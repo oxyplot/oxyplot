@@ -77,7 +77,7 @@ namespace ExampleLibrary
         public static PlotModel WideArrayPeaks()
         {
             var model = new PlotModel("Peaks");
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, -3.16262, 3.162));
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum=-3.16262, Maximum=3.162});
             var cs = new ContourSeries
             {
                 ColumnCoordinates = ArrayHelper.CreateVector(-3, 3, 0.05),

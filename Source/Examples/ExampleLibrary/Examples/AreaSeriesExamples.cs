@@ -89,7 +89,7 @@ namespace ExampleLibrary
         public static PlotModel LineSeriesandAreaSeries()
         {
             var plotModel1 = new PlotModel("LineSeries and AreaSeries");
-            var linearAxis1 = new LinearAxis(AxisPosition.Bottom);
+            var linearAxis1 = new LinearAxis { Position = AxisPosition.Bottom };
             plotModel1.Axes.Add(linearAxis1);
             var linearAxis2 = new LinearAxis();
             plotModel1.Axes.Add(linearAxis2);

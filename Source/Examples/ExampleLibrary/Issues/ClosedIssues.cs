@@ -45,8 +45,8 @@ namespace ExampleLibrary
         public static PlotModel DontShowMinorTicks()
         {
             var model = new PlotModel("ShowMinorTicks = false");
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom) { ShowMinorTicks = false });
-            model.Axes.Add(new LinearAxis(AxisPosition.Left) { ShowMinorTicks = false });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, ShowMinorTicks = false });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, ShowMinorTicks = false });
             return model;
         }
 
@@ -68,15 +68,16 @@ namespace ExampleLibrary
                     MinorGridlineThickness = 4,
                 };
             plotModel1.Axes.Add(leftAxis);
-            var bottomAxis = new LinearAxis(AxisPosition.Bottom)
-                {
-                    MajorGridlineStyle = LineStyle.Solid,
-                    MajorGridlineColor = OxyColors.Black,
-                    MajorGridlineThickness = 4,
-                    MinorGridlineStyle = LineStyle.Solid,
-                    MinorGridlineColor = OxyColors.LightBlue,
-                    MinorGridlineThickness = 4,
-                };
+            var bottomAxis = new LinearAxis
+            {
+                Position = AxisPosition.Bottom,
+                MajorGridlineStyle = LineStyle.Solid,
+                MajorGridlineColor = OxyColors.Black,
+                MajorGridlineThickness = 4,
+                MinorGridlineStyle = LineStyle.Solid,
+                MinorGridlineColor = OxyColors.LightBlue,
+                MinorGridlineThickness = 4,
+            };
             plotModel1.Axes.Add(bottomAxis);
             return plotModel1;
         }
@@ -178,8 +179,8 @@ namespace ExampleLibrary
         public static PlotModel SuperExponentialFormat()
         {
             var model = new PlotModel("UseSuperExponentialFormat=true and 0");
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, 0, 100, 10, 1) { UseSuperExponentialFormat = true });
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -100, 100, 20, 10) { UseSuperExponentialFormat = true });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 0, Maximum = 100, MajorStep = 10, MinorStep = 1, UseSuperExponentialFormat = true });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -100, Maximum = 100, MajorStep = 20, MinorStep = 10, UseSuperExponentialFormat = true });
             return model;
         }
 
@@ -252,7 +253,7 @@ namespace ExampleLibrary
         public static PlotModel FloatingPointInaccuracy()
         {
             var model = new PlotModel("Issue 10153");
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, -0.0515724495834661, 0.016609368598352, 0.02, 0.002));
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -0.0515724495834661, Maximum = 0.016609368598352, MajorStep = 0.02, MinorStep = 0.002 });
             return model;
         }
 

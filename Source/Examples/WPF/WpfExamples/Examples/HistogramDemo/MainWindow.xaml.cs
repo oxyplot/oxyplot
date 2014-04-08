@@ -72,9 +72,9 @@ namespace HistogramDemo
             pm.Series.Add(redLine);
             pm.Series.Add(greenLine);
             pm.Series.Add(blueLine);
-            pm.PlotMargins = new OxyThickness(60,0,0,30);
-            pm.Axes.Add(new LinearAxis(AxisPosition.Left, 0, 1, 0.2, 0.05, "Frequency"));
-            pm.Axes.Add(new LinearAxis(AxisPosition.Bottom, 0, 100, "Lightness"));
+            pm.PlotMargins = new OxyThickness(60, 0, 0, 30);
+            pm.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 0, Maximum = 1, MajorStep = 0.2, MinorStep = 0.05, Title = "Frequency" });
+            pm.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = 0, Maximum = 100, Title = "Lightness" });
             chart.Model = pm;
         }
 
@@ -150,7 +150,7 @@ namespace HistogramDemo
             for (int i = 0; i < histoR.Length; i++)
             {
                 double x = i * xScale;
-                redLine.Points.Add(new DataPoint(x,(double)histoR[i] / n));
+                redLine.Points.Add(new DataPoint(x, (double)histoR[i] / n));
                 greenLine.Points.Add(new DataPoint(x, (double)histoG[i] / n));
                 blueLine.Points.Add(new DataPoint(x, (double)histoB[i] / n));
             }

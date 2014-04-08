@@ -57,7 +57,7 @@ namespace ExampleLibrary
             categoryAxis.Labels.Add("Activity B");
             categoryAxis.Labels.Add("Activity C");
             categoryAxis.Labels.Add("Activity D");
-            var valueAxis = new LinearAxis(AxisPosition.Bottom) { MinimumPadding = 0.1, MaximumPadding = 0.1 };
+            var valueAxis = new LinearAxis { Position = AxisPosition.Bottom,  MinimumPadding = 0.1, MaximumPadding = 0.1 };
             model.Axes.Add(categoryAxis);
             model.Axes.Add(valueAxis);
             return model;

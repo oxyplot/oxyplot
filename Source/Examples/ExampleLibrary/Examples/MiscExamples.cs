@@ -123,7 +123,7 @@ namespace ExampleLibrary
             //    Points = RungeKutta4(f, t0, y0, 4, 1)
             //});
 
-            model.Axes.Add(new LinearAxis(AxisPosition.Left));
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
             return model;
         }
 
@@ -253,57 +253,64 @@ namespace ExampleLibrary
                                     60, 4, 60, 40)
                             };
             model.Axes.Add(
-                new LinearAxis(AxisPosition.Left, -20, 540, "Distance from Oslo S")
-                    {
-                        IsAxisVisible = true,
-                        StringFormat = "0"
-                    });
+                new LinearAxis
+                {
+                    Position = AxisPosition.Left,
+                    Minimum = -20,
+                    Maximum = 540,
+                    Title = "Distance from Oslo S",
+                    IsAxisVisible = true,
+                    StringFormat = "0"
+                });
             model.Axes.Add(
-                new TimeSpanAxis(AxisPosition.Bottom, 0, TimeSpanAxis.ToDouble(TimeSpan.FromHours(24)))
-                    {
-                        StringFormat
-                            = "hh",
-                        Title =
-                            "Time",
-                        MajorStep =
-                            TimeSpanAxis
-                            .ToDouble
-                            (
-                                TimeSpan
-                            .FromHours
-                            (1)),
-                        MinorStep =
-                            TimeSpanAxis
-                            .ToDouble
-                            (
-                                TimeSpan
-                            .FromMinutes
-                            (10)),
-                        TickStyle =
-                            TickStyle
-                            .None,
-                        MajorGridlineStyle
-                            =
-                            LineStyle
-                            .Solid,
-                        MajorGridlineColor
-                            =
-                            OxyColors
-                            .LightGray,
-                        MinorGridlineStyle
-                            =
-                            LineStyle
-                            .Solid,
-                        MinorGridlineColor
-                            =
-                            OxyColor
-                            .FromArgb
-                            (
-                                255,
-                                240,
-                                240,
-                                240)
-                    });
+                new TimeSpanAxis
+                {
+                    Position = AxisPosition.Bottom,
+                    Minimum = 0,
+                    Maximum = TimeSpanAxis.ToDouble(TimeSpan.FromHours(24)),
+                    StringFormat
+                        = "hh",
+                    Title =
+                        "Time",
+                    MajorStep =
+                        TimeSpanAxis
+                        .ToDouble
+                        (
+                            TimeSpan
+                        .FromHours
+                        (1)),
+                    MinorStep =
+                        TimeSpanAxis
+                        .ToDouble
+                        (
+                            TimeSpan
+                        .FromMinutes
+                        (10)),
+                    TickStyle =
+                        TickStyle
+                        .None,
+                    MajorGridlineStyle
+                        =
+                        LineStyle
+                        .Solid,
+                    MajorGridlineColor
+                        =
+                        OxyColors
+                        .LightGray,
+                    MinorGridlineStyle
+                        =
+                        LineStyle
+                        .Solid,
+                    MinorGridlineColor
+                        =
+                        OxyColor
+                        .FromArgb
+                        (
+                            255,
+                            240,
+                            240,
+                            240)
+                });
 
             // Read the train schedule from a .csv resource
             using (
@@ -439,7 +446,7 @@ namespace ExampleLibrary
                                 PlotType = PlotType.Cartesian,
                                 Background = OxyColor.FromRgb(84, 98, 207)
                             };
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, -500, 1000));
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -500, Maximum = 1000 });
             var series1 = new AreaSeries { Fill = OxyColors.White, StrokeThickness = 0 };
             series1.Points.Append(GetLineaPoints());
             model.Series.Add(series1);
@@ -455,7 +462,7 @@ namespace ExampleLibrary
                                 PlotType = PlotType.Cartesian,
                                 Background = OxyColor.FromRgb(84, 98, 207)
                             };
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, -500, 1000));
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -500, Maximum = 1000 });
             var series1 = new LineSeries { Color = OxyColors.White, StrokeThickness = 1.5 };
             series1.Points.Append(GetLineaPoints());
             model.Series.Add(series1);

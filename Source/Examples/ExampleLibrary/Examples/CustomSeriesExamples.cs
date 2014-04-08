@@ -28,6 +28,8 @@
 namespace ExampleLibrary
 {
     using System;
+    using System.Collections.Generic;
+
     using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
@@ -180,8 +182,8 @@ namespace ExampleLibrary
             matrix[1, 0] = 1.5;
             matrix[1, 1] = 0.2;
 
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -100, 100));
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, 0, 100));
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -100, Maximum = 100 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 0, Maximum = 100 });
             model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Rainbow(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
             model.Series.Add(new PolarHeatMapSeries { Data = matrix, Angle0 = 30, Angle1 = 150, Magnitude0 = 0, Magnitude1 = 80, Interpolate = true });
 
@@ -232,12 +234,19 @@ namespace ExampleLibrary
 
             var model = new PlotModel("Design structure matrix (DSM)");
             model.Axes.Add(new LinearColorAxis { Position = AxisPosition.None, Palette = new OxyPalette(OxyColors.White, OxyColors.LightGreen), LowColor = OxyColors.Black, Minimum = 0, IsAxisVisible = false });
-            model.Axes.Add(new CategoryAxis(AxisPosition.Top, null, new[] { "A", "B", "C", "D", "E", "F", "G" }));
-            model.Axes.Add(new CategoryAxis(AxisPosition.Left, null, new[] { "Element A", "Element B", "Element C", "Element D", "Element E", "Element F", "Element G" })
+            model.Axes.Add(new CategoryAxis
             {
-                StartPosition = 1,
-                EndPosition = 0
+                Position = AxisPosition.Top,
+                Labels = new List<string>(new[] { "A", "B", "C", "D", "E", "F", "G" })
             });
+            model.Axes.Add(
+                new CategoryAxis
+                {
+                    Position = AxisPosition.Left,
+                    Labels = new List<string>(new[] { "Element A", "Element B", "Element C", "Element D", "Element E", "Element F", "Element G" }),
+                    StartPosition = 1,
+                    EndPosition = 0
+                });
 
             var hms = new DesignStructureMatrixSeries
             {

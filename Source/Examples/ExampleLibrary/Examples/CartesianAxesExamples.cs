@@ -60,8 +60,8 @@ namespace ExampleLibrary
         {
             var plot = new PlotModel("Y: AbsoluteMinimum = 0") { PlotType = PlotType.Cartesian };
             var c = OxyColors.DarkBlue;
-            plot.Axes.Add(new LinearAxis(AxisPosition.Bottom, "X-axis") { MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Solid, MajorGridlineColor = OxyColor.FromAColor(40, c), MinorGridlineColor = OxyColor.FromAColor(20, c) });
-            plot.Axes.Add(new LinearAxis(AxisPosition.Left, "Y-axis") { AbsoluteMinimum = 0, Minimum = 0, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Solid, MajorGridlineColor = OxyColor.FromAColor(40, c), MinorGridlineColor = OxyColor.FromAColor(20, c) });
+            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "X-axis", MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Solid, MajorGridlineColor = OxyColor.FromAColor(40, c), MinorGridlineColor = OxyColor.FromAColor(20, c) });
+            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Y-axis", AbsoluteMinimum = 0, Minimum = 0, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Solid, MajorGridlineColor = OxyColor.FromAColor(40, c), MinorGridlineColor = OxyColor.FromAColor(20, c) });
             plot.Series.Add(CreateTestSeries());
             return plot;
         }
@@ -76,8 +76,8 @@ namespace ExampleLibrary
                     PlotMargins = new OxyThickness(60, 4, 4, 40)
                 };
             var c = OxyColors.DarkBlue;
-            plot.Axes.Add(new LinearAxis(AxisPosition.Bottom, "X-axis") { MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Solid, MajorGridlineColor = OxyColor.FromAColor(40, c), MinorGridlineColor = OxyColor.FromAColor(20, c) });
-            plot.Axes.Add(new LinearAxis(AxisPosition.Left, "Y-axis") { AbsoluteMinimum = 0, Minimum = 0, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Solid, MajorGridlineColor = OxyColor.FromAColor(40, c), MinorGridlineColor = OxyColor.FromAColor(20, c) });
+            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "X-axis", MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Solid, MajorGridlineColor = OxyColor.FromAColor(40, c), MinorGridlineColor = OxyColor.FromAColor(20, c) });
+            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Y-axis", AbsoluteMinimum = 0, Minimum = 0, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Solid, MajorGridlineColor = OxyColor.FromAColor(40, c), MinorGridlineColor = OxyColor.FromAColor(20, c) });
             plot.Series.Add(CreateTestSeries());
             return plot;
         }
@@ -88,8 +88,8 @@ namespace ExampleLibrary
             var plot = new PlotModel("X: AbsoluteMinimum = -10, Y: AbsoluteMinimum = 0") { PlotType = PlotType.Cartesian };
 
             var c = OxyColors.DarkBlue;
-            plot.Axes.Add(new LinearAxis(AxisPosition.Bottom, "X-axis") { AbsoluteMinimum = -10, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Solid, MajorGridlineColor = OxyColor.FromAColor(40, c), MinorGridlineColor = OxyColor.FromAColor(20, c) });
-            plot.Axes.Add(new LinearAxis(AxisPosition.Left, "Y-axis") { AbsoluteMinimum = 0, Minimum = 0, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Solid, MajorGridlineColor = OxyColor.FromAColor(40, c), MinorGridlineColor = OxyColor.FromAColor(20, c) });
+            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "X-axis", AbsoluteMinimum = -10, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Solid, MajorGridlineColor = OxyColor.FromAColor(40, c), MinorGridlineColor = OxyColor.FromAColor(20, c) });
+            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Y-axis", AbsoluteMinimum = 0, Minimum = 0, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Solid, MajorGridlineColor = OxyColor.FromAColor(40, c), MinorGridlineColor = OxyColor.FromAColor(20, c) });
             plot.Series.Add(CreateTestSeries());
             return plot;
         }
@@ -100,8 +100,8 @@ namespace ExampleLibrary
             var plot = new PlotModel("Y: AbsoluteMinimum = 0, AbsoluteMaximum = 2") { PlotType = PlotType.Cartesian };
 
             var c = OxyColors.DarkBlue;
-            plot.Axes.Add(new LinearAxis(AxisPosition.Bottom, "X-axis") { MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Solid, MajorGridlineColor = OxyColor.FromAColor(40, c), MinorGridlineColor = OxyColor.FromAColor(20, c) });
-            plot.Axes.Add(new LinearAxis(AxisPosition.Left, "Y-axis") { AbsoluteMinimum = 0, Minimum = 0, AbsoluteMaximum = 2, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Solid, MajorGridlineColor = OxyColor.FromAColor(40, c), MinorGridlineColor = OxyColor.FromAColor(20, c) });
+            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "X-axis", MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Solid, MajorGridlineColor = OxyColor.FromAColor(40, c), MinorGridlineColor = OxyColor.FromAColor(20, c) });
+            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Y-axis", AbsoluteMinimum = 0, Minimum = 0, AbsoluteMaximum = 2, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Solid, MajorGridlineColor = OxyColor.FromAColor(40, c), MinorGridlineColor = OxyColor.FromAColor(20, c) });
             plot.Series.Add(CreateTestSeries());
             return plot;
         }
@@ -112,8 +112,8 @@ namespace ExampleLibrary
             var plot = new PlotModel("Y: AbsoluteMinimum = 0, X: AbsoluteMinimum = -10, AbsoluteMaximum = 10") { PlotType = PlotType.Cartesian };
 
             var c = OxyColors.DarkBlue;
-            plot.Axes.Add(new LinearAxis(AxisPosition.Bottom, "X-axis") { AbsoluteMinimum = -10, AbsoluteMaximum = 10, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Solid, MajorGridlineColor = OxyColor.FromAColor(40, c), MinorGridlineColor = OxyColor.FromAColor(20, c) });
-            plot.Axes.Add(new LinearAxis(AxisPosition.Left, "Y-axis") { AbsoluteMinimum = 0, Minimum = 0, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Solid, MajorGridlineColor = OxyColor.FromAColor(40, c), MinorGridlineColor = OxyColor.FromAColor(20, c) });
+            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "X-axis", AbsoluteMinimum = -10, AbsoluteMaximum = 10, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Solid, MajorGridlineColor = OxyColor.FromAColor(40, c), MinorGridlineColor = OxyColor.FromAColor(20, c) });
+            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Y-axis", AbsoluteMinimum = 0, Minimum = 0, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Solid, MajorGridlineColor = OxyColor.FromAColor(40, c), MinorGridlineColor = OxyColor.FromAColor(20, c) });
             plot.Series.Add(CreateTestSeries());
 
             return plot;
@@ -125,8 +125,8 @@ namespace ExampleLibrary
             var plot = new PlotModel("Y: AbsoluteMinimum = 0, AbsoluteMaximum = 2, X: AbsoluteMinimum = -10, AbsoluteMaximum = 10") { PlotType = PlotType.Cartesian };
 
             var c = OxyColors.DarkBlue;
-            plot.Axes.Add(new LinearAxis(AxisPosition.Bottom, "X-axis") { AbsoluteMinimum = -10, AbsoluteMaximum = 10, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Solid, MajorGridlineColor = OxyColor.FromAColor(40, c), MinorGridlineColor = OxyColor.FromAColor(20, c) });
-            plot.Axes.Add(new LinearAxis(AxisPosition.Left, "Y-axis") { AbsoluteMinimum = 0, Minimum = 0, AbsoluteMaximum = 2, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Solid, MajorGridlineColor = OxyColor.FromAColor(40, c), MinorGridlineColor = OxyColor.FromAColor(20, c) });
+            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "X-axis", AbsoluteMinimum = -10, AbsoluteMaximum = 10, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Solid, MajorGridlineColor = OxyColor.FromAColor(40, c), MinorGridlineColor = OxyColor.FromAColor(20, c) });
+            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Y-axis", AbsoluteMinimum = 0, Minimum = 0, AbsoluteMaximum = 2, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Solid, MajorGridlineColor = OxyColor.FromAColor(40, c), MinorGridlineColor = OxyColor.FromAColor(20, c) });
             plot.Series.Add(CreateTestSeries());
 
             return plot;

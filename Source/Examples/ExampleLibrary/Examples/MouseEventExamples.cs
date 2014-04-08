@@ -42,8 +42,8 @@ namespace ExampleLibrary
         public static PlotModel MouseEvents()
         {
             var model = new PlotModel("Mouse events", "Left click and drag");
-            var yaxis = new LinearAxis(AxisPosition.Left, -1, 1);
-            var xaxis = new LinearAxis(AxisPosition.Bottom, -1, 1);
+            var yaxis = new LinearAxis { Position = AxisPosition.Left, Minimum = -1, Maximum = 1 };
+            var xaxis = new LinearAxis { Position = AxisPosition.Bottom, Minimum = -1, Maximum = 1 };
             model.Axes.Add(yaxis);
             model.Axes.Add(xaxis);
 
@@ -218,8 +218,8 @@ namespace ExampleLibrary
         public static PlotModel AddAnnotations()
         {
             var model = new PlotModel("Add arrow annotations", "Press and drag the left mouse button");
-            var xaxis = new LinearAxis(AxisPosition.Bottom);
-            var yaxis = new LinearAxis(AxisPosition.Left);
+            var xaxis = new LinearAxis { Position = AxisPosition.Bottom };
+            var yaxis = new LinearAxis { Position = AxisPosition.Left };
             model.Axes.Add(xaxis);
             model.Axes.Add(yaxis);
             model.Series.Add(new FunctionSeries(x => Math.Sin(x / 4) * Math.Acos(Math.Sin(x)), 0, Math.PI * 8, 2000, "sin(x/4)*acos(sin(x))"));
@@ -270,8 +270,8 @@ namespace ExampleLibrary
         public static PlotModel LineAnnotation()
         {
             var model = new PlotModel("LineAnnotation", "Click and drag the annotation line.");
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -20, 80));
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, -10, 10));
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -20, Maximum = 80 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -10, Maximum = 10 });
             var la = new LineAnnotation { Type = LineAnnotationType.Vertical, X = 4 };
             la.MouseDown += (s, e) =>
                 {
@@ -306,8 +306,8 @@ namespace ExampleLibrary
         public static PlotModel ArrowAnnotation()
         {
             var model = new PlotModel("ArrowAnnotation", "Click and drag the arrow.");
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -40, 60));
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, -10, 10));
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -40, Maximum = 60 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -10, Maximum = 10 });
 
             var arrow = new ArrowAnnotation { StartPoint = new DataPoint(8, 4), EndPoint = new DataPoint(0, 0), Text = "Move me!" };
 
@@ -367,8 +367,7 @@ namespace ExampleLibrary
         public static PlotModel PolygonAnnotation()
         {
             var model = new PlotModel("PolygonAnnotation", "Click the polygon");
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -20, 20));
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, -10, 10));
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -20, Maximum = 20 });
             var pa = new PolygonAnnotation
                 {
                     Text = "Polygon 1"
@@ -401,8 +400,8 @@ namespace ExampleLibrary
         public static PlotModel TextAnnotation()
         {
             var model = new PlotModel("TextAnnotation", "Click the text");
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -20, 20));
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, -10, 10));
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -20, Maximum = 20 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -10, Maximum = 10 });
             var ta = new TextAnnotation
             {
                 Position = new DataPoint(4, -2),
@@ -430,8 +429,8 @@ namespace ExampleLibrary
         public static PlotModel ImageAnnotation()
         {
             var model = new PlotModel("ImageAnnotation", "Click the image");
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -20, 20));
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, -10, 10));
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -20, Maximum = 20 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -10, Maximum = 10 });
 
             OxyImage image;
             var assembly = Assembly.GetExecutingAssembly();

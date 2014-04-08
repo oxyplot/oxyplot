@@ -100,8 +100,8 @@ namespace DateTimeDemo
         private PlotModel CreateModel(DateTime start, DateTime end, double increment)
         {
             var tmp = new PlotModel("DateTime axis (PlotModel)");
-            tmp.Axes.Add(new DateTimeAxis(AxisPosition.Bottom));
-            tmp.Axes.Add(new LinearAxis(AxisPosition.Left));
+            tmp.Axes.Add(new DateTimeAxis { Position = AxisPosition.Bottom});
+            tmp.Axes.Add(new LinearAxis { Position = AxisPosition.Left});
 
             // Create a random data collection
             var r = new Random();

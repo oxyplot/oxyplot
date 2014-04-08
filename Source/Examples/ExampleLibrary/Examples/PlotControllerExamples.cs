@@ -40,8 +40,8 @@ namespace ExampleLibrary
         public static Example BasicExample()
         {
             var model = new PlotModel("Basic Controller example", "Panning with left mouse button");
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom));
-            model.Axes.Add(new LinearAxis(AxisPosition.Left));
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
             var controller = new PlotController();
             controller.InputCommandBindings.Clear();
             controller.BindMouseDown(OxyMouseButton.Left, PlotCommands.PanAt);
@@ -52,8 +52,8 @@ namespace ExampleLibrary
         public static Example HoverTracking()
         {
             var model = new PlotModel("Show tracker without clicking");
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom));
-            model.Axes.Add(new LinearAxis(AxisPosition.Left));
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
             model.Series.Add(new FunctionSeries(t => (Math.Cos(t) * 5) + Math.Cos(t * 50), t => (Math.Sin(t) * 5) + Math.Sin(t * 50), 0, Math.PI * 2, 20000));
 
             // create a new plot controller with default bindings

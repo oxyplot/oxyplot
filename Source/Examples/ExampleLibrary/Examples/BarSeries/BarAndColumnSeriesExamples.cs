@@ -28,6 +28,7 @@
 namespace ExampleLibrary
 {
     using System;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
 
     using OxyPlot;
@@ -71,7 +72,7 @@ namespace ExampleLibrary
             var s1 = new TSeries { Title = "Series 1" };
             var s2 = new TSeries { Title = "Series 2" };
             var categoryAxis = new CategoryAxis { Position = CategoryAxisPosition() };
-            var valueAxis = new LinearAxis(ValueAxisPosition());
+            var valueAxis = new LinearAxis { Position = ValueAxisPosition() };
             model.Series.Add(s1);
             model.Series.Add(s2);
             model.Axes.Add(categoryAxis);
@@ -95,8 +96,9 @@ namespace ExampleLibrary
             s2.Items.Add(new TItem { Value = -120 });
             s2.Items.Add(new TItem { Value = -26 });
             var categoryAxis = new CategoryAxis { Position = CategoryAxisPosition() };
-            var valueAxis = new LinearAxis(ValueAxisPosition())
+            var valueAxis = new LinearAxis
             {
+                Position = ValueAxisPosition(),
                 MinimumPadding = 0.06,
                 MaximumPadding = 0.06,
                 ExtraGridlines = new[] { 0.0 },
@@ -188,7 +190,7 @@ namespace ExampleLibrary
             categoryAxis.Labels.Add("Category D");
             model.Series.Add(s1);
             model.Axes.Add(categoryAxis);
-            model.Axes.Add(new LogarithmicAxis(ValueAxisPosition()) { Minimum = 0.1, MinimumPadding = 0, AbsoluteMinimum = 0 });
+            model.Axes.Add(new LogarithmicAxis { Position = ValueAxisPosition(), Minimum = 0.1, MinimumPadding = 0, AbsoluteMinimum = 0 });
             return model;
         }
 
@@ -219,7 +221,7 @@ namespace ExampleLibrary
             categoryAxis.Labels.Add("Category B");
             categoryAxis.Labels.Add("Category C");
             categoryAxis.Labels.Add("Category D");
-            var valueAxis = new LinearAxis(ValueAxisPosition()) { MinimumPadding = 0, MaximumPadding = 0.06, AbsoluteMinimum = 0 };
+            var valueAxis = new LinearAxis { Position = ValueAxisPosition(), MinimumPadding = 0, MaximumPadding = 0.06, AbsoluteMinimum = 0 };
             model.Series.Add(s1);
             model.Series.Add(s2);
             model.Axes.Add(categoryAxis);
@@ -267,8 +269,9 @@ namespace ExampleLibrary
             categoryAxis.Labels.Add("Category C");
             categoryAxis.Labels.Add("Category D");
 
-            var valueAxis = new LinearAxis(ValueAxisPosition())
+            var valueAxis = new LinearAxis
                 {
+                    Position = ValueAxisPosition(),
                     MinimumPadding = 0.06,
                     MaximumPadding = 0.06,
                     ExtraGridlines = new[] { 0.0 },
@@ -399,7 +402,7 @@ namespace ExampleLibrary
             series.Items.Add(new TItem { Value = 1, Color = OxyColors.Red });
             series.Items.Add(new TItem { Value = 2, Color = OxyColors.Green });
             series.Items.Add(new TItem { Value = 1, Color = OxyColors.Blue });
-            model.Axes.Add(new CategoryAxis("Category", "A", "B", "C") { Position = CategoryAxisPosition() });
+            model.Axes.Add(new CategoryAxis { Title = "Category", Labels = new[] { "A", "B", "C" }, Position = CategoryAxisPosition() });
             model.Series.Add(series);
             return model;
         }
@@ -423,7 +426,7 @@ namespace ExampleLibrary
             series3.Items.Add(new TItem { Value = 1 });
             model.Series.Add(series3);
 
-            model.Axes.Add(new CategoryAxis("Category", "A", "B") { Position = CategoryAxisPosition() });
+            model.Axes.Add(new CategoryAxis { Title = "Category", Labels = new[] { "A", "B" }, Position = CategoryAxisPosition() });
             return model;
         }
 
@@ -443,7 +446,7 @@ namespace ExampleLibrary
             series2.Items.Add(new TItem { Value = 1 });
             model.Series.Add(series2);
 
-            model.Axes.Add(new CategoryAxis("Category", "A", "B") { Position = CategoryAxisPosition() });
+            model.Axes.Add(new CategoryAxis { Title = "Category", Labels = new[] { "A", "B" }, Position = CategoryAxisPosition() });
             return model;
         }
 
@@ -475,7 +478,7 @@ namespace ExampleLibrary
             series2.Items.Add(new TItem { Value = 1 });
             model.Series.Add(series2);
 
-            model.Axes.Add(new CategoryAxis("Category", "A", "B") { Position = CategoryAxisPosition() });
+            model.Axes.Add(new CategoryAxis { Title = "Category", Labels = new[] { "A", "B" }, Position = CategoryAxisPosition() });
             return model;
         }
 
@@ -493,7 +496,7 @@ namespace ExampleLibrary
             series2.Items.Add(new TItem { Value = 1 });
             model.Series.Add(series2);
 
-            model.Axes.Add(new CategoryAxis("Category", "A", "B") { Position = CategoryAxisPosition() });
+            model.Axes.Add(new CategoryAxis { Title = "Category", Labels = new[] { "A", "B" }, Position = CategoryAxisPosition() });
             return model;
         }
 
@@ -510,7 +513,7 @@ namespace ExampleLibrary
             series2.Items.Add(new TItem { Value = 1.2 });
             model.Series.Add(series2);
 
-            model.Axes.Add(new CategoryAxis("Category", "A", "B") { Position = CategoryAxisPosition() });
+            model.Axes.Add(new CategoryAxis { Title = "Category", Labels = new[] { "A", "B" }, Position = CategoryAxisPosition() });
             return model;
         }
 
@@ -523,7 +526,7 @@ namespace ExampleLibrary
             series.Items.Add(new TItem { Value = 2, CategoryIndex = 0 });
             model.Series.Add(series);
 
-            model.Axes.Add(new CategoryAxis("Category", "A", "B") { Position = CategoryAxisPosition() });
+            model.Axes.Add(new CategoryAxis { Title = "Category", Labels = new[] { "A", "B" }, Position = CategoryAxisPosition() });
             return model;
         }
 
@@ -536,7 +539,7 @@ namespace ExampleLibrary
             series.Items.Add(new TItem { Value = 2, CategoryIndex = 0 });
             model.Series.Add(series);
 
-            model.Axes.Add(new CategoryAxis("Category", "A", "B") { Position = CategoryAxisPosition() });
+            model.Axes.Add(new CategoryAxis { Title = "Category", Labels = new[] { "A", "B" }, Position = CategoryAxisPosition() });
             return model;
         }
 
@@ -553,7 +556,7 @@ namespace ExampleLibrary
             series2.Items.Add(new TItem { Value = 7 });
             model.Series.Add(series2);
 
-            model.Axes.Add(new CategoryAxis("Category", "A", "B") { Position = CategoryAxisPosition() });
+            model.Axes.Add(new CategoryAxis { Title = "Category", Labels = new[] { "A", "B" }, Position = CategoryAxisPosition() });
             return model;
         }
 
@@ -570,7 +573,7 @@ namespace ExampleLibrary
             series2.Items.Add(new TItem { Value = 7 });
             model.Series.Add(series2);
 
-            model.Axes.Add(new CategoryAxis("Category", "A", "B") { Position = CategoryAxisPosition() });
+            model.Axes.Add(new CategoryAxis { Title = "Category", Labels = new[] { "A", "B" }, Position = CategoryAxisPosition() });
             return model;
         }
 
@@ -615,8 +618,9 @@ namespace ExampleLibrary
             categoryAxis.Labels.Add("Category B");
             categoryAxis.Labels.Add("Category C");
             categoryAxis.Labels.Add("Category D");
-            var valueAxis = new LinearAxis(ValueAxisPosition())
+            var valueAxis = new LinearAxis
             {
+                Position = ValueAxisPosition(),
                 MinimumPadding = 0.06,
                 MaximumPadding = 0.06,
                 ExtraGridlines = new[] { 0.0 },

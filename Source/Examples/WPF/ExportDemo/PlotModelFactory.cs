@@ -166,8 +166,8 @@ namespace ExportDemo
             for (int i = 0; i < n; i++)
                 data = Fractalise(data, KochDetail);
             var model = new PlotModel("Koch curve");
-            model.Axes.Add(new LinearAxis(AxisPosition.Left) { MinimumPadding = 0.1, MaximumPadding = 0.1 });
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom) { MinimumPadding = 0.1, MaximumPadding = 0.1 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, MinimumPadding = 0.1, MaximumPadding = 0.1 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, MinimumPadding = 0.1, MaximumPadding = 0.1 });
             model.PlotType = PlotType.Cartesian;
             var ls = new LineSeries { ItemsSource = data };
             model.Series.Add(ls);
@@ -200,8 +200,8 @@ namespace ExportDemo
         private static PlotModel CreateZigZagCurve(int n)
         {
             var model = new PlotModel("Zigzag curve");
-            model.Axes.Add(new LinearAxis(AxisPosition.Left) { MinimumPadding = 0.1, MaximumPadding = 0.1 });
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom) { MinimumPadding = 0.1, MaximumPadding = 0.1 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, MinimumPadding = 0.1, MaximumPadding = 0.1 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, MinimumPadding = 0.1, MaximumPadding = 0.1 });
             var ls = new LineSeries();
             for (int i = 0; i < n; i++)
             {

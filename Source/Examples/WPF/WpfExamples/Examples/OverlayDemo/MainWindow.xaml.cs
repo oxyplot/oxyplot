@@ -54,8 +54,8 @@ namespace OverlayDemo
         {
             this.InitializeComponent();
             this.model = new PlotModel();
-            this.horizontalAxis = new LinearAxis(AxisPosition.Bottom);
-            this.verticalAxis = new LinearAxis(AxisPosition.Left);
+            this.horizontalAxis = new LinearAxis { Position = AxisPosition.Bottom};
+            this.verticalAxis = new LinearAxis { Position = AxisPosition.Left};
             this.model.Axes.Add(this.horizontalAxis);
             this.model.Axes.Add(this.verticalAxis);
             plot1.Model = this.model;
