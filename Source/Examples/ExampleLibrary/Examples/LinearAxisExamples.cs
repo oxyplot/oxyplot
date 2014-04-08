@@ -59,16 +59,14 @@ namespace ExampleLibrary
         private static PlotModel CreateTickStyleModel(TickStyle tickStyle)
         {
             var model = new PlotModel("TickStyle: " + tickStyle);
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom)
-                               {
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom,
                                    TickStyle = tickStyle,
                                    MajorGridlineStyle = LineStyle.None,
                                    MinorGridlineStyle = LineStyle.None,
                                    MaximumPadding = 0,
                                    MinimumPadding = 0
                                });
-            model.Axes.Add(new LinearAxis(AxisPosition.Left)
-                               {
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left,
                                    TickStyle = tickStyle,
                                    MajorGridlineStyle = LineStyle.None,
                                    MinorGridlineStyle = LineStyle.None,
@@ -102,15 +100,13 @@ namespace ExampleLibrary
         private static PlotModel CreateGridlinesModel(string title, LineStyle horizontal, LineStyle vertical)
         {
             var model = new PlotModel("Gridlines: " + title);
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom)
-            {
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom,
                 MajorGridlineStyle = vertical,
                 MinorGridlineStyle = vertical==LineStyle.Solid?LineStyle.Dot:LineStyle.None,
                 MaximumPadding = 0,
                 MinimumPadding = 0
             });
-            model.Axes.Add(new LinearAxis(AxisPosition.Left)
-            {
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left,
                 MajorGridlineStyle = horizontal,
                 MinorGridlineStyle = horizontal == LineStyle.Solid ? LineStyle.Dot : LineStyle.None,
                 MaximumPadding = 0,

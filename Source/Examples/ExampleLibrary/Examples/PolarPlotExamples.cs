@@ -99,8 +99,12 @@ namespace ExampleLibrary
                 PlotMargins = new OxyThickness(60, 20, 4, 40)
             };
 
-            var angleAxis = new AngleAxis(0, Math.PI * 2, Math.PI / 4, Math.PI / 16)
+            var angleAxis = new AngleAxis
             {
+                Minimum = 0,
+                Maximum = Math.PI * 2,
+                MajorStep = Math.PI / 4,
+                MinorStep = Math.PI / 16,
                 StringFormat = "0.00",
                 StartAngle = 30,
                 EndAngle = 390
@@ -140,15 +144,21 @@ namespace ExampleLibrary
                 PlotMargins = new OxyThickness(60, 20, 4, 40)
             };
             model.Axes.Add(
-                new AngleAxis(0, 180, 45, 9)
+                new AngleAxis
                 {
+                    Minimum = 0,
+                    Maximum = 180,
+                    MajorStep = 45,
+                    MinorStep = 9,
                     StartAngle = 0,
                     EndAngle = 180,
                     MajorGridlineStyle = LineStyle.Solid,
                     MinorGridlineStyle = LineStyle.Solid
                 });
-            model.Axes.Add(new MagnitudeAxis(0, 1)
+            model.Axes.Add(new MagnitudeAxis
             {
+                Minimum = 0,
+                Maximum = 1,
                 MajorGridlineStyle = LineStyle.Solid,
                 MinorGridlineStyle = LineStyle.Solid
             });
@@ -166,15 +176,21 @@ namespace ExampleLibrary
                 PlotMargins = new OxyThickness(60, 20, 4, 40)
             };
             model.Axes.Add(
-                new AngleAxis(-180, 180, 45, 9)
+                new AngleAxis
                 {
+                    Minimum = -180,
+                    Maximum = 180,
+                    MajorStep = 45,
+                    MinorStep = 9,
                     StartAngle = 0,
                     EndAngle = 360,
                     MajorGridlineStyle = LineStyle.Solid,
                     MinorGridlineStyle = LineStyle.Solid
                 });
-            model.Axes.Add(new MagnitudeAxis(0, 1)
+            model.Axes.Add(new MagnitudeAxis
             {
+                Minimum = 0,
+                Maximum = 1,
                 MajorGridlineStyle = LineStyle.Solid,
                 MinorGridlineStyle = LineStyle.Solid
             });

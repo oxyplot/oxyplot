@@ -252,8 +252,8 @@ namespace ExampleLibrary
         public static PlotModel LinearAxis1()
         {
             var model = new PlotModel("LinearAxis (no gridlines)");
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, 0, 100, 1, 1));
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, 0, 100, 1, 1));
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum=0, Maximum=100, MajorStep=1, MinorStep=1});
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum=0, Maximum=100, MajorStep=1, MinorStep=1});
             return model;
         }
 
@@ -261,8 +261,8 @@ namespace ExampleLibrary
         public static PlotModel LinearAxis2()
         {
             var model = new PlotModel("LinearAxis (solid gridlines)");
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, 0, 100, 1, 1) { MajorGridlineStyle = LineStyle.Solid });
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, 0, 100, 1, 1) { MajorGridlineStyle = LineStyle.Solid });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum=0, Maximum=100, MajorStep=1, MinorStep=1, MajorGridlineStyle = LineStyle.Solid });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum=0, Maximum=100, MajorStep=1, MinorStep=1, MajorGridlineStyle = LineStyle.Solid });
             return model;
         }
 
@@ -270,8 +270,8 @@ namespace ExampleLibrary
         public static PlotModel LinearAxis3()
         {
             var model = new PlotModel("LinearAxis (dashed gridlines)");
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, 0, 100, 1, 1) { MajorGridlineStyle = LineStyle.Dash });
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, 0, 100, 1, 1) { MajorGridlineStyle = LineStyle.Dash });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum=0, Maximum=100, MajorStep=1, MinorStep=1, MajorGridlineStyle = LineStyle.Dash });
+            model.Axes.Add(new LinearAxis { Position =AxisPosition.Bottom, Minimum=0, Maximum=100, MajorStep=1, MinorStep=1, MajorGridlineStyle = LineStyle.Dash });
             return model;
         }
 
@@ -279,8 +279,8 @@ namespace ExampleLibrary
         public static PlotModel LinearAxis4()
         {
             var model = new PlotModel("LinearAxis (dotted gridlines)");
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, 0, 100, 1, 1) { MajorGridlineStyle = LineStyle.Dot });
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, 0, 100, 1, 1) { MajorGridlineStyle = LineStyle.Dot });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum=0, Maximum=100, MajorStep=1, MinorStep=1, MajorGridlineStyle = LineStyle.Dot });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum=0, Maximum=100, MajorStep=1, MinorStep=1, MajorGridlineStyle = LineStyle.Dot });
             return model;
         }
 

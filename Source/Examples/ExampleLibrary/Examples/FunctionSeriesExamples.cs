@@ -153,13 +153,17 @@ namespace ExampleLibrary
             m.PlotType = PlotType.Polar;
             m.PlotAreaBorderThickness = 0;
 
-            m.Axes.Add(new AngleAxis(0, Math.PI * 2, Math.PI / 4, Math.PI / 16)
-                {
-                    MajorGridlineStyle = LineStyle.Solid,
-                    FormatAsFractions = true,
-                    FractionUnit = Math.PI,
-                    FractionUnitSymbol = "π"
-                });
+            m.Axes.Add(new AngleAxis
+            {
+                Minimum = 0,
+                Maximum = Math.PI * 2,
+                MajorStep = Math.PI / 4,
+                MinorStep = Math.PI / 16,
+                MajorGridlineStyle = LineStyle.Solid,
+                FormatAsFractions = true,
+                FractionUnit = Math.PI,
+                FractionUnitSymbol = "π"
+            });
             m.Axes.Add(new MagnitudeAxis() { MajorGridlineStyle = LineStyle.Solid });
 
             int d = 4;
@@ -197,8 +201,8 @@ namespace ExampleLibrary
             // http://www.wolframalpha.com/input/?i=folium+of+Descartes
 
             var m = new PlotModel("Folium of Descartes") { PlotType = PlotType.Cartesian };
-            m.Axes.Add(new LinearAxis(AxisPosition.Left, -3, 3));
-            m.Axes.Add(new LinearAxis(AxisPosition.Bottom, -3, 3));
+            m.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -3, Maximum = 3 });
+            m.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -3, Maximum = 3 });
             double a = 1;
             m.Series.Add(new FunctionSeries(t => 3 * a * t / (t * t * t + 1), t => 3 * a * t * t / (t * t * t + 1), -30, 30, 1001, string.Format("a={0}", a)));
 

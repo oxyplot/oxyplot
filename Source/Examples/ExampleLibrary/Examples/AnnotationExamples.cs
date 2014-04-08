@@ -30,7 +30,7 @@ using OxyPlot;
 namespace ExampleLibrary
 {
     using System;
-	using System.Linq;
+    using System.Linq;
     using System.Reflection;
 
     using OxyPlot.Annotations;
@@ -44,8 +44,8 @@ namespace ExampleLibrary
         public static PlotModel LineAnnotationOnLinearAxes()
         {
             var model = new PlotModel("LineAnnotation on linear axes");
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -20, 80));
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, -10, 10));
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -20, Maximum = 80 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -10, Maximum = 10 });
             model.Annotations.Add(new LineAnnotation { Slope = 0.1, Intercept = 1, Text = "First" });
             model.Annotations.Add(new LineAnnotation { Slope = 0.3, Intercept = 2, MaximumX = 40, Color = OxyColors.Red, Text = "Second" });
             model.Annotations.Add(new LineAnnotation { Type = LineAnnotationType.Vertical, X = 4, MaximumY = 10, Color = OxyColors.Green, Text = "Vertical" });
@@ -57,8 +57,8 @@ namespace ExampleLibrary
         public static PlotModel LineAnnotationOnLogarithmicAxes()
         {
             var model = new PlotModel("LineAnnotation on logarithmic axes");
-            model.Axes.Add(new LogarithmicAxis(AxisPosition.Bottom, 1, 80));
-            model.Axes.Add(new LogarithmicAxis(AxisPosition.Left, 1, 10));
+            model.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Bottom, Minimum = 1, Maximum = 80 });
+            model.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Left, Minimum = 1, Maximum = 10 });
             model.Annotations.Add(new LineAnnotation { Slope = 0.1, Intercept = 1, Text = "First", TextMargin = 40 });
             model.Annotations.Add(new LineAnnotation { Slope = 0.3, Intercept = 2, MaximumX = 40, Color = OxyColors.Red, Text = "Second" });
             model.Annotations.Add(new LineAnnotation { Type = LineAnnotationType.Vertical, X = 4, MaximumY = 10, Color = OxyColors.Green, Text = "Vertical" });
@@ -70,8 +70,8 @@ namespace ExampleLibrary
         public static PlotModel LineAnnotationOnLinearAxesWithTextOrientation()
         {
             var model = new PlotModel("LineAnnotations", "with TextOrientation specified");
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -20, 80));
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, -10, 10));
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -20, Maximum = 80 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -10, Maximum = 10 });
             model.Annotations.Add(new LineAnnotation { Slope = 0.1, Intercept = 1, Text = "Horizontal", TextOrientation = AnnotationTextOrientation.Horizontal, TextVerticalAlignment = VerticalAlignment.Bottom });
             model.Annotations.Add(new LineAnnotation { Slope = 0.3, Intercept = 2, MaximumX = 40, Color = OxyColors.Red, Text = "Vertical", TextOrientation = AnnotationTextOrientation.Vertical });
             model.Annotations.Add(new LineAnnotation { Type = LineAnnotationType.Vertical, X = 4, MaximumY = 10, Color = OxyColors.Green, Text = "Horizontal (x=4)", TextPadding = 8, TextOrientation = AnnotationTextOrientation.Horizontal });
@@ -84,8 +84,8 @@ namespace ExampleLibrary
         public static PlotModel FunctionAnnotation()
         {
             var model = new PlotModel("FunctionAnnotation");
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -20, 80));
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, -10, 10));
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -20, Maximum = 80 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -10, Maximum = 10 });
             model.Annotations.Add(new FunctionAnnotation { Equation = Math.Sin, StrokeThickness = 2, Color = OxyColor.FromAColor(120, OxyColors.Blue), Text = "f(x)=sin(x)" });
             model.Annotations.Add(new FunctionAnnotation { Equation = y => y * y, StrokeThickness = 2, Color = OxyColor.FromAColor(120, OxyColors.Red), Type = FunctionAnnotationType.EquationY, Text = "f(y)=y^2" });
             return model;
@@ -95,8 +95,8 @@ namespace ExampleLibrary
         public static PlotModel RectangleAnnotation()
         {
             var model = new PlotModel("RectangleAnnotation");
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom));
-            model.Axes.Add(new LinearAxis(AxisPosition.Left));
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
             model.Annotations.Add(new RectangleAnnotation { MinimumX = 20, MaximumX = 70, MinimumY = 10, MaximumY = 40, TextRotation = 10, Text = "RectangleAnnotation", Fill = OxyColor.FromAColor(99, OxyColors.Blue), Stroke = OxyColors.Black, StrokeThickness = 2 });
             return model;
         }
@@ -105,8 +105,8 @@ namespace ExampleLibrary
         public static PlotModel EllipseAnnotation()
         {
             var model = new PlotModel("EllipseAnnotation");
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom));
-            model.Axes.Add(new LinearAxis(AxisPosition.Left));
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
             model.Annotations.Add(new EllipseAnnotation { X = 20, Y = 60, Width = 20, Height = 15, Text = "EllipseAnnotation", TextRotation = 10, Fill = OxyColor.FromAColor(99, OxyColors.Green), Stroke = OxyColors.Black, StrokeThickness = 2 });
 
             model.Annotations.Add(new EllipseAnnotation { X = 20, Y = 20, Width = 20, Height = 20, Fill = OxyColor.FromAColor(99, OxyColors.Green), Stroke = OxyColors.Black, StrokeThickness = 2 });
@@ -119,8 +119,8 @@ namespace ExampleLibrary
         public static PlotModel RectangleAnnotationVerticalLimit()
         {
             var model = new PlotModel("RectangleAnnotations - vertical limit");
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom));
-            model.Axes.Add(new LinearAxis(AxisPosition.Left));
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
             model.Annotations.Add(new RectangleAnnotation { MaximumY = 89.5, Text = "Valid area", Fill = OxyColor.FromAColor(99, OxyColors.Black) });
             return model;
         }
@@ -129,8 +129,8 @@ namespace ExampleLibrary
         public static PlotModel RectangleAnnotationHorizontals()
         {
             var model = new PlotModel("RectangleAnnotation - horizontal bands");
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, 0, 10));
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, 87, 97) { MajorStep = 1, MinorStep = 1 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = 0, Maximum = 10 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 87, Maximum = 97, MajorStep = 1, MinorStep = 1 });
             model.Annotations.Add(new RectangleAnnotation { MinimumY = 89.5, MaximumY = 90.8, Text = "Invalid", Fill = OxyColor.FromAColor(99, OxyColors.Red) });
             model.Annotations.Add(new RectangleAnnotation { MinimumY = 90.8, MaximumY = 92.1, Fill = OxyColor.FromAColor(99, OxyColors.Orange) });
             model.Annotations.Add(new RectangleAnnotation { MinimumY = 92.1, MaximumY = 94.6, Fill = OxyColor.FromAColor(99, OxyColors.Yellow) });
@@ -154,8 +154,8 @@ namespace ExampleLibrary
         public static PlotModel RectangleAnnotationVerticals()
         {
             var model = new PlotModel("RectangleAnnotation - vertical bands");
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, 0, 10));
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, 87, 97) { MajorStep = 1, MinorStep = 1 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = 0, Maximum = 10 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 87, Maximum = 97, MajorStep = 1, MinorStep = 1 });
             model.Annotations.Add(new RectangleAnnotation { MinimumX = 2.5, MaximumX = 2.8, TextRotation = 90, Text = "Red", Fill = OxyColor.FromAColor(99, OxyColors.Red) });
             model.Annotations.Add(new RectangleAnnotation { MinimumX = 2.8, MaximumX = 6.1, TextRotation = 90, Text = "Orange", Fill = OxyColor.FromAColor(99, OxyColors.Orange) });
             model.Annotations.Add(new RectangleAnnotation { MinimumX = 6.1, MaximumX = 7.6, TextRotation = 90, Text = "Yellow", Fill = OxyColor.FromAColor(99, OxyColors.Yellow) });
@@ -179,10 +179,10 @@ namespace ExampleLibrary
         public static PlotModel LinearAxesMultipleAxes()
         {
             var model = new PlotModel("ClipByAxis property", "This property specifies if the annotation should be clipped by the current axes or by the full plot area.");
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -20, 80) { StartPosition = 0, EndPosition = 0.45, TextColor = OxyColors.Red });
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, -10, 10) { StartPosition = 0, EndPosition = 0.45, TextColor = OxyColors.Green });
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -20, 80) { StartPosition = 0.55, EndPosition = 1, TextColor = OxyColors.Blue });
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, -10, 10) { StartPosition = 0.55, EndPosition = 1, TextColor = OxyColors.Orange });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -20, Maximum = 80, StartPosition = 0, EndPosition = 0.45, TextColor = OxyColors.Red });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -10, Maximum = 10, StartPosition = 0, EndPosition = 0.45, TextColor = OxyColors.Green });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -20, Maximum = 80, StartPosition = 0.55, EndPosition = 1, TextColor = OxyColors.Blue });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -10, Maximum = 10, StartPosition = 0.55, EndPosition = 1, TextColor = OxyColors.Orange });
 
             model.Annotations.Add(new LineAnnotation { ClipByYAxis = true, Type = LineAnnotationType.Vertical, X = 0, Color = OxyColors.Green, Text = "Vertical, ClipByAxis = true" });
             model.Annotations.Add(new LineAnnotation { ClipByYAxis = false, Type = LineAnnotationType.Vertical, X = 20, Color = OxyColors.Green, Text = "Vertical, ClipByAxis = false" });
@@ -195,8 +195,8 @@ namespace ExampleLibrary
         public static PlotModel ArrowAnnotation()
         {
             var model = new PlotModel("ArrowAnnotations");
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -40, 60));
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, -10, 10));
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -40, Maximum = 60 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -10, Maximum = 10 });
             model.Annotations.Add(new ArrowAnnotation { StartPoint = new DataPoint(8, 4), EndPoint = new DataPoint(0, 0), Color = OxyColors.Green, Text = "StartPoint and EndPoint" });
             model.Annotations.Add(new ArrowAnnotation { ArrowDirection = new ScreenVector(30, 70), EndPoint = new DataPoint(40, -3), Color = OxyColors.Blue, Text = "ArrowDirection and EndPoint" });
             model.Annotations.Add(new ArrowAnnotation { ArrowDirection = new ScreenVector(30, -70), EndPoint = new DataPoint(10, -3), HeadLength = 14, HeadWidth = 6, Veeness = 4, Color = OxyColors.Red, Text = "HeadLength = 20, HeadWidth = 10, Veeness = 4" });
@@ -207,8 +207,8 @@ namespace ExampleLibrary
         public static PlotModel PolylineAnnotations()
         {
             var model = new PlotModel("PolylineAnnotation");
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, 0, 30));
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, 0, 30));
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = 0, Maximum = 30 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 0, Maximum = 30 });
             var a1 = new PolylineAnnotation { Text = "Polyline" };
             a1.Points.AddRange(new[] { new DataPoint(0, 10), new DataPoint(5, 5), new DataPoint(20, 1), new DataPoint(30, 20) });
             var a2 = new PolylineAnnotation { Smooth = true, Text = "Smooth Polyline" };
@@ -222,8 +222,8 @@ namespace ExampleLibrary
         public static PlotModel PolygonAnnotation()
         {
             var model = new PlotModel("PolygonAnnotation");
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -20, 20));
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, -10, 10));
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -20, Maximum = 20 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -10, Maximum = 10 });
             var a1 = new PolygonAnnotation { Text = "Polygon 1" };
             a1.Points.AddRange(new[] { new DataPoint(4, -2), new DataPoint(8, -4), new DataPoint(17, 7), new DataPoint(5, 8), new DataPoint(2, 5) });
             model.Annotations.Add(a1);
@@ -234,8 +234,8 @@ namespace ExampleLibrary
         public static PlotModel AnnotationLayerProperty()
         {
             var model = new PlotModel("Annotation Layers");
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -20, 30) { MajorGridlineStyle = LineStyle.Solid, MajorGridlineThickness = 1 });
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, -10, 10) { MajorGridlineStyle = LineStyle.Solid, MajorGridlineThickness = 1 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -20, Maximum = 30, MajorGridlineStyle = LineStyle.Solid, MajorGridlineThickness = 1 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -10, Maximum = 10, MajorGridlineStyle = LineStyle.Solid, MajorGridlineThickness = 1 });
 
             var a1 = new PolygonAnnotation
             {
@@ -271,19 +271,19 @@ namespace ExampleLibrary
         public static PlotModel TextAnnotations()
         {
             var model = new PlotModel("TextAnnotation");
-			model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -15, 25));
-			model.Axes.Add(new LinearAxis(AxisPosition.Left, -5, 18));
-			model.Annotations.Add(new TextAnnotation { Position = new DataPoint(-6, 0), Text = "Text annotation 1" });
-			model.Annotations.Add(new TextAnnotation { Position = new DataPoint(-7, 10), Rotation = 80, Text = "Text annotation 2" });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -15, Maximum = 25 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -5, Maximum = 18 });
+            model.Annotations.Add(new TextAnnotation { Position = new DataPoint(-6, 0), Text = "Text annotation 1" });
+            model.Annotations.Add(new TextAnnotation { Position = new DataPoint(-7, 10), Rotation = 80, Text = "Text annotation 2" });
             model.Annotations.Add(new TextAnnotation { Position = new DataPoint(2, 2), Rotation = 20, HorizontalAlignment = HorizontalAlignment.Right, VerticalAlignment = VerticalAlignment.Top, Text = "Right/Top" });
             model.Annotations.Add(new TextAnnotation { Position = new DataPoint(2, 4), Rotation = 20, HorizontalAlignment = HorizontalAlignment.Right, VerticalAlignment = VerticalAlignment.Middle, Text = "Right/Middle" });
             model.Annotations.Add(new TextAnnotation { Position = new DataPoint(2, 6), Rotation = 20, HorizontalAlignment = HorizontalAlignment.Right, VerticalAlignment = VerticalAlignment.Bottom, Text = "Right/Bottom" });
-			model.Annotations.Add(new TextAnnotation { Position = new DataPoint(10, 2), Rotation = 20, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Top, Text = "Center/Top" });
-			model.Annotations.Add(new TextAnnotation { Position = new DataPoint(10, 4), Rotation = 20, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Middle, Text = "Center/Middle" });
-			model.Annotations.Add(new TextAnnotation { Position = new DataPoint(10, 6), Rotation = 20, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Bottom, Text = "Center/Bottom" });
-			model.Annotations.Add(new TextAnnotation { Position = new DataPoint(18, 2), Rotation = 20, HorizontalAlignment = HorizontalAlignment.Left, VerticalAlignment = VerticalAlignment.Top, Text = "Left/Top" });
-			model.Annotations.Add(new TextAnnotation { Position = new DataPoint(18, 4), Rotation = 20, HorizontalAlignment = HorizontalAlignment.Left, VerticalAlignment = VerticalAlignment.Middle, Text = "Left/Middle" });
-			model.Annotations.Add(new TextAnnotation { Position = new DataPoint(18, 6), Rotation = 20, HorizontalAlignment = HorizontalAlignment.Left, VerticalAlignment = VerticalAlignment.Bottom, Text = "Left/Bottom" });
+            model.Annotations.Add(new TextAnnotation { Position = new DataPoint(10, 2), Rotation = 20, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Top, Text = "Center/Top" });
+            model.Annotations.Add(new TextAnnotation { Position = new DataPoint(10, 4), Rotation = 20, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Middle, Text = "Center/Middle" });
+            model.Annotations.Add(new TextAnnotation { Position = new DataPoint(10, 6), Rotation = 20, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Bottom, Text = "Center/Bottom" });
+            model.Annotations.Add(new TextAnnotation { Position = new DataPoint(18, 2), Rotation = 20, HorizontalAlignment = HorizontalAlignment.Left, VerticalAlignment = VerticalAlignment.Top, Text = "Left/Top" });
+            model.Annotations.Add(new TextAnnotation { Position = new DataPoint(18, 4), Rotation = 20, HorizontalAlignment = HorizontalAlignment.Left, VerticalAlignment = VerticalAlignment.Middle, Text = "Left/Middle" });
+            model.Annotations.Add(new TextAnnotation { Position = new DataPoint(18, 6), Rotation = 20, HorizontalAlignment = HorizontalAlignment.Left, VerticalAlignment = VerticalAlignment.Bottom, Text = "Left/Bottom" });
 
             double d = 0.05;
 
@@ -301,22 +301,24 @@ namespace ExampleLibrary
                 model.Annotations.Add(annotation);
             };
 
-			foreach (var a in model.Annotations.ToArray()) {
-				var ta = a as TextAnnotation;
-				if (ta != null) {
-					addPoint (ta.Position.X, ta.Position.Y);
-				}
-			}
+            foreach (var a in model.Annotations.ToArray())
+            {
+                var ta = a as TextAnnotation;
+                if (ta != null)
+                {
+                    addPoint(ta.Position.X, ta.Position.Y);
+                }
+            }
 
-			return model;
+            return model;
         }
 
         [Example("LineAnnotation on reversed axes")]
         public static PlotModel ReversedAxes()
         {
             var model = new PlotModel("LineAnnotation on reversed axes");
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -20, 80) { StartPosition = 1, EndPosition = 0 });
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, -10, 10) { StartPosition = 1, EndPosition = 0 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -20, Maximum = 80, StartPosition = 1, EndPosition = 0 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -10, Maximum = 10, StartPosition = 1, EndPosition = 0 });
             model.Annotations.Add(new LineAnnotation { Slope = 0.1, Intercept = 1, Text = "First", TextHorizontalAlignment = HorizontalAlignment.Left });
             model.Annotations.Add(new LineAnnotation { Slope = 0.3, Intercept = 2, MaximumX = 40, Color = OxyColors.Red, Text = "Second", TextHorizontalAlignment = HorizontalAlignment.Left, TextVerticalAlignment = VerticalAlignment.Bottom });
             model.Annotations.Add(new LineAnnotation { Type = LineAnnotationType.Vertical, X = 4, MaximumY = 10, Color = OxyColors.Green, Text = "Vertical", TextHorizontalAlignment = HorizontalAlignment.Right });
@@ -328,8 +330,8 @@ namespace ExampleLibrary
         public static PlotModel ImageAnnotation()
         {
             var model = new PlotModel("ImageAnnotation") { PlotMargins = new OxyThickness(60, 4, 4, 60) };
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom));
-            model.Axes.Add(new LinearAxis(AxisPosition.Left));
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
 
             OxyImage image;
             var assembly = Assembly.GetExecutingAssembly();
@@ -432,8 +434,8 @@ namespace ExampleLibrary
         {
             // http://en.wikipedia.org/wiki/Chartjunk
             var model = new PlotModel("Using ImageAnnotations to draw a gradient backgrounds", "But do you really want this? This is called 'chartjunk'!") { PlotMargins = new OxyThickness(60, 4, 4, 60) };
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom));
-            model.Axes.Add(new LinearAxis(AxisPosition.Left));
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
 
             // create a gradient image of height n
             int n = 256;
@@ -490,8 +492,8 @@ namespace ExampleLibrary
         public static PlotModel ImageAnnotation_NormalAxes()
         {
             var model = new PlotModel("ImageAnnotation - normal axes");
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom));
-            model.Axes.Add(new LinearAxis(AxisPosition.Left));
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
 
             // create an image
             var pixels = new OxyColor[2, 2];
@@ -521,8 +523,8 @@ namespace ExampleLibrary
         public static PlotModel ImageAnnotation_ReverseHorizontalAxis()
         {
             var model = new PlotModel("ImageAnnotation - reverse horizontal axis");
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom) { StartPosition = 1, EndPosition = 0 });
-            model.Axes.Add(new LinearAxis(AxisPosition.Left));
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, StartPosition = 1, EndPosition = 0 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
 
             // create an image
             var pixels = new OxyColor[2, 2];
@@ -552,8 +554,8 @@ namespace ExampleLibrary
         public static PlotModel ImageAnnotation_ReverseVerticalAxis()
         {
             var model = new PlotModel("ImageAnnotation - reverse vertical axis");
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom));
-            model.Axes.Add(new LinearAxis(AxisPosition.Left) { StartPosition = 1, EndPosition = 0 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, StartPosition = 1, EndPosition = 0 });
 
             // create an image
             var pixels = new OxyColor[2, 2];
@@ -583,8 +585,8 @@ namespace ExampleLibrary
         public static PlotModel TileMapAnnotation2()
         {
             var model = new PlotModel("TileMapAnnotation");
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, 10.4, 10.6, "Longitude"));
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, 59.88, 59.96, "Latitude"));
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = 10.4, Maximum = 10.6, Title = "Longitude" });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 59.88, Maximum = 59.96, Title = "Latitude" });
 
             // Add the tile map annotation
             model.Annotations.Add(
@@ -603,8 +605,8 @@ namespace ExampleLibrary
             var model = new PlotModel("TileMapAnnotation");
 
             // TODO: scale ratio between the two axes should be fixed (or depending on latitude...)
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, 10.4, 10.6, "Longitude"));
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, 59.88, 59.96, "Latitude"));
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = 10.4, Maximum = 10.6, Title = "Longitude" });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 59.88, Maximum = 59.96, Title = "Latitude" });
 
             // Add the tile map annotation
             model.Annotations.Add(

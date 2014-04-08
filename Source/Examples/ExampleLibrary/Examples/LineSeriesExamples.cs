@@ -65,8 +65,8 @@ namespace ExampleLibrary
         public static PlotModel TwoLineSeries()
         {
             var model = new PlotModel("Two LineSeries") { LegendSymbolLength = 24 };
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, -1, 71, "Y-Axis"));
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -1, 61, "X-Axis"));
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -1, Maximum = 71, Title = "Y-Axis" });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -1, Maximum = 61, Title = "X-Axis" });
             var s1 = new LineSeries("Series 1")
             {
                 Color = OxyColors.SkyBlue,
@@ -148,8 +148,8 @@ namespace ExampleLibrary
             s1.Points.Add(new DataPoint(40, 20));
             s1.Points.Add(new DataPoint(60, 30));
             model.Series.Add(s1);
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom) { MinimumPadding = 0.1, MaximumPadding = 0.1 });
-            model.Axes.Add(new LinearAxis(AxisPosition.Left) { MinimumPadding = 0.1, MaximumPadding = 0.1 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, MinimumPadding = 0.1, MaximumPadding = 0.1 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, MinimumPadding = 0.1, MaximumPadding = 0.1 });
             return model;
         }
         static readonly Random Randomizer = new Random();
@@ -394,7 +394,7 @@ namespace ExampleLibrary
             }
 
             model.Series.Add(s1);
-            model.Axes.Add(new LinearAxis(AxisPosition.Left) { ExtraGridlines = new[] { 0.0 } });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, ExtraGridlines = new[] { 0.0 } });
 
             return model;
         }
@@ -423,8 +423,9 @@ namespace ExampleLibrary
             model.Series.Add(raleigh);
             model.Series.Add(minneapolis);
 
-            model.Axes.Add(new CategoryAxis(null, "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec") { AxislineStyle = LineStyle.Solid });
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, "Fahrenheit") { AxislineStyle = LineStyle.Solid });
+            var categoryAxis = new CategoryAxis { AxislineStyle = LineStyle.Solid };
+            categoryAxis.Labels = new[] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Fahrenheit", AxislineStyle = LineStyle.Solid });
 
             return model;
         }

@@ -125,8 +125,9 @@ namespace WorldStatisticsDemo
                 ss2.MarkerType = MarkerType.Circle;
                 pm.Series.Add(ss2);
             }
-            pm.Axes.Add(new LinearAxis(AxisPosition.Left, 19, 87, "Life expectancy (years)"));
-            pm.Axes.Add(new LogarithmicAxis(AxisPosition.Bottom, 200, 90000, "Income per person (GDP/capita, PPP$ inflation-adjusted)"));
+
+            pm.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 19, Maximum = 87, Title = "Life expectancy (years)" });
+            pm.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Bottom, Title = "Income per person (GDP/capita, PPP$ inflation-adjusted)", Minimum = 200, Maximum = 90000 });
             PlotModel = pm;
         }
 

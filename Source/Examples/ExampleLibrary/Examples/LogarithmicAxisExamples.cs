@@ -50,8 +50,8 @@ namespace ExampleLibrary
                 for (int n = 1; n <= 65536; n *= 2) ls.Points.Add(new DataPoint(n, maxSpeedup(p, n)));
                 return ls;
             };
-            model.Axes.Add(new LogarithmicAxis(AxisPosition.Bottom, "Number of processors") { Base = 2, MajorGridlineStyle = LineStyle.Solid, TickStyle = TickStyle.None });
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, 0, 20, 2, 2, "Speedup") { StringFormat = "F2", MajorGridlineStyle = LineStyle.Solid, TickStyle = TickStyle.None });
+            model.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Bottom, Title = "Number of processors", Base = 2, MajorGridlineStyle = LineStyle.Solid, TickStyle = TickStyle.None });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 0, Maximum = 20, MinorStep = 2, MajorStep = 2, Title = "Speedup", StringFormat = "F2", MajorGridlineStyle = LineStyle.Solid, TickStyle = TickStyle.None });
             model.Series.Add(createSpeedupCurve(0.5));
             model.Series.Add(createSpeedupCurve(0.75));
             model.Series.Add(createSpeedupCurve(0.9));
@@ -74,7 +74,7 @@ namespace ExampleLibrary
                                 LegendSymbolLength = 24
                             };
 
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, "Richter magnitude scale") { MajorGridlineStyle = LineStyle.None, TickStyle = TickStyle.None });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "Richter magnitude scale", MajorGridlineStyle = LineStyle.None, TickStyle = TickStyle.None });
 
             var frequencyCurve = new LineSeries("Frequency")
                          {
@@ -96,7 +96,7 @@ namespace ExampleLibrary
             frequencyCurve.Points.Add(new DataPoint(7.5, 18 * 100));
             frequencyCurve.Points.Add(new DataPoint(8.5, 1 * 100));
             frequencyCurve.Points.Add(new DataPoint(9.5, 1.0 / 20 * 100));
-            model.Axes.Add(new LogarithmicAxis(AxisPosition.Left, "Frequency / 100 yr") { UseSuperExponentialFormat = true, MajorGridlineStyle = LineStyle.None, TickStyle = TickStyle.Outside });
+            model.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Left, Title = "Frequency / 100 yr", UseSuperExponentialFormat = true, MajorGridlineStyle = LineStyle.None, TickStyle = TickStyle.Outside });
             model.Series.Add(frequencyCurve);
 
             var energyCurve = new LineSeries("Energy")
@@ -121,7 +121,7 @@ namespace ExampleLibrary
             energyCurve.Points.Add(new DataPoint(9.5, 11e18));
             energyCurve.YAxisKey = "energyAxis";
 
-            model.Axes.Add(new LogarithmicAxis(AxisPosition.Right, "Energy / J") { Key = "energyAxis", UseSuperExponentialFormat = true, MajorGridlineStyle = LineStyle.None, TickStyle = TickStyle.Outside });
+            model.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Right, Title = "Energy / J", Key = "energyAxis", UseSuperExponentialFormat = true, MajorGridlineStyle = LineStyle.None, TickStyle = TickStyle.Outside });
             model.Series.Add(energyCurve);
 
             return model;
@@ -131,7 +131,7 @@ namespace ExampleLibrary
         public static PlotModel AbsoluteMaximum()
         {
             var model = new PlotModel("AbsoluteMaximum = 1000");
-            model.Axes.Add(new LogarithmicAxis(AxisPosition.Left, 0.1, 1000) { AbsoluteMaximum = 1000 });
+            model.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Left, Minimum = 0.1, Maximum = 1000, AbsoluteMaximum = 1000 });
             model.Series.Add(new FunctionSeries(Math.Exp, 0, Math.Log(900), 100));
             return model;
         }
@@ -140,7 +140,7 @@ namespace ExampleLibrary
         public static PlotModel AxisChangedEventHAndler()
         {
             var model = new PlotModel("AxisChanged event handler");
-            var logAxis = new LogarithmicAxis(AxisPosition.Left, 0.1, 1000);
+            var logAxis = new LogarithmicAxis { Position = AxisPosition.Left, Minimum = 0.1, Maximum = 1000 };
             int n = 0;
             logAxis.AxisChanged += (s, e) => { model.Subtitle = "Changed " + (n++) + " times. ActualMaximum=" + logAxis.ActualMaximum; };
             model.Axes.Add(logAxis);

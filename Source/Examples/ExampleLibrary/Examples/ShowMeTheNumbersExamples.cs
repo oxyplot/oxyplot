@@ -60,12 +60,17 @@ namespace ExampleLibrary
                         TickStyle = TickStyle.None
                     });
             pm.Axes.Add(
-                new LinearAxis(AxisPosition.Left, 0, 6000, 1000, 1000)
-                    {
-                        AxislineStyle = LineStyle.Solid,
-                        TickStyle = TickStyle.Outside,
-                        StringFormat = "#,0"
-                    });
+                new LinearAxis
+                {
+                    Position = AxisPosition.Left,
+                    Minimum = 0,
+                    Maximum = 6000,
+                    MajorStep = 1000,
+                    MinorStep = 1000,
+                    AxislineStyle = LineStyle.Solid,
+                    TickStyle = TickStyle.Outside,
+                    StringFormat = "#,0"
+                });
             var series = new ColumnSeries { FillColor = OxyColors.Black };
             series.Items.Add(new ColumnItem { Value = 3000 });
             series.Items.Add(new ColumnItem { Value = 4500 });
@@ -95,12 +100,17 @@ namespace ExampleLibrary
                 TickStyle = TickStyle.None
             });
             pm.Axes.Add(
-                new LinearAxis(AxisPosition.Left, 0, 4000, 500, 500)
-                    {
-                        AxislineStyle = LineStyle.Solid,
-                        TickStyle = TickStyle.Outside,
-                        StringFormat = "#,0"
-                    });
+                new LinearAxis
+                {
+                    Position = AxisPosition.Left,
+                    Minimum = 0,
+                    Maximum = 4000,
+                    MajorStep = 500,
+                    MinorStep = 500,
+                    AxislineStyle = LineStyle.Solid,
+                    TickStyle = TickStyle.Outside,
+                    StringFormat = "#,0"
+                });
             var s1 = new LineSeries { Color = OxyColors.Orange };
             for (int i = 0; i < 12; i++)
             {
@@ -149,7 +159,7 @@ namespace ExampleLibrary
                         StartPosition = 1,
                         EndPosition = 0
                     });
-            pm.Axes.Add(new LinearAxis(AxisPosition.Bottom, 0, 250, 50, 50) { AxislineStyle = LineStyle.Solid, TickStyle = TickStyle.Outside, MinimumPadding = 0, MaximumPadding = 0 });
+            pm.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = 0, Maximum = 250, MajorStep = 50, MinorStep = 50, AxislineStyle = LineStyle.Solid, TickStyle = TickStyle.Outside, MinimumPadding = 0, MaximumPadding = 0 });
             pm.Series.Add(new BarSeries { FillColor = OxyColors.Black, ItemsSource = values, ValueField = "Value" });
             return pm;
         }
@@ -171,12 +181,17 @@ namespace ExampleLibrary
                         GapWidth = 0
                     });
             pm.Axes.Add(
-                new LinearAxis(AxisPosition.Left, 0, 0.35 + double.Epsilon, 0.05, 0.05)
-                    {
-                        AxislineStyle = LineStyle.Solid,
-                        TickStyle = TickStyle.Outside,
-                        StringFormat = "P0"
-                    });
+                new LinearAxis
+                {
+                    Position = AxisPosition.Left,
+                    Minimum = 0,
+                    Maximum = 0.35 + double.Epsilon,
+                    MajorStep = 0.05,
+                    MinorStep = 0.05,
+                    AxislineStyle = LineStyle.Solid,
+                    TickStyle = TickStyle.Outside,
+                    StringFormat = "P0"
+                });
 
             var series = new ColumnSeries
                     {
@@ -210,16 +225,21 @@ namespace ExampleLibrary
             values.Add("Finance", 5);
             pm.Axes.Add(new CategoryAxis { ItemsSource = values, LabelField = "Key", TickStyle = TickStyle.None });
             pm.Axes.Add(
-                new LinearAxis(AxisPosition.Left, -20, 10, 5, 5)
-                    {
-                        Layer = AxisLayer.AboveSeries,
-                        AxislineStyle = LineStyle.Solid,
-                        ExtraGridlines = new double[] { 0 },
-                        ExtraGridlineColor = OxyColors.Black,
-                        ExtraGridlineThickness = 3,
-                        TickStyle = TickStyle.Outside,
-                        StringFormat = "+0;-0;0"
-                    });
+                new LinearAxis
+                {
+                    Position = AxisPosition.Left,
+                    Minimum = -20,
+                    Maximum = 10,
+                    MinorStep = 5,
+                    MajorStep = 5,
+                    Layer = AxisLayer.AboveSeries,
+                    AxislineStyle = LineStyle.Solid,
+                    ExtraGridlines = new double[] { 0 },
+                    ExtraGridlineColor = OxyColors.Black,
+                    ExtraGridlineThickness = 3,
+                    TickStyle = TickStyle.Outside,
+                    StringFormat = "+0;-0;0"
+                });
             pm.Series.Add(
                 new ColumnSeries
                     {
@@ -257,12 +277,17 @@ namespace ExampleLibrary
                 TickStyle = TickStyle.None
             });
             pm.Axes.Add(
-                new LinearAxis(AxisPosition.Left, 0, 6000, 1000, 1000)
-                    {
-                        AxislineStyle = LineStyle.Solid,
-                        TickStyle = TickStyle.Outside,
-                        StringFormat = "+0;-0;0"
-                    });
+                new LinearAxis
+                {
+                    Position = AxisPosition.Left,
+                    Minimum = 0,
+                    Maximum = 6000,
+                    MajorStep = 1000,
+                    MinorStep = 1000,
+                    AxislineStyle = LineStyle.Solid,
+                    TickStyle = TickStyle.Outside,
+                    StringFormat = "+0;-0;0"
+                });
             pm.Series.Add(new ColumnSeries { FillColor = OxyColors.Orange, ItemsSource = values, ValueField = "Value" });
             return pm;
         }
@@ -300,14 +325,24 @@ namespace ExampleLibrary
                     new DataPoint(77, 81000)
                 };
             pm.Axes.Add(
-                new LinearAxis(AxisPosition.Left, 30000, 90000, 10000, 10000)
-                    {
-                        AxislineStyle = LineStyle.Solid,
-                        TickStyle = TickStyle.Outside,
-                        StringFormat = "0,0"
-                    });
-            pm.Axes.Add(new LinearAxis(AxisPosition.Bottom, 60, 80, 5, 5)
+                new LinearAxis
+                {
+                    Position = AxisPosition.Left,
+                    Minimum = 30000,
+                    Maximum = 90000,
+                    MajorStep = 10000,
+                    MinorStep = 10000,
+                    AxislineStyle = LineStyle.Solid,
+                    TickStyle = TickStyle.Outside,
+                    StringFormat = "0,0"
+                });
+            pm.Axes.Add(new LinearAxis
             {
+                Position = AxisPosition.Bottom,
+                Minimum = 60,
+                Maximum = 80,
+                MajorStep = 5,
+                MinorStep = 5,
                 AxislineStyle = LineStyle.Solid,
                 TickStyle = TickStyle.Outside
             });

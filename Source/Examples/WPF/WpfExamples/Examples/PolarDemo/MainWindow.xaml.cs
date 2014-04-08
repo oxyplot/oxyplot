@@ -101,12 +101,16 @@ namespace PolarDemo
                     PlotAreaBorderThickness = 0
                 };
             model.Axes.Add(
-                new AngleAxis(0, this.MaxAngle, this.MajorStep, this.MinorStep)
-                    {
-                        FormatAsFractions = true,
-                        FractionUnit = Math.PI,
-                        FractionUnitSymbol = "π"
-                    });
+                new AngleAxis
+                {
+                    Minimum = 0,
+                    Maximum = this.MaxAngle,
+                    MajorStep = this.MajorStep,
+                    MinorStep = this.MinorStep,
+                    FormatAsFractions = true,
+                    FractionUnit = Math.PI,
+                    FractionUnitSymbol = "π"
+                });
             model.Axes.Add(new MagnitudeAxis());
             model.Series.Add(new FunctionSeries(t => t, t => t, 0, Math.PI * 6, 0.01));
             return model;

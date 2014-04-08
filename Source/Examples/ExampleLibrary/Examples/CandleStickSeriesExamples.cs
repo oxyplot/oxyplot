@@ -58,8 +58,8 @@ namespace ExampleLibrary
             }
 
             model.Series.Add(s1);
-            model.Axes.Add(new LinearAxis(AxisPosition.Left) { MaximumPadding = 0.3, MinimumPadding = 0.3 });
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom) { MaximumPadding = 0.03, MinimumPadding = 0.03 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left,  MaximumPadding = 0.3, MinimumPadding = 0.3 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom,  MaximumPadding = 0.03, MinimumPadding = 0.03 });
 
             return model;
         }

@@ -77,7 +77,7 @@ namespace RealtimeDemo
             this.timer.Change(Timeout.Infinite, Timeout.Infinite);
 
             PlotModel = new PlotModel();
-            PlotModel.Axes.Add(new LinearAxis(AxisPosition.Left, -2, 2));
+            PlotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -2, Maximum = 2 });
 
             this.numberOfSeries = this.SimulationType == SimulationType.TimeSimulation ? 1 : 20;
 

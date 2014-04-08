@@ -63,7 +63,7 @@ namespace CsvDemo
             var tmp = new PlotModel(Path.GetFileNameWithoutExtension(file));
             tmp.LegendPosition = LegendPosition.RightTop;
             tmp.LegendPlacement = LegendPlacement.Outside;
-            tmp.PlotMargins= new OxyThickness(50,0,0,40);
+            tmp.PlotMargins = new OxyThickness(50, 0, 0, 40);
             for (int i = 1; i < doc.Headers.Length; i++)
             {
                 var ls = new LineSeries(doc.Headers[i]);
@@ -75,8 +75,8 @@ namespace CsvDemo
                 }
                 tmp.Series.Add(ls);
             }
-            tmp.Axes.Add(new LinearAxis(AxisPosition.Bottom, doc.Headers[0]));
-            // tmp.Axes.Add(new LogarithmicAxis(AxisPosition.Left));
+            tmp.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = doc.Headers[0] });
+            // tmp.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Left,);
             Model = tmp;
         }
 

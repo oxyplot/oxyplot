@@ -44,9 +44,9 @@ namespace ExampleLibrary
         public static PlotModel SubSuperScriptInAxisTitles()
         {
             var plotModel1 = new PlotModel { Title = "x_{i}^{j}", Subtitle = "x_{i}^{j}" };
-            var leftAxis = new LinearAxis(AxisPosition.Left) { Title = "x_{i}^{j}" };
+            var leftAxis = new LinearAxis { Position = AxisPosition.Left, Title = "x_{i}^{j}" };
             plotModel1.Axes.Add(leftAxis);
-            var bottomAxis = new LinearAxis(AxisPosition.Bottom) { Title = "x_{i}^{j}" };
+            var bottomAxis = new LinearAxis { Position = AxisPosition.Bottom, Title = "x_{i}^{j}" };
             plotModel1.Axes.Add(bottomAxis);
             plotModel1.Series.Add(new FunctionSeries(Math.Sin, 0, 10, 100, "x_{i}^{j}"));
             return plotModel1;
@@ -57,8 +57,8 @@ namespace ExampleLibrary
         {
             var s = "x_{A}^{B}";
             var plotModel1 = new PlotModel { Title = s, Subtitle = s };
-            plotModel1.Axes.Add(new LinearAxis(AxisPosition.Left) { Title = s, Minimum = -1, Maximum = 1 });
-            plotModel1.Axes.Add(new LinearAxis(AxisPosition.Bottom) { Title = s, Minimum = -1, Maximum = 11 });
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = s, Minimum = -1, Maximum = 1 });
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = s, Minimum = -1, Maximum = 11 });
             for (int rotation = 0; rotation < 360; rotation += 45)
             {
                 plotModel1.Annotations.Add(new TextAnnotation { Text = s, Position = new DataPoint(rotation / 360d * 10, 0), Rotation = rotation });

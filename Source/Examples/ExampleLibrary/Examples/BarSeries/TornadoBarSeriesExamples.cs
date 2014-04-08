@@ -73,7 +73,7 @@ namespace ExampleLibrary
             categoryAxis.Labels.Add("Inflation");
             categoryAxis.Labels.Add("Price");
             categoryAxis.Labels.Add("Conversion");
-            var valueAxis = new LinearAxis(AxisPosition.Bottom) { ExtraGridlines = new[] { 7.0 } };
+            var valueAxis = new LinearAxis { Position = AxisPosition.Bottom,  ExtraGridlines = new[] { 7.0 } };
             model.Series.Add(s1);
             model.Series.Add(s2);
             model.Axes.Add(categoryAxis);
@@ -97,7 +97,7 @@ namespace ExampleLibrary
             categoryAxis.Labels.Add("Inflation");
             categoryAxis.Labels.Add("Price");
             categoryAxis.Labels.Add("Conversion");
-            var valueAxis = new LinearAxis(AxisPosition.Bottom) { ExtraGridlines = new[] { 7.0 }, MinimumPadding = 0.1, MaximumPadding = 0.1 };
+            var valueAxis = new LinearAxis { Position = AxisPosition.Bottom,  ExtraGridlines = new[] { 7.0 }, MinimumPadding = 0.1, MaximumPadding = 0.1 };
             model.Series.Add(s1);
             model.Axes.Add(categoryAxis);
             model.Axes.Add(valueAxis);
