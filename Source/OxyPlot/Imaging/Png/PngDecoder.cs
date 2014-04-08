@@ -107,10 +107,10 @@ namespace OxyPlot
         /// </summary>
         /// <param name="bytes">The image data.</param>
         /// <returns>The 32-bit pixel data, indexed as [x,y].</returns>
-        /// <seealso cref="http://www.w3.org/TR/PNG/" />
-        /// <seealso cref="http://en.wikipedia.org/wiki/Portable_Network_Graphics" />
         public OxyColor[,] Decode(byte[] bytes)
         {
+            // http://www.w3.org/TR/PNG/
+            // http://en.wikipedia.org/wiki/Portable_Network_Graphics
             var s = new MemoryStream(bytes);
             var inputReader = new BinaryReader(s);
             var signature = inputReader.ReadBytes(8);
@@ -255,10 +255,10 @@ namespace OxyPlot
         /// </summary>
         /// <param name="bytes">The bytes.</param>
         /// <returns>The deflated bytes.</returns>
-        /// <seealso cref="http://en.wikipedia.org/wiki/DEFLATE" />
-        /// <seealso cref="http://www.nuget.org/packages/Microsoft.Bcl.Compression/" />
         private static byte[] Deflate(byte[] bytes)
         {
+            //// http://en.wikipedia.org/wiki/DEFLATE
+            //// http://www.nuget.org/packages/Microsoft.Bcl.Compression/
 #if NET
             var inputStream = new MemoryStream(bytes);
             var deflateStream = new DeflateStream(inputStream, CompressionMode.Decompress);

@@ -48,7 +48,6 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Mantissa function.
         /// </summary>
-        /// <seealso cref="http://en.wikipedia.org/wiki/Mantissa" />
         protected static readonly Func<double, double> Mantissa = x => x / Math.Pow(10, Exponent(x));
 
         /// <summary>
