@@ -56,9 +56,9 @@ namespace ExampleLibrary
                 if (e.ChangedButton == OxyMouseButton.Left)
                 {
                     // Add a line series
-                    s1 = new LineSeries("LineSeries" + (model.Series.Count + 1))
+                    s1 = new LineSeries
                     {
-                        // Color = OxyColors.SkyBlue,
+                        Title = "LineSeries" + (model.Series.Count + 1),
                         MarkerType = MarkerType.None,
                         StrokeThickness = 2
                     };
@@ -128,8 +128,9 @@ namespace ExampleLibrary
             var model = new PlotModel("MouseDown", "Left click to edit or add points.") { LegendSymbolLength = 40 };
 
             // Add a line series
-            var s1 = new LineSeries("LineSeries1")
+            var s1 = new LineSeries
             {
+                Title = "LineSeries1",
                 Color = OxyColors.SkyBlue,
                 MarkerType = MarkerType.Circle,
                 MarkerSize = 6,

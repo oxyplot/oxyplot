@@ -39,8 +39,9 @@ namespace ExampleLibrary
         public static PlotModel NoInterpolation()
         {
             var model = new PlotModel("No tracker interpolation", "Used for discrete values or scatter plots.") { LegendSymbolLength = 30 };
-            var s1 = new LineSeries("Series 1")
+            var s1 = new LineSeries
                          {
+                             Title = "Series 1",
                              CanTrackerInterpolatePoints = false,
                              Color = OxyColors.SkyBlue,
                              MarkerType = MarkerType.Circle,

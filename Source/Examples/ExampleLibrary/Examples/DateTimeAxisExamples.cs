@@ -51,10 +51,14 @@ namespace ExampleLibrary
         public static PlotModel Example1()
         {
             var tmp = new PlotModel("Test");
-            tmp.Axes.Add(new LinearAxis { Position = AxisPosition.Left,  MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot, TickStyle = TickStyle.Outside });
+            tmp.Axes.Add(new LinearAxis { Position = AxisPosition.Left, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot, TickStyle = TickStyle.Outside });
             var dt = new DateTime(2010, 1, 1);
-            tmp.Axes.Add(new DateTimeAxis { Position = AxisPosition.Bottom, Minimum=DateTimeAxis.ToDouble(dt), 
-                Maximum=DateTimeAxis.ToDouble(dt.AddDays(1)), IntervalType= DateTimeIntervalType.Hours,
+            tmp.Axes.Add(new DateTimeAxis
+            {
+                Position = AxisPosition.Bottom,
+                Minimum = DateTimeAxis.ToDouble(dt),
+                Maximum = DateTimeAxis.ToDouble(dt.AddDays(1)),
+                IntervalType = DateTimeIntervalType.Hours,
                 MajorGridlineStyle = LineStyle.Solid,
                 Angle = 90,
                 StringFormat = "HH:mm",
@@ -65,7 +69,7 @@ namespace ExampleLibrary
                 TickStyle = TickStyle.None
             });
 
-            var ls = new LineSeries("Line1") { DataFieldX = "X", DataFieldY = "Y" };
+            var ls = new LineSeries { Title = "Line1", DataFieldX = "X", DataFieldY = "Y" };
             var ii = new List<Item>();
 
             for (int i = 0; i < 24; i++)
@@ -80,7 +84,7 @@ namespace ExampleLibrary
         {
             var m = new PlotModel();
 
-            var xa = new DateTimeAxis { Position = AxisPosition.Bottom};
+            var xa = new DateTimeAxis { Position = AxisPosition.Bottom };
 #if PCL || SILVERLIGHT
             // TimeZone not available in PCL...
 #else
@@ -88,7 +92,7 @@ namespace ExampleLibrary
                 "W. Europe Standard Time");
 #endif
             m.Axes.Add(xa);
-            m.Axes.Add(new LinearAxis { Position = AxisPosition.Left});
+            m.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
             var ls = new LineSeries { MarkerType = MarkerType.Circle };
             m.Series.Add(ls);
 

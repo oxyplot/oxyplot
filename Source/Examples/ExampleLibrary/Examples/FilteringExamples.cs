@@ -45,7 +45,7 @@ namespace ExampleLibrary
             plot.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "X-axis" });
             plot.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Y-axis" });
 
-            var ls1 = new LineSeries("NaN");
+            var ls1 = new LineSeries { Title = "NaN" };
             ls1.Points.Add(new DataPoint(double.NaN, double.NaN));
             ls1.Points.Add(new DataPoint(1, 0));
             ls1.Points.Add(new DataPoint(2, 10));
@@ -60,7 +60,7 @@ namespace ExampleLibrary
             ls1.Points.Add(new DataPoint(double.NaN, double.NaN));
             plot.Series.Add(ls1);
 
-            var ls2 = new LineSeries("PositiveInfinity");
+            var ls2 = new LineSeries { Title = "PositiveInfinity" };
             ls2.Points.Add(new DataPoint(double.PositiveInfinity, double.PositiveInfinity));
             ls2.Points.Add(new DataPoint(1, 1));
             ls2.Points.Add(new DataPoint(2, 11));
@@ -75,7 +75,7 @@ namespace ExampleLibrary
             ls2.Points.Add(new DataPoint(double.PositiveInfinity, double.PositiveInfinity));
             plot.Series.Add(ls2);
 
-            var ls3 = new LineSeries("NegativeInfinity");
+            var ls3 = new LineSeries { Title = "NegativeInfinity" };
             ls3.Points.Add(new DataPoint(double.NegativeInfinity, double.NegativeInfinity));
             ls3.Points.Add(new DataPoint(1, 2));
             ls3.Points.Add(new DataPoint(2, 12));

@@ -772,7 +772,7 @@ namespace ExampleLibrary
             model.AutoAdjustPlotMargins = true;
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "X", TickStyle = TickStyle.Outside });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Y", TickStyle = TickStyle.Outside });
-            model.Series.Add(new LineSeries("Butterfly curve") { ItemsSource = ButterflyCurve(0, Math.PI * 4, 1000) });
+            model.Series.Add(new LineSeries { Title = "Butterfly curve", ItemsSource = ButterflyCurve(0, Math.PI * 4, 1000) });
             return model;
         }
 
@@ -785,7 +785,7 @@ namespace ExampleLibrary
             model.PlotMargins = new OxyThickness(60, 4, 4, 40);
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "X", TickStyle = TickStyle.Outside });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Y", TickStyle = TickStyle.Outside });
-            model.Series.Add(new LineSeries("Butterfly curve") { ItemsSource = ButterflyCurve(0, Math.PI * 4, 1000) });
+            model.Series.Add(new LineSeries { Title = "Butterfly curve", ItemsSource = ButterflyCurve(0, Math.PI * 4, 1000) });
             return model;
         }
 

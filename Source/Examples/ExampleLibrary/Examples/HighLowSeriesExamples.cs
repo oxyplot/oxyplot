@@ -40,7 +40,7 @@ namespace ExampleLibrary
         public static PlotModel HighLowSeries()
         {
             var model = new PlotModel("HighLowSeries") { LegendSymbolLength = 24 };
-            var s1 = new HighLowSeries("random values") { Color = OxyColors.Black, };
+            var s1 = new HighLowSeries { Title = "random values", Color = OxyColors.Black, };
             var r = new Random(314);
             var price = 100.0;
             for (int x = 0; x < 24; x++)
@@ -53,7 +53,7 @@ namespace ExampleLibrary
                 s1.Items.Add(new HighLowItem(x, high, low, open, close));
             }
             model.Series.Add(s1);
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left,  MaximumPadding = 0.3, MinimumPadding = 0.3 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, MaximumPadding = 0.3, MinimumPadding = 0.3 });
 
             return model;
         }
@@ -63,13 +63,15 @@ namespace ExampleLibrary
         {
             var m = new PlotModel();
             var x0 = DateTimeAxis.ToDouble(new DateTime(2013, 05, 04));
-            var a = new DateTimeAxis { Position = AxisPosition.Bottom,
-                            Minimum = x0 - 0.9,
-                            Maximum = x0 + 1.9,
-                            IntervalType = DateTimeIntervalType.Days,
-                            MajorStep = 1,
-                            MinorStep = 1
-                        };
+            var a = new DateTimeAxis
+            {
+                Position = AxisPosition.Bottom,
+                Minimum = x0 - 0.9,
+                Maximum = x0 + 1.9,
+                IntervalType = DateTimeIntervalType.Days,
+                MajorStep = 1,
+                MinorStep = 1
+            };
             a.StringFormat = "yyyy-MM-dd";
             m.Axes.Add(a);
             var s = new HighLowSeries();
