@@ -254,8 +254,6 @@ namespace OxyPlot.Wpf
             }
         }
 
-
-
         /// <summary>
         /// Gets or sets the decimator.
         /// </summary>
