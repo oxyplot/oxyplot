@@ -51,11 +51,10 @@ namespace OxyPlot.Series
         /// Initializes a new instance of the <see cref="StairStepSeries" /> class.
         /// </summary>
         /// <param name="title">The title.</param>
+        [Obsolete]
         public StairStepSeries(string title)
-            : base(title)
+            : this()
         {
-            this.VerticalStrokeThickness = double.NaN;
-            this.VerticalLineStyle = this.LineStyle;
             this.Title = title;
         }
 
@@ -65,6 +64,7 @@ namespace OxyPlot.Series
         /// <param name="color">The color.</param>
         /// <param name="strokeThickness">The stroke thickness.</param>
         /// <param name="title">The title.</param>
+        [Obsolete]
         public StairStepSeries(OxyColor color, double strokeThickness = 1, string title = null)
             : base(color, strokeThickness, title)
         {

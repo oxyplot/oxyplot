@@ -39,8 +39,9 @@ namespace ExampleLibrary
         public static PlotModel StairStepSeries()
         {
             var model = new PlotModel("StairStepSeries") { LegendSymbolLength = 24 };
-            var s1 = new StairStepSeries("sin(x)")
+            var s1 = new StairStepSeries
                          {
+                             Title = "sin(x)",
                              Color = OxyColors.SkyBlue,
                              MarkerType = MarkerType.Circle,
                              MarkerSize = 6,
@@ -59,8 +60,9 @@ namespace ExampleLibrary
         public static PlotModel StairStepSeriesThinVertical()
         {
             var model = new PlotModel("StairStepSeries", "With thin vertical lines");
-            var s1 = new StairStepSeries("sin(x)")
+            var s1 = new StairStepSeries
             {
+                Title = "sin(x)",
                 Color = OxyColors.SkyBlue,
                 StrokeThickness = 3,
                 VerticalStrokeThickness = 0.4,
@@ -77,8 +79,9 @@ namespace ExampleLibrary
         public static PlotModel StairStepSeriesDashedVertical()
         {
             var model = new PlotModel("StairStepSeries", "With dashed vertical lines");
-            var s1 = new StairStepSeries("sin(x)")
+            var s1 = new StairStepSeries
             {
+                Title = "sin(x)",
                 Color = OxyColors.SkyBlue,
                 VerticalLineStyle = LineStyle.Dash,
                 MarkerType = MarkerType.None
@@ -94,8 +97,9 @@ namespace ExampleLibrary
         public static PlotModel StemSeries()
         {
             var model = new PlotModel("StemSeries") { LegendSymbolLength = 24 };
-            var s1 = new StemSeries("sin(x)")
+            var s1 = new StemSeries
                          {
+                             Title = "sin(x)",
                              Color = OxyColors.SkyBlue,
                              MarkerType = MarkerType.Circle,
                              MarkerSize = 6,

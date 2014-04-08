@@ -46,7 +46,7 @@ namespace ExampleLibrary
             Func<double, LineSeries> createSpeedupCurve = p =>
             {
                 // todo: tracker does not work when smoothing = true (too few points interpolated on the left end of the curve)
-                var ls = new LineSeries(p.ToString("P0")) { Smooth = false };
+                var ls = new LineSeries { Title = p.ToString("P0"), Smooth = false };
                 for (int n = 1; n <= 65536; n *= 2) ls.Points.Add(new DataPoint(n, maxSpeedup(p, n)));
                 return ls;
             };
@@ -76,8 +76,9 @@ namespace ExampleLibrary
 
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "Richter magnitude scale", MajorGridlineStyle = LineStyle.None, TickStyle = TickStyle.None });
 
-            var frequencyCurve = new LineSeries("Frequency")
+            var frequencyCurve = new LineSeries
                          {
+                             Title = "Frequency",
                              Color = OxyColor.FromUInt32(0xff3c6c9e),
                              StrokeThickness = 3,
                              MarkerStroke = OxyColor.FromUInt32(0xff3c6c9e),
@@ -99,8 +100,9 @@ namespace ExampleLibrary
             model.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Left, Title = "Frequency / 100 yr", UseSuperExponentialFormat = true, MajorGridlineStyle = LineStyle.None, TickStyle = TickStyle.Outside });
             model.Series.Add(frequencyCurve);
 
-            var energyCurve = new LineSeries("Energy")
+            var energyCurve = new LineSeries
             {
+                Title = "Energy",
                 Color = OxyColor.FromUInt32(0xff9e6c3c),
                 StrokeThickness = 3,
                 MarkerStroke = OxyColor.FromUInt32(0xff9e6c3c),

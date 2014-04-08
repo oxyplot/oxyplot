@@ -30,6 +30,7 @@
 
 namespace OxyPlot.Series
 {
+    using System;
     using System.Collections.Generic;
 
     /// <summary>
@@ -51,6 +52,7 @@ namespace OxyPlot.Series
         /// Initializes a new instance of the <see cref="StemSeries" /> class.
         /// </summary>
         /// <param name="title">The title.</param>
+        [Obsolete]
         public StemSeries(string title)
             : base(title)
         {
@@ -63,6 +65,7 @@ namespace OxyPlot.Series
         /// <param name="color">The color of the line stroke.</param>
         /// <param name="strokeThickness">The stroke thickness (optional).</param>
         /// <param name="title">The title (optional).</param>
+        [Obsolete]
         public StemSeries(OxyColor color, double strokeThickness = 1, string title = null)
             : base(color, strokeThickness, title)
         {

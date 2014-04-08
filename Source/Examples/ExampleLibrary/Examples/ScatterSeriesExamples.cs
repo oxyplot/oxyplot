@@ -157,7 +157,7 @@ namespace ExampleLibrary
         {
             var model = new PlotModel(string.Format("LineSeries with markers only (n={0})", n));
 
-            var s1 = new LineSeries("Series 1") { StrokeThickness = 0, MarkerType = MarkerType.Square, MarkerFill = OxyColors.Blue, MarkerStrokeThickness = 0 };
+            var s1 = new LineSeries { Title = "Series 1", StrokeThickness = 0, MarkerType = MarkerType.Square, MarkerFill = OxyColors.Blue, MarkerStrokeThickness = 0 };
             var random = new Random();
             for (int i = 0; i < n; i++)
             {

@@ -66,7 +66,7 @@ namespace CsvDemo
             tmp.PlotMargins = new OxyThickness(50, 0, 0, 40);
             for (int i = 1; i < doc.Headers.Length; i++)
             {
-                var ls = new LineSeries(doc.Headers[i]);
+                var ls = new LineSeries { Title = doc.Headers[i] };
                 foreach (var item in doc.Items)
                 {
                     double x = ParseDouble(item[0]);

@@ -55,6 +55,7 @@ namespace OxyPlot.Series
         /// Initializes a new instance of the <see cref="CandleStickSeries" /> class.
         /// </summary>
         /// <param name="title">The title.</param>
+        [Obsolete]
         public CandleStickSeries(string title)
             : this()
         {
@@ -67,6 +68,7 @@ namespace OxyPlot.Series
         /// <param name="color">The color.</param>
         /// <param name="strokeThickness">The stroke thickness.</param>
         /// <param name="title">The title.</param>
+        [Obsolete]
         public CandleStickSeries(OxyColor color, double strokeThickness = 1, string title = null)
             : this(title)
         {

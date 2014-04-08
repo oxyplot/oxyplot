@@ -109,7 +109,7 @@ namespace WorldStatisticsDemo
             pm.Series.Add(ss);
             if (SelectedCountry != null)
             {
-                var ls = new LineSeries(SelectedCountry.Name);
+                var ls = new LineSeries { Title = SelectedCountry.Name };
                 ls.LineJoin = OxyPenLineJoin.Bevel;
                 foreach (var p in SelectedCountry.Statistics)
                 {

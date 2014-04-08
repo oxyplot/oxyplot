@@ -41,8 +41,9 @@ namespace ExampleLibrary
         public static PlotModel CandleStickSeries()
         {
             var model = new PlotModel("CandleStickSeries") { LegendSymbolLength = 24 };
-            var s1 = new CandleStickSeries("random values")
+            var s1 = new CandleStickSeries
                 {
+                    Title = "random values",
                     Color = OxyColors.Black,
                 };
             var r = new Random(314);
@@ -58,8 +59,8 @@ namespace ExampleLibrary
             }
 
             model.Series.Add(s1);
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left,  MaximumPadding = 0.3, MinimumPadding = 0.3 });
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom,  MaximumPadding = 0.03, MinimumPadding = 0.03 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, MaximumPadding = 0.3, MinimumPadding = 0.3 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, MaximumPadding = 0.03, MinimumPadding = 0.03 });
 
             return model;
         }

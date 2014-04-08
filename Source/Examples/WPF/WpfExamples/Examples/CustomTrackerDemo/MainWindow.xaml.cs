@@ -63,8 +63,8 @@ namespace CustomTrackerDemo
             get
             {
                 var model = new PlotModel();
-                model.Series.Add(new LineSeries("Series 1") { TrackerKey = "Tracker1", ItemsSource = new List<DataPoint> { new DataPoint(0, 0), new DataPoint(10, 20), new DataPoint(20, 18) } });
-                model.Series.Add(new LineSeries("Series 2") { TrackerKey = "Tracker2", ItemsSource = new List<DataPoint> { new DataPoint(0, 10), new DataPoint(10, 10), new DataPoint(20, 16) } });
+                model.Series.Add(new LineSeries { Title = "Series 1", TrackerKey = "Tracker1", ItemsSource = new List<DataPoint> { new DataPoint(0, 0), new DataPoint(10, 20), new DataPoint(20, 18) } });
+                model.Series.Add(new LineSeries { Title = "Series 2", TrackerKey = "Tracker2", ItemsSource = new List<DataPoint> { new DataPoint(0, 10), new DataPoint(10, 10), new DataPoint(20, 16) } });
                 return model;
             }
         }

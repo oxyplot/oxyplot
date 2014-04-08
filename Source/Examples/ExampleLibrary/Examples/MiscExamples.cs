@@ -78,8 +78,9 @@ namespace ExampleLibrary
                                 LegendOrientation = LegendOrientation.Horizontal
                             };
             model.Series.Add(new FunctionSeries(exact, 0, 4, 100) { Title = "Exact solution", StrokeThickness = 5 });
-            var eulerSeries = new LineSeries("Euler, h=0.25")
+            var eulerSeries = new LineSeries
             {
+                Title = "Euler, h=0.25",
                 MarkerType = MarkerType.Circle,
                 MarkerFill = OxyColors.Black,
             };
@@ -92,24 +93,27 @@ namespace ExampleLibrary
             //        MarkerFill = OxyColors.Black,
             //        Points = Euler(f, t0, y0, 4, 1)
             //    });
-            var heunSeries = new LineSeries("Heun, h=0.25")
+            var heunSeries = new LineSeries
             {
+                Title = "Heun, h=0.25",
                 MarkerType = MarkerType.Circle,
                 MarkerFill = OxyColors.Black,
             };
             heunSeries.Points.AddRange(Heun(f, t0, y0, 4, 0.25));
             model.Series.Add(heunSeries);
 
-            var midpointSeries = new LineSeries("Midpoint, h=0.25")
+            var midpointSeries = new LineSeries
             {
+                Title = "Midpoint, h=0.25",
                 MarkerType = MarkerType.Circle,
                 MarkerFill = OxyColors.Black,
             };
             midpointSeries.Points.AddRange(Midpoint(f, t0, y0, 4, 0.25));
             model.Series.Add(midpointSeries);
 
-            var rkSeries = new LineSeries("RK4, h=0.25")
+            var rkSeries = new LineSeries
             {
+                Title = "RK4, h=0.25",
                 MarkerType = MarkerType.Circle,
                 MarkerFill = OxyColors.Black,
             };
@@ -335,8 +339,9 @@ namespace ExampleLibrary
                     var series = new LineSeries[lines];
                     for (int i = 0; i < series.Length; i++)
                     {
-                        series[i] = new LineSeries(headerFields[3 + i])
+                        series[i] = new LineSeries
                                         {
+                                            Title = headerFields[3 + i],
                                             Color =
                                                 OxyColor.FromAColor(
                                                     180, OxyColors.Black),

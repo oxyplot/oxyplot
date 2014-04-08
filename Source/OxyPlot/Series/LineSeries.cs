@@ -93,6 +93,7 @@ namespace OxyPlot.Series
         /// Initializes a new instance of the <see cref="LineSeries" /> class.
         /// </summary>
         /// <param name="title">The title.</param>
+        [Obsolete]
         public LineSeries(string title)
             : this()
         {
@@ -105,6 +106,7 @@ namespace OxyPlot.Series
         /// <param name="color">The color of the line stroke.</param>
         /// <param name="strokeThickness">The stroke thickness (optional).</param>
         /// <param name="title">The title (optional).</param>
+        [Obsolete]
         public LineSeries(OxyColor color, double strokeThickness = 1, string title = null)
             : this()
         {
