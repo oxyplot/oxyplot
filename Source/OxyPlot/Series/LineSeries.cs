@@ -50,6 +50,11 @@ namespace OxyPlot.Series
         private List<ScreenPoint> outputBuffer;
 
         /// <summary>
+        /// The buffer for contiguous screen points.
+        /// </summary>
+        private List<ScreenPoint> contiguousScreenPointsBuffer;
+
+        /// <summary>
         /// The default color.
         /// </summary>
         private OxyColor defaultColor;
@@ -343,30 +348,7 @@ namespace OxyPlot.Series
             var clippingRect = this.GetClippingRect();
             rc.SetClip(clippingRect);
 
-            var contiguousLines = ExtractContiguousLines(this.Points).ToArray();
-            var transformedContiguousLines = contiguousLines.Select(l => l.Select(Transform).ToArray());
-            foreach (var transformedContiguousLine in transformedContiguousLines)
-            {
-                this.RenderPoints(rc, clippingRect, transformedContiguousLine);
-            }
-
-            if (this.BrokenLineThickness > 0 && this.BrokenLineStyle != LineStyle.None)
-            {
-                var brokenLines = CalculateBrokenLines(contiguousLines);
-                var transformedBrokenLines = brokenLines.Select(l => new[] { Transform(l.Point1), Transform(l.Point2) });
-                var brokenLineDashArray = this.BrokenLineStyle.GetDashArray();
-                foreach (var transformedBrokenLine in transformedBrokenLines)
-                {
-                    rc.DrawClippedLineSegments(
-                        transformedBrokenLine,
-                        clippingRect,
-                        this.BrokenLineColor,
-                        this.BrokenLineThickness,
-                        brokenLineDashArray,
-                        this.LineJoin,
-                        false);
-                }
-            }
+            this.RenderPoints(rc, clippingRect, this.Points);
 
             if (this.LabelFormatString != null)
             {
@@ -465,31 +447,48 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Calculates the collection of broken lines delimiting a collection of continuous lines.
+        /// Renders the points as line, broken line and markers.
         /// </summary>
-        /// <param name="contiguousLineSegments">The collection of contiguous lines for which to calculate the delimiting broken lines.</param>
-        /// <returns><see cref="DataPoint" /> pairs representing the broken lines delimiting the passed collection of contiguous lines.</returns>
-        protected static IEnumerable<Segment> CalculateBrokenLines(ICollection<ICollection<DataPoint>> contiguousLineSegments)
+        /// <param name="rc">The rendering context.</param>
+        /// <param name="clippingRect">The clipping rectangle.</param>
+        /// <param name="points">The points to render.</param>
+        protected void RenderPoints(IRenderContext rc, OxyRect clippingRect, ICollection<DataPoint> points)
         {
-            for (var i = 1; i < contiguousLineSegments.ToArray().Count(); i++)
-            {
-                var segment0 = contiguousLineSegments.ElementAt(i - 1);
-                var segment1 = contiguousLineSegments.ElementAt(i);
-                yield return new Segment(segment0.Last(), segment1.First());
-            }
-        }
+            var pointEnumerator = points.GetEnumerator();
+            var lastValidPoint = new ScreenPoint?();
+            var areBrokenLinesRendered = this.BrokenLineThickness > 0 && this.BrokenLineStyle != LineStyle.None;
+            var dashArray = areBrokenLinesRendered ? this.BrokenLineStyle.GetDashArray() : null;
+            var broken = areBrokenLinesRendered ? new List<ScreenPoint>(2) : null;
 
-        /// <summary>
-        /// Extracts all contiguous line segments from the line represented by the collection of points passed to the method.
-        /// </summary>
-        /// <param name="points">The line from which to extract all contiguous segments.</param>
-        /// <returns>A collection of <see cref="DataPoint" /> arrays which represent all contiguous line segments in the passed points collection.</returns>
-        protected static IEnumerable<DataPoint[]> ExtractContiguousLines(IEnumerable<DataPoint> points)
-        {
-            var enumerator = points.GetEnumerator();
-            while (enumerator.MoveNext())
+            if (this.contiguousScreenPointsBuffer == null)
             {
-                yield return ExtractNextContiguousLineSegment(enumerator).ToArray();
+                this.contiguousScreenPointsBuffer = new List<ScreenPoint>(points.Count);
+            }
+
+            while (pointEnumerator.MoveNext() && this.ExtractNextContiguousLineSegment(pointEnumerator, ref lastValidPoint, broken, this.contiguousScreenPointsBuffer))
+            {
+                if (areBrokenLinesRendered)
+                {
+                    if (broken.Count > 0)
+                    {
+                        rc.DrawClippedLineSegments(
+                            broken,
+                            clippingRect,
+                            this.BrokenLineColor,
+                            this.BrokenLineThickness,
+                            dashArray,
+                            this.LineJoin,
+                            false);
+                        broken.Clear();
+                    }
+                }
+                else
+                {
+                    lastValidPoint = null;
+                }
+
+                this.RenderLineAndMarkers(rc, clippingRect, this.contiguousScreenPointsBuffer);
+                this.contiguousScreenPointsBuffer.Clear();
             }
         }
 
@@ -497,24 +496,55 @@ namespace OxyPlot.Series
         /// Extracts a single contiguous line segment beginning with the element at the position of the enumerator when the method
         /// is called. Initial invalid data points are ignored.
         /// </summary>
-        /// <param name="enumerator">The enumerator to use to traverse the collection. The enumerator must be on a valid element.</param>
-        /// <returns>A collection of contiguous data points.</returns>
-        protected static IEnumerable<DataPoint> ExtractNextContiguousLineSegment(IEnumerator<DataPoint> enumerator)
+        /// <param name="pointEnumerator">The enumerator to use to traverse the collection. The enumerator must be on a valid element.</param>
+        /// <param name="previousContiguousLineSegmentEndPoint">Initially set to null, but I will update I won't give a broken line if this is null</param>
+        /// <param name="broken">place to put broken segment</param>
+        /// <param name="contiguous">place to put contiguous segment</param>
+        /// <returns>
+        ///   <c>true</c> if line segments are extracted, <c>false</c> if reached end.
+        /// </returns>
+        protected bool ExtractNextContiguousLineSegment(
+            IEnumerator<DataPoint> pointEnumerator,
+            ref ScreenPoint? previousContiguousLineSegmentEndPoint,
+            // ReSharper disable SuggestBaseTypeForParameter
+            List<ScreenPoint> broken,
+            List<ScreenPoint> contiguous)
+        // ReSharper restore SuggestBaseTypeForParameter
         {
-            while (!enumerator.Current.IsDefined())
+            DataPoint currentPoint;
+
+            // Skip all undefined points
+            while (!(currentPoint = pointEnumerator.Current).IsDefined())
             {
-                if (!enumerator.MoveNext())
+                if (!pointEnumerator.MoveNext())
                 {
-                    yield break;
+                    return false;
                 }
             }
 
-            yield return enumerator.Current;
+            // First valid point
+            var screenPoint = Transform(currentPoint);
 
-            while (enumerator.MoveNext() && enumerator.Current.IsDefined())
+            // Handle broken line segment if exists
+            if (previousContiguousLineSegmentEndPoint.HasValue)
             {
-                yield return enumerator.Current;
+                broken.Add(previousContiguousLineSegmentEndPoint.Value);
+                broken.Add(screenPoint);
             }
+
+            // Add first point
+            contiguous.Add(screenPoint);
+
+            // Add all points up until the next invalid one
+            while (pointEnumerator.MoveNext() && (currentPoint = pointEnumerator.Current).IsDefined())
+            {
+                screenPoint = this.Transform(currentPoint);
+                contiguous.Add(screenPoint);
+            }
+
+            previousContiguousLineSegmentEndPoint = screenPoint;
+
+            return true;
         }
 
         /// <summary>
@@ -626,12 +656,12 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Renders the transformed points.
+        /// Renders the transformed points as a line (smoothed if <see cref="DataPointSeries.Smooth"/> is <c>true</c>) and markers (if <see cref="MarkerType"/> is not <c>None</c>).
         /// </summary>
         /// <param name="rc">The render context.</param>
         /// <param name="clippingRect">The clipping rectangle.</param>
         /// <param name="pointsToRender">The points to render.</param>
-        protected virtual void RenderPoints(IRenderContext rc, OxyRect clippingRect, IList<ScreenPoint> pointsToRender)
+        protected virtual void RenderLineAndMarkers(IRenderContext rc, OxyRect clippingRect, IList<ScreenPoint> pointsToRender)
         {
             var screenPoints = pointsToRender;
             if (this.Smooth)
@@ -666,7 +696,7 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Renders the (smoothed) line.
+        /// Renders a continuous line.
         /// </summary>
         /// <param name="rc">The render context.</param>
         /// <param name="clippingRect">The clipping rectangle.</param>
