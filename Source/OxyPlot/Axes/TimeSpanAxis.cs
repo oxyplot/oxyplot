@@ -55,6 +55,7 @@ namespace OxyPlot.Axes
         /// <param name="position">The position of the axis.</param>
         /// <param name="title">The axis title.</param>
         /// <param name="format">The string format for the axis values.</param>
+        [Obsolete]
         public TimeSpanAxis(AxisPosition position, string title = null, string format = "m:ss")
             : base(position, title)
         {
@@ -69,6 +70,7 @@ namespace OxyPlot.Axes
         /// <param name="maximum">The maximum value.</param>
         /// <param name="title">The axis title.</param>
         /// <param name="format">The string format for the axis values.</param>
+        [Obsolete]
         public TimeSpanAxis(
             AxisPosition position,
             double minimum,

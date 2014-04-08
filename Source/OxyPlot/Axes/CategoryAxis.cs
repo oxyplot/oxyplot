@@ -30,6 +30,7 @@
 
 namespace OxyPlot.Axes
 {
+    using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Globalization;
@@ -105,6 +106,7 @@ namespace OxyPlot.Axes
         /// <param name="position">The position.</param>
         /// <param name="title">The title.</param>
         /// <param name="categories">The categories.</param>
+        [Obsolete]
         public CategoryAxis(AxisPosition position, string title = null, params string[] categories)
             : this(title, categories)
         {
@@ -116,6 +118,7 @@ namespace OxyPlot.Axes
         /// </summary>
         /// <param name="title">The title.</param>
         /// <param name="categories">The categories.</param>
+        [Obsolete]
         public CategoryAxis(string title, params string[] categories)
             : this()
         {
@@ -154,7 +157,7 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Gets or sets the labels collection.
         /// </summary>
-        public IList<string> Labels { get; set; }
+        public IList<string> Labels { get; set; } // TODO: Make read only List<string>     
 
         /// <summary>
         /// Gets or sets the original offset of the bars (not used for stacked bar series).

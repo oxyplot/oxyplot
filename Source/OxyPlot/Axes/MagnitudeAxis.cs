@@ -58,6 +58,7 @@ namespace OxyPlot.Axes
         /// <param name="majorStep">The major step.</param>
         /// <param name="minorStep">The minor step.</param>
         /// <param name="title">The title.</param>
+        [Obsolete]
         public MagnitudeAxis(
             double minimum = double.NaN,
             double maximum = double.NaN,

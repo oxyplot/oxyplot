@@ -143,26 +143,6 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Axis" /> class.
-        /// </summary>
-        /// <param name="pos">The position of the axis.</param>
-        /// <param name="minimum">The minimum value.</param>
-        /// <param name="maximum">The maximum value.</param>
-        /// <param name="title">The axis title.</param>
-        protected Axis(AxisPosition pos, double minimum, double maximum, string title = null)
-            : this()
-        {
-            this.Position = pos;
-            this.Minimum = minimum;
-            this.Maximum = maximum;
-
-            this.AbsoluteMaximum = double.NaN;
-            this.AbsoluteMinimum = double.NaN;
-
-            this.Title = title;
-        }
-
-        /// <summary>
         /// Occurs when the axis has been changed (by zooming, panning or resetting).
         /// </summary>
         public event EventHandler<AxisChangedEventArgs> AxisChanged;
