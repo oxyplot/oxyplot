@@ -80,10 +80,11 @@ namespace OxyPlot.OpenXml
     /// <summary>
     /// Provides a report writer for Word/OpenXML output using OpenXML SDK 2.0.
     /// </summary>
-    /// <seealso cref="http://www.codeproject.com/KB/office/OpenXML-SDK-HelloWorld.aspx" />
-    /// <seealso cref="http://msdn.microsoft.com/en-us/library/documentformat.openxml.wordprocessing.aspx" />
     public class WordDocumentReportWriter : IDisposable, IReportWriter
     {
+        //// http://www.codeproject.com/KB/office/OpenXML-SDK-HelloWorld.aspx
+        //// http://msdn.microsoft.com/en-us/library/documentformat.openxml.wordprocessing.aspx
+
         /// <summary>
         /// The body text id.
         /// </summary>
