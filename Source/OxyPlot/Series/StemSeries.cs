@@ -98,7 +98,7 @@ namespace OxyPlot.Series
 
             // http://paulbourke.net/geometry/pointlineplane/
             double minimumDistance = double.MaxValue;
-            var points = this.Points;
+            var points = this.ActualPoints;
 
             for (int i = 0; i < points.Count; i++)
             {
@@ -139,7 +139,7 @@ namespace OxyPlot.Series
         /// <param name="model">The owner plot model.</param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
-            if (this.Points.Count == 0)
+            if (this.ActualPoints.Count == 0)
             {
                 return;
             }
@@ -155,8 +155,8 @@ namespace OxyPlot.Series
             var dashArray = this.ActualDashArray;
             var actualColor = this.GetSelectableColor(this.ActualColor);
             var points = new ScreenPoint[2];
-            var markerPoints = this.MarkerType != MarkerType.None ? new List<ScreenPoint>(this.Points.Count) : null;
-            foreach (var point in this.Points)
+            var markerPoints = this.MarkerType != MarkerType.None ? new List<ScreenPoint>(this.ActualPoints.Count) : null;
+            foreach (var point in this.ActualPoints)
             {
                 if (!this.IsValidPoint(point, this.XAxis, this.YAxis))
                 {

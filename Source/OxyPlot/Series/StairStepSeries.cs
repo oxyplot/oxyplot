@@ -103,7 +103,7 @@ namespace OxyPlot.Series
             double minimumDistanceSquared = 16 * 16;
 
             // snap to the nearest point
-            var result = this.GetNearestPointInternal(this.Points, point);
+            var result = this.GetNearestPointInternal(this.ActualPoints, point);
             if (!interpolate && result != null && result.Position.DistanceToSquared(point) < minimumDistanceSquared)
             {
                 return result;
@@ -112,11 +112,11 @@ namespace OxyPlot.Series
             result = null;
 
             // find the nearest point on the horizontal line segments
-            int n = this.Points.Count;
+            int n = this.ActualPoints.Count;
             for (int i = 0; i < n; i++)
             {
-                var p1 = this.Points[i];
-                var p2 = this.Points[i + 1 < n ? i + 1 : i];
+                var p1 = this.ActualPoints[i];
+                var p2 = this.ActualPoints[i + 1 < n ? i + 1 : i];
                 var sp1 = this.Transform(p1.X, p1.Y);
                 var sp2 = this.Transform(p2.X, p1.Y);
 
@@ -171,7 +171,7 @@ namespace OxyPlot.Series
         /// <param name="model">The owner plot model.</param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
-            if (this.Points.Count == 0)
+            if (this.ActualPoints.Count == 0)
             {
                 return;
             }
@@ -256,7 +256,7 @@ namespace OxyPlot.Series
             var linePoints = new List<ScreenPoint>();
             var markerPoints = new List<ScreenPoint>();
             double previousY = double.NaN;
-            foreach (var point in this.Points)
+            foreach (var point in this.ActualPoints)
             {
                 if (!this.IsValidPoint(point, this.XAxis, this.YAxis))
                 {

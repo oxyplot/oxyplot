@@ -51,22 +51,29 @@ namespace PerformanceTest
         /// </summary>
         public static void Main()
         {
-            TestModelUpdate(100000);
-            Console.ReadKey();
+            var testModels = new Dictionary<string, PlotModel>
+            {
+                { "LineSeries with 100000 points", CreateModel(100000) },
+                { "LineSeries with 100000 points in ItemsSource", CreateModel2(100000) }
+            };
 
-            TestModelRender(100000);
-            Console.ReadKey();
+            foreach (var kvp in testModels)
+            {
+                Console.WriteLine(kvp.Key);
+                TestModelUpdate(kvp.Value);
+                TestModelRender(kvp.Value);
+                Console.WriteLine();
+            }
 
+            Console.WriteLine("DrawClippedLine test:");
             var t0 = TestDrawClippedLine(10000, 1000, false);
             var t1 = TestDrawClippedLine(10000, 1000, true);
             Console.WriteLine("{0:P1}", (t0 - t1) / t0);
             Console.ReadKey();
         }
 
-        public static double TestModelUpdate(int n, int m = 1000)
+        public static double TestModelUpdate(PlotModel model, int m = 1000)
         {
-            var model = CreateModel(n);
-
             var stopwatch = Stopwatch.StartNew();
             for (int i = 0; i < m; i++)
             {
@@ -74,13 +81,12 @@ namespace PerformanceTest
             }
 
             stopwatch.Stop();
-            Console.WriteLine((double)stopwatch.ElapsedMilliseconds);
+            Console.WriteLine("Update: {0}", (double)stopwatch.ElapsedMilliseconds);
             return stopwatch.ElapsedMilliseconds;
         }
 
-        public static double TestModelRender(int n, int m = 100)
+        public static double TestModelRender(PlotModel model, int m = 100)
         {
-            var model = CreateModel(n);
             var rc = new EmptyRenderContext();
             var stopwatch = Stopwatch.StartNew();
             for (int i = 0; i < m; i++)
@@ -89,7 +95,7 @@ namespace PerformanceTest
             }
 
             stopwatch.Stop();
-            Console.WriteLine((double)stopwatch.ElapsedMilliseconds);
+            Console.WriteLine("Render: {0}", (double)stopwatch.ElapsedMilliseconds);
             return stopwatch.ElapsedMilliseconds;
         }
 
@@ -101,6 +107,23 @@ namespace PerformanceTest
             {
                 series.Points.Add(new DataPoint(i, Math.Sin(i)));
             }
+
+            model.Series.Add(series);
+            model.Update(true);
+            return model;
+        }
+
+        private static PlotModel CreateModel2(int n)
+        {
+            var points = new List<DataPoint>();
+            for (int i = 0; i < n; i++)
+            {
+                points.Add(new DataPoint(i, Math.Sin(i)));
+            }
+
+            var model = new PlotModel();
+            var series = new LineSeries();
+            series.ItemsSource = points;
 
             model.Series.Add(series);
             model.Update(true);
