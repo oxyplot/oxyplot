@@ -30,7 +30,10 @@
 
 namespace OxyPlot.Wpf
 {
+    using System;
+    using System.Collections.Generic;
     using System.Windows;
+    using System.Windows.Documents;
     using System.Windows.Media;
 
     using OxyPlot.Series;
@@ -63,6 +66,12 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty DashesProperty = DependencyProperty.Register(
             "Dashes", typeof(double[]), typeof(LineSeries), new PropertyMetadata(null, AppearanceChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="Decimator"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty DecimatorProperty =
+            DependencyProperty.Register("Decimator", typeof(Action<List<ScreenPoint>, List<ScreenPoint>>), typeof(LineSeries), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
         /// Identifies the <see cref="LabelFormatString"/> dependency property.
@@ -243,6 +252,20 @@ namespace OxyPlot.Wpf
             {
                 this.SetValue(DashesProperty, value);
             }
+        }
+
+
+
+        /// <summary>
+        /// Gets or sets the decimator.
+        /// </summary>
+        /// <value>
+        /// The decimator.
+        /// </value>
+        public Action<List<ScreenPoint>, List<ScreenPoint>> Decimator
+        {
+            get { return (Action<List<ScreenPoint>, List<ScreenPoint>>)this.GetValue(DecimatorProperty); }
+            set { this.SetValue(DecimatorProperty, value); }
         }
 
         /// <summary>
@@ -502,6 +525,7 @@ namespace OxyPlot.Wpf
             s.BrokenLineColor = this.BrokenLineColor.ToOxyColor();
             s.BrokenLineStyle = this.BrokenLineStyle;
             s.BrokenLineThickness = this.BrokenLineThickness;
+            s.Decimator = this.Decimator;
         }
     }
 }

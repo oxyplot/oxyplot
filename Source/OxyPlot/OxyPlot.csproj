@@ -87,6 +87,7 @@
     <Compile Include="Rendering\ScreenPoint.cs" />
     <Compile Include="Rendering\OxyRect.cs" />
     <Compile Include="Rendering\OxySize.cs" />
+    <Compile Include="Rendering\Utilities\Decimator.cs" />
     <Compile Include="Rendering\Utilities\SutherlandHodgmanClipping.cs" />
     <Compile Include="Rendering\Utilities\CohenSutherlandClipping.cs" />
     <Compile Include="Rendering\OxyPenLineJoin.cs" />

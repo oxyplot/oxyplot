@@ -469,5 +469,37 @@ namespace ExampleLibrary
             model.Series.Add(s1);
             return model;
         }
+
+        [Example("Without Decimator")]
+        public static PlotModel WithoutDecimator()
+        {
+            var model = new PlotModel { Title = "Without Decimator" };
+            var s1 = CreateSeriesSuitableForDecimation();
+            model.Series.Add(s1);
+            return model;
+        }
+
+        [Example("With X Decimator")]
+        public static PlotModel WithXDecimator()
+        {
+            var model = new PlotModel { Title = "With X Decimator" };
+            var s1 = CreateSeriesSuitableForDecimation();
+            s1.Decimator = Decimator.Decimate;
+            model.Series.Add(s1);
+            return model;
+        }
+
+        private static LineSeries CreateSeriesSuitableForDecimation()
+        {
+            var s1 = new LineSeries();
+
+            int n = 20000;
+            for (int i = 0; i < n; i++)
+            {
+                s1.Points.Add(new DataPoint((double)i / n, Math.Sin(i)));
+            }
+
+            return s1;
+        }
     }
 }

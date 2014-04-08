@@ -71,6 +71,7 @@
     <Compile Include="Pdf\PortableDocumentExtensions.cs" />
     <Compile Include="Pdf\PortableDocumentTests.cs" />
     <Compile Include="PlotController\PlotControllerTests.cs" />
+    <Compile Include="Rendering\Utilities\DecimatorTests.cs" />
     <Compile Include="TestModels.cs" />
     <Compile Include="Svg\SvgAssert.cs" />
     <Compile Include="Svg\SvgExporterTests.cs" />
