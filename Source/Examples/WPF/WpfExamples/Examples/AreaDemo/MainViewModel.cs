@@ -35,7 +35,7 @@ namespace AreaDemo
         public MainViewModel()
         {
             Measurements = new Collection<Measurement>();
-            var r = new Random();
+            var r = new Random(31);
             double p1 = 0;
             double p2 = 5;
             double v1 = 0;

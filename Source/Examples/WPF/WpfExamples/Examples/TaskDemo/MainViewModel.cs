@@ -39,7 +39,7 @@ namespace TaskDemo
 
     public class MainViewModel
     {
-        private Random randomizer = new Random();
+        private Random randomizer = new Random(13);
 
         private IList<DataPoint> points = new List<DataPoint>();
 

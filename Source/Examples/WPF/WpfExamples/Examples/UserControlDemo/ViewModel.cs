@@ -38,7 +38,7 @@ namespace UserControlDemo
 
         public IList<DataPoint> Points { get; set; }
 
-        static Random r = new Random();
+        static Random r = new Random(13);
 
         public ViewModel()
         {

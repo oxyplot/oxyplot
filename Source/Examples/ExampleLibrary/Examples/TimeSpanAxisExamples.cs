@@ -51,7 +51,7 @@ namespace ExampleLibrary
             double increment = 3600;
 
             // Create a random data collection
-            var r = new Random();
+            var r = new Random(7);
             var data = new Collection<TimeValue>();
             var current = start;
             while (current <= end)

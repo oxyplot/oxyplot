@@ -57,7 +57,7 @@ namespace ExampleLibrary
                 MarkerType = markerType,
                 MarkerSize = 6,
             };
-            var random = new Random();
+            var random = new Random(13);
             for (int i = 0; i < n; i++)
             {
                 double x = random.NextDouble() * 2.2 - 1.1;
@@ -84,7 +84,7 @@ namespace ExampleLibrary
                 MarkerStrokeThickness = 0,
                 BinSize = binsize
             };
-            var random = new Random();
+            var random = new Random(13);
             for (int i = 0; i < n; i++)
             {
                 s1.Points.Add(new ScatterPoint(random.NextDouble(), random.NextDouble(), 4 + 10 * random.NextDouble()));
@@ -100,7 +100,7 @@ namespace ExampleLibrary
             var model = new PlotModel { Title = string.Format("Random data (n={0})", n), LegendPosition = LegendPosition.LeftTop };
 
             var s1 = new ScatterSeries { Title = "Measurements" };
-            var random = new Random();
+            var random = new Random(7);
             double x = 0;
             double y = 0;
             for (int i = 0; i < n; i++)
@@ -158,7 +158,7 @@ namespace ExampleLibrary
             var model = new PlotModel { Title = string.Format("LineSeries with markers only (n={0})", n) };
 
             var s1 = new LineSeries { Title = "Series 1", StrokeThickness = 0, MarkerType = MarkerType.Square, MarkerFill = OxyColors.Blue, MarkerStrokeThickness = 0 };
-            var random = new Random();
+            var random = new Random(7);
             for (int i = 0; i < n; i++)
             {
                 s1.Points.Add(new DataPoint(random.NextDouble(), random.NextDouble()));

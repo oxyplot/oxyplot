@@ -55,7 +55,7 @@ namespace ExampleLibrary
                     BoxWidth = 0.3
                 };
 
-            var random = new Random();
+            var random = new Random(31);
             for (var i = 0; i < boxes; i++)
             {
                 double x = i;

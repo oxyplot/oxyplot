@@ -59,7 +59,7 @@ namespace ScatterDemo
             foreach (var pt in Fern.Generate(2000))
                 s1.Points.Add(new DataPoint(pt.X, -pt.Y));
 
-            //var r = new Random();
+            //var r = new Random(13);
             //for (int i = 0; i < 1000; i++)
             //    s1.Points.Add(new DataPoint(r.NextDouble(), r.NextDouble()));
 

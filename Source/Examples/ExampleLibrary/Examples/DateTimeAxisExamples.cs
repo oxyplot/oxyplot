@@ -124,7 +124,7 @@ namespace ExampleLibrary
             double increment = 3600 * 24 * 14;
 
             // Create a random data collection
-            var r = new Random();
+            var r = new Random(13);
             var data = new Collection<DateValue>();
             var date = start;
             while (date <= end)
