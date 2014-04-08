@@ -46,7 +46,8 @@ namespace OxyPlot.Wpf.Tests
         /// <param name="expected">Path to the expected image.</param>
         /// <param name="actual">Path to the actual image.</param>
         /// <param name="message">The message.</param>
-        public static void AreEqual(string expected, string actual, string message)
+        /// <param name="output">The output difference file.</param>
+        public static void AreEqual(string expected, string actual, string message, string output)
         {
             var expectedImage = LoadImage(expected);
             var actualImage = LoadImage(actual);
@@ -61,17 +62,45 @@ namespace OxyPlot.Wpf.Tests
                 Assert.Fail("Expected width: {0}\nActual width:{1}\n{2}", expectedImage.GetLength(1), actualImage.GetLength(1), message);
             }
 
-            var w = expectedImage.GetLength(1);
-            var h = expectedImage.GetLength(0);
+            var w = expectedImage.GetLength(0);
+            var h = expectedImage.GetLength(1);
+            var differences = 0;
+            var differenceImage = new OxyColor[w, h];
             for (int i = 0; i < h; i++)
             {
                 for (int j = 0; j < w; j++)
                 {
-                    if (!expectedImage[i, j].Equals(actualImage[i, j]))
+                    if (!expectedImage[j, i].Equals(actualImage[j, i]))
                     {
-                        Assert.Fail("At pixel {0},{1}:\nExpected : {2}\nActual:{3}\n{4}", j, i, expectedImage[i, j], actualImage[i, j], message);
+                        differences++;
+                        differenceImage[j, i] = OxyColors.Red;
+                    }
+                    else
+                    {
+                        differenceImage[j, i] = actualImage[j, i].ChangeIntensity(100);
                     }
                 }
+            }
+
+            if (differences > 0)
+            {
+                if (output != null)
+                {
+                    for (int i = 0; i < h; i++)
+                    {
+                        for (int j = 0; j < w; j++)
+                        {
+                            if (!expectedImage[j, i].Equals(actualImage[j, i]))
+                            {
+                            }
+                        }
+                    }
+
+                    var encoder = new PngEncoder(new PngEncoderOptions());
+                    System.IO.File.WriteAllBytes(output, encoder.Encode(differenceImage));
+                }
+
+                Assert.Fail("Pixel differences: {0}\n{1}", differences, message);
             }
         }
 
@@ -82,6 +111,7 @@ namespace OxyPlot.Wpf.Tests
         /// <returns>The pixels as an array.</returns>
         private static OxyColor[,] LoadImage(string path)
         {
+            // TODO: use OxyPlot to decode
             var bitmapImage = new BitmapImage();
             bitmapImage.BeginInit();
             bitmapImage.UriSource = new Uri(path, UriKind.Relative);
@@ -92,7 +122,7 @@ namespace OxyPlot.Wpf.Tests
             var pixels = new byte[size];
             bitmapImage.CopyPixels(pixels, bitmapImage.PixelWidth * 4, 0);
 
-            var r = new OxyColor[bitmapImage.PixelHeight, bitmapImage.PixelWidth];
+            var r = new OxyColor[bitmapImage.PixelWidth, bitmapImage.PixelHeight];
             var index = 0;
             for (int i = 0; i < bitmapImage.PixelHeight; i++)
             {
@@ -102,7 +132,7 @@ namespace OxyPlot.Wpf.Tests
                     byte green = pixels[index++];
                     byte blue = pixels[index++];
                     byte alpha = pixels[index++];
-                    r[i, j] = OxyColor.FromArgb(alpha, red, green, blue);
+                    r[j, i] = OxyColor.FromArgb(alpha, red, green, blue);
                 }
             }
 
