@@ -805,11 +805,16 @@ namespace OxyPlot.Axes
         /// <returns><c>true</c> if the specified value is valid; otherwise, <c>false</c> .</returns>
         public virtual bool IsValidValue(double value)
         {
-            return !double.IsNaN(value) &&
-                !double.IsInfinity(value) &&
+            // ReSharper disable EqualExpressionComparison
+            // ReSharper disable CompareOfFloatsByEqualityOperator
+            return value == value &&
+                value != 1.0 / 0.0 &&
+                value != -1.0 / 0.0 &&
                 value < this.FilterMaxValue &&
                 value > this.FilterMinValue &&
                 (this.FilterFunction == null || this.FilterFunction(value));
+            // ReSharper restore CompareOfFloatsByEqualityOperator
+            // ReSharper restore EqualExpressionComparison
         }
 
         /// <summary>

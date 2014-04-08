@@ -329,8 +329,9 @@ namespace OxyPlot.Series
         /// <returns><c>true</c> if the point is valid; otherwise, <c>false</c> .</returns>
         protected virtual bool IsValidPoint(DataPoint pt, Axis xaxis, Axis yaxis)
         {
-            return !double.IsNaN(pt.X) && !double.IsInfinity(pt.X) && !double.IsNaN(pt.Y) && !double.IsInfinity(pt.Y)
-                   && (xaxis != null && xaxis.IsValidValue(pt.X)) && (yaxis != null && yaxis.IsValidValue(pt.Y));
+            return
+                xaxis != null && xaxis.IsValidValue(pt.X) &&
+                yaxis != null && yaxis.IsValidValue(pt.Y);
         }
 
         /// <summary>
