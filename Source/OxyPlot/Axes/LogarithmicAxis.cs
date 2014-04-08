@@ -55,6 +55,7 @@ namespace OxyPlot.Axes
         /// </summary>
         /// <param name="pos">The position.</param>
         /// <param name="title">The title.</param>
+        [Obsolete]
         public LogarithmicAxis(AxisPosition pos, string title)
             : this()
         {
@@ -66,11 +67,11 @@ namespace OxyPlot.Axes
         /// Initializes a new instance of the <see cref="LogarithmicAxis" /> class.
         /// </summary>
         /// <param name="position">The position.</param>
-        /// <param name="minimum">The minimum.</param>
-        /// <param name="maximum">The maximum.</param>
         /// <param name="title">The title.</param>
-        public LogarithmicAxis(
-            AxisPosition position, double minimum = double.NaN, double maximum = double.NaN, string title = null)
+        /// <param name="minimum">The minimum value.</param>
+        /// <param name="maximum">The maximum value.</param>
+        [Obsolete]
+        public LogarithmicAxis(AxisPosition position, string title = null, double minimum = double.NaN, double maximum = double.NaN)
             : this()
         {
             this.Position = position;

@@ -91,6 +91,7 @@ namespace OxyPlot.Axes
         /// <param name="title">The axis title.</param>
         /// <param name="format">The string format for the axis values.</param>
         /// <param name="intervalType">The interval type.</param>
+        [Obsolete]
         public DateTimeAxis(
             AxisPosition position,
             string title = null,
@@ -114,6 +115,7 @@ namespace OxyPlot.Axes
         /// <param name="title">The axis title.</param>
         /// <param name="format">The string format for the axis values.</param>
         /// <param name="intervalType">The interval type.</param>
+        [Obsolete]
         public DateTimeAxis(
             AxisPosition position,
             DateTime firstDateTime,
