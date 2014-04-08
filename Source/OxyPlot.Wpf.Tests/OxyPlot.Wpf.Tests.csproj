@@ -57,9 +57,11 @@
     </Compile>
     <Compile Include="Annotations\AnnotationsTests.cs" />
     <Compile Include="Axes\LinearAxisTests.cs" />
+    <Compile Include="ExampleLibraryTests.cs" />
     <Compile Include="OxyAssert.cs" />
     <Compile Include="Axes\AxesTests.cs" />
     <Compile Include="PlotTests.cs" />
+    <Compile Include="PngAssert.cs" />
     <Compile Include="PngExporterTests.cs" />
     <Compile Include="Series\SeriesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
