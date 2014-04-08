@@ -338,7 +338,8 @@ namespace OxyPlot.Series
         /// <param name="model">The owner plot model.</param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
-            if (this.Points.Count == 0)
+            var actualPoints = this.ActualPoints;
+            if (actualPoints.Count == 0)
             {
                 return;
             }
@@ -348,7 +349,7 @@ namespace OxyPlot.Series
             var clippingRect = this.GetClippingRect();
             rc.SetClip(clippingRect);
 
-            this.RenderPoints(rc, clippingRect, this.Points);
+            this.RenderPoints(rc, clippingRect, actualPoints);
 
             if (this.LabelFormatString != null)
             {
@@ -358,8 +359,7 @@ namespace OxyPlot.Series
 
             rc.ResetClip();
 
-            if (this.LineLegendPosition != LineLegendPosition.None && this.Points.Count > 0
-                && !string.IsNullOrEmpty(this.Title))
+            if (this.LineLegendPosition != LineLegendPosition.None && !string.IsNullOrEmpty(this.Title))
             {
                 // renders a legend on the line
                 this.RenderLegendOnLine(rc, clippingRect);
@@ -555,7 +555,7 @@ namespace OxyPlot.Series
         protected void RenderPointLabels(IRenderContext rc, OxyRect clippingRect)
         {
             int index = -1;
-            foreach (var point in this.Points)
+            foreach (var point in this.ActualPoints)
             {
                 index++;
 
@@ -625,14 +625,14 @@ namespace OxyPlot.Series
                 case LineLegendPosition.Start:
 
                     // start position
-                    point = this.Points[0];
+                    point = this.ActualPoints[0];
                     ha = HorizontalAlignment.Right;
                     dx = -4;
                     break;
                 default:
 
                     // end position
-                    point = this.Points[this.Points.Count - 1];
+                    point = this.ActualPoints[this.ActualPoints.Count - 1];
                     dx = 4;
                     break;
             }
@@ -728,7 +728,7 @@ namespace OxyPlot.Series
         protected virtual void ResetSmoothedPoints()
         {
             double tolerance = Math.Abs(Math.Max(this.MaxX - this.MinX, this.MaxY - this.MinY) / ToleranceDivisor);
-            this.smoothedPoints = CanonicalSplineHelper.CreateSpline(this.Points, 0.5, null, false, tolerance);
+            this.smoothedPoints = CanonicalSplineHelper.CreateSpline(this.ActualPoints, 0.5, null, false, tolerance);
         }
 
         /// <summary>

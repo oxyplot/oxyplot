@@ -46,6 +46,16 @@ namespace OxyPlot.Series
         private readonly List<DataPoint> points = new List<DataPoint>();
 
         /// <summary>
+        /// The data points from the items source.
+        /// </summary>
+        private List<DataPoint> itemsSourcePoints;
+
+        /// <summary>
+        /// Specifies if the itemsSourcePoints list can be modified.
+        /// </summary>
+        private bool ownsItemsSourcePoints;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref = "DataPointSeries" /> class.
         /// </summary>
         protected DataPointSeries()
@@ -97,6 +107,18 @@ namespace OxyPlot.Series
         public bool Smooth { get; set; }
 
         /// <summary>
+        /// Gets the list of points that should be rendered.
+        /// </summary>
+        /// <value>A list of <see cref="DataPoint" />.</value>
+        protected List<DataPoint> ActualPoints
+        {
+            get
+            {
+                return this.ItemsSource != null ? this.itemsSourcePoints : this.points;
+            }
+        }
+
+        /// <summary>
         /// Gets the point on the series that is nearest the specified point.
         /// </summary>
         /// <param name="point">The point.</param>
@@ -111,10 +133,10 @@ namespace OxyPlot.Series
 
             if (interpolate)
             {
-                return this.GetNearestInterpolatedPointInternal(this.Points, point);
+                return this.GetNearestInterpolatedPointInternal(this.ActualPoints, point);
             }
 
-            return this.GetNearestPointInternal(this.Points, point);
+            return this.GetNearestPointInternal(this.ActualPoints, point);
         }
 
         /// <summary>
@@ -127,7 +149,7 @@ namespace OxyPlot.Series
                 return;
             }
 
-            this.AddDataPoints(this.Points);
+            this.UpdateItemsSourcePoints();
         }
 
         /// <summary>
@@ -136,7 +158,7 @@ namespace OxyPlot.Series
         protected internal override void UpdateMaxMin()
         {
             base.UpdateMaxMin();
-            this.InternalUpdateMaxMin(this.Points);
+            this.InternalUpdateMaxMin(this.ActualPoints);
         }
 
         /// <summary>
@@ -146,30 +168,63 @@ namespace OxyPlot.Series
         /// <returns>The item of the index.</returns>
         protected override object GetItem(int i)
         {
-            if (this.ItemsSource == null && this.Points != null && i < this.Points.Count)
+            var actualPoints = this.ActualPoints;
+            if (this.ItemsSource == null && actualPoints != null && i < actualPoints.Count)
             {
-                return this.Points[i];
+                return actualPoints[i];
             }
 
             return base.GetItem(i);
         }
 
         /// <summary>
-        /// The add data points.
+        /// Clears or creates the <see cref="itemsSourcePoints"/> list.
         /// </summary>
-        /// <param name="pts">The points.</param>
-        protected void AddDataPoints(List<DataPoint> pts)
+        private void ClearItemsSourcePoints()
         {
-            pts.Clear();
+            if (!this.ownsItemsSourcePoints || this.itemsSourcePoints == null)
+            {
+                this.itemsSourcePoints = new List<DataPoint>();
+            }
+            else
+            {
+                this.itemsSourcePoints.Clear();
+            }
 
+            this.ownsItemsSourcePoints = true;
+        }
+
+        /// <summary>
+        /// Updates the points from the <see cref="ItemsSeries.ItemsSource" />.
+        /// </summary>
+        private void UpdateItemsSourcePoints()
+        {
             // Use the mapping to generate the points
             if (this.Mapping != null)
             {
+                this.ClearItemsSourcePoints();
                 foreach (var item in this.ItemsSource)
                 {
-                    pts.Add(this.Mapping(item));
+                    this.itemsSourcePoints.Add(this.Mapping(item));
                 }
 
+                return;
+            }
+
+            var sourceAsListOfDataPoints = this.ItemsSource as List<DataPoint>;
+            if (sourceAsListOfDataPoints != null)
+            {
+                this.itemsSourcePoints = sourceAsListOfDataPoints;
+                this.ownsItemsSourcePoints = false;
+                return;
+            }
+
+            this.ClearItemsSourcePoints();
+
+            var sourceAsEnumerableDataPoints = this.ItemsSource as IEnumerable<DataPoint>;
+            if (sourceAsEnumerableDataPoints != null)
+            {
+                this.itemsSourcePoints.AddRange(sourceAsEnumerableDataPoints);
                 return;
             }
 
@@ -182,7 +237,7 @@ namespace OxyPlot.Series
                 {
                     if (item is DataPoint)
                     {
-                        pts.Add((DataPoint)item);
+                        this.itemsSourcePoints.Add((DataPoint)item);
                         continue;
                     }
 
@@ -192,7 +247,7 @@ namespace OxyPlot.Series
                         continue;
                     }
 
-                    pts.Add(idpp.GetDataPoint());
+                    this.itemsSourcePoints.Add(idpp.GetDataPoint());
                 }
             }
             else
@@ -201,7 +256,7 @@ namespace OxyPlot.Series
                 // http://msdn.microsoft.com/en-us/library/bb613546.aspx
 
                 // Using reflection on DataFieldX and DataFieldY
-                this.AddDataPoints(pts, this.ItemsSource, this.DataFieldX, this.DataFieldY);
+                this.AddDataPoints(this.itemsSourcePoints, this.ItemsSource, this.DataFieldX, this.DataFieldY);
             }
         }
 
