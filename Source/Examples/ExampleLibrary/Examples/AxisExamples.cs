@@ -764,23 +764,42 @@ namespace ExampleLibrary
         [Example("Auto adjusting plot margins")]
         public static PlotModel AutoAdjustingMargins()
         {
-            var model = new PlotModel { Title = "Auto adjusting plot margins" };
-            model.LegendPosition = LegendPosition.RightBottom;
-            model.PlotMargins = new OxyThickness(0);
-            model.AutoAdjustPlotMargins = true;
+            var model = new PlotModel
+            {
+                Title = "Auto adjusting plot margins",
+                LegendPosition = LegendPosition.RightBottom
+            };
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "X", TickStyle = TickStyle.Outside });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Y", TickStyle = TickStyle.Outside });
             model.Series.Add(new LineSeries { Title = "Butterfly curve", ItemsSource = ButterflyCurve(0, Math.PI * 4, 1000) });
             return model;
         }
 
+        [Example("Auto adjusting left plot margin")]
+        public static PlotModel AutoAdjustingLeftMargin()
+        {
+            var model = new PlotModel
+            {
+                Title = "Auto adjusting left plot margin",
+                LegendPosition = LegendPosition.RightBottom,
+                PlotMargins = new OxyThickness(double.NaN, 40, 40, 40)
+            };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "X", TickStyle = TickStyle.Outside });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Y", TickStyle = TickStyle.Outside });
+            model.Series.Add(new LineSeries { Title = "Butterfly curve", ItemsSource = ButterflyCurve(0, Math.PI * 4, 1000) });
+            return model;
+        }
+
+
         [Example("Manual plot margins")]
         public static PlotModel ManualAdjustingMargins()
         {
-            var model = new PlotModel { Title = "Manual plot margins" };
-            model.LegendPosition = LegendPosition.RightBottom;
-            model.AutoAdjustPlotMargins = false;
-            model.PlotMargins = new OxyThickness(60, 4, 4, 40);
+            var model = new PlotModel
+            {
+                Title = "Manual plot margins",
+                LegendPosition = LegendPosition.RightBottom,
+                PlotMargins = new OxyThickness(60, 4, 4, 40)
+            };
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "X", TickStyle = TickStyle.Outside });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Y", TickStyle = TickStyle.Outside });
             model.Series.Add(new LineSeries { Title = "Butterfly curve", ItemsSource = ButterflyCurve(0, Math.PI * 4, 1000) });

@@ -74,7 +74,6 @@ namespace ExampleLibrary
                 Title = "Y: AbsoluteMinimum = 0",
                 Subtitle = "AutoAdjustPlotMargins = false",
                 PlotType = PlotType.Cartesian,
-                AutoAdjustPlotMargins = false,
                 PlotMargins = new OxyThickness(60, 4, 4, 40)
             };
             var c = OxyColors.DarkBlue;

@@ -252,9 +252,8 @@ namespace OxyPlot
 
             this.PlotType = PlotType.XY;
 
-            this.PlotMargins = new OxyThickness(4);
+            this.PlotMargins = new OxyThickness(double.NaN);
             this.Padding = new OxyThickness(8);
-            this.AutoAdjustPlotMargins = true;
 
             this.Background = OxyColors.Undefined;
             this.PlotAreaBackground = OxyColors.Undefined;
@@ -412,11 +411,6 @@ namespace OxyPlot
         /// </summary>
         /// <value>The annotations.</value>
         public PlotElementCollection<Annotation> Annotations { get; private set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether to auto adjust plot margins.
-        /// </summary>
-        public bool AutoAdjustPlotMargins { get; set; }
 
         /// <summary>
         /// Gets the axes.
@@ -654,7 +648,8 @@ namespace OxyPlot
         public double PlotAreaBorderThickness { get; set; }
 
         /// <summary>
-        /// Gets or sets the minimum margins around the plot (this should be large enough to fit the axes). The default value is (60, 4, 4, 40). Set AutoAdjustPlotMargins if you want the margins to be adjusted when the axes require more space.
+        /// Gets or sets the margins around the plot (this should be large enough to fit the axes). 
+        /// If any of the values is set to <c>double.NaN</c>, the margin is adjusted to the value required by the axes.
         /// </summary>
         public OxyThickness PlotMargins { get; set; }
 

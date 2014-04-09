@@ -81,7 +81,7 @@ namespace ExampleLibrary
         [Example("PlotMargins = (100,20,100,50)")]
         public static PlotModel PlotMargins()
         {
-            var model = new PlotModel { Title = "PlotMargins = (100,20,100,50)", AutoAdjustPlotMargins = false, PlotMargins = new OxyThickness(100, 20, 100, 50) };
+            var model = new PlotModel { Title = "PlotMargins = (100,20,100,50)", PlotMargins = new OxyThickness(100, 20, 100, 50) };
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
             return model;

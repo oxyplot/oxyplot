@@ -50,12 +50,6 @@ namespace OxyPlot.Wpf
             DependencyProperty.Register("Controller", typeof(IPlotController), typeof(Plot), new PropertyMetadata(null));
 
         /// <summary>
-        /// Identifies the <see cref="AutoAdjustPlotMargins"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty AutoAdjustPlotMarginsProperty =
-            DependencyProperty.Register("AutoAdjustPlotMargins", typeof(bool), typeof(Plot), new PropertyMetadata(true));
-
-        /// <summary>
         /// Identifies the <see cref="Culture"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CultureProperty = DependencyProperty.Register(
@@ -424,22 +418,6 @@ namespace OxyPlot.Wpf
         /// The series.
         /// </summary>
         private readonly ObservableCollection<Series> series;
-
-        /// <summary>
-        /// Gets or sets a value indicating whether AutoAdjustPlotMargins.
-        /// </summary>
-        public bool AutoAdjustPlotMargins
-        {
-            get
-            {
-                return (bool)this.GetValue(AutoAdjustPlotMarginsProperty);
-            }
-
-            set
-            {
-                this.SetValue(AutoAdjustPlotMarginsProperty, value);
-            }
-        }
 
         /// <summary>
         /// Gets the axes.
