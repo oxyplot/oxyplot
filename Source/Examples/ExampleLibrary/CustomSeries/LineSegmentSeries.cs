@@ -135,7 +135,7 @@ namespace ExampleLibrary
             {
                 var p1 = points[i];
                 var p2 = points[i + 1];
-                if (!this.IsValidPoint(p1, this.XAxis, this.YAxis) || !this.IsValidPoint(p2, this.XAxis, this.YAxis))
+                if (!this.IsValidPoint(p1) || !this.IsValidPoint(p2))
                 {
                     continue;
                 }

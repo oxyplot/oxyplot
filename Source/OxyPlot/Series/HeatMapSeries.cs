@@ -278,7 +278,7 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Updates the max/minimum values.
+        /// Updates the maximum and minimum values of the series.
         /// </summary>
         protected internal override void UpdateMaxMin()
         {
@@ -305,13 +305,14 @@ namespace OxyPlot.Series
 
             this.MinValue = this.Data.Min2D(true);
             this.MaxValue = this.Data.Max2D();
+        }
 
-            this.XAxis.Include(this.MinX);
-            this.XAxis.Include(this.MaxX);
-
-            this.YAxis.Include(this.MinY);
-            this.YAxis.Include(this.MaxY);
-
+        /// <summary>
+        /// Updates the axes to include the max and min of this series.
+        /// </summary>
+        protected internal override void UpdateAxisMaxMin()
+        {
+            base.UpdateAxisMaxMin();
             var colorAxis = this.ColorAxis as Axis;
             if (colorAxis != null)
             {

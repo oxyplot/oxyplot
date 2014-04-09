@@ -70,12 +70,16 @@ namespace ExampleLibrary
                 Maximum = x0 + 1.9,
                 IntervalType = DateTimeIntervalType.Days,
                 MajorStep = 1,
-                MinorStep = 1
+                MinorStep = 1,
+                StringFormat = "yyyy-MM-dd"
             };
-            a.StringFormat = "yyyy-MM-dd";
             m.Axes.Add(a);
-            var s = new HighLowSeries();
-            s.TrackerFormatString = "X: {1:yyyy-MM-dd}\nHigh: {2:0.00}\nLow: {3:0.00}\nOpen: {4:0.00}\nClose: {5:0.00}";
+            var s = new HighLowSeries
+            {
+                TrackerFormatString =
+                    "X: {1:yyyy-MM-dd}\nHigh: {2:0.00}\nLow: {3:0.00}\nOpen: {4:0.00}\nClose: {5:0.00}"
+            };
+
             s.Items.Add(new HighLowItem(x0, 14, 10, 13, 12.4));
             s.Items.Add(new HighLowItem(x0 + 1, 17, 8, 12.4, 16.3));
             m.Series.Add(s);

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IDataPointProvider.cs" company="OxyPlot">
+// <copyright file="IScatterPointProvider.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 OxyPlot contributors
@@ -24,21 +24,21 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines functionality to provide a <see cref="DataPoint" />.
+//   Defines functionality to provide a ScatterPoint.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace OxyPlot
+namespace OxyPlot.Series
 {
     /// <summary>
-    /// Defines functionality to provide a <see cref="DataPoint" />.
+    /// Defines functionality to provide a <see cref="ScatterPoint" />.
     /// </summary>
-    public interface IDataPointProvider
+    public interface IScatterPointProvider
     {
         /// <summary>
-        /// Gets the <see cref="DataPoint" /> that represents the element.
+        /// Gets the <see cref="ScatterPoint" /> that represents the element.
         /// </summary>
-        /// <returns>A <see cref="DataPoint" />.</returns>
-        DataPoint GetDataPoint();
+        /// <returns>A <see cref="ScatterPoint" />.</returns>
+        ScatterPoint GetScatterPoint();
     }
 }

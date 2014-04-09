@@ -803,7 +803,7 @@ namespace OxyPlot.Axes
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns><c>true</c> if the specified value is valid; otherwise, <c>false</c> .</returns>
-        public virtual bool IsValidValue(double value)
+        public bool IsValidValue(double value)
         {
 #pragma warning disable 1718
             // ReSharper disable EqualExpressionComparison

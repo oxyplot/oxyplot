@@ -105,9 +105,8 @@ namespace ExampleLibrary
         [Example("Invisible LineSeries")]
         public static PlotModel InvisibleLineSeries()
         {
-            var model = new PlotModel { Title = "Invisible LineSeries" };
+            var model = new PlotModel { Title = "Invisible LineSeries", Subtitle = "IsVisible = false for 'Series 2'" };
             var s1 = new LineSeries { Title = "Series 1" };
-
             s1.Points.Add(new DataPoint(0, 10));
             s1.Points.Add(new DataPoint(10, 40));
             var s2 = new LineSeries { Title = "Series 2", IsVisible = false };
@@ -135,7 +134,7 @@ namespace ExampleLibrary
         [Example("LineSeries with labels")]
         public static PlotModel LineSeriesWithLabels()
         {
-            var model = new PlotModel { Title = "LineSeries with labels", LegendSymbolLength = 24 };
+            var model = new PlotModel { Title = "LineSeries with labels", Subtitle = "Use the 'LabelFormatString' property", LegendSymbolLength = 24 };
             var s1 = new LineSeries
             {
                 Title = "Series 1",

@@ -31,9 +31,7 @@
 namespace OxyPlot.Series
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
-    using System.Reflection;
 
     /// <summary>
     /// Provides an abstract base class for series that contain a collection of <see cref="DataPoint" />s.
@@ -153,7 +151,7 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Updates the max/min from the data points.
+        /// Updates the maximum and minimum values of the series.
         /// </summary>
         protected internal override void UpdateMaxMin()
         {
@@ -178,147 +176,6 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Adds data points from the specified source to the specified destination.
-        /// </summary>
-        /// <param name="target">The destination list.</param>
-        /// <param name="itemsSource">The source.</param>
-        /// <param name="dataFieldX">The x-coordinate data field.</param>
-        /// <param name="dataFieldY">The y-coordinate data field.</param>
-        protected void AddDataPoints(List<DataPoint> target, IEnumerable itemsSource, string dataFieldX, string dataFieldY)
-        {
-            PropertyInfo pix = null;
-            PropertyInfo piy = null;
-            Type t = null;
-
-            foreach (var o in itemsSource)
-            {
-                if (pix == null || o.GetType() != t)
-                {
-                    t = o.GetType();
-                    pix = t.GetProperty(dataFieldX);
-                    piy = t.GetProperty(dataFieldY);
-                    if (pix == null)
-                    {
-                        throw new InvalidOperationException(
-                            string.Format("Could not find data field {0} on type {1}", this.DataFieldX, t));
-                    }
-
-                    if (piy == null)
-                    {
-                        throw new InvalidOperationException(
-                            string.Format("Could not find data field {0} on type {1}", this.DataFieldY, t));
-                    }
-                }
-
-                double x = this.ToDouble(pix.GetValue(o, null));
-                double y = this.ToDouble(piy.GetValue(o, null));
-
-                var pp = new DataPoint(x, y);
-                target.Add(pp);
-            }
-
-            ////var filler = new ListFiller<DataPoint>();
-            ////filler.Add(dataFieldX, (item, value) => item.X = this.ToDouble(value));
-            ////filler.Add(dataFieldY, (item, value) => item.Y = this.ToDouble(value));
-            ////filler.Fill(target, itemsSource);
-        }
-
-        /// <summary>
-        /// Updates the Max/Min limits from the specified point list.
-        /// </summary>
-        /// <param name="pts">The points.</param>
-        protected void InternalUpdateMaxMin(List<DataPoint> pts)
-        {
-            if (pts == null || pts.Count == 0)
-            {
-                return;
-            }
-
-            double minx = double.MaxValue;
-            double miny = double.MaxValue;
-            double maxx = double.MinValue;
-            double maxy = double.MinValue;
-
-            if (double.IsNaN(minx))
-            {
-                minx = double.MaxValue;
-            }
-
-            if (double.IsNaN(miny))
-            {
-                miny = double.MaxValue;
-            }
-
-            if (double.IsNaN(maxx))
-            {
-                maxx = double.MinValue;
-            }
-
-            if (double.IsNaN(maxy))
-            {
-                maxy = double.MinValue;
-            }
-
-            foreach (var pt in pts)
-            {
-                double x = pt.X;
-                double y = pt.Y;
-
-                // Check if the point is defined (the code below is faster than double.IsNaN)
-                // ReSharper disable EqualExpressionComparison
-                // ReSharper disable CompareOfFloatsByEqualityOperator
-#pragma warning disable 1718
-                if (x != x || y != y)
-                // ReSharper restore CompareOfFloatsByEqualityOperator
-                // ReSharper restore EqualExpressionComparison
-#pragma warning restore 1718
-                {
-                    continue;
-                }
-
-                if (x < minx)
-                {
-                    minx = x;
-                }
-
-                if (x > maxx)
-                {
-                    maxx = x;
-                }
-
-                if (y < miny)
-                {
-                    miny = y;
-                }
-
-                if (y > maxy)
-                {
-                    maxy = y;
-                }
-            }
-
-            if (minx < double.MaxValue)
-            {
-                this.MinX = minx;
-            }
-
-            if (miny < double.MaxValue)
-            {
-                this.MinY = miny;
-            }
-
-            if (maxx > double.MinValue)
-            {
-                this.MaxX = maxx;
-            }
-
-            if (maxy > double.MinValue)
-            {
-                this.MaxY = maxy;
-            }
-        }
-
-        /// <summary>
         /// Clears or creates the <see cref="itemsSourcePoints"/> list.
         /// </summary>
         private void ClearItemsSourcePoints()
@@ -340,7 +197,7 @@ namespace OxyPlot.Series
         /// </summary>
         private void UpdateItemsSourcePoints()
         {
-            // Use the mapping to generate the points
+            // Use the Mapping property to generate the points
             if (this.Mapping != null)
             {
                 this.ClearItemsSourcePoints();
@@ -397,7 +254,7 @@ namespace OxyPlot.Series
                 // http://msdn.microsoft.com/en-us/library/bb613546.aspx
 
                 // Using reflection on DataFieldX and DataFieldY
-                this.AddDataPoints(this.itemsSourcePoints, this.ItemsSource, this.DataFieldX, this.DataFieldY);
+                DataPointUtilities.FillList(this.itemsSourcePoints, this.ItemsSource, this.DataFieldX, this.DataFieldY);
             }
         }
     }

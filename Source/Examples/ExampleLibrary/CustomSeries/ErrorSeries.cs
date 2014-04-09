@@ -175,5 +175,14 @@ namespace ExampleLibrary
                           };
             rc.DrawLineSegments(pts, this.GetSelectableColor(this.Color), this.StrokeThickness, null, OxyPenLineJoin.Miter, true);
         }
+
+        /// <summary>
+        /// Updates the maximum and minimum values of the series.
+        /// </summary>
+        protected override void UpdateMaxMin()
+        {
+            base.UpdateMaxMin();
+            this.InternalUpdateMaxMin(this.points, p => p.X - p.XError, p => p.X + p.XError, p => p.Y - p.YError, p => p.Y + p.YError);
+        }
     }
 }

@@ -158,7 +158,7 @@ namespace OxyPlot.Series
             var markerPoints = this.MarkerType != MarkerType.None ? new List<ScreenPoint>(this.ActualPoints.Count) : null;
             foreach (var point in this.ActualPoints)
             {
-                if (!this.IsValidPoint(point, this.XAxis, this.YAxis))
+                if (!this.IsValidPoint(point))
                 {
                     continue;
                 }

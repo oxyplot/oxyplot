@@ -258,7 +258,7 @@ namespace OxyPlot.Series
             double previousY = double.NaN;
             foreach (var point in this.ActualPoints)
             {
-                if (!this.IsValidPoint(point, this.XAxis, this.YAxis))
+                if (!this.IsValidPoint(point))
                 {
                     renderPoints(linePoints, markerPoints);
                     linePoints.Clear();

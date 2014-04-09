@@ -42,7 +42,7 @@ namespace ExampleLibrary
         {
             int n = 20;
 
-            var model = new PlotModel { Title = "ErrorSeries" };
+            var model = new PlotModel { Title = "ErrorSeries", LegendPosition = LegendPosition.BottomRight };
 
             var s1 = new ErrorSeries { Title = "Measurements" };
             var random = new Random(31);

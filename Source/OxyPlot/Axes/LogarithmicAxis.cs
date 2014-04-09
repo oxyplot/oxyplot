@@ -206,16 +206,6 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Determines whether the specified value is valid.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns><c>true</c> if the specified value is valid; otherwise, <c>false</c>.</returns>
-        public override bool IsValidValue(double value)
-        {
-            return value > 0 && base.IsValidValue(value);
-        }
-
-        /// <summary>
         /// Determines whether the axis is used for X/Y values.
         /// </summary>
         /// <returns><c>true</c> if it is an XY axis; otherwise, <c>false</c> .</returns>
