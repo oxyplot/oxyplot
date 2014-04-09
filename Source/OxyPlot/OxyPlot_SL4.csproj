@@ -148,7 +148,6 @@
     <Compile Include="Pdf\PortableDocumentImageUtilities.cs" />
     <Compile Include="Pdf\StandardFonts.cs" />
     <Compile Include="Utilities\AxisUtilities.cs" />
-    <Compile Include="Utilities\DataPointUtilities.cs" />
     <Compile Include="Utilities\XmlWriterBase.cs" />
     <Compile Include="Utilities\BinaryReaderExtensions.cs" />
     <Compile Include="Utilities\ListFiller.cs" />

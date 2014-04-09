@@ -254,7 +254,7 @@ namespace OxyPlot.Series
                 // http://msdn.microsoft.com/en-us/library/bb613546.aspx
 
                 // Using reflection on DataFieldX and DataFieldY
-                DataPointUtilities.FillList(this.itemsSourcePoints, this.ItemsSource, this.DataFieldX, this.DataFieldY);
+                ReflectionHelper.FillList(this.itemsSourcePoints, this.ItemsSource, this.DataFieldX, this.DataFieldY);
             }
         }
     }

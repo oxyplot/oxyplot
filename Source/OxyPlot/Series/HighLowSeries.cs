@@ -401,11 +401,11 @@ namespace OxyPlot.Series
             }
 
             var filler = new ListFiller<HighLowItem>();
-            filler.Add(this.DataFieldX, (p, v) => p.X = DataPointUtilities.ToDouble(v));
-            filler.Add(this.DataFieldHigh, (p, v) => p.High = DataPointUtilities.ToDouble(v));
-            filler.Add(this.DataFieldLow, (p, v) => p.Low = DataPointUtilities.ToDouble(v));
-            filler.Add(this.DataFieldOpen, (p, v) => p.Open = DataPointUtilities.ToDouble(v));
-            filler.Add(this.DataFieldClose, (p, v) => p.Close = DataPointUtilities.ToDouble(v));
+            filler.Add(this.DataFieldX, (p, v) => p.X = Axis.ToDouble(v));
+            filler.Add(this.DataFieldHigh, (p, v) => p.High = Axis.ToDouble(v));
+            filler.Add(this.DataFieldLow, (p, v) => p.Low = Axis.ToDouble(v));
+            filler.Add(this.DataFieldOpen, (p, v) => p.Open = Axis.ToDouble(v));
+            filler.Add(this.DataFieldClose, (p, v) => p.Close = Axis.ToDouble(v));
             filler.FillT(this.items, this.ItemsSource);
         }
 

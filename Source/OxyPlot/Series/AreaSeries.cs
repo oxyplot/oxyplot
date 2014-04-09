@@ -323,7 +323,7 @@ namespace OxyPlot.Series
             this.itemsSourcePoints2.Clear();
 
             // Using reflection on DataFieldX2 and DataFieldY2
-            DataPointUtilities.FillList(this.itemsSourcePoints2, this.ItemsSource, this.DataFieldX2, this.DataFieldY2);
+            ReflectionHelper.FillList(this.itemsSourcePoints2, this.ItemsSource, this.DataFieldX2, this.DataFieldY2);
         }
 
         /// <summary>

@@ -664,6 +664,26 @@ namespace OxyPlot.Axes
         protected double ViewMinimum { get; set; }
 
         /// <summary>
+        /// Converts the value of the specified object to a double precision floating point number. DateTime objects are converted using DateTimeAxis.ToDouble and TimeSpan objects are converted using TimeSpanAxis.ToDouble
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>The floating point number value.</returns>
+        public static double ToDouble(object value)
+        {
+            if (value is DateTime)
+            {
+                return DateTimeAxis.ToDouble((DateTime)value);
+            }
+
+            if (value is TimeSpan)
+            {
+                return TimeSpanAxis.ToDouble((TimeSpan)value);
+            }
+
+            return Convert.ToDouble(value);
+        }
+
+        /// <summary>
         /// Transform the specified screen point to data coordinates.
         /// </summary>
         /// <param name="p">The point.</param>
