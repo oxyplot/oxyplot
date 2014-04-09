@@ -330,7 +330,7 @@ namespace OxyPlot.Series
             double minValue = double.MaxValue, maxValue = double.MinValue;
             if (this.IsStacked)
             {
-                var labels = this.GetCategoryAxis().Labels;
+                var labels = this.GetCategoryAxis().ActualLabels;
                 for (var i = 0; i < labels.Count; i++)
                 {
                     int j = 0;
@@ -396,7 +396,7 @@ namespace OxyPlot.Series
         {
             this.ValidItems = new List<BarItemBase>();
             this.ValidItemsIndexInversion = new Dictionary<int, int>();
-            var categories = this.GetCategoryAxis().Labels.Count;
+            var categories = this.GetCategoryAxis().ActualLabels.Count;
             var valueAxis = this.GetValueAxis();
 
             int i = 0;

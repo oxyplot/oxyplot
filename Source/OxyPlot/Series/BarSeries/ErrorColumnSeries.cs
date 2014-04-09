@@ -79,7 +79,7 @@ namespace OxyPlot.Series
             double minValue = double.MaxValue, maxValue = double.MinValue;
             if (this.IsStacked)
             {
-                var labels = this.GetCategoryAxis().Labels;
+                var labels = this.GetCategoryAxis().ActualLabels;
                 for (var i = 0; i < labels.Count; i++)
                 {
                     int j = 0;
