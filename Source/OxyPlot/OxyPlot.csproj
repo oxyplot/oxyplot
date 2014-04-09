@@ -45,6 +45,7 @@
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Series\IScatterPointProvider.cs" />
     <Compile Include="Input\Gestures\OxyMouseEnterGesture.cs" />
     <Compile Include="PlotController\DelegatePlotControllerCommand.cs" />
     <Compile Include="PlotController\EventArgs\OxyInputEventArgs.cs" />
@@ -123,6 +124,7 @@
     <Compile Include="Pdf\PortableDocumentImageUtilities.cs" />
     <Compile Include="Pdf\StandardFonts.cs" />
     <Compile Include="Utilities\AxisUtilities.cs" />
+    <Compile Include="Utilities\DataPointUtilities.cs" />
     <Compile Include="Utilities\XmlWriterBase.cs" />
     <Compile Include="Utilities\BinaryReaderExtensions.cs" />
     <Compile Include="Utilities\ListFiller.cs" />

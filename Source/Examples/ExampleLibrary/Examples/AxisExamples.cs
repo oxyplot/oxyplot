@@ -25,14 +25,13 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using OxyPlot;
-
 namespace ExampleLibrary
 {
     using System;
     using System.Collections.Generic;
     using System.Globalization;
 
+    using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
@@ -1011,6 +1010,14 @@ namespace ExampleLibrary
             plotModel.Axes.Add(new LinearAxis { AxislineStyle = LineStyle.Solid, AxisDistance = 20, Position = AxisPosition.Left });
             plotModel.Axes.Add(new LinearAxis { AxislineStyle = LineStyle.Solid, AxisDistance = 20, Position = AxisPosition.Right });
             plotModel.Axes.Add(new LinearAxis { AxislineStyle = LineStyle.Solid, AxisDistance = 20, Position = AxisPosition.Top });
+            return plotModel;
+        }
+
+        [Example("No axes defined")]
+        public static PlotModel NoAxesDefined()
+        {
+            var plotModel = new PlotModel { Title = "No axes defined", Subtitle = "Bottom and left axes are auto-generated." };
+            plotModel.Series.Add(new FunctionSeries(Math.Cos, 0, 10, 400));
             return plotModel;
         }
     }

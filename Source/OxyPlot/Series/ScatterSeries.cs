@@ -45,7 +45,17 @@ namespace OxyPlot.Series
         /// <summary>
         /// The list of data points.
         /// </summary>
-        private List<ScatterPoint> points = new List<ScatterPoint>();
+        private readonly List<ScatterPoint> points = new List<ScatterPoint>();
+
+        /// <summary>
+        /// The data points from the items source.
+        /// </summary>
+        private List<ScatterPoint> itemsSourcePoints;
+
+        /// <summary>
+        /// Specifies if the itemsSourcePoints list can be modified.
+        /// </summary>
+        private bool ownsItemsSourcePoints;
 
         /// <summary>
         /// The default fill color.
@@ -191,6 +201,18 @@ namespace OxyPlot.Series
         public double MinValue { get; private set; }
 
         /// <summary>
+        /// Gets the list of points that should be rendered.
+        /// </summary>
+        /// <value>A list of <see cref="DataPoint" />.</value>
+        protected List<ScatterPoint> ActualPoints
+        {
+            get
+            {
+                return this.ItemsSource != null ? this.itemsSourcePoints : this.points;
+            }
+        }
+
+        /// <summary>
         /// Gets the nearest point.
         /// </summary>
         /// <param name="point">The point.</param>
@@ -227,7 +249,7 @@ namespace OxyPlot.Series
                 }
             }
 
-            foreach (var p in this.Points)
+            foreach (var p in this.ActualPoints)
             {
                 if (p.X < this.XAxis.ActualMinimum || p.X > this.XAxis.ActualMaximum || p.Y < this.YAxis.ActualMinimum || p.Y > this.YAxis.ActualMaximum)
                 {
@@ -295,14 +317,15 @@ namespace OxyPlot.Series
         /// <param name="model">The owner plot model.</param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
-            if (this.Points.Count == 0)
+            var actualPoints = this.ActualPoints;
+            int n = actualPoints.Count;
+            if (n == 0)
             {
                 return;
             }
 
             var clippingRect = this.GetClippingRect();
 
-            int n = this.points.Count;
             var allPoints = new List<ScreenPoint>(n);
             var allMarkerSizes = new List<double>(n);
             var selectedPoints = new List<ScreenPoint>();
@@ -316,11 +339,11 @@ namespace OxyPlot.Series
             // Transform all points to screen coordinates
             for (int i = 0; i < n; i++)
             {
-                var dp = new DataPoint(this.points[i].X, this.points[i].Y);
+                var dp = new DataPoint(actualPoints[i].X, actualPoints[i].Y);
                 double size = double.NaN;
                 double value = double.NaN;
 
-                var scatterPoint = this.points[i];
+                var scatterPoint = actualPoints[i];
                 if (scatterPoint != null)
                 {
                     size = scatterPoint.Size;
@@ -477,57 +500,16 @@ namespace OxyPlot.Series
                 return;
             }
 
-            this.points.Clear();
-
-            // Use the mapping to generate the points
-            if (this.Mapping != null)
-            {
-                foreach (var item in this.ItemsSource)
-                {
-                    this.points.Add(this.Mapping(item));
-                }
-
-                return;
-            }
-
-            // Get DataPoints from the items in ItemsSource
-            // if they implement IScatterPointProvider
-            // If DataFields are set, this is not used
-            /*if (DataFieldX == null || DataFieldY == null)
-            {
-                foreach (var item in ItemsSource)
-                {
-                    var idpp = item as IScatterPointProvider;
-                    if (idpp == null)
-                    {
-                        continue;
-                    }
-
-                    points.Add(idpp.GetScatterPoint());
-                }
-
-                return;
-            }*/
-
-            this.Points.Clear();
-
-            // Using reflection to add points
-            var filler = new ListFiller<ScatterPoint>();
-            filler.Add(this.DataFieldX, (item, value) => item.X = Convert.ToDouble(value));
-            filler.Add(this.DataFieldY, (item, value) => item.Y = Convert.ToDouble(value));
-            filler.Add(this.DataFieldSize, (item, value) => item.Size = Convert.ToDouble(value));
-            filler.Add(this.DataFieldValue, (item, value) => item.Value = Convert.ToDouble(value));
-            filler.Add(this.DataFieldTag, (item, value) => item.Tag = value);
-            filler.Fill(this.Points, this.ItemsSource);
+            this.UpdateItemsSourcePoints();
         }
 
         /// <summary>
-        /// Updates the max/min from the data points.
+        /// Updates the maximum and minimum values of the series.
         /// </summary>
         protected internal override void UpdateMaxMin()
         {
             base.UpdateMaxMin();
-            this.InternalUpdateMaxMinValue(this.Points);
+            this.InternalUpdateMaxMinValue(this.ActualPoints);
         }
 
         /// <summary>
@@ -732,6 +714,89 @@ namespace OxyPlot.Series
                 colorAxis.Include(this.MinValue);
                 colorAxis.Include(this.MaxValue);
             }
+        }
+
+        /// <summary>
+        /// Clears or creates the <see cref="itemsSourcePoints"/> list.
+        /// </summary>
+        private void ClearItemsSourcePoints()
+        {
+            if (!this.ownsItemsSourcePoints || this.itemsSourcePoints == null)
+            {
+                this.itemsSourcePoints = new List<ScatterPoint>();
+            }
+            else
+            {
+                this.itemsSourcePoints.Clear();
+            }
+
+            this.ownsItemsSourcePoints = true;
+        }
+
+        /// <summary>
+        /// Updates the points from the <see cref="ItemsSeries.ItemsSource" />.
+        /// </summary>
+        private void UpdateItemsSourcePoints()
+        {
+            // Use the Mapping property to generate the points
+            if (this.Mapping != null)
+            {
+                this.ClearItemsSourcePoints();
+                foreach (var item in this.ItemsSource)
+                {
+                    this.itemsSourcePoints.Add(this.Mapping(item));
+                }
+
+                return;
+            }
+
+            var sourceAsListOfScatterPoints = this.ItemsSource as List<ScatterPoint>;
+            if (sourceAsListOfScatterPoints != null)
+            {
+                this.itemsSourcePoints = sourceAsListOfScatterPoints;
+                this.ownsItemsSourcePoints = false;
+                return;
+            }
+
+            this.ClearItemsSourcePoints();
+
+            var sourceAsEnumerableScatterPoints = this.ItemsSource as IEnumerable<ScatterPoint>;
+            if (sourceAsEnumerableScatterPoints != null)
+            {
+                this.itemsSourcePoints.AddRange(sourceAsEnumerableScatterPoints);
+                return;
+            }
+
+            // If DataFieldX or DataFieldY is not set, try to get the points from the ItemsSource
+            if (this.DataFieldX == null || this.DataFieldY == null)
+            {
+                foreach (var item in this.ItemsSource)
+                {
+                    var point = item as ScatterPoint;
+                    if (point != null)
+                    {
+                        this.itemsSourcePoints.Add(point);
+                        continue;
+                    }
+
+                    var idpp = item as IScatterPointProvider;
+                    if (idpp != null)
+                    {
+                        this.itemsSourcePoints.Add(idpp.GetScatterPoint());
+                    }
+                }
+
+                return;
+            }
+
+            // Use reflection to add scatter points
+            var filler = new ListFiller<ScatterPoint>();
+            filler.Add(this.DataFieldX, (item, value) => item.X = Convert.ToDouble(value));
+            filler.Add(this.DataFieldY, (item, value) => item.Y = Convert.ToDouble(value));
+            filler.Add(this.DataFieldSize, (item, value) => item.Size = Convert.ToDouble(value));
+            filler.Add(this.DataFieldValue, (item, value) => item.Value = Convert.ToDouble(value));
+            filler.Add(this.DataFieldTag, (item, value) => item.Tag = value);
+            filler.Fill(this.itemsSourcePoints, this.ItemsSource);
         }
     }
 }

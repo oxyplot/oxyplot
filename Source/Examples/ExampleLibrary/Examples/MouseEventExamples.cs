@@ -215,7 +215,7 @@ namespace ExampleLibrary
             return model;
         }
 
-        [Example("Add annotations")]
+        [Example("Add arrow annotations")]
         public static PlotModel AddAnnotations()
         {
             var model = new PlotModel { Title = "Add arrow annotations", Subtitle = "Press and drag the left mouse button" };
@@ -368,6 +368,7 @@ namespace ExampleLibrary
         public static PlotModel PolygonAnnotation()
         {
             var model = new PlotModel { Title = "PolygonAnnotation", Subtitle = "Click the polygon" };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -20, Maximum = 20 });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -20, Maximum = 20 });
             var pa = new PolygonAnnotation
                 {

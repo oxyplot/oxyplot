@@ -44,7 +44,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// High/low items
         /// </summary>
-        private IList<HighLowItem> items;
+        private readonly List<HighLowItem> items = new List<HighLowItem>();
 
         /// <summary>
         /// The default color.
@@ -56,7 +56,7 @@ namespace OxyPlot.Series
         /// </summary>
         public HighLowSeries()
         {
-            this.items = new List<HighLowItem>();
+            this.Color = OxyColors.Automatic;
             this.TickLength = 4;
             this.StrokeThickness = 1;
             this.TrackerFormatString = "X: {1:0.00}\nHigh: {2:0.00}\nLow: {3:0.00}\nOpen: {4:0.00}\nClose: {5:0.00}";
@@ -136,19 +136,14 @@ namespace OxyPlot.Series
         public string DataFieldX { get; set; }
 
         /// <summary>
-        /// Gets or sets the points.
+        /// Gets the items of the series.
         /// </summary>
-        /// <value>The points.</value>
-        public IList<HighLowItem> Items
+        /// <value>The items.</value>
+        public List<HighLowItem> Items
         {
             get
             {
                 return this.items;
-            }
-
-            set
-            {
-                this.items = value;
             }
         }
 
@@ -406,71 +401,21 @@ namespace OxyPlot.Series
             }
 
             var filler = new ListFiller<HighLowItem>();
-            filler.Add(this.DataFieldX, (p, v) => p.X = this.ToDouble(v));
-            filler.Add(this.DataFieldHigh, (p, v) => p.High = this.ToDouble(v));
-            filler.Add(this.DataFieldLow, (p, v) => p.Low = this.ToDouble(v));
-            filler.Add(this.DataFieldOpen, (p, v) => p.Open = this.ToDouble(v));
-            filler.Add(this.DataFieldClose, (p, v) => p.Close = this.ToDouble(v));
+            filler.Add(this.DataFieldX, (p, v) => p.X = DataPointUtilities.ToDouble(v));
+            filler.Add(this.DataFieldHigh, (p, v) => p.High = DataPointUtilities.ToDouble(v));
+            filler.Add(this.DataFieldLow, (p, v) => p.Low = DataPointUtilities.ToDouble(v));
+            filler.Add(this.DataFieldOpen, (p, v) => p.Open = DataPointUtilities.ToDouble(v));
+            filler.Add(this.DataFieldClose, (p, v) => p.Close = DataPointUtilities.ToDouble(v));
             filler.FillT(this.items, this.ItemsSource);
         }
 
         /// <summary>
-        /// Updates the max/min values.
+        /// Updates the maximum and minimum values of the series.
         /// </summary>
         protected internal override void UpdateMaxMin()
         {
             base.UpdateMaxMin();
-            this.InternalUpdateMaxMin(this.items);
-        }
-
-        /// <summary>
-        /// Updates the Max/Min limits from the specified point list.
-        /// </summary>
-        /// <param name="pts">The PTS.</param>
-        protected void InternalUpdateMaxMin(IList<HighLowItem> pts)
-        {
-            if (pts == null || pts.Count == 0)
-            {
-                return;
-            }
-
-            double minx = this.MinX;
-            double miny = this.MinY;
-            double maxx = this.MaxX;
-            double maxy = this.MaxY;
-
-            foreach (var pt in pts)
-            {
-                if (!this.IsValidItem(pt, this.XAxis, this.YAxis))
-                {
-                    continue;
-                }
-
-                if (pt.X < minx || double.IsNaN(minx))
-                {
-                    minx = pt.X;
-                }
-
-                if (pt.X > maxx || double.IsNaN(maxx))
-                {
-                    maxx = pt.X;
-                }
-
-                if (pt.Low < miny || double.IsNaN(miny))
-                {
-                    miny = pt.Low;
-                }
-
-                if (pt.High > maxy || double.IsNaN(maxy))
-                {
-                    maxy = pt.High;
-                }
-            }
-
-            this.MinX = minx;
-            this.MinY = miny;
-            this.MaxX = maxx;
-            this.MaxY = maxy;
+            this.InternalUpdateMaxMin(this.items, i => i.X, i => i.X, i => i.Low, i => i.High);
         }
     }
 }

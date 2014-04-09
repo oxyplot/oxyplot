@@ -32,6 +32,7 @@ namespace ExampleLibrary
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using OxyPlot;
     using OxyPlot.Annotations;
@@ -44,7 +45,37 @@ namespace ExampleLibrary
         [Example("Random points")]
         public static PlotModel RandomScatter()
         {
-            return RandomScatter(31000, 8);
+            return RandomScatter(32768, 0);
+        }
+
+        [Example("Random points (BinSize=2)")]
+        public static PlotModel RandomScatter2()
+        {
+            return RandomScatter(32768, 2);
+        }
+
+        [Example("Random points (BinSize=4)")]
+        public static PlotModel RandomScatter4()
+        {
+            return RandomScatter(32768, 4);
+        }
+
+        [Example("Random points (BinSize=6)")]
+        public static PlotModel RandomScatter6()
+        {
+            return RandomScatter(32768, 6);
+        }
+
+        [Example("Random points (BinSize=8)")]
+        public static PlotModel RandomScatter8()
+        {
+            return RandomScatter(32768, 8);
+        }
+
+        [Example("Random points (BinSize=10)")]
+        public static PlotModel RandomScatter10()
+        {
+            return RandomScatter(32768, 10);
         }
 
         public static PlotModel CreateRandomScatterSeriesWithColorAxisPlotModel(int n, OxyPalette palette, MarkerType markerType, AxisPosition colorAxisPosition, OxyColor highColor, OxyColor lowColor)
@@ -147,26 +178,6 @@ namespace ExampleLibrary
             b = 1 / d * (Sx * Sxy - Sxx * Sy);
         }
 
-        [Example("Scatter plot using a LineSeries with markers only")]
-        public static PlotModel MarkersOnly()
-        {
-            return MarkersOnly(31000);
-        }
-
-        public static PlotModel MarkersOnly(int n)
-        {
-            var model = new PlotModel { Title = string.Format("LineSeries with markers only (n={0})", n) };
-
-            var s1 = new LineSeries { Title = "Series 1", StrokeThickness = 0, MarkerType = MarkerType.Square, MarkerFill = OxyColors.Blue, MarkerStrokeThickness = 0 };
-            var random = new Random(7);
-            for (int i = 0; i < n; i++)
-            {
-                s1.Points.Add(new DataPoint(random.NextDouble(), random.NextDouble()));
-            }
-            model.Series.Add(s1);
-            return model;
-        }
-
         [Example("Marker types")]
         public static PlotModel MarkerTypes()
         {
@@ -182,37 +193,48 @@ namespace ExampleLibrary
             return model;
         }
 
-        [Example("ScatterSeries defined by Points collection")]
+        [Example("ScatterSeries.Points")]
         public static PlotModel DataPoints()
         {
-            var model = new PlotModel { Title = "Scatter plot of DataPoints" };
+            var model = new PlotModel { Title = "ScatterSeries (n=1000)", Subtitle = "The scatter points are added to the Points collection." };
             var series = new ScatterSeries();
-            series.Points.AddRange(CreateRandomPoints(100));
+            series.Points.AddRange(CreateRandomScatterPoints(1000));
             model.Series.Add(series);
             return model;
         }
 
-        [Example("ScatterSeries defined by ItemsSource")]
+        [Example("ScatterSeries.ItemsSource")]
         public static PlotModel FromItemsSource()
         {
-            var model = new PlotModel { Title = "Scatter plot from ItemsSource" };
+            var model = new PlotModel { Title = "ScatterSeries (n=1000)", Subtitle = "The scatter points are defined in the ItemsSource property." };
             model.Series.Add(new ScatterSeries
             {
-                ItemsSource = CreateRandomPoints(100),
-                DataFieldX = "X",
-                DataFieldY = "Y"
+                ItemsSource = CreateRandomScatterPoints(1000),
             });
             return model;
         }
 
-        [Example("ScatterSeries defined by Mapping")]
+        [Example("ScatterSeries.ItemsSource + Mapping")]
         public static PlotModel FromMapping()
         {
-            var model = new PlotModel { Title = "Scatter plot from Mapping" };
+            var model = new PlotModel { Title = "ScatterSeries (n=1000)", Subtitle = "The scatter points are defined by a mapping from the ItemsSource." };
             model.Series.Add(new ScatterSeries
             {
-                ItemsSource = CreateRandomPoints(100),
-                Mapping = item => new ScatterPoint(((ScatterPoint)item).X, ((ScatterPoint)item).Y)
+                ItemsSource = CreateRandomDataPoints(1000),
+                Mapping = item => new ScatterPoint(((DataPoint)item).X, ((DataPoint)item).Y)
+            });
+            return model;
+        }
+
+        [Example("ScatterSeries.ItemsSource + reflection")]
+        public static PlotModel FromItemsSourceReflection()
+        {
+            var model = new PlotModel { Title = "ScatterSeries (n=1000)", Subtitle = "The scatter points are defined by reflection from the ItemsSource." };
+            model.Series.Add(new ScatterSeries
+            {
+                ItemsSource = CreateRandomDataPoints(1000),
+                DataFieldX = "X",
+                DataFieldY = "Y"
             });
             return model;
         }
@@ -455,7 +477,7 @@ namespace ExampleLibrary
 
         private static PlotModel RandomScatter(int n, int binSize)
         {
-            var model = new PlotModel { Title = string.Format("ScatterSeries (n={0})", n), Subtitle = "BinSize = " + binSize };
+            var model = new PlotModel { Title = string.Format("ScatterSeries (n={0})", n), Subtitle = binSize > 0 ? "BinSize = " + binSize : "No 'binning'" };
 
             var s1 = new ScatterSeries()
             {
@@ -498,11 +520,16 @@ namespace ExampleLibrary
                 MarkerStroke = OxyColors.Black,
                 MarkerStrokeThickness = 1.0,
             };
-            series.Points.AddRange(CreateRandomPoints(n));
+            series.Points.AddRange(CreateRandomScatterPoints(n));
             return series;
         }
 
-        private static IList<ScatterPoint> CreateRandomPoints(int n)
+        private static List<DataPoint> CreateRandomDataPoints(int n)
+        {
+            return CreateRandomScatterPoints(n).Select(sp => new DataPoint(sp.X, sp.Y)).ToList();
+        }
+
+        private static List<ScatterPoint> CreateRandomScatterPoints(int n)
         {
             var r = new Random(12345);
 

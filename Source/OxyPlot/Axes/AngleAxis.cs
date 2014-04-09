@@ -105,20 +105,6 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Determines whether the specified value is valid.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns><c>true</c> if the specified value is valid; otherwise, <c>false</c> .</returns>
-        public override bool IsValidValue(double value)
-        {
-            return !double.IsNaN(value) &&
-                !double.IsInfinity(value) &&
-                value < this.FilterMaxValue &&
-                value > this.FilterMinValue &&
-                (this.FilterFunction == null || this.FilterFunction(value));
-        }
-
-        /// <summary>
         /// Inverse transforms the specified screen point.
         /// </summary>
         /// <param name="x">The x coordinate.</param>

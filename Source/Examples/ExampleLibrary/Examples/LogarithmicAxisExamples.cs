@@ -25,11 +25,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using OxyPlot;
-
 namespace ExampleLibrary
 {
+    using System;
+
+    using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
@@ -148,6 +148,16 @@ namespace ExampleLibrary
             logAxis.AxisChanged += (s, e) => { model.Subtitle = "Changed " + (n++) + " times. ActualMaximum=" + logAxis.ActualMaximum; };
             model.Axes.Add(logAxis);
             model.Series.Add(new FunctionSeries(Math.Exp, 0, Math.Log(900), 100));
+            return model;
+        }
+
+        [Example("Negative values")]
+        public static PlotModel NegativeValues()
+        {
+            var model = new PlotModel { Title = "LogarithmicAxis", Subtitle = "LineSeries with negative values" };
+            model.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Left });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            model.Series.Add(new FunctionSeries(Math.Sin, 0, 40, 1000));
             return model;
         }
     }

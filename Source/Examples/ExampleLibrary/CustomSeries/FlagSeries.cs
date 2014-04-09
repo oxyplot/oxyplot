@@ -60,8 +60,8 @@ namespace ExampleLibrary
             this.Values = new List<double>();
             this.Color = OxyColors.Black;
             this.FontSize = 10;
-            this.Symbol = "ä";
-            this.FontFamily = "Wingdings 2";
+            this.Symbol = ((char)0xEA).ToString();
+            this.Font = "Wingdings 2";
             this.TrackerFormatString = "{0}: {1}";
         }
 
@@ -70,12 +70,6 @@ namespace ExampleLibrary
         /// </summary>
         /// <value>The color.</value>
         public OxyColor Color { get; set; }
-
-        /// <summary>
-        /// Gets or sets the font family of the symbols.
-        /// </summary>
-        /// <value>The font family.</value>
-        public string FontFamily { get; set; }
 
         /// <summary>
         /// Gets the maximum value.
@@ -176,7 +170,7 @@ namespace ExampleLibrary
                     this.Color,
                     this.ActualFont,
                     this.ActualFontSize,
-                    FontWeights.Normal,
+                    this.ActualFontWeight,
                     0,
                     HorizontalAlignment.Center,
                     VerticalAlignment.Bottom);
@@ -194,9 +188,9 @@ namespace ExampleLibrary
                 legendBox.Center,
                 this.Symbol,
                 this.Color,
-                this.FontFamily,
-                this.FontSize,
-                FontWeights.Normal,
+                this.ActualFont,
+                this.ActualFontSize,
+                this.ActualFontWeight,
                 0,
                 HorizontalAlignment.Center,
                 VerticalAlignment.Middle);
@@ -255,7 +249,7 @@ namespace ExampleLibrary
         }
 
         /// <summary>
-        /// Updates the maximum and minimum of the series.
+        /// Updates the maximum and minimum values of the series.
         /// </summary>
         protected override void UpdateMaxMin()
         {

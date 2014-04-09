@@ -431,7 +431,7 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Updates the axes to include the max and min of this series.
+        /// Updates the maximum and minimum values of the series.
         /// </summary>
         protected internal override void UpdateMaxMin()
         {
@@ -546,7 +546,7 @@ namespace OxyPlot.Series
             DataPoint currentPoint;
 
             // Skip all undefined points
-            while (!(currentPoint = pointEnumerator.Current).IsDefined())
+            while (!this.IsValidPoint(currentPoint = pointEnumerator.Current))
             {
                 if (!pointEnumerator.MoveNext())
                 {
@@ -568,7 +568,7 @@ namespace OxyPlot.Series
             contiguous.Add(screenPoint);
 
             // Add all points up until the next invalid one
-            while (pointEnumerator.MoveNext() && (currentPoint = pointEnumerator.Current).IsDefined())
+            while (pointEnumerator.MoveNext() && this.IsValidPoint(currentPoint = pointEnumerator.Current))
             {
                 screenPoint = this.Transform(currentPoint);
                 contiguous.Add(screenPoint);
@@ -591,7 +591,7 @@ namespace OxyPlot.Series
             {
                 index++;
 
-                if (!this.IsValidPoint(point, this.XAxis, this.YAxis))
+                if (!this.IsValidPoint(point))
                 {
                     continue;
                 }

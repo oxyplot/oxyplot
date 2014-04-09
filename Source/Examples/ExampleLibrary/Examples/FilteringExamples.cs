@@ -38,14 +38,14 @@ namespace ExampleLibrary
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public static class FilteringExamples
     {
-        [Example("Filtering invalid points")]
+        [Example("Filtering NaN points")]
         public static PlotModel FilteringInvalidPoints()
         {
-            var plot = new PlotModel { Title = "Filtering invalid points" };
-            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "X-axis" });
-            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Y-axis" });
+            var plot = new PlotModel { Title = "Filtering NaN points" };
+            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
 
-            var ls1 = new LineSeries { Title = "NaN" };
+            var ls1 = new LineSeries();
             ls1.Points.Add(new DataPoint(double.NaN, double.NaN));
             ls1.Points.Add(new DataPoint(1, 0));
             ls1.Points.Add(new DataPoint(2, 10));
@@ -54,41 +54,38 @@ namespace ExampleLibrary
             ls1.Points.Add(new DataPoint(4, 0));
             ls1.Points.Add(new DataPoint(4.5, double.NaN));
             ls1.Points.Add(new DataPoint(5, 0));
-            ls1.Points.Add(new DataPoint(6, 10));
+            ls1.Points.Add(new DataPoint(7, 7));
+            ls1.Points.Add(new DataPoint(double.NaN, double.NaN));
             ls1.Points.Add(new DataPoint(double.NaN, double.NaN));
             ls1.Points.Add(new DataPoint(7, 0));
             ls1.Points.Add(new DataPoint(double.NaN, double.NaN));
             plot.Series.Add(ls1);
 
-            var ls2 = new LineSeries { Title = "PositiveInfinity" };
-            ls2.Points.Add(new DataPoint(double.PositiveInfinity, double.PositiveInfinity));
-            ls2.Points.Add(new DataPoint(1, 1));
-            ls2.Points.Add(new DataPoint(2, 11));
-            ls2.Points.Add(new DataPoint(double.PositiveInfinity, 20));
-            ls2.Points.Add(new DataPoint(3, 11));
-            ls2.Points.Add(new DataPoint(4, 1));
-            ls2.Points.Add(new DataPoint(4.5, double.PositiveInfinity));
-            ls2.Points.Add(new DataPoint(5, 1));
-            ls2.Points.Add(new DataPoint(6, 11));
-            ls2.Points.Add(new DataPoint(double.PositiveInfinity, double.PositiveInfinity));
-            ls2.Points.Add(new DataPoint(7, 1));
-            ls2.Points.Add(new DataPoint(double.PositiveInfinity, double.PositiveInfinity));
-            plot.Series.Add(ls2);
+            return plot;
+        }
 
-            var ls3 = new LineSeries { Title = "NegativeInfinity" };
-            ls3.Points.Add(new DataPoint(double.NegativeInfinity, double.NegativeInfinity));
-            ls3.Points.Add(new DataPoint(1, 2));
-            ls3.Points.Add(new DataPoint(2, 12));
-            ls3.Points.Add(new DataPoint(double.NegativeInfinity, 20));
-            ls3.Points.Add(new DataPoint(3, 12));
-            ls3.Points.Add(new DataPoint(4, 2));
-            ls3.Points.Add(new DataPoint(4.5, double.NegativeInfinity));
-            ls3.Points.Add(new DataPoint(5, 2));
-            ls3.Points.Add(new DataPoint(6, 12));
-            ls3.Points.Add(new DataPoint(double.NegativeInfinity, double.NegativeInfinity));
-            ls3.Points.Add(new DataPoint(7, 2));
-            ls3.Points.Add(new DataPoint(double.NegativeInfinity, double.NegativeInfinity));
-            plot.Series.Add(ls3);
+        [Example("Filtering undefined points")]
+        public static PlotModel FilteringUndefinedPoints()
+        {
+            var plot = new PlotModel { Title = "Filtering undefined points" };
+            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+
+            var ls1 = new LineSeries();
+            ls1.Points.Add(DataPoint.Undefined);
+            ls1.Points.Add(new DataPoint(1, 0));
+            ls1.Points.Add(new DataPoint(2, 10));
+            ls1.Points.Add(DataPoint.Undefined);
+            ls1.Points.Add(new DataPoint(3, 10));
+            ls1.Points.Add(new DataPoint(4, 0));
+            ls1.Points.Add(DataPoint.Undefined);
+            ls1.Points.Add(new DataPoint(5, 0));
+            ls1.Points.Add(new DataPoint(7, 7));
+            ls1.Points.Add(DataPoint.Undefined);
+            ls1.Points.Add(DataPoint.Undefined);
+            ls1.Points.Add(new DataPoint(7, 0));
+            ls1.Points.Add(DataPoint.Undefined);
+            plot.Series.Add(ls1);
 
             return plot;
         }
@@ -97,8 +94,8 @@ namespace ExampleLibrary
         public static PlotModel FilteringInvalidPointsLog()
         {
             var plot = new PlotModel { Title = "Filtering invalid points on logarithmic axes" };
-            plot.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Bottom, Title = "X-axis" });
-            plot.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Left, Title = "Y-axis" });
+            plot.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Bottom });
+            plot.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Left });
 
             var ls = new LineSeries();
             ls.Points.Add(new DataPoint(double.NaN, double.NaN));
@@ -121,8 +118,8 @@ namespace ExampleLibrary
         public static PlotModel FilteringPointsOutsideRange()
         {
             var plot = new PlotModel { Title = "Filtering points outside (-1,1)" };
-            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "X-axis", FilterMinValue = -1, FilterMaxValue = 1 });
-            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Y-axis", FilterMinValue = -1, FilterMaxValue = 1 });
+            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, FilterMinValue = -1, FilterMaxValue = 1 });
+            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Left, FilterMinValue = -1, FilterMaxValue = 1 });
 
             var ls = new LineSeries();
             for (double i = 0; i < 200; i += 0.01)
