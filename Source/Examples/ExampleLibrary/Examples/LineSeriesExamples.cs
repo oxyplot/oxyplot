@@ -436,9 +436,9 @@ namespace ExampleLibrary
 
             var categoryAxis = new CategoryAxis
             {
-                AxislineStyle = LineStyle.Solid,
-                Labels = new[] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" }
+                AxislineStyle = LineStyle.Solid
             };
+            categoryAxis.Labels.AddRange(new[] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" });
             model.Axes.Add(categoryAxis);
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Fahrenheit", AxislineStyle = LineStyle.Solid });
 

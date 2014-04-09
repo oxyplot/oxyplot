@@ -47,6 +47,11 @@ namespace OxyPlot.Axes
     public class CategoryAxis : LinearAxis
     {
         /// <summary>
+        /// The labels.
+        /// </summary>
+        private readonly List<string> labels = new List<string>();
+
+        /// <summary>
         /// The current offset of the bars (not used for stacked bar series).
         /// </summary>
         /// <remarks>These offsets are modified during rendering.</remarks>
@@ -91,7 +96,6 @@ namespace OxyPlot.Axes
         /// </summary>
         public CategoryAxis()
         {
-            this.Labels = new List<string>();
             this.TickStyle = TickStyle.Outside;
             this.Position = AxisPosition.Bottom;
             this.MinimumPadding = 0;
@@ -155,9 +159,15 @@ namespace OxyPlot.Axes
         public string LabelField { get; set; }
 
         /// <summary>
-        /// Gets or sets the labels collection.
+        /// Gets the list of category labels.
         /// </summary>
-        public IList<string> Labels { get; set; } // TODO: Make read only List<string>     
+        public List<string> Labels
+        {
+            get
+            {
+                return this.labels;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the original offset of the bars (not used for stacked bar series).

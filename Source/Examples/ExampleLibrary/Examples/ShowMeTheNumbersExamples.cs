@@ -31,8 +31,7 @@
 namespace ExampleLibrary
 {
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-
+    
     using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
@@ -50,15 +49,14 @@ namespace ExampleLibrary
         [Example("Q1 2003 Calls by Region")]
         public static PlotModel Graph1()
         {
-            var pm = new PlotModel { Title = "Q1 2003 Calls by Region" };
-            pm.PlotAreaBorderThickness = 0;
-            pm.Axes.Add(
-                new CategoryAxis
+            var pm = new PlotModel { Title = "Q1 2003 Calls by Region", PlotAreaBorderThickness = 0 };
+            var categoryAxis = new CategoryAxis
                     {
                         AxislineStyle = LineStyle.Solid,
-                        Labels = new List<string> { "North", "East", "South", "West" },
                         TickStyle = TickStyle.None
-                    });
+                    };
+            categoryAxis.Labels.AddRange(new[] { "North", "East", "South", "West" });
+            pm.Axes.Add(categoryAxis);
             pm.Axes.Add(
                 new LinearAxis
                 {
@@ -90,15 +88,15 @@ namespace ExampleLibrary
             var pm = new PlotModel { Title = "2003 Sales" };
             pm.PlotAreaBorderThickness = 0;
             pm.IsLegendVisible = false;
-            var months = new[] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
             var sales1 = new[] { 1000, 1010, 1020, 1010, 1020, 1030, 1000, 500, 1000, 900, 900, 1000 };
             var sales2 = new[] { 2250, 2500, 2750, 2500, 2750, 3000, 2500, 2750, 3100, 2800, 3100, 3500 };
-            pm.Axes.Add(new CategoryAxis
+            var categoryAxis = new CategoryAxis
             {
                 AxislineStyle = LineStyle.Solid,
-                Labels = new List<string>(months),
                 TickStyle = TickStyle.None
-            });
+            };
+            categoryAxis.Labels.AddRange(new[] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" });
+            pm.Axes.Add(categoryAxis);
             pm.Axes.Add(
                 new LinearAxis
                 {
@@ -171,15 +169,15 @@ namespace ExampleLibrary
         [Example("Regional % of Total Expenses")]
         public static PlotModel Graph4()
         {
-            var pm = new PlotModel { Title = "Regional % of Total Expenses" };
-            pm.PlotAreaBorderThickness = 0;
-            pm.Axes.Add(
-                new CategoryAxis
-                    {
-                        Labels = new List<string> { "West\n34%", "East\n30%", "North\n20%", "South\n16%" },
-                        TickStyle = TickStyle.None,
-                        GapWidth = 0
-                    });
+            var pm = new PlotModel { Title = "Regional % of Total Expenses", PlotAreaBorderThickness = 0 };
+            var categoryAxis = new CategoryAxis
+            {
+                TickStyle = TickStyle.None,
+                GapWidth = 0
+            };
+            categoryAxis.Labels.AddRange(new[] { "West\n34%", "East\n30%", "North\n20%", "South\n16%" });
+            pm.Axes.Add(categoryAxis);
+
             pm.Axes.Add(
                 new LinearAxis
                 {

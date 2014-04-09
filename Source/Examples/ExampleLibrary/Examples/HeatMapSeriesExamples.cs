@@ -274,11 +274,13 @@ namespace ExampleLibrary
             var lca = new LinearColorAxis { Position = AxisPosition.Right, Palette = palette, HighColor = OxyColors.White, LowColor = OxyColors.White };
             model.Axes.Add(lca);
 
-            var axis1 = new CategoryAxis { Position = AxisPosition.Top, Title = "Actual class", Labels = cat1 };
+            var axis1 = new CategoryAxis { Position = AxisPosition.Top, Title = "Actual class" };
+            axis1.Labels.AddRange(cat1);
             model.Axes.Add(axis1);
 
             // We invert this axis, so that they look "symmetrical"
-            var axis2 = new CategoryAxis { Position = AxisPosition.Left, Title = "Predicted class", Labels = cat1 };
+            var axis2 = new CategoryAxis { Position = AxisPosition.Left, Title = "Predicted class" };
+            axis2.Labels.AddRange(cat1);
             axis2.Angle = -90;
             axis2.StartPosition = 1;
             axis2.EndPosition = 0;
