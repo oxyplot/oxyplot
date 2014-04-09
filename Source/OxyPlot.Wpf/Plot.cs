@@ -935,7 +935,6 @@ namespace OxyPlot.Wpf
             m.Subtitle = this.Subtitle;
             m.PlotType = this.PlotType;
             m.PlotMargins = this.PlotMargins.ToOxyThickness();
-            m.AutoAdjustPlotMargins = this.AutoAdjustPlotMargins;
 
             m.Culture = this.Culture;
 
