@@ -75,7 +75,6 @@ namespace ExampleBrowser
             // 
             this.plot1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.plot1.Location = new System.Drawing.Point(0, 0);
-            plotModel1.AutoAdjustPlotMargins = true;
             plotModel1.AxisTierDistance = 4D;
             plotModel1.Background = OxyColors.Transparent;
             plotModel1.Culture = null;

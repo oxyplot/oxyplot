@@ -289,7 +289,6 @@ namespace IconGenerator
         {
             var pm = new PlotModel
                          {
-                             AutoAdjustPlotMargins = false,
                              Padding = new OxyThickness(size * 0.02),
                              PlotMargins = new OxyThickness(size * 0.05, size * 0.05, size * 0.07, size * 0.07)
                          };
