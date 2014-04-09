@@ -234,19 +234,20 @@ namespace ExampleLibrary
 
             var model = new PlotModel { Title = "Design structure matrix (DSM)" };
             model.Axes.Add(new LinearColorAxis { Position = AxisPosition.None, Palette = new OxyPalette(OxyColors.White, OxyColors.LightGreen), LowColor = OxyColors.Black, Minimum = 0, IsAxisVisible = false });
-            model.Axes.Add(new CategoryAxis
+            var topAxis = new CategoryAxis
             {
-                Position = AxisPosition.Top,
-                Labels = new List<string>(new[] { "A", "B", "C", "D", "E", "F", "G" })
-            });
-            model.Axes.Add(
-                new CategoryAxis
-                {
-                    Position = AxisPosition.Left,
-                    Labels = new List<string>(new[] { "Element A", "Element B", "Element C", "Element D", "Element E", "Element F", "Element G" }),
-                    StartPosition = 1,
-                    EndPosition = 0
-                });
+                Position = AxisPosition.Top
+            };
+            topAxis.Labels.AddRange(new[] { "A", "B", "C", "D", "E", "F", "G" });
+            model.Axes.Add(topAxis);
+            var leftAxis = new CategoryAxis
+            {
+                Position = AxisPosition.Left,
+                StartPosition = 1,
+                EndPosition = 0
+            };
+            leftAxis.Labels.AddRange(new[] { "Element A", "Element B", "Element C", "Element D", "Element E", "Element F", "Element G" });
+            model.Axes.Add(leftAxis);
 
             var hms = new DesignStructureMatrixSeries
             {

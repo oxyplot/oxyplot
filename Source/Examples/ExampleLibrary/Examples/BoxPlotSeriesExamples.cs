@@ -165,7 +165,12 @@ namespace ExampleLibrary
             s1.Items.Add(new BoxPlotItem(4, 730, 805, 807, 870, 950, new double[] { }));
             model.Series.Add(s1);
             model.Annotations.Add(new LineAnnotation { Type = LineAnnotationType.Horizontal, LineStyle = LineStyle.Solid, Y = 792.458, Text = "true speed" });
-            model.Axes.Add(new CategoryAxis { Title = "Experiment No.", Labels = new List<string>(new[] { "1", "2", "3", "4", "5" }) });
+            var categoryAxis = new CategoryAxis
+            {
+                Title = "Experiment No.",
+            };
+            categoryAxis.Labels.AddRange(new[] { "1", "2", "3", "4", "5" });
+            model.Axes.Add(categoryAxis);
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Speed of light (km/s minus 299,000)", MajorStep = 100, MinorStep = 100 });
             return model;
         }

@@ -405,7 +405,15 @@ namespace ExampleLibrary
             series.Items.Add(new TItem { Value = 1, Color = OxyColors.Red });
             series.Items.Add(new TItem { Value = 2, Color = OxyColors.Green });
             series.Items.Add(new TItem { Value = 1, Color = OxyColors.Blue });
-            model.Axes.Add(new CategoryAxis { Title = "Category", Labels = new[] { "A", "B", "C" }, Position = CategoryAxisPosition() });
+
+            var categoryAxis = new CategoryAxis
+            {
+                Title = "Category",
+                Position = CategoryAxisPosition()
+            };
+            categoryAxis.Labels.AddRange(new[] { "A", "B", "C" });
+            model.Axes.Add(categoryAxis);
+
             model.Series.Add(series);
             return model;
         }
@@ -429,7 +437,13 @@ namespace ExampleLibrary
             series3.Items.Add(new TItem { Value = 1 });
             model.Series.Add(series3);
 
-            model.Axes.Add(new CategoryAxis { Title = "Category", Labels = new[] { "A", "B" }, Position = CategoryAxisPosition() });
+            var categoryAxis = new CategoryAxis
+            {
+                Title = "Category",
+                Position = CategoryAxisPosition()
+            };
+            categoryAxis.Labels.AddRange(new[] { "A", "B" });
+            model.Axes.Add(categoryAxis);
             return model;
         }
 
@@ -449,7 +463,14 @@ namespace ExampleLibrary
             series2.Items.Add(new TItem { Value = 1 });
             model.Series.Add(series2);
 
-            model.Axes.Add(new CategoryAxis { Title = "Category", Labels = new[] { "A", "B" }, Position = CategoryAxisPosition() });
+            var categoryAxis = new CategoryAxis
+            {
+                Title = "Category",
+                Position = CategoryAxisPosition()
+            };
+            categoryAxis.Labels.AddRange(new[] { "A", "B" });
+            model.Axes.Add(categoryAxis);
+
             return model;
         }
 
@@ -481,7 +502,14 @@ namespace ExampleLibrary
             series2.Items.Add(new TItem { Value = 1 });
             model.Series.Add(series2);
 
-            model.Axes.Add(new CategoryAxis { Title = "Category", Labels = new[] { "A", "B" }, Position = CategoryAxisPosition() });
+            var categoryAxis = new CategoryAxis
+            {
+                Title = "Category",
+                Position = CategoryAxisPosition()
+            };
+            categoryAxis.Labels.AddRange(new[] { "A", "B" });
+            model.Axes.Add(categoryAxis);
+
             return model;
         }
 
@@ -499,7 +527,14 @@ namespace ExampleLibrary
             series2.Items.Add(new TItem { Value = 1 });
             model.Series.Add(series2);
 
-            model.Axes.Add(new CategoryAxis { Title = "Category", Labels = new[] { "A", "B" }, Position = CategoryAxisPosition() });
+            var categoryAxis = new CategoryAxis
+            {
+                Title = "Category",
+                Position = CategoryAxisPosition()
+            };
+            categoryAxis.Labels.AddRange(new[] { "A", "B" });
+            model.Axes.Add(categoryAxis);
+
             return model;
         }
 
@@ -516,7 +551,14 @@ namespace ExampleLibrary
             series2.Items.Add(new TItem { Value = 1.2 });
             model.Series.Add(series2);
 
-            model.Axes.Add(new CategoryAxis { Title = "Category", Labels = new[] { "A", "B" }, Position = CategoryAxisPosition() });
+            var categoryAxis = new CategoryAxis
+            {
+                Title = "Category",
+                Position = CategoryAxisPosition()
+            };
+            categoryAxis.Labels.AddRange(new[] { "A", "B" });
+            model.Axes.Add(categoryAxis);
+
             return model;
         }
 
@@ -529,7 +571,14 @@ namespace ExampleLibrary
             series.Items.Add(new TItem { Value = 2, CategoryIndex = 0 });
             model.Series.Add(series);
 
-            model.Axes.Add(new CategoryAxis { Title = "Category", Labels = new[] { "A", "B" }, Position = CategoryAxisPosition() });
+            var categoryAxis = new CategoryAxis
+            {
+                Title = "Category",
+                Position = CategoryAxisPosition()
+            };
+            categoryAxis.Labels.AddRange(new[] { "A", "B" });
+            model.Axes.Add(categoryAxis);
+
             return model;
         }
 
@@ -542,7 +591,14 @@ namespace ExampleLibrary
             series.Items.Add(new TItem { Value = 2, CategoryIndex = 0 });
             model.Series.Add(series);
 
-            model.Axes.Add(new CategoryAxis { Title = "Category", Labels = new[] { "A", "B" }, Position = CategoryAxisPosition() });
+            var categoryAxis = new CategoryAxis
+            {
+                Title = "Category",
+                Position = CategoryAxisPosition()
+            };
+            categoryAxis.Labels.AddRange(new[] { "A", "B" });
+            model.Axes.Add(categoryAxis);
+
             return model;
         }
 
@@ -559,7 +615,14 @@ namespace ExampleLibrary
             series2.Items.Add(new TItem { Value = 7 });
             model.Series.Add(series2);
 
-            model.Axes.Add(new CategoryAxis { Title = "Category", Labels = new[] { "A", "B" }, Position = CategoryAxisPosition() });
+            var categoryAxis = new CategoryAxis
+            {
+                Title = "Category",
+                Position = CategoryAxisPosition()
+            };
+            categoryAxis.Labels.AddRange(new[] { "A", "B" });
+            model.Axes.Add(categoryAxis);
+
             return model;
         }
 
@@ -576,7 +639,13 @@ namespace ExampleLibrary
             series2.Items.Add(new TItem { Value = 7 });
             model.Series.Add(series2);
 
-            model.Axes.Add(new CategoryAxis { Title = "Category", Labels = new[] { "A", "B" }, Position = CategoryAxisPosition() });
+            var categoryAxis = new CategoryAxis
+            {
+                Title = "Category",
+                Position = CategoryAxisPosition()
+            };
+            categoryAxis.Labels.AddRange(new[] { "A", "B" });
+            model.Axes.Add(categoryAxis);
             return model;
         }
 
