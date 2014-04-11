@@ -299,7 +299,7 @@ namespace OxyPlot.Annotations
 
             const double MinimumSegmentLength = 4;
 
-            IList<ScreenPoint> clippedPoints = null;
+            var clippedPoints = new List<ScreenPoint>();
             var dashArray = this.LineStyle.GetDashArray();
 
             rc.DrawClippedLine(
@@ -312,7 +312,7 @@ namespace OxyPlot.Annotations
                this.LineJoin,
                this.aliased,
                null,
-               pts => clippedPoints = pts);
+               clippedPoints.AddRange);
 
             ScreenPoint position;
             double angle;
