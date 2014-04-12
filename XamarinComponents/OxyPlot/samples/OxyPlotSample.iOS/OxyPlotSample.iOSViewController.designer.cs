@@ -5,10 +5,10 @@
 //
 using MonoTouch.Foundation;
 
-namespace SimpleDemo
+namespace OxyPlotSample.iOS
 {
-	[Register ("SimpleDemoViewController")]
-	partial class SimpleDemoViewController
+	[Register ("OxyPlotSample_iOSViewController")]
+	partial class OxyPlotSample_iOSViewController
 	{
 		void ReleaseDesignerOutlets ()
 		{
