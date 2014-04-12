@@ -1,7 +1,11 @@
-﻿namespace SimpleDemo
-{
-	using MonoTouch.UIKit;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using MonoTouch.Foundation;
+using MonoTouch.UIKit;
 
+namespace OxyPlotSample.iOS
+{
 	public class Application
 	{
 		// This is the main entry point of the application.
