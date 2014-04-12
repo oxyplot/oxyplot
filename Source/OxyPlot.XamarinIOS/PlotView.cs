@@ -45,6 +45,7 @@ namespace OxyPlot.XamarinIOS
             this.UserInteractionEnabled = true;
             this.MultipleTouchEnabled = true;
             this.KeepAspectRatioWhenPinching = true;
+			this.BackgroundColor = UIColor.White;
         }
 
 		/// <summary>
@@ -118,6 +119,12 @@ namespace OxyPlot.XamarinIOS
                 this.model.Update (updateData);
             }
 
+			var backgroundColor = this.model.Background;
+			if (!backgroundColor.IsVisible()) {
+				backgroundColor = OxyColors.White;
+			}
+
+			this.BackgroundColor = backgroundColor.ToUIColor ();
             this.SetNeedsDisplay ();
         }
 
@@ -139,7 +146,7 @@ namespace OxyPlot.XamarinIOS
 
         public void SetClipboardText (string text)
         {
-			// TODO: how to set clipboard on iOS
+			UIPasteboard.General.SetValue (new NSString (text), "public.utf8-plain-text");
         }
 
 		/// <summary>
@@ -148,15 +155,7 @@ namespace OxyPlot.XamarinIOS
 		/// <param name="rect">The rectangle to draw.</param>
         public override void Draw (System.Drawing.RectangleF rect)
         {
-            var context = UIGraphics.GetCurrentContext ();
-            if (this.model.Background.IsVisible ()) {
-                context.SetFillColor (this.model.Background.ToCGColor ());
-                context.FillRect (rect);
-                // TODO: is it possible to set the background color?
-                // this.BackgroundColor = plot.Background.ToUIColor ();
-            }
-
-            var renderer = new MonoTouchRenderContext (context);
+			var renderer = new MonoTouchRenderContext (UIGraphics.GetCurrentContext ());
             this.model.Render (renderer, rect.Width, rect.Height);
         }
 
