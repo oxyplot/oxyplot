@@ -12,7 +12,7 @@ cp ../../Icons/OxyPlot_512.png icons/OxyPlot_512x512.png
 
 mono ../../Tools/Xamarin/xamarin-component.exe create-manually "../OxyPlot-2014.1.xam" \
     --name="OxyPlot" \
-    --summary="OxyPlot is a cross-platform plotting library for .NET" \
+    --summary="A cross-platform plotting library for .NET" \
     --publisher="oxyplot.org" \
     --website="http://oxyplot.org/" \
     --details="Details.md" \
