@@ -25,9 +25,34 @@ You can zoom/pan/reset a single axis by positioning the mouse cursor over the ax
 
 === Customizing the bindings
 
-- Create new PlotController
-- Set Controller in the Plot control
-- Unbinding
-- Binding
+Create a new PlotController:
+
+```cs
+var myController = new PlotController();
+```
+
+Set the controller in the Plot control
+
+```cs
+plot.Controller = myController;
+```
+
+Bind an input gesture to a command
+
+```cs
+myController.BindMouseDown(OxyMouseButton.Left, PlotCommands.Pan);
+```
+
+Unbind an input gesture
+```cs
+myController.UnbindMouseDown(OxyMouseButton.Right);
+```
+
+Unbind all commands
+
+```cs
+myController.UnbindAll();
+```
+
 - Creating new commands
 - Creating new manipulators

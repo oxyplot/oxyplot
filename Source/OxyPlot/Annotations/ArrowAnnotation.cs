@@ -61,7 +61,7 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// Gets or sets the arrow direction.
         /// </summary>
-        /// <remarks>Setting this property overrides the StartPoint property.</remarks>
+        /// <remarks>Setting this property overrides the <see cref="StartPoint" /> property.</remarks>
         public ScreenVector ArrowDirection { get; set; }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace OxyPlot.Annotations
         public OxyColor Color { get; set; }
 
         /// <summary>
-        /// Gets or sets the end point.
+        /// Gets or sets the end point of the arrow.
         /// </summary>
         public DataPoint EndPoint { get; set; }
 
@@ -99,7 +99,7 @@ namespace OxyPlot.Annotations
         public LineStyle LineStyle { get; set; }
 
         /// <summary>
-        /// Gets or sets the start point.
+        /// Gets or sets the start point of the arrow.
         /// </summary>
         /// <remarks>This property is overridden by the ArrowDirection property, if set.</remarks>
         public DataPoint StartPoint { get; set; }
