@@ -60,6 +60,17 @@ namespace OxyPlot.XamarinAndroid
             return new RectF ((float)rect.Left, (float)rect.Top, (float)rect.Right, (float)rect.Bottom);
         }
 
+		/// <summary>
+		/// Converts a scaled <see cref="OxyRect" /> to a <see cref="RectF" />.
+		/// </summary>
+		/// <param name="rect">The rectangle to convert.</param>
+		/// <returns>The converted rectangle.</returns>
+		/// <param name = "scale">The scaling factor.</param>
+		public static RectF ToRectF (this OxyRect rect, double scale)
+		{
+			return new RectF ((float)(rect.Left * scale), (float)(rect.Top*scale), (float)(rect.Right*scale), (float)(rect.Bottom*scale));
+		}
+
         /// <summary>
         /// Converts an <see cref="OxyPenLineJoin" /> to a <see cref="Paint.Join" />.
         /// </summary>
@@ -83,11 +94,12 @@ namespace OxyPlot.XamarinAndroid
         /// Converts an <see cref="MotionEvent" /> to a <see cref="OxyTouchEventArgs" />.
         /// </summary>
         /// <param name="e">The event arguments.</param>
+		/// <param name = "scale">The resolution scale factor.</param>
         /// <returns>The converted event arguments.</returns>
-        public static OxyTouchEventArgs ToTouchEventArgs (this MotionEvent e)
+		public static OxyTouchEventArgs ToTouchEventArgs (this MotionEvent e, double scale)
         {
             return new OxyTouchEventArgs {
-                Position = new ScreenPoint (e.GetX (e.ActionIndex), e.GetY (e.ActionIndex)),
+				Position = new ScreenPoint (e.GetX (e.ActionIndex) / scale, e.GetY (e.ActionIndex) / scale),
                 DeltaTranslation = new ScreenVector (0, 0),
                 DeltaScale = new ScreenVector (1, 1)
             };
@@ -97,12 +109,13 @@ namespace OxyPlot.XamarinAndroid
         /// Gets the touch points from the specified <see cref="MotionEvent" /> argument.
         /// </summary>
         /// <param name="e">The event arguments.</param>
+		/// <param name = "scale">The resolution scale factor.</param>
         /// <returns>The touch points.</returns>
-        public static ScreenPoint[] GetTouchPoints (this MotionEvent e)
+		public static ScreenPoint[] GetTouchPoints (this MotionEvent e, double scale)
         {
             var result = new ScreenPoint[e.PointerCount];
             for (int i = 0; i < e.PointerCount; i++) {
-                result [i] = new ScreenPoint (e.GetX (i), e.GetY (i));
+				result [i] = new ScreenPoint (e.GetX (i) / scale, e.GetY (i) / scale);
             }
 
             return result;
@@ -308,7 +321,7 @@ namespace OxyPlot.XamarinAndroid
         /// <param name="e">The event arguments.</param>
         /// <returns>The converted event arguments.</returns>
         /// <remarks>See also <a href="http://developer.android.com/reference/android/view/KeyEvent.html">KeyEvent</a> reference.</remarks>
-        public static OxyKeyEventArgs ToKeyEventArgs (this KeyEvent e)
+		public static OxyKeyEventArgs ToKeyEventArgs (this KeyEvent e)
         {
             return new OxyKeyEventArgs {
                 Key = e.KeyCode.Convert (),
