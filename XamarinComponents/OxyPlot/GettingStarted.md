@@ -1,4 +1,4 @@
-To show a plot, you must define a `PlotModel` that defines the contents of the plot.
+To show a plot, you must define a `PlotModel` that includes all the data that is displayed.
 The following example shows how to add linear axes and a simple line series.
 See the online 'Example browser' on [oxyplot.org](http://oxyplot.org/) for more example models.
 Note that this code can be in a portable class library (PCL).
@@ -8,24 +8,14 @@ using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 
+...
+
 private PlotModel CreatePlotModel() {
 
-		var plotModel = new PlotModel {
-			Title = "Simple OxyPlot Demo"
-		};
+		var plotModel = new PlotModel { Title = "OxyPlot Demo" };
 
-		var xaxis = new LinearAxis {
-			Position = AxisPosition.Bottom
-		};
-
-		var yaxis = new LinearAxis {
-			Position = AxisPosition.Left,
-			Maximum = 10,
-			Minimum = 0
-		};
-
-		plotModel.Axes.Add (xaxis);
-		plotModel.Axes.Add (yaxis);
+		plotModel.Axes.Add (new LinearAxis { Position = AxisPosition.Bottom });
+		plotModel.Axes.Add (new LinearAxis { Position = AxisPosition.Left, Maximum = 10, Minimum = 0 });
 
   	var series1 = new LineSeries {
 		  MarkerType = OxyPlot.MarkerType.Circle,
@@ -47,8 +37,6 @@ private PlotModel CreatePlotModel() {
 }
 ```
 
-# iOS
-
 To show the plot in your iOS app, add a `PlotView` to the view controller class:
 
 ```csharp
@@ -62,7 +50,6 @@ public override void ViewDidLoad ()
       Model = CreatePlotModel();
       Frame = this.View.Frame 
     };
-    
     this.View.AddSubview (plotView);
 }    
 
@@ -73,8 +60,6 @@ public override void DidRotate (UIInterfaceOrientation fromInterfaceOrientation)
     this.plotView.InvalidatePlot (false);
 }
 ```
-
-# Android
 
 To show the plot in your Android app, add a `PlotView` to the activity class:
 
