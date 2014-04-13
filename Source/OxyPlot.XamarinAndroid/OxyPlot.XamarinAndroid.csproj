@@ -68,4 +68,9 @@
       <Name>OxyPlot</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Main.axml">
+      <DependentUpon>CanvasRenderContext.cs</DependentUpon>
+    </AndroidResource>
+  </ItemGroup>
 </Project>
