@@ -42,7 +42,14 @@ namespace OxyPlot.XamarinAndroid
     /// </summary>
     public class PlotView : View, IPlotControl
     {
-        /// <summary>
+		/// <summary>
+		/// The factor that scales from OxyPlot´s device independent pixels (96 dpi) to 
+		/// Android´s density-independent pixels (160 dpi).
+		/// </summary>
+		/// <remarks>See <a href="http://developer.android.com/guide/practices/screens_support.html">Supporting multiple screens.</a>.</remarks>
+		public const double Scale = 160d / 96d;
+
+		/// <summary>
         /// The rendering lock object.
         /// </summary>
         private readonly object renderingLock = new object ();
@@ -85,11 +92,22 @@ namespace OxyPlot.XamarinAndroid
         /// </summary>
         private bool updateDataFlag = true;
 
-        /// <summary>
+		/// <summary>
+		/// Initializes a new instance of the <see cref="PlotView" /> class.
+		/// </summary>
+		/// <param name="context">The context.</param>
+		/// <remarks>Use this constructor when creating the view from code.</remarks>
+		public PlotView (Context context) :
+		base (context)
+		{
+		}
+
+		/// <summary>
         /// Initializes a new instance of the <see cref="PlotView" /> class.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="attrs">The attribute set.</param>
+		/// <remarks>This constructor is called when inflating the view from XML.</remarks>
         public PlotView (Context context, IAttributeSet attrs) :
             base (context, attrs)
         {
@@ -101,6 +119,7 @@ namespace OxyPlot.XamarinAndroid
         /// <param name="context">The context.</param>
         /// <param name="attrs">The attribute set.</param>
         /// <param name="defStyle">The definition style.</param>
+		/// <remarks>This constructor performs inflation from XML and applies a class-specific base style.</remarks>
         public PlotView (Context context, IAttributeSet attrs, int defStyle) :
             base (context, attrs, defStyle)
         {
@@ -296,14 +315,16 @@ namespace OxyPlot.XamarinAndroid
             {
                 if (this.rc == null)
                 {
-                    this.rc = new CanvasRenderContext ();
+					this.rc = new CanvasRenderContext (Scale);
                 }
 
                 this.rc.SetTarget (canvas);
                 using (var bounds = new Rect())
                 {
                     canvas.GetClipBounds (bounds);
-                    actualModel.Render (this.rc, bounds.Right - bounds.Left, bounds.Bottom - bounds.Top);
+					var width = bounds.Right - bounds.Left;
+					var height = bounds.Bottom - bounds.Top;
+					actualModel.Render (this.rc, width/Scale, height/Scale);
                 }
             }
         }
@@ -315,9 +336,9 @@ namespace OxyPlot.XamarinAndroid
         /// <returns><c>true</c> if the event was handled.</returns>
         private bool OnTouchDownEvent (MotionEvent e)
         {
-            var args = e.ToTouchEventArgs ();
+			var args = e.ToTouchEventArgs (Scale);
             var handled = this.ActualController.HandleTouchStarted (this, args);
-            this.previousTouchPoints = e.GetTouchPoints ();
+			this.previousTouchPoints = e.GetTouchPoints (Scale);
             return handled;
         }
 
@@ -328,7 +349,7 @@ namespace OxyPlot.XamarinAndroid
         /// <returns><c>true</c> if the event was handled.</returns>
         private bool OnTouchMoveEvent (MotionEvent e)
         {
-            var currentTouchPoints = e.GetTouchPoints ();
+			var currentTouchPoints = e.GetTouchPoints (Scale);
             var args = new OxyTouchEventArgs (currentTouchPoints, this.previousTouchPoints);
             var handled = this.ActualController.HandleTouchDelta (this, args);
             this.previousTouchPoints = currentTouchPoints;
@@ -342,7 +363,7 @@ namespace OxyPlot.XamarinAndroid
         /// <returns><c>true</c> if the event was handled.</returns>
         private bool OnTouchUpEvent (MotionEvent e)
         {
-            return this.ActualController.HandleTouchCompleted (this, e.ToTouchEventArgs ());
+			return this.ActualController.HandleTouchCompleted (this, e.ToTouchEventArgs (Scale));
         }
     }
 }
