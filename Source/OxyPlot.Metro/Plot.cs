@@ -857,7 +857,9 @@ namespace OxyPlot.Metro
                 // TODO: Fix warning?
                 // Because this call is not awaited, execution of the current method continues before the call is completed.
                 // Consider applying the 'await' operator to the result of the call.
+#pragma warning disable 4014
                 this.Dispatcher.RunAsync(CoreDispatcherPriority.Low, () => action());
+#pragma warning restore 4014
             }
             else
             {

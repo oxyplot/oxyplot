@@ -17,7 +17,7 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="lib\NetCore45\OxyPlot.Metro\Themes\Generic.xaml" target="lib\NetCore45\OxyPlot.Metro\Themes\Generic.xaml"/>
+    <file src="lib\NetCore45\OxyPlot.Metro\Themes\Generic.xbf" target="lib\NetCore45\OxyPlot.Metro\Themes\Generic.xbf"/>
     <file src="lib\NetCore45\OxyPlot.Metro.dll" target="lib\NetCore45\OxyPlot.Metro.dll"/>
     <file src="lib\NetCore45\OxyPlot.Metro.pri" target="lib\NetCore45\OxyPlot.Metro.pri"/>
     <file src="lib\NetCore45\OxyPlot.Metro.XML" target="lib\NetCore45\OxyPlot.Metro.XML"/>
