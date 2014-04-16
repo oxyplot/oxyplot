@@ -372,40 +372,6 @@ namespace ExampleLibrary
                 for (double x = 0; x < 2 * Math.PI; x += 0.1)
                     s.Points.Add(new DataPoint(x, Math.Sin(x * i) / (i + 1) + i));
             }
-            return model;
-
-        }
-
-        [Example("Two-color LineSeries")]
-        public static PlotModel TwoColorLineSeries()
-        {
-            var model = new PlotModel { Title = "TwoColorLineSeries", LegendSymbolLength = 24 };
-            var s1 = new TwoColorLineSeries()
-            {
-                Title = "Temperature at Eidesmoen, December 1986.",
-                Color = OxyColors.Red,
-                Color2 = OxyColors.LightBlue,
-                StrokeThickness = 3,
-                Limit = 0,
-                Smooth = true,
-                MarkerType = MarkerType.Circle,
-                MarkerSize = 4,
-                MarkerStroke = OxyColors.Black,
-                MarkerStrokeThickness = 1.5
-            };
-            var temperature = new[]
-                {
-                    5, 0, 7, 7, 4, 3, 5, 5, 11, 4, 2, 3, 2, 1, 0, 2, -1, 0, 0, -3, -6, -13, -10, -10, 0, -4, -5, -4, 3, 0,
-                    -5
-                };
-
-            for (int i = 0; i < temperature.Length; i++)
-            {
-                s1.Points.Add(new DataPoint(i + 1, temperature[i]));
-            }
-
-            model.Series.Add(s1);
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, ExtraGridlines = new[] { 0.0 } });
 
             return model;
         }

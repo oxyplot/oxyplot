@@ -57,6 +57,11 @@ namespace OxyPlot
                     return;
                 }
 
+                if (this.RenderingDecorator != null)
+                {
+                    rc = this.RenderingDecorator(rc);
+                }
+
                 this.Width = width;
                 this.Height = height;
 

@@ -93,6 +93,8 @@
     <Compile Include="Examples\ScatterSeriesExamples.cs" />
     <Compile Include="Examples\TimeSpanAxisExamples.cs" />
     <Compile Include="Examples\TrackerExamples.cs" />
+    <Compile Include="Examples\TwoColorLineSeriesExamples.cs" />
+    <Compile Include="Examples\XkcdExamples.cs" />
     <Compile Include="Helpers\Sun.cs" />
     <Compile Include="Issues\OpenIssues.cs" />
     <Compile Include="Issues\ClosedIssues.cs" />

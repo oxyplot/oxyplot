@@ -107,6 +107,7 @@
     <Compile Include="Rendering\RenderContext\RenderContextBase.cs" />
     <Compile Include="Rendering\RenderContext\RenderingExtensions.cs" />
     <Compile Include="Rendering\RenderContext\IRenderContext.cs" />
+    <Compile Include="Rendering\RenderContext\XkcdRenderingDecorator.cs" />
     <Compile Include="Input\OxyKey.cs" />
     <Compile Include="Input\OxyModifierKeys.cs" />
     <Compile Include="Input\OxyMouseButton.cs" />
