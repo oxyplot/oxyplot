@@ -48,7 +48,7 @@ namespace OxyPlot
         /// <param name="rc">The rendering context.</param>
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
-        public void Render(IRenderContext rc, double width, double height)
+        public virtual void Render(IRenderContext rc, double width, double height)
         {
             lock (this.syncRoot)
             {
