@@ -203,5 +203,50 @@ namespace ExampleLibrary
             var plotModel1 = new PlotModel { Title = "Issue 10117" };
             return plotModel1;
         }
+
+        [Example("#10148: Data points remain visible outside of bounds on panning")]
+        public static PlotModel DataPointsRemainVisibleOutsideBoundsOnPanning()
+        {
+            var plotModel1 = new PlotModel();
+
+            var masterAxis = new DateTimeAxis { Key = "MasterDateTimeAxis", Position = AxisPosition.Bottom };
+            plotModel1.Axes.Add(masterAxis);
+
+            var verticalAxis = new LinearAxis
+            {
+                Position = AxisPosition.Left,
+                Title = "Measurement",
+                Key = "Measurement",
+                AbsoluteMinimum = -100,
+                Minimum = -100,
+                AbsoluteMaximum = 100,
+                Maximum = 100,
+                IsZoomEnabled = false,
+                IsPanEnabled = false
+            };
+
+            plotModel1.Axes.Add(verticalAxis);
+
+            var line = new LineSeries { Title = "Measurement", XAxisKey = masterAxis.Key, YAxisKey = verticalAxis.Key };
+            line.Points.Add(new DataPoint(DateTimeAxis.ToDouble(DateTime.Now), 10));
+            line.Points.Add(new DataPoint(DateTimeAxis.ToDouble(DateTime.Now.AddSeconds(1)), 10));
+            line.Points.Add(new DataPoint(DateTimeAxis.ToDouble(DateTime.Now.AddSeconds(2)), 45));
+            line.Points.Add(new DataPoint(DateTimeAxis.ToDouble(DateTime.Now.AddSeconds(3)), 17));
+
+            line.Points.Add(DataPoint.Undefined);
+
+            // this point should be visible
+            line.Points.Add(new DataPoint(DateTimeAxis.ToDouble(DateTime.Now.AddSeconds(4)), 10));
+            //// line.Points.Add(new DataPoint(DateTimeAxis.ToDouble(DateTime.Now.AddSeconds(4)), 10));
+
+            line.Points.Add(DataPoint.Undefined);
+
+            line.Points.Add(new DataPoint(DateTimeAxis.ToDouble(DateTime.Now.AddSeconds(5)), 45));
+            line.Points.Add(new DataPoint(DateTimeAxis.ToDouble(DateTime.Now.AddSeconds(6)), 17));
+
+            plotModel1.Series.Add(line);
+
+            return plotModel1;
+        }
     }
 }
