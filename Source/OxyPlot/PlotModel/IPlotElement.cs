@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IColorAxis.cs" company="OxyPlot">
+// <copyright file="IPlotElement.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 OxyPlot contributors
@@ -24,30 +24,22 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines functionality for color axes.
+//   Specifies functionality of an element of a plot.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace OxyPlot.Axes
+namespace OxyPlot
 {
     /// <summary>
-    /// Defines functionality for color axes.
+    /// Specifies functionality of an element of a plot.
     /// </summary>
-    public interface IColorAxis : IPlotElement
+    public interface IPlotElement
     {
         /// <summary>
-        /// Gets the color of the specified index in the color palette.
+        /// Returns a hash code for this element.
         /// </summary>
-        /// <param name="paletteIndex">The color map index (less than NumberOfEntries).</param>
-        /// <returns>The color.</returns>
-        OxyColor GetColor(int paletteIndex);
-
-        /// <summary>
-        /// Gets the palette index of the specified value.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns>The palette index.</returns>
-        /// <remarks>If the value is less than minimum, 0 is returned. If the value is greater than maximum, Palette.Colors.Count+1 is returned.</remarks>
-        int GetPaletteIndex(double value);
+        /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
+        /// <remarks>This method creates the hash code by reflecting the value of all public properties.</remarks>
+        int GetElementHashCode();
     }
 }

@@ -199,7 +199,7 @@ namespace OxyPlot.Series
             var rect = new OxyRect(s00, s11);
 
             var currentDataHash = this.Data.GetHashCode();
-            var currentColorAxisHash = this.ColorAxis.GetHashCode();
+            var currentColorAxisHash = this.ColorAxis.GetElementHashCode();
             if (this.image == null || currentDataHash != this.dataHash || currentColorAxisHash != this.colorAxisHash)
             {
                 this.UpdateImage();
