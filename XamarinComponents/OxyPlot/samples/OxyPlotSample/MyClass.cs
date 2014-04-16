@@ -4,15 +4,24 @@
 	using OxyPlot.Axes;
 	using OxyPlot.Series;
 
+	/// <summary>
+	/// Provides a model that is shared between the Android and iOS apps.
+	/// </summary>
 	public class MyClass
 	{
+		/// <summary>
+		/// Gets or sets the plot model that is shown in the demo apps.
+		/// </summary>
+		/// <value>My model.</value>
 		public PlotModel MyModel { get; set; }
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="OxyPlotSample.MyClass"/> class.
+		/// </summary>
 		public MyClass ()
 		{
 			var plotModel = new PlotModel {
-				Title = "OxyPlot on the Xamarin platform",
-				Background = OxyColors.White
+				Title = "OxyPlot on the Xamarin platform"
 			};
 
 			var xaxis = new LinearAxis {
@@ -50,4 +59,3 @@
 		}
 	}
 }
-

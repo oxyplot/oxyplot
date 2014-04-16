@@ -9,7 +9,7 @@ namespace OxyPlotSample.Android
 	[Activity (Label = "OxyPlotSample.Android", MainLauncher = true)]
 	public class MainActivity : Activity
 	{
-		MyClass myClass = new MyClass();
+		private readonly MyClass myClass = new MyClass();
 
 		protected override void OnCreate (Bundle bundle)
 		{
