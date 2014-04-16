@@ -44,6 +44,23 @@ namespace OxyPlot.Tests
     public class LinearAxisTests
     {
         /// <summary>
+        /// Tests the <see cref="LinearAxis.GetHashCode" /> method.
+        /// </summary>
+        public new class GetHashCode
+        {
+            /// <summary>
+            /// Given two axes with identical content, verify that the hash codes are different.
+            /// </summary>
+            [Test]
+            public void TwoEqualAxes()
+            {
+                var axis1 = new LinearAxis();
+                var axis2 = new LinearAxis();
+                Assert.IsTrue(axis1.GetHashCode() != axis2.GetHashCode());
+            }
+        }
+
+        /// <summary>
         /// Tests the <see cref="LinearAxis.FormatAsFractions" /> property.
         /// </summary>
         public class FormatAsFractions
