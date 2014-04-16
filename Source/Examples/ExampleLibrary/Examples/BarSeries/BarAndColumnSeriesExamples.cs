@@ -28,8 +28,8 @@
 namespace ExampleLibrary
 {
     using System;
-    using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Linq;
 
     using OxyPlot;
     using OxyPlot.Axes;
@@ -349,11 +349,26 @@ namespace ExampleLibrary
             public double Value { get; set; }
         }
 
-        [Example("Histogram (random numbers)")]
-        public static PlotModel Histogram()
+        [Example("Histogram (bins=5)")]
+        public static PlotModel Histogram3()
         {
-            int n = 1000;
-            int binCount = 20;
+            return CreateHistogram(100000, 5);
+        }
+
+        [Example("Histogram (bins=20)")]
+        public static PlotModel Histogram20()
+        {
+            return CreateHistogram(100000, 20);
+        }
+
+        [Example("Histogram (bins=200)")]
+        public static PlotModel Histogram200()
+        {
+            return CreateHistogram(100000, 200);
+        }
+
+        public static PlotModel CreateHistogram(int n, int binCount)
+        {
             var bins = new HistogramBin[binCount];
             for (int i = 0; i < bins.Length; i++)
             {
@@ -367,11 +382,70 @@ namespace ExampleLibrary
                 bins[value].Value++;
             }
 
-            var temp = new PlotModel();
+            var temp = new PlotModel { Title = string.Format("Histogram (bins={0}, n={1})", binCount, n), Subtitle = "Pseudorandom numbers" };
             var series1 = new TSeries { ItemsSource = bins, ValueField = "Value" };
+            if (binCount < 100)
+            {
+                series1.LabelFormatString = "{0}";
+            }
+
             temp.Series.Add(series1);
 
             temp.Axes.Add(new CategoryAxis { Position = CategoryAxisPosition(), ItemsSource = bins, LabelField = "Label", GapWidth = 0 });
+            temp.Axes.Add(new LinearAxis { Position = ValueAxisPosition(), MinimumPadding = 0, MaximumPadding = 0.1, AbsoluteMinimum = 0 });
+
+            return temp;
+        }
+
+        [Example("Histogram (standard normal distribution)")]
+        public static PlotModel HistogramStandardNormalDistribution()
+        {
+            return CreateNormalDistributionHistogram(100000, 2000);
+        }
+
+        public static PlotModel CreateNormalDistributionHistogram(int n, int binCount)
+        {
+            var bins = new HistogramBin[binCount];
+            double min = -10;
+            double max = 10;
+            for (int i = 0; i < bins.Length; i++)
+            {
+                var v = min + (max - min) * i / (bins.Length - 1);
+                bins[i] = new HistogramBin { Label = v.ToString("0.0") };
+            }
+
+            var r = new Random(31);
+            for (int i = 0; i < n; i++)
+            {
+                // http://en.wikipedia.org/wiki/Box%E2%80%93Muller_transform
+                var u1 = r.NextDouble();
+                var u2 = r.NextDouble();
+                var v = Math.Sqrt(-2 * Math.Log(u1)) * Math.Cos(2 * Math.PI * u2);
+
+                int bin = (int)Math.Round((v - min) / (max - min) * (bins.Length - 1));
+                if (bin >= 0 && bin < bins.Length)
+                {
+                    bins[bin].Value++;
+                }
+            }
+
+            var temp = new PlotModel { Title = string.Format("Histogram (bins={0}, n={1})", binCount, n), Subtitle = "Standard normal distribution by Box-Muller transform" };
+            var series1 = new TSeries { ItemsSource = bins, ValueField = "Value" };
+            temp.Series.Add(series1);
+
+            var categoryAxis = new CategoryAxis
+            {
+                Position = CategoryAxisPosition(),
+                GapWidth = 0
+            };
+
+            categoryAxis.Labels.AddRange(bins.Select(b => b.Label));
+            categoryAxis.IsAxisVisible = false;
+            temp.Axes.Add(categoryAxis);
+
+            // todo: link category and linear axis
+            temp.Axes.Add(new LinearAxis { Position = CategoryAxisPosition(), Minimum = min, Maximum = max });
+
             temp.Axes.Add(new LinearAxis { Position = ValueAxisPosition(), MinimumPadding = 0, AbsoluteMinimum = 0 });
 
             return temp;
