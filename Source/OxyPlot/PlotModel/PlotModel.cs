@@ -672,6 +672,14 @@ namespace OxyPlot
         public PlotElementCollection<Series.Series> Series { get; private set; }
 
         /// <summary>
+        /// Gets or sets the rendering decorator.
+        /// </summary>
+        /// <value>
+        /// The rendering decorator.
+        /// </value>
+        public Func<IRenderContext, IRenderContext> RenderingDecorator { get; set; }
+
+        /// <summary>
         /// Gets or sets the subtitle.
         /// </summary>
         /// <value>The subtitle.</value>
