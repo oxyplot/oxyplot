@@ -1,15 +1,16 @@
-﻿
-namespace OxyPlotSample.iOS
+﻿namespace OxyPlotSample.iOS
 {
 	using System;
 	using System.Drawing;
 
-	using MonoTouch.Foundation;
 	using MonoTouch.UIKit;
 
 	using OxyPlot.XamarinIOS;
 	using OxyPlotSample;
 
+	/// <summary>
+	/// Represents the main view controller.
+	/// </summary>
 	public partial class OxyPlotSample_iOSViewController : UIViewController
 	{
 		/// <summary>
@@ -17,28 +18,25 @@ namespace OxyPlotSample.iOS
 		/// </summary>
 		private PlotView plotView;
 
-		static bool UserInterfaceIdiomIsPhone {
-			get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
-		}
+		/// <summary>
+		/// The object that contains the plot model.
+		/// </summary>
+		private readonly MyClass myClass = new MyClass();
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="OxyPlotSample.iOS.OxyPlotSample_iOSViewController"/> class.
+		/// </summary>
+		/// <param name="handle">Handle.</param>
 		public OxyPlotSample_iOSViewController (IntPtr handle) : base (handle)
 		{
 		}
 
-		public override void DidReceiveMemoryWarning ()
-		{
-			// Releases the view if it doesn't have a superview.
-			base.DidReceiveMemoryWarning ();
-			
-			// Release any cached data, images, etc that aren't in use.
-		}
-
+		/// <summary>
+		/// Called after the controller’s view is loaded into memory.
+		/// </summary>
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-
-			// Create the instance that contains the plot model
-			var myClass = new MyClass ();
 
 			// Create the plot view and set the model
 			this.plotView = new PlotView ();
@@ -58,26 +56,6 @@ namespace OxyPlotSample.iOS
 		{
 			base.DidRotate (fromInterfaceOrientation);
 			this.plotView.InvalidatePlot (false);
-		}
-
-		public override void ViewWillAppear (bool animated)
-		{
-			base.ViewWillAppear (animated);
-		}
-
-		public override void ViewDidAppear (bool animated)
-		{
-			base.ViewDidAppear (animated);
-		}
-
-		public override void ViewWillDisappear (bool animated)
-		{
-			base.ViewWillDisappear (animated);
-		}
-
-		public override void ViewDidDisappear (bool animated)
-		{
-			base.ViewDidDisappear (animated);
 		}
 	}
 }
