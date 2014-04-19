@@ -43,13 +43,13 @@ namespace OxyPlot.Wpf
         /// Identifies the <see cref="StartAngle"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty StartAngleProperty =
-            DependencyProperty.Register("StartAngle", typeof(double), typeof(AngleAxis), new PropertyMetadata(0d));
+            DependencyProperty.Register("StartAngle", typeof(double), typeof(AngleAxis), new PropertyMetadata(0d, AppearanceChanged));
 
         /// <summary>
         /// Identifies the <see cref="EndAngle"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty EndAngleProperty =
-            DependencyProperty.Register("EndAngle", typeof(double), typeof(AngleAxis), new PropertyMetadata(360d));
+            DependencyProperty.Register("EndAngle", typeof(double), typeof(AngleAxis), new PropertyMetadata(360d, AppearanceChanged));
 
         /// <summary>
         /// Initializes static members of the <see cref = "AngleAxis" /> class.
