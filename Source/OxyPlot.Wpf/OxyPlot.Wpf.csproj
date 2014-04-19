@@ -75,6 +75,7 @@
     <Compile Include="Converters\ThicknessConverter.cs" />
     <Compile Include="Converters\OxyColorConverter.cs" />
     <Compile Include="PlotCommands.cs" />
+    <Compile Include="Series\StairStepSeries.cs" />
     <Compile Include="Utilities\WeakEvents\RenderingEventListener.cs" />
     <Compile Include="Utilities\WeakEvents\RenderingEventManager.cs" />
     <Compile Include="Utilities\WeakEvents\WeakEventListener{TEventManager,TEventArgs}.cs" />
