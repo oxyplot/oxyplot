@@ -12,9 +12,13 @@ cp ../../Icons/OxyPlot_512.png icons/OxyPlot_512x512.png
 
 mono ../../Tools/Xamarin/xamarin-component.exe create-manually "../OxyPlot-2014.1.xam" \
     --name="OxyPlot" \
-    --summary="A cross-platform plotting library for .NET" \
     --publisher="oxyplot.org" \
     --website="http://oxyplot.org/" \
+    --monodoc="doc"
+    --srcurl="http://hg.codeplex.com/oxyplot"
+    --summary="A cross-platform plotting library for .NET" \
+    --screenshot="OxyPlot running on Xamarin.iOS":"Screenshot_700x400.png"\
+    --popover="Popover_320x200.png"
     --details="Details.md" \
     --license="License.md" \
     --getting-started="GettingStarted.md" \
@@ -25,6 +29,5 @@ mono ../../Tools/Xamarin/xamarin-component.exe create-manually "../OxyPlot-2014.
     --library="ios":"bin/OxyPlot.XamarinIOS.dll" \
     --library="android":"bin/OxyPlot.dll" \
     --library="android":"bin/OxyPlot.XamarinAndroid.dll" \
-    --monodoc=doc \
-    --sample="iOS Sample. Demonstrates OxyPlot on iOS.":"samples/OxyPlotSample.iOS/OxyPlotSample.iOS.sln" \
-    --sample="Android Sample. Demonstrates OxyPlot on Android":"samples/OxyPlotSample.Android/OxyPlotSample.Android.sln"
+    --sample="iOS Sample. Demonstrates OxyPlot on iOS.":"samples/OxyPlotSample.iOS.sln" \
+    --sample="Android Sample. Demonstrates OxyPlot on Android":"samples/OxyPlotSample.Android.sln"
