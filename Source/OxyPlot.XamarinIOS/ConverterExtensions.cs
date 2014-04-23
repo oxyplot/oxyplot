@@ -47,7 +47,7 @@ namespace OxyPlot.XamarinIOS
         /// </summary>
         /// <param name="p">The point to convert.</param>
         /// <returns>The converted point.</returns>
-        public static ScreenPoint ToScreenPoint(this System.Drawing.PointF p)
+        public static ScreenPoint ToScreenPoint(this PointF p)
         {
             return new ScreenPoint(p.X, p.Y);
         }
