@@ -251,5 +251,16 @@ namespace ExampleLibrary
 
             return model;
         }
+
+        [Example("#542701: Same color of LineSeries and axis title & labels")]
+        public static PlotModel SameColorOfLineSeriesAndAxisTitleAndLabels()
+        {
+            var model = new PlotModel { Title = "Same color of LineSeries and axis title & labels" };
+            var color = OxyColors.IndianRed;
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Axis 1", TitleColor = color, TextColor = color });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            model.Series.Add(new LineSeries { Title = "LineSeries 1", Color = color, ItemsSource = new[] { new DataPoint(0, 0), new DataPoint(10, 3), new DataPoint(20, 2) } });
+            return model;
+        }
     }
 }
