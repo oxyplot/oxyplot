@@ -84,14 +84,14 @@
                 </oxy:Plot.Axes>
                 <oxy:Plot.Annotations>
                     <oxy:TextAnnotation TextColor="Green" Text="Hello">
-                        <oxy:TextAnnotation.Position>
+                        <oxy:TextAnnotation.TextPosition>
                             <OxyPlot:DataPoint X="30" Y="70"/>
-                        </oxy:TextAnnotation.Position>
+                        </oxy:TextAnnotation.TextPosition>
                     </oxy:TextAnnotation>
-                    <oxy:TextAnnotation TextColor="Orange" Text="world!" Rotation="20">
-                        <oxy:TextAnnotation.Position>
+                    <oxy:TextAnnotation TextColor="Orange" Text="world!" TextRotation="20">
+                        <oxy:TextAnnotation.TextPosition>
                             <OxyPlot:DataPoint X="50" Y="70"/>
-                        </oxy:TextAnnotation.Position>
+                        </oxy:TextAnnotation.TextPosition>
                     </oxy:TextAnnotation>
                 </oxy:Plot.Annotations>
             </oxy:Plot>

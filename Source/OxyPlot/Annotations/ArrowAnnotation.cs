@@ -31,7 +31,7 @@
 namespace OxyPlot.Annotations
 {
     /// <summary>
-	/// Represents an annotation that shows an arrow.
+    /// Represents an annotation that shows an arrow.
     /// </summary>
     public class ArrowAnnotation : TextualAnnotation
     {
@@ -169,10 +169,16 @@ namespace OxyPlot.Annotations
 
             if (!string.IsNullOrEmpty(this.Text))
             {
-                var ha = d.X < 0 ? HorizontalAlignment.Left : HorizontalAlignment.Right;
-                var va = d.Y < 0 ? VerticalAlignment.Top : VerticalAlignment.Bottom;
+                var ha = this.TextHorizontalAlignment;
+                var va = this.TextVerticalAlignment;
+                if (!this.TextPosition.IsDefined())
+                {
+                    // automatic position => use automatic alignment
+                    ha = d.X < 0 ? HorizontalAlignment.Left : HorizontalAlignment.Right;
+                    va = d.Y < 0 ? VerticalAlignment.Top : VerticalAlignment.Bottom;
+                }
 
-                var textPoint = this.screenStartPoint;
+                var textPoint = this.GetActualTextPosition(() => this.screenStartPoint);
                 rc.DrawClippedText(
                     clippingRect,
                     textPoint,
@@ -181,7 +187,7 @@ namespace OxyPlot.Annotations
                     this.ActualFont,
                     this.ActualFontSize,
                     this.ActualFontWeight,
-                    0,
+                    this.TextRotation,
                     ha,
                     va);
             }

@@ -61,7 +61,7 @@ namespace ExampleLibrary
             plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = s, Minimum = -1, Maximum = 11 });
             for (int rotation = 0; rotation < 360; rotation += 45)
             {
-                plotModel1.Annotations.Add(new TextAnnotation { Text = s, Position = new DataPoint(rotation / 360d * 10, 0), Rotation = rotation });
+                plotModel1.Annotations.Add(new TextAnnotation { Text = s, TextPosition = new DataPoint(rotation / 360d * 10, 0), TextRotation = rotation });
             }
 
             return plotModel1;

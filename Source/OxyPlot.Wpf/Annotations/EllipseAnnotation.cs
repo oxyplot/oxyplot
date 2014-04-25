@@ -78,12 +78,6 @@ namespace OxyPlot.Wpf
             "Y", typeof(double), typeof(EllipseAnnotation), new PropertyMetadata(0.0, DataChanged));
 
         /// <summary>
-        /// Identifies the <see cref="TextRotation"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty TextRotationProperty = DependencyProperty.Register(
-            "TextRotation", typeof(double), typeof(EllipseAnnotation), new UIPropertyMetadata(0.0));
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="EllipseAnnotation" /> class.
         /// </summary>
         public EllipseAnnotation()
@@ -172,23 +166,6 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the text rotation (degrees).
-        /// </summary>
-        /// <value>The text rotation in degrees.</value>
-        public double TextRotation
-        {
-            get
-            {
-                return (double)this.GetValue(TextRotationProperty);
-            }
-
-            set
-            {
-                this.SetValue(TextRotationProperty, value);
-            }
-        }
-
-        /// <summary>
         /// Creates the internal annotation object.
         /// </summary>
         /// <returns>The annotation.</returns>
@@ -214,7 +191,6 @@ namespace OxyPlot.Wpf
             a.Width = this.Width;
             a.Y = this.Y;
             a.Height = this.Height;
-            a.TextRotation = this.TextRotation;
         }
     }
 }

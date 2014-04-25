@@ -382,7 +382,7 @@ namespace ExampleLibrary
                                         Color = OxyColors.LightGray,
                                         Text = fields[0] + "  ",
                                         TextVerticalAlignment = VerticalAlignment.Middle,
-                                        TextPosition = 1,
+                                        TextLinePosition = 1,
                                         TextMargin = 0,
                                         TextPadding = 4,
                                         ClipText = false,

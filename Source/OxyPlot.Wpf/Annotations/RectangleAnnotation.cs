@@ -90,12 +90,6 @@ namespace OxyPlot.Wpf
             "MinimumY", typeof(double), typeof(RectangleAnnotation), new PropertyMetadata(double.MinValue, DataChanged));
 
         /// <summary>
-        /// Identifies the <see cref="TextRotation"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty TextRotationProperty = DependencyProperty.Register(
-            "TextRotation", typeof(double), typeof(RectangleAnnotation), new UIPropertyMetadata(0.0));
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="RectangleAnnotation" /> class.
         /// </summary>
         public RectangleAnnotation()
@@ -216,23 +210,6 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the text rotation (degrees).
-        /// </summary>
-        /// <value>The text rotation in degrees.</value>
-        public double TextRotation
-        {
-            get
-            {
-                return (double)this.GetValue(TextRotationProperty);
-            }
-
-            set
-            {
-                this.SetValue(TextRotationProperty, value);
-            }
-        }
-
-        /// <summary>
         /// Creates the internal annotation object.
         /// </summary>
         /// <returns>The annotation.</returns>
@@ -258,7 +235,6 @@ namespace OxyPlot.Wpf
             a.MaximumX = this.MaximumX;
             a.MinimumY = this.MinimumY;
             a.MaximumY = this.MaximumY;
-            a.TextRotation = this.TextRotation;
         }
     }
 }
