@@ -207,9 +207,9 @@ namespace OxyPlot.Axes
         public string ActualStringFormat { get; protected set; }
 
         /// <summary>
-        /// Gets the actual title (including Unit if Unit is set).
+        /// Gets the actual title of the axis.
         /// </summary>
-        /// <value>The actual title.</value>
+        /// <remarks>If the <see cref="Unit" /> property is set, the <see cref="TitleFormatString" /> property is used to format the actual title.</remarks>
         public string ActualTitle
         {
             get
@@ -229,15 +229,13 @@ namespace OxyPlot.Axes
         public double Angle { get; set; }
 
         /// <summary>
-        /// Gets or sets the distance from axis tick to number label.
+        /// Gets or sets the distance from the end of the tick line to the label.
         /// </summary>
-        /// <value>The axis tick to label distance.</value>
         public double AxisTickToLabelDistance { get; set; }
 
         /// <summary>
-        /// Gets or sets the distance from axis number to axis title.
+        /// Gets or sets the distance from the axis label to the axis title.
         /// </summary>
-        /// <value>The axis title distance.</value>
         public double AxisTitleDistance { get; set; }
 
         /// <summary>
@@ -251,12 +249,12 @@ namespace OxyPlot.Axes
         public OxyColor AxislineColor { get; set; }
 
         /// <summary>
-        /// Gets or sets the axis line.
+        /// Gets or sets the line style of the axis line.
         /// </summary>
         public LineStyle AxislineStyle { get; set; }
 
         /// <summary>
-        /// Gets or sets the axis line.
+        /// Gets or sets the thickness of the axis line.
         /// </summary>
         public double AxislineThickness { get; set; }
 
@@ -267,7 +265,7 @@ namespace OxyPlot.Axes
         public bool ClipTitle { get; set; }
 
         /// <summary>
-        /// Gets or sets the end position of the axis on the plot area. This is a fraction from 0(bottom/left) to 1(top/right).
+        /// Gets or sets the end position of the axis on the plot area. This is a fraction from 0 (bottom/left) to 1 (top/right).
         /// </summary>
         public double EndPosition { get; set; }
 
