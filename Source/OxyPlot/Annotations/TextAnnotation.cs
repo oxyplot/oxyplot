@@ -48,11 +48,9 @@ namespace OxyPlot.Annotations
         /// </summary>
         public TextAnnotation()
         {
-            this.TextColor = OxyColors.Blue;
             this.Stroke = OxyColors.Black;
             this.Background = OxyColors.Undefined;
             this.StrokeThickness = 1;
-            this.TextRotation = 0;
             this.TextVerticalAlignment = VerticalAlignment.Bottom;
             this.Padding = new OxyThickness(4);
         }
