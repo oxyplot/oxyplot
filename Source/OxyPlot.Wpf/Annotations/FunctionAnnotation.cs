@@ -61,6 +61,17 @@ namespace OxyPlot.Wpf
         public static readonly DependencyProperty ResolutionProperty =
             DependencyProperty.Register("Resolution", typeof(int), typeof(FunctionAnnotation), new PropertyMetadata(400));
 
+
+        /// <summary>
+        /// Initializes static members of the <see cref="FunctionAnnotation"/> class.
+        /// </summary>
+        static FunctionAnnotation()
+        {
+            TextColorProperty.OverrideMetadata(typeof(FunctionAnnotation), new FrameworkPropertyMetadata(MoreColors.Automatic, AppearanceChanged));
+            TextHorizontalAlignmentProperty.OverrideMetadata(typeof(FunctionAnnotation), new FrameworkPropertyMetadata(HorizontalAlignment.Right, AppearanceChanged));
+            TextVerticalAlignmentProperty.OverrideMetadata(typeof(FunctionAnnotation), new FrameworkPropertyMetadata(VerticalAlignment.Top, AppearanceChanged));
+        }
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="FunctionAnnotation" /> class.
         /// </summary>

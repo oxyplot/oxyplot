@@ -70,7 +70,7 @@ namespace OxyPlot.Wpf
                 "TextHorizontalAlignment",
                 typeof(HorizontalAlignment),
                 typeof(TextualAnnotation),
-                new UIPropertyMetadata(OxyPlot.HorizontalAlignment.Right, AppearanceChanged));
+                new UIPropertyMetadata(HorizontalAlignment.Center, AppearanceChanged));
 
         /// <summary>
         /// Identifies the <see cref="TextVerticalAlignment"/> dependency property.
@@ -80,7 +80,7 @@ namespace OxyPlot.Wpf
                 "TextVerticalAlignment",
                 typeof(VerticalAlignment),
                 typeof(TextualAnnotation),
-                new UIPropertyMetadata(OxyPlot.VerticalAlignment.Top, AppearanceChanged));
+                new UIPropertyMetadata(VerticalAlignment.Center, AppearanceChanged));
 
         /// <summary>
         /// Gets or sets the text.

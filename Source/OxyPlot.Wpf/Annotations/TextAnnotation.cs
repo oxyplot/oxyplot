@@ -80,9 +80,11 @@ namespace OxyPlot.Wpf
         /// </summary>
         static TextAnnotation()
         {
-            HorizontalAlignmentProperty.OverrideMetadata(typeof(TextAnnotation), new FrameworkPropertyMetadata(HorizontalAlignment.Center, AppearanceChanged));
-            VerticalAlignmentProperty.OverrideMetadata(typeof(TextAnnotation), new FrameworkPropertyMetadata(VerticalAlignment.Bottom, AppearanceChanged));
+            TextHorizontalAlignmentProperty.OverrideMetadata(typeof(TextAnnotation), new FrameworkPropertyMetadata(HorizontalAlignment.Center, AppearanceChanged));
+            TextVerticalAlignmentProperty.OverrideMetadata(typeof(TextAnnotation), new FrameworkPropertyMetadata(VerticalAlignment.Bottom, AppearanceChanged));
+            TextColorProperty.OverrideMetadata(typeof(TextAnnotation), new FrameworkPropertyMetadata(MoreColors.Automatic, AppearanceChanged));
         }
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref = "TextAnnotation" /> class.
