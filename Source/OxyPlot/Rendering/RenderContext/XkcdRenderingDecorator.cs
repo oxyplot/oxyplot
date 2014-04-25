@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="XkcdRenderingDecorator.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2014 OxyPlot contributors
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Provides 'XKCD style' to an IRenderContext.
+//   Provides a <see cref="IRenderContext" /> decorator that distorts the rendered output.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -32,11 +32,11 @@ namespace OxyPlot
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     /// <summary>
-	/// Provides a <see cref="IRenderContext" /> decorator that distorts the rendered output.
+    /// Provides a <see cref="IRenderContext" /> decorator that distorts the rendered output.
     /// </summary>
-    /// <remarks>See <a href="http://matplotlib.org/xkcd/">Matplotlib</a> and <a href="http://xkcd.com/">xkcd</a>.</remarks>
     public class XkcdRenderingDecorator : RenderContextBase
     {
         /// <summary>
@@ -57,7 +57,40 @@ namespace OxyPlot
         {
             this.rc = rc;
             this.RendersToScreen = this.rc.RendersToScreen;
+
+            this.DistortionFactor = 7;
+            this.InterpolationDistance = 10;
+            this.ThicknessScale = 2;
+
+            this.FontFamily = "Humor Sans"; // http://antiyawn.com/uploads/humorsans.html
+            //// this.FontFamily = "Comic Sans MS";
         }
+
+        /// <summary>
+        /// Gets or sets the distortion factor.
+        /// </summary>
+        public double DistortionFactor { get; set; }
+
+        /// <summary>
+        /// Gets or sets the interpolation distance.
+        /// </summary>
+        public double InterpolationDistance { get; set; }
+
+        /// <summary>
+        /// Gets or sets the font family.
+        /// </summary>
+        /// <value>
+        /// The font family.
+        /// </value>
+        public string FontFamily { get; set; }
+
+        /// <summary>
+        /// Gets or sets the thickness scale.
+        /// </summary>
+        /// <value>
+        /// The thickness scale.
+        /// </value>
+        public double ThicknessScale { get; set; }
 
         /// <summary>
         /// Draws a polyline.
@@ -76,8 +109,8 @@ namespace OxyPlot
             OxyPenLineJoin lineJoin,
             bool aliased)
         {
-            var xckdPoints = this.Xkcdify(points);
-            this.rc.DrawLine(xckdPoints, stroke, thickness, dashArray, lineJoin);
+            var xckdPoints = this.Distort(points);
+            this.rc.DrawLine(xckdPoints, stroke, thickness * this.ThicknessScale, dashArray, lineJoin);
         }
 
         /// <summary>
@@ -99,8 +132,11 @@ namespace OxyPlot
             OxyPenLineJoin lineJoin,
             bool aliased)
         {
-            var xckdPoints = this.Xkcdify(points);
-            this.rc.DrawPolygon(xckdPoints, fill, stroke, thickness, dashArray, lineJoin, aliased);
+            var p = new List<ScreenPoint>(points);
+            p.Add(p[0]);
+
+            var xckdPoints = this.Distort(p);
+            this.rc.DrawPolygon(xckdPoints, fill, stroke, thickness * this.ThicknessScale, dashArray, lineJoin);
         }
 
         /// <summary>
@@ -217,22 +253,24 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets the xkcdified font family name.
+        /// Gets the transformed font family name.
         /// </summary>
         /// <param name="fontFamily">The original font family.</param>
         /// <returns>The actual font family.</returns>
+        // ReSharper disable once UnusedParameter.Local
         private string GetFontFamily(string fontFamily)
         {
-            // google for 'humor-sans.ttf'
-            return "Humor Sans";
+            return this.FontFamily;
         }
 
         /// <summary>
-        /// Xkcdifies the specified points.
+        /// Distorts the specified points.
         /// </summary>
-        /// <param name="points">The points to xkcdify.</param>
-        /// <returns>The xkcdified points.</returns>
-        private ScreenPoint[] Xkcdify(IList<ScreenPoint> points)
+        /// <param name="points">The input points.</param>
+        /// <returns>
+        /// The distorted points.
+        /// </returns>
+        private ScreenPoint[] Distort(IEnumerable<ScreenPoint> points)
         {
             // See the Mathematica / Matplotlib solutions
             // http://jakevdp.github.io/blog/2012/10/07/xkcd-style-plots-in-matplotlib/
@@ -240,19 +278,161 @@ namespace OxyPlot
             // http://mathematica.stackexchange.com/questions/11350/xkcd-style-graphs
             // http://www.mail-archive.com/matplotlib-users@lists.sourceforge.net/msg25499.html
             // http://nbviewer.ipython.org/gist/anonymous/3835181
+            // http://matplotlib.org/xkcd/
+            // http://xkcd.com/
 
-            // TODO: this is where the points should be xkcdified
-            // The following code is just to show that some randomness is working - this must be improved
-            var result = new ScreenPoint[points.Count];
-            double d = 5;
+            // The following code is just to show that some randomness is working - this should be improved
+            IList<ScreenPoint> interpolated = this.Interpolate(points, this.InterpolationDistance).ToArray();
+            var result = new ScreenPoint[interpolated.Count];
+            var randomNumbers = this.GenerateRandomNumbers(interpolated.Count);
+            randomNumbers = this.ApplyMovingAverage(randomNumbers, 5);
+
+            var d = this.DistortionFactor;
             double d2 = d / 2;
-            for (int i = 0; i < points.Count; i++)
+            for (int i = 0; i < interpolated.Count; i++)
             {
-                var delta = new ScreenVector((r.NextDouble() * d) - d2, (r.NextDouble() * d) - d2);
-                result[i] = points[i] + delta;
+                if (i == 0 || i == interpolated.Count - 1)
+                {
+                    result[i] = interpolated[i];
+                    continue;
+                }
+
+                var tangent = interpolated[i + 1] - interpolated[i - 1];
+                tangent.Normalize();
+                var normal = new ScreenVector(tangent.Y, -tangent.X);
+
+                var delta = normal * ((randomNumbers[i] * d) - d2);
+                result[i] = interpolated[i] + delta;
             }
 
             return result;
         }
+
+        /// <summary>
+        /// Generates an array of random numbers.
+        /// </summary>
+        /// <param name="n">The number of numbers to generate.</param>
+        /// <returns>The random numbers.</returns>
+        private double[] GenerateRandomNumbers(int n)
+        {
+            var result = new double[n];
+            for (int i = 0; i < n; i++)
+            {
+                result[i] = this.r.NextDouble();
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Applies a moving average filter to the input values.
+        /// </summary>
+        /// <param name="input">The input values.</param>
+        /// <param name="m">The number of values to average.</param>
+        /// <returns>The filtered values.</returns>
+        private double[] ApplyMovingAverage(IList<double> input, int m)
+        {
+            // http://en.wikipedia.org/wiki/Moving_average
+            int n = input.Count;
+            var result = new double[n];
+            var m2 = m / 2;
+            for (int i = 0; i < n; i++)
+            {
+                var j0 = Math.Max(0, i - m2);
+                var j1 = Math.Min(n - 1, i + m2);
+                for (int j = j0; j <= j1; j++)
+                {
+                    result[i] += input[j];
+                }
+
+                result[i] /= m;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Interpolates the input points.
+        /// </summary>
+        /// <param name="input">The input points.</param>
+        /// <param name="dist">The interpolation distance.</param>
+        /// <returns>The interpolated points.</returns>
+        private IEnumerable<ScreenPoint> Interpolate(IEnumerable<ScreenPoint> input, double dist)
+        {
+            var p0 = default(ScreenPoint);
+            double l = -1;
+            double nl = dist;
+            foreach (var p1 in input)
+            {
+                if (l < 0)
+                {
+                    yield return p1;
+                    p0 = p1;
+                    l = 0;
+                    continue;
+                }
+
+                var dp = p1 - p0;
+                var l1 = dp.Length;
+
+                if (l1 > 0)
+                {
+                    while (nl >= l && nl <= l + l1)
+                    {
+                        var f = (nl - l) / l1;
+                        yield return new ScreenPoint((p0.X * (1 - f)) + (p1.X * f), (p0.Y * (1 - f)) + (p1.Y * f));
+
+                        nl += dist;
+                    }
+                }
+
+                l += l1;
+                p0 = p1;
+            }
+
+            yield return p0;
+        }
+
+        /*
+        private double[] KaiserWindow(int m, double beta)
+        {
+            // http://en.wikipedia.org/wiki/Kaiser_window
+            // http://docs.scipy.org/doc/numpy/reference/generated/numpy.kaiser.html
+            // http://docs.scipy.org/doc/numpy/reference/routines.window.html
+            return null;
+        }
+
+        private double[] FirWin(int nunmtaps, double cutoff)
+        {
+            // http://docs.scipy.org/doc/scipy-0.13.0/reference/generated/scipy.signal.firwin.html
+            // http://www.labbookpages.co.uk/audio/firWindowing.html
+            return null;
+        }
+
+        private static double[] FIR(double[] b, double[] x)
+        {
+            // http://stackoverflow.com/questions/2472093/implementation-of-fir-filter-in-c-sharp
+            int M = b.Length;
+            int n = x.Length;
+            //y[n]=b0x[n]+b1x[n-1]+....bmx[n-M]
+            var y = new double[n];
+            for (int yi = 0; yi < n; yi++)
+            {
+                double t = 0.0;
+                for (int bi = M - 1; bi >= 0; bi--)
+                {
+                    if (yi - bi < 0)
+                    {
+                        continue;
+                    }
+
+                    t += b[bi] * x[yi - bi];
+                }
+
+                y[yi] = t;
+            }
+
+            return y;
+        }*/
     }
 }
