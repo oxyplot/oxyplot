@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Provides functionality to render <see cref="MagnitudeAxis"/>.
+//   Provides functionality to render <see cref="MagnitudeAxis" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

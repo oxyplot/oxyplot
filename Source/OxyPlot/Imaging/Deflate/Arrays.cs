@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Provides utilities for <see cref="Array"/>s.
+//   Provides utilities for <see cref="Array" />s.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

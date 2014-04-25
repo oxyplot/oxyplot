@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represent a slice of a <see cref="PieSeries"/>.
+//   Represent a slice of a <see cref="PieSeries" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

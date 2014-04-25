@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines additional <see cref="Colors"/>.
+//   Defines additional <see cref="Colors" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

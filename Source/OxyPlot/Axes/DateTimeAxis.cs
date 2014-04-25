@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents an axis presenting <see cref="System.DateTime"/> values.
+//   Represents an axis presenting <see cref="System.DateTime" /> values.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

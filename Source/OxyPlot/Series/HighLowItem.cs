@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents an item in a <see cref="HighLowSeries"/>.
+//   Represents an item in a <see cref="HighLowSeries" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
