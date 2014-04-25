@@ -406,7 +406,7 @@ namespace ExampleLibrary
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -10, Maximum = 10 });
             var ta = new TextAnnotation
             {
-                Position = new DataPoint(4, -2),
+                TextPosition = new DataPoint(4, -2),
                 Text = "Click here"
             };
 

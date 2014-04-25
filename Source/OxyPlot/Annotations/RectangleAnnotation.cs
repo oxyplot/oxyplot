@@ -31,7 +31,7 @@
 namespace OxyPlot.Annotations
 {
     /// <summary>
-	/// Represents an annotation that shows a rectangle.
+    /// Represents an annotation that shows a rectangle.
     /// </summary>
     public class RectangleAnnotation : TextualAnnotation
     {
@@ -95,12 +95,6 @@ namespace OxyPlot.Annotations
         public double MaximumY { get; set; }
 
         /// <summary>
-        /// Gets or sets the text rotation (degrees).
-        /// </summary>
-        /// <value>The text rotation in degrees.</value>
-        public double TextRotation { get; set; }
-
-        /// <summary>
         /// Renders the polygon annotation.
         /// </summary>
         /// <param name="rc">The render context.</param>
@@ -131,7 +125,7 @@ namespace OxyPlot.Annotations
 
             if (!string.IsNullOrEmpty(this.Text))
             {
-                var textPosition = this.screenRectangle.Center;
+                var textPosition = this.GetActualTextPosition(() => this.screenRectangle.Center);
                 rc.DrawClippedText(
                     clipping,
                     textPosition,

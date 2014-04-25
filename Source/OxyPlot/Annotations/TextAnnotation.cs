@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="TextAnnotation.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2014 OxyPlot contributors
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -34,7 +34,7 @@ namespace OxyPlot.Annotations
     using System.Collections.Generic;
 
     /// <summary>
-	/// Represents an annotation that shows text.
+    /// Represents an annotation that shows text.
     /// </summary>
     public class TextAnnotation : TextualAnnotation
     {
@@ -52,9 +52,8 @@ namespace OxyPlot.Annotations
             this.Stroke = OxyColors.Black;
             this.Background = OxyColors.Undefined;
             this.StrokeThickness = 1;
-            this.Rotation = 0;
-            this.HorizontalAlignment = HorizontalAlignment.Center;
-            this.VerticalAlignment = VerticalAlignment.Bottom;
+            this.TextRotation = 0;
+            this.TextVerticalAlignment = VerticalAlignment.Bottom;
             this.Padding = new OxyThickness(4);
         }
 
@@ -63,12 +62,6 @@ namespace OxyPlot.Annotations
         /// </summary>
         /// <value>The background.</value>
         public OxyColor Background { get; set; }
-
-        /// <summary>
-        /// Gets or sets the horizontal alignment.
-        /// </summary>
-        /// <value>The horizontal alignment.</value>
-        public HorizontalAlignment HorizontalAlignment { get; set; }
 
         /// <summary>
         /// Gets or sets the position offset (screen coordinates).
@@ -83,17 +76,6 @@ namespace OxyPlot.Annotations
         public OxyThickness Padding { get; set; }
 
         /// <summary>
-        /// Gets or sets the position of the text.
-        /// </summary>
-        public DataPoint Position { get; set; }
-
-        /// <summary>
-        /// Gets or sets the rotation angle (degrees).
-        /// </summary>
-        /// <value>The rotation.</value>
-        public double Rotation { get; set; }
-
-        /// <summary>
         /// Gets or sets the stroke color of the background rectangle.
         /// </summary>
         /// <value>The stroke color.</value>
@@ -106,12 +88,6 @@ namespace OxyPlot.Annotations
         public double StrokeThickness { get; set; }
 
         /// <summary>
-        /// Gets or sets the vertical alignment.
-        /// </summary>
-        /// <value>The vertical alignment.</value>
-        public VerticalAlignment VerticalAlignment { get; set; }
-
-        /// <summary>
         /// Renders the text annotation.
         /// </summary>
         /// <param name="rc">The render context.</param>
@@ -120,7 +96,7 @@ namespace OxyPlot.Annotations
         {
             base.Render(rc, model);
 
-            var position = this.Transform(this.Position) + this.Offset;
+            var position = this.Transform(this.TextPosition) + this.Offset;
 
             var clippingRect = this.GetClippingRect();
 
@@ -129,7 +105,7 @@ namespace OxyPlot.Annotations
             const double MinDistSquared = 4;
 
             this.actualBounds = GetTextBounds(
-                position, textSize, this.Padding, this.Rotation, this.HorizontalAlignment, this.VerticalAlignment);
+                position, textSize, this.Padding, this.TextRotation, this.TextHorizontalAlignment, this.TextVerticalAlignment);
             rc.DrawClippedPolygon(
                 this.actualBounds, clippingRect, MinDistSquared, this.Background, this.Stroke, this.StrokeThickness);
 
@@ -141,9 +117,9 @@ namespace OxyPlot.Annotations
                 this.ActualFont,
                 this.ActualFontSize,
                 this.ActualFontWeight,
-                this.Rotation,
-                this.HorizontalAlignment,
-                this.VerticalAlignment);
+                this.TextRotation,
+                this.TextHorizontalAlignment,
+                this.TextVerticalAlignment);
         }
 
         /// <summary>
