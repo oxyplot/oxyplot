@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Provides unit tests for the <see cref="AxisUtilities"/> class.
+//   Provides unit tests for the <see cref="AxisUtilities" /> class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

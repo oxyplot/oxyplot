@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents a polygon annotation.
+//   Represents an annotation that shows a polygon.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

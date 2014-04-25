@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Provides functionality to export plots to scalable vector graphics using <see cref="Graphics"/> for text measuring.
+//   Provides functionality to export plots to scalable vector graphics using <see cref="Graphics" /> for text measuring.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

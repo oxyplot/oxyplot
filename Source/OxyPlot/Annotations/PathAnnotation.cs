@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Provides an abstract base class for all annotations that are shown as paths (lines, functions or polylines).
+//   Provides an abstract base class for all annotations that contain paths (lines, functions or polylines).
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

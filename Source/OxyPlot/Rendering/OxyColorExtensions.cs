@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Provides extension methods for <see cref="OxyColor"/>.
+//   Provides extension methods for <see cref="OxyColor" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

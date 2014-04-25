@@ -76,7 +76,6 @@ namespace OxyPlot.Wpf
             DependencyProperty.Register(
                 "StrokeThickness", typeof(double), typeof(PolygonAnnotation), new PropertyMetadata(1.0, AppearanceChanged));
 
-
         /// <summary>
         /// Initializes static members of the <see cref="PolygonAnnotation"/> class.
         /// </summary>
@@ -84,7 +83,7 @@ namespace OxyPlot.Wpf
         {
             TextColorProperty.OverrideMetadata(typeof(PolygonAnnotation), new FrameworkPropertyMetadata(MoreColors.Automatic, AppearanceChanged));
         }
-        
+
         /// <summary>
         /// Initializes a new instance of the <see cref = "PolygonAnnotation" /> class.
         /// </summary>

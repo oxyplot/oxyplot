@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents a font that can be used in a <see cref="PortableDocument"/>.
+//   Represents a font that can be used in a <see cref="PortableDocument" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

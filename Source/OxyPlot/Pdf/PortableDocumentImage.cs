@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents an image that can be included in a <see cref="PortableDocument"/>.
+//   Represents an image that can be included in a <see cref="PortableDocument" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

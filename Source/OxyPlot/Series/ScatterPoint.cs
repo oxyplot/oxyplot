@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents a point in a <see cref="ScatterSeries"/>.
+//   Represents a point in a <see cref="ScatterSeries" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

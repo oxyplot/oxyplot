@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Provides a <see cref="BitReader"/> based on a <see cref="string"/> of bits.
+//   Provides a <see cref="BitReader" /> based on a <see cref="string" /> of bits.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

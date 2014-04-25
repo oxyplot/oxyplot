@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents a line annotation defined
+//   Represents an annotation that shows a function rendered as a path.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
