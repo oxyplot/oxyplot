@@ -886,8 +886,8 @@ Global
 		{471608AE-E59E-44E3-9158-573686A4366C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{471608AE-E59E-44E3-9158-573686A4366C}.Release|ARM.ActiveCfg = Release|ARM
 		{471608AE-E59E-44E3-9158-573686A4366C}.Release|ARM.Build.0 = Release|ARM
-		{471608AE-E59E-44E3-9158-573686A4366C}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{471608AE-E59E-44E3-9158-573686A4366C}.Release|Mixed Platforms.Build.0 = Release|x86
+		{471608AE-E59E-44E3-9158-573686A4366C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{471608AE-E59E-44E3-9158-573686A4366C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{471608AE-E59E-44E3-9158-573686A4366C}.Release|x64.ActiveCfg = Release|Any CPU
 		{471608AE-E59E-44E3-9158-573686A4366C}.Release|x86.ActiveCfg = Release|x86
 		{471608AE-E59E-44E3-9158-573686A4366C}.Release|x86.Build.0 = Release|x86
