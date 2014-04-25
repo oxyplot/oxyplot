@@ -78,6 +78,14 @@ namespace OxyPlot.Wpf
             "Y", typeof(double), typeof(EllipseAnnotation), new PropertyMetadata(0.0, DataChanged));
 
         /// <summary>
+        /// Initializes static members of the <see cref="EllipseAnnotation"/> class.
+        /// </summary>
+        static EllipseAnnotation()
+        {
+            TextColorProperty.OverrideMetadata(typeof(EllipseAnnotation), new FrameworkPropertyMetadata(MoreColors.Automatic, AppearanceChanged));
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="EllipseAnnotation" /> class.
         /// </summary>
         public EllipseAnnotation()

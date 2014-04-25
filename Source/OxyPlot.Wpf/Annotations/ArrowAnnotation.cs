@@ -100,6 +100,14 @@ namespace OxyPlot.Wpf
             "Veeness", typeof(double), typeof(ArrowAnnotation), new PropertyMetadata(0.0, AppearanceChanged));
 
         /// <summary>
+        /// Initializes static members of the <see cref="ArrowAnnotation"/> class.
+        /// </summary>
+        static ArrowAnnotation()
+        {
+            TextColorProperty.OverrideMetadata(typeof(ArrowAnnotation), new FrameworkPropertyMetadata(MoreColors.Automatic, AppearanceChanged));
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref = "ArrowAnnotation" /> class.
         /// </summary>
         public ArrowAnnotation()

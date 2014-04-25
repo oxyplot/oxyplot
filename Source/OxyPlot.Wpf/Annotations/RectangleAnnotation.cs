@@ -90,6 +90,14 @@ namespace OxyPlot.Wpf
             "MinimumY", typeof(double), typeof(RectangleAnnotation), new PropertyMetadata(double.MinValue, DataChanged));
 
         /// <summary>
+        /// Initializes static members of the <see cref="RectangleAnnotation"/> class.
+        /// </summary>
+        static RectangleAnnotation()
+        {
+            TextColorProperty.OverrideMetadata(typeof(RectangleAnnotation), new FrameworkPropertyMetadata(MoreColors.Automatic, AppearanceChanged));
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="RectangleAnnotation" /> class.
         /// </summary>
         public RectangleAnnotation()
