@@ -1250,7 +1250,7 @@ namespace OxyPlot
         {
             if (key != null)
             {
-                return this.Axes.FirstOrDefault(a => a.Key == key) ?? defaultAxis;
+                return this.Axes.FirstOrDefault(a => a.Key == key);
             }
 
             return defaultAxis;

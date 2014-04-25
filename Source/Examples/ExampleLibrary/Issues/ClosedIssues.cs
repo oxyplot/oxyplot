@@ -279,5 +279,33 @@ namespace ExampleLibrary
 
             return model;
         }
+
+        [Example("#10184: ScatterSeries and LinearColorAxis on the same plot")]
+        public static PlotModel ScatterSeriesAndLinearColorAxis()
+        {
+            var plotModel = new PlotModel { Title = "ScatterSeries and LinearColorAxis on the same plot" };
+            int npoints = 100;
+            var random = new Random();
+
+            var scatterSeries = new ScatterSeries { ColorAxisKey = string.Empty };
+            for (var i = 0; i < npoints; i++)
+            {
+                scatterSeries.Points.Add(new ScatterPoint((double)i / npoints, random.NextDouble()));
+            }
+
+            plotModel.Series.Add(scatterSeries);
+
+            var lineSeries = new LineSeries();
+            for (var i = 0; i < npoints; i++)
+            {
+                lineSeries.Points.Add(new DataPoint((double)i / npoints, random.NextDouble()));
+            }
+
+            plotModel.Series.Add(lineSeries);
+
+            var hmLegendAxis = new LinearColorAxis();
+            plotModel.Axes.Add(hmLegendAxis);
+            return plotModel;
+        }
     }
 }
