@@ -28,6 +28,7 @@
 namespace ExampleLibrary
 {
     using System;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
 
@@ -72,11 +73,117 @@ namespace ExampleLibrary
             var s1 = new TSeries { Title = "Series 1" };
             var s2 = new TSeries { Title = "Series 2" };
             var categoryAxis = new CategoryAxis { Position = CategoryAxisPosition() };
-            var valueAxis = new LinearAxis { Position = ValueAxisPosition() };
+            var valueAxis = new LinearAxis { Position = ValueAxisPosition(), MinimumPadding = 0 };
             model.Series.Add(s1);
             model.Series.Add(s2);
             model.Axes.Add(categoryAxis);
             model.Axes.Add(valueAxis);
+            return model;
+        }
+
+        [Example("No category axis defined")]
+        public static PlotModel NoCategoryAxisDefined()
+        {
+            var model = new PlotModel { Title = "No category axis defined" };
+
+            var s1 = new TSeries { Title = "Series 1", ItemsSource = new[] { new TItem { Value = 25 }, new TItem { Value = 137 } } };
+            var s2 = new TSeries { Title = "Series 2", ItemsSource = new[] { new TItem { Value = 52 }, new TItem { Value = 317 } } };
+            var valueAxis = new LinearAxis { Position = ValueAxisPosition(), MinimumPadding = 0 };
+            model.Series.Add(s1);
+            model.Series.Add(s2);
+            model.Axes.Add(valueAxis);
+            return model;
+        }
+
+        [Example("Binding to ItemsSource")]
+        public static PlotModel BindingItemsSource()
+        {
+            var items = new Collection<Item>
+                            {
+                                new Item { Label = "Apples", Value1 = 37, Value2 = 12, Value3 = 19 },
+                                new Item { Label = "Pears", Value1 = 7, Value2 = 21, Value3 = 9 },
+                                new Item { Label = "Bananas", Value1 = 23, Value2 = 2, Value3 = 29 }
+                            };
+
+            var plotModel1 = new PlotModel { LegendPlacement = LegendPlacement.Outside, Title = "Binding to ItemsSource" };
+            var categoryAxis1 = new CategoryAxis { Position = CategoryAxisPosition(), LabelField = "Label", ItemsSource = items, MajorStep = 1, MinorStep = 1 };
+            plotModel1.Axes.Add(categoryAxis1);
+            var linearAxis1 = new LinearAxis { Position = ValueAxisPosition(), AbsoluteMinimum = 0, MinimumPadding = 0 };
+            plotModel1.Axes.Add(linearAxis1);
+            var series1 = new TSeries
+            {
+                FillColor = OxyColor.FromArgb(255, 78, 154, 6),
+                ValueField = "Value1",
+                Title = "2009",
+                ItemsSource = items
+            };
+            plotModel1.Series.Add(series1);
+            var series2 = new TSeries
+            {
+                FillColor = OxyColor.FromArgb(255, 200, 141, 0),
+                ValueField = "Value2",
+                Title = "2010",
+                ItemsSource = items
+            };
+            plotModel1.Series.Add(series2);
+            var series3 = new TSeries
+            {
+                FillColor = OxyColor.FromArgb(255, 204, 0, 0),
+                ValueField = "Value3",
+                Title = "2011",
+                ItemsSource = items
+            };
+            plotModel1.Series.Add(series3);
+            return plotModel1;
+        }
+
+        [Example("Binding to ItemsSource (array)")]
+        public static PlotModel BindingToItemsSourceArray()
+        {
+            var model = new PlotModel { Title = "Binding to ItemsSource", Subtitle = "The items are defined by an array of BarItem/ColumnItem" };
+            model.Series.Add(new TSeries { Title = "Series 1", ItemsSource = new[] { new TItem { Value = 25 }, new TItem { Value = 137 } } });
+            model.Series.Add(new TSeries { Title = "Series 2", ItemsSource = new[] { new TItem { Value = 52 }, new TItem { Value = 317 } } });
+            model.Axes.Add(new CategoryAxis { Position = CategoryAxisPosition() });
+            model.Axes.Add(new LinearAxis { Position = ValueAxisPosition(), MinimumPadding = 0 });
+            return model;
+        }
+
+        [Example("Binding to ItemsSource (list)")]
+        public static PlotModel BindingToItemsSourceListT()
+        {
+            var model = new PlotModel { Title = "Binding to ItemsSource", Subtitle = "The items are defined by a List of BarItem/ColumnItem" };
+            model.Series.Add(new TSeries { Title = "Series 1", ItemsSource = new List<TItem>(new[] { new TItem { Value = 25 }, new TItem { Value = 137 } }) });
+            model.Series.Add(new TSeries { Title = "Series 2", ItemsSource = new List<TItem>(new[] { new TItem { Value = 52 }, new TItem { Value = 317 } }) });
+            model.Axes.Add(new CategoryAxis { Position = CategoryAxisPosition() });
+            model.Axes.Add(new LinearAxis { Position = ValueAxisPosition(), MinimumPadding = 0 });
+            return model;
+        }
+
+        [Example("Binding to ItemsSource (reflection)")]
+        public static PlotModel BindingToItemsSourceReflection()
+        {
+            var model = new PlotModel { Title = "Binding to ItemsSource", Subtitle = "Reflect by 'ValueField'" };
+            model.Series.Add(new TSeries { Title = "Series 1", ValueField = "Value1", ItemsSource = new[] { new Item { Value1 = 25 }, new Item { Value1 = 137 } } });
+            model.Series.Add(new TSeries { Title = "Series 2", ValueField = "Value1", ItemsSource = new[] { new Item { Value1 = 52 }, new Item { Value1 = 317 } } });
+            model.Axes.Add(new CategoryAxis { Position = CategoryAxisPosition() });
+            model.Axes.Add(new LinearAxis { Position = ValueAxisPosition(), MinimumPadding = 0 });
+            return model;
+        }
+
+        [Example("Defined by Items")]
+        public static PlotModel DefinedByItems()
+        {
+            var model = new PlotModel { Title = "Defined by Items", Subtitle = "The items are added to the `Items` property." };
+
+            var s1 = new TSeries { Title = "Series 1" };
+            s1.Items.AddRange(new[] { new TItem { Value = 25 }, new TItem { Value = 137 } });
+            var s2 = new TSeries { Title = "Series 2" };
+            s2.Items.AddRange(new[] { new TItem { Value = 52 }, new TItem { Value = 317 } });
+            model.Series.Add(s1);
+            model.Series.Add(s2);
+
+            model.Axes.Add(new CategoryAxis { Position = CategoryAxisPosition() });
+            model.Axes.Add(new LinearAxis { Position = ValueAxisPosition(), MinimumPadding = 0 });
             return model;
         }
 
@@ -298,49 +405,6 @@ namespace ExampleLibrary
             public double Value1 { get; set; }
             public double Value2 { get; set; }
             public double Value3 { get; set; }
-        }
-
-        [Example("Binding to ItemsSource")]
-        public static PlotModel BindingItemsSource()
-        {
-            // The items
-            var items = new Collection<Item>
-                            {
-                                new Item { Label = "Apples", Value1 = 37, Value2 = 12, Value3 = 19 },
-                                new Item { Label = "Pears", Value1 = 7, Value2 = 21, Value3 = 9 },
-                                new Item { Label = "Bananas", Value1 = 23, Value2 = 2, Value3 = 29 }
-                            };
-
-            var plotModel1 = new PlotModel { LegendPlacement = LegendPlacement.Outside, Title = "Binding to ItemsSource" };
-            var categoryAxis1 = new CategoryAxis { Position = CategoryAxisPosition(), LabelField = "Label", ItemsSource = items, MajorStep = 1, MinorStep = 1 };
-            plotModel1.Axes.Add(categoryAxis1);
-            var linearAxis1 = new LinearAxis { Position = ValueAxisPosition(), AbsoluteMinimum = 0, MinimumPadding = 0 };
-            plotModel1.Axes.Add(linearAxis1);
-            var series1 = new TSeries
-                {
-                    FillColor = OxyColor.FromArgb(255, 78, 154, 6),
-                    ValueField = "Value1",
-                    Title = "2009",
-                    ItemsSource = items
-                };
-            plotModel1.Series.Add(series1);
-            var series2 = new TSeries
-                {
-                    FillColor = OxyColor.FromArgb(255, 200, 141, 0),
-                    ValueField = "Value2",
-                    Title = "2010",
-                    ItemsSource = items
-                };
-            plotModel1.Series.Add(series2);
-            var series3 = new TSeries
-                {
-                    FillColor = OxyColor.FromArgb(255, 204, 0, 0),
-                    ValueField = "Value3",
-                    Title = "2011",
-                    ItemsSource = items
-                };
-            plotModel1.Series.Add(series3);
-            return plotModel1;
         }
 
         public class HistogramBin
