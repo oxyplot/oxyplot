@@ -1,0 +1,47 @@
+body {
+    font-family: Helvetica, Arial;
+    font-size: 0.8em;
+    max-width:60em;
+}
+
+h1, h2 {
+    font-weight: bold;
+    color: #5aa5c8;
+}
+
+h1 {
+    font-size: 2em;
+}
+
+h2 {
+    font-size: 1.6em;
+}
+
+h3 {
+    font-size: 1.2em;
+}
+
+.example {
+  width:140px;
+  height:110px;
+  text-align:center;
+  padding: 2pt;
+  margin: 4pt 4pt 10pt 4pt;
+  display: inline-block;
+}
+
+.example img {
+  max-height:90px;
+  max-width: 160px;
+}
+  
+header {
+    border-bottom: solid 1px gray;
+}
+
+footer {
+    color: gray;
+    margin-top: 1em;
+    padding-top: 0.2em;
+    border-top: solid 1px gray;
+}

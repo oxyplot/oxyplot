@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot", "..\..\..\Source\OxyPlot\OxyPlot.csproj", "{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.XamarinAndroid", "..\..\..\Source\OxyPlot.XamarinAndroid\OxyPlot.XamarinAndroid.csproj", "{E965BA32-9561-4E2A-ADB0-19487B25A939}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlotSample", "OxyPlotSample\OxyPlotSample.csproj", "{D1F615E8-0DE7-4CC1-B092-B7DF669ECA46}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlotSample.Android", "OxyPlotSample.Android\OxyPlotSample.Android.csproj", "{55A89843-F424-4B77-B18E-9730ED3CBC15}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{55A89843-F424-4B77-B18E-9730ED3CBC15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55A89843-F424-4B77-B18E-9730ED3CBC15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55A89843-F424-4B77-B18E-9730ED3CBC15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55A89843-F424-4B77-B18E-9730ED3CBC15}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1F615E8-0DE7-4CC1-B092-B7DF669ECA46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1F615E8-0DE7-4CC1-B092-B7DF669ECA46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1F615E8-0DE7-4CC1-B092-B7DF669ECA46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1F615E8-0DE7-4CC1-B092-B7DF669ECA46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E965BA32-9561-4E2A-ADB0-19487B25A939}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E965BA32-9561-4E2A-ADB0-19487B25A939}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E965BA32-9561-4E2A-ADB0-19487B25A939}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E965BA32-9561-4E2A-ADB0-19487B25A939}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = OxyPlotSample.Android\OxyPlotSample.Android.csproj
+	EndGlobalSection
+EndGlobal

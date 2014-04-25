@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleGenerator", "ExampleGenerator.csproj", "{FE37EF85-360E-46BA-95D5-3A336F70297A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot", "..\..\..\OxyPlot\OxyPlot.csproj", "{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.WindowsForms", "..\..\..\OxyPlot.WindowsForms\OxyPlot.WindowsForms.csproj", "{8BC521AD-81CF-4E6C-8898-BE67527E7064}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FE37EF85-360E-46BA-95D5-3A336F70297A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE37EF85-360E-46BA-95D5-3A336F70297A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE37EF85-360E-46BA-95D5-3A336F70297A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE37EF85-360E-46BA-95D5-3A336F70297A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BC521AD-81CF-4E6C-8898-BE67527E7064}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BC521AD-81CF-4E6C-8898-BE67527E7064}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BC521AD-81CF-4E6C-8898-BE67527E7064}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BC521AD-81CF-4E6C-8898-BE67527E7064}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
