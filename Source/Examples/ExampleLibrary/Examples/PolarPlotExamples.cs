@@ -204,12 +204,16 @@ namespace ExampleLibrary
             return model;
         }
 
-        [Example("Zero at bottom")]
-        public static PlotModel ZeroDegreesAtBottom()
+        /// <summary>
+        /// Shows how to orient 0 degrees at the bottom and add E/W to indicate directions.
+        /// </summary>
+        /// <returns></returns>
+        [Example("East/west directions")]
+        public static PlotModel EastWestDirections()
         {
             var model = new PlotModel
             {
-                Title = "Zonal wind",
+                Title = "East/west directions",
                 PlotType = PlotType.Polar,
                 PlotAreaBorderThickness = 0,
                 PlotMargins = new OxyThickness(60, 20, 4, 40)
