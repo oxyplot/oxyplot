@@ -122,8 +122,15 @@ namespace ExampleLibrary
                 var increment = 0d;
 
                 // Increment and decrement must be in degrees (corresponds to the StartAngle and EndAngle properties).
-                if (e.ChangedButton == OxyMouseButton.Left) increment = 15;
-                if (e.ChangedButton == OxyMouseButton.Right) increment = -15;
+                if (e.ChangedButton == OxyMouseButton.Left)
+                {
+                    increment = 15;
+                }
+
+                if (e.ChangedButton == OxyMouseButton.Right)
+                {
+                    increment = -15;
+                }
 
                 if (Math.Abs(increment) > double.Epsilon)
                 {

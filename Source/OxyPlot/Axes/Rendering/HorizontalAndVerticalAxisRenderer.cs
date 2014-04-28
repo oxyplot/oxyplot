@@ -125,7 +125,7 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Snaps v to value if it is within the the specified distance.
+        /// Snaps v to value if it is within the specified distance.
         /// </summary>
         /// <param name="target">The target value.</param>
         /// <param name="v">The value to snap.</param>
