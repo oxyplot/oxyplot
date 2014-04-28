@@ -248,5 +248,13 @@ namespace ExampleLibrary
 
             return plotModel1;
         }
+
+        [Example("#10188: MinorStep should not be MajorStep/5 when MajorStep is 2")]
+        public static PlotModel MinorTicks()
+        {
+            var plotModel1 = new PlotModel { Title = "Issue 10117" };
+            plotModel1.Axes.Add(new LinearAxis { Minimum = 0, Maximum = 16 });
+            return plotModel1;
+        }
     }
 }
