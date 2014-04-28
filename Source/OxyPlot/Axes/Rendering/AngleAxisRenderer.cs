@@ -133,7 +133,7 @@ namespace OxyPlot.Axes
                 if (Math.Abs(Math.Abs(angle) - 90) < 10)
                 {
                     ha = HorizontalAlignment.Center;
-                    va = angle > 90 ? VerticalAlignment.Top : VerticalAlignment.Bottom;
+                    va = angle >= 90 ? VerticalAlignment.Top : VerticalAlignment.Bottom;
                     angle = 0;
                 }
                 else if (angle > 90 || angle < -90)
