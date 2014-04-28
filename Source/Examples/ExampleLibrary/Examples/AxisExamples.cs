@@ -1039,5 +1039,34 @@ namespace ExampleLibrary
             plotModel.Series.Add(new FunctionSeries(Math.Cos, 0, 10, 400));
             return plotModel;
         }
+
+        /// <summary>
+        /// Shows usage of the <see cref="Axis.LabelFormatter" /> property.
+        /// </summary>
+        /// <returns>The <see cref="PlotModel" /> for the example.</returns>
+        [Example("LabelFormatter")]
+        public static PlotModel LabelFormatter()
+        {
+            var plotModel = new PlotModel { Title = "LabelFormatter" };
+            plotModel.Axes.Add(new LinearAxis
+            {
+                Position = AxisPosition.Bottom,
+                Minimum = -10,
+                Maximum = 10,
+                LabelFormatter = x => Math.Abs(x) < double.Epsilon ? "ZERO" : x.ToString()
+            });
+            plotModel.Axes.Add(new LinearAxis
+            {
+                Position = AxisPosition.Left,
+                Minimum = 0,
+                Maximum = 25,
+                MajorStep = 1,
+                MinorStep = 1,
+                MaximumPadding = 0,
+                MinimumPadding = 0,
+                LabelFormatter = y => ((char)(y + 'A')).ToString()
+            });
+            return plotModel;
+        }
     }
 }
