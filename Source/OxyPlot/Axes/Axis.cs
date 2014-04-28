@@ -344,6 +344,12 @@ namespace OxyPlot.Axes
         public string Key { get; set; }
 
         /// <summary>
+        /// Gets or sets the formatting function for the labels.
+        /// </summary>
+        /// <rermarks>This function can be used instead of overriding the <see cref="FormatValue" /> method.</rermarks>
+        public Func<double, string> LabelFormatter { get; set; }
+
+        /// <summary>
         /// Gets or sets the layer.
         /// </summary>
         /// <value>The layer.</value>
@@ -581,7 +587,9 @@ namespace OxyPlot.Axes
         public string Unit { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to use superscript exponential format. This format will convert 1.5E+03 to 1.5·10^{3} and render the superscript properly If StringFormat is <c>null</c>, 1.0E+03 will be converted to 10^{3}
+        /// Gets or sets a value indicating whether to use superscript exponential format. 
+        /// This format will convert 1.5E+03 to 1.5·10^{3} and render the superscript properly.
+        /// If <see cref="StringFormat" /> is <c>null</c>, 1.0E+03 will be converted to 10^{3}, otherwise it will use the format string for the mantissa.
         /// </summary>
         public bool UseSuperExponentialFormat { get; set; }
 
@@ -738,6 +746,11 @@ namespace OxyPlot.Axes
         /// <returns>The formatted value.</returns>
         public virtual string FormatValue(double x)
         {
+            if (this.LabelFormatter != null)
+            {
+                return this.LabelFormatter(x);
+            }
+
             // The "SuperExponentialFormat" renders the number with superscript exponents. E.g. 10^2
             if (this.UseSuperExponentialFormat && !x.Equals(0))
             {

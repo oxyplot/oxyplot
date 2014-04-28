@@ -211,6 +211,12 @@ namespace OxyPlot.Wpf
             "Key", typeof(string), typeof(Axis), new PropertyMetadata(null, DataChanged));
 
         /// <summary>
+        /// Identifies the <see cref="LabelFormatter"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty LabelFormatterProperty = DependencyProperty.Register(
+            "LabelFormatter", typeof(Func<double, string>), typeof(Axis), new PropertyMetadata(null, AppearanceChanged));
+
+        /// <summary>
         /// Identifies the <see cref="Layer"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LayerProperty = DependencyProperty.Register(
@@ -864,7 +870,23 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets Layer.
+        /// Gets or sets the label formatter.
+        /// </summary>
+        public Func<double, string> LabelFormatter
+        {
+            get
+            {
+                return (Func<double, string>)this.GetValue(LabelFormatterProperty);
+            }
+
+            set
+            {
+                this.SetValue(LabelFormatterProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the layer.
         /// </summary>
         public Axes.AxisLayer Layer
         {
@@ -1551,6 +1573,7 @@ namespace OxyPlot.Wpf
             a.TitlePosition = this.TitlePosition;
             a.Unit = this.Unit;
             a.UseSuperExponentialFormat = this.UseSuperExponentialFormat;
+            a.LabelFormatter = this.LabelFormatter;
         }
     }
 }
