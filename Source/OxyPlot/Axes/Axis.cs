@@ -467,11 +467,6 @@ namespace OxyPlot.Axes
         public int PositionTier { get; set; }
 
         /// <summary>
-        /// Gets or sets the related axis. This is used for polar coordinate systems where the angle and magnitude axes are related.
-        /// </summary>
-        public Axis RelatedAxis { get; set; }
-
-        /// <summary>
         /// Gets or sets the scaling factor of the axis. This is used to transform between data and screen coordinates.
         /// </summary>
         public double Scale

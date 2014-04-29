@@ -60,10 +60,6 @@ namespace OxyPlot.Axes
             base.Render(axis, pass);
 
             var angleAxis = this.Plot.DefaultAngleAxis;
-            if (axis.RelatedAxis != null)
-            {
-                angleAxis = axis.RelatedAxis as AngleAxis;
-            }
 
             if (angleAxis == null)
             {

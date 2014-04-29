@@ -61,10 +61,6 @@ namespace OxyPlot.Axes
             base.Render(axis, pass);
 
             var magnitudeAxis = this.Plot.DefaultMagnitudeAxis;
-            if (axis.RelatedAxis != null)
-            {
-                magnitudeAxis = axis.RelatedAxis as MagnitudeAxis;
-            }
 
             if (magnitudeAxis == null)
             {
