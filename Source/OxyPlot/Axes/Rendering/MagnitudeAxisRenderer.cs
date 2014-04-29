@@ -74,7 +74,7 @@ namespace OxyPlot.Axes
 
             var majorTicks = MajorTickValues.Where(x => x > axis.ActualMinimum && x <= axis.ActualMaximum).ToArray();
 
-            if (pass == 0 && axis.ShowMinorTicks && this.MinorPen != null)
+            if (pass == 0 && this.MinorPen != null)
             {
                 var minorTicks = MinorTickValues.Where(x => x >= axis.ActualMinimum && x <= axis.ActualMaximum && !majorTicks.Contains(x)).ToArray();
 

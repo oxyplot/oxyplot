@@ -76,7 +76,7 @@ namespace OxyPlot.Axes
 
             var axisLength = Math.Abs(scaledEndAngle - scaledStartAngle);
             var eps = axis.MinorStep * 1e-3;
-            if (axis.ShowMinorTicks && this.MinorPen != null)
+            if (this.MinorPen != null)
             {
                 var tickCount = Math.Abs((int)(axisLength / axis.ActualMinorStep));
                 var screenPoints = this.MinorTickValues

@@ -109,8 +109,6 @@ namespace OxyPlot.Axes
             this.ExtraGridlineColor = OxyColors.Black;
             this.ExtraGridlineThickness = 1;
 
-            this.ShowMinorTicks = true;
-
             this.MinorTickSize = 4;
             this.MajorTickSize = 7;
 
@@ -502,7 +500,19 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Gets or sets a value indicating whether minor ticks should be shown. The default value is <c>true</c>.
         /// </summary>
-        public bool ShowMinorTicks { get; set; }
+        [Obsolete("Set MinorTickSize = 0 instead")]
+        public bool ShowMinorTicks
+        {
+            get
+            {
+                return this.MinorTickSize > 0;
+            }
+
+            set
+            {
+                this.MinorTickSize = value ? 4 : 0;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the start position of the axis on the plot area. The default value is <c>0</c>.
