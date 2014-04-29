@@ -44,12 +44,16 @@ namespace ExampleLibrary
         [Example("#9971: Don't show minor ticks")]
         public static PlotModel DontShowMinorTicks()
         {
-            var model = new PlotModel { Title = "ShowMinorTicks = false" };
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, ShowMinorTicks = false });
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, ShowMinorTicks = false });
+            var model = new PlotModel { Title = "MinorTickSize = 0" };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, MinorTickSize = 0, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Solid });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, MinorTickSize = 0, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Solid });
             return model;
         }
 
+        /// <summary>
+        /// Grids the lines both different colors.
+        /// </summary>
+        /// <returns></returns>
         [Example("#9990: Major grid lines in front of minor")]
         public static PlotModel GridLinesBothDifferentColors()
         {

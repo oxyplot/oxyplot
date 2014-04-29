@@ -350,12 +350,6 @@ namespace OxyPlot.Wpf
             "PositionTier", typeof(int), typeof(Axis), new PropertyMetadata(0, AppearanceChanged));
 
         /// <summary>
-        /// Identifies the <see cref="ShowMinorTicks"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty ShowMinorTicksProperty = DependencyProperty.Register(
-            "ShowMinorTicks", typeof(bool), typeof(Axis), new PropertyMetadata(true, AppearanceChanged));
-
-        /// <summary>
         /// Identifies the <see cref="StartPosition"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty StartPositionProperty = DependencyProperty.Register(
@@ -1191,22 +1185,6 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to show minor ticks.
-        /// </summary>
-        public bool ShowMinorTicks
-        {
-            get
-            {
-                return (bool)this.GetValue(ShowMinorTicksProperty);
-            }
-
-            set
-            {
-                this.SetValue(ShowMinorTicksProperty, value);
-            }
-        }
-
-        /// <summary>
         /// Gets or sets the start position.
         /// </summary>
         public double StartPosition
@@ -1556,8 +1534,6 @@ namespace OxyPlot.Wpf
             a.Position = this.Position;
             a.PositionTier = this.PositionTier;
             a.PositionAtZeroCrossing = this.PositionAtZeroCrossing;
-            //// a.RelatedAxis = this.RelatedAxis;
-            a.ShowMinorTicks = this.ShowMinorTicks;
             a.StartPosition = this.StartPosition;
             a.StringFormat = this.StringFormat;
             a.TicklineColor = this.TicklineColor.ToOxyColor();
