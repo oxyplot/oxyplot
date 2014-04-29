@@ -424,18 +424,13 @@ namespace OxyPlot.Axes
         public double MinorTickSize { get; set; }
 
         /// <summary>
-        /// Gets or sets the offset. This is used to transform between data and screen coordinates.
+        /// Gets the offset. This is used to transform between data and screen coordinates.
         /// </summary>
         public double Offset
         {
             get
             {
                 return this.offset;
-            }
-
-            protected set
-            {
-                this.offset = value;
             }
         }
 
@@ -467,18 +462,13 @@ namespace OxyPlot.Axes
         public int PositionTier { get; set; }
 
         /// <summary>
-        /// Gets or sets the scaling factor of the axis. This is used to transform between data and screen coordinates.
+        /// Gets the scaling factor of the axis. This is used to transform between data and screen coordinates.
         /// </summary>
         public double Scale
         {
             get
             {
                 return this.scale;
-            }
-
-            protected set
-            {
-                this.scale = value;
             }
         }
 
