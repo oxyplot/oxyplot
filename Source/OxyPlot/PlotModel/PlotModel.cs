@@ -222,11 +222,6 @@ namespace OxyPlot
         internal static readonly OxyColor DefaultSelectionColor = OxyColors.Yellow;
 
         /// <summary>
-        /// The default font.
-        /// </summary>
-        private const string PrivateDefaultFont = "Segoe UI";
-
-        /// <summary>
         /// The synchronization root object.
         /// </summary>
         private readonly object syncRoot = new object();
@@ -264,7 +259,7 @@ namespace OxyPlot
             this.TitleColor = OxyColors.Automatic;
             this.SubtitleColor = OxyColors.Automatic;
 
-            this.DefaultFont = PrivateDefaultFont;
+            this.DefaultFont = "Segoe UI";
             this.DefaultFontSize = 12;
 
             this.TitleFont = null;
