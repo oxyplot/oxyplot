@@ -502,6 +502,7 @@ namespace OxyPlot.Axes
                     axis.Transform(actualMaximum),
                     this.AxislinePen);
             }
+
             if (this.MajorPen != null)
             {
                 this.RenderContext.DrawLineSegments(majorSegments, this.MajorPen);
