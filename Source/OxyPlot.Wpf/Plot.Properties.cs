@@ -30,6 +30,8 @@
 
 namespace OxyPlot.Wpf
 {
+    using System;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Globalization;
     using System.Windows;
@@ -221,6 +223,96 @@ namespace OxyPlot.Wpf
                 new PropertyMetadata(LegendSymbolPlacement.Left, AppearanceChanged));
 
         /// <summary>
+        /// Identifies the <see cref="SelectionColor"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty SelectionColorProperty = DependencyProperty.Register(
+            "SelectionColor", typeof(Color), typeof(Plot), new PropertyMetadata(Colors.Yellow, AppearanceChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="RenderingDecorator"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty RenderingDecoratorProperty = DependencyProperty.Register(
+            "RenderingDecorator", typeof(Func<IRenderContext, IRenderContext>), typeof(Plot), new PropertyMetadata(null, AppearanceChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="SubtitleFont"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty SubtitleFontProperty = DependencyProperty.Register(
+            "SubtitleFont", typeof(string), typeof(Plot), new PropertyMetadata(null, AppearanceChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="TitleColor"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty TitleColorProperty = DependencyProperty.Register(
+            "TitleColor", typeof(Color), typeof(Plot), new PropertyMetadata(MoreColors.Automatic, AppearanceChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="SubtitleColor"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty SubtitleColorProperty = DependencyProperty.Register(
+            "SubtitleColor", typeof(Color), typeof(Plot), new PropertyMetadata(MoreColors.Automatic, AppearanceChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="DefaultFont"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty DefaultFontProperty = DependencyProperty.Register(
+            "DefaultFont", typeof(string), typeof(Plot), new PropertyMetadata("Segoe UI", AppearanceChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="DefaultFontSize"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty DefaultFontSizeProperty = DependencyProperty.Register(
+            "DefaultFontSize", typeof(double), typeof(Plot), new PropertyMetadata(12d, AppearanceChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="DefaultColors"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty DefaultColorsProperty = DependencyProperty.Register(
+            "DefaultColors",
+            typeof(IList<Color>),
+            typeof(Plot),
+            new PropertyMetadata(
+                new[] 
+            {  
+                Color.FromRgb(0x4E, 0x9A, 0x06),
+                    Color.FromRgb(0xC8, 0x8D, 0x00),
+                    Color.FromRgb(0xCC, 0x00, 0x00),
+                    Color.FromRgb(0x20, 0x4A, 0x87),
+                    Colors.Red,
+                    Colors.Orange,
+                    Colors.Yellow,
+                    Colors.Green,
+                    Colors.Blue,
+                    Colors.Indigo,
+                    Colors.Violet
+            },
+                    AppearanceChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="AxisTierDistance"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty AxisTierDistanceProperty = DependencyProperty.Register(
+            "AxisTierDistance", typeof(double), typeof(Plot), new PropertyMetadata(4d, AppearanceChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="LegendTextColor"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty LegendTextColorProperty = DependencyProperty.Register(
+            "LegendTextColor", typeof(Color), typeof(Plot), new PropertyMetadata(MoreColors.Automatic, AppearanceChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="LegendTitle"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty LegendTitleProperty = DependencyProperty.Register(
+            "LegendTitle", typeof(string), typeof(Plot), new PropertyMetadata(null, AppearanceChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="LegendTextColor"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty LegendTitleColorProperty = DependencyProperty.Register(
+            "LegendTitleColor", typeof(Color), typeof(Plot), new PropertyMetadata(MoreColors.Automatic, AppearanceChanged));
+
+        /// <summary>
         /// Identifies the <see cref="LegendTitleFont"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LegendTitleFontProperty =
@@ -290,7 +382,7 @@ namespace OxyPlot.Wpf
             "PlotMargins",
             typeof(Thickness),
             typeof(Plot),
-            new PropertyMetadata(new Thickness(60, 4, 4, 40), AppearanceChanged));
+            new PropertyMetadata(new Thickness(double.NaN), AppearanceChanged));
 
         /// <summary>
         /// Identifies the <see cref="PlotType"/> dependency property.
@@ -813,7 +905,183 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets LegendTitleFontSize.
+        /// Gets or sets the default font.
+        /// </summary>
+        public string DefaultFont
+        {
+            get
+            {
+                return (string)this.GetValue(DefaultFontProperty);
+            }
+
+            set
+            {
+                this.SetValue(DefaultFontProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the default font size.
+        /// </summary>
+        public double DefaultFontSize
+        {
+            get
+            {
+                return (double)this.GetValue(DefaultFontSizeProperty);
+            }
+
+            set
+            {
+                this.SetValue(DefaultFontSizeProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the default colors.
+        /// </summary>
+        public IList<Color> DefaultColors
+        {
+            get
+            {
+                return (IList<Color>)this.GetValue(DefaultColorsProperty);
+            }
+
+            set
+            {
+                this.SetValue(DefaultColorsProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the text color of the legends.
+        /// </summary>
+        public Color LegendTextColor
+        {
+            get
+            {
+                return (Color)this.GetValue(LegendTextColorProperty);
+            }
+
+            set
+            {
+                this.SetValue(LegendTextColorProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the legend title.
+        /// </summary>
+        public string LegendTitle
+        {
+            get
+            {
+                return (string)this.GetValue(LegendTitleProperty);
+            }
+
+            set
+            {
+                this.SetValue(LegendTitleProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets color of the legend title.
+        /// </summary>
+        public Color LegendTitleColor
+        {
+            get
+            {
+                return (Color)this.GetValue(LegendTitleColorProperty);
+            }
+
+            set
+            {
+                this.SetValue(LegendTitleColorProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the axis tier distance.
+        /// </summary>
+        public double AxisTierDistance
+        {
+            get
+            {
+                return (double)this.GetValue(AxisTierDistanceProperty);
+            }
+
+            set
+            {
+                this.SetValue(LegendTitleFontProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the color of selected elements.
+        /// </summary>
+        public Color SelectionColor
+        {
+            get
+            {
+                return (Color)this.GetValue(SelectionColorProperty);
+            }
+
+            set
+            {
+                this.SetValue(LegendTitleFontProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a rendering decorator.
+        /// </summary>
+        public Func<IRenderContext, IRenderContext> RenderingDecorator
+        {
+            get
+            {
+                return (Func<IRenderContext, IRenderContext>)this.GetValue(RenderingDecoratorProperty);
+            }
+
+            set
+            {
+                this.SetValue(RenderingDecoratorProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the font of the subtitles.
+        /// </summary>
+        public string SubtitleFont
+        {
+            get
+            {
+                return (string)this.GetValue(SubtitleFontProperty);
+            }
+
+            set
+            {
+                this.SetValue(SubtitleFontProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the color of the titles.
+        /// </summary>
+        public Color TitleColor
+        {
+            get
+            {
+                return (Color)this.GetValue(TitleColorProperty);
+            }
+
+            set
+            {
+                this.SetValue(TitleColorProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the font size of the legend titles.
         /// </summary>
         public double LegendTitleFontSize
         {
@@ -829,7 +1097,23 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets LegendTitleFontWeight.
+        /// Gets or sets the color of the subtitles.
+        /// </summary>
+        public Color SubtitleColor
+        {
+            get
+            {
+                return (Color)this.GetValue(SubtitleColorProperty);
+            }
+
+            set
+            {
+                this.SetValue(SubtitleColorProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the font weight of the legend titles.
         /// </summary>
         public FontWeight LegendTitleFontWeight
         {
@@ -1077,7 +1361,7 @@ namespace OxyPlot.Wpf
             get { return (TitleHorizontalAlignment)GetValue(TitleAlignmentProperty); }
             set { SetValue(TitleAlignmentProperty, value); }
         }
-        
+
         /// <summary>
         /// Gets or sets font of the title.
         /// </summary>
