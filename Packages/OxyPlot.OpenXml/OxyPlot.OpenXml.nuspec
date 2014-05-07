@@ -5,13 +5,13 @@
     <version>2014.1.1</version>
     <authors>objo</authors>
     <licenseUrl>http://oxyplot.codeplex.com/license</licenseUrl>
-    <projectUrl>http://oxyplot.codeplex.com/</projectUrl>
+    <projectUrl>http://oxyplot.org/</projectUrl>
     <iconUrl>http://oxyplot.org/icons/oxyplot_128.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>OxyPlot is an open source plotting library for .NET. This package contains the OpenXML (.docx) export extensions.</description>
     <tags>openxml plotting plot charting chart</tags>
     <dependencies>
-      <dependency id="OxyPlot.Core"/>
+      <dependency id="OxyPlot.Core" version="$version"/>
     </dependencies>
   </metadata>
 </package>
