@@ -6,14 +6,14 @@
     <authors>Oystein Bjorke</authors>
     <owners>Oystein Bjorke</owners>
     <licenseUrl>http://oxyplot.codeplex.com/license</licenseUrl>
-    <projectUrl>http://oxyplot.codeplex.com/</projectUrl>
+    <projectUrl>http://oxyplot.org/</projectUrl>
     <iconUrl>http://oxyplot.org/icons/oxyplot_128.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>OxyPlot is an open source plotting library for .NET.</description>
     <language>en-US</language>
     <tags>winrt win8 metro plotting plot charting chart</tags>
     <dependencies>
-      <dependency id="OxyPlot.Core"/>
+      <dependency id="OxyPlot.Core" version="$version"/>
     </dependencies>
   </metadata>
   <files>
