@@ -13,7 +13,7 @@
     <language>en-US</language>
     <tags>winrt win8 metro plotting plot charting chart</tags>
     <dependencies>
-      <dependency id="OxyPlot.Core" version="$version"/>
+      <dependency id="OxyPlot.Core" version="[$version]"/>
     </dependencies>
   </metadata>
   <files>
