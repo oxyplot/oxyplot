@@ -11,7 +11,7 @@
     <description>OxyPlot is an open source plotting library for .NET.</description>
     <tags>gtk gtk# plotting plot charting chart</tags>
     <dependencies>
-      <dependency id="OxyPlot.Core" version="$version"/>
+      <dependency id="OxyPlot.Core" version="[$version]"/>
     </dependencies>
   </metadata>
 </package>
