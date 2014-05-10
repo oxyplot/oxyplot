@@ -27,18 +27,34 @@
 
 namespace OxyPlot.XamarinIOS
 {
-    using MonoTouch.CoreGraphics;
     using MonoTouch.Foundation;
     using MonoTouch.UIKit;
     using OxyPlot;
 
+	/// <summary>
+	/// Provides a view that can show a <see cref="PlotModel" />. 
+	/// </summary>
     [Register ("PlotView")]
     public class PlotView : UIView, IPlotControl
     {
+		/// <summary>
+		/// The current plot model.
+		/// </summary>
         private PlotModel model;
-        private IPlotController controller;
-        private IPlotController defaultController;
 
+		/// <summary>
+		/// The current plot controller.
+		/// </summary>
+        private IPlotController controller;
+        
+		/// <summary>
+		/// The default plot controller.
+		/// </summary>
+		private IPlotController defaultController;
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="OxyPlot.XamarinIOS.PlotView"/> class.
+		/// </summary>
         public PlotView ()
         {
 			// TODO: virtual method calls in constructor, how to avoid this?
@@ -102,16 +118,30 @@ namespace OxyPlot.XamarinIOS
             }
         }
 
+		/// <summary>
+		/// Gets or sets a value indicating whether this <see cref="OxyPlot.XamarinIOS.PlotView"/> keeps the aspect ratio when pinching.
+		/// </summary>
+		/// <value><c>true</c> if keep aspect ratio when pinching; otherwise, <c>false</c>.</value>
         public bool KeepAspectRatioWhenPinching { get; set;}
 
+		/// <summary>
+		/// Hides the tracker.
+		/// </summary>
         public void HideTracker ()
         {
         }
 
+		/// <summary>
+		/// Hides the zoom rectangle.
+		/// </summary>
         public void HideZoomRectangle ()
         {
         }
 
+		/// <summary>
+		/// Invalidates the plot (not blocking the UI thread)
+		/// </summary>
+		/// <param name="updateData">If set to <c>true</c> update data.</param>
         public void InvalidatePlot (bool updateData = true)
         {
             if (this.model != null) {
@@ -128,22 +158,38 @@ namespace OxyPlot.XamarinIOS
             this.SetNeedsDisplay ();
         }
 
+		/// <summary>
+		/// Sets the cursor type.
+		/// </summary>
+		/// <param name="cursorType">The cursor type.</param>
         public void SetCursorType (CursorType cursorType)
         {
 			// No cursor on iOS
         }
 
+		/// <summary>
+		/// Shows the tracker.
+		/// </summary>
+		/// <param name="trackerHitResult">The tracker data.</param>
         public void ShowTracker (TrackerHitResult trackerHitResult)
         {
 			// TODO: how to show a tracker on iOS
 			// the tracker must be moved away from the finger...
         }
 
+		/// <summary>
+		/// Shows the zoom rectangle.
+		/// </summary>
+		/// <param name="rectangle">The rectangle.</param>
         public void ShowZoomRectangle (OxyRect rectangle)
         {
 			// Not needed - better with pinch events on iOS?
         }
 
+		/// <summary>
+		/// Stores text on the clipboard.
+		/// </summary>
+		/// <param name="text">The text.</param>
         public void SetClipboardText (string text)
         {
 			UIPasteboard.General.SetValue (new NSString (text), "public.utf8-plain-text");
@@ -159,6 +205,11 @@ namespace OxyPlot.XamarinIOS
             this.model.Render (renderer, rect.Width, rect.Height);
         }
 
+		/// <summary>
+		/// Method invoked when a motion (a shake) has started.
+		/// </summary>
+		/// <param name="motion">The motion subtype.</param>
+		/// <param name="evt">The event arguments.</param>
         public override void MotionBegan (UIEventSubtype motion, UIEvent evt)
         {
             base.MotionBegan (motion, evt);
@@ -167,6 +218,11 @@ namespace OxyPlot.XamarinIOS
             }
         }
 
+		/// <summary>
+		/// Called when a touch gesture begins.
+		/// </summary>
+		/// <param name="touches">The touches.</param>
+		/// <param name="evt">The event arguments.</param>
         public override void TouchesBegan (NSSet touches, UIEvent evt)
         {
             base.TouchesBegan (touches, evt);
@@ -176,6 +232,11 @@ namespace OxyPlot.XamarinIOS
             }
         }
 
+		/// <summary>
+		/// Called when a touch gesture is moving.
+		/// </summary>
+		/// <param name="touches">The touches.</param>
+		/// <param name="evt">The event arguments.</param>
         public override void TouchesMoved (NSSet touches, UIEvent evt)
         {
             // it seems to be easier to handle touch events here than using UIPanGesturRecognizer and UIPinchGestureRecognizer
@@ -214,6 +275,11 @@ namespace OxyPlot.XamarinIOS
             }
         }
 
+		/// <summary>
+		/// Called when a touch gesture ends.
+		/// </summary>
+		/// <param name="touches">The touches.</param>
+		/// <param name="evt">The event arguments.</param>
         public override void TouchesEnded (NSSet touches, UIEvent evt)
         {
             base.TouchesEnded (touches, evt);
@@ -223,6 +289,11 @@ namespace OxyPlot.XamarinIOS
             }
         }
 
+		/// <summary>
+		/// Called when a touch gesture is cancelled.
+		/// </summary>
+		/// <param name="touches">The touches.</param>
+		/// <param name="evt">The event arguments.</param>
         public override void TouchesCancelled (NSSet touches, UIEvent evt)
         {
             base.TouchesCancelled (touches, evt);
