@@ -16,8 +16,6 @@
     <AssemblyName>OxyPlotSample.Android</AssemblyName>
     <TargetFrameworkVersion>v4.0.3</TargetFrameworkVersion>
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -45,11 +43,18 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="Mono.Android" />
+    <Reference Include="OxyPlot.XamarinAndroid">
+      <HintPath>..\..\bin\OxyPlot.XamarinAndroid.dll</HintPath>
+    </Reference>
+    <Reference Include="OxyPlot">
+      <HintPath>..\..\bin\OxyPlot.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="MyClass.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -61,20 +66,6 @@
     <AndroidResource Include="Resources\drawable\Icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Source\OxyPlot\OxyPlot.csproj">
-      <Project>{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}</Project>
-      <Name>OxyPlot</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Source\OxyPlot.XamarinAndroid\OxyPlot.XamarinAndroid.csproj">
-      <Project>{E965BA32-9561-4E2A-ADB0-19487B25A939}</Project>
-      <Name>OxyPlot.XamarinAndroid</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OxyPlotSample\OxyPlotSample.csproj">
-      <Project>{D1F615E8-0DE7-4CC1-B092-B7DF669ECA46}</Project>
-      <Name>OxyPlotSample</Name>
-    </ProjectReference>
-  </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\layout\" />
   </ItemGroup>
