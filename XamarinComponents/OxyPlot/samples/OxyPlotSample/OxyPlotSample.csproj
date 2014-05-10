@@ -37,9 +37,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Source\OxyPlot\OxyPlot.csproj">
-      <Project>{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}</Project>
-      <Name>OxyPlot</Name>
-    </ProjectReference>
+    <Reference Include="OxyPlot">
+      <HintPath>..\..\bin\OxyPlot.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>
