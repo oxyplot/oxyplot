@@ -159,7 +159,7 @@ namespace OxyPlot.Annotations
                 return null;
             }
 
-            return ScreenPointHelper.IsPointInPolygon(args.Point, this.screenPoints) ? new HitTestResult(args.Point) : null;
+            return ScreenPointHelper.IsPointInPolygon(args.Point, this.screenPoints) ? new HitTestResult(this, args.Point) : null;
         }
     }
 }

@@ -278,7 +278,7 @@ namespace OxyPlot.Annotations
         {
             if (this.actualBounds.Contains(args.Point))
             {
-                return new HitTestResult(args.Point);
+                return new HitTestResult(this, args.Point);
             }
 
             return null;

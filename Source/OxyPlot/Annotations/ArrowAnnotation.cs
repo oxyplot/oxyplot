@@ -204,18 +204,18 @@ namespace OxyPlot.Annotations
         {
             if ((args.Point - this.screenStartPoint).Length < args.Tolerance)
             {
-                return new HitTestResult(this.screenStartPoint, null, 1);
+                return new HitTestResult(this, this.screenStartPoint, null, 1);
             }
 
             if ((args.Point - this.screenEndPoint).Length < args.Tolerance)
             {
-                return new HitTestResult(this.screenEndPoint, null, 2);
+                return new HitTestResult(this, this.screenEndPoint, null, 2);
             }
 
             var p = ScreenPointHelper.FindPointOnLine(args.Point, this.screenStartPoint, this.screenEndPoint);
             if ((p - args.Point).Length < args.Tolerance)
             {
-                return new HitTestResult(p);
+                return new HitTestResult(this, p);
             }
 
             return null;
