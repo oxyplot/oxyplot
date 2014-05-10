@@ -135,7 +135,7 @@ namespace OxyPlot.Annotations
             }
 
             // Todo: see if performance can be improved by checking rectangle (with rotation and alignment), not polygon
-            return ScreenPointHelper.IsPointInPolygon(args.Point, this.actualBounds) ? new HitTestResult(args.Point) : null;
+            return ScreenPointHelper.IsPointInPolygon(args.Point, this.actualBounds) ? new HitTestResult(this, args.Point) : null;
         }
 
         /// <summary>

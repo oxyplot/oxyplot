@@ -411,7 +411,7 @@ namespace OxyPlot.Annotations
             double dist = (args.Point - nearestPoint).Length;
             if (dist < args.Tolerance)
             {
-                return new HitTestResult(nearestPoint);
+                return new HitTestResult(this, nearestPoint);
             }
 
             return null;

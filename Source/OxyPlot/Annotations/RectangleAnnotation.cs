@@ -151,7 +151,7 @@ namespace OxyPlot.Annotations
         {
             if (this.screenRectangle.Contains(args.Point))
             {
-                return new HitTestResult(args.Point);
+                return new HitTestResult(this, args.Point);
             }
 
             return null;
