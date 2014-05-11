@@ -1,5 +1,7 @@
 #!/bin/bash
 
+VERSION=2014.1.300
+
 # Clean the output folders
 . clean.sh
 

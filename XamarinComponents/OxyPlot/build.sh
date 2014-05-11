@@ -8,9 +8,11 @@ UVNTOOL="../../Tools/Lynx/UpdateVersionNumbers.exe"
 SOURCE=../../Source
 OUTPUT=../../Output
 
-echo "Updating version numbers"
+VERSION=${VERSION:=2014.1.0}
+
 # Run the tool that updates the version numbers in all AssemblyInfo.cs files
-mono $UVNTOOL /VersionFromNuGet=OxyPlot.Core /Directory=$SOURCE > build-update.log
+echo "Updating version numbers to $VERSION"
+mono $UVNTOOL /Version=$VERSION /Directory=$SOURCE > build-update.log
 if [ $? -ne 0 ]; then 
 	echo "  FAILED!"
 fi
@@ -18,19 +20,21 @@ fi
 # Clean the output folder
 rm -rf $OUTPUT
 
-echo "Building libraries"
+echo "Building for Xamarin.iOS"
 # Build OxyPlot. The output will be created in the $OUTPUT folder.
 "$MDTOOL" build "--configuration:Release" $SOURCE/OxyPlot.XamarinIOS.sln > build-ios.log
 if [ $? -ne 0 ]; then 
-	echo "  iOS: failed"
+	echo "  FAILED"
 else 
-	echo "  iOS: OK"
+	echo "  OK"
 fi
+
+echo "Building for Xamarin.Android"
 "$MDTOOL" build "--configuration:Release" $SOURCE/OxyPlot.XamarinAndroid.sln > build-android.log
 if [ $? -ne 0 ]; then 
-	echo "  Android: failed"
+	echo "  FAILED"
 else 
-	echo "  Android: OK"
+	echo "  OK"
 fi
 
 # Copy the relevant output files to the bin/ folder
