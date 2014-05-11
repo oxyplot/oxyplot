@@ -21,9 +21,9 @@ cp -v ../../Icons/OxyPlot_128.png icons/OxyPlot_128x128.png
 cp -v ../../Icons/OxyPlot_256.png icons/OxyPlot_256x256.png
 cp -v ../../Icons/OxyPlot_512.png icons/OxyPlot_512x512.png
 
-VERSION=${VERSION:=2014.1.199}
+VERSION=${VERSION:=2014.1.0}
 
-OUTPUT=../../Output/OxyPlot-${VERSION:=2014.1.199}.xam
+OUTPUT=../../Output/OxyPlot-$VERSION.xam
 
 echo "\nCreating Xamarin Component: $OUTPUT"
 mono ../../Tools/Xamarin/xamarin-component.exe create-manually "$OUTPUT" \
@@ -45,5 +45,5 @@ mono ../../Tools/Xamarin/xamarin-component.exe create-manually "$OUTPUT" \
     --library="ios":"bin/OxyPlot.XamarinIOS.dll" \
     --library="android":"bin/OxyPlot.dll" \
     --library="android":"bin/OxyPlot.XamarinAndroid.dll" \
-    --sample="iOS Sample. Demonstrates how to use OxyPlot on iOS.":"samples/OxyPlotSample.iOS.sln" \
-    --sample="Android Sample. Demonstrates how to use OxyPlot on Android":"samples/OxyPlotSample.Android.sln"
+    --sample="iOS Sample. Demonstrates how to create a view with a LineSeries on iOS.":"samples/OxyPlotSample.iOS.sln" \
+    --sample="Android Sample. Demonstrates how to create a view with a LineSeries on Android. ":"samples/OxyPlotSample.Android.sln"
