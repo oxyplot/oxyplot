@@ -42,6 +42,6 @@ namespace OxyPlot
         /// <param name="view">The plot view.</param>
         /// <param name="controller">The plot controller.</param>
         /// <param name="args">The <see cref="OxyInputEventArgs" /> instance containing the event data.</param>
-        void Execute(IPlotControl view, IPlotController controller, T args);
+        void Execute(IPlotView view, IPlotController controller, T args);
     }
 }

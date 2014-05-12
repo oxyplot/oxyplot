@@ -39,7 +39,7 @@ namespace OxyPlot
         /// Initializes a new instance of the <see cref="PanManipulator" /> class.
         /// </summary>
         /// <param name="plotControl">The plot control.</param>
-        public PanManipulator(IPlotControl plotControl)
+        public PanManipulator(IPlotView plotControl)
             : base(plotControl)
         {
         }

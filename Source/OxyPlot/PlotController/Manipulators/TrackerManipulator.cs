@@ -46,7 +46,7 @@ namespace OxyPlot
         /// Initializes a new instance of the <see cref="TrackerManipulator" /> class.
         /// </summary>
         /// <param name="plotControl">The plot control.</param>
-        public TrackerManipulator(IPlotControl plotControl)
+        public TrackerManipulator(IPlotView plotControl)
             : base(plotControl)
         {
             this.Snap = true;

@@ -39,7 +39,7 @@ namespace OxyPlot
         /// Initializes a new instance of the <see cref="ZoomStepManipulator" /> class.
         /// </summary>
         /// <param name="plotControl">The plot control.</param>
-        public ZoomStepManipulator(IPlotControl plotControl)
+        public ZoomStepManipulator(IPlotView plotControl)
             : base(plotControl)
         {
         }

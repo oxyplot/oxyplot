@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IPlotControl.cs" company="OxyPlot">
+// <copyright file="IPlotView.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 OxyPlot contributors
@@ -33,7 +33,7 @@ namespace OxyPlot
     /// <summary>
     /// Specifies functionality for the plot views.
     /// </summary>
-    public interface IPlotControl
+    public interface IPlotView
     {
         /// <summary>
         /// Gets the actual <see cref="PlotModel" /> of the control.
