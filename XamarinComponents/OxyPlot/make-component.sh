@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION=2014.1.300
+VERSION=2014.1
 
 # Clean the output folders
 . clean.sh
