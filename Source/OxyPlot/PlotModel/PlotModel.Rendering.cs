@@ -52,7 +52,9 @@ namespace OxyPlot
         {
             lock (this.syncRoot)
             {
-                if (width <= 0 || height <= 0)
+                var minimumWidth = this.Padding.Left + this.Padding.Right;
+                var minimumHeight = this.Padding.Top + this.Padding.Bottom;
+                if (width <= minimumWidth || height <= minimumHeight)
                 {
                     return;
                 }
