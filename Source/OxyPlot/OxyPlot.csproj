@@ -216,7 +216,7 @@
     <Compile Include="PlotModel\Selection.cs" />
     <Compile Include="PlotModel\SelectionMode.cs" />
     <Compile Include="PlotModel\TrackerEventArgs.cs" />
-    <Compile Include="PlotView\IPlotControl.cs" />
+    <Compile Include="PlotView\IPlotView.cs" />
     <Compile Include="PlotView\CursorType.cs" />
     <Compile Include="Series\BarSeries\BarItem.cs" />
     <Compile Include="Series\BarSeries\BarItemBase.cs" />

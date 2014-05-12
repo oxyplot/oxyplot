@@ -44,7 +44,7 @@ namespace OxyPlot
         /// Initializes a new instance of the <see cref="TouchManipulator" /> class.
         /// </summary>
         /// <param name="plotControl">The plot control.</param>
-        public TouchManipulator(IPlotControl plotControl)
+        public TouchManipulator(IPlotView plotControl)
             : base(plotControl)
         {
         }

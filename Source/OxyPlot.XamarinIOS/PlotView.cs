@@ -35,7 +35,7 @@ namespace OxyPlot.XamarinIOS
     /// Provides a view that can show a <see cref="PlotModel" />. 
     /// </summary>
     [Register("PlotView")]
-    public class PlotView : UIView, IPlotControl
+    public class PlotView : UIView, IPlotView
     {
         /// <summary>
         /// The current plot model.

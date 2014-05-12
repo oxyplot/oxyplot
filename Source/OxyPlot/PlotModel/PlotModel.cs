@@ -393,11 +393,11 @@ namespace OxyPlot
         /// </summary>
         /// <value>The plot control.</value>
         /// <remarks>Only one PlotControl can render the plot at the same time.</remarks>
-        public IPlotControl PlotControl
+        public IPlotView PlotControl
         {
             get
             {
-                return (this.plotControlReference != null) ? (IPlotControl)this.plotControlReference.Target : null;
+                return (this.plotControlReference != null) ? (IPlotView)this.plotControlReference.Target : null;
             }
         }
 
@@ -843,7 +843,7 @@ namespace OxyPlot
         /// <param name="plotControl">The plot control.</param>
         /// <remarks>Only one plot control can be attached to the plot model.
         /// The plot model contains data (e.g. axis scaling) that is only relevant to the current plot control.</remarks>
-        public void AttachPlotControl(IPlotControl plotControl)
+        public void AttachPlotControl(IPlotView plotControl)
         {
             this.plotControlReference = (plotControl == null) ? null : new WeakReference(plotControl);
         }

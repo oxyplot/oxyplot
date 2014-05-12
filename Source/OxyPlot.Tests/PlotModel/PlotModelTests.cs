@@ -90,7 +90,7 @@ namespace OxyPlot.Tests
         [Test]
         public void PlotControl_CollectedPlotControl_ReferenceShouldNotBeAlive()
         {
-            var plot = Substitute.For<IPlotControl>();
+            var plot = Substitute.For<IPlotView>();
             var pm = new PlotModel();
             pm.AttachPlotControl(plot);
             Assert.IsNotNull(pm.PlotControl);

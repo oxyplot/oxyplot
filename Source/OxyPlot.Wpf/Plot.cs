@@ -52,7 +52,7 @@ namespace OxyPlot.Wpf
     /// </summary>
     [ContentProperty("Series")]
     [TemplatePart(Name = PartGrid, Type = typeof(Grid))]
-    public partial class Plot : RenderingControl, IPlotControl
+    public partial class Plot : RenderingControl, IPlotView
     {
         /// <summary>
         /// The Grid PART constant.

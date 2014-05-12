@@ -41,7 +41,7 @@ namespace OxyPlot.WindowsForms
     /// Represents a control that displays a plot.
     /// </summary>
     [Serializable]
-    public class Plot : Control, IPlotControl
+    public class Plot : Control, IPlotView
     {
         /// <summary>
         /// The category for the properties of this control.

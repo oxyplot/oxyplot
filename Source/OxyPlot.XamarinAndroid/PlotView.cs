@@ -40,7 +40,7 @@ namespace OxyPlot.XamarinAndroid
     /// <summary>
     /// Represents a view that can show a <see cref="PlotModel" />.
     /// </summary>
-    public class PlotView : View, IPlotControl
+    public class PlotView : View, IPlotView
     {
         /// <summary>
         /// The factor that scales from OxyPlot´s device independent pixels (96 dpi) to 

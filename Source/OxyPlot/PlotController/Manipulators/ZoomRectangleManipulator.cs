@@ -46,7 +46,7 @@ namespace OxyPlot
         /// Initializes a new instance of the <see cref="ZoomRectangleManipulator" /> class.
         /// </summary>
         /// <param name="plotControl">The plot control.</param>
-        public ZoomRectangleManipulator(IPlotControl plotControl)
+        public ZoomRectangleManipulator(IPlotView plotControl)
             : base(plotControl)
         {
         }

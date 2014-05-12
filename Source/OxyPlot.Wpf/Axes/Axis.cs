@@ -1444,7 +1444,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         protected void OnDataChanged()
         {
-            var pc = this.Parent as IPlotControl;
+            var pc = this.Parent as IPlotView;
             if (pc != null)
             {
                 pc.InvalidatePlot();
@@ -1477,7 +1477,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         protected void OnVisualChanged()
         {
-            var pc = this.Parent as IPlotControl;
+            var pc = this.Parent as IPlotView;
             if (pc != null)
             {
                 pc.InvalidatePlot(false);
