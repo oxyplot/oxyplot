@@ -13,6 +13,9 @@ copy ..\Output\NET45\OxyPlot.WindowsForms.??? ..\Output\Release\NET45
 copy ..\Output\NET40\OxyPlot.WPF.??? ..\Output\Release\NET40
 copy ..\Output\NET45\OxyPlot.WPF.??? ..\Output\Release\NET45
 
+copy ..\Output\NET40\OxyPlot.Xps.??? ..\Output\Release\NET40
+copy ..\Output\NET45\OxyPlot.Xps.??? ..\Output\Release\NET45
+
 copy ..\Output\SL5\OxyPlot.Silverlight.??? ..\Output\Release\SL5
 
 copy ..\Output\NetCore45\OxyPlot.Metro.??? ..\Output\Release\NetCore45
