@@ -193,7 +193,7 @@ namespace OxyPlot.Annotations
                 OxyColors.Black,
                 this.ActualFont,
                 this.ActualFontSize,
-                500,
+                this.ActualFontWeight,
                 0,
                 HorizontalAlignment.Right,
                 VerticalAlignment.Bottom);
