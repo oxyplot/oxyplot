@@ -71,6 +71,7 @@
     <Compile Include="Axes\Axis.cs" />
     <Compile Include="Axes\CategoryAxis.cs" />
     <Compile Include="Axes\DateTimeAxis.cs" />
+    <Compile Include="Axes\LinearColorAxis.cs" />
     <Compile Include="Axes\MagnitudeAxis.cs" />
     <Compile Include="Axes\TimeSpanAxis.cs" />
     <Compile Include="Axes\LinearAxis.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="Converters\ThicknessConverter.cs" />
     <Compile Include="Converters\OxyColorConverter.cs" />
     <Compile Include="PlotCommands.cs" />
+    <Compile Include="Series\HeatMapSeries.cs" />
     <Compile Include="Series\StairStepSeries.cs" />
     <Compile Include="Utilities\WeakEvents\RenderingEventListener.cs" />
     <Compile Include="Utilities\WeakEvents\RenderingEventManager.cs" />
