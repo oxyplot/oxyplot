@@ -47,7 +47,7 @@ namespace OxyPlot.WP8
     /// </summary>
     [ContentProperty("Series")]
     [TemplatePart(Name = PartGrid, Type = typeof(Grid))]
-    public class Plot : Control, IPlotControl
+    public class Plot : Control, IPlotView
     {
         /// <summary>
         /// Identifies the <see cref="Controller"/> dependency property.
