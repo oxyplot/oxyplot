@@ -97,6 +97,9 @@ Source\OxyPlot.Silverlight.sln
 # Build Metro solution
 Source\OxyPlot.Metro.sln
 
+# Build WP8 solution
+Source\OxyPlot.WP8.sln
+
 # Build Silverlight 4 solution (disabled)
 Source\OxyPlot.Silverlight4.sln
 
