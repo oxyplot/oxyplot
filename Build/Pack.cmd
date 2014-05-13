@@ -64,6 +64,13 @@ copy ..\Output\SL5\OxyPlot.Silverlight.??? ..\Packages\OxyPlot.Silverlight\lib\S
 copy ..\LICENSE ..\Packages\OxyPlot.Silverlight
 ..\Source\.nuget\NuGet.exe pack ..\Packages\OxyPlot.Silverlight\OxyPlot.Silverlight.nuspec -OutputDirectory ..\Packages >> pack.log
 
+REM === WP8 ===
+mkdir ..\Packages\OxyPlot.WP8\lib
+mkdir ..\Packages\OxyPlot.WP8\lib\wp80
+copy ..\Output\WP8\OxyPlot.??? ..\Packages\OxyPlot.WP8\lib\wp80
+copy ..\LICENSE ..\Packages\OxyPlot.WP8
+..\Source\.nuget\NuGet.exe pack ..\Packages\OxyPlot.WP8\OxyPlot.WP8.nuspec -OutputDirectory ..\Packages >> pack.log
+
 REM === WINFORMS ===
 mkdir ..\Packages\OxyPlot.WindowsForms\lib
 mkdir ..\Packages\OxyPlot.WindowsForms\lib\NET40
