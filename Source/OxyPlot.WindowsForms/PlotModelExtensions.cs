@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Provides extension methods to the <see cref="PlotModel"/>.
+//   Provides extension methods to the <see cref="PlotModel" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

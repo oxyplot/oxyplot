@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PlotModel.MouseEvents.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2014 OxyPlot contributors
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -24,17 +24,18 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Partial PlotModel class - this file contains mouse events and handlers.
+//   The mouse hit tolerance.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     using System;
-	using System.Diagnostics.CodeAnalysis;
+    using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
-	[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1601:PartialElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
+    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1601:PartialElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public partial class PlotModel
     {
         /// <summary>
@@ -104,30 +105,14 @@ namespace OxyPlot
         /// <param name="e">The <see cref="OxyPlot.OxyMouseEventArgs" /> instance containing the event data.</param>
         public void HandleMouseDown(object sender, OxyMouseDownEventArgs e)
         {
-            // Revert the order to handle the top-level elements first
-            foreach (var element in this.GetElements().Reverse())
+            foreach (var result in this.HitTest(e.Position, MouseHitTolerance))
             {
-                var uiElement = element as UIPlotElement;
-                if (uiElement == null)
-                {
-                    continue;
-                }
-
-                var args = new HitTestArguments(e.Position, MouseHitTolerance);
-                var result = uiElement.HitTest(args);
-                if (result != null)
-                {
-                    e.HitTestResult = result;
-                    uiElement.OnMouseDown(sender, e);
-                    if (e.Handled)
-                    {
-                        this.currentMouseEventElement = uiElement;
-                    }
-                }
-
+                e.HitTestResult = result;
+                result.Element.OnMouseDown(e);
                 if (e.Handled)
                 {
-                    break;
+                    this.currentMouseEventElement = result.Element;
+                    return;
                 }
             }
 
@@ -146,7 +131,7 @@ namespace OxyPlot
         {
             if (this.currentMouseEventElement != null)
             {
-                this.currentMouseEventElement.OnMouseMove(sender, e);
+                this.currentMouseEventElement.OnMouseMove(e);
             }
 
             if (!e.Handled)
@@ -164,7 +149,7 @@ namespace OxyPlot
         {
             if (this.currentMouseEventElement != null)
             {
-                this.currentMouseEventElement.OnMouseUp(sender, e);
+                this.currentMouseEventElement.OnMouseUp(e);
                 this.currentMouseEventElement = null;
             }
 
@@ -207,29 +192,13 @@ namespace OxyPlot
         /// <param name="e">A <see cref="OxyPlot.OxyTouchEventArgs" /> instance containing the event data.</param>
         public void HandleTouchStarted(object sender, OxyTouchEventArgs e)
         {
-            // Revert the order to handle the top-level elements first
-            foreach (var element in this.GetElements().Reverse())
+            foreach (var result in this.HitTest(e.Position, MouseHitTolerance))
             {
-                var uiElement = element as UIPlotElement;
-                if (uiElement == null)
-                {
-                    continue;
-                }
-
-                var args = new HitTestArguments(e.Position, MouseHitTolerance);
-                var result = uiElement.HitTest(args);
-                if (result != null)
-                {
-                    uiElement.OnTouchStarted(sender, e);
-                    if (e.Handled)
-                    {
-                        this.currentTouchEventElement = uiElement;
-                    }
-                }
-
+                result.Element.OnTouchStarted(e);
                 if (e.Handled)
                 {
-                    break;
+                    this.currentTouchEventElement = result.Element;
+                    return;
                 }
             }
 
@@ -248,7 +217,7 @@ namespace OxyPlot
         {
             if (this.currentTouchEventElement != null)
             {
-                this.currentTouchEventElement.OnTouchDelta(sender, e);
+                this.currentTouchEventElement.OnTouchDelta(e);
             }
 
             if (!e.Handled)
@@ -266,7 +235,7 @@ namespace OxyPlot
         {
             if (this.currentTouchEventElement != null)
             {
-                this.currentTouchEventElement.OnTouchCompleted(sender, e);
+                this.currentTouchEventElement.OnTouchCompleted(e);
                 this.currentTouchEventElement = null;
             }
 
@@ -292,7 +261,7 @@ namespace OxyPlot
                     continue;
                 }
 
-                uiElement.OnKeyDown(sender, e);
+                uiElement.OnKeyDown(e);
 
                 if (e.Handled)
                 {

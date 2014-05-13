@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Provides a report writer for Word/OpenXML (.docx) output using OpenXML SDK 2.0.
+//   Provides a report writer for Word/OpenXML output using OpenXML SDK 2.0.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

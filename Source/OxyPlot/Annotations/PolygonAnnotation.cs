@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents a polygon annotation.
+//   Represents an annotation that shows a polygon.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -159,7 +159,7 @@ namespace OxyPlot.Annotations
                 return null;
             }
 
-            return ScreenPointHelper.IsPointInPolygon(args.Point, this.screenPoints) ? new HitTestResult(args.Point) : null;
+            return ScreenPointHelper.IsPointInPolygon(args.Point, this.screenPoints) ? new HitTestResult(this, args.Point) : null;
         }
     }
 }

@@ -70,43 +70,43 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty AxisTickToLabelDistanceProperty =
             DependencyProperty.Register(
-                "AxisTickToLabelDistance", typeof(double), typeof(Axis), new PropertyMetadata(4.0));
+                "AxisTickToLabelDistance", typeof(double), typeof(Axis), new PropertyMetadata(4.0, AppearanceChanged));
 
         /// <summary>
         /// Identifies the <see cref="AxisTitleDistance"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty AxisTitleDistanceProperty =
-            DependencyProperty.Register("AxisTitleDistance", typeof(double), typeof(Axis), new PropertyMetadata(4.0));
+            DependencyProperty.Register("AxisTitleDistance", typeof(double), typeof(Axis), new PropertyMetadata(4.0, AppearanceChanged));
 
         /// <summary>
         /// Identifies the <see cref="AxisDistance"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty AxisDistanceProperty =
-            DependencyProperty.Register("AxisDistance", typeof(double), typeof(Axis), new PropertyMetadata(0.0));
+            DependencyProperty.Register("AxisDistance", typeof(double), typeof(Axis), new PropertyMetadata(0.0, AppearanceChanged));
 
         /// <summary>
         /// Identifies the <see cref="AxislineColor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty AxislineColorProperty = DependencyProperty.Register(
-            "AxislineColor", typeof(Color), typeof(Axis), new UIPropertyMetadata(Colors.Black));
+            "AxislineColor", typeof(Color), typeof(Axis), new UIPropertyMetadata(Colors.Black, AppearanceChanged));
 
         /// <summary>
         /// Identifies the <see cref="AxislineStyle"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty AxislineStyleProperty = DependencyProperty.Register(
-            "AxislineStyle", typeof(LineStyle), typeof(Axis), new UIPropertyMetadata(LineStyle.None));
+            "AxislineStyle", typeof(LineStyle), typeof(Axis), new UIPropertyMetadata(LineStyle.None, AppearanceChanged));
 
         /// <summary>
         /// Identifies the <see cref="AxislineThickness"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty AxislineThicknessProperty =
-            DependencyProperty.Register("AxislineThickness", typeof(double), typeof(Axis), new UIPropertyMetadata(1.0));
+            DependencyProperty.Register("AxislineThickness", typeof(double), typeof(Axis), new UIPropertyMetadata(1.0, AppearanceChanged));
 
         /// <summary>
         /// Identifies the <see cref="ClipTitle"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ClipTitleProperty = DependencyProperty.Register(
-            "ClipTitle", typeof(bool), typeof(Axis), new UIPropertyMetadata(true));
+            "ClipTitle", typeof(bool), typeof(Axis), new UIPropertyMetadata(true, AppearanceChanged));
 
         /// <summary>
         /// Identifies the <see cref="EndPosition"/> dependency property.
@@ -148,7 +148,7 @@ namespace OxyPlot.Wpf
         /// Identifies the <see cref="FilterFunction"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty FilterFunctionProperty = DependencyProperty.Register(
-            "FilterFunction", typeof(Func<double, bool>), typeof(Axis), new UIPropertyMetadata(null));
+            "FilterFunction", typeof(Func<double, bool>), typeof(Axis), new UIPropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
         /// Identifies the <see cref="FilterMaxValue"/> dependency property.
@@ -184,7 +184,7 @@ namespace OxyPlot.Wpf
         /// Identifies the <see cref="IntervalLength"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IntervalLengthProperty = DependencyProperty.Register(
-            "IntervalLength", typeof(double), typeof(Axis), new PropertyMetadata(60.0));
+            "IntervalLength", typeof(double), typeof(Axis), new PropertyMetadata(60.0, AppearanceChanged));
 
         /// <summary>
         /// Identifies the <see cref="IsAxisVisible"/> dependency property.
@@ -211,10 +211,16 @@ namespace OxyPlot.Wpf
             "Key", typeof(string), typeof(Axis), new PropertyMetadata(null, DataChanged));
 
         /// <summary>
+        /// Identifies the <see cref="LabelFormatter"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty LabelFormatterProperty = DependencyProperty.Register(
+            "LabelFormatter", typeof(Func<double, string>), typeof(Axis), new PropertyMetadata(null, AppearanceChanged));
+
+        /// <summary>
         /// Identifies the <see cref="Layer"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LayerProperty = DependencyProperty.Register(
-            "Layer", typeof(Axes.AxisLayer), typeof(Axis), new PropertyMetadata(Axes.AxisLayer.BelowSeries));
+            "Layer", typeof(Axes.AxisLayer), typeof(Axis), new PropertyMetadata(Axes.AxisLayer.BelowSeries, AppearanceChanged));
 
         /// <summary>
         /// Identifies the <see cref="MajorGridlineColor"/> dependency property.
@@ -344,12 +350,6 @@ namespace OxyPlot.Wpf
             "PositionTier", typeof(int), typeof(Axis), new PropertyMetadata(0, AppearanceChanged));
 
         /// <summary>
-        /// Identifies the <see cref="ShowMinorTicks"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty ShowMinorTicksProperty = DependencyProperty.Register(
-            "ShowMinorTicks", typeof(bool), typeof(Axis), new PropertyMetadata(true, AppearanceChanged));
-
-        /// <summary>
         /// Identifies the <see cref="StartPosition"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty StartPositionProperty = DependencyProperty.Register(
@@ -378,32 +378,32 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty TitleClippingLengthProperty =
             DependencyProperty.Register(
-                "TitleClippingLength", typeof(double), typeof(Axis), new UIPropertyMetadata(0.9));
+                "TitleClippingLength", typeof(double), typeof(Axis), new UIPropertyMetadata(0.9, AppearanceChanged));
 
         /// <summary>
         /// Identifies the <see cref="TitleColor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TitleColorProperty = DependencyProperty.Register(
-            "TitleColor", typeof(Color), typeof(Axis), new UIPropertyMetadata(OxyColors.Automatic.ToColor()));
+            "TitleColor", typeof(Color), typeof(Axis), new UIPropertyMetadata(OxyColors.Automatic.ToColor(), AppearanceChanged));
 
         /// <summary>
         /// Identifies the <see cref="TitleFont"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TitleFontProperty = DependencyProperty.Register(
-            "TitleFont", typeof(string), typeof(Axis), new UIPropertyMetadata(null));
+            "TitleFont", typeof(string), typeof(Axis), new UIPropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
         /// Identifies the <see cref="TitleFontSize"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TitleFontSizeProperty = DependencyProperty.Register(
-            "TitleFontSize", typeof(double), typeof(Axis), new UIPropertyMetadata(double.NaN));
+            "TitleFontSize", typeof(double), typeof(Axis), new UIPropertyMetadata(double.NaN, AppearanceChanged));
 
         /// <summary>
         /// Identifies the <see cref="TitleFontWeight"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TitleFontWeightProperty =
             DependencyProperty.Register(
-                "TitleFontWeight", typeof(FontWeight), typeof(Axis), new UIPropertyMetadata(FontWeights.Normal));
+                "TitleFontWeight", typeof(FontWeight), typeof(Axis), new UIPropertyMetadata(FontWeights.Normal, AppearanceChanged));
 
         /// <summary>
         /// Identifies the <see cref="TitleFormatString"/> dependency property.
@@ -443,7 +443,7 @@ namespace OxyPlot.Wpf
         public Axes.Axis InternalAxis { get; protected set; }
 
         /// <summary>
-        /// Gets or sets AbsoluteMaximum.
+        /// Gets or sets the absolute maximum. This is only used for the UI control. It will not be possible to zoom/pan beyond this limit.
         /// </summary>
         public double AbsoluteMaximum
         {
@@ -459,7 +459,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets AbsoluteMinimum.
+        /// Gets or sets the absolute minimum. This is only used for the UI control. It will not be possible to zoom/pan beyond this limit.
         /// </summary>
         public double AbsoluteMinimum
         {
@@ -768,7 +768,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets FontWeight.
+        /// Gets or sets the font weight.
         /// </summary>
         public FontWeight FontWeight
         {
@@ -784,7 +784,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets IntervalLength.
+        /// Gets or sets the interval length.
         /// </summary>
         public double IntervalLength
         {
@@ -800,7 +800,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether IsAxisVisible.
+        /// Gets or sets a value indicating whether the axis is visible.
         /// </summary>
         public bool IsAxisVisible
         {
@@ -816,7 +816,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether IsPanEnabled.
+        /// Gets or sets a value indicating whether pan is enabled.
         /// </summary>
         public bool IsPanEnabled
         {
@@ -832,7 +832,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether IsZoomEnabled.
+        /// Gets or sets a value indicating whether zoom is enabled.
         /// </summary>
         public bool IsZoomEnabled
         {
@@ -848,7 +848,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets Key.
+        /// Gets or sets the axis key.
         /// </summary>
         public string Key
         {
@@ -864,7 +864,23 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets Layer.
+        /// Gets or sets the label formatter.
+        /// </summary>
+        public Func<double, string> LabelFormatter
+        {
+            get
+            {
+                return (Func<double, string>)this.GetValue(LabelFormatterProperty);
+            }
+
+            set
+            {
+                this.SetValue(LabelFormatterProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the layer.
         /// </summary>
         public Axes.AxisLayer Layer
         {
@@ -880,7 +896,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets MajorGridlineColor.
+        /// Gets or sets the color of the major gridlines.
         /// </summary>
         public Color MajorGridlineColor
         {
@@ -896,7 +912,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets MajorGridlineStyle.
+        /// Gets or sets the line style of the major gridlines.
         /// </summary>
         public LineStyle MajorGridlineStyle
         {
@@ -1154,7 +1170,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the position tier which defines in which tier the axis is displayed.
         /// </summary>
-        /// <remarks>The bigger the value the the further afar is the axis from the graph.</remarks>
+        /// <remarks>The bigger the value the further afar is the axis from the graph.</remarks>
         public int PositionTier
         {
             get
@@ -1165,22 +1181,6 @@ namespace OxyPlot.Wpf
             set
             {
                 this.SetValue(PositionTierProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether to show minor ticks.
-        /// </summary>
-        public bool ShowMinorTicks
-        {
-            get
-            {
-                return (bool)this.GetValue(ShowMinorTicksProperty);
-            }
-
-            set
-            {
-                this.SetValue(ShowMinorTicksProperty, value);
             }
         }
 
@@ -1444,7 +1444,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         protected void OnDataChanged()
         {
-            var pc = this.Parent as IPlotControl;
+            var pc = this.Parent as IPlotView;
             if (pc != null)
             {
                 pc.InvalidatePlot();
@@ -1477,7 +1477,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         protected void OnVisualChanged()
         {
-            var pc = this.Parent as IPlotControl;
+            var pc = this.Parent as IPlotView;
             if (pc != null)
             {
                 pc.InvalidatePlot(false);
@@ -1534,8 +1534,6 @@ namespace OxyPlot.Wpf
             a.Position = this.Position;
             a.PositionTier = this.PositionTier;
             a.PositionAtZeroCrossing = this.PositionAtZeroCrossing;
-            //// a.RelatedAxis = this.RelatedAxis;
-            a.ShowMinorTicks = this.ShowMinorTicks;
             a.StartPosition = this.StartPosition;
             a.StringFormat = this.StringFormat;
             a.TicklineColor = this.TicklineColor.ToOxyColor();
@@ -1551,6 +1549,7 @@ namespace OxyPlot.Wpf
             a.TitlePosition = this.TitlePosition;
             a.Unit = this.Unit;
             a.UseSuperExponentialFormat = this.UseSuperExponentialFormat;
+            a.LabelFormatter = this.LabelFormatter;
         }
     }
 }

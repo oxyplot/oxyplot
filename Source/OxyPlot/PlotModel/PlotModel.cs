@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PlotModel.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2014 OxyPlot contributors
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -222,11 +222,6 @@ namespace OxyPlot
         internal static readonly OxyColor DefaultSelectionColor = OxyColors.Yellow;
 
         /// <summary>
-        /// The default font.
-        /// </summary>
-        private const string PrivateDefaultFont = "Segoe UI";
-
-        /// <summary>
         /// The synchronization root object.
         /// </summary>
         private readonly object syncRoot = new object();
@@ -264,7 +259,7 @@ namespace OxyPlot
             this.TitleColor = OxyColors.Automatic;
             this.SubtitleColor = OxyColors.Automatic;
 
-            this.DefaultFont = PrivateDefaultFont;
+            this.DefaultFont = "Segoe UI";
             this.DefaultFontSize = 12;
 
             this.TitleFont = null;
@@ -398,11 +393,11 @@ namespace OxyPlot
         /// </summary>
         /// <value>The plot control.</value>
         /// <remarks>Only one PlotControl can render the plot at the same time.</remarks>
-        public IPlotControl PlotControl
+        public IPlotView PlotControl
         {
             get
             {
-                return (this.plotControlReference != null) ? (IPlotControl)this.plotControlReference.Target : null;
+                return (this.plotControlReference != null) ? (IPlotView)this.plotControlReference.Target : null;
             }
         }
 
@@ -848,7 +843,7 @@ namespace OxyPlot
         /// <param name="plotControl">The plot control.</param>
         /// <remarks>Only one plot control can be attached to the plot model.
         /// The plot model contains data (e.g. axis scaling) that is only relevant to the current plot control.</remarks>
-        public void AttachPlotControl(IPlotControl plotControl)
+        public void AttachPlotControl(IPlotView plotControl)
         {
             this.plotControlReference = (plotControl == null) ? null : new WeakReference(plotControl);
         }
@@ -1179,6 +1174,32 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Returns the elements that are hit at the specified position.
+        /// </summary>
+        /// <param name="position">The position (in screen space).</param>
+        /// <param name="tolerance">The tolerance (in screen space).</param>
+        /// <returns>A sequence of hit results.</returns>
+        public IEnumerable<HitTestResult> HitTest(ScreenPoint position, double tolerance)
+        {
+            // Revert the order to handle the top-level elements first
+            foreach (var element in this.GetElements().Reverse())
+            {
+                var uiElement = element as UIPlotElement;
+                if (uiElement == null)
+                {
+                    continue;
+                }
+
+                var args = new HitTestArguments(position, MouseHitTolerance);
+                var result = uiElement.HitTest(args);
+                if (result != null)
+                {
+                    yield return result;
+                }
+            }
+        }
+
+        /// <summary>
         /// Updates all axes and series.
         /// 0. Updates the owner PlotModel of all plot items (axes, series and annotations)
         /// 1. Updates the data of each Series (only if updateData==<c>true</c>).
@@ -1250,7 +1271,7 @@ namespace OxyPlot
         {
             if (key != null)
             {
-                return this.Axes.FirstOrDefault(a => a.Key == key) ?? defaultAxis;
+                return this.Axes.FirstOrDefault(a => a.Key == key);
             }
 
             return defaultAxis;

@@ -90,7 +90,7 @@ namespace OxyPlot.Tests
         [Test]
         public void PlotControl_CollectedPlotControl_ReferenceShouldNotBeAlive()
         {
-            var plot = Substitute.For<IPlotControl>();
+            var plot = Substitute.For<IPlotView>();
             var pm = new PlotModel();
             pm.AttachPlotControl(plot);
             Assert.IsNotNull(pm.PlotControl);
@@ -101,6 +101,34 @@ namespace OxyPlot.Tests
 
             // Verify that the reference is lost
             Assert.IsNull(pm.PlotControl);
+        }
+
+        /// <summary>
+        /// Tests the <see cref="PlotModel.Render" /> method.
+        /// </summary>
+        public class Render
+        {
+            /// <summary>
+            /// Tests rendering on a collapsed output surface.
+            /// </summary>
+            [Test]
+            public void Collapsed()
+            {
+                var model = new PlotModel();
+                var rc = Substitute.For<IRenderContext>();
+                model.Render(rc, 0, 0);
+            }
+
+            /// <summary>
+            /// Tests rendering on a small output surface.
+            /// </summary>
+            [Test]
+            public void NoPadding()
+            {
+                var model = new PlotModel { Padding = new OxyThickness(0) };
+                var rc = Substitute.For<IRenderContext>();
+                model.Render(rc, double.Epsilon, double.Epsilon);
+            }
         }
 
         /// <summary>

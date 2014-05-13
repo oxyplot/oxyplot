@@ -639,5 +639,32 @@ namespace ExampleLibrary
 
             return plotModel;
         }
+
+        [Example("Clicking on an annotation")]
+        public static PlotModel ClickingOnAnAnnotation()
+        {
+            // https://oxyplot.codeplex.com/discussions/543975
+            var plotModel = new PlotModel { Title = "Clicking on an annotation", Subtitle = "Click on the rectangles" };
+
+            plotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            plotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+
+            var annotation1 = new RectangleAnnotation { Fill = OxyColors.Green, Text = "RectangleAnnotation 1", MinimumX = 25, MaximumX = 75, MinimumY = 20, MaximumY = 40 };
+            plotModel.Annotations.Add(annotation1);
+
+            var annotation2 = new RectangleAnnotation { Fill = OxyColors.SkyBlue, Text = "RectangleAnnotation 2", MinimumX = 25, MaximumX = 75, MinimumY = 60, MaximumY = 80 };
+            plotModel.Annotations.Add(annotation2);
+
+            EventHandler<OxyMouseDownEventArgs> handleMouseClick = (s, e) =>
+            {
+                plotModel.Subtitle = "You clicked " + ((RectangleAnnotation)s).Text;
+                plotModel.InvalidatePlot(false);
+            };
+
+            annotation1.MouseDown += handleMouseClick;
+            annotation2.MouseDown += handleMouseClick;
+
+            return plotModel;
+        }
     }
 }

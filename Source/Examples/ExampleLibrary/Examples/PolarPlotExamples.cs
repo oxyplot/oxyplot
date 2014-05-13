@@ -25,11 +25,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using OxyPlot;
-
 namespace ExampleLibrary
 {
+    using System;
+
+    using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
@@ -122,8 +122,15 @@ namespace ExampleLibrary
                 var increment = 0d;
 
                 // Increment and decrement must be in degrees (corresponds to the StartAngle and EndAngle properties).
-                if (e.ChangedButton == OxyMouseButton.Left) increment = 15;
-                if (e.ChangedButton == OxyMouseButton.Right) increment = -15;
+                if (e.ChangedButton == OxyMouseButton.Left)
+                {
+                    increment = 15;
+                }
+
+                if (e.ChangedButton == OxyMouseButton.Right)
+                {
+                    increment = -15;
+                }
 
                 if (Math.Abs(increment) > double.Epsilon)
                 {
@@ -192,6 +199,57 @@ namespace ExampleLibrary
                     EndAngle = 360,
                     MajorGridlineStyle = LineStyle.Solid,
                     MinorGridlineStyle = LineStyle.Solid
+                });
+            model.Axes.Add(new MagnitudeAxis
+            {
+                Minimum = 0,
+                Maximum = 1,
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Solid
+            });
+            model.Series.Add(new FunctionSeries(x => Math.Sin(x / 180 * Math.PI), t => t, 0, 180, 0.01));
+            return model;
+        }
+
+        /// <summary>
+        /// Shows how to orient 0 degrees at the bottom and add E/W to indicate directions.
+        /// </summary>
+        /// <returns></returns>
+        [Example("East/west directions")]
+        public static PlotModel EastWestDirections()
+        {
+            var model = new PlotModel
+            {
+                Title = "East/west directions",
+                PlotType = PlotType.Polar,
+                PlotAreaBorderThickness = 0,
+                PlotMargins = new OxyThickness(60, 20, 4, 40)
+            };
+            model.Axes.Add(
+                new AngleAxis
+                {
+                    Minimum = 0,
+                    Maximum = 360,
+                    MajorStep = 30,
+                    MinorStep = 30,
+                    StartAngle = -90,
+                    EndAngle = 270,
+                    LabelFormatter = angle =>
+                    {
+                        if (angle > 0 && angle < 180)
+                        {
+                            return angle + "E";
+                        }
+
+                        if (angle > 180)
+                        {
+                            return (360 - angle) + "W";
+                        }
+
+                        return angle.ToString();
+                    },
+                    MajorGridlineStyle = LineStyle.Dot,
+                    MinorGridlineStyle = LineStyle.None
                 });
             model.Axes.Add(new MagnitudeAxis
             {

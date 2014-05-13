@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Implements <see cref="Stream"/> extension methods.
+//   Implements <see cref="Stream" /> extension methods.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

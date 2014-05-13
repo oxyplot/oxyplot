@@ -42,7 +42,7 @@ namespace OxyPlot.GtkSharp
     /// Represents a control that displays a plot.
     /// </summary>
     [Serializable]
-    public class Plot : DrawingArea, IPlotControl
+    public class Plot : DrawingArea, IPlotView
     {
         /// <summary>
         /// The category for the properties of this control.
@@ -155,7 +155,7 @@ namespace OxyPlot.GtkSharp
         /// <summary>
         /// Gets the actual <see cref="PlotModel" /> of the control.
         /// </summary>
-        PlotModel IPlotControl.ActualModel
+        PlotModel IPlotView.ActualModel
         {
             get
             {

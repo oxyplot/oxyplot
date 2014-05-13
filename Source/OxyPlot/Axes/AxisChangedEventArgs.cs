@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Provides additional data for the <see cref="Axis.AxisChanged"/> event.
+//   Provides additional data for the <see cref="Axis.AxisChanged" /> event.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

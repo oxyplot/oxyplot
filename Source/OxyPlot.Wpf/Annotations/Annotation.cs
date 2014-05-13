@@ -91,7 +91,7 @@ namespace OxyPlot.Wpf
         /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
         protected static void AppearanceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var pc = ((Annotation)d).Parent as IPlotControl;
+            var pc = ((Annotation)d).Parent as IPlotView;
             if (pc != null)
             {
                 pc.InvalidatePlot(false);
@@ -105,7 +105,7 @@ namespace OxyPlot.Wpf
         /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
         protected static void DataChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var pc = ((Annotation)d).Parent as IPlotControl;
+            var pc = ((Annotation)d).Parent as IPlotView;
             if (pc != null)
             {
                 pc.InvalidatePlot();

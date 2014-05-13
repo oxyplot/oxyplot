@@ -169,7 +169,7 @@ namespace OxyPlot.Series
                     return null;
                 }
 
-                return new HitTestResult(thr.Position, thr.Item, thr.Index);
+                return new HitTestResult(this, thr.Position, thr.Item, thr.Index);
             }
 
             return null;

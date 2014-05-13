@@ -52,7 +52,9 @@ namespace OxyPlot
         {
             lock (this.syncRoot)
             {
-                if (width <= 0 || height <= 0)
+                var minimumWidth = this.Padding.Left + this.Padding.Right;
+                var minimumHeight = this.Padding.Top + this.Padding.Bottom;
+                if (width <= minimumWidth || height <= minimumHeight)
                 {
                     return;
                 }
@@ -212,14 +214,13 @@ namespace OxyPlot
 
             for (var position = AxisPosition.Left; position <= AxisPosition.Bottom; position++)
             {
+                var axesOfPosition = this.VisibleAxes.Where(a => a.Position == position).ToList();
+                var requiredSize = this.AdjustAxesPositions(rc, axesOfPosition);
+
                 if (!this.IsPlotMarginAutoSized(position))
                 {
                     continue;
                 }
-
-                var axesOfPosition = this.VisibleAxes.Where(a => a.Position == position).ToList();
-
-                var requiredSize = this.AdjustAxesPositions(rc, axesOfPosition);
 
                 EnsureMarginIsBigEnough(ref currentMargin, requiredSize, position);
             }

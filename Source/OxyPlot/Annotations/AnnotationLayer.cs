@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Specifies the layer for an <see cref="Annotation"/>.
+//   Specifies the layer for an <see cref="Annotation" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents a text annotation.
+//   Represents an annotation that shows text.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -135,7 +135,7 @@ namespace OxyPlot.Annotations
             }
 
             // Todo: see if performance can be improved by checking rectangle (with rotation and alignment), not polygon
-            return ScreenPointHelper.IsPointInPolygon(args.Point, this.actualBounds) ? new HitTestResult(args.Point) : null;
+            return ScreenPointHelper.IsPointInPolygon(args.Point, this.actualBounds) ? new HitTestResult(this, args.Point) : null;
         }
 
         /// <summary>

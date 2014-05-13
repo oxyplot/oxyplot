@@ -42,7 +42,7 @@ namespace OxyPlot
         /// Initializes a new instance of the <see cref="ManipulatorBase{T}" /> class.
         /// </summary>
         /// <param name="plotControl">The plot control.</param>
-        protected ManipulatorBase(IPlotControl plotControl)
+        protected ManipulatorBase(IPlotView plotControl)
         {
             this.PlotControl = plotControl;
         }
@@ -51,7 +51,7 @@ namespace OxyPlot
         /// Gets the plot control where the event was raised.
         /// </summary>
         /// <value>The plot control.</value>
-        public IPlotControl PlotControl { get; private set; }
+        public IPlotView PlotControl { get; private set; }
 
         /// <summary>
         /// Gets or sets the X axis.

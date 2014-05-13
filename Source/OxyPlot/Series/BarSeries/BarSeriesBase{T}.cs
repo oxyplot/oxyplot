@@ -42,6 +42,16 @@ namespace OxyPlot.Series
         where T : BarItemBase, new()
     {
         /// <summary>
+        /// The items from the items source.
+        /// </summary>
+        private List<T> itemsSourceItems;
+
+        /// <summary>
+        /// Specifies if the ownsItemsSourceItems list can be modified.
+        /// </summary>
+        private bool ownsItemsSourceItems;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="BarSeriesBase{T}" /> class. Initializes a new instance of the <see cref="BarSeriesBase&lt;T&gt;" /> class.
         /// </summary>
         protected BarSeriesBase()
@@ -50,10 +60,21 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Gets the items.
+        /// Gets the items list.
         /// </summary>
-        /// <value>The items.</value>
-        public IList<T> Items { get; private set; }
+        /// <value>A list of <see cref="BarItem" /> or <see cref="ColumnItem" />.</value>
+        public List<T> Items { get; private set; }
+
+        /// <summary>
+        /// Gets the list of items that should be rendered.
+        /// </summary>
+        protected List<T> ActualItems
+        {
+            get
+            {
+                return this.ItemsSource != null ? this.itemsSourceItems : this.Items;
+            }
+        }
 
         /// <summary>
         /// Gets the items of this series.
@@ -61,7 +82,7 @@ namespace OxyPlot.Series
         /// <returns>The items.</returns>
         protected internal override IList<CategorizedItem> GetItems()
         {
-            return this.Items.Cast<CategorizedItem>().ToList();
+            return this.ActualItems.Cast<CategorizedItem>().ToList();
         }
 
         /// <summary>
@@ -74,14 +95,28 @@ namespace OxyPlot.Series
                 return;
             }
 
-            var dest = new List<T>();
+            var sourceAsListOfT = this.ItemsSource as List<T>;
+            if (sourceAsListOfT != null)
+            {
+                this.itemsSourceItems = sourceAsListOfT;
+                this.ownsItemsSourceItems = false;
+                return;
+            }
 
-            // Using reflection to add points
-            var filler = new ListFiller<T>();
-            filler.Add(this.ValueField, (item, value) => item.Value = Convert.ToDouble(value));
-            filler.Add(this.ColorField, (item, value) => item.Color = (OxyColor)value);
-            filler.Fill(dest, this.ItemsSource);
-            this.Items = dest;
+            this.ClearItemsSourceItems();
+
+            if (this.ValueField == null)
+            {
+                this.itemsSourceItems.AddRange(this.ItemsSource.OfType<T>());
+            }
+            else
+            {
+                // Using reflection to add items by value and color (optional)
+                var filler = new ListFiller<T>();
+                filler.Add(this.ValueField, (item, value) => item.Value = Convert.ToDouble(value));
+                filler.Add(this.ColorField, (item, value) => item.Color = (OxyColor)value);
+                filler.Fill(this.itemsSourceItems, this.ItemsSource);
+            }
         }
 
         /// <summary>
@@ -91,12 +126,29 @@ namespace OxyPlot.Series
         /// <returns>The item of the index.</returns>
         protected override object GetItem(int i)
         {
-            if (this.ItemsSource != null || this.Items == null || this.Items.Count == 0)
+            if (this.ItemsSource != null || this.ActualItems == null || this.ActualItems.Count == 0)
             {
                 return base.GetItem(i);
             }
 
-            return this.Items[i];
+            return this.ActualItems[i];
+        }
+
+        /// <summary>
+        /// Clears or creates the <see cref="itemsSourceItems"/> list.
+        /// </summary>
+        private void ClearItemsSourceItems()
+        {
+            if (!this.ownsItemsSourceItems || this.itemsSourceItems == null)
+            {
+                this.itemsSourceItems = new List<T>();
+            }
+            else
+            {
+                this.itemsSourceItems.Clear();
+            }
+
+            this.ownsItemsSourceItems = true;
         }
     }
 }

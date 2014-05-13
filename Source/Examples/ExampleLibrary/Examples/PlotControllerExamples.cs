@@ -28,8 +28,10 @@
 namespace ExampleLibrary
 {
     using System;
+    using System.Linq;
 
     using OxyPlot;
+    using OxyPlot.Annotations;
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
@@ -85,6 +87,46 @@ namespace ExampleLibrary
             controller.BindMouseDown(OxyMouseButton.Left, command);
 
             return new Example(model, controller);
+        }
+
+        [Example("Clicking on an annotation")]
+        public static Example ClickingOnAnAnnotation()
+        {
+            // https://oxyplot.codeplex.com/discussions/543975
+            var plotModel = new PlotModel { Title = "Clicking on an annotation", Subtitle = "Click on the rectangles" };
+
+            plotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            plotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+
+            var annotation1 = new RectangleAnnotation { Fill = OxyColors.Green, Text = "RectangleAnnotation 1", MinimumX = 25, MaximumX = 75, MinimumY = 20, MaximumY = 40 };
+            plotModel.Annotations.Add(annotation1);
+
+            var annotation2 = new RectangleAnnotation { Fill = OxyColors.SkyBlue, Text = "RectangleAnnotation 2", MinimumX = 25, MaximumX = 75, MinimumY = 60, MaximumY = 80 };
+            plotModel.Annotations.Add(annotation2);
+
+            EventHandler<OxyMouseDownEventArgs> handleMouseClick = (s, e) =>
+            {
+                plotModel.Subtitle = "You clicked " + ((RectangleAnnotation)s).Text;
+                plotModel.InvalidatePlot(false);
+            };
+
+            annotation1.MouseDown += handleMouseClick;
+            annotation2.MouseDown += handleMouseClick;
+
+            var controller = new PlotController();
+            var handleClick = new DelegatePlotControllerCommand<OxyMouseDownEventArgs>(
+                (v, c, e) =>
+                {
+                    var firstHit = v.ActualModel.HitTest(e.Position, 10).FirstOrDefault(x => x.Element is RectangleAnnotation);
+                    if (firstHit != null)
+                    {
+                        plotModel.Subtitle = "You clicked " + ((RectangleAnnotation)firstHit.Element).Text;
+                        plotModel.InvalidatePlot(false);
+                    }
+                });
+            controller.Bind(new OxyMouseDownGesture(OxyMouseButton.Left), handleClick);
+
+            return new Example(plotModel, controller);
         }
     }
 }

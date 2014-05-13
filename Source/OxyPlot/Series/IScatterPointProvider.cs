@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines functionality to provide a ScatterPoint.
+//   Defines functionality to provide a <see cref="ScatterPoint" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

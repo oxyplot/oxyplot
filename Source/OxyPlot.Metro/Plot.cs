@@ -51,7 +51,7 @@ namespace OxyPlot.Metro
     /// Represents a control that displays plots in Windows Store apps.
     /// </summary>
     [TemplatePart(Name = PartGrid, Type = typeof(Grid))]
-    public class Plot : Control, IPlotControl
+    public class Plot : Control, IPlotView
     {
         /// <summary>
         /// Identifies the <see cref="Controller"/> dependency property.
@@ -455,7 +455,7 @@ namespace OxyPlot.Metro
         /// Stores text on the clipboard.
         /// </summary>
         /// <param name="text">The text.</param>
-        void IPlotControl.SetClipboardText(string text)
+        void IPlotView.SetClipboardText(string text)
         {
             var pkg = new DataPackage();
             pkg.SetText(text);

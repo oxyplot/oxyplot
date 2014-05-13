@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Provides a report writer for LaTeX2e.
+//   Provides a report writer for <c>LaTeX2e</c>.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

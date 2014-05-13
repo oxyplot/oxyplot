@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Provides utility methods related to <see cref="PortableDocumentImage"/>.
+//   Provides utility methods related to <see cref="PortableDocumentImage" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

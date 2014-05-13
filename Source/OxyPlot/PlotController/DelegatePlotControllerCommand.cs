@@ -41,13 +41,13 @@ namespace OxyPlot
         /// <summary>
         /// The handler
         /// </summary>
-        private readonly Action<IPlotControl, IPlotController, T> handler;
+        private readonly Action<IPlotView, IPlotController, T> handler;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DelegatePlotControllerCommand{T}" /> class.
         /// </summary>
         /// <param name="handler">The handler.</param>
-        public DelegatePlotControllerCommand(Action<IPlotControl, IPlotController, T> handler)
+        public DelegatePlotControllerCommand(Action<IPlotView, IPlotController, T> handler)
         {
             this.handler = handler;
         }
@@ -58,7 +58,7 @@ namespace OxyPlot
         /// <param name="view">The plot view.</param>
         /// <param name="controller">The plot controller.</param>
         /// <param name="args">The <see cref="OxyInputEventArgs" /> instance containing the event data.</param>
-        public void Execute(IPlotControl view, IPlotController controller, T args)
+        public void Execute(IPlotView view, IPlotController controller, T args)
         {
             this.handler(view, controller, args);
         }
@@ -69,7 +69,7 @@ namespace OxyPlot
         /// <param name="view">The plot view.</param>
         /// <param name="controller">The plot controller.</param>
         /// <param name="args">The <see cref="OxyInputEventArgs" /> instance containing the event data.</param>
-        public void Execute(IPlotControl view, IPlotController controller, OxyInputEventArgs args)
+        public void Execute(IPlotView view, IPlotController controller, OxyInputEventArgs args)
         {
             this.handler(view, controller, (T)args);
         }

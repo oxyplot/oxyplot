@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Provides extension methods for <see cref="IRenderContext"/>.
+//   Provides extension methods for <see cref="IRenderContext" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

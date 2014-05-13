@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Provides functionality to render <see cref="AngleAxis"/>.
+//   Provides functionality to render <see cref="AngleAxis" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -61,10 +61,6 @@ namespace OxyPlot.Axes
             base.Render(axis, pass);
 
             var magnitudeAxis = this.Plot.DefaultMagnitudeAxis;
-            if (axis.RelatedAxis != null)
-            {
-                magnitudeAxis = axis.RelatedAxis as MagnitudeAxis;
-            }
 
             if (magnitudeAxis == null)
             {
@@ -76,7 +72,7 @@ namespace OxyPlot.Axes
 
             var axisLength = Math.Abs(scaledEndAngle - scaledStartAngle);
             var eps = axis.MinorStep * 1e-3;
-            if (axis.ShowMinorTicks && this.MinorPen != null)
+            if (this.MinorPen != null)
             {
                 var tickCount = Math.Abs((int)(axisLength / axis.ActualMinorStep));
                 var screenPoints = this.MinorTickValues
@@ -133,7 +129,7 @@ namespace OxyPlot.Axes
                 if (Math.Abs(Math.Abs(angle) - 90) < 10)
                 {
                     ha = HorizontalAlignment.Center;
-                    va = angle > 90 ? VerticalAlignment.Top : VerticalAlignment.Bottom;
+                    va = angle >= 90 ? VerticalAlignment.Top : VerticalAlignment.Bottom;
                     angle = 0;
                 }
                 else if (angle > 90 || angle < -90)

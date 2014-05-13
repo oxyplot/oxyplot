@@ -44,12 +44,16 @@ namespace ExampleLibrary
         [Example("#9971: Don't show minor ticks")]
         public static PlotModel DontShowMinorTicks()
         {
-            var model = new PlotModel { Title = "ShowMinorTicks = false" };
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, ShowMinorTicks = false });
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, ShowMinorTicks = false });
+            var model = new PlotModel { Title = "MinorTickSize = 0" };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, MinorTickSize = 0, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Solid });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, MinorTickSize = 0, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Solid });
             return model;
         }
 
+        /// <summary>
+        /// Grids the lines both different colors.
+        /// </summary>
+        /// <returns></returns>
         [Example("#9990: Major grid lines in front of minor")]
         public static PlotModel GridLinesBothDifferentColors()
         {
@@ -278,6 +282,34 @@ namespace ExampleLibrary
             }
 
             return model;
+        }
+
+        [Example("#10184: ScatterSeries and LinearColorAxis on the same plot")]
+        public static PlotModel ScatterSeriesAndLinearColorAxis()
+        {
+            var plotModel = new PlotModel { Title = "ScatterSeries and LinearColorAxis on the same plot" };
+            int npoints = 100;
+            var random = new Random();
+
+            var scatterSeries = new ScatterSeries { ColorAxisKey = string.Empty };
+            for (var i = 0; i < npoints; i++)
+            {
+                scatterSeries.Points.Add(new ScatterPoint((double)i / npoints, random.NextDouble()));
+            }
+
+            plotModel.Series.Add(scatterSeries);
+
+            var lineSeries = new LineSeries();
+            for (var i = 0; i < npoints; i++)
+            {
+                lineSeries.Points.Add(new DataPoint((double)i / npoints, random.NextDouble()));
+            }
+
+            plotModel.Series.Add(lineSeries);
+
+            var hmLegendAxis = new LinearColorAxis();
+            plotModel.Axes.Add(hmLegendAxis);
+            return plotModel;
         }
     }
 }
