@@ -67,7 +67,7 @@ namespace Visiblox.Charts.Examples
         private Series ListToSeries(List<Histogram.DataPoint> data, OxyColor color)
         {
             var pts = data.Select(pt => new OxyPlot.DataPoint(pt.Location, pt.Intensity));
-            return new LineSeries { Points = pts.Cast<IDataPoint>().ToList(), StrokeThickness = 1.0, Color = color };
+            return new LineSeries { ItemsSource = pts.ToList(), StrokeThickness = 1.0, Color = color };
         }
     }
 }
