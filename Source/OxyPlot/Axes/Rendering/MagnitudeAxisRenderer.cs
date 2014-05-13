@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Provides functionality to render <see cref="MagnitudeAxis"/>.
+//   Provides functionality to render <see cref="MagnitudeAxis" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -60,10 +60,6 @@ namespace OxyPlot.Axes
             base.Render(axis, pass);
 
             var angleAxis = this.Plot.DefaultAngleAxis;
-            if (axis.RelatedAxis != null)
-            {
-                angleAxis = axis.RelatedAxis as AngleAxis;
-            }
 
             if (angleAxis == null)
             {
@@ -74,7 +70,7 @@ namespace OxyPlot.Axes
 
             var majorTicks = MajorTickValues.Where(x => x > axis.ActualMinimum && x <= axis.ActualMaximum).ToArray();
 
-            if (pass == 0 && axis.ShowMinorTicks && this.MinorPen != null)
+            if (pass == 0 && this.MinorPen != null)
             {
                 var minorTicks = MinorTickValues.Where(x => x >= axis.ActualMinimum && x <= axis.ActualMaximum && !majorTicks.Contains(x)).ToArray();
 

@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Provides an abstract base class for all annotations that are shown as paths (lines, functions or polylines).
+//   Provides an abstract base class for all annotations that contain paths (lines, functions or polylines).
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -411,7 +411,7 @@ namespace OxyPlot.Annotations
             double dist = (args.Point - nearestPoint).Length;
             if (dist < args.Tolerance)
             {
-                return new HitTestResult(nearestPoint);
+                return new HitTestResult(this, nearestPoint);
             }
 
             return null;

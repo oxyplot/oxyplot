@@ -85,7 +85,6 @@ namespace OxyPlot.Wpf
             TextColorProperty.OverrideMetadata(typeof(TextAnnotation), new FrameworkPropertyMetadata(MoreColors.Automatic, AppearanceChanged));
         }
 
-
         /// <summary>
         /// Initializes a new instance of the <see cref = "TextAnnotation" /> class.
         /// </summary>

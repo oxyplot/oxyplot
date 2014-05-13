@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Provides unit tests for the <see cref="Plot"/> class.
+//   Provides unit tests for the <see cref="Plot" /> class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -109,6 +109,23 @@ namespace OxyPlot.Wpf.Tests
                 var model = new PlotModel();
                 var plot = new Plot { Model = model };
                 Task.Factory.StartNew(() => plot.InvalidatePlot()).Wait();
+            }
+        }
+
+        /// <summary>
+        /// Provides unit tests for the default values of the <see cref="Plot" /> class.
+        /// </summary>
+        public class DefaultValues
+        {
+            /// <summary>
+            /// Asserts that the default values are equal to the default values in the <see cref="PlotModel" />.
+            /// </summary>
+            [Test]
+            public void PlotModelVsPlot()
+            {
+                var model = new PlotModel();
+                var view = new Plot();
+                OxyAssert.PropertiesAreEqual(model, view);
             }
         }
     }

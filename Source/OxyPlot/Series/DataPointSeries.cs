@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Provides an abstract base class for series that contain a collection of <see cref="DataPoint"/>s.
+//   Provides an abstract base class for series that contain a collection of <see cref="DataPoint" />s.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

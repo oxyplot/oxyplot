@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Provides algorithms for polygons and lines of <see cref="ScreenPoint"/>.
+//   Provides algorithms for polygons and lines of <see cref="ScreenPoint" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

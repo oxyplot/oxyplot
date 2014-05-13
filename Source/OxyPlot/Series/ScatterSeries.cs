@@ -102,16 +102,18 @@ namespace OxyPlot.Series
         public int BinSize { get; set; }
 
         /// <summary>
-        /// Gets or sets the color axis.
+        /// Gets the color axis.
         /// </summary>
         /// <value>The color axis.</value>
         /// <remarks>This is used to map scatter point values to colors.</remarks>
-        public IColorAxis ColorAxis { get; set; }
+        public IColorAxis ColorAxis { get; private set; }
 
         /// <summary>
         /// Gets or sets the color axis key.
         /// </summary>
         /// <value>The color axis key.</value>
+        /// <remarks>If set to <c>null</c>, the default color axis of the <see cref="PlotModel" /> will be used. Make sure that the points contains values.
+        /// If your <see cref="PlotModel" /> contains a <see cref="IColorAxis" />, but you don't want to use a color axis, set the value to <c>string.Empty</c> or some other key that is not in use.</remarks>
         public string ColorAxisKey { get; set; }
 
         /// <summary>

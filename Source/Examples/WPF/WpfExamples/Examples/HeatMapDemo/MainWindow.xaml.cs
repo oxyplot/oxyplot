@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IPlotControl.cs" company="OxyPlot">
+// <copyright file="MainWindow.xaml.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2014 OxyPlot contributors
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -24,60 +24,54 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Specifies functionality for the plot views.
+//   Interaction logic for MainWindow.xaml
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace OxyPlot
+namespace HeatMapDemo
 {
+    using System;
+
     /// <summary>
-	/// Specifies functionality for the plot views.
+    /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public interface IPlotControl
+    public partial class MainWindow
     {
         /// <summary>
-        /// Gets the actual <see cref="PlotModel" /> of the control.
+        /// Initializes a new instance of the <see cref="MainWindow"/> class.
         /// </summary>
-        PlotModel ActualModel { get; }
+        public MainWindow()
+        {
+            this.InitializeComponent();
+            this.DataContext = this;
+            this.Data = this.GenerateHeatMap();
+        }
 
         /// <summary>
-        /// Hides the tracker.
+        /// Gets the data.
         /// </summary>
-        void HideTracker();
+        public double[,] Data { get; private set; }
 
         /// <summary>
-        /// Hides the zoom rectangle.
+        /// Generates the heat map data.
         /// </summary>
-        void HideZoomRectangle();
+        /// <returns>
+        /// The heat map data array.
+        /// </returns>
+        private double[,] GenerateHeatMap()
+        {
+            const int Rows = 100;
+            const int Cols = 100;
+            var result = new double[Rows, Cols];
+            for (var i = 0; i < Rows; i++)
+            {
+                for (var j = 0; j < Cols; j++)
+                {
+                    result[i, j] = Math.Sin(2 * Math.PI * i / Rows) * Math.Sin(2 * Math.PI * j / Cols);
+                }
+            }
 
-        /// <summary>
-        /// Invalidates the plot (not blocking the UI thread)
-        /// </summary>
-        /// <param name="updateData">if set to <c>true</c>, all data bindings will be updated.</param>
-        void InvalidatePlot(bool updateData = true);
-
-        /// <summary>
-        /// Sets the cursor type.
-        /// </summary>
-        /// <param name="cursorType">The cursor type.</param>
-        void SetCursorType(CursorType cursorType);
-
-        /// <summary>
-        /// Shows the tracker.
-        /// </summary>
-        /// <param name="trackerHitResult">The tracker data.</param>
-        void ShowTracker(TrackerHitResult trackerHitResult);
-
-        /// <summary>
-        /// Shows the zoom rectangle.
-        /// </summary>
-        /// <param name="rectangle">The rectangle.</param>
-        void ShowZoomRectangle(OxyRect rectangle);
-
-        /// <summary>
-        /// Stores text on the clipboard.
-        /// </summary>
-        /// <param name="text">The text.</param>
-        void SetClipboardText(string text);
+            return result;
+        }
     }
 }

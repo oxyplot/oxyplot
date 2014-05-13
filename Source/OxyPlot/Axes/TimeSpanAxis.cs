@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents an axis presenting <see cref="System.TimeSpan"/> values.
+//   Represents an axis presenting <see cref="System.TimeSpan" /> values.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

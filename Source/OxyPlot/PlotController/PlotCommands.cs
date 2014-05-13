@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PlotCommands.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2014 OxyPlot contributors
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -31,7 +31,7 @@
 namespace OxyPlot
 {
     /// <summary>
-	/// Defines common commands for the plots.
+    /// Defines common commands for the plots.
     /// </summary>
     public static class PlotCommands
     {
@@ -229,7 +229,7 @@ namespace OxyPlot
         /// Handles the reset events.
         /// </summary>
         /// <param name="view">The view to reset.</param>
-        private static void HandleReset(IPlotControl view)
+        private static void HandleReset(IPlotView view)
         {
             view.ActualModel.ResetAllAxes();
             view.InvalidatePlot(false);
@@ -241,7 +241,7 @@ namespace OxyPlot
         /// <param name="view">The view.</param>
         /// <param name="args">The <see cref="OxyMouseWheelEventArgs" /> instance containing the event data.</param>
         /// <param name="delta">The zoom factor.</param>
-        private static void HandleZoomAt(IPlotControl view, OxyMouseEventArgs args, double delta)
+        private static void HandleZoomAt(IPlotView view, OxyMouseEventArgs args, double delta)
         {
             var m = new ZoomStepManipulator(view) { Step = delta, FineControl = args.IsControlDown };
             m.Started(args);
@@ -253,7 +253,7 @@ namespace OxyPlot
         /// <param name="view">The view.</param>
         /// <param name="args">The <see cref="OxyMouseWheelEventArgs" /> instance containing the event data.</param>
         /// <param name="factor">The zoom speed factor. Default value is 1.</param>
-        private static void HandleZoomByWheel(IPlotControl view, OxyMouseWheelEventArgs args, double factor = 1)
+        private static void HandleZoomByWheel(IPlotView view, OxyMouseWheelEventArgs args, double factor = 1)
         {
             var m = new ZoomStepManipulator(view) { Step = args.Delta * 0.001 * factor, FineControl = args.IsControlDown };
             m.Started(args);
@@ -264,7 +264,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="view">The view.</param>
         /// <param name="delta">The zoom factor (positive zoom in, negative zoom out).</param>
-        private static void HandleZoomCenter(IPlotControl view, double delta)
+        private static void HandleZoomCenter(IPlotView view, double delta)
         {
             view.ActualModel.ZoomAllAxes(1 + (delta * 0.12));
             view.InvalidatePlot(false);
@@ -276,7 +276,7 @@ namespace OxyPlot
         /// <param name="view">The view.</param>
         /// <param name="dx">The horizontal delta (percentage of plot area width).</param>
         /// <param name="dy">The vertical delta (percentage of plot area height).</param>
-        private static void HandlePan(IPlotControl view, double dx, double dy)
+        private static void HandlePan(IPlotView view, double dx, double dy)
         {
             dx *= view.ActualModel.PlotArea.Width;
             dy *= view.ActualModel.PlotArea.Height;

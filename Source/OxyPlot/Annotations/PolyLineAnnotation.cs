@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PolyLineAnnotation.cs" company="OxyPlot">
+// <copyright file="PolylineAnnotation.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 OxyPlot contributors
@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents a polyline annotation.
+//   Represents an annotation that shows a polyline.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

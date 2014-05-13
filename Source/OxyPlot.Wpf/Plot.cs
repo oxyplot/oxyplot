@@ -52,7 +52,7 @@ namespace OxyPlot.Wpf
     /// </summary>
     [ContentProperty("Series")]
     [TemplatePart(Name = PartGrid, Type = typeof(Grid))]
-    public partial class Plot : RenderingControl, IPlotControl
+    public partial class Plot : RenderingControl, IPlotView
     {
         /// <summary>
         /// The Grid PART constant.
@@ -140,8 +140,7 @@ namespace OxyPlot.Wpf
         static Plot()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(Plot), new FrameworkPropertyMetadata(typeof(Plot)));
-            PaddingProperty.OverrideMetadata(
-                typeof(Plot), new FrameworkPropertyMetadata(new Thickness(8, 8, 16, 8), AppearanceChanged));
+            PaddingProperty.OverrideMetadata(typeof(Plot), new FrameworkPropertyMetadata(new Thickness(8), AppearanceChanged));
         }
 
         /// <summary>
@@ -931,23 +930,41 @@ namespace OxyPlot.Wpf
         private void SynchronizeProperties()
         {
             var m = this.internalModel;
-            m.Title = this.Title;
-            m.Subtitle = this.Subtitle;
+                        
             m.PlotType = this.PlotType;
+
             m.PlotMargins = this.PlotMargins.ToOxyThickness();
+            m.Padding = this.Padding.ToOxyThickness();
+            m.TitlePadding = this.TitlePadding;
 
             m.Culture = this.Culture;
 
-            m.Padding = this.Padding.ToOxyThickness();
+            m.DefaultColors = this.DefaultColors.Select(c => c.ToOxyColor()).ToArray();
+            m.DefaultFont = this.DefaultFont;
+            m.DefaultFontSize = this.DefaultFontSize;
+
+            m.Title = this.Title;
+            m.TitleColor = this.TitleColor.ToOxyColor();
             m.TitleFont = this.TitleFont;
             m.TitleFontSize = this.TitleFontSize;
-            m.SubtitleFontSize = this.SubtitleFontSize;
             m.TitleFontWeight = this.TitleFontWeight.ToOpenTypeWeight();
+
+            m.Subtitle = this.Subtitle;
+            m.SubtitleColor = this.SubtitleColor.ToOxyColor();
+            m.SubtitleFont = this.SubtitleFont;
+            m.SubtitleFontSize = this.SubtitleFontSize;
             m.SubtitleFontWeight = this.SubtitleFontWeight.ToOpenTypeWeight();
-            m.TitlePadding = this.TitlePadding;
+                        
             m.TextColor = this.TextColor.ToOxyColor();
+            m.SelectionColor = this.SelectionColor.ToOxyColor();
+            
+            m.RenderingDecorator = this.RenderingDecorator;
+
+            m.AxisTierDistance = this.AxisTierDistance;
 
             m.IsLegendVisible = this.IsLegendVisible;
+            m.LegendTitle = this.LegendTitle;
+            m.LegendTitleColor = this.LegendTitleColor.ToOxyColor();
             m.LegendTitleFont = this.LegendTitleFont;
             m.LegendTitleFontSize = this.LegendTitleFontSize;
             m.LegendTitleFontWeight = this.LegendTitleFontWeight.ToOpenTypeWeight();

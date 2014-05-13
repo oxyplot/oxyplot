@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ArrowAnnotation.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2014 OxyPlot contributors
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents an arrow annotation.
+//   Represents an annotation that shows an arrow.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -204,18 +204,18 @@ namespace OxyPlot.Annotations
         {
             if ((args.Point - this.screenStartPoint).Length < args.Tolerance)
             {
-                return new HitTestResult(this.screenStartPoint, null, 1);
+                return new HitTestResult(this, this.screenStartPoint, null, 1);
             }
 
             if ((args.Point - this.screenEndPoint).Length < args.Tolerance)
             {
-                return new HitTestResult(this.screenEndPoint, null, 2);
+                return new HitTestResult(this, this.screenEndPoint, null, 2);
             }
 
             var p = ScreenPointHelper.FindPointOnLine(args.Point, this.screenStartPoint, this.screenEndPoint);
             if ((p - args.Point).Length < args.Tolerance)
             {
-                return new HitTestResult(p);
+                return new HitTestResult(this, p);
             }
 
             return null;

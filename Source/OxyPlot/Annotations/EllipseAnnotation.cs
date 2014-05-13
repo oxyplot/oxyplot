@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents an ellipse annotation.
+//   Represents an annotation that shows an ellipse.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -131,7 +131,7 @@ namespace OxyPlot.Annotations
         {
             if (this.screenRectangle.Contains(args.Point))
             {
-                return new HitTestResult(args.Point);
+                return new HitTestResult(this, args.Point);
             }
 
             return null;
