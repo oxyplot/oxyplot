@@ -1,0 +1,96 @@
+body {
+    padding-top: 60px;
+}
+
+code {
+  font-family: Consolas, 'Courier New';
+}
+
+code .string {
+  color: #A31515;
+}
+
+
+code .keyword {
+  color: blue;
+}
+
+code .comment {
+  color: #008000;
+}
+
+code .doc {
+  color: gray;
+}
+
+code .key {
+}
+
+code .tag {
+  color: blue;
+}
+
+code .name {
+  color: #A31515;
+}
+
+code .key {
+  color: red;
+}
+
+code .value {
+  color: blue;
+}
+
+pre  {
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  border-radius: 3pt;
+  overflow: auto;
+  padding: 1em;
+}
+
+/*
+h1, h2 {
+    font-weight: bold;
+    color: #3F529C;
+}
+
+h1 {
+    font-size: 2em;
+}
+
+h2 {
+    font-size: 1.6em;
+}
+
+h3 {
+    font-size: 1.2em;
+}*/
+
+table {
+    border-collapse: collapse;
+    width:100%;
+}
+
+td, th {
+    border: solid 1px #BBB;
+    padding: 4px;
+    vertical-align: top;
+}
+
+td:first-child {
+    word-break: break-all;
+    width: 33%;
+}
+
+th {
+    background-color: #E5E5E5;
+    text-align: left;
+}
+/*
+.footer {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #e5e5e5;
+}*/
