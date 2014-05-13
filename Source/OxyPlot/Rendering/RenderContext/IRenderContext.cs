@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Specifies functionlity to render 2D graphics.
+//   Specifies functionality to render 2D graphics.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -174,7 +174,7 @@ namespace OxyPlot
             OxyColor fill,
             string fontFamily = null,
             double fontSize = 10,
-            double fontWeight = 500,
+            double fontWeight = FontWeights.Normal,
             double rotate = 0,
             HorizontalAlignment halign = HorizontalAlignment.Left,
             VerticalAlignment valign = VerticalAlignment.Top,

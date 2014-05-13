@@ -604,7 +604,7 @@ namespace ExampleLibrary
                 new TileMapAnnotation
                 {
                     Url = "http://tile.openstreetmap.org/{Z}/{X}/{Y}.png",
-                    CopyrightNotice = "OpenStreet map."
+                    CopyrightNotice = "OpenStreetMap"
                 });
 
             return model;
