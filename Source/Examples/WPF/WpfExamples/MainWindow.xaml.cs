@@ -72,7 +72,7 @@ namespace WpfExamples
                     new Example(typeof(UserControlDemo.MainWindow), null, "Demonstrates a Plot in a UserControl."),
                     new Example(typeof(UserControlDemo.MainWindow2), null, "Demonstrates a Plot in a UserControl in a DataTemplate."),
                     new Example(typeof(UserControlDemo.MainWindow3), null, "Demonstrates a Plot in a DataTemplate."),
-                    new Example(typeof(HeatMapDemo.MainWindow), null, "Demonstrates the HeatMap series.")
+                    new Example(typeof(HeatMapDemo.MainWindow), null, "Demonstrates the HeatMapSeries.")
                 };
         }
 
