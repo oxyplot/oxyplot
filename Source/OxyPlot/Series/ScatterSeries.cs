@@ -67,20 +67,18 @@ namespace OxyPlot.Series
         /// </summary>
         public ScatterSeries()
         {
-            this.DataFieldSize = null;
-            this.DataFieldValue = null;
-
             this.MarkerFill = OxyColors.Automatic;
             this.MarkerSize = 5;
             this.MarkerType = MarkerType.Square;
             this.MarkerStroke = OxyColors.Automatic;
-            this.MarkerStrokeThickness = 1.0;
+            this.MarkerStrokeThickness = 1;
         }
 
         /// <summary>
         /// Gets the list of points.
         /// </summary>
         /// <value>A list of <see cref="ScatterPoint" />.</value>
+        /// <remarks>If the <see cref="ItemsSeries.ItemsSource" /> is specified, this list will not be used.</remarks>
         public List<ScatterPoint> Points
         {
             get
@@ -90,66 +88,73 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Gets or sets the mapping delegate.
-        /// Example: series1.Mapping = item => new DataPoint(((MyType)item).Time,((MyType)item).Value);
+        /// Gets or sets a function that maps from elements in the <see cref="ItemsSeries.ItemsSource" /> to <see cref="ScatterPoint" /> points to be rendered.
         /// </summary>
-        /// <value>The mapping.</value>
+        /// <value>The mapping function. The default is <c>null</c>.</value>
+        /// <remarks>Example: series1.Mapping = item => new DataPoint(((MyType)item).Time,((MyType)item).Value);
+        /// </remarks>
         public Func<object, ScatterPoint> Mapping { get; set; }
 
         /// <summary>
-        /// Gets or sets the screen resolution. If this number is greater than 1, bins of that size is created for both x and y directions. Only one point will be drawn in each bin.
+        /// Gets or sets the size of the 'binning' feature. 
+        /// If this number is greater than 1, bins of the specified is created for both x and y directions. Only one point will be drawn in each bin.
         /// </summary>
+        /// <value>
+        /// The size of the bins. The default is <c>0</c> - no binning.
+        /// </value>
         public int BinSize { get; set; }
 
         /// <summary>
-        /// Gets the color axis.
+        /// Gets the actual color axis.
         /// </summary>
-        /// <value>The color axis.</value>
-        /// <remarks>This is used to map scatter point values to colors.</remarks>
+        /// <value>A <see cref="IColorAxis" />.</value>
+        /// <remarks>This is used to map scatter point values to colors. Use the <see cref="ColorAxisKey" /> to specify a color axis. 
+        /// If the <see cref="ColorAxisKey" /> is not specified, the first <see cref="IColorAxis" /> of the <see cref="PlotModel" /> will be used.</remarks>
         public IColorAxis ColorAxis { get; private set; }
 
         /// <summary>
         /// Gets or sets the color axis key.
         /// </summary>
-        /// <value>The color axis key.</value>
-        /// <remarks>If set to <c>null</c>, the default color axis of the <see cref="PlotModel" /> will be used. Make sure that the points contains values.
+        /// <value>The color axis key. The default is <c>null</c>.</value>
+        /// <remarks>If set to <c>null</c>, the first <see cref="IColorAxis" /> of the <see cref="PlotModel" /> will be used. 
+        /// Make sure that the points contains values.
         /// If your <see cref="PlotModel" /> contains a <see cref="IColorAxis" />, but you don't want to use a color axis, set the value to <c>string.Empty</c> or some other key that is not in use.</remarks>
         public string ColorAxisKey { get; set; }
 
         /// <summary>
-        /// Gets or sets the data field X.
+        /// Gets or sets the name of the property that specifies X coordinates in the <see cref="ItemsSeries.ItemsSource" /> elements.
         /// </summary>
-        /// <value>The data field X.</value>
+        /// <value>The name of the property. The default is <c>null</c>.</value>
         public string DataFieldX { get; set; }
 
         /// <summary>
-        /// Gets or sets the data field Y.
+        /// Gets or sets the name of the property that specifies Y coordinates in the <see cref="ItemsSeries.ItemsSource" /> elements.
         /// </summary>
-        /// <value>The data field Y.</value>
+        /// <value>The name of the property. The default is <c>null</c>.</value>
         public string DataFieldY { get; set; }
 
         /// <summary>
-        /// Gets or sets the data field for the size.
+        /// Gets or sets the name of the property that specifies the size in the <see cref="ItemsSeries.ItemsSource" /> elements.
         /// </summary>
-        /// <value>The size data field.</value>
+        /// <value>The name of the property. The default is <c>null</c>.</value>
         public string DataFieldSize { get; set; }
 
         /// <summary>
-        /// Gets or sets the tag data field.
+        /// Gets or sets the name of the property that specifies the tag in the <see cref="ItemsSeries.ItemsSource" /> elements.
         /// </summary>
-        /// <value>The tag data field.</value>
+        /// <value>The name of the property. The default is <c>null</c>.</value>
         public string DataFieldTag { get; set; }
 
         /// <summary>
-        /// Gets or sets the value data field.
+        /// Gets or sets the name of the property that specifies the color value in the <see cref="ItemsSeries.ItemsSource" /> elements.
         /// </summary>
-        /// <value>The value data field.</value>
+        /// <value>The name of the property. The default is <c>null</c>.</value>
         public string DataFieldValue { get; set; }
 
         /// <summary>
         /// Gets or sets the marker fill color. If <c>null</c>, this color will be automatically set.
         /// </summary>
-        /// <value>The marker fill color.</value>
+        /// <value>The fill color of the markers. The default is <see cref="OxyColors.Automatic" />.</value>
         public OxyColor MarkerFill { get; set; }
 
         /// <summary>
@@ -162,43 +167,43 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Gets or sets the marker outline polygon. Set MarkerType to Custom to use this.
+        /// Gets or sets the custom marker outline polygon. Set <see cref="MarkerType" /> to <see cref="T:MarkerType.Custom" /> to use this.
         /// </summary>
-        /// <value>The marker outline.</value>
+        /// <value>The outline. The default is <c>null</c>.</value>
         public ScreenPoint[] MarkerOutline { get; set; }
 
         /// <summary>
         /// Gets or sets the size of the marker (same size for all items).
         /// </summary>
-        /// <value>The size of the markers.</value>
+        /// <value>The size of the markers. The default is <c>5</c>.</value>
         public double MarkerSize { get; set; }
 
         /// <summary>
         /// Gets or sets the marker stroke.
         /// </summary>
-        /// <value>The marker stroke.</value>
+        /// <value>The marker stroke. The default is <see cref="OxyColors.Automatic" />.</value>
         public OxyColor MarkerStroke { get; set; }
 
         /// <summary>
-        /// Gets or sets the marker stroke thickness.
+        /// Gets or sets thickness of the the marker strokes.
         /// </summary>
-        /// <value>The marker stroke thickness.</value>
+        /// <value>The thickness. The default is <c>1</c>.</value>
         public double MarkerStrokeThickness { get; set; }
 
         /// <summary>
         /// Gets or sets the type of the marker.
         /// </summary>
-        /// <value>The type of the marker.</value>
-        /// <remarks>If MarkerType.Custom is used, the MarkerOutline property must be specified.</remarks>
+        /// <value>The type of the marker. The default is <see cref="T:MarkerType.Square" />.</value>
+        /// <remarks>If <see cref="T:MarkerType.Custom" /> is used, the <see cref="MarkerOutline" /> property must be specified.</remarks>
         public MarkerType MarkerType { get; set; }
 
         /// <summary>
-        /// Gets the max value of the points.
+        /// Gets the maximum value of the points.
         /// </summary>
         public double MaxValue { get; private set; }
 
         /// <summary>
-        /// Gets the min value of the points.
+        /// Gets the minimum value of the points.
         /// </summary>
         public double MinValue { get; private set; }
 

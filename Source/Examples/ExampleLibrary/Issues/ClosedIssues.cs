@@ -41,6 +41,29 @@ namespace ExampleLibrary
     // ReSharper disable InconsistentNaming
     public class ClosedIssues : ExamplesBase
     {
+        [Example("#9042: Support colour coding on scatter plots")]
+        public static PlotModel ColorCodingOnScatterPlots()
+        {
+            var model = new PlotModel { Title = "Colour coding on scatter plots" };
+            var colorAxis = new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(500), Minimum = 0, Maximum = 5, HighColor = OxyColors.Gray, LowColor = OxyColors.Black };
+            model.Axes.Add(colorAxis);
+
+            var s4 = new ScatterSeries { MarkerType = MarkerType.Circle };
+            s4.Points.Add(new ScatterPoint(3, 5, 5, 0));
+            s4.Points.Add(new ScatterPoint(5, 5, 7, 0));
+            s4.Points.Add(new ScatterPoint(2, 4, 5, 0.3));
+            s4.Points.Add(new ScatterPoint(3, 3, 8, 0));
+            s4.Points.Add(new ScatterPoint(3, 2, 5, 0));
+            s4.Points.Add(new ScatterPoint(3, 5, 8, 1));
+            s4.Points.Add(new ScatterPoint(2, 2, 3, 5));
+            s4.Points.Add(new ScatterPoint(1, 4, 4, 1));
+            s4.Points.Add(new ScatterPoint(4, 3, 5, 3));
+            s4.Points.Add(new ScatterPoint(0, 0, 1, 1));
+            s4.Points.Add(new ScatterPoint(8, 8, 1, 1));
+            model.Series.Add(s4);
+            return model;
+        }
+
         [Example("#9971: Don't show minor ticks")]
         public static PlotModel DontShowMinorTicks()
         {
