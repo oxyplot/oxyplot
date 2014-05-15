@@ -43,7 +43,7 @@ namespace OxyPlot
         /// Initializes a new instance of the <see cref="DelegatePlotCommand{T}" /> class.
         /// </summary>
         /// <param name="handler">The handler.</param>
-        public DelegatePlotCommand(Action<IPlotView, IGraphicsController, T> handler)
+        public DelegatePlotCommand(Action<IPlotView, IController, T> handler)
             : base((v, c, e) => handler((IPlotView)v, c, e))
         {
         }

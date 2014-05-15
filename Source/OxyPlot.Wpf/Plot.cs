@@ -232,7 +232,7 @@ namespace OxyPlot.Wpf
         /// Gets the actual model.
         /// </summary>
         /// <value>The actual model.</value>
-        Model IGraphicsView.ActualModel
+        Model IView.ActualModel
         {
             get
             {
@@ -256,7 +256,7 @@ namespace OxyPlot.Wpf
         /// Gets the actual plot controller.
         /// </summary>
         /// <value>The actual plot controller.</value>
-        IGraphicsController IGraphicsView.ActualController
+        IController IView.ActualController
         {
             get
             {
