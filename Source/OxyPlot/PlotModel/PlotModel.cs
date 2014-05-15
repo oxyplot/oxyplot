@@ -424,11 +424,15 @@ namespace OxyPlot
         /// </summary>
         /// <value>The color specified in <see cref="Background" /> or <see cref="OxyColors.White" /> if
         /// the color is not specified.</value>
-        public OxyColor ActualBackground {
-            get {
-                if (this.Background.IsAutomatic () || this.Background.IsUndefined ()) {
+        public OxyColor ActualBackground
+        {
+            get
+            {
+                if (this.Background.IsAutomatic() || this.Background.IsUndefined())
+                {
                     return OxyColors.White;
                 }
+
                 return this.Background;
             }
         }
