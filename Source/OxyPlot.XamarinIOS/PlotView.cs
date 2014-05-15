@@ -129,6 +129,18 @@ namespace OxyPlot.XamarinIOS
         }
 
         /// <summary>
+        /// Gets the coordinates of the client area of the view.
+        /// </summary>
+        public OxyRect ClientArea
+        {
+            get
+            {
+                // TODO
+                return new OxyRect(0, 0, 100, 100);
+            }
+        }
+
+        /// <summary>
         /// Gets the actual <see cref="IPlotController"/>.
         /// </summary>
         /// <value>The actual plot controller.</value>

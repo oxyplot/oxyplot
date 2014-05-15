@@ -49,6 +49,7 @@
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Graphics\DelegateViewCommand{T}.cs" />
+    <Compile Include="Graphics\ManipulatorBase.cs" />
     <Compile Include="PlotController\DelegatePlotCommand.cs" />
     <Compile Include="Graphics\Element.cs" />
     <Compile Include="Graphics\ElementCollection{T}.cs" />
@@ -71,7 +72,7 @@
     <Compile Include="PlotController\Manipulators\MouseManipulator.cs" />
     <Compile Include="PlotController\Manipulators\TouchManipulator.cs" />
     <Compile Include="PlotController\PlotCommands.cs" />
-    <Compile Include="PlotController\PlotControllerExtensions.cs" />
+    <Compile Include="Graphics\ControllerExtensions.cs" />
     <Compile Include="PlotModel\HitTestArguments.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LibraryDoc.cs" />
@@ -211,7 +212,7 @@
     <Compile Include="Axes\Rendering\AngleAxisRenderer.cs" />
     <Compile Include="Axes\Rendering\MagnitudeAxisRenderer.cs" />
     <Compile Include="Axes\Rendering\HorizontalAndVerticalAxisRenderer.cs" />
-    <Compile Include="PlotController\Manipulators\ManipulatorBase.cs" />
+    <Compile Include="PlotController\Manipulators\PlotManipulator.cs" />
     <Compile Include="PlotController\Manipulators\PanManipulator.cs" />
     <Compile Include="PlotController\Manipulators\TrackerHitResult.cs" />
     <Compile Include="PlotController\Manipulators\TrackerManipulator.cs" />
@@ -223,7 +224,7 @@
     <Compile Include="PlotModel\SelectionMode.cs" />
     <Compile Include="PlotModel\TrackerEventArgs.cs" />
     <Compile Include="PlotView\IPlotView.cs" />
-    <Compile Include="PlotView\CursorType.cs" />
+    <Compile Include="Graphics\CursorType.cs" />
     <Compile Include="Series\BarSeries\BarItem.cs" />
     <Compile Include="Series\BarSeries\BarItemBase.cs" />
     <Compile Include="Series\BarSeries\BarSeriesBase{T}.cs" />

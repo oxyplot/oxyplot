@@ -55,62 +55,80 @@ namespace OxyPlot
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="args">The <see cref="OxyPlot.OxyMouseEventArgs" /> instance containing the event data.</param>
-        public abstract void HandleMouseDown(object sender, OxyMouseDownEventArgs args);
+        public virtual void HandleMouseDown(object sender, OxyMouseDownEventArgs args)
+        {
+        }
 
         /// <summary>
         /// Handles the mouse enter event.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="args">The <see cref="OxyPlot.OxyMouseEventArgs" /> instance containing the event data.</param>
-        public abstract void HandleMouseEnter(object sender, OxyMouseEventArgs args);
+        public virtual void HandleMouseEnter(object sender, OxyMouseEventArgs args)
+        {
+        }
 
         /// <summary>
         /// Handles the mouse leave event.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="args">The <see cref="OxyPlot.OxyMouseEventArgs" /> instance containing the event data.</param>
-        public abstract void HandleMouseLeave(object sender, OxyMouseEventArgs args);
+        public virtual void HandleMouseLeave(object sender, OxyMouseEventArgs args)
+        {
+        }
 
         /// <summary>
         /// Handles the mouse move event.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="args">The <see cref="OxyPlot.OxyMouseEventArgs" /> instance containing the event data.</param>
-        public abstract void HandleMouseMove(object sender, OxyMouseEventArgs args);
+        public virtual void HandleMouseMove(object sender, OxyMouseEventArgs args)
+        {
+        }
 
         /// <summary>
         /// Handles the mouse up event.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="args">The <see cref="OxyPlot.OxyMouseEventArgs" /> instance containing the event data.</param>
-        public abstract void HandleMouseUp(object sender, OxyMouseEventArgs args);
+        public virtual void HandleMouseUp(object sender, OxyMouseEventArgs args)
+        {
+        }
 
         /// <summary>
         /// Handles the touch started event.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="args">A <see cref="OxyPlot.OxyTouchEventArgs" /> instance containing the event data.</param>
-        public abstract void HandleTouchStarted(object sender, OxyTouchEventArgs args);
+        public virtual void HandleTouchStarted(object sender, OxyTouchEventArgs args)
+        {
+        }
 
         /// <summary>
         /// Handles the touch delta event.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="args">A <see cref="OxyPlot.OxyTouchEventArgs" /> instance containing the event data.</param>
-        public abstract void HandleTouchDelta(object sender, OxyTouchEventArgs args);
+        public virtual void HandleTouchDelta(object sender, OxyTouchEventArgs args)
+        {
+        }
 
         /// <summary>
         /// Handles the touch completed event.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="args">A <see cref="OxyPlot.OxyTouchEventArgs" /> instance containing the event data.</param>
-        public abstract void HandleTouchCompleted(object sender, OxyTouchEventArgs args);
+        public virtual void HandleTouchCompleted(object sender, OxyTouchEventArgs args)
+        {
+        }
 
         /// <summary>
         /// Handles key down events.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="args">The <see cref="OxyKeyEventArgs" /> instance containing the event data.</param>
-        public abstract void HandleKeyDown(object sender, OxyKeyEventArgs args);
+        public virtual void HandleKeyDown(object sender, OxyKeyEventArgs args)
+        {
+        }
     }
 }

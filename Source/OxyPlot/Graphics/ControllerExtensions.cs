@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PlotControllerExtensions.cs" company="OxyPlot">
+// <copyright file="ControllerExtensions.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 OxyPlot contributors
@@ -33,7 +33,7 @@ namespace OxyPlot
     /// <summary>
     /// Provides extension methods for the <see cref="IController" />.
     /// </summary>
-    public static class PlotControllerExtensions
+    public static class ControllerExtensions
     {
         /// <summary>
         /// Binds the specified key to the specified command.

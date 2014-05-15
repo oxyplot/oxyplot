@@ -162,6 +162,17 @@ namespace OxyPlot.WindowsForms
         }
 
         /// <summary>
+        /// Gets the coordinates of the client area of the view.
+        /// </summary>
+        public OxyRect ClientArea
+        {
+            get
+            {
+                return new OxyRect(this.ClientRectangle.Left, this.ClientRectangle.Top, this.ClientRectangle.Width, this.ClientRectangle.Height);
+            }
+        }
+
+        /// <summary>
         /// Gets the actual plot controller.
         /// </summary>
         /// <value>The actual plot controller.</value>
