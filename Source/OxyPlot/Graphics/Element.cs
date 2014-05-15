@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="GraphicsElement.cs" company="OxyPlot">
+// <copyright file="Element.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 OxyPlot contributors
@@ -33,7 +33,7 @@ namespace OxyPlot
     /// <summary>
     /// Provides an abstract base class for graphics elements.
     /// </summary>
-    public abstract class GraphicsElement
+    public abstract class Element
     {
         /// <summary>
         /// Gets the parent model of the element.
