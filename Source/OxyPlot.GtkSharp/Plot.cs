@@ -153,9 +153,9 @@ namespace OxyPlot.GtkSharp
         }
 
         /// <summary>
-        /// Gets the actual <see cref="GraphicsModel" /> of the control.
+        /// Gets the actual <see cref="OxyPlot.Model" /> of the control.
         /// </summary>
-        GraphicsModel IGraphicsView.ActualModel
+        Model IGraphicsView.ActualModel
         {
             get
             {

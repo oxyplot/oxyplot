@@ -214,7 +214,7 @@ namespace OxyPlot
     /// <summary>
     /// Represents a plot.
     /// </summary>
-    public partial class PlotModel : GraphicsModel
+    public partial class PlotModel : Model
     {
         /// <summary>
         /// The default selection color.

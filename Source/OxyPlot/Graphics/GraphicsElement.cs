@@ -39,8 +39,8 @@ namespace OxyPlot
         /// Gets the parent model of the element.
         /// </summary>
         /// <value>
-        /// The <see cref="GraphicsModel" /> that is the parent of the element.
+        /// The <see cref="Model" /> that is the parent of the element.
         /// </value>
-        public GraphicsModel Parent { get; internal set; }
+        public Model Parent { get; internal set; }
     }
 }

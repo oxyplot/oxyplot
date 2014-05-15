@@ -127,7 +127,7 @@ namespace OxyPlot.WindowsForms
         /// <value>
         /// The actual model.
         /// </value>
-        GraphicsModel IGraphicsView.ActualModel
+        Model IGraphicsView.ActualModel
         {
             get
             {

@@ -41,9 +41,9 @@ namespace OxyPlot
     public class GraphicsElementCollection<T> : IList<T> where T : GraphicsElement
     {
         /// <summary>
-        /// The parent <see cref="GraphicsModel" />.
+        /// The parent <see cref="Model" />.
         /// </summary>
-        private readonly GraphicsModel parent;
+        private readonly Model parent;
 
         /// <summary>
         /// The internal list.
@@ -54,7 +54,7 @@ namespace OxyPlot
         /// Initializes a new instance of the <see cref="GraphicsElementCollection{T}" /> class.
         /// </summary>
         /// <param name="parent">The parent <see cref="PlotModel" />.</param>
-        public GraphicsElementCollection(GraphicsModel parent)
+        public GraphicsElementCollection(Model parent)
         {
             this.parent = parent;
         }
