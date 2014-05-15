@@ -31,6 +31,7 @@
 namespace OxyPlot.Wpf.Tests
 {
     using System;
+    using System.IO;
     using System.Windows.Media.Imaging;
 
     using NUnit.Framework;
@@ -51,6 +52,13 @@ namespace OxyPlot.Wpf.Tests
         {
             var expectedImage = LoadImage(expected);
             var actualImage = LoadImage(actual);
+
+            if (expectedImage == null)
+            {
+                EnsureFolder(expected);
+                File.Copy(actual, expected);
+                Assert.Fail("File not found: {0}", expected);
+            }
 
             if (expectedImage.GetLength(0) != actualImage.GetLength(0))
             {
@@ -96,11 +104,25 @@ namespace OxyPlot.Wpf.Tests
                         }
                     }
 
+                    EnsureFolder(output);
                     var encoder = new PngEncoder(new PngEncoderOptions());
-                    System.IO.File.WriteAllBytes(output, encoder.Encode(differenceImage));
+                    File.WriteAllBytes(output, encoder.Encode(differenceImage));
                 }
 
                 Assert.Fail("Pixel differences: {0}\n{1}", differences, message);
+            }
+        }
+
+        /// <summary>
+        /// Ensures that the folder for the specified path exists.
+        /// </summary>
+        /// <param name="path">The path to a file.</param>
+        private static void EnsureFolder(string path)
+        {
+            var dir = Path.GetDirectoryName(path);
+            if (dir != null && !Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
             }
         }
 
@@ -111,6 +133,11 @@ namespace OxyPlot.Wpf.Tests
         /// <returns>The pixels as an array.</returns>
         private static OxyColor[,] LoadImage(string path)
         {
+            if (!File.Exists(path))
+            {
+                return null;
+            }
+
             // TODO: use OxyPlot to decode
             var bitmapImage = new BitmapImage();
             bitmapImage.BeginInit();
