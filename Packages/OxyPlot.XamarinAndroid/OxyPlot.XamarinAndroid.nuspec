@@ -2,6 +2,7 @@
 <package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <id>OxyPlot.XamarinAndroid</id>
+	<title>OxyPlot for Xamarin.Android</title>
     <version>2014.1.1</version>
     <authors>objo</authors>
     <licenseUrl>http://oxyplot.codeplex.com/license</licenseUrl>
@@ -14,4 +15,8 @@
       <dependency id="OxyPlot.Core" version="[$version]"/>
     </dependencies>
   </metadata>
+  <files>
+    <file src="lib/MonoAndroid/OxyPlot.XamarinAndroid.dll" target="lib/MonoAndroid" />
+    <file src="lib/MonoAndroid/OxyPlot.XamarinAndroid.XML" target="lib/MonoAndroid" />
+  </files>
 </package>
