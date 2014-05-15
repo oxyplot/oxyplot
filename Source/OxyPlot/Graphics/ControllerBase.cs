@@ -49,9 +49,9 @@ namespace OxyPlot
         protected ControllerBase()
         {
             this.InputCommandBindings = new List<InputCommandBinding>();
-            this.MouseDownManipulators = new List<MouseManipulator>();
-            this.MouseHoverManipulators = new List<MouseManipulator>();
-            this.TouchManipulators = new List<TouchManipulator>();
+            this.MouseDownManipulators = new List<ManipulatorBase<OxyMouseEventArgs>>();
+            this.MouseHoverManipulators = new List<ManipulatorBase<OxyMouseEventArgs>>();
+            this.TouchManipulators = new List<ManipulatorBase<OxyTouchEventArgs>>();
         }
 
         /// <summary>
@@ -63,17 +63,17 @@ namespace OxyPlot
         /// <summary>
         /// Gets the manipulators that are created by mouse down events. These manipulators are removed when the mouse button is released.
         /// </summary>
-        protected IList<MouseManipulator> MouseDownManipulators { get; private set; }
+        protected IList<ManipulatorBase<OxyMouseEventArgs>> MouseDownManipulators { get; private set; }
 
         /// <summary>
         /// Gets the manipulators that are created by mouse enter events. These manipulators are removed when the mouse leaves the control.
         /// </summary>
-        protected IList<MouseManipulator> MouseHoverManipulators { get; private set; }
+        protected IList<ManipulatorBase<OxyMouseEventArgs>> MouseHoverManipulators { get; private set; }
 
         /// <summary>
         /// Gets the manipulators that are created by touch events. These manipulators are removed when the touch gesture is completed.
         /// </summary>
-        protected IList<TouchManipulator> TouchManipulators { get; private set; }
+        protected IList<ManipulatorBase<OxyTouchEventArgs>> TouchManipulators { get; private set; }
 
         /// <summary>
         /// Handles the specified gesture.
@@ -357,7 +357,7 @@ namespace OxyPlot
         /// <param name="args">The <see cref="OxyMouseDownEventArgs" /> instance containing the event data.</param>
         public virtual void AddMouseManipulator(
             IView view,
-            MouseManipulator manipulator,
+            ManipulatorBase<OxyMouseEventArgs> manipulator,
             OxyMouseDownEventArgs args)
         {
             this.MouseDownManipulators.Add(manipulator);
@@ -372,7 +372,7 @@ namespace OxyPlot
         /// <param name="args">The <see cref="OxyMouseEventArgs" /> instance containing the event data.</param>
         public virtual void AddHoverManipulator(
             IView view,
-            MouseManipulator manipulator,
+            ManipulatorBase<OxyMouseEventArgs> manipulator,
             OxyMouseEventArgs args)
         {
             this.MouseHoverManipulators.Add(manipulator);
@@ -387,7 +387,7 @@ namespace OxyPlot
         /// <param name="args">The <see cref="OxyTouchEventArgs" /> instance containing the event data.</param>
         public virtual void AddTouchManipulator(
             IView view,
-            TouchManipulator manipulator,
+            ManipulatorBase<OxyTouchEventArgs> manipulator,
             OxyTouchEventArgs args)
         {
             this.TouchManipulators.Add(manipulator);

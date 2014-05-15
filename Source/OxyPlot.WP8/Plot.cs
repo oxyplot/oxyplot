@@ -387,6 +387,17 @@ namespace OxyPlot.WP8
         }
 
         /// <summary>
+        /// Gets the coordinates of the client area of the view.
+        /// </summary>
+        public OxyRect ClientArea
+        {
+            get
+            {
+                return new OxyRect(0, 0, this.ActualWidth, this.ActualHeight);
+            }
+        }
+
+        /// <summary>
         /// Gets the actual plot controller.
         /// </summary>
         /// <value>The actual plot controller.</value>

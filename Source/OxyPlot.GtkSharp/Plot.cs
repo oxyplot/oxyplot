@@ -189,6 +189,17 @@ namespace OxyPlot.GtkSharp
         }
 
         /// <summary>
+        /// Gets the coordinates of the client area of the view.
+        /// </summary>
+        public OxyRect ClientArea
+        {
+            get
+            {
+                return new OxyRect(0, 0, this.width, this.height);
+            }
+        }
+
+        /// <summary>
         /// Gets the actual plot controller.
         /// </summary>
         /// <value>The actual plot controller.</value>

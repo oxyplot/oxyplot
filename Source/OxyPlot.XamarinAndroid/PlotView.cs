@@ -162,7 +162,7 @@ namespace OxyPlot.XamarinAndroid
                 return this.Model;
             }
         }
-        
+
         /// <summary>
         /// Gets the actual <see cref="PlotModel" /> of the control.
         /// </summary>
@@ -185,6 +185,17 @@ namespace OxyPlot.XamarinAndroid
             get
             {
                 return this.ActualController;
+            }
+        }
+
+        /// <summary>
+        /// Gets the coordinates of the client area of the view.
+        /// </summary>
+        public OxyRect ClientArea
+        {
+            get
+            {
+                return new OxyRect(0, 0, this.Width, this.Height);
             }
         }
 

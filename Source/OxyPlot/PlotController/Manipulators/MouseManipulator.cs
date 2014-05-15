@@ -30,12 +30,10 @@
 
 namespace OxyPlot
 {
-    using OxyPlot.Axes;
-
     /// <summary>
     /// Provides an abstract base class for manipulators that handles mouse events.
     /// </summary>
-    public abstract class MouseManipulator : ManipulatorBase<OxyMouseEventArgs>
+    public abstract class MouseManipulator : PlotManipulator<OxyMouseEventArgs>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MouseManipulator" /> class.

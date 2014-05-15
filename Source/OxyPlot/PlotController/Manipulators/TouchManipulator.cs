@@ -33,7 +33,7 @@ namespace OxyPlot
     /// <summary>
     /// Provides a manipulator for panning and scaling by touch events.
     /// </summary>
-    public class TouchManipulator : ManipulatorBase<OxyTouchEventArgs>
+    public class TouchManipulator : PlotManipulator<OxyTouchEventArgs>
     {
         /// <summary>
         /// The previous position

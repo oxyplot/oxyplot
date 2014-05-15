@@ -24,16 +24,14 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Provides an abstract base class for plot control manipulators.
+//   Provides an abstract base class for controller manipulators.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
-    using OxyPlot.Axes;
-
     /// <summary>
-    /// Provides an abstract base class for plot control manipulators.
+    /// Provides an abstract base class for controller manipulators.
     /// </summary>
     /// <typeparam name="T">The type of the event arguments.</typeparam>
     public abstract class ManipulatorBase<T> where T : OxyInputEventArgs
@@ -41,29 +39,17 @@ namespace OxyPlot
         /// <summary>
         /// Initializes a new instance of the <see cref="ManipulatorBase{T}" /> class.
         /// </summary>
-        /// <param name="plotControl">The plot control.</param>
-        protected ManipulatorBase(IPlotView plotControl)
+        /// <param name="view">The view.</param>
+        protected ManipulatorBase(IView view)
         {
-            this.PlotControl = plotControl;
+            this.View = view;
         }
 
         /// <summary>
         /// Gets the plot control where the event was raised.
         /// </summary>
         /// <value>The plot control.</value>
-        public IPlotView PlotControl { get; private set; }
-
-        /// <summary>
-        /// Gets or sets the X axis.
-        /// </summary>
-        /// <value>The X axis.</value>
-        protected Axis XAxis { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Y axis.
-        /// </summary>
-        /// <value>The Y axis.</value>
-        protected Axis YAxis { get; set; }
+        public IView View { get; private set; }
 
         /// <summary>
         /// Occurs when a manipulation is complete.
@@ -71,7 +57,7 @@ namespace OxyPlot
         /// <param name="e">The <see cref="OxyInputEventArgs" /> instance containing the event data.</param>
         public virtual void Completed(T e)
         {
-            this.PlotControl.SetCursorType(CursorType.Default);
+            this.View.SetCursorType(CursorType.Default);
         }
 
         /// <summary>
@@ -97,50 +83,7 @@ namespace OxyPlot
         /// <param name="e">The <see cref="OxyInputEventArgs" /> instance containing the event data.</param>
         public virtual void Started(T e)
         {
-            this.PlotControl.SetCursorType(this.GetCursorType());
-        }
-
-        /// <summary>
-        /// Transforms a point from screen coordinates to data coordinates.
-        /// </summary>
-        /// <param name="x">The x coordinate.</param>
-        /// <param name="y">The y coordinate.</param>
-        /// <returns>A data point.</returns>
-        protected DataPoint InverseTransform(double x, double y)
-        {
-            if (this.XAxis != null)
-            {
-                return this.XAxis.InverseTransform(x, y, this.YAxis);
-            }
-
-            if (this.YAxis != null)
-            {
-                return new DataPoint(0, this.YAxis.InverseTransform(y));
-            }
-
-            return new DataPoint();
-        }
-
-        /// <summary>
-        /// Assigns the axes to this manipulator by the specified position.
-        /// </summary>
-        /// <param name="position">The position.</param>
-        protected void AssignAxes(ScreenPoint position)
-        {
-            Axis xaxis;
-            Axis yaxis;
-            if (this.PlotControl.ActualModel != null)
-            {
-                this.PlotControl.ActualModel.GetAxesFromPoint(position, out xaxis, out yaxis);
-            }
-            else
-            {
-                xaxis = null;
-                yaxis = null;
-            }
-
-            this.XAxis = xaxis;
-            this.YAxis = yaxis;
+            this.View.SetCursorType(this.GetCursorType());
         }
     }
 }

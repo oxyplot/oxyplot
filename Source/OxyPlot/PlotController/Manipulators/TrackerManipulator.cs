@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Provides a plot control manipulator for tracker functionality.
+//   Provides a plot manipulator for tracker functionality.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -33,7 +33,7 @@ namespace OxyPlot
     using OxyPlot.Series;
 
     /// <summary>
-    /// Provides a plot control manipulator for tracker functionality.
+    /// Provides a plot manipulator for tracker functionality.
     /// </summary>
     public class TrackerManipulator : MouseManipulator
     {

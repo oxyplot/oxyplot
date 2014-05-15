@@ -24,14 +24,14 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Specifies functionality for the graphics views.
+//   Specifies common functionality for the views.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     /// <summary>
-    /// Specifies functionality for the graphics views.
+    /// Specifies common functionality for the views.
     /// </summary>
     public interface IView
     {
@@ -50,6 +50,14 @@ namespace OxyPlot
         /// The actual <see cref="IController" />.
         /// </value>
         IController ActualController { get; }
+
+        /// <summary>
+        /// Gets the coordinates of the client area of the view.
+        /// </summary>
+        /// <value>
+        /// The client area rectangle.
+        /// </value>
+        OxyRect ClientArea { get; }
 
         /// <summary>
         /// Sets the cursor type.

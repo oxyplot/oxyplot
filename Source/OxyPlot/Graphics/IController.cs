@@ -130,7 +130,7 @@ namespace OxyPlot
         /// <param name="view">The plot view.</param>
         /// <param name="manipulator">The manipulator to add.</param>
         /// <param name="args">The <see cref="OxyMouseEventArgs" /> instance containing the event data.</param>
-        void AddMouseManipulator(IView view, MouseManipulator manipulator, OxyMouseDownEventArgs args);
+        void AddMouseManipulator(IView view, ManipulatorBase<OxyMouseEventArgs> manipulator, OxyMouseDownEventArgs args);
 
         /// <summary>
         /// Adds the specified mouse hover manipulator and invokes the <see cref="MouseManipulator.Started" /> method with the specified mouse event arguments.
@@ -138,7 +138,7 @@ namespace OxyPlot
         /// <param name="view">The view.</param>
         /// <param name="manipulator">The manipulator.</param>
         /// <param name="args">The <see cref="OxyMouseEventArgs" /> instance containing the event data.</param>
-        void AddHoverManipulator(IView view, MouseManipulator manipulator, OxyMouseEventArgs args);
+        void AddHoverManipulator(IView view, ManipulatorBase<OxyMouseEventArgs> manipulator, OxyMouseEventArgs args);
 
         /// <summary>
         /// Adds the specified touch manipulator and invokes the <see cref="MouseManipulator.Started" /> method with the specified mouse event arguments.
@@ -146,7 +146,7 @@ namespace OxyPlot
         /// <param name="view">The view.</param>
         /// <param name="manipulator">The manipulator.</param>
         /// <param name="args">The <see cref="OxyMouseEventArgs" /> instance containing the event data.</param>
-        void AddTouchManipulator(IView view, TouchManipulator manipulator, OxyTouchEventArgs args);
+        void AddTouchManipulator(IView view, ManipulatorBase<OxyTouchEventArgs> manipulator, OxyTouchEventArgs args);
 
         /// <summary>
         /// Binds the specified command to the specified mouse down gesture. Removes old bindings to the gesture.
