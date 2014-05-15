@@ -153,35 +153,35 @@ namespace OxyPlot
         /// </summary>
         /// <param name="gesture">The mouse down gesture.</param>
         /// <param name="command">The command. If <c>null</c>, the binding will be removed.</param>
-        void Bind(OxyMouseDownGesture gesture, IGraphicsControllerCommand<OxyMouseDownEventArgs> command);
+        void Bind(OxyMouseDownGesture gesture, IViewCommand<OxyMouseDownEventArgs> command);
 
         /// <summary>
         /// Binds the specified command to the specified mouse enter gesture. Removes old bindings to the gesture.
         /// </summary>
         /// <param name="gesture">The mouse enter gesture.</param>
         /// <param name="command">The command. If <c>null</c>, the binding will be removed.</param>
-        void Bind(OxyMouseEnterGesture gesture, IGraphicsControllerCommand<OxyMouseEventArgs> command);
+        void Bind(OxyMouseEnterGesture gesture, IViewCommand<OxyMouseEventArgs> command);
 
         /// <summary>
         /// Binds the specified command to the specified mouse wheel gesture. Removes old bindings to the gesture.
         /// </summary>
         /// <param name="gesture">The mouse wheel gesture.</param>
         /// <param name="command">The command. If <c>null</c>, the binding will be removed.</param>
-        void Bind(OxyMouseWheelGesture gesture, IGraphicsControllerCommand<OxyMouseWheelEventArgs> command);
+        void Bind(OxyMouseWheelGesture gesture, IViewCommand<OxyMouseWheelEventArgs> command);
 
         /// <summary>
         /// Binds the specified command to the specified touch gesture. Removes old bindings to the gesture.
         /// </summary>
         /// <param name="gesture">The touch gesture.</param>
         /// <param name="command">The command. If <c>null</c>, the binding will be removed.</param>
-        void Bind(OxyTouchGesture gesture, IGraphicsControllerCommand<OxyTouchEventArgs> command);
+        void Bind(OxyTouchGesture gesture, IViewCommand<OxyTouchEventArgs> command);
 
         /// <summary>
         /// Binds the specified command to the specified key gesture. Removes old bindings to the gesture.
         /// </summary>
         /// <param name="gesture">The key gesture.</param>
         /// <param name="command">The command. If <c>null</c>, the binding will be removed.</param>
-        void Bind(OxyKeyGesture gesture, IGraphicsControllerCommand<OxyKeyEventArgs> command);
+        void Bind(OxyKeyGesture gesture, IViewCommand<OxyKeyEventArgs> command);
 
         /// <summary>
         /// Unbinds the specified gesture.
@@ -193,7 +193,7 @@ namespace OxyPlot
         /// Unbinds the specified command from all gestures.
         /// </summary>
         /// <param name="command">The command to unbind.</param>
-        void Unbind(IGraphicsControllerCommand command);
+        void Unbind(IViewCommand command);
 
         /// <summary>
         /// Unbinds all commands.

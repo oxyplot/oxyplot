@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DelegateGraphicsControllerCommand{T}.cs" company="OxyPlot">
+// <copyright file="DelegatePlotCommand.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 OxyPlot contributors
@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Provides a <see cref="IGraphicsControllerCommand" /> implemented by a delegate.
+//   Provides a controller command for the IPlotView implemented by a delegate.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -33,46 +33,19 @@ namespace OxyPlot
     using System;
 
     /// <summary>
-    /// Provides a <see cref="IGraphicsControllerCommand" /> implemented by a delegate.
+    /// Provides a controller command for the <see cref="IPlotView" /> implemented by a delegate.
     /// </summary>
     /// <typeparam name="T">The type of the event arguments.</typeparam>
-    public class DelegateGraphicsControllerCommand<T> : IGraphicsControllerCommand<T>
+    public class DelegatePlotCommand<T> : DelegateViewCommand<T>
         where T : OxyInputEventArgs
     {
         /// <summary>
-        /// The handler
-        /// </summary>
-        private readonly Action<IGraphicsView, IGraphicsController, T> handler;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DelegateGraphicsControllerCommand{T}" /> class.
+        /// Initializes a new instance of the <see cref="DelegatePlotCommand{T}" /> class.
         /// </summary>
         /// <param name="handler">The handler.</param>
-        public DelegateGraphicsControllerCommand(Action<IGraphicsView, IGraphicsController, T> handler)
+        public DelegatePlotCommand(Action<IPlotView, IGraphicsController, T> handler)
+            : base((v, c, e) => handler((IPlotView)v, c, e))
         {
-            this.handler = handler;
-        }
-
-        /// <summary>
-        /// Executes the command on the specified plot.
-        /// </summary>
-        /// <param name="view">The plot view.</param>
-        /// <param name="controller">The plot controller.</param>
-        /// <param name="args">The <see cref="OxyInputEventArgs" /> instance containing the event data.</param>
-        public void Execute(IGraphicsView view, IGraphicsController controller, T args)
-        {
-            this.handler(view, controller, args);
-        }
-
-        /// <summary>
-        /// Executes the command on the specified plot.
-        /// </summary>
-        /// <param name="view">The plot view.</param>
-        /// <param name="controller">The plot controller.</param>
-        /// <param name="args">The <see cref="OxyInputEventArgs" /> instance containing the event data.</param>
-        public void Execute(IGraphicsView view, IGraphicsController controller, OxyInputEventArgs args)
-        {
-            this.handler(view, controller, (T)args);
         }
     }
 }

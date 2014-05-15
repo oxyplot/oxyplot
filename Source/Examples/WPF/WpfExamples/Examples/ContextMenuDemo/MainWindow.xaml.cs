@@ -40,6 +40,7 @@ namespace ContextMenuDemo
     using WpfExamples;
 
     using DelegateCommand = PropertyTools.Wpf.DelegateCommand;
+    using ICommand = System.Windows.Input.ICommand;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
