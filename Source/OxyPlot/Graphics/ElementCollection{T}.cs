@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="GraphicsElementCollection{T}.cs" company="OxyPlot">
+// <copyright file="ElementCollection{T}.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 OxyPlot contributors
@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents a collection of <see cref="GraphicsElement" /> objects.
+//   Represents a collection of <see cref="Element" /> objects.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -35,10 +35,10 @@ namespace OxyPlot
     using System.Collections.Generic;
 
     /// <summary>
-    /// Represents a collection of <see cref="GraphicsElement" /> objects.
+    /// Represents a collection of <see cref="Element" /> objects.
     /// </summary>
     /// <typeparam name="T">The type of the elements.</typeparam>
-    public class GraphicsElementCollection<T> : IList<T> where T : GraphicsElement
+    public class ElementCollection<T> : IList<T> where T : Element
     {
         /// <summary>
         /// The parent <see cref="Model" />.
@@ -51,10 +51,10 @@ namespace OxyPlot
         private readonly List<T> internalList = new List<T>();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GraphicsElementCollection{T}" /> class.
+        /// Initializes a new instance of the <see cref="ElementCollection{T}" /> class.
         /// </summary>
         /// <param name="parent">The parent <see cref="PlotModel" />.</param>
-        public GraphicsElementCollection(Model parent)
+        public ElementCollection(Model parent)
         {
             this.parent = parent;
         }

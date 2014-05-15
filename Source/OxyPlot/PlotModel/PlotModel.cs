@@ -236,9 +236,9 @@ namespace OxyPlot
         /// </summary>
         public PlotModel()
         {
-            this.Axes = new GraphicsElementCollection<Axis>(this);
-            this.Series = new GraphicsElementCollection<Series.Series>(this);
-            this.Annotations = new GraphicsElementCollection<Annotation>(this);
+            this.Axes = new ElementCollection<Axis>(this);
+            this.Series = new ElementCollection<Series.Series>(this);
+            this.Annotations = new ElementCollection<Annotation>(this);
 
             this.PlotType = PlotType.XY;
 
@@ -390,13 +390,13 @@ namespace OxyPlot
         /// Gets the annotations.
         /// </summary>
         /// <value>The annotations.</value>
-        public GraphicsElementCollection<Annotation> Annotations { get; private set; }
+        public ElementCollection<Annotation> Annotations { get; private set; }
 
         /// <summary>
         /// Gets the axes.
         /// </summary>
         /// <value>The axes.</value>
-        public GraphicsElementCollection<Axis> Axes { get; private set; }
+        public ElementCollection<Axis> Axes { get; private set; }
 
         /// <summary>
         /// Gets or sets the color of the background of the plot.
@@ -668,7 +668,7 @@ namespace OxyPlot
         /// Gets the series.
         /// </summary>
         /// <value>The series.</value>
-        public GraphicsElementCollection<Series.Series> Series { get; private set; }
+        public ElementCollection<Series.Series> Series { get; private set; }
 
         /// <summary>
         /// Gets or sets the rendering decorator.

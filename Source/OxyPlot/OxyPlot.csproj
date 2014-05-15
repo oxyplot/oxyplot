@@ -49,8 +49,8 @@
     </Compile>
     <Compile Include="Graphics\DelegateViewCommand{T}.cs" />
     <Compile Include="PlotController\DelegatePlotCommand.cs" />
-    <Compile Include="Graphics\GraphicsElement.cs" />
-    <Compile Include="Graphics\GraphicsElementCollection{T}.cs" />
+    <Compile Include="Graphics\Element.cs" />
+    <Compile Include="Graphics\ElementCollection{T}.cs" />
     <Compile Include="Graphics\Model.cs" />
     <Compile Include="Graphics\IGraphicsController.cs" />
     <Compile Include="Graphics\IViewCommand.cs" />
