@@ -69,15 +69,15 @@
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Graphics\DelegateGraphicsControllerCommand{T}.cs" />
-    <Compile Include="PlotController\DelegatePlotControllerCommand.cs" />
-    <Compile Include="Graphics\GraphicsElement.cs" />
-    <Compile Include="Graphics\GraphicsElementCollection{T}.cs" />
-    <Compile Include="Graphics\GraphicsModel.cs" />
-    <Compile Include="Graphics\IGraphicsController.cs" />
-    <Compile Include="Graphics\IGraphicsControllerCommand.cs" />
-    <Compile Include="Graphics\IGraphicsControllerCommand{T}.cs" />
-    <Compile Include="Graphics\IGraphicsView.cs" />
+    <Compile Include="Graphics\DelegateViewCommand{T}.cs" />
+    <Compile Include="PlotController\DelegatePlotCommand.cs" />
+    <Compile Include="Graphics\Element.cs" />
+    <Compile Include="Graphics\ElementCollection{T}.cs" />
+    <Compile Include="Graphics\Model.cs" />
+    <Compile Include="Graphics\IController.cs" />
+    <Compile Include="Graphics\IViewCommand.cs" />
+    <Compile Include="Graphics\IViewCommand{T}.cs" />
+    <Compile Include="Graphics\IView.cs" />
     <Compile Include="PlotController\IPlotController.cs" />
     <Compile Include="PlotModel\IPlotElement.cs" />
     <Compile Include="Series\IScatterPointProvider.cs" />
@@ -238,7 +238,7 @@
     <Compile Include="PlotController\Manipulators\TrackerManipulator.cs" />
     <Compile Include="PlotController\Manipulators\ZoomRectangleManipulator.cs" />
     <Compile Include="PlotController\Manipulators\ZoomStepManipulator.cs" />
-    <Compile Include="Graphics\GraphicsControllerBase.cs" />
+    <Compile Include="Graphics\ControllerBase.cs" />
     <Compile Include="PlotModel\HitTestResult.cs" />
     <Compile Include="PlotModel\Selection.cs" />
     <Compile Include="PlotModel\SelectionMode.cs" />
