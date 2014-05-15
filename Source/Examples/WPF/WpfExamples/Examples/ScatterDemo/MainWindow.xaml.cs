@@ -28,20 +28,21 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Windows;
-using OxyPlot;
-
 namespace ScatterDemo
 {
+    using System.Windows;
+
+    using OxyPlot;
     using OxyPlot.Series;
+
+    using WpfExamples;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [Example("Plotting a barnsley fern with a scatter series.")]
     public partial class MainWindow : Window
     {
-        public PlotModel ScatterModel { get; set; }
-
         public MainWindow()
         {
             InitializeComponent();
@@ -51,20 +52,19 @@ namespace ScatterDemo
                          {
                              StrokeThickness = 0,
                              MarkerSize = 3,
-                             // MarkerFill = OxyColors.Blue,
                              MarkerStroke = OxyColors.ForestGreen,
                              MarkerType = MarkerType.Plus
                          };
 
             foreach (var pt in Fern.Generate(2000))
+            {
                 s1.Points.Add(new DataPoint(pt.X, -pt.Y));
-
-            //var r = new Random(13);
-            //for (int i = 0; i < 1000; i++)
-            //    s1.Points.Add(new DataPoint(r.NextDouble(), r.NextDouble()));
+            }
 
             tmp.Series.Add(s1);
-            ScatterModel = tmp;
+            this.ScatterModel = tmp;
         }
+
+        public PlotModel ScatterModel { get; set; }
     }
 }

@@ -28,34 +28,26 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using OxyPlot;
-
 namespace CustomTrackerDemo
 {
+    using System.Collections.Generic;
+    using System.Windows;
+
+    using OxyPlot;
     using OxyPlot.Series;
+
+    using WpfExamples;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [Example("Demonstrates a custom tracker.")]
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
-            InitializeComponent();
-            DataContext = this;
+            this.InitializeComponent();
+            this.DataContext = this;
         }
 
         public PlotModel Model

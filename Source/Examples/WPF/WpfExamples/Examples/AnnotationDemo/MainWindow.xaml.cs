@@ -35,9 +35,12 @@ namespace AnnotationDemo
 
     using OxyPlot;
 
+    using WpfExamples;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [Example(null, "Shows different types of annotations.")]
     public partial class MainWindow : Window
     {
         /// <summary>

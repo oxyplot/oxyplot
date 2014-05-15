@@ -28,33 +28,23 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-
 namespace CoupledAxesDemo
 {
+    using System;
+    using System.Windows;
+
     using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
+    using WpfExamples;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [Example("Shows how to keep two axes in sync.")]
     public partial class MainWindow : Window
     {
-        public PlotModel Model1 { get; set; }
-        public PlotModel Model2 { get; set; }
-
         public MainWindow()
         {
             this.InitializeComponent();
@@ -96,5 +86,9 @@ namespace CoupledAxesDemo
                 isInternalChange = false;
             };
         }
+
+        public PlotModel Model1 { get; set; }
+
+        public PlotModel Model2 { get; set; }
     }
 }

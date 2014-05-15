@@ -25,16 +25,13 @@
 // </copyright>
 // <summary>
 //   Calculation of sunrise/sunset
-//   http://williams.best.vwh.net/sunrise_sunset_algorithm.htm
-//   based on code by Huysentruit Wouter, Fastload-Media.be
-//   Added support for TimeZoneInfo
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-
 namespace DateTimeDemo
 {
+    using System;
+
     /// <summary>
     /// Calculation of sunrise/sunset
     /// http://williams.best.vwh.net/sunrise_sunset_algorithm.htm

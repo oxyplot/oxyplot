@@ -28,23 +28,26 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Windows;
-using System.Windows.Input;
-using System.Windows.Media.Imaging;
-using OxyPlot;
-
 // Original code
 // http://www.scottlogic.co.uk/blog/colin/2010/11/visiblox-charts-vs-silverlight-toolkit-charts-a-test-of-performance-2/
 
 namespace HistogramDemo
 {
+    using System;
+    using System.Windows;
+    using System.Windows.Input;
+    using System.Windows.Media.Imaging;
+
+    using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
+
+    using WpfExamples;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [Example("Plots a histogram.")]
     public partial class MainWindow : Window
     {
         private readonly LineSeries blueLine;

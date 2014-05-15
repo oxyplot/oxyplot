@@ -32,9 +32,12 @@ namespace HeatMapDemo
 {
     using System;
 
+    using WpfExamples;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [Example("Demonstrates the HeatMapSeries.")]
     public partial class MainWindow
     {
         /// <summary>

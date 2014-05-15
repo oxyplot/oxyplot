@@ -28,21 +28,23 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Windows;
-using OxyPlot.Wpf;
 
 namespace AreaDemo
 {
+    using System.Windows;
+
+    using WpfExamples;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [Example(null, "Plotting with AreaSeries.")]
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
-            InitializeComponent();
-            var vm = new MainViewModel();
-            DataContext = vm;
+            this.InitializeComponent();
+            this.DataContext = new MainViewModel();
         }
     }
 }

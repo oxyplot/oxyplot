@@ -37,9 +37,12 @@ namespace BarSeriesDemo
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
+    using WpfExamples;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [Example("Shows bar series.")]
     public partial class MainWindow : Window
     {
         public MainWindow()
