@@ -145,11 +145,7 @@ namespace OxyPlot.XamarinIOS
                 actualModel.Update(updateData);
             }
 
-            var background = actualModel != null ? actualModel.Background : OxyColors.White;
-            if (!background.IsVisible())
-            {
-                background = OxyColors.White;
-            }
+            var background = actualModel != null ? actualModel.ActualBackground : OxyColors.White;
 
             this.BackgroundColor = background.ToUIColor();
             this.SetNeedsDisplay();

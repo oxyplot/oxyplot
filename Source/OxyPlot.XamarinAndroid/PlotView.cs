@@ -290,7 +290,7 @@ namespace OxyPlot.XamarinAndroid
                 return;
             }
 
-            var background = actualModel.Background.IsVisible() ? actualModel.Background : OxyColors.White;
+            var background = actualModel.ActualBackground;
             canvas.DrawColor(background.ToColor());
 
             lock (this.invalidateLock)
