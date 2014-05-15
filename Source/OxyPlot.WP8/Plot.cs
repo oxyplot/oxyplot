@@ -352,7 +352,7 @@ namespace OxyPlot.WP8
         /// <value>
         /// The actual model.
         /// </value>
-        GraphicsModel IGraphicsView.ActualModel
+        Model IGraphicsView.ActualModel
         {
             get
             {

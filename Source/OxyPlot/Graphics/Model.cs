@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="GraphicsModel.cs" company="OxyPlot">
+// <copyright file="Model.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 OxyPlot contributors
@@ -33,7 +33,7 @@ namespace OxyPlot
     /// <summary>
     /// Provides an abstract base class for graphics models.
     /// </summary>
-    public abstract class GraphicsModel
+    public abstract class Model
     {
         /// <summary>
         /// The synchronization root object.
@@ -41,10 +41,10 @@ namespace OxyPlot
         private readonly object syncRoot = new object();
 
         /// <summary>
-        /// Gets an object that can be used to synchronize access to the <see cref="GraphicsModel" />.
+        /// Gets an object that can be used to synchronize access to the <see cref="Model" />.
         /// </summary>
         /// <value>A synchronization object.</value>
-        /// <remarks>This property can be used when modifying the <see cref="GraphicsModel" /> on a separate thread (not the thread updating or rendering the model).</remarks>
+        /// <remarks>This property can be used when modifying the <see cref="Model" /> on a separate thread (not the thread updating or rendering the model).</remarks>
         public object SyncRoot
         {
             get { return this.syncRoot; }
