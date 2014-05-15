@@ -1,5 +1,5 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DelegatePlotControllerCommand.cs" company="OxyPlot">
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="IViewCommand{T}.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 OxyPlot contributors
@@ -24,28 +24,24 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Provides a controller command for the IPlotView implemented by a delegate.
+//   Specifies functionality to execute a command on a view.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
-    using System;
-
     /// <summary>
-    /// Provides a controller command for the <see cref="IPlotView" /> implemented by a delegate.
+    /// Specifies functionality to execute a command on a view.
     /// </summary>
     /// <typeparam name="T">The type of the event arguments.</typeparam>
-    public class DelegatePlotControllerCommand<T> : DelegateGraphicsControllerCommand<T>
-        where T : OxyInputEventArgs
+    public interface IViewCommand<in T> : IViewCommand where T : OxyInputEventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DelegatePlotControllerCommand{T}" /> class.
+        /// Executes the command on the specified plot.
         /// </summary>
-        /// <param name="handler">The handler.</param>
-        public DelegatePlotControllerCommand(Action<IPlotView, IGraphicsController, T> handler)
-            : base((v, c, e) => handler((IPlotView)v, c, e))
-        {
-        }
+        /// <param name="view">The view.</param>
+        /// <param name="controller">The controller.</param>
+        /// <param name="args">The <see cref="OxyInputEventArgs" /> instance containing the event data.</param>
+        void Execute(IGraphicsView view, IGraphicsController controller, T args);
     }
 }

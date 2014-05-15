@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IGraphicsControllerCommand{T}.cs" company="OxyPlot">
+// <copyright file="IViewCommand.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 OxyPlot contributors
@@ -33,8 +33,7 @@ namespace OxyPlot
     /// <summary>
     /// Specifies functionality to execute a command on a view.
     /// </summary>
-    /// <typeparam name="T">The type of the event arguments.</typeparam>
-    public interface IGraphicsControllerCommand<in T> : IGraphicsControllerCommand where T : OxyInputEventArgs
+    public interface IViewCommand
     {
         /// <summary>
         /// Executes the command on the specified plot.
@@ -42,6 +41,6 @@ namespace OxyPlot
         /// <param name="view">The view.</param>
         /// <param name="controller">The controller.</param>
         /// <param name="args">The <see cref="OxyInputEventArgs" /> instance containing the event data.</param>
-        void Execute(IGraphicsView view, IGraphicsController controller, T args);
+        void Execute(IGraphicsView view, IGraphicsController controller, OxyInputEventArgs args);
     }
 }

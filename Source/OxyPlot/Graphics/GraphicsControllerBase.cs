@@ -399,7 +399,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="gesture">The gesture.</param>
         /// <param name="command">The command. If <c>null</c>, the binding will be removed.</param>
-        public virtual void Bind(OxyMouseDownGesture gesture, IGraphicsControllerCommand<OxyMouseDownEventArgs> command)
+        public virtual void Bind(OxyMouseDownGesture gesture, IViewCommand<OxyMouseDownEventArgs> command)
         {
             this.BindCore(gesture, command);
         }
@@ -409,7 +409,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="gesture">The gesture.</param>
         /// <param name="command">The command. If <c>null</c>, the binding will be removed.</param>
-        public virtual void Bind(OxyMouseEnterGesture gesture, IGraphicsControllerCommand<OxyMouseEventArgs> command)
+        public virtual void Bind(OxyMouseEnterGesture gesture, IViewCommand<OxyMouseEventArgs> command)
         {
             this.BindCore(gesture, command);
         }
@@ -419,7 +419,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="gesture">The gesture.</param>
         /// <param name="command">The command. If <c>null</c>, the binding will be removed.</param>
-        public virtual void Bind(OxyMouseWheelGesture gesture, IGraphicsControllerCommand<OxyMouseWheelEventArgs> command)
+        public virtual void Bind(OxyMouseWheelGesture gesture, IViewCommand<OxyMouseWheelEventArgs> command)
         {
             this.BindCore(gesture, command);
         }
@@ -429,7 +429,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="gesture">The gesture.</param>
         /// <param name="command">The command. If <c>null</c>, the binding will be removed.</param>
-        public virtual void Bind(OxyTouchGesture gesture, IGraphicsControllerCommand<OxyTouchEventArgs> command)
+        public virtual void Bind(OxyTouchGesture gesture, IViewCommand<OxyTouchEventArgs> command)
         {
             this.BindCore(gesture, command);
         }
@@ -439,7 +439,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="gesture">The gesture.</param>
         /// <param name="command">The command. If <c>null</c>, the binding will be removed.</param>
-        public virtual void Bind(OxyKeyGesture gesture, IGraphicsControllerCommand<OxyKeyEventArgs> command)
+        public virtual void Bind(OxyKeyGesture gesture, IViewCommand<OxyKeyEventArgs> command)
         {
             this.BindCore(gesture, command);
         }
@@ -461,7 +461,7 @@ namespace OxyPlot
         /// Unbinds the specified command from all gestures.
         /// </summary>
         /// <param name="command">The command to unbind.</param>
-        public virtual void Unbind(IGraphicsControllerCommand command)
+        public virtual void Unbind(IViewCommand command)
         {
             // ReSharper disable once RedundantNameQualifier
             foreach (var icb in this.InputCommandBindings.Where(icb => object.ReferenceEquals(icb.Command, command)).ToArray())
@@ -484,7 +484,7 @@ namespace OxyPlot
         /// <param name="gesture">The gesture.</param>
         /// <param name="command">The command. If <c>null</c>, the binding will be removed.</param>
         /// <remarks>This method was created to avoid calling a virtual method in the constructor.</remarks>
-        protected void BindCore(OxyInputGesture gesture, IGraphicsControllerCommand command)
+        protected void BindCore(OxyInputGesture gesture, IViewCommand command)
         {
             var current = this.InputCommandBindings.FirstOrDefault(icb => icb.Gesture.Equals(gesture));
             if (current != null)
@@ -503,7 +503,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="gesture">The input gesture.</param>
         /// <returns>A command.</returns>
-        protected virtual IGraphicsControllerCommand GetCommand(OxyInputGesture gesture)
+        protected virtual IViewCommand GetCommand(OxyInputGesture gesture)
         {
             var binding = this.InputCommandBindings.FirstOrDefault(b => b.Gesture.Equals(gesture));
             if (binding == null)
@@ -521,7 +521,7 @@ namespace OxyPlot
         /// <param name="view">The plot view.</param>
         /// <param name="args">The <see cref="OxyInputEventArgs" /> instance containing the event data.</param>
         /// <returns><c>true</c> if the command was handled.</returns>
-        protected virtual bool HandleCommand(IGraphicsControllerCommand command, IGraphicsView view, OxyInputEventArgs args)
+        protected virtual bool HandleCommand(IViewCommand command, IGraphicsView view, OxyInputEventArgs args)
         {
             if (command == null)
             {

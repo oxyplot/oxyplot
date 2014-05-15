@@ -75,7 +75,7 @@ namespace ExampleLibrary
             model.Series.Add(series);
 
             // Create a command that adds points to the scatter series
-            var command = new DelegatePlotControllerCommand<OxyMouseEventArgs>(
+            var command = new DelegatePlotCommand<OxyMouseEventArgs>(
                 (v, c, a) =>
                 {
                     var point = series.InverseTransform(a.Position);
@@ -114,7 +114,7 @@ namespace ExampleLibrary
             annotation2.MouseDown += handleMouseClick;
 
             var controller = new PlotController();
-            var handleClick = new DelegatePlotControllerCommand<OxyMouseDownEventArgs>(
+            var handleClick = new DelegatePlotCommand<OxyMouseDownEventArgs>(
                 (v, c, e) =>
                 {
                     var firstHit = v.ActualModel.HitTest(e.Position, 10).FirstOrDefault(x => x.Element is RectangleAnnotation);

@@ -41,7 +41,7 @@ namespace OxyPlot
         /// <param name="controller">The plot controller.</param>
         /// <param name="key">The key.</param>
         /// <param name="command">A plot controller command that takes key event arguments.</param>
-        public static void BindKeyDown(this IGraphicsController controller, OxyKey key, IGraphicsControllerCommand<OxyKeyEventArgs> command)
+        public static void BindKeyDown(this IGraphicsController controller, OxyKey key, IViewCommand<OxyKeyEventArgs> command)
         {
             controller.Bind(new OxyKeyGesture(key), command);
         }
@@ -53,7 +53,7 @@ namespace OxyPlot
         /// <param name="key">The key.</param>
         /// <param name="modifiers">The key modifiers.</param>
         /// <param name="command">A plot controller command that takes key event arguments.</param>
-        public static void BindKeyDown(this IGraphicsController controller, OxyKey key, OxyModifierKeys modifiers, IGraphicsControllerCommand<OxyKeyEventArgs> command)
+        public static void BindKeyDown(this IGraphicsController controller, OxyKey key, OxyModifierKeys modifiers, IViewCommand<OxyKeyEventArgs> command)
         {
             controller.Bind(new OxyKeyGesture(key, modifiers), command);
         }
@@ -64,7 +64,7 @@ namespace OxyPlot
         /// <param name="controller">The plot controller.</param>
         /// <param name="mouseButton">The mouse button.</param>
         /// <param name="command">A plot controller command that takes mouse event arguments.</param>
-        public static void BindMouseDown(this IGraphicsController controller, OxyMouseButton mouseButton, IGraphicsControllerCommand<OxyMouseDownEventArgs> command)
+        public static void BindMouseDown(this IGraphicsController controller, OxyMouseButton mouseButton, IViewCommand<OxyMouseDownEventArgs> command)
         {
             controller.Bind(new OxyMouseDownGesture(mouseButton), command);
         }
@@ -76,7 +76,7 @@ namespace OxyPlot
         /// <param name="mouseButton">The mouse button.</param>
         /// <param name="modifiers">The modifiers.</param>
         /// <param name="command">A plot controller command that takes mouse event arguments.</param>
-        public static void BindMouseDown(this IGraphicsController controller, OxyMouseButton mouseButton, OxyModifierKeys modifiers, IGraphicsControllerCommand<OxyMouseDownEventArgs> command)
+        public static void BindMouseDown(this IGraphicsController controller, OxyMouseButton mouseButton, OxyModifierKeys modifiers, IViewCommand<OxyMouseDownEventArgs> command)
         {
             controller.Bind(new OxyMouseDownGesture(mouseButton, modifiers), command);
         }
@@ -89,7 +89,7 @@ namespace OxyPlot
         /// <param name="modifiers">The modifiers.</param>
         /// <param name="clickCount">The click count.</param>
         /// <param name="command">A plot controller command that takes mouse event arguments.</param>
-        public static void BindMouseDown(this IGraphicsController controller, OxyMouseButton mouseButton, OxyModifierKeys modifiers, int clickCount, IGraphicsControllerCommand<OxyMouseDownEventArgs> command)
+        public static void BindMouseDown(this IGraphicsController controller, OxyMouseButton mouseButton, OxyModifierKeys modifiers, int clickCount, IViewCommand<OxyMouseDownEventArgs> command)
         {
             controller.Bind(new OxyMouseDownGesture(mouseButton, modifiers, clickCount), command);
         }
@@ -99,7 +99,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="controller">The plot controller.</param>
         /// <param name="command">A plot controller command that takes touch event arguments.</param>
-        public static void BindTouchDown(this IGraphicsController controller, IGraphicsControllerCommand<OxyTouchEventArgs> command)
+        public static void BindTouchDown(this IGraphicsController controller, IViewCommand<OxyTouchEventArgs> command)
         {
             controller.Bind(new OxyTouchGesture(), command);
         }
@@ -109,7 +109,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="controller">The plot controller.</param>
         /// <param name="command">A plot controller command that takes mouse event arguments.</param>
-        public static void BindMouseEnter(this IGraphicsController controller, IGraphicsControllerCommand<OxyMouseEventArgs> command)
+        public static void BindMouseEnter(this IGraphicsController controller, IViewCommand<OxyMouseEventArgs> command)
         {
             controller.Bind(new OxyMouseEnterGesture(), command);
         }
@@ -119,7 +119,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="controller">The plot controller.</param>
         /// <param name="command">A plot controller command that takes mouse wheel event arguments.</param>
-        public static void BindMouseWheel(this IGraphicsController controller, IGraphicsControllerCommand<OxyMouseWheelEventArgs> command)
+        public static void BindMouseWheel(this IGraphicsController controller, IViewCommand<OxyMouseWheelEventArgs> command)
         {
             controller.Bind(new OxyMouseWheelGesture(), command);
         }
@@ -130,7 +130,7 @@ namespace OxyPlot
         /// <param name="controller">The plot controller.</param>
         /// <param name="modifiers">The modifier key(s).</param>
         /// <param name="command">A plot controller command that takes mouse wheel event arguments.</param>
-        public static void BindMouseWheel(this IGraphicsController controller, OxyModifierKeys modifiers, IGraphicsControllerCommand<OxyMouseWheelEventArgs> command)
+        public static void BindMouseWheel(this IGraphicsController controller, OxyModifierKeys modifiers, IViewCommand<OxyMouseWheelEventArgs> command)
         {
             controller.Bind(new OxyMouseWheelGesture(modifiers), command);
         }
