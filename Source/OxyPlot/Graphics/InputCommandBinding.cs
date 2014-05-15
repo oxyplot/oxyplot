@@ -40,7 +40,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="gesture">The gesture.</param>
         /// <param name="command">The command.</param>
-        public InputCommandBinding(OxyInputGesture gesture, IPlotControllerCommand command)
+        public InputCommandBinding(OxyInputGesture gesture, IGraphicsControllerCommand command)
         {
             this.Gesture = gesture;
             this.Command = command;
@@ -52,7 +52,7 @@ namespace OxyPlot
         /// <param name="key">The key.</param>
         /// <param name="modifiers">The modifiers.</param>
         /// <param name="command">The command.</param>
-        public InputCommandBinding(OxyKey key, OxyModifierKeys modifiers, IPlotControllerCommand command)
+        public InputCommandBinding(OxyKey key, OxyModifierKeys modifiers, IGraphicsControllerCommand command)
             : this(new OxyKeyGesture(key, modifiers), command)
         {
         }
@@ -63,7 +63,7 @@ namespace OxyPlot
         /// <param name="mouseButton">The mouse button.</param>
         /// <param name="modifiers">The modifiers.</param>
         /// <param name="command">The command.</param>
-        public InputCommandBinding(OxyMouseButton mouseButton, OxyModifierKeys modifiers, IPlotControllerCommand command)
+        public InputCommandBinding(OxyMouseButton mouseButton, OxyModifierKeys modifiers, IGraphicsControllerCommand command)
             : this(new OxyMouseDownGesture(mouseButton, modifiers), command)
         {
         }
@@ -76,6 +76,6 @@ namespace OxyPlot
         /// <summary>
         /// Gets the command.
         /// </summary>
-        public IPlotControllerCommand Command { get; private set; }
+        public IGraphicsControllerCommand Command { get; private set; }
     }
 }

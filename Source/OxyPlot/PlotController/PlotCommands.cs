@@ -83,147 +83,147 @@ namespace OxyPlot
         /// <summary>
         /// Gets the reset axes command.
         /// </summary>
-        public static IPlotControllerCommand<OxyKeyEventArgs> Reset { get; private set; }
+        public static IGraphicsControllerCommand<OxyKeyEventArgs> Reset { get; private set; }
 
         /// <summary>
         /// Gets the reset axes command (for mouse events).
         /// </summary>
-        public static IPlotControllerCommand<OxyMouseEventArgs> ResetAt { get; private set; }
+        public static IGraphicsControllerCommand<OxyMouseEventArgs> ResetAt { get; private set; }
 
         /// <summary>
         /// Gets the copy text report command.
         /// </summary>
-        public static IPlotControllerCommand<OxyKeyEventArgs> CopyTextReport { get; private set; }
+        public static IGraphicsControllerCommand<OxyKeyEventArgs> CopyTextReport { get; private set; }
 
         /// <summary>
         /// Gets the copy code command.
         /// </summary>
-        public static IPlotControllerCommand<OxyKeyEventArgs> CopyCode { get; private set; }
+        public static IGraphicsControllerCommand<OxyKeyEventArgs> CopyCode { get; private set; }
 
         /// <summary>
         /// Gets the pan/zoom touch command.
         /// </summary>
-        public static IPlotControllerCommand<OxyTouchEventArgs> PanZoomByTouch { get; private set; }
+        public static IGraphicsControllerCommand<OxyTouchEventArgs> PanZoomByTouch { get; private set; }
 
         /// <summary>
         /// Gets the pan command.
         /// </summary>
-        public static IPlotControllerCommand<OxyMouseDownEventArgs> PanAt { get; private set; }
+        public static IGraphicsControllerCommand<OxyMouseDownEventArgs> PanAt { get; private set; }
 
         /// <summary>
         /// Gets the zoom rectangle command.
         /// </summary>
-        public static IPlotControllerCommand<OxyMouseDownEventArgs> ZoomRectangle { get; private set; }
+        public static IGraphicsControllerCommand<OxyMouseDownEventArgs> ZoomRectangle { get; private set; }
 
         /// <summary>
         /// Gets the zoom by mouse wheel command.
         /// </summary>
-        public static IPlotControllerCommand<OxyMouseWheelEventArgs> ZoomWheel { get; private set; }
+        public static IGraphicsControllerCommand<OxyMouseWheelEventArgs> ZoomWheel { get; private set; }
 
         /// <summary>
         /// Gets the fine-control zoom by mouse wheel command.
         /// </summary>
-        public static IPlotControllerCommand<OxyMouseWheelEventArgs> ZoomWheelFine { get; private set; }
+        public static IGraphicsControllerCommand<OxyMouseWheelEventArgs> ZoomWheelFine { get; private set; }
 
         /// <summary>
         /// Gets the tracker command.
         /// </summary>
-        public static IPlotControllerCommand<OxyMouseDownEventArgs> Track { get; private set; }
+        public static IGraphicsControllerCommand<OxyMouseDownEventArgs> Track { get; private set; }
 
         /// <summary>
         /// Gets the snap tracker command.
         /// </summary>
-        public static IPlotControllerCommand<OxyMouseDownEventArgs> SnapTrack { get; private set; }
+        public static IGraphicsControllerCommand<OxyMouseDownEventArgs> SnapTrack { get; private set; }
 
         /// <summary>
         /// Gets the points only tracker command.
         /// </summary>
-        public static IPlotControllerCommand<OxyMouseDownEventArgs> PointsOnlyTrack { get; private set; }
+        public static IGraphicsControllerCommand<OxyMouseDownEventArgs> PointsOnlyTrack { get; private set; }
 
         /// <summary>
         /// Gets the mouse hover tracker.
         /// </summary>
-        public static IPlotControllerCommand<OxyMouseEventArgs> HoverTrack { get; private set; }
+        public static IGraphicsControllerCommand<OxyMouseEventArgs> HoverTrack { get; private set; }
 
         /// <summary>
         /// Gets the mouse hover snap tracker.
         /// </summary>
-        public static IPlotControllerCommand<OxyMouseEventArgs> HoverSnapTrack { get; private set; }
+        public static IGraphicsControllerCommand<OxyMouseEventArgs> HoverSnapTrack { get; private set; }
 
         /// <summary>
         /// Gets the mouse hover points only tracker.
         /// </summary>
-        public static IPlotControllerCommand<OxyMouseEventArgs> HoverPointsOnlyTrack { get; private set; }
+        public static IGraphicsControllerCommand<OxyMouseEventArgs> HoverPointsOnlyTrack { get; private set; }
 
         /// <summary>
         /// Gets the pan left command.
         /// </summary>
-        public static IPlotControllerCommand<OxyKeyEventArgs> PanLeft { get; private set; }
+        public static IGraphicsControllerCommand<OxyKeyEventArgs> PanLeft { get; private set; }
 
         /// <summary>
         /// Gets the pan right command.
         /// </summary>
-        public static IPlotControllerCommand<OxyKeyEventArgs> PanRight { get; private set; }
+        public static IGraphicsControllerCommand<OxyKeyEventArgs> PanRight { get; private set; }
 
         /// <summary>
         /// Gets the pan up command.
         /// </summary>
-        public static IPlotControllerCommand<OxyKeyEventArgs> PanUp { get; private set; }
+        public static IGraphicsControllerCommand<OxyKeyEventArgs> PanUp { get; private set; }
 
         /// <summary>
         /// Gets the pan down command.
         /// </summary>
-        public static IPlotControllerCommand<OxyKeyEventArgs> PanDown { get; private set; }
+        public static IGraphicsControllerCommand<OxyKeyEventArgs> PanDown { get; private set; }
 
         /// <summary>
         /// Gets the fine control pan left command.
         /// </summary>
-        public static IPlotControllerCommand<OxyKeyEventArgs> PanLeftFine { get; private set; }
+        public static IGraphicsControllerCommand<OxyKeyEventArgs> PanLeftFine { get; private set; }
 
         /// <summary>
         /// Gets the fine control pan right command.
         /// </summary>
-        public static IPlotControllerCommand<OxyKeyEventArgs> PanRightFine { get; private set; }
+        public static IGraphicsControllerCommand<OxyKeyEventArgs> PanRightFine { get; private set; }
 
         /// <summary>
         /// Gets the fine control pan up command.
         /// </summary>
-        public static IPlotControllerCommand<OxyKeyEventArgs> PanUpFine { get; private set; }
+        public static IGraphicsControllerCommand<OxyKeyEventArgs> PanUpFine { get; private set; }
 
         /// <summary>
         /// Gets the fine control pan down command.
         /// </summary>
-        public static IPlotControllerCommand<OxyKeyEventArgs> PanDownFine { get; private set; }
+        public static IGraphicsControllerCommand<OxyKeyEventArgs> PanDownFine { get; private set; }
 
         /// <summary>
         /// Gets the zoom in command.
         /// </summary>
-        public static IPlotControllerCommand<OxyMouseEventArgs> ZoomInAt { get; private set; }
+        public static IGraphicsControllerCommand<OxyMouseEventArgs> ZoomInAt { get; private set; }
 
         /// <summary>
         /// Gets the zoom out command.
         /// </summary>
-        public static IPlotControllerCommand<OxyMouseEventArgs> ZoomOutAt { get; private set; }
+        public static IGraphicsControllerCommand<OxyMouseEventArgs> ZoomOutAt { get; private set; }
 
         /// <summary>
         /// Gets the zoom in command.
         /// </summary>
-        public static IPlotControllerCommand<OxyKeyEventArgs> ZoomIn { get; private set; }
+        public static IGraphicsControllerCommand<OxyKeyEventArgs> ZoomIn { get; private set; }
 
         /// <summary>
         /// Gets the zoom out command.
         /// </summary>
-        public static IPlotControllerCommand<OxyKeyEventArgs> ZoomOut { get; private set; }
+        public static IGraphicsControllerCommand<OxyKeyEventArgs> ZoomOut { get; private set; }
 
         /// <summary>
         /// Gets the fine control zoom in command.
         /// </summary>
-        public static IPlotControllerCommand<OxyKeyEventArgs> ZoomInFine { get; private set; }
+        public static IGraphicsControllerCommand<OxyKeyEventArgs> ZoomInFine { get; private set; }
 
         /// <summary>
         /// Gets the fine control zoom out command.
         /// </summary>
-        public static IPlotControllerCommand<OxyKeyEventArgs> ZoomOutFine { get; private set; }
+        public static IGraphicsControllerCommand<OxyKeyEventArgs> ZoomOutFine { get; private set; }
 
         /// <summary>
         /// Handles the reset events.

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PlotControllerBase.cs" company="OxyPlot">
+// <copyright file="GraphicsControllerBase.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 OxyPlot contributors
@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Provides functionality to interact with the plot view.
+//   Provides functionality to handle input events.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -34,9 +34,9 @@ namespace OxyPlot
     using System.Linq;
 
     /// <summary>
-    /// Provides functionality to interact with the plot view.
+    /// Provides functionality to handle input events.
     /// </summary>
-    public abstract class PlotControllerBase : IPlotController
+    public abstract class GraphicsControllerBase : IGraphicsController
     {
         /// <summary>
         /// A synchronization object that is used when the actual model in the current view is <c>null</c>.
@@ -44,14 +44,21 @@ namespace OxyPlot
         private readonly object syncRoot = new object();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PlotControllerBase" /> class.
+        /// Initializes a new instance of the <see cref="GraphicsControllerBase" /> class.
         /// </summary>
-        protected PlotControllerBase()
+        protected GraphicsControllerBase()
         {
+            this.InputCommandBindings = new List<InputCommandBinding>();
             this.MouseDownManipulators = new List<MouseManipulator>();
             this.MouseHoverManipulators = new List<MouseManipulator>();
             this.TouchManipulators = new List<TouchManipulator>();
         }
+
+        /// <summary>
+        /// Gets the input bindings.
+        /// </summary>
+        /// <remarks>This collection is used to specify the customized input gestures (both key, mouse and touch).</remarks>
+        public List<InputCommandBinding> InputCommandBindings { get; private set; }
 
         /// <summary>
         /// Gets the manipulators that are created by mouse down events. These manipulators are removed when the mouse button is released.
@@ -75,7 +82,7 @@ namespace OxyPlot
         /// <param name="gesture">The gesture.</param>
         /// <param name="args">The <see cref="OxyInputEventArgs" /> instance containing the event data.</param>
         /// <returns><c>true</c> if the event was handled.</returns>
-        public bool HandleGesture(IPlotView view, OxyInputGesture gesture, OxyInputEventArgs args)
+        public bool HandleGesture(IGraphicsView view, OxyInputGesture gesture, OxyInputEventArgs args)
         {
             var command = this.GetCommand(gesture);
             return this.HandleCommand(command, view, args);
@@ -87,7 +94,7 @@ namespace OxyPlot
         /// <param name="view">The plot view.</param>
         /// <param name="args">The <see cref="OxyMouseEventArgs" /> instance containing the event data.</param>
         /// <returns><c>true</c> if the event was handled.</returns>
-        public virtual bool HandleMouseDown(IPlotView view, OxyMouseDownEventArgs args)
+        public virtual bool HandleMouseDown(IGraphicsView view, OxyMouseDownEventArgs args)
         {
             lock (this.GetSyncRoot(view))
             {
@@ -111,7 +118,7 @@ namespace OxyPlot
         /// <param name="view">The plot view.</param>
         /// <param name="args">The <see cref="OxyMouseEventArgs" /> instance containing the event data.</param>
         /// <returns><c>true</c> if the event was handled.</returns>
-        public virtual bool HandleMouseEnter(IPlotView view, OxyMouseEventArgs args)
+        public virtual bool HandleMouseEnter(IGraphicsView view, OxyMouseEventArgs args)
         {
             lock (this.GetSyncRoot(view))
             {
@@ -135,7 +142,7 @@ namespace OxyPlot
         /// <param name="view">The plot view.</param>
         /// <param name="args">The <see cref="OxyMouseEventArgs" /> instance containing the event data.</param>
         /// <returns><c>true</c> if the event was handled.</returns>
-        public virtual bool HandleMouseLeave(IPlotView view, OxyMouseEventArgs args)
+        public virtual bool HandleMouseLeave(IGraphicsView view, OxyMouseEventArgs args)
         {
             lock (this.GetSyncRoot(view))
             {
@@ -164,7 +171,7 @@ namespace OxyPlot
         /// <param name="view">The plot view.</param>
         /// <param name="args">The <see cref="OxyMouseEventArgs" /> instance containing the event data.</param>
         /// <returns><c>true</c> if the event was handled.</returns>
-        public virtual bool HandleMouseMove(IPlotView view, OxyMouseEventArgs args)
+        public virtual bool HandleMouseMove(IGraphicsView view, OxyMouseEventArgs args)
         {
             lock (this.GetSyncRoot(view))
             {
@@ -197,7 +204,7 @@ namespace OxyPlot
         /// <param name="view">The plot view.</param>
         /// <param name="args">The <see cref="OxyMouseEventArgs" /> instance containing the event data.</param>
         /// <returns><c>true</c> if the event was handled.</returns>
-        public virtual bool HandleMouseUp(IPlotView view, OxyMouseEventArgs args)
+        public virtual bool HandleMouseUp(IGraphicsView view, OxyMouseEventArgs args)
         {
             lock (this.GetSyncRoot(view))
             {
@@ -226,7 +233,7 @@ namespace OxyPlot
         /// <param name="view">The plot view.</param>
         /// <param name="args">The <see cref="OxyMouseWheelEventArgs" /> instance containing the event data.</param>
         /// <returns><c>true</c> if the event was handled.</returns>
-        public virtual bool HandleMouseWheel(IPlotView view, OxyMouseWheelEventArgs args)
+        public virtual bool HandleMouseWheel(IGraphicsView view, OxyMouseWheelEventArgs args)
         {
             lock (this.GetSyncRoot(view))
             {
@@ -241,7 +248,7 @@ namespace OxyPlot
         /// <param name="view">The plot view.</param>
         /// <param name="args">The <see cref="OxyTouchEventArgs" /> instance containing the event data.</param>
         /// <returns><c>true</c> if the event was handled.</returns>
-        public bool HandleTouchStarted(IPlotView view, OxyTouchEventArgs args)
+        public bool HandleTouchStarted(IGraphicsView view, OxyTouchEventArgs args)
         {
             lock (this.GetSyncRoot(view))
             {
@@ -265,7 +272,7 @@ namespace OxyPlot
         /// <param name="view">The plot view.</param>
         /// <param name="args">The <see cref="OxyTouchEventArgs" /> instance containing the event data.</param>
         /// <returns><c>true</c> if the event was handled.</returns>
-        public bool HandleTouchDelta(IPlotView view, OxyTouchEventArgs args)
+        public bool HandleTouchDelta(IGraphicsView view, OxyTouchEventArgs args)
         {
             lock (this.GetSyncRoot(view))
             {
@@ -293,7 +300,7 @@ namespace OxyPlot
         /// <param name="view">The plot view.</param>
         /// <param name="args">The <see cref="OxyTouchEventArgs" /> instance containing the event data.</param>
         /// <returns><c>true</c> if the event was handled.</returns>
-        public bool HandleTouchCompleted(IPlotView view, OxyTouchEventArgs args)
+        public bool HandleTouchCompleted(IGraphicsView view, OxyTouchEventArgs args)
         {
             lock (this.GetSyncRoot(view))
             {
@@ -322,7 +329,7 @@ namespace OxyPlot
         /// <param name="view">The plot view.</param>
         /// <param name="args">The <see cref="OxyKeyEventArgs" /> instance containing the event data.</param>
         /// <returns><c>true</c> if the event was handled.</returns>
-        public virtual bool HandleKeyDown(IPlotView view, OxyKeyEventArgs args)
+        public virtual bool HandleKeyDown(IGraphicsView view, OxyKeyEventArgs args)
         {
             lock (this.GetSyncRoot(view))
             {
@@ -349,7 +356,7 @@ namespace OxyPlot
         /// <param name="manipulator">The manipulator to add.</param>
         /// <param name="args">The <see cref="OxyMouseDownEventArgs" /> instance containing the event data.</param>
         public virtual void AddMouseManipulator(
-            IPlotView view,
+            IGraphicsView view,
             MouseManipulator manipulator,
             OxyMouseDownEventArgs args)
         {
@@ -364,7 +371,7 @@ namespace OxyPlot
         /// <param name="manipulator">The manipulator.</param>
         /// <param name="args">The <see cref="OxyMouseEventArgs" /> instance containing the event data.</param>
         public virtual void AddHoverManipulator(
-            IPlotView view,
+            IGraphicsView view,
             MouseManipulator manipulator,
             OxyMouseEventArgs args)
         {
@@ -379,7 +386,7 @@ namespace OxyPlot
         /// <param name="manipulator">The manipulator.</param>
         /// <param name="args">The <see cref="OxyTouchEventArgs" /> instance containing the event data.</param>
         public virtual void AddTouchManipulator(
-            IPlotView view,
+            IGraphicsView view,
             TouchManipulator manipulator,
             OxyTouchEventArgs args)
         {
@@ -392,53 +399,121 @@ namespace OxyPlot
         /// </summary>
         /// <param name="gesture">The gesture.</param>
         /// <param name="command">The command. If <c>null</c>, the binding will be removed.</param>
-        public abstract void Bind(OxyMouseDownGesture gesture, IPlotControllerCommand<OxyMouseDownEventArgs> command);
+        public virtual void Bind(OxyMouseDownGesture gesture, IGraphicsControllerCommand<OxyMouseDownEventArgs> command)
+        {
+            this.BindCore(gesture, command);
+        }
 
         /// <summary>
         /// Binds the specified command to the specified mouse enter gesture. Removes old bindings to the gesture.
         /// </summary>
         /// <param name="gesture">The gesture.</param>
         /// <param name="command">The command. If <c>null</c>, the binding will be removed.</param>
-        public abstract void Bind(OxyMouseEnterGesture gesture, IPlotControllerCommand<OxyMouseEventArgs> command);
+        public virtual void Bind(OxyMouseEnterGesture gesture, IGraphicsControllerCommand<OxyMouseEventArgs> command)
+        {
+            this.BindCore(gesture, command);
+        }
 
         /// <summary>
         /// Binds the specified command to the specified mouse wheel gesture. Removes old bindings to the gesture.
         /// </summary>
         /// <param name="gesture">The gesture.</param>
         /// <param name="command">The command. If <c>null</c>, the binding will be removed.</param>
-        public abstract void Bind(OxyMouseWheelGesture gesture, IPlotControllerCommand<OxyMouseWheelEventArgs> command);
+        public virtual void Bind(OxyMouseWheelGesture gesture, IGraphicsControllerCommand<OxyMouseWheelEventArgs> command)
+        {
+            this.BindCore(gesture, command);
+        }
 
         /// <summary>
         /// Binds the specified command to the specified touch gesture. Removes old bindings to the gesture.
         /// </summary>
         /// <param name="gesture">The gesture.</param>
         /// <param name="command">The command. If <c>null</c>, the binding will be removed.</param>
-        public abstract void Bind(OxyTouchGesture gesture, IPlotControllerCommand<OxyTouchEventArgs> command);
+        public virtual void Bind(OxyTouchGesture gesture, IGraphicsControllerCommand<OxyTouchEventArgs> command)
+        {
+            this.BindCore(gesture, command);
+        }
 
         /// <summary>
         /// Binds the specified command to the specified key gesture. Removes old bindings to the gesture.
         /// </summary>
         /// <param name="gesture">The gesture.</param>
         /// <param name="command">The command. If <c>null</c>, the binding will be removed.</param>
-        public abstract void Bind(OxyKeyGesture gesture, IPlotControllerCommand<OxyKeyEventArgs> command);
+        public virtual void Bind(OxyKeyGesture gesture, IGraphicsControllerCommand<OxyKeyEventArgs> command)
+        {
+            this.BindCore(gesture, command);
+        }
 
         /// <summary>
         /// Unbinds the specified gesture.
         /// </summary>
         /// <param name="gesture">The gesture to unbind.</param>
-        public abstract void Unbind(OxyInputGesture gesture);
+        public virtual void Unbind(OxyInputGesture gesture)
+        {
+            // ReSharper disable once RedundantNameQualifier
+            foreach (var icb in this.InputCommandBindings.Where(icb => icb.Gesture.Equals(gesture)).ToArray())
+            {
+                this.InputCommandBindings.Remove(icb);
+            }
+        }
 
         /// <summary>
         /// Unbinds the specified command from all gestures.
         /// </summary>
         /// <param name="command">The command to unbind.</param>
-        public abstract void Unbind(IPlotControllerCommand command);
+        public virtual void Unbind(IGraphicsControllerCommand command)
+        {
+            // ReSharper disable once RedundantNameQualifier
+            foreach (var icb in this.InputCommandBindings.Where(icb => object.ReferenceEquals(icb.Command, command)).ToArray())
+            {
+                this.InputCommandBindings.Remove(icb);
+            }
+        }
 
         /// <summary>
         /// Unbinds all commands.
         /// </summary>
-        public abstract void UnbindAll();
+        public virtual void UnbindAll()
+        {
+            this.InputCommandBindings.Clear();
+        }
 
+        /// <summary>
+        /// Binds the specified command to the specified gesture. Removes old bindings to the gesture.
+        /// </summary>
+        /// <param name="gesture">The gesture.</param>
+        /// <param name="command">The command. If <c>null</c>, the binding will be removed.</param>
+        /// <remarks>This method was created to avoid calling a virtual method in the constructor.</remarks>
+        protected void BindCore(OxyInputGesture gesture, IGraphicsControllerCommand command)
+        {
+            var current = this.InputCommandBindings.FirstOrDefault(icb => icb.Gesture.Equals(gesture));
+            if (current != null)
+            {
+                this.InputCommandBindings.Remove(current);
+            }
+
+            if (command != null)
+            {
+                this.InputCommandBindings.Add(new InputCommandBinding(gesture, command));
+            }
+        }
+
+        /// <summary>
+        /// Gets the command for the specified <see cref="OxyInputGesture" />.
+        /// </summary>
+        /// <param name="gesture">The input gesture.</param>
+        /// <returns>A command.</returns>
+        protected virtual IGraphicsControllerCommand GetCommand(OxyInputGesture gesture)
+        {
+            var binding = this.InputCommandBindings.FirstOrDefault(b => b.Gesture.Equals(gesture));
+            if (binding == null)
+            {
+                return null;
+            }
+
+            return binding.Command;
+        }
+        
         /// <summary>
         /// Handles a command triggered by an input gesture.
         /// </summary>
@@ -446,7 +521,7 @@ namespace OxyPlot
         /// <param name="view">The plot view.</param>
         /// <param name="args">The <see cref="OxyInputEventArgs" /> instance containing the event data.</param>
         /// <returns><c>true</c> if the command was handled.</returns>
-        protected virtual bool HandleCommand(IPlotControllerCommand command, IPlotView view, OxyInputEventArgs args)
+        protected virtual bool HandleCommand(IGraphicsControllerCommand command, IGraphicsView view, OxyInputEventArgs args)
         {
             if (command == null)
             {
@@ -460,19 +535,12 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets the command for the specified <see cref="OxyInputGesture" />.
-        /// </summary>
-        /// <param name="gesture">The input gesture.</param>
-        /// <returns>A command.</returns>
-        protected abstract IPlotControllerCommand GetCommand(OxyInputGesture gesture);
-
-        /// <summary>
         /// Gets the synchronization object for the specified view.
         /// </summary>
         /// <param name="view">The view.</param>
         /// <returns>An object that can be used to synchronize access to the actual model of the view.</returns>
         /// <remarks>This object is used to ensure that events are not handled when the model is being updated.</remarks>
-        protected object GetSyncRoot(IPlotView view)
+        protected object GetSyncRoot(IGraphicsView view)
         {
             return view.ActualModel != null ? view.ActualModel.SyncRoot : this.syncRoot;
         }

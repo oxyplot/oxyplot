@@ -36,7 +36,7 @@ namespace OxyPlot
     /// <summary>
     /// Provides an abstract base class for elements of a <see cref="PlotModel" />.
     /// </summary>
-    public abstract class PlotElement : IPlotElement
+    public abstract class PlotElement : GraphicsElement, IPlotElement
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PlotElement" /> class.
@@ -70,9 +70,15 @@ namespace OxyPlot
         public double FontWeight { get; set; }
 
         /// <summary>
-        /// Gets the parent plot model.
+        /// Gets the parent <see cref="PlotModel" />.
         /// </summary>
-        public PlotModel PlotModel { get; internal set; }
+        public PlotModel PlotModel
+        {
+            get
+            {
+                return (PlotModel)this.Parent;
+            }
+        }
 
         /// <summary>
         /// Gets or sets an arbitrary object value that can be used to store custom information about this plot element.

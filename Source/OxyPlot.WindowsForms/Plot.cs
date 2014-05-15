@@ -122,6 +122,20 @@ namespace OxyPlot.WindowsForms
         }
 
         /// <summary>
+        /// Gets the actual model in the view.
+        /// </summary>
+        /// <value>
+        /// The actual model.
+        /// </value>
+        GraphicsModel IGraphicsView.ActualModel
+        {
+            get
+            {
+                return this.Model;
+            }
+        }
+
+        /// <summary>
         /// Gets the actual model.
         /// </summary>
         /// <value>The actual model.</value>
@@ -130,6 +144,20 @@ namespace OxyPlot.WindowsForms
             get
             {
                 return this.Model;
+            }
+        }
+
+        /// <summary>
+        /// Gets the actual controller.
+        /// </summary>
+        /// <value>
+        /// The actual <see cref="IGraphicsController" />.
+        /// </value>
+        IGraphicsController IGraphicsView.ActualController
+        {
+            get
+            {
+                return this.ActualController;
             }
         }
 

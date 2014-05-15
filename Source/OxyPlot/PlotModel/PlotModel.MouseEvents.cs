@@ -31,7 +31,6 @@
 namespace OxyPlot
 {
     using System;
-    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
@@ -103,7 +102,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="OxyPlot.OxyMouseEventArgs" /> instance containing the event data.</param>
-        public void HandleMouseDown(object sender, OxyMouseDownEventArgs e)
+        public override void HandleMouseDown(object sender, OxyMouseDownEventArgs e)
         {
             foreach (var result in this.HitTest(e.Position, MouseHitTolerance))
             {
@@ -127,7 +126,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="OxyPlot.OxyMouseEventArgs" /> instance containing the event data.</param>
-        public void HandleMouseMove(object sender, OxyMouseEventArgs e)
+        public override void HandleMouseMove(object sender, OxyMouseEventArgs e)
         {
             if (this.currentMouseEventElement != null)
             {
@@ -145,7 +144,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="OxyPlot.OxyMouseEventArgs" /> instance containing the event data.</param>
-        public void HandleMouseUp(object sender, OxyMouseEventArgs e)
+        public override void HandleMouseUp(object sender, OxyMouseEventArgs e)
         {
             if (this.currentMouseEventElement != null)
             {
@@ -164,7 +163,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="OxyPlot.OxyMouseEventArgs" /> instance containing the event data.</param>
-        public void HandleMouseEnter(object sender, OxyMouseEventArgs e)
+        public override void HandleMouseEnter(object sender, OxyMouseEventArgs e)
         {
             if (!e.Handled)
             {
@@ -177,7 +176,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="OxyPlot.OxyMouseEventArgs" /> instance containing the event data.</param>
-        public void HandleMouseLeave(object sender, OxyMouseEventArgs e)
+        public override void HandleMouseLeave(object sender, OxyMouseEventArgs e)
         {
             if (!e.Handled)
             {
@@ -190,7 +189,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">A <see cref="OxyPlot.OxyTouchEventArgs" /> instance containing the event data.</param>
-        public void HandleTouchStarted(object sender, OxyTouchEventArgs e)
+        public override void HandleTouchStarted(object sender, OxyTouchEventArgs e)
         {
             foreach (var result in this.HitTest(e.Position, MouseHitTolerance))
             {
@@ -213,7 +212,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">A <see cref="OxyPlot.OxyTouchEventArgs" /> instance containing the event data.</param>
-        public void HandleTouchDelta(object sender, OxyTouchEventArgs e)
+        public override void HandleTouchDelta(object sender, OxyTouchEventArgs e)
         {
             if (this.currentTouchEventElement != null)
             {
@@ -231,7 +230,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">A <see cref="OxyPlot.OxyTouchEventArgs" /> instance containing the event data.</param>
-        public void HandleTouchCompleted(object sender, OxyTouchEventArgs e)
+        public override void HandleTouchCompleted(object sender, OxyTouchEventArgs e)
         {
             if (this.currentTouchEventElement != null)
             {
@@ -250,7 +249,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="OxyKeyEventArgs" /> instance containing the event data.</param>
-        public void HandleKeyDown(object sender, OxyKeyEventArgs e)
+        public override void HandleKeyDown(object sender, OxyKeyEventArgs e)
         {
             // Revert the order to handle the top-level elements first
             foreach (var element in this.GetElements().Reverse())

@@ -1,5 +1,5 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IPlotControllerCommand.cs" company="OxyPlot">
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="GraphicsElement.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 OxyPlot contributors
@@ -24,23 +24,23 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Specifies functionality to execute a command on a plot.
+//   Provides an abstract base class for graphics elements.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     /// <summary>
-    /// Specifies functionality to execute a command on a plot.
+    /// Provides an abstract base class for graphics elements.
     /// </summary>
-    public interface IPlotControllerCommand
+    public abstract class GraphicsElement
     {
         /// <summary>
-        /// Executes the command on the specified plot.
+        /// Gets the parent model of the element.
         /// </summary>
-        /// <param name="view">The plot view.</param>
-        /// <param name="controller">The plot controller.</param>
-        /// <param name="args">The <see cref="OxyInputEventArgs" /> instance containing the event data.</param>
-        void Execute(IPlotView view, IPlotController controller, OxyInputEventArgs args);
+        /// <value>
+        /// The <see cref="GraphicsModel" /> that is the parent of the element.
+        /// </value>
+        public GraphicsModel Parent { get; internal set; }
     }
 }

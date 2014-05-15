@@ -57,7 +57,7 @@ namespace OxyPlot.Metro
         /// Identifies the <see cref="Controller"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ControllerProperty =
-            DependencyProperty.Register("Controller", typeof(PlotController), typeof(Plot), new PropertyMetadata(null));
+            DependencyProperty.Register("Controller", typeof(IPlotController), typeof(Plot), new PropertyMetadata(null));
 
         /// <summary>
         /// Identifies the <see cref="DefaultTrackerTemplate"/> dependency property.
@@ -189,9 +189,9 @@ namespace OxyPlot.Metro
         /// Gets or sets the plot controller.
         /// </summary>
         /// <value>The plot controller.</value>
-        public PlotController Controller
+        public IPlotController Controller
         {
-            get { return (PlotController)this.GetValue(ControllerProperty); }
+            get { return (IPlotController)this.GetValue(ControllerProperty); }
             set { this.SetValue(ControllerProperty, value); }
         }
 
@@ -290,6 +290,20 @@ namespace OxyPlot.Metro
         }
 
         /// <summary>
+        /// Gets the actual model in the view.
+        /// </summary>
+        /// <value>
+        /// The actual model.
+        /// </value>
+        GraphicsModel IGraphicsView.ActualModel
+        {
+            get
+            {
+                return this.Model;
+            }
+        }
+
+        /// <summary>
         /// Gets the actual model.
         /// </summary>
         /// <value>The actual model.</value>
@@ -298,6 +312,20 @@ namespace OxyPlot.Metro
             get
             {
                 return this.currentModel;
+            }
+        }
+
+        /// <summary>
+        /// Gets the actual controller.
+        /// </summary>
+        /// <value>
+        /// The actual <see cref="IGraphicsController" />.
+        /// </value>
+        IGraphicsController IGraphicsView.ActualController
+        {
+            get
+            {
+                return this.ActualController;
             }
         }
 
