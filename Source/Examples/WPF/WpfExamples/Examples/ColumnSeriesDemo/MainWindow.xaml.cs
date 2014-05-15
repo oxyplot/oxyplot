@@ -28,18 +28,21 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Collections.ObjectModel;
-using System.Windows;
-using OxyPlot;
-
 namespace ColumnSeriesDemo
 {
+    using System.Collections.ObjectModel;
+    using System.Windows;
+
+    using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
+
+    using WpfExamples;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [Example("Shows column series.")]
     public partial class MainWindow : Window
     {
         public MainWindow()

@@ -25,11 +25,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.ObjectModel;
-
 namespace AreaDemo
 {
+    using System;
+    using System.Collections.ObjectModel;
+
     public class MainViewModel
     {
         public MainViewModel()

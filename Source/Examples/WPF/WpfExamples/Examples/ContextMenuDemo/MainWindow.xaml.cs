@@ -35,14 +35,16 @@ namespace ContextMenuDemo
     using System.Windows.Input;
 
     using OxyPlot;
-    using OxyPlot.Axes;
     using OxyPlot.Series;
 
-    using PropertyTools.Wpf;
+    using WpfExamples;
+
+    using DelegateCommand = PropertyTools.Wpf.DelegateCommand;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [Example("Integrate with a ContextMenu")]
     public partial class MainWindow : Window
     {
         public MainWindow()
@@ -63,6 +65,7 @@ namespace ContextMenuDemo
         }
 
         public ICommand ResetCommand { get; set; }
+
         public PlotModel Model { get; set; }
     }
 }

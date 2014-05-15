@@ -28,38 +28,45 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Windows;
-using System.Windows.Controls;
-
 namespace ContourDemo
 {
+    using System.Windows;
+    using System.Windows.Controls;
+
+    using WpfExamples;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [Example("Plotting with contour series.")]
     public partial class MainWindow : Window
     {
         private MainViewModel vm = new MainViewModel();
-        private MenuItem checkedItem = null;
+
+        private MenuItem checkedItem;
 
         public MainWindow()
         {
-            InitializeComponent();
-            DataContext = vm;
+            this.InitializeComponent();
+            this.DataContext = this.vm;
         }
 
         private void FileExit(object sender, RoutedEventArgs e)
         {
-            Close();
+            this.Close();
         }
 
         private void ExampleClick(object sender, RoutedEventArgs e)
         {
-            var mi = sender as MenuItem;
-            if (checkedItem != null)
-                checkedItem.IsChecked = false;
+            var mi = (MenuItem)sender;
+            if (this.checkedItem != null)
+            {
+                this.checkedItem.IsChecked = false;
+            }
+
             mi.IsChecked = true;
-            checkedItem = mi;
-            vm.SelectedExample = mi.DataContext as MainViewModel.Example;
+            this.checkedItem = mi;
+            this.vm.SelectedExample = mi.DataContext as MainViewModel.Example;
         }
     }
 }

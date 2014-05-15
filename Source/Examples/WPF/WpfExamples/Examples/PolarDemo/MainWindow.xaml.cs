@@ -38,9 +38,12 @@ namespace PolarDemo
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
+    using WpfExamples;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [Example("Creates a polar plot.")]
     public partial class MainWindow : Window
     {
         /// <summary>

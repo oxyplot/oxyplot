@@ -28,24 +28,28 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Windows;
-
 namespace UserControlDemo
 {
+    using System.Windows;
+
+    using WpfExamples;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [Example("Demonstrates a Plot in a UserControl.")]
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
-            InitializeComponent();
-            Model1 = new ViewModel { Title = "Plot1" };
-            Model2 = new ViewModel { Title = "Plot2" };
-            DataContext = this;
+            this.InitializeComponent();
+            this.Model1 = new ViewModel { Title = "Plot1" };
+            this.Model2 = new ViewModel { Title = "Plot2" };
+            this.DataContext = this;
         }
 
         public ViewModel Model1 { get; set; }
+
         public ViewModel Model2 { get; set; }
     }
 }

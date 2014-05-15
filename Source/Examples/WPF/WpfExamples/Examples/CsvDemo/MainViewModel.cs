@@ -39,19 +39,19 @@ namespace CsvDemo
     {
         private PlotModel model;
 
-        public MainViewModel()
-        {
-        }
-
         public PlotModel Model
         {
-            get { return model; }
+            get
+            {
+                return this.model;
+            }
+
             set
             {
-                if (model != value)
+                if (this.model != value)
                 {
-                    model = value;
-                    RaisePropertyChanged(() => Model);
+                    this.model = value;
+                    this.RaisePropertyChanged(() => this.Model);
                 }
             }
         }
@@ -60,34 +60,43 @@ namespace CsvDemo
         {
             var doc = new CsvDocument();
             doc.Load(file);
-            var tmp = new PlotModel { Title = Path.GetFileNameWithoutExtension(file) };
-            tmp.LegendPosition = LegendPosition.RightTop;
-            tmp.LegendPlacement = LegendPlacement.Outside;
-            tmp.PlotMargins = new OxyThickness(50, 0, 0, 40);
+            var tmp = new PlotModel
+            {
+                Title = Path.GetFileNameWithoutExtension(file),
+                LegendPosition = LegendPosition.RightTop,
+                LegendPlacement = LegendPlacement.Outside,
+                PlotMargins = new OxyThickness(50, 0, 0, 40)
+            };
             for (int i = 1; i < doc.Headers.Length; i++)
             {
                 var ls = new LineSeries { Title = doc.Headers[i] };
                 foreach (var item in doc.Items)
                 {
-                    double x = ParseDouble(item[0]);
-                    double y = ParseDouble(item[i]);
+                    double x = this.ParseDouble(item[0]);
+                    double y = this.ParseDouble(item[i]);
                     ls.Points.Add(new DataPoint(x, y));
                 }
+
                 tmp.Series.Add(ls);
             }
+
             tmp.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = doc.Headers[0] });
-            // tmp.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Left,);
-            Model = tmp;
+            this.Model = tmp;
         }
 
         private double ParseDouble(string s)
         {
             if (s == null)
+            {
                 return double.NaN;
+            }
             s = s.Replace(',', '.');
             double result;
             if (double.TryParse(s, NumberStyles.Number, CultureInfo.InvariantCulture, out result))
+            {
                 return result;
+            }
+
             return double.NaN;
         }
 
