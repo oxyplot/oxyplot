@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IPlotControllerCommand{T}.cs" company="OxyPlot">
+// <copyright file="IGraphicsView.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 OxyPlot contributors
@@ -24,24 +24,48 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Specifies functionality to execute a command on a plot.
+//   Specifies functionality for the graphics views.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     /// <summary>
-    /// Specifies functionality to execute a command on a plot.
+    /// Specifies functionality for the graphics views.
     /// </summary>
-    /// <typeparam name="T">The type of the event arguments.</typeparam>
-    public interface IPlotControllerCommand<in T> : IPlotControllerCommand where T : OxyInputEventArgs
+    public interface IGraphicsView
     {
         /// <summary>
-        /// Executes the command on the specified plot.
+        /// Gets the actual model in the view.
         /// </summary>
-        /// <param name="view">The plot view.</param>
-        /// <param name="controller">The plot controller.</param>
-        /// <param name="args">The <see cref="OxyInputEventArgs" /> instance containing the event data.</param>
-        void Execute(IPlotView view, IPlotController controller, T args);
+        /// <value>
+        /// The actual <see cref="GraphicsModel" />.
+        /// </value>
+        GraphicsModel ActualModel { get; }
+
+        /// <summary>
+        /// Gets the actual controller.
+        /// </summary>
+        /// <value>
+        /// The actual <see cref="IGraphicsController" />.
+        /// </value>
+        IGraphicsController ActualController { get; }
+
+        /// <summary>
+        /// Sets the cursor type.
+        /// </summary>
+        /// <param name="cursorType">The cursor type.</param>
+        void SetCursorType(CursorType cursorType);
+
+        /// <summary>
+        /// Hides the zoom rectangle.
+        /// </summary>
+        void HideZoomRectangle();
+
+        /// <summary>
+        /// Shows the zoom rectangle.
+        /// </summary>
+        /// <param name="rectangle">The rectangle.</param>
+        void ShowZoomRectangle(OxyRect rectangle);
     }
 }

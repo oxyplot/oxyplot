@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PlotElementCollection.cs" company="OxyPlot">
+// <copyright file="GraphicsElementCollection{T}.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 OxyPlot contributors
@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents a collection of <see cref="PlotElement" /> objects.
+//   Represents a collection of <see cref="GraphicsElement" /> objects.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -35,15 +35,15 @@ namespace OxyPlot
     using System.Collections.Generic;
 
     /// <summary>
-    /// Represents a collection of <see cref="PlotElement" /> objects.
+    /// Represents a collection of <see cref="GraphicsElement" /> objects.
     /// </summary>
     /// <typeparam name="T">The type of the elements.</typeparam>
-    public class PlotElementCollection<T> : IList<T> where T : PlotElement
+    public class GraphicsElementCollection<T> : IList<T> where T : GraphicsElement
     {
         /// <summary>
-        /// The parent <see cref="PlotModel" />.
+        /// The parent <see cref="GraphicsModel" />.
         /// </summary>
-        private readonly PlotModel parent;
+        private readonly GraphicsModel parent;
 
         /// <summary>
         /// The internal list.
@@ -51,10 +51,10 @@ namespace OxyPlot
         private readonly List<T> internalList = new List<T>();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PlotElementCollection{T}" /> class.
+        /// Initializes a new instance of the <see cref="GraphicsElementCollection{T}" /> class.
         /// </summary>
         /// <param name="parent">The parent <see cref="PlotModel" />.</param>
-        public PlotElementCollection(PlotModel parent)
+        public GraphicsElementCollection(GraphicsModel parent)
         {
             this.parent = parent;
         }
@@ -97,7 +97,7 @@ namespace OxyPlot
 
             set
             {
-                value.PlotModel = this.parent;
+                value.Parent = this.parent;
                 this.internalList[index] = value;
             }
         }
@@ -127,12 +127,12 @@ namespace OxyPlot
         /// <exception cref="System.InvalidOperationException">The element cannot be added, it already belongs to a PlotModel.</exception>
         public void Add(T item)
         {
-            if (item.PlotModel != null)
+            if (item.Parent != null)
             {
                 throw new InvalidOperationException("The element cannot be added, it already belongs to a PlotModel.");
             }
 
-            item.PlotModel = this.parent;
+            item.Parent = this.parent;
             this.internalList.Add(item);
         }
 
@@ -143,7 +143,7 @@ namespace OxyPlot
         {
             foreach (var item in this.internalList)
             {
-                item.PlotModel = null;
+                item.Parent = null;
             }
 
             this.internalList.Clear();
@@ -176,7 +176,7 @@ namespace OxyPlot
         /// <returns><c>true</c> if <paramref name="item" /> was successfully removed from the <see cref="T:System.Collections.Generic.ICollection`1" />; otherwise, <c>false</c>. This method also returns <c>false</c> if <paramref name="item" /> is not found in the original <see cref="T:System.Collections.Generic.ICollection`1" />.</returns>
         public bool Remove(T item)
         {
-            item.PlotModel = null;
+            item.Parent = null;
             return this.internalList.Remove(item);
         }
 
@@ -198,12 +198,12 @@ namespace OxyPlot
         /// <exception cref="System.InvalidOperationException">The element cannot be inserted, it already belongs to a PlotModel.</exception>
         public void Insert(int index, T item)
         {
-            if (item.PlotModel != null)
+            if (item.Parent != null)
             {
                 throw new InvalidOperationException("The element cannot be inserted, it already belongs to a PlotModel.");
             }
 
-            item.PlotModel = this.parent;
+            item.Parent = this.parent;
             this.internalList.Insert(index, item);
         }
 
@@ -213,7 +213,7 @@ namespace OxyPlot
         /// <param name="index">The zero-based index of the item to remove.</param>
         public void RemoveAt(int index)
         {
-            this[index].PlotModel = null;
+            this[index].Parent = null;
             this.internalList.RemoveAt(index);
         }
     }

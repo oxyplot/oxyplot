@@ -232,11 +232,35 @@ namespace OxyPlot.Wpf
         /// Gets the actual model.
         /// </summary>
         /// <value>The actual model.</value>
+        GraphicsModel IGraphicsView.ActualModel
+        {
+            get
+            {
+                return this.ActualModel;
+            }
+        }
+
+        /// <summary>
+        /// Gets the actual model.
+        /// </summary>
+        /// <value>The actual model.</value>
         public PlotModel ActualModel
         {
             get
             {
                 return this.currentModel ?? this.internalModel;
+            }
+        }
+
+        /// <summary>
+        /// Gets the actual plot controller.
+        /// </summary>
+        /// <value>The actual plot controller.</value>
+        IGraphicsController IGraphicsView.ActualController
+        {
+            get
+            {
+                return this.ActualController;
             }
         }
 
@@ -930,7 +954,7 @@ namespace OxyPlot.Wpf
         private void SynchronizeProperties()
         {
             var m = this.internalModel;
-                        
+
             m.PlotType = this.PlotType;
 
             m.PlotMargins = this.PlotMargins.ToOxyThickness();
@@ -954,10 +978,10 @@ namespace OxyPlot.Wpf
             m.SubtitleFont = this.SubtitleFont;
             m.SubtitleFontSize = this.SubtitleFontSize;
             m.SubtitleFontWeight = this.SubtitleFontWeight.ToOpenTypeWeight();
-                        
+
             m.TextColor = this.TextColor.ToOxyColor();
             m.SelectionColor = this.SelectionColor.ToOxyColor();
-            
+
             m.RenderingDecorator = this.RenderingDecorator;
 
             m.AxisTierDistance = this.AxisTierDistance;

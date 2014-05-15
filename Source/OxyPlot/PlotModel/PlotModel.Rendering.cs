@@ -50,7 +50,7 @@ namespace OxyPlot
         /// <param name="height">The height.</param>
         public virtual void Render(IRenderContext rc, double width, double height)
         {
-            lock (this.syncRoot)
+            lock (this.SyncRoot)
             {
                 var minimumWidth = this.Padding.Left + this.Padding.Right;
                 var minimumHeight = this.Padding.Top + this.Padding.Bottom;

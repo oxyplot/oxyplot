@@ -150,6 +150,20 @@ namespace OxyPlot.XamarinAndroid
         public IPlotController Controller { get; set; }
 
         /// <summary>
+        /// Gets the actual model in the view.
+        /// </summary>
+        /// <value>
+        /// The actual model.
+        /// </value>
+        GraphicsModel IGraphicsView.ActualModel
+        {
+            get
+            {
+                return this.Model;
+            }
+        }
+        
+        /// <summary>
         /// Gets the actual <see cref="PlotModel" /> of the control.
         /// </summary>
         public PlotModel ActualModel
@@ -157,6 +171,20 @@ namespace OxyPlot.XamarinAndroid
             get
             {
                 return this.Model;
+            }
+        }
+
+        /// <summary>
+        /// Gets the actual controller.
+        /// </summary>
+        /// <value>
+        /// The actual <see cref="IGraphicsController" />.
+        /// </value>
+        IGraphicsController IGraphicsView.ActualController
+        {
+            get
+            {
+                return this.ActualController;
             }
         }
 

@@ -214,17 +214,12 @@ namespace OxyPlot
     /// <summary>
     /// Represents a plot.
     /// </summary>
-    public partial class PlotModel
+    public partial class PlotModel : GraphicsModel
     {
         /// <summary>
         /// The default selection color.
         /// </summary>
         internal static readonly OxyColor DefaultSelectionColor = OxyColors.Yellow;
-
-        /// <summary>
-        /// The synchronization root object.
-        /// </summary>
-        private readonly object syncRoot = new object();
 
         /// <summary>
         /// The plot control that renders this plot.
@@ -241,9 +236,9 @@ namespace OxyPlot
         /// </summary>
         public PlotModel()
         {
-            this.Axes = new PlotElementCollection<Axis>(this);
-            this.Series = new PlotElementCollection<Series.Series>(this);
-            this.Annotations = new PlotElementCollection<Annotation>(this);
+            this.Axes = new GraphicsElementCollection<Axis>(this);
+            this.Series = new GraphicsElementCollection<Series.Series>(this);
+            this.Annotations = new GraphicsElementCollection<Annotation>(this);
 
             this.PlotType = PlotType.XY;
 
@@ -349,16 +344,6 @@ namespace OxyPlot
         public event EventHandler Updating;
 
         /// <summary>
-        /// Gets an object that can be used to synchronize access to the <see cref="PlotModel" />.
-        /// </summary>
-        /// <value>A synchronization object.</value>
-        /// <remarks>This property can be used when modifying the <see cref="PlotModel" /> on a separate thread (not the thread updating or rendering the plot).</remarks>
-        public object SyncRoot
-        {
-            get { return this.syncRoot; }
-        }
-
-        /// <summary>
         /// Gets or sets the default font.
         /// </summary>
         /// <value>The default font.</value>
@@ -405,13 +390,13 @@ namespace OxyPlot
         /// Gets the annotations.
         /// </summary>
         /// <value>The annotations.</value>
-        public PlotElementCollection<Annotation> Annotations { get; private set; }
+        public GraphicsElementCollection<Annotation> Annotations { get; private set; }
 
         /// <summary>
         /// Gets the axes.
         /// </summary>
         /// <value>The axes.</value>
-        public PlotElementCollection<Axis> Axes { get; private set; }
+        public GraphicsElementCollection<Axis> Axes { get; private set; }
 
         /// <summary>
         /// Gets or sets the color of the background of the plot.
@@ -683,7 +668,7 @@ namespace OxyPlot
         /// Gets the series.
         /// </summary>
         /// <value>The series.</value>
-        public PlotElementCollection<Series.Series> Series { get; private set; }
+        public GraphicsElementCollection<Series.Series> Series { get; private set; }
 
         /// <summary>
         /// Gets or sets the rendering decorator.
@@ -1228,7 +1213,7 @@ namespace OxyPlot
         /// <param name="updateData">if set to <c>true</c> , all data collections will be updated.</param>
         public void Update(bool updateData = true)
         {
-            lock (this.syncRoot)
+            lock (this.SyncRoot)
             {
                 this.OnUpdating();
 
