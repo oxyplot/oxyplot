@@ -27,25 +27,69 @@
 
 namespace OxyPlot.Wpf.Tests
 {
-    using System.Diagnostics.CodeAnalysis;
     using System.IO;
 
     using NUnit.Framework;
     using OxyPlot.Tests;
 
-    // ReSharper disable InconsistentNaming
-    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented",
-        Justification = "Reviewed. Suppression is OK here.")]
+    /// <summary>
+    /// Tests the <see cref="PngExporter" />.
+    /// </summary>
     [TestFixture]
     public class PngExporterTests
     {
+        /// <summary>
+        /// Exports to a file and verifies that the file exists.
+        /// </summary>
         [Test]
-        public void ExportToFile_TestPlot_CheckThatFileExists()
+        public void ExportToFile()
         {
             var plotModel = TestModels.CreateTestModel1();
             const string FileName = "PngExporterTests_Plot1.png";
-            PngExporter.Export(plotModel, FileName, 400, 300, OxyColors.Automatic);
+            var exporter = new PngExporter { Width = 400, Height = 300 };
+            using (var stream = File.OpenWrite(FileName))
+            {
+                exporter.Export(plotModel, stream);
+            }
+
             Assert.IsTrue(File.Exists(FileName));
+        }
+
+        /// <summary>
+        /// Exports with yellow background to a file and verifies that the file exists.
+        /// </summary>
+        [Test]
+        public void ExportWithDifferentBackground()
+        {
+            var plotModel = TestModels.CreateTestModel1();
+            const string FileName = "PngExporterTests_BackgroundYellow.png";
+            var exporter = new PngExporter { Width = 400, Height = 300, Background = OxyColors.Yellow };
+            using (var stream = File.OpenWrite(FileName))
+            {
+                exporter.Export(plotModel, stream);
+            }
+
+            Assert.IsTrue(File.Exists(FileName));
+        }
+
+        /// <summary>
+        /// Exports with higher resolution and verifies that the file exists.
+        /// </summary>
+        /// <param name="factor">The resolution factor.</param>
+        [Test]
+        [TestCase(2)]
+        [TestCase(4)]
+        public void ExportWithHigherResolution(int factor)
+        {
+            var plotModel = TestModels.CreateTestModel1();
+            var fileName = "PngExporterTests_HighResolution" + factor + ".png";
+            var exporter = new PngExporter { Width = 400 * factor, Height = 300 * factor, Resolution = 96 * factor };
+            using (var stream = File.OpenWrite(fileName))
+            {
+                exporter.Export(plotModel, stream);
+            }
+
+            Assert.IsTrue(File.Exists(fileName));
         }
     }
 }
