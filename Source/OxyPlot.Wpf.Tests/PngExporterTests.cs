@@ -27,6 +27,7 @@
 
 namespace OxyPlot.Wpf.Tests
 {
+    using System.Globalization;
     using System.IO;
 
     using NUnit.Framework;
@@ -79,17 +80,19 @@ namespace OxyPlot.Wpf.Tests
         [Test]
         [TestCase(2)]
         [TestCase(4)]
-        public void ExportWithHigherResolution(int factor)
+        public void ExportWithResolution(double factor)
         {
+            var resolution = (int)(96 * factor);
             var plotModel = TestModels.CreateTestModel1();
-            var fileName = "PngExporterTests_HighResolution" + factor + ".png";
-            var exporter = new PngExporter { Width = 400 * factor, Height = 300 * factor, Resolution = 96 * factor };
+            var fileName = string.Format(CultureInfo.InvariantCulture, "PngExporterTests_ExportWithResolution_{0}dpi.png", resolution);
+            var exporter = new PngExporter { Width = (int)(400 * factor), Height = (int)(300 * factor), Resolution = resolution };
             using (var stream = File.OpenWrite(fileName))
             {
                 exporter.Export(plotModel, stream);
             }
 
             Assert.IsTrue(File.Exists(fileName));
+            PngAssert.AreEqual(Path.Combine("Baseline", fileName), fileName, fileName, Path.Combine("Diff", fileName));
         }
     }
 }
