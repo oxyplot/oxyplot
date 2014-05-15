@@ -33,7 +33,7 @@ namespace OxyPlot
     /// <summary>
     /// Specifies functionality for the plot views.
     /// </summary>
-    public interface IPlotView : IGraphicsView
+    public interface IPlotView : IView
     {
         /// <summary>
         /// Gets the actual <see cref="PlotModel" /> of the control.

@@ -127,7 +127,7 @@ namespace OxyPlot.WindowsForms
         /// <value>
         /// The actual model.
         /// </value>
-        Model IGraphicsView.ActualModel
+        Model IView.ActualModel
         {
             get
             {
@@ -151,9 +151,9 @@ namespace OxyPlot.WindowsForms
         /// Gets the actual controller.
         /// </summary>
         /// <value>
-        /// The actual <see cref="IGraphicsController" />.
+        /// The actual <see cref="IController" />.
         /// </value>
-        IGraphicsController IGraphicsView.ActualController
+        IController IView.ActualController
         {
             get
             {

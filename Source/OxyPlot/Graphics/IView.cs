@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IGraphicsView.cs" company="OxyPlot">
+// <copyright file="IView.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 OxyPlot contributors
@@ -33,7 +33,7 @@ namespace OxyPlot
     /// <summary>
     /// Specifies functionality for the graphics views.
     /// </summary>
-    public interface IGraphicsView
+    public interface IView
     {
         /// <summary>
         /// Gets the actual model in the view.
@@ -47,9 +47,9 @@ namespace OxyPlot
         /// Gets the actual controller.
         /// </summary>
         /// <value>
-        /// The actual <see cref="IGraphicsController" />.
+        /// The actual <see cref="IController" />.
         /// </value>
-        IGraphicsController ActualController { get; }
+        IController ActualController { get; }
 
         /// <summary>
         /// Sets the cursor type.

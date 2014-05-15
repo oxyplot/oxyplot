@@ -33,7 +33,7 @@ namespace OxyPlot
     /// <summary>
     /// Provides an <see cref="IPlotController" /> with a default set of plot bindings.
     /// </summary>
-    public class PlotController : GraphicsControllerBase, IPlotController
+    public class PlotController : ControllerBase, IPlotController
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PlotController" /> class.

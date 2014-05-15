@@ -33,7 +33,7 @@ namespace OxyPlot
     /// <summary>
     /// Specifies functionality to interact with a plot view.
     /// </summary>
-    public interface IPlotController : IGraphicsController
+    public interface IPlotController : IController
     {
     }
 }
