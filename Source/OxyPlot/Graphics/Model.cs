@@ -75,10 +75,11 @@ namespace OxyPlot
         /// <summary>
         /// Returns the elements that are hit at the specified position.
         /// </summary>
-        /// <param name="position">The position (in screen space).</param>
-        /// <param name="tolerance">The tolerance (in screen space).</param>
-        /// <returns>A sequence of hit results.</returns>
-        public IEnumerable<HitTestResult> HitTest(ScreenPoint position, double tolerance)
+        /// <param name="args">The hit test arguments.</param>
+        /// <returns>
+        /// A sequence of hit results.
+        /// </returns>
+        public IEnumerable<HitTestResult> HitTest(HitTestArguments args)
         {
             // Revert the order to handle the top-level elements first
             foreach (var element in this.GetElements().Reverse())
@@ -89,7 +90,6 @@ namespace OxyPlot
                     continue;
                 }
 
-                var args = new HitTestArguments(position, MouseHitTolerance);
                 var result = uiElement.HitTest(args);
                 if (result != null)
                 {
