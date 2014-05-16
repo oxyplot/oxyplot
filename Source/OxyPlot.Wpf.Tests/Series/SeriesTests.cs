@@ -45,9 +45,9 @@ namespace OxyPlot.Wpf.Tests
             }
 
             [Test]
-            public void SelectablePlotElement()
+            public void SelectableElement()
             {
-                OxyAssert.PropertiesExist(typeof(SelectablePlotElement), typeof(Series));
+                OxyAssert.PropertiesExist(typeof(SelectableElement), typeof(Series));
             }
 
             [Test]

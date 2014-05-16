@@ -217,11 +217,6 @@ namespace OxyPlot
     public partial class PlotModel : Model
     {
         /// <summary>
-        /// The default selection color.
-        /// </summary>
-        internal static readonly OxyColor DefaultSelectionColor = OxyColors.Yellow;
-
-        /// <summary>
         /// The plot control that renders this plot.
         /// </summary>
         private WeakReference plotControlReference;
@@ -247,8 +242,6 @@ namespace OxyPlot
 
             this.Background = OxyColors.Undefined;
             this.PlotAreaBackground = OxyColors.Undefined;
-
-            this.SelectionColor = OxyColors.Yellow;
 
             this.TextColor = OxyColors.Black;
             this.TitleColor = OxyColors.Automatic;
@@ -657,12 +650,6 @@ namespace OxyPlot
         /// </summary>
         /// <value>The type of the plot.</value>
         public PlotType PlotType { get; set; }
-
-        /// <summary>
-        /// Gets or sets the color of the selection.
-        /// </summary>
-        /// <value>The color of the selection.</value>
-        public OxyColor SelectionColor { get; set; }
 
         /// <summary>
         /// Gets the series.
@@ -1188,7 +1175,7 @@ namespace OxyPlot
             // Revert the order to handle the top-level elements first
             foreach (var element in this.GetElements().Reverse())
             {
-                var uiElement = element as UIPlotElement;
+                var uiElement = element as UIElement;
                 if (uiElement == null)
                 {
                     continue;

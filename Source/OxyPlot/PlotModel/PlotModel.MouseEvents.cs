@@ -45,12 +45,12 @@ namespace OxyPlot
         /// <summary>
         /// The element that receives mouse move events.
         /// </summary>
-        private UIPlotElement currentMouseEventElement;
+        private UIElement currentMouseEventElement;
 
         /// <summary>
         /// The element that receives touch delta events.
         /// </summary>
-        private UIPlotElement currentTouchEventElement;
+        private UIElement currentTouchEventElement;
 
         /// <summary>
         /// Occurs when a key is pressed down when the plot view is focused.
@@ -254,7 +254,7 @@ namespace OxyPlot
             // Revert the order to handle the top-level elements first
             foreach (var element in this.GetElements().Reverse())
             {
-                var uiElement = element as UIPlotElement;
+                var uiElement = element as UIElement;
                 if (uiElement == null)
                 {
                     continue;

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SelectablePlotElement.cs" company="OxyPlot">
+// <copyright file="SelectableElement.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 OxyPlot contributors
@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Provides an abstract base class for plot elements that support selection.
+//   Provides an abstract base class for elements that support selection.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -34,9 +34,9 @@ namespace OxyPlot
     using System.Collections.Generic;
 
     /// <summary>
-    /// Provides an abstract base class for plot elements that support selection.
+    /// Provides an abstract base class for elements that support selection.
     /// </summary>
-    public abstract class SelectablePlotElement : PlotElement
+    public abstract class SelectableElement : Element
     {
         /// <summary>
         /// The selection
@@ -44,9 +44,9 @@ namespace OxyPlot
         private Selection selection;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SelectablePlotElement" /> class.
+        /// Initializes a new instance of the <see cref="SelectableElement" /> class.
         /// </summary>
-        protected SelectablePlotElement()
+        protected SelectableElement()
         {
             this.Selectable = true;
             this.SelectionMode = SelectionMode.All;
@@ -58,7 +58,7 @@ namespace OxyPlot
         public event EventHandler SelectionChanged;
 
         /// <summary>
-        /// Gets or sets a value indicating whether this plot element can be selected.
+        /// Gets or sets a value indicating whether this element can be selected.
         /// </summary>
         public bool Selectable { get; set; }
 
@@ -90,12 +90,12 @@ namespace OxyPlot
         {
             get
             {
-                if (this.PlotModel != null)
+                if (this.Parent != null)
                 {
-                    return this.PlotModel.SelectionColor.GetActualColor(PlotModel.DefaultSelectionColor);
+                    return this.Parent.SelectionColor.GetActualColor(Model.DefaultSelectionColor);
                 }
 
-                return PlotModel.DefaultSelectionColor;
+                return Model.DefaultSelectionColor;
             }
         }
 
