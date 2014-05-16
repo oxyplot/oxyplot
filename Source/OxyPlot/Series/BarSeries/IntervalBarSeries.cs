@@ -248,8 +248,8 @@ namespace OxyPlot.Series
                 this.ActualBarRectangles.Add(rectangle);
 
                 rc.DrawClippedRectangleAsPolygon(
-                    rectangle,
                     clippingRect,
+                    rectangle,
                     this.GetSelectableFillColor(item.Color.GetActualColor(this.ActualFillColor)),
                     this.StrokeColor,
                     this.StrokeThickness);

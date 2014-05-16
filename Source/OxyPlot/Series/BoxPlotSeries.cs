@@ -335,7 +335,7 @@ namespace OxyPlot.Series
                 {
                     // Draw the box
                     var rect = this.GetBoxRect(item);
-                    rc.DrawClippedRectangleAsPolygon(rect, clippingRect, fillColor, strokeColor, this.StrokeThickness);
+                    rc.DrawClippedRectangleAsPolygon(clippingRect, rect, fillColor, strokeColor, this.StrokeThickness);
                 }
 
                 if (!this.ShowMedianAsDot)

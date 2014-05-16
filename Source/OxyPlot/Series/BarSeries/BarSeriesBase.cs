@@ -497,7 +497,7 @@ namespace OxyPlot.Series
                 }
             }
 
-            rc.DrawClippedRectangleAsPolygon(rect, clippingRect, this.GetSelectableFillColor(actualFillColor), this.StrokeColor, this.StrokeThickness);
+            rc.DrawClippedRectangleAsPolygon(clippingRect, rect, this.GetSelectableFillColor(actualFillColor), this.StrokeColor, this.StrokeThickness);
         }
 
         /// <summary>
