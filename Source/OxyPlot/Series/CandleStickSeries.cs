@@ -220,7 +220,7 @@ namespace OxyPlot.Series
                         var fillColor = v.Close > v.Open
                                             ? this.GetSelectableFillColor(this.ActualIncreasingFill)
                                             : this.GetSelectableFillColor(this.DecreasingFill);
-                        rc.DrawClippedRectangleAsPolygon(rect, clippingRect, fillColor, actualColor, this.StrokeThickness);
+                        rc.DrawClippedRectangleAsPolygon(clippingRect, rect, fillColor, actualColor, this.StrokeThickness);
                     }
                 }
             }
