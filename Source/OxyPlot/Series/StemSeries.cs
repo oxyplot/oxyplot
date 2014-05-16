@@ -188,8 +188,8 @@ namespace OxyPlot.Series
             if (this.MarkerType != MarkerType.None)
             {
                 rc.DrawMarkers(
-                    markerPoints,
                     clippingRect,
+                    markerPoints,
                     this.MarkerType,
                     this.MarkerOutline,
                     new[] { this.MarkerSize },

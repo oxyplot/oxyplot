@@ -398,8 +398,8 @@ namespace OxyPlot.Series
                 this.ActualLineStyle.GetDashArray());
             var midpt = new ScreenPoint(xmid, ymid);
             rc.DrawMarker(
-                midpt,
                 legendBox,
+                midpt,
                 this.MarkerType,
                 this.MarkerOutline,
                 this.MarkerSize,
@@ -714,8 +714,8 @@ namespace OxyPlot.Series
                 var markerBinOffset = this.MarkerResolution > 0 ? Transform(this.MinX, this.MinY) : default(ScreenPoint);
 
                 rc.DrawMarkers(
-                    pointsToRender,
                     clippingRect,
+                    pointsToRender,
                     this.MarkerType,
                     this.MarkerOutline,
                     new[] { this.MarkerSize },

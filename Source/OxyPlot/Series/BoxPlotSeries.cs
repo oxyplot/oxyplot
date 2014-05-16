@@ -371,8 +371,8 @@ namespace OxyPlot.Series
             // Draw the outlier(s)
             var markerSizes = outlierScreenPoints.Select(o => this.OutlierSize).ToList();
             rc.DrawMarkers(
-                outlierScreenPoints,
                 clippingRect,
+                outlierScreenPoints,
                 this.OutlierType,
                 null,
                 markerSizes,

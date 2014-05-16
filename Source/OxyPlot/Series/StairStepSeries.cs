@@ -240,8 +240,8 @@ namespace OxyPlot.Series
                     if (this.MarkerType != MarkerType.None)
                     {
                         rc.DrawMarkers(
-                            mpts,
                             clippingRect,
+                            mpts,
                             this.MarkerType,
                             this.MarkerOutline,
                             new[] { this.MarkerSize },

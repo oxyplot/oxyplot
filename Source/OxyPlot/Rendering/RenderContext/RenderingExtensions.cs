@@ -605,8 +605,8 @@ namespace OxyPlot
         /// Renders the marker.
         /// </summary>
         /// <param name="rc">The render context.</param>
-        /// <param name="p">The center point of the marker.</param>
         /// <param name="clippingRect">The clipping rectangle.</param>
+        /// <param name="p">The center point of the marker.</param>
         /// <param name="type">The marker type.</param>
         /// <param name="outline">The outline.</param>
         /// <param name="size">The size of the marker.</param>
@@ -615,8 +615,8 @@ namespace OxyPlot
         /// <param name="strokeThickness">The stroke thickness.</param>
         public static void DrawMarker(
             this IRenderContext rc,
-            ScreenPoint p,
             OxyRect clippingRect,
+            ScreenPoint p,
             MarkerType type,
             IList<ScreenPoint> outline,
             double size,
@@ -624,7 +624,7 @@ namespace OxyPlot
             OxyColor stroke,
             double strokeThickness)
         {
-            rc.DrawMarkers(new[] { p }, clippingRect, type, outline, new[] { size }, fill, stroke, strokeThickness);
+            rc.DrawMarkers(clippingRect, new[] { p }, type, outline, new[] { size }, fill, stroke, strokeThickness);
         }
 
         /// <summary>
@@ -656,8 +656,8 @@ namespace OxyPlot
         {
             DrawMarkers(
                 rc,
-                markerPoints,
                 clippingRect,
+                markerPoints,
                 markerType,
                 markerOutline,
                 new[] { markerSize },
@@ -672,8 +672,8 @@ namespace OxyPlot
         /// Draws a list of markers.
         /// </summary>
         /// <param name="rc">The render context.</param>
-        /// <param name="markerPoints">The marker points.</param>
         /// <param name="clippingRect">The clipping rectangle.</param>
+        /// <param name="markerPoints">The marker points.</param>
         /// <param name="markerType">Type of the marker.</param>
         /// <param name="markerOutline">The marker outline.</param>
         /// <param name="markerSize">Size of the markers.</param>
@@ -684,8 +684,8 @@ namespace OxyPlot
         /// <param name="binOffset">The bin Offset.</param>
         public static void DrawMarkers(
             this IRenderContext rc,
-            IList<ScreenPoint> markerPoints,
             OxyRect clippingRect,
+            IList<ScreenPoint> markerPoints,
             MarkerType markerType,
             IList<ScreenPoint> markerOutline,
             IList<double> markerSize,
@@ -771,8 +771,7 @@ namespace OxyPlot
         /// <param name="fill">The fill.</param>
         /// <param name="stroke">The stroke.</param>
         /// <param name="thickness">The thickness.</param>
-        public static void DrawRectangleAsPolygon(
-            this IRenderContext rc, OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
+        public static void DrawRectangleAsPolygon(this IRenderContext rc, OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
             var sp0 = new ScreenPoint(rect.Left, rect.Top);
             var sp1 = new ScreenPoint(rect.Right, rect.Top);
@@ -790,8 +789,7 @@ namespace OxyPlot
         /// <param name="fill">The fill.</param>
         /// <param name="stroke">The stroke.</param>
         /// <param name="thickness">The thickness.</param>
-        public static void DrawRectangleAsPolygon(
-            this IRenderContext rc, OxyRect rect, OxyColor fill, OxyColor stroke, OxyThickness thickness)
+        public static void DrawRectangleAsPolygon(this IRenderContext rc, OxyRect rect, OxyColor fill, OxyColor stroke, OxyThickness thickness)
         {
             if (thickness.Left.Equals(thickness.Right) && thickness.Left.Equals(thickness.Top)
                 && thickness.Left.Equals(thickness.Bottom))
