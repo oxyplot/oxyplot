@@ -137,8 +137,8 @@ namespace ExampleLibrary
             for (int i = 0; i + 1 < segments.Count; i += 2)
             {
                 rc.DrawClippedLine(
-                    new[] { segments[i], segments[i + 1] },
                     clippingRect,
+                    new[] { segments[i], segments[i + 1] },
                     2,
                     this.GetSelectableColor(this.Color),
                     this.StrokeThickness,

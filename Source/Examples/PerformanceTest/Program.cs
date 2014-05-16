@@ -152,8 +152,8 @@ namespace PerformanceTest
             for (int i = 0; i < m; i++)
             {
                 rc.DrawClippedLine(
-                    points,
                     clippingRectangle,
+                    points,
                     1,
                     OxyColors.Black,
                     1,

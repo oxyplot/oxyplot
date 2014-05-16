@@ -169,8 +169,8 @@ namespace OxyPlot.Series
                 if (this.StrokeThickness > 0 && this.ActualLineStyle != LineStyle.None)
                 {
                     rc.DrawClippedLine(
-                        points,
                         clippingRect,
+                        points,
                         minDistSquared,
                         actualColor,
                         this.StrokeThickness,

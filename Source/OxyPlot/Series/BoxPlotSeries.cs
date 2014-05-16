@@ -285,8 +285,8 @@ namespace OxyPlot.Series
                 var bottomWhiskerTop = this.Transform(item.X, item.BoxBottom);
                 var bottomWhiskerBottom = this.Transform(item.X, item.LowerWhisker);
                 rc.DrawClippedLine(
-                    new[] { topWhiskerTop, topWhiskerBottom },
                     clippingRect,
+                    new[] { topWhiskerTop, topWhiskerBottom },
                     0,
                     strokeColor,
                     this.StrokeThickness,
@@ -294,8 +294,8 @@ namespace OxyPlot.Series
                     OxyPenLineJoin.Miter,
                     true);
                 rc.DrawClippedLine(
-                    new[] { bottomWhiskerTop, bottomWhiskerBottom },
                     clippingRect,
+                    new[] { bottomWhiskerTop, bottomWhiskerBottom },
                     0,
                     strokeColor,
                     this.StrokeThickness,
@@ -312,8 +312,8 @@ namespace OxyPlot.Series
                     var bottomWhiskerLine2 = this.Transform(item.X + halfWhiskerWidth, item.LowerWhisker);
 
                     rc.DrawClippedLine(
-                        new[] { topWhiskerLine1, topWhiskerLine2 },
                         clippingRect,
+                        new[] { topWhiskerLine1, topWhiskerLine2 },
                         0,
                         strokeColor,
                         this.StrokeThickness,
@@ -321,8 +321,8 @@ namespace OxyPlot.Series
                         OxyPenLineJoin.Miter,
                         true);
                     rc.DrawClippedLine(
-                        new[] { bottomWhiskerLine1, bottomWhiskerLine2 },
                         clippingRect,
+                        new[] { bottomWhiskerLine1, bottomWhiskerLine2 },
                         0,
                         strokeColor,
                         this.StrokeThickness,
@@ -344,8 +344,8 @@ namespace OxyPlot.Series
                     var medianLeft = this.Transform(item.X - halfBoxWidth, item.Median);
                     var medianRight = this.Transform(item.X + halfBoxWidth, item.Median);
                     rc.DrawClippedLine(
-                        new[] { medianLeft, medianRight },
                         clippingRect,
+                        new[] { medianLeft, medianRight },
                         0,
                         strokeColor,
                         this.StrokeThickness * this.MedianThickness,

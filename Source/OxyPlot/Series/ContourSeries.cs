@@ -299,8 +299,8 @@ namespace OxyPlot.Series
                     var strokeColor = contour.Color.GetActualColor(this.ActualColor);
 
                     rc.DrawClippedLine(
-                        transformedPoints,
                         clippingRect,
+                        transformedPoints,
                         4,
                         this.GetSelectableColor(strokeColor),
                         this.StrokeThickness,

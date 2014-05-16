@@ -156,8 +156,8 @@ namespace OxyPlot.Series
 
             clippingRect.Bottom = y;
             rc.DrawClippedLine(
-                pointsToRender,
                 clippingRect,
+                pointsToRender,
                 this.MinimumSegmentLength * this.MinimumSegmentLength,
                 this.GetSelectableColor(this.ActualColor),
                 this.StrokeThickness,
@@ -167,8 +167,8 @@ namespace OxyPlot.Series
             clippingRect.Top = y;
             clippingRect.Height = bottom - y;
             rc.DrawClippedLine(
-                pointsToRender,
                 clippingRect,
+                pointsToRender,
                 this.MinimumSegmentLength * this.MinimumSegmentLength,
                 this.GetSelectableColor(this.ActualColor2),
                 this.StrokeThickness,

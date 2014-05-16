@@ -233,8 +233,8 @@ namespace OxyPlot.Series
 
             // draw the clipped lines
             rc.DrawClippedLine(
-                pts0,
                 clippingRect,
+                pts0,
                 minDistSquared,
                 this.GetSelectableColor(this.ActualColor),
                 this.StrokeThickness,
@@ -242,8 +242,8 @@ namespace OxyPlot.Series
                 this.LineJoin,
                 false);
             rc.DrawClippedLine(
-                pts1,
                 clippingRect,
+                pts1,
                 minDistSquared,
                 this.GetSelectableColor(this.ActualColor2),
                 this.StrokeThickness,

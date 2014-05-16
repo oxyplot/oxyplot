@@ -207,16 +207,16 @@ namespace OxyPlot.Series
                             }
 
                             rc.DrawClippedLineSegments(
-                                hlpts,
                                 clippingRect,
+                                hlpts,
                                 actualColor,
                                 this.StrokeThickness,
                                 dashArray,
                                 this.LineJoin,
                                 false);
                             rc.DrawClippedLineSegments(
-                                vlpts,
                                 clippingRect,
+                                vlpts,
                                 actualColor,
                                 verticalStrokeThickness,
                                 verticalLineDashArray,
@@ -226,8 +226,8 @@ namespace OxyPlot.Series
                         else
                         {
                             rc.DrawClippedLine(
-                                lpts,
                                 clippingRect,
+                                lpts,
                                 0,
                                 actualColor,
                                 this.StrokeThickness,

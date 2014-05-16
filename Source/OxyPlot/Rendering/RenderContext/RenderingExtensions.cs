@@ -85,8 +85,8 @@ namespace OxyPlot
         /// Draws a clipped polyline through the specified points.
         /// </summary>
         /// <param name="rc">The render context.</param>
-        /// <param name="points">The points.</param>
         /// <param name="clippingRectangle">The clipping rectangle.</param>
+        /// <param name="points">The points.</param>
         /// <param name="minDistSquared">The minimum line segment length (squared).</param>
         /// <param name="stroke">The stroke color.</param>
         /// <param name="strokeThickness">The stroke thickness.</param>
@@ -97,8 +97,8 @@ namespace OxyPlot
         /// <param name="pointsRendered">The points rendered callback.</param>
         public static void DrawClippedLine(
             this IRenderContext rc,
-            IList<ScreenPoint> points,
             OxyRect clippingRectangle,
+            IList<ScreenPoint> points,
             double minDistSquared,
             OxyColor stroke,
             double strokeThickness,
@@ -195,8 +195,8 @@ namespace OxyPlot
         /// Draws the clipped line segments.
         /// </summary>
         /// <param name="rc">The render context.</param>
-        /// <param name="points">The points.</param>
         /// <param name="clippingRectangle">The clipping rectangle.</param>
+        /// <param name="points">The points.</param>
         /// <param name="stroke">The stroke.</param>
         /// <param name="strokeThickness">The stroke thickness.</param>
         /// <param name="dashArray">The dash array (in device independent units, 1/96 inch).</param>
@@ -204,8 +204,8 @@ namespace OxyPlot
         /// <param name="aliased">Set to <c>true</c> to draw as an aliased line.</param>
         public static void DrawClippedLineSegments(
             this IRenderContext rc,
-            IList<ScreenPoint> points,
             OxyRect clippingRectangle,
+            IList<ScreenPoint> points,
             OxyColor stroke,
             double strokeThickness,
             double[] dashArray,
