@@ -161,8 +161,8 @@ namespace OxyPlot.Annotations
                 false);
 
             rc.DrawClippedPolygon(
-                new[] { p3, this.screenEndPoint, p2, p4 },
                 clippingRect,
+                new[] { p3, this.screenEndPoint, p2, p4 },
                 MinimumSegmentLength * MinimumSegmentLength,
                 this.GetSelectableColor(this.Color),
                 OxyColors.Undefined);

@@ -117,8 +117,8 @@ namespace OxyPlot.Annotations
             const double MinimumSegmentLength = 4;
 
             rc.DrawClippedPolygon(
-                this.screenPoints,
                 clipping,
+                this.screenPoints,
                 MinimumSegmentLength * MinimumSegmentLength,
                 this.GetSelectableFillColor(this.Fill),
                 this.GetSelectableColor(this.Color),

@@ -332,8 +332,8 @@ namespace OxyPlot
         /// Draws the polygon within the specified clipping rectangle.
         /// </summary>
         /// <param name="rc">The render context.</param>
-        /// <param name="points">The points.</param>
         /// <param name="clippingRectangle">The clipping rectangle.</param>
+        /// <param name="points">The points.</param>
         /// <param name="minDistSquared">The squared minimum distance between points.</param>
         /// <param name="fill">The fill.</param>
         /// <param name="stroke">The stroke.</param>
@@ -343,8 +343,8 @@ namespace OxyPlot
         /// <param name="aliased">The aliased.</param>
         public static void DrawClippedPolygon(
             this IRenderContext rc,
-            IList<ScreenPoint> points,
             OxyRect clippingRectangle,
+            IList<ScreenPoint> points,
             double minDistSquared,
             OxyColor fill,
             OxyColor stroke,
@@ -467,7 +467,7 @@ namespace OxyPlot
                 points[i] = new ScreenPoint(cx + (rx * Math.Cos(a)), cy + (ry * Math.Sin(a)));
             }
 
-            rc.DrawClippedPolygon(points, clippingRectangle, 4, fill, stroke, thickness);
+            rc.DrawClippedPolygon(clippingRectangle, points, 4, fill, stroke, thickness);
         }
 
         /// <summary>
