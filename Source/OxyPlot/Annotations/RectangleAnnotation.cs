@@ -119,15 +119,20 @@ namespace OxyPlot.Annotations
             this.screenRectangle = new OxyRect(this.Transform(x0, y0), this.Transform(x1, y1));
 
             // clip to the area defined by the axes
-            var clipping = this.GetClippingRect();
+            var clippingRectangle = this.GetClippingRect();
 
-            rc.DrawClippedRectangle(this.screenRectangle, clipping, this.Fill, this.Stroke, this.StrokeThickness);
+            rc.DrawClippedRectangle(
+                this.screenRectangle,
+                clippingRectangle,
+                this.GetSelectableFillColor(this.Fill),
+                this.GetSelectableColor(this.Stroke),
+                this.StrokeThickness);
 
             if (!string.IsNullOrEmpty(this.Text))
             {
                 var textPosition = this.GetActualTextPosition(() => this.screenRectangle.Center);
                 rc.DrawClippedText(
-                    clipping,
+                    clippingRectangle,
                     textPosition,
                     this.Text,
                     this.ActualTextColor,
