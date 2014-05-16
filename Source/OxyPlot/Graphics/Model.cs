@@ -30,10 +30,13 @@
 
 namespace OxyPlot
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
     /// <summary>
     /// Provides an abstract base class for graphics models.
     /// </summary>
-    public abstract class Model
+    public abstract partial class Model
     {
         /// <summary>
         /// The default selection color.
@@ -50,7 +53,7 @@ namespace OxyPlot
         /// </summary>
         protected Model()
         {
-            this.SelectionColor = OxyColors.Yellow;            
+            this.SelectionColor = OxyColors.Yellow;
         }
 
         /// <summary>
@@ -70,84 +73,35 @@ namespace OxyPlot
         public OxyColor SelectionColor { get; set; }
 
         /// <summary>
-        /// Handles the mouse down event.
+        /// Returns the elements that are hit at the specified position.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="OxyPlot.OxyMouseEventArgs" /> instance containing the event data.</param>
-        public virtual void HandleMouseDown(object sender, OxyMouseDownEventArgs args)
+        /// <param name="position">The position (in screen space).</param>
+        /// <param name="tolerance">The tolerance (in screen space).</param>
+        /// <returns>A sequence of hit results.</returns>
+        public IEnumerable<HitTestResult> HitTest(ScreenPoint position, double tolerance)
         {
+            // Revert the order to handle the top-level elements first
+            foreach (var element in this.GetElements().Reverse())
+            {
+                var uiElement = element as UIElement;
+                if (uiElement == null)
+                {
+                    continue;
+                }
+
+                var args = new HitTestArguments(position, MouseHitTolerance);
+                var result = uiElement.HitTest(args);
+                if (result != null)
+                {
+                    yield return result;
+                }
+            }
         }
 
         /// <summary>
-        /// Handles the mouse enter event.
+        /// Gets all elements of the model, sorted by rendering priority.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="OxyPlot.OxyMouseEventArgs" /> instance containing the event data.</param>
-        public virtual void HandleMouseEnter(object sender, OxyMouseEventArgs args)
-        {
-        }
-
-        /// <summary>
-        /// Handles the mouse leave event.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="OxyPlot.OxyMouseEventArgs" /> instance containing the event data.</param>
-        public virtual void HandleMouseLeave(object sender, OxyMouseEventArgs args)
-        {
-        }
-
-        /// <summary>
-        /// Handles the mouse move event.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="OxyPlot.OxyMouseEventArgs" /> instance containing the event data.</param>
-        public virtual void HandleMouseMove(object sender, OxyMouseEventArgs args)
-        {
-        }
-
-        /// <summary>
-        /// Handles the mouse up event.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="OxyPlot.OxyMouseEventArgs" /> instance containing the event data.</param>
-        public virtual void HandleMouseUp(object sender, OxyMouseEventArgs args)
-        {
-        }
-
-        /// <summary>
-        /// Handles the touch started event.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">A <see cref="OxyPlot.OxyTouchEventArgs" /> instance containing the event data.</param>
-        public virtual void HandleTouchStarted(object sender, OxyTouchEventArgs args)
-        {
-        }
-
-        /// <summary>
-        /// Handles the touch delta event.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">A <see cref="OxyPlot.OxyTouchEventArgs" /> instance containing the event data.</param>
-        public virtual void HandleTouchDelta(object sender, OxyTouchEventArgs args)
-        {
-        }
-
-        /// <summary>
-        /// Handles the touch completed event.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">A <see cref="OxyPlot.OxyTouchEventArgs" /> instance containing the event data.</param>
-        public virtual void HandleTouchCompleted(object sender, OxyTouchEventArgs args)
-        {
-        }
-
-        /// <summary>
-        /// Handles key down events.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="OxyKeyEventArgs" /> instance containing the event data.</param>
-        public virtual void HandleKeyDown(object sender, OxyKeyEventArgs args)
-        {
-        }
+        /// <returns>An enumerator of the elements.</returns>
+        public abstract IEnumerable<PlotElement> GetElements();
     }
 }
