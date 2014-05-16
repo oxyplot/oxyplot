@@ -91,6 +91,7 @@
     <Compile Include="Converters\ThicknessConverter.cs" />
     <Compile Include="PhoneRenderContext.cs" />
     <Compile Include="Plot.cs" />
+    <Compile Include="PlotView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tracker\TrackerControl.cs" />
     <Compile Include="Tracker\TrackerDefinition.cs" />

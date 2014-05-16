@@ -22,8 +22,8 @@ void Main()
 public static class MyExtensions
 {
 	public static void Show(this PlotModel model, double width = 800, double height = 500) {
-		var w = new Window() { Title = "OxyPlot.Wpf.Plot : " + model.Title, Width = width, Height = height };
-		var plot = new Plot();
+		var w = new Window() { Title = "OxyPlot.Wpf.PlotView : " + model.Title, Width = width, Height = height };
+		var plot = new PlotView();
 		plot.Model = model;
 		w.Content = plot;
 		w.Show();

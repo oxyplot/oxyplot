@@ -78,6 +78,9 @@
     <Compile Include="Converters\ThicknessConverter.cs" />
     <Compile Include="Converters\OxyColorConverter.cs" />
     <Compile Include="PlotCommands.cs" />
+    <Compile Include="PlotView.cs" />
+    <Compile Include="PlotView.Properties.cs" />
+    <Compile Include="PlotView.TouchEvents.cs" />
     <Compile Include="Series\HeatMapSeries.cs" />
     <Compile Include="Series\StairStepSeries.cs" />
     <Compile Include="Utilities\WeakEvents\RenderingEventListener.cs" />
@@ -86,7 +89,6 @@
     <Compile Include="Utilities\WeakEvents\WeakEventManagerBase{TManager}.cs" />
     <Compile Include="MoreColors.cs" />
     <Compile Include="NamespaceDoc.cs" />
-    <Compile Include="Plot.TouchEvents.cs" />
     <Compile Include="RenderingControl.cs" />
     <Compile Include="Series\BarSeries\ColumnSeries.cs" />
     <Compile Include="Series\BarSeries\CategorizedSeries.cs" />
@@ -95,7 +97,6 @@
     <Compile Include="SvgExporter.cs" />
     <Compile Include="Utilities\Keyboard.cs" />
     <Compile Include="XamlExporter.cs" />
-    <Compile Include="Plot.Properties.cs" />
     <Compile Include="PngExporter.cs" />
     <Compile Include="Series\BarSeries\BarSeries.cs" />
     <Compile Include="Series\TwoColorLineSeries.cs" />

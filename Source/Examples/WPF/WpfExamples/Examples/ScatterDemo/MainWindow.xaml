@@ -2,6 +2,6 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf" Title="ScatterDemo" Height="480" Width="640">
     <Grid>
-        <oxy:Plot Model="{Binding ScatterModel}"/>
+        <oxy:PlotView Model="{Binding ScatterModel}"/>
     </Grid>
 </Window>

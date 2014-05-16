@@ -37,9 +37,11 @@
 - [Series]
 - [Annotations]
 
-== Plot controls
-- [WpfPlotControl|WPF plot control]
-- [PlotController|Plot controller]
+== Plot controlers
+- [PlotController]
+
+== Plot views
+- [PlotView]
 - [Tracker]
 
 == Guidelines

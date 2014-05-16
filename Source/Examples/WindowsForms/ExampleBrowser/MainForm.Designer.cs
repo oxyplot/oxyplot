@@ -39,7 +39,7 @@ namespace ExampleBrowser
             OxyPlot.PlotModel plotModel1 = new OxyPlot.PlotModel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.treeView1 = new System.Windows.Forms.TreeView();
-            this.plot1 = new OxyPlot.WindowsForms.Plot();
+            this.plot1 = new OxyPlot.WindowsForms.PlotView();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -154,6 +154,6 @@ namespace ExampleBrowser
 
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.TreeView treeView1;
-        private OxyPlot.WindowsForms.Plot plot1;
+        private OxyPlot.WindowsForms.PlotView plot1;
     }
 }

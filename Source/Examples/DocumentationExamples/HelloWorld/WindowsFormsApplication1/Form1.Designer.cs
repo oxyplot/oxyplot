@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.plot1 = new OxyPlot.WindowsForms.Plot();
+            this.plot1 = new OxyPlot.WindowsForms.PlotView();
             this.SuspendLayout();
             // 
             // plot1
@@ -58,7 +58,7 @@
 
         #endregion
 
-        private OxyPlot.WindowsForms.Plot plot1;
+        private OxyPlot.WindowsForms.PlotView plot1;
     }
 }
 

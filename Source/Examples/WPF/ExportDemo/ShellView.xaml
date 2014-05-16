@@ -47,18 +47,15 @@
             </StatusBarItem>
         </StatusBar>
         <Grid>
-            <oxy:Plot 
-            x:Name="plot1" 
-            Model="{Binding Model}" 
-            Background="White">
-                <oxy:Plot.ContextMenu>
+            <oxy:PlotView x:Name="plot1" Model="{Binding Model}" Background="White">
+                <oxy:PlotView.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Copy svg" Name="ContextCopySvg"/>
                         <MenuItem Header="Copy bitmap" Name="ContextCopyBitmap"/>
                         <MenuItem Header="Copy xaml" Name="ContextCopyXaml"/>
                     </ContextMenu>
-                </oxy:Plot.ContextMenu>
-            </oxy:Plot>
+                </oxy:PlotView.ContextMenu>
+            </oxy:PlotView>
         </Grid>
     </DockPanel>
 </Window>

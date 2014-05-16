@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PlotTests.cs" company="OxyPlot">
+// <copyright file="PlotViewTests.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 OxyPlot contributors
@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Provides unit tests for the <see cref="Plot" /> class.
+//   Provides unit tests for the <see cref="PlotView" /> class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -36,13 +36,13 @@ namespace OxyPlot.Wpf.Tests
     using NUnit.Framework;
 
     /// <summary>
-    /// Provides unit tests for the <see cref="Plot" /> class.
+    /// Provides unit tests for the <see cref="PlotView" /> class.
     /// </summary>
     [TestFixture]
-    public class PlotTests
+    public class PlotViewTests
     {
         /// <summary>
-        /// Provides unit tests for the <see cref="Plot.ActualModel" /> property.
+        /// Provides unit tests for the <see cref="PlotView.ActualModel" /> property.
         /// </summary>
         public class ActualModel
         {
@@ -53,67 +53,67 @@ namespace OxyPlot.Wpf.Tests
             public void GetDefault()
             {
                 var w = new Window();
-                var plot = new Plot();
-                w.Content = plot;
+                var plotView = new PlotView();
+                w.Content = plotView;
                 w.Show();
-                Assert.IsNotNull(plot.ActualModel);
+                Assert.IsNotNull(plotView.ActualModel);
             }
 
             /// <summary>
-            /// Gets the actual model from the same thread that created the <see cref="Plot" />.
+            /// Gets the actual model from the same thread that created the <see cref="PlotView" />.
             /// </summary>
             [Test]
             public void GetFromSameThread()
             {
                 var model = new PlotModel();
-                var plot = new Plot { Model = model };
-                Assert.AreEqual(model, plot.ActualModel);
+                var plotView = new PlotView { Model = model };
+                Assert.AreEqual(model, plotView.ActualModel);
             }
 
             /// <summary>
-            /// Gets the actual model from a thread different from the one that created the <see cref="Plot" />.
+            /// Gets the actual model from a thread different from the one that created the <see cref="PlotView" />.
             /// </summary>
             [Test]
             public void GetFromOtherThread()
             {
                 var model = new PlotModel();
-                var plot = new Plot { Model = model };
+                var plotView = new PlotView { Model = model };
                 PlotModel actualModel = null;
-                Task.Factory.StartNew(() => actualModel = plot.ActualModel).Wait();
+                Task.Factory.StartNew(() => actualModel = plotView.ActualModel).Wait();
                 Assert.AreEqual(model, actualModel);
             }
         }
 
         /// <summary>
-        /// Provides unit tests for the <see cref="Plot.InvalidatePlot" /> method.
+        /// Provides unit tests for the <see cref="PlotView.InvalidatePlot" /> method.
         /// </summary>
         public class InvalidatePlot
         {
             /// <summary>
-            /// Invalidates the plot from the same thread that created the <see cref="Plot" />.
+            /// Invalidates the plotView from the same thread that created the <see cref="PlotView" />.
             /// </summary>
             [Test]
             public void InvalidateFromSameThread()
             {
                 var model = new PlotModel();
-                var plot = new Plot { Model = model };
-                plot.InvalidatePlot();
+                var plotView = new PlotView { Model = model };
+                plotView.InvalidatePlot();
             }
 
             /// <summary>
-            /// Invalidates the plot from a thread different from the one that created the <see cref="Plot" />.
+            /// Invalidates the plotView from a thread different from the one that created the <see cref="PlotView" />.
             /// </summary>
             [Test]
             public void InvalidateFromOtherThread()
             {
                 var model = new PlotModel();
-                var plot = new Plot { Model = model };
-                Task.Factory.StartNew(() => plot.InvalidatePlot()).Wait();
+                var plotView = new PlotView { Model = model };
+                Task.Factory.StartNew(() => plotView.InvalidatePlot()).Wait();
             }
         }
 
         /// <summary>
-        /// Provides unit tests for the default values of the <see cref="Plot" /> class.
+        /// Provides unit tests for the default values of the <see cref="PlotView" /> class.
         /// </summary>
         public class DefaultValues
         {
@@ -124,7 +124,7 @@ namespace OxyPlot.Wpf.Tests
             public void PlotModelVsPlot()
             {
                 var model = new PlotModel();
-                var view = new Plot();
+                var view = new PlotView();
                 OxyAssert.PropertiesAreEqual(model, view);
             }
         }

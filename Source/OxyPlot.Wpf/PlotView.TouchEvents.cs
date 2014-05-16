@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Plot.TouchEvents.cs" company="OxyPlot">
+// <copyright file="PlotView.TouchEvents.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 OxyPlot contributors
@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents a WPF control that displays an OxyPlot plot.
+//   Represents a WPF control that displays an OxyPlot PlotView.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -33,9 +33,9 @@ namespace OxyPlot.Wpf
     using System.Windows.Input;
 
     /// <summary>
-    /// Represents a WPF control that displays an OxyPlot plot.
+    /// Represents a control that displays a <see cref="PlotModel" />.
     /// </summary>
-    public partial class Plot
+    public partial class PlotView
     {
         /// <summary>
         /// Called when the <see cref="E:System.Windows.UIElement.ManipulationStarted" /> event occurs.

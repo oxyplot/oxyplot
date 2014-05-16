@@ -7,5 +7,5 @@
 // TODO //
 
 - Adding the "OxyPlot GTK#" NuGet package
-- Add a control
+- Add a `PlotView` control
 - Bind to a `PlotModel`

@@ -96,7 +96,7 @@
         </Grid>
         <TabControl Grid.Column="1" TabStripPlacement="Bottom">
             <TabItem Header="Plot">
-                <oxy:Plot x:Name="Plot1" Model="{Binding Model}" Controller="{Binding Controller}"/>
+                <oxy:PlotView x:Name="Plot1" Model="{Binding Model}" Controller="{Binding Controller}"/>
             </TabItem>
             <TabItem Header="Code">
                 <TextBox AcceptsReturn="True" FontFamily="Consolas" 

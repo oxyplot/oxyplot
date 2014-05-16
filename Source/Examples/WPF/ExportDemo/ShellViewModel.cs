@@ -103,7 +103,7 @@ namespace ExportDemo
 
         public Window Owner { get; private set; }
 
-        public Plot Plot { get; private set; }
+        public PlotView Plot { get; private set; }
 
         public int TotalNumberOfPoints
         {
@@ -120,7 +120,7 @@ namespace ExportDemo
 
 
 
-        public void Attach(Window owner, Plot plot)
+        public void Attach(Window owner, PlotView plot)
         {
             this.Owner = owner;
             this.Plot = plot;

@@ -40,7 +40,7 @@ namespace ExampleBrowser
 
         private TreeView treeView1;
 
-        private OxyPlot.GtkSharp.Plot plot1;
+        private OxyPlot.GtkSharp.PlotView plotView1;
 
         private ExampleInfo selectedExample;
 
@@ -64,15 +64,15 @@ namespace ExampleBrowser
             set
             {
                 this.selectedExample = value;
-                this.plot1.Model = this.selectedExample != null ? this.selectedExample.PlotModel : null;
-                this.plot1.Controller = this.selectedExample != null ? this.selectedExample.PlotController : null;
+                this.plotView1.Model = this.selectedExample != null ? this.selectedExample.PlotModel : null;
+                this.plotView1.Controller = this.selectedExample != null ? this.selectedExample.PlotController : null;
             }
         }
 
         private void InitializeComponent()
         {
-            this.plot1 = new OxyPlot.GtkSharp.Plot();
-            this.plot1.SetSizeRequest(625, 554);
+            this.plotView1 = new OxyPlot.GtkSharp.PlotView();
+            this.plotView1.SetSizeRequest(625, 554);
 
             this.treeView1 = new TreeView();
             this.treeView1.SetSizeRequest(314, 554);
@@ -120,7 +120,7 @@ namespace ExampleBrowser
             this.hbox1.SetSizeRequest(943, 554);
 
             this.hbox1.PackStart(this.treeView1, false, false, 6);
-            this.hbox1.PackStart(this.plot1, false, false, 6);
+            this.hbox1.PackStart(this.plotView1, false, false, 6);
 
             this.Add(this.hbox1);
 

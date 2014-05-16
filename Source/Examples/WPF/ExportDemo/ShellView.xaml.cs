@@ -28,15 +28,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Diagnostics;
-using System.Windows;
-using System.Windows.Controls;
-using Microsoft.Win32;
-using OxyPlot.Pdf;
-
 namespace ExportDemo
 {
+    using System.Windows;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -46,15 +41,14 @@ namespace ExportDemo
 
         public ShellView()
         {
-            InitializeComponent();
-            DataContextChanged += OnDataContextChanged;
+            this.InitializeComponent();
+            this.DataContextChanged += this.OnDataContextChanged;
         }
 
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            var svm=e.NewValue as ShellViewModel;
-            svm.Attach(this,plot1);
+            var svm = e.NewValue as ShellViewModel;
+            svm.Attach(this, plot1);
         }
-
     }
 }
