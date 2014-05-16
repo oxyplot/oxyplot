@@ -486,8 +486,8 @@ namespace OxyPlot.Series
                     if (broken.Count > 0)
                     {
                         rc.DrawClippedLineSegments(
-                            broken,
                             clippingRect,
+                            broken,
                             this.BrokenLineColor,
                             this.BrokenLineThickness,
                             dashArray,
@@ -743,8 +743,8 @@ namespace OxyPlot.Series
             }
 
             rc.DrawClippedLine(
-                pointsToRender,
                 clippingRect,
+                pointsToRender,
                 this.MinimumSegmentLength * this.MinimumSegmentLength,
                 this.GetSelectableColor(this.ActualColor),
                 this.StrokeThickness,

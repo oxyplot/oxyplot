@@ -104,8 +104,8 @@ namespace ExampleLibrary
                 }
             }
 
-            rc.DrawClippedLineSegments(screenPoints, clippingRect, this.ActualColor, this.StrokeThickness, this.LineStyle.GetDashArray(), this.LineJoin, false);
-            rc.DrawClippedLineSegments(verticalLines, clippingRect, this.ActualColor, this.StrokeThickness / 3, LineStyle.Dash.GetDashArray(), this.LineJoin, false);
+            rc.DrawClippedLineSegments(clippingRect, screenPoints, this.ActualColor, this.StrokeThickness, this.LineStyle.GetDashArray(), this.LineJoin, false);
+            rc.DrawClippedLineSegments(clippingRect, verticalLines, this.ActualColor, this.StrokeThickness / 3, LineStyle.Dash.GetDashArray(), this.LineJoin, false);
 
             rc.DrawMarkers(screenPoints, clippingRect, this.MarkerType, null, this.MarkerSize, this.MarkerFill, this.MarkerStroke, this.MarkerStrokeThickness);
         }

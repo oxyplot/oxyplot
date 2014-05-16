@@ -148,8 +148,8 @@ namespace OxyPlot.Series
                     if (double.IsNaN(v.Open) || double.IsNaN(v.Close))
                     {
                         rc.DrawClippedLine(
-                            new[] { low, high },
                             clippingRect,
+                            new[] { low, high },
                             0,
                             actualColor,
                             this.StrokeThickness,
@@ -166,8 +166,8 @@ namespace OxyPlot.Series
 
                         // Upper shadow
                         rc.DrawClippedLine(
-                            new[] { high, min },
                             clippingRect,
+                            new[] { high, min },
                             0,
                             actualColor,
                             this.StrokeThickness,
@@ -177,8 +177,8 @@ namespace OxyPlot.Series
 
                         // Lower shadow
                         rc.DrawClippedLine(
-                            new[] { max, low },
                             clippingRect,
+                            new[] { max, low },
                             0,
                             actualColor,
                             this.StrokeThickness,
@@ -192,8 +192,8 @@ namespace OxyPlot.Series
                             var highLeft = new ScreenPoint(high.X - (this.CandleWidth * 0.5 * this.ShadowEndLength) - 1, high.Y);
                             var highRight = new ScreenPoint(high.X + (this.CandleWidth * 0.5 * this.ShadowEndLength), high.Y);
                             rc.DrawClippedLine(
-                                 new[] { highLeft, highRight },
                                  clippingRect,
+                                 new[] { highLeft, highRight },
                                  0,
                                  shadowEndColor,
                                  this.StrokeThickness,
@@ -204,8 +204,8 @@ namespace OxyPlot.Series
                             var lowLeft = new ScreenPoint(low.X - (this.CandleWidth * 0.5 * this.ShadowEndLength) - 1, low.Y);
                             var lowRight = new ScreenPoint(low.X + (this.CandleWidth * 0.5 * this.ShadowEndLength), low.Y);
                             rc.DrawClippedLine(
-                                new[] { lowLeft, lowRight },
                                 clippingRect,
+                                new[] { lowLeft, lowRight },
                                 0,
                                 shadowEndColor,
                                 this.StrokeThickness,

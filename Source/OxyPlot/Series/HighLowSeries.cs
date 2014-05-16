@@ -288,8 +288,8 @@ namespace OxyPlot.Series
                     var low = this.Transform(v.X, v.Low);
 
                     rc.DrawClippedLine(
-                        new[] { low, high },
                         clippingRect,
+                        new[] { low, high },
                         0,
                         actualColor,
                         this.StrokeThickness,
@@ -301,8 +301,8 @@ namespace OxyPlot.Series
                         var open = this.Transform(v.X, v.Open);
                         var openTick = open + new ScreenVector(-this.TickLength, 0);
                         rc.DrawClippedLine(
-                            new[] { open, openTick },
                             clippingRect,
+                            new[] { open, openTick },
                             0,
                             actualColor,
                             this.StrokeThickness,
@@ -316,8 +316,8 @@ namespace OxyPlot.Series
                         var close = this.Transform(v.X, v.Close);
                         var closeTick = close + new ScreenVector(this.TickLength, 0);
                         rc.DrawClippedLine(
-                            new[] { close, closeTick },
                             clippingRect,
+                            new[] { close, closeTick },
                             0,
                             actualColor,
                             this.StrokeThickness,

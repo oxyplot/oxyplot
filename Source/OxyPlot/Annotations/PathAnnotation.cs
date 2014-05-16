@@ -292,8 +292,8 @@ namespace OxyPlot.Annotations
             var dashArray = this.LineStyle.GetDashArray();
 
             rc.DrawClippedLine(
-               this.screenPoints,
                clippingRectangle,
+               this.screenPoints,
                MinimumSegmentLength * MinimumSegmentLength,
                this.GetSelectableColor(this.Color),
                this.StrokeThickness,
