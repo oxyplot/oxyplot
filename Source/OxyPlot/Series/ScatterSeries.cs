@@ -410,8 +410,8 @@ namespace OxyPlot.Series
                 {
                     var color = this.ColorAxis.GetColor(group.Key);
                     rc.DrawMarkers(
-                        group.Value,
                         clippingRect,
+                        group.Value,
                         this.MarkerType,
                         this.MarkerOutline,
                         groupSizes[group.Key],
@@ -425,8 +425,8 @@ namespace OxyPlot.Series
 
             // Draw unselected markers
             rc.DrawMarkers(
-                    allPoints,
                     clippingRect,
+                    allPoints,
                     this.MarkerType,
                     this.MarkerOutline,
                     allMarkerSizes,
@@ -438,8 +438,8 @@ namespace OxyPlot.Series
 
             // Draw the selected markers
             rc.DrawMarkers(
-                selectedPoints,
                 clippingRect,
+                selectedPoints,
                 this.MarkerType,
                 this.MarkerOutline,
                 selectedMarkerSizes,
@@ -465,8 +465,8 @@ namespace OxyPlot.Series
             var midpt = new ScreenPoint(xmid, ymid);
 
             rc.DrawMarker(
-                midpt,
                 legendBox,
+                midpt,
                 this.MarkerType,
                 this.MarkerOutline,
                 this.MarkerSize,

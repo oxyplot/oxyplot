@@ -263,8 +263,8 @@ namespace OxyPlot.Series
 
             // draw the markers on top
             rc.DrawMarkers(
-                pts0,
                 clippingRect,
+                pts0,
                 this.MarkerType,
                 null,
                 markerSizes,
@@ -273,8 +273,8 @@ namespace OxyPlot.Series
                 this.MarkerStrokeThickness,
                 1);
             rc.DrawMarkers(
-                pts1,
                 clippingRect,
+                pts1,
                 this.MarkerType,
                 null,
                 markerSizes,
