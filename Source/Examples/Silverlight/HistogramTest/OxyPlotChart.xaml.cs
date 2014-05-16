@@ -25,21 +25,21 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Windows.Controls;
-using OxyPlot.Silverlight;
-
 namespace Visiblox.Charts.Examples
 {
+    using System.Windows.Controls;
+    using OxyPlot.Silverlight;
+
     public partial class OxyPlotChart : UserControl
     {
         public OxyPlotChart()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
-        public Plot Chart
+        public PlotView Chart
         {
-            get { return chart; }
+            get { return this.chart; }
         }
     }
 }

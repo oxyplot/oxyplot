@@ -10,11 +10,11 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <oxy:Plot Title="{Binding Title}">
-            <oxy:Plot.Series>
+        <oxy:PlotView Title="{Binding Title}">
+            <oxy:PlotView.Series>
                 <oxy:LineSeries ItemsSource="{Binding Points}"/>
-            </oxy:Plot.Series>
-        </oxy:Plot>
+            </oxy:PlotView.Series>
+        </oxy:PlotView>
         <DataGrid Grid.Column="1" ItemsSource="{Binding Points}"/>
         <!--<ItemsControl Grid.Column="2" ItemsSource="{Binding Points}"/>-->
     </Grid>

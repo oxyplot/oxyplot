@@ -26,7 +26,7 @@
         </StackPanel>
 
         <Grid>
-            <oxy:Plot x:Name="chart"/>
+            <oxy:PlotView x:Name="chart"/>
         </Grid>
 
 

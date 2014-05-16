@@ -3,6 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf" Title="Window1" Height="300" Width="300">
     <Grid>
-        <oxy:Plot Model="{Binding Model}"/>
+        <oxy:PlotView Model="{Binding Model}"/>
     </Grid>
 </Window>

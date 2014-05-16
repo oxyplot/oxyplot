@@ -35,6 +35,6 @@
             </ListBox.GroupStyle>
         </ListBox>     
                        
-        <oxy:Plot Grid.Row="1" Grid.Column="1" Model="{Binding PlotModel}" Controller="{Binding PlotController}" Background="{Binding PlotBackground}"/>        
+        <oxy:PlotView Grid.Row="1" Grid.Column="1" Model="{Binding PlotModel}" Controller="{Binding PlotController}" Background="{Binding PlotBackground}"/>        
     </Grid>
 </Page>

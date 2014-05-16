@@ -11,7 +11,7 @@
         <Slider DockPanel.Dock="Bottom" Value="{Binding Year}" Minimum="1800" Maximum="2009" SmallChange="1" LargeChange="10" Margin="10" TickPlacement="Both" TickFrequency="25"/>
         <Grid>
             <TextBlock Text="{Binding Year}" Foreground="#20000000" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="200" FontWeight="Bold"/>
-            <oxy:Plot Model="{Binding PlotModel}" Background="Transparent"/>
+            <oxy:PlotView Model="{Binding PlotModel}" Background="Transparent"/>
         </Grid>
         
     </DockPanel>

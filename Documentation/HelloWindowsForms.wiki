@@ -26,7 +26,7 @@ You can also use the [http://docs.nuget.org/docs/start-here/using-the-package-ma
 PM> Install-Package OxyPlot.WindowsForms
 ```
 
-=== Add a plot control
+=== Add a plot view
 
 TODO (add component to toolbox?)
 

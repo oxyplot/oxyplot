@@ -8,8 +8,8 @@ The OxyPlot controls do not automatically refresh when you change properties of 
 
 You have the following options to update the plot:
 
-- Change the Model property of the Plot control
-- Call Invalidate/Refresh on the Plot control
-- Call Invalidate/Refresh on the PlotModel
+- Change the `Model` property of the `PlotView` control
+- Call `Invalidate` on the `PlotView` control
+- Call `Invalidate` on the `PlotModel`
 
 examples coming...

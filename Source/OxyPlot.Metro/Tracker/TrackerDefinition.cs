@@ -38,7 +38,7 @@ namespace OxyPlot.Metro
     /// </summary>
     /// <remarks>The tracker definitions make it possible to show different trackers for different series.
     /// The <see cref="OxyPlot.Series.Series.TrackerKey" /> property is matched with the <see cref="TrackerDefinition.TrackerKey" />
-    /// in the TrackerDefinitions collection in the <see cref="Plot" /> control.</remarks>
+    /// in the TrackerDefinitions collection in the <see cref="PlotView" /> control.</remarks>
     public class TrackerDefinition : DependencyObject
     {
         /// <summary>
@@ -51,8 +51,7 @@ namespace OxyPlot.Metro
         /// Identifies the <see cref="TrackerTemplate"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TrackerTemplateProperty =
-            DependencyProperty.Register(
-                "TrackerTemplate", typeof(ControlTemplate), typeof(TrackerDefinition), new PropertyMetadata(null));
+            DependencyProperty.Register("TrackerTemplate", typeof(ControlTemplate), typeof(TrackerDefinition), new PropertyMetadata(null));
 
         /// <summary>
         /// Gets or sets the tracker key.

@@ -5,7 +5,7 @@
     <DockPanel>
         <pt:PropertyControl SelectedObject="{Binding}" DockPanel.Dock="Left" Width="300" UseTabs="False" Margin="8"/>
         <Grid>
-            <oxy:Plot 
+            <oxy:PlotView 
             x:Name="plot1" 
             Model="{Binding Model}" 
             Background="White"/>
