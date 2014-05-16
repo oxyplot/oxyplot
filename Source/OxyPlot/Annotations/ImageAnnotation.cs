@@ -206,7 +206,7 @@ namespace OxyPlot.Annotations
             var o = this.GetVector(this.OffsetX, this.OffsetY, rc, model);
             var position = p + o;
 
-            var clippingRect = this.GetClippingRect();
+            var clippingRectangle = this.GetClippingRect();
 
             var s = this.GetVector(this.Width, this.Height, rc, model);
 
@@ -259,7 +259,7 @@ namespace OxyPlot.Annotations
 
             if (this.X.Unit == PlotLengthUnit.Data || this.Y.Unit == PlotLengthUnit.Data)
             {
-                rc.DrawClippedImage(clippingRect, this.ImageSource, x, y, width, height, this.Opacity, this.Interpolate);
+                rc.DrawClippedImage(clippingRectangle, this.ImageSource, x, y, width, height, this.Opacity, this.Interpolate);
             }
             else
             {

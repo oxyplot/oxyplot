@@ -120,7 +120,7 @@ namespace OxyPlot.Annotations
         public override void Render(IRenderContext rc, PlotModel model)
         {
             base.Render(rc, model);
-            var clippingRect = this.GetClippingRect();
+
             var lon0 = this.XAxis.ActualMinimum;
             var lon1 = this.XAxis.ActualMaximum;
             var lat0 = this.YAxis.ActualMinimum;
@@ -153,6 +153,8 @@ namespace OxyPlot.Annotations
             double ymax = Math.Max(y0, y1);
             double ymin = Math.Min(y0, y1);
 
+            var clippingRectangle = this.GetClippingRect();
+
             // Add the tiles
             for (var x = (int)xmin; x < xmax; x++)
             {
@@ -178,12 +180,12 @@ namespace OxyPlot.Annotations
                     var r = OxyRect.Create(s00.X, s00.Y, s11.X, s11.Y);
 
                     // draw the image
-                    rc.DrawClippedImage(clippingRect, img, r.Left, r.Top, r.Width, r.Height, this.Opacity, true);
+                    rc.DrawClippedImage(clippingRectangle, img, r.Left, r.Top, r.Width, r.Height, this.Opacity, true);
                 }
             }
 
             // draw the copyright notice
-            var p = new ScreenPoint(clippingRect.Right - 5, clippingRect.Bottom - 5);
+            var p = new ScreenPoint(clippingRectangle.Right - 5, clippingRectangle.Bottom - 5);
             var textSize = rc.MeasureText(this.CopyrightNotice, this.ActualFont, this.ActualFontSize, this.ActualFontWeight);
             rc.DrawRectangle(new OxyRect(p.X - textSize.Width - 2, p.Y - textSize.Height - 2, textSize.Width + 4, textSize.Height + 4), OxyColor.FromAColor(200, OxyColors.White), OxyColors.Undefined);
 

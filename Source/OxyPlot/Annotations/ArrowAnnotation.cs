@@ -145,13 +145,13 @@ namespace OxyPlot.Annotations
             var p3 = p1 - (n * this.HeadWidth * this.StrokeThickness);
             var p4 = p1 + (d * this.Veeness * this.StrokeThickness);
 
-            OxyRect clippingRect = this.GetClippingRect();
+            var clippingRectangle = this.GetClippingRect();
             const double MinimumSegmentLength = 4;
 
             var dashArray = this.LineStyle.GetDashArray();
 
             rc.DrawClippedLine(
-                clippingRect,
+                clippingRectangle,
                 new[] { this.screenStartPoint, p4 },
                 MinimumSegmentLength * MinimumSegmentLength,
                 this.GetSelectableColor(this.Color),
@@ -161,7 +161,7 @@ namespace OxyPlot.Annotations
                 false);
 
             rc.DrawClippedPolygon(
-                clippingRect,
+                clippingRectangle,
                 new[] { p3, this.screenEndPoint, p2, p4 },
                 MinimumSegmentLength * MinimumSegmentLength,
                 this.GetSelectableColor(this.Color),
@@ -180,7 +180,7 @@ namespace OxyPlot.Annotations
 
                 var textPoint = this.GetActualTextPosition(() => this.screenStartPoint);
                 rc.DrawClippedText(
-                    clippingRect,
+                    clippingRectangle,
                     textPoint,
                     this.Text,
                     this.ActualTextColor,

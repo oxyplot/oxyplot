@@ -112,12 +112,12 @@ namespace OxyPlot.Annotations
             }
 
             // clip to the area defined by the axes
-            var clipping = this.GetClippingRect();
+            var clippingRectangle = this.GetClippingRect();
 
             const double MinimumSegmentLength = 4;
 
             rc.DrawClippedPolygon(
-                clipping,
+                clippingRectangle,
                 this.screenPoints,
                 MinimumSegmentLength * MinimumSegmentLength,
                 this.GetSelectableFillColor(this.Fill),
@@ -131,7 +131,7 @@ namespace OxyPlot.Annotations
                 var textPosition = this.GetActualTextPosition(() => ScreenPointHelper.GetCentroid(this.screenPoints));
 
                 rc.DrawClippedText(
-                    clipping,
+                    clippingRectangle,
                     textPosition,
                     this.Text,
                     this.ActualTextColor,

@@ -96,7 +96,7 @@ namespace OxyPlot.Annotations
 
             var position = this.Transform(this.TextPosition) + this.Offset;
 
-            var clippingRect = this.GetClippingRect();
+            var clippingRectangle = this.GetClippingRect();
 
             var textSize = rc.MeasureText(this.Text, this.ActualFont, this.ActualFontSize, this.ActualFontWeight);
 
@@ -105,7 +105,7 @@ namespace OxyPlot.Annotations
             this.actualBounds = GetTextBounds(
                 position, textSize, this.Padding, this.TextRotation, this.TextHorizontalAlignment, this.TextVerticalAlignment);
             rc.DrawClippedPolygon(
-                clippingRect,
+                clippingRectangle,
                 this.actualBounds, 
                 MinDistSquared, 
                 this.Background, 
@@ -113,7 +113,7 @@ namespace OxyPlot.Annotations
                 this.StrokeThickness);
 
             rc.DrawClippedMathText(
-                clippingRect,
+                clippingRectangle,
                 position,
                 this.Text,
                 this.GetSelectableFillColor(this.ActualTextColor),

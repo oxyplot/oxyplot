@@ -264,7 +264,7 @@ namespace OxyPlot
         /// Draws the clipped image.
         /// </summary>
         /// <param name="rc">The render context.</param>
-        /// <param name="clippingRect">The clipping rectangle.</param>
+        /// <param name="clippingRectangle">The clipping rectangle.</param>
         /// <param name="source">The source.</param>
         /// <param name="x">The destination X position.</param>
         /// <param name="y">The destination Y position.</param>
@@ -274,7 +274,7 @@ namespace OxyPlot
         /// <param name="interpolate">interpolate if set to <c>true</c>.</param>
         public static void DrawClippedImage(
             this IRenderContext rc,
-            OxyRect clippingRect,
+            OxyRect clippingRectangle,
             OxyImage source,
             double x,
             double y,
@@ -283,12 +283,12 @@ namespace OxyPlot
             double opacity,
             bool interpolate)
         {
-            if (x > clippingRect.Right || x + w < clippingRect.Left || y > clippingRect.Bottom || y + h < clippingRect.Top)
+            if (x > clippingRectangle.Right || x + w < clippingRectangle.Left || y > clippingRectangle.Bottom || y + h < clippingRectangle.Top)
             {
                 return;
             }
 
-            if (rc.SetClip(clippingRect))
+            if (rc.SetClip(clippingRectangle))
             {
                 // The render context supports clipping, then we can draw the whole image
                 rc.DrawImage(source, x, y, w, h, opacity, interpolate);
@@ -297,10 +297,10 @@ namespace OxyPlot
             }
 
             // Fint the positions of the clipping rectangle normalized to image coordinates (0,1)
-            var i0 = (clippingRect.Left - x) / w;
-            var i1 = (clippingRect.Right - x) / w;
-            var j0 = (clippingRect.Top - y) / h;
-            var j1 = (clippingRect.Bottom - y) / h;
+            var i0 = (clippingRectangle.Left - x) / w;
+            var i1 = (clippingRectangle.Right - x) / w;
+            var j0 = (clippingRectangle.Top - y) / h;
+            var j1 = (clippingRectangle.Bottom - y) / h;
 
             // Find the origin of the clipped source rectangle
             var srcx = i0 < 0 ? 0u : i0 * source.Width;
@@ -605,7 +605,7 @@ namespace OxyPlot
         /// Renders the marker.
         /// </summary>
         /// <param name="rc">The render context.</param>
-        /// <param name="clippingRect">The clipping rectangle.</param>
+        /// <param name="clippingRectangle">The clipping rectangle.</param>
         /// <param name="p">The center point of the marker.</param>
         /// <param name="type">The marker type.</param>
         /// <param name="outline">The outline.</param>
@@ -615,7 +615,7 @@ namespace OxyPlot
         /// <param name="strokeThickness">The stroke thickness.</param>
         public static void DrawMarker(
             this IRenderContext rc,
-            OxyRect clippingRect,
+            OxyRect clippingRectangle,
             ScreenPoint p,
             MarkerType type,
             IList<ScreenPoint> outline,
@@ -624,7 +624,7 @@ namespace OxyPlot
             OxyColor stroke,
             double strokeThickness)
         {
-            rc.DrawMarkers(clippingRect, new[] { p }, type, outline, new[] { size }, fill, stroke, strokeThickness);
+            rc.DrawMarkers(clippingRectangle, new[] { p }, type, outline, new[] { size }, fill, stroke, strokeThickness);
         }
 
         /// <summary>
@@ -632,7 +632,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="rc">The render context.</param>
         /// <param name="markerPoints">The marker points.</param>
-        /// <param name="clippingRect">The clipping rectangle.</param>
+        /// <param name="clippingRectangle">The clipping rectangle.</param>
         /// <param name="markerType">Type of the marker.</param>
         /// <param name="markerOutline">The marker outline.</param>
         /// <param name="markerSize">Size of the marker.</param>
@@ -644,7 +644,7 @@ namespace OxyPlot
         public static void DrawMarkers(
             this IRenderContext rc,
             IList<ScreenPoint> markerPoints,
-            OxyRect clippingRect,
+            OxyRect clippingRectangle,
             MarkerType markerType,
             IList<ScreenPoint> markerOutline,
             double markerSize,
@@ -656,7 +656,7 @@ namespace OxyPlot
         {
             DrawMarkers(
                 rc,
-                clippingRect,
+                clippingRectangle,
                 markerPoints,
                 markerType,
                 markerOutline,
@@ -672,7 +672,7 @@ namespace OxyPlot
         /// Draws a list of markers.
         /// </summary>
         /// <param name="rc">The render context.</param>
-        /// <param name="clippingRect">The clipping rectangle.</param>
+        /// <param name="clippingRectangle">The clipping rectangle.</param>
         /// <param name="markerPoints">The marker points.</param>
         /// <param name="markerType">Type of the marker.</param>
         /// <param name="markerOutline">The marker outline.</param>
@@ -684,7 +684,7 @@ namespace OxyPlot
         /// <param name="binOffset">The bin Offset.</param>
         public static void DrawMarkers(
             this IRenderContext rc,
-            OxyRect clippingRect,
+            OxyRect clippingRectangle,
             IList<ScreenPoint> markerPoints,
             MarkerType markerType,
             IList<ScreenPoint> markerOutline,
@@ -710,10 +710,10 @@ namespace OxyPlot
 
             int i = 0;
 
-            double minx = clippingRect.Left;
-            double maxx = clippingRect.Right;
-            double miny = clippingRect.Top;
-            double maxy = clippingRect.Bottom;
+            double minx = clippingRectangle.Left;
+            double maxx = clippingRectangle.Right;
+            double miny = clippingRectangle.Top;
+            double maxy = clippingRectangle.Bottom;
 
             foreach (var p in markerPoints)
             {
