@@ -1128,10 +1128,10 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets all elements of the plot model, sorted by rendering priority.
+        /// Gets all elements of the model, sorted by rendering priority.
         /// </summary>
-        /// <returns>An enumerator of the plot elements.</returns>
-        public IEnumerable<PlotElement> GetElements()
+        /// <returns>An enumerator of the elements.</returns>
+        public override IEnumerable<PlotElement> GetElements()
         {
             foreach (var annotation in this.Annotations.Where(a => a.Layer == AnnotationLayer.BelowAxes))
             {
@@ -1161,32 +1161,6 @@ namespace OxyPlot
             foreach (var axis in this.VisibleAxes.Where(a => a.Layer == AxisLayer.AboveSeries))
             {
                 yield return axis;
-            }
-        }
-
-        /// <summary>
-        /// Returns the elements that are hit at the specified position.
-        /// </summary>
-        /// <param name="position">The position (in screen space).</param>
-        /// <param name="tolerance">The tolerance (in screen space).</param>
-        /// <returns>A sequence of hit results.</returns>
-        public IEnumerable<HitTestResult> HitTest(ScreenPoint position, double tolerance)
-        {
-            // Revert the order to handle the top-level elements first
-            foreach (var element in this.GetElements().Reverse())
-            {
-                var uiElement = element as UIElement;
-                if (uiElement == null)
-                {
-                    continue;
-                }
-
-                var args = new HitTestArguments(position, MouseHitTolerance);
-                var result = uiElement.HitTest(args);
-                if (result != null)
-                {
-                    yield return result;
-                }
             }
         }
 

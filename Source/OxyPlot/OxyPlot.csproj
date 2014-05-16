@@ -72,7 +72,7 @@
     <Compile Include="PlotController\Manipulators\TouchManipulator.cs" />
     <Compile Include="PlotController\PlotCommands.cs" />
     <Compile Include="Graphics\ControllerExtensions.cs" />
-    <Compile Include="PlotModel\HitTestArguments.cs" />
+    <Compile Include="Graphics\HitTestArguments.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LibraryDoc.cs" />
     <Compile Include="NamespaceDoc.cs" />
@@ -218,9 +218,9 @@
     <Compile Include="PlotController\Manipulators\ZoomRectangleManipulator.cs" />
     <Compile Include="PlotController\Manipulators\ZoomStepManipulator.cs" />
     <Compile Include="Graphics\ControllerBase.cs" />
-    <Compile Include="PlotModel\HitTestResult.cs" />
-    <Compile Include="PlotModel\Selection.cs" />
-    <Compile Include="PlotModel\SelectionMode.cs" />
+    <Compile Include="Graphics\HitTestResult.cs" />
+    <Compile Include="Graphics\Selection.cs" />
+    <Compile Include="Graphics\SelectionMode.cs" />
     <Compile Include="PlotModel\TrackerEventArgs.cs" />
     <Compile Include="PlotView\IPlotView.cs" />
     <Compile Include="Graphics\CursorType.cs" />
@@ -237,7 +237,7 @@
     <Compile Include="Series\BoxPlotSeries.cs" />
     <Compile Include="Series\HeatMapSeries.cs" />
     <Compile Include="Series\LineLegendPosition.cs" />
-    <Compile Include="PlotModel\PlotModel.MouseEvents.cs" />
+    <Compile Include="Graphics\Model.MouseEvents.cs" />
     <Compile Include="PlotController\EventArgs\OxyMouseEventArgs.cs" />
     <Compile Include="PlotModel\PlotElement.cs" />
     <Compile Include="PlotModel\PlotModel.Legends.cs" />
