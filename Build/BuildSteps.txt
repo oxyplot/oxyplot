@@ -62,7 +62,7 @@ Clean all files before build
 
 # Update verison number
 Directory: Tools\Lynx
-UpdateVersionNumbers.exe /Version=%build.number% /Directory=..\..
+UpdateVersionNumbers.exe /Version=%build.number% /Dependency=OxyPlot.Core /Directory=..\..
 
 # Create changeset ID file
 Commands:
