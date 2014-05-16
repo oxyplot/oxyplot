@@ -105,7 +105,8 @@ namespace OxyPlot
         /// <param name="e">The <see cref="OxyPlot.OxyMouseEventArgs" /> instance containing the event data.</param>
         public virtual void HandleMouseDown(object sender, OxyMouseDownEventArgs e)
         {
-            foreach (var result in this.HitTest(e.Position, MouseHitTolerance))
+            var args = new HitTestArguments(e.Position, MouseHitTolerance);
+            foreach (var result in this.HitTest(args))
             {
                 e.HitTestResult = result;
                 result.Element.OnMouseDown(e);
@@ -192,7 +193,8 @@ namespace OxyPlot
         /// <param name="e">A <see cref="OxyPlot.OxyTouchEventArgs" /> instance containing the event data.</param>
         public virtual void HandleTouchStarted(object sender, OxyTouchEventArgs e)
         {
-            foreach (var result in this.HitTest(e.Position, MouseHitTolerance))
+            var args = new HitTestArguments(e.Position, MouseHitTolerance);
+            foreach (var result in this.HitTest(args))
             {
                 result.Element.OnTouchStarted(e);
                 if (e.Handled)

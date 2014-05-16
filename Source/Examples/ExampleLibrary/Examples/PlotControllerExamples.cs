@@ -117,7 +117,8 @@ namespace ExampleLibrary
             var handleClick = new DelegatePlotCommand<OxyMouseDownEventArgs>(
                 (v, c, e) =>
                 {
-                    var firstHit = v.ActualModel.HitTest(e.Position, 10).FirstOrDefault(x => x.Element is RectangleAnnotation);
+                    var args = new HitTestArguments(e.Position, 10);
+                    var firstHit = v.ActualModel.HitTest(args).FirstOrDefault(x => x.Element is RectangleAnnotation);
                     if (firstHit != null)
                     {
                         plotModel.Subtitle = "You clicked " + ((RectangleAnnotation)firstHit.Element).Text;
