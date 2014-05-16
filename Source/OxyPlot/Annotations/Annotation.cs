@@ -37,7 +37,7 @@ namespace OxyPlot.Annotations
     /// <summary>
     /// Provides an abstract base class for annotations.
     /// </summary>
-    public abstract class Annotation : UIPlotElement
+    public abstract class Annotation : PlotElement
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Annotation" /> class.

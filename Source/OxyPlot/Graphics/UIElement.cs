@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="UIPlotElement.cs" company="OxyPlot">
+// <copyright file="UIElement.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 OxyPlot contributors
@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Provides an abstract base class for plot elements that handle mouse events.
+//   Provides an abstract base class for elements that handle mouse events.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -33,10 +33,10 @@ namespace OxyPlot
     using System;
 
     /// <summary>
-    /// Provides an abstract base class for plot elements that handle mouse events.
+    /// Provides an abstract base class for elements that handle mouse events.
     /// </summary>
     // ReSharper disable once InconsistentNaming
-    public abstract class UIPlotElement : SelectablePlotElement
+    public abstract class UIElement : SelectableElement
     {
         /// <summary>
         /// Occurs when a key is pressed down when the plot view is in focus.
@@ -183,6 +183,9 @@ namespace OxyPlot
         /// <returns>
         /// The result of the hit test.
         /// </returns>
-        protected abstract HitTestResult HitTestOverride(HitTestArguments args);
+        protected virtual HitTestResult HitTestOverride(HitTestArguments args)
+        {
+            return null;
+        }
     }
 }

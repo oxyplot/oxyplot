@@ -36,9 +36,22 @@ namespace OxyPlot
     public abstract class Model
     {
         /// <summary>
+        /// The default selection color.
+        /// </summary>
+        internal static readonly OxyColor DefaultSelectionColor = OxyColors.Yellow;
+
+        /// <summary>
         /// The synchronization root object.
         /// </summary>
         private readonly object syncRoot = new object();
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Model"/> class.
+        /// </summary>
+        protected Model()
+        {
+            this.SelectionColor = OxyColors.Yellow;            
+        }
 
         /// <summary>
         /// Gets an object that can be used to synchronize access to the <see cref="Model" />.
@@ -49,6 +62,12 @@ namespace OxyPlot
         {
             get { return this.syncRoot; }
         }
+
+        /// <summary>
+        /// Gets or sets the color of the selection.
+        /// </summary>
+        /// <value>The color of the selection.</value>
+        public OxyColor SelectionColor { get; set; }
 
         /// <summary>
         /// Handles the mouse down event.

@@ -36,7 +36,7 @@ namespace OxyPlot
     /// <summary>
     /// Provides an abstract base class for elements of a <see cref="PlotModel" />.
     /// </summary>
-    public abstract class PlotElement : Element, IPlotElement
+    public abstract class PlotElement : UIElement, IPlotElement
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PlotElement" /> class.

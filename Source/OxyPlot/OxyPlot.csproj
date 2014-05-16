@@ -243,8 +243,8 @@
     <Compile Include="PlotModel\PlotModel.Legends.cs" />
     <Compile Include="PlotModel\PlotModel.Rendering.cs" />
     <Compile Include="PlotModel\PlotModel.cs" />
-    <Compile Include="PlotModel\SelectablePlotElement.cs" />
-    <Compile Include="PlotModel\UIPlotElement.cs" />
+    <Compile Include="Graphics\SelectableElement.cs" />
+    <Compile Include="Graphics\UIElement.cs" />
     <Compile Include="Reporting\NamespaceDoc.cs" />
     <Compile Include="Reporting\ReportWriters\WikiReportWriter.cs" />
     <Compile Include="Reporting\ReportWriters\HtmlReportWriter.cs" />

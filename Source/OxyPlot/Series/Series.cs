@@ -36,7 +36,7 @@ namespace OxyPlot.Series
     /// Provides an abstract base class for plot series.
     /// </summary>
     /// <remarks>This class contains internal methods that should be called only from the PlotModel.</remarks>
-    public abstract class Series : UIPlotElement, ITrackableSeries
+    public abstract class Series : PlotElement, ITrackableSeries
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Series" /> class.

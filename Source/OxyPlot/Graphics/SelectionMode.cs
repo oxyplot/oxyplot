@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="HitTestResult.cs" company="OxyPlot">
+// <copyright file="SelectionMode.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 OxyPlot contributors
@@ -24,57 +24,30 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents a hit test result.
+//   Defines the mode of selection used by SelectableElement.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     /// <summary>
-    /// Represents a hit test result.
+    /// Defines the mode of selection used by <see cref="SelectableElement" />.
     /// </summary>
-    public class HitTestResult
+    public enum SelectionMode
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="HitTestResult" /> class.
+        /// All the elements will be selected
         /// </summary>
-        /// <param name="element">The element that was hit.</param>
-        /// <param name="nearestHitPoint">The nearest hit point.</param>
-        /// <param name="item">The item.</param>
-        /// <param name="index">The index.</param>
-        public HitTestResult(UIPlotElement element, ScreenPoint nearestHitPoint, object item = null, double index = 0)
-        {
-            this.Element = element;
-            this.NearestHitPoint = nearestHitPoint;
-            this.Item = item;
-            this.Index = index;
-        }
+        All,
 
         /// <summary>
-        /// Gets the index of the hit (if available).
+        /// A single element will be selected
         /// </summary>
-        /// <value>The index.</value>
-        /// <remarks>If the hit was in the middle between point 1 and 2, index = 1.5.</remarks>
-        public double Index { get; private set; }
+        Single,
 
         /// <summary>
-        /// Gets the item of the hit (if available).
+        /// Multiple elements can be selected
         /// </summary>
-        /// <value>The item.</value>
-        public object Item { get; private set; }
-
-        /// <summary>
-        /// Gets the element that was hit.
-        /// </summary>
-        /// <value>
-        /// The element.
-        /// </value>
-        public UIPlotElement Element { get; private set; }
-
-        /// <summary>
-        /// Gets the position of the nearest hit point.
-        /// </summary>
-        /// <value>The nearest hit point.</value>
-        public ScreenPoint NearestHitPoint { get; private set; }
+        Multiple
     }
 }
