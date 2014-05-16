@@ -105,7 +105,12 @@ namespace OxyPlot.Annotations
             this.actualBounds = GetTextBounds(
                 position, textSize, this.Padding, this.TextRotation, this.TextHorizontalAlignment, this.TextVerticalAlignment);
             rc.DrawClippedPolygon(
-                this.actualBounds, clippingRect, MinDistSquared, this.Background, this.Stroke, this.StrokeThickness);
+                clippingRect,
+                this.actualBounds, 
+                MinDistSquared, 
+                this.Background, 
+                this.Stroke, 
+                this.StrokeThickness);
 
             rc.DrawClippedMathText(
                 clippingRect,

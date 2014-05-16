@@ -257,7 +257,7 @@ namespace OxyPlot.Series
             pts.AddRange(pts0);
 
             // pts = SutherlandHodgmanClipping.ClipPolygon(clippingRect, pts);
-            rc.DrawClippedPolygon(pts, clippingRect, minDistSquared, this.GetSelectableFillColor(this.ActualFill), OxyColors.Undefined);
+            rc.DrawClippedPolygon(clippingRect, pts, minDistSquared, this.GetSelectableFillColor(this.ActualFill), OxyColors.Undefined);
 
             var markerSizes = new[] { this.MarkerSize };
 
