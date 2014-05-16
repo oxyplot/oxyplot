@@ -122,8 +122,8 @@ namespace OxyPlot.Annotations
             var clippingRectangle = this.GetClippingRect();
 
             rc.DrawClippedRectangle(
-                this.screenRectangle,
                 clippingRectangle,
+                this.screenRectangle,
                 this.GetSelectableFillColor(this.Fill),
                 this.GetSelectableColor(this.Stroke),
                 this.StrokeThickness);

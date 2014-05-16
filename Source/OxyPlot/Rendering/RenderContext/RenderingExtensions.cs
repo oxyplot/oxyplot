@@ -368,15 +368,15 @@ namespace OxyPlot
         /// Draws the clipped rectangle.
         /// </summary>
         /// <param name="rc">The render context.</param>
-        /// <param name="rect">The rectangle to draw.</param>
         /// <param name="clippingRectangle">The clipping rectangle.</param>
+        /// <param name="rect">The rectangle to draw.</param>
         /// <param name="fill">The fill color.</param>
         /// <param name="stroke">The stroke color.</param>
         /// <param name="thickness">The stroke thickness.</param>
         public static void DrawClippedRectangle(
             this IRenderContext rc,
-            OxyRect rect,
             OxyRect clippingRectangle,
+            OxyRect rect,
             OxyColor fill,
             OxyColor stroke,
             double thickness)
