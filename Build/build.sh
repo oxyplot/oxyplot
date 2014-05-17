@@ -8,11 +8,11 @@ UVNTOOL="../Tools/Lynx/UpdateVersionNumbers.exe"
 SOURCE=../Source
 OUTPUT=../Output
 
-VERSION=${VERSION:=2014.1.0}
+# VERSION=${VERSION:=2014.1.308}
 
 # Run the tool that updates the version numbers in all AssemblyInfo.cs files
-echo "Updating version numbers to $VERSION"
-mono $UVNTOOL /Version=$VERSION /Directory=$SOURCE > build-update.log
+echo "Updating version numbers"
+mono $UVNTOOL /VersionFromNuGet=OxyPlot.Core /Dependency=OxyPlot.Core /Directory=.. > build-update.log
 if [ $? -ne 0 ]; then 
 	echo "  FAILED!"
 fi

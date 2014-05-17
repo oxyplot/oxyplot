@@ -4,7 +4,7 @@ The Xamarin Component is generated from sh scripts executed on a Mac with Xamari
 
 ./make-component.sh         cleans, builds, creates documentation and creates the component.
   ./clean.sh                cleans the output files
-  ./build.sh                updates version numbers*, builds OxyPlot, OxyPlot.XamarinIOS and OxyPlot.XamarinAndroid
+  /Build/build.sh           updates version numbers*, builds OxyPlot, OxyPlot.XamarinIOS and OxyPlot.XamarinAndroid
   ./create-doc.sh           creates the monodoc, html and msxdoc documentation files
   ./create-component.sh     creates the component
 

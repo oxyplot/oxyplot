@@ -6,7 +6,10 @@ VERSION=2014.1
 . clean.sh
 
 # Build OxyPlot and samples
+DIR=$PWD
+cd ../../Build
 . build.sh
+cd $DIR
 
 # Create documentation
 . create-doc.sh
