@@ -1,32 +1,36 @@
 #!/bin/sh
 
+# Folders
+OUTPUT=../../Output
+ICONS=../../Icons
+
 echo Removing old files
 rm -v bin/*
 rm -v icons/*
-rm -v ../../Output/*.xam
+rm -v $OUTPUT/*.xam
 
 echo "\nCopying binaries"
 if [ ! -d "bin" ]; then
   mkdir bin
 fi
-cp -v ../../Output/PCL/OxyPlot.dll bin
-cp -v ../../Output/XamarinIOS/OxyPlot.XamarinIOS.dll bin
-cp -v ../../Output/XamarinAndroid/OxyPlot.XamarinAndroid.dll bin
+cp -v $OUTPUT/PCL/OxyPlot.dll bin
+cp -v $OUTPUT/XamarinIOS/OxyPlot.XamarinIOS.dll bin
+cp -v $OUTPUT/XamarinAndroid/OxyPlot.XamarinAndroid.dll bin
 
 echo "\nCopying icons"
 if [ ! -d "icons" ]; then
   mkdir -v icons
 fi
-cp -v ../../Icons/OxyPlot_128.png icons/OxyPlot_128x128.png
-cp -v ../../Icons/OxyPlot_256.png icons/OxyPlot_256x256.png
-cp -v ../../Icons/OxyPlot_512.png icons/OxyPlot_512x512.png
+cp -v $ICONS/OxyPlot_128.png icons/OxyPlot_128x128.png
+cp -v $ICONS/OxyPlot_256.png icons/OxyPlot_256x256.png
+cp -v $ICONS/OxyPlot_512.png icons/OxyPlot_512x512.png
 
 VERSION=${VERSION:=2014.1.0}
 
-OUTPUT=../../Output/OxyPlot-$VERSION.xam
+OUTPUTPACKAGE=$OUTPUT/OxyPlot-$VERSION.xam
 
-echo "\nCreating Xamarin Component: $OUTPUT"
-mono ../../Tools/Xamarin/xamarin-component.exe create-manually "$OUTPUT" \
+echo "\nCreating Xamarin Component: $OUTPUTPACKAGE"
+mono ../../Tools/Xamarin/xamarin-component.exe create-manually "$OUTPUTPACKAGE" \
     --name="OxyPlot" \
     --publisher="oxyplot.org" \
     --website="http://oxyplot.org/" \
