@@ -11,17 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleBrowser", "Examples\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleLibrary", "Examples\ExampleLibrary\ExampleLibrary.csproj", "{FACB89E5-53A5-4748-9F5B-E0714EBB37B2}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Xamarin Component", "Xamarin Component", "{9EC00F42-ADFD-40AD-AE04-DBAA72EC46D2}"
-	ProjectSection(SolutionItems) = preProject
-		..\XamarinComponents\OxyPlot\Details.md = ..\XamarinComponents\OxyPlot\Details.md
-		..\XamarinComponents\OxyPlot\GettingStarted.md = ..\XamarinComponents\OxyPlot\GettingStarted.md
-		..\XamarinComponents\OxyPlot\create-component.sh = ..\XamarinComponents\OxyPlot\create-component.sh
-		..\XamarinComponents\OxyPlot\create-doc.sh = ..\XamarinComponents\OxyPlot\create-doc.sh
-		..\XamarinComponents\OxyPlot\build.sh = ..\XamarinComponents\OxyPlot\build.sh
-		..\XamarinComponents\OxyPlot\License.md = ..\XamarinComponents\OxyPlot\License.md
-		..\XamarinComponents\OxyPlot\make-component.sh = ..\XamarinComponents\OxyPlot\make-component.sh
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
