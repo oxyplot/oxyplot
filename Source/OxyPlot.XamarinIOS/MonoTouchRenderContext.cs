@@ -351,10 +351,9 @@ namespace OxyPlot.XamarinIOS
                     }
 
                     textLine.Draw(this.gctx);
+                    this.gctx.RestoreState();
                 }
             }
-
-            this.gctx.RestoreState();
         }
 
         /// <summary>

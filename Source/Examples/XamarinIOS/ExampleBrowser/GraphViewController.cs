@@ -44,6 +44,7 @@ namespace ExampleBrowser
     public class GraphViewController : UIViewController
     {
         private readonly ExampleInfo exampleInfo;
+
 		private PlotView plotView;
 
         public GraphViewController (ExampleInfo exampleInfo)
@@ -51,7 +52,6 @@ namespace ExampleBrowser
             this.exampleInfo = exampleInfo;
 			this.plotView = new PlotView ();
 			this.plotView.Model = exampleInfo.PlotModel;
-			this.plotView.BackgroundColor = UIColor.White;
         }
 
         public override void LoadView ()
@@ -76,7 +76,7 @@ namespace ExampleBrowser
             // Only for iOS 7 and later?
             this.EdgesForExtendedLayout = UIRectEdge.None;
 
-			this.View = this.plotView;
+            this.View = this.plotView;
 
         }
 
