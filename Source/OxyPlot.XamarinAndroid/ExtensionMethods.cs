@@ -51,27 +51,6 @@ namespace OxyPlot.XamarinAndroid
         }
 
         /// <summary>
-        /// Converts an <see cref="OxyRect" /> to a <see cref="RectF" />.
-        /// </summary>
-        /// <param name="rect">The rectangle to convert.</param>
-        /// <returns>The converted rectangle.</returns>
-        public static RectF ToRectF(this OxyRect rect)
-        {
-            return new RectF((float)rect.Left, (float)rect.Top, (float)rect.Right, (float)rect.Bottom);
-        }
-
-        /// <summary>
-        /// Converts a scaled <see cref="OxyRect" /> to a <see cref="RectF" />.
-        /// </summary>
-        /// <param name="rect">The rectangle to convert.</param>
-        /// <returns>The converted rectangle.</returns>
-        /// <param name = "scale">The scaling factor.</param>
-        public static RectF ToRectF(this OxyRect rect, double scale)
-        {
-            return new RectF((float)(rect.Left * scale), (float)(rect.Top * scale), (float)(rect.Right * scale), (float)(rect.Bottom * scale));
-        }
-
-        /// <summary>
         /// Converts an <see cref="OxyPenLineJoin" /> to a <see cref="Paint.Join" />.
         /// </summary>
         /// <param name="join">The join value to convert.</param>
