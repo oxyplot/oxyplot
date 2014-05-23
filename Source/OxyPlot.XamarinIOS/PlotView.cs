@@ -56,7 +56,7 @@ namespace OxyPlot.XamarinIOS
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
             this.UserInteractionEnabled = true;
             this.MultipleTouchEnabled = true;
-            this.BackgroundColor = UIColor.White;
+			this.BackgroundColor = UIColor.White;
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
             this.KeepAspectRatioWhenPinching = true;
         }
@@ -185,9 +185,13 @@ namespace OxyPlot.XamarinIOS
                 actualModel.Update(updateData);
             }
 
-            var background = actualModel != null ? actualModel.ActualBackground : OxyColors.White;
+			if (actualModel != null && !actualModel.Background.IsUndefined ()) {
+                this.BackgroundColor = actualModel.Background.ToUIColor ();
+            } else {
+				// Use white as default background color
+				this.BackgroundColor = UIColor.White;
+            }
 
-            this.BackgroundColor = background.ToUIColor();
             this.SetNeedsDisplay();
         }
 
@@ -234,8 +238,10 @@ namespace OxyPlot.XamarinIOS
         /// <param name="rect">The rectangle to draw.</param>
         public override void Draw(System.Drawing.RectangleF rect)
         {
-            var renderer = new MonoTouchRenderContext(UIGraphics.GetCurrentContext());
-            this.model.Render(renderer, rect.Width, rect.Height);
+            if (this.model != null) {
+                var renderer = new MonoTouchRenderContext (UIGraphics.GetCurrentContext ());
+                this.model.Render (renderer, rect.Width, rect.Height);
+            }
         }
 
         /// <summary>

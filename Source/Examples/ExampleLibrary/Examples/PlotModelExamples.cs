@@ -86,5 +86,65 @@ namespace ExampleLibrary
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
             return model;
         }
+
+        [Example("No model")]
+        public static PlotModel NoModel()
+        {
+            return null;
+        }
+
+        [Example("Background = Undefined (default)")]
+        public static PlotModel BackgroundUndefined()
+        {
+            var model = new PlotModel { Title = "Background = Undefined", Background = OxyColors.Undefined };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+            return model;
+        }
+
+        [Example("Background = 50% White")]
+        public static PlotModel BackgroundWhite50()
+        {
+            var model = new PlotModel { Title = "Background = 50% White", Background = OxyColor.FromAColor(128, OxyColors.White) };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+            return model;
+        }
+
+        [Example("Background = Transparent")]
+        public static PlotModel BackgroundTransparent()
+        {
+            var model = new PlotModel { Title = "Background = Transparent", Background = OxyColors.Transparent };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+            return model;
+        }
+
+        [Example("Background = LightSkyBlue")]
+        public static PlotModel BackgroundLightGray()
+        {
+            var model = new PlotModel { Title = "Background = LightSkyBlue", Background = OxyColors.LightSkyBlue };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+            return model;
+        }
+
+        [Example("Background = White")]
+        public static PlotModel BackgroundWhite()
+        {
+            var model = new PlotModel { Title = "Background = White", Background = OxyColors.White };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+            return model;
+        }
+
+        [Example("Background = Black")]
+        public static PlotModel BackgroundBlack()
+        {
+            var model = new PlotModel { Title = "Background = Black", Background = OxyColors.Black, TextColor = OxyColors.White, TitleColor = OxyColors.White, PlotAreaBorderColor = OxyColors.White };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, TicklineColor = OxyColors.White });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, TicklineColor = OxyColors.White });
+            return model;
+        }
     }
 }
