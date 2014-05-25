@@ -791,8 +791,7 @@ namespace OxyPlot
         /// <param name="thickness">The thickness.</param>
         public static void DrawRectangleAsPolygon(this IRenderContext rc, OxyRect rect, OxyColor fill, OxyColor stroke, OxyThickness thickness)
         {
-            if (thickness.Left.Equals(thickness.Right) && thickness.Left.Equals(thickness.Top)
-                && thickness.Left.Equals(thickness.Bottom))
+            if (thickness.Left.Equals(thickness.Right) && thickness.Left.Equals(thickness.Top) && thickness.Left.Equals(thickness.Bottom))
             {
                 DrawRectangleAsPolygon(rc, rect, fill, stroke, thickness.Left);
                 return;
@@ -803,10 +802,10 @@ namespace OxyPlot
             var sp2 = new ScreenPoint(rect.Right, rect.Bottom);
             var sp3 = new ScreenPoint(rect.Left, rect.Bottom);
             rc.DrawPolygon(new[] { sp0, sp1, sp2, sp3 }, fill, OxyColors.Undefined, 0, null, OxyPenLineJoin.Miter, true);
-            rc.DrawPolygon(new[] { sp0, sp1 }, OxyColors.Undefined, stroke, thickness.Top, null, OxyPenLineJoin.Miter, true);
-            rc.DrawPolygon(new[] { sp1, sp2 }, OxyColors.Undefined, stroke, thickness.Right, null, OxyPenLineJoin.Miter, true);
-            rc.DrawPolygon(new[] { sp2, sp3 }, OxyColors.Undefined, stroke, thickness.Bottom, null, OxyPenLineJoin.Miter, true);
-            rc.DrawPolygon(new[] { sp3, sp0 }, OxyColors.Undefined, stroke, thickness.Left, null, OxyPenLineJoin.Miter, true);
+            rc.DrawLine(new[] { sp0, sp1 }, stroke, thickness.Top, null, OxyPenLineJoin.Miter, true);
+            rc.DrawLine(new[] { sp1, sp2 }, stroke, thickness.Right, null, OxyPenLineJoin.Miter, true);
+            rc.DrawLine(new[] { sp2, sp3 }, stroke, thickness.Bottom, null, OxyPenLineJoin.Miter, true);
+            rc.DrawLine(new[] { sp3, sp0 }, stroke, thickness.Left, null, OxyPenLineJoin.Miter, true);
         }
 
         /// <summary>

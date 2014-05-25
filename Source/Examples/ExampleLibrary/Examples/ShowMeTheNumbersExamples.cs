@@ -49,7 +49,7 @@ namespace ExampleLibrary
         [Example("Q1 2003 Calls by Region")]
         public static PlotModel Graph1()
         {
-            var pm = new PlotModel { Title = "Q1 2003 Calls by Region", PlotAreaBorderThickness = 0 };
+            var pm = new PlotModel { Title = "Q1 2003 Calls by Region", PlotAreaBorderThickness = new OxyThickness(0) };
             var categoryAxis = new CategoryAxis
                     {
                         AxislineStyle = LineStyle.Solid,
@@ -85,9 +85,12 @@ namespace ExampleLibrary
         [Example("2003 Sales")]
         public static PlotModel Graph2()
         {
-            var pm = new PlotModel { Title = "2003 Sales" };
-            pm.PlotAreaBorderThickness = 0;
-            pm.IsLegendVisible = false;
+            var pm = new PlotModel
+                         {
+                             Title = "2003 Sales",
+                             PlotAreaBorderThickness = new OxyThickness(0),
+                             IsLegendVisible = false
+                         };
             var sales1 = new[] { 1000, 1010, 1020, 1010, 1020, 1030, 1000, 500, 1000, 900, 900, 1000 };
             var sales2 = new[] { 2250, 2500, 2750, 2500, 2750, 3000, 2500, 2750, 3100, 2800, 3100, 3500 };
             var categoryAxis = new CategoryAxis
@@ -133,9 +136,12 @@ namespace ExampleLibrary
         [Example("Headcount")]
         public static PlotModel Graph3()
         {
-            var pm = new PlotModel { Title = "Headcount" };
-            pm.PlotAreaBorderThickness = 0;
-            pm.PlotMargins = new OxyThickness(100, 40, 20, 40);
+            var pm = new PlotModel
+                         {
+                             Title = "Headcount",
+                             PlotAreaBorderThickness = new OxyThickness(0),
+                             PlotMargins = new OxyThickness(100, 40, 20, 40)
+                         };
             var values = new Dictionary<string, double> {
                     { "Manufacturing", 240 },
                     { "Sales", 160 },
@@ -169,7 +175,7 @@ namespace ExampleLibrary
         [Example("Regional % of Total Expenses")]
         public static PlotModel Graph4()
         {
-            var pm = new PlotModel { Title = "Regional % of Total Expenses", PlotAreaBorderThickness = 0 };
+            var pm = new PlotModel { Title = "Regional % of Total Expenses", PlotAreaBorderThickness = new OxyThickness(0) };
             var categoryAxis = new CategoryAxis
             {
                 TickStyle = TickStyle.None,
@@ -213,8 +219,7 @@ namespace ExampleLibrary
         [Example("Actual to Plan Variance")]
         public static PlotModel Graph5()
         {
-            var pm = new PlotModel { Title = "Actual to Plan Variance" };
-            pm.PlotAreaBorderThickness = 0;
+            var pm = new PlotModel { Title = "Actual to Plan Variance", PlotAreaBorderThickness = new OxyThickness(0) };
             var values = new Dictionary<string, double>();
             values.Add("Sales", 7);
             values.Add("Marketing", -7);
@@ -256,9 +261,12 @@ namespace ExampleLibrary
         [Example("Order Count by Order Size")]
         public static PlotModel Graph6()
         {
-            var pm = new PlotModel { Title = "Order Count by Order Size" };
-            pm.PlotAreaBorderThickness = 0;
-            pm.PlotMargins = new OxyThickness(60, 4, 4, 60);
+            var pm = new PlotModel
+                         {
+                             Title = "Order Count by Order Size",
+                             PlotAreaBorderThickness = new OxyThickness(0),
+                             PlotMargins = new OxyThickness(60, 4, 4, 60)
+                         };
             var values = new Dictionary<string, double>
                 {
                     { " <$10", 5000 },
@@ -300,7 +308,7 @@ namespace ExampleLibrary
             var pm = new PlotModel
             {
                 Title = "Correlation of Employee Heights and Salaries",
-                PlotAreaBorderThickness = 0
+                PlotAreaBorderThickness = new OxyThickness(0)
             };
             var values = new[]
             {

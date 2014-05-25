@@ -67,7 +67,7 @@ namespace SparklineDemo
                             {
                                 PlotMargins = new OxyThickness(0),
                                 Padding = new OxyThickness(0),
-                                PlotAreaBorderThickness = 0,
+                                PlotAreaBorderThickness = new OxyThickness(0)
                             };
             var ls = new LineSeries
                          {

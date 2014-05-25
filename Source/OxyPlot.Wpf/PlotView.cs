@@ -1027,7 +1027,7 @@ namespace OxyPlot.Wpf
 
             m.PlotAreaBackground = this.PlotAreaBackground.ToOxyColor();
             m.PlotAreaBorderColor = this.PlotAreaBorderColor.ToOxyColor();
-            m.PlotAreaBorderThickness = this.PlotAreaBorderThickness;
+            m.PlotAreaBorderThickness = this.PlotAreaBorderThickness.ToOxyThickness();
         }
 
         /// <summary>

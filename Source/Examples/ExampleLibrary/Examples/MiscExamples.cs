@@ -256,7 +256,7 @@ namespace ExampleLibrary
                 Title = "Train schedule",
                 Subtitle = "Bergensbanen (Oslo-Bergen, Norway)",
                 IsLegendVisible = false,
-                PlotAreaBorderThickness = 0,
+                PlotAreaBorderThickness = new OxyThickness(0),
                 PlotMargins = new OxyThickness(60, 4, 60, 40)
             };
             model.Axes.Add(
