@@ -43,6 +43,24 @@ namespace OxyPlot
     /// </summary>
     public static class ReflectionHelper
     {
+#if UNIVERSAL
+        public static PropertyInfo GetProperty(this Type type, string name)
+        {
+            return type.GetRuntimeProperty(name);
+        }
+        public static MethodInfo GetSetMethod(this PropertyInfo pi)
+        {
+            return pi.SetMethod;
+        }
+        public static IEnumerable<PropertyInfo> GetProperties(this Type type)
+        {
+            return type.GetRuntimeProperties();
+        }
+        public static IEnumerable<FieldInfo> GetFields(this Type type)
+        {
+            return type.GetRuntimeFields();
+        }
+#endif
         /// <summary>
         /// Fills a target by the specified property of a source target/enumerable.
         /// </summary>
