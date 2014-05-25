@@ -56,7 +56,7 @@ namespace OxyPlot.XamarinIOS
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
             this.UserInteractionEnabled = true;
             this.MultipleTouchEnabled = true;
-			this.BackgroundColor = UIColor.White;
+            this.BackgroundColor = UIColor.White;
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
             this.KeepAspectRatioWhenPinching = true;
         }
@@ -182,14 +182,17 @@ namespace OxyPlot.XamarinIOS
             if (actualModel != null)
             {
                 // TODO: update the model on a background thread
-                actualModel.Update(updateData);
+                ((IPlotModel)actualModel).Update(updateData);
             }
 
-			if (actualModel != null && !actualModel.Background.IsUndefined ()) {
-                this.BackgroundColor = actualModel.Background.ToUIColor ();
-            } else {
-				// Use white as default background color
-				this.BackgroundColor = UIColor.White;
+            if (actualModel != null && !actualModel.Background.IsUndefined())
+            {
+                this.BackgroundColor = actualModel.Background.ToUIColor();
+            }
+            else
+            {
+                // Use white as default background color
+                this.BackgroundColor = UIColor.White;
             }
 
             this.SetNeedsDisplay();
@@ -238,9 +241,10 @@ namespace OxyPlot.XamarinIOS
         /// <param name="rect">The rectangle to draw.</param>
         public override void Draw(System.Drawing.RectangleF rect)
         {
-            if (this.model != null) {
-                var renderer = new MonoTouchRenderContext (UIGraphics.GetCurrentContext ());
-                this.model.Render (renderer, rect.Width, rect.Height);
+            if (this.model != null)
+            {
+                var renderer = new MonoTouchRenderContext(UIGraphics.GetCurrentContext());
+                ((IPlotModel)this.model).Render(renderer, rect.Width, rect.Height);
             }
         }
 

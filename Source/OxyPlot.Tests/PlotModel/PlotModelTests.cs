@@ -58,7 +58,7 @@ namespace OxyPlot.Tests
                     continue;
                 }
 
-                example.PlotModel.Update();
+                ((IPlotModel)example.PlotModel).Update(true);
             }
         }
 
@@ -121,7 +121,7 @@ namespace OxyPlot.Tests
             {
                 var model = new PlotModel();
                 var rc = Substitute.For<IRenderContext>();
-                model.Render(rc, 0, 0);
+                ((IPlotModel)model).Render(rc, 0, 0);
             }
 
             /// <summary>
@@ -132,7 +132,7 @@ namespace OxyPlot.Tests
             {
                 var model = new PlotModel { Padding = new OxyThickness(0) };
                 var rc = Substitute.For<IRenderContext>();
-                model.Render(rc, double.Epsilon, double.Epsilon);
+                ((IPlotModel)model).Render(rc, double.Epsilon, double.Epsilon);
             }
         }
 

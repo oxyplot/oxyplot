@@ -329,9 +329,12 @@ namespace OxyPlot.XamarinAndroid
                 return;
             }
 
-            if (actualModel != null && !actualModel.Background.IsUndefined ()) {
+            if (!actualModel.Background.IsUndefined())
+            {
                 canvas.DrawColor(actualModel.Background.ToColor());
-            } else {
+            }
+            else
+            {
                 // Use white as default background color
                 canvas.DrawColor(Color.White);
             }
@@ -340,7 +343,7 @@ namespace OxyPlot.XamarinAndroid
             {
                 if (this.isModelInvalidated)
                 {
-                    actualModel.Update(this.updateDataFlag);
+                    ((IPlotModel)actualModel).Update(this.updateDataFlag);
                     this.updateDataFlag = false;
                     this.isModelInvalidated = false;
                 }
@@ -359,7 +362,7 @@ namespace OxyPlot.XamarinAndroid
                     canvas.GetClipBounds(bounds);
                     var width = bounds.Right - bounds.Left;
                     var height = bounds.Bottom - bounds.Top;
-                    actualModel.Render(this.rc, width / Scale, height / Scale);
+                    ((IPlotModel)actualModel).Render(this.rc, width / Scale, height / Scale);
                 }
             }
         }

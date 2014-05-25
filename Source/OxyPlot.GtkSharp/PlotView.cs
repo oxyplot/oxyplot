@@ -454,7 +454,7 @@ namespace OxyPlot.GtkSharp
                         {
                             if (this.model != null)
                             {
-                                this.model.Update(this.updateDataFlag);
+                                ((IPlotModel)this.model).Update(this.updateDataFlag);
                                 this.updateDataFlag = false;
                             }
 
@@ -472,7 +472,7 @@ namespace OxyPlot.GtkSharp
                                 this.renderContext.DrawRectangle(new OxyRect(e.Area.Left, e.Area.Top, e.Area.Width, e.Area.Height), this.model.Background, OxyColors.Undefined, 0);
                             }
 
-                            this.model.Render(this.renderContext, this.width, this.height);
+                            ((IPlotModel)this.model).Render(this.renderContext, this.width, this.height);
                         }
 
                         if (this.zoomRectangle.HasValue)

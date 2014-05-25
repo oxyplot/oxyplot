@@ -456,7 +456,7 @@ namespace OxyPlot.WindowsForms
                     {
                         if (this.model != null)
                         {
-                            this.model.Update(this.updateDataFlag);
+                            ((IPlotModel)this.model).Update(this.updateDataFlag);
                             this.updateDataFlag = false;
                         }
 
@@ -478,7 +478,7 @@ namespace OxyPlot.WindowsForms
                             }
                         }
 
-                        this.model.Render(this.renderContext, this.Width, this.Height);
+                        ((IPlotModel)this.model).Render(this.renderContext, this.Width, this.Height);
                     }
 
                     if (this.zoomRectangle != Rectangle.Empty)

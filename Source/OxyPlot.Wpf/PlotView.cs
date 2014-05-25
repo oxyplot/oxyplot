@@ -951,11 +951,11 @@ namespace OxyPlot.Wpf
                 this.SynchronizeSeries();
                 this.SynchronizeAxes();
                 this.SynchronizeAnnotations();
-                this.internalModel.Update(updateData);
+                ((IPlotModel)this.internalModel).Update(updateData);
             }
             else
             {
-                this.currentModel.Update(updateData);
+                ((IPlotModel)this.currentModel).Update(updateData);
             }
         }
 
@@ -1101,7 +1101,7 @@ namespace OxyPlot.Wpf
                         this.grid.Children.RemoveAt(idx);
                     }
 
-                    this.ActualModel.Render(this.renderContext, this.canvas.ActualWidth, this.canvas.ActualHeight);
+                    ((IPlotModel)this.ActualModel).Render(this.renderContext, this.canvas.ActualWidth, this.canvas.ActualHeight);
 
                     // reinsert the canvas again
                     if (idx != -1)
@@ -1111,7 +1111,7 @@ namespace OxyPlot.Wpf
                 }
                 else
                 {
-                    this.ActualModel.Render(this.renderContext, this.canvas.ActualWidth, this.canvas.ActualHeight);
+                    ((IPlotModel)this.ActualModel).Render(this.renderContext, this.canvas.ActualWidth, this.canvas.ActualHeight);
                 }
             }
         }

@@ -295,8 +295,8 @@ namespace IconGenerator
             pm.Axes.Add(new LinearAxis { Position = AxisPosition.Left, TextColor = OxyColors.Transparent });
             pm.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, TextColor = OxyColors.Transparent });
             this.AddPeaks(pm);
-            pm.Update();
-            pm.Render(rc, size, size);
+            ((IPlotModel)pm).Update(true);
+            ((IPlotModel)pm).Render(rc, size, size);
         }
 
         /// <summary>

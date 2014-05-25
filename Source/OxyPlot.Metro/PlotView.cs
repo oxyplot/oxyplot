@@ -862,7 +862,7 @@ namespace OxyPlot.Metro
         {
             if (this.ActualModel != null)
             {
-                this.ActualModel.Update(update);
+                ((IPlotModel)this.ActualModel).Update(update);
             }
         }
 
@@ -890,7 +890,7 @@ namespace OxyPlot.Metro
 
             if (this.ActualModel != null)
             {
-                this.ActualModel.Render(this.renderContext, this.canvas.ActualWidth, this.canvas.ActualHeight);
+                ((IPlotModel)this.ActualModel).Render(this.renderContext, this.canvas.ActualWidth, this.canvas.ActualHeight);
             }
         }
 

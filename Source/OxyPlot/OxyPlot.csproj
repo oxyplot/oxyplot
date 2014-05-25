@@ -61,6 +61,7 @@
     <Compile Include="Graphics\IView.cs" />
     <Compile Include="PlotController\IPlotController.cs" />
     <Compile Include="PlotModel\IPlotElement.cs" />
+    <Compile Include="PlotModel\IPlotModel.cs" />
     <Compile Include="Series\IScatterPointProvider.cs" />
     <Compile Include="Input\Gestures\OxyMouseEnterGesture.cs" />
     <Compile Include="PlotController\EventArgs\OxyInputEventArgs.cs" />

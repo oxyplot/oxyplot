@@ -145,7 +145,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         /// <param name="model">The model to export.</param>
         /// <returns>A bitmap.</returns>
-        public BitmapSource ExportToBitmap(PlotModel model)
+        public BitmapSource ExportToBitmap(IPlotModel model)
         {
             var scale = 96d / this.Resolution;
             var canvas = new Canvas { Width = this.Width * scale, Height = this.Height * scale, Background = this.Background.ToBrush() };
@@ -153,7 +153,7 @@ namespace OxyPlot.Wpf
             canvas.Arrange(new Rect(0, 0, canvas.Width, canvas.Height));
 
             var rc = new ShapesRenderContext(canvas) { RendersToScreen = false };
-            model.Update();
+            model.Update(true);
             model.Render(rc, canvas.Width, canvas.Height);
 
             canvas.UpdateLayout();
