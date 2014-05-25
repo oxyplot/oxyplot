@@ -77,7 +77,7 @@ namespace PerformanceTest
             var stopwatch = Stopwatch.StartNew();
             for (int i = 0; i < m; i++)
             {
-                model.Update(true);
+                ((IPlotModel)model).Update(true);
             }
 
             stopwatch.Stop();
@@ -91,7 +91,7 @@ namespace PerformanceTest
             var stopwatch = Stopwatch.StartNew();
             for (int i = 0; i < m; i++)
             {
-                model.Render(rc, 800, 600);
+                ((IPlotModel)model).Render(rc, 800, 600);
             }
 
             stopwatch.Stop();
@@ -109,7 +109,7 @@ namespace PerformanceTest
             }
 
             model.Series.Add(series);
-            model.Update(true);
+            ((IPlotModel)model).Update(true);
             return model;
         }
 
@@ -126,7 +126,7 @@ namespace PerformanceTest
             series.ItemsSource = points;
 
             model.Series.Add(series);
-            model.Update(true);
+            ((IPlotModel)model).Update(true);
             return model;
         }
 

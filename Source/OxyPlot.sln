@@ -113,6 +113,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.WP8", "OxyPlot.WP8\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Pdf_SL5", "OxyPlot.Pdf\OxyPlot.Pdf_SL5.csproj", "{10A30E0C-D902-4803-9CCD-8902C41CA244}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerformanceTest", "Examples\PerformanceTest\PerformanceTest.csproj", "{EDD52464-AD60-4EA1-B774-87AAFD930B6B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PerformanceTests", "PerformanceTests", "{DBA505F8-9432-4FFC-B5F4-4E6EAFEDB911}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1005,6 +1009,24 @@ Global
 		{10A30E0C-D902-4803-9CCD-8902C41CA244}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{10A30E0C-D902-4803-9CCD-8902C41CA244}.Release|x64.ActiveCfg = Release|Any CPU
 		{10A30E0C-D902-4803-9CCD-8902C41CA244}.Release|x86.ActiveCfg = Release|Any CPU
+		{EDD52464-AD60-4EA1-B774-87AAFD930B6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDD52464-AD60-4EA1-B774-87AAFD930B6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDD52464-AD60-4EA1-B774-87AAFD930B6B}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{EDD52464-AD60-4EA1-B774-87AAFD930B6B}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{EDD52464-AD60-4EA1-B774-87AAFD930B6B}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{EDD52464-AD60-4EA1-B774-87AAFD930B6B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{EDD52464-AD60-4EA1-B774-87AAFD930B6B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{EDD52464-AD60-4EA1-B774-87AAFD930B6B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{EDD52464-AD60-4EA1-B774-87AAFD930B6B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EDD52464-AD60-4EA1-B774-87AAFD930B6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDD52464-AD60-4EA1-B774-87AAFD930B6B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDD52464-AD60-4EA1-B774-87AAFD930B6B}.Release|ARM.ActiveCfg = Release|Any CPU
+		{EDD52464-AD60-4EA1-B774-87AAFD930B6B}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{EDD52464-AD60-4EA1-B774-87AAFD930B6B}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{EDD52464-AD60-4EA1-B774-87AAFD930B6B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{EDD52464-AD60-4EA1-B774-87AAFD930B6B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{EDD52464-AD60-4EA1-B774-87AAFD930B6B}.Release|x64.ActiveCfg = Release|Any CPU
+		{EDD52464-AD60-4EA1-B774-87AAFD930B6B}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1040,5 +1062,6 @@ Global
 		{6BA93A60-C2C2-46BA-8C83-0E563F2C5CD2} = {8619D594-5980-47B0-BB8D-1C15AC8F2357}
 		{D301156F-622D-4821-8C9A-10B895057634} = {831970F4-9390-4214-848B-70E6250443DC}
 		{8A7939AC-BAC2-4CFB-B429-DB92F106700C} = {7FCD460D-86D0-4908-A11A-B4E7C2DF5319}
+		{EDD52464-AD60-4EA1-B774-87AAFD930B6B} = {DBA505F8-9432-4FFC-B5F4-4E6EAFEDB911}
 	EndGlobalSection
 EndGlobal
