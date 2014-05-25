@@ -735,7 +735,7 @@ namespace OxyPlot.Wpf
             {
                 if (this.currentlyAttachedModel == null && this.ActualModel != null)
                 {
-                    this.ActualModel.AttachPlotControl(this);
+                    ((IPlotModel)this.ActualModel).AttachPlotControl(this);
                     this.currentlyAttachedModel = this.ActualModel;
                 }
             }
@@ -758,7 +758,7 @@ namespace OxyPlot.Wpf
             {
                 if (this.currentlyAttachedModel != null)
                 {
-                    this.currentlyAttachedModel.AttachPlotControl(null);
+                    ((IPlotModel)this.currentlyAttachedModel).AttachPlotControl(null);
                     this.currentlyAttachedModel = null;
                 }
             }
@@ -858,7 +858,7 @@ namespace OxyPlot.Wpf
             {
                 if (this.currentlyAttachedModel != null)
                 {
-                    this.currentlyAttachedModel.AttachPlotControl(null);
+                    ((IPlotModel)this.currentlyAttachedModel).AttachPlotControl(null);
                     this.currentlyAttachedModel = null;
                 }
 
@@ -875,7 +875,7 @@ namespace OxyPlot.Wpf
 
                 if (this.IsLoaded && this.ActualModel != null)
                 {
-                    this.ActualModel.AttachPlotControl(this);
+                    ((IPlotModel)this.ActualModel).AttachPlotControl(this);
                     this.currentlyAttachedModel = this.ActualModel;
                 }
             }

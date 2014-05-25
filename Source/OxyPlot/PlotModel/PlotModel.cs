@@ -817,7 +817,7 @@ namespace OxyPlot
         /// <param name="plotControl">The plot control.</param>
         /// <remarks>Only one plot control can be attached to the plot model.
         /// The plot model contains data (e.g. axis scaling) that is only relevant to the current plot control.</remarks>
-        public void AttachPlotControl(IPlotView plotControl)
+        void IPlotModel.AttachPlotControl(IPlotView plotControl)
         {
             this.plotControlReference = (plotControl == null) ? null : new WeakReference(plotControl);
         }
