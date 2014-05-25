@@ -284,7 +284,7 @@ namespace OxyPlot.WindowsForms
             {
                 if (this.currentModel != null)
                 {
-                    this.currentModel.AttachPlotControl(null);
+                    ((IPlotModel)this.currentModel).AttachPlotControl(null);
                 }
 
                 if (this.Model != null)
@@ -295,7 +295,7 @@ namespace OxyPlot.WindowsForms
                             "This PlotModel is already in use by some other plot control.");
                     }
 
-                    this.Model.AttachPlotControl(this);
+                    ((IPlotModel)this.Model).AttachPlotControl(this);
                     this.currentModel = this.Model;
                 }
             }

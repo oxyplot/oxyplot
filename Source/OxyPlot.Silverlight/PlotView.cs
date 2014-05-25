@@ -868,7 +868,7 @@ namespace OxyPlot.Silverlight
             {
                 if (this.currentModel != null)
                 {
-                    this.currentModel.AttachPlotControl(null);
+                    ((IPlotModel)this.currentModel).AttachPlotControl(null);
                     this.currentModel = null;
                 }
 
@@ -882,7 +882,7 @@ namespace OxyPlot.Silverlight
                             "This PlotModel is already in use by some other PlotView control.");
                     }
 
-                    this.currentModel.AttachPlotControl(this);
+                    ((IPlotModel)this.currentModel).AttachPlotControl(this);
                 }
             }
 

@@ -824,7 +824,7 @@ namespace OxyPlot.Metro
             {
                 if (this.currentModel != null)
                 {
-                    this.currentModel.AttachPlotControl(null);
+                    ((IPlotModel)this.currentModel).AttachPlotControl(null);
                     this.currentModel = null;
                 }
 
@@ -836,7 +836,7 @@ namespace OxyPlot.Metro
                             "This PlotModel is already in use by some other PlotView control.");
                     }
 
-                    this.Model.AttachPlotControl(this);
+                    ((IPlotModel)this.Model).AttachPlotControl(this);
                     this.currentModel = this.Model;
                 }
             }

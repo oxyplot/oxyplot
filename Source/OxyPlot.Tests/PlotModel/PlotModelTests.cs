@@ -97,7 +97,7 @@ namespace OxyPlot.Tests
         {
             var plot = Substitute.For<IPlotView>();
             var pm = new PlotModel();
-            pm.AttachPlotControl(plot);
+            ((IPlotModel)pm).AttachPlotControl(plot);
             Assert.IsNotNull(pm.PlotControl);
 
             // ReSharper disable once RedundantAssignment
