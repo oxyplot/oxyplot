@@ -10,6 +10,26 @@
         <SolidColorBrush x:Key="SelectedItemBackground" Color="#cbe6ef"/>
         <SolidColorBrush x:Key="NormalItemBackground" Color="White"/>
 
+        <DrawingBrush x:Key="CheckerBoard" TileMode="Tile" ViewboxUnits="Absolute" Viewbox="0,0,2,2" Viewport="0,0,10,10" ViewportUnits="Absolute">
+            <DrawingBrush.Drawing>
+                <DrawingGroup>
+                    <GeometryDrawing Brush="White">
+                        <GeometryDrawing.Geometry>
+                            <RectangleGeometry Rect="0,0,2,2" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="LightGray">
+                        <GeometryDrawing.Geometry>
+                            <GeometryGroup>
+                                <RectangleGeometry Rect="0,0,1,1" />
+                                <RectangleGeometry Rect="1,1,1,1" />
+                            </GeometryGroup>
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                </DrawingGroup>
+            </DrawingBrush.Drawing>
+        </DrawingBrush>
+
         <Style x:Key="ListboxItemStyle" TargetType="{x:Type ListBoxItem}">
             <Setter Property="HorizontalAlignment" Value="Stretch" />
             <Setter Property="Background" Value="{StaticResource NormalItemBackground}" />

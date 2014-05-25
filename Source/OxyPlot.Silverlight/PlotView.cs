@@ -924,6 +924,15 @@ namespace OxyPlot.Silverlight
             // Clear the canvas
             this.canvas.Children.Clear();
 
+            if (this.ActualModel != null && !this.ActualModel.Background.IsUndefined())
+            {
+                this.canvas.Background = this.ActualModel.Background.ToBrush();
+            }
+            else
+            {
+                this.canvas.Background = null;
+            }
+
             if (this.ActualModel != null)
             {
                 this.ActualModel.Render(this.renderContext, this.canvas.ActualWidth, this.canvas.ActualHeight);

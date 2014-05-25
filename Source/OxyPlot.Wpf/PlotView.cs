@@ -1081,10 +1081,17 @@ namespace OxyPlot.Wpf
             // Clear the canvas
             this.canvas.Children.Clear();
 
-            if (this.ActualModel != null)
+            if (this.ActualModel != null && !this.ActualModel.Background.IsUndefined())
             {
                 this.canvas.Background = this.ActualModel.Background.ToBrush();
+            }
+            else
+            {
+                this.canvas.Background = null;
+            }
 
+            if (this.ActualModel != null)
+            {
                 if (this.DisconnectCanvasWhileUpdating)
                 {
                     // TODO: profile... not sure if this makes any difference
