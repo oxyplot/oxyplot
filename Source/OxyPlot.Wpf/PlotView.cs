@@ -735,7 +735,7 @@ namespace OxyPlot.Wpf
             {
                 if (this.currentlyAttachedModel == null && this.ActualModel != null)
                 {
-                    ((IPlotModel)this.ActualModel).AttachPlotControl(this);
+                    ((IPlotModel)this.ActualModel).AttachPlotView(this);
                     this.currentlyAttachedModel = this.ActualModel;
                 }
             }
@@ -758,7 +758,7 @@ namespace OxyPlot.Wpf
             {
                 if (this.currentlyAttachedModel != null)
                 {
-                    ((IPlotModel)this.currentlyAttachedModel).AttachPlotControl(null);
+                    ((IPlotModel)this.currentlyAttachedModel).AttachPlotView(null);
                     this.currentlyAttachedModel = null;
                 }
             }
@@ -858,7 +858,7 @@ namespace OxyPlot.Wpf
             {
                 if (this.currentlyAttachedModel != null)
                 {
-                    ((IPlotModel)this.currentlyAttachedModel).AttachPlotControl(null);
+                    ((IPlotModel)this.currentlyAttachedModel).AttachPlotView(null);
                     this.currentlyAttachedModel = null;
                 }
 
@@ -866,7 +866,7 @@ namespace OxyPlot.Wpf
 
                 if (this.currentModel != null)
                 {
-                    if (this.currentModel.PlotControl != null)
+                    if (this.currentModel.PlotView != null)
                     {
                         throw new InvalidOperationException(
                             "This PlotModel is already in use by some other PlotView control.");
@@ -875,7 +875,7 @@ namespace OxyPlot.Wpf
 
                 if (this.IsLoaded && this.ActualModel != null)
                 {
-                    ((IPlotModel)this.ActualModel).AttachPlotControl(this);
+                    ((IPlotModel)this.ActualModel).AttachPlotView(this);
                     this.currentlyAttachedModel = this.ActualModel;
                 }
             }

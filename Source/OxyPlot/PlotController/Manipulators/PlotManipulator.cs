@@ -45,14 +45,14 @@ namespace OxyPlot
         protected PlotManipulator(IPlotView view)
             : base(view)
         {
-            this.PlotControl = view;
+            this.PlotView = view;
         }
 
         /// <summary>
-        /// Gets the plot control where the event was raised.
+        /// Gets the plot view where the event was raised.
         /// </summary>
-        /// <value>The plot control.</value>
-        public IPlotView PlotControl { get; private set; }
+        /// <value>The plot view.</value>
+        public IPlotView PlotView { get; private set; }
 
         /// <summary>
         /// Gets or sets the X axis.
@@ -95,9 +95,9 @@ namespace OxyPlot
         {
             Axis xaxis;
             Axis yaxis;
-            if (this.PlotControl.ActualModel != null)
+            if (this.PlotView.ActualModel != null)
             {
-                this.PlotControl.ActualModel.GetAxesFromPoint(position, out xaxis, out yaxis);
+                this.PlotView.ActualModel.GetAxesFromPoint(position, out xaxis, out yaxis);
             }
             else
             {

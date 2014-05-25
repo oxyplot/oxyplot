@@ -45,9 +45,9 @@ namespace OxyPlot
         /// <summary>
         /// Initializes a new instance of the <see cref="ZoomRectangleManipulator" /> class.
         /// </summary>
-        /// <param name="plotControl">The plot control.</param>
-        public ZoomRectangleManipulator(IPlotView plotControl)
-            : base(plotControl)
+        /// <param name="plotView">The plot view.</param>
+        public ZoomRectangleManipulator(IPlotView plotView)
+            : base(plotView)
         {
         }
 
@@ -59,7 +59,7 @@ namespace OxyPlot
         {
             base.Completed(e);
 
-            this.PlotControl.HideZoomRectangle();
+            this.PlotView.HideZoomRectangle();
 
             if (this.zoomRectangle.Width > 10 && this.zoomRectangle.Height > 10)
             {
@@ -76,7 +76,7 @@ namespace OxyPlot
                     this.YAxis.Zoom(p0.Y, p1.Y);
                 }
 
-                this.PlotControl.InvalidatePlot();
+                this.PlotView.InvalidatePlot();
             }
         }
 
@@ -88,7 +88,7 @@ namespace OxyPlot
         {
             base.Delta(e);
 
-            var plotArea = this.PlotControl.ActualModel.PlotArea;
+            var plotArea = this.PlotView.ActualModel.PlotArea;
 
             double x = Math.Min(this.StartPosition.X, e.Position.X);
             double w = Math.Abs(this.StartPosition.X - e.Position.X);
@@ -108,7 +108,7 @@ namespace OxyPlot
             }
 
             this.zoomRectangle = new OxyRect(x, y, w, h);
-            this.PlotControl.ShowZoomRectangle(this.zoomRectangle);
+            this.PlotView.ShowZoomRectangle(this.zoomRectangle);
         }
 
         /// <summary>
@@ -138,7 +138,7 @@ namespace OxyPlot
         {
             base.Started(e);
             this.zoomRectangle = new OxyRect(this.StartPosition.X, this.StartPosition.Y, 0, 0);
-            this.PlotControl.ShowZoomRectangle(this.zoomRectangle);
+            this.PlotView.ShowZoomRectangle(this.zoomRectangle);
         }
     }
 }

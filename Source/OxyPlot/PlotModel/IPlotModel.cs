@@ -56,11 +56,11 @@ namespace OxyPlot
         void Render(IRenderContext rc, double width, double height);
 
         /// <summary>
-        /// Attaches this model to the specified plot control.
+        /// Attaches this model to the specified plot view.
         /// </summary>
-        /// <param name="plotControl">The plot control.</param>
-        /// <remarks>Only one plot control can be attached to the plot model.
-        /// The plot model contains data (e.g. axis scaling) that is only relevant to the current plot control.</remarks>
-        void AttachPlotControl(IPlotView plotControl);
+        /// <param name="plotView">The plot view.</param>
+        /// <remarks>Only one plot view can be attached to the plot model.
+        /// The plot model contains data (e.g. axis scaling) that is only relevant to the current plot view.</remarks>
+        void AttachPlotView(IPlotView plotView);
     }
 }

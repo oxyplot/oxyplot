@@ -46,9 +46,9 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets the plot control where the event was raised.
+        /// Gets the plot view where the event was raised.
         /// </summary>
-        /// <value>The plot control.</value>
+        /// <value>The plot view.</value>
         public IView View { get; private set; }
 
         /// <summary>

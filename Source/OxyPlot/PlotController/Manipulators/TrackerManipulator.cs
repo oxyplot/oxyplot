@@ -45,9 +45,9 @@ namespace OxyPlot
         /// <summary>
         /// Initializes a new instance of the <see cref="TrackerManipulator" /> class.
         /// </summary>
-        /// <param name="plotControl">The plot control.</param>
-        public TrackerManipulator(IPlotView plotControl)
-            : base(plotControl)
+        /// <param name="plotView">The plot view.</param>
+        public TrackerManipulator(IPlotView plotView)
+            : base(plotView)
         {
             this.Snap = true;
             this.PointsOnly = false;
@@ -79,10 +79,10 @@ namespace OxyPlot
             base.Completed(e);
 
             this.currentSeries = null;
-            this.PlotControl.HideTracker();
-            if (this.PlotControl.ActualModel != null)
+            this.PlotView.HideTracker();
+            if (this.PlotView.ActualModel != null)
             {
-                this.PlotControl.ActualModel.OnTrackerChanged(null);
+                this.PlotView.ActualModel.OnTrackerChanged(null);
             }
         }
 
@@ -97,20 +97,20 @@ namespace OxyPlot
             if (this.currentSeries == null || !this.LockToInitialSeries)
             {
                 // get the nearest
-                this.currentSeries = this.PlotControl.ActualModel != null ? this.PlotControl.ActualModel.GetSeriesFromPoint(e.Position, 20) : null;
+                this.currentSeries = this.PlotView.ActualModel != null ? this.PlotView.ActualModel.GetSeriesFromPoint(e.Position, 20) : null;
             }
 
             if (this.currentSeries == null)
             {
                 if (!this.LockToInitialSeries)
                 {
-                    this.PlotControl.HideTracker();
+                    this.PlotView.HideTracker();
                 }
 
                 return;
             }
 
-            var actualModel = this.PlotControl.ActualModel;
+            var actualModel = this.PlotView.ActualModel;
             if (actualModel == null)
             {
                 return;
@@ -124,9 +124,9 @@ namespace OxyPlot
             var result = GetNearestHit(this.currentSeries, e.Position, this.Snap, this.PointsOnly);
             if (result != null)
             {
-                result.PlotModel = this.PlotControl.ActualModel;
-                this.PlotControl.ShowTracker(result);
-                this.PlotControl.ActualModel.OnTrackerChanged(result);
+                result.PlotModel = this.PlotView.ActualModel;
+                this.PlotView.ShowTracker(result);
+                this.PlotView.ActualModel.OnTrackerChanged(result);
             }
         }
 
@@ -146,7 +146,7 @@ namespace OxyPlot
         public override void Started(OxyMouseEventArgs e)
         {
             base.Started(e);
-            this.currentSeries = this.PlotControl.ActualModel != null ? this.PlotControl.ActualModel.GetSeriesFromPoint(e.Position) : null;
+            this.currentSeries = this.PlotView.ActualModel != null ? this.PlotView.ActualModel.GetSeriesFromPoint(e.Position) : null;
             this.Delta(e);
         }
 

@@ -38,9 +38,9 @@ namespace OxyPlot
         /// <summary>
         /// Initializes a new instance of the <see cref="MouseManipulator" /> class.
         /// </summary>
-        /// <param name="plotControl">The plot control.</param>
-        protected MouseManipulator(IPlotView plotControl)
-            : base(plotControl)
+        /// <param name="plotView">The plot view.</param>
+        protected MouseManipulator(IPlotView plotView)
+            : base(plotView)
         {
         }
 

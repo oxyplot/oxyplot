@@ -76,7 +76,7 @@ namespace OxyPlot.Series
         /// Gets or sets the key for the tracker to use on this series.
         /// </summary>
         /// <remarks>
-        /// This key may be used by the plot control to show a custom tracker for the series.
+        /// This key may be used by the plot view to show a custom tracker for the series.
         /// </remarks>
         public string TrackerKey { get; set; }
 
