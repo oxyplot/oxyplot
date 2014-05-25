@@ -21,6 +21,17 @@
                 </oxy:PlotView.Annotations>
             </oxy:PlotView>
         </TabItem>
+        <TabItem Header="EllipseAnnotation">
+            <oxy:PlotView Title="EllipseAnnotation">
+                <oxy:PlotView.Axes>
+                    <oxy:LinearAxis Position="Bottom" Minimum="0" Maximum="100" />
+                    <oxy:LinearAxis Position="Left" Minimum="0" Maximum="100" />
+                </oxy:PlotView.Axes>
+                <oxy:PlotView.Annotations>
+                    <oxy:EllipseAnnotation Text="EllipseAnnotation1" X="50" Y="50" Width="20" Height="10"/>
+                </oxy:PlotView.Annotations>
+            </oxy:PlotView>
+        </TabItem>
         <TabItem Header="LineAnnotation">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -53,6 +64,17 @@
                 </oxy:PlotView>
             </Grid>
         </TabItem>
+        <TabItem Header="PointAnnotation">
+            <oxy:PlotView Title="PointAnnotation">
+                <oxy:PlotView.Axes>
+                    <oxy:LinearAxis Position="Bottom" Minimum="0" Maximum="100" />
+                    <oxy:LinearAxis Position="Left" Minimum="0" Maximum="100" />
+                </oxy:PlotView.Axes>
+                <oxy:PlotView.Annotations>
+                    <oxy:PointAnnotation Text="P1" X="50" Y="50"/>
+                </oxy:PlotView.Annotations>
+            </oxy:PlotView>
+        </TabItem>
         <TabItem Header="PolygonAnnotation">
             <oxy:PlotView Title="PolygonAnnotation">
                 <oxy:PlotView.Axes>
@@ -60,7 +82,18 @@
                     <oxy:LinearAxis Position="Left" Minimum="0" Maximum="100" />
                 </oxy:PlotView.Axes>
                 <oxy:PlotView.Annotations>
-                    <oxy:PolygonAnnotation Fill="Green" Text="Polygon 1"  Points="{Binding PolygonPoints}"/>
+                    <oxy:PolygonAnnotation Text="PolygonAnnotation1"  Points="{Binding Points}"/>
+                </oxy:PlotView.Annotations>
+            </oxy:PlotView>
+        </TabItem>
+        <TabItem Header="PolylineAnnotation">
+            <oxy:PlotView Title="PolylineAnnotation">
+                <oxy:PlotView.Axes>
+                    <oxy:LinearAxis Position="Bottom" Minimum="0" Maximum="100" />
+                    <oxy:LinearAxis Position="Left" Minimum="0" Maximum="100" />
+                </oxy:PlotView.Axes>
+                <oxy:PlotView.Annotations>
+                    <oxy:PolylineAnnotation Text="PolylineAnnotation1"  Points="{Binding Points}"/>
                 </oxy:PlotView.Annotations>
             </oxy:PlotView>
         </TabItem>

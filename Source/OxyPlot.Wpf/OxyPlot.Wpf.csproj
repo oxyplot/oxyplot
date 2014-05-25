@@ -57,12 +57,14 @@
     </Compile>
     <Compile Include="Annotations\Annotation.cs" />
     <Compile Include="Annotations\ArrowAnnotation.cs" />
+    <Compile Include="Annotations\PointAnnotation.cs" />
     <Compile Include="Annotations\EllipseAnnotation.cs" />
     <Compile Include="Annotations\FunctionAnnotation.cs" />
     <Compile Include="Annotations\PathAnnotation.cs" />
     <Compile Include="Annotations\PolygonAnnotation.cs" />
     <Compile Include="Annotations\PolylineAnnotation.cs" />
     <Compile Include="Annotations\RectangleAnnotation.cs" />
+    <Compile Include="Annotations\ShapeAnnotation.cs" />
     <Compile Include="Annotations\TextAnnotation.cs" />
     <Compile Include="Annotations\LineAnnotation.cs" />
     <Compile Include="Annotations\TextualAnnotation.cs" />

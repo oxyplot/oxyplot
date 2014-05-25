@@ -33,7 +33,7 @@ namespace OxyPlot.Annotations
     /// <summary>
     /// Represents an annotation that shows an ellipse.
     /// </summary>
-    public class EllipseAnnotation : TextualAnnotation
+    public class EllipseAnnotation : ShapeAnnotation
     {
         /// <summary>
         /// The rectangle transformed to screen coordinates.
@@ -45,27 +45,9 @@ namespace OxyPlot.Annotations
         /// </summary>
         public EllipseAnnotation()
         {
-            this.Stroke = OxyColors.Black;
-            this.Fill = OxyColors.LightBlue;
             this.Width = double.NaN;
             this.Height = double.NaN;
         }
-
-        /// <summary>
-        /// Gets or sets the fill color.
-        /// </summary>
-        /// <value>The fill.</value>
-        public OxyColor Fill { get; set; }
-
-        /// <summary>
-        /// Gets or sets the stroke color.
-        /// </summary>
-        public OxyColor Stroke { get; set; }
-
-        /// <summary>
-        /// Gets or sets the stroke thickness.
-        /// </summary>
-        public double StrokeThickness { get; set; }
 
         /// <summary>
         /// Gets or sets the x-coordinate of the center.

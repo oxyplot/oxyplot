@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PolygonAnnotation.cs" company="OxyPlot">
+// <copyright file="PointAnnotation.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 OxyPlot contributors
@@ -24,52 +24,58 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents an annotation that shows a polygon.
+//   Represents an annotation that shows a point.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Annotations
 {
-    using System.Collections.Generic;
-    using System.Linq;
-
     /// <summary>
-    /// Represents an annotation that shows a polygon.
+    /// Represents an annotation that shows a point.
     /// </summary>
-    public class PolygonAnnotation : ShapeAnnotation
+    public class PointAnnotation : ShapeAnnotation
     {
         /// <summary>
-        /// The polygon points transformed to screen coordinates.
+        /// The position transformed to screen coordinates.
         /// </summary>
-        private IList<ScreenPoint> screenPoints;
+        private ScreenPoint screenPosition;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PolygonAnnotation" /> class.
+        /// Initializes a new instance of the <see cref="PointAnnotation" /> class.
         /// </summary>
-        public PolygonAnnotation()
+        public PointAnnotation()
         {
-            this.LineStyle = LineStyle.Solid;
-            this.LineJoin = OxyPenLineJoin.Miter;
-            this.Points = new List<DataPoint>();
+            this.Size = 4;
+            this.TextMargin = 2;
+            this.Shape = MarkerType.Circle;
+            this.TextVerticalAlignment = VerticalAlignment.Top;
         }
 
         /// <summary>
-        /// Gets or sets the line join.
+        /// Gets or sets the x-coordinate of the center.
         /// </summary>
-        /// <value>The line join.</value>
-        public OxyPenLineJoin LineJoin { get; set; }
+        public double X { get; set; }
 
         /// <summary>
-        /// Gets or sets the line style.
+        /// Gets or sets the y-coordinate of the center.
         /// </summary>
-        /// <value>The line style.</value>
-        public LineStyle LineStyle { get; set; }
+        public double Y { get; set; }
 
         /// <summary>
-        /// Gets the points.
+        /// Gets or sets the size of the rendered point.
         /// </summary>
-        /// <value>The points.</value>
-        public List<DataPoint> Points { get; private set; }
+        public double Size { get; set; }
+
+        /// <summary>
+        /// Gets or sets the distance between the rendered point and the text.
+        /// </summary>
+        public double TextMargin { get; set; }
+
+        /// <summary>
+        /// Gets or sets the shape of the rendered point.
+        /// </summary>
+        /// <value>The shape.</value>
+        public MarkerType Shape { get; set; }
 
         /// <summary>
         /// Renders the polygon annotation.
@@ -79,37 +85,19 @@ namespace OxyPlot.Annotations
         public override void Render(IRenderContext rc, PlotModel model)
         {
             base.Render(rc, model);
-            if (this.Points == null)
-            {
-                return;
-            }
 
-            // transform to screen coordinates
-            this.screenPoints = this.Points.Select(this.Transform).ToList();
-            if (this.screenPoints.Count == 0)
-            {
-                return;
-            }
+            this.screenPosition = this.Transform(this.X, this.Y);
 
             // clip to the area defined by the axes
             var clippingRectangle = this.GetClippingRect();
 
-            const double MinimumSegmentLength = 4;
-
-            rc.DrawClippedPolygon(
-                clippingRectangle,
-                this.screenPoints,
-                MinimumSegmentLength * MinimumSegmentLength,
-                this.GetSelectableFillColor(this.Fill),
-                this.GetSelectableColor(this.Stroke),
-                this.StrokeThickness,
-                this.LineStyle,
-                this.LineJoin);
+            rc.DrawMarker(clippingRectangle, this.screenPosition, this.Shape, null, this.Size, this.Fill, this.Stroke, this.StrokeThickness);
 
             if (!string.IsNullOrEmpty(this.Text))
             {
-                var textPosition = this.GetActualTextPosition(() => ScreenPointHelper.GetCentroid(this.screenPoints));
-
+                var dx = -(int)this.TextHorizontalAlignment * (this.Size + this.TextMargin);
+                var dy = -(int)this.TextVerticalAlignment * (this.Size + this.TextMargin);
+                var textPosition = this.screenPosition + new ScreenVector(dx, dy);
                 rc.DrawClippedText(
                     clippingRectangle,
                     textPosition,
@@ -133,13 +121,12 @@ namespace OxyPlot.Annotations
         /// </returns>
         protected override HitTestResult HitTestOverride(HitTestArguments args)
         {
-            if (this.screenPoints == null)
+            if (this.screenPosition.DistanceTo(args.Point) < this.Size)
             {
-                // Points not specified.
-                return null;
+                return new HitTestResult(this, this.screenPosition);
             }
 
-            return ScreenPointHelper.IsPointInPolygon(args.Point, this.screenPoints) ? new HitTestResult(this, args.Point) : null;
+            return null;
         }
     }
 }
