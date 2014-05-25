@@ -142,14 +142,13 @@ namespace ExampleLibrary
             return model;
         }
 
-        [Example("PointAnnotation . text alignments")]
+        [Example("PointAnnotation - text alignments")]
         public static PlotModel PointAnnotationTextAlignment()
         {
             var model = new PlotModel { Title = "PointAnnotation - text alignments" };
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -50, Maximum = 50 });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -50, Maximum = 50 });
 
-            var i = 1;
             for (var ha = -1; ha <= 1; ha++)
             {
                 var h = (HorizontalAlignment)ha;
