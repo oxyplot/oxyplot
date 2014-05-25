@@ -25,25 +25,32 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Windows.Controls;
-using ExampleLibrary;
-using OxyPlot;
-
 namespace ExampleBrowser
 {
-    using System.Windows.Media;
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Windows.Controls;
 
-    using OxyPlot.Silverlight;
+    using ExampleLibrary;
+
+    using OxyPlot;
 
     public class MainWindowViewModel : INotifyPropertyChanged
     {
-        public bool MeasureFrameRate { get; set; }
-
+        private IEnumerable<ExampleInfo> examples;
+        private object selectedItem;
+        private ExampleInfo selectedExample;
         private double frameRate;
+
+        public MainWindowViewModel()
+        {
+            this.Examples = ExampleLibrary.Examples.GetList();
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public bool MeasureFrameRate { get; set; }
 
         public double FrameRate
         {
@@ -51,39 +58,37 @@ namespace ExampleBrowser
             {
                 return this.frameRate;
             }
+
             set
             {
-                this.frameRate = value; RaisePropertyChanged("FrameRate");
+                this.frameRate = value; this.RaisePropertyChanged("FrameRate");
             }
         }
 
-        private IEnumerable<ExampleInfo> examples;
         public IEnumerable<ExampleInfo> Examples
         {
-            get { return examples; }
-            set { examples = value; RaisePropertyChanged("Examples"); }
+            get { return this.examples; }
+            set { this.examples = value; this.RaisePropertyChanged("Examples"); }
         }
 
-        private object selectedItem;
         public object SelectedItem
         {
-            get { return selectedItem; }
+            get { return this.selectedItem; }
             set
             {
-                selectedItem = value;
+                this.selectedItem = value;
                 var cc = value as ContentControl;
-                SelectedExample = cc.Content as ExampleInfo;
+                this.SelectedExample = cc.Content as ExampleInfo;
             }
         }
 
-        private ExampleInfo selectedExample;
         public ExampleInfo SelectedExample
         {
             get { return selectedExample; }
             set
             {
-                selectedExample = value; RaisePropertyChanged("SelectedExample");
-                this.RaisePropertyChanged("PlotBackground");
+                this.selectedExample = value;
+                this.RaisePropertyChanged("SelectedExample");
             }
         }
 
@@ -95,22 +100,6 @@ namespace ExampleBrowser
             }
         }
 
-        public Brush PlotBackground
-        {
-            get
-            {
-                return selectedExample != null && selectedExample.PlotModel.Background.IsVisible() ? selectedExample.PlotModel.Background.ToBrush() : new SolidColorBrush(Colors.Transparent);
-            }
-        }
-
-        public MainWindowViewModel()
-        {
-            Examples = ExampleLibrary.Examples.GetList();
-            // SelectedExample = Examples.First();
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
         protected void RaisePropertyChanged(string property)
         {
             var handler = PropertyChanged;
@@ -119,7 +108,6 @@ namespace ExampleBrowser
                 handler(this, new PropertyChangedEventArgs(property));
             }
         }
-
     }
 
     // Simple IGroupingItemsControlConverterSelector implementation for grouping by an Animal's species

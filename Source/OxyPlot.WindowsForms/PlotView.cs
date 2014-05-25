@@ -467,8 +467,17 @@ namespace OxyPlot.WindowsForms
                 lock (this.renderingLock)
                 {
                     this.renderContext.SetGraphicsTarget(e.Graphics);
+
                     if (this.model != null)
                     {
+                        if (!this.model.Background.IsUndefined())
+                        {
+                            using (var brush = new SolidBrush(this.model.Background.ToColor()))
+                            {
+                                e.Graphics.FillRectangle(brush, e.ClipRectangle);
+                            }
+                        }
+
                         this.model.Render(this.renderContext, this.Width, this.Height);
                     }
 
