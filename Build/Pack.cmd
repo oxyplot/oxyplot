@@ -67,7 +67,7 @@ copy ..\LICENSE ..\Packages\OxyPlot.Silverlight
 REM === WP8 ===
 mkdir ..\Packages\OxyPlot.WP8\lib
 mkdir ..\Packages\OxyPlot.WP8\lib\wp80
-copy ..\Output\WP8\OxyPlot.??? ..\Packages\OxyPlot.WP8\lib\wp80
+copy ..\Output\WP8\OxyPlot.WP8.??? ..\Packages\OxyPlot.WP8\lib\wp80
 copy ..\LICENSE ..\Packages\OxyPlot.WP8
 ..\Source\.nuget\NuGet.exe pack ..\Packages\OxyPlot.WP8\OxyPlot.WP8.nuspec -OutputDirectory ..\Packages >> pack.log
 
