@@ -32,25 +32,12 @@ namespace OxyPlot.Wpf
 {
     using System.Collections.Generic;
     using System.Windows;
-    using System.Windows.Media;
 
     /// <summary>
     /// This is a WPF wrapper of OxyPlot.PolygonAnnotation
     /// </summary>
-    public class PolygonAnnotation : TextualAnnotation
+    public class PolygonAnnotation : ShapeAnnotation
     {
-        /// <summary>
-        /// Identifies the <see cref="Color"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty ColorProperty = DependencyProperty.Register(
-            "Color", typeof(Color), typeof(PolygonAnnotation), new PropertyMetadata(Colors.Blue, AppearanceChanged));
-
-        /// <summary>
-        /// Identifies the <see cref="Fill"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty FillProperty = DependencyProperty.Register(
-            "Fill", typeof(Color), typeof(PolygonAnnotation), new PropertyMetadata(Colors.LightBlue, AppearanceChanged));
-
         /// <summary>
         /// Identifies the <see cref="LineJoin"/> dependency property.
         /// </summary>
@@ -70,13 +57,6 @@ namespace OxyPlot.Wpf
             "Points", typeof(IList<DataPoint>), typeof(PolygonAnnotation), new PropertyMetadata(new List<DataPoint>(), DataChanged));
 
         /// <summary>
-        /// Identifies the <see cref="StrokeThickness"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty StrokeThicknessProperty =
-            DependencyProperty.Register(
-                "StrokeThickness", typeof(double), typeof(PolygonAnnotation), new PropertyMetadata(1.0, AppearanceChanged));
-
-        /// <summary>
         /// Initializes static members of the <see cref="PolygonAnnotation"/> class.
         /// </summary>
         static PolygonAnnotation()
@@ -90,38 +70,6 @@ namespace OxyPlot.Wpf
         public PolygonAnnotation()
         {
             this.InternalAnnotation = new Annotations.PolygonAnnotation();
-        }
-
-        /// <summary>
-        /// Gets or sets the stroke color.
-        /// </summary>
-        public Color Color
-        {
-            get
-            {
-                return (Color)this.GetValue(ColorProperty);
-            }
-
-            set
-            {
-                this.SetValue(ColorProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the fill color.
-        /// </summary>
-        public Color Fill
-        {
-            get
-            {
-                return (Color)this.GetValue(FillProperty);
-            }
-
-            set
-            {
-                this.SetValue(FillProperty, value);
-            }
         }
 
         /// <summary>
@@ -174,22 +122,6 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the stroke thickness.
-        /// </summary>
-        public double StrokeThickness
-        {
-            get
-            {
-                return (double)this.GetValue(StrokeThicknessProperty);
-            }
-
-            set
-            {
-                this.SetValue(StrokeThicknessProperty, value);
-            }
-        }
-
-        /// <summary>
         /// Creates the internal annotation object.
         /// </summary>
         /// <returns>The annotation.</returns>
@@ -209,9 +141,6 @@ namespace OxyPlot.Wpf
             a.Points.Clear();
             a.Points.AddRange(this.Points);
 
-            a.Fill = this.Fill.ToOxyColor();
-            a.Color = this.Color.ToOxyColor();
-            a.StrokeThickness = this.StrokeThickness;
             a.LineStyle = this.LineStyle;
             a.LineJoin = this.LineJoin;
         }

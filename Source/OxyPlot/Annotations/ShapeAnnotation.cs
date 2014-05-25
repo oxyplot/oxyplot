@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MainWindow.xaml.cs" company="OxyPlot">
+// <copyright file="ShapeAnnotation.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 OxyPlot contributors
@@ -24,41 +24,40 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Interaction logic for MainWindow.xaml
+//   Provides an abstract base class for shape annotations, such as PointAnnotation, EllipseAnnotation, PolygonAnnotation and RectangleAnnotation.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace AnnotationDemo
+namespace OxyPlot.Annotations
 {
-    using System.Collections.Generic;
-    using System.Windows;
-
-    using OxyPlot;
-
-    using WpfExamples;
-
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Provides an abstract base class for shape annotations, such as <see cref="PointAnnotation" />, <see cref="EllipseAnnotation" />, <see cref="PolygonAnnotation" /> and <see cref="RectangleAnnotation" />.
     /// </summary>
-    [Example(null, "Shows different types of annotations.")]
-    public partial class MainWindow : Window
+    public abstract class ShapeAnnotation : TextualAnnotation
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="MainWindow" /> class.
+        /// Initializes a new instance of the <see cref="ShapeAnnotation"/> class.
         /// </summary>
-        public MainWindow()
+        protected ShapeAnnotation()
         {
-            this.InitializeComponent();
-            this.Points = new List<DataPoint>
-                {
-                   new DataPoint(10, 10), new DataPoint(80, 30), new DataPoint(60, 70)
-                };
-            this.DataContext = this;
+            this.Stroke = OxyColors.Black;
+            this.Fill = OxyColors.LightBlue;
         }
 
         /// <summary>
-        /// Gets the points.
+        /// Gets or sets the fill color.
         /// </summary>
-        public IList<DataPoint> Points { get; private set; }
+        /// <value>The fill.</value>
+        public OxyColor Fill { get; set; }
+
+        /// <summary>
+        /// Gets or sets the stroke color.
+        /// </summary>
+        public OxyColor Stroke { get; set; }
+
+        /// <summary>
+        /// Gets or sets the stroke thickness.
+        /// </summary>
+        public double StrokeThickness { get; set; }
     }
 }

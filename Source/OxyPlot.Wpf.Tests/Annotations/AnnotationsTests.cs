@@ -47,6 +47,14 @@ namespace OxyPlot.Wpf.Tests
             }
 
             [Test]
+            public void PointAnnotation()
+            {
+                var s1 = new PointAnnotation();
+                var s2 = new Annotations.PointAnnotation();
+                OxyAssert.PropertiesAreEqual(s2, s1);
+            }
+
+            [Test]
             public void EllipseAnnotation()
             {
                 var s1 = new EllipseAnnotation();

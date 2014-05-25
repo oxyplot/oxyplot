@@ -47,6 +47,8 @@
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Annotations\PointAnnotation.cs" />
+    <Compile Include="Annotations\ShapeAnnotation.cs" />
     <Compile Include="Graphics\DelegateViewCommand{T}.cs" />
     <Compile Include="Graphics\ManipulatorBase.cs" />
     <Compile Include="PlotController\DelegatePlotCommand.cs" />

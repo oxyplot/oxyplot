@@ -33,7 +33,7 @@ namespace OxyPlot.Annotations
     /// <summary>
     /// Represents an annotation that shows a rectangle.
     /// </summary>
-    public class RectangleAnnotation : TextualAnnotation
+    public class RectangleAnnotation : ShapeAnnotation
     {
         /// <summary>
         /// The rectangle transformed to screen coordinates.
@@ -45,30 +45,12 @@ namespace OxyPlot.Annotations
         /// </summary>
         public RectangleAnnotation()
         {
-            this.Stroke = OxyColors.Black;
-            this.Fill = OxyColors.LightBlue;
             this.MinimumX = double.MinValue;
             this.MaximumX = double.MaxValue;
             this.MinimumY = double.MinValue;
             this.MaximumY = double.MaxValue;
             this.TextRotation = 0;
         }
-
-        /// <summary>
-        /// Gets or sets the fill color.
-        /// </summary>
-        /// <value>The fill.</value>
-        public OxyColor Fill { get; set; }
-
-        /// <summary>
-        /// Gets or sets the stroke color.
-        /// </summary>
-        public OxyColor Stroke { get; set; }
-
-        /// <summary>
-        /// Gets or sets the stroke thickness.
-        /// </summary>
-        public double StrokeThickness { get; set; }
 
         /// <summary>
         /// Gets or sets the minimum X.

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EllipseAnnotation.cs" company="OxyPlot">
+// <copyright file="ShapeAnnotation.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 OxyPlot contributors
@@ -24,87 +24,93 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   This is a WPF wrapper of OxyPlot.EllipseAnnotation
+//   Provides an abstract base class for shape annotations.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Wpf
 {
     using System.Windows;
+    using System.Windows.Media;
 
     /// <summary>
-    /// This is a WPF wrapper of OxyPlot.EllipseAnnotation
+    /// Provides an abstract base class for shape annotations.
     /// </summary>
-    public class EllipseAnnotation : ShapeAnnotation
+    public abstract class ShapeAnnotation : TextualAnnotation
     {
         /// <summary>
-        /// Identifies the <see cref="X"/> dependency property.
+        /// Identifies the <see cref="Fill"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty XProperty = DependencyProperty.Register(
-            "X", typeof(double), typeof(EllipseAnnotation), new PropertyMetadata(0.0, DataChanged));
+        public static readonly DependencyProperty FillProperty = DependencyProperty.Register(
+            "Fill",
+            typeof(Color),
+            typeof(ShapeAnnotation),
+            new PropertyMetadata(Colors.LightBlue, AppearanceChanged));
 
         /// <summary>
-        /// Identifies the <see cref="Y"/> dependency property.
+        /// Identifies the <see cref="Stroke"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty YProperty = DependencyProperty.Register(
-            "Y", typeof(double), typeof(EllipseAnnotation), new PropertyMetadata(0.0, DataChanged));
+        public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(
+            "Stroke",
+            typeof(Color),
+            typeof(ShapeAnnotation),
+            new PropertyMetadata(Colors.Black, AppearanceChanged));
 
         /// <summary>
-        /// Initializes static members of the <see cref="EllipseAnnotation"/> class.
+        /// Identifies the <see cref="StrokeThickness"/> dependency property.
         /// </summary>
-        static EllipseAnnotation()
-        {
-            TextColorProperty.OverrideMetadata(typeof(EllipseAnnotation), new FrameworkPropertyMetadata(MoreColors.Automatic, AppearanceChanged));
-        }
+        public static readonly DependencyProperty StrokeThicknessProperty = DependencyProperty.Register(
+            "StrokeThickness",
+            typeof(double),
+            typeof(ShapeAnnotation),
+            new PropertyMetadata(0.0, AppearanceChanged));
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EllipseAnnotation" /> class.
+        /// Gets or sets the fill color.
         /// </summary>
-        public EllipseAnnotation()
-        {
-            this.InternalAnnotation = new Annotations.EllipseAnnotation();
-        }
-
-        /// <summary>
-        /// Gets or sets the  X.
-        /// </summary>
-        public double X
+        public Color Fill
         {
             get
             {
-                return (double)this.GetValue(XProperty);
+                return (Color)this.GetValue(FillProperty);
             }
 
             set
             {
-                this.SetValue(XProperty, value);
+                this.SetValue(FillProperty, value);
             }
         }
 
         /// <summary>
-        /// Gets or sets the  Y.
+        /// Gets or sets the stroke color.
         /// </summary>
-        public double Y
+        public Color Stroke
         {
             get
             {
-                return (double)this.GetValue(YProperty);
+                return (Color)this.GetValue(StrokeProperty);
             }
 
             set
             {
-                this.SetValue(YProperty, value);
+                this.SetValue(StrokeProperty, value);
             }
         }
 
         /// <summary>
-        /// Creates the internal annotation object.
+        /// Gets or sets the stroke thickness.
         /// </summary>
-        /// <returns>The annotation.</returns>
-        public override Annotations.Annotation CreateModel()
+        public double StrokeThickness
         {
-            this.SynchronizeProperties();
-            return this.InternalAnnotation;
+            get
+            {
+                return (double)this.GetValue(StrokeThicknessProperty);
+            }
+
+            set
+            {
+                this.SetValue(StrokeThicknessProperty, value);
+            }
         }
 
         /// <summary>
@@ -113,12 +119,10 @@ namespace OxyPlot.Wpf
         public override void SynchronizeProperties()
         {
             base.SynchronizeProperties();
-            var a = (Annotations.EllipseAnnotation)this.InternalAnnotation;
-
-            a.X = this.X;
-            a.Width = this.Width;
-            a.Y = this.Y;
-            a.Height = this.Height;
+            var a = (Annotations.ShapeAnnotation)this.InternalAnnotation;
+            a.Fill = this.Fill.ToOxyColor();
+            a.Stroke = this.Stroke.ToOxyColor();
+            a.StrokeThickness = this.StrokeThickness;
         }
     }
 }
