@@ -392,9 +392,6 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Examples\BindingDemo\WorldPopulation.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\AnnotationDemo.png" />
   </ItemGroup>
   <ItemGroup>
