@@ -36,6 +36,8 @@ namespace ExampleLibrary
     using System.IO;
     using System.Reflection;
     using System.Threading;
+    using System.Xml;
+    using System.Xml.Serialization;
 
     using OxyPlot;
     using OxyPlot.Annotations;
@@ -254,11 +256,8 @@ namespace ExampleLibrary
                 Title = "Train schedule",
                 Subtitle = "Bergensbanen (Oslo-Bergen, Norway)",
                 IsLegendVisible = false,
-                PlotAreaBorderThickness
-                    = 0,
-                PlotMargins =
-                    new OxyThickness(
-                    60, 4, 60, 40)
+                PlotAreaBorderThickness = 0,
+                PlotMargins = new OxyThickness(60, 4, 60, 40)
             };
             model.Axes.Add(
                 new LinearAxis
@@ -276,55 +275,19 @@ namespace ExampleLibrary
                     Position = AxisPosition.Bottom,
                     Minimum = 0,
                     Maximum = TimeSpanAxis.ToDouble(TimeSpan.FromHours(24)),
-                    StringFormat
-                        = "hh",
-                    Title =
-                        "Time",
-                    MajorStep =
-                        TimeSpanAxis
-                        .ToDouble
-                        (
-                            TimeSpan
-                        .FromHours
-                        (1)),
-                    MinorStep =
-                        TimeSpanAxis
-                        .ToDouble
-                        (
-                            TimeSpan
-                        .FromMinutes
-                        (10)),
-                    TickStyle =
-                        TickStyle
-                        .None,
-                    MajorGridlineStyle
-                        =
-                        LineStyle
-                        .Solid,
-                    MajorGridlineColor
-                        =
-                        OxyColors
-                        .LightGray,
-                    MinorGridlineStyle
-                        =
-                        LineStyle
-                        .Solid,
-                    MinorGridlineColor
-                        =
-                        OxyColor
-                        .FromArgb
-                        (
-                            255,
-                            240,
-                            240,
-                            240)
+                    StringFormat = "hh",
+                    Title = "Time",
+                    MajorStep = TimeSpanAxis.ToDouble(TimeSpan.FromHours(1)),
+                    MinorStep = TimeSpanAxis.ToDouble(TimeSpan.FromMinutes(10)),
+                    TickStyle = TickStyle.None,
+                    MajorGridlineStyle = LineStyle.Solid,
+                    MajorGridlineColor = OxyColors.LightGray,
+                    MinorGridlineStyle = LineStyle.Solid,
+                    MinorGridlineColor = OxyColor.FromArgb(255, 240, 240, 240)
                 });
 
             // Read the train schedule from a .csv resource
-            using (
-                var stream =
-                    Assembly.GetExecutingAssembly()
-                            .GetManifestResourceStream("ExampleLibrary.Resources.Bergensbanen.csv"))
+            using (var stream = GetResourceStream("Bergensbanen.csv"))
             {
                 using (var reader = new StreamReader(stream))
                 {
@@ -443,6 +406,23 @@ namespace ExampleLibrary
                 }
             }
 
+            return model;
+        }
+
+        [Example("World population")]
+        public static PlotModel WorldPopulation()
+        {
+            WorldPopulationDataSet dataSet;
+            using (var stream = GetResourceStream("WorldPopulation.xml"))
+            {
+                var serializer = new XmlSerializer(typeof(WorldPopulationDataSet));
+                dataSet = (WorldPopulationDataSet)serializer.Deserialize(stream);
+            }
+
+            var model = new PlotModel { Title = "World population" };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "millions" });
+            var series1 = new LineSeries { ItemsSource = dataSet.Items, DataFieldX = "Year", DataFieldY = "Population", StrokeThickness = 3, MarkerType = MarkerType.Circle };
+            model.Series.Add(series1);
             return model;
         }
 
@@ -2209,6 +2189,16 @@ namespace ExampleLibrary
         }
 
         /// <summary>
+        /// Gets the stream for the specified embedded resource.
+        /// </summary>
+        /// <param name="name">The name of the resource.</param>
+        /// <returns>A stream.</returns>
+        private static Stream GetResourceStream(string name)
+        {
+            return Assembly.GetExecutingAssembly().GetManifestResourceStream("ExampleLibrary.Resources." + name);
+        }
+
+        /// <summary>
         /// Renders the Mandelbrot set as an image inside the current plot area.
         /// </summary>
         public class MandelbrotSetSeries : XYAxisSeries
@@ -2393,6 +2383,23 @@ namespace ExampleLibrary
                 }
 
                 return iteration;
+            }
+        }
+
+        [XmlRoot("DataSet")]
+        [XmlInclude(typeof(Data))]
+        public class WorldPopulationDataSet
+        {
+            [XmlElement("Data")]
+            public List<Data> Items { get; set; }
+
+            public class Data
+            {
+                [XmlAttribute("Year")]
+                public int Year { get; set; }
+
+                [XmlAttribute("Population")]
+                public double Population { get; set; }
             }
         }
     }

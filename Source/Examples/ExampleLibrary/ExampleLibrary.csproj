@@ -102,12 +102,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Bergensbanen.csv" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Resources\OxyPlot.png" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Resources\west0479.mtx" />
+    <EmbeddedResource Include="Resources\WorldPopulation.xml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\OxyPlot\OxyPlot.csproj">
