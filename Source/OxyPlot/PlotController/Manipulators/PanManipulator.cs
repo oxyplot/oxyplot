@@ -38,9 +38,9 @@ namespace OxyPlot
         /// <summary>
         /// Initializes a new instance of the <see cref="PanManipulator" /> class.
         /// </summary>
-        /// <param name="plotControl">The plot control.</param>
-        public PanManipulator(IPlotView plotControl)
-            : base(plotControl)
+        /// <param name="plotView">The plot view.</param>
+        public PanManipulator(IPlotView plotView)
+            : base(plotView)
         {
         }
 
@@ -66,7 +66,7 @@ namespace OxyPlot
                 this.YAxis.Pan(this.PreviousPosition, e.Position);
             }
 
-            this.PlotControl.InvalidatePlot(false);
+            this.PlotView.InvalidatePlot(false);
             this.PreviousPosition = e.Position;
         }
 

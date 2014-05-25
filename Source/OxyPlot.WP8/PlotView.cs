@@ -868,7 +868,7 @@ namespace OxyPlot.WP8
             {
                 if (this.currentModel != null)
                 {
-                    ((IPlotModel)this.currentModel).AttachPlotControl(null);
+                    ((IPlotModel)this.currentModel).AttachPlotView(null);
                     this.currentModel = null;
                 }
 
@@ -876,13 +876,13 @@ namespace OxyPlot.WP8
 
                 if (this.currentModel != null)
                 {
-                    if (this.currentModel.PlotControl != null)
+                    if (this.currentModel.PlotView != null)
                     {
                         throw new InvalidOperationException(
                             "This PlotModel is already in use by some other PlotView control.");
                     }
 
-                    ((IPlotModel)this.currentModel).AttachPlotControl(this);
+                    ((IPlotModel)this.currentModel).AttachPlotView(this);
                 }
             }
 

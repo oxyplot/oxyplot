@@ -824,19 +824,19 @@ namespace OxyPlot.Metro
             {
                 if (this.currentModel != null)
                 {
-                    ((IPlotModel)this.currentModel).AttachPlotControl(null);
+                    ((IPlotModel)this.currentModel).AttachPlotView(null);
                     this.currentModel = null;
                 }
 
                 if (this.Model != null)
                 {
-                    if (this.Model.PlotControl != null)
+                    if (this.Model.PlotView != null)
                     {
                         throw new InvalidOperationException(
                             "This PlotModel is already in use by some other PlotView control.");
                     }
 
-                    ((IPlotModel)this.Model).AttachPlotControl(this);
+                    ((IPlotModel)this.Model).AttachPlotView(this);
                     this.currentModel = this.Model;
                 }
             }

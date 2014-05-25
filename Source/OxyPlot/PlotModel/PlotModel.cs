@@ -217,9 +217,9 @@ namespace OxyPlot
     public partial class PlotModel : Model, IPlotModel
     {
         /// <summary>
-        /// The plot control that renders this plot.
+        /// The plot view that renders this plot.
         /// </summary>
-        private WeakReference plotControlReference;
+        private WeakReference plotViewReference;
 
         /// <summary>
         /// The current color index.
@@ -367,15 +367,15 @@ namespace OxyPlot
         public OxyThickness ActualPlotMargins { get; private set; }
 
         /// <summary>
-        /// Gets the plot control that renders this plot.
+        /// Gets the plot view that renders this plot.
         /// </summary>
-        /// <value>The plot control.</value>
-        /// <remarks>Only one PlotControl can render the plot at the same time.</remarks>
-        public IPlotView PlotControl
+        /// <value>The plot view.</value>
+        /// <remarks>Only one view can render the plot at the same time.</remarks>
+        public IPlotView PlotView
         {
             get
             {
-                return (this.plotControlReference != null) ? (IPlotView)this.plotControlReference.Target : null;
+                return (this.plotViewReference != null) ? (IPlotView)this.plotViewReference.Target : null;
             }
         }
 
@@ -812,14 +812,14 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Attaches this model to the specified plot control.
+        /// Attaches this model to the specified plot view.
         /// </summary>
-        /// <param name="plotControl">The plot control.</param>
-        /// <remarks>Only one plot control can be attached to the plot model.
-        /// The plot model contains data (e.g. axis scaling) that is only relevant to the current plot control.</remarks>
-        void IPlotModel.AttachPlotControl(IPlotView plotControl)
+        /// <param name="plotView">The plot view.</param>
+        /// <remarks>Only one plot view can be attached to the plot model.
+        /// The plot model contains data (e.g. axis scaling) that is only relevant to the current plot view.</remarks>
+        void IPlotModel.AttachPlotView(IPlotView plotView)
         {
-            this.plotControlReference = (plotControl == null) ? null : new WeakReference(plotControl);
+            this.plotViewReference = (plotView == null) ? null : new WeakReference(plotView);
         }
 
         /// <summary>
@@ -892,13 +892,13 @@ namespace OxyPlot
         /// <param name="updateData">Updates all data sources if set to <c>true</c>.</param>
         public void InvalidatePlot(bool updateData)
         {
-            var plotControl = this.PlotControl;
-            if (plotControl == null)
+            var plotView = this.PlotView;
+            if (plotView == null)
             {
                 return;
             }
 
-            plotControl.InvalidatePlot(updateData);
+            plotView.InvalidatePlot(updateData);
         }
 
         /// <summary>

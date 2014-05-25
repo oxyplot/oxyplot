@@ -43,9 +43,9 @@ namespace OxyPlot
         /// <summary>
         /// Initializes a new instance of the <see cref="TouchManipulator" /> class.
         /// </summary>
-        /// <param name="plotControl">The plot control.</param>
-        public TouchManipulator(IPlotView plotControl)
-            : base(plotControl)
+        /// <param name="plotView">The plot view.</param>
+        public TouchManipulator(IPlotView plotView)
+            : base(plotView)
         {
         }
 
@@ -81,7 +81,7 @@ namespace OxyPlot
                 this.YAxis.ZoomAt(e.DeltaScale.Y, current.Y);
             }
 
-            this.PlotControl.InvalidatePlot(false);
+            this.PlotView.InvalidatePlot(false);
 
             this.previousPosition = newPosition;
         }
