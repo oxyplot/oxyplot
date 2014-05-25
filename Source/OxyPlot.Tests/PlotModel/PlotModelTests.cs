@@ -53,6 +53,11 @@ namespace OxyPlot.Tests
         {
             foreach (var example in Examples.GetList())
             {
+                if (example.PlotModel == null)
+                {
+                    continue;
+                }
+
                 example.PlotModel.Update();
             }
         }

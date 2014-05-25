@@ -27,8 +27,10 @@
 
 namespace OxyPlot.Tests
 {
+    using System;
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
+    using System.Xml.XPath;
 
     using ExampleLibrary;
     using NUnit.Framework;
@@ -53,10 +55,22 @@ namespace OxyPlot.Tests
 
             foreach (var example in Examples.GetList())
             {
+                if (example.PlotModel == null)
+                {
+                    continue;
+                }
+
                 var path = Path.Combine(DestinationDirectory, StringHelper.CreateValidFileName(example.Category + " - " + example.Title, ".pdf"));
                 using (var s = File.Create(path))
                 {
-                    PdfExporter.Export(example.PlotModel, s, Width, Height);
+                    try
+                    {
+                        PdfExporter.Export(example.PlotModel, s, Width, Height);
+                    }
+                    catch (Exception ex)
+                    {
+                        Assert.Fail("Exception in " + example.Title + ":" + ex.Message);
+                    }
                 }
 
                 Assert.IsTrue(File.Exists(path));

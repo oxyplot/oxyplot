@@ -62,6 +62,11 @@ namespace OxyPlot.Wpf.Tests
 
             foreach (var example in ExampleLibrary.Examples.GetList())
             {
+                if (example.PlotModel == null)
+                {
+                    continue;
+                }
+
                 var baselinePath = Path.Combine(
                     BaselineDirectory,
                     StringHelper.CreateValidFileName(example.Category + " - " + example.Title, ".png"));
