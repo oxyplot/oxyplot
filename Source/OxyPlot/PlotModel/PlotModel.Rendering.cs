@@ -48,7 +48,18 @@ namespace OxyPlot
         /// <param name="rc">The rendering context.</param>
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
-        public virtual void Render(IRenderContext rc, double width, double height)
+        void IPlotModel.Render(IRenderContext rc, double width, double height)
+        {
+            this.RenderOverride(rc, width, height);
+        }
+
+        /// <summary>
+        /// Renders the plot with the specified rendering context.
+        /// </summary>
+        /// <param name="rc">The rendering context.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        protected virtual void RenderOverride(IRenderContext rc, double width, double height)
         {
             lock (this.SyncRoot)
             {

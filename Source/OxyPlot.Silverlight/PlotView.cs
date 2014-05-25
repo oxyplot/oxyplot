@@ -907,7 +907,7 @@ namespace OxyPlot.Silverlight
         {
             if (this.ActualModel != null)
             {
-                this.ActualModel.Update(updateData);
+                ((IPlotModel)this.ActualModel).Update(updateData);
             }
         }
 
@@ -935,7 +935,7 @@ namespace OxyPlot.Silverlight
 
             if (this.ActualModel != null)
             {
-                this.ActualModel.Render(this.renderContext, this.canvas.ActualWidth, this.canvas.ActualHeight);
+                ((IPlotModel)this.ActualModel).Render(this.renderContext, this.canvas.ActualWidth, this.canvas.ActualHeight);
             }
         }
 

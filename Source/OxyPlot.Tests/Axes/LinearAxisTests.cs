@@ -140,7 +140,7 @@ namespace OxyPlot.Tests
                     StringFormat = "0.###"
                 };
                 model.Axes.Add(axis);
-                model.Update();
+                ((IPlotModel)model).Update(true);
                 Assert.AreEqual("1.273π", axis.FormatValue(4));
             }
         }

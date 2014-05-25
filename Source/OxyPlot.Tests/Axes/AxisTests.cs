@@ -415,7 +415,7 @@ namespace OxyPlot.Tests
         {
             var plot = new PlotModel { Title = "Simple plot" };
             plot.Axes.Add(new LinearAxis { AbsoluteMaximum = 0, AbsoluteMinimum = 0 });
-            Assert.Throws<InvalidOperationException>(() => plot.Update());
+            Assert.Throws<InvalidOperationException>(() => ((IPlotModel)plot).Update(true));
         }
 
         [Test]
@@ -423,7 +423,7 @@ namespace OxyPlot.Tests
         {
             var plot = new PlotModel { Title = "Simple plot" };
             plot.Axes.Add(new LinearAxis { Maximum = 0, Minimum = 0 });
-            plot.Update();
+            ((IPlotModel)plot).Update(true);
             Assert.AreEqual(100, plot.Axes[0].ActualMaximum);
             Assert.AreEqual(0, plot.Axes[0].ActualMinimum);
         }
@@ -433,7 +433,7 @@ namespace OxyPlot.Tests
         {
             var plot = new PlotModel { Title = "Simple plot" };
             plot.Axes.Add(new LogarithmicAxis { Maximum = 1, Minimum = 1 });
-            plot.Update();
+            ((IPlotModel)plot).Update(true);
             Assert.AreEqual(100, plot.Axes[0].ActualMaximum);
             Assert.AreEqual(1, plot.Axes[0].ActualMinimum);
         }
@@ -443,7 +443,7 @@ namespace OxyPlot.Tests
         {
             var plot = new PlotModel { Title = "Simple plot" };
             plot.Axes.Add(new LogarithmicAxis { Maximum = 1, Minimum = 0 });
-            plot.Update();
+            ((IPlotModel)plot).Update(true);
             Assert.AreEqual(100, plot.Axes[0].ActualMaximum);
             Assert.AreEqual(1, plot.Axes[0].ActualMinimum);
         }
