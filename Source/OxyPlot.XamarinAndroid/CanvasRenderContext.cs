@@ -172,7 +172,7 @@ namespace OxyPlot.XamarinAndroid
             {
                 this.path.Reset();
                 {
-                    this.SetPath (points, aliased);
+                    this.SetPath(points, aliased);
                     this.SetStroke(stroke, thickness, dashArray, lineJoin, aliased);
                     this.canvas.DrawPath(this.path, this.paint);
                 }
@@ -195,17 +195,23 @@ namespace OxyPlot.XamarinAndroid
             {
                 this.SetStroke(stroke, thickness, dashArray, lineJoin, aliased);
                 this.pts.Clear();
-                if (aliased) {
-                    foreach (var p in points) {
-                        this.pts.Add (this.ConvertAliased (p.X));
-                        this.pts.Add (this.ConvertAliased (p.Y));
+                if (aliased)
+                {
+                    foreach (var p in points)
+                    {
+                        this.pts.Add(this.ConvertAliased(p.X));
+                        this.pts.Add(this.ConvertAliased(p.Y));
                     }
-                } else {
-                    foreach (var p in points) {
-                        this.pts.Add (this.Convert (p.X));
-                        this.pts.Add (this.Convert (p.Y));
+                }
+                else
+                {
+                    foreach (var p in points)
+                    {
+                        this.pts.Add(this.Convert(p.X));
+                        this.pts.Add(this.Convert(p.Y));
                     }
-                     }
+                }
+
                 this.canvas.DrawLines(this.pts.ToArray(), this.paint);
             }
         }
@@ -226,8 +232,8 @@ namespace OxyPlot.XamarinAndroid
             {
                 this.path.Reset();
                 {
-                    this.SetPath (points, aliased);
-                    this.path.Close ();
+                    this.SetPath(points, aliased);
+                    this.path.Close();
 
                     if (fill.IsVisible())
                     {
@@ -258,13 +264,13 @@ namespace OxyPlot.XamarinAndroid
                 if (fill.IsVisible())
                 {
                     this.SetFill(fill);
-                    this.canvas.DrawRect(this.ConvertAliased(rect.Left ), this.ConvertAliased(rect.Top), this.ConvertAliased(rect.Right),this.ConvertAliased(rect.Bottom), this.paint);
+                    this.canvas.DrawRect(this.ConvertAliased(rect.Left), this.ConvertAliased(rect.Top), this.ConvertAliased(rect.Right), this.ConvertAliased(rect.Bottom), this.paint);
                 }
 
                 if (stroke.IsVisible())
                 {
                     this.SetStroke(stroke, thickness, aliased: true);
-                    this.canvas.DrawRect(this.ConvertAliased(rect.Left ), this.ConvertAliased(rect.Top), this.ConvertAliased(rect.Right),this.ConvertAliased(rect.Bottom), this.paint);
+                    this.canvas.DrawRect(this.ConvertAliased(rect.Left), this.ConvertAliased(rect.Top), this.ConvertAliased(rect.Right), this.ConvertAliased(rect.Bottom), this.paint);
                 }
             }
         }
@@ -295,8 +301,8 @@ namespace OxyPlot.XamarinAndroid
                 if (maxSize.HasValue || halign != HorizontalAlignment.Left || valign != VerticalAlignment.Bottom)
                 {
                     this.paint.GetTextBounds(text, 0, text.Length, this.bounds);
-                    width = bounds.Width();
-                    height = bounds.Height();
+                    width = this.bounds.Width();
+                    height = this.bounds.Height();
                 }
                 else
                 {
@@ -305,8 +311,8 @@ namespace OxyPlot.XamarinAndroid
 
                 if (maxSize.HasValue)
                 {
-                    var maxWidth = this.Convert (maxSize.Value.Width);
-                    var maxHeight = this.Convert (maxSize.Value.Height);
+                    var maxWidth = this.Convert(maxSize.Value.Width);
+                    var maxHeight = this.Convert(maxSize.Value.Height);
 
                     if (width > maxWidth)
                     {
@@ -329,7 +335,7 @@ namespace OxyPlot.XamarinAndroid
 
                 if (maxSize.HasValue)
                 {
-                    this.canvas.ClipRect (0, -height, this.Convert(maxSize.Value.Width), 0);
+                    this.canvas.ClipRect(0, -height, this.Convert(maxSize.Value.Width), 0);
                 }
 
                 this.canvas.DrawText(text, 0, 0, this.paint);
@@ -445,7 +451,8 @@ namespace OxyPlot.XamarinAndroid
         /// </summary>
         /// <param name="x">The coordinate to convert.</param>
         /// <returns>The converted coordinate.</returns>
-        private float Convert(double x) {
+        private float Convert(double x)
+        {
             return (float)(x * this.Scale);
         }
 
@@ -454,9 +461,9 @@ namespace OxyPlot.XamarinAndroid
         /// </summary>
         /// <param name="rect">The rectangle to convert.</param>
         /// <returns>The converted rectangle.</returns>
-        private RectF Convert(OxyRect rect) {
+        private RectF Convert(OxyRect rect)
+        {
             return new RectF(this.ConvertAliased(rect.Left), this.ConvertAliased(rect.Top), this.ConvertAliased(rect.Right), this.ConvertAliased(rect.Bottom));
-
         }
 
         /// <summary>
@@ -464,7 +471,8 @@ namespace OxyPlot.XamarinAndroid
         /// </summary>
         /// <param name="x">The coordinate to convert.</param>
         /// <returns>The converted coordinate.</returns>
-        private float ConvertAliased(double x) {
+        private float ConvertAliased(double x)
+        {
             return (int)(x * this.Scale) + 0.5f;
         }
 
@@ -473,14 +481,18 @@ namespace OxyPlot.XamarinAndroid
         /// </summary>
         /// <param name="points">The points defining the path.</param>
         /// <param name="aliased">If set to <c>true</c> aliased.</param>
-        private void SetPath(IList<ScreenPoint> points, bool aliased){
-            if (aliased) {
+        private void SetPath(IList<ScreenPoint> points, bool aliased)
+        {
+            if (aliased)
+            {
                 this.path.MoveTo(this.ConvertAliased(points[0].X), this.ConvertAliased(points[0].Y));
                 for (int i = 1; i < points.Count; i++)
                 {
                     this.path.LineTo(this.ConvertAliased(points[i].X), this.ConvertAliased(points[i].Y));
                 }
-            } else {
+            }
+            else
+            {
                 this.path.MoveTo(this.Convert(points[0].X), this.Convert(points[0].Y));
                 for (int i = 1; i < points.Count; i++)
                 {
