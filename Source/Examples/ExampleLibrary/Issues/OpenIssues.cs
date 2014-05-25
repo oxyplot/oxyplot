@@ -131,7 +131,7 @@ namespace ExampleLibrary
                 LegendPlacement = LegendPlacement.Outside,
                 PlotAreaBackground = OxyColors.Gray,
                 PlotAreaBorderColor = OxyColors.Gainsboro,
-                PlotAreaBorderThickness = 2,
+                PlotAreaBorderThickness = new OxyThickness(2),
                 Title = "Value / Time"
             };
             var linearAxis1 = new LinearAxis

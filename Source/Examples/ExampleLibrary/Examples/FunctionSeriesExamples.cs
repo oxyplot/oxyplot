@@ -149,9 +149,12 @@ namespace ExampleLibrary
         {
             // http://en.wikipedia.org/wiki/Rose_curve
 
-            var m = new PlotModel { Title = "Rose curve" };
-            m.PlotType = PlotType.Polar;
-            m.PlotAreaBorderThickness = 0;
+            var m = new PlotModel
+                        {
+                            Title = "Rose curve",
+                            PlotType = PlotType.Polar,
+                            PlotAreaBorderThickness = new OxyThickness(0)
+                        };
 
             m.Axes.Add(new AngleAxis
             {

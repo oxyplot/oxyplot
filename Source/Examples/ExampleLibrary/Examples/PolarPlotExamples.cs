@@ -44,7 +44,7 @@ namespace ExampleLibrary
                 Title = "Polar plot",
                 Subtitle = "Archimedean spiral with equation r(θ) = θ for 0 < θ < 6π",
                 PlotType = PlotType.Polar,
-                PlotAreaBorderThickness = 0,
+                PlotAreaBorderThickness = new OxyThickness(0),
                 PlotMargins = new OxyThickness(60, 20, 4, 40)
             };
             model.Axes.Add(
@@ -98,7 +98,7 @@ namespace ExampleLibrary
             {
                 Title = "Offset angle axis",
                 PlotType = PlotType.Polar,
-                PlotAreaBorderThickness = 0,
+                PlotAreaBorderThickness = new OxyThickness(0),
                 PlotMargins = new OxyThickness(60, 20, 4, 40)
             };
 
@@ -151,7 +151,7 @@ namespace ExampleLibrary
             {
                 Title = "Semi-circle polar plot",
                 PlotType = PlotType.Polar,
-                PlotAreaBorderThickness = 0,
+                PlotAreaBorderThickness = new OxyThickness(0),
                 PlotMargins = new OxyThickness(60, 20, 4, 40)
             };
             model.Axes.Add(
@@ -185,7 +185,7 @@ namespace ExampleLibrary
                 Title = "Semi-circle polar plot",
                 Subtitle = "Angle axis range offset to -180 - 180",
                 PlotType = PlotType.Polar,
-                PlotAreaBorderThickness = 0,
+                PlotAreaBorderThickness = new OxyThickness(0),
                 PlotMargins = new OxyThickness(60, 20, 4, 40)
             };
             model.Axes.Add(
@@ -222,7 +222,7 @@ namespace ExampleLibrary
             {
                 Title = "East/west directions",
                 PlotType = PlotType.Polar,
-                PlotAreaBorderThickness = 0,
+                PlotAreaBorderThickness = new OxyThickness(0),
                 PlotMargins = new OxyThickness(60, 20, 4, 40)
             };
             model.Axes.Add(

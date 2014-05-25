@@ -259,7 +259,7 @@ namespace OxyPlot
             this.TitlePadding = 6;
 
             this.PlotAreaBorderColor = OxyColors.Black;
-            this.PlotAreaBorderThickness = 1;
+            this.PlotAreaBorderThickness = new OxyThickness(1);
 
             this.IsLegendVisible = true;
             this.LegendTitleFont = null;
@@ -637,7 +637,7 @@ namespace OxyPlot
         /// Gets or sets the thickness of the border around the plot area.
         /// </summary>
         /// <value>The box thickness.</value>
-        public double PlotAreaBorderThickness { get; set; }
+        public OxyThickness PlotAreaBorderThickness { get; set; }
 
         /// <summary>
         /// Gets or sets the margins around the plot (this should be large enough to fit the axes).

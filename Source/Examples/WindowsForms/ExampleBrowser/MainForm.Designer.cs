@@ -109,7 +109,7 @@ namespace ExampleBrowser
             plotModel1.LegendTitleFontWeight = 700D;
             plotModel1.PlotAreaBackground = OxyColors.Undefined;
             plotModel1.PlotAreaBorderColor = OxyColors.Undefined;
-            plotModel1.PlotAreaBorderThickness = 1D;
+            plotModel1.PlotAreaBorderThickness = new OxyThickness(1);
             plotModel1.PlotType = OxyPlot.PlotType.XY;
             plotModel1.SelectionColor = OxyColors.Undefined;
             plotModel1.Subtitle = null;

@@ -380,7 +380,7 @@ namespace ExampleLibrary
         public static PlotModel LineLegendPositionAtEnd()
         {
             // http://www.perceptualedge.com/example2.php
-            var model = new PlotModel { Title = "Average (Mean) monthly temperatures in 2003", PlotMargins = new OxyThickness(60, 4, 60, 40), PlotAreaBorderThickness = 0, IsLegendVisible = false };
+            var model = new PlotModel { Title = "Average (Mean) monthly temperatures in 2003", PlotMargins = new OxyThickness(60, 4, 60, 40), PlotAreaBorderThickness = new OxyThickness(0), IsLegendVisible = false };
             var phoenix = new LineSeries { Title = "Phoenix", LineLegendPosition = LineLegendPosition.End };
             var raleigh = new LineSeries { Title = "Raleigh", LineLegendPosition = LineLegendPosition.End };
             var minneapolis = new LineSeries { Title = "Minneapolis", LineLegendPosition = LineLegendPosition.End };

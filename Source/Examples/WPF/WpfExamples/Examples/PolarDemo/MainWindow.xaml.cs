@@ -103,7 +103,7 @@ namespace PolarDemo
                 Subtitle = "Archimedean spiral with equation r(θ) = θ for 0 < θ < 6π",
                 PlotType = PlotType.Polar,
                 PlotMargins = new OxyThickness(20, 20, 4, 40),
-                PlotAreaBorderThickness = 0
+                PlotAreaBorderThickness = new OxyThickness(0)
             };
             model.Axes.Add(
                 new AngleAxis

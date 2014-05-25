@@ -192,7 +192,7 @@ namespace ExampleLibrary
             var plotModel1 = new PlotModel
             {
                 Title = "PositionAtZeroCrossing = true",
-                PlotAreaBorderThickness = 0,
+                PlotAreaBorderThickness = new OxyThickness(0),
                 PlotMargins = new OxyThickness(10, 10, 10, 10)
             };
             plotModel1.Axes.Add(new LinearAxis
@@ -702,7 +702,7 @@ namespace ExampleLibrary
                 Background = OxyColors.Silver,
                 PlotAreaBackground = OxyColors.Gray,
                 PlotAreaBorderColor = OxyColors.Black,
-                PlotAreaBorderThickness = 3
+                PlotAreaBorderThickness = new OxyThickness(3)
             };
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });

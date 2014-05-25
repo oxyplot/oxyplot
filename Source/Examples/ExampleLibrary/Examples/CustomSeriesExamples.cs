@@ -137,7 +137,7 @@ namespace ExampleLibrary
         [Example("PolarHeatMap")]
         public static PlotModel PolarHeatMap()
         {
-            var model = new PlotModel { Title = "Polar heat map", PlotMargins = new OxyThickness(40, 80, 40, 40), PlotType = PlotType.Polar, PlotAreaBorderThickness = 0 };
+            var model = new PlotModel { Title = "Polar heat map", PlotMargins = new OxyThickness(40, 80, 40, 40), PlotType = PlotType.Polar, PlotAreaBorderThickness = new OxyThickness(0) };
 
             var matrix = new double[2, 2];
             matrix[0, 0] = 0;

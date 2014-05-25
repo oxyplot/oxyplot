@@ -373,7 +373,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty PlotAreaBorderThicknessProperty =
             DependencyProperty.Register(
-                "PlotAreaBorderThickness", typeof(double), typeof(PlotView), new PropertyMetadata(1.0, AppearanceChanged));
+                "PlotAreaBorderThickness", typeof(Thickness), typeof(PlotView), new PropertyMetadata(new Thickness(1.0), AppearanceChanged));
 
         /// <summary>
         /// Identifies the <see cref="PlotMargins"/> dependency property.
@@ -1200,11 +1200,11 @@ namespace OxyPlot.Wpf
         /// Gets or sets the thickness of the PlotView area border.
         /// </summary>
         /// <value>The thickness of the PlotView area border.</value>
-        public double PlotAreaBorderThickness
+        public Thickness PlotAreaBorderThickness
         {
             get
             {
-                return (double)this.GetValue(PlotAreaBorderThicknessProperty);
+                return (Thickness)this.GetValue(PlotAreaBorderThicknessProperty);
             }
 
             set

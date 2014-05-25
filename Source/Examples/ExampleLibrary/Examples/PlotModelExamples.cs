@@ -146,5 +146,50 @@ namespace ExampleLibrary
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, TicklineColor = OxyColors.White });
             return model;
         }
+
+        [Example("PlotAreaBorderThickness = 2")]
+        public static PlotModel PlotAreaBorderThickness2()
+        {
+            var model = new PlotModel { Title = "PlotAreaBorderThickness = 2", PlotAreaBorderThickness = new OxyThickness(2) };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+            return model;
+        }
+
+        [Example("PlotAreaBorderThickness = (1,0,0,1)")]
+        public static PlotModel PlotAreaBorderThickness1001()
+        {
+            var model = new PlotModel { Title = "PlotAreaBorderThickness = (1,0,0,1)", PlotAreaBorderThickness = new OxyThickness(1, 0, 0, 1) };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+            return model;
+        }
+
+        [Example("PlotAreaBorderThickness = (4,1,1,4)")]
+        public static PlotModel PlotAreaBorderThickness4114()
+        {
+            var model = new PlotModel { Title = "PlotAreaBorderThickness = (4,1,1,4)", PlotAreaBorderThickness = new OxyThickness(4, 1, 1, 4) };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+            return model;
+        }
+
+        [Example("PlotAreaBorderThickness = 0")]
+        public static PlotModel PlotAreaBorderThickness0()
+        {
+            var model = new PlotModel { Title = "PlotAreaBorderThickness = 0", PlotAreaBorderThickness = new OxyThickness(0) };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+            return model;
+        }
+
+        [Example("PlotAreaBorderThickness / AxisLine")]
+        public static PlotModel PlotAreaBorderThickness0AxisLineThickness1()
+        {
+            var model = new PlotModel { Title = "PlotAreaBorderThickness = 0", Subtitle = "AxislineThickness = 1, AxislineColor = OxyColors.Blue, AxislineStyle = LineStyle.Solid", PlotAreaBorderThickness = new OxyThickness(0) };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, AxislineThickness = 1, AxislineColor = OxyColors.Blue, AxislineStyle = LineStyle.Solid });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, AxislineThickness = 1, AxislineColor = OxyColors.Blue, AxislineStyle = LineStyle.Solid });
+            return model;
+        }
     }
 }
