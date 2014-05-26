@@ -1,0 +1,89 @@
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="TextualAnnotation.cs" company="OxyPlot">
+//   The MIT License (MIT)
+//   
+//   Copyright (c) 2014 OxyPlot contributors
+//   
+//   Permission is hereby granted, free of charge, to any person obtaining a
+//   copy of this software and associated documentation files (the
+//   "Software"), to deal in the Software without restriction, including
+//   without limitation the rights to use, copy, modify, merge, publish,
+//   distribute, sublicense, and/or sell copies of the Software, and to
+//   permit persons to whom the Software is furnished to do so, subject to
+//   the following conditions:
+//   
+//   The above copyright notice and this permission notice shall be included
+//   in all copies or substantial portions of the Software.
+//   
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+//   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+//   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+// </copyright>
+// <summary>
+//   Provides an abstract base class for annotations that contains text.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace OxyPlot.Annotations
+{
+    using System;
+
+    /// <summary>
+    /// Provides an abstract base class for annotations that contains text.
+    /// </summary>
+    public abstract class TextualAnnotation : Annotation
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TextualAnnotation"/> class.
+        /// </summary>
+        protected TextualAnnotation()
+        {
+            this.TextHorizontalAlignment = HorizontalAlignment.Center;
+            this.TextVerticalAlignment = VerticalAlignment.Middle;
+            this.TextPosition = DataPoint.Undefined;
+            this.TextRotation = 0;
+        }
+
+        /// <summary>
+        /// Gets or sets the annotation text.
+        /// </summary>
+        /// <value>The text.</value>
+        public string Text { get; set; }
+
+        /// <summary>
+        /// Gets or sets the position of the text.
+        /// </summary>
+        /// <remarks>If the value is <c>DataPoint.Undefined</c>, the default position of the text will be used.</remarks>
+        public DataPoint TextPosition { get; set; }
+
+        /// <summary>
+        /// Gets or sets the horizontal alignment of the text.
+        /// </summary>
+        public HorizontalAlignment TextHorizontalAlignment { get; set; }
+
+        /// <summary>
+        /// Gets or sets the vertical alignment of the text.
+        /// </summary>
+        public VerticalAlignment TextVerticalAlignment { get; set; }
+
+        /// <summary>
+        /// Gets or sets the rotation of the text.
+        /// </summary>
+        /// <value>The text rotation in degrees.</value>
+        public double TextRotation { get; set; }
+
+        /// <summary>
+        /// Gets the actual position of the text.
+        /// </summary>
+        /// <param name="defaultPosition">A function that returns the default position. This is used if <see cref="TextPosition" /> is undefined.</param>
+        /// <returns>The actual position of the text, in screen space.</returns>
+        protected ScreenPoint GetActualTextPosition(Func<ScreenPoint> defaultPosition)
+        {
+            return this.TextPosition.IsDefined() ? this.Transform(this.TextPosition) : defaultPosition();
+        }
+    }
+}

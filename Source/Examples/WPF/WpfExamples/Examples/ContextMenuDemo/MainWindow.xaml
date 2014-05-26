@@ -1,0 +1,11 @@
+﻿<Window x:Class="ContextMenuDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf" Title="ContextMenuDemo" Height="480" Width="640">
+    <oxy:PlotView Model="{Binding Model}">
+        <oxy:PlotView.ContextMenu>
+            <ContextMenu>
+                <MenuItem Header="Reset" Command="{Binding ResetCommand}"></MenuItem>
+            </ContextMenu>
+        </oxy:PlotView.ContextMenu>
+    </oxy:PlotView>
+</Window>

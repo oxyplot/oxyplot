@@ -1,0 +1,12 @@
+﻿<Window x:Class="RealtimeDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf" xmlns:pt="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf" Title="RealtimeDemo" Height="480" Width="640">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <pt:EnumMenuItem Header="Simulation type" SelectedValue="{Binding SimulationType}"/>
+        </Menu>
+        <TextBlock DockPanel.Dock="Bottom" Margin="8" Text="{Binding TotalNumberOfPoints, StringFormat='Total number of data points: {0}'}"/>
+        <oxy:PlotView x:Name="plot1" Model="{Binding PlotModel}"/>
+    </DockPanel>
+</Window>

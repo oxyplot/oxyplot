@@ -1,0 +1,12 @@
+﻿<Window x:Class="RefreshDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="RefreshDemo" Height="480" Width="640">
+    <StackPanel>
+        <Button Content="Refresh by changing the Model property of the Plot control" Click="RefreshMethod1_Click"/>
+        <Button Content="Refresh by calling InvalidatePlot on the Plot control" Click="RefreshMethod2_Click"/>
+        <Button Content="Refresh by calling InvalidatePlot on the PlotModel" Click="RefreshMethod3_Click"/>
+        <Button Content="Refresh by calling InvalidatePlot on the PlotModel from a non-UI thread" Click="RefreshMethod4_Click"/>
+        <Button Content="Refresh by changing InvalidateFlag on the Plot from a non-UI thread" Click="RefreshMethod6_Click"/>
+    </StackPanel>
+</Window>

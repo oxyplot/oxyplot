@@ -1,0 +1,69 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:OxyPlot.WP8">
+
+    <local:ThicknessConverter x:Key="ThicknessConverter" />
+
+    <Style TargetType="local:TrackerControl">
+        <Setter Property="Background" Value="#E0FFFFA0" />
+        <Setter Property="BorderBrush" Value="Black" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="LineStroke" Value="#80000000" />
+        <Setter Property="HorizontalLineVisibility" Value="Visible" />
+        <Setter Property="VerticalLineVisibility" Value="Visible" />
+        <Setter Property="Distance" Value="7" />
+        <Setter Property="CornerRadius" Value="0" />
+        <Setter Property="ShowPointer" Value="true" />
+        <Setter Property="CanCenterHorizontally" Value="true" />
+        <Setter Property="CanCenterVertically" Value="true" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:TrackerControl">
+                    <Canvas HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                        <Line x:Name="PART_HorizontalLine" Visibility="{TemplateBinding HorizontalLineVisibility}"
+                  Stroke="{TemplateBinding LineStroke}" StrokeDashArray="{TemplateBinding LineDashArray}" />
+                        <Line x:Name="PART_VerticalLine" Visibility="{TemplateBinding VerticalLineVisibility}"
+                  Stroke="{TemplateBinding LineStroke}" StrokeDashArray="{TemplateBinding LineDashArray}" />
+                        <Grid x:Name="PART_ContentContainer">
+                            <Path x:Name="PART_Path" Fill="{TemplateBinding Background}" Stroke="{TemplateBinding BorderBrush}"
+                    StrokeThickness="{Binding BorderThickness, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource ThicknessConverter}}" />
+                            <ContentPresenter x:Name="PART_Content" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Grid>
+                    </Canvas>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="local:PlotView">
+        <Setter Property="Background" Value="White" />
+        <Setter Property="DefaultTrackerTemplate">
+            <Setter.Value>
+                <ControlTemplate>
+                    <local:TrackerControl Position="{Binding Position}" LineExtents="{Binding PlotModel.PlotArea}">
+                        <local:TrackerControl.Content>
+                            <TextBlock Text="{Binding}" Margin="7" />
+                        </local:TrackerControl.Content>
+                    </local:TrackerControl>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ZoomRectangleTemplate">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Rectangle Fill="#40FFFF00" Stroke="Black" StrokeDashArray="3,1" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:PlotView">
+                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}">
+                        <!-- Don't set CacheMode="BitmapCache" as this makes the text look ugly -->
+                        <Grid x:Name="PART_Grid" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

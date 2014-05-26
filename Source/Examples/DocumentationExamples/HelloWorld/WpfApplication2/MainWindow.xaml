@@ -1,0 +1,16 @@
+﻿<Window x:Class="WpfApplication2.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:oxy="http://oxyplot.codeplex.com"
+        xmlns:local="clr-namespace:WpfApplication2"
+        Title="Example 2 (WPF)" Height="350" Width="525">
+    <Window.DataContext>
+        <local:MainViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <oxy:PlotView Title="{Binding Title}">
+            <oxy:PlotView.Series>
+                <oxy:LineSeries ItemsSource="{Binding Points}"/>
+            </oxy:PlotView.Series>
+        </oxy:PlotView>
+    </Grid>
+</Window>

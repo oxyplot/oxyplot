@@ -1,0 +1,129 @@
+﻿<Window x:Class="ExampleBrowser.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf" 
+        Title="OxyPlot.WPF Example Browser"
+        Height="720" Width="1280" Icon="OxyPlot_64.png">
+    <Window.Resources>
+        <SolidColorBrush x:Key="HotItemBackground" Color="#e6f3f7"/>
+        <SolidColorBrush x:Key="SelectedItemBorder" Color="#6dbdd1"/>
+        <SolidColorBrush x:Key="SelectedItemBackground" Color="#cbe6ef"/>
+        <SolidColorBrush x:Key="NormalItemBackground" Color="White"/>
+
+        <DrawingBrush x:Key="CheckerBoard" TileMode="Tile" ViewboxUnits="Absolute" Viewbox="0,0,2,2" Viewport="0,0,10,10" ViewportUnits="Absolute">
+            <DrawingBrush.Drawing>
+                <DrawingGroup>
+                    <GeometryDrawing Brush="White">
+                        <GeometryDrawing.Geometry>
+                            <RectangleGeometry Rect="0,0,2,2" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="LightGray">
+                        <GeometryDrawing.Geometry>
+                            <GeometryGroup>
+                                <RectangleGeometry Rect="0,0,1,1" />
+                                <RectangleGeometry Rect="1,1,1,1" />
+                            </GeometryGroup>
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                </DrawingGroup>
+            </DrawingBrush.Drawing>
+        </DrawingBrush>
+
+        <Style x:Key="ListboxItemStyle" TargetType="{x:Type ListBoxItem}">
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="Background" Value="{StaticResource NormalItemBackground}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        <Grid>
+                            <Rectangle Fill="{TemplateBinding Background}" Stroke="{TemplateBinding BorderBrush}" 
+                                       StrokeThickness="{TemplateBinding BorderThickness}" RadiusX="3" RadiusY="3" SnapsToDevicePixels="True"/>
+                            <ContentPresenter Margin="8,5" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsMouseOver" Value="True" />
+                                    <Condition Property="IsSelected" Value="False"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Background" Value="{StaticResource HotItemBackground}" />
+                            </MultiTrigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="{StaticResource SelectedItemBackground}" />
+                                <Setter Property="BorderBrush" Value="{StaticResource SelectedItemBorder}" />
+                                <Setter Property="BorderThickness" Value="1" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Background="#20000000">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <ListBox ItemsSource="{Binding ExamplesView}" ItemContainerStyle="{DynamicResource ListboxItemStyle}" 
+                     SelectedItem="{Binding SelectedExample}" BorderThickness="0,0,0,1">
+                <ListBox.GroupStyle>
+                    <!-- GroupStyle with headers -->
+                    <!--<GroupStyle>
+                        <GroupStyle.HeaderTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock FontWeight="Bold" Text="{Binding Name}" Padding="2 0 8 0"/>
+                                    <TextBlock Text="{Binding ItemCount, StringFormat='({0})'}" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </GroupStyle.HeaderTemplate>
+                    </GroupStyle>-->
+
+                    <!-- GroupStyle with expanders -->
+                    <GroupStyle>
+                        <GroupStyle.ContainerStyle>
+                            <Style TargetType="{x:Type GroupItem}">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate>
+                                            <Expander IsExpanded="False" ExpandDirection="Down">
+                                                <Expander.Header>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock FontWeight="Bold" Text="{Binding Name}" Padding="0 0 8 0"/>
+                                                        <TextBlock Text="{Binding ItemCount, StringFormat='({0})'}"/>
+                                                    </StackPanel>
+                                                </Expander.Header>
+                                                <ItemsPresenter />
+                                            </Expander>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </GroupStyle.ContainerStyle>
+                    </GroupStyle>
+                </ListBox.GroupStyle>
+            </ListBox>
+            <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="8">
+                <CheckBox IsChecked="{Binding MeasureFrameRate}" Content="Measure frame rate"/>
+                <TextBlock Margin="20 0 0 0" Text="{Binding FrameRate, StringFormat='{}{0:0.0} fps'}"/>
+            </StackPanel>
+        </Grid>
+        <TabControl Grid.Column="1" TabStripPlacement="Bottom">
+            <TabItem Header="Plot">
+                <oxy:PlotView x:Name="Plot1" Model="{Binding Model}" Controller="{Binding Controller}"/>
+            </TabItem>
+            <TabItem Header="Code">
+                <TextBox AcceptsReturn="True" FontFamily="Consolas" 
+                         Text="{Binding SelectedExample.Code, Mode=OneWay}" BorderThickness="0"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto"
+                         />
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

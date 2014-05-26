@@ -1,0 +1,8 @@
+﻿<Window x:Class="RefreshDemo.Window2"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:o="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf"
+        Title="Refresh by calling InvalidatePlot on the Plot control" Height="480" Width="640">
+    <Grid>
+        <o:PlotView x:Name="plot1" Model="{Binding PlotModel}"/>
+    </Grid>
+</Window>

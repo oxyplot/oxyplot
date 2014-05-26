@@ -1,0 +1,29 @@
+﻿@syntax owiki
+@title Export to PDF
+@keywords OxyPlot,Export,PDF
+
+== Export to PDF
+
+// TODO //
+
+=== Core Pdf writer
+
+- Simple PDF export is included in OxyPlot core library
+- Limitations (text encoding, fonts, images)
+
+```cs
+using (var stream = File.Create(fileName))
+{
+    var pdfExporter = new PdfExporter();
+    pdfExporter.Export(plotModel, stream, 600, 400);
+}
+```
+
+See also the section about the [PortableDocument] class that can be used to create general PDF files.
+
+=== OxyPlot.Pdf
+
+- based on [http://www.pdfsharp.net|PdfSharp] / [https://silverpdf.codeplex.com|SilverPdf] open-source projects
+- better handling of fonts and images
+
+
