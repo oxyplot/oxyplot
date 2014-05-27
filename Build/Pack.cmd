@@ -50,6 +50,7 @@ mkdir ..\Packages\OxyPlot.Metro\lib\NetCore45
 mkdir ..\Packages\OxyPlot.Metro\lib\NetCore45\OxyPlot.Metro
 mkdir ..\Packages\OxyPlot.Metro\lib\NetCore45\OxyPlot.Metro\Themes
 copy ..\Output\NetCore45\OxyPlot.Metro.??? ..\Packages\OxyPlot.Metro\lib\NetCore45
+copy ..\Output\NetCore45\OxyPlot.Metro.xr.xml ..\Packages\OxyPlot.Metro\lib\NetCore45\OxyPlot.Metro
 copy ..\Output\NetCore45\Themes\Generic.* ..\Packages\OxyPlot.Metro\lib\NetCore45\OxyPlot.Metro\Themes
 copy ..\LICENSE ..\Packages\OxyPlot.Metro
 ..\Source\.nuget\NuGet.exe pack ..\Packages\OxyPlot.Metro\OxyPlot.Metro.nuspec -OutputDirectory ..\Packages >> pack.log
