@@ -72,6 +72,20 @@ copy ..\Output\WP8\OxyPlot.WP8.??? ..\Packages\OxyPlot.WP8\lib\wp80
 copy ..\LICENSE ..\Packages\OxyPlot.WP8
 ..\Source\.nuget\NuGet.exe pack ..\Packages\OxyPlot.WP8\OxyPlot.WP8.nuspec -OutputDirectory ..\Packages >> pack.log
 
+REM === Xamarin.iOS ===
+mkdir ..\Packages\OxyPlot.XamarinIOS\lib
+mkdir ..\Packages\OxyPlot.XamarinIOS\lib\MonoTouch
+copy ..\Output\XamarinIOS\OxyPlot.XamarinIOS.??? ..\Packages\OxyPlot.XamarinIOS\lib\MonoTouch
+copy ..\LICENSE ..\Packages\OxyPlot.XamarinIOS
+..\Source\.nuget\NuGet.exe pack ..\Packages\OxyPlot.XamarinIOS\OxyPlot.XamarinIOS.nuspec -OutputDirectory ..\Packages >> pack.log
+
+REM === Xamarin.Android ===
+mkdir ..\Packages\OxyPlot.XamarinAndroid\lib
+mkdir ..\Packages\OxyPlot.XamarinAndroid\lib\MonoAndroid
+copy ..\Output\XamarinAndroid\OxyPlot.XamarinAndroid.??? ..\Packages\OxyPlot.XamarinAndroid\lib\MonoAndroid
+copy ..\LICENSE ..\Packages\OxyPlot.XamarinAndroid
+..\Source\.nuget\NuGet.exe pack ..\Packages\OxyPlot.XamarinAndroid\OxyPlot.XamarinAndroid.nuspec -OutputDirectory ..\Packages >> pack.log
+
 REM === WINFORMS ===
 mkdir ..\Packages\OxyPlot.WindowsForms\lib
 mkdir ..\Packages\OxyPlot.WindowsForms\lib\NET40
