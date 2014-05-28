@@ -30,27 +30,21 @@
 
 namespace LegendsDemo
 {
-    using System.Windows;
-
     using WpfExamples;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     [Example("Demonstrates legend box capabilities.")]
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
-        MainViewModel vm = new MainViewModel();
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MainWindow"/> class.
+        /// </summary>
         public MainWindow()
         {
             this.InitializeComponent();
-            this.DataContext = this.vm;
-        }
-
-        private void Exit_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
+            this.DataContext = new MainViewModel();
         }
     }
 }
