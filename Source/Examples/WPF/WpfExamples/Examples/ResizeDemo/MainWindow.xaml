@@ -1,0 +1,25 @@
+﻿<Window x:Class="ResizeDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:oxy="http://oxyplot.codeplex.com"
+        Title="ResizeDemo" Height="720" Width="1280">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1.618*"/>
+            <ColumnDefinition Width="2"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <oxy:PlotView Grid.Column="0" Model="{Binding Model1}"/>
+        <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" Background="LightSkyBlue"/>
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1.618*"/>
+                <RowDefinition Height="2"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <oxy:PlotView Model="{Binding Model2}" Grid.Row="0"/>
+            <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" Background="LightSkyBlue"/>
+            <oxy:PlotView Model="{Binding Model3}" Grid.Row="2"/>
+        </Grid>
+    </Grid>
+</Window>
