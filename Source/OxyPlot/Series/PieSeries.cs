@@ -332,7 +332,7 @@ namespace OxyPlot.Series
                         tp0.X + (this.TickRadialLength * Math.Cos(midAngleRadians)),
                         tp0.Y + (this.TickRadialLength * Math.Sin(midAngleRadians)));
                     var tp2 = new ScreenPoint(tp1.X + (this.TickHorizontalLength * sign), tp1.Y);
-                    rc.DrawLine(new[] { tp0, tp1, tp2 }, this.Stroke, this.StrokeThickness, null, OxyPenLineJoin.Bevel);
+                    rc.DrawLine(new[] { tp0, tp1, tp2 }, this.ActualTextColor, 1, null, OxyPenLineJoin.Bevel);
 
                     // label
                     var labelPosition = new ScreenPoint(tp2.X + (this.TickLabelDistance * sign), tp2.Y);
