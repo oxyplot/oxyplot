@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DiscreteDataSeriesExamples.cs" company="OxyPlot">
+// <copyright file="StairStepSeriesExamples.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 OxyPlot contributors
@@ -25,92 +25,81 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using OxyPlot;
-
 namespace ExampleLibrary
 {
+    using System;
+
+    using OxyPlot;
     using OxyPlot.Series;
 
-    [Examples("Discrete Data Series")]
-    public static class DiscreteDataSeriesExamples
+    /// <summary>
+    /// Provides examples for the <see cref="StairStepSeries" />.
+    /// </summary>
+    [Examples("StairStepSeries")]
+    public static class StairStepSeriesExamples
     {
         [Example("StairStepSeries")]
         public static PlotModel StairStepSeries()
         {
-            var model = new PlotModel { Title = "StairStepSeries", LegendSymbolLength = 24 };
-            var s1 = new StairStepSeries
+            return CreateExampleModel(new StairStepSeries());
+        }
+
+        [Example("StairStepSeries with labels")]
+        public static PlotModel StairStepSeriesWithLabels()
+        {
+            return CreateExampleModel(new StairStepSeries { LabelFormatString = "{1:0.00}" });
+        }
+
+        [Example("StairStepSeries with markers")]
+        public static PlotModel StairStepSeriesWithMarkers()
+        {
+            return CreateExampleModel(new StairStepSeries
                          {
-                             Title = "sin(x)",
                              Color = OxyColors.SkyBlue,
                              MarkerType = MarkerType.Circle,
                              MarkerSize = 6,
                              MarkerStroke = OxyColors.White,
                              MarkerFill = OxyColors.SkyBlue,
                              MarkerStrokeThickness = 1.5
-                         };
-            for (double x = 0; x < Math.PI * 2; x += 0.5)
-                s1.Points.Add(new DataPoint(x, Math.Sin(x)));
-            model.Series.Add(s1);
-
-            return model;
+                         });
         }
 
         [Example("StairStepSeries with thin vertical lines")]
         public static PlotModel StairStepSeriesThinVertical()
         {
-            var model = new PlotModel { Title = "StairStepSeries", Subtitle = "With thin vertical lines" };
-            var s1 = new StairStepSeries
+            return CreateExampleModel(new StairStepSeries
             {
-                Title = "sin(x)",
-                Color = OxyColors.SkyBlue,
                 StrokeThickness = 3,
                 VerticalStrokeThickness = 0.4,
                 MarkerType = MarkerType.None
-            };
-            for (double x = 0; x < Math.PI * 2; x += 0.5)
-                s1.Points.Add(new DataPoint(x, Math.Sin(x)));
-            model.Series.Add(s1);
-
-            return model;
+            });
         }
 
         [Example("StairStepSeries with dashed vertical lines")]
         public static PlotModel StairStepSeriesDashedVertical()
         {
-            var model = new PlotModel { Title = "StairStepSeries", Subtitle = "With dashed vertical lines" };
-            var s1 = new StairStepSeries
+            return CreateExampleModel(new StairStepSeries
             {
-                Title = "sin(x)",
-                Color = OxyColors.SkyBlue,
                 VerticalLineStyle = LineStyle.Dash,
                 MarkerType = MarkerType.None
-            };
-            for (double x = 0; x < Math.PI * 2; x += 0.5)
-                s1.Points.Add(new DataPoint(x, Math.Sin(x)));
-            model.Series.Add(s1);
-
-            return model;
+            });
         }
 
-        [Example("StemSeries")]
-        public static PlotModel StemSeries()
+        /// <summary>
+        /// Creates an example model and fills the specified series with points.
+        /// </summary>
+        /// <param name="series">The series.</param>
+        /// <returns>A plot model.</returns>
+        private static PlotModel CreateExampleModel(DataPointSeries series)
         {
-            var model = new PlotModel { Title = "StemSeries", LegendSymbolLength = 24 };
-            var s1 = new StemSeries
-                         {
-                             Title = "sin(x)",
-                             Color = OxyColors.SkyBlue,
-                             MarkerType = MarkerType.Circle,
-                             MarkerSize = 6,
-                             MarkerStroke = OxyColors.White,
-                             MarkerFill = OxyColors.SkyBlue,
-                             MarkerStrokeThickness = 1.5
-                         };
-            for (double x = 0; x < Math.PI * 2; x += 0.1)
-                s1.Points.Add(new DataPoint(x, Math.Sin(x)));
-            model.Series.Add(s1);
+            var model = new PlotModel { Title = "StairStepSeries", LegendSymbolLength = 24 };
+            series.Title = "sin(x)";
+            for (double x = 0; x < Math.PI * 2; x += 0.5)
+            {
+                series.Points.Add(new DataPoint(x, Math.Sin(x)));
+            }
 
+            model.Series.Add(series);
             return model;
         }
     }

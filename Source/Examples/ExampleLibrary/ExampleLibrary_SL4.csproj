@@ -101,7 +101,7 @@
     <Compile Include="Examples\PlotModelExamples.cs" />
     <Compile Include="Examples\RangeColorAxisExamples.cs" />
     <Compile Include="Examples\ShowMeTheNumbersExamples.cs" />
-    <Compile Include="Examples\DiscreteDataSeriesExamples.cs" />
+    <Compile Include="Examples\StairStepSeriesExamples.cs" />
     <Compile Include="Examples\FilteringExamples.cs" />
     <Compile Include="Examples\HighLowSeriesExamples.cs" />
     <Compile Include="Examples\LinearAxisExamples.cs" />
@@ -113,6 +113,7 @@
     <Compile Include="Examples\PieSeriesExamples.cs" />
     <Compile Include="Examples\PolarPlotExamples.cs" />
     <Compile Include="Examples\ScatterSeriesExamples.cs" />
+    <Compile Include="Examples\StemSeriesExamples.cs" />
     <Compile Include="Examples\TimeSpanAxisExamples.cs" />
     <Compile Include="Examples\TrackerExamples.cs" />
     <Compile Include="Examples\TwoColorLineSeriesExamples.cs" />
