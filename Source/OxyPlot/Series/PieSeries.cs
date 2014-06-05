@@ -39,7 +39,8 @@ namespace OxyPlot.Series
     /// <summary>
     /// Represents a series for pie/circle/doughnut charts.
     /// </summary>
-    /// <remarks>The arc length/central angle/area of each slice is proportional to the quantity it represents. See http://en.wikipedia.org/wiki/Pie_chart</remarks>
+    /// <remarks>The arc length/central angle/area of each slice is proportional to the quantity it represents.
+    /// See <a href="http://en.wikipedia.org/wiki/Pie_chart">Pie charts</a>.</remarks>
     public class PieSeries : ItemsSeries
     {
         /// <summary>
@@ -64,6 +65,7 @@ namespace OxyPlot.Series
 
             this.LegendFormat = null;
             this.OutsideLabelFormat = "{2:0} %";
+            this.InsideLabelColor = OxyColors.Automatic;
             this.InsideLabelFormat = "{1}";
             this.TickDistance = 0;
             this.TickRadialLength = 6;
@@ -113,14 +115,16 @@ namespace OxyPlot.Series
         public double InnerDiameter { get; set; }
 
         /// <summary>
-        /// Gets or sets InnerTextColor.
+        /// Gets or sets the color of the inside labels.
         /// </summary>
-        public OxyColor InnerTextColor { get; set; }
+        /// <remarks>If the value is <c>OxyColors.Automatic</c>, the <see cref="PlotElement.TextColor" /> will be used.</remarks>
+        public OxyColor InsideLabelColor { get; set; }
 
         /// <summary>
         /// Gets or sets the inside label format.
         /// </summary>
         /// <value>The inside label format.</value>
+        /// <remarks>The formatting arguments are: value {0}, label {1} and percentage {2}.</remarks>
         public string InsideLabelFormat { get; set; }
 
         /// <summary>
@@ -177,7 +181,7 @@ namespace OxyPlot.Series
         public double StartAngle { get; set; }
 
         /// <summary>
-        /// Gets or sets the stroke.
+        /// Gets or sets the stroke color.
         /// </summary>
         /// <value>The stroke.</value>
         public OxyColor Stroke { get; set; }
@@ -189,9 +193,9 @@ namespace OxyPlot.Series
         public double StrokeThickness { get; set; }
 
         /// <summary>
-        /// Gets or sets the tick distance.
+        /// Gets or sets the distance from the edge of the pie slice to the tick line.
         /// </summary>
-        /// <value>The tick distance.</value>
+        /// <value>The distance.</value>
         public double TickDistance { get; set; }
 
         /// <summary>
@@ -201,15 +205,15 @@ namespace OxyPlot.Series
         public double TickHorizontalLength { get; set; }
 
         /// <summary>
-        /// Gets or sets the tick label distance.
+        /// Gets or sets the distance from the tick line to the outside label.
         /// </summary>
-        /// <value>The tick label distance.</value>
+        /// <value>The distance.</value>
         public double TickLabelDistance { get; set; }
 
         /// <summary>
-        /// Gets or sets the length of the tick radial.
+        /// Gets or sets the length of the radial part of the tick line.
         /// </summary>
-        /// <value>The length of the tick radial.</value>
+        /// <value>The length.</value>
         public double TickRadialLength { get; set; }
 
         /// <summary>
@@ -226,6 +230,7 @@ namespace OxyPlot.Series
         /// <returns>A TrackerHitResult for the current hit.</returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
+            // TODO
             return null;
         }
 
@@ -236,11 +241,6 @@ namespace OxyPlot.Series
         /// <param name="model">The model.</param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
-            if (this.InnerTextColor.IsUndefined())
-            {
-                this.InnerTextColor = this.ActualTextColor;
-            }
-
             if (this.Slices.Count == 0)
             {
                 return;
@@ -332,6 +332,8 @@ namespace OxyPlot.Series
                         tp0.X + (this.TickRadialLength * Math.Cos(midAngleRadians)),
                         tp0.Y + (this.TickRadialLength * Math.Sin(midAngleRadians)));
                     var tp2 = new ScreenPoint(tp1.X + (this.TickHorizontalLength * sign), tp1.Y);
+
+                    // draw the tick line with the same color as the text
                     rc.DrawLine(new[] { tp0, tp1, tp2 }, this.ActualTextColor, 1, null, OxyPenLineJoin.Bevel);
 
                     // label
@@ -348,8 +350,8 @@ namespace OxyPlot.Series
                         VerticalAlignment.Middle);
                 }
 
-                // Render label inside the slice
-                if (this.InsideLabelFormat != null)
+                // Render a label inside the slice
+                if (this.InsideLabelFormat != null && !this.InsideLabelColor.IsUndefined())
                 {
                     string label = string.Format(
                         this.InsideLabelFormat, slice.Value, slice.Label, slice.Value / total * 100);
@@ -366,10 +368,12 @@ namespace OxyPlot.Series
                         }
                     }
 
+                    var actualInsideLabelColor = this.InsideLabelColor.IsAutomatic() ? this.ActualTextColor : this.InsideLabelColor;
+
                     rc.DrawText(
                         labelPosition,
                         label,
-                        this.InnerTextColor,
+                        actualInsideLabelColor,
                         this.ActualFont,
                         this.ActualFontSize,
                         this.ActualFontWeight,
@@ -390,7 +394,7 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Check if this data series requires X/Y axes. (e.g. Pie series do not require axes)
+        /// Checks if this data series requires X/Y axes. (e.g. PieSeries does not require axes)
         /// </summary>
         /// <returns>True if no axes are required.</returns>
         protected internal override bool AreAxesRequired()
@@ -431,7 +435,7 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// The update axis max min.
+        /// Updates the maximum and minimum values of the axes used by this series.
         /// </summary>
         protected internal override void UpdateAxisMaxMin()
         {
