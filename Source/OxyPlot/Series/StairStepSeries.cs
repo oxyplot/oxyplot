@@ -280,6 +280,12 @@ namespace OxyPlot.Series
             }
 
             renderPoints(linePoints, markerPoints);
+
+            if (this.LabelFormatString != null)
+            {
+                // render point labels (not optimized for performance)
+                this.RenderPointLabels(rc, clippingRect);
+            }
         }
     }
 }
