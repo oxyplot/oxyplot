@@ -209,15 +209,18 @@ namespace OxyPlot.Wpf
             var palletePosition = stops[0].Offset;
             var step = (double)stops.Count / paletteSize;
 
-            foreach (var pair in stops.Zip(stops.Skip(1), (g1, g2) => new { Start = g1, End = g2 }))
+            for (int i = 0; i < stops.Count - 1; i++)
             {
-                while (palletePosition <= pair.End.Offset)
+                GradientStop start = stops[i];
+                GradientStop end = stops[i + 1];
+
+                while (palletePosition <= end.Offset)
                 {
                     palette.Add(
                         OxyColor.Interpolate(
-                            pair.Start.Color.ToOxyColor(),
-                            pair.End.Color.ToOxyColor(),
-                            (palletePosition - pair.Start.Offset) / (pair.End.Offset - pair.Start.Offset)));
+                            start.Color.ToOxyColor(),
+                            end.Color.ToOxyColor(),
+                            (palletePosition - start.Offset) / (end.Offset - start.Offset)));
                     palletePosition += step;
                 }
             }
