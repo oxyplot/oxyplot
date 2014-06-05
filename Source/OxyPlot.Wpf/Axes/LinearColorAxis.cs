@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the ColorAxisPaletteStop type.
+//   Provides a WPF wrapper for the OxyPlot.Axes.LinearColorAxis.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -38,7 +38,7 @@ namespace OxyPlot.Wpf
     using System.Windows.Media;
 
     /// <summary>
-    /// The linear color axis.
+    /// Provides a WPF wrapper for the <see cref="OxyPlot.Axes.LinearColorAxis" />.
     /// </summary>
     [ContentProperty("GradientStops")]
     public class LinearColorAxis : Axis
@@ -154,10 +154,10 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// The create model.
+        /// Creates the model.
         /// </summary>
         /// <returns>
-        /// The <see cref="Axis"/>.
+        /// An axis object.
         /// </returns>
         public override Axes.Axis CreateModel()
         {
@@ -166,7 +166,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// The synchronize properties.
+        /// Synchronizes the properties.
         /// </summary>
         protected override void SynchronizeProperties()
         {
@@ -187,10 +187,10 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Translate GradientStop collection to OxyPalette.
+        /// Translates a collection of <see cref="GradientStop" /> to an <see cref="OxyPalette" />.
         /// </summary>
         /// <param name="stops">
-        /// Gradient stops collection.
+        /// The gradient stops collection to convert.
         /// </param>
         /// <param name="paletteSize">
         /// The palette size.
@@ -206,22 +206,22 @@ namespace OxyPlot.Wpf
             var palette = new List<OxyColor>();
             stops.Sort((x1, x2) => x1.Offset.CompareTo(x2.Offset));
 
-            var palletePosition = stops[0].Offset;
+            var palettePositions = stops[0].Offset;
             var step = (double)stops.Count / paletteSize;
 
             for (int i = 0; i < stops.Count - 1; i++)
             {
-                GradientStop start = stops[i];
-                GradientStop end = stops[i + 1];
+                var start = stops[i];
+                var end = stops[i + 1];
 
-                while (palletePosition <= end.Offset)
+                while (palettePositions <= end.Offset)
                 {
                     palette.Add(
                         OxyColor.Interpolate(
                             start.Color.ToOxyColor(),
                             end.Color.ToOxyColor(),
-                            (palletePosition - start.Offset) / (end.Offset - start.Offset)));
-                    palletePosition += step;
+                            (palettePositions - start.Offset) / (end.Offset - start.Offset)));
+                    palettePositions += step;
                 }
             }
 
@@ -229,7 +229,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// The validate palette size.
+        /// Validates the palette size.
         /// </summary>
         /// <param name="value">
         /// The property value.
