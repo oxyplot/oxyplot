@@ -113,6 +113,11 @@ namespace OxyPlot.Series
         public double InnerDiameter { get; set; }
 
         /// <summary>
+        /// Gets or sets InnerTextColor.
+        /// </summary>
+        public OxyColor InnerTextColor { get; set; }
+
+        /// <summary>
         /// Gets or sets the inside label format.
         /// </summary>
         /// <value>The inside label format.</value>
@@ -231,6 +236,11 @@ namespace OxyPlot.Series
         /// <param name="model">The model.</param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
+            if (this.InnerTextColor.IsUndefined())
+            {
+                this.InnerTextColor = this.ActualTextColor;
+            }
+
             if (this.Slices.Count == 0)
             {
                 return;
@@ -322,7 +332,7 @@ namespace OxyPlot.Series
                         tp0.X + (this.TickRadialLength * Math.Cos(midAngleRadians)),
                         tp0.Y + (this.TickRadialLength * Math.Sin(midAngleRadians)));
                     var tp2 = new ScreenPoint(tp1.X + (this.TickHorizontalLength * sign), tp1.Y);
-                    rc.DrawLine(new[] { tp0, tp1, tp2 }, this.Stroke, this.StrokeThickness, null, OxyPenLineJoin.Bevel);
+                    rc.DrawLine(new[] { tp0, tp1, tp2 }, this.ActualTextColor, 1, null, OxyPenLineJoin.Bevel);
 
                     // label
                     var labelPosition = new ScreenPoint(tp2.X + (this.TickLabelDistance * sign), tp2.Y);
@@ -359,7 +369,7 @@ namespace OxyPlot.Series
                     rc.DrawText(
                         labelPosition,
                         label,
-                        this.ActualTextColor,
+                        this.InnerTextColor,
                         this.ActualFont,
                         this.ActualFontSize,
                         this.ActualFontWeight,
