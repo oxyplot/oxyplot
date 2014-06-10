@@ -281,6 +281,55 @@ namespace ExampleLibrary
             return pm;
         }
 
+        [Example("Squirqle")]
+        public static PlotModel Squirqle()
+        {
+            var plot = new PlotModel { Title = "Squirqle", PlotType = PlotType.Cartesian };
+            plot.Series.Add(CreateSuperellipseSeries(4, 1, 1));
+
+            return plot;
+        }
+
+        [Example("Superellipse n=20")]
+        public static PlotModel Superellipse20()
+        {
+            var plot = new PlotModel { Title = "Superellipse", PlotType = PlotType.Cartesian };
+            var s = CreateSuperellipseSeries(20, 1, 1);
+            s.MarkerType = MarkerType.Circle;
+            plot.Series.Add(s);
+
+            return plot;
+        }
+
+        [Example("Lamé curves")]
+        public static PlotModel LameCurves()
+        {
+            var plot = new PlotModel { Title = "Lamé curves", PlotType = PlotType.Cartesian, LegendPlacement = LegendPlacement.Outside };
+            for (double n = 0.25; n < 2; n += 0.25)
+            {
+                plot.Series.Add(CreateSuperellipseSeries(n, 1, 1));
+            }
+
+            for (double n = 2; n <= 8 + 1e-6; n += 1)
+            {
+                plot.Series.Add(CreateSuperellipseSeries(n, 1, 1));
+            }
+
+            return plot;
+        }
+
+        public static FunctionSeries CreateSuperellipseSeries(double n, double a, double b)
+        {
+            // http://en.wikipedia.org/wiki/Superellipse
+            return new FunctionSeries(
+                t => a * Math.Sign(Math.Cos(t)) * Math.Pow(Math.Abs(Math.Cos(t)), 2 / n),
+                t => b * Math.Sign(Math.Sin(t)) * Math.Pow(Math.Abs(Math.Sin(t)), 2 / n),
+                0,
+                Math.PI * 2,
+                101,
+                string.Format("n={0}, a={1}, b={2}", n, a, b));
+        }
+
         private static PlotModel CreateParametricPlot(Func<double, double> fx, Func<double, double> fy, double t0,
                                                       double t1, int n, string title, string subtitle = null,
                                                       string seriesTitle = null)
