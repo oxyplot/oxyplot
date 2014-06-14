@@ -1,0 +1,39 @@
+﻿<Window x:Class="ScatterErrorSeriesDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf" Title="BarSeriesDemo" Height="480" Width="640">
+    <TabControl>
+        <TabItem Header="ItemsSource (reflection)">
+            <oxy:PlotView Title="ScatterErrorSeriesDemo" Subtitle="Binding to an items source and specifying data fields">
+                <oxy:PlotView.Axes>
+                    <oxy:LinearAxis Position="Bottom"/>
+                    <oxy:LinearAxis Position="Left"/>
+                </oxy:PlotView.Axes>
+                <oxy:PlotView.Series>
+                    <oxy:ScatterErrorSeries ItemsSource="{Binding Points}" DataFieldX="V1" DataFieldY="V2" DataFieldErrorX="E1" DataFieldErrorY="E2"/>
+                </oxy:PlotView.Series>
+            </oxy:PlotView>
+        </TabItem>
+        <TabItem Header="ItemsSource (List{ScatterErrorPoint})">
+            <oxy:PlotView Title="ScatterErrorSeriesDemo" Subtitle="Binding to a List{ScatterErrorPoint}">
+                <oxy:PlotView.Axes>
+                    <oxy:LinearAxis Position="Bottom"/>
+                    <oxy:LinearAxis Position="Left"/>
+                </oxy:PlotView.Axes>
+                <oxy:PlotView.Series>
+                    <oxy:ScatterErrorSeries ItemsSource="{Binding PointList}" />
+                </oxy:PlotView.Series>
+            </oxy:PlotView>
+        </TabItem>
+        <TabItem Header="ItemsSource (ScatterErrorPoint[])">
+            <oxy:PlotView Title="ScatterErrorSeriesDemo" Subtitle="Binding to an array of ScatterErrorPoint">
+                <oxy:PlotView.Axes>
+                    <oxy:LinearAxis Position="Bottom"/>
+                    <oxy:LinearAxis Position="Left"/>
+                </oxy:PlotView.Axes>
+                <oxy:PlotView.Series>
+                    <oxy:ScatterErrorSeries ItemsSource="{Binding PointArray}" />
+                </oxy:PlotView.Series>
+            </oxy:PlotView>
+        </TabItem>
+    </TabControl>
+</Window>
