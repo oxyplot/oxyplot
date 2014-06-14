@@ -48,16 +48,6 @@ namespace OxyPlot.Series
         private readonly List<ScatterPoint> points = new List<ScatterPoint>();
 
         /// <summary>
-        /// The data points from the items source.
-        /// </summary>
-        private List<ScatterPoint> itemsSourcePoints;
-
-        /// <summary>
-        /// Specifies if the itemsSourcePoints list can be modified.
-        /// </summary>
-        private bool ownsItemsSourcePoints;
-
-        /// <summary>
         /// The default fill color.
         /// </summary>
         private OxyColor defaultMarkerFillColor;
@@ -215,9 +205,19 @@ namespace OxyPlot.Series
         {
             get
             {
-                return this.ItemsSource != null ? this.itemsSourcePoints : this.points;
+                return this.ItemsSource != null ? this.ItemsSourcePoints : this.points;
             }
         }
+
+        /// <summary>
+        /// Gets or sets the data points from the items source.
+        /// </summary>
+        protected List<ScatterPoint> ItemsSourcePoints { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the <see cref="ItemsSourcePoints" /> list can be modified.
+        /// </summary>
+        protected bool OwnsItemsSourcePoints { get; set; }
 
         /// <summary>
         /// Gets the nearest point.
@@ -724,20 +724,20 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Clears or creates the <see cref="itemsSourcePoints"/> list.
+        /// Clears or creates the <see cref="ItemsSourcePoints"/> list.
         /// </summary>
-        private void ClearItemsSourcePoints()
+        protected void ClearItemsSourcePoints()
         {
-            if (!this.ownsItemsSourcePoints || this.itemsSourcePoints == null)
+            if (!this.OwnsItemsSourcePoints || this.ItemsSourcePoints == null)
             {
-                this.itemsSourcePoints = new List<ScatterPoint>();
+                this.ItemsSourcePoints = new List<ScatterPoint>();
             }
             else
             {
-                this.itemsSourcePoints.Clear();
+                this.ItemsSourcePoints.Clear();
             }
 
-            this.ownsItemsSourcePoints = true;
+            this.OwnsItemsSourcePoints = true;
         }
 
         /// <summary>
@@ -751,7 +751,7 @@ namespace OxyPlot.Series
                 this.ClearItemsSourcePoints();
                 foreach (var item in this.ItemsSource)
                 {
-                    this.itemsSourcePoints.Add(this.Mapping(item));
+                    this.ItemsSourcePoints.Add(this.Mapping(item));
                 }
 
                 return;
@@ -760,8 +760,8 @@ namespace OxyPlot.Series
             var sourceAsListOfScatterPoints = this.ItemsSource as List<ScatterPoint>;
             if (sourceAsListOfScatterPoints != null)
             {
-                this.itemsSourcePoints = sourceAsListOfScatterPoints;
-                this.ownsItemsSourcePoints = false;
+                this.ItemsSourcePoints = sourceAsListOfScatterPoints;
+                this.OwnsItemsSourcePoints = false;
                 return;
             }
 
@@ -770,7 +770,7 @@ namespace OxyPlot.Series
             var sourceAsEnumerableScatterPoints = this.ItemsSource as IEnumerable<ScatterPoint>;
             if (sourceAsEnumerableScatterPoints != null)
             {
-                this.itemsSourcePoints.AddRange(sourceAsEnumerableScatterPoints);
+                this.ItemsSourcePoints.AddRange(sourceAsEnumerableScatterPoints);
                 return;
             }
 
@@ -782,14 +782,14 @@ namespace OxyPlot.Series
                     var point = item as ScatterPoint;
                     if (point != null)
                     {
-                        this.itemsSourcePoints.Add(point);
+                        this.ItemsSourcePoints.Add(point);
                         continue;
                     }
 
                     var idpp = item as IScatterPointProvider;
                     if (idpp != null)
                     {
-                        this.itemsSourcePoints.Add(idpp.GetScatterPoint());
+                        this.ItemsSourcePoints.Add(idpp.GetScatterPoint());
                     }
                 }
 
@@ -803,7 +803,7 @@ namespace OxyPlot.Series
             filler.Add(this.DataFieldSize, (item, value) => item.Size = Convert.ToDouble(value));
             filler.Add(this.DataFieldValue, (item, value) => item.Value = Convert.ToDouble(value));
             filler.Add(this.DataFieldTag, (item, value) => item.Tag = value);
-            filler.Fill(this.itemsSourcePoints, this.ItemsSource);
+            filler.Fill(this.ItemsSourcePoints, this.ItemsSource);
         }
     }
 }

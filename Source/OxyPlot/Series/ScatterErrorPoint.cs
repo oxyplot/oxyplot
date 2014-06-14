@@ -39,7 +39,6 @@ namespace OxyPlot.Series
         /// Initializes a new instance of the <see cref="ScatterErrorPoint"/> class.
         /// </summary>
         public ScatterErrorPoint()
-            : base()
         {
             this.Error = double.NaN;
         }
