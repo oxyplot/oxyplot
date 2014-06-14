@@ -62,7 +62,7 @@ Clean all files before build
 
 # Update verison number
 Directory: Tools\Lynx
-VersionUpdater.exe /Version=%build.number% /Directory=..\..
+UpdateVersionNumbers.exe /Version=%build.number% /Dependency=OxyPlot.Core /Directory=..\..
 
 # Create changeset ID file
 Commands:
@@ -96,6 +96,15 @@ Source\OxyPlot.Silverlight.sln
 
 # Build Metro solution
 Source\OxyPlot.Metro.sln
+
+# Build WP8 solution
+Source\OxyPlot.WP8.sln
+
+# Build Xamarin.iOS solution
+Source\OxyPlot.XamarinIOS.sln
+
+# Build Xamarin.Android solution
+Source\OxyPlot.XamarinAndroid.sln
 
 # Build Silverlight 4 solution (disabled)
 Source\OxyPlot.Silverlight4.sln

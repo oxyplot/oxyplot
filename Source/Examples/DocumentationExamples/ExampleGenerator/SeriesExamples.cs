@@ -93,8 +93,9 @@ namespace ExampleGenerator
 
         public static PlotModel BarSeries()
         {
-            var model = new PlotModel("BarSeries")
+            var model = new PlotModel
             {
+                Title = "BarSeries",
                 LegendPlacement = LegendPlacement.Outside,
                 LegendPosition = LegendPosition.BottomCenter,
                 LegendOrientation = LegendOrientation.Horizontal,
@@ -128,8 +129,9 @@ namespace ExampleGenerator
 
         public static PlotModel ColumnSeries()
         {
-            var model = new PlotModel("ColumnSeries")
+            var model = new PlotModel
             {
+                Title = "ColumnSeries",
                 LegendPlacement = LegendPlacement.Outside,
                 LegendPosition = LegendPosition.BottomCenter,
                 LegendOrientation = LegendOrientation.Horizontal,

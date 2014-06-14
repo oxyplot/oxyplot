@@ -37,7 +37,6 @@ namespace OxyPlot.Metro
     /// <summary>
     /// Mouse button helper
     /// </summary>
-    /// <seealso cref="http://yinyangme.com/blog/post/The-simplest-way-to-detect-DoubleClick-in-Silverlight.aspx" />
     internal static class MouseButtonHelper
     {
         /// <summary>

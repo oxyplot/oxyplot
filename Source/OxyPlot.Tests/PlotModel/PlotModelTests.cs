@@ -53,39 +53,22 @@ namespace OxyPlot.Tests
         {
             foreach (var example in Examples.GetList())
             {
-                example.PlotModel.Update();
+                if (example.PlotModel == null)
+                {
+                    continue;
+                }
+
+                ((IPlotModel)example.PlotModel).Update(true);
             }
-        }
-
-        [Test]
-        public void ToSvg_TestPlot_ValidSvgString()
-        {
-            var plotModel = TestModels.CreateTestModel1();
-
-            var svg1 = plotModel.ToSvg(800, 500, true);
-            SvgAssert.IsValidDocument(svg1);
-            var svg2 = plotModel.ToSvg(800, 500, false);
-            SvgAssert.IsValidElement(svg2);
-        }
-
-        [Test]
-        public void SaveSvg_TestPlot_ValidSvgFile()
-        {
-            var plotModel = TestModels.CreateTestModel1();
-
-            const string FileName = "PlotModelTests_Test1.svg";
-            var svg = plotModel.ToSvg(800, 500, false);
-            File.WriteAllText(FileName, svg);
-            SvgAssert.IsValidFile(FileName);
         }
 
         [Test]
         public void B11_Backgrounds()
         {
-            var plot = new PlotModel("Backgrounds");
-            plot.Axes.Add(new LinearAxis(AxisPosition.Bottom, "X-axis"));
-            var yaxis1 = new LinearAxis(AxisPosition.Left, "Y1") { Key = "Y1", StartPosition = 0, EndPosition = 0.5 };
-            var yaxis2 = new LinearAxis(AxisPosition.Left, "Y2") { Key = "Y2", StartPosition = 0.5, EndPosition = 1 };
+            var plot = new PlotModel { Title = "Backgrounds" };
+            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "X-axis" });
+            var yaxis1 = new LinearAxis { Position = AxisPosition.Left, Title = "Y1", Key = "Y1", StartPosition = 0, EndPosition = 0.5 };
+            var yaxis2 = new LinearAxis { Position = AxisPosition.Left, Title = "Y2", Key = "Y2", StartPosition = 0.5, EndPosition = 1 };
             plot.Axes.Add(yaxis1);
             plot.Axes.Add(yaxis2);
 
@@ -112,17 +95,45 @@ namespace OxyPlot.Tests
         [Test]
         public void PlotControl_CollectedPlotControl_ReferenceShouldNotBeAlive()
         {
-            var plot = Substitute.For<IPlotControl>();
+            var plot = Substitute.For<IPlotView>();
             var pm = new PlotModel();
-            pm.AttachPlotControl(plot);
-            Assert.IsNotNull(pm.PlotControl);
+            ((IPlotModel)pm).AttachPlotView(plot);
+            Assert.IsNotNull(pm.PlotView);
 
             // ReSharper disable once RedundantAssignment
             plot = null;
             GC.Collect();
 
             // Verify that the reference is lost
-            Assert.IsNull(pm.PlotControl);
+            Assert.IsNull(pm.PlotView);
+        }
+
+        /// <summary>
+        /// Tests the <see cref="PlotModel.Render" /> method.
+        /// </summary>
+        public class Render
+        {
+            /// <summary>
+            /// Tests rendering on a collapsed output surface.
+            /// </summary>
+            [Test]
+            public void Collapsed()
+            {
+                var model = new PlotModel();
+                var rc = Substitute.For<IRenderContext>();
+                ((IPlotModel)model).Render(rc, 0, 0);
+            }
+
+            /// <summary>
+            /// Tests rendering on a small output surface.
+            /// </summary>
+            [Test]
+            public void NoPadding()
+            {
+                var model = new PlotModel { Padding = new OxyThickness(0) };
+                var rc = Substitute.For<IRenderContext>();
+                ((IPlotModel)model).Render(rc, double.Epsilon, double.Epsilon);
+            }
         }
 
         /// <summary>

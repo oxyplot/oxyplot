@@ -66,6 +66,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BitmapTools.cs" />
+    <Compile Include="Examples\ResizeDemo\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ScreenCapture.cs" />
     <Page Include="Examples\AnnotationDemo\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -90,6 +95,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Examples\ContextMenuDemo\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Examples\ContourDemo\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -97,6 +106,14 @@
     <Page Include="Examples\ColumnSeriesDemo\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\ResizeDemo\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\HeatMapDemo\MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Examples\OverlayDemo\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -199,6 +216,7 @@
     </Compile>
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="Example.cs" />
+    <Compile Include="ExampleAttribute.cs" />
     <Compile Include="Examples\AnnotationDemo\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -222,11 +240,17 @@
     <Compile Include="Examples\ColorBindingDemo\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Examples\ContextMenuDemo\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Examples\ContourDemo\MainViewModel.cs" />
     <Compile Include="Examples\ContourDemo\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Examples\ColumnSeriesDemo\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\HeatMapDemo\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Examples\OverlayDemo\MainWindow.xaml.cs">
@@ -325,6 +349,10 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Images\ResizeDemo.png" />
+    <None Include="ReadMe.txt" />
+    <Resource Include="Images\HeatMapDemo.png" />
+    <Resource Include="Images\ContextMenuDemo.png" />
     <Resource Include="Images\OverlayDemo.png" />
     <Resource Include="Images\ColorBindingDemo.png" />
     <Resource Include="Images\ColumnSeriesDemo.png" />
@@ -372,9 +400,6 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Examples\BindingDemo\WorldPopulation.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\AnnotationDemo.png" />
   </ItemGroup>
   <ItemGroup>
@@ -398,6 +423,9 @@
       <Project>{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}</Project>
       <Name>OxyPlot</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Workitems\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

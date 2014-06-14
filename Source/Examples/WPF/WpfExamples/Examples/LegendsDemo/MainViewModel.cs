@@ -154,21 +154,22 @@ namespace LegendsDemo
 
         private PlotModel CreateModel(int n)
         {
-            var newModel = new PlotModel("LineSeries")
-                            {
-                                LegendBorder = OxyColors.Black,
-                                LegendBackground = OxyColor.FromAColor(200, OxyColors.White),
-                                LegendPosition = LegendPosition,
-                                LegendPlacement = LegendPlacement,
-                                LegendOrientation = LegendOrientation,
-                                LegendItemOrder = LegendItemOrder,
-                                LegendItemAlignment = LegendItemAlignment,
-                                LegendSymbolPlacement = LegendSymbolPlacement
-                            };
+            var newModel = new PlotModel
+            {
+                Title = "LineSeries",
+                LegendBorder = OxyColors.Black,
+                LegendBackground = OxyColor.FromAColor(200, OxyColors.White),
+                LegendPosition = LegendPosition,
+                LegendPlacement = LegendPlacement,
+                LegendOrientation = LegendOrientation,
+                LegendItemOrder = LegendItemOrder,
+                LegendItemAlignment = LegendItemAlignment,
+                LegendSymbolPlacement = LegendSymbolPlacement
+            };
 
             for (int i = 1; i <= n; i++)
             {
-                var s = new LineSeries("Series " + i);
+                var s = new LineSeries { Title = "Series " + i };
                 newModel.Series.Add(s);
                 for (double x = 0; x < 2 * Math.PI; x += 0.1)
                     s.Points.Add(new DataPoint(x, Math.Sin(x * i) / i + i));

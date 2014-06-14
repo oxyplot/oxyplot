@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Provides an abstract base class for elements contained in a <see cref="PlotModel"/>.
+//   Provides an abstract base class for elements of a <see cref="PlotModel" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -34,9 +34,9 @@ namespace OxyPlot
     using System.Linq;
 
     /// <summary>
-    /// Provides an abstract base class for elements contained in a <see cref="PlotModel" />.
+    /// Provides an abstract base class for elements of a <see cref="PlotModel" />.
     /// </summary>
-    public abstract class PlotElement
+    public abstract class PlotElement : UIElement, IPlotElement
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PlotElement" /> class.
@@ -70,9 +70,15 @@ namespace OxyPlot
         public double FontWeight { get; set; }
 
         /// <summary>
-        /// Gets the parent plot model.
+        /// Gets the parent <see cref="PlotModel" />.
         /// </summary>
-        public PlotModel PlotModel { get; internal set; }
+        public PlotModel PlotModel
+        {
+            get
+            {
+                return (PlotModel)this.Parent;
+            }
+        }
 
         /// <summary>
         /// Gets or sets an arbitrary object value that can be used to store custom information about this plot element.
@@ -147,14 +153,15 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Returns a hash code for this instance by reflection (!) on all public properties.
+        /// Returns a hash code for this element.
         /// </summary>
         /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
-        public override int GetHashCode()
+        /// <remarks>This method creates the hash code by reflecting the value of all public properties.</remarks>
+        public virtual int GetElementHashCode()
         {
             // Get the values of all properties in the object (this is slow, any better ideas?)
             var propertyValues = this.GetType().GetProperties().Select(pi => pi.GetValue(this, null));
-            return propertyValues.GetHashCode();
+            return ArrayHelper.GetHashCode(propertyValues);
         }
 
         /// <summary>

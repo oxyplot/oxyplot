@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -80,7 +80,7 @@
     <Compile Include="AppDelegate.cs" />
     <Compile Include="GraphViewController.cs" />
   </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ItemGroup>
     <ProjectReference Include="..\..\..\OxyPlot.XamarinIOS\OxyPlot.XamarinIOS.csproj">
       <Project>{7DCF07B1-B8BD-4EF0-B1FC-2AAC4466B6C6}</Project>
@@ -97,6 +97,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Images\" />
+    <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="..\..\..\..\Icons\OxyPlot_57.png">
@@ -138,5 +139,19 @@
     <BundleResource Include="..\..\..\..\Icons\OxyPlot_100.png">
       <Link>Images\OxyPlot_100.png</Link>
     </BundleResource>
+    <BundleResource Include="Images\ExampleBrowser_320x480.png" />
+    <BundleResource Include="Images\ExampleBrowser_640x960.png" />
+    <BundleResource Include="Images\ExampleBrowser_640x1136.png" />
+    <BundleResource Include="Images\ExampleBrowser_768x1004.png" />
+    <BundleResource Include="Images\ExampleBrowser_1024x748.png" />
+    <BundleResource Include="Images\ExampleBrowser_1536x2008.png" />
+    <BundleResource Include="Images\ExampleBrowser_2048x1496.png" />
+    <BundleResource Include="Resources\Default-568h%402x.png" />
+    <BundleResource Include="Resources\Default.png" />
+    <BundleResource Include="Resources\Default%402x.png" />
+    <BundleResource Include="Resources\Default-Portrait.png" />
+    <BundleResource Include="Resources\Default-Landscape.png" />
+    <BundleResource Include="Resources\Default-Portrait%402x.png" />
+    <BundleResource Include="Resources\Default-Landscape%402x.png" />
   </ItemGroup>
 </Project>

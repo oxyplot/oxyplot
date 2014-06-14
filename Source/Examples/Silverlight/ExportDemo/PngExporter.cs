@@ -52,7 +52,7 @@ namespace ExportDemo
         /// <param name="width">The width of the export image.</param>
         /// <param name="height">The height of the exported image.</param>
         /// <param name="background">The background.</param>
-        public static void Export(PlotModel model, Stream stream, double width, double height, OxyColor background)
+        public static void Export(IPlotModel model, Stream stream, double width, double height, OxyColor background)
         {
             var canvas = new Canvas { Width = width, Height = height };
             if (background.IsVisible())
@@ -64,7 +64,7 @@ namespace ExportDemo
             canvas.Arrange(new Rect(0, 0, width, height));
 
             var rc = new SilverlightRenderContext(canvas);
-            model.Update();
+            model.Update(true);
             model.Render(rc, width, height);
 
             canvas.UpdateLayout();

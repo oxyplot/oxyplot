@@ -47,10 +47,26 @@ namespace OxyPlot.Wpf.Tests
             }
 
             [Test]
+            public void PointAnnotation()
+            {
+                var s1 = new PointAnnotation();
+                var s2 = new Annotations.PointAnnotation();
+                OxyAssert.PropertiesAreEqual(s2, s1);
+            }
+
+            [Test]
             public void EllipseAnnotation()
             {
                 var s1 = new EllipseAnnotation();
                 var s2 = new Annotations.EllipseAnnotation();
+                OxyAssert.PropertiesAreEqual(s2, s1);
+            }
+
+            [Test]
+            public void FunctionAnnotation()
+            {
+                var s1 = new FunctionAnnotation();
+                var s2 = new Annotations.FunctionAnnotation();
                 OxyAssert.PropertiesAreEqual(s2, s1);
             }
 
@@ -75,6 +91,14 @@ namespace OxyPlot.Wpf.Tests
             {
                 var s1 = new PolygonAnnotation();
                 var s2 = new Annotations.PolygonAnnotation();
+                OxyAssert.PropertiesAreEqual(s2, s1);
+            }
+
+            [Test]
+            public void PolylineAnnotation()
+            {
+                var s1 = new PolylineAnnotation();
+                var s2 = new Annotations.PolylineAnnotation();
                 OxyAssert.PropertiesAreEqual(s2, s1);
             }
 

@@ -19,7 +19,7 @@
                             <ColumnDefinition Width="2*"/>
                             <ColumnDefinition Width="1*"/>
                         </Grid.ColumnDefinitions>
-                        <oxy:Plot Background="#e0e0e0" Height="30" Model="{Binding PlotModel}" HandleRightClicks="False"/>
+                        <oxy:PlotView Background="#e0e0e0" Height="30" Model="{Binding PlotModel}" HandleRightClicks="False"/>
                         <TextBlock Text="{Binding Name}" FontWeight="Bold" Grid.Column="1" Margin="4 0 4 0" VerticalAlignment="Center"/>
                         <TextBlock Text="{Binding LastValue, StringFormat='{}{0:0.000}'}" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="2"/>
                     </Grid>

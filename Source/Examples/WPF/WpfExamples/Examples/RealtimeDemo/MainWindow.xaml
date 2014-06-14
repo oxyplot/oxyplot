@@ -7,6 +7,6 @@
             <pt:EnumMenuItem Header="Simulation type" SelectedValue="{Binding SimulationType}"/>
         </Menu>
         <TextBlock DockPanel.Dock="Bottom" Margin="8" Text="{Binding TotalNumberOfPoints, StringFormat='Total number of data points: {0}'}"/>
-        <oxy:Plot x:Name="plot1" Model="{Binding PlotModel}"/>
+        <oxy:PlotView x:Name="plot1" Model="{Binding PlotModel}"/>
     </DockPanel>
 </Window>

@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Implements a structure that is used to describe the size of an object.
+//   Describes the size of an object.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -33,7 +33,7 @@ namespace OxyPlot
     using System.Globalization;
 
     /// <summary>
-    /// Implements a structure that is used to describe the size of an object.
+    /// Describes the size of an object.
     /// </summary>
     public struct OxySize
     {

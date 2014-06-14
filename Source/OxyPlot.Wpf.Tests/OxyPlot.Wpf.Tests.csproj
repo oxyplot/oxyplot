@@ -57,9 +57,11 @@
     </Compile>
     <Compile Include="Annotations\AnnotationsTests.cs" />
     <Compile Include="Axes\LinearAxisTests.cs" />
+    <Compile Include="ExampleLibraryTests.cs" />
     <Compile Include="OxyAssert.cs" />
     <Compile Include="Axes\AxesTests.cs" />
-    <Compile Include="PlotTests.cs" />
+    <Compile Include="PlotViewTests.cs" />
+    <Compile Include="PngAssert.cs" />
     <Compile Include="PngExporterTests.cs" />
     <Compile Include="Series\SeriesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -87,6 +89,14 @@
       <Project>{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}</Project>
       <Name>OxyPlot</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Baseline\PngExporterTests_ExportWithResolution_192dpi.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Baseline\PngExporterTests_ExportWithResolution_384dpi.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(ProjectDir)\..\..\Tools\StyleCop\StyleCop.targets" Condition=" '$(OS)' == 'Windows_NT' " />

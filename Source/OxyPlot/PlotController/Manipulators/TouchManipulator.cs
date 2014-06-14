@@ -24,16 +24,16 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Provides a plot control manipulator for touch functionality.
+//   Provides a manipulator for panning and scaling by touch events.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     /// <summary>
-    /// Provides a plot control manipulator for touch functionality.
+    /// Provides a manipulator for panning and scaling by touch events.
     /// </summary>
-    public class TouchManipulator : ManipulatorBase<OxyTouchEventArgs>
+    public class TouchManipulator : PlotManipulator<OxyTouchEventArgs>
     {
         /// <summary>
         /// The previous position
@@ -43,9 +43,9 @@ namespace OxyPlot
         /// <summary>
         /// Initializes a new instance of the <see cref="TouchManipulator" /> class.
         /// </summary>
-        /// <param name="plotControl">The plot control.</param>
-        public TouchManipulator(IPlotControl plotControl)
-            : base(plotControl)
+        /// <param name="plotView">The plot view.</param>
+        public TouchManipulator(IPlotView plotView)
+            : base(plotView)
         {
         }
 
@@ -81,7 +81,7 @@ namespace OxyPlot
                 this.YAxis.ZoomAt(e.DeltaScale.Y, current.Y);
             }
 
-            this.PlotControl.InvalidatePlot(false);
+            this.PlotView.InvalidatePlot(false);
 
             this.previousPosition = newPosition;
         }

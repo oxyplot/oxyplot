@@ -5,6 +5,6 @@
 <Input>*.wiki</Input>
 <Output>..\Output\Documentation</Output>
 <Variables>
-<Variable Key="version">2013</Variable>
+<Variable Key="version">2014</Variable>
 </Variables>
 </WikiProject>

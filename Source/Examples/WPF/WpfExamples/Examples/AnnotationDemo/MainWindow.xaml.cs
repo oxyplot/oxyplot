@@ -35,9 +35,12 @@ namespace AnnotationDemo
 
     using OxyPlot;
 
+    using WpfExamples;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [Example(null, "Shows different types of annotations.")]
     public partial class MainWindow : Window
     {
         /// <summary>
@@ -46,7 +49,7 @@ namespace AnnotationDemo
         public MainWindow()
         {
             this.InitializeComponent();
-            this.PolygonPoints = new List<IDataPoint>
+            this.Points = new List<DataPoint>
                 {
                    new DataPoint(10, 10), new DataPoint(80, 30), new DataPoint(60, 70)
                 };
@@ -54,8 +57,8 @@ namespace AnnotationDemo
         }
 
         /// <summary>
-        /// Gets the polygon points.
+        /// Gets the points.
         /// </summary>
-        public IList<IDataPoint> PolygonPoints { get; private set; }
+        public IList<DataPoint> Points { get; private set; }
     }
 }

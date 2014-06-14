@@ -37,7 +37,7 @@ namespace OxyPlot.Annotations
     /// <summary>
     /// Provides an abstract base class for annotations.
     /// </summary>
-    public abstract class Annotation : UIPlotElement
+    public abstract class Annotation : PlotElement
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Annotation" /> class.
@@ -110,7 +110,7 @@ namespace OxyPlot.Annotations
         /// </summary>
         /// <param name="p">The point.</param>
         /// <returns>A screen point.</returns>
-        public ScreenPoint Transform(IDataPoint p)
+        public ScreenPoint Transform(DataPoint p)
         {
             return this.XAxis.Transform(p.X, p.Y, this.YAxis);
         }
@@ -122,7 +122,7 @@ namespace OxyPlot.Annotations
         /// <returns>A data point</returns>
         public DataPoint InverseTransform(ScreenPoint position)
         {
-            return Axis.InverseTransform(position, this.XAxis, this.YAxis);
+            return this.XAxis.InverseTransform(position.X, position.Y, this.YAxis);
         }
 
         /// <summary>

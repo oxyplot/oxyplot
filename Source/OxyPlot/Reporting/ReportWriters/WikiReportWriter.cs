@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Wiki formatting report writer.
+//   Implements a <see cref="IReportWriter" /> that writes to wiki format.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -34,7 +34,7 @@ namespace OxyPlot.Reporting
     using System.IO;
 
     /// <summary>
-    /// Wiki formatting report writer.
+    /// Implements a <see cref="IReportWriter" /> that writes to wiki format.
     /// </summary>
     /// <remarks>This will not write figures/images.</remarks>
     public class WikiReportWriter : StreamWriter, IReportWriter

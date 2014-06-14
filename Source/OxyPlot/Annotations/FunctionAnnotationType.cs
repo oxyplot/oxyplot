@@ -24,14 +24,14 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Specifies the definition of function line in a <see cref="FunctionAnnotation"/>.
+//   Defines the definition of function in a <see cref="FunctionAnnotation" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Annotations
 {
     /// <summary>
-    /// Specifies the definition of function line in a <see cref="FunctionAnnotation" />.
+    /// Defines the definition of function in a <see cref="FunctionAnnotation" />.
     /// </summary>
     public enum FunctionAnnotationType
     {

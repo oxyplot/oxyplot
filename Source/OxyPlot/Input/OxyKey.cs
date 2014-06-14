@@ -24,14 +24,14 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Specifies the possible key values on a keyboard.
+//   Defines the possible key values on a keyboard.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     /// <summary>
-    /// Specifies the possible key values on a keyboard.
+    /// Defines the possible key values on a keyboard.
     /// </summary>
     public enum OxyKey
     {

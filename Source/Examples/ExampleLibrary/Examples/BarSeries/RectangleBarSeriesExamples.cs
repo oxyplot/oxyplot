@@ -36,7 +36,7 @@ namespace ExampleLibrary
         [Example("RectangleBarSeries")]
         public static PlotModel RectangleBarSeries()
         {
-            var model = new PlotModel("RectangleBarSeries") { LegendPlacement = LegendPlacement.Outside };
+            var model = new PlotModel { Title = "RectangleBarSeries", LegendPlacement = LegendPlacement.Outside };
 
             var s1 = new RectangleBarSeries { Title = "RectangleBarSeries 1" };
             s1.Items.Add(new RectangleBarItem { X0 = 2, X1 = 8, Y0 = 1, Y1 = 4 });

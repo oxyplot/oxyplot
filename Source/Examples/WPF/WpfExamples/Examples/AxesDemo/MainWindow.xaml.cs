@@ -28,18 +28,22 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Windows;
 
 namespace AxesDemo
 {
+    using System.Windows;
+
+    using WpfExamples;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [Example(null, "Demonstrates functionality of the axes.")]
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
-            InitializeComponent();
+            this.InitializeComponent();
             this.DataContext = new MainViewModel();
         }
     }

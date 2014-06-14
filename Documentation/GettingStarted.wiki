@@ -11,7 +11,11 @@
 - [HelloWindowsForms|Windows Forms]
 - [HelloSilverlight|Silverlight]
 - [HelloWindowsStoreApp|Windows Store App]
+- [HelloWindowsPhone|Windows Phone App]
 - [HelloGTK|GTK#]
+- [HelloXamarinIOS|Xamarin.iOS App]
+- [HelloXamarinAndroid|Xamarin.Android App]
+- [HelloXamarinMac|Xamarin.Mac App]
 
 === VB.NET
 

@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Specifies the html element type to use when writing plots.
+//   Defines the html element type to use when writing plots.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -35,7 +35,7 @@ namespace OxyPlot.Reporting
     using System.Text;
 
     /// <summary>
-    /// Specifies the html element type to use when writing plots.
+    /// Defines the html element type to use when writing plots.
     /// </summary>
     public enum HtmlPlotElementType
     {
@@ -56,7 +56,7 @@ namespace OxyPlot.Reporting
     }
 
     /// <summary>
-    /// HTML5 report writer.
+    /// Implements a <see cref="IReportWriter" /> that writes to HTML format.
     /// </summary>
     public class HtmlReportWriter : XmlWriterBase, IReportWriter
     {
@@ -205,7 +205,7 @@ namespace OxyPlot.Reporting
                     ////this.WriteEndElement();
                     break;
                 case HtmlPlotElementType.Svg:
-                    this.WriteRaw(plot.PlotModel.ToSvg(plot.Width, plot.Height, false, this.textMeasurer));
+                    this.WriteRaw(SvgExporter.ExportToString(plot.PlotModel, plot.Width, plot.Height, false, this.textMeasurer));
                     break;
             }
 

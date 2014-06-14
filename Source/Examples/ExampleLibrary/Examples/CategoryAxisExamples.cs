@@ -27,11 +27,8 @@
 
 namespace ExampleLibrary
 {
-    using System.Collections.Generic;
-
     using OxyPlot;
     using OxyPlot.Axes;
-    using OxyPlot.Series;
 
     [Examples("CategoryAxis")]
     public static class CategoryAxisExamples
@@ -39,13 +36,11 @@ namespace ExampleLibrary
         [Example("Standard")]
         public static PlotModel StandardCategoryAxis()
         {
-            var plotModel1 = new PlotModel();
-            plotModel1.Title = "Standard";
+            var plotModel1 = new PlotModel { Title = "Standard" };
             var catAxis = new CategoryAxis();
-            catAxis.Labels = new List<string>() { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" };
+            catAxis.Labels.AddRange(new[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" });
             plotModel1.Axes.Add(catAxis);
-            var linearAxis = new LinearAxis();
-            linearAxis.Position = AxisPosition.Left;
+            var linearAxis = new LinearAxis { Position = AxisPosition.Left };
             plotModel1.Axes.Add(linearAxis);
             return plotModel1;
         }
@@ -53,15 +48,11 @@ namespace ExampleLibrary
         [Example("MajorStep")]
         public static PlotModel MajorStepCategoryAxis()
         {
-            var plotModel1 = new PlotModel();
-            plotModel1.Title = "Major Step = 4, IsTickCentered = true";
-            var catAxis = new CategoryAxis();
-            catAxis.IsTickCentered = true;
-            catAxis.MajorStep = 4;
-            catAxis.Labels = new List<string>() { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" };
+            var plotModel1 = new PlotModel { Title = "Major Step = 4, IsTickCentered = true" };
+            var catAxis = new CategoryAxis { IsTickCentered = true, MajorStep = 4 };
+            catAxis.Labels.AddRange(new[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" });
             plotModel1.Axes.Add(catAxis);
-            var linearAxis = new LinearAxis();
-            linearAxis.Position = AxisPosition.Left;
+            var linearAxis = new LinearAxis { Position = AxisPosition.Left };
             plotModel1.Axes.Add(linearAxis);
             return plotModel1;
         }

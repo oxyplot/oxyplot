@@ -28,18 +28,21 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Windows;
-
 namespace ColorBindingDemo
 {
+    using System.Windows;
+
+    using WpfExamples;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [Example("Binds fore and background colors.")]
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
     }
 }

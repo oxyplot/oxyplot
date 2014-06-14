@@ -30,6 +30,7 @@
 
 namespace OxyPlot.Series
 {
+    using System;
     using System.Collections.Generic;
 
     /// <summary>
@@ -51,6 +52,7 @@ namespace OxyPlot.Series
         /// Initializes a new instance of the <see cref="StemSeries" /> class.
         /// </summary>
         /// <param name="title">The title.</param>
+        [Obsolete]
         public StemSeries(string title)
             : base(title)
         {
@@ -63,6 +65,7 @@ namespace OxyPlot.Series
         /// <param name="color">The color of the line stroke.</param>
         /// <param name="strokeThickness">The stroke thickness (optional).</param>
         /// <param name="title">The title (optional).</param>
+        [Obsolete]
         public StemSeries(OxyColor color, double strokeThickness = 1, string title = null)
             : base(color, strokeThickness, title)
         {
@@ -95,7 +98,7 @@ namespace OxyPlot.Series
 
             // http://paulbourke.net/geometry/pointlineplane/
             double minimumDistance = double.MaxValue;
-            var points = this.Points;
+            var points = this.ActualPoints;
 
             for (int i = 0; i < points.Count; i++)
             {
@@ -136,7 +139,7 @@ namespace OxyPlot.Series
         /// <param name="model">The owner plot model.</param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
-            if (this.Points.Count == 0)
+            if (this.ActualPoints.Count == 0)
             {
                 return;
             }
@@ -152,10 +155,10 @@ namespace OxyPlot.Series
             var dashArray = this.ActualDashArray;
             var actualColor = this.GetSelectableColor(this.ActualColor);
             var points = new ScreenPoint[2];
-            var markerPoints = this.MarkerType != MarkerType.None ? new List<ScreenPoint>(this.Points.Count) : null;
-            foreach (var point in this.Points)
+            var markerPoints = this.MarkerType != MarkerType.None ? new List<ScreenPoint>(this.ActualPoints.Count) : null;
+            foreach (var point in this.ActualPoints)
             {
-                if (!this.IsValidPoint(point, this.XAxis, this.YAxis))
+                if (!this.IsValidPoint(point))
                 {
                     continue;
                 }
@@ -166,8 +169,8 @@ namespace OxyPlot.Series
                 if (this.StrokeThickness > 0 && this.ActualLineStyle != LineStyle.None)
                 {
                     rc.DrawClippedLine(
-                        points,
                         clippingRect,
+                        points,
                         minDistSquared,
                         actualColor,
                         this.StrokeThickness,
@@ -185,8 +188,8 @@ namespace OxyPlot.Series
             if (this.MarkerType != MarkerType.None)
             {
                 rc.DrawMarkers(
-                    markerPoints,
                     clippingRect,
+                    markerPoints,
                     this.MarkerType,
                     this.MarkerOutline,
                     new[] { this.MarkerSize },

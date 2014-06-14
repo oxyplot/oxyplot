@@ -39,23 +39,28 @@ namespace OverlayDemo
     using OxyPlot;
     using OxyPlot.Axes;
 
+    using WpfExamples;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [Example("WPF overlays.")]
     public partial class MainWindow : Window
     {
         private LinearAxis horizontalAxis;
+
         private LinearAxis verticalAxis;
 
         private PlotModel model;
+        
         private Rectangle rect;
 
         public MainWindow()
         {
             this.InitializeComponent();
             this.model = new PlotModel();
-            this.horizontalAxis = new LinearAxis(AxisPosition.Bottom);
-            this.verticalAxis = new LinearAxis(AxisPosition.Left);
+            this.horizontalAxis = new LinearAxis { Position = AxisPosition.Bottom };
+            this.verticalAxis = new LinearAxis { Position = AxisPosition.Left };
             this.model.Axes.Add(this.horizontalAxis);
             this.model.Axes.Add(this.verticalAxis);
             plot1.Model = this.model;
@@ -72,8 +77,8 @@ namespace OverlayDemo
         void HandleTransformChanged(object sender, EventArgs e)
         {
             // Transform to screen coordinates
-            var p1 = Axis.Transform(0, 0, this.horizontalAxis, this.verticalAxis);
-            var p2 = Axis.Transform(100, 100, this.horizontalAxis, this.verticalAxis);
+            var p1 = this.horizontalAxis.Transform(0, 0, this.verticalAxis);
+            var p2 = this.horizontalAxis.Transform(100, 100, this.verticalAxis);
 
             // Change the position and size of the WPF shape
             this.rect.Width = Math.Abs(p2.X - p1.X);

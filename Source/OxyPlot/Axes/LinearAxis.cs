@@ -30,6 +30,8 @@
 
 namespace OxyPlot.Axes
 {
+    using System;
+
     /// <summary>
     /// Represents an axis with linear scale.
     /// </summary>
@@ -48,40 +50,41 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Initializes a new instance of the <see cref="LinearAxis" /> class.
         /// </summary>
-        /// <param name="pos">The position of the axis.</param>
+        /// <param name="position">The position of the axis.</param>
         /// <param name="title">The title.</param>
-        public LinearAxis(AxisPosition pos, string title)
+        [Obsolete]
+        public LinearAxis(AxisPosition position, string title)
             : this()
         {
-            this.Position = pos;
+            this.Position = position;
             this.Title = title;
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LinearAxis" /> class.
         /// </summary>
-        /// <param name="pos">The position of the axis.</param>
-        /// <param name="minimum">The minimum.</param>
-        /// <param name="maximum">The maximum.</param>
+        /// <param name="position">The position of the axis.</param>
+        /// <param name="minimum">The minimum value.</param>
+        /// <param name="maximum">The maximum value.</param>
         /// <param name="title">The title.</param>
-        public LinearAxis(
-            AxisPosition pos, double minimum = double.NaN, double maximum = double.NaN, string title = null)
-            : this(pos, minimum, maximum, double.NaN, double.NaN, title)
+        [Obsolete]
+        public LinearAxis(AxisPosition position, double minimum = double.NaN, double maximum = double.NaN, string title = null)
+            : this(position, minimum, maximum, double.NaN, double.NaN, title)
         {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LinearAxis" /> class.
         /// </summary>
-        /// <param name="pos">The position of the axis.</param>
-        /// <param name="minimum">The minimum.</param>
-        /// <param name="maximum">The maximum.</param>
+        /// <param name="position">The position of the axis.</param>
+        /// <param name="minimum">The minimum value.</param>
+        /// <param name="maximum">The maximum value.</param>
         /// <param name="majorStep">The major step.</param>
         /// <param name="minorStep">The minor step.</param>
         /// <param name="title">The title.</param>
-        public LinearAxis(
-            AxisPosition pos, double minimum, double maximum, double majorStep, double minorStep, string title = null)
-            : this(pos, title)
+        [Obsolete]
+        public LinearAxis(AxisPosition position, double minimum, double maximum, double majorStep, double minorStep, string title = null)
+            : this(position, title)
         {
             this.Minimum = minimum;
             this.Maximum = maximum;

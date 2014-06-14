@@ -24,14 +24,14 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents lengths in the plot.
+//   Represents absolute or relative engths in data or screen space.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     /// <summary>
-    /// Represents lengths in the plot.
+    /// Represents absolute or relative lengths in data or screen space.
     /// </summary>
     public struct PlotLength
     {

@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Specifies the position of an <see cref="Axis"/>.
+//   Specifies the position of an <see cref="Axis" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

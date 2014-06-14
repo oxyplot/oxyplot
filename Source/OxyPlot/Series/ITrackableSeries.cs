@@ -33,7 +33,7 @@ namespace OxyPlot.Series
     /// <summary>
     /// Provides functionality to return data for a tracker control.
     /// </summary>
-    /// <remarks>The plot control will show a tracker with the current value when moving the mouse over the data.</remarks>
+    /// <remarks>The plot view will show a tracker with the current value when moving the mouse over the data.</remarks>
     public interface ITrackableSeries
     {
         /// <summary>

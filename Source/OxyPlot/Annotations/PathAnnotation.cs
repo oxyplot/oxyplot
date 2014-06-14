@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents all annotations who are paths such as lines, functions or polylines
+//   Provides an abstract base class for all annotations that contain paths (lines, functions or polylines).
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -34,7 +34,7 @@ namespace OxyPlot.Annotations
     using System.Collections.Generic;
 
     /// <summary>
-    /// Represents all annotations who are paths such as lines, functions or polylines
+    /// Provides an abstract base class for all annotations that contain paths (lines, functions or polylines).
     /// </summary>
     public abstract class PathAnnotation : TextualAnnotation
     {
@@ -85,7 +85,7 @@ namespace OxyPlot.Annotations
             this.ClipByYAxis = true;
             this.aliased = false;
 
-            this.TextPosition = 1;
+            this.TextLinePosition = 1;
             this.TextOrientation = AnnotationTextOrientation.AlongLine;
             this.TextMargin = 12;
             this.ClipText = true;
@@ -137,12 +137,6 @@ namespace OxyPlot.Annotations
         public double StrokeThickness { get; set; }
 
         /// <summary>
-        /// Gets or sets the text horizontal alignment.
-        /// </summary>
-        /// <value>The text horizontal alignment.</value>
-        public HorizontalAlignment TextHorizontalAlignment { get; set; }
-
-        /// <summary>
         /// Gets or sets the text margin (along the line).
         /// </summary>
         /// <value>The text margin.</value>
@@ -161,24 +155,19 @@ namespace OxyPlot.Annotations
         public AnnotationTextOrientation TextOrientation { get; set; }
 
         /// <summary>
-        /// Gets or sets the text position fraction.
+        /// Gets or sets the text position relative to the line.
         /// </summary>
         /// <value>The text position in the interval [0,1].</value>
         /// <remarks>Positions smaller than 0.25 are left aligned at the start of the line
         /// Positions larger than 0.75 are right aligned at the end of the line
         /// Other positions are center aligned at the specified position</remarks>
-        public double TextPosition { get; set; }
+        public double TextLinePosition { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to clip the text within the plot area.
         /// </summary>
         /// <value><c>true</c> if text should be clipped within the plot area; otherwise, <c>false</c>.</value>
         public bool ClipText { get; set; }
-
-        /// <summary>
-        /// Gets or sets the vertical alignment of text (above or below the line).
-        /// </summary>
-        public VerticalAlignment TextVerticalAlignment { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to clip the annotation line by the X axis range.
@@ -299,19 +288,20 @@ namespace OxyPlot.Annotations
 
             const double MinimumSegmentLength = 4;
 
-            IList<ScreenPoint> clippedPoints = null;
+            var clippedPoints = new List<ScreenPoint>();
             var dashArray = this.LineStyle.GetDashArray();
 
             rc.DrawClippedLine(
-               this.screenPoints,
                clippingRectangle,
+               this.screenPoints,
                MinimumSegmentLength * MinimumSegmentLength,
                this.GetSelectableColor(this.Color),
                this.StrokeThickness,
                dashArray,
                this.LineJoin,
                this.aliased,
-               pts => clippedPoints = pts);
+               null,
+               clippedPoints.AddRange);
 
             ScreenPoint position;
             double angle;
@@ -323,10 +313,10 @@ namespace OxyPlot.Annotations
             }
             else
             {
-                margin *= this.TextPosition < 0.5 ? 1 : -1;
+                margin *= this.TextLinePosition < 0.5 ? 1 : -1;
             }
 
-            if (clippedPoints != null && GetPointAtRelativeDistance(clippedPoints, this.TextPosition, margin, out position, out angle))
+            if (GetPointAtRelativeDistance(clippedPoints, this.TextLinePosition, margin, out position, out angle))
             {
                 if (angle < -90)
                 {
@@ -366,6 +356,13 @@ namespace OxyPlot.Annotations
 
                 if (!string.IsNullOrEmpty(this.Text))
                 {
+                    var textPosition = this.GetActualTextPosition(() => position);
+                    
+                    if (this.TextPosition.IsDefined())
+                    {
+                        angle = this.TextRotation;
+                    }
+
                     if (this.ClipText)
                     {
                         var cs = new CohenSutherlandClipping(clippingRectangle);
@@ -373,7 +370,7 @@ namespace OxyPlot.Annotations
                         {
                             rc.DrawClippedText(
                                 clippingRectangle,
-                                position,
+                                textPosition,
                                 this.Text,
                                 this.ActualTextColor,
                                 this.ActualFont,
@@ -387,7 +384,7 @@ namespace OxyPlot.Annotations
                     else
                     {
                         rc.DrawText(
-                           position,
+                           textPosition,
                            this.Text,
                            this.ActualTextColor,
                            this.ActualFont,
@@ -414,7 +411,7 @@ namespace OxyPlot.Annotations
             double dist = (args.Point - nearestPoint).Length;
             if (dist < args.Tolerance)
             {
-                return new HitTestResult(nearestPoint);
+                return new HitTestResult(this, nearestPoint);
             }
 
             return null;

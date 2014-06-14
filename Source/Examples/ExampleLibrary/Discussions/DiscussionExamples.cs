@@ -43,7 +43,7 @@ namespace ExampleLibrary
         [Example("#445576: Invisible contour series")]
         public static PlotModel InvisibleContourSeries()
         {
-            var model = new PlotModel("Invisible contour series");
+            var model = new PlotModel { Title = "Invisible contour series" };
             var cs = new ContourSeries
             {
                 IsVisible = false,
@@ -58,7 +58,7 @@ namespace ExampleLibrary
         [Example("#461507: StairStepSeries NullReferenceException")]
         public static PlotModel StairStepSeries_NullReferenceException()
         {
-            var plotModel1 = new PlotModel("StairStepSeries NullReferenceException");
+            var plotModel1 = new PlotModel { Title = "StairStepSeries NullReferenceException" };
             plotModel1.Series.Add(new StairStepSeries());
             return plotModel1;
         }
@@ -71,7 +71,7 @@ namespace ExampleLibrary
             data[0, 1] = 0;
             data[0, 2] = -10;
 
-            var model = new PlotModel("HeatMapSeries");
+            var model = new PlotModel { Title = "HeatMapSeries" };
             model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = new OxyPalette(OxyColors.Red, OxyColors.Green, OxyColors.Blue) });
 
             var hms = new HeatMapSeries
@@ -249,6 +249,17 @@ namespace ExampleLibrary
                 model.Series.Add(columnSeries);
             }
 
+            return model;
+        }
+
+        [Example("#542701: Same color of LineSeries and axis title & labels")]
+        public static PlotModel SameColorOfLineSeriesAndAxisTitleAndLabels()
+        {
+            var model = new PlotModel { Title = "Same color of LineSeries and axis title & labels" };
+            var color = OxyColors.IndianRed;
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Axis 1", TitleColor = color, TextColor = color });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            model.Series.Add(new LineSeries { Title = "LineSeries 1", Color = color, ItemsSource = new[] { new DataPoint(0, 0), new DataPoint(10, 3), new DataPoint(20, 2) } });
             return model;
         }
     }

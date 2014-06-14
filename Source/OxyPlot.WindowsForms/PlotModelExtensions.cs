@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Provides extension methods to the <see cref="PlotModel"/>.
+//   Provides extension methods to the <see cref="PlotModel" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -52,7 +52,7 @@ namespace OxyPlot.WindowsForms
             {
                 using (var rc = new GraphicsRenderContext(g) { RendersToScreen = false })
                 {
-                    return model.ToSvg(width, height, isDocument, rc);
+                    return OxyPlot.SvgExporter.ExportToString(model, width, height, isDocument, rc);
                 }
             }
         }

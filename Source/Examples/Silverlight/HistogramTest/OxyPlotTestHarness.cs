@@ -56,8 +56,8 @@ namespace Visiblox.Charts.Examples
         {
             var model = new PlotModel();
             model.PlotMargins = new OxyThickness(10, 10, 10, 20);
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, 0, 250, 50, 100) { MajorGridlineStyle = LineStyle.Solid, TickStyle = TickStyle.None });
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, 0) { MajorGridlineStyle = LineStyle.Solid, TickStyle = TickStyle.None });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 0, Maximum = 250, MinorStep = 50, MajorStep = 100, MajorGridlineStyle = LineStyle.Solid, TickStyle = TickStyle.None });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = 0, MajorGridlineStyle = LineStyle.Solid, TickStyle = TickStyle.None });
             model.Series.Add(ListToSeries(rgbData[0], OxyColors.Red));
             model.Series.Add(ListToSeries(rgbData[1], OxyColors.Green));
             model.Series.Add(ListToSeries(rgbData[2], OxyColors.Blue));
@@ -67,7 +67,7 @@ namespace Visiblox.Charts.Examples
         private Series ListToSeries(List<Histogram.DataPoint> data, OxyColor color)
         {
             var pts = data.Select(pt => new OxyPlot.DataPoint(pt.Location, pt.Intensity));
-            return new LineSeries { Points = pts.Cast<IDataPoint>().ToList(), StrokeThickness = 1.0, Color = color };
+            return new LineSeries { ItemsSource = pts.ToList(), StrokeThickness = 1.0, Color = color };
         }
     }
 }

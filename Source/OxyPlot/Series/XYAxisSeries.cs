@@ -132,7 +132,7 @@ namespace OxyPlot.Series
         /// </summary>
         /// <param name="p">The point.</param>
         /// <returns>A screen point.</returns>
-        public ScreenPoint Transform(IDataPoint p)
+        public ScreenPoint Transform(DataPoint p)
         {
             return this.XAxis.Transform(p.X, p.Y, this.YAxis);
         }
@@ -192,7 +192,7 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Updates the max/minimum values.
+        /// Updates the maximum and minimum values of the series.
         /// </summary>
         protected internal override void UpdateMaxMin()
         {
@@ -219,7 +219,7 @@ namespace OxyPlot.Series
         /// <param name="points">The point list.</param>
         /// <param name="point">The point.</param>
         /// <returns>A tracker hit result if a point was found.</returns>
-        protected TrackerHitResult GetNearestInterpolatedPointInternal(IList<IDataPoint> points, ScreenPoint point)
+        protected TrackerHitResult GetNearestInterpolatedPointInternal(List<DataPoint> points, ScreenPoint point)
         {
             if (this.XAxis == null || this.YAxis == null || points == null)
             {
@@ -236,7 +236,7 @@ namespace OxyPlot.Series
             {
                 var p1 = points[i];
                 var p2 = points[i + 1];
-                if (!this.IsValidPoint(p1, this.XAxis, this.YAxis) || !this.IsValidPoint(p2, this.XAxis, this.YAxis))
+                if (!this.IsValidPoint(p1) || !this.IsValidPoint(p2))
                 {
                     continue;
                 }
@@ -281,23 +281,23 @@ namespace OxyPlot.Series
         /// <param name="points">The points (data coordinates).</param>
         /// <param name="point">The point (screen coordinates).</param>
         /// <returns>A <see cref="TrackerHitResult" /> if a point was found, <c>null</c> otherwise.</returns>
-        protected TrackerHitResult GetNearestPointInternal(IEnumerable<IDataPoint> points, ScreenPoint point)
+        protected TrackerHitResult GetNearestPointInternal(IEnumerable<DataPoint> points, ScreenPoint point)
         {
             var spn = default(ScreenPoint);
-            IDataPoint dpn = default(DataPoint);
+            var dpn = default(DataPoint);
             double index = -1;
 
             double minimumDistance = double.MaxValue;
             int i = 0;
             foreach (var p in points)
             {
-                if (!this.IsValidPoint(p, this.XAxis, this.YAxis))
+                if (!this.IsValidPoint(p))
                 {
                     i++;
                     continue;
                 }
 
-                var sp = Axis.Transform(p, this.XAxis, this.YAxis);
+                var sp = this.XAxis.Transform(p.x, p.y, this.YAxis);
                 double d2 = (sp - point).LengthSquared;
 
                 if (d2 < minimumDistance)
@@ -324,33 +324,338 @@ namespace OxyPlot.Series
         /// Determines whether the specified point is valid.
         /// </summary>
         /// <param name="pt">The point.</param>
-        /// <param name="xaxis">The x axis.</param>
-        /// <param name="yaxis">The y axis.</param>
         /// <returns><c>true</c> if the point is valid; otherwise, <c>false</c> .</returns>
-        protected virtual bool IsValidPoint(IDataPoint pt, Axis xaxis, Axis yaxis)
+        protected virtual bool IsValidPoint(DataPoint pt)
         {
-            return pt != null && !double.IsNaN(pt.X) && !double.IsInfinity(pt.X) && !double.IsNaN(pt.Y) && !double.IsInfinity(pt.Y)
-                   && (xaxis != null && xaxis.IsValidValue(pt.X)) && (yaxis != null && yaxis.IsValidValue(pt.Y));
+            return
+                this.XAxis != null && this.XAxis.IsValidValue(pt.X) &&
+                this.YAxis != null && this.YAxis.IsValidValue(pt.Y);
         }
 
         /// <summary>
-        /// Converts the value of the specified object to a double precision floating point number. DateTime objects are converted using DateTimeAxis.ToDouble and TimeSpan objects are converted using TimeSpanAxis.ToDouble
+        /// Determines whether the specified point is valid.
         /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns>The floating point number value.</returns>
-        protected virtual double ToDouble(object value)
+        /// <param name="x">The x coordinate.</param>
+        /// <param name="y">The y coordinate.</param>
+        /// <returns><c>true</c> if the point is valid; otherwise, <c>false</c> . </returns>
+        protected bool IsValidPoint(double x, double y)
         {
-            if (value is DateTime)
+            return
+                this.XAxis != null && this.XAxis.IsValidValue(x) &&
+                this.YAxis != null && this.YAxis.IsValidValue(y);
+        }
+
+        /// <summary>
+        /// Updates the Max/Min limits from the specified <see cref="DataPoint" /> list.
+        /// </summary>
+        /// <param name="points">The list of points.</param>
+        protected void InternalUpdateMaxMin(List<DataPoint> points)
+        {
+            if (points == null)
             {
-                return DateTimeAxis.ToDouble((DateTime)value);
+                throw new ArgumentNullException("points");
             }
 
-            if (value is TimeSpan)
+            if (points.Count == 0)
             {
-                return ((TimeSpan)value).TotalSeconds;
+                return;
             }
 
-            return Convert.ToDouble(value);
+            double minx = this.MinX;
+            double miny = this.MinY;
+            double maxx = this.MaxX;
+            double maxy = this.MaxY;
+
+            if (double.IsNaN(minx))
+            {
+                minx = double.MaxValue;
+            }
+
+            if (double.IsNaN(miny))
+            {
+                miny = double.MaxValue;
+            }
+
+            if (double.IsNaN(maxx))
+            {
+                maxx = double.MinValue;
+            }
+
+            if (double.IsNaN(maxy))
+            {
+                maxy = double.MinValue;
+            }
+
+            foreach (var pt in points)
+            {
+                double x = pt.X;
+                double y = pt.Y;
+
+                // Check if the point is valid
+                if (!this.IsValidPoint(pt))
+                {
+                    continue;
+                }
+
+                if (x < minx)
+                {
+                    minx = x;
+                }
+
+                if (x > maxx)
+                {
+                    maxx = x;
+                }
+
+                if (y < miny)
+                {
+                    miny = y;
+                }
+
+                if (y > maxy)
+                {
+                    maxy = y;
+                }
+            }
+
+            if (minx < double.MaxValue)
+            {
+                if (minx < this.XAxis.FilterMinValue)
+                {
+                    minx = this.XAxis.FilterMinValue;
+                }
+
+                this.MinX = minx;
+            }
+
+            if (miny < double.MaxValue)
+            {
+                if (miny < this.YAxis.FilterMinValue)
+                {
+                    miny = this.YAxis.FilterMinValue;
+                }
+
+                this.MinY = miny;
+            }
+
+            if (maxx > double.MinValue)
+            {
+                if (maxx > this.XAxis.FilterMaxValue)
+                {
+                    maxx = this.XAxis.FilterMaxValue;
+                }
+
+                this.MaxX = maxx;
+            }
+
+            if (maxy > double.MinValue)
+            {
+                if (maxy > this.YAxis.FilterMaxValue)
+                {
+                    maxy = this.YAxis.FilterMaxValue;
+                }
+
+                this.MaxY = maxy;
+            }
+        }
+
+        /// <summary>
+        /// Updates the Max/Min limits from the specified list.
+        /// </summary>
+        /// <typeparam name="T">The type of the elements in the list.</typeparam>
+        /// <param name="items">The items.</param>
+        /// <param name="xf">A function that provides the x value for each item.</param>
+        /// <param name="yf">A function that provides the y value for each item.</param>
+        /// <exception cref="System.ArgumentNullException">The items argument cannot be null.</exception>
+        protected void InternalUpdateMaxMin<T>(List<T> items, Func<T, double> xf, Func<T, double> yf)
+        {
+            if (items == null)
+            {
+                throw new ArgumentNullException("items");
+            }
+
+            if (items.Count == 0)
+            {
+                return;
+            }
+
+            double minx = this.MinX;
+            double miny = this.MinY;
+            double maxx = this.MaxX;
+            double maxy = this.MaxY;
+
+            if (double.IsNaN(minx))
+            {
+                minx = double.MaxValue;
+            }
+
+            if (double.IsNaN(miny))
+            {
+                miny = double.MaxValue;
+            }
+
+            if (double.IsNaN(maxx))
+            {
+                maxx = double.MinValue;
+            }
+
+            if (double.IsNaN(maxy))
+            {
+                maxy = double.MinValue;
+            }
+
+            foreach (var item in items)
+            {
+                double x = xf(item);
+                double y = yf(item);
+
+                // Check if the point is valid
+                if (!this.IsValidPoint(x, y))
+                {
+                    continue;
+                }
+
+                if (x < minx)
+                {
+                    minx = x;
+                }
+
+                if (x > maxx)
+                {
+                    maxx = x;
+                }
+
+                if (y < miny)
+                {
+                    miny = y;
+                }
+
+                if (y > maxy)
+                {
+                    maxy = y;
+                }
+            }
+
+            if (minx < double.MaxValue)
+            {
+                this.MinX = minx;
+            }
+
+            if (miny < double.MaxValue)
+            {
+                this.MinY = miny;
+            }
+
+            if (maxx > double.MinValue)
+            {
+                this.MaxX = maxx;
+            }
+
+            if (maxy > double.MinValue)
+            {
+                this.MaxY = maxy;
+            }
+        }
+
+        /// <summary>
+        /// Updates the Max/Min limits from the specified collection.
+        /// </summary>
+        /// <typeparam name="T">The type of the items in the collection.</typeparam>
+        /// <param name="items">The items.</param>
+        /// <param name="xmin">A function that provides the x minimum for each item.</param>
+        /// <param name="xmax">A function that provides the x maximum for each item.</param>
+        /// <param name="ymin">A function that provides the y minimum for each item.</param>
+        /// <param name="ymax">A function that provides the y maximum for each item.</param>
+        /// <exception cref="System.ArgumentNullException">The items argument cannot be null.</exception>
+        protected void InternalUpdateMaxMin<T>(List<T> items, Func<T, double> xmin, Func<T, double> xmax, Func<T, double> ymin, Func<T, double> ymax)
+        {
+            if (items == null)
+            {
+                throw new ArgumentNullException("items");
+            }
+
+            if (items.Count == 0)
+            {
+                return;
+            }
+
+            double minx = this.MinX;
+            double miny = this.MinY;
+            double maxx = this.MaxX;
+            double maxy = this.MaxY;
+
+            if (double.IsNaN(minx))
+            {
+                minx = double.MaxValue;
+            }
+
+            if (double.IsNaN(miny))
+            {
+                miny = double.MaxValue;
+            }
+
+            if (double.IsNaN(maxx))
+            {
+                maxx = double.MinValue;
+            }
+
+            if (double.IsNaN(maxy))
+            {
+                maxy = double.MinValue;
+            }
+
+            foreach (var item in items)
+            {
+                double x0 = xmin(item);
+                double x1 = xmax(item);
+                double y0 = ymin(item);
+                double y1 = ymax(item);
+
+                if (!this.IsValidPoint(x0, y0) || !this.IsValidPoint(x1, y1))
+                {
+                    continue;
+                }
+
+                if (x0 < minx)
+                {
+                    minx = x0;
+                }
+
+                if (x1 > maxx)
+                {
+                    maxx = x1;
+                }
+
+                if (y0 < miny)
+                {
+                    miny = y0;
+                }
+
+                if (y1 > maxy)
+                {
+                    maxy = y1;
+                }
+            }
+
+            if (minx < double.MaxValue)
+            {
+                this.MinX = minx;
+            }
+
+            if (miny < double.MaxValue)
+            {
+                this.MinY = miny;
+            }
+
+            if (maxx > double.MinValue)
+            {
+                this.MaxX = maxx;
+            }
+
+            if (maxy > double.MinValue)
+            {
+                this.MaxY = maxy;
+            }
         }
 
         /// <summary>

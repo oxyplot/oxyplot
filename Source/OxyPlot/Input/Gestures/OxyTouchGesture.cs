@@ -24,15 +24,16 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines a touch input gesture that can be used to invoke a command.
+//   Represents a touch input gesture.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     /// <summary>
-    /// Defines a touch input gesture that can be used to invoke a command.
+    /// Represents a touch input gesture.
     /// </summary>
+    /// <remarks>The input gesture can be bound to a command in a <see cref="PlotController" />.</remarks>
     public class OxyTouchGesture : OxyInputGesture
     {
         /// <summary>

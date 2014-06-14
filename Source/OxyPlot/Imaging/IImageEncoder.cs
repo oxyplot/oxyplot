@@ -24,14 +24,14 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Provides functionality to encode an image.
+//   Specifies functionality to encode an image.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     /// <summary>
-    /// Provides functionality to encode an image.
+    /// Specifies functionality to encode an image.
     /// </summary>
     public interface IImageEncoder
     {

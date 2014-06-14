@@ -25,12 +25,13 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Android.App;
-using Android.OS;
-
 namespace ExampleBrowser
 {
     using System.Linq;
+
+	using Android.App;
+	using Android.OS;
+	using Android.Views;
 
     using OxyPlot.XamarinAndroid;
 
@@ -40,6 +41,9 @@ namespace ExampleBrowser
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
+
+			this.RequestWindowFeature (WindowFeatures.NoTitle);
+
             var category = Intent.GetStringExtra("category");
             var plot = Intent.GetStringExtra("plot");
 

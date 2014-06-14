@@ -275,14 +275,14 @@ namespace OxyPlot.Series
                 this.ActualMaximumBarRectangles.Add(maximumRectangle);
 
                 rc.DrawClippedRectangleAsPolygon(
-                    minimumRectangle,
                     clippingRect,
+                    minimumRectangle,
                     item.MinimumColor.GetActualColor(this.ActualMinimumFillColor),
                     this.StrokeColor,
                     this.StrokeThickness);
                 rc.DrawClippedRectangleAsPolygon(
-                    maximumRectangle,
                     clippingRect,
+                    maximumRectangle,
                     item.MaximumColor.GetActualColor(this.ActualMaximumFillColor),
                     this.StrokeColor,
                     this.StrokeThickness);
@@ -429,7 +429,7 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Updates the maximum/minimum value on the value axis from the bar values.
+        /// Updates the maximum and minimum values of the series.
         /// </summary>
         protected internal override void UpdateMaxMin()
         {

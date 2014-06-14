@@ -37,12 +37,18 @@ syntax: glob
 Output/
 ClientBin/
 lib/
+*.sln.ide/
 
 Documentation/Images/Series/
 Web/Examples/
 Web/favicon.ico
 
 Tools/    # Add manually
+
+XamarinComponents/OxyPlot/doc
+XamarinComponents/OxyPlot/icons
+XamarinComponents/OxyPlot/htmldoc
+XamarinComponents/OxyPlot/msxdoc
 
 _ReSharper*/
 _TeamCity*/

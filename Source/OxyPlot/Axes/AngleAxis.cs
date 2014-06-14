@@ -61,6 +61,7 @@ namespace OxyPlot.Axes
         /// <param name="majorStep">The major step.</param>
         /// <param name="minorStep">The minor step.</param>
         /// <param name="title">The title.</param>
+        [Obsolete]
         public AngleAxis(
             double minimum = double.NaN,
             double maximum = double.NaN,
@@ -101,20 +102,6 @@ namespace OxyPlot.Axes
             minorTickValues = AxisUtilities.CreateTickValues(minimum, maximum, this.ActualMinorStep);
             majorTickValues = AxisUtilities.CreateTickValues(minimum, maximum, this.ActualMajorStep);
             majorLabelValues = AxisUtilities.CreateTickValues(this.Minimum, this.Maximum, this.ActualMajorStep);
-        }
-
-        /// <summary>
-        /// Determines whether the specified value is valid.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns><c>true</c> if the specified value is valid; otherwise, <c>false</c> .</returns>
-        public override bool IsValidValue(double value)
-        {
-            return !double.IsNaN(value) &&
-                !double.IsInfinity(value) &&
-                value < this.FilterMaxValue &&
-                value > this.FilterMinValue &&
-                (this.FilterFunction == null || this.FilterFunction(value));
         }
 
         /// <summary>

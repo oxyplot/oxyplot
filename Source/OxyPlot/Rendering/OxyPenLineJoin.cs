@@ -24,14 +24,14 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Specifies how to join line segments.
+//   Defines how to join line segments.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     /// <summary>
-    /// Specifies how to join line segments.
+    /// Defines how to join line segments.
     /// </summary>
     public enum OxyPenLineJoin
     {

@@ -24,21 +24,21 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Provides functionality to create data points.
+//   Specifies functionality to provide a <see cref="DataPoint" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     /// <summary>
-    /// Provides functionality to create data points.
+    /// Specifies functionality to provide a <see cref="DataPoint" />.
     /// </summary>
     public interface IDataPointProvider
     {
         /// <summary>
-        /// Gets the data point.
+        /// Gets the <see cref="DataPoint" /> that represents the element.
         /// </summary>
-        /// <returns>The data point.</returns>
+        /// <returns>A <see cref="DataPoint" />.</returns>
         DataPoint GetDataPoint();
     }
 }

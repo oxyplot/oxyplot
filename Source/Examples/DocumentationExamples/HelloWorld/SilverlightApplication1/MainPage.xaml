@@ -12,6 +12,6 @@
     </UserControl.DataContext>
 
     <Grid x:Name="LayoutRoot" Background="White">
-        <oxy:Plot Model="{Binding MyModel}"/>
+        <oxy:PlotView Model="{Binding MyModel}"/>
     </Grid>
 </UserControl>

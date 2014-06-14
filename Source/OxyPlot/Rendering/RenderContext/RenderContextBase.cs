@@ -30,6 +30,7 @@
 
 namespace OxyPlot
 {
+    using System;
     using System.Collections.Generic;
 
     /// <summary>
@@ -58,7 +59,11 @@ namespace OxyPlot
         /// <param name="fill">The fill color.</param>
         /// <param name="stroke">The stroke color.</param>
         /// <param name="thickness">The thickness.</param>
-        public abstract void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness);
+        public virtual void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
+        {
+            var polygon = CreateEllipse(rect);
+            this.DrawPolygon(polygon, fill, stroke, thickness, null, OxyPenLineJoin.Miter, false);
+        }
 
         /// <summary>
         /// Draws the collection of ellipses, where all have the same stroke and fill.
@@ -169,7 +174,11 @@ namespace OxyPlot
         /// <param name="fill">The fill color.</param>
         /// <param name="stroke">The stroke color.</param>
         /// <param name="thickness">The stroke thickness.</param>
-        public abstract void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness);
+        public virtual void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
+        {
+            var polygon = CreateRectangle(rect);
+            this.DrawPolygon(polygon, fill, stroke, thickness, null, OxyPenLineJoin.Miter, true);
+        }
 
         /// <summary>
         /// Draws a collection of rectangles, where all have the same stroke and fill.
@@ -282,6 +291,43 @@ namespace OxyPlot
         /// </summary>
         public virtual void ResetClip()
         {
+        }
+
+        /// <summary>
+        /// Creates an ellipse polygon.
+        /// </summary>
+        /// <param name="rect">The bounding rectangle.</param>
+        /// <param name="n">The number of points.</param>
+        /// <returns>The points defining the ellipse.</returns>
+        /// <remarks>Note that this is very slow, not optimized in any way.</remarks>
+        protected static ScreenPoint[] CreateEllipse(OxyRect rect, int n = 40)
+        {
+            double cx = rect.Center.X;
+            double cy = rect.Center.Y;
+            double dx = rect.Width / 2;
+            double dy = rect.Height / 2;
+            var points = new ScreenPoint[n];
+            for (int i = 0; i < n; i++)
+            {
+                double t = Math.PI * 2 * i / n;
+                points[i] = new ScreenPoint(cx + (Math.Cos(t) * dx), cy + (Math.Sin(t) * dy));
+            }
+
+            return points;
+        }
+
+        /// <summary>
+        /// Creates a rectangle polygon.
+        /// </summary>
+        /// <param name="rect">The rectangle.</param>
+        /// <returns>The points defining the rectangle.</returns>
+        protected static ScreenPoint[] CreateRectangle(OxyRect rect)
+        {
+            return new[]
+                       {
+                           new ScreenPoint(rect.Left, rect.Top), new ScreenPoint(rect.Left, rect.Bottom),
+                           new ScreenPoint(rect.Right, rect.Bottom), new ScreenPoint(rect.Right, rect.Top)
+                       };
         }
     }
 }

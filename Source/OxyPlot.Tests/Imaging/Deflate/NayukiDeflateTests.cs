@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Unit tests based on <a href="https://github.com/nayuki/DEFLATE/blob/master/test/nayuki/deflate/DecompressorTest.java">DecompressorTest.java</a>.
+//   Unit tests based on Nayjuki's <a href="https://github.com/nayuki/DEFLATE/blob/master/test/nayuki/deflate/DecompressorTest.java">DEFLATE</a> project.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

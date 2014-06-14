@@ -28,7 +28,6 @@
     <AndroidLinkMode>None</AndroidLinkMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\Output\XamarinAndroid\</OutputPath>
     <DefineConstants>TRACE;MONO</DefineConstants>
@@ -67,5 +66,10 @@
       <Project>{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}</Project>
       <Name>OxyPlot</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Main.axml">
+      <DependentUpon>CanvasRenderContext.cs</DependentUpon>
+    </AndroidResource>
   </ItemGroup>
 </Project>

@@ -8,5 +8,5 @@
 
 - Download component
 - Add references
-- Add a control
-- Bind to a PlotModel
+- Add a `PlotView` control
+- Bind to a `PlotModel`

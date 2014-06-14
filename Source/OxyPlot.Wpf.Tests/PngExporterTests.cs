@@ -27,41 +27,72 @@
 
 namespace OxyPlot.Wpf.Tests
 {
-    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.IO;
 
     using NUnit.Framework;
     using OxyPlot.Tests;
 
-    // ReSharper disable InconsistentNaming
-    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
+    /// <summary>
+    /// Tests the <see cref="PngExporter" />.
+    /// </summary>
     [TestFixture]
     public class PngExporterTests
     {
+        /// <summary>
+        /// Exports to a file and verifies that the file exists.
+        /// </summary>
         [Test]
-        public void ExportToFile_TestPlot_CheckThatFileExists()
+        public void ExportToFile()
         {
             var plotModel = TestModels.CreateTestModel1();
             const string FileName = "PngExporterTests_Plot1.png";
-            PngExporter.Export(plotModel, FileName, 400, 300, OxyColors.Automatic);
+            var exporter = new PngExporter { Width = 400, Height = 300 };
+            using (var stream = File.OpenWrite(FileName))
+            {
+                exporter.Export(plotModel, stream);
+            }
+
             Assert.IsTrue(File.Exists(FileName));
         }
 
+        /// <summary>
+        /// Exports with yellow background to a file and verifies that the file exists.
+        /// </summary>
         [Test]
-        public void ExportToFile_AllExamples_CheckThatFilesExist()
+        public void ExportWithDifferentBackground()
         {
-            const string DestinationDirectory = "ExampleLibrary";
-
-            if (!Directory.Exists(DestinationDirectory))
+            var plotModel = TestModels.CreateTestModel1();
+            const string FileName = "PngExporterTests_BackgroundYellow.png";
+            var exporter = new PngExporter { Width = 400, Height = 300, Background = OxyColors.Yellow };
+            using (var stream = File.OpenWrite(FileName))
             {
-                Directory.CreateDirectory(DestinationDirectory);
+                exporter.Export(plotModel, stream);
             }
 
-            foreach (var example in ExampleLibrary.Examples.GetList())
+            Assert.IsTrue(File.Exists(FileName));
+        }
+
+        /// <summary>
+        /// Exports with higher resolution and verifies that the file exists.
+        /// </summary>
+        /// <param name="factor">The resolution factor.</param>
+        [Test]
+        [TestCase(2)]
+        [TestCase(4)]
+        public void ExportWithResolution(double factor)
+        {
+            var resolution = (int)(96 * factor);
+            var plotModel = TestModels.CreateTestModel1();
+            var fileName = string.Format(CultureInfo.InvariantCulture, "PngExporterTests_ExportWithResolution_{0}dpi.png", resolution);
+            var exporter = new PngExporter { Width = (int)(400 * factor), Height = (int)(300 * factor), Resolution = resolution };
+            using (var stream = File.OpenWrite(fileName))
             {
-                var path = Path.Combine(DestinationDirectory, StringHelper.CreateValidFileName(example.Category + " - " + example.Title, ".png"));
-                PngExporter.Export(example.PlotModel, path, 800, 500, OxyColors.White);
+                exporter.Export(plotModel, stream);
             }
+
+            Assert.IsTrue(File.Exists(fileName));
+            PngAssert.AreEqual(Path.Combine("Baseline", fileName), fileName, fileName, Path.Combine("Diff", fileName));
         }
     }
 }

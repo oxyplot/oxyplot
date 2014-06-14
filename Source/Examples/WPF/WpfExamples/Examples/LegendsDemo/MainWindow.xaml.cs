@@ -28,38 +28,23 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-
 namespace LegendsDemo
 {
+    using WpfExamples;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    [Example("Demonstrates legend box capabilities.")]
+    public partial class MainWindow
     {
-        MainViewModel vm = new MainViewModel();
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MainWindow"/> class.
+        /// </summary>
         public MainWindow()
         {
-            InitializeComponent();
-            DataContext = vm;
-        }
-
-        private void Exit_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
+            this.InitializeComponent();
+            this.DataContext = new MainViewModel();
         }
     }
 }

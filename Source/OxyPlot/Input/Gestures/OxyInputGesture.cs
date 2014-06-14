@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Abstract class that describes input device gestures.
+//   Provides an abstract base class for input device gestures.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -33,8 +33,9 @@ namespace OxyPlot
     using System;
 
     /// <summary>
-    /// Abstract class that describes input device gestures.
+    /// Provides an abstract base class for input device gestures.
     /// </summary>
+    /// <remarks>The input gesture can be bound to a command in a <see cref="PlotController" />.</remarks>
     public abstract class OxyInputGesture : IEquatable<OxyInputGesture>
     {
         /// <summary>

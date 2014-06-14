@@ -30,7 +30,6 @@ namespace TaskDemo
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
-    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -39,9 +38,9 @@ namespace TaskDemo
 
     public class MainViewModel
     {
-        private Random randomizer = new Random();
+        private Random randomizer = new Random(13);
 
-        private IList<IDataPoint> points = new List<IDataPoint>();
+        private IList<DataPoint> points = new List<DataPoint>();
 
         private CancellationTokenSource tokenSource;
 
@@ -52,7 +51,7 @@ namespace TaskDemo
         public MainViewModel()
         {
             // Create a plot model
-            this.PlotModel = new PlotModel("Updating by task running on the UI thread");
+            this.PlotModel = new PlotModel { Title = "Updating by task running on the UI thread" };
             this.LineSeries1 = new LineSeries();
             this.points.Add(new DataPoint(0, 0));
             this.PlotModel.Series.Add(this.LineSeries1);
@@ -103,7 +102,7 @@ namespace TaskDemo
             }
         }
 
-        private IDataPoint CalculateNextPoint()
+        private DataPoint CalculateNextPoint()
         {
             // this runs on a worker thread
             int i = this.points.Count - 1;
@@ -126,7 +125,8 @@ namespace TaskDemo
             lock (this.points)
             {
                 // Create a copy of the points and give it to the LineSeries
-                this.LineSeries1.Points = this.points.ToList();
+                this.LineSeries1.Points.Clear();
+                this.LineSeries1.Points.AddRange(this.points);
             }
 
             this.PlotModel.InvalidatePlot(true);

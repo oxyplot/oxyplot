@@ -47,7 +47,7 @@ namespace ExampleLibrary
         {
             const int boxes = 10;
 
-            var model = new PlotModel(string.Format("BoxPlot (n={0})", boxes)) { LegendPlacement = LegendPlacement.Outside };
+            var model = new PlotModel { Title = string.Format("BoxPlot (n={0})", boxes), LegendPlacement = LegendPlacement.Outside };
 
             var s1 = new BoxPlotSeries
                 {
@@ -55,7 +55,7 @@ namespace ExampleLibrary
                     BoxWidth = 0.3
                 };
 
-            var random = new Random();
+            var random = new Random(31);
             for (var i = 0; i < boxes; i++)
             {
                 double x = i;
@@ -85,8 +85,8 @@ namespace ExampleLibrary
             }
 
             model.Series.Add(s1);
-            model.Axes.Add(new LinearAxis(AxisPosition.Left));
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom) { MinimumPadding = 0.1, MaximumPadding = 0.1 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, MinimumPadding = 0.1, MaximumPadding = 0.1 });
             return model;
         }
 
@@ -165,8 +165,13 @@ namespace ExampleLibrary
             s1.Items.Add(new BoxPlotItem(4, 730, 805, 807, 870, 950, new double[] { }));
             model.Series.Add(s1);
             model.Annotations.Add(new LineAnnotation { Type = LineAnnotationType.Horizontal, LineStyle = LineStyle.Solid, Y = 792.458, Text = "true speed" });
-            model.Axes.Add(new CategoryAxis("Experiment No.", "1", "2", "3", "4", "5"));
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, "Speed of light (km/s minus 299,000)") { MajorStep = 100, MinorStep = 100 });
+            var categoryAxis = new CategoryAxis
+            {
+                Title = "Experiment No.",
+            };
+            categoryAxis.Labels.AddRange(new[] { "1", "2", "3", "4", "5" });
+            model.Axes.Add(categoryAxis);
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Speed of light (km/s minus 299,000)", MajorStep = 100, MinorStep = 100 });
             return model;
         }
 
@@ -175,14 +180,15 @@ namespace ExampleLibrary
         {
             var m = new PlotModel();
             var x0 = DateTimeAxis.ToDouble(new DateTime(2013, 05, 04));
-            var a = new DateTimeAxis(AxisPosition.Bottom)
-                        {
-                            Minimum = x0 - 0.9,
-                            Maximum = x0 + 1.9,
-                            IntervalType = DateTimeIntervalType.Days,
-                            MajorStep = 1,
-                            MinorStep = 1
-                        };
+            var a = new DateTimeAxis
+            {
+                Position = AxisPosition.Bottom,
+                Minimum = x0 - 0.9,
+                Maximum = x0 + 1.9,
+                IntervalType = DateTimeIntervalType.Days,
+                MajorStep = 1,
+                MinorStep = 1
+            };
             a.StringFormat = "yyyy-MM-dd";
             m.Axes.Add(a);
             var s = new BoxPlotSeries();

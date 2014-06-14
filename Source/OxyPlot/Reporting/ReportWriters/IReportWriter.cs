@@ -24,14 +24,14 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Interface for Report writers.
+//   Specifies functionality to write <see cref="Report" /> objects.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Reporting
 {
     /// <summary>
-    /// Interface for Report writers.
+    /// Specifies functionality to write <see cref="Report" /> objects.
     /// </summary>
     public interface IReportWriter
     {

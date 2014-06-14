@@ -41,9 +41,9 @@ namespace ExampleLibrary
         [Example("PlotModel mouse events")]
         public static PlotModel MouseEvents()
         {
-            var model = new PlotModel("Mouse events", "Left click and drag");
-            var yaxis = new LinearAxis(AxisPosition.Left, -1, 1);
-            var xaxis = new LinearAxis(AxisPosition.Bottom, -1, 1);
+            var model = new PlotModel { Title = "Mouse events", Subtitle = "Left click and drag" };
+            var yaxis = new LinearAxis { Position = AxisPosition.Left, Minimum = -1, Maximum = 1 };
+            var xaxis = new LinearAxis { Position = AxisPosition.Bottom, Minimum = -1, Maximum = 1 };
             model.Axes.Add(yaxis);
             model.Axes.Add(xaxis);
 
@@ -56,13 +56,13 @@ namespace ExampleLibrary
                 if (e.ChangedButton == OxyMouseButton.Left)
                 {
                     // Add a line series
-                    s1 = new LineSeries("LineSeries" + (model.Series.Count + 1))
+                    s1 = new LineSeries
                     {
-                        // Color = OxyColors.SkyBlue,
+                        Title = "LineSeries" + (model.Series.Count + 1),
                         MarkerType = MarkerType.None,
                         StrokeThickness = 2
                     };
-                    s1.Points.Add(Axis.InverseTransform(e.Position, xaxis, yaxis));
+                    s1.Points.Add(xaxis.InverseTransform(e.Position.X, e.Position.Y, yaxis));
                     model.Series.Add(s1);
                     model.InvalidatePlot(false);
                     e.Handled = true;
@@ -73,7 +73,7 @@ namespace ExampleLibrary
             {
                 if (s1 != null)
                 {
-                    s1.Points.Add(Axis.InverseTransform(e.Position, xaxis, yaxis));
+                    s1.Points.Add(xaxis.InverseTransform(e.Position.X, e.Position.Y, yaxis));
                     model.InvalidatePlot(false);
                     e.Handled = true;
                 }
@@ -93,7 +93,7 @@ namespace ExampleLibrary
         [Example("MouseDown event and HitTestResult")]
         public static PlotModel MouseDownEventHitTestResult()
         {
-            var model = new PlotModel("MouseDown HitTestResult", "Reports the index of the nearest point.");
+            var model = new PlotModel { Title = "MouseDown HitTestResult", Subtitle = "Reports the index of the nearest point." };
 
             var s1 = new LineSeries();
             s1.Points.Add(new DataPoint(0, 10));
@@ -108,10 +108,10 @@ namespace ExampleLibrary
                 };
 
             var s2 = new ScatterSeries();
-            s2.Points.Add(new DataPoint(0, 15));
-            s2.Points.Add(new DataPoint(10, 45));
-            s2.Points.Add(new DataPoint(40, 25));
-            s2.Points.Add(new DataPoint(60, 35));
+            s2.Points.Add(new ScatterPoint(0, 15));
+            s2.Points.Add(new ScatterPoint(10, 45));
+            s2.Points.Add(new ScatterPoint(40, 25));
+            s2.Points.Add(new ScatterPoint(60, 35));
             model.Series.Add(s2);
             s2.MouseDown += (s, e) =>
                 {
@@ -125,11 +125,12 @@ namespace ExampleLibrary
         [Example("LineSeries and PlotModel MouseDown event")]
         public static PlotModel MouseDownEvent()
         {
-            var model = new PlotModel("MouseDown", "Left click to edit or add points.") { LegendSymbolLength = 40 };
+            var model = new PlotModel { Title = "MouseDown", Subtitle = "Left click to edit or add points.", LegendSymbolLength = 40 };
 
             // Add a line series
-            var s1 = new LineSeries("LineSeries1")
+            var s1 = new LineSeries
             {
+                Title = "LineSeries1",
                 Color = OxyColors.SkyBlue,
                 MarkerType = MarkerType.Circle,
                 MarkerSize = 6,
@@ -214,12 +215,12 @@ namespace ExampleLibrary
             return model;
         }
 
-        [Example("Add annotations")]
+        [Example("Add arrow annotations")]
         public static PlotModel AddAnnotations()
         {
-            var model = new PlotModel("Add arrow annotations", "Press and drag the left mouse button");
-            var xaxis = new LinearAxis(AxisPosition.Bottom);
-            var yaxis = new LinearAxis(AxisPosition.Left);
+            var model = new PlotModel { Title = "Add arrow annotations", Subtitle = "Press and drag the left mouse button" };
+            var xaxis = new LinearAxis { Position = AxisPosition.Bottom };
+            var yaxis = new LinearAxis { Position = AxisPosition.Left };
             model.Axes.Add(xaxis);
             model.Axes.Add(yaxis);
             model.Series.Add(new FunctionSeries(x => Math.Sin(x / 4) * Math.Acos(Math.Sin(x)), 0, Math.PI * 8, 2000, "sin(x/4)*acos(sin(x))"));
@@ -233,7 +234,7 @@ namespace ExampleLibrary
                 {
                     // Create a new arrow annotation
                     tmp = new ArrowAnnotation();
-                    tmp.StartPoint = tmp.EndPoint = Axis.InverseTransform(e.Position, xaxis, yaxis);
+                    tmp.StartPoint = tmp.EndPoint = xaxis.InverseTransform(e.Position.X, e.Position.Y, yaxis);
                     model.Annotations.Add(tmp);
                     e.Handled = true;
                 }
@@ -245,7 +246,7 @@ namespace ExampleLibrary
                 if (tmp != null)
                 {
                     // Modify the end point
-                    tmp.EndPoint = Axis.InverseTransform(e.Position, xaxis, yaxis);
+                    tmp.EndPoint = xaxis.InverseTransform(e.Position.X, e.Position.Y, yaxis);
                     tmp.Text = string.Format("Y = {0:0.###}", tmp.EndPoint.Y);
 
                     // Redraw the plot
@@ -269,9 +270,9 @@ namespace ExampleLibrary
         [Example("LineAnnotation")]
         public static PlotModel LineAnnotation()
         {
-            var model = new PlotModel("LineAnnotation", "Click and drag the annotation line.");
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -20, 80));
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, -10, 10));
+            var model = new PlotModel { Title = "LineAnnotation", Subtitle = "Click and drag the annotation line." };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -20, Maximum = 80 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -10, Maximum = 10 });
             var la = new LineAnnotation { Type = LineAnnotationType.Vertical, X = 4 };
             la.MouseDown += (s, e) =>
                 {
@@ -305,9 +306,9 @@ namespace ExampleLibrary
         [Example("ArrowAnnotation")]
         public static PlotModel ArrowAnnotation()
         {
-            var model = new PlotModel("ArrowAnnotation", "Click and drag the arrow.");
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -40, 60));
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, -10, 10));
+            var model = new PlotModel { Title = "ArrowAnnotation", Subtitle = "Click and drag the arrow." };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -40, Maximum = 60 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -10, Maximum = 10 });
 
             var arrow = new ArrowAnnotation { StartPoint = new DataPoint(8, 4), EndPoint = new DataPoint(0, 0), Text = "Move me!" };
 
@@ -366,19 +367,18 @@ namespace ExampleLibrary
         [Example("PolygonAnnotation")]
         public static PlotModel PolygonAnnotation()
         {
-            var model = new PlotModel("PolygonAnnotation", "Click the polygon");
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -20, 20));
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, -10, 10));
+            var model = new PlotModel { Title = "PolygonAnnotation", Subtitle = "Click the polygon" };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -20, Maximum = 20 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -20, Maximum = 20 });
             var pa = new PolygonAnnotation
                 {
-                    Points =
-                        new IDataPoint[]
+                    Text = "Polygon 1"
+                };
+            pa.Points.AddRange(new[]
                             {
                                 new DataPoint(4, -2), new DataPoint(8, -4), new DataPoint(17, 7), new DataPoint(5, 8),
                                 new DataPoint(2, 5)
-                            },
-                    Text = "Polygon 1"
-                };
+                            });
 
             // Handle left mouse clicks
             int hitCount = 1;
@@ -401,12 +401,12 @@ namespace ExampleLibrary
         [Example("TextAnnotation")]
         public static PlotModel TextAnnotation()
         {
-            var model = new PlotModel("TextAnnotation", "Click the text");
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -20, 20));
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, -10, 10));
+            var model = new PlotModel { Title = "TextAnnotation", Subtitle = "Click the text" };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -20, Maximum = 20 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -10, Maximum = 10 });
             var ta = new TextAnnotation
             {
-                Position = new DataPoint(4, -2),
+                TextPosition = new DataPoint(4, -2),
                 Text = "Click here"
             };
 
@@ -430,9 +430,9 @@ namespace ExampleLibrary
         [Example("ImageAnnotation")]
         public static PlotModel ImageAnnotation()
         {
-            var model = new PlotModel("ImageAnnotation", "Click the image");
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -20, 20));
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, -10, 10));
+            var model = new PlotModel { Title = "ImageAnnotation", Subtitle = "Click the image" };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -20, Maximum = 20 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -10, Maximum = 10 });
 
             OxyImage image;
             var assembly = Assembly.GetExecutingAssembly();
@@ -441,7 +441,7 @@ namespace ExampleLibrary
                 image = new OxyImage(stream);
             }
 
-            var ia = new ImageAnnotation(image, new DataPoint(4, 2), HorizontalAlignment.Right);
+            var ia = new ImageAnnotation { ImageSource = image, X = new PlotLength(4, PlotLengthUnit.Data), Y = new PlotLength(2, PlotLengthUnit.Data), HorizontalAlignment = HorizontalAlignment.Right };
             model.Annotations.Add(ia);
 
             // Handle left mouse clicks
@@ -463,7 +463,7 @@ namespace ExampleLibrary
         [Example("Add Series")]
         public static PlotModel AddSeriesByMouseDownEvent()
         {
-            var model = new PlotModel("MouseDown", "Left click to add series.") { LegendSymbolLength = 40 };
+            var model = new PlotModel { Title = "MouseDown", Subtitle = "Left click to add series.", LegendSymbolLength = 40 };
 
             model.MouseDown += (s, e) =>
             {
@@ -482,7 +482,7 @@ namespace ExampleLibrary
         [Example("Select range")]
         public static PlotModel SelectRange()
         {
-            var model = new PlotModel("Select range", "Left click and drag to select a range.");
+            var model = new PlotModel { Title = "Select range", Subtitle = "Left click and drag to select a range." };
             model.Series.Add(new FunctionSeries(Math.Cos, 0, 40, 0.1));
 
             var range = new RectangleAnnotation { Fill = OxyColor.FromAColor(120, OxyColors.SkyBlue), MinimumX = 0, MaximumX = 0 };
@@ -526,7 +526,7 @@ namespace ExampleLibrary
         [Example("Hover")]
         public static PlotModel Hover()
         {
-            var model = new PlotModel("Hover");
+            var model = new PlotModel { Title = "Hover" };
             LineSeries series = null;
 
             model.MouseEnter += (s, e) =>
@@ -560,7 +560,7 @@ namespace ExampleLibrary
         [Example("Touch")]
         public static PlotModel Touch()
         {
-            var model = new PlotModel("Touch");
+            var model = new PlotModel { Title = "Touch" };
             var series = new LineSeries();
             model.Series.Add(series);
 
@@ -590,7 +590,7 @@ namespace ExampleLibrary
         [Example("Touch on a LineSeries")]
         public static PlotModel TouchSeries()
         {
-            var model = new PlotModel("Touch on a LineSeries");
+            var model = new PlotModel { Title = "Touch on a LineSeries" };
             var series = new LineSeries();
             series.Points.Add(new DataPoint(0, 0));
             series.Points.Add(new DataPoint(10, 10));
@@ -622,7 +622,7 @@ namespace ExampleLibrary
         [Example("RectangleAnnotation click")]
         public static PlotModel RectangleAnnotationClick()
         {
-            var plotModel = new PlotModel("RectangleAnnotation click");
+            var plotModel = new PlotModel { Title = "RectangleAnnotation click" };
 
             plotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
             plotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
@@ -636,6 +636,33 @@ namespace ExampleLibrary
                 annotation.Text = "Clicked " + (++i) + " times.";
                 plotModel.InvalidatePlot(false);
             };
+
+            return plotModel;
+        }
+
+        [Example("Clicking on an annotation")]
+        public static PlotModel ClickingOnAnAnnotation()
+        {
+            // https://oxyplot.codeplex.com/discussions/543975
+            var plotModel = new PlotModel { Title = "Clicking on an annotation", Subtitle = "Click on the rectangles" };
+
+            plotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            plotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+
+            var annotation1 = new RectangleAnnotation { Fill = OxyColors.Green, Text = "RectangleAnnotation 1", MinimumX = 25, MaximumX = 75, MinimumY = 20, MaximumY = 40 };
+            plotModel.Annotations.Add(annotation1);
+
+            var annotation2 = new RectangleAnnotation { Fill = OxyColors.SkyBlue, Text = "RectangleAnnotation 2", MinimumX = 25, MaximumX = 75, MinimumY = 60, MaximumY = 80 };
+            plotModel.Annotations.Add(annotation2);
+
+            EventHandler<OxyMouseDownEventArgs> handleMouseClick = (s, e) =>
+            {
+                plotModel.Subtitle = "You clicked " + ((RectangleAnnotation)s).Text;
+                plotModel.InvalidatePlot(false);
+            };
+
+            annotation1.MouseDown += handleMouseClick;
+            annotation2.MouseDown += handleMouseClick;
 
             return plotModel;
         }

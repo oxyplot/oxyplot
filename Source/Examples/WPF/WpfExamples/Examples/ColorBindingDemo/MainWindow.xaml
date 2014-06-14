@@ -15,15 +15,15 @@
             <MenuItem Header="White" Command="{Binding SetWhiteCommand}"/>
             <MenuItem Header="Rasta" Command="{Binding SetRastaCommand}"/>
         </Menu>
-        <oxy:Plot 
+        <oxy:PlotView 
             Background="{Binding Background, Converter={StaticResource OxyColorConverter}}" 
             PlotAreaBorderColor="{Binding PlotAreaBorderColor, Converter={StaticResource OxyColorConverter}}" 
             TextColor="{Binding TextColor, Converter={StaticResource OxyColorConverter}}" 
             Foreground="Orange">
-            <oxy:Plot.Axes>
+            <oxy:PlotView.Axes>
                 <oxy:LinearAxis Position="Bottom" TicklineColor="{Binding TicklineColor, Converter={StaticResource OxyColorConverter}}"/>
                 <oxy:LinearAxis Position="Left" TicklineColor="{Binding TicklineColor, Converter={StaticResource OxyColorConverter}}"/>
-            </oxy:Plot.Axes>
-        </oxy:Plot>
+            </oxy:PlotView.Axes>
+        </oxy:PlotView>
     </DockPanel>
 </Window>

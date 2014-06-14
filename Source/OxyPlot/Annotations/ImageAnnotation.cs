@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents a text annotation.
+//   Represents an annotation that shows an image.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -33,7 +33,7 @@ namespace OxyPlot.Annotations
     using System;
 
     /// <summary>
-    /// Represents a text annotation.
+    /// Represents an annotation that shows an image.
     /// </summary>
     public class ImageAnnotation : Annotation
     {
@@ -66,6 +66,7 @@ namespace OxyPlot.Annotations
         /// <param name="position">The position in screen coordinates.</param>
         /// <param name="horizontalAlignment">The horizontal alignment.</param>
         /// <param name="verticalAlignment">The vertical alignment.</param>
+        [Obsolete]
         public ImageAnnotation(
             OxyImage image,
             ScreenPoint position,
@@ -87,9 +88,10 @@ namespace OxyPlot.Annotations
         /// <param name="position">The position in data coordinates.</param>
         /// <param name="horizontalAlignment">The horizontal alignment.</param>
         /// <param name="verticalAlignment">The vertical alignment.</param>
+        [Obsolete]
         public ImageAnnotation(
             OxyImage image,
-            IDataPoint position,
+            DataPoint position,
             HorizontalAlignment horizontalAlignment = HorizontalAlignment.Center,
             VerticalAlignment verticalAlignment = VerticalAlignment.Middle)
             : this()
@@ -109,6 +111,7 @@ namespace OxyPlot.Annotations
         /// <param name="relativeY">The y-coordinate relative to the plot area (0-1).</param>
         /// <param name="horizontalAlignment">The horizontal alignment.</param>
         /// <param name="verticalAlignment">The vertical alignment.</param>
+        [Obsolete]
         public ImageAnnotation(
             OxyImage image,
             double relativeX,
@@ -203,7 +206,7 @@ namespace OxyPlot.Annotations
             var o = this.GetVector(this.OffsetX, this.OffsetY, rc, model);
             var position = p + o;
 
-            var clippingRect = this.GetClippingRect();
+            var clippingRectangle = this.GetClippingRect();
 
             var s = this.GetVector(this.Width, this.Height, rc, model);
 
@@ -256,7 +259,7 @@ namespace OxyPlot.Annotations
 
             if (this.X.Unit == PlotLengthUnit.Data || this.Y.Unit == PlotLengthUnit.Data)
             {
-                rc.DrawClippedImage(clippingRect, this.ImageSource, x, y, width, height, this.Opacity, this.Interpolate);
+                rc.DrawClippedImage(clippingRectangle, this.ImageSource, x, y, width, height, this.Opacity, this.Interpolate);
             }
             else
             {
@@ -275,7 +278,7 @@ namespace OxyPlot.Annotations
         {
             if (this.actualBounds.Contains(args.Point))
             {
-                return new HitTestResult(args.Point);
+                return new HitTestResult(this, args.Point);
             }
 
             return null;

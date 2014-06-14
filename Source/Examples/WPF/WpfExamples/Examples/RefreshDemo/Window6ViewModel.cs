@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents a view-model for <see cref="Window6"/>.
+//   Represents a view-model for <see cref="Window6" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

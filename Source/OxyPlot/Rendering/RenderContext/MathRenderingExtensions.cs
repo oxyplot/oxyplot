@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Provides functionality to render mathematical expressions (in <c>TeX</c> syntax).
+//   Provides functionality to render mathematical expressions.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -33,7 +33,7 @@ namespace OxyPlot
     using System;
 
     /// <summary>
-    /// Provides functionality to render mathematical expressions (in <c>TeX</c> syntax).
+    /// Provides functionality to render mathematical expressions.
     /// </summary>
     public static class MathRenderingExtensions
     {

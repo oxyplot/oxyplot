@@ -25,32 +25,32 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.ObjectModel;
-
 namespace AreaDemo
 {
+    using System;
+    using System.Collections.ObjectModel;
+
     public class MainViewModel
     {
         public MainViewModel()
         {
-            Measurements = new Collection<Measurement>();
-            var r = new Random();
+            this.Measurements = new Collection<Measurement>();
+            var r = new Random(31);
             double p1 = 0;
             double p2 = 5;
             double v1 = 0;
             double v2 = 0;
             for (int i = 0; i < 100; i++)
             {
-                v1 += (r.NextDouble() - 0.5)*0.7;
-                v2 += (r.NextDouble() - 0.5)*0.1;
+                v1 += (r.NextDouble() - 0.5) * 0.7;
+                v2 += (r.NextDouble() - 0.5) * 0.1;
                 double y1 = p1 + v1;
                 double y2 = p2 + v2;
                 p1 = y1;
                 p2 = y2;
-                Measurements.Add(new Measurement
+                this.Measurements.Add(new Measurement
                                      {
-                                         Time = i*2.5,
+                                         Time = i * 2.5,
                                          Value = y1,
                                          Maximum = y1 + y2,
                                          Minimum = y1 - y2

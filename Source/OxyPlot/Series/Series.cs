@@ -36,7 +36,7 @@ namespace OxyPlot.Series
     /// Provides an abstract base class for plot series.
     /// </summary>
     /// <remarks>This class contains internal methods that should be called only from the PlotModel.</remarks>
-    public abstract class Series : UIPlotElement, ITrackableSeries
+    public abstract class Series : PlotElement, ITrackableSeries
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Series" /> class.
@@ -76,7 +76,7 @@ namespace OxyPlot.Series
         /// Gets or sets the key for the tracker to use on this series.
         /// </summary>
         /// <remarks>
-        /// This key may be used by the plot control to show a custom tracker for the series.
+        /// This key may be used by the plot view to show a custom tracker for the series.
         /// </remarks>
         public string TrackerKey { get; set; }
 
@@ -104,31 +104,6 @@ namespace OxyPlot.Series
         /// <param name="rc">The rendering context.</param>
         /// <param name="legendBox">The legend rectangle.</param>
         public abstract void RenderLegend(IRenderContext rc, OxyRect legendBox);
-
-        /// <summary>
-        /// When overridden in a derived class, tests if the plot element is hit by the specified point.
-        /// </summary>
-        /// <param name="args">The hit test arguments.</param>
-        /// <returns>
-        /// The result of the hit test.
-        /// </returns>
-        protected override HitTestResult HitTestOverride(HitTestArguments args)
-        {
-            var thr = this.GetNearestPoint(args.Point, true) ?? this.GetNearestPoint(args.Point, false);
-
-            if (thr != null)
-            {
-                double distance = thr.Position.DistanceTo(args.Point);
-                if (distance > args.Tolerance)
-                {
-                    return null;
-                }
-
-                return new HitTestResult(thr.Position, thr.Item, thr.Index);
-            }
-
-            return null;
-        }
 
         /// <summary>
         /// Checks if this data series requires X/Y axes. (e.g. Pie series do not require axes)
@@ -174,5 +149,30 @@ namespace OxyPlot.Series
         /// </summary>
         /// <remarks>This method is called when the <see cref="PlotModel" /> is updated with the <c>updateData</c> parameter set to <c>true</c>.</remarks>
         protected internal abstract void UpdateMaxMin();
+
+        /// <summary>
+        /// When overridden in a derived class, tests if the plot element is hit by the specified point.
+        /// </summary>
+        /// <param name="args">The hit test arguments.</param>
+        /// <returns>
+        /// The result of the hit test.
+        /// </returns>
+        protected override HitTestResult HitTestOverride(HitTestArguments args)
+        {
+            var thr = this.GetNearestPoint(args.Point, true) ?? this.GetNearestPoint(args.Point, false);
+
+            if (thr != null)
+            {
+                double distance = thr.Position.DistanceTo(args.Point);
+                if (distance > args.Tolerance)
+                {
+                    return null;
+                }
+
+                return new HitTestResult(this, thr.Position, thr.Item, thr.Index);
+            }
+
+            return null;
+        }
     }
 }

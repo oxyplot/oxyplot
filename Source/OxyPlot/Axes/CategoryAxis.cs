@@ -30,6 +30,7 @@
 
 namespace OxyPlot.Axes
 {
+    using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Globalization;
@@ -45,6 +46,16 @@ namespace OxyPlot.Axes
     /// The range of the axis will be from -0.5 to 4.5 (excluding padding).</remarks>
     public class CategoryAxis : LinearAxis
     {
+        /// <summary>
+        /// The labels.
+        /// </summary>
+        private readonly List<string> labels = new List<string>();
+
+        /// <summary>
+        /// The labels from the <see cref="ItemsSource" />.
+        /// </summary>
+        private readonly List<string> itemsSourceLabels = new List<string>();
+
         /// <summary>
         /// The current offset of the bars (not used for stacked bar series).
         /// </summary>
@@ -90,7 +101,6 @@ namespace OxyPlot.Axes
         /// </summary>
         public CategoryAxis()
         {
-            this.Labels = new List<string>();
             this.TickStyle = TickStyle.Outside;
             this.Position = AxisPosition.Bottom;
             this.MinimumPadding = 0;
@@ -105,6 +115,7 @@ namespace OxyPlot.Axes
         /// <param name="position">The position.</param>
         /// <param name="title">The title.</param>
         /// <param name="categories">The categories.</param>
+        [Obsolete]
         public CategoryAxis(AxisPosition position, string title = null, params string[] categories)
             : this(title, categories)
         {
@@ -116,6 +127,7 @@ namespace OxyPlot.Axes
         /// </summary>
         /// <param name="title">The title.</param>
         /// <param name="categories">The categories.</param>
+        [Obsolete]
         public CategoryAxis(string title, params string[] categories)
             : this()
         {
@@ -152,9 +164,29 @@ namespace OxyPlot.Axes
         public string LabelField { get; set; }
 
         /// <summary>
-        /// Gets or sets the labels collection.
+        /// Gets the list of category labels.
         /// </summary>
-        public IList<string> Labels { get; set; }
+        public List<string> Labels
+        {
+            get
+            {
+                return this.labels;
+            }
+        }
+
+        /// <summary>
+        /// Gets the actual category labels.
+        /// </summary>
+        /// <value>
+        /// The actual labels.
+        /// </value>
+        public List<string> ActualLabels
+        {
+            get
+            {
+                return this.ItemsSource != null ? this.itemsSourceLabels : this.labels;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the original offset of the bars (not used for stacked bar series).
@@ -184,9 +216,10 @@ namespace OxyPlot.Axes
         public override string FormatValue(double x)
         {
             var index = (int)x;
-            if (this.Labels != null && index >= 0 && index < this.Labels.Count)
+            var actualLabels = this.ActualLabels;
+            if (index >= 0 && index < actualLabels.Count)
             {
-                return this.Labels[index];
+                return actualLabels[index];
             }
 
             return null;
@@ -375,9 +408,11 @@ namespace OxyPlot.Axes
             // Update the DataMinimum/DataMaximum from the number of categories
             this.Include(-0.5);
 
-            if (this.Labels != null && this.Labels.Count > 0)
+            var actualLabels = this.ActualLabels;
+
+            if (actualLabels.Count > 0)
             {
-                this.Include((this.Labels.Count - 1) + 0.5);
+                this.Include((actualLabels.Count - 1) + 0.5);
             }
             else
             {
@@ -400,7 +435,8 @@ namespace OxyPlot.Axes
 
             this.UpdateLabels(series);
 
-            if (this.Labels.Count == 0)
+            var actualLabels = this.ActualLabels;
+            if (actualLabels.Count == 0)
             {
                 this.TotalWidthPerCategory = null;
                 this.maxWidth = double.NaN;
@@ -411,7 +447,7 @@ namespace OxyPlot.Axes
                 return;
             }
 
-            this.TotalWidthPerCategory = new double[this.Labels.Count];
+            this.TotalWidthPerCategory = new double[actualLabels.Count];
 
             var usedSeries = series.Where(s => s.IsUsing(this)).ToList();
 
@@ -425,7 +461,7 @@ namespace OxyPlot.Axes
                 var maxBarWidth =
                     stackedSeries.Where(s => s.StackGroup == stackIndices[j]).Select(
                         s => ((CategorizedSeries)s).GetBarWidth()).Concat(new[] { 0.0 }).Max();
-                for (var i = 0; i < this.Labels.Count; i++)
+                for (var i = 0; i < actualLabels.Count; i++)
                 {
                     int k = 0;
                     if (
@@ -443,7 +479,7 @@ namespace OxyPlot.Axes
             var unstackedBarSeries = categorizedSeries.Where(s => !(s is IStackableSeries) || !((IStackableSeries)s).IsStacked).ToList();
             foreach (var s in unstackedBarSeries)
             {
-                for (var i = 0; i < this.Labels.Count; i++)
+                for (var i = 0; i < actualLabels.Count; i++)
                 {
                     int j = 0;
                     var numberOfItems = s.GetItems().Count(item => item.GetCategoryIndex(j++) == i);
@@ -454,18 +490,18 @@ namespace OxyPlot.Axes
             this.maxWidth = this.TotalWidthPerCategory.Max();
 
             // Calculate BarOffset and StackedBarOffset
-            this.BarOffset = new double[this.Labels.Count];
-            this.StackedBarOffset = new double[stackIndices.Count + 1, this.Labels.Count];
+            this.BarOffset = new double[actualLabels.Count];
+            this.StackedBarOffset = new double[stackIndices.Count + 1, actualLabels.Count];
 
             var factor = 0.5 / (1 + this.GapWidth) / this.maxWidth;
-            for (var i = 0; i < this.Labels.Count; i++)
+            for (var i = 0; i < actualLabels.Count; i++)
             {
                 this.BarOffset[i] = 0.5 - (this.TotalWidthPerCategory[i] * factor);
             }
 
             for (var j = 0; j <= stackIndices.Count; j++)
             {
-                for (var i = 0; i < this.Labels.Count; i++)
+                for (var i = 0; i < actualLabels.Count; i++)
                 {
                     int k = 0;
                     if (
@@ -501,17 +537,17 @@ namespace OxyPlot.Axes
         {
             base.ResetCurrentValues();
             this.currentBarOffset = this.BarOffset != null ? this.BarOffset.ToArray() : null;
-
+            var actualLabels = this.ActualLabels;
             if (this.maxStackIndex > 0)
             {
-                this.currentPositiveBaseValues = new double[this.maxStackIndex, this.Labels.Count];
+                this.currentPositiveBaseValues = new double[this.maxStackIndex, actualLabels.Count];
                 this.currentPositiveBaseValues.Fill2D(double.NaN);
-                this.currentNegativeBaseValues = new double[this.maxStackIndex, this.Labels.Count];
+                this.currentNegativeBaseValues = new double[this.maxStackIndex, actualLabels.Count];
                 this.currentNegativeBaseValues.Fill2D(double.NaN);
 
-                this.currentMaxValue = new double[this.maxStackIndex, this.Labels.Count];
+                this.currentMaxValue = new double[this.maxStackIndex, actualLabels.Count];
                 this.currentMaxValue.Fill2D(double.NaN);
-                this.currentMinValue = new double[this.maxStackIndex, this.Labels.Count];
+                this.currentMinValue = new double[this.maxStackIndex, actualLabels.Count];
                 this.currentMinValue.Fill2D(double.NaN);
             }
             else
@@ -531,12 +567,15 @@ namespace OxyPlot.Axes
         {
             if (this.ItemsSource != null)
             {
-                this.Labels.Clear();
-                ReflectionHelper.FillList(this.ItemsSource, this.LabelField, this.Labels);
+                this.itemsSourceLabels.Clear();
+                ReflectionHelper.FillList(this.itemsSourceLabels, this.ItemsSource, this.LabelField);
+                return;
             }
 
             if (this.Labels.Count == 0)
             {
+                // auto-create labels
+                // TODO: should not modify Labels collection
                 foreach (var s in series)
                 {
                     if (!s.IsUsing(this))

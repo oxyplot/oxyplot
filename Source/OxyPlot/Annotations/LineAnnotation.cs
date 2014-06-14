@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents a line annotation.
+//   Represents an annotation that shows a straight line.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -37,7 +37,7 @@ namespace OxyPlot.Annotations
     using OxyPlot.Axes;
 
     /// <summary>
-    /// Represents a line annotation.
+    /// Represents an annotation that shows a straight line.
     /// </summary>
     public class LineAnnotation : PathAnnotation
     {
@@ -170,7 +170,7 @@ namespace OxyPlot.Annotations
             }
 
             // transform to screen coordinates
-            return points.Select(p => this.Transform(p)).ToList();
+            return points.Select(this.Transform).ToList();
         }
     }
 }

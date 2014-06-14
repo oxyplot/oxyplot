@@ -35,7 +35,7 @@ namespace ExampleLibrary
     /// <summary>
     /// Represents an error item.
     /// </summary>
-    public class ErrorItem : IDataPoint
+    public class ErrorItem
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ErrorItem" /> class.

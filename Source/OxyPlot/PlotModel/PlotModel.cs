@@ -196,29 +196,30 @@ namespace OxyPlot
     }
 
     /// <summary>
-    /// Represents a plot (including axes, series and annotations).
+    /// Specifies the horizontal alignment of the titles.
     /// </summary>
-    public partial class PlotModel
+    public enum TitleHorizontalAlignment
     {
         /// <summary>
-        /// The default selection color.
+        /// Centered within the plot area.
         /// </summary>
-        internal static readonly OxyColor DefaultSelectionColor = OxyColors.Yellow;
+        CenteredWithinPlotArea,
 
         /// <summary>
-        /// The default font.
+        /// Centered within the client view (excluding padding defined in <see cref="PlotModel.Padding" />).
         /// </summary>
-        private const string PrivateDefaultFont = "Segoe UI";
+        CenteredWithinView
+    }
 
+    /// <summary>
+    /// Represents a plot.
+    /// </summary>
+    public partial class PlotModel : Model, IPlotModel
+    {
         /// <summary>
-        /// The synchronization root object.
+        /// The plot view that renders this plot.
         /// </summary>
-        private readonly object syncRoot = new object();
-
-        /// <summary>
-        /// The plot control that renders this plot.
-        /// </summary>
-        private WeakReference plotControlReference;
+        private WeakReference plotViewReference;
 
         /// <summary>
         /// The current color index.
@@ -230,26 +231,23 @@ namespace OxyPlot
         /// </summary>
         public PlotModel()
         {
-            this.Axes = new PlotElementCollection<Axis>(this);
-            this.Series = new PlotElementCollection<Series.Series>(this);
-            this.Annotations = new PlotElementCollection<Annotation>(this);
+            this.Axes = new ElementCollection<Axis>(this);
+            this.Series = new ElementCollection<Series.Series>(this);
+            this.Annotations = new ElementCollection<Annotation>(this);
 
             this.PlotType = PlotType.XY;
 
-            this.PlotMargins = new OxyThickness(4);
+            this.PlotMargins = new OxyThickness(double.NaN);
             this.Padding = new OxyThickness(8);
-            this.AutoAdjustPlotMargins = true;
 
             this.Background = OxyColors.Undefined;
             this.PlotAreaBackground = OxyColors.Undefined;
-
-            this.SelectionColor = OxyColors.Yellow;
 
             this.TextColor = OxyColors.Black;
             this.TitleColor = OxyColors.Automatic;
             this.SubtitleColor = OxyColors.Automatic;
 
-            this.DefaultFont = PrivateDefaultFont;
+            this.DefaultFont = "Segoe UI";
             this.DefaultFontSize = 12;
 
             this.TitleFont = null;
@@ -261,7 +259,7 @@ namespace OxyPlot
             this.TitlePadding = 6;
 
             this.PlotAreaBorderColor = OxyColors.Black;
-            this.PlotAreaBorderThickness = 1;
+            this.PlotAreaBorderThickness = new OxyThickness(1);
 
             this.IsLegendVisible = true;
             this.LegendTitleFont = null;
@@ -315,6 +313,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="title">The title.</param>
         /// <param name="subtitle">The subtitle.</param>
+        [Obsolete]
         public PlotModel(string title, string subtitle = null)
             : this()
         {
@@ -336,16 +335,6 @@ namespace OxyPlot
         /// Occurs when the plot is about to be updated.
         /// </summary>
         public event EventHandler Updating;
-
-        /// <summary>
-        /// Gets an object that can be used to synchronize access to the <see cref="PlotModel" />.
-        /// </summary>
-        /// <value>A synchronization object.</value>
-        /// <remarks>This property can be used when modifying the <see cref="PlotModel" /> on a separate thread (not the thread updating or rendering the plot).</remarks>
-        public object SyncRoot
-        {
-            get { return this.syncRoot; }
-        }
 
         /// <summary>
         /// Gets or sets the default font.
@@ -378,15 +367,15 @@ namespace OxyPlot
         public OxyThickness ActualPlotMargins { get; private set; }
 
         /// <summary>
-        /// Gets the plot control that renders this plot.
+        /// Gets the plot view that renders this plot.
         /// </summary>
-        /// <value>The plot control.</value>
-        /// <remarks>Only one PlotControl can render the plot at the same time.</remarks>
-        public IPlotControl PlotControl
+        /// <value>The plot view.</value>
+        /// <remarks>Only one view can render the plot at the same time.</remarks>
+        public IPlotView PlotView
         {
             get
             {
-                return (this.plotControlReference != null) ? (IPlotControl)this.plotControlReference.Target : null;
+                return (this.plotViewReference != null) ? (IPlotView)this.plotViewReference.Target : null;
             }
         }
 
@@ -394,22 +383,19 @@ namespace OxyPlot
         /// Gets the annotations.
         /// </summary>
         /// <value>The annotations.</value>
-        public PlotElementCollection<Annotation> Annotations { get; private set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether to auto adjust plot margins.
-        /// </summary>
-        public bool AutoAdjustPlotMargins { get; set; }
+        public ElementCollection<Annotation> Annotations { get; private set; }
 
         /// <summary>
         /// Gets the axes.
         /// </summary>
         /// <value>The axes.</value>
-        public PlotElementCollection<Axis> Axes { get; private set; }
+        public ElementCollection<Axis> Axes { get; private set; }
 
         /// <summary>
         /// Gets or sets the color of the background of the plot.
         /// </summary>
+        /// <value>The color. The default is <see cref="OxyColors.Undefined" />.</value>
+        /// <remarks>If the background color is set to <see cref="OxyColors.Undefined" />, the default color of the plot view will be used.</remarks>
         public OxyColor Background { get; set; }
 
         /// <summary>
@@ -634,10 +620,11 @@ namespace OxyPlot
         /// Gets or sets the thickness of the border around the plot area.
         /// </summary>
         /// <value>The box thickness.</value>
-        public double PlotAreaBorderThickness { get; set; }
+        public OxyThickness PlotAreaBorderThickness { get; set; }
 
         /// <summary>
-        /// Gets or sets the minimum margins around the plot (this should be large enough to fit the axes). The default value is (60, 4, 4, 40). Set AutoAdjustPlotMargins if you want the margins to be adjusted when the axes require more space.
+        /// Gets or sets the margins around the plot (this should be large enough to fit the axes).
+        /// If any of the values is set to <c>double.NaN</c>, the margin is adjusted to the value required by the axes.
         /// </summary>
         public OxyThickness PlotMargins { get; set; }
 
@@ -648,16 +635,18 @@ namespace OxyPlot
         public PlotType PlotType { get; set; }
 
         /// <summary>
-        /// Gets or sets the color of the selection.
-        /// </summary>
-        /// <value>The color of the selection.</value>
-        public OxyColor SelectionColor { get; set; }
-
-        /// <summary>
         /// Gets the series.
         /// </summary>
         /// <value>The series.</value>
-        public PlotElementCollection<Series.Series> Series { get; private set; }
+        public ElementCollection<Series.Series> Series { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the rendering decorator.
+        /// </summary>
+        /// <value>
+        /// The rendering decorator.
+        /// </value>
+        public Func<IRenderContext, IRenderContext> RenderingDecorator { get; set; }
 
         /// <summary>
         /// Gets or sets the subtitle.
@@ -707,6 +696,14 @@ namespace OxyPlot
         /// </summary>
         /// <value>The color of the subtitle.</value>
         public OxyColor SubtitleColor { get; set; }
+
+        /// <summary>
+        /// Gets or sets the horizontal alignment of the title and subtitle.
+        /// </summary>
+        /// <value>
+        /// The alignment.
+        /// </value>
+        public TitleHorizontalAlignment TitleHorizontalAlignment { get; set; }
 
         /// <summary>
         /// Gets the title area.
@@ -815,14 +812,14 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Attaches this model to the specified plot control.
+        /// Attaches this model to the specified plot view.
         /// </summary>
-        /// <param name="plotControl">The plot control.</param>
-        /// <remarks>Only one plot control can be attached to the plot model.
-        /// The plot model contains data (e.g. axis scaling) that is only relevant to the current plot control.</remarks>
-        public void AttachPlotControl(IPlotControl plotControl)
+        /// <param name="plotView">The plot view.</param>
+        /// <remarks>Only one plot view can be attached to the plot model.
+        /// The plot model contains data (e.g. axis scaling) that is only relevant to the current plot view.</remarks>
+        void IPlotModel.AttachPlotView(IPlotView plotView)
         {
-            this.plotControlReference = (plotControl == null) ? null : new WeakReference(plotControl);
+            this.plotViewReference = (plotView == null) ? null : new WeakReference(plotView);
         }
 
         /// <summary>
@@ -861,7 +858,11 @@ namespace OxyPlot
                 }
             }
 
+#if UNIVERSAL
+            var assemblyName = new AssemblyName(typeof(PlotModel).GetTypeInfo().Assembly.FullName);
+#else
             var assemblyName = new AssemblyName(Assembly.GetExecutingAssembly().FullName);
+#endif
             r.AddParagraph(string.Format("Report generated by OxyPlot {0}", assemblyName.Version.ToString(3)));
 
             return r;
@@ -891,13 +892,13 @@ namespace OxyPlot
         /// <param name="updateData">Updates all data sources if set to <c>true</c>.</param>
         public void InvalidatePlot(bool updateData)
         {
-            var plotControl = this.PlotControl;
-            if (plotControl == null)
+            var plotView = this.PlotView;
+            if (plotView == null)
             {
                 return;
             }
 
-            plotControl.InvalidatePlot(updateData);
+            plotView.InvalidatePlot(updateData);
         }
 
         /// <summary>
@@ -1107,16 +1108,17 @@ namespace OxyPlot
         /// <param name="isDocument">if set to <c>true</c>, the xml headers will be included (?xml and !DOCTYPE).</param>
         /// <param name="textMeasurer">The text measurer.</param>
         /// <returns>The svg string.</returns>
+        [Obsolete("Use SvgExporter instead")]
         public string ToSvg(double width, double height, bool isDocument, IRenderContext textMeasurer = null)
         {
             return SvgExporter.ExportToString(this, width, height, isDocument, textMeasurer);
         }
 
         /// <summary>
-        /// Gets all elements of the plot model, sorted by rendering priority.
+        /// Gets all elements of the model, sorted by rendering priority.
         /// </summary>
-        /// <returns>An enumerator of the plot elements.</returns>
-        public IEnumerable<PlotElement> GetElements()
+        /// <returns>An enumerator of the elements.</returns>
+        public override IEnumerable<PlotElement> GetElements()
         {
             foreach (var annotation in this.Annotations.Where(a => a.Layer == AnnotationLayer.BelowAxes))
             {
@@ -1157,9 +1159,9 @@ namespace OxyPlot
         /// 3. Updates the max and min of the axes.
         /// </summary>
         /// <param name="updateData">if set to <c>true</c> , all data collections will be updated.</param>
-        public void Update(bool updateData = true)
+        void IPlotModel.Update(bool updateData)
         {
-            lock (this.syncRoot)
+            lock (this.SyncRoot)
             {
                 this.OnUpdating();
 
@@ -1221,7 +1223,7 @@ namespace OxyPlot
         {
             if (key != null)
             {
-                return this.Axes.FirstOrDefault(a => a.Key == key) ?? defaultAxis;
+                return this.Axes.FirstOrDefault(a => a.Key == key);
             }
 
             return defaultAxis;

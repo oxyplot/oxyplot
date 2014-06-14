@@ -28,6 +28,8 @@
 namespace ExampleLibrary
 {
     using System;
+    using System.Collections.Generic;
+
     using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
@@ -40,10 +42,10 @@ namespace ExampleLibrary
         {
             int n = 20;
 
-            var model = new PlotModel("ErrorSeries");
+            var model = new PlotModel { Title = "ErrorSeries", LegendPosition = LegendPosition.BottomRight };
 
             var s1 = new ErrorSeries { Title = "Measurements" };
-            var random = new Random();
+            var random = new Random(31);
             double x = 0;
             double y = 0;
             for (int i = 0; i < n; i++)
@@ -62,7 +64,7 @@ namespace ExampleLibrary
         [Example("LineSegmentSeries")]
         public static PlotModel LineSegmentSeries()
         {
-            var model = new PlotModel("LineSegmentSeries");
+            var model = new PlotModel { Title = "LineSegmentSeries" };
 
             var lss1 = new LineSegmentSeries { Title = "The first series" };
 
@@ -98,7 +100,7 @@ namespace ExampleLibrary
         [Example("FlagSeries")]
         public static PlotModel FlagSeries()
         {
-            var model = new PlotModel("FlagSeries");
+            var model = new PlotModel { Title = "FlagSeries" };
 
             var s1 = new FlagSeries { Title = "Incidents", Color = OxyColors.Red };
             s1.Values.Add(2);
@@ -135,7 +137,7 @@ namespace ExampleLibrary
         [Example("PolarHeatMap")]
         public static PlotModel PolarHeatMap()
         {
-            var model = new PlotModel { Title = "Polar heat map", PlotMargins = new OxyThickness(40, 80, 40, 40), PlotType = PlotType.Polar, PlotAreaBorderThickness = 0 };
+            var model = new PlotModel { Title = "Polar heat map", PlotMargins = new OxyThickness(40, 80, 40, 40), PlotType = PlotType.Polar, PlotAreaBorderThickness = new OxyThickness(0) };
 
             var matrix = new double[2, 2];
             matrix[0, 0] = 0;
@@ -180,8 +182,8 @@ namespace ExampleLibrary
             matrix[1, 0] = 1.5;
             matrix[1, 1] = 0.2;
 
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -100, 100));
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, 0, 100));
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -100, Maximum = 100 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 0, Maximum = 100 });
             model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Rainbow(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
             model.Series.Add(new PolarHeatMapSeries { Data = matrix, Angle0 = 30, Angle1 = 150, Magnitude0 = 0, Magnitude1 = 80, Interpolate = true });
 
@@ -230,14 +232,22 @@ namespace ExampleLibrary
                 data[i, i] = -1;
             }
 
-            var model = new PlotModel("Design structure matrix (DSM)");
+            var model = new PlotModel { Title = "Design structure matrix (DSM)" };
             model.Axes.Add(new LinearColorAxis { Position = AxisPosition.None, Palette = new OxyPalette(OxyColors.White, OxyColors.LightGreen), LowColor = OxyColors.Black, Minimum = 0, IsAxisVisible = false });
-            model.Axes.Add(new CategoryAxis(AxisPosition.Top, null, new[] { "A", "B", "C", "D", "E", "F", "G" }));
-            model.Axes.Add(new CategoryAxis(AxisPosition.Left, null, new[] { "Element A", "Element B", "Element C", "Element D", "Element E", "Element F", "Element G" })
+            var topAxis = new CategoryAxis
             {
+                Position = AxisPosition.Top
+            };
+            topAxis.Labels.AddRange(new[] { "A", "B", "C", "D", "E", "F", "G" });
+            model.Axes.Add(topAxis);
+            var leftAxis = new CategoryAxis
+            {
+                Position = AxisPosition.Left,
                 StartPosition = 1,
                 EndPosition = 0
-            });
+            };
+            leftAxis.Labels.AddRange(new[] { "Element A", "Element B", "Element C", "Element D", "Element E", "Element F", "Element G" });
+            model.Axes.Add(leftAxis);
 
             var hms = new DesignStructureMatrixSeries
             {

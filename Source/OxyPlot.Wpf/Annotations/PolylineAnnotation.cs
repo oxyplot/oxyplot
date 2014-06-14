@@ -48,14 +48,24 @@ namespace OxyPlot.Wpf
         /// Identifies the <see cref="MinimumSegmentLength"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MinimumSegmentLengthProperty =
-            DependencyProperty.Register("MinimumSegmentLength", typeof(double), typeof(PolylineAnnotation), new PropertyMetadata(0));
+            DependencyProperty.Register("MinimumSegmentLength", typeof(double), typeof(PolylineAnnotation), new PropertyMetadata(0d));
 
         /// <summary>
         /// Identifies the <see cref="Points"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PointsProperty =
-            DependencyProperty.Register("Points", typeof(IList<IDataPoint>), typeof(PolylineAnnotation), new PropertyMetadata(new List<IDataPoint>()));
+            DependencyProperty.Register("Points", typeof(IList<DataPoint>), typeof(PolylineAnnotation), new PropertyMetadata(new List<DataPoint>()));
 
+        /// <summary>
+        /// Initializes static members of the <see cref="PolylineAnnotation"/> class.
+        /// </summary>
+        static PolylineAnnotation()
+        {
+            TextColorProperty.OverrideMetadata(typeof(PolylineAnnotation), new FrameworkPropertyMetadata(MoreColors.Automatic, AppearanceChanged));
+            TextHorizontalAlignmentProperty.OverrideMetadata(typeof(PolylineAnnotation), new FrameworkPropertyMetadata(HorizontalAlignment.Right, AppearanceChanged));
+            TextVerticalAlignmentProperty.OverrideMetadata(typeof(PolylineAnnotation), new FrameworkPropertyMetadata(VerticalAlignment.Top, AppearanceChanged));
+        }
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="PolylineAnnotation" /> class.
         /// </summary>
@@ -68,11 +78,11 @@ namespace OxyPlot.Wpf
         /// Gets or sets the points.
         /// </summary>
         /// <value>The points.</value>
-        public IList<IDataPoint> Points
+        public IList<DataPoint> Points
         {
             get
             {
-                return (IList<IDataPoint>)this.GetValue(PointsProperty);
+                return (IList<DataPoint>)this.GetValue(PointsProperty);
             }
 
             set
@@ -121,7 +131,8 @@ namespace OxyPlot.Wpf
             base.SynchronizeProperties();
 
             var a = (Annotations.PolylineAnnotation)this.InternalAnnotation;
-            a.Points = this.Points;
+            a.Points.Clear();
+            a.Points.AddRange(this.Points);
             a.Smooth = this.Smooth;
             a.MinimumSegmentLength = this.MinimumSegmentLength;
         }

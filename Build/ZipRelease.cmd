@@ -1,11 +1,27 @@
-call clean ..\Output\NET40\Examples
-call clean ..\Output\NET45\Examples
+mkdir ..\Output\Release
+mkdir ..\Output\Release\NET40
+mkdir ..\Output\Release\NET45
+mkdir ..\Output\Release\NetCore45
+mkdir ..\Output\Release\NetCore45\Themes
+mkdir ..\Output\Release\SL5
+mkdir ..\Output\Release\WP8
 
-REM "C:\Program Files\7-Zip\7z.exe" a ..\Output\OxyPlot-NET40-%1.zip ..\Output\NET40\*.* > ZipRelease.log
-REM "C:\Program Files\7-Zip\7z.exe" a ..\Output\OxyPlot-NET45-%1.zip ..\Output\NET45\*.* >> ZipRelease.log
-REM "C:\Program Files\7-Zip\7z.exe" a ..\Output\OxyPlot-SL4-%1.zip ..\Output\SL4\*.* >> ZipRelease.log
-REM "C:\Program Files\7-Zip\7z.exe" a ..\Output\OxyPlot-SL5-%1.zip ..\Output\SL5\*.* >> ZipRelease.log
-REM "C:\Program Files\7-Zip\7z.exe" a -r ..\Output\OxyPlot-NET40-Examples-%1.zip ..\Output\NET40\Examples\*.* >> ZipRelease.log
-REM "C:\Program Files\7-Zip\7z.exe" a -r ..\Output\OxyPlot-NET45-Examples-%1.zip ..\Output\NET45\Examples\*.* >> ZipRelease.log
+copy ..\Output\NET45\OxyPlot.??? ..\Output\Release
 
-"C:\Program Files\7-Zip\7z.exe" a -r ..\Output\OxyPlot-%1.zip ..\Output\*.* > ZipRelease.log
+copy ..\Output\NET40\OxyPlot.WindowsForms.??? ..\Output\Release\NET40
+copy ..\Output\NET45\OxyPlot.WindowsForms.??? ..\Output\Release\NET45
+
+copy ..\Output\NET40\OxyPlot.WPF.??? ..\Output\Release\NET40
+copy ..\Output\NET45\OxyPlot.WPF.??? ..\Output\Release\NET45
+
+copy ..\Output\NET40\OxyPlot.Xps.??? ..\Output\Release\NET40
+copy ..\Output\NET45\OxyPlot.Xps.??? ..\Output\Release\NET45
+
+copy ..\Output\SL5\OxyPlot.Silverlight.??? ..\Output\Release\SL5
+
+copy ..\Output\WP8\OxyPlot.WP8.??? ..\Output\Release\WP8
+
+copy ..\Output\NetCore45\OxyPlot.Metro.??? ..\Output\Release\NetCore45
+copy ..\Output\NetCore45\Themes\*.* ..\Output\Release\NetCore45\Themes
+
+"C:\Program Files\7-Zip\7z.exe" a -r ..\Output\OxyPlot-%1.zip ..\Output\Release\*.* > ZipRelease.log

@@ -368,7 +368,7 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Updates the max/minimum values.
+        /// Updates the maximum and minimum values of the series.
         /// </summary>
         protected override void UpdateMaxMin()
         {

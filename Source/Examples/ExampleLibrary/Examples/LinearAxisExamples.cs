@@ -58,30 +58,32 @@ namespace ExampleLibrary
 
         private static PlotModel CreateTickStyleModel(TickStyle tickStyle)
         {
-            var model = new PlotModel("TickStyle: " + tickStyle);
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom)
-                               {
-                                   TickStyle = tickStyle,
-                                   MajorGridlineStyle = LineStyle.None,
-                                   MinorGridlineStyle = LineStyle.None,
-                                   MaximumPadding = 0,
-                                   MinimumPadding = 0
-                               });
-            model.Axes.Add(new LinearAxis(AxisPosition.Left)
-                               {
-                                   TickStyle = tickStyle,
-                                   MajorGridlineStyle = LineStyle.None,
-                                   MinorGridlineStyle = LineStyle.None,
-                                   MaximumPadding = 0,
-                                   MinimumPadding = 0
-                               });
+            var model = new PlotModel { Title = "TickStyle: " + tickStyle };
+            model.Axes.Add(new LinearAxis
+            {
+                Position = AxisPosition.Bottom,
+                TickStyle = tickStyle,
+                MajorGridlineStyle = LineStyle.None,
+                MinorGridlineStyle = LineStyle.None,
+                MaximumPadding = 0,
+                MinimumPadding = 0
+            });
+            model.Axes.Add(new LinearAxis
+            {
+                Position = AxisPosition.Left,
+                TickStyle = tickStyle,
+                MajorGridlineStyle = LineStyle.None,
+                MinorGridlineStyle = LineStyle.None,
+                MaximumPadding = 0,
+                MinimumPadding = 0
+            });
             return model;
         }
 
         [Example("Gridlines: None")]
         public static PlotModel GridlinesNone()
         {
-            return CreateGridlinesModel("None",LineStyle.None,LineStyle.None);
+            return CreateGridlinesModel("None", LineStyle.None, LineStyle.None);
         }
         [Example("Gridlines: Horizontal")]
         public static PlotModel GridlinesHorizontal()
@@ -101,16 +103,18 @@ namespace ExampleLibrary
 
         private static PlotModel CreateGridlinesModel(string title, LineStyle horizontal, LineStyle vertical)
         {
-            var model = new PlotModel("Gridlines: " + title);
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom)
+            var model = new PlotModel { Title = "Gridlines: " + title };
+            model.Axes.Add(new LinearAxis
             {
+                Position = AxisPosition.Bottom,
                 MajorGridlineStyle = vertical,
-                MinorGridlineStyle = vertical==LineStyle.Solid?LineStyle.Dot:LineStyle.None,
+                MinorGridlineStyle = vertical == LineStyle.Solid ? LineStyle.Dot : LineStyle.None,
                 MaximumPadding = 0,
                 MinimumPadding = 0
             });
-            model.Axes.Add(new LinearAxis(AxisPosition.Left)
+            model.Axes.Add(new LinearAxis
             {
+                Position = AxisPosition.Left,
                 MajorGridlineStyle = horizontal,
                 MinorGridlineStyle = horizontal == LineStyle.Solid ? LineStyle.Dot : LineStyle.None,
                 MaximumPadding = 0,

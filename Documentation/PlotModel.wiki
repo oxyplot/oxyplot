@@ -10,7 +10,7 @@
 
 === Limitations
 
-Why cannot a PlotModel be used in more than one view?
+Why cannot a `PlotModel` be used in more than one view?
 
 === Contents
 

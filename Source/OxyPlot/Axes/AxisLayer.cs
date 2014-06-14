@@ -24,14 +24,14 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Specifies the layer position of an <see cref="Axis"/>.
+//   Specifies the layer of an <see cref="Axis" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Axes
 {
     /// <summary>
-    /// Specifies the layer position of an <see cref="Axis" />.
+    /// Specifies the layer of an <see cref="Axis" />.
     /// </summary>
     public enum AxisLayer
     {

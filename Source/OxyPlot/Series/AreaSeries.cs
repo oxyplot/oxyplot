@@ -40,7 +40,12 @@ namespace OxyPlot.Series
         /// <summary>
         /// The second list of points.
         /// </summary>
-        private IList<IDataPoint> points2 = new List<IDataPoint>();
+        private readonly List<DataPoint> points2 = new List<DataPoint>();
+
+        /// <summary>
+        /// The secondary data points from the items source.
+        /// </summary>
+        private readonly List<DataPoint> itemsSourcePoints2 = new List<DataPoint>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref = "AreaSeries" /> class.
@@ -106,19 +111,14 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Gets or sets the second list of points.
+        /// Gets the second list of points.
         /// </summary>
         /// <value>The second list of points.</value>
-        public IList<IDataPoint> Points2
+        public List<DataPoint> Points2
         {
             get
             {
                 return this.points2;
-            }
-
-            set
-            {
-                this.points2 = value;
             }
         }
 
@@ -132,6 +132,18 @@ namespace OxyPlot.Series
         public bool Reverse2 { get; set; }
 
         /// <summary>
+        /// Gets the second list of points.
+        /// </summary>
+        /// <value>The second list of points.</value>
+        protected List<DataPoint> ActualPoints2
+        {
+            get
+            {
+                return this.ItemsSource != null ? this.itemsSourcePoints2 : this.points2;
+            }
+        }
+
+        /// <summary>
         /// Gets the nearest point.
         /// </summary>
         /// <param name="point">The point.</param>
@@ -142,13 +154,13 @@ namespace OxyPlot.Series
             TrackerHitResult result1, result2;
             if (interpolate && this.CanTrackerInterpolatePoints)
             {
-                result1 = this.GetNearestInterpolatedPointInternal(this.Points, point);
-                result2 = this.GetNearestInterpolatedPointInternal(this.Points2, point);
+                result1 = this.GetNearestInterpolatedPointInternal(this.ActualPoints, point);
+                result2 = this.GetNearestInterpolatedPointInternal(this.ActualPoints2, point);
             }
             else
             {
-                result1 = this.GetNearestPointInternal(this.Points, point);
-                result2 = this.GetNearestPointInternal(this.Points2, point);
+                result1 = this.GetNearestPointInternal(this.ActualPoints, point);
+                result2 = this.GetNearestPointInternal(this.ActualPoints2, point);
             }
 
             if (result1 != null && result2 != null)
@@ -178,7 +190,10 @@ namespace OxyPlot.Series
         /// <param name="model">The owner plot model.</param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
-            if (this.Points.Count == 0)
+            var actualPoints = this.ActualPoints;
+            var actualPoints2 = this.ActualPoints2;
+            int n0 = actualPoints.Count;
+            if (n0 == 0)
             {
                 return;
             }
@@ -191,20 +206,18 @@ namespace OxyPlot.Series
             rc.SetClip(clippingRect);
 
             // Transform all points to screen coordinates
-            var points = this.Points;
-            int n0 = points.Count;
             IList<ScreenPoint> pts0 = new ScreenPoint[n0];
             for (int i = 0; i < n0; i++)
             {
-                pts0[i] = this.XAxis.Transform(points[i].X, points[i].Y, this.YAxis);
+                pts0[i] = this.XAxis.Transform(actualPoints[i].X, actualPoints[i].Y, this.YAxis);
             }
 
-            int n1 = this.points2.Count;
+            int n1 = actualPoints2.Count;
             IList<ScreenPoint> pts1 = new ScreenPoint[n1];
             for (int i = 0; i < n1; i++)
             {
                 int j = this.Reverse2 ? n1 - 1 - i : i;
-                pts1[j] = this.XAxis.Transform(this.points2[i].X, this.points2[i].Y, this.YAxis);
+                pts1[j] = this.XAxis.Transform(actualPoints2[i].X, actualPoints2[i].Y, this.YAxis);
             }
 
             if (this.Smooth)
@@ -220,8 +233,8 @@ namespace OxyPlot.Series
 
             // draw the clipped lines
             rc.DrawClippedLine(
-                pts0,
                 clippingRect,
+                pts0,
                 minDistSquared,
                 this.GetSelectableColor(this.ActualColor),
                 this.StrokeThickness,
@@ -229,8 +242,8 @@ namespace OxyPlot.Series
                 this.LineJoin,
                 false);
             rc.DrawClippedLine(
-                pts1,
                 clippingRect,
+                pts1,
                 minDistSquared,
                 this.GetSelectableColor(this.ActualColor2),
                 this.StrokeThickness,
@@ -244,14 +257,14 @@ namespace OxyPlot.Series
             pts.AddRange(pts0);
 
             // pts = SutherlandHodgmanClipping.ClipPolygon(clippingRect, pts);
-            rc.DrawClippedPolygon(pts, clippingRect, minDistSquared, this.GetSelectableFillColor(this.ActualFill), OxyColors.Undefined);
+            rc.DrawClippedPolygon(clippingRect, pts, minDistSquared, this.GetSelectableFillColor(this.ActualFill), OxyColors.Undefined);
 
             var markerSizes = new[] { this.MarkerSize };
 
             // draw the markers on top
             rc.DrawMarkers(
-                pts0,
                 clippingRect,
+                pts0,
                 this.MarkerType,
                 null,
                 markerSizes,
@@ -260,8 +273,8 @@ namespace OxyPlot.Series
                 this.MarkerStrokeThickness,
                 1);
             rc.DrawMarkers(
-                pts1,
                 clippingRect,
+                pts1,
                 this.MarkerType,
                 null,
                 markerSizes,
@@ -307,19 +320,19 @@ namespace OxyPlot.Series
                 return;
             }
 
-            this.points2.Clear();
+            this.itemsSourcePoints2.Clear();
 
             // Using reflection on DataFieldX2 and DataFieldY2
-            this.AddDataPoints(this.points2, this.ItemsSource, this.DataFieldX2, this.DataFieldY2);
+            ReflectionHelper.FillList(this.itemsSourcePoints2, this.ItemsSource, this.DataFieldX2, this.DataFieldY2);
         }
 
         /// <summary>
-        /// The update max min.
+        /// Updates the maximum and minimum values of the series.
         /// </summary>
         protected internal override void UpdateMaxMin()
         {
             base.UpdateMaxMin();
-            this.InternalUpdateMaxMin(this.points2);
+            this.InternalUpdateMaxMin(this.ActualPoints2);
         }
     }
 }

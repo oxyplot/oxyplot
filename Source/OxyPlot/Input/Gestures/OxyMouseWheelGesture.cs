@@ -24,15 +24,16 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines a mouse wheel gesture that can be used to invoke a command.
+//   Represents a mouse wheel gesture.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     /// <summary>
-    /// Defines a mouse wheel gesture that can be used to invoke a command.
+    /// Represents a mouse wheel gesture.
     /// </summary>
+    /// <remarks>The input gesture can be bound to a command in a <see cref="PlotController" />.</remarks>
     public class OxyMouseWheelGesture : OxyInputGesture
     {
         /// <summary>

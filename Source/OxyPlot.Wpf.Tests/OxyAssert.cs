@@ -32,9 +32,13 @@ namespace OxyPlot.Wpf.Tests
 {
     using System;
     using System.Collections;
+    using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Linq;
     using System.Windows;
     using System.Windows.Media;
+
+    using NUnit.Framework;
 
     /// <summary>
     /// Provides specialized unit test assertion methods.
@@ -70,7 +74,7 @@ namespace OxyPlot.Wpf.Tests
                 }
             }
 
-            NUnit.Framework.Assert.IsTrue(result);
+            Assert.IsTrue(result);
         }
 
         /// <summary>
@@ -116,51 +120,36 @@ namespace OxyPlot.Wpf.Tests
                 }
 
                 var v2 = pd2.GetValue(o2);
-                if (v2 is Color)
-                {
-                    v2 = ((Color)v2).ToOxyColor();
-                }
-
-                if (typeof(Brush).IsAssignableFrom(pd2.PropertyType))
-                {
-                    v2 = ((Brush)v2).ToOxyColor();
-                }
-
-                if (v2 is Visibility)
-                {
-                    v2 = ((Visibility)v2) == Visibility.Visible;
-                }
-
-                if (v2 is Vector)
-                {
-                    v2 = ((Vector)v2).ToScreenVector();
-                }
-
-                if (v2 is Thickness)
-                {
-                    v2 = ((Thickness)v2).ToOxyThickness();
-                }
-
-                if (v2 is HorizontalAlignment)
-                {
-                    v2 = ((HorizontalAlignment)v2).ToHorizontalAlignment();
-                }
-
-                if (v2 is VerticalAlignment)
-                {
-                    v2 = ((VerticalAlignment)v2).ToVerticalAlignment();
-                }
-
-                if (v2 is FontWeight)
-                {
-                    v2 = (double)((FontWeight)v2).ToOpenTypeWeight();
-                }
+                v2 = ConvertToOxyPlotObject(v2, pd2.PropertyType);
 
                 var type1 = v1 != null ? v1.GetType() : null;
                 var type2 = v2 != null ? v2.GetType() : null;
                 if (!AreEqual(type1, type2))
                 {
                     Console.WriteLine(@"{0}: {1} / {2}", pd1.Name, type1, type2);
+                }
+
+                var list1 = v1 as IList;
+                var list2 = v2 as IList;
+                if (list1 != null)
+                {
+                    if (list1.Count != list2.Count)
+                    {
+                        Console.WriteLine(@"{0}: {1} / {2}", pd1.Name, list1.Count, list2.Count);
+                        result = false;
+                        continue;
+                    }
+
+                    for (int i = 0; i < list1.Count; i++)
+                    {
+                        if (!AreEqual(list1[i], list2[i]))
+                        {
+                            Console.WriteLine(@"{0}[{1}]: {2} / {3}", pd1.Name, i, list1[i], list2[i]);
+                            result = false;
+                        }
+                    }
+
+                    continue;
                 }
 
                 if (AreEqual(v1, v2))
@@ -177,7 +166,66 @@ namespace OxyPlot.Wpf.Tests
                 result = false;
             }
 
-            NUnit.Framework.Assert.IsTrue(result);
+            Assert.IsTrue(result);
+        }
+
+        /// <summary>
+        /// Converts the specified object to the corresponding OxyPlot object.
+        /// </summary>
+        /// <param name="value">The object to convert.</param>
+        /// <param name="type">The type.</param>
+        /// <returns>
+        /// A converted <see cref="Object"/>.
+        /// </returns>
+        private static object ConvertToOxyPlotObject(object value, Type type)
+        {
+            if (value is Color)
+            {
+                return ((Color)value).ToOxyColor();
+            }
+
+            var listOfColor = value as IList<Color>;
+            if (listOfColor != null)
+            {
+                return listOfColor.Select(c => c.ToOxyColor()).ToList();
+            }
+
+            if (typeof(Brush).IsAssignableFrom(type))
+            {
+                return ((Brush)value).ToOxyColor();
+            }
+
+            if (value is Visibility)
+            {
+                return ((Visibility)value) == Visibility.Visible;
+            }
+
+            if (value is Vector)
+            {
+                return ((Vector)value).ToScreenVector();
+            }
+
+            if (value is Thickness)
+            {
+                return ((Thickness)value).ToOxyThickness();
+            }
+
+            if (value is HorizontalAlignment)
+            {
+                return ((HorizontalAlignment)value).ToHorizontalAlignment();
+            }
+
+            if (value is VerticalAlignment)
+            {
+                return ((VerticalAlignment)value).ToVerticalAlignment();
+            }
+
+            if (value is FontWeight)
+            {
+                return (double)((FontWeight)value).ToOpenTypeWeight();
+            }
+
+            return value;
         }
 
         /// <summary>

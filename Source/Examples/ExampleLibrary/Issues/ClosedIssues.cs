@@ -41,15 +41,42 @@ namespace ExampleLibrary
     // ReSharper disable InconsistentNaming
     public class ClosedIssues : ExamplesBase
     {
-        [Example("#9971: Don't show minor ticks")]
-        public static PlotModel DontShowMinorTicks()
+        [Example("#9042: Support colour coding on scatter plots")]
+        public static PlotModel ColorCodingOnScatterPlots()
         {
-            var model = new PlotModel("ShowMinorTicks = false");
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom) { ShowMinorTicks = false });
-            model.Axes.Add(new LinearAxis(AxisPosition.Left) { ShowMinorTicks = false });
+            var model = new PlotModel { Title = "Colour coding on scatter plots" };
+            var colorAxis = new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(500), Minimum = 0, Maximum = 5, HighColor = OxyColors.Gray, LowColor = OxyColors.Black };
+            model.Axes.Add(colorAxis);
+
+            var s4 = new ScatterSeries { MarkerType = MarkerType.Circle };
+            s4.Points.Add(new ScatterPoint(3, 5, 5, 0));
+            s4.Points.Add(new ScatterPoint(5, 5, 7, 0));
+            s4.Points.Add(new ScatterPoint(2, 4, 5, 0.3));
+            s4.Points.Add(new ScatterPoint(3, 3, 8, 0));
+            s4.Points.Add(new ScatterPoint(3, 2, 5, 0));
+            s4.Points.Add(new ScatterPoint(3, 5, 8, 1));
+            s4.Points.Add(new ScatterPoint(2, 2, 3, 5));
+            s4.Points.Add(new ScatterPoint(1, 4, 4, 1));
+            s4.Points.Add(new ScatterPoint(4, 3, 5, 3));
+            s4.Points.Add(new ScatterPoint(0, 0, 1, 1));
+            s4.Points.Add(new ScatterPoint(8, 8, 1, 1));
+            model.Series.Add(s4);
             return model;
         }
 
+        [Example("#9971: Don't show minor ticks")]
+        public static PlotModel DontShowMinorTicks()
+        {
+            var model = new PlotModel { Title = "MinorTickSize = 0" };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, MinorTickSize = 0, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Solid });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, MinorTickSize = 0, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Solid });
+            return model;
+        }
+
+        /// <summary>
+        /// Grids the lines both different colors.
+        /// </summary>
+        /// <returns></returns>
         [Example("#9990: Major grid lines in front of minor")]
         public static PlotModel GridLinesBothDifferentColors()
         {
@@ -68,15 +95,16 @@ namespace ExampleLibrary
                     MinorGridlineThickness = 4,
                 };
             plotModel1.Axes.Add(leftAxis);
-            var bottomAxis = new LinearAxis(AxisPosition.Bottom)
-                {
-                    MajorGridlineStyle = LineStyle.Solid,
-                    MajorGridlineColor = OxyColors.Black,
-                    MajorGridlineThickness = 4,
-                    MinorGridlineStyle = LineStyle.Solid,
-                    MinorGridlineColor = OxyColors.LightBlue,
-                    MinorGridlineThickness = 4,
-                };
+            var bottomAxis = new LinearAxis
+            {
+                Position = AxisPosition.Bottom,
+                MajorGridlineStyle = LineStyle.Solid,
+                MajorGridlineColor = OxyColors.Black,
+                MajorGridlineThickness = 4,
+                MinorGridlineStyle = LineStyle.Solid,
+                MinorGridlineColor = OxyColors.LightBlue,
+                MinorGridlineThickness = 4,
+            };
             plotModel1.Axes.Add(bottomAxis);
             return plotModel1;
         }
@@ -84,7 +112,7 @@ namespace ExampleLibrary
         [Example("#10060: AnnotationLayers")]
         public static PlotModel AnnotationLayers()
         {
-            var model = new PlotModel("AnnotationLayers");
+            var model = new PlotModel { Title = "AnnotationLayers" };
 
             var a1 = new RectangleAnnotation { MinimumX = 10, MaximumX = 20, MinimumY = -1, MaximumY = 1, Layer = AnnotationLayer.BelowAxes };
             var a2 = new RectangleAnnotation { MinimumX = 30, MaximumX = 40, MinimumY = -1, MaximumY = 1, Layer = AnnotationLayer.BelowSeries };
@@ -125,7 +153,7 @@ namespace ExampleLibrary
         [Example("#10061: Argument out of range in OxyPlot mouse over")]
         public static PlotModel ArgumentOutOfRangeInMouseOver()
         {
-            var model = new PlotModel("Argument out of range in OxyPlot mouse over");
+            var model = new PlotModel { Title = "Argument out of range in OxyPlot mouse over" };
             var ls = new LineSeries();
             ls.Points.Add(new DataPoint(10, 10));
             ls.Points.Add(new DataPoint(10, 10));
@@ -137,10 +165,10 @@ namespace ExampleLibrary
         [Example("#10076: Slow redraws with noisy data")]
         public static PlotModel NoisyData()
         {
-            var model = new PlotModel("Noisy data");
+            var model = new PlotModel { Title = "Noisy data" };
 
-            var points = new List<IDataPoint>();
-            var rng = new Random();
+            var points = new List<DataPoint>();
+            var rng = new Random(7);
             for (int i = 0; i < 500; i++)
             {
                 points.Add(new DataPoint(i + 1, rng.NextDouble()));
@@ -153,7 +181,7 @@ namespace ExampleLibrary
         [Example("#10076: Dashed line test")]
         public static PlotModel DashedLineTest()
         {
-            var model = new PlotModel("Dashed line test");
+            var model = new PlotModel { Title = "Dashed line test" };
 
             for (int y = 1; y <= 24; y++)
             {
@@ -177,16 +205,16 @@ namespace ExampleLibrary
         [Example("#10076: Super exponential format")]
         public static PlotModel SuperExponentialFormat()
         {
-            var model = new PlotModel("UseSuperExponentialFormat=true and 0");
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, 0, 100, 10, 1) { UseSuperExponentialFormat = true });
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -100, 100, 20, 10) { UseSuperExponentialFormat = true });
+            var model = new PlotModel { Title = "UseSuperExponentialFormat=true and 0" };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 0, Maximum = 100, MajorStep = 10, MinorStep = 1, UseSuperExponentialFormat = true });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -100, Maximum = 100, MajorStep = 20, MinorStep = 10, UseSuperExponentialFormat = true });
             return model;
         }
 
         [Example("#10079: AreaSeries draws on top of other elements")]
         public static PlotModel DefaultAnnotationLayer()
         {
-            var plotModel1 = new PlotModel("Annotations should be drawn on top by default", "The line annotation should be on top!");
+            var plotModel1 = new PlotModel { Title = "Annotations should be drawn on top by default", Subtitle = "The line annotation should be on top!" };
             var areaSeries1 = new AreaSeries();
             areaSeries1.Points.Add(new DataPoint(0, 50));
             areaSeries1.Points.Add(new DataPoint(10, 40));
@@ -213,7 +241,7 @@ namespace ExampleLibrary
         [Example("#10084: AreaSeries should respect CanTrackerInterpolatePoints")]
         public static PlotModel AreaSeries_CanTrackerInterpolatePointsFalse()
         {
-            var plotModel1 = new PlotModel("AreaSeries with CanTrackerInterpolatePoints=false");
+            var plotModel1 = new PlotModel { Title = "AreaSeries with CanTrackerInterpolatePoints=false" };
             var areaSeries1 = new AreaSeries { CanTrackerInterpolatePoints = false };
             areaSeries1.Points.Add(new DataPoint(0, 50));
             areaSeries1.Points.Add(new DataPoint(10, 40));
@@ -225,10 +253,10 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
-        [Example("#10084: AreaSeries should respect CanTrackerInterpolatePoints")]
+        [Example("#10084: AreaSeries should respect CanTrackerInterpolatePoints=true")]
         public static PlotModel AreaSeries_CanTrackerInterpolatePointsTrue()
         {
-            var plotModel1 = new PlotModel("AreaSeries with CanTrackerInterpolatePoints=true");
+            var plotModel1 = new PlotModel { Title = "AreaSeries with CanTrackerInterpolatePoints=true" };
             var areaSeries1 = new AreaSeries { CanTrackerInterpolatePoints = true };
             areaSeries1.Points.Add(new DataPoint(0, 50));
             areaSeries1.Points.Add(new DataPoint(10, 40));
@@ -243,7 +271,7 @@ namespace ExampleLibrary
         [Example("#10118: Empty LineSeries with smoothing")]
         public static PlotModel EmptyLineSeriesWithSmoothing_ThrowsException()
         {
-            var plotModel1 = new PlotModel("Empty LineSeries with smoothing");
+            var plotModel1 = new PlotModel { Title = "Empty LineSeries with smoothing" };
             plotModel1.Series.Add(new LineSeries { Smooth = true });
             return plotModel1;
         }
@@ -251,15 +279,15 @@ namespace ExampleLibrary
         [Example("#10153: Floating-point inaccuracy")]
         public static PlotModel FloatingPointInaccuracy()
         {
-            var model = new PlotModel("Issue 10153");
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, -0.0515724495834661, 0.016609368598352, 0.02, 0.002));
+            var model = new PlotModel { Title = "Issue 10153" };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -0.0515724495834661, Maximum = 0.016609368598352, MajorStep = 0.02, MinorStep = 0.002 });
             return model;
         }
 
         [Example("#10164: LineSeries.Dashes property")]
         public static PlotModel DashesTest()
         {
-            var model = new PlotModel("Dashed line test");
+            var model = new PlotModel { Title = "Dashed line test" };
 
             for (int y = 1; y <= 10; y++)
             {
@@ -277,6 +305,34 @@ namespace ExampleLibrary
             }
 
             return model;
+        }
+
+        [Example("#10184: ScatterSeries and LinearColorAxis on the same plot")]
+        public static PlotModel ScatterSeriesAndLinearColorAxis()
+        {
+            var plotModel = new PlotModel { Title = "ScatterSeries and LinearColorAxis on the same plot" };
+            int npoints = 100;
+            var random = new Random();
+
+            var scatterSeries = new ScatterSeries { ColorAxisKey = string.Empty };
+            for (var i = 0; i < npoints; i++)
+            {
+                scatterSeries.Points.Add(new ScatterPoint((double)i / npoints, random.NextDouble()));
+            }
+
+            plotModel.Series.Add(scatterSeries);
+
+            var lineSeries = new LineSeries();
+            for (var i = 0; i < npoints; i++)
+            {
+                lineSeries.Points.Add(new DataPoint((double)i / npoints, random.NextDouble()));
+            }
+
+            plotModel.Series.Add(lineSeries);
+
+            var hmLegendAxis = new LinearColorAxis();
+            plotModel.Axes.Add(hmLegendAxis);
+            return plotModel;
         }
     }
 }

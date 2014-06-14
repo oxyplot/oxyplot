@@ -40,9 +40,9 @@ namespace OxyPlot.Wpf
     public class LineAnnotation : PathAnnotation
     {
         /// <summary>
-        /// Identifies the <see cref="LineType"/> dependency property.
+        /// Identifies the <see cref="Type"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty LineTypeProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty TypeProperty = DependencyProperty.Register(
             "Type",
             typeof(LineAnnotationType),
             typeof(LineAnnotation),
@@ -96,6 +96,16 @@ namespace OxyPlot.Wpf
         public static readonly DependencyProperty YProperty = DependencyProperty.Register(
             "Y", typeof(double), typeof(LineAnnotation), new PropertyMetadata(0.0, DataChanged));
 
+        /// <summary>
+        /// Initializes static members of the <see cref="LineAnnotation"/> class.
+        /// </summary>
+        static LineAnnotation()
+        {
+            TextColorProperty.OverrideMetadata(typeof(LineAnnotation), new FrameworkPropertyMetadata(MoreColors.Automatic, AppearanceChanged));
+            TextHorizontalAlignmentProperty.OverrideMetadata(typeof(LineAnnotation), new FrameworkPropertyMetadata(HorizontalAlignment.Right, AppearanceChanged));
+            TextVerticalAlignmentProperty.OverrideMetadata(typeof(LineAnnotation), new FrameworkPropertyMetadata(VerticalAlignment.Top, AppearanceChanged));
+        }
+        
         /// <summary>
         /// Initializes a new instance of the <see cref = "LineAnnotation" /> class.
         /// </summary>
@@ -207,12 +217,12 @@ namespace OxyPlot.Wpf
         {
             get
             {
-                return (LineAnnotationType)this.GetValue(LineTypeProperty);
+                return (LineAnnotationType)this.GetValue(TypeProperty);
             }
 
             set
             {
-                this.SetValue(LineTypeProperty, value);
+                this.SetValue(TypeProperty, value);
             }
         }
 

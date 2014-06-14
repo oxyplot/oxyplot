@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents a point in the data coordinate system.
+//   Represents a point in the data space.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -33,10 +33,10 @@ namespace OxyPlot
     using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
-    /// Represents a point in the data coordinate system.
+    /// Represents a point in the data space.
     /// </summary>
     /// <remarks><see cref="DataPoint" />s are transformed to <see cref="ScreenPoint" />s.</remarks>
-    public struct DataPoint : IDataPoint, ICodeGenerating
+    public struct DataPoint : ICodeGenerating
     {
         /// <summary>
         /// The undefined.
@@ -118,6 +118,22 @@ namespace OxyPlot
         public override string ToString()
         {
             return this.x + " " + this.y;
+        }
+
+        /// <summary>
+        /// Determines whether this point is defined.
+        /// </summary>
+        /// <returns><c>true</c> if this point is defined; otherwise, <c>false</c>.</returns>
+        public bool IsDefined()
+        {
+            // check that x and y is not NaN (the code below is faster than double.IsNaN)
+#pragma warning disable 1718
+            // ReSharper disable EqualExpressionComparison
+            // ReSharper disable CompareOfFloatsByEqualityOperator
+            return this.x == this.x && this.y == this.y;
+            // ReSharper restore CompareOfFloatsByEqualityOperator
+            // ReSharper restore EqualExpressionComparison
+#pragma warning restore 1718
         }
     }
 }

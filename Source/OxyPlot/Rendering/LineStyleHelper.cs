@@ -24,14 +24,14 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Provides functionality to convert from LineStyle to a stroke dash array.
+//   Provides functionality to convert from <see cref="LineStyle"/> to a stroke dash array.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     /// <summary>
-    /// Provides functionality to convert from LineStyle to a stroke dash array.
+    /// Provides functionality to convert from <see cref="LineStyle" /> to a stroke dash array.
     /// </summary>
     public static class LineStyleHelper
     {

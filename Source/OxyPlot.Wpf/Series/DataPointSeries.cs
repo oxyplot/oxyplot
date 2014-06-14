@@ -64,7 +64,7 @@ namespace OxyPlot.Wpf
         /// Identifies the <see cref="Mapping"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MappingProperty = DependencyProperty.Register(
-            "Mapping", typeof(Func<object, IDataPoint>), typeof(DataPointSeries), new UIPropertyMetadata(null));
+            "Mapping", typeof(Func<object, DataPoint>), typeof(DataPointSeries), new UIPropertyMetadata(null));
 
         /// <summary>
         /// Identifies the <see cref="Smooth"/> dependency property.
@@ -124,11 +124,11 @@ namespace OxyPlot.Wpf
         /// Gets or sets the mapping.
         /// </summary>
         /// <value>The mapping.</value>
-        public Func<object, IDataPoint> Mapping
+        public Func<object, DataPoint> Mapping
         {
             get
             {
-                return (Func<object, IDataPoint>)this.GetValue(MappingProperty);
+                return (Func<object, DataPoint>)this.GetValue(MappingProperty);
             }
 
             set

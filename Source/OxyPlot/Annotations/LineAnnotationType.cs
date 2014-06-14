@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Specifies the definition of the line in a <see cref="LineAnnotation"/>.
+//   Specifies the definition of the line in a <see cref="LineAnnotation" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

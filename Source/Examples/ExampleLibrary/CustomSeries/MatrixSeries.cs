@@ -219,7 +219,7 @@ namespace ExampleLibrary
                 points.Add(this.Transform(n, m));
             }
 
-            rc.DrawClippedLineSegments(points, clip, this.GridColor, 1, null, OxyPenLineJoin.Miter, true);
+            rc.DrawClippedLineSegments(clip, points, this.GridColor, 1, null, OxyPenLineJoin.Miter, true);
 
             if (this.BorderColor.IsVisible())
             {
@@ -235,12 +235,12 @@ namespace ExampleLibrary
                         this.Transform(m, n)
                     };
 
-                rc.DrawClippedLineSegments(borderPoints, clip, this.BorderColor, 1, null, OxyPenLineJoin.Miter, true);
+                rc.DrawClippedLineSegments(clip, borderPoints, this.BorderColor, 1, null, OxyPenLineJoin.Miter, true);
             }
         }
 
         /// <summary>
-        /// Updates the max/minimum values.
+        /// Updates the maximum and minimum values of the series.
         /// </summary>
         protected override void UpdateMaxMin()
         {

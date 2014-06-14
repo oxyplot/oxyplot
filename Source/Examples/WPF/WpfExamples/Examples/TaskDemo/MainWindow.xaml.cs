@@ -28,17 +28,17 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Windows;
-using System.Windows.Media;
-
 namespace TaskDemo
 {
     using System.ComponentModel;
+    using System.Windows;
+
+    using WpfExamples;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [Example("Updating a LineSeries from a Task running on the UI thread synchronization context.")]
     public partial class MainWindow : Window
     {
         public MainWindow()

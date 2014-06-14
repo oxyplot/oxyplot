@@ -24,14 +24,14 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Specifies the style of axis ticks.
+//   Defines the style of axis ticks.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Axes
 {
     /// <summary>
-    /// Specifies the style of axis ticks.
+    /// Defines the style of axis ticks.
     /// </summary>
     public enum TickStyle
     {

@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines rendering functionality.
+//   Specifies functionality to render 2D graphics.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -33,7 +33,7 @@ namespace OxyPlot
     using System.Collections.Generic;
 
     /// <summary>
-    /// Defines rendering functionality.
+    /// Specifies functionality to render 2D graphics.
     /// </summary>
     public interface IRenderContext
     {
@@ -174,7 +174,7 @@ namespace OxyPlot
             OxyColor fill,
             string fontFamily = null,
             double fontSize = 10,
-            double fontWeight = 500,
+            double fontWeight = FontWeights.Normal,
             double rotate = 0,
             HorizontalAlignment halign = HorizontalAlignment.Left,
             VerticalAlignment valign = VerticalAlignment.Top,
@@ -219,14 +219,14 @@ namespace OxyPlot
         void DrawImage(OxyImage source, double srcX, double srcY, double srcWidth, double srcHeight, double destX, double destY, double destWidth, double destHeight, double opacity, bool interpolate);
 
         /// <summary>
-        /// Sets the clip rectangle.
+        /// Sets the clipping rectangle.
         /// </summary>
-        /// <param name="rect">The clip rectangle.</param>
-        /// <returns>True if the clip rectangle was set.</returns>
-        bool SetClip(OxyRect rect);
+        /// <param name="clippingRect">The clipping rectangle.</param>
+        /// <returns><c>true</c> if the clip rectangle was set.</returns>
+        bool SetClip(OxyRect clippingRect);
 
         /// <summary>
-        /// Resets the clip rectangle.
+        /// Resets the clipping rectangle.
         /// </summary>
         void ResetClip();
     }

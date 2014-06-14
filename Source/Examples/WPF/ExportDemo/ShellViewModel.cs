@@ -103,7 +103,7 @@ namespace ExportDemo
 
         public Window Owner { get; private set; }
 
-        public Plot Plot { get; private set; }
+        public PlotView Plot { get; private set; }
 
         public int TotalNumberOfPoints
         {
@@ -120,7 +120,7 @@ namespace ExportDemo
 
 
 
-        public void Attach(Window owner, Plot plot)
+        public void Attach(Window owner, PlotView plot)
         {
             this.Owner = owner;
             this.Plot = plot;
@@ -136,7 +136,8 @@ namespace ExportDemo
         public void CopySvg()
         {
             var rc = new ShapesRenderContext(null);
-            Clipboard.SetText(this.Model.ToSvg(this.Plot.ActualWidth, this.Plot.ActualHeight, true, rc));
+            var svg = SvgExporter.ExportToString(this.Model, this.Plot.ActualWidth, this.Plot.ActualHeight, true, rc);
+            Clipboard.SetText(svg);
         }
 
         public void CopyXaml()

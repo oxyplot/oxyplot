@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Provides unit tests for the <see cref="LinearAxis"/> class.
+//   Provides unit tests for the <see cref="LinearAxis" /> class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -43,6 +43,23 @@ namespace OxyPlot.Tests
     [TestFixture]
     public class LinearAxisTests
     {
+        /// <summary>
+        /// Tests the <see cref="LinearAxis.GetHashCode" /> method.
+        /// </summary>
+        public new class GetHashCode
+        {
+            /// <summary>
+            /// Given two axes with identical content, verify that the hash codes are different.
+            /// </summary>
+            [Test]
+            public void TwoEqualAxes()
+            {
+                var axis1 = new LinearAxis();
+                var axis2 = new LinearAxis();
+                Assert.IsTrue(axis1.GetHashCode() != axis2.GetHashCode());
+            }
+        }
+
         /// <summary>
         /// Tests the <see cref="LinearAxis.FormatAsFractions" /> property.
         /// </summary>
@@ -123,7 +140,7 @@ namespace OxyPlot.Tests
                     StringFormat = "0.###"
                 };
                 model.Axes.Add(axis);
-                model.Update();
+                ((IPlotModel)model).Update(true);
                 Assert.AreEqual("1.273π", axis.FormatValue(4));
             }
         }

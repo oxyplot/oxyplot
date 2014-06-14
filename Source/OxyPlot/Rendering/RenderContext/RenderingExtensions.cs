@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Provides extension methods for <see cref="IRenderContext"/>.
+//   Provides extension methods for <see cref="IRenderContext" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -82,101 +82,112 @@ namespace OxyPlot
         private static readonly double M3 = Math.Tan(Math.PI / 4);
 
         /// <summary>
-        /// Draws the clipped line.
+        /// Draws a clipped polyline through the specified points.
         /// </summary>
         /// <param name="rc">The render context.</param>
-        /// <param name="points">The points.</param>
         /// <param name="clippingRectangle">The clipping rectangle.</param>
-        /// <param name="minDistSquared">The squared minimum distance.</param>
-        /// <param name="stroke">The stroke.</param>
+        /// <param name="points">The points.</param>
+        /// <param name="minDistSquared">The minimum line segment length (squared).</param>
+        /// <param name="stroke">The stroke color.</param>
         /// <param name="strokeThickness">The stroke thickness.</param>
         /// <param name="dashArray">The dash array (in device independent units, 1/96 inch).</param>
         /// <param name="lineJoin">The line join.</param>
-        /// <param name="aliased">if set to <c>true</c> [aliased].</param>
+        /// <param name="aliased">Set to <c>true</c> to draw as an aliased line.</param>
+        /// <param name="outputBuffer">The output buffer.</param>
         /// <param name="pointsRendered">The points rendered callback.</param>
         public static void DrawClippedLine(
             this IRenderContext rc,
-            IList<ScreenPoint> points,
             OxyRect clippingRectangle,
+            IList<ScreenPoint> points,
             double minDistSquared,
             OxyColor stroke,
             double strokeThickness,
             double[] dashArray,
             OxyPenLineJoin lineJoin,
             bool aliased,
+            List<ScreenPoint> outputBuffer = null,
             Action<IList<ScreenPoint>> pointsRendered = null)
         {
-            var clipping = new CohenSutherlandClipping(clippingRectangle.Left, clippingRectangle.Right, clippingRectangle.Top, clippingRectangle.Bottom);
-
-            var pts = new List<ScreenPoint>();
-            int n = points.Count;
-            if (n > 0)
+            var n = points.Count;
+            if (n == 0)
             {
-                if (n == 1)
+                return;
+            }
+
+            if (outputBuffer != null)
+            {
+                outputBuffer.Clear();
+            }
+            else
+            {
+                outputBuffer = new List<ScreenPoint>(n);
+            }
+
+            // draws the points in the output buffer and calls the callback (if specified)
+            Action drawLine = () =>
+            {
+                EnsureNonEmptyLineIsVisible(outputBuffer);
+                rc.DrawLine(outputBuffer, stroke, strokeThickness, dashArray, lineJoin, aliased);
+
+                // Execute the 'callback'
+                if (pointsRendered != null)
                 {
-                    pts.Add(points[0]);
+                    pointsRendered(outputBuffer);
+                }
+            };
+
+            var clipping = new CohenSutherlandClipping(clippingRectangle);
+            if (n == 1 && clipping.IsInside(points[0]))
+            {
+                outputBuffer.Add(points[0]);
+            }
+
+            int lastPointIndex = 0;
+            for (int i = 1; i < n; i++)
+            {
+                // Calculate the clipped version of previous and this point.
+                var sc0 = points[i - 1];
+                var sc1 = points[i];
+                bool isInside = clipping.ClipLine(ref sc0, ref sc1);
+
+                if (!isInside)
+                {
+                    // the line segment is outside the clipping rectangle
+                    // keep the previous coordinate for minimum distance comparison
+                    continue;
                 }
 
-                var last = points[0];
-                for (int i = 1; i < n; i++)
+                // length calculation (inlined for performance)
+                var dx = sc1.X - points[lastPointIndex].X;
+                var dy = sc1.Y - points[lastPointIndex].Y;
+
+                if ((dx * dx) + (dy * dy) > minDistSquared || outputBuffer.Count == 0 || i == n - 1)
                 {
-                    var s0 = points[i - 1];
-                    var s1 = points[i];
-
-                    // Clipped version of this and next point.
-                    var sc0 = s0;
-                    var sc1 = s1;
-                    bool isInside = clipping.ClipLine(ref sc0, ref sc1);
-
-                    if (!isInside)
+                    // point comparison inlined for performance
+                    // ReSharper disable CompareOfFloatsByEqualityOperator
+                    if (sc0.X != points[lastPointIndex].X || sc0.Y != points[lastPointIndex].Y || outputBuffer.Count == 0)
+                    // ReSharper restore disable CompareOfFloatsByEqualityOperator
                     {
-                        // keep the previous coordinate
-                        continue;
+                        outputBuffer.Add(new ScreenPoint(sc0.X, sc0.Y));
                     }
 
-                    // render from s0c-s1c
-                    double dx = sc1.x - last.x;
-                    double dy = sc1.y - last.y;
-
-                    if ((dx * dx) + (dy * dy) > minDistSquared || i == 1 || i == n - 1)
-                    {
-                        if (!sc0.Equals(last) || i == 1)
-                        {
-                            pts.Add(sc0);
-                        }
-
-                        pts.Add(sc1);
-                        last = sc1;
-                    }
-
-                    // render the line if we are leaving the clipping region););
-                    if (!clipping.IsInside(s1))
-                    {
-                        if (pts.Count > 0)
-                        {
-                            EnsureNonEmptyLineIsVisible(pts);
-                            rc.DrawLine(pts, stroke, strokeThickness, dashArray, lineJoin, aliased);
-                            if (pointsRendered != null)
-                            {
-                                pointsRendered(pts);
-                            }
-
-                            pts = new List<ScreenPoint>();
-                        }
-                    }
+                    outputBuffer.Add(new ScreenPoint(sc1.X, sc1.Y));
+                    lastPointIndex = i;
                 }
 
-                if (pts.Count > 0)
+                if (clipping.IsInside(points[i]) || outputBuffer.Count == 0)
                 {
-                    EnsureNonEmptyLineIsVisible(pts);
-                    rc.DrawLine(pts, stroke, strokeThickness, dashArray, lineJoin, aliased);
-
-                    // Execute the 'callback'.
-                    if (pointsRendered != null)
-                    {
-                        pointsRendered(pts);
-                    }
+                    continue;
                 }
+
+                // we are leaving the clipping region - render the line
+                drawLine();
+                outputBuffer.Clear();
+            }
+
+            if (outputBuffer.Count > 0)
+            {
+                drawLine();
             }
         }
 
@@ -184,17 +195,17 @@ namespace OxyPlot
         /// Draws the clipped line segments.
         /// </summary>
         /// <param name="rc">The render context.</param>
-        /// <param name="points">The points.</param>
         /// <param name="clippingRectangle">The clipping rectangle.</param>
+        /// <param name="points">The points.</param>
         /// <param name="stroke">The stroke.</param>
         /// <param name="strokeThickness">The stroke thickness.</param>
         /// <param name="dashArray">The dash array (in device independent units, 1/96 inch).</param>
         /// <param name="lineJoin">The line join.</param>
-        /// <param name="aliased">if set to <c>true</c> [aliased].</param>
+        /// <param name="aliased">Set to <c>true</c> to draw as an aliased line.</param>
         public static void DrawClippedLineSegments(
             this IRenderContext rc,
-            IList<ScreenPoint> points,
             OxyRect clippingRectangle,
+            IList<ScreenPoint> points,
             OxyColor stroke,
             double strokeThickness,
             double[] dashArray,
@@ -208,7 +219,7 @@ namespace OxyPlot
                 return;
             }
 
-            var clipping = new CohenSutherlandClipping(clippingRectangle.Left, clippingRectangle.Right, clippingRectangle.Top, clippingRectangle.Bottom);
+            var clipping = new CohenSutherlandClipping(clippingRectangle);
 
             var clippedPoints = new List<ScreenPoint>(points.Count);
             for (int i = 0; i + 1 < points.Count; i += 2)
@@ -253,7 +264,7 @@ namespace OxyPlot
         /// Draws the clipped image.
         /// </summary>
         /// <param name="rc">The render context.</param>
-        /// <param name="clippingRect">The clipping rectangle.</param>
+        /// <param name="clippingRectangle">The clipping rectangle.</param>
         /// <param name="source">The source.</param>
         /// <param name="x">The destination X position.</param>
         /// <param name="y">The destination Y position.</param>
@@ -263,7 +274,7 @@ namespace OxyPlot
         /// <param name="interpolate">interpolate if set to <c>true</c>.</param>
         public static void DrawClippedImage(
             this IRenderContext rc,
-            OxyRect clippingRect,
+            OxyRect clippingRectangle,
             OxyImage source,
             double x,
             double y,
@@ -272,12 +283,12 @@ namespace OxyPlot
             double opacity,
             bool interpolate)
         {
-            if (x > clippingRect.Right || x + w < clippingRect.Left || y > clippingRect.Bottom || y + h < clippingRect.Top)
+            if (x > clippingRectangle.Right || x + w < clippingRectangle.Left || y > clippingRectangle.Bottom || y + h < clippingRectangle.Top)
             {
                 return;
             }
 
-            if (rc.SetClip(clippingRect))
+            if (rc.SetClip(clippingRectangle))
             {
                 // The render context supports clipping, then we can draw the whole image
                 rc.DrawImage(source, x, y, w, h, opacity, interpolate);
@@ -286,10 +297,10 @@ namespace OxyPlot
             }
 
             // Fint the positions of the clipping rectangle normalized to image coordinates (0,1)
-            var i0 = (clippingRect.Left - x) / w;
-            var i1 = (clippingRect.Right - x) / w;
-            var j0 = (clippingRect.Top - y) / h;
-            var j1 = (clippingRect.Bottom - y) / h;
+            var i0 = (clippingRectangle.Left - x) / w;
+            var i1 = (clippingRectangle.Right - x) / w;
+            var j0 = (clippingRectangle.Top - y) / h;
+            var j1 = (clippingRectangle.Bottom - y) / h;
 
             // Find the origin of the clipped source rectangle
             var srcx = i0 < 0 ? 0u : i0 * source.Width;
@@ -321,8 +332,8 @@ namespace OxyPlot
         /// Draws the polygon within the specified clipping rectangle.
         /// </summary>
         /// <param name="rc">The render context.</param>
-        /// <param name="points">The points.</param>
         /// <param name="clippingRectangle">The clipping rectangle.</param>
+        /// <param name="points">The points.</param>
         /// <param name="minDistSquared">The squared minimum distance between points.</param>
         /// <param name="fill">The fill.</param>
         /// <param name="stroke">The stroke.</param>
@@ -332,8 +343,8 @@ namespace OxyPlot
         /// <param name="aliased">The aliased.</param>
         public static void DrawClippedPolygon(
             this IRenderContext rc,
-            IList<ScreenPoint> points,
             OxyRect clippingRectangle,
+            IList<ScreenPoint> points,
             double minDistSquared,
             OxyColor fill,
             OxyColor stroke,
@@ -350,24 +361,22 @@ namespace OxyPlot
             }
 
             var clippedPoints = SutherlandHodgmanClipping.ClipPolygon(clippingRectangle, points);
-
-            rc.DrawPolygon(
-                clippedPoints, fill, stroke, strokeThickness, lineStyle.GetDashArray(), lineJoin, aliased);
+            rc.DrawPolygon(clippedPoints, fill, stroke, strokeThickness, lineStyle.GetDashArray(), lineJoin, aliased);
         }
 
         /// <summary>
         /// Draws the clipped rectangle.
         /// </summary>
         /// <param name="rc">The render context.</param>
-        /// <param name="rect">The rectangle to draw.</param>
         /// <param name="clippingRectangle">The clipping rectangle.</param>
+        /// <param name="rect">The rectangle to draw.</param>
         /// <param name="fill">The fill color.</param>
         /// <param name="stroke">The stroke color.</param>
         /// <param name="thickness">The stroke thickness.</param>
         public static void DrawClippedRectangle(
             this IRenderContext rc,
-            OxyRect rect,
             OxyRect clippingRectangle,
+            OxyRect rect,
             OxyColor fill,
             OxyColor stroke,
             double thickness)
@@ -392,15 +401,15 @@ namespace OxyPlot
         /// Draws the clipped rectangle as a polygon.
         /// </summary>
         /// <param name="rc">The render context.</param>
-        /// <param name="rect">The rectangle to draw.</param>
         /// <param name="clippingRectangle">The clipping rectangle.</param>
+        /// <param name="rect">The rectangle to draw.</param>
         /// <param name="fill">The fill color.</param>
         /// <param name="stroke">The stroke color.</param>
         /// <param name="thickness">The stroke thickness.</param>
         public static void DrawClippedRectangleAsPolygon(
             this IRenderContext rc,
-            OxyRect rect,
             OxyRect clippingRectangle,
+            OxyRect rect,
             OxyColor fill,
             OxyColor stroke,
             double thickness)
@@ -458,7 +467,7 @@ namespace OxyPlot
                 points[i] = new ScreenPoint(cx + (rx * Math.Cos(a)), cy + (ry * Math.Sin(a)));
             }
 
-            rc.DrawClippedPolygon(points, clippingRectangle, 4, fill, stroke, thickness);
+            rc.DrawClippedPolygon(clippingRectangle, points, 4, fill, stroke, thickness);
         }
 
         /// <summary>
@@ -596,8 +605,8 @@ namespace OxyPlot
         /// Renders the marker.
         /// </summary>
         /// <param name="rc">The render context.</param>
+        /// <param name="clippingRectangle">The clipping rectangle.</param>
         /// <param name="p">The center point of the marker.</param>
-        /// <param name="clippingRect">The clipping rectangle.</param>
         /// <param name="type">The marker type.</param>
         /// <param name="outline">The outline.</param>
         /// <param name="size">The size of the marker.</param>
@@ -606,8 +615,8 @@ namespace OxyPlot
         /// <param name="strokeThickness">The stroke thickness.</param>
         public static void DrawMarker(
             this IRenderContext rc,
+            OxyRect clippingRectangle,
             ScreenPoint p,
-            OxyRect clippingRect,
             MarkerType type,
             IList<ScreenPoint> outline,
             double size,
@@ -615,7 +624,7 @@ namespace OxyPlot
             OxyColor stroke,
             double strokeThickness)
         {
-            rc.DrawMarkers(new[] { p }, clippingRect, type, outline, new[] { size }, fill, stroke, strokeThickness);
+            rc.DrawMarkers(clippingRectangle, new[] { p }, type, outline, new[] { size }, fill, stroke, strokeThickness);
         }
 
         /// <summary>
@@ -623,7 +632,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="rc">The render context.</param>
         /// <param name="markerPoints">The marker points.</param>
-        /// <param name="clippingRect">The clipping rectangle.</param>
+        /// <param name="clippingRectangle">The clipping rectangle.</param>
         /// <param name="markerType">Type of the marker.</param>
         /// <param name="markerOutline">The marker outline.</param>
         /// <param name="markerSize">Size of the marker.</param>
@@ -635,7 +644,7 @@ namespace OxyPlot
         public static void DrawMarkers(
             this IRenderContext rc,
             IList<ScreenPoint> markerPoints,
-            OxyRect clippingRect,
+            OxyRect clippingRectangle,
             MarkerType markerType,
             IList<ScreenPoint> markerOutline,
             double markerSize,
@@ -647,8 +656,8 @@ namespace OxyPlot
         {
             DrawMarkers(
                 rc,
+                clippingRectangle,
                 markerPoints,
-                clippingRect,
                 markerType,
                 markerOutline,
                 new[] { markerSize },
@@ -663,8 +672,8 @@ namespace OxyPlot
         /// Draws a list of markers.
         /// </summary>
         /// <param name="rc">The render context.</param>
+        /// <param name="clippingRectangle">The clipping rectangle.</param>
         /// <param name="markerPoints">The marker points.</param>
-        /// <param name="clippingRect">The clipping rectangle.</param>
         /// <param name="markerType">Type of the marker.</param>
         /// <param name="markerOutline">The marker outline.</param>
         /// <param name="markerSize">Size of the markers.</param>
@@ -675,8 +684,8 @@ namespace OxyPlot
         /// <param name="binOffset">The bin Offset.</param>
         public static void DrawMarkers(
             this IRenderContext rc,
+            OxyRect clippingRectangle,
             IList<ScreenPoint> markerPoints,
-            OxyRect clippingRect,
             MarkerType markerType,
             IList<ScreenPoint> markerOutline,
             IList<double> markerSize,
@@ -701,10 +710,10 @@ namespace OxyPlot
 
             int i = 0;
 
-            double minx = clippingRect.Left;
-            double maxx = clippingRect.Right;
-            double miny = clippingRect.Top;
-            double maxy = clippingRect.Bottom;
+            double minx = clippingRectangle.Left;
+            double maxx = clippingRectangle.Right;
+            double miny = clippingRectangle.Top;
+            double maxy = clippingRectangle.Bottom;
 
             foreach (var p in markerPoints)
             {
@@ -762,8 +771,7 @@ namespace OxyPlot
         /// <param name="fill">The fill.</param>
         /// <param name="stroke">The stroke.</param>
         /// <param name="thickness">The thickness.</param>
-        public static void DrawRectangleAsPolygon(
-            this IRenderContext rc, OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
+        public static void DrawRectangleAsPolygon(this IRenderContext rc, OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
             var sp0 = new ScreenPoint(rect.Left, rect.Top);
             var sp1 = new ScreenPoint(rect.Right, rect.Top);
@@ -781,11 +789,9 @@ namespace OxyPlot
         /// <param name="fill">The fill.</param>
         /// <param name="stroke">The stroke.</param>
         /// <param name="thickness">The thickness.</param>
-        public static void DrawRectangleAsPolygon(
-            this IRenderContext rc, OxyRect rect, OxyColor fill, OxyColor stroke, OxyThickness thickness)
+        public static void DrawRectangleAsPolygon(this IRenderContext rc, OxyRect rect, OxyColor fill, OxyColor stroke, OxyThickness thickness)
         {
-            if (thickness.Left.Equals(thickness.Right) && thickness.Left.Equals(thickness.Top)
-                && thickness.Left.Equals(thickness.Bottom))
+            if (thickness.Left.Equals(thickness.Right) && thickness.Left.Equals(thickness.Top) && thickness.Left.Equals(thickness.Bottom))
             {
                 DrawRectangleAsPolygon(rc, rect, fill, stroke, thickness.Left);
                 return;
@@ -796,10 +802,10 @@ namespace OxyPlot
             var sp2 = new ScreenPoint(rect.Right, rect.Bottom);
             var sp3 = new ScreenPoint(rect.Left, rect.Bottom);
             rc.DrawPolygon(new[] { sp0, sp1, sp2, sp3 }, fill, OxyColors.Undefined, 0, null, OxyPenLineJoin.Miter, true);
-            rc.DrawPolygon(new[] { sp0, sp1 }, OxyColors.Undefined, stroke, thickness.Top, null, OxyPenLineJoin.Miter, true);
-            rc.DrawPolygon(new[] { sp1, sp2 }, OxyColors.Undefined, stroke, thickness.Right, null, OxyPenLineJoin.Miter, true);
-            rc.DrawPolygon(new[] { sp2, sp3 }, OxyColors.Undefined, stroke, thickness.Bottom, null, OxyPenLineJoin.Miter, true);
-            rc.DrawPolygon(new[] { sp3, sp0 }, OxyColors.Undefined, stroke, thickness.Left, null, OxyPenLineJoin.Miter, true);
+            rc.DrawLine(new[] { sp0, sp1 }, stroke, thickness.Top, null, OxyPenLineJoin.Miter, true);
+            rc.DrawLine(new[] { sp1, sp2 }, stroke, thickness.Right, null, OxyPenLineJoin.Miter, true);
+            rc.DrawLine(new[] { sp2, sp3 }, stroke, thickness.Bottom, null, OxyPenLineJoin.Miter, true);
+            rc.DrawLine(new[] { sp3, sp0 }, stroke, thickness.Left, null, OxyPenLineJoin.Miter, true);
         }
 
         /// <summary>

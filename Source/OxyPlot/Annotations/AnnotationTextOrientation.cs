@@ -24,14 +24,14 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Specifies the orientation of the annotation text
+//   Specifies the orientation of the text in an annotation.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Annotations
 {
     /// <summary>
-    /// Specifies the orientation of the annotation text
+    /// Specifies the orientation of the text in an annotation.
     /// </summary>
     public enum AnnotationTextOrientation
     {

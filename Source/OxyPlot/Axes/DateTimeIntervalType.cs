@@ -24,14 +24,14 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Specifies the date time interval for <see cref="DateTimeAxis"/>.
+//   Specifies the interval for a <see cref="DateTimeAxis" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Axes
 {
     /// <summary>
-    /// Specifies the date time interval for <see cref="DateTimeAxis" />.
+    /// Specifies the interval for a <see cref="DateTimeAxis" />.
     /// </summary>
     public enum DateTimeIntervalType
     {

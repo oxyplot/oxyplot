@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Provides encoding of bmp images.
+//   Implements support for encoding bmp images.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -34,7 +34,7 @@ namespace OxyPlot
     using System.IO;
 
     /// <summary>
-    /// Provides encoding of bmp images.
+    /// Implements support for encoding bmp images.
     /// </summary>
     public class BmpEncoder : IImageEncoder
     {

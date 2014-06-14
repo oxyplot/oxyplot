@@ -127,7 +127,7 @@ namespace OxyPlot
     }
 
     /// <summary>
-    /// Provides encoding of uncompressed png images.
+    /// Implements support for encoding png images.
     /// </summary>
     public class PngEncoder : IImageEncoder
     {

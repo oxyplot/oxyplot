@@ -31,7 +31,6 @@ namespace ExampleBrowser
     using System.ComponentModel;
     using System.Linq;
     using System.Windows.Data;
-    using System.Windows.Media;
 
     using ExampleLibrary;
 
@@ -51,9 +50,11 @@ namespace ExampleBrowser
         {
             this.defaultController = new PlotController();
             this.Examples = ExampleLibrary.Examples.GetList();
-            this.ExamplesView = CollectionViewSource.GetDefaultView(Examples.OrderBy(e => e.Category));
+            this.ExamplesView = CollectionViewSource.GetDefaultView(this.Examples.OrderBy(e => e.Category));
             this.ExamplesView.GroupDescriptions.Add(new PropertyGroupDescription("Category"));
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public bool MeasureFrameRate { get; set; }
 
@@ -100,7 +101,6 @@ namespace ExampleBrowser
                 this.RaisePropertyChanged("Model");
                 this.RaisePropertyChanged("Controller");
                 this.RaisePropertyChanged("SelectedExample");
-                this.RaisePropertyChanged("PlotBackground");
             }
         }
 
@@ -120,11 +120,9 @@ namespace ExampleBrowser
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
         protected void RaisePropertyChanged(string property)
         {
-            var handler = PropertyChanged;
+            var handler = this.PropertyChanged;
             if (handler != null)
             {
                 handler(this, new PropertyChangedEventArgs(property));

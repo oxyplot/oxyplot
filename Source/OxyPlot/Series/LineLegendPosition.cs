@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Specifies the position of legends rendered on a <see cref="LineSeries"/>.
+//   Specifies the position of legends rendered on a <see cref="LineSeries" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

@@ -36,7 +36,7 @@ namespace WindowsFormsDemo
         /// </summary>
         private void InitializeComponent()
         {
-            this.plot1 = new OxyPlot.WindowsForms.Plot();
+            this.plot1 = new OxyPlot.WindowsForms.PlotView();
             this.SuspendLayout();
             // 
             // plot1
@@ -62,6 +62,6 @@ namespace WindowsFormsDemo
 
         #endregion
 
-        private Plot plot1;
+        private PlotView plot1;
     }
 }

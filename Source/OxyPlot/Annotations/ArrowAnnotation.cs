@@ -24,14 +24,14 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents an arrow annotation.
+//   Represents an annotation that shows an arrow.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Annotations
 {
     /// <summary>
-    /// Represents an arrow annotation.
+    /// Represents an annotation that shows an arrow.
     /// </summary>
     public class ArrowAnnotation : TextualAnnotation
     {
@@ -61,7 +61,7 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// Gets or sets the arrow direction.
         /// </summary>
-        /// <remarks>Setting this property overrides the StartPoint property.</remarks>
+        /// <remarks>Setting this property overrides the <see cref="StartPoint" /> property.</remarks>
         public ScreenVector ArrowDirection { get; set; }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace OxyPlot.Annotations
         public OxyColor Color { get; set; }
 
         /// <summary>
-        /// Gets or sets the end point.
+        /// Gets or sets the end point of the arrow.
         /// </summary>
         public DataPoint EndPoint { get; set; }
 
@@ -99,7 +99,7 @@ namespace OxyPlot.Annotations
         public LineStyle LineStyle { get; set; }
 
         /// <summary>
-        /// Gets or sets the start point.
+        /// Gets or sets the start point of the arrow.
         /// </summary>
         /// <remarks>This property is overridden by the ArrowDirection property, if set.</remarks>
         public DataPoint StartPoint { get; set; }
@@ -145,14 +145,14 @@ namespace OxyPlot.Annotations
             var p3 = p1 - (n * this.HeadWidth * this.StrokeThickness);
             var p4 = p1 + (d * this.Veeness * this.StrokeThickness);
 
-            OxyRect clippingRect = this.GetClippingRect();
+            var clippingRectangle = this.GetClippingRect();
             const double MinimumSegmentLength = 4;
 
             var dashArray = this.LineStyle.GetDashArray();
 
             rc.DrawClippedLine(
+                clippingRectangle,
                 new[] { this.screenStartPoint, p4 },
-                clippingRect,
                 MinimumSegmentLength * MinimumSegmentLength,
                 this.GetSelectableColor(this.Color),
                 this.StrokeThickness,
@@ -161,27 +161,33 @@ namespace OxyPlot.Annotations
                 false);
 
             rc.DrawClippedPolygon(
+                clippingRectangle,
                 new[] { p3, this.screenEndPoint, p2, p4 },
-                clippingRect,
                 MinimumSegmentLength * MinimumSegmentLength,
                 this.GetSelectableColor(this.Color),
                 OxyColors.Undefined);
 
             if (!string.IsNullOrEmpty(this.Text))
             {
-                var ha = d.X < 0 ? HorizontalAlignment.Left : HorizontalAlignment.Right;
-                var va = d.Y < 0 ? VerticalAlignment.Top : VerticalAlignment.Bottom;
+                var ha = this.TextHorizontalAlignment;
+                var va = this.TextVerticalAlignment;
+                if (!this.TextPosition.IsDefined())
+                {
+                    // automatic position => use automatic alignment
+                    ha = d.X < 0 ? HorizontalAlignment.Left : HorizontalAlignment.Right;
+                    va = d.Y < 0 ? VerticalAlignment.Top : VerticalAlignment.Bottom;
+                }
 
-                var textPoint = this.screenStartPoint;
+                var textPoint = this.GetActualTextPosition(() => this.screenStartPoint);
                 rc.DrawClippedText(
-                    clippingRect,
+                    clippingRectangle,
                     textPoint,
                     this.Text,
                     this.ActualTextColor,
                     this.ActualFont,
                     this.ActualFontSize,
                     this.ActualFontWeight,
-                    0,
+                    this.TextRotation,
                     ha,
                     va);
             }
@@ -198,18 +204,18 @@ namespace OxyPlot.Annotations
         {
             if ((args.Point - this.screenStartPoint).Length < args.Tolerance)
             {
-                return new HitTestResult(this.screenStartPoint, null, 1);
+                return new HitTestResult(this, this.screenStartPoint, null, 1);
             }
 
             if ((args.Point - this.screenEndPoint).Length < args.Tolerance)
             {
-                return new HitTestResult(this.screenEndPoint, null, 2);
+                return new HitTestResult(this, this.screenEndPoint, null, 2);
             }
 
             var p = ScreenPointHelper.FindPointOnLine(args.Point, this.screenStartPoint, this.screenEndPoint);
             if ((p - args.Point).Length < args.Tolerance)
             {
-                return new HitTestResult(p);
+                return new HitTestResult(this, p);
             }
 
             return null;

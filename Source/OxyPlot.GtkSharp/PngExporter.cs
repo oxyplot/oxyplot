@@ -68,7 +68,7 @@ namespace OxyPlot.GtkSharp
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
         /// <param name="background">The background color.</param>
-        public static void Export(PlotModel model, string fileName, int width, int height, Pattern background = null)
+        public static void Export(IPlotModel model, string fileName, int width, int height, Pattern background = null)
         {
             using (var bm = new ImageSurface(Format.ARGB32, width, height))
             {
@@ -85,7 +85,7 @@ namespace OxyPlot.GtkSharp
 
                     var rc = new GraphicsRenderContext { RendersToScreen = false };
                     rc.SetGraphicsTarget(g);
-                    model.Update();
+                    model.Update(true);
                     model.Render(rc, width, height);
                     bm.WriteToPng(fileName);
                 }
@@ -97,7 +97,7 @@ namespace OxyPlot.GtkSharp
         /// </summary>
         /// <param name="model">The model.</param>
         /// <param name="stream">The output stream.</param>
-        public void Export(PlotModel model, Stream stream)
+        public void Export(IPlotModel model, Stream stream)
         {
             using (var bm = new ImageSurface(Format.ARGB32, this.Width, this.Height))
             {
@@ -118,7 +118,7 @@ namespace OxyPlot.GtkSharp
 
                     var rc = new GraphicsRenderContext { RendersToScreen = false };
                     rc.SetGraphicsTarget(g);
-                    model.Update();
+                    model.Update(true);
                     model.Render(rc, this.Width, this.Height);
 
                     // write to a temporary file

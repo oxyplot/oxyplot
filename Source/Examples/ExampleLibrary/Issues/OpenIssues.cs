@@ -44,9 +44,9 @@ namespace ExampleLibrary
         public static PlotModel SubSuperScriptInAxisTitles()
         {
             var plotModel1 = new PlotModel { Title = "x_{i}^{j}", Subtitle = "x_{i}^{j}" };
-            var leftAxis = new LinearAxis(AxisPosition.Left) { Title = "x_{i}^{j}" };
+            var leftAxis = new LinearAxis { Position = AxisPosition.Left, Title = "x_{i}^{j}" };
             plotModel1.Axes.Add(leftAxis);
-            var bottomAxis = new LinearAxis(AxisPosition.Bottom) { Title = "x_{i}^{j}" };
+            var bottomAxis = new LinearAxis { Position = AxisPosition.Bottom, Title = "x_{i}^{j}" };
             plotModel1.Axes.Add(bottomAxis);
             plotModel1.Series.Add(new FunctionSeries(Math.Sin, 0, 10, 100, "x_{i}^{j}"));
             return plotModel1;
@@ -57,11 +57,11 @@ namespace ExampleLibrary
         {
             var s = "x_{A}^{B}";
             var plotModel1 = new PlotModel { Title = s, Subtitle = s };
-            plotModel1.Axes.Add(new LinearAxis(AxisPosition.Left) { Title = s, Minimum = -1, Maximum = 1 });
-            plotModel1.Axes.Add(new LinearAxis(AxisPosition.Bottom) { Title = s, Minimum = -1, Maximum = 11 });
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = s, Minimum = -1, Maximum = 1 });
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = s, Minimum = -1, Maximum = 11 });
             for (int rotation = 0; rotation < 360; rotation += 45)
             {
-                plotModel1.Annotations.Add(new TextAnnotation { Text = s, Position = new DataPoint(rotation / 360d * 10, 0), Rotation = rotation });
+                plotModel1.Annotations.Add(new TextAnnotation { Text = s, TextPosition = new DataPoint(rotation / 360d * 10, 0), TextRotation = rotation });
             }
 
             return plotModel1;
@@ -94,7 +94,7 @@ namespace ExampleLibrary
         [Example("#10055: Hit testing LineSeries with smoothing")]
         public static PlotModel MouseDownEvent()
         {
-            var model = new PlotModel("LineSeries with smoothing", "Tracker uses wrong points");
+            var model = new PlotModel { Title = "LineSeries with smoothing", Subtitle = "Tracker uses wrong points" };
             var logarithmicAxis1 = new LogarithmicAxis { Position = AxisPosition.Bottom };
             model.Axes.Add(logarithmicAxis1);
 
@@ -131,7 +131,7 @@ namespace ExampleLibrary
                 LegendPlacement = LegendPlacement.Outside,
                 PlotAreaBackground = OxyColors.Gray,
                 PlotAreaBorderColor = OxyColors.Gainsboro,
-                PlotAreaBorderThickness = 2,
+                PlotAreaBorderThickness = new OxyThickness(2),
                 Title = "Value / Time"
             };
             var linearAxis1 = new LinearAxis
@@ -181,7 +181,7 @@ namespace ExampleLibrary
         [Example("#10080: LegendItemAlignment = Center")]
         public static PlotModel LegendItemAlignmentCenter()
         {
-            var plotModel1 = new PlotModel("LegendItemAlignment = Center");
+            var plotModel1 = new PlotModel { Title = "LegendItemAlignment = Center" };
             plotModel1.LegendItemAlignment = HorizontalAlignment.Center;
             plotModel1.LegendBorder = OxyColors.Black;
             plotModel1.LegendBorderThickness = 1;
@@ -193,14 +193,67 @@ namespace ExampleLibrary
         [Example("#10115: GetNearestPoint return DataPoint even when custom IDataPoint used")]
         public static PlotModel GetNearestPointReturnsDataPoint()
         {
-            var plotModel1 = new PlotModel("Issue 10115");
+            var plotModel1 = new PlotModel { Title = "Issue 10115" };
             return plotModel1;
         }
 
         [Example("#10117: Selecting points changes the legend colours")]
         public static PlotModel SelectingPointsChangesTheLegendColors()
         {
-            var plotModel1 = new PlotModel("Issue 10117");
+            var plotModel1 = new PlotModel { Title = "Issue 10117" };
+            return plotModel1;
+        }
+
+        [Example("#10148: Data points remain visible outside of bounds on panning")]
+        public static PlotModel DataPointsRemainVisibleOutsideBoundsOnPanning()
+        {
+            var plotModel1 = new PlotModel();
+
+            var masterAxis = new DateTimeAxis { Key = "MasterDateTimeAxis", Position = AxisPosition.Bottom };
+            plotModel1.Axes.Add(masterAxis);
+
+            var verticalAxis = new LinearAxis
+            {
+                Position = AxisPosition.Left,
+                Title = "Measurement",
+                Key = "Measurement",
+                AbsoluteMinimum = -100,
+                Minimum = -100,
+                AbsoluteMaximum = 100,
+                Maximum = 100,
+                IsZoomEnabled = false,
+                IsPanEnabled = false
+            };
+
+            plotModel1.Axes.Add(verticalAxis);
+
+            var line = new LineSeries { Title = "Measurement", XAxisKey = masterAxis.Key, YAxisKey = verticalAxis.Key };
+            line.Points.Add(new DataPoint(DateTimeAxis.ToDouble(DateTime.Now), 10));
+            line.Points.Add(new DataPoint(DateTimeAxis.ToDouble(DateTime.Now.AddSeconds(1)), 10));
+            line.Points.Add(new DataPoint(DateTimeAxis.ToDouble(DateTime.Now.AddSeconds(2)), 45));
+            line.Points.Add(new DataPoint(DateTimeAxis.ToDouble(DateTime.Now.AddSeconds(3)), 17));
+
+            line.Points.Add(DataPoint.Undefined);
+
+            // this point should be visible
+            line.Points.Add(new DataPoint(DateTimeAxis.ToDouble(DateTime.Now.AddSeconds(4)), 10));
+            //// line.Points.Add(new DataPoint(DateTimeAxis.ToDouble(DateTime.Now.AddSeconds(4)), 10));
+
+            line.Points.Add(DataPoint.Undefined);
+
+            line.Points.Add(new DataPoint(DateTimeAxis.ToDouble(DateTime.Now.AddSeconds(5)), 45));
+            line.Points.Add(new DataPoint(DateTimeAxis.ToDouble(DateTime.Now.AddSeconds(6)), 17));
+
+            plotModel1.Series.Add(line);
+
+            return plotModel1;
+        }
+
+        [Example("#10188: MinorStep should not be MajorStep/5 when MajorStep is 2")]
+        public static PlotModel MinorTicks()
+        {
+            var plotModel1 = new PlotModel { Title = "Issue 10117" };
+            plotModel1.Axes.Add(new LinearAxis { Minimum = 0, Maximum = 16 });
             return plotModel1;
         }
     }

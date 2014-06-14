@@ -50,7 +50,7 @@ namespace OxyPlot.Wpf
         /// <param name="height">The height.</param>
         /// <param name="background">The background.</param>
         /// <returns>A xaml string.</returns>
-        public static string ExportToString(PlotModel model, double width, double height, OxyColor background)
+        public static string ExportToString(IPlotModel model, double width, double height, OxyColor background)
         {
             var g = new Grid();
             if (background.IsVisible())
@@ -67,7 +67,7 @@ namespace OxyPlot.Wpf
             g.UpdateLayout();
 
             var rc = new ShapesRenderContext(c) { UseStreamGeometry = false };
-            model.Update();
+            model.Update(true);
             model.Render(rc, width, height);
 
             var sb = new StringBuilder();

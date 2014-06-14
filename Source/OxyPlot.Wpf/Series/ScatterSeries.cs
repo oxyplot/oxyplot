@@ -34,6 +34,8 @@ namespace OxyPlot.Wpf
     using System.Windows;
     using System.Windows.Media;
 
+    using OxyPlot.Series;
+
     /// <summary>
     /// This is a WPF wrapper of OxyPlot.ScatterSeries
     /// </summary>
@@ -79,7 +81,7 @@ namespace OxyPlot.Wpf
         /// Identifies the <see cref="Mapping"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MappingProperty = DependencyProperty.Register(
-            "Mapping", typeof(Func<object, IDataPoint>), typeof(ScatterSeries), new PropertyMetadata(null, DataChanged));
+            "Mapping", typeof(Func<object, ScatterPoint>), typeof(ScatterSeries), new PropertyMetadata(null, DataChanged));
 
         /// <summary>
         /// Identifies the <see cref="MarkerFill"/> dependency property.
@@ -231,11 +233,11 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets Mapping.
         /// </summary>
-        public Func<object, IDataPoint> Mapping
+        public Func<object, ScatterPoint> Mapping
         {
             get
             {
-                return (Func<object, IDataPoint>)this.GetValue(MappingProperty);
+                return (Func<object, ScatterPoint>)this.GetValue(MappingProperty);
             }
 
             set
