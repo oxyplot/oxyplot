@@ -39,10 +39,16 @@ namespace OxyPlot.Wpf
     public class ScatterErrorSeries : ScatterSeries
     {
         /// <summary>
-        /// Identifies the <see cref="DataFieldError"/> dependency property.
+        /// Identifies the <see cref="DataFieldErrorX"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty DataFieldErrorProperty =
-            DependencyProperty.Register("DataFieldError", typeof(string), typeof(ScatterErrorSeries), new PropertyMetadata(null, DataChanged));
+        public static readonly DependencyProperty DataFieldErrorXProperty =
+            DependencyProperty.Register("DataFieldErrorX", typeof(string), typeof(ScatterErrorSeries), new PropertyMetadata(null, DataChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="DataFieldErrorY"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty DataFieldErrorYProperty =
+            DependencyProperty.Register("DataFieldErrorY", typeof(string), typeof(ScatterErrorSeries), new PropertyMetadata(null, DataChanged));
 
         /// <summary>
         /// Identifies the <see cref="ErrorBarColor"/> dependency property.
@@ -77,15 +83,27 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the data field error.
+        /// Gets or sets the data field X error.
         /// </summary>
         /// <value>
         /// The data field error.
         /// </value>
-        public string DataFieldError
+        public string DataFieldErrorX
         {
-            get { return (string)this.GetValue(DataFieldErrorProperty); }
-            set { this.SetValue(DataFieldErrorProperty, value); }
+            get { return (string)this.GetValue(DataFieldErrorXProperty); }
+            set { this.SetValue(DataFieldErrorXProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the data field Y error.
+        /// </summary>
+        /// <value>
+        /// The data field error.
+        /// </value>
+        public string DataFieldErrorY
+        {
+            get { return (string)this.GetValue(DataFieldErrorYProperty); }
+            set { this.SetValue(DataFieldErrorYProperty, value); }
         }
 
         /// <summary>
@@ -141,7 +159,8 @@ namespace OxyPlot.Wpf
         {
             base.SynchronizeProperties(series);
             var s = (OxyPlot.Series.ScatterErrorSeries)series;
-            s.DataFieldError = this.DataFieldError;
+            s.DataFieldErrorX = this.DataFieldErrorX;
+            s.DataFieldErrorY = this.DataFieldErrorY;
             s.ErrorBarColor = this.ErrorBarColor.ToOxyColor();
             s.ErrorBarStopWidth = this.ErrorBarStopWidth;
             s.ErrorBarStrokeThickness = this.ErrorBarStrokeThickness;

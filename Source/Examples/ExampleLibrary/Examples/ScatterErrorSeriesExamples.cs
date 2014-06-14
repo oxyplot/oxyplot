@@ -38,23 +38,22 @@ namespace ExampleLibrary
     [Examples("ScatterErrorSeries")]
     public class ScatterErrorSeriesExamples : ExamplesBase
     {
-        [Example("Random points and error")]
+        [Example("Random points and errors")]
         public static PlotModel RandomPointsAndError()
         {
             const int N = 20;
             var model = new PlotModel { Title = string.Format("Random data (n={0})", N), LegendPosition = LegendPosition.LeftTop };
 
             var s1 = new ScatterErrorSeries { Title = "Measurements" };
-            var random = new Random();
+            var random = new Random(27);
             double x = 0;
             double y = 0;
             for (int i = 0; i < N; i++)
             {
-                x += 2 + (random.NextDouble() * 10);
+                x += 2 + random.NextDouble();
                 y += 1 + random.NextDouble();
-                double error = random.NextDouble();
 
-                var p = new ScatterErrorPoint(x, y, error);
+                var p = new ScatterErrorPoint(x, y, random.NextDouble(), random.NextDouble());
                 s1.Points.Add(p);
             }
 
