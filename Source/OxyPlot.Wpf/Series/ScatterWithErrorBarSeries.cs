@@ -30,11 +30,6 @@
 
 namespace OxyPlot.Wpf
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Media;
 
@@ -73,6 +68,9 @@ namespace OxyPlot.Wpf
         public static readonly DependencyProperty AlwaysShowErrorBarsProperty =
             DependencyProperty.Register("AlwaysShowErrorBars", typeof(bool), typeof(ScatterWithErrorBarSeries), new PropertyMetadata(false, AppearanceChanged));
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ScatterWithErrorBarSeries"/> class.
+        /// </summary>
         public ScatterWithErrorBarSeries()
         {
             this.InternalSeries = new OxyPlot.Series.ScatterWithErrorBarSeries();
@@ -86,8 +84,8 @@ namespace OxyPlot.Wpf
         /// </value>
         public string DataFieldError
         {
-            get { return (string)GetValue(DataFieldErrorProperty); }
-            set { SetValue(DataFieldErrorProperty, value); }
+            get { return (string)this.GetValue(DataFieldErrorProperty); }
+            set { this.SetValue(DataFieldErrorProperty, value); }
         }
 
         /// <summary>
@@ -98,8 +96,8 @@ namespace OxyPlot.Wpf
         /// </value>
         public Color ErrorBarColor
         {
-            get { return (Color)GetValue(ErrorBarColorProperty); }
-            set { SetValue(ErrorBarColorProperty, value); }
+            get { return (Color)this.GetValue(ErrorBarColorProperty); }
+            set { this.SetValue(ErrorBarColorProperty, value); }
         }
 
         /// <summary>
@@ -110,8 +108,8 @@ namespace OxyPlot.Wpf
         /// </value>
         public double ErrorBarStopWidth
         {
-            get { return (double)GetValue(ErrorBarStopWidthProperty); }
-            set { SetValue(ErrorBarStopWidthProperty, value); }
+            get { return (double)this.GetValue(ErrorBarStopWidthProperty); }
+            set { this.SetValue(ErrorBarStopWidthProperty, value); }
         }
 
         /// <summary>
@@ -122,8 +120,8 @@ namespace OxyPlot.Wpf
         /// </value>
         public double ErrorBarStrokeThickness
         {
-            get { return (double)GetValue(ErrorBarStrokeThicknessProperty); }
-            set { SetValue(ErrorBarStrokeThicknessProperty, value); }
+            get { return (double)this.GetValue(ErrorBarStrokeThicknessProperty); }
+            set { this.SetValue(ErrorBarStrokeThicknessProperty, value); }
         }
 
         /// <summary>
@@ -135,18 +133,8 @@ namespace OxyPlot.Wpf
         /// </value>
         public bool AlwaysShowErrorBars
         {
-            get { return (bool)GetValue(AlwaysShowErrorBarsProperty); }
-            set { SetValue(AlwaysShowErrorBarsProperty, value); }
-        }
-
-        /// <summary>
-        /// Creates the internal series.
-        /// </summary>
-        /// <returns>The series.</returns>
-        public override OxyPlot.Series.Series CreateModel()
-        {
-            this.SynchronizeProperties(this.InternalSeries);
-            return this.InternalSeries;
+            get { return (bool)this.GetValue(AlwaysShowErrorBarsProperty); }
+            set { this.SetValue(AlwaysShowErrorBarsProperty, value); }
         }
 
         /// <summary>
@@ -156,17 +144,12 @@ namespace OxyPlot.Wpf
         protected override void SynchronizeProperties(OxyPlot.Series.Series series)
         {
             base.SynchronizeProperties(series);
-
-            base.SynchronizeProperties(series);
-            var s = series as OxyPlot.Series.ScatterWithErrorBarSeries;
-            if (s != null)
-            {
-                s.DataFieldError = this.DataFieldError;
-                s.ErrorBarColor = this.ErrorBarColor.ToOxyColor();
-                s.ErrorBarStopWidth = this.ErrorBarStopWidth;
-                s.ErrorBarStrokeThickness = this.ErrorBarStrokeThickness;
-                s.AlwaysShowErrorBars = this.AlwaysShowErrorBars;
-            }
+            var s = (OxyPlot.Series.ScatterWithErrorBarSeries)series;
+            s.DataFieldError = this.DataFieldError;
+            s.ErrorBarColor = this.ErrorBarColor.ToOxyColor();
+            s.ErrorBarStopWidth = this.ErrorBarStopWidth;
+            s.ErrorBarStrokeThickness = this.ErrorBarStrokeThickness;
+            s.AlwaysShowErrorBars = this.AlwaysShowErrorBars;
         }
     }
 }
