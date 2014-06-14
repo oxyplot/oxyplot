@@ -145,7 +145,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the minimum size (relative to <see cref="ScatterSeries.MarkerSize" />) of the error bars to be shown. 
+        /// Gets or sets the minimum size (relative to <see cref="ScatterSeries{T}.MarkerSize" />) of the error bars to be shown. 
         /// </summary>
         public double MinimumErrorSize
         {
