@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ScatterWithErrorBarSeries.cs" company="OxyPlot">
+// <copyright file="ScatterErrorSeries.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 OxyPlot contributors
@@ -37,12 +37,12 @@ namespace OxyPlot.Series
     /// <summary>
     ///     Represents a series for scatter plots with the possibility to display error bars.
     /// </summary>
-    public class ScatterWithErrorBarSeries : ScatterSeries
+    public class ScatterErrorSeries : ScatterSeries
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="ScatterWithErrorBarSeries" /> class.
+        ///     Initializes a new instance of the <see cref="ScatterErrorSeries" /> class.
         /// </summary>
-        public ScatterWithErrorBarSeries()
+        public ScatterErrorSeries()
         {
             this.ErrorBarColor = OxyColors.Black;
             this.ErrorBarStrokeThickness = 1;

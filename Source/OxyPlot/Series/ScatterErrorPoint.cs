@@ -24,14 +24,14 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents a point in a ScatterWithErrorBarSeries.
+//   Represents a point in a ScatterErrorSeries.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Series
 {
     /// <summary>
-    /// Represents a point in a <see cref="ScatterWithErrorBarSeries" />.
+    /// Represents a point in a <see cref="ScatterErrorSeries" />.
     /// </summary>
     public class ScatterErrorPoint : ScatterPoint
     {

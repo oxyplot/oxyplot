@@ -137,7 +137,7 @@
     <Compile Include="Pdf\PortableDocumentImageUtilities.cs" />
     <Compile Include="Pdf\StandardFonts.cs" />
     <Compile Include="Series\ScatterErrorPoint.cs" />
-    <Compile Include="Series\ScatterWithErrorBarSeries.cs" />
+    <Compile Include="Series\ScatterErrorSeries.cs" />
     <Compile Include="Utilities\AxisUtilities.cs" />
     <Compile Include="Utilities\XmlWriterBase.cs" />
     <Compile Include="Utilities\BinaryReaderExtensions.cs" />

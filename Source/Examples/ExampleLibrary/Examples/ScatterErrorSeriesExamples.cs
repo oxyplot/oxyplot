@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ScatterWithErrorBarSeriesExamples.cs" company="OxyPlot">
+// <copyright file="ScatterErrorSeriesExamples.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 OxyPlot contributors
@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the ScatterWithErrorBarSeriesExamples examples.
+//   Defines the ScatterErrorSeriesExamples examples.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -35,16 +35,16 @@ namespace ExampleLibrary
     using OxyPlot;
     using OxyPlot.Series;
 
-    [Examples("ScatterWithErrorBarSeries")]
-    public class ScatterWithErrorBarSeriesExamples : ExamplesBase
+    [Examples("ScatterErrorSeries")]
+    public class ScatterErrorSeriesExamples : ExamplesBase
     {
         [Example("Random points and error")]
-        public static PlotModel ScatterWithErrorBarSeriesExample()
+        public static PlotModel RandomPointsAndError()
         {
             const int N = 20;
             var model = new PlotModel { Title = string.Format("Random data (n={0})", N), LegendPosition = LegendPosition.LeftTop };
 
-            var s1 = new ScatterWithErrorBarSeries { Title = "Measurements" };
+            var s1 = new ScatterErrorSeries { Title = "Measurements" };
             var random = new Random();
             double x = 0;
             double y = 0;

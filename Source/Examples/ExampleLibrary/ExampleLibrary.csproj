@@ -55,7 +55,7 @@
     <Compile Include="Examples\BarSeries\BarSeriesExamples.cs" />
     <Compile Include="Examples\BarSeries\ColumnSeriesExamples.cs" />
     <Compile Include="Examples\BarSeries\ErrorColumnSeriesExamples.cs" />
-    <Compile Include="Examples\ScatterWithErrorBarSeriesExamples.cs" />
+    <Compile Include="Examples\ScatterErrorSeriesExamples.cs" />
     <Compile Include="Examples\BoxPlotSeriesExamples.cs" />
     <Compile Include="Examples\CandleStickSeriesExamples.cs" />
     <Compile Include="Examples\CartesianAxesExamples.cs" />
