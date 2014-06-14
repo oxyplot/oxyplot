@@ -40,7 +40,8 @@ namespace OxyPlot.Series
         /// </summary>
         public ScatterErrorPoint()
         {
-            this.Error = double.NaN;
+            this.ErrorX = double.NaN;
+            this.ErrorY = double.NaN;
         }
 
         /// <summary>
@@ -48,22 +49,32 @@ namespace OxyPlot.Series
         /// </summary>
         /// <param name="x">The x.</param>
         /// <param name="y">The y.</param>
-        /// <param name="error">The error.</param>
+        /// <param name="errorX">The X error.</param>
+        /// <param name="errorY">The Y error.</param>
         /// <param name="size">The size.</param>
         /// <param name="value">The value.</param>
         /// <param name="tag">The tag.</param>
-        public ScatterErrorPoint(double x, double y, double error, double size = double.NaN, double value = double.NaN, object tag = null)
+        public ScatterErrorPoint(double x, double y, double errorX, double errorY, double size = double.NaN, double value = double.NaN, object tag = null)
             : base(x, y, size, value, tag)
         {
-            this.Error = error;
+            this.ErrorX = errorX;
+            this.ErrorY = errorY;
         }
 
         /// <summary>
-        /// Gets or sets the error.
+        /// Gets or sets the error in X.
         /// </summary>
         /// <value>
         /// The error.
         /// </value>
-        public double Error { get; set; }
+        public double ErrorX { get; set; }
+
+        /// <summary>
+        /// Gets or sets the error in Y.
+        /// </summary>
+        /// <value>
+        /// The error.
+        /// </value>
+        public double ErrorY { get; set; }
     }
 }

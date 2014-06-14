@@ -51,12 +51,20 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        ///     Gets or sets the data field for the error property.
+        ///     Gets or sets the data field for the X error property.
         /// </summary>
         /// <value>
         ///     The data field.
         /// </value>
-        public string DataFieldError { get; set; }
+        public string DataFieldErrorX { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the data field for the Y error property.
+        /// </summary>
+        /// <value>
+        ///     The data field.
+        /// </value>
+        public string DataFieldErrorY { get; set; }
 
         /// <summary>
         ///     Gets or sets the color of the error bar.
@@ -110,12 +118,28 @@ namespace OxyPlot.Series
                     continue;
                 }
 
-                if (point.Error > 0.0)
+                if (point.ErrorX > 0.0)
                 {
-                    var topErrorPoint = this.XAxis.Transform(point.X, point.Y - (point.Error * 0.5), this.YAxis);
-                    var bottomErrorPoint = this.XAxis.Transform(point.X, point.Y + (point.Error * 0.5), this.YAxis);
+                    var leftErrorPoint = this.XAxis.Transform(point.X - (point.ErrorX * 0.5), point.Y, this.YAxis);
+                    var rightErrorPoint = this.XAxis.Transform(point.X + (point.ErrorX * 0.5), point.Y, this.YAxis);
 
-                    if (topErrorPoint.Y - bottomErrorPoint.Y > this.MarkerSize * this.MinimumErrorSize)
+                    if (Math.Abs(rightErrorPoint.X - leftErrorPoint.X) > this.MarkerSize * this.MinimumErrorSize)
+                    {
+                        segments.Add(leftErrorPoint);
+                        segments.Add(rightErrorPoint);
+                        segments.Add(new ScreenPoint(leftErrorPoint.X, leftErrorPoint.Y - this.ErrorBarStopWidth));
+                        segments.Add(new ScreenPoint(leftErrorPoint.X, leftErrorPoint.Y + this.ErrorBarStopWidth));
+                        segments.Add(new ScreenPoint(rightErrorPoint.X, rightErrorPoint.Y - this.ErrorBarStopWidth));
+                        segments.Add(new ScreenPoint(rightErrorPoint.X, rightErrorPoint.Y + this.ErrorBarStopWidth));
+                    }
+                }
+
+                if (point.ErrorY > 0.0)
+                {
+                    var topErrorPoint = this.XAxis.Transform(point.X, point.Y - (point.ErrorY * 0.5), this.YAxis);
+                    var bottomErrorPoint = this.XAxis.Transform(point.X, point.Y + (point.ErrorY * 0.5), this.YAxis);
+
+                    if (Math.Abs(topErrorPoint.Y - bottomErrorPoint.Y) > this.MarkerSize * this.MinimumErrorSize)
                     {
                         segments.Add(topErrorPoint);
                         segments.Add(bottomErrorPoint);
@@ -163,7 +187,8 @@ namespace OxyPlot.Series
         protected override void DefineDataFields(ListFiller<ScatterErrorPoint> filler)
         {
             base.DefineDataFields(filler);
-            filler.Add(this.DataFieldError, (item, value) => item.Error = Convert.ToDouble(value));
+            filler.Add(this.DataFieldErrorX, (item, value) => item.ErrorX = Convert.ToDouble(value));
+            filler.Add(this.DataFieldErrorY, (item, value) => item.ErrorY = Convert.ToDouble(value));
         }
     }
 }
