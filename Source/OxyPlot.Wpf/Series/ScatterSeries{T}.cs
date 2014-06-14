@@ -136,7 +136,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets BinSize.
+        /// Gets or sets bin size.
         /// </summary>
         public int BinSize
         {
@@ -152,7 +152,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets DataFieldSize.
+        /// Gets or sets size data field.
         /// </summary>
         public string DataFieldSize
         {
@@ -168,7 +168,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets DataFieldTag.
+        /// Gets or sets tag data field.
         /// </summary>
         public string DataFieldTag
         {
@@ -184,7 +184,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets DataFieldValue.
+        /// Gets or sets value (color) data field.
         /// </summary>
         public string DataFieldValue
         {
@@ -200,7 +200,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets DataFieldX.
+        /// Gets or sets X data field.
         /// </summary>
         public string DataFieldX
         {
@@ -216,7 +216,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets DataFieldY.
+        /// Gets or sets Y data field.
         /// </summary>
         public string DataFieldY
         {
@@ -232,7 +232,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets Mapping.
+        /// Gets or sets mapping function.
         /// </summary>
         public Func<object, T> Mapping
         {
@@ -248,7 +248,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets MarkerFill.
+        /// Gets or sets fill color of the markers.
         /// </summary>
         public Color MarkerFill
         {
@@ -264,7 +264,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets MarkerOutline.
+        /// Gets or sets custom outline of the markers.
         /// </summary>
         public ScreenPoint[] MarkerOutline
         {
@@ -280,7 +280,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets MarkerSize.
+        /// Gets or sets the size of the markers.
         /// </summary>
         public double MarkerSize
         {
@@ -296,7 +296,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets MarkerStroke.
+        /// Gets or sets color of the marker strokes.
         /// </summary>
         public Color MarkerStroke
         {
@@ -312,7 +312,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets MarkerStrokeThickness.
+        /// Gets or sets thickness of the marker strokes.
         /// </summary>
         public double MarkerStrokeThickness
         {
@@ -328,7 +328,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets MarkerType.
+        /// Gets or sets type of the markers.
         /// </summary>
         public MarkerType MarkerType
         {
