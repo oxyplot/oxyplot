@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ScatterWithErrorBarSeries.cs" company="OxyPlot">
+// <copyright file="ScatterErrorSeries.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 OxyPlot contributors
@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   This is a WPF wrapper of OxyPlot.ScatterWithErrorBarSeries
+//   This is a WPF wrapper of OxyPlot.ScatterErrorSeries
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -34,46 +34,46 @@ namespace OxyPlot.Wpf
     using System.Windows.Media;
 
     /// <summary>
-    /// This is a WPF wrapper of OxyPlot.ScatterWithErrorBarSeries
+    /// This is a WPF wrapper of OxyPlot.ScatterErrorSeries
     /// </summary>
-    public class ScatterWithErrorBarSeries : ScatterSeries
+    public class ScatterErrorSeries : ScatterSeries
     {
         /// <summary>
         /// Identifies the <see cref="DataFieldError"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DataFieldErrorProperty =
-            DependencyProperty.Register("DataFieldError", typeof(string), typeof(ScatterWithErrorBarSeries), new PropertyMetadata(null, DataChanged));
+            DependencyProperty.Register("DataFieldError", typeof(string), typeof(ScatterErrorSeries), new PropertyMetadata(null, DataChanged));
 
         /// <summary>
         /// Identifies the <see cref="ErrorBarColor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ErrorBarColorProperty =
-            DependencyProperty.Register("ErrorBarColor", typeof(Color), typeof(ScatterWithErrorBarSeries), new PropertyMetadata(Colors.Black, AppearanceChanged));
+            DependencyProperty.Register("ErrorBarColor", typeof(Color), typeof(ScatterErrorSeries), new PropertyMetadata(Colors.Black, AppearanceChanged));
 
         /// <summary>
         /// Identifies the <see cref="ErrorBarStopWidth"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ErrorBarStopWidthProperty =
-            DependencyProperty.Register("ErrorBarStopWidth", typeof(double), typeof(ScatterWithErrorBarSeries), new PropertyMetadata(4.0, AppearanceChanged));
+            DependencyProperty.Register("ErrorBarStopWidth", typeof(double), typeof(ScatterErrorSeries), new PropertyMetadata(4.0, AppearanceChanged));
 
         /// <summary>
         /// Identifies the <see cref="ErrorBarStrokeThickness"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ErrorBarStrokeThicknessProperty =
-            DependencyProperty.Register("ErrorBarStrokeThickness", typeof(double), typeof(ScatterWithErrorBarSeries), new PropertyMetadata(1.0, AppearanceChanged));
+            DependencyProperty.Register("ErrorBarStrokeThickness", typeof(double), typeof(ScatterErrorSeries), new PropertyMetadata(1.0, AppearanceChanged));
 
         /// <summary>
         /// Identifies the <see cref="AlwaysShowErrorBars"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty AlwaysShowErrorBarsProperty =
-            DependencyProperty.Register("AlwaysShowErrorBars", typeof(bool), typeof(ScatterWithErrorBarSeries), new PropertyMetadata(false, AppearanceChanged));
+            DependencyProperty.Register("AlwaysShowErrorBars", typeof(bool), typeof(ScatterErrorSeries), new PropertyMetadata(false, AppearanceChanged));
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ScatterWithErrorBarSeries"/> class.
+        /// Initializes a new instance of the <see cref="ScatterErrorSeries"/> class.
         /// </summary>
-        public ScatterWithErrorBarSeries()
+        public ScatterErrorSeries()
         {
-            this.InternalSeries = new OxyPlot.Series.ScatterWithErrorBarSeries();
+            this.InternalSeries = new OxyPlot.Series.ScatterErrorSeries();
         }
 
         /// <summary>
@@ -144,7 +144,7 @@ namespace OxyPlot.Wpf
         protected override void SynchronizeProperties(OxyPlot.Series.Series series)
         {
             base.SynchronizeProperties(series);
-            var s = (OxyPlot.Series.ScatterWithErrorBarSeries)series;
+            var s = (OxyPlot.Series.ScatterErrorSeries)series;
             s.DataFieldError = this.DataFieldError;
             s.ErrorBarColor = this.ErrorBarColor.ToOxyColor();
             s.ErrorBarStopWidth = this.ErrorBarStopWidth;
