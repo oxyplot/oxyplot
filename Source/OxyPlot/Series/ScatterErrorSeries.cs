@@ -47,7 +47,7 @@ namespace OxyPlot.Series
             this.ErrorBarColor = OxyColors.Black;
             this.ErrorBarStrokeThickness = 1;
             this.ErrorBarStopWidth = 4.0;
-            this.AlwaysShowErrorBars = false;
+            this.MinimumErrorSize = 1.5;
         }
 
         /// <summary>
@@ -83,13 +83,9 @@ namespace OxyPlot.Series
         public double ErrorBarStrokeThickness { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the error bars should always be displayed, regardless of their size. <br />
-        /// By default, the error bars are only displayed when they are bigger than 1.5x the cursor size.
+        /// Gets or sets the minimum size (relative to <see cref="ScatterSeries{T}.MarkerSize" />) of the error bars to be shown. 
         /// </summary>
-        /// <value>
-        /// <c>true</c> if the error bars should always be displayed; otherwise, <c>false</c>.
-        /// </value>
-        public bool AlwaysShowErrorBars { get; set; }
+        public double MinimumErrorSize { get; set; }
 
         /// <summary>
         /// Renders the series on the specified rendering context.
@@ -119,7 +115,7 @@ namespace OxyPlot.Series
                     var topErrorPoint = this.XAxis.Transform(point.X, point.Y - (point.Error * 0.5), this.YAxis);
                     var bottomErrorPoint = this.XAxis.Transform(point.X, point.Y + (point.Error * 0.5), this.YAxis);
 
-                    if (topErrorPoint.Y - bottomErrorPoint.Y > this.MarkerSize * 1.5 || this.AlwaysShowErrorBars)
+                    if (topErrorPoint.Y - bottomErrorPoint.Y > this.MarkerSize * this.MinimumErrorSize)
                     {
                         segments.Add(topErrorPoint);
                         segments.Add(bottomErrorPoint);

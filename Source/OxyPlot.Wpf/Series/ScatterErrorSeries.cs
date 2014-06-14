@@ -63,10 +63,10 @@ namespace OxyPlot.Wpf
             DependencyProperty.Register("ErrorBarStrokeThickness", typeof(double), typeof(ScatterErrorSeries), new PropertyMetadata(1.0, AppearanceChanged));
 
         /// <summary>
-        /// Identifies the <see cref="AlwaysShowErrorBars"/> dependency property.
+        /// Identifies the <see cref="MinimumErrorSize"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty AlwaysShowErrorBarsProperty =
-            DependencyProperty.Register("AlwaysShowErrorBars", typeof(bool), typeof(ScatterErrorSeries), new PropertyMetadata(false, AppearanceChanged));
+        public static readonly DependencyProperty MinimumErrorSizeProperty =
+            DependencyProperty.Register("MinimumErrorSize", typeof(double), typeof(ScatterErrorSeries), new PropertyMetadata(1.5, AppearanceChanged));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ScatterErrorSeries"/> class.
@@ -125,16 +125,12 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the error bars should always be displayed, regardless of their size. <br />
-        /// By default, the error bars are only displayed when they are bigger than 1.5x the cursor size.
+        /// Gets or sets the minimum size (relative to <see cref="ScatterSeries.MarkerSize" />) of the error bars to be shown. 
         /// </summary>
-        /// <value>
-        /// <c>true</c> if the error bars should always be displayed; otherwise, <c>false</c>.
-        /// </value>
-        public bool AlwaysShowErrorBars
+        public double MinimumErrorSize
         {
-            get { return (bool)this.GetValue(AlwaysShowErrorBarsProperty); }
-            set { this.SetValue(AlwaysShowErrorBarsProperty, value); }
+            get { return (double)this.GetValue(MinimumErrorSizeProperty); }
+            set { this.SetValue(MinimumErrorSizeProperty, value); }
         }
 
         /// <summary>
@@ -149,7 +145,7 @@ namespace OxyPlot.Wpf
             s.ErrorBarColor = this.ErrorBarColor.ToOxyColor();
             s.ErrorBarStopWidth = this.ErrorBarStopWidth;
             s.ErrorBarStrokeThickness = this.ErrorBarStrokeThickness;
-            s.AlwaysShowErrorBars = this.AlwaysShowErrorBars;
+            s.MinimumErrorSize = this.MinimumErrorSize;
         }
     }
 }
