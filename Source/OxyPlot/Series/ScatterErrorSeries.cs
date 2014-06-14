@@ -111,7 +111,7 @@ namespace OxyPlot.Series
             var clippingRectangle = this.GetClippingRect();
 
             var segments = new List<ScreenPoint>();
-            foreach (var point in this.Points)
+            foreach (var point in this.ActualPoints)
             {
                 if (point == null)
                 {
@@ -151,19 +151,7 @@ namespace OxyPlot.Series
                 }
             }
 
-            // clip the line segments with the clipping rectangle
-            for (int i = 0; i + 1 < segments.Count; i += 2)
-            {
-                rc.DrawClippedLine(
-                    clippingRectangle,
-                    new[] { segments[i], segments[i + 1] },
-                    2,
-                    this.GetSelectableColor(this.ErrorBarColor),
-                    this.ErrorBarStrokeThickness,
-                    null,
-                    OxyPenLineJoin.Bevel,
-                    true);
-            }
+            rc.DrawClippedLineSegments(clippingRectangle, segments, this.GetSelectableColor(this.ErrorBarColor), this.ErrorBarStrokeThickness, null, OxyPenLineJoin.Bevel, true);
         }
 
         /// <summary>
