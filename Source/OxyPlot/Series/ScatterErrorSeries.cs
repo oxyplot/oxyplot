@@ -37,7 +37,7 @@ namespace OxyPlot.Series
     /// <summary>
     ///     Represents a series for scatter plots with the possibility to display error bars.
     /// </summary>
-    public class ScatterErrorSeries : ScatterSeries
+    public class ScatterErrorSeries : ScatterSeries<ScatterErrorPoint>
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="ScatterErrorSeries" /> class.
@@ -109,13 +109,15 @@ namespace OxyPlot.Series
             var segments = new List<ScreenPoint>();
             foreach (var point in this.Points)
             {
-                var errorItem = point as ScatterErrorPoint;
-                double error = errorItem != null ? errorItem.Error : 0.0;
-
-                if (error > 0.0)
+                if (point == null)
                 {
-                    var topErrorPoint = this.XAxis.Transform(point.X, point.Y - (error * 0.5), this.YAxis);
-                    var bottomErrorPoint = this.XAxis.Transform(point.X, point.Y + (error * 0.5), this.YAxis);
+                    continue;
+                }
+
+                if (point.Error > 0.0)
+                {
+                    var topErrorPoint = this.XAxis.Transform(point.X, point.Y - (point.Error * 0.5), this.YAxis);
+                    var bottomErrorPoint = this.XAxis.Transform(point.X, point.Y + (point.Error * 0.5), this.YAxis);
 
                     if (topErrorPoint.Y - bottomErrorPoint.Y > this.MarkerSize * 1.5 || this.AlwaysShowErrorBars)
                     {
@@ -150,7 +152,7 @@ namespace OxyPlot.Series
         /// <param name="func">
         /// The function.
         /// </param>
-        public void SelectAll(Func<ScatterPoint, bool> func)
+        public void SelectAll(Func<ScatterErrorPoint, bool> func)
         {
             foreach (var dataPoint in this.Points.Where(func))
             {
@@ -159,83 +161,13 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Updates the data.
+        /// Defines the data fields used by the code that reflects on the <see cref="ItemsSeries.ItemsSource" />.
         /// </summary>
-        protected internal override void UpdateData()
+        /// <param name="filler">The list filler.</param>
+        protected override void DefineDataFields(ListFiller<ScatterErrorPoint> filler)
         {
-            if (this.ItemsSource == null)
-            {
-                return;
-            }
-
-            this.UpdateItemsSourcePoints();
-        }
-
-        /// <summary>
-        /// Updates the points from the <see cref="ItemsSeries.ItemsSource" />.
-        /// </summary>
-        private void UpdateItemsSourcePoints()
-        {
-            // Use the Mapping property to generate the points
-            if (this.Mapping != null)
-            {
-                this.ClearItemsSourcePoints();
-                foreach (var item in this.ItemsSource)
-                {
-                    this.ItemsSourcePoints.Add(this.Mapping(item));
-                }
-
-                return;
-            }
-
-            var sourceAsListOfScatterPoints = this.ItemsSource as List<ScatterPoint>;
-            if (sourceAsListOfScatterPoints != null)
-            {
-                this.ItemsSourcePoints = sourceAsListOfScatterPoints;
-                this.OwnsItemsSourcePoints = false;
-                return;
-            }
-
-            this.ClearItemsSourcePoints();
-
-            var sourceAsEnumerableScatterPoints = this.ItemsSource as IEnumerable<ScatterPoint>;
-            if (sourceAsEnumerableScatterPoints != null)
-            {
-                this.ItemsSourcePoints.AddRange(sourceAsEnumerableScatterPoints);
-                return;
-            }
-
-            // If DataFieldX or DataFieldY is not set, try to get the points from the ItemsSource
-            if (this.DataFieldX == null || this.DataFieldY == null)
-            {
-                foreach (var item in this.ItemsSource)
-                {
-                    var point = item as ScatterPoint;
-                    if (point != null)
-                    {
-                        this.ItemsSourcePoints.Add(point);
-                        continue;
-                    }
-
-                    var idpp = item as IScatterPointProvider;
-                    if (idpp != null)
-                    {
-                        this.ItemsSourcePoints.Add(idpp.GetScatterPoint());
-                    }
-                }
-
-                return;
-            }
-
-            // Use reflection to add scatter points
-            var filler = new ListFiller<ScatterErrorPoint>();
-            filler.Add(this.DataFieldX, (item, value) => item.X = Convert.ToDouble(value));
-            filler.Add(this.DataFieldY, (item, value) => item.Y = Convert.ToDouble(value));
-            filler.Add(this.DataFieldSize, (item, value) => item.Size = Convert.ToDouble(value));
-            filler.Add(this.DataFieldValue, (item, value) => item.Value = Convert.ToDouble(value));
-            filler.Add(this.DataFieldTag, (item, value) => item.Tag = value);
+            base.DefineDataFields(filler);
             filler.Add(this.DataFieldError, (item, value) => item.Error = Convert.ToDouble(value));
-            filler.Fill(this.ItemsSourcePoints, this.ItemsSource);
         }
     }
 }
