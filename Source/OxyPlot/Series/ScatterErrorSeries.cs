@@ -47,7 +47,7 @@ namespace OxyPlot.Series
             this.ErrorBarColor = OxyColors.Black;
             this.ErrorBarStrokeThickness = 1;
             this.ErrorBarStopWidth = 4.0;
-            this.MinimumErrorSize = 1.5;
+            this.MinimumErrorSize = 0;
         }
 
         /// <summary>
