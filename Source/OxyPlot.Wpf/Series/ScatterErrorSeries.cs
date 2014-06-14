@@ -72,7 +72,7 @@ namespace OxyPlot.Wpf
         /// Identifies the <see cref="MinimumErrorSize"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MinimumErrorSizeProperty =
-            DependencyProperty.Register("MinimumErrorSize", typeof(double), typeof(ScatterErrorSeries), new PropertyMetadata(1.5, AppearanceChanged));
+            DependencyProperty.Register("MinimumErrorSize", typeof(double), typeof(ScatterErrorSeries), new PropertyMetadata(0d, AppearanceChanged));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ScatterErrorSeries"/> class.
