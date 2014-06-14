@@ -44,17 +44,17 @@ namespace SimpleDemo
         public MainViewModel()
         {
             // Create the plot model
-            var tmp = new PlotModel("Simple example", "using OxyPlot");
+            var tmp = new PlotModel { Title = "Simple example", Subtitle = "using OxyPlot" };
 
             // Create two line series (markers are hidden by default)
-            var series1 = new LineSeries("Series 1") { MarkerType = MarkerType.Circle };
+            var series1 = new LineSeries { Title = "Series 1", MarkerType = MarkerType.Circle };
             series1.Points.Add(new DataPoint(0, 0));
             series1.Points.Add(new DataPoint(10, 18));
             series1.Points.Add(new DataPoint(20, 12));
             series1.Points.Add(new DataPoint(30, 8));
             series1.Points.Add(new DataPoint(40, 15));
 
-            var series2 = new LineSeries("Series 2") { MarkerType = MarkerType.Square };
+            var series2 = new LineSeries { Title = "Series 2", MarkerType = MarkerType.Square };
             series2.Points.Add(new DataPoint(0, 4));
             series2.Points.Add(new DataPoint(10, 12));
             series2.Points.Add(new DataPoint(20, 16));

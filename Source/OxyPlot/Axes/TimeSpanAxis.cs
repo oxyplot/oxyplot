@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents an axis presenting <see cref="System.TimeSpan"/> values.
+//   Represents an axis presenting <see cref="System.TimeSpan" /> values.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -52,11 +52,12 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Initializes a new instance of the <see cref="TimeSpanAxis" /> class.
         /// </summary>
-        /// <param name="pos">The position.</param>
+        /// <param name="position">The position of the axis.</param>
         /// <param name="title">The axis title.</param>
         /// <param name="format">The string format for the axis values.</param>
-        public TimeSpanAxis(AxisPosition pos, string title = null, string format = "m:ss")
-            : base(pos, title)
+        [Obsolete]
+        public TimeSpanAxis(AxisPosition position, string title = null, string format = "m:ss")
+            : base(position, title)
         {
             this.StringFormat = format;
         }
@@ -64,18 +65,19 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Initializes a new instance of the <see cref="TimeSpanAxis" /> class.
         /// </summary>
-        /// <param name="pos">The position.</param>
-        /// <param name="min">The min.</param>
-        /// <param name="max">The max.</param>
+        /// <param name="position">The position of the axis.</param>
+        /// <param name="minimum">The minimum value.</param>
+        /// <param name="maximum">The maximum value.</param>
         /// <param name="title">The axis title.</param>
         /// <param name="format">The string format for the axis values.</param>
+        [Obsolete]
         public TimeSpanAxis(
-            AxisPosition pos = AxisPosition.Bottom,
-            double min = double.NaN,
-            double max = double.NaN,
+            AxisPosition position,
+            double minimum,
+            double maximum = double.NaN,
             string title = null,
             string format = "m:ss")
-            : base(pos, min, max, title)
+            : base(position, minimum, maximum, title)
         {
             this.StringFormat = format;
         }

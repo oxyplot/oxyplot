@@ -24,14 +24,14 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents encoder options for the <see cref="BmpEncoder"/>.
+//   Represents options for the <see cref="BmpEncoder" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     /// <summary>
-    /// Represents encoder options for the <see cref="BmpEncoder" />.
+    /// Represents options for the <see cref="BmpEncoder" />.
     /// </summary>
     public class BmpEncoderOptions : ImageEncoderOptions
     {

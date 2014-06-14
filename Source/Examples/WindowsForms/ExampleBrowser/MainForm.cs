@@ -70,7 +70,6 @@ namespace ExampleBrowser
         {
             this.plot1.Model = this.vm.SelectedExample != null ? this.vm.SelectedExample.PlotModel : null;
             this.plot1.Controller = this.vm.SelectedExample != null ? this.vm.SelectedExample.PlotController : null;
-            this.plot1.BackColor = this.vm.PlotBackground;
         }
     }
 }

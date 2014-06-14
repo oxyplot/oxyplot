@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Provides functionality to generate C# code for the specified <see cref="PlotModel"/>.
+//   Provides functionality to generate C# code for the specified <see cref="PlotModel" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

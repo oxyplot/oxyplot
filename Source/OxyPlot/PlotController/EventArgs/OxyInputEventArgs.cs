@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Provides a base class for classes that contain event data for input events.
+//   Provides an abstract base class for classes that contain event data for input events.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -33,7 +33,7 @@ namespace OxyPlot
     using System;
 
     /// <summary>
-    /// Provides a base class for classes that contain event data for input events.
+    /// Provides an abstract base class for classes that contain event data for input events.
     /// </summary>
     public abstract class OxyInputEventArgs : EventArgs
     {

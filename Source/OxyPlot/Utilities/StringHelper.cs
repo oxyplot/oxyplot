@@ -117,30 +117,5 @@ namespace OxyPlot
 
             return validFileName + extension;
         }
-
-        /// <summary>
-        /// Creates a string from a collection of items.
-        /// </summary>
-        /// <param name="provider">The provider.</param>
-        /// <param name="items">The items.</param>
-        /// <param name="formatstring">The format string to apply to each item.</param>
-        /// <param name="separator">The separator.</param>
-        /// <returns>The collection as a string.</returns>
-        public static object CreateList(
-            IFormatProvider provider, IEnumerable items, string formatstring, string separator = ", ")
-        {
-            var sb = new StringBuilder();
-            foreach (var item in items)
-            {
-                if (sb.Length > 0)
-                {
-                    sb.Append(separator);
-                }
-
-                sb.Append(string.Format(provider, formatstring, item));
-            }
-
-            return sb.ToString();
-        }
     }
 }

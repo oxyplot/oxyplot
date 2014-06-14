@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   The string extensions.
+//   Provides extension methods for <see cref="string"/> objects.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -34,7 +34,7 @@ namespace OxyPlot.Reporting
     using System.Text;
 
     /// <summary>
-    /// The string extensions.
+    /// Provides extension methods for <see cref="string"/> objects.
     /// </summary>
     public static class StringExtensions
     {

@@ -67,8 +67,7 @@ namespace SparklineDemo
                             {
                                 PlotMargins = new OxyThickness(0),
                                 Padding = new OxyThickness(0),
-                                PlotAreaBorderThickness = 0,
-                                AutoAdjustPlotMargins = false
+                                PlotAreaBorderThickness = new OxyThickness(0)
                             };
             var ls = new LineSeries
                          {
@@ -79,7 +78,7 @@ namespace SparklineDemo
                          };
             model.Series.Add(ls);
             model.Axes.Add(new DateTimeAxis { IsAxisVisible = false });
-            model.Axes.Add(new LinearAxis(AxisPosition.Left) { IsAxisVisible = false });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, IsAxisVisible = false });
             return model;
         }
 

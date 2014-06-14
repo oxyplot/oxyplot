@@ -24,14 +24,14 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Specifies the horizontal alignment.
+//   Defines horizontal alignment.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     /// <summary>
-    /// Specifies the horizontal alignment.
+    /// Defines horizontal alignment.
     /// </summary>
     public enum HorizontalAlignment
     {

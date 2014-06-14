@@ -71,8 +71,8 @@ namespace OxyPlot.Pdf.Tests
             var s = File.Create(FileName);
             var r = new Report();
             r.AddHeader(1, "Test");
-            r.AddPlot(new PlotModel("Plot 1"), null, 600, 400);
-            r.AddPlot(new PlotModel("Plot 2"), null, 600, 400);
+            r.AddPlot(new PlotModel { Title = "Plot 1" }, null, 600, 400);
+            r.AddPlot(new PlotModel { Title = "Plot 2" }, null, 600, 400);
 
             using (var w = new PdfReportWriter(s))
             {
@@ -86,8 +86,8 @@ namespace OxyPlot.Pdf.Tests
         {
             var r = new Report();
             r.AddHeader(1, "Test");
-            r.AddPlot(new PlotModel("Plot 1"), "First plot", 600, 400);
-            r.AddPlot(new PlotModel("Plot 2"), "Second plot", 600, 400);
+            r.AddPlot(new PlotModel { Title = "Plot 1" }, "First plot", 600, 400);
+            r.AddPlot(new PlotModel { Title = "Plot 2" }, "Second plot", 600, 400);
             return r;
         }
     }

@@ -25,10 +25,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-
 namespace BindingDemo
 {
+    using System;
+
     public class Measurement
     {
         public double Time { get; set; }

@@ -55,6 +55,7 @@ namespace OxyPlot.Axes
         /// </summary>
         /// <param name="pos">The position.</param>
         /// <param name="title">The title.</param>
+        [Obsolete]
         public LogarithmicAxis(AxisPosition pos, string title)
             : this()
         {
@@ -66,11 +67,11 @@ namespace OxyPlot.Axes
         /// Initializes a new instance of the <see cref="LogarithmicAxis" /> class.
         /// </summary>
         /// <param name="position">The position.</param>
-        /// <param name="minimum">The minimum.</param>
-        /// <param name="maximum">The maximum.</param>
         /// <param name="title">The title.</param>
-        public LogarithmicAxis(
-            AxisPosition position, double minimum = double.NaN, double maximum = double.NaN, string title = null)
+        /// <param name="minimum">The minimum value.</param>
+        /// <param name="maximum">The maximum value.</param>
+        [Obsolete]
+        public LogarithmicAxis(AxisPosition position, string title = null, double minimum = double.NaN, double maximum = double.NaN)
             : this()
         {
             this.Position = position;
@@ -205,16 +206,6 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Determines whether the specified value is valid.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns><c>true</c> if the specified value is valid; otherwise, <c>false</c>.</returns>
-        public override bool IsValidValue(double value)
-        {
-            return value > 0 && base.IsValidValue(value);
-        }
-
-        /// <summary>
         /// Determines whether the axis is used for X/Y values.
         /// </summary>
         /// <returns><c>true</c> if it is an XY axis; otherwise, <c>false</c> .</returns>
@@ -320,7 +311,7 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Updates the <see cref="ActualMaximum" /> and <see cref="ActualMinimum" /> values.
+        /// Updates the <see cref="Axis.ActualMaximum" /> and <see cref="Axis.ActualMinimum" /> values.
         /// </summary>
         /// <remarks>
         /// If the user has zoomed/panned the axis, the internal ViewMaximum/ViewMinimum

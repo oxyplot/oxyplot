@@ -32,6 +32,7 @@ namespace ExampleLibrary
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using OxyPlot;
     using OxyPlot.Annotations;
@@ -44,28 +45,85 @@ namespace ExampleLibrary
         [Example("Random points")]
         public static PlotModel RandomScatter()
         {
-            return RandomScatter(31000, 8);
+            return RandomScatter(32768, 0);
         }
 
-        public static PlotModel CreateRandomScatterSeriesWithColorAxisPlotModel(int n, OxyPalette palette, MarkerType markerType, AxisPosition colorAxisPosition, OxyColor highColor, OxyColor lowColor)
+        [Example("Random points (BinSize=2)")]
+        public static PlotModel RandomScatter2()
         {
-            var model = new PlotModel(string.Format("ScatterSeries (n={0})", n)) { Background = OxyColors.LightGray };
-            model.Axes.Add(new LinearColorAxis { Position = colorAxisPosition, Palette = palette, Minimum = -1, Maximum = 1, HighColor = highColor, LowColor = lowColor });
+            return RandomScatter(32768, 2);
+        }
 
+        [Example("Random points (BinSize=4)")]
+        public static PlotModel RandomScatter4()
+        {
+            return RandomScatter(32768, 4);
+        }
+
+        [Example("Random points (BinSize=6)")]
+        public static PlotModel RandomScatter6()
+        {
+            return RandomScatter(32768, 6);
+        }
+
+        [Example("Random points (BinSize=8)")]
+        public static PlotModel RandomScatter8()
+        {
+            return RandomScatter(32768, 8);
+        }
+
+        [Example("Random points (BinSize=10)")]
+        public static PlotModel RandomScatter10()
+        {
+            return RandomScatter(32768, 10);
+        }
+
+        [Example("Two ScatterSeries")]
+        public static PlotModel TwoScatterSeries()
+        {
+            var model = new PlotModel { Title = "Two ScatterSeries (with and without values)", Subtitle = "With values (squares), without values (triangles)" };
+            var colorAxis = new LinearColorAxis { Position = AxisPosition.Right, Key = "ColorAxis", Palette = OxyPalettes.Jet(30), Minimum = -1, Maximum = 1 };
+            model.Axes.Add(colorAxis);
+            model.Series.Add(CreateRandomScatterSeries(50, MarkerType.Triangle, false, false, null));
+            model.Series.Add(CreateRandomScatterSeries(50, MarkerType.Square, false, true, colorAxis));
+            return model;
+        }
+
+        private static PlotModel CreateRandomScatterSeriesWithColorAxisPlotModel(int n, OxyPalette palette, MarkerType markerType, AxisPosition colorAxisPosition, OxyColor highColor, OxyColor lowColor)
+        {
+            var model = new PlotModel { Title = string.Format("ScatterSeries (n={0})", n), Background = OxyColors.LightGray };
+            var colorAxis = new LinearColorAxis { Position = colorAxisPosition, Palette = palette, Minimum = -1, Maximum = 1, HighColor = highColor, LowColor = lowColor };
+            model.Axes.Add(colorAxis);
+            model.Series.Add(CreateRandomScatterSeries(n, markerType, false, true, colorAxis));
+            return model;
+        }
+
+        private static ScatterSeries CreateRandomScatterSeries(int n, MarkerType markerType, bool setSize, bool setValue, LinearColorAxis colorAxis)
+        {
             var s1 = new ScatterSeries
             {
                 MarkerType = markerType,
                 MarkerSize = 6,
+                ColorAxisKey = colorAxis != null ? colorAxis.Key : "nix"
             };
-            var random = new Random();
+            var random = new Random(13);
             for (int i = 0; i < n; i++)
             {
-                double x = random.NextDouble() * 2.2 - 1.1;
-                s1.Points.Add(new ScatterPoint(x, random.NextDouble()) { Value = x });
+                var p = new ScatterPoint((random.NextDouble() * 2.2) - 1.1, random.NextDouble());
+                if (setSize)
+                {
+                    p.Size = (random.NextDouble() * 5) + 5;
+                }
+
+                if (setValue)
+                {
+                    p.Value = (random.NextDouble() * 2.2) - 1.1;
+                }
+
+                s1.Points.Add(p);
             }
 
-            model.Series.Add(s1);
-            return model;
+            return s1;
         }
 
         [Example("Random points with random size")]
@@ -76,19 +134,15 @@ namespace ExampleLibrary
 
         public static PlotModel RandomSize(int n, int binsize)
         {
-            var model = new PlotModel(string.Format("ScatterSeries with random MarkerSize (n={0})", n), "BinSize = " + binsize);
+            var model = new PlotModel { Title = string.Format("ScatterSeries with random MarkerSize (n={0})", n), Subtitle = "BinSize = " + binsize };
 
-            var s1 = new ScatterSeries()
-            {
-                Title = "Series 1",
-                MarkerStrokeThickness = 0,
-                BinSize = binsize
-            };
-            var random = new Random();
+            var s1 = new ScatterSeries { Title = "Series 1", MarkerStrokeThickness = 0, BinSize = binsize };
+            var random = new Random(13);
             for (int i = 0; i < n; i++)
             {
-                s1.Points.Add(new ScatterPoint(random.NextDouble(), random.NextDouble(), 4 + 10 * random.NextDouble()));
+                s1.Points.Add(new ScatterPoint(random.NextDouble(), random.NextDouble(), 4 + (10 * random.NextDouble())));
             }
+
             model.Series.Add(s1);
             return model;
         }
@@ -97,19 +151,20 @@ namespace ExampleLibrary
         public static PlotModel RandomWithFit()
         {
             const int n = 20;
-            var model = new PlotModel(string.Format("Random data (n={0})", n)) { LegendPosition = LegendPosition.LeftTop };
+            var model = new PlotModel { Title = string.Format("Random data (n={0})", n), LegendPosition = LegendPosition.LeftTop };
 
             var s1 = new ScatterSeries { Title = "Measurements" };
-            var random = new Random();
+            var random = new Random(7);
             double x = 0;
             double y = 0;
             for (int i = 0; i < n; i++)
             {
-                x += 2 + random.NextDouble() * 10;
+                x += 2 + (random.NextDouble() * 10);
                 y += 1 + random.NextDouble();
                 var p = new ScatterPoint(x, y);
                 s1.Points.Add(p);
             }
+
             model.Series.Add(s1);
             double a, b;
             LeastSquaresFit(s1.Points, out a, out b);
@@ -123,7 +178,7 @@ namespace ExampleLibrary
         /// <param name="points">The points.</param>
         /// <param name="a">The slope.</param>
         /// <param name="b">The intercept.</param>
-        public static void LeastSquaresFit(IEnumerable<IDataPoint> points, out double a, out double b)
+        public static void LeastSquaresFit(IEnumerable<ScatterPoint> points, out double a, out double b)
         {
             // http://en.wikipedia.org/wiki/Least_squares
             // http://mathworld.wolfram.com/LeastSquaresFitting.html
@@ -142,35 +197,16 @@ namespace ExampleLibrary
                 Sxx += p.X * p.X;
                 m++;
             }
+
             double d = Sx * Sx - m * Sxx;
             a = 1 / d * (Sx * Sy - m * Sxy);
             b = 1 / d * (Sx * Sxy - Sxx * Sy);
         }
 
-        [Example("Scatter plot using a LineSeries with markers only")]
-        public static PlotModel MarkersOnly()
-        {
-            return MarkersOnly(31000);
-        }
-
-        public static PlotModel MarkersOnly(int n)
-        {
-            var model = new PlotModel(string.Format("LineSeries with markers only (n={0})", n));
-
-            var s1 = new LineSeries("Series 1") { StrokeThickness = 0, MarkerType = MarkerType.Square, MarkerFill = OxyColors.Blue, MarkerStrokeThickness = 0 };
-            var random = new Random();
-            for (int i = 0; i < n; i++)
-            {
-                s1.Points.Add(new DataPoint(random.NextDouble(), random.NextDouble()));
-            }
-            model.Series.Add(s1);
-            return model;
-        }
-
         [Example("Marker types")]
         public static PlotModel MarkerTypes()
         {
-            var model = new PlotModel("Marker types");
+            var model = new PlotModel { Title = "Marker types" };
             var r = new Random(12345);
             model.Series.Add(CreateRandomScatterSeries(r, 10, "Circle", MarkerType.Circle));
             model.Series.Add(CreateRandomScatterSeries(r, 10, "Cross", MarkerType.Cross));
@@ -182,38 +218,48 @@ namespace ExampleLibrary
             return model;
         }
 
-        [Example("ScatterSeries defined by Points collection")]
+        [Example("ScatterSeries.Points")]
         public static PlotModel DataPoints()
         {
-            var model = new PlotModel("Scatter plot of DataPoints");
-            model.Series.Add(new ScatterSeries
-            {
-                Points = CreateRandomPoints(100)
-            });
+            var model = new PlotModel { Title = "ScatterSeries (n=1000)", Subtitle = "The scatter points are added to the Points collection." };
+            var series = new ScatterSeries();
+            series.Points.AddRange(CreateRandomScatterPoints(1000));
+            model.Series.Add(series);
             return model;
         }
 
-        [Example("ScatterSeries defined by ItemsSource")]
+        [Example("ScatterSeries.ItemsSource")]
         public static PlotModel FromItemsSource()
         {
-            var model = new PlotModel("Scatter plot from ItemsSource");
+            var model = new PlotModel { Title = "ScatterSeries (n=1000)", Subtitle = "The scatter points are defined in the ItemsSource property." };
             model.Series.Add(new ScatterSeries
             {
-                ItemsSource = CreateRandomPoints(100),
-                DataFieldX = "X",
-                DataFieldY = "Y"
+                ItemsSource = CreateRandomScatterPoints(1000),
             });
             return model;
         }
 
-        [Example("ScatterSeries defined by Mapping")]
+        [Example("ScatterSeries.ItemsSource + Mapping")]
         public static PlotModel FromMapping()
         {
-            var model = new PlotModel("Scatter plot from Mapping");
+            var model = new PlotModel { Title = "ScatterSeries (n=1000)", Subtitle = "The scatter points are defined by a mapping from the ItemsSource." };
             model.Series.Add(new ScatterSeries
             {
-                ItemsSource = CreateRandomPoints(100),
-                Mapping = item => new ScatterPoint(((IDataPoint)item).X, ((IDataPoint)item).Y)
+                ItemsSource = CreateRandomDataPoints(1000),
+                Mapping = item => new ScatterPoint(((DataPoint)item).X, ((DataPoint)item).Y)
+            });
+            return model;
+        }
+
+        [Example("ScatterSeries.ItemsSource + reflection")]
+        public static PlotModel FromItemsSourceReflection()
+        {
+            var model = new PlotModel { Title = "ScatterSeries (n=1000)", Subtitle = "The scatter points are defined by reflection from the ItemsSource." };
+            model.Series.Add(new ScatterSeries
+            {
+                ItemsSource = CreateRandomDataPoints(1000),
+                DataFieldX = "X",
+                DataFieldY = "Y"
             });
             return model;
         }
@@ -424,17 +470,21 @@ namespace ExampleLibrary
         [Example("TrackerFormatString")]
         public static PlotModel TrackerFormatString()
         {
-            var model = new PlotModel("TrackerFormatString");
+            var model = new PlotModel { Title = "TrackerFormatString" };
 
-            var s1 = new ScatterSeries { TrackerFormatString = "{Sum:0.0}" };
-            s1.Points.Add(new MyPoint { X = 10, Y = 40 });
-            s1.Points.Add(new MyPoint { X = 40, Y = 20 });
-            s1.Points.Add(new MyPoint { X = 60, Y = 30 });
+            var s1 = new ScatterSeries { TrackerFormatString = "{Sum:0.0}", DataFieldX = "X", DataFieldY = "Y" };
+            var myPoints = new List<MyPoint>
+            {
+                new MyPoint { X = 10, Y = 40 },
+                new MyPoint { X = 40, Y = 20 },
+                new MyPoint { X = 60, Y = 30 }
+            };
+            s1.ItemsSource = myPoints;
             model.Series.Add(s1);
             return model;
         }
 
-        public struct MyPoint : IDataPoint
+        public struct MyPoint
         {
             public double X { get; set; }
 
@@ -452,7 +502,7 @@ namespace ExampleLibrary
 
         private static PlotModel RandomScatter(int n, int binSize)
         {
-            var model = new PlotModel(string.Format("ScatterSeries (n={0})", n), "BinSize = " + binSize);
+            var model = new PlotModel { Title = string.Format("ScatterSeries (n={0})", n), Subtitle = binSize > 0 ? "BinSize = " + binSize : "No 'binning'" };
 
             var s1 = new ScatterSeries()
             {
@@ -488,26 +538,32 @@ namespace ExampleLibrary
 
         private static ScatterSeries CreateRandomScatterSeries2(int n, string title, MarkerType markerType)
         {
-            return new ScatterSeries
+            var series = new ScatterSeries
             {
                 Title = title,
                 MarkerType = markerType,
                 MarkerStroke = OxyColors.Black,
                 MarkerStrokeThickness = 1.0,
-                Points = CreateRandomPoints(n)
             };
+            series.Points.AddRange(CreateRandomScatterPoints(n));
+            return series;
         }
 
-        private static IList<IDataPoint> CreateRandomPoints(int n)
+        private static List<DataPoint> CreateRandomDataPoints(int n)
+        {
+            return CreateRandomScatterPoints(n).Select(sp => new DataPoint(sp.X, sp.Y)).ToList();
+        }
+
+        private static List<ScatterPoint> CreateRandomScatterPoints(int n)
         {
             var r = new Random(12345);
 
-            var points = new List<IDataPoint>();
+            var points = new List<ScatterPoint>();
             for (int i = 0; i < n; i++)
             {
                 double x = r.NextDouble() * 10;
                 double y = r.NextDouble() * 10;
-                var p = new DataPoint(x, y);
+                var p = new ScatterPoint(x, y);
                 points.Add(p);
             }
 

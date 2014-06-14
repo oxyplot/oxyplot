@@ -33,6 +33,8 @@ namespace ColorBindingDemo
 
     using WpfExamples;
 
+    using ICommand = System.Windows.Input.ICommand;
+
     public class MainViewModel : Observable
     {
         private OxyColor background;

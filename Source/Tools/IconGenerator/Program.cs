@@ -289,15 +289,14 @@ namespace IconGenerator
         {
             var pm = new PlotModel
                          {
-                             AutoAdjustPlotMargins = false,
                              Padding = new OxyThickness(size * 0.02),
                              PlotMargins = new OxyThickness(size * 0.05, size * 0.05, size * 0.07, size * 0.07)
                          };
-            pm.Axes.Add(new LinearAxis(AxisPosition.Left) { TextColor = OxyColors.Transparent });
-            pm.Axes.Add(new LinearAxis(AxisPosition.Bottom) { TextColor = OxyColors.Transparent });
+            pm.Axes.Add(new LinearAxis { Position = AxisPosition.Left, TextColor = OxyColors.Transparent });
+            pm.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, TextColor = OxyColors.Transparent });
             this.AddPeaks(pm);
-            pm.Update();
-            pm.Render(rc, size, size);
+            ((IPlotModel)pm).Update(true);
+            ((IPlotModel)pm).Render(rc, size, size);
         }
 
         /// <summary>

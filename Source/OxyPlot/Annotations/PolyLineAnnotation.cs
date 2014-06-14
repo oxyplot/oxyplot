@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PolyLineAnnotation.cs" company="OxyPlot">
+// <copyright file="PolylineAnnotation.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 OxyPlot contributors
@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents a polyline annotation.
+//   Represents an annotation that shows a polyline.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -34,15 +34,26 @@ namespace OxyPlot.Annotations
     using System.Linq;
 
     /// <summary>
-    /// Represents a polyline annotation.
+    /// Represents an annotation that shows a polyline.
     /// </summary>
     public class PolylineAnnotation : PathAnnotation
     {
         /// <summary>
-        /// Gets or sets the points.
+        /// The points.
+        /// </summary>
+        private readonly List<DataPoint> points = new List<DataPoint>();
+
+        /// <summary>
+        /// Gets the points.
         /// </summary>
         /// <value>The points.</value>
-        public IList<IDataPoint> Points { get; set; }
+        public List<DataPoint> Points
+        {
+            get
+            {
+                return this.points;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the minimum length of the segment.

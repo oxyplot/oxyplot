@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Specifies the set of modifier keys.
+//   Defines the set of modifier keys.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -33,7 +33,7 @@ namespace OxyPlot
     using System;
 
     /// <summary>
-    /// Specifies the set of modifier keys.
+    /// Defines the set of modifier keys.
     /// </summary>
     [Flags]
     public enum OxyModifierKeys

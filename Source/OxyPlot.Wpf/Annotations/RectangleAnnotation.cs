@@ -31,40 +31,12 @@
 namespace OxyPlot.Wpf
 {
     using System.Windows;
-    using System.Windows.Media;
 
     /// <summary>
     /// This is a WPF wrapper of OxyPlot.RectangleAnnotation
     /// </summary>
-    public class RectangleAnnotation : TextualAnnotation
+    public class RectangleAnnotation : ShapeAnnotation
     {
-        /// <summary>
-        /// Identifies the <see cref="Fill"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty FillProperty = DependencyProperty.Register(
-            "Fill",
-            typeof(Color),
-            typeof(RectangleAnnotation),
-            new PropertyMetadata(Colors.LightBlue, AppearanceChanged));
-
-        /// <summary>
-        /// Identifies the <see cref="Stroke"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(
-            "Stroke",
-            typeof(Color),
-            typeof(RectangleAnnotation),
-            new PropertyMetadata(Colors.Black, AppearanceChanged));
-
-        /// <summary>
-        /// Identifies the <see cref="StrokeThickness"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty StrokeThicknessProperty = DependencyProperty.Register(
-            "StrokeThickness",
-            typeof(double),
-            typeof(RectangleAnnotation),
-            new PropertyMetadata(0.0, AppearanceChanged));
-
         /// <summary>
         /// Identifies the <see cref="MaximumX"/> dependency property.
         /// </summary>
@@ -90,10 +62,12 @@ namespace OxyPlot.Wpf
             "MinimumY", typeof(double), typeof(RectangleAnnotation), new PropertyMetadata(double.MinValue, DataChanged));
 
         /// <summary>
-        /// Identifies the <see cref="TextRotation"/> dependency property.
+        /// Initializes static members of the <see cref="RectangleAnnotation"/> class.
         /// </summary>
-        public static readonly DependencyProperty TextRotationProperty = DependencyProperty.Register(
-            "TextRotation", typeof(double), typeof(RectangleAnnotation), new UIPropertyMetadata(0.0));
+        static RectangleAnnotation()
+        {
+            TextColorProperty.OverrideMetadata(typeof(RectangleAnnotation), new FrameworkPropertyMetadata(MoreColors.Automatic, AppearanceChanged));
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RectangleAnnotation" /> class.
@@ -101,54 +75,6 @@ namespace OxyPlot.Wpf
         public RectangleAnnotation()
         {
             this.InternalAnnotation = new Annotations.RectangleAnnotation();
-        }
-
-        /// <summary>
-        /// Gets or sets the fill color.
-        /// </summary>
-        public Color Fill
-        {
-            get
-            {
-                return (Color)this.GetValue(FillProperty);
-            }
-
-            set
-            {
-                this.SetValue(FillProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the stroke color.
-        /// </summary>
-        public Color Stroke
-        {
-            get
-            {
-                return (Color)this.GetValue(StrokeProperty);
-            }
-
-            set
-            {
-                this.SetValue(StrokeProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the stroke thickness.
-        /// </summary>
-        public double StrokeThickness
-        {
-            get
-            {
-                return (double)this.GetValue(StrokeThicknessProperty);
-            }
-
-            set
-            {
-                this.SetValue(StrokeThicknessProperty, value);
-            }
         }
 
         /// <summary>
@@ -216,23 +142,6 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the text rotation (degrees).
-        /// </summary>
-        /// <value>The text rotation in degrees.</value>
-        public double TextRotation
-        {
-            get
-            {
-                return (double)this.GetValue(TextRotationProperty);
-            }
-
-            set
-            {
-                this.SetValue(TextRotationProperty, value);
-            }
-        }
-
-        /// <summary>
         /// Creates the internal annotation object.
         /// </summary>
         /// <returns>The annotation.</returns>
@@ -250,15 +159,10 @@ namespace OxyPlot.Wpf
             base.SynchronizeProperties();
             var a = (Annotations.RectangleAnnotation)this.InternalAnnotation;
 
-            a.Fill = this.Fill.ToOxyColor();
-            a.Stroke = this.Stroke.ToOxyColor();
-            a.StrokeThickness = this.StrokeThickness;
-
             a.MinimumX = this.MinimumX;
             a.MaximumX = this.MaximumX;
             a.MinimumY = this.MinimumY;
             a.MaximumY = this.MaximumY;
-            a.TextRotation = this.TextRotation;
         }
     }
 }

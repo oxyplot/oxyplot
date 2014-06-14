@@ -36,6 +36,8 @@ namespace ExampleLibrary
     using System.IO;
     using System.Reflection;
     using System.Threading;
+    using System.Xml;
+    using System.Xml.Serialization;
 
     using OxyPlot;
     using OxyPlot.Annotations;
@@ -71,21 +73,23 @@ namespace ExampleLibrary
             Func<double, double> exact,
             Func<double, double, double> f)
         {
-            var model = new PlotModel(title, subtitle)
+            var model = new PlotModel
                             {
+                                Title = title,
+                                Subtitle = subtitle,
                                 LegendPosition = LegendPosition.BottomCenter,
                                 LegendPlacement = LegendPlacement.Outside,
                                 LegendOrientation = LegendOrientation.Horizontal
                             };
             model.Series.Add(new FunctionSeries(exact, 0, 4, 100) { Title = "Exact solution", StrokeThickness = 5 });
-
-            model.Series.Add(
-                new LineSeries("Euler, h=0.25")
-                    {
-                        MarkerType = MarkerType.Circle,
-                        MarkerFill = OxyColors.Black,
-                        Points = Euler(f, t0, y0, 4, 0.25)
-                    });
+            var eulerSeries = new LineSeries
+            {
+                Title = "Euler, h=0.25",
+                MarkerType = MarkerType.Circle,
+                MarkerFill = OxyColors.Black,
+            };
+            eulerSeries.Points.AddRange(Euler(f, t0, y0, 4, 0.25));
+            model.Series.Add(eulerSeries);
 
             //model.Series.Add(new LineSeries("Euler, h=1")
             //    {
@@ -93,30 +97,32 @@ namespace ExampleLibrary
             //        MarkerFill = OxyColors.Black,
             //        Points = Euler(f, t0, y0, 4, 1)
             //    });
+            var heunSeries = new LineSeries
+            {
+                Title = "Heun, h=0.25",
+                MarkerType = MarkerType.Circle,
+                MarkerFill = OxyColors.Black,
+            };
+            heunSeries.Points.AddRange(Heun(f, t0, y0, 4, 0.25));
+            model.Series.Add(heunSeries);
 
-            model.Series.Add(
-                new LineSeries("Heun, h=0.25")
-                    {
-                        MarkerType = MarkerType.Circle,
-                        MarkerFill = OxyColors.Black,
-                        Points = Heun(f, t0, y0, 4, 0.25)
-                    });
+            var midpointSeries = new LineSeries
+            {
+                Title = "Midpoint, h=0.25",
+                MarkerType = MarkerType.Circle,
+                MarkerFill = OxyColors.Black,
+            };
+            midpointSeries.Points.AddRange(Midpoint(f, t0, y0, 4, 0.25));
+            model.Series.Add(midpointSeries);
 
-            model.Series.Add(
-                new LineSeries("Midpoint, h=0.25")
-                    {
-                        MarkerType = MarkerType.Circle,
-                        MarkerFill = OxyColors.Black,
-                        Points = Midpoint(f, t0, y0, 4, 0.25)
-                    });
-
-            model.Series.Add(
-                new LineSeries("RK4, h=0.25")
-                    {
-                        MarkerType = MarkerType.Circle,
-                        MarkerFill = OxyColors.Black,
-                        Points = RungeKutta4(f, t0, y0, 4, 0.25)
-                    });
+            var rkSeries = new LineSeries
+            {
+                Title = "RK4, h=0.25",
+                MarkerType = MarkerType.Circle,
+                MarkerFill = OxyColors.Black,
+            };
+            rkSeries.Points.AddRange(RungeKutta4(f, t0, y0, 4, 0.25));
+            model.Series.Add(rkSeries);
 
             //model.Series.Add(new LineSeries("RK4, h=1")
             //{
@@ -125,14 +131,14 @@ namespace ExampleLibrary
             //    Points = RungeKutta4(f, t0, y0, 4, 1)
             //});
 
-            model.Axes.Add(new LinearAxis(AxisPosition.Left));
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
             return model;
         }
 
-        private static IList<IDataPoint> Euler(
+        private static List<DataPoint> Euler(
             Func<double, double, double> f, double t0, double y0, double t1, double h)
         {
-            var points = new List<IDataPoint>();
+            var points = new List<DataPoint>();
             double y = y0;
             for (double t = t0; t < t1 + h / 2; t += h)
             {
@@ -143,9 +149,9 @@ namespace ExampleLibrary
             return points;
         }
 
-        private static IList<IDataPoint> Heun(Func<double, double, double> f, double t0, double y0, double t1, double h)
+        private static IList<DataPoint> Heun(Func<double, double, double> f, double t0, double y0, double t1, double h)
         {
-            var points = new List<IDataPoint>();
+            var points = new List<DataPoint>();
             double y = y0;
             for (double t = t0; t < t1 + h / 2; t += h)
             {
@@ -157,10 +163,10 @@ namespace ExampleLibrary
             return points;
         }
 
-        private static IList<IDataPoint> Midpoint(
+        private static List<DataPoint> Midpoint(
             Func<double, double, double> f, double t0, double y0, double t1, double h)
         {
-            var points = new List<IDataPoint>();
+            var points = new List<DataPoint>();
             double y = y0;
             for (double t = t0; t < t1 + h / 2; t += h)
             {
@@ -171,10 +177,10 @@ namespace ExampleLibrary
             return points;
         }
 
-        private static IList<IDataPoint> RungeKutta4(
+        private static List<DataPoint> RungeKutta4(
             Func<double, double, double> f, double t0, double y0, double t1, double h)
         {
-            var points = new List<IDataPoint>();
+            var points = new List<DataPoint>();
             double y = y0;
             for (double t = t0; t < t1 + h / 2; t += h)
             {
@@ -245,73 +251,43 @@ namespace ExampleLibrary
             //// http://mbostock.github.com/protovis/ex/marey-train-schedule.jpg
             //// http://c82.net/posts.php?id=66
 
-            var model = new PlotModel("Train schedule", "Bergensbanen (Oslo-Bergen, Norway)")
-                            {
-                                IsLegendVisible = false,
-                                PlotAreaBorderThickness
-                                    = 0,
-                                PlotMargins =
-                                    new OxyThickness(
-                                    60, 4, 60, 40)
-                            };
+            var model = new PlotModel
+            {
+                Title = "Train schedule",
+                Subtitle = "Bergensbanen (Oslo-Bergen, Norway)",
+                IsLegendVisible = false,
+                PlotAreaBorderThickness = new OxyThickness(0),
+                PlotMargins = new OxyThickness(60, 4, 60, 40)
+            };
             model.Axes.Add(
-                new LinearAxis(AxisPosition.Left, -20, 540, "Distance from Oslo S")
-                    {
-                        IsAxisVisible = true,
-                        StringFormat = "0"
-                    });
+                new LinearAxis
+                {
+                    Position = AxisPosition.Left,
+                    Minimum = -20,
+                    Maximum = 540,
+                    Title = "Distance from Oslo S",
+                    IsAxisVisible = true,
+                    StringFormat = "0"
+                });
             model.Axes.Add(
-                new TimeSpanAxis(AxisPosition.Bottom, 0, TimeSpanAxis.ToDouble(TimeSpan.FromHours(24)))
-                    {
-                        StringFormat
-                            = "hh",
-                        Title =
-                            "Time",
-                        MajorStep =
-                            TimeSpanAxis
-                            .ToDouble
-                            (
-                                TimeSpan
-                            .FromHours
-                            (1)),
-                        MinorStep =
-                            TimeSpanAxis
-                            .ToDouble
-                            (
-                                TimeSpan
-                            .FromMinutes
-                            (10)),
-                        TickStyle =
-                            TickStyle
-                            .None,
-                        MajorGridlineStyle
-                            =
-                            LineStyle
-                            .Solid,
-                        MajorGridlineColor
-                            =
-                            OxyColors
-                            .LightGray,
-                        MinorGridlineStyle
-                            =
-                            LineStyle
-                            .Solid,
-                        MinorGridlineColor
-                            =
-                            OxyColor
-                            .FromArgb
-                            (
-                                255,
-                                240,
-                                240,
-                                240)
-                    });
+                new TimeSpanAxis
+                {
+                    Position = AxisPosition.Bottom,
+                    Minimum = 0,
+                    Maximum = TimeSpanAxis.ToDouble(TimeSpan.FromHours(24)),
+                    StringFormat = "hh",
+                    Title = "Time",
+                    MajorStep = TimeSpanAxis.ToDouble(TimeSpan.FromHours(1)),
+                    MinorStep = TimeSpanAxis.ToDouble(TimeSpan.FromMinutes(10)),
+                    TickStyle = TickStyle.None,
+                    MajorGridlineStyle = LineStyle.Solid,
+                    MajorGridlineColor = OxyColors.LightGray,
+                    MinorGridlineStyle = LineStyle.Solid,
+                    MinorGridlineColor = OxyColor.FromArgb(255, 240, 240, 240)
+                });
 
             // Read the train schedule from a .csv resource
-            using (
-                var stream =
-                    Assembly.GetExecutingAssembly()
-                            .GetManifestResourceStream("ExampleLibrary.Resources.Bergensbanen.csv"))
+            using (var stream = GetResourceStream("Bergensbanen.csv"))
             {
                 using (var reader = new StreamReader(stream))
                 {
@@ -330,8 +306,9 @@ namespace ExampleLibrary
                     var series = new LineSeries[lines];
                     for (int i = 0; i < series.Length; i++)
                     {
-                        series[i] = new LineSeries(headerFields[3 + i])
+                        series[i] = new LineSeries
                                         {
+                                            Title = headerFields[3 + i],
                                             Color =
                                                 OxyColor.FromAColor(
                                                     180, OxyColors.Black),
@@ -368,7 +345,7 @@ namespace ExampleLibrary
                                         Color = OxyColors.LightGray,
                                         Text = fields[0] + "  ",
                                         TextVerticalAlignment = VerticalAlignment.Middle,
-                                        TextPosition = 1,
+                                        TextLinePosition = 1,
                                         TextMargin = 0,
                                         TextPadding = 4,
                                         ClipText = false,
@@ -432,16 +409,34 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("World population")]
+        public static PlotModel WorldPopulation()
+        {
+            WorldPopulationDataSet dataSet;
+            using (var stream = GetResourceStream("WorldPopulation.xml"))
+            {
+                var serializer = new XmlSerializer(typeof(WorldPopulationDataSet));
+                dataSet = (WorldPopulationDataSet)serializer.Deserialize(stream);
+            }
+
+            var model = new PlotModel { Title = "World population" };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "millions" });
+            var series1 = new LineSeries { ItemsSource = dataSet.Items, DataFieldX = "Year", DataFieldY = "Population", StrokeThickness = 3, MarkerType = MarkerType.Circle };
+            model.Series.Add(series1);
+            return model;
+        }
+
         [Example("La Linea (AreaSeries)")]
         public static PlotModel LaLineaAreaSeries()
         {
             // http://en.wikipedia.org/wiki/La_Linea_(TV_series)
-            var model = new PlotModel("La Linea")
-                            {
-                                PlotType = PlotType.Cartesian,
-                                Background = OxyColor.FromRgb(84, 98, 207)
-                            };
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, -500, 1000));
+            var model = new PlotModel
+            {
+                Title = "La Linea",
+                PlotType = PlotType.Cartesian,
+                Background = OxyColor.FromRgb(84, 98, 207)
+            };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -500, Maximum = 1000 });
             var series1 = new AreaSeries { Fill = OxyColors.White, StrokeThickness = 0 };
             series1.Points.Append(GetLineaPoints());
             model.Series.Add(series1);
@@ -452,12 +447,13 @@ namespace ExampleLibrary
         public static PlotModel LaLinea()
         {
             // http://en.wikipedia.org/wiki/La_Linea_(TV_series)
-            var model = new PlotModel("La Linea")
-                            {
-                                PlotType = PlotType.Cartesian,
-                                Background = OxyColor.FromRgb(84, 98, 207)
-                            };
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, -500, 1000));
+            var model = new PlotModel
+            {
+                Title = "La Linea",
+                PlotType = PlotType.Cartesian,
+                Background = OxyColor.FromRgb(84, 98, 207)
+            };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -500, Maximum = 1000 });
             var series1 = new LineSeries { Color = OxyColors.White, StrokeThickness = 1.5 };
             series1.Points.Append(GetLineaPoints());
             model.Series.Add(series1);
@@ -478,9 +474,9 @@ namespace ExampleLibrary
             }
         }
 
-        private static IEnumerable<IDataPoint> GetLineaPoints()
+        private static IEnumerable<DataPoint> GetLineaPoints()
         {
-            var points = new List<IDataPoint>();
+            var points = new List<DataPoint>();
 
             // The original image was vectorized by http://www.autotracer.org/
             // Then inkscape was used to convert from svg to xaml http://inkscape.org/
@@ -1516,7 +1512,7 @@ namespace ExampleLibrary
                     + 5d / 3 * sin(33 * t + 4) + 27d / 7 * sin(35 * t + 13d / 6) + 1d / 4 * sin(36 * t + 43d / 11)
                     + 16d / 5 * sin(37 * t + 9d / 2) + 20d / 19 * sin(38 * t + 23d / 6) + 8d / 3 * sin(39 * t + 4d / 7);
 
-            var model = new PlotModel("Elephant curve") { PlotType = PlotType.Cartesian };
+            var model = new PlotModel { Title = "Elephant curve", PlotType = PlotType.Cartesian };
             model.Series.Add(new FunctionSeries(x, y, 0, Math.PI * 2, 1000));
             return model;
         }
@@ -1531,7 +1527,7 @@ namespace ExampleLibrary
             Func<double, double> y =
                 t => 70d / 37 * sin(65d / 32 - 32 * t) + 11d / 12 * sin(98d / 41 - 31 * t) + 26d / 29 * sin(35d / 12 - 30 * t) + 54d / 41 * sin(18d / 7 - 29 * t) + 177d / 71 * sin(51d / 19 - 27 * t) + 59d / 34 * sin(125d / 33 - 26 * t) + 49d / 29 * sin(18d / 11 - 25 * t) + 151d / 75 * sin(59d / 22 - 24 * t) + 52d / 9 * sin(118d / 45 - 22 * t) + 52d / 33 * sin(133d / 52 - 21 * t) + 37d / 45 * sin(61d / 14 - 20 * t) + 143d / 46 * sin(144d / 41 - 19 * t) + 254d / 47 * sin(19d / 52 - 18 * t) + 246d / 35 * sin(92d / 25 - 17 * t) + 722d / 111 * sin(176d / 67 - 16 * t) + 136d / 23 * sin(3d / 19 - 15 * t) + 273d / 25 * sin(32d / 21 - 13 * t) + 229d / 33 * sin(117d / 28 - 12 * t) + 19d / 4 * sin(43d / 11 - 11 * t) + 135d / 8 * sin(23d / 10 - 10 * t) + 205d / 6 * sin(33d / 23 - 8 * t) + 679d / 45 * sin(55d / 12 - 7 * t) + 101d / 8 * sin(11d / 12 - 6 * t) + 2760d / 59 * sin(40d / 11 - 5 * t) + 1207d / 18 * sin(21d / 23 - 4 * t) + 8566d / 27 * sin(39d / 28 - 3 * t) + 12334d / 29 * sin(47d / 37 - 2 * t) + 15410d / 39 * sin(185d / 41 - t) - 596d / 17 * sin(9 * t + 3d / 26) - 247d / 28 * sin(14 * t + 25d / 21) - 458d / 131 * sin(23 * t + 21d / 37) - 41d / 36 * sin(28 * t + 7d / 8);
 
-            var model = new PlotModel("PI curve") { PlotType = PlotType.Cartesian };
+            var model = new PlotModel { Title = "PI curve", PlotType = PlotType.Cartesian };
             model.Series.Add(new FunctionSeries(x, y, 0, Math.PI * 2, 1000));
             return model;
         }
@@ -2172,7 +2168,7 @@ namespace ExampleLibrary
                     + 141d / 31 * sin(8 * t + 30d / 17) + 79d / 40 * sin(9 * t + 121d / 26) + 5838d / 29)
                  * theta(3 * pi - t) * theta(t + pi)) * theta(Math.Sqrt(Math.Sign(sin(t / 2))));
 
-            var model = new PlotModel("Angelina Jolie curve") { PlotType = PlotType.Cartesian };
+            var model = new PlotModel { Title = "Angelina Jolie curve", PlotType = PlotType.Cartesian };
             var fs = new FunctionSeries(xt, yt, 0, Math.PI * 120, 10000);
             model.Series.Add(fs);
 
@@ -2190,6 +2186,16 @@ namespace ExampleLibrary
             }
 
             return model;
+        }
+
+        /// <summary>
+        /// Gets the stream for the specified embedded resource.
+        /// </summary>
+        /// <param name="name">The name of the resource.</param>
+        /// <returns>A stream.</returns>
+        private static Stream GetResourceStream(string name)
+        {
+            return Assembly.GetExecutingAssembly().GetManifestResourceStream("ExampleLibrary.Resources." + name);
         }
 
         /// <summary>
@@ -2377,6 +2383,23 @@ namespace ExampleLibrary
                 }
 
                 return iteration;
+            }
+        }
+
+        [XmlRoot("DataSet")]
+        [XmlInclude(typeof(Data))]
+        public class WorldPopulationDataSet
+        {
+            [XmlElement("Data")]
+            public List<Data> Items { get; set; }
+
+            public class Data
+            {
+                [XmlAttribute("Year")]
+                public int Year { get; set; }
+
+                [XmlAttribute("Population")]
+                public double Population { get; set; }
             }
         }
     }

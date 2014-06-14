@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents a document that can be output to pdf.
+//   Represents a document that can be output to PDF.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -37,7 +37,7 @@ namespace OxyPlot
     using System.Text;
 
     /// <summary>
-    /// Represents a document that can be output to pdf.
+    /// Represents a document that can be output to PDF.
     /// </summary>
     public class PortableDocument
     {

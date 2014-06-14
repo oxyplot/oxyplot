@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Provides unit tests for the <see cref="Axis"/> class.
+//   Provides unit tests for the <see cref="Axis" /> class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -49,7 +49,7 @@ namespace OxyPlot.Tests
         [Test]
         public void A00_NoAxesDefined()
         {
-            var plot = new PlotModel("Simple plot without axes defined");
+            var plot = new PlotModel { Title = "Simple plot without axes defined" };
 
             var ls = new LineSeries();
             ls.Points.Add(new DataPoint(3, 13));
@@ -65,9 +65,9 @@ namespace OxyPlot.Tests
         [Test]
         public void A01_SimpleAxes()
         {
-            var plot = new PlotModel("Simple plot");
-            plot.Axes.Add(new LinearAxis(AxisPosition.Bottom, "X-axis"));
-            plot.Axes.Add(new LinearAxis(AxisPosition.Left, "Y-axis"));
+            var plot = new PlotModel { Title = "Simple plot" };
+            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "X-axis" });
+            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Y-axis" });
 
             var ls = new LineSeries();
             ls.Points.Add(new DataPoint(3, 13));
@@ -83,9 +83,9 @@ namespace OxyPlot.Tests
         [Test]
         public void A02_ReversedAxes()
         {
-            var plot = new PlotModel("Reversed axes");
-            plot.Axes.Add(new LinearAxis(AxisPosition.Bottom, "X-axis") { StartPosition = 1, EndPosition = 0 });
-            plot.Axes.Add(new LinearAxis(AxisPosition.Left, "Y-axis") { StartPosition = 1, EndPosition = 0 });
+            var plot = new PlotModel { Title = "Reversed axes" };
+            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "X-axis", StartPosition = 1, EndPosition = 0 });
+            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Y-axis", StartPosition = 1, EndPosition = 0 });
 
             var ls = new LineSeries();
             ls.Points.Add(new DataPoint(0, 13));
@@ -101,9 +101,9 @@ namespace OxyPlot.Tests
         [Test]
         public void A11_SmallRangeAxis()
         {
-            var plot = new PlotModel("Small range axis") { PlotMargins = new OxyThickness(80, 60, 50, 50) };
-            plot.Axes.Add(new LinearAxis(AxisPosition.Bottom, "X-axis"));
-            plot.Axes.Add(new LinearAxis(AxisPosition.Left, "Y-axis"));
+            var plot = new PlotModel { Title = "Small range axis", PlotMargins = new OxyThickness(80, 60, 50, 50) };
+            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "X-axis" });
+            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Y-axis" });
 
             var ls = new LineSeries();
             ls.Points.Add(new DataPoint(1e-40, 1e-38));
@@ -118,9 +118,9 @@ namespace OxyPlot.Tests
         [Test]
         public void A12_LargeRangeAxis()
         {
-            var plot = new PlotModel("Large range axis") { PlotMargins = new OxyThickness(80, 60, 50, 50) };
-            plot.Axes.Add(new LinearAxis(AxisPosition.Bottom, "X-axis"));
-            plot.Axes.Add(new LinearAxis(AxisPosition.Left, "Y-axis"));
+            var plot = new PlotModel { Title = "Large range axis", PlotMargins = new OxyThickness(80, 60, 50, 50) };
+            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "X-axis" });
+            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Y-axis" });
 
             var ls = new LineSeries();
             ls.Points.Add(new DataPoint(1e40, 1e38));
@@ -135,9 +135,9 @@ namespace OxyPlot.Tests
         [Test]
         public void A13_BadConditionedAxis()
         {
-            var plot = new PlotModel("Bad conditioned axis") { PlotMargins = new OxyThickness(80, 60, 50, 50) };
-            plot.Axes.Add(new LinearAxis(AxisPosition.Bottom, "X-axis"));
-            plot.Axes.Add(new LinearAxis(AxisPosition.Left, "Y-axis"));
+            var plot = new PlotModel { Title = "Bad conditioned axis", PlotMargins = new OxyThickness(80, 60, 50, 50) };
+            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "X-axis" });
+            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Y-axis" });
 
             var ls = new LineSeries();
             ls.Points.Add(new DataPoint(1.20000000001, 2400000001));
@@ -152,12 +152,13 @@ namespace OxyPlot.Tests
         [Test]
         public void A13B_BadConditionedAxis_SettingMinimumRange()
         {
-            var plot = new PlotModel("Bad conditioned axis with MinimumRange")
+            var plot = new PlotModel
             {
+                Title = "Bad conditioned axis with MinimumRange",
                 PlotMargins = new OxyThickness(80, 60, 50, 50)
             };
-            plot.Axes.Add(new LinearAxis(AxisPosition.Bottom, "X-axis") { MinimumRange = 1e-3 });
-            plot.Axes.Add(new LinearAxis(AxisPosition.Left, "Y-axis") { MinimumRange = 1e8, StringFormat = "0.00E00" });
+            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "X-axis", MinimumRange = 1e-3 });
+            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Y-axis", MinimumRange = 1e8, StringFormat = "0.00E00" });
 
             var ls = new LineSeries();
             ls.Points.Add(new DataPoint(1.20000000001, 2400000001));
@@ -172,9 +173,9 @@ namespace OxyPlot.Tests
         [Test]
         public void A14_ConstantValue()
         {
-            var plot = new PlotModel("Constant value");
-            plot.Axes.Add(new LinearAxis(AxisPosition.Bottom, "X-axis"));
-            plot.Axes.Add(new LinearAxis(AxisPosition.Left, "Y-axis"));
+            var plot = new PlotModel { Title = "Constant value" };
+            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "X-axis" });
+            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Y-axis" });
 
             var ls = new LineSeries();
             ls.Points.Add(new DataPoint(1, 2.4));
@@ -189,9 +190,9 @@ namespace OxyPlot.Tests
         [Test]
         public void A15_SinglePoint()
         {
-            var plot = new PlotModel("Single point");
-            plot.Axes.Add(new LinearAxis(AxisPosition.Bottom, "X-axis"));
-            plot.Axes.Add(new LinearAxis(AxisPosition.Left, "Y-axis"));
+            var plot = new PlotModel { Title = "Single point" };
+            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "X-axis" });
+            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Y-axis" });
 
             var ls = new LineSeries();
             ls.Points.Add(new DataPoint(1, 2.4));
@@ -203,9 +204,9 @@ namespace OxyPlot.Tests
         [Test]
         public void A16_TwoClosePoints()
         {
-            var plot = new PlotModel("Two close points");
-            plot.Axes.Add(new LinearAxis(AxisPosition.Bottom, "X-axis") { MinimumRange = 1e-3 });
-            plot.Axes.Add(new LinearAxis(AxisPosition.Left, "Y-axis"));
+            var plot = new PlotModel { Title = "Two close points" };
+            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "X-axis", MinimumRange = 1e-3 });
+            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Y-axis" });
 
             var ls = new LineSeries();
             ls.Points.Add(new DataPoint(1, 2.4));
@@ -218,9 +219,9 @@ namespace OxyPlot.Tests
         [Test]
         public void B01_LogarithmicAxis()
         {
-            var plot = new PlotModel("Logarithmic axis");
-            plot.Axes.Add(new LogarithmicAxis(AxisPosition.Bottom, "X-axis"));
-            plot.Axes.Add(new LogarithmicAxis(AxisPosition.Left, "Y-axis"));
+            var plot = new PlotModel { Title = "Logarithmic axis" };
+            plot.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Bottom, Title = "X-axis" });
+            plot.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Left, Title = "Y-axis" });
 
             var ls = new LineSeries();
             ls.Points.Add(new DataPoint(1.2, 3.3));
@@ -235,9 +236,9 @@ namespace OxyPlot.Tests
         [Test]
         public void B02_LogarithmicAxis()
         {
-            var plot = new PlotModel("Logarithmic axis");
-            plot.Axes.Add(new LogarithmicAxis(AxisPosition.Bottom, "X-axis"));
-            plot.Axes.Add(new LogarithmicAxis(AxisPosition.Left, "Y-axis"));
+            var plot = new PlotModel { Title = "Logarithmic axis" };
+            plot.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Bottom, Title = "X-axis" });
+            plot.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Left, Title = "Y-axis" });
 
             var ls = new LineSeries();
             ls.Points.Add(new DataPoint(1, 12));
@@ -252,9 +253,9 @@ namespace OxyPlot.Tests
         [Test]
         public void B03_LogarithmicAxis()
         {
-            var plot = new PlotModel("Logarithmic axis");
-            plot.Axes.Add(new LogarithmicAxis(AxisPosition.Bottom, "X-axis"));
-            plot.Axes.Add(new LogarithmicAxis(AxisPosition.Left, "Y-axis"));
+            var plot = new PlotModel { Title = "Logarithmic axis" };
+            plot.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Bottom, Title = "X-axis" });
+            plot.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Left, Title = "Y-axis" });
 
             var ls = new LineSeries();
             ls.Points.Add(new DataPoint(1e10, 1e18));
@@ -269,11 +270,11 @@ namespace OxyPlot.Tests
         [Test]
         public void B04_LogarithmicAxis_Padding()
         {
-            var plot = new PlotModel("Logarithmic axis with padding");
+            var plot = new PlotModel { Title = "Logarithmic axis with padding" };
             plot.Axes.Add(
-                new LogarithmicAxis(AxisPosition.Bottom, "X-axis") { MinimumPadding = 0.3, MaximumPadding = 0.3 });
+                new LogarithmicAxis { Position = AxisPosition.Bottom, Title = "X-axis", MinimumPadding = 0.3, MaximumPadding = 0.3 });
             plot.Axes.Add(
-                new LogarithmicAxis(AxisPosition.Left, "Y-axis") { MinimumPadding = 0.3, MaximumPadding = 0.3 });
+                new LogarithmicAxis { Position = AxisPosition.Left, Title = "Y-axis", MinimumPadding = 0.3, MaximumPadding = 0.3 });
 
             var ls = new LineSeries();
             ls.Points.Add(new DataPoint(1, 12));
@@ -288,17 +289,21 @@ namespace OxyPlot.Tests
         [Test]
         public void B05_LogarithmicAxis_SuperExponentialFormat()
         {
-            var plot = new PlotModel("Logarithmic axis with SuperExponentialFormat");
+            var plot = new PlotModel { Title = "Logarithmic axis with SuperExponentialFormat" };
             plot.Axes.Add(
-                new LogarithmicAxis(AxisPosition.Bottom, "X-axis")
+                new LogarithmicAxis
                 {
+                    Position = AxisPosition.Bottom,
+                    Title = "X-axis",
                     Minimum = 1.8e2,
                     Maximum = 1e5,
                     UseSuperExponentialFormat = true
                 });
             plot.Axes.Add(
-                new LogarithmicAxis(AxisPosition.Left, "Y-axis")
+                new LogarithmicAxis
                 {
+                    Position = AxisPosition.Left,
+                    Title = "Y-axis",
                     Minimum = 1e18,
                     Maximum = 1e38,
                     UseSuperExponentialFormat = true
@@ -309,14 +314,20 @@ namespace OxyPlot.Tests
         [Test]
         public void C01_DateTimeAxis()
         {
-            var plot = new PlotModel("DateTime axis") { PlotMargins = new OxyThickness(100, 40, 20, 100) };
-            var xaxis = new DateTimeAxis(AxisPosition.Bottom, "DateTime X", null, DateTimeIntervalType.Days)
+            var plot = new PlotModel { Title = "DateTime axis", PlotMargins = new OxyThickness(100, 40, 20, 100) };
+            var xaxis = new DateTimeAxis
             {
+                Position = AxisPosition.Bottom,
+                Title = "DateTime X",
+                IntervalType = DateTimeIntervalType.Days,
                 Angle = -46,
                 MajorStep = 1
             };
-            var yaxis = new DateTimeAxis(AxisPosition.Left, "DateTime Y", null, DateTimeIntervalType.Days)
+            var yaxis = new DateTimeAxis
             {
+                Position = AxisPosition.Left,
+                Title = "DateTime Y",
+                IntervalType = DateTimeIntervalType.Days,
                 Angle = -45,
                 MajorStep = 1
             };
@@ -337,14 +348,20 @@ namespace OxyPlot.Tests
         [Test]
         public void C02_DateTimeAxis_WithSomeUndefinedPoints()
         {
-            var plot = new PlotModel("DateTime axis") { PlotMargins = new OxyThickness(100, 40, 20, 100) };
-            var xaxis = new DateTimeAxis(AxisPosition.Bottom, "DateTime X", null, DateTimeIntervalType.Days)
+            var plot = new PlotModel { Title = "DateTime axis", PlotMargins = new OxyThickness(100, 40, 20, 100) };
+            var xaxis = new DateTimeAxis
             {
+                Position = AxisPosition.Bottom,
+                Title = "DateTime X",
+                IntervalType = DateTimeIntervalType.Days,
                 Angle = -46,
                 MajorStep = 1
             };
-            var yaxis = new DateTimeAxis(AxisPosition.Left, "DateTime Y", null, DateTimeIntervalType.Days)
+            var yaxis = new DateTimeAxis
             {
+                Position = AxisPosition.Left,
+                Title = "DateTime Y",
+                IntervalType = DateTimeIntervalType.Days,
                 Angle = -45,
                 MajorStep = 1
             };
@@ -365,14 +382,20 @@ namespace OxyPlot.Tests
         [Test]
         public void C03_DateTimeAxis_WithAllUndefinedPoints()
         {
-            var plot = new PlotModel("DateTime axis") { PlotMargins = new OxyThickness(100, 40, 20, 100) };
-            var xaxis = new DateTimeAxis(AxisPosition.Bottom, "DateTime X", null, DateTimeIntervalType.Days)
+            var plot = new PlotModel { Title = "DateTime axis", PlotMargins = new OxyThickness(100, 40, 20, 100) };
+            var xaxis = new DateTimeAxis
             {
+                Position = AxisPosition.Bottom,
+                Title = "DateTime X",
+                IntervalType = DateTimeIntervalType.Days,
                 Angle = -46,
                 MajorStep = 1
             };
-            var yaxis = new DateTimeAxis(AxisPosition.Left, "DateTime Y", null, DateTimeIntervalType.Days)
+            var yaxis = new DateTimeAxis
             {
+                Position = AxisPosition.Left,
+                Title = "DateTime Y",
+                IntervalType = DateTimeIntervalType.Days,
                 Angle = -45,
                 MajorStep = 1
             };
@@ -390,17 +413,17 @@ namespace OxyPlot.Tests
         [Test]
         public void D01_InvalidAbsoluteMaxMin()
         {
-            var plot = new PlotModel("Simple plot");
+            var plot = new PlotModel { Title = "Simple plot" };
             plot.Axes.Add(new LinearAxis { AbsoluteMaximum = 0, AbsoluteMinimum = 0 });
-            Assert.Throws<InvalidOperationException>(() => plot.Update());
+            Assert.Throws<InvalidOperationException>(() => ((IPlotModel)plot).Update(true));
         }
 
         [Test]
         public void D02_InvalidMaxMin()
         {
-            var plot = new PlotModel("Simple plot");
+            var plot = new PlotModel { Title = "Simple plot" };
             plot.Axes.Add(new LinearAxis { Maximum = 0, Minimum = 0 });
-            plot.Update();
+            ((IPlotModel)plot).Update(true);
             Assert.AreEqual(100, plot.Axes[0].ActualMaximum);
             Assert.AreEqual(0, plot.Axes[0].ActualMinimum);
         }
@@ -408,9 +431,9 @@ namespace OxyPlot.Tests
         [Test]
         public void D03_InvalidMaxMin()
         {
-            var plot = new PlotModel("Simple plot");
+            var plot = new PlotModel { Title = "Simple plot" };
             plot.Axes.Add(new LogarithmicAxis { Maximum = 1, Minimum = 1 });
-            plot.Update();
+            ((IPlotModel)plot).Update(true);
             Assert.AreEqual(100, plot.Axes[0].ActualMaximum);
             Assert.AreEqual(1, plot.Axes[0].ActualMinimum);
         }
@@ -418,9 +441,9 @@ namespace OxyPlot.Tests
         [Test]
         public void D04_InvalidLogAxis()
         {
-            var plot = new PlotModel("Simple plot");
+            var plot = new PlotModel { Title = "Simple plot" };
             plot.Axes.Add(new LogarithmicAxis { Maximum = 1, Minimum = 0 });
-            plot.Update();
+            ((IPlotModel)plot).Update(true);
             Assert.AreEqual(100, plot.Axes[0].ActualMaximum);
             Assert.AreEqual(1, plot.Axes[0].ActualMinimum);
         }

@@ -69,6 +69,7 @@
     </Compile>
     <Compile Include="Converters\OxyColorConverter.cs" />
     <Compile Include="Converters\ThicknessConverter.cs" />
+    <Compile Include="PlotView.cs" />
     <Compile Include="Utilities\Keyboard.cs" />
     <Compile Include="NamespaceDoc.cs" />
     <Compile Include="Utilities\ConverterExtensions.cs" />

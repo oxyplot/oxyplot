@@ -24,23 +24,23 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Provides a plot control manipulator for stepwise zoom functionality.
+//   Provides a plot view manipulator for stepwise zoom functionality.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     /// <summary>
-    /// Provides a plot control manipulator for stepwise zoom functionality.
+    /// Provides a plot view manipulator for stepwise zoom functionality.
     /// </summary>
     public class ZoomStepManipulator : MouseManipulator
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ZoomStepManipulator" /> class.
         /// </summary>
-        /// <param name="plotControl">The plot control.</param>
-        public ZoomStepManipulator(IPlotControl plotControl)
-            : base(plotControl)
+        /// <param name="plotView">The plot view.</param>
+        public ZoomStepManipulator(IPlotView plotView)
+            : base(plotView)
         {
         }
 
@@ -88,7 +88,7 @@ namespace OxyPlot
                 this.YAxis.ZoomAt(scale, current.Y);
             }
 
-            this.PlotControl.InvalidatePlot(false);
+            this.PlotView.InvalidatePlot(false);
         }
     }
 }

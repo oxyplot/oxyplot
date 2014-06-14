@@ -7,6 +7,6 @@
     d:DesignHeight="300" d:DesignWidth="400">
 
   <Grid x:Name="LayoutRoot" Background="White">
-        <oxy:Plot x:Name="chart"/>
+        <oxy:PlotView x:Name="chart"/>
   </Grid>
 </UserControl>

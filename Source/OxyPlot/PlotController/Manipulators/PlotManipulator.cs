@@ -1,0 +1,112 @@
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="PlotManipulator.cs" company="OxyPlot">
+//   The MIT License (MIT)
+//   
+//   Copyright (c) 2014 OxyPlot contributors
+//   
+//   Permission is hereby granted, free of charge, to any person obtaining a
+//   copy of this software and associated documentation files (the
+//   "Software"), to deal in the Software without restriction, including
+//   without limitation the rights to use, copy, modify, merge, publish,
+//   distribute, sublicense, and/or sell copies of the Software, and to
+//   permit persons to whom the Software is furnished to do so, subject to
+//   the following conditions:
+//   
+//   The above copyright notice and this permission notice shall be included
+//   in all copies or substantial portions of the Software.
+//   
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+//   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+//   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+// </copyright>
+// <summary>
+//   Provides an abstract base class for plot manipulators.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace OxyPlot
+{
+    using OxyPlot.Axes;
+
+    /// <summary>
+    /// Provides an abstract base class for plot manipulators.
+    /// </summary>
+    /// <typeparam name="T">The type of the event arguments.</typeparam>
+    public abstract class PlotManipulator<T> : ManipulatorBase<T> where T : OxyInputEventArgs
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PlotManipulator{T}" /> class.
+        /// </summary>
+        /// <param name="view">The plot view.</param>
+        protected PlotManipulator(IPlotView view)
+            : base(view)
+        {
+            this.PlotView = view;
+        }
+
+        /// <summary>
+        /// Gets the plot view where the event was raised.
+        /// </summary>
+        /// <value>The plot view.</value>
+        public IPlotView PlotView { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the X axis.
+        /// </summary>
+        /// <value>The X axis.</value>
+        protected Axis XAxis { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Y axis.
+        /// </summary>
+        /// <value>The Y axis.</value>
+        protected Axis YAxis { get; set; }
+
+        /// <summary>
+        /// Transforms a point from screen coordinates to data coordinates.
+        /// </summary>
+        /// <param name="x">The x coordinate.</param>
+        /// <param name="y">The y coordinate.</param>
+        /// <returns>A data point.</returns>
+        protected DataPoint InverseTransform(double x, double y)
+        {
+            if (this.XAxis != null)
+            {
+                return this.XAxis.InverseTransform(x, y, this.YAxis);
+            }
+
+            if (this.YAxis != null)
+            {
+                return new DataPoint(0, this.YAxis.InverseTransform(y));
+            }
+
+            return new DataPoint();
+        }
+
+        /// <summary>
+        /// Assigns the axes to this manipulator by the specified position.
+        /// </summary>
+        /// <param name="position">The position.</param>
+        protected void AssignAxes(ScreenPoint position)
+        {
+            Axis xaxis;
+            Axis yaxis;
+            if (this.PlotView.ActualModel != null)
+            {
+                this.PlotView.ActualModel.GetAxesFromPoint(position, out xaxis, out yaxis);
+            }
+            else
+            {
+                xaxis = null;
+                yaxis = null;
+            }
+
+            this.XAxis = xaxis;
+            this.YAxis = yaxis;
+        }
+    }
+}

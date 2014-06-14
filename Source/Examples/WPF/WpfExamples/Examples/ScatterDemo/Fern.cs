@@ -25,17 +25,16 @@
 // </copyright>
 // <summary>
 //   Barnesley fern point generator
-//   http://en.wikipedia.org/wiki/Barnsley_fern
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Windows;
-using System.Windows.Media;
-
 namespace ScatterDemo
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Windows;
+    using System.Windows.Media;
+
     /// <summary>
     /// Barnesley fern point generator
     /// http://en.wikipedia.org/wiki/Barnsley_fern
@@ -52,7 +51,7 @@ namespace ScatterDemo
             var a2 = new MatrixTransform(new Matrix(0.20, 0.23, -0.26, 0.22, 0, 1.6));
             var a3 = new MatrixTransform(new Matrix(-0.15, 0.26, 0.28, 0.24, 0, 0.44));
             var a4 = new MatrixTransform(new Matrix(0, 0, 0, 0.16, 0, 0));
-            var random = new Random();
+            var random = new Random(17);
             var point = new Point(0.5, 0.5);
             var points = new List<Point>();
 
@@ -74,6 +73,7 @@ namespace ScatterDemo
 
                 points.Add(T.Transform(point));
             }
+
             return points;
         }
     }

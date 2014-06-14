@@ -59,7 +59,7 @@ namespace ExampleLibrary
             var yvalues = ArrayHelper.CreateVector(y0, y1, n);
             var peaksData = ArrayHelper.Evaluate(peaks, xvalues, yvalues);
 
-            var model = new PlotModel("Peaks");
+            var model = new PlotModel { Title = "Peaks" };
             model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = palette ?? OxyPalettes.Jet(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
 
             var hms = new HeatMapSeries { X0 = x0, X1 = x1, Y0 = y0, Y1 = y1, Data = peaksData };
@@ -203,7 +203,7 @@ namespace ExampleLibrary
             data[1, 1] = 1;
             data[2, 2] = 1;
 
-            var model = new PlotModel("Diagonal (center defined)");
+            var model = new PlotModel { Title = "Diagonal (center defined)" };
             model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
 
             // adding half cellwidth/cellheight to bounding box coordinates
@@ -220,7 +220,7 @@ namespace ExampleLibrary
             data[1, 1] = 1;
             data[2, 2] = 1;
 
-            var model = new PlotModel("Diagonal (edge defined)");
+            var model = new PlotModel { Title = "Diagonal (edge defined)" };
             model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
 
             // adding half cellwidth/cellheight to bounding box coordinates
@@ -241,7 +241,7 @@ namespace ExampleLibrary
             data[4, 4] = 1;
             data[5, 5] = 1;
 
-            var model = new PlotModel("Diagonal 6×6");
+            var model = new PlotModel { Title = "Diagonal 6×6" };
             model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
 
             // note: the coordinates are specifying the centers of the edge cells
@@ -267,18 +267,20 @@ namespace ExampleLibrary
 
             string[] cat1 = { "class A", "class B", "class C" };
 
-            var model = new PlotModel("Confusion Matrix");
+            var model = new PlotModel { Title = "Confusion Matrix" };
 
             var palette = OxyPalette.Interpolate(50, OxyColors.White, OxyColors.Black);
 
             var lca = new LinearColorAxis { Position = AxisPosition.Right, Palette = palette, HighColor = OxyColors.White, LowColor = OxyColors.White };
             model.Axes.Add(lca);
 
-            var axis1 = new CategoryAxis(AxisPosition.Top, "Actual class", cat1);
+            var axis1 = new CategoryAxis { Position = AxisPosition.Top, Title = "Actual class" };
+            axis1.Labels.AddRange(cat1);
             model.Axes.Add(axis1);
 
             // We invert this axis, so that they look "symmetrical"
-            var axis2 = new CategoryAxis(AxisPosition.Left, "Predicted class", cat1);
+            var axis2 = new CategoryAxis { Position = AxisPosition.Left, Title = "Predicted class" };
+            axis2.Labels.AddRange(cat1);
             axis2.Angle = -90;
             axis2.StartPosition = 1;
             axis2.EndPosition = 0;
@@ -316,7 +318,7 @@ namespace ExampleLibrary
             data[1, 1] = 0.3;
             data[1, 2] = 0.2;
 
-            var model = new PlotModel("HeatMapSeries", title);
+            var model = new PlotModel { Title = "HeatMapSeries", Subtitle = title };
             model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
 
             // adding half cellwidth/cellheight to bounding box coordinates

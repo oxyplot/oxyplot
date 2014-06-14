@@ -106,7 +106,6 @@ namespace ExampleBrowser
                 this.RaisePropertyChanged("SelectedExample");
                 this.RaisePropertyChanged("PlotModel");
                 this.RaisePropertyChanged("PlotController");
-                this.RaisePropertyChanged("PlotBackground");
             }
         }
 
@@ -123,14 +122,6 @@ namespace ExampleBrowser
             get
             {
                 return this.SelectedExample != null ? this.SelectedExample.PlotController : null;
-            }
-        }
-
-        public Brush PlotBackground
-        {
-            get
-            {
-                return this.selectedExample != null && this.selectedExample.PlotModel.Background.IsVisible() ? this.selectedExample.PlotModel.Background.ToBrush() : new SolidColorBrush(Colors.White);
             }
         }
 

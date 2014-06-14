@@ -50,12 +50,11 @@ namespace OxyPlot
         /// <param name="isClosed">True if the spline is closed.</param>
         /// <param name="tolerance">The tolerance.</param>
         /// <returns>A list of data points.</returns>
-        internal static List<IDataPoint> CreateSpline(
-            IList<IDataPoint> points, double tension, IList<double> tensions, bool isClosed, double tolerance)
+        internal static List<DataPoint> CreateSpline(List<DataPoint> points, double tension, IList<double> tensions, bool isClosed, double tolerance)
         {
             var screenPoints = points.Select(p => new ScreenPoint(p.X, p.Y)).ToList();
             var interpolatedScreenPoints = CreateSpline(screenPoints, tension, tensions, isClosed, tolerance);
-            var interpolatedDataPoints = new List<IDataPoint>(interpolatedScreenPoints.Count);
+            var interpolatedDataPoints = new List<DataPoint>(interpolatedScreenPoints.Count);
 
             foreach (var s in interpolatedScreenPoints)
             {

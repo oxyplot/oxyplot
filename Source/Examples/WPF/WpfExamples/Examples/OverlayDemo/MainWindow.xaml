@@ -1,8 +1,8 @@
 ﻿<Window x:Class="OverlayDemo.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf" Title="Overlay Demo" Height="480" Width="640">
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf" Title="OverlayDemo" Height="480" Width="640">
     <Grid>
         <Canvas x:Name="canvas1"/>
-        <oxy:Plot x:Name="plot1" Background="Transparent"/>
+        <oxy:PlotView x:Name="plot1" Background="Transparent"/>
     </Grid>
 </Window>

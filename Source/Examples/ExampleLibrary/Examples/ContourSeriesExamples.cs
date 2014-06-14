@@ -45,7 +45,7 @@ namespace ExampleLibrary
         [Example("Peaks")]
         public static PlotModel Peaks()
         {
-            var model = new PlotModel("Peaks");
+            var model = new PlotModel { Title = "Peaks" };
             var cs = new ContourSeries
                 {
                     ColumnCoordinates = ArrayHelper.CreateVector(-3, 3, 0.05),
@@ -60,7 +60,7 @@ namespace ExampleLibrary
         [Example("Peaks (different contour colors)")]
         public static PlotModel PeaksWithColors()
         {
-            var model = new PlotModel("Peaks");
+            var model = new PlotModel { Title = "Peaks" };
             var cs = new ContourSeries
             {
                 ColumnCoordinates = ArrayHelper.CreateVector(-3, 3, 0.05),
@@ -76,8 +76,8 @@ namespace ExampleLibrary
         [Example("Peaks (wide array)")]
         public static PlotModel WideArrayPeaks()
         {
-            var model = new PlotModel("Peaks");
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, -3.16262, 3.162));
+            var model = new PlotModel { Title = "Peaks" };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -3.16262, Maximum = 3.162 });
             var cs = new ContourSeries
             {
                 ColumnCoordinates = ArrayHelper.CreateVector(-3, 3, 0.05),

@@ -24,27 +24,22 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Provides a plot controller where the input command bindings can be modified.
+//   Provides an IPlotController with a default set of plot bindings.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
-    using System.Collections.Generic;
-    using System.Linq;
-
     /// <summary>
-    /// Provides a plot controller where the input command bindings can be modified.
+    /// Provides an <see cref="IPlotController" /> with a default set of plot bindings.
     /// </summary>
-    public class PlotController : PlotControllerBase
+    public class PlotController : ControllerBase, IPlotController
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PlotController" /> class.
         /// </summary>
         public PlotController()
         {
-            this.InputCommandBindings = new List<InputCommandBinding>();
-
             // Zoom rectangle bindings: MMB / control RMB / control+alt LMB
             this.BindMouseDown(OxyMouseButton.Middle, PlotCommands.ZoomRectangle);
             this.BindMouseDown(OxyMouseButton.Right, OxyModifierKeys.Control, PlotCommands.ZoomRectangle);
@@ -92,132 +87,6 @@ namespace OxyPlot
             this.BindKeyDown(OxyKey.Subtract, OxyModifierKeys.Control, PlotCommands.ZoomOutFine);
             this.BindKeyDown(OxyKey.PageUp, OxyModifierKeys.Control, PlotCommands.ZoomInFine);
             this.BindKeyDown(OxyKey.PageDown, OxyModifierKeys.Control, PlotCommands.ZoomOutFine);
-        }
-
-        /// <summary>
-        /// Gets the input bindings.
-        /// </summary>
-        /// <remarks>This collection is used to specify the customized input gestures (both key, mouse and touch).</remarks>
-        public List<InputCommandBinding> InputCommandBindings { get; private set; }
-
-        /// <summary>
-        /// Binds the specified command to the specified mouse gesture. Removes old bindings to the gesture.
-        /// </summary>
-        /// <param name="gesture">The gesture.</param>
-        /// <param name="command">The command. If <c>null</c>, the binding will be removed.</param>
-        public override void Bind(OxyMouseDownGesture gesture, IPlotControllerCommand<OxyMouseDownEventArgs> command)
-        {
-            this.BindCore(gesture, command);
-        }
-
-        /// <summary>
-        /// Binds the specified command to the specified mouse enter gesture. Removes old bindings to the gesture.
-        /// </summary>
-        /// <param name="gesture">The gesture.</param>
-        /// <param name="command">The command. If <c>null</c>, the binding will be removed.</param>
-        public override void Bind(OxyMouseEnterGesture gesture, IPlotControllerCommand<OxyMouseEventArgs> command)
-        {
-            this.BindCore(gesture, command);
-        }
-
-        /// <summary>
-        /// Binds the specified command to the specified mouse wheel gesture. Removes old bindings to the gesture.
-        /// </summary>
-        /// <param name="gesture">The gesture.</param>
-        /// <param name="command">The command. If <c>null</c>, the binding will be removed.</param>
-        public override void Bind(OxyMouseWheelGesture gesture, IPlotControllerCommand<OxyMouseWheelEventArgs> command)
-        {
-            this.BindCore(gesture, command);
-        }
-
-        /// <summary>
-        /// Binds the specified command to the specified touch gesture. Removes old bindings to the gesture.
-        /// </summary>
-        /// <param name="gesture">The gesture.</param>
-        /// <param name="command">The command. If <c>null</c>, the binding will be removed.</param>
-        public override void Bind(OxyTouchGesture gesture, IPlotControllerCommand<OxyTouchEventArgs> command)
-        {
-            this.BindCore(gesture, command);
-        }
-
-        /// <summary>
-        /// Binds the specified command to the specified key gesture. Removes old bindings to the gesture.
-        /// </summary>
-        /// <param name="gesture">The gesture.</param>
-        /// <param name="command">The command. If <c>null</c>, the binding will be removed.</param>
-        public override void Bind(OxyKeyGesture gesture, IPlotControllerCommand<OxyKeyEventArgs> command)
-        {
-            this.BindCore(gesture, command);
-        }
-
-        /// <summary>
-        /// Unbinds the specified gesture.
-        /// </summary>
-        /// <param name="gesture">The gesture to unbind.</param>
-        public override void Unbind(OxyInputGesture gesture)
-        {
-            // ReSharper disable once RedundantNameQualifier
-            foreach (var icb in this.InputCommandBindings.Where(icb => icb.Gesture.Equals(gesture)).ToArray())
-            {
-                this.InputCommandBindings.Remove(icb);
-            }
-        }
-
-        /// <summary>
-        /// Unbinds the specified command from all gestures.
-        /// </summary>
-        /// <param name="command">The command to unbind.</param>
-        public override void Unbind(IPlotControllerCommand command)
-        {
-            // ReSharper disable once RedundantNameQualifier
-            foreach (var icb in this.InputCommandBindings.Where(icb => object.ReferenceEquals(icb.Command, command)).ToArray())
-            {
-                this.InputCommandBindings.Remove(icb);
-            }
-        }
-
-        /// <summary>
-        /// Unbinds all commands.
-        /// </summary>
-        public override void UnbindAll()
-        {
-            this.InputCommandBindings.Clear();
-        }
-
-        /// <summary>
-        /// Binds the specified command to the specified gesture. Removes old bindings to the gesture.
-        /// </summary>
-        /// <param name="gesture">The gesture.</param>
-        /// <param name="command">The command. If <c>null</c>, the binding will be removed.</param>
-        /// <remarks>This method was created to avoid calling a virtual method in the constructor.</remarks>
-        protected void BindCore(OxyInputGesture gesture, IPlotControllerCommand command)
-        {
-            var current = this.InputCommandBindings.FirstOrDefault(icb => icb.Gesture.Equals(gesture));
-            if (current != null)
-            {
-                this.InputCommandBindings.Remove(current);
-            }
-
-            if (command != null)
-            {
-                this.InputCommandBindings.Add(new InputCommandBinding(gesture, command));
-            }
-        }
-
-        /// <summary>
-        /// Gets the command for the specified <see cref="OxyInputGesture" />.
-        /// </summary>
-        /// <param name="gesture">The input gesture.</param>
-        /// <returns>A command.</returns>
-        protected override IPlotControllerCommand GetCommand(OxyInputGesture gesture)
-        {
-            var binding = this.InputCommandBindings.FirstOrDefault(b => b.Gesture.Equals(gesture));
-            if (binding == null)
-            {
-                return null;
-            }
-
-            return binding.Command;
         }
     }
 }

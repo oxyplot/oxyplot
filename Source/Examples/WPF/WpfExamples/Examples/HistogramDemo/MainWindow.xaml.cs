@@ -28,53 +28,55 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Windows;
-using System.Windows.Input;
-using System.Windows.Media.Imaging;
-using OxyPlot;
-
 // Original code
 // http://www.scottlogic.co.uk/blog/colin/2010/11/visiblox-charts-vs-silverlight-toolkit-charts-a-test-of-performance-2/
 
 namespace HistogramDemo
 {
+    using System;
+    using System.Windows;
+    using System.Windows.Input;
+    using System.Windows.Media.Imaging;
+
+    using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
+
+    using WpfExamples;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    [Example("Plots a histogram of RGB components.")]
+    public partial class MainWindow
     {
         private readonly LineSeries blueLine;
         private readonly LineSeries greenLine;
         private readonly LineSeries redLine;
 
-        private bool lButtonDown;
+        private bool leftButtonDown;
         private int[] pixelData;
 
         public MainWindow()
         {
-            InitializeComponent();
+            this.InitializeComponent();
 
-            LoadPixelData();
+            this.LoadPixelData();
 
             var throttledEvent = new ThrottledMouseMoveEvent(image);
-            throttledEvent.ThrottledMouseMove += ThrottledEvent_ThrottledMouseMove;
-            var pm = new PlotModel("RGB histogram");
-            redLine = new LineSeries(OxyColors.Red);
-            greenLine = new LineSeries(OxyColors.Green);
-            blueLine = new LineSeries(OxyColors.Blue);
-            redLine.Smooth = true;
-            greenLine.Smooth = true;
-            blueLine.Smooth = true;
-            pm.Series.Add(redLine);
-            pm.Series.Add(greenLine);
-            pm.Series.Add(blueLine);
-            pm.PlotMargins = new OxyThickness(60,0,0,30);
-            pm.Axes.Add(new LinearAxis(AxisPosition.Left, 0, 1, 0.2, 0.05, "Frequency"));
-            pm.Axes.Add(new LinearAxis(AxisPosition.Bottom, 0, 100, "Lightness"));
+            throttledEvent.ThrottledMouseMove += this.ThrottledEvent_ThrottledMouseMove;
+            var pm = new PlotModel { Title = "RGB histogram" };
+            this.redLine = new LineSeries { Color = OxyColors.Red };
+            this.greenLine = new LineSeries { Color = OxyColors.Green };
+            this.blueLine = new LineSeries { Color = OxyColors.Blue };
+            this.redLine.Smooth = true;
+            this.greenLine.Smooth = true;
+            this.blueLine.Smooth = true;
+            pm.Series.Add(this.redLine);
+            pm.Series.Add(this.greenLine);
+            pm.Series.Add(this.blueLine);
+            pm.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 0, Maximum = 1, MajorStep = 0.2, MinorStep = 0.05, Title = "Frequency" });
+            pm.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = 0, Maximum = 100, Title = "Lightness" });
             chart.Model = pm;
         }
 
@@ -85,11 +87,11 @@ namespace HistogramDemo
         {
             var bitmapImage = new BitmapImage(new Uri("pack://application:,,,/Examples/HistogramDemo/hare.jpg"));
 
-            int nStride = (bitmapImage.PixelWidth * bitmapImage.Format.BitsPerPixel + 7) / 8;
-            var pixelByteArray = new byte[bitmapImage.PixelHeight * nStride];
-            bitmapImage.CopyPixels(pixelByteArray, nStride, 0);
-            pixelData = new int[pixelByteArray.Length / 4];
-            Buffer.BlockCopy(pixelByteArray, 0, pixelData, 0, pixelByteArray.Length);
+            int stride = ((bitmapImage.PixelWidth * bitmapImage.Format.BitsPerPixel) + 7) / 8;
+            var pixelByteArray = new byte[bitmapImage.PixelHeight * stride];
+            bitmapImage.CopyPixels(pixelByteArray, stride, 0);
+            this.pixelData = new int[pixelByteArray.Length / 4];
+            Buffer.BlockCopy(pixelByteArray, 0, this.pixelData, 0, pixelByteArray.Length);
         }
 
         /// <summary>
@@ -97,24 +99,25 @@ namespace HistogramDemo
         /// </summary>
         private void ThrottledEvent_ThrottledMouseMove(object sender, MouseEventArgs e)
         {
-            if (!lButtonDown)
+            if (!this.leftButtonDown)
+            {
                 return;
+            }
 
             line.X2 = e.GetPosition(grid).X;
             line.Y2 = e.GetPosition(grid).Y;
 
             // compute distance between the points
-            double distance = Math.Sqrt((line.X1 - line.X2) * (line.X1 - line.X2) +
-                                        (line.Y1 - line.Y2) * (line.Y1 - line.Y2));
+            double distance = Math.Sqrt((line.X1 - line.X2) * (line.X1 - line.X2) + (line.Y1 - line.Y2) * (line.Y1 - line.Y2));
 
-            redLine.Points.Clear();
-            greenLine.Points.Clear();
-            blueLine.Points.Clear();
+            this.redLine.Points.Clear();
+            this.greenLine.Points.Clear();
+            this.blueLine.Points.Clear();
 
             int b = 16;
-            int[] histoR = new int[256 / b];
-            int[] histoG = new int[256 / b];
-            int[] histoB = new int[256 / b];
+            var histoR = new int[256 / b];
+            var histoG = new int[256 / b];
+            var histoB = new int[256 / b];
 
             // build the charts
             int n = 0;
@@ -126,33 +129,28 @@ namespace HistogramDemo
                 var xIndex = (int)xPos;
                 var yIndex = (int)yPos;
 
-                int pixel = pixelData[xIndex + yIndex * 300];
+                int pixel = this.pixelData[xIndex + (yIndex * 300)];
 
                 // the RGB values are 'packed' into an int, here we unpack them
-                var B = (byte)(pixel & 0xFF);
+                var blue = (byte)(pixel & 0xFF);
                 pixel >>= 8;
-                var G = (byte)(pixel & 0xFF);
+                var green = (byte)(pixel & 0xFF);
                 pixel >>= 8;
-                var R = (byte)(pixel & 0xFF);
-                //pixel >>= 8;
-                //var A = (byte)(pixel & 0xFF);
+                var red = (byte)(pixel & 0xFF);
 
-                //redLine.Points.Add(new OxyPlot.Point(pt, R));
-                //greenLine.Points.Add(new OxyPlot.Point(pt, G));
-                //blueLine.Points.Add(new OxyPlot.Point(pt, B));
-
-                histoR[R / b]++;
-                histoG[G / b]++;
-                histoB[B / b]++;
+                histoR[red / b]++;
+                histoG[green / b]++;
+                histoB[blue / b]++;
                 n++;
             }
+
             double xScale = 100.0 / histoR.Length;
             for (int i = 0; i < histoR.Length; i++)
             {
                 double x = i * xScale;
-                redLine.Points.Add(new DataPoint(x,(double)histoR[i] / n));
-                greenLine.Points.Add(new DataPoint(x, (double)histoG[i] / n));
-                blueLine.Points.Add(new DataPoint(x, (double)histoB[i] / n));
+                this.redLine.Points.Add(new DataPoint(x, (double)histoR[i] / n));
+                this.greenLine.Points.Add(new DataPoint(x, (double)histoG[i] / n));
+                this.blueLine.Points.Add(new DataPoint(x, (double)histoB[i] / n));
             }
 
             chart.InvalidatePlot();
@@ -161,14 +159,14 @@ namespace HistogramDemo
         private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             instructions.Visibility = Visibility.Collapsed;
-            lButtonDown = true;
+            this.leftButtonDown = true;
             line.X1 = line.X2 = e.GetPosition(grid).X;
             line.Y1 = line.Y2 = e.GetPosition(grid).Y;
         }
 
         private void Grid_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            lButtonDown = false;
+            this.leftButtonDown = false;
         }
     }
 }

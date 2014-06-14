@@ -23,6 +23,9 @@
 //   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
+// <summary>
+//   Handles device orientation changes.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace ExampleBrowser
@@ -42,9 +45,13 @@ namespace ExampleBrowser
     {
         private readonly ExampleInfo exampleInfo;
 
+		private PlotView plotView;
+
         public GraphViewController (ExampleInfo exampleInfo)
         {
             this.exampleInfo = exampleInfo;
+			this.plotView = new PlotView ();
+			this.plotView.Model = exampleInfo.PlotModel;
         }
 
         public override void LoadView ()
@@ -69,13 +76,21 @@ namespace ExampleBrowser
             // Only for iOS 7 and later?
             this.EdgesForExtendedLayout = UIRectEdge.None;
 
-            var plot = new PlotView ();
-            plot.Model = exampleInfo.PlotModel;
-            plot.BackgroundColor = UIColor.White;
-            this.View = plot;
+            this.View = this.plotView;
+
         }
 
-        private void Email(string exportType)
+		/// <summary>
+		/// Handles device orientation changes.
+		/// </summary>
+		/// <param name="fromInterfaceOrientation">The previous interface orientation.</param>
+		public override void DidRotate (UIInterfaceOrientation fromInterfaceOrientation)
+		{
+			base.DidRotate (fromInterfaceOrientation);
+			this.plotView.InvalidatePlot (false);
+		}
+        
+		private void Email(string exportType)
         {
             if(!MFMailComposeViewController.CanSendMail)
                 return;

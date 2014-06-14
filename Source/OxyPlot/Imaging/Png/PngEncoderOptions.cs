@@ -24,14 +24,14 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents encoder options for the <see cref="PngEncoder"/>.
+//   Represents options for the <see cref="PngEncoder" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     /// <summary>
-    /// Represents encoder options for the <see cref="PngEncoder" />.
+    /// Represents options for the <see cref="PngEncoder" />.
     /// </summary>
     public class PngEncoderOptions : ImageEncoderOptions
     {

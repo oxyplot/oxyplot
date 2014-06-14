@@ -12,7 +12,7 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <oxy:Plot Model="{Binding}" Height="300"/>
+                        <oxy:PlotView Model="{Binding}" Height="300"/>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

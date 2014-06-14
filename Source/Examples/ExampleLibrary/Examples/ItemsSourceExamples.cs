@@ -25,84 +25,94 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using OxyPlot;
-
 namespace ExampleLibrary
 {
+    using System;
+    using System.Collections.Generic;
+
+    using OxyPlot;
     using OxyPlot.Series;
 
     [Examples("ItemsSource")]
     public class ItemsSourceExamples : ExamplesBase
     {
-        [Example("Using IDataPointProvider")]
-        public static PlotModel UsingIDataPointProvider()
-        {
-            var measurements = new[] { new MeasurementType1(0, 10), new MeasurementType1(10, 8), new MeasurementType1(15, 12) };
-            var model = new PlotModel("Using IDataPointProvider");
-            model.Series.Add(new LineSeries { ItemsSource = measurements });
-            return model;
-        }
-
-        [Example("Using IDataPoint")]
+        private static int n = 100000;
+        [Example("List<DataPoint>")]
         public static PlotModel UsingIDataPoint()
         {
-            var measurements = new[] { new MeasurementType2(0, 8), new MeasurementType2(10, 10), new MeasurementType2(15, 12) };
-            var model = new PlotModel("Using IDataPoint");
-            model.Series.Add(new LineSeries { ItemsSource = measurements });
+            var points = new List<DataPoint>(n);
+            for (int i = 0; i < n; i++)
+            {
+                var x = (double)i / (n - 1);
+                points.Add(new DataPoint(x, y(x)));
+            }
+
+            var model = new PlotModel { Title = "Using IDataPoint" };
+            model.Series.Add(new LineSeries { ItemsSource = points });
             return model;
         }
 
-        [Example("Using reflection")]
-        public static PlotModel UsingReflection()
+        [Example("Items implementing IDataPointProvider")]
+        public static PlotModel UsingIDataPointProvider()
         {
-            var measurements = new[] { new MeasurementType3(0, 12), new MeasurementType3(10, 8), new MeasurementType3(15, 10) };
-            var model = new PlotModel("Using reflection");
-            model.Series.Add(new LineSeries { ItemsSource = measurements, DataFieldX = "Abscissa", DataFieldY = "Ordinate" });
+            var points = new List<PointType1>(n);
+            for (int i = 0; i < n; i++)
+            {
+                var x = (double)i / (n - 1);
+                points.Add(new PointType1(x, y(x)));
+            }
+
+            var model = new PlotModel { Title = "Items implementing IDataPointProvider" };
+            model.Series.Add(new LineSeries { ItemsSource = points });
             return model;
         }
 
-        [Example("Using Mapping property")]
+        [Example("Mapping property")]
         public static PlotModel UsingMappingProperty()
         {
-            var measurements = new[] { new MeasurementType3(0, 12), new MeasurementType3(10, 8), new MeasurementType3(15, 10) };
-            var model = new PlotModel("Using Mapping property");
+            var points = new List<PointType2>(n);
+            for (int i = 0; i < n; i++)
+            {
+                var x = (double)i / (n - 1);
+                points.Add(new PointType2(x, y(x)));
+            }
+
+            var model = new PlotModel { Title = "Using Mapping property" };
             model.Series.Add(
                 new LineSeries
-                    {
-                        ItemsSource = measurements,
-                        Mapping =
-                            item => new DataPoint(((MeasurementType3)item).Abscissa, ((MeasurementType3)item).Ordinate)
-                    });
+                {
+                    ItemsSource = points,
+                    Mapping = item => new DataPoint(((PointType2)item).Abscissa, ((PointType2)item).Ordinate)
+                });
             return model;
         }
 
-        private class MeasurementType1 : IDataPointProvider
+        [Example("Using reflection (slow)")]
+        public static PlotModel UsingReflection()
         {
-            public double Abscissa { get; set; }
-            public double Ordinate { get; set; }
-
-            public MeasurementType1(double abscissa, double ordinate)
+            var points = new List<PointType2>(n);
+            for (int i = 0; i < n; i++)
             {
-                this.Abscissa = abscissa;
-                this.Ordinate = ordinate;
+                var x = (double)i / (n - 1);
+                points.Add(new PointType2(x, y(x)));
             }
 
-            public DataPoint GetDataPoint()
-            {
-                return new DataPoint(Abscissa, Ordinate);
-            }
+            var model = new PlotModel { Title = "Using reflection (slow)" };
+            model.Series.Add(new LineSeries { ItemsSource = points, DataFieldX = "Abscissa", DataFieldY = "Ordinate" });
+            return model;
         }
 
-        private class MeasurementType2 : IDataPoint
+        private class PointType1 : IDataPointProvider, ICodeGenerating
         {
-            public double Abscissa { get; set; }
-            public double Ordinate { get; set; }
-
-            public MeasurementType2(double abscissa, double ordinate)
+            public PointType1(double abscissa, double ordinate)
             {
                 this.Abscissa = abscissa;
                 this.Ordinate = ordinate;
             }
+
+            public double Abscissa { get; private set; }
+
+            public double Ordinate { get; private set; }
 
             public DataPoint GetDataPoint()
             {
@@ -113,43 +123,30 @@ namespace ExampleLibrary
             {
                 return CodeGenerator.FormatConstructor(this.GetType(), "{0},{1}", this.Abscissa, this.Ordinate);
             }
-
-            public double X
-            {
-                get
-                {
-                    return Abscissa;
-                }
-                set
-                {
-                    Abscissa = value;
-                }
-            }
-
-            public double Y
-            {
-                get
-                {
-                    return Ordinate;
-                }
-                set
-                {
-                    Ordinate = value;
-                }
-            }
         }
 
-        private class MeasurementType3
+        private class PointType2
         {
-            public double Abscissa { get; set; }
-
-            public double Ordinate { get; set; }
-
-            public MeasurementType3(double abscissa, double ordinate)
+            public PointType2(double abscissa, double ordinate)
             {
                 this.Abscissa = abscissa;
                 this.Ordinate = ordinate;
             }
+
+            public double Abscissa { get; private set; }
+
+            public double Ordinate { get; private set; }
+        }
+
+        /// <summary>
+        /// Evaluates a chaotic function.
+        /// </summary>
+        /// <param name="x">The x value.</param>
+        /// <returns>A y value.</returns>
+        private static double y(double x)
+        {
+            // http://computing.dcu.ie/~humphrys/Notes/Neural/chaos.html
+            return Math.Sin(3 / x) * Math.Sin(5 / (1 - x));
         }
     }
 }

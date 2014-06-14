@@ -76,7 +76,7 @@ namespace OxyPlot
         /// <param name="height">The height (points).</param>
         /// <param name="isDocument">if set to <c>true</c>, the xml headers will be included (?xml and !DOCTYPE).</param>
         /// <param name="textMeasurer">The text measurer.</param>
-        public static void Export(PlotModel model, Stream stream, double width, double height, bool isDocument, IRenderContext textMeasurer = null)
+        public static void Export(IPlotModel model, Stream stream, double width, double height, bool isDocument, IRenderContext textMeasurer = null)
         {
             if (textMeasurer == null)
             {
@@ -85,7 +85,7 @@ namespace OxyPlot
 
             using (var rc = new SvgRenderContext(stream, width, height, true, textMeasurer, model.Background))
             {
-                model.Update();
+                model.Update(true);
                 model.Render(rc, width, height);
                 rc.Complete();
                 rc.Flush();
@@ -101,7 +101,7 @@ namespace OxyPlot
         /// <param name="isDocument">if set to <c>true</c>, the xml headers will be included (?xml and !DOCTYPE).</param>
         /// <param name="textMeasurer">The text measurer.</param>
         /// <returns>The plot as a svg string.</returns>
-        public static string ExportToString(PlotModel model, double width, double height, bool isDocument, IRenderContext textMeasurer = null)
+        public static string ExportToString(IPlotModel model, double width, double height, bool isDocument, IRenderContext textMeasurer = null)
         {
             string svg;
             using (var ms = new MemoryStream())
@@ -121,7 +121,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="model">The model to export.</param>
         /// <param name="stream">The target stream.</param>
-        public void Export(PlotModel model, Stream stream)
+        public void Export(IPlotModel model, Stream stream)
         {
             Export(model, stream, this.Width, this.Height, this.IsDocument, this.TextMeasurer);
         }
@@ -131,7 +131,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="model">The model.</param>
         /// <returns>the SVG content as a string.</returns>
-        public string ExportToString(PlotModel model)
+        public string ExportToString(IPlotModel model)
         {
             return ExportToString(model, this.Width, this.Height, this.IsDocument, this.TextMeasurer);
         }

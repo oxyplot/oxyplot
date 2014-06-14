@@ -12,6 +12,6 @@
     </Page.DataContext>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <oxy:Plot Model="{Binding MyModel}"/>
+        <oxy:PlotView Model="{Binding MyModel}"/>
     </Grid>
 </Page>

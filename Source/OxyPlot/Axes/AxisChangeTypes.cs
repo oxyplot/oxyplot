@@ -24,14 +24,14 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Specifies change types for the <see cref="Axis.AxisChanged"/> event.
+//   Defines change types for the <see cref="Axis.AxisChanged" /> event.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Axes
 {
     /// <summary>
-    /// Specifies change types for the <see cref="Axis.AxisChanged" /> event.
+    /// Defines change types for the <see cref="Axis.AxisChanged" /> event.
     /// </summary>
     public enum AxisChangeTypes
     {

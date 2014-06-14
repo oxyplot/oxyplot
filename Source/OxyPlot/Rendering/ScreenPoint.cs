@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents a point defined in the screen coordinate system.
+//   Represents a point defined in screen space.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -34,7 +34,7 @@ namespace OxyPlot
     using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
-    /// Represents a point defined in the screen coordinate system.
+    /// Represents a point defined in screen space.
     /// </summary>
     /// <remarks>The rendering methods transforms <see cref="DataPoint" />s to <see cref="ScreenPoint" />s.</remarks>
     public struct ScreenPoint

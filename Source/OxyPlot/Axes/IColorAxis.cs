@@ -24,16 +24,16 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines functionality for color axes.
+//   Specifies functionality for color axes.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Axes
 {
     /// <summary>
-    /// Defines functionality for color axes.
+    /// Specifies functionality for color axes.
     /// </summary>
-    public interface IColorAxis
+    public interface IColorAxis : IPlotElement
     {
         /// <summary>
         /// Gets the color of the specified index in the color palette.

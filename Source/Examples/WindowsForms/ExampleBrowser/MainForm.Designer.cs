@@ -39,7 +39,7 @@ namespace ExampleBrowser
             OxyPlot.PlotModel plotModel1 = new OxyPlot.PlotModel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.treeView1 = new System.Windows.Forms.TreeView();
-            this.plot1 = new OxyPlot.WindowsForms.Plot();
+            this.plot1 = new OxyPlot.WindowsForms.PlotView();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -75,7 +75,6 @@ namespace ExampleBrowser
             // 
             this.plot1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.plot1.Location = new System.Drawing.Point(0, 0);
-            plotModel1.AutoAdjustPlotMargins = true;
             plotModel1.AxisTierDistance = 4D;
             plotModel1.Background = OxyColors.Transparent;
             plotModel1.Culture = null;
@@ -110,7 +109,7 @@ namespace ExampleBrowser
             plotModel1.LegendTitleFontWeight = 700D;
             plotModel1.PlotAreaBackground = OxyColors.Undefined;
             plotModel1.PlotAreaBorderColor = OxyColors.Undefined;
-            plotModel1.PlotAreaBorderThickness = 1D;
+            plotModel1.PlotAreaBorderThickness = new OxyThickness(1);
             plotModel1.PlotType = OxyPlot.PlotType.XY;
             plotModel1.SelectionColor = OxyColors.Undefined;
             plotModel1.Subtitle = null;
@@ -155,6 +154,6 @@ namespace ExampleBrowser
 
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.TreeView treeView1;
-        private OxyPlot.WindowsForms.Plot plot1;
+        private OxyPlot.WindowsForms.PlotView plot1;
     }
 }

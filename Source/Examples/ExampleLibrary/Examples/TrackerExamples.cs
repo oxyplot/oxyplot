@@ -38,9 +38,10 @@ namespace ExampleLibrary
         [Example("No interpolation")]
         public static PlotModel NoInterpolation()
         {
-            var model = new PlotModel("No tracker interpolation", "Used for discrete values or scatter plots.") { LegendSymbolLength = 30 };
-            var s1 = new LineSeries("Series 1")
+            var model = new PlotModel { Title = "No tracker interpolation", Subtitle = "Used for discrete values or scatter plots.", LegendSymbolLength = 30 };
+            var s1 = new LineSeries
                          {
+                             Title = "Series 1",
                              CanTrackerInterpolatePoints = false,
                              Color = OxyColors.SkyBlue,
                              MarkerType = MarkerType.Circle,
@@ -62,7 +63,7 @@ namespace ExampleLibrary
         [Example("TrackerChangedEvent")]
         public static PlotModel TrackerChangedEvent()
         {
-            var model = new PlotModel("Handling the TrackerChanged event", "Press the left mouse button to test the tracker.");
+            var model = new PlotModel { Title = "Handling the TrackerChanged event", Subtitle = "Press the left mouse button to test the tracker." };
             model.Series.Add(new FunctionSeries(Math.Sin, 0, 10, 100));
             model.TrackerChanged += (s, e) =>
             {

@@ -99,15 +99,13 @@ namespace OxyPlot.Axes
 
             if (pass == 0)
             {
-                if (axis.ShowMinorTicks)
-                {
-                    this.RenderMinorItems(axis, axisPosition);
-                }
+                this.RenderMinorItems(axis, axisPosition);
             }
 
             if (pass == 1)
             {
                 this.RenderMajorItems(axis, axisPosition, titlePosition);
+                this.RenderAxisTitle(axis, titlePosition);
             }
         }
 
@@ -125,7 +123,7 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Snaps v to value if it is within the the specified distance.
+        /// Snaps v to value if it is within the specified distance.
         /// </summary>
         /// <param name="target">The target value.</param>
         /// <param name="v">The value to snap.</param>
@@ -239,6 +237,11 @@ namespace OxyPlot.Axes
         /// <param name="titlePosition">The title position.</param>
         protected virtual void RenderAxisTitle(Axis axis, double titlePosition)
         {
+            if (string.IsNullOrEmpty(axis.ActualTitle))
+            {
+                return;
+            }
+
             bool isHorizontal = axis.IsHorizontal();
 
             OxySize? maxSize = null;
@@ -298,7 +301,7 @@ namespace OxyPlot.Axes
             double a1;
             var majorSegments = new List<ScreenPoint>();
             var majorTickSegments = new List<ScreenPoint>();
-                this.GetTickPositions(axis, axis.TickStyle, axis.MajorTickSize, axis.Position, out a0, out a1);
+            this.GetTickPositions(axis, axis.TickStyle, axis.MajorTickSize, axis.Position, out a0, out a1);
 
             foreach (double value in this.MajorTickValues)
             {
@@ -338,7 +341,7 @@ namespace OxyPlot.Axes
                     }
                 }
 
-                if (axis.TickStyle != TickStyle.None)
+                if (axis.TickStyle != TickStyle.None && axis.MajorTickSize > 0)
                 {
                     if (isHorizontal)
                     {
@@ -386,22 +389,38 @@ namespace OxyPlot.Axes
                     case AxisPosition.Left:
                         pt = new ScreenPoint(axisPosition + a1 - axis.AxisTickToLabelDistance, transformedValue);
                         this.GetRotatedAlignments(
-                            axis.Angle, HorizontalAlignment.Right, VerticalAlignment.Middle, out ha, out va);
+                            axis.Angle,
+                            HorizontalAlignment.Right,
+                            VerticalAlignment.Middle,
+                            out ha,
+                            out va);
                         break;
                     case AxisPosition.Right:
                         pt = new ScreenPoint(axisPosition + a1 + axis.AxisTickToLabelDistance, transformedValue);
                         this.GetRotatedAlignments(
-                            axis.Angle, HorizontalAlignment.Left, VerticalAlignment.Middle, out ha, out va);
+                            axis.Angle,
+                            HorizontalAlignment.Left,
+                            VerticalAlignment.Middle,
+                            out ha,
+                            out va);
                         break;
                     case AxisPosition.Top:
                         pt = new ScreenPoint(transformedValue, axisPosition + a1 - axis.AxisTickToLabelDistance);
                         this.GetRotatedAlignments(
-                            axis.Angle, HorizontalAlignment.Center, VerticalAlignment.Bottom, out ha, out va);
+                            axis.Angle,
+                            HorizontalAlignment.Center,
+                            VerticalAlignment.Bottom,
+                            out ha,
+                            out va);
                         break;
                     case AxisPosition.Bottom:
                         pt = new ScreenPoint(transformedValue, axisPosition + a1 + axis.AxisTickToLabelDistance);
                         this.GetRotatedAlignments(
-                            axis.Angle, HorizontalAlignment.Center, VerticalAlignment.Top, out ha, out va);
+                            axis.Angle,
+                            HorizontalAlignment.Center,
+                            VerticalAlignment.Top,
+                            out ha,
+                            out va);
                         break;
                 }
 
@@ -445,11 +464,21 @@ namespace OxyPlot.Axes
                     double transformedValue = axis.Transform(value);
                     if (isHorizontal)
                     {
-                        this.RenderContext.DrawLine(transformedValue, plotAreaTop, transformedValue, plotAreaBottom, this.ExtraPen);
+                        this.RenderContext.DrawLine(
+                            transformedValue,
+                            plotAreaTop,
+                            transformedValue,
+                            plotAreaBottom,
+                            this.ExtraPen);
                     }
                     else
                     {
-                        this.RenderContext.DrawLine(plotAreaLeft, transformedValue, plotAreaRight, transformedValue, this.ExtraPen);
+                        this.RenderContext.DrawLine(
+                            plotAreaLeft,
+                            transformedValue,
+                            plotAreaRight,
+                            transformedValue,
+                            this.ExtraPen);
                     }
                 }
             }
@@ -472,12 +501,6 @@ namespace OxyPlot.Axes
                     axisPosition,
                     axis.Transform(actualMaximum),
                     this.AxislinePen);
-            }
-
-            // Draw the axis title
-            if (!string.IsNullOrEmpty(axis.ActualTitle))
-            {
-                this.RenderAxisTitle(axis, titlePosition);
             }
 
             if (this.MajorPen != null)
@@ -565,7 +588,7 @@ namespace OxyPlot.Axes
                 }
 
                 // Draw the minor tick
-                if (axis.TickStyle != TickStyle.None)
+                if (axis.TickStyle != TickStyle.None && axis.MinorTickSize > 0)
                 {
                     if (isHorizontal)
                     {

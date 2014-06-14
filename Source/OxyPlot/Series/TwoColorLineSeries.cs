@@ -134,7 +134,7 @@ namespace OxyPlot.Series
         /// <param name="rc">The render context.</param>
         /// <param name="clippingRect">The clipping rectangle.</param>
         /// <param name="pointsToRender">The points.</param>
-        protected override void RenderSmoothedLine(IRenderContext rc, OxyRect clippingRect, IList<ScreenPoint> pointsToRender)
+        protected override void RenderLine(IRenderContext rc, OxyRect clippingRect, IList<ScreenPoint> pointsToRender)
         {
             double bottom = clippingRect.Bottom;
 
@@ -156,8 +156,8 @@ namespace OxyPlot.Series
 
             clippingRect.Bottom = y;
             rc.DrawClippedLine(
-                pointsToRender,
                 clippingRect,
+                pointsToRender,
                 this.MinimumSegmentLength * this.MinimumSegmentLength,
                 this.GetSelectableColor(this.ActualColor),
                 this.StrokeThickness,
@@ -167,8 +167,8 @@ namespace OxyPlot.Series
             clippingRect.Top = y;
             clippingRect.Height = bottom - y;
             rc.DrawClippedLine(
-                pointsToRender,
                 clippingRect,
+                pointsToRender,
                 this.MinimumSegmentLength * this.MinimumSegmentLength,
                 this.GetSelectableColor(this.ActualColor2),
                 this.StrokeThickness,

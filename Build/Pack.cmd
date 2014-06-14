@@ -50,7 +50,8 @@ mkdir ..\Packages\OxyPlot.Metro\lib\NetCore45
 mkdir ..\Packages\OxyPlot.Metro\lib\NetCore45\OxyPlot.Metro
 mkdir ..\Packages\OxyPlot.Metro\lib\NetCore45\OxyPlot.Metro\Themes
 copy ..\Output\NetCore45\OxyPlot.Metro.??? ..\Packages\OxyPlot.Metro\lib\NetCore45
-copy ..\Output\NetCore45\Themes\Generic.xaml ..\Packages\OxyPlot.Metro\lib\NetCore45\OxyPlot.Metro\Themes
+copy ..\Output\NetCore45\OxyPlot.Metro.xr.xml ..\Packages\OxyPlot.Metro\lib\NetCore45\OxyPlot.Metro
+copy ..\Output\NetCore45\Themes\Generic.* ..\Packages\OxyPlot.Metro\lib\NetCore45\OxyPlot.Metro\Themes
 copy ..\LICENSE ..\Packages\OxyPlot.Metro
 ..\Source\.nuget\NuGet.exe pack ..\Packages\OxyPlot.Metro\OxyPlot.Metro.nuspec -OutputDirectory ..\Packages >> pack.log
 
@@ -63,6 +64,27 @@ copy ..\Output\SL4\OxyPlot.Silverlight.??? ..\Packages\OxyPlot.Silverlight\lib\S
 copy ..\Output\SL5\OxyPlot.Silverlight.??? ..\Packages\OxyPlot.Silverlight\lib\SL5
 copy ..\LICENSE ..\Packages\OxyPlot.Silverlight
 ..\Source\.nuget\NuGet.exe pack ..\Packages\OxyPlot.Silverlight\OxyPlot.Silverlight.nuspec -OutputDirectory ..\Packages >> pack.log
+
+REM === WP8 ===
+mkdir ..\Packages\OxyPlot.WP8\lib
+mkdir ..\Packages\OxyPlot.WP8\lib\wp80
+copy ..\Output\WP8\OxyPlot.WP8.??? ..\Packages\OxyPlot.WP8\lib\wp80
+copy ..\LICENSE ..\Packages\OxyPlot.WP8
+..\Source\.nuget\NuGet.exe pack ..\Packages\OxyPlot.WP8\OxyPlot.WP8.nuspec -OutputDirectory ..\Packages >> pack.log
+
+REM === Xamarin.iOS ===
+mkdir ..\Packages\OxyPlot.XamarinIOS\lib
+mkdir ..\Packages\OxyPlot.XamarinIOS\lib\MonoTouch
+copy ..\Output\XamarinIOS\OxyPlot.XamarinIOS.??? ..\Packages\OxyPlot.XamarinIOS\lib\MonoTouch
+copy ..\LICENSE ..\Packages\OxyPlot.XamarinIOS
+..\Source\.nuget\NuGet.exe pack ..\Packages\OxyPlot.XamarinIOS\OxyPlot.XamarinIOS.nuspec -OutputDirectory ..\Packages >> pack.log
+
+REM === Xamarin.Android ===
+mkdir ..\Packages\OxyPlot.XamarinAndroid\lib
+mkdir ..\Packages\OxyPlot.XamarinAndroid\lib\MonoAndroid
+copy ..\Output\XamarinAndroid\OxyPlot.XamarinAndroid.??? ..\Packages\OxyPlot.XamarinAndroid\lib\MonoAndroid
+copy ..\LICENSE ..\Packages\OxyPlot.XamarinAndroid
+..\Source\.nuget\NuGet.exe pack ..\Packages\OxyPlot.XamarinAndroid\OxyPlot.XamarinAndroid.nuspec -OutputDirectory ..\Packages >> pack.log
 
 REM === WINFORMS ===
 mkdir ..\Packages\OxyPlot.WindowsForms\lib

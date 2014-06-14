@@ -24,14 +24,14 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Provides a set of static predefined font weight values.
+//   Defines standard font weight values.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     /// <summary>
-    /// Provides a set of static predefined font weight values.
+    /// Defines standard font weight values.
     /// </summary>
     public static class FontWeights
     {

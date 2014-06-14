@@ -6,8 +6,8 @@
     </Window.Resources>
     <TabControl Margin="4">
         <TabItem Header="Custom background brush">
-            <oxy:Plot Model="{Binding Model}">
-                <oxy:Plot.DefaultTrackerTemplate>
+            <oxy:PlotView Model="{Binding Model}">
+                <oxy:PlotView.DefaultTrackerTemplate>
                     <ControlTemplate>
                         <oxy:TrackerControl Position="{Binding Position}" LineExtents="{Binding PlotModel.PlotArea}">
                             <oxy:TrackerControl.Background>
@@ -21,12 +21,12 @@
                             </oxy:TrackerControl.Content>
                         </oxy:TrackerControl>
                     </ControlTemplate>
-                </oxy:Plot.DefaultTrackerTemplate>
-            </oxy:Plot>
+                </oxy:PlotView.DefaultTrackerTemplate>
+            </oxy:PlotView>
         </TabItem>
         <TabItem Header="Border by series color">
-            <oxy:Plot Model="{Binding Model}">
-                <oxy:Plot.DefaultTrackerTemplate>
+            <oxy:PlotView Model="{Binding Model}">
+                <oxy:PlotView.DefaultTrackerTemplate>
                     <ControlTemplate>
                         <oxy:TrackerControl Position="{Binding Position}" LineExtents="{Binding PlotModel.PlotArea}" BorderBrush="{Binding Series.ActualColor, Converter={StaticResource OxyColorConverter}}" BorderThickness="3">
                             <oxy:TrackerControl.Content>
@@ -34,15 +34,15 @@
                             </oxy:TrackerControl.Content>
                         </oxy:TrackerControl>
                     </ControlTemplate>
-                </oxy:Plot.DefaultTrackerTemplate>
-            </oxy:Plot>
+                </oxy:PlotView.DefaultTrackerTemplate>
+            </oxy:PlotView>
         </TabItem>
         <TabItem Header="No tracker">
-            <oxy:Plot Model="{Binding Model}" DefaultTrackerTemplate="{x:Null}" />
+            <oxy:PlotView Model="{Binding Model}" DefaultTrackerTemplate="{x:Null}" />
         </TabItem>
         <TabItem Header="Rounded box">
-            <oxy:Plot Model="{Binding Model}">
-                <oxy:Plot.DefaultTrackerTemplate>
+            <oxy:PlotView Model="{Binding Model}">
+                <oxy:PlotView.DefaultTrackerTemplate>
                     <ControlTemplate>
                         <oxy:TrackerControl Position="{Binding Position}" ShowPointer="False" CornerRadius="8" BorderEdgeMode="Unspecified" LineExtents="{Binding PlotModel.PlotArea}">
                             <oxy:TrackerControl.Content>
@@ -50,12 +50,12 @@
                             </oxy:TrackerControl.Content>
                         </oxy:TrackerControl>
                     </ControlTemplate>
-                </oxy:Plot.DefaultTrackerTemplate>
-            </oxy:Plot>
+                </oxy:PlotView.DefaultTrackerTemplate>
+            </oxy:PlotView>
         </TabItem>
         <TabItem Header="No vertical line">
-            <oxy:Plot Model="{Binding Model}">
-                <oxy:Plot.DefaultTrackerTemplate>
+            <oxy:PlotView Model="{Binding Model}">
+                <oxy:PlotView.DefaultTrackerTemplate>
                     <ControlTemplate>
                         <oxy:TrackerControl Position="{Binding Position}" VerticalLineVisibility="Collapsed" LineExtents="{Binding PlotModel.PlotArea}">
                             <oxy:TrackerControl.Content>
@@ -63,12 +63,12 @@
                             </oxy:TrackerControl.Content>
                         </oxy:TrackerControl>
                     </ControlTemplate>
-                </oxy:Plot.DefaultTrackerTemplate>
-            </oxy:Plot>
+                </oxy:PlotView.DefaultTrackerTemplate>
+            </oxy:PlotView>
         </TabItem>
         <TabItem Header="Border">
-            <oxy:Plot Model="{Binding Model}">
-                <oxy:Plot.DefaultTrackerTemplate>
+            <oxy:PlotView Model="{Binding Model}">
+                <oxy:PlotView.DefaultTrackerTemplate>
                     <ControlTemplate>
                         <Canvas>
                             <Border CornerRadius="0 6 6 6" BorderBrush="Black" BorderThickness="1" Background="White" Canvas.Left="{Binding Position.X}" Canvas.Top="{Binding Position.Y}" Padding="5" Margin="0">
@@ -76,23 +76,23 @@
                             </Border>
                         </Canvas>
                     </ControlTemplate>
-                </oxy:Plot.DefaultTrackerTemplate>
-            </oxy:Plot>
+                </oxy:PlotView.DefaultTrackerTemplate>
+            </oxy:PlotView>
         </TabItem>
         <TabItem Header="TextBlock">
-            <oxy:Plot Model="{Binding Model}">
-                <oxy:Plot.DefaultTrackerTemplate>
+            <oxy:PlotView Model="{Binding Model}">
+                <oxy:PlotView.DefaultTrackerTemplate>
                     <ControlTemplate>
                         <Canvas>
                             <TextBlock Canvas.Left="{Binding Position.X}" Canvas.Top="{Binding Position.Y}" Padding="5" Margin="10" Background="#a0ffffff" Text="{Binding}" />
                         </Canvas>
                     </ControlTemplate>
-                </oxy:Plot.DefaultTrackerTemplate>
-            </oxy:Plot>
+                </oxy:PlotView.DefaultTrackerTemplate>
+            </oxy:PlotView>
         </TabItem>
         <TabItem Header="Circle">
-            <oxy:Plot Model="{Binding Model}">
-                <oxy:Plot.DefaultTrackerTemplate>
+            <oxy:PlotView Model="{Binding Model}">
+                <oxy:PlotView.DefaultTrackerTemplate>
                     <ControlTemplate>
                         <Canvas>
                             <Grid Canvas.Left="{Binding Position.X}" Canvas.Top="{Binding Position.Y}">
@@ -105,12 +105,12 @@
                             </Grid>
                         </Canvas>
                     </ControlTemplate>
-                </oxy:Plot.DefaultTrackerTemplate>
-            </oxy:Plot>
+                </oxy:PlotView.DefaultTrackerTemplate>
+            </oxy:PlotView>
         </TabItem>
         <TabItem Header="UniformPanel">
-            <oxy:Plot Model="{Binding Model}">
-                <oxy:Plot.DefaultTrackerTemplate>
+            <oxy:PlotView Model="{Binding Model}">
+                <oxy:PlotView.DefaultTrackerTemplate>
                     <ControlTemplate>
                         <oxy:TrackerControl Position="{Binding Position}" LineExtents="{Binding PlotModel.PlotArea}">
 
@@ -126,12 +126,12 @@
                             </oxy:TrackerControl.Content>
                         </oxy:TrackerControl>
                     </ControlTemplate>
-                </oxy:Plot.DefaultTrackerTemplate>
-            </oxy:Plot>
+                </oxy:PlotView.DefaultTrackerTemplate>
+            </oxy:PlotView>
         </TabItem>
         <TabItem Header="Different trackers">
-            <oxy:Plot Model="{Binding Model}">
-                <oxy:Plot.TrackerDefinitions>
+            <oxy:PlotView Model="{Binding Model}">
+                <oxy:PlotView.TrackerDefinitions>
                     <oxy:TrackerDefinition TrackerKey="Tracker1">
                         <oxy:TrackerDefinition.TrackerTemplate>
                             <ControlTemplate>
@@ -150,12 +150,12 @@
                             </ControlTemplate>
                         </oxy:TrackerDefinition.TrackerTemplate>
                     </oxy:TrackerDefinition>
-                </oxy:Plot.TrackerDefinitions>
-            </oxy:Plot>
+                </oxy:PlotView.TrackerDefinitions>
+            </oxy:PlotView>
         </TabItem>
         <TabItem Header="Bind to Item">
-            <oxy:Plot Model="{Binding Model}">
-                <oxy:Plot.DefaultTrackerTemplate>
+            <oxy:PlotView Model="{Binding Model}">
+                <oxy:PlotView.DefaultTrackerTemplate>
                     <ControlTemplate>
                         <oxy:TrackerControl Position="{Binding Position}" LineExtents="{Binding LineExtents}">
                             <oxy:TrackerControl.Content>
@@ -164,8 +164,8 @@
                             </oxy:TrackerControl.Content>
                         </oxy:TrackerControl>
                     </ControlTemplate>
-                </oxy:Plot.DefaultTrackerTemplate>
-            </oxy:Plot>
+                </oxy:PlotView.DefaultTrackerTemplate>
+            </oxy:PlotView>
         </TabItem>
     </TabControl>
 </Window>

@@ -40,8 +40,23 @@ namespace OxyPlot.Series
     /// Represents a series for scatter plots.
     /// </summary>
     /// <remarks>See http://en.wikipedia.org/wiki/Scatter_plot</remarks>
-    public class ScatterSeries : DataPointSeries
+    public class ScatterSeries : XYAxisSeries
     {
+        /// <summary>
+        /// The list of data points.
+        /// </summary>
+        private readonly List<ScatterPoint> points = new List<ScatterPoint>();
+
+        /// <summary>
+        /// The data points from the items source.
+        /// </summary>
+        private List<ScatterPoint> itemsSourcePoints;
+
+        /// <summary>
+        /// Specifies if the itemsSourcePoints list can be modified.
+        /// </summary>
+        private bool ownsItemsSourcePoints;
+
         /// <summary>
         /// The default fill color.
         /// </summary>
@@ -52,56 +67,94 @@ namespace OxyPlot.Series
         /// </summary>
         public ScatterSeries()
         {
-            this.DataFieldSize = null;
-            this.DataFieldValue = null;
-
             this.MarkerFill = OxyColors.Automatic;
             this.MarkerSize = 5;
             this.MarkerType = MarkerType.Square;
             this.MarkerStroke = OxyColors.Automatic;
-            this.MarkerStrokeThickness = 1.0;
+            this.MarkerStrokeThickness = 1;
         }
 
         /// <summary>
-        /// Gets or sets the screen resolution. If this number is greater than 1, bins of that size is created for both x and y directions. Only one point will be drawn in each bin.
+        /// Gets the list of points.
         /// </summary>
+        /// <value>A list of <see cref="ScatterPoint" />.</value>
+        /// <remarks>If the <see cref="ItemsSeries.ItemsSource" /> is specified, this list will not be used.</remarks>
+        public List<ScatterPoint> Points
+        {
+            get
+            {
+                return this.points;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a function that maps from elements in the <see cref="ItemsSeries.ItemsSource" /> to <see cref="ScatterPoint" /> points to be rendered.
+        /// </summary>
+        /// <value>The mapping function. The default is <c>null</c>.</value>
+        /// <remarks>Example: series1.Mapping = item => new DataPoint(((MyType)item).Time,((MyType)item).Value);
+        /// </remarks>
+        public Func<object, ScatterPoint> Mapping { get; set; }
+
+        /// <summary>
+        /// Gets or sets the size of the 'binning' feature. 
+        /// If this number is greater than 1, bins of the specified is created for both x and y directions. Only one point will be drawn in each bin.
+        /// </summary>
+        /// <value>
+        /// The size of the bins. The default is <c>0</c> - no binning.
+        /// </value>
         public int BinSize { get; set; }
 
         /// <summary>
-        /// Gets or sets the color axis.
+        /// Gets the actual color axis.
         /// </summary>
-        /// <value>The color axis.</value>
-        /// <remarks>This is used to map scatter point values to colors.</remarks>
-        public IColorAxis ColorAxis { get; set; }
+        /// <value>A <see cref="IColorAxis" />.</value>
+        /// <remarks>This is used to map scatter point values to colors. Use the <see cref="ColorAxisKey" /> to specify a color axis. 
+        /// If the <see cref="ColorAxisKey" /> is not specified, the first <see cref="IColorAxis" /> of the <see cref="PlotModel" /> will be used.</remarks>
+        public IColorAxis ColorAxis { get; private set; }
 
         /// <summary>
         /// Gets or sets the color axis key.
         /// </summary>
-        /// <value>The color axis key.</value>
+        /// <value>The color axis key. The default is <c>null</c>.</value>
+        /// <remarks>If set to <c>null</c>, the first <see cref="IColorAxis" /> of the <see cref="PlotModel" /> will be used. 
+        /// Make sure that the points contains values.
+        /// If your <see cref="PlotModel" /> contains a <see cref="IColorAxis" />, but you don't want to use a color axis, set the value to <c>string.Empty</c> or some other key that is not in use.</remarks>
         public string ColorAxisKey { get; set; }
 
         /// <summary>
-        /// Gets or sets the data field for the size.
+        /// Gets or sets the name of the property that specifies X coordinates in the <see cref="ItemsSeries.ItemsSource" /> elements.
         /// </summary>
-        /// <value>The size data field.</value>
+        /// <value>The name of the property. The default is <c>null</c>.</value>
+        public string DataFieldX { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name of the property that specifies Y coordinates in the <see cref="ItemsSeries.ItemsSource" /> elements.
+        /// </summary>
+        /// <value>The name of the property. The default is <c>null</c>.</value>
+        public string DataFieldY { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name of the property that specifies the size in the <see cref="ItemsSeries.ItemsSource" /> elements.
+        /// </summary>
+        /// <value>The name of the property. The default is <c>null</c>.</value>
         public string DataFieldSize { get; set; }
 
         /// <summary>
-        /// Gets or sets the tag data field.
+        /// Gets or sets the name of the property that specifies the tag in the <see cref="ItemsSeries.ItemsSource" /> elements.
         /// </summary>
-        /// <value>The tag data field.</value>
+        /// <value>The name of the property. The default is <c>null</c>.</value>
         public string DataFieldTag { get; set; }
 
         /// <summary>
-        /// Gets or sets the value data field.
+        /// Gets or sets the name of the property that specifies the color value in the <see cref="ItemsSeries.ItemsSource" /> elements.
         /// </summary>
-        /// <value>The value data field.</value>
+        /// <value>The name of the property. The default is <c>null</c>.</value>
         public string DataFieldValue { get; set; }
 
         /// <summary>
         /// Gets or sets the marker fill color. If <c>null</c>, this color will be automatically set.
         /// </summary>
-        /// <value>The marker fill color.</value>
+        /// <value>The fill color of the markers. The default is <see cref="OxyColors.Automatic" />.</value>
         public OxyColor MarkerFill { get; set; }
 
         /// <summary>
@@ -114,45 +167,57 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Gets or sets the marker outline polygon. Set MarkerType to Custom to use this.
+        /// Gets or sets the custom marker outline polygon. Set <see cref="MarkerType" /> to <see cref="T:MarkerType.Custom" /> to use this.
         /// </summary>
-        /// <value>The marker outline.</value>
+        /// <value>The outline. The default is <c>null</c>.</value>
         public ScreenPoint[] MarkerOutline { get; set; }
 
         /// <summary>
         /// Gets or sets the size of the marker (same size for all items).
         /// </summary>
-        /// <value>The size of the markers.</value>
+        /// <value>The size of the markers. The default is <c>5</c>.</value>
         public double MarkerSize { get; set; }
 
         /// <summary>
         /// Gets or sets the marker stroke.
         /// </summary>
-        /// <value>The marker stroke.</value>
+        /// <value>The marker stroke. The default is <see cref="OxyColors.Automatic" />.</value>
         public OxyColor MarkerStroke { get; set; }
 
         /// <summary>
-        /// Gets or sets the marker stroke thickness.
+        /// Gets or sets thickness of the the marker strokes.
         /// </summary>
-        /// <value>The marker stroke thickness.</value>
+        /// <value>The thickness. The default is <c>1</c>.</value>
         public double MarkerStrokeThickness { get; set; }
 
         /// <summary>
         /// Gets or sets the type of the marker.
         /// </summary>
-        /// <value>The type of the marker.</value>
-        /// <remarks>If MarkerType.Custom is used, the MarkerOutline property must be specified.</remarks>
+        /// <value>The type of the marker. The default is <see cref="T:MarkerType.Square" />.</value>
+        /// <remarks>If <see cref="T:MarkerType.Custom" /> is used, the <see cref="MarkerOutline" /> property must be specified.</remarks>
         public MarkerType MarkerType { get; set; }
 
         /// <summary>
-        /// Gets the max value of the points.
+        /// Gets the maximum value of the points.
         /// </summary>
         public double MaxValue { get; private set; }
 
         /// <summary>
-        /// Gets the min value of the points.
+        /// Gets the minimum value of the points.
         /// </summary>
         public double MinValue { get; private set; }
+
+        /// <summary>
+        /// Gets the list of points that should be rendered.
+        /// </summary>
+        /// <value>A list of <see cref="DataPoint" />.</value>
+        protected List<ScatterPoint> ActualPoints
+        {
+            get
+            {
+                return this.ItemsSource != null ? this.itemsSourcePoints : this.points;
+            }
+        }
 
         /// <summary>
         /// Gets the nearest point.
@@ -191,7 +256,7 @@ namespace OxyPlot.Series
                 }
             }
 
-            foreach (var p in this.Points)
+            foreach (var p in this.ActualPoints)
             {
                 if (p.X < this.XAxis.ActualMinimum || p.X > this.XAxis.ActualMaximum || p.Y < this.YAxis.ActualMinimum || p.Y > this.YAxis.ActualMaximum)
                 {
@@ -199,8 +264,7 @@ namespace OxyPlot.Series
                     continue;
                 }
 
-                var dp = new DataPoint(p.X, p.Y);
-                var sp = Axis.Transform(dp, this.XAxis, this.YAxis);
+                var sp = this.XAxis.Transform(p.X, p.Y, this.YAxis);
                 double dx = sp.x - point.x;
                 double dy = sp.y - point.y;
                 double d2 = (dx * dx) + (dy * dy);
@@ -209,17 +273,13 @@ namespace OxyPlot.Series
                 {
                     var item = this.GetItem(i);
 
-                    object xvalue = this.XAxis.GetValue(dp.X);
-                    object yvalue = this.YAxis.GetValue(dp.Y);
+                    object xvalue = this.XAxis.GetValue(p.X);
+                    object yvalue = this.YAxis.GetValue(p.Y);
                     object zvalue = null;
 
-                    var scatterPoint = p as ScatterPoint;
-                    if (scatterPoint != null)
+                    if (!double.IsNaN(p.Value) && !double.IsInfinity(p.Value))
                     {
-                        if (!double.IsNaN(scatterPoint.Value) && !double.IsInfinity(scatterPoint.Value))
-                        {
-                            zvalue = scatterPoint.Value;
-                        }
+                        zvalue = p.Value;
                     }
 
                     var text = this.Format(
@@ -233,7 +293,7 @@ namespace OxyPlot.Series
                         colorAxisTitle,
                         zvalue);
 
-                    result = new TrackerHitResult(this, dp, sp, item, i, text);
+                    result = new TrackerHitResult(this, new DataPoint(p.X, p.Y), sp, item, i, text);
 
                     minimumDistance = d2;
                 }
@@ -264,15 +324,15 @@ namespace OxyPlot.Series
         /// <param name="model">The owner plot model.</param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
-            if (this.Points.Count == 0)
+            var actualPoints = this.ActualPoints;
+            int n = actualPoints.Count;
+            if (n == 0)
             {
                 return;
             }
 
             var clippingRect = this.GetClippingRect();
 
-            var points = this.Points;
-            int n = points.Count;
             var allPoints = new List<ScreenPoint>(n);
             var allMarkerSizes = new List<double>(n);
             var selectedPoints = new List<ScreenPoint>();
@@ -286,11 +346,11 @@ namespace OxyPlot.Series
             // Transform all points to screen coordinates
             for (int i = 0; i < n; i++)
             {
-                var dp = new DataPoint(points[i].X, points[i].Y);
+                var dp = new DataPoint(actualPoints[i].X, actualPoints[i].Y);
                 double size = double.NaN;
                 double value = double.NaN;
 
-                var scatterPoint = points[i] as ScatterPoint;
+                var scatterPoint = actualPoints[i];
                 if (scatterPoint != null)
                 {
                     size = scatterPoint.Size;
@@ -350,8 +410,8 @@ namespace OxyPlot.Series
                 {
                     var color = this.ColorAxis.GetColor(group.Key);
                     rc.DrawMarkers(
-                        group.Value,
                         clippingRect,
+                        group.Value,
                         this.MarkerType,
                         this.MarkerOutline,
                         groupSizes[group.Key],
@@ -365,8 +425,8 @@ namespace OxyPlot.Series
 
             // Draw unselected markers
             rc.DrawMarkers(
-                    allPoints,
                     clippingRect,
+                    allPoints,
                     this.MarkerType,
                     this.MarkerOutline,
                     allMarkerSizes,
@@ -378,8 +438,8 @@ namespace OxyPlot.Series
 
             // Draw the selected markers
             rc.DrawMarkers(
-                selectedPoints,
                 clippingRect,
+                selectedPoints,
                 this.MarkerType,
                 this.MarkerOutline,
                 selectedMarkerSizes,
@@ -405,8 +465,8 @@ namespace OxyPlot.Series
             var midpt = new ScreenPoint(xmid, ymid);
 
             rc.DrawMarker(
-                midpt,
                 legendBox,
+                midpt,
                 this.MarkerType,
                 this.MarkerOutline,
                 this.MarkerSize,
@@ -447,66 +507,158 @@ namespace OxyPlot.Series
                 return;
             }
 
-            var points = this.Points;
-            points.Clear();
-
-            // Use the mapping to generate the points
-            if (this.Mapping != null)
-            {
-                foreach (var item in this.ItemsSource)
-                {
-                    points.Add(this.Mapping(item));
-                }
-
-                return;
-            }
-
-            // Get DataPoints from the items in ItemsSource
-            // if they implement IScatterPointProvider
-            // If DataFields are set, this is not used
-            /*if (DataFieldX == null || DataFieldY == null)
-            {
-                foreach (var item in ItemsSource)
-                {
-                    var idpp = item as IScatterPointProvider;
-                    if (idpp == null)
-                    {
-                        continue;
-                    }
-
-                    points.Add(idpp.GetScatterPoint());
-                }
-
-                return;
-            }*/
-
-            var dest = new List<IDataPoint>();
-
-            // Using reflection to add points
-            var filler = new ListFiller<ScatterPoint>();
-            filler.Add(this.DataFieldX, (item, value) => item.X = Convert.ToDouble(value));
-            filler.Add(this.DataFieldY, (item, value) => item.Y = Convert.ToDouble(value));
-            filler.Add(this.DataFieldSize, (item, value) => item.Size = Convert.ToDouble(value));
-            filler.Add(this.DataFieldValue, (item, value) => item.Value = Convert.ToDouble(value));
-            filler.Add(this.DataFieldTag, (item, value) => item.Tag = value);
-            filler.Fill(dest, this.ItemsSource);
-
-            this.Points = dest;
+            this.UpdateItemsSourcePoints();
         }
 
         /// <summary>
-        /// Updates the max/min from the data points.
+        /// Updates the maximum and minimum values of the series.
         /// </summary>
         protected internal override void UpdateMaxMin()
         {
             base.UpdateMaxMin();
-            this.InternalUpdateMaxMinValue(this.Points);
+            this.InternalUpdateMaxMinValue(this.ActualPoints);
+        }
+
+        /// <summary>
+        /// Updates the Max/Min limits from the values in the specified point list.
+        /// </summary>
+        /// <param name="pts">The points.</param>
+        protected void InternalUpdateMaxMinValue(List<ScatterPoint> pts)
+        {
+            if (pts == null || pts.Count == 0)
+            {
+                return;
+            }
+
+            double minx = double.MaxValue;
+            double miny = double.MaxValue;
+            double minvalue = double.MaxValue;
+            double maxx = double.MinValue;
+            double maxy = double.MinValue;
+            double maxvalue = double.MinValue;
+
+            if (double.IsNaN(minx))
+            {
+                minx = double.MaxValue;
+            }
+
+            if (double.IsNaN(miny))
+            {
+                miny = double.MaxValue;
+            }
+
+            if (double.IsNaN(maxx))
+            {
+                maxx = double.MinValue;
+            }
+
+            if (double.IsNaN(maxy))
+            {
+                maxy = double.MinValue;
+            }
+
+            if (double.IsNaN(minvalue))
+            {
+                minvalue = double.MinValue;
+            }
+
+            if (double.IsNaN(maxvalue))
+            {
+                maxvalue = double.MinValue;
+            }
+
+            foreach (var pt in pts)
+            {
+                double x = pt.X;
+                double y = pt.Y;
+
+                // Check if the point is defined (the code below is faster than double.IsNaN)
+                // ReSharper disable EqualExpressionComparison
+                // ReSharper disable CompareOfFloatsByEqualityOperator
+#pragma warning disable 1718
+                if (x != x || y != y)
+                // ReSharper restore CompareOfFloatsByEqualityOperator
+                // ReSharper restore EqualExpressionComparison
+#pragma warning restore 1718
+                {
+                    continue;
+                }
+
+                double value = pt.value;
+
+                if (x < minx)
+                {
+                    minx = x;
+                }
+
+                if (x > maxx)
+                {
+                    maxx = x;
+                }
+
+                if (y < miny)
+                {
+                    miny = y;
+                }
+
+                if (y > maxy)
+                {
+                    maxy = y;
+                }
+
+                if (value < minvalue)
+                {
+                    minvalue = value;
+                }
+
+                if (value > maxvalue)
+                {
+                    maxvalue = value;
+                }
+            }
+
+            if (minx < double.MaxValue)
+            {
+                this.MinX = minx;
+            }
+
+            if (miny < double.MaxValue)
+            {
+                this.MinY = miny;
+            }
+
+            if (maxx > double.MinValue)
+            {
+                this.MaxX = maxx;
+            }
+
+            if (maxy > double.MinValue)
+            {
+                this.MaxY = maxy;
+            }
+
+            if (minvalue < double.MaxValue)
+            {
+                this.MinValue = minvalue;
+            }
+
+            if (maxvalue > double.MinValue)
+            {
+                this.MaxValue = maxvalue;
+            }
+
+            var colorAxis = this.ColorAxis as Axis;
+            if (colorAxis != null)
+            {
+                colorAxis.Include(this.MinValue);
+                colorAxis.Include(this.MaxValue);
+            }
         }
 
         /// <summary>
         /// Adds scatter points specified by a items source and data fields.
         /// </summary>
-        /// <param name="dest">The destination collection.</param>
+        /// <param name="target">The destination collection.</param>
         /// <param name="itemsSource">The items source.</param>
         /// <param name="dataFieldX">The data field x.</param>
         /// <param name="dataFieldY">The data field y.</param>
@@ -514,7 +666,7 @@ namespace OxyPlot.Series
         /// <param name="dataFieldValue">The data field value.</param>
         /// <param name="dataFieldTag">The data field tag.</param>
         protected void AddScatterPoints(
-            IList<ScatterPoint> dest,
+            IList<ScatterPoint> target,
             IEnumerable itemsSource,
             string dataFieldX,
             string dataFieldY,
@@ -528,14 +680,14 @@ namespace OxyPlot.Series
             filler.Add(dataFieldSize, (item, value) => item.Size = Convert.ToDouble(value));
             filler.Add(dataFieldValue, (item, value) => item.Value = Convert.ToDouble(value));
             filler.Add(dataFieldTag, (item, value) => item.Tag = value);
-            filler.FillT(dest, itemsSource);
+            filler.FillT(target, itemsSource);
         }
 
         /// <summary>
         /// Updates the Max/Min limits from the values in the specified point list.
         /// </summary>
         /// <param name="pts">The points.</param>
-        protected void InternalUpdateMaxMinValue(IList<IDataPoint> pts)
+        protected void InternalUpdateMaxMinValue(IList<ScatterPoint> pts)
         {
             if (pts == null || pts.Count == 0)
             {
@@ -547,12 +699,7 @@ namespace OxyPlot.Series
 
             foreach (var pt in pts)
             {
-                if (!(pt is ScatterPoint))
-                {
-                    continue;
-                }
-
-                double value = ((ScatterPoint)pt).value;
+                double value = pt.value;
 
                 if (value < minvalue || double.IsNaN(minvalue))
                 {
@@ -574,6 +721,89 @@ namespace OxyPlot.Series
                 colorAxis.Include(this.MinValue);
                 colorAxis.Include(this.MaxValue);
             }
+        }
+
+        /// <summary>
+        /// Clears or creates the <see cref="itemsSourcePoints"/> list.
+        /// </summary>
+        private void ClearItemsSourcePoints()
+        {
+            if (!this.ownsItemsSourcePoints || this.itemsSourcePoints == null)
+            {
+                this.itemsSourcePoints = new List<ScatterPoint>();
+            }
+            else
+            {
+                this.itemsSourcePoints.Clear();
+            }
+
+            this.ownsItemsSourcePoints = true;
+        }
+
+        /// <summary>
+        /// Updates the points from the <see cref="ItemsSeries.ItemsSource" />.
+        /// </summary>
+        private void UpdateItemsSourcePoints()
+        {
+            // Use the Mapping property to generate the points
+            if (this.Mapping != null)
+            {
+                this.ClearItemsSourcePoints();
+                foreach (var item in this.ItemsSource)
+                {
+                    this.itemsSourcePoints.Add(this.Mapping(item));
+                }
+
+                return;
+            }
+
+            var sourceAsListOfScatterPoints = this.ItemsSource as List<ScatterPoint>;
+            if (sourceAsListOfScatterPoints != null)
+            {
+                this.itemsSourcePoints = sourceAsListOfScatterPoints;
+                this.ownsItemsSourcePoints = false;
+                return;
+            }
+
+            this.ClearItemsSourcePoints();
+
+            var sourceAsEnumerableScatterPoints = this.ItemsSource as IEnumerable<ScatterPoint>;
+            if (sourceAsEnumerableScatterPoints != null)
+            {
+                this.itemsSourcePoints.AddRange(sourceAsEnumerableScatterPoints);
+                return;
+            }
+
+            // If DataFieldX or DataFieldY is not set, try to get the points from the ItemsSource
+            if (this.DataFieldX == null || this.DataFieldY == null)
+            {
+                foreach (var item in this.ItemsSource)
+                {
+                    var point = item as ScatterPoint;
+                    if (point != null)
+                    {
+                        this.itemsSourcePoints.Add(point);
+                        continue;
+                    }
+
+                    var idpp = item as IScatterPointProvider;
+                    if (idpp != null)
+                    {
+                        this.itemsSourcePoints.Add(idpp.GetScatterPoint());
+                    }
+                }
+
+                return;
+            }
+
+            // Use reflection to add scatter points
+            var filler = new ListFiller<ScatterPoint>();
+            filler.Add(this.DataFieldX, (item, value) => item.X = Convert.ToDouble(value));
+            filler.Add(this.DataFieldY, (item, value) => item.Y = Convert.ToDouble(value));
+            filler.Add(this.DataFieldSize, (item, value) => item.Size = Convert.ToDouble(value));
+            filler.Add(this.DataFieldValue, (item, value) => item.Value = Convert.ToDouble(value));
+            filler.Add(this.DataFieldTag, (item, value) => item.Tag = value);
+            filler.Fill(this.itemsSourcePoints, this.ItemsSource);
         }
     }
 }

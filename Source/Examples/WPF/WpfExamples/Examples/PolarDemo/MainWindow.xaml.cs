@@ -38,9 +38,12 @@ namespace PolarDemo
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
+    using WpfExamples;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [Example("Creates a polar plot.")]
     public partial class MainWindow : Window
     {
         /// <summary>
@@ -86,7 +89,7 @@ namespace PolarDemo
         /// <summary>
         /// Gets or sets SpiralPoints.
         /// </summary>
-        public IList<IDataPoint> SpiralPoints { get; set; }
+        public IList<DataPoint> SpiralPoints { get; set; }
 
         /// <summary>
         /// Creates the model.
@@ -94,19 +97,25 @@ namespace PolarDemo
         /// <returns>A PlotModel.</returns>
         private PlotModel CreateModel()
         {
-            var model = new PlotModel("Polar plot", "Archimedean spiral with equation r(θ) = θ for 0 < θ < 6π")
-                {
-                    PlotType = PlotType.Polar,
-                    PlotMargins = new OxyThickness(20, 20, 4, 40),
-                    PlotAreaBorderThickness = 0
-                };
+            var model = new PlotModel
+            {
+                Title = "Polar plot",
+                Subtitle = "Archimedean spiral with equation r(θ) = θ for 0 < θ < 6π",
+                PlotType = PlotType.Polar,
+                PlotMargins = new OxyThickness(20, 20, 4, 40),
+                PlotAreaBorderThickness = new OxyThickness(0)
+            };
             model.Axes.Add(
-                new AngleAxis(0, this.MaxAngle, this.MajorStep, this.MinorStep)
-                    {
-                        FormatAsFractions = true,
-                        FractionUnit = Math.PI,
-                        FractionUnitSymbol = "π"
-                    });
+                new AngleAxis
+                {
+                    Minimum = 0,
+                    Maximum = this.MaxAngle,
+                    MajorStep = this.MajorStep,
+                    MinorStep = this.MinorStep,
+                    FormatAsFractions = true,
+                    FractionUnit = Math.PI,
+                    FractionUnitSymbol = "π"
+                });
             model.Axes.Add(new MagnitudeAxis());
             model.Series.Add(new FunctionSeries(t => t, t => t, 0, Math.PI * 6, 0.01));
             return model;

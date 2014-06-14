@@ -4,11 +4,11 @@
         xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf" Title="Plot in DataTemplate" Height="480" Width="640">
     <Window.Resources>
         <DataTemplate DataType="{x:Type UserControlDemo:ViewModel}">
-            <oxy:Plot Title="{Binding Title}">
-                <oxy:Plot.Series>
+            <oxy:PlotView Title="{Binding Title}">
+                <oxy:PlotView.Series>
                     <oxy:LineSeries ItemsSource="{Binding Points}"/>
-                </oxy:Plot.Series>
-            </oxy:Plot>
+                </oxy:PlotView.Series>
+            </oxy:PlotView>
         </DataTemplate>
     </Window.Resources>
     <TabControl ItemsSource="{Binding Models}" DisplayMemberPath="Title"/>

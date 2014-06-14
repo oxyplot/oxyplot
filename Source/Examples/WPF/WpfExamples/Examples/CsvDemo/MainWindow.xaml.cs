@@ -28,32 +28,34 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Diagnostics;
-using System.IO;
-using System.Windows;
-using Microsoft.Win32;
-using OxyPlot.Pdf;
-
 namespace CsvDemo
 {
+    using System.Diagnostics;
+    using System.IO;
+    using System.Windows;
+
+    using Microsoft.Win32;
+
     using OxyPlot;
     using OxyPlot.Wpf;
+
+    using WpfExamples;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [Example("Plotting data from CSV files.")]
     public partial class MainWindow : Window
     {
         MainViewModel vm = new MainViewModel();
 
         public MainWindow()
         {
-            InitializeComponent();
-            DataContext = vm;
+            this.InitializeComponent();
+            this.DataContext = this.vm;
             // vm.Open("Examples\CsvDemo\Data\GlobalTemperatureAnomaly.csv");
             // vm.Open("Examples\CsvDemo\Data\WorldPopulation.csv");
-            vm.Open(@"Examples\CsvDemo\Data\RiverFlow.csv");
+            this.vm.Open(@"Examples\CsvDemo\Data\RiverFlow.csv");
         }
 
         private void Window_Drop(object sender, DragEventArgs e)
@@ -63,14 +65,14 @@ namespace CsvDemo
             {
                 foreach (var file in data.GetFileDropList())
                 {
-                    vm.Open(file);
+                    this.vm.Open(file);
                 }
             }
         }
 
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
-            Close();
+            this.Close();
         }
 
         private void OpenCsv_Click(object sender, RoutedEventArgs e)
@@ -80,15 +82,17 @@ namespace CsvDemo
             dlg.DefaultExt = ".csv";
             if (dlg.ShowDialog(this).Value)
             {
-                vm.Open(dlg.FileName);
+                this.vm.Open(dlg.FileName);
             }
         }
 
         private void SavePlot_Click(object sender, RoutedEventArgs e)
         {
-            var dlg = new SaveFileDialog();
-            dlg.Filter = ".svg files|*.svg|.png files|*.png|.pdf files|*.pdf|.xaml files|*.xaml";
-            dlg.DefaultExt = ".svg";
+            var dlg = new SaveFileDialog
+            {
+                Filter = ".svg files|*.svg|.png files|*.png|.pdf files|*.pdf|.xaml files|*.xaml",
+                DefaultExt = ".svg"
+            };
             if (dlg.ShowDialog(this).Value)
             {
                 var ext = Path.GetExtension(dlg.FileName).ToLower();
@@ -99,7 +103,7 @@ namespace CsvDemo
                         break;
                     case ".svg":
                         var rc = new ShapesRenderContext(null);
-                        var svg = vm.Model.ToSvg(plot1.ActualWidth, plot1.ActualHeight, false, rc);
+                        var svg = OxyPlot.SvgExporter.ExportToString(this.vm.Model, plot1.ActualWidth, plot1.ActualHeight, false, rc);
                         File.WriteAllText(dlg.FileName, svg);
                         break;
                     case ".pdf":
@@ -113,7 +117,8 @@ namespace CsvDemo
                         plot1.SaveXaml(dlg.FileName);
                         break;
                 }
-                OpenContainingFolder(dlg.FileName);
+
+                this.OpenContainingFolder(dlg.FileName);
             }
         }
 
@@ -126,20 +131,19 @@ namespace CsvDemo
 
         private void SaveReport_Click(object sender, RoutedEventArgs e)
         {
-            var dlg = new SaveFileDialog();
-            dlg.Filter = ".html files|*.html";
-            dlg.DefaultExt = ".html";
+            var dlg = new SaveFileDialog { Filter = ".html files|*.html", DefaultExt = ".html" };
             if (dlg.ShowDialog(this).Value)
             {
-                vm.SaveReport(dlg.FileName);
-                OpenContainingFolder(dlg.FileName);
+                this.vm.SaveReport(dlg.FileName);
+                this.OpenContainingFolder(dlg.FileName);
             }
         }
 
         private void CopySvg_Click(object sender, RoutedEventArgs e)
         {
             var rc = new ShapesRenderContext(null);
-            Clipboard.SetText(vm.Model.ToSvg(plot1.ActualWidth, plot1.ActualHeight, true, rc));
+            var svg = OxyPlot.SvgExporter.ExportToString(this.vm.Model, plot1.ActualWidth, plot1.ActualHeight, true, rc);
+            Clipboard.SetText(svg);
         }
 
         private void CopyBitmap_Click(object sender, RoutedEventArgs e)
@@ -161,6 +165,5 @@ namespace CsvDemo
         {
             Process.Start("http://oxyplot.codeplex.com");
         }
-
     }
 }

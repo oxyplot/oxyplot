@@ -5,6 +5,9 @@
 == Building OxyPlot
 
 === Requirements
+- .NET 3.5 or later
+- Build tool with support for Portable Class Libraries (Visual Studio 201x, MonoDevelop, Xamarin Studio, MsBuild)
+- StyleCop (only required for builds on Windows)
 
 The OxyPlot solutions can be opened in
 
@@ -19,18 +22,20 @@ VS Express does not support Portable Class Libraries, and cannot be used to buil
 Depending on what platform you want to build, you may need to install extra SDKs or target framework profiles
 
 - [http://www.microsoft.com/en-us/download/details.aspx?id=22|.NET 3.5]
-- .NET 4.0
-- .NET 4.5
-- Silverlight 4
-- Silverlight 5
-- Windows Store App
+- [http://www.microsoft.com/nb-no/download/details.aspx?id=17851|.NET 4.0]
+- [http://www.microsoft.com/nb-no/download/details.aspx?id=30653|.NET 4.5]
+- [http://visualstudiogallery.msdn.microsoft.com/b0e0b5e9-e138-410b-ad10-00cb3caf4981/|Portable library tools 2.0]
+- [ http://www.microsoft.com/en-us/download/details.aspx?id=40727|Microsoft .NET Portable Library Reference Assemblies 4.6]
+- [http://stylecop.codeplex.com/|StyleCop]
+- [http://www.microsoft.com/en-us/download/details.aspx?id=7335|Silverlight 4 SDK]
+- [http://www.microsoft.com/en-us/download/details.aspx?id=28359|Silverlight 5 SDK]
+- [http://msdn.microsoft.com/en-us/windows/desktop/bg162891.aspx|Windows Store App]
 - [http://www.mono-project.com/GtkSharp|GTK#]
-- Xamarin.iOS
-- Xamarin.Android
-- Xamarin.Mac
-- MonoTouch
-- Mono for Android
-- MonoMac
+- [http://xamarin.com/ios|Xamarin.iOS]
+- [http://xamarin.com/android|Xamarin.Android]
+- [http://xamarin.com/mac|Xamarin.Mac]
+
+See [https://oxyplot.codeplex.com/discussions/539517|Discussion 539517] for information about installing portable library tools on a machine without Visual Studio.
 
 === Obtain the source code
 
@@ -65,8 +70,8 @@ The build output of the //Release// configurations are placed in the `Output/` f
 
 === Additional information
 
-OxyPlot uses [https://github.com/SimonCropp/Pepita|Pepita] to update the Nuget packages. The `PepitaGet.dll` library is placed in `Tools\Pepita` folder. The PepitaGet tasks will be executed every time the solution is built.
+OxyPlot is currently being built by [http://www.microsoft.com/visualstudio|Visual Studio 2013] on a Windows 8.1 virtual machine (running on [https://www.virtualbox.org|VirtualBox]). The build machine is running [http://www.jetbrains.com/teamcity/|TeamCity] and trigs the build on every code check-in. When all code is compiled and all unit tests have passed, the build machine is automatically pushing [http://nuget.org|NuGet] packages and uploading the output files to Codeplex and oxyplot.org.
 
-OxyPlot is currently being built by [http://www.microsoft.com/visualstudio|Visual Studio 2013] on a Windows 8.1 virtual machine (running on [https://www.virtualbox.org|VirtualBox]). The build machine is running [http://www.jetbrains.com/teamcity/|TeamCity] and trigs the build on every code check-in. The build steps are described in the `Build/BuildSteps.txt` file. The build machine is automatically pushing [http://nuget.org|NuGet] packages and uploading the output files to Codeplex and oxyplot.org.
+The build steps are described in the `Build/BuildSteps.txt` file.
 
 {Images\BuildMachine.png}

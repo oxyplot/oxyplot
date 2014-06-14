@@ -13,6 +13,8 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <StyleCopTreatErrorsAsWarnings>false</StyleCopTreatErrorsAsWarnings>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -55,12 +57,14 @@
     </Compile>
     <Compile Include="Annotations\Annotation.cs" />
     <Compile Include="Annotations\ArrowAnnotation.cs" />
+    <Compile Include="Annotations\PointAnnotation.cs" />
     <Compile Include="Annotations\EllipseAnnotation.cs" />
     <Compile Include="Annotations\FunctionAnnotation.cs" />
     <Compile Include="Annotations\PathAnnotation.cs" />
     <Compile Include="Annotations\PolygonAnnotation.cs" />
     <Compile Include="Annotations\PolylineAnnotation.cs" />
     <Compile Include="Annotations\RectangleAnnotation.cs" />
+    <Compile Include="Annotations\ShapeAnnotation.cs" />
     <Compile Include="Annotations\TextAnnotation.cs" />
     <Compile Include="Annotations\LineAnnotation.cs" />
     <Compile Include="Annotations\TextualAnnotation.cs" />
@@ -68,6 +72,7 @@
     <Compile Include="Axes\Axis.cs" />
     <Compile Include="Axes\CategoryAxis.cs" />
     <Compile Include="Axes\DateTimeAxis.cs" />
+    <Compile Include="Axes\LinearColorAxis.cs" />
     <Compile Include="Axes\MagnitudeAxis.cs" />
     <Compile Include="Axes\TimeSpanAxis.cs" />
     <Compile Include="Axes\LinearAxis.cs" />
@@ -75,6 +80,11 @@
     <Compile Include="Converters\ThicknessConverter.cs" />
     <Compile Include="Converters\OxyColorConverter.cs" />
     <Compile Include="PlotCommands.cs" />
+    <Compile Include="PlotView.cs" />
+    <Compile Include="PlotView.Properties.cs" />
+    <Compile Include="PlotView.TouchEvents.cs" />
+    <Compile Include="Series\HeatMapSeries.cs" />
+    <Compile Include="Series\StairStepSeries.cs" />
     <Compile Include="Series\ScatterWithErrorBarSeries.cs" />
     <Compile Include="Utilities\WeakEvents\RenderingEventListener.cs" />
     <Compile Include="Utilities\WeakEvents\RenderingEventManager.cs" />
@@ -82,7 +92,6 @@
     <Compile Include="Utilities\WeakEvents\WeakEventManagerBase{TManager}.cs" />
     <Compile Include="MoreColors.cs" />
     <Compile Include="NamespaceDoc.cs" />
-    <Compile Include="Plot.TouchEvents.cs" />
     <Compile Include="RenderingControl.cs" />
     <Compile Include="Series\BarSeries\ColumnSeries.cs" />
     <Compile Include="Series\BarSeries\CategorizedSeries.cs" />
@@ -91,7 +100,6 @@
     <Compile Include="SvgExporter.cs" />
     <Compile Include="Utilities\Keyboard.cs" />
     <Compile Include="XamlExporter.cs" />
-    <Compile Include="Plot.Properties.cs" />
     <Compile Include="PngExporter.cs" />
     <Compile Include="Series\BarSeries\BarSeries.cs" />
     <Compile Include="Series\TwoColorLineSeries.cs" />

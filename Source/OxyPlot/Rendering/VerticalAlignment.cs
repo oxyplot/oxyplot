@@ -24,14 +24,14 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Specifies the vertical alignment.
+//   Specifies vertical alignment.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     /// <summary>
-    /// Specifies the vertical alignment.
+    /// Specifies vertical alignment.
     /// </summary>
     public enum VerticalAlignment
     {

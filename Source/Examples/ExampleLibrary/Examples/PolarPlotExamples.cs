@@ -25,11 +25,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using OxyPlot;
-
 namespace ExampleLibrary
 {
+    using System;
+
+    using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
@@ -39,10 +39,12 @@ namespace ExampleLibrary
         [Example("Spiral")]
         public static PlotModel ArchimedeanSpiral()
         {
-            var model = new PlotModel("Polar plot", "Archimedean spiral with equation r(θ) = θ for 0 < θ < 6π")
+            var model = new PlotModel
             {
+                Title = "Polar plot",
+                Subtitle = "Archimedean spiral with equation r(θ) = θ for 0 < θ < 6π",
                 PlotType = PlotType.Polar,
-                PlotAreaBorderThickness = 0,
+                PlotAreaBorderThickness = new OxyThickness(0),
                 PlotMargins = new OxyThickness(60, 20, 4, 40)
             };
             model.Axes.Add(
@@ -92,15 +94,20 @@ namespace ExampleLibrary
         [Example("Angle axis with offset angle")]
         public static PlotModel OffsetAngles()
         {
-            var model = new PlotModel("Offset angle axis", "")
+            var model = new PlotModel
             {
+                Title = "Offset angle axis",
                 PlotType = PlotType.Polar,
-                PlotAreaBorderThickness = 0,
+                PlotAreaBorderThickness = new OxyThickness(0),
                 PlotMargins = new OxyThickness(60, 20, 4, 40)
             };
 
-            var angleAxis = new AngleAxis(0, Math.PI * 2, Math.PI / 4, Math.PI / 16)
+            var angleAxis = new AngleAxis
             {
+                Minimum = 0,
+                Maximum = Math.PI * 2,
+                MajorStep = Math.PI / 4,
+                MinorStep = Math.PI / 16,
                 StringFormat = "0.00",
                 StartAngle = 30,
                 EndAngle = 390
@@ -115,8 +122,15 @@ namespace ExampleLibrary
                 var increment = 0d;
 
                 // Increment and decrement must be in degrees (corresponds to the StartAngle and EndAngle properties).
-                if (e.ChangedButton == OxyMouseButton.Left) increment = 15;
-                if (e.ChangedButton == OxyMouseButton.Right) increment = -15;
+                if (e.ChangedButton == OxyMouseButton.Left)
+                {
+                    increment = 15;
+                }
+
+                if (e.ChangedButton == OxyMouseButton.Right)
+                {
+                    increment = -15;
+                }
 
                 if (Math.Abs(increment) > double.Epsilon)
                 {
@@ -133,22 +147,29 @@ namespace ExampleLibrary
         [Example("Semi-circle")]
         public static PlotModel SemiCircle()
         {
-            var model = new PlotModel("Semi-circle polar plot", "")
+            var model = new PlotModel
             {
+                Title = "Semi-circle polar plot",
                 PlotType = PlotType.Polar,
-                PlotAreaBorderThickness = 0,
+                PlotAreaBorderThickness = new OxyThickness(0),
                 PlotMargins = new OxyThickness(60, 20, 4, 40)
             };
             model.Axes.Add(
-                new AngleAxis(0, 180, 45, 9)
+                new AngleAxis
                 {
+                    Minimum = 0,
+                    Maximum = 180,
+                    MajorStep = 45,
+                    MinorStep = 9,
                     StartAngle = 0,
                     EndAngle = 180,
                     MajorGridlineStyle = LineStyle.Solid,
                     MinorGridlineStyle = LineStyle.Solid
                 });
-            model.Axes.Add(new MagnitudeAxis(0, 1)
+            model.Axes.Add(new MagnitudeAxis
             {
+                Minimum = 0,
+                Maximum = 1,
                 MajorGridlineStyle = LineStyle.Solid,
                 MinorGridlineStyle = LineStyle.Solid
             });
@@ -159,22 +180,81 @@ namespace ExampleLibrary
         [Example("Semi-circle offset angle axis range")]
         public static PlotModel SemiCircleOffsetAngleAxisRange()
         {
-            var model = new PlotModel("Semi-circle polar plot", "Angle axis range offset to -180 - 180")
+            var model = new PlotModel
             {
+                Title = "Semi-circle polar plot",
+                Subtitle = "Angle axis range offset to -180 - 180",
                 PlotType = PlotType.Polar,
-                PlotAreaBorderThickness = 0,
+                PlotAreaBorderThickness = new OxyThickness(0),
                 PlotMargins = new OxyThickness(60, 20, 4, 40)
             };
             model.Axes.Add(
-                new AngleAxis(-180, 180, 45, 9)
+                new AngleAxis
                 {
+                    Minimum = -180,
+                    Maximum = 180,
+                    MajorStep = 45,
+                    MinorStep = 9,
                     StartAngle = 0,
                     EndAngle = 360,
                     MajorGridlineStyle = LineStyle.Solid,
                     MinorGridlineStyle = LineStyle.Solid
                 });
-            model.Axes.Add(new MagnitudeAxis(0, 1)
+            model.Axes.Add(new MagnitudeAxis
             {
+                Minimum = 0,
+                Maximum = 1,
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Solid
+            });
+            model.Series.Add(new FunctionSeries(x => Math.Sin(x / 180 * Math.PI), t => t, 0, 180, 0.01));
+            return model;
+        }
+
+        /// <summary>
+        /// Shows how to orient 0 degrees at the bottom and add E/W to indicate directions.
+        /// </summary>
+        /// <returns></returns>
+        [Example("East/west directions")]
+        public static PlotModel EastWestDirections()
+        {
+            var model = new PlotModel
+            {
+                Title = "East/west directions",
+                PlotType = PlotType.Polar,
+                PlotAreaBorderThickness = new OxyThickness(0),
+                PlotMargins = new OxyThickness(60, 20, 4, 40)
+            };
+            model.Axes.Add(
+                new AngleAxis
+                {
+                    Minimum = 0,
+                    Maximum = 360,
+                    MajorStep = 30,
+                    MinorStep = 30,
+                    StartAngle = -90,
+                    EndAngle = 270,
+                    LabelFormatter = angle =>
+                    {
+                        if (angle > 0 && angle < 180)
+                        {
+                            return angle + "E";
+                        }
+
+                        if (angle > 180)
+                        {
+                            return (360 - angle) + "W";
+                        }
+
+                        return angle.ToString();
+                    },
+                    MajorGridlineStyle = LineStyle.Dot,
+                    MinorGridlineStyle = LineStyle.None
+                });
+            model.Axes.Add(new MagnitudeAxis
+            {
+                Minimum = 0,
+                Maximum = 1,
                 MajorGridlineStyle = LineStyle.Solid,
                 MinorGridlineStyle = LineStyle.Solid
             });

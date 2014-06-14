@@ -28,7 +28,9 @@
 namespace ExampleLibrary
 {
     using System;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Linq;
 
     using OxyPlot;
     using OxyPlot.Axes;
@@ -66,12 +68,12 @@ namespace ExampleLibrary
         [Example("Empty series")]
         public static PlotModel EmptySeries()
         {
-            var model = new PlotModel("Empty series");
+            var model = new PlotModel { Title = "Empty series" };
 
             var s1 = new TSeries { Title = "Series 1" };
             var s2 = new TSeries { Title = "Series 2" };
             var categoryAxis = new CategoryAxis { Position = CategoryAxisPosition() };
-            var valueAxis = new LinearAxis(ValueAxisPosition());
+            var valueAxis = new LinearAxis { Position = ValueAxisPosition(), MinimumPadding = 0 };
             model.Series.Add(s1);
             model.Series.Add(s2);
             model.Axes.Add(categoryAxis);
@@ -79,10 +81,116 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("No category axis defined")]
+        public static PlotModel NoCategoryAxisDefined()
+        {
+            var model = new PlotModel { Title = "No category axis defined" };
+
+            var s1 = new TSeries { Title = "Series 1", ItemsSource = new[] { new TItem { Value = 25 }, new TItem { Value = 137 } } };
+            var s2 = new TSeries { Title = "Series 2", ItemsSource = new[] { new TItem { Value = 52 }, new TItem { Value = 317 } } };
+            var valueAxis = new LinearAxis { Position = ValueAxisPosition(), MinimumPadding = 0 };
+            model.Series.Add(s1);
+            model.Series.Add(s2);
+            model.Axes.Add(valueAxis);
+            return model;
+        }
+
+        [Example("Binding to ItemsSource")]
+        public static PlotModel BindingItemsSource()
+        {
+            var items = new Collection<Item>
+                            {
+                                new Item { Label = "Apples", Value1 = 37, Value2 = 12, Value3 = 19 },
+                                new Item { Label = "Pears", Value1 = 7, Value2 = 21, Value3 = 9 },
+                                new Item { Label = "Bananas", Value1 = 23, Value2 = 2, Value3 = 29 }
+                            };
+
+            var plotModel1 = new PlotModel { LegendPlacement = LegendPlacement.Outside, Title = "Binding to ItemsSource" };
+            var categoryAxis1 = new CategoryAxis { Position = CategoryAxisPosition(), LabelField = "Label", ItemsSource = items, MajorStep = 1, MinorStep = 1 };
+            plotModel1.Axes.Add(categoryAxis1);
+            var linearAxis1 = new LinearAxis { Position = ValueAxisPosition(), AbsoluteMinimum = 0, MinimumPadding = 0 };
+            plotModel1.Axes.Add(linearAxis1);
+            var series1 = new TSeries
+            {
+                FillColor = OxyColor.FromArgb(255, 78, 154, 6),
+                ValueField = "Value1",
+                Title = "2009",
+                ItemsSource = items
+            };
+            plotModel1.Series.Add(series1);
+            var series2 = new TSeries
+            {
+                FillColor = OxyColor.FromArgb(255, 200, 141, 0),
+                ValueField = "Value2",
+                Title = "2010",
+                ItemsSource = items
+            };
+            plotModel1.Series.Add(series2);
+            var series3 = new TSeries
+            {
+                FillColor = OxyColor.FromArgb(255, 204, 0, 0),
+                ValueField = "Value3",
+                Title = "2011",
+                ItemsSource = items
+            };
+            plotModel1.Series.Add(series3);
+            return plotModel1;
+        }
+
+        [Example("Binding to ItemsSource (array)")]
+        public static PlotModel BindingToItemsSourceArray()
+        {
+            var model = new PlotModel { Title = "Binding to ItemsSource", Subtitle = "The items are defined by an array of BarItem/ColumnItem" };
+            model.Series.Add(new TSeries { Title = "Series 1", ItemsSource = new[] { new TItem { Value = 25 }, new TItem { Value = 137 } } });
+            model.Series.Add(new TSeries { Title = "Series 2", ItemsSource = new[] { new TItem { Value = 52 }, new TItem { Value = 317 } } });
+            model.Axes.Add(new CategoryAxis { Position = CategoryAxisPosition() });
+            model.Axes.Add(new LinearAxis { Position = ValueAxisPosition(), MinimumPadding = 0 });
+            return model;
+        }
+
+        [Example("Binding to ItemsSource (list)")]
+        public static PlotModel BindingToItemsSourceListT()
+        {
+            var model = new PlotModel { Title = "Binding to ItemsSource", Subtitle = "The items are defined by a List of BarItem/ColumnItem" };
+            model.Series.Add(new TSeries { Title = "Series 1", ItemsSource = new List<TItem>(new[] { new TItem { Value = 25 }, new TItem { Value = 137 } }) });
+            model.Series.Add(new TSeries { Title = "Series 2", ItemsSource = new List<TItem>(new[] { new TItem { Value = 52 }, new TItem { Value = 317 } }) });
+            model.Axes.Add(new CategoryAxis { Position = CategoryAxisPosition() });
+            model.Axes.Add(new LinearAxis { Position = ValueAxisPosition(), MinimumPadding = 0 });
+            return model;
+        }
+
+        [Example("Binding to ItemsSource (reflection)")]
+        public static PlotModel BindingToItemsSourceReflection()
+        {
+            var model = new PlotModel { Title = "Binding to ItemsSource", Subtitle = "Reflect by 'ValueField'" };
+            model.Series.Add(new TSeries { Title = "Series 1", ValueField = "Value1", ItemsSource = new[] { new Item { Value1 = 25 }, new Item { Value1 = 137 } } });
+            model.Series.Add(new TSeries { Title = "Series 2", ValueField = "Value1", ItemsSource = new[] { new Item { Value1 = 52 }, new Item { Value1 = 317 } } });
+            model.Axes.Add(new CategoryAxis { Position = CategoryAxisPosition() });
+            model.Axes.Add(new LinearAxis { Position = ValueAxisPosition(), MinimumPadding = 0 });
+            return model;
+        }
+
+        [Example("Defined by Items")]
+        public static PlotModel DefinedByItems()
+        {
+            var model = new PlotModel { Title = "Defined by Items", Subtitle = "The items are added to the `Items` property." };
+
+            var s1 = new TSeries { Title = "Series 1" };
+            s1.Items.AddRange(new[] { new TItem { Value = 25 }, new TItem { Value = 137 } });
+            var s2 = new TSeries { Title = "Series 2" };
+            s2.Items.AddRange(new[] { new TItem { Value = 52 }, new TItem { Value = 317 } });
+            model.Series.Add(s1);
+            model.Series.Add(s2);
+
+            model.Axes.Add(new CategoryAxis { Position = CategoryAxisPosition() });
+            model.Axes.Add(new LinearAxis { Position = ValueAxisPosition(), MinimumPadding = 0 });
+            return model;
+        }
+
         [Example("Empty category axis")]
         public static PlotModel EmptyCategoryAxis()
         {
-            var model = new PlotModel("Empty category axis");
+            var model = new PlotModel { Title = "Empty category axis" };
 
             var s1 = new TSeries { Title = "Series 1" };
             s1.Items.Add(new TItem { Value = 25 });
@@ -95,8 +203,9 @@ namespace ExampleLibrary
             s2.Items.Add(new TItem { Value = -120 });
             s2.Items.Add(new TItem { Value = -26 });
             var categoryAxis = new CategoryAxis { Position = CategoryAxisPosition() };
-            var valueAxis = new LinearAxis(ValueAxisPosition())
+            var valueAxis = new LinearAxis
             {
+                Position = ValueAxisPosition(),
                 MinimumPadding = 0.06,
                 MaximumPadding = 0.06,
                 ExtraGridlines = new[] { 0.0 },
@@ -167,8 +276,9 @@ namespace ExampleLibrary
         [Example("Logarithmic axis")]
         public static PlotModel LogAxis()
         {
-            var model = new PlotModel("Logarithmic axis")
+            var model = new PlotModel
             {
+                Title = "Logarithmic axis",
                 LegendPlacement = LegendPlacement.Outside,
                 LegendPosition = LegendPosition.BottomCenter,
                 LegendOrientation = LegendOrientation.Horizontal,
@@ -188,14 +298,15 @@ namespace ExampleLibrary
             categoryAxis.Labels.Add("Category D");
             model.Series.Add(s1);
             model.Axes.Add(categoryAxis);
-            model.Axes.Add(new LogarithmicAxis(ValueAxisPosition()) { Minimum = 0.1, MinimumPadding = 0, AbsoluteMinimum = 0 });
+            model.Axes.Add(new LogarithmicAxis { Position = ValueAxisPosition(), Minimum = 0.1, MinimumPadding = 0, AbsoluteMinimum = 0 });
             return model;
         }
 
         private static PlotModel CreateSimpleModel(bool stacked, string title)
         {
-            var model = new PlotModel(title)
+            var model = new PlotModel
             {
+                Title = title,
                 LegendPlacement = LegendPlacement.Outside,
                 LegendPosition = LegendPosition.BottomCenter,
                 LegendOrientation = LegendOrientation.Horizontal,
@@ -219,7 +330,7 @@ namespace ExampleLibrary
             categoryAxis.Labels.Add("Category B");
             categoryAxis.Labels.Add("Category C");
             categoryAxis.Labels.Add("Category D");
-            var valueAxis = new LinearAxis(ValueAxisPosition()) { MinimumPadding = 0, MaximumPadding = 0.06, AbsoluteMinimum = 0 };
+            var valueAxis = new LinearAxis { Position = ValueAxisPosition(), MinimumPadding = 0, MaximumPadding = 0.06, AbsoluteMinimum = 0 };
             model.Series.Add(s1);
             model.Series.Add(s2);
             model.Axes.Add(categoryAxis);
@@ -229,8 +340,9 @@ namespace ExampleLibrary
 
         private static PlotModel CreateModelWithNegativeValues(bool stacked, string title)
         {
-            var model = new PlotModel(title)
+            var model = new PlotModel
             {
+                Title = title,
                 LegendPlacement = LegendPlacement.Outside,
                 LegendPosition = LegendPosition.BottomCenter,
                 LegendOrientation = LegendOrientation.Horizontal,
@@ -267,8 +379,9 @@ namespace ExampleLibrary
             categoryAxis.Labels.Add("Category C");
             categoryAxis.Labels.Add("Category D");
 
-            var valueAxis = new LinearAxis(ValueAxisPosition())
+            var valueAxis = new LinearAxis
                 {
+                    Position = ValueAxisPosition(),
                     MinimumPadding = 0.06,
                     MaximumPadding = 0.06,
                     ExtraGridlines = new[] { 0.0 },
@@ -294,78 +407,109 @@ namespace ExampleLibrary
             public double Value3 { get; set; }
         }
 
-        [Example("Binding to ItemsSource")]
-        public static PlotModel BindingItemsSource()
-        {
-            // The items
-            var items = new Collection<Item>
-                            {
-                                new Item { Label = "Apples", Value1 = 37, Value2 = 12, Value3 = 19 },
-                                new Item { Label = "Pears", Value1 = 7, Value2 = 21, Value3 = 9 },
-                                new Item { Label = "Bananas", Value1 = 23, Value2 = 2, Value3 = 29 }
-                            };
-
-            var plotModel1 = new PlotModel { LegendPlacement = LegendPlacement.Outside, Title = "Binding to ItemsSource" };
-            var categoryAxis1 = new CategoryAxis { Position = CategoryAxisPosition(), LabelField = "Label", ItemsSource = items, MajorStep = 1, MinorStep = 1 };
-            plotModel1.Axes.Add(categoryAxis1);
-            var linearAxis1 = new LinearAxis { Position = ValueAxisPosition(), AbsoluteMinimum = 0, MinimumPadding = 0 };
-            plotModel1.Axes.Add(linearAxis1);
-            var series1 = new TSeries
-                {
-                    FillColor = OxyColor.FromArgb(255, 78, 154, 6),
-                    ValueField = "Value1",
-                    Title = "2009",
-                    ItemsSource = items
-                };
-            plotModel1.Series.Add(series1);
-            var series2 = new TSeries
-                {
-                    FillColor = OxyColor.FromArgb(255, 200, 141, 0),
-                    ValueField = "Value2",
-                    Title = "2010",
-                    ItemsSource = items
-                };
-            plotModel1.Series.Add(series2);
-            var series3 = new TSeries
-                {
-                    FillColor = OxyColor.FromArgb(255, 204, 0, 0),
-                    ValueField = "Value3",
-                    Title = "2011",
-                    ItemsSource = items
-                };
-            plotModel1.Series.Add(series3);
-            return plotModel1;
-        }
-
         public class HistogramBin
         {
             public string Label { get; set; }
             public double Value { get; set; }
         }
 
-        [Example("Histogram (random numbers)")]
-        public static PlotModel Histogram()
+        [Example("Histogram (bins=5)")]
+        public static PlotModel Histogram3()
         {
-            int n = 1000;
-            int binCount = 20;
+            return CreateHistogram(100000, 5);
+        }
+
+        [Example("Histogram (bins=20)")]
+        public static PlotModel Histogram20()
+        {
+            return CreateHistogram(100000, 20);
+        }
+
+        [Example("Histogram (bins=200)")]
+        public static PlotModel Histogram200()
+        {
+            return CreateHistogram(100000, 200);
+        }
+
+        public static PlotModel CreateHistogram(int n, int binCount)
+        {
             var bins = new HistogramBin[binCount];
             for (int i = 0; i < bins.Length; i++)
             {
                 bins[i] = new HistogramBin { Label = i.ToString() };
             }
 
-            var r = new Random();
+            var r = new Random(31);
             for (int i = 0; i < n; i++)
             {
                 int value = r.Next(binCount);
                 bins[value].Value++;
             }
 
-            var temp = new PlotModel();
+            var temp = new PlotModel { Title = string.Format("Histogram (bins={0}, n={1})", binCount, n), Subtitle = "Pseudorandom numbers" };
             var series1 = new TSeries { ItemsSource = bins, ValueField = "Value" };
+            if (binCount < 100)
+            {
+                series1.LabelFormatString = "{0}";
+            }
+
             temp.Series.Add(series1);
 
             temp.Axes.Add(new CategoryAxis { Position = CategoryAxisPosition(), ItemsSource = bins, LabelField = "Label", GapWidth = 0 });
+            temp.Axes.Add(new LinearAxis { Position = ValueAxisPosition(), MinimumPadding = 0, MaximumPadding = 0.1, AbsoluteMinimum = 0 });
+
+            return temp;
+        }
+
+        [Example("Histogram (standard normal distribution)")]
+        public static PlotModel HistogramStandardNormalDistribution()
+        {
+            return CreateNormalDistributionHistogram(100000, 2000);
+        }
+
+        public static PlotModel CreateNormalDistributionHistogram(int n, int binCount)
+        {
+            var bins = new HistogramBin[binCount];
+            double min = -10;
+            double max = 10;
+            for (int i = 0; i < bins.Length; i++)
+            {
+                var v = min + (max - min) * i / (bins.Length - 1);
+                bins[i] = new HistogramBin { Label = v.ToString("0.0") };
+            }
+
+            var r = new Random(31);
+            for (int i = 0; i < n; i++)
+            {
+                // http://en.wikipedia.org/wiki/Box%E2%80%93Muller_transform
+                var u1 = r.NextDouble();
+                var u2 = r.NextDouble();
+                var v = Math.Sqrt(-2 * Math.Log(u1)) * Math.Cos(2 * Math.PI * u2);
+
+                int bin = (int)Math.Round((v - min) / (max - min) * (bins.Length - 1));
+                if (bin >= 0 && bin < bins.Length)
+                {
+                    bins[bin].Value++;
+                }
+            }
+
+            var temp = new PlotModel { Title = string.Format("Histogram (bins={0}, n={1})", binCount, n), Subtitle = "Standard normal distribution by Box-Muller transform" };
+            var series1 = new TSeries { ItemsSource = bins, ValueField = "Value" };
+            temp.Series.Add(series1);
+
+            var categoryAxis = new CategoryAxis
+            {
+                Position = CategoryAxisPosition(),
+                GapWidth = 0
+            };
+
+            categoryAxis.Labels.AddRange(bins.Select(b => b.Label));
+            categoryAxis.IsAxisVisible = false;
+            temp.Axes.Add(categoryAxis);
+
+            // todo: link category and linear axis
+            temp.Axes.Add(new LinearAxis { Position = CategoryAxisPosition(), Minimum = min, Maximum = max });
+
             temp.Axes.Add(new LinearAxis { Position = ValueAxisPosition(), MinimumPadding = 0, AbsoluteMinimum = 0 });
 
             return temp;
@@ -394,12 +538,20 @@ namespace ExampleLibrary
         [Example("Different colors within the same series")]
         public static PlotModel DifferentColors()
         {
-            var model = new PlotModel("Different colors within the same series");
+            var model = new PlotModel { Title = "Different colors within the same series" };
             var series = new TSeries { Title = "Series 1" };
             series.Items.Add(new TItem { Value = 1, Color = OxyColors.Red });
             series.Items.Add(new TItem { Value = 2, Color = OxyColors.Green });
             series.Items.Add(new TItem { Value = 1, Color = OxyColors.Blue });
-            model.Axes.Add(new CategoryAxis("Category", "A", "B", "C") { Position = CategoryAxisPosition() });
+
+            var categoryAxis = new CategoryAxis
+            {
+                Title = "Category",
+                Position = CategoryAxisPosition()
+            };
+            categoryAxis.Labels.AddRange(new[] { "A", "B", "C" });
+            model.Axes.Add(categoryAxis);
+
             model.Series.Add(series);
             return model;
         }
@@ -407,7 +559,7 @@ namespace ExampleLibrary
         [Example("Different stacking groups")]
         public static PlotModel StackingGroups()
         {
-            var model = new PlotModel("Stacking groups");
+            var model = new PlotModel { Title = "Stacking groups" };
             var series = new TSeries { Title = "Series 1", StackGroup = "1", IsStacked = true };
             series.Items.Add(new TItem { Value = 1 });
             series.Items.Add(new TItem { Value = 2 });
@@ -423,14 +575,20 @@ namespace ExampleLibrary
             series3.Items.Add(new TItem { Value = 1 });
             model.Series.Add(series3);
 
-            model.Axes.Add(new CategoryAxis("Category", "A", "B") { Position = CategoryAxisPosition() });
+            var categoryAxis = new CategoryAxis
+            {
+                Title = "Category",
+                Position = CategoryAxisPosition()
+            };
+            categoryAxis.Labels.AddRange(new[] { "A", "B" });
+            model.Axes.Add(categoryAxis);
             return model;
         }
 
         [Example("Different widths")]
         public static PlotModel DifferentWidths()
         {
-            var model = new PlotModel("Different widths", "Series1=0.6 and Series2=0.3");
+            var model = new PlotModel { Title = "Different widths", Subtitle = "Series1=0.6 and Series2=0.3" };
             var series1 = new TSeries { Title = "Series 1" };
             SetBarWidth(series1, 0.6);
             series1.Items.Add(new TItem { Value = 1 });
@@ -443,7 +601,14 @@ namespace ExampleLibrary
             series2.Items.Add(new TItem { Value = 1 });
             model.Series.Add(series2);
 
-            model.Axes.Add(new CategoryAxis("Category", "A", "B") { Position = CategoryAxisPosition() });
+            var categoryAxis = new CategoryAxis
+            {
+                Title = "Category",
+                Position = CategoryAxisPosition()
+            };
+            categoryAxis.Labels.AddRange(new[] { "A", "B" });
+            model.Axes.Add(categoryAxis);
+
             return model;
         }
 
@@ -462,7 +627,7 @@ namespace ExampleLibrary
         [Example("Different widths (stacked)")]
         public static PlotModel DifferentWidthsStacked()
         {
-            var model = new PlotModel("Different widths (stacked)");
+            var model = new PlotModel { Title = "Different widths (stacked)" };
             var series1 = new TSeries { Title = "Series 1", IsStacked = true };
             SetBarWidth(series1, 0.6);
             series1.Items.Add(new TItem { Value = 1 });
@@ -475,14 +640,21 @@ namespace ExampleLibrary
             series2.Items.Add(new TItem { Value = 1 });
             model.Series.Add(series2);
 
-            model.Axes.Add(new CategoryAxis("Category", "A", "B") { Position = CategoryAxisPosition() });
+            var categoryAxis = new CategoryAxis
+            {
+                Title = "Category",
+                Position = CategoryAxisPosition()
+            };
+            categoryAxis.Labels.AddRange(new[] { "A", "B" });
+            model.Axes.Add(categoryAxis);
+
             return model;
         }
 
         [Example("Invalid values")]
         public static PlotModel InvalidValues()
         {
-            var model = new PlotModel("Invalid values", "Series 1 contains a NaN value for category B.");
+            var model = new PlotModel { Title = "Invalid values", Subtitle = "Series 1 contains a NaN value for category B." };
             var series1 = new TSeries { Title = "Series 1" };
             series1.Items.Add(new TItem { Value = 1 });
             series1.Items.Add(new TItem { Value = double.NaN });
@@ -493,14 +665,21 @@ namespace ExampleLibrary
             series2.Items.Add(new TItem { Value = 1 });
             model.Series.Add(series2);
 
-            model.Axes.Add(new CategoryAxis("Category", "A", "B") { Position = CategoryAxisPosition() });
+            var categoryAxis = new CategoryAxis
+            {
+                Title = "Category",
+                Position = CategoryAxisPosition()
+            };
+            categoryAxis.Labels.AddRange(new[] { "A", "B" });
+            model.Axes.Add(categoryAxis);
+
             return model;
         }
 
         [Example("Missing values")]
         public static PlotModel MissingValues()
         {
-            var model = new PlotModel("Missing values", "Series 1 contains only one item with CategoryIndex = 1");
+            var model = new PlotModel { Title = "Missing values", Subtitle = "Series 1 contains only one item with CategoryIndex = 1" };
             var series1 = new TSeries { Title = "Series 1" };
             series1.Items.Add(new TItem { Value = 1, CategoryIndex = 1 });
             model.Series.Add(series1);
@@ -510,40 +689,61 @@ namespace ExampleLibrary
             series2.Items.Add(new TItem { Value = 1.2 });
             model.Series.Add(series2);
 
-            model.Axes.Add(new CategoryAxis("Category", "A", "B") { Position = CategoryAxisPosition() });
+            var categoryAxis = new CategoryAxis
+            {
+                Title = "Category",
+                Position = CategoryAxisPosition()
+            };
+            categoryAxis.Labels.AddRange(new[] { "A", "B" });
+            model.Axes.Add(categoryAxis);
+
             return model;
         }
 
         [Example("CategoryIndex")]
         public static PlotModel CategoryIndex()
         {
-            var model = new PlotModel("CategoryIndex", "Setting CategoryIndex = 0 for both items in the series.");
+            var model = new PlotModel { Title = "CategoryIndex", Subtitle = "Setting CategoryIndex = 0 for both items in the series." };
             var series = new TSeries { Title = "Series 1", StrokeThickness = 1 };
             series.Items.Add(new TItem { Value = 1, CategoryIndex = 0 });
             series.Items.Add(new TItem { Value = 2, CategoryIndex = 0 });
             model.Series.Add(series);
 
-            model.Axes.Add(new CategoryAxis("Category", "A", "B") { Position = CategoryAxisPosition() });
+            var categoryAxis = new CategoryAxis
+            {
+                Title = "Category",
+                Position = CategoryAxisPosition()
+            };
+            categoryAxis.Labels.AddRange(new[] { "A", "B" });
+            model.Axes.Add(categoryAxis);
+
             return model;
         }
 
         [Example("CategoryIndex (stacked)")]
         public static PlotModel CategoryIndexStacked()
         {
-            var model = new PlotModel("CategoryIndex (stacked)", "Setting CategoryIndex = 0 for both items in the series.");
+            var model = new PlotModel { Title = "CategoryIndex (stacked)", Subtitle = "Setting CategoryIndex = 0 for both items in the series." };
             var series = new TSeries { Title = "Series 1", IsStacked = true, StrokeThickness = 1 };
             series.Items.Add(new TItem { Value = 1, CategoryIndex = 0 });
             series.Items.Add(new TItem { Value = 2, CategoryIndex = 0 });
             model.Series.Add(series);
 
-            model.Axes.Add(new CategoryAxis("Category", "A", "B") { Position = CategoryAxisPosition() });
+            var categoryAxis = new CategoryAxis
+            {
+                Title = "Category",
+                Position = CategoryAxisPosition()
+            };
+            categoryAxis.Labels.AddRange(new[] { "A", "B" });
+            model.Axes.Add(categoryAxis);
+
             return model;
         }
 
         [Example("BaseValue")]
         public static PlotModel BaseValue()
         {
-            var model = new PlotModel("BaseValue", "BaseValue = -1");
+            var model = new PlotModel { Title = "BaseValue", Subtitle = "BaseValue = -1" };
             var series1 = new TSeries { Title = "Series 1", BaseValue = -1 };
             series1.Items.Add(new TItem { Value = 1 });
             series1.Items.Add(new TItem { Value = 2 });
@@ -553,14 +753,21 @@ namespace ExampleLibrary
             series2.Items.Add(new TItem { Value = 7 });
             model.Series.Add(series2);
 
-            model.Axes.Add(new CategoryAxis("Category", "A", "B") { Position = CategoryAxisPosition() });
+            var categoryAxis = new CategoryAxis
+            {
+                Title = "Category",
+                Position = CategoryAxisPosition()
+            };
+            categoryAxis.Labels.AddRange(new[] { "A", "B" });
+            model.Axes.Add(categoryAxis);
+
             return model;
         }
 
         [Example("BaseValue (stacked)")]
         public static PlotModel BaseValueStacked()
         {
-            var model = new PlotModel("BaseValue (stacked)", "BaseValue = -1");
+            var model = new PlotModel { Title = "BaseValue (stacked)", Subtitle = "BaseValue = -1" };
             var series1 = new TSeries { Title = "Series 1", IsStacked = true, BaseValue = -1 };
             series1.Items.Add(new TItem { Value = 1 });
             series1.Items.Add(new TItem { Value = 2 });
@@ -570,7 +777,13 @@ namespace ExampleLibrary
             series2.Items.Add(new TItem { Value = 7 });
             model.Series.Add(series2);
 
-            model.Axes.Add(new CategoryAxis("Category", "A", "B") { Position = CategoryAxisPosition() });
+            var categoryAxis = new CategoryAxis
+            {
+                Title = "Category",
+                Position = CategoryAxisPosition()
+            };
+            categoryAxis.Labels.AddRange(new[] { "A", "B" });
+            model.Axes.Add(categoryAxis);
             return model;
         }
 
@@ -602,8 +815,9 @@ namespace ExampleLibrary
         // [Example("All in one")]
         public static PlotModel AllInOne()
         {
-            var model = new PlotModel("All in one")
+            var model = new PlotModel
             {
+                Title = "All in one",
                 LegendPlacement = LegendPlacement.Outside,
                 LegendPosition = LegendPosition.BottomCenter,
                 LegendOrientation = LegendOrientation.Horizontal,
@@ -615,8 +829,9 @@ namespace ExampleLibrary
             categoryAxis.Labels.Add("Category B");
             categoryAxis.Labels.Add("Category C");
             categoryAxis.Labels.Add("Category D");
-            var valueAxis = new LinearAxis(ValueAxisPosition())
+            var valueAxis = new LinearAxis
             {
+                Position = ValueAxisPosition(),
                 MinimumPadding = 0.06,
                 MaximumPadding = 0.06,
                 ExtraGridlines = new[] { 0.0 },

@@ -44,7 +44,7 @@ namespace OxyPlot.Tests
         [Test]
         public void ExportToString_TestPlot_ValidSvgDocument()
         {
-            var plotModel = new PlotModel("Test plot");
+            var plotModel = new PlotModel { Title = "Test plot" };
             plotModel.Series.Add(new FunctionSeries(Math.Sin, 0, Math.PI * 8, 200, "Math.Sin"));
             var svg = SvgExporter.ExportToString(plotModel, 800, 500, true);
             SvgAssert.IsValidDocument(svg);
@@ -53,7 +53,7 @@ namespace OxyPlot.Tests
         [Test]
         public void ExportToString_TestPlot_ValidSvgString()
         {
-            var plotModel = new PlotModel("Test plot");
+            var plotModel = new PlotModel { Title = "Test plot" };
             plotModel.Series.Add(new FunctionSeries(Math.Sin, 0, Math.PI * 8, 200, "Math.Sin"));
             var svg = SvgExporter.ExportToString(plotModel, 800, 500, false);
             SvgAssert.IsValidElement(svg);
@@ -62,7 +62,7 @@ namespace OxyPlot.Tests
         [Test]
         public void Export_TestPlot_ValidSvgString()
         {
-            var plotModel = new PlotModel("Test plot");
+            var plotModel = new PlotModel { Title = "Test plot" };
             const string FileName = "SvgExporterTests_Plot1.svg";
             plotModel.Series.Add(new FunctionSeries(Math.Sin, 0, Math.PI * 8, 200, "Math.Sin"));
             using (var s = File.Create(FileName))
@@ -84,6 +84,11 @@ namespace OxyPlot.Tests
 
             foreach (var example in Examples.GetList())
             {
+                if (example.PlotModel == null)
+                {
+                    continue;
+                }
+
                 var path = Path.Combine(DestinationDirectory, StringHelper.CreateValidFileName(example.Category + " - " + example.Title, ".svg"));
                 using (var s = File.Create(path))
                 {

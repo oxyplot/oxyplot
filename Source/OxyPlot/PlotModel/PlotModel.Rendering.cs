@@ -48,19 +48,42 @@ namespace OxyPlot
         /// <param name="rc">The rendering context.</param>
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
-        public void Render(IRenderContext rc, double width, double height)
+        void IPlotModel.Render(IRenderContext rc, double width, double height)
         {
-            lock (this.syncRoot)
+            this.RenderOverride(rc, width, height);
+        }
+
+        /// <summary>
+        /// Renders the plot with the specified rendering context.
+        /// </summary>
+        /// <param name="rc">The rendering context.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        protected virtual void RenderOverride(IRenderContext rc, double width, double height)
+        {
+            lock (this.SyncRoot)
             {
-                if (width <= 0 || height <= 0)
+                var minimumWidth = this.Padding.Left + this.Padding.Right;
+                var minimumHeight = this.Padding.Top + this.Padding.Bottom;
+                if (width <= minimumWidth || height <= minimumHeight)
                 {
                     return;
+                }
+
+                if (this.RenderingDecorator != null)
+                {
+                    rc = this.RenderingDecorator(rc);
                 }
 
                 this.Width = width;
                 this.Height = height;
 
-                this.ActualPlotMargins = this.PlotMargins;
+                this.ActualPlotMargins = new OxyThickness(
+                    double.IsNaN(this.PlotMargins.Left) ? 0 : this.PlotMargins.Left,
+                    double.IsNaN(this.PlotMargins.Top) ? 0 : this.PlotMargins.Top,
+                    double.IsNaN(this.PlotMargins.Right) ? 0 : this.PlotMargins.Right,
+                    double.IsNaN(this.PlotMargins.Bottom) ? 0 : this.PlotMargins.Bottom);
+
                 this.EnsureLegendProperties();
 
                 while (true)
@@ -68,10 +91,6 @@ namespace OxyPlot
                     this.UpdatePlotArea(rc);
                     this.UpdateAxisTransforms();
                     this.UpdateIntervals();
-                    if (!this.AutoAdjustPlotMargins)
-                    {
-                        break;
-                    }
 
                     if (!this.AdjustPlotMargins(rc))
                     {
@@ -108,19 +127,6 @@ namespace OxyPlot
                 // Clean up unused images
                 rc.CleanUp();
             }
-        }
-
-        /// <summary>
-        /// Increases margin size if needed, do it on all borders
-        /// </summary>
-        /// <param name="currentMargin">The current margin.</param>
-        /// <param name="minBorderSize">Minimum size of the border.</param>
-        private static void EnsureMarginIsBigEnough(ref OxyThickness currentMargin, double minBorderSize)
-        {
-            currentMargin.Bottom = Math.Max(currentMargin.Bottom, minBorderSize);
-            currentMargin.Left = Math.Max(currentMargin.Left, minBorderSize);
-            currentMargin.Right = Math.Max(currentMargin.Right, minBorderSize);
-            currentMargin.Top = Math.Max(currentMargin.Top, minBorderSize);
         }
 
         /// <summary>
@@ -187,10 +193,32 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Determines whether the plot margin for the specified axis position is auto-sized.
+        /// </summary>
+        /// <param name="position">The axis position.</param>
+        /// <returns><c>true</c> if it is auto-sized.</returns>
+        private bool IsPlotMarginAutoSized(AxisPosition position)
+        {
+            switch (position)
+            {
+                case AxisPosition.Left:
+                    return double.IsNaN(this.PlotMargins.Left);
+                case AxisPosition.Right:
+                    return double.IsNaN(this.PlotMargins.Right);
+                case AxisPosition.Top:
+                    return double.IsNaN(this.PlotMargins.Top);
+                case AxisPosition.Bottom:
+                    return double.IsNaN(this.PlotMargins.Bottom);
+                default:
+                    return false;
+            }
+        }
+
+        /// <summary>
         /// Adjusts the plot margins.
         /// </summary>
         /// <param name="rc">The render context.</param>
-        /// <returns>The adjust plot margins.</returns>
+        /// <returns><c>true</c> if the margins were adjusted.</returns>
         private bool AdjustPlotMargins(IRenderContext rc)
         {
             var currentMargin = this.ActualPlotMargins;
@@ -198,8 +226,12 @@ namespace OxyPlot
             for (var position = AxisPosition.Left; position <= AxisPosition.Bottom; position++)
             {
                 var axesOfPosition = this.VisibleAxes.Where(a => a.Position == position).ToList();
-
                 var requiredSize = this.AdjustAxesPositions(rc, axesOfPosition);
+
+                if (!this.IsPlotMarginAutoSized(position))
+                {
+                    continue;
+                }
 
                 EnsureMarginIsBigEnough(ref currentMargin, requiredSize, position);
             }
@@ -211,7 +243,15 @@ namespace OxyPlot
             {
                 var requiredSize = this.AdjustAxesPositions(rc, angularAxes);
 
-                EnsureMarginIsBigEnough(ref currentMargin, requiredSize);
+                for (var position = AxisPosition.Left; position <= AxisPosition.Bottom; position++)
+                {
+                    if (!this.IsPlotMarginAutoSized(position))
+                    {
+                        continue;
+                    }
+
+                    EnsureMarginIsBigEnough(ref currentMargin, requiredSize, position);
+                }
             }
 
             if (currentMargin.Equals(this.ActualPlotMargins))
@@ -489,7 +529,25 @@ namespace OxyPlot
                 plotArea.Top - this.ActualPlotMargins.Top,
                 plotArea.Width + this.ActualPlotMargins.Left + this.ActualPlotMargins.Right,
                 plotArea.Height + this.ActualPlotMargins.Top + this.ActualPlotMargins.Bottom);
-            this.TitleArea = new OxyRect(this.PlotArea.Left, this.Padding.Top, this.PlotArea.Width, titleSize.Height + (this.TitlePadding * 2));
+
+            switch (this.TitleHorizontalAlignment)
+            {
+                case TitleHorizontalAlignment.CenteredWithinView:
+                    this.TitleArea = new OxyRect(
+                        0,
+                        this.Padding.Top,
+                        this.Width,
+                        titleSize.Height + (this.TitlePadding * 2));
+                    break;
+                default:
+                    this.TitleArea = new OxyRect(
+                        this.PlotArea.Left,
+                        this.Padding.Top,
+                        this.PlotArea.Width,
+                        titleSize.Height + (this.TitlePadding * 2));
+                    break;
+            }
+
             this.LegendArea = this.GetLegendRectangle(legendSize);
         }
     }

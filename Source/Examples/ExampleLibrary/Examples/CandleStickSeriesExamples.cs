@@ -40,9 +40,10 @@ namespace ExampleLibrary
         [Example("CandleStickSeries")]
         public static PlotModel CandleStickSeries()
         {
-            var model = new PlotModel("CandleStickSeries") { LegendSymbolLength = 24 };
-            var s1 = new CandleStickSeries("random values")
+            var model = new PlotModel { Title = "CandleStickSeries", LegendSymbolLength = 24 };
+            var s1 = new CandleStickSeries
                 {
+                    Title = "random values",
                     Color = OxyColors.Black,
                 };
             var r = new Random(314);
@@ -58,8 +59,8 @@ namespace ExampleLibrary
             }
 
             model.Series.Add(s1);
-            model.Axes.Add(new LinearAxis(AxisPosition.Left) { MaximumPadding = 0.3, MinimumPadding = 0.3 });
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom) { MaximumPadding = 0.03, MinimumPadding = 0.03 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, MaximumPadding = 0.3, MinimumPadding = 0.3 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, MaximumPadding = 0.03, MinimumPadding = 0.03 });
 
             return model;
         }
@@ -80,7 +81,7 @@ namespace ExampleLibrary
         [Example("Minute data (DateTimeAxis)")]
         public static PlotModel MinuteData_DateTimeAxis()
         {
-            var pm = new PlotModel("Minute Data (DateTimeAxis)");
+            var pm = new PlotModel { Title = "Minute Data (DateTimeAxis)" };
 
             var timeSpanAxis1 = new DateTimeAxis { Position = AxisPosition.Bottom, StringFormat = "hh:mm" };
             pm.Axes.Add(timeSpanAxis1);
@@ -132,7 +133,7 @@ namespace ExampleLibrary
         public static PlotModel MinuteData_TimeSpan()
         {
 
-            var pm = new PlotModel("Minute Data (TimeSpanAxis)");
+            var pm = new PlotModel { Title = "Minute Data (TimeSpanAxis)" };
 
             var timeSpanAxis1 = new TimeSpanAxis { Position = AxisPosition.Bottom, StringFormat = "hh:mm" };
             pm.Axes.Add(timeSpanAxis1);

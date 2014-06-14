@@ -24,14 +24,14 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Describes the kind of value that a <see cref="PlotLength"/> object is holding.
+//   Defines the kind of value that a <see cref="PlotLength" /> object is holding.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     /// <summary>
-    /// Describes the kind of value that a <see cref="PlotLength" /> object is holding.
+    /// Defines the kind of value that a <see cref="PlotLength" /> object is holding.
     /// </summary>
     public enum PlotLengthUnit
     {

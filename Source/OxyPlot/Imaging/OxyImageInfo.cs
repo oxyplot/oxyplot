@@ -24,14 +24,14 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Provides information about the size of an image.
+//   Provides information about an <see cref="OxyImage" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     /// <summary>
-    /// Provides information about the size of an image.
+    /// Provides information about an <see cref="OxyImage" />.
     /// </summary>
     public class OxyImageInfo
     {

@@ -50,11 +50,15 @@ namespace ExampleLibrary
         // [Example("DateTime Minimum bug")]
         public static PlotModel Example1()
         {
-            var tmp = new PlotModel("Test");
-            tmp.Axes.Add(new LinearAxis(AxisPosition.Left) { MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot, TickStyle = TickStyle.Outside });
-            DateTime dt = new DateTime(2010, 1, 1);
-            tmp.Axes.Add(new DateTimeAxis(AxisPosition.Bottom, dt, dt.AddDays(1), null, null, DateTimeIntervalType.Hours)
+            var tmp = new PlotModel { Title = "Test" };
+            tmp.Axes.Add(new LinearAxis { Position = AxisPosition.Left, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot, TickStyle = TickStyle.Outside });
+            var dt = new DateTime(2010, 1, 1);
+            tmp.Axes.Add(new DateTimeAxis
             {
+                Position = AxisPosition.Bottom,
+                Minimum = DateTimeAxis.ToDouble(dt),
+                Maximum = DateTimeAxis.ToDouble(dt.AddDays(1)),
+                IntervalType = DateTimeIntervalType.Hours,
                 MajorGridlineStyle = LineStyle.Solid,
                 Angle = 90,
                 StringFormat = "HH:mm",
@@ -65,8 +69,8 @@ namespace ExampleLibrary
                 TickStyle = TickStyle.None
             });
 
-            var ls = new LineSeries("Line1") { DataFieldX = "X", DataFieldY = "Y" };
-            List<Item> ii = new List<Item>();
+            var ls = new LineSeries { Title = "Line1", DataFieldX = "X", DataFieldY = "Y" };
+            var ii = new List<Item>();
 
             for (int i = 0; i < 24; i++)
                 ii.Add(new Item { X = dt.AddHours(i), Y = i * i });
@@ -80,7 +84,7 @@ namespace ExampleLibrary
         {
             var m = new PlotModel();
 
-            var xa = new DateTimeAxis(AxisPosition.Bottom);
+            var xa = new DateTimeAxis { Position = AxisPosition.Bottom };
 #if PCL || SILVERLIGHT
             // TimeZone not available in PCL...
 #else
@@ -88,7 +92,7 @@ namespace ExampleLibrary
                 "W. Europe Standard Time");
 #endif
             m.Axes.Add(xa);
-            m.Axes.Add(new LinearAxis(AxisPosition.Left));
+            m.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
             var ls = new LineSeries { MarkerType = MarkerType.Circle };
             m.Series.Add(ls);
 
@@ -120,7 +124,7 @@ namespace ExampleLibrary
             double increment = 3600 * 24 * 14;
 
             // Create a random data collection
-            var r = new Random();
+            var r = new Random(13);
             var data = new Collection<DateValue>();
             var date = start;
             while (date <= end)
@@ -129,7 +133,7 @@ namespace ExampleLibrary
                 date = date.AddSeconds(increment);
             }
 
-            var plotModel1 = new PlotModel("DateTime axis");
+            var plotModel1 = new PlotModel { Title = "DateTime axis" };
             var dateTimeAxis1 = new DateTimeAxis
                 {
                     CalendarWeekRule = CalendarWeekRule.FirstFourDayWeek,
@@ -198,7 +202,7 @@ namespace ExampleLibrary
 
             var sunData = CreateSunData(year, 59.91, 10.75, utcToLocalTime);
 
-            var plotModel1 = new PlotModel("Sunrise and sunset in Oslo", "UTC time");
+            var plotModel1 = new PlotModel { Title = "Sunrise and sunset in Oslo", Subtitle = "UTC time" };
 
             var dateTimeAxis1 = new DateTimeAxis
                 {

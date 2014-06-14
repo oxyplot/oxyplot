@@ -31,8 +31,7 @@
 namespace ExampleLibrary
 {
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-
+    
     using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
@@ -50,22 +49,26 @@ namespace ExampleLibrary
         [Example("Q1 2003 Calls by Region")]
         public static PlotModel Graph1()
         {
-            var pm = new PlotModel("Q1 2003 Calls by Region");
-            pm.PlotAreaBorderThickness = 0;
-            pm.Axes.Add(
-                new CategoryAxis
+            var pm = new PlotModel { Title = "Q1 2003 Calls by Region", PlotAreaBorderThickness = new OxyThickness(0) };
+            var categoryAxis = new CategoryAxis
                     {
                         AxislineStyle = LineStyle.Solid,
-                        Labels = new List<string> { "North", "East", "South", "West" },
                         TickStyle = TickStyle.None
-                    });
+                    };
+            categoryAxis.Labels.AddRange(new[] { "North", "East", "South", "West" });
+            pm.Axes.Add(categoryAxis);
             pm.Axes.Add(
-                new LinearAxis(AxisPosition.Left, 0, 6000, 1000, 1000)
-                    {
-                        AxislineStyle = LineStyle.Solid,
-                        TickStyle = TickStyle.Outside,
-                        StringFormat = "#,0"
-                    });
+                new LinearAxis
+                {
+                    Position = AxisPosition.Left,
+                    Minimum = 0,
+                    Maximum = 6000,
+                    MajorStep = 1000,
+                    MinorStep = 1000,
+                    AxislineStyle = LineStyle.Solid,
+                    TickStyle = TickStyle.Outside,
+                    StringFormat = "#,0"
+                });
             var series = new ColumnSeries { FillColor = OxyColors.Black };
             series.Items.Add(new ColumnItem { Value = 3000 });
             series.Items.Add(new ColumnItem { Value = 4500 });
@@ -82,25 +85,33 @@ namespace ExampleLibrary
         [Example("2003 Sales")]
         public static PlotModel Graph2()
         {
-            var pm = new PlotModel("2003 Sales");
-            pm.PlotAreaBorderThickness = 0;
-            pm.IsLegendVisible = false;
-            var months = new[] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+            var pm = new PlotModel
+                         {
+                             Title = "2003 Sales",
+                             PlotAreaBorderThickness = new OxyThickness(0),
+                             IsLegendVisible = false
+                         };
             var sales1 = new[] { 1000, 1010, 1020, 1010, 1020, 1030, 1000, 500, 1000, 900, 900, 1000 };
             var sales2 = new[] { 2250, 2500, 2750, 2500, 2750, 3000, 2500, 2750, 3100, 2800, 3100, 3500 };
-            pm.Axes.Add(new CategoryAxis
+            var categoryAxis = new CategoryAxis
             {
                 AxislineStyle = LineStyle.Solid,
-                Labels = new List<string>(months),
                 TickStyle = TickStyle.None
-            });
+            };
+            categoryAxis.Labels.AddRange(new[] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" });
+            pm.Axes.Add(categoryAxis);
             pm.Axes.Add(
-                new LinearAxis(AxisPosition.Left, 0, 4000, 500, 500)
-                    {
-                        AxislineStyle = LineStyle.Solid,
-                        TickStyle = TickStyle.Outside,
-                        StringFormat = "#,0"
-                    });
+                new LinearAxis
+                {
+                    Position = AxisPosition.Left,
+                    Minimum = 0,
+                    Maximum = 4000,
+                    MajorStep = 500,
+                    MinorStep = 500,
+                    AxislineStyle = LineStyle.Solid,
+                    TickStyle = TickStyle.Outside,
+                    StringFormat = "#,0"
+                });
             var s1 = new LineSeries { Color = OxyColors.Orange };
             for (int i = 0; i < 12; i++)
             {
@@ -125,9 +136,12 @@ namespace ExampleLibrary
         [Example("Headcount")]
         public static PlotModel Graph3()
         {
-            var pm = new PlotModel("Headcount");
-            pm.PlotAreaBorderThickness = 0;
-            pm.PlotMargins = new OxyThickness(100, 40, 20, 40);
+            var pm = new PlotModel
+                         {
+                             Title = "Headcount",
+                             PlotAreaBorderThickness = new OxyThickness(0),
+                             PlotMargins = new OxyThickness(100, 40, 20, 40)
+                         };
             var values = new Dictionary<string, double> {
                     { "Manufacturing", 240 },
                     { "Sales", 160 },
@@ -149,7 +163,7 @@ namespace ExampleLibrary
                         StartPosition = 1,
                         EndPosition = 0
                     });
-            pm.Axes.Add(new LinearAxis(AxisPosition.Bottom, 0, 250, 50, 50) { AxislineStyle = LineStyle.Solid, TickStyle = TickStyle.Outside, MinimumPadding = 0, MaximumPadding = 0 });
+            pm.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = 0, Maximum = 250, MajorStep = 50, MinorStep = 50, AxislineStyle = LineStyle.Solid, TickStyle = TickStyle.Outside, MinimumPadding = 0, MaximumPadding = 0 });
             pm.Series.Add(new BarSeries { FillColor = OxyColors.Black, ItemsSource = values, ValueField = "Value" });
             return pm;
         }
@@ -161,22 +175,27 @@ namespace ExampleLibrary
         [Example("Regional % of Total Expenses")]
         public static PlotModel Graph4()
         {
-            var pm = new PlotModel("Regional % of Total Expenses");
-            pm.PlotAreaBorderThickness = 0;
+            var pm = new PlotModel { Title = "Regional % of Total Expenses", PlotAreaBorderThickness = new OxyThickness(0) };
+            var categoryAxis = new CategoryAxis
+            {
+                TickStyle = TickStyle.None,
+                GapWidth = 0
+            };
+            categoryAxis.Labels.AddRange(new[] { "West\n34%", "East\n30%", "North\n20%", "South\n16%" });
+            pm.Axes.Add(categoryAxis);
+
             pm.Axes.Add(
-                new CategoryAxis
-                    {
-                        Labels = new List<string> { "West\n34%", "East\n30%", "North\n20%", "South\n16%" },
-                        TickStyle = TickStyle.None,
-                        GapWidth = 0
-                    });
-            pm.Axes.Add(
-                new LinearAxis(AxisPosition.Left, 0, 0.35 + double.Epsilon, 0.05, 0.05)
-                    {
-                        AxislineStyle = LineStyle.Solid,
-                        TickStyle = TickStyle.Outside,
-                        StringFormat = "P0"
-                    });
+                new LinearAxis
+                {
+                    Position = AxisPosition.Left,
+                    Minimum = 0,
+                    Maximum = 0.35 + double.Epsilon,
+                    MajorStep = 0.05,
+                    MinorStep = 0.05,
+                    AxislineStyle = LineStyle.Solid,
+                    TickStyle = TickStyle.Outside,
+                    StringFormat = "P0"
+                });
 
             var series = new ColumnSeries
                     {
@@ -200,8 +219,7 @@ namespace ExampleLibrary
         [Example("Actual to Plan Variance")]
         public static PlotModel Graph5()
         {
-            var pm = new PlotModel("Actual to Plan Variance");
-            pm.PlotAreaBorderThickness = 0;
+            var pm = new PlotModel { Title = "Actual to Plan Variance", PlotAreaBorderThickness = new OxyThickness(0) };
             var values = new Dictionary<string, double>();
             values.Add("Sales", 7);
             values.Add("Marketing", -7);
@@ -210,16 +228,21 @@ namespace ExampleLibrary
             values.Add("Finance", 5);
             pm.Axes.Add(new CategoryAxis { ItemsSource = values, LabelField = "Key", TickStyle = TickStyle.None });
             pm.Axes.Add(
-                new LinearAxis(AxisPosition.Left, -20, 10, 5, 5)
-                    {
-                        Layer = AxisLayer.AboveSeries,
-                        AxislineStyle = LineStyle.Solid,
-                        ExtraGridlines = new double[] { 0 },
-                        ExtraGridlineColor = OxyColors.Black,
-                        ExtraGridlineThickness = 3,
-                        TickStyle = TickStyle.Outside,
-                        StringFormat = "+0;-0;0"
-                    });
+                new LinearAxis
+                {
+                    Position = AxisPosition.Left,
+                    Minimum = -20,
+                    Maximum = 10,
+                    MinorStep = 5,
+                    MajorStep = 5,
+                    Layer = AxisLayer.AboveSeries,
+                    AxislineStyle = LineStyle.Solid,
+                    ExtraGridlines = new double[] { 0 },
+                    ExtraGridlineColor = OxyColors.Black,
+                    ExtraGridlineThickness = 3,
+                    TickStyle = TickStyle.Outside,
+                    StringFormat = "+0;-0;0"
+                });
             pm.Series.Add(
                 new ColumnSeries
                     {
@@ -238,9 +261,12 @@ namespace ExampleLibrary
         [Example("Order Count by Order Size")]
         public static PlotModel Graph6()
         {
-            var pm = new PlotModel("Order Count by Order Size");
-            pm.PlotAreaBorderThickness = 0;
-            pm.PlotMargins = new OxyThickness(60, 4, 4, 60);
+            var pm = new PlotModel
+                         {
+                             Title = "Order Count by Order Size",
+                             PlotAreaBorderThickness = new OxyThickness(0),
+                             PlotMargins = new OxyThickness(60, 4, 4, 60)
+                         };
             var values = new Dictionary<string, double>
                 {
                     { " <$10", 5000 },
@@ -257,12 +283,17 @@ namespace ExampleLibrary
                 TickStyle = TickStyle.None
             });
             pm.Axes.Add(
-                new LinearAxis(AxisPosition.Left, 0, 6000, 1000, 1000)
-                    {
-                        AxislineStyle = LineStyle.Solid,
-                        TickStyle = TickStyle.Outside,
-                        StringFormat = "+0;-0;0"
-                    });
+                new LinearAxis
+                {
+                    Position = AxisPosition.Left,
+                    Minimum = 0,
+                    Maximum = 6000,
+                    MajorStep = 1000,
+                    MinorStep = 1000,
+                    AxislineStyle = LineStyle.Solid,
+                    TickStyle = TickStyle.Outside,
+                    StringFormat = "+0;-0;0"
+                });
             pm.Series.Add(new ColumnSeries { FillColor = OxyColors.Orange, ItemsSource = values, ValueField = "Value" });
             return pm;
         }
@@ -274,10 +305,11 @@ namespace ExampleLibrary
         [Example("Correlation of Employee Heights and Salaries")]
         public static PlotModel Graph7()
         {
-            var pm = new PlotModel("Correlation of Employee Heights and Salaries")
-                {
-                    PlotAreaBorderThickness = 0
-                };
+            var pm = new PlotModel
+            {
+                Title = "Correlation of Employee Heights and Salaries",
+                PlotAreaBorderThickness = new OxyThickness(0)
+            };
             var values = new[]
             {
                     new DataPoint(62, 39000),
@@ -300,14 +332,24 @@ namespace ExampleLibrary
                     new DataPoint(77, 81000)
                 };
             pm.Axes.Add(
-                new LinearAxis(AxisPosition.Left, 30000, 90000, 10000, 10000)
-                    {
-                        AxislineStyle = LineStyle.Solid,
-                        TickStyle = TickStyle.Outside,
-                        StringFormat = "0,0"
-                    });
-            pm.Axes.Add(new LinearAxis(AxisPosition.Bottom, 60, 80, 5, 5)
+                new LinearAxis
+                {
+                    Position = AxisPosition.Left,
+                    Minimum = 30000,
+                    Maximum = 90000,
+                    MajorStep = 10000,
+                    MinorStep = 10000,
+                    AxislineStyle = LineStyle.Solid,
+                    TickStyle = TickStyle.Outside,
+                    StringFormat = "0,0"
+                });
+            pm.Axes.Add(new LinearAxis
             {
+                Position = AxisPosition.Bottom,
+                Minimum = 60,
+                Maximum = 80,
+                MajorStep = 5,
+                MinorStep = 5,
                 AxislineStyle = LineStyle.Solid,
                 TickStyle = TickStyle.Outside
             });

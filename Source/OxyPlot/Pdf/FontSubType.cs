@@ -24,14 +24,14 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Specifies the page size.
+//   Defines the page size.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     /// <summary>
-    /// Specifies the page size.
+    /// Defines the page size.
     /// </summary>
     public enum PageSize
     {
@@ -52,7 +52,7 @@ namespace OxyPlot
     }
 
     /// <summary>
-    /// Specifies the page orientation.
+    /// Defines the page orientation.
     /// </summary>
     public enum PageOrientation
     {
@@ -68,7 +68,7 @@ namespace OxyPlot
     }
 
     /// <summary>
-    /// Specifies the line cap type.
+    /// Defines the line cap type.
     /// </summary>
     public enum LineCap
     {
@@ -89,7 +89,7 @@ namespace OxyPlot
     }
 
     /// <summary>
-    /// Specifies the shape that joins two lines or segments.
+    /// Defines the shape that joins two lines or segments.
     /// </summary>
     public enum LineJoin
     {
@@ -110,7 +110,7 @@ namespace OxyPlot
     }
 
     /// <summary>
-    /// Specifies the color space.
+    /// Defines the color space.
     /// </summary>
     public enum ColorSpace
     {

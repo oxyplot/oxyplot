@@ -299,8 +299,8 @@ namespace OxyPlot.Series
                     var strokeColor = contour.Color.GetActualColor(this.ActualColor);
 
                     rc.DrawClippedLine(
-                        transformedPoints,
                         clippingRect,
+                        transformedPoints,
                         4,
                         this.GetSelectableColor(strokeColor),
                         this.StrokeThickness,
@@ -343,7 +343,7 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Updates the max/minimum values.
+        /// Updates the maximum and minimum values of the series.
         /// </summary>
         protected internal override void UpdateMaxMin()
         {
@@ -490,7 +490,7 @@ namespace OxyPlot.Series
             // This is a simple, slow, naïve method - should be improved:
             // http://stackoverflow.com/questions/1436091/joining-unordered-line-segments
             this.contours = new List<Contour>();
-            var contourPoints = new List<IDataPoint>();
+            var contourPoints = new List<DataPoint>();
             int contourPointsCount = 0;
 
             ContourSegment firstSegment = null;
@@ -504,8 +504,7 @@ namespace OxyPlot.Series
                     bool reverse;
 
                     // Find a segment that is connected to the head of the contour
-                    segment1 = this.FindConnectedSegment(
-                        (DataPoint)contourPoints[0], firstSegment.ContourLevel, eps, out reverse);
+                    segment1 = this.FindConnectedSegment(contourPoints[0], firstSegment.ContourLevel, eps, out reverse);
                     if (segment1 != null)
                     {
                         contourPoints.Insert(0, reverse ? segment1.StartPoint : segment1.EndPoint);
@@ -515,8 +514,7 @@ namespace OxyPlot.Series
                     }
 
                     // Find a segment that is connected to the tail of the contour
-                    segment2 = this.FindConnectedSegment(
-                        (DataPoint)contourPoints[contourPointsCount - 1], firstSegment.ContourLevel, eps, out reverse);
+                    segment2 = this.FindConnectedSegment(contourPoints[contourPointsCount - 1], firstSegment.ContourLevel, eps, out reverse);
                     if (segment2 != null)
                     {
                         contourPoints.Add(reverse ? segment2.StartPoint : segment2.EndPoint);
@@ -531,7 +529,7 @@ namespace OxyPlot.Series
                     if (contourPointsCount > 0 && firstSegment != null)
                     {
                         this.contours.Add(new Contour(contourPoints, firstSegment.ContourLevel));
-                        contourPoints = new List<IDataPoint>();
+                        contourPoints = new List<DataPoint>();
                         contourPointsCount = 0;
                     }
 
@@ -620,14 +618,14 @@ namespace OxyPlot.Series
             /// Gets or sets the points.
             /// </summary>
             /// <value>The points.</value>
-            internal readonly IList<IDataPoint> Points;
+            internal readonly List<DataPoint> Points;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="Contour" /> class.
             /// </summary>
             /// <param name="points">The points.</param>
             /// <param name="contourLevel">The contour level.</param>
-            public Contour(IList<IDataPoint> points, double contourLevel)
+            public Contour(List<DataPoint> points, double contourLevel)
             {
                 this.Points = points;
                 this.ContourLevel = contourLevel;

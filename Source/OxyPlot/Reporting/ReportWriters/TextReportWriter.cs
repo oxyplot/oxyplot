@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   ANSI text report writer.
+//   Implements a <see cref="IReportWriter" /> that writes to plain text format.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -34,7 +34,7 @@ namespace OxyPlot.Reporting
     using System.IO;
 
     /// <summary>
-    /// ANSI text report writer.
+    /// Implements a <see cref="IReportWriter" /> that writes to plain text format.
     /// </summary>
     /// <remarks>This will not write figures/images.</remarks>
     public class TextReportWriter : StreamWriter, IReportWriter

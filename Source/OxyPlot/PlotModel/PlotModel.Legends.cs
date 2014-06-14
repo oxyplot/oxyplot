@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Partial PlotModel class - this file contains methods related to the series legends.
+//   Makes the LegendOrientation property safe.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -32,11 +32,10 @@ namespace OxyPlot
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
-    /// <summary>
-    /// Partial PlotModel class - this file contains methods related to the series legends.
-    /// </summary>
+    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1601:PartialElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public partial class PlotModel
     {
         /// <summary>

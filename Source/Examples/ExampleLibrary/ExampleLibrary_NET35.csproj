@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System.Core" />
+    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\GlobalAssemblyInfo.cs">
@@ -74,9 +75,10 @@
     <Compile Include="Examples\ItemsSourceExamples.cs" />
     <Compile Include="Examples\FunctionSeriesExamples.cs" />
     <Compile Include="Examples\PerformanceExamples.cs" />
+    <Compile Include="Examples\PlotModelExamples.cs" />
     <Compile Include="Examples\RangeColorAxisExamples.cs" />
     <Compile Include="Examples\ShowMeTheNumbersExamples.cs" />
-    <Compile Include="Examples\DiscreteDataSeriesExamples.cs" />
+    <Compile Include="Examples\StairStepSeriesExamples.cs" />
     <Compile Include="Examples\FilteringExamples.cs" />
     <Compile Include="Examples\HighLowSeriesExamples.cs" />
     <Compile Include="Examples\LinearAxisExamples.cs" />
@@ -88,8 +90,11 @@
     <Compile Include="Examples\PieSeriesExamples.cs" />
     <Compile Include="Examples\PolarPlotExamples.cs" />
     <Compile Include="Examples\ScatterSeriesExamples.cs" />
+    <Compile Include="Examples\StemSeriesExamples.cs" />
     <Compile Include="Examples\TimeSpanAxisExamples.cs" />
     <Compile Include="Examples\TrackerExamples.cs" />
+    <Compile Include="Examples\TwoColorLineSeriesExamples.cs" />
+    <Compile Include="Examples\XkcdExamples.cs" />
     <Compile Include="Helpers\Sun.cs" />
     <Compile Include="Issues\OpenIssues.cs" />
     <Compile Include="Issues\ClosedIssues.cs" />
@@ -97,12 +102,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Bergensbanen.csv" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Resources\OxyPlot.png" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Resources\west0479.mtx" />
+    <EmbeddedResource Include="Resources\WorldPopulation.xml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\OxyPlot\OxyPlot_NET35.csproj">

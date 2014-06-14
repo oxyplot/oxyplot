@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the standard fonts that can be used in a <see cref="PortableDocument"/>.
+//   Defines the standard fonts that can be used in a <see cref="PortableDocument" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

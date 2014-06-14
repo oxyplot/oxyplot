@@ -24,16 +24,16 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents an ellipse annotation.
+//   Represents an annotation that shows an ellipse.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Annotations
 {
     /// <summary>
-    /// Represents an ellipse annotation.
+    /// Represents an annotation that shows an ellipse.
     /// </summary>
-    public class EllipseAnnotation : TextualAnnotation
+    public class EllipseAnnotation : ShapeAnnotation
     {
         /// <summary>
         /// The rectangle transformed to screen coordinates.
@@ -45,27 +45,9 @@ namespace OxyPlot.Annotations
         /// </summary>
         public EllipseAnnotation()
         {
-            this.Stroke = OxyColors.Black;
-            this.Fill = OxyColors.LightBlue;
             this.Width = double.NaN;
             this.Height = double.NaN;
         }
-
-        /// <summary>
-        /// Gets or sets the fill color.
-        /// </summary>
-        /// <value>The fill.</value>
-        public OxyColor Fill { get; set; }
-
-        /// <summary>
-        /// Gets or sets the stroke color.
-        /// </summary>
-        public OxyColor Stroke { get; set; }
-
-        /// <summary>
-        /// Gets or sets the stroke thickness.
-        /// </summary>
-        public double StrokeThickness { get; set; }
 
         /// <summary>
         /// Gets or sets the x-coordinate of the center.
@@ -88,12 +70,6 @@ namespace OxyPlot.Annotations
         public double Height { get; set; }
 
         /// <summary>
-        /// Gets or sets the text rotation (degrees).
-        /// </summary>
-        /// <value>The text rotation in degrees.</value>
-        public double TextRotation { get; set; }
-
-        /// <summary>
         /// Renders the polygon annotation.
         /// </summary>
         /// <param name="rc">The render context.</param>
@@ -105,15 +81,20 @@ namespace OxyPlot.Annotations
             this.screenRectangle = new OxyRect(this.Transform(this.X - (this.Width / 2), this.Y - (this.Height / 2)), this.Transform(this.X + (this.Width / 2), this.Y + (this.Height / 2)));
 
             // clip to the area defined by the axes
-            var clipping = this.GetClippingRect();
+            var clippingRectangle = this.GetClippingRect();
 
-            rc.DrawClippedEllipse(clipping, this.screenRectangle, this.Fill, this.Stroke, this.StrokeThickness);
+            rc.DrawClippedEllipse(
+                clippingRectangle,
+                this.screenRectangle,
+                this.GetSelectableFillColor(this.Fill),
+                this.GetSelectableColor(this.Stroke),
+                this.StrokeThickness);
 
             if (!string.IsNullOrEmpty(this.Text))
             {
-                var textPosition = this.screenRectangle.Center;
+                var textPosition = this.GetActualTextPosition(() => this.screenRectangle.Center);
                 rc.DrawClippedText(
-                    clipping,
+                    clippingRectangle,
                     textPosition,
                     this.Text,
                     this.ActualTextColor,
@@ -121,8 +102,8 @@ namespace OxyPlot.Annotations
                     this.ActualFontSize,
                     this.ActualFontWeight,
                     this.TextRotation,
-                    HorizontalAlignment.Center,
-                    VerticalAlignment.Middle);
+                    this.TextHorizontalAlignment,
+                    this.TextVerticalAlignment);
             }
         }
 
@@ -137,7 +118,7 @@ namespace OxyPlot.Annotations
         {
             if (this.screenRectangle.Contains(args.Point))
             {
-                return new HitTestResult(args.Point);
+                return new HitTestResult(this, args.Point);
             }
 
             return null;

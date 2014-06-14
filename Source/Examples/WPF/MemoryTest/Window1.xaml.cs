@@ -57,7 +57,7 @@ namespace MemoryTest
         {
             InitializeComponent();
             DataContext = this;
-            Model = new PlotModel("Test 1");
+            Model = new PlotModel { Title = "Test 1" };
             Model.Series.Add(new FunctionSeries(Math.Cos, 0, 10, 0.01));
         }
     }

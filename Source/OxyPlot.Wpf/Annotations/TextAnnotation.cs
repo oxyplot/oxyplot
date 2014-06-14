@@ -45,12 +45,6 @@ namespace OxyPlot.Wpf
             "Background", typeof(Color), typeof(TextAnnotation), new PropertyMetadata(MoreColors.Undefined, AppearanceChanged));
 
         /// <summary>
-        /// Identifies the <see cref="TextColor"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty TextColorProperty = DependencyProperty.Register(
-            "TextColor", typeof(Color), typeof(TextAnnotation), new PropertyMetadata(Colors.Blue, AppearanceChanged));
-
-        /// <summary>
         /// Identifies the <see cref="Offset"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty OffsetProperty = DependencyProperty.Register(
@@ -67,18 +61,6 @@ namespace OxyPlot.Wpf
             typeof(Thickness),
             typeof(TextAnnotation),
             new PropertyMetadata(new Thickness(4), AppearanceChanged));
-
-        /// <summary>
-        /// Identifies the <see cref="Position"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty PositionProperty = DependencyProperty.Register(
-            "Position", typeof(DataPoint), typeof(TextAnnotation), new PropertyMetadata(AppearanceChanged));
-
-        /// <summary>
-        /// Identifies the <see cref="Rotation"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty RotationProperty = DependencyProperty.Register(
-            "Rotation", typeof(double), typeof(TextAnnotation), new PropertyMetadata(0.0, AppearanceChanged));
 
         /// <summary>
         /// Identifies the <see cref="Stroke"/> dependency property.
@@ -98,8 +80,9 @@ namespace OxyPlot.Wpf
         /// </summary>
         static TextAnnotation()
         {
-            HorizontalAlignmentProperty.OverrideMetadata(typeof(TextAnnotation), new FrameworkPropertyMetadata(HorizontalAlignment.Center, AppearanceChanged));
-            VerticalAlignmentProperty.OverrideMetadata(typeof(TextAnnotation), new FrameworkPropertyMetadata(VerticalAlignment.Bottom, AppearanceChanged));
+            TextHorizontalAlignmentProperty.OverrideMetadata(typeof(TextAnnotation), new FrameworkPropertyMetadata(HorizontalAlignment.Center, AppearanceChanged));
+            TextVerticalAlignmentProperty.OverrideMetadata(typeof(TextAnnotation), new FrameworkPropertyMetadata(VerticalAlignment.Bottom, AppearanceChanged));
+            TextColorProperty.OverrideMetadata(typeof(TextAnnotation), new FrameworkPropertyMetadata(MoreColors.Automatic, AppearanceChanged));
         }
 
         /// <summary>
@@ -123,22 +106,6 @@ namespace OxyPlot.Wpf
             set
             {
                 this.SetValue(BackgroundProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the color of the text.
-        /// </summary>
-        public Color TextColor
-        {
-            get
-            {
-                return (Color)this.GetValue(TextColorProperty);
-            }
-
-            set
-            {
-                this.SetValue(TextColorProperty, value);
             }
         }
 
@@ -171,38 +138,6 @@ namespace OxyPlot.Wpf
             set
             {
                 this.SetValue(PaddingProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the position of the text.
-        /// </summary>
-        public DataPoint Position
-        {
-            get
-            {
-                return (DataPoint)this.GetValue(PositionProperty);
-            }
-
-            set
-            {
-                this.SetValue(PositionProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the rotation angle (degrees).
-        /// </summary>
-        public double Rotation
-        {
-            get
-            {
-                return (double)this.GetValue(RotationProperty);
-            }
-
-            set
-            {
-                this.SetValue(RotationProperty, value);
             }
         }
 
@@ -255,19 +190,15 @@ namespace OxyPlot.Wpf
         {
             base.SynchronizeProperties();
             var a = (Annotations.TextAnnotation)this.InternalAnnotation;
-            a.HorizontalAlignment = this.HorizontalAlignment.ToHorizontalAlignment();
+            a.TextHorizontalAlignment = this.HorizontalAlignment.ToHorizontalAlignment();
             a.Background = this.Background.ToOxyColor();
 
-            a.Position = this.Position;
             a.Offset = this.Offset.ToScreenVector();
-            a.VerticalAlignment = this.VerticalAlignment.ToVerticalAlignment();
+            a.TextVerticalAlignment = this.VerticalAlignment.ToVerticalAlignment();
             a.Padding = this.Padding.ToOxyThickness();
 
-            a.TextColor = this.TextColor.ToOxyColor();
             a.Stroke = this.Stroke.ToOxyColor();
             a.StrokeThickness = this.StrokeThickness;
-
-            a.Rotation = this.Rotation;
         }
     }
 }

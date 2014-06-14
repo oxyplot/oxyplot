@@ -104,8 +104,8 @@ namespace ExampleLibrary
                 }
             }
 
-            rc.DrawClippedLineSegments(screenPoints, clippingRect, this.ActualColor, this.StrokeThickness, this.LineStyle.GetDashArray(), this.LineJoin, false);
-            rc.DrawClippedLineSegments(verticalLines, clippingRect, this.ActualColor, this.StrokeThickness / 3, LineStyle.Dash.GetDashArray(), this.LineJoin, false);
+            rc.DrawClippedLineSegments(clippingRect, screenPoints, this.ActualColor, this.StrokeThickness, this.LineStyle.GetDashArray(), this.LineJoin, false);
+            rc.DrawClippedLineSegments(clippingRect, verticalLines, this.ActualColor, this.StrokeThickness / 3, LineStyle.Dash.GetDashArray(), this.LineJoin, false);
 
             rc.DrawMarkers(screenPoints, clippingRect, this.MarkerType, null, this.MarkerSize, this.MarkerFill, this.MarkerStroke, this.MarkerStrokeThickness);
         }
@@ -135,7 +135,7 @@ namespace ExampleLibrary
             {
                 var p1 = points[i];
                 var p2 = points[i + 1];
-                if (!this.IsValidPoint(p1, this.XAxis, this.YAxis) || !this.IsValidPoint(p2, this.XAxis, this.YAxis))
+                if (!this.IsValidPoint(p1) || !this.IsValidPoint(p2))
                 {
                     continue;
                 }

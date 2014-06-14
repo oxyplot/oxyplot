@@ -32,9 +32,12 @@ namespace RefreshDemo
 {
     using System.Windows;
 
+    using WpfExamples;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [Example("Demonstrates invalidating/refreshing the plot.")]
     public partial class MainWindow : Window
     {
         public MainWindow()

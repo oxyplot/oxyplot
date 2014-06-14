@@ -193,10 +193,7 @@ namespace OxyPlot.Wpf
             if (this.Labels != null && this.ItemsSource == null)
             {
                 a.Labels.Clear();
-                foreach (string label in this.Labels)
-                {
-                    a.Labels.Add(label);
-                }
+                a.Labels.AddRange(this.Labels);
             }
         }
     }

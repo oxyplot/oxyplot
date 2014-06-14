@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Implements an <see cref="IRenderContext"/> producing PDF documents by <see cref="PortableDocument"/>.
+//   Implements an <see cref="IRenderContext" /> producing PDF documents by <see cref="PortableDocument" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

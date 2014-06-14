@@ -37,7 +37,7 @@ Add a class that creates a [API/OxyPlot.PlotModel|PlotModel] and a [API/OxyPlot.
 
 === Create the view
 
-Define the namespace in the `Window` element, set the `DataContext` and add a [API/OxyPlot.Wpf.Plot|`Plot`] control:
+Define the namespace in the `Window` element, set the `DataContext` and add a [API/OxyPlot.Wpf.PlotView|`PlotView`] control:
 
 ```xml
 @include ..\Source\Examples\DocumentationExamples\HelloWorld\WpfApplication1\MainWindow.xaml

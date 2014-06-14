@@ -33,6 +33,7 @@
     <DefineConstants>TRACE;NETFX_CORE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\Output\NetCore45\OxyPlot.Metro.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
     <DebugSymbols>true</DebugSymbols>
@@ -109,6 +110,7 @@
     </Compile>
     <Compile Include="Converters\OxyColorConverter.cs" />
     <Compile Include="Converters\ThicknessConverter.cs" />
+    <Compile Include="PlotView.cs" />
     <Compile Include="Utilities\ConverterExtensions.cs" />
     <Compile Include="Utilities\MouseButtonHelper.cs" />
     <Compile Include="Plot.cs" />

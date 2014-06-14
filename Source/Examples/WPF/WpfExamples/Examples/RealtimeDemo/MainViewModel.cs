@@ -25,16 +25,17 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Threading;
-using OxyPlot;
-using OxyPlot.Axes;
-using OxyPlot.Series;
-
 namespace RealtimeDemo
 {
+    using System;
+    using System.ComponentModel;
+    using System.Diagnostics;
+    using System.Threading;
+
+    using OxyPlot;
+    using OxyPlot.Axes;
+    using OxyPlot.Series;
+
     public enum SimulationType
     {
         Waves,
@@ -51,12 +52,20 @@ namespace RealtimeDemo
         private int numberOfSeries;
         private SimulationType simulationType;
 
+        public MainViewModel()
+        {
+            this.timer = new Timer(OnTimerElapsed);
+            this.Function = (t, x, a) => Math.Cos(t * a) * (x == 0 ? 1 : Math.Sin(x * a) / x);
+            this.SimulationType = SimulationType.Waves;
+        }
+
         public SimulationType SimulationType
         {
             get
             {
                 return this.simulationType;
             }
+
             set
             {
                 this.simulationType = value;
@@ -65,19 +74,12 @@ namespace RealtimeDemo
             }
         }
 
-        public MainViewModel()
-        {
-            this.timer = new Timer(OnTimerElapsed);
-            this.Function = (t, x, a) => Math.Cos(t * a) * (x == 0 ? 1 : Math.Sin(x * a) / x);
-            this.SimulationType = SimulationType.Waves;
-        }
-
         private void SetupModel()
         {
             this.timer.Change(Timeout.Infinite, Timeout.Infinite);
 
             PlotModel = new PlotModel();
-            PlotModel.Axes.Add(new LinearAxis(AxisPosition.Left, -2, 2));
+            PlotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -2, Maximum = 2 });
 
             this.numberOfSeries = this.SimulationType == SimulationType.TimeSimulation ? 1 : 20;
 
@@ -85,9 +87,10 @@ namespace RealtimeDemo
             {
                 PlotModel.Series.Add(new LineSeries { LineStyle = LineStyle.Solid });
             }
-            watch.Start();
+            
+            this.watch.Start();
 
-            RaisePropertyChanged("PlotModel");
+            this.RaisePropertyChanged("PlotModel");
 
             this.timer.Change(1000, UpdateInterval);
         }
@@ -110,7 +113,7 @@ namespace RealtimeDemo
 
         private void Update()
         {
-            double t = watch.ElapsedMilliseconds * 0.001;
+            double t = this.watch.ElapsedMilliseconds * 0.001;
             int n = 0;
 
             for (int i = 0; i < PlotModel.Series.Count; i++)
@@ -132,6 +135,7 @@ namespace RealtimeDemo
                             s.Points.Add(new DataPoint(x, y));
                             break;
                         }
+
                     case SimulationType.Waves:
                         s.Points.Clear();
                         double a = 0.5 + i * 0.05;
@@ -139,16 +143,17 @@ namespace RealtimeDemo
                         {
                             s.Points.Add(new DataPoint(x, Function(t, x, a)));
                         }
+
                         break;
                 }
 
                 n += s.Points.Count;
             }
 
-            if (TotalNumberOfPoints != n)
+            if (this.TotalNumberOfPoints != n)
             {
-                TotalNumberOfPoints = n;
-                RaisePropertyChanged("TotalNumberOfPoints");
+                this.TotalNumberOfPoints = n;
+                this.RaisePropertyChanged("TotalNumberOfPoints");
             }
         }
 
@@ -156,7 +161,7 @@ namespace RealtimeDemo
 
         protected void RaisePropertyChanged(string property)
         {
-            var handler = PropertyChanged;
+            var handler = this.PropertyChanged;
             if (handler != null)
             {
                 handler(this, new PropertyChangedEventArgs(property));

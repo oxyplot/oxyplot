@@ -39,8 +39,13 @@ namespace ExampleLibrary
     /// <summary>
     /// Represents an error series.
     /// </summary>
-    public class ErrorSeries : DataPointSeries
+    public class ErrorSeries : XYAxisSeries
     {
+        /// <summary>
+        /// The list of error items.
+        /// </summary>
+        private readonly List<ErrorItem> points = new List<ErrorItem>();
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ErrorSeries" /> class.
         /// </summary>
@@ -55,6 +60,18 @@ namespace ExampleLibrary
         /// </summary>
         /// <value>The color.</value>
         public OxyColor Color { get; set; }
+
+        /// <summary>
+        /// Gets the list of points.
+        /// </summary>
+        /// <value>A list of <see cref="ErrorItem" />.</value>
+        public List<ErrorItem> Points
+        {
+            get
+            {
+                return this.points;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the stroke thickness.
@@ -86,7 +103,7 @@ namespace ExampleLibrary
             for (int i = 0; i < n; i++)
             {
                 var sp = XAxis.Transform(points[i].X, points[i].Y, YAxis);
-                var ei = points[i] as ErrorItem;
+                var ei = points[i];
                 double errorx = ei != null ? ei.XError * XAxis.Scale : 0;
                 double errory = ei != null ? ei.YError * Math.Abs(YAxis.Scale) : 0;
                 double d = 4;
@@ -120,8 +137,8 @@ namespace ExampleLibrary
             for (int i = 0; i + 1 < segments.Count; i += 2)
             {
                 rc.DrawClippedLine(
-                    new[] { segments[i], segments[i + 1] },
                     clippingRect,
+                    new[] { segments[i], segments[i + 1] },
                     2,
                     this.GetSelectableColor(this.Color),
                     this.StrokeThickness,
@@ -157,6 +174,15 @@ namespace ExampleLibrary
                               new ScreenPoint(xmid + 3, legendBox.Bottom)
                           };
             rc.DrawLineSegments(pts, this.GetSelectableColor(this.Color), this.StrokeThickness, null, OxyPenLineJoin.Miter, true);
+        }
+
+        /// <summary>
+        /// Updates the maximum and minimum values of the series.
+        /// </summary>
+        protected override void UpdateMaxMin()
+        {
+            base.UpdateMaxMin();
+            this.InternalUpdateMaxMin(this.points, p => p.X - p.XError, p => p.X + p.XError, p => p.Y - p.YError, p => p.Y + p.YError);
         }
     }
 }

@@ -25,11 +25,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using OxyPlot;
-
 namespace ExampleLibrary
 {
+    using System;
+
+    using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
@@ -39,19 +39,19 @@ namespace ExampleLibrary
         [Example("Amdahl's Law")]
         public static PlotModel AmdahlsLaw()
         {
-            var model = new PlotModel("Amdahl's law") { LegendTitle = "Parallel portion" };
+            var model = new PlotModel { Title = "Amdahl's law", LegendTitle = "Parallel portion" };
 
             // http://en.wikipedia.org/wiki/Amdahl's_law
             Func<double, int, double> maxSpeedup = (p, n) => 1.0 / ((1.0 - p) + (double)p / n);
             Func<double, LineSeries> createSpeedupCurve = p =>
             {
                 // todo: tracker does not work when smoothing = true (too few points interpolated on the left end of the curve)
-                var ls = new LineSeries(p.ToString("P0")) { Smooth = false };
+                var ls = new LineSeries { Title = p.ToString("P0"), Smooth = false };
                 for (int n = 1; n <= 65536; n *= 2) ls.Points.Add(new DataPoint(n, maxSpeedup(p, n)));
                 return ls;
             };
-            model.Axes.Add(new LogarithmicAxis(AxisPosition.Bottom, "Number of processors") { Base = 2, MajorGridlineStyle = LineStyle.Solid, TickStyle = TickStyle.None });
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, 0, 20, 2, 2, "Speedup") { StringFormat = "F2", MajorGridlineStyle = LineStyle.Solid, TickStyle = TickStyle.None });
+            model.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Bottom, Title = "Number of processors", Base = 2, MajorGridlineStyle = LineStyle.Solid, TickStyle = TickStyle.None });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 0, Maximum = 20, MinorStep = 2, MajorStep = 2, Title = "Speedup", StringFormat = "F2", MajorGridlineStyle = LineStyle.Solid, TickStyle = TickStyle.None });
             model.Series.Add(createSpeedupCurve(0.5));
             model.Series.Add(createSpeedupCurve(0.75));
             model.Series.Add(createSpeedupCurve(0.9));
@@ -65,19 +65,21 @@ namespace ExampleLibrary
         {
             // http://en.wikipedia.org/wiki/Richter_magnitude_scale
 
-            var model = new PlotModel("The Richter magnitude scale")
-                            {
-                                PlotMargins = new OxyThickness(80, 0, 80, 40),
-                                LegendPlacement = LegendPlacement.Inside,
-                                LegendPosition = LegendPosition.TopCenter,
-                                LegendOrientation = LegendOrientation.Horizontal,
-                                LegendSymbolLength = 24
-                            };
+            var model = new PlotModel
+            {
+                Title = "The Richter magnitude scale",
+                PlotMargins = new OxyThickness(80, 0, 80, 40),
+                LegendPlacement = LegendPlacement.Inside,
+                LegendPosition = LegendPosition.TopCenter,
+                LegendOrientation = LegendOrientation.Horizontal,
+                LegendSymbolLength = 24
+            };
 
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, "Richter magnitude scale") { MajorGridlineStyle = LineStyle.None, TickStyle = TickStyle.None });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "Richter magnitude scale", MajorGridlineStyle = LineStyle.None, TickStyle = TickStyle.None });
 
-            var frequencyCurve = new LineSeries("Frequency")
+            var frequencyCurve = new LineSeries
                          {
+                             Title = "Frequency",
                              Color = OxyColor.FromUInt32(0xff3c6c9e),
                              StrokeThickness = 3,
                              MarkerStroke = OxyColor.FromUInt32(0xff3c6c9e),
@@ -96,11 +98,12 @@ namespace ExampleLibrary
             frequencyCurve.Points.Add(new DataPoint(7.5, 18 * 100));
             frequencyCurve.Points.Add(new DataPoint(8.5, 1 * 100));
             frequencyCurve.Points.Add(new DataPoint(9.5, 1.0 / 20 * 100));
-            model.Axes.Add(new LogarithmicAxis(AxisPosition.Left, "Frequency / 100 yr") { UseSuperExponentialFormat = true, MajorGridlineStyle = LineStyle.None, TickStyle = TickStyle.Outside });
+            model.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Left, Title = "Frequency / 100 yr", UseSuperExponentialFormat = true, MajorGridlineStyle = LineStyle.None, TickStyle = TickStyle.Outside });
             model.Series.Add(frequencyCurve);
 
-            var energyCurve = new LineSeries("Energy")
+            var energyCurve = new LineSeries
             {
+                Title = "Energy",
                 Color = OxyColor.FromUInt32(0xff9e6c3c),
                 StrokeThickness = 3,
                 MarkerStroke = OxyColor.FromUInt32(0xff9e6c3c),
@@ -121,7 +124,7 @@ namespace ExampleLibrary
             energyCurve.Points.Add(new DataPoint(9.5, 11e18));
             energyCurve.YAxisKey = "energyAxis";
 
-            model.Axes.Add(new LogarithmicAxis(AxisPosition.Right, "Energy / J") { Key = "energyAxis", UseSuperExponentialFormat = true, MajorGridlineStyle = LineStyle.None, TickStyle = TickStyle.Outside });
+            model.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Right, Title = "Energy / J", Key = "energyAxis", UseSuperExponentialFormat = true, MajorGridlineStyle = LineStyle.None, TickStyle = TickStyle.Outside });
             model.Series.Add(energyCurve);
 
             return model;
@@ -130,8 +133,8 @@ namespace ExampleLibrary
         [Example("LogarithmicAxis with AbsoluteMaximum")]
         public static PlotModel AbsoluteMaximum()
         {
-            var model = new PlotModel("AbsoluteMaximum = 1000");
-            model.Axes.Add(new LogarithmicAxis(AxisPosition.Left, 0.1, 1000) { AbsoluteMaximum = 1000 });
+            var model = new PlotModel { Title = "AbsoluteMaximum = 1000" };
+            model.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Left, Minimum = 0.1, Maximum = 1000, AbsoluteMaximum = 1000 });
             model.Series.Add(new FunctionSeries(Math.Exp, 0, Math.Log(900), 100));
             return model;
         }
@@ -139,12 +142,22 @@ namespace ExampleLibrary
         [Example("LogarithmicAxis with AxisChanged event handler")]
         public static PlotModel AxisChangedEventHAndler()
         {
-            var model = new PlotModel("AxisChanged event handler");
-            var logAxis = new LogarithmicAxis(AxisPosition.Left, 0.1, 1000);
+            var model = new PlotModel { Title = "AxisChanged event handler" };
+            var logAxis = new LogarithmicAxis { Position = AxisPosition.Left, Minimum = 0.1, Maximum = 1000 };
             int n = 0;
             logAxis.AxisChanged += (s, e) => { model.Subtitle = "Changed " + (n++) + " times. ActualMaximum=" + logAxis.ActualMaximum; };
             model.Axes.Add(logAxis);
             model.Series.Add(new FunctionSeries(Math.Exp, 0, Math.Log(900), 100));
+            return model;
+        }
+
+        [Example("Negative values")]
+        public static PlotModel NegativeValues()
+        {
+            var model = new PlotModel { Title = "LogarithmicAxis", Subtitle = "LineSeries with negative values" };
+            model.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Left });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            model.Series.Add(new FunctionSeries(Math.Sin, 0, 40, 1000));
             return model;
         }
     }

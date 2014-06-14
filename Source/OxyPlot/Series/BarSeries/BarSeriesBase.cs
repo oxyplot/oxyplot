@@ -314,7 +314,7 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Updates the maximum/minimum value on the value axis from the bar values.
+        /// Updates the maximum and minimum values of the series.
         /// </summary>
         protected internal override void UpdateMaxMin()
         {
@@ -330,7 +330,7 @@ namespace OxyPlot.Series
             double minValue = double.MaxValue, maxValue = double.MinValue;
             if (this.IsStacked)
             {
-                var labels = this.GetCategoryAxis().Labels;
+                var labels = this.GetCategoryAxis().ActualLabels;
                 for (var i = 0; i < labels.Count; i++)
                 {
                     int j = 0;
@@ -396,7 +396,7 @@ namespace OxyPlot.Series
         {
             this.ValidItems = new List<BarItemBase>();
             this.ValidItemsIndexInversion = new Dictionary<int, int>();
-            var categories = this.GetCategoryAxis().Labels.Count;
+            var categories = this.GetCategoryAxis().ActualLabels.Count;
             var valueAxis = this.GetValueAxis();
 
             int i = 0;
@@ -497,7 +497,7 @@ namespace OxyPlot.Series
                 }
             }
 
-            rc.DrawClippedRectangleAsPolygon(rect, clippingRect, this.GetSelectableFillColor(actualFillColor), this.StrokeColor, this.StrokeThickness);
+            rc.DrawClippedRectangleAsPolygon(clippingRect, rect, this.GetSelectableFillColor(actualFillColor), this.StrokeColor, this.StrokeThickness);
         }
 
         /// <summary>

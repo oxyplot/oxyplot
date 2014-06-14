@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents a polygon annotation.
+//   Represents an annotation that shows a polygon.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -34,9 +34,9 @@ namespace OxyPlot.Annotations
     using System.Linq;
 
     /// <summary>
-    /// Represents a polygon annotation.
+    /// Represents an annotation that shows a polygon.
     /// </summary>
-    public class PolygonAnnotation : TextualAnnotation
+    public class PolygonAnnotation : ShapeAnnotation
     {
         /// <summary>
         /// The polygon points transformed to screen coordinates.
@@ -48,24 +48,10 @@ namespace OxyPlot.Annotations
         /// </summary>
         public PolygonAnnotation()
         {
-            this.Color = OxyColors.Blue;
-            this.Fill = OxyColors.LightBlue;
-            this.StrokeThickness = 1;
             this.LineStyle = LineStyle.Solid;
             this.LineJoin = OxyPenLineJoin.Miter;
-            this.Points = new List<IDataPoint>();
+            this.Points = new List<DataPoint>();
         }
-
-        /// <summary>
-        /// Gets or sets the color of the line.
-        /// </summary>
-        public OxyColor Color { get; set; }
-
-        /// <summary>
-        /// Gets or sets the fill color.
-        /// </summary>
-        /// <value>The fill.</value>
-        public OxyColor Fill { get; set; }
 
         /// <summary>
         /// Gets or sets the line join.
@@ -80,16 +66,10 @@ namespace OxyPlot.Annotations
         public LineStyle LineStyle { get; set; }
 
         /// <summary>
-        /// Gets or sets the points.
+        /// Gets the points.
         /// </summary>
         /// <value>The points.</value>
-        public IList<IDataPoint> Points { get; set; }
-
-        /// <summary>
-        /// Gets or sets the stroke thickness.
-        /// </summary>
-        /// <value>The stroke thickness.</value>
-        public double StrokeThickness { get; set; }
+        public List<DataPoint> Points { get; private set; }
 
         /// <summary>
         /// Renders the polygon annotation.
@@ -112,35 +92,35 @@ namespace OxyPlot.Annotations
             }
 
             // clip to the area defined by the axes
-            var clipping = this.GetClippingRect();
+            var clippingRectangle = this.GetClippingRect();
 
             const double MinimumSegmentLength = 4;
 
             rc.DrawClippedPolygon(
+                clippingRectangle,
                 this.screenPoints,
-                clipping,
                 MinimumSegmentLength * MinimumSegmentLength,
                 this.GetSelectableFillColor(this.Fill),
-                this.GetSelectableColor(this.Color),
+                this.GetSelectableColor(this.Stroke),
                 this.StrokeThickness,
                 this.LineStyle,
                 this.LineJoin);
 
             if (!string.IsNullOrEmpty(this.Text))
             {
-                var textPosition = ScreenPointHelper.GetCentroid(this.screenPoints);
+                var textPosition = this.GetActualTextPosition(() => ScreenPointHelper.GetCentroid(this.screenPoints));
 
                 rc.DrawClippedText(
-                    clipping,
+                    clippingRectangle,
                     textPosition,
                     this.Text,
                     this.ActualTextColor,
                     this.ActualFont,
                     this.ActualFontSize,
                     this.ActualFontWeight,
-                    0,
-                    HorizontalAlignment.Center,
-                    VerticalAlignment.Middle);
+                    this.TextRotation,
+                    this.TextHorizontalAlignment,
+                    this.TextVerticalAlignment);
             }
         }
 
@@ -159,7 +139,7 @@ namespace OxyPlot.Annotations
                 return null;
             }
 
-            return ScreenPointHelper.IsPointInPolygon(args.Point, this.screenPoints) ? new HitTestResult(args.Point) : null;
+            return ScreenPointHelper.IsPointInPolygon(args.Point, this.screenPoints) ? new HitTestResult(this, args.Point) : null;
         }
     }
 }

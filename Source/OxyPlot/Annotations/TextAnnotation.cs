@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents a text annotation.
+//   Represents an annotation that shows text.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -34,7 +34,7 @@ namespace OxyPlot.Annotations
     using System.Collections.Generic;
 
     /// <summary>
-    /// Represents a text annotation.
+    /// Represents an annotation that shows text.
     /// </summary>
     public class TextAnnotation : TextualAnnotation
     {
@@ -48,13 +48,10 @@ namespace OxyPlot.Annotations
         /// </summary>
         public TextAnnotation()
         {
-            this.TextColor = OxyColors.Blue;
             this.Stroke = OxyColors.Black;
             this.Background = OxyColors.Undefined;
             this.StrokeThickness = 1;
-            this.Rotation = 0;
-            this.HorizontalAlignment = HorizontalAlignment.Center;
-            this.VerticalAlignment = VerticalAlignment.Bottom;
+            this.TextVerticalAlignment = VerticalAlignment.Bottom;
             this.Padding = new OxyThickness(4);
         }
 
@@ -63,12 +60,6 @@ namespace OxyPlot.Annotations
         /// </summary>
         /// <value>The background.</value>
         public OxyColor Background { get; set; }
-
-        /// <summary>
-        /// Gets or sets the horizontal alignment.
-        /// </summary>
-        /// <value>The horizontal alignment.</value>
-        public HorizontalAlignment HorizontalAlignment { get; set; }
 
         /// <summary>
         /// Gets or sets the position offset (screen coordinates).
@@ -83,17 +74,6 @@ namespace OxyPlot.Annotations
         public OxyThickness Padding { get; set; }
 
         /// <summary>
-        /// Gets or sets the position of the text.
-        /// </summary>
-        public DataPoint Position { get; set; }
-
-        /// <summary>
-        /// Gets or sets the rotation angle (degrees).
-        /// </summary>
-        /// <value>The rotation.</value>
-        public double Rotation { get; set; }
-
-        /// <summary>
         /// Gets or sets the stroke color of the background rectangle.
         /// </summary>
         /// <value>The stroke color.</value>
@@ -106,12 +86,6 @@ namespace OxyPlot.Annotations
         public double StrokeThickness { get; set; }
 
         /// <summary>
-        /// Gets or sets the vertical alignment.
-        /// </summary>
-        /// <value>The vertical alignment.</value>
-        public VerticalAlignment VerticalAlignment { get; set; }
-
-        /// <summary>
         /// Renders the text annotation.
         /// </summary>
         /// <param name="rc">The render context.</param>
@@ -120,30 +94,35 @@ namespace OxyPlot.Annotations
         {
             base.Render(rc, model);
 
-            var position = this.Transform(this.Position) + this.Offset;
+            var position = this.Transform(this.TextPosition) + this.Offset;
 
-            var clippingRect = this.GetClippingRect();
+            var clippingRectangle = this.GetClippingRect();
 
             var textSize = rc.MeasureText(this.Text, this.ActualFont, this.ActualFontSize, this.ActualFontWeight);
 
             const double MinDistSquared = 4;
 
             this.actualBounds = GetTextBounds(
-                position, textSize, this.Padding, this.Rotation, this.HorizontalAlignment, this.VerticalAlignment);
+                position, textSize, this.Padding, this.TextRotation, this.TextHorizontalAlignment, this.TextVerticalAlignment);
             rc.DrawClippedPolygon(
-                this.actualBounds, clippingRect, MinDistSquared, this.Background, this.Stroke, this.StrokeThickness);
+                clippingRectangle,
+                this.actualBounds, 
+                MinDistSquared, 
+                this.Background, 
+                this.Stroke, 
+                this.StrokeThickness);
 
             rc.DrawClippedMathText(
-                clippingRect,
+                clippingRectangle,
                 position,
                 this.Text,
                 this.GetSelectableFillColor(this.ActualTextColor),
                 this.ActualFont,
                 this.ActualFontSize,
                 this.ActualFontWeight,
-                this.Rotation,
-                this.HorizontalAlignment,
-                this.VerticalAlignment);
+                this.TextRotation,
+                this.TextHorizontalAlignment,
+                this.TextVerticalAlignment);
         }
 
         /// <summary>
@@ -161,7 +140,7 @@ namespace OxyPlot.Annotations
             }
 
             // Todo: see if performance can be improved by checking rectangle (with rotation and alignment), not polygon
-            return ScreenPointHelper.IsPointInPolygon(args.Point, this.actualBounds) ? new HitTestResult(args.Point) : null;
+            return ScreenPointHelper.IsPointInPolygon(args.Point, this.actualBounds) ? new HitTestResult(this, args.Point) : null;
         }
 
         /// <summary>

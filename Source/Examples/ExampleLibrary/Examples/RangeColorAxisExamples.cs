@@ -40,10 +40,15 @@ namespace ExampleLibrary
         public static PlotModel RangeColorAxis()
         {
             int n = 1000;
-            var model = new PlotModel(string.Format("ScatterSeries and RangeColorAxis (n={0})", n))
+            var model = new PlotModel
                 {
+                    Title = string.Format("ScatterSeries and RangeColorAxis (n={0})", n),
                     Background = OxyColors.LightGray
                 };
+
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+
             var rca = new RangeColorAxis { Position = AxisPosition.Right, Maximum = 2, Minimum = -2 };
             rca.AddRange(0, 0.5, OxyColors.Blue);
             rca.AddRange(-0.2, -0.1, OxyColors.Red);
@@ -51,10 +56,10 @@ namespace ExampleLibrary
 
             var s1 = new ScatterSeries { MarkerType = MarkerType.Square, MarkerSize = 6, };
 
-            var random = new Random();
+            var random = new Random(13);
             for (int i = 0; i < n; i++)
             {
-                double x = random.NextDouble() * 2.2 - 1.1;
+                double x = (random.NextDouble() * 2.2) - 1.1;
                 s1.Points.Add(new ScatterPoint(x, random.NextDouble()) { Value = x });
             }
 

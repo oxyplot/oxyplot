@@ -62,7 +62,7 @@ namespace OxyPlot.Series
         public double ErrorWidth { get; set; }
 
         /// <summary>
-        /// Updates the maximum/minimum value on the value axis from the bar values.
+        /// Updates the maximum and minimum values of the series.
         /// </summary>
         protected internal override void UpdateMaxMin()
         {
@@ -79,7 +79,7 @@ namespace OxyPlot.Series
             double minValue = double.MaxValue, maxValue = double.MinValue;
             if (this.IsStacked)
             {
-                var labels = this.GetCategoryAxis().Labels;
+                var labels = this.GetCategoryAxis().ActualLabels;
                 for (var i = 0; i < labels.Count; i++)
                 {
                     int j = 0;
@@ -179,8 +179,8 @@ namespace OxyPlot.Series
             var upperErrorPoint = this.Transform(middleValue, upperValue);
 
             rc.DrawClippedLine(
-                new List<ScreenPoint> { lowerErrorPoint, upperErrorPoint },
                 clippingRect,
+                new List<ScreenPoint> { lowerErrorPoint, upperErrorPoint },
                 0,
                 this.StrokeColor,
                 this.ErrorStrokeThickness,
@@ -193,8 +193,8 @@ namespace OxyPlot.Series
                 var lowerLeftErrorPoint = this.Transform(leftValue, lowerValue);
                 var lowerRightErrorPoint = this.Transform(rightValue, lowerValue);
                 rc.DrawClippedLine(
-                    new List<ScreenPoint> { lowerLeftErrorPoint, lowerRightErrorPoint },
                     clippingRect,
+                    new List<ScreenPoint> { lowerLeftErrorPoint, lowerRightErrorPoint },
                     0,
                     this.StrokeColor,
                     this.ErrorStrokeThickness,
@@ -205,8 +205,8 @@ namespace OxyPlot.Series
                 var upperLeftErrorPoint = this.Transform(leftValue, upperValue);
                 var upperRightErrorPoint = this.Transform(rightValue, upperValue);
                 rc.DrawClippedLine(
-                    new List<ScreenPoint> { upperLeftErrorPoint, upperRightErrorPoint },
                     clippingRect,
+                    new List<ScreenPoint> { upperLeftErrorPoint, upperRightErrorPoint },
                     0,
                     this.StrokeColor,
                     this.ErrorStrokeThickness,

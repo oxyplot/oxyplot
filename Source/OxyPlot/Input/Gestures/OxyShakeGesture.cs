@@ -24,16 +24,16 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines a shake input gesture that can be used to invoke a command.
+//   Represents a shake input gesture.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     /// <summary>
-    /// Defines a shake input gesture that can be used to invoke a command.
+    /// Represents a shake input gesture.
     /// </summary>
-    /// <remarks>Applies primarily to mobiles...</remarks>
+    /// <remarks>The input gesture can be bound to a command in a <see cref="PlotController" />. The shake gesture applies primarily to mobile devices.</remarks>
     public class OxyShakeGesture : OxyInputGesture
     {
         /// <summary>

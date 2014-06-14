@@ -9,6 +9,6 @@
     xmlns:oxy="using:OxyPlot.Metro"  
     mc:Ignorable="d">
     <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
-        <oxy:Plot Model="{Binding PlotModel}"/>    
+        <oxy:PlotView Model="{Binding PlotModel}"/>    
     </Grid>
 </Page>

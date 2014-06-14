@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents a vector defined in the screen coordinate system.
+//   Represents a vector defined in screen space.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -34,7 +34,7 @@ namespace OxyPlot
     using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
-    /// Represents a vector defined in the screen coordinate system.
+    /// Represents a vector defined in screen space.
     /// </summary>
     public struct ScreenVector
     {

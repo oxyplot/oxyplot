@@ -44,8 +44,10 @@
   <Parsers>
     <Parser ParserId="StyleCop.CSharp.CsParser">
       <ParserSettings>
+        <BooleanProperty Name="AnalyzeDesignerFiles">False</BooleanProperty>
         <CollectionProperty Name="GeneratedFileFilters">
           <Value>TemporaryGeneratedFile_.*\.cs$</Value>
+          <Value>XamlTypeInfo\.g\.cs$</Value>
         </CollectionProperty>
       </ParserSettings>
     </Parser>
