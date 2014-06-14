@@ -106,6 +106,14 @@ namespace OxyPlot.Wpf.Tests
                 OxyAssert.PropertiesAreEqual(s1, s2);
             }
 
+            [Test]
+            public void ScatterErrorSeries()
+            {
+                var s1 = new OxyPlot.Series.ScatterErrorSeries();
+                var s2 = new ScatterErrorSeries();
+                OxyAssert.PropertiesAreEqual(s1, s2);
+            }
+
             /*
         [Test]
         public void CandleStickSeries()
