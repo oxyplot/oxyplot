@@ -33,10 +33,12 @@ namespace OxyPlot.Wpf
     using System.Windows;
     using System.Windows.Media;
 
+    using OxyPlot.Series;
+
     /// <summary>
     /// This is a WPF wrapper of OxyPlot.ScatterErrorSeries
     /// </summary>
-    public class ScatterErrorSeries : ScatterSeries
+    public class ScatterErrorSeries : ScatterSeries<ScatterErrorPoint>
     {
         /// <summary>
         /// Identifies the <see cref="DataFieldErrorX"/> dependency property.

@@ -86,6 +86,7 @@
     <Compile Include="PlotView.cs" />
     <Compile Include="PlotView.Properties.cs" />
     <Compile Include="Series\HeatMapSeries.cs" />
+    <Compile Include="Series\ScatterSeries{T}.cs" />
     <Compile Include="Series\StairStepSeries.cs" />
     <Compile Include="Series\ScatterErrorSeries.cs" />
     <Compile Include="Utilities\WeakEvents\RenderingEventListener.cs" />
