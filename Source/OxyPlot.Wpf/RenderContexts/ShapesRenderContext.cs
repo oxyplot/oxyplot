@@ -540,14 +540,24 @@ namespace OxyPlot.Wpf
                 var size = tb.DesiredSize;
                 if (maxSize != null)
                 {
-                    if (size.Width > maxSize.Value.Width)
+                    if (size.Width > maxSize.Value.Width + 1e-3)
                     {
                         size.Width = Math.Max(maxSize.Value.Width, 0);
                     }
+                    else
+                    {
+                        // Add 1 to make sure the text is not clipped at the end
+                        size.Width += 1;
+                    }
 
-                    if (size.Height > maxSize.Value.Height)
+                    if (size.Height > maxSize.Value.Height + 1e-3)
                     {
                         size.Height = Math.Max(maxSize.Value.Height, 0);
+                    }
+                    else
+                    {
+                        // Add 1 to make sure the text is not clipped at the bottom
+                        size.Height += 1;
                     }
 
                     tb.Width = size.Width;
