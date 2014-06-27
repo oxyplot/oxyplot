@@ -262,5 +262,71 @@ namespace ExampleLibrary
             model.Series.Add(new LineSeries { Title = "LineSeries 1", Color = color, ItemsSource = new[] { new DataPoint(0, 0), new DataPoint(10, 3), new DataPoint(20, 2) } });
             return model;
         }
+
+        [Example("#549839: Polar plot with custom arrow series")]
+        public static PlotModel PolarPlotWithArrows()
+        {
+            var model = new PlotModel { Title = "Custom arrow series", PlotType = PlotType.Polar, PlotAreaBorderColor = OxyColors.Undefined };
+            model.Axes.Add(new AngleAxis { Minimum = 0, Maximum = 360, MajorStep = 30, MinorStep = 30, MajorGridlineStyle = LineStyle.Dash });
+            model.Axes.Add(new MagnitudeAxis { Minimum = 0, Maximum = 5, MajorStep = 1, MinorStep = 1, Angle = 90, MajorGridlineStyle = LineStyle.Dash });
+            model.Series.Add(new ArrowSeries549839 { EndPoint = new DataPoint(1, 40) });
+            model.Series.Add(new ArrowSeries549839 { EndPoint = new DataPoint(2, 75) });
+            model.Series.Add(new ArrowSeries549839 { EndPoint = new DataPoint(3, 110) });
+            model.Series.Add(new ArrowSeries549839 { EndPoint = new DataPoint(4, 140) });
+            model.Series.Add(new ArrowSeries549839 { EndPoint = new DataPoint(5, 180) });
+            return model;
+        }
+
+        private class ArrowSeries549839 : XYAxisSeries
+        {
+            private OxyColor defaultColor;
+
+            public ArrowSeries549839()
+            {
+                this.Color = OxyColors.Automatic;
+                this.StrokeThickness = 2;
+            }
+
+            public DataPoint StartPoint { get; set; }
+
+            public DataPoint EndPoint { get; set; }
+
+            public OxyColor Color { get; set; }
+
+            public double StrokeThickness { get; set; }
+
+            protected override void SetDefaultValues(PlotModel model)
+            {
+                if (this.Color.IsAutomatic())
+                {
+                    this.defaultColor = model.GetDefaultColor();
+                }
+            }
+
+            public OxyColor ActualColor
+            {
+                get
+                {
+                    return this.Color.GetActualColor(this.defaultColor);
+                }
+            }
+
+            public override void Render(IRenderContext rc, PlotModel model)
+            {
+                // transform to screen coordinates
+                var p0 = this.Transform(this.StartPoint);
+                var p1 = this.Transform(this.EndPoint);
+
+                var direction = p1 - p0;
+                var normal = new ScreenVector(direction.Y, -direction.X);
+
+                // the end points of the arrow head, scaled by length of arrow
+                var p2 = p1 - (direction * 0.2) + (normal * 0.1);
+                var p3 = p1 - (direction * 0.2) - (normal * 0.1);
+
+                // draw the line segments
+                rc.DrawLineSegments(new[] { p0, p1, p1, p2, p1, p3 }, this.ActualColor, this.StrokeThickness);
+            }
+        }
     }
 }
