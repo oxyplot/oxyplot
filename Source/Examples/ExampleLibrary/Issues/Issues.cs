@@ -36,10 +36,10 @@ namespace ExampleLibrary
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
-    [Examples("Z1 Issues (open)")]
+    [Examples("Z1 Issues")]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     // ReSharper disable InconsistentNaming
-    public class OpenIssues : ExamplesBase
+    public class Issues : ExamplesBase
     {
         [Example("#9042: Support colour coding on scatter plots (Closed)")]
         public static PlotModel ColorCodingOnScatterPlots()
