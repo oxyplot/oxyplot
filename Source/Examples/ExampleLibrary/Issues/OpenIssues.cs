@@ -256,5 +256,144 @@ namespace ExampleLibrary
             plotModel1.Axes.Add(new LinearAxis { Minimum = 0, Maximum = 16 });
             return plotModel1;
         }
+
+        [Example("#10225: WPF Scatterseries not rendered at specific plot sizes")]
+        public static PlotModel ScatterSeries10225()
+        {
+            var plotModel1 = new PlotModel
+            {
+                Title = "Issue 10225",
+                PlotMargins = new OxyThickness(50, 5, 5, 50),
+                Padding = new OxyThickness(0),
+                PlotAreaBorderThickness = new OxyThickness(1, 1, 1, 1),
+                PlotAreaBorderColor = OxyColors.Black,
+                TextColor = OxyColors.Black,
+                LegendOrientation = LegendOrientation.Horizontal,
+                LegendPosition = LegendPosition.TopRight,
+                LegendMargin = 0
+            };
+            plotModel1.Axes.Add(new LinearAxis
+            {
+                IsAxisVisible = true,
+                Title = "X",
+                Position = AxisPosition.Bottom,
+                TickStyle = TickStyle.Outside,
+                TicklineColor = OxyColors.Black,
+                Minimum = 0,
+                MaximumPadding = 0.05
+            });
+            plotModel1.Axes.Add(new LogarithmicAxis
+            {
+                MinimumPadding = 0.05,
+                MaximumPadding = 0.1,
+                Title = "Y",
+                Position = AxisPosition.Left,
+                TickStyle = TickStyle.Outside,
+                TicklineColor = OxyColors.Black,
+                MajorGridlineColor = OxyColors.Black,
+                MajorGridlineStyle = LineStyle.Solid
+            });
+            var referenceCurve = new LineSeries
+            {
+                Title = "Reference",
+                Smooth = true,
+                Color = OxyColor.FromArgb(255, 89, 128, 168)
+            };
+            var upperBoundary = new LineSeries
+            {
+                LineStyle = LineStyle.Dot,
+                Color = OxyColors.LightGray,
+                Smooth = true,
+                Title = string.Empty
+            };
+
+            var lowerBoundary = new LineSeries
+            {
+                LineStyle = LineStyle.Dot,
+                Color = OxyColors.LightGray,
+                Smooth = true,
+                Title = "+/- 15 %"
+            };
+
+            // Series that holds and formats points inside of the boundary
+            var inBoundaryResultLine = new ScatterSeries
+            {
+                Title = "actual",
+                MarkerFill = OxyColors.Black,
+                MarkerSize = 4,
+                MarkerStroke = OxyColors.White,
+                MarkerType = MarkerType.Circle
+            };
+
+            // Series that holds and formats points outside of the boundary
+            var outBoundaryResultLine = new ScatterSeries
+            {
+                Title = "not permissible deviation",
+                MarkerFill = OxyColors.Red,
+                MarkerSize = 4,
+                MarkerStroke = OxyColors.White,
+                MarkerType = MarkerType.Circle
+            };
+
+            // Just some random data to fill the series:
+            var referenceValues = new[]
+            {
+                double.NaN, 0.985567558024852, 0.731704530257957, 0.591109071735532, 0.503627816316065, 0.444980686815776,
+                0.403576666032678, 0.373234299823915, 0.350375591667333, 0.332795027566349, 0.319063666439909,
+                0.30821748743148, 0.299583943726489, 0.292680371378706, 0.287151885046283, 0.282732008216725,
+                0.279216923371711, 0.276557880999918
+            };
+            var actualValues = new[]
+            {
+                double.NaN, 0.33378346040897, 1.09868427497967, 0.970771068054048, 0.739778217457323, 0.582112938330166,
+                0.456962500853806, 0.37488740614826, 0.330272509496142, 0.334461549522006, 0.30989175806678,
+                0.286944862053553, 0.255895385950234, 0.231850970296068, 0.217579897050944, 0.217113227224437,
+                0.164759946945322, 0.0459134254747994
+            };
+
+
+            for (var index = 0; index <= 17; index++)
+            {
+                var referenceValue = referenceValues[index];
+                var lowerBound = referenceValue - (referenceValue * 0.15);
+                var upperBound = referenceValue + (referenceValue * 0.15);
+                referenceCurve.Points.Add(new DataPoint(index, referenceValue));
+                lowerBoundary.Points.Add(new DataPoint(index, lowerBound));
+                upperBoundary.Points.Add(new DataPoint(index, upperBound));
+
+                var actualValue = actualValues[index];
+                if (actualValue > lowerBound && actualValue < upperBound)
+                {
+                    inBoundaryResultLine.Points.Add(new ScatterPoint(index, actualValue));
+                }
+                else
+                {
+                    outBoundaryResultLine.Points.Add(new ScatterPoint(index, actualValue));
+                }
+            }
+
+            plotModel1.Series.Add(referenceCurve);
+            plotModel1.Series.Add(lowerBoundary);
+            plotModel1.Series.Add(upperBoundary);
+            plotModel1.Series.Add(outBoundaryResultLine);
+            plotModel1.Series.Add(inBoundaryResultLine);
+
+            return plotModel1;
+        }
+
+        [Example("#10225: ScatterSeries with invalid point and marker type circle")]
+        public static PlotModel ScatterSeriesWithInvalidPointAndMarkerTypeCircle()
+        {
+            var plotModel1 = new PlotModel
+            {
+                Title = "Issue 10225",
+            };
+            plotModel1.Series.Add(new ScatterSeries
+            {
+                MarkerType = MarkerType.Circle,
+                ItemsSource = new[] { new ScatterPoint(0, double.NaN), new ScatterPoint(0, 0) }
+            });
+            return plotModel1;
+        }
     }
 }

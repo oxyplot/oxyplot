@@ -305,19 +305,6 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Determines whether the specified point is valid.
-        /// </summary>
-        /// <param name="pt">The point.</param>
-        /// <param name="xaxis">The x axis.</param>
-        /// <param name="yaxis">The y axis.</param>
-        /// <returns><c>true</c> if the point is valid; otherwise, <c>false</c> .</returns>
-        public virtual bool IsValidPoint(T pt, Axis xaxis, Axis yaxis)
-        {
-            return !double.IsNaN(pt.X) && !double.IsInfinity(pt.X) && !double.IsNaN(pt.Y) && !double.IsInfinity(pt.Y)
-                   && (xaxis != null && xaxis.IsValidValue(pt.X)) && (yaxis != null && yaxis.IsValidValue(pt.Y));
-        }
-
-        /// <summary>
         /// Renders the series on the specified rendering context.
         /// </summary>
         /// <param name="rc">The rendering context.</param>
@@ -347,6 +334,13 @@ namespace OxyPlot.Series
             for (int i = 0; i < n; i++)
             {
                 var dp = new DataPoint(actualPoints[i].X, actualPoints[i].Y);
+
+                // Skip invalid points
+                if (!this.IsValidPoint(dp))
+                {
+                    continue;
+                }
+
                 double size = double.NaN;
                 double value = double.NaN;
 
@@ -573,12 +567,12 @@ namespace OxyPlot.Series
                 double y = pt.Y;
 
                 // Check if the point is defined (the code below is faster than double.IsNaN)
+#pragma warning disable 1718
                 // ReSharper disable EqualExpressionComparison
                 // ReSharper disable CompareOfFloatsByEqualityOperator
-#pragma warning disable 1718
                 if (x != x || y != y)
-                    // ReSharper restore CompareOfFloatsByEqualityOperator
-                    // ReSharper restore EqualExpressionComparison
+                // ReSharper restore CompareOfFloatsByEqualityOperator
+                // ReSharper restore EqualExpressionComparison
 #pragma warning restore 1718
                 {
                     continue;
