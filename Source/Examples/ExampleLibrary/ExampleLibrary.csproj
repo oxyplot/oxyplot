@@ -99,7 +99,6 @@
     <Compile Include="Examples\XkcdExamples.cs" />
     <Compile Include="Helpers\Sun.cs" />
     <Compile Include="Issues\OpenIssues.cs" />
-    <Compile Include="Issues\ClosedIssues.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

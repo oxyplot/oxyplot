@@ -54,6 +54,7 @@
     <Compile Include="Examples\BarSeries\BarSeriesExamples.cs" />
     <Compile Include="Examples\BarSeries\ColumnSeriesExamples.cs" />
     <Compile Include="Examples\BarSeries\ErrorColumnSeriesExamples.cs" />
+    <Compile Include="Examples\ScatterErrorSeriesExamples.cs" />
     <Compile Include="Examples\BoxPlotSeriesExamples.cs" />
     <Compile Include="Examples\CandleStickSeriesExamples.cs" />
     <Compile Include="Examples\CartesianAxesExamples.cs" />
@@ -97,7 +98,6 @@
     <Compile Include="Examples\XkcdExamples.cs" />
     <Compile Include="Helpers\Sun.cs" />
     <Compile Include="Issues\OpenIssues.cs" />
-    <Compile Include="Issues\ClosedIssues.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
