@@ -117,6 +117,11 @@ namespace OxyPlot.Wpf
         private string currentToolTip;
 
         /// <summary>
+        /// The pixel scale
+        /// </summary>
+        private double pixelScale;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ShapesRenderContext" /> class.
         /// </summary>
         /// <param name="canvas">The canvas.</param>
@@ -128,6 +133,17 @@ namespace OxyPlot.Wpf
             this.UseStreamGeometry = true;
             this.RendersToScreen = true;
             this.BalancedLineDrawingThicknessLimit = 3.5;
+
+            // TODO: issue 10221 - try to find the size of physical pixels
+            var presentationSource = PresentationSource.FromVisual(canvas);
+            if (presentationSource != null && presentationSource.CompositionTarget != null)
+            {
+                this.pixelScale = presentationSource.CompositionTarget.TransformToDevice.M11;
+            }
+            else
+            {
+                this.pixelScale = 1;
+            }
         }
 
         /// <summary>
@@ -202,7 +218,7 @@ namespace OxyPlot.Wpf
             var gg = new GeometryGroup { FillRule = FillRule.Nonzero };
             foreach (var rect in rectangles)
             {
-                gg.Children.Add(new EllipseGeometry(rect.ToRect()));
+                gg.Children.Add(new EllipseGeometry(this.ToRect(rect)));
             }
 
             path.Data = gg;
@@ -234,7 +250,7 @@ namespace OxyPlot.Wpf
             var e = this.CreateAndAdd<Polyline>();
             this.SetStroke(e, stroke, thickness, lineJoin, dashArray, 0, aliased);
 
-            e.Points = points.ToPointCollection(aliased);
+            e.Points = this.ToPointCollection(points, aliased);
         }
 
         /// <summary>
@@ -275,8 +291,8 @@ namespace OxyPlot.Wpf
                     pathGeometry = new PathGeometry();
                 }
 
-                var figure = new PathFigure { StartPoint = points[i].ToPoint(aliased), IsClosed = false };
-                figure.Segments.Add(new LineSegment(points[i + 1].ToPoint(aliased), true) { IsSmoothJoin = false });
+                var figure = new PathFigure { StartPoint = this.ToPoint(points[i], aliased), IsClosed = false };
+                figure.Segments.Add(new LineSegment(this.ToPoint(points[i + 1], aliased), true) { IsSmoothJoin = false });
                 pathGeometry.Figures.Add(figure);
 
                 count++;
@@ -323,7 +339,7 @@ namespace OxyPlot.Wpf
                 e.Fill = this.GetCachedBrush(fill);
             }
 
-            e.Points = points.ToPointCollection(aliased);
+            e.Points = this.ToPointCollection(points, aliased);
         }
 
         /// <summary>
@@ -379,7 +395,7 @@ namespace OxyPlot.Wpf
                 bool first = true;
                 foreach (var p in polygon)
                 {
-                    var point = aliased ? p.ToPixelAlignedPoint() : p.ToPoint();
+                    var point = aliased ? this.ToPixelAlignedPoint(p) : this.ToPoint(p);
                     if (first)
                     {
                         if (usg)
@@ -489,7 +505,7 @@ namespace OxyPlot.Wpf
             var gg = new GeometryGroup { FillRule = FillRule.Nonzero };
             foreach (var rect in rectangles)
             {
-                gg.Children.Add(new RectangleGeometry { Rect = rect.ToPixelAlignedRect() });
+                gg.Children.Add(new RectangleGeometry { Rect = this.ToPixelAlignedRect(rect) });
             }
 
             path.Data = gg;
@@ -727,7 +743,7 @@ namespace OxyPlot.Wpf
         /// <returns><c>true</c> if the clip rectangle was set.</returns>
         public bool SetClip(OxyRect clippingRect)
         {
-            this.clip = clippingRect.ToRect();
+            this.clip = this.ToRect(clippingRect);
             return true;
         }
 
@@ -906,8 +922,8 @@ namespace OxyPlot.Wpf
                     streamGeometryContext = streamGeometry.Open();
                 }
 
-                streamGeometryContext.BeginFigure(points[i].ToPoint(aliased), false, false);
-                streamGeometryContext.LineTo(points[i + 1].ToPoint(aliased), true, false);
+                streamGeometryContext.BeginFigure(this.ToPoint(points[i], aliased), false, false);
+                streamGeometryContext.LineTo(this.ToPoint(points[i + 1], aliased), true, false);
 
                 count++;
 
@@ -1093,7 +1109,7 @@ namespace OxyPlot.Wpf
             var last = new Point();
             for (int i = 0; i < n; i++)
             {
-                var p = aliased ? points[i].ToPixelAlignedPoint() : points[i].ToPoint();
+                var p = aliased ? this.ToPixelAlignedPoint(points[i]) : this.ToPoint(points[i]);
                 pc.Add(p);
 
                 // alt. 1
@@ -1135,6 +1151,77 @@ namespace OxyPlot.Wpf
             {
                 polyline.Points = pc;
             }
+        }
+
+        /// <summary>
+        /// Converts a <see cref="ScreenPoint" /> to a <see cref="Point" />.
+        /// </summary>
+        /// <param name="pt">The screen point.</param>
+        /// <returns>A <see cref="Point" />.</returns>
+        private Point ToPoint(ScreenPoint pt)
+        {
+            return new Point(pt.X, pt.Y);
+        }
+
+        /// <summary>
+        /// Converts a <see cref="ScreenPoint" /> to a pixel aligned<see cref="Point" />.
+        /// </summary>
+        /// <param name="pt">The screen point.</param>
+        /// <returns>A pixel aligned <see cref="Point" />.</returns>
+        private Point ToPixelAlignedPoint(ScreenPoint pt)
+        {
+            // adding 0.5 to get pixel boundary alignment, seems to work
+            // http://weblogs.asp.net/mschwarz/archive/2008/01/04/silverlight-rectangles-paths-and-line-comparison.aspx
+            // http://www.wynapse.com/Silverlight/Tutor/Silverlight_Rectangles_Paths_And_Lines_Comparison.aspx
+            // TODO: issue 10221 - should consider line thickness and logical to physical size of pixels
+            return new Point(0.5 + (int)pt.X, 0.5 + (int)pt.Y);
+        }
+
+        /// <summary>
+        /// Converts an <see cref="OxyRect" /> to a <see cref="Rect" />.
+        /// </summary>
+        /// <param name="r">The rectangle.</param>
+        /// <returns>A <see cref="Rect" />.</returns>
+        private Rect ToRect(OxyRect r)
+        {
+            return new Rect(r.Left, r.Top, r.Width, r.Height);
+        }
+
+        /// <summary>
+        /// Converts an <see cref="OxyRect" /> to a pixel aligned <see cref="Rect" />.
+        /// </summary>
+        /// <param name="r">The rectangle.</param>
+        /// <returns>A pixel aligned<see cref="Rect" />.</returns>
+        private Rect ToPixelAlignedRect(OxyRect r)
+        {
+            // TODO: similar changes as in ToPixelAlignedPoint
+            double x = 0.5 + (int)r.Left;
+            double y = 0.5 + (int)r.Top;
+            double ri = 0.5 + (int)r.Right;
+            double bo = 0.5 + (int)r.Bottom;
+            return new Rect(x, y, ri - x, bo - y);
+        }
+
+        /// <summary>
+        /// Converts a <see cref="ScreenPoint" /> to a <see cref="Point" />.
+        /// </summary>
+        /// <param name="pt">The screen point.</param>
+        /// <param name="aliased">use pixel alignment conversion if set to <c>true</c>.</param>
+        /// <returns>A <see cref="Point" />.</returns>
+        private Point ToPoint(ScreenPoint pt, bool aliased)
+        {
+            return aliased ? this.ToPixelAlignedPoint(pt) : this.ToPoint(pt);
+        }
+
+        /// <summary>
+        /// Creates a point collection from the specified points.
+        /// </summary>
+        /// <param name="points">The points to convert.</param>
+        /// <param name="aliased">convert to pixel aligned points if set to <c>true</c>.</param>
+        /// <returns>The point collection.</returns>
+        private PointCollection ToPointCollection(IEnumerable<ScreenPoint> points, bool aliased)
+        {
+            return new PointCollection(aliased ? points.Select(this.ToPixelAlignedPoint) : points.Select(this.ToPoint));
         }
     }
 }
