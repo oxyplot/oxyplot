@@ -566,11 +566,6 @@ namespace OxyPlot.Axes
         public double TitlePosition { get; set; }
 
         /// <summary>
-        /// Gets or sets the tool tip. The default value is <c>null</c>.
-        /// </summary>
-        public string ToolTip { get; set; }
-
-        /// <summary>
         /// Gets or sets the unit of the axis. The default value is <c>null</c>.
         /// </summary>
         /// <remarks>The <see cref="TitleFormatString" /> is used to format the title including this unit.</remarks>

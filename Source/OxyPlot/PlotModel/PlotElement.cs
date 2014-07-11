@@ -95,6 +95,11 @@ namespace OxyPlot
         public OxyColor TextColor { get; set; }
 
         /// <summary>
+        /// Gets or sets the tool tip. The default value is <c>null</c>.
+        /// </summary>
+        public string ToolTip { get; set; }
+
+        /// <summary>
         /// Gets the actual font.
         /// </summary>
         protected internal string ActualFont

@@ -44,28 +44,28 @@ namespace OxyPlot
         bool RendersToScreen { get; }
 
         /// <summary>
-        /// Draws an ellipse.
+        /// Draws an extents.
         /// </summary>
-        /// <param name="rect">The rectangle.</param>
-        /// <param name="fill">The fill color. If set to <c>OxyColors.Undefined</c>, the ellipse will not be filled.</param>
-        /// <param name="stroke">The stroke color. If set to <c>OxyColors.Undefined</c>, the ellipse will not be stroked.</param>
+        /// <param name="extents">The rectangle defining the extents of the ellipse.</param>
+        /// <param name="fill">The fill color. If set to <c>OxyColors.Undefined</c>, the extents will not be filled.</param>
+        /// <param name="stroke">The stroke color. If set to <c>OxyColors.Undefined</c>, the extents will not be stroked.</param>
         /// <param name="thickness">The thickness (in device independent units, 1/96 inch).</param>
-        void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness = 1.0);
+        void DrawEllipse(OxyRect extents, OxyColor fill, OxyColor stroke, double thickness = 1.0);
 
         /// <summary>
         /// Draws a collection of ellipses, where all have the same stroke and fill.
         /// This performs better than calling DrawEllipse multiple times.
         /// </summary>
-        /// <param name="rectangles">The rectangles.</param>
+        /// <param name="extents">The rectangles defining the extents of the ellipses.</param>
         /// <param name="fill">The fill color. If set to <c>OxyColors.Undefined</c>, the ellipses will not be filled.</param>
         /// <param name="stroke">The stroke color. If set to <c>OxyColors.Undefined</c>, the ellipses will not be stroked.</param>
         /// <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
-        void DrawEllipses(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness = 1.0);
+        void DrawEllipses(IList<OxyRect> extents, OxyColor fill, OxyColor stroke, double thickness = 1.0);
 
         /// <summary>
         /// Draws a polyline.
         /// </summary>
-        /// <param name="points">The points.</param>
+        /// <param name="points">The points defining the polyline.</param>
         /// <param name="stroke">The stroke color.</param>
         /// <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
         /// <param name="dashArray">The dash array (in device independent units, 1/96 inch). Use <c>null</c> to get a solid line.</param>
@@ -83,7 +83,7 @@ namespace OxyPlot
         /// Draws line segments defined by points (0,1) (2,3) (4,5) etc.
         /// This should have better performance than calling DrawLine for each segment.
         /// </summary>
-        /// <param name="points">The points.</param>
+        /// <param name="points">The points defining the line segments.</param>
         /// <param name="stroke">The stroke color.</param>
         /// <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
         /// <param name="dashArray">The dash array (in device independent units, 1/96 inch).</param>
@@ -100,7 +100,7 @@ namespace OxyPlot
         /// <summary>
         /// Draws a polygon.
         /// </summary>
-        /// <param name="points">The points.</param>
+        /// <param name="points">The points defining the polygon.</param>
         /// <param name="fill">The fill color. If set to <c>OxyColors.Undefined</c>, the polygon will not be filled.</param>
         /// <param name="stroke">The stroke color. If set to <c>OxyColors.Undefined</c>, the polygon will not be stroked.</param>
         /// <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
@@ -120,7 +120,7 @@ namespace OxyPlot
         /// Draws a collection of polygons, where all polygons have the same stroke and fill.
         /// This performs better than calling DrawPolygon multiple times.
         /// </summary>
-        /// <param name="polygons">The polygons.</param>
+        /// <param name="polygons">The polygons to draw.</param>
         /// <param name="fill">The fill color. If set to <c>OxyColors.Undefined</c>, the polygons will not be filled.</param>
         /// <param name="stroke">The stroke color. If set to <c>OxyColors.Undefined</c>, the polygons will not be stroked.</param>
         /// <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
@@ -139,19 +139,19 @@ namespace OxyPlot
         /// <summary>
         /// Draws a rectangle.
         /// </summary>
-        /// <param name="rect">The rectangle.</param>
+        /// <param name="rectangle">The rectangle to draw.</param>
         /// <param name="fill">The fill color. If set to <c>OxyColors.Undefined</c>, the rectangle will not be filled.</param>
         /// <param name="stroke">The stroke color. If set to <c>OxyColors.Undefined</c>, the rectangle will not be stroked.</param>
         /// <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
-        void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness = 1.0);
+        void DrawRectangle(OxyRect rectangle, OxyColor fill, OxyColor stroke, double thickness = 1.0);
 
         /// <summary>
-        /// Draws a collection of rectangles, where all have the same stroke and fill.
+        /// Draws a collection of extents, where all have the same stroke and fill.
         /// This performs better than calling DrawRectangle multiple times.
         /// </summary>
-        /// <param name="rectangles">The rectangles.</param>
-        /// <param name="fill">The fill color. If set to <c>OxyColors.Undefined</c>, the rectangles will not be filled.</param>
-        /// <param name="stroke">The stroke color. If set to <c>OxyColors.Undefined</c>, the rectangles will not be stroked.</param>
+        /// <param name="rectangles">The extents to draw.</param>
+        /// <param name="fill">The fill color. If set to <c>OxyColors.Undefined</c>, the extents will not be filled.</param>
+        /// <param name="stroke">The stroke color. If set to <c>OxyColors.Undefined</c>, the extents will not be stroked.</param>
         /// <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
         void DrawRectangles(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness = 1.0);
 
@@ -164,9 +164,9 @@ namespace OxyPlot
         /// <param name="fontFamily">The font family.</param>
         /// <param name="fontSize">Size of the font (in device independent units, 1/96 inch).</param>
         /// <param name="fontWeight">The font weight.</param>
-        /// <param name="rotate">The rotation angle.</param>
-        /// <param name="halign">The horizontal alignment.</param>
-        /// <param name="valign">The vertical alignment.</param>
+        /// <param name="rotation">The rotation angle.</param>
+        /// <param name="horizontalAlignment">The horizontal alignment.</param>
+        /// <param name="verticalAlignment">The vertical alignment.</param>
         /// <param name="maxSize">The maximum size of the text (in device independent units, 1/96 inch).</param>
         void DrawText(
             ScreenPoint p,
@@ -175,9 +175,9 @@ namespace OxyPlot
             string fontFamily = null,
             double fontSize = 10,
             double fontWeight = FontWeights.Normal,
-            double rotate = 0,
-            HorizontalAlignment halign = HorizontalAlignment.Left,
-            VerticalAlignment valign = VerticalAlignment.Top,
+            double rotation = 0,
+            HorizontalAlignment horizontalAlignment = HorizontalAlignment.Left,
+            VerticalAlignment verticalAlignment = VerticalAlignment.Top,
             OxySize? maxSize = null);
 
         /// <summary>
@@ -193,7 +193,7 @@ namespace OxyPlot
         /// <summary>
         /// Sets the tool tip for the following items.
         /// </summary>
-        /// <param name="text">The text in the tooltip.</param>
+        /// <param name="text">The text in the tool tip, or <c>null</c> if no tool tip should be shown.</param>
         void SetToolTip(string text);
 
         /// <summary>
@@ -221,9 +221,9 @@ namespace OxyPlot
         /// <summary>
         /// Sets the clipping rectangle.
         /// </summary>
-        /// <param name="clippingRect">The clipping rectangle.</param>
+        /// <param name="clippingRectangle">The clipping rectangle.</param>
         /// <returns><c>true</c> if the clip rectangle was set.</returns>
-        bool SetClip(OxyRect clippingRect);
+        bool SetClip(OxyRect clippingRectangle);
 
         /// <summary>
         /// Resets the clipping rectangle.

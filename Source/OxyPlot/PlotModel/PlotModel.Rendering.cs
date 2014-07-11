@@ -320,8 +320,11 @@ namespace OxyPlot
         {
             foreach (var a in this.Annotations.Where(a => a.Layer == layer))
             {
+                rc.SetToolTip(a.ToolTip);
                 a.Render(rc, this);
             }
+
+            rc.SetToolTip(null);
         }
 
         /// <summary>
@@ -335,12 +338,16 @@ namespace OxyPlot
             {
                 foreach (var a in this.VisibleAxes)
                 {
+                    rc.SetToolTip(a.ToolTip);
+
                     if (a.Layer == layer)
                     {
                         a.Render(rc, this, layer, i);
                     }
                 }
             }
+
+            rc.SetToolTip(null);
         }
 
         /// <summary>
@@ -384,8 +391,11 @@ namespace OxyPlot
         {
             foreach (var s in this.VisibleSeries)
             {
+                rc.SetToolTip(s.ToolTip);
                 s.Render(rc, this);
             }
+
+            rc.SetToolTip(null);
         }
 
         /// <summary>

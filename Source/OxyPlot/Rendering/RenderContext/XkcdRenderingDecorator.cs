@@ -185,7 +185,7 @@ namespace OxyPlot
         /// <summary>
         /// Sets the tool tip for the following items.
         /// </summary>
-        /// <param name="text">The text in the tooltip.</param>
+        /// <param name="text">The text in the tool tip.</param>
         public override void SetToolTip(string text)
         {
             this.rc.SetToolTip(text);

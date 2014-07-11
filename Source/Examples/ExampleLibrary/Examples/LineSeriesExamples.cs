@@ -46,6 +46,7 @@ namespace ExampleLibrary
             var s1 = new LineSeries
             {
                 Title = "Series 1",
+                ToolTip = "This is a tooltip for a LineSeries",
                 Color = OxyColors.SkyBlue,
                 MarkerType = MarkerType.Circle,
                 MarkerSize = 6,

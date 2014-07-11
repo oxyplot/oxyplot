@@ -353,6 +353,7 @@ namespace OxyPlot
             OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter,
             bool aliased = false)
         {
+            // TODO: minDistSquared should be implemented or removed
             if (rc.SetClip(clippingRectangle))
             {
                 rc.DrawPolygon(points, fill, stroke, strokeThickness, lineStyle.GetDashArray(), lineJoin, aliased);

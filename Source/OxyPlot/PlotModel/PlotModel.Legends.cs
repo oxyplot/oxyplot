@@ -222,6 +222,7 @@ namespace OxyPlot
             double y = rect.Top;
             var maxsize = new OxySize(Math.Max(rect.Right - x, 0), Math.Max(rect.Bottom - y, 0));
 
+            rc.SetToolTip(s.ToolTip);
             var textSize = rc.DrawMathText(
                 new ScreenPoint(x, y),
                 s.Title,
@@ -255,6 +256,7 @@ namespace OxyPlot
                     textSize.Height);
 
             s.RenderLegend(rc, symbolRect);
+            rc.SetToolTip(null);
         }
 
         /// <summary>

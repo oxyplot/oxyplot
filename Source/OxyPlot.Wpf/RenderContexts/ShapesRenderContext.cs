@@ -617,7 +617,6 @@ namespace OxyPlot.Wpf
 #if !NET35
             tb.SetValue(RenderOptions.ClearTypeHintProperty, ClearTypeHint.Enabled);
 #endif
-            this.ApplyTooltip(tb);
         }
 
         /// <summary>
@@ -669,7 +668,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Sets the tool tip for the following items.
         /// </summary>
-        /// <param name="text">The text in the tooltip.</param>
+        /// <param name="text">The text in the tool tip.</param>
         public void SetToolTip(string text)
         {
             this.currentToolTip = text;
@@ -733,7 +732,6 @@ namespace OxyPlot.Wpf
             //// alternative: image.RenderTransform = new TranslateTransform(destX, destY);
 
             image.Source = bitmapChain;
-            this.ApplyTooltip(image);
         }
 
         /// <summary>
@@ -877,14 +875,15 @@ namespace OxyPlot.Wpf
 
             this.canvas.Children.Add(element);
 
+            this.ApplyToolTip(element);
             return element;
         }
 
         /// <summary>
-        /// The apply tooltip.
+        /// Applies the current tool tip to the specified element.
         /// </summary>
         /// <param name="element">The element.</param>
-        private void ApplyTooltip(FrameworkElement element)
+        private void ApplyToolTip(FrameworkElement element)
         {
             if (!string.IsNullOrEmpty(this.currentToolTip))
             {
