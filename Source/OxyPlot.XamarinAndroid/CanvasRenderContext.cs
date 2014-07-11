@@ -77,7 +77,7 @@ namespace OxyPlot.XamarinAndroid
         /// <summary>
         /// Initializes a new instance of the <see cref="CanvasRenderContext" /> class.
         /// </summary>
-        /// <param name="scale">The this.Scale.</param>
+        /// <param name="scale">The scale.</param>
         public CanvasRenderContext(double scale)
         {
             this.paint = new Paint();
