@@ -263,7 +263,6 @@ namespace OxyPlot.Axes
 
             var lpt = this.GetAxisTitlePositionAndAlignment(axis, titlePosition, ref angle, ref halign, ref valign);
 
-            this.RenderContext.SetToolTip(axis.ToolTip);
             this.RenderContext.DrawMathText(
                 lpt,
                 axis.ActualTitle,
@@ -275,7 +274,6 @@ namespace OxyPlot.Axes
                 halign,
                 valign,
                 maxSize);
-            this.RenderContext.SetToolTip(null);
         }
 
         /// <summary>

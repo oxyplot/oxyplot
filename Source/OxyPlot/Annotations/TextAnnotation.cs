@@ -100,20 +100,21 @@ namespace OxyPlot.Annotations
 
             var textSize = rc.MeasureText(this.Text, this.ActualFont, this.ActualFontSize, this.ActualFontWeight);
 
-            const double MinDistSquared = 4;
-
+            rc.SetClip(clippingRectangle);
             this.actualBounds = GetTextBounds(
                 position, textSize, this.Padding, this.TextRotation, this.TextHorizontalAlignment, this.TextVerticalAlignment);
-            rc.DrawClippedPolygon(
-                clippingRectangle,
-                this.actualBounds, 
-                MinDistSquared, 
-                this.Background, 
-                this.Stroke, 
-                this.StrokeThickness);
 
-            rc.DrawClippedMathText(
-                clippingRectangle,
+            if ((this.TextRotation % 90).Equals(0))
+            {
+                var actualRect = new OxyRect(this.actualBounds[0], this.actualBounds[2]);
+                rc.DrawRectangle(actualRect, this.Background, this.Stroke, this.StrokeThickness);
+            }
+            else
+            {
+                rc.DrawPolygon(this.actualBounds, this.Background, this.Stroke, this.StrokeThickness);
+            }
+
+            rc.DrawMathText(
                 position,
                 this.Text,
                 this.GetSelectableFillColor(this.ActualTextColor),
@@ -123,6 +124,8 @@ namespace OxyPlot.Annotations
                 this.TextRotation,
                 this.TextHorizontalAlignment,
                 this.TextVerticalAlignment);
+
+            rc.ResetClip();
         }
 
         /// <summary>

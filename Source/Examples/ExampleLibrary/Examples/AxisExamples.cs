@@ -69,8 +69,8 @@ namespace ExampleLibrary
             return CreateTickStyleExample(TickStyle.Outside);
         }
 
-        [Example("GridLines: None (default)")]
-        public static PlotModel GridLinesNone()
+        [Example("GridLinestyle: None (default)")]
+        public static PlotModel GridlineStyleNone()
         {
             var plotModel1 = new PlotModel { Title = "No gridlines" };
             plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
@@ -78,8 +78,8 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
-        [Example("GridLines: Vertical")]
-        public static PlotModel GridLinesVertical()
+        [Example("GridLinestyle: Vertical")]
+        public static PlotModel GridLinestyleVertical()
         {
             var plotModel1 = new PlotModel { Title = "Vertical gridlines" };
             plotModel1.Axes.Add(new LinearAxis());
@@ -92,8 +92,8 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
-        [Example("GridLines: Horizontal")]
-        public static PlotModel GridLinesHorizontal()
+        [Example("GridLinestyle: Horizontal")]
+        public static PlotModel GridLinestyleHorizontal()
         {
             var plotModel1 = new PlotModel { Title = "Horizontal gridlines" };
             plotModel1.Axes.Add(new LinearAxis
@@ -105,8 +105,8 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
-        [Example("GridLines: Horizontal and vertical")]
-        public static PlotModel GridLinesBoth()
+        [Example("GridLinestyle: Horizontal and vertical")]
+        public static PlotModel GridLinestyleBoth()
         {
             var plotModel1 = new PlotModel { Title = "Horizontal and vertical gridlines" };
             plotModel1.Axes.Add(new LinearAxis
@@ -806,7 +806,7 @@ namespace ExampleLibrary
         public static PlotModel LongAxisTitlesClipped90()
         {
             var longTitle = "Long title 12345678901234567890123456789012345678901234567890123456789012345678901234567890";
-            var tooltip = "The tooltip is " + longTitle;
+            var tooltip = "The tool tip is " + longTitle;
             var plotModel1 = new PlotModel { Title = "Long axis titles (clipped at 90%)" };
             plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = longTitle, ToolTip = tooltip });
             plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = longTitle, ToolTip = tooltip });
@@ -817,7 +817,7 @@ namespace ExampleLibrary
         public static PlotModel LongAxisTitlesClipped100()
         {
             var longTitle = "Long title 12345678901234567890123456789012345678901234567890123456789012345678901234567890";
-            var tooltip = "The tooltip is " + longTitle;
+            var tooltip = "The tool tip is " + longTitle;
             var plotModel1 = new PlotModel { Title = "Long axis titles (clipped at 100%)" };
             plotModel1.Axes.Add(
                 new LinearAxis { Position = AxisPosition.Left, Title = longTitle, ToolTip = tooltip, TitleClippingLength = 1.0 });
@@ -830,7 +830,7 @@ namespace ExampleLibrary
         public static PlotModel LongAxisTitlesNotClipped()
         {
             var longTitle = "Long title 12345678901234567890123456789012345678901234567890123456789012345678901234567890";
-            var tooltip = "The tooltip is " + longTitle;
+            var tooltip = "The tool tip is " + longTitle;
             var plotModel1 = new PlotModel { Title = "Long axis titles (not clipped)" };
             plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = longTitle, ToolTip = tooltip, ClipTitle = false });
             plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = longTitle, ToolTip = tooltip, ClipTitle = false });
@@ -1006,6 +1006,15 @@ namespace ExampleLibrary
                 LabelFormatter = y => ((char)(y + 'A')).ToString()
             });
             return plotModel;
+        }
+
+        [Example("Tool tips")]
+        public static PlotModel ToolTips()
+        {
+            var plotModel1 = new PlotModel { Title = "Tool tips" };
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Left axis", ToolTip = "Tool tip for the left axis" });
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "Bottom axis", ToolTip = "Tool tip for the bottom axis" });
+            return plotModel1;
         }
 
         /// <summary>
