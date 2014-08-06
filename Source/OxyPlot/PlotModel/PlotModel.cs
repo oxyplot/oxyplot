@@ -227,6 +227,12 @@ namespace OxyPlot
         private int currentColorIndex;
 
         /// <summary>
+        /// The last update exception.
+        /// </summary>
+        /// <value>The exception or <c>null</c> if there was no exceptions during the last update.</value>
+        private Exception updateException;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="PlotModel" /> class.
         /// </summary>
         public PlotModel()
@@ -869,9 +875,9 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Creates a text report for the plot.
+        /// Creates a text report for the plot model.
         /// </summary>
-        /// <returns>The create text report.</returns>
+        /// <returns>A text report that contains information about the contents of the plot model.</returns>
         public string CreateTextReport()
         {
             using (var ms = new MemoryStream())
@@ -1163,67 +1169,82 @@ namespace OxyPlot
         {
             lock (this.SyncRoot)
             {
-                this.OnUpdating();
-
-                // Updates the default axes
-                this.EnsureDefaultAxes();
-
-                var visibleSeries = this.VisibleSeries.ToArray();
-
-                // Update data of the series
-                if (updateData)
+                try
                 {
-                    foreach (var s in visibleSeries)
+                    this.updateException = null;
+                    this.OnUpdating();
+
+                    // Updates the default axes
+                    this.EnsureDefaultAxes();
+
+                    var visibleSeries = this.VisibleSeries.ToArray();
+
+                    // Update data of the series
+                    if (updateData)
                     {
-                        s.UpdateData();
+                        foreach (var s in visibleSeries)
+                        {
+                            s.UpdateData();
+                        }
                     }
-                }
 
-                // TODO: clean this up :-)
+                    // TODO: clean this up :-)
 
-                // Updates axes with information from the series
-                // This is used by the category axis that need to know the number of series using the axis.
-                foreach (var a in this.Axes)
-                {
-                    a.UpdateFromSeries(visibleSeries);
-                    a.ResetCurrentValues();
-                }
-
-                // Update valid data of the series
-                // This must be done after the axes are updated from series!
-                if (updateData)
-                {
-                    foreach (var s in visibleSeries)
+                    // Updates axes with information from the series
+                    // This is used by the category axis that need to know the number of series using the axis.
+                    foreach (var a in this.Axes)
                     {
-                        s.UpdateValidData();
+                        a.UpdateFromSeries(visibleSeries);
+                        a.ResetCurrentValues();
                     }
+
+                    // Update valid data of the series
+                    // This must be done after the axes are updated from series!
+                    if (updateData)
+                    {
+                        foreach (var s in visibleSeries)
+                        {
+                            s.UpdateValidData();
+                        }
+                    }
+
+                    // Update the max and min of the axes
+                    this.UpdateMaxMin(updateData);
+
+                    // Update undefined colors
+                    this.ResetDefaultColor();
+                    foreach (var s in this.VisibleSeries)
+                    {
+                        s.SetDefaultValues(this);
+                    }
+
+                    this.OnUpdated();
                 }
-
-                // Update the max and min of the axes
-                this.UpdateMaxMin(updateData);
-
-                // Update undefined colors
-                this.ResetDefaultColor();
-                foreach (var s in this.VisibleSeries)
+                catch (Exception e)
                 {
-                    s.SetDefaultValues(this);
+                    this.updateException = e;
                 }
-
-                this.OnUpdated();
             }
         }
 
         /// <summary>
         /// Gets the axis for the specified key.
         /// </summary>
-        /// <param name="key">The key.</param>
+        /// <param name="key">The axis key.</param>
         /// <param name="defaultAxis">The default axis.</param>
-        /// <returns>The axis, or the defaultAxis if the key is not found.</returns>
+        /// <returns>The axis, or the defaultAxis if the key is not specified.</returns>
+        /// <exception cref="System.InvalidOperationException">Cannot find axis with the specified key.</exception>
         public Axis GetAxisOrDefault(string key, Axis defaultAxis)
         {
             if (key != null)
             {
-                return this.Axes.FirstOrDefault(a => a.Key == key);
+                var axis = this.Axes.FirstOrDefault(a => a.Key == key);
+                if (axis == null)
+                {
+                    throw new InvalidOperationException(string.Format("Cannot find axis with Key = \"{0}\"", key));
+                }
+
+                return axis;
             }
 
             return defaultAxis;

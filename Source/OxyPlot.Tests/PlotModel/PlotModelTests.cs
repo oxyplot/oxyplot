@@ -32,7 +32,6 @@ namespace OxyPlot.Tests
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
-    using System.IO;
 
     using ExampleLibrary;
 
@@ -164,6 +163,24 @@ namespace OxyPlot.Tests
                 var axis = new LinearAxis();
                 model1.Axes.Add(axis);
                 Assert.Throws<InvalidOperationException>(() => model2.Axes.Add(axis));
+            }
+        }
+
+        /// <summary>
+        /// Tests the <see cref="PlotModel.GetAxisOrDefault" /> method.
+        /// </summary>
+        public class GetAxisOrDefault
+        {
+            /// <summary>
+            /// An exception should be thrown when the axis key is invalid.
+            /// </summary>
+            [Test]
+            public void InvalidAxisKey()
+            {
+                var model = new PlotModel();
+                model.Axes.Add(new LinearAxis());
+                model.Series.Add(new LineSeries { XAxisKey = "invalidKey" });
+                Assert.Throws<InvalidOperationException>(() => ((IPlotModel)model).Update(true));
             }
         }
     }

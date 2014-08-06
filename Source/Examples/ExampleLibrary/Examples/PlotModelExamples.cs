@@ -29,6 +29,7 @@ namespace ExampleLibrary
 {
     using OxyPlot;
     using OxyPlot.Axes;
+    using OxyPlot.Series;
 
     [Examples("PlotModel examples")]
     public static class PlotModelExamples
@@ -189,6 +190,15 @@ namespace ExampleLibrary
             var model = new PlotModel { Title = "PlotAreaBorderThickness = 0", Subtitle = "AxislineThickness = 1, AxislineColor = OxyColors.Blue, AxislineStyle = LineStyle.Solid", PlotAreaBorderThickness = new OxyThickness(0) };
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, AxislineThickness = 1, AxislineColor = OxyColors.Blue, AxislineStyle = LineStyle.Solid });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, AxislineThickness = 1, AxislineColor = OxyColors.Blue, AxislineStyle = LineStyle.Solid });
+            return model;
+        }
+
+        [Example("Exception handling (invalid XAxisKey)")]
+        public static PlotModel InvalidAxisKey()
+        {
+            var model = new PlotModel();
+            model.Axes.Add(new LinearAxis());
+            model.Series.Add(new LineSeries { XAxisKey = "invalidKey" });
             return model;
         }
     }

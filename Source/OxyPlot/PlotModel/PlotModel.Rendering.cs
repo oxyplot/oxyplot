@@ -63,69 +63,98 @@ namespace OxyPlot
         {
             lock (this.SyncRoot)
             {
-                var minimumWidth = this.Padding.Left + this.Padding.Right;
-                var minimumHeight = this.Padding.Top + this.Padding.Bottom;
-                if (width <= minimumWidth || height <= minimumHeight)
+                try
                 {
-                    return;
-                }
-
-                if (this.RenderingDecorator != null)
-                {
-                    rc = this.RenderingDecorator(rc);
-                }
-
-                this.Width = width;
-                this.Height = height;
-
-                this.ActualPlotMargins = new OxyThickness(
-                    double.IsNaN(this.PlotMargins.Left) ? 0 : this.PlotMargins.Left,
-                    double.IsNaN(this.PlotMargins.Top) ? 0 : this.PlotMargins.Top,
-                    double.IsNaN(this.PlotMargins.Right) ? 0 : this.PlotMargins.Right,
-                    double.IsNaN(this.PlotMargins.Bottom) ? 0 : this.PlotMargins.Bottom);
-
-                this.EnsureLegendProperties();
-
-                while (true)
-                {
-                    this.UpdatePlotArea(rc);
-                    this.UpdateAxisTransforms();
-                    this.UpdateIntervals();
-
-                    if (!this.AdjustPlotMargins(rc))
+                    if (this.updateException != null)
                     {
-                        break;
+                        // There was an exception during plot model update. 
+                        // This could happen when OxyPlot is given invalid input data. 
+                        // The client application should be responsible for handling this.
+                        // If the client application submitted invalid data, show the exception message and stack trace.
+                        var errorMessage = string.Format(
+                                "An exception of type {0} was thrown when updating the plot model.\r\n{1}",
+                                this.updateException.GetType(),
+                                this.updateException.GetBaseException().StackTrace);
+                        this.RenderErrorMessage(rc, string.Format("OxyPlot exception: {0}", this.updateException.Message), errorMessage);
+                        return;
+                    }
+
+                    var minimumWidth = this.Padding.Left + this.Padding.Right;
+                    var minimumHeight = this.Padding.Top + this.Padding.Bottom;
+                    if (width <= minimumWidth || height <= minimumHeight)
+                    {
+                        return;
+                    }
+
+                    if (this.RenderingDecorator != null)
+                    {
+                        rc = this.RenderingDecorator(rc);
+                    }
+
+                    this.Width = width;
+                    this.Height = height;
+
+                    this.ActualPlotMargins =
+                        new OxyThickness(
+                            double.IsNaN(this.PlotMargins.Left) ? 0 : this.PlotMargins.Left,
+                            double.IsNaN(this.PlotMargins.Top) ? 0 : this.PlotMargins.Top,
+                            double.IsNaN(this.PlotMargins.Right) ? 0 : this.PlotMargins.Right,
+                            double.IsNaN(this.PlotMargins.Bottom) ? 0 : this.PlotMargins.Bottom);
+
+                    this.EnsureLegendProperties();
+
+                    while (true)
+                    {
+                        this.UpdatePlotArea(rc);
+                        this.UpdateAxisTransforms();
+                        this.UpdateIntervals();
+
+                        if (!this.AdjustPlotMargins(rc))
+                        {
+                            break;
+                        }
+                    }
+
+                    if (this.PlotType == PlotType.Cartesian)
+                    {
+                        this.EnforceCartesianTransforms();
+                        this.UpdateIntervals();
+                    }
+
+                    foreach (var a in this.Axes)
+                    {
+                        a.ResetCurrentValues();
+                    }
+
+                    this.RenderBackgrounds(rc);
+                    this.RenderAnnotations(rc, AnnotationLayer.BelowAxes);
+                    this.RenderAxes(rc, AxisLayer.BelowSeries);
+                    this.RenderAnnotations(rc, AnnotationLayer.BelowSeries);
+                    this.RenderSeries(rc);
+                    this.RenderAnnotations(rc, AnnotationLayer.AboveSeries);
+                    this.RenderTitle(rc);
+                    this.RenderBox(rc);
+                    this.RenderAxes(rc, AxisLayer.AboveSeries);
+
+                    if (this.IsLegendVisible)
+                    {
+                        this.RenderLegends(rc, this.LegendArea);
                     }
                 }
-
-                if (this.PlotType == PlotType.Cartesian)
+                catch (Exception exception)
                 {
-                    this.EnforceCartesianTransforms();
-                    this.UpdateIntervals();
+                    // An exception was raised during rendering. This should not happen...
+                    var errorMessage = string.Format(
+                            "An exception of type {0} was thrown when rendering the plot model.\r\n{1}",
+                            exception.GetType(),
+                            exception.GetBaseException().StackTrace);
+                    this.RenderErrorMessage(rc, string.Format("OxyPlot exception: {0}", exception.Message), errorMessage);
                 }
-
-                foreach (var a in this.Axes)
+                finally
                 {
-                    a.ResetCurrentValues();
+                    // Clean up unused images
+                    rc.CleanUp();
                 }
-
-                this.RenderBackgrounds(rc);
-                this.RenderAnnotations(rc, AnnotationLayer.BelowAxes);
-                this.RenderAxes(rc, AxisLayer.BelowSeries);
-                this.RenderAnnotations(rc, AnnotationLayer.BelowSeries);
-                this.RenderSeries(rc);
-                this.RenderAnnotations(rc, AnnotationLayer.AboveSeries);
-                this.RenderTitle(rc);
-                this.RenderBox(rc);
-                this.RenderAxes(rc, AxisLayer.AboveSeries);
-
-                if (this.IsLegendVisible)
-                {
-                    this.RenderLegends(rc, this.LegendArea);
-                }
-
-                // Clean up unused images
-                rc.CleanUp();
             }
         }
 
@@ -190,6 +219,20 @@ namespace OxyPlot
             }
 
             return maxSizeOfPositionTier;
+        }
+
+        /// <summary>
+        /// Renders the specified error message.
+        /// </summary>
+        /// <param name="rc">The rendering context.</param>
+        /// <param name="title">The title.</param>
+        /// <param name="errorMessage">The error message.</param>
+        /// <param name="fontSize">The font size. The default value is 12.</param>
+        private void RenderErrorMessage(IRenderContext rc, string title, string errorMessage, double fontSize = 12)
+        {
+            var p0 = new ScreenPoint(10, 10);
+            rc.DrawText(p0, title, this.TextColor, fontWeight: FontWeights.Bold, fontSize: fontSize);
+            rc.DrawMultilineText(p0 + new ScreenVector(0, fontSize * 1.5), errorMessage, this.TextColor, fontSize: fontSize, dy: fontSize * 1.25);
         }
 
         /// <summary>

@@ -558,6 +558,31 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Draws multi-line text at the specified point.
+        /// </summary>
+        /// <param name="rc">The render context.</param>
+        /// <param name="point">The point.</param>
+        /// <param name="text">The text.</param>
+        /// <param name="color">The text color.</param>
+        /// <param name="fontFamily">The font family.</param>
+        /// <param name="fontSize">The font size.</param>
+        /// <param name="fontWeight">The font weight.</param>
+        /// <param name="dy">The line spacing.</param>
+        public static void DrawMultilineText(this IRenderContext rc, ScreenPoint point, string text, OxyColor color, string fontFamily = null, double fontSize = 10, double fontWeight = FontWeights.Normal, double dy = 12)
+        {
+            var lines = text.Split(new[] { "\r\n" }, StringSplitOptions.None);
+            for (int i = 0; i < lines.Length; i++)
+            {
+                rc.DrawText(
+                    new ScreenPoint(point.X, point.Y + (i * dy)),
+                    lines[i],
+                    color,
+                    fontWeight: fontWeight,
+                    fontSize: fontSize);
+            }
+        }
+
+        /// <summary>
         /// Draws a line specified by coordinates.
         /// </summary>
         /// <param name="rc">The render context.</param>
