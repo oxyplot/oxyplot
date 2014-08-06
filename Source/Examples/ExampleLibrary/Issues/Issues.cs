@@ -687,5 +687,43 @@ namespace ExampleLibrary
             });
             return plotModel1;
         }
+
+        [Example("#10236: RectangleBarSeries rendered on top layer (rejected)")]
+        public static PlotModel RectangleBarSeriesRenderedOnTopLayer()
+        {
+            var plotModel1 = new PlotModel
+            {
+                Title = "Issue 10236",
+            };
+            var lineSeries1 = new LineSeries();
+            lineSeries1.Points.Add(new DataPoint(0, 1));
+            lineSeries1.Points.Add(new DataPoint(1, 0));
+            plotModel1.Series.Add(lineSeries1);
+            var rectangleBarSeries1 = new RectangleBarSeries();
+            rectangleBarSeries1.Items.Add(new RectangleBarItem(0.25, 0.25, 0.75, 0.75));
+            plotModel1.Series.Add(rectangleBarSeries1);
+            var lineSeries2 = new LineSeries();
+            lineSeries2.Points.Add(new DataPoint(0, 0));
+            lineSeries2.Points.Add(new DataPoint(1, 1));
+            plotModel1.Series.Add(lineSeries2);
+            return plotModel1;
+        }
+
+        [Example("#10237: Legend is not visible")]
+        public static PlotModel LegendIsNotVisible()
+        {
+            var plotModel = new PlotModel
+            {
+                Title = "Issue 10237",
+            };
+            plotModel.Series.Add(new LineSeries { Title = "LineSeries 1" });
+            plotModel.Series.Add(new LineSeries { Title = "LineSeries 2" });
+            plotModel.Series.Add(new LineSeries { Title = "LineSeries 3" });
+            plotModel.IsLegendVisible = true;
+            plotModel.LegendPlacement = LegendPlacement.Inside;
+            plotModel.LegendPosition = LegendPosition.RightMiddle;
+            plotModel.LegendOrientation = LegendOrientation.Vertical;
+            return plotModel;
+        }
     }
 }
