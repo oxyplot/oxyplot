@@ -16,7 +16,7 @@ OS: Windows 8.1
 - Visual Studio 2013
 - MS Build tools 2013: http://www.microsoft.com/en-us/download/details.aspx?id=40760
 - StyleCop: http://stylecop.codeplex.com/
-- Mercurial
+- Git
 - 7-Zip in default folder
 - .NET 3.5
 - GTK# / Xamarin Studio
@@ -28,11 +28,6 @@ Defined under "Parameters" in the TeamCity project.
 Environment variables:
 EnableNuGetPackageRestore = true
 NUGET_ACCESS_KEY = ####
-CODEPLEX_USERNAME = ####
-CODEPLEX_PASSWORD = ####
-OXYPLOT_FTP_SERVER = ftp.oxyplot.org
-OXYPLOT_FTP_USER = ####
-OXYPLOT_FTP_PWD = ####
 YEAR = 2014
 
 == OxyPlot :: Build
@@ -47,11 +42,10 @@ output/**/*.* => Output.zip!/output/
 packages/**/*.* => Output.zip!/packages/
 source/.nuget/*.* => Output.zip!/source/.nuget/
 tools/**/*.* => Output.zip!/tools/
-web/**/*.* => Output.zip!/web/
 
 VCS root: 
-Type of VCS: Mercurial
-Pull changes from: https://hg.codeplex.com/oxyplot
+Type of VCS: Git
+Pull changes from: https://github.com/oxyplot/oxyplot.git
 
 Automatically on agent
 
@@ -68,7 +62,6 @@ UpdateVersionNumbers.exe /Version=%build.number% /Dependency=OxyPlot.Core /Direc
 Commands:
 mkdir Output
 echo %build.vcs.number%> Output\changeset.id
-hg log > Output\changesets.log
 
 # Build WPF solution
 Solution: Source\OxyPlot.WPF.sln
@@ -119,64 +112,10 @@ Source\OxyPlot.WPF_NET40.sln
 Build
 pack.cmd 
 
-# Generate documentation
-Build
-GenerateDocumentation.cmd %build.number%
-
-# Clean examples
-Build
-DeleteExamplePdbFiles.cmd
-
-# Create release
-Build
-ZipRelease.cmd %build.number%
-
-# Update web
-Build
-UpdateWeb.cmd
-
-=== Build triggers
-
-Triggers a build after a VCS check-in is detected
-
-
-== OxyPlot :: Upload
-Build configuration ID: OxyPlot_Upload
-Build number format: %dep.OxyPlot_Build.build.number%
-
-=== Build steps
-
 # Push packages to NuGet
 Build
 push.cmd
 
-# Upload example browser
-build
-UploadExampleBrowser.cmd
+=== Build triggers
 
-# Update web pages
-Build
-UploadWeb.cmd
-
-# Upload documentation
-Build
-UploadDocumentation.cmd
-
-# Upload release
-Build
-UploadRelease.cmd %build.number%
-
-=== Build trigger
-
-Finish Build Trigger:
-Wait for a successful build in: OxyPlot build
-
-=== Dependencies 
-
-# Artifact dependency
-Source: OxyPlot :: Build
-Paths: 
-Output.zip!** => .
-
-Clean destination paths before downloading artifacts
-
+Triggers a build after a VCS check-in is detected
