@@ -4,6 +4,7 @@ License:            The MIT License (MIT)
 Web page:           http://oxyplot.org  
 Source repository:  https://github.com/oxyplot/oxyplot  
 Discussion forum:   https://oxyplot.userecho.com  
+StackOverflow:      https://stackoverflow.com/questions/tagged/oxyplot
 
 #### Getting started
 
