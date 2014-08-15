@@ -180,7 +180,8 @@ namespace OxyPlot.Tests
                 var model = new PlotModel();
                 model.Axes.Add(new LinearAxis());
                 model.Series.Add(new LineSeries { XAxisKey = "invalidKey" });
-                Assert.Throws<InvalidOperationException>(() => ((IPlotModel)model).Update(true));
+                ((IPlotModel)model).Update(true);
+                Assert.IsNotNull(model.GetLastUpdateException() as InvalidOperationException);
             }
         }
     }

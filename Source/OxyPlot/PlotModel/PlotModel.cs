@@ -1158,6 +1158,15 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Gets any exception thrown during the last <see cref="IPlotModel.Update" /> call.
+        /// </summary>
+        /// <returns>The exception or <c>null</c> if there was no exception.</returns>
+        public Exception GetLastUpdateException()
+        {
+            return this.updateException;
+        }
+
+        /// <summary>
         /// Updates all axes and series.
         /// 0. Updates the owner PlotModel of all plot items (axes, series and annotations)
         /// 1. Updates the data of each Series (only if updateData==<c>true</c>).

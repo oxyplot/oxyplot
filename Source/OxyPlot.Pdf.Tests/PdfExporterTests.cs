@@ -55,6 +55,11 @@ namespace OxyPlot.Pdf.Tests
 
             foreach (var example in Examples.GetList())
             {
+                if (example.PlotModel == null)
+                {
+                    continue;
+                }
+
                 var path = Path.Combine(DestinationDirectory, StringHelper.CreateValidFileName(example.Category + " - " + example.Title, ".pdf"));
                 using (var s = File.Create(path))
                 {
