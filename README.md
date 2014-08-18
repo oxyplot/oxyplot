@@ -1,10 +1,13 @@
-OxyPlot is an open source, cross-platform .NET plotting library.
+OxyPlot is a cross-platform plotting library for .NET
 
 License:            The MIT License (MIT)  
 Web page:           http://oxyplot.org  
+Documentation:      http://oxyplot.org/documentation  
+Announcements:      http://oxyplot.org/announcements
+Announcements feed: http://oxyplot.org/atom.xml
 Discussion forum:   http://discussion.oxyplot.org  
 Source repository:  http://github.com/oxyplot/oxyplot  
-Issue tracker:      http://github.com/oxyplot/oxyplot/issues
+Issue tracker:      http://github.com/oxyplot/oxyplot/issues  
 StackOverflow:      http://stackoverflow.com/questions/tagged/oxyplot
 
 #### Getting started
