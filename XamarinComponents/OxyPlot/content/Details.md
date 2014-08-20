@@ -9,8 +9,9 @@ The main goals for the library are:
 
 See [oxyplot.org](http://oxyplot.org/) for examples and documentation (under construction).
 
-Note that this is an open source project, please collaborate. 
-Please use the [Codeplex](http://oxyplot.codeplex.com/) site to discuss, report bugs and request new features.
+If you have questions, use the [discussion forum](http://discussion.oxyplot.org/).
+
+To report bugs or request features, use the [issue tracker](https://github.com/oxyplot/oxyplot/issues) for the [GitHub repository](https://github.com/oxyplot/oxyplot).
 
 # Main features
 
