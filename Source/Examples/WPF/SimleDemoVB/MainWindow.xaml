@@ -8,6 +8,6 @@
         <local:MainViewModel/>
     </Window.DataContext>
     <Grid>
-        <oxy:Plot Model="{Binding Model}"/>
+        <oxy:PlotView Model="{Binding Model}"/>
     </Grid>
 </Window>
