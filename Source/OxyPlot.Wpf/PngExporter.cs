@@ -152,7 +152,7 @@ namespace OxyPlot.Wpf
             canvas.Measure(new Size(canvas.Width, canvas.Height));
             canvas.Arrange(new Rect(0, 0, canvas.Width, canvas.Height));
 
-            var rc = new ShapesRenderContext(canvas) { RendersToScreen = false };
+            var rc = new ShapesRenderContext(canvas) { RendersToScreen = false, TextFormattingMode = TextFormattingMode.Ideal };
             model.Update(true);
             model.Render(rc, canvas.Width, canvas.Height);
 
