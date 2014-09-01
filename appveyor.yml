@@ -1,0 +1,66 @@
+- # master branch only
+  branches:
+    only:
+      - master
+  version: 2014.1.{build}
+  environment:
+    nuget_api_key:
+      secure: kM3Kse+ivuuE5RVoe6dPdw+aguWx56K2YeXujGa9tMPQTms3lv7QxNpTLFMALYNa
+  install:
+    - cinst stylecop
+    - cinst LynxToolkit
+    - cinst gtksharp
+  platform: Any CPU
+  configuration: Release
+  before_build:
+    cmd: UpdateVersionNumbers /Version=%APPVEYOR_BUILD_VERSION% /Dependency=OxyPlot.Core /Directory=Source
+  build:
+    project: Source/OxyPlot.AppVeyor.sln
+    verbosity: minimal
+  artifacts:
+    - path: Output
+      name: OxyPlot-$(APPVEYOR_BUILD_VERSION)
+      type: zip
+  deploy_script:
+    - cmd: mkdir Packages
+    - cmd: NuGet pack Source\OxyPlot\OxyPlot.Core.nuspec -OutputDirectory Packages
+    - cmd: NuGet pack Source\OxyPlot.Wpf\OxyPlot.Wpf.nuspec -OutputDirectory Packages
+    - cmd: NuGet pack Source\OxyPlot.WindowsForms\OxyPlot.WindowsForms.nuspec Packages
+    - cmd: NuGet pack Source\OxyPlot.Metro\OxyPlot.Metro.nuspec Packages
+    - cmd: NuGet pack Source\OxyPlot.Silverlight\OxyPlot.Silverlight.nuspec Packages
+    - cmd: NuGet pack Source\OxyPlot.OpenXml\OxyPlot.OpenXml.nuspec Packages
+    - cmd: NuGet pack Source\OxyPlot.Pdf\OxyPlot.Pdf.nuspec Packages
+    - cmd: NuGet pack Source\OxyPlot.GtkSharp\OxyPlot.GtkSharp.nuspec -OutputDirectory Packages
+    - cmd: for %%G in (Packages\*.nupkg) do NuGet push %%G %nuget_api_key%
+
+- # all other branches
+  version: 2014.1.{build}
+  environment:
+    nuget_api_key:
+      secure: kM3Kse+ivuuE5RVoe6dPdw+aguWx56K2YeXujGa9tMPQTms3lv7QxNpTLFMALYNa
+  install:
+    - cinst stylecop
+    - cinst LynxToolkit
+    - cinst gtksharp
+  platform: Any CPU
+  configuration: Release
+  before_build:
+    cmd: UpdateVersionNumbers /Version=%APPVEYOR_BUILD_VERSION% /PreRelease=alpha /Dependency=OxyPlot.Core /Directory=Source
+  build:
+    project: Source/OxyPlot.AppVeyor.sln
+    verbosity: normal
+  artifacts:
+    - path: Output
+      name: OxyPlot-$(APPVEYOR_BUILD_VERSION)-alpha
+      type: zip
+  deploy_script:
+    - cmd: mkdir Packages
+    - cmd: NuGet pack Source\OxyPlot\OxyPlot.Core.nuspec -OutputDirectory Packages
+    - cmd: NuGet pack Source\OxyPlot.Wpf\OxyPlot.Wpf.nuspec -OutputDirectory Packages
+    - cmd: NuGet pack Source\OxyPlot.WindowsForms\OxyPlot.WindowsForms.nuspec Packages
+    - cmd: NuGet pack Source\OxyPlot.Metro\OxyPlot.Metro.nuspec Packages
+    - cmd: NuGet pack Source\OxyPlot.Silverlight\OxyPlot.Silverlight.nuspec Packages
+    - cmd: NuGet pack Source\OxyPlot.OpenXml\OxyPlot.OpenXml.nuspec Packages
+    - cmd: NuGet pack Source\OxyPlot.Pdf\OxyPlot.Pdf.nuspec Packages
+    - cmd: NuGet pack Source\OxyPlot.GtkSharp\OxyPlot.GtkSharp.nuspec -OutputDirectory Packages
+    - cmd: for %%G in (Packages\*.nupkg) do NuGet push %%G %nuget_api_key%
