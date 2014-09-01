@@ -17,6 +17,7 @@ build/
 bld/
 [Bb]in/
 [Oo]bj/
+Output/
 
 # Roslyn cache directories
 *.ide/
@@ -58,6 +59,7 @@ dlldata.c
 *.pidb
 *.svclog
 *.scc
+*.bak
 
 # Chutzpah Test files
 _Chutzpah*
@@ -98,6 +100,9 @@ _TeamCity*
 # NCrunch
 _NCrunch_*
 .*crunch*.local.xml
+
+# NuGet
+NuGet.exe
 
 # MightyMoose
 *.mm.*
@@ -181,3 +186,6 @@ UpgradeLog*.htm
 
 # Microsoft Fakes
 FakesAssemblies/
+
+# GhostDoc settings
+*.GhostDoc.xml
