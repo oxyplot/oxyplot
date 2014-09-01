@@ -21,7 +21,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\NET35\</OutputPath>
-    <IntermediateOutputPath>obj\Debug\NET40\</IntermediateOutputPath>
+    <IntermediateOutputPath>obj\Debug\NET35\</IntermediateOutputPath>
     <DefineConstants>TRACE;DEBUG;NET35</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>

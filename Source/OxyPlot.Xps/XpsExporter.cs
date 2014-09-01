@@ -49,11 +49,13 @@ namespace OxyPlot.Xps
         /// </summary>
         public OxyColor Background { get; set; }
 
+#if !NET35
         /// <summary>
         /// Gets or sets the text formatting mode.
         /// </summary>
         /// <value>The text formatting mode.</value>
         public TextFormattingMode TextFormattingMode { get; set; }
+#endif
 
         /// <summary>
         /// Exports the specified plot model to an xps file.
@@ -73,7 +75,11 @@ namespace OxyPlot.Xps
                     canvas.Measure(new Size(width, height));
                     canvas.Arrange(new Rect(0, 0, width, height));
 
-                    var rc = new ShapesRenderContext(canvas) { TextFormattingMode = TextFormattingMode.Ideal };
+                    var rc = new ShapesRenderContext(canvas);
+#if !NET35
+                    rc.TextFormattingMode = TextFormattingMode.Ideal;
+#endif
+
                     model.Update(true);
                     model.Render(rc, width, height);
 
@@ -125,7 +131,10 @@ namespace OxyPlot.Xps
                     canvas.Measure(new Size(this.Width, this.Height));
                     canvas.Arrange(new Rect(0, 0, this.Width, this.Height));
 
-                    var rc = new ShapesRenderContext(canvas) { TextFormattingMode = this.TextFormattingMode };
+                    var rc = new ShapesRenderContext(canvas);
+#if !NET35
+                    rc.TextFormattingMode = this.TextFormattingMode;
+#endif
                     model.Update(true);
                     model.Render(rc, this.Width, this.Height);
 
@@ -163,7 +172,10 @@ namespace OxyPlot.Xps
                 canvas.Measure(new Size(width, height));
                 canvas.Arrange(new Rect(0, 0, width, height));
 
-                var rc = new ShapesRenderContext(canvas) { TextFormattingMode = this.TextFormattingMode };
+                var rc = new ShapesRenderContext(canvas);
+#if !NET35
+                rc.TextFormattingMode = this.TextFormattingMode;
+#endif
                 model.Update(true);
                 model.Render(rc, width, height);
 

@@ -107,7 +107,9 @@ namespace OxyPlot.Wpf
         public ShapesRenderContext(Canvas canvas)
         {
             this.canvas = canvas;
+#if !NET35
             this.TextFormattingMode = TextFormattingMode.Display;
+#endif
             this.TextMeasurementMethod = TextMeasurementMethod.TextBlock;
             this.UseStreamGeometry = true;
             this.RendersToScreen = true;
@@ -131,11 +133,13 @@ namespace OxyPlot.Wpf
         /// <value>The text measurement method.</value>
         public TextMeasurementMethod TextMeasurementMethod { get; set; }
 
+#if !NET35
         /// <summary>
         /// Gets or sets the text formatting mode.
         /// </summary>
         /// <value>The text formatting mode. The default value is <see cref="System.Windows.Media.TextFormattingMode.Display"/>.</value>
         public TextFormattingMode TextFormattingMode { get; set; }
+#endif
 
         /// <summary>
         /// Gets or sets the thickness limit for "balanced" line drawing.
@@ -533,7 +537,9 @@ namespace OxyPlot.Wpf
                 tb.FontWeight = GetFontWeight(fontWeight);
             }
 
+#if !NET35
             TextOptions.SetTextFormattingMode(tb, this.TextFormattingMode);
+#endif
 
             double dx = 0;
             double dy = 0;
@@ -622,7 +628,9 @@ namespace OxyPlot.Wpf
 
             var tb = new TextBlock { Text = text };
 
+#if !NET35
             TextOptions.SetTextFormattingMode(tb, this.TextFormattingMode);
+#endif
 
             if (fontFamily != null)
             {
