@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>OxyPlot.Core</id>
+    <version>2014.1.1</version>
+    <authors>objo</authors>
+    <description>OxyPlot is an open source plotting library for .NET. This core package is included in the other OxyPlot packages.</description>
+    <releaseNotes></releaseNotes>
+    <licenseUrl>https://raw.githubusercontent.com/oxyplot/oxyplot/master/LICENSE</licenseUrl>
+    <projectUrl>http://oxyplot.org/</projectUrl>
+    <iconUrl>http://resources.oxyplot.org/icons/oxyplot_128.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <copyright>Copyright 2014</copyright>
+    <tags>plotting plot charting chart</tags>
+  </metadata>
+  <files>
+    <file src="..\..\Output\PCL\OxyPlot.???" target="lib\portable-net4+sl4+wp71+win8" />
+    <file src="..\..\LICENSE" />
+    <file src="..\..\AUTHORS" />
+    <file src="..\..\CONTRIBUTORS" />
+    <file src="..\..\README.md" />
+  </files>
+</package>
