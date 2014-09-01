@@ -4,14 +4,29 @@
     <id>OxyPlot.Pdf</id>
     <version>2014.1.1</version>
     <authors>objo</authors>
-    <licenseUrl>http://oxyplot.codeplex.com/license</licenseUrl>
-    <projectUrl>http://oxyplot.org/</projectUrl>
-    <iconUrl>http://oxyplot.org/icons/oxyplot_128.png</iconUrl>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>OxyPlot is an open source plotting library for .NET. This package contains the .pdf export extensions for Silverlight, .NET 4.0 and .NET 4.5.</description>
+    <releaseNotes></releaseNotes>
+    <licenseUrl>https://raw.githubusercontent.com/oxyplot/oxyplot/master/LICENSE</licenseUrl>
+    <projectUrl>http://oxyplot.org/</projectUrl>
+    <iconUrl>http://resources.oxyplot.org/icons/oxyplot_128.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <tags>pdf plotting plot charting chart</tags>
     <dependencies>
       <dependency id="OxyPlot.Core" version="2014.1"/>
     </dependencies>
   </metadata>
+  <files>
+    <file src="..\..\Output\NET45\OxyPlot.Pdf.???" target="lib\net45" />
+    <file src="..\..\Output\NET40\OxyPlot.Pdf.???" target="lib\net40" />
+    <file src="..\..\Output\SL5\OxyPlot.Pdf.???" target="lib\sl5" />
+    <file src="..\..\Output\NET45\PdfSharp.*" target="lib\net45" />
+    <file src="..\..\Output\NET40\PdfSharp.*" target="lib\net40" />
+    <file src="..\..\Output\NET45\MigraDoc.*" target="lib\net45" />
+    <file src="..\..\Output\NET40\MigraDoc.*" target="lib\net40" />
+    <file src="..\..\Output\SL5\silverPDF.*" target="lib\sl5" />
+    <file src="..\..\LICENSE" />
+    <file src="..\..\AUTHORS" />
+    <file src="..\..\CONTRIBUTORS" />
+    <file src="..\..\README.md" />
+  </files>
 </package>
