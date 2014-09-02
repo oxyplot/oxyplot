@@ -6,6 +6,10 @@
   environment:
     nuget_api_key:
       secure: kM3Kse+ivuuE5RVoe6dPdw+aguWx56K2YeXujGa9tMPQTms3lv7QxNpTLFMALYNa
+    ftp_user:
+      secure: Q/t4tRGEtslJG0q4i9QeMw==
+    ftp_password:
+      secure: 8Zwx5dScSahnbraTsKTP3g==
   install:
     - cinst stylecop
     - cinst LynxToolkit
@@ -25,19 +29,25 @@
     - cmd: mkdir Packages
     - cmd: NuGet pack Source\OxyPlot\OxyPlot.Core.nuspec -OutputDirectory Packages
     - cmd: NuGet pack Source\OxyPlot.Wpf\OxyPlot.Wpf.nuspec -OutputDirectory Packages
-    - cmd: NuGet pack Source\OxyPlot.WindowsForms\OxyPlot.WindowsForms.nuspec Packages
-    - cmd: NuGet pack Source\OxyPlot.Metro\OxyPlot.Metro.nuspec Packages
-    - cmd: NuGet pack Source\OxyPlot.Silverlight\OxyPlot.Silverlight.nuspec Packages
-    - cmd: NuGet pack Source\OxyPlot.OpenXml\OxyPlot.OpenXml.nuspec Packages
-    - cmd: NuGet pack Source\OxyPlot.Pdf\OxyPlot.Pdf.nuspec Packages
+    - cmd: NuGet pack Source\OxyPlot.WindowsForms\OxyPlot.WindowsForms.nuspec -OutputDirectory Packages
+    - cmd: NuGet pack Source\OxyPlot.Metro\OxyPlot.Metro.nuspec -OutputDirectory Packages
+    - cmd: NuGet pack Source\OxyPlot.WP8\OxyPlot.WP8.nuspec -OutputDirectory Packages
+    - cmd: NuGet pack Source\OxyPlot.Silverlight\OxyPlot.Silverlight.nuspec -OutputDirectory Packages
+    - cmd: NuGet pack Source\OxyPlot.OpenXml\OxyPlot.OpenXml.nuspec -OutputDirectory Packages
+    - cmd: NuGet pack Source\OxyPlot.Pdf\OxyPlot.Pdf.nuspec -OutputDirectory Packages
     - cmd: NuGet pack Source\OxyPlot.GtkSharp\OxyPlot.GtkSharp.nuspec -OutputDirectory Packages
     - cmd: for %%G in (Packages\*.nupkg) do NuGet push %%G %nuget_api_key%
+    - cmd: FtpUpload ftp.oxyplot.org %ftp_user% %ftp_password% Output\SL5\Examples\Silverlight\ExampleBrowser\ExampleBrowser.xap /ExampleBrowser/ExampleBrowser.xap
 
 - # all other branches
   version: 2014.1.{build}
   environment:
     nuget_api_key:
       secure: kM3Kse+ivuuE5RVoe6dPdw+aguWx56K2YeXujGa9tMPQTms3lv7QxNpTLFMALYNa
+    ftp_user:
+      secure: Q/t4tRGEtslJG0q4i9QeMw==
+    ftp_password:
+      secure: 8Zwx5dScSahnbraTsKTP3g==
   install:
     - cinst stylecop
     - cinst LynxToolkit
@@ -57,10 +67,12 @@
     - cmd: mkdir Packages
     - cmd: NuGet pack Source\OxyPlot\OxyPlot.Core.nuspec -OutputDirectory Packages
     - cmd: NuGet pack Source\OxyPlot.Wpf\OxyPlot.Wpf.nuspec -OutputDirectory Packages
-    - cmd: NuGet pack Source\OxyPlot.WindowsForms\OxyPlot.WindowsForms.nuspec Packages
-    - cmd: NuGet pack Source\OxyPlot.Metro\OxyPlot.Metro.nuspec Packages
-    - cmd: NuGet pack Source\OxyPlot.Silverlight\OxyPlot.Silverlight.nuspec Packages
-    - cmd: NuGet pack Source\OxyPlot.OpenXml\OxyPlot.OpenXml.nuspec Packages
-    - cmd: NuGet pack Source\OxyPlot.Pdf\OxyPlot.Pdf.nuspec Packages
+    - cmd: NuGet pack Source\OxyPlot.WindowsForms\OxyPlot.WindowsForms.nuspec -OutputDirectory Packages
+    - cmd: NuGet pack Source\OxyPlot.Metro\OxyPlot.Metro.nuspec -OutputDirectory Packages
+    - cmd: NuGet pack Source\OxyPlot.WP8\OxyPlot.WP8.nuspec -OutputDirectory Packages
+    - cmd: NuGet pack Source\OxyPlot.Silverlight\OxyPlot.Silverlight.nuspec -OutputDirectory Packages
+    - cmd: NuGet pack Source\OxyPlot.OpenXml\OxyPlot.OpenXml.nuspec -OutputDirectory Packages
+    - cmd: NuGet pack Source\OxyPlot.Pdf\OxyPlot.Pdf.nuspec -OutputDirectory Packages
     - cmd: NuGet pack Source\OxyPlot.GtkSharp\OxyPlot.GtkSharp.nuspec -OutputDirectory Packages
     - cmd: for %%G in (Packages\*.nupkg) do NuGet push %%G %nuget_api_key%
+    - cmd: FtpUpload ftp.oxyplot.org %ftp_user% %ftp_password% Output\SL5\Examples\Silverlight\ExampleBrowser\ExampleBrowser.xap /ExampleBrowser/ExampleBrowser.xap

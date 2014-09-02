@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <id>OxyPlot.WP8</id>
+    <version>2014.1.1</version>
+    <authors>objo</authors>
+    <description>OxyPlot is an open source plotting library for .NET. This package contains the custom control for Windows Phone 8 apps.</description>
+    <releaseNotes></releaseNotes>
+    <licenseUrl>https://raw.githubusercontent.com/oxyplot/oxyplot/master/LICENSE</licenseUrl>
+    <projectUrl>http://oxyplot.org/</projectUrl>
+    <iconUrl>http://resources.oxyplot.org/icons/oxyplot_128.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <tags>wp8 windows phone 8 windowsphone winphone plotting plot charting chart</tags>
+    <dependencies>
+      <dependency id="OxyPlot.Core" version="2014.1.1"/>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\..\Output\WP8\OxyPlot.WP8.???" target="lib\windowsphone8" />
+    <file src="..\..\LICENSE" />
+    <file src="..\..\AUTHORS" />
+    <file src="..\..\CONTRIBUTORS" />
+    <file src="..\..\README.md" />
+  </files>
+</package>
