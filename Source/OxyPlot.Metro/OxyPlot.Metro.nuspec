@@ -17,8 +17,9 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="..\..\Output\NetCore45\OxyPlot.Metro.*" target="lib\NetCore45\OxyPlot.Metro\" />
-    <file src="..\..\Output\NetCore45\Themes\*.*" target="lib\NetCore45\OxyPlot.Metro\Themes\" />
+    <file src="..\..\Output\NetCore45\OxyPlot.Metro.???" target="lib\NetCore45\OxyPlot.Metro\" />
+    <file src="..\..\Output\NetCore45\OxyPlot.Metro.xr.xml" target="lib\NetCore45\OxyPlot.Metro\OxyPlot.Metro\" />
+    <file src="..\..\Output\NetCore45\Themes\*.*" target="lib\NetCore45\OxyPlot.Metro\OxyPlot.Metro\Themes\" />
     <file src="..\..\LICENSE" />
     <file src="..\..\AUTHORS" />
     <file src="..\..\CONTRIBUTORS" />
