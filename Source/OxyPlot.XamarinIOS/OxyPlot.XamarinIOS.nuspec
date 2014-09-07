@@ -5,10 +5,10 @@
 	<title>OxyPlot for Xamarin.iOS</title>
     <version>2014.1.1</version>
     <authors>objo</authors>
-    <description>OxyPlot is an open source plotting library for .NET.</description>
+    <description>OxyPlot is an open source plotting library for .NET. This package targets iOS apps.</description>
     <licenseUrl>https://raw.githubusercontent.com/oxyplot/oxyplot/master/LICENSE</licenseUrl>
     <projectUrl>http://oxyplot.org/</projectUrl>
-    <iconUrl>http://resources.oxyplot.org/icons/oxyplot_128.png</iconUrl>
+    <iconUrl>https://raw.githubusercontent.com/oxyplot/oxyplot/master/Icons/OxyPlot_128.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <tags>xamarin iOS plotting plot charting chart</tags>
     <dependencies>
