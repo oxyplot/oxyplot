@@ -177,17 +177,31 @@ namespace OxyPlot.Series
         public double MinValue { get; private set; }
 
         /// <summary>
+        /// Gets the actual points.
+        /// </summary>
+        /// <value>
+        /// A read-only list of points.
+        /// </value>
+        public System.Collections.ObjectModel.ReadOnlyCollection<T> ActualPoints
+        {
+            get
+            {
+                return new System.Collections.ObjectModel.ReadOnlyCollection<T>(this.ActualPointsList);
+            }
+        }
+
+        /// <summary>
         /// Gets the list of points that should be rendered.
         /// </summary>
         /// <value>A list of <see cref="DataPoint" />.</value>
-        protected List<T> ActualPoints
+        protected List<T> ActualPointsList
         {
             get
             {
                 return this.ItemsSource != null ? this.ItemsSourcePoints : this.points;
             }
         }
-
+        
         /// <summary>
         /// Gets or sets the data points from the items source.
         /// </summary>
@@ -235,7 +249,7 @@ namespace OxyPlot.Series
                 }
             }
 
-            foreach (var p in this.ActualPoints)
+            foreach (var p in this.ActualPointsList)
             {
                 if (p.X < this.XAxis.ActualMinimum || p.X > this.XAxis.ActualMaximum || p.Y < this.YAxis.ActualMinimum || p.Y > this.YAxis.ActualMaximum)
                 {
@@ -290,7 +304,7 @@ namespace OxyPlot.Series
         /// <param name="model">The owner plot model.</param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
-            var actualPoints = this.ActualPoints;
+            var actualPoints = this.ActualPointsList;
             int n = actualPoints.Count;
             if (n == 0)
             {
@@ -489,7 +503,7 @@ namespace OxyPlot.Series
         protected internal override void UpdateMaxMin()
         {
             base.UpdateMaxMin();
-            this.InternalUpdateMaxMinValue(this.ActualPoints);
+            this.InternalUpdateMaxMinValue(this.ActualPointsList);
         }
 
         /// <summary>
