@@ -14,4 +14,5 @@ using System.Reflection;
 [assembly: AssemblyCulture("")]
 
 [assembly: AssemblyVersion("2014.1.1.1")]
+[assembly: AssemblyInformationalVersion("2014.1.1.1-alpha")]
 [assembly: AssemblyFileVersion("2014.1.1.1")]
