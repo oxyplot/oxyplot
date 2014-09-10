@@ -23,6 +23,6 @@ cp ../Source/OxyPlot.XamarinAndroid/*.nuspec ../Output
 mono $NUGET pack ../Output/OxyPlot.XamarinIOS.nuspec -OutputDirectory ../Output
 
 # Create XamarinAndroid NuGet package
-mono $NUGET pack ../Source/OxyPlot.XamarinAndroid/OxyPlot.XamarinAndroid.nuspec -OutputDirectory ../Output
+mono $NUGET pack ../Output/OxyPlot.XamarinAndroid.nuspec -OutputDirectory ../Output
 
 ls -al ../Output/*.nupkg
