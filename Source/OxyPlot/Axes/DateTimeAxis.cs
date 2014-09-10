@@ -195,35 +195,6 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Formats the specified value by the axis' ActualStringFormat.
-        /// </summary>
-        /// <param name="x">The x.</param>
-        /// <returns>The formatted DateTime value</returns>
-        public override string FormatValue(double x)
-        {
-            // convert the double value to a DateTime
-            var time = ToDateTime(x);
-
-            // If a time zone is specified, convert the time
-            if (this.TimeZone != null)
-            {
-                time = TimeZoneInfo.ConvertTime(time, this.TimeZone);
-            }
-
-            string fmt = this.ActualStringFormat;
-            if (fmt == null)
-            {
-                return time.ToString(CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern);
-            }
-
-            int week = this.GetWeek(time);
-            fmt = fmt.Replace("ww", week.ToString("00"));
-            fmt = fmt.Replace("w", week.ToString(CultureInfo.InvariantCulture));
-            fmt = string.Concat("{0:", fmt, "}");
-            return string.Format(this.ActualCulture, fmt, time);
-        }
-
-        /// <summary>
         /// Gets the tick values.
         /// </summary>
         /// <param name="majorLabelValues">The major label values.</param>
@@ -330,6 +301,35 @@ namespace OxyPlot.Axes
                 case DateTimeIntervalType.Auto:
                     break;
             }
+        }
+
+        /// <summary>
+        /// Formats the value to be used on the axis.
+        /// </summary>
+        /// <param name="x">The value to format.</param>
+        /// <returns>The formatted value.</returns>
+        protected override string FormatValueOverride(double x)
+        {
+            // convert the double value to a DateTime
+            var time = ToDateTime(x);
+
+            // If a time zone is specified, convert the time
+            if (this.TimeZone != null)
+            {
+                time = TimeZoneInfo.ConvertTime(time, this.TimeZone);
+            }
+
+            string fmt = this.ActualStringFormat;
+            if (fmt == null)
+            {
+                return time.ToString(CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern);
+            }
+
+            int week = this.GetWeek(time);
+            fmt = fmt.Replace("ww", week.ToString("00"));
+            fmt = fmt.Replace("w", week.ToString(CultureInfo.InvariantCulture));
+            fmt = string.Concat("{0:", fmt, "}");
+            return string.Format(this.ActualCulture, fmt, time);
         }
 
         /// <summary>

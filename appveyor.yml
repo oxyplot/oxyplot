@@ -39,9 +39,13 @@
     - cmd: for %%G in (Packages\*.nupkg) do NuGet push %%G %nuget_api_key%
     - cmd: FtpUpload ftp.oxyplot.org %ftp_user% %ftp_password% Output\SL5\Examples\Silverlight\ExampleBrowser\ExampleBrowser.xap /ExampleBrowser/ExampleBrowser.xap
 
-- # all other branches
-  version: 2014.1.{build}
+- # develop branch only
+  branches:
+    only:
+      - develop
+  version: 2014.1.{build}-alpha
   environment:
+    version: 2014.1.%APPVEYOR_BUILD_NUMBER%
     nuget_api_key:
       secure: kM3Kse+ivuuE5RVoe6dPdw+aguWx56K2YeXujGa9tMPQTms3lv7QxNpTLFMALYNa
     ftp_user:
@@ -55,13 +59,13 @@
   platform: Any CPU
   configuration: Release
   before_build:
-    cmd: UpdateVersionNumbers /Version=%APPVEYOR_BUILD_VERSION% /PreRelease=alpha /Dependency=OxyPlot.Core /Directory=Source
+    cmd: UpdateVersionNumbers /Version=%version% /PreRelease=alpha /Dependency=OxyPlot.Core /Directory=Source
   build:
     project: Source/OxyPlot.AppVeyor.sln
     verbosity: normal
   artifacts:
     - path: Output
-      name: OxyPlot-$(APPVEYOR_BUILD_VERSION)-alpha
+      name: OxyPlot-$(APPVEYOR_BUILD_VERSION)
       type: zip
   deploy_script:
     - cmd: mkdir Packages

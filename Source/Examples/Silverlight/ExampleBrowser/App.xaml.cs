@@ -4,23 +4,13 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-
 namespace ExampleBrowser
 {
-    public partial class App : Application
-    {
+    using System;
+    using System.Windows;
 
+    public partial class App
+    {
         public App()
         {
             this.Startup += this.Application_Startup;
@@ -37,7 +27,6 @@ namespace ExampleBrowser
 
         private void Application_Exit(object sender, EventArgs e)
         {
-
         }
 
         private void Application_UnhandledException(object sender, ApplicationUnhandledExceptionEventArgs e)
@@ -47,13 +36,12 @@ namespace ExampleBrowser
             // icon in the status bar and Firefox will display a script error.
             if (!System.Diagnostics.Debugger.IsAttached)
             {
-
                 // NOTE: This will allow the application to continue running after an exception has been thrown
                 // but not handled.
                 // For production applications this error handling should be replaced with something that will
                 // report the error to the website and stop the application.
                 e.Handled = true;
-                Deployment.Current.Dispatcher.BeginInvoke(delegate { ReportErrorToDOM(e); });
+                Deployment.Current.Dispatcher.BeginInvoke(() => this.ReportErrorToDOM(e));
             }
         }
 

@@ -9,9 +9,11 @@ using System.Reflection;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyProduct("OxyPlot")]
 [assembly: AssemblyCompany("OxyPlot")]
-[assembly: AssemblyCopyright("Copyright (C) OxyPlot 2012.")]
+[assembly: AssemblyCopyright("Copyright (c) 2014 OxyPlot contributors")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
-[assembly: AssemblyVersion("2014.1.1.1")]
-[assembly: AssemblyFileVersion("2014.1.1.1")]
+// The version numbers are updated by the build script. See ~/appveyor.yml
+[assembly: AssemblyVersion("0.0.0")]
+[assembly: AssemblyInformationalVersion("0.0.0-alpha")]
+[assembly: AssemblyFileVersion("0.0.0")]

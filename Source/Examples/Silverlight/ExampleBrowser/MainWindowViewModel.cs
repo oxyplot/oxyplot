@@ -9,6 +9,7 @@ namespace ExampleBrowser
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Reflection;
     using System.Windows.Controls;
 
     using ExampleLibrary;
@@ -40,30 +41,47 @@ namespace ExampleBrowser
 
             set
             {
-                this.frameRate = value; this.RaisePropertyChanged("FrameRate");
+                this.frameRate = value;
+                this.RaisePropertyChanged("FrameRate");
             }
         }
 
         public IEnumerable<ExampleInfo> Examples
         {
-            get { return this.examples; }
-            set { this.examples = value; this.RaisePropertyChanged("Examples"); }
+            get
+            {
+                return this.examples;
+            }
+
+            set
+            {
+                this.examples = value;
+                this.RaisePropertyChanged("Examples");
+            }
         }
 
         public object SelectedItem
         {
-            get { return this.selectedItem; }
+            get
+            {
+                return this.selectedItem;
+            }
+
             set
             {
                 this.selectedItem = value;
-                var cc = value as ContentControl;
+                var cc = (ContentControl)value;
                 this.SelectedExample = cc.Content as ExampleInfo;
             }
         }
 
         public ExampleInfo SelectedExample
         {
-            get { return selectedExample; }
+            get
+            {
+                return this.selectedExample;
+            }
+
             set
             {
                 this.selectedExample = value;
@@ -75,13 +93,18 @@ namespace ExampleBrowser
         {
             get
             {
-                return typeof(PlotModel).Assembly.FullName.Split(',')[1];
+                var informationalVersionAttribute =
+                    (AssemblyInformationalVersionAttribute)
+                        Attribute.GetCustomAttribute(
+                            typeof(PlotModel).Assembly,
+                            typeof(AssemblyInformationalVersionAttribute));
+                return informationalVersionAttribute.InformationalVersion;
             }
         }
 
         protected void RaisePropertyChanged(string property)
         {
-            var handler = PropertyChanged;
+            var handler = this.PropertyChanged;
             if (handler != null)
             {
                 handler(this, new PropertyChangedEventArgs(property));
@@ -89,9 +112,13 @@ namespace ExampleBrowser
         }
     }
 
-    // Simple IGroupingItemsControlConverterSelector implementation for grouping by an Animal's species
+    // Simple IGroupingItemsControlConverterSelector implementation for grouping by category
     public class ExampleInfoGroupSelector : IGroupingItemsControlConverterSelector
     {
+        /// <summary>
+        /// Function that returns the group selector.
+        /// </summary>
+        /// <returns>Key to use for grouping.</returns>
         public Func<object, IComparable> GetGroupSelector()
         {
             return (o) => ((ExampleInfo)o).Category;

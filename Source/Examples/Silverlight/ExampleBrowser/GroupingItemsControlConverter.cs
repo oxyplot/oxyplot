@@ -7,17 +7,17 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-
 namespace ExampleBrowser
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Data;
+
     // http://blogs.msdn.com/b/delay/archive/2010/03/17/confessions-of-a-listbox-groupie-using-ivalueconverter-to-create-a-grouped-list-of-items-simply-and-flexibly.aspx
 
     /// <summary>
@@ -41,13 +41,14 @@ namespace ExampleBrowser
             {
                 throw new ArgumentException("GroupingItemsControlConverter works for only IEnumerable inputs.", "value");
             }
+
             var parameterAsGroupingItemsControlConverterParameter = parameter as GroupingItemsControlConverterParameters;
             if (null == parameterAsGroupingItemsControlConverterParameter)
             {
                 throw new ArgumentException("Missing required GroupingItemsControlConverterParameter.", "parameter");
             }
-            var groupSelectorAsIGroupingItemsControlConverterSelector =
-                parameterAsGroupingItemsControlConverterParameter.GroupSelector as IGroupingItemsControlConverterSelector;
+
+            var groupSelectorAsIGroupingItemsControlConverterSelector = parameterAsGroupingItemsControlConverterParameter.GroupSelector;
             if (null == groupSelectorAsIGroupingItemsControlConverterSelector)
             {
                 throw new ArgumentException(
@@ -56,7 +57,7 @@ namespace ExampleBrowser
             }
 
             // Return the grouped results
-            return ConvertAndGroupSequence(valueAsIEnumerable.Cast<object>(), parameterAsGroupingItemsControlConverterParameter);
+            return this.ConvertAndGroupSequence(valueAsIEnumerable.Cast<object>(), parameterAsGroupingItemsControlConverterParameter);
         }
 
         /// <summary>
@@ -68,7 +69,7 @@ namespace ExampleBrowser
         private IEnumerable<object> ConvertAndGroupSequence(IEnumerable<object> sequence, GroupingItemsControlConverterParameters parameters)
         {
             // Validate parameters
-            var groupSelector = ((IGroupingItemsControlConverterSelector)(parameters.GroupSelector)).GetGroupSelector();
+            var groupSelector = parameters.GroupSelector.GetGroupSelector();
             if (null == groupSelector)
             {
                 throw new NotSupportedException("IGroupingItemsControlConverterSelector.GetGroupSelector must return a non-null value.");

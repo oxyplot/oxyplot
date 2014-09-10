@@ -209,5 +209,22 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
+        [Example("LabelFormatter")]
+        public static PlotModel LabelFormatter()
+        {
+            var model = new PlotModel { Title = "Using LabelFormatter to format labels by day of week" };
+            model.Axes.Add(new DateTimeAxis { LabelFormatter = x => DateTimeAxis.ToDateTime(x).DayOfWeek.ToString().Substring(0, 3) });
+            var series = new LineSeries();
+            model.Series.Add(series);
+            for (int i = 0; i < 7; i++)
+            {
+                var time = new DateTime(2014, 9, 10).AddDays(i);
+                double x = DateTimeAxis.ToDouble(time);
+                double y = Math.Sin(i * i);
+                series.Points.Add(new DataPoint(x, y));
+            }
+
+            return model;
+        }
     }
 }
