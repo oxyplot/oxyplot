@@ -89,27 +89,27 @@ namespace OxyPlot.Axes
         public string FractionUnitSymbol { get; set; }
 
         /// <summary>
-        /// Formats the value to be used on the axis.
-        /// </summary>
-        /// <param name="x">The value.</param>
-        /// <returns>The formatted value.</returns>
-        public override string FormatValue(double x)
-        {
-            if (this.FormatAsFractions)
-            {
-                return FractionHelper.ConvertToFractionString(x, this.FractionUnit, this.FractionUnitSymbol, 1e-6, this.ActualCulture, this.StringFormat);
-            }
-
-            return base.FormatValue(x);
-        }
-
-        /// <summary>
         /// Determines whether the axis is used for X/Y values.
         /// </summary>
         /// <returns><c>true</c> if it is an XY axis; otherwise, <c>false</c> .</returns>
         public override bool IsXyAxis()
         {
             return true;
+        }
+
+        /// <summary>
+        /// Formats the value to be used on the axis.
+        /// </summary>
+        /// <param name="x">The value to format.</param>
+        /// <returns>The formatted value.</returns>
+        protected override string FormatValueOverride(double x)
+        {
+            if (this.FormatAsFractions)
+            {
+                return FractionHelper.ConvertToFractionString(x, this.FractionUnit, this.FractionUnitSymbol, 1e-6, this.ActualCulture, this.StringFormat);
+            }
+
+            return base.FormatValueOverride(x);
         }
     }
 }

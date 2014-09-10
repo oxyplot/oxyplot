@@ -188,23 +188,6 @@ namespace OxyPlot.Axes
         private double[] TotalWidthPerCategory { get; set; }
 
         /// <summary>
-        /// Formats the value to be used on the axis.
-        /// </summary>
-        /// <param name="x">The value.</param>
-        /// <returns>The formatted value.</returns>
-        public override string FormatValue(double x)
-        {
-            var index = (int)x;
-            var actualLabels = this.ActualLabels;
-            if (index >= 0 && index < actualLabels.Count)
-            {
-                return actualLabels[index];
-            }
-
-            return null;
-        }
-
-        /// <summary>
         /// Gets the maximum width of all category labels.
         /// </summary>
         /// <returns>The maximum width.</returns>
@@ -536,6 +519,23 @@ namespace OxyPlot.Axes
                 this.currentMaxValue = null;
                 this.currentMinValue = null;
             }
+        }
+
+        /// <summary>
+        /// Formats the value to be used on the axis.
+        /// </summary>
+        /// <param name="x">The value to format.</param>
+        /// <returns>The formatted value.</returns>
+        protected override string FormatValueOverride(double x)
+        {
+            var index = (int)x;
+            var actualLabels = this.ActualLabels;
+            if (index >= 0 && index < actualLabels.Count)
+            {
+                return actualLabels[index];
+            }
+
+            return null;
         }
 
         /// <summary>
