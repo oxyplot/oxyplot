@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!DOCTYPE schema SYSTEM "XMLSchema.dtd" [
+  <!ENTITY % p ''>
+  <!ENTITY % s ''>
+]>
+<schema targetNamespace="http://www.w3.org/XML/1998/namespace" xmlns="http://www.w3.org/2001/XMLSchema">
+  <!-- xmlns:xml="http://www.w3.org/1998/xml/namespace" neither needed nor desirable -->
+  <attribute name="lang" type="NMTOKEN">
+    <annotation>
+      <documentation>The content of the lang attribute is a hyphen-separated list of case-insensitive tokens where the first token, if one character, is "i" or "x"; if two characters, is an ISO 639-1 language code; if three characters, is an ISO 639-2 language code. The second token, if two characters, is an ISO 3166-1 country code; if from three to eight characters, is an IANA-registered language code. The meaning of other tokens is undefined. This documentation briefly summarizes  RFC3066, which obseletes RFC1766.
+	 </documentation>
+      <documentation>Examples: en-GB ja-JP no-bok sgn-US i-navajo cel-gaulish</documentation>
+      <documentation source="http://www.w3.org/TR/REC-xml#sec-lang-tag">XML specification, Language Identification (in the second edition as modified by errattum E11)</documentation>
+      <documentation source="http://www.w3.org/XML/xml-V10-2e-errata#E11"/>
+      <documentation source="ftp://ftp.isi.edu/in-notes/rfc3066.txt">RFC 3066</documentation>
+      <documentation source="http://lcweb.loc.gov/standards/iso639-2/termcodes.html">Registration authority for ISO 639-1 and -2</documentation>
+      <documentation source="http://lcweb.loc.gov/standards/iso639-2/termcodes.html">Registration authority for ISO 3166</documentation>
+      <documentation source="http://www.isi.edu/in-notes/iana/assignments/languages/">IANA-registered language codes</documentation>
+    </annotation>
+  </attribute>
+  <attribute name="space">
+    <annotation>
+      <documentation source="http://www.w3.org/TR/REC-xml.html#sec-white-space"/>
+    </annotation>
+    <simpleType>
+      <restriction base="string">
+        <enumeration value="default"/>
+        <enumeration value="preserve"/>
+      </restriction>
+    </simpleType>
+  </attribute>
+  <attribute name="base" type="anyURI">
+    <annotation>
+      <documentation source="http://www.w3.org/TR/xmlbase/"/>
+    </annotation>
+  </attribute>
+</schema>

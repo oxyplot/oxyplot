@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!DOCTYPE schema SYSTEM "XMLSchema.dtd" [
+	<!ENTITY % p ''>
+	<!ENTITY % s ''>
+	<!ATTLIST schema
+	xmlns:xlink CDATA #FIXED "http://www.w3.org/1999/xlink"
+>
+]>
+<schema targetNamespace="http://www.w3.org/1999/xlink" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2001/XMLSchema">
+	<attribute name="type" default="simple">
+		<simpleType>
+			<restriction base="string">
+				<enumeration value="simple"/>
+				<enumeration value="extended"/>
+				<enumeration value="locator"/>
+				<enumeration value="arc"/>
+			</restriction>
+		</simpleType>
+	</attribute>
+	<attribute name="href" type="anyURI" use="optional"/>
+	<attribute name="role" type="string" use="optional"/>
+	<attribute name="arcrole" type="string" use="optional"/>
+	<attribute name="title" type="string" use="optional"/>
+	<attribute name="show" default="embed">
+		<simpleType>
+			<restriction base="string">
+				<enumeration value="new"/>
+				<enumeration value="replace"/>
+				<enumeration value="embed"/>
+				<enumeration value="other"/>
+				<enumeration value="none"/>
+			</restriction>
+		</simpleType>
+	</attribute>
+	<attribute name="actuate" default="onLoad">
+		<simpleType>
+			<restriction base="string">
+				<enumeration value="onLoad"/>
+				<enumeration value="onRequest"/>
+				<enumeration value="other"/>
+				<enumeration value="none"/>
+			</restriction>
+		</simpleType>
+	</attribute>
+	<attribute name="from" type="string" use="optional"/>
+	<attribute name="to" type="string" use="optional"/>
+</schema>
