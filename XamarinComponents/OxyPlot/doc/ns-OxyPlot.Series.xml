@@ -1,6 +1,0 @@
-<Namespace Name="OxyPlot.Series">
-  <Docs>
-    <summary>The OxyPlot.Series namespace contains the series types that can be used in a <see cref="T:OxyPlot.PlotModel" />.</summary>
-    <remarks></remarks>
-  </Docs>
-</Namespace>

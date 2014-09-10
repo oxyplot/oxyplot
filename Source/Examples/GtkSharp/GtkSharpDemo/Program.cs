@@ -28,7 +28,7 @@ namespace GtkSharpDemo
         {
             Application.Init();
 
-            var window = new Window("helloworld");
+            var window = new Window("GtkSharpDemo");
             var plotModel = new PlotModel
                          {
                              Title = "Trigonometric functions",

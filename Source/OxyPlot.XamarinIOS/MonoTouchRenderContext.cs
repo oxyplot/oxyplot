@@ -70,7 +70,7 @@ namespace OxyPlot.XamarinIOS
             {
                 this.SetFill(fill);
                 var path = new CGPath();
-                path.AddElipseInRect(convertedRectangle);
+                path.AddEllipseInRect(convertedRectangle);
 
                 this.gctx.AddPath(path);
                 this.gctx.DrawPath(CGPathDrawingMode.Fill);
@@ -81,7 +81,7 @@ namespace OxyPlot.XamarinIOS
                 this.SetStroke(stroke, thickness);
 
                 var path = new CGPath();
-                path.AddElipseInRect(convertedRectangle);
+                path.AddEllipseInRect(convertedRectangle);
 
                 this.gctx.AddPath(path);
                 this.gctx.DrawPath(CGPathDrawingMode.Stroke);

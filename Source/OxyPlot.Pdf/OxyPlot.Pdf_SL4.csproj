@@ -52,6 +52,7 @@
     <Reference Include="mscorlib" />
     <Reference Include="silverPDF">
       <HintPath>..\..\Components\silverPDF.dll</HintPath>
+      <HintPath>silverPDF.dll</HintPath>
     </Reference>
     <Reference Include="system" />
     <Reference Include="System.Core" />

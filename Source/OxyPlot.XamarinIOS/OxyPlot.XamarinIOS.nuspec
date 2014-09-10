@@ -2,9 +2,9 @@
 <package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <id>OxyPlot.XamarinIOS</id>
-	<title>OxyPlot for Xamarin.iOS</title>
-    <version>2014.1.1</version>
-    <authors>objo</authors>
+    <title>OxyPlot for Xamarin.iOS</title>
+    <version>2014.1.456-alpha</version>
+    <authors>Oystein Bjorke</authors>
     <description>OxyPlot is an open source plotting library for .NET. This package targets iOS apps.</description>
     <licenseUrl>https://raw.githubusercontent.com/oxyplot/oxyplot/master/LICENSE</licenseUrl>
     <projectUrl>http://oxyplot.org/</projectUrl>
@@ -12,14 +12,15 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <tags>xamarin iOS plotting plot charting chart</tags>
     <dependencies>
-      <dependency id="OxyPlot.Core" version="2014.1.1"/>
+      <dependency id="OxyPlot.Core" version="[2014.1.456-alpha]"/>
     </dependencies>
   </metadata>
   <files>
-    <file src="../../Output/XamarinIOS/OxyPlot.XamarinIOS.???" target="lib/MonoTouch" />
-    <file src="../../LICENSE" />
-    <file src="../../AUTHORS" />
-    <file src="../../CONTRIBUTORS" />
-    <file src="../../README.md" />
+    <file src="lib/MonoTouch/OxyPlot.XamarinIOS.dll" target="lib/MonoTouch"/>
+    <file src="lib/MonoTouch/OxyPlot.XamarinIOS.XML" target="lib/MonoTouch"/>
+    <file src="LICENSE" />
+    <file src="AUTHORS" />
+    <file src="CONTRIBUTORS" />
+    <file src="README.md" />
   </files>
 </package>

@@ -1,6 +1,0 @@
-<Namespace Name="OxyPlot.Annotations">
-  <Docs>
-    <summary>The OxyPlot.Annotations namespace contains the annotation types that can be used in a <see cref="T:OxyPlot.PlotModel" />.</summary>
-    <remarks></remarks>
-  </Docs>
-</Namespace>

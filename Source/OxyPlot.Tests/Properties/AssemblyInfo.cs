@@ -9,6 +9,6 @@ using System.Reflection;
 using NUnit.Framework;
 
 [assembly: AssemblyTitle("OxyPlot.Tests")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Unit tests for OxyPlot")]
 
 [assembly: RequiresSTA]
