@@ -3,16 +3,20 @@
 VERSION=2014.1
 
 # Clean the output folders
-. clean.sh
+cd ../XamarinComponents/OxyPlot
+rm -rf *.log
+rm -rf htmldoc
+rm -rf monodoc
+rm -rf icons
+rm -rf msxdoc
+cd ../../Build
 
 # Build OxyPlot and samples
-DIR=$PWD
-cd ../../Build
 . build.sh
-cd $DIR
+echo
 
 # Create documentation
 . create-doc.sh
 
 # Create the component
-. create-component.sh
+. create-xamarin-component.sh

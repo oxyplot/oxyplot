@@ -1,5 +1,7 @@
 #!/bin/sh
 
+cd ../XamarinComponents/OxyPlot
+
 # Clean old output files
 rm -rf monodoc
 rm -rf htmldoc
@@ -56,3 +58,5 @@ fi
 # open doc-update.log
 # open doc-export.log
 # open doc-assemble.log
+echo
+cd ../../Build

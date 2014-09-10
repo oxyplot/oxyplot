@@ -1,5 +1,7 @@
 #!/bin/sh
 
+cd ../XamarinComponents/OxyPlot
+
 # Folders
 OUTPUT=../../Output
 ICONS=../../Icons
@@ -9,7 +11,7 @@ rm -v bin/*
 rm -v icons/*
 rm -v $OUTPUT/*.xam
 
-echo "\nCopying binaries"
+echo "Copying binaries"
 if [ ! -d "bin" ]; then
   mkdir bin
 fi
@@ -17,7 +19,7 @@ cp -v $OUTPUT/PCL/OxyPlot.dll bin
 cp -v $OUTPUT/XamarinIOS/OxyPlot.XamarinIOS.dll bin
 cp -v $OUTPUT/XamarinAndroid/OxyPlot.XamarinAndroid.dll bin
 
-echo "\nCopying icons"
+echo "Copying icons"
 if [ ! -d "icons" ]; then
   mkdir -v icons
 fi
@@ -29,13 +31,13 @@ VERSION=${VERSION:=2014.1.0}
 
 OUTPUTPACKAGE=$OUTPUT/OxyPlot-$VERSION.xam
 
-echo "\nCreating Xamarin Component: $OUTPUTPACKAGE"
+echo "Creating Xamarin Component: $OUTPUTPACKAGE"
 mono ../../Tools/Xamarin/xamarin-component.exe create-manually "$OUTPUTPACKAGE" \
     --name="OxyPlot" \
     --publisher="oxyplot.org" \
     --website="http://oxyplot.org/" \
     --monodoc="doc" \
-    --srcurl="http://hg.codeplex.com/oxyplot" \
+    --srcurl="https://github.com/oxyplot/oxyplot" \
     --summary="A cross-platform plotting library for .NET" \
     --screenshot="OxyPlot running on Xamarin.iOS":"content/Screenshot_700x400.png"\
     --popover="content/Popover_320x200.png" \
@@ -49,5 +51,9 @@ mono ../../Tools/Xamarin/xamarin-component.exe create-manually "$OUTPUTPACKAGE" 
     --library="ios":"bin/OxyPlot.XamarinIOS.dll" \
     --library="android":"bin/OxyPlot.dll" \
     --library="android":"bin/OxyPlot.XamarinAndroid.dll" \
-    --sample="iOS Sample. Demonstrates how to create a view with a LineSeries on iOS.":"samples/OxyPlotSample.iOS.sln" \
-    --sample="Android Sample. Demonstrates how to create a view with a LineSeries on Android. ":"samples/OxyPlotSample.Android.sln"
+    --sample="iOS Sample. Demonstrates how to create a view with a line plot on iOS.":"samples/OxyPlotSample.iOS.sln" \
+    --sample="Android Sample. Demonstrates how to create a view with a line plot on Android. ":"samples/OxyPlotSample.Android.sln"
+
+ls -al $OUTPUT/OxyPlot*.xam
+
+cd ../../Build

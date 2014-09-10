@@ -2,10 +2,10 @@
 
 MDTOOL="/Applications/Xamarin Studio.app/Contents/MacOS/mdtool"
 
-VERSION=2014.1.199
+VERSION=2014.1
 
 SAMPLES=OxyPlot-$VERSION/samples
-cd ../../Output
+cd ../Output
 unzip -o *.xam
 
 # Build samples

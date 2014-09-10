@@ -191,6 +191,10 @@ FakesAssemblies/
 # GhostDoc settings
 *.GhostDoc.xml
 
+# Xamarin component
+icons/
+
 # MonoDoc output
 doc/
 htmldoc/
+msxdoc/
