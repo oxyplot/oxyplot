@@ -705,33 +705,14 @@ namespace OxyPlot.Axes
         /// </summary>
         /// <param name="x">The value.</param>
         /// <returns>The formatted value.</returns>
-        public virtual string FormatValue(double x)
+        public string FormatValue(double x)
         {
             if (this.LabelFormatter != null)
             {
                 return this.LabelFormatter(x);
             }
 
-            // The "SuperExponentialFormat" renders the number with superscript exponents. E.g. 10^2
-            if (this.UseSuperExponentialFormat && !x.Equals(0))
-            {
-                double exp = Exponent(x);
-                double mantissa = Mantissa(x);
-                string fmt;
-                if (this.StringFormat == null)
-                {
-                    fmt = Math.Abs(mantissa - 1.0) < 1e-6 ? "10^{{{1:0}}}" : "{0}·10^{{{1:0}}}";
-                }
-                else
-                {
-                    fmt = "{0:" + this.StringFormat + "}·10^{{{1:0}}}";
-                }
-
-                return string.Format(this.ActualCulture, fmt, mantissa, exp);
-            }
-
-            string format = string.Concat("{0:", this.ActualStringFormat ?? this.StringFormat ?? string.Empty, "}");
-            return string.Format(this.ActualCulture, format, x);
+            return this.FormatValueOverride(x);
         }
 
         /// <summary>
@@ -1333,6 +1314,35 @@ namespace OxyPlot.Axes
         protected virtual double PreTransform(double x)
         {
             return x;
+        }
+
+        /// <summary>
+        /// Formats the value to be used on the axis.
+        /// </summary>
+        /// <param name="x">The value to format.</param>
+        /// <returns>The formatted value.</returns>
+        protected virtual string FormatValueOverride(double x)
+        {
+            // The "SuperExponentialFormat" renders the number with superscript exponents. E.g. 10^2
+            if (this.UseSuperExponentialFormat && !x.Equals(0))
+            {
+                double exp = Exponent(x);
+                double mantissa = Mantissa(x);
+                string fmt;
+                if (this.StringFormat == null)
+                {
+                    fmt = Math.Abs(mantissa - 1.0) < 1e-6 ? "10^{{{1:0}}}" : "{0}·10^{{{1:0}}}";
+                }
+                else
+                {
+                    fmt = "{0:" + this.StringFormat + "}·10^{{{1:0}}}";
+                }
+
+                return string.Format(this.ActualCulture, fmt, mantissa, exp);
+            }
+
+            string format = string.Concat("{0:", this.ActualStringFormat ?? this.StringFormat ?? string.Empty, "}");
+            return string.Format(this.ActualCulture, format, x);
         }
 
         /// <summary>

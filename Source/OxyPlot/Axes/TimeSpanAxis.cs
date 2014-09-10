@@ -82,14 +82,24 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Formats the value.
+        /// Gets the value from an axis coordinate, converts from double to the correct data type if necessary. e.g. DateTimeAxis returns the DateTime and CategoryAxis returns category strings.
         /// </summary>
-        /// <param name="x">The x.</param>
-        /// <returns>The format value.</returns>
-        public override string FormatValue(double x)
+        /// <param name="x">The coordinate.</param>
+        /// <returns>The value.</returns>
+        public override object GetValue(double x)
         {
-            TimeSpan span = TimeSpan.FromSeconds(x);
-            string s = this.ActualStringFormat ?? "h:mm:ss";
+            return TimeSpan.FromSeconds(x);
+        }
+
+        /// <summary>
+        /// Formats the value to be used on the axis.
+        /// </summary>
+        /// <param name="x">The value to format.</param>
+        /// <returns>The formatted value.</returns>
+        protected override string FormatValueOverride(double x)
+        {
+            var span = TimeSpan.FromSeconds(x);
+            var s = this.ActualStringFormat ?? "h:mm:ss";
 
             s = s.Replace("mm", span.Minutes.ToString("00"));
             s = s.Replace("ss", span.Seconds.ToString("00"));
@@ -99,16 +109,6 @@ namespace OxyPlot.Axes
             s = s.Replace("s", ((int)span.TotalSeconds).ToString("0"));
             s = s.Replace("h", ((int)span.TotalHours).ToString("0"));
             return s;
-        }
-
-        /// <summary>
-        /// Gets the value from an axis coordinate, converts from double to the correct data type if necessary. e.g. DateTimeAxis returns the DateTime and CategoryAxis returns category strings.
-        /// </summary>
-        /// <param name="x">The coordinate.</param>
-        /// <returns>The value.</returns>
-        public override object GetValue(double x)
-        {
-            return TimeSpan.FromSeconds(x);
         }
 
         /// <summary>
