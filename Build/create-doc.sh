@@ -8,7 +8,7 @@ rm -rf htmldoc
 rm -rf msxdoc
 
 # Path to the mdoc tool
-MDOC=../../Tools/Xamarin/mdoc.exe
+MDOC=/usr/local/bin/mdoc.exe
 
 # The path to the OxyPlot output files (dll/xml)
 OUTPUT=../../Output

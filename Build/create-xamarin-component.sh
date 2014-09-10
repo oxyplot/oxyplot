@@ -32,7 +32,7 @@ VERSION=${VERSION:=2014.1.0}
 OUTPUTPACKAGE=$OUTPUT/OxyPlot-$VERSION.xam
 
 echo "Creating Xamarin Component: $OUTPUTPACKAGE"
-mono ../../Tools/Xamarin/xamarin-component.exe create-manually "$OUTPUTPACKAGE" \
+mono /usr/local/bin/xamarin-component.exe create-manually "$OUTPUTPACKAGE" \
     --name="OxyPlot" \
     --publisher="oxyplot.org" \
     --website="http://oxyplot.org/" \
