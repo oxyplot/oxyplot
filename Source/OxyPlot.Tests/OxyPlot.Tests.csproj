@@ -91,18 +91,6 @@
     <Compile Include="Svg\SvgWriterTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\Schemas\svg\svg.xsd">
-      <Link>Schemas\svg.xsd</Link>
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\Schemas\svg\xlink.xsd">
-      <Link>Schemas\xlink.xsd</Link>
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\Schemas\svg\xml.xsd">
-      <Link>Schemas\xml.xsd</Link>
     <Content Include="Schemas\svg.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
