@@ -95,7 +95,6 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
-  <Import Project="$(ProjectDir)\..\..\Tools\StyleCop\StyleCop.targets" Condition=" '$(OS)' == 'Windows_NT' " />
   <Import Project="$(ProjectDir)\..\StyleCop.targets" Condition=" '$(OS)' == 'Windows_NT' " />
   <ProjectExtensions>
     <VisualStudio>
