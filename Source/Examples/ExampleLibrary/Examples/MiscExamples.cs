@@ -15,6 +15,7 @@ namespace ExampleLibrary
     using System.IO;
     using System.Reflection;
     using System.Threading;
+    using System.Threading.Tasks;
     using System.Xml;
     using System.Xml.Serialization;
 
@@ -184,7 +185,7 @@ namespace ExampleLibrary
 
             using (
                 var stream =
-                    Assembly.GetExecutingAssembly().GetManifestResourceStream("ExampleLibrary.Resources.west0479.mtx"))
+                    typeof(MiscExamples).GetTypeInfo().Assembly.GetManifestResourceStream("ExampleLibrary.Resources.west0479.mtx"))
             {
                 using (var reader = new StreamReader(stream))
                 {
@@ -2174,7 +2175,9 @@ namespace ExampleLibrary
         /// <returns>A stream.</returns>
         private static Stream GetResourceStream(string name)
         {
-            return Assembly.GetExecutingAssembly().GetManifestResourceStream("ExampleLibrary.Resources." + name);
+            return typeof(MiscExamples).GetTypeInfo().Assembly.GetManifestResourceStream("ExampleLibrary.Resources." + name);
+
+            //return Assembly.GetExecutingAssembly().GetManifestResourceStream("ExampleLibrary.Resources." + name);
         }
 
         /// <summary>
@@ -2228,6 +2231,7 @@ namespace ExampleLibrary
                 int maxIterations = (int)this.ColorAxis.ActualMaximum + 1;
                 var pixels = new OxyColor[w, h];
 
+#if !UNIVERSAL
                 ParallelFor(
                     0,
                     h,
@@ -2243,6 +2247,23 @@ namespace ExampleLibrary
                             pixels[j, i] = this.ColorAxis.GetColor((double)iterations);
                         }
                     });
+#else
+                Parallel.For(
+                    0,
+                    h,
+                    i =>
+                    {
+                        double y = this.YAxis.ActualMaximum - ((double)i / (h - 1) * (this.YAxis.ActualMaximum - this.YAxis.ActualMinimum));
+                        for (int j = 0; j < w; j++)
+                        {
+                            double x = this.XAxis.ActualMinimum
+                                       + ((double)j / (w - 1)
+                                          * (this.XAxis.ActualMaximum - this.XAxis.ActualMinimum));
+                            var iterations = Solve(x, y, maxIterations);
+                            pixels[j, i] = this.ColorAxis.GetColor((double)iterations);
+                        }
+                    });
+#endif
 
                 var bitmap = OxyImage.Create(pixels, ImageFormat.Png);
                 rc.DrawImage(bitmap, p0.X, p1.Y, p1.X - p0.X, p0.Y - p1.Y, 1, true);
@@ -2294,6 +2315,7 @@ namespace ExampleLibrary
                 }
             }
 
+#if !UNIVERSAL
             /// <summary>
             /// Executes a parallel for loop using ThreadPool.
             /// </summary>
@@ -2339,7 +2361,9 @@ namespace ExampleLibrary
                     wh.WaitOne();
                 }
             }
+#endif
         }
+
 
         private class JuliaSetSeries : MandelbrotSetSeries
         {

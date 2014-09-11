@@ -16,7 +16,11 @@ namespace ExampleLibrary
         public static List<ExampleInfo> GetList()
         {
             var list = new List<ExampleInfo>();
-            var assemblyTypes = typeof(Examples).Assembly.GetTypes();
+#if UNIVERSAL
+            var assemblyTypes = typeof(Examples).GetTypeInfo().Assembly.DefinedTypes;
+#else
+            var assemblyTypes = typeof(Examples).GetTypeInfo().Assembly.GetTypes();
+#endif
 
             foreach (var type in assemblyTypes)
             {
@@ -31,24 +35,42 @@ namespace ExampleLibrary
                 var baseType = type;
                 while (baseType != null)
                 {
+#if UNIVERSAL
+                    types.Add(baseType.AsType());
+                    baseType = null;
+#else
                     types.Add(baseType);
                     baseType = baseType.BaseType;
+#endif
                 }
 
                 foreach (var t in types)
                 {
-                    foreach (var method in t.GetMethods(BindingFlags.Public | BindingFlags.Static))
+#if UNIVERSAL
+                    var methods = t.GetRuntimeMethods();
+#else
+                    var methods = t.GetMethods(BindingFlags.Public | BindingFlags.Static);
+#endif
+
+                    foreach (var method in methods)
                     {
-                        var exampleAttributes = method.GetCustomAttributes(typeof(ExampleAttribute), true);
-                        if (exampleAttributes.Length == 0)
+                        try
+                        {
+                            var exampleAttributes = method.GetCustomAttributes(typeof(ExampleAttribute), true).ToList();
+                            if (!exampleAttributes.Any())
+                            {
+                                continue;
+                            }
+
+                            var exampleAttribute = exampleAttributes.ElementAtOrDefault(0) as ExampleAttribute;
+                            if (exampleAttribute != null && examplesAttribute != null)
+                            {
+                                list.Add(new ExampleInfo(examplesAttribute.Category, exampleAttribute.Title, method));
+                            }
+                        }
+                        catch(Exception e)
                         {
                             continue;
-                        }
-
-                        var exampleAttribute = (ExampleAttribute)exampleAttributes[0];
-                        if (examplesAttribute != null)
-                        {
-                            list.Add(new ExampleInfo(examplesAttribute.Category, exampleAttribute.Title, method));
                         }
                     }
                 }

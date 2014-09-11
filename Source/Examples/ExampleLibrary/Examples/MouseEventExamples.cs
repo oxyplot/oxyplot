@@ -414,7 +414,7 @@ namespace ExampleLibrary
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -10, Maximum = 10 });
 
             OxyImage image;
-            var assembly = Assembly.GetExecutingAssembly();
+            var assembly = typeof(PlotModel).GetTypeInfo().Assembly;
             using (var stream = assembly.GetManifestResourceStream("ExampleLibrary.Resources.OxyPlot.png"))
             {
                 image = new OxyImage(stream);

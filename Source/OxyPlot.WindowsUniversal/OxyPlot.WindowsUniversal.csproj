@@ -35,13 +35,6 @@
     <DocumentationFile>..\..\Output\WindowsUniversal\OxyPlot.WindowsUniversal.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <!-- A reference to the entire .NET Framework is automatically included -->
-    <ProjectReference Include="..\OxyPlot\OxyPlot_WindowsUniversal.csproj">
-      <Project>{f8366b56-b224-4416-8c47-1fa8af75a359}</Project>
-      <Name>OxyPlot_WindowsUniversal</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <TargetPlatform Include="WindowsPhoneApp, Version=8.1" />
     <TargetPlatform Include="Windows, Version=8.1" />
   </ItemGroup>
@@ -60,10 +53,10 @@
     <Compile Include="Utilities\MouseButtonHelper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Themes\Generic.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
+    <ProjectReference Include="..\OxyPlot\OxyPlot_WindowsUniversal.csproj">
+      <Project>{f8366b56-b224-4416-8c47-1fa8af75a359}</Project>
+      <Name>OxyPlot_WindowsUniversal</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
