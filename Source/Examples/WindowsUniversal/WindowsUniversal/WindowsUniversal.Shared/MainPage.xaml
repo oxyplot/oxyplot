@@ -10,7 +10,7 @@
     
     <Page.Resources>
         <DataTemplate x:Key="ListViewDataTemplate">
-            <TextBlock Text="{Binding Key}" Style="{StaticResource TitleTextBlockStyle}"
+            <TextBlock Text="{Binding Title}" Style="{StaticResource TitleTextBlockStyle}"
                        Margin="10,0,0,0"  TextTrimming="WordEllipsis" TextWrapping="Wrap" 
                        HorizontalAlignment="Left" Width="190"/>
         </DataTemplate>
@@ -24,7 +24,7 @@
                     <TextBlock HorizontalAlignment="Right" Text="{Binding Version}" Style="{StaticResource TitleTextBlockStyle}" FontSize="11"/>
                 </Grid>
             </Hub.Header>
-            <HubSection Width="200">
+            <HubSection Width="300">
                 <DataTemplate>
                     <ListView ItemsSource="{Binding ExamplesView}" SelectedItem="{Binding SelectedExample, Mode=TwoWay}" 
                             BorderThickness="0,0,0,1" ItemTemplate="{StaticResource ListViewDataTemplate}"/>
