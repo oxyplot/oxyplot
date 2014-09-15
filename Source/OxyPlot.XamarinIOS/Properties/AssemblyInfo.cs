@@ -6,5 +6,5 @@
 
 using System.Reflection;
 
-[assembly: AssemblyTitle("OxyPlot.XamarinAndroid")]
-[assembly: AssemblyDescription("OxyPlot for Xamarin.Android")]
+[assembly: AssemblyTitle("OxyPlot.XamarinIOS")]
+[assembly: AssemblyDescription("OxyPlot for Xamarin.iOS")]
