@@ -183,9 +183,13 @@ namespace ExampleLibrary
 
             double[,] matrix = null;
 
-            using (
-                var stream =
-                    typeof(MiscExamples).GetTypeInfo().Assembly.GetManifestResourceStream("ExampleLibrary.Resources.west0479.mtx"))
+            
+                
+#if UNIVERSAL
+            using (var stream = typeof(MiscExamples).GetTypeInfo().Assembly.GetManifestResourceStream("ExampleLibrary.Resources.west0479.mtx"))
+#else
+            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("ExampleLibrary.Resources.west0479.mtx"))
+#endif
             {
                 using (var reader = new StreamReader(stream))
                 {
@@ -2175,9 +2179,11 @@ namespace ExampleLibrary
         /// <returns>A stream.</returns>
         private static Stream GetResourceStream(string name)
         {
+#if UNIVERSAL
             return typeof(MiscExamples).GetTypeInfo().Assembly.GetManifestResourceStream("ExampleLibrary.Resources." + name);
-
-            //return Assembly.GetExecutingAssembly().GetManifestResourceStream("ExampleLibrary.Resources." + name);
+#else
+            return Assembly.GetExecutingAssembly().GetManifestResourceStream("ExampleLibrary.Resources." + name);
+#endif
         }
 
         /// <summary>

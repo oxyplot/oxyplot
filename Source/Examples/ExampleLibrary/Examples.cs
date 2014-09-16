@@ -19,7 +19,7 @@ namespace ExampleLibrary
 #if UNIVERSAL
             var assemblyTypes = typeof(Examples).GetTypeInfo().Assembly.DefinedTypes;
 #else
-            var assemblyTypes = typeof(Examples).GetTypeInfo().Assembly.GetTypes();
+            var assemblyTypes = typeof(Examples).Assembly.GetTypes();
 #endif
 
             foreach (var type in assemblyTypes)
@@ -68,10 +68,7 @@ namespace ExampleLibrary
                                 list.Add(new ExampleInfo(examplesAttribute.Category, exampleAttribute.Title, method));
                             }
                         }
-                        catch(Exception e)
-                        {
-                            continue;
-                        }
+                        catch(Exception) { }
                     }
                 }
             }
