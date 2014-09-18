@@ -24,9 +24,6 @@
     <file src="..\..\Output\NET45\MigraDoc.*" target="lib\net45" />
     <file src="..\..\Output\NET40\MigraDoc.*" target="lib\net40" />
     <file src="..\..\Output\SL5\silverPDF.*" target="lib\sl5" />
-    <file src="..\..\LICENSE" />
-    <file src="..\..\AUTHORS" />
-    <file src="..\..\CONTRIBUTORS" />
     <file src="..\..\README.md" />
   </files>
 </package>

@@ -18,9 +18,6 @@
   <files>
     <file src="lib/MonoTouch/OxyPlot.XamarinIOS.dll" target="lib/MonoTouch"/>
     <file src="lib/MonoTouch/OxyPlot.XamarinIOS.XML" target="lib/MonoTouch"/>
-    <file src="LICENSE" />
-    <file src="AUTHORS" />
-    <file src="CONTRIBUTORS" />
     <file src="README.md" />
   </files>
 </package>

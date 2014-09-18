@@ -20,9 +20,6 @@
     <file src="..\..\Output\NET40\OxyPlot.Wpf.???" target="lib\net40" />
     <file src="..\..\Output\NET45\OxyPlot.Xps.???" target="lib\net45" />
     <file src="..\..\Output\NET40\OxyPlot.Xps.???" target="lib\net40" />
-    <file src="..\..\LICENSE" />
-    <file src="..\..\AUTHORS" />
-    <file src="..\..\CONTRIBUTORS" />
     <file src="..\..\README.md" />
   </files>
 </package>
