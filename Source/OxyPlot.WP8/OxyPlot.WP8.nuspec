@@ -17,9 +17,6 @@
   </metadata>
   <files>
     <file src="..\..\Output\WP8\OxyPlot.WP8.???" target="lib\windowsphone8" />
-    <file src="..\..\LICENSE" />
-    <file src="..\..\AUTHORS" />
-    <file src="..\..\CONTRIBUTORS" />
     <file src="..\..\README.md" />
   </files>
 </package>

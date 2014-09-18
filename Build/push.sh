@@ -1,8 +1,6 @@
 #!/bin/sh
 
-# Pushing packages to NuGet
-
-echo ACCESS KEY: $NUGET_ACCESS_KEY
+# Push all packages to NuGet
 
 for f in ../Output/*.nupkg 
 do
