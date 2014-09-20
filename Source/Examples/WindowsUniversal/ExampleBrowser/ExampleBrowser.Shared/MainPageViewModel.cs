@@ -4,7 +4,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace WindowsUniversal
+namespace ExampleBrowser
 {
     using System.Collections.Generic;
     using System.ComponentModel;

@@ -30,6 +30,7 @@
     - cmd: NuGet pack Source\OxyPlot\OxyPlot.Core.nuspec -OutputDirectory Packages
     - cmd: NuGet pack Source\OxyPlot.Wpf\OxyPlot.Wpf.nuspec -OutputDirectory Packages
     - cmd: NuGet pack Source\OxyPlot.WindowsForms\OxyPlot.WindowsForms.nuspec -OutputDirectory Packages
+    - cmd: NuGet pack Source\OxyPlot.WindowsUniversal\OxyPlot.WindowsUniversal.nuspec -OutputDirectory Packages
     - cmd: NuGet pack Source\OxyPlot.Metro\OxyPlot.Metro.nuspec -OutputDirectory Packages
     - cmd: NuGet pack Source\OxyPlot.WP8\OxyPlot.WP8.nuspec -OutputDirectory Packages
     - cmd: NuGet pack Source\OxyPlot.Silverlight\OxyPlot.Silverlight.nuspec -OutputDirectory Packages
@@ -72,6 +73,7 @@
     - cmd: NuGet pack Source\OxyPlot\OxyPlot.Core.nuspec -OutputDirectory Packages
     - cmd: NuGet pack Source\OxyPlot.Wpf\OxyPlot.Wpf.nuspec -OutputDirectory Packages
     - cmd: NuGet pack Source\OxyPlot.WindowsForms\OxyPlot.WindowsForms.nuspec -OutputDirectory Packages
+    - cmd: NuGet pack Source\OxyPlot.WindowsUniversal\OxyPlot.WindowsUniversal.nuspec -OutputDirectory Packages
     - cmd: NuGet pack Source\OxyPlot.Metro\OxyPlot.Metro.nuspec -OutputDirectory Packages
     - cmd: NuGet pack Source\OxyPlot.WP8\OxyPlot.WP8.nuspec -OutputDirectory Packages
     - cmd: NuGet pack Source\OxyPlot.Silverlight\OxyPlot.Silverlight.nuspec -OutputDirectory Packages
