@@ -807,7 +807,7 @@ namespace OxyPlot.WindowsUniversal
             var randomAccessStream = new InMemoryRandomAccessStream();
             var outputStream = randomAccessStream.GetOutputStreamAt(0);
             var dw = new DataWriter(outputStream);
-            var task = Task.Factory.StartNew(() => dw.WriteBytes(memoryStream.ToArray()));
+            var task = Task.Run(() => dw.WriteBytes(memoryStream.ToArray()));
             await task;
             await dw.StoreAsync();
             await outputStream.FlushAsync();

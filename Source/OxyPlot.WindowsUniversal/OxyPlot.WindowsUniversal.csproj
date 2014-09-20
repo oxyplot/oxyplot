@@ -64,6 +64,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <ProjectReference Include="..\OxyPlot\OxyPlot_WindowsUniversal.csproj">
+      <Project>{f8366b56-b224-4416-8c47-1fa8af75a359}</Project>
+      <Name>OxyPlot_WindowsUniversal</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -372,7 +372,11 @@ namespace ExampleLibrary
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
 
             OxyImage image;
+#if UNIVERSAL
+            var assembly = typeof(PlotModel).GetTypeInfo().Assembly;
+#else
             var assembly = Assembly.GetExecutingAssembly();
+#endif
             using (var stream = assembly.GetManifestResourceStream("ExampleLibrary.Resources.OxyPlot.png"))
             {
                 image = new OxyImage(stream);
