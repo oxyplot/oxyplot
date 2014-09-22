@@ -74,6 +74,19 @@ namespace OxyPlot.Axes
             {
                 var perpendicularAxis = axis.IsHorizontal() ? this.Plot.DefaultYAxis : this.Plot.DefaultXAxis;
                 axisPosition = perpendicularAxis.Transform(0);
+                var p0 = perpendicularAxis.Transform(perpendicularAxis.ActualMinimum);
+                var p1 = perpendicularAxis.Transform(perpendicularAxis.ActualMaximum);
+                var min = Math.Min(p0, p1);
+                var max = Math.Max(p0, p1);
+                if (axisPosition < min)
+                {
+                    axisPosition = min;
+                }
+
+                if (axisPosition > max)
+                {
+                    axisPosition = max;
+                }
             }
 
             if (pass == 0)
@@ -415,7 +428,7 @@ namespace OxyPlot.Axes
             }
 
             // Draw the zero crossing line
-            if (axis.PositionAtZeroCrossing && this.ZeroPen != null)
+            if (axis.PositionAtZeroCrossing && this.ZeroPen != null && this.IsWithin(0, actualMinimum, actualMaximum))
             {
                 double t0 = axis.Transform(0);
                 if (isHorizontal)
