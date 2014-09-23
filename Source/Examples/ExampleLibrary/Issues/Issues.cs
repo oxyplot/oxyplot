@@ -23,7 +23,7 @@ namespace ExampleLibrary
     // ReSharper disable InconsistentNaming
     public class Issues : ExamplesBase
     {
-        [Example("#9042: Support colour coding on scatter plots (Closed)")]
+        [Example("Support colour coding on scatter plots (Closed)")]
         public static PlotModel ColorCodingOnScatterPlots()
         {
             var model = new PlotModel { Title = "Colour coding on scatter plots" };
@@ -46,7 +46,7 @@ namespace ExampleLibrary
             return model;
         }
 
-        [Example("#9971: Don't show minor ticks (Closed)")]
+        [Example("Don't show minor ticks (Closed)")]
         public static PlotModel DontShowMinorTicks()
         {
             var model = new PlotModel { Title = "MinorTickSize = 0" };
@@ -58,12 +58,12 @@ namespace ExampleLibrary
         /// <summary>
         /// Grids the lines both different colors.
         /// </summary>
-        [Example("#9990: Major grid lines in front of minor (Closed)")]
+        [Example("Major grid lines in front of minor (Closed)")]
         public static PlotModel GridLinesBothDifferentColors()
         {
             var plotModel1 = new PlotModel
             {
-                Title = "Issue #9990",
+                Title = "Major grid lines in front of minor",
                 Subtitle = "Minor grid lines should be below major grid lines"
             };
             var leftAxis = new LinearAxis
@@ -90,7 +90,7 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
-        [Example("#10018: Sub/superscript in vertical axis title")]
+        [Example("#50: Sub/superscript in vertical axis title")]
         public static PlotModel SubSuperScriptInAxisTitles()
         {
             var plotModel1 = new PlotModel { Title = "x_{i}^{j}", Subtitle = "x_{i}^{j}" };
@@ -102,7 +102,7 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
-        [Example("#10018: Sub/superscript in rotated annotations")]
+        [Example("#50: Sub/superscript in rotated annotations")]
         public static PlotModel RotatedSubSuperScript()
         {
             var s = "x_{A}^{B}";
@@ -117,7 +117,7 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
-        [Example("#10045: DateTimeAxis with IntervalType = Minutes")]
+        [Example("#61: DateTimeAxis with IntervalType = Minutes")]
         public static PlotModel DateTimeAxisWithIntervalTypeMinutes()
         {
             var plotModel1 = new PlotModel();
@@ -141,7 +141,7 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
-        [Example("#10055: Hit testing LineSeries with smoothing")]
+        [Example("#67: Hit testing LineSeries with smoothing")]
         public static PlotModel MouseDownEvent()
         {
             var model = new PlotModel { Title = "LineSeries with smoothing", Subtitle = "Tracker uses wrong points" };
@@ -171,7 +171,7 @@ namespace ExampleLibrary
             return model;
         }
 
-        [Example("#10056: Tracker wrong for logarithmic y-axis")]
+        [Example("#68: Tracker wrong for logarithmic y-axis")]
         public static PlotModel ValueTime()
         {
             var plotModel1 = new PlotModel
@@ -228,7 +228,7 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
-        [Example("#10060: AnnotationLayers (Closed)")]
+        [Example("AnnotationLayers (Closed)")]
         public static PlotModel AnnotationLayers()
         {
             var model = new PlotModel { Title = "AnnotationLayers" };
@@ -269,7 +269,7 @@ namespace ExampleLibrary
             return model;
         }
 
-        [Example("#10061: Argument out of range in OxyPlot mouse over (Closed)")]
+        [Example("Argument out of range in OxyPlot mouse over (Closed)")]
         public static PlotModel ArgumentOutOfRangeInMouseOver()
         {
             var model = new PlotModel { Title = "Argument out of range in OxyPlot mouse over" };
@@ -281,7 +281,7 @@ namespace ExampleLibrary
             return model;
         }
 
-        [Example("#10076: Slow redraws with noisy data (Closed)")]
+        [Example("Slow redraws with noisy data (Closed)")]
         public static PlotModel NoisyData()
         {
             var model = new PlotModel { Title = "Noisy data" };
@@ -297,7 +297,7 @@ namespace ExampleLibrary
             return model;
         }
 
-        [Example("#10076: Dashed line test (Closed)")]
+        [Example("Dashed line test (Closed)")]
         public static PlotModel DashedLineTest()
         {
             var model = new PlotModel { Title = "Dashed line test" };
@@ -321,7 +321,7 @@ namespace ExampleLibrary
             return model;
         }
 
-        [Example("#10076: Super exponential format (Closed)")]
+        [Example("Super exponential format (Closed)")]
         public static PlotModel SuperExponentialFormat()
         {
             var model = new PlotModel { Title = "UseSuperExponentialFormat=true and 0" };
@@ -330,7 +330,7 @@ namespace ExampleLibrary
             return model;
         }
 
-        [Example("#10079: AreaSeries draws on top of other elements (Closed)")]
+        [Example("AreaSeries draws on top of other elements (Closed)")]
         public static PlotModel DefaultAnnotationLayer()
         {
             var plotModel1 = new PlotModel { Title = "Annotations should be drawn on top by default", Subtitle = "The line annotation should be on top!" };
@@ -357,7 +357,7 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
-        [Example("#10080: LegendItemAlignment = Center")]
+        [Example("#79: LegendItemAlignment = Center")]
         public static PlotModel LegendItemAlignmentCenter()
         {
             var plotModel1 = new PlotModel { Title = "LegendItemAlignment = Center" };
@@ -369,7 +369,7 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
-        [Example("#10084: AreaSeries should respect CanTrackerInterpolatePoints (Closed)")]
+        [Example("AreaSeries should respect CanTrackerInterpolatePoints (Closed)")]
         public static PlotModel AreaSeries_CanTrackerInterpolatePointsFalse()
         {
             var plotModel1 = new PlotModel { Title = "AreaSeries with CanTrackerInterpolatePoints=false" };
@@ -384,7 +384,7 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
-        [Example("#10084: AreaSeries should respect CanTrackerInterpolatePoints=true (Closed)")]
+        [Example("AreaSeries should respect CanTrackerInterpolatePoints=true (Closed)")]
         public static PlotModel AreaSeries_CanTrackerInterpolatePointsTrue()
         {
             var plotModel1 = new PlotModel { Title = "AreaSeries with CanTrackerInterpolatePoints=true" };
@@ -399,21 +399,23 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
-        [Example("#10115: GetNearestPoint return DataPoint even when custom IDataPoint used")]
+        [Example("GetNearestPoint return DataPoint even when custom IDataPoint used (closed)")]
         public static PlotModel GetNearestPointReturnsDataPoint()
         {
-            var plotModel1 = new PlotModel { Title = "Issue 10115" };
+            var plotModel1 = new PlotModel { Title = "GetNearestPoint" };
+            //// TODO: add code to reproduce
             return plotModel1;
         }
 
-        [Example("#10117: Selecting points changes the legend colours")]
+        [Example("#102: Selecting points changes the legend colours")]
         public static PlotModel SelectingPointsChangesTheLegendColors()
         {
-            var plotModel1 = new PlotModel { Title = "Issue 10117" };
+            var plotModel1 = new PlotModel { Title = "Selecting points changes the legend colours" };
+            //// TODO: add code to reproduce
             return plotModel1;
         }
 
-        [Example("#10118: Empty LineSeries with smoothing (Closed)")]
+        [Example("Empty LineSeries with smoothing (Closed)")]
         public static PlotModel EmptyLineSeriesWithSmoothing_ThrowsException()
         {
             var plotModel1 = new PlotModel { Title = "Empty LineSeries with smoothing" };
@@ -421,7 +423,7 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
-        [Example("#10148: Data points remain visible outside of bounds on panning")]
+        [Example("#119: Data points remain visible outside of bounds on panning")]
         public static PlotModel DataPointsRemainVisibleOutsideBoundsOnPanning()
         {
             var plotModel1 = new PlotModel();
@@ -466,15 +468,15 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
-        [Example("#10153: Floating-point inaccuracy (Closed)")]
+        [Example("Floating-point inaccuracy (Closed)")]
         public static PlotModel FloatingPointInaccuracy()
         {
-            var model = new PlotModel { Title = "Issue 10153" };
+            var model = new PlotModel { Title = "Floating-point inaccuracy" };
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -0.0515724495834661, Maximum = 0.016609368598352, MajorStep = 0.02, MinorStep = 0.002 });
             return model;
         }
 
-        [Example("#10164: LineSeries.Dashes property (Closed)")]
+        [Example("LineSeries.Dashes property (Closed)")]
         public static PlotModel DashesTest()
         {
             var model = new PlotModel { Title = "Dashed line test" };
@@ -497,7 +499,7 @@ namespace ExampleLibrary
             return model;
         }
 
-        [Example("#10184: ScatterSeries and LinearColorAxis on the same plot (Closed)")]
+        [Example("ScatterSeries and LinearColorAxis on the same plot (Closed)")]
         public static PlotModel ScatterSeriesAndLinearColorAxis()
         {
             var plotModel = new PlotModel { Title = "ScatterSeries and LinearColorAxis on the same plot" };
@@ -524,7 +526,7 @@ namespace ExampleLibrary
             return plotModel;
         }
 
-        [Example("#10188: MinorStep should not be MajorStep/5 when MajorStep is 2")]
+        [Example("#133: MinorStep should not be MajorStep/5 when MajorStep is 2")]
         public static PlotModel MinorTicks()
         {
             var plotModel1 = new PlotModel { Title = "Issue 10117" };
@@ -532,12 +534,12 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
-        [Example("#10225: WPF Scatterseries not rendered at specific plot sizes")]
-        public static PlotModel ScatterSeries10225()
+        [Example("Scatterseries not rendered at specific plot sizes (closed)")]
+        public static PlotModel ScatterSeries()
         {
             var plotModel1 = new PlotModel
             {
-                Title = "Issue 10225",
+                Title = "Scatterseries not rendered at specific plot sizes",
                 PlotMargins = new OxyThickness(50, 5, 5, 50),
                 Padding = new OxyThickness(0),
                 PlotAreaBorderThickness = new OxyThickness(1, 1, 1, 1),
@@ -655,12 +657,12 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
-        [Example("#10225: ScatterSeries with invalid point and marker type circle")]
+        [Example("ScatterSeries with invalid point and marker type circle (closed)")]
         public static PlotModel ScatterSeriesWithInvalidPointAndMarkerTypeCircle()
         {
             var plotModel1 = new PlotModel
             {
-                Title = "Issue 10225",
+                Title = "ScatterSeries with invalid point and marker type circle",
             };
             plotModel1.Series.Add(new ScatterSeries
             {
@@ -670,12 +672,12 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
-        [Example("#10236: RectangleBarSeries rendered on top layer (rejected)")]
+        [Example("RectangleBarSeries rendered on top layer (rejected)")]
         public static PlotModel RectangleBarSeriesRenderedOnTopLayer()
         {
             var plotModel1 = new PlotModel
             {
-                Title = "Issue 10236",
+                Title = "RectangleBarSeries rendered on top layer",
             };
             var lineSeries1 = new LineSeries();
             lineSeries1.Points.Add(new DataPoint(0, 1));
@@ -691,12 +693,12 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
-        [Example("#10237: Legend is not visible")]
+        [Example("Legend is not visible (closed)")]
         public static PlotModel LegendIsNotVisible()
         {
             var plotModel = new PlotModel
             {
-                Title = "Issue 10237",
+                Title = "Legend is not visible",
             };
             plotModel.Series.Add(new LineSeries { Title = "LineSeries 1" });
             plotModel.Series.Add(new LineSeries { Title = "LineSeries 2" });
@@ -706,6 +708,20 @@ namespace ExampleLibrary
             plotModel.LegendPosition = LegendPosition.RightMiddle;
             plotModel.LegendOrientation = LegendOrientation.Vertical;
             return plotModel;
+        }
+
+        [Example("#189: Wrong position of titles when PositionAtZeroCrossing is true")]
+        public static PlotModel PositionAtZeroCrossing()
+        {
+            var plotModel1 = new PlotModel { PlotType = PlotType.Cartesian, Title = "Zero Crossing Diagram", Subtitle = "The titles should be shown next to the axes" };
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, AxislineStyle = LineStyle.Solid, PositionAtZeroCrossing = true, Title = "horizontal axis" });
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Left, AxislineStyle = LineStyle.Solid, PositionAtZeroCrossing = true, Title = "vertical axis" });
+            plotModel1.Series.Add(new FunctionSeries(x => Math.Cos(x * Math.PI / 180.0) * 2, x => Math.Sin(x * Math.PI / 180.0) * 2, 0.0, 180.0, 1.0)
+            {
+                Color = OxyColors.Red
+            });
+
+            return plotModel1;
         }
     }
 }
