@@ -708,12 +708,12 @@ namespace ExampleLibrary
             return plotModel;
         }
 
-        [Example("#189: Axis trouble when PositionAtZeroCrossing is true")]
+        [Example("#189: Wrong position of titles when PositionAtZeroCrossing is true")]
         public static PlotModel PositionAtZeroCrossing()
         {
-            var plotModel1 = new PlotModel { PlotType = PlotType.Cartesian, Title = "Zero Crossing Diagram" };
-            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, AxislineStyle = LineStyle.Solid, PositionAtZeroCrossing = true });
-            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Left, AxislineStyle = LineStyle.Solid, PositionAtZeroCrossing = true });
+            var plotModel1 = new PlotModel { PlotType = PlotType.Cartesian, Title = "Zero Crossing Diagram", Subtitle = "The titles should be shown next to the axes" };
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, AxislineStyle = LineStyle.Solid, PositionAtZeroCrossing = true, Title = "horizontal axis" });
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Left, AxislineStyle = LineStyle.Solid, PositionAtZeroCrossing = true, Title = "vertical axis" });
             plotModel1.Series.Add(new FunctionSeries(x => Math.Cos(x * Math.PI / 180.0) * 2, x => Math.Sin(x * Math.PI / 180.0) * 2, 0.0, 180.0, 1.0)
             {
                 Color = OxyColors.Red
