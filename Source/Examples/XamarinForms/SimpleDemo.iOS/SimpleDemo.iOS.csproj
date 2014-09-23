@@ -124,5 +124,13 @@
       <Project>{F9508036-E3C1-4887-8BE6-3C86BC106311}</Project>
       <Name>OxyPlot.XamarinFormsIOS</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\OxyPlot.XamarinForms\OxyPlot.XamarinForms.csproj">
+      <Project>{B63C5F8C-61C8-4E69-93D6-F49F816D3746}</Project>
+      <Name>OxyPlot.XamarinForms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\OxyPlot.XamarinIOS\OxyPlot.XamarinIOS.csproj">
+      <Project>{7DCF07B1-B8BD-4EF0-B1FC-2AAC4466B6C6}</Project>
+      <Name>OxyPlot.XamarinIOS</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>
