@@ -1,19 +1,19 @@
 ﻿using Xamarin.Forms;
-using Xamarin.Forms.Platform.iOS;
+using Xamarin.Forms.Platform.Android;
 using OxyPlot.XamarinForms;
-using OxyPlot.XamarinFormsIOS;
+using OxyPlot.XamarinFormsAndroid;
 
 // Exports the renderer.
 [assembly: ExportRenderer(typeof(PlotView), typeof(PlotViewRenderer))]
 
-namespace OxyPlot.XamarinFormsIOS
+namespace OxyPlot.XamarinFormsAndroid
 {
     using System.ComponentModel;
 
     /// <summary>
-    /// Provides a custom <see cref="OxyPlot.XamarinForms.PlotView" /> renderer for Xamarin.iOS. 
+    /// Provides a custom <see cref="OxyPlot.XamarinForms.PlotView" /> renderer for Xamarin.Android. 
     /// </summary>
-    public class PlotViewRenderer : ViewRenderer<PlotView, OxyPlot.XamarinIOS.PlotView>
+    public class PlotViewRenderer : ViewRenderer<PlotView, OxyPlot.XamarinAndroid.PlotView>
     {
         /// <summary>
         /// Raises the element changed event.
@@ -25,7 +25,7 @@ namespace OxyPlot.XamarinFormsIOS
                 return;
             }
 
-            var plotView = new OxyPlot.XamarinIOS.PlotView {
+            var plotView = new OxyPlot.XamarinAndroid.PlotView(this.Context) {
                 Model = this.Element.Model
             };
 
