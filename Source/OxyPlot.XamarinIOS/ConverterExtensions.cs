@@ -131,7 +131,11 @@ namespace OxyPlot.XamarinIOS
         /// <returns>The converted rectangle.</returns>
         public static RectangleF Convert(this OxyRect rect)
         {
-            return new RectangleF((int)rect.Left, (int)rect.Top, (int)rect.Width, (int)rect.Height);
+            var left = (int)rect.Left;
+            var right = (int)rect.Right;
+            var top = (int)rect.Top;
+            var bottom = (int)rect.Bottom;
+            return new RectangleF(left, top, right - left, bottom - top);
         }
     }
 }
