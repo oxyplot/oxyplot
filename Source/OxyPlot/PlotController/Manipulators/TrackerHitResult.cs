@@ -40,11 +40,11 @@ namespace OxyPlot
             this.Index = index;
             this.Series = series;
             this.Text = text;
-            var ds = series as DataPointSeries;
-            if (ds != null)
+            var axisSeries = series as XYAxisSeries;
+            if (axisSeries != null)
             {
-                this.XAxis = ds.XAxis;
-                this.YAxis = ds.YAxis;
+                this.XAxis = axisSeries.XAxis;
+                this.YAxis = axisSeries.YAxis;
             }
         }
 
