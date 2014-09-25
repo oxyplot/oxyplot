@@ -13,9 +13,9 @@
     <tags>plotting plot charting chart</tags>
     <dependencies>
       <dependency id="OxyPlot.Core" version="[0.0.0]"/>
-      <dependency id="OxyPlot.XamarinIOS" version="[0.0.0]"/>
-      <dependency id="OxyPlot.XamarinAndroid" version="[0.0.0]"/>
-      <dependency id="OxyPlot.WP8" version="[0.0.0]"/>
+      <dependency id="OxyPlot.XamarinIOS"/>
+      <dependency id="OxyPlot.XamarinAndroid"/>
+      <dependency id="OxyPlot.WP8"/>
       <dependency id="Xamarin.Forms"/>
     </dependencies>
   </metadata>
