@@ -1,22 +1,22 @@
 ﻿using OxyPlot.XamarinForms;
-using OxyPlot.XamarinFormsAndroid;
+using OxyPlot.XamarinFormsIOS;
 
 using Xamarin.Forms;
-using Xamarin.Forms.Platform.Android;
+using Xamarin.Forms.Platform.WinPhone;
 
 // Exports the renderer.
 [assembly: ExportRenderer(typeof(PlotView), typeof(PlotViewRenderer))]
 
-namespace OxyPlot.XamarinFormsAndroid
+namespace OxyPlot.XamarinFormsIOS
 {
     using System.ComponentModel;
 
-    using OxyPlot.XamarinAndroid;
+    using OxyPlot.WP8;
 
     /// <summary>
-    /// Provides a custom <see cref="OxyPlot.XamarinForms.PlotView" /> renderer for Xamarin.Android. 
+    /// Provides a custom <see cref="OxyPlot.XamarinForms.PlotView" /> renderer for Xamarin.iOS. 
     /// </summary>
-    public class PlotViewRenderer : ViewRenderer<XamarinForms.PlotView, PlotView>
+    public class PlotViewRenderer : ViewRenderer<XamarinForms.PlotView, OxyPlot.WP8.PlotView>
     {
         /// <summary>
         /// Raises the element changed event.
@@ -30,7 +30,7 @@ namespace OxyPlot.XamarinFormsAndroid
                 return;
             }
 
-            var plotView = new PlotView(this.Context)
+            var plotView = new PlotView
             {
                 Model = this.Element.Model,
                 Controller = this.Element.Controller
@@ -38,7 +38,7 @@ namespace OxyPlot.XamarinFormsAndroid
 
             if (this.Element.Model.Background.IsVisible())
             {
-                plotView.Background = new Android.Graphics.Drawables.ColorDrawable(this.Element.Model.Background.ToColor());
+                plotView.Background = this.Element.Model.Background.ToBrush();
             }
 
             this.SetNativeControl(plotView);

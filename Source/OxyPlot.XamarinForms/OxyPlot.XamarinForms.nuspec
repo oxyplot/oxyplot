@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>OxyPlot.XamarinForms</id>
+    <version>0.0.0</version>
+    <authors>Oystein Bjorke</authors>
+    <description>OxyPlot is an open source plotting library for .NET. This is the package to use with Xamarin.Forms.</description>
+    <releaseNotes></releaseNotes>
+    <licenseUrl>https://raw.githubusercontent.com/oxyplot/oxyplot/master/LICENSE</licenseUrl>
+    <projectUrl>http://oxyplot.org/</projectUrl>
+    <iconUrl>http://resources.oxyplot.org/icons/oxyplot_128.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <tags>plotting plot charting chart</tags>
+    <dependencies>
+      <dependency id="OxyPlot.Core" version="[0.0.0]"/>
+      <dependency id="OxyPlot.XamarinIOS"/>
+      <dependency id="OxyPlot.XamarinAndroid"/>
+      <dependency id="OxyPlot.WP8"/>
+      <dependency id="Xamarin.Forms"/>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\..\Output\XamarinForms\OxyPlot.XamarinForms.???" target="lib\portable-win+net45+wp80+MonoAndroid10+MonoTouch10" />
+    <file src="..\..\Output\XamarinForms\OxyPlot.XamarinFormsIOS.???" target="lib\MonoTouch10" />
+    <file src="..\..\Output\XamarinForms\OxyPlot.XamarinFormsAndroid.???" target="lib\MonoAndroid10" />
+    <file src="..\..\Output\XamarinForms\OxyPlot.XamarinFormsWinPhone.???" target="lib\windowsphone8" />
+  </files>
+</package>

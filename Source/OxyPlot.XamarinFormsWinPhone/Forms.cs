@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace OxyPlot.XamarinFormsIOS
+namespace OxyPlot.XamarinFormsWinPhone
 {
     /// <summary>
     /// Initializes OxyPlot renderers for use with Xamarin.Forms.

@@ -3,6 +3,7 @@
     <CollectionProperty Name="RecognizedWords">
       <Value>Ansi</Value>
       <Value>Bézier</Value>
+      <Value>bindable</Value>
       <Value>Conrec</Value>
       <Value>Cornsilk</Value>
       <Value>CRC</Value>
@@ -36,6 +37,7 @@
       <Value>underfilled</Value>
       <Value>veeness</Value>
       <Value>wpf</Value>
+      <Value>Xamarin</Value>
       <Value>xaml</Value>
       <Value>xps</Value>
       <Value>XY</Value>

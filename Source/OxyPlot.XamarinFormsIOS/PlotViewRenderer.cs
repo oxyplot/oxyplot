@@ -1,7 +1,8 @@
-﻿using Xamarin.Forms;
-using Xamarin.Forms.Platform.iOS;
-using OxyPlot.XamarinForms;
+﻿using OxyPlot.XamarinForms;
 using OxyPlot.XamarinFormsIOS;
+
+using Xamarin.Forms;
+using Xamarin.Forms.Platform.iOS;
 
 // Exports the renderer.
 [assembly: ExportRenderer(typeof(PlotView), typeof(PlotViewRenderer))]
@@ -10,26 +11,37 @@ namespace OxyPlot.XamarinFormsIOS
 {
     using System.ComponentModel;
 
+    using OxyPlot.XamarinIOS;
+
     /// <summary>
-    /// Provides a custom <see cref="OxyPlot.XamarinForms.PlotView" /> renderer for Xamarin.iOS. 
+    /// Provides a custom <see cref="OxyPlot.XamarinForms.PlotView" /> renderer for Xamarin.iOS.
     /// </summary>
-    public class PlotViewRenderer : ViewRenderer<PlotView, OxyPlot.XamarinIOS.PlotView>
+    public class PlotViewRenderer : ViewRenderer<XamarinForms.PlotView, PlotView>
     {
         /// <summary>
         /// Raises the element changed event.
         /// </summary>
         /// <param name="e">The event arguments.</param>
-        protected override void OnElementChanged (ElementChangedEventArgs<PlotView> e){
-            base.OnElementChanged (e);
-            if (e.OldElement != null || this.Element == null) {
+        protected override void OnElementChanged(ElementChangedEventArgs<XamarinForms.PlotView> e)
+        {
+            base.OnElementChanged(e);
+            if (e.OldElement != null || this.Element == null)
+            {
                 return;
             }
 
-            var plotView = new OxyPlot.XamarinIOS.PlotView {
-                Model = this.Element.Model
+            var plotView = new PlotView
+            {
+                Model = this.Element.Model,
+                Controller = this.Element.Controller
             };
 
-            this.SetNativeControl (plotView);
+            if (this.Element.Model.Background.IsVisible())
+            {
+                plotView.BackgroundColor = this.Element.Model.Background.ToUIColor();
+            }
+
+            this.SetNativeControl(plotView);
         }
 
         /// <summary>
@@ -37,15 +49,23 @@ namespace OxyPlot.XamarinFormsIOS
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event arguments.</param>
-        protected override void OnElementPropertyChanged (object sender, PropertyChangedEventArgs e) {
-            base.OnElementPropertyChanged (sender, e);
-            if (this.Element == null || this.Control == null) {
+        protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            base.OnElementPropertyChanged(sender, e);
+            if (this.Element == null || this.Control == null)
+            {
                 return;
             }
 
-            if (e.PropertyName == PlotView.ModelProperty.PropertyName) {
+            if (e.PropertyName == XamarinForms.PlotView.ModelProperty.PropertyName)
+            {
                 this.Control.Model = Element.Model;
-            } 
-       }
+            }
+
+            if (e.PropertyName == XamarinForms.PlotView.ControllerProperty.PropertyName)
+            {
+                this.Control.Controller = Element.Controller;
+            }
+        }
     }
 }
