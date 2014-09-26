@@ -211,7 +211,6 @@ namespace ExampleLibrary
         [Example("6×6, diagonal")]
         public static PlotModel Diagonal_6X6()
         {
-            // https://oxyplot.codeplex.com/discussions/453174
             var data = new double[6, 6];
             data[0, 0] = 1;
             data[1, 1] = 1;

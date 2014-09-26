@@ -44,7 +44,6 @@ namespace ExampleLibrary
         [Example("ArrowAxis")]
         public static PlotModel CustomArrowAxis()
         {
-            // https://oxyplot.codeplex.com/discussions/467255
             var model = new PlotModel { PlotAreaBorderThickness = new OxyThickness(0), PlotMargins = new OxyThickness(60, 60, 60, 60) };
             model.Axes.Add(new ArrowAxis { Position = AxisPosition.Bottom, AxislineStyle = LineStyle.Solid });
             model.Axes.Add(new ArrowAxis { Position = AxisPosition.Left, AxislineStyle = LineStyle.Solid });
