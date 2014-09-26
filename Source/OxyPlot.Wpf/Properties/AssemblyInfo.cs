@@ -15,5 +15,5 @@ using System.Windows.Markup;
 
 [assembly: CLSCompliant(true)]
 
-[assembly: XmlnsPrefix("http://oxyplot.codeplex.com", "oxy")]
-[assembly: XmlnsDefinition("http://oxyplot.codeplex.com", "OxyPlot.Wpf")]
+[assembly: XmlnsPrefix("http://oxyplot.org/wpf", "oxy")]
+[assembly: XmlnsDefinition("http://oxyplot.org/wpf", "OxyPlot.Wpf")]

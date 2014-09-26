@@ -1,6 +1,7 @@
 ﻿<Window x:Class="ColorBindingDemo.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:oxy="http://oxyplot.codeplex.com"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:oxy="http://oxyplot.org/wpf"
         xmlns:ColorBindingDemo="clr-namespace:ColorBindingDemo"
         Title="ColorBindingDemo" Height="480" Width="640">
     <Window.DataContext>
