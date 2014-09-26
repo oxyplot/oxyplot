@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>OxyPlot</id>
+    <version>0.0.0</version>
+    <authors>Oystein Bjorke</authors>
+    <description>OxyPlot is an open source plotting library for .NET. This package contains the components for GTK#, Windows 8, OpenXML, PDF, Silverlight, Windows Forms, Windows Universal, Windows Phone Silverlight, WPF and XPS. The Xamarin components are not included in this package.</description>
+    <releaseNotes></releaseNotes>
+    <licenseUrl>https://raw.githubusercontent.com/oxyplot/oxyplot/master/LICENSE</licenseUrl>
+    <projectUrl>http://oxyplot.org/</projectUrl>
+    <iconUrl>http://resources.oxyplot.org/icons/oxyplot_128.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <tags>plotting plot charting chart</tags>
+    <dependencies>
+      <group targetFramework="net40">
+        <dependency id="PDFsharp-MigraDoc-GDI"/>
+      </group>
+      <group targetFramework="net45">
+        <dependency id="PDFsharp-MigraDoc-GDI"/>
+      </group>
+    </dependencies>    
+  </metadata>
+  <files>
+    <file src="..\Output\PCL\OxyPlot.???" target="lib\portable-net4+sl4+wp71+win8" />
+
+    <file src="..\Output\NET40\OxyPlot.GtkSharp.???" target="lib\net40" />
+
+    <file src="..\Output\NetCore45\OxyPlot.Metro.???" target="lib\NetCore45\OxyPlot.Metro\" />
+    <file src="..\Output\NetCore45\OxyPlot.Metro.xr.xml" target="lib\NetCore45\OxyPlot.Metro\OxyPlot.Metro\" />
+    <file src="..\Output\NetCore45\Themes\*.*" target="lib\NetCore45\OxyPlot.Metro\OxyPlot.Metro\Themes\" />
+
+    <file src="..\Output\NET45\OxyPlot.OpenXml.???" target="lib\net45" />
+    <file src="..\Output\NET40\OxyPlot.OpenXml.???" target="lib\net40" />
+
+    <file src="..\Output\NET45\OxyPlot.Pdf.???" target="lib\net45" />
+    <file src="..\Output\NET40\OxyPlot.Pdf.???" target="lib\net40" />
+    <file src="..\Output\SL5\OxyPlot.Pdf.???" target="lib\sl5" />
+    <file src="..\Output\SL5\silverPDF.*" target="lib\sl5" />
+
+    <file src="..\Output\SL5\OxyPlot.Silverlight.???" target="lib\sl5" />
+
+    <file src="..\Output\NET45\OxyPlot.WindowsForms.???" target="lib\net45" />
+    <file src="..\Output\NET40\OxyPlot.WindowsForms.???" target="lib\net40" />
+
+    <file src="..\Output\WindowsUniversal\OxyPlot.WindowsUniversal.???" target="lib\portable-windows8+wpa81\OxyPlot.WindowsUniversal\" />
+    <file src="..\Output\WindowsUniversal\OxyPlot.WindowsUniversal.xr.xml" target="lib\portable-windows8+wpa81\OxyPlot.WindowsUniversal\OxyPlot.WindowsUniversal\" />
+    <file src="..\Output\WindowsUniversal\Themes\*.*" target="lib\portable-windows8+wpa81\OxyPlot.WindowsUniversal\OxyPlot.WindowsUniversal\Themes\" />
+
+    <file src="..\Output\WP8\OxyPlot.WP8.???" target="lib\windowsphone8" />
+
+    <file src="..\Output\NET45\OxyPlot.Wpf.???" target="lib\net45" />
+    <file src="..\Output\NET40\OxyPlot.Wpf.???" target="lib\net40" />
+    
+    <file src="..\Output\NET45\OxyPlot.Xps.???" target="lib\net45" />
+    <file src="..\Output\NET40\OxyPlot.Xps.???" target="lib\net40" />
+
+    <file src="..\LICENSE" />
+    <file src="..\AUTHORS" />
+    <file src="..\CONTRIBUTORS" />
+    <file src="..\README.md" />
+  </files>
+</package>
