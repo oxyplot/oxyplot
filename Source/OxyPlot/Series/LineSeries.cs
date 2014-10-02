@@ -179,10 +179,9 @@ namespace OxyPlot.Series
         public OxyColor MarkerFill { get; set; }
 
         /// <summary>
-        /// Gets or sets the marker outline polygon.
-        /// If this property is set, the MarkerType will not be used.
+        /// Gets or sets the a custom polygon outline for the markers. Set <see cref="MarkerType" /> to <see cref="OxyPlot.MarkerType.Custom" /> to use this property.
         /// </summary>
-        /// <value>The marker outline.</value>
+        /// <value>A polyline. The default is <c>null</c>.</value>
         public ScreenPoint[] MarkerOutline { get; set; }
 
         /// <summary>
