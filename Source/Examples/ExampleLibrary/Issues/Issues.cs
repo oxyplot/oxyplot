@@ -725,11 +725,20 @@ namespace ExampleLibrary
         }
 
         [Example("#208: Wrong plot margins")]
-        public static PlotModel PlotMargins()
+        public static PlotModel PlotMarginsWhenAxisAngleIs90()
         {
             var plotModel1 = new PlotModel { Title = "Plot margins not adjusted correctly when Angle = 90", Subtitle = "The numbers should not be clipped" };
             plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Angle = 90, Minimum = 1e8, Maximum = 1e9 });
             plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Angle = 90, Minimum = 1e8, Maximum = 1e9 });
+            return plotModel1;
+        }
+
+        [Example("#185: Wrong plot margins (DateTimeAxis)")]
+        public static PlotModel PlotMarginsWhenDateTimeAxisAngleIs90()
+        {
+            var plotModel1 = new PlotModel { Title = "Plot margins not adjusted correctly when Angle = 90", Subtitle = "The numbers should not be clipped" };
+            plotModel1.Axes.Add(new DateTimeAxis { Position = AxisPosition.Bottom, Angle = 90 });
+            plotModel1.Axes.Add(new DateTimeAxis { Position = AxisPosition.Left, Angle = 90 });
             return plotModel1;
         }
     }
