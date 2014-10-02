@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0"?>
 <package>
   <metadata>
-    <id>OxyPlot for Xamarin.Forms</id>
+    <id>OxyPlot.XamarinForms</id>
+    <title>OxyPlot for Xamarin.Forms</title>
     <version>0.0.0</version>
     <authors>Oystein Bjorke</authors>
     <description>OxyPlot is an open source plotting library for .NET. This is the package to use for Xamarin.Forms apps.</description>
@@ -12,7 +13,9 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <tags>plotting plot charting chart</tags>
     <dependencies>
-      <dependency id="OxyPlot.Core" version="[0.0.0]"/>
+      <group>
+        <dependency id="OxyPlot.Core" version="[0.0.0]"/>
+      </group>
       <group targetFramework="MonoTouch1.0">
         <dependency id="OxyPlot.XamarinIOS"/>
       </group>
@@ -22,7 +25,9 @@
       <group targetFramework="WindowsPhone8.0">
         <dependency id="OxyPlot.WP8"/>
       </group>
-      <dependency id="Xamarin.Forms"/>
+      <group>
+        <dependency id="Xamarin.Forms"/>
+      </group>
     </dependencies>
   </metadata>
   <files>
