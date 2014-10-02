@@ -1508,6 +1508,7 @@ namespace OxyPlot.Wpf
             a.MinorTickSize = this.MinorTickSize;
             a.Minimum = this.Minimum;
             a.Maximum = this.Maximum;
+            a.MinimumRange = this.MinimumRange;
             a.MinimumPadding = this.MinimumPadding;
             a.MaximumPadding = this.MaximumPadding;
             a.Position = this.Position;
