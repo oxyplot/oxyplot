@@ -58,7 +58,7 @@ namespace ExampleLibrary
                 var lowerWhisker = firstQuartil - step;
                 lowerWhisker = values.Where(v => v >= lowerWhisker).Min();
 
-                var outliers = values.Where(v => v > upperWhisker || v < lowerWhisker).ToList();
+                var outliers = new[] { upperWhisker + random.Next(1, 10), lowerWhisker - random.Next(1, 10) };
 
                 s1.Items.Add(new BoxPlotItem(x, lowerWhisker, firstQuartil, median, thirdQuartil, upperWhisker, outliers));
             }
@@ -91,12 +91,12 @@ namespace ExampleLibrary
         public static PlotModel BoxPlot2()
         {
             var model = BoxPlot();
-            var s0 = model.Series[0] as BoxPlotSeries;
-            s0.ShowMedianAsDot = true;
-            s0.OutlierType = MarkerType.Cross;
-            s0.Fill = OxyColors.Black;
-            s0.ShowBox = false;
-            s0.WhiskerWidth = 0;
+            var boxPlotSeries = (BoxPlotSeries)model.Series[0];
+            boxPlotSeries.ShowMedianAsDot = true;
+            boxPlotSeries.OutlierType = MarkerType.Cross;
+            boxPlotSeries.Fill = OxyColors.Black;
+            boxPlotSeries.ShowBox = false;
+            boxPlotSeries.WhiskerWidth = 0;
             return model;
         }
 
@@ -104,17 +104,27 @@ namespace ExampleLibrary
         public static PlotModel BoxPlot3()
         {
             var model = BoxPlot();
-            var s0 = model.Series[0] as BoxPlotSeries;
-            s0.LineStyle = LineStyle.Dash;
+            var boxPlotSeries = (BoxPlotSeries)model.Series[0];
+            boxPlotSeries.LineStyle = LineStyle.Dash;
             return model;
         }
 
-        [Example("BoxPlot (different outlier type)")]
-        public static PlotModel BoxPlot4()
+        [Example("Outlier type = Cross")]
+        public static PlotModel OutlierTypeCross()
         {
             var model = BoxPlot();
-            var s0 = model.Series[0] as BoxPlotSeries;
-            s0.OutlierType = MarkerType.Cross;
+            var boxPlotSeries = (BoxPlotSeries)model.Series[0];
+            boxPlotSeries.OutlierType = MarkerType.Cross;
+            return model;
+        }
+
+        [Example("Outlier type = Custom")]
+        public static PlotModel OutlierTypeCustom()
+        {
+            var model = BoxPlot();
+            var boxPlotSeries = (BoxPlotSeries)model.Series[0];
+            boxPlotSeries.OutlierType = MarkerType.Custom;
+            boxPlotSeries.OutlierOutline = new[] { new ScreenPoint(-1, -1), new ScreenPoint(1, 1), new ScreenPoint(-1, 1), new ScreenPoint(1, -1) };
             return model;
         }
 
@@ -127,7 +137,7 @@ namespace ExampleLibrary
 
             var model = new PlotModel();
 
-            var s1 = new BoxPlotSeries
+            var boxPlotSeries = new BoxPlotSeries
             {
                 Title = "Results",
                 Stroke = OxyColors.Black,
@@ -137,12 +147,12 @@ namespace ExampleLibrary
             };
 
             // note: approximated data values (not the original values)
-            s1.Items.Add(new BoxPlotItem(0, 740, 850, 945, 980, 1070, new[] { 650.0 }));
-            s1.Items.Add(new BoxPlotItem(1, 750, 805, 845, 890, 970, new double[] { }));
-            s1.Items.Add(new BoxPlotItem(2, 845, 847, 855, 880, 910, new[] { 640.0, 950, 970 }));
-            s1.Items.Add(new BoxPlotItem(3, 720, 760, 820, 870, 910, new double[] { }));
-            s1.Items.Add(new BoxPlotItem(4, 730, 805, 807, 870, 950, new double[] { }));
-            model.Series.Add(s1);
+            boxPlotSeries.Items.Add(new BoxPlotItem(0, 740, 850, 945, 980, 1070, new[] { 650.0 }));
+            boxPlotSeries.Items.Add(new BoxPlotItem(1, 750, 805, 845, 890, 970, new double[] { }));
+            boxPlotSeries.Items.Add(new BoxPlotItem(2, 845, 847, 855, 880, 910, new[] { 640.0, 950, 970 }));
+            boxPlotSeries.Items.Add(new BoxPlotItem(3, 720, 760, 820, 870, 910, new double[] { }));
+            boxPlotSeries.Items.Add(new BoxPlotItem(4, 730, 805, 807, 870, 950, new double[] { }));
+            model.Series.Add(boxPlotSeries);
             model.Annotations.Add(new LineAnnotation { Type = LineAnnotationType.Horizontal, LineStyle = LineStyle.Solid, Y = 792.458, Text = "true speed" });
             var categoryAxis = new CategoryAxis
             {
@@ -159,23 +169,23 @@ namespace ExampleLibrary
         {
             var m = new PlotModel();
             var x0 = DateTimeAxis.ToDouble(new DateTime(2013, 05, 04));
-            var a = new DateTimeAxis
+            m.Axes.Add(new DateTimeAxis
             {
                 Position = AxisPosition.Bottom,
                 Minimum = x0 - 0.9,
                 Maximum = x0 + 1.9,
                 IntervalType = DateTimeIntervalType.Days,
                 MajorStep = 1,
-                MinorStep = 1
+                MinorStep = 1,
+                StringFormat = "yyyy-MM-dd"
+            });
+            var boxPlotSeries = new BoxPlotSeries
+            {
+                TrackerFormatString = "X: {1:yyyy-MM-dd}\nUpper Whisker: {2:0.00}\nThird Quartil: {3:0.00}\nMedian: {4:0.00}\nFirst Quartil: {5:0.00}\nLower Whisker: {6:0.00}"
             };
-            a.StringFormat = "yyyy-MM-dd";
-            m.Axes.Add(a);
-            var s = new BoxPlotSeries();
-            s.TrackerFormatString =
-                            "X: {1:yyyy-MM-dd}\nUpper Whisker: {2:0.00}\nThird Quartil: {3:0.00}\nMedian: {4:0.00}\nFirst Quartil: {5:0.00}\nLower Whisker: {6:0.00}";
-            s.Items.Add(new BoxPlotItem(x0, 10, 14, 16, 20, 22, new[] { 23.5 }));
-            s.Items.Add(new BoxPlotItem(x0 + 1, 11, 13, 14, 15, 18, new[] { 23.4 }));
-            m.Series.Add(s);
+            boxPlotSeries.Items.Add(new BoxPlotItem(x0, 10, 14, 16, 20, 22, new[] { 23.5 }));
+            boxPlotSeries.Items.Add(new BoxPlotItem(x0 + 1, 11, 13, 14, 15, 18, new[] { 23.4 }));
+            m.Series.Add(boxPlotSeries);
             return m;
         }
     }
