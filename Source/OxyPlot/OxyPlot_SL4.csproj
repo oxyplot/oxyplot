@@ -170,7 +170,7 @@
     <Compile Include="Utilities\StringHelper.cs" />
     <Compile Include="Utilities\FractionHelper.cs" />
     <Compile Include="Utilities\ArrayBuilder.cs" />
-    <Compile Include="Utilities\ReflectionHelper.cs" />
+    <Compile Include="Utilities\ReflectionExtensions.cs" />
     <Compile Include="Utilities\Conrec.cs" />
     <Compile Include="Imaging\OxyImage.cs" />
     <Compile Include="Imaging\OxyImageInfo.cs" />

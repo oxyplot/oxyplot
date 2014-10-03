@@ -82,7 +82,7 @@
     <Compile Include="Foundation\CohenSutherlandClippingTests.cs" />
     <Compile Include="Foundation\SutherlandHodgmanClippingTests.cs" />
     <Compile Include="Foundation\ScreenPointHelperTests.cs" />
-    <Compile Include="Foundation\ReflectionHelperTests.cs" />
+    <Compile Include="Foundation\ReflectionExtensionsTests.cs" />
     <Compile Include="Foundation\OxyPaletteTests.cs" />
     <Compile Include="Foundation\FractionHelperTests.cs" />
     <Compile Include="Foundation\StringHelperTests.cs" />

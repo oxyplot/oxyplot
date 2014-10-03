@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ReflectionHelper.cs" company="OxyPlot">
+// <copyright file="ReflectionExtensions.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
@@ -18,9 +18,9 @@ namespace OxyPlot
     using OxyPlot.Axes;
 
     /// <summary>
-    /// Provides utility methods reflection based support methods.
+    /// Provides extension methods based on reflection.
     /// </summary>
-    public static class ReflectionHelper
+    public static class ReflectionExtensions
     {
 #if UNIVERSAL
         public static PropertyInfo GetProperty(this Type type, string name)
@@ -48,7 +48,7 @@ namespace OxyPlot
         /// <param name="source">The source target.</param>
         /// <param name="propertyName">The property name.</param>
         /// <exception cref="System.InvalidOperationException">Could not find property.</exception>
-        public static void FillList<T>(List<T> target, IEnumerable source, string propertyName)
+        public static void AddRange<T>(this List<T> target, IEnumerable source, string propertyName)
         {
             PropertyInfo pi = null;
             Type t = null;
@@ -77,7 +77,7 @@ namespace OxyPlot
         /// <param name="itemsSource">The source.</param>
         /// <param name="dataFieldX">The x-coordinate data field.</param>
         /// <param name="dataFieldY">The y-coordinate data field.</param>
-        public static void FillList(List<DataPoint> target, IEnumerable itemsSource, string dataFieldX, string dataFieldY)
+        public static void AddRange(this List<DataPoint> target, IEnumerable itemsSource, string dataFieldX, string dataFieldY)
         {
             PropertyInfo pix = null;
             PropertyInfo piy = null;
@@ -92,14 +92,12 @@ namespace OxyPlot
                     piy = t.GetProperty(dataFieldY);
                     if (pix == null)
                     {
-                        throw new InvalidOperationException(
-                            string.Format("Could not find data field {0} on type {1}", dataFieldX, t));
+                        throw new InvalidOperationException(string.Format("Could not find data field {0} on type {1}", dataFieldX, t));
                     }
 
                     if (piy == null)
                     {
-                        throw new InvalidOperationException(
-                            string.Format("Could not find data field {0} on type {1}", dataFieldY, t));
+                        throw new InvalidOperationException(string.Format("Could not find data field {0} on type {1}", dataFieldY, t));
                     }
                 }
 
