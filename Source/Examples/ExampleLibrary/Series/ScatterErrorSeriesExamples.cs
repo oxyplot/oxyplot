@@ -17,7 +17,7 @@ namespace ExampleLibrary
     using OxyPlot.Series;
 
     [Examples("ScatterErrorSeries")]
-    public class ScatterErrorSeriesExamples : ExamplesBase
+    public class ScatterErrorSeriesExamples
     {
         [Example("Random points and errors (n=20)")]
         public static PlotModel RandomPointsAndError20()

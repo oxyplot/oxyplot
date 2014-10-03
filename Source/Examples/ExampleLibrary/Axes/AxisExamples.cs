@@ -21,7 +21,7 @@ namespace ExampleLibrary
     /// Provides examples for general axis properties.
     /// </summary>
     [Examples("Axis examples")]
-    public class AxisExamples : ExamplesBase
+    public class AxisExamples
     {
         /// <summary>
         /// Creates an example for the <see cref="Axis.TickStyle" /> property using <see cref="TickStyle.None" />.

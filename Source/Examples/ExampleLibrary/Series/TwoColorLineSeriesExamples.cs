@@ -17,7 +17,7 @@ namespace ExampleLibrary
     /// Provides examples for the <see cref="TwoColorLineSeries" />.
     /// </summary>
     [Examples("TwoColorLineSeries")]
-    public class TwoColorLineSeriesExamples : ExamplesBase
+    public class TwoColorLineSeriesExamples
     {
         /// <summary>
         /// Creates an example showing temperatures by a red/blue line.

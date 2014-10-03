@@ -21,7 +21,7 @@ namespace ExampleLibrary
     [Examples("Z1 Issues")]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     // ReSharper disable InconsistentNaming
-    public class Issues : ExamplesBase
+    public class Issues
     {
         [Example("Support colour coding on scatter plots (Closed)")]
         public static PlotModel ColorCodingOnScatterPlots()

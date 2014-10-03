@@ -10,7 +10,7 @@ namespace ExampleLibrary
     using OxyPlot.Axes;
 
     [Examples("LinearColorAxis")]
-    public class LinearColorAxisExamples : ExamplesBase
+    public class LinearColorAxisExamples
     {
         [Example("Default palette")]
         public static PlotModel DefaultPalette()

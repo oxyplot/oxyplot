@@ -19,7 +19,7 @@ namespace ExampleLibrary
 
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     [Examples("HeatMapSeries")]
-    public class HeatMapSeriesExamples : ExamplesBase
+    public class HeatMapSeriesExamples
     {
         [Example("Peaks")]
         public static PlotModel Peaks()

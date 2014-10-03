@@ -80,7 +80,6 @@
     <Compile Include="Axes\LinearColorAxisExamples.cs" />
     <Compile Include="Misc\MiscExamples.cs" />
     <Compile Include="Examples\MouseEventExamples.cs" />
-    <Compile Include="Examples\ExamplesBase.cs" />
     <Compile Include="Examples\ItemsSourceExamples.cs" />
     <Compile Include="Series\FunctionSeriesExamples.cs" />
     <Compile Include="Examples\PerformanceExamples.cs" />

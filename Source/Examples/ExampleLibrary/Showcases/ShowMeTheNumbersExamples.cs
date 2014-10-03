@@ -19,7 +19,7 @@ namespace ExampleLibrary
     /// Examples from the book "Show Me the Numbers" by Stephen Few
     /// </summary>
     [Examples("Examples from the book 'Show Me the Numbers'")]
-    public class ShowMeTheNumbersExamples : ExamplesBase
+    public class ShowMeTheNumbersExamples
     {
         /// <summary>
         /// The graph 1.

@@ -19,7 +19,7 @@ namespace ExampleLibrary
     using OxyPlot.Series;
 
     [Examples("ScatterSeries")]
-    public class ScatterSeriesExamples : ExamplesBase
+    public class ScatterSeriesExamples
     {
         [Example("Random points")]
         public static PlotModel RandomScatter()

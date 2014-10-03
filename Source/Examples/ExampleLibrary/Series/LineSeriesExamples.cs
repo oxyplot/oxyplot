@@ -16,7 +16,7 @@ namespace ExampleLibrary
     [Examples("LineSeries")]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     // ReSharper disable InconsistentNaming
-    public class LineSeriesExamples : ExamplesBase
+    public class LineSeriesExamples
     {
         [Example("LineSeries")]
         public static PlotModel OneSeries()

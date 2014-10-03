@@ -16,7 +16,7 @@ namespace ExampleLibrary
     using OxyPlot.Series;
 
     [Examples("ItemsSource")]
-    public class ItemsSourceExamples : ExamplesBase
+    public class ItemsSourceExamples
     {
         private static int n = 100000;
         [Example("List<DataPoint>")]

@@ -18,7 +18,7 @@ namespace ExampleLibrary
     [Examples("Z0 Discussions")]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     // ReSharper disable InconsistentNaming
-    public class DiscussionExamples : ExamplesBase
+    public class DiscussionExamples
     {
         [Example("#445576: Invisible contour series")]
         public static PlotModel InvisibleContourSeries()

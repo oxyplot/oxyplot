@@ -13,7 +13,7 @@ namespace ExampleLibrary
     using OxyPlot.Series;
 
     [Examples("CategoryColorAxis")]
-    public class CategoryColorAxisExamples : ExamplesBase
+    public class CategoryColorAxisExamples
     {
         [Example("CategoryColorAxis")]
         public static PlotModel StandardCategoryColorAxis()

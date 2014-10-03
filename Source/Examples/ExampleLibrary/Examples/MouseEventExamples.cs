@@ -15,7 +15,7 @@ namespace ExampleLibrary
     using OxyPlot.Series;
 
     [Examples("Mouse Events")]
-    public class MouseEventExamples : ExamplesBase
+    public class MouseEventExamples
     {
         [Example("PlotModel mouse events")]
         public static PlotModel MouseEvents()

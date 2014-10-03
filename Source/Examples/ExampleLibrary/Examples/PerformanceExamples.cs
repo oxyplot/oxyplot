@@ -15,7 +15,7 @@ namespace ExampleLibrary
     using OxyPlot.Series;
 
     [Examples("Performance")]
-    public class PerformanceExamples : ExamplesBase
+    public class PerformanceExamples
     {
         [Example("LineSeries, 1M points")]
         public static PlotModel LineSeries1M()

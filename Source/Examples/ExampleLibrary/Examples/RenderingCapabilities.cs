@@ -18,7 +18,7 @@ namespace ExampleLibrary
     /// Provides rendering capability examples.
     /// </summary>
     [Examples("Rendering capabilities")]
-    public class RenderingCapabilities : ExamplesBase
+    public class RenderingCapabilities
     {
         /// <summary>
         /// Shows capabilities for the DrawText method.

@@ -14,7 +14,7 @@ namespace ExampleLibrary
     using OxyPlot.Series;
 
     [Examples("ContourSeries")]
-    public class ContourSeriesExamples : ExamplesBase
+    public class ContourSeriesExamples
     {
         private static Func<double, double, double> peaks = (x, y) =>
                3 * (1 - x) * (1 - x) * Math.Exp(-(x * x) - (y + 1) * (y + 1))

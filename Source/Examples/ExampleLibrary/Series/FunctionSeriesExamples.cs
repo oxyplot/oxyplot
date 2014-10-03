@@ -14,7 +14,7 @@ namespace ExampleLibrary
     using OxyPlot.Series;
 
     [Examples("FunctionSeries")]
-    public class FunctionSeriesExamples : ExamplesBase
+    public class FunctionSeriesExamples
     {
         [Example("Square wave")]
         public static PlotModel CreateSquareWave()
