@@ -3,14 +3,14 @@
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
-//   The OxyPlot.Axes namespace contains the annotations and related types.
+//   The OxyPlot.Annotations namespace contains the annotations and related types.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Annotations
 {
     /// <summary>
-    /// The OxyPlot.Axes namespace contains the annotations and related types.
+    /// The OxyPlot.Annotations namespace contains the annotations and related types.
     /// </summary>
     [System.Runtime.CompilerServices.CompilerGenerated]
     internal class NamespaceDoc
