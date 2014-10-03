@@ -84,6 +84,21 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("Using reflection with path (slow)")]
+        public static PlotModel UsingReflectionPath()
+        {
+            var points = new List<ItemType3>(n);
+            for (int i = 0; i < n; i++)
+            {
+                var x = (double)i / (n - 1);
+                points.Add(new ItemType3(x, y(x)));
+            }
+
+            var model = new PlotModel { Title = "Using reflection with path (slow)" };
+            model.Series.Add(new LineSeries { ItemsSource = points, DataFieldX = "Point.X", DataFieldY = "Point.Y" });
+            return model;
+        }
+
         private class PointType1 : IDataPointProvider, ICodeGenerating
         {
             public PointType1(double abscissa, double ordinate)
@@ -118,6 +133,16 @@ namespace ExampleLibrary
             public double Abscissa { get; private set; }
 
             public double Ordinate { get; private set; }
+        }
+
+        private class ItemType3
+        {
+            public ItemType3(double x, double y)
+            {
+                this.Point = new ScreenPoint(x, y);
+            }
+
+            public ScreenPoint Point { get; private set; }
         }
 
         /// <summary>

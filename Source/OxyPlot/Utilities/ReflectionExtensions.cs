@@ -50,21 +50,10 @@ namespace OxyPlot
         /// <exception cref="System.InvalidOperationException">Could not find property.</exception>
         public static void AddRange<T>(this List<T> target, IEnumerable source, string propertyName)
         {
-            PropertyInfo pi = null;
-            Type t = null;
+            var pi = new ReflectionPath(propertyName);
             foreach (var o in source)
             {
-                if (pi == null || o.GetType() != t)
-                {
-                    t = o.GetType();
-                    pi = t.GetProperty(propertyName);
-                    if (pi == null)
-                    {
-                        throw new InvalidOperationException(string.Format("Could not find property {0} on type {1}", propertyName, t));
-                    }
-                }
-
-                var v = pi.GetValue(o, null);
+                var v = pi.GetValue(o);
                 var value = (T)Convert.ChangeType(v, typeof(T), CultureInfo.InvariantCulture);
                 target.Add(value);
             }
@@ -79,33 +68,11 @@ namespace OxyPlot
         /// <param name="dataFieldY">The y-coordinate data field.</param>
         public static void AddRange(this List<DataPoint> target, IEnumerable itemsSource, string dataFieldX, string dataFieldY)
         {
-            PropertyInfo pix = null;
-            PropertyInfo piy = null;
-            Type t = null;
-
+            var pix = new ReflectionPath(dataFieldX);
+            var piy = new ReflectionPath(dataFieldY);
             foreach (var o in itemsSource)
             {
-                if (pix == null || o.GetType() != t)
-                {
-                    t = o.GetType();
-                    pix = t.GetProperty(dataFieldX);
-                    piy = t.GetProperty(dataFieldY);
-                    if (pix == null)
-                    {
-                        throw new InvalidOperationException(string.Format("Could not find data field {0} on type {1}", dataFieldX, t));
-                    }
-
-                    if (piy == null)
-                    {
-                        throw new InvalidOperationException(string.Format("Could not find data field {0} on type {1}", dataFieldY, t));
-                    }
-                }
-
-                double x = Axis.ToDouble(pix.GetValue(o, null));
-                double y = Axis.ToDouble(piy.GetValue(o, null));
-
-                var pp = new DataPoint(x, y);
-                target.Add(pp);
+                target.Add(new DataPoint(Axis.ToDouble(pix.GetValue(o)), Axis.ToDouble(piy.GetValue(o))));
             }
         }
     }
