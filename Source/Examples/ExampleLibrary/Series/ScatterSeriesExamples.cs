@@ -18,7 +18,7 @@ namespace ExampleLibrary
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
-    [Examples("ScatterSeries")]
+    [Examples("ScatterSeries"), Tags("Series")]
     public class ScatterSeriesExamples
     {
         [Example("Random points")]

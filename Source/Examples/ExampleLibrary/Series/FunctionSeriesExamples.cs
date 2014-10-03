@@ -13,7 +13,7 @@ namespace ExampleLibrary
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
-    [Examples("FunctionSeries")]
+    [Examples("FunctionSeries"), Tags("Series")]
     public class FunctionSeriesExamples
     {
         [Example("Square wave")]

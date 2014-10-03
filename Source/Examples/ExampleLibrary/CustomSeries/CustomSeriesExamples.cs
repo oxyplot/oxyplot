@@ -7,13 +7,12 @@
 namespace ExampleLibrary
 {
     using System;
-    using System.Collections.Generic;
 
     using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
-    [Examples("Custom series")]
+    [Examples("Custom series"), Tags("Series")]
     public static class CustomSeriesExamples
     {
         [Example("ErrorSeries")]

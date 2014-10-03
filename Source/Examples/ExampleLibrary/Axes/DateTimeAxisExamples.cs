@@ -4,20 +4,19 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using OxyPlot;
 
 namespace ExampleLibrary
 {
+    using System;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.Diagnostics;
     using System.Globalization;
 
+    using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
-    [Examples("DateTimeAxis")]
+    [Examples("DateTimeAxis"), Tags("Axes")]
     public static class DateTimeAxisExamples
     {
         public class DateValue

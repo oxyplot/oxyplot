@@ -16,7 +16,7 @@ namespace ExampleLibrary
     /// <summary>
     /// Provides examples for the <see cref="TwoColorLineSeries" />.
     /// </summary>
-    [Examples("TwoColorLineSeries")]
+    [Examples("TwoColorLineSeries"), Tags("Series")]
     public class TwoColorLineSeriesExamples
     {
         /// <summary>

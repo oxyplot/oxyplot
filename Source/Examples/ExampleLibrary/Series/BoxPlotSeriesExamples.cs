@@ -18,7 +18,7 @@ namespace ExampleLibrary
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
-    [Examples("BoxPlotSeries")]
+    [Examples("BoxPlotSeries"), Tags("Series")]
     public class BoxPlotSeriesExamples
     {
         [Example("BoxPlot")]

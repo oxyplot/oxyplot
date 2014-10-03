@@ -7,10 +7,9 @@
 namespace ExampleLibrary
 {
     using OxyPlot;
-
     using OxyPlot.Series;
 
-    [Examples("PieSeries")]
+    [Examples("PieSeries"), Tags("Series")]
     public static class PieSeriesExamples
     {
         [Example("PieSeries")]

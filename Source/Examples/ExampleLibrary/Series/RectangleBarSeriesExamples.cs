@@ -9,7 +9,7 @@ namespace ExampleLibrary
     using OxyPlot;
     using OxyPlot.Series;
 
-    [Examples("RectangleBarSeries")]
+    [Examples("RectangleBarSeries"), Tags("Series")]
     public static class RectangleBarSeriesExamples
     {
         [Example("RectangleBarSeries")]

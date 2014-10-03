@@ -7,15 +7,12 @@
 namespace ExampleLibrary
 {
     using System;
-    using System.Diagnostics.CodeAnalysis;
 
     using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
-    [Examples("LineSeries")]
-    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    // ReSharper disable InconsistentNaming
+    [Examples("LineSeries"), Tags("Series")]
     public class LineSeriesExamples
     {
         [Example("LineSeries")]

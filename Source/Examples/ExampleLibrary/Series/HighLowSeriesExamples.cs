@@ -4,15 +4,15 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using OxyPlot;
-
 namespace ExampleLibrary
 {
+    using System;
+
+    using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
-    [Examples("HighLowSeries")]
+    [Examples("HighLowSeries"), Tags("Series")]
     public static class HighLowSeriesExamples
     {
         [Example("HighLowSeries")]

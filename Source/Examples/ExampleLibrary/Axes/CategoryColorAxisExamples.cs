@@ -6,13 +6,11 @@
 
 namespace ExampleLibrary
 {
-    using System.Collections.Generic;
-
     using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
-    [Examples("CategoryColorAxis")]
+    [Examples("CategoryColorAxis"), Tags("Axes")]
     public class CategoryColorAxisExamples
     {
         [Example("CategoryColorAxis")]

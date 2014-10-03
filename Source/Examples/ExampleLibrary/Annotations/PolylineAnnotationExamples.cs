@@ -10,7 +10,7 @@ namespace ExampleLibrary
     using OxyPlot.Annotations;
     using OxyPlot.Axes;
 
-    [Examples("PolylineAnnotation")]
+    [Examples("PolylineAnnotation"), Tags("Annotations")]
     public static class PolylineAnnotationExamples
     {
         [Example("PolylineAnnotation")]

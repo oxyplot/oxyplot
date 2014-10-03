@@ -12,7 +12,7 @@ namespace ExampleLibrary
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
-    [Examples("Cartesian axes")]
+    [Examples("Cartesian axes"), Tags("Axes")]
     public class CartesianAxesExamples
     {
         [Example("Trigonometric functions")]

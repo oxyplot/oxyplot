@@ -10,7 +10,7 @@ namespace ExampleLibrary
     using OxyPlot.Annotations;
     using OxyPlot.Axes;
 
-    [Examples("EllipseAnnotation")]
+    [Examples("EllipseAnnotation"), Tags("Annotations")]
     public static class EllipseAnnotationExamples
     {
         [Example("EllipseAnnotation")]

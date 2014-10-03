@@ -4,14 +4,12 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using OxyPlot;
-
 namespace ExampleLibrary
 {
+    using OxyPlot;
     using OxyPlot.Axes;
 
-    [Examples("LinearAxis")]
+    [Examples("LinearAxis"), Tags("Axes")]
     public static class LinearAxisExamples
     {
         [Example("TickStyle: None")]
@@ -19,16 +17,19 @@ namespace ExampleLibrary
         {
             return CreateTickStyleModel(TickStyle.None);
         }
+
         [Example("TickStyle: Crossing")]
         public static PlotModel TickStyleCrossing()
         {
             return CreateTickStyleModel(TickStyle.Crossing);
         }
+
         [Example("TickStyle: Inside")]
         public static PlotModel TickStyleInside()
         {
             return CreateTickStyleModel(TickStyle.Inside);
         }
+
         [Example("TickStyle: Outside")]
         public static PlotModel TickStyleOutside()
         {
@@ -64,16 +65,19 @@ namespace ExampleLibrary
         {
             return CreateGridlinesModel("None", LineStyle.None, LineStyle.None);
         }
+
         [Example("Gridlines: Horizontal")]
         public static PlotModel GridlinesHorizontal()
         {
             return CreateGridlinesModel("Horizontal", LineStyle.Solid, LineStyle.None);
         }
+
         [Example("Gridlines: Vertical")]
         public static PlotModel GridlinesVertical()
         {
             return CreateGridlinesModel("Vertical", LineStyle.None, LineStyle.Solid);
         }
+
         [Example("Gridlines: Both")]
         public static PlotModel GridlinesBoth()
         {

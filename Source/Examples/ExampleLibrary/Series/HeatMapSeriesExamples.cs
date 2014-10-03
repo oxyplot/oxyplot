@@ -10,15 +10,12 @@
 namespace ExampleLibrary
 {
     using System;
-    using System.Diagnostics;
-    using System.Diagnostics.CodeAnalysis;
 
     using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
-    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    [Examples("HeatMapSeries")]
+    [Examples("HeatMapSeries"), Tags("Series")]
     public class HeatMapSeriesExamples
     {
         [Example("Peaks")]

@@ -12,7 +12,7 @@ namespace ExampleLibrary
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
-    [Examples("LogarithmicAxis")]
+    [Examples("LogarithmicAxis"), Tags("Axes")]
     public static class LogarithmicAxisExamples
     {
         [Example("Amdahl's Law")]

@@ -14,7 +14,7 @@ namespace ExampleLibrary
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
-    [Examples("ImageAnnotation")]
+    [Examples("ImageAnnotation"), Tags("Annotations")]
     public static class ImageAnnotationExamples
     {
         [Example("ImageAnnotation")]

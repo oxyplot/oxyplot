@@ -10,7 +10,7 @@ namespace ExampleLibrary
     using OxyPlot.Annotations;
     using OxyPlot.Axes;
 
-    [Examples("ArrowAnnotation")]
+    [Examples("ArrowAnnotation"), Tags("Annotations")]
     public static class ArrowAnnotationExamples
     {
         [Example("ArrowAnnotation")]

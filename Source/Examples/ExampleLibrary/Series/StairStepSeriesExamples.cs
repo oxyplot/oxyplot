@@ -17,7 +17,7 @@ namespace ExampleLibrary
     /// <summary>
     /// Provides examples for the <see cref="StairStepSeries" />.
     /// </summary>
-    [Examples("StairStepSeries")]
+    [Examples("StairStepSeries"), Tags("Series")]
     public static class StairStepSeriesExamples
     {
         [Example("StairStepSeries")]

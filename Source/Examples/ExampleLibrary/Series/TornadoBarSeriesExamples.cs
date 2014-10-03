@@ -10,7 +10,7 @@ namespace ExampleLibrary
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
-    [Examples("TornadoBarSeries")]
+    [Examples("TornadoBarSeries"), Tags("Series")]
     public static class TornadoBarSeriesExamples
     {
         [Example("Tornado diagram 1")]

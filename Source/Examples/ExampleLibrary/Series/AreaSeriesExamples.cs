@@ -10,7 +10,7 @@ namespace ExampleLibrary
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
-    [Examples("AreaSeries")]
+    [Examples("AreaSeries"), Tags("Series")]
     public static class AreaSeriesExamples
     {
         [Example("Default style")]

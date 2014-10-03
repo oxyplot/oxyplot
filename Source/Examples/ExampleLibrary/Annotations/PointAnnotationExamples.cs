@@ -10,7 +10,7 @@ namespace ExampleLibrary
     using OxyPlot.Annotations;
     using OxyPlot.Axes;
 
-    [Examples("PointAnnotation")]
+    [Examples("PointAnnotation"), Tags("Annotations")]
     public static class PointAnnotationExamples
     {
         [Example("PointAnnotation")]

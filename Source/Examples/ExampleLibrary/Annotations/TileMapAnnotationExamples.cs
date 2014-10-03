@@ -10,7 +10,7 @@ namespace ExampleLibrary
     using OxyPlot.Annotations;
     using OxyPlot.Axes;
 
-    [Examples("TileMapAnnotation")]
+    [Examples("TileMapAnnotation"), Tags("Annotations")]
     public static class TileMapAnnotationExamples
     {
         [Example("TileMapAnnotation (openstreetmap.org)")]

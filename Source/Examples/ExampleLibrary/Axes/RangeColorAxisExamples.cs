@@ -12,7 +12,7 @@ namespace ExampleLibrary
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
-    [Examples("RangeColorAxis")]
+    [Examples("RangeColorAxis"), Tags("Axes")]
     public class RangeColorAxisExamples
     {
         [Example("ScatterSeries with RangeColorAxis")]

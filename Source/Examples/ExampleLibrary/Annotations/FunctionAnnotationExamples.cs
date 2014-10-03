@@ -12,7 +12,7 @@ namespace ExampleLibrary
     using OxyPlot.Annotations;
     using OxyPlot.Axes;
 
-    [Examples("FunctionAnnotation")]
+    [Examples("FunctionAnnotation"), Tags("Annotations")]
     public static class FunctionAnnotationExamples
     {
         [Example("FunctionAnnotation")]

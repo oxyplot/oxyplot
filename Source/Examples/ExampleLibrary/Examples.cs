@@ -11,8 +11,41 @@ namespace ExampleLibrary
     using System.Linq;
     using System.Reflection;
 
+    /// <summary>
+    /// Enumerates all examples in the assembly.
+    /// </summary>
     public static class Examples
     {
+        /// <summary>
+        /// Gets the first or default attribute of the specified type.
+        /// </summary>
+        /// <typeparam name="T">The attribute type.</typeparam>
+        /// <param name="type">The type to reflect.</param>
+        /// <returns>The attribute.</returns>
+        public static T FirstOrDefault<T>(this Type type) where T : Attribute
+        {
+            var attributes = type.GetCustomAttributes(typeof(T), true).ToArray();
+            return attributes.Length == 0 ? null : (T)attributes[0];
+        }
+
+        /// <summary>
+        /// Gets the first or default attribute of the specified type.
+        /// </summary>
+        /// <typeparam name="T">The attribute type.</typeparam>
+        /// <param name="info">The information.</param>
+        /// <returns>
+        /// The attribute.
+        /// </returns>
+        public static T FirstOrDefault<T>(this MethodInfo info) where T : Attribute
+        {
+            var attributes = info.GetCustomAttributes(typeof(T), true).ToArray();
+            return attributes.Length == 0 ? null : (T)attributes[0];
+        }
+
+        /// <summary>
+        /// Gets the list of examples.
+        /// </summary>
+        /// <returns>The list of examples.</returns>
         public static List<ExampleInfo> GetList()
         {
             var list = new List<ExampleInfo>();
@@ -24,13 +57,14 @@ namespace ExampleLibrary
 
             foreach (var type in assemblyTypes)
             {
-                var examplesAttributes = type.GetCustomAttributes(typeof(ExamplesAttribute), true).ToArray();
-                if (examplesAttributes.Length == 0)
+                var examplesAttribute = type.FirstOrDefault<ExamplesAttribute>();
+                if (examplesAttribute == null)
                 {
                     continue;
                 }
 
-                var examplesAttribute = examplesAttributes[0] as ExamplesAttribute;
+                var examplesTags = type.FirstOrDefault<TagsAttribute>() ?? new TagsAttribute();
+
                 var types = new List<Type>();
                 var baseType = type;
                 while (baseType != null)
@@ -56,19 +90,23 @@ namespace ExampleLibrary
                     {
                         try
                         {
-                            var exampleAttributes = method.GetCustomAttributes(typeof(ExampleAttribute), true).ToList();
-                            if (!exampleAttributes.Any())
+                            var exampleAttribute = method.FirstOrDefault<ExampleAttribute>();
+                            if (exampleAttribute != null)
                             {
-                                continue;
-                            }
-
-                            var exampleAttribute = exampleAttributes.ElementAtOrDefault(0) as ExampleAttribute;
-                            if (exampleAttribute != null && examplesAttribute != null)
-                            {
-                                list.Add(new ExampleInfo(examplesAttribute.Category, exampleAttribute.Title, method));
+                                var exampleTags = method.FirstOrDefault<TagsAttribute>() ?? new TagsAttribute();
+                                var tags = new List<string>(examplesTags.Tags);
+                                tags.AddRange(exampleTags.Tags);
+                                list.Add(
+                                    new ExampleInfo(
+                                        examplesAttribute.Category,
+                                        exampleAttribute.Title,
+                                        tags.ToArray(),
+                                        method));
                             }
                         }
-                        catch(Exception) { }
+                        catch (Exception)
+                        {
+                        }
                     }
                 }
             }

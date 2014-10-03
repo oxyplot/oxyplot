@@ -4,16 +4,15 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using OxyPlot;
-
 namespace ExampleLibrary
 {
     using System;
 
+    using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
-    [Examples("ContourSeries")]
+    [Examples("ContourSeries"), Tags("Series")]
     public class ContourSeriesExamples
     {
         private static Func<double, double, double> peaks = (x, y) =>

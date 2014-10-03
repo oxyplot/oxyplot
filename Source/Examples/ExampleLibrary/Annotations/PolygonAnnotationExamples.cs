@@ -13,7 +13,7 @@ namespace ExampleLibrary
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
-    [Examples("PolygonAnnotation")]
+    [Examples("PolygonAnnotation"), Tags("Annotations")]
     public static class PolygonAnnotationExamples
     {
         [Example("PolygonAnnotation")]

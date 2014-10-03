@@ -15,7 +15,7 @@ namespace ExampleLibrary
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
-    [Examples("Polar Plots")]
+    [Examples("Polar Plots"), Tags("Axes")]
     public static class PolarPlotExamples
     {
         [Example("Spiral")]

@@ -13,7 +13,7 @@ namespace ExampleLibrary
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
-    [Examples("CandleStickSeries")]
+    [Examples("CandleStickSeries"), Tags("Series")]
     public static class CandleStickSeriesExamples
     {
         [Example("CandleStickSeries")]

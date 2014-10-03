@@ -72,6 +72,7 @@
     <Compile Include="Annotations\TextAnnotationExamples.cs" />
     <Compile Include="Annotations\TileMapAnnotationExamples.cs" />
     <Compile Include="Attributes\ExampleAttribute.cs" />
+    <Compile Include="Attributes\TagsAttribute.cs" />
     <Compile Include="CustomSeries\ErrorItem.cs" />
     <Compile Include="CustomSeries\ErrorSeries.cs" />
     <Compile Include="CustomSeries\FlagSeries.cs" />

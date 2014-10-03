@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ExampleAttribute.cs" company="OxyPlot">
+// <copyright file="TagsAttribute.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -9,26 +9,26 @@ namespace ExampleLibrary
     using System;
 
     /// <summary>
-    /// Specifies the title for an example.
+    /// Specifies tags.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Method)]
-    public class ExampleAttribute : Attribute
+    [AttributeUsage(AttributeTargets.Class)]
+    public class TagsAttribute : Attribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExampleAttribute"/> class.
+        /// Initializes a new instance of the <see cref="TagsAttribute" /> class.
         /// </summary>
-        /// <param name="title">The title.</param>
-        public ExampleAttribute(string title = null)
+        /// <param name="tags">The tags.</param>
+        public TagsAttribute(params string[] tags)
         {
-            this.Title = title;
+            this.Tags = tags;
         }
 
         /// <summary>
-        /// Gets the title.
+        /// Gets the tags.
         /// </summary>
         /// <value>
-        /// The title.
+        /// The tags.
         /// </value>
-        public string Title { get; private set; }
+        public string[] Tags { get; private set; }
     }
 }

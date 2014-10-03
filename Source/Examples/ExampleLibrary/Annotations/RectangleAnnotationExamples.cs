@@ -11,7 +11,7 @@ namespace ExampleLibrary
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
-    [Examples("RectangleAnnotation")]
+    [Examples("RectangleAnnotation"), Tags("Annotations")]
     public static class RectangleAnnotationExamples
     {
         [Example("RectangleAnnotation")]

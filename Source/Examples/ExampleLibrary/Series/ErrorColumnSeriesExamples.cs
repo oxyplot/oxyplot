@@ -10,7 +10,7 @@ namespace ExampleLibrary
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
-    [Examples("ErrorColumnSeries")]
+    [Examples("ErrorColumnSeries"), Tags("Series")]
     public class ErrorColumnSeriesExamples
     {
         [Example("ErrorColumnSeries")]

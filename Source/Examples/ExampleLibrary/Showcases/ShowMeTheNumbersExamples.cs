@@ -10,7 +10,7 @@
 namespace ExampleLibrary
 {
     using System.Collections.Generic;
-    
+
     using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
@@ -18,7 +18,7 @@ namespace ExampleLibrary
     /// <summary>
     /// Examples from the book "Show Me the Numbers" by Stephen Few
     /// </summary>
-    [Examples("Examples from the book 'Show Me the Numbers'")]
+    [Examples("Examples from the book 'Show Me the Numbers'"), Tags("Showcase")]
     public class ShowMeTheNumbersExamples
     {
         /// <summary>

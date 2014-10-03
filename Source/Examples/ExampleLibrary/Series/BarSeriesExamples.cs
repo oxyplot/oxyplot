@@ -8,7 +8,7 @@ namespace ExampleLibrary
 {
     using OxyPlot.Series;
 
-    [Examples("BarSeries")]
+    [Examples("BarSeries"), Tags("Series")]
     public class BarSeriesExamples : BarAndColumnSeriesExamples<BarSeries, BarItem>
     {
     }

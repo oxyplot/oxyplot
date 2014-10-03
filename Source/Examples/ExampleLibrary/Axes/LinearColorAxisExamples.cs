@@ -9,7 +9,7 @@ namespace ExampleLibrary
     using OxyPlot;
     using OxyPlot.Axes;
 
-    [Examples("LinearColorAxis")]
+    [Examples("LinearColorAxis"), Tags("Axes")]
     public class LinearColorAxisExamples
     {
         [Example("Default palette")]

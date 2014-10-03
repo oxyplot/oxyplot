@@ -17,7 +17,7 @@ namespace ExampleLibrary
     /// <summary>
     /// Provides examples for the <see cref="StemSeries" />.
     /// </summary>
-    [Examples("StemSeries")]
+    [Examples("StemSeries"), Tags("Series")]
     public static class StemSeriesExamples
     {
         [Example("StemSeries")]

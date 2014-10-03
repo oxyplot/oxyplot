@@ -20,7 +20,7 @@ namespace ExampleLibrary
     /// <summary>
     /// Provides examples for general axis properties.
     /// </summary>
-    [Examples("Axis examples")]
+    [Examples("Axis examples"), Tags("Axes")]
     public class AxisExamples
     {
         /// <summary>

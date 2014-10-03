@@ -10,7 +10,7 @@ namespace ExampleLibrary
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
-    [Examples("IntervalBarSeries")]
+    [Examples("IntervalBarSeries"), Tags("Series")]
     public static class IntervalBarSeriesExamples
     {
         [Example("IntervalBarSeries")]

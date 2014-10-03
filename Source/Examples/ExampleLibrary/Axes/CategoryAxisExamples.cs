@@ -9,7 +9,7 @@ namespace ExampleLibrary
     using OxyPlot;
     using OxyPlot.Axes;
 
-    [Examples("CategoryAxis")]
+    [Examples("CategoryAxis"), Tags("Axes")]
     public static class CategoryAxisExamples
     {
         [Example("Standard")]

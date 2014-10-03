@@ -13,7 +13,7 @@ namespace ExampleLibrary
     using OxyPlot.Annotations;
     using OxyPlot.Axes;
 
-    [Examples("TextAnnotation")]
+    [Examples("TextAnnotation"), Tags("Annotations")]
     public static class TextAnnotationExamples
     {
         [Example("TextAnnotation")]

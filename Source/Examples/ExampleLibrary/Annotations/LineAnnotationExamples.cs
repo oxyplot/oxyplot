@@ -10,7 +10,7 @@ namespace ExampleLibrary
     using OxyPlot.Annotations;
     using OxyPlot.Axes;
 
-    [Examples("LineAnnotation")]
+    [Examples("LineAnnotation"), Tags("Annotations")]
     public static class LineAnnotationExamples
     {
         [Example("LineAnnotation on linear axes")]

@@ -10,28 +10,70 @@ namespace ExampleLibrary
 
     using OxyPlot;
 
+    /// <summary>
+    /// Provides information about an example.
+    /// </summary>
     public class ExampleInfo
     {
+        /// <summary>
+        /// The method to invoke.
+        /// </summary>
         private readonly MethodInfo method;
 
+        /// <summary>
+        /// The result of the method call.
+        /// </summary>
         private object result;
 
-        public ExampleInfo(string category, string title, MethodInfo method)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExampleInfo"/> class.
+        /// </summary>
+        /// <param name="category">The category.</param>
+        /// <param name="title">The title.</param>
+        /// <param name="tags">The tags.</param>
+        /// <param name="method">The method.</param>
+        public ExampleInfo(string category, string title, string[] tags, MethodInfo method)
         {
             this.Category = category;
             this.Title = title;
+            this.Tags = tags;
             this.method = method;
         }
 
-        public string Category { get; set; }
+        /// <summary>
+        /// Gets the category.
+        /// </summary>
+        /// <value>
+        /// The category.
+        /// </value>
+        public string Category { get; private set; }
 
-        public string Title { get; set; }
+        /// <summary>
+        /// Gets the title.
+        /// </summary>
+        /// <value>
+        /// The title.
+        /// </value>
+        public string Title { get; private set; }
 
+        /// <summary>
+        /// Gets the tags.
+        /// </summary>
+        /// <value>
+        /// The tags.
+        /// </value>
+        public string[] Tags { get; private set; }
+
+        /// <summary>
+        /// Gets the plot model.
+        /// </summary>
+        /// <value>
+        /// The plot model.
+        /// </value>
         public PlotModel PlotModel
         {
             get
             {
-
                 var plotModel = this.Result as PlotModel;
                 if (plotModel != null)
                 {
@@ -43,6 +85,12 @@ namespace ExampleLibrary
             }
         }
 
+        /// <summary>
+        /// Gets the plot controller.
+        /// </summary>
+        /// <value>
+        /// The plot controller.
+        /// </value>
         public IPlotController PlotController
         {
             get
@@ -52,6 +100,12 @@ namespace ExampleLibrary
             }
         }
 
+        /// <summary>
+        /// Gets the code.
+        /// </summary>
+        /// <value>
+        /// The code.
+        /// </value>
         public string Code
         {
             get
@@ -60,6 +114,12 @@ namespace ExampleLibrary
             }
         }
 
+        /// <summary>
+        /// Gets the result.
+        /// </summary>
+        /// <value>
+        /// The result.
+        /// </value>
         private object Result
         {
             get
@@ -68,6 +128,12 @@ namespace ExampleLibrary
             }
         }
 
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
         public override string ToString()
         {
             return this.Title;

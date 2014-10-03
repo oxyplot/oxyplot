@@ -13,7 +13,7 @@ namespace ExampleLibrary
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
-    [Examples("TimeSpanAxis")]
+    [Examples("TimeSpanAxis"), Tags("Axes")]
     public static class TimeSpanAxisExamples
     {
         public class TimeValue

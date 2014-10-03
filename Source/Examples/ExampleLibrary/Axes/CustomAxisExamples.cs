@@ -11,7 +11,7 @@ namespace ExampleLibrary
     using OxyPlot;
     using OxyPlot.Axes;
 
-    [Examples("Custom axes")]
+    [Examples("Custom axes"), Tags("Axes")]
     public static class CustomAxisExamples
     {
         public class ArrowAxis : LinearAxis
