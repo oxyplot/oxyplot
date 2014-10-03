@@ -68,7 +68,7 @@ namespace OxyPlot.Tests
                     continue;
                 }
 
-                var path = Path.Combine(DestinationDirectory, StringHelper.CreateValidFileName(example.Category + " - " + example.Title, ".svg"));
+                var path = Path.Combine(DestinationDirectory, FileNameUtilities.CreateValidFileName(example.Category + " - " + example.Title, ".svg"));
                 using (var s = File.Create(path))
                 {
                     SvgExporter.Export(example.PlotModel, s, 800, 500, true);

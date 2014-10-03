@@ -14,6 +14,8 @@ namespace OxyPlot.Wpf.Tests
 
     using NUnit.Framework;
 
+    using OxyPlot.Tests;
+
     /// <summary>
     /// Provides unit tests for the example library.
     /// </summary>
@@ -48,13 +50,13 @@ namespace OxyPlot.Wpf.Tests
 
                 var baselinePath = Path.Combine(
                     BaselineDirectory,
-                    StringHelper.CreateValidFileName(example.Category + " - " + example.Title, ".png"));
+                    FileNameUtilities.CreateValidFileName(example.Category + " - " + example.Title, ".png"));
                 var path = Path.Combine(
                     DestinationDirectory,
-                    StringHelper.CreateValidFileName(example.Category + " - " + example.Title, ".png"));
+                    FileNameUtilities.CreateValidFileName(example.Category + " - " + example.Title, ".png"));
                 var diffpath = Path.Combine(
                     DestinationDirectory,
-                    StringHelper.CreateValidFileName(example.Category + " - " + example.Title, ".DIFF.png"));
+                    FileNameUtilities.CreateValidFileName(example.Category + " - " + example.Title, ".DIFF.png"));
                 Console.WriteLine(path);
                 PngExporter.Export(example.PlotModel, path, 800, 500, OxyColors.White);
                 if (File.Exists(baselinePath))

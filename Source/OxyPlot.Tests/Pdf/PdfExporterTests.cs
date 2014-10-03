@@ -39,7 +39,7 @@ namespace OxyPlot.Tests
                     continue;
                 }
 
-                var path = Path.Combine(DestinationDirectory, StringHelper.CreateValidFileName(example.Category + " - " + example.Title, ".pdf"));
+                var path = Path.Combine(DestinationDirectory, FileNameUtilities.CreateValidFileName(example.Category + " - " + example.Title, ".pdf"));
                 using (var s = File.Create(path))
                 {
                     try
