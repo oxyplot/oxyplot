@@ -22,7 +22,7 @@
       <group targetFramework="MonoAndroid1.0">
         <dependency id="OxyPlot.XamarinAndroid"/>
       </group>
-      <group targetFramework="WindowsPhone8.0">
+      <group targetFramework="wp80">
         <dependency id="OxyPlot.WP8"/>
       </group>
       <group>
@@ -34,6 +34,6 @@
     <file src="..\..\Output\XamarinForms\OxyPlot.XamarinForms.???" target="lib\portable-win+net45+wp80+MonoAndroid10+MonoTouch10" />
     <file src="..\..\Output\XamarinForms\OxyPlot.XamarinFormsIOS.???" target="lib\MonoTouch10" />
     <file src="..\..\Output\XamarinForms\OxyPlot.XamarinFormsAndroid.???" target="lib\MonoAndroid10" />
-    <file src="..\..\Output\XamarinForms\OxyPlot.XamarinFormsWinPhone.???" target="lib\windowsphone8" />
+    <file src="..\..\Output\XamarinForms\OxyPlot.XamarinFormsWinPhone.???" target="lib\wp80" />
   </files>
 </package>
