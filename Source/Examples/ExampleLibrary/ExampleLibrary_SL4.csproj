@@ -60,6 +60,17 @@
     <Compile Include="..\..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Annotations\ArrowAnnotationExamples.cs" />
+    <Compile Include="Annotations\EllipseAnnotationExamples.cs" />
+    <Compile Include="Annotations\FunctionAnnotationExamples.cs" />
+    <Compile Include="Annotations\ImageAnnotationExamples.cs" />
+    <Compile Include="Annotations\LineAnnotationExamples.cs" />
+    <Compile Include="Annotations\PointAnnotationExamples.cs" />
+    <Compile Include="Annotations\PolygonAnnotationExamples.cs" />
+    <Compile Include="Annotations\PolylineAnnotationExamples.cs" />
+    <Compile Include="Annotations\RectangleAnnotationExamples.cs" />
+    <Compile Include="Annotations\TextAnnotationExamples.cs" />
+    <Compile Include="Annotations\TileMapAnnotationExamples.cs" />
     <Compile Include="Attributes\ExampleAttribute.cs" />
     <Compile Include="CustomSeries\ErrorItem.cs" />
     <Compile Include="CustomSeries\ErrorSeries.cs" />
