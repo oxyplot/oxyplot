@@ -24,10 +24,10 @@ namespace ExampleLibrary
             var cs = new ContourSeries
             {
                 IsVisible = false,
-                ColumnCoordinates = ArrayHelper.CreateVector(-1, 1, 0.05),
-                RowCoordinates = ArrayHelper.CreateVector(-1, 1, 0.05)
+                ColumnCoordinates = ArrayBuilder.CreateVector(-1, 1, 0.05),
+                RowCoordinates = ArrayBuilder.CreateVector(-1, 1, 0.05)
             };
-            cs.Data = ArrayHelper.Evaluate((x, y) => x + y, cs.ColumnCoordinates, cs.RowCoordinates);
+            cs.Data = ArrayBuilder.Evaluate((x, y) => x + y, cs.ColumnCoordinates, cs.RowCoordinates);
             model.Series.Add(cs);
             return model;
         }

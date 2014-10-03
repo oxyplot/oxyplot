@@ -145,7 +145,7 @@ namespace OxyPlot
         {
             // Get the values of all properties in the object (this is slow, any better ideas?)
             var propertyValues = this.GetType().GetProperties().Select(pi => pi.GetValue(this, null));
-            return ArrayHelper.GetHashCode(propertyValues);
+            return HashCodeBuilder.GetHashCode(propertyValues);
         }
 
         /// <summary>

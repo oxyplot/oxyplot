@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ArrayHelperTests.cs" company="OxyPlot">
+// <copyright file="ArrayBuilderTests.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -14,12 +14,12 @@ namespace OxyPlot.Tests
     // ReSharper disable InconsistentNaming
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     [TestFixture]
-    public class ArrayHelperTests
+    public class ArrayBuilderTests
     {
         [Test]
         public void CreateVector_ByDelta_ReturnsExpectedArray()
         {
-            var v = ArrayHelper.CreateVector(0, 1, 0.1);
+            var v = ArrayBuilder.CreateVector(0, 1, 0.1);
             Assert.AreEqual(11, v.Length);
             Assert.AreEqual(0, v[0]);
             Assert.AreEqual(0.3, v[3]);
@@ -31,7 +31,7 @@ namespace OxyPlot.Tests
         [Test]
         public void CreateVector_ByNumberOfSteps_ReturnsExpectedArray()
         {
-            var v = ArrayHelper.CreateVector(0, 1, 11);
+            var v = ArrayBuilder.CreateVector(0, 1, 11);
             Assert.AreEqual(11, v.Length);
             Assert.AreEqual(0, v[0]);
             Assert.AreEqual(0.3, v[3]);
@@ -43,9 +43,9 @@ namespace OxyPlot.Tests
         [Test]
         public void Evaluate()
         {
-            var xvector = ArrayHelper.CreateVector(0, 1, 0.1);
-            var yvector = ArrayHelper.CreateVector(0, 1, 0.1);
-            var dvector = ArrayHelper.Evaluate((x, y) => x * y, xvector, yvector);
+            var xvector = ArrayBuilder.CreateVector(0, 1, 0.1);
+            var yvector = ArrayBuilder.CreateVector(0, 1, 0.1);
+            var dvector = ArrayBuilder.Evaluate((x, y) => x * y, xvector, yvector);
 
             Assert.AreEqual(10, dvector.GetUpperBound(0));
             Assert.AreEqual(10, dvector.GetUpperBound(1));

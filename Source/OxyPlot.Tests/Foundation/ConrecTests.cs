@@ -19,10 +19,10 @@ namespace OxyPlot.Tests
         [Test]
         public void Contour()
         {
-            var x = ArrayHelper.CreateVector(0, 10, 100);
-            var y = ArrayHelper.CreateVector(0, 10, 100);
-            var z = ArrayHelper.CreateVector(-1, 1, 20);
-            var data = ArrayHelper.Evaluate((x1, y1) => Math.Sin(x1 * y1), x, y);
+            var x = ArrayBuilder.CreateVector(0, 10, 100);
+            var y = ArrayBuilder.CreateVector(0, 10, 100);
+            var z = ArrayBuilder.CreateVector(-1, 1, 20);
+            var data = ArrayBuilder.Evaluate((x1, y1) => Math.Sin(x1 * y1), x, y);
             int segments = 0;
             Conrec.Contour(data, x, y, z, (x1, y1, x2, y2, elev) => { segments++; });
             Assert.AreEqual(134068, segments);

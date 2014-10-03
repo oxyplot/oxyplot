@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Implements <see cref="Stream" /> extension methods.
+//   Provides useful extension methods for streams.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -12,7 +12,7 @@ namespace OxyPlot
     using System.IO;
 
     /// <summary>
-    /// Implements <see cref="Stream" /> extension methods.
+    /// Provides useful extension methods for streams.
     /// </summary>
     public static class StreamExtensions
     {

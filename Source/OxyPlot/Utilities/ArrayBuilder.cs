@@ -1,22 +1,20 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ArrayHelper.cs" company="OxyPlot">
+// <copyright file="ArrayBuilder.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Provides utility methods for vector generation.
+//   Provides functionality to build arrays.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
 
     /// <summary>
-    /// Provides utility methods for vector generation.
+    /// Provides functionality to build arrays.
     /// </summary>
-    public static class ArrayHelper
+    public static class ArrayBuilder
     {
         /// <summary>
         /// Creates a vector.
@@ -81,7 +79,7 @@ namespace OxyPlot
         /// <summary>
         /// Fills the array with the specified value.
         /// </summary>
-        /// <param name="array">The array.</param>
+        /// <param name="array">The array to fill.</param>
         /// <param name="value">The value.</param>
         public static void Fill(this double[] array, double value)
         {
@@ -104,72 +102,6 @@ namespace OxyPlot
                 {
                     array[i, j] = value;
                 }
-            }
-        }
-
-        /// <summary>
-        /// Finds the maximum value in the specified 2D array (NaN values not included).
-        /// </summary>
-        /// <param name="array">The array.</param>
-        /// <returns>The maximum value.</returns>
-        public static double Max2D(this double[,] array)
-        {
-            var max = double.MinValue;
-            for (var i = 0; i < array.GetLength(0); i++)
-            {
-                for (var j = 0; j < array.GetLength(1); j++)
-                {
-                    if (array[i, j].CompareTo(max) > 0)
-                    {
-                        max = array[i, j];
-                    }
-                }
-            }
-
-            return max;
-        }
-
-        /// <summary>
-        /// Finds the minimum value in the specified 2D array.
-        /// </summary>
-        /// <param name="array">The array.</param>
-        /// <param name="excludeNaN">Exclude NaN values if set to <c>true</c>.</param>
-        /// <returns>The minimum value.</returns>
-        public static double Min2D(this double[,] array, bool excludeNaN = false)
-        {
-            var min = double.MaxValue;
-            for (var i = 0; i < array.GetLength(0); i++)
-            {
-                for (var j = 0; j < array.GetLength(1); j++)
-                {
-                    if (excludeNaN && double.IsNaN(array[i, j]))
-                    {
-                        continue;
-                    }
-
-                    if (array[i, j].CompareTo(min) < 0)
-                    {
-                        min = array[i, j];
-                    }
-                }
-            }
-
-            return min;
-        }
-
-        /// <summary>
-        /// Calculates a hash code for the specified sequence of items.
-        /// </summary>
-        /// <param name="items">A sequence of items.</param>
-        /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
-        public static int GetHashCode(this IEnumerable<object> items)
-        {
-            // See http://stackoverflow.com/questions/263400/what-is-the-best-algorithm-for-an-overridden-system-object-gethashcode
-
-            // Overflow is fine, just wrap
-            unchecked
-            {
-                return items.Where(item => item != null).Aggregate(17, (current, item) => (current * 23) + item.GetHashCode());
             }
         }
     }

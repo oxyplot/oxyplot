@@ -183,7 +183,7 @@ namespace OxyPlot.Series
                 max = Math.Round(actualStep * (int)Math.Ceiling(max / actualStep), 14);
                 min = Math.Round(actualStep * (int)Math.Floor(min / actualStep), 14);
 
-                actualContourLevels = ArrayHelper.CreateVector(min, max, actualStep);
+                actualContourLevels = ArrayBuilder.CreateVector(min, max, actualStep);
             }
 
             Conrec.Contour(this.Data, this.ColumnCoordinates, this.RowCoordinates, actualContourLevels, renderer);

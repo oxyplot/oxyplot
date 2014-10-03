@@ -239,10 +239,10 @@ namespace ContourDemo
                 string formatString = null)
             {
                 this.Title = title;
-                this.X = ArrayHelper.CreateVector(minx, maxx, dx);
-                this.Y = ArrayHelper.CreateVector(miny, maxy, dy);
-                this.Z = ArrayHelper.CreateVector(minz, maxz, dz);
-                this.D = ArrayHelper.Evaluate(f, this.X, this.Y);
+                this.X = ArrayBuilder.CreateVector(minx, maxx, dx);
+                this.Y = ArrayBuilder.CreateVector(miny, maxy, dy);
+                this.Z = ArrayBuilder.CreateVector(minz, maxz, dz);
+                this.D = ArrayBuilder.Evaluate(f, this.X, this.Y);
                 this.FormatString = formatString;
             }
 

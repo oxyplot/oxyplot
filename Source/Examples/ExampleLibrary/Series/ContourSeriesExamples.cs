@@ -26,10 +26,10 @@ namespace ExampleLibrary
             var model = new PlotModel { Title = "Peaks" };
             var cs = new ContourSeries
                 {
-                    ColumnCoordinates = ArrayHelper.CreateVector(-3, 3, 0.05),
-                    RowCoordinates = ArrayHelper.CreateVector(-3.1, 3.1, 0.05)
+                    ColumnCoordinates = ArrayBuilder.CreateVector(-3, 3, 0.05),
+                    RowCoordinates = ArrayBuilder.CreateVector(-3.1, 3.1, 0.05)
                 };
-            cs.Data = ArrayHelper.Evaluate(peaks, cs.ColumnCoordinates, cs.RowCoordinates);
+            cs.Data = ArrayBuilder.Evaluate(peaks, cs.ColumnCoordinates, cs.RowCoordinates);
             model.Subtitle = cs.Data.GetLength(0) + "×" + cs.Data.GetLength(1);
             model.Series.Add(cs);
             return model;
@@ -41,11 +41,11 @@ namespace ExampleLibrary
             var model = new PlotModel { Title = "Peaks" };
             var cs = new ContourSeries
             {
-                ColumnCoordinates = ArrayHelper.CreateVector(-3, 3, 0.05),
-                RowCoordinates = ArrayHelper.CreateVector(-3.1, 3.1, 0.05),
+                ColumnCoordinates = ArrayBuilder.CreateVector(-3, 3, 0.05),
+                RowCoordinates = ArrayBuilder.CreateVector(-3.1, 3.1, 0.05),
                 ContourColors = new[] { OxyColors.SeaGreen, OxyColors.RoyalBlue, OxyColors.IndianRed }
             };
-            cs.Data = ArrayHelper.Evaluate(peaks, cs.ColumnCoordinates, cs.RowCoordinates);
+            cs.Data = ArrayBuilder.Evaluate(peaks, cs.ColumnCoordinates, cs.RowCoordinates);
             model.Subtitle = cs.Data.GetLength(0) + "×" + cs.Data.GetLength(1);
             model.Series.Add(cs);
             return model;
@@ -58,10 +58,10 @@ namespace ExampleLibrary
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -3.16262, Maximum = 3.162 });
             var cs = new ContourSeries
             {
-                ColumnCoordinates = ArrayHelper.CreateVector(-3, 3, 0.05),
-                RowCoordinates = ArrayHelper.CreateVector(-1, 1, 0.05)
+                ColumnCoordinates = ArrayBuilder.CreateVector(-3, 3, 0.05),
+                RowCoordinates = ArrayBuilder.CreateVector(-1, 1, 0.05)
             };
-            cs.Data = ArrayHelper.Evaluate(peaks, cs.ColumnCoordinates, cs.RowCoordinates);
+            cs.Data = ArrayBuilder.Evaluate(peaks, cs.ColumnCoordinates, cs.RowCoordinates);
             model.Subtitle = cs.Data.GetLength(0) + "×" + cs.Data.GetLength(1);
             model.Series.Add(cs);
             return model;
