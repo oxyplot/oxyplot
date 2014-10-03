@@ -7,7 +7,6 @@
 namespace ExampleLibrary
 {
     using System;
-    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
 
@@ -16,8 +15,6 @@ namespace ExampleLibrary
     using OxyPlot.Series;
 
     [Examples("Z0 Discussions")]
-    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    // ReSharper disable InconsistentNaming
     public class DiscussionExamples
     {
         [Example("#445576: Invisible contour series")]
