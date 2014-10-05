@@ -21,12 +21,17 @@ namespace OxyPlot.XamarinIOS
     /// <summary>
     /// Implements a <see cref="IRenderContext"/> for MonoTouch CoreGraphics.
     /// </summary>
-    public class MonoTouchRenderContext : RenderContextBase
+    public class MonoTouchRenderContext : RenderContextBase, IDisposable
     {
         /// <summary>
         /// The images in use.
         /// </summary>
         private readonly HashSet<OxyImage> imagesInUse = new HashSet<OxyImage>();
+
+        /// <summary>
+        /// The fonts cache.
+        /// </summary>
+        private readonly Dictionary<string, CTFont> fonts = new Dictionary<string, CTFont>();
 
         /// <summary>
         /// The image cache.
@@ -53,6 +58,7 @@ namespace OxyPlot.XamarinIOS
             this.gctx.SetShouldSmoothFonts(true);
             this.gctx.SetShouldAntialias(true);
             this.gctx.InterpolationQuality = CGInterpolationQuality.High;
+            this.gctx.SetTextDrawingMode(CGTextDrawingMode.Fill);
         }
 
         /// <summary>
@@ -69,10 +75,12 @@ namespace OxyPlot.XamarinIOS
             if (fill.IsVisible())
             {
                 this.SetFill(fill);
-                var path = new CGPath();
-                path.AddEllipseInRect(convertedRectangle);
+                using (var path = new CGPath())
+                {
+                    path.AddEllipseInRect(convertedRectangle);
+                    this.gctx.AddPath(path);
+                }
 
-                this.gctx.AddPath(path);
                 this.gctx.DrawPath(CGPathDrawingMode.Fill);
             }
 
@@ -80,10 +88,12 @@ namespace OxyPlot.XamarinIOS
             {
                 this.SetStroke(stroke, thickness);
 
-                var path = new CGPath();
-                path.AddEllipseInRect(convertedRectangle);
+                using (var path = new CGPath())
+                {
+                    path.AddEllipseInRect(convertedRectangle);
+                    this.gctx.AddPath(path);
+                }
 
-                this.gctx.AddPath(path);
                 this.gctx.DrawPath(CGPathDrawingMode.Stroke);
             }
         }
@@ -176,11 +186,13 @@ namespace OxyPlot.XamarinIOS
                 this.SetAlias(aliased);
                 this.SetStroke(stroke, thickness, dashArray, lineJoin);
 
-                var path = new CGPath();
-                var convertedPoints = (aliased ? points.Select(p => p.ConvertAliased()) : points.Select(p => p.Convert())).ToArray();
-                path.AddLines(convertedPoints);
+                using (var path = new CGPath())
+                {
+                    var convertedPoints = (aliased ? points.Select(p => p.ConvertAliased()) : points.Select(p => p.Convert())).ToArray();
+                    path.AddLines(convertedPoints);
+                    this.gctx.AddPath(path);
+                }
 
-                this.gctx.AddPath(path);
                 this.gctx.DrawPath(CGPathDrawingMode.Stroke);
             }
         }
@@ -202,10 +214,13 @@ namespace OxyPlot.XamarinIOS
             if (fill.IsVisible())
             {
                 this.SetFill(fill);
-                var path = new CGPath();
-                path.AddLines(convertedPoints);
-                path.CloseSubpath();
-                this.gctx.AddPath(path);
+                using (var path = new CGPath())
+                {
+                    path.AddLines(convertedPoints);
+                    path.CloseSubpath();
+                    this.gctx.AddPath(path);
+                }
+
                 this.gctx.DrawPath(CGPathDrawingMode.Fill);
             }
 
@@ -213,10 +228,13 @@ namespace OxyPlot.XamarinIOS
             {
                 this.SetStroke(stroke, thickness, dashArray, lineJoin);
 
-                var path = new CGPath();
-                path.AddLines(convertedPoints);
-                path.CloseSubpath();
-                this.gctx.AddPath(path);
+                using (var path = new CGPath())
+                {
+                    path.AddLines(convertedPoints);
+                    path.CloseSubpath();
+                    this.gctx.AddPath(path);
+                }
+
                 this.gctx.DrawPath(CGPathDrawingMode.Stroke);
             }
         }
@@ -236,9 +254,12 @@ namespace OxyPlot.XamarinIOS
             if (fill.IsVisible())
             {
                 this.SetFill(fill);
-                var path = new CGPath();
-                path.AddRect(convertedRect);
-                this.gctx.AddPath(path);
+                using (var path = new CGPath())
+                {
+                    path.AddRect(convertedRect);
+                    this.gctx.AddPath(path);
+                }
+
                 this.gctx.DrawPath(CGPathDrawingMode.Fill);
             }
 
@@ -246,9 +267,12 @@ namespace OxyPlot.XamarinIOS
             {
                 this.SetStroke(stroke, thickness);
 
-                var path = new CGPath();
-                path.AddRect(convertedRect);
-                this.gctx.AddPath(path);
+                using (var path = new CGPath())
+                {
+                    path.AddRect(convertedRect);
+                    this.gctx.AddPath(path);
+                }
+
                 this.gctx.DrawPath(CGPathDrawingMode.Stroke);
             }
         }
@@ -275,7 +299,8 @@ namespace OxyPlot.XamarinIOS
 
             var fontName = GetActualFontName(fontFamily, fontWeight);
 
-            using (var attributedString = new NSAttributedString(text, new CTStringAttributes { ForegroundColorFromContext = true, Font = new CTFont(fontName, (float)fontSize) }))
+            var font = this.GetCachedFont(fontName, fontSize);
+            using (var attributedString = new NSAttributedString(text, new CTStringAttributes { ForegroundColorFromContext = true, Font = font }))
             {
                 using (var textLine = new CTLine(attributedString))
                 {
@@ -353,14 +378,36 @@ namespace OxyPlot.XamarinIOS
             }
 
             var fontName = GetActualFontName(fontFamily, fontWeight);
-
-            using (var attributedString = new NSAttributedString(text, new CTStringAttributes { ForegroundColorFromContext = true, Font = new CTFont(fontName, (float)fontSize) }))
+            var font = this.GetCachedFont(fontName, (float)fontSize);
+            using (var attributedString = new NSAttributedString(text, new CTStringAttributes { ForegroundColorFromContext = true, Font = font }))
             {
                 using (var textLine = new CTLine(attributedString))
                 {
                     var bounds = textLine.GetImageBounds(this.gctx);
                     return new OxySize(bounds.Width, bounds.Height);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Releases all resource used by the <see cref="OxyPlot.XamarinIOS.MonoTouchRenderContext"/> object.
+        /// </summary>
+        /// <remarks>Call <see cref="Dispose"/> when you are finished using the
+        /// <see cref="OxyPlot.XamarinIOS.MonoTouchRenderContext"/>. The <see cref="Dispose"/> method leaves the
+        /// <see cref="OxyPlot.XamarinIOS.MonoTouchRenderContext"/> in an unusable state. After calling
+        /// <see cref="Dispose"/>, you must release all references to the
+        /// <see cref="OxyPlot.XamarinIOS.MonoTouchRenderContext"/> so the garbage collector can reclaim the memory that
+        /// the <see cref="OxyPlot.XamarinIOS.MonoTouchRenderContext"/> was occupying.</remarks>
+        public void Dispose()
+        {
+            foreach (var image in this.imageCache.Values)
+            {
+                image.Dispose();
+            }
+
+            foreach (var font in this.fonts.Values)
+            {
+                font.Dispose();
             }
         }
 
@@ -375,12 +422,16 @@ namespace OxyPlot.XamarinIOS
             string fontName;
             switch (fontFamily)
             {
+                case null:
                 case "Segoe UI":
-                case "Arial":
                     fontName = "HelveticaNeue";
                     break;
+                case "Arial":
+                    fontName = "ArialMT";
+                    break;
+                case "Times":
                 case "Times New Roman":
-                    fontName = "Times";
+                    fontName = "TimesNewRomanPSMT";
                     break;
                 default:
                     fontName = fontFamily;
@@ -393,6 +444,24 @@ namespace OxyPlot.XamarinIOS
             }
 
             return fontName;
+        }
+
+        /// <summary>
+        /// Gets the specified from cache.
+        /// </summary>
+        /// <returns>The font.</returns>
+        /// <param name="fontName">Font name.</param>
+        /// <param name="fontSize">Font size.</param>
+        private CTFont GetCachedFont(string fontName, double fontSize)
+        {
+            var key = fontName + fontSize.ToString("0.###");
+            CTFont font;
+            if (this.fonts.TryGetValue(key, out font))
+            {
+                return font;
+            }
+
+            return this.fonts[key] = new CTFont(fontName, (float)fontSize);
         }
 
         /// <summary>
