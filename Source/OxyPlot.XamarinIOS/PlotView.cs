@@ -258,8 +258,10 @@ namespace OxyPlot.XamarinIOS
         {
             if (this.model != null)
             {
-                var renderer = new MonoTouchRenderContext(UIGraphics.GetCurrentContext());
-                ((IPlotModel)this.model).Render(renderer, rect.Width, rect.Height);
+                using (var renderer = new MonoTouchRenderContext(UIGraphics.GetCurrentContext()))
+                {
+                    ((IPlotModel)this.model).Render(renderer, rect.Width, rect.Height);
+                }
             }
         }
 
