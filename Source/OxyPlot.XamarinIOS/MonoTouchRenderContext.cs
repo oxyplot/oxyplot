@@ -292,7 +292,7 @@ namespace OxyPlot.XamarinIOS
         /// <param name="maxSize">The maximum size of the text.</param>
         public override void DrawText(ScreenPoint p, string text, OxyColor fill, string fontFamily, double fontSize, double fontWeight, double rotate, HorizontalAlignment halign, VerticalAlignment valign, OxySize? maxSize)
         {
-            if (string.IsNullOrEmpty(text) || fontFamily == null)
+            if (string.IsNullOrEmpty(text))
             {
                 return;
             }
@@ -306,11 +306,17 @@ namespace OxyPlot.XamarinIOS
                 {
                     float width;
                     float height;
+
+                    this.gctx.TextPosition = new PointF(0, 0);
+
+                    float lineHeight, delta;
+                    this.GetFontMetrics(font, out lineHeight, out delta);
+                    var bounds = textLine.GetImageBounds(this.gctx);
+
                     if (maxSize.HasValue || halign != HorizontalAlignment.Left || valign != VerticalAlignment.Bottom)
                     {
-                        var bounds = textLine.GetImageBounds(this.gctx);
                         width = bounds.Width;
-                        height = bounds.Height;
+                        height = lineHeight;
                     }
                     else
                     {
@@ -330,28 +336,25 @@ namespace OxyPlot.XamarinIOS
                         }
                     }
 
-                    var x = p.X;
-                    var y = p.Y;
-
-                    this.gctx.SaveState();
+                    var dx = halign == HorizontalAlignment.Left ? 0d : (halign == HorizontalAlignment.Center ? -width * 0.5 : -width);
+                    var dy = valign == VerticalAlignment.Bottom ? 0d : (valign == VerticalAlignment.Middle ? height * 0.5 : height);
 
                     this.SetFill(fill);
                     this.SetAlias(false);
 
-                    this.gctx.SetTextDrawingMode(CGTextDrawingMode.Fill);
-                    this.gctx.TextPosition = new PointF(0, 0);
+                    this.gctx.SaveState();
+                    this.gctx.TranslateCTM((float)p.X, (float)p.Y);
+                    if (rotate.Equals(0))
+                    {
+                        this.gctx.RotateCTM((float)(rotate / 180 * Math.PI));
+                    }
 
-                    var dx = halign == HorizontalAlignment.Left ? 0d : (halign == HorizontalAlignment.Center ? -width * 0.5 : -width);
-                    var dy = valign == VerticalAlignment.Bottom ? 0d : (valign == VerticalAlignment.Middle ? height * 0.5 : height);
-
-                    this.gctx.TranslateCTM((float)x, (float)y);
-                    this.gctx.RotateCTM((float)(rotate / 180 * Math.PI));
-                    this.gctx.TranslateCTM((float)dx, (float)dy);
+                    this.gctx.TranslateCTM((float)dx - bounds.Left, (float)dy + delta);
                     this.gctx.ScaleCTM(1f, -1f);
 
                     if (maxSize.HasValue)
                     {
-                        this.gctx.ClipToRect(new RectangleF(0, 0, width, height));
+                        this.gctx.ClipToRect(new RectangleF(0, 0, (float)Math.Ceiling(width), (float)Math.Ceiling(height)));
                     }
 
                     textLine.Draw(this.gctx);
@@ -383,8 +386,11 @@ namespace OxyPlot.XamarinIOS
             {
                 using (var textLine = new CTLine(attributedString))
                 {
+                    float lineHeight, delta;
+                    this.GetFontMetrics(font, out lineHeight, out delta);
+                    this.gctx.TextPosition = new PointF(0, 0);
                     var bounds = textLine.GetImageBounds(this.gctx);
-                    return new OxySize(bounds.Width, bounds.Height);
+                    return new OxySize(bounds.Width, lineHeight);
                 }
             }
         }
@@ -444,6 +450,27 @@ namespace OxyPlot.XamarinIOS
             }
 
             return fontName;
+        }
+
+        /// <summary>
+        /// Gets font metrics for the specified font.
+        /// </summary>
+        /// <param name="font">The font.</param>
+        /// <param name="defaultLineHeight">Default line height.</param>
+        /// <param name="delta">The vertical delta.</param>
+        private void GetFontMetrics(CTFont font, out float defaultLineHeight, out float delta)
+        {
+            var ascent = font.AscentMetric;
+            var descent = font.DescentMetric;
+            var leading = font.LeadingMetric;
+
+            //// http://stackoverflow.com/questions/5511830/how-does-line-spacing-work-in-core-text-and-why-is-it-different-from-nslayoutm
+
+            leading = leading < 0 ? 0 : (float)Math.Floor(leading + 0.5f);
+            var lineHeight = (float)Math.Floor(ascent + 0.5f) + (float)Math.Floor(descent + 0.5) + leading;
+            var ascenderDelta = leading >= 0 ? 0 : (float)Math.Floor((0.2 * lineHeight) + 0.5);
+            defaultLineHeight = lineHeight + ascenderDelta;
+            delta = ascenderDelta - descent;
         }
 
         /// <summary>
