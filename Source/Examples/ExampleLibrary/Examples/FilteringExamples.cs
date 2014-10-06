@@ -7,14 +7,12 @@
 namespace ExampleLibrary
 {
     using System;
-    using System.Diagnostics.CodeAnalysis;
 
     using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
     [Examples("Filtering data points")]
-    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public static class FilteringExamples
     {
         [Example("Filtering NaN points")]

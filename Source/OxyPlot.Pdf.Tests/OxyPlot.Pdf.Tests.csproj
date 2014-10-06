@@ -70,6 +70,10 @@
       <Project>{12737c3f-5770-403f-90a1-bc12ebd1bb31}</Project>
       <Name>OxyPlot.Pdf</Name>
     </ProjectReference>
+    <ProjectReference Include="..\OxyPlot.Tests\OxyPlot.Tests.csproj">
+      <Project>{e6218b88-69f5-4e3f-9abc-93ab82fd77ad}</Project>
+      <Name>OxyPlot.Tests</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OxyPlot\OxyPlot.csproj">
       <Project>{7a0b35c0-dd17-4964-8e9a-44d6cecdc692}</Project>
       <Name>OxyPlot</Name>

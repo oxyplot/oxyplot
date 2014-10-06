@@ -13,6 +13,7 @@ namespace OxyPlot.Pdf.Tests
     using NUnit.Framework;
 
     using OxyPlot.Pdf;
+    using OxyPlot.Tests;
 
     // ReSharper disable InconsistentNaming
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
@@ -39,7 +40,7 @@ namespace OxyPlot.Pdf.Tests
                     continue;
                 }
 
-                var path = Path.Combine(DestinationDirectory, StringHelper.CreateValidFileName(example.Category + " - " + example.Title, ".pdf"));
+                var path = Path.Combine(DestinationDirectory, FileNameUtilities.CreateValidFileName(example.Category + " - " + example.Title, ".pdf"));
                 using (var s = File.Create(path))
                 {
                     PdfExporter.Export(example.PlotModel, s, Width, Height);

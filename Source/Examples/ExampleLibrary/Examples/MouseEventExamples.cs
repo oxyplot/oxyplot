@@ -15,7 +15,7 @@ namespace ExampleLibrary
     using OxyPlot.Series;
 
     [Examples("Mouse Events")]
-    public class MouseEventExamples : ExamplesBase
+    public class MouseEventExamples
     {
         [Example("PlotModel mouse events")]
         public static PlotModel MouseEvents()
@@ -626,7 +626,6 @@ namespace ExampleLibrary
         [Example("Clicking on an annotation")]
         public static PlotModel ClickingOnAnAnnotation()
         {
-            // https://oxyplot.codeplex.com/discussions/543975
             var plotModel = new PlotModel { Title = "Clicking on an annotation", Subtitle = "Click on the rectangles" };
 
             plotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });

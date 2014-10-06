@@ -138,7 +138,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets or sets the custom marker outline polygon. Set <see cref="MarkerType" /> to <see cref="T:MarkerType.Custom" /> to use this.
         /// </summary>
-        /// <value>The outline. The default is <c>null</c>.</value>
+        /// <value>A polyline. The default is <c>null</c>.</value>
         public ScreenPoint[] MarkerOutline { get; set; }
 
         /// <summary>

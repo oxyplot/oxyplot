@@ -28,7 +28,7 @@ namespace OxyPlot.Wpf
                 return;
             }
 
-            e.Handled = this.Controller.HandleTouchStarted(this, e.ToTouchEventArgs(this));
+            e.Handled = this.ActualController.HandleTouchStarted(this, e.ToTouchEventArgs(this));
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace OxyPlot.Wpf
                 return;
             }
 
-            e.Handled = this.Controller.HandleTouchDelta(this, e.ToTouchEventArgs(this));
+            e.Handled = this.ActualController.HandleTouchDelta(this, e.ToTouchEventArgs(this));
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace OxyPlot.Wpf
                 return;
             }
 
-            e.Handled = this.Controller.HandleTouchCompleted(this, e.ToTouchEventArgs(this));
+            e.Handled = this.ActualController.HandleTouchCompleted(this, e.ToTouchEventArgs(this));
         }
     }
 }

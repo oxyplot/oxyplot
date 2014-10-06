@@ -11,11 +11,12 @@ namespace OxyPlot
 {
     using System;
     using System.Globalization;
+    using System.Text;
 
     /// <summary>
     /// Describes the width, height, and point origin of a rectangle.
     /// </summary>
-    public struct OxyRect
+    public struct OxyRect : IFormattable
     {
         /// <summary>
         /// The height of the rectangle.
@@ -72,6 +73,16 @@ namespace OxyPlot
         /// <param name="p1">The second point that the new rectangle must contain.</param>
         public OxyRect(ScreenPoint p0, ScreenPoint p1)
             : this(Math.Min(p0.X, p1.X), Math.Min(p0.Y, p1.Y), Math.Abs(p1.X - p0.X), Math.Abs(p1.Y - p0.Y))
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OxyRect"/> struct by location and size.
+        /// </summary>
+        /// <param name="p0">The location.</param>
+        /// <param name="size">The size.</param>
+        public OxyRect(ScreenPoint p0, OxySize size)
+            : this(p0.X, p0.Y, size.Width, size.Height)
         {
         }
 
@@ -229,8 +240,31 @@ namespace OxyPlot
         /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
         public override string ToString()
         {
-            return string.Format(
-                CultureInfo.InvariantCulture, "({0}, {1}, {2}, {3})", this.left, this.top, this.width, this.height);
+            return string.Format(CultureInfo.InvariantCulture, "({0}, {1}, {2}, {3})", this.left, this.top, this.width, this.height);
+        }
+
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <param name="format">The format.</param>
+        /// <param name="formatProvider">The format provider.</param>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
+        public string ToString(string format, IFormatProvider formatProvider)
+        {
+            const string Separator = ", ";
+            var builder = new StringBuilder();
+            builder.Append("(");
+            builder.Append(this.Left.ToString(format, formatProvider));
+            builder.Append(Separator);
+            builder.Append(this.Top.ToString(format, formatProvider));
+            builder.Append(Separator);
+            builder.Append(this.Width.ToString(format, formatProvider));
+            builder.Append(Separator);
+            builder.Append(this.Height.ToString(format, formatProvider));
+            builder.Append(")");
+            return builder.ToString();
         }
     }
 }

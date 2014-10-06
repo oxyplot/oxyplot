@@ -100,6 +100,12 @@ namespace OxyPlot.Series
         public MarkerType OutlierType { get; set; }
 
         /// <summary>
+        /// Gets or sets the a custom polygon outline for the outlier markers. Set <see cref="OutlierType" /> to <see cref="OxyPlot.MarkerType.Custom" /> to use this property.
+        /// </summary>
+        /// <value>A polyline. The default is <c>null</c>.</value>
+        public ScreenPoint[] OutlierOutline { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether to show the boxes.
         /// </summary>
         public bool ShowBox { get; set; }
@@ -347,17 +353,20 @@ namespace OxyPlot.Series
                 }
             }
 
-            // Draw the outlier(s)
-            var markerSizes = outlierScreenPoints.Select(o => this.OutlierSize).ToList();
-            rc.DrawMarkers(
-                clippingRect,
-                outlierScreenPoints,
-                this.OutlierType,
-                null,
-                markerSizes,
-                fillColor,
-                strokeColor,
-                this.StrokeThickness);
+            if (this.OutlierType != MarkerType.None)
+            {
+                // Draw the outlier(s)
+                var markerSizes = outlierScreenPoints.Select(o => this.OutlierSize).ToList();
+                rc.DrawMarkers(
+                    clippingRect,
+                    outlierScreenPoints,
+                    this.OutlierType,
+                    this.OutlierOutline,
+                    markerSizes,
+                    fillColor,
+                    strokeColor,
+                    this.StrokeThickness);
+            }
         }
 
         /// <summary>

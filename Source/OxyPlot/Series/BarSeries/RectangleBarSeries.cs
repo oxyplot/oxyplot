@@ -238,7 +238,7 @@ namespace OxyPlot.Series
 
             this.Items.Clear();
 
-            // ReflectionHelper.FillList(
+            // ReflectionExtensions.AddRange(
             // this.ItemsSource,
             // this.Items,
             // new[] { this.MinimumField, this.MaximumField },

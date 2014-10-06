@@ -57,6 +57,12 @@ namespace OxyPlot.Annotations
         public MarkerType Shape { get; set; }
 
         /// <summary>
+        /// Gets or sets a custom polygon outline for the point marker. Set <see cref="Shape" /> to <see cref="MarkerType.Custom" /> to use this property.
+        /// </summary>
+        /// <value>A polyline. The default is <c>null</c>.</value>
+        public ScreenPoint[] CustomOutline { get; set; }
+
+        /// <summary>
         /// Renders the polygon annotation.
         /// </summary>
         /// <param name="rc">The render context.</param>
@@ -70,7 +76,7 @@ namespace OxyPlot.Annotations
             // clip to the area defined by the axes
             var clippingRectangle = this.GetClippingRect();
 
-            rc.DrawMarker(clippingRectangle, this.screenPosition, this.Shape, null, this.Size, this.Fill, this.Stroke, this.StrokeThickness);
+            rc.DrawMarker(clippingRectangle, this.screenPosition, this.Shape, this.CustomOutline, this.Size, this.Fill, this.Stroke, this.StrokeThickness);
 
             if (!string.IsNullOrEmpty(this.Text))
             {

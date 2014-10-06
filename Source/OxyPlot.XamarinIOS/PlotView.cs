@@ -28,18 +28,51 @@ namespace OxyPlot.XamarinIOS
         /// The default plot controller.
         /// </summary>
         private IPlotController defaultController;
-
+               
         /// <summary>
         /// Initializes a new instance of the <see cref="OxyPlot.XamarinIOS.PlotView"/> class.
         /// </summary>
         public PlotView()
         {
-            // TODO: virtual method calls in constructor, how to avoid this?
-            // ReSharper disable DoNotCallOverridableMethodsInConstructor
+            this.Initialize ();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OxyPlot.XamarinIOS.PlotView"/> class.
+        /// </summary>
+        /// <param name="frame">The initial frame.</param>
+        public PlotView(System.Drawing.RectangleF frame) : base(frame)
+        {
+            this.Initialize ();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OxyPlot.XamarinIOS.PlotView"/> class.
+        /// </summary>
+        /// <param name="coder">Coder.</param>
+        [Export ("initWithCoder:")]
+        public PlotView(NSCoder coder) : base (coder)
+        {
+            this.Initialize ();
+        }
+
+        /// <summary>
+        /// Uses the new layout.
+        /// </summary>
+        /// <returns><c>true</c>, if new layout was used, <c>false</c> otherwise.</returns>
+        [Export ("requiresConstraintBasedLayout")]
+        bool UseNewLayout ()
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// Initialize the view.
+        /// </summary>
+        private void Initialize() {
             this.UserInteractionEnabled = true;
             this.MultipleTouchEnabled = true;
             this.BackgroundColor = UIColor.White;
-            // ReSharper restore DoNotCallOverridableMethodsInConstructor
             this.KeepAspectRatioWhenPinching = true;
         }
 
@@ -225,8 +258,10 @@ namespace OxyPlot.XamarinIOS
         {
             if (this.model != null)
             {
-                var renderer = new MonoTouchRenderContext(UIGraphics.GetCurrentContext());
-                ((IPlotModel)this.model).Render(renderer, rect.Width, rect.Height);
+                using (var renderer = new MonoTouchRenderContext(UIGraphics.GetCurrentContext()))
+                {
+                    ((IPlotModel)this.model).Render(renderer, rect.Width, rect.Height);
+                }
             }
         }
 

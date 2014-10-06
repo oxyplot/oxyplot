@@ -10,8 +10,6 @@
 namespace OxyPlot
 {
     using System;
-    using System.Collections;
-    using System.Text;
     using System.Text.RegularExpressions;
 
     /// <summary>
@@ -66,35 +64,6 @@ namespace OxyPlot
             // Also apply the standard formatting
             s = string.Format(provider, s, values);
             return s;
-        }
-
-        /// <summary>
-        /// Creates a valid file name.
-        /// </summary>
-        /// <param name="title">The title.</param>
-        /// <param name="extension">The extension.</param>
-        /// <returns>A file name.</returns>
-        public static string CreateValidFileName(string title, string extension)
-        {
-            string validFileName = title.Trim();
-            var invalidFileNameChars = "/?<>\\:*|\0\t\r\n".ToCharArray();
-            foreach (char invalChar in invalidFileNameChars)
-            {
-                validFileName = validFileName.Replace(invalChar.ToString(), string.Empty);
-            }
-
-            foreach (char invalChar in invalidFileNameChars)
-            {
-                validFileName = validFileName.Replace(invalChar.ToString(), string.Empty);
-            }
-
-            if (validFileName.Length > 160)
-            {
-                // safe value threshold is 260
-                validFileName = validFileName.Remove(156) + "...";
-            }
-
-            return validFileName + extension;
         }
     }
 }

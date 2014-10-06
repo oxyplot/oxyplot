@@ -13,6 +13,7 @@
     <tags>openxml plotting plot charting chart</tags>
     <dependencies>
       <dependency id="OxyPlot.Core" version="[0.0.0]"/>
+      <dependency id="DocumentFormat.OpenXml"/>
     </dependencies>
   </metadata>
   <files>

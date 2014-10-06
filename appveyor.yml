@@ -27,6 +27,7 @@
       type: zip
   deploy_script:
     - cmd: mkdir Packages
+    - cmd: NuGet pack Source\OxyPlot.nuspec -OutputDirectory Packages
     - cmd: NuGet pack Source\OxyPlot\OxyPlot.Core.nuspec -OutputDirectory Packages
     - cmd: NuGet pack Source\OxyPlot.Wpf\OxyPlot.Wpf.nuspec -OutputDirectory Packages
     - cmd: NuGet pack Source\OxyPlot.WindowsForms\OxyPlot.WindowsForms.nuspec -OutputDirectory Packages
@@ -70,6 +71,7 @@
       type: zip
   deploy_script:
     - cmd: mkdir Packages
+    - cmd: NuGet pack Source\OxyPlot.nuspec -OutputDirectory Packages
     - cmd: NuGet pack Source\OxyPlot\OxyPlot.Core.nuspec -OutputDirectory Packages
     - cmd: NuGet pack Source\OxyPlot.Wpf\OxyPlot.Wpf.nuspec -OutputDirectory Packages
     - cmd: NuGet pack Source\OxyPlot.WindowsForms\OxyPlot.WindowsForms.nuspec -OutputDirectory Packages

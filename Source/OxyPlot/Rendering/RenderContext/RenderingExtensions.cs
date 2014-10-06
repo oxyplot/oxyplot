@@ -786,6 +786,58 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Draws a circle at the specified position.
+        /// </summary>
+        /// <param name="rc">The render context.</param>
+        /// <param name="x">The center x-coordinate.</param>
+        /// <param name="y">The center y-coordinate.</param>
+        /// <param name="r">The radius.</param>
+        /// <param name="fill">The fill color.</param>
+        /// <param name="stroke">The stroke color.</param>
+        /// <param name="thickness">The thickness.</param>
+        public static void DrawCircle(this IRenderContext rc, double x, double y, double r, OxyColor fill, OxyColor stroke, double thickness = 1)
+        {
+            rc.DrawEllipse(new OxyRect(x - r, y - r, r * 2, r * 2), fill, stroke, thickness);
+        }
+
+        /// <summary>
+        /// Draws a circle at the specified position.
+        /// </summary>
+        /// <param name="rc">The render context.</param>
+        /// <param name="center">The center.</param>
+        /// <param name="r">The radius.</param>
+        /// <param name="fill">The fill color.</param>
+        /// <param name="stroke">The stroke color.</param>
+        /// <param name="thickness">The thickness.</param>
+        public static void DrawCircle(this IRenderContext rc, ScreenPoint center, double r, OxyColor fill, OxyColor stroke, double thickness = 1)
+        {
+            DrawCircle(rc, center.X, center.Y, r, fill, stroke, thickness);
+        }
+
+        /// <summary>
+        /// Fills a circle at the specified position.
+        /// </summary>
+        /// <param name="rc">The render context.</param>
+        /// <param name="center">The center.</param>
+        /// <param name="r">The radius.</param>
+        /// <param name="fill">The fill color.</param>
+        public static void FillCircle(this IRenderContext rc, ScreenPoint center, double r, OxyColor fill)
+        {
+            DrawCircle(rc, center.X, center.Y, r, fill, OxyColors.Undefined, 0d);
+        }
+
+        /// <summary>
+        /// Fills a rectangle at the specified position.
+        /// </summary>
+        /// <param name="rc">The render context.</param>
+        /// <param name="rectangle">The rectangle.</param>
+        /// <param name="fill">The fill color.</param>
+        public static void FillRectangle(this IRenderContext rc, OxyRect rectangle, OxyColor fill)
+        {
+            rc.DrawRectangle(rectangle, fill, OxyColors.Undefined, 0d);
+        }
+
+        /// <summary>
         /// Draws the rectangle as an aliased polygon.
         /// (makes sure pixel alignment is the same as for lines)
         /// </summary>

@@ -9,12 +9,14 @@
 
 namespace OxyPlot
 {
+    using System;
     using System.Globalization;
+    using System.Text;
 
     /// <summary>
     /// Describes the size of an object.
     /// </summary>
-    public struct OxySize
+    public struct OxySize : IFormattable
     {
         /// <summary>
         /// Empty Size.
@@ -52,6 +54,26 @@ namespace OxyPlot
         public override string ToString()
         {
             return string.Format(CultureInfo.InvariantCulture, "({0}, {1})", this.Width, this.Height);
+        }
+
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <param name="format">The format.</param>
+        /// <param name="formatProvider">The format provider.</param>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
+        public string ToString(string format, IFormatProvider formatProvider)
+        {
+            var builder = new StringBuilder();
+            builder.Append("(");
+            builder.Append(this.Width.ToString(format, formatProvider));
+            builder.Append(","); // or get from culture?
+            builder.Append(" ");
+            builder.Append(this.Height.ToString(format, formatProvider));
+            builder.Append(")");
+            return builder.ToString();
         }
     }
 }

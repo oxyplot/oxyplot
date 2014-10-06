@@ -547,7 +547,7 @@ namespace OxyPlot.Axes
             if (this.ItemsSource != null)
             {
                 this.itemsSourceLabels.Clear();
-                ReflectionHelper.FillList(this.itemsSourceLabels, this.ItemsSource, this.LabelField);
+                this.itemsSourceLabels.AddRange(this.ItemsSource, this.LabelField);
                 return;
             }
 

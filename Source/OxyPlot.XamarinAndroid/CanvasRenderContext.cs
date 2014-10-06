@@ -9,6 +9,7 @@
 
 namespace OxyPlot.XamarinAndroid
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Android.Graphics;
@@ -277,11 +278,13 @@ namespace OxyPlot.XamarinAndroid
 
                 float width;
                 float height;
+                float lineHeight, delta;
+                this.GetFontMetrics(this.paint, out lineHeight, out delta);
                 if (maxSize.HasValue || halign != HorizontalAlignment.Left || valign != VerticalAlignment.Bottom)
                 {
                     this.paint.GetTextBounds(text, 0, text.Length, this.bounds);
                     width = this.bounds.Width();
-                    height = this.bounds.Height();
+                    height = lineHeight;
                 }
                 else
                 {
@@ -310,7 +313,7 @@ namespace OxyPlot.XamarinAndroid
                 this.canvas.Save();
                 this.canvas.Translate(this.Convert(p.X), this.Convert(p.Y));
                 this.canvas.Rotate((float)rotate);
-                this.canvas.Translate((float)dx, (float)dy);
+                this.canvas.Translate((float)dx, (float)dy + delta);
 
                 if (maxSize.HasValue)
                 {
@@ -341,8 +344,10 @@ namespace OxyPlot.XamarinAndroid
             {
                 this.paint.AntiAlias = true;
                 this.paint.TextSize = this.Convert(fontSize);
+                float lineHeight, delta;
+                this.GetFontMetrics(this.paint, out lineHeight, out delta);
                 this.paint.GetTextBounds(text, 0, text.Length, this.bounds);
-                return new OxySize(this.bounds.Width() / this.Scale, this.bounds.Height() / this.Scale);
+                return new OxySize(this.bounds.Width() / this.Scale, lineHeight / this.Scale);
             }
         }
 
@@ -423,6 +428,28 @@ namespace OxyPlot.XamarinAndroid
             }
 
             this.imagesInUse.Clear();
+        }
+
+        /// <summary>
+        /// Gets font metrics for the font in the specified paint.
+        /// </summary>
+        /// <param name="paint">The paint.</param>
+        /// <param name="defaultLineHeight">Default line height.</param>
+        /// <param name="delta">The vertical delta.</param>
+        private void GetFontMetrics(Paint paint, out float defaultLineHeight, out float delta)
+        {
+            var metrics = paint.GetFontMetrics ();
+            var ascent = -metrics.Ascent;
+            var descent = metrics.Descent;
+            var leading = metrics.Leading;
+
+            //// http://stackoverflow.com/questions/5511830/how-does-line-spacing-work-in-core-text-and-why-is-it-different-from-nslayoutm
+
+            leading = leading < 0 ? 0 : (float)Math.Floor(leading + 0.5f);
+            var lineHeight = (float)Math.Floor(ascent + 0.5f) + (float)Math.Floor(descent + 0.5) + leading;
+            var ascenderDelta = leading >= 0 ? 0 : (float)Math.Floor((0.2 * lineHeight) + 0.5);
+            defaultLineHeight = lineHeight + ascenderDelta;
+            delta = ascenderDelta - descent;
         }
 
         /// <summary>

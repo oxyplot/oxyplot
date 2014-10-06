@@ -74,6 +74,7 @@ namespace OxyPlot
         /// <param name="a">The a.</param>
         /// <param name="b">The b.</param>
         /// <returns>The greatest common divisor.</returns>
+        [Obsolete]
         public static int GreatestCommonDivisor(int a, int b)
         {
             if (b == 0)
@@ -90,6 +91,7 @@ namespace OxyPlot
         /// <param name="x">The x.</param>
         /// <param name="y">The y.</param>
         /// <returns>The greatest common factor.</returns>
+        [Obsolete]
         public static int GreatestCommonFactor(int x, int y)
         {
             x = Math.Abs(x);

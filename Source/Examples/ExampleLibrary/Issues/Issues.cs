@@ -11,7 +11,6 @@ namespace ExampleLibrary
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
 
     using OxyPlot;
     using OxyPlot.Annotations;
@@ -19,9 +18,7 @@ namespace ExampleLibrary
     using OxyPlot.Series;
 
     [Examples("Z1 Issues")]
-    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    // ReSharper disable InconsistentNaming
-    public class Issues : ExamplesBase
+    public class Issues
     {
         [Example("Support colour coding on scatter plots (Closed)")]
         public static PlotModel ColorCodingOnScatterPlots()
@@ -721,6 +718,24 @@ namespace ExampleLibrary
                 Color = OxyColors.Red
             });
 
+            return plotModel1;
+        }
+
+        [Example("#185: Wrong plot margins when Angle = 90 (LinearAxis)")]
+        public static PlotModel PlotMarginsLinearAxisWhenAxisAngleIs90()
+        {
+            var plotModel1 = new PlotModel { Title = "Plot margins not adjusted correctly when Angle = 90", Subtitle = "The numbers should not be clipped" };
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Angle = 90, Minimum = 1e8, Maximum = 1e9 });
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Angle = 90, Minimum = 1e8, Maximum = 1e9 });
+            return plotModel1;
+        }
+
+        [Example("#185: Wrong plot margins when Angle = 90 (DateTimeAxis)")]
+        public static PlotModel PlotMarginsDateTimeAxisWhenAxisAngleIs90()
+        {
+            var plotModel1 = new PlotModel { Title = "Plot margins not adjusted correctly when Angle = 90", Subtitle = "The numbers should not be clipped" };
+            plotModel1.Axes.Add(new DateTimeAxis { Position = AxisPosition.Bottom, Angle = 90 });
+            plotModel1.Axes.Add(new DateTimeAxis { Position = AxisPosition.Left, Angle = 90 });
             return plotModel1;
         }
     }

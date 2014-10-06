@@ -7,7 +7,7 @@
 namespace ExampleLibrary
 {
     using System;
-    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Linq;
 
     using OxyPlot;
@@ -15,9 +15,7 @@ namespace ExampleLibrary
     using OxyPlot.Series;
 
     [Examples("Z0 Discussions")]
-    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    // ReSharper disable InconsistentNaming
-    public class DiscussionExamples : ExamplesBase
+    public class DiscussionExamples
     {
         [Example("#445576: Invisible contour series")]
         public static PlotModel InvisibleContourSeries()
@@ -26,10 +24,10 @@ namespace ExampleLibrary
             var cs = new ContourSeries
             {
                 IsVisible = false,
-                ColumnCoordinates = ArrayHelper.CreateVector(-1, 1, 0.05),
-                RowCoordinates = ArrayHelper.CreateVector(-1, 1, 0.05)
+                ColumnCoordinates = ArrayBuilder.CreateVector(-1, 1, 0.05),
+                RowCoordinates = ArrayBuilder.CreateVector(-1, 1, 0.05)
             };
-            cs.Data = ArrayHelper.Evaluate((x, y) => x + y, cs.ColumnCoordinates, cs.RowCoordinates);
+            cs.Data = ArrayBuilder.Evaluate((x, y) => x + y, cs.ColumnCoordinates, cs.RowCoordinates);
             model.Series.Add(cs);
             return model;
         }
@@ -84,7 +82,7 @@ namespace ExampleLibrary
             var hms = (HeatMapSeries)model.Series[0];
             hms.MouseDown += (s, e) =>
             {
-                lca.Maximum = double.IsNaN(lca.Maximum) ? 10 : double.NaN;
+                lca.Maximum = Double.IsNaN(lca.Maximum) ? 10 : Double.NaN;
                 model.InvalidatePlot(true);
             };
             return model;
@@ -100,7 +98,7 @@ namespace ExampleLibrary
             var hms = (HeatMapSeries)model.Series[0];
             hms.MouseDown += (s, e) =>
             {
-                lca.Maximum = double.IsNaN(lca.Maximum) ? 10 : double.NaN;
+                lca.Maximum = Double.IsNaN(lca.Maximum) ? 10 : Double.NaN;
                 hms.Invalidate();
                 model.InvalidatePlot(true);
             };
@@ -254,6 +252,63 @@ namespace ExampleLibrary
             model.Series.Add(new ArrowSeries549839 { EndPoint = new DataPoint(4, 140) });
             model.Series.Add(new ArrowSeries549839 { EndPoint = new DataPoint(5, 180) });
             return model;
+        }
+
+        [Example("MarkerType = Circle problem")]
+        public static PlotModel MarkerTypeCircleProblem()
+        {
+            var plotModel = new PlotModel { LegendSymbolLength = 30, PlotType = PlotType.Cartesian, PlotAreaBorderThickness = new OxyThickness(0) };
+
+
+            var xaxis = new DateTimeAxis
+                            {
+                                Position = AxisPosition.Bottom,
+                                TickStyle = TickStyle.None,
+                                AxislineStyle = LineStyle.Solid,
+                                AxislineColor = OxyColor.FromRgb(153, 153, 153),
+                                StringFormat = CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(1) + "d HH",
+                                IntervalType = DateTimeIntervalType.Hours
+                            };
+
+            var yaxis = new LinearAxis
+                            {
+                                Position = AxisPosition.Left,
+                                Minimum = 0.001f,
+                                Maximum = 3,
+                                MajorGridlineStyle = LineStyle.Solid,
+                                TickStyle = TickStyle.None,
+                                IntervalLength = 50
+                            };
+
+            plotModel.Axes.Add(xaxis);
+            plotModel.Axes.Add(yaxis);
+
+            var series1 = new LineSeries
+                              {
+                                  Color = OxyColor.FromRgb(44, 169, 173),
+                                  StrokeThickness = 1,
+                                  MarkerType = MarkerType.Circle,
+                                  MarkerStroke = OxyColors.Blue,
+                                  MarkerFill = OxyColors.SkyBlue,
+                                  // MarkerStrokeThickness = 5,
+                                  MarkerSize = 2,
+                                  DataFieldX = "Date",
+                                  DataFieldY = "Value",
+                                  TrackerFormatString = "Date: {2:d HH}&#x0a;Value: {4}"
+                              };
+
+            series1.Points.Add(new DataPoint(0.1, 0.7));
+            series1.Points.Add(new DataPoint(0.6, 0.9));
+            series1.Points.Add(new DataPoint(1.0, 0.85));
+            series1.Points.Add(new DataPoint(1.4, 0.95));
+            series1.Points.Add(new DataPoint(1.8, 1.2));
+            series1.Points.Add(new DataPoint(2.2, 1.7));
+            series1.Points.Add(new DataPoint(2.6, 1.7));
+            series1.Points.Add(new DataPoint(3.0, 0.7));
+
+            plotModel.Series.Add(series1);
+
+            return plotModel;
         }
 
         private class ArrowSeries549839 : XYAxisSeries
