@@ -70,7 +70,7 @@ namespace OxyPlot.Series
             this.MinimumSegmentLength = 2;
             this.StrokeThickness = 2;
             this.LineJoin = LineJoin.Bevel;
-            this.LineStyle = LineStyle.Undefined;
+            this.LineStyle = LineStyle.Automatic;
             this.MarkerResolution = 0;
             this.MarkerSize = 3;
             this.MarkerStrokeThickness = 1;
@@ -267,7 +267,7 @@ namespace OxyPlot.Series
         {
             get
             {
-                return this.LineStyle != LineStyle.Undefined ? this.LineStyle : this.defaultLineStyle;
+                return this.LineStyle != LineStyle.Automatic ? this.LineStyle : this.defaultLineStyle;
             }
         }
 
@@ -398,7 +398,7 @@ namespace OxyPlot.Series
         /// <param name="model">The plot model.</param>
         protected internal override void SetDefaultValues(PlotModel model)
         {
-            if (this.LineStyle == LineStyle.Undefined)
+            if (this.LineStyle == LineStyle.Automatic)
             {
                 this.defaultLineStyle = model.GetDefaultLineStyle();
             }

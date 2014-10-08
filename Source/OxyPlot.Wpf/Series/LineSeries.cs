@@ -88,7 +88,7 @@ namespace OxyPlot.Wpf
         /// Identifies the <see cref="LineStyle"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LineStyleProperty = DependencyProperty.Register(
-            "LineStyle", typeof(LineStyle), typeof(LineSeries), new PropertyMetadata(LineStyle.Undefined, AppearanceChanged));
+            "LineStyle", typeof(LineStyle), typeof(LineSeries), new PropertyMetadata(LineStyle.Automatic, AppearanceChanged));
 
         /// <summary>
         /// Identifies the <see cref="MarkerFill"/> dependency property.
