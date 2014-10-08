@@ -105,7 +105,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         static BarSeriesBase()
         {
-            TrackerFormatStringProperty.OverrideMetadata(typeof(CategoryAxis), new PropertyMetadata("{0}, {1}: {2}", AppearanceChanged));
+            TrackerFormatStringProperty.OverrideMetadata(typeof(BarSeriesBase), new PropertyMetadata(OxyPlot.Series.BarSeriesBase.DefaultTrackerFormatString, AppearanceChanged));
         }
 
         /// <summary>

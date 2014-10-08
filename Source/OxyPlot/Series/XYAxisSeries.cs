@@ -20,6 +20,11 @@ namespace OxyPlot.Series
     public abstract class XYAxisSeries : ItemsSeries
     {
         /// <summary>
+        /// The default tracker format string
+        /// </summary>
+        public const string DefaultTrackerFormatString = "{0}\n{1}: {2:0.###}\n{3}: {4:0.###}";
+
+        /// <summary>
         /// The default x-axis title
         /// </summary>
         protected const string DefaultXAxisTitle = "X";
@@ -34,7 +39,7 @@ namespace OxyPlot.Series
         /// </summary>
         protected XYAxisSeries()
         {
-            this.TrackerFormatString = "{0}\n{1}: {2:0.###}\n{3}: {4:0.###}";
+            this.TrackerFormatString = DefaultTrackerFormatString;
         }
 
         /// <summary>

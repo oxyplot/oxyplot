@@ -29,6 +29,14 @@ namespace OxyPlot.Wpf
             "YAxisKey", typeof(string), typeof(XYAxisSeries), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
+        /// Initializes static members of the <see cref="XYAxisSeries"/> class.
+        /// </summary>
+        static XYAxisSeries()
+        {
+            TrackerFormatStringProperty.OverrideMetadata(typeof(XYAxisSeries), new PropertyMetadata(OxyPlot.Series.XYAxisSeries.DefaultTrackerFormatString, AppearanceChanged));
+        }
+
+        /// <summary>
         /// Gets or sets the x-axis key.
         /// </summary>
         public string XAxisKey

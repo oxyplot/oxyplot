@@ -25,14 +25,6 @@ namespace OxyPlot.Wpf
             "BarWidth", typeof(double), typeof(BarSeries), new PropertyMetadata(1.0, AppearanceChanged));
 
         /// <summary>
-        /// Initializes static members of the <see cref="BarSeries" /> class.
-        /// </summary>
-        static BarSeries()
-        {
-            TrackerFormatStringProperty.OverrideMetadata(typeof(BarSeries), new PropertyMetadata("{0}, {1}: {2}", AppearanceChanged));
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="BarSeries" /> class.
         /// </summary>
         public BarSeries()

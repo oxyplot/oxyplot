@@ -21,6 +21,11 @@ namespace OxyPlot.Series
     public abstract class BarSeriesBase : CategorizedSeries, IStackableSeries
     {
         /// <summary>
+        /// The default tracker format string
+        /// </summary>
+        public new const string DefaultTrackerFormatString = "{0}\n{1}: {2:0.###}";
+
+        /// <summary>
         /// The default fill color.
         /// </summary>
         private OxyColor defaultFillColor;
@@ -34,7 +39,7 @@ namespace OxyPlot.Series
             this.NegativeFillColor = OxyColors.Undefined;
             this.StrokeColor = OxyColors.Black;
             this.StrokeThickness = 0;
-            this.TrackerFormatString = "{0}\n{1}: {2:0.###}";
+            this.TrackerFormatString = DefaultTrackerFormatString;
             this.LabelMargin = 2;
             this.StackGroup = string.Empty;
         }
