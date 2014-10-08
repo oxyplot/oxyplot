@@ -13,10 +13,11 @@ OxyPlot is a cross-platform plotting library for .NET
 
 [![Build status](https://ci.appveyor.com/api/projects/status/mlaqnruo6ic3oe60)](https://ci.appveyor.com/project/objorke/oxyplot)
 
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/oxyplot/oxyplot?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 ![Plot](http://oxyplot.org/public/images/normal-distributions.png)
 
 #### Branches
-[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/oxyplot/oxyplot?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 `master` - the release branch (stable channel)  
 `develop` -  the main branch with the latest development changes (pre-release channel)
