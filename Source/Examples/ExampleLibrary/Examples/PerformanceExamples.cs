@@ -284,6 +284,38 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("int overflow (10k)")]
+        public static PlotModel IntOverflow10k()
+        {
+            return IntOverflow(10000);
+        }
+
+        [Example("int overflow (50k)")]
+        public static PlotModel IntOverflow50k()
+        {
+            return IntOverflow(50000);
+        }
+
+        [Example("int overflow (100k)")]
+        public static PlotModel IntOverflow100k()
+        {
+            return IntOverflow(100000);
+        }
+
+        private static PlotModel IntOverflow(int n)
+        {
+            var model = new PlotModel { Title = "int overflow", Subtitle = "n = " + n };
+            var ls = new LineSeries();
+            int k = 0;
+            for (int i = 0; i < n; i++)
+            {
+                ls.Points.Add(new DataPoint(i, k += i * i));
+            }
+
+            model.Series.Add(ls);
+            return model;
+        }
+
         private static List<DataPoint> GetPoints(int n)
         {
             var points = new List<DataPoint>();
