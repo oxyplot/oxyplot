@@ -27,24 +27,24 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Gets or sets the background color of the series.
+        /// Gets or sets the background color of the series. The default is <c>OxyColors.Undefined</c>.
         /// </summary>
         /// <remarks>This property defines the background color in the area defined by the x and y axes used by this series.</remarks>
         public OxyColor Background { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this series is visible.
+        /// Gets or sets a value indicating whether this series is visible. The default is <c>true</c>.
         /// </summary>
         public bool IsVisible { get; set; }
 
         /// <summary>
-        /// Gets or sets the title of the series.
+        /// Gets or sets the title of the series. The default is <c>null</c>.
         /// </summary>
         /// <value>The title that is shown in the legend of the plot. The default value is <c>null</c>. When the value is <c>null</c>, this series will not be shown in the legend.</value>
         public string Title { get; set; }
 
         /// <summary>
-        /// Gets or sets a format string used for the tracker.
+        /// Gets or sets a format string used for the tracker. The default is <c>null</c> (use default tracker format string for the series).
         /// </summary>
         /// <remarks>
         /// The arguments for the format string may be different for each type of series. See the documentation.
@@ -52,12 +52,26 @@ namespace OxyPlot.Series
         public string TrackerFormatString { get; set; }
 
         /// <summary>
-        /// Gets or sets the key for the tracker to use on this series.
+        /// Gets or sets the key for the tracker to use on this series. The default is <c>null</c>.
         /// </summary>
         /// <remarks>
         /// This key may be used by the plot view to show a custom tracker for the series.
         /// </remarks>
         public string TrackerKey { get; set; }
+
+        /// <summary>
+        /// Gets the actual tracker format string.
+        /// </summary>
+        /// <value>
+        /// The actual tracker format string.
+        /// </value>
+        protected string ActualTrackerFormatString
+        {
+            get
+            {
+                return this.TrackerFormatString ?? this.GetDefaultTrackerFormatString();
+            }
+        }
 
         /// <summary>
         /// Gets the point on the series that is nearest the specified point.
@@ -128,6 +142,12 @@ namespace OxyPlot.Series
         /// </summary>
         /// <remarks>This method is called when the <see cref="PlotModel" /> is updated with the <c>updateData</c> parameter set to <c>true</c>.</remarks>
         protected internal abstract void UpdateMaxMin();
+
+        /// <summary>
+        /// Gets the default tracker format string.
+        /// </summary>
+        /// <returns>A format string.</returns>
+        protected abstract string GetDefaultTrackerFormatString();
 
         /// <summary>
         /// When overridden in a derived class, tests if the plot element is hit by the specified point.
