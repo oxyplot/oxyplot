@@ -85,7 +85,7 @@ namespace OxyPlot
             OxyColor stroke,
             double thickness,
             double[] dashArray,
-            OxyPenLineJoin lineJoin,
+            LineJoin lineJoin,
             bool aliased)
         {
             var xckdPoints = this.Distort(points);
@@ -108,7 +108,7 @@ namespace OxyPlot
             OxyColor stroke,
             double thickness,
             double[] dashArray,
-            OxyPenLineJoin lineJoin,
+            LineJoin lineJoin,
             bool aliased)
         {
             var p = new List<ScreenPoint>(points);

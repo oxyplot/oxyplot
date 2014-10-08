@@ -221,7 +221,7 @@ namespace OxyPlot.Series
                 this.GetSelectableColor(this.ActualColor),
                 this.StrokeThickness,
                 dashArray,
-                OxyPenLineJoin.Miter,
+                LineJoin.Miter,
                 true);
 
             // Shadow ends

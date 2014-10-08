@@ -146,7 +146,7 @@ namespace OxyPlot.XamarinAndroid
         /// <param name="dashArray">The dash array.</param>
         /// <param name="lineJoin">The line join type.</param>
         /// <param name="aliased">if set to <c>true</c> the shape will be aliased.</param>
-        public override void DrawLine(IList<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
+        public override void DrawLine(IList<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray, LineJoin lineJoin, bool aliased)
         {
             this.paint.Reset();
             {
@@ -169,7 +169,7 @@ namespace OxyPlot.XamarinAndroid
         /// <param name="dashArray">The dash array.</param>
         /// <param name="lineJoin">The line join type.</param>
         /// <param name="aliased">If set to <c>true</c> the shape will be aliased.</param>
-        public override void DrawLineSegments(IList<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
+        public override void DrawLineSegments(IList<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray, LineJoin lineJoin, bool aliased)
         {
             this.paint.Reset();
             {
@@ -206,7 +206,7 @@ namespace OxyPlot.XamarinAndroid
         /// <param name="dashArray">The dash array.</param>
         /// <param name="lineJoin">The line join type.</param>
         /// <param name="aliased">If set to <c>true</c> the shape will be aliased.</param>
-        public override void DrawPolygon(IList<ScreenPoint> points, OxyColor fill, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
+        public override void DrawPolygon(IList<ScreenPoint> points, OxyColor fill, OxyColor stroke, double thickness, double[] dashArray, LineJoin lineJoin, bool aliased)
         {
             this.paint.Reset();
             {
@@ -526,7 +526,7 @@ namespace OxyPlot.XamarinAndroid
         /// <param name="dashArray">The dash array.</param>
         /// <param name="lineJoin">The line join.</param>
         /// <param name="aliased">Use aliased strokes if set to <c>true</c>.</param>
-        private void SetStroke(OxyColor stroke, double thickness, double[] dashArray = null, OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter, bool aliased = false)
+        private void SetStroke(OxyColor stroke, double thickness, double[] dashArray = null, LineJoin lineJoin = LineJoin.Miter, bool aliased = false)
         {
             this.paint.SetStyle(Paint.Style.Stroke);
             this.paint.Color = stroke.ToColor();

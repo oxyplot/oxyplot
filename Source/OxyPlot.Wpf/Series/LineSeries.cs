@@ -70,9 +70,9 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty LineJoinProperty = DependencyProperty.Register(
             "LineJoin",
-            typeof(OxyPenLineJoin),
+            typeof(LineJoin),
             typeof(LineSeries),
-            new PropertyMetadata(OxyPenLineJoin.Bevel, AppearanceChanged));
+            new PropertyMetadata(LineJoin.Bevel, AppearanceChanged));
 
         /// <summary>
         /// Identifies the <see cref="LineLegendPosition"/> dependency property.
@@ -288,11 +288,11 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets LineJoin.
         /// </summary>
-        public OxyPenLineJoin LineJoin
+        public LineJoin LineJoin
         {
             get
             {
-                return (OxyPenLineJoin)this.GetValue(LineJoinProperty);
+                return (LineJoin)this.GetValue(LineJoinProperty);
             }
 
             set

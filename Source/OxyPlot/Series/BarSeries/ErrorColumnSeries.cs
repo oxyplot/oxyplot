@@ -164,7 +164,7 @@ namespace OxyPlot.Series
                 this.StrokeColor,
                 this.ErrorStrokeThickness,
                 null,
-                OxyPenLineJoin.Miter,
+                LineJoin.Miter,
                 true);
 
             if (this.ErrorWidth > 0)
@@ -178,7 +178,7 @@ namespace OxyPlot.Series
                     this.StrokeColor,
                     this.ErrorStrokeThickness,
                     null,
-                    OxyPenLineJoin.Miter,
+                    LineJoin.Miter,
                     true);
 
                 var upperLeftErrorPoint = this.Transform(leftValue, upperValue);
@@ -190,7 +190,7 @@ namespace OxyPlot.Series
                     this.StrokeColor,
                     this.ErrorStrokeThickness,
                     null,
-                    OxyPenLineJoin.Miter,
+                    LineJoin.Miter,
                     true);
             }
         }

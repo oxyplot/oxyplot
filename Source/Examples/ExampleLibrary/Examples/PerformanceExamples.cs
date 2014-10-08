@@ -71,7 +71,7 @@ namespace ExampleLibrary
         public static PlotModel LineSeriesRoundLineJoins()
         {
             var model = new PlotModel { Title = "LineSeries, 100k points", Subtitle = "LineJoin = Round" };
-            var s1 = new LineSeries { LineJoin = OxyPenLineJoin.Round };
+            var s1 = new LineSeries { LineJoin = LineJoin.Round };
             AddPoints(s1.Points, 100000);
             model.Series.Add(s1);
             return model;
@@ -136,7 +136,7 @@ namespace ExampleLibrary
         public static PlotModel LineSeries2MiterLineJoins()
         {
             var model = new PlotModel { Title = "LineSeries, 3k points, miter line joins", Subtitle = "LineJoin = Miter" };
-            var s1 = new LineSeries { LineJoin = OxyPenLineJoin.Miter, StrokeThickness = 8.0 };
+            var s1 = new LineSeries { LineJoin = LineJoin.Miter, StrokeThickness = 8.0 };
             for (int i = 0; i < 3000; i++)
             {
                 s1.Points.Add(new DataPoint(i, i % 2));
@@ -151,7 +151,7 @@ namespace ExampleLibrary
         public static PlotModel LineSeries2RoundLineJoins()
         {
             var model = new PlotModel { Title = "LineSeries, 3k points, round line joins", Subtitle = "LineJoin = Round" };
-            var s1 = new LineSeries { LineJoin = OxyPenLineJoin.Round, StrokeThickness = 8.0 };
+            var s1 = new LineSeries { LineJoin = LineJoin.Round, StrokeThickness = 8.0 };
             for (int i = 0; i < 3000; i++)
             {
                 s1.Points.Add(new DataPoint(i, i % 2));
@@ -165,7 +165,7 @@ namespace ExampleLibrary
         public static PlotModel LineSeries2BevelLineJoins()
         {
             var model = new PlotModel { Title = "LineSeries, 3k points, bevel line joins", Subtitle = "LineJoin = Bevel" };
-            var s1 = new LineSeries { LineJoin = OxyPenLineJoin.Bevel, StrokeThickness = 8.0 };
+            var s1 = new LineSeries { LineJoin = LineJoin.Bevel, StrokeThickness = 8.0 };
             for (int i = 0; i < 3000; i++)
             {
                 s1.Points.Add(new DataPoint(i, i % 2));

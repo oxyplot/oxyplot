@@ -137,7 +137,7 @@ namespace PerformanceTest
                     OxyColors.Black,
                     1,
                     null,
-                    OxyPenLineJoin.Miter,
+                    LineJoin.Miter,
                     false,
                     outputBuffer);
             }

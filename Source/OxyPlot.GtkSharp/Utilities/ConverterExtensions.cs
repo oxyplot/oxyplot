@@ -23,17 +23,17 @@ namespace OxyPlot.GtkSharp
     public static class ConverterExtensions
     {
         /// <summary>
-        /// Converts an <see cref="OxyPenLineJoin" /> to a <see cref="LineJoin" />.
+        /// Converts an <see cref="OxyPlot.LineJoin" /> to a <see cref="LineJoin" />.
         /// </summary>
-        /// <param name="lineJoin">The <see cref="OxyPenLineJoin" /> to convert.</param>
+        /// <param name="lineJoin">The <see cref="OxyPlot.LineJoin" /> to convert.</param>
         /// <returns>The converted value.</returns>
-        public static LineJoin ToLineJoin(this OxyPenLineJoin lineJoin)
+        public static LineJoin ToLineJoin(this OxyPlot.LineJoin lineJoin)
         {
             switch (lineJoin)
             {
-                case OxyPenLineJoin.Round:
+                case OxyPlot.LineJoin.Round:
                     return LineJoin.Round;
-                case OxyPenLineJoin.Bevel:
+                case OxyPlot.LineJoin.Bevel:
                     return LineJoin.Bevel;
                 default:
                     return LineJoin.Miter;

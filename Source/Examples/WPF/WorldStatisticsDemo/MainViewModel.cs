@@ -89,7 +89,7 @@ namespace WorldStatisticsDemo
             if (SelectedCountry != null)
             {
                 var ls = new LineSeries { Title = SelectedCountry.Name };
-                ls.LineJoin = OxyPenLineJoin.Bevel;
+                ls.LineJoin = LineJoin.Bevel;
                 foreach (var p in SelectedCountry.Statistics)
                 {
                     if (double.IsNaN(p.GdpPerCapitaPpp) || double.IsNaN(p.LifeExpectancyAtBirth)) continue;

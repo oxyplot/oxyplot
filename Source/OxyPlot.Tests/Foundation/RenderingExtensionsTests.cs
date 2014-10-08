@@ -37,7 +37,7 @@ namespace OxyPlot.Tests
                 var clippingRectangle = new OxyRect(0.3, -0.5, 0.5, 1);
                 var rc = Substitute.For<IRenderContext>();
                 var received = new List<ScreenPoint>();
-                rc.DrawClippedLine(clippingRectangle, points, 1, OxyColors.Black, 1, null, OxyPenLineJoin.Miter, false, null, received.AddRange);
+                rc.DrawClippedLine(clippingRectangle, points, 1, OxyColors.Black, 1, null, LineJoin.Miter, false, null, received.AddRange);
                 Assert.AreEqual(0, received.Count);
             }
 
@@ -51,7 +51,7 @@ namespace OxyPlot.Tests
                 var clippingRectangle = new OxyRect(0.3, -0.5, 0.5, 1);
                 var rc = Substitute.For<IRenderContext>();
                 var received = new List<ScreenPoint>();
-                rc.DrawClippedLine(clippingRectangle, points, 1, OxyColors.Black, 1, null, OxyPenLineJoin.Miter, false, null, received.AddRange);
+                rc.DrawClippedLine(clippingRectangle, points, 1, OxyColors.Black, 1, null, LineJoin.Miter, false, null, received.AddRange);
                 Assert.AreEqual(2, received.Count);
             }
 
@@ -65,7 +65,7 @@ namespace OxyPlot.Tests
                 var clippingRectangle = new OxyRect(0.3, -0.5, 0.5, 1);
                 var rc = Substitute.For<IRenderContext>();
                 var received = new List<ScreenPoint>();
-                rc.DrawClippedLine(clippingRectangle, points, 1, OxyColors.Black, 1, null, OxyPenLineJoin.Miter, false, null, received.AddRange);
+                rc.DrawClippedLine(clippingRectangle, points, 1, OxyColors.Black, 1, null, LineJoin.Miter, false, null, received.AddRange);
                 Assert.AreEqual(0, received.Count);
             }
 
@@ -79,7 +79,7 @@ namespace OxyPlot.Tests
                 var clippingRectangle = new OxyRect(30, -50, 50, 100);
                 var rc = Substitute.For<IRenderContext>();
                 var received = new List<ScreenPoint>();
-                rc.DrawClippedLine(clippingRectangle, points, 1, OxyColors.Black, 1, null, OxyPenLineJoin.Miter, false, null, received.AddRange);
+                rc.DrawClippedLine(clippingRectangle, points, 1, OxyColors.Black, 1, null, LineJoin.Miter, false, null, received.AddRange);
                 Assert.AreEqual(2, received.Count);
                 Assert.AreEqual(new ScreenPoint(30, 0), received[0]);
                 Assert.AreEqual(new ScreenPoint(80, 0), received[1]);

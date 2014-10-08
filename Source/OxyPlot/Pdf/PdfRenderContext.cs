@@ -109,7 +109,7 @@ namespace OxyPlot
             OxyColor stroke,
             double thickness,
             double[] dashArray,
-            OxyPenLineJoin lineJoin,
+            LineJoin lineJoin,
             bool aliased)
         {
             this.doc.SetColor(stroke);
@@ -150,7 +150,7 @@ namespace OxyPlot
             OxyColor stroke,
             double thickness,
             double[] dashArray,
-            OxyPenLineJoin lineJoin,
+            LineJoin lineJoin,
             bool aliased)
         {
             var isStroked = stroke.IsVisible() && thickness > 0;
@@ -409,17 +409,17 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Converts the specified <see cref="OxyPenLineJoin" /> to a <see cref="LineJoin" />.
+        /// Converts the specified <see cref="OxyPlot.LineJoin" /> to a <see cref="OxyPlot.LineJoin" />.
         /// </summary>
         /// <param name="lineJoin">The value to convert.</param>
         /// <returns>The converted value.</returns>
-        private static LineJoin Convert(OxyPenLineJoin lineJoin)
+        private static LineJoin Convert(LineJoin lineJoin)
         {
             switch (lineJoin)
             {
-                case OxyPenLineJoin.Bevel:
+                case LineJoin.Bevel:
                     return LineJoin.Bevel;
-                case OxyPenLineJoin.Miter:
+                case LineJoin.Miter:
                     return LineJoin.Miter;
                 default:
                     return LineJoin.Round;

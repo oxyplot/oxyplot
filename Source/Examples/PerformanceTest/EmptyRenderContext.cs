@@ -69,7 +69,7 @@ namespace PerformanceTest
             OxyColor stroke,
             double thickness = 1,
             double[] dashArray = null,
-            OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter,
+            LineJoin lineJoin = LineJoin.Miter,
             bool aliased = false)
         {
         }
@@ -89,7 +89,7 @@ namespace PerformanceTest
             OxyColor stroke,
             double thickness = 1,
             double[] dashArray = null,
-            OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter,
+            LineJoin lineJoin = LineJoin.Miter,
             bool aliased = false)
         {
         }
@@ -110,7 +110,7 @@ namespace PerformanceTest
             OxyColor stroke,
             double thickness = 1,
             double[] dashArray = null,
-            OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter,
+            LineJoin lineJoin = LineJoin.Miter,
             bool aliased = false)
         {
         }
@@ -132,7 +132,7 @@ namespace PerformanceTest
             OxyColor stroke,
             double thickness = 1,
             double[] dashArray = null,
-            OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter,
+            LineJoin lineJoin = LineJoin.Miter,
             bool aliased = false)
         {
         }

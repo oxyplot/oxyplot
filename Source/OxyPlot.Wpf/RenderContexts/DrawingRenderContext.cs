@@ -33,14 +33,14 @@ namespace OxyPlot.Wpf
         public double Height { get; private set; }
 
         public void DrawLineSegments(IList<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray,
-                                     OxyPenLineJoin lineJoin, bool aliased)
+                                     LineJoin lineJoin, bool aliased)
         {
             for (int i = 0; i + 1 < points.Count; i += 2)
                 DrawLine(new[] {points[i], points[i + 1]}, stroke, thickness, dashArray, lineJoin, aliased);
         }
 
         public void DrawLine(IList<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray,
-                             OxyPenLineJoin lineJoin, bool aliased)
+                             LineJoin lineJoin, bool aliased)
         {
             var pen = CreatePen(stroke, thickness, dashArray, lineJoin);
 
@@ -63,7 +63,7 @@ namespace OxyPlot.Wpf
         }
 
         private static Pen CreatePen(OxyColor stroke, double thickness, double[] dashArray,
-                                     OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter)
+                                     LineJoin lineJoin = LineJoin.Miter)
         {
             if (stroke == null)
                 return null;
@@ -74,10 +74,10 @@ namespace OxyPlot.Wpf
             }
             switch (lineJoin)
             {
-                case OxyPenLineJoin.Round:
+                case LineJoin.Round:
                     pen.LineJoin = PenLineJoin.Round;
                     break;
-                case OxyPenLineJoin.Bevel:
+                case LineJoin.Bevel:
                     pen.LineJoin = PenLineJoin.Bevel;
                     break;
                     //  The default LineJoin is Miter
@@ -109,7 +109,7 @@ namespace OxyPlot.Wpf
         }
 
         public void DrawPolygon(IList<ScreenPoint> points, OxyColor fill, OxyColor stroke, double thickness,
-                                double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
+                                double[] dashArray, LineJoin lineJoin, bool aliased)
         {
             Brush brush = null;
             if (fill != null)
@@ -121,7 +121,7 @@ namespace OxyPlot.Wpf
             dc.DrawGeometry(brush, pen, g);
         }
 
-        public void DrawPolygons(IList<IList<ScreenPoint>> polygons, OxyColor fill, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
+        public void DrawPolygons(IList<IList<ScreenPoint>> polygons, OxyColor fill, OxyColor stroke, double thickness, double[] dashArray, LineJoin lineJoin, bool aliased)
         {
             foreach (var polygon in polygons)
                 DrawPolygon(polygon, fill, stroke, thickness, dashArray, lineJoin, aliased);

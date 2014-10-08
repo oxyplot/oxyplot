@@ -284,7 +284,7 @@ namespace OxyPlot.Series
                         this.GetSelectableColor(strokeColor),
                         this.StrokeThickness,
                         dashArray,
-                        OxyPenLineJoin.Miter,
+                        LineJoin.Miter,
                         false);
 
                     // rc.DrawClippedPolygon(transformedPoints, clippingRect, 4, model.GetDefaultColor(), OxyColors.Black);

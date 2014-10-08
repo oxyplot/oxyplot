@@ -115,7 +115,7 @@ namespace OxyPlot.GtkSharp
             OxyColor stroke,
             double thickness,
             double[] dashArray,
-            OxyPenLineJoin lineJoin,
+            OxyPlot.LineJoin lineJoin,
             bool aliased)
         {
             if (stroke.IsVisible() && thickness > 0 && points.Count >= 2)
@@ -157,7 +157,7 @@ namespace OxyPlot.GtkSharp
             OxyColor stroke,
             double thickness,
             double[] dashArray,
-            OxyPenLineJoin lineJoin,
+            OxyPlot.LineJoin lineJoin,
             bool aliased)
         {
             if (fill.IsVisible() && points.Count >= 2)

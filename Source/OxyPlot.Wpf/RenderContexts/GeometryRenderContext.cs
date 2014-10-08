@@ -45,7 +45,7 @@ namespace OxyPlot.Wpf
         Dictionary<OxyColor, Brush> brushCache = new Dictionary<OxyColor, Brush>();
 
         public void DrawLines(IEnumerable<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray,
-                             OxyPenLineJoin lineJoin, bool aliased)
+                             LineJoin lineJoin, bool aliased)
         {
             var startPoint = new ScreenPoint();
             bool first = true;
@@ -64,7 +64,7 @@ namespace OxyPlot.Wpf
         }
 
         public void DrawLine(IList<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray,
-                             OxyPenLineJoin lineJoin, bool aliased)
+                             LineJoin lineJoin, bool aliased)
         {
             var e = new Polyline();
             if (stroke != null && thickness > 0)
@@ -73,10 +73,10 @@ namespace OxyPlot.Wpf
 
                 switch (lineJoin)
                 {
-                    case OxyPenLineJoin.Round:
+                    case LineJoin.Round:
                         e.StrokeLineJoin = PenLineJoin.Round;
                         break;
-                    case OxyPenLineJoin.Bevel:
+                    case LineJoin.Bevel:
                         e.StrokeLineJoin = PenLineJoin.Bevel;
                         break;
                     //  The default StrokeLineJoin is Miter
@@ -112,7 +112,7 @@ namespace OxyPlot.Wpf
         }
 
         public void DrawPolygon(IEnumerable<ScreenPoint> points, OxyColor fill, OxyColor stroke, double thickness,
-                                double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
+                                double[] dashArray, LineJoin lineJoin, bool aliased)
         {
             var e = new Polygon();
             if (stroke != null && thickness > 0)
@@ -124,10 +124,10 @@ namespace OxyPlot.Wpf
                     e.StrokeDashArray = new DoubleCollection(dashArray);
                 switch (lineJoin)
                 {
-                    case OxyPenLineJoin.Round:
+                    case LineJoin.Round:
                         e.StrokeLineJoin = PenLineJoin.Round;
                         break;
-                    case OxyPenLineJoin.Bevel:
+                    case LineJoin.Bevel:
                         e.StrokeLineJoin = PenLineJoin.Bevel;
                         break;
                     //  The default StrokeLineJoin is Miter

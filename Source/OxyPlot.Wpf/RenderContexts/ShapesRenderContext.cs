@@ -221,7 +221,7 @@ namespace OxyPlot.Wpf
             OxyColor stroke,
             double thickness,
             double[] dashArray,
-            OxyPenLineJoin lineJoin,
+            LineJoin lineJoin,
             bool aliased)
         {
             if (thickness < this.BalancedLineDrawingThicknessLimit)
@@ -251,7 +251,7 @@ namespace OxyPlot.Wpf
             OxyColor stroke,
             double thickness,
             double[] dashArray,
-            OxyPenLineJoin lineJoin,
+            LineJoin lineJoin,
             bool aliased)
         {
             if (this.UseStreamGeometry)
@@ -311,7 +311,7 @@ namespace OxyPlot.Wpf
             OxyColor stroke,
             double thickness,
             double[] dashArray,
-            OxyPenLineJoin lineJoin,
+            LineJoin lineJoin,
             bool aliased)
         {
             var e = this.CreateAndAdd<Polygon>();
@@ -342,7 +342,7 @@ namespace OxyPlot.Wpf
             OxyColor stroke,
             double thickness,
             double[] dashArray,
-            OxyPenLineJoin lineJoin,
+            LineJoin lineJoin,
             bool aliased)
         {
             var usg = this.UseStreamGeometry;
@@ -455,7 +455,7 @@ namespace OxyPlot.Wpf
         public void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
             var e = this.CreateAndAdd<Rectangle>(rect.Left, rect.Top);
-            this.SetStroke(e, stroke, thickness, OxyPenLineJoin.Miter, null, 0, true);
+            this.SetStroke(e, stroke, thickness, LineJoin.Miter, null, 0, true);
 
             if (!fill.IsUndefined())
             {
@@ -892,7 +892,7 @@ namespace OxyPlot.Wpf
             OxyColor stroke,
             double thickness,
             double[] dashArray,
-            OxyPenLineJoin lineJoin,
+            LineJoin lineJoin,
             bool aliased)
         {
             StreamGeometry streamGeometry = null;
@@ -993,7 +993,7 @@ namespace OxyPlot.Wpf
             Shape shape,
             OxyColor stroke,
             double thickness,
-            OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter,
+            LineJoin lineJoin = LineJoin.Miter,
             IEnumerable<double> dashArray = null,
             double dashOffset = 0,
             bool aliased = false)
@@ -1004,10 +1004,10 @@ namespace OxyPlot.Wpf
 
                 switch (lineJoin)
                 {
-                    case OxyPenLineJoin.Round:
+                    case LineJoin.Round:
                         shape.StrokeLineJoin = PenLineJoin.Round;
                         break;
-                    case OxyPenLineJoin.Bevel:
+                    case LineJoin.Bevel:
                         shape.StrokeLineJoin = PenLineJoin.Bevel;
                         break;
 
@@ -1080,7 +1080,7 @@ namespace OxyPlot.Wpf
         /// <param name="lineJoin">The line join.</param>
         /// <param name="aliased">Render aliased if set to <c>true</c>.</param>
         /// <remarks>See <a href="https://oxyplot.codeplex.com/discussions/456679">discussion</a>.</remarks>
-        private void DrawLineBalanced(IList<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
+        private void DrawLineBalanced(IList<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray, LineJoin lineJoin, bool aliased)
         {
             // balance the number of points per polyline and the number of polylines
             var numPointsPerPolyline = Math.Max(points.Count / MaxPolylinesPerLine, MinPointsPerPolyline);

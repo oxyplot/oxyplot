@@ -165,12 +165,12 @@ namespace ExportDemo
             var model = new PlotModel { Title = "Koch Snowflake", PlotType = PlotType.Cartesian };
             if (areaSeries)
             {
-                var s = new AreaSeries { ItemsSource = data, LineJoin = OxyPenLineJoin.Bevel, Fill = OxyColors.LightGray };
+                var s = new AreaSeries { ItemsSource = data, LineJoin = LineJoin.Bevel, Fill = OxyColors.LightGray };
                 model.Series.Add(s);
             }
             else
             {
-                var ls = new LineSeries { ItemsSource = data, LineJoin = OxyPenLineJoin.Bevel };
+                var ls = new LineSeries { ItemsSource = data, LineJoin = LineJoin.Bevel };
                 model.Series.Add(ls);
             }
             return model;

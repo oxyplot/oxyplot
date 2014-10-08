@@ -48,9 +48,9 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty LineJoinProperty = DependencyProperty.Register(
             "LineJoin",
-            typeof(OxyPenLineJoin),
+            typeof(LineJoin),
             typeof(LineAnnotation),
-            new UIPropertyMetadata(OxyPenLineJoin.Miter, AppearanceChanged));
+            new UIPropertyMetadata(LineJoin.Miter, AppearanceChanged));
 
         /// <summary>
         /// Identifies the <see cref="LineStyle"/> dependency property.
@@ -148,11 +148,11 @@ namespace OxyPlot.Wpf
         /// Gets or sets the line join.
         /// </summary>
         /// <value>The line join.</value>
-        public OxyPenLineJoin LineJoin
+        public LineJoin LineJoin
         {
             get
             {
-                return (OxyPenLineJoin)this.GetValue(LineJoinProperty);
+                return (LineJoin)this.GetValue(LineJoinProperty);
             }
 
             set

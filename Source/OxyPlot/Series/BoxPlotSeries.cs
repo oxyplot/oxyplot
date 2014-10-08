@@ -282,7 +282,7 @@ namespace OxyPlot.Series
                     strokeColor,
                     this.StrokeThickness,
                     dashArray,
-                    OxyPenLineJoin.Miter,
+                    LineJoin.Miter,
                     true);
                 rc.DrawClippedLine(
                     clippingRect,
@@ -291,7 +291,7 @@ namespace OxyPlot.Series
                     strokeColor,
                     this.StrokeThickness,
                     dashArray,
-                    OxyPenLineJoin.Miter,
+                    LineJoin.Miter,
                     true);
 
                 // Draw the whiskers
@@ -309,7 +309,7 @@ namespace OxyPlot.Series
                         strokeColor,
                         this.StrokeThickness,
                         null,
-                        OxyPenLineJoin.Miter,
+                        LineJoin.Miter,
                         true);
                     rc.DrawClippedLine(
                         clippingRect,
@@ -318,7 +318,7 @@ namespace OxyPlot.Series
                         strokeColor,
                         this.StrokeThickness,
                         null,
-                        OxyPenLineJoin.Miter,
+                        LineJoin.Miter,
                         true);
                 }
 
@@ -341,7 +341,7 @@ namespace OxyPlot.Series
                         strokeColor,
                         this.StrokeThickness * this.MedianThickness,
                         null,
-                        OxyPenLineJoin.Miter,
+                        LineJoin.Miter,
                         true);
                 }
                 else
@@ -398,7 +398,7 @@ namespace OxyPlot.Series
                 strokeColor,
                 LegendStrokeThickness,
                 LineStyle.Solid.GetDashArray(),
-                OxyPenLineJoin.Miter,
+                LineJoin.Miter,
                 true);
 
             rc.DrawLine(
@@ -406,7 +406,7 @@ namespace OxyPlot.Series
                 strokeColor,
                 LegendStrokeThickness,
                 LineStyle.Solid.GetDashArray(),
-                OxyPenLineJoin.Miter,
+                LineJoin.Miter,
                 true);
 
             if (this.WhiskerWidth > 0)
@@ -421,7 +421,7 @@ namespace OxyPlot.Series
                     strokeColor,
                     LegendStrokeThickness,
                     LineStyle.Solid.GetDashArray(),
-                    OxyPenLineJoin.Miter,
+                    LineJoin.Miter,
                     true);
 
                 // bottom whisker
@@ -434,7 +434,7 @@ namespace OxyPlot.Series
                     strokeColor,
                     LegendStrokeThickness,
                     LineStyle.Solid.GetDashArray(),
-                    OxyPenLineJoin.Miter,
+                    LineJoin.Miter,
                     true);
             }
 
@@ -456,7 +456,7 @@ namespace OxyPlot.Series
                     strokeColor,
                     LegendStrokeThickness * this.MedianThickness,
                     LineStyle.Solid.GetDashArray(),
-                    OxyPenLineJoin.Miter,
+                    LineJoin.Miter,
                     true);
             }
             else

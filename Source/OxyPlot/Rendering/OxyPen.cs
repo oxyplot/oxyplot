@@ -27,7 +27,7 @@ namespace OxyPlot
             OxyColor color,
             double thickness = 1.0,
             LineStyle lineStyle = LineStyle.Solid,
-            OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter)
+            LineJoin lineJoin = LineJoin.Miter)
         {
             this.Color = color;
             this.Thickness = thickness;
@@ -52,7 +52,7 @@ namespace OxyPlot
         /// Gets or sets the line join type.
         /// </summary>
         /// <value>The line join type.</value>
-        public OxyPenLineJoin LineJoin { get; set; }
+        public LineJoin LineJoin { get; set; }
 
         /// <summary>
         /// Gets or sets the line style (overridden by <see cref="DashArray" />).
@@ -90,7 +90,7 @@ namespace OxyPlot
             OxyColor color,
             double thickness,
             LineStyle lineStyle = LineStyle.Solid,
-            OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter)
+            LineJoin lineJoin = LineJoin.Miter)
         {
             if (color.IsInvisible() || lineStyle == LineStyle.None || Math.Abs(thickness) < double.Epsilon)
             {

@@ -71,19 +71,19 @@ namespace OxyPlot.XamarinIOS
         }
 
         /// <summary>
-        /// Converts a <see cref="OxyPenLineJoin" /> to a <see cref="CGLineCap" />.
+        /// Converts a <see cref="LineJoin" /> to a <see cref="CGLineCap" />.
         /// </summary>
         /// <param name="lineJoin">The line join.</param>
         /// <returns>The converted join.</returns>
-        public static CGLineJoin Convert(this OxyPenLineJoin lineJoin)
+        public static CGLineJoin Convert(this LineJoin lineJoin)
         {
             switch (lineJoin)
             {
-            case OxyPenLineJoin.Bevel:
+            case LineJoin.Bevel:
                 return CGLineJoin.Bevel;
-            case OxyPenLineJoin.Miter:
+            case LineJoin.Miter:
                 return CGLineJoin.Miter;
-            case OxyPenLineJoin.Round:
+            case LineJoin.Round:
                 return CGLineJoin.Round;
             default:
                 throw new InvalidOperationException("Invalid join type.");

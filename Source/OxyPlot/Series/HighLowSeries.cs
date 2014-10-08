@@ -130,7 +130,7 @@ namespace OxyPlot.Series
         /// Gets or sets the line join.
         /// </summary>
         /// <value>The line join.</value>
-        public OxyPenLineJoin LineJoin { get; set; }
+        public LineJoin LineJoin { get; set; }
 
         /// <summary>
         /// Gets or sets the line style.
@@ -330,21 +330,21 @@ namespace OxyPlot.Series
                 color,
                 this.StrokeThickness,
                 dashArray,
-                OxyPenLineJoin.Miter,
+                LineJoin.Miter,
                 true);
             rc.DrawLine(
                 new[] { new ScreenPoint(xmid - this.TickLength, yopen), new ScreenPoint(xmid, yopen) },
                 color,
                 this.StrokeThickness,
                 dashArray,
-                OxyPenLineJoin.Miter,
+                LineJoin.Miter,
                 true);
             rc.DrawLine(
                 new[] { new ScreenPoint(xmid + this.TickLength, yclose), new ScreenPoint(xmid, yclose) },
                 color,
                 this.StrokeThickness,
                 dashArray,
-                OxyPenLineJoin.Miter,
+                LineJoin.Miter,
                 true);
         }
 

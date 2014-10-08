@@ -69,7 +69,7 @@ namespace OxyPlot.Series
             this.MarkerStroke = OxyColors.Automatic;
             this.MinimumSegmentLength = 2;
             this.StrokeThickness = 2;
-            this.LineJoin = OxyPenLineJoin.Bevel;
+            this.LineJoin = LineJoin.Bevel;
             this.LineStyle = LineStyle.Undefined;
             this.MarkerResolution = 0;
             this.MarkerSize = 3;
@@ -158,7 +158,7 @@ namespace OxyPlot.Series
         /// Gets or sets the line join.
         /// </summary>
         /// <value>The line join.</value>
-        public OxyPenLineJoin LineJoin { get; set; }
+        public LineJoin LineJoin { get; set; }
 
         /// <summary>
         /// Gets or sets the line style.

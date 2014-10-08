@@ -30,19 +30,19 @@ namespace OxyPlot.XamarinAndroid
         }
 
         /// <summary>
-        /// Converts an <see cref="OxyPenLineJoin" /> to a <see cref="Paint.Join" />.
+        /// Converts an <see cref="LineJoin" /> to a <see cref="Paint.Join" />.
         /// </summary>
         /// <param name="join">The join value to convert.</param>
         /// <returns>The converted join value.</returns>
-        public static Paint.Join Convert(this OxyPenLineJoin join)
+        public static Paint.Join Convert(this LineJoin join)
         {
             switch (join)
             {
-                case OxyPenLineJoin.Bevel:
+                case LineJoin.Bevel:
                     return Paint.Join.Bevel;
-                case OxyPenLineJoin.Miter:
+                case LineJoin.Miter:
                     return Paint.Join.Miter;
-                case OxyPenLineJoin.Round:
+                case LineJoin.Round:
                     return Paint.Join.Round;
                 default:
                     throw new InvalidOperationException("Invalid join type.");

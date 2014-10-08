@@ -179,7 +179,7 @@ namespace OxyPlot.XamarinIOS
         /// <param name="dashArray">The dash array.</param>
         /// <param name="lineJoin">The line join type.</param>
         /// <param name="aliased">if set to <c>true</c> the shape will be aliased.</param>
-        public override void DrawLine(IList<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
+        public override void DrawLine(IList<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray, LineJoin lineJoin, bool aliased)
         {
             if (stroke.IsVisible() && thickness > 0)
             {
@@ -207,7 +207,7 @@ namespace OxyPlot.XamarinIOS
         /// <param name="dashArray">The dash array.</param>
         /// <param name="lineJoin">The line join type.</param>
         /// <param name="aliased">If set to <c>true</c> the shape will be aliased.</param>
-        public override void DrawPolygon(IList<ScreenPoint> points, OxyColor fill, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
+        public override void DrawPolygon(IList<ScreenPoint> points, OxyColor fill, OxyColor stroke, double thickness, double[] dashArray, LineJoin lineJoin, bool aliased)
         {
             this.SetAlias(aliased);
             var convertedPoints = (aliased ? points.Select(p => p.ConvertAliased()) : points.Select(p => p.Convert())).ToArray();
@@ -516,7 +516,7 @@ namespace OxyPlot.XamarinIOS
         /// <param name="thickness">The stroke thickness.</param>
         /// <param name="dashArray">The dash array.</param>
         /// <param name="lineJoin">The line join.</param>
-        private void SetStroke(OxyColor c, double thickness, double[] dashArray = null, OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter)
+        private void SetStroke(OxyColor c, double thickness, double[] dashArray = null, LineJoin lineJoin = LineJoin.Miter)
         {
             this.gctx.SetStrokeColor(c.ToCGColor());
             this.gctx.SetLineWidth((float)thickness);

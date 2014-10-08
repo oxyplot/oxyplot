@@ -67,7 +67,7 @@ namespace OxyPlot
         ProjectingSquare = 2
     }
 
-    /// <summary>
+/*    /// <summary>
     /// Defines the shape that joins two lines or segments.
     /// </summary>
     public enum LineJoin
@@ -86,7 +86,7 @@ namespace OxyPlot
         /// Bevel join. The two segments are finished with butt caps (see “Line Cap Style” on page 216) and the resulting notch beyond the ends of the segments is filled with a triangle.
         /// </summary>
         Bevel = 2
-    }
+    }*/
 
     /// <summary>
     /// Defines the color space.

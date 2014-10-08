@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="OxyPenLineJoin.cs" company="OxyPlot">
+// <copyright file="LineJoin.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
@@ -12,7 +12,7 @@ namespace OxyPlot
     /// <summary>
     /// Defines how to join line segments.
     /// </summary>
-    public enum OxyPenLineJoin
+    public enum LineJoin
     {
         /// <summary>
         /// Line joins use regular angular vertices.
