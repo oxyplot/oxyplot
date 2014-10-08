@@ -46,12 +46,6 @@ namespace OxyPlot.Wpf
             "Mapping", typeof(Func<object, DataPoint>), typeof(DataPointSeries), new UIPropertyMetadata(null));
 
         /// <summary>
-        /// Identifies the <see cref="Smooth"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty SmoothProperty = DependencyProperty.Register(
-            "Smooth", typeof(bool), typeof(DataPointSeries), new UIPropertyMetadata(false));
-
-        /// <summary>
         /// Gets or sets a value indicating whether the tracker can interpolate points.
         /// </summary>
         public bool CanTrackerInterpolatePoints
@@ -117,23 +111,6 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="DataPointSeries" /> is smooth.
-        /// </summary>
-        /// <value><c>true</c> if smooth; otherwise, <c>false</c> .</value>
-        public bool Smooth
-        {
-            get
-            {
-                return (bool)this.GetValue(SmoothProperty);
-            }
-
-            set
-            {
-                this.SetValue(SmoothProperty, value);
-            }
-        }
-
-        /// <summary>
         /// Synchronizes the properties.
         /// </summary>
         /// <param name="series">The series.</param>
@@ -145,7 +122,6 @@ namespace OxyPlot.Wpf
             s.DataFieldX = this.DataFieldX;
             s.DataFieldY = this.DataFieldY;
             s.CanTrackerInterpolatePoints = this.CanTrackerInterpolatePoints;
-            s.Smooth = this.Smooth;
             s.Mapping = this.Mapping;
         }
     }

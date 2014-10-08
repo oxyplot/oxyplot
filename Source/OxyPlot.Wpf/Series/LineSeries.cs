@@ -147,6 +147,12 @@ namespace OxyPlot.Wpf
                 "MinimumSegmentLength", typeof(double), typeof(LineSeries), new PropertyMetadata(2.0, AppearanceChanged));
 
         /// <summary>
+        /// Identifies the <see cref="Smooth"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty SmoothProperty = DependencyProperty.Register(
+            "Smooth", typeof(bool), typeof(LineSeries), new UIPropertyMetadata(false));
+
+        /// <summary>
         /// Identifies the <see cref="StrokeThickness"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty StrokeThicknessProperty =
@@ -450,6 +456,23 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="DataPointSeries" /> is smooth.
+        /// </summary>
+        /// <value><c>true</c> if smooth; otherwise, <c>false</c> .</value>
+        public bool Smooth
+        {
+            get
+            {
+                return (bool)this.GetValue(SmoothProperty);
+            }
+
+            set
+            {
+                this.SetValue(SmoothProperty, value);
+            }
+        }
+        
+        /// <summary>
         /// Gets or sets StrokeThickness.
         /// </summary>
         public double StrokeThickness
@@ -503,6 +526,7 @@ namespace OxyPlot.Wpf
             s.BrokenLineStyle = this.BrokenLineStyle;
             s.BrokenLineThickness = this.BrokenLineThickness;
             s.Decimator = this.Decimator;
+            s.Smooth = this.Smooth;
         }
     }
 }
