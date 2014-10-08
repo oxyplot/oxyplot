@@ -52,6 +52,7 @@ namespace OxyPlot.Series
             this.TickLabelDistance = 4;
             this.InsideLabelPosition = 0.5;
             this.FontSize = 12;
+            this.TrackerFormatString = "{0}: {1:0.###}";
         }
 
         /// <summary>

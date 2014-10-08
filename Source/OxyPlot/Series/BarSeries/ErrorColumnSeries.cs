@@ -25,7 +25,7 @@ namespace OxyPlot.Series
         {
             this.ErrorWidth = 0.4;
             this.ErrorStrokeThickness = 1;
-            this.TrackerFormatString = "{0}, {1}: {2}, Error: {Error}";
+            this.TrackerFormatString = "{0}\n{1}: {2:0.###}, Error: {Error:0.###}";
         }
 
         /// <summary>

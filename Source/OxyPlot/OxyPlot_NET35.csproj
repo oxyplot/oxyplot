@@ -304,7 +304,6 @@
     <Compile Include="Series\Series.cs" />
     <Compile Include="Series\StemSeries.cs" />
     <Compile Include="Series\StairStepSeries.cs" />
-    <Compile Include="Series\ITrackableSeries.cs" />
     <Compile Include="Series\ScatterSeries.cs" />
     <Compile Include="Series\TwoColorLineSeries.cs" />
     <Compile Include="Series\XYAxisSeries.cs" />

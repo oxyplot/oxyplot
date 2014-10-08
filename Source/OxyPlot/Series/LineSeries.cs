@@ -63,17 +63,22 @@ namespace OxyPlot.Series
         /// </summary>
         public LineSeries()
         {
-            this.Color = OxyColors.Automatic;
-            this.BrokenLineColor = OxyColors.Undefined;
-            this.MarkerFill = OxyColors.Automatic;
-            this.MarkerStroke = OxyColors.Automatic;
-            this.MinimumSegmentLength = 2;
             this.StrokeThickness = 2;
             this.LineJoin = OxyPenLineJoin.Bevel;
             this.LineStyle = LineStyle.Undefined;
+
+            this.Color = OxyColors.Automatic;
+            this.BrokenLineColor = OxyColors.Undefined;
+
+            this.MarkerFill = OxyColors.Automatic;
+            this.MarkerStroke = OxyColors.Automatic;
             this.MarkerResolution = 0;
             this.MarkerSize = 3;
             this.MarkerStrokeThickness = 1;
+            this.MarkerType = MarkerType.None;
+
+            this.MinimumSegmentLength = 2;
+
             this.CanTrackerInterpolatePoints = true;
             this.LabelMargin = 6;
         }
@@ -106,29 +111,29 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Gets or sets the color of the curve.
+        /// Gets or sets the color of the curve. The default is <c>OxyColors.Automatic</c> (use color from <see cref="PlotModel.DefaultColors" />).
         /// </summary>
         /// <value>The color.</value>
         public OxyColor Color { get; set; }
 
         /// <summary>
-        /// Gets or sets the color of the broken line segments.
+        /// Gets or sets the color of the broken line segments. The default is <c>OxyColors.Undefined</c>.
         /// </summary>
         /// <remarks>Add <c>DataPoint.Undefined</c> in the Points collection to create breaks in the line.</remarks>
         public OxyColor BrokenLineColor { get; set; }
 
         /// <summary>
-        /// Gets or sets the broken line style.
+        /// Gets or sets the broken line style. The default is <c>LineStyle.Solid</c>.
         /// </summary>
         public LineStyle BrokenLineStyle { get; set; }
 
         /// <summary>
-        /// Gets or sets the broken line thickness.
+        /// Gets or sets the broken line thickness. The default is <c>0</c> (no line).
         /// </summary>
         public double BrokenLineThickness { get; set; }
 
         /// <summary>
-        /// Gets or sets the dash array for the rendered line (overrides <see cref="LineStyle" />).
+        /// Gets or sets the dash array for the rendered line (overrides <see cref="LineStyle" />). The default is <c>null</c>.
         /// </summary>
         /// <value>The dash array.</value>
         /// <remarks>If this is not <c>null</c> it overrides the <see cref="LineStyle" /> property.</remarks>
@@ -144,72 +149,72 @@ namespace OxyPlot.Series
         public Action<List<ScreenPoint>, List<ScreenPoint>> Decimator { get; set; }
 
         /// <summary>
-        /// Gets or sets the label format string.
+        /// Gets or sets the label format string. The default is <c>null</c> (no labels).
         /// </summary>
         /// <value>The label format string.</value>
         public string LabelFormatString { get; set; }
 
         /// <summary>
-        /// Gets or sets the label margins.
+        /// Gets or sets the label margins. The default is <c>6</c>.
         /// </summary>
         public double LabelMargin { get; set; }
 
         /// <summary>
-        /// Gets or sets the line join.
+        /// Gets or sets the line join. The default is <c>OxyPenLineJoin.Bevel</c>.
         /// </summary>
         /// <value>The line join.</value>
         public OxyPenLineJoin LineJoin { get; set; }
 
         /// <summary>
-        /// Gets or sets the line style.
+        /// Gets or sets the line style. The default is <c>LineStyle.Undefined</c>.
         /// </summary>
         /// <value>The line style.</value>
         public LineStyle LineStyle { get; set; }
 
         /// <summary>
-        /// Gets or sets a value specifying the position of a legend rendered on the line.
+        /// Gets or sets a value specifying the position of a legend rendered on the line. The default is <c>LineLegendPosition.None</c>.
         /// </summary>
         /// <value>A value specifying the position of the legend.</value>
         public LineLegendPosition LineLegendPosition { get; set; }
 
         /// <summary>
-        /// Gets or sets the marker fill color.
+        /// Gets or sets the marker fill color. The default is <c>OxyColors.Automatic</c>.
         /// </summary>
         /// <value>The marker fill.</value>
         public OxyColor MarkerFill { get; set; }
 
         /// <summary>
-        /// Gets or sets the a custom polygon outline for the markers. Set <see cref="MarkerType" /> to <see cref="OxyPlot.MarkerType.Custom" /> to use this property.
+        /// Gets or sets the a custom polygon outline for the markers. Set <see cref="MarkerType" /> to <see cref="OxyPlot.MarkerType.Custom" /> to use this property. The default is <c>null</c>.
         /// </summary>
-        /// <value>A polyline. The default is <c>null</c>.</value>
+        /// <value>A polyline.</value>
         public ScreenPoint[] MarkerOutline { get; set; }
 
         /// <summary>
-        /// Gets or sets the marker resolution.
+        /// Gets or sets the marker resolution. The default is <c>0</c>.
         /// </summary>
         /// <value>The marker resolution.</value>
         public int MarkerResolution { get; set; }
 
         /// <summary>
-        /// Gets or sets the size of the marker.
+        /// Gets or sets the size of the marker. The default is <c>3</c>.
         /// </summary>
         /// <value>The size of the marker.</value>
         public double MarkerSize { get; set; }
 
         /// <summary>
-        /// Gets or sets the marker stroke.
+        /// Gets or sets the marker stroke. The default is <c>OxyColors.Automatic</c>.
         /// </summary>
         /// <value>The marker stroke.</value>
         public OxyColor MarkerStroke { get; set; }
 
         /// <summary>
-        /// Gets or sets the marker stroke thickness.
+        /// Gets or sets the marker stroke thickness. The default is <c>2</c>.
         /// </summary>
         /// <value>The marker stroke thickness.</value>
         public double MarkerStrokeThickness { get; set; }
 
         /// <summary>
-        /// Gets or sets the type of the marker.
+        /// Gets or sets the type of the marker. The default is <c>MarkerType.None</c>.
         /// </summary>
         /// <value>The type of the marker.</value>
         /// <remarks>If MarkerType.Custom is used, the MarkerOutline property must be specified.</remarks>
@@ -218,13 +223,13 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets or sets the minimum length of the segment.
         /// Increasing this number will increase performance,
-        /// but make the curve less accurate.
+        /// but make the curve less accurate. The default is <c>2</c>.
         /// </summary>
         /// <value>The minimum length of the segment.</value>
         public double MinimumSegmentLength { get; set; }
 
         /// <summary>
-        /// Gets or sets the thickness of the curve.
+        /// Gets or sets the thickness of the curve. The default is <c>2</c>.
         /// </summary>
         /// <value>The stroke thickness.</value>
         public double StrokeThickness { get; set; }
@@ -317,7 +322,15 @@ namespace OxyPlot.Series
 
             if (interpolate && this.Smooth && this.SmoothedPoints != null)
             {
-                return this.GetNearestInterpolatedPointInternal(this.SmoothedPoints, point);
+                var result = this.GetNearestInterpolatedPointInternal(this.SmoothedPoints, point);
+                result.Text = this.Format(
+                    this.TrackerFormatString,
+                    result.Item,
+                    this.Title,
+                    this.XAxis.Title ?? XYAxisSeries.DefaultXAxisTitle,
+                    result.DataPoint.X,
+                    this.YAxis.Title ?? XYAxisSeries.DefaultYAxisTitle,
+                    result.DataPoint.Y);
             }
 
             return base.GetNearestPoint(point, interpolate);
@@ -354,7 +367,7 @@ namespace OxyPlot.Series
             if (this.LineLegendPosition != LineLegendPosition.None && !string.IsNullOrEmpty(this.Title))
             {
                 // renders a legend on the line
-                this.RenderLegendOnLine(rc, clippingRect);
+                this.RenderLegendOnLine(rc);
             }
         }
 
@@ -581,7 +594,8 @@ namespace OxyPlot.Series
                     continue;
                 }
 
-                var s = this.Format(this.LabelFormatString, this.GetItem(index), point.X, point.Y);
+                var item = this.GetItem(index);
+                var s = this.Format(this.LabelFormatString, item, point.X, point.Y);
 
 #if SUPPORTLABELPLACEMENT
                     switch (this.LabelPlacement)
@@ -623,8 +637,7 @@ namespace OxyPlot.Series
         /// Renders a legend on the line.
         /// </summary>
         /// <param name="rc">The render context.</param>
-        /// <param name="clippingRect">The clipping rectangle.</param>
-        protected void RenderLegendOnLine(IRenderContext rc, OxyRect clippingRect)
+        protected void RenderLegendOnLine(IRenderContext rc)
         {
             // Find the position
             DataPoint point;
@@ -649,11 +662,8 @@ namespace OxyPlot.Series
 
             var pt = Transform(point) + new ScreenVector(dx, 0);
 
-            // TODO: should not clip text when rendering at end of line, cf. example
-
             // Render the legend
-            rc.DrawClippedText(
-                clippingRect,
+            rc.DrawText(
                 pt,
                 this.Title,
                 this.ActualTextColor,

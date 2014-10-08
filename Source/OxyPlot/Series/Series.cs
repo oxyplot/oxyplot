@@ -15,7 +15,7 @@ namespace OxyPlot.Series
     /// Provides an abstract base class for plot series.
     /// </summary>
     /// <remarks>This class contains internal methods that should be called only from the PlotModel.</remarks>
-    public abstract class Series : PlotElement, ITrackableSeries
+    public abstract class Series : PlotElement
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Series" /> class.
@@ -27,24 +27,24 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Gets or sets the background color of the series.
+        /// Gets or sets the background color of the series. The default is <c>OxyColors.Undefined</c>.
         /// </summary>
         /// <remarks>This property defines the background color in the area defined by the x and y axes used by this series.</remarks>
         public OxyColor Background { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this series is visible.
+        /// Gets or sets a value indicating whether this series is visible. The default is <c>true</c>.
         /// </summary>
         public bool IsVisible { get; set; }
 
         /// <summary>
-        /// Gets or sets the title of the series.
+        /// Gets or sets the title of the series. The default is <c>null</c>.
         /// </summary>
         /// <value>The title that is shown in the legend of the plot. The default value is <c>null</c>. When the value is <c>null</c>, this series will not be shown in the legend.</value>
         public string Title { get; set; }
 
         /// <summary>
-        /// Gets or sets a format string used for the tracker.
+        /// Gets or sets a format string used for the tracker. The default depends on the series.
         /// </summary>
         /// <remarks>
         /// The arguments for the format string may be different for each type of series. See the documentation.
@@ -52,7 +52,7 @@ namespace OxyPlot.Series
         public string TrackerFormatString { get; set; }
 
         /// <summary>
-        /// Gets or sets the key for the tracker to use on this series.
+        /// Gets or sets the key for the tracker to use on this series. The default is <c>null</c>.
         /// </summary>
         /// <remarks>
         /// This key may be used by the plot view to show a custom tracker for the series.

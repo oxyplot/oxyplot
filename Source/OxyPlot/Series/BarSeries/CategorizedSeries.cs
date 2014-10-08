@@ -19,6 +19,16 @@ namespace OxyPlot.Series
     public abstract class CategorizedSeries : XYAxisSeries
     {
         /// <summary>
+        /// The default category axis title
+        /// </summary>
+        protected const string DefaultCategoryAxisTitle = "Category";
+
+        /// <summary>
+        /// The default value axis title
+        /// </summary>
+        protected const string DefaultValueAxisTitle = "Value";
+
+        /// <summary>
         /// Gets or sets the width/height of the columns/bars (as a fraction of the available space).
         /// </summary>
         /// <value>The width of the bars.</value>

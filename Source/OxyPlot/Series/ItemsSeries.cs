@@ -18,7 +18,7 @@ namespace OxyPlot.Series
     public abstract class ItemsSeries : Series
     {
         /// <summary>
-        /// Gets or sets the items source.
+        /// Gets or sets the items source. The default is <c>null</c>.
         /// </summary>
         /// <value>The items source.</value>
         [CodeGeneration(false)]

@@ -34,7 +34,7 @@ namespace OxyPlot.Series
             this.NegativeFillColor = OxyColors.Undefined;
             this.StrokeColor = OxyColors.Black;
             this.StrokeThickness = 0;
-            this.TrackerFormatString = "{0}, {1}: {2}";
+            this.TrackerFormatString = "{0}\n{1}: {2:0.###}";
             this.LabelMargin = 2;
             this.StackGroup = string.Empty;
         }
@@ -151,8 +151,15 @@ namespace OxyPlot.Series
 
                     var dp = new DataPoint(categoryIndex, this.ValidItems[i].Value);
                     var item = this.GetItem(this.ValidItemsIndexInversion[i]);
-                    var text = this.GetTrackerText(item, categoryIndex);
-                    return new TrackerHitResult(this, dp, point, item, i, text);
+                    return new TrackerHitResult
+                    {
+                        Series = this,
+                        DataPoint = dp,
+                        Position = point,
+                        Item = item,
+                        Index = i,
+                        Text = this.GetTrackerText(item, categoryIndex)
+                    };
                 }
 
                 i++;

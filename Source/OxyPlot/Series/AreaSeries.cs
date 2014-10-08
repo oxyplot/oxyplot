@@ -149,17 +149,21 @@ namespace OxyPlot.Series
                 return dist1 < dist2 ? result1 : result2;
             }
 
-            if (result1 != null)
+            var result = result1 ?? result2;
+
+            if (result != null)
             {
-                return result1;
+                result.Text = this.Format(
+                    this.TrackerFormatString,
+                    result.Item,
+                    this.Title,
+                    this.XAxis.Title ?? XYAxisSeries.DefaultXAxisTitle,
+                    result.DataPoint.X,
+                    this.YAxis.Title ?? XYAxisSeries.DefaultYAxisTitle,
+                    result.DataPoint.Y);
             }
 
-            if (result2 != null)
-            {
-                return result2;
-            }
-
-            return null;
+            return result;
         }
 
         /// <summary>

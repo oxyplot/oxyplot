@@ -1033,16 +1033,10 @@ namespace OxyPlot
         public Series.Series GetSeriesFromPoint(ScreenPoint point, double limit = 100)
         {
             double mindist = double.MaxValue;
-            Series.Series closest = null;
-            foreach (var s in this.VisibleSeries.Reverse())
+            Series.Series nearestSeries = null;
+            foreach (var series in this.VisibleSeries.Reverse())
             {
-                var ts = s as ITrackableSeries;
-                if (ts == null)
-                {
-                    continue;
-                }
-
-                var thr = ts.GetNearestPoint(point, true) ?? ts.GetNearestPoint(point, false);
+                var thr = series.GetNearestPoint(point, true) ?? series.GetNearestPoint(point, false);
 
                 if (thr == null)
                 {
@@ -1053,14 +1047,14 @@ namespace OxyPlot
                 double dist = point.DistanceTo(thr.Position);
                 if (dist < mindist)
                 {
-                    closest = s;
+                    nearestSeries = series;
                     mindist = dist;
                 }
             }
 
             if (mindist < limit)
             {
-                return closest;
+                return nearestSeries;
             }
 
             return null;

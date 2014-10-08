@@ -183,8 +183,8 @@ namespace ExampleLibrary
 
             double[,] matrix = null;
 
-            
-                
+
+
 #if UNIVERSAL
             using (var stream = typeof(MiscExamples).GetTypeInfo().Assembly.GetManifestResourceStream("ExampleLibrary.Resources.west0479.mtx"))
 #else
@@ -2192,6 +2192,14 @@ namespace ExampleLibrary
         public class MandelbrotSetSeries : XYAxisSeries
         {
             /// <summary>
+            /// Initializes a new instance of the <see cref="MandelbrotSetSeries"/> class.
+            /// </summary>
+            public MandelbrotSetSeries()
+            {
+                this.TrackerFormatString = "X: {0:0.000}\r\nY: {1:0.000}\r\nIterations: {2}";
+            }
+
+            /// <summary>
             /// Gets or sets the color axis.
             /// </summary>
             /// <value>The color axis.</value>
@@ -2213,14 +2221,16 @@ namespace ExampleLibrary
             public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
             {
                 var p = this.InverseTransform(point);
-                var it = Solve(p.X, p.Y, (int)this.ColorAxis.ActualMaximum + 1);
-                return new TrackerHitResult(
-                    this,
-                    p,
-                    point,
-                    null,
-                    -1,
-                    string.Format("X: {0:0.000}\r\nY: {1:0.000}\r\nIterations: {2}", p.X, p.Y, it));
+                var it = this.Solve(p.X, p.Y, (int)this.ColorAxis.ActualMaximum + 1);
+                return new TrackerHitResult
+                {
+                    Series = this,
+                    DataPoint = p,
+                    Position = point,
+                    Item = null,
+                    Index = -1,
+                    Text = this.Format(this.TrackerFormatString, null, p.X, p.Y, it)
+                };
             }
 
             /// <summary>

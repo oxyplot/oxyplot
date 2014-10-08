@@ -22,6 +22,11 @@ namespace OxyPlot.Series
     public abstract class ScatterSeries<T> : XYAxisSeries where T : ScatterPoint, new()
     {
         /// <summary>
+        /// The default color-axis title
+        /// </summary>
+        private const string DefaultColorAxisTitle = "Value";
+
+        /// <summary>
         /// The list of data points.
         /// </summary>
         private readonly List<T> points = new List<T>();
@@ -41,6 +46,7 @@ namespace OxyPlot.Series
             this.MarkerType = MarkerType.Square;
             this.MarkerStroke = OxyColors.Automatic;
             this.MarkerStrokeThickness = 1;
+            this.TrackerFormatString = "{0}\n{1}: {2:0.###}\n{3}: {4:0.###}";
         }
 
         /// <summary>
@@ -201,7 +207,7 @@ namespace OxyPlot.Series
                 return this.ItemsSource != null ? this.ItemsSourcePoints : this.points;
             }
         }
-        
+
         /// <summary>
         /// Gets or sets the data points from the items source.
         /// </summary>
@@ -234,20 +240,9 @@ namespace OxyPlot.Series
             double minimumDistance = double.MaxValue;
             int i = 0;
 
-            var xaxisTitle = this.XAxis.Title ?? "X";
-            var yaxisTitle = this.YAxis.Title ?? "Y";
-            var colorAxisTitle = (this.ColorAxis != null ? ((Axis)this.ColorAxis).Title : null) ?? "Z";
-
-            var formatString = this.TrackerFormatString;
-            if (string.IsNullOrEmpty(this.TrackerFormatString))
-            {
-                // Create a default format string
-                formatString = "{1}: {2}\n{3}: {4}";
-                if (this.ColorAxis != null)
-                {
-                    formatString += "\n{5}: {6}";
-                }
-            }
+            var xaxisTitle = this.XAxis.Title ?? DefaultXAxisTitle;
+            var yaxisTitle = this.YAxis.Title ?? DefaultYAxisTitle;
+            var colorAxisTitle = (this.ColorAxis != null ? ((Axis)this.ColorAxis).Title : null) ?? DefaultColorAxisTitle;
 
             foreach (var p in this.ActualPointsList)
             {
@@ -275,18 +270,26 @@ namespace OxyPlot.Series
                         zvalue = p.Value;
                     }
 
-                    var text = this.Format(
-                        formatString,
-                        item,
-                        this.Title,
-                        xaxisTitle,
-                        xvalue,
-                        yaxisTitle,
-                        yvalue,
-                        colorAxisTitle,
-                        zvalue);
-
-                    result = new TrackerHitResult(this, new DataPoint(p.X, p.Y), sp, item, i, text);
+                    result = new TrackerHitResult
+                    {
+                        Series = this,
+                        DataPoint = new DataPoint(p.X, p.Y),
+                        Position = sp,
+                        Item = item,
+                        Index = i,
+                        Text =
+                            StringHelper.Format(
+                                this.ActualCulture,
+                                this.TrackerFormatString,
+                                item,
+                                this.Title,
+                                xaxisTitle,
+                                xvalue,
+                                yaxisTitle,
+                                yvalue,
+                                colorAxisTitle,
+                                zvalue),
+                    };
 
                     minimumDistance = d2;
                 }
