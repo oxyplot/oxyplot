@@ -102,19 +102,16 @@ namespace ExampleLibrary
                 }
 
                 double x = this.XAxis.Transform(v);
-                var r = new OxyRect(
-                    x - this.symbolSize.Width / 2,
-                    this.symbolPosition - this.symbolSize.Height,
-                    this.symbolSize.Width,
-                    this.symbolSize.Height);
+                var r = new OxyRect(x - (this.symbolSize.Width / 2), this.symbolPosition - this.symbolSize.Height, this.symbolSize.Width, this.symbolSize.Height);
                 if (r.Contains(point))
                 {
-                    var text = StringHelper.Format(this.ActualCulture, this.TrackerFormatString, null, this.Title, v);
-
-                    return new TrackerHitResult(
-                        this,
-                        new DataPoint(v, double.NaN),
-                        new ScreenPoint(x, this.symbolPosition - this.symbolSize.Height)) { Text = text };
+                    return new TrackerHitResult
+                    {
+                        Series = this,
+                        DataPoint = new DataPoint(v, double.NaN),
+                        Position = new ScreenPoint(x, this.symbolPosition - this.symbolSize.Height),
+                        Text = StringHelper.Format(this.ActualCulture, this.ActualTrackerFormatString, null, this.Title, v)
+                    };
                 }
             }
 
@@ -203,7 +200,7 @@ namespace ExampleLibrary
         }
 
         /// <summary>
-        /// Sets default values (colors, line style etc) from the plotmodel.
+        /// Sets default values (colors, line style etc) from the plot model.
         /// </summary>
         /// <param name="model">A plot model.</param>
         protected override void SetDefaultValues(PlotModel model)
@@ -234,6 +231,17 @@ namespace ExampleLibrary
         {
             this.MinimumX = this.Values.Min();
             this.MaximumX = this.Values.Max();
+        }
+
+        /// <summary>
+        /// Gets the default tracker format string.
+        /// </summary>
+        /// <returns>
+        /// A format string.
+        /// </returns>
+        protected override string GetDefaultTrackerFormatString()
+        {
+            return "{0}: {1}";
         }
     }
 }

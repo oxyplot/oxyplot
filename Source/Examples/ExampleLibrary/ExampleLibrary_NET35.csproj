@@ -90,6 +90,7 @@
     <Compile Include="Examples\PerformanceExamples.cs" />
     <Compile Include="Examples\PlotModelExamples.cs" />
     <Compile Include="Axes\RangeColorAxisExamples.cs" />
+    <Compile Include="Showcases\ShowCases.cs" />
     <Compile Include="Showcases\ShowMeTheNumbersExamples.cs" />
     <Compile Include="Series\StairStepSeriesExamples.cs" />
     <Compile Include="Examples\FilteringExamples.cs" />
