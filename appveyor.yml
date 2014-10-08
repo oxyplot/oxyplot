@@ -17,7 +17,7 @@
   platform: Any CPU
   configuration: Release
   before_build:
-    cmd: UpdateVersionNumbers /Version=%APPVEYOR_BUILD_VERSION% /Dependency=OxyPlot.Core /Directory=Source
+    cmd: UpdateVersionNumbers /Version=%APPVEYOR_BUILD_VERSION% /Dependency=OxyPlot.Core /ReleaseNotesFile=RELEASE-NOTES.md /Directory=Source
   build:
     project: Source/OxyPlot.AppVeyor.sln
     verbosity: minimal
@@ -61,7 +61,7 @@
   platform: Any CPU
   configuration: Release
   before_build:
-    cmd: UpdateVersionNumbers /Version=%version% /PreRelease=alpha /Dependency=OxyPlot.Core /Directory=Source
+    cmd: UpdateVersionNumbers /Version=%version% /PreRelease=alpha /Dependency=OxyPlot.Core /ReleaseNotesFile=RELEASE-NOTES.md /Directory=Source
   build:
     project: Source/OxyPlot.AppVeyor.sln
     verbosity: normal
