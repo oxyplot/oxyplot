@@ -446,5 +446,16 @@ namespace OxyPlot.Series
         protected internal override void UpdateMaxMin()
         {
         }
+
+        /// <summary>
+        /// Gets the default tracker format string.
+        /// </summary>
+        /// <returns>
+        /// A format string.
+        /// </returns>
+        protected override string GetDefaultTrackerFormatString()
+        {
+            return "{0}: {1}";
+        }
     }
 }

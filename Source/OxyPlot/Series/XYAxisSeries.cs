@@ -20,6 +20,16 @@ namespace OxyPlot.Series
     public abstract class XYAxisSeries : ItemsSeries
     {
         /// <summary>
+        /// The default x-axis title
+        /// </summary>
+        private const string DefaultXAxisTitle = "X";
+
+        /// <summary>
+        /// The default y-axis title
+        /// </summary>
+        private const string DefaultYAxisTitle = "Y";
+
+        /// <summary>
         /// Gets or sets the maximum x-coordinate of the dataset.
         /// </summary>
         /// <value>The maximum x-coordinate.</value>
@@ -50,7 +60,7 @@ namespace OxyPlot.Series
         public Axis XAxis { get; private set; }
 
         /// <summary>
-        /// Gets or sets the x-axis key.
+        /// Gets or sets the x-axis key. The default is <c>null</c>.
         /// </summary>
         /// <value>The x-axis key.</value>
         public string XAxisKey { get; set; }
@@ -62,7 +72,7 @@ namespace OxyPlot.Series
         public Axis YAxis { get; private set; }
 
         /// <summary>
-        /// Gets or sets the y-axis key.
+        /// Gets or sets the y-axis key. The default is <c>null</c>.
         /// </summary>
         /// <value>The y-axis key.</value>
         public string YAxisKey { get; set; }
@@ -179,6 +189,17 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
+        /// Gets the default tracker format string.
+        /// </summary>
+        /// <returns>
+        /// A format string.
+        /// </returns>
+        protected override string GetDefaultTrackerFormatString()
+        {
+            return "{0}\n{1}: {2}\n{3}: {4}";
+        }
+
+        /// <summary>
         /// Gets the clipping rectangle.
         /// </summary>
         /// <returns>The clipping rectangle.</returns>
@@ -247,8 +268,18 @@ namespace OxyPlot.Series
 
             if (minimumDistance < double.MaxValue)
             {
-                object item = this.GetItem((int)index);
-                return new TrackerHitResult(this, dpn, spn, item) { Index = index };
+                var item = this.GetItem((int)Math.Round(index));
+                return new TrackerHitResult
+                {
+                    DataPoint = dpn,
+                    Position = spn,
+                    Item = item,
+                    Index = index,
+                    Series = this,
+                    Text = StringHelper.Format(this.ActualCulture, this.ActualTrackerFormatString, item, this.Title, this.XAxis.Title ?? DefaultXAxisTitle, dpn.X, this.YAxis.Title ?? DefaultYAxisTitle, dpn.Y),
+                    XAxis = this.XAxis,
+                    YAxis = this.YAxis
+                };
             }
 
             return null;
@@ -292,8 +323,18 @@ namespace OxyPlot.Series
 
             if (minimumDistance < double.MaxValue)
             {
-                object item = this.GetItem((int)index);
-                return new TrackerHitResult(this, dpn, spn, item) { Index = index };
+                var item = this.GetItem((int)Math.Round(index));
+                return new TrackerHitResult
+                {
+                    DataPoint = dpn,
+                    Position = spn,
+                    Item = item,
+                    Index = index,
+                    Series = this,
+                    Text = StringHelper.Format(this.ActualCulture, this.ActualTrackerFormatString, item, this.Title, this.XAxis.Title ?? DefaultXAxisTitle, dpn.X, this.YAxis.Title ?? DefaultYAxisTitle, dpn.Y),
+                    XAxis = this.XAxis,
+                    YAxis = this.YAxis
+                };
             }
 
             return null;

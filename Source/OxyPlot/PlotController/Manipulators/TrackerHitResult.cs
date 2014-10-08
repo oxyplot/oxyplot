@@ -24,6 +24,13 @@ namespace OxyPlot
         private const string DefaultFormatString = "{0}\n{1}: {2}\n{3}: {4}";
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="TrackerHitResult"/> class.
+        /// </summary>
+        public TrackerHitResult()
+        {            
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="TrackerHitResult" /> class.
         /// </summary>
         /// <param name="series">The series.</param>
