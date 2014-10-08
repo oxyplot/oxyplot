@@ -241,23 +241,23 @@ namespace ExampleLibrary
         public static PlotModel BrokenLine()
         {
             var model = new PlotModel { Title = "LineSeries with broken lines" };
-            var s1 = new LineSeries
-                {
-                    BrokenLineColor = OxyColors.Gray,
-                    BrokenLineThickness = 1,
-                    BrokenLineStyle = LineStyle.Dash
-                };
-            s1.Points.Add(new DataPoint(0, 26));
-            s1.Points.Add(new DataPoint(10, 30));
-            s1.Points.Add(DataPoint.Undefined);
-            s1.Points.Add(new DataPoint(10, 25));
-            s1.Points.Add(new DataPoint(20, 26));
-            s1.Points.Add(new DataPoint(25, 36));
-            s1.Points.Add(new DataPoint(30, 40));
-            s1.Points.Add(DataPoint.Undefined);
-            s1.Points.Add(new DataPoint(30, 20));
-            s1.Points.Add(new DataPoint(40, 10));
+
+            var s1 = CreateExampleLineSeries();
+            s1.Points[3] = DataPoint.Undefined;
+            s1.Points[7] = DataPoint.Undefined;
+            s1.BrokenLineColor = OxyColors.Gray;
+            s1.BrokenLineThickness = 0.5;
+            s1.BrokenLineStyle = LineStyle.Solid;
             model.Series.Add(s1);
+
+            var s2 = CreateExampleLineSeries(49);
+            s2.Points[3] = DataPoint.Undefined;
+            s2.Points[7] = DataPoint.Undefined;
+            s2.BrokenLineColor = OxyColors.Automatic;
+            s2.BrokenLineThickness = 1;
+            s2.BrokenLineStyle = LineStyle.Dot;
+            model.Series.Add(s2);
+            
             return model;
         }
 

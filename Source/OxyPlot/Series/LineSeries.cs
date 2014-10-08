@@ -102,6 +102,7 @@ namespace OxyPlot.Series
             this.Color = color;
             this.StrokeThickness = strokeThickness;
             this.BrokenLineThickness = 0;
+            this.BrokenLineStyle = LineStyle.Solid;
             this.Title = title;
         }
 
@@ -112,18 +113,18 @@ namespace OxyPlot.Series
         public OxyColor Color { get; set; }
 
         /// <summary>
-        /// Gets or sets the color of the broken line segments.
+        /// Gets or sets the color of the broken line segments. The default is <see cref="OxyColors.Undefined"/>. Set it to <see cref="OxyColors.Automatic"/> if it should follow the <see cref="Color" />.
         /// </summary>
         /// <remarks>Add <c>DataPoint.Undefined</c> in the Points collection to create breaks in the line.</remarks>
         public OxyColor BrokenLineColor { get; set; }
 
         /// <summary>
-        /// Gets or sets the broken line style.
+        /// Gets or sets the broken line style. The default is <see cref="OxyPlot.LineStyle.Solid" />.
         /// </summary>
         public LineStyle BrokenLineStyle { get; set; }
 
         /// <summary>
-        /// Gets or sets the broken line thickness.
+        /// Gets or sets the broken line thickness. The default is <c>0</c>.
         /// </summary>
         public double BrokenLineThickness { get; set; }
 
@@ -469,10 +470,14 @@ namespace OxyPlot.Series
                 {
                     if (broken.Count > 0)
                     {
+                        var actualBrokenLineColor = this.BrokenLineColor.IsAutomatic()
+                                                        ? this.ActualColor
+                                                        : this.BrokenLineColor;
+
                         rc.DrawClippedLineSegments(
                             clippingRect,
                             broken,
-                            this.BrokenLineColor,
+                            actualBrokenLineColor,
                             this.BrokenLineThickness,
                             dashArray,
                             this.LineJoin,
