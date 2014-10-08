@@ -145,7 +145,14 @@ namespace ExampleLibrary
 
             if (minimumDistance < double.MaxValue)
             {
-                return new TrackerHitResult(this, dpn, spn, this.GetItem((int)index)) { Index = index };
+                return new TrackerHitResult
+                {
+                    Series = this,
+                    DataPoint = dpn,
+                    Position = spn,
+                    Item = this.GetItem((int)index),
+                    Index = index
+                };
             }
 
             return null;

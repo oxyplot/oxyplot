@@ -22,12 +22,20 @@ namespace OxyPlot.Series
         /// <summary>
         /// The default x-axis title
         /// </summary>
-        private const string DefaultXAxisTitle = "X";
+        protected const string DefaultXAxisTitle = "X";
 
         /// <summary>
         /// The default y-axis title
         /// </summary>
-        private const string DefaultYAxisTitle = "Y";
+        protected const string DefaultYAxisTitle = "Y";
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="XYAxisSeries"/> class.
+        /// </summary>
+        protected XYAxisSeries()
+        {
+            this.TrackerFormatString = "{0}\n{1}: {2:0.###}\n{3}: {4:0.###}";
+        }
 
         /// <summary>
         /// Gets or sets the maximum x-coordinate of the dataset.
@@ -189,17 +197,6 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Gets the default tracker format string.
-        /// </summary>
-        /// <returns>
-        /// A format string.
-        /// </returns>
-        protected override string GetDefaultTrackerFormatString()
-        {
-            return "{0}\n{1}: {2}\n{3}: {4}";
-        }
-
-        /// <summary>
         /// Gets the clipping rectangle.
         /// </summary>
         /// <returns>The clipping rectangle.</returns>
@@ -219,6 +216,7 @@ namespace OxyPlot.Series
         /// <param name="points">The point list.</param>
         /// <param name="point">The point.</param>
         /// <returns>A tracker hit result if a point was found.</returns>
+        /// <remarks>The Text property of the result will not be set, since the formatting depends on the various series.</remarks>
         protected TrackerHitResult GetNearestInterpolatedPointInternal(List<DataPoint> points, ScreenPoint point)
         {
             if (this.XAxis == null || this.YAxis == null || points == null)
@@ -271,14 +269,11 @@ namespace OxyPlot.Series
                 var item = this.GetItem((int)Math.Round(index));
                 return new TrackerHitResult
                 {
+                    Series = this,
                     DataPoint = dpn,
                     Position = spn,
                     Item = item,
-                    Index = index,
-                    Series = this,
-                    Text = StringHelper.Format(this.ActualCulture, this.ActualTrackerFormatString, item, this.Title, this.XAxis.Title ?? DefaultXAxisTitle, dpn.X, this.YAxis.Title ?? DefaultYAxisTitle, dpn.Y),
-                    XAxis = this.XAxis,
-                    YAxis = this.YAxis
+                    Index = index
                 };
             }
 
@@ -291,6 +286,7 @@ namespace OxyPlot.Series
         /// <param name="points">The points (data coordinates).</param>
         /// <param name="point">The point (screen coordinates).</param>
         /// <returns>A <see cref="TrackerHitResult" /> if a point was found, <c>null</c> otherwise.</returns>
+        /// <remarks>The Text property of the result will not be set, since the formatting depends on the various series.</remarks>
         protected TrackerHitResult GetNearestPointInternal(IEnumerable<DataPoint> points, ScreenPoint point)
         {
             var spn = default(ScreenPoint);
@@ -326,14 +322,11 @@ namespace OxyPlot.Series
                 var item = this.GetItem((int)Math.Round(index));
                 return new TrackerHitResult
                 {
+                    Series = this,
                     DataPoint = dpn,
                     Position = spn,
                     Item = item,
-                    Index = index,
-                    Series = this,
-                    Text = StringHelper.Format(this.ActualCulture, this.ActualTrackerFormatString, item, this.Title, this.XAxis.Title ?? DefaultXAxisTitle, dpn.X, this.YAxis.Title ?? DefaultYAxisTitle, dpn.Y),
-                    XAxis = this.XAxis,
-                    YAxis = this.YAxis
+                    Index = index
                 };
             }
 

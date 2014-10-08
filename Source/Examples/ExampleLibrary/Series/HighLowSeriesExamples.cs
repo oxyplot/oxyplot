@@ -19,7 +19,7 @@ namespace ExampleLibrary
         public static PlotModel HighLowSeries()
         {
             var model = new PlotModel { Title = "HighLowSeries", LegendSymbolLength = 24 };
-            var s1 = new HighLowSeries { Title = "random values", Color = OxyColors.Black, };
+            var s1 = new HighLowSeries { Title = "HighLowSeries 1", Color = OxyColors.Black, };
             var r = new Random(314);
             var price = 100.0;
             for (int x = 0; x < 24; x++)
@@ -31,6 +31,7 @@ namespace ExampleLibrary
                 var close = low + r.NextDouble() * (high - low);
                 s1.Items.Add(new HighLowItem(x, high, low, open, close));
             }
+
             model.Series.Add(s1);
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, MaximumPadding = 0.3, MinimumPadding = 0.3 });
 

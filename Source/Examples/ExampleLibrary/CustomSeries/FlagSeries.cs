@@ -110,7 +110,7 @@ namespace ExampleLibrary
                         Series = this,
                         DataPoint = new DataPoint(v, double.NaN),
                         Position = new ScreenPoint(x, this.symbolPosition - this.symbolSize.Height),
-                        Text = StringHelper.Format(this.ActualCulture, this.ActualTrackerFormatString, null, this.Title, v)
+                        Text = this.Format(this.TrackerFormatString, null, this.Title, v)
                     };
                 }
             }
@@ -231,17 +231,6 @@ namespace ExampleLibrary
         {
             this.MinimumX = this.Values.Min();
             this.MaximumX = this.Values.Max();
-        }
-
-        /// <summary>
-        /// Gets the default tracker format string.
-        /// </summary>
-        /// <returns>
-        /// A format string.
-        /// </returns>
-        protected override string GetDefaultTrackerFormatString()
-        {
-            return "{0}: {1}";
         }
     }
 }

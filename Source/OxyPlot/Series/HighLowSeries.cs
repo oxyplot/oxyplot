@@ -38,7 +38,7 @@ namespace OxyPlot.Series
             this.Color = OxyColors.Automatic;
             this.TickLength = 4;
             this.StrokeThickness = 1;
-            this.TrackerFormatString = "X: {1:0.00}\nHigh: {2:0.00}\nLow: {3:0.00}\nOpen: {4:0.00}\nClose: {5:0.00}";
+            this.TrackerFormatString = "{0}\n{1}: {2}\nHigh: {3:0.###}\nLow: {4:0.###}\nOpen: {5:0.###}\nClose: {6:0.###}";
         }
 
         /// <summary>
@@ -176,8 +176,8 @@ namespace OxyPlot.Series
             }
 
             double minimumDistance = double.MaxValue;
-            var result = new TrackerHitResult(this, DataPoint.Undefined, ScreenPoint.Undefined);
 
+            TrackerHitResult result = null;
             Action<DataPoint, HighLowItem, int> check = (p, item, index) =>
                 {
                     var sp = this.Transform(p);
@@ -187,22 +187,27 @@ namespace OxyPlot.Series
 
                     if (d2 < minimumDistance)
                     {
-                        result.DataPoint = p;
-                        result.Position = sp;
-                        result.Item = item;
-                        result.Index = index;
-                        if (this.TrackerFormatString != null)
+                        var xvalue = this.XAxis.GetValue(p.X);
+                        result = new TrackerHitResult
                         {
-                            result.Text = this.Format(
-                                this.TrackerFormatString,
-                                item,
-                                this.Title,
-                                this.XAxis.GetValue(p.X),
-                                item.High,
-                                item.Low,
-                                item.Open,
-                                item.Close);
-                        }
+                            Series = this,
+                            DataPoint = p,
+                            Position = sp,
+                            Item = item,
+                            Index = index,
+                            Text =
+                                StringHelper.Format(
+                                    this.ActualCulture,
+                                    this.TrackerFormatString,
+                                    item,
+                                    this.Title,
+                                    this.XAxis.Title ?? DefaultXAxisTitle,
+                                    xvalue,
+                                    item.High,
+                                    item.Low,
+                                    item.Open,
+                                    item.Close)
+                        };
 
                         minimumDistance = d2;
                     }

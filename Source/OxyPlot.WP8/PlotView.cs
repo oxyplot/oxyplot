@@ -521,11 +521,10 @@ namespace OxyPlot.WP8
                 return;
             }
 
-            var ts = trackerHitResult.Series as ITrackableSeries;
             var trackerTemplate = this.DefaultTrackerTemplate;
-            if (ts != null && !string.IsNullOrEmpty(ts.TrackerKey))
+            if (trackerHitResult.Series != null && !string.IsNullOrEmpty(trackerHitResult.Series.TrackerKey))
             {
-                var match = this.TrackerDefinitions.FirstOrDefault(t => t.TrackerKey == ts.TrackerKey);
+                var match = this.TrackerDefinitions.FirstOrDefault(t => t.TrackerKey == trackerHitResult.Series.TrackerKey);
                 if (match != null)
                 {
                     trackerTemplate = match.TrackerTemplate;

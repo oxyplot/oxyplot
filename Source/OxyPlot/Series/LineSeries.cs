@@ -66,10 +66,10 @@ namespace OxyPlot.Series
             this.StrokeThickness = 2;
             this.LineJoin = OxyPenLineJoin.Bevel;
             this.LineStyle = LineStyle.Undefined;
-            
+
             this.Color = OxyColors.Automatic;
             this.BrokenLineColor = OxyColors.Undefined;
-            
+
             this.MarkerFill = OxyColors.Automatic;
             this.MarkerStroke = OxyColors.Automatic;
             this.MarkerResolution = 0;
@@ -78,7 +78,7 @@ namespace OxyPlot.Series
             this.MarkerType = MarkerType.None;
 
             this.MinimumSegmentLength = 2;
-            
+
             this.CanTrackerInterpolatePoints = true;
             this.LabelMargin = 6;
         }
@@ -322,7 +322,15 @@ namespace OxyPlot.Series
 
             if (interpolate && this.Smooth && this.SmoothedPoints != null)
             {
-                return this.GetNearestInterpolatedPointInternal(this.SmoothedPoints, point);
+                var result = this.GetNearestInterpolatedPointInternal(this.SmoothedPoints, point);
+                result.Text = this.Format(
+                    this.TrackerFormatString,
+                    result.Item,
+                    this.Title,
+                    this.XAxis.Title ?? XYAxisSeries.DefaultXAxisTitle,
+                    result.DataPoint.X,
+                    this.YAxis.Title ?? XYAxisSeries.DefaultYAxisTitle,
+                    result.DataPoint.Y);
             }
 
             return base.GetNearestPoint(point, interpolate);
@@ -587,7 +595,7 @@ namespace OxyPlot.Series
                 }
 
                 var item = this.GetItem(index);
-                var s = StringHelper.Format(this.ActualCulture, this.LabelFormatString, item, point.X, point.Y);
+                var s = this.Format(this.LabelFormatString, item, point.X, point.Y);
 
 #if SUPPORTLABELPLACEMENT
                     switch (this.LabelPlacement)

@@ -49,7 +49,7 @@ namespace OxyPlot.Series
             this.StrokeThickness = 1.0;
             this.LineStyle = LineStyle.Solid;
 
-            this.TrackerFormatString = "{1}: {2:0.####}\n{3}: {4:0.####}\n{5}: {6:0.####}";
+            this.TrackerFormatString = "{0}\n{1}: {2:0.####}\n{3}: {4:0.####}\n{5}: {6:0.####}";
         }
 
         /// <summary>

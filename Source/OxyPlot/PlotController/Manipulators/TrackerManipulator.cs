@@ -9,8 +9,6 @@
 
 namespace OxyPlot
 {
-    using OxyPlot.Series;
-
     /// <summary>
     /// Provides a plot manipulator for tracker functionality.
     /// </summary>
@@ -19,7 +17,7 @@ namespace OxyPlot
         /// <summary>
         /// The current series.
         /// </summary>
-        private ITrackableSeries currentSeries;
+        private Series.Series currentSeries;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TrackerManipulator" /> class.
@@ -132,14 +130,14 @@ namespace OxyPlot
         /// <summary>
         /// Gets the nearest tracker hit.
         /// </summary>
-        /// <param name="s">The series.</param>
+        /// <param name="series">The series.</param>
         /// <param name="point">The point.</param>
         /// <param name="snap">Snap to points.</param>
         /// <param name="pointsOnly">Check points only (no interpolation).</param>
         /// <returns>A tracker hit result.</returns>
-        private static TrackerHitResult GetNearestHit(ITrackableSeries s, ScreenPoint point, bool snap, bool pointsOnly)
+        private static TrackerHitResult GetNearestHit(Series.Series series, ScreenPoint point, bool snap, bool pointsOnly)
         {
-            if (s == null)
+            if (series == null)
             {
                 return null;
             }
@@ -147,7 +145,7 @@ namespace OxyPlot
             // Check data points only
             if (snap || pointsOnly)
             {
-                var result = s.GetNearestPoint(point, false);
+                var result = series.GetNearestPoint(point, false);
                 if (result != null)
                 {
                     if (result.Position.DistanceTo(point) < 20)
@@ -160,7 +158,7 @@ namespace OxyPlot
             // Check between data points (if possible)
             if (!pointsOnly)
             {
-                var result = s.GetNearestPoint(point, true);
+                var result = series.GetNearestPoint(point, true);
                 return result;
             }
 

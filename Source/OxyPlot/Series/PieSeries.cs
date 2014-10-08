@@ -52,6 +52,7 @@ namespace OxyPlot.Series
             this.TickLabelDistance = 4;
             this.InsideLabelPosition = 0.5;
             this.FontSize = 12;
+            this.TrackerFormatString = "{0}: {1:0.###}";
         }
 
         /// <summary>
@@ -445,17 +446,6 @@ namespace OxyPlot.Series
         /// </summary>
         protected internal override void UpdateMaxMin()
         {
-        }
-
-        /// <summary>
-        /// Gets the default tracker format string.
-        /// </summary>
-        /// <returns>
-        /// A format string.
-        /// </returns>
-        protected override string GetDefaultTrackerFormatString()
-        {
-            return "{0}: {1}";
         }
     }
 }

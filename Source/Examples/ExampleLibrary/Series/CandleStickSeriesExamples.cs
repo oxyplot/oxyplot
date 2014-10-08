@@ -22,7 +22,7 @@ namespace ExampleLibrary
             var model = new PlotModel { Title = "CandleStickSeries", LegendSymbolLength = 24 };
             var s1 = new CandleStickSeries
                 {
-                    Title = "random values",
+                    Title = "CandleStickSeries 1",
                     Color = OxyColors.Black,
                 };
             var r = new Random(314);
@@ -111,7 +111,6 @@ namespace ExampleLibrary
         [Example("Minute data (TimeSpanAxis)")]
         public static PlotModel MinuteData_TimeSpan()
         {
-
             var pm = new PlotModel { Title = "Minute Data (TimeSpanAxis)" };
 
             var timeSpanAxis1 = new TimeSpanAxis { Position = AxisPosition.Bottom, StringFormat = "hh:mm" };

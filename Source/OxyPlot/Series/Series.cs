@@ -15,7 +15,7 @@ namespace OxyPlot.Series
     /// Provides an abstract base class for plot series.
     /// </summary>
     /// <remarks>This class contains internal methods that should be called only from the PlotModel.</remarks>
-    public abstract class Series : PlotElement, ITrackableSeries
+    public abstract class Series : PlotElement
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Series" /> class.
@@ -44,7 +44,7 @@ namespace OxyPlot.Series
         public string Title { get; set; }
 
         /// <summary>
-        /// Gets or sets a format string used for the tracker. The default is <c>null</c> (use default tracker format string for the series).
+        /// Gets or sets a format string used for the tracker. The default depends on the series.
         /// </summary>
         /// <remarks>
         /// The arguments for the format string may be different for each type of series. See the documentation.
@@ -58,20 +58,6 @@ namespace OxyPlot.Series
         /// This key may be used by the plot view to show a custom tracker for the series.
         /// </remarks>
         public string TrackerKey { get; set; }
-
-        /// <summary>
-        /// Gets the actual tracker format string.
-        /// </summary>
-        /// <value>
-        /// The actual tracker format string.
-        /// </value>
-        protected string ActualTrackerFormatString
-        {
-            get
-            {
-                return this.TrackerFormatString ?? this.GetDefaultTrackerFormatString();
-            }
-        }
 
         /// <summary>
         /// Gets the point on the series that is nearest the specified point.
@@ -142,12 +128,6 @@ namespace OxyPlot.Series
         /// </summary>
         /// <remarks>This method is called when the <see cref="PlotModel" /> is updated with the <c>updateData</c> parameter set to <c>true</c>.</remarks>
         protected internal abstract void UpdateMaxMin();
-
-        /// <summary>
-        /// Gets the default tracker format string.
-        /// </summary>
-        /// <returns>A format string.</returns>
-        protected abstract string GetDefaultTrackerFormatString();
 
         /// <summary>
         /// When overridden in a derived class, tests if the plot element is hit by the specified point.

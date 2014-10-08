@@ -99,12 +99,30 @@ namespace OxyPlot.Series
                 return null;
             }
 
+            TrackerHitResult result = null;
             if (interpolate)
             {
-                return this.GetNearestInterpolatedPointInternal(this.ActualPoints, point);
+                result = this.GetNearestInterpolatedPointInternal(this.ActualPoints, point);
             }
 
-            return this.GetNearestPointInternal(this.ActualPoints, point);
+            if (result == null)
+            {
+                result = this.GetNearestPointInternal(this.ActualPoints, point);
+            }
+
+            if (result != null)
+            {
+                result.Text = this.Format(
+                    this.TrackerFormatString,
+                    result.Item,
+                    this.Title,
+                    this.XAxis.Title ?? XYAxisSeries.DefaultXAxisTitle,
+                    result.DataPoint.X,
+                    this.YAxis.Title ?? XYAxisSeries.DefaultYAxisTitle,
+                    result.DataPoint.Y);
+            }
+
+            return result;
         }
 
         /// <summary>
