@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MonoTouchRenderContext.cs" company="OxyPlot">
+// <copyright file="CoreGraphicsRenderContext.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
@@ -21,7 +21,7 @@ namespace OxyPlot.Xamarin.iOS
     /// <summary>
     /// Implements a <see cref="IRenderContext"/> for CoreGraphics.
     /// </summary>
-    public class MonoTouchRenderContext : RenderContextBase, IDisposable
+    public class CoreGraphicsRenderContext : RenderContextBase, IDisposable
     {
         /// <summary>
         /// The images in use.
@@ -44,10 +44,10 @@ namespace OxyPlot.Xamarin.iOS
         private readonly CGContext gctx;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MonoTouchRenderContext"/> class.
+        /// Initializes a new instance of the <see cref="CoreGraphicsRenderContext"/> class.
         /// </summary>
         /// <param name="context">The context.</param>
-        public MonoTouchRenderContext(CGContext context)
+        public CoreGraphicsRenderContext(CGContext context)
         {
             this.gctx = context;
 
@@ -396,14 +396,14 @@ namespace OxyPlot.Xamarin.iOS
         }
 
         /// <summary>
-        /// Releases all resource used by the <see cref="OxyPlot.XamarinIOS.MonoTouchRenderContext"/> object.
+        /// Releases all resource used by the <see cref="OxyPlot.Xamarin.iOS.CoreGraphicsRenderContext"/> object.
         /// </summary>
         /// <remarks>Call <see cref="Dispose"/> when you are finished using the
-        /// <see cref="OxyPlot.XamarinIOS.MonoTouchRenderContext"/>. The <see cref="Dispose"/> method leaves the
-        /// <see cref="OxyPlot.XamarinIOS.MonoTouchRenderContext"/> in an unusable state. After calling
+        /// <see cref="OxyPlot.Xamarin.iOS.CoreGraphicsRenderContext"/>. The <see cref="Dispose"/> method leaves the
+        /// <see cref="OxyPlot.Xamarin.iOS.CoreGraphicsRenderContext"/> in an unusable state. After calling
         /// <see cref="Dispose"/>, you must release all references to the
-        /// <see cref="OxyPlot.XamarinIOS.MonoTouchRenderContext"/> so the garbage collector can reclaim the memory that
-        /// the <see cref="OxyPlot.XamarinIOS.MonoTouchRenderContext"/> was occupying.</remarks>
+        /// <see cref="OxyPlot.Xamarin.iOS.CoreGraphicsRenderContext"/> so the garbage collector can reclaim the memory that
+        /// the <see cref="OxyPlot.Xamarin.iOS.CoreGraphicsRenderContext"/> was occupying.</remarks>
         public void Dispose()
         {
             foreach (var image in this.imageCache.Values)

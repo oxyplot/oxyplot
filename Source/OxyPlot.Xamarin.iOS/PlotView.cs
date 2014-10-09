@@ -259,7 +259,7 @@ namespace OxyPlot.Xamarin.iOS
         {
             if (this.model != null)
             {
-                using (var renderer = new MonoTouchRenderContext(UIGraphics.GetCurrentContext()))
+                using (var renderer = new CoreGraphicsRenderContext(UIGraphics.GetCurrentContext()))
                 {
                     ((IPlotModel)this.model).Render(renderer, rect.Width, rect.Height);
                 }
