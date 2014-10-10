@@ -47,6 +47,7 @@ namespace OxyPlot.Series
             this.MarkerStroke = OxyColors.Automatic;
             this.MarkerStrokeThickness = 1;
             this.TrackerFormatString = "{0}\n{1}: {2:0.###}\n{3}: {4:0.###}";
+            this.LabelMargin = 6;
         }
 
         /// <summary>
@@ -61,6 +62,17 @@ namespace OxyPlot.Series
                 return this.points;
             }
         }
+
+        /// <summary>
+        /// Gets or sets the label format string. The default is <c>null</c> (no labels).
+        /// </summary>
+        /// <value>The label format string.</value>
+        public string LabelFormatString { get; set; }
+
+        /// <summary>
+        /// Gets or sets the label margins. The default is <c>6</c>.
+        /// </summary>
+        public double LabelMargin { get; set; }
 
         /// <summary>
         /// Gets or sets a function that maps from elements in the <see cref="ItemsSeries.ItemsSource" /> to <see cref="ScatterPoint" /> points to be rendered.
@@ -439,6 +451,12 @@ namespace OxyPlot.Series
                 this.BinSize,
                 binOffset);
 
+            if (this.LabelFormatString != null)
+            {
+                // render point labels (not optimized for performance)
+                this.RenderPointLabels(rc, clippingRect);
+            }
+
             rc.ResetClip();
         }
 
@@ -507,6 +525,70 @@ namespace OxyPlot.Series
         {
             base.UpdateMaxMin();
             this.InternalUpdateMaxMinValue(this.ActualPointsList);
+        }
+
+        /// <summary>
+        /// Renders the point labels.
+        /// </summary>
+        /// <param name="rc">The render context.</param>
+        /// <param name="clippingRect">The clipping rectangle.</param>
+        protected void RenderPointLabels(IRenderContext rc, OxyRect clippingRect)
+        {
+            // TODO: share code with LineSeries
+            int index = -1;
+            foreach (var point in this.ActualPointsList)
+            {
+                index++;
+                var dataPoint = new DataPoint(point.X, point.Y);
+                if (!this.IsValidPoint(dataPoint))
+                {
+                    continue;
+                }
+
+                var pt = this.Transform(dataPoint) + new ScreenVector(0, -this.LabelMargin);
+
+                if (!clippingRect.Contains(pt))
+                {
+                    continue;
+                }
+
+                var item = this.GetItem(index);
+                var s = this.Format(this.LabelFormatString, item, point.X, point.Y);
+
+#if SUPPORTLABELPLACEMENT
+                    switch (this.LabelPlacement)
+                    {
+                        case LabelPlacement.Inside:
+                            pt = new ScreenPoint(rect.Right - this.LabelMargin, (rect.Top + rect.Bottom) / 2);
+                            ha = HorizontalAlignment.Right;
+                            break;
+                        case LabelPlacement.Middle:
+                            pt = new ScreenPoint((rect.Left + rect.Right) / 2, (rect.Top + rect.Bottom) / 2);
+                            ha = HorizontalAlignment.Center;
+                            break;
+                        case LabelPlacement.Base:
+                            pt = new ScreenPoint(rect.Left + this.LabelMargin, (rect.Top + rect.Bottom) / 2);
+                            ha = HorizontalAlignment.Left;
+                            break;
+                        default: // Outside
+                            pt = new ScreenPoint(rect.Right + this.LabelMargin, (rect.Top + rect.Bottom) / 2);
+                            ha = HorizontalAlignment.Left;
+                            break;
+                    }
+#endif
+
+                rc.DrawClippedText(
+                    clippingRect,
+                    pt,
+                    s,
+                    this.ActualTextColor,
+                    this.ActualFont,
+                    this.ActualFontSize,
+                    this.ActualFontWeight,
+                    0,
+                    HorizontalAlignment.Center,
+                    VerticalAlignment.Bottom);
+            }
         }
 
         /// <summary>

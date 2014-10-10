@@ -11,6 +11,7 @@ Enhancements
 
 - Improve TrackerFormatString consistency (#214)
 - Support LineColor.BrokenLineColor
+- LabelFormatString for ScatterSeries (#12)
 
 Breaking changes
 
