@@ -738,5 +738,32 @@ namespace ExampleLibrary
             plotModel1.Axes.Add(new DateTimeAxis { Position = AxisPosition.Left, Angle = 90 });
             return plotModel1;
         }
+
+        [Example("#180: Two vertical axes on the same position")]
+        public static PlotModel TwoVerticalAxisOnTheSamePosition()
+        {
+            var plotModel1 = new PlotModel { Title = "Two vertical axes on the same position", Subtitle = "The titles should overlap here!" };
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "First axis" });
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Second axis" });
+            return plotModel1;
+        }
+
+        [Example("#180: Two vertical axis on the same position (Start/EndPosition)")]
+        public static PlotModel TwoVerticalAxisOnTheSamePositionStartEndPosition()
+        {
+            var plotModel1 = new PlotModel { Title = "Two vertical axes on the same position with different StartPosition/EndPosition", Subtitle = "The titles should be centered on the axes" };
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Left, StartPosition = 0, EndPosition = 0.4, Title = "First axis" });
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Left, StartPosition = 0.6, EndPosition = 1, Title = "Second axis" });
+            return plotModel1;
+        }
+
+        [Example("#180: Two vertical axis on the same position (PositionTier)")]
+        public static PlotModel TwoVerticalAxisOnTheSamePositionStartEndPositionPositionTier()
+        {
+            var plotModel1 = new PlotModel { Title = "Two vertical axes on the same position with different PositionTier", Subtitle = "The titles should be centered and not overlapping" };
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Left, PositionTier = 0, Title = "First axis" });
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Left, PositionTier = 1, Title = "Second axis", AxislineStyle = LineStyle.Solid });
+            return plotModel1;
+        }
     }
 }
