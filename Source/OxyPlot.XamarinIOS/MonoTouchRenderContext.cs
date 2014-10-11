@@ -346,7 +346,7 @@ namespace OxyPlot.XamarinIOS
 
                     this.gctx.SaveState();
                     this.gctx.TranslateCTM((float)p.X, (float)p.Y);
-                    if (rotate.Equals(0))
+                    if (!rotate.Equals(0))
                     {
                         this.gctx.RotateCTM((float)(rotate / 180 * Math.PI));
                     }
