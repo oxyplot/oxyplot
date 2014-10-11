@@ -173,6 +173,34 @@ namespace ExampleLibrary
         }
 
         /// <summary>
+        /// Shows color capabilities for the DrawText method.
+        /// </summary>
+        /// <returns>A plot model.</returns>
+        [Example("DrawText - MaxSize")]
+        public static PlotModel DrawTextMaxSize()
+        {
+            var model = new PlotModel();
+            model.Annotations.Add(new DelegateAnnotation(rc =>
+                {
+                    const string Font = "Arial";
+                    const double FontSize = 32d;
+                    const double FontWeight = FontWeights.Bold;
+                    const double D = FontSize * 1.6;
+                    const double X = 20;
+                    double y = 20 - D;
+                    var testStrings = new []{"iii","jjj","OxyPlot","Bottom","100","KML"};
+                    foreach (var text in testStrings){
+                        var maxSize = rc.MeasureText(text, Font, FontSize, FontWeight);
+                        var p=new ScreenPoint(X, y += D);
+                        rc.DrawText(p, text, OxyColors.Black, Font, FontSize, FontWeight, maxSize: maxSize);
+                        var rect=new OxyRect(p,maxSize);
+                        rc.DrawRectangle(rect,OxyColors.Undefined,OxyColors.Black);
+                    }
+                }));
+            return model;
+        }
+
+        /// <summary>
         /// Draws text and shows marks for ascent/descent/baseline/x-height and the expected bounding box.
         /// </summary>
         /// <returns>A plot model.</returns>
