@@ -442,6 +442,9 @@ namespace OxyPlot.XamarinIOS
                 case "Times New Roman":
                     fontName = "TimesNewRomanPSMT";
                     break;
+                case "Courier New":
+                    fontName = "CourierNewPSMT";
+                    break;
                 default:
                     fontName = fontFamily;
                     break;
