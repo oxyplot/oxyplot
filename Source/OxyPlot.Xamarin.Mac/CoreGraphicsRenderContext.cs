@@ -315,8 +315,12 @@ namespace OxyPlot.Xamarin.Mac
 
                     if (maxSize.HasValue || halign != HorizontalAlignment.Left || valign != VerticalAlignment.Bottom)
                     {
-                        width = bounds.Width;
+                        width = bounds.Left + bounds.Width;
                         height = lineHeight;
+
+                        // TODO
+                        width *= 12;
+                        height *= 12;
                     }
                     else
                     {
@@ -338,26 +342,35 @@ namespace OxyPlot.Xamarin.Mac
 
                     var dx = halign == HorizontalAlignment.Left ? 0d : (halign == HorizontalAlignment.Center ? -width * 0.5 : -width);
                     var dy = valign == VerticalAlignment.Bottom ? 0d : (valign == VerticalAlignment.Middle ? height * 0.5 : height);
+                    var x0 = -bounds.Left;
+                    var y0 = delta;
 
                     this.SetFill(fill);
                     this.SetAlias(false);
 
                     this.gctx.SaveState();
                     this.gctx.TranslateCTM((float)p.X, (float)p.Y);
-                    if (rotate.Equals(0))
+                    if (!rotate.Equals(0))
                     {
                         this.gctx.RotateCTM((float)(rotate / 180 * Math.PI));
                     }
 
-                    this.gctx.TranslateCTM((float)dx - bounds.Left, (float)dy + delta);
+                    this.gctx.TranslateCTM((float)dx + x0, (float)dy + y0);
                     this.gctx.ScaleCTM(1f, -1f);
 
                     if (maxSize.HasValue)
                     {
-                        this.gctx.ClipToRect(new CGRect(0, 0, (float)Math.Ceiling(width), (float)Math.Ceiling(height)));
+                        var clipRect = new CGRect(-x0, y0, (float)Math.Ceiling (width), (float)Math.Ceiling (height));
+                        this.gctx.ClipToRect(clipRect);
                     }
 
-                    textLine.Draw(this.gctx);
+                    // TODO: Draw method is not advancing the glyphs
+                    // textLine.Draw(this.gctx);
+                    // Draw glyph by glyph instead...
+                    foreach (var run in textLine.GetGlyphRuns()) {
+                        run.Draw (this.gctx, new NSRange ());
+                    }
+
                     this.gctx.RestoreState();
                 }
             }
@@ -390,7 +403,13 @@ namespace OxyPlot.Xamarin.Mac
                     this.GetFontMetrics(font, out lineHeight, out delta);
                     this.gctx.TextPosition = new CGPoint(0, 0);
                     var bounds = textLine.GetImageBounds(this.gctx);
-                    return new OxySize(bounds.Width, lineHeight);
+                    var width = bounds.Width;
+
+                    // TODO
+                    width *= 12;
+                    lineHeight *= 12;
+
+                    return new OxySize(width, lineHeight);
                 }
             }
         }
@@ -438,6 +457,9 @@ namespace OxyPlot.Xamarin.Mac
                 case "Times":
                 case "Times New Roman":
                     fontName = "TimesNewRomanPSMT";
+                    break;
+                case "Courier New":
+                    fontName = "CourierNewPSMT";
                     break;
                 default:
                     fontName = fontFamily;
