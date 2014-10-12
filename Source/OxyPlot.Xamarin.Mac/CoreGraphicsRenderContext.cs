@@ -26,17 +26,17 @@ namespace OxyPlot.Xamarin.Mac
         /// <summary>
         /// The images in use.
         /// </summary>
-        private readonly HashSet<OxyImage> imagesInUse = new HashSet<OxyImage>();
+        private readonly HashSet<OxyImage> imagesInUse = new HashSet<OxyImage> ();
 
         /// <summary>
         /// The fonts cache.
         /// </summary>
-        private readonly Dictionary<string, CTFont> fonts = new Dictionary<string, CTFont>();
+        private readonly Dictionary<string, CTFont> fonts = new Dictionary<string, CTFont> ();
 
         /// <summary>
         /// The image cache.
         /// </summary>
-        private readonly Dictionary<OxyImage, NSImage> imageCache = new Dictionary<OxyImage, NSImage>();
+        private readonly Dictionary<OxyImage, NSImage> imageCache = new Dictionary<OxyImage, NSImage> ();
 
         /// <summary>
         /// The graphics context.
@@ -47,18 +47,18 @@ namespace OxyPlot.Xamarin.Mac
         /// Initializes a new instance of the <see cref="CoreGraphicsRenderContext"/> class.
         /// </summary>
         /// <param name="context">The context.</param>
-        public CoreGraphicsRenderContext(CGContext context)
+        public CoreGraphicsRenderContext (CGContext context)
         {
             this.gctx = context;
 
             // Set rendering quality
-            this.gctx.SetAllowsFontSmoothing(true);
-            this.gctx.SetAllowsFontSubpixelQuantization(true);
-            this.gctx.SetAllowsAntialiasing(true);
-            this.gctx.SetShouldSmoothFonts(true);
-            this.gctx.SetShouldAntialias(true);
+            this.gctx.SetAllowsFontSmoothing (true);
+            this.gctx.SetAllowsFontSubpixelQuantization (true);
+            this.gctx.SetAllowsAntialiasing (true);
+            this.gctx.SetShouldSmoothFonts (true);
+            this.gctx.SetShouldAntialias (true);
             this.gctx.InterpolationQuality = CGInterpolationQuality.High;
-            this.gctx.SetTextDrawingMode(CGTextDrawingMode.Fill);
+            this.gctx.SetTextDrawingMode (CGTextDrawingMode.Fill);
         }
 
         /// <summary>
@@ -68,33 +68,29 @@ namespace OxyPlot.Xamarin.Mac
         /// <param name="fill">The fill color.</param>
         /// <param name="stroke">The stroke color.</param>
         /// <param name="thickness">The thickness.</param>
-        public override void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
+        public override void DrawEllipse (OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
-            this.SetAlias(false);
-            var convertedRectangle = rect.Convert();
-            if (fill.IsVisible())
-            {
-                this.SetFill(fill);
-                using (var path = new CGPath())
-                {
-                    path.AddEllipseInRect(convertedRectangle);
-                    this.gctx.AddPath(path);
+            this.SetAlias (false);
+            var convertedRectangle = rect.Convert ();
+            if (fill.IsVisible ()) {
+                this.SetFill (fill);
+                using (var path = new CGPath ()) {
+                    path.AddEllipseInRect (convertedRectangle);
+                    this.gctx.AddPath (path);
                 }
 
-                this.gctx.DrawPath(CGPathDrawingMode.Fill);
+                this.gctx.DrawPath (CGPathDrawingMode.Fill);
             }
 
-            if (stroke.IsVisible() && thickness > 0)
-            {
-                this.SetStroke(stroke, thickness);
+            if (stroke.IsVisible () && thickness > 0) {
+                this.SetStroke (stroke, thickness);
 
-                using (var path = new CGPath())
-                {
-                    path.AddEllipseInRect(convertedRectangle);
-                    this.gctx.AddPath(path);
+                using (var path = new CGPath ()) {
+                    path.AddEllipseInRect (convertedRectangle);
+                    this.gctx.AddPath (path);
                 }
 
-                this.gctx.DrawPath(CGPathDrawingMode.Stroke);
+                this.gctx.DrawPath (CGPathDrawingMode.Stroke);
             }
         }
 
@@ -112,42 +108,40 @@ namespace OxyPlot.Xamarin.Mac
         /// <param name="destHeight">The height of the drawn image.</param>
         /// <param name="opacity">The opacity.</param>
         /// <param name="interpolate">Interpolate if set to <c>true</c>.</param>
-        public override void DrawImage(OxyImage source, double srcX, double srcY, double srcWidth, double srcHeight, double destX, double destY, double destWidth, double destHeight, double opacity, bool interpolate)
+        public override void DrawImage (OxyImage source, double srcX, double srcY, double srcWidth, double srcHeight, double destX, double destY, double destWidth, double destHeight, double opacity, bool interpolate)
         {
-            var image = this.GetImage(source);
-            if (image == null)
-            {
+            var image = this.GetImage (source);
+            if (image == null) {
                 return;
             }
 
-            this.gctx.SaveState();
+            this.gctx.SaveState ();
 
             double x = destX - (srcX / srcWidth * destWidth);
             double y = destY - (srcY / srcHeight * destHeight);
-            this.gctx.ScaleCTM(1, -1);
-            this.gctx.TranslateCTM((float)x, -(float)(y + destHeight));
-            this.gctx.SetAlpha((float)opacity);
+            this.gctx.ScaleCTM (1, -1);
+            this.gctx.TranslateCTM ((float)x, -(float)(y + destHeight));
+            this.gctx.SetAlpha ((float)opacity);
             this.gctx.InterpolationQuality = interpolate ? CGInterpolationQuality.High : CGInterpolationQuality.None;
-            var destRect = new CGRect(0f, 0f, (float)destWidth, (float)destHeight);
-            this.gctx.DrawImage(destRect, image.CGImage);
-            this.gctx.RestoreState();
+            var destRect = new CGRect (0f, 0f, (float)destWidth, (float)destHeight);
+            this.gctx.DrawImage (destRect, image.CGImage);
+            this.gctx.RestoreState ();
         }
 
         /// <summary>
         /// Cleans up resources not in use.
         /// </summary>
         /// <remarks>This method is called at the end of each rendering.</remarks>
-        public override void CleanUp()
+        public override void CleanUp ()
         {
-            var imagesToRelease = this.imageCache.Keys.Where(i => !this.imagesInUse.Contains(i)).ToList();
-            foreach (var i in imagesToRelease)
-            {
-                var image = this.GetImage(i);
-                image.Dispose();
-                this.imageCache.Remove(i);
+            var imagesToRelease = this.imageCache.Keys.Where (i => !this.imagesInUse.Contains (i)).ToList ();
+            foreach (var i in imagesToRelease) {
+                var image = this.GetImage (i);
+                image.Dispose ();
+                this.imageCache.Remove (i);
             }
 
-            this.imagesInUse.Clear();
+            this.imagesInUse.Clear ();
         }
 
         /// <summary>
@@ -155,19 +149,19 @@ namespace OxyPlot.Xamarin.Mac
         /// </summary>
         /// <param name="rect">The clip rectangle.</param>
         /// <returns>True if the clip rectangle was set.</returns>
-        public override bool SetClip(OxyRect rect)
+        public override bool SetClip (OxyRect rect)
         {
-            this.gctx.SaveState();
-            this.gctx.ClipToRect(rect.Convert());
+            this.gctx.SaveState ();
+            this.gctx.ClipToRect (rect.Convert ());
             return true;
         }
 
         /// <summary>
         /// Resets the clip rectangle.
         /// </summary>
-        public override void ResetClip()
+        public override void ResetClip ()
         {
-            this.gctx.RestoreState();
+            this.gctx.RestoreState ();
         }
 
         /// <summary>
@@ -179,21 +173,19 @@ namespace OxyPlot.Xamarin.Mac
         /// <param name="dashArray">The dash array.</param>
         /// <param name="lineJoin">The line join type.</param>
         /// <param name="aliased">if set to <c>true</c> the shape will be aliased.</param>
-        public override void DrawLine(IList<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray, LineJoin lineJoin, bool aliased)
+        public override void DrawLine (IList<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray, LineJoin lineJoin, bool aliased)
         {
-            if (stroke.IsVisible() && thickness > 0)
-            {
-                this.SetAlias(aliased);
-                this.SetStroke(stroke, thickness, dashArray, lineJoin);
+            if (stroke.IsVisible () && thickness > 0) {
+                this.SetAlias (aliased);
+                this.SetStroke (stroke, thickness, dashArray, lineJoin);
 
-                using (var path = new CGPath())
-                {
-                    var convertedPoints = (aliased ? points.Select(p => p.ConvertAliased()) : points.Select(p => p.Convert())).ToArray();
-                    path.AddLines(convertedPoints);
-                    this.gctx.AddPath(path);
+                using (var path = new CGPath ()) {
+                    var convertedPoints = (aliased ? points.Select (p => p.ConvertAliased ()) : points.Select (p => p.Convert ())).ToArray ();
+                    path.AddLines (convertedPoints);
+                    this.gctx.AddPath (path);
                 }
 
-                this.gctx.DrawPath(CGPathDrawingMode.Stroke);
+                this.gctx.DrawPath (CGPathDrawingMode.Stroke);
             }
         }
 
@@ -207,35 +199,31 @@ namespace OxyPlot.Xamarin.Mac
         /// <param name="dashArray">The dash array.</param>
         /// <param name="lineJoin">The line join type.</param>
         /// <param name="aliased">If set to <c>true</c> the shape will be aliased.</param>
-        public override void DrawPolygon(IList<ScreenPoint> points, OxyColor fill, OxyColor stroke, double thickness, double[] dashArray, LineJoin lineJoin, bool aliased)
+        public override void DrawPolygon (IList<ScreenPoint> points, OxyColor fill, OxyColor stroke, double thickness, double[] dashArray, LineJoin lineJoin, bool aliased)
         {
-            this.SetAlias(aliased);
-            var convertedPoints = (aliased ? points.Select(p => p.ConvertAliased()) : points.Select(p => p.Convert())).ToArray();
-            if (fill.IsVisible())
-            {
-                this.SetFill(fill);
-                using (var path = new CGPath())
-                {
-                    path.AddLines(convertedPoints);
-                    path.CloseSubpath();
-                    this.gctx.AddPath(path);
+            this.SetAlias (aliased);
+            var convertedPoints = (aliased ? points.Select (p => p.ConvertAliased ()) : points.Select (p => p.Convert ())).ToArray ();
+            if (fill.IsVisible ()) {
+                this.SetFill (fill);
+                using (var path = new CGPath ()) {
+                    path.AddLines (convertedPoints);
+                    path.CloseSubpath ();
+                    this.gctx.AddPath (path);
                 }
 
-                this.gctx.DrawPath(CGPathDrawingMode.Fill);
+                this.gctx.DrawPath (CGPathDrawingMode.Fill);
             }
 
-            if (stroke.IsVisible() && thickness > 0)
-            {
-                this.SetStroke(stroke, thickness, dashArray, lineJoin);
+            if (stroke.IsVisible () && thickness > 0) {
+                this.SetStroke (stroke, thickness, dashArray, lineJoin);
 
-                using (var path = new CGPath())
-                {
-                    path.AddLines(convertedPoints);
-                    path.CloseSubpath();
-                    this.gctx.AddPath(path);
+                using (var path = new CGPath ()) {
+                    path.AddLines (convertedPoints);
+                    path.CloseSubpath ();
+                    this.gctx.AddPath (path);
                 }
 
-                this.gctx.DrawPath(CGPathDrawingMode.Stroke);
+                this.gctx.DrawPath (CGPathDrawingMode.Stroke);
             }
         }
 
@@ -246,34 +234,30 @@ namespace OxyPlot.Xamarin.Mac
         /// <param name="fill">The fill color.</param>
         /// <param name="stroke">The stroke color.</param>
         /// <param name="thickness">The stroke thickness.</param>
-        public override void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
+        public override void DrawRectangle (OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
-            this.SetAlias(true);
-            var convertedRect = rect.ConvertAliased();
+            this.SetAlias (true);
+            var convertedRect = rect.ConvertAliased ();
 
-            if (fill.IsVisible())
-            {
-                this.SetFill(fill);
-                using (var path = new CGPath())
-                {
-                    path.AddRect(convertedRect);
-                    this.gctx.AddPath(path);
+            if (fill.IsVisible ()) {
+                this.SetFill (fill);
+                using (var path = new CGPath ()) {
+                    path.AddRect (convertedRect);
+                    this.gctx.AddPath (path);
                 }
 
-                this.gctx.DrawPath(CGPathDrawingMode.Fill);
+                this.gctx.DrawPath (CGPathDrawingMode.Fill);
             }
 
-            if (stroke.IsVisible() && thickness > 0)
-            {
-                this.SetStroke(stroke, thickness);
+            if (stroke.IsVisible () && thickness > 0) {
+                this.SetStroke (stroke, thickness);
 
-                using (var path = new CGPath())
-                {
-                    path.AddRect(convertedRect);
-                    this.gctx.AddPath(path);
+                using (var path = new CGPath ()) {
+                    path.AddRect (convertedRect);
+                    this.gctx.AddPath (path);
                 }
 
-                this.gctx.DrawPath(CGPathDrawingMode.Stroke);
+                this.gctx.DrawPath (CGPathDrawingMode.Stroke);
             }
         }
 
@@ -290,52 +274,46 @@ namespace OxyPlot.Xamarin.Mac
         /// <param name="halign">The horizontal alignment.</param>
         /// <param name="valign">The vertical alignment.</param>
         /// <param name="maxSize">The maximum size of the text.</param>
-        public override void DrawText(ScreenPoint p, string text, OxyColor fill, string fontFamily, double fontSize, double fontWeight, double rotate, HorizontalAlignment halign, VerticalAlignment valign, OxySize? maxSize)
+        public override void DrawText (ScreenPoint p, string text, OxyColor fill, string fontFamily, double fontSize, double fontWeight, double rotate, HorizontalAlignment halign, VerticalAlignment valign, OxySize? maxSize)
         {
-            if (string.IsNullOrEmpty(text))
-            {
+            if (string.IsNullOrEmpty (text)) {
                 return;
             }
 
-            var fontName = GetActualFontName(fontFamily, fontWeight);
+            var fontName = GetActualFontName (fontFamily, fontWeight);
 
-            var font = this.GetCachedFont(fontName, fontSize);
-            using (var attributedString = new NSAttributedString(text, new CTStringAttributes { ForegroundColorFromContext = true, Font = font }))
-            {
-                using (var textLine = new CTLine(attributedString))
-                {
+            var font = this.GetCachedFont (fontName, fontSize);
+            using (var attributedString = new NSAttributedString (text, new CTStringAttributes {
+                ForegroundColorFromContext = true,
+                Font = font
+            })) {
+                using (var textLine = new CTLine (attributedString)) {
                     nfloat width;
                     nfloat height;
 
-                    this.gctx.TextPosition = new CGPoint(0, 0);
+                    this.gctx.TextPosition = new CGPoint (0, 0);
 
                     nfloat lineHeight, delta;
-                    this.GetFontMetrics(font, out lineHeight, out delta);
-                    var bounds = textLine.GetImageBounds(this.gctx);
+                    this.GetFontMetrics (font, out lineHeight, out delta);
+                    var bounds = textLine.GetImageBounds (this.gctx);
 
-                    if (maxSize.HasValue || halign != HorizontalAlignment.Left || valign != VerticalAlignment.Bottom)
-                    {
+                    if (maxSize.HasValue || halign != HorizontalAlignment.Left || valign != VerticalAlignment.Bottom) {
                         width = bounds.Left + bounds.Width;
                         height = lineHeight;
 
                         // TODO
                         width *= 12;
                         height *= 12;
-                    }
-                    else
-                    {
+                    } else {
                         width = height = 0f;
                     }
 
-                    if (maxSize.HasValue)
-                    {
-                        if (width > maxSize.Value.Width)
-                        {
+                    if (maxSize.HasValue) {
+                        if (width > maxSize.Value.Width) {
                             width = (float)maxSize.Value.Width;
                         }
 
-                        if (height > maxSize.Value.Height)
-                        {
+                        if (height > maxSize.Value.Height) {
                             height = (float)maxSize.Value.Height;
                         }
                     }
@@ -345,23 +323,21 @@ namespace OxyPlot.Xamarin.Mac
                     var x0 = -bounds.Left;
                     var y0 = delta;
 
-                    this.SetFill(fill);
-                    this.SetAlias(false);
+                    this.SetFill (fill);
+                    this.SetAlias (false);
 
-                    this.gctx.SaveState();
-                    this.gctx.TranslateCTM((float)p.X, (float)p.Y);
-                    if (!rotate.Equals(0))
-                    {
-                        this.gctx.RotateCTM((float)(rotate / 180 * Math.PI));
+                    this.gctx.SaveState ();
+                    this.gctx.TranslateCTM ((float)p.X, (float)p.Y);
+                    if (!rotate.Equals (0)) {
+                        this.gctx.RotateCTM ((float)(rotate / 180 * Math.PI));
                     }
 
-                    this.gctx.TranslateCTM((float)dx + x0, (float)dy + y0);
-                    this.gctx.ScaleCTM(1f, -1f);
+                    this.gctx.TranslateCTM ((float)dx + x0, (float)dy + y0);
+                    this.gctx.ScaleCTM (1f, -1f);
 
-                    if (maxSize.HasValue)
-                    {
-                        var clipRect = new CGRect(-x0, y0, (float)Math.Ceiling (width), (float)Math.Ceiling (height));
-                        this.gctx.ClipToRect(clipRect);
+                    if (maxSize.HasValue) {
+                        var clipRect = new CGRect (-x0, y0, (float)Math.Ceiling (width), (float)Math.Ceiling (height));
+                        this.gctx.ClipToRect (clipRect);
                     }
 
                     // TODO: Draw method is not advancing the glyphs
@@ -371,7 +347,7 @@ namespace OxyPlot.Xamarin.Mac
                         run.Draw (this.gctx, new NSRange ());
                     }
 
-                    this.gctx.RestoreState();
+                    this.gctx.RestoreState ();
                 }
             }
         }
@@ -386,30 +362,30 @@ namespace OxyPlot.Xamarin.Mac
         /// <returns>
         /// The size of the text.
         /// </returns>
-        public override OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
+        public override OxySize MeasureText (string text, string fontFamily, double fontSize, double fontWeight)
         {
-            if (string.IsNullOrEmpty(text) || fontFamily == null)
-            {
+            if (string.IsNullOrEmpty (text) || fontFamily == null) {
                 return OxySize.Empty;
             }
 
-            var fontName = GetActualFontName(fontFamily, fontWeight);
-            var font = this.GetCachedFont(fontName, (float)fontSize);
-            using (var attributedString = new NSAttributedString(text, new CTStringAttributes { ForegroundColorFromContext = true, Font = font }))
-            {
-                using (var textLine = new CTLine(attributedString))
-                {
+            var fontName = GetActualFontName (fontFamily, fontWeight);
+            var font = this.GetCachedFont (fontName, (float)fontSize);
+            using (var attributedString = new NSAttributedString (text, new CTStringAttributes {
+                ForegroundColorFromContext = true,
+                Font = font
+            })) {
+                using (var textLine = new CTLine (attributedString)) {
                     nfloat lineHeight, delta;
-                    this.GetFontMetrics(font, out lineHeight, out delta);
-                    this.gctx.TextPosition = new CGPoint(0, 0);
-                    var bounds = textLine.GetImageBounds(this.gctx);
+                    this.GetFontMetrics (font, out lineHeight, out delta);
+                    this.gctx.TextPosition = new CGPoint (0, 0);
+                    var bounds = textLine.GetImageBounds (this.gctx);
                     var width = bounds.Width;
 
                     // TODO
                     width *= 12;
                     lineHeight *= 12;
 
-                    return new OxySize(width, lineHeight);
+                    return new OxySize (width, lineHeight);
                 }
             }
         }
@@ -423,16 +399,14 @@ namespace OxyPlot.Xamarin.Mac
         /// <see cref="Dispose"/>, you must release all references to the
         /// <see cref="OxyPlot.Xamarin.Mac.CoreGraphicsRenderContext"/> so the garbage collector can reclaim the memory that
         /// the <see cref="OxyPlot.Xamarin.Mac.CoreGraphicsRenderContext"/> was occupying.</remarks>
-        public void Dispose()
+        public void Dispose ()
         {
-            foreach (var image in this.imageCache.Values)
-            {
-                image.Dispose();
+            foreach (var image in this.imageCache.Values) {
+                image.Dispose ();
             }
 
-            foreach (var font in this.fonts.Values)
-            {
-                font.Dispose();
+            foreach (var font in this.fonts.Values) {
+                font.Dispose ();
             }
         }
 
@@ -442,32 +416,30 @@ namespace OxyPlot.Xamarin.Mac
         /// <param name="fontFamily">The font family.</param> 
         /// <param name="fontWeight">The font weight.</param> 
         /// <returns>The actual font name.</returns>
-        private static string GetActualFontName(string fontFamily, double fontWeight)
+        private static string GetActualFontName (string fontFamily, double fontWeight)
         {
             string fontName;
-            switch (fontFamily)
-            {
-                case null:
-                case "Segoe UI":
-                    fontName = "HelveticaNeue";
-                    break;
-                case "Arial":
-                    fontName = "ArialMT";
-                    break;
-                case "Times":
-                case "Times New Roman":
-                    fontName = "TimesNewRomanPSMT";
-                    break;
-                case "Courier New":
-                    fontName = "CourierNewPSMT";
-                    break;
-                default:
-                    fontName = fontFamily;
-                    break;
+            switch (fontFamily) {
+            case null:
+            case "Segoe UI":
+                fontName = "HelveticaNeue";
+                break;
+            case "Arial":
+                fontName = "ArialMT";
+                break;
+            case "Times":
+            case "Times New Roman":
+                fontName = "TimesNewRomanPSMT";
+                break;
+            case "Courier New":
+                fontName = "CourierNewPSMT";
+                break;
+            default:
+                fontName = fontFamily;
+                break;
             }
 
-            if (fontWeight >= 700)
-            {
+            if (fontWeight >= 700) {
                 fontName += "-Bold";
             }
 
@@ -480,7 +452,7 @@ namespace OxyPlot.Xamarin.Mac
         /// <param name="font">The font.</param>
         /// <param name="defaultLineHeight">Default line height.</param>
         /// <param name="delta">The vertical delta.</param>
-        private void GetFontMetrics(CTFont font, out nfloat defaultLineHeight, out nfloat delta)
+        private void GetFontMetrics (CTFont font, out nfloat defaultLineHeight, out nfloat delta)
         {
             var ascent = font.AscentMetric;
             var descent = font.DescentMetric;
@@ -488,9 +460,9 @@ namespace OxyPlot.Xamarin.Mac
 
             //// http://stackoverflow.com/questions/5511830/how-does-line-spacing-work-in-core-text-and-why-is-it-different-from-nslayoutm
 
-            leading = leading < 0 ? 0 : (float)Math.Floor(leading + 0.5f);
-            var lineHeight = (nfloat)Math.Floor(ascent + 0.5f) + (nfloat)Math.Floor(descent + 0.5) + leading;
-            var ascenderDelta = leading >= 0 ? 0 : (nfloat)Math.Floor((0.2 * lineHeight) + 0.5);
+            leading = leading < 0 ? 0 : (float)Math.Floor (leading + 0.5f);
+            var lineHeight = (nfloat)Math.Floor (ascent + 0.5f) + (nfloat)Math.Floor (descent + 0.5) + leading;
+            var ascenderDelta = leading >= 0 ? 0 : (nfloat)Math.Floor ((0.2 * lineHeight) + 0.5);
             defaultLineHeight = lineHeight + ascenderDelta;
             delta = ascenderDelta - descent;
         }
@@ -501,37 +473,36 @@ namespace OxyPlot.Xamarin.Mac
         /// <returns>The font.</returns>
         /// <param name="fontName">Font name.</param>
         /// <param name="fontSize">Font size.</param>
-        private CTFont GetCachedFont(string fontName, double fontSize)
+        private CTFont GetCachedFont (string fontName, double fontSize)
         {
-            var key = fontName + fontSize.ToString("0.###");
+            var key = fontName + fontSize.ToString ("0.###");
             CTFont font;
-            if (this.fonts.TryGetValue(key, out font))
-            {
+            if (this.fonts.TryGetValue (key, out font)) {
                 return font;
             }
 
             // TODO: is font size not given in pt??
             fontSize /= 12;
 
-            return this.fonts[key] = new CTFont(fontName, (nfloat)fontSize);
+            return this.fonts [key] = new CTFont (fontName, (nfloat)fontSize);
         }
 
         /// <summary>
         /// Sets the alias state.
         /// </summary>
         /// <param name="alias">alias if set to <c>true</c>.</param>
-        private void SetAlias(bool alias)
+        private void SetAlias (bool alias)
         {
-            this.gctx.SetShouldAntialias(!alias);
+            this.gctx.SetShouldAntialias (!alias);
         }
 
         /// <summary>
         /// Sets the fill color.
         /// </summary>
         /// <param name="c">The color.</param>
-        private void SetFill(OxyColor c)
+        private void SetFill (OxyColor c)
         {
-            this.gctx.SetFillColor(c.ToCGColor());
+            this.gctx.SetFillColor (c.ToCGColor ());
         }
 
         /// <summary>
@@ -541,19 +512,16 @@ namespace OxyPlot.Xamarin.Mac
         /// <param name="thickness">The stroke thickness.</param>
         /// <param name="dashArray">The dash array.</param>
         /// <param name="lineJoin">The line join.</param>
-        private void SetStroke(OxyColor c, double thickness, double[] dashArray = null, LineJoin lineJoin = LineJoin.Miter)
+        private void SetStroke (OxyColor c, double thickness, double[] dashArray = null, LineJoin lineJoin = LineJoin.Miter)
         {
-            this.gctx.SetStrokeColor(c.ToCGColor());
-            this.gctx.SetLineWidth((float)thickness);
-            this.gctx.SetLineJoin(lineJoin.Convert());
-            if (dashArray != null)
-            {
-                var lengths = dashArray.Select(d => (nfloat)d).ToArray();
-                this.gctx.SetLineDash(0f, lengths);
-            }
-            else
-            {
-                this.gctx.SetLineDash(0, null);
+            this.gctx.SetStrokeColor (c.ToCGColor ());
+            this.gctx.SetLineWidth ((float)thickness);
+            this.gctx.SetLineJoin (lineJoin.Convert ());
+            if (dashArray != null) {
+                var lengths = dashArray.Select (d => (nfloat)d).ToArray ();
+                this.gctx.SetLineDash (0f, lengths);
+            } else {
+                this.gctx.SetLineDash (0, null);
             }
         }
 
@@ -562,27 +530,25 @@ namespace OxyPlot.Xamarin.Mac
         /// </summary>
         /// <param name="source">The source.</param>
         /// <returns>The image.</returns>
-        private NSImage GetImage(OxyImage source)
+        private NSImage GetImage (OxyImage source)
         {
-            if (source == null)
-            {
+            if (source == null) {
                 return null;
             }
 
-            if (!this.imagesInUse.Contains(source))
-            {
-                this.imagesInUse.Add(source);
+            if (!this.imagesInUse.Contains (source)) {
+                this.imagesInUse.Add (source);
             }
 
             NSImage src;
-            if (!this.imageCache.TryGetValue(source, out src))
-            {
-                using (var data = NSData.FromArray(source.GetData()))
-                {
-                   // src = NSImage.LoadFromData(data);
+            if (!this.imageCache.TryGetValue (source, out src)) {
+                using (var ms = new System.IO.MemoryStream (source.GetData ())) {
+                    src = NSImage.FromStream (ms);
                 }
 
-                this.imageCache.Add(source, src);
+                if (src != null) {
+                    this.imageCache.Add (source, src);
+                }
             }
 
             return src;
