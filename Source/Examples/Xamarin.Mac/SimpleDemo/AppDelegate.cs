@@ -21,7 +21,7 @@ namespace SimpleDemo
             menu.AddItem (menuItem);
 
             var appMenu = new NSMenu ();
-            var quitItem = new NSMenuItem ("Quit " + NSProcessInfo.ProcessInfo.ProcessName, "q", (s, e) => NSApplication.SharedApplication.Terminate (menu));
+            var quitItem = new NSMenuItem ("Quit", "q", (s, e) => NSApplication.SharedApplication.Terminate (menu));
             appMenu.AddItem (quitItem);
 
             menuItem.Submenu = appMenu;
