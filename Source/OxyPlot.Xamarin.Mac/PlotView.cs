@@ -71,6 +71,7 @@ namespace OxyPlot.Xamarin.Mac
         /// Initialize the view.
         /// </summary>
         private void Initialize() {
+            this.AcceptsTouchEvents = true;
         }
 
         /// <summary>
@@ -160,8 +161,15 @@ namespace OxyPlot.Xamarin.Mac
         {
             get
             {
-                return this.Controller ?? (this.defaultController ?? (this.defaultController = new PlotController()));
+                return this.Controller ?? (this.defaultController ?? (this.defaultController = CreateDefaultController()));
             }
+        }
+
+        private PlotController CreateDefaultController(){
+            var c = new PlotController ();
+            c.UnbindMouseDown (OxyMouseButton.Left);
+            c.BindMouseDown (OxyMouseButton.Left, PlotCommands.PanAt);
+            return c;
         }
 
         /// <summary>
@@ -211,7 +219,27 @@ namespace OxyPlot.Xamarin.Mac
         /// <param name="cursorType">The cursor type.</param>
         public void SetCursorType(CursorType cursorType)
         {
-            // TODO
+            this.ResetCursorRects ();
+            var cursor = Convert (cursorType);
+            if (cursor!=null)
+            this.AddCursorRect (this.Bounds, cursor);
+        }
+
+        public static NSCursor Convert(CursorType cursorType){
+            switch (cursorType) {
+            case CursorType.Default:
+                return null;
+            case CursorType.Pan:
+                return NSCursor.PointingHandCursor;
+            case CursorType.ZoomHorizontal:
+                return NSCursor.ResizeUpDownCursor;
+            case CursorType.ZoomVertical:
+                return NSCursor.ResizeLeftRightCursor;
+            case CursorType.ZoomRectangle:
+                return NSCursor.CrosshairCursor;
+            default:
+                return null;
+            }
         }
 
         /// <summary>
@@ -260,5 +288,86 @@ namespace OxyPlot.Xamarin.Mac
                     }
             }
         }
-   }
+
+        public override void MouseDown (NSEvent theEvent)
+        {
+            base.MouseDown (theEvent);
+            this.ActualController.HandleMouseDown (this, theEvent.ToMouseDownEventArgs(this.Bounds));
+        }
+
+        public override void MouseDragged (NSEvent theEvent)
+        {
+            base.MouseDragged (theEvent);
+            this.ActualController.HandleMouseMove (this, theEvent.ToMouseEventArgs (this.Bounds));
+        }
+
+        public override void MouseMoved (NSEvent theEvent)
+        {
+            base.MouseMoved (theEvent);
+            this.ActualController.HandleMouseMove (this, theEvent.ToMouseEventArgs (this.Bounds));
+        }
+
+        public override void MouseUp (NSEvent theEvent)
+        {
+            base.MouseUp (theEvent);
+            this.ActualController.HandleMouseUp (this, theEvent.ToMouseEventArgs (this.Bounds));
+        }
+
+        public override void MouseEntered (NSEvent theEvent)
+        {
+            base.MouseEntered (theEvent);
+            this.ActualController.HandleMouseEnter (this, theEvent.ToMouseEventArgs (this.Bounds));
+        }
+
+        public override void MouseExited (NSEvent theEvent)
+        {
+            base.MouseExited (theEvent);
+            this.ActualController.HandleMouseLeave (this, theEvent.ToMouseEventArgs (this.Bounds));
+        }
+
+        public override void ScrollWheel (NSEvent theEvent)
+        {
+            // TODO: use scroll events to pan?
+            base.ScrollWheel (theEvent);
+            this.ActualController.HandleMouseWheel (this, theEvent.ToMouseWheelEventArgs (this.Bounds));
+        }
+
+        public override void OtherMouseDown (NSEvent theEvent)
+        {
+            base.OtherMouseDown (theEvent);
+        }
+
+        public override void RightMouseDown (NSEvent theEvent)
+        {
+            base.RightMouseDown (theEvent);
+        }
+
+        public override void KeyDown (NSEvent theEvent)
+        {
+            base.KeyDown (theEvent);
+            this.ActualController.HandleKeyDown (this, theEvent.ToKeyEventArgs ());
+        }
+
+        public override void TouchesBeganWithEvent (NSEvent theEvent)
+        {
+            base.TouchesBeganWithEvent (theEvent);
+        }
+
+        public override void MagnifyWithEvent (NSEvent theEvent)
+        {
+            base.MagnifyWithEvent (theEvent);
+            // TODO: handle pinch event
+            // https://developer.apple.com/library/mac/documentation/cocoa/conceptual/eventoverview/HandlingTouchEvents/HandlingTouchEvents.html
+        }
+
+        public override void SmartMagnify (NSEvent withEvent)
+        {
+            base.SmartMagnify (withEvent);
+        }
+
+        public override void SwipeWithEvent (NSEvent theEvent)
+        {
+            base.SwipeWithEvent (theEvent);
+        }
+    }
 }

@@ -11,6 +11,7 @@ namespace OxyPlot.Xamarin.Mac
 {
     using System;
 
+    using AppKit;
     using CoreGraphics;
  
     using OxyPlot;
@@ -30,6 +31,16 @@ namespace OxyPlot.Xamarin.Mac
             return new ScreenPoint(p.X, p.Y);
         }
             
+        /// <summary>
+        /// Converts a <see cref="System.Drawing.PointF" /> to a <see cref="ScreenPoint" />.
+        /// </summary>
+        /// <param name="p">The point to convert.</param>
+        /// <returns>The converted point.</returns>
+        public static ScreenPoint LocationToScreenPoint(this CGPoint p, CGRect bounds)
+        {
+            return new ScreenPoint(p.X, bounds.Height - p.Y);
+        }
+
         /// <summary>
         /// Converts a <see cref="OxyColor" /> to a <see cref="CGColor" />.
         /// </summary>
@@ -107,6 +118,71 @@ namespace OxyPlot.Xamarin.Mac
             var top = (int)rect.Top;
             var bottom = (int)rect.Bottom;
             return new CGRect(left, top, right - left, bottom - top);
+        }
+
+        public static OxyMouseButton ToButton(this NSEventType theType){
+            switch (theType) {
+            case NSEventType.LeftMouseDown:
+                return OxyMouseButton.Left;
+            case NSEventType.RightMouseDown:
+                return OxyMouseButton.Right;
+            case NSEventType.OtherMouseDown:
+                return OxyMouseButton.Middle;
+            default:
+                return OxyMouseButton.None;
+            }
+        }
+
+        public static OxyModifierKeys ToModifierKeys(this NSEventModifierMask theMask){
+            var keys = OxyModifierKeys.None;
+            if ((theMask & NSEventModifierMask.ShiftKeyMask) == NSEventModifierMask.ShiftKeyMask)
+                keys |= OxyModifierKeys.Shift;
+                if ((theMask & NSEventModifierMask.ControlKeyMask) == NSEventModifierMask.ControlKeyMask)
+                keys |= OxyModifierKeys.Control;
+                    if ((theMask & NSEventModifierMask.AlternateKeyMask )== NSEventModifierMask.AlternateKeyMask)
+                keys |= OxyModifierKeys.Alt;
+
+            // TODO
+                        if ((theMask & NSEventModifierMask.CommandKeyMask )== NSEventModifierMask.CommandKeyMask)
+                keys |= OxyModifierKeys.Control;
+
+            return keys;
+        }
+
+        public static OxyMouseDownEventArgs ToMouseDownEventArgs(this NSEvent theEvent, CGRect bounds){
+            // https://developer.apple.com/library/mac/documentation/Cocoa/Reference/ApplicationKit/Classes/NSEvent_Class/Reference/Reference.html
+            return new OxyMouseDownEventArgs{
+                Position=theEvent.LocationInWindow.LocationToScreenPoint(bounds),
+                ChangedButton=theEvent.Type.ToButton(),
+                ModifierKeys=theEvent.ModifierFlags.ToModifierKeys(),
+                ClickCount=(int)theEvent.ClickCount,
+            };
+        }
+
+        public static OxyMouseEventArgs ToMouseEventArgs(this NSEvent theEvent, CGRect bounds){
+            return new OxyMouseEventArgs{
+                Position=theEvent.LocationInWindow.LocationToScreenPoint(bounds),
+                ModifierKeys=theEvent.ModifierFlags.ToModifierKeys(),
+            };
+        }
+
+        public static OxyMouseWheelEventArgs ToMouseWheelEventArgs(this NSEvent theEvent, CGRect bounds){
+            return new OxyMouseWheelEventArgs{
+                Delta = (int)theEvent.ScrollingDeltaY,
+                Position=theEvent.LocationInWindow.LocationToScreenPoint(bounds),
+                ModifierKeys=theEvent.ModifierFlags.ToModifierKeys(),
+            };
+        }
+
+        public static OxyKeyEventArgs ToKeyEventArgs(this NSEvent theEvent){
+            return new OxyKeyEventArgs{
+                Key = theEvent.KeyCode.ToKey(),
+                ModifierKeys=theEvent.ModifierFlags.ToModifierKeys(),
+            };
+        }
+
+        public static OxyKey ToKey(this ushort keycode){
+            return OxyKey.A;
         }
     }
 }
