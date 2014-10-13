@@ -631,7 +631,7 @@ namespace OxyPlot.Wpf
                 {
                     // TODO: why is the data context not passed to the context menu??
                     this.ContextMenu.DataContext = this.DataContext;
-
+                    this.ContextMenu.PlacementTarget = this;
                     this.ContextMenu.Visibility = Visibility.Visible;
                     this.ContextMenu.IsOpen = true;
                 }
