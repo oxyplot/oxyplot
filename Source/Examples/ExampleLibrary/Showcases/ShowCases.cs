@@ -18,7 +18,7 @@ namespace ExampleLibrary
     /// <summary>
     /// Showcase models
     /// </summary>
-    [Examples("_ShowCases_")]
+    [Examples("1 ShowCases")]
     [Tags("Showcase")]
     public class ShowCases
     {

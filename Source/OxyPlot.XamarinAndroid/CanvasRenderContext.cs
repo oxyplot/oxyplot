@@ -272,9 +272,8 @@ namespace OxyPlot.XamarinAndroid
         {
             this.paint.Reset();
             {
-                this.paint.AntiAlias = true;
                 this.paint.TextSize = this.Convert(fontSize);
-                this.paint.Color = fill.ToColor();
+                this.SetFill(fill);
 
                 float width;
                 float height;
@@ -283,7 +282,7 @@ namespace OxyPlot.XamarinAndroid
                 if (maxSize.HasValue || halign != HorizontalAlignment.Left || valign != VerticalAlignment.Bottom)
                 {
                     this.paint.GetTextBounds(text, 0, text.Length, this.bounds);
-                    width = this.bounds.Width();
+                    width = this.bounds.Left + this.bounds.Width();
                     height = lineHeight;
                 }
                 else
@@ -301,7 +300,7 @@ namespace OxyPlot.XamarinAndroid
                         width = maxWidth;
                     }
 
-                    if (height > maxSize.Value.Height)
+                    if (height > maxHeight)
                     {
                         height = maxHeight;
                     }
@@ -309,15 +308,20 @@ namespace OxyPlot.XamarinAndroid
 
                 var dx = halign == HorizontalAlignment.Left ? 0d : (halign == HorizontalAlignment.Center ? -width * 0.5 : -width);
                 var dy = valign == VerticalAlignment.Bottom ? 0d : (valign == VerticalAlignment.Middle ? height * 0.5 : height);
+                var x0 = -this.bounds.Left;
+                var y0 = delta;
 
                 this.canvas.Save();
                 this.canvas.Translate(this.Convert(p.X), this.Convert(p.Y));
                 this.canvas.Rotate((float)rotate);
-                this.canvas.Translate((float)dx, (float)dy + delta);
+                this.canvas.Translate((float)dx + x0, (float)dy + y0);
 
                 if (maxSize.HasValue)
                 {
-                    this.canvas.ClipRect(0, -height, this.Convert(maxSize.Value.Width), 0);
+                    var x1 = -x0;
+                    var y1 = -height - y0;
+                    this.canvas.ClipRect(x1, y1, x1 + width, y1 + height);
+                    this.canvas.Translate(0, lineHeight - height);
                 }
 
                 this.canvas.DrawText(text, 0, 0, this.paint);
@@ -438,7 +442,7 @@ namespace OxyPlot.XamarinAndroid
         /// <param name="delta">The vertical delta.</param>
         private void GetFontMetrics(Paint paint, out float defaultLineHeight, out float delta)
         {
-            var metrics = paint.GetFontMetrics ();
+            var metrics = paint.GetFontMetrics();
             var ascent = -metrics.Ascent;
             var descent = metrics.Descent;
             var leading = metrics.Leading;

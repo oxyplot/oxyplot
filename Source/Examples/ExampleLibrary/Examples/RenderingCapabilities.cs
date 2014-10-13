@@ -19,7 +19,7 @@ namespace ExampleLibrary
     /// <summary>
     /// Provides rendering capability examples.
     /// </summary>
-    [Examples("Rendering capabilities")]
+    [Examples("9 Rendering capabilities")]
     public class RenderingCapabilities
     {
         /// <summary>
@@ -187,14 +187,24 @@ namespace ExampleLibrary
                     const double FontWeight = FontWeights.Bold;
                     const double D = FontSize * 1.6;
                     const double X = 20;
-                    double y = 20 - D;
-                    var testStrings = new []{"iii","jjj","OxyPlot","Bottom","100","KML"};
-                    foreach (var text in testStrings){
+                    const double X2 = 200;
+                    double y = 20;
+                    var testStrings = new[] { "iii", "jjj", "OxyPlot", "Bottom", "100", "KML" };
+                    foreach (var text in testStrings)
+                    {
                         var maxSize = rc.MeasureText(text, Font, FontSize, FontWeight);
-                        var p=new ScreenPoint(X, y += D);
+                        var p = new ScreenPoint(X, y);
                         rc.DrawText(p, text, OxyColors.Black, Font, FontSize, FontWeight, maxSize: maxSize);
-                        var rect=new OxyRect(p,maxSize);
-                        rc.DrawRectangle(rect,OxyColors.Undefined,OxyColors.Black);
+                        var rect = new OxyRect(p, maxSize);
+                        rc.DrawRectangle(rect, OxyColors.Undefined, OxyColors.Black);
+
+                        var p2 = new ScreenPoint(X2, y);
+                        var maxSize2 = new OxySize(maxSize.Width / 2, maxSize.Height / 2);
+                        rc.DrawText(p2, text, OxyColors.Black, Font, FontSize, FontWeight, maxSize: maxSize2);
+                        var rect2 = new OxyRect(p2, maxSize2);
+                        rc.DrawRectangle(rect2, OxyColors.Undefined, OxyColors.Black);
+
+                        y += D;
                     }
                 }));
             return model;
@@ -227,7 +237,7 @@ namespace ExampleLibrary
         [Example("DrawText - WinForms metrics (StringFormat = GenericTypographic)")]
         public static PlotModel DrawTextWithWinFormsMetricsTypographic()
         {
-            return DrawTextWithMetrics("OxyPlot", "Arial", 60, 224.1, 71.5, 108, 73, 61, 121, 23,242, "WinForms");
+            return DrawTextWithMetrics("OxyPlot", "Arial", 60, 224.1, 71.5, 108, 73, 61, 121, 23, 242, "WinForms");
         }
 
         /// <summary>
