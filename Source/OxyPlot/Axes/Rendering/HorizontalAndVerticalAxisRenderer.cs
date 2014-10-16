@@ -55,19 +55,15 @@ namespace OxyPlot.Axes
             {
                 case AxisPosition.Left:
                     axisPosition = plotAreaLeft - totalShift;
-                    titlePosition = axisPosition - tierSize;
                     break;
                 case AxisPosition.Right:
                     axisPosition = plotAreaRight + totalShift;
-                    titlePosition = axisPosition + tierSize;
                     break;
                 case AxisPosition.Top:
                     axisPosition = plotAreaTop - totalShift;
-                    titlePosition = axisPosition - tierSize;
                     break;
                 case AxisPosition.Bottom:
                     axisPosition = plotAreaBottom + totalShift;
-                    titlePosition = axisPosition + tierSize;
                     break;
             }
 
@@ -77,7 +73,7 @@ namespace OxyPlot.Axes
 
                 // the axis should be positioned at the origin of the perpendicular axis
                 axisPosition = perpendicularAxis.Transform(0);
-                
+
                 var p0 = perpendicularAxis.Transform(perpendicularAxis.ActualMinimum);
                 var p1 = perpendicularAxis.Transform(perpendicularAxis.ActualMaximum);
 
@@ -118,6 +114,22 @@ namespace OxyPlot.Axes
                         drawAxisLine = false;
                     }
                 }
+            }
+
+            switch (axis.Position)
+            {
+                case AxisPosition.Left:
+                    titlePosition = axisPosition - tierSize;
+                    break;
+                case AxisPosition.Right:
+                    titlePosition = axisPosition + tierSize;
+                    break;
+                case AxisPosition.Top:
+                    titlePosition = axisPosition - tierSize;
+                    break;
+                case AxisPosition.Bottom:
+                    titlePosition = axisPosition + tierSize;
+                    break;
             }
 
             if (pass == 0)
@@ -181,8 +193,7 @@ namespace OxyPlot.Axes
 
             if (axis.PositionAtZeroCrossing)
             {
-                var perpendicularAxis = axis.IsHorizontal() ? this.Plot.DefaultYAxis : this.Plot.DefaultXAxis;
-                middle = perpendicularAxis.Transform(perpendicularAxis.ActualMaximum);
+                middle = Lerp(axis.Transform(axis.ActualMaximum), axis.Transform(axis.ActualMinimum), axis.TitlePosition);
             }
 
             switch (axis.Position)
