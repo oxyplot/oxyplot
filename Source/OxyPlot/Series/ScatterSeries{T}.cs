@@ -273,8 +273,6 @@ namespace OxyPlot.Series
                 {
                     var item = this.GetItem(i) ?? p;
 
-                    object xvalue = this.XAxis.GetValue(p.X);
-                    object yvalue = this.YAxis.GetValue(p.Y);
                     object zvalue = null;
 
                     if (!double.IsNaN(p.Value) && !double.IsInfinity(p.Value))
@@ -296,9 +294,9 @@ namespace OxyPlot.Series
                                 item,
                                 this.Title,
                                 xaxisTitle,
-                                xvalue,
+                                this.XAxis.GetValue(p.X),
                                 yaxisTitle,
-                                yvalue,
+                                this.YAxis.GetValue(p.Y),
                                 colorAxisTitle,
                                 zvalue),
                     };

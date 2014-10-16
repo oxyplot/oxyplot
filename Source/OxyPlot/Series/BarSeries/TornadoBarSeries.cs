@@ -203,7 +203,7 @@ namespace OxyPlot.Series
                                 categoryAxis.Title ?? DefaultCategoryAxisTitle,
                                 categoryAxis.FormatValue(categoryIndex),
                                 valueAxis.Title ?? DefaultValueAxisTitle,
-                                value)
+                                valueAxis.GetValue(value))
                     };
                 }
             }

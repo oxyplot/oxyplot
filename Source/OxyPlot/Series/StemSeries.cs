@@ -116,9 +116,9 @@ namespace OxyPlot.Series
                                 item,
                                 this.Title,
                                 this.XAxis.Title ?? XYAxisSeries.DefaultXAxisTitle,
-                                p1.X,
+                                this.XAxis.GetValue(p1.X),
                                 this.YAxis.Title ?? XYAxisSeries.DefaultYAxisTitle,
-                                p1.Y)
+                                this.YAxis.GetValue(p1.Y))
                     };
                     minimumDistance = distance;
                 }

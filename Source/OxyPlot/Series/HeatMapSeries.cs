@@ -268,7 +268,16 @@ namespace OxyPlot.Series
                 Position = point,
                 Item = null,
                 Index = -1,
-                Text = this.Format(this.TrackerFormatString, null, this.Title, this.XAxis.Title ?? DefaultXAxisTitle, p.X, this.YAxis.Title ?? DefaultYAxisTitle, p.Y, colorAxisTitle, value)
+                Text = this.Format(
+                this.TrackerFormatString,
+                null,
+                this.Title,
+                this.XAxis.Title ?? DefaultXAxisTitle,
+                this.XAxis.GetValue(p.X),
+                this.YAxis.Title ?? DefaultYAxisTitle,
+                this.YAxis.GetValue(p.Y),
+                colorAxisTitle,
+                value)
             };
         }
 

@@ -213,11 +213,11 @@ namespace OxyPlot.Series
                                 this.Title,
                                 this.XAxis.Title ?? DefaultXAxisTitle,
                                 this.XAxis.GetValue(item.X),
-                                item.UpperWhisker,
-                                item.BoxTop,
-                                item.Median,
-                                item.BoxBottom,
-                                item.LowerWhisker)
+                                this.YAxis.GetValue(item.UpperWhisker),
+                                this.YAxis.GetValue(item.BoxTop),
+                                this.YAxis.GetValue(item.Median),
+                                this.YAxis.GetValue(item.BoxBottom),
+                                this.YAxis.GetValue(item.LowerWhisker))
                     };
                 }
             }

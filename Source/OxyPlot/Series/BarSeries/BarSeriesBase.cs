@@ -431,13 +431,14 @@ namespace OxyPlot.Series
             }
 
             var categoryAxis = this.GetCategoryAxis();
+            var valueAxis = this.GetValueAxis();
 
             var text = this.Format(
                 this.TrackerFormatString,
                 item,
                 this.Title,
                 categoryAxis.FormatValue(categoryIndex),
-                barItem.Value);
+                valueAxis.GetValue(barItem.Value));
             return text;
         }
 

@@ -765,5 +765,22 @@ namespace ExampleLibrary
             plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Left, PositionTier = 1, Title = "Second axis", AxislineStyle = LineStyle.Solid });
             return plotModel1;
         }
+
+        [Example("#220: Tracker strings not correctly showing date/times")]
+        public static PlotModel TrackerStringsNotCorrectlySHowingDateTimes()
+        {
+            var plotModel1 = new PlotModel { Title = "Tracker strings not correctly showing date/times" };
+            plotModel1.Axes.Add(new DateTimeAxis { Position = AxisPosition.Bottom, Title = "Date" });
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Quantity" });
+            var ls = new LineSeries { TrackerFormatString = "{1}: {2:d-M-yyyy}\n{3}: {4:0.00}", MarkerType = MarkerType.Circle };
+            var t0 = new DateTime(2014, 10, 16);
+            for (int i = 0; i < 20; i++)
+            {
+                ls.Points.Add(new DataPoint(DateTimeAxis.ToDouble(t0.AddDays(i)), 13 + Math.IEEERemainder(i, 7)));
+            }
+
+            plotModel1.Series.Add(ls);
+            return plotModel1;
+        }
     }
 }

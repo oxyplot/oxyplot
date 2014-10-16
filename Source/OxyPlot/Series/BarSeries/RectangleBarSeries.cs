@@ -122,11 +122,11 @@ namespace OxyPlot.Series
                         item,
                         this.Title,
                         this.XAxis.Title ?? DefaultXAxisTitle,
-                        this.Items[i].X0,
-                        this.Items[i].X1,
+                        this.XAxis.GetValue(this.Items[i].X0),
+                        this.XAxis.GetValue(this.Items[i].X1),
                         this.YAxis.Title ?? DefaultYAxisTitle,
-                        this.Items[i].Y0,
-                        this.Items[i].Y1,
+                        this.YAxis.GetValue(this.Items[i].Y0),
+                        this.YAxis.GetValue(this.Items[i].Y1),
                         this.Items[i].Title)
                     };
                 }

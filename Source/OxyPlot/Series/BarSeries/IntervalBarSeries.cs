@@ -184,8 +184,8 @@ namespace OxyPlot.Series
                         categoryAxis.Title ?? DefaultCategoryAxisTitle,
                         categoryAxis.FormatValue(categoryIndex),
                         valueAxis.Title ?? DefaultValueAxisTitle,
-                        this.Items[i].Start,
-                        this.Items[i].End,
+                        valueAxis.GetValue(this.Items[i].Start),
+                        valueAxis.GetValue(this.Items[i].End),
                         this.Items[i].Title)
                     };
                 }

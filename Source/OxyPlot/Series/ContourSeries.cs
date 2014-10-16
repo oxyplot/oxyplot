@@ -233,9 +233,9 @@ namespace OxyPlot.Series
                             null,
                             this.Title,
                             xaxisTitle,
-                            r.DataPoint.X,
+                            this.XAxis.GetValue(r.DataPoint.X),
                             yaxisTitle,
-                            r.DataPoint.Y,
+                            this.YAxis.GetValue(r.DataPoint.Y),
                             zaxisTitle,
                             c.ContourLevel);
                     }

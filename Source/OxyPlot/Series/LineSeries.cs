@@ -335,9 +335,9 @@ namespace OxyPlot.Series
                     result.Item,
                     this.Title,
                     this.XAxis.Title ?? XYAxisSeries.DefaultXAxisTitle,
-                    result.DataPoint.X,
+                    this.XAxis.GetValue(result.DataPoint.X),
                     this.YAxis.Title ?? XYAxisSeries.DefaultYAxisTitle,
-                    result.DataPoint.Y);
+                    this.YAxis.GetValue(result.DataPoint.Y));
             }
 
             return base.GetNearestPoint(point, interpolate);

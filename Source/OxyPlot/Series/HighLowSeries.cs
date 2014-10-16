@@ -187,7 +187,6 @@ namespace OxyPlot.Series
 
                     if (d2 < minimumDistance)
                     {
-                        var xvalue = this.XAxis.GetValue(p.X);
                         result = new TrackerHitResult
                         {
                             Series = this,
@@ -202,11 +201,11 @@ namespace OxyPlot.Series
                                     item,
                                     this.Title,
                                     this.XAxis.Title ?? DefaultXAxisTitle,
-                                    xvalue,
-                                    item.High,
-                                    item.Low,
-                                    item.Open,
-                                    item.Close)
+                                    this.XAxis.GetValue(p.X),
+                                    this.YAxis.GetValue(item.High),
+                                    this.YAxis.GetValue(item.Low),
+                                    this.YAxis.GetValue(item.Open),
+                                    this.YAxis.GetValue(item.Close))
                         };
 
                         minimumDistance = d2;
