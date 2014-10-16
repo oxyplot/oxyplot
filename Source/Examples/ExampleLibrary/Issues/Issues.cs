@@ -721,6 +721,15 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
+        [Example("#189: PositionAtZeroCrossing and no plot area border")]
+        public static PlotModel PositionAtZeroCrossingNoPlotBorder()
+        {
+            var pm = PositionAtZeroCrossing();
+            pm.PlotAreaBorderThickness = new OxyThickness(0);
+            pm.Subtitle = "The axis lines should be drawn when the origin is outside the plot area.";
+            return pm;
+        }
+
         [Example("#185: Wrong plot margins when Angle = 90 (LinearAxis)")]
         public static PlotModel PlotMarginsLinearAxisWhenAxisAngleIs90()
         {
