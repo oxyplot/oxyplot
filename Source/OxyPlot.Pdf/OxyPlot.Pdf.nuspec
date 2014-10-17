@@ -2,6 +2,7 @@
 <package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <id>OxyPlot.Pdf</id>
+    <title>OxyPlot PDF export</title>
     <version>0.0.0</version>
     <authors>Oystein Bjorke</authors>
     <description>OxyPlot is an open source plotting library for .NET. This package contains the .pdf export extensions for Silverlight, .NET 4.0 and .NET 4.5.</description>

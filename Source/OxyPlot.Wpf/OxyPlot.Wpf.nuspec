@@ -2,6 +2,7 @@
 <package>
   <metadata>
     <id>OxyPlot.Wpf</id>
+    <title>OxyPlot for WPF</title>
     <version>0.0.0</version>
     <authors>Oystein Bjorke</authors>
     <description>OxyPlot is an open source plotting library for .NET. This package contains the custom control for WPF applications.</description>
