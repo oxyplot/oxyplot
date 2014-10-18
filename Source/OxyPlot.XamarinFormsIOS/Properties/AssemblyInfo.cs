@@ -7,5 +7,5 @@
 using System.Reflection;
 
 [assembly: AssemblyTitle("OxyPlot.XamarinFormsIOS")]
-[assembly: AssemblyDescription("OxyPlot for Xamarin.Forms.Platform.iOS")]
+[assembly: AssemblyDescription("OxyPlot for Xamarin.Forms.Platform.iOS (Classic API)")]
 
