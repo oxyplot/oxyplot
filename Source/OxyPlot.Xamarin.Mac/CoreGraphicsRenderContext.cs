@@ -59,6 +59,7 @@ namespace OxyPlot.Xamarin.Mac
             this.gctx.SetShouldAntialias (true);
             this.gctx.InterpolationQuality = CGInterpolationQuality.High;
             this.gctx.SetTextDrawingMode (CGTextDrawingMode.Fill);
+            this.gctx.TextMatrix = CGAffineTransform.MakeScale (1, 1);
         }
 
         /// <summary>
@@ -295,15 +296,15 @@ namespace OxyPlot.Xamarin.Mac
 
                     nfloat lineHeight, delta;
                     this.GetFontMetrics (font, out lineHeight, out delta);
+
                     var bounds = textLine.GetImageBounds (this.gctx);
+
+                    var x0 = 0;
+                    var y0 = delta;
 
                     if (maxSize.HasValue || halign != HorizontalAlignment.Left || valign != VerticalAlignment.Bottom) {
                         width = bounds.Left + bounds.Width;
                         height = lineHeight;
-
-                        // TODO
-                        width *= 12;
-                        height *= 12;
                     } else {
                         width = height = 0f;
                     }
@@ -320,8 +321,6 @@ namespace OxyPlot.Xamarin.Mac
 
                     var dx = halign == HorizontalAlignment.Left ? 0d : (halign == HorizontalAlignment.Center ? -width * 0.5 : -width);
                     var dy = valign == VerticalAlignment.Bottom ? 0d : (valign == VerticalAlignment.Middle ? height * 0.5 : height);
-                    var x0 = -bounds.Left;
-                    var y0 = delta;
 
                     this.SetFill (fill);
                     this.SetAlias (false);
@@ -340,12 +339,7 @@ namespace OxyPlot.Xamarin.Mac
                         this.gctx.ClipToRect (clipRect);
                     }
 
-                    // TODO: Draw method is not advancing the glyphs
-                    // textLine.Draw(this.gctx);
-                    // Draw glyph by glyph instead...
-                    foreach (var run in textLine.GetGlyphRuns()) {
-                        run.Draw (this.gctx, new NSRange ());
-                    }
+                    textLine.Draw (this.gctx);
 
                     this.gctx.RestoreState ();
                 }
@@ -377,13 +371,12 @@ namespace OxyPlot.Xamarin.Mac
                 using (var textLine = new CTLine (attributedString)) {
                     nfloat lineHeight, delta;
                     this.GetFontMetrics (font, out lineHeight, out delta);
-                    this.gctx.TextPosition = new CGPoint (0, 0);
-                    var bounds = textLine.GetImageBounds (this.gctx);
-                    var width = bounds.Width;
 
-                    // TODO
-                    width *= 12;
-                    lineHeight *= 12;
+                    // the text position must be set to get the correct bounds
+                    this.gctx.TextPosition = new CGPoint (0, 0);
+
+                    var bounds = textLine.GetImageBounds (this.gctx);
+                    var width = bounds.Left + bounds.Width;
 
                     return new OxySize (width, lineHeight);
                 }
@@ -480,9 +473,6 @@ namespace OxyPlot.Xamarin.Mac
             if (this.fonts.TryGetValue (key, out font)) {
                 return font;
             }
-
-            // TODO: is font size not given in pt??
-            fontSize /= 12;
 
             return this.fonts [key] = new CTFont (fontName, (nfloat)fontSize);
         }
