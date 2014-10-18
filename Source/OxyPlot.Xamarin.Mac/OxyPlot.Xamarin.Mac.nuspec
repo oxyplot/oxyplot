@@ -2,7 +2,7 @@
 <package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <id>OxyPlot.Xamarin.Mac</id>
-    <title>OxyPlot for Xamarin.Mac (Unified API)</title>
+    <title>OxyPlot for Xamarin.Mac</title>
     <version>0.0.0</version>
     <authors>Oystein Bjorke</authors>
     <description>OxyPlot is an open source plotting library for .NET. This package targets Xamarin.Mac apps using the Unified API.</description>
@@ -16,8 +16,8 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="lib/Xamarin.Mac/OxyPlot.Xamarin.Mac.dll" target="lib/Xamarin.Mac"/>
-    <file src="lib/Xamarin.Mac/OxyPlot.Xamarin.Mac.XML" target="lib/Xamarin.Mac"/>
+    <file src="lib/Xamarin.Mac/OxyPlot.Xamarin.Mac.dll" target="lib/Xamarin.Mac20"/>
+    <file src="lib/Xamarin.Mac/OxyPlot.Xamarin.Mac.xml" target="lib/Xamarin.Mac20"/>
     <file src="README.md" />
   </files>
 </package>
