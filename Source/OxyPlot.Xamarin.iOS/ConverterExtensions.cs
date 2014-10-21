@@ -12,9 +12,8 @@ namespace OxyPlot.Xamarin.iOS
     using System;
 
     using CoreGraphics;
-    using UIKit;
-
     using OxyPlot;
+    using UIKit;
 
     /// <summary>
     /// Provides extension methods that converts between MonoTouch and OxyPlot types.
@@ -91,7 +90,7 @@ namespace OxyPlot.Xamarin.iOS
         }
 
         /// <summary>
-        /// Converts a <see cref="ScreenPoint" /> to a <see cref="PointF" />.
+        /// Converts a <see cref="ScreenPoint" /> to a <see cref="CGPoint" />.
         /// </summary>
         /// <param name="p">The point to convert.</param>
         /// <returns>The converted point.</returns>
@@ -101,7 +100,7 @@ namespace OxyPlot.Xamarin.iOS
         }
 
         /// <summary>
-        /// Converts a <see cref="ScreenPoint" /> to a pixel center aligned <see cref="PointF" />.
+        /// Converts a <see cref="ScreenPoint" /> to a pixel center aligned <see cref="CGPoint" />.
         /// </summary>
         /// <param name="p">The point to convert.</param>
         /// <returns>The converted point.</returns>
@@ -111,7 +110,7 @@ namespace OxyPlot.Xamarin.iOS
         }
 
         /// <summary>
-        /// Converts a <see cref="OxyRect" /> to a pixel center aligned <see cref="RectangleF" />.
+        /// Converts a <see cref="OxyRect" /> to a pixel center aligned <see cref="CGRect" />.
         /// </summary>
         /// <param name="rect">The rectangle to convert.</param>
         /// <returns>The converted rectangle.</returns>
@@ -125,7 +124,7 @@ namespace OxyPlot.Xamarin.iOS
         }
 
         /// <summary>
-        /// Converts a <see cref="OxyRect" /> to a <see cref="RectangleF" />.
+        /// Converts a <see cref="OxyRect" /> to a <see cref="CGRect" />.
         /// </summary>
         /// <param name="rect">The rectangle to convert.</param>
         /// <returns>The converted rectangle.</returns>
