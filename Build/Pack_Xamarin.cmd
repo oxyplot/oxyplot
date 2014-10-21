@@ -19,5 +19,5 @@ nuget pack ..\Output\OxyPlot.XamarinIOS.nuspec -OutputDirectory ..\Output
 
 nuget pack ..\Output\OxyPlot.XamarinAndroid.nuspec -OutputDirectory ..\Output
 
-nuget pack ..\Source\OxyPlot.XamarinForms/OxyPlot.XamarinForms.nuspec -OutputDirectory ../Output
+nuget pack ..\Source\OxyPlot.XamarinForms/OxyPlot.XamarinForms.nuspec -OutputDirectory ..\Output
 pause
