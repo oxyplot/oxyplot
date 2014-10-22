@@ -30,6 +30,7 @@ namespace ExampleLibrary
             var s1 = new TwoColorLineSeries
                          {
                              Title = "Temperature at Eidesmoen, December 1986.",
+                             TrackerFormatString = "December {2:0}: {4:0.0} °C",
                              Color = OxyColors.Red,
                              Color2 = OxyColors.LightBlue,
                              StrokeThickness = 3,
@@ -48,7 +49,8 @@ namespace ExampleLibrary
             }
 
             model.Series.Add(s1);
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, ExtraGridlines = new[] { 0.0 } });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Temperature", Unit = "°C", ExtraGridlines = new[] { 0.0 } });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "Date" });
 
             return model;
         }

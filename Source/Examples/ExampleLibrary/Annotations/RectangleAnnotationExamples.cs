@@ -45,7 +45,7 @@ namespace ExampleLibrary
             model.Annotations.Add(new RectangleAnnotation { MinimumY = 92.1, MaximumY = 94.6, Fill = OxyColor.FromAColor(99, OxyColors.Yellow) });
             model.Annotations.Add(new RectangleAnnotation { MinimumY = 94.6, MaximumY = 96, Text = "Ok", Fill = OxyColor.FromAColor(99, OxyColors.Green) });
             LineSeries series1;
-            model.Series.Add(series1 = new LineSeries { Color = OxyColors.Black, StrokeThickness = 6.0, LineJoin = OxyPenLineJoin.Round });
+            model.Series.Add(series1 = new LineSeries { Color = OxyColors.Black, StrokeThickness = 6.0, LineJoin = LineJoin.Round });
             series1.Points.Add(new DataPoint(0.5, 90.7));
             series1.Points.Add(new DataPoint(1.5, 91.2));
             series1.Points.Add(new DataPoint(2.5, 91));
@@ -70,7 +70,7 @@ namespace ExampleLibrary
             model.Annotations.Add(new RectangleAnnotation { MinimumX = 6.1, MaximumX = 7.6, TextRotation = 90, Text = "Yellow", Fill = OxyColor.FromAColor(99, OxyColors.Yellow) });
             model.Annotations.Add(new RectangleAnnotation { MinimumX = 7.6, MaximumX = 9.7, TextRotation = 270, Text = "Green", Fill = OxyColor.FromAColor(99, OxyColors.Green) });
             LineSeries series1;
-            model.Series.Add(series1 = new LineSeries { Color = OxyColors.Black, StrokeThickness = 6.0, LineJoin = OxyPenLineJoin.Round });
+            model.Series.Add(series1 = new LineSeries { Color = OxyColors.Black, StrokeThickness = 6.0, LineJoin = LineJoin.Round });
             series1.Points.Add(new DataPoint(0.5, 90.7));
             series1.Points.Add(new DataPoint(1.5, 91.2));
             series1.Points.Add(new DataPoint(2.5, 91));

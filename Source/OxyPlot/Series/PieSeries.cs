@@ -52,6 +52,7 @@ namespace OxyPlot.Series
             this.TickLabelDistance = 4;
             this.InsideLabelPosition = 0.5;
             this.FontSize = 12;
+            this.TrackerFormatString = "{0}: {1:0.###}";
         }
 
         /// <summary>
@@ -294,7 +295,7 @@ namespace OxyPlot.Series
                 var points = outerPoints;
                 points.AddRange(innerPoints);
 
-                rc.DrawPolygon(points, slice.ActualFillColor, this.Stroke, this.StrokeThickness, null, OxyPenLineJoin.Bevel);
+                rc.DrawPolygon(points, slice.ActualFillColor, this.Stroke, this.StrokeThickness, null, LineJoin.Bevel);
 
                 // Render label outside the slice
                 if (this.OutsideLabelFormat != null)
@@ -313,7 +314,7 @@ namespace OxyPlot.Series
                     var tp2 = new ScreenPoint(tp1.X + (this.TickHorizontalLength * sign), tp1.Y);
 
                     // draw the tick line with the same color as the text
-                    rc.DrawLine(new[] { tp0, tp1, tp2 }, this.ActualTextColor, 1, null, OxyPenLineJoin.Bevel);
+                    rc.DrawLine(new[] { tp0, tp1, tp2 }, this.ActualTextColor, 1, null, LineJoin.Bevel);
 
                     // label
                     var labelPosition = new ScreenPoint(tp2.X + (this.TickLabelDistance * sign), tp2.Y);

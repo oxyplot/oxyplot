@@ -37,6 +37,7 @@ namespace OxyPlot.Axes
         {
             base.Render(axis, pass);
 
+            bool drawAxisLine = true;
             double totalShift = axis.AxisDistance + axis.PositionTierMinShift;
             double tierSize = axis.PositionTierSize - this.Plot.AxisTierDistance;
 
@@ -54,39 +55,81 @@ namespace OxyPlot.Axes
             {
                 case AxisPosition.Left:
                     axisPosition = plotAreaLeft - totalShift;
-                    titlePosition = axisPosition - tierSize;
                     break;
                 case AxisPosition.Right:
                     axisPosition = plotAreaRight + totalShift;
-                    titlePosition = axisPosition + tierSize;
                     break;
                 case AxisPosition.Top:
                     axisPosition = plotAreaTop - totalShift;
-                    titlePosition = axisPosition - tierSize;
                     break;
                 case AxisPosition.Bottom:
                     axisPosition = plotAreaBottom + totalShift;
-                    titlePosition = axisPosition + tierSize;
                     break;
             }
 
             if (axis.PositionAtZeroCrossing)
             {
                 var perpendicularAxis = axis.IsHorizontal() ? this.Plot.DefaultYAxis : this.Plot.DefaultXAxis;
+
+                // the axis should be positioned at the origin of the perpendicular axis
                 axisPosition = perpendicularAxis.Transform(0);
+
                 var p0 = perpendicularAxis.Transform(perpendicularAxis.ActualMinimum);
                 var p1 = perpendicularAxis.Transform(perpendicularAxis.ActualMaximum);
+
+                // find the min/max positions
                 var min = Math.Min(p0, p1);
                 var max = Math.Max(p0, p1);
+
+                // also consider the plot area
+                var areaMin = axis.IsHorizontal() ? plotAreaTop : plotAreaLeft;
+                var areaMax = axis.IsHorizontal() ? plotAreaBottom : plotAreaRight;
+                min = Math.Max(min, areaMin);
+                max = Math.Min(max, areaMax);
+
                 if (axisPosition < min)
                 {
                     axisPosition = min;
+
+                    var borderThickness = axis.IsHorizontal()
+                        ? this.Plot.PlotAreaBorderThickness.Top
+                        : this.Plot.PlotAreaBorderThickness.Left;
+                    if (borderThickness > 0 && this.Plot.PlotAreaBorderColor.IsVisible())
+                    {
+                        // there is already a line here...
+                        drawAxisLine = false;
+                    }
                 }
 
                 if (axisPosition > max)
                 {
                     axisPosition = max;
+
+                    var borderThickness = axis.IsHorizontal()
+                        ? this.Plot.PlotAreaBorderThickness.Bottom
+                        : this.Plot.PlotAreaBorderThickness.Right;
+                    if (borderThickness > 0 && this.Plot.PlotAreaBorderColor.IsVisible())
+                    {
+                        // there is already a line here...
+                        drawAxisLine = false;
+                    }
                 }
+            }
+
+            switch (axis.Position)
+            {
+                case AxisPosition.Left:
+                    titlePosition = axisPosition - tierSize;
+                    break;
+                case AxisPosition.Right:
+                    titlePosition = axisPosition + tierSize;
+                    break;
+                case AxisPosition.Top:
+                    titlePosition = axisPosition - tierSize;
+                    break;
+                case AxisPosition.Bottom:
+                    titlePosition = axisPosition + tierSize;
+                    break;
             }
 
             if (pass == 0)
@@ -96,7 +139,7 @@ namespace OxyPlot.Axes
 
             if (pass == 1)
             {
-                this.RenderMajorItems(axis, axisPosition, titlePosition);
+                this.RenderMajorItems(axis, axisPosition, titlePosition, drawAxisLine);
                 this.RenderAxisTitle(axis, titlePosition);
             }
         }
@@ -150,8 +193,7 @@ namespace OxyPlot.Axes
 
             if (axis.PositionAtZeroCrossing)
             {
-                var perpendicularAxis = axis.IsHorizontal() ? this.Plot.DefaultYAxis : this.Plot.DefaultXAxis;
-                middle = perpendicularAxis.Transform(perpendicularAxis.ActualMaximum);
+                middle = Lerp(axis.Transform(axis.ActualMaximum), axis.Transform(axis.ActualMinimum), axis.TitlePosition);
             }
 
             switch (axis.Position)
@@ -274,7 +316,8 @@ namespace OxyPlot.Axes
         /// <param name="axis">The axis.</param>
         /// <param name="axisPosition">The axis position.</param>
         /// <param name="titlePosition">The title position.</param>
-        protected virtual void RenderMajorItems(Axis axis, double axisPosition, double titlePosition)
+        /// <param name="drawAxisLine">Draw the axis line if set to <c>true</c>.</param>
+        protected virtual void RenderMajorItems(Axis axis, double axisPosition, double titlePosition, bool drawAxisLine)
         {
             double eps = axis.ActualMinorStep * 1e-3;
 
@@ -473,24 +516,27 @@ namespace OxyPlot.Axes
                 }
             }
 
-            // Draw the axis line (across the tick marks)
-            if (isHorizontal)
+            if (drawAxisLine)
             {
-                this.RenderContext.DrawLine(
-                    axis.Transform(actualMinimum),
-                    axisPosition,
-                    axis.Transform(actualMaximum),
-                    axisPosition,
-                    this.AxislinePen);
-            }
-            else
-            {
-                this.RenderContext.DrawLine(
-                    axisPosition,
-                    axis.Transform(actualMinimum),
-                    axisPosition,
-                    axis.Transform(actualMaximum),
-                    this.AxislinePen);
+                // Draw the axis line (across the tick marks)
+                if (isHorizontal)
+                {
+                    this.RenderContext.DrawLine(
+                        axis.Transform(actualMinimum),
+                        axisPosition,
+                        axis.Transform(actualMaximum),
+                        axisPosition,
+                        this.AxislinePen);
+                }
+                else
+                {
+                    this.RenderContext.DrawLine(
+                        axisPosition,
+                        axis.Transform(actualMinimum),
+                        axisPosition,
+                        axis.Transform(actualMaximum),
+                        this.AxislinePen);
+                }
             }
 
             if (this.MajorPen != null)

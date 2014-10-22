@@ -22,6 +22,11 @@ namespace OxyPlot.Series
     public abstract class ScatterSeries<T> : XYAxisSeries where T : ScatterPoint, new()
     {
         /// <summary>
+        /// The default color-axis title
+        /// </summary>
+        private const string DefaultColorAxisTitle = "Value";
+
+        /// <summary>
         /// The list of data points.
         /// </summary>
         private readonly List<T> points = new List<T>();
@@ -41,6 +46,8 @@ namespace OxyPlot.Series
             this.MarkerType = MarkerType.Square;
             this.MarkerStroke = OxyColors.Automatic;
             this.MarkerStrokeThickness = 1;
+            this.TrackerFormatString = "{0}\n{1}: {2:0.###}\n{3}: {4:0.###}";
+            this.LabelMargin = 6;
         }
 
         /// <summary>
@@ -55,6 +62,17 @@ namespace OxyPlot.Series
                 return this.points;
             }
         }
+
+        /// <summary>
+        /// Gets or sets the label format string. The default is <c>null</c> (no labels).
+        /// </summary>
+        /// <value>The label format string.</value>
+        public string LabelFormatString { get; set; }
+
+        /// <summary>
+        /// Gets or sets the label margins. The default is <c>6</c>.
+        /// </summary>
+        public double LabelMargin { get; set; }
 
         /// <summary>
         /// Gets or sets a function that maps from elements in the <see cref="ItemsSeries.ItemsSource" /> to <see cref="ScatterPoint" /> points to be rendered.
@@ -201,7 +219,7 @@ namespace OxyPlot.Series
                 return this.ItemsSource != null ? this.ItemsSourcePoints : this.points;
             }
         }
-        
+
         /// <summary>
         /// Gets or sets the data points from the items source.
         /// </summary>
@@ -234,20 +252,9 @@ namespace OxyPlot.Series
             double minimumDistance = double.MaxValue;
             int i = 0;
 
-            var xaxisTitle = this.XAxis.Title ?? "X";
-            var yaxisTitle = this.YAxis.Title ?? "Y";
-            var colorAxisTitle = (this.ColorAxis != null ? ((Axis)this.ColorAxis).Title : null) ?? "Z";
-
-            var formatString = this.TrackerFormatString;
-            if (string.IsNullOrEmpty(this.TrackerFormatString))
-            {
-                // Create a default format string
-                formatString = "{1}: {2}\n{3}: {4}";
-                if (this.ColorAxis != null)
-                {
-                    formatString += "\n{5}: {6}";
-                }
-            }
+            var xaxisTitle = this.XAxis.Title ?? DefaultXAxisTitle;
+            var yaxisTitle = this.YAxis.Title ?? DefaultYAxisTitle;
+            var colorAxisTitle = (this.ColorAxis != null ? ((Axis)this.ColorAxis).Title : null) ?? DefaultColorAxisTitle;
 
             foreach (var p in this.ActualPointsList)
             {
@@ -266,8 +273,6 @@ namespace OxyPlot.Series
                 {
                     var item = this.GetItem(i) ?? p;
 
-                    object xvalue = this.XAxis.GetValue(p.X);
-                    object yvalue = this.YAxis.GetValue(p.Y);
                     object zvalue = null;
 
                     if (!double.IsNaN(p.Value) && !double.IsInfinity(p.Value))
@@ -275,18 +280,26 @@ namespace OxyPlot.Series
                         zvalue = p.Value;
                     }
 
-                    var text = this.Format(
-                        formatString,
-                        item,
-                        this.Title,
-                        xaxisTitle,
-                        xvalue,
-                        yaxisTitle,
-                        yvalue,
-                        colorAxisTitle,
-                        zvalue);
-
-                    result = new TrackerHitResult(this, new DataPoint(p.X, p.Y), sp, item, i, text);
+                    result = new TrackerHitResult
+                    {
+                        Series = this,
+                        DataPoint = new DataPoint(p.X, p.Y),
+                        Position = sp,
+                        Item = item,
+                        Index = i,
+                        Text =
+                            StringHelper.Format(
+                                this.ActualCulture,
+                                this.TrackerFormatString,
+                                item,
+                                this.Title,
+                                xaxisTitle,
+                                this.XAxis.GetValue(p.X),
+                                yaxisTitle,
+                                this.YAxis.GetValue(p.Y),
+                                colorAxisTitle,
+                                zvalue),
+                    };
 
                     minimumDistance = d2;
                 }
@@ -436,6 +449,12 @@ namespace OxyPlot.Series
                 this.BinSize,
                 binOffset);
 
+            if (this.LabelFormatString != null)
+            {
+                // render point labels (not optimized for performance)
+                this.RenderPointLabels(rc, clippingRect);
+            }
+
             rc.ResetClip();
         }
 
@@ -504,6 +523,70 @@ namespace OxyPlot.Series
         {
             base.UpdateMaxMin();
             this.InternalUpdateMaxMinValue(this.ActualPointsList);
+        }
+
+        /// <summary>
+        /// Renders the point labels.
+        /// </summary>
+        /// <param name="rc">The render context.</param>
+        /// <param name="clippingRect">The clipping rectangle.</param>
+        protected void RenderPointLabels(IRenderContext rc, OxyRect clippingRect)
+        {
+            // TODO: share code with LineSeries
+            int index = -1;
+            foreach (var point in this.ActualPointsList)
+            {
+                index++;
+                var dataPoint = new DataPoint(point.X, point.Y);
+                if (!this.IsValidPoint(dataPoint))
+                {
+                    continue;
+                }
+
+                var pt = this.Transform(dataPoint) + new ScreenVector(0, -this.LabelMargin);
+
+                if (!clippingRect.Contains(pt))
+                {
+                    continue;
+                }
+
+                var item = this.GetItem(index);
+                var s = this.Format(this.LabelFormatString, item, point.X, point.Y);
+
+#if SUPPORTLABELPLACEMENT
+                    switch (this.LabelPlacement)
+                    {
+                        case LabelPlacement.Inside:
+                            pt = new ScreenPoint(rect.Right - this.LabelMargin, (rect.Top + rect.Bottom) / 2);
+                            ha = HorizontalAlignment.Right;
+                            break;
+                        case LabelPlacement.Middle:
+                            pt = new ScreenPoint((rect.Left + rect.Right) / 2, (rect.Top + rect.Bottom) / 2);
+                            ha = HorizontalAlignment.Center;
+                            break;
+                        case LabelPlacement.Base:
+                            pt = new ScreenPoint(rect.Left + this.LabelMargin, (rect.Top + rect.Bottom) / 2);
+                            ha = HorizontalAlignment.Left;
+                            break;
+                        default: // Outside
+                            pt = new ScreenPoint(rect.Right + this.LabelMargin, (rect.Top + rect.Bottom) / 2);
+                            ha = HorizontalAlignment.Left;
+                            break;
+                    }
+#endif
+
+                rc.DrawClippedText(
+                    clippingRect,
+                    pt,
+                    s,
+                    this.ActualTextColor,
+                    this.ActualFont,
+                    this.ActualFontSize,
+                    this.ActualFontWeight,
+                    0,
+                    HorizontalAlignment.Center,
+                    VerticalAlignment.Bottom);
+            }
         }
 
         /// <summary>

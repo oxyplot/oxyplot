@@ -9,6 +9,8 @@
 
 namespace OxyPlot
 {
+    using System;
+
     using OxyPlot.Series;
 
     /// <summary>
@@ -19,9 +21,11 @@ namespace OxyPlot
     public class TrackerHitResult
     {
         /// <summary>
-        /// The default format string.
+        /// Initializes a new instance of the <see cref="TrackerHitResult"/> class.
         /// </summary>
-        private const string DefaultFormatString = "{0}\n{1}: {2}\n{3}: {4}";
+        public TrackerHitResult()
+        {
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TrackerHitResult" /> class.
@@ -32,6 +36,7 @@ namespace OxyPlot
         /// <param name="item">The item.</param>
         /// <param name="index">The index.</param>
         /// <param name="text">The text.</param>
+        [Obsolete("Replace with parameterless constructor")]
         public TrackerHitResult(Series.Series series, DataPoint dp, ScreenPoint sp, object item = null, double index = -1, string text = null)
         {
             this.DataPoint = dp;
@@ -40,12 +45,6 @@ namespace OxyPlot
             this.Index = index;
             this.Series = series;
             this.Text = text;
-            var axisSeries = series as XYAxisSeries;
-            if (axisSeries != null)
-            {
-                this.XAxis = axisSeries.XAxis;
-                this.YAxis = axisSeries.YAxis;
-            }
         }
 
         /// <summary>
@@ -90,14 +89,28 @@ namespace OxyPlot
         public string Text { get; set; }
 
         /// <summary>
-        /// Gets or sets the X axis.
+        /// Gets the X axis.
         /// </summary>
-        public Axes.Axis XAxis { get; set; }
+        public Axes.Axis XAxis
+        {
+            get
+            {
+                var xyas = this.Series as XYAxisSeries;
+                return xyas != null ? xyas.XAxis : null;
+            }
+        }
 
         /// <summary>
-        /// Gets or sets the Y axis.
+        /// Gets the Y axis.
         /// </summary>
-        public Axes.Axis YAxis { get; set; }
+        public Axes.Axis YAxis
+        {
+            get
+            {
+                var xyas = this.Series as XYAxisSeries;
+                return xyas != null ? xyas.YAxis : null;
+            }
+        }
 
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.
@@ -105,33 +118,7 @@ namespace OxyPlot
         /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
         public override string ToString()
         {
-            if (this.Text != null)
-            {
-                return this.Text;
-            }
-
-            var ts = this.Series as ITrackableSeries;
-            string formatString = DefaultFormatString;
-            if (ts != null && !string.IsNullOrEmpty(ts.TrackerFormatString))
-            {
-                formatString = ts.TrackerFormatString;
-            }
-
-            string xaxisTitle = (this.XAxis != null ? this.XAxis.Title : null) ?? "X";
-            string yaxisTitle = (this.YAxis != null ? this.YAxis.Title : null) ?? "Y";
-            object xvalue = this.XAxis != null ? this.XAxis.GetValue(this.DataPoint.X) : this.DataPoint.X;
-            object yvalue = this.YAxis != null ? this.YAxis.GetValue(this.DataPoint.Y) : this.DataPoint.Y;
-
-            return StringHelper.Format(
-                this.PlotModel.ActualCulture,
-                formatString,
-                this.Item,
-                this.Series.Title,
-                xaxisTitle,
-                xvalue,
-                yaxisTitle,
-                yvalue,
-                this.Item).Trim();
+            return this.Text != null ? this.Text.Trim() : string.Empty;
         }
     }
 }

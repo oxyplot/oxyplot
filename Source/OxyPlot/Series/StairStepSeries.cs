@@ -85,6 +85,14 @@ namespace OxyPlot.Series
             var result = this.GetNearestPointInternal(this.ActualPoints, point);
             if (!interpolate && result != null && result.Position.DistanceToSquared(point) < minimumDistanceSquared)
             {
+                result.Text = this.Format(
+                    this.TrackerFormatString,
+                    result.Item,
+                    this.Title,
+                    this.XAxis.Title ?? XYAxisSeries.DefaultXAxisTitle,
+                    this.XAxis.GetValue(result.DataPoint.X),
+                    this.YAxis.Title ?? XYAxisSeries.DefaultYAxisTitle,
+                    this.YAxis.GetValue(result.DataPoint.Y));
                 return result;
             }
 
@@ -134,8 +142,16 @@ namespace OxyPlot.Series
                 {
                     double px = p1.X + (u * (p2.X - p1.X));
                     double py = p1.Y;
-                    result = new TrackerHitResult(
-                        this, new DataPoint(px, py), new ScreenPoint(sx, sy), this.GetItem(i), i);
+                    var item = this.GetItem(i);
+                    result = new TrackerHitResult
+                    {
+                        Series = this,
+                        DataPoint = new DataPoint(px, py),
+                        Position = new ScreenPoint(sx, sy),
+                        Item = item,
+                        Index = i,
+                        Text = this.Format(this.TrackerFormatString, item, this.Title, this.XAxis.Title ?? DefaultXAxisTitle, px, this.YAxis.Title ?? DefaultYAxisTitle, py)
+                    };
                     minimumDistanceSquared = distanceSquared;
                 }
             }

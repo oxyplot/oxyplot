@@ -55,7 +55,7 @@ namespace OxyPlot
             OxyColor stroke,
             double thickness = 1.0,
             double[] dashArray = null,
-            OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter,
+            LineJoin lineJoin = LineJoin.Miter,
             bool aliased = false);
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace OxyPlot
             OxyColor stroke,
             double thickness = 1.0,
             double[] dashArray = null,
-            OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter,
+            LineJoin lineJoin = LineJoin.Miter,
             bool aliased = false);
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace OxyPlot
             OxyColor stroke,
             double thickness = 1.0,
             double[] dashArray = null,
-            OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter,
+            LineJoin lineJoin = LineJoin.Miter,
             bool aliased = false);
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace OxyPlot
             OxyColor stroke,
             double thickness = 1.0,
             double[] dashArray = null,
-            OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter,
+            LineJoin lineJoin = LineJoin.Miter,
             bool aliased = false);
 
         /// <summary>

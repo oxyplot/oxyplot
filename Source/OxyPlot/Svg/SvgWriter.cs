@@ -102,7 +102,7 @@ namespace OxyPlot
             OxyColor stroke,
             double thickness,
             double[] dashArray = null,
-            OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter)
+            LineJoin lineJoin = LineJoin.Miter)
         {
             // http://oreilly.com/catalog/svgess/chapter/ch03.html
             var style = new StringBuilder();
@@ -129,10 +129,10 @@ namespace OxyPlot
                 style.AppendFormat(CultureInfo.InvariantCulture, formatString, this.ColorToString(stroke), thickness);
                 switch (lineJoin)
                 {
-                    case OxyPenLineJoin.Round:
+                    case LineJoin.Round:
                         style.AppendFormat(";stroke-linejoin:round");
                         break;
-                    case OxyPenLineJoin.Bevel:
+                    case LineJoin.Bevel:
                         style.AppendFormat(";stroke-linejoin:bevel");
                         break;
                 }

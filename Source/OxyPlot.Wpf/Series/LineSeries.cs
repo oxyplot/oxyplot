@@ -12,7 +12,6 @@ namespace OxyPlot.Wpf
     using System;
     using System.Collections.Generic;
     using System.Windows;
-    using System.Windows.Documents;
     using System.Windows.Media;
 
     using OxyPlot.Series;
@@ -70,9 +69,9 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty LineJoinProperty = DependencyProperty.Register(
             "LineJoin",
-            typeof(OxyPenLineJoin),
+            typeof(LineJoin),
             typeof(LineSeries),
-            new PropertyMetadata(OxyPenLineJoin.Bevel, AppearanceChanged));
+            new PropertyMetadata(LineJoin.Bevel, AppearanceChanged));
 
         /// <summary>
         /// Identifies the <see cref="LineLegendPosition"/> dependency property.
@@ -88,7 +87,7 @@ namespace OxyPlot.Wpf
         /// Identifies the <see cref="LineStyle"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LineStyleProperty = DependencyProperty.Register(
-            "LineStyle", typeof(LineStyle), typeof(LineSeries), new PropertyMetadata(LineStyle.Undefined, AppearanceChanged));
+            "LineStyle", typeof(LineStyle), typeof(LineSeries), new PropertyMetadata(LineStyle.Automatic, AppearanceChanged));
 
         /// <summary>
         /// Identifies the <see cref="MarkerFill"/> dependency property.
@@ -145,6 +144,12 @@ namespace OxyPlot.Wpf
         public static readonly DependencyProperty MinimumSegmentLengthProperty =
             DependencyProperty.Register(
                 "MinimumSegmentLength", typeof(double), typeof(LineSeries), new PropertyMetadata(2.0, AppearanceChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="Smooth"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty SmoothProperty = DependencyProperty.Register(
+            "Smooth", typeof(bool), typeof(LineSeries), new UIPropertyMetadata(false));
 
         /// <summary>
         /// Identifies the <see cref="StrokeThickness"/> dependency property.
@@ -282,11 +287,11 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets LineJoin.
         /// </summary>
-        public OxyPenLineJoin LineJoin
+        public LineJoin LineJoin
         {
             get
             {
-                return (OxyPenLineJoin)this.GetValue(LineJoinProperty);
+                return (LineJoin)this.GetValue(LineJoinProperty);
             }
 
             set
@@ -450,6 +455,23 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="DataPointSeries" /> is smooth.
+        /// </summary>
+        /// <value><c>true</c> if smooth; otherwise, <c>false</c> .</value>
+        public bool Smooth
+        {
+            get
+            {
+                return (bool)this.GetValue(SmoothProperty);
+            }
+
+            set
+            {
+                this.SetValue(SmoothProperty, value);
+            }
+        }
+        
+        /// <summary>
         /// Gets or sets StrokeThickness.
         /// </summary>
         public double StrokeThickness
@@ -503,6 +525,7 @@ namespace OxyPlot.Wpf
             s.BrokenLineStyle = this.BrokenLineStyle;
             s.BrokenLineThickness = this.BrokenLineThickness;
             s.Decimator = this.Decimator;
+            s.Smooth = this.Smooth;
         }
     }
 }

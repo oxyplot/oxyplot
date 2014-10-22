@@ -71,19 +71,19 @@ namespace OxyPlot.XamarinIOS
         }
 
         /// <summary>
-        /// Converts a <see cref="OxyPenLineJoin" /> to a <see cref="CGLineCap" />.
+        /// Converts a <see cref="LineJoin" /> to a <see cref="CGLineCap" />.
         /// </summary>
         /// <param name="lineJoin">The line join.</param>
         /// <returns>The converted join.</returns>
-        public static CGLineJoin Convert(this OxyPenLineJoin lineJoin)
+        public static CGLineJoin Convert(this LineJoin lineJoin)
         {
             switch (lineJoin)
             {
-            case OxyPenLineJoin.Bevel:
+            case LineJoin.Bevel:
                 return CGLineJoin.Bevel;
-            case OxyPenLineJoin.Miter:
+            case LineJoin.Miter:
                 return CGLineJoin.Miter;
-            case OxyPenLineJoin.Round:
+            case LineJoin.Round:
                 return CGLineJoin.Round;
             default:
                 throw new InvalidOperationException("Invalid join type.");
@@ -107,7 +107,7 @@ namespace OxyPlot.XamarinIOS
         /// <returns>The converted point.</returns>
         public static PointF ConvertAliased(this ScreenPoint p)
         {
-            return new PointF(0.5f + (int)p.X, 0.5f + (int)p.Y);
+            return new PointF(0.5f + (float)Math.Round(p.X), 0.5f + (float)Math.Round(p.Y));
         }
 
         /// <summary>
@@ -117,10 +117,10 @@ namespace OxyPlot.XamarinIOS
         /// <returns>The converted rectangle.</returns>
         public static RectangleF ConvertAliased(this OxyRect rect)
         {
-            float x = 0.5f + (int)rect.Left;
-            float y = 0.5f + (int)rect.Top;
-            float ri = 0.5f + (int)rect.Right;
-            float bo = 0.5f + (int)rect.Bottom;
+            float x = 0.5f + (float)Math.Round(rect.Left);
+            float y = 0.5f + (float)Math.Round(rect.Top);
+            float ri = 0.5f + (float)Math.Round(rect.Right);
+            float bo = 0.5f + (float)Math.Round(rect.Bottom);
             return new RectangleF(x, y, ri - x, bo - y);
         }
 
@@ -131,11 +131,7 @@ namespace OxyPlot.XamarinIOS
         /// <returns>The converted rectangle.</returns>
         public static RectangleF Convert(this OxyRect rect)
         {
-            var left = (int)rect.Left;
-            var right = (int)rect.Right;
-            var top = (int)rect.Top;
-            var bottom = (int)rect.Bottom;
-            return new RectangleF(left, top, right - left, bottom - top);
+            return new RectangleF((float)rect.Left, (float)rect.Top, (float)(rect.Right - rect.Left), (float)(rect.Bottom-rect.Top));
         }
     }
 }

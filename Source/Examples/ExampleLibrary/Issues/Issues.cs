@@ -721,6 +721,15 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
+        [Example("#189: PositionAtZeroCrossing and no plot area border")]
+        public static PlotModel PositionAtZeroCrossingNoPlotBorder()
+        {
+            var pm = PositionAtZeroCrossing();
+            pm.PlotAreaBorderThickness = new OxyThickness(0);
+            pm.Subtitle = "The axis lines should be drawn when the origin is outside the plot area.";
+            return pm;
+        }
+
         [Example("#185: Wrong plot margins when Angle = 90 (LinearAxis)")]
         public static PlotModel PlotMarginsLinearAxisWhenAxisAngleIs90()
         {
@@ -736,6 +745,50 @@ namespace ExampleLibrary
             var plotModel1 = new PlotModel { Title = "Plot margins not adjusted correctly when Angle = 90", Subtitle = "The numbers should not be clipped" };
             plotModel1.Axes.Add(new DateTimeAxis { Position = AxisPosition.Bottom, Angle = 90 });
             plotModel1.Axes.Add(new DateTimeAxis { Position = AxisPosition.Left, Angle = 90 });
+            return plotModel1;
+        }
+
+        [Example("#180: Two vertical axes on the same position")]
+        public static PlotModel TwoVerticalAxisOnTheSamePosition()
+        {
+            var plotModel1 = new PlotModel { Title = "Two vertical axes on the same position", Subtitle = "The titles should overlap here!" };
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "First axis" });
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Second axis" });
+            return plotModel1;
+        }
+
+        [Example("#180: Two vertical axis on the same position (Start/EndPosition)")]
+        public static PlotModel TwoVerticalAxisOnTheSamePositionStartEndPosition()
+        {
+            var plotModel1 = new PlotModel { Title = "Two vertical axes on the same position with different StartPosition/EndPosition", Subtitle = "The titles should be centered on the axes" };
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Left, StartPosition = 0, EndPosition = 0.4, Title = "First axis" });
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Left, StartPosition = 0.6, EndPosition = 1, Title = "Second axis" });
+            return plotModel1;
+        }
+
+        [Example("#180: Two vertical axis on the same position (PositionTier)")]
+        public static PlotModel TwoVerticalAxisOnTheSamePositionStartEndPositionPositionTier()
+        {
+            var plotModel1 = new PlotModel { Title = "Two vertical axes on the same position with different PositionTier", Subtitle = "The titles should be centered and not overlapping" };
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Left, PositionTier = 0, Title = "First axis" });
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Left, PositionTier = 1, Title = "Second axis", AxislineStyle = LineStyle.Solid });
+            return plotModel1;
+        }
+
+        [Example("#220: Tracker strings not correctly showing date/times")]
+        public static PlotModel TrackerStringsNotCorrectlySHowingDateTimes()
+        {
+            var plotModel1 = new PlotModel { Title = "Tracker strings not correctly showing date/times" };
+            plotModel1.Axes.Add(new DateTimeAxis { Position = AxisPosition.Bottom, Title = "Date" });
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Quantity" });
+            var ls = new LineSeries { TrackerFormatString = "{1}: {2:d-M-yyyy}\n{3}: {4:0.00}", MarkerType = MarkerType.Circle };
+            var t0 = new DateTime(2014, 10, 16);
+            for (int i = 0; i < 20; i++)
+            {
+                ls.Points.Add(new DataPoint(DateTimeAxis.ToDouble(t0.AddDays(i)), 13 + Math.IEEERemainder(i, 7)));
+            }
+
+            plotModel1.Series.Add(ls);
             return plotModel1;
         }
     }

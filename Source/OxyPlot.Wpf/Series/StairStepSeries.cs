@@ -26,7 +26,7 @@ namespace OxyPlot.Wpf
         /// Identifies the <see cref="VerticalStrokeThickness"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty VerticalLineStyleProperty =
-            DependencyProperty.Register("VerticalLineStyle", typeof(LineStyle), typeof(StairStepSeries), new UIPropertyMetadata(LineStyle.Undefined, AppearanceChanged));
+            DependencyProperty.Register("VerticalLineStyle", typeof(LineStyle), typeof(StairStepSeries), new UIPropertyMetadata(LineStyle.Automatic, AppearanceChanged));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StairStepSeries"/> class.

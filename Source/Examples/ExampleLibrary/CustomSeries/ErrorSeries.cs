@@ -122,7 +122,7 @@ namespace ExampleLibrary
                     this.GetSelectableColor(this.Color),
                     this.StrokeThickness,
                     null,
-                    OxyPenLineJoin.Bevel,
+                    LineJoin.Bevel,
                     true);
             }
         }
@@ -152,7 +152,7 @@ namespace ExampleLibrary
                               new ScreenPoint(xmid - 2, legendBox.Bottom),
                               new ScreenPoint(xmid + 3, legendBox.Bottom)
                           };
-            rc.DrawLineSegments(pts, this.GetSelectableColor(this.Color), this.StrokeThickness, null, OxyPenLineJoin.Miter, true);
+            rc.DrawLineSegments(pts, this.GetSelectableColor(this.Color), this.StrokeThickness, null, LineJoin.Miter, true);
         }
 
         /// <summary>

@@ -25,14 +25,6 @@ namespace OxyPlot.Wpf
             "ColumnWidth", typeof(double), typeof(ColumnSeries), new PropertyMetadata(1.0, AppearanceChanged));
 
         /// <summary>
-        /// Initializes static members of the <see cref="ColumnSeries" /> class.
-        /// </summary>
-        static ColumnSeries()
-        {
-            TrackerFormatStringProperty.OverrideMetadata(typeof(ColumnSeries), new PropertyMetadata("{0} {1}: {2}", AppearanceChanged));
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="ColumnSeries" /> class.
         /// </summary>
         public ColumnSeries()

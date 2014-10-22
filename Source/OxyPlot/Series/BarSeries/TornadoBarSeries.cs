@@ -46,7 +46,7 @@ namespace OxyPlot.Series
             this.StrokeThickness = 1;
             this.BarWidth = 1;
 
-            this.TrackerFormatString = "{0}";
+            this.TrackerFormatString = "{0}\n{1}: {2}\n{3}: {4}";
             this.LabelMargin = 4;
 
             this.MinimumLabelFormatString = "{0}";
@@ -178,26 +178,33 @@ namespace OxyPlot.Series
         {
             for (int i = 0; i < this.ActualMinimumBarRectangles.Count; i++)
             {
-                var r = this.ActualMinimumBarRectangles[i];
-                if (r.Contains(point))
+                var insideMinimumRectangle = this.ActualMinimumBarRectangles[i].Contains(point);
+                var insideMaximumRectangle = this.ActualMaximumBarRectangles[i].Contains(point);
+                if (insideMinimumRectangle || insideMaximumRectangle)
                 {
                     var item = (TornadoBarItem)this.GetItem(this.ValidItemsIndexInversion[i]);
                     var categoryIndex = item.GetCategoryIndex(i);
-                    var value = this.ValidItems[i].Minimum;
+                    var value = insideMaximumRectangle ? this.ValidItems[i].Maximum : this.ValidItems[i].Minimum;
                     var dp = new DataPoint(categoryIndex, value);
-                    var text = this.Format(this.TrackerFormatString, item, value);
-                    return new TrackerHitResult(this, dp, point, item, i, text);
-                }
-
-                r = this.ActualMaximumBarRectangles[i];
-                if (r.Contains(point))
-                {
-                    var item = (TornadoBarItem)this.GetItem(this.ValidItemsIndexInversion[i]);
-                    var categoryIndex = item.GetCategoryIndex(i);
-                    var value = this.ValidItems[i].Maximum;
-                    var dp = new DataPoint(categoryIndex, value);
-                    var text = this.Format(this.TrackerFormatString, item, value);
-                    return new TrackerHitResult(this, dp, point, item, i, text);
+                    var categoryAxis = this.GetCategoryAxis();
+                    var valueAxis = this.GetValueAxis();
+                    return new TrackerHitResult
+                    {
+                        Series = this,
+                        DataPoint = dp,
+                        Position = point,
+                        Item = item,
+                        Index = i,
+                        Text =
+                            this.Format(
+                                this.TrackerFormatString,
+                                item,
+                                this.Title,
+                                categoryAxis.Title ?? DefaultCategoryAxisTitle,
+                                categoryAxis.FormatValue(categoryIndex),
+                                valueAxis.Title ?? DefaultValueAxisTitle,
+                                valueAxis.GetValue(value))
+                    };
                 }
             }
 

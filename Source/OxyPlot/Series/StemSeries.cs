@@ -102,8 +102,24 @@ namespace OxyPlot.Series
 
                 if (distance < minimumDistance)
                 {
-                    result = new TrackerHitResult(
-                        this, new DataPoint(p1.X, p1.Y), new ScreenPoint(sp1.x, sp1.y), this.GetItem(i));
+                    var item = this.GetItem(i);
+                    result = new TrackerHitResult
+                    {
+                        Series = this,
+                        DataPoint = new DataPoint(p1.X, p1.Y),
+                        Position = new ScreenPoint(sp1.x, sp1.y),
+                        Item = this.GetItem(i),
+                        Index = i,
+                        Text =
+                            this.Format(
+                                this.TrackerFormatString,
+                                item,
+                                this.Title,
+                                this.XAxis.Title ?? XYAxisSeries.DefaultXAxisTitle,
+                                this.XAxis.GetValue(p1.X),
+                                this.YAxis.Title ?? XYAxisSeries.DefaultYAxisTitle,
+                                this.YAxis.GetValue(p1.Y))
+                    };
                     minimumDistance = distance;
                 }
             }

@@ -9,8 +9,11 @@ OxyPlot is a cross-platform plotting library for .NET
 - [NuGet packages](http://www.nuget.org/packages?q=oxyplot)
 - [Stack Overflow](http://stackoverflow.com/questions/tagged/oxyplot)
 - [Twitter](https://twitter.com/hashtag/oxyplot)
+- [Gitter](https://gitter.im/oxyplot/oxyplot)
 
 [![Build status](https://ci.appveyor.com/api/projects/status/mlaqnruo6ic3oe60)](https://ci.appveyor.com/project/objorke/oxyplot)
+
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/oxyplot/oxyplot?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ![Plot](http://oxyplot.org/public/images/normal-distributions.png)
 

@@ -82,7 +82,7 @@ namespace OxyPlot
             OxyColor stroke,
             double strokeThickness,
             double[] dashArray,
-            OxyPenLineJoin lineJoin,
+            LineJoin lineJoin,
             bool aliased,
             List<ScreenPoint> outputBuffer = null,
             Action<IList<ScreenPoint>> pointsRendered = null)
@@ -188,7 +188,7 @@ namespace OxyPlot
             OxyColor stroke,
             double strokeThickness,
             double[] dashArray,
-            OxyPenLineJoin lineJoin,
+            LineJoin lineJoin,
             bool aliased)
         {
             if (rc.SetClip(clippingRectangle))
@@ -329,7 +329,7 @@ namespace OxyPlot
             OxyColor stroke,
             double strokeThickness = 1.0,
             LineStyle lineStyle = LineStyle.Solid,
-            OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter,
+            LineJoin lineJoin = LineJoin.Miter,
             bool aliased = false)
         {
             // TODO: minDistSquared should be implemented or removed
@@ -782,7 +782,7 @@ namespace OxyPlot
             var sp1 = new ScreenPoint(rect.Right, rect.Top);
             var sp2 = new ScreenPoint(rect.Right, rect.Bottom);
             var sp3 = new ScreenPoint(rect.Left, rect.Bottom);
-            rc.DrawPolygon(new[] { sp0, sp1, sp2, sp3 }, fill, stroke, thickness, null, OxyPenLineJoin.Miter, true);
+            rc.DrawPolygon(new[] { sp0, sp1, sp2, sp3 }, fill, stroke, thickness, null, LineJoin.Miter, true);
         }
 
         /// <summary>
@@ -858,11 +858,11 @@ namespace OxyPlot
             var sp1 = new ScreenPoint(rect.Right, rect.Top);
             var sp2 = new ScreenPoint(rect.Right, rect.Bottom);
             var sp3 = new ScreenPoint(rect.Left, rect.Bottom);
-            rc.DrawPolygon(new[] { sp0, sp1, sp2, sp3 }, fill, OxyColors.Undefined, 0, null, OxyPenLineJoin.Miter, true);
-            rc.DrawLine(new[] { sp0, sp1 }, stroke, thickness.Top, null, OxyPenLineJoin.Miter, true);
-            rc.DrawLine(new[] { sp1, sp2 }, stroke, thickness.Right, null, OxyPenLineJoin.Miter, true);
-            rc.DrawLine(new[] { sp2, sp3 }, stroke, thickness.Bottom, null, OxyPenLineJoin.Miter, true);
-            rc.DrawLine(new[] { sp3, sp0 }, stroke, thickness.Left, null, OxyPenLineJoin.Miter, true);
+            rc.DrawPolygon(new[] { sp0, sp1, sp2, sp3 }, fill, OxyColors.Undefined, 0, null, LineJoin.Miter, true);
+            rc.DrawLine(new[] { sp0, sp1 }, stroke, thickness.Top, null, LineJoin.Miter, true);
+            rc.DrawLine(new[] { sp1, sp2 }, stroke, thickness.Right, null, LineJoin.Miter, true);
+            rc.DrawLine(new[] { sp2, sp3 }, stroke, thickness.Bottom, null, LineJoin.Miter, true);
+            rc.DrawLine(new[] { sp3, sp0 }, stroke, thickness.Left, null, LineJoin.Miter, true);
         }
 
         /// <summary>

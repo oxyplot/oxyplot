@@ -28,7 +28,7 @@ namespace OxyPlot.Annotations
         public PolygonAnnotation()
         {
             this.LineStyle = LineStyle.Solid;
-            this.LineJoin = OxyPenLineJoin.Miter;
+            this.LineJoin = LineJoin.Miter;
             this.Points = new List<DataPoint>();
         }
 
@@ -36,7 +36,7 @@ namespace OxyPlot.Annotations
         /// Gets or sets the line join.
         /// </summary>
         /// <value>The line join.</value>
-        public OxyPenLineJoin LineJoin { get; set; }
+        public LineJoin LineJoin { get; set; }
 
         /// <summary>
         /// Gets or sets the line style.

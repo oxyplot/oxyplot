@@ -148,7 +148,7 @@ namespace OxyPlot.Metro
             OxyColor stroke,
             double thickness,
             double[] dashArray,
-            OxyPenLineJoin lineJoin,
+            LineJoin lineJoin,
             bool aliased)
         {
             var e = new Polyline();
@@ -179,7 +179,7 @@ namespace OxyPlot.Metro
             OxyColor stroke,
             double thickness,
             double[] dashArray,
-            OxyPenLineJoin lineJoin,
+            LineJoin lineJoin,
             bool aliased)
         {
             var path = new Path();
@@ -224,7 +224,7 @@ namespace OxyPlot.Metro
             OxyColor stroke,
             double thickness,
             double[] dashArray,
-            OxyPenLineJoin lineJoin,
+            LineJoin lineJoin,
             bool aliased)
         {
             var po = new Polygon();
@@ -262,7 +262,7 @@ namespace OxyPlot.Metro
             OxyColor stroke,
             double thickness,
             double[] dashArray,
-            OxyPenLineJoin lineJoin,
+            LineJoin lineJoin,
             bool aliased)
         {
             var path = new Path();
@@ -658,7 +658,7 @@ namespace OxyPlot.Metro
             Shape shape,
             OxyColor stroke,
             double thickness,
-            OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter,
+            LineJoin lineJoin = LineJoin.Miter,
             double[] dashArray = null,
             bool aliased = false)
         {
@@ -671,10 +671,10 @@ namespace OxyPlot.Metro
 
             switch (lineJoin)
             {
-                case OxyPenLineJoin.Round:
+                case LineJoin.Round:
                     shape.StrokeLineJoin = PenLineJoin.Round;
                     break;
-                case OxyPenLineJoin.Bevel:
+                case LineJoin.Bevel:
                     shape.StrokeLineJoin = PenLineJoin.Bevel;
                     break;
 

@@ -35,6 +35,11 @@ namespace OxyPlot.Series
     public class HeatMapSeries : XYAxisSeries
     {
         /// <summary>
+        /// The default color-axis title
+        /// </summary>
+        private const string DefaultColorAxisTitle = "Value";
+
+        /// <summary>
         /// The hash code of the data when the image was updated.
         /// </summary>
         private int dataHash;
@@ -54,6 +59,7 @@ namespace OxyPlot.Series
         /// </summary>
         public HeatMapSeries()
         {
+            this.TrackerFormatString = "{0}\n{1}: {2:0.###}\n{3}: {4:0.###}\n{5}: {6:0.###}";
             this.Interpolate = true;
             this.LabelFormatString = "0.00";
             this.LabelFontSize = 0;
@@ -251,16 +257,28 @@ namespace OxyPlot.Series
                 point = this.Transform(p);
             }
 
-            var v = GetValue(this.Data, i, j);
+            var value = GetValue(this.Data, i, j);
+            var colorAxis = this.ColorAxis as Axis;
+            var colorAxisTitle = (colorAxis != null ? colorAxis.Title : null) ?? DefaultColorAxisTitle;
 
-            var formatString = this.TrackerFormatString;
-            if (string.IsNullOrEmpty(this.TrackerFormatString))
+            return new TrackerHitResult
             {
-                formatString = "{2},{4}: {5}";
-            }
-
-            var text = this.Format(formatString, null, this.Title, this.XAxis.Title, p.X, this.YAxis.Title, p.Y, v);
-            return new TrackerHitResult(this, p, point, null, -1, text);
+                Series = this,
+                DataPoint = p,
+                Position = point,
+                Item = null,
+                Index = -1,
+                Text = this.Format(
+                this.TrackerFormatString,
+                null,
+                this.Title,
+                this.XAxis.Title ?? DefaultXAxisTitle,
+                this.XAxis.GetValue(p.X),
+                this.YAxis.Title ?? DefaultYAxisTitle,
+                this.YAxis.GetValue(p.Y),
+                colorAxisTitle,
+                value)
+            };
         }
 
         /// <summary>

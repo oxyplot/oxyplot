@@ -127,7 +127,7 @@ namespace OxyPlot.WindowsForms
             OxyColor stroke,
             double thickness,
             double[] dashArray,
-            OxyPenLineJoin lineJoin,
+            OxyPlot.LineJoin lineJoin,
             bool aliased)
         {
             if (stroke.IsInvisible() || thickness <= 0 || points.Count < 2)
@@ -158,7 +158,7 @@ namespace OxyPlot.WindowsForms
             OxyColor stroke,
             double thickness,
             double[] dashArray,
-            OxyPenLineJoin lineJoin,
+            OxyPlot.LineJoin lineJoin,
             bool aliased)
         {
             if (points.Count < 2)
@@ -188,10 +188,10 @@ namespace OxyPlot.WindowsForms
 
                 switch (lineJoin)
                 {
-                    case OxyPenLineJoin.Round:
+                    case OxyPlot.LineJoin.Round:
                         pen.LineJoin = System.Drawing.Drawing2D.LineJoin.Round;
                         break;
-                    case OxyPenLineJoin.Bevel:
+                    case OxyPlot.LineJoin.Bevel:
                         pen.LineJoin = System.Drawing.Drawing2D.LineJoin.Bevel;
                         break;
 
@@ -511,7 +511,7 @@ namespace OxyPlot.WindowsForms
         /// <param name="dashArray">The dash array.</param>
         /// <param name="lineJoin">The line join.</param>
         /// <returns>A <see cref="Pen" />.</returns>
-        private Pen CreatePen(OxyColor stroke, double thickness, double[] dashArray = null, OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter)
+        private Pen CreatePen(OxyColor stroke, double thickness, double[] dashArray = null, OxyPlot.LineJoin lineJoin = OxyPlot.LineJoin.Miter)
         {
             var pen = new Pen(stroke.ToColor(), (float)thickness);
             if (dashArray != null)
@@ -521,10 +521,10 @@ namespace OxyPlot.WindowsForms
 
             switch (lineJoin)
             {
-                case OxyPenLineJoin.Round:
+                case OxyPlot.LineJoin.Round:
                     pen.LineJoin = System.Drawing.Drawing2D.LineJoin.Round;
                     break;
-                case OxyPenLineJoin.Bevel:
+                case OxyPlot.LineJoin.Bevel:
                     pen.LineJoin = System.Drawing.Drawing2D.LineJoin.Bevel;
                     break;
                 //// The default LineJoin is Miter

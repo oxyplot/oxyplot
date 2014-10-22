@@ -59,7 +59,7 @@ namespace OxyPlot.Annotations
             this.Color = OxyColors.Blue;
             this.StrokeThickness = 1;
             this.LineStyle = LineStyle.Dash;
-            this.LineJoin = OxyPenLineJoin.Miter;
+            this.LineJoin = LineJoin.Miter;
             this.ClipByXAxis = true;
             this.ClipByYAxis = true;
             this.aliased = false;
@@ -81,7 +81,7 @@ namespace OxyPlot.Annotations
         /// Gets or sets the line join.
         /// </summary>
         /// <value>The line join.</value>
-        public OxyPenLineJoin LineJoin { get; set; }
+        public LineJoin LineJoin { get; set; }
 
         /// <summary>
         /// Gets or sets the line style.

@@ -70,8 +70,8 @@ namespace OxyPlot
         None,
 
         /// <summary>
-        /// The undefined line style.
+        /// The automatic line style.
         /// </summary>
-        Undefined
+        Automatic
     }
 }

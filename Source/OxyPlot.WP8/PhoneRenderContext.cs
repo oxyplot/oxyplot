@@ -176,7 +176,7 @@ namespace OxyPlot.WP8
             OxyColor stroke,
             double thickness,
             double[] dashArray,
-            OxyPenLineJoin lineJoin,
+            LineJoin lineJoin,
             bool aliased)
         {
             var e = new Polyline();
@@ -208,7 +208,7 @@ namespace OxyPlot.WP8
             OxyColor stroke,
             double thickness,
             double[] dashArray,
-            OxyPenLineJoin lineJoin,
+            LineJoin lineJoin,
             bool aliased)
         {
             var path = new Path();
@@ -253,7 +253,7 @@ namespace OxyPlot.WP8
             OxyColor stroke,
             double thickness,
             double[] dashArray,
-            OxyPenLineJoin lineJoin,
+            LineJoin lineJoin,
             bool aliased)
         {
             var po = new Polygon();
@@ -292,7 +292,7 @@ namespace OxyPlot.WP8
             OxyColor stroke,
             double thickness,
             double[] dashArray,
-            OxyPenLineJoin lineJoin,
+            LineJoin lineJoin,
             bool aliased)
         {
             var path = new Path();
@@ -711,7 +711,7 @@ namespace OxyPlot.WP8
             Shape shape,
             OxyColor stroke,
             double thickness,
-            OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter,
+            LineJoin lineJoin = LineJoin.Miter,
             IEnumerable<double> dashArray = null,
             bool aliased = false)
         {
@@ -721,10 +721,10 @@ namespace OxyPlot.WP8
 
                 switch (lineJoin)
                 {
-                    case OxyPenLineJoin.Round:
+                    case LineJoin.Round:
                         shape.StrokeLineJoin = PenLineJoin.Round;
                         break;
-                    case OxyPenLineJoin.Bevel:
+                    case LineJoin.Bevel:
                         shape.StrokeLineJoin = PenLineJoin.Bevel;
                         break;
 

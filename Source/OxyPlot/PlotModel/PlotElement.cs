@@ -29,21 +29,21 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets or sets the font.
+        /// Gets or sets the font. The default is <c>null</c> (use <see cref="OxyPlot.PlotModel.DefaultFont" />.
         /// </summary>
         /// <value>The font.</value>
-        /// <remarks>If the value is <c>null</c>, the parent PlotModel's DefaultFont will be used.</remarks>
+        /// <remarks>If the value is <c>null</c>, the DefaultFont of the parent PlotModel will be used.</remarks>
         public string Font { get; set; }
 
         /// <summary>
-        /// Gets or sets the size of the font.
+        /// Gets or sets the size of the font. The default is <c>double.NaN</c> (use <see cref="OxyPlot.PlotModel.DefaultFontSize" />).
         /// </summary>
         /// <value>The size of the font.</value>
-        /// <remarks>If the value is NaN, the parent PlotModel's DefaultFontSize will be used.</remarks>
+        /// <remarks>If the value is <c>NaN</c>, the DefaultFontSize of the parent PlotModel will be used.</remarks>
         public double FontSize { get; set; }
 
         /// <summary>
-        /// Gets or sets the font weight.
+        /// Gets or sets the font weight. The default is <c>FontWeights.Normal</c>.
         /// </summary>
         /// <value>The font weight.</value>
         public double FontWeight { get; set; }
@@ -60,22 +60,25 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets or sets an arbitrary object value that can be used to store custom information about this plot element.
+        /// Gets or sets an arbitrary object value that can be used to store custom information about this plot element. The default is <c>null</c>.
         /// </summary>
-        /// <value>The intended value. This property has no default value.</value>
+        /// <value>The intended value.</value>
         /// <remarks>This property is analogous to Tag properties in other Microsoft programming models. Tag is intended to provide a pre-existing property location where you can store some basic custom information about any PlotElement without requiring you to subclass an element.</remarks>
         public object Tag { get; set; }
 
         /// <summary>
-        /// Gets or sets the color of the text.
+        /// Gets or sets the color of the text. The default is <c>OxyColors.Automatic</c> (use <see cref="OxyPlot.PlotModel.TextColor" />).
         /// </summary>
         /// <value>The color of the text.</value>
-        /// <remarks>If the value is <c>null</c>, the TextColor of the parent PlotModel will be used.</remarks>
+        /// <remarks>If the value is <c>OxyColors.Automatic</c>, the TextColor of the parent PlotModel will be used.</remarks>
         public OxyColor TextColor { get; set; }
 
         /// <summary>
-        /// Gets or sets the tool tip. The default value is <c>null</c>.
+        /// Gets or sets the tool tip. The default is <c>null</c>.
         /// </summary>
+        /// <value>
+        /// The tool tip string.
+        /// </value>
         public string ToolTip { get; set; }
 
         /// <summary>

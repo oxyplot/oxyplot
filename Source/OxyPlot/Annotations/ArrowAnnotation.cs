@@ -34,7 +34,7 @@ namespace OxyPlot.Annotations
             this.Color = OxyColors.Blue;
             this.StrokeThickness = 2;
             this.LineStyle = LineStyle.Solid;
-            this.LineJoin = OxyPenLineJoin.Miter;
+            this.LineJoin = LineJoin.Miter;
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace OxyPlot.Annotations
         /// Gets or sets the line join type.
         /// </summary>
         /// <value>The line join type.</value>
-        public OxyPenLineJoin LineJoin { get; set; }
+        public LineJoin LineJoin { get; set; }
 
         /// <summary>
         /// Gets or sets the line style.

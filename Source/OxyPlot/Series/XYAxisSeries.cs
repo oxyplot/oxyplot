@@ -20,6 +20,29 @@ namespace OxyPlot.Series
     public abstract class XYAxisSeries : ItemsSeries
     {
         /// <summary>
+        /// The default tracker format string
+        /// </summary>
+        public const string DefaultTrackerFormatString = "{0}\n{1}: {2:0.###}\n{3}: {4:0.###}";
+
+        /// <summary>
+        /// The default x-axis title
+        /// </summary>
+        protected const string DefaultXAxisTitle = "X";
+
+        /// <summary>
+        /// The default y-axis title
+        /// </summary>
+        protected const string DefaultYAxisTitle = "Y";
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="XYAxisSeries"/> class.
+        /// </summary>
+        protected XYAxisSeries()
+        {
+            this.TrackerFormatString = DefaultTrackerFormatString;
+        }
+
+        /// <summary>
         /// Gets or sets the maximum x-coordinate of the dataset.
         /// </summary>
         /// <value>The maximum x-coordinate.</value>
@@ -50,7 +73,7 @@ namespace OxyPlot.Series
         public Axis XAxis { get; private set; }
 
         /// <summary>
-        /// Gets or sets the x-axis key.
+        /// Gets or sets the x-axis key. The default is <c>null</c>.
         /// </summary>
         /// <value>The x-axis key.</value>
         public string XAxisKey { get; set; }
@@ -62,7 +85,7 @@ namespace OxyPlot.Series
         public Axis YAxis { get; private set; }
 
         /// <summary>
-        /// Gets or sets the y-axis key.
+        /// Gets or sets the y-axis key. The default is <c>null</c>.
         /// </summary>
         /// <value>The y-axis key.</value>
         public string YAxisKey { get; set; }
@@ -198,6 +221,7 @@ namespace OxyPlot.Series
         /// <param name="points">The point list.</param>
         /// <param name="point">The point.</param>
         /// <returns>A tracker hit result if a point was found.</returns>
+        /// <remarks>The Text property of the result will not be set, since the formatting depends on the various series.</remarks>
         protected TrackerHitResult GetNearestInterpolatedPointInternal(List<DataPoint> points, ScreenPoint point)
         {
             if (this.XAxis == null || this.YAxis == null || points == null)
@@ -247,8 +271,15 @@ namespace OxyPlot.Series
 
             if (minimumDistance < double.MaxValue)
             {
-                object item = this.GetItem((int)index);
-                return new TrackerHitResult(this, dpn, spn, item) { Index = index };
+                var item = this.GetItem((int)Math.Round(index));
+                return new TrackerHitResult
+                {
+                    Series = this,
+                    DataPoint = dpn,
+                    Position = spn,
+                    Item = item,
+                    Index = index
+                };
             }
 
             return null;
@@ -260,6 +291,7 @@ namespace OxyPlot.Series
         /// <param name="points">The points (data coordinates).</param>
         /// <param name="point">The point (screen coordinates).</param>
         /// <returns>A <see cref="TrackerHitResult" /> if a point was found, <c>null</c> otherwise.</returns>
+        /// <remarks>The Text property of the result will not be set, since the formatting depends on the various series.</remarks>
         protected TrackerHitResult GetNearestPointInternal(IEnumerable<DataPoint> points, ScreenPoint point)
         {
             var spn = default(ScreenPoint);
@@ -292,8 +324,15 @@ namespace OxyPlot.Series
 
             if (minimumDistance < double.MaxValue)
             {
-                object item = this.GetItem((int)index);
-                return new TrackerHitResult(this, dpn, spn, item) { Index = index };
+                var item = this.GetItem((int)Math.Round(index));
+                return new TrackerHitResult
+                {
+                    Series = this,
+                    DataPoint = dpn,
+                    Position = spn,
+                    Item = item,
+                    Index = index
+                };
             }
 
             return null;

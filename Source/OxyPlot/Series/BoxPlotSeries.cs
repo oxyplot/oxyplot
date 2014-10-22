@@ -25,9 +25,8 @@ namespace OxyPlot.Series
         public BoxPlotSeries()
         {
             this.Items = new List<BoxPlotItem>();
-            this.TrackerFormatString =
-                "X: {1:0.00}\nUpper Whisker: {2:0.00}\nThird Quartil: {3:0.00}\nMedian: {4:0.00}\nFirst Quartil: {5:0.00}\nLower Whisker: {6:0.00}";
-            this.OutlierTrackerFormatString = "X: {1:0.00}\nY: {2:0.00}";
+            this.TrackerFormatString = "{0}\n{1}: {2:0.00}\nUpper Whisker: {3:0.00}\nThird Quartil: {4:0.00}\nMedian: {5:0.00}\nFirst Quartil: {6:0.00}\nLower Whisker: {7:0.00}";
+            this.OutlierTrackerFormatString = "{0}\n{1}: {2:0.00}\nY: {3:0.00}";
             this.Title = null;
             this.Fill = OxyColors.Automatic;
             this.Stroke = OxyColors.Black;
@@ -147,7 +146,7 @@ namespace OxyPlot.Series
             }
 
             double minimumDistance = double.MaxValue;
-            var result = new TrackerHitResult(this, DataPoint.Undefined, ScreenPoint.Undefined);
+            TrackerHitResult result = null;
             foreach (var item in this.Items)
             {
                 foreach (var outlier in item.Outliers)
@@ -156,38 +155,33 @@ namespace OxyPlot.Series
                     double d = (sp - point).LengthSquared;
                     if (d < minimumDistance)
                     {
-                        result.DataPoint = new DataPoint(item.X, outlier);
-                        result.Position = sp;
-                        result.Item = item;
-                        result.Text = this.Format(
-                            this.OutlierTrackerFormatString,
-                            item,
-                            this.Title,
-                            this.XAxis.GetValue(result.DataPoint.X),
-                            outlier);
+                        result = new TrackerHitResult
+                        {
+                            Series = this,
+                            DataPoint = new DataPoint(item.X, outlier),
+                            Position = sp,
+                            Item = item,
+                            Text =
+                                StringHelper.Format(
+                                    this.ActualCulture,
+                                    this.OutlierTrackerFormatString,
+                                    item,
+                                    this.Title,
+                                    this.XAxis.Title ?? DefaultXAxisTitle,
+                                    this.XAxis.GetValue(item.X),
+                                    outlier)
+                        };
                         minimumDistance = d;
                     }
                 }
+
+                var hitPoint = DataPoint.Undefined;
 
                 // check if we are inside the box rectangle
                 var rect = this.GetBoxRect(item);
                 if (rect.Contains(point))
                 {
-                    result.DataPoint = new DataPoint(item.X, this.YAxis.InverseTransform(point.Y));
-                    result.Position = this.Transform(result.DataPoint);
-                    result.Item = item;
-
-                    result.Text = this.Format(
-                        this.TrackerFormatString,
-                        item,
-                        this.Title,
-                        this.XAxis.GetValue(result.DataPoint.X),
-                        item.UpperWhisker,
-                        item.BoxTop,
-                        item.Median,
-                        item.BoxBottom,
-                        item.LowerWhisker);
-
+                    hitPoint = new DataPoint(item.X, this.YAxis.InverseTransform(point.Y));
                     minimumDistance = 0;
                 }
 
@@ -199,20 +193,32 @@ namespace OxyPlot.Series
                 double d2 = (p - point).LengthSquared;
                 if (d2 < minimumDistance)
                 {
-                    result.DataPoint = this.InverseTransform(p);
-                    result.Position = this.Transform(result.DataPoint);
-                    result.Item = item;
-                    result.Text = this.Format(
-                        this.TrackerFormatString,
-                        item,
-                        this.Title,
-                        this.XAxis.GetValue(result.DataPoint.X),
-                        item.UpperWhisker,
-                        item.BoxTop,
-                        item.Median,
-                        item.BoxBottom,
-                        item.LowerWhisker);
+                    hitPoint = this.InverseTransform(p);
                     minimumDistance = d2;
+                }
+
+                if (hitPoint.IsDefined())
+                {
+                    result = new TrackerHitResult
+                    {
+                        Series = this,
+                        DataPoint = hitPoint,
+                        Position = this.Transform(hitPoint),
+                        Item = item,
+                        Text =
+                            StringHelper.Format(
+                                this.ActualCulture,
+                                this.TrackerFormatString,
+                                item,
+                                this.Title,
+                                this.XAxis.Title ?? DefaultXAxisTitle,
+                                this.XAxis.GetValue(item.X),
+                                this.YAxis.GetValue(item.UpperWhisker),
+                                this.YAxis.GetValue(item.BoxTop),
+                                this.YAxis.GetValue(item.Median),
+                                this.YAxis.GetValue(item.BoxBottom),
+                                this.YAxis.GetValue(item.LowerWhisker))
+                    };
                 }
             }
 
@@ -276,7 +282,7 @@ namespace OxyPlot.Series
                     strokeColor,
                     this.StrokeThickness,
                     dashArray,
-                    OxyPenLineJoin.Miter,
+                    LineJoin.Miter,
                     true);
                 rc.DrawClippedLine(
                     clippingRect,
@@ -285,7 +291,7 @@ namespace OxyPlot.Series
                     strokeColor,
                     this.StrokeThickness,
                     dashArray,
-                    OxyPenLineJoin.Miter,
+                    LineJoin.Miter,
                     true);
 
                 // Draw the whiskers
@@ -303,7 +309,7 @@ namespace OxyPlot.Series
                         strokeColor,
                         this.StrokeThickness,
                         null,
-                        OxyPenLineJoin.Miter,
+                        LineJoin.Miter,
                         true);
                     rc.DrawClippedLine(
                         clippingRect,
@@ -312,7 +318,7 @@ namespace OxyPlot.Series
                         strokeColor,
                         this.StrokeThickness,
                         null,
-                        OxyPenLineJoin.Miter,
+                        LineJoin.Miter,
                         true);
                 }
 
@@ -335,7 +341,7 @@ namespace OxyPlot.Series
                         strokeColor,
                         this.StrokeThickness * this.MedianThickness,
                         null,
-                        OxyPenLineJoin.Miter,
+                        LineJoin.Miter,
                         true);
                 }
                 else
@@ -392,7 +398,7 @@ namespace OxyPlot.Series
                 strokeColor,
                 LegendStrokeThickness,
                 LineStyle.Solid.GetDashArray(),
-                OxyPenLineJoin.Miter,
+                LineJoin.Miter,
                 true);
 
             rc.DrawLine(
@@ -400,7 +406,7 @@ namespace OxyPlot.Series
                 strokeColor,
                 LegendStrokeThickness,
                 LineStyle.Solid.GetDashArray(),
-                OxyPenLineJoin.Miter,
+                LineJoin.Miter,
                 true);
 
             if (this.WhiskerWidth > 0)
@@ -415,7 +421,7 @@ namespace OxyPlot.Series
                     strokeColor,
                     LegendStrokeThickness,
                     LineStyle.Solid.GetDashArray(),
-                    OxyPenLineJoin.Miter,
+                    LineJoin.Miter,
                     true);
 
                 // bottom whisker
@@ -428,7 +434,7 @@ namespace OxyPlot.Series
                     strokeColor,
                     LegendStrokeThickness,
                     LineStyle.Solid.GetDashArray(),
-                    OxyPenLineJoin.Miter,
+                    LineJoin.Miter,
                     true);
             }
 
@@ -450,7 +456,7 @@ namespace OxyPlot.Series
                     strokeColor,
                     LegendStrokeThickness * this.MedianThickness,
                     LineStyle.Solid.GetDashArray(),
-                    OxyPenLineJoin.Miter,
+                    LineJoin.Miter,
                     true);
             }
             else

@@ -348,11 +348,10 @@ namespace OxyPlot.Wpf
                 return;
             }
 
-            var ts = trackerHitResult.Series as ITrackableSeries;
             var trackerTemplate = this.DefaultTrackerTemplate;
-            if (ts != null && !string.IsNullOrEmpty(ts.TrackerKey))
+            if (trackerHitResult.Series != null && !string.IsNullOrEmpty(trackerHitResult.Series.TrackerKey))
             {
-                var match = this.TrackerDefinitions.FirstOrDefault(t => t.TrackerKey == ts.TrackerKey);
+                var match = this.TrackerDefinitions.FirstOrDefault(t => t.TrackerKey == trackerHitResult.Series.TrackerKey);
                 if (match != null)
                 {
                     trackerTemplate = match.TrackerTemplate;
@@ -632,7 +631,7 @@ namespace OxyPlot.Wpf
                 {
                     // TODO: why is the data context not passed to the context menu??
                     this.ContextMenu.DataContext = this.DataContext;
-
+                    this.ContextMenu.PlacementTarget = this;
                     this.ContextMenu.Visibility = Visibility.Visible;
                     this.ContextMenu.IsOpen = true;
                 }

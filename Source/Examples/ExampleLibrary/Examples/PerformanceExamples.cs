@@ -71,7 +71,7 @@ namespace ExampleLibrary
         public static PlotModel LineSeriesRoundLineJoins()
         {
             var model = new PlotModel { Title = "LineSeries, 100k points", Subtitle = "LineJoin = Round" };
-            var s1 = new LineSeries { LineJoin = OxyPenLineJoin.Round };
+            var s1 = new LineSeries { LineJoin = LineJoin.Round };
             AddPoints(s1.Points, 100000);
             model.Series.Add(s1);
             return model;
@@ -136,7 +136,7 @@ namespace ExampleLibrary
         public static PlotModel LineSeries2MiterLineJoins()
         {
             var model = new PlotModel { Title = "LineSeries, 3k points, miter line joins", Subtitle = "LineJoin = Miter" };
-            var s1 = new LineSeries { LineJoin = OxyPenLineJoin.Miter, StrokeThickness = 8.0 };
+            var s1 = new LineSeries { LineJoin = LineJoin.Miter, StrokeThickness = 8.0 };
             for (int i = 0; i < 3000; i++)
             {
                 s1.Points.Add(new DataPoint(i, i % 2));
@@ -151,7 +151,7 @@ namespace ExampleLibrary
         public static PlotModel LineSeries2RoundLineJoins()
         {
             var model = new PlotModel { Title = "LineSeries, 3k points, round line joins", Subtitle = "LineJoin = Round" };
-            var s1 = new LineSeries { LineJoin = OxyPenLineJoin.Round, StrokeThickness = 8.0 };
+            var s1 = new LineSeries { LineJoin = LineJoin.Round, StrokeThickness = 8.0 };
             for (int i = 0; i < 3000; i++)
             {
                 s1.Points.Add(new DataPoint(i, i % 2));
@@ -165,7 +165,7 @@ namespace ExampleLibrary
         public static PlotModel LineSeries2BevelLineJoins()
         {
             var model = new PlotModel { Title = "LineSeries, 3k points, bevel line joins", Subtitle = "LineJoin = Bevel" };
-            var s1 = new LineSeries { LineJoin = OxyPenLineJoin.Bevel, StrokeThickness = 8.0 };
+            var s1 = new LineSeries { LineJoin = LineJoin.Bevel, StrokeThickness = 8.0 };
             for (int i = 0; i < 3000; i++)
             {
                 s1.Points.Add(new DataPoint(i, i % 2));
@@ -281,6 +281,38 @@ namespace ExampleLibrary
             var model = new PlotModel { Title = "LinearAxis (dotted gridlines)" };
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 0, Maximum = 100, MajorStep = 1, MinorStep = 1, MajorGridlineStyle = LineStyle.Dot });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = 0, Maximum = 100, MajorStep = 1, MinorStep = 1, MajorGridlineStyle = LineStyle.Dot });
+            return model;
+        }
+
+        [Example("int overflow (10k)")]
+        public static PlotModel IntOverflow10k()
+        {
+            return IntOverflow(10000);
+        }
+
+        [Example("int overflow (50k)")]
+        public static PlotModel IntOverflow50k()
+        {
+            return IntOverflow(50000);
+        }
+
+        [Example("int overflow (100k)")]
+        public static PlotModel IntOverflow100k()
+        {
+            return IntOverflow(100000);
+        }
+
+        private static PlotModel IntOverflow(int n)
+        {
+            var model = new PlotModel { Title = "int overflow", Subtitle = "n = " + n };
+            var ls = new LineSeries();
+            int k = 0;
+            for (int i = 0; i < n; i++)
+            {
+                ls.Points.Add(new DataPoint(i, k += i * i));
+            }
+
+            model.Series.Add(ls);
             return model;
         }
 

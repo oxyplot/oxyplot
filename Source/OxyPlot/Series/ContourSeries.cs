@@ -49,7 +49,7 @@ namespace OxyPlot.Series
             this.StrokeThickness = 1.0;
             this.LineStyle = LineStyle.Solid;
 
-            this.TrackerFormatString = "{1}: {2:0.####}\n{3}: {4:0.####}\n{5}: {6:0.####}";
+            this.TrackerFormatString = "{0}\n{1}: {2:0.####}\n{3}: {4:0.####}\n{5}: {6:0.####}";
         }
 
         /// <summary>
@@ -233,9 +233,9 @@ namespace OxyPlot.Series
                             null,
                             this.Title,
                             xaxisTitle,
-                            r.DataPoint.X,
+                            this.XAxis.GetValue(r.DataPoint.X),
                             yaxisTitle,
-                            r.DataPoint.Y,
+                            this.YAxis.GetValue(r.DataPoint.Y),
                             zaxisTitle,
                             c.ContourLevel);
                     }
@@ -284,7 +284,7 @@ namespace OxyPlot.Series
                         this.GetSelectableColor(strokeColor),
                         this.StrokeThickness,
                         dashArray,
-                        OxyPenLineJoin.Miter,
+                        LineJoin.Miter,
                         false);
 
                     // rc.DrawClippedPolygon(transformedPoints, clippingRect, 4, model.GetDefaultColor(), OxyColors.Black);

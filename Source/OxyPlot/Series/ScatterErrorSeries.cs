@@ -130,7 +130,7 @@ namespace OxyPlot.Series
                 }
             }
 
-            rc.DrawClippedLineSegments(clippingRectangle, segments, this.GetSelectableColor(this.ErrorBarColor), this.ErrorBarStrokeThickness, null, OxyPenLineJoin.Bevel, true);
+            rc.DrawClippedLineSegments(clippingRectangle, segments, this.GetSelectableColor(this.ErrorBarColor), this.ErrorBarStrokeThickness, null, LineJoin.Bevel, true);
         }
 
         /// <summary>

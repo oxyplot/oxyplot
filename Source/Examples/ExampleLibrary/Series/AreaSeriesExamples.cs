@@ -17,15 +17,15 @@ namespace ExampleLibrary
         public static PlotModel DefaultStyle()
         {
             var plotModel1 = new PlotModel { Title = "AreaSeries with default style" };
-            plotModel1.Series.Add(CreateExampleSeries());
+            plotModel1.Series.Add(CreateExampleAreaSeries());
             return plotModel1;
         }
 
         [Example("Different stroke colors")]
         public static PlotModel DifferentColors()
         {
-            var plotModel1 = new PlotModel { Title = "Different stroke colors" };
-            var areaSeries1 = CreateExampleSeries();
+            var plotModel1 = new PlotModel { Title = "AreaSeries with different stroke colors" };
+            var areaSeries1 = CreateExampleAreaSeries();
             areaSeries1.Color = OxyColors.Red;
             areaSeries1.Color2 = OxyColors.Blue;
             plotModel1.Series.Add(areaSeries1);
@@ -35,25 +35,7 @@ namespace ExampleLibrary
         [Example("Crossing lines")]
         public static PlotModel CrossingLines()
         {
-            var plotModel1 = new PlotModel { Title = "Crossing lines" };
-            plotModel1.Series.Add(CreateExampleSeries2());
-            return plotModel1;
-        }
-
-        private static AreaSeries CreateExampleSeries()
-        {
-            var areaSeries1 = new AreaSeries();
-            areaSeries1.Points.Add(new DataPoint(0, 50));
-            areaSeries1.Points.Add(new DataPoint(10, 40));
-            areaSeries1.Points.Add(new DataPoint(20, 60));
-            areaSeries1.Points2.Add(new DataPoint(0, 60));
-            areaSeries1.Points2.Add(new DataPoint(5, 80));
-            areaSeries1.Points2.Add(new DataPoint(20, 70));
-            return areaSeries1;
-        }
-
-        private static AreaSeries CreateExampleSeries2()
-        {
+            var plotModel1 = new PlotModel { Title = "AreaSeries with crossing lines" };
             var areaSeries1 = new AreaSeries();
             areaSeries1.Points.Add(new DataPoint(0, 50));
             areaSeries1.Points.Add(new DataPoint(10, 140));
@@ -61,11 +43,28 @@ namespace ExampleLibrary
             areaSeries1.Points2.Add(new DataPoint(0, 60));
             areaSeries1.Points2.Add(new DataPoint(5, 80));
             areaSeries1.Points2.Add(new DataPoint(20, 70));
-            return areaSeries1;
+            plotModel1.Series.Add(areaSeries1);
+            return plotModel1;
+        }
+
+        [Example("Custom TrackerFormatString")]
+        public static PlotModel TrackerFormatString()
+        {
+            var model = new PlotModel { Title = "AreaSeries with custom TrackerFormatString" };
+
+            // the axis titles will be used in the default tracker format string
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "X-axis" });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Y-axis" });
+
+            var areaSeries1 = CreateExampleAreaSeries();
+            areaSeries1.Title = "X={2:0.0} Y={4:0.0}";
+            areaSeries1.TrackerFormatString = "X={2:0.0} Y={4:0.0}";
+            model.Series.Add(areaSeries1);
+            return model;
         }
 
         [Example("LineSeries and AreaSeries")]
-        public static PlotModel LineSeriesandAreaSeries()
+        public static PlotModel LineSeriesAndAreaSeries()
         {
             var plotModel1 = new PlotModel { Title = "LineSeries and AreaSeries" };
             var linearAxis1 = new LinearAxis { Position = AxisPosition.Bottom };
@@ -396,6 +395,18 @@ namespace ExampleLibrary
             lineSeries1.Title = "Average";
             plotModel1.Series.Add(lineSeries1);
             return plotModel1;
+        }
+
+        private static AreaSeries CreateExampleAreaSeries()
+        {
+            var areaSeries1 = new AreaSeries();
+            areaSeries1.Points.Add(new DataPoint(0, 50));
+            areaSeries1.Points.Add(new DataPoint(10, 40));
+            areaSeries1.Points.Add(new DataPoint(20, 60));
+            areaSeries1.Points2.Add(new DataPoint(0, 60));
+            areaSeries1.Points2.Add(new DataPoint(5, 80));
+            areaSeries1.Points2.Add(new DataPoint(20, 70));
+            return areaSeries1;
         }
     }
 }

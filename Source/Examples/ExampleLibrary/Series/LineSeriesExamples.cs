@@ -7,6 +7,7 @@
 namespace ExampleLibrary
 {
     using System;
+    using System.Linq;
 
     using OxyPlot;
     using OxyPlot.Axes;
@@ -15,26 +16,39 @@ namespace ExampleLibrary
     [Examples("LineSeries"), Tags("Series")]
     public class LineSeriesExamples
     {
-        [Example("LineSeries")]
-        public static PlotModel OneSeries()
+        private static readonly Random Randomizer = new Random(13);
+
+        [Example("Default style")]
+        public static PlotModel DefaultStyle()
         {
-            var model = new PlotModel { Title = "LineSeries", LegendSymbolLength = 24 };
-            var s1 = new LineSeries
-            {
-                Title = "Series 1",
-                ToolTip = "This is a tooltip for a LineSeries",
-                Color = OxyColors.SkyBlue,
-                MarkerType = MarkerType.Circle,
-                MarkerSize = 6,
-                MarkerStroke = OxyColors.White,
-                MarkerFill = OxyColors.SkyBlue,
-                MarkerStrokeThickness = 1.5
-            };
-            s1.Points.Add(new DataPoint(0, 10));
-            s1.Points.Add(new DataPoint(10, 40));
-            s1.Points.Add(new DataPoint(40, 20));
-            s1.Points.Add(new DataPoint(60, 30));
-            model.Series.Add(s1);
+            var model = new PlotModel { Title = "LineSeries with default style" };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+            var lineSeries1 = CreateExampleLineSeries();
+            lineSeries1.Title = "LineSeries 1";
+            model.Series.Add(lineSeries1);
+
+            return model;
+        }
+
+        [Example("Custom style")]
+        public static PlotModel CustomStyle()
+        {
+            var model = new PlotModel { Title = "LineSeries with custom style", LegendSymbolLength = 24 };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+            var lineSeries1 = CreateExampleLineSeries();
+            lineSeries1.Title = "LineSeries 1";
+            lineSeries1.ToolTip = "This is a tooltip for a LineSeries 1";
+            lineSeries1.Color = OxyColors.SkyBlue;
+            lineSeries1.StrokeThickness = 3;
+            lineSeries1.LineStyle = LineStyle.Dash;
+            lineSeries1.MarkerType = MarkerType.Circle;
+            lineSeries1.MarkerSize = 5;
+            lineSeries1.MarkerStroke = OxyColors.White;
+            lineSeries1.MarkerFill = OxyColors.SkyBlue;
+            lineSeries1.MarkerStrokeThickness = 1.5;
+            model.Series.Add(lineSeries1);
 
             return model;
         }
@@ -42,228 +56,90 @@ namespace ExampleLibrary
         [Example("Two LineSeries")]
         public static PlotModel TwoLineSeries()
         {
-            var model = new PlotModel { Title = "Two LineSeries", LegendSymbolLength = 24 };
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -1, Maximum = 71, Title = "Y-Axis" });
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -1, Maximum = 61, Title = "X-Axis" });
-            var s1 = new LineSeries
-            {
-                Title = "Series 1",
-                Color = OxyColors.SkyBlue,
-                MarkerType = MarkerType.Circle,
-                MarkerSize = 6,
-                MarkerStroke = OxyColors.White,
-                MarkerFill = OxyColors.SkyBlue,
-                MarkerStrokeThickness = 1.5
-            };
-            s1.Points.Add(new DataPoint(0, 10));
-            s1.Points.Add(new DataPoint(10, 40));
-            s1.Points.Add(new DataPoint(40, 20));
-            s1.Points.Add(new DataPoint(60, 30));
-            model.Series.Add(s1);
+            var model = new PlotModel { Title = "Two LineSeries" };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+            var lineSeries1 = CreateExampleLineSeries();
+            lineSeries1.Title = "LineSeries 1";
+            model.Series.Add(lineSeries1);
 
-            var s2 = new LineSeries
-            {
-                Title = "Series 2",
-                Color = OxyColors.Teal,
-                MarkerType = MarkerType.Diamond,
-                MarkerSize = 6,
-                MarkerStroke = OxyColors.White,
-                MarkerFill = OxyColors.Teal,
-                MarkerStrokeThickness = 1.5
-            };
-            s2.Points.Add(new DataPoint(0, 4));
-            s2.Points.Add(new DataPoint(10, 32));
-            s2.Points.Add(new DataPoint(40, 14));
-            s2.Points.Add(new DataPoint(60, 20));
-            model.Series.Add(s2);
+            var lineSeries2 = CreateExampleLineSeries(41);
+            lineSeries2.Title = "LineSeries 2";
+            model.Series.Add(lineSeries2);
             return model;
         }
 
-        [Example("Invisible LineSeries")]
-        public static PlotModel InvisibleLineSeries()
+        [Example("Visibility")]
+        public static PlotModel IsVisibleFalse()
         {
-            var model = new PlotModel { Title = "Invisible LineSeries", Subtitle = "IsVisible = false for 'Series 2'" };
-            var s1 = new LineSeries { Title = "Series 1" };
-            s1.Points.Add(new DataPoint(0, 10));
-            s1.Points.Add(new DataPoint(10, 40));
-            var s2 = new LineSeries { Title = "Series 2", IsVisible = false };
-            s2.Points.Add(new DataPoint(40, 20));
-            s2.Points.Add(new DataPoint(60, 30));
+            var model = new PlotModel { Title = "LineSeries with IsVisible = false", Subtitle = "Click to change the IsVisible property for LineSeries 2" };
+
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 0, Maximum = 50 });
+
+            var s1 = CreateExampleLineSeries(38);
+            s1.Title = "LineSeries 1";
             model.Series.Add(s1);
+
+            var s2 = CreateExampleLineSeries(39);
+            s2.Title = "LineSeries 2";
+            s2.IsVisible = false;
             model.Series.Add(s2);
+
+            // handle mouse clicks to change visibility
+            model.MouseDown += (s, e) => { s2.IsVisible = !s2.IsVisible; model.InvalidatePlot(true); };
+
+            return model;
+        }
+
+        [Example("Custom TrackerFormatString")]
+        public static PlotModel TrackerFormatString()
+        {
+            var model = new PlotModel { Title = "LineSeries with custom TrackerFormatString", Subtitle = "TrackerFormatString = \"X={2:0.0} Y={4:0.0}\"" };
+
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+
+            var lineSeries1 = CreateExampleLineSeries();
+            lineSeries1.TrackerFormatString = "X={2:0.0} Y={4:0.0}";
+            model.Series.Add(lineSeries1);
+            return model;
+        }
+
+        [Example("Custom markers")]
+        public static PlotModel CustomMarkers()
+        {
+            var model = new PlotModel { Title = "LineSeries with custom markers", LegendSymbolLength = 30 };
+
+            const int N = 6;
+            var customMarkerOutline = new ScreenPoint[N];
+            for (int i = 0; i < N; i++)
+            {
+                double th = Math.PI * ((4.0 * i / (N - 1)) - 0.5);
+                const double R = 1;
+                customMarkerOutline[i] = new ScreenPoint(Math.Cos(th) * R, Math.Sin(th) * R);
+            }
+
+            var s1 = CreateExampleLineSeries(39);
+            s1.Title = "LineSeries 1";
+            s1.MarkerType = MarkerType.Custom;
+            s1.MarkerSize = 8;
+            s1.MarkerOutline = customMarkerOutline;
+
+            model.Series.Add(s1);
+
             return model;
         }
 
         [Example("Marker types")]
         public static PlotModel MarkerTypes()
         {
-            var model = new PlotModel { Title = "Marker types" };
-            model.Series.Add(CreateRandomLineSeries(10, "Circle", MarkerType.Circle));
-            model.Series.Add(CreateRandomLineSeries(10, "Cross", MarkerType.Cross));
-            model.Series.Add(CreateRandomLineSeries(10, "Diamond", MarkerType.Diamond));
-            model.Series.Add(CreateRandomLineSeries(10, "Plus", MarkerType.Plus));
-            model.Series.Add(CreateRandomLineSeries(10, "Square", MarkerType.Square));
-            model.Series.Add(CreateRandomLineSeries(10, "Star", MarkerType.Star));
-            model.Series.Add(CreateRandomLineSeries(10, "Triangle", MarkerType.Triangle));
-            return model;
-        }
-
-        [Example("LineSeries with labels")]
-        public static PlotModel LineSeriesWithLabels()
-        {
-            var model = new PlotModel { Title = "LineSeries with labels", Subtitle = "Use the 'LabelFormatString' property", LegendSymbolLength = 24 };
-            var s1 = new LineSeries
-            {
-                Title = "Series 1",
-                LabelFormatString = "{1}",
-                Color = OxyColors.SkyBlue,
-                MarkerType = MarkerType.Circle,
-                MarkerSize = 6,
-                MarkerStroke = OxyColors.White,
-                MarkerFill = OxyColors.SkyBlue,
-                MarkerStrokeThickness = 1.5
-            };
-            s1.Points.Add(new DataPoint(0, 10));
-            s1.Points.Add(new DataPoint(10, 40));
-            s1.Points.Add(new DataPoint(40, 20));
-            s1.Points.Add(new DataPoint(60, 30));
-            model.Series.Add(s1);
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, MinimumPadding = 0.1, MaximumPadding = 0.1 });
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, MinimumPadding = 0.1, MaximumPadding = 0.1 });
-            return model;
-        }
-
-        static readonly Random Randomizer = new Random(13);
-
-        private static Series CreateRandomLineSeries(int n, string title, MarkerType markerType)
-        {
-            var s1 = new LineSeries { Title = title, MarkerType = markerType, MarkerStroke = OxyColors.Black, MarkerStrokeThickness = 1.0 };
-            double x = 0;
-            double y = 0;
-            for (int i = 0; i < n; i++)
-            {
-                x += 2 + Randomizer.NextDouble() * 10;
-                y += 1 + Randomizer.NextDouble();
-                var p = new DataPoint(x, y);
-                s1.Points.Add(p);
-            }
-            return s1;
-        }
-
-        [Example("Custom markers")]
-        public static PlotModel CustomMarkers()
-        {
-            var model = new PlotModel { Title = "LineSeries with custom markers", LegendSymbolLength = 30, PlotType = PlotType.Cartesian };
-            const int N = 6;
-            var customMarkerOutline = new ScreenPoint[N];
-            for (int i = 0; i < N; i++)
-            {
-                double th = Math.PI * (4.0 * i / (N - 1) - 0.5);
-                const double R = 1;
-                customMarkerOutline[i] = new ScreenPoint(Math.Cos(th) * R, Math.Sin(th) * R);
-            }
-
-            var s1 = new LineSeries
-                         {
-                             Title = "Series 1",
-                             Color = OxyColors.Red,
-                             StrokeThickness = 2,
-                             MarkerType = MarkerType.Custom,
-                             MarkerOutline = customMarkerOutline,
-                             MarkerFill = OxyColors.DarkRed,
-                             MarkerStroke = OxyColors.Black,
-                             MarkerStrokeThickness = 0,
-                             MarkerSize = 10
-                         };
-
-            foreach (var pt in customMarkerOutline)
-            {
-                s1.Points.Add(new DataPoint(pt.X, -pt.Y));
-            }
-
-            model.Series.Add(s1);
-
-            return model;
-        }
-
-        [Example("Normal distribution")]
-        public static PlotModel CreateNormalDistributionModel()
-        {
-            // http://en.wikipedia.org/wiki/Normal_distribution
-
-            var plot = new PlotModel
-            {
-                Title = "Normal distribution",
-                Subtitle = "Probability density function"
-            };
-
-            plot.Axes.Add(new LinearAxis
-            {
-                Position = AxisPosition.Left,
-                Minimum = -0.05,
-                Maximum = 1.05,
-                MajorStep = 0.2,
-                MinorStep = 0.05,
-                TickStyle = TickStyle.Inside
-            });
-            plot.Axes.Add(new LinearAxis
-            {
-                Position = AxisPosition.Bottom,
-                Minimum = -5.25,
-                Maximum = 5.25,
-                MajorStep = 1,
-                MinorStep = 0.25,
-                TickStyle = TickStyle.Inside
-            });
-            plot.Series.Add(CreateNormalDistributionSeries(-5, 5, 0, 0.2));
-            plot.Series.Add(CreateNormalDistributionSeries(-5, 5, 0, 1));
-            plot.Series.Add(CreateNormalDistributionSeries(-5, 5, 0, 5));
-            plot.Series.Add(CreateNormalDistributionSeries(-5, 5, -2, 0.5));
-            return plot;
-        }
-
-        private static DataPointSeries CreateNormalDistributionSeries(double x0, double x1, double mean, double variance,
-                                                                 int n = 1001)
-        {
-            var ls = new LineSeries
-            {
-                Title = String.Format("μ={0}, σ²={1}", mean, variance)
-            };
-
-            for (int i = 0; i < n; i++)
-            {
-                double x = x0 + (x1 - x0) * i / (n - 1);
-                double f = 1.0 / Math.Sqrt(2 * Math.PI * variance) * Math.Exp(-(x - mean) * (x - mean) / 2 / variance);
-                ls.Points.Add(new DataPoint(x, f));
-            }
-            return ls;
-        }
-
-        [Example("LineStyle")]
-        public static PlotModel LineStyles()
-        {
-            var pm = CreateModel("LineStyle", (int)LineStyle.None);
-            pm.LegendPlacement = LegendPlacement.Outside;
-            pm.LegendSymbolLength = 50;
-            int i = 0;
-            foreach (LineSeries ls in pm.Series)
-            {
-                ls.Color = OxyColors.Red;
-                ls.LineStyle = (LineStyle)i++;
-                ls.Title = ls.LineStyle.ToString();
-            }
-            return pm;
-        }
-
-        [Example("MarkerType")]
-        public static PlotModel MarkerTypes2()
-        {
-            var pm = CreateModel("MarkerType", (int)MarkerType.Custom);
+            var pm = CreateModel("LineSeries with different MarkerType", (int)MarkerType.Custom);
             pm.LegendBackground = OxyColor.FromAColor(220, OxyColors.White);
             pm.LegendBorder = OxyColors.Black;
             pm.LegendBorderThickness = 1.0;
             int i = 0;
-            foreach (LineSeries ls in pm.Series)
+            foreach (var ls in pm.Series.Cast<LineSeries>())
             {
                 ls.Color = OxyColors.Red;
                 ls.MarkerStroke = OxyColors.Black;
@@ -271,57 +147,57 @@ namespace ExampleLibrary
                 ls.MarkerType = (MarkerType)i++;
                 ls.Title = ls.MarkerType.ToString();
             }
+
             return pm;
         }
 
-        [Example("Smooth Line")]
-        public static PlotModel SmoothLine()
+        [Example("Labels")]
+        public static PlotModel Labels()
         {
-            var model = new PlotModel { Title = "Smooth Line", LegendSymbolLength = 24 };
-            var s1 = new LineSeries
-            {
-                Title = "Series 1",
-                Color = OxyColors.Purple,
-                MarkerType = MarkerType.Circle,
-                MarkerSize = 4,
-                MarkerStroke = OxyColors.White,
-                MarkerFill = OxyColors.Purple,
-                MarkerStrokeThickness = 1.0,
-                Smooth = true
-            };
-            s1.Points.Add(new DataPoint(0, 10));
-            s1.Points.Add(new DataPoint(10, 5));
-            s1.Points.Add(new DataPoint(20, 1));
-            s1.Points.Add(new DataPoint(30, 20));
+            var model = new PlotModel { Title = "LineSeries with labels", Subtitle = "Use the 'LabelFormatString' property", LegendSymbolLength = 24 };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, MaximumPadding = 0.1 }); // increase the top padding to make sure the labels are visible
+            var s1 = CreateExampleLineSeries();
+            s1.LabelFormatString = "{1}";
+            s1.MarkerType = MarkerType.Circle;
             model.Series.Add(s1);
+            return model;
+        }
 
-            s1 = new LineSeries
+        [Example("LineStyle")]
+        public static PlotModel LineStyles()
+        {
+            var pm = CreateModel("LineSeries with LineStyle", (int)LineStyle.None);
+            pm.LegendPlacement = LegendPlacement.Outside;
+            pm.LegendSymbolLength = 50;
+            int i = 0;
+            foreach (var lineSeries in pm.Series.Cast<LineSeries>())
             {
-                Title = "Series 2 - tracker",
-                Color = OxyColors.OrangeRed,
-                MarkerType = MarkerType.Diamond,
-                MarkerSize = 4,
-                MarkerStroke = OxyColors.WhiteSmoke,
-                MarkerFill = OxyColors.OrangeRed,
-                MarkerStrokeThickness = 1.0,
-                Smooth = true
-            };
-            s1.Points.Add(new DataPoint(0, 15));
-            s1.Points.Add(new DataPoint(3, 23));
-            s1.Points.Add(new DataPoint(9, 30));
-            s1.Points.Add(new DataPoint(20, 12));
-            s1.Points.Add(new DataPoint(30, 10));
-            model.Series.Add(s1);
+                lineSeries.Color = OxyColors.Red;
+                lineSeries.LineStyle = (LineStyle)i++;
+                lineSeries.Title = lineSeries.LineStyle.ToString();
+            }
 
-            s1.CanTrackerInterpolatePoints = true;
+            return pm;
+        }
+
+        [Example("Smooth")]
+        public static PlotModel Smooth()
+        {
+            var model = new PlotModel { Title = "LineSeries with Smooth = true", LegendSymbolLength = 24 };
+
+            var s1 = CreateExampleLineSeries();
+            s1.MarkerType = MarkerType.Circle;
+            s1.Smooth = true;
+            model.Series.Add(s1);
 
             return model;
         }
 
-        [Example("Complex Smooth Line")]
+        [Example("Smooth (complex curve)")]
         public static PlotModel ComplexSmoothLine()
         {
-            var model = new PlotModel { Title = "Complex Smooth Lines" };
+            var model = new PlotModel { Title = "LineSeries with Smooth = true", Subtitle = "complex curve" };
 
             var s1 = new LineSeries
             {
@@ -336,7 +212,90 @@ namespace ExampleLibrary
             s1.Points.Add(new DataPoint(0.02, 28180557));
             s1.Points.Add(new DataPoint(0.03, 13957503));
             model.Series.Add(s1);
+
             return model;
+        }
+
+        [Example("LineLegendPosition")]
+        public static PlotModel CustomLineLegendPosition()
+        {
+            var model = new PlotModel { Title = "LineSeries with LineLegendPosition" };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, MinimumPadding = 0.1, MaximumPadding = 0.1 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+            var s1 = CreateExampleLineSeries();
+            s1.Title = "Start";
+            s1.MarkerType = MarkerType.Circle;
+            s1.LineLegendPosition = LineLegendPosition.Start;
+            model.Series.Add(s1);
+
+            var s2 = CreateExampleLineSeries(41);
+            s2.Title = "End";
+            s2.MarkerType = MarkerType.Circle;
+            s2.LineLegendPosition = LineLegendPosition.End;
+            model.Series.Add(s2);
+
+            return model;
+        }
+
+        [Example("Broken lines")]
+        public static PlotModel BrokenLine()
+        {
+            var model = new PlotModel { Title = "LineSeries with broken lines" };
+
+            var s1 = CreateExampleLineSeries();
+            s1.Points[3] = DataPoint.Undefined;
+            s1.Points[7] = DataPoint.Undefined;
+            s1.BrokenLineColor = OxyColors.Gray;
+            s1.BrokenLineThickness = 0.5;
+            s1.BrokenLineStyle = LineStyle.Solid;
+            model.Series.Add(s1);
+
+            var s2 = CreateExampleLineSeries(49);
+            s2.Points[3] = DataPoint.Undefined;
+            s2.Points[7] = DataPoint.Undefined;
+            s2.BrokenLineColor = OxyColors.Automatic;
+            s2.BrokenLineThickness = 1;
+            s2.BrokenLineStyle = LineStyle.Dot;
+            model.Series.Add(s2);
+            
+            return model;
+        }
+
+        [Example("Without Decimator")]
+        public static PlotModel WithoutDecimator()
+        {
+            var model = new PlotModel { Title = "LineSeries without Decimator" };
+            var s1 = CreateSeriesSuitableForDecimation();
+            model.Series.Add(s1);
+            return model;
+        }
+
+        [Example("With X Decimator")]
+        public static PlotModel WithXDecimator()
+        {
+            var model = new PlotModel { Title = "LineSeries with X Decimator" };
+            var s1 = CreateSeriesSuitableForDecimation();
+            s1.Decimator = Decimator.Decimate;
+            model.Series.Add(s1);
+            return model;
+        }
+
+        /// <summary>
+        /// Creates an example line series.
+        /// </summary>
+        /// <returns>A line series containing random points.</returns>
+        private static LineSeries CreateExampleLineSeries(int seed = 13)
+        {
+            var lineSeries1 = new LineSeries();
+            var r = new Random(seed);
+            var y = r.Next(10, 30);
+            for (int x = 0; x <= 100; x += 10)
+            {
+                lineSeries1.Points.Add(new DataPoint(x, y));
+                y += r.Next(-5, 5);
+            }
+
+            return lineSeries1;
         }
 
         private static PlotModel CreateModel(string title, int n = 20)
@@ -347,87 +306,11 @@ namespace ExampleLibrary
                 var s = new LineSeries { Title = "Series " + i };
                 model.Series.Add(s);
                 for (double x = 0; x < 2 * Math.PI; x += 0.1)
-                    s.Points.Add(new DataPoint(x, Math.Sin(x * i) / (i + 1) + i));
-            }
-
-            return model;
-        }
-
-        [Example("LineSeries with legend at the end of the line")]
-        public static PlotModel LineLegendPositionAtEnd()
-        {
-            // http://www.perceptualedge.com/example2.php
-            var model = new PlotModel { Title = "Average (Mean) monthly temperatures in 2003", PlotMargins = new OxyThickness(60, 4, 60, 40), PlotAreaBorderThickness = new OxyThickness(0), IsLegendVisible = false };
-            var phoenix = new LineSeries { Title = "Phoenix", LineLegendPosition = LineLegendPosition.End };
-            var raleigh = new LineSeries { Title = "Raleigh", LineLegendPosition = LineLegendPosition.End };
-            var minneapolis = new LineSeries { Title = "Minneapolis", LineLegendPosition = LineLegendPosition.End };
-
-            var phoenixTemps = new[] { 52.1, 55.1, 59.7, 67.7, 76.3, 84.6, 91.2, 89.1, 83.8, 72.2, 59.8, 52.5 };
-            var raleighTemps = new[] { 40.5, 42.2, 49.2, 59.5, 67.4, 74.4, 77.5, 76.5, 70.6, 60.2, 50.0, 41.2 };
-            var minneapolisTemps = new[] { 12.2, 16.5, 28.3, 45.1, 57.1, 66.9, 71.9, 70.2, 60.0, 50.0, 32.4, 18.6 };
-
-            for (int i = 0; i < 12; i++)
-            {
-                phoenix.Points.Add(new DataPoint(i, phoenixTemps[i]));
-                raleigh.Points.Add(new DataPoint(i, raleighTemps[i]));
-                minneapolis.Points.Add(new DataPoint(i, minneapolisTemps[i]));
-            }
-
-            model.Series.Add(phoenix);
-            model.Series.Add(raleigh);
-            model.Series.Add(minneapolis);
-
-            var categoryAxis = new CategoryAxis
-            {
-                AxislineStyle = LineStyle.Solid
-            };
-            categoryAxis.Labels.AddRange(new[] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" });
-            model.Axes.Add(categoryAxis);
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Fahrenheit", AxislineStyle = LineStyle.Solid });
-
-            return model;
-        }
-
-        [Example("Broken line")]
-        public static PlotModel BrokenLine()
-        {
-            var model = new PlotModel { Title = "Broken line" };
-            var s1 = new LineSeries
                 {
-                    BrokenLineColor = OxyColors.Gray,
-                    BrokenLineThickness = 1,
-                    BrokenLineStyle = LineStyle.Dash
-                };
-            s1.Points.Add(new DataPoint(0, 26));
-            s1.Points.Add(new DataPoint(10, 30));
-            s1.Points.Add(DataPoint.Undefined);
-            s1.Points.Add(new DataPoint(10, 25));
-            s1.Points.Add(new DataPoint(20, 26));
-            s1.Points.Add(new DataPoint(25, 36));
-            s1.Points.Add(new DataPoint(30, 40));
-            s1.Points.Add(DataPoint.Undefined);
-            s1.Points.Add(new DataPoint(30, 20));
-            s1.Points.Add(new DataPoint(40, 10));
-            model.Series.Add(s1);
-            return model;
-        }
+                    s.Points.Add(new DataPoint(x, (Math.Sin(x * i) / (i + 1)) + i));
+                }
+            }
 
-        [Example("Without Decimator")]
-        public static PlotModel WithoutDecimator()
-        {
-            var model = new PlotModel { Title = "Without Decimator" };
-            var s1 = CreateSeriesSuitableForDecimation();
-            model.Series.Add(s1);
-            return model;
-        }
-
-        [Example("With X Decimator")]
-        public static PlotModel WithXDecimator()
-        {
-            var model = new PlotModel { Title = "With X Decimator" };
-            var s1 = CreateSeriesSuitableForDecimation();
-            s1.Decimator = Decimator.Decimate;
-            model.Series.Add(s1);
             return model;
         }
 
@@ -439,6 +322,22 @@ namespace ExampleLibrary
             for (int i = 0; i < n; i++)
             {
                 s1.Points.Add(new DataPoint((double)i / n, Math.Sin(i)));
+            }
+
+            return s1;
+        }
+
+        private static Series CreateRandomLineSeries(int n, string title, MarkerType markerType)
+        {
+            var s1 = new LineSeries { Title = title, MarkerType = markerType, MarkerStroke = OxyColors.Black, MarkerStrokeThickness = 1.0 };
+            double x = 0;
+            double y = 0;
+            for (int i = 0; i < n; i++)
+            {
+                x += 2 + Randomizer.NextDouble() * 10;
+                y += 1 + Randomizer.NextDouble();
+                var p = new DataPoint(x, y);
+                s1.Points.Add(p);
             }
 
             return s1;

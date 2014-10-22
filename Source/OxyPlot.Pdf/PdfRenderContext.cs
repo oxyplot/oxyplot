@@ -116,7 +116,7 @@ namespace OxyPlot.Pdf
             OxyColor stroke,
             double thickness,
             double[] dashArray,
-            OxyPenLineJoin lineJoin,
+            LineJoin lineJoin,
             bool aliased)
         {
             if (stroke.IsInvisible() || thickness <= 0)
@@ -134,10 +134,10 @@ namespace OxyPlot.Pdf
 
             switch (lineJoin)
             {
-                case OxyPenLineJoin.Round:
+                case LineJoin.Round:
                     pen.LineJoin = XLineJoin.Round;
                     break;
-                case OxyPenLineJoin.Bevel:
+                case LineJoin.Bevel:
                     pen.LineJoin = XLineJoin.Bevel;
                     break;
 
@@ -163,7 +163,7 @@ namespace OxyPlot.Pdf
             OxyColor stroke,
             double thickness,
             double[] dashArray,
-            OxyPenLineJoin lineJoin,
+            LineJoin lineJoin,
             bool aliased)
         {
             this.g.SmoothingMode = aliased ? XSmoothingMode.None : XSmoothingMode.HighQuality;
@@ -186,10 +186,10 @@ namespace OxyPlot.Pdf
 
                 switch (lineJoin)
                 {
-                    case OxyPenLineJoin.Round:
+                    case LineJoin.Round:
                         pen.LineJoin = XLineJoin.Round;
                         break;
-                    case OxyPenLineJoin.Bevel:
+                    case LineJoin.Bevel:
                         pen.LineJoin = XLineJoin.Bevel;
                         break;
 

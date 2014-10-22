@@ -142,24 +142,31 @@ namespace OxyPlot.Series
                 result2 = this.GetNearestPointInternal(this.ActualPoints2, point);
             }
 
+            TrackerHitResult result;
             if (result1 != null && result2 != null)
             {
                 double dist1 = result1.Position.DistanceTo(point);
                 double dist2 = result2.Position.DistanceTo(point);
-                return dist1 < dist2 ? result1 : result2;
+                result = dist1 < dist2 ? result1 : result2;
             }
-
-            if (result1 != null)
+            else
             {
-                return result1;
+                result = result1 ?? result2;
             }
 
-            if (result2 != null)
+            if (result != null)
             {
-                return result2;
+                result.Text = this.Format(
+                    this.TrackerFormatString,
+                    result.Item,
+                    this.Title,
+                    this.XAxis.Title ?? XYAxisSeries.DefaultXAxisTitle,
+                    this.XAxis.GetValue(result.DataPoint.X),
+                    this.YAxis.Title ?? XYAxisSeries.DefaultYAxisTitle,
+                    this.YAxis.GetValue(result.DataPoint.Y));
             }
 
-            return null;
+            return result;
         }
 
         /// <summary>

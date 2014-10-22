@@ -37,12 +37,12 @@ namespace OxyPlot
         public event EventHandler SelectionChanged;
 
         /// <summary>
-        /// Gets or sets a value indicating whether this element can be selected.
+        /// Gets or sets a value indicating whether this element can be selected. The default is <c>true</c>.
         /// </summary>
         public bool Selectable { get; set; }
 
         /// <summary>
-        /// Gets or sets the selection mode of items in this element.
+        /// Gets or sets the selection mode of items in this element. The default is <c>SelectionMode.All</c>.
         /// </summary>
         /// <value>The selection mode.</value>
         /// <remarks>This is only used by the select/unselect functionality, not by the rendering.</remarks>

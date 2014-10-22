@@ -21,6 +21,11 @@ namespace OxyPlot.Series
     public abstract class BarSeriesBase : CategorizedSeries, IStackableSeries
     {
         /// <summary>
+        /// The default tracker format string
+        /// </summary>
+        public new const string DefaultTrackerFormatString = "{0}\n{1}: {2:0.###}";
+
+        /// <summary>
         /// The default fill color.
         /// </summary>
         private OxyColor defaultFillColor;
@@ -34,7 +39,7 @@ namespace OxyPlot.Series
             this.NegativeFillColor = OxyColors.Undefined;
             this.StrokeColor = OxyColors.Black;
             this.StrokeThickness = 0;
-            this.TrackerFormatString = "{0}, {1}: {2}";
+            this.TrackerFormatString = DefaultTrackerFormatString;
             this.LabelMargin = 2;
             this.StackGroup = string.Empty;
         }
@@ -151,8 +156,15 @@ namespace OxyPlot.Series
 
                     var dp = new DataPoint(categoryIndex, this.ValidItems[i].Value);
                     var item = this.GetItem(this.ValidItemsIndexInversion[i]);
-                    var text = this.GetTrackerText(item, categoryIndex);
-                    return new TrackerHitResult(this, dp, point, item, i, text);
+                    return new TrackerHitResult
+                    {
+                        Series = this,
+                        DataPoint = dp,
+                        Position = point,
+                        Item = item,
+                        Index = i,
+                        Text = this.GetTrackerText(item, categoryIndex)
+                    };
                 }
 
                 i++;
@@ -419,13 +431,14 @@ namespace OxyPlot.Series
             }
 
             var categoryAxis = this.GetCategoryAxis();
+            var valueAxis = this.GetValueAxis();
 
             var text = this.Format(
                 this.TrackerFormatString,
                 item,
                 this.Title,
                 categoryAxis.FormatValue(categoryIndex),
-                barItem.Value);
+                valueAxis.GetValue(barItem.Value));
             return text;
         }
 

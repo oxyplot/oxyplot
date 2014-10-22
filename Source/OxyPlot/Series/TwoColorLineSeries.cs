@@ -73,7 +73,7 @@ namespace OxyPlot.Series
         {
             get
             {
-                return this.LineStyle2 != LineStyle.Undefined ? this.LineStyle2 : LineStyle.Solid;
+                return this.LineStyle2 != LineStyle.Automatic ? this.LineStyle2 : LineStyle.Solid;
             }
         }
 
@@ -101,7 +101,7 @@ namespace OxyPlot.Series
                 this.defaultColor2 = model.GetDefaultColor();
             }
 
-            if (this.LineStyle2 == LineStyle.Undefined)
+            if (this.LineStyle2 == LineStyle.Automatic)
             {
                 this.LineStyle2 = model.GetDefaultLineStyle();
             }

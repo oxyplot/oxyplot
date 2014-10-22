@@ -34,7 +34,7 @@ namespace OxyPlot.Series
             this.StrokeColor = OxyColors.Black;
             this.StrokeThickness = 1;
 
-            this.TrackerFormatString = "{0}";
+            this.TrackerFormatString = "{0}\n{1}: {2:0.###} {3:0.###}\n{4}: {5:0.###} {6:0.###}";
 
             this.LabelFormatString = "{4}"; // title
 
@@ -110,15 +110,25 @@ namespace OxyPlot.Series
                     var sp = point;
                     var dp = new DataPoint(i, value);
                     var item = this.GetItem(i);
-                    var text = this.Format(
+                    return new TrackerHitResult
+                    {
+                        Series = this,
+                        DataPoint = dp,
+                        Position = sp,
+                        Item = item,
+                        Index = i,
+                        Text = this.Format(
                         this.TrackerFormatString,
                         item,
-                        this.Items[i].X0,
-                        this.Items[i].X1,
-                        this.Items[i].Y0,
-                        this.Items[i].Y1,
-                        this.Items[i].Title);
-                    return new TrackerHitResult(this, dp, sp, item, i, text);
+                        this.Title,
+                        this.XAxis.Title ?? DefaultXAxisTitle,
+                        this.XAxis.GetValue(this.Items[i].X0),
+                        this.XAxis.GetValue(this.Items[i].X1),
+                        this.YAxis.Title ?? DefaultYAxisTitle,
+                        this.YAxis.GetValue(this.Items[i].Y0),
+                        this.YAxis.GetValue(this.Items[i].Y1),
+                        this.Items[i].Title)
+                    };
                 }
             }
 

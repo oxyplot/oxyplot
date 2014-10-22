@@ -33,36 +33,27 @@ namespace OxyPlot.Series
         private bool ownsItemsSourcePoints;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref = "DataPointSeries" /> class.
-        /// </summary>
-        protected DataPointSeries()
-        {
-            this.DataFieldX = null;
-            this.DataFieldY = null;
-        }
-
-        /// <summary>
         /// Gets or sets a value indicating whether the tracker can interpolate points.
         /// </summary>
         public bool CanTrackerInterpolatePoints { get; set; }
 
         /// <summary>
-        /// Gets or sets the data field X.
+        /// Gets or sets the data field X. The default is <c>null</c>.
         /// </summary>
         /// <value>The data field X.</value>
         public string DataFieldX { get; set; }
 
         /// <summary>
-        /// Gets or sets the data field Y.
+        /// Gets or sets the data field Y. The default is <c>null</c>.
         /// </summary>
         /// <value>The data field Y.</value>
         public string DataFieldY { get; set; }
 
         /// <summary>
-        /// Gets or sets the mapping delegate.
-        /// Example: series1.Mapping = item => new DataPoint(((MyType)item).Time,((MyType)item).Value);
+        /// Gets or sets the delegate used to map from <see cref="ItemsSeries.ItemsSource" /> to the <see cref="ActualPoints" />. The default is <c>null</c>.
         /// </summary>
         /// <value>The mapping.</value>
+        /// <remarks>Example: series1.Mapping = item => new DataPoint(((MyType)item).Time,((MyType)item).Value);</remarks>
         public Func<object, DataPoint> Mapping { get; set; }
 
         /// <summary>
@@ -76,12 +67,6 @@ namespace OxyPlot.Series
                 return this.points;
             }
         }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether this <see cref = "DataPointSeries" /> is smooth.
-        /// </summary>
-        /// <value><c>true</c> if smooth; otherwise, <c>false</c>.</value>
-        public bool Smooth { get; set; }
 
         /// <summary>
         /// Gets the list of points that should be rendered.
@@ -108,12 +93,30 @@ namespace OxyPlot.Series
                 return null;
             }
 
+            TrackerHitResult result = null;
             if (interpolate)
             {
-                return this.GetNearestInterpolatedPointInternal(this.ActualPoints, point);
+                result = this.GetNearestInterpolatedPointInternal(this.ActualPoints, point);
             }
 
-            return this.GetNearestPointInternal(this.ActualPoints, point);
+            if (result == null)
+            {
+                result = this.GetNearestPointInternal(this.ActualPoints, point);
+            }
+
+            if (result != null)
+            {
+                result.Text = this.Format(
+                    this.TrackerFormatString,
+                    result.Item,
+                    this.Title,
+                    this.XAxis.Title ?? XYAxisSeries.DefaultXAxisTitle,
+                    this.XAxis.GetValue(result.DataPoint.X),
+                    this.YAxis.Title ?? XYAxisSeries.DefaultYAxisTitle,
+                    this.YAxis.GetValue(result.DataPoint.Y));
+            }
+
+            return result;
         }
 
         /// <summary>

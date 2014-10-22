@@ -41,7 +41,7 @@ namespace OxyPlot
         public virtual void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
             var polygon = CreateEllipse(rect);
-            this.DrawPolygon(polygon, fill, stroke, thickness, null, OxyPenLineJoin.Miter, false);
+            this.DrawPolygon(polygon, fill, stroke, thickness, null, LineJoin.Miter, false);
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace OxyPlot
             OxyColor stroke,
             double thickness,
             double[] dashArray,
-            OxyPenLineJoin lineJoin,
+            LineJoin lineJoin,
             bool aliased);
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace OxyPlot
             OxyColor stroke,
             double thickness,
             double[] dashArray,
-            OxyPenLineJoin lineJoin,
+            LineJoin lineJoin,
             bool aliased)
         {
             for (int i = 0; i + 1 < points.Count; i += 2)
@@ -117,7 +117,7 @@ namespace OxyPlot
             OxyColor stroke,
             double thickness,
             double[] dashArray,
-            OxyPenLineJoin lineJoin,
+            LineJoin lineJoin,
             bool aliased);
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace OxyPlot
             OxyColor stroke,
             double thickness,
             double[] dashArray,
-            OxyPenLineJoin lineJoin,
+            LineJoin lineJoin,
             bool aliased)
         {
             foreach (var polygon in polygons)
@@ -156,7 +156,7 @@ namespace OxyPlot
         public virtual void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
             var polygon = CreateRectangle(rect);
-            this.DrawPolygon(polygon, fill, stroke, thickness, null, OxyPenLineJoin.Miter, true);
+            this.DrawPolygon(polygon, fill, stroke, thickness, null, LineJoin.Miter, true);
         }
 
         /// <summary>

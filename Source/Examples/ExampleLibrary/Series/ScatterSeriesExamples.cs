@@ -68,6 +68,16 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("LabelFormatString")]
+        public static PlotModel LabelFormatString()
+        {
+            var model = new PlotModel { Title = "ScatterSeries with LabelFormatString" };
+            var s = CreateRandomScatterSeries(50, MarkerType.Square, false, false, null);
+            s.LabelFormatString = "{1:0.###}";
+            model.Series.Add(s);
+            return model;
+        }
+
         private static PlotModel CreateRandomScatterSeriesWithColorAxisPlotModel(int n, OxyPalette palette, MarkerType markerType, AxisPosition colorAxisPosition, OxyColor highColor, OxyColor lowColor)
         {
             var model = new PlotModel { Title = string.Format("ScatterSeries (n={0})", n), Background = OxyColors.LightGray };
@@ -83,7 +93,7 @@ namespace ExampleLibrary
             {
                 MarkerType = markerType,
                 MarkerSize = 6,
-                ColorAxisKey = colorAxis != null ? colorAxis.Key : "nix"
+                ColorAxisKey = colorAxis != null ? colorAxis.Key : null
             };
             var random = new Random(13);
             for (int i = 0; i < n; i++)

@@ -38,7 +38,7 @@ namespace OxyPlot.Series
             this.StrokeThickness = 1;
             this.BarWidth = 1;
 
-            this.TrackerFormatString = "{0}";
+            this.TrackerFormatString = "{0}\n{1}: {2:0.###}\n{3}: {4:0.###}";
             this.LabelMargin = 4;
 
             this.LabelFormatString = "{2}"; // title
@@ -168,13 +168,26 @@ namespace OxyPlot.Series
                     var categoryIndex = item.GetCategoryIndex(i);
                     double value = (this.ValidItems[i].Start + this.ValidItems[i].End) / 2;
                     var dp = new DataPoint(categoryIndex, value);
-                    var text = this.Format(
+                    var categoryAxis = this.GetCategoryAxis();
+                    var valueAxis = this.GetValueAxis();
+                    return new TrackerHitResult
+                    {
+                        Series = this,
+                        DataPoint = dp,
+                        Position = point,
+                        Item = item,
+                        Index = i,
+                        Text = this.Format(
                         this.TrackerFormatString,
                         item,
-                        this.Items[i].Start,
-                        this.Items[i].End,
-                        this.Items[i].Title);
-                    return new TrackerHitResult(this, dp, point, item, i, text);
+                        this.Title,
+                        categoryAxis.Title ?? DefaultCategoryAxisTitle,
+                        categoryAxis.FormatValue(categoryIndex),
+                        valueAxis.Title ?? DefaultValueAxisTitle,
+                        valueAxis.GetValue(this.Items[i].Start),
+                        valueAxis.GetValue(this.Items[i].End),
+                        this.Items[i].Title)
+                    };
                 }
             }
 
