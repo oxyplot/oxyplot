@@ -13,7 +13,7 @@
     <tags>plotting plot charting chart</tags>
   </metadata>
   <files>
-    <file src="..\..\Output\PCL\OxyPlot.???" target="lib\portable-net4+sl4+wp71+win8" />
+    <file src="..\..\Output\PCL\OxyPlot.???" target="lib\portable-net4+sl4+wp71+win8+wpa81" />
     <file src="..\..\LICENSE" />
     <file src="..\..\AUTHORS" />
     <file src="..\..\CONTRIBUTORS" />
