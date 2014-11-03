@@ -58,7 +58,7 @@
       <Project>{0d7c7710-c58b-4713-ba18-8231a2f35a12}</Project>
       <Name>OxyPlot.Wpf_NET40</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OxyPlot\OxyPlot.csproj">
+    <ProjectReference Include="..\OxyPlot\OxyPlot_NET40.csproj">
       <Project>{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}</Project>
       <Name>OxyPlot</Name>
     </ProjectReference>

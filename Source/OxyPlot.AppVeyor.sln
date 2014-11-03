@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Tests", "OxyPlot.Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot", "OxyPlot\OxyPlot.csproj", "{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot", "OxyPlot\OxyPlot_NET40.csproj", "{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Pdf", "OxyPlot.Pdf\OxyPlot.Pdf.csproj", "{12737C3F-5770-403F-90A1-BC12EBD1BB31}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Xps", "OxyPlot.Xps\OxyPlot.Xps.csproj", "{639E0B40-A307-4D4A-BB78-BE0019D8D7C1}"
@@ -34,6 +36,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.OpenXml_NET40", "OxyPlot.OpenXml\OxyPlot.OpenXml_NET40.csproj", "{AF4DF6F4-FD99-4236-B0F1-CE8F5AD0D8A2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleLibrary", "Examples\ExampleLibrary\ExampleLibrary.csproj", "{FACB89E5-53A5-4748-9F5B-E0714EBB37B2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleLibrary", "Examples\ExampleLibrary\ExampleLibrary_NET40.csproj", "{FACB89E5-53A5-4748-9F5B-E0714EBB37B2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Metro", "OxyPlot.Metro\OxyPlot.Metro.csproj", "{2FA3C4D5-1B43-4191-863C-F940DAA6A1EE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Silverlight", "OxyPlot.Silverlight\OxyPlot.Silverlight.csproj", "{2EB36333-58C3-47FD-B01F-C1C3FAF1888A}"
 EndProject
