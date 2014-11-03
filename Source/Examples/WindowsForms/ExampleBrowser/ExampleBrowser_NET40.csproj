@@ -87,7 +87,7 @@
       <Name>OxyPlot</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\ExampleLibrary\ExampleLibrary.csproj">
-      <Project>{facb89e5-53a5-4748-9f5b-e0714ebb37b2}</Project>
+      <Project>{b8a34a2f-e505-4517-8eff-7f80e39cf425}</Project>
       <Name>ExampleLibrary</Name>
     </ProjectReference>
   </ItemGroup>
