@@ -104,7 +104,7 @@
     <Compile Include="Rendering\Utilities\Decimator.cs" />
     <Compile Include="Rendering\Utilities\SutherlandHodgmanClipping.cs" />
     <Compile Include="Rendering\Utilities\CohenSutherlandClipping.cs" />
-    <Compile Include="Rendering\OxyPenLineJoin.cs" />
+    <Compile Include="Rendering\LineJoin.cs" />
     <Compile Include="Rendering\HorizontalAlignment.cs" />
     <Compile Include="Rendering\VerticalAlignment.cs" />
     <Compile Include="Rendering\OxyColor.cs" />

@@ -15,8 +15,6 @@ namespace ExampleLibrary
     using System.IO;
     using System.Reflection;
     using System.Threading;
-    using System.Threading.Tasks;
-    using System.Xml;
     using System.Xml.Serialization;
 
     using OxyPlot;
