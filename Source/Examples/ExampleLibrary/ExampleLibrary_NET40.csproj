@@ -139,8 +139,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\OxyPlot\OxyPlot_NET40.csproj">
-      <Project>{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}</Project>
-      <Project>{7a0b35c0-dd17-4964-8e9a-44d6cecdc692}</Project>
+      <Project>{D52B7EB7-74B8-435F-953C-007B4EF3523F}</Project>
+      <Project>{d52b7eb7-74b8-435f-953c-007b4ef3523f}</Project>
       <Name>OxyPlot</Name>
     </ProjectReference>
   </ItemGroup>
