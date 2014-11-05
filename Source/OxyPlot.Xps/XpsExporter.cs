@@ -15,6 +15,7 @@ namespace OxyPlot.Xps
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Media;
+    using System.Windows.Xps;
     using System.Windows.Xps.Packaging;
 
     using OxyPlot.Wpf;
@@ -67,27 +68,10 @@ namespace OxyPlot.Xps
         /// <param name="background">The background color.</param>
         public static void Export(IPlotModel model, string fileName, double width, double height, OxyColor background)
         {
-            using (var xpsPackage = Package.Open(fileName, FileMode.Create, FileAccess.ReadWrite))
+            using (var stream = File.Open(fileName, FileMode.Create, FileAccess.ReadWrite))
             {
-                using (var doc = new XpsDocument(xpsPackage))
-                {
-                    var canvas = new Canvas { Width = width, Height = height, Background = background.ToBrush() };
-                    canvas.Measure(new Size(width, height));
-                    canvas.Arrange(new Rect(0, 0, width, height));
-
-                    var rc = new ShapesRenderContext(canvas);
-#if !NET35
-                    rc.TextFormattingMode = TextFormattingMode.Ideal;
-#endif
-
-                    model.Update(true);
-                    model.Render(rc, width, height);
-
-                    canvas.UpdateLayout();
-
-                    var xpsdw = XpsDocument.CreateXpsDocumentWriter(doc);
-                    xpsdw.Write(canvas);
-                }
+                var exporter = new XpsExporter { Width = width, Height = height, Background = background };
+                exporter.Export(model, stream);
             }
         }
 
@@ -123,25 +107,12 @@ namespace OxyPlot.Xps
         /// <param name="stream">The stream.</param>
         public void Export(IPlotModel model, Stream stream)
         {
-            using (var xpsPackage = Package.Open(stream))
+            using (var xpsPackage = Package.Open(stream, FileMode.Create, FileAccess.ReadWrite))
             {
                 using (var doc = new XpsDocument(xpsPackage))
                 {
-                    var canvas = new Canvas { Width = this.Width, Height = this.Height, Background = this.Background.ToBrush() };
-                    canvas.Measure(new Size(this.Width, this.Height));
-                    canvas.Arrange(new Rect(0, 0, this.Width, this.Height));
-
-                    var rc = new ShapesRenderContext(canvas);
-#if !NET35
-                    rc.TextFormattingMode = this.TextFormattingMode;
-#endif
-                    model.Update(true);
-                    model.Render(rc, this.Width, this.Height);
-
-                    canvas.UpdateLayout();
-
                     var xpsdw = XpsDocument.CreateXpsDocumentWriter(doc);
-                    xpsdw.Write(canvas);
+                    this.Write(model, xpsdw);
                 }
             }
         }
@@ -156,33 +127,41 @@ namespace OxyPlot.Xps
             var xpsDocumentWriter = PrintQueue.CreateXpsDocumentWriter(ref area);
             if (xpsDocumentWriter != null)
             {
-                var width = this.Width;
-                var height = this.Height;
-                if (double.IsNaN(width))
+                if (double.IsNaN(this.Width))
                 {
-                    width = area.MediaSizeWidth;
+                    this.Width = area.ExtentWidth;
                 }
 
-                if (double.IsNaN(height))
+                if (double.IsNaN(this.Height))
                 {
-                    height = area.MediaSizeHeight;
+                    this.Height = area.ExtentHeight;
                 }
 
-                var canvas = new Canvas { Width = width, Height = height, Background = this.Background.ToBrush() };
-                canvas.Measure(new Size(width, height));
-                canvas.Arrange(new Rect(0, 0, width, height));
-
-                var rc = new ShapesRenderContext(canvas);
-#if !NET35
-                rc.TextFormattingMode = this.TextFormattingMode;
-#endif
-                model.Update(true);
-                model.Render(rc, width, height);
-
-                canvas.UpdateLayout();
-
-                xpsDocumentWriter.Write(canvas);
+                this.Write(model, xpsDocumentWriter);
             }
+        }
+
+        /// <summary>
+        /// Write the specified <see cref="IPlotModel" /> to the specified <see cref="XpsDocumentWriter" />.
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <param name="writer">The document writer.</param>
+        private void Write(IPlotModel model, XpsDocumentWriter writer)
+        {
+            var canvas = new Canvas { Width = this.Width, Height = this.Height, Background = this.Background.ToBrush() };
+            canvas.Measure(new Size(this.Width, this.Height));
+            canvas.Arrange(new Rect(0, 0, this.Width, this.Height));
+
+            var rc = new ShapesRenderContext(canvas);
+#if !NET35
+            rc.TextFormattingMode = this.TextFormattingMode;
+#endif
+            model.Update(true);
+            model.Render(rc, this.Width, this.Height);
+
+            canvas.UpdateLayout();
+
+            writer.Write(canvas);
         }
     }
 }
