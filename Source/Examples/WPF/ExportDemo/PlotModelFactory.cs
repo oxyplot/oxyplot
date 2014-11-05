@@ -110,6 +110,8 @@ namespace ExportDemo
                     model.PlotType = PlotType.XY;
                     break;
             }
+
+            model.Background = OxyColors.Beige;
             return model;
         }
 
