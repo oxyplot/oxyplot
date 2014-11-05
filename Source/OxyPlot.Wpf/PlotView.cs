@@ -503,7 +503,8 @@ namespace OxyPlot.Wpf
         /// <param name="fileName">Name of the file.</param>
         public void SaveXaml(string fileName)
         {
-            XamlExporter.Export(this.ActualModel, fileName, this.ActualWidth, this.ActualHeight, this.Background.ToOxyColor());
+            var background = this.ActualModel.Background.IsVisible() ? this.ActualModel.Background : this.Background.ToOxyColor();
+            XamlExporter.Export(this.ActualModel, fileName, this.ActualWidth, this.ActualHeight, background);
         }
 
         /// <summary>
@@ -512,7 +513,8 @@ namespace OxyPlot.Wpf
         /// <returns>A bitmap.</returns>
         public BitmapSource ToBitmap()
         {
-            return PngExporter.ExportToBitmap(this.ActualModel, (int)this.ActualWidth, (int)this.ActualHeight, this.Background.ToOxyColor());
+            var background = this.ActualModel.Background.IsVisible() ? this.ActualModel.Background : this.Background.ToOxyColor();
+            return PngExporter.ExportToBitmap(this.ActualModel, (int)this.ActualWidth, (int)this.ActualHeight, background);
         }
 
         /// <summary>
@@ -521,7 +523,8 @@ namespace OxyPlot.Wpf
         /// <returns>The xaml.</returns>
         public string ToXaml()
         {
-            return XamlExporter.ExportToString(this.ActualModel, this.ActualWidth, this.ActualHeight, this.Background.ToOxyColor());
+            var background = this.ActualModel.Background.IsVisible() ? this.ActualModel.Background : this.Background.ToOxyColor();
+            return XamlExporter.ExportToString(this.ActualModel, this.ActualWidth, this.ActualHeight, background);
         }
 
         /// <summary>
@@ -769,9 +772,14 @@ namespace OxyPlot.Wpf
         /// <param name="e">The <see cref="System.Windows.Input.ExecutedRoutedEventArgs" /> instance containing the event data.</param>
         private void DoCopy(object sender, ExecutedRoutedEventArgs e)
         {
-            var background = ReferenceEquals(this.Background, Brushes.Transparent) ? Brushes.White : this.Background;
+            var background = this.ActualModel.Background.IsVisible() ? this.ActualModel.Background : this.Background.ToOxyColor();
+            if (background.IsInvisible())
+            {
+                background = OxyColors.White;
+            }
+
             var bitmap = PngExporter.ExportToBitmap(
-                this.ActualModel, (int)this.ActualWidth, (int)this.ActualHeight, background.ToOxyColor());
+                this.ActualModel, (int)this.ActualWidth, (int)this.ActualHeight, background);
             Clipboard.SetImage(bitmap);
         }
 
@@ -1059,7 +1067,7 @@ namespace OxyPlot.Wpf
             // Clear the canvas
             this.canvas.Children.Clear();
 
-            if (this.ActualModel != null && !this.ActualModel.Background.IsUndefined())
+            if (this.ActualModel != null && this.ActualModel.Background.IsVisible())
             {
                 this.canvas.Background = this.ActualModel.Background.ToBrush();
             }
