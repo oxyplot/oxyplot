@@ -14,8 +14,9 @@
   </metadata>
   <files>
     <file src="..\..\Output\PCL\OxyPlot.???" target="lib\portable-net4+sl4+wp71+win8+wpa81" />
-	<file src="..\..\Output\NET40\OxyPlot.???" target="lib\net40-client" />
-	<file src="..\..\Output\NET40\OxyPlot.???" target="lib\net40" />
+    <file src="..\..\Output\PCL\OxyPlot.???" target="lib\net45" />
+    <file src="..\..\Output\NET40\OxyPlot.???" target="lib\net40-client" />
+    <file src="..\..\Output\NET40\OxyPlot.???" target="lib\net40" />
     <file src="..\..\LICENSE" />
     <file src="..\..\AUTHORS" />
     <file src="..\..\CONTRIBUTORS" />
