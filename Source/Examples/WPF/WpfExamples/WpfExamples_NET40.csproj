@@ -428,7 +428,7 @@
       <Name>OxyPlot.Xps_NET40</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\OxyPlot\OxyPlot_NET40.csproj">
-      <Project>{52B7EB7-74B8-435F-953C-007B4EF3523F}</Project>
+      <Project>{1C1D9807-BE39-40A4-87DE-3F81E7C651E5}</Project>
       <Name>OxyPlot</Name>
     </ProjectReference>
   </ItemGroup>
