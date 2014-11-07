@@ -14,6 +14,7 @@ namespace OxyPlot.WindowsUniversal
     using System.Linq;
     using System.Threading;
 
+    using Windows.ApplicationModel;
     using Windows.ApplicationModel.DataTransfer;
     using Windows.Devices.Input;
     using Windows.Foundation;
@@ -356,6 +357,12 @@ namespace OxyPlot.WindowsUniversal
         public void InvalidatePlot(bool update = true)
         {
             this.UpdateModel(update);
+
+            if (DesignMode.DesignModeEnabled)
+            {
+                this.InvalidateArrange();
+                return;
+            }
 
             if (Interlocked.CompareExchange(ref this.isPlotInvalidated, 1, 0) == 0)
             {
