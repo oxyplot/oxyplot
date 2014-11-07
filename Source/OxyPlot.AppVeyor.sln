@@ -35,8 +35,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.OpenXml_NET40", "Ox
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleLibrary", "Examples\ExampleLibrary\ExampleLibrary.csproj", "{FACB89E5-53A5-4748-9F5B-E0714EBB37B2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Metro", "OxyPlot.Metro\OxyPlot.Metro.csproj", "{2FA3C4D5-1B43-4191-863C-F940DAA6A1EE}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Silverlight", "OxyPlot.Silverlight\OxyPlot.Silverlight.csproj", "{2EB36333-58C3-47FD-B01F-C1C3FAF1888A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Pdf_SL5", "OxyPlot.Pdf\OxyPlot.Pdf_SL5.csproj", "{10A30E0C-D902-4803-9CCD-8902C41CA244}"
@@ -337,30 +335,6 @@ Global
 		{FACB89E5-53A5-4748-9F5B-E0714EBB37B2}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{FACB89E5-53A5-4748-9F5B-E0714EBB37B2}.Release|x64.ActiveCfg = Release|Any CPU
 		{FACB89E5-53A5-4748-9F5B-E0714EBB37B2}.Release|x86.ActiveCfg = Release|Any CPU
-		{2FA3C4D5-1B43-4191-863C-F940DAA6A1EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2FA3C4D5-1B43-4191-863C-F940DAA6A1EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2FA3C4D5-1B43-4191-863C-F940DAA6A1EE}.Debug|ARM.ActiveCfg = Debug|ARM
-		{2FA3C4D5-1B43-4191-863C-F940DAA6A1EE}.Debug|ARM.Build.0 = Debug|ARM
-		{2FA3C4D5-1B43-4191-863C-F940DAA6A1EE}.Debug|iPhone.ActiveCfg = Debug|Any CPU
-		{2FA3C4D5-1B43-4191-863C-F940DAA6A1EE}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
-		{2FA3C4D5-1B43-4191-863C-F940DAA6A1EE}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{2FA3C4D5-1B43-4191-863C-F940DAA6A1EE}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{2FA3C4D5-1B43-4191-863C-F940DAA6A1EE}.Debug|x64.ActiveCfg = Debug|x64
-		{2FA3C4D5-1B43-4191-863C-F940DAA6A1EE}.Debug|x64.Build.0 = Debug|x64
-		{2FA3C4D5-1B43-4191-863C-F940DAA6A1EE}.Debug|x86.ActiveCfg = Debug|x86
-		{2FA3C4D5-1B43-4191-863C-F940DAA6A1EE}.Debug|x86.Build.0 = Debug|x86
-		{2FA3C4D5-1B43-4191-863C-F940DAA6A1EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2FA3C4D5-1B43-4191-863C-F940DAA6A1EE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2FA3C4D5-1B43-4191-863C-F940DAA6A1EE}.Release|ARM.ActiveCfg = Release|ARM
-		{2FA3C4D5-1B43-4191-863C-F940DAA6A1EE}.Release|ARM.Build.0 = Release|ARM
-		{2FA3C4D5-1B43-4191-863C-F940DAA6A1EE}.Release|iPhone.ActiveCfg = Release|Any CPU
-		{2FA3C4D5-1B43-4191-863C-F940DAA6A1EE}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{2FA3C4D5-1B43-4191-863C-F940DAA6A1EE}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{2FA3C4D5-1B43-4191-863C-F940DAA6A1EE}.Release|Mixed Platforms.Build.0 = Release|x86
-		{2FA3C4D5-1B43-4191-863C-F940DAA6A1EE}.Release|x64.ActiveCfg = Release|x64
-		{2FA3C4D5-1B43-4191-863C-F940DAA6A1EE}.Release|x64.Build.0 = Release|x64
-		{2FA3C4D5-1B43-4191-863C-F940DAA6A1EE}.Release|x86.ActiveCfg = Release|x86
-		{2FA3C4D5-1B43-4191-863C-F940DAA6A1EE}.Release|x86.Build.0 = Release|x86
 		{2EB36333-58C3-47FD-B01F-C1C3FAF1888A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2EB36333-58C3-47FD-B01F-C1C3FAF1888A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2EB36333-58C3-47FD-B01F-C1C3FAF1888A}.Debug|ARM.ActiveCfg = Debug|Any CPU

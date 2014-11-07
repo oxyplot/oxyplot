@@ -6,7 +6,7 @@
     xmlns:local="using:BasicSample"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:oxy="using:OxyPlot.Metro"  
+    xmlns:oxy="using:OxyPlot.WindowsUniversal"
     mc:Ignorable="d">
     <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
         <oxy:PlotView Model="{Binding PlotModel}"/>    

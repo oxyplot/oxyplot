@@ -6,5 +6,5 @@
 
 using System.Reflection;
 
-[assembly: AssemblyTitle("OxyPlot Metro Example Browser")]
-[assembly: AssemblyDescription("OxyPlot example browser")]
+[assembly: AssemblyTitle("OxyPlot Windows Store BasicSample")]
+[assembly: AssemblyDescription("OxyPlot basic Windows Store app sample")]

@@ -105,9 +105,9 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-    <ProjectReference Include="..\..\..\OxyPlot.Metro\OxyPlot.Metro.csproj">
-      <Project>{2fa3c4d5-1b43-4191-863c-f940daa6a1ee}</Project>
-      <Name>OxyPlot.Metro</Name>
+    <ProjectReference Include="..\..\..\OxyPlot.WindowsUniversal\OxyPlot.WindowsUniversal.csproj">
+      <Project>{5b113736-a535-462f-b04e-acf7fe0a65ad}</Project>
+      <Name>OxyPlot.WindowsUniversal</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\OxyPlot\OxyPlot.csproj">
       <Project>{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}</Project>
