@@ -42,7 +42,7 @@ namespace ExportDemo
             canvas.Measure(new Size(width, height));
             canvas.Arrange(new Rect(0, 0, width, height));
 
-            var rc = new SilverlightRenderContext(canvas);
+            var rc = new CanvasRenderContext(canvas);
             model.Update(true);
             model.Render(rc, width, height);
 
