@@ -899,7 +899,7 @@ namespace OxyPlot.Silverlight
             // Clear the canvas
             this.canvas.Children.Clear();
 
-            if (this.ActualModel != null && !this.ActualModel.Background.IsUndefined())
+            if (this.ActualModel != null && !this.ActualModel.Background.IsVisible())
             {
                 this.canvas.Background = this.ActualModel.Background.ToBrush();
             }

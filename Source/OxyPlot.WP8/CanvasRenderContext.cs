@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PhoneRenderContext.cs" company="OxyPlot">
+// <copyright file="CanvasRenderContext.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
@@ -22,7 +22,7 @@ namespace OxyPlot.WP8
     /// <summary>
     /// Implements <see cref="IRenderContext" /> for <see cref="System.Windows.Controls.Canvas" />.
     /// </summary>
-    public class PhoneRenderContext : IRenderContext
+    public class CanvasRenderContext : IRenderContext
     {
         /// <summary>
         /// The brush cache.
@@ -60,10 +60,10 @@ namespace OxyPlot.WP8
         private bool clip;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PhoneRenderContext" /> class.
+        /// Initializes a new instance of the <see cref="CanvasRenderContext" /> class.
         /// </summary>
         /// <param name="canvas">The canvas.</param>
-        public PhoneRenderContext(Canvas canvas)
+        public CanvasRenderContext(Canvas canvas)
         {
             this.canvas = canvas;
             this.Width = canvas.ActualWidth;
