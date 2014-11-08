@@ -78,7 +78,7 @@ namespace OxyPlot.Wpf
             c.Measure(new Size(width, height));
             c.Arrange(new Rect(0, 0, width, height));
 
-            var rc = new ShapesRenderContext(c) { UseStreamGeometry = false };
+            var rc = new CanvasRenderContext(c) { UseStreamGeometry = false };
 #if !NET35
             rc.TextFormattingMode = TextFormattingMode.Ideal;
 #endif
