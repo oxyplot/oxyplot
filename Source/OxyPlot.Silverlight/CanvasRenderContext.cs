@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SilverlightRenderContext.cs" company="OxyPlot">
+// <copyright file="CanvasRenderContext.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
@@ -20,9 +20,9 @@ namespace OxyPlot.Silverlight
     using FontWeights = OxyPlot.FontWeights;
 
     /// <summary>
-    /// Rendering Silverlight shapes to a Canvas
+    /// Implements <see cref="IRenderContext" /> for <see cref="Canvas" />.
     /// </summary>
-    public class SilverlightRenderContext : IRenderContext
+    public class CanvasRenderContext : IRenderContext
     {
         /// <summary>
         /// The brush cache.
@@ -60,10 +60,10 @@ namespace OxyPlot.Silverlight
         private bool clip;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SilverlightRenderContext" /> class.
+        /// Initializes a new instance of the <see cref="CanvasRenderContext" /> class.
         /// </summary>
         /// <param name="canvas">The canvas.</param>
-        public SilverlightRenderContext(Canvas canvas)
+        public CanvasRenderContext(Canvas canvas)
         {
             this.canvas = canvas;
             this.Width = canvas.ActualWidth;

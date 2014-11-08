@@ -73,7 +73,7 @@ namespace ExportDemo
             {
                 using (var s = d.OpenFile())
                 {
-                    var rc = new SilverlightRenderContext(new Canvas());
+                    var rc = new CanvasRenderContext(new Canvas());
                     SvgExporter.Export(this.plot1.ActualModel, s, this.plot1.ActualWidth, this.plot1.ActualHeight, true, rc);
                 }
             }
