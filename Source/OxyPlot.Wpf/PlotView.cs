@@ -31,7 +31,7 @@ namespace OxyPlot.Wpf
     /// </summary>
     [ContentProperty("Series")]
     [TemplatePart(Name = PartGrid, Type = typeof(Grid))]
-    public partial class PlotView : RenderingControl, IPlotView
+    public partial class PlotView : Control, IPlotView
     {
         /// <summary>
         /// The Grid PART constant.
@@ -180,18 +180,7 @@ namespace OxyPlot.Wpf
 
             set
             {
-                if (value != this.isRendering)
-                {
-                    this.isRendering = value;
-                    if (this.isRendering)
-                    {
-                        this.SubscribeToRenderingEvent();
-                    }
-                    else
-                    {
-                        this.UnsubscribeRenderingEvent();
-                    }
-                }
+                this.isRendering = value;
             }
         }
 
