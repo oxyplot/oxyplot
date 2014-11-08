@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ShapesRenderContext.cs" company="OxyPlot">
+// <copyright file="CanvasRenderContext.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
-//   The text measurement methods.
+//   Implements <see cref="IRenderContext" /> for <see cref="System.Windows.Controls.Canvas" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -25,25 +25,9 @@ namespace OxyPlot.Wpf
     using VerticalAlignment = OxyPlot.VerticalAlignment;
 
     /// <summary>
-    /// The text measurement methods.
+    /// Implements <see cref="IRenderContext" /> for <see cref="System.Windows.Controls.Canvas" />.
     /// </summary>
-    public enum TextMeasurementMethod
-    {
-        /// <summary>
-        /// Measurement by TextBlock.
-        /// </summary>
-        TextBlock,
-
-        /// <summary>
-        /// Measurement by glyph typeface.
-        /// </summary>
-        GlyphTypeface
-    }
-
-    /// <summary>
-    /// Provides a <see cref="IRenderContext" /> implementation that adds WPF shapes to a <see cref="Canvas" />.
-    /// </summary>
-    public class ShapesRenderContext : IRenderContext
+    public class CanvasRenderContext : IRenderContext
     {
         /// <summary>
         /// The maximum number of figures per geometry.
@@ -101,10 +85,10 @@ namespace OxyPlot.Wpf
         private double pixelScale;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ShapesRenderContext" /> class.
+        /// Initializes a new instance of the <see cref="CanvasRenderContext" /> class.
         /// </summary>
         /// <param name="canvas">The canvas.</param>
-        public ShapesRenderContext(Canvas canvas)
+        public CanvasRenderContext(Canvas canvas)
         {
             this.canvas = canvas;
 #if !NET35

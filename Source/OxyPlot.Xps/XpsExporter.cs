@@ -152,7 +152,7 @@ namespace OxyPlot.Xps
             canvas.Measure(new Size(this.Width, this.Height));
             canvas.Arrange(new Rect(0, 0, this.Width, this.Height));
 
-            var rc = new ShapesRenderContext(canvas);
+            var rc = new CanvasRenderContext(canvas);
 #if !NET35
             rc.TextFormattingMode = this.TextFormattingMode;
 #endif

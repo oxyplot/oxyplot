@@ -94,6 +94,7 @@
     <Compile Include="Series\BarSeries\BarSeriesBase.cs" />
     <Compile Include="Series\BarSeries\BarSeriesBase{T}.cs" />
     <Compile Include="SvgExporter.cs" />
+    <Compile Include="TextMeasurementMethod.cs" />
     <Compile Include="Utilities\Keyboard.cs" />
     <Compile Include="XamlExporter.cs" />
     <Compile Include="PngExporter.cs" />
@@ -106,15 +107,12 @@
     <Compile Include="Tracker\TrackerControl.cs" />
     <Compile Include="Tracker\TrackerDefinition.cs" />
     <None Include="OxyPlot.Wpf.snk" />
-    <None Include="RenderContexts\GeometryRenderContext.cs" />
-    <None Include="RenderContexts\DrawingRenderContext.cs" />
-    <None Include="PlotFrame.cs" />
     <Compile Include="Series\AreaSeries.cs" />
     <Compile Include="Series\LineSeries.cs" />
     <Compile Include="Plot.cs" />
     <Compile Include="Series\DataPointSeries.cs" />
     <Compile Include="Utilities\ConverterExtensions.cs" />
-    <Compile Include="RenderContexts\ShapesRenderContext.cs" />
+    <Compile Include="CanvasRenderContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
