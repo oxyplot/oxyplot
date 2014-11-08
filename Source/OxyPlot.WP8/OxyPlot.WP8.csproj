@@ -89,7 +89,8 @@
     </Compile>
     <Compile Include="Converters\OxyColorConverter.cs" />
     <Compile Include="Converters\ThicknessConverter.cs" />
-    <Compile Include="PhoneRenderContext.cs" />
+    <Compile Include="CanvasRenderContext.cs" />
+    <Compile Include="NamespaceDoc.cs" />
     <Compile Include="Plot.cs" />
     <Compile Include="PlotView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
