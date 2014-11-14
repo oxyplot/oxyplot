@@ -532,7 +532,8 @@ namespace OxyPlot.WindowsUniversal
 
 #if WPF
             ScreenPoint pos = this.Position;
-#else
+#endif
+#if SILVERLIGHT || NETFX_CORE
             Point pos = this.Position.ToPoint(true);
 #endif
 
