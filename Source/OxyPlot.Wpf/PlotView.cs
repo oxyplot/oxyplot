@@ -31,7 +31,7 @@ namespace OxyPlot.Wpf
     /// </summary>
     [ContentProperty("Series")]
     [TemplatePart(Name = PartGrid, Type = typeof(Grid))]
-    public partial class PlotView : RenderingControl, IPlotView
+    public partial class PlotView : Control, IPlotView
     {
         /// <summary>
         /// The Grid PART constant.
@@ -106,7 +106,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// The render context
         /// </summary>
-        private ShapesRenderContext renderContext;
+        private CanvasRenderContext renderContext;
 
         /// <summary>
         /// The zoom control.
@@ -180,18 +180,7 @@ namespace OxyPlot.Wpf
 
             set
             {
-                if (value != this.isRendering)
-                {
-                    this.isRendering = value;
-                    if (this.isRendering)
-                    {
-                        this.SubscribeToRenderingEvent();
-                    }
-                    else
-                    {
-                        this.UnsubscribeRenderingEvent();
-                    }
-                }
+                this.isRendering = value;
             }
         }
 
@@ -419,7 +408,7 @@ namespace OxyPlot.Wpf
             this.canvas = new Canvas();
             this.grid.Children.Add(this.canvas);
             this.canvas.UpdateLayout();
-            this.renderContext = new ShapesRenderContext(this.canvas);
+            this.renderContext = new CanvasRenderContext(this.canvas);
 
             this.overlays = new Canvas();
             this.grid.Children.Add(this.overlays);

@@ -131,7 +131,7 @@ namespace OxyPlot.Wpf
             canvas.Measure(new Size(canvas.Width, canvas.Height));
             canvas.Arrange(new Rect(0, 0, canvas.Width, canvas.Height));
 
-            var rc = new ShapesRenderContext(canvas) { RendersToScreen = false };
+            var rc = new CanvasRenderContext(canvas) { RendersToScreen = false };
 #if !NET35
             rc.TextFormattingMode = TextFormattingMode.Ideal;
 #endif

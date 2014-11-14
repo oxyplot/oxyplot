@@ -86,7 +86,7 @@ namespace OxyPlot.Wpf
         {
             base.OnApplyTemplate();
             this.canvas = this.GetTemplateChild(PartCanvas) as Canvas;
-            this.renderContext = new ShapesRenderContext(this.canvas);
+            this.renderContext = new CanvasRenderContext(this.canvas);
             this.SizeChanged += this.HandleSizeChanged;
         }
 

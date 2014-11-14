@@ -76,7 +76,7 @@
     <Compile Include="Utilities\MouseButtonHelper.cs" />
     <Compile Include="Plot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SilverlightRenderContext.cs" />
+    <Compile Include="CanvasRenderContext.cs" />
     <Compile Include="Tracker\TrackerControl.cs" />
     <Compile Include="Tracker\TrackerDefinition.cs" />
   </ItemGroup>
