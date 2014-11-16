@@ -7,16 +7,16 @@
             <oxy:PlotView Model="{Binding MyModel}"/>
         </TabItem>
         <TabItem Header="Defined in XAML">
-            <oxy:PlotView Title="Polar Plot" Subtitle="Archimedean spiral with equation r(θ) = θ for 0 &lt; θ &lt; 6π" PlotType="Polar" PlotMargins="20,20,4,40" PlotAreaBorderThickness="0">
-                <oxy:PlotView.Axes>
+            <oxy:Plot Title="Polar Plot" Subtitle="Archimedean spiral with equation r(θ) = θ for 0 &lt; θ &lt; 6π" PlotType="Polar" PlotMargins="20,20,4,40" PlotAreaBorderThickness="0">
+                <oxy:Plot.Axes>
                     <oxy:MagnitudeAxis/>
                     <oxy:AngleAxis Minimum="0" Maximum="{Binding MaxAngle}" MajorStep="{Binding MajorStep}" MinorStep="{Binding MinorStep}" 
                                    FormatAsFractions = "true" FractionUnit = "{Binding PI}" FractionUnitSymbol = "π"/>
-                </oxy:PlotView.Axes>
-                <oxy:PlotView.Series>
+                </oxy:Plot.Axes>
+                <oxy:Plot.Series>
                     <oxy:LineSeries ItemsSource="{Binding SpiralPoints}"/>
-                </oxy:PlotView.Series>
-            </oxy:PlotView>
+                </oxy:Plot.Series>
+            </oxy:Plot>
         </TabItem>
     </TabControl>
 </Window>

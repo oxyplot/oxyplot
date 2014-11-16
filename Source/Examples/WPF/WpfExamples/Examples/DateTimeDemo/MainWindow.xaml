@@ -6,38 +6,38 @@
             <oxy:PlotView Model="{Binding ExampleModel}"/>
         </TabItem>
         <TabItem Header="DateTime (XAML)">
-            <oxy:PlotView Title="DateTime axis (XAML binding)">
-                <oxy:PlotView.Axes>
+            <oxy:Plot Title="DateTime axis (XAML binding)">
+                <oxy:Plot.Axes>
                     <oxy:DateTimeAxis Position="Bottom" StringFormat="yyyy-MM-dd"/>
-                </oxy:PlotView.Axes>
-                <oxy:PlotView.Series>
+                </oxy:Plot.Axes>
+                <oxy:Plot.Series>
                     <oxy:LineSeries ItemsSource="{Binding Data}" DataFieldX="Date" DataFieldY="Value" StrokeThickness="1" MarkerSize="3" MarkerType="Plus" TrackerFormatString="Time: {2:yyyy-MM-dd HH:mm:ss}&#x0a;Value: {4}"/>
-                </oxy:PlotView.Series>
-            </oxy:PlotView>
+                </oxy:Plot.Series>
+            </oxy:Plot>
         </TabItem>
         <TabItem Header="TimeSpan (PlotModel)">
             <oxy:PlotView Model="{Binding ExampleModel2}"/>
         </TabItem>
         <TabItem Header="TimeSpan (XAML)">
-            <oxy:PlotView Title="TimeSpan axis (XAML binding)">
-                <oxy:PlotView.Axes>
+            <oxy:Plot Title="TimeSpan axis (XAML binding)">
+                <oxy:Plot.Axes>
                     <oxy:TimeSpanAxis Position="Bottom" StringFormat="h:mm"/>
-                </oxy:PlotView.Axes>
-                <oxy:PlotView.Series>
+                </oxy:Plot.Axes>
+                <oxy:Plot.Series>
                     <oxy:LineSeries ItemsSource="{Binding Data2}" DataFieldX="Time" DataFieldY="Value" StrokeThickness="1" MarkerSize="3" MarkerType="Plus"/>
-                </oxy:PlotView.Series>
-            </oxy:PlotView>
+                </oxy:Plot.Series>
+            </oxy:Plot>
         </TabItem>
         <TabItem Header="Sun">
-            <oxy:PlotView Title="Sunrise and sunset in Oslo">
-                <oxy:PlotView.Axes>
+            <oxy:Plot Title="Sunrise and sunset in Oslo">
+                <oxy:Plot.Axes>
                     <oxy:DateTimeAxis Position="Bottom" IntervalType="Months" StringFormat="MMM" MajorGridlineStyle="Solid"/>
                     <oxy:TimeSpanAxis Position="Left" StringFormat="h:mm" Minimum="0" Maximum="86400" MajorGridlineStyle="Solid"/>
-                </oxy:PlotView.Axes>
-                <oxy:PlotView.Series>
+                </oxy:Plot.Axes>
+                <oxy:Plot.Series>
                     <oxy:AreaSeries ItemsSource="{Binding SunData}" DataFieldX="Day" DataFieldY="Sunrise" DataFieldX2="Day" DataFieldY2="Sunset" StrokeThickness="2" MarkerType="None" Color="Black" Fill="#80FFFF00"/>
-                </oxy:PlotView.Series>
-            </oxy:PlotView>
+                </oxy:Plot.Series>
+            </oxy:Plot>
         </TabItem>
     </TabControl>
 </Window>
