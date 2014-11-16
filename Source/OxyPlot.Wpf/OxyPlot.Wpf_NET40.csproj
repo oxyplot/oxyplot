@@ -81,10 +81,13 @@
     <Compile Include="CanvasRenderContext.cs" />
     <Compile Include="Converters\ThicknessConverter.cs" />
     <Compile Include="Converters\OxyColorConverter.cs" />
+    <Compile Include="Plot.Properties.cs" />
+    <Compile Include="PlotBase.cs" />
+    <Compile Include="PlotBase.Events.cs" />
+    <Compile Include="PlotBase.Export.cs" />
+    <Compile Include="PlotBase.Properties.cs" />
     <Compile Include="PlotCommands.cs" />
     <Compile Include="PlotView.cs" />
-    <Compile Include="PlotView.Properties.cs" />
-    <Compile Include="PlotView.TouchEvents.cs" />
     <Compile Include="Series\HeatMapSeries.cs" />
     <Compile Include="Series\ScatterSeries{T}.cs" />
     <Compile Include="Series\StairStepSeries.cs" />
