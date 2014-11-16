@@ -26,12 +26,6 @@ namespace OxyPlot.Wpf
                 "DefaultTrackerTemplate", typeof(ControlTemplate), typeof(PlotBase), new PropertyMetadata(null));
 
         /// <summary>
-        /// Identifies the <see cref="HandleRightClicks"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty HandleRightClicksProperty =
-            DependencyProperty.Register("HandleRightClicks", typeof(bool), typeof(PlotBase), new PropertyMetadata(true));
-
-        /// <summary>
         /// Identifies the <see cref="IsMouseWheelEnabled"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsMouseWheelEnabledProperty =
@@ -84,22 +78,6 @@ namespace OxyPlot.Wpf
             set
             {
                 this.SetValue(DefaultTrackerTemplateProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether to handle right clicks.
-        /// </summary>
-        public bool HandleRightClicks
-        {
-            get
-            {
-                return (bool)this.GetValue(HandleRightClicksProperty);
-            }
-
-            set
-            {
-                this.SetValue(HandleRightClicksProperty, value);
             }
         }
 
