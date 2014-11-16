@@ -1442,7 +1442,7 @@ namespace OxyPlot.Wpf
                 var fpm = e.Property.GetMetadata(e.Property.OwnerType) as FrameworkPropertyMetadata;
                 if (fpm != null && fpm.AffectsRender)
                 {
-                    var plot = this.Parent as PlotView;
+                    var plot = this.Parent as IPlotView;
                     if (plot != null)
                     {
                         plot.InvalidatePlot();
