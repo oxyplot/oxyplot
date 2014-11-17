@@ -72,7 +72,7 @@
     <None Include="OxyPlot.WindowsForms.snk" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OxyPlot\OxyPlot.csproj">
+    <ProjectReference Include="..\OxyPlot\OxyPlot_NET40.csproj">
       <Project>{7a0b35c0-dd17-4964-8e9a-44d6cecdc692}</Project>
       <Name>OxyPlot</Name>
     </ProjectReference>
