@@ -79,10 +79,12 @@
     <Compile Include="Axes\LogarithmicAxis.cs" />
     <Compile Include="Converters\ThicknessConverter.cs" />
     <Compile Include="Converters\OxyColorConverter.cs" />
+    <Compile Include="PlotBase.cs" />
+    <Compile Include="PlotBase.Events.cs" />
+    <Compile Include="PlotBase.Export.cs" />
     <Compile Include="PlotCommands.cs" />
     <Compile Include="PlotView.cs" />
-    <Compile Include="PlotView.Properties.cs" />
-    <Compile Include="PlotView.TouchEvents.cs" />
+    <Compile Include="Plot.Properties.cs" />
     <Compile Include="Series\HeatMapSeries.cs" />
     <Compile Include="Series\ScatterSeries{T}.cs" />
     <Compile Include="Series\StairStepSeries.cs" />
@@ -132,6 +134,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Compile Include="PlotBase.Properties.cs" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

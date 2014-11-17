@@ -9,8 +9,8 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Slider Maximum="1.0" Minimum="0" x:Name="Slider" Value="0.5"/>
-        <oxy:PlotView Grid.Row="1">
-            <oxy:PlotView.Axes>
+        <oxy:Plot Grid.Row="1">
+            <oxy:Plot.Axes>
                 <oxy:LinearAxis Key="x" Position="Bottom"/>
                 <oxy:LinearAxis Key="y" Position="Left" />
                 <oxy:LinearColorAxis Key="z" Position="Top" LowColor="White" HighColor="Red" PaletteSize="100">
@@ -18,10 +18,10 @@
                     <GradientStop Color="Red" Offset="{Binding ElementName=Slider, Path=Value}" />
                     <GradientStop Color="Black" Offset="1.0" />
                 </oxy:LinearColorAxis>
-            </oxy:PlotView.Axes>
-            <oxy:PlotView.Series>
+            </oxy:Plot.Axes>
+            <oxy:Plot.Series>
                 <oxy:HeatMapSeries ColorAxisKey="Z" Data="{Binding Data}" X0="-1" X1="1" Y0="-1" Y1="1"/>
-            </oxy:PlotView.Series>
-        </oxy:PlotView>
+            </oxy:Plot.Series>
+        </oxy:Plot>
     </Grid>
 </Window>

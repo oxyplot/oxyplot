@@ -4,6 +4,6 @@
         xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf" xmlns:TaskDemo="clr-namespace:TaskDemo"
         Title="TaskDemo" Height="480" Width="640">
     <Grid>
-        <oxy:PlotView Title="TaskDemo" Model="{Binding PlotModel}"/>
+        <oxy:PlotView Model="{Binding PlotModel}"/>
     </Grid>
 </Window>
