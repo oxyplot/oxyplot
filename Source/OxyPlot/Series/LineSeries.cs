@@ -351,7 +351,7 @@ namespace OxyPlot.Series
         public override void Render(IRenderContext rc, PlotModel model)
         {
             var actualPoints = this.ActualPoints;
-            if (actualPoints.Count == 0)
+            if (actualPoints == null || actualPoints.Count == 0)
             {
                 return;
             }
