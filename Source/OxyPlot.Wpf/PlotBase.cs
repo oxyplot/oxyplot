@@ -16,6 +16,7 @@ namespace OxyPlot.Wpf
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
+    using System.Windows.Media;
 
     using CursorType = OxyPlot.CursorType;
 
@@ -75,6 +76,16 @@ namespace OxyPlot.Wpf
         private ContentControl zoomControl;
 
         /// <summary>
+        /// The is visible to user cache.
+        /// </summary>
+        private bool isVisibleToUserCache;
+
+        /// <summary>
+        /// The cached parent.
+        /// </summary>
+        private FrameworkElement containerCache;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="PlotBase" /> class.
         /// </summary>
         protected PlotBase()
@@ -82,6 +93,7 @@ namespace OxyPlot.Wpf
             this.DisconnectCanvasWhileUpdating = true;
             this.trackerDefinitions = new ObservableCollection<TrackerDefinition>();
             this.Loaded += this.OnLoaded;
+            this.LayoutUpdated += this.OnLayoutUpdated;
             this.SizeChanged += this.OnSizeChanged;
 
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Copy, this.DoCopy));
@@ -394,6 +406,52 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
+        /// Determines whether the plot is currently visible to the user.
+        /// </summary>
+        /// <returns><c>true</c> if the plot is currently visible to the user; otherwise, <c>false</c>.</returns>
+        protected bool IsVisibleToUser()
+        {
+            var container = this.containerCache;
+            if (container == null)
+            {
+                container = this.GetRelevantParent<FrameworkElement>(this);
+                if (container != null)
+                {
+                    this.containerCache = container;
+                }
+            }
+
+            if (container != null)
+            {
+                var visible = this.IsUserVisible(this, container);
+                if (!visible)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Determines whether the specified element is currently visible to the user.
+        /// </summary>
+        /// <param name="element">The element.</param>
+        /// <param name="container">The container.</param>
+        /// <returns><c>true</c> if if the specified element is currently visible to the user; otherwise, <c>false</c>.</returns>
+        private bool IsUserVisible(FrameworkElement element, FrameworkElement container)
+        {
+            if (!element.IsVisible)
+            {
+                return false;
+            }
+
+            var bounds = element.TransformToAncestor(container).TransformBounds(new Rect(0.0, 0.0, element.ActualWidth, element.ActualHeight));
+            var rect = new Rect(0.0, 0.0, container.ActualWidth, container.ActualHeight);
+            return rect.Contains(bounds.TopLeft) || rect.Contains(bounds.BottomRight);
+        }
+
+        /// <summary>
         /// Performs the copy operation.
         /// </summary>
         /// <param name="sender">The sender.</param>
@@ -424,6 +482,24 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
+        /// Called when the layout is updated.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        private void OnLayoutUpdated(object sender, EventArgs e)
+        {
+            var oldValue = this.isVisibleToUserCache;
+            var newValue = this.IsVisibleToUser();
+
+            if (oldValue != newValue)
+            {
+                this.isVisibleToUserCache = newValue;
+                Interlocked.Exchange(ref this.isPlotInvalidated, 1);
+                this.InvalidateVisual();
+            }
+        }
+
+        /// <summary>
         /// Called when the size of the control is changed.
         /// </summary>
         /// <param name="sender">The sender.</param>
@@ -437,14 +513,47 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Updates the visuals.
+        /// Gets the relevant parent.
         /// </summary>
+        /// <typeparam name="T">Type of the relevant parent</typeparam>
+        /// <param name="obj">The object.</param>
+        /// <returns>The relevant parent.</returns>
+        private FrameworkElement GetRelevantParent<T>(DependencyObject obj)
+            where T : FrameworkElement
+        {
+            var container = VisualTreeHelper.GetParent(obj) as FrameworkElement;
+
+            var contentPresenter = container as ContentPresenter;
+            if (contentPresenter != null)
+            {
+                container = this.GetRelevantParent<T>(contentPresenter);
+            }
+
+            var panel = container as Panel;
+            if (panel != null)
+            {
+                container = this.GetRelevantParent<ScrollViewer>(panel);
+            }
+
+            if (!(container is T) && (container != null))
+            {
+                container = this.GetRelevantParent<T>(container);
+            }
+
+            return container;
+        }
+
         /// <summary>
         /// Updates the visuals.
         /// </summary>
         private void UpdateVisuals()
         {
             if (this.canvas == null || this.renderContext == null)
+            {
+                return;
+            }
+
+            if (!this.isVisibleToUserCache)
             {
                 return;
             }
