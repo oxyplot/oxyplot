@@ -406,6 +406,52 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
+        /// Determines whether the plot is currently visible to the user.
+        /// </summary>
+        /// <returns><c>true</c> if the plot is currently visible to the user; otherwise, <c>false</c>.</returns>
+        protected bool IsVisibleToUser()
+        {
+            var container = this.containerCache;
+            if (container == null)
+            {
+                container = this.GetRelevantParent<FrameworkElement>(this);
+                if (container != null)
+                {
+                    this.containerCache = container;
+                }
+            }
+
+            if (container != null)
+            {
+                var visible = this.IsUserVisible(this, container);
+                if (!visible)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Determines whether the specified element is currently visible to the user.
+        /// </summary>
+        /// <param name="element">The element.</param>
+        /// <param name="container">The container.</param>
+        /// <returns><c>true</c> if if the specified element is currently visible to the user; otherwise, <c>false</c>.</returns>
+        private bool IsUserVisible(FrameworkElement element, FrameworkElement container)
+        {
+            if (!element.IsVisible)
+            {
+                return false;
+            }
+
+            var bounds = element.TransformToAncestor(container).TransformBounds(new Rect(0.0, 0.0, element.ActualWidth, element.ActualHeight));
+            var rect = new Rect(0.0, 0.0, container.ActualWidth, container.ActualHeight);
+            return rect.Contains(bounds.TopLeft) || rect.Contains(bounds.BottomRight);
+        }
+
+        /// <summary>
         /// Performs the copy operation.
         /// </summary>
         /// <param name="sender">The sender.</param>
@@ -495,52 +541,6 @@ namespace OxyPlot.Wpf
             }
 
             return container;
-        }
-
-        /// <summary>
-        /// Determines whether the specified element is currently visible to the user.
-        /// </summary>
-        /// <param name="element">The element.</param>
-        /// <param name="container">The container.</param>
-        /// <returns><c>true</c> if if the specified element is currently visible to the user; otherwise, <c>false</c>.</returns>
-        private bool IsUserVisible(FrameworkElement element, FrameworkElement container)
-        {
-            if (!element.IsVisible)
-            {
-                return false;
-            }
-
-            var bounds = element.TransformToAncestor(container).TransformBounds(new Rect(0.0, 0.0, element.ActualWidth, element.ActualHeight));
-            var rect = new Rect(0.0, 0.0, container.ActualWidth, container.ActualHeight);
-            return rect.Contains(bounds.TopLeft) || rect.Contains(bounds.BottomRight);
-        }
-
-        /// <summary>
-        /// Determines whether the plot is currently visible to the user.
-        /// </summary>
-        /// <returns><c>true</c> if the plot is currently visible to the user; otherwise, <c>false</c>.</returns>
-        protected bool IsVisibleToUser()
-        {
-            var container = this.containerCache;
-            if (container == null)
-            {
-                container = this.GetRelevantParent<FrameworkElement>(this);
-                if (container != null)
-                {
-                    this.containerCache = container;
-                }
-            }
-
-            if (container != null)
-            {
-                var visible = this.IsUserVisible(this, container);
-                if (!visible)
-                {
-                    return false;
-                }
-            }
-
-            return true;
         }
 
         /// <summary>
