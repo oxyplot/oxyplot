@@ -67,6 +67,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="BitmapTools.cs" />
+    <Compile Include="Examples\PerformanceDemo\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Examples\ScatterErrorSeriesDemo\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -83,6 +86,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Examples\AxesDemo\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\PerformanceDemo\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -356,6 +363,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Images\PerformanceDemo.png" />
     <Resource Include="Images\ScatterErrorSeriesDemo.png" />
     <Resource Include="Images\ResizeDemo.png" />
     <None Include="ReadMe.txt" />
