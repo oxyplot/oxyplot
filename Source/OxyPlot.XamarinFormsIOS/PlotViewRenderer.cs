@@ -60,6 +60,7 @@ namespace OxyPlot.XamarinFormsIOS
             if (e.PropertyName == XamarinForms.PlotView.ModelProperty.PropertyName)
             {
                 this.Control.Model = Element.Model;
+                this.Control.SetNeedsLayout();
             }
 
             if (e.PropertyName == XamarinForms.PlotView.ControllerProperty.PropertyName)
