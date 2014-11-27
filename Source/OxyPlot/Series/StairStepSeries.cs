@@ -150,7 +150,7 @@ namespace OxyPlot.Series
                         Position = new ScreenPoint(sx, sy),
                         Item = item,
                         Index = i,
-                        Text = this.Format(this.TrackerFormatString, item, this.Title, this.XAxis.Title ?? DefaultXAxisTitle, px, this.YAxis.Title ?? DefaultYAxisTitle, py)
+                        Text = this.Format(this.TrackerFormatString, item, this.Title, this.XAxis.Title ?? DefaultXAxisTitle, this.XAxis.GetValue(px), this.YAxis.Title ?? DefaultYAxisTitle, this.YAxis.GetValue(py))
                     };
                     minimumDistanceSquared = distanceSquared;
                 }
