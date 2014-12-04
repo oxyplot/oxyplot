@@ -748,6 +748,25 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
+        [Example("Wrong label placement for category axis when Angle = 45")]
+        public static PlotModel LabelPlacementCategoryAxisWhenAxisAngleIs45()
+        {
+            var plotModel1 = new PlotModel { Title = "Wrong label placement for category axis when Angle = 45", Subtitle = "The labels should not be clipped" };
+            var categoryAxis = new CategoryAxis() { Position = AxisPosition.Bottom, Angle = 45 };
+            categoryAxis.Labels.Add("Very looooong and big label");
+            categoryAxis.Labels.Add("Very looooong and big label");
+            categoryAxis.Labels.Add("Very looooong and big label");
+            categoryAxis.Labels.Add("Very looooong and big label");
+            plotModel1.Axes.Add(categoryAxis);
+            var columnSeries = new ColumnSeries();
+            columnSeries.Items.Add(new ColumnItem(5));
+            columnSeries.Items.Add(new ColumnItem(3));
+            columnSeries.Items.Add(new ColumnItem(7));
+            columnSeries.Items.Add(new ColumnItem(2));
+            plotModel1.Series.Add(columnSeries);
+            return plotModel1;
+        }
+
         [Example("#180: Two vertical axes on the same position")]
         public static PlotModel TwoVerticalAxisOnTheSamePosition()
         {
