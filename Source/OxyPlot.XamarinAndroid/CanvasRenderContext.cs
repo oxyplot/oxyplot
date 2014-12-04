@@ -336,8 +336,9 @@ namespace OxyPlot.XamarinAndroid
         /// <param name="fontFamily">The font family.</param>
         /// <param name="fontSize">Size of the font.</param>
         /// <param name="fontWeight">The font weight.</param>
+        /// <param name="angle">The text angle.</param>
         /// <returns>The text size.</returns>
-        public override OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
+        public override OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight, double angle = 0)
         {
             if (string.IsNullOrEmpty(text))
             {
@@ -351,7 +352,7 @@ namespace OxyPlot.XamarinAndroid
                 float lineHeight, delta;
                 this.GetFontMetrics(this.paint, out lineHeight, out delta);
                 this.paint.GetTextBounds(text, 0, text.Length, this.bounds);
-                return new OxySize(this.bounds.Width() / this.Scale, lineHeight / this.Scale);
+                return MeasureRotatedRectangleBound(angle, this.bounds.Width() / this.Scale, lineHeight / this.Scale);
             }
         }
 

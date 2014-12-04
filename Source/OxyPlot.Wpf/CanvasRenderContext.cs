@@ -595,10 +595,11 @@ namespace OxyPlot.Wpf
         /// <param name="fontFamily">The font family.</param>
         /// <param name="fontSize">Size of the font (in device independent units, 1/96 inch).</param>
         /// <param name="fontWeight">The font weight.</param>
+        /// <param name="angle">The text angle.</param>
         /// <returns>
         /// The size of the text (in device independent units, 1/96 inch).
         /// </returns>
-        public OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
+        public OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight, double angle = 0)
         {
             if (string.IsNullOrEmpty(text))
             {
@@ -629,6 +630,11 @@ namespace OxyPlot.Wpf
             if (fontWeight > 0)
             {
                 tb.FontWeight = GetFontWeight(fontWeight);
+            }
+
+            if (angle != 0)
+            {
+                tb.LayoutTransform = new RotateTransform(angle);
             }
 
             tb.Measure(new Size(1000, 1000));

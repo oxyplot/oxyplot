@@ -153,12 +153,13 @@ namespace OxyPlot
         /// <param name="fontFamily">The font family.</param>
         /// <param name="fontSize">Size of the font.</param>
         /// <param name="fontWeight">The font weight.</param>
+        /// <param name="angle">The text angle.</param>
         /// <returns>
         /// The text size.
         /// </returns>
-        public override OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
+        public override OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight, double angle = 0)
         {
-            return this.rc.MeasureText(text, this.GetFontFamily(fontFamily), fontSize, fontWeight);
+            return this.rc.MeasureText(text, this.GetFontFamily(fontFamily), fontSize, fontWeight, angle);
         }
 
         /// <summary>

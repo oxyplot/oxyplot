@@ -194,10 +194,11 @@ namespace PerformanceTest
         /// <param name="fontFamily">The font family.</param>
         /// <param name="fontSize">Size of the font (in device independent units, 1/96 inch).</param>
         /// <param name="fontWeight">The font weight.</param>
+        /// <param name="angle">The text angle.</param>
         /// <returns>
         /// The size of the text (in device independent units, 1/96 inch).
         /// </returns>
-        public OxySize MeasureText(string text, string fontFamily = null, double fontSize = 10, double fontWeight = 500)
+        public OxySize MeasureText(string text, string fontFamily = null, double fontSize = 10, double fontWeight = 500, double angle = 0)
         {
             return OxySize.Empty;
         }

@@ -373,10 +373,11 @@ namespace OxyPlot.XamarinIOS
         /// <param name="fontFamily">The font family.</param>
         /// <param name="fontSize">Size of the font.</param>
         /// <param name="fontWeight">The font weight.</param>
+        /// <param name="angle">The text angle.</param>
         /// <returns>
         /// The size of the text.
         /// </returns>
-        public override OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
+        public override OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight, double angle = 0)
         {
             if (string.IsNullOrEmpty(text) || fontFamily == null)
             {
@@ -393,7 +394,7 @@ namespace OxyPlot.XamarinIOS
                     this.GetFontMetrics(font, out lineHeight, out delta);
                     this.gctx.TextPosition = new PointF(0, 0);
                     var bounds = textLine.GetImageBounds(this.gctx);
-                    return new OxySize(bounds.Left + bounds.Width, lineHeight);
+                    return MeasureRotatedRectangleBound(angle, bounds.Left + bounds.Width, lineHeight);
                 }
             }
         }

@@ -323,8 +323,9 @@ namespace OxyPlot.WindowsForms
         /// <param name="fontFamily">The font family.</param>
         /// <param name="fontSize">Size of the font.</param>
         /// <param name="fontWeight">The font weight.</param>
+        /// <param name="angle">The text angle </param>
         /// <returns>The text size.</returns>
-        public override OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
+        public override OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight, double angle = 0)
         {
             if (text == null)
             {
@@ -337,7 +338,8 @@ namespace OxyPlot.WindowsForms
                 this.stringFormat.Alignment = StringAlignment.Near;
                 this.stringFormat.LineAlignment = StringAlignment.Near;
                 var size = this.g.MeasureString(text, font, int.MaxValue, this.stringFormat);
-                return new OxySize(size.Width, size.Height);
+
+                return new MeasureRotatedRectangleBound(angle, size.Width, size.Height);
             }
         }
 

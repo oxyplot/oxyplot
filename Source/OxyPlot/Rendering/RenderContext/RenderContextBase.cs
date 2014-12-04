@@ -207,8 +207,9 @@ namespace OxyPlot
         /// <param name="fontFamily">The font family.</param>
         /// <param name="fontSize">Size of the font.</param>
         /// <param name="fontWeight">The font weight.</param>
+        /// <param name="angle">The text angle.</param>
         /// <returns>The text size.</returns>
-        public abstract OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight);
+        public abstract OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight, double angle = 0);
 
         /// <summary>
         /// Sets the tool tip for the following items.
@@ -270,6 +271,23 @@ namespace OxyPlot
         /// </summary>
         public virtual void ResetClip()
         {
+        }
+
+        /// <summary>
+        /// Turns the rectangle clockwise by given angle and computes new rectangle bound over it.
+        /// </summary>
+        /// <param name="angle">Angle measured in degrees.</param>
+        /// <param name="width">The rectangle width.</param>
+        /// <param name="height">The rectangle height.</param>
+        /// <returns>The size of a bound over rotated rectangle.</returns>
+        protected OxySize MeasureRotatedRectangleBound(double angle, double width, double height)
+        {
+            angle = angle * Math.PI / 180.0;
+
+            double x = Math.Cos(angle) * width + Math.Sin(angle) * height;
+            double y = Math.Sin(angle) * width + Math.Cos(angle) * height;
+
+            return new OxySize(Math.Abs(x), Math.Abs(y));
         }
 
         /// <summary>
