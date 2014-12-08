@@ -215,6 +215,9 @@ namespace OxyPlot.Axes
                 return;
             }
 
+            var oldMinimum = this.ViewMinimum;
+            var oldMaximum = this.ViewMaximum;
+
             double dx = x0 / x1;
 
             double newMinimum = this.ActualMinimum * dx;
@@ -234,7 +237,10 @@ namespace OxyPlot.Axes
             this.ViewMinimum = newMinimum;
             this.ViewMaximum = newMaximum;
 
-            this.OnAxisChanged(new AxisChangedEventArgs(AxisChangeTypes.Pan));
+            var deltaMinimum = newMinimum - oldMinimum;
+            var deltaMaximum = newMaximum - oldMaximum;
+
+            this.OnAxisChanged(new AxisChangedEventArgs(AxisChangeTypes.Pan, deltaMinimum, deltaMaximum));
         }
 
         /// <summary>
@@ -276,17 +282,26 @@ namespace OxyPlot.Axes
                 return;
             }
 
+            var oldMinimum = this.ViewMinimum;
+            var oldMaximum = this.ViewMaximum;
+
             double px = this.PreTransform(x);
             double dx0 = this.PreTransform(this.ActualMinimum) - px;
             double dx1 = this.PreTransform(this.ActualMaximum) - px;
             double newViewMinimum = this.PostInverseTransform((dx0 / factor) + px);
             double newViewMaximum = this.PostInverseTransform((dx1 / factor) + px);
 
-            this.ViewMinimum = Math.Max(newViewMinimum, this.AbsoluteMinimum);
-            this.ViewMaximum = Math.Min(newViewMaximum, this.AbsoluteMaximum);
+            double newMinimum = Math.Max(newViewMinimum, this.AbsoluteMinimum);
+            double newMaximum = Math.Min(newViewMaximum, this.AbsoluteMaximum);
+
+            this.ViewMinimum = newMinimum;
+            this.ViewMaximum = newMaximum;
             this.UpdateActualMaxMin();
 
-            this.OnAxisChanged(new AxisChangedEventArgs(AxisChangeTypes.Zoom));
+            var deltaMinimum = newMinimum - oldMinimum;
+            var deltaMaximum = newMaximum - oldMaximum;
+
+            this.OnAxisChanged(new AxisChangedEventArgs(AxisChangeTypes.Zoom, deltaMinimum, deltaMaximum));
         }
 
         /// <summary>
