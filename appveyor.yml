@@ -14,6 +14,7 @@
     - cinst stylecop
     - cinst LynxToolkit
     - cinst gtksharp
+    - cinst gitlink -Pre
   platform: Any CPU
   configuration: Release
   before_build:
@@ -21,6 +22,8 @@
   build:
     project: Source/OxyPlot.AppVeyor.sln
     verbosity: minimal
+  after_build:
+    cmd: gitlink c:\projects\oxyplot -u https://github.com/oxyplot/oxyplot -b master -f Source/OxyPlot.AppVeyor.sln
   artifacts:
     - path: Output
       name: OxyPlot-$(APPVEYOR_BUILD_VERSION)
@@ -57,6 +60,7 @@
     - cinst stylecop
     - cinst LynxToolkit
     - cinst gtksharp
+    - cinst gitlink -Pre
   platform: Any CPU
   configuration: Release
   before_build:
@@ -64,6 +68,8 @@
   build:
     project: Source/OxyPlot.AppVeyor.sln
     verbosity: normal
+  after_build:
+    cmd: gitlink c:\projects\oxyplot -u https://github.com/oxyplot/oxyplot -b develop -f Source/OxyPlot.AppVeyor.sln
   artifacts:
     - path: Output
       name: OxyPlot-$(APPVEYOR_BUILD_VERSION)
