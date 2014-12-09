@@ -30,19 +30,19 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Gets or sets the type of the change.
+        /// Gets the type of the change.
         /// </summary>
         /// <value>The type of the change.</value>
         public AxisChangeTypes ChangeType { get; private set; }
 
         /// <summary>
-        /// Gets or sets the delta for the minimum.
+        /// Gets the delta for the minimum.
         /// </summary>
         /// <value>The delta.</value>
         public double DeltaMinimum { get; private set; }
 
         /// <summary>
-        /// Gets or sets the delta for the maximum.
+        /// Gets the delta for the maximum.
         /// </summary>
         /// <value>The delta.</value>
         public double DeltaMaximum { get; private set; }
