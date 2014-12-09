@@ -82,6 +82,12 @@
   <ItemGroup>
     <None Include="OxyPlot.GtkSharp.snk" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OxyPlot\OxyPlot_NET40.csproj">
+      <Project>{1c1d9807-be39-40a4-87de-3f81e7c651e5}</Project>
+      <Name>OxyPlot_NET40</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(ProjectDir)\..\StyleCop.targets" Condition=" '$(OS)' == 'Windows_NT' " />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -91,10 +97,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <ItemGroup>
-    <ProjectReference Include="..\OxyPlot\OxyPlot.csproj">
-      <Project>{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}</Project>
-      <Name>OxyPlot</Name>
-    </ProjectReference>
-  </ItemGroup>
 </Project>
