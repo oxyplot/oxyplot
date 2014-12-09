@@ -74,16 +74,16 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OxyPlot\OxyPlot_NET40.csproj">
-      <Project>{D52B7EB7-74B8-435F-953C-007B4EF3523F}</Project>
-      <Name>OxyPlot</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="OxyPlot.Pdf.snk" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OxyPlot\OxyPlot_NET40.csproj">
+      <Project>{1c1d9807-be39-40a4-87de-3f81e7c651e5}</Project>
+      <Name>OxyPlot_NET40</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
