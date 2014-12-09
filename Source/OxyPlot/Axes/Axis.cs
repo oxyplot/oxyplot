@@ -1597,9 +1597,14 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Gets the minimum.
+        /// Gets the minimum value. It will return the first valid value in the following list: <para />
+        /// <list type="number">
+        ///   <item><description><see cref="ViewMinimum"/></description></item>
+        ///   <item><description><see cref="Minimum"/></description></item>
+        ///   <item><description><see cref="DataMinimum"/></description></item>
+        /// </list>
         /// </summary>
-        /// <returns>System.Double.</returns>
+        /// <returns>The minimum value which is actually useful.</returns>
         protected double GetMinimum()
         {
             var minimum = this.ViewMinimum;
@@ -1618,9 +1623,14 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Gets the maximum.
+        /// Gets the maximum. It will return the first valid value in the following list: <para />
+        /// <list type="number">
+        ///   <item><description><see cref="ViewMaximum"/></description></item>
+        ///   <item><description><see cref="Maximum"/></description></item>
+        ///   <item><description><see cref="DataMaximum"/></description></item>
+        /// </list>
         /// </summary>
-        /// <returns>System.Double.</returns>
+        /// <returns>The maximum value which is actually useful.</returns>
         protected double GetMaximum()
         {
             var maximum = this.ViewMaximum;
