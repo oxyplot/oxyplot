@@ -958,6 +958,9 @@ namespace OxyPlot.Axes
                 return;
             }
 
+            var oldMinimum = this.ActualMinimum;
+            var oldMaximum = this.ActualMaximum;
+
             double dx = delta / this.Scale;
 
             double newMinimum = this.ActualMinimum - dx;
@@ -978,7 +981,10 @@ namespace OxyPlot.Axes
             this.ViewMaximum = newMaximum;
             this.UpdateActualMaxMin();
 
-            this.OnAxisChanged(new AxisChangedEventArgs(AxisChangeTypes.Pan));
+            var deltaMinimum = this.ActualMinimum - oldMinimum;
+            var deltaMaximum = this.ActualMaximum - oldMaximum;
+
+            this.OnAxisChanged(new AxisChangedEventArgs(AxisChangeTypes.Pan, deltaMinimum, deltaMaximum));
         }
 
         /// <summary>
@@ -999,10 +1005,17 @@ namespace OxyPlot.Axes
         /// </summary>
         public virtual void Reset()
         {
+            var oldMinimum = this.ActualMinimum;
+            var oldMaximum = this.ActualMinimum;
+
             this.ViewMinimum = double.NaN;
             this.ViewMaximum = double.NaN;
             this.UpdateActualMaxMin();
-            this.OnAxisChanged(new AxisChangedEventArgs(AxisChangeTypes.Reset));
+
+            var deltaMinimum = this.ActualMinimum - oldMinimum;
+            var deltaMaximum = this.ActualMaximum - oldMaximum;
+
+            this.OnAxisChanged(new AxisChangedEventArgs(AxisChangeTypes.Reset, deltaMinimum, deltaMaximum));
         }
 
         /// <summary>
@@ -1054,6 +1067,9 @@ namespace OxyPlot.Axes
         /// <param name="newScale">The new scale.</param>
         public virtual void Zoom(double newScale)
         {
+            var oldMinimum = this.ActualMinimum;
+            var oldMaximum = this.ActualMaximum;
+
             double sx1 = this.Transform(this.ActualMaximum);
             double sx0 = this.Transform(this.ActualMinimum);
 
@@ -1099,6 +1115,11 @@ namespace OxyPlot.Axes
             this.ViewMaximum = newMaximum;
             this.ViewMinimum = newMinimum;
             this.UpdateActualMaxMin();
+
+            var deltaMinimum = this.ActualMinimum - oldMinimum;
+            var deltaMaximum = this.ActualMaximum - oldMaximum;
+
+            this.OnAxisChanged(new AxisChangedEventArgs(AxisChangeTypes.Zoom, deltaMinimum, deltaMaximum));
         }
 
         /// <summary>
@@ -1113,6 +1134,9 @@ namespace OxyPlot.Axes
                 return;
             }
 
+            var oldMinimum = this.ActualMinimum;
+            var oldMaximum = this.ActualMaximum;
+
             double newMinimum = Math.Max(Math.Min(x0, x1), this.AbsoluteMinimum);
             double newMaximum = Math.Min(Math.Max(x0, x1), this.AbsoluteMaximum);
 
@@ -1120,7 +1144,10 @@ namespace OxyPlot.Axes
             this.ViewMaximum = newMaximum;
             this.UpdateActualMaxMin();
 
-            this.OnAxisChanged(new AxisChangedEventArgs(AxisChangeTypes.Zoom));
+            var deltaMinimum = this.ActualMinimum - oldMinimum;
+            var deltaMaximum = this.ActualMaximum - oldMaximum;
+
+            this.OnAxisChanged(new AxisChangedEventArgs(AxisChangeTypes.Zoom, deltaMinimum, deltaMaximum));
         }
 
         /// <summary>
@@ -1135,6 +1162,9 @@ namespace OxyPlot.Axes
                 return;
             }
 
+            var oldMinimum = this.ActualMinimum;
+            var oldMaximum = this.ActualMaximum;
+
             double dx0 = (this.ActualMinimum - x) * this.scale;
             double dx1 = (this.ActualMaximum - x) * this.scale;
             this.scale *= factor;
@@ -1146,7 +1176,10 @@ namespace OxyPlot.Axes
             this.ViewMaximum = newMaximum;
             this.UpdateActualMaxMin();
 
-            this.OnAxisChanged(new AxisChangedEventArgs(AxisChangeTypes.Zoom));
+            var deltaMinimum = this.ActualMinimum - oldMinimum;
+            var deltaMaximum = this.ActualMaximum - oldMaximum;
+
+            this.OnAxisChanged(new AxisChangedEventArgs(AxisChangeTypes.Zoom, deltaMinimum, deltaMaximum));
         }
 
         /// <summary>
