@@ -1005,10 +1005,17 @@ namespace OxyPlot.Axes
         /// </summary>
         public virtual void Reset()
         {
+            var oldMinimum = this.ActualMinimum;
+            var oldMaximum = this.ActualMinimum;
+
             this.ViewMinimum = double.NaN;
             this.ViewMaximum = double.NaN;
             this.UpdateActualMaxMin();
-            this.OnAxisChanged(new AxisChangedEventArgs(AxisChangeTypes.Reset, double.NaN, double.NaN));
+
+            var deltaMinimum = this.ActualMinimum - oldMinimum;
+            var deltaMaximum = this.ActualMaximum - oldMaximum;
+
+            this.OnAxisChanged(new AxisChangedEventArgs(AxisChangeTypes.Reset, deltaMinimum, deltaMaximum));
         }
 
         /// <summary>
