@@ -958,8 +958,8 @@ namespace OxyPlot.Axes
                 return;
             }
 
-            var oldMinimum = this.GetMinimum();
-            var oldMaximum = this.GetMaximum();
+            var oldMinimum = this.ActualMinimum;
+            var oldMaximum = this.ActualMaximum;
 
             double dx = delta / this.Scale;
 
@@ -981,8 +981,8 @@ namespace OxyPlot.Axes
             this.ViewMaximum = newMaximum;
             this.UpdateActualMaxMin();
 
-            var deltaMinimum = newMinimum - oldMinimum;
-            var deltaMaximum = newMaximum - oldMaximum;
+            var deltaMinimum = this.ActualMinimum - oldMinimum;
+            var deltaMaximum = this.ActualMaximum - oldMaximum;
 
             this.OnAxisChanged(new AxisChangedEventArgs(AxisChangeTypes.Pan, deltaMinimum, deltaMaximum));
         }
@@ -1060,6 +1060,9 @@ namespace OxyPlot.Axes
         /// <param name="newScale">The new scale.</param>
         public virtual void Zoom(double newScale)
         {
+            var oldMinimum = this.ActualMinimum;
+            var oldMaximum = this.ActualMaximum;
+
             double sx1 = this.Transform(this.ActualMaximum);
             double sx0 = this.Transform(this.ActualMinimum);
 
@@ -1105,6 +1108,11 @@ namespace OxyPlot.Axes
             this.ViewMaximum = newMaximum;
             this.ViewMinimum = newMinimum;
             this.UpdateActualMaxMin();
+
+            var deltaMinimum = this.ActualMinimum - oldMinimum;
+            var deltaMaximum = this.ActualMaximum - oldMaximum;
+
+            this.OnAxisChanged(new AxisChangedEventArgs(AxisChangeTypes.Zoom, deltaMinimum, deltaMaximum));
         }
 
         /// <summary>
@@ -1119,8 +1127,8 @@ namespace OxyPlot.Axes
                 return;
             }
 
-            var oldMinimum = this.GetMinimum();
-            var oldMaximum = this.GetMaximum();
+            var oldMinimum = this.ActualMinimum;
+            var oldMaximum = this.ActualMaximum;
 
             double newMinimum = Math.Max(Math.Min(x0, x1), this.AbsoluteMinimum);
             double newMaximum = Math.Min(Math.Max(x0, x1), this.AbsoluteMaximum);
@@ -1129,8 +1137,8 @@ namespace OxyPlot.Axes
             this.ViewMaximum = newMaximum;
             this.UpdateActualMaxMin();
 
-            var deltaMinimum = newMinimum - oldMinimum;
-            var deltaMaximum = newMaximum - oldMaximum;
+            var deltaMinimum = this.ActualMinimum - oldMinimum;
+            var deltaMaximum = this.ActualMaximum - oldMaximum;
 
             this.OnAxisChanged(new AxisChangedEventArgs(AxisChangeTypes.Zoom, deltaMinimum, deltaMaximum));
         }
@@ -1147,8 +1155,8 @@ namespace OxyPlot.Axes
                 return;
             }
 
-            var oldMinimum = this.GetMinimum();
-            var oldMaximum = this.GetMaximum();
+            var oldMinimum = this.ActualMinimum;
+            var oldMaximum = this.ActualMaximum;
 
             double dx0 = (this.ActualMinimum - x) * this.scale;
             double dx1 = (this.ActualMaximum - x) * this.scale;
@@ -1161,8 +1169,8 @@ namespace OxyPlot.Axes
             this.ViewMaximum = newMaximum;
             this.UpdateActualMaxMin();
 
-            var deltaMinimum = newMinimum - oldMinimum;
-            var deltaMaximum = newMaximum - oldMaximum;
+            var deltaMinimum = this.ActualMinimum - oldMinimum;
+            var deltaMaximum = this.ActualMaximum - oldMaximum;
 
             this.OnAxisChanged(new AxisChangedEventArgs(AxisChangeTypes.Zoom, deltaMinimum, deltaMaximum));
         }
@@ -1594,58 +1602,6 @@ namespace OxyPlot.Axes
             {
                 handler(this, args);
             }
-        }
-
-        /// <summary>
-        /// Gets the minimum value. It will return the first valid value in the following list: <para />
-        /// <list type="number">
-        ///   <item><description><see cref="ViewMinimum"/></description></item>
-        ///   <item><description><see cref="Minimum"/></description></item>
-        ///   <item><description><see cref="DataMinimum"/></description></item>
-        /// </list>
-        /// </summary>
-        /// <returns>The minimum value which is actually useful.</returns>
-        protected double GetMinimum()
-        {
-            var minimum = this.ViewMinimum;
-            if (!double.IsNaN(minimum))
-            {
-                return minimum;
-            }
-
-            minimum = this.Minimum;
-            if (!double.IsNaN(minimum))
-            {
-                return minimum;
-            }
-
-            return this.DataMinimum;
-        }
-
-        /// <summary>
-        /// Gets the maximum. It will return the first valid value in the following list: <para />
-        /// <list type="number">
-        ///   <item><description><see cref="ViewMaximum"/></description></item>
-        ///   <item><description><see cref="Maximum"/></description></item>
-        ///   <item><description><see cref="DataMaximum"/></description></item>
-        /// </list>
-        /// </summary>
-        /// <returns>The maximum value which is actually useful.</returns>
-        protected double GetMaximum()
-        {
-            var maximum = this.ViewMaximum;
-            if (!double.IsNaN(maximum))
-            {
-                return maximum;
-            }
-
-            maximum = this.Maximum;
-            if (!double.IsNaN(maximum))
-            {
-                return maximum;
-            }
-
-            return this.DataMaximum;
         }
     }
 }
