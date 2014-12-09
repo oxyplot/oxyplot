@@ -958,8 +958,8 @@ namespace OxyPlot.Axes
                 return;
             }
 
-            var oldMinimum = this.ViewMinimum;
-            var oldMaximum = this.ViewMaximum;
+            var oldMinimum = this.GetMinimum();
+            var oldMaximum = this.GetMaximum();
 
             double dx = delta / this.Scale;
 
@@ -1119,8 +1119,8 @@ namespace OxyPlot.Axes
                 return;
             }
 
-            var oldMinimum = this.ViewMinimum;
-            var oldMaximum = this.ViewMaximum;
+            var oldMinimum = this.GetMinimum();
+            var oldMaximum = this.GetMaximum();
 
             double newMinimum = Math.Max(Math.Min(x0, x1), this.AbsoluteMinimum);
             double newMaximum = Math.Min(Math.Max(x0, x1), this.AbsoluteMaximum);
@@ -1147,8 +1147,8 @@ namespace OxyPlot.Axes
                 return;
             }
 
-            var oldMinimum = this.ViewMinimum;
-            var oldMaximum = this.ViewMaximum;
+            var oldMinimum = this.GetMinimum();
+            var oldMaximum = this.GetMaximum();
 
             double dx0 = (this.ActualMinimum - x) * this.scale;
             double dx1 = (this.ActualMaximum - x) * this.scale;
@@ -1594,6 +1594,48 @@ namespace OxyPlot.Axes
             {
                 handler(this, args);
             }
+        }
+
+        /// <summary>
+        /// Gets the minimum.
+        /// </summary>
+        /// <returns>System.Double.</returns>
+        protected double GetMinimum()
+        {
+            var minimum = this.ViewMinimum;
+            if (!double.IsNaN(minimum))
+            {
+                return minimum;
+            }
+
+            minimum = this.Minimum;
+            if (!double.IsNaN(minimum))
+            {
+                return minimum;
+            }
+
+            return this.DataMinimum;
+        }
+
+        /// <summary>
+        /// Gets the maximum.
+        /// </summary>
+        /// <returns>System.Double.</returns>
+        protected double GetMaximum()
+        {
+            var maximum = this.ViewMaximum;
+            if (!double.IsNaN(maximum))
+            {
+                return maximum;
+            }
+
+            maximum = this.Maximum;
+            if (!double.IsNaN(maximum))
+            {
+                return maximum;
+            }
+
+            return this.DataMaximum;
         }
     }
 }
