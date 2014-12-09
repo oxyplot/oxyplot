@@ -215,8 +215,8 @@ namespace OxyPlot.Axes
                 return;
             }
 
-            var oldMinimum = this.ViewMinimum;
-            var oldMaximum = this.ViewMaximum;
+            var oldMinimum = this.GetMinimum();
+            var oldMaximum = this.GetMaximum();
 
             double dx = x0 / x1;
 
