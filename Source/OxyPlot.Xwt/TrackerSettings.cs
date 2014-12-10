@@ -1,0 +1,117 @@
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="PlotView.cs" company="OxyPlot">
+//   Copyright (c) 2014 OxyPlot contributors
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace OxyPlot.Xwt
+{
+	public class TrackerSettings
+	{
+		/// <summary>
+		/// Gets or sets the background color.
+		/// </summary>
+		/// <value>The background color.</value>
+		public OxyColor Background { get; set; }
+
+		/// <summary>
+		/// Gets or sets the color of the horizontal line.
+		/// </summary>
+		/// <value>The color of the horizontal line.</value>
+		public OxyColor HorizontalLineColor { get; set; }
+
+		/// <summary>
+		/// Gets or sets the width of the horizontal line.
+		/// </summary>
+		/// <value>The width of the horizontal line.</value>
+		public double HorizontalLineWidth { get; set; }
+
+		/// <summary>
+		/// Gets or sets a value indicating whether this <see cref="OxyPlot.Xwt.TrackerSettings"/> horizontal line visible.
+		/// </summary>
+		/// <value><c>true</c> if horizontal line visible; otherwise, <c>false</c>.</value>
+		public bool HorizontalLineVisible { get; set; }
+
+		/// <summary>
+		/// Gets or sets the horizontal line style (overridden by <see cref="HorizontalLineDashArray" />).
+		/// </summary>
+		/// <value>The horizontal line style.</value>
+		public LineStyle HorizontalLineStyle { get; set; }
+
+		/// <summary>
+		/// Gets or sets the horizontal dash array (overrides <see cref="HorizontalLineStyle" />).
+		/// </summary>
+		/// <value>The horizontal dash array.</value>
+		public double[] HorizontalLineDashArray { get; set; }
+
+		/// <summary>
+		/// Gets the actual horizontal dash array.
+		/// </summary>
+		/// <value>The actual horizontal dash array.</value>
+		public double[] HorizontalLineActualDashArray
+		{
+			get
+			{
+				return HorizontalLineDashArray ?? HorizontalLineStyle.GetDashArray();
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the color of the vertical line.
+		/// </summary>
+		/// <value>The color of the vertical line.</value>
+		public OxyColor VerticalLineColor { get; set; }
+
+		/// <summary>
+		/// Gets or sets the width of the vertical line.
+		/// </summary>
+		/// <value>The width of the vertical line.</value>
+		public double VerticalLineWidth { get; set; }
+
+		/// <summary>
+		/// Gets or sets a value indicating whether this <see cref="OxyPlot.Xwt.TrackerSettings"/> vertical line visible.
+		/// </summary>
+		/// <value><c>true</c> if vertical line visible; otherwise, <c>false</c>.</value>
+		public bool VerticalLineVisible { get; set; }
+
+		/// <summary>
+		/// Gets or sets the vertical line style (overridden by <see cref="HorizontalLineDashArray" />).
+		/// </summary>
+		/// <value>The vertical line style.</value>
+		public LineStyle VerticalLineStyle { get; set; }
+
+		/// <summary>
+		/// Gets or sets the vertical dash array (overrides <see cref="HorizontalLineStyle" />).
+		/// </summary>
+		/// <value>The vertical dash array.</value>
+		public double[] VerticalLineDashArray { get; set; }
+
+		/// <summary>
+		/// Gets the actual vertical dash array.
+		/// </summary>
+		/// <value>The actual vertical dash array.</value>
+		public double[] VerticalLineActualDashArray
+		{
+			get
+			{
+				return VerticalLineDashArray ?? VerticalLineStyle.GetDashArray();
+			}
+		}
+
+		public TrackerSettings ()
+		{
+			Background = OxyColor.FromArgb (0x80, 0xFF, 0xFF, 0x00);
+			HorizontalLineColor = OxyColors.Black;
+			HorizontalLineWidth = 1.0;
+			HorizontalLineVisible = true;
+			HorizontalLineStyle = LineStyle.Solid;
+			HorizontalLineDashArray = null;
+			VerticalLineColor = OxyColors.Black;
+			VerticalLineWidth = 1.0;
+			VerticalLineVisible = true;
+			VerticalLineStyle = LineStyle.Solid;
+			VerticalLineDashArray = null;
+		}
+	}
+}
+
