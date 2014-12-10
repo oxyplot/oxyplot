@@ -64,7 +64,8 @@
   platform: Any CPU
   configuration: Release
   before_build:
-    cmd: UpdateVersionNumbers /Version=%version% /PreRelease=alpha /Dependency=OxyPlot.Core /ReleaseNotesFile=RELEASE-NOTES.md /Directory=Source
+    - cmd: git submodule update --init --recursive
+    - cmd: UpdateVersionNumbers /Version=%version% /PreRelease=alpha /Dependency=OxyPlot.Core /ReleaseNotesFile=RELEASE-NOTES.md /Directory=Source
   build:
     project: Source/OxyPlot.AppVeyor.sln
     verbosity: normal
