@@ -55,12 +55,12 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OxyPlot.Wpf\OxyPlot.Wpf_NET40.csproj">
-      <Project>{0d7c7710-c58b-4713-ba18-8231a2f35a12}</Project>
+      <Project>{0D7C7710-C58B-4713-BA18-8231A2F35A12}</Project>
       <Name>OxyPlot.Wpf_NET40</Name>
     </ProjectReference>
     <ProjectReference Include="..\OxyPlot\OxyPlot_NET40.csproj">
-      <Project>{D52B7EB7-74B8-435F-953C-007B4EF3523F}</Project>
-      <Name>OxyPlot</Name>
+      <Project>{1c1d9807-be39-40a4-87de-3f81e7c651e5}</Project>
+      <Name>OxyPlot_NET40</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -98,7 +98,10 @@ namespace ExampleBrowser
             this.hbox1 = new HBox(false, 6);
             this.hbox1.SetSizeRequest(943, 554);
 
-            this.hbox1.PackStart(this.treeView1, false, false, 6);
+            var scrollwin = new ScrolledWindow ();
+            scrollwin.Add (this.treeView1);
+
+            this.hbox1.PackStart(scrollwin, false, false, 6);
             this.hbox1.PackStart(this.plotView1, false, false, 6);
 
             this.Add(this.hbox1);
