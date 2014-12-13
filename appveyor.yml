@@ -40,6 +40,7 @@
     - cmd: NuGet pack Source\OxyPlot.OpenXml\OxyPlot.OpenXml.nuspec -OutputDirectory Packages
     - cmd: NuGet pack Source\OxyPlot.Pdf\OxyPlot.Pdf.nuspec -OutputDirectory Packages
     - cmd: NuGet pack Source\OxyPlot.GtkSharp\OxyPlot.GtkSharp.nuspec -OutputDirectory Packages
+    - cmd: NuGet pack Source\OxyPlot.Xwt\OxyPlot.Xwt.nuspec -OutputDirectory Packages
     - cmd: for %%G in (Packages\*.nupkg) do NuGet push %%G %nuget_api_key%
     - cmd: FtpUpload ftp.oxyplot.org %ftp_user% %ftp_password% Output\SL5\Examples\Silverlight\ExampleBrowser\ExampleBrowser.xap /ExampleBrowser/ExampleBrowser.xap
 
@@ -87,5 +88,6 @@
     - cmd: NuGet pack Source\OxyPlot.OpenXml\OxyPlot.OpenXml.nuspec -OutputDirectory Packages
     - cmd: NuGet pack Source\OxyPlot.Pdf\OxyPlot.Pdf.nuspec -OutputDirectory Packages
     - cmd: NuGet pack Source\OxyPlot.GtkSharp\OxyPlot.GtkSharp.nuspec -OutputDirectory Packages
+    - cmd: NuGet pack Source\OxyPlot.Xwt\OxyPlot.Xwt.nuspec -OutputDirectory Packages
     - cmd: for %%G in (Packages\*.nupkg) do NuGet push %%G %nuget_api_key%
     - cmd: FtpUpload ftp.oxyplot.org %ftp_user% %ftp_password% Output\SL5\Examples\Silverlight\ExampleBrowser\ExampleBrowser.xap /ExampleBrowser/ExampleBrowser.xap
