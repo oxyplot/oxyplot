@@ -103,7 +103,7 @@ namespace OxyPlot.Xwt
                 //Context.Li = lineJoin.ToLineJoin();
                 Context.SetLineWidth (thickness);
                 if (dashArray != null)
-                    Context.SetLineDash (0, dashArray);
+					Context.SetLineDash (0, Array.ConvertAll (dashArray, x => x * thickness));
 
                 Context.MoveTo (points [0].ToXwtPoint (aliased));
                 foreach (var point in points.Skip(1)) {
@@ -138,9 +138,9 @@ namespace OxyPlot.Xwt
                 Context.Save ();
                 Context.SetColor (fill.ToXwtColor ());
                 //Context.LineJoin = lineJoin.ToLineJoin();
-                Context.SetLineWidth (thickness);
+				Context.SetLineWidth (thickness);
                 if (dashArray != null)
-                    Context.SetLineDash (0, dashArray);
+					Context.SetLineDash (0, Array.ConvertAll (dashArray, x => x * thickness));
 
                 Context.MoveTo (points [0].ToXwtPoint (aliased));
                 foreach (var point in points.Skip(1)) {
@@ -160,7 +160,7 @@ namespace OxyPlot.Xwt
                 //Context.LineJoin = lineJoin.ToLineJoin();
                 Context.SetLineWidth (thickness);
                 if (dashArray != null)
-                    Context.SetLineDash (0, dashArray);
+					Context.SetLineDash (0, Array.ConvertAll (dashArray, x => x * thickness));
 
                 Context.MoveTo (points [0].ToXwtPoint (aliased));
                 foreach (var point in points.Skip(1)) {
