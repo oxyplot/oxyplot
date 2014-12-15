@@ -656,11 +656,11 @@ namespace OxyPlot.Axes
             var epsilon = step * 1e-3 * Math.Sign(step);
             var values = new List<double>(numberOfValues);
             var i = 0;
-			var lastValue = startValue;
+            var lastValue = startValue;
 
             while (lastValue <= to + epsilon && i < maxTicks)
             {
-				lastValue = startValue + step * i++;
+                lastValue = startValue + (step * i++);
 
                 // try to get rid of numerical noise
                 var v = Math.Round(lastValue / step, 14) * step;
