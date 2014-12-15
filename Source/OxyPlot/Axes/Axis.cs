@@ -658,7 +658,7 @@ namespace OxyPlot.Axes
             var i = 0;
             var lastValue = startValue;
 
-            while (lastValue <= to + epsilon && i < maxTicks)
+            while (startValue + (step * i) <= to + epsilon && i < maxTicks)
             {
                 lastValue = startValue + (step * i++);
 
