@@ -23,7 +23,7 @@
     project: Source/OxyPlot.AppVeyor.sln
     verbosity: minimal
   after_build:
-    cmd: gitlink c:\projects\oxyplot -u https://github.com/oxyplot/oxyplot -b master -f Source/OxyPlot.AppVeyor.sln
+    cmd: gitlink c:\projects\oxyplot -u https://github.com/oxyplot/oxyplot -b master -f Source/OxyPlot.AppVeyor.sln -ignore Xwt
   artifacts:
     - path: Output
       name: OxyPlot-$(APPVEYOR_BUILD_VERSION)
@@ -40,6 +40,7 @@
     - cmd: NuGet pack Source\OxyPlot.OpenXml\OxyPlot.OpenXml.nuspec -OutputDirectory Packages
     - cmd: NuGet pack Source\OxyPlot.Pdf\OxyPlot.Pdf.nuspec -OutputDirectory Packages
     - cmd: NuGet pack Source\OxyPlot.GtkSharp\OxyPlot.GtkSharp.nuspec -OutputDirectory Packages
+    - cmd: NuGet pack Source\OxyPlot.Xwt\OxyPlot.Xwt.nuspec -OutputDirectory Packages
     - cmd: for %%G in (Packages\*.nupkg) do NuGet push %%G %nuget_api_key%
     - cmd: FtpUpload ftp.oxyplot.org %ftp_user% %ftp_password% Output\SL5\Examples\Silverlight\ExampleBrowser\ExampleBrowser.xap /ExampleBrowser/ExampleBrowser.xap
 
@@ -64,12 +65,13 @@
   platform: Any CPU
   configuration: Release
   before_build:
-    cmd: UpdateVersionNumbers /Version=%version% /PreRelease=alpha /Dependency=OxyPlot.Core /ReleaseNotesFile=RELEASE-NOTES.md /Directory=Source
+    - cmd: git submodule update --init --recursive
+    - cmd: UpdateVersionNumbers /Version=%version% /PreRelease=alpha /Dependency=OxyPlot.Core /ReleaseNotesFile=RELEASE-NOTES.md /Directory=Source
   build:
     project: Source/OxyPlot.AppVeyor.sln
     verbosity: normal
   after_build:
-    cmd: gitlink c:\projects\oxyplot -u https://github.com/oxyplot/oxyplot -b develop -f Source/OxyPlot.AppVeyor.sln
+    cmd: gitlink c:\projects\oxyplot -u https://github.com/oxyplot/oxyplot -b develop -f Source/OxyPlot.AppVeyor.sln -ignore Xwt
   artifacts:
     - path: Output
       name: OxyPlot-$(APPVEYOR_BUILD_VERSION)
@@ -86,5 +88,6 @@
     - cmd: NuGet pack Source\OxyPlot.OpenXml\OxyPlot.OpenXml.nuspec -OutputDirectory Packages
     - cmd: NuGet pack Source\OxyPlot.Pdf\OxyPlot.Pdf.nuspec -OutputDirectory Packages
     - cmd: NuGet pack Source\OxyPlot.GtkSharp\OxyPlot.GtkSharp.nuspec -OutputDirectory Packages
+    - cmd: NuGet pack Source\OxyPlot.Xwt\OxyPlot.Xwt.nuspec -OutputDirectory Packages
     - cmd: for %%G in (Packages\*.nupkg) do NuGet push %%G %nuget_api_key%
     - cmd: FtpUpload ftp.oxyplot.org %ftp_user% %ftp_password% Output\SL5\Examples\Silverlight\ExampleBrowser\ExampleBrowser.xap /ExampleBrowser/ExampleBrowser.xap

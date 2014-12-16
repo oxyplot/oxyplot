@@ -52,12 +52,25 @@ namespace OxyPlot.Xwt
         /// <summary>
         /// Converts a <see cref="OxyColor" /> to a <see cref="Color" />.
         /// </summary>
-        /// <returns>The xwt color.</returns>
-        /// <param name="c">The color.</param>
+        /// <returns>The Xwt color.</returns>
+        /// <param name="c">The Oxy color.</param>
         public static Color ToXwtColor (this OxyColor c)
         {
-            return new Color (c.R / 256.0, c.G / 256.0, c.B / 256.0, c.A / 256.0);
-        }
+			return Color.FromBytes (c.R, c.G, c.B, c.A);
+		}
+
+		/// <summary>
+		/// Converts a <see cref="Color" /> to a <see cref="OxyColor" />.
+		/// </summary>
+		/// <returns>The Oxy color.</returns>
+		/// <param name="c">The Xwt color.</param>
+		public static OxyColor ToOxyColor (this Color c)
+		{
+			return OxyColor.FromArgb ((byte)(c.Alpha * 255.0),
+			                          (byte)(c.Red * 255.0),
+			                          (byte)(c.Green * 255.0),
+			                          (byte)(c.Blue * 255.0));
+		}
 
         /// <summary>
         /// Converts a <see cref="ScreenPoint" /> to a Xwt <see cref="Point" />.

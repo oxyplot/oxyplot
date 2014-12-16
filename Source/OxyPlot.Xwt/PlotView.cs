@@ -4,6 +4,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using Xwt;
 using Xwt.Drawing;
@@ -42,7 +43,7 @@ namespace OxyPlot.Xwt
         /// <summary>
         /// The is model invalidated.
         /// </summary>
-        private bool isModelInvalidated;
+        bool isModelInvalidated;
 
         /// <summary>
         /// The model.
@@ -64,12 +65,42 @@ namespace OxyPlot.Xwt
         /// </summary>
         IPlotController defaultController;
 
+		/// <summary>
+		/// The tracker definitions.
+		/// </summary>
+		Dictionary<string, TrackerSettings> trackerDefinitions;
+
+		/// <summary>
+		/// The tracker lock.
+		/// </summary>
+		readonly object trackerLock = new object ();
+
+		/// <summary>
+		/// The tracker hit result.
+		/// </summary>
+		TrackerHitResult actualTrackerHitResult;
+
+		/// <summary>
+		/// The tracker popover.
+		/// </summary>
+		Popover trackerPopover;
+
+		/// <summary>
+		/// The tracker label.
+		/// </summary>
+		Label lblTrackerText = new Label ();
+
         /// <summary>
         /// Initializes a new instance of the <see cref="OxyPlot.Xwt.PlotView"/> class.
         /// </summary>
         public PlotView ()
         {
             renderContext = new GraphicsRenderContext ();
+			trackerDefinitions = new Dictionary<string, TrackerSettings> ();
+			DefaultTrackerSettings = new TrackerSettings ();
+			ZoomRectangleColor = OxyColor.FromArgb (0x40, 0xFF, 0xFF, 0x00);
+			ZoomRectangleBorderColor = OxyColors.Transparent;
+			ZoomRectangleBorderWidth = 1.0;
         }
 
         /// <summary>
@@ -147,6 +178,44 @@ namespace OxyPlot.Xwt
         /// <value>The controller.</value>
         public IPlotController Controller { get; set; }
 
+		/// <summary>
+		/// Gets the tracker definitions.
+		/// </summary>
+		/// <value>The tracker definitions mapping.</value>
+		/// <remarks>The tracker definitions make it possible to show different trackers for different series.
+		/// The dictionary key must match the <see cref="OxyPlot.Series.Series.TrackerKey" /> property. If
+		/// the dictionary does not contain a matching key, the <see cref="DefaultTrackerSettings"/> tracker
+		/// configuration is used.</remarks>
+		public Dictionary<string, TrackerSettings> TrackerDefinitions {
+			get { return trackerDefinitions; }
+		}
+
+		/// <summary>
+		/// Gets or sets the default tracker settings.
+		/// </summary>
+		/// <value>The default tracker settings.</value>
+		/// <remarks>The default thracker settings to be used, if <see cref="TrackerDefinitions"/> does not
+		/// contain a definition for the matching <see cref="OxyPlot.Series.Series.TrackerKey" />.</remarks>
+		public TrackerSettings DefaultTrackerSettings { get; set; }
+
+		/// <summary>
+		/// Gets or sets the color of the zoom rectangle.
+		/// </summary>
+		/// <value>The color of the zoom rectangle.</value>
+		public OxyColor ZoomRectangleColor { get; set; }
+
+		/// <summary>
+		/// Gets or sets the color of the zoom rectangle border.
+		/// </summary>
+		/// <value>The color of the zoom rectangle border.</value>
+		public OxyColor ZoomRectangleBorderColor { get; set; }
+
+		/// <summary>
+		/// Gets or sets the width of the zoom rectangle border.
+		/// </summary>
+		/// <value>The width of the zoom rectangle border.</value>
+		public double ZoomRectangleBorderWidth { get; set; }
+
         /// <summary>
         /// Invalidates the plot (not blocking the UI thread)
         /// </summary>
@@ -200,14 +269,46 @@ namespace OxyPlot.Xwt
         /// </summary>
         /// <param name="trackerHitResult">The data.</param>
         public virtual void ShowTracker (TrackerHitResult trackerHitResult)
-        {
+		{
+			if (trackerHitResult == null) {
+				HideTracker ();
+				return;
+			}
+
+			if (trackerPopover != null)
+				HideTracker();
+
+			lock (trackerLock) {
+				actualTrackerHitResult = trackerHitResult;
+				trackerPopover = new Popover (lblTrackerText);
+				// TODO: background color, when supported by xwt
+				lblTrackerText.Text = trackerHitResult.Text;
+
+				var position = new Rectangle (trackerHitResult.Position.X, trackerHitResult.Position.Y, 1, 1);
+				//TODO: horizontal flip, needs xwt fix (https://github.com/mono/xwt/pull/362)
+				//if (trackerHitResult.Position.Y <= Bounds.Height / 2)
+					trackerPopover.Show (Popover.Position.Top, this, position);
+				//else
+				//	trackerPopover.Show (Popover.Position.Bottom, this, position);
+			}
+			QueueDraw ();
         }
 
         /// <summary>
         /// Hides the tracker.
         /// </summary>
         public virtual void HideTracker ()
-        {
+		{
+			lock (trackerLock) {
+				actualTrackerHitResult = null;
+				if (trackerPopover != null) {
+					trackerPopover.Hide ();
+					trackerPopover.Content = null;
+					trackerPopover.Dispose ();
+					trackerPopover = null;
+				}
+			}
+			QueueDraw ();
         }
 
         /// <summary>
@@ -390,10 +491,48 @@ namespace OxyPlot.Xwt
 
                 if (zoomRectangle.HasValue) {
                     renderContext.DrawRectangle (zoomRectangle.Value,
-                                  OxyColor.FromArgb (0x40, 0xFF, 0xFF, 0x00),
-                                  OxyColors.Transparent,
-                                  1.0);
+					                             ZoomRectangleColor,
+					                             ZoomRectangleBorderColor,
+					                             ZoomRectangleBorderWidth);
                 }
+
+				if (actualTrackerHitResult != null) {
+					var extents = actualTrackerHitResult.LineExtents;
+					if (Math.Abs (extents.Width) < double.Epsilon) {
+						extents.Left = actualTrackerHitResult.XAxis.ScreenMin.X;
+						extents.Right = actualTrackerHitResult.XAxis.ScreenMax.X;
+					}
+					if (Math.Abs (extents.Height) < double.Epsilon) {
+						extents.Top = actualTrackerHitResult.YAxis.ScreenMin.Y;
+						extents.Bottom = actualTrackerHitResult.YAxis.ScreenMax.Y;
+					}
+
+					var pos = actualTrackerHitResult.Position;
+
+					var trackerSettings = DefaultTrackerSettings;
+					if (actualTrackerHitResult.Series != null && !string.IsNullOrEmpty(actualTrackerHitResult.Series.TrackerKey))
+						trackerSettings = trackerDefinitions[actualTrackerHitResult.Series.TrackerKey];
+
+					if (trackerSettings.HorizontalLineVisible) {
+
+						renderContext.DrawLine (
+							new[] { new ScreenPoint(extents.Left, pos.Y), new ScreenPoint(extents.Right, pos.Y)},
+							trackerSettings.HorizontalLineColor,
+							trackerSettings.HorizontalLineWidth,
+							trackerSettings.HorizontalLineActualDashArray,
+							LineJoin.Miter,
+							true);
+					}
+					if (trackerSettings.VerticalLineVisible) {
+						renderContext.DrawLine (
+							new[] { new ScreenPoint(pos.X, extents.Top), new ScreenPoint(pos.X, extents.Bottom)},
+							trackerSettings.VerticalLineColor,
+							trackerSettings.VerticalLineWidth,
+							trackerSettings.VerticalLineActualDashArray,
+							LineJoin.Miter,
+							true);
+					}
+				}
             } catch (Exception paintException) {
                 var trace = new StackTrace (paintException);
                 Debug.WriteLine (paintException);
@@ -412,8 +551,11 @@ namespace OxyPlot.Xwt
 
         protected override void Dispose (bool disposing)
         {
-            if (disposing)
-                renderContext.Dispose ();
+			if (disposing) {
+				renderContext.Dispose ();
+				if (trackerPopover != null)
+					trackerPopover.Dispose ();
+			}
             base.Dispose (disposing);
         }
     }
