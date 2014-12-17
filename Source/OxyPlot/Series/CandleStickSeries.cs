@@ -112,15 +112,20 @@ namespace OxyPlot.Series
             var actualColor = this.GetSelectableColor(this.ActualColor);
             var shadowEndColor = this.GetSelectableColor(this.ShadowEndColor);
 
-            foreach (var v in this.Items)
+            if (this.StrokeThickness > 0 && this.LineStyle != LineStyle.None)
             {
-                if (!this.IsValidItem(v, this.XAxis, this.YAxis))
+                foreach (var v in this.Items)
                 {
-                    continue;
-                }
+                    if (!this.IsValidItem(v, this.XAxis, this.YAxis))
+                    {
+                        continue;
+                    }
 
-                if (this.StrokeThickness > 0 && this.LineStyle != LineStyle.None)
-                {
+                    if (v.X <= this.XAxis.ActualMinimum || v.X >= this.XAxis.ActualMaximum)
+                    {
+                        continue;
+                    }
+
                     var high = this.Transform(v.X, v.High);
                     var low = this.Transform(v.X, v.Low);
 
