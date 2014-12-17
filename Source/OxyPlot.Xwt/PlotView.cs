@@ -17,7 +17,12 @@ namespace OxyPlot.Xwt
     /// </summary>
     [Serializable]
     public class PlotView : Canvas, IPlotView
-    {
+	{
+
+		/// <summary>
+		/// The mouse hit tolerance.
+		/// </summary>
+		const double MouseHitTolerance = 10;
 
         /// <summary>
         /// The invalidate lock.
@@ -216,6 +221,22 @@ namespace OxyPlot.Xwt
 		/// <value>The width of the zoom rectangle border.</value>
 		public double ZoomRectangleBorderWidth { get; set; }
 
+		bool showDynamicTooltips = true;
+
+		/// <summary>
+		/// Gets or sets a value indicating whether this <see cref="OxyPlot.Xwt.PlotView"/> shows dynamic tooltips
+		/// for plot elements with <see cref="OxyPlot.PlotElement.ToolTip"/> property set.
+		/// </summary>
+		/// <value><c>true</c> to show dynamic tooltips; otherwise, <c>false</c>.</value>
+		public bool ShowDynamicTooltips {
+			get {
+				return showDynamicTooltips;
+			}
+			set {
+				showDynamicTooltips = value;
+			}
+		}
+
         /// <summary>
         /// Invalidates the plot (not blocking the UI thread)
         /// </summary>
@@ -397,6 +418,19 @@ namespace OxyPlot.Xwt
             base.OnMouseMoved (args);
             if (args.Handled)
                 return;
+
+			if (ShowDynamicTooltips) {
+				string tooltip = null;
+				var hitArgs = new HitTestArguments (new ScreenPoint (args.X, args.Y), MouseHitTolerance);
+				foreach (var result in ActualModel.HitTest(hitArgs)) {
+					var plotElement = result.Element as PlotElement;
+					if (plotElement != null && !String.IsNullOrEmpty (plotElement.ToolTip)) {
+						tooltip = String.IsNullOrEmpty (tooltip) ? plotElement.ToolTip : tooltip + Environment.NewLine + plotElement.ToolTip;
+					}
+				}
+				TooltipText = tooltip;
+			}
+
             args.Handled = ActualController.HandleMouseMove (this,
                                                     args.ToOxyMouseEventArgs ());
         }
