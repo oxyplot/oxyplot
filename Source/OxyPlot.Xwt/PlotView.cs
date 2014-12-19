@@ -291,26 +291,31 @@ namespace OxyPlot.Xwt
         /// <param name="trackerHitResult">The data.</param>
         public virtual void ShowTracker (TrackerHitResult trackerHitResult)
 		{
-			if (trackerHitResult == null) {
-				HideTracker ();
-				return;
-			}
-
 			if (trackerPopover != null)
 				HideTracker();
 
-			lock (trackerLock) {
-				actualTrackerHitResult = trackerHitResult;
-				trackerPopover = new Popover (lblTrackerText);
-				// TODO: background color, when supported by xwt
-				lblTrackerText.Text = trackerHitResult.Text;
+			if (trackerHitResult == null)
+				return;
 
-				var position = new Rectangle (trackerHitResult.Position.X, trackerHitResult.Position.Y, 1, 1);
-				//TODO: horizontal flip, needs xwt fix (https://github.com/mono/xwt/pull/362)
-				//if (trackerHitResult.Position.Y <= Bounds.Height / 2)
+			var trackerSettings = DefaultTrackerSettings;
+			if (trackerHitResult.Series != null && !string.IsNullOrEmpty(trackerHitResult.Series.TrackerKey))
+				trackerSettings = trackerDefinitions[trackerHitResult.Series.TrackerKey];
+
+			if (trackerSettings.Enabled) {
+				lock (trackerLock) {
+					actualTrackerHitResult = trackerHitResult;
+					trackerPopover = new Popover (lblTrackerText);
+					// TODO: background color, when supported by xwt
+					//trackerPopover.Background = trackerSettings.Background;
+					lblTrackerText.Text = trackerHitResult.Text;
+
+					var position = new Rectangle (trackerHitResult.Position.X, trackerHitResult.Position.Y, 1, 1);
+					//TODO: horizontal flip, needs xwt fix (https://github.com/mono/xwt/pull/362)
+					//if (trackerHitResult.Position.Y <= Bounds.Height / 2)
 					trackerPopover.Show (Popover.Position.Top, this, position);
-				//else
-				//	trackerPopover.Show (Popover.Position.Bottom, this, position);
+					//else
+					//	trackerPopover.Show (Popover.Position.Bottom, this, position);
+				}
 			}
 			QueueDraw ();
         }
@@ -531,40 +536,42 @@ namespace OxyPlot.Xwt
                 }
 
 				if (actualTrackerHitResult != null) {
-					var extents = actualTrackerHitResult.LineExtents;
-					if (Math.Abs (extents.Width) < double.Epsilon) {
-						extents.Left = actualTrackerHitResult.XAxis.ScreenMin.X;
-						extents.Right = actualTrackerHitResult.XAxis.ScreenMax.X;
-					}
-					if (Math.Abs (extents.Height) < double.Epsilon) {
-						extents.Top = actualTrackerHitResult.YAxis.ScreenMin.Y;
-						extents.Bottom = actualTrackerHitResult.YAxis.ScreenMax.Y;
-					}
-
-					var pos = actualTrackerHitResult.Position;
-
 					var trackerSettings = DefaultTrackerSettings;
 					if (actualTrackerHitResult.Series != null && !string.IsNullOrEmpty(actualTrackerHitResult.Series.TrackerKey))
 						trackerSettings = trackerDefinitions[actualTrackerHitResult.Series.TrackerKey];
 
-					if (trackerSettings.HorizontalLineVisible) {
+					if (trackerSettings.Enabled) {
+						var extents = actualTrackerHitResult.LineExtents;
+						if (Math.Abs (extents.Width) < double.Epsilon) {
+							extents.Left = actualTrackerHitResult.XAxis.ScreenMin.X;
+							extents.Right = actualTrackerHitResult.XAxis.ScreenMax.X;
+						}
+						if (Math.Abs (extents.Height) < double.Epsilon) {
+							extents.Top = actualTrackerHitResult.YAxis.ScreenMin.Y;
+							extents.Bottom = actualTrackerHitResult.YAxis.ScreenMax.Y;
+						}
 
-						renderContext.DrawLine (
-							new[] { new ScreenPoint(extents.Left, pos.Y), new ScreenPoint(extents.Right, pos.Y)},
-							trackerSettings.HorizontalLineColor,
-							trackerSettings.HorizontalLineWidth,
-							trackerSettings.HorizontalLineActualDashArray,
-							LineJoin.Miter,
-							true);
-					}
-					if (trackerSettings.VerticalLineVisible) {
-						renderContext.DrawLine (
-							new[] { new ScreenPoint(pos.X, extents.Top), new ScreenPoint(pos.X, extents.Bottom)},
-							trackerSettings.VerticalLineColor,
-							trackerSettings.VerticalLineWidth,
-							trackerSettings.VerticalLineActualDashArray,
-							LineJoin.Miter,
-							true);
+						var pos = actualTrackerHitResult.Position;
+
+						if (trackerSettings.HorizontalLineVisible) {
+
+							renderContext.DrawLine (
+								new[] { new ScreenPoint(extents.Left, pos.Y), new ScreenPoint(extents.Right, pos.Y)},
+								trackerSettings.HorizontalLineColor,
+								trackerSettings.HorizontalLineWidth,
+								trackerSettings.HorizontalLineActualDashArray,
+								LineJoin.Miter,
+								true);
+						}
+						if (trackerSettings.VerticalLineVisible) {
+							renderContext.DrawLine (
+								new[] { new ScreenPoint(pos.X, extents.Top), new ScreenPoint(pos.X, extents.Bottom)},
+								trackerSettings.VerticalLineColor,
+								trackerSettings.VerticalLineWidth,
+								trackerSettings.VerticalLineActualDashArray,
+								LineJoin.Miter,
+								true);
+						}
 					}
 				}
             } catch (Exception paintException) {
