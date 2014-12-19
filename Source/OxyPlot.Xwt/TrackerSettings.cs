@@ -9,6 +9,12 @@ namespace OxyPlot.Xwt
 	public class TrackerSettings
 	{
 		/// <summary>
+		/// Gets or sets a value indicating whether the tracker is enabled.
+		/// </summary>
+		/// <value><c>true</c> if enabled; otherwise, <c>false</c>.</value>
+		public bool Enabled { get; set; }
+
+		/// <summary>
 		/// Gets or sets the background color.
 		/// </summary>
 		/// <value>The background color.</value>
@@ -100,6 +106,7 @@ namespace OxyPlot.Xwt
 
 		public TrackerSettings ()
 		{
+			Enabled = false;
 			Background = OxyColor.FromArgb (0x80, 0xFF, 0xFF, 0x00);
 			HorizontalLineColor = OxyColors.Black;
 			HorizontalLineWidth = 1.0;
