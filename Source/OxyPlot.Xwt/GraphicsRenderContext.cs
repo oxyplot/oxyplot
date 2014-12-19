@@ -259,7 +259,7 @@ namespace OxyPlot.Xwt
 
             Context.Translate (p.X, p.Y);
             if (Math.Abs (rotate) > double.Epsilon) {
-                Context.Rotate (rotate * Math.PI / 180.0);
+                Context.Rotate (rotate);
             }
 
             Context.Translate (dx, dy);
