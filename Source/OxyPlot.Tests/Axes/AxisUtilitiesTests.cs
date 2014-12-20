@@ -102,6 +102,19 @@ namespace OxyPlot.Tests
                 var values = Axis.CreateTickValues(0, Math.PI * 2, Math.PI);
                 CollectionAssert.AreEqual(new[] { 0, Math.PI, Math.PI * 2 }, values);
             }
+
+            /// <summary>
+            /// Ensures tick values are not including floating point error to such an extent that it would show up when printed 
+            /// </summary>
+            [Test]
+            public void FloatingPointAccumulation()
+            {
+                var values = Axis.CreateTickValues(0.58666699999999994, 0.9233, 0.05);
+                foreach (var val in values)
+                {
+                    Assert.LessOrEqual(string.Format("{0:}", val).Length, 4);
+                }
+            }
         }
     }
 }
