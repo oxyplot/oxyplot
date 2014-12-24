@@ -339,7 +339,7 @@ namespace OxyPlot.WindowsForms
                 this.stringFormat.LineAlignment = StringAlignment.Near;
                 var size = this.g.MeasureString(text, font, int.MaxValue, this.stringFormat);
 
-                return new MeasureRotatedRectangleBound(angle, size.Width, size.Height);
+                return RenderContextBase.MeasureRotatedRectangleBound(angle, size.Width, size.Height);
             }
         }
 

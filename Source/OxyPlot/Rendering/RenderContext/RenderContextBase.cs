@@ -280,12 +280,12 @@ namespace OxyPlot
         /// <param name="width">The rectangle width.</param>
         /// <param name="height">The rectangle height.</param>
         /// <returns>The size of a bound over rotated rectangle.</returns>
-        protected OxySize MeasureRotatedRectangleBound(double angle, double width, double height)
+        protected static OxySize MeasureRotatedRectangleBound(double angle, double width, double height)
         {
             angle = angle * Math.PI / 180.0;
 
-            double x = Math.Cos(angle) * width + Math.Sin(angle) * height;
-            double y = Math.Sin(angle) * width + Math.Cos(angle) * height;
+            double x = (Math.Cos(angle) * width) + (Math.Sin(angle) * height);
+            double y = (Math.Sin(angle) * width) + (Math.Cos(angle) * height);
 
             return new OxySize(Math.Abs(x), Math.Abs(y));
         }
