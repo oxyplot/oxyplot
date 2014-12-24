@@ -352,7 +352,7 @@ namespace OxyPlot.XamarinAndroid
                 float lineHeight, delta;
                 this.GetFontMetrics(this.paint, out lineHeight, out delta);
                 this.paint.GetTextBounds(text, 0, text.Length, this.bounds);
-                return MeasureRotatedRectangleBound(angle, this.bounds.Width() / this.Scale, lineHeight / this.Scale);
+                return this.MeasureRotatedRectangleBound(angle, this.bounds.Width() / this.Scale, lineHeight / this.Scale);
             }
         }
 

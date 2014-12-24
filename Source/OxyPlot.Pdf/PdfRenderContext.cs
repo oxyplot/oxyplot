@@ -347,7 +347,7 @@ namespace OxyPlot.Pdf
             size.Height *= 0.5;
 #endif
 
-            return MeasureRotatedRectangleBound(angle, size.Width, size.Height);
+            return this.MeasureRotatedRectangleBound(angle, size.Width, size.Height);
         }
 
         /// <summary>

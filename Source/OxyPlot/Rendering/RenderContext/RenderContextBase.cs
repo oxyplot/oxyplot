@@ -274,23 +274,6 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Turns the rectangle clockwise by given angle and computes new rectangle bound over it.
-        /// </summary>
-        /// <param name="angle">Angle measured in degrees.</param>
-        /// <param name="width">The rectangle width.</param>
-        /// <param name="height">The rectangle height.</param>
-        /// <returns>The size of a bound over rotated rectangle.</returns>
-        protected static OxySize MeasureRotatedRectangleBound(double angle, double width, double height)
-        {
-            angle = angle * Math.PI / 180.0;
-
-            double x = (Math.Cos(angle) * width) + (Math.Sin(angle) * height);
-            double y = (Math.Sin(angle) * width) + (Math.Cos(angle) * height);
-
-            return new OxySize(Math.Abs(x), Math.Abs(y));
-        }
-
-        /// <summary>
         /// Creates an ellipse polygon.
         /// </summary>
         /// <param name="rect">The bounding rectangle.</param>

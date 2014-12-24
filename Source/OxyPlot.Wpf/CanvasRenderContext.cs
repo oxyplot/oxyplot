@@ -632,14 +632,9 @@ namespace OxyPlot.Wpf
                 tb.FontWeight = GetFontWeight(fontWeight);
             }
 
-            if (angle != 0)
-            {
-                tb.LayoutTransform = new RotateTransform(angle);
-            }
-
             tb.Measure(new Size(1000, 1000));
 
-            return new OxySize(tb.DesiredSize.Width, tb.DesiredSize.Height);
+            return this.MeasureRotatedRectangleBound(angle, tb.DesiredSize.Width, tb.DesiredSize.Height);
         }
 
         /// <summary>

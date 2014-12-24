@@ -335,7 +335,7 @@ namespace OxyPlot
             double width, height;
             this.doc.MeasureText(text, out width, out height);
 
-            return RenderContextBase.MeasureRotatedRectangleBound(angle, width, height);
+            return this.MeasureRotatedRectangleBound(angle, width, height);
         }
 
         /// <summary>

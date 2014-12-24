@@ -379,7 +379,7 @@ namespace OxyPlot.Xamarin.Mac
                     var bounds = textLine.GetImageBounds (this.gctx);
                     var width = bounds.Left + bounds.Width;
 
-                    return MeasureRotatedRectangleBound(angle, width, lineHeight);
+                    return this.MeasureRotatedRectangleBound(angle, width, lineHeight);
                 }
             }
         }

@@ -394,7 +394,7 @@ namespace OxyPlot.Xamarin.iOS
                     this.GetFontMetrics(font, out lineHeight, out delta);
                     this.gctx.TextPosition = new CGPoint(0, 0);
                     var bounds = textLine.GetImageBounds(this.gctx);
-                    return MeasureRotatedRectangleBound(angle, bounds.Left + bounds.Width, lineHeight);
+                    return this.MeasureRotatedRectangleBound(angle, bounds.Left + bounds.Width, lineHeight);
                 }
             }
         }
