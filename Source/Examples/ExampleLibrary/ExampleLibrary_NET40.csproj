@@ -85,6 +85,7 @@
     <Compile Include="Series\BarAndColumnSeriesExamples.cs" />
     <Compile Include="Series\BarSeriesExamples.cs" />
     <Compile Include="Series\ColumnSeriesExamples.cs" />
+    <Compile Include="Series\TwoColorAreaSeriesExamples.cs" />
     <Compile Include="Series\ErrorColumnSeriesExamples.cs" />
     <Compile Include="Examples\RenderingCapabilities.cs" />
     <Compile Include="Series\ScatterErrorSeriesExamples.cs" />
