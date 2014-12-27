@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TwoColorLineSeries.cs" company="OxyPlot">
+// <copyright file="TwoColorAreaSeries.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Represents a two-color line series.
+//   Represents a two-color area series.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -21,23 +21,13 @@ namespace OxyPlot.Series
         /// <summary>
         /// The second list of points representing limit line.
         /// </summary>
-        private readonly List<DataPoint> points2 = new List<DataPoint>();
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the second
-        /// data collection should be reversed.
-        /// The first dataset is not reversed, and normally
-        /// the second dataset should be reversed to get a
-        /// closed polygon.
-        /// </summary>
-        //private bool reverse2 = true;
+        private readonly List<DataPoint> points2 = new List<DataPoint>();   
 
         /// <summary>
         /// Initializes a new instance of the <see cref = "TwoColorAreaSeries" /> class.
         /// </summary>
         public TwoColorAreaSeries()
-        {
-            //this.reverse2 = true;
+        {            
             this.Fill = OxyColors.Automatic;
             this.Fill2 = OxyColors.Automatic;
 
@@ -48,13 +38,13 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets or sets the area fill color above the limit line.
         /// </summary>
-        /// <value>The fill.</value>
+        /// <value>The fill above the limit line.</value>
         public OxyColor Fill { get; set; }
 
         /// <summary>
         /// Gets or sets the area fill color below the limit line.
         /// </summary>
-        /// <value>The fill.</value>
+        /// <value>The fill below the limit line.</value>
         public OxyColor Fill2 { get; set; }
 
         /// <summary>
@@ -89,18 +79,17 @@ namespace OxyPlot.Series
         public OxyColor MarkerFill2 { get; set; }
 
         /// <summary>
-        /// Gets or sets the marker stroke which is belove the limit line. The default is <c>OxyColors.Automatic</c>.
+        /// Gets or sets the marker stroke which is below the limit line. The default is <c>OxyColors.Automatic</c>.
         /// </summary>
         /// <value>The marker stroke.</value>
         public OxyColor MarkerStroke2 { get; set; }
-
 
 
         /// <summary>
         /// Gets the nearest point.
         /// </summary>
         /// <param name="point">The point.</param>
-        /// <param name="interpolate">interpolate if set to <c>true</c> .</param>
+        /// <param name="interpolate">Interpolate if set to <c>true</c> .</param>
         /// <returns>A TrackerHitResult for the current hit.</returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
@@ -184,9 +173,7 @@ namespace OxyPlot.Series
 
             var dashArray = this.ActualDashArray;
             var dashArray2 = this.ActualDashArray2;
-
-
-            //var lineColor = OxyColor.FromRgb(120, 20, 13);
+            
 
             var limit = this.YAxis.Transform(this.Limit);
 
@@ -202,13 +189,7 @@ namespace OxyPlot.Series
             }
 
 
-
-            var markerSizes = new[] { this.MarkerSize };
-
-            // combine the two lines and draw the clipped area
-            var pts = new List<ScreenPoint>();
-            pts.AddRange(pts1);
-            pts.AddRange(pts0);
+            var markerSizes = new[] { this.MarkerSize };            
 
 
             var bottom = clippingRect.Bottom;
@@ -227,6 +208,11 @@ namespace OxyPlot.Series
                 dashArray2,
                 this.LineJoin,
                 false);
+
+            // combine the two lines and draw the clipped area
+            var pts = new List<ScreenPoint>();
+            pts.AddRange(pts1);
+            pts.AddRange(pts0);
 
             //fill the area belove the limit line
             rc.DrawClippedPolygon(clippingRect, pts, minDistSquared, this.GetSelectableFillColor(this.ActuallFill2), OxyColors.Undefined);
@@ -311,6 +297,7 @@ namespace OxyPlot.Series
         {
             base.UpdateData();
 
+            //update points from the limit line
             if (this.ActualPoints != null && this.ActualPoints.Count > 1)
             {
                 this.points2.Clear();
@@ -321,12 +308,7 @@ namespace OxyPlot.Series
             if (this.ItemsSource == null)
             {
                 return;
-            }
-
-            //this.itemsSourcePoints2.Clear();
-
-            // Using reflection on DataFieldX2 and DataFieldY2
-            //ReflectionExtensions.AddRange(this.itemsSourcePoints2, this.ItemsSource, this.DataFieldX2, this.DataFieldY2);
+            }            
         }
 
         /// <summary>
