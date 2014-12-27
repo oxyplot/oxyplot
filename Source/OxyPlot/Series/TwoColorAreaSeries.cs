@@ -17,7 +17,6 @@ namespace OxyPlot.Series
     /// </summary>
     public class TwoColorAreaSeries : TwoColorLineSeries
     {
-
         /// <summary>
         /// The second list of points representing limit line.
         /// </summary>
@@ -71,7 +70,6 @@ namespace OxyPlot.Series
             }
         }
 
-
         /// <summary>
         /// Gets or sets the marker fill color which is below the limit line. The default is <see cref="OxyColors.Automatic" />.
         /// </summary>
@@ -83,7 +81,6 @@ namespace OxyPlot.Series
         /// </summary>
         /// <value>The marker stroke.</value>
         public OxyColor MarkerStroke2 { get; set; }
-
 
         /// <summary>
         /// Gets the nearest point.
@@ -135,19 +132,15 @@ namespace OxyPlot.Series
                 return;
             }
 
-
             this.VerifyAxes();
 
             double minDistSquared = this.MinimumSegmentLength * this.MinimumSegmentLength;
-
 
             var clippingRect = this.GetClippingRect();
 
             rc.SetClip(clippingRect);
 
-
             // Transform all points to screen coordinates
-
             IList<ScreenPoint> pts0 = new List<ScreenPoint>();
 
             for (int i = 0; i < n0; i++)
@@ -168,15 +161,16 @@ namespace OxyPlot.Series
             {
                 var rpts0 = ScreenPointHelper.ResamplePoints(pts0, this.MinimumSegmentLength);
 
+                // var rpts1 = ScreenPointHelper.ResamplePoints(pts1, this.MinimumSegmentLength);
                 pts0 = CanonicalSplineHelper.CreateSpline(rpts0, 0.5, null, false, 0.25);
+                
+                // pts1 = CanonicalSplineHelper.CreateSpline(rpts1, 0.5, null, false, 0.25);                
             }
 
             var dashArray = this.ActualDashArray;
             var dashArray2 = this.ActualDashArray2;
             
-
             var limit = this.YAxis.Transform(this.Limit);
-
 
             if (limit < clippingRect.Top)
             {
@@ -188,17 +182,14 @@ namespace OxyPlot.Series
                 limit = clippingRect.Bottom;
             }
 
-
             var markerSizes = new[] { this.MarkerSize };            
-
 
             var bottom = clippingRect.Bottom;
             var top = clippingRect.Top;
 
             clippingRect.Top = limit;
 
-
-            //draw the clipped lines belove the limit line 
+            // draw the clipped lines belove the limit line 
             rc.DrawClippedLine(
                 clippingRect,
                 pts0,
@@ -214,11 +205,10 @@ namespace OxyPlot.Series
             pts.AddRange(pts1);
             pts.AddRange(pts0);
 
-            //fill the area belove the limit line
+            // fill the area belove the limit line
             rc.DrawClippedPolygon(clippingRect, pts, minDistSquared, this.GetSelectableFillColor(this.ActuallFill2), OxyColors.Undefined);
 
-
-            //draw the markers on line belove the limit line
+            // draw the markers on line belove the limit line
             rc.DrawMarkers(
                 clippingRect,
                 pts0,
@@ -230,13 +220,10 @@ namespace OxyPlot.Series
                 this.MarkerStrokeThickness,
                 1);
 
-
-
             clippingRect.Top = top;
             clippingRect.Bottom = limit;
 
-
-            //draw the clipped lines above the limit line
+            // draw the clipped lines above the limit line
             rc.DrawClippedLine(
                 clippingRect,
                 pts0,
@@ -247,11 +234,10 @@ namespace OxyPlot.Series
                 this.LineJoin,
                 false);
 
-            //fill the area above the limit line
+            // fill the area above the limit line
             rc.DrawClippedPolygon(clippingRect, pts, minDistSquared, this.GetSelectableFillColor(this.ActualFill), OxyColors.Undefined);
 
-
-            //draw the markers on line above the limit line
+            // draw the markers on line above the limit line
             rc.DrawMarkers(
                 clippingRect,
                 pts0,
@@ -263,9 +249,7 @@ namespace OxyPlot.Series
                 this.MarkerStrokeThickness,
                 1);
 
-
             rc.ResetClip();
-
         }
 
         /// <summary>
@@ -297,7 +281,7 @@ namespace OxyPlot.Series
         {
             base.UpdateData();
 
-            //update points from the limit line
+            // update points from the limit line
             if (this.ActualPoints != null && this.ActualPoints.Count > 1)
             {
                 this.points2.Clear();
