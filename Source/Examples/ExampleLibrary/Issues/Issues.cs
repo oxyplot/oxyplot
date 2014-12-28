@@ -770,7 +770,7 @@ namespace ExampleLibrary
             createAxis(AxisPosition.Right);
             createAxis(AxisPosition.Top);
 
-            var textAnnotation = new TextAnnotation() { Text = "Hold mouse to increase angle", TextPosition = new DataPoint(0, 5), TextHorizontalAlignment = HorizontalAlignment.Left, TextVerticalAlignment = VerticalAlignment.Top };
+            var textAnnotation = new TextAnnotation() { Text = "Hold mouse button here to increase angle", TextPosition = new DataPoint(0, 6), TextHorizontalAlignment = HorizontalAlignment.Left, TextVerticalAlignment = VerticalAlignment.Top };
             plotModel1.Annotations.Add(textAnnotation);
             bool? stopTask = null;
 
