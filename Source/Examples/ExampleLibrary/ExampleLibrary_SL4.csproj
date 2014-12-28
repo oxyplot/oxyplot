@@ -130,6 +130,7 @@
     <Compile Include="Series\StemSeriesExamples.cs" />
     <Compile Include="Axes\TimeSpanAxisExamples.cs" />
     <Compile Include="Examples\TrackerExamples.cs" />
+	<Compile Include="Series\TwoColorAreaSeriesExamples.cs" />
     <Compile Include="Series\TwoColorLineSeriesExamples.cs" />
     <Compile Include="Misc\XkcdExamples.cs" />
     <Compile Include="Utilities\Sun.cs" />
