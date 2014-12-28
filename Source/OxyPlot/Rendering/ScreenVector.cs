@@ -100,6 +100,17 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Implements the subtraction operator.
+        /// </summary>
+        /// <param name="v">The vector to subtract from.</param>
+        /// <param name="d">The vector to be subtracted.</param>
+        /// <returns>The result of operation.</returns>
+        public static ScreenVector operator -(ScreenVector v, ScreenVector d)
+        {
+            return new ScreenVector(v.x - d.x, v.y - d.y);
+        }
+
+        /// <summary>
         /// Normalizes this vector.
         /// </summary>
         public void Normalize()
