@@ -305,6 +305,7 @@
     <Compile Include="Series\StairStepSeries.cs" />
     <Compile Include="Series\ScatterSeries.cs" />
     <Compile Include="Series\TwoColorLineSeries.cs" />
+	<Compile Include="Series\TwoColorAreaSeries.cs" />
     <Compile Include="Series\XYAxisSeries.cs" />
     <Compile Include="Series\PieSeries.cs" />
     <Compile Include="Series\FunctionSeries.cs" />

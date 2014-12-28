@@ -150,6 +150,7 @@
     <Compile Include="Series\ScatterErrorPoint.cs" />
     <Compile Include="Series\ScatterErrorSeries.cs" />
     <Compile Include="Series\ScatterSeries{T}.cs" />
+    <Compile Include="Series\TwoColorAreaSeries.cs" />
     <Compile Include="Utilities\ArrayExtensions.cs" />
     <Compile Include="Utilities\HashCodeBuilder.cs" />
     <Compile Include="Utilities\ReflectionPath.cs" />
