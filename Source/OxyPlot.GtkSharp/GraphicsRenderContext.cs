@@ -321,8 +321,9 @@ namespace OxyPlot.GtkSharp
         /// <param name="fontFamily">The font family.</param>
         /// <param name="fontSize">The font size.</param>
         /// <param name="fontWeight">The font weight.</param>
+        /// <param name="angle">The text angle.</param>
         /// <returns>The size of the text.</returns>
-        public override OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
+        public override OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight, double angle = 0)
         {
             if (text == null)
             {
@@ -336,7 +337,8 @@ namespace OxyPlot.GtkSharp
             this.g.SelectFontFace(fontFamily, FontSlant.Normal, fs);
             var size = this.g.TextExtents(text);
             this.g.Restore();
-            return new OxySize(size.Width, size.Height);
+
+            return this.MeasureRotatedRectangleBound(angle, size.Width, size.Height);
         }
 
         /// <summary>

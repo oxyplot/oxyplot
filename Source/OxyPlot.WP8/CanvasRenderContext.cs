@@ -492,8 +492,9 @@ namespace OxyPlot.WP8
         /// <param name="fontFamily">The font family.</param>
         /// <param name="fontSize">Size of the font.</param>
         /// <param name="fontWeight">The font weight.</param>
+        /// <param name="angle">The text angle.</param>
         /// <returns>The text size.</returns>
-        public OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
+        public OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight, double angle = 0)
         {
             if (string.IsNullOrEmpty(text))
             {
@@ -516,7 +517,7 @@ namespace OxyPlot.WP8
 
             tb.Measure(new Size(1000, 1000));
 
-            return new OxySize(tb.ActualWidth, tb.ActualHeight);
+            return this.MeasureRotatedRectangleBound(angle, tb.ActualWidth, tb.ActualHeight);
         }
 
         /// <summary>

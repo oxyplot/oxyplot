@@ -327,13 +327,15 @@ namespace OxyPlot
         /// <param name="fontFamily">The font family.</param>
         /// <param name="fontSize">Size of the font.</param>
         /// <param name="fontWeight">The font weight.</param>
+        /// <param name="angle">The text angle.</param>
         /// <returns>The text size.</returns>
-        public override OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
+        public override OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight, double angle = 0)
         {
             this.doc.SetFont(fontFamily, fontSize / 96 * 72, fontWeight > 500);
             double width, height;
             this.doc.MeasureText(text, out width, out height);
-            return new OxySize(width, height);
+
+            return this.MeasureRotatedRectangleBound(angle, width, height);
         }
 
         /// <summary>

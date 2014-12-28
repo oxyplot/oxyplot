@@ -866,6 +866,30 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Rotates the rectangle clockwise by given angle and computes new rectangle bound over it.
+        /// </summary>
+        /// <param name="rc">The render context.</param>
+        /// <param name="angle">Angle measured in degrees.</param>
+        /// <param name="width">The rectangle width.</param>
+        /// <param name="height">The rectangle height.</param>
+        /// <returns>The size of a bound over rotated rectangle.</returns>
+        public static OxySize MeasureRotatedRectangleBound(this IRenderContext rc, double angle, double width, double height)
+        {
+            // If angle is default value - compute nothing.
+            if (angle == 0)
+            {
+                return new OxySize(width, height);
+            }
+
+            angle = angle * Math.PI / 180.0;
+
+            double x = (Math.Cos(angle) * width) + (Math.Sin(angle) * height);
+            double y = (Math.Sin(angle) * width) + (Math.Cos(angle) * height);
+
+            return new OxySize(Math.Abs(x), Math.Abs(y));
+        }
+
+        /// <summary>
         /// Adds a marker geometry.
         /// </summary>
         /// <param name="p">The position of the marker.</param>
