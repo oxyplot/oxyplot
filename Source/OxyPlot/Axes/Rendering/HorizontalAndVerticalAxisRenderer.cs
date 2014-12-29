@@ -219,52 +219,6 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Gets the alignments given the specified rotation angle.
-        /// </summary>
-        /// <param name="angle">The angle.</param>
-        /// <param name="defaultHorizontalAlignment">The default horizontal alignment.</param>
-        /// <param name="defaultVerticalAlignment">The default vertical alignment.</param>
-        /// <param name="ha">The rotated horizontal alignment.</param>
-        /// <param name="va">The rotated vertical alignment.</param>
-        protected virtual void GetRotatedAlignments(
-            double angle,
-            HorizontalAlignment defaultHorizontalAlignment,
-            VerticalAlignment defaultVerticalAlignment,
-            out HorizontalAlignment ha,
-            out VerticalAlignment va)
-        {
-            ha = defaultHorizontalAlignment;
-            va = defaultVerticalAlignment;
-
-            Debug.Assert(angle <= 180 && angle >= -180, "Axis angle should be in the interval [-180,180] degrees.");
-
-            if (angle > -45 && angle < 45)
-            {
-                return;
-            }
-
-            if (angle > 135 || angle < -135)
-            {
-                ha = (HorizontalAlignment)(-(int)defaultHorizontalAlignment);
-                va = (VerticalAlignment)(-(int)defaultVerticalAlignment);
-                return;
-            }
-
-            if (angle > 45)
-            {
-                ha = (HorizontalAlignment)((int)defaultVerticalAlignment);
-                va = (VerticalAlignment)(-(int)defaultHorizontalAlignment);
-                return;
-            }
-
-            if (angle < -45)
-            {
-                ha = (HorizontalAlignment)(-(int)defaultVerticalAlignment);
-                va = (VerticalAlignment)((int)defaultHorizontalAlignment);
-            }
-        }
-
-        /// <summary>
         /// Renders the axis title.
         /// </summary>
         /// <param name="axis">The axis.</param>
@@ -421,39 +375,19 @@ namespace OxyPlot.Axes
                 {
                     case AxisPosition.Left:
                         pt = new ScreenPoint(axisPosition + a1 - axis.AxisTickToLabelDistance, transformedValue);
-                        this.GetRotatedAlignments(
-                            axis.Angle,
-                            HorizontalAlignment.Right,
-                            VerticalAlignment.Middle,
-                            out ha,
-                            out va);
+                        ha = axis.Angle >= -90 && axis.Angle < 90 ? HorizontalAlignment.Right : HorizontalAlignment.Left;
                         break;
                     case AxisPosition.Right:
                         pt = new ScreenPoint(axisPosition + a1 + axis.AxisTickToLabelDistance, transformedValue);
-                        this.GetRotatedAlignments(
-                            axis.Angle,
-                            HorizontalAlignment.Left,
-                            VerticalAlignment.Middle,
-                            out ha,
-                            out va);
+                        ha = axis.Angle >= -90 && axis.Angle < 90 ? HorizontalAlignment.Left : HorizontalAlignment.Right;
                         break;
                     case AxisPosition.Top:
                         pt = new ScreenPoint(transformedValue, axisPosition + a1 - axis.AxisTickToLabelDistance);
-                        this.GetRotatedAlignments(
-                            axis.Angle,
-                            HorizontalAlignment.Center,
-                            VerticalAlignment.Bottom,
-                            out ha,
-                            out va);
+                        ha = axis.Angle >= 0 ? HorizontalAlignment.Right : HorizontalAlignment.Left;
                         break;
                     case AxisPosition.Bottom:
                         pt = new ScreenPoint(transformedValue, axisPosition + a1 + axis.AxisTickToLabelDistance);
-                        this.GetRotatedAlignments(
-                            axis.Angle,
-                            HorizontalAlignment.Center,
-                            VerticalAlignment.Top,
-                            out ha,
-                            out va);
+                        ha = axis.Angle >= 0 ? HorizontalAlignment.Left : HorizontalAlignment.Right;
                         break;
                 }
 
