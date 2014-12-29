@@ -188,6 +188,7 @@ namespace OxyPlot.Series
             var top = clippingRect.Top;
 
             clippingRect.Top = limit;
+            clippingRect.Height = bottom - limit;
 
             // draw the clipped lines belove the limit line 
             rc.DrawClippedLine(
