@@ -869,7 +869,7 @@ namespace OxyPlot.Axes
             foreach (double v in majorLabelValues)
             {
                 string s = this.FormatValue(v);
-                var size = rc.MeasureText(s, this.ActualFont, this.ActualFontSize, this.ActualFontWeight);
+                var size = rc.MeasureText(s, this.ActualFont, this.ActualFontSize, this.ActualFontWeight, this.Angle);
                 if (size.Width > maximumTextSize.Width)
                 {
                     maximumTextSize.Width = size.Width;

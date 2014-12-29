@@ -10,6 +10,7 @@
 namespace ExampleLibrary
 {
     using System;
+    using System.Threading;
     using System.Collections.Generic;
 
     using OxyPlot;
@@ -745,6 +746,59 @@ namespace ExampleLibrary
             var plotModel1 = new PlotModel { Title = "Plot margins not adjusted correctly when Angle = 90", Subtitle = "The numbers should not be clipped" };
             plotModel1.Axes.Add(new DateTimeAxis { Position = AxisPosition.Bottom, Angle = 90 });
             plotModel1.Axes.Add(new DateTimeAxis { Position = AxisPosition.Left, Angle = 90 });
+            return plotModel1;
+        }
+
+        [Example("Wrong label placement for category axis when Angle = 45")]
+        public static PlotModel LabelPlacementCategoryAxisWhenAxisAngleIs45()
+        {
+            var plotModel1 = new PlotModel { Title = "Wrong label placement for category axis when Angle = 45", Subtitle = "The labels should not be clipped. Click on text annotation to change tha angle." };
+
+            Action<AxisPosition> createAxis = (AxisPosition position) =>
+            {
+                var categoryAxis = new CategoryAxis() { Position = position, Angle = 45 };
+
+                categoryAxis.Labels.Add("Very looooong and big label");
+                categoryAxis.Labels.Add("Very looooong and big label");
+                categoryAxis.Labels.Add("Very looooong and big label");
+                categoryAxis.Labels.Add("Very looooong and big label");
+                plotModel1.Axes.Add(categoryAxis);
+            };
+
+            createAxis(AxisPosition.Bottom);
+            createAxis(AxisPosition.Left);
+            createAxis(AxisPosition.Right);
+            createAxis(AxisPosition.Top);
+
+            var textAnnotation = new TextAnnotation() { Text = "Hold mouse button here to increase angle", TextPosition = new DataPoint(0, 6), TextHorizontalAlignment = HorizontalAlignment.Left, TextVerticalAlignment = VerticalAlignment.Top };
+            plotModel1.Annotations.Add(textAnnotation);
+            bool? stopTask = null;
+
+
+            Timer t = new Timer(o =>
+            {
+                // Angles are the same for all axes.
+                double angle = 0;
+
+                foreach (var axis in plotModel1.Axes)
+                {
+                    angle = (axis.Angle + 181) % 360 - 180;
+                    axis.Angle = angle;
+                }
+
+                plotModel1.Subtitle = string.Format("Current angle is {0}", angle);
+                plotModel1.InvalidatePlot(false);
+            }, null, -1, 50);
+
+            textAnnotation.MouseDown += (o, e) => { t.Change(0, 50); };
+            plotModel1.MouseUp += (o, e) => { t.Change(-1, 50); };
+
+            var columnSeries = new ColumnSeries();
+            columnSeries.Items.Add(new ColumnItem(5));
+            columnSeries.Items.Add(new ColumnItem(3));
+            columnSeries.Items.Add(new ColumnItem(7));
+            columnSeries.Items.Add(new ColumnItem(2));
+            plotModel1.Series.Add(columnSeries);
             return plotModel1;
         }
 

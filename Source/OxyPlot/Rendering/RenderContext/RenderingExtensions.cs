@@ -866,6 +866,22 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Measures the size of the specified text.
+        /// </summary>
+        /// <param name="rc">The render context.</param>
+        /// <param name="text">The text.</param>
+        /// <param name="fontFamily">The font family.</param>
+        /// <param name="fontSize">Size of the font (in device independent units, 1/96 inch).</param>
+        /// <param name="fontWeight">The font weight.</param>
+        /// <param name="angle">The angle of measured text (degrees).</param>
+        /// <returns>The size of the text (in device independent units, 1/96 inch).</returns>
+        public static OxySize MeasureText(this IRenderContext rc, string text, string fontFamily, double fontSize, double fontWeight, double angle)
+        {
+            var bounds = rc.MeasureText(text, fontFamily, fontSize, fontWeight);
+            return MeasureRotatedRectangleBound(bounds, angle);
+        } 
+
+        /// <summary>
         /// Adds a marker geometry.
         /// </summary>
         /// <param name="p">The position of the marker.</param>
@@ -1043,6 +1059,18 @@ namespace OxyPlot
                 pts.Add(new ScreenPoint(pts[0].X + 1, pts[0].Y));
                 pts[0] = new ScreenPoint(pts[0].X - 1, pts[0].Y);
             }
+        }
+
+        /// <summary>
+        /// Calculates the bounds with respect to rotation angle and horizontal/vertical alignment.
+        /// </summary>
+        /// <param name="bounds">The size of the object to calculate bounds for.</param>
+        /// <param name="angle">The rotation angle (degrees).</param>
+        /// <returns>A minimum bounding rectangle.</returns>
+        private static OxySize MeasureRotatedRectangleBound(OxySize bounds, double angle)
+        {
+            var oxyRect = bounds.GetBounds(angle, HorizontalAlignment.Center, VerticalAlignment.Middle);
+            return new OxySize(oxyRect.Width, oxyRect.Height);
         }
     }
 }
