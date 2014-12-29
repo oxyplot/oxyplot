@@ -375,19 +375,23 @@ namespace OxyPlot.Axes
                 {
                     case AxisPosition.Left:
                         pt = new ScreenPoint(axisPosition + a1 - axis.AxisTickToLabelDistance, transformedValue);
-                        ha = axis.Angle >= -90 && axis.Angle < 90 ? HorizontalAlignment.Right : HorizontalAlignment.Left;
+                        this.GetRotatedAlignments(axis.Angle, -90, out ha, out va);
+
                         break;
                     case AxisPosition.Right:
                         pt = new ScreenPoint(axisPosition + a1 + axis.AxisTickToLabelDistance, transformedValue);
-                        ha = axis.Angle >= -90 && axis.Angle < 90 ? HorizontalAlignment.Left : HorizontalAlignment.Right;
+                        this.GetRotatedAlignments(axis.Angle, 90, out ha, out va);
+
                         break;
                     case AxisPosition.Top:
                         pt = new ScreenPoint(transformedValue, axisPosition + a1 - axis.AxisTickToLabelDistance);
-                        ha = axis.Angle >= 0 ? HorizontalAlignment.Right : HorizontalAlignment.Left;
+                        this.GetRotatedAlignments(axis.Angle, 0, out ha, out va);
+
                         break;
                     case AxisPosition.Bottom:
                         pt = new ScreenPoint(transformedValue, axisPosition + a1 + axis.AxisTickToLabelDistance);
-                        ha = axis.Angle >= 0 ? HorizontalAlignment.Left : HorizontalAlignment.Right;
+                        this.GetRotatedAlignments(axis.Angle, -180, out ha, out va);
+
                         break;
                 }
 
@@ -582,6 +586,50 @@ namespace OxyPlot.Axes
             if (this.MinorTickPen != null)
             {
                 this.RenderContext.DrawLineSegments(minorTickSegments, this.MinorTickPen);
+            }
+        }
+
+        /// <summary>
+        /// Gets the alignments given the specified rotation angle.
+        /// </summary>
+        /// <param name="angle">The angle.</param>
+        /// <param name="axisAngle">The axis angle, the original angle belongs to.</param>
+        /// <param name="ha">Horizontal alignment.</param>
+        /// <param name="va">Vertical alignment.</param>
+        private void GetRotatedAlignments(
+            double angle,
+            double axisAngle,
+            out HorizontalAlignment ha,
+            out VerticalAlignment va)
+        {
+            const double AngleTolerance = 10;
+
+            double flippedAxisAngle = ((axisAngle + 360) % 360) - 180;
+
+            ha = angle >= Math.Min(axisAngle, flippedAxisAngle) && angle < Math.Max(axisAngle, flippedAxisAngle) ? HorizontalAlignment.Left : HorizontalAlignment.Right;
+            va = VerticalAlignment.Middle;
+
+            // If the angle of axis is flipped - flip the horizontal alignment
+            if (axisAngle < 0)
+            {
+                ha = (HorizontalAlignment)((int)ha * -1);
+            }
+
+            // If the angle almost the same as axisAngle - set horizontal alignment to Center
+            if (Math.Abs(angle - flippedAxisAngle) < AngleTolerance || Math.Abs(angle - axisAngle) < AngleTolerance)
+            {
+                ha = HorizontalAlignment.Center;
+            }
+
+            // And vertical alignment according to whether it is near to axisAngle or flippedAxisAngle
+            if (Math.Abs(angle - axisAngle) < AngleTolerance)
+            {
+                va = VerticalAlignment.Bottom;
+            }
+
+            if (Math.Abs(angle - flippedAxisAngle) < AngleTolerance)
+            {
+                va = VerticalAlignment.Top;
             }
         }
     }
