@@ -749,7 +749,7 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
-        [Example("Wrong label placement for category axis when Angle = 45")]
+        [Example("#301: Wrong label placement for category axis when Angle = 45 (closed)")]
         public static PlotModel LabelPlacementCategoryAxisWhenAxisAngleIs45()
         {
             var plotModel1 = new PlotModel { Title = "Wrong label placement for category axis when Angle = 45", Subtitle = "The labels should not be clipped. Click on text annotation to change tha angle." };
