@@ -12,6 +12,7 @@ namespace OxyPlot.Axes
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Linq;
 
     /// <summary>
     /// Provides functionality to render horizontal and vertical axes.
@@ -592,42 +593,59 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Gets the alignments given the specified rotation angle.
         /// </summary>
-        /// <param name="angle">The angle.</param>
-        /// <param name="axisAngle">The axis angle, the original angle belongs to.</param>
+        /// <param name="boxAngle">The angle of a box to rotate (usually it is label angle).</param>
+        /// <param name="axisAngle">
+        /// The axis angle, the original angle belongs to. The Top axis should have 0, next angles are computed clockwise. 
+        /// The angle should be in [-180, 180). (T, R, B, L) is (0, 90, -180, -90). 
+        /// </param>
         /// <param name="ha">Horizontal alignment.</param>
         /// <param name="va">Vertical alignment.</param>
+        /// <remarks>
+        /// This method is supposed to compute the alignment of the labels that are put near axis. 
+        /// Because such labels can have different angles, and the axis can have different angles as well,
+        /// computing the alignment is not straightforward.
+        /// </remarks>
         private void GetRotatedAlignments(
-            double angle,
+            double boxAngle,
             double axisAngle,
             out HorizontalAlignment ha,
             out VerticalAlignment va)
         {
-            const double AngleTolerance = 10;
+            const double AngleTolerance = 10.0;
 
-            double flippedAxisAngle = ((axisAngle + 360) % 360) - 180;
+            Debug.Assert(new[] { 0.0, 90.0, -180.0, -90.0 }.Contains(axisAngle), "The axis angles should be one of 0, 90, -180, -90");
 
-            ha = angle >= Math.Min(axisAngle, flippedAxisAngle) && angle < Math.Max(axisAngle, flippedAxisAngle) ? HorizontalAlignment.Left : HorizontalAlignment.Right;
-            va = VerticalAlignment.Middle;
+            // The axis angle if it would have been turned on 180 and leave it in [-180, 180)
+            double flippedAxisAngle = ((axisAngle + 360.0) % 360.0) - 180.0;
 
-            // If the angle of axis is flipped - flip the horizontal alignment
+            // When the box (assuming the axis and box have the same angle) box starts to turn clockwise near the axis
+            // It leans on the right until it gets to 180 rotation, when it is started to lean on the left.
+            // In real computation we need to compute this in relation with axisAngle
+            // So if axisAngle <= boxAngle < (axisAngle + 180), we align Right, else - left.
+            // The check looks inverted because flippedAxisAngle has the opposite sign.
+            ha = boxAngle >= Math.Min(axisAngle, flippedAxisAngle) && boxAngle < Math.Max(axisAngle, flippedAxisAngle) ? HorizontalAlignment.Left : HorizontalAlignment.Right;
+
+            // If axisAngle was < 0, we need to shift the previous computation on 180.
             if (axisAngle < 0)
             {
                 ha = (HorizontalAlignment)((int)ha * -1);
             }
 
-            // If the angle almost the same as axisAngle - set horizontal alignment to Center
-            if (Math.Abs(angle - flippedAxisAngle) < AngleTolerance || Math.Abs(angle - axisAngle) < AngleTolerance)
+            va = VerticalAlignment.Middle;
+
+            // If the angle almost the same as axisAngle (or axisAngle + 180) - set horizontal alignment to Center
+            if (Math.Abs(boxAngle - flippedAxisAngle) < AngleTolerance || Math.Abs(boxAngle - axisAngle) < AngleTolerance)
             {
                 ha = HorizontalAlignment.Center;
             }
 
             // And vertical alignment according to whether it is near to axisAngle or flippedAxisAngle
-            if (Math.Abs(angle - axisAngle) < AngleTolerance)
+            if (Math.Abs(boxAngle - axisAngle) < AngleTolerance)
             {
                 va = VerticalAlignment.Bottom;
             }
 
-            if (Math.Abs(angle - flippedAxisAngle) < AngleTolerance)
+            if (Math.Abs(boxAngle - flippedAxisAngle) < AngleTolerance)
             {
                 va = VerticalAlignment.Top;
             }
