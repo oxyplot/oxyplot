@@ -2,7 +2,7 @@
   branches:
     only:
       - master
-  version: 2014.1.{build}
+  version: 2015.1.{build}
   environment:
     nuget_api_key:
       secure: kM3Kse+ivuuE5RVoe6dPdw+aguWx56K2YeXujGa9tMPQTms3lv7QxNpTLFMALYNa
@@ -48,9 +48,9 @@
   branches:
     only:
       - develop
-  version: 2014.1.{build}-alpha
+  version: 2015.1.{build}-alpha
   environment:
-    version: 2014.1.%APPVEYOR_BUILD_NUMBER%
+    version: 2015.1.%APPVEYOR_BUILD_NUMBER%
     nuget_api_key:
       secure: kM3Kse+ivuuE5RVoe6dPdw+aguWx56K2YeXujGa9tMPQTms3lv7QxNpTLFMALYNa
     ftp_user:
