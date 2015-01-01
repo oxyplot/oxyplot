@@ -12,6 +12,7 @@ namespace OxyPlot.Axes
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Linq;
 
     /// <summary>
     /// Provides functionality to render horizontal and vertical axes.
@@ -219,52 +220,6 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Gets the alignments given the specified rotation angle.
-        /// </summary>
-        /// <param name="angle">The angle.</param>
-        /// <param name="defaultHorizontalAlignment">The default horizontal alignment.</param>
-        /// <param name="defaultVerticalAlignment">The default vertical alignment.</param>
-        /// <param name="ha">The rotated horizontal alignment.</param>
-        /// <param name="va">The rotated vertical alignment.</param>
-        protected virtual void GetRotatedAlignments(
-            double angle,
-            HorizontalAlignment defaultHorizontalAlignment,
-            VerticalAlignment defaultVerticalAlignment,
-            out HorizontalAlignment ha,
-            out VerticalAlignment va)
-        {
-            ha = defaultHorizontalAlignment;
-            va = defaultVerticalAlignment;
-
-            Debug.Assert(angle <= 180 && angle >= -180, "Axis angle should be in the interval [-180,180] degrees.");
-
-            if (angle > -45 && angle < 45)
-            {
-                return;
-            }
-
-            if (angle > 135 || angle < -135)
-            {
-                ha = (HorizontalAlignment)(-(int)defaultHorizontalAlignment);
-                va = (VerticalAlignment)(-(int)defaultVerticalAlignment);
-                return;
-            }
-
-            if (angle > 45)
-            {
-                ha = (HorizontalAlignment)((int)defaultVerticalAlignment);
-                va = (VerticalAlignment)(-(int)defaultHorizontalAlignment);
-                return;
-            }
-
-            if (angle < -45)
-            {
-                ha = (HorizontalAlignment)(-(int)defaultVerticalAlignment);
-                va = (VerticalAlignment)((int)defaultHorizontalAlignment);
-            }
-        }
-
-        /// <summary>
         /// Renders the axis title.
         /// </summary>
         /// <param name="axis">The axis.</param>
@@ -421,39 +376,23 @@ namespace OxyPlot.Axes
                 {
                     case AxisPosition.Left:
                         pt = new ScreenPoint(axisPosition + a1 - axis.AxisTickToLabelDistance, transformedValue);
-                        this.GetRotatedAlignments(
-                            axis.Angle,
-                            HorizontalAlignment.Right,
-                            VerticalAlignment.Middle,
-                            out ha,
-                            out va);
+                        this.GetRotatedAlignments(axis.Angle, -90, out ha, out va);
+
                         break;
                     case AxisPosition.Right:
                         pt = new ScreenPoint(axisPosition + a1 + axis.AxisTickToLabelDistance, transformedValue);
-                        this.GetRotatedAlignments(
-                            axis.Angle,
-                            HorizontalAlignment.Left,
-                            VerticalAlignment.Middle,
-                            out ha,
-                            out va);
+                        this.GetRotatedAlignments(axis.Angle, 90, out ha, out va);
+
                         break;
                     case AxisPosition.Top:
                         pt = new ScreenPoint(transformedValue, axisPosition + a1 - axis.AxisTickToLabelDistance);
-                        this.GetRotatedAlignments(
-                            axis.Angle,
-                            HorizontalAlignment.Center,
-                            VerticalAlignment.Bottom,
-                            out ha,
-                            out va);
+                        this.GetRotatedAlignments(axis.Angle, 0, out ha, out va);
+
                         break;
                     case AxisPosition.Bottom:
                         pt = new ScreenPoint(transformedValue, axisPosition + a1 + axis.AxisTickToLabelDistance);
-                        this.GetRotatedAlignments(
-                            axis.Angle,
-                            HorizontalAlignment.Center,
-                            VerticalAlignment.Top,
-                            out ha,
-                            out va);
+                        this.GetRotatedAlignments(axis.Angle, -180, out ha, out va);
+
                         break;
                 }
 
@@ -648,6 +587,67 @@ namespace OxyPlot.Axes
             if (this.MinorTickPen != null)
             {
                 this.RenderContext.DrawLineSegments(minorTickSegments, this.MinorTickPen);
+            }
+        }
+
+        /// <summary>
+        /// Gets the alignments given the specified rotation angle.
+        /// </summary>
+        /// <param name="boxAngle">The angle of a box to rotate (usually it is label angle).</param>
+        /// <param name="axisAngle">
+        /// The axis angle, the original angle belongs to. The Top axis should have 0, next angles are computed clockwise. 
+        /// The angle should be in [-180, 180). (T, R, B, L) is (0, 90, -180, -90). 
+        /// </param>
+        /// <param name="ha">Horizontal alignment.</param>
+        /// <param name="va">Vertical alignment.</param>
+        /// <remarks>
+        /// This method is supposed to compute the alignment of the labels that are put near axis. 
+        /// Because such labels can have different angles, and the axis can have different angles as well,
+        /// computing the alignment is not straightforward.
+        /// </remarks>
+        private void GetRotatedAlignments(
+            double boxAngle,
+            double axisAngle,
+            out HorizontalAlignment ha,
+            out VerticalAlignment va)
+        {
+            const double AngleTolerance = 10.0;
+
+            Debug.Assert(new[] { 0.0, 90.0, -180.0, -90.0 }.Contains(axisAngle), "The axis angles should be one of 0, 90, -180, -90");
+
+            // The axis angle if it would have been turned on 180 and leave it in [-180, 180)
+            double flippedAxisAngle = ((axisAngle + 360.0) % 360.0) - 180.0;
+
+            // When the box (assuming the axis and box have the same angle) box starts to turn clockwise near the axis
+            // It leans on the right until it gets to 180 rotation, when it is started to lean on the left.
+            // In real computation we need to compute this in relation with axisAngle
+            // So if axisAngle <= boxAngle < (axisAngle + 180), we align Right, else - left.
+            // The check looks inverted because flippedAxisAngle has the opposite sign.
+            ha = boxAngle >= Math.Min(axisAngle, flippedAxisAngle) && boxAngle < Math.Max(axisAngle, flippedAxisAngle) ? HorizontalAlignment.Left : HorizontalAlignment.Right;
+
+            // If axisAngle was < 0, we need to shift the previous computation on 180.
+            if (axisAngle < 0)
+            {
+                ha = (HorizontalAlignment)((int)ha * -1);
+            }
+
+            va = VerticalAlignment.Middle;
+
+            // If the angle almost the same as axisAngle (or axisAngle + 180) - set horizontal alignment to Center
+            if (Math.Abs(boxAngle - flippedAxisAngle) < AngleTolerance || Math.Abs(boxAngle - axisAngle) < AngleTolerance)
+            {
+                ha = HorizontalAlignment.Center;
+            }
+
+            // And vertical alignment according to whether it is near to axisAngle or flippedAxisAngle
+            if (Math.Abs(boxAngle - axisAngle) < AngleTolerance)
+            {
+                va = VerticalAlignment.Bottom;
+            }
+
+            if (Math.Abs(boxAngle - flippedAxisAngle) < AngleTolerance)
+            {
+                va = VerticalAlignment.Top;
             }
         }
     }
