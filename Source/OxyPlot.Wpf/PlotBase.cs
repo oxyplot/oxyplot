@@ -17,6 +17,7 @@ namespace OxyPlot.Wpf
     using System.Windows.Controls;
     using System.Windows.Input;
     using System.Windows.Media;
+    using System.Windows.Threading;
 
     using CursorType = OxyPlot.CursorType;
 
@@ -604,7 +605,7 @@ namespace OxyPlot.Wpf
         {
             if (!this.Dispatcher.CheckAccess())
             {
-                this.Dispatcher.BeginInvoke(action);
+                this.Dispatcher.BeginInvoke(DispatcherPriority.Background, action);
             }
             else
             {
