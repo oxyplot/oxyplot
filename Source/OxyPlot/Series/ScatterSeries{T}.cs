@@ -415,7 +415,7 @@ namespace OxyPlot.Series
                         this.MarkerType,
                         this.MarkerOutline,
                         groupSizes[group.Key],
-                        this.MarkerFill.Equals(OxyColors.Automatic) ? color : this.MarkerFill,
+                        this.MarkerFill.GetActualColor(color),
                         markerIsStrokedOnly ? color : this.MarkerStroke,
                         this.MarkerStrokeThickness,
                         this.BinSize,
