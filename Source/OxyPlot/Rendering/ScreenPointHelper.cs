@@ -7,10 +7,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-
 namespace OxyPlot
 {
+    using System;
     using System.Collections.Generic;
 
     /// <summary>
