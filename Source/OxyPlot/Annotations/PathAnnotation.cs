@@ -386,11 +386,14 @@ namespace OxyPlot.Annotations
         /// </returns>
         protected override HitTestResult HitTestOverride(HitTestArguments args)
         {
-            var nearestPoint = ScreenPointHelper.FindNearestPointOnPolyline(args.Point, this.screenPoints);
-            double dist = (args.Point - nearestPoint).Length;
-            if (dist < args.Tolerance)
+            if (this.screenPoints != null)
             {
-                return new HitTestResult(this, nearestPoint);
+                var nearestPoint = ScreenPointHelper.FindNearestPointOnPolyline(args.Point, this.screenPoints);
+                double dist = (args.Point - nearestPoint).Length;
+                if (dist < args.Tolerance)
+                {
+                    return new HitTestResult(this, nearestPoint);
+                }
             }
 
             return null;
