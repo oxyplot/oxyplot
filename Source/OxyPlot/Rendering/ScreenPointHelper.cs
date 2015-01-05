@@ -27,13 +27,13 @@ namespace OxyPlot
         /// <exception cref="ArgumentNullException">The <paramref name="points"/> is <c>null</c>.</exception>
         public static ScreenPoint FindNearestPointOnPolyline(ScreenPoint point, IList<ScreenPoint> points)
         {
-            double minimumDistance = double.MaxValue;
-            var nearestPoint = default(ScreenPoint);
-
             if (points == null)
             {
                 throw new ArgumentNullException("points");
             }
+
+            double minimumDistance = double.MaxValue;
+            var nearestPoint = default(ScreenPoint);
 
             for (int i = 0; i + 1 < points.Count; i++)
             {
