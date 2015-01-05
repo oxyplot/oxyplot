@@ -336,7 +336,7 @@ namespace OxyPlot.Annotations
                 if (!string.IsNullOrEmpty(this.Text))
                 {
                     var textPosition = this.GetActualTextPosition(() => position);
-                    
+
                     if (this.TextPosition.IsDefined())
                     {
                         angle = this.TextRotation;
@@ -386,14 +386,16 @@ namespace OxyPlot.Annotations
         /// </returns>
         protected override HitTestResult HitTestOverride(HitTestArguments args)
         {
-            if (this.screenPoints != null)
+            if (this.screenPoints == null)
             {
-                var nearestPoint = ScreenPointHelper.FindNearestPointOnPolyline(args.Point, this.screenPoints);
-                double dist = (args.Point - nearestPoint).Length;
-                if (dist < args.Tolerance)
-                {
-                    return new HitTestResult(this, nearestPoint);
-                }
+                return null;
+            }
+
+            var nearestPoint = ScreenPointHelper.FindNearestPointOnPolyline(args.Point, this.screenPoints);
+            double dist = (args.Point - nearestPoint).Length;
+            if (dist < args.Tolerance)
+            {
+                return new HitTestResult(this, nearestPoint);
             }
 
             return null;
