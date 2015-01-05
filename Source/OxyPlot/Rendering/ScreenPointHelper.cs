@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+
 namespace OxyPlot
 {
     using System.Collections.Generic;
@@ -22,37 +24,40 @@ namespace OxyPlot
         /// <param name="point">The point.</param>
         /// <param name="points">The points.</param>
         /// <returns>The nearest point.</returns>
+        /// <exception cref="ArgumentNullException">The <paramref name="points"/> is <c>null</c>.</exception>
         public static ScreenPoint FindNearestPointOnPolyline(ScreenPoint point, IList<ScreenPoint> points)
         {
             double minimumDistance = double.MaxValue;
             var nearestPoint = default(ScreenPoint);
 
-            if (points != null)
+            if (points == null)
             {
-                for (int i = 0; i + 1 < points.Count; i++)
+                throw new ArgumentNullException("points");
+            }
+
+            for (int i = 0; i + 1 < points.Count; i++)
+            {
+                var p1 = points[i];
+                var p2 = points[i + 1];
+                if (ScreenPoint.IsUndefined(p1) || ScreenPoint.IsUndefined(p2))
                 {
-                    var p1 = points[i];
-                    var p2 = points[i + 1];
-                    if (ScreenPoint.IsUndefined(p1) || ScreenPoint.IsUndefined(p2))
-                    {
-                        continue;
-                    }
+                    continue;
+                }
 
-                    // Find the nearest point on the line segment.
-                    var nearestPointOnSegment = FindPointOnLine(point, p1, p2);
+                // Find the nearest point on the line segment.
+                var nearestPointOnSegment = FindPointOnLine(point, p1, p2);
 
-                    if (ScreenPoint.IsUndefined(nearestPointOnSegment))
-                    {
-                        continue;
-                    }
+                if (ScreenPoint.IsUndefined(nearestPointOnSegment))
+                {
+                    continue;
+                }
 
-                    double l2 = (point - nearestPointOnSegment).LengthSquared;
+                double l2 = (point - nearestPointOnSegment).LengthSquared;
 
-                    if (l2 < minimumDistance)
-                    {
-                        nearestPoint = nearestPointOnSegment;
-                        minimumDistance = l2;
-                    }
+                if (l2 < minimumDistance)
+                {
+                    nearestPoint = nearestPointOnSegment;
+                    minimumDistance = l2;
                 }
             }
 
