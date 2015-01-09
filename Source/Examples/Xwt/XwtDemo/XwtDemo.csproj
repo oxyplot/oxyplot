@@ -45,5 +45,13 @@
       <Project>{C3887A93-B2BD-4097-8E2F-3A063EFF32FD}</Project>
       <Name>Xwt.Gtk</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\OxyPlot\OxyPlot.csproj">
+      <Project>{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}</Project>
+      <Name>OxyPlot</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\OxyPlot.Xwt\OxyPlot.Xwt.csproj">
+      <Project>{4803717E-3DD6-4E91-99D2-5E19499552AF}</Project>
+      <Name>OxyPlot.Xwt</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>
