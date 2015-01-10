@@ -20,6 +20,11 @@ namespace OxyPlot.Series
     public class ContourSeries : XYAxisSeries
     {
         /// <summary>
+        /// The default tracker format string
+        /// </summary>
+        public new const string DefaultTrackerFormatString = "{0}\n{1}: {2}\n{3}: {4}\n{5}: {6}";
+
+        /// <summary>
         /// The contour collection.
         /// </summary>
         private List<Contour> contours;
@@ -49,7 +54,7 @@ namespace OxyPlot.Series
             this.StrokeThickness = 1.0;
             this.LineStyle = LineStyle.Solid;
 
-            this.TrackerFormatString = "{0}\n{1}: {2:0.####}\n{3}: {4:0.####}\n{5}: {6:0.####}";
+            this.TrackerFormatString = DefaultTrackerFormatString;
         }
 
         /// <summary>

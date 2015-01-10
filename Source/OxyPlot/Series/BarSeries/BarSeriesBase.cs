@@ -23,7 +23,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// The default tracker format string
         /// </summary>
-        public new const string DefaultTrackerFormatString = "{0}\n{1}: {2:0.###}";
+        public new const string DefaultTrackerFormatString = "{0}\n{1}: {2}";
 
         /// <summary>
         /// The default fill color.

@@ -46,7 +46,6 @@ namespace OxyPlot.Series
             this.MarkerType = MarkerType.Square;
             this.MarkerStroke = OxyColors.Automatic;
             this.MarkerStrokeThickness = 1;
-            this.TrackerFormatString = "{0}\n{1}: {2:0.###}\n{3}: {4:0.###}";
             this.LabelMargin = 6;
         }
 
