@@ -20,13 +20,18 @@ namespace OxyPlot.Series
     public class BoxPlotSeries : XYAxisSeries
     {
         /// <summary>
+        /// The default tracker format string
+        /// </summary>
+        public new const string DefaultTrackerFormatString = "{0}\n{1}: {2}\nUpper Whisker: {3:0.00}\nThird Quartil: {4:0.00}\nMedian: {5:0.00}\nFirst Quartil: {6:0.00}\nLower Whisker: {7:0.00}";
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="BoxPlotSeries" /> class.
         /// </summary>
         public BoxPlotSeries()
         {
             this.Items = new List<BoxPlotItem>();
-            this.TrackerFormatString = "{0}\n{1}: {2:0.00}\nUpper Whisker: {3:0.00}\nThird Quartil: {4:0.00}\nMedian: {5:0.00}\nFirst Quartil: {6:0.00}\nLower Whisker: {7:0.00}";
-            this.OutlierTrackerFormatString = "{0}\n{1}: {2:0.00}\nY: {3:0.00}";
+            this.TrackerFormatString = DefaultTrackerFormatString;
+            this.OutlierTrackerFormatString = "{0}\n{1}: {2}\nY: {3:0.00}";
             this.Title = null;
             this.Fill = OxyColors.Automatic;
             this.Stroke = OxyColors.Black;

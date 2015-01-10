@@ -21,6 +21,11 @@ namespace OxyPlot.Series
     public class HighLowSeries : XYAxisSeries
     {
         /// <summary>
+        /// The default tracker format string
+        /// </summary>
+        public new const string DefaultTrackerFormatString = "{0}\n{1}: {2}\nHigh: {3:0.###}\nLow: {4:0.###}\nOpen: {5:0.###}\nClose: {6:0.###}";
+
+        /// <summary>
         /// High/low items
         /// </summary>
         private readonly List<HighLowItem> items = new List<HighLowItem>();
@@ -38,7 +43,7 @@ namespace OxyPlot.Series
             this.Color = OxyColors.Automatic;
             this.TickLength = 4;
             this.StrokeThickness = 1;
-            this.TrackerFormatString = "{0}\n{1}: {2}\nHigh: {3:0.###}\nLow: {4:0.###}\nOpen: {5:0.###}\nClose: {6:0.###}";
+            this.TrackerFormatString = DefaultTrackerFormatString;
         }
 
         /// <summary>

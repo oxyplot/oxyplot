@@ -35,6 +35,11 @@ namespace OxyPlot.Series
     public class HeatMapSeries : XYAxisSeries
     {
         /// <summary>
+        /// The default tracker format string
+        /// </summary>
+        public new const string DefaultTrackerFormatString = "{0}\n{1}: {2}\n{3}: {4}\n{5}: {6}";
+        
+        /// <summary>
         /// The default color-axis title
         /// </summary>
         private const string DefaultColorAxisTitle = "Value";
@@ -59,7 +64,7 @@ namespace OxyPlot.Series
         /// </summary>
         public HeatMapSeries()
         {
-            this.TrackerFormatString = "{0}\n{1}: {2:0.###}\n{3}: {4:0.###}\n{5}: {6:0.###}";
+            this.TrackerFormatString = DefaultTrackerFormatString;
             this.Interpolate = true;
             this.LabelFormatString = "0.00";
             this.LabelFontSize = 0;
