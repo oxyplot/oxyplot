@@ -861,5 +861,19 @@ namespace ExampleLibrary
             plotModel1.Series.Add(ls);
             return plotModel1;
         }
+
+        [Example("#79: Center aligned legends")]
+        public static PlotModel CenterAlignedLegends()
+        {
+            var plotModel1 = new PlotModel
+            {
+                Title = "Center aligned legends",
+                LegendPosition = LegendPosition.BottomCenter,
+                LegendItemAlignment = HorizontalAlignment.Center
+            };
+            plotModel1.Series.Add(new LineSeries { Title = "LineSeries 1" });
+            plotModel1.Series.Add(new LineSeries { Title = "LS2" });
+            return plotModel1;
+        }
     }
 }

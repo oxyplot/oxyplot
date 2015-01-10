@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 - Fix exception for default tracker format strings (#265)
+- Fix center-aligned legends (#79)
 - Fix Markdown links to tag comparison URL with footnote-style links.
 - WPF dispatcher issue (#311,#309)
 - Custom colors for scatters (#307)
