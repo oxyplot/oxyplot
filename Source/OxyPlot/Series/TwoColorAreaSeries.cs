@@ -289,11 +289,6 @@ namespace OxyPlot.Series
                 this.points2.Add(new DataPoint(this.ActualPoints.Min(el => el.X), this.Limit));
                 this.points2.Add(new DataPoint(this.ActualPoints.Max(el => el.X), this.Limit));
             }
-
-            if (this.ItemsSource == null)
-            {
-                return;
-            }            
         }
 
         /// <summary>
