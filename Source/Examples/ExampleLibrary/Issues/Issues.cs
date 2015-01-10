@@ -845,5 +845,21 @@ namespace ExampleLibrary
             plotModel1.Series.Add(ls);
             return plotModel1;
         }
+
+        [Example("#226: LineSeries exception when smoothing")]
+        public static PlotModel LineSeriesExceptionWhenSmoothing()
+        {
+            var plotModel1 = new PlotModel
+                                 {
+                                     Title = "LineSeries null reference exception when smoothing is enabled and all datapoints have the same y value",
+                                     Subtitle = "Click on the plot to reproduce the issue."
+                                 };
+            var ls = new LineSeries { Smooth = true };
+            ls.Points.Add(new DataPoint(0, 0));
+            ls.Points.Add(new DataPoint(1, 0));
+            ls.Points.Add(new DataPoint(10, 0));
+            plotModel1.Series.Add(ls);
+            return plotModel1;
+        }
     }
 }
