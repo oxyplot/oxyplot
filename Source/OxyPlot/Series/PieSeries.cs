@@ -61,17 +61,17 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Gets or sets AngleIncrement.
+        /// Gets or sets the angle increment.
         /// </summary>
         public double AngleIncrement { get; set; }
 
         /// <summary>
-        /// Gets or sets AngleSpan.
+        /// Gets or sets the angle span.
         /// </summary>
         public double AngleSpan { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether AreInsideLabelsAngled.
+        /// Gets or sets a value indicating whether inside labels are angled.
         /// </summary>
         public bool AreInsideLabelsAngled { get; set; }
 

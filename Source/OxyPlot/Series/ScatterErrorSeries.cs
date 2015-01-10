@@ -14,12 +14,12 @@ namespace OxyPlot.Series
     using System.Linq;
 
     /// <summary>
-    ///     Represents a series for scatter plots with the possibility to display error bars.
+    /// Represents a series for scatter plots with the possibility to display error bars.
     /// </summary>
     public class ScatterErrorSeries : ScatterSeries<ScatterErrorPoint>
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="ScatterErrorSeries" /> class.
+        /// Initializes a new instance of the <see cref="ScatterErrorSeries" /> class.
         /// </summary>
         public ScatterErrorSeries()
         {
@@ -30,48 +30,51 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        ///     Gets or sets the data field for the X error property.
+        /// Gets or sets the data field for the X error property.
         /// </summary>
         /// <value>
-        ///     The data field.
+        /// The data field.
         /// </value>
         public string DataFieldErrorX { get; set; }
 
         /// <summary>
-        ///     Gets or sets the data field for the Y error property.
+        /// Gets or sets the data field for the Y error property.
         /// </summary>
         /// <value>
-        ///     The data field.
+        /// The data field.
         /// </value>
         public string DataFieldErrorY { get; set; }
 
         /// <summary>
-        ///     Gets or sets the color of the error bar.
+        /// Gets or sets the color of the error bar.
         /// </summary>
         /// <value>
-        ///     The color of the error bar.
+        /// The color of the error bar.
         /// </value>
         public OxyColor ErrorBarColor { get; set; }
 
         /// <summary>
-        ///     Gets or sets the width of the error bar stop.
+        /// Gets or sets the width of the error bar stop.
         /// </summary>
         /// <value>
-        ///     The width of the error bar stop.
+        /// The width of the error bar stop.
         /// </value>
         public double ErrorBarStopWidth { get; set; }
 
         /// <summary>
-        ///     Gets or sets the error bar stroke thickness.
+        /// Gets or sets the error bar stroke thickness.
         /// </summary>
         /// <value>
-        ///     The error bar stroke thickness.
+        /// The error bar stroke thickness.
         /// </value>
         public double ErrorBarStrokeThickness { get; set; }
 
         /// <summary>
-        /// Gets or sets the minimum size (relative to <see cref="ScatterSeries{T}.MarkerSize" />) of the error bars to be shown. 
+        /// Gets or sets the minimum size (relative to <see cref="ScatterSeries{T}.MarkerSize" />) of the error bars to be shown.
         /// </summary>
+        /// <value>
+        /// The minimum size of the error.
+        /// </value>
         public double MinimumErrorSize { get; set; }
 
         /// <summary>
