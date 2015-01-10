@@ -653,7 +653,7 @@ namespace OxyPlot.Series
                     continue;
                 }
 
-                double value = pt.value;
+                double value = pt.Value;
 
                 if (x < minx)
                 {
@@ -768,7 +768,7 @@ namespace OxyPlot.Series
 
             foreach (var pt in pts)
             {
-                double value = pt.value;
+                double value = pt.Value;
 
                 if (value < minvalue || double.IsNaN(minvalue))
                 {
