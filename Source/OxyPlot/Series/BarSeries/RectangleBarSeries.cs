@@ -18,6 +18,11 @@ namespace OxyPlot.Series
     public class RectangleBarSeries : XYAxisSeries
     {
         /// <summary>
+        /// The default tracker format string
+        /// </summary>
+        public new const string DefaultTrackerFormatString = "{0}\n{1}: {2} {3}\n{4}: {5} {6}";
+
+        /// <summary>
         /// The default fill color.
         /// </summary>
         private OxyColor defaultFillColor;
@@ -34,7 +39,7 @@ namespace OxyPlot.Series
             this.StrokeColor = OxyColors.Black;
             this.StrokeThickness = 1;
 
-            this.TrackerFormatString = "{0}\n{1}: {2:0.###} {3:0.###}\n{4}: {5:0.###} {6:0.###}";
+            this.TrackerFormatString = DefaultTrackerFormatString;
 
             this.LabelFormatString = "{4}"; // title
 

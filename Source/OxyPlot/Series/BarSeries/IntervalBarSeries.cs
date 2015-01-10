@@ -21,6 +21,11 @@ namespace OxyPlot.Series
     public class IntervalBarSeries : CategorizedSeries, IStackableSeries
     {
         /// <summary>
+        /// The default tracker format string
+        /// </summary>
+        public new const string DefaultTrackerFormatString = "{0}\n{1}: {2}\n{3}: {4}";
+
+        /// <summary>
         /// The default fill color.
         /// </summary>
         private OxyColor defaultFillColor;
@@ -38,7 +43,7 @@ namespace OxyPlot.Series
             this.StrokeThickness = 1;
             this.BarWidth = 1;
 
-            this.TrackerFormatString = "{0}\n{1}: {2:0.###}\n{3}: {4:0.###}";
+            this.TrackerFormatString = DefaultTrackerFormatString;
             this.LabelMargin = 4;
 
             this.LabelFormatString = "{2}"; // title

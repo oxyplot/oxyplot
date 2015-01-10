@@ -23,6 +23,11 @@ namespace OxyPlot.Series
     public class PieSeries : ItemsSeries
     {
         /// <summary>
+        /// The default tracker format string
+        /// </summary>
+        public const string DefaultTrackerFormatString = "{0}: {1:0.###}";
+        
+        /// <summary>
         /// The slices.
         /// </summary>
         private IList<PieSlice> slices;
@@ -52,21 +57,21 @@ namespace OxyPlot.Series
             this.TickLabelDistance = 4;
             this.InsideLabelPosition = 0.5;
             this.FontSize = 12;
-            this.TrackerFormatString = "{0}: {1:0.###}";
+            this.TrackerFormatString = DefaultTrackerFormatString;
         }
 
         /// <summary>
-        /// Gets or sets AngleIncrement.
+        /// Gets or sets the angle increment.
         /// </summary>
         public double AngleIncrement { get; set; }
 
         /// <summary>
-        /// Gets or sets AngleSpan.
+        /// Gets or sets the angle span.
         /// </summary>
         public double AngleSpan { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether AreInsideLabelsAngled.
+        /// Gets or sets a value indicating whether inside labels are angled.
         /// </summary>
         public bool AreInsideLabelsAngled { get; set; }
 

@@ -46,7 +46,6 @@ namespace OxyPlot.Series
             this.MarkerType = MarkerType.Square;
             this.MarkerStroke = OxyColors.Automatic;
             this.MarkerStrokeThickness = 1;
-            this.TrackerFormatString = "{0}\n{1}: {2:0.###}\n{3}: {4:0.###}";
             this.LabelMargin = 6;
         }
 
@@ -654,7 +653,7 @@ namespace OxyPlot.Series
                     continue;
                 }
 
-                double value = pt.value;
+                double value = pt.Value;
 
                 if (x < minx)
                 {
@@ -769,7 +768,7 @@ namespace OxyPlot.Series
 
             foreach (var pt in pts)
             {
-                double value = pt.value;
+                double value = pt.Value;
 
                 if (value < minvalue || double.IsNaN(minvalue))
                 {

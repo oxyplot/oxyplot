@@ -22,7 +22,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// The default tracker format string
         /// </summary>
-        public const string DefaultTrackerFormatString = "{0}\n{1}: {2:0.###}\n{3}: {4:0.###}";
+        public const string DefaultTrackerFormatString = "{0}\n{1}: {2}\n{3}: {4}";
 
         /// <summary>
         /// The default x-axis title
