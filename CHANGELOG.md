@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 - Enable stepping through source code (GitLink) (#267,#266)
 
 ### Changed
+- Change target to Android level 10 (#223)
 - Separate WPF Plot and PlotView (#252,#239)
 
 ### Removed
