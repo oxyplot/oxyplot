@@ -1,7 +1,9 @@
 ﻿namespace SimpleDemo.iOS
 {
-    using MonoTouch.Foundation;
-    using MonoTouch.UIKit;
+    using Foundation;
+
+    using UIKit;
+
     using Xamarin.Forms;
     using Xamarin.Forms.Platform.iOS;
 
@@ -13,7 +15,7 @@
     {
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
-            OxyPlot.XamarinFormsIOS.Forms.Init();
+            OxyPlot.XamarinForms.iOS.Forms.Init();
             Forms.Init();
 
             this.LoadApplication(new App());
@@ -22,4 +24,3 @@
         }
     }
 }
-
