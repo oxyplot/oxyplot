@@ -7,9 +7,9 @@
 
     using Xamarin.Forms;
 
-    public class App
+    public class App : Application
     {
-        public static Page GetMainPage()
+        public App()
         {
             var plotModel = new PlotModel
             {
@@ -30,7 +30,7 @@
             series.Items.Add(new ColumnItem { Value = 7 });
             plotModel.Series.Add(series);
 
-            return new ContentPage
+            this.MainPage = new ContentPage
             {
                 Padding = new Thickness(0, 20, 0, 0),
                 Content = new PlotView
