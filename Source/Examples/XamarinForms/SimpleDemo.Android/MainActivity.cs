@@ -6,21 +6,21 @@ using Xamarin.Forms.Platform.Android;
 
 namespace SimpleDemo.Android
 {
-    [Activity (Label = "SimpleDemo.Android", MainLauncher = true, ConfigurationChanges = ConfigChanges.Orientation, Icon = "@drawable/icon")]
-    public class MainActivity : AndroidActivity
+    [Activity(Label = "SimpleDemo.Android", MainLauncher = true, ConfigurationChanges = ConfigChanges.Orientation, Icon = "@drawable/icon")]
+    public class MainActivity : FormsApplicationActivity
     {
         /// <summary>
         /// Raises the create event.
         /// </summary>
         /// <param name="bundle">The bundle.</param>
-        protected override void OnCreate (Bundle bundle)
+        protected override void OnCreate(Bundle bundle)
         {
-            base.OnCreate (bundle);
+            base.OnCreate(bundle);
 
-            OxyPlot.XamarinFormsAndroid.Forms.Init ();
-            Forms.Init (this, bundle);
+            OxyPlot.XamarinFormsAndroid.Forms.Init();
+            Forms.Init(this, bundle);
 
-            SetPage (App.GetMainPage ());
+            LoadApplication(new App());
         }
     }
 }

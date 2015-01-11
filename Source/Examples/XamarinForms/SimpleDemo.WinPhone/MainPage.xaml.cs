@@ -1,10 +1,9 @@
 ﻿namespace SimpleDemo.WinPhone
 {
-    using Microsoft.Phone.Controls;
-
     using Xamarin.Forms;
+    using Xamarin.Forms.Platform.WinPhone;
 
-    public partial class MainPage : PhoneApplicationPage
+    public partial class MainPage : FormsApplicationPage
     {
         public MainPage()
         {
@@ -12,7 +11,8 @@
 
             OxyPlot.XamarinFormsWinPhone.Forms.Init();
             Forms.Init();
-            this.Content = SimpleDemo.App.GetMainPage().ConvertPageToUIElement(this);
+
+            this.LoadApplication(new SimpleDemo.App());
         }
     }
 }
