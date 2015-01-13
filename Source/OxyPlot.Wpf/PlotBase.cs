@@ -442,7 +442,7 @@ namespace OxyPlot.Wpf
         /// <returns><c>true</c> if if the specified element is currently visible to the user; otherwise, <c>false</c>.</returns>
         private bool IsUserVisible(FrameworkElement element, FrameworkElement container)
         {
-            if (!element.IsVisible)
+            if (!container.IsVisible || !element.IsVisible)
             {
                 return false;
             }
