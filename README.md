@@ -13,7 +13,6 @@ OxyPlot is a cross-platform plotting library for .NET
 
 ![License](https://img.shields.io/badge/license-MIT-red.svg)
 [![Build status](https://img.shields.io/appveyor/ci/objorke/oxyplot.svg)](https://ci.appveyor.com/project/objorke/oxyplot)
-
 ![NuGet downloads](https://img.shields.io/nuget/dt/oxyplot.core.svg)
 ![Version](https://img.shields.io/nuget/v/OxyPlot.Core.svg)
 ![Pre-release version](https://img.shields.io/nuget/vpre/OxyPlot.Core.svg)
