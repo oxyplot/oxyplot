@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="GraphViewController.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
@@ -9,15 +9,15 @@
 
 namespace ExampleBrowser
 {
-    using CoreGraphics;
-
-    using Foundation;
-    using UIKit;
-    using MessageUI;
+    using System.Drawing;
 
     using ExampleLibrary;
 
-    using OxyPlot.Xamarin.iOS;
+    using MonoTouch.Foundation;
+    using MonoTouch.MessageUI;
+    using MonoTouch.UIKit;
+
+    using OxyPlot.MonoTouch;
 
     public class GraphViewController : UIViewController
     {
@@ -79,7 +79,7 @@ namespace ExampleBrowser
             var title = exampleInfo.Title + "." + exportType;
             NSData nsData = null;
             string attachmentType = "text/plain";
-            var rect = new CGRect(0, 0, 800, 600);
+            var rect = new RectangleF(0, 0, 800, 600);
             switch (exportType)
             {
                 case "png":
