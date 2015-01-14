@@ -35,7 +35,7 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Gets or sets Fill.
+        /// Gets or sets the fill color.
         /// </summary>
         public OxyColor Fill { get; set; }
 
@@ -49,17 +49,17 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether IsExploded.
+        /// Gets or sets a value indicating whether the slice is exploded.
         /// </summary>
         public bool IsExploded { get; set; }
 
         /// <summary>
-        /// Gets or sets Label.
+        /// Gets or sets the label.
         /// </summary>
         public string Label { get; set; }
 
         /// <summary>
-        /// Gets or sets Value.
+        /// Gets or sets the value.
         /// </summary>
         public double Value { get; set; }
 
