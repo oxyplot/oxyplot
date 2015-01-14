@@ -19,9 +19,6 @@ OxyPlot is a cross-platform plotting library for .NET
 ![GitHub release](https://img.shields.io/github/release/oxyplot/oxyplot.svg)
 ![GitHub tag](https://img.shields.io/github/tag/oxyplot/oxyplot.svg)
 
-[![Pull request status](http://www.issuestats.com/github/oxyplot/oxyplot/badge/pr?style=flat)](http://www.issuestats.com/github/oxyplot/oxyplot/)
-[![Issues closed status](http://www.issuestats.com/github/oxyplot/oxyplot/badge/issue?style=flat)](http://www.issuestats.com/github/oxyplot/oxyplot/)
-
 ![Plot](http://oxyplot.org/public/images/normal-distributions.png)
 
 #### Branches
@@ -45,3 +42,6 @@ You can find examples in the `/Source/Examples` folder in the code repository.
 #### Contribute
 
 See [the documentation](http://oxyplot.org/documentation/contributions) for information about how to contribute!
+
+[![Pull request status](http://www.issuestats.com/github/oxyplot/oxyplot/badge/pr?style=flat)](http://www.issuestats.com/github/oxyplot/oxyplot/)
+[![Issues closed status](http://www.issuestats.com/github/oxyplot/oxyplot/badge/issue?style=flat)](http://www.issuestats.com/github/oxyplot/oxyplot/)
