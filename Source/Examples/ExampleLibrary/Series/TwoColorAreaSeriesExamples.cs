@@ -38,8 +38,8 @@ namespace ExampleLibrary
                              StrokeThickness = 2,
                              Limit = -1,
                              Smooth = false,
-                             MarkerType = MarkerType.Circle,                             
-                             MarkerSize = 3,                                                          
+                             MarkerType = MarkerType.Circle,
+                             MarkerSize = 3,
                          };
             var temperatures = new[] { 5, 0, 7, 7, 4, 3, 5, 5, 11, 4, 2, 3, 2, 1, 0, 2, -1, 0, 0, -3, -6, -13, -10, -10, 0, -4, -5, -4, 3, 0, -5 };
 
@@ -49,8 +49,8 @@ namespace ExampleLibrary
             }
 
             model.Series.Add(s1);
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Temperature", Unit = "°C", MinorGridlineStyle = LineStyle.Solid, MajorGridlineStyle = LineStyle.Solid, ShowMinorTicks=true});
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "Date", MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle=LineStyle.Solid });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Temperature", Unit = "°C", MinorGridlineStyle = LineStyle.Solid, MajorGridlineStyle = LineStyle.Solid, MinorTickSize = 0 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "Date", MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Solid });
 
             return model;
         }
@@ -72,14 +72,14 @@ namespace ExampleLibrary
                 MarkerFill = OxyColors.Red,
                 Fill = OxyColors.Tomato,
                 Fill2 = OxyColors.LightBlue,
-                MarkerFill2 = OxyColors.Blue,            
-                MarkerStroke=OxyColors.Brown,
-                MarkerStroke2=OxyColors.Black,
+                MarkerFill2 = OxyColors.Blue,
+                MarkerStroke = OxyColors.Brown,
+                MarkerStroke2 = OxyColors.Black,
                 StrokeThickness = 2,
                 Limit = 0,
                 Smooth = false,
-                MarkerType = MarkerType.Circle,                
-                MarkerSize = 3,                
+                MarkerType = MarkerType.Circle,
+                MarkerSize = 3,
             };
 
             var temperatures = new[] { 5, 0, 7, 7, 4, 3, 5, 5, 11, 4, 2, 3, 2, 1, 0, 2, -1, 0, 0, -3, -6, -13, -10, -10, 0, -4, -5, -4, 3, 0, -5 };
