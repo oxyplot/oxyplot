@@ -9,7 +9,7 @@ OxyPlot is a cross-platform plotting library for .NET
 - [NuGet packages](http://www.nuget.org/packages?q=oxyplot)
 - [Stack Overflow](http://stackoverflow.com/questions/tagged/oxyplot)
 - [Twitter](https://twitter.com/hashtag/oxyplot)
-- [Gitter](https://gitter.im/oxyplot/oxyplot)
+- [Gitter](https://gitter.im/oxyplot/oxyplot) (chat)
 
 ![License](https://img.shields.io/badge/license-MIT-red.svg)
 [![Build status](https://img.shields.io/appveyor/ci/objorke/oxyplot.svg)](https://ci.appveyor.com/project/objorke/oxyplot)
@@ -17,15 +17,11 @@ OxyPlot is a cross-platform plotting library for .NET
 ![NuGet downloads](https://img.shields.io/nuget/dt/oxyplot.core.svg)
 ![Version](https://img.shields.io/nuget/v/OxyPlot.Core.svg)
 ![Pre-release version](https://img.shields.io/nuget/vpre/OxyPlot.Core.svg)
-
 ![GitHub release](https://img.shields.io/github/release/oxyplot/oxyplot.svg)
 ![GitHub tag](https://img.shields.io/github/tag/oxyplot/oxyplot.svg)
 
-
 [![Pull request status](http://www.issuestats.com/github/oxyplot/oxyplot/badge/pr?style=flat)](http://www.issuestats.com/github/oxyplot/oxyplot/)
 [![Issues closed status](http://www.issuestats.com/github/oxyplot/oxyplot/badge/issue?style=flat)](http://www.issuestats.com/github/oxyplot/oxyplot/)
-
-[![Gitter](https://img.shields.io/badge/gitter-join chat-green.svg)](https://gitter.im/oxyplot/oxyplot?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ![Plot](http://oxyplot.org/public/images/normal-distributions.png)
 
