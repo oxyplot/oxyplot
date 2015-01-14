@@ -25,12 +25,22 @@ namespace OxyPlot.Series
         /// <summary>
         /// The default tracker format string
         /// </summary>
-        public const string DefaultTrackerFormatString = "{0}: {1:0.###}";
-        
+        public const string DefaultTrackerFormatString = "{1}: {2:0.###} ({3:P1})";
+
         /// <summary>
         /// The slices.
         /// </summary>
         private IList<PieSlice> slices;
+
+        /// <summary>
+        /// The actual points of the slices.
+        /// </summary>
+        private List<IList<ScreenPoint>> slicePoints = new List<IList<ScreenPoint>>();
+
+        /// <summary>
+        /// The total value of all the pie slices.
+        /// </summary>
+        private double total;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PieSeries" /> class.
@@ -215,7 +225,23 @@ namespace OxyPlot.Series
         /// <returns>A TrackerHitResult for the current hit.</returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
-            // TODO
+            for (int i = 0; i < this.slicePoints.Count; i++)
+            {
+                if (ScreenPointHelper.IsPointInPolygon(point, this.slicePoints[i]))
+                {
+                    var slice = this.slices[i];
+                    var item = this.GetItem(i);
+                    return new TrackerHitResult
+                               {
+                                   Series = this,
+                                   Position = point,
+                                   Item = item,
+                                   Index = i,
+                                   Text = this.Format(this.TrackerFormatString, slice, this.Title, slice.Label, slice.Value, slice.Value / this.total)
+                               };
+                }
+            }
+
             return null;
         }
 
@@ -226,13 +252,15 @@ namespace OxyPlot.Series
         /// <param name="model">The model.</param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
+            this.slicePoints.Clear();
+
             if (this.Slices.Count == 0)
             {
                 return;
             }
 
-            double total = this.slices.Sum(slice => slice.Value);
-            if (Math.Abs(total) < double.Epsilon)
+            this.total = this.slices.Sum(slice => slice.Value);
+            if (Math.Abs(this.total) < double.Epsilon)
             {
                 return;
             }
@@ -252,7 +280,7 @@ namespace OxyPlot.Series
                 var outerPoints = new List<ScreenPoint>();
                 var innerPoints = new List<ScreenPoint>();
 
-                double sliceAngle = slice.Value / total * this.AngleSpan;
+                double sliceAngle = slice.Value / this.total * this.AngleSpan;
                 double endAngle = angle + sliceAngle;
                 double explodedRadius = slice.IsExploded ? this.ExplodedDistance * radius : 0.0;
 
@@ -302,11 +330,14 @@ namespace OxyPlot.Series
 
                 rc.DrawPolygon(points, slice.ActualFillColor, this.Stroke, this.StrokeThickness, null, LineJoin.Bevel);
 
+                // keep the point for hit testing
+                this.slicePoints.Add(points);
+
                 // Render label outside the slice
                 if (this.OutsideLabelFormat != null)
                 {
                     string label = string.Format(
-                        this.OutsideLabelFormat, slice.Value, slice.Label, slice.Value / total * 100);
+                        this.OutsideLabelFormat, slice.Value, slice.Label, slice.Value / this.total * 100);
                     int sign = Math.Sign(Math.Cos(midAngleRadians));
 
                     // tick points
@@ -339,7 +370,7 @@ namespace OxyPlot.Series
                 if (this.InsideLabelFormat != null && !this.InsideLabelColor.IsUndefined())
                 {
                     string label = string.Format(
-                        this.InsideLabelFormat, slice.Value, slice.Label, slice.Value / total * 100);
+                        this.InsideLabelFormat, slice.Value, slice.Label, slice.Value / this.total * 100);
                     double r = (innerRadius * (1 - this.InsideLabelPosition)) + (outerRadius * this.InsideLabelPosition);
                     var labelPosition = new ScreenPoint(
                         mp.X + (r * Math.Cos(midAngleRadians)), mp.Y + (r * Math.Sin(midAngleRadians)));
