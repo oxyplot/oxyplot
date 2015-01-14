@@ -17,8 +17,8 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="lib/Xamarin.Android/OxyPlot.Xamarin.Android.dll" target="lib/MonoAndroid"/>
-    <file src="lib/Xamarin.Android/OxyPlot.Xamarin.Android.XML" target="lib/MonoAndroid"/>
+    <file src="lib/MonoAndroid/OxyPlot.Xamarin.Android.dll" target="lib/MonoAndroid"/>
+    <file src="lib/MonoAndroid/OxyPlot.Xamarin.Android.XML" target="lib/MonoAndroid"/>
     <file src="README.md" />
   </files>
 </package>
