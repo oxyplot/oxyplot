@@ -355,7 +355,7 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
-        [Example("#79: LegendItemAlignment = Center")]
+        [Example("#79: LegendItemAlignment = Center (closed)")]
         public static PlotModel LegendItemAlignmentCenter()
         {
             var plotModel1 = new PlotModel { Title = "LegendItemAlignment = Center" };
@@ -752,7 +752,7 @@ namespace ExampleLibrary
         [Example("#301: Wrong label placement for category axis when Angle = 45 (closed)")]
         public static PlotModel LabelPlacementCategoryAxisWhenAxisAngleIs45()
         {
-            var plotModel1 = new PlotModel { Title = "Wrong label placement for category axis when Angle = 45", Subtitle = "The labels should not be clipped. Click on text annotation to change tha angle." };
+            var plotModel1 = new PlotModel { Title = "Wrong label placement for category axis when Angle = 45", Subtitle = "The labels should not be clipped. Click on text annotation to change the angle." };
 
             Action<AxisPosition> createAxis = (AxisPosition position) =>
             {
@@ -772,8 +772,6 @@ namespace ExampleLibrary
 
             var textAnnotation = new TextAnnotation() { Text = "Hold mouse button here to increase angle", TextPosition = new DataPoint(0, 6), TextHorizontalAlignment = HorizontalAlignment.Left, TextVerticalAlignment = VerticalAlignment.Top };
             plotModel1.Annotations.Add(textAnnotation);
-            bool? stopTask = null;
-
 
             Timer t = new Timer(o =>
             {
@@ -829,7 +827,7 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
-        [Example("#220: Tracker strings not correctly showing date/times")]
+        [Example("#220: Tracker strings not correctly showing date/times (closed)")]
         public static PlotModel TrackerStringsNotCorrectlySHowingDateTimes()
         {
             var plotModel1 = new PlotModel { Title = "Tracker strings not correctly showing date/times" };
@@ -862,7 +860,7 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
-        [Example("#79: Center aligned legends")]
+        [Example("#79: Center aligned legends (closed)")]
         public static PlotModel CenterAlignedLegends()
         {
             var plotModel1 = new PlotModel
