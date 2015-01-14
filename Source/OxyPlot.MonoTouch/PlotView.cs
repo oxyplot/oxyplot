@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PlotView.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
@@ -7,13 +7,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace OxyPlot.Xamarin.iOS
+namespace OxyPlot.MonoTouch
 {
-    using Foundation;
-
+    using global::MonoTouch.Foundation;
+    using global::MonoTouch.UIKit;
     using OxyPlot;
-
-    using UIKit;
 
     /// <summary>
     /// Provides a view that can show a <see cref="PlotModel" />. 
@@ -32,7 +30,7 @@ namespace OxyPlot.Xamarin.iOS
         private IPlotController defaultController;
                
         /// <summary>
-        /// Initializes a new instance of the <see cref="OxyPlot.Xamarin.iOS.PlotView"/> class.
+        /// Initializes a new instance of the <see cref="OxyPlot.XamarinIOS.PlotView"/> class.
         /// </summary>
         public PlotView()
         {
@@ -40,16 +38,16 @@ namespace OxyPlot.Xamarin.iOS
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OxyPlot.Xamarin.iOS.PlotView"/> class.
+        /// Initializes a new instance of the <see cref="OxyPlot.XamarinIOS.PlotView"/> class.
         /// </summary>
         /// <param name="frame">The initial frame.</param>
-        public PlotView(CoreGraphics.CGRect frame) : base(frame)
+        public PlotView(System.Drawing.RectangleF frame) : base(frame)
         {
             this.Initialize ();
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OxyPlot.Xamarin.iOS.PlotView"/> class.
+        /// Initializes a new instance of the <see cref="OxyPlot.XamarinIOS.PlotView"/> class.
         /// </summary>
         /// <param name="coder">Coder.</param>
         [Export ("initWithCoder:")]
@@ -170,7 +168,7 @@ namespace OxyPlot.Xamarin.iOS
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="OxyPlot.Xamarin.iOS.PlotView"/> keeps the aspect ratio when pinching.
+        /// Gets or sets a value indicating whether this <see cref="OxyPlot.XamarinIOS.PlotView"/> keeps the aspect ratio when pinching.
         /// </summary>
         /// <value><c>true</c> if keep aspect ratio when pinching; otherwise, <c>false</c>.</value>
         public bool KeepAspectRatioWhenPinching { get; set; }
@@ -256,11 +254,11 @@ namespace OxyPlot.Xamarin.iOS
         /// Draws the content of the view.
         /// </summary>
         /// <param name="rect">The rectangle to draw.</param>
-        public override void Draw(CoreGraphics.CGRect rect)
+        public override void Draw(System.Drawing.RectangleF rect)
         {
             if (this.model != null)
             {
-                using (var renderer = new CoreGraphicsRenderContext(UIGraphics.GetCurrentContext()))
+                using (var renderer = new MonoTouchRenderContext(UIGraphics.GetCurrentContext()))
                 {
                     ((IPlotModel)this.model).Render(renderer, rect.Width, rect.Height);
                 }
