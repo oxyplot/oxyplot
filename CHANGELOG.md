@@ -9,13 +9,19 @@ All notable changes to this project will be documented in this file.
 - Enable stepping through source code (GitLink) (#267,#266)
 
 ### Changed
-- Rename Xamarin projects and namespaces (#327)
+- Renamed OxyPlot.XamarinIOS to OxyPlot.MonoTouch (#327)
+- Renamed OxyPlot.XamarinAndroid to OxyPlot.Xamarin.Android (#327)
+- Renamed OxyPlot.XamarinForms to OxyPlot.Xamarin.Forms (#327)
+- Renamed OxyPlot.XamarinForms.iOS to OxyPlot.Xamarin.Forms.Platform.iOS (#327)
+- Renamed OxyPlot.XamarinFormsIOS to OxyPlot.Xamarin.Forms.Platform.iOS.Classic (#327)
+- Renamed OxyPlot.XamarinFormsAndroid to OxyPlot.Xamarin.Forms.Platform.Android (#327)
+- Renamed OxyPlot.XamarinFormsWinPhone to OxyPlot.Xamarin.Forms.Platform.WP8 (#327)
 - Xamarin Forms references updated to 1.3.1 (#293)
-- Change target to Android level 10 (#223)
-- Separate WPF Plot and PlotView (#252,#239)
+- Changed OxyPlot.Xamarin.Android target to Android level 10 (#223)
+- Separated WPF Plot and PlotView (#252,#239)
 
 ### Removed
-- OxyPlot.Metro project (#241)
+- OxyPlot.Metro project (superseded by OxyPlot.WindowsUniversal) (#241)
 
 ### Fixed
 - Fix exception for default tracker format strings (#265)
