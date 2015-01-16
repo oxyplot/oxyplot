@@ -1,2 +1,0 @@
-"C:\Windows\Microsoft.NET\Framework\v4.0.30319\msbuild.exe" ..\Source\OxyPlot.XamarinIOS.sln /p:Configuration=Release
-"C:\Windows\Microsoft.NET\Framework\v4.0.30319\msbuild.exe" ..\Source\OxyPlot.Xamarin.iOS.sln /p:Configuration=Release
