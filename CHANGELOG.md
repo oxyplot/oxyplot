@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file.
 - Support for XWT (#295)
 - TwoColorAreaSeries (#299)
 - Delta values in AxisChangedEventArgs (#276)
-- Enable stepping through source code (GitLink) (#267,#266)
+- Enable Git source server (added GitLink build step) (#267,#266)
 
 ### Changed
 - Renamed OxyPlot.XamarinIOS to OxyPlot.MonoTouch (#327)
