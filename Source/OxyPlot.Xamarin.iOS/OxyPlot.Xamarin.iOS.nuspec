@@ -5,7 +5,7 @@
     <title>OxyPlot for Xamarin.iOS</title>
     <version>0.0.0</version>
     <authors>Oystein Bjorke</authors>
-    <description>OxyPlot is an open source plotting library for .NET. This package targets Xamarin.iOS apps (both classic and unified APIs).</description>
+    <description>OxyPlot is a plotting library for .NET. This package targets Xamarin.iOS apps (both classic and unified APIs).</description>
     <licenseUrl>https://raw.githubusercontent.com/oxyplot/oxyplot/master/LICENSE</licenseUrl>
     <projectUrl>http://oxyplot.org/</projectUrl>
     <iconUrl>https://raw.githubusercontent.com/oxyplot/oxyplot/master/Icons/OxyPlot_128.png</iconUrl>

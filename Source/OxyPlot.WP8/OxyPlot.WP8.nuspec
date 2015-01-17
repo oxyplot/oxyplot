@@ -5,7 +5,7 @@
     <title>OxyPlot for Windows Phone Silverlight apps</title>
     <version>0.0.0</version>
     <authors>Oystein Bjorke</authors>
-    <description>OxyPlot is an open source plotting library for .NET. This package contains the custom control for Windows Phone Silverlight apps.</description>
+    <description>OxyPlot is a plotting library for .NET. This package targets Windows Phone Silverlight apps.</description>
     <releaseNotes></releaseNotes>
     <licenseUrl>https://raw.githubusercontent.com/oxyplot/oxyplot/master/LICENSE</licenseUrl>
     <projectUrl>http://oxyplot.org/</projectUrl>
