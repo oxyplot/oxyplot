@@ -20,6 +20,9 @@ bld/
 [Oo]bj/
 Output/
 
+# Include the ~Build/ folder
+!Build/
+
 # Roslyn cache directories
 *.ide/
 
