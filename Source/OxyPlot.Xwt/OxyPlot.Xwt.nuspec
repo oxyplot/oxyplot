@@ -5,7 +5,7 @@
     <title>OxyPlot for Xwt</title>
     <version>0.0.0</version>
     <authors>Oystein Bjorke, Vsevolod Kukol</authors>
-    <description>OxyPlot is an open source plotting library for .NET. This package contains the widget for Xwt based applications.</description>
+    <description>OxyPlot is a plotting library for .NET. This package contains the widget for Xwt based applications.</description>
     <releaseNotes>Your application needs to reference Xwt and the desired backend from https://github.com/mono/xwt separately. Xwt MIT License: https://github.com/mono/xwt/blob/master/LICENSE.txt</releaseNotes>
     <licenseUrl>https://raw.githubusercontent.com/oxyplot/oxyplot/master/LICENSE</licenseUrl>
     <projectUrl>http://oxyplot.org/</projectUrl>

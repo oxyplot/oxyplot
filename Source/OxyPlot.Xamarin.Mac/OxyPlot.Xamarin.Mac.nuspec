@@ -5,7 +5,7 @@
     <title>OxyPlot for Xamarin.Mac</title>
     <version>0.0.0</version>
     <authors>Oystein Bjorke</authors>
-    <description>OxyPlot is an open source plotting library for .NET. This package targets Xamarin.Mac apps using the Unified API.</description>
+    <description>OxyPlot is a plotting library for .NET. This package targets Xamarin.Mac apps using the Unified API.</description>
     <licenseUrl>https://raw.githubusercontent.com/oxyplot/oxyplot/master/LICENSE</licenseUrl>
     <projectUrl>http://oxyplot.org/</projectUrl>
     <iconUrl>https://raw.githubusercontent.com/oxyplot/oxyplot/master/Icons/OxyPlot_128.png</iconUrl>

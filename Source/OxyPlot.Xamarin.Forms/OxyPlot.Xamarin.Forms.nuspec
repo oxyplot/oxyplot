@@ -2,10 +2,10 @@
 <package>
   <metadata>
     <id>OxyPlot.Xamarin.Forms</id>
-    <title>OxyPlot for Xamarin.Forms</title>
+    <title>OxyPlot for Xamarin.Forms (iOS, Android and Windows Phone)</title>
     <version>0.0.0</version>
     <authors>Oystein Bjorke</authors>
-    <description>OxyPlot is an open source plotting library for .NET. This is the package to use for Xamarin.Forms apps.</description>
+    <description>OxyPlot is a plotting library for .NET. This package includes a portable library for Xamarin.Forms apps and platform-specific libraries for iOS, Android and Windows Phone.</description>
     <releaseNotes></releaseNotes>
     <licenseUrl>https://raw.githubusercontent.com/oxyplot/oxyplot/master/LICENSE</licenseUrl>
     <projectUrl>http://oxyplot.org/</projectUrl>
