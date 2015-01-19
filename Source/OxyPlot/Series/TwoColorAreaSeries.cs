@@ -283,7 +283,7 @@ namespace OxyPlot.Series
             base.UpdateData();
 
             // update points from the limit line
-            if (this.ActualPoints != null )
+            if (this.ActualPoints != null)
             {
                 this.points2.Clear();
 
