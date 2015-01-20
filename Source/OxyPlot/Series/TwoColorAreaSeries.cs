@@ -283,11 +283,15 @@ namespace OxyPlot.Series
             base.UpdateData();
 
             // update points from the limit line
-            if (this.ActualPoints != null && this.ActualPoints.Count > 1)
+            if (this.ActualPoints != null)
             {
                 this.points2.Clear();
-                this.points2.Add(new DataPoint(this.ActualPoints.Min(el => el.X), this.Limit));
-                this.points2.Add(new DataPoint(this.ActualPoints.Max(el => el.X), this.Limit));
+
+                if (this.ActualPoints.Count > 1)
+                {
+                    this.points2.Add(new DataPoint(this.ActualPoints.Min(el => el.X), this.Limit));
+                    this.points2.Add(new DataPoint(this.ActualPoints.Max(el => el.X), this.Limit));
+                }
             }
         }
 
