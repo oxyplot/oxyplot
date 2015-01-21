@@ -3,6 +3,7 @@
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+using Xwt.Drawing;
 
 namespace OxyPlot.Xwt
 {
@@ -19,6 +20,36 @@ namespace OxyPlot.Xwt
 		/// </summary>
 		/// <value>The background color.</value>
 		public OxyColor Background { get; set; }
+
+		/// <summary>
+		/// Gets or sets the text padding.
+		/// </summary>
+		/// <value>The padding.</value>
+		public double Padding { get; set; }
+
+		/// <summary>
+		/// Gets or sets the font.
+		/// </summary>
+		/// <value>The font.</value>
+		public Font Font { get; set; }
+
+		/// <summary>
+		/// Gets or sets the color of the text.
+		/// </summary>
+		/// <value>The color of the text.</value>
+		public OxyColor TextColor { get; set; }
+
+		/// <summary>
+		/// Gets or sets the color of the border.
+		/// </summary>
+		/// <value>The color of the border.</value>
+		public OxyColor BorderColor { get; set; }
+
+		/// <summary>
+		/// Gets or sets the width of the border.
+		/// </summary>
+		/// <value>The width of the border.</value>
+		public double BorderWidth { get; set; }
 
 		/// <summary>
 		/// Gets or sets the color of the horizontal line.
@@ -108,6 +139,11 @@ namespace OxyPlot.Xwt
 		{
 			Enabled = false;
 			Background = OxyColor.FromArgb (0x80, 0xFF, 0xFF, 0x00);
+			Font = Font.SystemFont;
+			TextColor = OxyColors.Black;
+			Padding = 6;
+			BorderWidth = 1;
+			BorderColor = OxyColor.FromArgb (0xFF, 0x3C, 0x3C, 0x3C);
 			HorizontalLineColor = OxyColors.Black;
 			HorizontalLineWidth = 1.0;
 			HorizontalLineVisible = true;

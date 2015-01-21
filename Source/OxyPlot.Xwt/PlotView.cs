@@ -86,11 +86,6 @@ namespace OxyPlot.Xwt
 		TrackerHitResult actualTrackerHitResult;
 
 		/// <summary>
-		/// The tracker popover.
-		/// </summary>
-		Popover trackerPopover;
-
-		/// <summary>
 		/// The tracker label.
 		/// </summary>
 		Label lblTrackerText = new Label ();
@@ -291,31 +286,8 @@ namespace OxyPlot.Xwt
         /// <param name="trackerHitResult">The data.</param>
         public virtual void ShowTracker (TrackerHitResult trackerHitResult)
 		{
-			if (trackerPopover != null)
-				HideTracker();
-
-			if (trackerHitResult == null)
-				return;
-
-			var trackerSettings = DefaultTrackerSettings;
-			if (trackerHitResult.Series != null && !string.IsNullOrEmpty(trackerHitResult.Series.TrackerKey))
-				trackerSettings = trackerDefinitions[trackerHitResult.Series.TrackerKey];
-
-			if (trackerSettings.Enabled) {
-				lock (trackerLock) {
-					actualTrackerHitResult = trackerHitResult;
-					trackerPopover = new Popover (lblTrackerText);
-					// TODO: background color, when supported by xwt
-					//trackerPopover.Background = trackerSettings.Background;
-					lblTrackerText.Text = trackerHitResult.Text;
-
-					var position = new Rectangle (trackerHitResult.Position.X, trackerHitResult.Position.Y, 1, 1);
-					//TODO: horizontal flip, needs xwt fix (https://github.com/mono/xwt/pull/362)
-					//if (trackerHitResult.Position.Y <= Bounds.Height / 2)
-					trackerPopover.Show (Popover.Position.Top, this, position);
-					//else
-					//	trackerPopover.Show (Popover.Position.Bottom, this, position);
-				}
+			lock (trackerLock) {
+				actualTrackerHitResult = trackerHitResult;
 			}
 			QueueDraw ();
         }
@@ -327,12 +299,6 @@ namespace OxyPlot.Xwt
 		{
 			lock (trackerLock) {
 				actualTrackerHitResult = null;
-				if (trackerPopover != null) {
-					trackerPopover.Hide ();
-					trackerPopover.Content = null;
-					trackerPopover.Dispose ();
-					trackerPopover = null;
-				}
 			}
 			QueueDraw ();
         }
@@ -534,11 +500,21 @@ namespace OxyPlot.Xwt
 					                             ZoomRectangleBorderColor,
 					                             ZoomRectangleBorderWidth);
                 }
+				DrawPopover (ctx);
+            } catch (Exception paintException) {
+                var trace = new StackTrace (paintException);
+                Debug.WriteLine (paintException);
+                Debug.WriteLine (trace);
+            }
+        }
 
+		void DrawPopover (Context ctx)
+		{
+			lock (trackerLock) {
 				if (actualTrackerHitResult != null) {
 					var trackerSettings = DefaultTrackerSettings;
-					if (actualTrackerHitResult.Series != null && !string.IsNullOrEmpty(actualTrackerHitResult.Series.TrackerKey))
-						trackerSettings = trackerDefinitions[actualTrackerHitResult.Series.TrackerKey];
+					if (actualTrackerHitResult.Series != null && !string.IsNullOrEmpty (actualTrackerHitResult.Series.TrackerKey))
+						trackerSettings = trackerDefinitions [actualTrackerHitResult.Series.TrackerKey];
 
 					if (trackerSettings.Enabled) {
 						var extents = actualTrackerHitResult.LineExtents;
@@ -556,7 +532,7 @@ namespace OxyPlot.Xwt
 						if (trackerSettings.HorizontalLineVisible) {
 
 							renderContext.DrawLine (
-								new[] { new ScreenPoint(extents.Left, pos.Y), new ScreenPoint(extents.Right, pos.Y)},
+								new[] { new ScreenPoint (extents.Left, pos.Y), new ScreenPoint (extents.Right, pos.Y) },
 								trackerSettings.HorizontalLineColor,
 								trackerSettings.HorizontalLineWidth,
 								trackerSettings.HorizontalLineActualDashArray,
@@ -565,21 +541,69 @@ namespace OxyPlot.Xwt
 						}
 						if (trackerSettings.VerticalLineVisible) {
 							renderContext.DrawLine (
-								new[] { new ScreenPoint(pos.X, extents.Top), new ScreenPoint(pos.X, extents.Bottom)},
+								new[] { new ScreenPoint (pos.X, extents.Top), new ScreenPoint (pos.X, extents.Bottom) },
 								trackerSettings.VerticalLineColor,
 								trackerSettings.VerticalLineWidth,
 								trackerSettings.VerticalLineActualDashArray,
 								LineJoin.Miter,
 								true);
 						}
+
+						TextLayout text = new TextLayout ();
+						text.Font = trackerSettings.Font;
+						text.Text = actualTrackerHitResult.Text;
+
+						var arrowTop = actualTrackerHitResult.Position.Y <= Bounds.Height / 2;
+						const int arrowPadding = 10;
+
+						var textSize = text.GetSize ();
+						var outerSize = new Size (textSize.Width + (trackerSettings.Padding * 2),
+						                          textSize.Height + (trackerSettings.Padding * 2) + arrowPadding);
+
+						var trackerBounds = new Rectangle (pos.X - (outerSize.Width / 2),
+						                                   0,
+						                                   outerSize.Width,
+						                                   outerSize.Height - arrowPadding);
+						if (arrowTop)
+							trackerBounds.Y = pos.Y + arrowPadding + trackerSettings.BorderWidth;
+						else
+							trackerBounds.Y = pos.Y - outerSize.Height - trackerSettings.BorderWidth;
+
+						var borderColor = trackerSettings.BorderColor.ToXwtColor ();
+
+						ctx.RoundRectangle (trackerBounds, 6);
+						ctx.SetLineWidth (trackerSettings.BorderWidth);
+						ctx.SetColor (borderColor);
+						ctx.StrokePreserve ();
+						ctx.SetColor (trackerSettings.Background.ToXwtColor ());
+						ctx.Fill ();
+
+						ctx.Save ();
+						var arrowX = trackerBounds.Center.X;
+						var arrowY = arrowTop ? trackerBounds.Top : trackerBounds.Bottom;
+						ctx.NewPath ();
+						ctx.MoveTo (arrowX, arrowY);
+						var triangleSide = 2 * arrowPadding / Math.Sqrt (3);
+						var halfSide = triangleSide / 2;
+						var verticalModifier = arrowTop ? -1 : 1;
+						ctx.RelMoveTo (-halfSide, 0);
+						ctx.RelLineTo (halfSide, verticalModifier * arrowPadding);
+						ctx.RelLineTo (halfSide, verticalModifier * -arrowPadding);
+						ctx.SetColor (borderColor);
+						ctx.StrokePreserve ();
+						ctx.ClosePath ();
+						ctx.SetColor (trackerSettings.Background.ToXwtColor ());
+						ctx.Fill ();
+						ctx.Restore ();
+
+						ctx.SetColor (trackerSettings.TextColor.ToXwtColor ());
+						ctx.DrawTextLayout (text,
+						                    trackerBounds.Left + trackerSettings.Padding,
+						                    trackerBounds.Top + trackerSettings.Padding);
 					}
 				}
-            } catch (Exception paintException) {
-                var trace = new StackTrace (paintException);
-                Debug.WriteLine (paintException);
-                Debug.WriteLine (trace);
-            }
-        }
+			}
+		}
 
         /// <summary>
         /// Renders the contents of the widget into an Image
@@ -594,8 +618,6 @@ namespace OxyPlot.Xwt
         {
 			if (disposing) {
 				renderContext.Dispose ();
-				if (trackerPopover != null)
-					trackerPopover.Dispose ();
 			}
             base.Dispose (disposing);
         }
