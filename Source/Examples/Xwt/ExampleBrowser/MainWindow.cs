@@ -1,8 +1,9 @@
 ﻿using System;
-using Xwt;
-using ExampleLibrary;
 using System.Collections.Generic;
 using System.Linq;
+using ExampleLibrary;
+using OxyPlot.Xwt;
+using Xwt;
 
 namespace ExampleBrowser
 {
@@ -35,9 +36,11 @@ namespace ExampleBrowser
 		{
 			this.Examples = ExampleLibrary.Examples.GetList().OrderBy(e => e.Category).ToList();
 
-			this.plotView = new OxyPlot.Xwt.PlotView();
+			this.plotView = new PlotView();
 			this.plotView.MinHeight = 554;
 			this.plotView.MinWidth = 625;
+			this.plotView.DefaultTrackerSettings.Enabled = true;
+			this.plotView.DefaultTrackerSettings.Background = Xwt.Drawing.Colors.AliceBlue.WithAlpha (0.9).ToOxyColor();
 
 			this.treeView = new TreeView();
 			this.treeView.MinWidth = 314;
