@@ -377,11 +377,37 @@ namespace OxyPlot.Xwt
         /// <param name="fontWeight">Font weight.</param>
         Font GetCachedFont (string fontFamily, double fontSize, double fontWeight)
         {
-            var fs = (fontWeight >= 700) ? FontWeight.Bold : FontWeight.Normal;
-            var key = fontFamily + ' ' + fs + ' ' + fontSize.ToString ("0.###");
+			if (String.IsNullOrEmpty (fontFamily))
+				fontFamily = Font.SystemFont.Family;
+
+			var key = fontFamily + ' ' + GetFontWeight(fontWeight) + ' ' + fontSize.ToString ("0.###");
+
             Font font;
-            return fonts.TryGetValue (key, out font) ? font : fonts [key] = Font.FromName (key);
+			if (!fonts.TryGetValue (key, out font))
+				fonts [key] = Font.FromName (fontFamily).WithWeight (GetFontWeight (fontWeight)).WithSize (fontSize);
+
+			return fonts [key];
         }
+
+		/// <summary>
+		/// Gets the Xwt font weight.
+		/// </summary>
+		/// <returns>The font weight.</returns>
+		/// <param name="weight">the numeric font weight.</param>
+		FontWeight GetFontWeight (double weight)
+		{
+			if (weight < 300)
+				return FontWeight.Ultralight;
+			if (weight < 400)
+				return FontWeight.Light;
+			if (weight < 600)
+				return FontWeight.Normal;
+			if (weight < 700)
+				return FontWeight.Semibold;
+			if (weight < 800)
+				return FontWeight.Bold;
+			return FontWeight.Ultrabold;
+		}
 
         /// <summary>
         /// Gets the cached <see cref="Image" /> of the specified <see cref="OxyImage" />.
