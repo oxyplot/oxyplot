@@ -11,6 +11,9 @@ namespace OxyPlot.MonoTouch
 {
     using global::MonoTouch.Foundation;
     using global::MonoTouch.UIKit;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using OxyPlot;
 
     /// <summary>
@@ -28,7 +31,18 @@ namespace OxyPlot.MonoTouch
         /// The default plot controller.
         /// </summary>
         private IPlotController defaultController;
-               
+
+        /// <summary>
+        /// Up to 2 touches being currently tracked in a pan/zoom.
+        /// </summary>
+        private List<UITouch> activeTouches = new List<UITouch>();
+
+        /// <summary>
+        /// How far apart touch points must be on a certain axis to enable scaling that axis
+        /// </summary>
+        private const double threshold = 20d;
+
+
         /// <summary>
         /// Initializes a new instance of the <see cref="OxyPlot.XamarinIOS.PlotView"/> class.
         /// </summary>
@@ -91,7 +105,24 @@ namespace OxyPlot.MonoTouch
             {
                 if (this.model != value)
                 {
-                    this.model = value;
+                    if (this.model != null)
+                    {
+                        ((IPlotModel)this.model).AttachPlotView(null);
+                        this.model = null;
+                    }
+
+                    if (value != null)
+                    {
+                        if (value.PlotView != null)
+                        {
+                            throw new InvalidOperationException(
+                                "This PlotModel is already in use by some other PlotView control.");
+                        }
+
+                        ((IPlotModel)value).AttachPlotView(this);
+                        this.model = value;
+                    }
+
                     this.InvalidatePlot();
                 }
             }
@@ -286,11 +317,24 @@ namespace OxyPlot.MonoTouch
         /// <param name="evt">The event arguments.</param>
         public override void TouchesBegan(NSSet touches, UIEvent evt)
         {
-            base.TouchesBegan(touches, evt);
-            var touch = touches.AnyObject as UITouch;
-            if (touch != null)
+            if (this.activeTouches.Count >= 2)
             {
-                this.ActualController.HandleTouchStarted(this, touch.ToTouchEventArgs(this));
+                // we already have two touches
+                return;
+            }
+
+            // Grab 1-2 touches to track
+            var newTouches = touches.ToArray<UITouch>();
+            var firstTouch = !this.activeTouches.Any();
+
+            activeTouches.AddRange(newTouches.Take(2 - this.activeTouches.Count));
+
+            if (firstTouch)
+            {
+                // HandleTouchStarted initializes the entire multitouch gesture,
+                // with the first touch used for panning.
+                //
+                ActualController.HandleTouchStarted(this, this.activeTouches.First().ToTouchEventArgs(this));
             }
         }
 
@@ -301,33 +345,31 @@ namespace OxyPlot.MonoTouch
         /// <param name="evt">The event arguments.</param>
         public override void TouchesMoved(NSSet touches, UIEvent evt)
         {
-            // it seems to be easier to handle touch events here than using UIPanGesturRecognizer and UIPinchGestureRecognizer
-            base.TouchesMoved(touches, evt);
-
-            // convert the touch points to an array
-            var ta = touches.ToArray<UITouch>();
-
-            if (ta.Length > 0)
+            if (activeTouches.Count > 0)
             {
                 // get current and previous location of the first touch point
-                var t1 = ta[0];
+                var t1 = this.activeTouches.First();
                 var l1 = t1.LocationInView(this).ToScreenPoint();
-                var pl1 = t1.PreviousLocationInView(this).ToScreenPoint();
+                var pl1 = t1.Phase == UITouchPhase.Moved ? t1.PreviousLocationInView(this).ToScreenPoint() : l1;
+
                 var l = l1;
                 var t = l1 - pl1;
                 var s = new ScreenVector(1, 1);
-                if (ta.Length > 1)
+
+                if (activeTouches.Count > 1)
                 {
                     // get current and previous location of the second touch point
-                    var t2 = ta[1];
+                    var t2 = this.activeTouches.ElementAt(1);
                     var l2 = t2.LocationInView(this).ToScreenPoint();
-                    var pl2 = t2.PreviousLocationInView(this).ToScreenPoint();
+                    var pl2 = t2.Phase == UITouchPhase.Moved ? t2.PreviousLocationInView(this).ToScreenPoint() : l2;
+
                     var d = l1 - l2;
                     var pd = pl1 - pl2;
+
                     if (!this.KeepAspectRatioWhenPinching)
                     {
-                        var scalex = System.Math.Abs(pd.X) > 0 ? System.Math.Abs(d.X / pd.X) : 1;
-                        var scaley = System.Math.Abs(pd.Y) > 0 ? System.Math.Abs(d.Y / pd.Y) : 1;
+                        var scalex = Math.Abs(pd.X) > PlotView.threshold && Math.Abs(d.X) > PlotView.threshold ? Math.Abs(d.X / pd.X) : 1;
+                        var scaley = Math.Abs(pd.Y) > PlotView.threshold && Math.Abs(d.Y) > PlotView.threshold ? Math.Abs(d.Y / pd.Y) : 1;
                         s = new ScreenVector(scalex, scaley);
                     }
                     else
@@ -349,11 +391,29 @@ namespace OxyPlot.MonoTouch
         /// <param name="evt">The event arguments.</param>
         public override void TouchesEnded(NSSet touches, UIEvent evt)
         {
-            base.TouchesEnded(touches, evt);
-            var touch = touches.AnyObject as UITouch;
-            if (touch != null)
+            // We already have the only two touches we care about, so ignore the params
+            //
+            var secondTouch = this.activeTouches.ElementAtOrDefault(1);
+
+            if (secondTouch != null && secondTouch.Phase == UITouchPhase.Ended)
             {
-                this.ActualController.HandleTouchCompleted(this, touch.ToTouchEventArgs(this));
+                this.activeTouches.Remove(secondTouch);
+            }
+
+            var firstTouch = this.activeTouches.FirstOrDefault();
+
+            if (firstTouch != null && firstTouch.Phase == UITouchPhase.Ended)
+            {
+                this.activeTouches.Remove(firstTouch);
+
+                ActualController.HandleTouchCompleted(this, firstTouch.ToTouchEventArgs(this));
+
+                if (secondTouch != null && secondTouch.Phase != UITouchPhase.Ended)
+                {
+                    // Restart with the former-secondary touch now promoted to primary touch (congratulations!)
+                    //
+                    ActualController.HandleTouchStarted(this, secondTouch.ToTouchEventArgs(this));
+                }
             }
         }
 
@@ -364,9 +424,10 @@ namespace OxyPlot.MonoTouch
         /// <param name="evt">The event arguments.</param>
         public override void TouchesCancelled(NSSet touches, UIEvent evt)
         {
-            base.TouchesCancelled(touches, evt);
-            var touch = touches.AnyObject as UITouch;
-            if (touch != null)
+            // TODO: Is it possible for one touch to be canceled while others remain in play?
+
+            var touch = this.activeTouches.FirstOrDefault();
+            if (touch != null && touch.Phase == UITouchPhase.Cancelled)
             {
                 this.ActualController.HandleTouchCompleted(this, touch.ToTouchEventArgs(this));
             }
