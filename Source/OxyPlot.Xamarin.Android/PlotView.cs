@@ -116,8 +116,25 @@ namespace OxyPlot.Xamarin.Android
             {
                 if (this.model != value)
                 {
-                    this.model = value;
-                    this.InvalidatePlot(true);
+                    if (this.model != null)
+                    {
+                        ((IPlotModel)this.model).AttachPlotView(null);
+                        this.model = null;
+                    }
+
+                    if (value != null)
+                    {
+                        if (value.PlotView != null)
+                        {
+                            throw new InvalidOperationException(
+                                "This PlotModel is already in use by some other PlotView control.");
+                        }
+
+                        ((IPlotModel)value).AttachPlotView(this);
+                        this.model = value;
+                    }
+
+                    this.InvalidatePlot();
                 }
             }
         }
