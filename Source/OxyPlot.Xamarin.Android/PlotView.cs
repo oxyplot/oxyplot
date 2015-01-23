@@ -9,6 +9,8 @@
 
 namespace OxyPlot.Xamarin.Android
 {
+    using System;
+
     using global::Android.Content;
     using global::Android.Graphics;
     using global::Android.Util;
@@ -126,8 +128,7 @@ namespace OxyPlot.Xamarin.Android
                     {
                         if (value.PlotView != null)
                         {
-                            throw new InvalidOperationException(
-                                "This PlotModel is already in use by some other PlotView control.");
+                            throw new InvalidOperationException("This PlotModel is already in use by some other PlotView control.");
                         }
 
                         ((IPlotModel)value).AttachPlotView(this);
@@ -225,7 +226,7 @@ namespace OxyPlot.Xamarin.Android
         /// Invalidates the plot (not blocking the UI thread)
         /// </summary>
         /// <param name="updateData">if set to <c>true</c>, all data bindings will be updated.</param>
-        public void InvalidatePlot(bool updateData)
+        public void InvalidatePlot(bool updateData = true)
         {
             lock (this.invalidateLock)
             {
