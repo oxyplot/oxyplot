@@ -462,23 +462,6 @@ namespace OxyPlot.Axes
         public ScreenPoint ScreenMin { get; protected set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether minor ticks should be shown. The default value is <c>true</c>.
-        /// </summary>
-        [Obsolete("Set MinorTickSize = 0 instead")]
-        public bool ShowMinorTicks
-        {
-            get
-            {
-                return this.MinorTickSize > 0;
-            }
-
-            set
-            {
-                this.MinorTickSize = value ? 4 : 0;
-            }
-        }
-
-        /// <summary>
         /// Gets or sets the start position of the axis on the plot area. The default value is <c>0</c>.
         /// </summary>
         /// <remarks>The position is defined by a fraction in the range from <c>0</c> to <c>1</c>, where <c>0</c> is at the bottom/left
