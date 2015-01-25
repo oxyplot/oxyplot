@@ -30,30 +30,6 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MagnitudeAxis" /> class.
-        /// </summary>
-        /// <param name="minimum">The minimum.</param>
-        /// <param name="maximum">The maximum.</param>
-        /// <param name="majorStep">The major step.</param>
-        /// <param name="minorStep">The minor step.</param>
-        /// <param name="title">The title.</param>
-        [Obsolete]
-        public MagnitudeAxis(
-            double minimum = double.NaN,
-            double maximum = double.NaN,
-            double majorStep = double.NaN,
-            double minorStep = double.NaN,
-            string title = null)
-            : this()
-        {
-            this.Minimum = minimum;
-            this.Maximum = maximum;
-            this.MajorStep = majorStep;
-            this.MinorStep = minorStep;
-            this.Title = title;
-        }
-
-        /// <summary>
         /// Gets or sets the midpoint (screen coordinates) of the plot area. This is used by polar coordinate systems.
         /// </summary>
         internal ScreenPoint MidPoint { get; set; }

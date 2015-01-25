@@ -64,51 +64,6 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DateTimeAxis" /> class.
-        /// </summary>
-        /// <param name="position">The position of the axis.</param>
-        /// <param name="title">The axis title.</param>
-        /// <param name="format">The string format for the axis values.</param>
-        /// <param name="intervalType">The interval type.</param>
-        [Obsolete]
-        public DateTimeAxis(
-            AxisPosition position,
-            string title = null,
-            string format = null,
-            DateTimeIntervalType intervalType = DateTimeIntervalType.Auto)
-            : base(position, title)
-        {
-            this.FirstDayOfWeek = DayOfWeek.Monday;
-            this.CalendarWeekRule = CalendarWeekRule.FirstFourDayWeek;
-
-            this.StringFormat = format;
-            this.IntervalType = intervalType;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DateTimeAxis" /> class.
-        /// </summary>
-        /// <param name="position">The position of the axis.</param>
-        /// <param name="firstDateTime">The first date/time on the axis.</param>
-        /// <param name="lastDateTime">The last date/time on the axis.</param>
-        /// <param name="title">The axis title.</param>
-        /// <param name="format">The string format for the axis values.</param>
-        /// <param name="intervalType">The interval type.</param>
-        [Obsolete]
-        public DateTimeAxis(
-            AxisPosition position,
-            DateTime firstDateTime,
-            DateTime lastDateTime,
-            string title = null,
-            string format = null,
-            DateTimeIntervalType intervalType = DateTimeIntervalType.Auto)
-            : this(position, title, format, intervalType)
-        {
-            this.Minimum = ToDouble(firstDateTime);
-            this.Maximum = ToDouble(lastDateTime);
-        }
-
-        /// <summary>
         /// Gets or sets CalendarWeekRule.
         /// </summary>
         public CalendarWeekRule CalendarWeekRule { get; set; }

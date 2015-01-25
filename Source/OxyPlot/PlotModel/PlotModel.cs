@@ -294,19 +294,6 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PlotModel" /> class.
-        /// </summary>
-        /// <param name="title">The title.</param>
-        /// <param name="subtitle">The subtitle.</param>
-        [Obsolete]
-        public PlotModel(string title, string subtitle = null)
-            : this()
-        {
-            this.Title = title;
-            this.Subtitle = subtitle;
-        }
-
-        /// <summary>
         /// Occurs when the tracker has been changed.
         /// </summary>
         public event EventHandler<TrackerEventArgs> TrackerChanged;

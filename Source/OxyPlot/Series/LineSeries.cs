@@ -84,34 +84,6 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LineSeries" /> class.
-        /// </summary>
-        /// <param name="title">The title.</param>
-        [Obsolete]
-        public LineSeries(string title)
-            : this()
-        {
-            this.Title = title;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LineSeries" /> class.
-        /// </summary>
-        /// <param name="color">The color of the line stroke.</param>
-        /// <param name="strokeThickness">The stroke thickness (optional).</param>
-        /// <param name="title">The title (optional).</param>
-        [Obsolete]
-        public LineSeries(OxyColor color, double strokeThickness = 1, string title = null)
-            : this()
-        {
-            this.Color = color;
-            this.StrokeThickness = strokeThickness;
-            this.BrokenLineThickness = 0;
-            this.BrokenLineStyle = LineStyle.Solid;
-            this.Title = title;
-        }
-
-        /// <summary>
         /// Gets or sets the color of the curve.
         /// </summary>
         /// <value>The color.</value>

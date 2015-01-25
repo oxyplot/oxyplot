@@ -31,31 +31,6 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CandleStickSeries" /> class.
-        /// </summary>
-        /// <param name="title">The title.</param>
-        [Obsolete]
-        public CandleStickSeries(string title)
-            : this()
-        {
-            this.Title = title;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CandleStickSeries" /> class.
-        /// </summary>
-        /// <param name="color">The color.</param>
-        /// <param name="strokeThickness">The stroke thickness.</param>
-        /// <param name="title">The title.</param>
-        [Obsolete]
-        public CandleStickSeries(OxyColor color, double strokeThickness = 1, string title = null)
-            : this(title)
-        {
-            this.Color = color;
-            this.StrokeThickness = strokeThickness;
-        }
-
-        /// <summary>
         /// Gets or sets the width of the candle (in screen space units).
         /// </summary>
         public double CandleWidth { get; set; }
