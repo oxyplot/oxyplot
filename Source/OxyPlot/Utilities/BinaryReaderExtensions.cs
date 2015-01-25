@@ -16,7 +16,6 @@ namespace OxyPlot
     /// <summary>
     /// Provides extension methods to the <see cref="BinaryReader" />.
     /// </summary>
-    [Obsolete]
     public static class BinaryReaderExtensions
     {
         /// <summary>
