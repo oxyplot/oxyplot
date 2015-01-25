@@ -89,38 +89,6 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CategoryAxis" /> class.
-        /// </summary>
-        /// <param name="position">The position.</param>
-        /// <param name="title">The title.</param>
-        /// <param name="categories">The categories.</param>
-        [Obsolete]
-        public CategoryAxis(AxisPosition position, string title = null, params string[] categories)
-            : this(title, categories)
-        {
-            this.Position = position;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CategoryAxis" /> class.
-        /// </summary>
-        /// <param name="title">The title.</param>
-        /// <param name="categories">The categories.</param>
-        [Obsolete]
-        public CategoryAxis(string title, params string[] categories)
-            : this()
-        {
-            this.Title = title;
-            if (categories != null)
-            {
-                foreach (var c in categories)
-                {
-                    this.Labels.Add(c);
-                }
-            }
-        }
-
-        /// <summary>
         /// Gets or sets the gap width.
         /// </summary>
         /// <remarks>The default value is 1.0 (100%). The gap width is given as a fraction of the total width/height of the items in a category.</remarks>

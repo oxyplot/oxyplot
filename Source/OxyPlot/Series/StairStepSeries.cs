@@ -27,31 +27,6 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="StairStepSeries" /> class.
-        /// </summary>
-        /// <param name="title">The title.</param>
-        [Obsolete]
-        public StairStepSeries(string title)
-            : this()
-        {
-            this.Title = title;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="StairStepSeries" /> class.
-        /// </summary>
-        /// <param name="color">The color.</param>
-        /// <param name="strokeThickness">The stroke thickness.</param>
-        /// <param name="title">The title.</param>
-        [Obsolete]
-        public StairStepSeries(OxyColor color, double strokeThickness = 1, string title = null)
-            : base(color, strokeThickness, title)
-        {
-            this.VerticalStrokeThickness = double.NaN;
-            this.VerticalLineStyle = this.LineStyle;
-        }
-
-        /// <summary>
         /// Gets or sets the stroke thickness of the vertical line segments.
         /// </summary>
         /// <value>The vertical stroke thickness.</value>

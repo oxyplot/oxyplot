@@ -33,30 +33,6 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AngleAxis" /> class.
-        /// </summary>
-        /// <param name="minimum">The minimum value.</param>
-        /// <param name="maximum">The maximum value.</param>
-        /// <param name="majorStep">The major step.</param>
-        /// <param name="minorStep">The minor step.</param>
-        /// <param name="title">The title.</param>
-        [Obsolete]
-        public AngleAxis(
-            double minimum = double.NaN,
-            double maximum = double.NaN,
-            double majorStep = double.NaN,
-            double minorStep = double.NaN,
-            string title = null)
-            : this()
-        {
-            this.Minimum = minimum;
-            this.Maximum = maximum;
-            this.MajorStep = majorStep;
-            this.MinorStep = minorStep;
-            this.Title = title;
-        }
-
-        /// <summary>
         /// Gets or sets the start angle (degrees).
         /// </summary>
         public double StartAngle { get; set; }

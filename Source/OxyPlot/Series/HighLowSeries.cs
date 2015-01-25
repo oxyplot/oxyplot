@@ -47,32 +47,6 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="HighLowSeries" /> class.
-        /// </summary>
-        /// <param name="title">The title.</param>
-        [Obsolete]
-        public HighLowSeries(string title)
-            : this()
-        {
-            this.Title = title;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="HighLowSeries" /> class.
-        /// </summary>
-        /// <param name="color">The color.</param>
-        /// <param name="strokeThickness">The stroke thickness.</param>
-        /// <param name="title">The title.</param>
-        [Obsolete]
-        public HighLowSeries(OxyColor color, double strokeThickness = 1, string title = null)
-            : this()
-        {
-            this.Color = color;
-            this.StrokeThickness = strokeThickness;
-            this.Title = title;
-        }
-
-        /// <summary>
         /// Gets or sets the color of the item.
         /// </summary>
         /// <value>The color.</value>
