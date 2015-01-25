@@ -1067,20 +1067,6 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Creates an svg model and return it as a string.
-        /// </summary>
-        /// <param name="width">The width (points).</param>
-        /// <param name="height">The height (points).</param>
-        /// <param name="isDocument">if set to <c>true</c>, the xml headers will be included (?xml and !DOCTYPE).</param>
-        /// <param name="textMeasurer">The text measurer.</param>
-        /// <returns>The svg string.</returns>
-        [Obsolete("Use SvgExporter instead")]
-        public string ToSvg(double width, double height, bool isDocument, IRenderContext textMeasurer = null)
-        {
-            return SvgExporter.ExportToString(this, width, height, isDocument, textMeasurer);
-        }
-
-        /// <summary>
         /// Gets all elements of the model, sorted by rendering priority.
         /// </summary>
         /// <returns>An enumerator of the elements.</returns>
