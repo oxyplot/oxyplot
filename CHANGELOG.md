@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 - Enable Git source server (added GitLink build step) (#267,#266)
 
 ### Changed
+- Deleted Axis.ShowMinorTicks. Use MinorTickSize = 0 instead. (#347)
 - Renamed OxyPlot.XamarinIOS to OxyPlot.MonoTouch (#327)
 - Renamed OxyPlot.XamarinAndroid to OxyPlot.Xamarin.Android (#327)
 - Renamed OxyPlot.XamarinForms to OxyPlot.Xamarin.Forms (#327)
