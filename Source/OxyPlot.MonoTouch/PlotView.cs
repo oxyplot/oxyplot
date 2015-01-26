@@ -44,7 +44,7 @@ namespace OxyPlot.MonoTouch
 
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OxyPlot.XamarinIOS.PlotView"/> class.
+        /// Initializes a new instance of the <see cref="OxyPlot.MonoTouch.PlotView"/> class.
         /// </summary>
         public PlotView()
         {
@@ -52,7 +52,7 @@ namespace OxyPlot.MonoTouch
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OxyPlot.XamarinIOS.PlotView"/> class.
+        /// Initializes a new instance of the <see cref="OxyPlot.MonoTouch.PlotView"/> class.
         /// </summary>
         /// <param name="frame">The initial frame.</param>
         public PlotView(System.Drawing.RectangleF frame) : base(frame)
@@ -61,7 +61,7 @@ namespace OxyPlot.MonoTouch
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OxyPlot.XamarinIOS.PlotView"/> class.
+        /// Initializes a new instance of the <see cref="OxyPlot.MonoTouch.PlotView"/> class.
         /// </summary>
         /// <param name="coder">Coder.</param>
         [Export ("initWithCoder:")]
@@ -199,7 +199,7 @@ namespace OxyPlot.MonoTouch
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="OxyPlot.XamarinIOS.PlotView"/> keeps the aspect ratio when pinching.
+        /// Gets or sets a value indicating whether this <see cref="OxyPlot.MonoTouch.PlotView"/> keeps the aspect ratio when pinching.
         /// </summary>
         /// <value><c>true</c> if keep aspect ratio when pinching; otherwise, <c>false</c>.</value>
         public bool KeepAspectRatioWhenPinching { get; set; }

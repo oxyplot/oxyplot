@@ -399,14 +399,14 @@ namespace OxyPlot.MonoTouch
         }
 
         /// <summary>
-        /// Releases all resource used by the <see cref="OxyPlot.XamarinIOS.MonoTouchRenderContext"/> object.
+        /// Releases all resource used by the <see cref="OxyPlot.MonoTouch.MonoTouchRenderContext"/> object.
         /// </summary>
         /// <remarks>Call <see cref="Dispose"/> when you are finished using the
-        /// <see cref="OxyPlot.XamarinIOS.MonoTouchRenderContext"/>. The <see cref="Dispose"/> method leaves the
-        /// <see cref="OxyPlot.XamarinIOS.MonoTouchRenderContext"/> in an unusable state. After calling
+        /// <see cref="OxyPlot.MonoTouch.MonoTouchRenderContext"/>. The <see cref="Dispose"/> method leaves the
+        /// <see cref="OxyPlot.MonoTouch.MonoTouchRenderContext"/> in an unusable state. After calling
         /// <see cref="Dispose"/>, you must release all references to the
-        /// <see cref="OxyPlot.XamarinIOS.MonoTouchRenderContext"/> so the garbage collector can reclaim the memory that
-        /// the <see cref="OxyPlot.XamarinIOS.MonoTouchRenderContext"/> was occupying.</remarks>
+        /// <see cref="OxyPlot.MonoTouch.MonoTouchRenderContext"/> so the garbage collector can reclaim the memory that
+        /// the <see cref="OxyPlot.MonoTouch.MonoTouchRenderContext"/> was occupying.</remarks>
         public void Dispose()
         {
             foreach (var image in this.imageCache.Values)
