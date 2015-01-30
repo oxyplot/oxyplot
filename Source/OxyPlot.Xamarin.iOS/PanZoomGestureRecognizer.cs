@@ -33,7 +33,7 @@ namespace OxyPlot.Xamarin.iOS
         public double ZoomThreshold { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="OxyPlot.Xamarin.iOS.PlotView"/> keeps the aspect ratio when pinching.
+        /// Gets or sets a value indicating whether this <see cref="OxyPlot.Xamarin.iOS.PanZoomGestureRecognizer"/> keeps the aspect ratio when pinching.
         /// </summary>
         /// <value><c>true</c> if keep aspect ratio when pinching; otherwise, <c>false</c>.</value>
         public bool KeepAspectRatioWhenPinching { get; set; }
