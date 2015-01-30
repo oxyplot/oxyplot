@@ -38,6 +38,7 @@
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PanZoomGestureRecognizer.cs" />
     <Compile Include="PlotView.cs" />
     <Compile Include="ExportExtensions.cs" />
     <Compile Include="ConverterExtensions.cs" />
