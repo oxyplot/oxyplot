@@ -219,6 +219,17 @@ namespace OxyPlot.MonoTouch
         }
 
         /// <summary>
+        /// If <c>true</c>, and KeepAspectRatioWhenPinching is <c>false</c>, a zoom-out gesture
+        /// can turn into a zoom-in gesture if the fingers cross. Setting to <c>false</c> will
+        /// instead simply stop the zoom at that point.
+        /// </summary>
+        public bool AllowPinchPastZero
+        {
+            get { return this.panZoomGesture.AllowPinchPastZero; }
+            set { this.panZoomGesture.AllowPinchPastZero = value; }
+        }
+
+        /// <summary>
         /// Hides the tracker.
         /// </summary>
         public void HideTracker()
