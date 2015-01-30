@@ -26,17 +26,29 @@ namespace OxyPlot.MonoTouch
         /// </summary>
         private List<UITouch> activeTouches = new List<UITouch>();
 
+        // Distance between touchpoints when the second touchpoint begins. Used to determine
+        // whether the touchpoints cross along a given axis during the zoom gesture.
+        //
+        private ScreenVector startingDistance = default(ScreenVector);
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="OxyPlot.Xamarin.iOS.PanZoomGestureRecognizer"/> keeps the aspect ratio when pinching.
+        /// </summary>
+        /// <value><c>true</c> if keep aspect ratio when pinching; otherwise, <c>false</c>.</value>
+        public bool KeepAspectRatioWhenPinching { get; set; }
+
         /// <summary>
         /// How far apart touch points must be on a certain axis to enable scaling that axis.
-        /// (only applies if KeepAspectRatioWhenPinching == false)
+        /// (only applies if KeepAspectRatioWhenPinching is <c>false</c>)
         /// </summary>
         public double ZoomThreshold { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="OxyPlot.MonoTouch.PanZoomGestureRecognizer"/> keeps the aspect ratio when pinching.
+        /// If <c>true</c>, and KeepAspectRatioWhenPinching is <c>false</c>, a zoom-out gesture
+        /// can turn into a zoom-in gesture if the fingers cross. Setting to <c>false</c> will
+        /// instead simply stop the zoom at that point.
         /// </summary>
-        /// <value><c>true</c> if keep aspect ratio when pinching; otherwise, <c>false</c>.</value>
-        public bool KeepAspectRatioWhenPinching { get; set; }
+        public bool AllowPinchPastZero { get; set; }
 
         /// <summary>
         /// The current calculated pan/zoom changes
@@ -46,7 +58,8 @@ namespace OxyPlot.MonoTouch
 
         public PanZoomGestureRecognizer()
         {
-            ZoomThreshold = 20d;
+            this.ZoomThreshold = 20d;
+            this.AllowPinchPastZero = true;
         }
 
 
@@ -78,6 +91,9 @@ namespace OxyPlot.MonoTouch
                 //
                 TouchEventArgs = this.activeTouches.First().ToTouchEventArgs(this.View);
             }
+
+
+            CalculateStartingDistance();
         }
 
         /// <summary>
@@ -112,6 +128,12 @@ namespace OxyPlot.MonoTouch
 
                     if (!this.KeepAspectRatioWhenPinching)
                     {
+                        if (!this.AllowPinchPastZero)
+                        {
+                            // Don't allow fingers crossing in a zoom-out gesture to turn it back into a zoom-in gesture
+                            d = PreventCross(d);
+                        }
+
                         var scalex = CalculateScaleFactor(d.X, pd.X);
                         var scaley = CalculateScaleFactor(d.Y, pd.Y);
                         s = new ScreenVector(scalex, scaley);
@@ -187,6 +209,44 @@ namespace OxyPlot.MonoTouch
                 && Math.Abs(distance) > this.ZoomThreshold
                 ? Math.Abs(distance / previousDistance)
                 : 1;
+        }
+
+        
+        private void CalculateStartingDistance()
+        {
+            if (this.activeTouches.Count < 2)
+            {
+                this.startingDistance = default(ScreenVector);
+                return;
+            }
+
+            var loc1 = this.activeTouches.ElementAt(0).LocationInView(this.View).ToScreenPoint();
+            var loc2 = this.activeTouches.ElementAt(1).LocationInView(this.View).ToScreenPoint();
+
+            this.startingDistance = loc1 - loc2;
+        }
+
+        private ScreenVector PreventCross(ScreenVector currentDistance)
+        {
+            var x = currentDistance.X;
+            var y = currentDistance.Y;
+
+            if (DidDirectionChange(x, this.startingDistance.X))
+            {
+                x = 0;
+            }
+
+            if (DidDirectionChange(y, this.startingDistance.Y))
+            {
+                y = 0;
+            }
+
+            return new ScreenVector(x, y);
+        }
+
+        private static bool DidDirectionChange(double current, double original)
+        {
+            return ((current >= 0) != (original >= 0));
         }
     }
 }
