@@ -12,6 +12,7 @@
       secure: 8Zwx5dScSahnbraTsKTP3g==
   install:
     - cinst stylecop
+    - cinst silverlight4sdk
     - cinst LynxToolkit
     - cinst gtksharp
     - cinst gitlink -Pre
@@ -60,6 +61,7 @@
       secure: 8Zwx5dScSahnbraTsKTP3g==
   install:
     - cinst stylecop
+    - cinst silverlight4sdk
     - cinst LynxToolkit
     - cinst gtksharp
     - cinst gitlink -Pre
