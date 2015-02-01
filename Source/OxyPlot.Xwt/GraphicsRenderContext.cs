@@ -31,6 +31,12 @@ namespace OxyPlot.Xwt
         /// </summary>
         readonly Dictionary<string, Font> fonts = new Dictionary<string, Font> ();
 
+        /// <summary>
+        /// Gets or sets the context.
+        /// </summary>
+        /// <value>
+        /// The context.
+        /// </value>
         public Context Context {
             get;
             set;
@@ -350,7 +356,7 @@ namespace OxyPlot.Xwt
         /// <summary>
         /// Sets the clipping rectangle.
         /// </summary>
-        /// <param name="clippingRectangle">The clipping rectangle.</param>
+        /// <param name="rect">The clipping rectangle.</param>
         /// <returns><c>true</c> if the clip rectangle was set.</returns>
         public override bool SetClip (OxyRect rect)
         {
