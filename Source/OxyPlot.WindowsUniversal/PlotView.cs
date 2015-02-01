@@ -70,6 +70,11 @@ namespace OxyPlot.WindowsUniversal
                 "ZoomRectangleTemplate", typeof(ControlTemplate), typeof(PlotView), new PropertyMetadata(null));
 
         /// <summary>
+        /// Flags if the cursor is not implemented (Windows Phone).
+        /// </summary>
+        private static bool cursorNotImplemented;
+
+        /// <summary>
         /// The Grid PART constant.
         /// </summary>
         private const string PartGrid = "PART_Grid";
@@ -379,6 +384,12 @@ namespace OxyPlot.WindowsUniversal
         /// <param name="cursor">The cursor.</param>
         public void SetCursorType(CursorType cursor)
         {
+            if (cursorNotImplemented)
+            {
+                // setting the cursor has failed in a previous attempt, see code below
+                return;
+            }
+
             var type = CoreCursorType.Arrow;
             switch (cursor)
             {
@@ -399,7 +410,16 @@ namespace OxyPlot.WindowsUniversal
                     break;
             }
 
-            Window.Current.CoreWindow.PointerCursor = new CoreCursor(type, 1);
+            // TODO: determine if creating a CoreCursor is possible, do not use exception
+            try
+            {
+                var newCursor = new CoreCursor(type, 1); // this line throws an exception on Windows Phone
+                Window.Current.CoreWindow.PointerCursor = newCursor;
+            }
+            catch (NotImplementedException)
+            {                
+                cursorNotImplemented = true;
+            }
         }
 
         /// <summary>
