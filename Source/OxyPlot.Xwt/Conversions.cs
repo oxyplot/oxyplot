@@ -1,14 +1,17 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ConverterExtensions.cs" company="OxyPlot">
+// <copyright file="Conversions.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-using System;
+
 using Xwt;
 using Xwt.Drawing;
 
 namespace OxyPlot.Xwt
 {
+    /// <summary>
+    /// Provides conversions from and to Xwt structures.
+    /// </summary>
     public static class Conversions
     {
         /// <summary>
@@ -87,6 +90,11 @@ namespace OxyPlot.Xwt
             return new Point (pt.X, pt.Y);
         }
 
+        /// <summary>
+        /// Converts a cursor type to an Xwt cursor type.
+        /// </summary>
+        /// <param name="cursorType">Type of the cursor.</param>
+        /// <returns>An Xwt cursor type.</returns>
         public static global::Xwt.CursorType ToXwtCursorType (this CursorType cursorType)
         {
             switch (cursorType) {

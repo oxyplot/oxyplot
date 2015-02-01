@@ -7,6 +7,9 @@ using Xwt.Drawing;
 
 namespace OxyPlot.Xwt
 {
+    /// <summary>
+    /// Represents settings for the tracker.
+    /// </summary>
 	public class TrackerSettings
 	{
 		/// <summary>
@@ -135,6 +138,9 @@ namespace OxyPlot.Xwt
 			}
 		}
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TrackerSettings"/> class.
+        /// </summary>
 		public TrackerSettings ()
 		{
 			Enabled = false;
