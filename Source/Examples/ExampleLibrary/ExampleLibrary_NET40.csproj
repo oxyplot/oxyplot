@@ -31,7 +31,8 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\NET40\ExampleLibrary.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <DebugType>pdbonly</DebugType>
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
