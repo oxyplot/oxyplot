@@ -27,6 +27,7 @@ All notable changes to this project will be documented in this file.
 - OxyPlot.Metro project (superseded by OxyPlot.WindowsUniversal) (#241)
 
 ### Fixed
+- Windows Phone cursor exception (#345)
 - Bar/ColumSeries tracker format string bug (#333)
 - Fix exception for default tracker format strings (#265)
 - Fix center-aligned legends (#79)
