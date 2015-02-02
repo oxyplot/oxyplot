@@ -7,11 +7,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-
 namespace OxyPlot.Tests.Foundation
 {
     using NUnit.Framework;
 
+    /// <summary>
+    /// Unit tests for <see cref="OxySize" />.
+    /// </summary>
     [TestFixture]
     public class OxySizeTests
     {
@@ -48,11 +50,18 @@ namespace OxyPlot.Tests.Foundation
             this.AssertRect(new OxyRect(-17, -17, 63, 63), 45, HorizontalAlignment.Left, VerticalAlignment.Middle);
         }
 
+        /// <summary>
+        /// Asserts that the rectangle rotated by the specified angle and alignment equals the specified expected rectangle.
+        /// </summary>
+        /// <param name="expected">The expected.</param>
+        /// <param name="angle">The angle.</param>
+        /// <param name="horizontalAlignment">The horizontal alignment.</param>
+        /// <param name="verticalAlignment">The vertical alignment.</param>
         private void AssertRect(OxyRect expected, double angle, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment)
         {
             var actual = new OxySize(40, 50).GetBounds(angle, horizontalAlignment, verticalAlignment);
             const double Delta = 1;
-            string errorMessage = string.Format("{0} is not equal to {1} rotated by {2} angle when aligned {3} and {4}", expected, actual, angle, horizontalAlignment, verticalAlignment);
+            var errorMessage = string.Format("{0} is not equal to {1} rotated by {2} angle when aligned {3} and {4}", expected, actual, angle, horizontalAlignment, verticalAlignment);
             Assert.AreEqual(expected.Left, actual.Left, Delta, errorMessage);
             Assert.AreEqual(expected.Top, actual.Top, Delta, errorMessage);
             Assert.AreEqual(expected.Width, actual.Width, Delta, errorMessage);
