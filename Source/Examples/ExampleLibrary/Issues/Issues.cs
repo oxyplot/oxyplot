@@ -873,5 +873,35 @@ namespace ExampleLibrary
             plotModel1.Series.Add(new LineSeries { Title = "LS2" });
             return plotModel1;
         }
+
+        [Example("#356 Draw legend line with custom pattern")]
+        public static PlotModel LegendWithCustomPattern()
+        {
+            var plotModel1 = new PlotModel
+            {
+                Title = "Draw legend line with custom pattern",
+            };
+            var solid = new LineSeries
+            {
+                Title = "Solid",
+                LineStyle = LineStyle.Solid
+                // without dashes
+            };
+            var custom = new LineSeries
+            {
+                Title = "Custom",
+                LineStyle = LineStyle.Solid,
+                // dashd-dot pattern
+                Dashes = new[] {10.0, 2.0, 4.0, 2.0},
+            };
+            solid.Points.Add(new DataPoint(0, 2));
+            solid.Points.Add(new DataPoint(100, 1));
+            custom.Points.Add(new DataPoint(0, 3));
+            custom.Points.Add(new DataPoint(100, 2));
+            plotModel1.Series.Add(solid);
+            plotModel1.Series.Add(custom);
+            plotModel1.LegendSymbolLength = 100; // wide enough to see pattern
+            return plotModel1;
+        }
     }
 }

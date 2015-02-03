@@ -365,7 +365,7 @@ namespace OxyPlot.Series
                 pts,
                 this.GetSelectableColor(this.ActualColor),
                 this.StrokeThickness,
-                this.ActualLineStyle.GetDashArray());
+                this.ActualDashArray);
             var midpt = new ScreenPoint(xmid, ymid);
             rc.DrawMarker(
                 legendBox,
