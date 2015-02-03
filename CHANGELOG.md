@@ -45,6 +45,7 @@ All notable changes to this project will be documented in this file.
 - XamlExporter background (#233)
 - .NET 3.5 build (#229)
 - Support WinPhone 8.1 in core NuGet package (#161)
+- Draw legend line with custom pattern (#356)
 
 ## [2014.1.546] - 2014-10-22
 ### Added
