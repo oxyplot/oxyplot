@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>OxyPlot.Mobile</id>
+    <title>OxyPlot for Mobile Devices (Windows Store/Windows Phone/Android/iOS)</title>
+    <version>0.0.0</version>
+    <authors>Oystein Bjorke</authors>
+    <description>OxyPlot is a plotting library for .NET. This package contains the components for Windows Universal, Windows Phone Silverlight, Xamarin.Android and Xamarin.iOS</description>
+    <releaseNotes></releaseNotes>
+    <licenseUrl>https://raw.githubusercontent.com/oxyplot/oxyplot/master/LICENSE</licenseUrl>
+    <projectUrl>http://oxyplot.org/</projectUrl>
+    <iconUrl>http://resources.oxyplot.org/icons/oxyplot_128.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <tags>plotting plot charting chart wp8 windows phone 8 windowsphone winphone winrt win8 metro store xamarin android ios monotouch</tags>
+    <dependencies>
+      <dependency id="OxyPlot.Core" version="[0.0.0]"/>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\Output\WindowsUniversal\OxyPlot.WindowsUniversal.???" target="lib\portable-windows8+wpa81\" />
+    <file src="..\Output\WindowsUniversal\OxyPlot.WindowsUniversal.xr.xml" target="lib\portable-windows8+wpa81\" />
+    <file src="..\Output\WindowsUniversal\Themes\*.*" target="lib\portable-windows8+wpa81\Themes\" />
+
+    <file src="..\Output\WP8\OxyPlot.WP8.???" target="lib\windowsphone8" />
+
+    <file src="..\Output\Xamarin.Android\OxyPlot.Xamarin.Android.???" target="lib\MonoAndroid" />	
+
+    <file src="..\Output\MonoTouch\OxyPlot.MonoTouch.???" target="lib\MonoTouch" />
+    <file src="..\Output\MonoTouch\OxyPlot.MonoTouch.???" target="lib\MonoTouch" />
+    <file src="..\Output\Xamarin.iOS\OxyPlot.Xamarin.iOS.???" target="lib\Xamarin.iOS10" />
+    <file src="..\Output\Xamarin.iOS\OxyPlot.Xamarin.iOS.???" target="lib\Xamarin.iOS10" />
+  </files>
+</package>

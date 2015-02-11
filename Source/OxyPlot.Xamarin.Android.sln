@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Xamarin.Android", "OxyPlot.Xamarin.Android\OxyPlot.Xamarin.Android.csproj", "{E965BA32-9561-4E2A-ADB0-19487B25A939}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot", "OxyPlot\OxyPlot.csproj", "{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}"
