@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{8A7939AC-BAC2-4CFB-B429-DB92F106700C}</ProjectGuid>
+    <ProjectGuid>{C7BE7D76-AD4A-4634-9CD4-C2B8C9B4E5DE}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
     <RootNamespace>ExampleBrowser</RootNamespace>
@@ -82,6 +82,11 @@
     <Compile Include="GraphViewController.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\OxyPlot.Xamarin.iOS\OxyPlot.Xamarin.iOS.csproj">
+      <Project>{017bff60-40e6-4520-8554-5862a95ef123}</Project>
+      <Name>OxyPlot.Xamarin.iOS</Name>
+      <IsAppExtension>false</IsAppExtension>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\OxyPlot\OxyPlot.csproj">
       <Project>{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}</Project>
       <Name>OxyPlot</Name>
@@ -90,14 +95,6 @@
       <Project>{FACB89E5-53A5-4748-9F5B-E0714EBB37B2}</Project>
       <Name>ExampleLibrary</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\OxyPlot.Xamarin.iOS\OxyPlot.Xamarin.iOS.csproj">
-      <Project>{7DCF07B1-B8BD-4EF0-B1FC-2AAC4466B6C6}</Project>
-      <Name>OxyPlot.Xamarin.iOS</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Images\" />
-    <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="..\..\..\..\Icons\OxyPlot_57.png">

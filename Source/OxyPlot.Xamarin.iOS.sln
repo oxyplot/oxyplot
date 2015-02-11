@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot", "OxyPlot\OxyPlot.csproj", "{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}"
 EndProject
@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{0A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleLibrary", "Examples\ExampleLibrary\ExampleLibrary.csproj", "{FACB89E5-53A5-4748-9F5B-E0714EBB37B2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleBrowser", "Examples\Xamarin.iOS\ExampleBrowser\ExampleBrowser.csproj", "{8A7939AC-BAC2-4CFB-B429-DB92F106700C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleBrowser", "Examples\Xamarin.iOS\ExampleBrowser\ExampleBrowser.csproj", "{C7BE7D76-AD4A-4634-9CD4-C2B8C9B4E5DE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Xamarin.iOS", "OxyPlot.Xamarin.iOS\OxyPlot.Xamarin.iOS.csproj", "{017BFF60-40E6-4520-8554-5862A95EF123}"
 EndProject
@@ -73,28 +73,28 @@ Global
 		{FACB89E5-53A5-4748-9F5B-E0714EBB37B2}.Release|iPhone.Build.0 = Release|Any CPU
 		{FACB89E5-53A5-4748-9F5B-E0714EBB37B2}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{FACB89E5-53A5-4748-9F5B-E0714EBB37B2}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
-		{8A7939AC-BAC2-4CFB-B429-DB92F106700C}.Ad-Hoc|Any CPU.ActiveCfg = Release|iPhone
-		{8A7939AC-BAC2-4CFB-B429-DB92F106700C}.Ad-Hoc|iPhone.ActiveCfg = Debug|iPhone
-		{8A7939AC-BAC2-4CFB-B429-DB92F106700C}.Ad-Hoc|iPhone.Build.0 = Debug|iPhone
-		{8A7939AC-BAC2-4CFB-B429-DB92F106700C}.Ad-Hoc|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
-		{8A7939AC-BAC2-4CFB-B429-DB92F106700C}.Ad-Hoc|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
-		{8A7939AC-BAC2-4CFB-B429-DB92F106700C}.AppStore|Any CPU.ActiveCfg = Release|iPhone
-		{8A7939AC-BAC2-4CFB-B429-DB92F106700C}.AppStore|iPhone.ActiveCfg = Debug|iPhone
-		{8A7939AC-BAC2-4CFB-B429-DB92F106700C}.AppStore|iPhone.Build.0 = Debug|iPhone
-		{8A7939AC-BAC2-4CFB-B429-DB92F106700C}.AppStore|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
-		{8A7939AC-BAC2-4CFB-B429-DB92F106700C}.AppStore|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
-		{8A7939AC-BAC2-4CFB-B429-DB92F106700C}.Debug|Any CPU.ActiveCfg = Debug|iPhoneSimulator
-		{8A7939AC-BAC2-4CFB-B429-DB92F106700C}.Debug|Any CPU.Build.0 = Debug|iPhoneSimulator
-		{8A7939AC-BAC2-4CFB-B429-DB92F106700C}.Debug|iPhone.ActiveCfg = Debug|iPhone
-		{8A7939AC-BAC2-4CFB-B429-DB92F106700C}.Debug|iPhone.Build.0 = Debug|iPhone
-		{8A7939AC-BAC2-4CFB-B429-DB92F106700C}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
-		{8A7939AC-BAC2-4CFB-B429-DB92F106700C}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
-		{8A7939AC-BAC2-4CFB-B429-DB92F106700C}.Release|Any CPU.ActiveCfg = Release|iPhoneSimulator
-		{8A7939AC-BAC2-4CFB-B429-DB92F106700C}.Release|Any CPU.Build.0 = Release|iPhoneSimulator
-		{8A7939AC-BAC2-4CFB-B429-DB92F106700C}.Release|iPhone.ActiveCfg = Release|iPhone
-		{8A7939AC-BAC2-4CFB-B429-DB92F106700C}.Release|iPhone.Build.0 = Release|iPhone
-		{8A7939AC-BAC2-4CFB-B429-DB92F106700C}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
-		{8A7939AC-BAC2-4CFB-B429-DB92F106700C}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
+		{C7BE7D76-AD4A-4634-9CD4-C2B8C9B4E5DE}.Ad-Hoc|Any CPU.ActiveCfg = Release|iPhone
+		{C7BE7D76-AD4A-4634-9CD4-C2B8C9B4E5DE}.Ad-Hoc|iPhone.ActiveCfg = Debug|iPhone
+		{C7BE7D76-AD4A-4634-9CD4-C2B8C9B4E5DE}.Ad-Hoc|iPhone.Build.0 = Debug|iPhone
+		{C7BE7D76-AD4A-4634-9CD4-C2B8C9B4E5DE}.Ad-Hoc|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
+		{C7BE7D76-AD4A-4634-9CD4-C2B8C9B4E5DE}.Ad-Hoc|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
+		{C7BE7D76-AD4A-4634-9CD4-C2B8C9B4E5DE}.AppStore|Any CPU.ActiveCfg = Release|iPhone
+		{C7BE7D76-AD4A-4634-9CD4-C2B8C9B4E5DE}.AppStore|iPhone.ActiveCfg = Debug|iPhone
+		{C7BE7D76-AD4A-4634-9CD4-C2B8C9B4E5DE}.AppStore|iPhone.Build.0 = Debug|iPhone
+		{C7BE7D76-AD4A-4634-9CD4-C2B8C9B4E5DE}.AppStore|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
+		{C7BE7D76-AD4A-4634-9CD4-C2B8C9B4E5DE}.AppStore|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
+		{C7BE7D76-AD4A-4634-9CD4-C2B8C9B4E5DE}.Debug|Any CPU.ActiveCfg = Debug|iPhoneSimulator
+		{C7BE7D76-AD4A-4634-9CD4-C2B8C9B4E5DE}.Debug|Any CPU.Build.0 = Debug|iPhoneSimulator
+		{C7BE7D76-AD4A-4634-9CD4-C2B8C9B4E5DE}.Debug|iPhone.ActiveCfg = Debug|iPhone
+		{C7BE7D76-AD4A-4634-9CD4-C2B8C9B4E5DE}.Debug|iPhone.Build.0 = Debug|iPhone
+		{C7BE7D76-AD4A-4634-9CD4-C2B8C9B4E5DE}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
+		{C7BE7D76-AD4A-4634-9CD4-C2B8C9B4E5DE}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
+		{C7BE7D76-AD4A-4634-9CD4-C2B8C9B4E5DE}.Release|Any CPU.ActiveCfg = Release|iPhoneSimulator
+		{C7BE7D76-AD4A-4634-9CD4-C2B8C9B4E5DE}.Release|Any CPU.Build.0 = Release|iPhoneSimulator
+		{C7BE7D76-AD4A-4634-9CD4-C2B8C9B4E5DE}.Release|iPhone.ActiveCfg = Release|iPhone
+		{C7BE7D76-AD4A-4634-9CD4-C2B8C9B4E5DE}.Release|iPhone.Build.0 = Release|iPhone
+		{C7BE7D76-AD4A-4634-9CD4-C2B8C9B4E5DE}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
+		{C7BE7D76-AD4A-4634-9CD4-C2B8C9B4E5DE}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
 		{017BFF60-40E6-4520-8554-5862A95EF123}.Ad-Hoc|Any CPU.ActiveCfg = Release|Any CPU
 		{017BFF60-40E6-4520-8554-5862A95EF123}.Ad-Hoc|Any CPU.Build.0 = Release|Any CPU
 		{017BFF60-40E6-4520-8554-5862A95EF123}.Ad-Hoc|iPhone.ActiveCfg = Debug|Any CPU
@@ -123,7 +123,7 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{FACB89E5-53A5-4748-9F5B-E0714EBB37B2} = {0AB67A65-9645-4DF6-98A2-D5734D212E7C}
-		{8A7939AC-BAC2-4CFB-B429-DB92F106700C} = {0AB67A65-9645-4DF6-98A2-D5734D212E7C}
+		{C7BE7D76-AD4A-4634-9CD4-C2B8C9B4E5DE} = {0AB67A65-9645-4DF6-98A2-D5734D212E7C}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Examples\Xamarin.iOS\ExampleBrowser\ExampleBrowser.csproj
