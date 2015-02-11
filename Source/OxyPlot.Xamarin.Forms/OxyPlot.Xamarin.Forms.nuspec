@@ -11,21 +11,11 @@
     <projectUrl>http://oxyplot.org/</projectUrl>
     <iconUrl>http://resources.oxyplot.org/icons/oxyplot_128.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <tags>plotting plot charting chart</tags>
+    <tags>plotting plot charting chart xamarin forms android windows phone ios</tags>
     <dependencies>
       <group>
         <dependency id="OxyPlot.Core" version="[0.0.0]"/>
-      </group>
-      <group targetFramework="MonoTouch1.0">
-        <dependency id="OxyPlot.Xamarin.iOS"/>
-      </group>
-      <group targetFramework="MonoAndroid1.0">
-        <dependency id="OxyPlot.Xamarin.Android"/>
-      </group>
-      <group targetFramework="wp80">
-        <dependency id="OxyPlot.WP8"/>
-      </group>
-      <group>
+        <dependency id="OxyPlot.Mobile" version="[0.0.0]"/>
         <dependency id="Xamarin.Forms"/>
       </group>
     </dependencies>
