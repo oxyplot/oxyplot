@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 <package>
   <metadata>
     <id>OxyPlot.Mobile</id>
@@ -27,7 +27,14 @@
 
     <file src="..\Output\MonoTouch\OxyPlot.MonoTouch.???" target="lib\MonoTouch" />
     <file src="..\Output\MonoTouch\OxyPlot.MonoTouch.???" target="lib\MonoTouch" />
+    
     <file src="..\Output\Xamarin.iOS\OxyPlot.Xamarin.iOS.???" target="lib\Xamarin.iOS10" />
     <file src="..\Output\Xamarin.iOS\OxyPlot.Xamarin.iOS.???" target="lib\Xamarin.iOS10" />
+    
+    <file src="..\LICENSE" />
+    <file src="..\AUTHORS" />
+    <file src="..\CONTRIBUTORS" />
+    <file src="..\README.md" />
+    <file src="..\CHANGELOG.md" />
   </files>
 </package>
