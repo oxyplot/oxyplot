@@ -3,12 +3,14 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 ### Added
+- Created a new OxyPlot.Mobile NuGet to combine the mobile platforms into a single NuGet. (#362)
 - Support for XWT (#295)
 - TwoColorAreaSeries (#299)
 - Delta values in AxisChangedEventArgs (#276)
 - Enable Git source server (added GitLink build step) (#267,#266)
 
 ### Changed
+- Changed the OxyPlot.Xamarin.Forms to require the OxyPlot.Mobile dependency instead of each separate NuGet. (#362)
 - Deleted PlotModel.ToSvg. Use the SvgExporter instead. (#347)
 - Deleted constructors with parameters. Use default constructors instead. (#347)
 - Deleted Axis.ShowMinorTicks. Use MinorTickSize = 0 instead. (#347)
