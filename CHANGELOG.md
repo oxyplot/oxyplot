@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 - TwoColorAreaSeries (#299)
 - Delta values in AxisChangedEventArgs (#276)
 - Enable Git source server (added GitLink build step) (#267,#266)
+- iOS PlotView ZoomThreshold/AllowPinchPastZero for use with KeepAspectRatioWhenPinching=false (#359)
 
 ### Changed
 - Deleted PlotModel.ToSvg. Use the SvgExporter instead. (#347)
@@ -46,6 +47,7 @@ All notable changes to this project will be documented in this file.
 - .NET 3.5 build (#229)
 - Support WinPhone 8.1 in core NuGet package (#161)
 - Draw legend line with custom pattern (#356)
+- iOS pan/zoom stability (#336)
 
 ## [2014.1.546] - 2014-10-22
 ### Added
