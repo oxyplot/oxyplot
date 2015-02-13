@@ -36,7 +36,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
-    <DocumentationFile>..\..\Output\Xamarin.Android\OxyPlot.Xamarin.Android.XML</DocumentationFile>
+    <DocumentationFile>..\..\Output\Xamarin.Android\OxyPlot.Xamarin.Android.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
