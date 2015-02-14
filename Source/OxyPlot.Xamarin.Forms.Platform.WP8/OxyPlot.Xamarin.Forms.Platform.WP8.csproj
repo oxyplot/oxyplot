@@ -57,13 +57,13 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\Output\XamarinForms\</OutputPath>
+    <OutputPath>..\..\Output\Xamarin.Forms.Platform.WP8\</OutputPath>
     <DefineConstants>TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
     <NoStdLib>true</NoStdLib>
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\Output\XamarinForms\OxyPlot.Xamarin.Forms.Platform.WP8.xml</DocumentationFile>
+    <DocumentationFile>..\..\Output\Xamarin.Forms.Platform.WP8\OxyPlot.Xamarin.Forms.Platform.WP8.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|ARM' ">
     <DebugSymbols>true</DebugSymbols>
