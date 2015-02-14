@@ -3,65 +3,83 @@
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Recognizes drag/pinch multitouch gestures and translates them into pan/zoom information.
+//   Recognizes drag/pinch multi-touch gestures and translates them into pan/zoom information.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#if __UNIFIED__
 namespace OxyPlot.Xamarin.iOS
+#else
+namespace OxyPlot.MonoTouch
+#endif
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
-    using Foundation;
-    using UIKit;
+
+#if __UNIFIED__
+    using global::Foundation;
+    using global::UIKit;
+#else
+    using global::MonoTouch.Foundation;
+    using global::MonoTouch.UIKit;
+#endif
 
     /// <summary>
-    /// Recognizes drag/pinch multitouch gestures and translates them into pan/zoom information.
+    /// Recognizes drag/pinch multi-touch gestures and translates them into pan/zoom information.
     /// </summary>
     public class PanZoomGestureRecognizer : UIGestureRecognizer
     {
         /// <summary>
         /// Up to 2 touches being currently tracked in a pan/zoom.
         /// </summary>
-        private List<UITouch> activeTouches = new List<UITouch>();
+        private readonly List<UITouch> activeTouches = new List<UITouch>();
 
-        // Distance between touchpoints when the second touchpoint begins. Used to determine
-        // whether the touchpoints cross along a given axis during the zoom gesture.
-        //
+        /// <summary>
+        /// Distance between touch points when the second touch point begins. Used to determine
+        /// whether the touch points cross along a given axis during the zoom gesture.
+        /// </summary>
         private ScreenVector startingDistance = default(ScreenVector);
 
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="OxyPlot.Xamarin.iOS.PanZoomGestureRecognizer"/> keeps the aspect ratio when pinching.
+        /// Initializes a new instance of the <see cref="PanZoomGestureRecognizer"/> class.
         /// </summary>
-        /// <value><c>true</c> if keep aspect ratio when pinching; otherwise, <c>false</c>.</value>
-        public bool KeepAspectRatioWhenPinching { get; set; }
-
-        /// <summary>
-        /// How far apart touch points must be on a certain axis to enable scaling that axis.
-        /// (only applies if KeepAspectRatioWhenPinching is <c>false</c>)
-        /// </summary>
-        public double ZoomThreshold { get; set; }
-
-        /// <summary>
-        /// If <c>true</c>, and KeepAspectRatioWhenPinching is <c>false</c>, a zoom-out gesture
-        /// can turn into a zoom-in gesture if the fingers cross. Setting to <c>false</c> will
-        /// instead simply stop the zoom at that point.
-        /// </summary>
-        public bool AllowPinchPastZero { get; set; }
-
-        /// <summary>
-        /// The current calculated pan/zoom changes
-        /// </summary>
-        public OxyTouchEventArgs TouchEventArgs { get; set; }
-
-
+        /// <remarks>
+        /// To add methods that will be invoked upon recognition, you can use the AddTarget method.
+        /// </remarks>
         public PanZoomGestureRecognizer()
         {
             this.ZoomThreshold = 20d;
             this.AllowPinchPastZero = true;
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="PanZoomGestureRecognizer"/> keeps the aspect ratio when pinching.
+        /// </summary>
+        /// <value><c>true</c> if keep aspect ratio when pinching; otherwise, <c>false</c>.</value>
+        public bool KeepAspectRatioWhenPinching { get; set; }
+
+        /// <summary>
+        /// Gets or sets how far apart touch points must be on a certain axis to enable scaling that axis.
+        /// (only applies if KeepAspectRatioWhenPinching is <c>false</c>)
+        /// </summary>
+        public double ZoomThreshold { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether a zoom-out gesture can turn into a zoom-in gesture if the fingers cross. 
+        /// If <c>true</c>, and <see cref="KeepAspectRatioWhenPinching" /> is <c>false</c>, a zoom-out gesture
+        /// can turn into a zoom-in gesture if the fingers cross. Setting to <c>false</c> will
+        /// instead simply stop the zoom at that point.
+        /// </summary>
+        public bool AllowPinchPastZero { get; set; }
+
+        /// <summary>
+        /// Gets or sets the current calculated pan/zoom changes.
+        /// </summary>
+        /// <value>
+        /// The touch event arguments.
+        /// </value>
+        public OxyTouchEventArgs TouchEventArgs { get; set; }
 
         /// <summary>
         /// Called when a touch gesture begins.
@@ -82,17 +100,16 @@ namespace OxyPlot.Xamarin.iOS
             var newTouches = touches.ToArray<UITouch>();
             var firstTouch = !this.activeTouches.Any();
 
-            activeTouches.AddRange(newTouches.Take(2 - this.activeTouches.Count));
+            this.activeTouches.AddRange(newTouches.Take(2 - this.activeTouches.Count));
 
             if (firstTouch)
             {
                 // HandleTouchStarted initializes the entire multitouch gesture,
                 // with the first touch used for panning.
-                //
-                TouchEventArgs = this.activeTouches.First().ToTouchEventArgs(this.View);
+                this.TouchEventArgs = this.activeTouches.First().ToTouchEventArgs(this.View);
             }
 
-            CalculateStartingDistance();
+            this.CalculateStartingDistance();
         }
 
         /// <summary>
@@ -104,7 +121,7 @@ namespace OxyPlot.Xamarin.iOS
         {
             base.TouchesMoved(touches, evt);
 
-            if (activeTouches.Any(touch => touch.Phase == UITouchPhase.Moved))
+            if (this.activeTouches.Any(touch => touch.Phase == UITouchPhase.Moved))
             {
                 // get current and previous location of the first touch point
                 var t1 = this.activeTouches.First();
@@ -115,7 +132,7 @@ namespace OxyPlot.Xamarin.iOS
                 var t = l1 - pl1;
                 var s = new ScreenVector(1, 1);
 
-                if (activeTouches.Count > 1)
+                if (this.activeTouches.Count > 1)
                 {
                     // get current and previous location of the second touch point
                     var t2 = this.activeTouches.ElementAt(1);
@@ -130,11 +147,11 @@ namespace OxyPlot.Xamarin.iOS
                         if (!this.AllowPinchPastZero)
                         {
                             // Don't allow fingers crossing in a zoom-out gesture to turn it back into a zoom-in gesture
-                            d = PreventCross(d);
+                            d = this.PreventCross(d);
                         }
 
-                        var scalex = CalculateScaleFactor(d.X, pd.X);
-                        var scaley = CalculateScaleFactor(d.Y, pd.Y);
+                        var scalex = this.CalculateScaleFactor(d.X, pd.X);
+                        var scaley = this.CalculateScaleFactor(d.Y, pd.Y);
                         s = new ScreenVector(scalex, scaley);
                     }
                     else
@@ -160,7 +177,6 @@ namespace OxyPlot.Xamarin.iOS
             base.TouchesEnded(touches, evt);
 
             // We already have the only two touches we care about, so ignore the params
-            //
             var secondTouch = this.activeTouches.ElementAtOrDefault(1);
 
             if (secondTouch != null && secondTouch.Phase == UITouchPhase.Ended)
@@ -176,8 +192,8 @@ namespace OxyPlot.Xamarin.iOS
 
                 if (!this.activeTouches.Any())
                 {
-                    TouchEventArgs = firstTouch.ToTouchEventArgs(this.View);
-                    State = UIGestureRecognizerState.Ended;
+                    this.TouchEventArgs = firstTouch.ToTouchEventArgs(this.View);
+                    this.State = UIGestureRecognizerState.Ended;
                 }
             }
         }
@@ -191,17 +207,33 @@ namespace OxyPlot.Xamarin.iOS
         {
             base.TouchesCancelled(touches, evt);
 
-            // TODO: Is it possible for one touch to be canceled while others remain in play?
+            //// TODO: Is it possible for one touch to be canceled while others remain in play?
 
             var touch = this.activeTouches.FirstOrDefault();
             if (touch != null && touch.Phase == UITouchPhase.Cancelled)
             {
-                TouchEventArgs = touch.ToTouchEventArgs(this.View);
-                State = UIGestureRecognizerState.Cancelled;
+                this.TouchEventArgs = touch.ToTouchEventArgs(this.View);
+                this.State = UIGestureRecognizerState.Cancelled;
             }
         }
 
+        /// <summary>
+        /// Determines whether the direction has changed.
+        /// </summary>
+        /// <param name="current">The current value.</param>
+        /// <param name="original">The original value.</param>
+        /// <returns><c>true</c> if the direction changed.</returns>
+        private static bool DidDirectionChange(double current, double original)
+        {
+            return (current >= 0) != (original >= 0);
+        }
 
+        /// <summary>
+        /// Calculates the scale factor.
+        /// </summary>
+        /// <param name="distance">The distance.</param>
+        /// <param name="previousDistance">The previous distance.</param>
+        /// <returns>The scale factor.</returns>
         private double CalculateScaleFactor(double distance, double previousDistance)
         {
             return Math.Abs(previousDistance) > this.ZoomThreshold
@@ -210,6 +242,9 @@ namespace OxyPlot.Xamarin.iOS
                 : 1;
         }
 
+        /// <summary>
+        /// Calculates the starting distance.
+        /// </summary>
         private void CalculateStartingDistance()
         {
             if (this.activeTouches.Count < 2)
@@ -224,6 +259,11 @@ namespace OxyPlot.Xamarin.iOS
             this.startingDistance = loc1 - loc2;
         }
 
+        /// <summary>
+        /// Applies the "prevent fingers crossing" to the specified vector.
+        /// </summary>
+        /// <param name="currentDistance">The current distance.</param>
+        /// <returns>A vector where the "prevent fingers crossing" is applied.</returns>
         private ScreenVector PreventCross(ScreenVector currentDistance)
         {
             var x = currentDistance.X;
@@ -240,11 +280,6 @@ namespace OxyPlot.Xamarin.iOS
             }
 
             return new ScreenVector(x, y);
-        }
-
-        private static bool DidDirectionChange(double current, double original)
-        {
-            return ((current >= 0) != (original >= 0));
         }
     }
 }
