@@ -38,8 +38,10 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ItemGroup>
+    <Compile Include="..\OxyPlot.Xamarin.iOS\PanZoomGestureRecognizer.cs">
+      <Link>PanZoomGestureRecognizer.cs</Link>
+    </Compile>
     <Compile Include="MonoTouchRenderContext.cs" />
-    <Compile Include="PanZoomGestureRecognizer.cs" />
     <Compile Include="PlotView.cs" />
     <Compile Include="ExportExtensions.cs" />
     <Compile Include="ConverterExtensions.cs" />
