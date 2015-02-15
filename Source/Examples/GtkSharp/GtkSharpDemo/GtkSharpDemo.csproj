@@ -11,6 +11,8 @@
     <AssemblyName>GtkSharpDemo</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -56,10 +58,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\gtk-sharp.dll</HintPath>
     </Reference>
-    <Reference Include="Mono.Cairo, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\GtkSharp\2.12\lib\Mono.Cairo\Mono.Cairo.dll</HintPath>
-    </Reference>
     <Reference Include="pango-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\pango-sharp.dll</HintPath>
@@ -67,6 +65,9 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="Mono.Cairo">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\GtkSharp\2.12\lib\Mono.Cairo\Mono.Cairo.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\..\GlobalAssemblyInfo.cs">
@@ -93,16 +94,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\OxyPlot.GtkSharp\OxyPlot.GtkSharp.csproj">
-      <Project>{89d008d7-ad33-4ab6-b61a-064c48da6699}</Project>
-      <Name>OxyPlot.GtkSharp</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\OxyPlot\OxyPlot.csproj">
-      <Project>{7a0b35c0-dd17-4964-8e9a-44d6cecdc692}</Project>
-      <Name>OxyPlot</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -111,4 +102,14 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\OxyPlot\OxyPlot.csproj">
+      <Project>{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}</Project>
+      <Name>OxyPlot</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\OxyPlot.GtkSharp\OxyPlot.GtkSharp.csproj">
+      <Project>{89D008D7-AD33-4AB6-B61A-064C48DA6699}</Project>
+      <Name>OxyPlot.GtkSharp</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>

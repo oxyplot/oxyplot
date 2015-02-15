@@ -45,7 +45,4 @@ Global
 		{FACB89E5-53A5-4748-9F5B-E0714EBB37B2} = {47133BFC-5147-43B7-94F9-AB12B006C8AC}
 		{04C4F5CF-4B8A-4D27-9562-462581C1D323} = {47133BFC-5147-43B7-94F9-AB12B006C8AC}
 	EndGlobalSection
-	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Examples\GtkSharp\GtkSharpDemo\GtkSharpDemo.csproj
-	EndGlobalSection
 EndGlobal
