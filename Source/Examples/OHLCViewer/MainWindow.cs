@@ -38,59 +38,116 @@ namespace OHLCViewer
 
 		private void Build ()
 		{
-			var bars = BarGenerator.MRProcess ();
-			_ohlc = new OHLCVPlot (bars, 80);
-
-			_plot = new PlotView();
-			_plot.Model = _ohlc;
-			_plot.Controller = _ohlc.Controller;
-			_plot.Visible = true;
-			_plot.SetSizeRequest (800, 550);
-
 			this.Title = "OHLC Viewer";
-			var vbox = new VBox (false, 10);
-			var hbox = new HBox (false, 50);
-			var fix = new Fixed ();
-			hbox.Add (VolumeSelectorWidget ());
-			hbox.Add (PeriodSelectorWidget ());
-			hbox.Add (StatusTextWidget ());
-			fix.Add (hbox);
-
-			vbox.Add (fix);
-			vbox.Add (_plot);
-			this.Add (vbox);
-
-			fix.Visible = true;
-			hbox.Visible = true;
-			vbox.Visible = true;
-			this.Focus = vbox;
+			this.Add (CreateLayout2 ());
 
 			this.DeleteEvent += OnDeleteEvent;
 		}
 
+		private Widget CreateLayout2()
+		{
+			var table = new Table (2, 2, homogeneous: false);
+			table.Attach (
+				CreateSelectors (), 0, 1, 0, 1, 
+				xoptions: AttachOptions.Shrink,
+				yoptions: AttachOptions.Shrink,
+				xpadding: 0,
+				ypadding: 0);
+			table.Attach (
+				CreateStatusText (), 1, 2, 0, 1,
+				xoptions: AttachOptions.Fill | AttachOptions.Expand,
+				yoptions: AttachOptions.Shrink, 
+				xpadding: 0,
+				ypadding: 0);
+			table.Attach (
+				CreateView (), 0, 2, 1, 2, 
+				xoptions: AttachOptions.Fill | AttachOptions.Expand, 
+				yoptions: AttachOptions.Fill | AttachOptions.Expand,
+				xpadding: 0,
+				ypadding: 0);
+			table.Visible = true;
+			table.SetSizeRequest (800, 600);
+			return table;
+		}
 
-		private ComboBox VolumeSelectorWidget ()
+		private Widget CreateLayout1()
+		{
+			var view = CreateView ();
+			var vbox = new VBox (false, 10);
+			var hbox = new HBox (false, 50);
+			var fix = new Fixed ();
+
+			hbox.Add (CreateVolumeSelector ());
+			hbox.Add (CreatePeriodSelector ());
+			hbox.Add (CreateStatusText ());
+			fix.Add (hbox);
+
+			vbox.Add (fix);
+			vbox.Add (view);
+
+			fix.Visible = true;
+			hbox.Visible = true;
+			vbox.Visible = true;
+
+			return vbox;
+		}
+
+
+		private PlotView CreateView ()
+		{
+			var bars = BarGenerator.MRProcess ();
+			_ohlc = new OHLCVPlot (bars, 80);
+
+			var plot = new PlotView();
+			plot.Model = _ohlc;
+			plot.Controller = _ohlc.Controller;
+			plot.Visible = true;
+			plot.SetSizeRequest (800, 550);
+
+			return plot;
+		}
+
+
+		private Widget CreateSelectors ()
+		{
+			var fix = new Fixed ();
+			var hbox = new HBox (false, 50);
+
+			hbox.Add (CreateVolumeSelector ());
+			hbox.Add (CreatePeriodSelector ());
+			fix.Add (hbox);
+
+			hbox.Visible = true;
+			fix.Visible = true;
+			return fix;
+		}
+
+
+
+		private ComboBox CreateVolumeSelector ()
 		{
 			_volume = new ComboBox (new string[] { "None", "Combined", "Stacked", "+/-" });
 			_volume.Changed += (object sender, EventArgs e) => OnVolumeChange ();
+			_volume.WidthRequest = 120;
 			_volume.Visible = true;
 
 			return _volume;
 		}
 
 
-		private ComboBox PeriodSelectorWidget ()
+		private ComboBox CreatePeriodSelector ()
 		{
 			_period = new ComboBox (new string[] { "5sec", "10sec", "30sec", "1min", "5min", "15min" });
 			_period.Changed += (object sender, EventArgs e) => OnPeriodChange ();
+			_period.WidthRequest = 80;
 			_period.Visible = true;
-			Console.Error.WriteLine (_period.SizeRequest().Width + "x" + _period.SizeRequest().Height);
 			return _period;
 		}
 
-		private Label StatusTextWidget ()
+		private Label CreateStatusText ()
 		{
 			_info = new Label ("volume: " + _volume.ActiveText + "  period: " + _period.ActiveText);
+			_info.Justify = Justification.Right;
 			_info.Visible = true;
 			return _info;
 		}
