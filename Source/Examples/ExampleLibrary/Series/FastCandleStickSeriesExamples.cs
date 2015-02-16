@@ -202,9 +202,9 @@ namespace ExampleLibrary
 			var Tbase = DateTime.UtcNow;
 			for (int ti = 0 ; ti < n ; ti++)
 			{
-				var dx_c = -kappa * (x - x0) + Rnorm (0, csigma);
-				var dx_1 = -kappa * (x - x0) + Rnorm (0, esigma);
-				var dx_2 = -kappa * (x - x0) + Rnorm (0, esigma);
+				var dx_c = -kappa * (x - x0) + RandomNormal (0, csigma);
+				var dx_1 = -kappa * (x - x0) + RandomNormal (0, esigma);
+				var dx_2 = -kappa * (x - x0) + RandomNormal (0, esigma);
 
 				var open = x;
 				var close = x = x + dx_c;
@@ -219,14 +219,26 @@ namespace ExampleLibrary
 
 
 
-		#region Implementation
-
-
+		/// <summary>
+		/// Minimum of the specified a, b, c and d.
+		/// </summary>
+		/// <param name="a">A.</param>
+		/// <param name="b">B.</param>
+		/// <param name="c">C.</param>
+		/// <param name="d">D.</param>
 		private static double Min (double a, double b, double c, double d)
 		{
 			return Math.Min (a, Math.Min (b, Math.Min (c, d)));
 		}
 
+
+		/// <summary>
+		/// Maximum of the specified a, b, c and d.
+		/// </summary>
+		/// <param name="a">A.</param>
+		/// <param name="b">B.</param>
+		/// <param name="c">C.</param>
+		/// <param name="d">D.</param>
 		private static double Max (double a, double b, double c, double d)
 		{
 			return Math.Max (a, Math.Max (b, Math.Max (c, d)));
@@ -238,19 +250,19 @@ namespace ExampleLibrary
 		/// </summary>
 		/// <param name="mu">Mu.</param>
 		/// <param name="sigma">Sigma.</param>
-		private static double Rnorm (double mu, double sigma)
+		private static double RandomNormal (double mu, double sigma)
 		{
-			return icum (_rand.NextDouble (), mu, sigma);
+			return InverseCumNormal (_rand.NextDouble (), mu, sigma);
 		}
 
 
 		/// <summary>
-		/// inverse cum normal
+		/// fast approximation for inverse cum normal
 		/// </summary>
 		/// <param name="u">probability</param>
 		/// <param name="mu">Mean</param>
 		/// <param name="sigma">std dev</param>
-		private static double icum (double p, double mu, double sigma)
+		private static double InverseCumNormal (double p, double mu, double sigma)
 		{
 			const double a1_ = -3.969683028665376e+01;
 			const double a2_ =  2.209460984245205e+02;
@@ -346,8 +358,6 @@ namespace ExampleLibrary
 			}
 		}
 
-
-		#endregion
 
 		// Variables
 

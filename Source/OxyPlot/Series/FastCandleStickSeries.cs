@@ -16,10 +16,12 @@ namespace OxyPlot.Series
 	/// <summary>
 	/// Represents a "higher performance" ordered OHLC series for candlestick charts
 	/// 
-	/// Unlike CandleStickSeries, does the following:
+	/// Does the following:
 	/// - automatically calculates the appropriate bar width based on available screen + # of bars
 	/// - can render and pan within millions of bars, using a fast approach to indexing in series
 	/// - convenience methods
+	/// 
+	/// This implementation is associated with <a href="https://github.com/oxyplot/oxyplot/issues/369">issue 369</a>.
 	/// </summary>
 	/// <remarks>See also <a href="http://en.wikipedia.org/wiki/Candlestick_chart">Wikipedia</a> and
 	/// <a href="http://www.mathworks.com/help/toolbox/finance/candle.html">Matlab documentation</a>.</remarks>
@@ -48,7 +50,6 @@ namespace OxyPlot.Series
 		/// </summary>
 		public OxyColor DecreasingColor { get; set; }
 
-
 		/// <summary>
 		/// Gets or sets the bar width in data units (for example if the X axis is datetime based, then should
 		/// use the difference of DateTimeAxis.ToDouble(date) to indicate the width).  By default candlestick
@@ -75,9 +76,9 @@ namespace OxyPlot.Series
 
 
 		/// <summary>
-		/// Fast index of bar where max(bar[i].X) <= x 
+		/// Fast index of bar where max(bar[i].X) &lt;= x 
 		/// </summary>
-		/// <returns>The index of the bar closest to X, where max(bar[i].X) <= x.</returns>
+		/// <returns>The index of the bar closest to X, where max(bar[i].X) &lt;= x.</returns>
 		/// <param name="x">The x coordinate.</param>
 		/// <param name="Istarting">starting index</param> 
 		public int FindByX (double x, int Istarting = -1)
@@ -307,9 +308,6 @@ namespace OxyPlot.Series
 		}
 
 
-		#region Miscellaneous
-
-
 		/// <summary>
 		/// Comvert incoming bar to native bar
 		/// </summary>
@@ -352,7 +350,7 @@ namespace OxyPlot.Series
 
 
 		/// <summary>
-		/// Find index of max(x) <= target x
+		/// Find index of max(x) &lt;= target x
 		/// </summary>
 		/// <param name='items'>
 		/// vector of bars
@@ -364,7 +362,7 @@ namespace OxyPlot.Series
 		/// initial guess.
 		/// </param>
 		/// <returns>
-		/// index of x with max(x) <= target x or -1 if cannot find
+		/// index of x with max(x) &lt;= target x or -1 if cannot find
 		/// </returns>
 		private static int FindIndex (List<HighLowItem> items, double targetX, int Iguess)
 		{
@@ -410,8 +408,6 @@ namespace OxyPlot.Series
 			return Ilastguess;
 		}
 
-
-		#endregion
 
 		// Variables
 
