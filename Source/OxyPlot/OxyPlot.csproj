@@ -313,6 +313,8 @@
     <Compile Include="Series\PieSlice.cs" />
     <Compile Include="Series\LineSeries.cs" />
     <Compile Include="Series\FastCandleStickSeries.cs" />
+    <Compile Include="Series\OHLCVSeries.cs" />
+    <Compile Include="Series\OHLCVItem.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagrams\Series.cd" />
