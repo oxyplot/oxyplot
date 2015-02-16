@@ -13,15 +13,31 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleLibrary", "Examples\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GtkSharpDemo", "Examples\GtkSharp\GtkSharpDemo\GtkSharpDemo.csproj", "{04C4F5CF-4B8A-4D27-9562-462581C1D323}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GtkSharpDemo", "Examples\GtkSharp\GtkSharpDemo\GtkSharpDemo.csproj", "{04C4F5CF-4B8A-4D27-9562-462581C1D323}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GtkSharpDemo", "Examples\GtkSharp\GtkSharpDemo\GtkSharpDemo.csproj", "{04C4F5CF-4B8A-4D27-9562-462581C1D323}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GtkSharpDemo", "Examples\GtkSharp\GtkSharpDemo\GtkSharpDemo.csproj", "{04C4F5CF-4B8A-4D27-9562-462581C1D323}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OHLCViewer", "Examples\OHLCViewer\OHLCViewer.csproj", "{04C4F3CF-4B8A-4327-9762-162581C1D323}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{04C4F3CF-4B8A-4327-9762-162581C1D323}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04C4F3CF-4B8A-4327-9762-162581C1D323}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04C4F3CF-4B8A-4327-9762-162581C1D323}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04C4F3CF-4B8A-4327-9762-162581C1D323}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04C4F5CF-4B8A-4D27-9562-462581C1D323}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{04C4F5CF-4B8A-4D27-9562-462581C1D323}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{04C4F5CF-4B8A-4D27-9562-462581C1D323}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04C4F5CF-4B8A-4D27-9562-462581C1D323}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{04C4F5CF-4B8A-4D27-9562-462581C1D323}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04C4F5CF-4B8A-4D27-9562-462581C1D323}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04C4F5CF-4B8A-4D27-9562-462581C1D323}.Release|Any CPU.Build.0 = Release|Any CPU
 		{04C4F5CF-4B8A-4D27-9562-462581C1D323}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}.Debug|Any CPU.Build.0 = Debug|Any CPU
@@ -43,6 +59,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{7CECF810-9B40-46A9-9B56-5A719CFDCAD0} = {47133BFC-5147-43B7-94F9-AB12B006C8AC}
 		{FACB89E5-53A5-4748-9F5B-E0714EBB37B2} = {47133BFC-5147-43B7-94F9-AB12B006C8AC}
+		{04C4F5CF-4B8A-4D27-9562-462581C1D323} = {47133BFC-5147-43B7-94F9-AB12B006C8AC}
+		{04C4F5CF-4B8A-4D27-9562-462581C1D323} = {47133BFC-5147-43B7-94F9-AB12B006C8AC}
 		{04C4F5CF-4B8A-4D27-9562-462581C1D323} = {47133BFC-5147-43B7-94F9-AB12B006C8AC}
 	EndGlobalSection
 EndGlobal
