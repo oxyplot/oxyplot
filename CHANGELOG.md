@@ -30,6 +30,7 @@ All notable changes to this project will be documented in this file.
 - OxyPlot.Metro project (superseded by OxyPlot.WindowsUniversal) (#241)
 
 ### Fixed
+- Fixed the dependency of OxyPlot.Xamarin.Forms NuGet (#370)
 - Add default ctor for Xamarin.Forms iOS renderer (#348)
 - Windows Phone cursor exception (#345)
 - Bar/ColumSeries tracker format string bug (#333)
@@ -67,7 +68,6 @@ All notable changes to this project will be documented in this file.
 - Rename LineStyle.Undefined to LineStyle.Automatic
 
 ### Fixed
-- Fixed the dependency of OxyPlot.Xamarin.Forms NuGet (#370)
 - Improved text rendering for Android and iOS (#209)
 - Custom shape outline for PointAnnotation (#174)
 - Synchronize Wpf.Axis.MinimumRange (#205)
