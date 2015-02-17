@@ -314,6 +314,10 @@
     <Compile Include="Series\PieSlice.cs" />
     <Compile Include="Series\LineSeries.cs" />
     <Compile Include="Series\FastCandleStickSeries.cs" />
+    <Compile Include="Series\OHLCV\OHLCVItem.cs" />
+    <Compile Include="Series\OHLCV\CandleStickAndVolumeSeries.cs" />
+    <Compile Include="Series\OHLCV\VolumeSeries.cs" />
+    <Compile Include="Series\OHLCV\VolumeStyle.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagrams\Series.cd" />

@@ -136,6 +136,7 @@
     <Compile Include="Utilities\Sun.cs" />
     <Compile Include="Issues\Issues.cs" />
     <Compile Include="Series\FastCandleStickSeriesExamples.cs" />
+    <Compile Include="Series\OHLCVSeriesExamples.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

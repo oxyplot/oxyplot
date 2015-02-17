@@ -61,6 +61,12 @@ namespace ExampleLibrary
 		}
 
 
+        /// <summary>
+        /// Creates the bar & vol series.
+        /// </summary>
+        /// <returns>The bar vol series.</returns>
+        /// <param name="title">Title.</param>
+        /// <param name="style">Style.</param>
 		private static Example CreateBarVolSeries (string title, VolumeStyle style)
 		{
 			var pm = new PlotModel { Title = title };
@@ -142,6 +148,12 @@ namespace ExampleLibrary
 		}
 
 
+        /// <summary>
+        /// Creates a volume series.
+        /// </summary>
+        /// <returns>The volume series.</returns>
+        /// <param name="title">Title.</param>
+        /// <param name="style">Style.</param>
 		private static Example CreateVolumeSeries (string title, VolumeStyle style)
 		{
 			var pm = new PlotModel { Title = title };
@@ -161,7 +173,6 @@ namespace ExampleLibrary
 			{
 				series.Append (bar);
 			}
-
 
 			// create visible window
 			var Istart = n - 200;
@@ -396,7 +407,6 @@ namespace ExampleLibrary
 			return mu + z * sigma;
 
 		}
-
 
 
 		/// <summary>
