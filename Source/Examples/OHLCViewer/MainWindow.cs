@@ -36,13 +36,16 @@ namespace OHLCViewer
 
 		#region Widget Creation
 
+
 		private void Build ()
 		{
 			this.Title = "OHLC Viewer";
 			this.Add (CreateLayout2 ());
+			OnVolumeChange ();
 
 			this.DeleteEvent += OnDeleteEvent;
 		}
+
 
 		private Widget CreateLayout2()
 		{
@@ -51,7 +54,7 @@ namespace OHLCViewer
 				CreateSelectors (), 0, 1, 0, 1, 
 				xoptions: AttachOptions.Shrink,
 				yoptions: AttachOptions.Shrink,
-				xpadding: 0,
+				xpadding: 20,
 				ypadding: 0);
 			table.Attach (
 				CreateStatusText (), 1, 2, 0, 1,
@@ -68,28 +71,6 @@ namespace OHLCViewer
 			table.Visible = true;
 			table.SetSizeRequest (800, 600);
 			return table;
-		}
-
-		private Widget CreateLayout1()
-		{
-			var view = CreateView ();
-			var vbox = new VBox (false, 10);
-			var hbox = new HBox (false, 50);
-			var fix = new Fixed ();
-
-			hbox.Add (CreateVolumeSelector ());
-			hbox.Add (CreatePeriodSelector ());
-			hbox.Add (CreateStatusText ());
-			fix.Add (hbox);
-
-			vbox.Add (fix);
-			vbox.Add (view);
-
-			fix.Visible = true;
-			hbox.Visible = true;
-			vbox.Visible = true;
-
-			return vbox;
 		}
 
 
@@ -110,23 +91,18 @@ namespace OHLCViewer
 
 		private Widget CreateSelectors ()
 		{
-			var fix = new Fixed ();
 			var hbox = new HBox (false, 50);
-
 			hbox.Add (CreateVolumeSelector ());
 			hbox.Add (CreatePeriodSelector ());
-			fix.Add (hbox);
-
 			hbox.Visible = true;
-			fix.Visible = true;
-			return fix;
+			return hbox;
 		}
 
 
 
 		private ComboBox CreateVolumeSelector ()
 		{
-			_volume = new ComboBox (new string[] { "None", "Combined", "Stacked", "+/-" });
+			_volume = new ComboBox (new string[] { "None", "Combined", "Stacked", "+/-" }) { Active = 1 };
 			_volume.Changed += (object sender, EventArgs e) => OnVolumeChange ();
 			_volume.WidthRequest = 120;
 			_volume.Visible = true;
@@ -137,7 +113,7 @@ namespace OHLCViewer
 
 		private ComboBox CreatePeriodSelector ()
 		{
-			_period = new ComboBox (new string[] { "5sec", "10sec", "30sec", "1min", "5min", "15min" });
+			_period = new ComboBox (new string[] { "5sec", "10sec", "30sec", "1min", "5min", "15min" }) { Active = 1 };
 			_period.Changed += (object sender, EventArgs e) => OnPeriodChange ();
 			_period.WidthRequest = 80;
 			_period.Visible = true;

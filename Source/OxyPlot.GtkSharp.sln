@@ -13,12 +13,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleLibrary", "Examples\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GtkSharpDemo", "Examples\GtkSharp\GtkSharpDemo\GtkSharpDemo.csproj", "{04C4F5CF-4B8A-4D27-9562-462581C1D323}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GtkSharpDemo", "Examples\GtkSharp\GtkSharpDemo\GtkSharpDemo.csproj", "{04C4F5CF-4B8A-4D27-9562-462581C1D323}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GtkSharpDemo", "Examples\GtkSharp\GtkSharpDemo\GtkSharpDemo.csproj", "{04C4F5CF-4B8A-4D27-9562-462581C1D323}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GtkSharpDemo", "Examples\GtkSharp\GtkSharpDemo\GtkSharpDemo.csproj", "{04C4F5CF-4B8A-4D27-9562-462581C1D323}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OHLCViewer", "Examples\OHLCViewer\OHLCViewer.csproj", "{04C4F3CF-4B8A-4327-9762-162581C1D323}"
 EndProject
 Global
