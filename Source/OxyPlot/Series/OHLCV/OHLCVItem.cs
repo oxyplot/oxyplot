@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Represents an item in a <see cref="HighLowSeries" />.
+//   Represents an item in a <see cref="CandleStickAndVolumeSeries" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -23,10 +23,19 @@ namespace OxyPlot.Series
 		/// Initializes a new instance of the <see cref="OHLCVItem" /> class.
         /// </summary>
 		public OHLCVItem()
-        	{ }
+        { 
+        }
 
-
-        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OxyPlot.Series.OHLCVItem"/> class.
+        /// </summary>
+        /// <param name="x">The x coordinate / time.</param>
+        /// <param name="open">Open.</param>
+        /// <param name="high">High.</param>
+        /// <param name="low">Low.</param>
+        /// <param name="close">Close.</param>
+        /// <param name="buyvolume">Buy volume.</param>
+        /// <param name="sellvolume">Sell volume.</param>
 		public OHLCVItem(
 			double x, 
 			double open, double high, double low, double close,
