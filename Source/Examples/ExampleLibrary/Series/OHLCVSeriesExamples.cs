@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CandleStickSeriesExamples.cs" company="OxyPlot">
+// <copyright file="OHLCSeriesExamples.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -14,46 +14,126 @@ namespace ExampleLibrary
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
-    [Examples("FastCandleStickSeries"), Tags("Series")]
-    public static class FastCandleStickSeriesExamples
+    [Examples("OHLCV Related Series"), Tags("Series")]
+    public static class OHLVCSeriesExamples
     {
-		[Example("Large Data Set (wide window)")]
-		public static Example LargeDataSet_Wide ()
+		[Example("Candles + Volume (combined volume)")]
+		public static Example CombinedVolume ()
 		{
-			var pm = new PlotModel { Title = "Large Data Set (wide window)" };
+			return CreateBarVolSeries ("Candles + Volume (combined volume)", VolumeStyle.Combined);
+		}
 
-			var timeSpanAxis1 = new DateTimeAxis { Position = AxisPosition.Bottom };
-			pm.Axes.Add(timeSpanAxis1);
-			var linearAxis1 = new LinearAxis { Position = AxisPosition.Left };
-			pm.Axes.Add(linearAxis1);
-			var series = new FastCandleStickSeries
+		[Example("Candles + Volume (stacked volume)")]
+		public static Example StackedVolume ()
+		{
+			return CreateBarVolSeries ("Candles + Volume (stacked volume)", VolumeStyle.Stacked);
+		}
+
+		[Example("Candles + Volume (+/- volume)")]
+		public static Example PosNegVolume ()
+		{
+			return CreateBarVolSeries ("Candles + Volume (+/- volume)", VolumeStyle.PositiveNegative);
+		}
+
+		[Example("Candles + Volume (volume not shown)")]
+		public static Example NoVolume ()
+		{
+			return CreateBarVolSeries ("Candles + Volume (volume not shown)", VolumeStyle.None);
+		}
+
+
+		[Example("Just Volume (combined)")]
+		public static Example JustVolumeCombined ()
+		{
+			return CreateVolumeSeries ("Just Volume (combined)", VolumeStyle.Combined);
+		}
+
+		[Example("Just Volume (stacked)")]
+		public static Example JustVolumeStacked ()
+		{
+			return CreateVolumeSeries ("Just Volume (stacked)", VolumeStyle.Stacked);
+		}
+
+		[Example("Just Volume (+/-)")]
+		public static Example JustVolumePosNeg ()
+		{
+			return CreateVolumeSeries ("Just Volume (+/-)", VolumeStyle.PositiveNegative);
+		}
+
+
+		private static Example CreateBarVolSeries (string title, VolumeStyle style)
+		{
+			var pm = new PlotModel { Title = title };
+
+			var series = new CandleStickAndVolumeSeries
 			{
-				Color = OxyColors.Black,
-				IncreasingColor = OxyColors.DarkGreen,
-				DecreasingColor = OxyColors.Red,
-				DataFieldX = "Time",
-				DataFieldHigh = "H",
-				DataFieldLow = "L",
-				DataFieldOpen = "O",
-				DataFieldClose = "C",
-				TrackerFormatString = "High: {2:0.00}\nLow: {3:0.00}\nOpen: {4:0.00}\nClose: {5:0.00}",
+				PositiveColor = OxyColors.DarkGreen,
+				NegativeColor = OxyColors.Red,
+				PositiveHollow = false,
+				NegativeHollow = false,
+				SeparatorColor = OxyColors.Gray,
+				SeparatorLineStyle = LineStyle.Dash,
+				VolumeStyle = style
 			};
 
-			var n = 1000000;
-			foreach (var bar in BarGenerator.MRProcess (n))
+			// create bars
+			var n = 10000;
+			foreach (var bar in OHLCVBarGenerator.MRProcess (n))
 			{
 				series.Append (bar);
 			}
 
-			timeSpanAxis1.Minimum = series.Items [n - 200].X;
-			timeSpanAxis1.Maximum = series.Items [n-130].X;
 
-			linearAxis1.Minimum = series.Items.Skip (n - 200).Take(70).Select (x => x.Low).Min();
-			linearAxis1.Maximum = series.Items.Skip (n - 200).Take(70).Select (x => x.High).Max();
+			// create visible window
+			var Istart = n - 200;
+			var Iend = n - 120;
+			var Ymin = series.Items.Skip (Istart).Take(Iend-Istart+1).Select (x => x.Low).Min();
+			var Ymax = series.Items.Skip (Istart).Take(Iend-Istart+1).Select (x => x.High).Max();
+			var Xmin = series.Items [Istart].X;
+			var Xmax = series.Items [Iend].X;
+
+			// setup axes
+			var timeAxis = new DateTimeAxis { 
+				Position = AxisPosition.Bottom,
+				Minimum = Xmin,
+				Maximum = Xmax
+			};
+			var barAxis = new LinearAxis { 
+				Position = AxisPosition.Left, Key = "Bars", 
+				StartPosition = 0.25, EndPosition = 1.0,
+				Minimum = Ymin, Maximum = Ymax
+			};
+			var volAxis = new LinearAxis { 
+				Position = AxisPosition.Left, Key = "Volume", 
+				StartPosition = 0.0, EndPosition = 0.22,
+				Minimum = 0, Maximum = 5000
+			};
+
+			switch (style)
+			{
+				case VolumeStyle.None:
+					barAxis.StartPosition = 0.0;
+					pm.Axes.Add (timeAxis);
+					pm.Axes.Add (barAxis);
+					break;
+
+				case VolumeStyle.Combined:
+				case VolumeStyle.Stacked:
+					pm.Axes.Add (timeAxis);
+					pm.Axes.Add (barAxis);
+					pm.Axes.Add (volAxis);
+					break;
+
+				case VolumeStyle.PositiveNegative:
+					volAxis.Minimum = -5000;
+					pm.Axes.Add (timeAxis);
+					pm.Axes.Add (barAxis);
+					pm.Axes.Add (volAxis);
+					break;
+			}
 
 			pm.Series.Add(series);
-
-			timeSpanAxis1.AxisChanged += (sender, e) =>  AdjustYExtent (series, timeSpanAxis1, linearAxis1);
+			timeAxis.AxisChanged += (sender, e) =>  AdjustYExtent (series, timeAxis, barAxis);
 
 			var controller = new PlotController();
 			controller.InputCommandBindings.Clear();
@@ -62,82 +142,61 @@ namespace ExampleLibrary
 		}
 
 
-		[Example("Large Data Set (narrow window)")]
-		public static Example LargeDataSet_Narrow ()
+		private static Example CreateVolumeSeries (string title, VolumeStyle style)
 		{
-			var pm = new PlotModel { Title = "Large Data Set (narrow window)" };
+			var pm = new PlotModel { Title = title };
 
-			var timeSpanAxis1 = new DateTimeAxis { Position = AxisPosition.Bottom };
-			pm.Axes.Add(timeSpanAxis1);
-			var linearAxis1 = new LinearAxis { Position = AxisPosition.Left };
-			pm.Axes.Add(linearAxis1);
-			var series = new FastCandleStickSeries
+			var series = new VolumeSeries
 			{
-				Color = OxyColors.Black,
-				IncreasingColor = OxyColors.DarkGreen,
-				DecreasingColor = OxyColors.Red,
-				DataFieldX = "Time",
-				DataFieldHigh = "H",
-				DataFieldLow = "L",
-				DataFieldOpen = "O",
-				DataFieldClose = "C",
-				TrackerFormatString = "High: {2:0.00}\nLow: {3:0.00}\nOpen: {4:0.00}\nClose: {5:0.00}",
+				PositiveColor = OxyColors.DarkGreen,
+				NegativeColor = OxyColors.Red,
+				PositiveHollow = false,
+				NegativeHollow = false,
+				VolumeStyle = style
 			};
 
-			var n = 1000000;
-			foreach (var bar in BarGenerator.MRProcess (n))
+			// create bars
+			var n = 10000;
+			foreach (var bar in OHLCVBarGenerator.MRProcess (n))
 			{
 				series.Append (bar);
 			}
 
-			timeSpanAxis1.Minimum = series.Items [0].X;
-			timeSpanAxis1.Maximum = series.Items [29].X;
 
-			linearAxis1.Minimum = series.Items.Take(30).Select (x => x.Low).Min();
-			linearAxis1.Maximum = series.Items.Take(30).Select (x => x.High).Max();
+			// create visible window
+			var Istart = n - 200;
+			var Iend = n - 120;
+			var Xmin = series.Items [Istart].X;
+			var Xmax = series.Items [Iend].X;
 
-			pm.Series.Add(series);
-
-			timeSpanAxis1.AxisChanged += (sender, e) =>  AdjustYExtent (series, timeSpanAxis1, linearAxis1);
-
-			var controller = new PlotController();
-			controller.InputCommandBindings.Clear();
-			controller.BindMouseDown(OxyMouseButton.Left, PlotCommands.PanAt);
-			return new Example(pm, controller);
-		}
-
-
-		[Example("Small Set")]
-		public static Example SmallDataSet ()
-		{
-			var pm = new PlotModel { Title = "Small Data Set" };
-
-			var timeSpanAxis1 = new DateTimeAxis { Position = AxisPosition.Bottom };
-			pm.Axes.Add(timeSpanAxis1);
-			var linearAxis1 = new LinearAxis { Position = AxisPosition.Left };
-			pm.Axes.Add(linearAxis1);
-			var series = new FastCandleStickSeries
-			{
-				Color = OxyColors.Black,
-				IncreasingColor = OxyColors.DarkGreen,
-				DecreasingColor = OxyColors.Red,
-				DataFieldX = "Time",
-				DataFieldHigh = "H",
-				DataFieldLow = "L",
-				DataFieldOpen = "O",
-				DataFieldClose = "C",
-				TrackerFormatString = "High: {2:0.00}\nLow: {3:0.00}\nOpen: {4:0.00}\nClose: {5:0.00}",
+			// setup axes
+			var timeAxis = new DateTimeAxis { 
+				Position = AxisPosition.Bottom,
+				Minimum = Xmin,
+				Maximum = Xmax
+			};
+			var volAxis = new LinearAxis { 
+				Position = AxisPosition.Left, Key = "Volume", 
+				StartPosition = 0.0, EndPosition = 1.0,
+				Minimum = 0, Maximum = 10000
 			};
 
-			var n = 100;
-			foreach (var bar in BarGenerator.MRProcess (n))
+			switch (style)
 			{
-				series.Append (bar);
+				case VolumeStyle.Combined:
+				case VolumeStyle.Stacked:
+					pm.Axes.Add (timeAxis);
+					pm.Axes.Add (volAxis);
+					break;
+
+				case VolumeStyle.PositiveNegative:
+					volAxis.Minimum = -10000;
+					pm.Axes.Add (timeAxis);
+					pm.Axes.Add (volAxis);
+					break;
 			}
 
 			pm.Series.Add(series);
-
-			timeSpanAxis1.AxisChanged += (sender, e) =>  AdjustYExtent (series, timeSpanAxis1, linearAxis1);			
 
 			var controller = new PlotController();
 			controller.InputCommandBindings.Clear();
@@ -152,7 +211,7 @@ namespace ExampleLibrary
 		/// <param name="series">Series.</param>
 		/// <param name="xaxis">Xaxis.</param>
 		/// <param name="yaxis">Yaxis.</param>
-		private static void AdjustYExtent (FastCandleStickSeries series, DateTimeAxis xaxis, LinearAxis yaxis)
+		private static void AdjustYExtent (CandleStickAndVolumeSeries series, DateTimeAxis xaxis, LinearAxis yaxis)
 		{
 			var xmin = xaxis.ActualMinimum;
 			var xmax = xaxis.ActualMaximum;
@@ -174,31 +233,33 @@ namespace ExampleLibrary
 
 			yaxis.Zoom (ymin - margin, ymax + margin);
 		}
+
     }
 
 
 	/// <summary>
 	/// Creates realistic bars
 	/// </summary>
-	static class BarGenerator
+	static class OHLCVBarGenerator
 	{
 		/// <summary>
 		/// Create bars governed by a MR process
 		/// </summary>
 		/// <returns>The process.</returns>
+		/// <param name="n">Number of bars to generate.</param>
 		/// <param name="x0">X0.</param>
 		/// <param name="csigma">Csigma.</param>
 		/// <param name="esigma">Esigma.</param>
 		/// <param name="kappa">Kappa.</param>
-		public static IEnumerable<HighLowItem> MRProcess (
+		public static IEnumerable<OHLCVItem> MRProcess (
 			int n,
 			double x0 = 100.0,
+			double v0 = 500,
 			double csigma = 0.50, 
-			double esigma = 0.70, 
+			double esigma = 0.75, 
 			double kappa = 0.01)
 		{
 			double x = x0;
-
 			var Tbase = DateTime.UtcNow;
 			for (int ti = 0 ; ti < n ; ti++)
 			{
@@ -211,12 +272,21 @@ namespace ExampleLibrary
 				var low = Min (open, close, open + dx_1, open + dx_2);
 				var high = Max (open, close, open + dx_1, open + dx_2);
 
+				var dp = (close - open);
+				var v = v0 * Math.Exp (Math.Abs (dp) / csigma);
+				var dir = (dp < 0) ?
+					-Math.Min (-dp / esigma, 1.0) :
+					Math.Min (dp / esigma, 1.0);
+
+				var skew = (dir + 1) / 2.0;
+				var buyvol = skew * v;
+				var sellvol = (1 - skew) * v;
+
 				var Tnow = Tbase.AddSeconds(ti);
 				var t = DateTimeAxis.ToDouble (Tnow);
-				yield return new HighLowItem (t, high, low, open, close);
+				yield return new OHLCVItem (t, open, high, low, close, buyvol, sellvol);
 			}
 		}
-
 
 
 		/// <summary>
