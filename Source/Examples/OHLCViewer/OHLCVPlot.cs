@@ -35,7 +35,6 @@ namespace OHLCViewer
 		{
 			Window = barwindow;
 			MAWindow = mawindow;
-			Title = "OHLC Pane";
 
 			SetupOHLCV (bars);
 			SetupMA ();
@@ -207,16 +206,20 @@ namespace OHLCViewer
 				case OHLCVSeries.VolumeStyle.Combined:
 					_yaxis_volume.Maximum = max;
 					_yaxis_volume.Minimum = 0;
+					_yaxis_volume.Reset ();
 					_Sohlcv.VolumeRendering = style;
+					_yaxis_volume.IsAxisVisible = true;
 					break;
 				case OHLCVSeries.VolumeStyle.PositiveNegative:
 					_yaxis_volume.Maximum = max;
 					_yaxis_volume.Minimum = -max;
+					_yaxis_volume.Reset ();
 					_Sohlcv.VolumeRendering = style;
 					break;
 				case OHLCVSeries.VolumeStyle.Stacked:
 					_yaxis_volume.Maximum = max;
 					_yaxis_volume.Minimum = 0;
+					_yaxis_volume.Reset ();
 					_Sohlcv.VolumeRendering = style;
 					break;
 			}

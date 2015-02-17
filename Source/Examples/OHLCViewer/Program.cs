@@ -24,6 +24,8 @@ namespace OHLCViewer
 		public static void Main (string[] args)
 		{
 			Application.Init ();
+			Gtk.Rc.Parse("/tmp/dark.gtkrc");
+
 			MainWindow win = new MainWindow ();
 			win.Show ();
 			Application.Run ();
