@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="HighLowSeries.cs" company="OxyPlot">
-//   Copyright (c) 2014 OxyPlot contributors
+//   Copyright (c) 2015 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Represents a series for high-low plots.
+//   Represents a dual view (candlestick & volume) series for OHLCV bars
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -11,33 +11,27 @@ namespace OxyPlot.Series
 {
 	using System;
 	using System.Collections.Generic;
+	using System.Linq;
 
 	using OxyPlot.Axes;
 
 	/// <summary>
-	/// Represents a series for OHLC + volume plots
+	/// Represents a dual view (candlestick & volume) series for OHLCV bars
 	/// </summary>
 	/// <remarks>See <a href="http://www.mathworks.com/help/toolbox/finance/highlowfts.html">link</a></remarks>
-	public class OHLCVSeries : XYAxisSeries
+	public class CandleStickAndVolumeSeries : XYAxisSeries
 	{
-		public enum VolumeStyle
-			{ None, Combined, Stacked, PositiveNegative }
-
 		/// <summary>
 		/// The default tracker format string
 		/// </summary>
 		public new const string DefaultTrackerFormatString = 
 			"Time: {0}\nHigh: {1}\nLow: {2}\nOpen: {3}\nClose: {4}\nBuy Volume: {5}\nSell Volume: {6}";
 
-		/// <summary>
-		/// High/low items
-		/// </summary>
-		private readonly List<OHLCVItem> items = new List<OHLCVItem>();
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref = "HighLowSeries" /> class.
 		/// </summary>
-		public OHLCVSeries()
+		public CandleStickAndVolumeSeries()
 		{
 			this.YAxisKey = "Bars";
 			this.PositiveColor = OxyColors.DarkGreen;
@@ -46,10 +40,10 @@ namespace OxyPlot.Series
 			this.CandleWidth = 0;
 			this.SeparatorStrokeThickness = 1;
 			this.SeparatorLineStyle = LineStyle.Dash;
-			this.BarStrokeThickness = 1;
-			this.VolumeStacked = true;
+			this.StrokeThickness = 1;
 			this.NegativeHollow = false;
 			this.PositiveHollow = true;
+			this.StrokeIntensity = 0.80;
 
 			this.TrackerFormatString = DefaultTrackerFormatString;
 		}
@@ -61,32 +55,40 @@ namespace OxyPlot.Series
 		/// </summary>
 		/// <value>The items.</value>
 		public List<OHLCVItem> Items
-			{ get { return this.items; } }
+		{ 
+			get 
+				{ return (_data != null) ? _data : (_data = new List<OHLCVItem> ()); } 
+			set
+				{ _data = value; }
+		}
 
 
 		/// <summary>
 		/// The portion of the Y axis associated with bars
 		/// </summary>
-		public LinearAxis BarAxis
-			{ get { return (LinearAxis)YAxis; } }
+		public LinearAxis BarAxis  { get { return (LinearAxis)YAxis; } }
 
 		/// <summary>
 		/// The portion of the Y axis associated with volume
 		/// </summary>
-		public LinearAxis VolumeAxis
-			{ get; private set; }
+		public LinearAxis VolumeAxis { get; private set; }
 
 		/// <summary>
 		/// The style of volume rendering
 		/// </summary>
-		public VolumeStyle VolumeRendering
-			{ get; set; }
+		public VolumeStyle VolumeStyle { get; set; }
 
 		/// <summary>
 		/// Gets or sets the thickness of the bar lines
 		/// </summary>
 		/// <value>The stroke thickness.</value>
-		public double BarStrokeThickness { get; set; }
+		public double StrokeThickness { get; set; }
+
+		/// <summary>
+		/// Gets or sets the stroke intensity scale (used to generate stroke color from positive or negative color).
+		/// For example, 1.0 = same color and 0.5 is 1/2 of the intensity of the source fill color.
+		/// </summary>
+		public double StrokeIntensity { get; set; }
 
 		/// <summary>
 		/// Gets or sets the thickness of the volume / bar separator
@@ -133,11 +135,6 @@ namespace OxyPlot.Series
 		/// </summary>
 		public double CandleWidth { get; set; }
 
-		/// <summary>
-		/// Indicate whether shows dominant volume or semi-stacked
-		/// </summary>
-		public bool VolumeStacked { get; set; }
-
 
 		// Functions
 
@@ -149,10 +146,13 @@ namespace OxyPlot.Series
 		/// <param name="bar">Bar.</param>
 		public void Append (OHLCVItem bar)
 		{
-			if (Items.Count > 0 && Items [Items.Count - 1].X > bar.X)
+			if (_data == null)
+				_data = new List<OHLCVItem> ();
+
+			if (_data.Count > 0 && _data [_data.Count - 1].X > bar.X)
 				throw new ArgumentException ("cannot append bar out of order, must be sequential in X");
 
-			Items.Add (bar);
+			_data.Add (bar);
 		}
 
 
@@ -167,7 +167,7 @@ namespace OxyPlot.Series
 			if (Istarting < 0)
 				Istarting = _pindex;
 
-			return FindIndex (Items, x, Istarting);
+			return FindIndex (_data, x, Istarting);
 		}
 
 
@@ -178,11 +178,11 @@ namespace OxyPlot.Series
 		/// <param name="model">The owner plot model.</param>
 		public override void Render(IRenderContext rc, PlotModel model)
 		{
-			var nitems = this.Items.Count;
-			var items = this.Items;
-
-			if (nitems == 0)
+			if (_data == null || _data.Count == 0)
 				return;
+
+			var items = _data;
+			var nitems = _data.Count;
 
 			this.VerifyAxes();
 
@@ -193,7 +193,7 @@ namespace OxyPlot.Series
 			var datacandlewidth = (CandleWidth > 0) ? CandleWidth : _dx * 0.80;
 			var candlewidth = 
 				this.XAxis.Transform (items [0].X + datacandlewidth) -
-				this.XAxis.Transform (items [0].X) - BarStrokeThickness; 
+				this.XAxis.Transform (items [0].X) - StrokeThickness; 
 
 			// colors
 			var fill_up = this.GetSelectableFillColor (this.PositiveColor);
@@ -204,8 +204,8 @@ namespace OxyPlot.Series
 			var barfill_down = this.NegativeHollow ? 
 				OxyColors.Transparent : fill_down;
 
-			var line_up = this.GetSelectableColor(this.PositiveColor.ChangeIntensity (0.70));
-			var line_down = this.GetSelectableColor(this.NegativeColor.ChangeIntensity (0.70));
+			var line_up = this.GetSelectableColor(this.PositiveColor.ChangeIntensity (StrokeIntensity));
+			var line_down = this.GetSelectableColor(this.NegativeColor.ChangeIntensity (StrokeIntensity));
 
 
 			// determine render range
@@ -248,7 +248,7 @@ namespace OxyPlot.Series
 					new[] { high, min },
 					0,
 					lineColor,
-					this.BarStrokeThickness,
+					this.StrokeThickness,
 					null,
 					LineJoin.Miter,
 					true);
@@ -259,7 +259,7 @@ namespace OxyPlot.Series
 					new[] { max, low },
 					0,
 					lineColor,
-					this.BarStrokeThickness,
+					this.StrokeThickness,
 					null,
 					LineJoin.Miter,
 					true);
@@ -270,18 +270,18 @@ namespace OxyPlot.Series
 				rc.DrawClippedRectangleAsPolygon(
 					clipping_bar, rect, 
 					fillColor, 
-					lineColor, this.BarStrokeThickness);
+					lineColor, this.StrokeThickness);
 
 
 				//
 				// Volume Part
 				//
 
-				if (VolumeAxis == null || this.VolumeRendering == VolumeStyle.None)
+				if (VolumeAxis == null || this.VolumeStyle == VolumeStyle.None)
 					continue;
 
 				var Y0 = VolumeAxis.Transform (0); 
-				switch (VolumeRendering)
+				switch (VolumeStyle)
 				{
 					case VolumeStyle.Combined:
 						{
@@ -289,7 +289,7 @@ namespace OxyPlot.Series
 							var fillcolor = (bar.BuyVolume > bar.SellVolume) ? barfill_up : barfill_down;
 							var linecolor = (bar.BuyVolume > bar.SellVolume) ? line_up : line_down;
 							var rect1 = new OxyRect (openLeft.X, adj, candlewidth, Math.Abs(adj-Y0));
-							rc.DrawClippedRectangleAsPolygon(clipping_vol, rect1, fillcolor, linecolor, this.BarStrokeThickness);
+							rc.DrawClippedRectangleAsPolygon(clipping_vol, rect1, fillcolor, linecolor, this.StrokeThickness);
 						}
 						break;
 					
@@ -298,9 +298,9 @@ namespace OxyPlot.Series
 							var Ybuy = VolumeAxis.Transform (bar.BuyVolume);
 							var Ysell = VolumeAxis.Transform (-bar.SellVolume);
 							var rect1 = new OxyRect (openLeft.X, Ybuy, candlewidth, Math.Abs(Ybuy-Y0));
-							rc.DrawClippedRectangleAsPolygon(clipping_vol, rect1, fill_up, line_up, this.BarStrokeThickness);
+							rc.DrawClippedRectangleAsPolygon(clipping_vol, rect1, fill_up, line_up, this.StrokeThickness);
 							var rect2 = new OxyRect (openLeft.X, Y0, candlewidth, Math.Abs(Ysell-Y0));
-							rc.DrawClippedRectangleAsPolygon(clipping_vol, rect2, fill_down, line_down, this.BarStrokeThickness);
+							rc.DrawClippedRectangleAsPolygon(clipping_vol, rect2, fill_down, line_down, this.StrokeThickness);
 						}
 						break;
 
@@ -311,9 +311,9 @@ namespace OxyPlot.Series
 							var Ysell = VolumeAxis.Transform (bar.SellVolume);
 							var dyoffset = Ysell - Y0;
 							var rect2 = new OxyRect (openLeft.X, Ysell, candlewidth, Math.Abs (Ysell - Y0));
-							rc.DrawClippedRectangleAsPolygon (clipping_vol, rect2, fill_down, line_down, this.BarStrokeThickness);
+							rc.DrawClippedRectangleAsPolygon (clipping_vol, rect2, fill_down, line_down, this.StrokeThickness);
 							var rect1 = new OxyRect (openLeft.X, Ybuy + dyoffset, candlewidth, Math.Abs (Ybuy - Y0));
-							rc.DrawClippedRectangleAsPolygon (clipping_vol, rect1, fill_up, line_up, this.BarStrokeThickness);
+							rc.DrawClippedRectangleAsPolygon (clipping_vol, rect1, fill_up, line_up, this.StrokeThickness);
 						}
 						else
 						{
@@ -321,9 +321,9 @@ namespace OxyPlot.Series
 							var Ysell = VolumeAxis.Transform (bar.SellVolume);
 							var dyoffset = Ybuy - Y0;
 							var rect1 = new OxyRect (openLeft.X, Ybuy, candlewidth, Math.Abs (Ybuy - Y0));
-							rc.DrawClippedRectangleAsPolygon (clipping_vol, rect1, fill_up, line_up, this.BarStrokeThickness);
+							rc.DrawClippedRectangleAsPolygon (clipping_vol, rect1, fill_up, line_up, this.StrokeThickness);
 							var rect2 = new OxyRect (openLeft.X, Ysell + dyoffset, candlewidth, Math.Abs (Ysell - Y0));
-							rc.DrawClippedRectangleAsPolygon (clipping_vol, rect2, fill_down, line_down, this.BarStrokeThickness);
+							rc.DrawClippedRectangleAsPolygon (clipping_vol, rect2, fill_down, line_down, this.StrokeThickness);
 						}
 						break;
 
@@ -331,7 +331,7 @@ namespace OxyPlot.Series
 			}
 
 			// draw volume & bar separation line
-			if (VolumeAxis != null)
+			if (VolumeStyle != VolumeStyle.None)
 			{
 				var ysep = (clipping_sep.Bottom + clipping_sep.Top) / 2.0;
 				rc.DrawClippedLine (
@@ -346,12 +346,12 @@ namespace OxyPlot.Series
 			}
 
 			// draw volume y=0 line
-			if (VolumeAxis != null && VolumeRendering == VolumeStyle.PositiveNegative)
+			if (VolumeStyle == VolumeStyle.PositiveNegative)
 			{
 				var Y0 = VolumeAxis.Transform (0); 
 				rc.DrawClippedLine (
-					clipping_sep,
-					new[] { new ScreenPoint (clipping_sep.Left, Y0), new ScreenPoint (clipping_sep.Right, Y0) },
+					clipping_vol,
+					new[] { new ScreenPoint (clipping_vol.Left, Y0), new ScreenPoint (clipping_vol.Right, Y0) },
 					0,
 					OxyColors.Goldenrod,
 					SeparatorStrokeThickness,
@@ -380,13 +380,13 @@ namespace OxyPlot.Series
 			var line_up = this.GetSelectableColor(this.PositiveColor.ChangeIntensity (0.70));
 
 			var candlewidth = 
-				this.XAxis.Transform (this.Items [0].X + datacandlewidth) -
-				this.XAxis.Transform (this.Items [0].X); 
+				this.XAxis.Transform (this._data [0].X + datacandlewidth) -
+				this.XAxis.Transform (this._data [0].X); 
 
 			rc.DrawLine(
 				new[] { new ScreenPoint(xmid, legendBox.Top), new ScreenPoint(xmid, legendBox.Bottom) },
 				line_up,
-				this.BarStrokeThickness,
+				this.StrokeThickness,
 				dashArray,
 				LineJoin.Miter,
 				true);
@@ -395,7 +395,7 @@ namespace OxyPlot.Series
 				new OxyRect(xmid - (candlewidth * 0.5), yclose, candlewidth, yopen - yclose),
 				fill_up,
 				line_up,
-				this.BarStrokeThickness);
+				this.StrokeThickness);
 		}
 
 
@@ -408,7 +408,7 @@ namespace OxyPlot.Series
 			_pindex = 0;
 
 			// determine minimum X gap between successive points
-			var items = Items;
+			var items = _data;
 			var nitems = items.Count;
 			_dx = double.MaxValue;
 
@@ -432,21 +432,21 @@ namespace OxyPlot.Series
 		/// <returns>A TrackerHitResult for the current hit.</returns>
 		public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
 		{
-			if (this.XAxis == null || this.YAxis == null || interpolate || Items.Count == 0)
+			if (this.XAxis == null || this.YAxis == null || interpolate || _data.Count == 0)
 				return null;
 
-			var nbars = Items.Count;
+			var nbars = _data.Count;
 			var xy = InverseTransform (point);
 			var targetX = xy.X;
 
 			// punt if beyond start & end of series
-			if (targetX > (Items [nbars - 1].X + _dx))
+			if (targetX > (_data [nbars - 1].X + _dx))
 				return null;
-			if (targetX < (Items [0].X - _dx))
+			if (targetX < (_data [0].X - _dx))
 				return null;
 
-			var pidx = FindIndex (Items, targetX, _pindex);
-			var nidx = ((pidx + 1) < Items.Count) ? pidx + 1 : pidx;
+			var pidx = FindIndex (_data, targetX, _pindex);
+			var nidx = ((pidx + 1) < _data.Count) ? pidx + 1 : pidx;
 
 			Func<OHLCVItem,double> distance = (bar) =>
 			{
@@ -455,8 +455,8 @@ namespace OxyPlot.Series
 			};
 
 			// determine closest point
-			var midx = distance (Items [pidx]) <= distance (Items [nidx]) ? pidx : nidx; 
-			var mbar = Items [midx];
+			var midx = distance (_data [pidx]) <= distance (_data [nidx]) ? pidx : nidx; 
+			var mbar = _data [midx];
 
 			var hit = new DataPoint(mbar.X, mbar.Close);
 			return new TrackerHitResult
@@ -487,7 +487,7 @@ namespace OxyPlot.Series
 		protected internal override void EnsureAxes()
 		{
 			base.EnsureAxes ();
-			this.VolumeAxis = (LinearAxis)this.PlotModel.GetAxisOrDefault("Volume", null);
+			this.VolumeAxis = (LinearAxis)this.PlotModel.Axes.FirstOrDefault (a => a.Key == "Volume");
 		}
 			
 
@@ -601,7 +601,8 @@ namespace OxyPlot.Series
 
 		// Variables
 
-		private double		_dx;
-		private int 		_pindex;
+		private List<OHLCVItem>		_data;
+		private double				_dx;
+		private int 				_pindex;
 	}
 }
