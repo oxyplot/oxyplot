@@ -10,7 +10,7 @@ All notable changes to this project will be documented in this file.
 - Enable Git source server (added GitLink build step) (#267,#266)
 - iOS PlotView ZoomThreshold/AllowPinchPastZero for use with KeepAspectRatioWhenPinching=false (#359)
 - Added FastCandleStickSeries & examples (#369)
-- Added OHLCVItem, CandleStickAndVolumeSeries, VolumeSeries & examples (TBD)
+- Added OHLCVItem, CandleStickAndVolumeSeries, VolumeSeries & examples (#377)
 
 ### Changed
 - Changed the OxyPlot.Xamarin.Forms to require the OxyPlot.Mobile dependency instead of each separate NuGet. (#362)
