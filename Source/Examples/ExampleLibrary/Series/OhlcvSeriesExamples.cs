@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="OHLCSeriesExamples.cs" company="OxyPlot">
+// <copyright file="OhlcvSeriesExamples.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -14,58 +14,50 @@ namespace ExampleLibrary
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
-
-    [Examples ("OHLCV Related Series"), Tags ("Series")]
+    [Examples("OHLCV Related Series"), Tags("Series")]
     public static class OhlcvSeriesExamples
     {
-        [Example ("Candles + Volume (combined volume)")]
+        [Example("Candles + Volume (combined volume)")]
         public static Example CombinedVolume()
         {
-            return CreateBarVolSeries ("Candles + Volume (combined volume)", VolumeStyle.Combined);
+            return CreateBarVolSeries("Candles + Volume (combined volume)", VolumeStyle.Combined);
         }
 
-
-        [Example ("Candles + Volume (stacked volume)")]
+        [Example("Candles + Volume (stacked volume)")]
         public static Example StackedVolume()
         {
-            return CreateBarVolSeries ("Candles + Volume (stacked volume)", VolumeStyle.Stacked);
+            return CreateBarVolSeries("Candles + Volume (stacked volume)", VolumeStyle.Stacked);
         }
 
-
-        [Example ("Candles + Volume (+/- volume)")]
+        [Example("Candles + Volume (+/- volume)")]
         public static Example PosNegVolume()
         {
-            return CreateBarVolSeries ("Candles + Volume (+/- volume)", VolumeStyle.PositiveNegative);
+            return CreateBarVolSeries("Candles + Volume (+/- volume)", VolumeStyle.PositiveNegative);
         }
 
-
-        [Example ("Candles + Volume (volume not shown)")]
+        [Example("Candles + Volume (volume not shown)")]
         public static Example NoVolume()
         {
-            return CreateBarVolSeries ("Candles + Volume (volume not shown)", VolumeStyle.None);
+            return CreateBarVolSeries("Candles + Volume (volume not shown)", VolumeStyle.None);
         }
 
-
-        [Example ("Just Volume (combined)")]
+        [Example("Just Volume (combined)")]
         public static Example JustVolumeCombined()
         {
-            return CreateVolumeSeries ("Just Volume (combined)", VolumeStyle.Combined);
+            return CreateVolumeSeries("Just Volume (combined)", VolumeStyle.Combined);
         }
 
-
-        [Example ("Just Volume (stacked)")]
+        [Example("Just Volume (stacked)")]
         public static Example JustVolumeStacked()
         {
-            return CreateVolumeSeries ("Just Volume (stacked)", VolumeStyle.Stacked);
+            return CreateVolumeSeries("Just Volume (stacked)", VolumeStyle.Stacked);
         }
 
-
-        [Example ("Just Volume (+/-)")]
+        [Example("Just Volume (+/-)")]
         public static Example JustVolumePosNeg()
         {
-            return CreateVolumeSeries ("Just Volume (+/-)", VolumeStyle.PositiveNegative);
+            return CreateVolumeSeries("Just Volume (+/-)", VolumeStyle.PositiveNegative);
         }
-
 
         /// <summary>
         /// Creates the bar & vol series.
@@ -77,7 +69,7 @@ namespace ExampleLibrary
         {
             var pm = new PlotModel { Title = title };
 
-            var series = new CandleStickAndVolumeSeries 
+            var series = new CandleStickAndVolumeSeries
             {
                 PositiveColor = OxyColors.DarkGreen,
                 NegativeColor = OxyColors.Red,
@@ -105,28 +97,28 @@ namespace ExampleLibrary
             var Xmax = series.Items[Iend].X;
 
             // setup axes
-            var timeAxis = new DateTimeAxis 
-            { 
+            var timeAxis = new DateTimeAxis
+            {
                 Position = AxisPosition.Bottom,
                 Minimum = Xmin,
                 Maximum = Xmax
             };
-            var barAxis = new LinearAxis 
-            { 
-                Position = AxisPosition.Left, 
-                Key = "Bars", 
-                StartPosition = 0.25, 
+            var barAxis = new LinearAxis
+            {
+                Position = AxisPosition.Left,
+                Key = "Bars",
+                StartPosition = 0.25,
                 EndPosition = 1.0,
-                Minimum = Ymin, 
+                Minimum = Ymin,
                 Maximum = Ymax
             };
-            var volAxis = new LinearAxis 
-            { 
-                Position = AxisPosition.Left, 
-                Key = "Volume", 
-                StartPosition = 0.0, 
+            var volAxis = new LinearAxis
+            {
+                Position = AxisPosition.Left,
+                Key = "Volume",
+                StartPosition = 0.0,
                 EndPosition = 0.22,
-                Minimum = 0, 
+                Minimum = 0,
                 Maximum = 5000
             };
 
@@ -157,7 +149,7 @@ namespace ExampleLibrary
             timeAxis.AxisChanged += (sender, e) => AdjustYExtent(series, timeAxis, barAxis);
 
             var controller = new PlotController();
-            controller.InputCommandBindings.Clear ();
+            controller.InputCommandBindings.Clear();
             controller.BindMouseDown(OxyMouseButton.Left, PlotCommands.PanAt);
             return new Example(pm, controller);
         }
@@ -173,7 +165,7 @@ namespace ExampleLibrary
         {
             var pm = new PlotModel { Title = title };
 
-            var series = new VolumeSeries 
+            var series = new VolumeSeries
             {
                 PositiveColor = OxyColors.DarkGreen,
                 NegativeColor = OxyColors.Red,
@@ -196,19 +188,19 @@ namespace ExampleLibrary
             var Xmax = series.Items[Iend].X;
 
             // setup axes
-            var timeAxis = new DateTimeAxis 
-            { 
+            var timeAxis = new DateTimeAxis
+            {
                 Position = AxisPosition.Bottom,
                 Minimum = Xmin,
                 Maximum = Xmax
             };
-            var volAxis = new LinearAxis 
-            { 
-                Position = AxisPosition.Left, 
-                Key = "Volume", 
-                StartPosition = 0.0, 
+            var volAxis = new LinearAxis
+            {
+                Position = AxisPosition.Left,
+                Key = "Volume",
+                StartPosition = 0.0,
                 EndPosition = 1.0,
-                Minimum = 0, 
+                Minimum = 0,
                 Maximum = 10000
             };
 
@@ -287,8 +279,8 @@ namespace ExampleLibrary
             int n,
             double x0 = 100.0,
             double v0 = 500,
-            double csigma = 0.50, 
-            double esigma = 0.75, 
+            double csigma = 0.50,
+            double esigma = 0.75,
             double kappa = 0.01)
         {
             double x = x0;
@@ -307,8 +299,8 @@ namespace ExampleLibrary
                 var dp = (close - open);
                 var v = v0 * Math.Exp(Math.Abs(dp) / csigma);
                 var dir = (dp < 0) ?
-					-Math.Min(-dp / esigma, 1.0) :
-					Math.Min(dp / esigma, 1.0);
+                    -Math.Min(-dp / esigma, 1.0) :
+                    Math.Min(dp / esigma, 1.0);
 
                 var skew = (dir + 1) / 2.0;
                 var buyvol = skew * v;
@@ -401,7 +393,7 @@ namespace ExampleLibrary
             if (p < Xlow)
             {
                 // Rational approximation for the lower region 0<x<u_low
-                z = Math.Sqrt(-2.0 * Math.Log (p));
+                z = Math.Sqrt(-2.0 * Math.Log(p));
                 z = (((((C1 * z + C2) * z + C3) * z + C4) * z + C5) * z + C6) /
                     ((((D1 * z + D2) * z + D3) * z + D4) * z + 1.0);
             }
