@@ -29,7 +29,7 @@ namespace OxyPlot.Series
 
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OxyPlot.Series.OHLCVItem"/> class.
+        /// Initializes a new instance of the <see cref="OxyPlot.Series.OhlcvItem"/> class.
         /// </summary>
         /// <param name="x">The x coordinate / time.</param>
         /// <param name="open">Open.</param>
