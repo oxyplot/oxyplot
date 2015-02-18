@@ -85,7 +85,7 @@ namespace OxyPlot.Annotations
             }
             else if (fy != null)
             {
-                double y = ActualMinimumY;
+                double y = this.ActualMinimumY;
 
                 // todo: the step size should be adaptive
                 double dy = (this.ActualMaximumY - this.ActualMinimumY) / this.Resolution;

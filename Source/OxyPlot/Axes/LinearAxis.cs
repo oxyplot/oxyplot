@@ -9,8 +9,6 @@
 
 namespace OxyPlot.Axes
 {
-    using System;
-
     /// <summary>
     /// Represents an axis with linear scale.
     /// </summary>

@@ -3,17 +3,14 @@
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Represents rendering style for volume in either <see cref="CandleStickAndVolumeSeries" /> or 
-//   <see cref="VolumeSeries" />.
+//   Represents rendering style for volume in either CandleStickAndVolumeSeries or VolumeSeries.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Series
 {
-    using System;
-
     /// <summary>
-    /// Volume rendering style.
+    /// Represents rendering style for volume in either <see cref="CandleStickAndVolumeSeries" /> or <see cref="VolumeSeries" />.
     /// </summary>
     public enum VolumeStyle
     {

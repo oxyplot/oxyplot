@@ -85,8 +85,6 @@ namespace OxyPlot.Series
         /// <value>The X value.</value>
         public double X { get; set; }
 
-        // Utilities
-
         /// <summary>
         /// Find index of max(x) &lt;= target x in a list of OHLC items
         /// </summary>
@@ -120,7 +118,7 @@ namespace OxyPlot.Series
                 }
 
                 var guessX = items[guess].X;
-                if (guessX == targetX)
+                if (guessX.Equals(targetX))
                 {
                     return guess;
                 }
@@ -150,7 +148,7 @@ namespace OxyPlot.Series
                 var endX = items[end].X;
                 var startX = items[start].X;
 
-                var m = (double)(end - start + 1) / (endX - startX);
+                var m = (end - start + 1) / (endX - startX);
                 guess = start + (int)((targetX - startX) * m);
             }
 

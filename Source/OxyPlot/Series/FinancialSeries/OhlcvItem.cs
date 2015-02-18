@@ -133,7 +133,7 @@ namespace OxyPlot.Series
                 }
 
                 var guessX = items[guessIdx].X;
-                if (guessX == targetX)
+                if (guessX.Equals(targetX))
                 {
                     return guessIdx;
                 }
@@ -163,7 +163,7 @@ namespace OxyPlot.Series
                 var endX = items[end].X;
                 var startX = items[start].X;
 
-                var m = (double)(end - start + 1) / (endX - startX);
+                var m = (end - start + 1) / (endX - startX);
                 guessIdx = start + (int)((targetX - startX) * m);
             }
 

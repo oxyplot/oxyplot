@@ -260,10 +260,10 @@ namespace OxyPlot.Annotations
 
             // clip to the area defined by the axes
             var clippingRectangle = OxyRect.Create(
-                this.ClipByXAxis ? this.XAxis.ScreenMin.X : PlotModel.PlotArea.Left,
-                this.ClipByYAxis ? this.YAxis.ScreenMin.Y : PlotModel.PlotArea.Top,
-                this.ClipByXAxis ? this.XAxis.ScreenMax.X : PlotModel.PlotArea.Right,
-                this.ClipByYAxis ? this.YAxis.ScreenMax.Y : PlotModel.PlotArea.Bottom);
+                this.ClipByXAxis ? this.XAxis.ScreenMin.X : this.PlotModel.PlotArea.Left,
+                this.ClipByYAxis ? this.YAxis.ScreenMin.Y : this.PlotModel.PlotArea.Top,
+                this.ClipByXAxis ? this.XAxis.ScreenMax.X : this.PlotModel.PlotArea.Right,
+                this.ClipByYAxis ? this.YAxis.ScreenMax.Y : this.PlotModel.PlotArea.Bottom);
 
             const double MinimumSegmentLength = 4;
 
@@ -419,16 +419,16 @@ namespace OxyPlot.Annotations
 
             if (!this.ClipByXAxis)
             {
-                double right = XAxis.InverseTransform(PlotModel.PlotArea.Right);
-                double left = XAxis.InverseTransform(PlotModel.PlotArea.Left);
+                double right = this.XAxis.InverseTransform(this.PlotModel.PlotArea.Right);
+                double left = this.XAxis.InverseTransform(this.PlotModel.PlotArea.Left);
                 this.actualMaximumX = Math.Max(left, right);
                 this.actualMinimumX = Math.Min(left, right);
             }
 
             if (!this.ClipByYAxis)
             {
-                double bottom = YAxis.InverseTransform(PlotModel.PlotArea.Bottom);
-                double top = YAxis.InverseTransform(PlotModel.PlotArea.Top);
+                double bottom = this.YAxis.InverseTransform(this.PlotModel.PlotArea.Bottom);
+                double top = this.YAxis.InverseTransform(this.PlotModel.PlotArea.Top);
                 this.actualMaximumY = Math.Max(top, bottom);
                 this.actualMinimumY = Math.Min(top, bottom);
             }

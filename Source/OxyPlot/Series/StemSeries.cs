@@ -9,7 +9,6 @@
 
 namespace OxyPlot.Series
 {
-    using System;
     using System.Collections.Generic;
 
     /// <summary>

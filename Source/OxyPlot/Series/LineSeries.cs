@@ -529,7 +529,7 @@ namespace OxyPlot.Series
             }
 
             // First valid point
-            var screenPoint = Transform(currentPoint);
+            var screenPoint = this.Transform(currentPoint);
 
             // Handle broken line segment if exists
             if (previousContiguousLineSegmentEndPoint.HasValue)
@@ -643,7 +643,7 @@ namespace OxyPlot.Series
                     break;
             }
 
-            var pt = Transform(point) + new ScreenVector(dx, 0);
+            var pt = this.Transform(point) + new ScreenVector(dx, 0);
 
             // Render the legend
             rc.DrawText(
@@ -682,7 +682,7 @@ namespace OxyPlot.Series
 
             if (this.MarkerType != MarkerType.None)
             {
-                var markerBinOffset = this.MarkerResolution > 0 ? Transform(this.MinX, this.MinY) : default(ScreenPoint);
+                var markerBinOffset = this.MarkerResolution > 0 ? this.Transform(this.MinX, this.MinY) : default(ScreenPoint);
 
                 rc.DrawMarkers(
                     clippingRect,
