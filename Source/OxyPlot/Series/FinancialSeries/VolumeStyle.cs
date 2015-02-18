@@ -4,10 +4,9 @@
 // </copyright>
 // <summary>
 //   Represents rendering style for volume in either <see cref="CandleStickAndVolumeSeries" /> or 
-//	 <see cref="VolumeSeries" />.
+//   <see cref="VolumeSeries" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 
 namespace OxyPlot.Series
 {
@@ -39,4 +38,3 @@ namespace OxyPlot.Series
         PositiveNegative
     }
 }
-

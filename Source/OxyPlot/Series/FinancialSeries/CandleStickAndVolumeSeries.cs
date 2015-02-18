@@ -3,7 +3,7 @@
 //   Copyright (c) 2015 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Represents a dual view (candlestick & volume) series for OHLCV bars
+//   Represents a dual view (candlestick + volume) series for OHLCV bars
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -12,13 +12,11 @@ namespace OxyPlot.Series
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
     using OxyPlot.Axes;
-
 
     /// <summary>
     /// Represents a dual view (candlestick + volume) series for OHLCV bars
-    /// 
+    /// <para/>
     /// Note that to use this series, one *must* define two y-axes, one named "Bars" and the other named
     /// "Volume".  Typically would set up the volume on StartPosition =0, EndPosition = fraction and for
     /// the bar axis StartPosition = fraction + delta, EndPosition = 1.0.
@@ -31,10 +29,6 @@ namespace OxyPlot.Series
         /// </summary>
         public new const string DefaultTrackerFormatString = 
             "Time: {0}\nHigh: {1}\nLow: {2}\nOpen: {3}\nClose: {4}\nBuy Volume: {5}\nSell Volume: {6}";
-
-
-
-
 
         /// <summary>
         /// The data series
@@ -50,7 +44,6 @@ namespace OxyPlot.Series
         /// The index of the data item at the start of visible window
         /// </summary>
         private int winIndex;
-
 
         /// <summary>
         /// Initializes a new instance of the <see cref = "CandleStickAndVolumeSeries" /> class.
@@ -72,7 +65,6 @@ namespace OxyPlot.Series
             this.TrackerFormatString = DefaultTrackerFormatString;
         }
 
-
         /// <summary>
         /// Gets or sets the items of the series.
         /// </summary>
@@ -89,7 +81,6 @@ namespace OxyPlot.Series
                 this.data = value; 
             }
         }
-
 
         /// <summary>
         /// Gets the portion of the Y axis associated with bars
@@ -148,12 +139,12 @@ namespace OxyPlot.Series
         public OxyColor NegativeColor { get; set; }
 
         /// <summary>
-        /// Gets or sets the color of the separtator line
+        /// Gets or sets the color of the separator line
         /// </summary>
         public OxyColor SeparatorColor { get; set; }
 
         /// <summary>
-        /// Get or sets a value indicating whether positive bars are shown as filled (false) or hollow (true) candlesticks
+        /// Gets or sets a value indicating whether positive bars are shown as filled (false) or hollow (true) candlesticks
         /// </summary>
         public bool PositiveHollow { get; set; }
 
@@ -163,18 +154,16 @@ namespace OxyPlot.Series
         public bool NegativeHollow { get; set; }
 
         /// <summary>
-        /// Gets or sets the bar width in data units (for example if the X axis is datetime based, then should
+        /// Gets or sets the bar width in data units (for example if the X axis is date-time based, then should
         /// use the difference of DateTimeAxis.ToDouble(date) to indicate the width).  By default candlestick
         /// series will use 0.80 x the minimum difference in data points.
         /// </summary>
         public double CandleWidth { get; set; }
 
-
-
         /// <summary>
         /// Append a bar to the series (must be in X order)
         /// </summary>
-        /// <param name="bar">Bar.</param>
+        /// <param name="bar">Bar object.</param>
         public void Append(OhlcvItem bar)
         {
             if (this.data == null)
@@ -190,7 +179,6 @@ namespace OxyPlot.Series
             this.data.Add(bar);
         }
 
-
         /// <summary>
         /// Fast index of bar where max(bar[i].X) &lt;= x 
         /// </summary>
@@ -204,9 +192,8 @@ namespace OxyPlot.Series
                 startingIndex = this.winIndex;
             }
 
-            return CandleStickAndVolumeSeries.FindIndex(this.data, x, startingIndex);
+            return OhlcvItem.FindIndex(this.data, x, startingIndex);
         }
-
 
         /// <summary>
         /// Renders the series on the specified rendering context.
@@ -249,7 +236,7 @@ namespace OxyPlot.Series
             // determine render range
             var xmin = this.XAxis.ActualMinimum;
             var xmax = this.XAxis.ActualMaximum;
-            this.winIndex = FindIndex(items, xmin, this.winIndex);
+            this.winIndex = OhlcvItem.FindIndex(items, xmin, this.winIndex);
 
             for (int i = this.winIndex; i < nitems; i++)
             {
@@ -400,7 +387,6 @@ namespace OxyPlot.Series
             }
         }
 
-
         /// <summary>
         /// Renders the legend symbol for the series on the specified rendering context.
         /// </summary>
@@ -437,7 +423,6 @@ namespace OxyPlot.Series
                 this.StrokeThickness);
         }
 
-
         /// <summary>
         /// Gets the point on the series that is nearest the specified point.
         /// </summary>
@@ -465,7 +450,7 @@ namespace OxyPlot.Series
                 return null;
             }
 
-            var pidx = CandleStickAndVolumeSeries.FindIndex(this.data, targetX, this.winIndex);
+            var pidx = OhlcvItem.FindIndex(this.data, targetX, this.winIndex);
             var nidx = ((pidx + 1) < this.data.Count) ? pidx + 1 : pidx;
 
             Func<OhlcvItem, double> distance = (bar) =>
@@ -499,8 +484,7 @@ namespace OxyPlot.Series
                     this.YAxis.GetValue(mbar.SellVolume))
             };
         }
-            
-
+ 
         /// <summary>
         /// Updates the data.
         /// </summary>
@@ -529,7 +513,6 @@ namespace OxyPlot.Series
             }
         }
 
-
         /// <summary>
         /// Ensures that the axes of the series is defined.
         /// </summary>
@@ -539,12 +522,11 @@ namespace OxyPlot.Series
             this.VolumeAxis = (LinearAxis)this.PlotModel.Axes.FirstOrDefault(a => a.Key == "Volume");
         }
 
-
         /// <summary>
         /// Gets the clipping rectangle for the given combination of existing XAxis and specific yaxis
         /// </summary>
-        /// <returns>The clipping rect.</returns>
-        /// <param name="yaxis">Yaxis.</param>
+        /// <returns>The clipping rectangle.</returns>
+        /// <param name="yaxis">Y axis.</param>
         protected OxyRect GetClippingRect(Axis yaxis)
         {
             if (yaxis == null)
@@ -559,7 +541,6 @@ namespace OxyPlot.Series
 
             return new OxyRect(minX, minY, maxX - minX, maxY - minY);
         }
-
 
         /// <summary>
         /// Gets the clipping rectangle between plots
@@ -590,76 +571,5 @@ namespace OxyPlot.Series
 
             return new OxyRect(minX, minY, maxX - minX, maxY - minY);
         }
-
-
-        /// <summary>
-        /// Find index of max(x) &lt;= target x
-        /// </summary>
-        /// <param name='items'>
-        /// vector of bars
-        /// </param>
-        /// <param name='targetX'>
-        /// target x.
-        /// </param>
-        /// <param name='guessIdx'>
-        /// initial guess.
-        /// </param>
-        /// <returns>
-        /// index of x with max(x) &lt;= target x or -1 if cannot find
-        /// </returns>
-        private static int FindIndex(List<OhlcvItem> items, double targetX, int guessIdx)
-        {
-            int lastguess = 0;
-            int start = 0;
-            int end = items.Count - 1;
-
-            while (start <= end)
-            {
-                if (guessIdx < start)
-                {
-                    return lastguess;
-                }
-                else if (guessIdx > end)
-                {
-                    return end;
-                }
-
-                var guessX = items[guessIdx].X;
-                if (guessX == targetX)
-                {
-                    return guessIdx;
-                }
-                else if (guessX > targetX)
-                {
-                    end = guessIdx - 1;
-                    if (end < start)
-                    {
-                        return lastguess;
-                    }
-                    else if (end == start)
-                    {
-                        return end;
-                    }
-                }
-                else
-                { 
-                    start = guessIdx + 1; 
-                    lastguess = guessIdx; 
-                }
-
-                if (start >= end)
-                {
-                    return lastguess;
-                }
-
-                var endX = items[end].X;
-                var startX = items[start].X;
-
-                var m = (double)(end - start + 1) / (endX - startX);
-                guessIdx = start + (int)((targetX - startX) * m);
-            }
-
-            return lastguess;
-        }
-    }
+   }
 }
