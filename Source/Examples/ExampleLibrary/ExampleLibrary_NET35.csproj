@@ -70,7 +70,6 @@
     <Compile Include="Examples\RenderingCapabilities.cs" />
     <Compile Include="Series\ScatterErrorSeriesExamples.cs" />
     <Compile Include="Series\BoxPlotSeriesExamples.cs" />
-    <Compile Include="Series\CandleStickSeriesExamples.cs" />
     <Compile Include="Axes\CartesianAxesExamples.cs" />
     <Compile Include="Axes\CategoryAxisExamples.cs" />
     <Compile Include="Axes\AxisExamples.cs" />
@@ -113,8 +112,9 @@
     <Compile Include="Misc\XkcdExamples.cs" />
     <Compile Include="Utilities\Sun.cs" />
     <Compile Include="Issues\Issues.cs" />
-    <Compile Include="Series\FastCandleStickSeriesExamples.cs" />
-    <Compile Include="Series\OHLCVSeriesExamples.cs" />
+    <Compile Include="Series\OldCandleStickSeriesExamples.cs" />
+    <Compile Include="Series\CandleStickSeriesExamples.cs" />
+    <Compile Include="Series\OhlcvSeriesExamples.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

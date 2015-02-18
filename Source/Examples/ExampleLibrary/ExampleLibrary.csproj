@@ -119,9 +119,9 @@
     <Compile Include="Utilities\Sun.cs" />
     <Compile Include="Issues\Issues.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Series\FastCandleStickSeriesExamples.cs" />
+    <Compile Include="Series\OldCandleStickSeriesExamples.cs" />
     <Compile Include="Series\CandleStickSeriesExamples.cs" />
-    <Compile Include="Series\OHLCVSeriesExamples.cs" />
+    <Compile Include="Series\OhlcvSeriesExamples.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Bergensbanen.csv" />
