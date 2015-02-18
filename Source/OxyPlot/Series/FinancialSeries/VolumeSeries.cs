@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="VolumeSeries.cs" company="OxyPlot">
-//   Copyright (c) 2015 OxyPlot contributors
+//   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
 //   Represents a volume view on OHLCV bars
@@ -133,7 +133,7 @@ namespace OxyPlot.Series
         public bool NegativeHollow { get; set; }
 
         /// <summary>
-        /// Gets or sets the bar width in data units (for example if the X axis is datetime based, then should
+        /// Gets or sets the bar width in data units (for example if the X axis is date/time based, then should
         /// use the difference of DateTimeAxis.ToDouble(date) to indicate the width).  By default candlestick
         /// series will use 0.80 x the minimum difference in data points.
         /// </summary>
