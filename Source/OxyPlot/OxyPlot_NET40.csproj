@@ -257,7 +257,6 @@
     <Compile Include="Series\BoxPlotSeries.cs" />
     <Compile Include="Series\HeatMapSeries.cs" />
     <Compile Include="Series\LineLegendPosition.cs" />
-    <Compile Include="Series\FastCandleStickSeries.cs" />
     <Compile Include="Graphics\Model.MouseEvents.cs" />
     <Compile Include="PlotController\EventArgs\OxyMouseEventArgs.cs" />
     <Compile Include="PlotModel\PlotElement.cs" />
