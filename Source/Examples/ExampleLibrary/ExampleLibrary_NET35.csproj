@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -70,7 +70,6 @@
     <Compile Include="Examples\RenderingCapabilities.cs" />
     <Compile Include="Series\ScatterErrorSeriesExamples.cs" />
     <Compile Include="Series\BoxPlotSeriesExamples.cs" />
-    <Compile Include="Series\CandleStickSeriesExamples.cs" />
     <Compile Include="Axes\CartesianAxesExamples.cs" />
     <Compile Include="Axes\CategoryAxisExamples.cs" />
     <Compile Include="Axes\AxisExamples.cs" />
@@ -113,6 +112,9 @@
     <Compile Include="Misc\XkcdExamples.cs" />
     <Compile Include="Utilities\Sun.cs" />
     <Compile Include="Issues\Issues.cs" />
+    <Compile Include="Series\OldCandleStickSeriesExamples.cs" />
+    <Compile Include="Series\CandleStickSeriesExamples.cs" />
+    <Compile Include="Series\OhlcvSeriesExamples.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

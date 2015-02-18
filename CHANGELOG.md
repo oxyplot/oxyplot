@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 - Delta values in AxisChangedEventArgs (#276)
 - Enable Git source server (added GitLink build step) (#267,#266)
 - iOS PlotView ZoomThreshold/AllowPinchPastZero for use with KeepAspectRatioWhenPinching=false (#359)
+- Added OHLCVItem, CandleStickAndVolumeSeries, VolumeSeries & examples (#377)
 
 ### Changed
 - Changed the OxyPlot.Xamarin.Forms to require the OxyPlot.Mobile dependency instead of each separate NuGet. (#362)
@@ -25,6 +26,7 @@ All notable changes to this project will be documented in this file.
 - Xamarin Forms references updated to 1.3.1 (#293)
 - Changed OxyPlot.Xamarin.Android target to Android level 10 (#223)
 - Separated WPF Plot and PlotView (#252,#239)
+- current CandleStickSeries renamed to OldCandleStickSeries, replaced by a faster implementation (#369)
 
 ### Removed
 - OxyPlot.Metro project (superseded by OxyPlot.WindowsUniversal) (#241)

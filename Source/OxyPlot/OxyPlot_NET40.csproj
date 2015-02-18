@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -296,7 +296,6 @@
     <Compile Include="Series\NamespaceDoc.cs" />
     <Compile Include="Series\AreaSeries.cs" />
     <Compile Include="Series\BarSeries\LabelPlacement.cs" />
-    <Compile Include="Series\CandleStickSeries.cs" />
     <Compile Include="Series\ContourSeries.cs" />
     <Compile Include="Series\BarSeries\ColumnSeries.cs" />
     <Compile Include="Series\BarSeries\BarSeries.cs" />
@@ -309,8 +308,6 @@
     <Compile Include="Series\BarSeries\TornadoBarSeries.cs" />
     <Compile Include="Series\ItemsSeries.cs" />
     <Compile Include="Series\DataPointSeries.cs" />
-    <Compile Include="Series\HighLowItem.cs" />
-    <Compile Include="Series\HighLowSeries.cs" />
     <Compile Include="Series\ScatterPoint.cs" />
     <Compile Include="Series\Series.cs" />
     <Compile Include="Series\StemSeries.cs" />
@@ -322,6 +319,14 @@
     <Compile Include="Series\FunctionSeries.cs" />
     <Compile Include="Series\PieSlice.cs" />
     <Compile Include="Series\LineSeries.cs" />
+    <Compile Include="Series\FinancialSeries\CandleStickAndVolumeSeries.cs" />
+    <Compile Include="Series\FinancialSeries\VolumeSeries.cs" />
+    <Compile Include="Series\FinancialSeries\VolumeStyle.cs" />
+    <Compile Include="Series\FinancialSeries\CandleStickSeries.cs" />
+    <Compile Include="Series\FinancialSeries\OldCandleStickSeries.cs" />
+    <Compile Include="Series\FinancialSeries\OhlcvItem.cs" />
+    <Compile Include="Series\FinancialSeries\HighLowItem.cs" />
+    <Compile Include="Series\FinancialSeries\HighLowSeries.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagrams\Series.cd" />

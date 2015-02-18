@@ -14,7 +14,7 @@
     <TargetFrameworkProfile>Profile328</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <ProductVersion>10.0.0</ProductVersion>
+    <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -76,7 +76,6 @@
     <Compile Include="Examples\RenderingCapabilities.cs" />
     <Compile Include="Series\ScatterErrorSeriesExamples.cs" />
     <Compile Include="Series\BoxPlotSeriesExamples.cs" />
-    <Compile Include="Series\CandleStickSeriesExamples.cs" />
     <Compile Include="Axes\CartesianAxesExamples.cs" />
     <Compile Include="Axes\CategoryAxisExamples.cs" />
     <Compile Include="Axes\AxisExamples.cs" />
@@ -114,12 +113,15 @@
     <Compile Include="Series\StemSeriesExamples.cs" />
     <Compile Include="Axes\TimeSpanAxisExamples.cs" />
     <Compile Include="Examples\TrackerExamples.cs" />
-	<Compile Include="Series\TwoColorAreaSeriesExamples.cs" />
+    <Compile Include="Series\TwoColorAreaSeriesExamples.cs" />
     <Compile Include="Series\TwoColorLineSeriesExamples.cs" />
     <Compile Include="Misc\XkcdExamples.cs" />
     <Compile Include="Utilities\Sun.cs" />
     <Compile Include="Issues\Issues.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Series\OldCandleStickSeriesExamples.cs" />
+    <Compile Include="Series\CandleStickSeriesExamples.cs" />
+    <Compile Include="Series\OhlcvSeriesExamples.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Bergensbanen.csv" />
