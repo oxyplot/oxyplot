@@ -16,7 +16,7 @@ namespace OxyPlot.Series
 
 
     /// <summary>
-    /// Represents a dual view (candlestick & volume) series for OHLCV bars
+    /// Represents a dual view (candlestick + volume) series for OHLCV bars
     /// </summary>
     /// <remarks>See <a href="http://www.mathworks.com/help/toolbox/finance/highlowfts.html">link</a></remarks>
     public class VolumeSeries : XYAxisSeries

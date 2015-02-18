@@ -10,7 +10,7 @@
 namespace OxyPlot.Series
 {
     /// <summary>
-    /// Represents an item in a <see cref="OHLCVSeries" />.
+    /// Represents an item in a <see cref="CandleStickAndVolumeSeries" />.
     /// </summary>
     public class OhlcvItem
     {
