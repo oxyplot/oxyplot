@@ -7,13 +7,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-
 namespace OxyPlot.Series
 {
     using System;
     using System.Collections.Generic;
     using OxyPlot.Axes;
-
 
     /// <summary>
     /// Represents a "higher performance" ordered OHLC series for candlestick charts
@@ -39,7 +37,6 @@ namespace OxyPlot.Series
         /// </summary>
         private int winIndex;
 
-
         /// <summary>
         /// Initializes a new instance of the <see cref = "CandleStickSeries" /> class.
         /// </summary>
@@ -50,18 +47,15 @@ namespace OxyPlot.Series
             this.CandleWidth = 0;
         }
 
-
         /// <summary>
         /// Gets or sets the color used when the closing value is greater than opening value.
         /// </summary>
         public OxyColor IncreasingColor { get; set; }
 
-
         /// <summary>
         /// Gets or sets the fill color used when the closing value is less than opening value.
         /// </summary>
         public OxyColor DecreasingColor { get; set; }
-
 
         /// <summary>
         /// Gets or sets the bar width in data units (for example if the X axis is datetime based, then should
@@ -70,12 +64,10 @@ namespace OxyPlot.Series
         /// </summary>
         public double CandleWidth { get; set; }
 
-
-
         /// <summary>
         /// Append a bar to the series (must be in X order)
         /// </summary>
-        /// <param name="bar">Bar.</param>
+        /// <param name="bar">Bar to be appended.</param>
         public void Append(object bar)
         {
             var nbar = this.ToNativeBar(bar);
@@ -88,23 +80,21 @@ namespace OxyPlot.Series
             items.Add(nbar);
         }
 
-
         /// <summary>
         /// Fast index of bar where max(bar[i].X) &lt;= x 
         /// </summary>
         /// <returns>The index of the bar closest to X, where max(bar[i].X) &lt;= x.</returns>
         /// <param name="x">The x coordinate.</param>
-        /// <param name="Istarting">starting index</param> 
-        public int FindByX(double x, int Istarting = -1)
+        /// <param name="startIndex">starting index</param> 
+        public int FindByX(double x, int startIndex = -1)
         {
-            if (Istarting < 0)
+            if (startIndex < 0)
             {
-                Istarting = this.winIndex;
+                startIndex = this.winIndex;
             }
 
-            return FindIndex(this.Items, x, Istarting);
+            return HighLowItem.FindIndex(this.Items, x, startIndex);
         }
-
 
         /// <summary>
         /// Renders the series on the specified rendering context.
@@ -137,11 +127,10 @@ namespace OxyPlot.Series
             var line_up = this.GetSelectableColor(this.IncreasingColor.ChangeIntensity(0.70));
             var line_down = this.GetSelectableColor(this.DecreasingColor.ChangeIntensity(0.70));
 
-
             // determine render range
             var xmin = this.XAxis.ActualMinimum;
             var xmax = this.XAxis.ActualMaximum;
-            this.winIndex = CandleStickSeries.FindIndex(items, xmin, this.winIndex);
+            this.winIndex = HighLowItem.FindIndex(items, xmin, this.winIndex);
 
             for (int i = this.winIndex; i < nitems; i++)
             {
@@ -199,7 +188,6 @@ namespace OxyPlot.Series
             }
         }
 
-
         /// <summary>
         /// Renders the legend symbol for the series on the specified rendering context.
         /// </summary>
@@ -233,7 +221,6 @@ namespace OxyPlot.Series
                 this.StrokeThickness);
         }
 
-
         /// <summary>
         /// Gets the point on the series that is nearest the specified point.
         /// </summary>
@@ -257,7 +244,7 @@ namespace OxyPlot.Series
                 return null;
             }
 
-            var pidx = FindIndex(Items, targetX, this.winIndex);
+            var pidx = HighLowItem.FindIndex(Items, targetX, this.winIndex);
             var nidx = ((pidx + 1) < Items.Count) ? pidx + 1 : pidx;
 
             Func<HighLowItem, double> distance = (bar) =>
@@ -302,7 +289,6 @@ namespace OxyPlot.Series
             };
         }
 
-
         /// <summary>
         /// Updates the data.
         /// </summary>
@@ -331,12 +317,11 @@ namespace OxyPlot.Series
             }
         }
 
-
         /// <summary>
         /// Comvert incoming bar to native bar
         /// </summary>
         /// <returns>The native bar.</returns>
-        /// <param name="bar">Bar.</param>
+        /// <param name="bar">Bar as object.</param>
         private HighLowItem ToNativeBar(object bar)
         {
             var nativebar = bar as HighLowItem;
@@ -356,13 +341,12 @@ namespace OxyPlot.Series
             return new HighLowItem(x, high, low, open, close);
         }
 
-
         /// <summary>
         /// Get named field on 
         /// </summary>
-        /// <returns>The value of.</returns>
-        /// <param name="bar">Bar.</param>
-        /// <param name="field">Field.</param>
+        /// <returns>The value of field.</returns>
+        /// <param name="bar">Bar obj.</param>
+        /// <param name="field">Field name.</param>
         private double FieldValueOf(object bar, string field)
         {
             if (field != null)
@@ -375,77 +359,6 @@ namespace OxyPlot.Series
             {
                 return double.NaN;
             }
-        }
-
-
-        /// <summary>
-        /// Find index of max(x) &lt;= target x
-        /// </summary>
-        /// <param name='items'>
-        /// vector of bars
-        /// </param>
-        /// <param name='targetX'>
-        /// target x.
-        /// </param>
-        /// <param name='guess'>
-        /// initial guess index.
-        /// </param>
-        /// <returns>
-        /// index of x with max(x) &lt;= target x or -1 if cannot find
-        /// </returns>
-        private static int FindIndex(List<HighLowItem> items, double targetX, int guess)
-        {
-            int lastguess = 0;
-            int start = 0;
-            int end = items.Count - 1;
-
-            while (start <= end)
-            {
-                if (guess < start)
-                {
-                    return lastguess;
-                }
-                else if (guess > end)
-                {
-                    return end;
-                }
-
-                var guessX = items[guess].X;
-                if (guessX == targetX)
-                {
-                    return guess;
-                }
-                else if (guessX > targetX)
-                {
-                    end = guess - 1;
-                    if (end < start)
-                    {
-                        return lastguess;
-                    }
-                    else if (end == start)
-                    {
-                        return end;
-                    }
-                }
-                else
-                { 
-                    start = guess + 1; 
-                    lastguess = guess; 
-                }
-
-                if (start >= end)
-                {
-                    return lastguess;
-                }
-
-                var endX = items[end].X;
-                var startX = items[start].X;
-
-                var m = (double)(end - start + 1) / (endX - startX);
-                guess = start + (int)((targetX - startX) * m);
-            }
-
-            return lastguess;
         }
     }
 }
