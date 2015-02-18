@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="VolumeStyle.cs" company="OxyPlot">
-//   Copyright (c) 2015 OxyPlot contributors
+//   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
 //   Represents rendering style for volume in either <see cref="CandleStickAndVolumeSeries" /> or 

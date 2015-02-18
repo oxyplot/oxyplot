@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CandleStickAndVolumeSeries.cs" company="OxyPlot">
-//   Copyright (c) 2015 OxyPlot contributors
+//   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
 //   Represents a dual view (candlestick + volume) series for OHLCV bars
@@ -523,7 +523,7 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Gets the clipping rectangle for the given combination of existing XAxis and specific yaxis
+        /// Gets the clipping rectangle for the given combination of existing X-Axis and specific Y-Axis
         /// </summary>
         /// <returns>The clipping rectangle.</returns>
         /// <param name="yaxis">Y axis.</param>

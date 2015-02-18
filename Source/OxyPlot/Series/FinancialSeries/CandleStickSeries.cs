@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CandleStickAndVolumeSeries.cs" company="OxyPlot">
-//   Copyright (c) 2015 OxyPlot contributors
+// <copyright file="CandleStickSeries.cs" company="OxyPlot">
+//   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
 //   Represents a series for candlestick charts.
@@ -15,12 +15,12 @@ namespace OxyPlot.Series
 
     /// <summary>
     /// Represents a "higher performance" ordered OHLC series for candlestick charts
-    /// 
+    /// <para>
     /// Does the following:
     /// - automatically calculates the appropriate bar width based on available screen + # of bars
     /// - can render and pan within millions of bars, using a fast approach to indexing in series
     /// - convenience methods
-    /// 
+    /// </para>
     /// This implementation is associated with <a href="https://github.com/oxyplot/oxyplot/issues/369">issue 369</a>.
     /// </summary>
     /// <remarks>See also <a href="http://en.wikipedia.org/wiki/Candlestick_chart">Wikipedia</a> and
@@ -58,7 +58,7 @@ namespace OxyPlot.Series
         public OxyColor DecreasingColor { get; set; }
 
         /// <summary>
-        /// Gets or sets the bar width in data units (for example if the X axis is datetime based, then should
+        /// Gets or sets the bar width in data units (for example if the X axis is date/time based, then should
         /// use the difference of DateTimeAxis.ToDouble(date) to indicate the width).  By default candlestick
         /// series will use 0.80 x the minimum difference in data points.
         /// </summary>
@@ -318,7 +318,7 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Comvert incoming bar to native bar
+        /// Convert incoming bar to native bar
         /// </summary>
         /// <returns>The native bar.</returns>
         /// <param name="bar">Bar as object.</param>
@@ -345,7 +345,7 @@ namespace OxyPlot.Series
         /// Get named field on 
         /// </summary>
         /// <returns>The value of field.</returns>
-        /// <param name="bar">Bar obj.</param>
+        /// <param name="bar">Bar object.</param>
         /// <param name="field">Field name.</param>
         private double FieldValueOf(object bar, string field)
         {
