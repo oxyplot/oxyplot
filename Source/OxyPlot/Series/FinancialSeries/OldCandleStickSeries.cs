@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CandleStickSeries.cs" company="OxyPlot">
+// <copyright file="OldCandleStickSeries.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
@@ -16,12 +16,13 @@ namespace OxyPlot.Series
     /// </summary>
     /// <remarks>See also <a href="http://en.wikipedia.org/wiki/Candlestick_chart">Wikipedia</a> and
     /// <a href="http://www.mathworks.com/help/toolbox/finance/candle.html">Matlab documentation</a>.</remarks>
-    public class CandleStickSeries : HighLowSeries
+    [Obsolete("use replacement CandleStickSeries instead")]
+    public class OldCandleStickSeries : HighLowSeries
     {
         /// <summary>
         /// Initializes a new instance of the <see cref = "CandleStickSeries" /> class.
         /// </summary>
-        public CandleStickSeries()
+        public OldCandleStickSeries()
         {
             this.CandleWidth = 10;
             this.IncreasingFill = OxyColors.Automatic;

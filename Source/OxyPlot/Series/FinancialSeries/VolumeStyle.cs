@@ -7,32 +7,36 @@
 //	 <see cref="VolumeSeries" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-using System;
 
 
 namespace OxyPlot.Series
 {
-	/// <summary>
-	/// Volume rendering style.
-	/// </summary>
-	public enum VolumeStyle
-	{
+    using System;
+
+    /// <summary>
+    /// Volume rendering style.
+    /// </summary>
+    public enum VolumeStyle
+    {
         /// <summary>
         /// Volume is not displayed
         /// </summary>
-		None,
+        None,
+
         /// <summary>
-        /// Buy & Sell volume summed to produce net positive or negative volume
+        /// Buy + Sell volume summed to produce net positive or negative volume
         /// </summary>
-		Combined,
+        Combined,
+
         /// <summary>
         /// Buy and Sell volume is stacked, one on top of the other, with the dominant on top
         /// </summary>
-		Stacked, 
+        Stacked,
+
         /// <summary>
         /// Buy volume above y=0 axis and Sell volume below y=0 axis
         /// </summary>
-		PositiveNegative
-	}
+        PositiveNegative
+    }
 }
 
