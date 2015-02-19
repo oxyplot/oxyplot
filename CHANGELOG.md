@@ -10,7 +10,7 @@ All notable changes to this project will be documented in this file.
 - Enable Git source server (added GitLink build step) (#267,#266)
 - iOS PlotView ZoomThreshold/AllowPinchPastZero for use with KeepAspectRatioWhenPinching=false (#359)
 - Added OHLCVItem, CandleStickAndVolumeSeries, VolumeSeries & examples (#377)
-- Added ActualDimension property on Axis & associated internal changes (#383)
+- Added NaturalSize property on Axis & associated internal changes (#383)
 
 ### Changed
 - Changed the OxyPlot.Xamarin.Forms to require the OxyPlot.Mobile dependency instead of each separate NuGet. (#362)
@@ -38,6 +38,7 @@ All notable changes to this project will be documented in this file.
 - Windows Phone cursor exception (#345)
 - Bar/ColumSeries tracker format string bug (#333)
 - Fix exception for default tracker format strings (#265)
+- Fix center-aligned legends (#79)
 - Fix Markdown links to tag comparison URL with footnote-style links.
 - WPF dispatcher issue (#311,#309)
 - Custom colors for scatters (#307)
