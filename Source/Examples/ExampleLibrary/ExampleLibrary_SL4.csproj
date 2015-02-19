@@ -90,6 +90,8 @@
     <Compile Include="Series\ColumnSeriesExamples.cs" />
     <Compile Include="Series\ErrorColumnSeriesExamples.cs" />
     <Compile Include="Examples\RenderingCapabilities.cs" />
+    <Compile Include="Series\FinancialSeries\HighLowItemGenerator.cs" />
+    <Compile Include="Series\FinancialSeries\OhlcvItemGenerator.cs" />
     <Compile Include="Series\ScatterErrorSeriesExamples.cs" />
     <Compile Include="Series\BoxPlotSeriesExamples.cs" />
     <Compile Include="Axes\CartesianAxesExamples.cs" />
@@ -112,11 +114,12 @@
     <Compile Include="Examples\PerformanceExamples.cs" />
     <Compile Include="Examples\PlotModelExamples.cs" />
     <Compile Include="Axes\RangeColorAxisExamples.cs" />
+    <Compile Include="Series\FinancialSeries\VolumeSeriesExamples.cs" />
     <Compile Include="Showcases\ShowCases.cs" />
     <Compile Include="Showcases\ShowMeTheNumbersExamples.cs" />
     <Compile Include="Series\StairStepSeriesExamples.cs" />
     <Compile Include="Examples\FilteringExamples.cs" />
-    <Compile Include="Series\HighLowSeriesExamples.cs" />
+    <Compile Include="Series\FinancialSeries\HighLowSeriesExamples.cs" />
     <Compile Include="Axes\LinearAxisExamples.cs" />
     <Compile Include="Examples\LegendExamples.cs" />
     <Compile Include="CustomSeries\CustomSeriesExamples.cs" />
@@ -129,15 +132,15 @@
     <Compile Include="Series\StemSeriesExamples.cs" />
     <Compile Include="Axes\TimeSpanAxisExamples.cs" />
     <Compile Include="Examples\TrackerExamples.cs" />
-	<Compile Include="Series\TwoColorAreaSeriesExamples.cs" />
+    <Compile Include="Series\TwoColorAreaSeriesExamples.cs" />
     <Compile Include="Series\TwoColorLineSeriesExamples.cs" />
     <Compile Include="Misc\XkcdExamples.cs" />
     <Compile Include="Utilities\Sun.cs" />
     <Compile Include="Issues\Issues.cs" />
-    <Compile Include="Series\OldCandleStickSeriesExamples.cs" />
-    <Compile Include="Series\CandleStickSeriesExamples.cs" />
-    <Compile Include="Series\OhlcvSeriesExamples.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Series\FinancialSeries\OldCandleStickSeriesExamples.cs" />
+    <Compile Include="Series\FinancialSeries\CandleStickSeriesExamples.cs" />
+    <Compile Include="Series\FinancialSeries\CandleStickAndVolumeSeriesExamples.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Bergensbanen.csv" />

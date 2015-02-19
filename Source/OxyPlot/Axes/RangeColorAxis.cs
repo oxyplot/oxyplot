@@ -184,8 +184,8 @@ namespace OxyPlot.Axes
                     double ylow = this.Transform(range.LowerBound);
                     double yhigh = this.Transform(range.UpperBound);
 
-                    double ymax = this.Transform(ActualMaximum);
-                    double ymin = this.Transform(ActualMinimum);
+                    double ymax = this.Transform(this.ActualMaximum);
+                    double ymin = this.Transform(this.ActualMinimum);
 
                     if (ylow < ymax)
                     {

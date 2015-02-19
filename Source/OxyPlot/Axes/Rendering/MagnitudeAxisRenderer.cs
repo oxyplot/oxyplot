@@ -47,11 +47,11 @@ namespace OxyPlot.Axes
 
             angleAxis.UpdateActualMaxMin();
 
-            var majorTicks = MajorTickValues.Where(x => x > axis.ActualMinimum && x <= axis.ActualMaximum).ToArray();
+            var majorTicks = this.MajorTickValues.Where(x => x > axis.ActualMinimum && x <= axis.ActualMaximum).ToArray();
 
             if (pass == 0 && this.MinorPen != null)
             {
-                var minorTicks = MinorTickValues.Where(x => x >= axis.ActualMinimum && x <= axis.ActualMaximum && !majorTicks.Contains(x)).ToArray();
+                var minorTicks = this.MinorTickValues.Where(x => x >= axis.ActualMinimum && x <= axis.ActualMaximum && !majorTicks.Contains(x)).ToArray();
 
                 foreach (var tickValue in minorTicks)
                 {

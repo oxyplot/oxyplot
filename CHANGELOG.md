@@ -32,6 +32,7 @@ All notable changes to this project will be documented in this file.
 - OxyPlot.Metro project (superseded by OxyPlot.WindowsUniversal) (#241)
 
 ### Fixed
+- Fixed the dependency of OxyPlot.Xamarin.Forms NuGet (#370)
 - Add default ctor for Xamarin.Forms iOS renderer (#348)
 - Windows Phone cursor exception (#345)
 - Bar/ColumSeries tracker format string bug (#333)

@@ -10,7 +10,7 @@
 namespace OxyPlot.Series
 {
     using System;
-    using System.Collections.Generic;
+
     using OxyPlot.Axes;
 
     /// <summary>
@@ -122,10 +122,10 @@ namespace OxyPlot.Series
                 this.XAxis.Transform(items[0].X); 
 
             // colors
-            var fill_up = this.GetSelectableFillColor(this.IncreasingColor);
-            var fill_down = this.GetSelectableFillColor(this.DecreasingColor);
-            var line_up = this.GetSelectableColor(this.IncreasingColor.ChangeIntensity(0.70));
-            var line_down = this.GetSelectableColor(this.DecreasingColor.ChangeIntensity(0.70));
+            var fillUp = this.GetSelectableFillColor(this.IncreasingColor);
+            var fillDown = this.GetSelectableFillColor(this.DecreasingColor);
+            var lineUp = this.GetSelectableColor(this.IncreasingColor.ChangeIntensity(0.70));
+            var lineDown = this.GetSelectableColor(this.DecreasingColor.ChangeIntensity(0.70));
 
             // determine render range
             var xmin = this.XAxis.ActualMinimum;
@@ -148,8 +148,8 @@ namespace OxyPlot.Series
                     continue;
                 }
 
-                var fillColor = bar.Close > bar.Open ? fill_up : fill_down;
-                var lineColor = bar.Close > bar.Open ? line_up : line_down;
+                var fillColor = bar.Close > bar.Open ? fillUp : fillDown;
+                var lineColor = bar.Close > bar.Open ? lineUp : lineDown;
 
                 var high = this.Transform(bar.X, bar.High);
                 var low = this.Transform(bar.X, bar.Low);
@@ -234,7 +234,7 @@ namespace OxyPlot.Series
                 return null;
             }
 
-            var nbars = Items.Count;
+            var nbars = this.Items.Count;
             var xy = this.InverseTransform(point);
             var targetX = xy.X;
 
@@ -244,10 +244,10 @@ namespace OxyPlot.Series
                 return null;
             }
 
-            var pidx = HighLowItem.FindIndex(Items, targetX, this.winIndex);
-            var nidx = ((pidx + 1) < Items.Count) ? pidx + 1 : pidx;
+            var pidx = HighLowItem.FindIndex(this.Items, targetX, this.winIndex);
+            var nidx = ((pidx + 1) < this.Items.Count) ? pidx + 1 : pidx;
 
-            Func<HighLowItem, double> distance = (bar) =>
+            Func<HighLowItem, double> distance = bar =>
             {
                 var dx = bar.X - xy.X;
                 var dyo = bar.Open - xy.Y;
@@ -255,12 +255,12 @@ namespace OxyPlot.Series
                 var dyl = bar.Low - xy.Y;
                 var dyc = bar.Close - xy.Y;
 
-                var d2o = (dx * dx) + (dyo * dyo);
-                var d2h = (dx * dx) + (dyh * dyh);
-                var d2l = (dx * dx) + (dyl * dyl);
-                var d2c = (dx * dx) + (dyc * dyc);
+                var d2O = (dx * dx) + (dyo * dyo);
+                var d2H = (dx * dx) + (dyh * dyh);
+                var d2L = (dx * dx) + (dyl * dyl);
+                var d2C = (dx * dx) + (dyc * dyc);
 
-                return Math.Min(d2o, Math.Min(d2h, Math.Min(d2l, d2c)));
+                return Math.Min(d2O, Math.Min(d2H, Math.Min(d2L, d2C)));
             };
 
             // determine closest point
@@ -272,7 +272,7 @@ namespace OxyPlot.Series
             {
                 Series = this,
                 DataPoint = hit,
-                Position = Transform(hit),
+                Position = this.Transform(hit),
                 Item = mbar,
                 Index = midx,
                 Text = StringHelper.Format(
@@ -298,7 +298,7 @@ namespace OxyPlot.Series
             this.winIndex = 0;
 
             // determine minimum X gap between successive points
-            var items = Items;
+            var items = this.Items;
             var nitems = items.Count;
             this.minDx = double.MaxValue;
 
@@ -342,23 +342,21 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Get named field on 
+        /// Gets the value of the specified property in the specified item. 
         /// </summary>
         /// <returns>The value of field.</returns>
-        /// <param name="bar">Bar object.</param>
-        /// <param name="field">Field name.</param>
-        private double FieldValueOf(object bar, string field)
+        /// <param name="item">Bar object.</param>
+        /// <param name="propertyName">Property name.</param>
+        private double FieldValueOf(object item, string propertyName)
         {
-            if (field != null)
+            if (propertyName != null)
             {
-                var type = bar.GetType();
-                var prop = type.GetProperty(field);
-                return Axis.ToDouble(prop.GetValue(bar, null));
+                var type = item.GetType();
+                var prop = type.GetProperty(propertyName);
+                return Axis.ToDouble(prop.GetValue(item, null));
             }
-            else
-            {
-                return double.NaN;
-            }
+            
+            return double.NaN;
         }
     }
 }

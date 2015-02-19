@@ -9,8 +9,6 @@
 
 namespace OxyPlot
 {
-    using System;
-
     using OxyPlot.Series;
 
     /// <summary>

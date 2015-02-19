@@ -637,12 +637,11 @@ namespace OxyPlot.Axes
             var startValue = Math.Round(from / step) * step;
             var numberOfValues = Math.Max((int)((to - from) / step), 1);
             var epsilon = step * 1e-3 * Math.Sign(step);
-            var values = new List<double>(numberOfValues);            
-            var lastValue = startValue;
+            var values = new List<double>(numberOfValues);
 
             for (int k = 0; k < maxTicks; k++)
             {
-                lastValue = startValue + (step * k);
+                var lastValue = startValue + (step * k);
 
                 // If we hit the maximum value before reaching the max number of ticks, exit
                 if (lastValue > to + epsilon)

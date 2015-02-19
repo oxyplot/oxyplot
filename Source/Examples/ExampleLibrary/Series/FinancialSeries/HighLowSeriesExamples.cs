@@ -39,7 +39,7 @@ namespace ExampleLibrary
         }
 
         [Example("HighLowSeries (DateTime axis)")]
-        public static PlotModel HighLowSeries_DateTimeAxis()
+        public static PlotModel HighLowSeriesDateTimeAxis()
         {
             var m = new PlotModel();
             var x0 = DateTimeAxis.ToDouble(new DateTime(2013, 05, 04));
