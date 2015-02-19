@@ -179,7 +179,10 @@ namespace OxyPlot
             double maxSizeOfPositionTier = 0;
             foreach (var axis in axesOfPositionTier)
             {
-                var size = axis.Measure(rc);
+                // update axis with latest render context, adjusting dimensions, etc.
+                axis.Update(rc);
+
+                var size = axis.NaturalSize;
                 if (axis.IsVertical())
                 {
                     if (size.Width > maxSizeOfPositionTier)

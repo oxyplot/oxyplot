@@ -543,6 +543,11 @@ namespace OxyPlot.Axes
         public bool UseSuperExponentialFormat { get; set; }
 
         /// <summary>
+        /// Gets or sets the natural dimensions of the axis, as of most recent rendering.
+        /// </summary>
+        public OxySize NaturalSize { get; protected set; }
+
+        /// <summary>
         /// Gets or sets the position tier max shift.
         /// </summary>
         internal double PositionTierMaxShift { get; set; }
@@ -835,85 +840,13 @@ namespace OxyPlot.Axes
         public abstract bool IsXyAxis();
 
         /// <summary>
-        /// Measures the size of the axis (maximum axis label width/height).
+        /// Updates the natural dimensions of axis with respect to graphics context and
+        /// any other graphical housekeeping.
         /// </summary>
         /// <param name="rc">The render context.</param>
-        /// <returns>The size of the axis.</returns>
-        public virtual OxySize Measure(IRenderContext rc)
+        public void Update(IRenderContext rc)
         {
-            IList<double> majorTickValues;
-            IList<double> minorTickValues;
-            IList<double> majorLabelValues;
-
-            this.GetTickValues(out majorLabelValues, out majorTickValues, out minorTickValues);
-
-            var maximumTextSize = new OxySize();
-            foreach (double v in majorLabelValues)
-            {
-                string s = this.FormatValue(v);
-                var size = rc.MeasureText(s, this.ActualFont, this.ActualFontSize, this.ActualFontWeight, this.Angle);
-                if (size.Width > maximumTextSize.Width)
-                {
-                    maximumTextSize.Width = size.Width;
-                }
-
-                if (size.Height > maximumTextSize.Height)
-                {
-                    maximumTextSize.Height = size.Height;
-                }
-            }
-
-            var labelTextSize = rc.MeasureText(
-                this.ActualTitle, this.ActualFont, this.ActualFontSize, this.ActualFontWeight);
-
-            double width = 0;
-            double height = 0;
-
-            if (this.IsVertical())
-            {
-                switch (this.TickStyle)
-                {
-                    case TickStyle.Outside:
-                        width += this.MajorTickSize;
-                        break;
-                    case TickStyle.Crossing:
-                        width += this.MajorTickSize * 0.75;
-                        break;
-                }
-
-                width += this.AxisDistance;
-                width += this.AxisTickToLabelDistance;
-                width += maximumTextSize.Width;
-                if (labelTextSize.Height > 0)
-                {
-                    width += this.AxisTitleDistance;
-                    width += labelTextSize.Height;
-                }
-            }
-            else
-            {
-                // caution: this includes AngleAxis because Position=None
-                switch (this.TickStyle)
-                {
-                    case TickStyle.Outside:
-                        height += this.MajorTickSize;
-                        break;
-                    case TickStyle.Crossing:
-                        height += this.MajorTickSize * 0.75;
-                        break;
-                }
-
-                height += this.AxisDistance;
-                height += this.AxisTickToLabelDistance;
-                height += maximumTextSize.Height;
-                if (labelTextSize.Height > 0)
-                {
-                    height += this.AxisTitleDistance;
-                    height += labelTextSize.Height;
-                }
-            }
-
-            return new OxySize(width, height);
+            this.NaturalSize = this.Measure(rc);
         }
 
         /// <summary>
@@ -1350,6 +1283,88 @@ namespace OxyPlot.Axes
         /// <remarks>The current values may be modified during update of max/min and rendering.</remarks>
         protected internal virtual void ResetCurrentValues()
         {
+        }
+
+        /// <summary>
+        /// Measures the size of the axis (maximum axis label width/height).
+        /// </summary>
+        /// <param name="rc">The render context.</param>
+        /// <returns>The size of the axis.</returns>
+        protected virtual OxySize Measure(IRenderContext rc)
+        {
+            IList<double> majorTickValues;
+            IList<double> minorTickValues;
+            IList<double> majorLabelValues;
+
+            this.GetTickValues(out majorLabelValues, out majorTickValues, out minorTickValues);
+
+            var maximumTextSize = new OxySize();
+            foreach (double v in majorLabelValues)
+            {
+                string s = this.FormatValue(v);
+                var size = rc.MeasureText(s, this.ActualFont, this.ActualFontSize, this.ActualFontWeight, this.Angle);
+                if (size.Width > maximumTextSize.Width)
+                {
+                    maximumTextSize.Width = size.Width;
+                }
+
+                if (size.Height > maximumTextSize.Height)
+                {
+                    maximumTextSize.Height = size.Height;
+                }
+            }
+
+            var labelTextSize = rc.MeasureText(
+                this.ActualTitle, this.ActualFont, this.ActualFontSize, this.ActualFontWeight);
+
+            double width = 0;
+            double height = 0;
+
+            if (this.IsVertical())
+            {
+                switch (this.TickStyle)
+                {
+                    case TickStyle.Outside:
+                        width += this.MajorTickSize;
+                        break;
+                    case TickStyle.Crossing:
+                        width += this.MajorTickSize * 0.75;
+                        break;
+                }
+
+                width += this.AxisDistance;
+                width += this.AxisTickToLabelDistance;
+                width += maximumTextSize.Width;
+                if (labelTextSize.Height > 0)
+                {
+                    width += this.AxisTitleDistance;
+                    width += labelTextSize.Height;
+                }
+            }
+            else
+            {
+                // caution: this includes AngleAxis because Position=None
+                switch (this.TickStyle)
+                {
+                    case TickStyle.Outside:
+                        height += this.MajorTickSize;
+                        break;
+                    case TickStyle.Crossing:
+                        height += this.MajorTickSize * 0.75;
+                        break;
+                }
+
+                height += this.AxisDistance;
+                height += this.AxisTickToLabelDistance;
+                height += maximumTextSize.Height;
+                if (labelTextSize.Height > 0)
+                {
+                    height += this.AxisTitleDistance;
+                    height += labelTextSize.Height;
+                }
+            }
+
+            return new OxySize(width, height);
         }
 
         /// <summary>
