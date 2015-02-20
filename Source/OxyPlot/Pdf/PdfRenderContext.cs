@@ -17,7 +17,7 @@ namespace OxyPlot
     /// <summary>
     /// Implements an <see cref="IRenderContext" /> producing PDF documents by <see cref="PortableDocument" />.
     /// </summary>
-    internal class PdfRenderContext : RenderContextBase
+    public class PdfRenderContext : RenderContextBase
     {
         /// <summary>
         /// The current document.
