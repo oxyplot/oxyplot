@@ -543,6 +543,13 @@ namespace OxyPlot.Axes
         public bool UseSuperExponentialFormat { get; set; }
 
         /// <summary>
+        /// Gets or sets the "desired" size by the renderer such that the axis text &amp; ticks will not be clipped.  This
+        /// size is distinct from the margin settings or the size which is actually rendered, as in: ActualWidth / ActualSize.  
+        /// Actual rendered size may be smaller or larger than the desired size if the margins are set manually.
+        /// </summary>
+        public OxySize DesiredSize { get; protected set; }
+
+        /// <summary>
         /// Gets or sets the position tier max shift.
         /// </summary>
         internal double PositionTierMaxShift { get; set; }
@@ -913,7 +920,7 @@ namespace OxyPlot.Axes
                 }
             }
 
-            return new OxySize(width, height);
+            return this.DesiredSize = new OxySize(width, height);
         }
 
         /// <summary>
