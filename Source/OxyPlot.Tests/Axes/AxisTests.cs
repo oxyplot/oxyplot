@@ -427,5 +427,42 @@ namespace OxyPlot.Tests
             Assert.AreEqual(100, plot.Axes[0].ActualMaximum);
             Assert.AreEqual(1, plot.Axes[0].ActualMinimum);
         }
+            
+        /// <summary>
+        /// Test DesiredSize property to see if working property
+        /// </summary>
+        [Test]
+        public void Axis_DesiredSize()
+        {
+            var xaxis = new LinearAxis { Position = AxisPosition.Bottom, Title = "X-axis" };
+            var yaxis = new LinearAxis { Position = AxisPosition.Left, Title = "Y-axis" };
+
+            var plot = new PlotModel { Title = "Simple plot" };
+            plot.Axes.Add (xaxis);
+            plot.Axes.Add (yaxis);
+
+            var ls = new LineSeries ();
+            ls.Points.Add (new DataPoint (3, 13));
+            ls.Points.Add (new DataPoint (10, 47));
+            ls.Points.Add (new DataPoint (30, 23));
+            ls.Points.Add (new DataPoint (40, 65));
+            ls.Points.Add (new DataPoint (80, 10));
+            plot.Series.Add (ls);
+
+            // initial setting
+            plot.UpdateAndRenderToNull (800, 600);
+            Assert.That (yaxis.DesiredSize.Width, Is.EqualTo (35.0).Within (0.5), "y-axis width");
+            Assert.That (yaxis.DesiredSize.Height, Is.EqualTo (0.0).Within (1e-6), "y-axis height");
+
+            Assert.That (xaxis.DesiredSize.Width, Is.EqualTo (0.0).Within (1e-6), "x-axis width");
+            Assert.That (xaxis.DesiredSize.Height, Is.EqualTo (35.0).Within (0.5), "x-axis height");
+
+            // widen axis -> larger desired size
+            yaxis.Zoom (10000, 11000);
+            plot.UpdateAndRenderToNull (800, 600);
+
+            Assert.That (yaxis.DesiredSize.Width, Is.EqualTo (50.0).Within (0.5), "y-axis width");
+            Assert.That (yaxis.DesiredSize.Height, Is.EqualTo (0.0).Within (1e-6), "y-axis height");
+        }
     }
 }
