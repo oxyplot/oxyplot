@@ -544,9 +544,8 @@ namespace OxyPlot.Axes
 
         /// <summary>
         /// Gets or sets the "desired" size by the renderer such that the axis text &amp; ticks will not be clipped.  This
-        /// size is distinct from the margin settings (which are overridable settings) or the size which is actually
-        /// rendered: ActualWidth / ActualSize.  Actual rendered size may be smaller or larger than desired size if the
-        /// margins are overriden.
+        /// size is distinct from the margin settings or the size which is actually rendered, as in: ActualWidth / ActualSize.  
+        /// Actual rendered size may be smaller or larger than the desired size if the margins are set manually.
         /// </summary>
         public OxySize DesiredSize { get; protected set; }
 
