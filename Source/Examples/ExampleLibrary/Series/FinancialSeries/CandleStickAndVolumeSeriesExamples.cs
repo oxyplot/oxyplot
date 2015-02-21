@@ -17,42 +17,101 @@ namespace ExampleLibrary
     [Tags("Series")]
     public static class CandleStickAndVolumeSeriesExamples
     {
-        [Example("Candles + Volume (combined volume)")]
-        public static Example CombinedVolume()
+        [Example("Candles + Volume (combined volume), adjusting Y-axis")]
+        public static Example CombinedVolume_Adj()
         {
-            return CreateCandleStickAndVolumeSeriesExample("Candles + Volume (combined volume)", VolumeStyle.Combined);
+            return CreateCandleStickAndVolumeSeriesExample(
+                "Candles + Volume (combined volume)", 
+                VolumeStyle.Combined,
+                naturalY: false,
+                naturalV: false);
         }
 
-        [Example("Candles + Volume (stacked volume)")]
-        public static Example StackedVolume()
+        [Example("Candles + Volume (combined volume), natural Y-axis")]
+        public static Example CombinedVolume_Nat()
         {
-            return CreateCandleStickAndVolumeSeriesExample("Candles + Volume (stacked volume)", VolumeStyle.Stacked);
+            return CreateCandleStickAndVolumeSeriesExample(
+                "Candles + Volume (combined volume)", 
+                VolumeStyle.Combined,
+                naturalY: true,
+                naturalV: true);
         }
 
-        [Example("Candles + Volume (+/- volume)")]
-        public static Example PosNegVolume()
+        [Example("Candles + Volume (stacked volume), adjusting Y-axis")]
+        public static Example StackedVolume_Adj()
+        {
+            return CreateCandleStickAndVolumeSeriesExample(
+                "Candles + Volume (stacked volume)", 
+                VolumeStyle.Stacked,
+                naturalY: false,
+                naturalV: false);
+        }
+
+        [Example("Candles + Volume (stacked volume), natural Y-axis")]
+        public static Example StackedVolume_Nat()
+        {
+            return CreateCandleStickAndVolumeSeriesExample(
+                "Candles + Volume (stacked volume)", 
+                VolumeStyle.Stacked,
+                naturalY: true,
+                naturalV: true);
+        }
+
+        [Example("Candles + Volume (+/- volume), adjusting Y-axis")]
+        public static Example PosNegVolume_Adj()
         {
             return CreateCandleStickAndVolumeSeriesExample(
                 "Candles + Volume (+/- volume)",
-                VolumeStyle.PositiveNegative);
+                VolumeStyle.PositiveNegative,
+                naturalY: false,
+                naturalV: false);
         }
 
-        [Example("Candles + Volume (volume not shown)")]
-        public static Example NoVolume()
+        [Example("Candles + Volume (+/- volume), natural Y-axis")]
+        public static Example PosNegVolume_Nat()
         {
-            return CreateCandleStickAndVolumeSeriesExample("Candles + Volume (volume not shown)", VolumeStyle.None);
+            return CreateCandleStickAndVolumeSeriesExample(
+                "Candles + Volume (+/- volume)",
+                VolumeStyle.PositiveNegative,
+                naturalY: true,
+                naturalV: true);
+        }
+
+        [Example("Candles + Volume (volume not shown), adjusting Y-axis")]
+        public static Example NoVolume_Adj()
+        {
+            return CreateCandleStickAndVolumeSeriesExample(
+                "Candles + Volume (volume not shown)", 
+                VolumeStyle.None,
+                naturalY: false,
+                naturalV: false);
+        }
+
+        [Example("Candles + Volume (volume not shown), natural Y-axis")]
+        public static Example NoVolume_Nat()
+        {
+            return CreateCandleStickAndVolumeSeriesExample(
+                "Candles + Volume (volume not shown)", 
+                VolumeStyle.None,
+                naturalY: true,
+                naturalV: true);
         }
 
         /// <summary>
-        /// Creates the candlestick and volume series example.
+        /// Creates the candle stick and volume series example.
         /// </summary>
-        /// <param name="title">The title.</param>
-        /// <param name="style">The style.</param>
-        /// <param name="n">The number of bars.</param>
-        /// <returns>
-        /// An example.
-        /// </returns>
-        private static Example CreateCandleStickAndVolumeSeriesExample(string title, VolumeStyle style, int n = 10000)
+        /// <returns>The candle stick and volume series example.</returns>
+        /// <param name="title">Title.</param>
+        /// <param name="style">Style.</param>
+        /// <param name="n">N.</param>
+        /// <param name="naturalY">If set to <c>true</c> natural y.</param>
+        /// <param name="naturalV">If set to <c>true</c> natural v.</param>
+        private static Example CreateCandleStickAndVolumeSeriesExample(
+            string title, 
+            VolumeStyle style, 
+            int n = 10000,
+            bool naturalY = false,
+            bool naturalV = false)
         {
             var pm = new PlotModel { Title = title };
 
@@ -94,8 +153,8 @@ namespace ExampleLibrary
                 Key = "Bars",
                 StartPosition = 0.25,
                 EndPosition = 1.0,
-                Minimum = Ymin,
-                Maximum = Ymax
+                Minimum = naturalY ? double.NaN : Ymin,
+                Maximum = naturalY ? double.NaN : Ymax
             };
             var volAxis = new LinearAxis
             {
@@ -103,13 +162,14 @@ namespace ExampleLibrary
                 Key = "Volume",
                 StartPosition = 0.0,
                 EndPosition = 0.22,
-                Minimum = 0,
-                Maximum = 5000
+                Minimum = naturalV ? double.NaN : 0,
+                Maximum = naturalV ? double.NaN : 5000
             };
 
             switch (style)
             {
                 case VolumeStyle.None:
+                    barAxis.Key = null;
                     barAxis.StartPosition = 0.0;
                     pm.Axes.Add(timeAxis);
                     pm.Axes.Add(barAxis);
@@ -123,7 +183,7 @@ namespace ExampleLibrary
                     break;
 
                 case VolumeStyle.PositiveNegative:
-                    volAxis.Minimum = -5000;
+                    volAxis.Minimum = naturalV ? double.NaN : -5000;
                     pm.Axes.Add(timeAxis);
                     pm.Axes.Add(barAxis);
                     pm.Axes.Add(volAxis);
@@ -131,7 +191,11 @@ namespace ExampleLibrary
             }
 
             pm.Series.Add(series);
-            timeAxis.AxisChanged += (sender, e) => AdjustYExtent(series, timeAxis, barAxis);
+
+            if (naturalY == false)
+            {
+                timeAxis.AxisChanged += (sender, e) => AdjustYExtent(series, timeAxis, barAxis);
+            }
 
             var controller = new PlotController();
             controller.InputCommandBindings.Clear();
