@@ -14,34 +14,55 @@ namespace ExampleLibrary
     [Tags("Series")]
     public static class VolumeSeriesExamples
     {
-        [Example("Just Volume (combined)")]
-        public static Example JustVolumeCombined()
+        [Example("Just Volume (combined), fixed axis")]
+        public static Example JustVolumeCombined_Fixed()
         {
-            return CreateVolumeSeries("Just Volume (combined)", VolumeStyle.Combined);
+            return CreateVolumeSeries("Just Volume (combined)", VolumeStyle.Combined, natural: false);
         }
 
-        [Example("Just Volume (stacked)")]
-        public static Example JustVolumeStacked()
+        [Example("Just Volume (combined), natural axis")]
+        public static Example JustVolumeCombined_Natural()
         {
-            return CreateVolumeSeries("Just Volume (stacked)", VolumeStyle.Stacked);
+            return CreateVolumeSeries("Just Volume (combined)", VolumeStyle.Combined, natural: true);
         }
 
-        [Example("Just Volume (+/-)")]
-        public static Example JustVolumePositiveNegative()
+        [Example("Just Volume (stacked), fixed axis")]
+        public static Example JustVolumeStacked_Fixed()
         {
-            return CreateVolumeSeries("Just Volume (+/-)", VolumeStyle.PositiveNegative);
+            return CreateVolumeSeries("Just Volume (stacked)", VolumeStyle.Stacked, natural: false);
+        }
+
+        [Example("Just Volume (stacked), natural axis")]
+        public static Example JustVolumeStacked_Natural()
+        {
+            return CreateVolumeSeries("Just Volume (stacked)", VolumeStyle.Stacked, natural: true);
+        }
+
+        [Example("Just Volume (+/-), fixed axis")]
+        public static Example JustVolumePositiveNegative_Fixed()
+        {
+            return CreateVolumeSeries("Just Volume (+/-)", VolumeStyle.PositiveNegative, natural: false);
+        }
+
+        [Example("Just Volume (+/-), natural axis")]
+        public static Example JustVolumePositiveNegative_Natural()
+        {
+            return CreateVolumeSeries("Just Volume (+/-)", VolumeStyle.PositiveNegative, natural: true);
         }
 
         /// <summary>
-        /// Creates a volume series example.
+        /// Creates the volume series.
         /// </summary>
+        /// <returns>The volume series.</returns>
         /// <param name="title">Title.</param>
         /// <param name="style">Style.</param>
-        /// <param name="n">The number of bars.</param>
-        /// <returns>
-        /// A volume series.
-        /// </returns>
-        private static Example CreateVolumeSeries(string title, VolumeStyle style, int n = 10000)
+        /// <param name="n">N.</param>
+        /// <param name="natural">If set to <c>true</c> natural.</param>
+        private static Example CreateVolumeSeries(
+            string title, 
+            VolumeStyle style, 
+            int n = 10000,
+            bool natural = false)
         {
             var pm = new PlotModel { Title = title };
 
@@ -79,8 +100,8 @@ namespace ExampleLibrary
                 Key = "Volume",
                 StartPosition = 0.0,
                 EndPosition = 1.0,
-                Minimum = 0,
-                Maximum = 10000
+                Minimum = natural ? double.NaN : 0,
+                Maximum = natural ? double.NaN : 10000
             };
 
             switch (style)
@@ -92,7 +113,7 @@ namespace ExampleLibrary
                     break;
 
                 case VolumeStyle.PositiveNegative:
-                    volAxis.Minimum = -10000;
+                    volAxis.Minimum = natural ? double.NaN : -10000;
                     pm.Axes.Add(timeAxis);
                     pm.Axes.Add(volAxis);
                     break;

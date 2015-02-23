@@ -28,6 +28,7 @@ All notable changes to this project will be documented in this file.
 - Changed OxyPlot.Xamarin.Android target to Android level 10 (#223)
 - Separated WPF Plot and PlotView (#252,#239)
 - current CandleStickSeries renamed to OldCandleStickSeries, replaced by a faster implementation (#369)
+- fixed axis min/max calc & axis assignment for CandleStick + VolumeSeries (#389)
 
 ### Removed
 - OxyPlot.Metro project (superseded by OxyPlot.WindowsUniversal) (#241)

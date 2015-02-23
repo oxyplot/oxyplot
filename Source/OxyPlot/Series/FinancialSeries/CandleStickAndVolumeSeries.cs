@@ -50,7 +50,6 @@ namespace OxyPlot.Series
         /// </summary>
         public CandleStickAndVolumeSeries()
         {
-            this.YAxisKey = "Bars";
             this.PositiveColor = OxyColors.DarkGreen;
             this.NegativeColor = OxyColors.Red;
             this.SeparatorColor = OxyColors.Black;
@@ -61,6 +60,9 @@ namespace OxyPlot.Series
             this.NegativeHollow = false;
             this.PositiveHollow = true;
             this.StrokeIntensity = 0.80;
+            this.VolumeStyle = VolumeStyle.Combined;
+            this.VolumeAxisKey = "Volume";
+            this.BarAxisKey = null;
 
             this.TrackerFormatString = DefaultTrackerFormatString;
         }
@@ -99,7 +101,17 @@ namespace OxyPlot.Series
         public LinearAxis VolumeAxis { get; private set; }
 
         /// <summary>
-        /// Gets or sets the style of volume rendering
+        /// Gets or sets the volume axis key (defaults to "Volume")
+        /// </summary>
+        public string VolumeAxisKey { get; set; }
+
+        /// <summary>
+        /// Gets or sets the bar axis key (defaults to null, as is the primary axis).
+        /// </summary>
+        public string BarAxisKey { get; set; }
+
+        /// <summary>
+        /// Gets or sets the style of volume rendering (defaults to Combined)
         /// </summary>
         public VolumeStyle VolumeStyle { get; set; }
 
@@ -159,6 +171,21 @@ namespace OxyPlot.Series
         /// series will use 0.80 x the minimum difference in data points.
         /// </summary>
         public double CandleWidth { get; set; }
+
+        /// <summary>
+        /// Gets or sets the minimum volume seen in the data series.
+        /// </summary>
+        public double MinimumVolume { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets the maximum volume seen in the data series.
+        /// </summary>
+        public double MaximumVolume { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets the average volume seen in the data series.
+        /// </summary>
+        public double AverageVolume { get; protected set; }
 
         /// <summary>
         /// Append a bar to the series (must be in X order)
@@ -517,8 +544,112 @@ namespace OxyPlot.Series
         /// </summary>
         protected internal override void EnsureAxes()
         {
+            // find volume axis
+            this.VolumeAxis = (LinearAxis)this.PlotModel.Axes.FirstOrDefault(a => a.Key == this.VolumeAxisKey);
+
+            // now setup XYSeries axes, where BarAxisKey indicates the primary Y axis
+            this.YAxisKey = this.BarAxisKey;
             base.EnsureAxes();
-            this.VolumeAxis = (LinearAxis)this.PlotModel.Axes.FirstOrDefault(a => a.Key == "Volume");
+        }
+
+        /// <summary>
+        /// Updates the axes to include the max and min of this series.
+        /// </summary>
+        protected internal override void UpdateAxisMaxMin()
+        {
+            this.XAxis.Include(this.MinX);
+            this.XAxis.Include(this.MaxX);
+            this.YAxis.Include(this.MinY);
+            this.YAxis.Include(this.MaxY);
+
+            // we may not have a volume axis, if so, skip adjustments
+            if (this.VolumeAxis == null)
+            {
+                return;
+            }
+
+            var ymin = this.MinimumVolume;
+            var ymax = this.MaximumVolume;
+            var yavg = this.AverageVolume;
+
+            var yquartile = (ymax - ymin) / 4.0;
+
+            switch (VolumeStyle)
+            {
+                case VolumeStyle.PositiveNegative:
+                    ymin = -(yavg + (yquartile / 2.0));
+                    ymax = +(yavg + (yquartile / 2.0));
+                    break;
+                case VolumeStyle.Stacked:
+                    ymax = yavg + yquartile;
+                    ymin = 0;
+                    break;
+                default:
+                case VolumeStyle.Combined:
+                    ymax = yavg + (yquartile / 2.0);
+                    ymin = 0;
+                    break;
+            }
+
+            ymin = Math.Max(this.VolumeAxis.FilterMinValue, ymin);
+            ymax = Math.Min(this.VolumeAxis.FilterMaxValue, ymax);
+            this.VolumeAxis.Include(ymin);
+            this.VolumeAxis.Include(ymax);
+        }
+
+        /// <summary>
+        /// Updates the maximum and minimum values of the series.
+        /// </summary>
+        protected internal override void UpdateMaxMin()
+        {
+            base.UpdateMaxMin();
+
+            double xmin = double.MaxValue;
+            double xmax = double.MinValue;
+            double ymin_bar = double.MaxValue;
+            double ymax_bar = double.MinValue;
+            double ymin_vol = double.MaxValue;
+            double ymax_vol = double.MinValue;
+
+            var nvol = 0.0;
+            var cumvol = 0.0;
+
+            foreach (var bar in this.Items)
+            {
+                if (!bar.IsValid())
+                {
+                    continue;
+                }
+
+                if (bar.SellVolume > 0)
+                {
+                    nvol++;
+                }
+
+                if (bar.BuyVolume > 0)
+                {
+                    nvol++;
+                }
+
+                cumvol += bar.BuyVolume;
+                cumvol += bar.SellVolume;
+
+                xmin = Math.Min(xmin, bar.X);
+                xmax = Math.Max(xmax, bar.X);
+                ymin_bar = Math.Min(ymin_bar, bar.Low);
+                ymax_bar = Math.Max(ymax_bar, bar.High);
+                ymin_vol = Math.Min(ymin_vol, -bar.SellVolume);
+                ymax_vol = Math.Max(ymax_vol, +bar.BuyVolume);
+            }
+
+            this.MinX = Math.Max(this.XAxis.FilterMinValue, xmin);
+            this.MaxX = Math.Min(this.XAxis.FilterMaxValue, xmax);
+            this.MinY = Math.Max(this.YAxis.FilterMinValue, ymin_bar);
+            this.MaxY = Math.Min(this.YAxis.FilterMaxValue, ymax_bar);
+
+            this.MinimumVolume = ymin_vol;
+            this.MaximumVolume = ymax_vol;
+            this.AverageVolume = cumvol / nvol;
         }
 
         /// <summary>
