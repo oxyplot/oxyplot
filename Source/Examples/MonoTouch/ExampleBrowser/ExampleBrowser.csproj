@@ -83,8 +83,9 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ItemGroup>
     <ProjectReference Include="..\..\..\OxyPlot.MonoTouch\OxyPlot.MonoTouch.csproj">
-      <Project>{7DCF07B1-B8BD-4EF0-B1FC-2AAC4466B6C6}</Project>
-      <Name>OxyPlot.XamarinIOS</Name>
+      <Project>{7dcf07b1-b8bd-4ef0-b1fc-2aac4466b6c6}</Project>
+      <Name>OxyPlot.MonoTouch</Name>
+      <IsAppExtension>false</IsAppExtension>
     </ProjectReference>
     <ProjectReference Include="..\..\..\OxyPlot\OxyPlot.csproj">
       <Project>{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}</Project>

@@ -84,34 +84,6 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LineSeries" /> class.
-        /// </summary>
-        /// <param name="title">The title.</param>
-        [Obsolete]
-        public LineSeries(string title)
-            : this()
-        {
-            this.Title = title;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LineSeries" /> class.
-        /// </summary>
-        /// <param name="color">The color of the line stroke.</param>
-        /// <param name="strokeThickness">The stroke thickness (optional).</param>
-        /// <param name="title">The title (optional).</param>
-        [Obsolete]
-        public LineSeries(OxyColor color, double strokeThickness = 1, string title = null)
-            : this()
-        {
-            this.Color = color;
-            this.StrokeThickness = strokeThickness;
-            this.BrokenLineThickness = 0;
-            this.BrokenLineStyle = LineStyle.Solid;
-            this.Title = title;
-        }
-
-        /// <summary>
         /// Gets or sets the color of the curve.
         /// </summary>
         /// <value>The color.</value>
@@ -393,7 +365,7 @@ namespace OxyPlot.Series
                 pts,
                 this.GetSelectableColor(this.ActualColor),
                 this.StrokeThickness,
-                this.ActualLineStyle.GetDashArray());
+                this.ActualDashArray);
             var midpt = new ScreenPoint(xmid, ymid);
             rc.DrawMarker(
                 legendBox,
@@ -557,7 +529,7 @@ namespace OxyPlot.Series
             }
 
             // First valid point
-            var screenPoint = Transform(currentPoint);
+            var screenPoint = this.Transform(currentPoint);
 
             // Handle broken line segment if exists
             if (previousContiguousLineSegmentEndPoint.HasValue)
@@ -671,7 +643,7 @@ namespace OxyPlot.Series
                     break;
             }
 
-            var pt = Transform(point) + new ScreenVector(dx, 0);
+            var pt = this.Transform(point) + new ScreenVector(dx, 0);
 
             // Render the legend
             rc.DrawText(
@@ -710,7 +682,7 @@ namespace OxyPlot.Series
 
             if (this.MarkerType != MarkerType.None)
             {
-                var markerBinOffset = this.MarkerResolution > 0 ? Transform(this.MinX, this.MinY) : default(ScreenPoint);
+                var markerBinOffset = this.MarkerResolution > 0 ? this.Transform(this.MinX, this.MinY) : default(ScreenPoint);
 
                 rc.DrawMarkers(
                     clippingRect,

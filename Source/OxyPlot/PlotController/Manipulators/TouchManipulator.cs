@@ -15,11 +15,6 @@ namespace OxyPlot
     public class TouchManipulator : PlotManipulator<OxyTouchEventArgs>
     {
         /// <summary>
-        /// The previous position
-        /// </summary>
-        private ScreenPoint previousPosition;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="TouchManipulator" /> class.
         /// </summary>
         /// <param name="plotView">The plot view.</param>
@@ -36,16 +31,17 @@ namespace OxyPlot
         {
             base.Delta(e);
 
-            var newPosition = this.previousPosition + e.DeltaTranslation;
+            var newPosition = e.Position;
+            var previousPosition = newPosition - e.DeltaTranslation;
 
             if (this.XAxis != null)
             {
-                this.XAxis.Pan(this.previousPosition, newPosition);
+                this.XAxis.Pan(previousPosition, newPosition);
             }
 
             if (this.YAxis != null)
             {
-                this.YAxis.Pan(this.previousPosition, newPosition);
+                this.YAxis.Pan(previousPosition, newPosition);
             }
 
             var current = this.InverseTransform(newPosition.X, newPosition.Y);
@@ -61,8 +57,6 @@ namespace OxyPlot
             }
 
             this.PlotView.InvalidatePlot(false);
-
-            this.previousPosition = newPosition;
         }
 
         /// <summary>
@@ -73,7 +67,6 @@ namespace OxyPlot
         {
             this.AssignAxes(e.Position);
             base.Started(e);
-            this.previousPosition = e.Position;
         }
     }
 }

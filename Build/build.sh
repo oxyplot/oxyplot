@@ -13,7 +13,7 @@ OUTPUT=../Output
 # VERSION=${VERSION:=2014.1.308}
 
 # Run the tool that updates the version numbers in all AssemblyInfo.cs files
-mono "$LynxToolkit/UpdateVersionNumbers.exe" /VersionFromNuGet=OxyPlot.Core /Dependency=OxyPlot.Core /Directory=..
+mono "$LynxToolkit/UpdateVersionNumbers.exe" /VersionFromNuGet=OxyPlot.Core /Dependency=OxyPlot.Core /ExtractReleaseNotes=../CHANGELOG.md /Directory=..
 if [ $? -ne 0 ]; then 
 	echo "  FAILED!"
 fi

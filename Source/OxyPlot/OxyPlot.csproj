@@ -1,5 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
@@ -14,7 +14,7 @@
     <TargetFrameworkProfile>Profile328</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <ProductVersion>10.0.0</ProductVersion>
+    <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <StyleCopTreatErrorsAsWarnings>false</StyleCopTreatErrorsAsWarnings>
@@ -285,7 +285,6 @@
     <Compile Include="Series\NamespaceDoc.cs" />
     <Compile Include="Series\AreaSeries.cs" />
     <Compile Include="Series\BarSeries\LabelPlacement.cs" />
-    <Compile Include="Series\CandleStickSeries.cs" />
     <Compile Include="Series\ContourSeries.cs" />
     <Compile Include="Series\BarSeries\ColumnSeries.cs" />
     <Compile Include="Series\BarSeries\BarSeries.cs" />
@@ -298,20 +297,26 @@
     <Compile Include="Series\BarSeries\TornadoBarSeries.cs" />
     <Compile Include="Series\ItemsSeries.cs" />
     <Compile Include="Series\DataPointSeries.cs" />
-    <Compile Include="Series\HighLowItem.cs" />
-    <Compile Include="Series\HighLowSeries.cs" />
     <Compile Include="Series\ScatterPoint.cs" />
     <Compile Include="Series\Series.cs" />
     <Compile Include="Series\StemSeries.cs" />
     <Compile Include="Series\StairStepSeries.cs" />
     <Compile Include="Series\ScatterSeries.cs" />
     <Compile Include="Series\TwoColorLineSeries.cs" />
-	<Compile Include="Series\TwoColorAreaSeries.cs" />
+    <Compile Include="Series\TwoColorAreaSeries.cs" />
     <Compile Include="Series\XYAxisSeries.cs" />
     <Compile Include="Series\PieSeries.cs" />
     <Compile Include="Series\FunctionSeries.cs" />
     <Compile Include="Series\PieSlice.cs" />
     <Compile Include="Series\LineSeries.cs" />
+    <Compile Include="Series\FinancialSeries\CandleStickAndVolumeSeries.cs" />
+    <Compile Include="Series\FinancialSeries\VolumeSeries.cs" />
+    <Compile Include="Series\FinancialSeries\VolumeStyle.cs" />
+    <Compile Include="Series\FinancialSeries\CandleStickSeries.cs" />
+    <Compile Include="Series\FinancialSeries\OldCandleStickSeries.cs" />
+    <Compile Include="Series\FinancialSeries\OhlcvItem.cs" />
+    <Compile Include="Series\FinancialSeries\HighLowItem.cs" />
+    <Compile Include="Series\FinancialSeries\HighLowSeries.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagrams\Series.cd" />
@@ -334,4 +339,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ItemGroup>
+    <Folder Include="Series\FinancialSeries\" />
+  </ItemGroup>
 </Project>

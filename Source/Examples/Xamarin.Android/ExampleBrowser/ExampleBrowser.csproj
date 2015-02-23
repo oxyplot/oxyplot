@@ -19,6 +19,8 @@
     <DeployExternal>True</DeployExternal>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
+    <AndroidUseLatestPlatformSdk />
+    <TargetFrameworkVersion>v2.3</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -74,8 +76,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\OxyPlot.Xamarin.Android\OxyPlot.Xamarin.Android.csproj">
-      <Project>{E965BA32-9561-4E2A-ADB0-19487B25A939}</Project>
-      <Name>OxyPlot.XamarinAndroid</Name>
+      <Project>{e965ba32-9561-4e2a-adb0-19487b25a939}</Project>
+      <Name>OxyPlot.Xamarin.Android</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\OxyPlot\OxyPlot.csproj">
       <Project>{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}</Project>

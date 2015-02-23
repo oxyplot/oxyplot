@@ -1,16 +1,13 @@
 ﻿using OxyPlot.Xamarin.Forms;
 using OxyPlot.Xamarin.Forms.Platform.iOS;
-
 using global::Xamarin.Forms;
 using global::Xamarin.Forms.Platform.iOS;
 
 // Exports the renderer.
 [assembly: ExportRenderer(typeof(PlotView), typeof(PlotViewRenderer))]
-
 namespace OxyPlot.Xamarin.Forms.Platform.iOS
 {
     using System.ComponentModel;
-
     using OxyPlot.Xamarin.iOS;
 
     /// <summary>
@@ -18,6 +15,13 @@ namespace OxyPlot.Xamarin.Forms.Platform.iOS
     /// </summary>
     public class PlotViewRenderer : ViewRenderer<Xamarin.Forms.PlotView, PlotView>
     {
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
+        public PlotViewRenderer()
+        {
+        }
+
         /// <summary>
         /// Raises the element changed event.
         /// </summary>

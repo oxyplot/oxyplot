@@ -1,0 +1,16 @@
+﻿<Window x:Class="AlignedAxesDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:oxy="http://oxyplot.org/wpf"
+        Title="AlignedAxesDemo" Height="480" Width="640">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Label>The plot margins are undefined, and the vertical axes should be adjusted to have the same width.</Label>
+        <oxy:PlotView Grid.Row="1" Model="{Binding Model0}"/>
+        <oxy:PlotView Grid.Row="2" Model="{Binding Model1}"/>
+    </Grid>
+</Window>

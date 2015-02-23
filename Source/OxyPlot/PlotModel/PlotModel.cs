@@ -294,19 +294,6 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PlotModel" /> class.
-        /// </summary>
-        /// <param name="title">The title.</param>
-        /// <param name="subtitle">The subtitle.</param>
-        [Obsolete]
-        public PlotModel(string title, string subtitle = null)
-            : this()
-        {
-            this.Title = title;
-            this.Subtitle = subtitle;
-        }
-
-        /// <summary>
         /// Occurs when the tracker has been changed.
         /// </summary>
         public event EventHandler<TrackerEventArgs> TrackerChanged;
@@ -1077,20 +1064,6 @@ namespace OxyPlot
         public override string ToString()
         {
             return this.Title;
-        }
-
-        /// <summary>
-        /// Creates an svg model and return it as a string.
-        /// </summary>
-        /// <param name="width">The width (points).</param>
-        /// <param name="height">The height (points).</param>
-        /// <param name="isDocument">if set to <c>true</c>, the xml headers will be included (?xml and !DOCTYPE).</param>
-        /// <param name="textMeasurer">The text measurer.</param>
-        /// <returns>The svg string.</returns>
-        [Obsolete("Use SvgExporter instead")]
-        public string ToSvg(double width, double height, bool isDocument, IRenderContext textMeasurer = null)
-        {
-            return SvgExporter.ExportToString(this, width, height, isDocument, textMeasurer);
         }
 
         /// <summary>

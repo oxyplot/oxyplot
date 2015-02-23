@@ -30,36 +30,6 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LogarithmicAxis" /> class.
-        /// </summary>
-        /// <param name="pos">The position.</param>
-        /// <param name="title">The title.</param>
-        [Obsolete]
-        public LogarithmicAxis(AxisPosition pos, string title)
-            : this()
-        {
-            this.Position = pos;
-            this.Title = title;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LogarithmicAxis" /> class.
-        /// </summary>
-        /// <param name="position">The position.</param>
-        /// <param name="title">The title.</param>
-        /// <param name="minimum">The minimum value.</param>
-        /// <param name="maximum">The maximum value.</param>
-        [Obsolete]
-        public LogarithmicAxis(AxisPosition position, string title = null, double minimum = double.NaN, double maximum = double.NaN)
-            : this()
-        {
-            this.Position = position;
-            this.Title = title;
-            this.Minimum = minimum;
-            this.Maximum = maximum;
-        }
-
-        /// <summary>
         /// Gets or sets the logarithmic base (normally 10).
         /// </summary>
         /// <value>The logarithmic base.</value>

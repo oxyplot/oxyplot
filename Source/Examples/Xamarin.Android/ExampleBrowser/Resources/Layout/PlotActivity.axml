@@ -3,7 +3,7 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-    <oxyplot.xamarinandroid.PlotView
+    <OxyPlot.Xamarin.Android.PlotView
         android:id="@+id/plotview"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />

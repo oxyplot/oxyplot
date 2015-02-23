@@ -462,23 +462,6 @@ namespace OxyPlot.Axes
         public ScreenPoint ScreenMin { get; protected set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether minor ticks should be shown. The default value is <c>true</c>.
-        /// </summary>
-        [Obsolete("Set MinorTickSize = 0 instead")]
-        public bool ShowMinorTicks
-        {
-            get
-            {
-                return this.MinorTickSize > 0;
-            }
-
-            set
-            {
-                this.MinorTickSize = value ? 4 : 0;
-            }
-        }
-
-        /// <summary>
         /// Gets or sets the start position of the axis on the plot area. The default value is <c>0</c>.
         /// </summary>
         /// <remarks>The position is defined by a fraction in the range from <c>0</c> to <c>1</c>, where <c>0</c> is at the bottom/left
@@ -558,6 +541,13 @@ namespace OxyPlot.Axes
         /// If <see cref="StringFormat" /> is <c>null</c>, 1.0E+03 will be converted to 10^{3}, otherwise it will use the format string for the mantissa.
         /// </remarks>
         public bool UseSuperExponentialFormat { get; set; }
+
+        /// <summary>
+        /// Gets or sets the "desired" size by the renderer such that the axis text &amp; ticks will not be clipped.  This
+        /// size is distinct from the margin settings or the size which is actually rendered, as in: ActualWidth / ActualSize.  
+        /// Actual rendered size may be smaller or larger than the desired size if the margins are set manually.
+        /// </summary>
+        public OxySize DesiredSize { get; protected set; }
 
         /// <summary>
         /// Gets or sets the position tier max shift.
@@ -654,12 +644,11 @@ namespace OxyPlot.Axes
             var startValue = Math.Round(from / step) * step;
             var numberOfValues = Math.Max((int)((to - from) / step), 1);
             var epsilon = step * 1e-3 * Math.Sign(step);
-            var values = new List<double>(numberOfValues);            
-            var lastValue = startValue;
+            var values = new List<double>(numberOfValues);
 
             for (int k = 0; k < maxTicks; k++)
             {
-                lastValue = startValue + (step * k);
+                var lastValue = startValue + (step * k);
 
                 // If we hit the maximum value before reaching the max number of ticks, exit
                 if (lastValue > to + epsilon)
@@ -931,7 +920,7 @@ namespace OxyPlot.Axes
                 }
             }
 
-            return new OxySize(width, height);
+            return this.DesiredSize = new OxySize(width, height);
         }
 
         /// <summary>

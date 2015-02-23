@@ -22,46 +22,6 @@ namespace OxyPlot.Axes
     public class TimeSpanAxis : LinearAxis
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref = "TimeSpanAxis" /> class.
-        /// </summary>
-        public TimeSpanAxis()
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TimeSpanAxis" /> class.
-        /// </summary>
-        /// <param name="position">The position of the axis.</param>
-        /// <param name="title">The axis title.</param>
-        /// <param name="format">The string format for the axis values.</param>
-        [Obsolete]
-        public TimeSpanAxis(AxisPosition position, string title = null, string format = "m:ss")
-            : base(position, title)
-        {
-            this.StringFormat = format;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TimeSpanAxis" /> class.
-        /// </summary>
-        /// <param name="position">The position of the axis.</param>
-        /// <param name="minimum">The minimum value.</param>
-        /// <param name="maximum">The maximum value.</param>
-        /// <param name="title">The axis title.</param>
-        /// <param name="format">The string format for the axis values.</param>
-        [Obsolete]
-        public TimeSpanAxis(
-            AxisPosition position,
-            double minimum,
-            double maximum = double.NaN,
-            string title = null,
-            string format = "m:ss")
-            : base(position, minimum, maximum, title)
-        {
-            this.StringFormat = format;
-        }
-
-        /// <summary>
         /// Converts a time span to a double.
         /// </summary>
         /// <param name="s">The time span.</param>

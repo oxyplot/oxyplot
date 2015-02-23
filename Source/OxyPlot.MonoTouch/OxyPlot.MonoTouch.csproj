@@ -28,7 +28,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
-    <DocumentationFile>..\..\Output\MonoTouch\OxyPlot.MonoTouch.XML</DocumentationFile>
+    <DocumentationFile>..\..\Output\MonoTouch\OxyPlot.MonoTouch.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -38,6 +38,9 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ItemGroup>
+    <Compile Include="..\OxyPlot.Xamarin.iOS\PanZoomGestureRecognizer.cs">
+      <Link>PanZoomGestureRecognizer.cs</Link>
+    </Compile>
     <Compile Include="MonoTouchRenderContext.cs" />
     <Compile Include="PlotView.cs" />
     <Compile Include="ExportExtensions.cs" />
