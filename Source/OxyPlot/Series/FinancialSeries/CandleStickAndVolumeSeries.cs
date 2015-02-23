@@ -46,16 +46,10 @@ namespace OxyPlot.Series
         private int winIndex;
 
         /// <summary>
-        /// The style of volume to be rendered
-        /// </summary>
-        private VolumeStyle volumeStyle;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref = "CandleStickAndVolumeSeries" /> class.
         /// </summary>
         public CandleStickAndVolumeSeries()
         {
-            this.YAxisKey = "Bars";
             this.PositiveColor = OxyColors.DarkGreen;
             this.NegativeColor = OxyColors.Red;
             this.SeparatorColor = OxyColors.Black;
@@ -66,6 +60,9 @@ namespace OxyPlot.Series
             this.NegativeHollow = false;
             this.PositiveHollow = true;
             this.StrokeIntensity = 0.80;
+            this.VolumeStyle = VolumeStyle.Combined;
+            this.VolumeAxisKey = "Volume";
+            this.BarAxisKey = null;
 
             this.TrackerFormatString = DefaultTrackerFormatString;
         }
@@ -104,27 +101,19 @@ namespace OxyPlot.Series
         public LinearAxis VolumeAxis { get; private set; }
 
         /// <summary>
-        /// Gets or sets the style of volume rendering
+        /// Gets or sets the volume axis key (defaults to "Volume")
         /// </summary>
-        public VolumeStyle VolumeStyle 
-        { 
-            get
-            {
-                return this.volumeStyle;
-            }
+        public string VolumeAxisKey { get; set; }
 
-            set
-            {
-                // if style has changed adjust axis min/max
-                if (value != this.volumeStyle && this.VolumeAxis != null)
-                {
-                    this.YAxis.ResetDataMaxMin();
-                    this.UpdateAxisMaxMin();
-                }
+        /// <summary>
+        /// Gets or sets the bar axis key (defaults to null, as is the primary axis).
+        /// </summary>
+        public string BarAxisKey { get; set; }
 
-                this.volumeStyle = value;
-            }
-        }
+        /// <summary>
+        /// Gets or sets the style of volume rendering (defaults to Combined)
+        /// </summary>
+        public VolumeStyle VolumeStyle { get; set; }
 
         /// <summary>
         /// Gets or sets the thickness of the bar lines
@@ -556,20 +545,10 @@ namespace OxyPlot.Series
         protected internal override void EnsureAxes()
         {
             // find volume axis
-            this.VolumeAxis = (LinearAxis)this.PlotModel.Axes.FirstOrDefault(a => a.Key == "Volume");
+            this.VolumeAxis = (LinearAxis)this.PlotModel.Axes.FirstOrDefault(a => a.Key == this.VolumeAxisKey);
 
-            // assign the bar axis if not found
-            var barAxis = this.PlotModel.Axes.FirstOrDefault(a => a.Key == "Bars");
-            if (barAxis == null)
-            {
-                // determine a bar axis fallback
-                var defAxis = this.PlotModel.Axes.FirstOrDefault(a => a.IsVertical() && a.Key != "Volume");
-               
-                // would be nice to avoid having to change the key & override base method
-                defAxis.Key = "Bars";
-            }
-
-            // now setup XYSeries axes
+            // now setup XYSeries axes, where BarAxisKey indicates the primary Y axis
+            this.YAxisKey = this.BarAxisKey;
             base.EnsureAxes();
         }
 

@@ -18,7 +18,7 @@ namespace ExampleLibrary
     public static class CandleStickAndVolumeSeriesExamples
     {
         [Example("Candles + Volume (combined volume), adjusting Y-axis")]
-        public static Example CombinedVolume_Adj()
+        public static Example CombinedVolume_Adjusting()
         {
             return CreateCandleStickAndVolumeSeriesExample(
                 "Candles + Volume (combined volume)", 
@@ -28,7 +28,7 @@ namespace ExampleLibrary
         }
 
         [Example("Candles + Volume (combined volume), natural Y-axis")]
-        public static Example CombinedVolume_Nat()
+        public static Example CombinedVolume_Natural()
         {
             return CreateCandleStickAndVolumeSeriesExample(
                 "Candles + Volume (combined volume)", 
@@ -38,7 +38,7 @@ namespace ExampleLibrary
         }
 
         [Example("Candles + Volume (stacked volume), adjusting Y-axis")]
-        public static Example StackedVolume_Adj()
+        public static Example StackedVolume_Adjusting()
         {
             return CreateCandleStickAndVolumeSeriesExample(
                 "Candles + Volume (stacked volume)", 
@@ -48,7 +48,7 @@ namespace ExampleLibrary
         }
 
         [Example("Candles + Volume (stacked volume), natural Y-axis")]
-        public static Example StackedVolume_Nat()
+        public static Example StackedVolume_Natural()
         {
             return CreateCandleStickAndVolumeSeriesExample(
                 "Candles + Volume (stacked volume)", 
@@ -58,7 +58,7 @@ namespace ExampleLibrary
         }
 
         [Example("Candles + Volume (+/- volume), adjusting Y-axis")]
-        public static Example PosNegVolume_Adj()
+        public static Example PosNegVolume_Adjusting()
         {
             return CreateCandleStickAndVolumeSeriesExample(
                 "Candles + Volume (+/- volume)",
@@ -68,7 +68,7 @@ namespace ExampleLibrary
         }
 
         [Example("Candles + Volume (+/- volume), natural Y-axis")]
-        public static Example PosNegVolume_Nat()
+        public static Example PosNegVolume_Natural()
         {
             return CreateCandleStickAndVolumeSeriesExample(
                 "Candles + Volume (+/- volume)",
@@ -78,7 +78,7 @@ namespace ExampleLibrary
         }
 
         [Example("Candles + Volume (volume not shown), adjusting Y-axis")]
-        public static Example NoVolume_Adj()
+        public static Example NoVolume_Adjusting()
         {
             return CreateCandleStickAndVolumeSeriesExample(
                 "Candles + Volume (volume not shown)", 
@@ -88,7 +88,7 @@ namespace ExampleLibrary
         }
 
         [Example("Candles + Volume (volume not shown), natural Y-axis")]
-        public static Example NoVolume_Nat()
+        public static Example NoVolume_Natural()
         {
             return CreateCandleStickAndVolumeSeriesExample(
                 "Candles + Volume (volume not shown)", 
@@ -150,7 +150,7 @@ namespace ExampleLibrary
             var barAxis = new LinearAxis
             {
                 Position = AxisPosition.Left,
-                Key = "Bars",
+                Key = series.BarAxisKey,
                 StartPosition = 0.25,
                 EndPosition = 1.0,
                 Minimum = naturalY ? double.NaN : Ymin,
@@ -159,7 +159,7 @@ namespace ExampleLibrary
             var volAxis = new LinearAxis
             {
                 Position = AxisPosition.Left,
-                Key = "Volume",
+                Key = series.VolumeAxisKey,
                 StartPosition = 0.0,
                 EndPosition = 0.22,
                 Minimum = naturalV ? double.NaN : 0,

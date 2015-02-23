@@ -40,11 +40,6 @@ namespace OxyPlot.Series
         private int winIndex;
 
         /// <summary>
-        /// The style of volume to be rendered
-        /// </summary>
-        private VolumeStyle volumeStyle;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref = "VolumeSeries" /> class.
         /// </summary>
         public VolumeSeries()
@@ -83,30 +78,9 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Gets or sets the style of volume rendering
+        /// Gets or sets the style of volume rendering (defaults to Combined)
         /// </summary>
-        public VolumeStyle VolumeStyle 
-        { 
-            get
-            {
-                return this.volumeStyle;
-            }
-        
-            set
-            {
-                // if style has changed adjust axis min/max
-                if (value != this.volumeStyle && this.YAxis != null)
-                {
-                    this.volumeStyle = value;
-                    this.YAxis.ResetDataMaxMin();
-                    this.UpdateAxisMaxMin();
-                }
-                else
-                {
-                    this.volumeStyle = value;
-                }
-            }
-        }
+        public VolumeStyle VolumeStyle { get; set; }
 
         /// <summary>
         /// Gets or sets the thickness of the bar lines
