@@ -3,20 +3,17 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 ### Added
-- Created a new OxyPlot.Mobile NuGet to combine the mobile platforms into a single NuGet. (#362)
+- Created a new OxyPlot.Mobile NuGet package to combine the mobile platforms into a single package. (#362)
 - Support for XWT (#295)
 - TwoColorAreaSeries (#299)
 - Delta values in AxisChangedEventArgs (#276)
 - Enable Git source server (added GitLink build step) (#267,#266)
 - iOS PlotView ZoomThreshold/AllowPinchPastZero for use with KeepAspectRatioWhenPinching=false (#359)
-- Added OHLCVItem, CandleStickAndVolumeSeries, VolumeSeries & examples (#377)
-- Added DesiredSize property on Axis (#383)
+- CandleStickAndVolumeSeries and VolumeSeries (#377)
+- Axis.DesiredSize property (#383)
 
 ### Changed
 - Changed the OxyPlot.Xamarin.Forms to require the OxyPlot.Mobile dependency instead of each separate NuGet. (#362)
-- Deleted PlotModel.ToSvg. Use the SvgExporter instead. (#347)
-- Deleted constructors with parameters. Use default constructors instead. (#347)
-- Deleted Axis.ShowMinorTicks. Use MinorTickSize = 0 instead. (#347)
 - Renamed OxyPlot.XamarinIOS to OxyPlot.MonoTouch (#327)
 - Renamed OxyPlot.XamarinAndroid to OxyPlot.Xamarin.Android (#327)
 - Renamed OxyPlot.XamarinForms to OxyPlot.Xamarin.Forms (#327)
@@ -27,11 +24,14 @@ All notable changes to this project will be documented in this file.
 - Xamarin Forms references updated to 1.3.1 (#293)
 - Changed OxyPlot.Xamarin.Android target to Android level 10 (#223)
 - Separated WPF Plot and PlotView (#252,#239)
-- current CandleStickSeries renamed to OldCandleStickSeries, replaced by a faster implementation (#369)
-- fixed axis min/max calc & axis assignment for CandleStick + VolumeSeries (#389)
+- Current CandleStickSeries renamed to OldCandleStickSeries, replaced by a faster implementation (#369)
+- Fixed axis min/max calc and axis assignment for CandleStick + VolumeSeries (#389)
 
 ### Removed
 - OxyPlot.Metro project (superseded by OxyPlot.WindowsUniversal) (#241)
+- PlotModel.ToSvg method. Use the SvgExporter instead. (#347)
+- Constructors with parameters. Use default constructors instead. (#347)
+- Axis.ShowMinorTicks property. Use MinorTickSize = 0 instead. (#347)
 
 ### Fixed
 - Fixed the dependency of OxyPlot.Xamarin.Forms NuGet (#370)
