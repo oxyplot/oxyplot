@@ -178,7 +178,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets or sets the stroke color.
         /// </summary>
-        /// <value>The stroke.</value>
+        /// <value>The stroke color.</value>
         public OxyColor Stroke { get; set; }
 
         /// <summary>
