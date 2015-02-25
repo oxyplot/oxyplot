@@ -23,7 +23,7 @@ namespace OxyPlot
         bool RendersToScreen { get; }
 
         /// <summary>
-        /// Draws an extents.
+        /// Draws an ellipse.
         /// </summary>
         /// <param name="extents">The rectangle defining the extents of the ellipse.</param>
         /// <param name="fill">The fill color. If set to <c>OxyColors.Undefined</c>, the extents will not be filled.</param>
@@ -33,18 +33,20 @@ namespace OxyPlot
 
         /// <summary>
         /// Draws a collection of ellipses, where all have the same stroke and fill.
-        /// This performs better than calling DrawEllipse multiple times.
         /// </summary>
         /// <param name="extents">The rectangles defining the extents of the ellipses.</param>
         /// <param name="fill">The fill color. If set to <c>OxyColors.Undefined</c>, the ellipses will not be filled.</param>
         /// <param name="stroke">The stroke color. If set to <c>OxyColors.Undefined</c>, the ellipses will not be stroked.</param>
         /// <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
+        /// <remarks>
+        /// This should have better performance than calling <see cref="DrawEllipse" /> multiple times.
+        /// </remarks>
         void DrawEllipses(IList<OxyRect> extents, OxyColor fill, OxyColor stroke, double thickness = 1.0);
 
         /// <summary>
         /// Draws a polyline.
         /// </summary>
-        /// <param name="points">The points defining the polyline.</param>
+        /// <param name="points">The points defining the polyline. The polyline is drawn from point 0, to point 1, to point 2 and so on.</param>
         /// <param name="stroke">The stroke color.</param>
         /// <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
         /// <param name="dashArray">The dash array (in device independent units, 1/96 inch). Use <c>null</c> to get a solid line.</param>
@@ -59,15 +61,17 @@ namespace OxyPlot
             bool aliased = false);
 
         /// <summary>
-        /// Draws line segments defined by points (0,1) (2,3) (4,5) etc.
-        /// This should have better performance than calling DrawLine for each segment.
+        /// Draws line segments.
         /// </summary>
-        /// <param name="points">The points defining the line segments.</param>
+        /// <param name="points">The points defining the line segments. Lines are drawn from point 0 to 1, point 2 to 3 and so on.</param>
         /// <param name="stroke">The stroke color.</param>
         /// <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
         /// <param name="dashArray">The dash array (in device independent units, 1/96 inch).</param>
         /// <param name="lineJoin">The line join type.</param>
         /// <param name="aliased">if set to <c>true</c> the shape will be aliased.</param>
+        /// <remarks>
+        /// This should have better performance than calling <see cref="DrawLine" /> for each segment.
+        /// </remarks>
         void DrawLineSegments(
             IList<ScreenPoint> points,
             OxyColor stroke,
@@ -97,7 +101,6 @@ namespace OxyPlot
 
         /// <summary>
         /// Draws a collection of polygons, where all polygons have the same stroke and fill.
-        /// This performs better than calling DrawPolygon multiple times.
         /// </summary>
         /// <param name="polygons">The polygons to draw.</param>
         /// <param name="fill">The fill color. If set to <c>OxyColors.Undefined</c>, the polygons will not be filled.</param>
@@ -106,6 +109,9 @@ namespace OxyPlot
         /// <param name="dashArray">The dash array (in device independent units, 1/96 inch).</param>
         /// <param name="lineJoin">The line join type.</param>
         /// <param name="aliased">if set to <c>true</c> the shape will be aliased.</param>
+        /// <remarks>
+        /// This performs better than calling <see cref="DrawPolygon" /> multiple times.
+        /// </remarks>
         void DrawPolygons(
             IList<IList<ScreenPoint>> polygons,
             OxyColor fill,
@@ -126,12 +132,14 @@ namespace OxyPlot
 
         /// <summary>
         /// Draws a collection of extents, where all have the same stroke and fill.
-        /// This performs better than calling DrawRectangle multiple times.
         /// </summary>
         /// <param name="rectangles">The extents to draw.</param>
         /// <param name="fill">The fill color. If set to <c>OxyColors.Undefined</c>, the extents will not be filled.</param>
         /// <param name="stroke">The stroke color. If set to <c>OxyColors.Undefined</c>, the extents will not be stroked.</param>
         /// <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
+        /// <remarks>
+        /// This should have better performance than calling <see cref="DrawRectangle" /> multiple times.
+        /// </remarks>
         void DrawRectangles(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness = 1.0);
 
         /// <summary>
@@ -146,7 +154,10 @@ namespace OxyPlot
         /// <param name="rotation">The rotation angle.</param>
         /// <param name="horizontalAlignment">The horizontal alignment.</param>
         /// <param name="verticalAlignment">The vertical alignment.</param>
-        /// <param name="maxSize">The maximum size of the text (in device independent units, 1/96 inch).</param>
+        /// <param name="maxSize">The maximum size of the text (in device independent units, 1/96 inch). If set to <c>null</c>, the text will not be clipped.</param>
+        /// <remarks>
+        /// Multi-line text is not supported.
+        /// </remarks>
         void DrawText(
             ScreenPoint p,
             string text,
@@ -162,7 +173,7 @@ namespace OxyPlot
         /// <summary>
         /// Measures the size of the specified text.
         /// </summary>
-        /// <param name="text">The text.</param>
+        /// <param name="text">The text to measure.</param>
         /// <param name="fontFamily">The font family.</param>
         /// <param name="fontSize">Size of the font (in device independent units, 1/96 inch).</param>
         /// <param name="fontWeight">The font weight.</param>
@@ -201,7 +212,9 @@ namespace OxyPlot
         /// Sets the clipping rectangle.
         /// </summary>
         /// <param name="clippingRectangle">The clipping rectangle.</param>
-        /// <returns><c>true</c> if the clip rectangle was set.</returns>
+        /// <returns>
+        ///   <c>true</c> if the clipping rectangle was set.
+        /// </returns>
         bool SetClip(OxyRect clippingRectangle);
 
         /// <summary>
