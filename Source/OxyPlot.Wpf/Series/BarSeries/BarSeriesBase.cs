@@ -142,9 +142,9 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the color of the fill.
+        /// Gets or sets the color of the fill color.
         /// </summary>
-        /// <value>The color of the fill.</value>
+        /// <value>The color of the fill color.</value>
         public Color FillColor
         {
             get

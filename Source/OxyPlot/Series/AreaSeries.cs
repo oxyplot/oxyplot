@@ -74,7 +74,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets or sets the area fill color.
         /// </summary>
-        /// <value>The fill.</value>
+        /// <value>The fill color.</value>
         public OxyColor Fill { get; set; }
 
         /// <summary>
