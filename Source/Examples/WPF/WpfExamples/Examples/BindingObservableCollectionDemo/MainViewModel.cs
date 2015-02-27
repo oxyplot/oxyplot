@@ -4,6 +4,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+
 namespace BindingObservableCollectionDemo
 {
     using System;
@@ -15,32 +17,38 @@ namespace BindingObservableCollectionDemo
 
     public class MainViewModel
     {
+        private double dy = 0;
+
+        private double y = 0;
+
+        private Random random = new Random(385);
+
+        private int i = 0;
+
         public MainViewModel()
         {
             this.Measurements = new ObservableCollection<Measurement>();
-            const int N = 500;
-            this.Subtitle = "N = " + N;
+            const int N = 10;
+            this.Subtitle = "N = " + 10;
 
-            this.LoadCommand = new DelegateCommand(() => this.Load(N));
+            this.LoadCommand = new DelegateCommand(() => this.LoadNextPoint(N));
         }
 
-        private void Load(int N)
+        private void LoadNextPoint(int N)
         {
-            var r = new Random(385);
-            double dy = 0;
-            double y = 0;
-            for (int i = 0; i < N; i++)
+            for (int j = 0; j < N; j++)
             {
-                dy += (r.NextDouble() * 2) - 1;
-                y += dy;
+                this.dy += (this.random.NextDouble() * 2) - 1;
+                this.y += this.dy;
                 this.Measurements.Add(
                     new Measurement
                     {
-                        Time = 2.5 * i / (N - 1),
-                        Value = y / (N - 1),
-                        Maximum = (y / (N - 1)) + 5,
-                        Minimum = (y / (N - 1)) - 5
+                        Time = 2.5 * this.i / (N - 1),
+                        Value = this.y / (N - 1),
+                        Maximum = (this.y / (N - 1)) + 5,
+                        Minimum = (this.y / (N - 1)) - 5
                     });
+                i++;
             }
         }
 
