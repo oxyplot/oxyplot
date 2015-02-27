@@ -7,6 +7,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Specialized;
+
 namespace OxyPlot.Wpf
 {
     using System.Collections;
@@ -171,6 +174,39 @@ namespace OxyPlot.Wpf
         protected override void OnItemsSourceChanged(IEnumerable oldValue, IEnumerable newValue)
         {
             base.OnItemsSourceChanged(oldValue, newValue);
+            SubscribeToCollectionChanged(oldValue, newValue);
+            this.OnDataChanged();
+        }
+
+        /// <summary>
+        /// If the ItemsSource implements INotifyCollectionChanged update the visual when the collection changes.
+        /// </summary>
+        /// <param name="oldValue"></param>
+        /// <param name="newValue"></param>
+        private void SubscribeToCollectionChanged(IEnumerable oldValue, IEnumerable newValue)
+        {
+            var collection = oldValue as INotifyCollectionChanged;
+            if (collection != null)
+            {
+                var oldCollection = collection;
+                oldCollection.CollectionChanged -= OnCollectionChanged;
+            }
+
+            collection = newValue as INotifyCollectionChanged;
+            if (collection != null)
+            {
+                var oldCollection = collection;
+                oldCollection.CollectionChanged += OnCollectionChanged;
+            }
+        }
+
+        /// <summary>
+        /// Invalidate the view when the collection changes
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="notifyCollectionChangedEventArgs"></param>
+        private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
+        {
             this.OnDataChanged();
         }
 
