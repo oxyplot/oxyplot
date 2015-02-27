@@ -7,12 +7,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Specialized;
-
 namespace OxyPlot.Wpf
 {
     using System.Collections;
+    using System.Collections.Specialized;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Media;
@@ -174,39 +172,7 @@ namespace OxyPlot.Wpf
         protected override void OnItemsSourceChanged(IEnumerable oldValue, IEnumerable newValue)
         {
             base.OnItemsSourceChanged(oldValue, newValue);
-            SubscribeToCollectionChanged(oldValue, newValue);
-            this.OnDataChanged();
-        }
-
-        /// <summary>
-        /// If the ItemsSource implements INotifyCollectionChanged update the visual when the collection changes.
-        /// </summary>
-        /// <param name="oldValue"></param>
-        /// <param name="newValue"></param>
-        private void SubscribeToCollectionChanged(IEnumerable oldValue, IEnumerable newValue)
-        {
-            var collection = oldValue as INotifyCollectionChanged;
-            if (collection != null)
-            {
-                var oldCollection = collection;
-                oldCollection.CollectionChanged -= OnCollectionChanged;
-            }
-
-            collection = newValue as INotifyCollectionChanged;
-            if (collection != null)
-            {
-                var oldCollection = collection;
-                oldCollection.CollectionChanged += OnCollectionChanged;
-            }
-        }
-
-        /// <summary>
-        /// Invalidate the view when the collection changes
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="notifyCollectionChangedEventArgs"></param>
-        private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
-        {
+            this.SubscribeToCollectionChanged(oldValue, newValue);
             this.OnDataChanged();
         }
 
@@ -236,6 +202,38 @@ namespace OxyPlot.Wpf
             s.IsVisible = this.Visibility == Visibility.Visible;
             s.Font = this.FontFamily.ToString();
             s.TextColor = this.Foreground.ToOxyColor();
+        }
+
+        /// <summary>
+        /// If the ItemsSource implements INotifyCollectionChanged update the visual when the collection changes.
+        /// </summary>
+        /// <param name="oldValue">The old ItemsSource</param>
+        /// <param name="newValue">The new ItemsSource</param>
+        private void SubscribeToCollectionChanged(IEnumerable oldValue, IEnumerable newValue)
+        {
+            var collection = oldValue as INotifyCollectionChanged;
+            if (collection != null)
+            {
+                var oldCollection = collection;
+                oldCollection.CollectionChanged -= this.OnCollectionChanged;
+            }
+
+            collection = newValue as INotifyCollectionChanged;
+            if (collection != null)
+            {
+                var oldCollection = collection;
+                oldCollection.CollectionChanged += this.OnCollectionChanged;
+            }
+        }
+
+        /// <summary>
+        /// Invalidate the view when the collection changes
+        /// </summary>
+        /// <param name="sender">The sender</param>
+        /// <param name="notifyCollectionChangedEventArgs">The collection changed args</param>
+        private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
+        {
+            this.OnDataChanged();
         }
     }
 }
