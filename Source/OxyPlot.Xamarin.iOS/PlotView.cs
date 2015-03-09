@@ -85,6 +85,9 @@ namespace OxyPlot.Xamarin.iOS
                 HandlePanZoomGesture();
             });
 
+            // Do not intercept touches on overlapping views
+            this.panZoomGesture.ShouldReceiveTouch += (recognizer, touch) => touch.View == this;
+
             this.AddGestureRecognizer(this.panZoomGesture);
         }
 
