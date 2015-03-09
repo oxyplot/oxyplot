@@ -214,15 +214,13 @@ namespace OxyPlot.Wpf
             var collection = oldValue as INotifyCollectionChanged;
             if (collection != null)
             {
-                var oldCollection = collection;
-                oldCollection.CollectionChanged -= this.OnCollectionChanged;
+                CollectionChangedEventManager.RemoveHandler(collection, this.OnCollectionChanged);
             }
 
             collection = newValue as INotifyCollectionChanged;
             if (collection != null)
             {
-                var oldCollection = collection;
-                oldCollection.CollectionChanged += this.OnCollectionChanged;
+                CollectionChangedEventManager.AddHandler(collection, this.OnCollectionChanged);
             }
         }
 
