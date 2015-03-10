@@ -50,7 +50,7 @@ namespace OxyPlot.Wpf
         public static readonly DependencyProperty TrackerKeyProperty = DependencyProperty.Register(
             "TrackerKey", typeof(string), typeof(Series), new PropertyMetadata(null, AppearanceChanged));
 
-        private readonly EventListener _eventListener;
+        private readonly EventListener eventListener;
 
         /// <summary>
         /// Initializes static members of the <see cref="Series" /> class.
@@ -61,9 +61,12 @@ namespace OxyPlot.Wpf
             BackgroundProperty.OverrideMetadata(typeof(Series), new FrameworkPropertyMetadata(null, AppearanceChanged));
         }
 
+        /// <summary>
+        /// Create a Series
+        /// </summary>
         public Series()
         {
-            _eventListener = new EventListener(this.OnCollectionChanged);
+            this.eventListener = new EventListener(this.OnCollectionChanged);
         }
 
 
@@ -224,13 +227,13 @@ namespace OxyPlot.Wpf
             var collection = oldValue as INotifyCollectionChanged;
             if (collection != null)
             {
-                CollectionChangedEventManager.RemoveListener(collection, _eventListener);
+                CollectionChangedEventManager.RemoveListener(collection, this.eventListener);
             }
 
             collection = newValue as INotifyCollectionChanged;
             if (collection != null)
             {
-                CollectionChangedEventManager.AddListener(collection, _eventListener);
+                CollectionChangedEventManager.AddListener(collection, this.eventListener);
             }
         }
 
