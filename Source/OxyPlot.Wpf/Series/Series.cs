@@ -6,8 +6,6 @@
 //   Abstract base class for series.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-
 namespace OxyPlot.Wpf
 {
     using System;
@@ -50,6 +48,9 @@ namespace OxyPlot.Wpf
         public static readonly DependencyProperty TrackerKeyProperty = DependencyProperty.Register(
             "TrackerKey", typeof(string), typeof(Series), new PropertyMetadata(null, AppearanceChanged));
 
+        /// <summary>
+        /// The event listener used to subscribe to ItemSource.CollectionChanged events
+        /// </summary>
         private readonly EventListener eventListener;
 
         /// <summary>
@@ -62,13 +63,12 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Create a Series
+        /// Initializes a new instance of the <see cref="Series" /> class.
         /// </summary>
-        public Series()
+        protected Series()
         {
             this.eventListener = new EventListener(this.OnCollectionChanged);
         }
-
 
         /// <summary>
         /// Gets or sets Color.
@@ -247,22 +247,40 @@ namespace OxyPlot.Wpf
             this.OnDataChanged();
         }
 
+        /// <summary>
+        /// Listens to and forwards any collection changed events
+        /// </summary>
         private class EventListener : IWeakEventListener
         {
-            private readonly EventHandler<NotifyCollectionChangedEventArgs> _onCollectionChanged;
+            /// <summary>
+            /// The delegate to forward to
+            /// </summary>
+            private readonly EventHandler<NotifyCollectionChangedEventArgs> onCollectionChanged;
 
+            /// <summary>
+            /// Create an event listener
+            /// </summary>
+            /// <param name="onCollectionChanged"></param>
             public EventListener(EventHandler<NotifyCollectionChangedEventArgs> onCollectionChanged)
             {
-                _onCollectionChanged = onCollectionChanged;
+                this.onCollectionChanged = onCollectionChanged;
             }
 
+            /// <summary>
+            /// Receive a weak event
+            /// </summary>
+            /// <param name="managerType"></param>
+            /// <param name="sender"></param>
+            /// <param name="e"></param>
+            /// <returns></returns>
             public bool ReceiveWeakEvent(Type managerType, object sender, EventArgs e)
             {
                 if (managerType == typeof(CollectionChangedEventManager))
                 {
-                    _onCollectionChanged(sender, (NotifyCollectionChangedEventArgs)e);
+                    this.onCollectionChanged(sender, (NotifyCollectionChangedEventArgs)e);
                     return true;
                 }
+
                 return false;
             }
         }
