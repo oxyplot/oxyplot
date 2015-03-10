@@ -7,8 +7,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+
 namespace OxyPlot.Wpf
 {
+    using System;
     using System.Collections;
     using System.Collections.Specialized;
     using System.Windows;
@@ -48,6 +50,8 @@ namespace OxyPlot.Wpf
         public static readonly DependencyProperty TrackerKeyProperty = DependencyProperty.Register(
             "TrackerKey", typeof(string), typeof(Series), new PropertyMetadata(null, AppearanceChanged));
 
+        private readonly EventListener _eventListener;
+
         /// <summary>
         /// Initializes static members of the <see cref="Series" /> class.
         /// </summary>
@@ -56,6 +60,12 @@ namespace OxyPlot.Wpf
             VisibilityProperty.OverrideMetadata(typeof(Series), new PropertyMetadata(Visibility.Visible, AppearanceChanged));
             BackgroundProperty.OverrideMetadata(typeof(Series), new FrameworkPropertyMetadata(null, AppearanceChanged));
         }
+
+        public Series()
+        {
+            _eventListener = new EventListener(this.OnCollectionChanged);
+        }
+
 
         /// <summary>
         /// Gets or sets Color.
@@ -214,13 +224,13 @@ namespace OxyPlot.Wpf
             var collection = oldValue as INotifyCollectionChanged;
             if (collection != null)
             {
-                CollectionChangedEventManager.RemoveHandler(collection, this.OnCollectionChanged);
+                CollectionChangedEventManager.RemoveListener(collection, _eventListener);
             }
 
             collection = newValue as INotifyCollectionChanged;
             if (collection != null)
             {
-                CollectionChangedEventManager.AddHandler(collection, this.OnCollectionChanged);
+                CollectionChangedEventManager.AddListener(collection, _eventListener);
             }
         }
 
@@ -232,6 +242,26 @@ namespace OxyPlot.Wpf
         private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
         {
             this.OnDataChanged();
+        }
+
+        private class EventListener : IWeakEventListener
+        {
+            private readonly EventHandler<NotifyCollectionChangedEventArgs> _onCollectionChanged;
+
+            public EventListener(EventHandler<NotifyCollectionChangedEventArgs> onCollectionChanged)
+            {
+                _onCollectionChanged = onCollectionChanged;
+            }
+
+            public bool ReceiveWeakEvent(Type managerType, object sender, EventArgs e)
+            {
+                if (managerType == typeof(CollectionChangedEventManager))
+                {
+                    _onCollectionChanged(sender, (NotifyCollectionChangedEventArgs)e);
+                    return true;
+                }
+                return false;
+            }
         }
     }
 }
