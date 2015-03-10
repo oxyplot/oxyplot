@@ -248,7 +248,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Listens to and forwards any collection changed events
+        /// Initializes a new instance of the <see cref="EventListener" /> class.  Listens to and forwards any collection changed events
         /// </summary>
         private class EventListener : IWeakEventListener
         {
@@ -269,10 +269,10 @@ namespace OxyPlot.Wpf
             /// <summary>
             /// Receive a weak event
             /// </summary>
-            /// <param name="managerType"></param>
-            /// <param name="sender"></param>
-            /// <param name="e"></param>
-            /// <returns></returns>
+            /// <param name="managerType">The manager type</param>
+            /// <param name="sender">The sender</param>
+            /// <param name="e">The arguments</param>
+            /// <returns>Whether the event was handled or not</returns>
             public bool ReceiveWeakEvent(Type managerType, object sender, EventArgs e)
             {
                 if (managerType == typeof(CollectionChangedEventManager))
