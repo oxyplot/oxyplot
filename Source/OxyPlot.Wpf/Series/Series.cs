@@ -248,7 +248,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EventListener" /> class.  Listens to and forwards any collection changed events
+        /// Listens to and forwards any collection changed events
         /// </summary>
         private class EventListener : IWeakEventListener
         {
@@ -258,9 +258,9 @@ namespace OxyPlot.Wpf
             private readonly EventHandler<NotifyCollectionChangedEventArgs> onCollectionChanged;
 
             /// <summary>
-            /// Create an event listener
+            /// Initializes a new instance of the <see cref="EventListener" /> class
             /// </summary>
-            /// <param name="onCollectionChanged"></param>
+            /// <param name="onCollectionChanged">The handler</param>
             public EventListener(EventHandler<NotifyCollectionChangedEventArgs> onCollectionChanged)
             {
                 this.onCollectionChanged = onCollectionChanged;
