@@ -7,24 +7,22 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace BindingDemo
+namespace BindingObservableCollectionDemo
 {
     using System.Windows;
-
-    using global::BindingDemo;
 
     using WpfExamples;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    [Example("Demonstrates data binding.")]
+    [Example("Demonstrates data binding with an observable collection.")]
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
             this.InitializeComponent();
-            var vm = new MainViewModel();
+            var vm = new global::BindingObservableCollectionDemo.MainViewModel();
             this.DataContext = vm;
         }
     }
