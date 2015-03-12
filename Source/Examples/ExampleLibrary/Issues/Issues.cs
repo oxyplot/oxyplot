@@ -892,7 +892,7 @@ namespace ExampleLibrary
                 Title = "Custom",
                 LineStyle = LineStyle.Solid,
                 // dashd-dot pattern
-                Dashes = new[] {10.0, 2.0, 4.0, 2.0},
+                Dashes = new[] { 10.0, 2.0, 4.0, 2.0 },
             };
             solid.Points.Add(new DataPoint(0, 2));
             solid.Points.Add(new DataPoint(100, 1));
@@ -903,5 +903,62 @@ namespace ExampleLibrary
             plotModel1.LegendSymbolLength = 100; // wide enough to see pattern
             return plotModel1;
         }
+
+        [Example("#409 ImageAnnotation width width/height crashes")]
+        public static PlotModel ImageAnnotationWithWidthHeightCrashes()
+        {
+            var myModel = new PlotModel { Title = "Example 1" };
+            myModel.Series.Add(new FunctionSeries(Math.Cos, 0, 10, 0.1, "cos(x)"));
+
+            var rng = new Random();
+            var buf = new byte[100, 100];
+            for (int i = 0; i < 100; i++)
+            {
+                for (int j = 0; j < 100; j++)
+                {
+                    buf[i, j] = (byte)rng.Next();
+                }
+            }
+
+            var palette = new OxyColor[256];
+            for (int i = 0; i < palette.Length; i++)
+            {
+                palette[i] = OxyColor.FromArgb(128, (byte)i, 0, 0);
+            }
+
+            var image = OxyImage.Create(buf, palette, ImageFormat.Bmp);
+            myModel.Annotations.Add(new ImageAnnotation
+            {
+                ImageSource = image,
+
+                X = new PlotLength(1, PlotLengthUnit.Data),
+                Y = new PlotLength(0, PlotLengthUnit.Data),
+                Width = new PlotLength(1, PlotLengthUnit.Data),
+                Height = new PlotLength(1, PlotLengthUnit.Data)
+            });
+
+            myModel.Annotations.Add(new ImageAnnotation
+            {
+                ImageSource = image,
+
+                X = new PlotLength(5, PlotLengthUnit.Data),
+                Y = new PlotLength(0, PlotLengthUnit.Data),
+            });
+
+            return myModel;
+        }
+
+        /* NEW ISSUE TEMPLATE
+        [Example("#356 Issue Description")]
+        public static PlotModel IssueDescription()
+        {
+            var plotModel1 = new PlotModel
+            {
+                Title = "",
+            };
+
+            return plotModel1;
+        }
+        */
     }
 }
