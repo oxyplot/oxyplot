@@ -18,8 +18,8 @@
   </metadata>
   <files>
     <file src="..\Output\WindowsUniversal\OxyPlot.WindowsUniversal.???" target="lib\portable-windows8+wpa81\" />
-    <file src="..\Output\WindowsUniversal\OxyPlot.WindowsUniversal.xr.xml" target="lib\portable-windows8+wpa81\" />
-    <file src="..\Output\WindowsUniversal\Themes\*.*" target="lib\portable-windows8+wpa81\Themes\" />
+    <file src="..\Output\WindowsUniversal\OxyPlot.WindowsUniversal.xr.xml" target="lib\portable-windows8+wpa81\OxyPlot.WindowsUniversal\" />
+    <file src="..\Output\WindowsUniversal\Themes\*.*" target="lib\portable-windows8+wpa81\OxyPlot.WindowsUniversal\Themes\" />
 
     <file src="..\Output\WP8\OxyPlot.WP8.???" target="lib\windowsphone8" />
 
