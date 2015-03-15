@@ -26,6 +26,7 @@ All notable changes to this project will be documented in this file.
 - Separated WPF Plot and PlotView (#252,#239)
 - Current CandleStickSeries renamed to OldCandleStickSeries, replaced by a faster implementation (#369)
 - Fixed axis min/max calc and axis assignment for CandleStick + VolumeSeries (#389)
+- Invalidate plot when ItemsSource contents change (INotifyCollectionChanged) on WPF only (#406)
 
 ### Removed
 - OxyPlot.Metro project (superseded by OxyPlot.WindowsUniversal) (#241)

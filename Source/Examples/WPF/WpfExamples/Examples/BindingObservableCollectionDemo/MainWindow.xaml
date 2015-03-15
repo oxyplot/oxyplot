@@ -1,9 +1,15 @@
-﻿<Window x:Class="BindingDemo.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+﻿<Window x:Class="BindingObservableCollectionDemo.Window" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf"
         Title="BindingDemo" Width="640"
         Height="480">
   <Grid>
-    <oxy:Plot Title="Binding ItemsSource" Subtitle="{Binding Subtitle}">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+    <Button Command="{Binding LoadCommand}" Content="Load next points" />
+    <oxy:Plot Title="Binding ItemsSource" Grid.Row="1"
+              Subtitle="{Binding Subtitle}">
       <oxy:Plot.Series>
         <oxy:LineSeries Title="Value" DataFieldX="Time"
                         DataFieldY="Value"
