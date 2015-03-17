@@ -427,7 +427,7 @@ namespace OxyPlot.Tests
             Assert.AreEqual(100, plot.Axes[0].ActualMaximum);
             Assert.AreEqual(1, plot.Axes[0].ActualMinimum);
         }
-            
+
         /// <summary>
         /// Test DesiredSize property to see if working property
         /// </summary>
@@ -447,7 +447,7 @@ namespace OxyPlot.Tests
             ls.Points.Add(new DataPoint(30, 23));
             ls.Points.Add(new DataPoint(40, 65));
             ls.Points.Add(new DataPoint(80, 10));
-            plot.Series.Add (ls);
+            plot.Series.Add(ls);
 
             // initial setting
             plot.UpdateAndRenderToNull(800, 600);
@@ -459,7 +459,7 @@ namespace OxyPlot.Tests
 
             // larger numbers on axis -> larger desired size
             yaxis.Zoom(10000, 11000);
-            plot.UpdateAndRenderToNull (800, 600);
+            plot.UpdateAndRenderToNull(800, 600);
 
             Assert.That(yaxis.DesiredSize.Width, Is.EqualTo(50.0).Within(0.5), "y-axis width");
             Assert.That(yaxis.DesiredSize.Height, Is.EqualTo(0.0).Within(1e-6), "y-axis height");

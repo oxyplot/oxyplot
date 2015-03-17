@@ -12,6 +12,8 @@ namespace ExampleLibrary
     using System;
     using System.Threading;
     using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Globalization;
 
     using OxyPlot;
     using OxyPlot.Annotations;
@@ -1014,6 +1016,36 @@ namespace ExampleLibrary
             plotModel1.Axes.Add(axis);
             plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
             return plotModel1;
+        }
+
+        [Example("#402 ColumnSeries with dates")]
+        public static PlotModel ColumnSeriesWithDates()
+        {
+            var plotModel1 = new PlotModel
+            {
+                Title = "ColumnSeries with dates",
+                Culture = CultureInfo.InvariantCulture
+            };
+            var data = new[]
+            {
+                new TimeValue { Time = new DateTime(2015, 1, 1), Value = 700 },
+                new TimeValue { Time = new DateTime(2015, 1, 2), Value = 710 },
+                new TimeValue { Time = new DateTime(2015, 1, 3), Value = 580},
+                new TimeValue { Time = new DateTime(2015, 1, 4), Value = 710 },
+                new TimeValue { Time = new DateTime(2015, 1, 5), Value = 715 },
+                new TimeValue { Time = new DateTime(2015, 1, 6), Value = 580 },
+            };
+
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 0, Maximum = 1000 });
+            plotModel1.Axes.Add(new CategoryAxis { ItemsSource = data, LabelField = "Time", StringFormat = "ddd" });
+            plotModel1.Series.Add(new ColumnSeries { ItemsSource = data, ValueField = "Value" });
+            return plotModel1;
+        }
+
+        private class TimeValue
+        {
+            public DateTime Time { get; set; }
+            public double Value { get; set; }
         }
 
         /* NEW ISSUE TEMPLATE
