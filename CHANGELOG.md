@@ -35,6 +35,7 @@ All notable changes to this project will be documented in this file.
 - Axis.ShowMinorTicks property. Use MinorTickSize = 0 instead. (#347)
 
 ### Fixed
+- CategoryAxis should use StringFormat (#415)
 - Fixed the dependency of OxyPlot.Xamarin.Forms NuGet (#370)
 - Add default ctor for Xamarin.Forms iOS renderer (#348)
 - Windows Phone cursor exception (#345)

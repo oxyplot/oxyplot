@@ -8,6 +8,7 @@ namespace OxyPlot.Tests
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
 
     using NUnit.Framework;
 
@@ -16,6 +17,16 @@ namespace OxyPlot.Tests
     [TestFixture]
     public class ReflectionExtensionsTests
     {
+        [Test]
+        public void AddFormattedRangeWithSimpleProperties()
+        {
+            var items = new List<Item> { new Item { A = 1, B = 2 } };
+            var result = new List<string>();
+            result.AddFormattedRange(items, "A", "0.0", CultureInfo.InvariantCulture);
+            Assert.That(result.Count, Is.EqualTo(1));
+            Assert.That(result[0], Is.EqualTo("1.0"));
+        }
+
         [Test]
         public void AddRangeWithSimpleProperties()
         {

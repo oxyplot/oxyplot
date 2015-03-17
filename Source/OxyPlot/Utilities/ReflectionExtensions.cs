@@ -60,6 +60,27 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Fills a formatted string collection by the specified property of a source enumerable.
+        /// </summary>
+        /// <param name="target">The target list to be filled.</param>
+        /// <param name="source">The source target.</param>
+        /// <param name="propertyName">The property name.</param>
+        /// <param name="formatString">The format string.</param>
+        /// <param name="provider">The provider.</param>
+        /// <exception cref="System.InvalidOperationException">Could not find property.</exception>
+        public static void AddFormattedRange(this List<string> target, IEnumerable source, string propertyName, string formatString, IFormatProvider provider)
+        {
+            var pi = new ReflectionPath(propertyName);
+            var fs = "{0:" + formatString + "}";
+            foreach (var o in source)
+            {
+                var v = pi.GetValue(o);
+                var value = string.Format(provider, fs, v);
+                target.Add(value);
+            }
+        }
+
+        /// <summary>
         /// Adds data points from the specified source to the specified destination.
         /// </summary>
         /// <param name="target">The destination target.</param>
