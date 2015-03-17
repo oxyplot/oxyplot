@@ -948,6 +948,57 @@ namespace ExampleLibrary
             return myModel;
         }
 
+        [Example("#413 HeatMap tracker format string")]
+        public static PlotModel HeatMapTrackerFormatString()
+        {
+            var plotModel1 = new PlotModel
+            {
+                Title = "HeatMap tracker format string",
+            };
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Left, StringFormat = "0.000", Minimum = 0, Maximum = 1 });
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, StringFormat = "0.000", Minimum = 0, Maximum = 1 });
+            plotModel1.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Minimum = 0, Maximum = 5 });
+            var data = new double[,] { { 1, 2 }, { 3, 4 } };
+            plotModel1.Series.Add(new HeatMapSeries
+            {
+                Data = data,
+                CoordinateDefinition = HeatMapCoordinateDefinition.Edge,
+                X0 = 0.1,
+                X1 = 0.9,
+                Y0 = 0.1,
+                Y1 = 0.9,
+                TrackerFormatString = "{0}\n{1}: {2:0.000}\n{3}: {4:0.000}\n{5}: {6:0.0000}"
+            });
+            return plotModel1;
+        }
+
+        [Example("#413 Using axis format strings in tracker")]
+        public static PlotModel AxisFormatStringInTracker()
+        {
+            var plotModel1 = new PlotModel
+            {
+                Title = "Using axis format strings in tracker",
+            };
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Left, StringFormat = "0.000", Minimum = 0, Maximum = 1 });
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, StringFormat = "0.000", Minimum = 0, Maximum = 1 });
+            plotModel1.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Minimum = 0, Maximum = 5 });
+            var data = new double[,] { { 1, 2 }, { 3, 4 } };
+            plotModel1.Series.Add(new HeatMapSeries
+            {
+                Data = data,
+                CoordinateDefinition = HeatMapCoordinateDefinition.Edge,
+                X0 = 0.1,
+                X1 = 0.9,
+                Y0 = 0.1,
+                Y1 = 0.9,
+
+                // IDEA: add new arguments for axis formatted values
+                // TODO: this will throw an exception, argument 7 and 8 is not implemented
+                TrackerFormatString = "{0}\n{1}: {7}\n{3}: {8}\n{5}: {6:0.0000}"
+            });
+            return plotModel1;
+        }
+
         /* NEW ISSUE TEMPLATE
         [Example("#356 Issue Description")]
         public static PlotModel IssueDescription()

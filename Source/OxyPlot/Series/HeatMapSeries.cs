@@ -38,7 +38,7 @@ namespace OxyPlot.Series
         /// The default tracker format string
         /// </summary>
         public new const string DefaultTrackerFormatString = "{0}\n{1}: {2}\n{3}: {4}\n{5}: {6}";
-        
+
         /// <summary>
         /// The default color-axis title
         /// </summary>
@@ -182,6 +182,11 @@ namespace OxyPlot.Series
             {
                 this.image = null;
                 return;
+            }
+
+            if (this.ColorAxis == null)
+            {
+                throw new InvalidOperationException("Color axis not specified.");
             }
 
             double left = this.X0;
