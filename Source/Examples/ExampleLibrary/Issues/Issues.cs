@@ -999,6 +999,23 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
+        [Example("#408 CategoryAxis label clipped on left margin")]
+        public static PlotModel CategoryAxisLabelClipped()
+        {
+            var plotModel1 = new PlotModel
+            {
+                Title = "CategoryAxis label clipped on left margin",
+            };
+            var axis = new CategoryAxis { Position = AxisPosition.Left, Angle = -52 };
+            axis.Labels.Add("Very very very very long label");
+            axis.Labels.Add("Short label");
+            axis.Labels.Add("Short label");
+            axis.Labels.Add("Short label");
+            plotModel1.Axes.Add(axis);
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            return plotModel1;
+        }
+
         /* NEW ISSUE TEMPLATE
         [Example("#356 Issue Description")]
         public static PlotModel IssueDescription()
