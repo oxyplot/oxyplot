@@ -97,6 +97,30 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
+        /// Gets an enumerator for logical child elements of this element.
+        /// </summary>
+        protected override System.Collections.IEnumerator LogicalChildren
+        {
+            get
+            {
+                foreach (var annotation in this.Annotations)
+                {
+                    yield return annotation;
+                }
+
+                foreach (var axis in this.Axes)
+                {
+                    yield return axis;
+                }
+
+                foreach (var series in this.Series)
+                {
+                    yield return series;
+                }
+            }
+        }
+
+        /// <summary>
         /// Updates the model. If Model==<c>null</c>, an internal model will be created. The ActualModel.Update will be called (updates all series data).
         /// </summary>
         /// <param name="updateData">if set to <c>true</c> , all data collections will be updated.</param>
