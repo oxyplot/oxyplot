@@ -22,10 +22,10 @@
     <file src="..\..\Output\NET40\Xwt.???" target="lib\net40" />
     <file src="..\..\Output\NET40\Xwt.???" target="lib\net45" />
 
-    <file src="..\LICENSE" />
-    <file src="..\AUTHORS" />
-    <file src="..\CONTRIBUTORS" />
-    <file src="..\README.md" />
-    <file src="..\CHANGELOG.md" />
+    <file src="..\..\LICENSE" />
+    <file src="..\..\AUTHORS" />
+    <file src="..\..\CONTRIBUTORS" />
+    <file src="..\..\README.md" />
+    <file src="..\..\CHANGELOG.md" />
   </files>
 </package>

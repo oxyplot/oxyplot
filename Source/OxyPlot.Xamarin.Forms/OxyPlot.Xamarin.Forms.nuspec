@@ -46,10 +46,10 @@
     <file src="..\..\Output\Xamarin.Forms.Platform.Android\OxyPlot.Xamarin.Forms.Platform.Android.???" target="lib\MonoAndroid10" />
     <file src="..\..\Output\Xamarin.Forms.Platform.WP8\OxyPlot.Xamarin.Forms.Platform.WP8.???" target="lib\wp80" />
 
-    <file src="..\LICENSE" />
-    <file src="..\AUTHORS" />
-    <file src="..\CONTRIBUTORS" />
-    <file src="..\README.md" />
-    <file src="..\CHANGELOG.md" />
+    <file src="..\..\LICENSE" />
+    <file src="..\..\AUTHORS" />
+    <file src="..\..\CONTRIBUTORS" />
+    <file src="..\..\README.md" />
+    <file src="..\..\CHANGELOG.md" />
   </files>
 </package>
