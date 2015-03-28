@@ -14,12 +14,17 @@
     <tags>openxml plotting plot charting chart</tags>
     <dependencies>
       <dependency id="OxyPlot.Core" version="[0.0.0]"/>
-      <dependency id="DocumentFormat.OpenXml"/>
+      <dependency id="DocumentFormat.OpenXml" version="[2.5.0]"/>
     </dependencies>
   </metadata>
   <files>
     <file src="..\..\Output\NET45\OxyPlot.OpenXml.???" target="lib\net45" />
     <file src="..\..\Output\NET40\OxyPlot.OpenXml.???" target="lib\net40" />
-    <file src="..\..\README.md" />
+
+    <file src="..\LICENSE" />
+    <file src="..\AUTHORS" />
+    <file src="..\CONTRIBUTORS" />
+    <file src="..\README.md" />
+    <file src="..\CHANGELOG.md" />
   </files>
 </package>

@@ -13,24 +13,24 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <tags>plotting plot charting chart wp8 windows phone 8 windowsphone winphone winrt win8 metro store xamarin android ios monotouch</tags>
     <dependencies>
-      <dependency id="OxyPlot.Core" version="[0.0.0]"/>
+      <group targetFramework="MonoTouch">
+        <dependency id="OxyPlot.Xamarin.iOS" version="[0.0.0]"/>
+      </group>
+      <group targetFramework="Xamarin.iOS10">
+        <dependency id="OxyPlot.Xamarin.iOS" version="[0.0.0]"/>
+      </group>
+      <group targetFramework="MonoAndroid">
+        <dependency id="OxyPlot.Xamarin.Android" version="[0.0.0]"/>
+      </group>
+      <group targetFramework="windowsphone8">
+        <dependency id="OxyPlot.WP8" version="[0.0.0]"/>
+      </group>
+      <group targetFramework="portable-windows8+wpa81">
+        <dependency id="OxyPlot.WindowsUniversal" version="[0.0.0]"/>
+      </group>
     </dependencies>
   </metadata>
   <files>
-    <file src="..\Output\WindowsUniversal\OxyPlot.WindowsUniversal.???" target="lib\portable-windows8+wpa81\" />
-    <file src="..\Output\WindowsUniversal\OxyPlot.WindowsUniversal.xr.xml" target="lib\portable-windows8+wpa81\OxyPlot.WindowsUniversal\" />
-    <file src="..\Output\WindowsUniversal\Themes\*.*" target="lib\portable-windows8+wpa81\OxyPlot.WindowsUniversal\Themes\" />
-
-    <file src="..\Output\WP8\OxyPlot.WP8.???" target="lib\windowsphone8" />
-
-    <file src="..\Output\Xamarin.Android\OxyPlot.Xamarin.Android.???" target="lib\MonoAndroid" />	
-
-    <file src="..\Output\MonoTouch\OxyPlot.MonoTouch.???" target="lib\MonoTouch" />
-    <file src="..\Output\MonoTouch\OxyPlot.MonoTouch.???" target="lib\MonoTouch" />
-    
-    <file src="..\Output\Xamarin.iOS\OxyPlot.Xamarin.iOS.???" target="lib\Xamarin.iOS10" />
-    <file src="..\Output\Xamarin.iOS\OxyPlot.Xamarin.iOS.???" target="lib\Xamarin.iOS10" />
-    
     <file src="..\LICENSE" />
     <file src="..\AUTHORS" />
     <file src="..\CONTRIBUTORS" />
