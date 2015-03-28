@@ -12,25 +12,30 @@
     <iconUrl>http://resources.oxyplot.org/icons/oxyplot_128.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <tags>plotting plot charting chart</tags>
+    <dependencies>
+      <group targetFramework="net40">
+        <dependency id="OxyPlot.Wpf" version="[0.0.0]"/>
+		<dependency id="OxyPlot.WindowsForms" version="[0.0.0]"/>
+      </group>
+      <group targetFramework="net45">
+        <dependency id="OxyPlot.Wpf" version="[0.0.0]"/>
+		<dependency id="OxyPlot.WindowsForms" version="[0.0.0]"/>
+      </group>
+      <group targetFramework="sl5">
+        <dependency id="OxyPlot.Silverlight" version="[0.0.0]"/>
+      </group>
+      <group targetFramework="windowsphone8">
+        <dependency id="OxyPlot.WP8" version="[0.0.0]"/>
+      </group>
+      <group targetFramework="portable-windows8+wpa81">
+        <dependency id="OxyPlot.WindowsUniversal" version="[0.0.0]"/>
+      </group>
+      <group>
+        <dependency id="OxyPlot.Core" version="[0.0.0]"/>
+      </group>
+    </dependencies>
   </metadata>
   <files>
-    <file src="..\Output\PCL\OxyPlot.???" target="lib\" />
-
-    <file src="..\Output\NET45\OxyPlot.Wpf.???" target="lib\net45" />
-    <file src="..\Output\NET40\OxyPlot.Wpf.???" target="lib\net40" />    
-    <file src="..\Output\NET45\OxyPlot.Xps.???" target="lib\net45" />
-    <file src="..\Output\NET40\OxyPlot.Xps.???" target="lib\net40" />
-
-    <file src="..\Output\WindowsUniversal\OxyPlot.WindowsUniversal.*" target="lib\portable-windows8+wpa81\OxyPlot.WindowsUniversal\" />
-    <file src="..\Output\WindowsUniversal\Themes\*.*" target="lib\portable-windows8+wpa81\OxyPlot.WindowsUniversal\OxyPlot.WindowsUniversal\Themes\" />
-
-    <file src="..\Output\SL5\OxyPlot.Silverlight.???" target="lib\sl5" />
-
-    <file src="..\Output\NET45\OxyPlot.WindowsForms.???" target="lib\net45" />
-    <file src="..\Output\NET40\OxyPlot.WindowsForms.???" target="lib\net40" />
-
-    <file src="..\Output\WP8\OxyPlot.WP8.???" target="lib\windowsphone8" />
-
     <file src="..\LICENSE" />
     <file src="..\AUTHORS" />
     <file src="..\CONTRIBUTORS" />
