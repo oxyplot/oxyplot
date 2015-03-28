@@ -11,10 +11,10 @@
     ftp_password:
       secure: 8Zwx5dScSahnbraTsKTP3g==
   install:
-    - cinst stylecop
-    - cinst LynxToolkit
-    - cinst gtksharp
-    - cinst gitlink -Pre
+    - cinst stylecop -y
+    - cinst LynxToolkit -y
+    - cinst gtksharp -y
+    - cinst gitlink -Pre -y
   platform: Any CPU
   configuration: Release
   before_build:
@@ -59,10 +59,10 @@
     ftp_password:
       secure: 8Zwx5dScSahnbraTsKTP3g==
   install:
-    - cinst stylecop
-    - cinst LynxToolkit
-    - cinst gtksharp
-    - cinst gitlink -Pre
+    - cinst stylecop -y
+    - cinst LynxToolkit -y
+    - cinst gtksharp -y
+    - cinst gitlink -Pre -y
   platform: Any CPU
   configuration: Release
   before_build:
