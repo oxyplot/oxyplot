@@ -14,7 +14,7 @@
     <tags>openxml plotting plot charting chart</tags>
     <dependencies>
       <dependency id="OxyPlot.Core" version="[0.0.0]"/>
-      <dependency id="DocumentFormat.OpenXml"/>
+      <dependency id="DocumentFormat.OpenXml" version="[2.5.0]"/>
     </dependencies>
   </metadata>
   <files>
