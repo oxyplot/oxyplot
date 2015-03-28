@@ -40,5 +40,6 @@
     <file src="..\AUTHORS" />
     <file src="..\CONTRIBUTORS" />
     <file src="..\README.md" />
+    <file src="..\CHANGELOG.md" />
   </files>
 </package>

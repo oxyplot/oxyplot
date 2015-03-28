@@ -20,6 +20,11 @@
     <file src="lib/MonoTouch/OxyPlot.MonoTouch.XML" target="lib/MonoTouch"/>
     <file src="lib/Xamarin.iOS10/OxyPlot.Xamarin.iOS.dll" target="lib/Xamarin.iOS10"/>
     <file src="lib/Xamarin.iOS10/OxyPlot.Xamarin.iOS.XML" target="lib/Xamarin.iOS10"/>
-    <file src="README.md" />
+
+    <file src="..\LICENSE" />
+    <file src="..\AUTHORS" />
+    <file src="..\CONTRIBUTORS" />
+    <file src="..\README.md" />
+    <file src="..\CHANGELOG.md" />
   </files>
 </package>

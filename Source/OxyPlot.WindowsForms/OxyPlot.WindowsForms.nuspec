@@ -19,6 +19,11 @@
   <files>
     <file src="..\..\Output\NET45\OxyPlot.WindowsForms.???" target="lib\net45" />
     <file src="..\..\Output\NET40\OxyPlot.WindowsForms.???" target="lib\net40" />
-    <file src="..\..\README.md" />
+
+    <file src="..\LICENSE" />
+    <file src="..\AUTHORS" />
+    <file src="..\CONTRIBUTORS" />
+    <file src="..\README.md" />
+    <file src="..\CHANGELOG.md" />
   </files>
 </package>

@@ -15,9 +15,11 @@
     <dependencies>
       <group targetFramework="net40">
         <dependency id="PDFsharp-MigraDoc-GDI" version="[1.32.4334]"/>
+        <dependency id="OxyPlot.Core" version="[0.0.0]"/>
       </group>
       <group targetFramework="net45">
         <dependency id="PDFsharp-MigraDoc-GDI" version="[1.32.4334]"/>
+        <dependency id="OxyPlot.Core" version="[0.0.0]"/>
       </group>
       <group>
         <dependency id="OxyPlot.Core" version="[0.0.0]"/>
@@ -29,6 +31,11 @@
     <file src="..\..\Output\NET40\OxyPlot.Pdf.???" target="lib\net40" />
     <file src="..\..\Output\SL5\OxyPlot.Pdf.???" target="lib\sl5" />
     <file src="..\..\Output\SL5\silverPDF.*" target="lib\sl5" />
-    <file src="..\..\README.md" />
+
+    <file src="..\LICENSE" />
+    <file src="..\AUTHORS" />
+    <file src="..\CONTRIBUTORS" />
+    <file src="..\README.md" />
+    <file src="..\CHANGELOG.md" />
   </files>
 </package>

@@ -21,6 +21,11 @@
     <file src="..\..\Output\WindowsUniversal\OxyPlot.WindowsUniversal.???" target="lib\portable-windows8+wpa81" />
     <file src="..\..\Output\WindowsUniversal\OxyPlot.WindowsUniversal.xr.xml" target="lib\portable-windows8+wpa81\OxyPlot.WindowsUniversal" />
     <file src="..\..\Output\WindowsUniversal\Themes\*.*" target="lib\portable-windows8+wpa81\OxyPlot.WindowsUniversal\Themes" />
-    <file src="..\..\README.md" />
+
+    <file src="..\LICENSE" />
+    <file src="..\AUTHORS" />
+    <file src="..\CONTRIBUTORS" />
+    <file src="..\README.md" />
+    <file src="..\CHANGELOG.md" />
   </files>
 </package>
