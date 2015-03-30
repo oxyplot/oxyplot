@@ -25,6 +25,16 @@ namespace OxyPlot.Series
         public new const string DefaultTrackerFormatString = "{0}\n{1}: {2}\nUpper Whisker: {3:0.00}\nThird Quartil: {4:0.00}\nMedian: {5:0.00}\nFirst Quartil: {6:0.00}\nLower Whisker: {7:0.00}";
 
         /// <summary>
+        /// The items from the items source.
+        /// </summary>
+        private List<BoxPlotItem> itemsSourceItems;
+
+        /// <summary>
+        /// Specifies if the ownsItemsSourceItems list can be modified.
+        /// </summary>
+        private bool ownsItemsSourceItems;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="BoxPlotSeries" /> class.
         /// </summary>
         public BoxPlotSeries()
@@ -138,6 +148,17 @@ namespace OxyPlot.Series
         public double WhiskerWidth { get; set; }
 
         /// <summary>
+        /// Gets the list of items that should be rendered.
+        /// </summary>
+        protected IList<BoxPlotItem> ActualItems
+        {
+            get
+            {
+                return this.ItemsSource != null ? this.itemsSourceItems : this.Items;
+            }
+        }
+
+        /// <summary>
         /// Gets the nearest point.
         /// </summary>
         /// <param name="point">The point.</param>
@@ -152,7 +173,7 @@ namespace OxyPlot.Series
 
             double minimumDistance = double.MaxValue;
             TrackerHitResult result = null;
-            foreach (var item in this.Items)
+            foreach (var item in this.ActualItems)
             {
                 foreach (var outlier in item.Outliers)
                 {
@@ -256,7 +277,7 @@ namespace OxyPlot.Series
         /// <param name="model">The model.</param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
-            if (this.Items.Count == 0)
+            if (this.ActualItems.Count == 0)
             {
                 return;
             }
@@ -271,7 +292,7 @@ namespace OxyPlot.Series
 
             var dashArray = this.LineStyle.GetDashArray();
 
-            foreach (var item in this.Items)
+            foreach (var item in this.ActualItems)
             {
                 // Add the outlier points
                 outlierScreenPoints.AddRange(item.Outliers.Select(outlier => this.Transform(item.X, outlier)));
@@ -476,12 +497,35 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
+        /// Updates the data.
+        /// </summary>
+        protected internal override void UpdateData()
+        {
+            if (this.ItemsSource == null)
+            {
+                return;
+            }
+
+            var sourceAsListOfT = this.ItemsSource as IEnumerable<BoxPlotItem>;
+            if (sourceAsListOfT != null)
+            {
+                this.itemsSourceItems = sourceAsListOfT.ToList();
+                this.ownsItemsSourceItems = false;
+                return;
+            }
+
+            this.ClearItemsSourceItems();
+
+            this.itemsSourceItems.AddRange(this.ItemsSource.OfType<BoxPlotItem>());
+        }
+
+        /// <summary>
         /// Updates the maximum and minimum values of the series.
         /// </summary>
         protected internal override void UpdateMaxMin()
         {
             base.UpdateMaxMin();
-            this.InternalUpdateMaxMin(this.Items);
+            this.InternalUpdateMaxMin(this.ActualItems);
         }
 
         /// <summary>
@@ -539,6 +583,21 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
+        /// Gets the item at the specified index.
+        /// </summary>
+        /// <param name="i">The index of the item.</param>
+        /// <returns>The item of the index.</returns>
+        protected override object GetItem(int i)
+        {
+            if (this.ItemsSource != null || this.ActualItems == null || this.ActualItems.Count == 0)
+            {
+                return base.GetItem(i);
+            }
+
+            return this.ActualItems[i];
+        }
+
+        /// <summary>
         /// Gets the screen rectangle for the box.
         /// </summary>
         /// <param name="item">The box item.</param>
@@ -552,6 +611,23 @@ namespace OxyPlot.Series
 
             var rect = new OxyRect(boxTop.X, boxTop.Y, boxBottom.X - boxTop.X, boxBottom.Y - boxTop.Y);
             return rect;
+        }
+
+        /// <summary>
+        /// Clears or creates the <see cref="itemsSourceItems"/> list.
+        /// </summary>
+        private void ClearItemsSourceItems()
+        {
+            if (!this.ownsItemsSourceItems || this.itemsSourceItems == null)
+            {
+                this.itemsSourceItems = new List<BoxPlotItem>();
+            }
+            else
+            {
+                this.itemsSourceItems.Clear();
+            }
+
+            this.ownsItemsSourceItems = true;
         }
     }
 }

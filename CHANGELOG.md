@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 - iOS PlotView ZoomThreshold/AllowPinchPastZero for use with KeepAspectRatioWhenPinching=false (#359)
 - CandleStickAndVolumeSeries and VolumeSeries (#377)
 - Axis.DesiredSize property (#383)
+- Added WPF Wrapper for BoxPlot (#434)
 
 ### Changed
 - Changed the OxyPlot.Xamarin.Forms to require the OxyPlot.Mobile dependency instead of each separate NuGet. (#362)
