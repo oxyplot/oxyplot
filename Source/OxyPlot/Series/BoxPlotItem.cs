@@ -34,7 +34,7 @@ namespace OxyPlot.Series
             double median,
             double boxTop,
             double upperWhisker,
-            IList<double> outliers,
+            IList<double> outliers = null,
             object tag = null)
             : this()
         {
@@ -44,7 +44,7 @@ namespace OxyPlot.Series
             this.Median = median;
             this.BoxTop = boxTop;
             this.UpperWhisker = upperWhisker;
-            this.Outliers = outliers;
+            this.Outliers = outliers ?? new List<double>();
             this.Tag = tag;
         }
 
@@ -98,7 +98,9 @@ namespace OxyPlot.Series
             get
             {
                 var values = new List<double> { this.LowerWhisker, this.BoxBottom, this.Median, this.BoxTop, this.UpperWhisker };
+
                 values.AddRange(this.Outliers);
+
                 return values;
             }
         }
