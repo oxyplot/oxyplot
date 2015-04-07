@@ -1,0 +1,34 @@
+﻿<Window x:Class="BoxPlotSeriesDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf"
+        Title="BoxPlotSeriesDemo"
+        Width="640"
+        Height="480">
+    <TabControl>
+        <TabItem Header="Binding to PlotModel">
+            <oxy:PlotView Model="{Binding Model1}" />
+        </TabItem>
+        <TabItem Header="Define plot in XAML">
+            <oxy:Plot Title="BoxPlot series (XAML)"
+                      LegendOrientation="Vertical"
+                      LegendPlacement="Outside"
+                      LegendPosition="RightTop">
+                <oxy:Plot.Axes>
+                    <oxy:LinearAxis AbsoluteMinimum="0"
+                                    MaximumPadding="0.3"
+                                    MinimumPadding="0.3"
+                                    Position="Bottom" />
+                    <oxy:LinearAxis MaximumPadding="0.3"
+                                    MinimumPadding="0.3"
+                                    Position="Left" />
+                </oxy:Plot.Axes>
+                <oxy:Plot.Series>
+                    <oxy:BoxPlotSeries Title="Values"
+                                       Fill="LightBlue"
+                                       ItemsSource="{Binding Items}" />
+                </oxy:Plot.Series>
+            </oxy:Plot>
+        </TabItem>
+    </TabControl>
+</Window>

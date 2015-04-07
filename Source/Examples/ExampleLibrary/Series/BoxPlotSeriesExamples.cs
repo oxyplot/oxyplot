@@ -47,6 +47,7 @@ namespace ExampleLibrary
 
                 values.Sort();
                 var median = GetMedian(values);
+                var mean = values.Average();
                 int r = values.Count % 2;
                 double firstQuartil = GetMedian(values.Take((values.Count + r) / 2));
                 double thirdQuartil = GetMedian(values.Skip((values.Count - r) / 2));
@@ -60,7 +61,7 @@ namespace ExampleLibrary
 
                 var outliers = new[] { upperWhisker + random.Next(1, 10), lowerWhisker - random.Next(1, 10) };
 
-                s1.Items.Add(new BoxPlotItem(x, lowerWhisker, firstQuartil, median, thirdQuartil, upperWhisker, outliers));
+                s1.Items.Add(new BoxPlotItem(x, lowerWhisker, firstQuartil, median, thirdQuartil, upperWhisker) { Mean = mean, Outliers =  outliers });
             }
 
             model.Series.Add(s1);
@@ -147,11 +148,11 @@ namespace ExampleLibrary
             };
 
             // note: approximated data values (not the original values)
-            boxPlotSeries.Items.Add(new BoxPlotItem(0, 740, 850, 945, 980, 1070, new[] { 650.0 }));
-            boxPlotSeries.Items.Add(new BoxPlotItem(1, 750, 805, 845, 890, 970, new double[] { }));
-            boxPlotSeries.Items.Add(new BoxPlotItem(2, 845, 847, 855, 880, 910, new[] { 640.0, 950, 970 }));
-            boxPlotSeries.Items.Add(new BoxPlotItem(3, 720, 760, 820, 870, 910, new double[] { }));
-            boxPlotSeries.Items.Add(new BoxPlotItem(4, 730, 805, 807, 870, 950, new double[] { }));
+            boxPlotSeries.Items.Add(new BoxPlotItem(0, 740, 850, 945, 980, 1070) { Outliers = new[] { 650.0 }});
+            boxPlotSeries.Items.Add(new BoxPlotItem(1, 750, 805, 845, 890, 970) { Outliers = new double[] { }});
+            boxPlotSeries.Items.Add(new BoxPlotItem(2, 845, 847, 855, 880, 910) { Outliers = new[] { 640.0, 950, 970 }});
+            boxPlotSeries.Items.Add(new BoxPlotItem(3, 720, 760, 820, 870, 910) { Outliers = new double[] { }});
+            boxPlotSeries.Items.Add(new BoxPlotItem(4, 730, 805, 807, 870, 950) { Outliers = new double[] { }});
             model.Series.Add(boxPlotSeries);
             model.Annotations.Add(new LineAnnotation { Type = LineAnnotationType.Horizontal, LineStyle = LineStyle.Solid, Y = 792.458, Text = "true speed" });
             var categoryAxis = new CategoryAxis
@@ -181,10 +182,10 @@ namespace ExampleLibrary
             });
             var boxPlotSeries = new BoxPlotSeries
             {
-                TrackerFormatString = "X: {1:yyyy-MM-dd}\nUpper Whisker: {2:0.00}\nThird Quartil: {3:0.00}\nMedian: {4:0.00}\nFirst Quartil: {5:0.00}\nLower Whisker: {6:0.00}"
+                TrackerFormatString = "X: {1:yyyy-MM-dd}\nUpper Whisker: {2:0.00}\nThird Quartil: {3:0.00}\nMedian: {4:0.00}\nFirst Quartil: {5:0.00}\nLower Whisker: {6:0.00}\nMean: {7:0.00}"
             };
-            boxPlotSeries.Items.Add(new BoxPlotItem(x0, 10, 14, 16, 20, 22, new[] { 23.5 }));
-            boxPlotSeries.Items.Add(new BoxPlotItem(x0 + 1, 11, 13, 14, 15, 18, new[] { 23.4 }));
+            boxPlotSeries.Items.Add(new BoxPlotItem(x0, 10, 14, 16, 20, 22) { Mean = 17, Outliers = new[] { 23.5 }});
+            boxPlotSeries.Items.Add(new BoxPlotItem(x0 + 1, 11, 13, 14, 15, 18) { Outliers = new[] { 23.4 }});
             m.Series.Add(boxPlotSeries);
             return m;
         }

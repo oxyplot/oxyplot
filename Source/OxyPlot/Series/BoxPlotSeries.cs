@@ -22,7 +22,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// The default tracker format string
         /// </summary>
-        public new const string DefaultTrackerFormatString = "{0}\n{1}: {2}\nUpper Whisker: {3:0.00}\nThird Quartil: {4:0.00}\nMedian: {5:0.00}\nFirst Quartil: {6:0.00}\nLower Whisker: {7:0.00}";
+        public new const string DefaultTrackerFormatString = "{0}\n{1}: {2}\nUpper Whisker: {3:N2}\nThird Quartil: {4:N2}\nMedian: {5:N2}\nFirst Quartil: {6:N2}\nLower Whisker: {7:N2}\nMean: {8:N2}";
 
         /// <summary>
         /// The items from the items source.
@@ -48,12 +48,15 @@ namespace OxyPlot.Series
             this.BoxWidth = 0.3;
             this.StrokeThickness = 1;
             this.MedianThickness = 2;
+            this.MeanThickness = 2;
             this.OutlierSize = 2;
             this.OutlierType = MarkerType.Circle;
             this.MedianPointSize = 2;
+            this.MeanPointSize = 2;
             this.WhiskerWidth = 0.5;
             this.LineStyle = LineStyle.Solid;
             this.ShowMedianAsDot = false;
+            this.ShowMeanAsDot = false;
             this.ShowBox = true;
         }
 
@@ -84,7 +87,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets or sets the size of the median point.
         /// </summary>
-        /// <remarks>This property is only used when MedianStyle = Dot.</remarks>
+        /// <remarks>This property is only used when ShowMedianAsDot = true.</remarks>
         public double MedianPointSize { get; set; }
 
         /// <summary>
@@ -92,6 +95,18 @@ namespace OxyPlot.Series
         /// </summary>
         /// <value>The median thickness.</value>
         public double MedianThickness { get; set; }
+
+        /// <summary>
+        /// Gets or sets the size of the mean point.
+        /// </summary>
+        /// <remarks>This property is only used when ShowMeanAsDot = true.</remarks>
+        public double MeanPointSize { get; set; }
+
+        /// <summary>
+        /// Gets or sets the mean thickness, relative to the StrokeThickness.
+        /// </summary>
+        /// <value>The mean thickness.</value>
+        public double MeanThickness { get; set; }
 
         /// <summary>
         /// Gets or sets the diameter of the outlier circles (specified in points).
@@ -128,6 +143,11 @@ namespace OxyPlot.Series
         /// Gets or sets a value indicating whether to show the median as a dot.
         /// </summary>
         public bool ShowMedianAsDot { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to show the mean as a dot.
+        /// </summary>
+        public bool ShowMeanAsDot { get; set; }
 
         /// <summary>
         /// Gets or sets the stroke color.
@@ -243,7 +263,8 @@ namespace OxyPlot.Series
                                 this.YAxis.GetValue(item.BoxTop),
                                 this.YAxis.GetValue(item.Median),
                                 this.YAxis.GetValue(item.BoxBottom),
-                                this.YAxis.GetValue(item.LowerWhisker))
+                                this.YAxis.GetValue(item.LowerWhisker),
+                                this.YAxis.GetValue(item.Mean))
                     };
                 }
             }
@@ -380,6 +401,35 @@ namespace OxyPlot.Series
                             mc.Y - this.MedianPointSize,
                             this.MedianPointSize * 2,
                             this.MedianPointSize * 2);
+                        rc.DrawEllipse(ellipseRect, fillColor, OxyColors.Undefined, 0);
+                    }
+                }
+
+                if (!this.ShowMeanAsDot && !double.IsNaN(item.Mean))
+                {
+                    // Draw the median line
+                    var meanLeft = this.Transform(item.X - halfBoxWidth, item.Mean);
+                    var meanRight = this.Transform(item.X + halfBoxWidth, item.Mean);
+                    rc.DrawClippedLine(
+                        clippingRect,
+                        new[] { meanLeft, meanRight },
+                        0,
+                        strokeColor,
+                        this.StrokeThickness * this.MeanThickness,
+                        LineStyle.Dash.GetDashArray(),
+                        LineJoin.Miter,
+                        true);
+                }
+                else if (!double.IsNaN(item.Mean))
+                {
+                    var mc = this.Transform(item.X, item.Mean);
+                    if (clippingRect.Contains(mc))
+                    {
+                        var ellipseRect = new OxyRect(
+                            mc.X - this.MeanPointSize,
+                            mc.Y - this.MeanPointSize,
+                            this.MeanPointSize * 2,
+                            this.MeanPointSize * 2);
                         rc.DrawEllipse(ellipseRect, fillColor, OxyColors.Undefined, 0);
                     }
                 }

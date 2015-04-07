@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 - CandleStickAndVolumeSeries and VolumeSeries (#377)
 - Axis.DesiredSize property (#383)
 - Added WPF Wrapper for BoxPlot (#434)
+- Added capability to display mean value to BoxPlot (#440)
 
 ### Changed
 - Changed OxyPlot.Xamarin.Forms to require OxyPlot.Mobile dependency instead of each separate NuGet. (#362)
@@ -32,6 +33,8 @@ All notable changes to this project will be documented in this file.
 - Change OxyPlot.Xamarin.Forms.Platform.Android target to Android level 15 (#439)
 - Changed OxyPlot.Xamarin.Forms to portable Profile259 (#439)
 - PlotController should not intercept input per default (#446)
+- Changed DefaultTrackerFormatString for BoxPlotSeries (to include Mean) (#440)
+- Changed Constructor of BoxPlotItem (to include Mean) (#440)
 
 ### Removed
 - OxyPlot.Metro project (superseded by OxyPlot.WindowsUniversal) (#241)
