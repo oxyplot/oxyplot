@@ -14,7 +14,7 @@ All notable changes to this project will be documented in this file.
 - Added WPF Wrapper for BoxPlot (#434)
 
 ### Changed
-- Changed the OxyPlot.Xamarin.Forms to require the OxyPlot.Mobile dependency instead of each separate NuGet. (#362)
+- Changed OxyPlot.Xamarin.Forms to require OxyPlot.Mobile dependency instead of each separate NuGet. (#362)
 - Renamed OxyPlot.XamarinIOS to OxyPlot.MonoTouch (#327)
 - Renamed OxyPlot.XamarinAndroid to OxyPlot.Xamarin.Android (#327)
 - Renamed OxyPlot.XamarinForms to OxyPlot.Xamarin.Forms (#327)
@@ -22,12 +22,15 @@ All notable changes to this project will be documented in this file.
 - Renamed OxyPlot.XamarinFormsIOS to OxyPlot.Xamarin.Forms.Platform.iOS.Classic (#327)
 - Renamed OxyPlot.XamarinFormsAndroid to OxyPlot.Xamarin.Forms.Platform.Android (#327)
 - Renamed OxyPlot.XamarinFormsWinPhone to OxyPlot.Xamarin.Forms.Platform.WP8 (#327)
-- Xamarin Forms references updated to 1.3.1 (#293)
+- Xamarin.Forms references updated to 1.3.1 (#293)
 - Changed OxyPlot.Xamarin.Android target to Android level 10 (#223)
 - Separated WPF Plot and PlotView (#252,#239)
 - Current CandleStickSeries renamed to OldCandleStickSeries, replaced by a faster implementation (#369)
 - Fixed axis min/max calc and axis assignment for CandleStick + VolumeSeries (#389)
 - Invalidate plot when ItemsSource contents change (INotifyCollectionChanged) on WPF only (#406)
+- Xamarin.Forms references updated to 1.4.1 (#439)
+- Change OxyPlot.Xamarin.Forms.Platform.Android target to Android level 15 (#439)
+- Changed OxyPlot.Xamarin.Forms to portable Profile259 (#439)
 
 ### Removed
 - OxyPlot.Metro project (superseded by OxyPlot.WindowsUniversal) (#241)
