@@ -83,7 +83,7 @@ namespace OxyPlot.Wpf
         {
             get
             {
-                return (IPlotController)GetValue(ControllerProperty);
+                return (IPlotController)this.GetValue(ControllerProperty);
             }
 
             set

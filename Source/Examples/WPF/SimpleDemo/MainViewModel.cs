@@ -48,11 +48,17 @@ namespace SimpleDemo
 
             // Set the Model property, the INotifyPropertyChanged event will make the WPF Plot control update its content
             this.Model = tmp;
+            this.Controller = new CustomPlotController();
         }
 
         /// <summary>
         /// Gets the plot model.
         /// </summary>
         public PlotModel Model { get; private set; }
+
+        /// <summary>
+        /// Gets the plot controller.
+        /// </summary>
+        public IPlotController Controller { get; private set; }
     }
 }
