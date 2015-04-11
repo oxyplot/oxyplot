@@ -16,15 +16,13 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="lib/MonoTouch/OxyPlot.MonoTouch.dll" target="lib/MonoTouch"/>
-    <file src="lib/MonoTouch/OxyPlot.MonoTouch.XML" target="lib/MonoTouch"/>
-    <file src="lib/Xamarin.iOS10/OxyPlot.Xamarin.iOS.dll" target="lib/Xamarin.iOS10"/>
-    <file src="lib/Xamarin.iOS10/OxyPlot.Xamarin.iOS.XML" target="lib/Xamarin.iOS10"/>
+    <file src="..\..\Output\MonoTouch\OxyPlot.MonoTouch.???" target="lib/MonoTouch"/>
+    <file src="..\..\Output\Xamarin.iOS10\OxyPlot.Xamarin.iOS.???" target="lib/Xamarin.iOS10"/>
 
-    <file src="..\LICENSE" />
-    <file src="..\AUTHORS" />
-    <file src="..\CONTRIBUTORS" />
-    <file src="..\README.md" />
-    <file src="..\CHANGELOG.md" />
+    <file src="..\..\LICENSE" />
+    <file src="..\..\AUTHORS" />
+    <file src="..\..\CONTRIBUTORS" />
+    <file src="..\..\README.md" />
+    <file src="..\..\CHANGELOG.md" />
   </files>
 </package>
