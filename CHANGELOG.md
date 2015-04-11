@@ -31,6 +31,7 @@ All notable changes to this project will be documented in this file.
 - Xamarin.Forms references updated to 1.4.1 (#439)
 - Change OxyPlot.Xamarin.Forms.Platform.Android target to Android level 15 (#439)
 - Changed OxyPlot.Xamarin.Forms to portable Profile259 (#439)
+- PlotController should not intercept input per default (#446)
 
 ### Removed
 - OxyPlot.Metro project (superseded by OxyPlot.WindowsUniversal) (#241)
