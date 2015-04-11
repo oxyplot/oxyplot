@@ -123,9 +123,8 @@ namespace OxyPlot
                 this.zoomRectangle = new OxyRect(this.StartPosition.X, this.StartPosition.Y, 0, 0);
                 this.PlotView.ShowZoomRectangle(this.zoomRectangle);
                 this.PlotView.SetCursorType(this.GetCursorType());
+                e.Handled = true;
             }
-
-            e.Handled |= this.IsZoomEnabled;
         }
 
         /// <summary>

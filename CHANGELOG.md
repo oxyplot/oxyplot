@@ -38,6 +38,7 @@ All notable changes to this project will be documented in this file.
 - PlotModel.ToSvg method. Use the SvgExporter instead. (#347)
 - Constructors with parameters. Use default constructors instead. (#347)
 - Axis.ShowMinorTicks property. Use MinorTickSize = 0 instead. (#347)
+- ManipulatorBase.GetCursorType method (#447)
 
 ### Fixed
 - CategoryAxis should use StringFormat (#415)
