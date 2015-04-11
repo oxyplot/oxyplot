@@ -24,23 +24,23 @@ rm -rf $OUTPUT
 echo
 echo "Building for Xamarin.iOS"
 # Build OxyPlot. The output will be created in the $OUTPUT folder.
-"$MDTOOL" build "--configuration:Release" $SOURCE/OxyPlot.XamarinIOS.sln > build-ios.log
+"$MDTOOL" build "--configuration:Release" $SOURCE/OxyPlot.Xamarin.iOS.sln > build-ios.log
 if [ $? -ne 0 ]; then 
 	echo "  FAILED"
 else 
 	echo "  OK"
 fi
-ls -al ../Output/XamarinIOS/OxyPlot*
+ls -al ../Output/Xamarin.iOS/OxyPlot*
 mate build-ios.log
 
 echo
 echo "Building for Xamarin.Android"
-"$MDTOOL" build "--configuration:Release" $SOURCE/OxyPlot.XamarinAndroid.sln > build-android.log
+"$MDTOOL" build "--configuration:Release" $SOURCE/OxyPlot.Xamarin.Android.sln > build-android.log
 if [ $? -ne 0 ]; then 
 	echo "  FAILED"
 else 
 	echo "  OK"
 fi
 
-ls -al ../Output/XamarinAndroid/OxyPlot*
+ls -al ../Output/Xamarin.Android/OxyPlot*
 mate build-android.log
