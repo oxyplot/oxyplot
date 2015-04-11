@@ -140,7 +140,7 @@ namespace OxyPlot
                     this.MouseHoverManipulators.Remove(m);
                 }
 
-                return true;
+                return args.Handled;
             }
         }
 
@@ -173,7 +173,7 @@ namespace OxyPlot
                     m.Delta(args);
                 }
 
-                return true;
+                return args.Handled;
             }
         }
 
@@ -202,7 +202,7 @@ namespace OxyPlot
                     this.MouseDownManipulators.Remove(m);
                 }
 
-                return true;
+                return args.Handled;
             }
         }
 
@@ -269,7 +269,7 @@ namespace OxyPlot
                     m.Delta(args);
                 }
 
-                return true;
+                return args.Handled;
             }
         }
 
@@ -298,7 +298,7 @@ namespace OxyPlot
                     this.TouchManipulators.Remove(m);
                 }
 
-                return true;
+                return args.Handled;
             }
         }
 
@@ -508,9 +508,7 @@ namespace OxyPlot
             }
 
             command.Execute(view, this, args);
-
-            args.Handled = true;
-            return true;
+            return args.Handled;
         }
 
         /// <summary>

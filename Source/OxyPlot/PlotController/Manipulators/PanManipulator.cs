@@ -29,12 +29,32 @@ namespace OxyPlot
         private ScreenPoint PreviousPosition { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether panning is enabled.
+        /// </summary>
+        private bool IsPanEnabled { get; set; }
+
+        /// <summary>
+        /// Occurs when a manipulation is complete.
+        /// </summary>
+        /// <param name="e">The <see cref="OxyInputEventArgs" /> instance containing the event data.</param>
+        public override void Completed(OxyMouseEventArgs e)
+        {
+            base.Completed(e);
+            e.Handled |= this.IsPanEnabled;
+        }
+
+        /// <summary>
         /// Occurs when the input device changes position during a manipulation.
         /// </summary>
         /// <param name="e">The <see cref="OxyPlot.OxyMouseEventArgs" /> instance containing the event data.</param>
         public override void Delta(OxyMouseEventArgs e)
         {
             base.Delta(e);
+            if (!this.IsPanEnabled)
+            {
+                return;
+            }
+
             if (this.XAxis != null)
             {
                 this.XAxis.Pan(this.PreviousPosition, e.Position);
@@ -47,6 +67,7 @@ namespace OxyPlot
 
             this.PlotView.InvalidatePlot(false);
             this.PreviousPosition = e.Position;
+            e.Handled = true;
         }
 
         /// <summary>
@@ -66,6 +87,11 @@ namespace OxyPlot
         {
             base.Started(e);
             this.PreviousPosition = e.Position;
+
+            this.IsPanEnabled = (this.XAxis != null && this.XAxis.IsPanEnabled)
+                                || (this.YAxis != null && this.YAxis.IsPanEnabled);
+
+            e.Handled |= this.IsPanEnabled;
         }
     }
 }

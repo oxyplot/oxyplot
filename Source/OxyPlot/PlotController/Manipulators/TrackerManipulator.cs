@@ -54,6 +54,7 @@ namespace OxyPlot
         public override void Completed(OxyMouseEventArgs e)
         {
             base.Completed(e);
+            e.Handled = true;
 
             this.currentSeries = null;
             this.PlotView.HideTracker();
@@ -70,6 +71,7 @@ namespace OxyPlot
         public override void Delta(OxyMouseEventArgs e)
         {
             base.Delta(e);
+            e.Handled = true;
 
             if (this.currentSeries == null || !this.LockToInitialSeries)
             {
