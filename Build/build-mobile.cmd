@@ -9,6 +9,8 @@ nuget restore Source\OxyPlot.Mobile.sln
 msbuild.exe Source\OxyPlot.Mobile.sln /p:Configuration=Release
 
 nuget pack Source\OxyPlot.Mobile.nuspec -OutputDirectory Output
+nuget pack Source\OxyPlot.Xamarin.Android\OxyPlot.Xamarin.Android.nuspec -OutputDirectory Output
+nuget pack Source\OxyPlot.Xamarin.iOS\OxyPlot.Xamarin.iOS.nuspec -OutputDirectory Output
 nuget pack Source\OxyPlot.Xamarin.Forms\OxyPlot.Xamarin.Forms.nuspec -OutputDirectory Output
 
 cd build

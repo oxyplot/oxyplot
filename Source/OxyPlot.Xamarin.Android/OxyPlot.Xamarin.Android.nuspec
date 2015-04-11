@@ -17,13 +17,12 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="lib/MonoAndroid/OxyPlot.Xamarin.Android.dll" target="lib/MonoAndroid"/>
-    <file src="lib/MonoAndroid/OxyPlot.Xamarin.Android.XML" target="lib/MonoAndroid"/>
+    <file src="..\..\Output\Xamarin.Android\OxyPlot.Xamarin.Android.???" target="lib/MonoAndroid"/>
 
-    <file src="..\LICENSE" />
-    <file src="..\AUTHORS" />
-    <file src="..\CONTRIBUTORS" />
-    <file src="..\README.md" />
-    <file src="..\CHANGELOG.md" />
+    <file src="..\..\LICENSE" />
+    <file src="..\..\AUTHORS" />
+    <file src="..\..\CONTRIBUTORS" />
+    <file src="..\..\README.md" />
+    <file src="..\..\CHANGELOG.md" />
   </files>
 </package>
