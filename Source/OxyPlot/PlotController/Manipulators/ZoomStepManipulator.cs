@@ -41,9 +41,17 @@ namespace OxyPlot
         {
             base.Started(e);
 
+            var isZoomEnabled = (this.XAxis != null && this.XAxis.IsZoomEnabled)
+                                || (this.YAxis != null && this.YAxis.IsZoomEnabled);
+
+            if (!isZoomEnabled)
+            {
+                return;
+            }
+
             var current = this.InverseTransform(e.Position.X, e.Position.Y);
 
-            double scale = this.Step;
+            var scale = this.Step;
             if (this.FineControl)
             {
                 scale *= 3;
@@ -68,6 +76,7 @@ namespace OxyPlot
             }
 
             this.PlotView.InvalidatePlot(false);
+            e.Handled = true;
         }
     }
 }
