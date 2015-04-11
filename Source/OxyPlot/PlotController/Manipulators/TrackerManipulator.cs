@@ -110,15 +110,6 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets the cursor for the manipulation.
-        /// </summary>
-        /// <returns>The cursor.</returns>
-        public override CursorType GetCursorType()
-        {
-            return CursorType.Default;
-        }
-
-        /// <summary>
         /// Occurs when an input device begins a manipulation on the plot.
         /// </summary>
         /// <param name="e">The <see cref="OxyPlot.OxyMouseEventArgs" /> instance containing the event data.</param>

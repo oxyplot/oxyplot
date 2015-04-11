@@ -36,7 +36,6 @@ namespace OxyPlot
         /// <param name="e">The <see cref="OxyInputEventArgs" /> instance containing the event data.</param>
         public virtual void Completed(T e)
         {
-            this.View.SetCursorType(CursorType.Default);
         }
 
         /// <summary>
@@ -48,21 +47,11 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets the cursor for the manipulation.
-        /// </summary>
-        /// <returns>The cursor.</returns>
-        public virtual CursorType GetCursorType()
-        {
-            return CursorType.Default;
-        }
-
-        /// <summary>
         /// Occurs when an input device begins a manipulation on the plot.
         /// </summary>
         /// <param name="e">The <see cref="OxyInputEventArgs" /> instance containing the event data.</param>
         public virtual void Started(T e)
         {
-            this.View.SetCursorType(this.GetCursorType());
         }
     }
 }

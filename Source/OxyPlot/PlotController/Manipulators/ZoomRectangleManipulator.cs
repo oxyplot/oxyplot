@@ -47,8 +47,9 @@ namespace OxyPlot
                 return;
             }
 
+            this.PlotView.SetCursorType(CursorType.Default);
             this.PlotView.HideZoomRectangle();
-
+            
             if (this.zoomRectangle.Width > 10 && this.zoomRectangle.Height > 10)
             {
                 var p0 = this.InverseTransform(this.zoomRectangle.Left, this.zoomRectangle.Top);
@@ -107,25 +108,6 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets the cursor for the manipulation.
-        /// </summary>
-        /// <returns>The cursor.</returns>
-        public override CursorType GetCursorType()
-        {
-            if (this.XAxis == null)
-            {
-                return CursorType.ZoomVertical;
-            }
-
-            if (this.YAxis == null)
-            {
-                return CursorType.ZoomHorizontal;
-            }
-
-            return CursorType.ZoomRectangle;
-        }
-
-        /// <summary>
         /// Occurs when an input device begins a manipulation on the plot.
         /// </summary>
         /// <param name="e">The <see cref="OxyPlot.OxyMouseEventArgs" /> instance containing the event data.</param>
@@ -140,9 +122,29 @@ namespace OxyPlot
             {
                 this.zoomRectangle = new OxyRect(this.StartPosition.X, this.StartPosition.Y, 0, 0);
                 this.PlotView.ShowZoomRectangle(this.zoomRectangle);
+                this.PlotView.SetCursorType(this.GetCursorType());
             }
 
             e.Handled |= this.IsZoomEnabled;
+        }
+
+        /// <summary>
+        /// Gets the cursor for the manipulation.
+        /// </summary>
+        /// <returns>The cursor.</returns>
+        private CursorType GetCursorType()
+        {
+            if (this.XAxis == null)
+            {
+                return CursorType.ZoomVertical;
+            }
+
+            if (this.YAxis == null)
+            {
+                return CursorType.ZoomHorizontal;
+            }
+
+            return CursorType.ZoomRectangle;
         }
     }
 }

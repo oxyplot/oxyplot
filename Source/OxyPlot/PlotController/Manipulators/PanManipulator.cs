@@ -40,7 +40,13 @@ namespace OxyPlot
         public override void Completed(OxyMouseEventArgs e)
         {
             base.Completed(e);
-            e.Handled |= this.IsPanEnabled;
+            if (!this.IsPanEnabled)
+            {
+                return;
+            }
+
+            this.View.SetCursorType(CursorType.Default);
+            e.Handled = true;
         }
 
         /// <summary>
@@ -71,15 +77,6 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets the cursor for the manipulation.
-        /// </summary>
-        /// <returns>The cursor.</returns>
-        public override CursorType GetCursorType()
-        {
-            return CursorType.Pan;
-        }
-
-        /// <summary>
         /// Occurs when an input device begins a manipulation on the plot.
         /// </summary>
         /// <param name="e">The <see cref="OxyPlot.OxyMouseEventArgs" /> instance containing the event data.</param>
@@ -91,7 +88,11 @@ namespace OxyPlot
             this.IsPanEnabled = (this.XAxis != null && this.XAxis.IsPanEnabled)
                                 || (this.YAxis != null && this.YAxis.IsPanEnabled);
 
-            e.Handled |= this.IsPanEnabled;
+            if (this.IsPanEnabled)
+            {
+                this.View.SetCursorType(CursorType.Pan);
+                e.Handled = true;
+            }
         }
     }
 }
