@@ -90,6 +90,7 @@
     <Compile Include="PlotBase.Properties.cs" />
     <Compile Include="PlotCommands.cs" />
     <Compile Include="PlotView.cs" />
+    <Compile Include="Series\BoxPlotSeries.cs" />
     <Compile Include="Series\HeatMapSeries.cs" />
     <Compile Include="Series\ScatterSeries{T}.cs" />
     <Compile Include="Series\StairStepSeries.cs" />
