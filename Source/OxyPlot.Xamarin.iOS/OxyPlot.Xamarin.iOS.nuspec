@@ -17,7 +17,7 @@
   </metadata>
   <files>
     <file src="..\..\Output\MonoTouch\OxyPlot.MonoTouch.???" target="lib/MonoTouch"/>
-    <file src="..\..\Output\Xamarin.iOS10\OxyPlot.Xamarin.iOS.???" target="lib/Xamarin.iOS10"/>
+    <file src="..\..\Output\Xamarin.iOS\OxyPlot.Xamarin.iOS.???" target="lib/Xamarin.iOS10"/>
 
     <file src="..\..\LICENSE" />
     <file src="..\..\AUTHORS" />
