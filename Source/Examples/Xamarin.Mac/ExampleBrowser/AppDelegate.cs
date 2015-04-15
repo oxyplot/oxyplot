@@ -20,7 +20,7 @@ namespace ExampleBrowser
 
         List<ExampleInfo> exampleList;
 
-        public override void FinishedLaunching (NSObject notification)
+        public override void DidFinishLaunching (NSNotification notification)
         {
             plotWindowController = new PlotWindowController ();
 

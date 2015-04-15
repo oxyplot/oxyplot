@@ -9,6 +9,7 @@
 
 namespace OxyPlot.Xamarin.Mac
 {
+    using System;
     using Foundation;
     using AppKit;
 

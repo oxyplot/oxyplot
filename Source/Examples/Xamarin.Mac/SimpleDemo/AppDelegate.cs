@@ -13,7 +13,7 @@ namespace SimpleDemo
         {
         }
 
-        public override void FinishedLaunching (NSObject notification)
+        public override void DidFinishLaunching (NSNotification notification)
         {
             var menu = new NSMenu ();
 
