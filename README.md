@@ -39,6 +39,26 @@ See '[A successful git branching model](http://nvie.com/posts/a-successful-git-b
 
 You can find examples in the `/Source/Examples` folder in the code repository.
 
+#### NuGet packages
+
+![OxyPlot.Core](https://img.shields.io/nuget/vpre/OxyPlot.Core.svg?label=OxyPlot.Core)  
+![OxyPlot.Wpf](https://img.shields.io/nuget/vpre/OxyPlot.Wpf.svg?label=OxyPlot.Wpf)  
+![OxyPlot.WindowsForms](https://img.shields.io/nuget/vpre/OxyPlot.WindowsForms.svg?label=OxyPlot.WindowsForms)  
+![OxyPlot.GtkSharp](https://img.shields.io/nuget/vpre/OxyPlot.GtkSharp.svg?label=OxyPlot.GtkSharp)  
+![OxyPlot.Silverlight](https://img.shields.io/nuget/vpre/OxyPlot.Silverlight.svg?label=OxyPlot.Silverlight)  
+![OxyPlot.WP8](https://img.shields.io/nuget/vpre/OxyPlot.WP8.svg?label=OxyPlot.WP8)  
+![OxyPlot.Xamarin.Android](https://img.shields.io/nuget/vpre/OxyPlot.Xamarin.Android.svg?label=OxyPlot.Xamarin.Android)  
+![OxyPlot.Xamarin.iOS](https://img.shields.io/nuget/vpre/OxyPlot.Xamarin.iOS.svg?label=OxyPlot.Xamarin.iOS)  
+![OxyPlot.Xamarin.Mac](https://img.shields.io/nuget/vpre/OxyPlot.Xamarin.Mac.svg?label=OxyPlot.Xamarin.Mac)  
+![OxyPlot.Xamarin.Forms](https://img.shields.io/nuget/vpre/OxyPlot.Xamarin.Forms.svg?label=OxyPlot.Xamarin.Forms)  
+![OxyPlot.Xwt](https://img.shields.io/nuget/vpre/OxyPlot.Xwt.svg?label=OxyPlot.Xwt)  
+![OxyPlot.OpenXML](https://img.shields.io/nuget/vpre/OxyPlot.OpenXML.svg?label=OxyPlot.OpenXML)  
+![OxyPlot.Pdf](https://img.shields.io/nuget/vpre/OxyPlot.Pdf.svg?label=OxyPlot.Pdf)  
+
+![OxyPlot.WindowsUniversal](https://img.shields.io/nuget/vpre/OxyPlot.WindowsUniversal.svg?label=OxyPlot.WindowsUniversal)  
+![OxyPlot.Mobile](https://img.shields.io/nuget/vpre/OxyPlot.Mobile.svg?label=OxyPlot.Mobile)  
+![OxyPlot](https://img.shields.io/nuget/vpre/OxyPlot.svg?label=OxyPlot)  
+
 #### Contribute
 
 See [the documentation](http://oxyplot.org/documentation/contributions) for information about how to contribute!
