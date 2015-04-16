@@ -320,8 +320,8 @@ namespace OxyPlot.WindowsForms
             }
 
             this.trackerLabel.Text = data.ToString();
-            this.trackerLabel.Top = (int)data.Position.Y - this.Top;
-            this.trackerLabel.Left = (int)data.Position.X - this.Left;
+            this.trackerLabel.Top = (int)data.Position.Y;
+            this.trackerLabel.Left = (int)data.Position.X;
             this.trackerLabel.Visible = true;
         }
 
