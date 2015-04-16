@@ -44,6 +44,7 @@ All notable changes to this project will be documented in this file.
 - ManipulatorBase.GetCursorType method (#447)
 
 ### Fixed
+- Tracker position is wrong when PlotView is offset from origin (#455)
 - CategoryAxis should use StringFormat (#415)
 - Fixed the dependency of OxyPlot.Xamarin.Forms NuGet (#370)
 - Add default ctor for Xamarin.Forms iOS renderer (#348)
