@@ -2,9 +2,6 @@
 // <copyright file="Issues.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
-// <summary>
-//   Grids the lines both different colors.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace ExampleLibrary
@@ -1408,6 +1405,14 @@ namespace ExampleLibrary
             return plotModel1;
         }
  
+        [Example("#453: Auto plot margin and width of labels")]
+        public static PlotModel AutoPlotMarginAndAxisLabelWidths()
+        {
+            var plotModel1 = new PlotModel { Title = "Auto plot margin not taking width of axis tick labels into account" };
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -1e8, Maximum = 1e8 });
+            return plotModel1;
+        }
+
         /* NEW ISSUE TEMPLATE
           [Example("#123: Issue Description")]
           public static PlotModel IssueDescription()
