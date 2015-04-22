@@ -8,7 +8,7 @@ namespace SimpleDemo.WinPhone
 {
     using Microsoft.Phone.Controls;
 
-    using OxyPlot.Xamarin.Forms.Platform.WinPhone;
+    using OxyPlot.Xamarin.Forms.Platform.WP8;
 
     using Xamarin.Forms.Platform.WinPhone;
 

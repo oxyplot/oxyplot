@@ -1,5 +1,5 @@
 ﻿using OxyPlot.Xamarin.Forms;
-using OxyPlot.Xamarin.Forms.Platform.WinPhone;
+using OxyPlot.Xamarin.Forms.Platform.WP8;
 
 using global::Xamarin.Forms;
 using global::Xamarin.Forms.Platform.WinPhone;
@@ -7,7 +7,7 @@ using global::Xamarin.Forms.Platform.WinPhone;
 // Exports the renderer.
 [assembly: ExportRenderer(typeof(PlotView), typeof(PlotViewRenderer))]
 
-namespace OxyPlot.Xamarin.Forms.Platform.WinPhone
+namespace OxyPlot.Xamarin.Forms.Platform.WP8
 {
     using System.ComponentModel;
 
@@ -36,7 +36,7 @@ namespace OxyPlot.Xamarin.Forms.Platform.WinPhone
                 Controller = this.Element.Controller
             };
 
-            if (this.Element.Model.Background.IsVisible())
+            if (this.Element.Model != null && this.Element.Model.Background.IsVisible())
             {
                 plotView.Background = this.Element.Model.Background.ToBrush();
             }
