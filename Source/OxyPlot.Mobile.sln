@@ -13,8 +13,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Xamarin.iOS", "OxyP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.WP8", "OxyPlot.WP8\OxyPlot.WP8.csproj", "{66493B76-2850-4035-9449-0E2F95229C48}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.WindowsUniversal", "OxyPlot.WindowsUniversal\OxyPlot.WindowsUniversal.csproj", "{5B113736-A535-462F-B04E-ACF7FE0A65AD}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Xamarin.Forms", "OxyPlot.Xamarin.Forms\OxyPlot.Xamarin.Forms.csproj", "{B63C5F8C-61C8-4E69-93D6-F49F816D3746}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Xamarin.Forms.Platform.Android", "OxyPlot.Xamarin.Forms.Platform.Android\OxyPlot.Xamarin.Forms.Platform.Android.csproj", "{A40AD708-3FF5-42FC-92B0-8D93FF1DB58F}"
@@ -256,42 +254,6 @@ Global
 		{66493B76-2850-4035-9449-0E2F95229C48}.Release|x64.ActiveCfg = Release|Any CPU
 		{66493B76-2850-4035-9449-0E2F95229C48}.Release|x86.ActiveCfg = Release|x86
 		{66493B76-2850-4035-9449-0E2F95229C48}.Release|x86.Build.0 = Release|x86
-		{5B113736-A535-462F-B04E-ACF7FE0A65AD}.Ad-Hoc|Any CPU.ActiveCfg = Release|Any CPU
-		{5B113736-A535-462F-B04E-ACF7FE0A65AD}.Ad-Hoc|Any CPU.Build.0 = Release|Any CPU
-		{5B113736-A535-462F-B04E-ACF7FE0A65AD}.Ad-Hoc|ARM.ActiveCfg = Release|Any CPU
-		{5B113736-A535-462F-B04E-ACF7FE0A65AD}.Ad-Hoc|iPhone.ActiveCfg = Release|Any CPU
-		{5B113736-A535-462F-B04E-ACF7FE0A65AD}.Ad-Hoc|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{5B113736-A535-462F-B04E-ACF7FE0A65AD}.Ad-Hoc|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{5B113736-A535-462F-B04E-ACF7FE0A65AD}.Ad-Hoc|Mixed Platforms.Build.0 = Release|Any CPU
-		{5B113736-A535-462F-B04E-ACF7FE0A65AD}.Ad-Hoc|x64.ActiveCfg = Release|Any CPU
-		{5B113736-A535-462F-B04E-ACF7FE0A65AD}.Ad-Hoc|x86.ActiveCfg = Release|Any CPU
-		{5B113736-A535-462F-B04E-ACF7FE0A65AD}.AppStore|Any CPU.ActiveCfg = Release|Any CPU
-		{5B113736-A535-462F-B04E-ACF7FE0A65AD}.AppStore|Any CPU.Build.0 = Release|Any CPU
-		{5B113736-A535-462F-B04E-ACF7FE0A65AD}.AppStore|ARM.ActiveCfg = Release|Any CPU
-		{5B113736-A535-462F-B04E-ACF7FE0A65AD}.AppStore|iPhone.ActiveCfg = Release|Any CPU
-		{5B113736-A535-462F-B04E-ACF7FE0A65AD}.AppStore|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{5B113736-A535-462F-B04E-ACF7FE0A65AD}.AppStore|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{5B113736-A535-462F-B04E-ACF7FE0A65AD}.AppStore|Mixed Platforms.Build.0 = Release|Any CPU
-		{5B113736-A535-462F-B04E-ACF7FE0A65AD}.AppStore|x64.ActiveCfg = Release|Any CPU
-		{5B113736-A535-462F-B04E-ACF7FE0A65AD}.AppStore|x86.ActiveCfg = Release|Any CPU
-		{5B113736-A535-462F-B04E-ACF7FE0A65AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5B113736-A535-462F-B04E-ACF7FE0A65AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5B113736-A535-462F-B04E-ACF7FE0A65AD}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{5B113736-A535-462F-B04E-ACF7FE0A65AD}.Debug|iPhone.ActiveCfg = Debug|Any CPU
-		{5B113736-A535-462F-B04E-ACF7FE0A65AD}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
-		{5B113736-A535-462F-B04E-ACF7FE0A65AD}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{5B113736-A535-462F-B04E-ACF7FE0A65AD}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{5B113736-A535-462F-B04E-ACF7FE0A65AD}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{5B113736-A535-462F-B04E-ACF7FE0A65AD}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{5B113736-A535-462F-B04E-ACF7FE0A65AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5B113736-A535-462F-B04E-ACF7FE0A65AD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5B113736-A535-462F-B04E-ACF7FE0A65AD}.Release|ARM.ActiveCfg = Release|Any CPU
-		{5B113736-A535-462F-B04E-ACF7FE0A65AD}.Release|iPhone.ActiveCfg = Release|Any CPU
-		{5B113736-A535-462F-B04E-ACF7FE0A65AD}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{5B113736-A535-462F-B04E-ACF7FE0A65AD}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{5B113736-A535-462F-B04E-ACF7FE0A65AD}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{5B113736-A535-462F-B04E-ACF7FE0A65AD}.Release|x64.ActiveCfg = Release|Any CPU
-		{5B113736-A535-462F-B04E-ACF7FE0A65AD}.Release|x86.ActiveCfg = Release|Any CPU
 		{B63C5F8C-61C8-4E69-93D6-F49F816D3746}.Ad-Hoc|Any CPU.ActiveCfg = Release|Any CPU
 		{B63C5F8C-61C8-4E69-93D6-F49F816D3746}.Ad-Hoc|Any CPU.Build.0 = Release|Any CPU
 		{B63C5F8C-61C8-4E69-93D6-F49F816D3746}.Ad-Hoc|ARM.ActiveCfg = Release|Any CPU

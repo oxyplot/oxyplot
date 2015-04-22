@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file.
 - Added capability to display mean value to BoxPlot (#440)
 
 ### Changed
+- Renamed OxyPlot.WindowsUniversal to OxyPlot.Windows (#242)
 - Changed OxyPlot.Xamarin.Forms to require OxyPlot.Mobile dependency instead of each separate NuGet. (#362)
 - Renamed OxyPlot.XamarinIOS to OxyPlot.MonoTouch (#327)
 - Renamed OxyPlot.XamarinAndroid to OxyPlot.Xamarin.Android (#327)

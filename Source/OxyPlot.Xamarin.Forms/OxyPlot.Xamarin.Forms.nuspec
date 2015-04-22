@@ -30,7 +30,7 @@
         <dependency id="Xamarin.Forms" version="1.4.1.6349" />
       </group>
       <group targetFramework="portable-windows8+wpa81">
-        <dependency id="OxyPlot.WindowsUniversal" version="[0.0.0]"/>
+        <dependency id="OxyPlot.Windows" version="[0.0.0]"/>
         <dependency id="Xamarin.Forms" version="1.4.1.6349" />
       </group>
       <group>

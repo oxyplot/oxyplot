@@ -2,10 +2,10 @@
 <package>
   <metadata>
     <id>OxyPlot</id>
-    <title>OxyPlot for WPF/Windows8/Windows Phone/Windows Forms/Silverlight</title>
+    <title>Obsolete package</title>
     <version>0.0.0</version>
     <authors>Oystein Bjorke</authors>
-    <description>OxyPlot is a plotting library for .NET. This package contains the components for WPF, Windows Universal, Silverlight, Windows Forms and Windows Phone Silverlight. The Xamarin components are not included in this package.</description>
+    <description>Please use the platform specific packages, this package is obsolete.</description>
     <releaseNotes></releaseNotes>
     <licenseUrl>https://raw.githubusercontent.com/oxyplot/oxyplot/master/LICENSE</licenseUrl>
     <projectUrl>http://oxyplot.org/</projectUrl>
