@@ -281,6 +281,28 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Determines whether the specified colors are equal to each other.
+        /// </summary>
+        /// <param name="first">The first color.</param>
+        /// <param name="second">The second color.</param>
+        /// <returns><c>true</c> if the two colors are equal; otherwise, <c>false</c> .</returns>
+        public static bool operator ==(OxyColor first, OxyColor second)
+        {
+            return first.Equals(second);
+        }
+
+        /// <summary>
+        /// Determines whether the specified colors are not equal to each other.
+        /// </summary>
+        /// <param name="first">The first color.</param>
+        /// <param name="second">The second color.</param>
+        /// <returns><c>true</c> if the two colors are not equal; otherwise, <c>false</c> .</returns>
+        public static bool operator !=(OxyColor first, OxyColor second)
+        {
+            return !first.Equals(second);
+        }
+
+        /// <summary>
         /// Determines whether the specified <see cref="System.Object" /> is equal to this instance.
         /// </summary>
         /// <param name="obj">The <see cref="System.Object" /> to compare with this instance.</param>
