@@ -36,7 +36,7 @@ namespace OxyPlot.Xamarin.Forms.Platform.iOS.Classic
                 Controller = this.Element.Controller
             };
 
-            if (this.Element.Model.Background.IsVisible())
+            if (this.Element.Model != null && this.Element.Model.Background.IsVisible())
             {
                 plotView.BackgroundColor = this.Element.Model.Background.ToUIColor();
             }

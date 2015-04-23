@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace OxyPlot.Xamarin.Forms.Platform.WinPhone
+namespace OxyPlot.Xamarin.Forms.Platform.WP8
 {
     /// <summary>
     /// Initializes OxyPlot renderers for use with Xamarin.Forms.
