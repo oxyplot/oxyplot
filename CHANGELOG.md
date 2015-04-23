@@ -24,13 +24,12 @@ All notable changes to this project will be documented in this file.
 - Renamed OxyPlot.XamarinFormsIOS to OxyPlot.Xamarin.Forms.Platform.iOS.Classic (#327)
 - Renamed OxyPlot.XamarinFormsAndroid to OxyPlot.Xamarin.Forms.Platform.Android (#327)
 - Renamed OxyPlot.XamarinFormsWinPhone to OxyPlot.Xamarin.Forms.Platform.WP8 (#327)
-- Xamarin.Forms references updated to 1.3.1 (#293)
 - Changed OxyPlot.Xamarin.Android target to Android level 10 (#223)
 - Separated WPF Plot and PlotView (#252,#239)
 - Current CandleStickSeries renamed to OldCandleStickSeries, replaced by a faster implementation (#369)
 - Fixed axis min/max calc and axis assignment for CandleStick + VolumeSeries (#389)
 - Invalidate plot when ItemsSource contents change (INotifyCollectionChanged) on WPF only (#406)
-- Xamarin.Forms references updated to 1.4.1 (#439)
+- Xamarin.Forms references updated to 1.4.2 (#293,#439)
 - Change OxyPlot.Xamarin.Forms.Platform.Android target to Android level 15 (#439)
 - Changed OxyPlot.Xamarin.Forms to portable Profile259 (#439)
 - PlotController should not intercept input per default (#446)
@@ -69,6 +68,7 @@ All notable changes to this project will be documented in this file.
 - Support WinPhone 8.1 in core NuGet package (#161)
 - Draw legend line with custom pattern (#356)
 - iOS pan/zoom stability (#336)
+- Xamarin.Forms iOS PlotViewRenderer crash (#458) 
 
 ## [2014.1.546] - 2014-10-22
 ### Added
