@@ -36,9 +36,9 @@ namespace WpfExamples
             [DllImport("user32.dll")]
             public static extern bool ReleaseDC(IntPtr hWnd, IntPtr hDc);
             [DllImport("gdi32.dll")]
-            public static extern IntPtr DeleteDC(IntPtr hDc);
+            public static extern bool DeleteDC(IntPtr hDc);
             [DllImport("gdi32.dll")]
-            public static extern IntPtr DeleteObject(IntPtr hDc);
+            public static extern bool DeleteObject(IntPtr hDc);
             [DllImport("gdi32.dll")]
             public static extern IntPtr CreateCompatibleBitmap(IntPtr hdc, int nWidth, int nHeight);
             [DllImport("gdi32.dll")]
