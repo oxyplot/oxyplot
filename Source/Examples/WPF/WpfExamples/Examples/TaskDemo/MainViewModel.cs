@@ -15,8 +15,10 @@ namespace TaskDemo
     using OxyPlot;
     using OxyPlot.Series;
 
-    public class MainViewModel
+    public class MainViewModel : IDisposable
     {
+        private bool disposed;
+
         private Random randomizer = new Random(13);
 
         private IList<DataPoint> points = new List<DataPoint>();
@@ -48,6 +50,12 @@ namespace TaskDemo
             // Start the point calculation worker task
             Task.Factory.StartNew(() => this.Work(this.tokenSource.Token, MaxPoints), this.tokenSource.Token);
             Task.Factory.StartNew(() => this.Update(context, this.tokenSource.Token), this.tokenSource.Token);
+        }
+
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         private const int MaxPoints = 20000;
@@ -115,6 +123,20 @@ namespace TaskDemo
         {
             // cancel the worker tasks
             this.tokenSource.Cancel();
+            this.tokenSource.Dispose();
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    this.Closing();
+                }
+            }
+
+            this.disposed = true;
         }
     }
 }
