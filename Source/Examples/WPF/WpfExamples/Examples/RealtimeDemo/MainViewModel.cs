@@ -21,11 +21,12 @@ namespace RealtimeDemo
         TimeSimulation
     }
 
-    public class MainViewModel : INotifyPropertyChanged
+    public class MainViewModel : INotifyPropertyChanged, IDisposable
     {
         // try to change might be lower or higher than the rendering interval
         private const int UpdateInterval = 20;
 
+        private bool disposed;
         private readonly Timer timer;
         private readonly Stopwatch watch = new Stopwatch();
         private int numberOfSeries;
@@ -145,6 +146,25 @@ namespace RealtimeDemo
             {
                 handler(this, new PropertyChangedEventArgs(property));
             }
+        }
+
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    this.timer.Dispose();
+                }
+            }
+
+            this.disposed = true;
         }
     }
 }

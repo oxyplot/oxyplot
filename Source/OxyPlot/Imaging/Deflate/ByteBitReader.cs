@@ -15,7 +15,7 @@ namespace OxyPlot
     /// <summary>
     /// The byte bit reader.
     /// </summary>
-    public class ByteBitReader : BitReader
+    public class ByteBitReader : BitReader, IDisposable
     {
         /// <summary>
         /// The input.
@@ -27,6 +27,11 @@ namespace OxyPlot
         /// </summary>
         /// <remarks>Either in the range 0x00 to 0xFF, or -1 if the end of stream is reached</remarks>
         private int bitPosition;
+
+        /// <summary>
+        /// The disposed flag.
+        /// </summary>
+        private bool disposed;
 
         /// <summary>
         /// The is end of stream.
@@ -55,6 +60,15 @@ namespace OxyPlot
             this.input = new BinaryReader(s);
             this.bitPosition = 8;
             this.isEndOfStream = false;
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>
@@ -125,7 +139,24 @@ namespace OxyPlot
         /// </summary>
         public override void Close()
         {
-            // input.Close();
+            this.Dispose();
+        }
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources
+        /// </summary>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        private void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    this.input.Dispose();
+                }
+            }
+
+            this.disposed = true;
         }
     }
 }
