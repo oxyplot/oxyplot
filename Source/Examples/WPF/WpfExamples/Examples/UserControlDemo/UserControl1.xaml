@@ -14,6 +14,10 @@
             <oxy:Plot.Series>
                 <oxy:LineSeries ItemsSource="{Binding Points}"/>
             </oxy:Plot.Series>
+            <oxy:Plot.Axes>
+                <oxy:LinearAxis Position="Bottom"/>
+                <oxy:LinearAxis Position="Left"/>
+            </oxy:Plot.Axes>
         </oxy:Plot>
         <DataGrid Grid.Column="1" ItemsSource="{Binding Points}"/>
         <!--<ItemsControl Grid.Column="2" ItemsSource="{Binding Points}"/>-->
