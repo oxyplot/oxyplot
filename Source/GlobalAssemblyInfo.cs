@@ -14,6 +14,6 @@ using System.Reflection;
 [assembly: AssemblyCulture("")]
 
 // The version numbers are updated by the build script. See ~/appveyor.yml
-[assembly: AssemblyVersion("0.0.0")]
-[assembly: AssemblyInformationalVersion("0.0.0-alpha")]
-[assembly: AssemblyFileVersion("0.0.0")]
+[assembly: AssemblyVersion("0.0.1")]
+[assembly: AssemblyInformationalVersion("0.0.1-alpha")]
+[assembly: AssemblyFileVersion("0.0.1")]

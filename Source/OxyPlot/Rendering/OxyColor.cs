@@ -311,7 +311,7 @@ namespace OxyPlot
         {
             if (obj == null)
             {
-                throw new InvalidOperationException("Should not compare against null!");
+                return false;
             }
 
             if (obj.GetType() != typeof(OxyColor))
