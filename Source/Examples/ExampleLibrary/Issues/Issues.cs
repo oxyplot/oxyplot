@@ -918,7 +918,7 @@ namespace ExampleLibrary
             {
                 for (int j = 0; j < 100; j++)
                 {
-                    buf[i, j] = (byte)rng.Next();
+                    unchecked { buf[i, j] = (byte)rng.Next(); }
                 }
             }
 
