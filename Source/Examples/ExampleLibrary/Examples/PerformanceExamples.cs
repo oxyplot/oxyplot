@@ -309,7 +309,8 @@ namespace ExampleLibrary
             int k = 0;
             for (int i = 0; i < n; i++)
             {
-                ls.Points.Add(new DataPoint(i, k += i * i));
+                unchecked { k += i * i; }
+                ls.Points.Add(new DataPoint(i, k));
             }
 
             model.Series.Add(ls);

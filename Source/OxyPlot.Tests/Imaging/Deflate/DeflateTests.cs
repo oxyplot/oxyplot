@@ -27,7 +27,7 @@ namespace OxyPlot.Tests
                     var input = new byte[n];
                     for (int i = 0; i < n; i++)
                     {
-                        input[i] = (byte)(Math.Sin(i) * 255);
+                        input[i] = (byte)Math.Abs((Math.Sin(i) * 255));
                     }
 
                     // Compress with System.IO.Compression
