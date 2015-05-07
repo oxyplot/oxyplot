@@ -69,6 +69,7 @@ All notable changes to this project will be documented in this file.
 - Draw legend line with custom pattern (#356)
 - iOS pan/zoom stability (#336)
 - Xamarin.Forms iOS PlotViewRenderer crash (#458) 
+- Inaccurate tracker when using LogarithmicAxis (#443)
 
 ## [2014.1.546] - 2014-10-22
 ### Added
