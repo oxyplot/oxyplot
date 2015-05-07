@@ -262,7 +262,7 @@ namespace OxyPlot.Series
                 {
                     double segmentLength = (sp2 - sp1).Length;
                     double u = segmentLength > 0 ? (spl - sp1).Length / segmentLength : 0;
-                    dpn = new DataPoint(p1.X + (u * (p2.X - p1.X)), p1.Y + (u * (p2.Y - p1.Y)));
+                    dpn = this.InverseTransform(spl);
                     spn = spl;
                     minimumDistance = l2;
                     index = i + u;
