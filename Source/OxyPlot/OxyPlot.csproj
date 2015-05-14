@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -141,6 +141,7 @@
     <Compile Include="Series\ScatterErrorSeries.cs" />
     <Compile Include="Series\ScatterSeries{T}.cs" />
     <Compile Include="Utilities\ArrayExtensions.cs" />
+    <Compile Include="Utilities\EnumerableExtensions.cs" />
     <Compile Include="Utilities\HashCodeBuilder.cs" />
     <Compile Include="Utilities\ReflectionPath.cs" />
     <Compile Include="Utilities\XmlWriterBase.cs" />
@@ -339,7 +340,5 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <ItemGroup>
-    <Folder Include="Series\FinancialSeries\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>

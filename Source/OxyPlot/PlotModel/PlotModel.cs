@@ -997,7 +997,7 @@ namespace OxyPlot
         {
             double mindist = double.MaxValue;
             Series.Series nearestSeries = null;
-            foreach (var series in this.Series.Where(s => s.IsVisible).Reverse())
+            foreach (var series in this.Series.Reverse().Where(s => s.IsVisible))
             {
                 var thr = series.GetNearestPoint(point, true) ?? series.GetNearestPoint(point, false);
 
@@ -1040,43 +1040,6 @@ namespace OxyPlot
         public override string ToString()
         {
             return this.Title;
-        }
-
-        /// <summary>
-        /// Gets all elements of the model, sorted by rendering priority.
-        /// </summary>
-        /// <returns>An enumerator of the elements.</returns>
-        public override IEnumerable<PlotElement> GetElements()
-        {
-            foreach (var annotation in this.Annotations.Where(a => a.Layer == AnnotationLayer.BelowAxes))
-            {
-                yield return annotation;
-            }
-
-            foreach (var axis in this.Axes.Where(a => a.IsAxisVisible && a.Layer == AxisLayer.BelowSeries))
-            {
-                yield return axis;
-            }
-
-            foreach (var annotation in this.Annotations.Where(a => a.Layer == AnnotationLayer.BelowSeries))
-            {
-                yield return annotation;
-            }
-
-            foreach (var s in this.Series.Where(s => s.IsVisible))
-            {
-                yield return s;
-            }
-
-            foreach (var annotation in this.Annotations.Where(a => a.Layer == AnnotationLayer.AboveSeries))
-            {
-                yield return annotation;
-            }
-
-            foreach (var axis in this.Axes.Where(a => a.IsAxisVisible && a.Layer == AxisLayer.AboveSeries))
-            {
-                yield return axis;
-            }
         }
 
         /// <summary>
@@ -1228,6 +1191,45 @@ namespace OxyPlot
             {
                 var args = new TrackerEventArgs { HitResult = result };
                 handler(this, args);
+            }
+        }
+
+        /// <summary>
+        /// Gets all elements of the model, top-level elements first.
+        /// </summary>
+        /// <returns>
+        /// An enumerator of the elements.
+        /// </returns>
+        protected override IEnumerable<PlotElement> GetHitTestElements()
+        {
+            foreach (var axis in this.Axes.Reverse().Where(a => a.IsAxisVisible && a.Layer == AxisLayer.AboveSeries))
+            {
+                yield return axis;
+            }
+
+            foreach (var annotation in this.Annotations.Reverse().Where(a => a.Layer == AnnotationLayer.AboveSeries))
+            {
+                yield return annotation;
+            }
+
+            foreach (var s in this.Series.Reverse().Where(s => s.IsVisible))
+            {
+                yield return s;
+            }
+
+            foreach (var annotation in this.Annotations.Reverse().Where(a => a.Layer == AnnotationLayer.BelowSeries))
+            {
+                yield return annotation;
+            }
+
+            foreach (var axis in this.Axes.Reverse().Where(a => a.IsAxisVisible && a.Layer == AxisLayer.BelowSeries))
+            {
+                yield return axis;
+            }
+
+            foreach (var annotation in this.Annotations.Reverse().Where(a => a.Layer == AnnotationLayer.BelowAxes))
+            {
+                yield return annotation;
             }
         }
 
