@@ -14,6 +14,7 @@ namespace ExampleLibrary
     using OxyPlot.Series;
 
     [Examples("Old CandleStickSeries"), Tags("Series")]
+    [Obsolete]
     public static class OldCandleStickSeriesExamples
     {
         [Example("CandleStickSeries")]

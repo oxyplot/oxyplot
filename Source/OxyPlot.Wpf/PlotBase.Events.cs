@@ -33,7 +33,6 @@ namespace OxyPlot.Wpf
             e.Handled = this.ActualController.HandleKeyDown(this, args);
         }
 
-#if !NET35
         /// <summary>
         /// Called when the <see cref="E:System.Windows.UIElement.ManipulationStarted" /> event occurs.
         /// </summary>
@@ -78,7 +77,6 @@ namespace OxyPlot.Wpf
 
             e.Handled = this.ActualController.HandleTouchCompleted(this, e.ToTouchEventArgs(this));
         }
-#endif
 
         /// <summary>
         /// Called before the <see cref="E:System.Windows.UIElement.MouseWheel" /> event occurs to provide handling for the event in a derived class without attaching a delegate.
