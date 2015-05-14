@@ -24,7 +24,7 @@ namespace ExampleLibrary
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
             var controller = new PlotController();
-            controller.InputCommandBindings.Clear();
+            controller.UnbindAll();
             controller.BindMouseDown(OxyMouseButton.Left, PlotCommands.PanAt);
             return new Example(model, controller);
         }

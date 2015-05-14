@@ -198,7 +198,7 @@ namespace ExampleLibrary
             }
 
             var controller = new PlotController();
-            controller.InputCommandBindings.Clear();
+            controller.UnbindAll();
             controller.BindMouseDown(OxyMouseButton.Left, PlotCommands.PanAt);
             return new Example(pm, controller);
         }
