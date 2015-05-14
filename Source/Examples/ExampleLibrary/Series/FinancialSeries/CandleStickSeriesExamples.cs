@@ -55,7 +55,7 @@ namespace ExampleLibrary
             timeSpanAxis1.AxisChanged += (sender, e) => AdjustYExtent(series, timeSpanAxis1, linearAxis1);
 
             var controller = new PlotController();
-            controller.InputCommandBindings.Clear();
+            controller.UnbindAll();
             controller.BindMouseDown(OxyMouseButton.Left, PlotCommands.PanAt);
             return new Example(pm, controller);
         }
@@ -99,7 +99,7 @@ namespace ExampleLibrary
             timeSpanAxis1.AxisChanged += (sender, e) => AdjustYExtent(series, timeSpanAxis1, linearAxis1);
 
             var controller = new PlotController();
-            controller.InputCommandBindings.Clear();
+            controller.UnbindAll();
             controller.BindMouseDown(OxyMouseButton.Left, PlotCommands.PanAt);
             return new Example(pm, controller);
         }
@@ -137,7 +137,7 @@ namespace ExampleLibrary
             timeSpanAxis1.AxisChanged += (sender, e) => AdjustYExtent(series, timeSpanAxis1, linearAxis1);
 
             var controller = new PlotController();
-            controller.InputCommandBindings.Clear();
+            controller.UnbindAll();
             controller.BindMouseDown(OxyMouseButton.Left, PlotCommands.PanAt);
             return new Example(pm, controller);
         }
