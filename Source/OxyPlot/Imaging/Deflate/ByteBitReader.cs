@@ -152,7 +152,7 @@ namespace OxyPlot
             {
                 if (disposing)
                 {
-                    this.input.Close();
+                    this.input.Dispose();
                 }
             }
 

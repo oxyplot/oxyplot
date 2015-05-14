@@ -443,7 +443,7 @@ namespace OxyPlot
             {
                 if (disposing)
                 {
-                    this.output.Close();
+                    this.output.Dispose();
                     this.outputStream.Dispose();
                 }
             }

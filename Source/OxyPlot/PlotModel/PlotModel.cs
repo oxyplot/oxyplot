@@ -1082,8 +1082,6 @@ namespace OxyPlot
                         }
                     }
 
-                    // TODO: clean this up :-)
-
                     // Updates axes with information from the series
                     // This is used by the category axis that need to know the number of series using the axis.
                     foreach (var a in this.Axes)
@@ -1107,7 +1105,7 @@ namespace OxyPlot
 
                     // Update undefined colors
                     this.ResetDefaultColor();
-                    foreach (var s in this.Series.Where(s => s.IsVisible))
+                    foreach (var s in visibleSeries)
                     {
                         s.SetDefaultValues(this);
                     }
