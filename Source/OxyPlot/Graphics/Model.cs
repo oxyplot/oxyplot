@@ -63,13 +63,7 @@ namespace OxyPlot
             // Revert the order to handle the top-level elements first
             foreach (var element in this.GetElements().Reverse())
             {
-                var uiElement = element as UIElement;
-                if (uiElement == null)
-                {
-                    continue;
-                }
-
-                var result = uiElement.HitTest(args);
+                var result = element.HitTest(args);
                 if (result != null)
                 {
                     yield return result;
