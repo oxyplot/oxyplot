@@ -100,9 +100,7 @@ namespace OxyPlot.Wpf
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Copy, this.DoCopy));
             this.CommandBindings.Add(new CommandBinding(PlotCommands.ResetAxes, (s, e) => this.ResetAllAxes()));
 
-#if !NET35
             this.IsManipulationEnabled = true;
-#endif
         }
 
         /// <summary>

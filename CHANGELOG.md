@@ -44,6 +44,7 @@ All notable changes to this project will be documented in this file.
 - ManipulatorBase.GetCursorType method (#447)
 - Model.GetElements() method
 - Remove SL4 support (#115)
+- Remove NET35 support (#115)
 
 ### Fixed
 - Tracker position is wrong when PlotView is offset from origin (#455)
