@@ -43,6 +43,7 @@ All notable changes to this project will be documented in this file.
 - Axis.ShowMinorTicks property. Use MinorTickSize = 0 instead. (#347)
 - ManipulatorBase.GetCursorType method (#447)
 - Model.GetElements() method
+- Remove SL4 support (#115)
 
 ### Fixed
 - Tracker position is wrong when PlotView is offset from origin (#455)
