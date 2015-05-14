@@ -760,30 +760,6 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets the visible series.
-        /// </summary>
-        /// <value>The visible series.</value>
-        private IEnumerable<Series.Series> VisibleSeries
-        {
-            get
-            {
-                return this.Series.Where(s => s.IsVisible);
-            }
-        }
-
-        /// <summary>
-        /// Gets the visible axes.
-        /// </summary>
-        /// <value>The visible axes.</value>
-        private IEnumerable<Axis> VisibleAxes
-        {
-            get
-            {
-                return this.Axes.Where(s => s.IsAxisVisible);
-            }
-        }
-
-        /// <summary>
         /// Attaches this model to the specified plot view.
         /// </summary>
         /// <param name="plotView">The plot view.</param>
@@ -1021,7 +997,7 @@ namespace OxyPlot
         {
             double mindist = double.MaxValue;
             Series.Series nearestSeries = null;
-            foreach (var series in this.VisibleSeries.Reverse())
+            foreach (var series in this.Series.Where(s => s.IsVisible).Reverse())
             {
                 var thr = series.GetNearestPoint(point, true) ?? series.GetNearestPoint(point, false);
 
@@ -1077,7 +1053,7 @@ namespace OxyPlot
                 yield return annotation;
             }
 
-            foreach (var axis in this.VisibleAxes.Where(a => a.Layer == AxisLayer.BelowSeries))
+            foreach (var axis in this.Axes.Where(a => a.IsAxisVisible && a.Layer == AxisLayer.BelowSeries))
             {
                 yield return axis;
             }
@@ -1087,7 +1063,7 @@ namespace OxyPlot
                 yield return annotation;
             }
 
-            foreach (var s in this.VisibleSeries)
+            foreach (var s in this.Series.Where(s => s.IsVisible))
             {
                 yield return s;
             }
@@ -1097,7 +1073,7 @@ namespace OxyPlot
                 yield return annotation;
             }
 
-            foreach (var axis in this.VisibleAxes.Where(a => a.Layer == AxisLayer.AboveSeries))
+            foreach (var axis in this.Axes.Where(a => a.IsAxisVisible && a.Layer == AxisLayer.AboveSeries))
             {
                 yield return axis;
             }
@@ -1132,7 +1108,7 @@ namespace OxyPlot
                     // Updates the default axes
                     this.EnsureDefaultAxes();
 
-                    var visibleSeries = this.VisibleSeries.ToArray();
+                    var visibleSeries = this.Series.Where(s => s.IsVisible).ToArray();
 
                     // Update data of the series
                     if (updateData)
@@ -1168,7 +1144,7 @@ namespace OxyPlot
 
                     // Update undefined colors
                     this.ResetDefaultColor();
-                    foreach (var s in this.VisibleSeries)
+                    foreach (var s in this.Series.Where(s => s.IsVisible))
                     {
                         s.SetDefaultValues(this);
                     }
@@ -1370,7 +1346,7 @@ namespace OxyPlot
                 bool createdlinearyaxis = false;
                 if (this.DefaultXAxis == null)
                 {
-                    if (this.VisibleSeries.Any(series => series is ColumnSeries))
+                    if (this.Series.Any(s => s.IsVisible && s is ColumnSeries))
                     {
                         this.DefaultXAxis = new CategoryAxis { Position = AxisPosition.Bottom };
                     }
@@ -1383,7 +1359,7 @@ namespace OxyPlot
 
                 if (this.DefaultYAxis == null)
                 {
-                    if (this.VisibleSeries.Any(series => series is BarSeries))
+                    if (this.Series.Any(s => s.IsVisible && s is BarSeries))
                     {
                         this.DefaultYAxis = new CategoryAxis { Position = AxisPosition.Left };
                     }
@@ -1405,7 +1381,7 @@ namespace OxyPlot
                 }
             }
 
-            var areAxesRequired = this.VisibleSeries.Any(s => s.AreAxesRequired());
+            var areAxesRequired = this.Series.Any(s => s.IsVisible && s.AreAxesRequired());
 
             if (areAxesRequired)
             {
@@ -1429,9 +1405,9 @@ namespace OxyPlot
             }
 
             // Update the axes of series without axes defined
-            foreach (var s in this.VisibleSeries)
+            foreach (var s in this.Series)
             {
-                if (s.AreAxesRequired())
+                if (s.IsVisible && s.AreAxesRequired())
                 {
                     s.EnsureAxes();
                 }
@@ -1466,13 +1442,13 @@ namespace OxyPlot
                 }
 
                 // data has been updated, so we need to calculate the max/min of the series again
-                foreach (var s in this.VisibleSeries)
+                foreach (var s in this.Series.Where(s => s.IsVisible))
                 {
                     s.UpdateMaxMin();
                 }
             }
 
-            foreach (var s in this.VisibleSeries)
+            foreach (var s in this.Series.Where(s => s.IsVisible))
             {
                 s.UpdateAxisMaxMin();
             }

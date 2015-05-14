@@ -332,7 +332,7 @@ namespace OxyPlot
             // the maximum item with in the column being rendered (only used for vertical orientation)
             double maxItemWidth = 0;
 
-            var items = this.LegendItemOrder == LegendItemOrder.Reverse ? this.VisibleSeries.Reverse() : this.VisibleSeries;
+            var items = this.LegendItemOrder == LegendItemOrder.Reverse ? this.Series.Where(s => s.IsVisible).Reverse() : this.Series.Where(s => s.IsVisible);
 
             // When orientation is vertical and alignment is center or right, the items cannot be rendered before
             // the max item width has been calculated. Render the items for each column, and at the end.

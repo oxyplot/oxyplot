@@ -247,7 +247,7 @@ namespace OxyPlot
 
             for (var position = AxisPosition.Left; position <= AxisPosition.Bottom; position++)
             {
-                var axesOfPosition = this.VisibleAxes.Where(a => a.Position == position).ToList();
+                var axesOfPosition = this.Axes.Where(a => a.IsAxisVisible && a.Position == position).ToList();
                 var requiredSize = this.AdjustAxesPositions(rc, axesOfPosition);
 
                 if (!this.IsPlotMarginAutoSized(position))
@@ -259,7 +259,7 @@ namespace OxyPlot
             }
 
             // Special case for AngleAxis which is all around the plot
-            var angularAxes = this.VisibleAxes.OfType<AngleAxis>().Cast<Axis>().ToList();
+            var angularAxes = this.Axes.Where(a => a.IsAxisVisible).OfType<AngleAxis>().Cast<Axis>().ToList();
 
             if (angularAxes.Any())
             {
@@ -358,7 +358,7 @@ namespace OxyPlot
         {
             for (int i = 0; i < 2; i++)
             {
-                foreach (var a in this.VisibleAxes)
+                foreach (var a in this.Axes.Where(a => a.IsAxisVisible))
                 {
                     rc.SetToolTip(a.ToolTip);
 
@@ -385,7 +385,7 @@ namespace OxyPlot
                 rc.DrawRectangleAsPolygon(this.PlotArea, this.PlotAreaBackground, OxyColors.Undefined, 0);
             }
 
-            foreach (var s in this.VisibleSeries.Where(s => s is XYAxisSeries && s.Background.IsVisible()).Cast<XYAxisSeries>())
+            foreach (var s in this.Series.Where(s => s.IsVisible && s is XYAxisSeries && s.Background.IsVisible()).Cast<XYAxisSeries>())
             {
                 rc.DrawRectangle(s.GetScreenRectangle(), s.Background, OxyColors.Undefined, 0);
             }
@@ -411,7 +411,7 @@ namespace OxyPlot
         /// <param name="rc">The render context.</param>
         private void RenderSeries(IRenderContext rc)
         {
-            foreach (var s in this.VisibleSeries)
+            foreach (var s in this.Series.Where(s => s.IsVisible))
             {
                 rc.SetToolTip(s.ToolTip);
                 s.Render(rc, this);
