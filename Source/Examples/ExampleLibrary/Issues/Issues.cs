@@ -10,10 +10,9 @@
 namespace ExampleLibrary
 {
     using System;
-    using System.Threading;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Globalization;
+    using System.Threading;
 
     using OxyPlot;
     using OxyPlot.Annotations;
@@ -876,7 +875,7 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
-        [Example("#356 Draw legend line with custom pattern")]
+        [Example("#356: Draw legend line with custom pattern")]
         public static PlotModel LegendWithCustomPattern()
         {
             var plotModel1 = new PlotModel
@@ -906,7 +905,7 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
-        [Example("#409 ImageAnnotation width width/height crashes")]
+        [Example("#409: ImageAnnotation width width/height crashes")]
         public static PlotModel ImageAnnotationWithWidthHeightCrashes()
         {
             var myModel = new PlotModel { Title = "Example 1" };
@@ -950,7 +949,7 @@ namespace ExampleLibrary
             return myModel;
         }
 
-        [Example("#413 HeatMap tracker format string")]
+        [Example("#413: HeatMap tracker format string")]
         public static PlotModel HeatMapTrackerFormatString()
         {
             var plotModel1 = new PlotModel
@@ -974,7 +973,7 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
-        [Example("#413 Using axis format strings in tracker")]
+        [Example("#413: Using axis format strings in tracker")]
         public static PlotModel AxisFormatStringInTracker()
         {
             var plotModel1 = new PlotModel
@@ -1001,7 +1000,7 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
-        [Example("#408 CategoryAxis label clipped on left margin")]
+        [Example("#408: CategoryAxis label clipped on left margin")]
         public static PlotModel CategoryAxisLabelClipped()
         {
             var plotModel1 = new PlotModel
@@ -1018,7 +1017,7 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
-        [Example("#402 ColumnSeries with dates")]
+        [Example("#402: ColumnSeries with dates")]
         public static PlotModel ColumnSeriesWithDates()
         {
             var plotModel1 = new PlotModel
@@ -1048,8 +1047,35 @@ namespace ExampleLibrary
             public double Value { get; set; }
         }
 
+        [Example("#474: Vertical Axis Title Font Bug")]
+        public static PlotModel VerticalAxisTitleFontBug()
+        {
+            var plotModel1 = new PlotModel
+            {
+                Title = "Vertical Axis Title Font Bug",
+            };
+
+            plotModel1.Axes.Add(new LinearAxis
+            {
+                Title = "X_Axe",
+                Position = AxisPosition.Bottom,
+                MajorGridlineStyle = LineStyle.Solid,
+                TitleFont = "Times New Roman"
+            });
+
+            plotModel1.Axes.Add(new LinearAxis
+            {
+                Title = "Y_Axe",
+                Position = AxisPosition.Left,
+                MajorGridlineStyle = LineStyle.Solid,
+                TitleFont = "Times New Roman"
+            });
+
+            return plotModel1;
+        }
+
         /* NEW ISSUE TEMPLATE
-        [Example("#356 Issue Description")]
+        [Example("#123: Issue Description")]
         public static PlotModel IssueDescription()
         {
             var plotModel1 = new PlotModel
