@@ -150,17 +150,5 @@ namespace OxyPlot
             var propertyValues = this.GetType().GetProperties().Select(pi => pi.GetValue(this, null));
             return HashCodeBuilder.GetHashCode(propertyValues);
         }
-
-        /// <summary>
-        /// Formats the specified item and arguments with the specified format string.
-        /// </summary>
-        /// <param name="formatString">The format string.</param>
-        /// <param name="item">The item.</param>
-        /// <param name="values">The values.</param>
-        /// <returns>The formatted string.</returns>
-        public string Format(string formatString, object item, params object[] values)
-        {
-            return StringHelper.Format(this.ActualCulture, formatString, item, values);
-        }
     }
 }

@@ -122,7 +122,8 @@ namespace OxyPlot.Series
                         Position = sp,
                         Item = item,
                         Index = i,
-                        Text = this.Format(
+                        Text = StringHelper.Format(
+                        this.ActualCulture, 
                         this.TrackerFormatString,
                         item,
                         this.Title,
@@ -181,7 +182,8 @@ namespace OxyPlot.Series
 
                 if (this.LabelFormatString != null)
                 {
-                    var s = this.Format(
+                    var s = StringHelper.Format(
+                        this.ActualCulture, 
                         this.LabelFormatString,
                         this.GetItem(i),
                         item.X0,

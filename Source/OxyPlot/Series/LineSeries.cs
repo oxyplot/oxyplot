@@ -302,7 +302,8 @@ namespace OxyPlot.Series
             if (interpolate && this.Smooth && this.SmoothedPoints != null)
             {
                 var result = this.GetNearestInterpolatedPointInternal(this.SmoothedPoints, point);
-                result.Text = this.Format(
+                result.Text = StringHelper.Format(
+                    this.ActualCulture, 
                     this.TrackerFormatString,
                     result.Item,
                     this.Title,
@@ -577,7 +578,7 @@ namespace OxyPlot.Series
                 }
 
                 var item = this.GetItem(index);
-                var s = this.Format(this.LabelFormatString, item, point.X, point.Y);
+                var s = StringHelper.Format(this.ActualCulture, this.LabelFormatString, item, point.X, point.Y);
 
 #if SUPPORTLABELPLACEMENT
                     switch (this.LabelPlacement)

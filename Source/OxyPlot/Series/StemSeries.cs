@@ -87,7 +87,8 @@ namespace OxyPlot.Series
                         Item = this.GetItem(i),
                         Index = i,
                         Text =
-                            this.Format(
+                            StringHelper.Format(
+                                this.ActualCulture, 
                                 this.TrackerFormatString,
                                 item,
                                 this.Title,

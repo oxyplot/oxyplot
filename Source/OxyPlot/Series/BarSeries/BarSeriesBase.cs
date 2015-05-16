@@ -433,7 +433,8 @@ namespace OxyPlot.Series
             var categoryAxis = this.GetCategoryAxis();
             var valueAxis = this.GetValueAxis();
 
-            var text = this.Format(
+            var text = StringHelper.Format(
+                this.ActualCulture, 
                 this.TrackerFormatString,
                 item,
                 this.Title,

@@ -237,7 +237,7 @@ namespace OxyPlot.Series
                                    Position = point,
                                    Item = item,
                                    Index = i,
-                                   Text = this.Format(this.TrackerFormatString, slice, this.Title, slice.Label, slice.Value, slice.Value / this.total)
+                                   Text = StringHelper.Format(this.ActualCulture, this.TrackerFormatString, slice, this.Title, slice.Label, slice.Value, slice.Value / this.total)
                                };
                 }
             }

@@ -182,7 +182,8 @@ namespace OxyPlot.Series
                         Position = point,
                         Item = item,
                         Index = i,
-                        Text = this.Format(
+                        Text = StringHelper.Format(
+                        this.ActualCulture, 
                         this.TrackerFormatString,
                         item,
                         this.Title,
@@ -252,7 +253,7 @@ namespace OxyPlot.Series
 
                 if (this.LabelFormatString != null)
                 {
-                    var s = this.Format(this.LabelFormatString, this.GetItem(i), item.Start, item.End, item.Title);
+                    var s = StringHelper.Format(this.ActualCulture, this.LabelFormatString, this.GetItem(i), item.Start, item.End, item.Title);
 
                     var pt = new ScreenPoint(
                         (rectangle.Left + rectangle.Right) / 2, (rectangle.Top + rectangle.Bottom) / 2);
