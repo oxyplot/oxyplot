@@ -360,14 +360,14 @@ namespace OxyPlot
             foreach (var a in this.Axes.Where(a => a.IsAxisVisible && a.Layer == layer))
             {
                 rc.SetToolTip(a.ToolTip);
-                a.Render(rc, this, 0);
+                a.Render(rc, 0);
             }
 
             // render pass 1
             foreach (var a in this.Axes.Where(a => a.IsAxisVisible && a.Layer == layer))
             {
                 rc.SetToolTip(a.ToolTip);
-                a.Render(rc, this, 1);
+                a.Render(rc, 1);
             }
 
             rc.SetToolTip(null);
