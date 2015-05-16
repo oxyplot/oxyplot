@@ -75,6 +75,7 @@ All notable changes to this project will be documented in this file.
 - Xamarin.Forms iOS PlotViewRenderer crash (#458) 
 - Inaccurate tracker when using LogarithmicAxis (#443)
 - Fix reset of transforms in WinForms render context (#489)
+- Fix StringFormat for TimeSpanAxis not recognizing f, ff, fff, etc (#330)
 
 ## [2014.1.546] - 2014-10-22
 ### Added

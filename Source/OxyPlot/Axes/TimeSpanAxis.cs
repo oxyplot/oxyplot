@@ -58,17 +58,13 @@ namespace OxyPlot.Axes
         /// <returns>The formatted value.</returns>
         protected override string FormatValueOverride(double x)
         {
-            var span = TimeSpan.FromSeconds(x);
-            var s = this.ActualStringFormat ?? "h:mm:ss";
+            var span = ToTimeSpan(x);
 
-            s = s.Replace("mm", span.Minutes.ToString("00"));
-            s = s.Replace("ss", span.Seconds.ToString("00"));
-            s = s.Replace("hh", span.Hours.ToString("00"));
-            s = s.Replace("msec", span.Milliseconds.ToString("000"));
-            s = s.Replace("m", ((int)span.TotalMinutes).ToString("0"));
-            s = s.Replace("s", ((int)span.TotalSeconds).ToString("0"));
-            s = s.Replace("h", ((int)span.TotalHours).ToString("0"));
-            return s;
+            var fmt = this.ActualStringFormat ?? this.StringFormat ?? string.Empty;
+            fmt = fmt.Replace(":", "\\:");
+            fmt = string.Concat("{0:", fmt, "}");
+
+            return string.Format(this.ActualCulture, fmt, span);
         }
 
         /// <summary>
