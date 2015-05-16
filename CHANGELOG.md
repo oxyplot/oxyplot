@@ -74,6 +74,7 @@ All notable changes to this project will be documented in this file.
 - iOS pan/zoom stability (#336)
 - Xamarin.Forms iOS PlotViewRenderer crash (#458) 
 - Inaccurate tracker when using LogarithmicAxis (#443)
+- Fix reset of transforms in WinForms render context (#489)
 
 ## [2014.1.546] - 2014-10-22
 ### Added
