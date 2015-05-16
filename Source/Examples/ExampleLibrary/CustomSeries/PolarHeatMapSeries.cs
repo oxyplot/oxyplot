@@ -102,8 +102,7 @@ namespace OxyPlot.Series
         /// Renders the series on the specified render context.
         /// </summary>
         /// <param name="rc">The rendering context.</param>
-        /// <param name="model">The model.</param>
-        public override void Render(IRenderContext rc, PlotModel model)
+        public override void Render(IRenderContext rc)
         {
             if (this.Data == null)
             {
@@ -113,11 +112,11 @@ namespace OxyPlot.Series
 
             if (this.ImageSize > 0)
             {
-                this.RenderFixed(rc, model);
+                this.RenderFixed(rc, this.PlotModel);
             }
             else
             {
-                this.RenderDynamic(rc, model);
+                this.RenderDynamic(rc, this.PlotModel);
             }
         }
 

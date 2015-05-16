@@ -83,12 +83,9 @@ namespace OxyPlot.Series
         /// <param name="rc">
         /// The rendering context.
         /// </param>
-        /// <param name="model">
-        /// The owner plot model.
-        /// </param>
-        public override void Render(IRenderContext rc, PlotModel model)
+        public override void Render(IRenderContext rc)
         {
-            base.Render(rc, model);
+            base.Render(rc);
 
             var clippingRectangle = this.GetClippingRect();
 

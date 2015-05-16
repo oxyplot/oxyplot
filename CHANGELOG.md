@@ -35,6 +35,7 @@ All notable changes to this project will be documented in this file.
 - PlotController should not intercept input per default (#446)
 - Changed DefaultTrackerFormatString for BoxPlotSeries (to include Mean) (#440)
 - Changed Constructor of BoxPlotItem (to include Mean) (#440)
+- Changed Axis, Annotation and Series Render() method (removed model parameter)
 
 ### Removed
 - OxyPlot.Metro project (superseded by OxyPlot.WindowsUniversal) (#241)

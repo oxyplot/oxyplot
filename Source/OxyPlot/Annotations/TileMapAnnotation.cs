@@ -95,10 +95,9 @@ namespace OxyPlot.Annotations
         /// Renders the annotation on the specified context.
         /// </summary>
         /// <param name="rc">The render context.</param>
-        /// <param name="model">The model.</param>
-        public override void Render(IRenderContext rc, PlotModel model)
+        public override void Render(IRenderContext rc)
         {
-            base.Render(rc, model);
+            base.Render(rc);
 
             var lon0 = this.XAxis.ActualMinimum;
             var lon1 = this.XAxis.ActualMaximum;
@@ -106,7 +105,7 @@ namespace OxyPlot.Annotations
             var lat1 = this.YAxis.ActualMaximum;
 
             // the desired number of tiles horizontally
-            double tilesx = model.Width / this.TileSize;
+            double tilesx = this.PlotModel.Width / this.TileSize;
 
             // calculate the desired zoom level
             var n = tilesx / (((lon1 + 180) / 360) - ((lon0 + 180) / 360));

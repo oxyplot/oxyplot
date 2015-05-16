@@ -343,7 +343,7 @@ namespace OxyPlot
             foreach (var a in this.Annotations.Where(a => a.Layer == layer))
             {
                 rc.SetToolTip(a.ToolTip);
-                a.Render(rc, this);
+                a.Render(rc);
             }
 
             rc.SetToolTip(null);
@@ -356,17 +356,18 @@ namespace OxyPlot
         /// <param name="layer">The layer.</param>
         private void RenderAxes(IRenderContext rc, AxisLayer layer)
         {
-            for (int i = 0; i < 2; i++)
+            // render pass 0
+            foreach (var a in this.Axes.Where(a => a.IsAxisVisible && a.Layer == layer))
             {
-                foreach (var a in this.Axes.Where(a => a.IsAxisVisible))
-                {
-                    rc.SetToolTip(a.ToolTip);
+                rc.SetToolTip(a.ToolTip);
+                a.Render(rc, 0);
+            }
 
-                    if (a.Layer == layer)
-                    {
-                        a.Render(rc, this, layer, i);
-                    }
-                }
+            // render pass 1
+            foreach (var a in this.Axes.Where(a => a.IsAxisVisible && a.Layer == layer))
+            {
+                rc.SetToolTip(a.ToolTip);
+                a.Render(rc, 1);
             }
 
             rc.SetToolTip(null);
@@ -414,7 +415,7 @@ namespace OxyPlot
             foreach (var s in this.Series.Where(s => s.IsVisible))
             {
                 rc.SetToolTip(s.ToolTip);
-                s.Render(rc, this);
+                s.Render(rc);
             }
 
             rc.SetToolTip(null);

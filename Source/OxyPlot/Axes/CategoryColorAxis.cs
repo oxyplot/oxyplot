@@ -72,10 +72,8 @@ namespace OxyPlot.Axes
         /// Renders the axis on the specified render context.
         /// </summary>
         /// <param name="rc">The render context.</param>
-        /// <param name="model">The model.</param>
-        /// <param name="axisLayer">The layer.</param>
         /// <param name="pass">The pass.</param>
-        public override void Render(IRenderContext rc, PlotModel model, AxisLayer axisLayer, int pass)
+        public override void Render(IRenderContext rc, int pass)
         {
             if (this.Position == AxisPosition.None)
             {
@@ -84,28 +82,28 @@ namespace OxyPlot.Axes
 
             if (pass == 0)
             {
-                double left = model.PlotArea.Left;
-                double top = model.PlotArea.Top;
+                double left = this.PlotModel.PlotArea.Left;
+                double top = this.PlotModel.PlotArea.Top;
                 double width = this.MajorTickSize - 2;
                 double height = this.MajorTickSize - 2;
 
                 switch (this.Position)
                 {
                     case AxisPosition.Left:
-                        left = model.PlotArea.Left - this.PositionTierMinShift - width;
-                        top = model.PlotArea.Top;
+                        left = this.PlotModel.PlotArea.Left - this.PositionTierMinShift - width;
+                        top = this.PlotModel.PlotArea.Top;
                         break;
                     case AxisPosition.Right:
-                        left = model.PlotArea.Right + this.PositionTierMinShift;
-                        top = model.PlotArea.Top;
+                        left = this.PlotModel.PlotArea.Right + this.PositionTierMinShift;
+                        top = this.PlotModel.PlotArea.Top;
                         break;
                     case AxisPosition.Top:
-                        left = model.PlotArea.Left;
-                        top = model.PlotArea.Top - this.PositionTierMinShift - height;
+                        left = this.PlotModel.PlotArea.Left;
+                        top = this.PlotModel.PlotArea.Top - this.PositionTierMinShift - height;
                         break;
                     case AxisPosition.Bottom:
-                        left = model.PlotArea.Left;
-                        top = model.PlotArea.Bottom + this.PositionTierMinShift;
+                        left = this.PlotModel.PlotArea.Left;
+                        top = this.PlotModel.PlotArea.Bottom + this.PositionTierMinShift;
                         break;
                 }
 
@@ -135,7 +133,7 @@ namespace OxyPlot.Axes
                 }
             }
 
-            base.Render(rc, model, axisLayer, pass);
+            base.Render(rc, pass);
         }
 
         /// <summary>

@@ -68,10 +68,9 @@ namespace OxyPlot.Annotations
         /// Renders the text annotation.
         /// </summary>
         /// <param name="rc">The render context.</param>
-        /// <param name="model">The plot model.</param>
-        public override void Render(IRenderContext rc, PlotModel model)
+        public override void Render(IRenderContext rc)
         {
-            base.Render(rc, model);
+            base.Render(rc);
 
             var position = this.Transform(this.TextPosition) + this.Offset;
 

@@ -72,17 +72,10 @@ namespace OxyPlot.Axes
         /// Renders the axis on the specified render context.
         /// </summary>
         /// <param name="rc">The render context.</param>
-        /// <param name="model">The model.</param>
-        /// <param name="axisLayer">The rendering order.</param>
         /// <param name="pass">The rendering pass.</param>
-        public override void Render(IRenderContext rc, PlotModel model, AxisLayer axisLayer, int pass)
+        public override void Render(IRenderContext rc, int pass)
         {
-            if (this.Layer != axisLayer)
-            {
-                return;
-            }
-
-            var r = new MagnitudeAxisRenderer(rc, model);
+            var r = new MagnitudeAxisRenderer(rc, this.PlotModel);
             r.Render(this, pass);
         }
 

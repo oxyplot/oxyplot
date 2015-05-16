@@ -231,8 +231,7 @@ namespace OxyPlot.Series
         /// Renders the Series on the specified rendering context.
         /// </summary>
         /// <param name="rc">The rendering context.</param>
-        /// <param name="model">The model.</param>
-        public override void Render(IRenderContext rc, PlotModel model)
+        public override void Render(IRenderContext rc)
         {
             this.ActualMinimumBarRectangles = new List<OxyRect>();
             this.ActualMaximumBarRectangles = new List<OxyRect>();

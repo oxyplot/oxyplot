@@ -175,8 +175,7 @@ namespace OxyPlot.Series
         /// Renders the series on the specified render context.
         /// </summary>
         /// <param name="rc">The rendering context.</param>
-        /// <param name="model">The model.</param>
-        public override void Render(IRenderContext rc, PlotModel model)
+        public override void Render(IRenderContext rc)
         {
             if (this.Data == null)
             {

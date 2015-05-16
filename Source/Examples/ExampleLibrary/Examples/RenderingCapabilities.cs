@@ -368,10 +368,9 @@ namespace ExampleLibrary
             /// Renders the annotation on the specified context.
             /// </summary>
             /// <param name="rc">The render context.</param>
-            /// <param name="model">The model.</param>
-            public override void Render(IRenderContext rc, PlotModel model)
+            public override void Render(IRenderContext rc)
             {
-                base.Render(rc, model);
+                base.Render(rc);
                 this.Rendering(rc);
             }
         }

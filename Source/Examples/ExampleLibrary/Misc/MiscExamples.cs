@@ -2229,8 +2229,7 @@ namespace ExampleLibrary
             /// Renders the series on the specified render context.
             /// </summary>
             /// <param name="rc">The rendering context.</param>
-            /// <param name="model">The model.</param>
-            public override void Render(IRenderContext rc, PlotModel model)
+            public override void Render(IRenderContext rc)
             {
                 var p0 = this.Transform(this.XAxis.ActualMinimum, this.YAxis.ActualMinimum);
                 var p1 = this.Transform(this.XAxis.ActualMaximum, this.YAxis.ActualMaximum);
