@@ -110,7 +110,7 @@ namespace ExampleLibrary
                         Series = this,
                         DataPoint = new DataPoint(v, double.NaN),
                         Position = new ScreenPoint(x, this.symbolPosition - this.symbolSize.Height),
-                        Text = this.Format(this.TrackerFormatString, null, this.Title, v)
+                        Text = StringHelper.Format(this.ActualCulture, this.TrackerFormatString, null, this.Title, v)
                     };
                 }
             }

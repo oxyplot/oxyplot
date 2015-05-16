@@ -277,7 +277,8 @@ namespace OxyPlot.Series
                 Position = point,
                 Item = null,
                 Index = -1,
-                Text = this.Format(
+                Text = StringHelper.Format(
+                this.ActualCulture, 
                 this.TrackerFormatString,
                 null,
                 this.Title,

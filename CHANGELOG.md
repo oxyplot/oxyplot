@@ -46,6 +46,7 @@ All notable changes to this project will be documented in this file.
 - Model.GetElements() method
 - Remove SL4 support (#115)
 - Remove NET35 support (#115)
+- PlotElement.Format method. Use StringHelper.Format instead.
 
 ### Fixed
 - Tracker position is wrong when PlotView is offset from origin (#455)
@@ -75,6 +76,7 @@ All notable changes to this project will be documented in this file.
 - Xamarin.Forms iOS PlotViewRenderer crash (#458) 
 - Inaccurate tracker when using LogarithmicAxis (#443)
 - Fix reset of transforms in WinForms render context (#489)
+- Fix StringFormat for TimeSpanAxis not recognizing f, ff, fff, etc (#330)
 
 ## [2014.1.546] - 2014-10-22
 ### Added

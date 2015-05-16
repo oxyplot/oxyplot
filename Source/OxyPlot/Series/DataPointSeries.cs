@@ -106,7 +106,8 @@ namespace OxyPlot.Series
 
             if (result != null)
             {
-                result.Text = this.Format(
+                result.Text = StringHelper.Format(
+                    this.ActualCulture, 
                     this.TrackerFormatString,
                     result.Item,
                     this.Title,

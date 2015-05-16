@@ -101,7 +101,7 @@ namespace OxyPlot.Series
         /// <param name="index">The index of the bar item.</param>
         protected override void RenderLabel(IRenderContext rc, OxyRect clippingRect, OxyRect rect, double value, int index)
         {
-            var s = this.Format(this.LabelFormatString, this.GetItem(this.ValidItemsIndexInversion[index]), value);
+            var s = StringHelper.Format(this.ActualCulture, this.LabelFormatString, this.GetItem(this.ValidItemsIndexInversion[index]), value);
             HorizontalAlignment ha;
             ScreenPoint pt;
             switch (this.LabelPlacement)

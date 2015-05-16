@@ -2221,7 +2221,7 @@ namespace ExampleLibrary
                     Position = point,
                     Item = null,
                     Index = -1,
-                    Text = this.Format(this.TrackerFormatString, null, p.X, p.Y, it)
+                    Text = StringHelper.Format(this.ActualCulture, this.TrackerFormatString, null, p.X, p.Y, it)
                 };
             }
 

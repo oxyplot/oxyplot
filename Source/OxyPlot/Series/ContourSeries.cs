@@ -233,7 +233,8 @@ namespace OxyPlot.Series
                     if (result == null || result.Position.DistanceToSquared(point) > r.Position.DistanceToSquared(point))
                     {
                         result = r;
-                        result.Text = this.Format(
+                        result.Text = StringHelper.Format(
+                            this.ActualCulture, 
                             this.TrackerFormatString,
                             null,
                             this.Title,
