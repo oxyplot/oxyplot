@@ -122,15 +122,14 @@ namespace ExampleLibrary
         /// Renders the series on the specified render context.
         /// </summary>
         /// <param name="rc">The rendering context.</param>
-        /// <param name="model">The model.</param>
-        public override void Render(IRenderContext rc, PlotModel model)
+        public override void Render(IRenderContext rc)
         {
             if (this.XAxis == null)
             {
                 return;
             }
 
-            this.symbolPosition = model.PlotArea.Bottom;
+            this.symbolPosition = this.PlotModel.PlotArea.Bottom;
             this.symbolSize = rc.MeasureText(this.Symbol, this.ActualFont, this.ActualFontSize);
             foreach (var v in this.Values)
             {

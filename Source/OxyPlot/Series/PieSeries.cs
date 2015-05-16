@@ -249,8 +249,7 @@ namespace OxyPlot.Series
         /// Renders the series on the specified render context.
         /// </summary>
         /// <param name="rc">The rendering context.</param>
-        /// <param name="model">The model.</param>
-        public override void Render(IRenderContext rc, PlotModel model)
+        public override void Render(IRenderContext rc)
         {
             this.slicePoints.Clear();
 
@@ -266,14 +265,14 @@ namespace OxyPlot.Series
             }
 
             // todo: reduce available size due to the labels
-            double radius = Math.Min(model.PlotArea.Width, model.PlotArea.Height) / 2;
+            double radius = Math.Min(this.PlotModel.PlotArea.Width, this.PlotModel.PlotArea.Height) / 2;
 
             double outerRadius = radius * (this.Diameter - this.ExplodedDistance);
             double innerRadius = radius * this.InnerDiameter;
 
             double angle = this.StartAngle;
             var midPoint = new ScreenPoint(
-                (model.PlotArea.Left + model.PlotArea.Right) * 0.5, (model.PlotArea.Top + model.PlotArea.Bottom) * 0.5);
+                (this.PlotModel.PlotArea.Left + this.PlotModel.PlotArea.Right) * 0.5, (this.PlotModel.PlotArea.Top + this.PlotModel.PlotArea.Bottom) * 0.5);
 
             foreach (var slice in this.slices)
             {

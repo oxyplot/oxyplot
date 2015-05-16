@@ -345,7 +345,7 @@ namespace ExampleLibrary
                 }
             }
 
-            public override void Render(IRenderContext rc, PlotModel model)
+            public override void Render(IRenderContext rc)
             {
                 // transform to screen coordinates
                 var p0 = this.Transform(this.StartPoint);

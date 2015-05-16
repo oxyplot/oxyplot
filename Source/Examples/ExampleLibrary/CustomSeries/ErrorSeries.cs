@@ -62,8 +62,7 @@ namespace ExampleLibrary
         /// Renders the series on the specified render context.
         /// </summary>
         /// <param name="rc">The rendering context.</param>
-        /// <param name="model">The model.</param>
-        public override void Render(IRenderContext rc, PlotModel model)
+        public override void Render(IRenderContext rc)
         {
             var points = this.Points;
             if (points.Count == 0)

@@ -415,7 +415,7 @@ namespace OxyPlot
             foreach (var s in this.Series.Where(s => s.IsVisible))
             {
                 rc.SetToolTip(s.ToolTip);
-                s.Render(rc, this);
+                s.Render(rc);
             }
 
             rc.SetToolTip(null);
