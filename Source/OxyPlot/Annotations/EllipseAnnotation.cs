@@ -52,10 +52,9 @@ namespace OxyPlot.Annotations
         /// Renders the polygon annotation.
         /// </summary>
         /// <param name="rc">The render context.</param>
-        /// <param name="model">The plot model.</param>
-        public override void Render(IRenderContext rc, PlotModel model)
+        public override void Render(IRenderContext rc)
         {
-            base.Render(rc, model);
+            base.Render(rc);
 
             this.screenRectangle = new OxyRect(this.Transform(this.X - (this.Width / 2), this.Y - (this.Height / 2)), this.Transform(this.X + (this.Width / 2), this.Y + (this.Height / 2)));
 

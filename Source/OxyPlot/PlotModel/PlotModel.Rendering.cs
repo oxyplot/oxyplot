@@ -343,7 +343,7 @@ namespace OxyPlot
             foreach (var a in this.Annotations.Where(a => a.Layer == layer))
             {
                 rc.SetToolTip(a.ToolTip);
-                a.Render(rc, this);
+                a.Render(rc);
             }
 
             rc.SetToolTip(null);

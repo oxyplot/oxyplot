@@ -108,18 +108,17 @@ namespace OxyPlot.Annotations
         /// Renders the image annotation.
         /// </summary>
         /// <param name="rc">The render context.</param>
-        /// <param name="model">The plot model.</param>
-        public override void Render(IRenderContext rc, PlotModel model)
+        public override void Render(IRenderContext rc)
         {
-            base.Render(rc, model);
+            base.Render(rc);
 
-            var p = this.GetPoint(this.X, this.Y, rc, model);
-            var o = this.GetVector(this.OffsetX, this.OffsetY, rc, model);
+            var p = this.GetPoint(this.X, this.Y, rc, this.PlotModel);
+            var o = this.GetVector(this.OffsetX, this.OffsetY, rc, this.PlotModel);
             var position = p + o;
 
             var clippingRectangle = this.GetClippingRect();
 
-            var s = this.GetVector(this.Width, this.Height, rc, model);
+            var s = this.GetVector(this.Width, this.Height, rc, this.PlotModel);
 
             var width = s.X;
             var height = s.Y;
