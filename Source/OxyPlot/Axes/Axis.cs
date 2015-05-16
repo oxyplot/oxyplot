@@ -986,9 +986,8 @@ namespace OxyPlot.Axes
         /// </summary>
         /// <param name="rc">The render context.</param>
         /// <param name="model">The model.</param>
-        /// <param name="axisLayer">The rendering order.</param>
         /// <param name="pass">The pass.</param>
-        public virtual void Render(IRenderContext rc, PlotModel model, AxisLayer axisLayer, int pass)
+        public virtual void Render(IRenderContext rc, PlotModel model, int pass)
         {
             var r = new HorizontalAndVerticalAxisRenderer(rc, model);
             r.Render(this, pass);

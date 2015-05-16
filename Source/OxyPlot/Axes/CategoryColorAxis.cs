@@ -73,9 +73,8 @@ namespace OxyPlot.Axes
         /// </summary>
         /// <param name="rc">The render context.</param>
         /// <param name="model">The model.</param>
-        /// <param name="axisLayer">The layer.</param>
         /// <param name="pass">The pass.</param>
-        public override void Render(IRenderContext rc, PlotModel model, AxisLayer axisLayer, int pass)
+        public override void Render(IRenderContext rc, PlotModel model, int pass)
         {
             if (this.Position == AxisPosition.None)
             {
@@ -135,7 +134,7 @@ namespace OxyPlot.Axes
                 }
             }
 
-            base.Render(rc, model, axisLayer, pass);
+            base.Render(rc, model, pass);
         }
 
         /// <summary>
