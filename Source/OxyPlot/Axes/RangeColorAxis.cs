@@ -68,6 +68,14 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
+        /// Clears the ranges.
+        /// </summary>
+        public void ClearRanges()
+        {
+            this.ranges.Clear();
+        }
+
+        /// <summary>
         /// Gets the palette index of the specified value.
         /// </summary>
         /// <param name="value">The value.</param>
