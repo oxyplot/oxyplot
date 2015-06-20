@@ -6,6 +6,7 @@
 //   Handles device orientation changes.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+using System;
 
 namespace ExampleBrowser
 {
@@ -34,32 +35,27 @@ namespace ExampleBrowser
 
         public override void LoadView()
         {
-            NavigationItem.RightBarButtonItem = new UIBarButtonItem(UIBarButtonSystemItem.Compose,
-                delegate
-                {
-                    var actionSheet = new UIActionSheet("Email", null, "Cancel", "PNG", "PDF")
-                    {
-                        Style = UIActionSheetStyle.Default
-                    };
-
-                    actionSheet.Clicked += delegate(object sender, UIButtonEventArgs args)
-                    {
-
-                        if (args.ButtonIndex > 1)
-                            return;
-
-                        Email(args.ButtonIndex == 0 ? "png" : "pdf");
-                    };
-
-                    actionSheet.ShowInView(View);
-                });
+			NavigationItem.RightBarButtonItem = new UIBarButtonItem(UIBarButtonSystemItem.Compose);
 
             // Only for iOS 7 and later?
             this.EdgesForExtendedLayout = UIRectEdge.None;
 
             this.View = this.plotView;
-
         }
+
+		public override void ViewDidAppear (bool animated)
+		{
+			base.ViewDidAppear (animated);
+
+			NavigationItem.RightBarButtonItem.Clicked += HandleEmailButton;
+		}
+
+		public override void ViewDidDisappear (bool animated)
+		{
+			base.ViewDidDisappear (animated);
+
+			NavigationItem.RightBarButtonItem.Clicked -= HandleEmailButton;
+		}
 
         /// <summary>
         /// Handles device orientation changes.
@@ -70,6 +66,24 @@ namespace ExampleBrowser
             base.DidRotate(fromInterfaceOrientation);
             this.plotView.InvalidatePlot(false);
         }
+
+		private void HandleEmailButton(object sender, EventArgs args)
+		{
+			var actionSheet = new UIActionSheet("Email", null, "Cancel", "PNG", "PDF")
+			{
+				Style = UIActionSheetStyle.Default
+			};
+
+			actionSheet.Clicked += (s, e) =>
+			{
+				if (e.ButtonIndex > 1)
+					return;
+
+				Email(e.ButtonIndex == 0 ? "png" : "pdf");
+			};
+
+			actionSheet.ShowInView(View);
+		}
 
         private void Email(string exportType)
         {
