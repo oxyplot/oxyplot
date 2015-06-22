@@ -78,6 +78,7 @@ All notable changes to this project will be documented in this file.
 - Fix reset of transforms in WinForms render context (#489)
 - Fix StringFormat for TimeSpanAxis not recognizing f, ff, fff, etc (#330)
 - Fix  LineSeries SMOOTH=True will crash WinForms on right click (#499)
+- Fix PlotView leak on iOS (#503)
 
 ## [2014.1.546] - 2014-10-22
 ### Added
