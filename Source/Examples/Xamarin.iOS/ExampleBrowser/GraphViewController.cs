@@ -6,12 +6,12 @@
 //   Handles device orientation changes.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-using System;
 
 namespace ExampleBrowser
 {
+    using System;
+    
     using CoreGraphics;
-
     using Foundation;
     using UIKit;
     using MessageUI;
