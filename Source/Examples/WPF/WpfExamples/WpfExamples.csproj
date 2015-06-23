@@ -69,6 +69,10 @@
     <Compile Include="Examples\AlignedAxesDemo\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Examples\LinearBarSeriesDemo\MainViewModel.cs" />
+    <Compile Include="Examples\LinearBarSeriesDemo\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Examples\BindingObservableCollectionDemo\MainViewModel.cs" />
     <Compile Include="Examples\BindingObservableCollectionDemo\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -94,6 +98,10 @@
     </Compile>
     <Compile Include="ScreenCapture.cs" />
     <Page Include="Examples\AnnotationDemo\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\LinearBarSeriesDemo\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -408,6 +416,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Resource Include="Images\ToolTipDemo.png" />
+    <Resource Include="Images\LinearBarSeriesDemo.png" />
     <Resource Include="Images\DataTemplateDemo.png" />
     <Resource Include="Images\BoxPlotSeriesDemo.png" />
     <Resource Include="Images\BindingObservableCollectionDemo.png" />

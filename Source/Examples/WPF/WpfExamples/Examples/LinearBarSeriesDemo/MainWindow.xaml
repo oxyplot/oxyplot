@@ -1,0 +1,17 @@
+﻿<Window x:Class="LinearBarSeriesDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf" 
+        Title="LinearBarSeriesDemo" Height="480" Width="640">
+    <DockPanel>
+        <oxy:Plot Title="LinearBarSeries">
+            <oxy:Plot.Annotations>
+                <oxy:LineAnnotation Type="Horizontal" Y="0"></oxy:LineAnnotation>
+            </oxy:Plot.Annotations>
+            <oxy:Plot.Axes>
+                <oxy:DateTimeAxis IntervalType="Hours" IntervalLength="50"/>
+            </oxy:Plot.Axes>
+            <oxy:LinearBarSeries ItemsSource="{Binding Pnls}" Title="P&amp;L" DataFieldX="Time" DataFieldY="Value" FillColor="#454CAF50" StrokeColor="#4CAF50" StrokeThickness="1" BarWidth="5"/>
+        </oxy:Plot>
+    </DockPanel>
+</Window>

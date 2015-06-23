@@ -61,6 +61,7 @@
     <Compile Include="Foundation\DataPointTests.cs" />
     <Compile Include="Foundation\OxyColorTests.cs" />
     <Compile Include="Foundation\OxySizeTests.cs" />
+    <Compile Include="Utilities\ComparerHelperTests.cs" />
     <Compile Include="Utilities\ListFillerTests.cs" />
     <Compile Include="Foundation\RenderingExtensionsTests.cs" />
     <Compile Include="Imaging\Deflate\DeflateStreamExtensions.cs" />

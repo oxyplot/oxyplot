@@ -85,6 +85,7 @@
     <Compile Include="PlotCommands.cs" />
     <Compile Include="PlotView.cs" />
     <Compile Include="Plot.Properties.cs" />
+    <Compile Include="Series\BarSeries\LinearBarSeries.cs" />
     <Compile Include="Series\BoxPlotSeries.cs" />
     <Compile Include="Series\HeatMapSeries.cs" />
     <Compile Include="Series\ScatterSeries{T}.cs" />
