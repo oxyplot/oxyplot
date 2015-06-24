@@ -1,7 +1,13 @@
 ﻿<Window x:Class="PerformanceDemo.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf" 
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf"
+        xmlns:performanceDemo="clr-namespace:WpfExamples.Examples.PerformanceDemo"
         Title="PerformanceDemo" Height="480" Width="640">
+    
+    <Window.Resources>
+        <performanceDemo:PerformanceDemoToolTipConverter x:Key="PerformanceDemoToolTipConverter" />
+    </Window.Resources>
+    
     <Grid>
         <ItemsControl ItemsSource="{Binding PlotModels}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
             <ItemsControl.Template>
@@ -26,7 +32,7 @@
 
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <oxy:PlotView Model="{Binding}" Height="200" />
+                    <oxy:PlotView Model="{Binding}" ToolTip="{Binding Converter={StaticResource PerformanceDemoToolTipConverter}}" Height="200" />
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
