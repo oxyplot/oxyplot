@@ -27,7 +27,7 @@ if [ $? -ne 0 ]; then echo "  FAILED"; else echo "  OK"; fi
 
 # MonoTouch
 echo "Building for MonoTouch..."
-"$MDTOOL" build "--configuration:Release" $SOURCE/OxyPlot.MonoTouch.sln > build-ios.log
+"$MDTOOL" build "--configuration:Release" $SOURCE/OxyPlot.MonoTouch.sln > build-monotouch.log
 if [ $? -ne 0 ]; then echo "  FAILED"; else echo "  OK"; fi
 ls -al ../Output/MonoTouch/OxyPlot*
 
