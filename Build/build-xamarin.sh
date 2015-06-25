@@ -1,7 +1,11 @@
 #!/bin/sh
 
 # Folders
-LynxToolkit=/usr/local/bin
+if [ -z "${LYNXTOOLKIT}" ]; then
+    LynxToolkit=/usr/local/bin
+else
+    LynxToolkit=$LYNXTOOLKIT
+fi
 SOURCE=../Source
 OUTPUT=../Output
 
