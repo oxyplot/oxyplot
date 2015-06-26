@@ -434,6 +434,8 @@ namespace OxyPlot
 
             if (!string.IsNullOrEmpty(this.Title))
             {
+                rc.SetToolTip(this.TitleToolTip);
+
                 rc.DrawMathText(
                     new ScreenPoint(x, y),
                     this.Title,
@@ -445,11 +447,6 @@ namespace OxyPlot
                     HorizontalAlignment.Center,
                     VerticalAlignment.Top);
                 y += titleSize.Height;
-
-                rc.SetToolTip(this.TitleToolTip);
-
-                
-                // todo: render
 
                 rc.SetToolTip(null);
             }

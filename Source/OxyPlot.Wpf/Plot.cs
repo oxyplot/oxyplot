@@ -159,7 +159,7 @@ namespace OxyPlot.Wpf
         /// <param name="e">The <see cref="System.Windows.DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
         private static void TitleToolTipChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var plot = (Plot) d;
+            var plot = (Plot)d;
 
             var model = plot.ActualModel;
             if (model != null)
