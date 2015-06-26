@@ -153,6 +153,24 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
+        /// Called when the visual appearance is changed.
+        /// </summary>
+        /// <param name="d">The d.</param>
+        /// <param name="e">The <see cref="System.Windows.DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
+        private static void TitleToolTipChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var plot = (Plot) d;
+
+            var model = plot.ActualModel;
+            if (model != null)
+            {
+                model.TitleToolTip = e.NewValue as string;
+            }
+
+            plot.OnAppearanceChanged();
+        }
+
+        /// <summary>
         /// Called when annotations is changed.
         /// </summary>
         /// <param name="sender">The sender.</param>

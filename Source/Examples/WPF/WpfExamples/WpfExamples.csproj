@@ -79,7 +79,6 @@
     <Compile Include="Examples\PerformanceDemo\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Examples\PerformanceDemo\PerformanceDemoToolTipConverter.cs" />
     <Compile Include="Examples\ScatterErrorSeriesDemo\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>

@@ -235,6 +235,7 @@ namespace OxyPlot
             this.DefaultFont = "Segoe UI";
             this.DefaultFontSize = 12;
 
+            this.TitleToolTip = null;
             this.TitleFont = null;
             this.TitleFontSize = 18;
             this.TitleFontWeight = FontWeights.Bold;
@@ -655,6 +656,12 @@ namespace OxyPlot
         /// </summary>
         /// <value>The title.</value>
         public string Title { get; set; }
+
+        /// <summary>
+        /// Gets or sets the title tool tip.
+        /// </summary>
+        /// <value>The title tool tip.</value>
+        public string TitleToolTip { get; set; }
 
         /// <summary>
         /// Gets or sets the color of the title.

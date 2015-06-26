@@ -407,6 +407,12 @@ namespace OxyPlot.Wpf
             "Title", typeof(string), typeof(Plot), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
+        /// Identifies the <see cref="TitleToolTip"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty TitleToolTipProperty = DependencyProperty.Register(
+            "TitleToolTip", typeof(string), typeof(Plot), new PropertyMetadata(null, TitleToolTipChanged));
+
+        /// <summary>
         /// Identifies the <see cref="InvalidateFlag"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty InvalidateFlagProperty = DependencyProperty.Register(
@@ -1189,6 +1195,23 @@ namespace OxyPlot.Wpf
             set
             {
                 this.SetValue(TitleProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the title tool tip.
+        /// </summary>
+        /// <value>The title tool tip.</value>
+        public string TitleToolTip
+        {
+            get
+            {
+                return (string)this.GetValue(TitleToolTipProperty);
+            }
+
+            set
+            {
+                this.SetValue(TitleToolTipProperty, value);
             }
         }
 

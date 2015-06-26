@@ -445,6 +445,13 @@ namespace OxyPlot
                     HorizontalAlignment.Center,
                     VerticalAlignment.Top);
                 y += titleSize.Height;
+
+                rc.SetToolTip(this.TitleToolTip);
+
+                
+                // todo: render
+
+                rc.SetToolTip(null);
             }
 
             if (!string.IsNullOrEmpty(this.Subtitle))
