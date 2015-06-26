@@ -153,7 +153,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Called when the visual appearance is changed.
+        /// Called when the tool tip is changed.
         /// </summary>
         /// <param name="d">The d.</param>
         /// <param name="e">The <see cref="System.Windows.DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
