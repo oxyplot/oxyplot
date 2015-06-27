@@ -13,6 +13,7 @@ namespace OxyPlot
     using System.Collections;
     using System.Collections.Generic;
     using System.Globalization;
+    using System.Linq;
     using System.Reflection;
 
     using OxyPlot.Axes;
@@ -51,7 +52,7 @@ namespace OxyPlot
         /// <returns>An array of PropertyInfo objects representing all public properties of the current Type.</returns>
         public static IEnumerable<PropertyInfo> GetProperties(this Type type)
         {
-            return type.GetRuntimeProperties();
+            return type.GetRuntimeProperties().Where(pi => pi.GetMethod.IsPublic);
         }
 
         /// <summary>
@@ -61,7 +62,7 @@ namespace OxyPlot
         /// <returns>An array of FieldInfo objects representing all the public fields defined for the current Type.</returns>
         public static IEnumerable<FieldInfo> GetFields(this Type type)
         {
-            return type.GetRuntimeFields();
+            return type.GetRuntimeFields().Where(fi => fi.IsPublic);
         }
 #endif
 
