@@ -12,7 +12,6 @@ namespace OxyPlot
     using System;
     using System.Globalization;
     using System.Linq;
-    using System.Reflection;
 
     /// <summary>
     /// Provides extension methods for <see cref="OxyColor" />.
@@ -176,12 +175,7 @@ namespace OxyPlot
         public static string GetColorName(this OxyColor color)
         {
             var t = typeof(OxyColors);
-#if UNIVERSAL
             var colors = t.GetFields();
-#else
-            var colors = t.GetFields(BindingFlags.Public | BindingFlags.Static);
-#endif
-            
             var colorField = colors.FirstOrDefault(field => color.Equals(field.GetValue(null)));
             return colorField != null ? colorField.Name : null;
         }

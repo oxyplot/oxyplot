@@ -23,23 +23,48 @@ namespace OxyPlot
     public static class ReflectionExtensions
     {
 #if UNIVERSAL
+        /// <summary>
+        /// Gets a specific property of the current Type.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="name">The string containing the name of the public property to get.</param>
+        /// <returns>An object representing the public property with the specified name, if found; otherwise, null.</returns>
         public static PropertyInfo GetProperty(this Type type, string name)
         {
             return type.GetRuntimeProperty(name);
         }
+
+        /// <summary>
+        /// Returns the public set accessor for this property.
+        /// </summary>
+        /// <param name="pi">The property.</param>
+        /// <returns>The MethodInfo object representing the Set method for this property, or null if the set accessor is not public.</returns>
         public static MethodInfo GetSetMethod(this PropertyInfo pi)
         {
             return pi.SetMethod;
         }
+
+        /// <summary>
+        /// Returns all the public properties of the current Type.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns>An array of PropertyInfo objects representing all public properties of the current Type.</returns>
         public static IEnumerable<PropertyInfo> GetProperties(this Type type)
         {
             return type.GetRuntimeProperties();
         }
+
+        /// <summary>
+        /// Returns all the public fields of the current Type.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns>An array of FieldInfo objects representing all the public fields defined for the current Type.</returns>
         public static IEnumerable<FieldInfo> GetFields(this Type type)
         {
             return type.GetRuntimeFields();
         }
 #endif
+
         /// <summary>
         /// Fills a target by the specified property of a source target/enumerable.
         /// </summary>
