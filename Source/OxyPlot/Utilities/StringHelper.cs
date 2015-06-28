@@ -10,6 +10,7 @@
 namespace OxyPlot
 {
     using System;
+    using System.Reflection;
     using System.Text.RegularExpressions;
 
     /// <summary>
@@ -48,7 +49,7 @@ namespace OxyPlot
                         return match.Value;
                     }
 
-                    var pi = item.GetType().GetProperty(property);
+                    var pi = item.GetType().GetRuntimeProperty(property);
                     if (pi == null)
                     {
                         return string.Empty;
