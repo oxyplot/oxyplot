@@ -64,7 +64,7 @@ namespace OxyPlot
                 var pi = this.infos[i];
                 if (pi == null || this.reflectedTypes[i] != currentType)
                 {
-                    pi = this.infos[i] = currentType.GetProperty(this.items[i]);
+                    pi = this.infos[i] = currentType.GetRuntimeProperty(this.items[i]);
                     this.reflectedTypes[i] = currentType;
                 }
 

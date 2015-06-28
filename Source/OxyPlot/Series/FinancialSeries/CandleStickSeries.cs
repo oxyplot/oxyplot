@@ -10,6 +10,7 @@
 namespace OxyPlot.Series
 {
     using System;
+    using System.Reflection;
 
     using OxyPlot.Axes;
 
@@ -351,7 +352,7 @@ namespace OxyPlot.Series
             if (propertyName != null)
             {
                 var type = item.GetType();
-                var prop = type.GetProperty(propertyName);
+                var prop = type.GetRuntimeProperty(propertyName);
                 return Axis.ToDouble(prop.GetValue(item, null));
             }
             

@@ -13,7 +13,6 @@ namespace OxyPlot
     using System.Collections;
     using System.Collections.Generic;
     using System.Globalization;
-    using System.Linq;
     using System.Reflection;
 
     using OxyPlot.Axes;
@@ -23,46 +22,16 @@ namespace OxyPlot
     /// </summary>
     public static class ReflectionExtensions
     {
-#if UNIVERSAL
+#if !UNIVERSAL        
         /// <summary>
-        /// Gets a specific property of the current Type.
+        /// Retrieves an object that represents a specified property.
         /// </summary>
-        /// <param name="type">The type.</param>
-        /// <param name="name">The string containing the name of the public property to get.</param>
-        /// <returns>An object representing the public property with the specified name, if found; otherwise, null.</returns>
-        public static PropertyInfo GetProperty(this Type type, string name)
+        /// <param name="type">The type that contains the property.</param>
+        /// <param name="name">The name of the property.</param>
+        /// <returns>An object that represents the specified property, or null if the property is not found.</returns>
+        public static PropertyInfo GetRuntimeProperty(this Type type, string name)
         {
-            return type.GetRuntimeProperty(name);
-        }
-
-        /// <summary>
-        /// Returns the public set accessor for this property.
-        /// </summary>
-        /// <param name="pi">The property.</param>
-        /// <returns>The MethodInfo object representing the Set method for this property, or null if the set accessor is not public.</returns>
-        public static MethodInfo GetSetMethod(this PropertyInfo pi)
-        {
-            return pi.SetMethod;
-        }
-
-        /// <summary>
-        /// Returns all the public properties of the current Type.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <returns>An array of PropertyInfo objects representing all public properties of the current Type.</returns>
-        public static IEnumerable<PropertyInfo> GetProperties(this Type type)
-        {
-            return type.GetRuntimeProperties().Where(pi => pi.GetMethod.IsPublic);
-        }
-
-        /// <summary>
-        /// Returns all the public fields of the current Type.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <returns>An array of FieldInfo objects representing all the public fields defined for the current Type.</returns>
-        public static IEnumerable<FieldInfo> GetFields(this Type type)
-        {
-            return type.GetRuntimeFields().Where(fi => fi.IsPublic);
+            return type.GetProperty(name);
         }
 #endif
 
