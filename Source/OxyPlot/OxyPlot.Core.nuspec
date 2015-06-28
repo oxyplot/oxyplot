@@ -14,7 +14,7 @@
     <tags>plotting plot charting chart</tags>
   </metadata>
   <files>
-    <file src="..\..\Output\PCL\OxyPlot.???" target="lib\portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1+Xamarin.iOS10" />
+    <file src="..\..\Output\PCL\OxyPlot.???" target="lib\portable-net45+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1+Xamarin.iOS10" />
     <file src="..\..\Output\PCL\OxyPlot.???" target="lib\net45" />
     <file src="..\..\Output\NET40\OxyPlot.???" target="lib\net40-client" />
     <file src="..\..\Output\NET40\OxyPlot.???" target="lib\net40" />
