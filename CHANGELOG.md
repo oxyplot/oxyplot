@@ -37,6 +37,7 @@ All notable changes to this project will be documented in this file.
 - Changed Constructor of BoxPlotItem (to include Mean) (#440)
 - Changed Axis, Annotation and Series Render() method (removed model parameter)
 - Changed PCL project to profile 259, SL5 is separate now (#115)
+- Extracted CreateReport() and CreateTextReport() from PlotModel (#517)
 
 ### Removed
 - OxyPlot.Metro project (superseded by OxyPlot.WindowsUniversal) (#241)
