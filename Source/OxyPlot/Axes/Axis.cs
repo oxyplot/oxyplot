@@ -11,7 +11,8 @@ namespace OxyPlot.Axes
 {
     using System;
     using System.Collections.Generic;
-
+    using System.Globalization;
+    using System.Threading;
     using OxyPlot.Series;
 
     /// <summary>
@@ -28,6 +29,16 @@ namespace OxyPlot.Axes
         /// Mantissa function.
         /// </summary>
         protected static readonly Func<double, double> Mantissa = x => x / Math.Pow(10, Exponent(x));
+
+        /// <summary>
+        /// The snap timer time out.
+        /// </summary>
+        private const int SnapTimerTimeOut = 200;
+
+        /// <summary>
+        /// The snap timer.
+        /// </summary>
+        private readonly Timer snapTimer;
 
         /// <summary>
         /// The offset.
@@ -116,6 +127,8 @@ namespace OxyPlot.Axes
             this.AxisDistance = 0;
             this.AxisTitleDistance = 4;
             this.AxisTickToLabelDistance = 4;
+
+            this.snapTimer = new Timer(this.OnSnapTimerTick, null, Timeout.Infinite, Timeout.Infinite);
         }
 
         /// <summary>
@@ -621,6 +634,54 @@ namespace OxyPlot.Axes
         protected double ViewMinimum { get; set; }
 
         /// <summary>
+        /// Gets the precision to use for the delta.
+        /// </summary>
+        /// <param name="delta">The delta.</param>
+        /// <returns>The precision.</returns>
+        public static int GetPrecision(double delta)
+        {
+            int precision = 0;
+
+            if (delta < 0)
+            {
+                const int SmallDelta = 3;
+                precision += SmallDelta;
+
+                var culture = CultureInfo.InvariantCulture;
+                var probablyDot = culture.NumberFormat.NumberDecimalSeparator[0];
+                var number = delta.ToString(culture).Split(probablyDot);
+                if (number.Length == 2)
+                {
+                    var numberValue = number[1];
+                    if (numberValue.Length > SmallDelta)
+                    {
+                        for (var i = SmallDelta; i < numberValue.Length; i++)
+                        {
+                            if (numberValue[i] == '0')
+                            {
+                                precision++;
+                            }
+                        }
+                    }
+                }
+            }
+            else if (delta < 1)
+            {
+                precision += 3;
+            }
+            else if (delta < 3)
+            {
+                precision += 2;
+            }
+            else if (delta < 5)
+            {
+                precision += 1;
+            }
+
+            return precision;
+        }
+
+        /// <summary>
         /// Creates tick values at the specified interval.
         /// </summary>
         /// <param name="from">The start value.</param>
@@ -641,10 +702,19 @@ namespace OxyPlot.Axes
                 step *= -1;
             }
 
-            var startValue = Math.Round(from / step) * step;
-            var numberOfValues = Math.Max((int)((to - from) / step), 1);
+            var startValue = from;
+            var endValue = to;
+
+            var delta = to - from;
+            var deltaToUse = delta - step;
+            var numberOfValues = Math.Max((int)(deltaToUse / step), 1);
+            var precision = GetPrecision(delta);
+
             var epsilon = step * 1e-3 * Math.Sign(step);
             var values = new List<double>(numberOfValues);
+
+            values.Add(Math.Round(startValue, precision));
+            startValue = startValue + (step / 2);
 
             for (int k = 0; k < maxTicks; k++)
             {
@@ -657,9 +727,15 @@ namespace OxyPlot.Axes
                 }
 
                 // try to get rid of numerical noise
-                var v = Math.Round(lastValue / step, 14) * step;
-                values.Add(v);
+                var lastValueWithoutStartValue = lastValue - startValue;
+                var v = Math.Round(((lastValueWithoutStartValue / step) * step) + startValue, precision);
+                if (!values.Contains(v))
+                {
+                    values.Add(v);
+                }
             }
+
+            values.Add(Math.Round(endValue, precision));
 
             return values;
         }
@@ -732,6 +808,8 @@ namespace OxyPlot.Axes
             {
                 throw new InvalidOperationException("AbsoluteMaximum should be larger than AbsoluteMinimum.");
             }
+
+            this.snapTimer.Change(SnapTimerTimeOut, Timeout.Infinite);
         }
 
         /// <summary>
@@ -1600,6 +1678,37 @@ namespace OxyPlot.Axes
             if (handler != null)
             {
                 handler(this, args);
+            }
+        }
+
+        /// <summary>
+        /// Called when the snap timer ticks.
+        /// </summary>
+        /// <param name="state">The state.</param>
+        private void OnSnapTimerTick(object state)
+        {
+            // We must "snap" to valid values in order to make our axis correct
+            var precision = Axis.GetPrecision(this.ActualMaximum - this.ActualMinimum);
+
+            var newActualMinimum = Math.Round(this.ActualMinimum, precision);
+            var newActualMaximum = Math.Round(this.ActualMaximum, precision);
+            bool hasChanges = false;
+
+            if (this.ActualMinimum != newActualMinimum)
+            {
+                hasChanges = true;
+                this.ActualMinimum = newActualMinimum;
+            }
+
+            if (this.ActualMaximum != newActualMaximum)
+            {
+                hasChanges = true;
+                this.ActualMaximum = newActualMaximum;
+            }
+
+            if (hasChanges)
+            {
+                this.CoerceActualMaxMin();
             }
         }
     }
