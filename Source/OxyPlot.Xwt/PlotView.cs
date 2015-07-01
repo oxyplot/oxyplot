@@ -254,14 +254,10 @@ namespace OxyPlot.Xwt
             lock (modelLock) {
                 if (currentModel != null) {
                     ((IPlotModel)currentModel).AttachPlotView (null);
+                    currentModel = null;
                 }
 
                 if (Model != null) {
-                    if (Model.PlotView != null) {
-                        throw new InvalidOperationException (
-                            "This PlotModel is already in use by some other plot view.");
-                    }
-
                     ((IPlotModel)Model).AttachPlotView (this);
                     currentModel = Model;
                 }
