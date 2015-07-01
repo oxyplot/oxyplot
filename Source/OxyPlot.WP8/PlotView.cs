@@ -847,17 +847,10 @@ namespace OxyPlot.WP8
                     this.currentModel = null;
                 }
 
-                this.currentModel = this.Model;
-
-                if (this.currentModel != null)
+                if (this.Model != null)
                 {
-                    if (this.currentModel.PlotView != null)
-                    {
-                        throw new InvalidOperationException(
-                            "This PlotModel is already in use by some other PlotView control.");
-                    }
-
-                    ((IPlotModel)this.currentModel).AttachPlotView(this);
+                    ((IPlotModel)this.Model).AttachPlotView(this);
+                    this.currentModel = this.Model;
                 }
             }
 
