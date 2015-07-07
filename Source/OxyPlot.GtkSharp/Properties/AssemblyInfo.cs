@@ -6,5 +6,5 @@
 
 using System.Reflection;
 
-[assembly: AssemblyTitle("OxyPlot for GTK#")]
-[assembly: AssemblyDescription("OxyPlot controls for GTK#.")]
+[assembly: AssemblyTitle("OxyPlot for GTK2")]
+[assembly: AssemblyDescription("OxyPlot controls for GTK2.")]
