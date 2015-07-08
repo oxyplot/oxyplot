@@ -410,7 +410,7 @@ namespace OxyPlot.Wpf
         /// Identifies the <see cref="TitleToolTip"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TitleToolTipProperty = DependencyProperty.Register(
-            "TitleToolTip", typeof(string), typeof(Plot), new PropertyMetadata(null, TitleToolTipChanged));
+            "TitleToolTip", typeof(string), typeof(Plot), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
         /// Identifies the <see cref="InvalidateFlag"/> dependency property.

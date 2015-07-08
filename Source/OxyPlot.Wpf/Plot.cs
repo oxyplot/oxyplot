@@ -153,24 +153,6 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Called when the tool tip is changed.
-        /// </summary>
-        /// <param name="d">The d.</param>
-        /// <param name="e">The <see cref="System.Windows.DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
-        private static void TitleToolTipChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var plot = (Plot)d;
-
-            var model = plot.ActualModel;
-            if (model != null)
-            {
-                model.TitleToolTip = e.NewValue as string;
-            }
-
-            plot.OnAppearanceChanged();
-        }
-
-        /// <summary>
         /// Called when annotations is changed.
         /// </summary>
         /// <param name="sender">The sender.</param>
@@ -249,6 +231,7 @@ namespace OxyPlot.Wpf
             m.TitleFont = this.TitleFont;
             m.TitleFontSize = this.TitleFontSize;
             m.TitleFontWeight = this.TitleFontWeight.ToOpenTypeWeight();
+            m.TitleToolTip = this.TitleToolTip;
 
             m.Subtitle = this.Subtitle;
             m.SubtitleColor = this.SubtitleColor.ToOxyColor();
