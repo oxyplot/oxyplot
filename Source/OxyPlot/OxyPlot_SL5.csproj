@@ -167,6 +167,8 @@
     <Compile Include="Utilities\EnumerableExtensions.cs" />
     <Compile Include="Utilities\HashCodeBuilder.cs" />
     <Compile Include="Utilities\ReflectionPath.cs" />
+    <Compile Include="Utilities\Timeout.cs" />
+    <Compile Include="Utilities\Timer.cs" />
     <Compile Include="Utilities\XmlWriterBase.cs" />
     <Compile Include="Utilities\BinaryReaderExtensions.cs" />
     <Compile Include="Utilities\ListFiller.cs" />
