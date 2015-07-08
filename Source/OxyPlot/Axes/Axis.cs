@@ -11,8 +11,8 @@ namespace OxyPlot.Axes
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Globalization;
-    using System.Threading;
     using OxyPlot.Series;
 
     /// <summary>
@@ -33,7 +33,7 @@ namespace OxyPlot.Axes
         /// <summary>
         /// The snap timer time out.
         /// </summary>
-        private const int SnapTimerTimeOut = 200;
+        private const int SnapTimerTimeOut = 500;
 
         /// <summary>
         /// The snap timer.
@@ -809,7 +809,11 @@ namespace OxyPlot.Axes
                 throw new InvalidOperationException("AbsoluteMaximum should be larger than AbsoluteMinimum.");
             }
 
-            this.snapTimer.Change(SnapTimerTimeOut, Timeout.Infinite);
+            var snapping = this.CalculateSnapping();
+            if (snapping.Item1)
+            {
+                this.snapTimer.Change(SnapTimerTimeOut, Timeout.Infinite);
+            }
         }
 
         /// <summary>
@@ -1549,7 +1553,7 @@ namespace OxyPlot.Axes
         {
             this.scale = newScale;
             this.offset = newOffset;
-            this.OnTransformChanged(new EventArgs());
+            this.OnTransformChanged(EventArgs.Empty);
         }
 
         /// <summary>
@@ -1682,33 +1686,50 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Called when the snap timer ticks.
+        /// Returns <c>true</c> if the axis requires snapping.
         /// </summary>
-        /// <param name="state">The state.</param>
-        private void OnSnapTimerTick(object state)
+        /// <returns><c>true</c> if snapping is required, <c>false</c> otherwise.</returns>
+        private Tuple<bool, double, double> CalculateSnapping()
         {
             // We must "snap" to valid values in order to make our axis correct
             var precision = Axis.GetPrecision(this.ActualMaximum - this.ActualMinimum);
 
             var newActualMinimum = Math.Round(this.ActualMinimum, precision);
             var newActualMaximum = Math.Round(this.ActualMaximum, precision);
-            bool hasChanges = false;
+            var hasChanges = false;
 
             if (this.ActualMinimum != newActualMinimum)
             {
                 hasChanges = true;
-                this.ActualMinimum = newActualMinimum;
             }
 
             if (this.ActualMaximum != newActualMaximum)
             {
                 hasChanges = true;
-                this.ActualMaximum = newActualMaximum;
             }
 
-            if (hasChanges)
+            return new Tuple<bool, double, double>(hasChanges, newActualMinimum, newActualMaximum);
+        }
+
+        /// <summary>
+        /// Called when the snap timer ticks.
+        /// </summary>
+        /// <param name="state">The state.</param>
+        private void OnSnapTimerTick(object state)
+        {
+            Debug.WriteLine("Snap timer tick");
+
+            var snapping = this.CalculateSnapping();
+            if (snapping.Item1)
             {
-                this.CoerceActualMaxMin();
+                Debug.WriteLine("Updating actual minimum from '{0}' to '{1}'", this.ActualMinimum, snapping.Item2);
+                Debug.WriteLine("Updating actual maximum from '{0}' to '{1}'", this.ActualMaximum, snapping.Item3);
+
+                this.ActualMinimum = snapping.Item2;
+                this.ActualMaximum = snapping.Item3;
+
+                // TODO: How to invalidate?
+                this.OnTransformChanged(EventArgs.Empty);
             }
         }
     }

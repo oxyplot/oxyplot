@@ -9,7 +9,6 @@ namespace RealtimeDemo
     using System;
     using System.ComponentModel;
     using System.Diagnostics;
-    using System.Threading;
 
     using OxyPlot;
     using OxyPlot.Axes;
@@ -27,14 +26,14 @@ namespace RealtimeDemo
         private const int UpdateInterval = 20;
 
         private bool disposed;
-        private readonly Timer timer;
+        private readonly OxyPlot.Timer timer;
         private readonly Stopwatch watch = new Stopwatch();
         private int numberOfSeries;
         private SimulationType simulationType;
 
         public MainViewModel()
         {
-            this.timer = new Timer(OnTimerElapsed);
+            this.timer = new OxyPlot.Timer(OnTimerElapsed);
             this.Function = (t, x, a) => Math.Cos(t * a) * (x == 0 ? 1 : Math.Sin(x * a) / x);
             this.SimulationType = SimulationType.Waves;
         }
