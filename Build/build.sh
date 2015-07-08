@@ -31,7 +31,17 @@ else
 	echo "  OK"
 fi
 ls -al ../Output/Xamarin.iOS/OxyPlot*
-mate build-ios.log
+
+echo
+echo "Building for MonoTouch"
+# Build OxyPlot. The output will be created in the $OUTPUT folder.
+"$MDTOOL" build "--configuration:Release" $SOURCE/OxyPlot.MonoTouch.sln > build-monotouch.log
+if [ $? -ne 0 ]; then
+echo "  FAILED"
+else
+echo "  OK"
+fi
+ls -al ../Output/MonoTouch/OxyPlot*
 
 echo
 echo "Building for Xamarin.Android"
@@ -43,4 +53,3 @@ else
 fi
 
 ls -al ../Output/Xamarin.Android/OxyPlot*
-mate build-android.log
