@@ -55,6 +55,7 @@
     <Compile Include="Axes\AxisTests.cs" />
     <Compile Include="Axes\AxisUtilitiesTests.cs" />
     <Compile Include="Axes\LinearAxisTests.cs" />
+    <Compile Include="Graphics\ElementCollectionTests.cs" />
     <Compile Include="NullRenderContext.cs" />
     <Compile Include="PlotModelExtensions.cs" />
     <Compile Include="Foundation\DataPointTests.cs" />
