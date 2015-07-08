@@ -231,6 +231,7 @@ namespace OxyPlot.Wpf
             m.TitleFont = this.TitleFont;
             m.TitleFontSize = this.TitleFontSize;
             m.TitleFontWeight = this.TitleFontWeight.ToOpenTypeWeight();
+            m.TitleToolTip = this.TitleToolTip;
 
             m.Subtitle = this.Subtitle;
             m.SubtitleColor = this.SubtitleColor.ToOxyColor();
