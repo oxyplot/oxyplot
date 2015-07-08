@@ -13,6 +13,7 @@ namespace OxyPlot
     using System.Collections;
     using System.Collections.Generic;
     using System.Globalization;
+    using System.Linq;
     using System.Reflection;
     using System.Text;
     using System.Text.RegularExpressions;
@@ -341,7 +342,13 @@ namespace OxyPlot
             var instanceType = instance.GetType();
             var listsToAdd = new Dictionary<string, IList>();
             var arraysToAdd = new Dictionary<string, Array>();
-            foreach (var pi in instanceType.GetProperties())
+
+#if UNIVERSAL
+            var properties = instanceType.GetRuntimeProperties().Where(pi => pi.GetMethod.IsPublic && !pi.GetMethod.IsStatic);
+#else
+            var properties = instanceType.GetProperties(BindingFlags.Instance | BindingFlags.Public);
+#endif
+            foreach (var pi in properties)
             {
                 // check the [CodeGeneration] attribute
                 var cga = this.GetFirstAttribute<CodeGenerationAttribute>(pi);
@@ -376,7 +383,11 @@ namespace OxyPlot
                 }
 
                 // only properties with public setters are used
+#if UNIVERSAL
+                var setter = pi.SetMethod;
+#else
                 var setter = pi.GetSetMethod();
+#endif
                 if (setter == null || !setter.IsPublic)
                 {
                     continue;

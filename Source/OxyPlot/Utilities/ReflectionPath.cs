@@ -28,6 +28,11 @@ namespace OxyPlot
         private readonly PropertyInfo[] infos;
 
         /// <summary>
+        /// The reflected types.
+        /// </summary>
+        private readonly Type[] reflectedTypes;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ReflectionPath"/> class.
         /// </summary>
         /// <param name="path">The reflection path.</param>
@@ -35,6 +40,7 @@ namespace OxyPlot
         {
             this.items = path.Split('.');
             this.infos = new PropertyInfo[this.items.Length];
+            this.reflectedTypes = new Type[this.items.Length];
         }
 
         /// <summary>
@@ -53,11 +59,13 @@ namespace OxyPlot
                     return null;
                 }
 
-                var pi = this.infos[i];
                 var currentType = current.GetType();
-                if (pi == null || pi.ReflectedType != currentType)
+
+                var pi = this.infos[i];
+                if (pi == null || this.reflectedTypes[i] != currentType)
                 {
-                    pi = this.infos[i] = currentType.GetProperty(this.items[i]);
+                    pi = this.infos[i] = currentType.GetRuntimeProperty(this.items[i]);
+                    this.reflectedTypes[i] = currentType;
                 }
 
                 if (pi == null)

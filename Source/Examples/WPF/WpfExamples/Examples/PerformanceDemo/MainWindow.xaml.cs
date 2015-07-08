@@ -45,7 +45,11 @@ namespace PerformanceDemo
 
         private PlotModel GenerateRandomPlotModel(string title, int numberOfPoints = 50)
         {
-            var plotModel = new PlotModel { Title = title };
+            var plotModel = new PlotModel
+            {
+                Title = title,
+                TitleToolTip = title
+            };
             var lineSeries = new LineSeries();
 
             for (int i = 0; i < numberOfPoints; i++)

@@ -66,7 +66,7 @@ namespace OxyPlot.Reporting
         /// <returns>The text.</returns>
         public string GetText(object item, IFormatProvider formatProvider)
         {
-            PropertyInfo pi = item.GetType().GetProperty(this.Path);
+            PropertyInfo pi = item.GetType().GetRuntimeProperty(this.Path);
             object o = pi.GetValue(item, null);
             var of = o as IFormattable;
             if (of != null)

@@ -63,12 +63,8 @@ namespace ExampleLibrary
             var m = new PlotModel();
 
             var xa = new DateTimeAxis { Position = AxisPosition.Bottom };
-#if PCL || SILVERLIGHT
             // TimeZone not available in PCL...
-#else
-            xa.TimeZone = TimeZoneInfo.FindSystemTimeZoneById(
-                "W. Europe Standard Time");
-#endif
+
             m.Axes.Add(xa);
             m.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
             var ls = new LineSeries { MarkerType = MarkerType.Circle };

@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
 - Axis.DesiredSize property (#383)
 - Added WPF Wrapper for BoxPlot (#434)
 - Added capability to display mean value to BoxPlot (#440)
+- Added TitleToolTip to PlotModel (#508)
 
 ### Changed
 - Renamed OxyPlot.WindowsUniversal to OxyPlot.Windows (#242)
@@ -36,6 +37,8 @@ All notable changes to this project will be documented in this file.
 - Changed DefaultTrackerFormatString for BoxPlotSeries (to include Mean) (#440)
 - Changed Constructor of BoxPlotItem (to include Mean) (#440)
 - Changed Axis, Annotation and Series Render() method (removed model parameter)
+- Changed PCL project to profile 259, SL5 is separate now (#115)
+- Extracted CreateReport() and CreateTextReport() from PlotModel (#517)
 
 ### Removed
 - OxyPlot.Metro project (superseded by OxyPlot.WindowsUniversal) (#241)
@@ -79,6 +82,7 @@ All notable changes to this project will be documented in this file.
 - Fix StringFormat for TimeSpanAxis not recognizing f, ff, fff, etc (#330)
 - Fix  LineSeries SMOOTH=True will crash WinForms on right click (#499)
 - Fix PlotView leak on iOS (#503)
+- This PlotModel is already in use by some other PlotView control (#497)
 
 ## [2014.1.546] - 2014-10-22
 ### Added

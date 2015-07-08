@@ -13,6 +13,7 @@ namespace ExampleLibrary
     using System.Collections.Generic;
     using System.Globalization;
     using System.Threading;
+    using System.Threading.Tasks;
 
     using OxyPlot;
     using OxyPlot.Annotations;
@@ -774,23 +775,29 @@ namespace ExampleLibrary
             var textAnnotation = new TextAnnotation() { Text = "Hold mouse button here to increase angle", TextPosition = new DataPoint(0, 6), TextHorizontalAlignment = HorizontalAlignment.Left, TextVerticalAlignment = VerticalAlignment.Top };
             plotModel1.Annotations.Add(textAnnotation);
 
-            Timer t = new Timer(o =>
+            var abort = new ManualResetEvent(false);
+
+            Action action = () =>
             {
-                // Angles are the same for all axes.
-                double angle = 0;
-
-                foreach (var axis in plotModel1.Axes)
+                do
                 {
-                    angle = (axis.Angle + 181) % 360 - 180;
-                    axis.Angle = angle;
+                    // Angles are the same for all axes.
+                    double angle = 0;
+
+                    foreach (var axis in plotModel1.Axes)
+                    {
+                        angle = (axis.Angle + 181) % 360 - 180;
+                        axis.Angle = angle;
+                    }
+
+                    plotModel1.Subtitle = string.Format("Current angle is {0}", angle);
+                    plotModel1.InvalidatePlot(false);
                 }
+                while (!abort.WaitOne(50));
+            };
 
-                plotModel1.Subtitle = string.Format("Current angle is {0}", angle);
-                plotModel1.InvalidatePlot(false);
-            }, null, -1, 50);
-
-            textAnnotation.MouseDown += (o, e) => { t.Change(0, 50); };
-            plotModel1.MouseUp += (o, e) => { t.Change(-1, 50); };
+            textAnnotation.MouseDown += (o, e) => { abort.Reset(); Task.Factory.StartNew(action); };
+            plotModel1.MouseUp += (o, e) => { abort.Set(); };
 
             var columnSeries = new ColumnSeries();
             columnSeries.Items.Add(new ColumnItem(5));
