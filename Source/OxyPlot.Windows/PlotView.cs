@@ -834,12 +834,6 @@ namespace OxyPlot.Windows
 
                 if (this.Model != null)
                 {
-                    if (this.Model.PlotView != null)
-                    {
-                        throw new InvalidOperationException(
-                            "This PlotModel is already in use by some other PlotView control.");
-                    }
-
                     ((IPlotModel)this.Model).AttachPlotView(this);
                     this.currentModel = this.Model;
                 }

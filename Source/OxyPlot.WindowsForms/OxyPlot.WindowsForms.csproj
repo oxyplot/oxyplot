@@ -56,9 +56,6 @@
     <Compile Include="Utilities\ConverterExtensions.cs" />
     <Compile Include="GraphicsRenderContext.cs" />
     <Compile Include="NamespaceDoc.cs" />
-    <Compile Include="Plot.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="PlotModelExtensions.cs" />
     <Compile Include="PngExporter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

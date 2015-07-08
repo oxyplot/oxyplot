@@ -11,6 +11,7 @@ namespace OxyPlot
 {
     using System.Globalization;
     using System.Linq;
+    using System.Reflection;
 
     /// <summary>
     /// Provides an abstract base class for elements of a <see cref="PlotModel" />.
@@ -147,7 +148,12 @@ namespace OxyPlot
         public virtual int GetElementHashCode()
         {
             // Get the values of all properties in the object (this is slow, any better ideas?)
-            var propertyValues = this.GetType().GetProperties().Select(pi => pi.GetValue(this, null));
+#if UNIVERSAL
+            var properties = this.GetType().GetRuntimeProperties().Where(pi => pi.GetMethod.IsPublic && !pi.GetMethod.IsStatic);
+#else
+            var properties = this.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
+#endif
+            var propertyValues = properties.Select(pi => pi.GetValue(this, null));
             return HashCodeBuilder.GetHashCode(propertyValues);
         }
     }

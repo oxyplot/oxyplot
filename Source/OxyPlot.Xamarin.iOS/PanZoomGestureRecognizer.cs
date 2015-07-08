@@ -207,14 +207,30 @@ namespace OxyPlot.MonoTouch
         {
             base.TouchesCancelled(touches, evt);
 
-            //// TODO: Is it possible for one touch to be canceled while others remain in play?
+			// I'm not sure if it's actually possible for one touch to be canceled without
+			// both being canceled, but just to be safe let's stay consistent with TouchesEnded
+			// and handle that scenario.
 
-            var touch = this.activeTouches.FirstOrDefault();
-            if (touch != null && touch.Phase == UITouchPhase.Cancelled)
-            {
-                this.TouchEventArgs = touch.ToTouchEventArgs(this.View);
-                this.State = UIGestureRecognizerState.Cancelled;
-            }
+			// We already have the only two touches we care about, so ignore the params
+			var secondTouch = this.activeTouches.ElementAtOrDefault(1);
+
+			if (secondTouch != null && secondTouch.Phase == UITouchPhase.Cancelled)
+			{
+				this.activeTouches.Remove(secondTouch);
+			}
+
+			var firstTouch = this.activeTouches.FirstOrDefault();
+
+			if (firstTouch != null && firstTouch.Phase == UITouchPhase.Cancelled)
+			{
+				this.activeTouches.Remove(firstTouch);
+
+				if (!this.activeTouches.Any())
+				{
+					this.TouchEventArgs = firstTouch.ToTouchEventArgs(this.View);
+					this.State = UIGestureRecognizerState.Cancelled;
+				}
+			}
         }
 
         /// <summary>
