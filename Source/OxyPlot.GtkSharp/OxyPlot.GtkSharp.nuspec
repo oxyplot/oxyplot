@@ -18,6 +18,7 @@
   </metadata>
   <files>
     <file src="..\..\Output\NET40\OxyPlot.GtkSharp.???" target="lib\net40" />
+    <file src="..\..\Output\NET45\OxyPlot.GtkSharp.???" target="lib\net45" />
 
     <file src="..\..\LICENSE" />
     <file src="..\..\AUTHORS" />

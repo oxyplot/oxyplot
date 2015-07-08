@@ -4,23 +4,21 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{89D008D7-AD33-4AB6-B61A-064C48DA6699}</ProjectGuid>
+    <ProjectGuid>{2E74660A-4559-4801-B226-AFAB379E4B2E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>OxyPlot.GtkSharp</RootNamespace>
     <AssemblyName>OxyPlot.GtkSharp</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\NET45\</OutputPath>
-    <IntermediateOutputPath>obj\Debug\NET45\</IntermediateOutputPath>
+    <OutputPath>bin\Debug\NET40\</OutputPath>
+    <IntermediateOutputPath>obj\Debug\NET40\</IntermediateOutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -30,12 +28,12 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\Output\NET45\</OutputPath>
-    <IntermediateOutputPath>obj\Release\NET45\</IntermediateOutputPath>
+    <OutputPath>..\..\Output\NET40\</OutputPath>
+    <IntermediateOutputPath>obj\Release\NET40\</IntermediateOutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\Output\NET45\OxyPlot.GtkSharp.XML</DocumentationFile>
+    <DocumentationFile>..\..\Output\NET40\OxyPlot.GtkSharp.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -92,9 +90,9 @@
   </Target>
   -->
   <ItemGroup>
-    <ProjectReference Include="..\OxyPlot\OxyPlot.csproj">
-      <Project>{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}</Project>
-      <Name>OxyPlot</Name>
+    <ProjectReference Include="..\OxyPlot\OxyPlot_NET40.csproj">
+      <Project>{1C1D9807-BE39-40A4-87DE-3F81E7C651E5}</Project>
+      <Name>OxyPlot_NET40</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>
