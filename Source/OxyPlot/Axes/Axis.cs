@@ -11,7 +11,6 @@ namespace OxyPlot.Axes
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Globalization;
     using OxyPlot.Series;
 
@@ -29,16 +28,6 @@ namespace OxyPlot.Axes
         /// Mantissa function.
         /// </summary>
         protected static readonly Func<double, double> Mantissa = x => x / Math.Pow(10, Exponent(x));
-
-        /// <summary>
-        /// The snap timer time out.
-        /// </summary>
-        private const int SnapTimerTimeOut = 500;
-
-        /// <summary>
-        /// The snap timer.
-        /// </summary>
-        private readonly Timer snapTimer;
 
         /// <summary>
         /// The offset.
@@ -127,8 +116,6 @@ namespace OxyPlot.Axes
             this.AxisDistance = 0;
             this.AxisTitleDistance = 4;
             this.AxisTickToLabelDistance = 4;
-
-            this.snapTimer = new Timer(this.OnSnapTimerTick, null, Timeout.Infinite, Timeout.Infinite);
         }
 
         /// <summary>
@@ -808,12 +795,6 @@ namespace OxyPlot.Axes
             {
                 throw new InvalidOperationException("AbsoluteMaximum should be larger than AbsoluteMinimum.");
             }
-
-            var snapping = this.CalculateSnapping();
-            if (snapping.Item1)
-            {
-                this.snapTimer.Change(SnapTimerTimeOut, Timeout.Infinite);
-            }
         }
 
         /// <summary>
@@ -1291,6 +1272,19 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
+        /// Updates the actual maximum minimum.
+        /// </summary>
+        /// <param name="minimum">The minimum.</param>
+        /// <param name="maximum">The maximum.</param>
+        internal void UpdateActualMaxMin(double minimum, double maximum)
+        {
+            this.ActualMinimum = minimum;
+            this.ActualMaximum = maximum;
+
+            this.CoerceActualMaxMin();
+        }
+
+        /// <summary>
         /// Updates the <see cref="ActualMaximum" /> and <see cref="ActualMinimum" /> values.
         /// </summary>
         /// <remarks>If the user has zoomed/panned the axis, the internal ViewMaximum/ViewMinimum
@@ -1298,36 +1292,39 @@ namespace OxyPlot.Axes
         /// of the series will be used, including the 'padding'.</remarks>
         internal virtual void UpdateActualMaxMin()
         {
+            var newMaximum = 0d;
+            var newMinimum = 0d;
+
             if (!double.IsNaN(this.ViewMaximum))
             {
                 // The user has zoomed/panned the axis, use the ViewMaximum value.
-                this.ActualMaximum = this.ViewMaximum;
+                newMaximum = this.ViewMaximum;
             }
             else if (!double.IsNaN(this.Maximum))
             {
                 // The Maximum value has been set
-                this.ActualMaximum = this.Maximum;
+                newMaximum = this.Maximum;
             }
             else
             {
                 // Calculate the actual maximum, including padding
-                this.ActualMaximum = this.CalculateActualMaximum();
+                newMaximum = this.CalculateActualMaximum();
             }
 
             if (!double.IsNaN(this.ViewMinimum))
             {
-                this.ActualMinimum = this.ViewMinimum;
+                newMinimum = this.ViewMinimum;
             }
             else if (!double.IsNaN(this.Minimum))
             {
-                this.ActualMinimum = this.Minimum;
+                newMinimum = this.Minimum;
             }
             else
             {
-                this.ActualMinimum = this.CalculateActualMinimum();
+                newMinimum = this.CalculateActualMinimum();
             }
 
-            this.CoerceActualMaxMin();
+            this.UpdateActualMaxMin(newMinimum, newMaximum);
         }
 
         /// <summary>
@@ -1682,54 +1679,6 @@ namespace OxyPlot.Axes
             if (handler != null)
             {
                 handler(this, args);
-            }
-        }
-
-        /// <summary>
-        /// Returns <c>true</c> if the axis requires snapping.
-        /// </summary>
-        /// <returns><c>true</c> if snapping is required, <c>false</c> otherwise.</returns>
-        private Tuple<bool, double, double> CalculateSnapping()
-        {
-            // We must "snap" to valid values in order to make our axis correct
-            var precision = Axis.GetPrecision(this.ActualMaximum - this.ActualMinimum);
-
-            var newActualMinimum = Math.Round(this.ActualMinimum, precision);
-            var newActualMaximum = Math.Round(this.ActualMaximum, precision);
-            var hasChanges = false;
-
-            if (this.ActualMinimum != newActualMinimum)
-            {
-                hasChanges = true;
-            }
-
-            if (this.ActualMaximum != newActualMaximum)
-            {
-                hasChanges = true;
-            }
-
-            return new Tuple<bool, double, double>(hasChanges, newActualMinimum, newActualMaximum);
-        }
-
-        /// <summary>
-        /// Called when the snap timer ticks.
-        /// </summary>
-        /// <param name="state">The state.</param>
-        private void OnSnapTimerTick(object state)
-        {
-            Debug.WriteLine("Snap timer tick");
-
-            var snapping = this.CalculateSnapping();
-            if (snapping.Item1)
-            {
-                Debug.WriteLine("Updating actual minimum from '{0}' to '{1}'", this.ActualMinimum, snapping.Item2);
-                Debug.WriteLine("Updating actual maximum from '{0}' to '{1}'", this.ActualMaximum, snapping.Item3);
-
-                this.ActualMinimum = snapping.Item2;
-                this.ActualMaximum = snapping.Item3;
-
-                // TODO: How to invalidate?
-                this.OnTransformChanged(EventArgs.Empty);
             }
         }
     }

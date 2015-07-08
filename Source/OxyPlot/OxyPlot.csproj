@@ -49,8 +49,11 @@
     </Compile>
     <Compile Include="Annotations\PointAnnotation.cs" />
     <Compile Include="Annotations\ShapeAnnotation.cs" />
+    <Compile Include="Axes\AxisExtensions.cs" />
+    <Compile Include="Graphics\ControllerEvent.cs" />
     <Compile Include="Graphics\DelegateViewCommand{T}.cs" />
     <Compile Include="Graphics\ManipulatorBase.cs" />
+    <Compile Include="Graphics\Snapping.cs" />
     <Compile Include="PlotController\DelegatePlotCommand.cs" />
     <Compile Include="Graphics\Element.cs" />
     <Compile Include="Graphics\ElementCollection{T}.cs" />
