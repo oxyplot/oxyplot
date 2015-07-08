@@ -22,24 +22,19 @@ namespace OxyPlot
     /// </summary>
     public static class ReflectionExtensions
     {
-#if UNIVERSAL
-        public static PropertyInfo GetProperty(this Type type, string name)
+#if !UNIVERSAL        
+        /// <summary>
+        /// Retrieves an object that represents a specified property.
+        /// </summary>
+        /// <param name="type">The type that contains the property.</param>
+        /// <param name="name">The name of the property.</param>
+        /// <returns>An object that represents the specified property, or null if the property is not found.</returns>
+        public static PropertyInfo GetRuntimeProperty(this Type type, string name)
         {
-            return type.GetRuntimeProperty(name);
-        }
-        public static MethodInfo GetSetMethod(this PropertyInfo pi)
-        {
-            return pi.SetMethod;
-        }
-        public static IEnumerable<PropertyInfo> GetProperties(this Type type)
-        {
-            return type.GetRuntimeProperties();
-        }
-        public static IEnumerable<FieldInfo> GetFields(this Type type)
-        {
-            return type.GetRuntimeFields();
+            return type.GetProperty(name);
         }
 #endif
+
         /// <summary>
         /// Fills a target by the specified property of a source target/enumerable.
         /// </summary>

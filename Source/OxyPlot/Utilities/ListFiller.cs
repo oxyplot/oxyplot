@@ -84,7 +84,7 @@ namespace OxyPlot
                             continue;
                         }
 
-                        pi[i] = t.GetProperty(p.Key);
+                        pi[i] = t.GetRuntimeProperty(p.Key);
                         if (pi[i] == null)
                         {
                             throw new InvalidOperationException(

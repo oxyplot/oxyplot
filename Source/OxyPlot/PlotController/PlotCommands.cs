@@ -9,6 +9,8 @@
 
 namespace OxyPlot
 {
+    using OxyPlot.Reporting;
+
     /// <summary>
     /// Defines common commands for the plots.
     /// </summary>
