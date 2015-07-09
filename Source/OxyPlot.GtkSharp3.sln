@@ -1,0 +1,76 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot", "OxyPlot\OxyPlot.csproj", "{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{47133BFC-5147-43B7-94F9-AB12B006C8AC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleLibrary", "Examples\ExampleLibrary\ExampleLibrary.csproj", "{FACB89E5-53A5-4748-9F5B-E0714EBB37B2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleBrowserGtk3", "Examples\GtkSharp\ExampleBrowser\ExampleBrowserGtk3.csproj", "{BA5651BE-8B77-4107-8DF7-FFB73C850E18}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GtkSharp3Demo", "Examples\GtkSharp\GtkSharpDemo\GtkSharp3Demo.csproj", "{480A7E68-5F4D-48C8-A8BD-E2DC1BA362E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.GtkSharp3", "OxyPlot.GtkSharp\OxyPlot.GtkSharp3.csproj", "{8B2DC377-4689-4252-AA08-3ACD06A045F3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{480A7E68-5F4D-48C8-A8BD-E2DC1BA362E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{480A7E68-5F4D-48C8-A8BD-E2DC1BA362E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{480A7E68-5F4D-48C8-A8BD-E2DC1BA362E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{480A7E68-5F4D-48C8-A8BD-E2DC1BA362E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B2DC377-4689-4252-AA08-3ACD06A045F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B2DC377-4689-4252-AA08-3ACD06A045F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B2DC377-4689-4252-AA08-3ACD06A045F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B2DC377-4689-4252-AA08-3ACD06A045F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA5651BE-8B77-4107-8DF7-FFB73C850E18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA5651BE-8B77-4107-8DF7-FFB73C850E18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA5651BE-8B77-4107-8DF7-FFB73C850E18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA5651BE-8B77-4107-8DF7-FFB73C850E18}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FACB89E5-53A5-4748-9F5B-E0714EBB37B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FACB89E5-53A5-4748-9F5B-E0714EBB37B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FACB89E5-53A5-4748-9F5B-E0714EBB37B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FACB89E5-53A5-4748-9F5B-E0714EBB37B2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FACB89E5-53A5-4748-9F5B-E0714EBB37B2} = {47133BFC-5147-43B7-94F9-AB12B006C8AC}
+		{BA5651BE-8B77-4107-8DF7-FFB73C850E18} = {47133BFC-5147-43B7-94F9-AB12B006C8AC}
+		{480A7E68-5F4D-48C8-A8BD-E2DC1BA362E6} = {47133BFC-5147-43B7-94F9-AB12B006C8AC}
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		Policies = $0
+		$0.TextStylePolicy = $1
+		$1.inheritsSet = VisualStudio
+		$1.inheritsScope = text/plain
+		$1.scope = text/x-csharp
+		$0.CSharpFormattingPolicy = $2
+		$2.IndentSwitchBody = True
+		$2.AnonymousMethodBraceStyle = NextLine
+		$2.PropertyBraceStyle = NextLine
+		$2.PropertyGetBraceStyle = NextLine
+		$2.PropertySetBraceStyle = NextLine
+		$2.EventBraceStyle = NextLine
+		$2.EventAddBraceStyle = NextLine
+		$2.EventRemoveBraceStyle = NextLine
+		$2.StatementBraceStyle = NextLine
+		$2.ElseNewLinePlacement = DoNotCare
+		$2.CatchNewLinePlacement = NewLine
+		$2.FinallyNewLinePlacement = NewLine
+		$2.WhileNewLinePlacement = NewLine
+		$2.ArrayInitializerWrapping = DoNotChange
+		$2.BlankLinesAfterUsings = 2
+		$2.BlankLinesBetweenTypes = 2
+		$2.BlankLinesBetweenMembers = 2
+		$2.inheritsSet = Mono
+		$2.inheritsScope = text/x-csharp
+		$2.scope = text/x-csharp
+	EndGlobalSection
+EndGlobal

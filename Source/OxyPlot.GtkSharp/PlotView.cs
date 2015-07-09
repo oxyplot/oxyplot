@@ -22,7 +22,7 @@ namespace OxyPlot.GtkSharp
     /// Represents a control that displays a <see cref="PlotModel" />.
     /// </summary>
     [Serializable]
-    public class PlotView : DrawingArea, IPlotView
+    public partial class PlotView : DrawingArea, IPlotView
     {
         /// <summary>
         /// The category for the properties of this control.
@@ -412,68 +412,63 @@ namespace OxyPlot.GtkSharp
         }
 
         /// <summary>
-        /// Called when the widget needs to be (fully or partially) redrawn.
+        /// Draws the plot to a cairo context within the specified bounds.
         /// </summary>
-        /// <param name="e">An instance that contains the event data.</param>
-        /// <returns><c>true</c> if the event was handled.</returns>
-        protected override bool OnExposeEvent(EventExpose e)
+        /// <param name="bounds">The bounds of the plot inside the cairo context.</param>
+        /// <param name="cr">The cairo context to use for drawing.</param>
+        void DrawPlot (Rectangle bounds, Cairo.Context cr)
         {
-            using (var g = CairoHelper.Create(e.Window))
+            try
             {
-                try
+                lock (this.invalidateLock)
                 {
-                    lock (this.invalidateLock)
+                    if (this.isModelInvalidated)
                     {
-                        if (this.isModelInvalidated)
-                        {
-                            if (this.model != null)
-                            {
-                                ((IPlotModel)this.model).Update(this.updateDataFlag);
-                                this.updateDataFlag = false;
-                            }
-
-                            this.isModelInvalidated = false;
-                        }
-                    }
-
-                    lock (this.renderingLock)
-                    {
-                        this.renderContext.SetGraphicsTarget(g);
                         if (this.model != null)
                         {
-                            if (!this.model.Background.IsUndefined())
-                            {
-                                this.renderContext.DrawRectangle(new OxyRect(e.Area.Left, e.Area.Top, e.Area.Width, e.Area.Height), this.model.Background, OxyColors.Undefined, 0);
-                            }
-
-                            ((IPlotModel)this.model).Render(this.renderContext, this.width, this.height);
+                            ((IPlotModel)this.model).Update(this.updateDataFlag);
+                            this.updateDataFlag = false;
                         }
 
-                        if (this.zoomRectangle.HasValue)
-                        {
-                            this.renderContext.DrawRectangle(this.zoomRectangle.Value, OxyColor.FromArgb(0x40, 0xFF, 0xFF, 0x00), OxyColors.Transparent, 1.0);
-                        }
+                        this.isModelInvalidated = false;
                     }
                 }
-                catch (Exception paintException)
+
+                lock (this.renderingLock)
                 {
-                    var trace = new StackTrace(paintException);
-                    Debug.WriteLine(paintException);
-                    Debug.WriteLine(trace);
-
-                    // using (var font = new Font("Arial", 10))
+                    this.renderContext.SetGraphicsTarget(cr);
+                    if (this.model != null)
                     {
-                        // int width; int height;
-                        // this.GetSizeRequest(out width, out height);
-                        Debug.Assert(false, "OxyPlot paint exception: " + paintException.Message);
+                        if (!this.model.Background.IsUndefined())
+                        {
+                            this.renderContext.DrawRectangle(new OxyRect(bounds.Left, bounds.Top, bounds.Width, bounds.Height), this.model.Background, OxyColors.Undefined, 0);
+                        }
 
-                        // g.ResetTransform();
-                        // g.DrawString(, font, Brushes.Red, width / 2, height / 2, new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });
+                        ((IPlotModel)this.model).Render(this.renderContext, this.width, this.height);
+                    }
+
+                    if (this.zoomRectangle.HasValue)
+                    {
+                        this.renderContext.DrawRectangle(this.zoomRectangle.Value, OxyColor.FromArgb(0x40, 0xFF, 0xFF, 0x00), OxyColors.Transparent, 1.0);
                     }
                 }
             }
+            catch (Exception paintException)
+            {
+                var trace = new StackTrace(paintException);
+                Debug.WriteLine(paintException);
+                Debug.WriteLine(trace);
 
-            return true;
+                // using (var font = new Font("Arial", 10))
+                {
+                    // int width; int height;
+                    // this.GetSizeRequest(out width, out height);
+                    Debug.Assert(false, "OxyPlot paint exception: " + paintException.Message);
+
+                    // g.ResetTransform();
+                    // g.DrawString(, font, Brushes.Red, width / 2, height / 2, new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });
+                }
+            }
         }
 
         /// <summary>

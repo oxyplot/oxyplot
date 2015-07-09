@@ -13,6 +13,10 @@ namespace ExampleBrowser
 
     using Gtk;
 
+    #if GTK3
+    using TreeModel = Gtk.ITreeModel;
+    #endif
+
     public partial class MainWindow : Window
     {
         private HBox hbox1;
