@@ -12,7 +12,7 @@ namespace OxyPlot.GtkSharp
     {
         protected override bool OnDrawn (Cairo.Context cr)
         {
-            DrawPlot (new Rectangle (0, 0, Allocation.Width, Allocation.Height), cr);
+            DrawPlot (cr);
             return base.OnDrawn (cr);
         }
     }

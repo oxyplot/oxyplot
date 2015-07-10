@@ -16,7 +16,7 @@ namespace OxyPlot.GtkSharp
             {
                 cr.Rectangle (evnt.Area.X, evnt.Area.Y, evnt.Area.Width, evnt.Area.Height);
                 cr.Clip ();
-                DrawPlot (evnt.Area, cr);
+                DrawPlot (cr);
             }
             return base.OnExposeEvent (evnt);
         }

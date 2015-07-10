@@ -76,16 +76,6 @@ namespace OxyPlot.GtkSharp
         private OxyRect? zoomRectangle;
 
         /// <summary>
-        /// The current width of the widget.
-        /// </summary>
-        private int width;
-
-        /// <summary>
-        /// The current height of the widget.
-        /// </summary>
-        private int height;
-
-        /// <summary>
         /// The default controller
         /// </summary>
         private IPlotController defaultController;
@@ -106,7 +96,6 @@ namespace OxyPlot.GtkSharp
             this.ZoomVerticalCursor = new Cursor(CursorType.SbVDoubleArrow);
             this.AddEvents((int)(EventMask.ButtonPressMask | EventMask.ButtonReleaseMask | EventMask.EnterNotifyMask | EventMask.LeaveNotifyMask | EventMask.ScrollMask | EventMask.KeyPressMask | EventMask.PointerMotionMask));
             this.CanFocus = true;
-            this.SizeAllocated += this.PlotSizeAllocated;
         }
 
         /// <summary>
@@ -175,7 +164,7 @@ namespace OxyPlot.GtkSharp
         {
             get
             {
-                return new OxyRect(0, 0, this.width, this.height);
+                return new OxyRect(0, 0, Allocation.Width, Allocation.Height);
             }
         }
 
@@ -414,9 +403,8 @@ namespace OxyPlot.GtkSharp
         /// <summary>
         /// Draws the plot to a cairo context within the specified bounds.
         /// </summary>
-        /// <param name="bounds">The bounds of the plot inside the cairo context.</param>
         /// <param name="cr">The cairo context to use for drawing.</param>
-        void DrawPlot (Rectangle bounds, Cairo.Context cr)
+        void DrawPlot (Cairo.Context cr)
         {
             try
             {
@@ -441,10 +429,10 @@ namespace OxyPlot.GtkSharp
                     {
                         if (!this.model.Background.IsUndefined())
                         {
-                            this.renderContext.DrawRectangle(new OxyRect(bounds.Left, bounds.Top, bounds.Width, bounds.Height), this.model.Background, OxyColors.Undefined, 0);
+                            this.renderContext.DrawRectangle(Allocation.ToOxyRect(), this.model.Background, OxyColors.Undefined, 0);
                         }
 
-                        ((IPlotModel)this.model).Render(this.renderContext, this.width, this.height);
+                        ((IPlotModel)this.model).Render(this.renderContext, Allocation.Width, Allocation.Height);
                     }
 
                     if (this.zoomRectangle.HasValue)
@@ -469,17 +457,6 @@ namespace OxyPlot.GtkSharp
                     // g.DrawString(, font, Brushes.Red, width / 2, height / 2, new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });
                 }
             }
-        }
-
-        /// <summary>
-        /// Handles the size allocated event.
-        /// </summary>
-        /// <param name="source">The source.</param>
-        /// <param name="args">The arguments.</param>
-        private void PlotSizeAllocated(object source, SizeAllocatedArgs args)
-        {
-            this.width = args.Allocation.Width;
-            this.height = args.Allocation.Height;
         }
     }
 }
