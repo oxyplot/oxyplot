@@ -6,5 +6,5 @@
 
 using System.Reflection;
 
-[assembly: AssemblyTitle("OxyPlot WinForms demo - Example browser")]
-[assembly: AssemblyDescription("WinForms based browser for the example library.")]
+[assembly: AssemblyTitle("OxyPlot for GTK3")]
+[assembly: AssemblyDescription("OxyPlot controls for GTK3.")]
