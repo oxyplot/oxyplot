@@ -27,7 +27,6 @@ namespace OxyPlot
     /// </summary>
     public class Timer : IDisposable
     {
-        #region Fields
         /// <summary>
         /// The timer callback.
         /// </summary>
@@ -42,9 +41,7 @@ namespace OxyPlot
         /// The cancellation token source.
         /// </summary>
         private CancellationTokenSource cancellationTokenSource;
-        #endregion
 
-        #region Constructors
         /// <summary>
         /// Initializes a new instance of the <see cref="Timer"/> class.
         /// </summary>
@@ -101,24 +98,18 @@ namespace OxyPlot
 
             this.Change(dueTime, interval);
         }
-        #endregion
-
-        #region Events
+ 
         /// <summary>
         /// Occurs when the interval elapses.
         /// </summary>
         public event EventHandler<EventArgs> Elapsed;
-        #endregion
-
-        #region Properties
+ 
         /// <summary>
         /// Gets or sets the interval.
         /// </summary>
         /// <value>The interval. The default is 100 milliseconds.</value>
         public int Interval { get; set; }
-        #endregion
-
-        #region Methods
+   
         /// <summary>
         /// Changes the specified interval.
         /// </summary>
@@ -240,6 +231,5 @@ namespace OxyPlot
                 this.timerCallback(this.timerState);
             }
         }
-        #endregion
     }
 }
