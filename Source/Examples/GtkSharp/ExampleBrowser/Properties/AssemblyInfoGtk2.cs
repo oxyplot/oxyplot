@@ -6,5 +6,5 @@
 
 using System.Reflection;
 
-[assembly: AssemblyTitle("OxyPlot Gtk# demo")]
-[assembly: AssemblyDescription("A basic example.")]
+[assembly: AssemblyTitle("OxyPlot GTK2 demo - Example browser")]
+[assembly: AssemblyDescription("GTK2 based browser for the example library.")]

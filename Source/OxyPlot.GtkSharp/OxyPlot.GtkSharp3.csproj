@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{89D008D7-AD33-4AB6-B61A-064C48DA6699}</ProjectGuid>
+    <ProjectGuid>{8B2DC377-4689-4252-AA08-3ACD06A045F3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>OxyPlot.GtkSharp</RootNamespace>
-    <AssemblyName>OxyPlot.GtkSharp</AssemblyName>
+    <AssemblyName>OxyPlot.GtkSharp3</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -25,7 +25,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
-    <NoWarn>3009, 3003, 3001</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -35,7 +34,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\Output\NET45\OxyPlot.GtkSharp.XML</DocumentationFile>
+    <DocumentationFile>..\..\Output\NET45\OxyPlot.GtkSharp3.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -44,26 +43,24 @@
     <AssemblyOriginatorKeyFile>OxyPlot.GtkSharp.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="atk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\atk-sharp.dll</HintPath>
-    </Reference>
-    <Reference Include="gdk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\gdk-sharp.dll</HintPath>
-    </Reference>
-    <Reference Include="glib-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\glib-sharp.dll</HintPath>
-    </Reference>
-    <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\gtk-sharp.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="Mono.Cairo">
-      <HintPath>..\..\..\..\Program Files (x86)\GtkSharp\2.12\lib\Mono.Cairo\Mono.Cairo.dll</HintPath>
+    <Reference Include="gdk-sharp, Version=3.0.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <Package>gdk-sharp-3.0</Package>
+    </Reference>
+    <Reference Include="glib-sharp, Version=3.0.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <Package>glib-sharp-3.0</Package>
+    </Reference>
+    <Reference Include="gtk-sharp, Version=3.0.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <Package>gtk-sharp-3.0</Package>
+    </Reference>
+    <Reference Include="atk-sharp, Version=3.0.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <Package>gtk-sharp-3.0</Package>
+    </Reference>
+    <Reference Include="gio-sharp, Version=3.0.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <Package>gio-sharp-3.0</Package>
+    </Reference>
+    <Reference Include="cairo-sharp, Version=1.10.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756">
+      <Package>gtk-sharp-3.0</Package>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -71,14 +68,14 @@
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="PlotView.cs" />
-    <Compile Include="PlotViewGtk2.cs" />
     <Compile Include="Utilities\ConverterExtensions.cs" />
     <Compile Include="GraphicsRenderContext.cs" />
     <Compile Include="NamespaceDoc.cs" />
     <Compile Include="PlotModelExtensions.cs" />
     <Compile Include="PngExporter.cs" />
-    <Compile Include="Properties\AssemblyInfoGtk2.cs" />
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
+    <Compile Include="PlotViewGtk3.cs" />
+    <Compile Include="Properties\AssemblyInfoGtk3.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="OxyPlot.GtkSharp.snk" />

@@ -1,0 +1,69 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{47133BFC-5147-43B7-94F9-AB12B006C8AC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleLibrary_NET40", "Examples\ExampleLibrary\ExampleLibrary_NET40.csproj", "{B8A34A2F-E505-4517-8EFF-7F80E39CF425}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleBrowserGtk3_NET40", "Examples\GtkSharp\ExampleBrowser\ExampleBrowserGtk3_NET40.csproj", "{D4F88E49-0ADD-42BB-8BD2-04E6530DDC55}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot_NET40", "OxyPlot\OxyPlot_NET40.csproj", "{1C1D9807-BE39-40A4-87DE-3F81E7C651E5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.GtkSharp3_NET40", "OxyPlot.GtkSharp\OxyPlot.GtkSharp3_NET40.csproj", "{EF182BB5-7416-4BB1-9434-9AF78B6DC9F4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1C1D9807-BE39-40A4-87DE-3F81E7C651E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C1D9807-BE39-40A4-87DE-3F81E7C651E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C1D9807-BE39-40A4-87DE-3F81E7C651E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C1D9807-BE39-40A4-87DE-3F81E7C651E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8A34A2F-E505-4517-8EFF-7F80E39CF425}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8A34A2F-E505-4517-8EFF-7F80E39CF425}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8A34A2F-E505-4517-8EFF-7F80E39CF425}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8A34A2F-E505-4517-8EFF-7F80E39CF425}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4F88E49-0ADD-42BB-8BD2-04E6530DDC55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4F88E49-0ADD-42BB-8BD2-04E6530DDC55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4F88E49-0ADD-42BB-8BD2-04E6530DDC55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4F88E49-0ADD-42BB-8BD2-04E6530DDC55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF182BB5-7416-4BB1-9434-9AF78B6DC9F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF182BB5-7416-4BB1-9434-9AF78B6DC9F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF182BB5-7416-4BB1-9434-9AF78B6DC9F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF182BB5-7416-4BB1-9434-9AF78B6DC9F4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B8A34A2F-E505-4517-8EFF-7F80E39CF425} = {47133BFC-5147-43B7-94F9-AB12B006C8AC}
+		{D4F88E49-0ADD-42BB-8BD2-04E6530DDC55} = {47133BFC-5147-43B7-94F9-AB12B006C8AC}
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		Policies = $0
+		$0.TextStylePolicy = $1
+		$1.inheritsSet = VisualStudio
+		$1.inheritsScope = text/plain
+		$1.scope = text/x-csharp
+		$0.CSharpFormattingPolicy = $2
+		$2.IndentSwitchBody = True
+		$2.AnonymousMethodBraceStyle = NextLine
+		$2.PropertyBraceStyle = NextLine
+		$2.PropertyGetBraceStyle = NextLine
+		$2.PropertySetBraceStyle = NextLine
+		$2.EventBraceStyle = NextLine
+		$2.EventAddBraceStyle = NextLine
+		$2.EventRemoveBraceStyle = NextLine
+		$2.StatementBraceStyle = NextLine
+		$2.ElseNewLinePlacement = DoNotCare
+		$2.CatchNewLinePlacement = NewLine
+		$2.FinallyNewLinePlacement = NewLine
+		$2.WhileNewLinePlacement = NewLine
+		$2.ArrayInitializerWrapping = DoNotChange
+		$2.BlankLinesAfterUsings = 2
+		$2.BlankLinesBetweenTypes = 2
+		$2.BlankLinesBetweenMembers = 2
+		$2.inheritsSet = Mono
+		$2.inheritsScope = text/x-csharp
+		$2.scope = text/x-csharp
+	EndGlobalSection
+EndGlobal

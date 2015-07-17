@@ -52,6 +52,7 @@
     <Compile Include="Axes\AxisExtensions.cs" />
     <Compile Include="Graphics\ControllerEvent.cs" />
     <Compile Include="Graphics\DelegateViewCommand{T}.cs" />
+    <Compile Include="Graphics\ElementCollectionChangedEventArgs{T}.cs" />
     <Compile Include="Graphics\ManipulatorBase.cs" />
     <Compile Include="Graphics\Snapping.cs" />
     <Compile Include="PlotController\DelegatePlotCommand.cs" />

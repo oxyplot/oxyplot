@@ -45,7 +45,7 @@ ls -al ../Output/Xamarin.Mac/OxyPlot*
 
 
 # Start the packaging
-$NUGET pack ../Source/OxyPlot.Xamarin.iOS/OxyPlot.Xamarin.iOS.nuspec -OutputDirectory ../Output
-$NUGET pack ../Source/OxyPlot.Xamarin.Android/OxyPlot.Xamarin.Android.nuspec -OutputDirectory ../Output
-$NUGET pack ../Source/OxyPlot.Xamarin.Mac/OxyPlot.Xamarin.Mac.nuspec -OutputDirectory ../Output
+$NUGET pack ../Source/OxyPlot.Xamarin.iOS/OxyPlot.Xamarin.iOS.nuspec -BasePath ../Source/OxyPlot.Xamarin.iOS/ -OutputDirectory ../Output
+$NUGET pack ../Source/OxyPlot.Xamarin.Android/OxyPlot.Xamarin.Android.nuspec -BasePath ../Source/OxyPlot.Xamarin.Android/ -OutputDirectory ../Output
+$NUGET pack ../Source/OxyPlot.Xamarin.Mac/OxyPlot.Xamarin.Mac.nuspec -BasePath ../Source/OxyPlot.Xamarin.Mac/ -OutputDirectory ../Output
 ls -al ../Output/*.nupkg

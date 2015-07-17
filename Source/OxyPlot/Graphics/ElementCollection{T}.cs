@@ -39,6 +39,11 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Raised when the collection changes.
+        /// </summary>
+        public event EventHandler<ElementCollectionChangedEventArgs<T>> CollectionChanged;
+
+        /// <summary>
         /// Gets the number of elements contained in the collection.
         /// </summary>
         /// <returns>The number of elements contained in the collection.</returns>
@@ -113,6 +118,8 @@ namespace OxyPlot
 
             item.Parent = this.parent;
             this.internalList.Add(item);
+
+            this.RaiseCollectionChanged(new[] { item });
         }
 
         /// <summary>
@@ -120,12 +127,17 @@ namespace OxyPlot
         /// </summary>
         public void Clear()
         {
+            var removedItems = new List<T>();
+
             foreach (var item in this.internalList)
             {
                 item.Parent = null;
+                removedItems.Add(item);
             }
 
             this.internalList.Clear();
+
+            this.RaiseCollectionChanged(removedItems: removedItems);
         }
 
         /// <summary>
@@ -156,7 +168,13 @@ namespace OxyPlot
         public bool Remove(T item)
         {
             item.Parent = null;
-            return this.internalList.Remove(item);
+            var result = this.internalList.Remove(item);
+            if (result)
+            {
+                this.RaiseCollectionChanged(removedItems: new[] { item });
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -184,6 +202,8 @@ namespace OxyPlot
 
             item.Parent = this.parent;
             this.internalList.Insert(index, item);
+
+            this.RaiseCollectionChanged(new[] { item });
         }
 
         /// <summary>
@@ -192,8 +212,26 @@ namespace OxyPlot
         /// <param name="index">The zero-based index of the item to remove.</param>
         public void RemoveAt(int index)
         {
-            this[index].Parent = null;
+            var item = this[index];
+            item.Parent = null;
+
             this.internalList.RemoveAt(index);
+
+            this.RaiseCollectionChanged(removedItems: new[] { item });
+        }
+
+        /// <summary>
+        /// Raises the collection changed event.
+        /// </summary>
+        /// <param name="addedItems">The added items.</param>
+        /// <param name="removedItems">The removed items.</param>
+        private void RaiseCollectionChanged(IEnumerable<T> addedItems = null, IEnumerable<T> removedItems = null)
+        {
+            var collectionChanged = this.CollectionChanged;
+            if (collectionChanged != null)
+            {
+                collectionChanged(this, new ElementCollectionChangedEventArgs<T>(addedItems, removedItems));
+            }
         }
     }
 }
