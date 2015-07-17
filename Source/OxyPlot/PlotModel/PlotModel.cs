@@ -193,6 +193,16 @@ namespace OxyPlot
     public partial class PlotModel : Model, IPlotModel
     {
         /// <summary>
+        /// The snap timer.
+        /// </summary>
+        private readonly Timer snapTimer;
+
+        /// <summary>
+        /// Gets or sets whether the axis is currently snapping.
+        /// </summary>
+        private bool isSnapping;
+
+        /// <summary>
         /// The plot view that renders this plot.
         /// </summary>
         private WeakReference plotViewReference;
@@ -291,6 +301,8 @@ namespace OxyPlot
                 };
 
             this.AxisTierDistance = 4.0;
+
+            this.snapTimer = new Timer(this.OnSnapTimerTick, null, Timeout.Infinite, Timeout.Infinite);
         }
 
         /// <summary>
@@ -783,6 +795,34 @@ namespace OxyPlot
             }
 
             this.plotViewReference = (plotView == null) ? null : new WeakReference(plotView);
+        }
+
+        /// <summary>
+        /// Snaps all the attached axes to values that make sense.
+        /// </summary>
+        /// <param name="snapAllAxes">if set to <c>true</c>, this is a forced snapping so all axes, even the ones that don't have snapping enabled, will be snapped.</param>
+        public virtual void Snap(bool snapAllAxes)
+        {
+            if (this.isSnapping)
+            {
+                return;
+            }
+
+            this.isSnapping = true;
+
+            this.OnUpdating();
+
+            foreach (var axis in this.Axes)
+            {
+                if (snapAllAxes || (axis.Snapping != null && axis.Snapping.IsEnabled))
+                {
+                    axis.Snap();
+                }
+            }
+
+            this.OnUpdated();
+
+            this.isSnapping = false;
         }
 
         /// <summary>
@@ -1435,7 +1475,21 @@ namespace OxyPlot
         /// <param name="e">The <see cref="AxisChangedEventArgs"/> instance containing the event data.</param>
         private void OnAxisChanged(object sender, AxisChangedEventArgs e)
         {
-            this.InvalidatePlot(false);
+            if (this.isSnapping)
+            {
+                return;
+            }
+
+            this.snapTimer.Change(500, Timeout.Infinite);
+        }
+
+        /// <summary>
+        /// Called when the snap timer ticks.
+        /// </summary>
+        /// <param name="state">The state.</param>
+        private void OnSnapTimerTick(object state)
+        {
+            this.Snap(false);
         }
     }
 }

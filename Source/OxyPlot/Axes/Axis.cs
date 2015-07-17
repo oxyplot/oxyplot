@@ -30,6 +30,11 @@ namespace OxyPlot.Axes
         protected static readonly Func<double, double> Mantissa = x => x / Math.Pow(10, Exponent(x));
 
         /// <summary>
+        /// Gets or sets whether the axis is currently snapping.
+        /// </summary>
+        private bool isSnapping;
+
+        /// <summary>
         /// The offset.
         /// </summary>
         private double offset;
@@ -116,6 +121,8 @@ namespace OxyPlot.Axes
             this.AxisDistance = 0;
             this.AxisTitleDistance = 4;
             this.AxisTickToLabelDistance = 4;
+
+            this.Snapping = new Snapping();
         }
 
         /// <summary>
@@ -550,6 +557,12 @@ namespace OxyPlot.Axes
         public OxySize DesiredSize { get; protected set; }
 
         /// <summary>
+        /// Gets or sets the snapping settings.
+        /// </summary>
+        /// <value>The snapping.</value>
+        public Snapping Snapping { get; set; }
+
+        /// <summary>
         /// Gets or sets the position tier max shift.
         /// </summary>
         internal double PositionTierMaxShift { get; set; }
@@ -764,6 +777,11 @@ namespace OxyPlot.Axes
         /// </summary>
         public virtual void CoerceActualMaxMin()
         {
+            if (this.isSnapping)
+            {
+                return;
+            }
+
             // Coerce actual minimum
             if (double.IsNaN(this.ActualMinimum) || double.IsInfinity(this.ActualMinimum))
             {
@@ -1071,6 +1089,52 @@ namespace OxyPlot.Axes
             var deltaMaximum = this.ActualMaximum - oldMaximum;
 
             this.OnAxisChanged(new AxisChangedEventArgs(AxisChangeTypes.Reset, deltaMinimum, deltaMaximum));
+        }
+
+        /// <summary>
+        /// Snaps the axis to values that make sense.
+        /// </summary>
+        public virtual void Snap()
+        {
+            if (this.isSnapping)
+            {
+                return;
+            }
+
+            this.isSnapping = true;
+
+            // We must "snap" to valid values in order to make our axis correct
+            var precision = Axis.GetPrecision(this.ActualMaximum - this.ActualMinimum);
+
+            var newActualMinimum = Math.Round(this.ActualMinimum, precision);
+            var newActualMaximum = Math.Round(this.ActualMaximum, precision);
+            var hasChanges = false;
+
+            var deltaMinimum = 0d;
+            var deltaMaximum = 0d;
+
+            if (this.ActualMinimum != newActualMinimum)
+            {
+                hasChanges = true;
+                deltaMinimum = newActualMinimum - this.ActualMinimum;
+                this.ActualMinimum = newActualMinimum;
+            }
+
+            if (this.ActualMaximum != newActualMaximum)
+            {
+                hasChanges = true;
+                deltaMaximum = newActualMaximum - this.ActualMaximum;
+                this.ActualMaximum = newActualMaximum;
+            }
+
+            if (hasChanges)
+            {
+                System.Diagnostics.Debug.WriteLine("Snapping Axis '{0}' to {1} / {2}", this.ActualTitle, this.ActualMinimum, this.ActualMaximum);
+
+                this.OnAxisChanged(new AxisChangedEventArgs(AxisChangeTypes.Snap, deltaMinimum, deltaMaximum));
+            }
+
+            this.isSnapping = false;
         }
 
         /// <summary>

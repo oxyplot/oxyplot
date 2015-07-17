@@ -129,8 +129,6 @@ namespace OxyPlot
         {
             this.Stop();
 
-            Debug.WriteLine("Changing timer (dueTime: {0}, interval: {1})", dueTime, interval);
-
             this.cancellationTokenSource = new CancellationTokenSource();
             var cancellationToken = this.cancellationTokenSource.Token;
 

@@ -20,7 +20,6 @@ namespace OxyPlot
         public Snapping()
         {
             this.IsEnabled = true;
-            this.Timeout = 500;
         }
 
         /// <summary>
@@ -28,13 +27,5 @@ namespace OxyPlot
         /// </summary>
         /// <value><c>true</c> if snapping is enabled; otherwise, <c>false</c>.</value>
         public bool IsEnabled { get; set; }
-
-        /// <summary>
-        /// Gets or sets the timeout in milliseconds.
-        /// <para />
-        /// The default value is <c>500</c>.
-        /// </summary>
-        /// <value>The timeout.</value>
-        public int Timeout { get; set; }
     }
 }
