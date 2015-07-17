@@ -708,7 +708,7 @@ namespace OxyPlot.Axes
         /// <param name="includeMinAndMax">if set to <c>true</c>, always include the min and max values in the tick values.</param>
         /// <returns>A sequence of values.</returns>
         /// <exception cref="System.ArgumentException">Step cannot be zero or negative.;step</exception>
-        public static IList<double> CreateTickValues(double from, double to, double step, int maxTicks = 1000, int? precision = null, bool includeMinAndMax = true)
+        public static IList<double> CreateTickValues(double from, double to, double step, int maxTicks = 1000, int? precision = null, bool includeMinAndMax = false)
         {
             if (step <= 0)
             {
