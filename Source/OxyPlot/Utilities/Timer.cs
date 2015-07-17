@@ -238,7 +238,7 @@ namespace OxyPlot
         /// <returns>Task.</returns>
         private static void Delay(int milliseconds, CancellationToken cancellationToken, Action<Task, object> continueAction)
         {
-#if NET40
+#if NET40 || SL5
             var tcs = new TaskCompletionSource<object>();
             new System.Threading.Timer(_ => tcs.SetResult(null)).Change(milliseconds, -1);
             tcs.Task.ContinueWith(task => continueAction(task, cancellationToken), cancellationToken);
