@@ -61,6 +61,8 @@ namespace OxyPlot.Axes
             this.IntervalType = DateTimeIntervalType.Auto;
             this.FirstDayOfWeek = DayOfWeek.Monday;
             this.CalendarWeekRule = CalendarWeekRule.FirstFourDayWeek;
+
+            this.Snapping.IsEnabled = false;
         }
 
         /// <summary>
