@@ -98,18 +98,18 @@ namespace OxyPlot
 
             this.Change(dueTime, interval);
         }
- 
+
         /// <summary>
         /// Occurs when the interval elapses.
         /// </summary>
         public event EventHandler<EventArgs> Elapsed;
- 
+
         /// <summary>
         /// Gets or sets the interval.
         /// </summary>
         /// <value>The interval. The default is 100 milliseconds.</value>
         public int Interval { get; set; }
-   
+
         /// <summary>
         /// Changes the specified interval.
         /// </summary>
@@ -147,8 +147,7 @@ namespace OxyPlot
             }
             else
             {
-                // Invoke after due time
-                Task.Delay(dueTime, cancellationToken).ContinueWith(this.ContinueTimer, cancellationToken, cancellationToken);
+                Delay((int)dueTime.TotalMilliseconds, cancellationToken, this.ContinueTimer);
             }
         }
 
@@ -177,7 +176,7 @@ namespace OxyPlot
                 return;
             }
 
-            Task.Delay(this.Interval, cancellationToken).ContinueWith(this.ContinueTimer, cancellationToken, cancellationToken);
+            Delay(this.Interval, cancellationToken, this.ContinueTimer);
         }
 
         /// <summary>
@@ -228,6 +227,25 @@ namespace OxyPlot
             {
                 this.timerCallback(this.timerState);
             }
+        }
+
+        /// <summary>
+        /// Delays a task for the specified milliseconds (should work on any platform).
+        /// </summary>
+        /// <param name="milliseconds">The milliseconds.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <param name="continueAction">The continue action.</param>
+        /// <returns>Task.</returns>
+        private static void Delay(int milliseconds, CancellationToken cancellationToken, Action<Task, object> continueAction)
+        {
+#if NET40
+            var tcs = new TaskCompletionSource<object>();
+            new System.Threading.Timer(_ => tcs.SetResult(null)).Change(milliseconds, -1);
+            tcs.Task.ContinueWith(task => continueAction(task, cancellationToken), cancellationToken);
+#else
+            // Invoke after due time
+            Task.Delay(milliseconds, cancellationToken).ContinueWith(continueAction, cancellationToken, cancellationToken);
+#endif
         }
     }
 }
