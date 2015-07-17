@@ -515,7 +515,7 @@ namespace OxyPlot.Axes
             }
 
             // For shorter step sizes we use the method from Axis
-            return Axis.CreateTickValues(min, max, interval, precision: this.Snapping.Precision);
+            return Axis.CreateTickValues(min, max, interval, precision: this.Snapping.Precision, includeMinAndMax: this.Snapping.IsEnabled);
         }
 
         /// <summary>

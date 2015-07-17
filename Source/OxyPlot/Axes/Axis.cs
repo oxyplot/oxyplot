@@ -887,8 +887,8 @@ namespace OxyPlot.Axes
         public virtual void GetTickValues(
             out IList<double> majorLabelValues, out IList<double> majorTickValues, out IList<double> minorTickValues)
         {
-            minorTickValues = Axis.CreateTickValues(this.ActualMinimum, this.ActualMaximum, this.ActualMinorStep, precision: this.Snapping.Precision);
-            majorTickValues = Axis.CreateTickValues(this.ActualMinimum, this.ActualMaximum, this.ActualMajorStep, precision: this.Snapping.Precision);
+            minorTickValues = Axis.CreateTickValues(this.ActualMinimum, this.ActualMaximum, this.ActualMinorStep, precision: this.Snapping.Precision, includeMinAndMax: this.Snapping.IsEnabled);
+            majorTickValues = Axis.CreateTickValues(this.ActualMinimum, this.ActualMaximum, this.ActualMajorStep, precision: this.Snapping.Precision, includeMinAndMax: this.Snapping.IsEnabled);
             majorLabelValues = majorTickValues;
         }
 
