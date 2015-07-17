@@ -19,7 +19,7 @@
     - if not exist gtk-sharp-2.99.3.msi appveyor DownloadFile https://download.gnome.org/binaries/win32/gtk-sharp/2.99/gtk-sharp-2.99.3.msi
     - msiexec /i gtk-sharp-2.99.3.msi /qn /norestart
   cache:
-    - gtk-sharp-2.12.25.msi
+    - gtk-sharp-2.12.26.msi
     - gtk-sharp-2.99.3.msi
   platform: Any CPU
   configuration: Release
@@ -75,7 +75,7 @@
     - if not exist gtk-sharp-2.99.3.msi appveyor DownloadFile https://download.gnome.org/binaries/win32/gtk-sharp/2.99/gtk-sharp-2.99.3.msi
     - msiexec /i gtk-sharp-2.99.3.msi /qn /norestart
   cache:
-    - gtk-sharp-2.12.25.msi
+    - gtk-sharp-2.12.26.msi
     - gtk-sharp-2.99.3.msi
   platform: Any CPU
   configuration: Release
