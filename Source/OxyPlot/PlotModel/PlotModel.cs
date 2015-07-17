@@ -822,6 +822,8 @@ namespace OxyPlot
 
             this.OnUpdated();
 
+            this.InvalidatePlot(false);
+
             this.isSnapping = false;
         }
 
@@ -1439,14 +1441,17 @@ namespace OxyPlot
                 }
             }
 
-            foreach (var s in this.Series.Where(s => s.IsVisible))
+            if (!this.isSnapping)
             {
-                s.UpdateAxisMaxMin();
-            }
+                foreach (var s in this.Series.Where(s => s.IsVisible))
+                {
+                    s.UpdateAxisMaxMin();
+                }
 
-            foreach (var a in this.Axes)
-            {
-                a.UpdateActualMaxMin();
+                foreach (var a in this.Axes)
+                {
+                    a.UpdateActualMaxMin();
+                }
             }
         }
 
