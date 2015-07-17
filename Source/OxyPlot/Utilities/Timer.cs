@@ -160,6 +160,24 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Delays a task for the specified milliseconds (should work on any platform).
+        /// </summary>
+        /// <param name="milliseconds">The milliseconds.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <param name="continueAction">The continue action.</param>
+        private static void Delay(int milliseconds, CancellationToken cancellationToken, Action<Task, object> continueAction)
+        {
+#if NET40 || SL5
+            var tcs = new TaskCompletionSource<object>();
+            new System.Threading.Timer(_ => tcs.SetResult(null)).Change(milliseconds, -1);
+            tcs.Task.ContinueWith(task => continueAction(task, cancellationToken), cancellationToken);
+#else
+            // Invoke after due time
+            Task.Delay(milliseconds, cancellationToken).ContinueWith(continueAction, cancellationToken, cancellationToken);
+#endif
+        }
+
+        /// <summary>
         /// Starts the timer.
         /// </summary>
         /// <param name="cancellationToken">The cancellation token.</param>
@@ -227,25 +245,6 @@ namespace OxyPlot
             {
                 this.timerCallback(this.timerState);
             }
-        }
-
-        /// <summary>
-        /// Delays a task for the specified milliseconds (should work on any platform).
-        /// </summary>
-        /// <param name="milliseconds">The milliseconds.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <param name="continueAction">The continue action.</param>
-        /// <returns>Task.</returns>
-        private static void Delay(int milliseconds, CancellationToken cancellationToken, Action<Task, object> continueAction)
-        {
-#if NET40 || SL5
-            var tcs = new TaskCompletionSource<object>();
-            new System.Threading.Timer(_ => tcs.SetResult(null)).Change(milliseconds, -1);
-            tcs.Task.ContinueWith(task => continueAction(task, cancellationToken), cancellationToken);
-#else
-            // Invoke after due time
-            Task.Delay(milliseconds, cancellationToken).ContinueWith(continueAction, cancellationToken, cancellationToken);
-#endif
         }
     }
 }
