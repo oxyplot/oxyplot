@@ -164,7 +164,7 @@ namespace OxyPlot.Axes
         /// <remarks>If <see cref="ViewMinimum" /> is not <c>NaN</c>, this value will be defined by <see cref="ViewMinimum" />.
         /// Otherwise, if <see cref="Minimum" /> is not <c>NaN</c>, this value will be defined by <see cref="Minimum" />.
         /// Otherwise this value will be defined by the minimum (+padding) of the data.</remarks>
-        public double ActualMinimum { get; set; }
+        public double ActualMinimum { get; protected set; }
 
         /// <summary>
         /// Gets or sets the actual minor step.
