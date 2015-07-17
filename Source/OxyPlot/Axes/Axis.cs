@@ -652,7 +652,13 @@ namespace OxyPlot.Axes
         {
             var precision = 0;
 
-            if (delta < 0)
+            // Backwards compatibility
+            if (delta.ToString().Contains("E"))
+            {
+                return 14;
+            }
+
+            if (delta < 0d)
             {
                 const int SmallDelta = 3;
                 precision += SmallDelta;
@@ -675,15 +681,15 @@ namespace OxyPlot.Axes
                     }
                 }
             }
-            else if (delta < 1)
+            else if (delta < 1d)
             {
                 precision += 3;
             }
-            else if (delta < 3)
+            else if (delta < 3d)
             {
                 precision += 2;
             }
-            else if (delta < 5)
+            else if (delta < 5d)
             {
                 precision += 1;
             }
@@ -699,9 +705,10 @@ namespace OxyPlot.Axes
         /// <param name="step">The interval.</param>
         /// <param name="maxTicks">The maximum number of ticks (optional). The default value is 1000.</param>
         /// <param name="precision">The precision. If <c>null</c>, the precision will be calculated automatically.</param>
+        /// <param name="includeMinAndMax">if set to <c>true</c>, always include the min and max values in the tick values.</param>
         /// <returns>A sequence of values.</returns>
         /// <exception cref="System.ArgumentException">Step cannot be zero or negative.;step</exception>
-        public static IList<double> CreateTickValues(double from, double to, double step, int maxTicks = 1000, int? precision = null)
+        public static IList<double> CreateTickValues(double from, double to, double step, int maxTicks = 1000, int? precision = null, bool includeMinAndMax = true)
         {
             if (step <= 0)
             {
@@ -720,6 +727,12 @@ namespace OxyPlot.Axes
             var deltaToUse = delta - step;
             var numberOfValues = Math.Max((int)(deltaToUse / step), 1);
 
+            if (!includeMinAndMax)
+            {
+                startValue = Math.Round(from / step) * step;
+                numberOfValues = Math.Max((int)((to - from) / step), 1);
+            }
+
             if (!precision.HasValue)
             {
                 precision = GetPrecision(delta);
@@ -728,8 +741,15 @@ namespace OxyPlot.Axes
             var epsilon = step * 1e-3 * Math.Sign(step);
             var values = new List<double>(numberOfValues);
 
-            values.Add(Math.Round(startValue, precision.Value));
-            startValue = startValue + (step / 2);
+            if (includeMinAndMax)
+            {
+                values.Add(Math.Round(startValue, precision.Value));
+            }
+
+            if (includeMinAndMax)
+            {
+                startValue = startValue + (step / 2);
+            }
 
             for (int k = 0; k < maxTicks; k++)
             {
@@ -741,16 +761,29 @@ namespace OxyPlot.Axes
                     break;
                 }
 
+                double v = 0d;
+
                 // try to get rid of numerical noise
-                var lastValueWithoutStartValue = lastValue - startValue;
-                var v = Math.Round(((lastValueWithoutStartValue / step) * step) + startValue, precision.Value);
+                if (includeMinAndMax)
+                {
+                    var lastValueWithoutStartValue = lastValue - startValue;
+                    v = Math.Round(((lastValueWithoutStartValue / step) * step) + startValue, precision.Value);
+                }
+                else
+                {
+                    v = Math.Round(lastValue / step, 14) * step;
+                }
+
                 if (!values.Contains(v))
                 {
                     values.Add(v);
                 }
             }
 
-            values.Add(Math.Round(endValue, precision.Value));
+            if (includeMinAndMax)
+            {
+                values.Add(Math.Round(endValue, precision.Value));
+            }
 
             return values;
         }
