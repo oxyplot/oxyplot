@@ -27,5 +27,13 @@ namespace OxyPlot
         /// </summary>
         /// <value><c>true</c> if snapping is enabled; otherwise, <c>false</c>.</value>
         public bool IsEnabled { get; set; }
+
+        /// <summary>
+        /// Gets or sets the precision to snap to. If <c>null</c>, the precision will be determined automatically.
+        /// <para />
+        /// The higher the number, the higher the precision.
+        /// </summary>
+        /// <value>The precision.</value>
+        public int? Precision { get; set; }
     }
 }

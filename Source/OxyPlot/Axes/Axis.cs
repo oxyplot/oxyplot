@@ -567,10 +567,10 @@ namespace OxyPlot.Axes
         public OxySize DesiredSize { get; protected set; }
 
         /// <summary>
-        /// Gets or sets the snapping settings.
+        /// Gets the snapping settings.
         /// </summary>
         /// <value>The snapping.</value>
-        public Snapping Snapping { get; set; }
+        public Snapping Snapping { get; private set; }
 
         /// <summary>
         /// Gets or sets the position tier max shift.
@@ -650,7 +650,7 @@ namespace OxyPlot.Axes
         /// <returns>The precision.</returns>
         public static int GetPrecision(double delta)
         {
-            int precision = 0;
+            var precision = 0;
 
             if (delta < 0)
             {
@@ -698,9 +698,10 @@ namespace OxyPlot.Axes
         /// <param name="to">The end value.</param>
         /// <param name="step">The interval.</param>
         /// <param name="maxTicks">The maximum number of ticks (optional). The default value is 1000.</param>
+        /// <param name="precision">The precision. If <c>null</c>, the precision will be calculated automatically.</param>
         /// <returns>A sequence of values.</returns>
         /// <exception cref="System.ArgumentException">Step cannot be zero or negative.;step</exception>
-        public static IList<double> CreateTickValues(double from, double to, double step, int maxTicks = 1000)
+        public static IList<double> CreateTickValues(double from, double to, double step, int maxTicks = 1000, int? precision = null)
         {
             if (step <= 0)
             {
@@ -718,12 +719,16 @@ namespace OxyPlot.Axes
             var delta = to - from;
             var deltaToUse = delta - step;
             var numberOfValues = Math.Max((int)(deltaToUse / step), 1);
-            var precision = GetPrecision(delta);
+
+            if (!precision.HasValue)
+            {
+                precision = GetPrecision(delta);
+            }
 
             var epsilon = step * 1e-3 * Math.Sign(step);
             var values = new List<double>(numberOfValues);
 
-            values.Add(Math.Round(startValue, precision));
+            values.Add(Math.Round(startValue, precision.Value));
             startValue = startValue + (step / 2);
 
             for (int k = 0; k < maxTicks; k++)
@@ -738,14 +743,14 @@ namespace OxyPlot.Axes
 
                 // try to get rid of numerical noise
                 var lastValueWithoutStartValue = lastValue - startValue;
-                var v = Math.Round(((lastValueWithoutStartValue / step) * step) + startValue, precision);
+                var v = Math.Round(((lastValueWithoutStartValue / step) * step) + startValue, precision.Value);
                 if (!values.Contains(v))
                 {
                     values.Add(v);
                 }
             }
 
-            values.Add(Math.Round(endValue, precision));
+            values.Add(Math.Round(endValue, precision.Value));
 
             return values;
         }
@@ -849,8 +854,8 @@ namespace OxyPlot.Axes
         public virtual void GetTickValues(
             out IList<double> majorLabelValues, out IList<double> majorTickValues, out IList<double> minorTickValues)
         {
-            minorTickValues = CreateTickValues(this.ActualMinimum, this.ActualMaximum, this.ActualMinorStep);
-            majorTickValues = CreateTickValues(this.ActualMinimum, this.ActualMaximum, this.ActualMajorStep);
+            minorTickValues = Axis.CreateTickValues(this.ActualMinimum, this.ActualMaximum, this.ActualMinorStep, precision: this.Snapping.Precision);
+            majorTickValues = Axis.CreateTickValues(this.ActualMinimum, this.ActualMaximum, this.ActualMajorStep, precision: this.Snapping.Precision);
             majorLabelValues = majorTickValues;
         }
 
