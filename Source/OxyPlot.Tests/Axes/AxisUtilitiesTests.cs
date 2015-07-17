@@ -33,7 +33,7 @@ namespace OxyPlot.Tests
             [Test]
             public void NormalValuesAroundZero()
             {
-                var values = Axis.CreateTickValues(-0.0515724495834661, 0.016609368598352, 0.02, includeMinAndMax: false);
+                var values = Axis.CreateTickValues(-0.0515724495834661, 0.016609368598352, 0.02);
                 CollectionAssert.AreEqual(new[] { -0.06, -0.04, -0.02, 0 }, values);
             }
 
@@ -44,7 +44,7 @@ namespace OxyPlot.Tests
             [Test]
             public void BigValuesAroundZero()
             {
-                var values = Axis.CreateTickValues(-0.0515724495834661e30, 0.016609368598352e30, 0.02e30, includeMinAndMax: false);
+                var values = Axis.CreateTickValues(-0.0515724495834661e30, 0.016609368598352e30, 0.02e30);
                 CollectionAssert.AreEqual(new[] { -0.06e30, -0.04e30, -0.02e30, 0 }, values);
             }
 
@@ -55,7 +55,7 @@ namespace OxyPlot.Tests
             [Test]
             public void SmallValuesAroundZero()
             {
-                var values = Axis.CreateTickValues(-0.0515724495834661e-30, 0.016609368598352e-30, 0.02e-30, includeMinAndMax: false);
+                var values = Axis.CreateTickValues(-0.0515724495834661e-30, 0.016609368598352e-30, 0.02e-30);
                 CollectionAssert.AreEqual(new[] { -0.06e-30, -0.04e-30, -0.02e-30, 0 }, values);
             }
 
@@ -66,7 +66,7 @@ namespace OxyPlot.Tests
             [Test]
             public void NormalPositiveValues()
             {
-                var values = Axis.CreateTickValues(0.016609368598352, 0.0515724495834661, 0.02, includeMinAndMax: false);
+                var values = Axis.CreateTickValues(0.016609368598352, 0.0515724495834661, 0.02);
                 CollectionAssert.AreEqual(new[] { 0.02, 0.04 }, values);
             }
 
@@ -77,7 +77,7 @@ namespace OxyPlot.Tests
             [Test]
             public void BigPositiveValues()
             {
-                var values = Axis.CreateTickValues(0.016609368598352e30, 0.0515724495834661e30, 0.02e30, includeMinAndMax: false);
+                var values = Axis.CreateTickValues(0.016609368598352e30, 0.0515724495834661e30, 0.02e30);
                 CollectionAssert.AreEqual(new[] { 0.02e30, 0.04e30 }, values);
             }
 
@@ -88,7 +88,7 @@ namespace OxyPlot.Tests
             [Test]
             public void SmallPositiveValues()
             {
-                var values = Axis.CreateTickValues(0.016609368598352e-30, 0.0515724495834661e-30, 0.02e-30, includeMinAndMax: false);
+                var values = Axis.CreateTickValues(0.016609368598352e-30, 0.0515724495834661e-30, 0.02e-30);
                 CollectionAssert.AreEqual(new[] { 0.02e-30, 0.04e-30 }, values);
             }
 
@@ -99,7 +99,7 @@ namespace OxyPlot.Tests
             [Test]
             public void StepWithManyDigits()
             {
-                var values = Axis.CreateTickValues(0, Math.PI * 2, Math.PI, includeMinAndMax: false);
+                var values = Axis.CreateTickValues(0, Math.PI * 2, Math.PI);
                 CollectionAssert.AreEqual(new[] { 0, Math.PI, Math.PI * 2 }, values);
             }
 
@@ -109,7 +109,7 @@ namespace OxyPlot.Tests
             [Test]
             public void FloatingPointAccumulation()
             {
-                var values = Axis.CreateTickValues(0.58666699999999994, 0.9233, 0.05, includeMinAndMax: false);
+                var values = Axis.CreateTickValues(0.58666699999999994, 0.9233, 0.05);
                 foreach (var val in values)
                 {
                     Assert.LessOrEqual(string.Format("{0:}", val).Length, 4);

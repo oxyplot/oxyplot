@@ -118,11 +118,6 @@ namespace OxyPlot.Tests
             plot.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "X-axis" });
             plot.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Y-axis" });
 
-            foreach (var axis in plot.Axes)
-            {
-                axis.Snapping.IsEnabled = false;
-            }
-
             var ls = new LineSeries();
             ls.Points.Add(new DataPoint(1.20000000001, 2400000001));
             ls.Points.Add(new DataPoint(1.20000000002, 2400000000));
