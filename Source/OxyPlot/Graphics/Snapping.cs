@@ -19,7 +19,7 @@ namespace OxyPlot
         /// </summary>
         public Snapping()
         {
-            this.IsEnabled = true;
+            this.IsEnabled = false;
         }
 
         /// <summary>
