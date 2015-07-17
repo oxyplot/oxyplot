@@ -214,6 +214,8 @@ namespace OxyPlot
         public PlotModel()
         {
             this.Axes = new ElementCollection<Axis>(this);
+            this.Axes.CollectionChanged += this.OnAxesCollectionChanged;
+
             this.Series = new ElementCollection<Series.Series>(this);
             this.Annotations = new ElementCollection<Annotation>(this);
 
@@ -1406,6 +1408,34 @@ namespace OxyPlot
             {
                 a.UpdateActualMaxMin();
             }
+        }
+
+        /// <summary>
+        /// Called when the Axes collection has changed.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The event args.</param>
+        private void OnAxesCollectionChanged(object sender, ElementCollectionChangedEventArgs<Axis> e)
+        {
+            foreach (var removedItem in e.RemovedItems)
+            {
+                removedItem.AxisChanged -= this.OnAxisChanged;
+            }
+
+            foreach (var addedItem in e.AddedItems)
+            {
+                addedItem.AxisChanged += this.OnAxisChanged;
+            }
+        }
+
+        /// <summary>
+        /// Handles the <see cref="E:AxisChanged" /> event.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="AxisChangedEventArgs"/> instance containing the event data.</param>
+        private void OnAxisChanged(object sender, AxisChangedEventArgs e)
+        {
+            this.InvalidatePlot(false);
         }
     }
 }
