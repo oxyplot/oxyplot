@@ -341,7 +341,7 @@ namespace OxyPlot.Wpf
             "StringFormat", typeof(string), typeof(Axis), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
-        /// Identifies the <see cref="Textcolor"/> dependency property.
+        /// Identifies the <see cref="TextColor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TextColorProperty = DependencyProperty.Register(
             "TextColor", typeof(Color), typeof(Axis), new PropertyMetadata(Colors.Black, AppearanceChanged));
