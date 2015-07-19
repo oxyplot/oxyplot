@@ -341,6 +341,12 @@ namespace OxyPlot.Wpf
             "StringFormat", typeof(string), typeof(Axis), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
+        /// Identifies the <see cref="TextColor"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty TextColorProperty = DependencyProperty.Register(
+            "TextColor", typeof(Color), typeof(Axis), new PropertyMetadata(MoreColors.Automatic, AppearanceChanged));
+
+        /// <summary>
         /// Identifies the <see cref="TickStyle"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TickStyleProperty = DependencyProperty.Register(
@@ -1196,6 +1202,22 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
+        /// Gets or sets the text color
+        /// </summary>
+        public Color TextColor
+        {
+            get
+            {
+                return (Color)this.GetValue(TextColorProperty);
+            }
+
+            set
+            {
+                this.SetValue(TextColorProperty, value);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the tick style.
         /// </summary>
         public Axes.TickStyle TickStyle
@@ -1516,6 +1538,7 @@ namespace OxyPlot.Wpf
             a.PositionAtZeroCrossing = this.PositionAtZeroCrossing;
             a.StartPosition = this.StartPosition;
             a.StringFormat = this.StringFormat;
+            a.TextColor = this.TextColor.ToOxyColor();
             a.TicklineColor = this.TicklineColor.ToOxyColor();
             a.TitleClippingLength = this.TitleClippingLength;
             a.TitleColor = this.TitleColor.ToOxyColor();
