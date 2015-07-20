@@ -725,7 +725,15 @@ namespace OxyPlot.Axes
 
             if (!precision.HasValue)
             {
-                precision = GetPrecision(delta);
+                if (!includeMinAndMax)
+                {
+                    // Ensure backwards compatibility
+                    precision = 14;
+                }
+                else
+                {
+                    precision = GetPrecision(delta);
+                }
             }
 
             var epsilon = step * 1e-3 * Math.Sign(step);
@@ -1652,7 +1660,7 @@ namespace OxyPlot.Axes
         {
             this.scale = newScale;
             this.offset = newOffset;
-            this.OnTransformChanged(EventArgs.Empty);
+            this.OnTransformChanged(new EventArgs());
         }
 
         /// <summary>
