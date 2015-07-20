@@ -1374,19 +1374,6 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Updates the actual maximum minimum.
-        /// </summary>
-        /// <param name="minimum">The minimum.</param>
-        /// <param name="maximum">The maximum.</param>
-        internal void UpdateActualMaxMin(double minimum, double maximum)
-        {
-            this.ActualMinimum = minimum;
-            this.ActualMaximum = maximum;
-
-            this.CoerceActualMaxMin();
-        }
-
-        /// <summary>
         /// Updates the <see cref="ActualMaximum" /> and <see cref="ActualMinimum" /> values.
         /// </summary>
         /// <remarks>If the user has zoomed/panned the axis, the internal ViewMaximum/ViewMinimum
@@ -1427,6 +1414,19 @@ namespace OxyPlot.Axes
             }
 
             this.UpdateActualMaxMin(newMinimum, newMaximum);
+        }
+
+        /// <summary>
+        /// Updates the actual maximum minimum.
+        /// </summary>
+        /// <param name="minimum">The minimum.</param>
+        /// <param name="maximum">The maximum.</param>
+        internal void UpdateActualMaxMin(double minimum, double maximum)
+        {
+            this.ActualMinimum = minimum;
+            this.ActualMaximum = maximum;
+
+            this.CoerceActualMaxMin();
         }
 
         /// <summary>

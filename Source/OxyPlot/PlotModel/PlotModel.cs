@@ -1301,6 +1301,15 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Determines whether snapping is enabled on at least 1 axis.
+        /// </summary>
+        /// <returns><c>true</c> if snapping is enabled on at least 1 axis; otherwise, <c>false</c>.</returns>
+        private bool IsSnappingEnabled()
+        {
+            return this.Axes.Any(axis => axis.Snapping.IsEnabled);
+        }
+
+        /// <summary>
         /// Finds and sets the default horizontal and vertical axes (the first horizontal/vertical axes in the Axes collection).
         /// </summary>
         private void EnsureDefaultAxes()
@@ -1481,6 +1490,11 @@ namespace OxyPlot
         private void OnAxisChanged(object sender, AxisChangedEventArgs e)
         {
             if (this.isSnapping)
+            {
+                return;
+            }
+
+            if (!this.IsSnappingEnabled())
             {
                 return;
             }
