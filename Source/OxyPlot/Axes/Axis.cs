@@ -1389,50 +1389,34 @@ namespace OxyPlot.Axes
         /// of the series will be used, including the 'padding'.</remarks>
         internal virtual void UpdateActualMaxMin()
         {
-            var newMaximum = 0d;
-            var newMinimum = 0d;
-
             if (!double.IsNaN(this.ViewMaximum))
             {
                 // The user has zoomed/panned the axis, use the ViewMaximum value.
-                newMaximum = this.ViewMaximum;
+                this.ActualMaximum = this.ViewMaximum;
             }
             else if (!double.IsNaN(this.Maximum))
             {
                 // The Maximum value has been set
-                newMaximum = this.Maximum;
+                this.ActualMaximum = this.Maximum;
             }
             else
             {
                 // Calculate the actual maximum, including padding
-                newMaximum = this.CalculateActualMaximum();
+                this.ActualMaximum = this.CalculateActualMaximum();
             }
 
             if (!double.IsNaN(this.ViewMinimum))
             {
-                newMinimum = this.ViewMinimum;
+                this.ActualMinimum = this.ViewMinimum;
             }
             else if (!double.IsNaN(this.Minimum))
             {
-                newMinimum = this.Minimum;
+                this.ActualMinimum = this.Minimum;
             }
             else
             {
-                newMinimum = this.CalculateActualMinimum();
+                this.ActualMinimum = this.CalculateActualMinimum();
             }
-
-            this.UpdateActualMaxMin(newMinimum, newMaximum);
-        }
-
-        /// <summary>
-        /// Updates the actual maximum minimum.
-        /// </summary>
-        /// <param name="minimum">The minimum.</param>
-        /// <param name="maximum">The maximum.</param>
-        internal void UpdateActualMaxMin(double minimum, double maximum)
-        {
-            this.ActualMinimum = minimum;
-            this.ActualMaximum = maximum;
 
             this.CoerceActualMaxMin();
         }
