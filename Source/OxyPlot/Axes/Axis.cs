@@ -11,7 +11,6 @@ namespace OxyPlot.Axes
 {
     using System;
     using System.Collections.Generic;
-    using System.Globalization;
     using OxyPlot.Series;
 
     /// <summary>
@@ -653,7 +652,7 @@ namespace OxyPlot.Axes
                 const int SmallDelta = 3;
                 precision += SmallDelta;
 
-                var culture = CultureInfo.InvariantCulture;
+                var culture = System.Globalization.CultureInfo.InvariantCulture;
                 var probablyDot = culture.NumberFormat.NumberDecimalSeparator[0];
                 var number = delta.ToString(culture).Split(probablyDot);
                 if (number.Length == 2)
