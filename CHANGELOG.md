@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 - Added WPF Wrapper for BoxPlot (#434)
 - Added capability to display mean value to BoxPlot (#440)
 - Added TitleToolTip to PlotModel (#508)
+- Expose PlotElement's TextColor property on WPF.Axes.Axis (#452)
 
 ### Changed
 - Renamed OxyPlot.WindowsUniversal to OxyPlot.Windows (#242)
