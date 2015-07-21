@@ -127,6 +127,7 @@ namespace OxyPlot
                             "An exception of type {0} was thrown when rendering the plot model.\r\n{1}",
                             exception.GetType(),
                             exception.GetBaseException().StackTrace);
+                    this.updateException = exception;
                     this.RenderErrorMessage(rc, string.Format("OxyPlot exception: {0}", exception.Message), errorMessage);
                 }
                 finally
