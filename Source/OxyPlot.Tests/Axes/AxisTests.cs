@@ -395,7 +395,7 @@ namespace OxyPlot.Tests
             var plot = new PlotModel { Title = "Simple plot" };
             plot.Axes.Add(new LinearAxis { AbsoluteMaximum = 0, AbsoluteMinimum = 0 });
             ((IPlotModel)plot).Update(true);
-            Assert.IsNotNull(plot.GetLastUpdateException() as InvalidOperationException);
+            Assert.IsNotNull(plot.GetLastPlotException() as InvalidOperationException);
         }
 
         [Test]

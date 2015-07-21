@@ -44,7 +44,7 @@ namespace OxyPlot
             {
                 try
                 {
-                    if (this.updateException != null)
+                    if (this.lastPlotException != null)
                     {
                         // There was an exception during plot model update. 
                         // This could happen when OxyPlot is given invalid input data. 
@@ -52,9 +52,9 @@ namespace OxyPlot
                         // If the client application submitted invalid data, show the exception message and stack trace.
                         var errorMessage = string.Format(
                                 "An exception of type {0} was thrown when updating the plot model.\r\n{1}",
-                                this.updateException.GetType(),
-                                this.updateException.GetBaseException().StackTrace);
-                        this.RenderErrorMessage(rc, string.Format("OxyPlot exception: {0}", this.updateException.Message), errorMessage);
+                                this.lastPlotException.GetType(),
+                                this.lastPlotException.GetBaseException().StackTrace);
+                        this.RenderErrorMessage(rc, string.Format("OxyPlot exception: {0}", this.lastPlotException.Message), errorMessage);
                         return;
                     }
 
@@ -127,7 +127,7 @@ namespace OxyPlot
                             "An exception of type {0} was thrown when rendering the plot model.\r\n{1}",
                             exception.GetType(),
                             exception.GetBaseException().StackTrace);
-                    this.updateException = exception;
+                    this.lastPlotException = exception;
                     this.RenderErrorMessage(rc, string.Format("OxyPlot exception: {0}", exception.Message), errorMessage);
                 }
                 finally

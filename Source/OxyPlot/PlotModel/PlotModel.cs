@@ -206,7 +206,7 @@ namespace OxyPlot
         /// The last update exception.
         /// </summary>
         /// <value>The exception or <c>null</c> if there was no exceptions during the last update.</value>
-        private Exception updateException;
+        private Exception lastPlotException;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PlotModel" /> class.
@@ -995,9 +995,9 @@ namespace OxyPlot
         /// Gets any exception thrown during the last <see cref="IPlotModel.Update" /> call.
         /// </summary>
         /// <returns>The exception or <c>null</c> if there was no exception.</returns>
-        public Exception GetLastUpdateException()
+        public Exception GetLastPlotException()
         {
-            return this.updateException;
+            return this.lastPlotException;
         }
 
         /// <summary>
@@ -1014,7 +1014,7 @@ namespace OxyPlot
             {
                 try
                 {
-                    this.updateException = null;
+                    this.lastPlotException = null;
                     this.OnUpdating();
 
                     // Updates the default axes
@@ -1063,7 +1063,7 @@ namespace OxyPlot
                 }
                 catch (Exception e)
                 {
-                    this.updateException = e;
+                    this.lastPlotException = e;
                 }
             }
         }
