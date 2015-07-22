@@ -18,9 +18,6 @@
   <files>
     <file src="../../Output/Xamarin.Mac/OxyPlot.Xamarin.Mac.???" target="lib/Xamarin.Mac20"/>
 
-    <file src="../../LICENSE" />
-    <file src="../../AUTHORS" />
-    <file src="../../CONTRIBUTORS" />
     <file src="../../README.md" />
     <file src="../../CHANGELOG.md" />
   </files>
