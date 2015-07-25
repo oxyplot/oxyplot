@@ -19,9 +19,6 @@
   <files>
     <file src="../../Output/Xamarin.Android/OxyPlot.Xamarin.Android.???" target="lib/MonoAndroid"/>
 
-    <file src="../../LICENSE" />
-    <file src="../../AUTHORS" />
-    <file src="../../CONTRIBUTORS" />
     <file src="../../README.md" />
     <file src="../../CHANGELOG.md" />
   </files>
