@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 - Added WPF Wrapper for BoxPlot (#434)
 - Added capability to display mean value to BoxPlot (#440)
 - Added TitleToolTip to PlotModel (#508)
+- Expose PlotElement's TextColor property on WPF.Axes.Axis (#452)
 - Added snapping feature to PlotModel and Axis. This also ensures that the minimum and maximum values 
   on the axis are always displayed (#19, #519). This feature is disabled by default, but can be enabled
   by setting Axis.Snapping.IsEnabled = true; for each axis that needs snapping
