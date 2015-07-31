@@ -193,7 +193,15 @@ namespace OxyPlot.MonoTouch
                 if (!this.activeTouches.Any())
                 {
                     this.TouchEventArgs = firstTouch.ToTouchEventArgs(this.View);
-                    this.State = UIGestureRecognizerState.Ended;
+
+					if (this.State == UIGestureRecognizerState.Possible)
+					{
+						this.State = UIGestureRecognizerState.Failed;
+					}
+					else
+					{
+						this.State = UIGestureRecognizerState.Ended;
+					}
                 }
             }
         }
@@ -228,7 +236,15 @@ namespace OxyPlot.MonoTouch
 				if (!this.activeTouches.Any())
 				{
 					this.TouchEventArgs = firstTouch.ToTouchEventArgs(this.View);
-					this.State = UIGestureRecognizerState.Cancelled;
+
+					if (this.State == UIGestureRecognizerState.Possible)
+					{
+						this.State = UIGestureRecognizerState.Failed;
+					}
+					else
+					{
+						this.State = UIGestureRecognizerState.Cancelled;
+					}
 				}
 			}
         }
