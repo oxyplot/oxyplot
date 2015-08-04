@@ -247,6 +247,7 @@ namespace OxyPlot.Wpf
             m.AxisTierDistance = this.AxisTierDistance;
 
             m.IsLegendVisible = this.IsLegendVisible;
+            m.LegendTextColor = this.LegendTextColor.ToOxyColor();
             m.LegendTitle = this.LegendTitle;
             m.LegendTitleColor = this.LegendTitleColor.ToOxyColor();
             m.LegendTitleFont = this.LegendTitleFont;
