@@ -429,9 +429,9 @@ namespace OxyPlot.Series
             var fillUp = this.GetSelectableFillColor(this.PositiveColor);
             var lineUp = this.GetSelectableColor(this.PositiveColor.ChangeIntensity(0.70));
 
-            var candlewidth =
+            var candlewidth = Math.Min(legendBox.Width,
                 this.XAxis.Transform(this.data[0].X + datacandlewidth) -
-                this.XAxis.Transform(this.data[0].X);
+                this.XAxis.Transform(this.data[0].X));
 
             rc.DrawLine(
                 new[] { new ScreenPoint(xmid, legendBox.Top), new ScreenPoint(xmid, legendBox.Bottom) },
