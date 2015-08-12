@@ -202,9 +202,9 @@ namespace OxyPlot.Series
 
             var datacandlewidth = (this.CandleWidth > 0) ? this.CandleWidth : this.minDx * 0.80;
 
-            var candlewidth = 
-                this.XAxis.Transform(this.Items[0].X + datacandlewidth) -
-                this.XAxis.Transform(this.Items[0].X); 
+            var candlewidth = Math.Min(
+                legendBox.Width,
+                this.XAxis.Transform(this.Items[0].X + datacandlewidth) - this.XAxis.Transform(this.Items[0].X));
 
             rc.DrawLine(
                 new[] { new ScreenPoint(xmid, legendBox.Top), new ScreenPoint(xmid, legendBox.Bottom) },
