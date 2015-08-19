@@ -65,6 +65,7 @@
     <Compile Include="PlotModel\IPlotModel.cs" />
     <Compile Include="Rendering\OxySizeExtensions.cs" />
     <Compile Include="Reporting\PlotModelExtensions.cs" />
+    <Compile Include="Series\BarSeries\LinearBarSeries.cs" />
     <Compile Include="Series\IScatterPointProvider.cs" />
     <Compile Include="Input\Gestures\OxyMouseEnterGesture.cs" />
     <Compile Include="PlotController\EventArgs\OxyInputEventArgs.cs" />
@@ -143,6 +144,7 @@
     <Compile Include="Series\ScatterErrorSeries.cs" />
     <Compile Include="Series\ScatterSeries{T}.cs" />
     <Compile Include="Utilities\ArrayExtensions.cs" />
+    <Compile Include="Utilities\ComparerHelper.cs" />
     <Compile Include="Utilities\EnumerableExtensions.cs" />
     <Compile Include="Utilities\HashCodeBuilder.cs" />
     <Compile Include="Utilities\ReflectionPath.cs" />
