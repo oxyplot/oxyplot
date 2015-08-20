@@ -356,7 +356,7 @@ namespace OxyPlot.Series
                 {
                     var p = new DataPoint((i * dx) + this.X0, (j * dy) + this.Y0);
                     var point = this.Transform(p);
-                    var v = GetValue(this.Data, i, j);
+                    var v = GetValueForLabel(this.Data, i, j);
                     var color = this.ColorAxis.GetColor(v);
                     var hsv = color.ToHsv();
                     var textColor = hsv[2] > 0.6 ? OxyColors.Black : OxyColors.White;
@@ -390,6 +390,8 @@ namespace OxyPlot.Series
 
         /// <summary>
         /// Gets the interpolated value at the specified position in the data array (by bilinear interpolation).
+        /// Where interpolation is impossible, return NaN, rather than a calculated nonsense value.
+        /// This addresses Issue 256.
         /// </summary>
         /// <param name="data">The data.</param>
         /// <param name="i">The first index.</param>
@@ -405,34 +407,54 @@ namespace OxyPlot.Series
 
             var i0 = (int)i;
             int i1 = i0 + 1 < data.GetLength(0) ? i0 + 1 : i0;
-            double ix = i - i0;
+
             var j0 = (int)j;
             int j1 = j0 + 1 < data.GetLength(1) ? j0 + 1 : j0;
-            double jx = j - j0;
-            var v0 = (data[i0, j0] * (1 - ix)) + (data[i1, j0] * ix);
-            var v1 = (data[i0, j1] * (1 - ix)) + (data[i1, j1] * ix);
 
-            if (double.IsNaN(v0))
+            if (double.IsNaN(data[i0, j0]) || double.IsNaN(data[i1, j0]) || double.IsNaN(data[i0, j1]) || double.IsNaN(data[i1, j1]))
             {
-                if (double.IsNaN(v1))
-                {
-                    return closestData;
-                }
-
-                return v1 * jx;
+                return double.NaN;
             }
 
-            if (double.IsNaN(v1))
-            {
-                if (double.IsNaN(v0))
-                {
-                    return closestData;
-                }
+            double ifraction = i - i0;
+            double jfraction = j - j0;
+            var v0 = (data[i0, j0] * (1 - ifraction)) + (data[i1, j0] * ifraction);
+            var v1 = (data[i0, j1] * (1 - ifraction)) + (data[i1, j1] * ifraction);
 
-                return v0 * (1 - jx);
-            }
+            ////if (double.IsNaN(v0))
+            ////{
+            ////    if (double.IsNaN(v1))
+            ////    {
+            ////        return closestData;
+            ////    }
 
-            return (v0 * (1 - jx)) + (v1 * jx);
+            ////    return v1 * jx;
+            ////}
+
+            ////if (double.IsNaN(v1))
+            ////{
+            ////    if (double.IsNaN(v0))
+            ////    {
+            ////        return closestData;
+            ////    }
+
+            ////    return v0 * (1 - jx);
+            ////}
+
+            return (v0 * (1 - jfraction)) + (v1 * jfraction);
+        }
+
+        /// <summary>
+        /// Labels are not interpolated so we have a method that accepts integer coordinates.
+        /// This addresses Issue 256.
+        /// </summary>
+        /// <param name="data">The data.</param>
+        /// <param name="i">The first index.</param>
+        /// <param name="j">The second index.</param>
+        /// <returns>A double that might be double.NaN.</returns>
+        private static double GetValueForLabel(double[,] data, int i, int j)
+        {
+            return data[i, j];
         }
 
         /// <summary>
