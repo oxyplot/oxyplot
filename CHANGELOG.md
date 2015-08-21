@@ -3,6 +3,7 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 ### Added
+- OxyPlot.Series.HeatMapSeries.GetValueForLabels (#256)
 - Created a new OxyPlot.Mobile NuGet package to combine the mobile platforms into a single package. (#362)
 - Support for XWT (#295)
 - TwoColorAreaSeries (#299)
@@ -18,6 +19,7 @@ All notable changes to this project will be documented in this file.
 - Expose PlotElement's TextColor property on WPF.Axes.Axis (#452)
 
 ### Changed
+- Changed OxyPlot.Series.HeatMapSeries.GetValue (#256)
 - Renamed OxyPlot.WindowsUniversal to OxyPlot.Windows (#242)
 - Changed OxyPlot.Xamarin.Forms to require OxyPlot.Mobile dependency instead of each separate NuGet. (#362)
 - Renamed OxyPlot.XamarinIOS to OxyPlot.MonoTouch (#327)
