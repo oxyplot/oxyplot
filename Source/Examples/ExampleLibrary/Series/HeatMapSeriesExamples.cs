@@ -82,6 +82,25 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("2×3, interpolated with two NaN values, flat data")]
+        public static PlotModel InterpolatedWithNanValue2()
+        {
+            var model = CreateExample("Interpolated including two NaN values, otherwise 4.71", true);
+            var hms = (HeatMapSeries)model.Series[0];
+
+            double datum = 4.71d;
+            hms.Data[0, 0] = datum;
+            hms.Data[0, 1] = datum;
+            hms.Data[0, 2] = datum;
+            hms.Data[1, 0] = datum;
+            hms.Data[1, 1] = datum;
+            hms.Data[1, 2] = datum;
+
+            hms.Data[0, 1] = double.NaN;
+            hms.Data[1, 0] = double.NaN;
+            return model;
+        }
+
         [Example("2×3, not interpolated")]
         public static PlotModel NotInterpolated()
         {
@@ -95,6 +114,27 @@ namespace ExampleLibrary
             var ca = (LinearColorAxis)model.Axes[0];
             ca.InvalidNumberColor = OxyColors.Transparent;
             var hms = (HeatMapSeries)model.Series[0];
+            hms.Data[0, 1] = double.NaN;
+            hms.Data[1, 0] = double.NaN;
+            return model;
+        }
+
+        [Example("2×3, not interpolated with two NaN values, flat data")]
+        public static PlotModel NotInterpolatedWithNanValue2()
+        {
+            var model = CreateExample("Not interpolated values including two NaN values, otherwise 4.71", false);
+            var ca = (LinearColorAxis)model.Axes[0];
+            ca.InvalidNumberColor = OxyColors.Transparent;
+            var hms = (HeatMapSeries)model.Series[0];
+
+            double datum = 4.71d;
+            hms.Data[0, 0] = datum;
+            hms.Data[0, 1] = datum;
+            hms.Data[0, 2] = datum;
+            hms.Data[1, 0] = datum;
+            hms.Data[1, 1] = datum;
+            hms.Data[1, 2] = datum;
+
             hms.Data[0, 1] = double.NaN;
             hms.Data[1, 0] = double.NaN;
             return model;

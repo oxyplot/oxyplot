@@ -391,7 +391,6 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets the interpolated value at the specified position in the data array (by bilinear interpolation).
         /// Where interpolation is impossible, return NaN, rather than a calculated nonsense value.
-        /// This addresses Issue 256.
         /// </summary>
         /// <param name="data">The data.</param>
         /// <param name="i">The first index.</param>
@@ -420,33 +419,11 @@ namespace OxyPlot.Series
             double jfraction = j - j0;
             var v0 = (data[i0, j0] * (1 - ifraction)) + (data[i1, j0] * ifraction);
             var v1 = (data[i0, j1] * (1 - ifraction)) + (data[i1, j1] * ifraction);
-
-            ////if (double.IsNaN(v0))
-            ////{
-            ////    if (double.IsNaN(v1))
-            ////    {
-            ////        return closestData;
-            ////    }
-
-            ////    return v1 * jx;
-            ////}
-
-            ////if (double.IsNaN(v1))
-            ////{
-            ////    if (double.IsNaN(v0))
-            ////    {
-            ////        return closestData;
-            ////    }
-
-            ////    return v0 * (1 - jx);
-            ////}
-
             return (v0 * (1 - jfraction)) + (v1 * jfraction);
         }
 
         /// <summary>
         /// Labels are not interpolated so we have a method that accepts integer coordinates.
-        /// This addresses Issue 256.
         /// </summary>
         /// <param name="data">The data.</param>
         /// <param name="i">The first index.</param>
