@@ -356,7 +356,7 @@ namespace OxyPlot.Series
                 {
                     var p = new DataPoint((i * dx) + this.X0, (j * dy) + this.Y0);
                     var point = this.Transform(p);
-                    var v = GetValueForLabel(this.Data, i, j);
+                    var v = GetValue(this.Data, i, j);
                     var color = this.ColorAxis.GetColor(v);
                     var hsv = color.ToHsv();
                     var textColor = hsv[2] > 0.6 ? OxyColors.Black : OxyColors.White;
@@ -398,16 +398,15 @@ namespace OxyPlot.Series
         /// <returns>The interpolated value.</returns>
         private static double GetValue(double[,] data, double i, double j)
         {
-            var closestData = data[(int)Math.Round(i), (int)Math.Round(j)];
-            if (double.IsNaN(closestData))
+            int i0 = (int)i;
+            int j0 = (int)j;
+
+            if ((i == i0) && (j == j0))
             {
-                return double.NaN;
+                return data[i0, j0];
             }
 
-            var i0 = (int)i;
             int i1 = i0 + 1 < data.GetLength(0) ? i0 + 1 : i0;
-
-            var j0 = (int)j;
             int j1 = j0 + 1 < data.GetLength(1) ? j0 + 1 : j0;
 
             if (double.IsNaN(data[i0, j0]) || double.IsNaN(data[i1, j0]) || double.IsNaN(data[i0, j1]) || double.IsNaN(data[i1, j1]))
@@ -417,21 +416,9 @@ namespace OxyPlot.Series
 
             double ifraction = i - i0;
             double jfraction = j - j0;
-            var v0 = (data[i0, j0] * (1 - ifraction)) + (data[i1, j0] * ifraction);
-            var v1 = (data[i0, j1] * (1 - ifraction)) + (data[i1, j1] * ifraction);
+            double v0 = (data[i0, j0] * (1 - ifraction)) + (data[i1, j0] * ifraction);
+            double v1 = (data[i0, j1] * (1 - ifraction)) + (data[i1, j1] * ifraction);
             return (v0 * (1 - jfraction)) + (v1 * jfraction);
-        }
-
-        /// <summary>
-        /// Labels are not interpolated so we have a method that accepts integer coordinates.
-        /// </summary>
-        /// <param name="data">The data.</param>
-        /// <param name="i">The first index.</param>
-        /// <param name="j">The second index.</param>
-        /// <returns>A double that might be double.NaN.</returns>
-        private static double GetValueForLabel(double[,] data, int i, int j)
-        {
-            return data[i, j];
         }
 
         /// <summary>

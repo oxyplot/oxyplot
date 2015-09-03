@@ -83,7 +83,7 @@ namespace ExampleLibrary
         }
 
         [Example("2×3, interpolated with two NaN values, flat data")]
-        public static PlotModel InterpolatedWithNanValue2()
+        public static PlotModel InterpolatedWithNanValueFlat()
         {
             var model = CreateExample("Interpolated including two NaN values, otherwise 4.71", true);
             var hms = (HeatMapSeries)model.Series[0];
@@ -120,7 +120,7 @@ namespace ExampleLibrary
         }
 
         [Example("2×3, not interpolated with two NaN values, flat data")]
-        public static PlotModel NotInterpolatedWithNanValue2()
+        public static PlotModel NotInterpolatedWithNanValueFlat()
         {
             var model = CreateExample("Not interpolated values including two NaN values, otherwise 4.71", false);
             var ca = (LinearColorAxis)model.Axes[0];
