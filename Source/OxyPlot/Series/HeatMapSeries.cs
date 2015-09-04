@@ -400,27 +400,88 @@ namespace OxyPlot.Series
         {
             int i0 = (int)i;
             int j0 = (int)j;
+            int i1 = i0 + 1 < data.GetLength(0) ? i0 + 1 : i0;
+            int j1 = j0 + 1 < data.GetLength(1) ? j0 + 1 : j0;
+            i = Math.Max(i, i0);
+            i = Math.Min(i, i1);
+            j = Math.Max(j, j0);
+            j = Math.Min(j, j1);
 
             if ((i == i0) && (j == j0))
             {
                 return data[i0, j0];
             }
-
-            int i1 = i0 + 1 < data.GetLength(0) ? i0 + 1 : i0;
-            int j1 = j0 + 1 < data.GetLength(1) ? j0 + 1 : j0;
-
-            if (double.IsNaN(data[i0, j0]) || double.IsNaN(data[i1, j0]) || double.IsNaN(data[i0, j1]) || double.IsNaN(data[i1, j1]))
+            else if ((i != i0) && (j == j0)) 
             {
-                return double.NaN;
+                //// interpolate only by i
+
+                if (double.IsNaN(data[i0, j0]) || double.IsNaN(data[i1, j0]))
+                {
+                    return double.NaN;
+                }
+
+                double ifraction = i - i0;
+                if (i0 != i1)
+                {
+                    return (data[i0, j0] * (1 - ifraction)) + (data[i1, j0] * ifraction);
+                }
+                else
+                {
+                    return data[i0, j0];
+                }
             }
+            else if ((i == i0) && (j != j0)) 
+            {
+                //// interpolate only by j
 
-            double ifraction = i - i0;
-            double jfraction = j - j0;
-            double v0 = (data[i0, j0] * (1 - ifraction)) + (data[i1, j0] * ifraction);
-            double v1 = (data[i0, j1] * (1 - ifraction)) + (data[i1, j1] * ifraction);
-            return (v0 * (1 - jfraction)) + (v1 * jfraction);
-        }
+                if (double.IsNaN(data[i0, j0]) || double.IsNaN(data[i0, j1]))
+                {
+                    return double.NaN;
+                }
 
+                double jfraction = j - j0;
+                if (j0 != j1)
+                {
+                    return (data[i0, j0] * (1 - jfraction)) + (data[i0, j1] * jfraction);
+                }
+                else
+                {
+                    return data[i0, j0];
+                }
+            }
+            else 
+            {
+                if (double.IsNaN(data[i0, j0]) || double.IsNaN(data[i1, j0]) || double.IsNaN(data[i0, j1]) || double.IsNaN(data[i1, j1]))
+                {
+                    return double.NaN;
+                }
+
+                double ifraction = i - i0;
+                double jfraction = j - j0;
+                double v0;
+                double v1;
+                if (i0 != i1)
+                {
+                    v0 = (data[i0, j0] * (1 - ifraction)) + (data[i1, j0] * ifraction);
+                    v1 = (data[i0, j1] * (1 - ifraction)) + (data[i1, j1] * ifraction);
+                }
+                else
+                {
+                    v0 = data[i0, j0];
+                    v1 = data[i0, j1];
+                }
+
+                if (j0 != j1)
+                {
+                    return (v0 * (1 - jfraction)) + (v1 * jfraction);
+                }
+                else
+                {
+                    return v0;
+                }
+            }
+        }        
+        
         /// <summary>
         /// Tests if a <see cref="DataPoint" /> is inside the heat map
         /// </summary>
