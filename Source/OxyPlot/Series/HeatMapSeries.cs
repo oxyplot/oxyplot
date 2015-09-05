@@ -398,13 +398,17 @@ namespace OxyPlot.Series
         /// <returns>The interpolated value.</returns>
         private static double GetValue(double[,] data, double i, double j)
         {
+            //// Note data[0, 0] is displayed in quadrant 1, not exactly at the origin, and that implies the invoker can produce negative coordinates.
+            i = Math.Max(i, 0);
+            j = Math.Max(j, 0);
+
             int i0 = (int)i;
-            int j0 = (int)j;
             int i1 = i0 + 1 < data.GetLength(0) ? i0 + 1 : i0;
+            
+            int j0 = (int)j;
             int j1 = j0 + 1 < data.GetLength(1) ? j0 + 1 : j0;
-            i = Math.Max(i, i0);
+
             i = Math.Min(i, i1);
-            j = Math.Max(j, j0);
             j = Math.Min(j, j1);
 
             if ((i == i0) && (j == j0))
