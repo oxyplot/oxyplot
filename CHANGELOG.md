@@ -55,6 +55,7 @@ All notable changes to this project will be documented in this file.
 - PlotElement.Format method. Use StringHelper.Format instead.
 
 ### Fixed
+- HeatMapSeries.GetValue returns NaN instead of calculating a wrong value in proximity to NaN (#256)
 - Tracker position is wrong when PlotView is offset from origin (#455)
 - CategoryAxis should use StringFormat (#415)
 - Fixed the dependency of OxyPlot.Xamarin.Forms NuGet (#370)

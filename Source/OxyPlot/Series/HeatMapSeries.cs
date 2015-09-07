@@ -400,6 +400,7 @@ namespace OxyPlot.Series
 
         /// <summary>
         /// Gets the interpolated value at the specified position in the data array (by bilinear interpolation).
+        /// Where interpolation is impossible, return NaN, rather than a calculated nonsense value.
         /// </summary>
         /// <param name="data">The data.</param>
         /// <param name="i">The first index.</param>
@@ -407,43 +408,93 @@ namespace OxyPlot.Series
         /// <returns>The interpolated value.</returns>
         private static double GetValue(double[,] data, double i, double j)
         {
-            var closestData = data[(int)Math.Round(i), (int)Math.Round(j)];
-            if (double.IsNaN(closestData))
-            {
-                return double.NaN;
-            }
+            //// Note data[0, 0] is displayed in quadrant 1, not exactly at the origin, and that implies the invoker can produce negative coordinates.
+            i = Math.Max(i, 0);
+            j = Math.Max(j, 0);
 
-            var i0 = (int)i;
+            int i0 = (int)i;
             int i1 = i0 + 1 < data.GetLength(0) ? i0 + 1 : i0;
-            double ix = i - i0;
-            var j0 = (int)j;
+
+            int j0 = (int)j;
             int j1 = j0 + 1 < data.GetLength(1) ? j0 + 1 : j0;
-            double jx = j - j0;
-            var v0 = (data[i0, j0] * (1 - ix)) + (data[i1, j0] * ix);
-            var v1 = (data[i0, j1] * (1 - ix)) + (data[i1, j1] * ix);
 
-            if (double.IsNaN(v0))
+            i = Math.Min(i, i1);
+            j = Math.Min(j, j1);
+
+            if ((i == i0) && (j == j0))
             {
-                if (double.IsNaN(v1))
+                return data[i0, j0];
+            }
+            else if ((i != i0) && (j == j0))
+            {
+                //// interpolate only by i
+
+                if (double.IsNaN(data[i0, j0]) || double.IsNaN(data[i1, j0]))
                 {
-                    return closestData;
+                    return double.NaN;
                 }
 
-                return v1 * jx;
-            }
-
-            if (double.IsNaN(v1))
-            {
-                if (double.IsNaN(v0))
+                double ifraction = i - i0;
+                if (i0 != i1)
                 {
-                    return closestData;
+                    return (data[i0, j0] * (1 - ifraction)) + (data[i1, j0] * ifraction);
+                }
+                else
+                {
+                    return data[i0, j0];
+                }
+            }
+            else if ((i == i0) && (j != j0))
+            {
+                //// interpolate only by j
+
+                if (double.IsNaN(data[i0, j0]) || double.IsNaN(data[i0, j1]))
+                {
+                    return double.NaN;
                 }
 
-                return v0 * (1 - jx);
+                double jfraction = j - j0;
+                if (j0 != j1)
+                {
+                    return (data[i0, j0] * (1 - jfraction)) + (data[i0, j1] * jfraction);
+                }
+                else
+                {
+                    return data[i0, j0];
+                }
             }
+            else
+            {
+                if (double.IsNaN(data[i0, j0]) || double.IsNaN(data[i1, j0]) || double.IsNaN(data[i0, j1]) || double.IsNaN(data[i1, j1]))
+                {
+                    return double.NaN;
+                }
 
-            return (v0 * (1 - jx)) + (v1 * jx);
-        }
+                double ifraction = i - i0;
+                double jfraction = j - j0;
+                double v0;
+                double v1;
+                if (i0 != i1)
+                {
+                    v0 = (data[i0, j0] * (1 - ifraction)) + (data[i1, j0] * ifraction);
+                    v1 = (data[i0, j1] * (1 - ifraction)) + (data[i1, j1] * ifraction);
+                }
+                else
+                {
+                    v0 = data[i0, j0];
+                    v1 = data[i0, j1];
+                }
+
+                if (j0 != j1)
+                {
+                    return (v0 * (1 - jfraction)) + (v1 * jfraction);
+                }
+                else
+                {
+                    return v0;
+                }
+            }
+        }  
 
         /// <summary>
         /// Tests if a <see cref="DataPoint" /> is inside the heat map
