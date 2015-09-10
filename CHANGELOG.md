@@ -89,6 +89,7 @@ All notable changes to this project will be documented in this file.
 - This PlotModel is already in use by some other PlotView control (#497)
 - LegendTextColor not synchronized between wpf.Plot and InternalModel (#548)
 - Legend in CandleStickSeries does not scale correctly (#554)
+- Fix CodeGenerator exception for types without parameterless ctor (#573)
 
 ## [2014.1.546] - 2014-10-22
 ### Added

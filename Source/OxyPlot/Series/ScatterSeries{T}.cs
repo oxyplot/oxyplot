@@ -203,7 +203,7 @@ namespace OxyPlot.Series
         {
             get
             {
-                return new System.Collections.ObjectModel.ReadOnlyCollection<T>(this.ActualPointsList);
+                return this.ActualPointsList != null ? new System.Collections.ObjectModel.ReadOnlyCollection<T>(this.ActualPointsList) : null;
             }
         }
 
