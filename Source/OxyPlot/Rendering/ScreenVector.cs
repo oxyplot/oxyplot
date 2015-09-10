@@ -100,7 +100,18 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Implements the subtraction operator.
+        /// Adds a vector to another vector.
+        /// </summary>
+        /// <param name="v">The vector to add to.</param>
+        /// <param name="d">The vector to be added.</param>
+        /// <returns>The result of the operation.</returns>
+        public static ScreenVector operator +(ScreenVector v, ScreenVector d)
+        {
+            return new ScreenVector(v.x + d.x, v.y + d.y);
+        }
+
+        /// <summary>
+        /// Subtracts one specified vector from another.
         /// </summary>
         /// <param name="v">The vector to subtract from.</param>
         /// <param name="d">The vector to be subtracted.</param>
@@ -108,6 +119,16 @@ namespace OxyPlot
         public static ScreenVector operator -(ScreenVector v, ScreenVector d)
         {
             return new ScreenVector(v.x - d.x, v.y - d.y);
+        }
+
+        /// <summary>
+        /// Negates the specified vector.
+        /// </summary>
+        /// <param name="v">The vector to negate.</param>
+        /// <returns>The result of operation.</returns>
+        public static ScreenVector operator -(ScreenVector v)
+        {
+            return new ScreenVector(-v.x, -v.y);
         }
 
         /// <summary>

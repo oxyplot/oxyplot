@@ -31,6 +31,15 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("Sub- and superscript in titles")]
+        public static PlotModel TitleAndSubtitleWithSubSuperscript()
+        {
+            var model = new PlotModel { Title = "Title with^{super}_{sub}script", Subtitle = "Subtitle with^{super}_{sub}script" };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+            return model;
+        }
+
         [Example("TitlePadding = 0")]
         public static PlotModel TitlePadding0()
         {
