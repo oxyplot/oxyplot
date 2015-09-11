@@ -200,7 +200,6 @@
     <Compile Include="Annotations\ImageAnnotation.cs" />
     <Compile Include="Annotations\PathAnnotation.cs" />
     <Compile Include="Annotations\PolyLineAnnotation.cs" />
-    <Compile Include="Annotations\TileMapAnnotation.cs" />
     <Compile Include="Axes\NamespaceDoc.cs" />
     <Compile Include="Axes\LogarithmicAxis.cs" />
     <Compile Include="Axes\RangeColorAxis.cs" />

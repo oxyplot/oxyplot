@@ -74,8 +74,8 @@
     <Compile Include="PlotModel\IPlotElement.cs" />
     <Compile Include="PlotModel\IPlotModel.cs" />
     <Compile Include="Rendering\OxySizeExtensions.cs" />
-	<Compile Include="Series\BarSeries\LinearBarSeries.cs" />
     <Compile Include="Reporting\PlotModelExtensions.cs" />
+    <Compile Include="Series\BarSeries\LinearBarSeries.cs" />
     <Compile Include="Series\IScatterPointProvider.cs" />
     <Compile Include="Input\Gestures\OxyMouseEnterGesture.cs" />
     <Compile Include="PlotController\EventArgs\OxyInputEventArgs.cs" />
@@ -153,7 +153,6 @@
     <Compile Include="Series\ScatterErrorPoint.cs" />
     <Compile Include="Series\ScatterErrorSeries.cs" />
     <Compile Include="Series\ScatterSeries{T}.cs" />
-    <Compile Include="Series\TwoColorAreaSeries.cs" />
     <Compile Include="Utilities\ArrayExtensions.cs" />
     <Compile Include="Utilities\ComparerHelper.cs" />
     <Compile Include="Utilities\EnumerableExtensions.cs" />
@@ -211,7 +210,6 @@
     <Compile Include="Annotations\ImageAnnotation.cs" />
     <Compile Include="Annotations\PathAnnotation.cs" />
     <Compile Include="Annotations\PolyLineAnnotation.cs" />
-    <Compile Include="Annotations\TileMapAnnotation.cs" />
     <Compile Include="Axes\NamespaceDoc.cs" />
     <Compile Include="Axes\LogarithmicAxis.cs" />
     <Compile Include="Axes\RangeColorAxis.cs" />
@@ -319,6 +317,7 @@
     <Compile Include="Series\StairStepSeries.cs" />
     <Compile Include="Series\ScatterSeries.cs" />
     <Compile Include="Series\TwoColorLineSeries.cs" />
+    <Compile Include="Series\TwoColorAreaSeries.cs" />
     <Compile Include="Series\XYAxisSeries.cs" />
     <Compile Include="Series\PieSeries.cs" />
     <Compile Include="Series\FunctionSeries.cs" />
