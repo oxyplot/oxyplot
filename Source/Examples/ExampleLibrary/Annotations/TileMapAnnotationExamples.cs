@@ -44,7 +44,7 @@ namespace ExampleLibrary
             model.Annotations.Add(
                 new TileMapAnnotation
                     {
-                        Url = "http://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps?layers=toporaster2&zoom={Z}&x={X}&y={Y}",
+                        Url = "http://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps?layers=toporaster3&zoom={Z}&x={X}&y={Y}",
                         CopyrightNotice = "Kartgrunnlag: Statens kartverk, Geovekst og kommuner.",
                         MinZoomLevel = 5,
                         MaxZoomLevel = 19

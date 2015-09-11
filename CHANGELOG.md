@@ -42,6 +42,7 @@ All notable changes to this project will be documented in this file.
 - Changed PCL project to profile 259, SL5 is separate now (#115)
 - Extracted CreateReport() and CreateTextReport() from PlotModel (#517)
 - Renamed GetLastUpdateException to GetLastPlotException and added the ability to see render exceptions(#543)
+- Move TileMapAnnotation class to example library (#567)
 
 ### Removed
 - OxyPlot.Metro project (superseded by OxyPlot.WindowsUniversal) (#241)

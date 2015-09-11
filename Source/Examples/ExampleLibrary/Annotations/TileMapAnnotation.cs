@@ -7,8 +7,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace OxyPlot.Annotations
+namespace ExampleLibrary
 {
+    using OxyPlot;
+    using OxyPlot.Annotations;
     using System;
     using System.Collections.Generic;
     using System.Globalization;
