@@ -112,7 +112,7 @@ namespace ExampleLibrary
             return plot;
         }
 
-        private static Series CreateTestSeries()
+        private static OxyPlot.Series.Series CreateTestSeries()
         {
             var absSerie = new LineSeries();
 

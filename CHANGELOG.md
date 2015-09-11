@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file.
 - Added LinearBarSeries for WPF (#506)
 - Added TitleToolTip to PlotModel (#508)
 - Expose PlotElement's TextColor property on WPF.Axes.Axis (#452)
+- ThreeColorLineSeries (#378)
 
 ### Changed
 - Renamed OxyPlot.WindowsUniversal to OxyPlot.Windows (#242)

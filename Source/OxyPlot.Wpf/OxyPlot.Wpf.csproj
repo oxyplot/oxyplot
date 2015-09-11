@@ -97,6 +97,7 @@
     <Compile Include="Series\BarSeries\CategorizedSeries.cs" />
     <Compile Include="Series\BarSeries\BarSeriesBase.cs" />
     <Compile Include="Series\BarSeries\BarSeriesBase{T}.cs" />
+    <Compile Include="Series\ThreeColorLineSeries.cs" />
     <Compile Include="Series\TwoColorAreaSeries.cs" />
     <Compile Include="SvgExporter.cs" />
     <Compile Include="TextMeasurementMethod.cs" />
