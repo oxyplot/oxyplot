@@ -61,6 +61,8 @@ namespace OxyPlot.Axes
             this.IntervalType = DateTimeIntervalType.Auto;
             this.FirstDayOfWeek = DayOfWeek.Monday;
             this.CalendarWeekRule = CalendarWeekRule.FirstFourDayWeek;
+
+            this.Snapping.IsEnabled = false;
         }
 
         /// <summary>
@@ -513,7 +515,7 @@ namespace OxyPlot.Axes
             }
 
             // For shorter step sizes we use the method from Axis
-            return Axis.CreateTickValues(min, max, interval);
+            return Axis.CreateTickValues(min, max, interval, precision: this.Snapping.Precision, includeMinAndMax: this.Snapping.IsEnabled);
         }
 
         /// <summary>

@@ -27,6 +27,11 @@ namespace OxyPlot.Axes
         /// <summary>
         /// The axis zoom/pan was reset by the user.
         /// </summary>
-        Reset
+        Reset,
+
+        /// <summary>
+        /// The axis was snapped.
+        /// </summary>
+        Snap
     }
 }

@@ -30,7 +30,7 @@
     <Optimize>false</Optimize>
     <OutputPath>Bin\Debug\SL5\</OutputPath>
     <IntermediateOutputPath>obj\Debug\SL5\</IntermediateOutputPath>
-    <DefineConstants>DEBUG;TRACE;SILVERLIGHT</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;SILVERLIGHT;SL5</DefineConstants>
     <NoStdLib>true</NoStdLib>
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
@@ -41,7 +41,7 @@
     <Optimize>true</Optimize>
     <OutputPath>..\..\Output\SL5\</OutputPath>
     <IntermediateOutputPath>obj\Release\SL5\</IntermediateOutputPath>
-    <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
+    <DefineConstants>TRACE;SILVERLIGHT;SL5</DefineConstants>
     <NoStdLib>true</NoStdLib>
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
@@ -71,9 +71,11 @@
     </Compile>
     <Compile Include="Annotations\PointAnnotation.cs" />
     <Compile Include="Annotations\ShapeAnnotation.cs" />
+    <Compile Include="Graphics\ControllerEvent.cs" />
     <Compile Include="Graphics\DelegateViewCommand{T}.cs" />
     <Compile Include="Graphics\ElementCollectionChangedEventArgs{T}.cs" />
     <Compile Include="Graphics\ManipulatorBase.cs" />
+    <Compile Include="Graphics\Snapping.cs" />
     <Compile Include="PlotController\DelegatePlotCommand.cs" />
     <Compile Include="Graphics\Element.cs" />
     <Compile Include="Graphics\ElementCollection{T}.cs" />
@@ -170,6 +172,8 @@
     <Compile Include="Utilities\EnumerableExtensions.cs" />
     <Compile Include="Utilities\HashCodeBuilder.cs" />
     <Compile Include="Utilities\ReflectionPath.cs" />
+    <Compile Include="Utilities\Timeout.cs" />
+    <Compile Include="Utilities\Timer.cs" />
     <Compile Include="Utilities\XmlWriterBase.cs" />
     <Compile Include="Utilities\BinaryReaderExtensions.cs" />
     <Compile Include="Utilities\ListFiller.cs" />

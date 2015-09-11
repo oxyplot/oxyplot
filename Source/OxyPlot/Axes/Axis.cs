@@ -11,7 +11,6 @@ namespace OxyPlot.Axes
 {
     using System;
     using System.Collections.Generic;
-
     using OxyPlot.Series;
 
     /// <summary>
@@ -28,6 +27,11 @@ namespace OxyPlot.Axes
         /// Mantissa function.
         /// </summary>
         protected static readonly Func<double, double> Mantissa = x => x / Math.Pow(10, Exponent(x));
+
+        /// <summary>
+        /// Gets or sets whether the axis is currently snapping.
+        /// </summary>
+        private bool isSnapping;
 
         /// <summary>
         /// The offset.
@@ -116,6 +120,8 @@ namespace OxyPlot.Axes
             this.AxisDistance = 0;
             this.AxisTitleDistance = 4;
             this.AxisTickToLabelDistance = 4;
+
+            this.Snapping = new Snapping();
         }
 
         /// <summary>
@@ -550,6 +556,12 @@ namespace OxyPlot.Axes
         public OxySize DesiredSize { get; protected set; }
 
         /// <summary>
+        /// Gets the snapping settings.
+        /// </summary>
+        /// <value>The snapping.</value>
+        public Snapping Snapping { get; private set; }
+
+        /// <summary>
         /// Gets or sets the position tier max shift.
         /// </summary>
         internal double PositionTierMaxShift { get; set; }
@@ -621,15 +633,71 @@ namespace OxyPlot.Axes
         protected double ViewMinimum { get; set; }
 
         /// <summary>
+        /// Gets the precision to use for the delta.
+        /// </summary>
+        /// <param name="delta">The delta.</param>
+        /// <returns>The precision.</returns>
+        public static int GetPrecision(double delta)
+        {
+            var precision = 0;
+
+            // Backwards compatibility
+            if (delta.ToString().Contains("E"))
+            {
+                return 14;
+            }
+
+            if (delta < 0d)
+            {
+                const int SmallDelta = 3;
+                precision += SmallDelta;
+
+                var culture = System.Globalization.CultureInfo.InvariantCulture;
+                var probablyDot = culture.NumberFormat.NumberDecimalSeparator[0];
+                var number = delta.ToString(culture).Split(probablyDot);
+                if (number.Length == 2)
+                {
+                    var numberValue = number[1];
+                    if (numberValue.Length > SmallDelta)
+                    {
+                        for (var i = SmallDelta; i < numberValue.Length; i++)
+                        {
+                            if (numberValue[i] == '0')
+                            {
+                                precision++;
+                            }
+                        }
+                    }
+                }
+            }
+            else if (delta < 1d)
+            {
+                precision += 3;
+            }
+            else if (delta < 3d)
+            {
+                precision += 2;
+            }
+            else if (delta < 5d)
+            {
+                precision += 1;
+            }
+
+            return precision;
+        }
+
+        /// <summary>
         /// Creates tick values at the specified interval.
         /// </summary>
         /// <param name="from">The start value.</param>
         /// <param name="to">The end value.</param>
         /// <param name="step">The interval.</param>
         /// <param name="maxTicks">The maximum number of ticks (optional). The default value is 1000.</param>
+        /// <param name="precision">The precision. If <c>null</c>, the precision will be calculated automatically.</param>
+        /// <param name="includeMinAndMax">if set to <c>true</c>, always include the min and max values in the tick values.</param>
         /// <returns>A sequence of values.</returns>
         /// <exception cref="System.ArgumentException">Step cannot be zero or negative.;step</exception>
-        public static IList<double> CreateTickValues(double from, double to, double step, int maxTicks = 1000)
+        public static IList<double> CreateTickValues(double from, double to, double step, int maxTicks = 1000, int? precision = null, bool includeMinAndMax = false)
         {
             if (step <= 0)
             {
@@ -641,10 +709,44 @@ namespace OxyPlot.Axes
                 step *= -1;
             }
 
-            var startValue = Math.Round(from / step) * step;
-            var numberOfValues = Math.Max((int)((to - from) / step), 1);
+            var startValue = from;
+            var endValue = to;
+
+            var delta = to - from;
+            var deltaToUse = delta - step;
+            var numberOfValues = Math.Max((int)(deltaToUse / step), 1);
+
+            if (!includeMinAndMax)
+            {
+                startValue = Math.Round(from / step) * step;
+                numberOfValues = Math.Max((int)((to - from) / step), 1);
+            }
+
+            if (!precision.HasValue)
+            {
+                if (!includeMinAndMax)
+                {
+                    // Ensure backwards compatibility
+                    precision = 14;
+                }
+                else
+                {
+                    precision = GetPrecision(delta);
+                }
+            }
+
             var epsilon = step * 1e-3 * Math.Sign(step);
             var values = new List<double>(numberOfValues);
+
+            if (includeMinAndMax)
+            {
+                values.Add(Math.Round(startValue, precision.Value));
+            }
+
+            if (includeMinAndMax)
+            {
+                startValue = startValue + (step / 2);
+            }
 
             for (int k = 0; k < maxTicks; k++)
             {
@@ -656,9 +758,28 @@ namespace OxyPlot.Axes
                     break;
                 }
 
+                double v = 0d;
+
                 // try to get rid of numerical noise
-                var v = Math.Round(lastValue / step, 14) * step;
-                values.Add(v);
+                if (includeMinAndMax)
+                {
+                    var lastValueWithoutStartValue = lastValue - startValue;
+                    v = Math.Round(((lastValueWithoutStartValue / step) * step) + startValue, precision.Value);
+                }
+                else
+                {
+                    v = Math.Round(lastValue / step, 14) * step;
+                }
+
+                if (!values.Contains(v))
+                {
+                    values.Add(v);
+                }
+            }
+
+            if (includeMinAndMax)
+            {
+                values.Add(Math.Round(endValue, precision.Value));
             }
 
             return values;
@@ -701,6 +822,11 @@ namespace OxyPlot.Axes
         /// </summary>
         public virtual void CoerceActualMaxMin()
         {
+            if (this.isSnapping)
+            {
+                return;
+            }
+
             // Coerce actual minimum
             if (double.IsNaN(this.ActualMinimum) || double.IsInfinity(this.ActualMinimum))
             {
@@ -758,8 +884,8 @@ namespace OxyPlot.Axes
         public virtual void GetTickValues(
             out IList<double> majorLabelValues, out IList<double> majorTickValues, out IList<double> minorTickValues)
         {
-            minorTickValues = CreateTickValues(this.ActualMinimum, this.ActualMaximum, this.ActualMinorStep);
-            majorTickValues = CreateTickValues(this.ActualMinimum, this.ActualMaximum, this.ActualMajorStep);
+            minorTickValues = CreateTickValues(this.ActualMinimum, this.ActualMaximum, this.ActualMinorStep, precision: this.Snapping.Precision, includeMinAndMax: this.Snapping.IsEnabled);
+            majorTickValues = CreateTickValues(this.ActualMinimum, this.ActualMaximum, this.ActualMajorStep, precision: this.Snapping.Precision, includeMinAndMax: this.Snapping.IsEnabled);
             majorLabelValues = majorTickValues;
         }
 
@@ -1008,6 +1134,52 @@ namespace OxyPlot.Axes
             var deltaMaximum = this.ActualMaximum - oldMaximum;
 
             this.OnAxisChanged(new AxisChangedEventArgs(AxisChangeTypes.Reset, deltaMinimum, deltaMaximum));
+        }
+
+        /// <summary>
+        /// Snaps the axis to values that make sense.
+        /// </summary>
+        public virtual void Snap()
+        {
+            if (this.isSnapping)
+            {
+                return;
+            }
+
+            this.isSnapping = true;
+
+            // We must "snap" to valid values in order to make our axis correct
+            var precision = Axis.GetPrecision(this.ActualMaximum - this.ActualMinimum);
+
+            var newActualMinimum = Math.Round(this.ActualMinimum, precision);
+            var newActualMaximum = Math.Round(this.ActualMaximum, precision);
+            var hasChanges = false;
+
+            var deltaMinimum = 0d;
+            var deltaMaximum = 0d;
+
+            if (this.ActualMinimum != newActualMinimum)
+            {
+                hasChanges = true;
+                deltaMinimum = newActualMinimum - this.ActualMinimum;
+                this.ActualMinimum = newActualMinimum;
+            }
+
+            if (this.ActualMaximum != newActualMaximum)
+            {
+                hasChanges = true;
+                deltaMaximum = newActualMaximum - this.ActualMaximum;
+                this.ActualMaximum = newActualMaximum;
+            }
+
+            if (hasChanges)
+            {
+                System.Diagnostics.Debug.WriteLine("Snapping Axis '{0}' to {1} / {2}", this.ActualTitle, this.ActualMinimum, this.ActualMaximum);
+
+                this.OnAxisChanged(new AxisChangedEventArgs(AxisChangeTypes.Snap, deltaMinimum, deltaMaximum));
+            }
+
+            this.isSnapping = false;
         }
 
         /// <summary>
@@ -1581,7 +1753,10 @@ namespace OxyPlot.Axes
         /// <param name="args">The <see cref="OxyPlot.Axes.AxisChangedEventArgs" /> instance containing the event data.</param>
         protected virtual void OnAxisChanged(AxisChangedEventArgs args)
         {
-            this.UpdateActualMaxMin();
+            if (args.ChangeType != AxisChangeTypes.Snap)
+            {
+                this.UpdateActualMaxMin();
+            }
 
             var handler = this.AxisChanged;
             if (handler != null)

@@ -20,7 +20,7 @@
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\NET40\</OutputPath>
     <IntermediateOutputPath>obj\Debug\NET40\</IntermediateOutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NET40</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <PlatformTarget>AnyCpu</PlatformTarget>
     <WarningLevel>4</WarningLevel>
@@ -30,7 +30,7 @@
     <Optimize>true</Optimize>
     <OutputPath>..\..\Output\NET40\</OutputPath>
     <IntermediateOutputPath>obj\Release\NET40\</IntermediateOutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;NET40</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <PlatformTarget>AnyCpu</PlatformTarget>
     <WarningLevel>4</WarningLevel>
@@ -59,9 +59,12 @@
     </Compile>
     <Compile Include="Annotations\PointAnnotation.cs" />
     <Compile Include="Annotations\ShapeAnnotation.cs" />
+    <Compile Include="Axes\AxisExtensions.cs" />
+    <Compile Include="Graphics\ControllerEvent.cs" />
     <Compile Include="Graphics\DelegateViewCommand{T}.cs" />
     <Compile Include="Graphics\ElementCollectionChangedEventArgs{T}.cs" />
     <Compile Include="Graphics\ManipulatorBase.cs" />
+    <Compile Include="Graphics\Snapping.cs" />
     <Compile Include="PlotController\DelegatePlotCommand.cs" />
     <Compile Include="Graphics\Element.cs" />
     <Compile Include="Graphics\ElementCollection{T}.cs" />
@@ -158,6 +161,8 @@
     <Compile Include="Utilities\EnumerableExtensions.cs" />
     <Compile Include="Utilities\HashCodeBuilder.cs" />
     <Compile Include="Utilities\ReflectionPath.cs" />
+    <Compile Include="Utilities\Timeout.cs" />
+    <Compile Include="Utilities\Timer.cs" />
     <Compile Include="Utilities\XmlWriterBase.cs" />
     <Compile Include="Utilities\BinaryReaderExtensions.cs" />
     <Compile Include="Utilities\ListFiller.cs" />

@@ -244,7 +244,16 @@ namespace OxyPlot.Wpf
                 return;
             }
 
-            this.UpdateModel(updateData);
+            var action = new Action(() => this.UpdateModel(updateData));
+
+            if (!this.Dispatcher.CheckAccess())
+            {
+                this.Dispatcher.Invoke((Delegate)action);
+            }
+            else
+            {
+                action();
+            }
 
             if (Interlocked.CompareExchange(ref this.isPlotInvalidated, 1, 0) == 0)
             {

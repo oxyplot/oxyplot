@@ -193,6 +193,16 @@ namespace OxyPlot
     public partial class PlotModel : Model, IPlotModel
     {
         /// <summary>
+        /// The snap timer.
+        /// </summary>
+        private readonly Timer snapTimer;
+
+        /// <summary>
+        /// Gets or sets whether the axis is currently snapping.
+        /// </summary>
+        private bool isSnapping;
+
+        /// <summary>
         /// The plot view that renders this plot.
         /// </summary>
         private WeakReference plotViewReference;
@@ -214,6 +224,8 @@ namespace OxyPlot
         public PlotModel()
         {
             this.Axes = new ElementCollection<Axis>(this);
+            this.Axes.CollectionChanged += this.OnAxesCollectionChanged;
+
             this.Series = new ElementCollection<Series.Series>(this);
             this.Annotations = new ElementCollection<Annotation>(this);
 
@@ -289,6 +301,8 @@ namespace OxyPlot
                 };
 
             this.AxisTierDistance = 4.0;
+
+            this.snapTimer = new Timer(this.OnSnapTimerTick, null, Timeout.Infinite, Timeout.Infinite);
         }
 
         /// <summary>
@@ -784,6 +798,36 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Snaps all the attached axes to values that make sense.
+        /// </summary>
+        /// <param name="snapAllAxes">if set to <c>true</c>, this is a forced snapping so all axes, even the ones that don't have snapping enabled, will be snapped.</param>
+        public virtual void Snap(bool snapAllAxes)
+        {
+            if (this.isSnapping)
+            {
+                return;
+            }
+
+            this.isSnapping = true;
+
+            this.OnUpdating();
+
+            foreach (var axis in this.Axes)
+            {
+                if (snapAllAxes || (axis.Snapping != null && axis.Snapping.IsEnabled))
+                {
+                    axis.Snap();
+                }
+            }
+
+            this.OnUpdated();
+
+            this.InvalidatePlot(false);
+
+            this.isSnapping = false;
+        }
+
+        /// <summary>
         /// Invalidates the plot.
         /// </summary>
         /// <param name="updateData">Updates all data sources if set to <c>true</c>.</param>
@@ -1257,6 +1301,15 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Determines whether snapping is enabled on at least 1 axis.
+        /// </summary>
+        /// <returns><c>true</c> if snapping is enabled on at least 1 axis; otherwise, <c>false</c>.</returns>
+        private bool IsSnappingEnabled()
+        {
+            return this.Axes.Any(axis => axis.Snapping.IsEnabled);
+        }
+
+        /// <summary>
         /// Finds and sets the default horizontal and vertical axes (the first horizontal/vertical axes in the Axes collection).
         /// </summary>
         private void EnsureDefaultAxes()
@@ -1397,15 +1450,65 @@ namespace OxyPlot
                 }
             }
 
-            foreach (var s in this.Series.Where(s => s.IsVisible))
+            if (!this.isSnapping)
             {
-                s.UpdateAxisMaxMin();
+                foreach (var s in this.Series.Where(s => s.IsVisible))
+                {
+                    s.UpdateAxisMaxMin();
+                }
+
+                foreach (var a in this.Axes)
+                {
+                    a.UpdateActualMaxMin();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Called when the Axes collection has changed.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The event args.</param>
+        private void OnAxesCollectionChanged(object sender, ElementCollectionChangedEventArgs<Axis> e)
+        {
+            foreach (var removedItem in e.RemovedItems)
+            {
+                removedItem.AxisChanged -= this.OnAxisChanged;
             }
 
-            foreach (var a in this.Axes)
+            foreach (var addedItem in e.AddedItems)
             {
-                a.UpdateActualMaxMin();
+                addedItem.AxisChanged += this.OnAxisChanged;
             }
+        }
+
+        /// <summary>
+        /// Handles the <see cref="E:AxisChanged" /> event.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="AxisChangedEventArgs"/> instance containing the event data.</param>
+        private void OnAxisChanged(object sender, AxisChangedEventArgs e)
+        {
+            if (this.isSnapping)
+            {
+                return;
+            }
+
+            if (!this.IsSnappingEnabled())
+            {
+                return;
+            }
+
+            this.snapTimer.Change(500, Timeout.Infinite);
+        }
+
+        /// <summary>
+        /// Called when the snap timer ticks.
+        /// </summary>
+        /// <param name="state">The state.</param>
+        private void OnSnapTimerTick(object state)
+        {
+            this.Snap(false);
         }
     }
 }

@@ -492,7 +492,7 @@ namespace OxyPlot
 
             return binding.Command;
         }
-        
+
         /// <summary>
         /// Handles a command triggered by an input gesture.
         /// </summary>

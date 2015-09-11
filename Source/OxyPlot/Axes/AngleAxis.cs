@@ -54,9 +54,9 @@ namespace OxyPlot.Axes
             var minimum = this.StartAngle / this.Scale;
             var maximum = this.EndAngle / this.Scale;
 
-            minorTickValues = Axis.CreateTickValues(minimum, maximum, this.ActualMinorStep);
-            majorTickValues = Axis.CreateTickValues(minimum, maximum, this.ActualMajorStep);
-            majorLabelValues = Axis.CreateTickValues(this.Minimum, this.Maximum, this.ActualMajorStep);
+            minorTickValues = Axis.CreateTickValues(minimum, maximum, this.ActualMinorStep, precision: this.Snapping.Precision, includeMinAndMax: this.Snapping.IsEnabled);
+            majorTickValues = Axis.CreateTickValues(minimum, maximum, this.ActualMajorStep, precision: this.Snapping.Precision, includeMinAndMax: this.Snapping.IsEnabled);
+            majorLabelValues = Axis.CreateTickValues(this.Minimum, this.Maximum, this.ActualMajorStep, precision: this.Snapping.Precision, includeMinAndMax: this.Snapping.IsEnabled);
         }
 
         /// <summary>
