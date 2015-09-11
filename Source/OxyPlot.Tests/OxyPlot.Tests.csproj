@@ -55,6 +55,7 @@
     <Compile Include="Axes\AxisTests.cs" />
     <Compile Include="Axes\AxisUtilitiesTests.cs" />
     <Compile Include="Axes\LinearAxisTests.cs" />
+    <Compile Include="Foundation\CodeGeneratorTests.cs" />
     <Compile Include="Graphics\ElementCollectionTests.cs" />
     <Compile Include="NullRenderContext.cs" />
     <Compile Include="PlotModelExtensions.cs" />
@@ -144,6 +145,9 @@
       <Project>{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}</Project>
       <Name>OxyPlot</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(ProjectDir)\..\StyleCop.targets" Condition=" '$(OS)' == 'Windows_NT' " />

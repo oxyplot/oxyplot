@@ -135,9 +135,19 @@ namespace OxyPlot
         /// <returns>The variable name.</returns>
         private string Add(object obj)
         {
-            Type type = obj.GetType();
-            object defaultInstance = Activator.CreateInstance(type);
-            string varName = this.GetNewVariableName(type);
+            var type = obj.GetType();
+#if UNIVERSAL
+            var hasParameterLessCtor = type.GetTypeInfo().DeclaredConstructors.Any(ci => ci.GetParameters().Length == 0);
+#else
+            var hasParameterLessCtor = type.GetConstructors().Any(ci => ci.GetParameters().Length == 0);
+#endif
+            if (!hasParameterLessCtor)
+            {
+                return string.Format("/* Cannot generate code for {0} constructor */", type.Name);
+            }
+
+            var defaultInstance = Activator.CreateInstance(type);
+            var varName = this.GetNewVariableName(type);
             this.variables.Add(varName, true);
             this.AppendLine("var {0} = new {1}();", varName, type.Name);
             this.SetProperties(obj, varName, defaultInstance);
