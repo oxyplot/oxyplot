@@ -11,9 +11,15 @@ namespace OxyPlot.Tests
 
     using NUnit.Framework;
 
+    /// <summary>
+    /// Unit tests for the <see cref="ComparerHelper"/>.
+    /// </summary>
     [TestFixture]
     public class ComparerHelperTests
     {
+        /// <summary>
+        /// Creates a comparer from a delegate.
+        /// </summary>
         [Test]
         public void CreateComparerFromDelegate()
         {
@@ -21,8 +27,15 @@ namespace OxyPlot.Tests
             var comparer = ComparerHelper.CreateComparer<int>(
                 (x, y) =>
                 {
-                    if (x == 0) return y == 0 ? 0 : -1;
-                    if (y == 0) return 1;
+                    if (x == 0)
+                    {
+                        return y == 0 ? 0 : -1;
+                    }
+
+                    if (y == 0)
+                    {
+                        return 1;
+                    }
 
                     return y.CompareTo(x);
                 });
