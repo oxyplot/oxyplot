@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Wpf", "OxyPlot.Wpf\OxyPlot.Wpf.csproj", "{698CCD8E-ADCC-4565-8517-5EDD36F07155}"
 EndProject
@@ -38,11 +38,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Pdf.Tests", "OxyPlot.Pdf.Tests\OxyPlot.Pdf.Tests.csproj", "{FF600107-3DEB-404F-8A37-F63473BDFCB8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathBlockDemo", "Examples\WPF\MathBlockDemo\MathBlockDemo.csproj", "{D301156F-622D-4821-8C9A-10B895057634}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{BA1B7BD0-E9AA-4A57-A865-394A281EE64F}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerformanceTest", "Examples\PerformanceTest\PerformanceTest.csproj", "{EDD52464-AD60-4EA1-B774-87AAFD930B6B}"
 EndProject

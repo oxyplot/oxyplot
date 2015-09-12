@@ -92,6 +92,7 @@ All notable changes to this project will be documented in this file.
 - LegendTextColor not synchronized between wpf.Plot and InternalModel (#548)
 - Legend in CandleStickSeries does not scale correctly (#554)
 - Fix CodeGenerator exception for types without parameterless ctor (#573)
+- Migrate automatic package restore (#557)
 
 ## [2014.1.546] - 2014-10-22
 ### Added
