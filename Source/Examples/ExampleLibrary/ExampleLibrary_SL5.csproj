@@ -113,6 +113,7 @@
     <Compile Include="Series\ContourSeriesExamples.cs" />
     <Compile Include="Series\IntervalBarSeriesExamples.cs" />
     <Compile Include="Series\RectangleBarSeriesExamples.cs" />
+    <Compile Include="Series\ThreeColorLineSeriesExamples.cs" />
     <Compile Include="Series\TornadoBarSeriesExamples.cs" />
     <Compile Include="Examples\PlotControllerExamples.cs" />
     <Compile Include="Axes\CustomAxisExamples.cs" />
