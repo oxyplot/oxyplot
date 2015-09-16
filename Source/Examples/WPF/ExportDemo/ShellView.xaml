@@ -47,7 +47,7 @@
             </StatusBarItem>
         </StatusBar>
         <Grid>
-            <oxy:PlotView x:Name="plot1" Model="{Binding Model}" Background="White">
+            <oxy:PlotView x:Name="plot1" Model="{Binding Model}">
                 <oxy:PlotView.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Copy svg" Name="ContextCopySvg"/>

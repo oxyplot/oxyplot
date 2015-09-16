@@ -157,7 +157,7 @@ namespace OxyPlot.Series
             if (result != null)
             {
                 result.Text = StringHelper.Format(
-                    this.ActualCulture, 
+                    this.ActualCulture,
                     this.TrackerFormatString,
                     result.Item,
                     this.Title,
@@ -308,8 +308,12 @@ namespace OxyPlot.Series
 
             this.itemsSourcePoints2.Clear();
 
+            // TODO: make it consistent with DataPointSeries.UpdateItemsSourcePoints
             // Using reflection on DataFieldX2 and DataFieldY2
-            ReflectionExtensions.AddRange(this.itemsSourcePoints2, this.ItemsSource, this.DataFieldX2, this.DataFieldY2);
+            if (this.DataFieldX2 != null && this.DataFieldY2 != null)
+            {
+                ReflectionExtensions.AddRange(this.itemsSourcePoints2, this.ItemsSource, this.DataFieldX2, this.DataFieldY2);
+            }
         }
 
         /// <summary>
