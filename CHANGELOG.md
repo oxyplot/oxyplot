@@ -98,6 +98,7 @@ All notable changes to this project will be documented in this file.
 - Fix rendering of rotated 'math' text (#569, #448)
 - Export demo (WPF) (#568)
 - Fixing a double comparison issue causing infinite loop (#587)
+- Fix null reference exception when ActualPoints was null rendering a StairStepSeries (#582) 
 
 ## [2014.1.546] - 2014-10-22
 ### Added
