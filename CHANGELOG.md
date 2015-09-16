@@ -93,6 +93,7 @@ All notable changes to this project will be documented in this file.
 - Legend in CandleStickSeries does not scale correctly (#554)
 - Fix CodeGenerator exception for types without parameterless ctor (#573)
 - Migrate automatic package restore (#557)
+- Fix rendering of rotated 'math' text (#569, #448)
 
 ## [2014.1.546] - 2014-10-22
 ### Added

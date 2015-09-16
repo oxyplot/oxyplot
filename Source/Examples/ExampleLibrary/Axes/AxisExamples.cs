@@ -223,23 +223,23 @@ namespace ExampleLibrary
         {
             var plotModel1 = new PlotModel();
             plotModel1.Axes.Add(new LinearAxis
-                {
-                    EndPosition = 0,
-                    StartPosition = 1,
-                    Maximum = 1.5,
-                    Minimum = -1.5,
-                    Position = AxisPosition.Left
-                });
+            {
+                EndPosition = 0,
+                StartPosition = 1,
+                Maximum = 1.5,
+                Minimum = -1.5,
+                Position = AxisPosition.Left
+            });
 
             var x1 = new LinearAxis
-                {
-                    StartPosition = 0,
-                    EndPosition = 0.45,
-                    Maximum = 7,
-                    Minimum = 0,
-                    Position = AxisPosition.Bottom,
-                    Key = "x1"
-                };
+            {
+                StartPosition = 0,
+                EndPosition = 0.45,
+                Maximum = 7,
+                Minimum = 0,
+                Position = AxisPosition.Bottom,
+                Key = "x1"
+            };
             plotModel1.Axes.Add(x1);
 
             var x2 = new LinearAxis
@@ -826,87 +826,87 @@ namespace ExampleLibrary
             var linearAxis1 = new LinearAxis { Maximum = 1, Minimum = -1, Title = "PositionTier=0" };
             plotModel1.Axes.Add(linearAxis1);
             var linearAxis2 = new LinearAxis
-                {
-                    AxislineStyle = LineStyle.Solid,
-                    Maximum = 2,
-                    Minimum = -2,
-                    PositionTier = 1,
-                    Title = "PositionTier=1"
-                };
+            {
+                AxislineStyle = LineStyle.Solid,
+                Maximum = 2,
+                Minimum = -2,
+                PositionTier = 1,
+                Title = "PositionTier=1"
+            };
             plotModel1.Axes.Add(linearAxis2);
             var linearAxis3 = new LinearAxis
-                {
-                    Maximum = 1,
-                    Minimum = -1,
-                    Position = AxisPosition.Right,
-                    Title = "PositionTier=0"
-                };
+            {
+                Maximum = 1,
+                Minimum = -1,
+                Position = AxisPosition.Right,
+                Title = "PositionTier=0"
+            };
             plotModel1.Axes.Add(linearAxis3);
             var linearAxis4 = new LinearAxis
-                {
-                    AxislineStyle = LineStyle.Solid,
-                    Maximum = 2,
-                    Minimum = -2,
-                    Position = AxisPosition.Right,
-                    PositionTier = 1,
-                    Title = "PositionTier=1"
-                };
+            {
+                AxislineStyle = LineStyle.Solid,
+                Maximum = 2,
+                Minimum = -2,
+                Position = AxisPosition.Right,
+                PositionTier = 1,
+                Title = "PositionTier=1"
+            };
             plotModel1.Axes.Add(linearAxis4);
             var linearAxis5 = new LinearAxis
-                {
-                    Maximum = 1,
-                    Minimum = -1,
-                    Position = AxisPosition.Top,
-                    Title = "PositionTier=0"
-                };
+            {
+                Maximum = 1,
+                Minimum = -1,
+                Position = AxisPosition.Top,
+                Title = "PositionTier=0"
+            };
             plotModel1.Axes.Add(linearAxis5);
             var linearAxis6 = new LinearAxis
-                {
-                    AxislineStyle = LineStyle.Solid,
-                    Maximum = 2,
-                    Minimum = -2,
-                    Position = AxisPosition.Top,
-                    PositionTier = 1,
-                    Title = "PositionTier=1"
-                };
+            {
+                AxislineStyle = LineStyle.Solid,
+                Maximum = 2,
+                Minimum = -2,
+                Position = AxisPosition.Top,
+                PositionTier = 1,
+                Title = "PositionTier=1"
+            };
             plotModel1.Axes.Add(linearAxis6);
             var linearAxis7 = new LinearAxis
-                {
-                    AxislineStyle = LineStyle.Solid,
-                    Maximum = 10,
-                    Minimum = -10,
-                    Position = AxisPosition.Top,
-                    PositionTier = 2,
-                    Title = "PositionTier=2"
-                };
+            {
+                AxislineStyle = LineStyle.Solid,
+                Maximum = 10,
+                Minimum = -10,
+                Position = AxisPosition.Top,
+                PositionTier = 2,
+                Title = "PositionTier=2"
+            };
             plotModel1.Axes.Add(linearAxis7);
             var linearAxis8 = new LinearAxis
-                {
-                    Maximum = 1,
-                    Minimum = -1,
-                    Position = AxisPosition.Bottom,
-                    Title = "PositionTier=0"
-                };
+            {
+                Maximum = 1,
+                Minimum = -1,
+                Position = AxisPosition.Bottom,
+                Title = "PositionTier=0"
+            };
             plotModel1.Axes.Add(linearAxis8);
             var linearAxis9 = new LinearAxis
-                {
-                    AxislineStyle = LineStyle.Solid,
-                    Maximum = 2,
-                    Minimum = -2,
-                    Position = AxisPosition.Bottom,
-                    PositionTier = 1,
-                    Title = "PositionTier=1"
-                };
+            {
+                AxislineStyle = LineStyle.Solid,
+                Maximum = 2,
+                Minimum = -2,
+                Position = AxisPosition.Bottom,
+                PositionTier = 1,
+                Title = "PositionTier=1"
+            };
             plotModel1.Axes.Add(linearAxis9);
             var linearAxis10 = new LinearAxis
-                {
-                    AxislineStyle = LineStyle.Solid,
-                    Maximum = 10,
-                    Minimum = -10,
-                    Position = AxisPosition.Bottom,
-                    PositionTier = 2,
-                    Title = "PositionTier=2"
-                };
+            {
+                AxislineStyle = LineStyle.Solid,
+                Maximum = 10,
+                Minimum = -10,
+                Position = AxisPosition.Bottom,
+                PositionTier = 2,
+                Title = "PositionTier=2"
+            };
             plotModel1.Axes.Add(linearAxis10);
             return plotModel1;
         }
@@ -996,6 +996,15 @@ namespace ExampleLibrary
             var plotModel1 = new PlotModel { Title = "Tool tips" };
             plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Left axis", ToolTip = "Tool tip for the left axis" });
             plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "Bottom axis", ToolTip = "Tool tip for the bottom axis" });
+            return plotModel1;
+        }
+
+        [Example("Sub- and superscript in axis titles")]
+        public static PlotModel SubSuperscriptInAxisTitles()
+        {
+            var plotModel1 = new PlotModel { Title = "Sub- and superscript in axis titles" };
+            plotModel1.Axes.Add(new LinearAxis { Title = "Title with^{super}_{sub}script" });
+            plotModel1.Axes.Add(new LinearAxis { Title = "Title with^{super}_{sub}script", Position = AxisPosition.Bottom });
             return plotModel1;
         }
 
