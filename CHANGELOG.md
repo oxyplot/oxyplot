@@ -94,6 +94,7 @@ All notable changes to this project will be documented in this file.
 - Fix CodeGenerator exception for types without parameterless ctor (#573)
 - Migrate automatic package restore (#557)
 - Fix rendering of rotated 'math' text (#569, #448)
+- Export demo (WPF) (#568)
 
 ## [2014.1.546] - 2014-10-22
 ### Added

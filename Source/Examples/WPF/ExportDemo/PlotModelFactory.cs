@@ -111,7 +111,6 @@ namespace ExportDemo
                     break;
             }
 
-            model.Background = OxyColors.Beige;
             return model;
         }
 
