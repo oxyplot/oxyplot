@@ -94,7 +94,6 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
-  <Import Project="$(ProjectDir)\..\StyleCop.targets" Condition=" '$(OS)' == 'Windows_NT' " />
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
@@ -110,3 +109,4 @@
   </Target>
   -->
 </Project>
+
