@@ -95,6 +95,7 @@ All notable changes to this project will be documented in this file.
 - Migrate automatic package restore (#557)
 - Fix rendering of rotated 'math' text (#569, #448)
 - Export demo (WPF) (#568)
+- Fixing a double comparison issue causing infinite loop (#587)
 
 ## [2014.1.546] - 2014-10-22
 ### Added

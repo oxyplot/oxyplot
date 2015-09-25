@@ -325,7 +325,7 @@ namespace OxyPlot.Axes
                 }
 
                 double nextInterval = goodIntervals.FirstOrDefault(i => i > interval);
-                if (Math.Abs(nextInterval) < double.Epsilon)
+                if (Math.Abs(nextInterval) <= double.Epsilon)
                 {
                     nextInterval = interval * 2;
                 }
