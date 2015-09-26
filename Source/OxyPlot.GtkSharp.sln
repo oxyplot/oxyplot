@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.GtkSharp", "OxyPlot.GtkSharp\OxyPlot.GtkSharp.csproj", "{89D008D7-AD33-4AB6-B61A-064C48DA6699}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot", "OxyPlot\OxyPlot.csproj", "{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}"
@@ -15,41 +17,60 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GtkSharpDemo", "Examples\Gt
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Tests", "OxyPlot.Tests\OxyPlot.Tests.csproj", "{E6218B88-69F5-4E3F-9ABC-93AB82FD77AD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.GtkSharp3", "OxyPlot.GtkSharp\OxyPlot.GtkSharp3.csproj", "{8B2DC377-4689-4252-AA08-3ACD06A045F3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GtkSharp3Demo", "Examples\GtkSharp\GtkSharpDemo\GtkSharp3Demo.csproj", "{480A7E68-5F4D-48C8-A8BD-E2DC1BA362E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleBrowserGtk3", "Examples\GtkSharp\ExampleBrowser\ExampleBrowserGtk3.csproj", "{BA5651BE-8B77-4107-8DF7-FFB73C850E18}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{04C4F5CF-4B8A-4D27-9562-462581C1D323}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{04C4F5CF-4B8A-4D27-9562-462581C1D323}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{04C4F5CF-4B8A-4D27-9562-462581C1D323}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{04C4F5CF-4B8A-4D27-9562-462581C1D323}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7CECF810-9B40-46A9-9B56-5A719CFDCAD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7CECF810-9B40-46A9-9B56-5A719CFDCAD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7CECF810-9B40-46A9-9B56-5A719CFDCAD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7CECF810-9B40-46A9-9B56-5A719CFDCAD0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{89D008D7-AD33-4AB6-B61A-064C48DA6699}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{89D008D7-AD33-4AB6-B61A-064C48DA6699}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89D008D7-AD33-4AB6-B61A-064C48DA6699}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{89D008D7-AD33-4AB6-B61A-064C48DA6699}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E6218B88-69F5-4E3F-9ABC-93AB82FD77AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E6218B88-69F5-4E3F-9ABC-93AB82FD77AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E6218B88-69F5-4E3F-9ABC-93AB82FD77AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E6218B88-69F5-4E3F-9ABC-93AB82FD77AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CECF810-9B40-46A9-9B56-5A719CFDCAD0}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{7CECF810-9B40-46A9-9B56-5A719CFDCAD0}.Debug|Any CPU.Build.0 = Debug|x86
+		{7CECF810-9B40-46A9-9B56-5A719CFDCAD0}.Release|Any CPU.ActiveCfg = Release|x86
 		{FACB89E5-53A5-4748-9F5B-E0714EBB37B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FACB89E5-53A5-4748-9F5B-E0714EBB37B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FACB89E5-53A5-4748-9F5B-E0714EBB37B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FACB89E5-53A5-4748-9F5B-E0714EBB37B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04C4F5CF-4B8A-4D27-9562-462581C1D323}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{04C4F5CF-4B8A-4D27-9562-462581C1D323}.Debug|Any CPU.Build.0 = Debug|x86
+		{04C4F5CF-4B8A-4D27-9562-462581C1D323}.Release|Any CPU.ActiveCfg = Release|x86
+		{E6218B88-69F5-4E3F-9ABC-93AB82FD77AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6218B88-69F5-4E3F-9ABC-93AB82FD77AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6218B88-69F5-4E3F-9ABC-93AB82FD77AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6218B88-69F5-4E3F-9ABC-93AB82FD77AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B2DC377-4689-4252-AA08-3ACD06A045F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B2DC377-4689-4252-AA08-3ACD06A045F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B2DC377-4689-4252-AA08-3ACD06A045F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B2DC377-4689-4252-AA08-3ACD06A045F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{480A7E68-5F4D-48C8-A8BD-E2DC1BA362E6}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{480A7E68-5F4D-48C8-A8BD-E2DC1BA362E6}.Debug|Any CPU.Build.0 = Debug|x86
+		{480A7E68-5F4D-48C8-A8BD-E2DC1BA362E6}.Release|Any CPU.ActiveCfg = Release|x86
+		{BA5651BE-8B77-4107-8DF7-FFB73C850E18}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{BA5651BE-8B77-4107-8DF7-FFB73C850E18}.Debug|Any CPU.Build.0 = Debug|x86
+		{BA5651BE-8B77-4107-8DF7-FFB73C850E18}.Release|Any CPU.ActiveCfg = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{7CECF810-9B40-46A9-9B56-5A719CFDCAD0} = {47133BFC-5147-43B7-94F9-AB12B006C8AC}
 		{FACB89E5-53A5-4748-9F5B-E0714EBB37B2} = {47133BFC-5147-43B7-94F9-AB12B006C8AC}
 		{04C4F5CF-4B8A-4D27-9562-462581C1D323} = {47133BFC-5147-43B7-94F9-AB12B006C8AC}
+		{480A7E68-5F4D-48C8-A8BD-E2DC1BA362E6} = {47133BFC-5147-43B7-94F9-AB12B006C8AC}
+		{BA5651BE-8B77-4107-8DF7-FFB73C850E18} = {47133BFC-5147-43B7-94F9-AB12B006C8AC}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0
