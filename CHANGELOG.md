@@ -46,6 +46,7 @@ All notable changes to this project will be documented in this file.
 - Move TileMapAnnotation class to example library (#567)
 
 ### Removed
+- StyleCop tasks (#556)
 - OxyPlot.Metro project (superseded by OxyPlot.WindowsUniversal) (#241)
 - PlotModel.ToSvg method. Use the SvgExporter instead. (#347)
 - Constructors with parameters. Use default constructors instead. (#347)

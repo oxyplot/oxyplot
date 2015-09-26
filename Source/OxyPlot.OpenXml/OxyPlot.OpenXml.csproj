@@ -62,5 +62,5 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(ProjectDir)\..\StyleCop.targets" Condition=" '$(OS)' == 'Windows_NT' " />
 </Project>
+
