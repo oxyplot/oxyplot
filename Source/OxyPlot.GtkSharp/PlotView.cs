@@ -265,32 +265,6 @@ namespace OxyPlot.GtkSharp
         }
 
         /// <summary>
-        /// Sets the cursor type.
-        /// </summary>
-        /// <param name="cursorType">The cursor type.</param>
-        public void SetCursorType(OxyPlot.CursorType cursorType)
-        {
-            switch (cursorType)
-            {
-                case OxyPlot.CursorType.Pan:
-                    this.GdkWindow.Cursor = this.PanCursor;
-                    break;
-                case OxyPlot.CursorType.ZoomRectangle:
-                    this.GdkWindow.Cursor = this.ZoomRectangleCursor;
-                    break;
-                case OxyPlot.CursorType.ZoomHorizontal:
-                    this.GdkWindow.Cursor = this.ZoomHorizontalCursor;
-                    break;
-                case OxyPlot.CursorType.ZoomVertical:
-                    this.GdkWindow.Cursor = this.ZoomVerticalCursor;
-                    break;
-                default:
-                    this.GdkWindow.Cursor = new Cursor(CursorType.Arrow);
-                    break;
-            }
-        }
-
-        /// <summary>
         /// Shows the tracker.
         /// </summary>
         /// <param name="data">The data.</param>
