@@ -1,7 +1,7 @@
 OxyPlot is a cross-platform plotting library for .NET
 
 - [Web page](http://oxyplot.org)  
-- [Documentation](http://oxyplot.org/documentation)
+- [Documentation](http://docs.oxyplot.org/)
 - [Announcements](http://oxyplot.org/announcements) / [atom](http://oxyplot.org/atom.xml)
 - [Discussion forum](http://discussion.oxyplot.org)
 - [Source repository](http://github.com/oxyplot/oxyplot)
@@ -41,27 +41,28 @@ You can find examples in the `/Source/Examples` folder in the code repository.
 
 #### NuGet packages
 
-![OxyPlot.Core](https://img.shields.io/nuget/vpre/OxyPlot.Core.svg?label=OxyPlot.Core)  
-![OxyPlot.Wpf](https://img.shields.io/nuget/vpre/OxyPlot.Wpf.svg?label=OxyPlot.Wpf)  
-![OxyPlot.WindowsForms](https://img.shields.io/nuget/vpre/OxyPlot.WindowsForms.svg?label=OxyPlot.WindowsForms)  
-![OxyPlot.GtkSharp](https://img.shields.io/nuget/vpre/OxyPlot.GtkSharp.svg?label=OxyPlot.GtkSharp)  
-![OxyPlot.Silverlight](https://img.shields.io/nuget/vpre/OxyPlot.Silverlight.svg?label=OxyPlot.Silverlight)  
-![OxyPlot.WP8](https://img.shields.io/nuget/vpre/OxyPlot.WP8.svg?label=OxyPlot.WP8)  
-![OxyPlot.Xamarin.Android](https://img.shields.io/nuget/vpre/OxyPlot.Xamarin.Android.svg?label=OxyPlot.Xamarin.Android)  
-![OxyPlot.Xamarin.iOS](https://img.shields.io/nuget/vpre/OxyPlot.Xamarin.iOS.svg?label=OxyPlot.Xamarin.iOS)  
-![OxyPlot.Xamarin.Mac](https://img.shields.io/nuget/vpre/OxyPlot.Xamarin.Mac.svg?label=OxyPlot.Xamarin.Mac)  
-![OxyPlot.Xamarin.Forms](https://img.shields.io/nuget/vpre/OxyPlot.Xamarin.Forms.svg?label=OxyPlot.Xamarin.Forms)  
-![OxyPlot.Xwt](https://img.shields.io/nuget/vpre/OxyPlot.Xwt.svg?label=OxyPlot.Xwt)  
-![OxyPlot.OpenXML](https://img.shields.io/nuget/vpre/OxyPlot.OpenXML.svg?label=OxyPlot.OpenXML)  
-![OxyPlot.Pdf](https://img.shields.io/nuget/vpre/OxyPlot.Pdf.svg?label=OxyPlot.Pdf)  
+Package | Current version | Targets
+--------|---------|---------------
+OxyPlot.Core | ![OxyPlot.Core](https://img.shields.io/nuget/vpre/OxyPlot.Core.svg) | Portable class library
+OxyPlot.Wpf | ![OxyPlot.Wpf](https://img.shields.io/nuget/vpre/OxyPlot.Wpf.svg) | WPF (NET40, NET45)  
+OxyPlot.WindowsForms | ![OxyPlot.WindowsForms](https://img.shields.io/nuget/vpre/OxyPlot.WindowsForms.svg)  | Windows Forms (NET40, NET45)
+OxyPlot.Windows | ![OxyPlot.Windows](https://img.shields.io/nuget/vpre/OxyPlot.Windows.svg) | Windows 8.1 and Windows Phone 8.1
+OxyPlot.WP8 | ![OxyPlot.WP8](https://img.shields.io/nuget/vpre/OxyPlot.WP8.svg) | Windows Phone Silverlight
+OxyPlot.Silverlight | ![OxyPlot.Silverlight](https://img.shields.io/nuget/vpre/OxyPlot.Silverlight.svg) | Silverlight 5 
+OxyPlot.GtkSharp | ![OxyPlot.GtkSharp](https://img.shields.io/nuget/vpre/OxyPlot.GtkSharp.svg) | GTK# 2 and 3 (NET40, NET45)
+OxyPlot.Xamarin.Android | ![OxyPlot.Xamarin.Android](https://img.shields.io/nuget/vpre/OxyPlot.Xamarin.Android.svg) | MonoAndroid
+OxyPlot.Xamarin.iOS | ![OxyPlot.Xamarin.iOS](https://img.shields.io/nuget/vpre/OxyPlot.Xamarin.iOS.svg) | MonoTouch and iOS10
+OxyPlot.Xamarin.Mac | ![OxyPlot.Xamarin.Mac](https://img.shields.io/nuget/vpre/OxyPlot.Xamarin.Mac.svg) | Mac20
+OxyPlot.Xamarin.Forms | ![OxyPlot.Xamarin.Forms](https://img.shields.io/nuget/vpre/OxyPlot.Xamarin.Forms.svg) | MonoTouch, iOS10, MonoAndroid, WP8
+OxyPlot.Xwt | ![OxyPlot.Xwt](https://img.shields.io/nuget/vpre/OxyPlot.Xwt.svg) | NET40, NET45
+OxyPlot.OpenXML | ![OxyPlot.OpenXML](https://img.shields.io/nuget/vpre/OxyPlot.OpenXML.svg) |  NET40, NET45
+OxyPlot.Pdf | ![OxyPlot.Pdf](https://img.shields.io/nuget/vpre/OxyPlot.Pdf.svg) |  PdfSharp (NET40, NET45, SL5)
 
+Obsolete packages:  
 ![OxyPlot.WindowsUniversal](https://img.shields.io/nuget/vpre/OxyPlot.WindowsUniversal.svg?label=OxyPlot.WindowsUniversal)  
 ![OxyPlot.Mobile](https://img.shields.io/nuget/vpre/OxyPlot.Mobile.svg?label=OxyPlot.Mobile)  
 ![OxyPlot](https://img.shields.io/nuget/vpre/OxyPlot.svg?label=OxyPlot)  
 
 #### Contribute
 
-See [the documentation](http://oxyplot.org/documentation/contributions) for information about how to contribute!
-
-[![Pull request status](http://www.issuestats.com/github/oxyplot/oxyplot/badge/pr?style=flat)](http://www.issuestats.com/github/oxyplot/oxyplot/)
-[![Issues closed status](http://www.issuestats.com/github/oxyplot/oxyplot/badge/issue?style=flat)](http://www.issuestats.com/github/oxyplot/oxyplot/)
+See [Contributing](CONTRIBUTING.md) and [the documentation](http://docs.oxyplot.org/en/latest/contribute/contributions.html) for information about how to contribute!
