@@ -6,25 +6,22 @@ Have a look at the following tips to get started quickly.
 
 ## Creating a pull request
 
-Contributions to the project are greatly appreciated. But please read the [requirements](http://oxyplot.org/documentation/contributions) before submitting a pull request.
-
-
+Contributions to the project are greatly appreciated. But please read the [How to contribute](http://docs.oxyplot.org/en/latest/contribute/contributions.html) section in the documentation before submitting a pull request.
 
 ## Reporting issues
 
 Please use the [discussion forums](http://discussion.oxyplot.org/) if you are unsure whether it is a bug in the library or a problem in your code.
 When you are sure, please add defects in the issue tracker.
-It is very helpful to get the code (use CTRL+ALT+C in the plot control) and report (CTRL+ALT+R) of the bug plot
+It is very helpful to get the code (use CTRL+ALT+C in the plot control) and report (CTRL+ALT+R) of the bug plot.
 You could use services like http://snipt.org or https://gist.github.com to share code snippets.
 
 ### A report should include
+
 - used platform and tools version
 - used OxyPlot version
 - version of dependencies (e.g. Xamarin.Forms and Android SDK)
 - description of the issue
 - sample code to reproduce the issue
-
-
 
 ## Common rules
 

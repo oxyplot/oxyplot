@@ -44,8 +44,10 @@ All notable changes to this project will be documented in this file.
 - Extracted CreateReport() and CreateTextReport() from PlotModel (#517)
 - Renamed GetLastUpdateException to GetLastPlotException and added the ability to see render exceptions(#543)
 - Move TileMapAnnotation class to example library (#567)
+- Change to semantic versioning (#595)
 
 ### Removed
+- StyleCop tasks (#556)
 - OxyPlot.Metro project (superseded by OxyPlot.WindowsUniversal) (#241)
 - PlotModel.ToSvg method. Use the SvgExporter instead. (#347)
 - Constructors with parameters. Use default constructors instead. (#347)

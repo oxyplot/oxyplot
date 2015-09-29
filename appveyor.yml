@@ -1,111 +1,47 @@
-- # master branch only
-  branches:
-    only:
-      - master
-  version: 2015.1.{build}
-  environment:
-    nuget_api_key:
-      secure: kM3Kse+ivuuE5RVoe6dPdw+aguWx56K2YeXujGa9tMPQTms3lv7QxNpTLFMALYNa
-    ftp_user:
-      secure: Q/t4tRGEtslJG0q4i9QeMw==
-    ftp_password:
-      secure: 8Zwx5dScSahnbraTsKTP3g==
-  install:
-    - cinst stylecop -y
-    - cinst LynxToolkit -y
-    - cinst gitlink -Pre -y
-    - if not exist gtk-sharp-2.12.26.msi appveyor DownloadFile http://download.xamarin.com/GTKforWindows/Windows/gtk-sharp-2.12.26.msi
-    - msiexec /i gtk-sharp-2.12.26.msi /qn /norestart
-    - if not exist gtk-sharp-2.99.3.msi appveyor DownloadFile https://download.gnome.org/binaries/win32/gtk-sharp/2.99/gtk-sharp-2.99.3.msi
-    - msiexec /i gtk-sharp-2.99.3.msi /qn /norestart
-  cache:
-    - gtk-sharp-2.12.26.msi
-    - gtk-sharp-2.99.3.msi
-  platform: Any CPU
-  configuration: Release
-  before_build:
-    - cmd: UpdateVersionNumbers /Version=%APPVEYOR_BUILD_VERSION% /Dependency=OxyPlot.Core /Dependency=OxyPlot.Wpf /Dependency=OxyPlot.WindowsForms /Dependency=OxyPlot.WindowsUniversal /Dependency=OxyPlot.Silverlight /Dependency=OxyPlot.WP8 /ExtractReleaseNotes=CHANGELOG.md /Directory=Source
-    - cmd: NuGet restore Source/OxyPlot.AppVeyor.sln
-  build:
-    project: Source/OxyPlot.AppVeyor.sln
-    verbosity: minimal
-  after_build:
-    cmd: gitlink c:\projects\oxyplot -u https://github.com/oxyplot/oxyplot -b master -f Source/OxyPlot.AppVeyor.sln -ignore Xwt
-  artifacts:
-    - path: Output
-      name: OxyPlot-$(APPVEYOR_BUILD_VERSION)
-      type: zip
-  deploy_script:
-    - cmd: mkdir Packages
-    - cmd: NuGet pack Source\OxyPlot.nuspec -OutputDirectory Packages
-    - cmd: NuGet pack Source\OxyPlot\OxyPlot.Core.nuspec -OutputDirectory Packages
-    - cmd: NuGet pack Source\OxyPlot.Wpf\OxyPlot.Wpf.nuspec -OutputDirectory Packages
-    - cmd: NuGet pack Source\OxyPlot.Windows\OxyPlot.Windows.nuspec -OutputDirectory Packages
-    - cmd: NuGet pack Source\OxyPlot.WindowsForms\OxyPlot.WindowsForms.nuspec -OutputDirectory Packages
-    - cmd: NuGet pack Source\OxyPlot.WindowsUniversal\OxyPlot.WindowsUniversal.nuspec -OutputDirectory Packages
-    - cmd: NuGet pack Source\OxyPlot.WP8\OxyPlot.WP8.nuspec -OutputDirectory Packages
-    - cmd: NuGet pack Source\OxyPlot.Silverlight\OxyPlot.Silverlight.nuspec -OutputDirectory Packages
-    - cmd: NuGet pack Source\OxyPlot.OpenXml\OxyPlot.OpenXml.nuspec -OutputDirectory Packages
-    - cmd: NuGet pack Source\OxyPlot.Pdf\OxyPlot.Pdf.nuspec -OutputDirectory Packages
-    - cmd: NuGet pack Source\OxyPlot.GtkSharp\OxyPlot.GtkSharp.nuspec -OutputDirectory Packages
-    - cmd: NuGet pack Source\OxyPlot.GtkSharp\OxyPlot.GtkSharp3.nuspec -OutputDirectory Packages
-    - cmd: NuGet pack Source\OxyPlot.Xwt\OxyPlot.Xwt.nuspec -OutputDirectory Packages
-    - cmd: for %%G in (Packages\*.nupkg) do NuGet push %%G %nuget_api_key%
-    - cmd: FtpUpload ftp.oxyplot.org %ftp_user% %ftp_password% Output\SL5\Examples\Silverlight\ExampleBrowser\ExampleBrowser.xap /ExampleBrowser/ExampleBrowser.xap
-
-- # develop branch only
-  branches:
-    only:
-      - develop
-  version: 2015.1.{build}-alpha
-  environment:
-    version: 2015.1.%APPVEYOR_BUILD_NUMBER%
-    nuget_api_key:
-      secure: kM3Kse+ivuuE5RVoe6dPdw+aguWx56K2YeXujGa9tMPQTms3lv7QxNpTLFMALYNa
-    ftp_user:
-      secure: Q/t4tRGEtslJG0q4i9QeMw==
-    ftp_password:
-      secure: 8Zwx5dScSahnbraTsKTP3g==
-  install:
-    - cinst stylecop -y
-    - cinst LynxToolkit -y
-    - cinst gitlink -Pre -y
-    - if not exist gtk-sharp-2.12.26.msi appveyor DownloadFile http://download.xamarin.com/GTKforWindows/Windows/gtk-sharp-2.12.26.msi
-    - msiexec /i gtk-sharp-2.12.26.msi /qn /norestart
-    - if not exist gtk-sharp-2.99.3.msi appveyor DownloadFile https://download.gnome.org/binaries/win32/gtk-sharp/2.99/gtk-sharp-2.99.3.msi
-    - msiexec /i gtk-sharp-2.99.3.msi /qn /norestart
-  cache:
-    - gtk-sharp-2.12.26.msi
-    - gtk-sharp-2.99.3.msi
-  platform: Any CPU
-  configuration: Release
-  before_build:
-    - cmd: git submodule update --init --recursive
-    - cmd: UpdateVersionNumbers /Version=%version% /PreRelease=alpha /Dependency=OxyPlot.Core /Dependency=OxyPlot.Wpf /Dependency=OxyPlot.WindowsForms /Dependency=OxyPlot.WindowsUniversal /Dependency=OxyPlot.Silverlight /Dependency=OxyPlot.WP8 /ExtractReleaseNotes=CHANGELOG.md /Directory=Source
-    - cmd: NuGet restore Source/OxyPlot.AppVeyor.sln
-  build:
-    project: Source/OxyPlot.AppVeyor.sln
-    verbosity: normal
-  after_build:
-    cmd: gitlink c:\projects\oxyplot -u https://github.com/oxyplot/oxyplot -b develop -f Source/OxyPlot.AppVeyor.sln -ignore Xwt
-  artifacts:
-    - path: Output
-      name: OxyPlot-$(APPVEYOR_BUILD_VERSION)
-      type: zip
-  deploy_script:
-    - cmd: mkdir Packages
-    - cmd: NuGet pack Source\OxyPlot.nuspec -OutputDirectory Packages
-    - cmd: NuGet pack Source\OxyPlot\OxyPlot.Core.nuspec -OutputDirectory Packages
-    - cmd: NuGet pack Source\OxyPlot.Wpf\OxyPlot.Wpf.nuspec -OutputDirectory Packages
-    - cmd: NuGet pack Source\OxyPlot.Windows\OxyPlot.Windows.nuspec -OutputDirectory Packages
-    - cmd: NuGet pack Source\OxyPlot.WindowsForms\OxyPlot.WindowsForms.nuspec -OutputDirectory Packages
-    - cmd: NuGet pack Source\OxyPlot.WindowsUniversal\OxyPlot.WindowsUniversal.nuspec -OutputDirectory Packages
-    - cmd: NuGet pack Source\OxyPlot.WP8\OxyPlot.WP8.nuspec -OutputDirectory Packages
-    - cmd: NuGet pack Source\OxyPlot.Silverlight\OxyPlot.Silverlight.nuspec -OutputDirectory Packages
-    - cmd: NuGet pack Source\OxyPlot.OpenXml\OxyPlot.OpenXml.nuspec -OutputDirectory Packages
-    - cmd: NuGet pack Source\OxyPlot.Pdf\OxyPlot.Pdf.nuspec -OutputDirectory Packages
-    - cmd: NuGet pack Source\OxyPlot.GtkSharp\OxyPlot.GtkSharp.nuspec -OutputDirectory Packages
-    - cmd: NuGet pack Source\OxyPlot.GtkSharp\OxyPlot.GtkSharp3.nuspec -OutputDirectory Packages
-    - cmd: NuGet pack Source\OxyPlot.Xwt\OxyPlot.Xwt.nuspec -OutputDirectory Packages
-    - cmd: for %%G in (Packages\*.nupkg) do NuGet push %%G %nuget_api_key%
-    - cmd: FtpUpload ftp.oxyplot.org %ftp_user% %ftp_password% Output\SL5\Examples\Silverlight\ExampleBrowser\ExampleBrowser.xap /ExampleBrowser/ExampleBrowser.xap
+install:
+  - cinst gitversion.portable -pre -y
+  - cinst gitlink -Pre -y
+  - if not exist gtk-sharp-2.12.26.msi appveyor DownloadFile http://download.xamarin.com/GTKforWindows/Windows/gtk-sharp-2.12.26.msi
+  - msiexec /i gtk-sharp-2.12.26.msi /qn /norestart
+  - if not exist gtk-sharp-2.99.3.msi appveyor DownloadFile https://download.gnome.org/binaries/win32/gtk-sharp/2.99/gtk-sharp-2.99.3.msi
+  - msiexec /i gtk-sharp-2.99.3.msi /qn /norestart
+cache:
+  - gtk-sharp-2.12.26.msi
+  - gtk-sharp-2.99.3.msi
+platform: Any CPU
+configuration: Release
+before_build:
+  - cmd: git submodule update --init --recursive
+  - cmd: NuGet restore Source/OxyPlot.AppVeyor.sln
+  - ps: gitversion /l console /output buildserver /updateAssemblyInfo
+build:
+  project: Source/OxyPlot.AppVeyor.sln
+  verbosity: minimal
+after_build:
+  - cmd: gitlink c:\projects\oxyplot -u https://github.com/oxyplot/oxyplot -f Source/OxyPlot.AppVeyor.sln -ignore Xwt
+  - cmd: NuGet pack Source\OxyPlot.nuspec -version "%GitVersion_NuGetVersion%"
+  - cmd: NuGet pack Source\OxyPlot\OxyPlot.Core.nuspec -version "%GitVersion_NuGetVersion%"
+  - cmd: NuGet pack Source\OxyPlot.Wpf\OxyPlot.Wpf.nuspec -version "%GitVersion_NuGetVersion%"
+  - cmd: NuGet pack Source\OxyPlot.Windows\OxyPlot.Windows.nuspec -version "%GitVersion_NuGetVersion%"
+  - cmd: NuGet pack Source\OxyPlot.WindowsForms\OxyPlot.WindowsForms.nuspec -version "%GitVersion_NuGetVersion%"
+  - cmd: NuGet pack Source\OxyPlot.WindowsUniversal\OxyPlot.WindowsUniversal.nuspec -version "%GitVersion_NuGetVersion%"
+  - cmd: NuGet pack Source\OxyPlot.WP8\OxyPlot.WP8.nuspec -version "%GitVersion_NuGetVersion%"
+  - cmd: NuGet pack Source\OxyPlot.Silverlight\OxyPlot.Silverlight.nuspec -version "%GitVersion_NuGetVersion%"
+  - cmd: NuGet pack Source\OxyPlot.OpenXml\OxyPlot.OpenXml.nuspec -version "%GitVersion_NuGetVersion%"
+  - cmd: NuGet pack Source\OxyPlot.Pdf\OxyPlot.Pdf.nuspec -version "%GitVersion_NuGetVersion%"
+  - cmd: NuGet pack Source\OxyPlot.GtkSharp\OxyPlot.GtkSharp.nuspec -version "%GitVersion_NuGetVersion%"
+  - cmd: NuGet pack Source\OxyPlot.GtkSharp\OxyPlot.GtkSharp3.nuspec -version "%GitVersion_NuGetVersion%"
+  - cmd: NuGet pack Source\OxyPlot.Xwt\OxyPlot.Xwt.nuspec -version "%GitVersion_NuGetVersion%"
+artifacts:
+  - path: Output
+    name: OxyPlot-$(GitVersion_SemVer)
+    type: zip
+  - path: '*.nupkg'
+deploy:
+  provider: NuGet
+  server:                  # remove to push to NuGet.org
+  api_key:
+    secure: kM3Kse+ivuuE5RVoe6dPdw+aguWx56K2YeXujGa9tMPQTms3lv7QxNpTLFMALYNa
+  skip_symbols: false
+  symbol_server:           # remove to push symbols to SymbolSource.org
+  artifact: /.*\.nupkg/  
