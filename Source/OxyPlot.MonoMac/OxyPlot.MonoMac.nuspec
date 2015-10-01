@@ -16,8 +16,8 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="..\..\Output\NET40\OxyPlot.MonoMac.???" target="lib\net40" />
-    <file src="..\..\Output\NET45\OxyPlot.MonoMac.???" target="lib\net45" />
+    <file src="../../Output/MonoMac/OxyPlot.MonoMac.???" target="lib\net40" />
+    <file src="../../Output/MonoMac/OxyPlot.MonoMac.???" target="lib\net45" />
 
 
     <file src="../../README.md" />
