@@ -33,7 +33,7 @@ All notable changes to this project will be documented in this file.
 - Current CandleStickSeries renamed to OldCandleStickSeries, replaced by a faster implementation (#369)
 - Fixed axis min/max calc and axis assignment for CandleStick + VolumeSeries (#389)
 - Invalidate plot when ItemsSource contents change (INotifyCollectionChanged) on WPF only (#406)
-- Xamarin.Forms references updated to 1.4.2 (#293,#439)
+- Xamarin.Forms references updated to 1.5.0.6447 (#293,#439)
 - Change OxyPlot.Xamarin.Forms.Platform.Android target to Android level 15 (#439)
 - Changed OxyPlot.Xamarin.Forms to portable Profile259 (#439)
 - PlotController should not intercept input per default (#446)
