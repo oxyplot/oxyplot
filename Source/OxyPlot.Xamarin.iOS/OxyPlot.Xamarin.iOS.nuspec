@@ -3,7 +3,7 @@
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <id>OxyPlot.Xamarin.iOS</id>
     <title>OxyPlot for Xamarin.iOS</title>
-    <version>0.0.0</version>
+    <version>$version$</version>
     <authors>Oystein Bjorke</authors>
     <description>OxyPlot is a plotting library for .NET. This package targets Xamarin.iOS apps (both classic and unified APIs).</description>
     <releaseNotes></releaseNotes>
@@ -13,7 +13,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <tags>xamarin iOS plotting plot charting chart</tags>
     <dependencies>
-      <dependency id="OxyPlot.Core" version="[0.0.0]"/>
+      <dependency id="OxyPlot.Core" version="[$version$]"/>
     </dependencies>
   </metadata>
   <files>

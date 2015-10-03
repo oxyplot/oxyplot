@@ -3,7 +3,7 @@
   <metadata>
     <id>OxyPlot.Core</id>
     <title>OxyPlot core library (PCL)</title>
-    <version>0.0.0</version>
+    <version>$version$</version>
     <authors>Oystein Bjorke</authors>
     <description>OxyPlot is a plotting library for .NET. This is the portable core library that is referenced by the platform-specific OxyPlot packages.</description>
     <releaseNotes></releaseNotes>
