@@ -45,6 +45,7 @@ All notable changes to this project will be documented in this file.
 - Renamed GetLastUpdateException to GetLastPlotException and added the ability to see render exceptions(#543)
 - Move TileMapAnnotation class to example library (#567)
 - Change to semantic versioning (#595)
+- Change GTKSharp3 project to x86 (#599)
 
 ### Removed
 - StyleCop tasks (#556)
