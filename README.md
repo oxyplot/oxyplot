@@ -60,4 +60,4 @@ Package | Current version | Targets
 
 #### Contribute
 
-See [Contributing](CONTRIBUTING.md) and [the documentation](http://docs.oxyplot.org/en/latest/contribute/contributions.html) for information about how to contribute!
+See [Contributing](CONTRIBUTING.md) for information about how to contribute!
