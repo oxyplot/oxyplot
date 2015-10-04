@@ -43,25 +43,20 @@ You can find examples in the `/Source/Examples` folder in the code repository.
 
 Package | Current version | Targets
 --------|---------|---------------
-OxyPlot.Core | ![OxyPlot.Core](https://img.shields.io/nuget/vpre/OxyPlot.Core.svg) | Portable class library
-OxyPlot.Wpf | ![OxyPlot.Wpf](https://img.shields.io/nuget/vpre/OxyPlot.Wpf.svg) | WPF (NET40, NET45)  
-OxyPlot.WindowsForms | ![OxyPlot.WindowsForms](https://img.shields.io/nuget/vpre/OxyPlot.WindowsForms.svg)  | Windows Forms (NET40, NET45)
-OxyPlot.Windows | ![OxyPlot.Windows](https://img.shields.io/nuget/vpre/OxyPlot.Windows.svg) | Windows 8.1 and Windows Phone 8.1
-OxyPlot.WP8 | ![OxyPlot.WP8](https://img.shields.io/nuget/vpre/OxyPlot.WP8.svg) | Windows Phone Silverlight
-OxyPlot.Silverlight | ![OxyPlot.Silverlight](https://img.shields.io/nuget/vpre/OxyPlot.Silverlight.svg) | Silverlight 5 
-OxyPlot.GtkSharp | ![OxyPlot.GtkSharp](https://img.shields.io/nuget/vpre/OxyPlot.GtkSharp.svg) | GTK# 2 and 3 (NET40, NET45)
-OxyPlot.Xamarin.Android | ![OxyPlot.Xamarin.Android](https://img.shields.io/nuget/vpre/OxyPlot.Xamarin.Android.svg) | MonoAndroid
-OxyPlot.Xamarin.iOS | ![OxyPlot.Xamarin.iOS](https://img.shields.io/nuget/vpre/OxyPlot.Xamarin.iOS.svg) | MonoTouch and iOS10
-OxyPlot.Xamarin.Mac | ![OxyPlot.Xamarin.Mac](https://img.shields.io/nuget/vpre/OxyPlot.Xamarin.Mac.svg) | Mac20
-OxyPlot.Xamarin.Forms | ![OxyPlot.Xamarin.Forms](https://img.shields.io/nuget/vpre/OxyPlot.Xamarin.Forms.svg) | MonoTouch, iOS10, MonoAndroid, WP8
-OxyPlot.Xwt | ![OxyPlot.Xwt](https://img.shields.io/nuget/vpre/OxyPlot.Xwt.svg) | NET40, NET45
-OxyPlot.OpenXML | ![OxyPlot.OpenXML](https://img.shields.io/nuget/vpre/OxyPlot.OpenXML.svg) |  NET40, NET45
-OxyPlot.Pdf | ![OxyPlot.Pdf](https://img.shields.io/nuget/vpre/OxyPlot.Pdf.svg) |  PdfSharp (NET40, NET45, SL5)
-
-Obsolete packages:  
-![OxyPlot.WindowsUniversal](https://img.shields.io/nuget/vpre/OxyPlot.WindowsUniversal.svg?label=OxyPlot.WindowsUniversal)  
-![OxyPlot.Mobile](https://img.shields.io/nuget/vpre/OxyPlot.Mobile.svg?label=OxyPlot.Mobile)  
-![OxyPlot](https://img.shields.io/nuget/vpre/OxyPlot.svg?label=OxyPlot)  
+[OxyPlot.Core](https://www.nuget.org/packages/OxyPlot.Core) | ![OxyPlot.Core](https://img.shields.io/nuget/vpre/OxyPlot.Core.svg) | Portable class library
+[OxyPlot.Wpf](https://www.nuget.org/packages/OxyPlot.Wpf) | ![OxyPlot.Wpf](https://img.shields.io/nuget/vpre/OxyPlot.Wpf.svg) | WPF (NET40, NET45)  
+[OxyPlot.WindowsForms](https://www.nuget.org/packages/OxyPlot.WindowsForms) | ![OxyPlot.WindowsForms](https://img.shields.io/nuget/vpre/OxyPlot.WindowsForms.svg)  | Windows Forms (NET40, NET45)
+[OxyPlot.Windows](https://www.nuget.org/packages/OxyPlot.Windows) | ![OxyPlot.Windows](https://img.shields.io/nuget/vpre/OxyPlot.Windows.svg) | Windows 8.1 and Windows Phone 8.1
+[OxyPlot.WP8](https://www.nuget.org/packages/OxyPlot.WP8) | ![OxyPlot.WP8](https://img.shields.io/nuget/vpre/OxyPlot.WP8.svg) | Windows Phone Silverlight
+[OxyPlot.Silverlight](https://www.nuget.org/packages/OxyPlot.Silverlight) | ![OxyPlot.Silverlight](https://img.shields.io/nuget/vpre/OxyPlot.Silverlight.svg) | Silverlight 5 
+[OxyPlot.GtkSharp](https://www.nuget.org/packages/OxyPlot.GtkSharp) | ![OxyPlot.GtkSharp](https://img.shields.io/nuget/vpre/OxyPlot.GtkSharp.svg) | GTK# 2 and 3 (NET40, NET45)
+[OxyPlot.Xamarin.Android](https://www.nuget.org/packages/OxyPlot.Xamarin.Android) | ![OxyPlot.Xamarin.Android](https://img.shields.io/nuget/vpre/OxyPlot.Xamarin.Android.svg) | MonoAndroid
+[OxyPlot.Xamarin.iOS](https://www.nuget.org/packages/OxyPlot.Xamarin.iOS) | ![OxyPlot.Xamarin.iOS](https://img.shields.io/nuget/vpre/OxyPlot.Xamarin.iOS.svg) | MonoTouch and iOS10
+[OxyPlot.Xamarin.Mac](https://www.nuget.org/packages/OxyPlot.Xamarin.Mac) | ![OxyPlot.Xamarin.Mac](https://img.shields.io/nuget/vpre/OxyPlot.Xamarin.Mac.svg) | Mac20
+[OxyPlot.Xamarin.Forms](https://www.nuget.org/packages/OxyPlot.Xamarin.Forms) | ![OxyPlot.Xamarin.Forms](https://img.shields.io/nuget/vpre/OxyPlot.Xamarin.Forms.svg) | MonoTouch, iOS10, MonoAndroid, WP8
+[OxyPlot.Xwt](https://www.nuget.org/packages/OxyPlot.Xwt) | ![OxyPlot.Xwt](https://img.shields.io/nuget/vpre/OxyPlot.Xwt.svg) | NET40, NET45
+[OxyPlot.OpenXML](https://www.nuget.org/packages/OxyPlot.OpenXML) | ![OxyPlot.OpenXML](https://img.shields.io/nuget/vpre/OxyPlot.OpenXML.svg) |  NET40, NET45
+[OxyPlot.Pdf](https://www.nuget.org/packages/OxyPlot.Pdf) | ![OxyPlot.Pdf](https://img.shields.io/nuget/vpre/OxyPlot.Pdf.svg) |  PdfSharp (NET40, NET45, SL5)
 
 #### Contribute
 
