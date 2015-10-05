@@ -38,7 +38,7 @@ on_finish:
   - IF DEFINED xamarin_password appveyor UnregisterXamarinLicense -Email %xamarin_email% -Password %xamarin_password%
 
 after_build:
-  - gitlink c:\projects\oxyplot -u https://github.com/oxyplot/oxyplot -f Source/OxyPlot.AppVeyor.sln -ignore Xwt
+  - gitlink c:\projects\oxyplot -u https://github.com/oxyplot/oxyplot -f Source/OxyPlot.AppVeyor.sln -ignore Xwt,OxyPlot.MonoTouch,OxyPlot.Xamarin.Android,OxyPlot.Xamarin.iOS,OxyPlot.Xamarin.Forms.Platform.Android,OxyPlot.Xamarin.Forms.Platform.iOS,OxyPlot.Xamarin.Forms.Platform.iOS.Classic
   - NuGet pack Source\OxyPlot.nuspec -version "%GitVersion_NuGetVersion%"
   - NuGet pack Source\OxyPlot\OxyPlot.Core.nuspec -version "%GitVersion_NuGetVersion%"
   - NuGet pack Source\OxyPlot.Wpf\OxyPlot.Wpf.nuspec -version "%GitVersion_NuGetVersion%"
