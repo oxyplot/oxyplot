@@ -47,6 +47,7 @@ All notable changes to this project will be documented in this file.
 - Move TileMapAnnotation class to example library (#567)
 - Change to semantic versioning (#595)
 - Change GTKSharp3 project to x86 (#599)
+- Change OxyPlot.Xamarin.Android to API Level 15 (#614)
 
 ### Removed
 - StyleCop tasks (#556)
