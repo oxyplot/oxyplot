@@ -1,3 +1,16 @@
+os: Visual Studio 2015
+platform: Any CPU
+configuration: Release
+
+environment:
+  xamarin_email:
+    secure: zPw/OGEp9Wa91O9g7UMZcBPn4Xs1BvqDqomCU68GdIE=
+  xamarin_password:
+    secure: UfiY1RqjRMyZq3y1qN3xOw==
+
+pull_requests:
+  do_not_increment_build_number: true
+
 install:
   - cinst gitversion.portable -pre -y
   - cinst gitlink -Pre -y
@@ -5,38 +18,51 @@ install:
   - msiexec /i gtk-sharp-2.12.26.msi /qn /norestart
   - if not exist gtk-sharp-2.99.3.msi appveyor DownloadFile https://download.gnome.org/binaries/win32/gtk-sharp/2.99/gtk-sharp-2.99.3.msi
   - msiexec /i gtk-sharp-2.99.3.msi /qn /norestart
+
 cache:
   - gtk-sharp-2.12.26.msi
   - gtk-sharp-2.99.3.msi
-platform: Any CPU
-configuration: Release
+
 before_build:
-  - cmd: git submodule update --init --recursive
-  - cmd: NuGet restore Source/OxyPlot.AppVeyor.sln
-  - ps: gitversion /l console /output buildserver /updateAssemblyInfo
+  - git submodule update --init --recursive
+  - IF DEFINED xamarin_password appveyor RegisterXamarinLicense -Email %xamarin_email% -Password %xamarin_password% -Product Android
+  - IF DEFINED xamarin_password appveyor RegisterXamarinLicense -Email %xamarin_email% -Password %xamarin_password% -Product iOS
+  - IF NOT DEFINED xamarin_password copy /Y Source\OxyPlot.AppVeyor.PullRequest.sln Source\OxyPlot.AppVeyor.sln
+  - NuGet restore Source/OxyPlot.AppVeyor.sln
+  - gitversion /l console /output buildserver /updateAssemblyInfo
+
 build:
   project: Source/OxyPlot.AppVeyor.sln
   verbosity: minimal
+
+on_finish:
+  - IF DEFINED xamarin_password appveyor UnregisterXamarinLicense -Email %xamarin_email% -Password %xamarin_password%
+
 after_build:
-  - cmd: gitlink c:\projects\oxyplot -u https://github.com/oxyplot/oxyplot -f Source/OxyPlot.AppVeyor.sln -ignore Xwt
-  - cmd: NuGet pack Source\OxyPlot.nuspec -version "%GitVersion_NuGetVersion%"
-  - cmd: NuGet pack Source\OxyPlot\OxyPlot.Core.nuspec -version "%GitVersion_NuGetVersion%"
-  - cmd: NuGet pack Source\OxyPlot.Wpf\OxyPlot.Wpf.nuspec -version "%GitVersion_NuGetVersion%"
-  - cmd: NuGet pack Source\OxyPlot.Windows\OxyPlot.Windows.nuspec -version "%GitVersion_NuGetVersion%"
-  - cmd: NuGet pack Source\OxyPlot.WindowsForms\OxyPlot.WindowsForms.nuspec -version "%GitVersion_NuGetVersion%"
-  - cmd: NuGet pack Source\OxyPlot.WindowsUniversal\OxyPlot.WindowsUniversal.nuspec -version "%GitVersion_NuGetVersion%"
-  - cmd: NuGet pack Source\OxyPlot.WP8\OxyPlot.WP8.nuspec -version "%GitVersion_NuGetVersion%"
-  - cmd: NuGet pack Source\OxyPlot.Silverlight\OxyPlot.Silverlight.nuspec -version "%GitVersion_NuGetVersion%"
-  - cmd: NuGet pack Source\OxyPlot.OpenXml\OxyPlot.OpenXml.nuspec -version "%GitVersion_NuGetVersion%"
-  - cmd: NuGet pack Source\OxyPlot.Pdf\OxyPlot.Pdf.nuspec -version "%GitVersion_NuGetVersion%"
-  - cmd: NuGet pack Source\OxyPlot.GtkSharp\OxyPlot.GtkSharp.nuspec -version "%GitVersion_NuGetVersion%"
-  - cmd: NuGet pack Source\OxyPlot.GtkSharp\OxyPlot.GtkSharp3.nuspec -version "%GitVersion_NuGetVersion%"
-  - cmd: NuGet pack Source\OxyPlot.Xwt\OxyPlot.Xwt.nuspec -version "%GitVersion_NuGetVersion%"
+  - gitlink c:\projects\oxyplot -u https://github.com/oxyplot/oxyplot -f Source/OxyPlot.AppVeyor.sln -ignore Xwt
+  - NuGet pack Source\OxyPlot.nuspec -version "%GitVersion_NuGetVersion%"
+  - NuGet pack Source\OxyPlot\OxyPlot.Core.nuspec -version "%GitVersion_NuGetVersion%"
+  - NuGet pack Source\OxyPlot.Wpf\OxyPlot.Wpf.nuspec -version "%GitVersion_NuGetVersion%"
+  - NuGet pack Source\OxyPlot.Windows\OxyPlot.Windows.nuspec -version "%GitVersion_NuGetVersion%"
+  - NuGet pack Source\OxyPlot.WindowsForms\OxyPlot.WindowsForms.nuspec -version "%GitVersion_NuGetVersion%"
+  - NuGet pack Source\OxyPlot.WindowsUniversal\OxyPlot.WindowsUniversal.nuspec -version "%GitVersion_NuGetVersion%"
+  - NuGet pack Source\OxyPlot.WP8\OxyPlot.WP8.nuspec -version "%GitVersion_NuGetVersion%"
+  - NuGet pack Source\OxyPlot.Silverlight\OxyPlot.Silverlight.nuspec -version "%GitVersion_NuGetVersion%"
+  - NuGet pack Source\OxyPlot.OpenXml\OxyPlot.OpenXml.nuspec -version "%GitVersion_NuGetVersion%"
+  - NuGet pack Source\OxyPlot.Pdf\OxyPlot.Pdf.nuspec -version "%GitVersion_NuGetVersion%"
+  - NuGet pack Source\OxyPlot.GtkSharp\OxyPlot.GtkSharp.nuspec -version "%GitVersion_NuGetVersion%"
+  - NuGet pack Source\OxyPlot.GtkSharp\OxyPlot.GtkSharp3.nuspec -version "%GitVersion_NuGetVersion%"
+  - NuGet pack Source\OxyPlot.Xwt\OxyPlot.Xwt.nuspec -version "%GitVersion_NuGetVersion%"
+  - IF DEFINED xamarin_password NuGet pack Source\OxyPlot.Xamarin.Android\OxyPlot.Xamarin.Android.nuspec -version "%GitVersion_NuGetVersion%"
+  - IF DEFINED xamarin_password NuGet pack Source\OxyPlot.Xamarin.iOS\OxyPlot.Xamarin.iOS.nuspec -version "%GitVersion_NuGetVersion%"
+  - IF DEFINED xamarin_password NuGet pack Source\OxyPlot.Xamarin.Forms\OxyPlot.Xamarin.Forms.nuspec -version "%GitVersion_NuGetVersion%"
+
 artifacts:
   - path: Output
     name: OxyPlot-$(GitVersion_SemVer)
     type: zip
   - path: '*.nupkg'
+
 deploy:
   provider: NuGet
   server:                  # remove to push to NuGet.org
