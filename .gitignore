@@ -193,3 +193,6 @@ FakesAssemblies/
 
 # GhostDoc settings
 *.GhostDoc.xml
+
+# Visual Studio config files
+.vs/
