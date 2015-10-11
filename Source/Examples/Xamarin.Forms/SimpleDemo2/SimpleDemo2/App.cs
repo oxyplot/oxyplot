@@ -1,28 +1,25 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="App.cs" company="OxyPlot">
-//   Copyright (c) 2014 OxyPlot contributors
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using OxyPlot;
+using OxyPlot.Axes;
+using OxyPlot.Series;
+using OxyPlot.Xamarin.Forms;
+using Xamarin.Forms;
 
-namespace SimpleDemo
+namespace SimpleDemo2
 {
-    using OxyPlot;
-    using OxyPlot.Axes;
-    using OxyPlot.Series;
-    using OxyPlot.Xamarin.Forms;
-
-    using Xamarin.Forms;
-
     /// <summary>
-    /// Represents a simple demo app (portable library).
+    /// Represents a simple demo app (shared library).
     /// </summary>
-    public class App : Application
-    {
+	public class App : Application
+	{
         /// <summary>
         /// Initializes a new instance of the <see cref="App"/> class.
         /// </summary>
-        public App()
-        {
+        public App ()
+		{
             var plotModel = new PlotModel
             {
                 Title = "OxyPlot in Xamarin.Forms",
@@ -53,5 +50,5 @@ namespace SimpleDemo
                 },
             };
         }
-    }
+	}
 }
