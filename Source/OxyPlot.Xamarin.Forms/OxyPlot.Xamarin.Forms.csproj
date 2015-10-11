@@ -37,6 +37,7 @@
     <DocumentationFile>..\..\Output\Xamarin.Forms\OxyPlot.Xamarin.Forms.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ExtensionMethods.cs" />
     <Compile Include="Properties\AssemblyDescription.cs" />
     <Compile Include="..\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>

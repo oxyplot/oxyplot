@@ -16,7 +16,7 @@ namespace OxyPlot.Xamarin.Forms.Platform.iOS
     public class PlotViewRenderer : ViewRenderer<Xamarin.Forms.PlotView, PlotView>
     {
         /// <summary>
-        /// Default constructor.
+        /// Initializes a new instance of the <see cref="PlotViewRenderer"/> class.
         /// </summary>
         public PlotViewRenderer()
         {
@@ -37,13 +37,9 @@ namespace OxyPlot.Xamarin.Forms.Platform.iOS
             var plotView = new PlotView
             {
                 Model = this.Element.Model,
-                Controller = this.Element.Controller
+                Controller = this.Element.Controller,
+                BackgroundColor = this.Element.BackgroundColor.ToOxyColor().ToUIColor()
             };
-
-            if (this.Element.Model != null && this.Element.Model.Background.IsVisible())
-            {
-                plotView.BackgroundColor = this.Element.Model.Background.ToUIColor();
-            }
 
             this.SetNativeControl(plotView);
         }
@@ -69,6 +65,11 @@ namespace OxyPlot.Xamarin.Forms.Platform.iOS
             if (e.PropertyName == Xamarin.Forms.PlotView.ControllerProperty.PropertyName)
             {
                 this.Control.Controller = this.Element.Controller;
+            }
+
+            if (e.PropertyName == VisualElement.BackgroundColorProperty.PropertyName)
+            {
+                this.Control.BackgroundColor = this.Element.BackgroundColor.ToOxyColor().ToUIColor();
             }
         }
     }
