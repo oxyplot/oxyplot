@@ -246,16 +246,6 @@ namespace OxyPlot.Xamarin.iOS
                 ((IPlotModel)actualModel).Update(updateData);
             }
 
-            if (actualModel != null && !actualModel.Background.IsUndefined())
-            {
-                this.BackgroundColor = actualModel.Background.ToUIColor();
-            }
-            else
-            {
-                // Use white as default background color
-                this.BackgroundColor = UIColor.White;
-            }
-
             this.SetNeedsDisplay();
         }
 
@@ -302,11 +292,19 @@ namespace OxyPlot.Xamarin.iOS
         /// <param name="rect">The rectangle to draw.</param>
         public override void Draw(CoreGraphics.CGRect rect)
         {
-            if (this.model != null)
+            var actualModel = (IPlotModel)this.model;
+            if (actualModel != null)
             {
-                using (var renderer = new CoreGraphicsRenderContext(UIGraphics.GetCurrentContext()))
+                var context = UIGraphics.GetCurrentContext ();
+                using (var renderer = new CoreGraphicsRenderContext(context))
                 {
-                    ((IPlotModel)this.model).Render(renderer, rect.Width, rect.Height);
+                    if (actualModel.Background.IsVisible())
+                    {
+                        context.SetFillColor (actualModel.Background.ToCGColor ());
+                        context.FillRect (rect);
+                    }
+
+                    actualModel.Render(renderer, rect.Width, rect.Height);
                 }
             }
         }

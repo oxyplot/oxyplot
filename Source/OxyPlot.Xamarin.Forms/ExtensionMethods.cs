@@ -21,7 +21,7 @@ namespace OxyPlot.Xamarin.Forms
         /// <returns>The converted color.</returns>
         public static global::Xamarin.Forms.Color ToXamarinForms(this OxyColor c)
         {
-            return new global::Xamarin.Forms.Color(c.R / 255d, c.G / 255d, c.B, c.A / 255d);
+            return global::Xamarin.Forms.Color.FromRgba(c.R, c.G, c.B, c.A);
         }
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace OxyPlot.Xamarin.Forms
         /// <returns>The converted color.</returns>
         public static OxyColor ToOxyColor(this global::Xamarin.Forms.Color c)
         {
-            return OxyColor.FromArgb((byte)(c.R * 255), (byte)(c.G * 255), (byte)(c.B * 255), (byte)(c.A * 255));
+            return OxyColor.FromArgb((byte)(c.A * 255), (byte)(c.R * 255), (byte)(c.G * 255), (byte)(c.B * 255));
         }
     }
 }
