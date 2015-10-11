@@ -891,20 +891,23 @@ namespace OxyPlot.WP8
 
             // Clear the canvas
             this.canvas.Children.Clear();
-
-            if (this.ActualModel != null && !this.ActualModel.Background.IsVisible())
+            var actualModel = (IPlotModel)this.ActualModel;
+            if (actualModel == null)
             {
-                this.canvas.Background = this.ActualModel.Background.ToBrush();
+                this.canvas.Background = null;
+                return;
+            }
+
+            if (!actualModel.Background.IsUndefined())
+            {
+                this.canvas.Background = actualModel.Background.ToBrush();
             }
             else
             {
                 this.canvas.Background = null;
             }
 
-            if (this.ActualModel != null)
-            {
-                ((IPlotModel)this.ActualModel).Render(this.renderContext, this.canvas.ActualWidth, this.canvas.ActualHeight);
-            }
+            actualModel.Render(this.renderContext, this.canvas.ActualWidth, this.canvas.ActualHeight);
         }
 
         /// <summary>

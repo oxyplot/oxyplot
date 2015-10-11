@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:oxy="clr-namespace:OxyPlot.Xamarin.Forms;assembly=OxyPlot.Xamarin.Forms"
+             xmlns:demoApp="clr-namespace:DemoApp;assembly=DemoApp"
+             x:Class="IssueDemos.BackgroundColorPickers">
+  <StackLayout>
+    <Label Text="Page.BackgroundColor"/>
+    <Picker x:Name="pageBackgroundPicker"/>
+    <Label Text="PlotView.BackgroundColor"/>
+    <Picker x:Name="viewBackgroundPicker"/>
+    <Label Text="PlotModel.Background"/>
+    <Picker x:Name="modelBackgroundPicker"/>
+    <Label x:Name="plotViewLabel" Text="PlotView"/>
+    <oxy:PlotView x:Name="plotView1" HeightRequest="200"/>
+  </StackLayout>
+</ContentPage>
