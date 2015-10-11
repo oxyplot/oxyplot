@@ -19,6 +19,13 @@ namespace OxyPlot.Xamarin.Forms.Platform.WP8
     public class PlotViewRenderer : ViewRenderer<Xamarin.Forms.PlotView, PlotView>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="PlotViewRenderer"/> class.
+        /// </summary>
+        public PlotViewRenderer()
+        {
+        }
+
+        /// <summary>
         /// Raises the element changed event.
         /// </summary>
         /// <param name="e">The event arguments.</param>
@@ -33,13 +40,9 @@ namespace OxyPlot.Xamarin.Forms.Platform.WP8
             var plotView = new PlotView
             {
                 Model = this.Element.Model,
-                Controller = this.Element.Controller
+                Controller = this.Element.Controller,
+                Background = this.Element.BackgroundColor.ToOxyColor().ToBrush()
             };
-
-            if (this.Element.Model != null && this.Element.Model.Background.IsVisible())
-            {
-                plotView.Background = this.Element.Model.Background.ToBrush();
-            }
 
             this.SetNativeControl(plotView);
         }
@@ -65,6 +68,11 @@ namespace OxyPlot.Xamarin.Forms.Platform.WP8
             if (e.PropertyName == Xamarin.Forms.PlotView.ControllerProperty.PropertyName)
             {
                 this.Control.Controller = this.Element.Controller;
+            }
+
+            if (e.PropertyName == VisualElement.BackgroundColorProperty.PropertyName)
+            {
+                this.Control.Background = this.Element.BackgroundColor.ToOxyColor().ToBrush();
             }
         }
     }

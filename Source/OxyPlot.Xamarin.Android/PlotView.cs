@@ -321,14 +321,13 @@ namespace OxyPlot.Xamarin.Android
                 return;
             }
 
-            if (!actualModel.Background.IsUndefined())
+            if (actualModel.Background.IsVisible())
             {
                 canvas.DrawColor(actualModel.Background.ToColor());
             }
             else
             {
-                // Use white as default background color
-                canvas.DrawColor(Color.White);
+                // do nothing
             }
 
             lock (this.invalidateLock)

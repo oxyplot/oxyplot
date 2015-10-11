@@ -87,7 +87,7 @@ All notable changes to this project will be documented in this file.
 - Support WinPhone 8.1 in core NuGet package (#161)
 - Draw legend line with custom pattern (#356)
 - iOS pan/zoom stability (#336)
-- Xamarin.Forms iOS PlotViewRenderer crash (#458) 
+- Xamarin.Forms iOS PlotViewRenderer crash (#458)
 - Inaccurate tracker when using LogarithmicAxis (#443)
 - Fix reset of transforms in WinForms render context (#489)
 - Fix StringFormat for TimeSpanAxis not recognizing f, ff, fff, etc (#330)
@@ -101,7 +101,9 @@ All notable changes to this project will be documented in this file.
 - Fix rendering of rotated 'math' text (#569, #448)
 - Export demo (WPF) (#568)
 - Fixing a double comparison issue causing infinite loop (#587)
-- Fix null reference exception when ActualPoints was null rendering a StairStepSeries (#582) 
+- Fix null reference exception when ActualPoints was null rendering a StairStepSeries (#582)
+- Background color in the Xamarin.Forms views (#546)
+- IsVisible change in Xamarin.Forms.Platform.iOS (#546)
 
 ## [2014.1.546] - 2014-10-22
 ### Added
