@@ -104,6 +104,7 @@ All notable changes to this project will be documented in this file.
 - Fix null reference exception when ActualPoints was null rendering a StairStepSeries (#582)
 - Background color in the Xamarin.Forms views (#546)
 - IsVisible change in Xamarin.Forms.Platform.iOS (#546)
+- Fix issue with MinimumRange not taking Minimum and Maximum values into account (#550)
 
 ## [2014.1.546] - 2014-10-22
 ### Added
