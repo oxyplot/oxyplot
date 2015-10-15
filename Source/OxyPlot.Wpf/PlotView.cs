@@ -55,7 +55,6 @@ namespace OxyPlot.Wpf
         /// </summary>
         public PlotView()
         {
-            this.Controller = new PlotController();
         }
 
         /// <summary>
@@ -83,6 +82,12 @@ namespace OxyPlot.Wpf
         {
             get
             {
+                // Set a default value if no custom controller has been specified
+                if ((IPlotController)this.GetValue(ControllerProperty) == null)
+                {
+                    this.Controller = new PlotController();
+                }
+
                 return (IPlotController)this.GetValue(ControllerProperty);
             }
 

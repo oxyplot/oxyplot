@@ -107,5 +107,23 @@ namespace OxyPlot.Wpf.Tests
                 OxyAssert.PropertiesAreEqual(model, view);
             }
         }
+
+        /// <summary>
+        /// Provides unit tests for the <see cref="PlotView.Controller" /> method.
+        /// </summary>
+        public class Controller
+        {
+            /// <summary>
+            /// Assert that the controller exists <see cref="PlotView" />.
+            /// </summary>
+            [Test]
+            public void VerifyController()
+            {
+                var model = new PlotModel();
+                var view = new PlotView();
+
+                Assert.NotNull(view.Controller);
+            }
+        }
     }
 }
