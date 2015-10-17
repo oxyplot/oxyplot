@@ -107,6 +107,7 @@ All notable changes to this project will be documented in this file.
 - IsVisible change in Xamarin.Forms.Platform.iOS (#546)
 - Rendering math text with syntax error gets stuck in an endless loop (#624)
 - Fix issue with MinimumRange not taking Minimum and Maximum values into account (#550)
+- Do not set default Controller in PlotView ctor (#436)
 
 ## [2014.1.546] - 2014-10-22
 ### Added
