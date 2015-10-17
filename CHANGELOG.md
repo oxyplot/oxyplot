@@ -104,6 +104,7 @@ All notable changes to this project will be documented in this file.
 - Fix null reference exception when ActualPoints was null rendering a StairStepSeries (#582)
 - Background color in the Xamarin.Forms views (#546)
 - IsVisible change in Xamarin.Forms.Platform.iOS (#546)
+- Rendering math text with syntax error gets stuck in an endless loop (#624)
 
 ## [2014.1.546] - 2014-10-22
 ### Added
