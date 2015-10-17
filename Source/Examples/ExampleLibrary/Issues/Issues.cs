@@ -125,12 +125,12 @@ namespace ExampleLibrary
             plotModel1.Axes.Add(linearAxis1);
 
             var dateTimeAxis1 = new DateTimeAxis
-                                    {
-                                        IntervalType = DateTimeIntervalType.Minutes,
-                                        EndPosition = 0,
-                                        StartPosition = 1,
-                                        StringFormat = "hh:mm:ss"
-                                    };
+            {
+                IntervalType = DateTimeIntervalType.Minutes,
+                EndPosition = 0,
+                StartPosition = 1,
+                StringFormat = "hh:mm:ss"
+            };
             plotModel1.Axes.Add(dateTimeAxis1);
             var time0 = new DateTime(2013, 5, 6, 3, 24, 0);
             var time1 = new DateTime(2013, 5, 6, 3, 28, 0);
@@ -856,10 +856,10 @@ namespace ExampleLibrary
         public static PlotModel LineSeriesExceptionWhenSmoothing()
         {
             var plotModel1 = new PlotModel
-                                 {
-                                     Title = "LineSeries null reference exception when smoothing is enabled and all datapoints have the same y value",
-                                     Subtitle = "Click on the plot to reproduce the issue."
-                                 };
+            {
+                Title = "LineSeries null reference exception when smoothing is enabled and all datapoints have the same y value",
+                Subtitle = "Click on the plot to reproduce the issue."
+            };
             var ls = new LineSeries { Smooth = true };
             ls.Points.Add(new DataPoint(0, 0));
             ls.Points.Add(new DataPoint(1, 0));
@@ -1081,120 +1081,134 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
-		
-		[Example("#535: Transposed HeatMap")]
-		public static PlotModel TransposedHeatMap()
-		{
-			int n = 100;
 
-			double x0 = -3.1;
-			double x1 = 3.1;
-			double y0 = -3;
-			double y1 = 3;
-			Func<double, double, double> peaks = (x, y) => 3 * (1 - x) * (1 - x) * Math.Exp(-(x * x) - (y + 1) * (y + 1)) - 10 * (x / 5 - x * x * x - y * y * y * y * y) * Math.Exp(-x * x - y * y) - 1.0 / 3 * Math.Exp(-(x + 1) * (x + 1) - y * y);
-			var xvalues = ArrayBuilder.CreateVector(x0, x1, n);
-			var yvalues = ArrayBuilder.CreateVector(y0, y1, n);
-			var peaksData = ArrayBuilder.Evaluate(peaks, xvalues, yvalues);
+        [Example("#535: Transposed HeatMap")]
+        public static PlotModel TransposedHeatMap()
+        {
+            int n = 100;
 
-			var model = new PlotModel { Title = "Normal Heatmap" };
+            double x0 = -3.1;
+            double x1 = 3.1;
+            double y0 = -3;
+            double y1 = 3;
+            Func<double, double, double> peaks = (x, y) => 3 * (1 - x) * (1 - x) * Math.Exp(-(x * x) - (y + 1) * (y + 1)) - 10 * (x / 5 - x * x * x - y * y * y * y * y) * Math.Exp(-x * x - y * y) - 1.0 / 3 * Math.Exp(-(x + 1) * (x + 1) - y * y);
+            var xvalues = ArrayBuilder.CreateVector(x0, x1, n);
+            var yvalues = ArrayBuilder.CreateVector(y0, y1, n);
+            var peaksData = ArrayBuilder.Evaluate(peaks, xvalues, yvalues);
 
-			model.Axes.Add(
-				new LinearAxis() { Key = "x_axis", AbsoluteMinimum = x0, AbsoluteMaximum = x1, Position = AxisPosition.Left });
+            var model = new PlotModel { Title = "Normal Heatmap" };
 
-			model.Axes.Add(
-				new LinearAxis() { Key = "y_axis", AbsoluteMinimum = y0, AbsoluteMaximum = y1, Position = AxisPosition.Top });
+            model.Axes.Add(
+                new LinearAxis() { Key = "x_axis", AbsoluteMinimum = x0, AbsoluteMaximum = x1, Position = AxisPosition.Left });
 
-			model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
+            model.Axes.Add(
+                new LinearAxis() { Key = "y_axis", AbsoluteMinimum = y0, AbsoluteMaximum = y1, Position = AxisPosition.Top });
 
-			var hms = new HeatMapSeries
-			{
-				X0 = x0,
-				X1 = x1,
-				Y0 = y0,
-				Y1 = y1,
-				Data = peaksData,
-				XAxisKey = "x_axis",
-				YAxisKey = "y_axis"
-			};
-			model.Series.Add(hms);
+            model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
 
-			return model;
-		}
+            var hms = new HeatMapSeries
+            {
+                X0 = x0,
+                X1 = x1,
+                Y0 = y0,
+                Y1 = y1,
+                Data = peaksData,
+                XAxisKey = "x_axis",
+                YAxisKey = "y_axis"
+            };
+            model.Series.Add(hms);
 
-		[Example("#535: Normal HeatMap")]
-		public static PlotModel NormalHeatMap()
-		{
-			int n = 100;
+            return model;
+        }
 
-			double x0 = -3.1;
-			double x1 = 3.1;
-			double y0 = -3;
-			double y1 = 3;
-			Func<double, double, double> peaks = (x, y) => 3 * (1 - x) * (1 - x) * Math.Exp(-(x * x) - (y + 1) * (y + 1)) - 10 * (x / 5 - x * x * x - y * y * y * y * y) * Math.Exp(-x * x - y * y) - 1.0 / 3 * Math.Exp(-(x + 1) * (x + 1) - y * y);
-			var xvalues = ArrayBuilder.CreateVector(x0, x1, n);
-			var yvalues = ArrayBuilder.CreateVector(y0, y1, n);
-			var peaksData = ArrayBuilder.Evaluate(peaks, xvalues, yvalues);
+        [Example("#535: Normal HeatMap")]
+        public static PlotModel NormalHeatMap()
+        {
+            int n = 100;
 
-			var model = new PlotModel { Title = "Peaks" };
+            double x0 = -3.1;
+            double x1 = 3.1;
+            double y0 = -3;
+            double y1 = 3;
+            Func<double, double, double> peaks = (x, y) => 3 * (1 - x) * (1 - x) * Math.Exp(-(x * x) - (y + 1) * (y + 1)) - 10 * (x / 5 - x * x * x - y * y * y * y * y) * Math.Exp(-x * x - y * y) - 1.0 / 3 * Math.Exp(-(x + 1) * (x + 1) - y * y);
+            var xvalues = ArrayBuilder.CreateVector(x0, x1, n);
+            var yvalues = ArrayBuilder.CreateVector(y0, y1, n);
+            var peaksData = ArrayBuilder.Evaluate(peaks, xvalues, yvalues);
 
-			model.Axes.Add(
-	new LinearAxis() { Key = "x_axis", AbsoluteMinimum = x0, AbsoluteMaximum = x1, Position = AxisPosition.Top });
+            var model = new PlotModel { Title = "Peaks" };
 
-			model.Axes.Add(
-				new LinearAxis() { Key = "y_axis", AbsoluteMinimum = y0, AbsoluteMaximum = y1, Position = AxisPosition.Left });
+            model.Axes.Add(
+    new LinearAxis() { Key = "x_axis", AbsoluteMinimum = x0, AbsoluteMaximum = x1, Position = AxisPosition.Top });
 
-			model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
+            model.Axes.Add(
+                new LinearAxis() { Key = "y_axis", AbsoluteMinimum = y0, AbsoluteMaximum = y1, Position = AxisPosition.Left });
 
-			var hms = new HeatMapSeries
-			{
-				X0 = x0,
-				X1 = x1,
-				Y0 = y0,
-				Y1 = y1,
-				Data = peaksData,
-				XAxisKey = "x_axis",
-				YAxisKey = "y_axis"
-			};
-			model.Series.Add(hms);
+            model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
 
-			return model;
-		}
+            var hms = new HeatMapSeries
+            {
+                X0 = x0,
+                X1 = x1,
+                Y0 = y0,
+                Y1 = y1,
+                Data = peaksData,
+                XAxisKey = "x_axis",
+                YAxisKey = "y_axis"
+            };
+            model.Series.Add(hms);
 
-		[Example("#42: ContourSeries not working for not square data array")]
-		public static PlotModel IssueDescription()
-		{
-			int n = 100;
-			double x0 = -3.1;
-			double x1 = 3.1;
-			double y0 = -3;
-			double y1 = 3;
-			Func<double, double, double> peaks = (x, y) => 3 * (1 - x) * (1 - x) * Math.Exp(-(x * x) - (y + 1) * (y + 1)) - 10 * (x / 5 - x * x * x - y * y * y * y * y) * Math.Exp(-x * x - y * y) - 1.0 / 3 * Math.Exp(-(x + 1) * (x + 1) - y * y);
-			// see https://github.com/oxyplot/oxyplot/issues/511
-			var xvalues = ArrayBuilder.CreateVector(x0, x1, n * 10);
-			var yvalues = ArrayBuilder.CreateVector(y0, y1, n);
-			var peaksData = ArrayBuilder.Evaluate(peaks, xvalues, yvalues);
-			var model = new PlotModel { Title = "Peaks" };
-			model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
+            return model;
+        }
 
-			var hms = new HeatMapSeries { X0 = x0, X1 = x1, Y0 = y0, Y1 = y1, Data = peaksData };
-			model.Series.Add(hms);
-			//if (includeContours)
-			{
-				var cs = new ContourSeries
-				{
-					Color = OxyColors.Black,
-					FontSize = 0,
-					ContourLevelStep = 1,
-					LabelBackground = OxyColors.Undefined,
-					ColumnCoordinates = yvalues,
-					RowCoordinates = xvalues,
-					Data = peaksData
-				};
-				model.Series.Add(cs);
-			}
+        [Example("#42: ContourSeries not working for not square data array")]
+        public static PlotModel IssueDescription()
+        {
+            int n = 100;
+            double x0 = -3.1;
+            double x1 = 3.1;
+            double y0 = -3;
+            double y1 = 3;
+            Func<double, double, double> peaks = (x, y) => 3 * (1 - x) * (1 - x) * Math.Exp(-(x * x) - (y + 1) * (y + 1)) - 10 * (x / 5 - x * x * x - y * y * y * y * y) * Math.Exp(-x * x - y * y) - 1.0 / 3 * Math.Exp(-(x + 1) * (x + 1) - y * y);
+            // see https://github.com/oxyplot/oxyplot/issues/511
+            var xvalues = ArrayBuilder.CreateVector(x0, x1, n * 10);
+            var yvalues = ArrayBuilder.CreateVector(y0, y1, n);
+            var peaksData = ArrayBuilder.Evaluate(peaks, xvalues, yvalues);
+            var model = new PlotModel { Title = "Peaks" };
+            model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
 
-			return model;
-		}
+            var hms = new HeatMapSeries { X0 = x0, X1 = x1, Y0 = y0, Y1 = y1, Data = peaksData };
+            model.Series.Add(hms);
+            //if (includeContours)
+            {
+                var cs = new ContourSeries
+                {
+                    Color = OxyColors.Black,
+                    FontSize = 0,
+                    ContourLevelStep = 1,
+                    LabelBackground = OxyColors.Undefined,
+                    ColumnCoordinates = yvalues,
+                    RowCoordinates = xvalues,
+                    Data = peaksData
+                };
+                model.Series.Add(cs);
+            }
+
+            return model;
+        }
+
+        [Example("#624: Rendering math text with syntax error gets stuck in an endless loop")]
+        public static PlotModel MathTextWithSyntaxError()
+        {
+            var model = new PlotModel { Title = "Math text syntax errors" };
+            model.Series.Add(new LineSeries { Title = "x_{1" });
+            model.Series.Add(new LineSeries { Title = "x^{2" });
+            model.Series.Add(new LineSeries { Title = "x^{2_{1" });
+            model.Series.Add(new LineSeries { Title = "x^{ x^" });
+            model.Series.Add(new LineSeries { Title = "x_{ x_" });
+            model.Series.Add(new LineSeries { Title = "" });
+            model.Series.Add(new LineSeries { Title = "x^{ x_{ x^_" });
+            return model;
+        }
 
         /* NEW ISSUE TEMPLATE
         [Example("#123: Issue Description")]

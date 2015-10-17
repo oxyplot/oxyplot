@@ -288,7 +288,7 @@ namespace OxyPlot
                 }
 
                 // Regular text
-                var i2 = s.IndexOfAny("^_".ToCharArray(), i);
+                var i2 = s.IndexOfAny("^_".ToCharArray(), i + 1);
                 string regularString;
                 if (i2 == -1)
                 {
