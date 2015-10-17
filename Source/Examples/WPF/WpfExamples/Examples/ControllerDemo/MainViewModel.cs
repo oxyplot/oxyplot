@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace SimpleDemo
+namespace ControllerDemo
 {
     using OxyPlot;
     using OxyPlot.Series;
@@ -23,7 +23,7 @@ namespace SimpleDemo
         public MainViewModel()
         {
             // Create the plot model
-            var tmp = new PlotModel { Title = "Simple example", Subtitle = "using OxyPlot" };
+            var tmp = new PlotModel { Title = "Custom PlotController", Subtitle = "Supports left/right keys only" };
 
             // Create two line series (markers are hidden by default)
             var series1 = new LineSeries { Title = "Series 1", MarkerType = MarkerType.Circle };
@@ -48,11 +48,17 @@ namespace SimpleDemo
 
             // Set the Model property, the INotifyPropertyChanged event will make the WPF Plot control update its content
             this.Model = tmp;
+            this.Controller = new CustomPlotController();
         }
 
         /// <summary>
         /// Gets the plot model.
         /// </summary>
         public PlotModel Model { get; private set; }
+
+        /// <summary>
+        /// Gets the plot controller.
+        /// </summary>
+        public IPlotController Controller { get; private set; }
     }
 }

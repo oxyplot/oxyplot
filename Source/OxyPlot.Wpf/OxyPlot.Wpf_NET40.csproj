@@ -14,6 +14,7 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -78,16 +79,15 @@
     <Compile Include="Axes\TimeSpanAxis.cs" />
     <Compile Include="Axes\LinearAxis.cs" />
     <Compile Include="Axes\LogarithmicAxis.cs" />
-    <Compile Include="CanvasRenderContext.cs" />
     <Compile Include="Converters\ThicknessConverter.cs" />
     <Compile Include="Converters\OxyColorConverter.cs" />
-    <Compile Include="Plot.Properties.cs" />
     <Compile Include="PlotBase.cs" />
     <Compile Include="PlotBase.Events.cs" />
     <Compile Include="PlotBase.Export.cs" />
-    <Compile Include="PlotBase.Properties.cs" />
     <Compile Include="PlotCommands.cs" />
     <Compile Include="PlotView.cs" />
+    <Compile Include="Plot.Properties.cs" />
+    <Compile Include="Series\BarSeries\LinearBarSeries.cs" />
     <Compile Include="Series\BoxPlotSeries.cs" />
     <Compile Include="Series\HeatMapSeries.cs" />
     <Compile Include="Series\ScatterSeries{T}.cs" />
@@ -99,6 +99,7 @@
     <Compile Include="Series\BarSeries\CategorizedSeries.cs" />
     <Compile Include="Series\BarSeries\BarSeriesBase.cs" />
     <Compile Include="Series\BarSeries\BarSeriesBase{T}.cs" />
+    <Compile Include="Series\ThreeColorLineSeries.cs" />
     <Compile Include="Series\TwoColorAreaSeries.cs" />
     <Compile Include="SvgExporter.cs" />
     <Compile Include="TextMeasurementMethod.cs" />
@@ -119,6 +120,7 @@
     <Compile Include="Plot.cs" />
     <Compile Include="Series\DataPointSeries.cs" />
     <Compile Include="Utilities\ConverterExtensions.cs" />
+    <Compile Include="CanvasRenderContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyDescription.cs">
@@ -138,6 +140,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Compile Include="PlotBase.Properties.cs" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
