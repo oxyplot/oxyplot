@@ -53,10 +53,50 @@ namespace ExampleLibrary
             return model;
         }
 
-        [Example("Default position")]
+        [Example("Legend at default position")]
         public static PlotModel LegendDefault()
         {
             var model = CreateModel();
+            return model;
+        }
+
+        [Example("LegendItemSpacing (only for horizontal orientation)")]
+        public static PlotModel LegendItemSpacing()
+        {
+            var model = CreateModel();
+            model.LegendOrientation = LegendOrientation.Horizontal;
+            model.LegendPosition = LegendPosition.BottomLeft;
+            model.LegendItemSpacing = 100;
+            return model;
+        }
+
+        [Example("LegendLineSpacing (vertical legend orientation)")]
+        public static PlotModel LegendLineSpacingVertical()
+        {
+            var model = CreateModel();
+            model.LegendOrientation = LegendOrientation.Vertical;
+            model.LegendPosition = LegendPosition.TopLeft;
+            model.LegendLineSpacing = 30;
+            return model;
+        }
+
+        [Example("LegendLineSpacing (horizontal legend orientation)")]
+        public static PlotModel LegendLineSpacingHorizontal()
+        {
+            var model = CreateModel();
+            model.LegendOrientation = LegendOrientation.Horizontal;
+            model.LegendPosition = LegendPosition.TopLeft;
+            model.LegendLineSpacing = 30;
+            return model;
+        }
+
+        [Example("LegendColumnSpacing (only for vertical orientation)")]
+        public static PlotModel LegendColumnSpacing()
+        {
+            var model = CreateModel(60);
+            model.LegendOrientation = LegendOrientation.Vertical;
+            model.LegendPosition = LegendPosition.TopRight;
+            model.LegendColumnSpacing = 100;
             return model;
         }
 

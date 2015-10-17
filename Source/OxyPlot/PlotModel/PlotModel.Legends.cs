@@ -390,7 +390,7 @@ namespace OxyPlot
                     {
                         // new line
                         x = this.LegendPadding;
-                        y += lineHeight;
+                        y += lineHeight + this.LegendLineSpacing;
                         lineHeight = 0;
                     }
 
@@ -426,7 +426,7 @@ namespace OxyPlot
                         seriesToRender.Add(s, new OxyRect(rect.Left + x, rect.Top + y, itemWidth, itemHeight));
                     }
 
-                    y += itemHeight;
+                    y += itemHeight + this.LegendLineSpacing;
 
                     // Update the max size of the items in the current column
                     maxItemWidth = Math.Max(maxItemWidth, itemWidth);
