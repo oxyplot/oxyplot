@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace SimpleDemo
+namespace ControllerDemo
 {
     using OxyPlot;
 
@@ -15,6 +15,7 @@ namespace SimpleDemo
     {
         public CustomPlotController()
         {
+            this.UnbindAll();
             this.BindKeyDown(OxyKey.Left, PlotCommands.PanRight);
             this.BindKeyDown(OxyKey.Right, PlotCommands.PanLeft);
         }

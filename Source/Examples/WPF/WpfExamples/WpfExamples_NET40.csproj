@@ -69,7 +69,24 @@
     <Compile Include="Examples\AlignedAxesDemo\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Examples\ControllerDemo\CustomPlotController.cs" />
+    <Compile Include="Examples\ControllerDemo\MainViewModel.cs" />
+    <Compile Include="Examples\ControllerDemo\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\LinearBarSeriesDemo\MainViewModel.cs" />
+    <Compile Include="Examples\LinearBarSeriesDemo\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\BindingObservableCollectionDemo\MainViewModel.cs" />
+    <Compile Include="Examples\BindingObservableCollectionDemo\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Examples\BoxPlotSeriesDemo\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\ToolTipDemo\MainViewModel.cs" />
+    <Compile Include="Examples\ToolTipDemo\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Examples\PerformanceDemo\MainWindow.xaml.cs">
@@ -81,8 +98,19 @@
     <Compile Include="Examples\ResizeDemo\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Examples\DataTemplateDemo\PlotViewDataTemplateWindow.xaml.cs">
+      <DependentUpon>PlotViewDataTemplateWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ScreenCapture.cs" />
     <Page Include="Examples\AnnotationDemo\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\ControllerDemo\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\LinearBarSeriesDemo\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -98,7 +126,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Examples\BindingObservableCollectionDemo\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Examples\BoxPlotSeriesDemo\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\ToolTipDemo\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -211,6 +247,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Examples\ScatterDemo\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\DataTemplateDemo\PlotViewDataTemplateWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -384,7 +424,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Images\ControllerDemo.png" />
+    <Resource Include="Images\ToolTipDemo.png" />
+    <Resource Include="Images\LinearBarSeriesDemo.png" />
+    <Resource Include="Images\DataTemplateDemo.png" />
     <Resource Include="Images\BoxPlotSeriesDemo.png" />
+    <Resource Include="Images\BindingObservableCollectionDemo.png" />
     <Resource Include="Images\AlignedAxesDemo.png" />
     <Resource Include="Images\PerformanceDemo.png" />
     <Resource Include="Images\ScatterErrorSeriesDemo.png" />
