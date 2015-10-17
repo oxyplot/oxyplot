@@ -18,6 +18,7 @@ All notable changes to this project will be documented in this file.
 - Expose PlotElement's TextColor property on WPF.Axes.Axis (#452)
 - ThreeColorLineSeries (#378)
 - Xamarin.Android, Xamarin.iOS and Xamarin.Forms packages built at AppVeyor (#274)
+- Add LegendLineSpacing property in PlotModel (#622)
 
 ### Changed
 - Renamed OxyPlot.WindowsUniversal to OxyPlot.Windows (#242)
