@@ -11,6 +11,7 @@ namespace DataTemplateDemo
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Windows;
 
     using OxyPlot;
@@ -27,22 +28,19 @@ namespace DataTemplateDemo
         public PlotViewDataTemplateWindow()
         {
             this.InitializeComponent();
-            this.Models = CreatePlotModels();
+            this.Models = CreateModels().ToArray();
             this.DataContext = this;
         }
 
-        public IList<PlotModel> Models { get; private set; }
+        public IList<Model> Models { get; private set; }
 
         private static Random r = new Random(13);
 
-        private static IList<PlotModel> CreatePlotModels()
+        private static IEnumerable<Model> CreateModels()
         {
-            var models = new List<PlotModel>();
-
             for (var i = 0; i < 3; i++)
             {
-                var model = new PlotModel();
-                model.Title = string.Format("Plot {0}", i + 1);
+                var pm = new PlotModel { Title = string.Format("Plot {0}", i + 1) };
 
                 var series = new LineSeries();
                 for (var j = 0; j < 10; j++)
@@ -50,12 +48,21 @@ namespace DataTemplateDemo
                     series.Points.Add(new DataPoint(j, r.NextDouble()));
                 }
 
-                model.Series.Add(series);
+                pm.Series.Add(series);
 
-                models.Add(model);
+                var pc = new PlotController();
+                pc.UnbindAll();
+                pc.BindKeyDown(OxyKey.Left, PlotCommands.PanRight);
+                pc.BindKeyDown(OxyKey.Right, PlotCommands.PanLeft);
+
+                yield return new Model { PlotModel = pm, PlotController = pc };
             }
+        }
 
-            return models;
+        public class Model
+        {
+            public PlotModel PlotModel { get; set; }
+            public IPlotController PlotController { get; set; }
         }
     }
 }
