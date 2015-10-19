@@ -65,6 +65,8 @@
     <Compile Include="Pages\PlotViewBackgroundColor.xaml.cs">
       <DependentUpon>PlotViewBackgroundColor.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\CarouselPageWithItemTemplate.cs" />
+    <Compile Include="Pages\TabbedPageWithItemTemplate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
