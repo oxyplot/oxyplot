@@ -516,6 +516,21 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("MinimumRange with Minimum")]
+        public static PlotModel MinimumRangeWithMinimum()
+        {
+            var model = new PlotModel { Title = "MinimumRange of 5 with a Minimum of 0", Subtitle = "Should show a range from 0 to 5" };
+            model.Axes.Add(
+                new LinearAxis
+                {
+                    Position = AxisPosition.Left,
+                    Minimum = 0,
+                    MinimumRange = 5
+                });
+
+            return model;
+        }
+
         [Example("Title with unit")]
         public static PlotModel TitleWithUnit()
         {

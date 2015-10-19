@@ -106,6 +106,7 @@ All notable changes to this project will be documented in this file.
 - Background color in the Xamarin.Forms views (#546)
 - IsVisible change in Xamarin.Forms.Platform.iOS (#546)
 - Rendering math text with syntax error gets stuck in an endless loop (#624)
+- Fix issue with MinimumRange not taking Minimum and Maximum values into account (#550)
 
 ## [2014.1.546] - 2014-10-22
 ### Added
