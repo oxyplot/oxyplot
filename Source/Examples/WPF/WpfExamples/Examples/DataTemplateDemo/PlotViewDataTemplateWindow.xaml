@@ -9,12 +9,12 @@
     <TabControl ItemsSource="{Binding Models}">
         <TabControl.ItemTemplate>
             <DataTemplate>
-                <TextBlock Text="{Binding Title}"/>
+                <TextBlock Text="{Binding PlotModel.Title}"/>
             </DataTemplate>
         </TabControl.ItemTemplate>
         <TabControl.ContentTemplate>
             <DataTemplate>
-                <oxy:PlotView Model="{Binding}" />
+                <oxy:PlotView Model="{Binding PlotModel}" Controller="{Binding PlotController}" />
             </DataTemplate>
         </TabControl.ContentTemplate>
     </TabControl>
