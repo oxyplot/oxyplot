@@ -1210,6 +1210,41 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("#635: PositionAtZeroCrossing Forces Value Axis Label")]
+        public static PlotModel PositionAtZeroCrossingForcesValueAxisLabel()
+        {
+            var plotModel = new PlotModel
+            {
+                Title = "PositionAtZeroCrossing Forces Value Axis Label",
+            };
+
+            var categoryAxis = new CategoryAxis
+            {
+                Position = AxisPosition.Bottom,
+                PositionAtZeroCrossing = true
+            };
+            var valueAxis = new LinearAxis
+            {
+                Position = AxisPosition.Left,
+                MinimumPadding = 0,
+                Minimum = -14,
+                Maximum = 14,
+                PositionAtZeroCrossing = true,
+                IsAxisVisible = false
+            };
+            plotModel.Axes.Add(categoryAxis);
+            plotModel.Axes.Add(valueAxis);
+            var series = new ColumnSeries();
+            series.Items.Add(new ColumnItem { Value = 3 });
+            series.Items.Add(new ColumnItem { Value = 14 });
+            series.Items.Add(new ColumnItem { Value = 11 });
+            series.Items.Add(new ColumnItem { Value = 12 });
+            series.Items.Add(new ColumnItem { Value = 7 });
+            plotModel.Series.Add(series);
+
+            return plotModel;
+        }
+
         /* NEW ISSUE TEMPLATE
         [Example("#123: Issue Description")]
         public static PlotModel IssueDescription()
