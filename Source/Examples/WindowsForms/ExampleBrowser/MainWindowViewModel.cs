@@ -21,6 +21,7 @@ namespace ExampleBrowser
         public MainWindowViewModel()
         {
             this.Examples = ExampleLibrary.Examples.GetList().OrderBy(e => e.Category);
+            this.SelectedExample = this.Examples.FirstOrDefault(ei => ei.Title == Properties.Settings.Default.SelectedExample);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -34,7 +35,12 @@ namespace ExampleBrowser
         public ExampleInfo SelectedExample
         {
             get { return this.selectedExample; }
-            set { this.selectedExample = value; this.RaisePropertyChanged("SelectedExample"); }
+            set
+            {
+                this.selectedExample = value; this.RaisePropertyChanged("SelectedExample");
+                Properties.Settings.Default.SelectedExample = value != null ? value.Title : null;
+                Properties.Settings.Default.Save();
+            }
         }
 
         protected void RaisePropertyChanged(string property)
