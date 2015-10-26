@@ -316,11 +316,13 @@ namespace OxyPlot.Series
         public override void Render(IRenderContext rc)
         {
             var actualPoints = this.ActualPointsList;
-            int n = actualPoints.Count;
-            if (n == 0)
+            
+            if(actualPoints == null || actualPoints.Count == 0)
             {
                 return;
             }
+            
+            int n = actualPoints.Count;
 
             var clippingRect = this.GetClippingRect();
 
