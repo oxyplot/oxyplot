@@ -1221,6 +1221,7 @@ namespace ExampleLibrary
             var categoryAxis = new CategoryAxis
             {
                 Position = AxisPosition.Bottom,
+                AxislineStyle = LineStyle.Solid,
                 PositionAtZeroCrossing = true
             };
             var valueAxis = new LinearAxis
@@ -1229,7 +1230,6 @@ namespace ExampleLibrary
                 MinimumPadding = 0,
                 Minimum = -14,
                 Maximum = 14,
-                PositionAtZeroCrossing = true,
                 IsAxisVisible = false
             };
             plotModel.Axes.Add(categoryAxis);

@@ -15,7 +15,7 @@ namespace ExampleLibrary
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
-    public class BarAndColumnSeriesExamples<TSeries, TItem>
+    public abstract class BarAndColumnSeriesExamples<TSeries, TItem>
         where TSeries : BarSeriesBase<TItem>, new()
         where TItem : BarItemBase, new()
     {
