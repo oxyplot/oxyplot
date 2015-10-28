@@ -22,6 +22,7 @@ namespace OxyPlot.Xamarin.Forms.Platform.Android
         {
             // Just bring this assembly into the current appdomain.
             // Forms.Init() should now find it!
+            PlotView.IsRendererInitialized = true;
         }
     }
 }
