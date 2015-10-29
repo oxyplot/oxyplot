@@ -16,10 +16,28 @@ namespace OxyPlot.Xamarin.Forms.Platform.iOS
     public class PlotViewRenderer : ViewRenderer<Xamarin.Forms.PlotView, PlotView>
     {
         /// <summary>
+        /// Initializes static members of the <see cref="PlotViewRenderer"/> class.
+        /// </summary>
+        static PlotViewRenderer()
+        {
+            Init();
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="PlotViewRenderer"/> class.
         /// </summary>
         public PlotViewRenderer()
         {
+            // Do not delete
+        }
+
+        /// <summary>
+        /// Initializes the renderer.
+        /// </summary>
+        /// <remarks>This method must be called before a <see cref="T:PlotView" /> is used.</remarks>
+        public static new void Init()
+        {
+            OxyPlot.Xamarin.Forms.PlotView.IsRendererInitialized = true;
         }
 
         /// <summary>

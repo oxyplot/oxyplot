@@ -49,6 +49,9 @@ All notable changes to this project will be documented in this file.
 - Change to semantic versioning (#595)
 - Change GTKSharp3 project to x86 (#599)
 - Change OxyPlot.Xamarin.Android to API Level 15 (#614)
+- Add Xamarin.Forms renderer initialization to PlotViewRenderer (#632)
+- Marked OxyPlot.Xamarin.Forms.Platform.*.Forms.Init() obsolete (#632)
+- Throw exception if Xamarin.Forms renderer is not 'initialized' (#492)
 
 ### Removed
 - StyleCop tasks (#556)
@@ -108,7 +111,6 @@ All notable changes to this project will be documented in this file.
 - Rendering math text with syntax error gets stuck in an endless loop (#624)
 - Fix issue with MinimumRange not taking Minimum and Maximum values into account (#550)
 - Do not set default Controller in PlotView ctor (#436)
-- Throw exception if Xamarin.Forms renderer is not 'initialized' (#492)
 
 ## [2014.1.546] - 2014-10-22
 ### Added

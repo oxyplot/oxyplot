@@ -37,8 +37,8 @@ namespace SimpleDemo.iOS
         /// </returns>
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
-            OxyPlot.Xamarin.Forms.Platform.iOS.Forms.Init();
             Xamarin.Forms.Forms.Init();
+            OxyPlot.Xamarin.Forms.Platform.iOS.PlotViewRenderer.Init();
             this.LoadApplication(new App());
 
             return base.FinishedLaunching(app, options);

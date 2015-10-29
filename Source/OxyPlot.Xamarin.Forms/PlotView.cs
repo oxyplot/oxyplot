@@ -43,15 +43,15 @@ namespace OxyPlot.Xamarin.Forms
                 {
                     case TargetPlatform.WinPhone:
                         message +=
-                            "\nRemember to add `OxyPlot.Xamarin.Forms.Platform.WP8.Forms.Init();` after `Xamarin.Forms.Forms.Init();` in the Windows Phone app project.";
+                            "\nRemember to add `OxyPlot.Xamarin.Forms.Platform.WP8.PlotViewRenderer.Init();` after `Xamarin.Forms.Forms.Init();` in the Windows Phone app project.";
                         break;
                     case TargetPlatform.Android:
                         message +=
-                            "\nRemember to add `OxyPlot.Xamarin.Forms.Platform.Android.Forms.Init();` after `Xamarin.Forms.Forms.Init();` in the Android app project.";
+                            "\nRemember to add `OxyPlot.Xamarin.Forms.Platform.Android.PlotViewRenderer.Init();` after `Xamarin.Forms.Forms.Init();` in the Android app project.";
                         break;
                     case TargetPlatform.iOS:
                         message +=
-                            "\nRemember to add `OxyPlot.Xamarin.Forms.Platform.iOS.Forms.Init();` after `Xamarin.Forms.Forms.Init();` in the iOS app project.";
+                            "\nRemember to add `OxyPlot.Xamarin.Forms.Platform.iOS.PlotViewRenderer.Init();` after `Xamarin.Forms.Forms.Init();` in the iOS app project.";
                         break;
                 }
                 throw new InvalidOperationException(message);

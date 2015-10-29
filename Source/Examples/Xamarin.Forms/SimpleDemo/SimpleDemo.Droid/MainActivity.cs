@@ -19,8 +19,8 @@ namespace SimpleDemo.Droid
         {
             base.OnCreate(bundle);
 
-            OxyPlot.Xamarin.Forms.Platform.Android.Forms.Init(); 
             Xamarin.Forms.Forms.Init(this, bundle);
+            OxyPlot.Xamarin.Forms.Platform.Android.PlotViewRenderer.Init();
             this.LoadApplication(new App());
         }
     }
