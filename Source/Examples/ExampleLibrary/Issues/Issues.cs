@@ -1210,6 +1210,68 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("#19: The minimum value is not mentioned on the axis I")]
+        public static PlotModel MinimumValueOnAxis()
+        {
+            var model = new PlotModel { Title = "Show minimum and maximum values on axis" };
+            model.Axes.Add(new LinearAxis
+            {
+                Position = AxisPosition.Left,
+                //ShowMinimumValue = true,
+                //ShowMaximumValue = true,
+                //MinimumValueStringFormat = "0.###",
+                //MaximumValueStringFormat = "0.###",
+                MaximumPadding = 0,
+                MinimumPadding = 0
+            });
+            model.Axes.Add(new LinearAxis
+            {
+                Position = AxisPosition.Bottom,
+                //ShowMinimumValue = true,
+                //ShowMaximumValue = true,
+                //MinimumValueStringFormat = "0.###",
+                //MaximumValueStringFormat = "0.###",
+                MaximumPadding = 0,
+                MinimumPadding = 0
+            });
+            var ls = new LineSeries();
+            ls.Points.Add(new DataPoint(0.14645, 0.14645));
+            ls.Points.Add(new DataPoint(9.85745, 9.85745));
+            model.Series.Add(ls);
+            return model;
+        }
+
+        [Example("#19: The minimum value is not mentioned on the axis II")]
+        public static PlotModel MinimumValueOnAxis2()
+        {
+            var model = new PlotModel { Title = "Show minimum and maximum values on axis" };
+            model.Axes.Add(new LinearAxis
+            {
+                Position = AxisPosition.Left,
+                //ShowMinimumValue = true,
+                //ShowMaximumValue = true,
+                //MinimumValueStringFormat = "0.###",
+                //MaximumValueStringFormat = "0.###",
+                MaximumPadding = 0,
+                MinimumPadding = 0
+            });
+            model.Axes.Add(new LinearAxis
+            {
+                Position = AxisPosition.Bottom,
+                //ShowMinimumValue = true,
+                //ShowMaximumValue = true,
+                //MinimumValueStringFormat = "0.###",
+                //MaximumValueStringFormat = "0.###",
+                MaximumPadding = 0,
+                MinimumPadding = 0
+            });
+            var ls = new LineSeries();
+            ls.Points.Add(new DataPoint(-0.14645, -0.14645));
+            ls.Points.Add(new DataPoint(10.15745, 10.15745));
+            model.Series.Add(ls);
+            return model;
+        }
+
         /* NEW ISSUE TEMPLATE
         [Example("#123: Issue Description")]
         public static PlotModel IssueDescription()
