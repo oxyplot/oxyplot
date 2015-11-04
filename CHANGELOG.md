@@ -49,6 +49,9 @@ All notable changes to this project will be documented in this file.
 - Change to semantic versioning (#595)
 - Change GTKSharp3 project to x86 (#599)
 - Change OxyPlot.Xamarin.Android to API Level 15 (#614)
+- Add Xamarin.Forms renderer initialization to PlotViewRenderer (#632)
+- Marked OxyPlot.Xamarin.Forms.Platform.*.Forms.Init() obsolete (#632)
+- Throw exception if Xamarin.Forms renderer is not 'initialized' (#492)
 
 ### Removed
 - StyleCop tasks (#556)

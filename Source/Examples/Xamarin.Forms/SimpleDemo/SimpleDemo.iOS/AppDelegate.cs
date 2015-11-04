@@ -8,8 +8,6 @@ namespace SimpleDemo.iOS
 {
     using Foundation;
 
-    using OxyPlot.Xamarin.Forms.Platform.iOS;
-
     using UIKit;
 
     using Xamarin.Forms.Platform.iOS;
@@ -39,8 +37,8 @@ namespace SimpleDemo.iOS
         /// </returns>
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
-            Forms.Init();
             Xamarin.Forms.Forms.Init();
+            OxyPlot.Xamarin.Forms.Platform.iOS.PlotViewRenderer.Init();
             this.LoadApplication(new App());
 
             return base.FinishedLaunching(app, options);

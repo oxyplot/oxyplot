@@ -18,7 +18,7 @@ namespace SimpleDemo2.WinPhone
 			SupportedOrientations = SupportedPageOrientation.PortraitOrLandscape;
 
 			global::Xamarin.Forms.Forms.Init ();
-            OxyPlot.Xamarin.Forms.Platform.WP8.Forms.Init();
+            OxyPlot.Xamarin.Forms.Platform.WP8.PlotViewRenderer.Init();
             LoadApplication(new SimpleDemo2.App ());
 		}
 	}

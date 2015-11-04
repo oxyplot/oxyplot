@@ -10,8 +10,6 @@ namespace SimpleDemo.Droid
     using Android.Content.PM;
     using Android.OS;
 
-    using OxyPlot.Xamarin.Forms.Platform.Android;
-
     using Xamarin.Forms.Platform.Android;
 
     [Activity(Label = "SimpleDemo", Icon = "@drawable/icon", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
@@ -21,8 +19,8 @@ namespace SimpleDemo.Droid
         {
             base.OnCreate(bundle);
 
-            Forms.Init(); 
             Xamarin.Forms.Forms.Init(this, bundle);
+            OxyPlot.Xamarin.Forms.Platform.Android.PlotViewRenderer.Init();
             this.LoadApplication(new App());
         }
     }

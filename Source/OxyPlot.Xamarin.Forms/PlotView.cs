@@ -9,6 +9,8 @@
 
 namespace OxyPlot.Xamarin.Forms
 {
+    using System;
+
     using OxyPlot;
 
     using global::Xamarin.Forms;
@@ -29,6 +31,34 @@ namespace OxyPlot.Xamarin.Forms
         public static readonly BindableProperty ModelProperty = BindableProperty.Create<PlotView, PlotModel>(p => p.Model, null);
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="PlotView"/> class.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">Renderer is not initialized</exception>
+        public PlotView()
+        {
+            if (!IsRendererInitialized)
+            {
+                var message = "Renderer is not initialized.";
+                switch (Device.OS)
+                {
+                    case TargetPlatform.WinPhone:
+                        message +=
+                            "\nRemember to add `OxyPlot.Xamarin.Forms.Platform.WP8.PlotViewRenderer.Init();` after `Xamarin.Forms.Forms.Init();` in the Windows Phone app project.";
+                        break;
+                    case TargetPlatform.Android:
+                        message +=
+                            "\nRemember to add `OxyPlot.Xamarin.Forms.Platform.Android.PlotViewRenderer.Init();` after `Xamarin.Forms.Forms.Init();` in the Android app project.";
+                        break;
+                    case TargetPlatform.iOS:
+                        message +=
+                            "\nRemember to add `OxyPlot.Xamarin.Forms.Platform.iOS.PlotViewRenderer.Init();` after `Xamarin.Forms.Forms.Init();` in the iOS app project.";
+                        break;
+                }
+                throw new InvalidOperationException(message);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the <see cref="PlotModel"/> to view.
         /// </summary>
         /// <value>The model.</value>
@@ -47,5 +77,11 @@ namespace OxyPlot.Xamarin.Forms
             get { return (PlotController)this.GetValue(ControllerProperty); }
             set { this.SetValue(ControllerProperty, value); }
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the renderer is "initialized".
+        /// </summary>
+        /// <value><c>true</c> if the renderer is initialized; otherwise, <c>false</c>.</value>
+        public static bool IsRendererInitialized { get; set; }
     }
 }
