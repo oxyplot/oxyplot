@@ -166,6 +166,25 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
+        /// Renders the legend symbol for the line series on the
+        /// specified rendering context.
+        /// </summary>
+        /// <param name="rc">The rendering context.</param>
+        /// <param name="legendBox">The bounding rectangle of the legend box.</param>
+        public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
+        {
+            var xmid = (legendBox.Left + legendBox.Right) / 2;
+            var ymid = (legendBox.Top + legendBox.Bottom) / 2;
+            var height = (legendBox.Bottom - legendBox.Top) * 0.8;
+            var width = height;
+            rc.DrawRectangleAsPolygon(
+                new OxyRect(xmid - (0.5 * width), ymid - (0.5 * height), width, height),
+                this.GetSelectableColor(this.ActualColor),
+                this.StrokeColor,
+                this.StrokeThickness);
+        }
+
+        /// <summary>
         /// Sets default values from the plot model.
         /// </summary>
         /// <param name="model">The plot model.</param>
