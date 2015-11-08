@@ -33,6 +33,12 @@
             </oxy:Plot>
         </TabItem>
         <TabItem Header="LineAnnotation">
+            <TabItem.Resources>
+                <Style x:Key="CustomLineAnnotationStyle" TargetType="oxy:LineAnnotation">
+                    <Setter Property="LineStyle" Value="Dot"/>
+                    <Setter Property="Color" Value="Black"/>
+                </Style>
+            </TabItem.Resources>
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
@@ -46,6 +52,7 @@
                     <oxy:Plot.Annotations>
                         <oxy:LineAnnotation Slope="0.1" Intercept="1" Text="First" />
                         <oxy:LineAnnotation Slope="0.3" Intercept="2" MaximumX="40" Color="Red" Text="Second" />
+                        <oxy:LineAnnotation Slope="0.3" Intercept="-6" Style="{StaticResource CustomLineAnnotationStyle}" Text="Black/Dotted by style" />
                         <oxy:LineAnnotation Type="Vertical" X="4" MaximumY="10" Color="Green" Text="Vertical" />
                         <oxy:LineAnnotation Type="Horizontal" Y="2" MinimumX="0" Color="Gold" Text="Horizontal" />
                     </oxy:Plot.Annotations>
