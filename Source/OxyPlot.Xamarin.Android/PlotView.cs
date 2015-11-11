@@ -348,13 +348,8 @@ namespace OxyPlot.Xamarin.Android
                 }
 
                 this.rc.SetTarget(canvas);
-                using (var bounds = new Rect())
-                {
-                    canvas.GetClipBounds(bounds);
-                    var width = bounds.Right - bounds.Left;
-                    var height = bounds.Bottom - bounds.Top;
-                    ((IPlotModel)actualModel).Render(this.rc, width / Scale, height / Scale);
-                }
+                
+                ((IPlotModel)actualModel).Render(this.rc, Width / Scale, Height / Scale);
             }
         }
 
