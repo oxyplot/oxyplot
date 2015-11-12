@@ -112,6 +112,7 @@ All notable changes to this project will be documented in this file.
 - Fix issue with MinimumRange not taking Minimum and Maximum values into account (#550)
 - Do not set default Controller in PlotView ctor (#436)
 - Corrected owner type of Wpf.PathAnnotation dependency properties (#645)
+- Fixed partial plot rendering on Xamarin.Android (#649)
 
 ## [2014.1.546] - 2014-10-22
 ### Added
