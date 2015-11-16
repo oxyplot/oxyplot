@@ -256,6 +256,7 @@ namespace OxyPlot
             this.LegendPadding = 8;
             this.LegendColumnSpacing = 8;
             this.LegendItemSpacing = 24;
+            this.LegendLineSpacing = 0;
             this.LegendMargin = 8;
 
             this.LegendBackground = OxyColors.Undefined;
@@ -410,9 +411,9 @@ namespace OxyPlot
         public double LegendBorderThickness { get; set; }
 
         /// <summary>
-        /// Gets or sets the legend column spacing.
+        /// Gets or sets the spacing between columns of legend items (only for vertical orientation).
         /// </summary>
-        /// <value>The legend column spacing.</value>
+        /// <value>The spacing in device independent units.</value>
         public double LegendColumnSpacing { get; set; }
 
         /// <summary>
@@ -453,10 +454,16 @@ namespace OxyPlot
         public LegendItemOrder LegendItemOrder { get; set; }
 
         /// <summary>
-        /// Gets or sets the legend spacing.
+        /// Gets or sets the horizontal spacing between legend items when the orientation is horizontal.
         /// </summary>
-        /// <value>The legend spacing.</value>
+        /// <value>The horizontal distance between items in device independent units.</value>
         public double LegendItemSpacing { get; set; }
+
+        /// <summary>
+        /// Gets or sets the vertical spacing between legend items.
+        /// </summary>
+        /// <value>The spacing in device independent units.</value>
+        public double LegendLineSpacing { get; set; }
 
         /// <summary>
         /// Gets or sets the legend margin.

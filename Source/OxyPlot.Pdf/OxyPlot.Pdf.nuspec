@@ -3,7 +3,7 @@
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <id>OxyPlot.Pdf</id>
     <title>OxyPlot PDF extensions (for Silverlight and NET4)</title>
-    <version>0.0.0</version>
+    <version>$version$</version>
     <authors>Oystein Bjorke</authors>
     <description>OxyPlot is a plotting library for .NET. This package contains .pdf export extensions for .NET 4 (based on PDFsharp) and Silverlight (based on SilverPDF).</description>
     <releaseNotes></releaseNotes>
@@ -15,14 +15,14 @@
     <dependencies>
       <group targetFramework="net40">
         <dependency id="PDFsharp-MigraDoc-GDI" version="[1.32.4334]"/>
-        <dependency id="OxyPlot.Core" version="[0.0.0]"/>
+        <dependency id="OxyPlot.Core" version="[$version$]"/>
       </group>
       <group targetFramework="net45">
         <dependency id="PDFsharp-MigraDoc-GDI" version="[1.32.4334]"/>
-        <dependency id="OxyPlot.Core" version="[0.0.0]"/>
+        <dependency id="OxyPlot.Core" version="[$version$]"/>
       </group>
       <group>
-        <dependency id="OxyPlot.Core" version="[0.0.0]"/>
+        <dependency id="OxyPlot.Core" version="[$version$]"/>
       </group>
     </dependencies>
   </metadata>

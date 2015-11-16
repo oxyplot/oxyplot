@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="IssueDemos.MainPage" Title="Select demo">
+  <ListView x:Name="list1" ItemsSource="{Binding DemoPages}" ItemTapped="ListView_OnItemTapped" VerticalOptions="Fill" HorizontalOptions="Fill">
+    <ListView.ItemTemplate>
+      <DataTemplate>
+        <TextCell Text="{Binding Title}" Detail="{Binding Details}"/>
+      </DataTemplate>
+    </ListView.ItemTemplate>
+  </ListView>
+</ContentPage>

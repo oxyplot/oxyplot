@@ -8,8 +8,6 @@ namespace SimpleDemo.WinPhone
 {
     using Microsoft.Phone.Controls;
 
-    using OxyPlot.Xamarin.Forms.Platform.WP8;
-
     using Xamarin.Forms.Platform.WinPhone;
 
     /// <summary>
@@ -25,8 +23,8 @@ namespace SimpleDemo.WinPhone
             this.InitializeComponent();
             this.SupportedOrientations = SupportedPageOrientation.PortraitOrLandscape;
 
-            Forms.Init();
             Xamarin.Forms.Forms.Init();
+            OxyPlot.Xamarin.Forms.Platform.WP8.PlotViewRenderer.Init();
             this.LoadApplication(new SimpleDemo.App());
         }
     }

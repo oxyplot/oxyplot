@@ -722,10 +722,21 @@ namespace OxyPlot.Axes
             var range = this.ActualMaximum - this.ActualMinimum;
             if (range < this.MinimumRange)
             {
-                var average = (this.ActualMaximum + this.ActualMinimum) * 0.5;
-                var delta = this.MinimumRange / 2;
-                this.ActualMinimum = average - delta;
-                this.ActualMaximum = average + delta;
+                if (!double.IsNaN(this.Minimum) && !double.IsNaN(this.Maximum))
+                {
+                    var average = (this.ActualMaximum + this.ActualMinimum) * 0.5;
+                    var delta = this.MinimumRange / 2;
+                    this.ActualMinimum = average - delta;
+                    this.ActualMaximum = average + delta;
+                }
+                else if (!double.IsNaN(this.Minimum) && double.IsNaN(this.Maximum))
+                {
+                    this.ActualMaximum = this.Minimum + this.MinimumRange;
+                }
+                else if (!double.IsNaN(this.Maximum) && double.IsNaN(this.Minimum))
+                {
+                    this.ActualMinimum = this.Maximum - this.MinimumRange;
+                }
             }
 
             if (this.AbsoluteMaximum <= this.AbsoluteMinimum)

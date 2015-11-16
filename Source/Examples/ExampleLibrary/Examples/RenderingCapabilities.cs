@@ -175,7 +175,7 @@ namespace ExampleLibrary
                     var text2 = "     A B";
                     rc.DrawText(origin2, text2, OxyColors.Red, fontFamily, fontSize, fontWeight, rotation, HorizontalAlignment.Left, VerticalAlignment.Middle);
                     var size2 = rc.MeasureText(text2, fontFamily, fontSize, fontWeight);
-                    var outline2 = size.GetPolygon(origin2, rotation, HorizontalAlignment.Left, VerticalAlignment.Middle).ToArray();
+                    var outline2 = size2.GetPolygon(origin2, rotation, HorizontalAlignment.Left, VerticalAlignment.Middle).ToArray();
                     rc.DrawPolygon(outline2, OxyColors.Undefined, OxyColors.Blue);
                 }
             }));

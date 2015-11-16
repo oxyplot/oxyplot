@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:oxy="clr-namespace:OxyPlot.Xamarin.Forms;assembly=OxyPlot.Xamarin.Forms"
+             xmlns:demoApp="clr-namespace:DemoApp;assembly=DemoApp"
+             x:Class="IssueDemos.ChangeVisibility">
+  <StackLayout>
+    <Switch BindingContext="{x:Reference Name=plotView1}" IsToggled="{Binding Path=IsVisible}"/>
+    <oxy:PlotView x:Name="plotView1" Model="{Binding Model}" IsVisible="False" HorizontalOptions="Fill" HeightRequest="200"/>
+  </StackLayout>
+</ContentPage>

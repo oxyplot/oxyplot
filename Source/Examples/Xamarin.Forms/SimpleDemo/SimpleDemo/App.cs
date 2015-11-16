@@ -14,7 +14,7 @@ namespace SimpleDemo
     using Xamarin.Forms;
 
     /// <summary>
-    /// Represents the simple demo app.
+    /// Represents a simple demo app (portable library).
     /// </summary>
     public class App : Application
     {
@@ -52,27 +52,6 @@ namespace SimpleDemo
                     HorizontalOptions = LayoutOptions.Fill,
                 },
             };
-        }
-
-        /// <summary>
-        /// Handles when your app starts.
-        /// </summary>
-        protected override void OnStart()
-        {
-        }
-
-        /// <summary>
-        /// Handles when your app sleeps.
-        /// </summary>
-        protected override void OnSleep()
-        {
-        }
-
-        /// <summary>
-        /// Handles when your app resumes.
-        /// </summary>
-        protected override void OnResume()
-        {
         }
     }
 }

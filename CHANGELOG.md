@@ -17,6 +17,8 @@ All notable changes to this project will be documented in this file.
 - Added TitleToolTip to PlotModel (#508)
 - Expose PlotElement's TextColor property on WPF.Axes.Axis (#452)
 - ThreeColorLineSeries (#378)
+- Xamarin.Android, Xamarin.iOS and Xamarin.Forms packages built at AppVeyor (#274)
+- Add LegendLineSpacing property in PlotModel (#622)
 
 ### Changed
 - Renamed OxyPlot.WindowsUniversal to OxyPlot.Windows (#242)
@@ -33,7 +35,7 @@ All notable changes to this project will be documented in this file.
 - Current CandleStickSeries renamed to OldCandleStickSeries, replaced by a faster implementation (#369)
 - Fixed axis min/max calc and axis assignment for CandleStick + VolumeSeries (#389)
 - Invalidate plot when ItemsSource contents change (INotifyCollectionChanged) on WPF only (#406)
-- Xamarin.Forms references updated to 1.4.2 (#293,#439)
+- Xamarin.Forms references updated to 1.5.0.6447 (#293,#439)
 - Change OxyPlot.Xamarin.Forms.Platform.Android target to Android level 15 (#439)
 - Changed OxyPlot.Xamarin.Forms to portable Profile259 (#439)
 - PlotController should not intercept input per default (#446)
@@ -44,6 +46,12 @@ All notable changes to this project will be documented in this file.
 - Extracted CreateReport() and CreateTextReport() from PlotModel (#517)
 - Renamed GetLastUpdateException to GetLastPlotException and added the ability to see render exceptions(#543)
 - Move TileMapAnnotation class to example library (#567)
+- Change to semantic versioning (#595)
+- Change GTKSharp3 project to x86 (#599)
+- Change OxyPlot.Xamarin.Android to API Level 15 (#614)
+- Add Xamarin.Forms renderer initialization to PlotViewRenderer (#632)
+- Marked OxyPlot.Xamarin.Forms.Platform.*.Forms.Init() obsolete (#632)
+- Throw exception if Xamarin.Forms renderer is not 'initialized' (#492)
 
 ### Removed
 - StyleCop tasks (#556)
@@ -83,7 +91,7 @@ All notable changes to this project will be documented in this file.
 - Support WinPhone 8.1 in core NuGet package (#161)
 - Draw legend line with custom pattern (#356)
 - iOS pan/zoom stability (#336)
-- Xamarin.Forms iOS PlotViewRenderer crash (#458) 
+- Xamarin.Forms iOS PlotViewRenderer crash (#458)
 - Inaccurate tracker when using LogarithmicAxis (#443)
 - Fix reset of transforms in WinForms render context (#489)
 - Fix StringFormat for TimeSpanAxis not recognizing f, ff, fff, etc (#330)
@@ -97,6 +105,14 @@ All notable changes to this project will be documented in this file.
 - Fix rendering of rotated 'math' text (#569, #448)
 - Export demo (WPF) (#568)
 - Fixing a double comparison issue causing infinite loop (#587)
+- Fix null reference exception when ActualPoints was null rendering a StairStepSeries (#582)
+- Background color in the Xamarin.Forms views (#546)
+- IsVisible change in Xamarin.Forms.Platform.iOS (#546)
+- Rendering math text with syntax error gets stuck in an endless loop (#624)
+- Fix issue with MinimumRange not taking Minimum and Maximum values into account (#550)
+- Do not set default Controller in PlotView ctor (#436)
+- Corrected owner type of Wpf.PathAnnotation dependency properties (#645)
+- Fixed partial plot rendering on Xamarin.Android (#649)
 
 ## [2014.1.546] - 2014-10-22
 ### Added

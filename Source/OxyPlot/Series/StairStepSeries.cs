@@ -141,7 +141,7 @@ namespace OxyPlot.Series
         /// <param name="rc">The rendering context.</param>
         public override void Render(IRenderContext rc)
         {
-            if (this.ActualPoints.Count == 0)
+            if (this.ActualPoints == null || this.ActualPoints.Count == 0)
             {
                 return;
             }

@@ -19,6 +19,31 @@ namespace OxyPlot.Xamarin.Forms.Platform.Android
     public class PlotViewRenderer : ViewRenderer<Xamarin.Forms.PlotView, PlotView>
     {
         /// <summary>
+        /// Initializes static members of the <see cref="PlotViewRenderer"/> class.
+        /// </summary>
+        static PlotViewRenderer()
+        {
+            Init();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PlotViewRenderer"/> class.
+        /// </summary>
+        public PlotViewRenderer()
+        {
+            // Do not delete
+        }
+
+        /// <summary>
+        /// Initializes the renderer.
+        /// </summary>
+        /// <remarks>This method must be called before a <see cref="T:PlotView" /> is used.</remarks>
+        public static void Init()
+        {
+            OxyPlot.Xamarin.Forms.PlotView.IsRendererInitialized = true;
+        }
+
+        /// <summary>
         /// Raises the element changed event.
         /// </summary>
         /// <param name="e">The event arguments.</param>
@@ -36,10 +61,7 @@ namespace OxyPlot.Xamarin.Forms.Platform.Android
                 Controller = this.Element.Controller
             };
 
-            if (this.Element.Model != null && this.Element.Model.Background.IsVisible())
-            {
-                plotView.SetBackgroundColor(this.Element.Model.Background.ToColor());
-            }
+            plotView.SetBackgroundColor(this.Element.BackgroundColor.ToAndroid());
 
             this.SetNativeControl(plotView);
         }
@@ -65,6 +87,11 @@ namespace OxyPlot.Xamarin.Forms.Platform.Android
             if (e.PropertyName == Xamarin.Forms.PlotView.ControllerProperty.PropertyName)
             {
                 this.Control.Controller = this.Element.Controller;
+            }
+
+            if (e.PropertyName == VisualElement.BackgroundColorProperty.PropertyName)
+            {
+                this.Control.SetBackgroundColor(this.Element.BackgroundColor.ToAndroid());
             }
         }
     }

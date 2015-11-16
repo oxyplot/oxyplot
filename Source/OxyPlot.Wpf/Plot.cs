@@ -261,6 +261,7 @@ namespace OxyPlot.Wpf
             m.LegendPadding = this.LegendPadding;
             m.LegendColumnSpacing = this.LegendColumnSpacing;
             m.LegendItemSpacing = this.LegendItemSpacing;
+            m.LegendLineSpacing = this.LegendLineSpacing;
             m.LegendMargin = this.LegendMargin;
             m.LegendMaxWidth = this.LegendMaxWidth;
 
