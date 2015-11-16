@@ -201,6 +201,17 @@ namespace OxyPlot.Axes
                     }
 
                     break;
+                case DateTimeIntervalType.Quarters:
+                    this.ActualMajorStep = 4;
+                    this.ActualMinorStep = 3;
+                    this.actualMinorIntervalType = DateTimeIntervalType.Months;
+                    if (this.ActualStringFormat == null)
+                    {
+                        this.ActualStringFormat = "qq yyyy";
+                    }
+
+                    break;
+
                 case DateTimeIntervalType.Months:
                     this.actualMinorIntervalType = DateTimeIntervalType.Months;
                     if (this.ActualStringFormat == null)
@@ -283,6 +294,15 @@ namespace OxyPlot.Axes
             int week = this.GetWeek(time);
             fmt = fmt.Replace("ww", week.ToString("00"));
             fmt = fmt.Replace("w", week.ToString(CultureInfo.InvariantCulture));
+
+
+            int quarter = this.GetQuarter(time);
+            fmt = fmt.Replace("qq",
+                              quarter.ToString("00"));
+            fmt = fmt.Replace("q",
+                              quarter.ToString(CultureInfo.InvariantCulture));
+
+
             fmt = string.Concat("{0:", fmt, "}");
             return string.Format(this.ActualCulture, fmt, time);
         }
@@ -296,6 +316,7 @@ namespace OxyPlot.Axes
         protected override double CalculateActualInterval(double availableSize, double maxIntervalSize)
         {
             const double Year = 365.25;
+            const double Quarter = 91.3125;
             const double Month = 30.5;
             const double Week = 7;
             const double Day = 1.0;
@@ -310,7 +331,7 @@ namespace OxyPlot.Axes
                                         Second, 2 * Second, 5 * Second, 10 * Second, 30 * Second, Minute, 2 * Minute,
                                         5 * Minute, 10 * Minute, 30 * Minute, Hour, 4 * Hour, 8 * Hour, 12 * Hour, Day,
                                         2 * Day, 5 * Day, Week, 2 * Week, Month, 2 * Month, 3 * Month, 4 * Month,
-                                        6 * Month, Year
+                                        6 * Month, Quarter, 2 * Quarter, 3 * Quarter, 4 * Quarter, Year
                                     };
 
             double interval = goodIntervals[0];
@@ -359,6 +380,11 @@ namespace OxyPlot.Axes
                     this.actualIntervalType = DateTimeIntervalType.Months;
                 }
 
+                if (interval >= 91.3125)
+                {
+                    this.actualIntervalType = DateTimeIntervalType.Quarters;
+                }
+
                 if (range >= 365.25)
                 {
                     this.actualIntervalType = DateTimeIntervalType.Years;
@@ -369,6 +395,12 @@ namespace OxyPlot.Axes
             {
                 double monthsRange = range / 30.5;
                 interval = this.CalculateActualInterval(availableSize, maxIntervalSize, monthsRange);
+            }
+
+            if (this.actualIntervalType == DateTimeIntervalType.Quarters)
+            {
+                double quartersRange = range / 91.3125;
+                interval = this.CalculateActualInterval(availableSize, maxIntervalSize, quartersRange);
             }
 
             if (this.actualIntervalType == DateTimeIntervalType.Years)
@@ -382,6 +414,9 @@ namespace OxyPlot.Axes
                 switch (this.actualIntervalType)
                 {
                     case DateTimeIntervalType.Years:
+                        this.actualMinorIntervalType = DateTimeIntervalType.Months;
+                        break;
+                    case DateTimeIntervalType.Quarters:
                         this.actualMinorIntervalType = DateTimeIntervalType.Months;
                         break;
                     case DateTimeIntervalType.Months:
@@ -436,6 +471,11 @@ namespace OxyPlot.Axes
                     // make sure the first tick is at the 1st of a month
                     start = new DateTime(start.Year, start.Month, 1);
                     break;
+                case DateTimeIntervalType.Quarters:
+
+                    // make sure the first tick is at the 1st of a month
+                    start = new DateTime(start.Year, 1, 1);
+                    break;
                 case DateTimeIntervalType.Years:
 
                     // make sure the first tick is at Jan 1st
@@ -475,6 +515,9 @@ namespace OxyPlot.Axes
                     {
                         case DateTimeIntervalType.Months:
                             current = current.AddMonths((int)Math.Ceiling(step));
+                            break;
+                        case DateTimeIntervalType.Quarters:
+                            current = current.AddMonths(3 * (int)Math.Ceiling(step));
                             break;
                         case DateTimeIntervalType.Years:
                             current = current.AddYears((int)Math.Ceiling(step));
@@ -524,6 +567,29 @@ namespace OxyPlot.Axes
         private int GetWeek(DateTime date)
         {
             return this.ActualCulture.Calendar.GetWeekOfYear(date, this.CalendarWeekRule, this.FirstDayOfWeek);
+        }
+
+        private int GetQuarter(DateTime date)
+        {
+            switch (date.Month)
+            {
+
+                case 1:
+                case 2:
+                case 3:
+                    return 1;
+                case 4:
+                case 5:
+                case 6:
+                    return 2;
+                case 7:
+                case 8:
+                case 9:
+                    return 3;
+                default:
+                    return 4;
+
+            }
         }
     }
 }

@@ -62,6 +62,11 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Interval type is years.
         /// </summary>
-        Years = 9,
+        Quarters = 9,
+
+        /// <summary>
+        /// Interval type is years.
+        /// </summary>
+        Years = 10,
     }
 }
