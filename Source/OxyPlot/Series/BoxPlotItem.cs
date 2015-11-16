@@ -11,6 +11,9 @@ namespace OxyPlot.Series
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading;
+    using static OxyPlot.EnumerableExtensions;
 
     /// <summary>
     /// Represents an item in a <see cref="BoxPlotSeries" />.
@@ -80,11 +83,87 @@ namespace OxyPlot.Series
             this.Tag = null;
         }
 
+
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BoxPlotItem" /> struct.
+        /// </summary>
+        /// <param name="x">The x.</param>
+        /// <param name="dataPoints">Data series with the original values</param>
+        /// <param name="whiskerType">Type of whisker values.</param>
+        public BoxPlotItem(double x,
+                           IList<double> dataPoints,
+                            OxyPlot.Series.BoxPlotWhiskerType whiskerType = OxyPlot.Series.BoxPlotWhiskerType.IQR)
+        {
+            double[] dataPointsArr = dataPoints.ToArray();
+            Array.Sort(dataPointsArr);
+            this.Datapoints = dataPointsArr;
+            double mean = this.Datapoints.Mean();
+            double median = this.Datapoints.Median();
+            double UpperWhisker = median;
+            double LowerWhisker = median;
+            double Q1 = this.Datapoints.FirstQuartile();
+            double Q3 = this.Datapoints.ThirdQuartile();
+
+            this.Outliers = new List<double>();
+            this.Tag = null;
+
+            switch (whiskerType)
+            {
+                case OxyPlot.Series.BoxPlotWhiskerType.IQR:
+                    double IQR = Q3 - Q1;
+                    UpperWhisker = (Q3 + 1.5 * IQR);
+                    LowerWhisker = (Q1 - 1.5 * IQR);
+                    break;
+                case OxyPlot.Series.BoxPlotWhiskerType.MinMax:
+                    double min = (from bpi in this.Datapoints
+                                  select bpi).Min();
+                    double max = (from bpi in this.Datapoints
+                                  select bpi).Max();
+                    UpperWhisker = max;
+                    LowerWhisker = min;
+                    break;
+                case OxyPlot.Series.BoxPlotWhiskerType.NinthPercentile:
+                    double NinthPercentile = this.Datapoints.PercentilePos(9);
+                    double NinetyFirstPercentile = this.Datapoints.PercentilePos(91);
+                    UpperWhisker = NinetyFirstPercentile;
+                    LowerWhisker = NinthPercentile;
+                    break;
+                case OxyPlot.Series.BoxPlotWhiskerType.SecondPercentile:
+                    double SecondPercentile = this.Datapoints.PercentilePos(2);
+                    double NinetyEighthPercentile = this.Datapoints.PercentilePos(98);
+                    UpperWhisker = NinetyEighthPercentile;
+                    LowerWhisker = SecondPercentile;
+                    break;
+                case OxyPlot.Series.BoxPlotWhiskerType.StDev:
+                    double StDev = this.Datapoints.StandardDeviation();
+                    UpperWhisker = mean + StDev;
+                    LowerWhisker = mean - StDev;
+                    break;
+            }
+
+            foreach (double d in this.Datapoints)
+            {
+                if (d < LowerWhisker || d > UpperWhisker)
+                {
+                    this.Outliers.Add(d);
+                }
+            }
+            this.X = x;
+            this.LowerWhisker = LowerWhisker;
+            this.BoxBottom = Q1;
+            this.Median = median;
+            this.BoxTop = Q3;
+            this.UpperWhisker = UpperWhisker;
+            this.Mean = double.NaN;
+        }
+
         /// <summary>
         /// Gets or sets the box bottom value (usually the 25th percentile, Q1).
         /// </summary>
         /// <value>The lower quartile value.</value>
-        public double BoxBottom { get; set; }
+        public double BoxBottom
+        { get; set; }
 
         /// <summary>
         /// Gets or sets the box top value (usually the 75th percentile, Q3)).
@@ -115,6 +194,13 @@ namespace OxyPlot.Series
         /// </summary>
         /// <value>The outliers.</value>
         public IList<double> Outliers { get; set; }
+
+        /// <summary>
+        /// Gets or sets the datapoints.
+        /// </summary>
+        /// <value>The datapoints.</value>
+        public IList<double> Datapoints { get; set; }
+
 
         /// <summary>
         /// Gets or sets the tag.

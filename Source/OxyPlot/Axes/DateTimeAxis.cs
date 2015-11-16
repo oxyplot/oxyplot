@@ -23,6 +23,7 @@ namespace OxyPlot.Axes
     /// The StringFormat value can be used to force formatting of the axis values
     /// <code>"yyyy-MM-dd"</code> shows date
     /// <code>"w"</code> or <code>"ww"</code> shows week number
+    /// <code>"q"</code> or <code>"qq"</code> shows quarter number
     /// <code>"h:mm"</code> shows hours and minutes</remarks>
     public class DateTimeAxis : LinearAxis
     {
