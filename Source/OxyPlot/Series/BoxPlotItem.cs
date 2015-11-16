@@ -83,8 +83,6 @@ namespace OxyPlot.Series
             this.Tag = null;
         }
 
-
-
         /// <summary>
         /// Initializes a new instance of the <see cref="BoxPlotItem" /> struct.
         /// </summary>
@@ -155,7 +153,7 @@ namespace OxyPlot.Series
             this.Median = median;
             this.BoxTop = Q3;
             this.UpperWhisker = UpperWhisker;
-            this.Mean = double.NaN;
+            this.Mean = mean;
         }
 
         /// <summary>
