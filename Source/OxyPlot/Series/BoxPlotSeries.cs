@@ -22,7 +22,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// The default tracker format string
         /// </summary>
-        public new const string DefaultTrackerFormatString = "{0}\n{1}: {2}\nUpper Whisker: {3:N2}\nThird Quartil: {4:N2}\nMedian: {5:N2}\nFirst Quartil: {6:N2}\nLower Whisker: {7:N2}\nMean: {8:N2}";
+        public new const string DefaultTrackerFormatString = "{0}\n{1}: {2}\nUpper Whisker: {3:N2}\nThird Quartile: {4:N2}\nMedian: {5:N2}\nFirst Quartile: {6:N2}\nLower Whisker: {7:N2}\nMean: {8:N2}";
 
         /// <summary>
         /// The items from the items source.
