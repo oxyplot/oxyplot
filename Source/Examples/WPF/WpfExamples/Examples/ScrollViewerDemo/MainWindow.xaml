@@ -1,0 +1,9 @@
+﻿<Window x:Class="ScrollViewerDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf" Title="ScrollViewerDemo" Height="480" Width="640">
+    <Grid>
+        <ScrollViewer>
+            <oxy:PlotView Model="{Binding Plot}" Height="1000"/>
+        </ScrollViewer>
+    </Grid>
+</Window>
