@@ -121,7 +121,7 @@ namespace OxyPlot.Series
             {
                 return this.ItemsSource != null 
                     ? this.itemsSourcePoints2 
-                    : (this.points2.Any() ? this.points2 : this.Points.Select(p => new DataPoint(p.X, ConstantY2)));
+                    : (this.points2.Any() ? this.points2 : this.Points.Select(p => new DataPoint(p.X, ConstantY2)).ToList());
             }
         }
 
