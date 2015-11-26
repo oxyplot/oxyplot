@@ -10,6 +10,7 @@
 namespace OxyPlot.Series
 {
     using System.Collections.Generic;
+    using System.Linq;
 
     /// <summary>
     /// Represents an area series that fills the polygon defined by two sets of points or one set of points and a constant.
