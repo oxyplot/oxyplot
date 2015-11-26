@@ -118,7 +118,9 @@ namespace OxyPlot.Series
         {
             get
             {
-                return this.ItemsSource != null ? this.itemsSourcePoints2 : this.points2;
+                return this.ItemsSource != null 
+                    ? this.itemsSourcePoints2 
+                    : (this.points2.Any() ? this.points2 : this.Points.Select(p => new DataPoint(p.X, ConstantY2));
             }
         }
 
