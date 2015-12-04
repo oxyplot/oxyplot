@@ -267,6 +267,7 @@ namespace OxyPlot
             this.LegendTitleColor = OxyColors.Automatic;
 
             this.LegendMaxWidth = double.NaN;
+            this.LegendMaxHeight = double.NaN;
             this.LegendPlacement = LegendPlacement.Inside;
             this.LegendPosition = LegendPosition.RightTop;
             this.LegendOrientation = LegendOrientation.Vertical;
@@ -476,6 +477,12 @@ namespace OxyPlot
         /// </summary>
         /// <value>The max width of the legend.</value>
         public double LegendMaxWidth { get; set; }
+
+        /// <summary>
+        /// Gets or sets the max height of the legend.
+        /// </summary>
+        /// <value>The max height of the legend.</value>
+        public double LegendMaxHeight { get; set; }
 
         /// <summary>
         /// Gets or sets the legend orientation.

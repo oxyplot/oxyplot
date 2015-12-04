@@ -500,7 +500,8 @@ namespace OxyPlot
 
             // Find the available size for the legend box
             var availableLegendWidth = plotArea.Width;
-            var availableLegendHeight = plotArea.Height;
+            var availableLegendHeight = double.IsNaN(this.LegendMaxHeight) ?
+                plotArea.Height : Math.Min(plotArea.Height, this.LegendMaxHeight);
             if (this.LegendPlacement == LegendPlacement.Inside)
             {
                 availableLegendWidth -= this.LegendMargin * 2;
