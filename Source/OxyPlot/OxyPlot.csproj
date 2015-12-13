@@ -65,6 +65,7 @@
     <Compile Include="Rendering\OxySizeExtensions.cs" />
     <Compile Include="Reporting\PlotModelExtensions.cs" />
     <Compile Include="Series\BarSeries\LinearBarSeries.cs" />
+    <Compile Include="Series\BoxPlotWhiskerType.cs" />
     <Compile Include="Series\IScatterPointProvider.cs" />
     <Compile Include="Input\Gestures\OxyMouseEnterGesture.cs" />
     <Compile Include="PlotController\EventArgs\OxyInputEventArgs.cs" />
@@ -344,5 +345,3 @@
   -->
   <ItemGroup />
 </Project>
-
-
