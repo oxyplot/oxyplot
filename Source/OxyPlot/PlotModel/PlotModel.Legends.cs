@@ -466,6 +466,11 @@ namespace OxyPlot
                 size.Width = this.LegendMaxWidth;
             }
 
+            if (!double.IsNaN(this.LegendMaxHeight) && size.Height > this.LegendMaxHeight)
+            {
+                size.Height = this.LegendMaxHeight;
+            }
+
             return size;
         }
     }

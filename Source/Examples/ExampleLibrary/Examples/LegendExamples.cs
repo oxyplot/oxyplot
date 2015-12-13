@@ -145,6 +145,17 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("LegendMaxHeight (vertical legend orientation)")]
+        public static PlotModel LegendBottomCenterOutsideWithMaxHeight()
+        {
+            var model = CreateModel();
+            model.LegendPlacement = LegendPlacement.Outside;
+            model.LegendPosition = LegendPosition.BottomCenter;
+            model.LegendOrientation = LegendOrientation.Vertical;
+            model.LegendMaxHeight = 75.0;
+            return model;
+        }
+
         private static PlotModel CreateModel(int n = 20)
         {
             var model = new PlotModel { Title = "LineSeries", LegendBackground = OxyColor.FromAColor(200, OxyColors.White), LegendBorder = OxyColors.Black };
