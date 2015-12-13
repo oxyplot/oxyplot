@@ -66,6 +66,7 @@ All notable changes to this project will be documented in this file.
 - Remove SL4 support (#115)
 - Remove NET35 support (#115)
 - PlotElement.Format method. Use StringHelper.Format instead.
+- EnumerableExtensions.Reverse removed (#677)
 
 ### Fixed
 - HeatMapSeries.GetValue returns NaN instead of calculating a wrong value in proximity to NaN (#256)
