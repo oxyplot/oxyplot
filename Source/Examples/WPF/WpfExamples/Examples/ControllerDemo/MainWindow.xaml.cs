@@ -23,6 +23,7 @@ namespace ControllerDemo
         public MainWindow()
         {
             this.InitializeComponent();
+            this.plotView2.ActualController.UnbindAll();
         }
    }
 }

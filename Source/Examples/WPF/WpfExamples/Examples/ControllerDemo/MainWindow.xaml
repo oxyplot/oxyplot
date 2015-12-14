@@ -7,9 +7,21 @@
     <Window.DataContext>
         <local:MainViewModel />
     </Window.DataContext>
-    <Grid>
-        <!-- The OxyPlot control is binding to a PlotModel and a PlotController in the MainViewModel -->
-        <oxy:PlotView Model="{Binding Model}"
-                      Controller="{Binding Controller}" />
-    </Grid>
+    <TabControl>
+        <TabItem Header="Custom controller">
+            <!-- The OxyPlot control is binding to a PlotModel and a PlotController in the MainViewModel -->
+            <oxy:PlotView Model="{Binding Model}"
+                          Controller="{Binding Controller}" />
+        </TabItem>
+        <TabItem Header="Default controllers">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <oxy:PlotView Model="{Binding Model1}" />
+                <oxy:PlotView Grid.Column="1" x:Name="plotView2" Model="{Binding Model2}" />
+            </Grid>
+        </TabItem>
+    </TabControl>
 </Window>
