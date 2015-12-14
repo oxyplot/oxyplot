@@ -21,25 +21,27 @@ namespace OxyPlot.Tests
         [Test]
         public void ToDouble_ValidDate()
         {
-            Assert.AreEqual(40616, DateTimeAxis.ToDouble(new DateTime(2011, 3, 15)));
+            var date = new DateTime(2011, 3, 15);
+            Assert.AreEqual(date.ToOADate(), DateTimeAxis.ToDouble(date));
         }
 
         [Test]
         public void ToDouble_NoDate()
         {
-            Assert.AreEqual(-693594, DateTimeAxis.ToDouble(new DateTime()));
+            Assert.AreEqual(-693593, DateTimeAxis.ToDouble(new DateTime()));
         }
 
         [Test]
         public void ToDateTime_ValidDate()
         {
-            Assert.AreEqual(new DateTime(2011, 3, 15), DateTimeAxis.ToDateTime(40616));
+            var date = new DateTime(2011, 3, 15);
+            Assert.AreEqual(date, DateTimeAxis.ToDateTime(date.ToOADate()));
         }
 
         [Test]
         public void ToDateTime_NoDate()
         {
-            Assert.AreEqual(new DateTime(), DateTimeAxis.ToDateTime(-693594));
+            Assert.AreEqual(new DateTime(), DateTimeAxis.ToDateTime(-693593));
         }
 
         [Test]
