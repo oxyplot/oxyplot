@@ -118,6 +118,7 @@ All notable changes to this project will be documented in this file.
 - Corrected owner type of Wpf.PathAnnotation dependency properties (#645)
 - Fixed partial plot rendering on Xamarin.Android (#649)
 - Default controller should not be shared in WPF PlotViews (#682)
+- PositionAtZeroCrossing adds zero crossing line at wrong position (#635)
 
 ## [2014.1.546] - 2014-10-22
 ### Added

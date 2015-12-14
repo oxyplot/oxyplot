@@ -57,7 +57,7 @@ namespace ExampleLibrary
                 {
 #if UNIVERSAL
                     types.Add(baseType.AsType());
-                    baseType = null;
+                    baseType = baseType.BaseType != null ? baseType.BaseType.GetTypeInfo() : null;
 #else
                     types.Add(baseType);
                     baseType = baseType.BaseType;

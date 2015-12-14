@@ -291,6 +291,9 @@ namespace OxyPlot.Axes
             var majorTickSegments = new List<ScreenPoint>();
             this.GetTickPositions(axis, axis.TickStyle, axis.MajorTickSize, axis.Position, out a0, out a1);
 
+            var perpendicularAxis = axis.IsHorizontal() ? this.Plot.DefaultYAxis : this.Plot.DefaultXAxis;
+            var dontRenderZero = axis.PositionAtZeroCrossing && perpendicularAxis.PositionAtZeroCrossing;
+
             foreach (double value in this.MajorTickValues)
             {
                 if (value < actualMinimum - eps || value > actualMaximum + eps)
@@ -298,7 +301,7 @@ namespace OxyPlot.Axes
                     continue;
                 }
 
-                if (axis.PositionAtZeroCrossing && Math.Abs(value) < eps)
+                if (dontRenderZero && Math.Abs(value) < eps)
                 {
                     continue;
                 }
@@ -352,7 +355,7 @@ namespace OxyPlot.Axes
                     continue;
                 }
 
-                if (axis.PositionAtZeroCrossing && Math.Abs(value) < eps)
+                if (dontRenderZero && Math.Abs(value) < eps)
                 {
                     continue;
                 }
@@ -407,20 +410,6 @@ namespace OxyPlot.Axes
                     axis.Angle,
                     ha,
                     va);
-            }
-
-            // Draw the zero crossing line
-            if (axis.PositionAtZeroCrossing && this.ZeroPen != null && this.IsWithin(0, actualMinimum, actualMaximum))
-            {
-                double t0 = axis.Transform(0);
-                if (isHorizontal)
-                {
-                    this.RenderContext.DrawLine(t0, plotAreaTop, t0, plotAreaBottom, this.ZeroPen);
-                }
-                else
-                {
-                    this.RenderContext.DrawLine(plotAreaLeft, t0, plotAreaRight, t0, this.ZeroPen);
-                }
             }
 
             // Draw extra grid lines
