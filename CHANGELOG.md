@@ -54,6 +54,7 @@ All notable changes to this project will be documented in this file.
 - Add Xamarin.Forms renderer initialization to PlotViewRenderer (#632)
 - Marked OxyPlot.Xamarin.Forms.Platform.*.Forms.Init() obsolete (#632)
 - Throw exception if Xamarin.Forms renderer is not 'initialized' (#492)
+- Make numeric values of DateTimeAxis compatible with ToOADate (#660)
 
 ### Removed
 - StyleCop tasks (#556)
