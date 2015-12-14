@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf" xmlns:pt="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf" 
         Title="LegendsDemo" Height="720" Width="1280">
     <DockPanel>
-        <pt:PropertyControl SelectedObject="{Binding}" DockPanel.Dock="Left" Width="300" UseTabs="False" Margin="8"/>
+        <pt:PropertyGrid SelectedObject="{Binding}" DockPanel.Dock="Left" Width="300" TabVisibility="Collapsed" Margin="8"/>
         <Grid>
             <oxy:PlotView Model="{Binding Model}" Background="White"/>
         </Grid>

@@ -20,7 +20,7 @@ All notable changes to this project will be documented in this file.
 - Xamarin.Android, Xamarin.iOS and Xamarin.Forms packages built at AppVeyor (#274)
 - Add LegendLineSpacing property in PlotModel (#622)
 - Implement RenderLegend for LinearBarSeries (#663)
-- Add LegendMaxHeight property in PlotModel (#668)
+- Add LegendMaxHeight property in PlotModel and Wpf.Plot (#668)
 
 ### Changed
 - Renamed OxyPlot.WindowsUniversal to OxyPlot.Windows (#242)

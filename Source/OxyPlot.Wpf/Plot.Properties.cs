@@ -118,6 +118,12 @@ namespace OxyPlot.Wpf
             "LegendMargin", typeof(double), typeof(Plot), new PropertyMetadata(8.0, AppearanceChanged));
 
         /// <summary>
+        /// Identifies the <see cref="LegendMaxHeight"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty LegendMaxHeightProperty =
+            DependencyProperty.Register("LegendMaxHeight", typeof(double), typeof(Plot), new UIPropertyMetadata(double.NaN, AppearanceChanged));
+
+        /// <summary>
         /// Identifies the <see cref="LegendMaxWidth"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LegendMaxWidthProperty =
@@ -667,7 +673,24 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the max width of the legends.
+        /// Gets or sets the max height of the legend.
+        /// </summary>
+        /// <value>The max width of the legends.</value>
+        public double LegendMaxHeight
+        {
+            get
+            {
+                return (double)this.GetValue(LegendMaxHeightProperty);
+            }
+
+            set
+            {
+                this.SetValue(LegendMaxHeightProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the max width of the legend.
         /// </summary>
         /// <value>The max width of the legends.</value>
         public double LegendMaxWidth
