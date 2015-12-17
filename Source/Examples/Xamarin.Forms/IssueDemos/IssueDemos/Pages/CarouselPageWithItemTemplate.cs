@@ -54,8 +54,8 @@
                 var layout = new StackLayout{ Orientation = StackOrientation.Vertical };
                 var label = new Label {
                     Text = "It should be possible to change pages by swiping over the plot view.", 
-                    XAlign = TextAlignment.Center,
-                    YAlign = TextAlignment.Center,
+                    HorizontalTextAlignment = TextAlignment.Center,
+                    VerticalTextAlignment = TextAlignment.Center,
                     HeightRequest = 80, 
                     BackgroundColor = Color.Gray
                 };
