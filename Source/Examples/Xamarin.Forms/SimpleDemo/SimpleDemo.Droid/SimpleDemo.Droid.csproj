@@ -116,11 +116,11 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\icon.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Properties\AndroidManifest.xml" />
+    <None Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\OxyPlot.Xamarin.Forms.Platform.Android\OxyPlot.Xamarin.Forms.Platform.Android.csproj">
-      <Project>{a40ad708-3ff5-42fc-92b0-8d93ff1db58f}</Project>
+      <Project>{8d30d955-f027-4d19-9f71-c197bb665070}</Project>
       <Name>OxyPlot.Xamarin.Forms.Platform.Android</Name>
     </ProjectReference>
     <ProjectReference Include="..\SimpleDemo\SimpleDemo.csproj">

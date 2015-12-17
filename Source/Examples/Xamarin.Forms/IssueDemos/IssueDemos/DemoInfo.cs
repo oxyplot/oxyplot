@@ -20,8 +20,8 @@ namespace IssueDemos
             return (Page)Activator.CreateInstance(this.type);
         }
 
-        public string Title => dpa.Title;
+		public string Title { get { return this.dpa.Title; } }
 
-        public string Details => dpa.Details;
+		public string Details { get { return this.dpa.Details; } }
     }
 }
