@@ -19,22 +19,22 @@ namespace OxyPlot
         /// <summary>
         /// The bottom.
         /// </summary>
-        private double bottom;
+        private readonly double bottom;
 
         /// <summary>
         /// The left.
         /// </summary>
-        private double left;
+        private readonly double left;
 
         /// <summary>
         /// The right.
         /// </summary>
-        private double right;
+        private readonly double right;
 
         /// <summary>
         /// The top.
         /// </summary>
-        private double top;
+        private readonly double top;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OxyThickness" /> struct.
@@ -70,11 +70,6 @@ namespace OxyPlot
             {
                 return this.bottom;
             }
-
-            set
-            {
-                this.bottom = value;
-            }
         }
 
         /// <summary>
@@ -98,11 +93,6 @@ namespace OxyPlot
             {
                 return this.left;
             }
-
-            set
-            {
-                this.left = value;
-            }
         }
 
         /// <summary>
@@ -115,11 +105,6 @@ namespace OxyPlot
             {
                 return this.right;
             }
-
-            set
-            {
-                this.right = value;
-            }
         }
 
         /// <summary>
@@ -131,11 +116,6 @@ namespace OxyPlot
             get
             {
                 return this.top;
-            }
-
-            set
-            {
-                this.top = value;
             }
         }
 
@@ -173,6 +153,16 @@ namespace OxyPlot
         {
             return string.Format(
                 CultureInfo.InvariantCulture, "({0}, {1}, {2}, {3})", this.left, this.top, this.right, this.bottom);
+        }
+
+        /// <summary>
+        /// Determines whether this instance and another specified <see cref="T:OxyThickness" /> object have the same value.
+        /// </summary>
+        /// <param name="other">The thickness to compare to this instance.</param>
+        /// <returns><c>true</c> if the value of the <paramref name="other" /> parameter is the same as the value of this instance; otherwise, <c>false</c>.</returns>
+        public bool Equals(OxyThickness other)
+        {
+            return this.Left.Equals(other.Left) && this.Top.Equals(other.Top) && this.Width.Equals(other.Width) && this.Height.Equals(other.Height);
         }
     }
 }

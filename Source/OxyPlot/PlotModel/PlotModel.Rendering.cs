@@ -149,19 +149,19 @@ namespace OxyPlot
             switch (borderPosition)
             {
                 case AxisPosition.Bottom:
-                    currentMargin.Bottom = Math.Max(currentMargin.Bottom, minBorderSize);
+                    currentMargin = new OxyThickness(currentMargin.Left, currentMargin.Top, currentMargin.Right, Math.Max(currentMargin.Bottom, minBorderSize));
                     break;
 
                 case AxisPosition.Left:
-                    currentMargin.Left = Math.Max(currentMargin.Left, minBorderSize);
+                    currentMargin = new OxyThickness(Math.Max(currentMargin.Left, minBorderSize), currentMargin.Top, currentMargin.Right, currentMargin.Bottom);
                     break;
 
                 case AxisPosition.Right:
-                    currentMargin.Right = Math.Max(currentMargin.Right, minBorderSize);
+                    currentMargin = new OxyThickness(currentMargin.Left, currentMargin.Top, Math.Max(currentMargin.Right, minBorderSize), currentMargin.Bottom);
                     break;
 
                 case AxisPosition.Top:
-                    currentMargin.Top = Math.Max(currentMargin.Top, minBorderSize);
+                    currentMargin = new OxyThickness(currentMargin.Left, Math.Max(currentMargin.Top, minBorderSize), currentMargin.Right, currentMargin.Bottom);
                     break;
 
                 default:
