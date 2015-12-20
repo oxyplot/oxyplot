@@ -9,13 +9,14 @@
 
 namespace OxyPlot
 {
+    using System;
     using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Represents a point in the data space.
     /// </summary>
     /// <remarks><see cref="DataPoint" />s are transformed to <see cref="ScreenPoint" />s.</remarks>
-    public struct DataPoint : ICodeGenerating
+    public struct DataPoint : ICodeGenerating, IEquatable<DataPoint>
     {
         /// <summary>
         /// The undefined.
@@ -78,6 +79,16 @@ namespace OxyPlot
         public string ToCode()
         {
             return CodeGenerator.FormatConstructor(this.GetType(), "{0},{1}", this.x, this.y);
+        }
+
+        /// <summary>
+        /// Determines whether this instance and another specified <see cref="T:DataPoint" /> object have the same value.
+        /// </summary>
+        /// <param name="other">The point to compare to this instance.</param>
+        /// <returns><c>true</c> if the value of the <paramref name="other" /> parameter is the same as the value of this instance; otherwise, <c>false</c>.</returns>
+        public bool Equals(DataPoint other)
+        {
+            return this.x.Equals(other.x) && this.y.Equals(other.y);
         }
 
         /// <summary>
