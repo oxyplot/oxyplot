@@ -133,7 +133,7 @@ namespace OxyPlot.Series
             var dashArray = this.ActualDashArray;
             var dashArray2 = this.ActualDashArray2;
 
-            clippingRect.Bottom = y;
+            clippingRect = new OxyRect(clippingRect.Left, clippingRect.Top, clippingRect.Width, y - clippingRect.Top);
             rc.DrawClippedLine(
                 clippingRect,
                 pointsToRender,
@@ -143,8 +143,7 @@ namespace OxyPlot.Series
                 dashArray,
                 this.LineJoin,
                 false);
-            clippingRect.Top = y;
-            clippingRect.Height = bottom - y;
+            clippingRect = new OxyRect(clippingRect.Left, y, clippingRect.Width, bottom - y);
             rc.DrawClippedLine(
                 clippingRect,
                 pointsToRender,

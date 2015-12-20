@@ -484,19 +484,13 @@ namespace OxyPlot
             if (titleSize.Height > 0)
             {
                 var titleHeight = titleSize.Height + this.TitlePadding;
-                plotArea.Height -= titleHeight;
-                plotArea.Top += titleHeight;
+                plotArea = new OxyRect(plotArea.Left, plotArea.Top + titleHeight, plotArea.Width, plotArea.Height - titleHeight);
             }
 
-            plotArea.Top += this.ActualPlotMargins.Top;
-            plotArea.Height -= this.ActualPlotMargins.Top;
-
-            plotArea.Height -= this.ActualPlotMargins.Bottom;
-
-            plotArea.Left += this.ActualPlotMargins.Left;
-            plotArea.Width -= this.ActualPlotMargins.Left;
-
-            plotArea.Width -= this.ActualPlotMargins.Right;
+            plotArea = new OxyRect(plotArea.Left + this.ActualPlotMargins.Left,
+                plotArea.Top + this.ActualPlotMargins.Top,
+                plotArea.Width - this.ActualPlotMargins.Left - this.ActualPlotMargins.Right,
+                plotArea.Height - this.ActualPlotMargins.Top - this.ActualPlotMargins.Bottom);
 
             // Find the available size for the legend box
             var availableLegendWidth = plotArea.Width;
@@ -529,24 +523,22 @@ namespace OxyPlot
                     case LegendPosition.LeftTop:
                     case LegendPosition.LeftMiddle:
                     case LegendPosition.LeftBottom:
-                        plotArea.Left += legendSize.Width + this.LegendMargin;
-                        plotArea.Width -= legendSize.Width + this.LegendMargin;
+                        plotArea = new OxyRect(plotArea.Left + legendSize.Width + this.LegendMargin, plotArea.Top, plotArea.Width - (legendSize.Width + this.LegendMargin), plotArea.Height);
                         break;
                     case LegendPosition.RightTop:
                     case LegendPosition.RightMiddle:
                     case LegendPosition.RightBottom:
-                        plotArea.Width -= legendSize.Width + this.LegendMargin;
+                        plotArea = new OxyRect(plotArea.Left, plotArea.Top, plotArea.Width - (legendSize.Width + this.LegendMargin), plotArea.Height);
                         break;
                     case LegendPosition.TopLeft:
                     case LegendPosition.TopCenter:
                     case LegendPosition.TopRight:
-                        plotArea.Top += legendSize.Height + this.LegendMargin;
-                        plotArea.Height -= legendSize.Height + this.LegendMargin;
+                        plotArea = new OxyRect(plotArea.Left, plotArea.Top + legendSize.Height + this.LegendMargin, plotArea.Width, plotArea.Height - (legendSize.Height + this.LegendMargin));
                         break;
                     case LegendPosition.BottomLeft:
                     case LegendPosition.BottomCenter:
                     case LegendPosition.BottomRight:
-                        plotArea.Height -= legendSize.Height + this.LegendMargin;
+                        plotArea = new OxyRect(plotArea.Left, plotArea.Top, plotArea.Width, plotArea.Height - (legendSize.Height + this.LegendMargin));
                         break;
                 }
             }
@@ -554,12 +546,12 @@ namespace OxyPlot
             // Ensure the plot area is valid
             if (plotArea.Height < 0)
             {
-                plotArea.Bottom = plotArea.Top + 1;
+                plotArea = new OxyRect(plotArea.Left, plotArea.Top, plotArea.Width, 1);
             }
 
             if (plotArea.Width < 0)
             {
-                plotArea.Right = plotArea.Left + 1;
+                plotArea = new OxyRect(plotArea.Left, plotArea.Top, 1, plotArea.Height);
             }
 
             this.PlotArea = plotArea;

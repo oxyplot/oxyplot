@@ -57,6 +57,7 @@
     <Compile Include="Axes\LinearAxisTests.cs" />
     <Compile Include="Axes\TimeSpanAxisTests.cs" />
     <Compile Include="Foundation\CodeGeneratorTests.cs" />
+    <Compile Include="Foundation\OxyRectTests.cs" />
     <Compile Include="Graphics\ElementCollectionTests.cs" />
     <Compile Include="NullRenderContext.cs" />
     <Compile Include="PlotModelExtensions.cs" />
@@ -152,5 +153,3 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
-
-

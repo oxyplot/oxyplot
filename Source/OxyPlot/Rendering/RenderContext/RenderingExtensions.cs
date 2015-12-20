@@ -878,7 +878,7 @@ namespace OxyPlot
         {
             var bounds = rc.MeasureText(text, fontFamily, fontSize, fontWeight);
             return MeasureRotatedRectangleBound(bounds, angle);
-        } 
+        }
 
         /// <summary>
         /// Adds a marker geometry to the specified collections.
@@ -1002,26 +1002,31 @@ namespace OxyPlot
                 return null;
             }
 
-            if (rect.Right > clippingRectangle.Right)
+            var width = rect.Width;
+            var left = rect.Left;
+            var top = rect.Top;
+            var height = rect.Height;
+
+            if (left + width > clippingRectangle.Right)
             {
-                rect.Right = clippingRectangle.Right;
+                width = clippingRectangle.Right - left;
             }
 
-            if (rect.Left < clippingRectangle.Left)
+            if (left < clippingRectangle.Left)
             {
-                rect.Width = rect.Right - clippingRectangle.Left;
-                rect.Left = clippingRectangle.Left;
+                width = rect.Right - clippingRectangle.Left;
+                left = clippingRectangle.Left;
             }
 
-            if (rect.Top < clippingRectangle.Top)
+            if (top < clippingRectangle.Top)
             {
-                rect.Height = rect.Bottom - clippingRectangle.Top;
-                rect.Top = clippingRectangle.Top;
+                height = rect.Bottom - clippingRectangle.Top;
+                top = clippingRectangle.Top;
             }
 
-            if (rect.Bottom > clippingRectangle.Bottom)
+            if (top + height > clippingRectangle.Bottom)
             {
-                rect.Bottom = clippingRectangle.Bottom;
+                height = clippingRectangle.Bottom - top;
             }
 
             if (rect.Width <= 0 || rect.Height <= 0)
@@ -1029,7 +1034,7 @@ namespace OxyPlot
                 return null;
             }
 
-            return rect;
+            return new OxyRect(left, top, width, height);
         }
 
         /// <summary>

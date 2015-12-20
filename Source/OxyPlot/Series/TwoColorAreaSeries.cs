@@ -20,13 +20,13 @@ namespace OxyPlot.Series
         /// <summary>
         /// The second list of points representing limit line.
         /// </summary>
-        private readonly List<DataPoint> points2 = new List<DataPoint>();   
+        private readonly List<DataPoint> points2 = new List<DataPoint>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref = "TwoColorAreaSeries" /> class.
         /// </summary>
         public TwoColorAreaSeries()
-        {            
+        {
             this.Fill = OxyColors.Automatic;
             this.Fill2 = OxyColors.Automatic;
 
@@ -104,7 +104,7 @@ namespace OxyPlot.Series
             if (result != null)
             {
                 result.Text = StringHelper.Format(
-                    this.ActualCulture, 
+                    this.ActualCulture,
                     this.TrackerFormatString,
                     result.Item,
                     this.Title,
@@ -163,13 +163,13 @@ namespace OxyPlot.Series
 
                 // var rpts1 = ScreenPointHelper.ResamplePoints(pts1, this.MinimumSegmentLength);
                 pts0 = CanonicalSplineHelper.CreateSpline(rpts0, 0.5, null, false, 0.25);
-                
+
                 // pts1 = CanonicalSplineHelper.CreateSpline(rpts1, 0.5, null, false, 0.25);                
             }
 
             var dashArray = this.ActualDashArray;
             var dashArray2 = this.ActualDashArray2;
-            
+
             var limit = this.YAxis.Transform(this.Limit);
 
             if (limit < clippingRect.Top)
@@ -182,13 +182,12 @@ namespace OxyPlot.Series
                 limit = clippingRect.Bottom;
             }
 
-            var markerSizes = new[] { this.MarkerSize };            
+            var markerSizes = new[] { this.MarkerSize };
 
             var bottom = clippingRect.Bottom;
             var top = clippingRect.Top;
 
-            clippingRect.Top = limit;
-            clippingRect.Height = bottom - limit;
+            clippingRect = new OxyRect(clippingRect.Left, limit, clippingRect.Width, bottom - limit);
 
             // draw the clipped lines belove the limit line 
             rc.DrawClippedLine(
@@ -221,8 +220,7 @@ namespace OxyPlot.Series
                 this.MarkerStrokeThickness,
                 1);
 
-            clippingRect.Top = top;
-            clippingRect.Bottom = limit;
+            clippingRect = new OxyRect(clippingRect.Left, top, clippingRect.Width, limit - top);
 
             // draw the clipped lines above the limit line
             rc.DrawClippedLine(
