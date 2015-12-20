@@ -9,15 +9,7 @@
                     <oxy:LinearAxis Position="Left" Minimum="0" Maximum="100" />
                 </oxy:Plot.Axes>
                 <oxy:Plot.Annotations>
-                    <oxy:ArrowAnnotation Color="Green" Text="Arrow 1">
-                        <oxy:ArrowAnnotation.StartPoint>
-                            <OxyPlot:DataPoint X="10" Y="10"/>
-                        </oxy:ArrowAnnotation.StartPoint>
-                        <oxy:ArrowAnnotation.EndPoint>
-                            <OxyPlot:DataPoint X="60" Y="30"/>
-                        </oxy:ArrowAnnotation.EndPoint>
-                    </oxy:ArrowAnnotation>
-
+                    <oxy:ArrowAnnotation Color="Green" Text="Arrow 1" StartPoint="{oxy:DataPoint 10,10}" EndPoint="{oxy:DataPoint 60,30}" />
                 </oxy:Plot.Annotations>
             </oxy:Plot>
         </TabItem>
@@ -123,16 +115,8 @@
                     <oxy:LinearAxis Position="Left" Minimum="0" Maximum="100" />
                 </oxy:Plot.Axes>
                 <oxy:Plot.Annotations>
-                    <oxy:TextAnnotation TextColor="Green" Text="Hello">
-                        <oxy:TextAnnotation.TextPosition>
-                            <OxyPlot:DataPoint X="30" Y="70"/>
-                        </oxy:TextAnnotation.TextPosition>
-                    </oxy:TextAnnotation>
-                    <oxy:TextAnnotation TextColor="Orange" Text="world!" TextRotation="20">
-                        <oxy:TextAnnotation.TextPosition>
-                            <OxyPlot:DataPoint X="50" Y="70"/>
-                        </oxy:TextAnnotation.TextPosition>
-                    </oxy:TextAnnotation>
+                    <oxy:TextAnnotation TextColor="Green" Text="Hello" TextPosition="{oxy:DataPoint 30,70}" />
+                    <oxy:TextAnnotation TextColor="Orange" Text="world!" TextRotation="20" TextPosition="{oxy:DataPoint 50,70}" />
                 </oxy:Plot.Annotations>
             </oxy:Plot>
         </TabItem>

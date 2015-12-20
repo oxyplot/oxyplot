@@ -27,14 +27,14 @@ namespace OxyPlot
         /// </summary>
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1307:AccessibleFieldsMustBeginWithUpperCaseLetter",
             Justification = "Reviewed. Suppression is OK here.")]
-        internal double x;
+        internal readonly double x;
 
         /// <summary>
         /// The y-coordinate.
         /// </summary>
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1307:AccessibleFieldsMustBeginWithUpperCaseLetter",
             Justification = "Reviewed. Suppression is OK here.")]
-        internal double y;
+        internal readonly double y;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DataPoint" /> struct.
@@ -48,36 +48,26 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets or sets the X.
+        /// Gets the X-coordinate of the point.
         /// </summary>
-        /// <value>The X.</value>
+        /// <value>The X-coordinate.</value>
         public double X
         {
             get
             {
                 return this.x;
             }
-
-            set
-            {
-                this.x = value;
-            }
         }
 
         /// <summary>
-        /// Gets or sets the Y.
+        /// Gets the Y-coordinate of the point.
         /// </summary>
-        /// <value>The Y.</value>
+        /// <value>The Y-coordinate.</value>
         public double Y
         {
             get
             {
                 return this.y;
-            }
-
-            set
-            {
-                this.y = value;
             }
         }
 
