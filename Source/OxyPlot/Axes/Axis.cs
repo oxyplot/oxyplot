@@ -872,12 +872,12 @@ namespace OxyPlot.Axes
                 var size = rc.MeasureText(s, this.ActualFont, this.ActualFontSize, this.ActualFontWeight, this.Angle);
                 if (size.Width > maximumTextSize.Width)
                 {
-                    maximumTextSize.Width = size.Width;
+                    maximumTextSize = new OxySize(size.Width, maximumTextSize.Height);
                 }
 
                 if (size.Height > maximumTextSize.Height)
                 {
-                    maximumTextSize.Height = size.Height;
+                    maximumTextSize = new OxySize(maximumTextSize.Width, size.Height);
                 }
             }
 

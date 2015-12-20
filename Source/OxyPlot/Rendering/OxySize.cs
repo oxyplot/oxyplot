@@ -16,12 +16,12 @@ namespace OxyPlot
     /// <summary>
     /// Describes the size of an object.
     /// </summary>
-    public struct OxySize : IFormattable
+    public struct OxySize : IFormattable, IEquatable<OxySize>
     {
         /// <summary>
         /// Empty Size.
         /// </summary>
-        public static OxySize Empty = new OxySize(0, 0);
+        public static readonly OxySize Empty = new OxySize(0, 0);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OxySize" /> struct.
@@ -39,13 +39,13 @@ namespace OxyPlot
         /// Gets or sets the height.
         /// </summary>
         /// <value>The height.</value>
-        public double Height { get; set; }
+        public double Height { get; private set; }
 
         /// <summary>
         /// Gets or sets the width.
         /// </summary>
         /// <value>The width.</value>
-        public double Width { get; set; }
+        public double Width { get; private set; }
 
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.
@@ -74,6 +74,16 @@ namespace OxyPlot
             builder.Append(this.Height.ToString(format, formatProvider));
             builder.Append(")");
             return builder.ToString();
+        }
+
+        /// <summary>
+        /// Determines whether this instance and another specified <see cref="T:OxySize" /> object have the same value.
+        /// </summary>
+        /// <param name="other">The point to compare to this instance.</param>
+        /// <returns><c>true</c> if the value of the <paramref name="other" /> parameter is the same as the value of this instance; otherwise, <c>false</c>.</returns>
+        public bool Equals(OxySize other)
+        {
+            return this.Width.Equals(other.Width) && this.Height.Equals(other.Height);
         }
     }
 }
