@@ -236,7 +236,7 @@ namespace OxyPlot
             builder.Append(")");
             return builder.ToString();
         }
- 
+
         /// <summary>
         /// Determines whether this instance and another specified <see cref="T:OxyRect" /> object have the same value.
         /// </summary>
@@ -245,6 +245,48 @@ namespace OxyPlot
         public bool Equals(OxyRect other)
         {
             return this.Left.Equals(other.Left) && this.Top.Equals(other.Top) && this.Width.Equals(other.Width) && this.Height.Equals(other.Height);
+        }
+
+        /// <summary>
+        /// Returns a rectangle that is expanded or shrunk by the specified width and height amounts, in all directions.
+        /// </summary>
+        /// <param name="dx">The amount by which to expand or shrink the left and right sides of the rectangle.</param>
+        /// <param name="dy">The amount by which to expand or shrink the top and bottom sides of the rectangle.</param>
+        /// <returns>The expanded/shrunk <see cref="OxyRect" />.</returns>
+        public OxyRect Inflate(double dx, double dy)
+        {
+            return new OxyRect(this.left - dx, this.top - dy, this.width + dx * 2, this.height + dy * 2);
+        }
+
+        /// <summary>
+        /// Returns a rectangle that is expanded by the specified thickness, in all directions.
+        /// </summary>
+        /// <param name="t">The thickness to apply to the rectangle.</param>
+        /// <returns>The inflated <see cref="OxyRect" />.</returns>
+        public OxyRect Inflate(OxyThickness t)
+        {
+            return new OxyRect(this.left - t.Left, this.top - t.Top, this.width + t.Left + t.Right, this.height + t.Top + t.Bottom);
+        }
+
+        /// <summary>
+        /// Returns a rectangle that is shrunk by the specified thickness, in all directions.
+        /// </summary>
+        /// <param name="t">The thickness to apply to the rectangle.</param>
+        /// <returns>The deflated <see cref="OxyRect" />.</returns>
+        public OxyRect Deflate(OxyThickness t)
+        {
+            return new OxyRect(this.left + t.Left, this.top + t.Top, this.width - t.Left - t.Right, this.height - t.Top - t.Bottom);
+        }
+
+        /// <summary>
+        /// Returns a rectangle that is moved by the specified horizontal and vertical amounts.
+        /// </summary>
+        /// <param name="offsetX">The amount to move the rectangle horizontally.</param>
+        /// <param name="offsetY">The amount to move the rectangle vertically.</param>
+        /// <returns>The moved <see cref="OxyRect" />.</returns>
+        public OxyRect Offset(double offsetX, double offsetY)
+        {
+            return new OxyRect(this.left + offsetX, this.top + offsetY, this.width, this.height);
         }
     }
 }

@@ -487,10 +487,7 @@ namespace OxyPlot
                 plotArea = new OxyRect(plotArea.Left, plotArea.Top + titleHeight, plotArea.Width, plotArea.Height - titleHeight);
             }
 
-            plotArea = new OxyRect(plotArea.Left + this.ActualPlotMargins.Left,
-                plotArea.Top + this.ActualPlotMargins.Top,
-                plotArea.Width - this.ActualPlotMargins.Left - this.ActualPlotMargins.Right,
-                plotArea.Height - this.ActualPlotMargins.Top - this.ActualPlotMargins.Bottom);
+            plotArea = plotArea.Deflate(this.ActualPlotMargins);
 
             // Find the available size for the legend box
             var availableLegendWidth = plotArea.Width;
@@ -555,11 +552,7 @@ namespace OxyPlot
             }
 
             this.PlotArea = plotArea;
-            this.PlotAndAxisArea = new OxyRect(
-                plotArea.Left - this.ActualPlotMargins.Left,
-                plotArea.Top - this.ActualPlotMargins.Top,
-                plotArea.Width + this.ActualPlotMargins.Left + this.ActualPlotMargins.Right,
-                plotArea.Height + this.ActualPlotMargins.Top + this.ActualPlotMargins.Bottom);
+            this.PlotAndAxisArea = plotArea.Inflate(this.ActualPlotMargins);
 
             switch (this.TitleHorizontalAlignment)
             {
