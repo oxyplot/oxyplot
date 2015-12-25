@@ -318,8 +318,7 @@ namespace OxyPlot
                 }
 
                 top += titleSize.Height;
-                size.Width = x + titleSize.Width + this.LegendPadding;
-                size.Height = top + titleSize.Height;
+                size = new OxySize(x + titleSize.Width + this.LegendPadding, top + titleSize.Height);
             }
 
             double y = top;
@@ -404,11 +403,8 @@ namespace OxyPlot
 
                     x += itemWidth;
 
-                    // Update the max width of the legend box
-                    size.Width = Math.Max(size.Width, x);
-
-                    // Update the max height of the legend box
-                    size.Height = Math.Max(size.Height, y + textSize.Height);
+                    // Update the max width and height of the legend box
+                    size = new OxySize(Math.Max(size.Width, x), Math.Max(size.Height, y + textSize.Height));
                 }
                 else
                 {
@@ -431,11 +427,8 @@ namespace OxyPlot
                     // Update the max size of the items in the current column
                     maxItemWidth = Math.Max(maxItemWidth, itemWidth);
 
-                    // Update the max width of the legend box
-                    size.Width = Math.Max(size.Width, x + itemWidth);
-
-                    // Update the max height of the legend box
-                    size.Height = Math.Max(size.Height, y);
+                    // Update the max width and height of the legend box
+                    size = new OxySize(Math.Max(size.Width, x + itemWidth), Math.Max(size.Height, y));
                 }
             }
 
@@ -443,32 +436,32 @@ namespace OxyPlot
 
             if (size.Width > 0)
             {
-                size.Width += this.LegendPadding;
+                size = new OxySize(size.Width + this.LegendPadding, size.Height);
             }
 
             if (size.Height > 0)
             {
-                size.Height += this.LegendPadding;
+                size = new OxySize(size.Width, size.Height + this.LegendPadding);
             }
 
             if (size.Width > availableWidth)
             {
-                size.Width = availableWidth;
+                size = new OxySize(availableWidth, size.Height);
             }
 
             if (size.Height > availableHeight)
             {
-                size.Height = availableHeight;
+                size = new OxySize(size.Width, availableHeight);
             }
 
             if (!double.IsNaN(this.LegendMaxWidth) && size.Width > this.LegendMaxWidth)
             {
-                size.Width = this.LegendMaxWidth;
+                size = new OxySize(this.LegendMaxWidth, size.Height);
             }
 
             if (!double.IsNaN(this.LegendMaxHeight) && size.Height > this.LegendMaxHeight)
             {
-                size.Height = this.LegendMaxHeight;
+                size = new OxySize(size.Width, this.LegendMaxHeight);
             }
 
             return size;

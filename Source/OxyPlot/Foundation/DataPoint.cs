@@ -9,13 +9,14 @@
 
 namespace OxyPlot
 {
+    using System;
     using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Represents a point in the data space.
     /// </summary>
     /// <remarks><see cref="DataPoint" />s are transformed to <see cref="ScreenPoint" />s.</remarks>
-    public struct DataPoint : ICodeGenerating
+    public struct DataPoint : ICodeGenerating, IEquatable<DataPoint>
     {
         /// <summary>
         /// The undefined.
@@ -27,14 +28,14 @@ namespace OxyPlot
         /// </summary>
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1307:AccessibleFieldsMustBeginWithUpperCaseLetter",
             Justification = "Reviewed. Suppression is OK here.")]
-        internal double x;
+        internal readonly double x;
 
         /// <summary>
         /// The y-coordinate.
         /// </summary>
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1307:AccessibleFieldsMustBeginWithUpperCaseLetter",
             Justification = "Reviewed. Suppression is OK here.")]
-        internal double y;
+        internal readonly double y;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DataPoint" /> struct.
@@ -48,36 +49,26 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets or sets the X.
+        /// Gets the X-coordinate of the point.
         /// </summary>
-        /// <value>The X.</value>
+        /// <value>The X-coordinate.</value>
         public double X
         {
             get
             {
                 return this.x;
             }
-
-            set
-            {
-                this.x = value;
-            }
         }
 
         /// <summary>
-        /// Gets or sets the Y.
+        /// Gets the Y-coordinate of the point.
         /// </summary>
-        /// <value>The Y.</value>
+        /// <value>The Y-coordinate.</value>
         public double Y
         {
             get
             {
                 return this.y;
-            }
-
-            set
-            {
-                this.y = value;
             }
         }
 
@@ -88,6 +79,16 @@ namespace OxyPlot
         public string ToCode()
         {
             return CodeGenerator.FormatConstructor(this.GetType(), "{0},{1}", this.x, this.y);
+        }
+
+        /// <summary>
+        /// Determines whether this instance and another specified <see cref="T:DataPoint" /> object have the same value.
+        /// </summary>
+        /// <param name="other">The point to compare to this instance.</param>
+        /// <returns><c>true</c> if the value of the <paramref name="other" /> parameter is the same as the value of this instance; otherwise, <c>false</c>.</returns>
+        public bool Equals(DataPoint other)
+        {
+            return this.x.Equals(other.x) && this.y.Equals(other.y);
         }
 
         /// <summary>
