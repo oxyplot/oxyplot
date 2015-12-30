@@ -15,31 +15,90 @@ namespace OxyPlot
     /// <summary>
     /// Describes a color in terms of alpha, red, green, and blue channels.
     /// </summary>
-    public struct OxyColor : ICodeGenerating
+    public struct OxyColor : ICodeGenerating, IEquatable<OxyColor>
     {
+        /// <summary>
+        /// The red component.
+        /// </summary>
+        private readonly byte r;
+
+        /// <summary>
+        /// The green component.
+        /// </summary>
+        private readonly byte g;
+
+        /// <summary>
+        /// The blue component.
+        /// </summary>
+        private readonly byte b;
+
+        /// <summary>
+        /// The alpha component.
+        /// </summary>
+        private readonly byte a;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OxyColor"/> struct.
+        /// </summary>
+        /// <param name="a">a.</param>
+        /// <param name="r">The r.</param>
+        /// <param name="g">The g.</param>
+        /// <param name="b">The b.</param>
+        private OxyColor(byte a, byte r, byte g, byte b)
+        {
+            this.a = a;
+            this.r = r;
+            this.g = g;
+            this.b = b;
+        }
+
         /// <summary>
         /// Gets the alpha value.
         /// </summary>
         /// <value>The alpha value.</value>
-        public byte A { get; private set; }
+        public byte A
+        {
+            get
+            {
+                return this.a;
+            }
+        }
 
         /// <summary>
         /// Gets the blue value.
         /// </summary>
         /// <value>The blue value.</value>
-        public byte B { get; private set; }
+        public byte B
+        {
+            get
+            {
+                return this.b;
+            }
+        }
 
         /// <summary>
         /// Gets the green value.
         /// </summary>
         /// <value>The green value.</value>
-        public byte G { get; private set; }
+        public byte G
+        {
+            get
+            {
+                return this.g;
+            }
+        }
 
         /// <summary>
         /// Gets the red value.
         /// </summary>
         /// <value>The red value.</value>
-        public byte R { get; private set; }
+        public byte R
+        {
+            get
+            {
+                return this.r;
+            }
+        }
 
         /// <summary>
         /// Parse a string.
@@ -248,7 +307,7 @@ namespace OxyPlot
         /// <returns>A color.</returns>
         public static OxyColor FromArgb(byte a, byte r, byte g, byte b)
         {
-            return new OxyColor { A = a, R = r, G = g, B = b };
+            return new OxyColor(a, r, g, b);
         }
 
         /// <summary>
@@ -261,7 +320,7 @@ namespace OxyPlot
         public static OxyColor FromRgb(byte r, byte g, byte b)
         {
             // ReSharper restore InconsistentNaming
-            return new OxyColor { A = 255, R = r, G = g, B = b };
+            return new OxyColor(255, r, g, b);
         }
 
         /// <summary>
@@ -403,7 +462,7 @@ namespace OxyPlot
         {
             return this.IsAutomatic() ? defaultColor : this;
         }
-
+ 
         /// <summary>
         /// Returns C# code that generates this instance.
         /// </summary>

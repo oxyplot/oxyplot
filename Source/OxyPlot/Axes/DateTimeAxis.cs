@@ -30,7 +30,7 @@ namespace OxyPlot.Axes
         /// The time origin.
         /// </summary>
         /// <remarks>This gives the same numeric date values as Excel</remarks>
-        private static readonly DateTime TimeOrigin = new DateTime(1900, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        private static readonly DateTime TimeOrigin = new DateTime(1899, 12, 31, 0, 0, 0, DateTimeKind.Utc);
 
         /// <summary>
         /// The maximum day value

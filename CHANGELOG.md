@@ -20,6 +20,7 @@ All notable changes to this project will be documented in this file.
 - Xamarin.Android, Xamarin.iOS and Xamarin.Forms packages built at AppVeyor (#274)
 - Add LegendLineSpacing property in PlotModel (#622)
 - Implement RenderLegend for LinearBarSeries (#663)
+- Add LegendMaxHeight property in PlotModel and Wpf.Plot (#668)
 
 ### Changed
 - Renamed OxyPlot.WindowsUniversal to OxyPlot.Windows (#242)
@@ -53,6 +54,9 @@ All notable changes to this project will be documented in this file.
 - Add Xamarin.Forms renderer initialization to PlotViewRenderer (#632)
 - Marked OxyPlot.Xamarin.Forms.Platform.*.Forms.Init() obsolete (#632)
 - Throw exception if Xamarin.Forms renderer is not 'initialized' (#492)
+- Make numeric values of DateTimeAxis compatible with ToOADate (#660)
+- Make struct types immutable (#692)
+- Implement IEquatable<T> for struct types (#692)
 
 ### Removed
 - StyleCop tasks (#556)
@@ -65,6 +69,7 @@ All notable changes to this project will be documented in this file.
 - Remove SL4 support (#115)
 - Remove NET35 support (#115)
 - PlotElement.Format method. Use StringHelper.Format instead.
+- EnumerableExtensions.Reverse removed (#677)
 
 ### Fixed
 - HeatMapSeries.GetValue returns NaN instead of calculating a wrong value in proximity to NaN (#256)
@@ -114,6 +119,8 @@ All notable changes to this project will be documented in this file.
 - Do not set default Controller in PlotView ctor (#436)
 - Corrected owner type of Wpf.PathAnnotation dependency properties (#645)
 - Fixed partial plot rendering on Xamarin.Android (#649)
+- Default controller should not be shared in WPF PlotViews (#682)
+- PositionAtZeroCrossing adds zero crossing line at wrong position (#635)
 
 ## [2014.1.546] - 2014-10-22
 ### Added

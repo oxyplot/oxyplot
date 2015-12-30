@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace OxyPlot.Tests.Foundation
+namespace OxyPlot.Tests
 {
     using NUnit.Framework;
     using System.Linq;
@@ -97,6 +97,16 @@ namespace OxyPlot.Tests.Foundation
             Assert.AreEqual(expected.Top, actual.Top, Delta, errorMessage);
             Assert.AreEqual(expected.Width, actual.Width, Delta, errorMessage);
             Assert.AreEqual(expected.Height, actual.Height, Delta, errorMessage);
+        }
+
+        /// <summary>
+        /// Tests the Equals method.
+        /// </summary>
+        [Test]
+        public void Equals()
+        {
+            Assert.That(new OxySize(1, 2).Equals(new OxySize(1, 2)), Is.True);
+            Assert.That(new OxySize(1, 2).Equals(new OxySize()), Is.False);
         }
     }
 }

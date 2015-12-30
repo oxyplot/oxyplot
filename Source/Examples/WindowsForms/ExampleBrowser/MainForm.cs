@@ -33,9 +33,13 @@ namespace ExampleBrowser
                     this.treeView1.Nodes.Add(node);
                 }
 
-                node.Nodes.Add(new TreeNode(ex.Title) { Tag = ex });
+                var exNode = new TreeNode(ex.Title) { Tag = ex };
+                node.Nodes.Add(exNode);
+                if (ex == this.vm.SelectedExample)
+                {
+                    this.treeView1.SelectedNode = exNode;
+                }
             }
-
             this.treeView1.AfterSelect += this.TreeView1AfterSelect;
         }
 

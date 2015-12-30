@@ -9,10 +9,12 @@
 
 namespace OxyPlot
 {
+    using System;
+
     /// <summary>
     /// Represents absolute or relative lengths in data or screen space.
     /// </summary>
-    public struct PlotLength
+    public struct PlotLength : IEquatable<PlotLength>
     {
         /// <summary>
         /// The unit type
@@ -57,6 +59,16 @@ namespace OxyPlot
             {
                 return this.unit;
             }
+        }
+
+        /// <summary>
+        /// Determines whether this instance and another specified <see cref="T:PlotLength" /> object have the same value.
+        /// </summary>
+        /// <param name="other">The length to compare to this instance.</param>
+        /// <returns><c>true</c> if the value of the <paramref name="other" /> parameter is the same as the value of this instance; otherwise, <c>false</c>.</returns>
+        public bool Equals(PlotLength other)
+        {
+            return this.value.Equals(other.value) && this.unit.Equals(other.unit);
         }
     }
 }

@@ -182,6 +182,7 @@ namespace ExampleLibrary
                 Maximum = 50,
                 Minimum = -30,
                 PositionAtZeroCrossing = true,
+                AxislineStyle = LineStyle.Solid,
                 TickStyle = TickStyle.Crossing
             });
             plotModel1.Axes.Add(new LinearAxis
@@ -190,7 +191,58 @@ namespace ExampleLibrary
                 Minimum = -50,
                 Position = AxisPosition.Bottom,
                 PositionAtZeroCrossing = true,
+                AxislineStyle = LineStyle.Solid,
                 TickStyle = TickStyle.Crossing
+            });
+            return plotModel1;
+        }
+
+        [Example("Horizontal zero crossing axis")]
+        public static PlotModel HorizontalZeroCrossing()
+        {
+            var plotModel1 = new PlotModel
+            {
+                Title = "Bottom axis: PositionAtZeroCrossing = true"
+            };
+            plotModel1.Axes.Add(new LinearAxis
+            {
+                Maximum = 50,
+                Minimum = -30,
+                Position = AxisPosition.Left,                
+                PositionAtZeroCrossing = false,
+            });
+            plotModel1.Axes.Add(new LinearAxis
+            {
+                Maximum = 70,
+                Minimum = -50,
+                Position = AxisPosition.Bottom,
+                PositionAtZeroCrossing = true,
+                AxislineStyle = LineStyle.Solid,
+            });
+            return plotModel1;
+        }
+
+        [Example("Vertical zero crossing axis")]
+        public static PlotModel VerticalZeroCrossing()
+        {
+            var plotModel1 = new PlotModel
+            {
+                Title = "Left axis: PositionAtZeroCrossing = true"
+            };
+            plotModel1.Axes.Add(new LinearAxis
+            {
+                Maximum = 50,
+                Minimum = -30,
+                Position = AxisPosition.Left,
+                PositionAtZeroCrossing = true,
+                AxislineStyle = LineStyle.Solid,
+            });
+            plotModel1.Axes.Add(new LinearAxis
+            {
+                Maximum = 70,
+                Minimum = -50,
+                Position = AxisPosition.Bottom,
+                PositionAtZeroCrossing = false,
             });
             return plotModel1;
         }
