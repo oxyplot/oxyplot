@@ -122,6 +122,7 @@ All notable changes to this project will be documented in this file.
 - Fixed partial plot rendering on Xamarin.Android (#649)
 - Default controller should not be shared in WPF PlotViews (#682)
 - PositionAtZeroCrossing adds zero crossing line at wrong position (#635)
+- Implement AreaSeries.ConstantY2 (#662)
 
 ## [2014.1.546] - 2014-10-22
 ### Added

@@ -9,6 +9,7 @@
 
 namespace OxyPlot.Series
 {
+    using System.Linq;
     using System.Collections.Generic;
 
     /// <summary>
@@ -22,9 +23,14 @@ namespace OxyPlot.Series
         private readonly List<DataPoint> points2 = new List<DataPoint>();
 
         /// <summary>
-        /// The secondary data points from the items source.
+        /// The secondary data points from the <see cref="P:ItemsSource" /> collection.
         /// </summary>
         private readonly List<DataPoint> itemsSourcePoints2 = new List<DataPoint>();
+
+        /// <summary>
+        /// The secondary data points from the <see cref="P:Points2" /> list.
+        /// </summary>
+        private List<DataPoint> actualPoints2;
 
         /// <summary>
         /// Initializes a new instance of the <see cref = "AreaSeries" /> class.
@@ -41,26 +47,31 @@ namespace OxyPlot.Series
         /// This is used if DataFieldBase and BaselineValues are <c>null</c>.
         /// </summary>
         /// <value>The baseline.</value>
+        /// <remarks><see cref="P:ConstantY2" /> is used if <see cref="P:ItemsSource" /> is set 
+        /// and <see cref="P:DataFieldX2" /> or <see cref="P:DataFieldY2" /> are <c>null</c>, 
+        /// or if <see cref="P:ItemsSource" /> is <c>null</c> and <see cref="P:Points2" /> is empty.</remarks>
         public double ConstantY2 { get; set; }
 
         /// <summary>
-        /// Gets or sets the second X data field.
+        /// Gets or sets the data field to use for the X-coordinates of the second data set.
         /// </summary>
+        /// <remarks>This property is used if <see cref="P:ItemsSource" /> is set.</remarks>
         public string DataFieldX2 { get; set; }
 
         /// <summary>
-        /// Gets or sets the second Y data field.
+        /// Gets or sets the data field to use for the Y-coordinates of the second data set.
         /// </summary>
+        /// <remarks>This property is used if <see cref="P:ItemsSource" /> is set.</remarks>
         public string DataFieldY2 { get; set; }
 
         /// <summary>
-        /// Gets or sets the color of the second line.
+        /// Gets or sets the color of the line for the second data set.
         /// </summary>
         /// <value>The color.</value>
         public OxyColor Color2 { get; set; }
 
         /// <summary>
-        /// Gets the actual color of the second line.
+        /// Gets the actual color of the line for the second data set.
         /// </summary>
         /// <value>The actual color.</value>
         public OxyColor ActualColor2
@@ -72,15 +83,15 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Gets or sets the area fill color.
+        /// Gets or sets the fill color of the area.
         /// </summary>
         /// <value>The fill color.</value>
         public OxyColor Fill { get; set; }
 
         /// <summary>
-        /// Gets the actual fill color.
+        /// Gets the actual fill color of the area.
         /// </summary>
-        /// <value>The actual fill.</value>
+        /// <value>The actual fill color.</value>
         public OxyColor ActualFill
         {
             get
@@ -93,6 +104,7 @@ namespace OxyPlot.Series
         /// Gets the second list of points.
         /// </summary>
         /// <value>The second list of points.</value>
+        /// <remarks>This property is not used if <see cref="P:ItemsSource" /> is set.</remarks>
         public List<DataPoint> Points2
         {
             get
@@ -104,21 +116,22 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets or sets a value indicating whether the second
         /// data collection should be reversed.
-        /// The first dataset is not reversed, and normally
-        /// the second dataset should be reversed to get a
-        /// closed polygon.
         /// </summary>
+        /// <value><c>true</c> if the second data setshould be reversed; otherwise, <c>false</c>.</value>
+        /// <remarks>The first dataset is not reversed, and normally
+        /// the second dataset should be reversed to get a
+        /// closed polygon.</remarks>
         public bool Reverse2 { get; set; }
 
         /// <summary>
-        /// Gets the second list of points.
+        /// Gets the actual points of the second data set.
         /// </summary>
-        /// <value>The second list of points.</value>
+        /// <value>A list of data points.</value>
         protected List<DataPoint> ActualPoints2
         {
             get
             {
-                return this.ItemsSource != null ? this.itemsSourcePoints2 : this.points2;
+                return this.ItemsSource != null ? this.itemsSourcePoints2 : this.actualPoints2;
             }
         }
 
@@ -176,9 +189,9 @@ namespace OxyPlot.Series
         /// <param name="rc">The rendering context.</param>
         public override void Render(IRenderContext rc)
         {
-            var actualPoints = this.ActualPoints;
-            var actualPoints2 = this.ActualPoints2;
-            int n0 = actualPoints.Count;
+            var dataPoints1 = this.ActualPoints;
+            var dataPoints2 = this.ActualPoints2;
+            int n0 = dataPoints1.Count;
             if (n0 == 0)
             {
                 return;
@@ -195,15 +208,15 @@ namespace OxyPlot.Series
             IList<ScreenPoint> pts0 = new ScreenPoint[n0];
             for (int i = 0; i < n0; i++)
             {
-                pts0[i] = this.XAxis.Transform(actualPoints[i].X, actualPoints[i].Y, this.YAxis);
+                pts0[i] = this.XAxis.Transform(dataPoints1[i].X, dataPoints1[i].Y, this.YAxis);
             }
 
-            int n1 = actualPoints2.Count;
+            int n1 = dataPoints2.Count;
             IList<ScreenPoint> pts1 = new ScreenPoint[n1];
             for (int i = 0; i < n1; i++)
             {
                 int j = this.Reverse2 ? n1 - 1 - i : i;
-                pts1[j] = this.XAxis.Transform(actualPoints2[i].X, actualPoints2[i].Y, this.YAxis);
+                pts1[j] = this.XAxis.Transform(dataPoints2[i].X, dataPoints2[i].Y, this.YAxis);
             }
 
             if (this.Smooth)
@@ -303,6 +316,13 @@ namespace OxyPlot.Series
 
             if (this.ItemsSource == null)
             {
+                if (this.points2.Count > 0)
+                {
+                    this.actualPoints2 = this.points2;
+                } else { 
+                    this.actualPoints2 = this.GetConstantPoints2().ToList();
+                }
+
                 return;
             }
 
@@ -312,7 +332,12 @@ namespace OxyPlot.Series
             // Using reflection on DataFieldX2 and DataFieldY2
             if (this.DataFieldX2 != null && this.DataFieldY2 != null)
             {
-                ReflectionExtensions.AddRange(this.itemsSourcePoints2, this.ItemsSource, this.DataFieldX2, this.DataFieldY2);
+                ReflectionExtensions.AddRange(this.itemsSourcePoints2, this.ItemsSource, this.DataFieldX2,
+                    this.DataFieldY2);
+            }
+            else
+            {
+                this.itemsSourcePoints2.AddRange(this.GetConstantPoints2());
             }
         }
 
@@ -323,6 +348,23 @@ namespace OxyPlot.Series
         {
             base.UpdateMaxMin();
             this.InternalUpdateMaxMin(this.ActualPoints2);
+        }
+
+        /// <summary>
+        /// Gets the points when <see cref="P:ConstantY2" /> is used.
+        /// </summary>
+        /// <returns>A sequence of <see cref="T:DataPoint"/>.</returns>
+        private IEnumerable<DataPoint> GetConstantPoints2()
+        {
+            var actualPoints = this.ActualPoints;
+            if (!double.IsNaN(this.ConstantY2) && actualPoints.Count > 0)
+            {
+                // Use ConstantY2
+                var x0 = actualPoints[0].X;
+                var x1 = actualPoints[actualPoints.Count - 1].X;
+                yield return new DataPoint(x0, this.ConstantY2);
+                yield return new DataPoint(x1, this.ConstantY2);
+            }
         }
     }
 }
