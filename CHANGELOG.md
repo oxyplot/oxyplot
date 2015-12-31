@@ -21,6 +21,7 @@ All notable changes to this project will be documented in this file.
 - Add LegendLineSpacing property in PlotModel (#622)
 - Implement RenderLegend for LinearBarSeries (#663)
 - Add LegendMaxHeight property in PlotModel and Wpf.Plot (#668)
+- Support for a Xamarin Forms UWP project with sample app. Nuget package will be added when Xamarin Forms UWP is released outside preview. (#697)
 
 ### Changed
 - Renamed OxyPlot.WindowsUniversal to OxyPlot.Windows (#242)
