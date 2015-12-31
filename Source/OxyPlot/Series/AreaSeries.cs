@@ -10,6 +10,7 @@
 namespace OxyPlot.Series
 {
     using System.Collections.Generic;
+    using System.Linq;
 
     /// <summary>
     /// Represents an area series that fills the polygon defined by two sets of points or one set of points and a constant.
@@ -118,7 +119,9 @@ namespace OxyPlot.Series
         {
             get
             {
-                return this.ItemsSource != null ? this.itemsSourcePoints2 : this.points2;
+                return this.ItemsSource != null 
+                    ? this.itemsSourcePoints2 
+                    : (this.points2.Any() ? this.points2 : this.Points.Select(p => new DataPoint(p.X, ConstantY2)).ToList());
             }
         }
 
