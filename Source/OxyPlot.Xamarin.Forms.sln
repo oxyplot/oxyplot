@@ -71,7 +71,26 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Xamarin.Forms.Platf
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleDemo.UWP", "Examples\Xamarin.Forms\SimpleDemo\SimpleDemo.UWP\SimpleDemo.UWP.csproj", "{3B9AC54C-70A2-41B1-866F-3310F4C97B83}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0 Change log", "0 Change log", "{718F324B-6F99-45AD-B4D8-99EBCB9D5F65}"
+	ProjectSection(SolutionItems) = preProject
+		..\AUTHORS = ..\AUTHORS
+		..\CHANGELOG.md = ..\CHANGELOG.md
+		..\CONTRIBUTORS = ..\CONTRIBUTORS
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0 Documentation", "0 Documentation", "{43AD5530-D29C-4DFE-A8F1-40024B9282E7}"
+	ProjectSection(SolutionItems) = preProject
+		..\CONTRIBUTING.md = ..\CONTRIBUTING.md
+		..\README.md = ..\README.md
+	EndProjectSection
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Examples\Xamarin.Forms\SimpleDemo2\SimpleDemo2\SimpleDemo2.projitems*{34a8f158-6361-4d78-a18d-df13626b0312}*SharedItemsImports = 13
+		Examples\Xamarin.Forms\SimpleDemo2\SimpleDemo2\SimpleDemo2.projitems*{46fa767d-f6f6-4b90-a991-2556ba6631a4}*SharedItemsImports = 4
+		Examples\Xamarin.Forms\SimpleDemo2\SimpleDemo2\SimpleDemo2.projitems*{3c670b13-00c2-4917-b9dc-eae76b01b808}*SharedItemsImports = 4
+		Examples\Xamarin.Forms\SimpleDemo2\SimpleDemo2\SimpleDemo2.projitems*{5bd48e60-d0e2-4c14-aaaf-81fe43e025cc}*SharedItemsImports = 4
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Ad-Hoc|Any CPU = Ad-Hoc|Any CPU
 		Ad-Hoc|ARM = Ad-Hoc|ARM

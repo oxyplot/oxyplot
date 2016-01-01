@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Wpf", "OxyPlot.Wpf\OxyPlot.Wpf.csproj", "{698CCD8E-ADCC-4565-8517-5EDD36F07155}"
 EndProject
@@ -40,6 +40,19 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathBlockDemo", "Examples\WPF\MathBlockDemo\MathBlockDemo.csproj", "{D301156F-622D-4821-8C9A-10B895057634}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerformanceTest", "Examples\PerformanceTest\PerformanceTest.csproj", "{EDD52464-AD60-4EA1-B774-87AAFD930B6B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Change log", "Change log", "{4334530D-EBDE-4F04-838A-DA5A8A598124}"
+	ProjectSection(SolutionItems) = preProject
+		..\AUTHORS = ..\AUTHORS
+		..\CHANGELOG.md = ..\CHANGELOG.md
+		..\CONTRIBUTORS = ..\CONTRIBUTORS
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{06B2EDA4-A30B-493A-A0A1-9DA28A2F4B0B}"
+	ProjectSection(SolutionItems) = preProject
+		..\CONTRIBUTING.md = ..\CONTRIBUTING.md
+		..\README.md = ..\README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
