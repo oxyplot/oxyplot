@@ -123,6 +123,7 @@ All notable changes to this project will be documented in this file.
 - Default controller should not be shared in WPF PlotViews (#682)
 - PositionAtZeroCrossing adds zero crossing line at wrong position (#635)
 - Implement AreaSeries.ConstantY2 (#662)
+- Null reference exception in ScatterSeries{T} actual points (#636)
 
 ## [2014.1.546] - 2014-10-22
 ### Added
