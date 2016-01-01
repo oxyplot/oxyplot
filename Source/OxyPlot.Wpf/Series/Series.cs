@@ -114,7 +114,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets whether the series should be rendered in legend.
+        /// Gets or sets a value indicating whether the series should be rendered in the legend.
         /// </summary>
         public bool RenderInLegend 
         {
@@ -122,6 +122,7 @@ namespace OxyPlot.Wpf
             {
                 return (bool)this.GetValue(RenderInLegendProperty);
             }
+
             set
             {
                 this.SetValue(RenderInLegendProperty, value);

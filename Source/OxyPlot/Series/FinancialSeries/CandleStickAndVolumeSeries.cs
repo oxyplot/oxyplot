@@ -573,7 +573,7 @@ namespace OxyPlot.Series
 
             var yquartile = (ymax - ymin) / 4.0;
 
-            switch (VolumeStyle)
+            switch (this.VolumeStyle)
             {
                 case VolumeStyle.PositiveNegative:
                     ymin = -(yavg + (yquartile / 2.0));
@@ -584,7 +584,6 @@ namespace OxyPlot.Series
                     ymin = 0;
                     break;
                 default:
-                case VolumeStyle.Combined:
                     ymax = yavg + (yquartile / 2.0);
                     ymin = 0;
                     break;
@@ -605,10 +604,10 @@ namespace OxyPlot.Series
 
             double xmin = double.MaxValue;
             double xmax = double.MinValue;
-            double ymin_bar = double.MaxValue;
-            double ymax_bar = double.MinValue;
-            double ymin_vol = double.MaxValue;
-            double ymax_vol = double.MinValue;
+            double yminBar = double.MaxValue;
+            double ymaxBar = double.MinValue;
+            double yminVol = double.MaxValue;
+            double ymaxVol = double.MinValue;
 
             var nvol = 0.0;
             var cumvol = 0.0;
@@ -635,19 +634,19 @@ namespace OxyPlot.Series
 
                 xmin = Math.Min(xmin, bar.X);
                 xmax = Math.Max(xmax, bar.X);
-                ymin_bar = Math.Min(ymin_bar, bar.Low);
-                ymax_bar = Math.Max(ymax_bar, bar.High);
-                ymin_vol = Math.Min(ymin_vol, -bar.SellVolume);
-                ymax_vol = Math.Max(ymax_vol, +bar.BuyVolume);
+                yminBar = Math.Min(yminBar, bar.Low);
+                ymaxBar = Math.Max(ymaxBar, bar.High);
+                yminVol = Math.Min(yminVol, -bar.SellVolume);
+                ymaxVol = Math.Max(ymaxVol, +bar.BuyVolume);
             }
 
             this.MinX = Math.Max(this.XAxis.FilterMinValue, xmin);
             this.MaxX = Math.Min(this.XAxis.FilterMaxValue, xmax);
-            this.MinY = Math.Max(this.YAxis.FilterMinValue, ymin_bar);
-            this.MaxY = Math.Min(this.YAxis.FilterMaxValue, ymax_bar);
+            this.MinY = Math.Max(this.YAxis.FilterMinValue, yminBar);
+            this.MaxY = Math.Min(this.YAxis.FilterMaxValue, ymaxBar);
 
-            this.MinimumVolume = ymin_vol;
-            this.MaximumVolume = ymax_vol;
+            this.MinimumVolume = yminVol;
+            this.MaximumVolume = ymaxVol;
             this.AverageVolume = cumvol / nvol;
         }
 

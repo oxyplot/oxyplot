@@ -130,8 +130,15 @@ namespace OxyPlot.Wpf
         /// <value><c>true</c> if text should be clipped; otherwise, <c>false</c>.</value>
         public bool ClipText
         {
-            get { return (bool)GetValue(ClipTextProperty); }
-            set { this.SetValue(ClipTextProperty, value); }
+            get
+            {
+                return (bool)this.GetValue(ClipTextProperty);
+            }
+
+            set
+            {
+                this.SetValue(ClipTextProperty, value);
+            }
         }
 
         /// <summary>
@@ -140,8 +147,15 @@ namespace OxyPlot.Wpf
         /// <value>The color.</value>
         public Color Color
         {
-            get { return (Color)this.GetValue(ColorProperty); }
-            set { this.SetValue(ColorProperty, value); }
+            get
+            {
+                return (Color)this.GetValue(ColorProperty);
+            }
+
+            set
+            {
+                this.SetValue(ColorProperty, value);
+            }
         }
 
         /// <summary>

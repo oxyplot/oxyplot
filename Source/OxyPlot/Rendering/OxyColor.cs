@@ -40,10 +40,10 @@ namespace OxyPlot
         /// <summary>
         /// Initializes a new instance of the <see cref="OxyColor"/> struct.
         /// </summary>
-        /// <param name="a">a.</param>
-        /// <param name="r">The r.</param>
-        /// <param name="g">The g.</param>
-        /// <param name="b">The b.</param>
+        /// <param name="a">The alpha value.</param>
+        /// <param name="r">The red value.</param>
+        /// <param name="g">The green value.</param>
+        /// <param name="b">The blue value.</param>
         private OxyColor(byte a, byte r, byte g, byte b)
         {
             this.a = a;

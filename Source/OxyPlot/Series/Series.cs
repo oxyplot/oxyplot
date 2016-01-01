@@ -45,7 +45,7 @@ namespace OxyPlot.Series
         public string Title { get; set; }
 
         /// <summary>
-        /// Gets or sets whether the series should be rendered in legend. The default ist true.
+        /// Gets or sets a value indicating whether the series should be rendered in the legend. The default is <c>true</c>.
         /// </summary>
         public bool RenderInLegend { get; set; }
 

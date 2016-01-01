@@ -1244,15 +1244,15 @@ namespace OxyPlot.Axes
             if (newMaximum - newMinimum > this.MaximumRange)
             {
                 var mid = (newMinimum + newMaximum) * 0.5;
-                newMaximum = mid + this.MaximumRange * 0.5;
-                newMinimum = mid - this.MaximumRange * 0.5;
+                newMaximum = mid + (this.MaximumRange * 0.5);
+                newMinimum = mid - (this.MaximumRange * 0.5);
             }
 
             if (newMaximum - newMinimum < this.MinimumRange)
             {
                 var mid = (newMinimum + newMaximum) * 0.5;
-                newMaximum = mid + this.MinimumRange * 0.5;
-                newMinimum = mid - this.MinimumRange * 0.5;
+                newMaximum = mid + (this.MinimumRange * 0.5);
+                newMinimum = mid - (this.MinimumRange * 0.5);
             }
 
             newMinimum = Math.Max(newMinimum, this.AbsoluteMinimum);

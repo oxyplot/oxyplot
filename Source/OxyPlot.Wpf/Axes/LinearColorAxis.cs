@@ -75,7 +75,7 @@ namespace OxyPlot.Wpf
         {
             get
             {
-                return (int)GetValue(PaletteSizeProperty);
+                return (int)this.GetValue(PaletteSizeProperty);
             }
 
             set
@@ -91,7 +91,7 @@ namespace OxyPlot.Wpf
         {
             get
             {
-                return (Color)GetValue(HighColorProperty);
+                return (Color)this.GetValue(HighColorProperty);
             }
 
             set
@@ -107,7 +107,7 @@ namespace OxyPlot.Wpf
         {
             get
             {
-                return (Color)GetValue(LowColorProperty);
+                return (Color)this.GetValue(LowColorProperty);
             }
 
             set
@@ -123,7 +123,7 @@ namespace OxyPlot.Wpf
         {
             get
             {
-                return (GradientStopCollection)GetValue(GradientStopsProperty);
+                return (GradientStopCollection)this.GetValue(GradientStopsProperty);
             }
 
             set
@@ -150,7 +150,7 @@ namespace OxyPlot.Wpf
         protected override void SynchronizeProperties()
         {
             base.SynchronizeProperties();
-            var axis = InternalAxis as Axes.LinearColorAxis;
+            var axis = this.InternalAxis as Axes.LinearColorAxis;
             Trace.Assert(axis != null);
             if (this.GradientStops != null)
             {

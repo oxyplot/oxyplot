@@ -792,6 +792,11 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
+        /// Updates the <see cref="F:ItemsSourcePoints" /> from the <see cref="P:ItemsSource" /> and data fields.
+        /// </summary>
+        protected abstract void UpdateFromDataFields();
+
+        /// <summary>
         /// Updates the points from the <see cref="ItemsSeries.ItemsSource" />.
         /// </summary>
         private void UpdateItemsSourcePoints()
@@ -849,10 +854,5 @@ namespace OxyPlot.Series
             // Use reflection to add scatter points
             this.UpdateFromDataFields();
         }
-
-        /// <summary>
-        /// Updates the <see cref="F:ItemsSourcePoints" /> from the <see cref="P:ItemsSource" /> and data fields.
-        /// </summary>
-        protected abstract void UpdateFromDataFields();
     }
 }

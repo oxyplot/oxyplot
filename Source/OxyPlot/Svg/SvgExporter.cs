@@ -79,7 +79,7 @@ namespace OxyPlot
         /// <param name="height">The height (points).</param>
         /// <param name="isDocument">if set to <c>true</c>, the xml headers will be included (?xml and !DOCTYPE).</param>
         /// <param name="textMeasurer">The text measurer.</param>
-        /// <returns>The plot as a svg string.</returns>
+        /// <returns>The plot as an <c>SVG</c> string.</returns>
         public static string ExportToString(IPlotModel model, double width, double height, bool isDocument, IRenderContext textMeasurer = null)
         {
             string svg;

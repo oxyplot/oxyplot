@@ -159,7 +159,6 @@ namespace OxyPlot.Series
         /// Returns C# code that generates this instance.
         /// </summary>
         /// <returns>The C# code.</returns>
-        /// <exception cref="System.NotImplementedException"></exception>
         public string ToCode()
         {
             return CodeGenerator.FormatConstructor(

@@ -61,7 +61,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets or sets the bottom thickness.
+        /// Gets the bottom thickness.
         /// </summary>
         /// <value>The bottom thickness.</value>
         public double Bottom
@@ -84,7 +84,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets or sets the left thickness.
+        /// Gets the left thickness.
         /// </summary>
         /// <value>The left thickness.</value>
         public double Left
@@ -96,7 +96,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets or sets the right thickness.
+        /// Gets the right thickness.
         /// </summary>
         /// <value>The right thickness.</value>
         public double Right
@@ -108,7 +108,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets or sets the top thickness.
+        /// Gets the top thickness.
         /// </summary>
         /// <value>The top thickness.</value>
         public double Top
