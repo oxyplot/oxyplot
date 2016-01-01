@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{B630CA82-A785-49CA-8FA0-3D3AF4D6626A}"
 EndProject
@@ -14,6 +14,19 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleLibrary", "Examples\ExampleLibrary\ExampleLibrary.csproj", "{FACB89E5-53A5-4748-9F5B-E0714EBB37B2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleBrowser", "Examples\WindowsForms\ExampleBrowser\ExampleBrowser.csproj", "{138BFD13-0ED1-49F5-B902-78770CB3D66B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Change log", "Change log", "{718F324B-6F99-45AD-B4D8-99EBCB9D5F65}"
+	ProjectSection(SolutionItems) = preProject
+		..\AUTHORS = ..\AUTHORS
+		..\CHANGELOG.md = ..\CHANGELOG.md
+		..\CONTRIBUTORS = ..\CONTRIBUTORS
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{43AD5530-D29C-4DFE-A8F1-40024B9282E7}"
+	ProjectSection(SolutionItems) = preProject
+		..\CONTRIBUTING.md = ..\CONTRIBUTING.md
+		..\README.md = ..\README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
