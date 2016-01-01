@@ -136,5 +136,17 @@ namespace OxyPlot.Series
                 ha,
                 VerticalAlignment.Middle);
         }
+
+        /// <summary>
+        /// Updates the <see cref="F:itemsSourceItems" /> from the <see cref="P:ItemsSource" /> and data fields.
+        /// </summary>
+        protected override void UpdateFromDataFields()
+        {
+            // Using reflection to add items by value and color (optional)
+            var filler = new ListBuilder<BarItem>();
+            filler.Add(this.ValueField, double.NaN);
+            filler.Add(this.ColorField, OxyColors.Automatic);
+            filler.Fill(this.ItemsSourceItems, this.ItemsSource, args => new BarItem(Convert.ToDouble(args[0])) { Color = (OxyColor)args[1] });
+        }
     }
 }
