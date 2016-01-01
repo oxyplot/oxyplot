@@ -87,10 +87,16 @@ namespace OxyPlot.Series
         {
             base.Render(rc);
 
+            var actualPoints = this.ActualPointsList;
+            if (actualPoints == null || actualPoints.Count == 0)
+            {
+                return;
+            }
+
             var clippingRectangle = this.GetClippingRect();
 
             var segments = new List<ScreenPoint>();
-            foreach (var point in this.ActualPointsList)
+            foreach (var point in actualPoints)
             {
                 if (point == null)
                 {

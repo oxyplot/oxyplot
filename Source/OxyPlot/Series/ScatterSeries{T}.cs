@@ -247,6 +247,12 @@ namespace OxyPlot.Series
                 return null;
             }
 
+            var actualPoints = this.ActualPointsList;
+            if (actualPoints == null || actualPoints.Count == 0)
+            {
+                return null;
+            }
+
             TrackerHitResult result = null;
             double minimumDistance = double.MaxValue;
             int i = 0;
@@ -255,7 +261,7 @@ namespace OxyPlot.Series
             var yaxisTitle = this.YAxis.Title ?? DefaultYAxisTitle;
             var colorAxisTitle = (this.ColorAxis != null ? ((Axis)this.ColorAxis).Title : null) ?? DefaultColorAxisTitle;
 
-            foreach (var p in this.ActualPointsList)
+            foreach (var p in actualPoints)
             {
                 if (p.X < this.XAxis.ActualMinimum || p.X > this.XAxis.ActualMaximum || p.Y < this.YAxis.ActualMinimum || p.Y > this.YAxis.ActualMaximum)
                 {
@@ -316,16 +322,15 @@ namespace OxyPlot.Series
         public override void Render(IRenderContext rc)
         {
             var actualPoints = this.ActualPointsList;
-            
-            if(actualPoints == null || actualPoints.Count == 0)
+
+            if (actualPoints == null || actualPoints.Count == 0)
             {
                 return;
             }
-            
-            int n = actualPoints.Count;
 
             var clippingRect = this.GetClippingRect();
 
+            int n = actualPoints.Count;
             var allPoints = new List<ScreenPoint>(n);
             var allMarkerSizes = new List<double>(n);
             var selectedPoints = new List<ScreenPoint>();
@@ -532,9 +537,15 @@ namespace OxyPlot.Series
         /// <param name="clippingRect">The clipping rectangle.</param>
         protected void RenderPointLabels(IRenderContext rc, OxyRect clippingRect)
         {
+            var actualPoints = this.ActualPointsList;
+            if (actualPoints == null || actualPoints.Count == 0)
+            {
+                return;
+            }
+
             // TODO: share code with LineSeries
             int index = -1;
-            foreach (var point in this.ActualPointsList)
+            foreach (var point in actualPoints)
             {
                 index++;
                 var dataPoint = new DataPoint(point.X, point.Y);
