@@ -142,6 +142,20 @@ namespace ExampleLibrary
             return new Example(pm, controller);
         }
 
+        [Example("Simple CandleStickSeries example")]
+        public static PlotModel SimpleExample()
+        {
+            var startTimeValue = DateTimeAxis.ToDouble(new DateTime(2016, 1, 1));
+            var pm = new PlotModel { Title = "Simple CandleStickSeries example" };
+            pm.Axes.Add(new DateTimeAxis { Position = AxisPosition.Bottom, Minimum = startTimeValue - 7, Maximum = startTimeValue + 7 });
+            pm.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+            var series = new CandleStickSeries();
+            series.Items.Add(new HighLowItem(startTimeValue, 100, 80, 92, 94));
+            series.Items.Add(new HighLowItem(startTimeValue + 1, 102, 77, 94, 93));
+            pm.Series.Add(series);
+            return pm;
+        }
+
         /// <summary>
         /// Adjusts the Y extent.
         /// </summary>
