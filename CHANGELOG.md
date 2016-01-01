@@ -60,6 +60,7 @@ All notable changes to this project will be documented in this file.
 - Make numeric values of DateTimeAxis compatible with ToOADate (#660)
 - Make struct types immutable (#692)
 - Implement IEquatable<T> for struct types (#692)
+- BoxPlotItem changed to reference type (#692)
 
 ### Removed
 - StyleCop tasks (#556)

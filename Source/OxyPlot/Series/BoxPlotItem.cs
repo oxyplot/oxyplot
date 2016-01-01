@@ -15,7 +15,7 @@ namespace OxyPlot.Series
     /// <summary>
     /// Represents an item in a <see cref="BoxPlotSeries" />.
     /// </summary>
-    public struct BoxPlotItem
+    public class BoxPlotItem
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BoxPlotItem" /> struct.
@@ -38,7 +38,6 @@ namespace OxyPlot.Series
             double upperWhisker,
             IList<double> outliers,
             object tag = null)
-            : this()
         {
             this.X = x;
             this.LowerWhisker = lowerWhisker;
@@ -67,7 +66,6 @@ namespace OxyPlot.Series
             double median,
             double boxTop,
             double upperWhisker)
-            : this()
         {
             this.X = x;
             this.LowerWhisker = lowerWhisker;
