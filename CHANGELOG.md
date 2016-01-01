@@ -23,6 +23,7 @@ All notable changes to this project will be documented in this file.
 - Add LegendMaxHeight property in PlotModel and Wpf.Plot (#668)
 - Support for a Xamarin Forms UWP project with sample app. Nuget package will be added when Xamarin Forms UWP is released outside preview. (#697)
 - Add ListBuilder for building lists by reflection (#705)
+- F# example (#699)
 
 ### Changed
 - Renamed OxyPlot.WindowsUniversal to OxyPlot.Windows (#242)
