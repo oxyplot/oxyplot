@@ -363,7 +363,7 @@ namespace OxyPlot.Axes
         public double MaximumPadding { get; set; }
 
         /// <summary>
-        /// Gets or sets the maximum range of the axis. Setting this property ensures that <c>ActualMaximum-ActualMinimum < <c>MaximumRange</c>. The default value is <c>double.PositiveInfinity</c>.
+        /// Gets or sets the maximum range of the axis. Setting this property ensures that <c>ActualMaximum-ActualMinimum < MaximumRange</c>. The default value is <c>double.PositiveInfinity</c>.
         /// </summary>
         public double MaximumRange { get; set; }
 
@@ -379,7 +379,7 @@ namespace OxyPlot.Axes
         public double MinimumPadding { get; set; }
 
         /// <summary>
-        /// Gets or sets the minimum range of the axis. Setting this property ensures that <c>ActualMaximum-ActualMinimum > <c>MinimumRange</c>. The default value is <c>0</c>.
+        /// Gets or sets the minimum range of the axis. Setting this property ensures that <c>ActualMaximum-ActualMinimum > MinimumRange</c>. The default value is <c>0</c>.
         /// </summary>
         public double MinimumRange { get; set; }
 
@@ -729,10 +729,21 @@ namespace OxyPlot.Axes
             // Coerce the minimum range
             if (range < this.MinimumRange)
             { 
-                var average = (this.ActualMaximum + this.ActualMinimum) * 0.5;
-                var delta = this.MinimumRange * 0.5;
-                this.ActualMinimum = average - delta;
-                this.ActualMaximum = average + delta;
+                if (!double.IsNaN(this.Minimum) && !double.IsNaN(this.Maximum))
+                {
+                    var average = (this.ActualMaximum + this.ActualMinimum) * 0.5;
+                    var delta = this.MinimumRange / 2;
+                    this.ActualMinimum = average - delta;
+                    this.ActualMaximum = average + delta;
+                }
+                else if (!double.IsNaN(this.Minimum) && double.IsNaN(this.Maximum))
+                {
+                    this.ActualMaximum = this.Minimum + this.MinimumRange;
+                }
+                else if (!double.IsNaN(this.Maximum) && double.IsNaN(this.Minimum))
+                {
+                    this.ActualMinimum = this.Maximum - this.MinimumRange;
+                } 
             }
 
             // Coerce the maximum range
