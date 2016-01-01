@@ -14,7 +14,7 @@ namespace OxyPlot.Series
     /// <summary>
     /// Represents an item in a <see cref="HighLowSeries" />.
     /// </summary>
-    public class HighLowItem
+    public class HighLowItem : ICodeGenerating
     {
         /// <summary>
         /// The undefined.
@@ -135,9 +135,9 @@ namespace OxyPlot.Series
                     }
                 }
                 else
-                { 
-                    start = guess + 1; 
-                    lastguess = guess; 
+                {
+                    start = guess + 1;
+                    lastguess = guess;
                 }
 
                 if (start >= end)
@@ -153,6 +153,17 @@ namespace OxyPlot.Series
             }
 
             return lastguess;
+        }
+
+        /// <summary>
+        /// Returns C# code that generates this instance.
+        /// </summary>
+        /// <returns>The C# code.</returns>
+        /// <exception cref="System.NotImplementedException"></exception>
+        public string ToCode()
+        {
+            return CodeGenerator.FormatConstructor(
+                this.GetType(), "{0},{1},{2},{3},{4}", this.X, this.High, this.Low, this.Open, this.Close);
         }
     }
 }

@@ -127,6 +127,7 @@ All notable changes to this project will be documented in this file.
 - PositionAtZeroCrossing adds zero crossing line at wrong position (#635)
 - Implement AreaSeries.ConstantY2 (#662)
 - Null reference exception in ScatterSeries{T} actual points (#636)
+- Code generation for HighLowItem (#634)
 
 ## [2014.1.546] - 2014-10-22
 ### Added
