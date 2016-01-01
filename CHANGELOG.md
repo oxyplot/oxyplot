@@ -22,6 +22,7 @@ All notable changes to this project will be documented in this file.
 - Implement RenderLegend for LinearBarSeries (#663)
 - Add LegendMaxHeight property in PlotModel and Wpf.Plot (#668)
 - Support for a Xamarin Forms UWP project with sample app. Nuget package will be added when Xamarin Forms UWP is released outside preview. (#697)
+- Add ListBuilder for building lists by reflection (#705)
 
 ### Changed
 - Renamed OxyPlot.WindowsUniversal to OxyPlot.Windows (#242)
@@ -71,6 +72,7 @@ All notable changes to this project will be documented in this file.
 - Remove NET35 support (#115)
 - PlotElement.Format method. Use StringHelper.Format instead.
 - EnumerableExtensions.Reverse removed (#677)
+- ListFiller (#705)
 
 ### Fixed
 - HeatMapSeries.GetValue returns NaN instead of calculating a wrong value in proximity to NaN (#256)

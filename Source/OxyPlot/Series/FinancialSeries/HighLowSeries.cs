@@ -361,13 +361,13 @@ namespace OxyPlot.Series
                 return;
             }
 
-            var filler = new ListFiller<HighLowItem>();
-            filler.Add(this.DataFieldX, (p, v) => p.X = Axis.ToDouble(v));
-            filler.Add(this.DataFieldHigh, (p, v) => p.High = Axis.ToDouble(v));
-            filler.Add(this.DataFieldLow, (p, v) => p.Low = Axis.ToDouble(v));
-            filler.Add(this.DataFieldOpen, (p, v) => p.Open = Axis.ToDouble(v));
-            filler.Add(this.DataFieldClose, (p, v) => p.Close = Axis.ToDouble(v));
-            filler.FillT(this.items, this.ItemsSource);
+            var filler = new ListBuilder<HighLowItem>();
+            filler.Add(this.DataFieldX, double.NaN);
+            filler.Add(this.DataFieldHigh, double.NaN);
+            filler.Add(this.DataFieldLow, double.NaN);
+            filler.Add(this.DataFieldOpen, double.NaN);
+            filler.Add(this.DataFieldClose, double.NaN);
+            filler.FillT(this.items, this.ItemsSource, args => new HighLowItem(Convert.ToDouble(args[0]), Convert.ToDouble(args[1]), Convert.ToDouble(args[2]), Convert.ToDouble(args[3]), Convert.ToDouble(args[4])));
         }
 
         /// <summary>

@@ -232,13 +232,13 @@ namespace OxyPlot.Series
                     var slice = this.slices[i];
                     var item = this.GetItem(i);
                     return new TrackerHitResult
-                               {
-                                   Series = this,
-                                   Position = point,
-                                   Item = item,
-                                   Index = i,
-                                   Text = StringHelper.Format(this.ActualCulture, this.TrackerFormatString, slice, this.Title, slice.Label, slice.Value, slice.Value / this.total)
-                               };
+                    {
+                        Series = this,
+                        Position = point,
+                        Item = item,
+                        Index = i,
+                        Text = StringHelper.Format(this.ActualCulture, this.TrackerFormatString, slice, this.Title, slice.Label, slice.Value, slice.Value / this.total)
+                    };
                 }
             }
 
@@ -468,12 +468,18 @@ namespace OxyPlot.Series
 
             this.slices.Clear();
 
-            var filler = new ListFiller<PieSlice>();
-            filler.Add(this.LabelField, (item, value) => item.Label = Convert.ToString(value));
-            filler.Add(this.ValueField, (item, value) => item.Value = Convert.ToDouble(value));
-            filler.Add(this.ColorField, (item, value) => item.Fill = (OxyColor)value);
-            filler.Add(this.IsExplodedField, (item, value) => item.IsExploded = (bool)value);
-            filler.FillT(this.slices, this.ItemsSource);
+            var filler = new ListBuilder<PieSlice>();
+            filler.Add(this.LabelField, (string)null);
+            filler.Add(this.ValueField, double.NaN);
+            filler.Add(this.ColorField, OxyColors.Automatic);
+            filler.Add(this.IsExplodedField, false);
+            filler.FillT(this.slices, this.ItemsSource,
+                args =>
+                new PieSlice((string)args[0], Convert.ToDouble(args[1]))
+                {
+                    Fill = (OxyColor)args[2],
+                    IsExploded = (bool)args[3]
+                });
         }
 
         /// <summary>

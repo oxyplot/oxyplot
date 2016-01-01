@@ -157,10 +157,10 @@
     <Compile Include="Utilities\ArrayExtensions.cs" />
     <Compile Include="Utilities\ComparerHelper.cs" />
     <Compile Include="Utilities\HashCodeBuilder.cs" />
+    <Compile Include="Utilities\ListBuilder{T}.cs" />
     <Compile Include="Utilities\ReflectionPath.cs" />
     <Compile Include="Utilities\XmlWriterBase.cs" />
     <Compile Include="Utilities\BinaryReaderExtensions.cs" />
-    <Compile Include="Utilities\ListFiller.cs" />
     <Compile Include="Utilities\StreamExtensions.cs" />
     <Compile Include="Utilities\StringHelper.cs" />
     <Compile Include="Utilities\FractionHelper.cs" />

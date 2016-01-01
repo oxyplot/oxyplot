@@ -414,10 +414,10 @@ namespace OxyPlot.Series
             {
                 this.Items.Clear();
 
-                var filler = new ListFiller<TornadoBarItem>();
-                filler.Add(this.MinimumField, (item, value) => item.Minimum = Convert.ToDouble(value));
-                filler.Add(this.MaximumField, (item, value) => item.Maximum = Convert.ToDouble(value));
-                filler.FillT(this.Items, this.ItemsSource);
+                var filler = new ListBuilder<TornadoBarItem>();
+                filler.Add(this.MinimumField, double.NaN);
+                filler.Add(this.MaximumField, double.NaN);
+                filler.FillT(this.Items, this.ItemsSource, args => new TornadoBarItem() { Minimum = Convert.ToDouble(args[0]), Maximum = Convert.ToDouble(args[1]) });
             }
         }
 
