@@ -253,6 +253,12 @@ namespace OxyPlot.Wpf
             "Maximum", typeof(double), typeof(Axis), new PropertyMetadata(double.NaN, AppearanceChanged));
 
         /// <summary>
+        /// Identifies the <see cref="MaximumRange"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty MaximumRangeProperty = DependencyProperty.Register(
+            "MaximumRange", typeof(double), typeof(Axis), new PropertyMetadata(double.PositiveInfinity, AppearanceChanged));
+
+        /// <summary>
         /// Identifies the <see cref="MinimumPadding"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MinimumPaddingProperty = DependencyProperty.Register(
@@ -993,6 +999,22 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
+        /// Gets or sets MaximumRange.
+        /// </summary>
+        public double MaximumRange
+        {
+            get
+            {
+                return (double)this.GetValue(MaximumRangeProperty);
+            }
+
+            set
+            {
+                this.SetValue(MaximumRangeProperty, value);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets Minimum.
         /// </summary>
         public double Minimum
@@ -1531,6 +1553,7 @@ namespace OxyPlot.Wpf
             a.Minimum = this.Minimum;
             a.Maximum = this.Maximum;
             a.MinimumRange = this.MinimumRange;
+            a.MaximumRange = this.MaximumRange;
             a.MinimumPadding = this.MinimumPadding;
             a.MaximumPadding = this.MaximumPadding;
             a.Position = this.Position;
