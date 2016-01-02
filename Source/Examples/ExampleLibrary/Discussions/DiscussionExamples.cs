@@ -329,11 +329,11 @@ namespace ExampleLibrary
 
             public double StrokeThickness { get; set; }
 
-            protected override void SetDefaultValues(PlotModel model)
+            protected override void SetDefaultValues()
             {
                 if (this.Color.IsAutomatic())
                 {
-                    this.defaultColor = model.GetDefaultColor();
+                    this.defaultColor = PlotModel.GetDefaultColor();
                 }
             }
 

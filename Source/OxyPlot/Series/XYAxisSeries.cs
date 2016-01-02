@@ -170,8 +170,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Sets default values from the plot model.
         /// </summary>
-        /// <param name="model">The plot model.</param>
-        protected internal override void SetDefaultValues(PlotModel model)
+        protected internal override void SetDefaultValues()
         {
         }
 

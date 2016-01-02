@@ -9,7 +9,6 @@
 
 namespace OxyPlot.Series
 {
-    using System;
     using System.Collections.Generic;
 
     /// <summary>
@@ -17,39 +16,6 @@ namespace OxyPlot.Series
     /// </summary>
     public class BoxPlotItem
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BoxPlotItem" /> struct.
-        /// </summary>
-        /// <param name="x">The x.</param>
-        /// <param name="lowerWhisker">The lower whisker.</param>
-        /// <param name="boxBottom">The box bottom.</param>
-        /// <param name="median">The median.</param>
-        /// <param name="boxTop">The box top.</param>
-        /// <param name="upperWhisker">The upper whisker.</param>
-        /// <param name="outliers">The outliers.</param>
-        /// <param name="tag">The tag.</param>
-        [Obsolete("Will be removed in a future version. Please use the other constructor in combination with an Object Initzializer.")]
-        public BoxPlotItem(
-            double x,
-            double lowerWhisker,
-            double boxBottom,
-            double median,
-            double boxTop,
-            double upperWhisker,
-            IList<double> outliers,
-            object tag = null)
-        {
-            this.X = x;
-            this.LowerWhisker = lowerWhisker;
-            this.BoxBottom = boxBottom;
-            this.Median = median;
-            this.BoxTop = boxTop;
-            this.UpperWhisker = upperWhisker;
-            this.Mean = double.NaN;
-            this.Outliers = outliers ?? new List<double>();
-            this.Tag = tag;
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="BoxPlotItem" /> struct.
         /// </summary>
@@ -75,7 +41,6 @@ namespace OxyPlot.Series
             this.UpperWhisker = upperWhisker;
             this.Mean = double.NaN;
             this.Outliers = new List<double>();
-            this.Tag = null;
         }
 
         /// <summary>
