@@ -104,8 +104,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Sets the default values (colors, line style etc.) from the plot model.
         /// </summary>
-        /// <param name="model">A plot model.</param>
-        protected internal abstract void SetDefaultValues(PlotModel model);
+        protected internal abstract void SetDefaultValues();
 
         /// <summary>
         /// Updates the maximum and minimum values of the axes used by this series.

@@ -1070,7 +1070,7 @@ namespace OxyPlot
                     this.ResetDefaultColor();
                     foreach (var s in visibleSeries)
                     {
-                        s.SetDefaultValues(this);
+                        s.SetDefaultValues();
                     }
 
                     this.OnUpdated();

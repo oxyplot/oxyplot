@@ -382,17 +382,16 @@ namespace OxyPlot.Series
         /// <summary>
         /// Sets the default values.
         /// </summary>
-        /// <param name="model">The model.</param>
-        protected internal override void SetDefaultValues(PlotModel model)
+        protected internal override void SetDefaultValues()
         {
             if (this.MaximumFillColor.IsAutomatic())
             {
-                this.defaultMaximumFillColor = model.GetDefaultColor();
+                this.defaultMaximumFillColor = PlotModel.GetDefaultColor();
             }
 
             if (this.MinimumFillColor.IsAutomatic())
             {
-                this.defaultMinimumFillColor = model.GetDefaultColor();
+                this.defaultMinimumFillColor = PlotModel.GetDefaultColor();
             }
         }
 

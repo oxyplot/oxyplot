@@ -201,8 +201,7 @@ namespace ExampleLibrary
         /// <summary>
         /// Sets default values (colors, line style etc) from the plot model.
         /// </summary>
-        /// <param name="model">A plot model.</param>
-        protected override void SetDefaultValues(PlotModel model)
+        protected override void SetDefaultValues()
         {
         }
 

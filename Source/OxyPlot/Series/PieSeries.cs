@@ -437,14 +437,13 @@ namespace OxyPlot.Series
         /// <summary>
         /// Sets the default values.
         /// </summary>
-        /// <param name="model">The model.</param>
-        protected internal override void SetDefaultValues(PlotModel model)
+        protected internal override void SetDefaultValues()
         {
             foreach (var slice in this.Slices)
             {
                 if (slice.Fill.IsAutomatic())
                 {
-                    slice.DefaultFillColor = model.GetDefaultColor();
+                    slice.DefaultFillColor = PlotModel.GetDefaultColor();
                 }
             }
         }
