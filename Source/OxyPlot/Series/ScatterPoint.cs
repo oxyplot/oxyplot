@@ -17,15 +17,6 @@ namespace OxyPlot.Series
         /// <summary>
         /// Initializes a new instance of the <see cref="ScatterPoint" /> class.
         /// </summary>
-        public ScatterPoint()
-        {
-            this.Size = double.NaN;
-            this.Value = double.NaN;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ScatterPoint" /> class.
-        /// </summary>
         /// <param name="x">The x.</param>
         /// <param name="y">The y.</param>
         /// <param name="size">The size.</param>
@@ -41,16 +32,22 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
+        /// Gets the X.
+        /// </summary>
+        /// <value>The X.</value>
+        public double X { get; private set; }
+
+        /// <summary>
+        /// Gets the Y.
+        /// </summary>
+        /// <value>The Y.</value>
+        public double Y { get; private set; }
+
+        /// <summary>
         /// Gets or sets the size.
         /// </summary>
         /// <value>The size.</value>
         public double Size { get; set; }
-
-        /// <summary>
-        /// Gets or sets the tag.
-        /// </summary>
-        /// <value>The tag.</value>
-        public object Tag { get; set; }
 
         /// <summary>
         /// Gets or sets the value.
@@ -59,22 +56,16 @@ namespace OxyPlot.Series
         public double Value { get; set; }
 
         /// <summary>
-        /// Gets or sets the X.
+        /// Gets or sets the tag.
         /// </summary>
-        /// <value>The X.</value>
-        public double X { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Y.
-        /// </summary>
-        /// <value>The Y.</value>
-        public double Y { get; set; }
+        /// <value>The tag.</value>
+        public object Tag { get; set; }
 
         /// <summary>
         /// Returns C# code that generates this instance.
         /// </summary>
         /// <returns>C# code.</returns>
-        public string ToCode()
+        public virtual string ToCode()
         {
             if (double.IsNaN(this.Size) && double.IsNaN(this.Value))
             {

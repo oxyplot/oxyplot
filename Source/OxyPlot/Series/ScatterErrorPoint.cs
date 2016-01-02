@@ -17,15 +17,6 @@ namespace OxyPlot.Series
         /// <summary>
         /// Initializes a new instance of the <see cref="ScatterErrorPoint"/> class.
         /// </summary>
-        public ScatterErrorPoint()
-        {
-            this.ErrorX = double.NaN;
-            this.ErrorY = double.NaN;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ScatterErrorPoint"/> class.
-        /// </summary>
         /// <param name="x">The x.</param>
         /// <param name="y">The y.</param>
         /// <param name="errorX">The X error.</param>
@@ -41,19 +32,39 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Gets or sets the error in X.
+        /// Gets the error in X.
         /// </summary>
         /// <value>
         /// The error.
         /// </value>
-        public double ErrorX { get; set; }
+        public double ErrorX { get; private set; }
 
         /// <summary>
-        /// Gets or sets the error in Y.
+        /// Gets the error in Y.
         /// </summary>
         /// <value>
         /// The error.
         /// </value>
-        public double ErrorY { get; set; }
+        public double ErrorY { get; private set; }
+
+        /// <summary>
+        /// Returns C# code that generates this instance.
+        /// </summary>
+        /// <returns>C# code.</returns>
+        public override string ToCode()
+        {
+            if (double.IsNaN(this.Size) && double.IsNaN(this.Value))
+            {
+                return CodeGenerator.FormatConstructor(this.GetType(), "{0}, {1}, {2}, {3}", this.X, this.Y, this.ErrorX, this.ErrorY);
+            }
+
+            if (double.IsNaN(this.Value))
+            {
+                return CodeGenerator.FormatConstructor(this.GetType(), "{0}, {1}, {2}, {3}, {4}", this.X, this.Y, this.ErrorX, this.ErrorY, this.Size);
+            }
+
+            return CodeGenerator.FormatConstructor(
+                this.GetType(), "{0}, {1}, {2}, {3}, {3}, {4}, {5}", this.X, this.Y, this.ErrorX, this.ErrorY, this.Size, this.Value);
+        }
     }
 }
