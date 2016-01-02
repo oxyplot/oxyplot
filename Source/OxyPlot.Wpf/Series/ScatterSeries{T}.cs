@@ -19,7 +19,7 @@ namespace OxyPlot.Wpf
     /// Provides a base class for scatter series.
     /// </summary>
     /// <typeparam name="T">The type of the points.</typeparam>
-    public abstract class ScatterSeries<T> : XYAxisSeries where T : ScatterPoint, new()
+    public abstract class ScatterSeries<T> : XYAxisSeries where T : ScatterPoint
     {
         /// <summary>
         /// Identifies the <see cref="BinSize"/> dependency property.
