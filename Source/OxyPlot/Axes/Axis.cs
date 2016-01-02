@@ -363,7 +363,7 @@ namespace OxyPlot.Axes
         public double MaximumPadding { get; set; }
 
         /// <summary>
-        /// Gets or sets the maximum range of the axis. Setting this property ensures that <c>ActualMaximum-ActualMinimum < MaximumRange</c>. The default value is <c>double.PositiveInfinity</c>.
+        /// Gets or sets the maximum range of the axis. Setting this property ensures that <c>ActualMaximum-ActualMinimum &lt; MaximumRange</c>. The default value is <c>double.PositiveInfinity</c>.
         /// </summary>
         public double MaximumRange { get; set; }
 
