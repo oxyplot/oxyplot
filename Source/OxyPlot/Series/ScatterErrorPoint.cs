@@ -60,11 +60,11 @@ namespace OxyPlot.Series
 
             if (double.IsNaN(this.Value))
             {
-                return CodeGenerator.FormatConstructor(this.GetType(), "{0}, {1}, {2}, {3}, {4}, {5}", this.X, this.Y, this.ErrorX, this.ErrorY, this.Size);
+                return CodeGenerator.FormatConstructor(this.GetType(), "{0}, {1}, {2}, {3}, {4}", this.X, this.Y, this.ErrorX, this.ErrorY, this.Size);
             }
 
             return CodeGenerator.FormatConstructor(
-                this.GetType(), "{0}, {1}, {2}, {3}, {3}, {4}, {5}, {6}", this.X, this.Y, this.ErrorX, this.ErrorY, this.Size, this.Value);
+                this.GetType(), "{0}, {1}, {2}, {3}, {3}, {4}, {5}", this.X, this.Y, this.ErrorX, this.ErrorY, this.Size, this.Value);
         }
     }
 }
