@@ -3,6 +3,7 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 ### Added
+- Added MaximumRange to limit the zoom. (#401)
 - Created a new OxyPlot.Mobile NuGet package to combine the mobile platforms into a single package. (#362)
 - Support for XWT (#295)
 - TwoColorAreaSeries (#299)
