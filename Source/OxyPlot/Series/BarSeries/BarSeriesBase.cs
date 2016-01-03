@@ -284,7 +284,7 @@ namespace OxyPlot.Series
         {
             if (this.FillColor.IsAutomatic())
             {
-                this.defaultFillColor = PlotModel.GetDefaultColor();
+                this.defaultFillColor = this.PlotModel.GetDefaultColor();
             }
         }
 

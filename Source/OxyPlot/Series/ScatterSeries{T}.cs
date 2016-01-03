@@ -502,7 +502,7 @@ namespace OxyPlot.Series
         {
             if (this.MarkerFill.IsAutomatic())
             {
-                this.defaultMarkerFillColor = PlotModel.GetDefaultColor();
+                this.defaultMarkerFillColor = this.PlotModel.GetDefaultColor();
             }
         }
 

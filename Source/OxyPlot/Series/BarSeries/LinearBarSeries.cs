@@ -191,7 +191,7 @@ namespace OxyPlot.Series
         {
             if (this.FillColor.IsAutomatic())
             {
-                this.defaultColor = PlotModel.GetDefaultColor();
+                this.defaultColor = this.PlotModel.GetDefaultColor();
             }
         }
 

@@ -162,22 +162,22 @@ namespace OxyPlot.Series
 
             if (this.ColorLo.IsAutomatic())
             {
-                this.defaultColorLo = PlotModel.GetDefaultColor();
+                this.defaultColorLo = this.PlotModel.GetDefaultColor();
             }
 
             if (this.LineStyleLo == LineStyle.Automatic)
             {
-                this.LineStyleLo = PlotModel.GetDefaultLineStyle();
+                this.LineStyleLo = this.PlotModel.GetDefaultLineStyle();
             }
 
             if (this.ColorHi.IsAutomatic())
             {
-                this.defaultColorHi = PlotModel.GetDefaultColor();
+                this.defaultColorHi = this.PlotModel.GetDefaultColor();
             }
 
             if (this.LineStyleHi == LineStyle.Automatic)
             {
-                this.LineStyleHi = PlotModel.GetDefaultLineStyle();
+                this.LineStyleHi = this.PlotModel.GetDefaultLineStyle();
             }
         }
 
