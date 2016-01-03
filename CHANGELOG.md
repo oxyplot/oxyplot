@@ -25,6 +25,7 @@ All notable changes to this project will be documented in this file.
 - Support for a Xamarin Forms UWP project with sample app. Nuget package will be added when Xamarin Forms UWP is released outside preview. (#697)
 - Add ListBuilder for building lists by reflection (#705)
 - F# example (#699)
+- Support for discontinuities in AreaSeries (#215)
 
 ### Changed
 - Renamed OxyPlot.WindowsUniversal to OxyPlot.Windows (#242)
