@@ -1238,8 +1238,25 @@ namespace OxyPlot.Axes
             double dx1 = (this.ActualMaximum - x) * this.scale;
             this.scale *= factor;
 
-            double newMinimum = Math.Max((dx0 / this.scale) + x, this.AbsoluteMinimum);
-            double newMaximum = Math.Min((dx1 / this.scale) + x, this.AbsoluteMaximum);
+            double newMinimum = (dx0 / this.scale) + x;
+            double newMaximum = (dx1 / this.scale) + x;
+
+            if (newMaximum - newMinimum > this.MaximumRange)
+            {
+                var mid = (newMinimum + newMaximum) * 0.5;
+                newMaximum = mid + this.MaximumRange * 0.5;
+                newMinimum = mid - this.MaximumRange * 0.5;
+            }
+
+            if (newMaximum - newMinimum < this.MinimumRange)
+            {
+                var mid = (newMinimum + newMaximum) * 0.5;
+                newMaximum = mid + this.MinimumRange * 0.5;
+                newMinimum = mid - this.MinimumRange * 0.5;
+            }
+
+            newMinimum = Math.Max(newMinimum, this.AbsoluteMinimum);
+            newMaximum = Math.Min(newMaximum, this.AbsoluteMaximum);
 
             this.ViewMinimum = newMinimum;
             this.ViewMaximum = newMaximum;
