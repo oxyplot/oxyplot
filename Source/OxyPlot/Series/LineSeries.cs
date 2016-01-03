@@ -386,12 +386,12 @@ namespace OxyPlot.Series
         {
             if (this.LineStyle == LineStyle.Automatic)
             {
-                this.defaultLineStyle = PlotModel.GetDefaultLineStyle();
+                this.defaultLineStyle = this.PlotModel.GetDefaultLineStyle();
             }
 
             if (this.Color.IsAutomatic())
             {
-                this.defaultColor = PlotModel.GetDefaultColor();
+                this.defaultColor = this.PlotModel.GetDefaultColor();
 
                 if (this.MarkerFill.IsAutomatic())
                 {

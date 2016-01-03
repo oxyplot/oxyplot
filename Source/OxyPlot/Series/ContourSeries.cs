@@ -320,8 +320,8 @@ namespace OxyPlot.Series
         {
             if (this.Color.IsAutomatic())
             {
-                this.LineStyle = PlotModel.GetDefaultLineStyle();
-                this.defaultColor = PlotModel.GetDefaultColor();
+                this.LineStyle = this.PlotModel.GetDefaultLineStyle();
+                this.defaultColor = this.PlotModel.GetDefaultColor();
             }
         }
 

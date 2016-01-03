@@ -386,12 +386,12 @@ namespace OxyPlot.Series
         {
             if (this.MaximumFillColor.IsAutomatic())
             {
-                this.defaultMaximumFillColor = PlotModel.GetDefaultColor();
+                this.defaultMaximumFillColor = this.PlotModel.GetDefaultColor();
             }
 
             if (this.MinimumFillColor.IsAutomatic())
             {
-                this.defaultMinimumFillColor = PlotModel.GetDefaultColor();
+                this.defaultMinimumFillColor = this.PlotModel.GetDefaultColor();
             }
         }
 

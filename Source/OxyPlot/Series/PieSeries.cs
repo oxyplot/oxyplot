@@ -443,7 +443,7 @@ namespace OxyPlot.Series
             {
                 if (slice.Fill.IsAutomatic())
                 {
-                    slice.DefaultFillColor = PlotModel.GetDefaultColor();
+                    slice.DefaultFillColor = this.PlotModel.GetDefaultColor();
                 }
             }
         }

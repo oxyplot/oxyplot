@@ -97,12 +97,12 @@ namespace OxyPlot.Series
 
             if (this.Color2.IsAutomatic())
             {
-                this.defaultColor2 = PlotModel.GetDefaultColor();
+                this.defaultColor2 = this.PlotModel.GetDefaultColor();
             }
 
             if (this.LineStyle2 == LineStyle.Automatic)
             {
-                this.LineStyle2 = PlotModel.GetDefaultLineStyle();
+                this.LineStyle2 = this.PlotModel.GetDefaultLineStyle();
             }
         }
 
