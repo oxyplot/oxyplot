@@ -1245,17 +1245,109 @@ namespace ExampleLibrary
             return plotModel;
         }
 
-        /* NEW ISSUE TEMPLATE
-        [Example("#123: Issue Description")]
-        public static PlotModel IssueDescription()
+        [Example("#550: MinimumRange with Minimum")]
+        public static PlotModel MinimumRangeWithMinimum()
         {
-            var plotModel1 = new PlotModel
-            {
-                Title = "",
-            };
+            var model = new PlotModel { Title = "MinimumRange of 500 with a Minimum of 50", Subtitle = "Should initially show a range from 50 to 550." };
+            model.Axes.Add(
+                new LinearAxis
+                {
+                    Position = AxisPosition.Left,
+                    Minimum = 50,
+                    MinimumRange = 500
+                });
 
-            return plotModel1;
+            return model;
         }
-        */
+
+
+        [Example("#710: MinimumRange and MaximumRange with Minimum")]
+        public static PlotModel MinimumRangeAndMaximumRangeWithMinimum()
+        {
+            var model = new PlotModel { Title = "MinimumRange of 5 and MaximumRange of 200 with a Minimum of 0", Subtitle = "Should show a range from 0 to 5 minimum and a range of 200 maximum." };
+            model.Axes.Add(
+                new LinearAxis
+                {
+                    Position = AxisPosition.Left,
+                    Minimum = 0,
+                    MinimumRange = 5,
+                    MaximumRange = 200
+                });
+
+            return model;
+        }
+
+        [Example("#711: MinimumRange with AbsoluteMinimum")]
+        public static PlotModel MinimumRangeWithAbsoluteMinimum()
+        {
+            var model = new PlotModel { Title = "MinimumRange of 500 with a AbsoluteMinimum of 50", Subtitle = "Should initially show a range from 50 to 550. It should not be possible to pan below 50." };
+            model.Axes.Add(
+                new LinearAxis
+                {
+                    Position = AxisPosition.Left,
+                    AbsoluteMinimum = 50,
+                    MinimumRange = 500
+                });
+
+            return model;
+        }
+
+        [Example("#711: MinimumRange with AbsoluteMaximum")]
+        public static PlotModel MinimumRangeWithAbsoluteMaximum()
+        {
+            var model = new PlotModel { Title = "MinimumRange of 500 with a AbsoluteMaximum of 200", Subtitle = "Should initially show a range from -300 to 200. It should not be possible to pan above 200." };
+            model.Axes.Add(
+                new LinearAxis
+                {
+                    Position = AxisPosition.Left,
+                    AbsoluteMaximum = 200,
+                    MinimumRange = 500
+                });
+
+            return model;
+        }
+
+        [Example("#711: MaximumRange with AbsoluteMinimum")]
+        public static PlotModel MaximumRangeWithAbsoluteMinimum()
+        {
+            var model = new PlotModel { Title = "MaximumRange of 50 with a AbsoluteMinimum of 20", Subtitle = "Should initially show a range from 20 to 70. It should not be possible to pan below 20." };
+            model.Axes.Add(
+                new LinearAxis
+                {
+                    Position = AxisPosition.Left,
+                    AbsoluteMinimum = 20,
+                    MaximumRange = 50
+                });
+
+            return model;
+        }
+
+        [Example("#711: MaximumRange with AbsoluteMaximum")]
+        public static PlotModel MaximumRangeWithAbsoluteMaximum()
+        {
+            var model = new PlotModel { Title = "MaximumRange of 25 with a AbsoluteMaximum of -20", Subtitle = "Should initially show a range from -45 to -20. It should not be possible to pan above -20." };
+            model.Axes.Add(
+                new LinearAxis
+                {
+                    Position = AxisPosition.Left,
+                    AbsoluteMaximum = -20,
+                    MaximumRange = 25
+                });
+
+            return model;
+        }
+
+        /* NEW ISSUE TEMPLATE
+         [Example("#123: Issue Description")]
+         public static PlotModel IssueDescription()
+         {
+             var plotModel1 = new PlotModel
+             {
+                 Title = "",
+             };
+
+             return plotModel1;
+         }
+         */
     }
 }

@@ -130,6 +130,7 @@ All notable changes to this project will be documented in this file.
 - Implement AreaSeries.ConstantY2 (#662)
 - Null reference exception in ScatterSeries{T} actual points (#636)
 - Code generation for HighLowItem (#634)
+- Axis.MinimumRange did not work correctly (#711)
 
 ## [2014.1.546] - 2014-10-22
 ### Added
