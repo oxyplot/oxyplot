@@ -7,8 +7,8 @@
     <ProjectGuid>{280C05F8-7E1F-4D11-89E4-B5319CA2CDE6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OxyPlot.Windows10</RootNamespace>
-    <AssemblyName>OxyPlot.Windows10</AssemblyName>
+    <RootNamespace>OxyPlot.Windows</RootNamespace>
+    <AssemblyName>OxyPlot.Windows</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.10586.0</TargetPlatformVersion>

@@ -22,15 +22,9 @@
     <file src="..\..\Output\Windows\OxyPlot.Windows.xr.xml" target="lib\portable-windows8+wpa81\OxyPlot.Windows" />
     <file src="..\..\Output\Windows\Themes\*.*" target="lib\portable-windows8+wpa81\OxyPlot.Windows\Themes" />
 
-    <file src="..\..\Output\Windows10\x86\OxyPlot.Windows10.???" target="runtimes\win10-x86\lib\uap10.0" />
-    <file src="..\..\Output\Windows10\x64\OxyPlot.Windows10.???" target="runtimes\win10-x64\lib\uap10.0" />
-    <file src="..\..\Output\Windows10\ARM\OxyPlot.Windows10.???" target="runtimes\win10-ARM\lib\uap10.0" />
-    <file src="..\..\Output\Windows10\x86\OxyPlot.Windows10.xr.xml" target="runtimes\win10-x86\lib\uap10.0" />
-    <file src="..\..\Output\Windows10\x64\OxyPlot.Windows10.xr.xml" target="runtimes\win10-x64\lib\uap10.0" />
-    <file src="..\..\Output\Windows10\ARM\OxyPlot.Windows10.xr.xml" target="runtimes\win10-ARM\lib\uap10.0" />
-    <file src="..\..\Output\Windows10\x86\Themes\*.*" target="runtimes\win10-x86\lib\uap10.0" />
-    <file src="..\..\Output\Windows10\x64\Themes\*.*" target="runtimes\win10-x64\lib\uap10.0" />
-    <file src="..\..\Output\Windows10\ARM\Themes\*.*" target="runtimes\win10-ARM\lib\uap10.0" />
+    <file src="..\..\Output\Windows10\OxyPlot.Windows.???" target="lib\uap10.0" />
+    <file src="..\..\Output\Windows10\OxyPlot.Windows.xr.xml" target="lib\uap10.0" />
+    <file src="..\..\Output\Windows10\Themes\*.*" target="lib\uap10.0\OxyPlot.Windows\Themes" />
 
     <file src="..\..\LICENSE" />
     <file src="..\..\AUTHORS" />
