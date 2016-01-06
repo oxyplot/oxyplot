@@ -67,6 +67,7 @@ All notable changes to this project will be documented in this file.
 - PlotElement.Format method. Use StringHelper.Format instead.
 
 ### Fixed
+- Fixed PDFRenderContext text alignment issues for rotated text (#723)
 - HeatMapSeries.GetValue returns NaN instead of calculating a wrong value in proximity to NaN (#256)
 - Tracker position is wrong when PlotView is offset from origin (#455)
 - CategoryAxis should use StringFormat (#415)
