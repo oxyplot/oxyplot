@@ -136,7 +136,9 @@
       <Link>MouseButtonHelper.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyDescription.cs" />
-    <Content Include="Properties\OxyPlot.Windows10.rd.xml" />
+    <Content Include="Properties\OxyPlot.Windows10.rd.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OxyPlot\OxyPlot.csproj">
