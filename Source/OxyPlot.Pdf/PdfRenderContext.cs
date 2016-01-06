@@ -306,7 +306,7 @@ namespace OxyPlot.Pdf
             this.g.TranslateTransform(dx, dy);
             if (Math.Abs(rotate) > double.Epsilon)
             {
-                this.g.RotateAtTransform((float)rotate, new XPoint((float)p.X + (float)(size.Width / 2.0), (float)p.Y));
+                this.g.RotateAtTransform((float)rotate, new XPoint((float)p.X - dx, (float)p.Y - dy));
             }
 
             this.g.TranslateTransform((float)p.X, (float)p.Y);
