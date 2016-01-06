@@ -23,7 +23,8 @@
     <file src="..\..\Output\Windows\Themes\*.*" target="lib\portable-windows8+wpa81\OxyPlot.Windows\Themes" />
 
     <file src="..\..\Output\Windows10\OxyPlot.Windows.???" target="lib\uap10.0" />
-    <file src="..\..\Output\Windows10\OxyPlot.Windows.xr.xml" target="lib\uap10.0" />
+    <file src="..\..\Output\Windows10\OxyPlot.Windows.xr.xml" target="lib\uap10.0\OxyPlot.Windows" />
+    <file src="..\..\Output\Windows10\Properties\*.*" target="lib\uap10.0\OxyPlot.Windows\Properties" />
     <file src="..\..\Output\Windows10\Themes\*.*" target="lib\uap10.0\OxyPlot.Windows\Themes" />
 
     <file src="..\..\LICENSE" />
