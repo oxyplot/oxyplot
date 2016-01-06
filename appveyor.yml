@@ -1,5 +1,5 @@
-configuration: 
-  - Release
+platform: Any CPU
+configuration: Release
 
 pull_requests:
   do_not_increment_build_number: true
@@ -24,11 +24,9 @@ before_build:
   - NuGet restore Source/OxyPlot.AppVeyor.sln
   - gitversion /l console /output buildserver /updateAssemblyInfo
 
-build_script:
-  - msbuild Source/OxyPlot.AppVeyor.sln "/property:Platform=Any CPU" /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
-#  - msbuild Source/OxyPlot.AppVeyor.sln /property:Platform=x86 /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
-#  - msbuild Source/OxyPlot.AppVeyor.sln /property:Platform=x64 /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
-#  - msbuild Source/OxyPlot.AppVeyor.sln /property:Platform=ARM /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+build:
+  project: Source/OxyPlot.AppVeyor.sln 
+  verbosity: minimal
   
 after_build:
   - gitlink c:\projects\oxyplot -u https://github.com/oxyplot/oxyplot -f Source/OxyPlot.AppVeyor.sln -ignore Xwt,OxyPlot.Windows10,OxyPlot.MonoTouch,OxyPlot.Xamarin.Android,OxyPlot.Xamarin.iOS,OxyPlot.Xamarin.Forms.Platform.Android,OxyPlot.Xamarin.Forms.Platform.iOS,OxyPlot.Xamarin.Forms.Platform.iOS.Classic
