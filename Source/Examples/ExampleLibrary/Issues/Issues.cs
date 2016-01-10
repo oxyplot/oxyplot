@@ -1377,6 +1377,37 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("#727: Axis Min/Max ignored")]
+        public static PlotModel AxisMinMaxIgnored()
+        {
+            var plotModel1 = new PlotModel
+            {
+                Title = "Axes min/max ignored",
+                PlotType = PlotType.Cartesian,
+            };
+            var ls = new LineSeries();
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = 0, Maximum = 866, Key = "Horizontal" });
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 103, Maximum = 37141, Key = "Vertical" });
+            ls.XAxisKey = "Horizontal";
+            ls.YAxisKey = "Vertical";
+            plotModel1.Series.Add(ls);
+
+            return plotModel1;
+        }
+
+        [Example("#727: Axis Min/Max")]
+        public static PlotModel AxisMinMax()
+        {
+            var plotModel1 = new PlotModel
+            {
+                Title = "Axes min/max",
+            };
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = 0, Maximum = 866 });
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 103, Maximum = 37141 });
+
+            return plotModel1;
+        }
+ 
         /* NEW ISSUE TEMPLATE
           [Example("#123: Issue Description")]
           public static PlotModel IssueDescription()
