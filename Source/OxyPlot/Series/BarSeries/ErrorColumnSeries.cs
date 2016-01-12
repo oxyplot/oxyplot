@@ -59,6 +59,7 @@ namespace OxyPlot.Series
             }
 
             var categoryAxis = this.GetCategoryAxis();
+            var valueAxis = this.GetValueAxis();
 
             double minValue = double.MaxValue, maxValue = double.MinValue;
             if (this.IsStacked)
@@ -73,21 +74,21 @@ namespace OxyPlot.Series
                     var maxTemp = values.Where(v => v >= 0).Sum() + ((ErrorColumnItem)items.Last()).Error;
 
                     int stackIndex = categoryAxis.GetStackIndex(this.StackGroup);
-                    var stackedMinValue = categoryAxis.GetCurrentMinValue(stackIndex, i);
+                    var stackedMinValue = categoryAxis.GetCurrentMinValue(valueAxis, stackIndex, i);
                     if (!double.IsNaN(stackedMinValue))
                     {
                         minTemp += stackedMinValue;
                     }
 
-                    categoryAxis.SetCurrentMinValue(stackIndex, i, minTemp);
+                    categoryAxis.SetCurrentMinValue(valueAxis, stackIndex, i, minTemp);
 
-                    var stackedMaxValue = categoryAxis.GetCurrentMaxValue(stackIndex, i);
+                    var stackedMaxValue = categoryAxis.GetCurrentMaxValue(valueAxis, stackIndex, i);
                     if (!double.IsNaN(stackedMaxValue))
                     {
                         maxTemp += stackedMaxValue;
                     }
 
-                    categoryAxis.SetCurrentMaxValue(stackIndex, i, maxTemp);
+                    categoryAxis.SetCurrentMaxValue(valueAxis, stackIndex, i, maxTemp);
 
                     minValue = Math.Min(minValue, minTemp + this.BaseValue);
                     maxValue = Math.Max(maxValue, maxTemp + this.BaseValue);
@@ -109,8 +110,7 @@ namespace OxyPlot.Series
                     maxValue = this.BaseValue;
                 }
             }
-
-            var valueAxis = this.GetValueAxis();
+            
             if (valueAxis.IsVertical())
             {
                 this.MinY = minValue;

@@ -19,14 +19,10 @@ namespace OxyPlot.Series
     public abstract class CategorizedSeries : XYAxisSeries
     {
         /// <summary>
-        /// The default category axis title
+        /// Gets the value axis.
         /// </summary>
-        protected const string DefaultCategoryAxisTitle = "Category";
-
-        /// <summary>
-        /// The default value axis title
-        /// </summary>
-        protected const string DefaultValueAxisTitle = "Value";
+        /// <returns>The value axis.</returns>
+        internal abstract Axis GetValueAxis();
 
         /// <summary>
         /// Gets or sets the width/height of the columns/bars (as a fraction of the available space).
@@ -35,6 +31,16 @@ namespace OxyPlot.Series
         /// <returns>The fractional width.</returns>
         /// <remarks>The available space will be determined by the GapWidth of the CategoryAxis used by this series.</remarks>
         internal abstract double GetBarWidth();
+
+        /// <summary>
+        /// The default category axis title
+        /// </summary>
+        protected const string DefaultCategoryAxisTitle = "Category";
+
+        /// <summary>
+        /// The default value axis title
+        /// </summary>
+        protected const string DefaultValueAxisTitle = "Value";
 
         /// <summary>
         /// Gets the items of this series.
@@ -47,7 +53,11 @@ namespace OxyPlot.Series
         /// </summary>
         /// <returns>The width or height.</returns>
         /// <remarks>The actual width is also influenced by the GapWidth of the CategoryAxis used by this series.</remarks>
-        protected abstract double GetActualBarWidth();
+        protected virtual double GetActualBarWidth()
+        {
+            var categoryAxis = this.GetCategoryAxis();
+            return this.GetBarWidth() / (1 + categoryAxis.GapWidth) / categoryAxis.GetMaxWidth();
+        }
 
         /// <summary>
         /// Gets the category axis.

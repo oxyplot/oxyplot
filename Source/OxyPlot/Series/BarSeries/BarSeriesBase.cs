@@ -192,6 +192,7 @@ namespace OxyPlot.Series
 
             var clippingRect = this.GetClippingRect();
             var categoryAxis = this.GetCategoryAxis();
+            var valueAxis = this.GetValueAxis();
 
             var actualBarWidth = this.GetActualBarWidth();
             var stackIndex = this.IsStacked ? categoryAxis.GetStackIndex(this.StackGroup) : 0;
@@ -206,7 +207,7 @@ namespace OxyPlot.Series
                 var baseValue = double.NaN;
                 if (this.IsStacked)
                 {
-                    baseValue = categoryAxis.GetCurrentBaseValue(stackIndex, categoryIndex, value < 0);
+                    baseValue = categoryAxis.GetCurrentBaseValue(valueAxis, stackIndex, categoryIndex, value < 0);
                 }
 
                 if (double.IsNaN(baseValue))
@@ -224,12 +225,12 @@ namespace OxyPlot.Series
                 }
                 else
                 {
-                    categoryValue = categoryIndex - 0.5 + categoryAxis.GetCurrentBarOffset(categoryIndex);
+                    categoryValue = categoryIndex - 0.5 + categoryAxis.GetCurrentBarOffset(valueAxis, categoryIndex);
                 }
 
                 if (this.IsStacked)
                 {
-                    categoryAxis.SetCurrentBaseValue(stackIndex, categoryIndex, value < 0, topValue);
+                    categoryAxis.SetCurrentBaseValue(valueAxis, stackIndex, categoryIndex, value < 0, topValue);
                 }
 
                 var rect = this.GetRectangle(baseValue, topValue, categoryValue, categoryValue + actualBarWidth);
@@ -244,7 +245,7 @@ namespace OxyPlot.Series
 
                 if (!this.IsStacked)
                 {
-                    categoryAxis.IncreaseCurrentBarOffset(categoryIndex, actualBarWidth);
+                    categoryAxis.IncreaseCurrentBarOffset(valueAxis, categoryIndex, actualBarWidth);
                 }
             }
         }
@@ -319,6 +320,7 @@ namespace OxyPlot.Series
             }
 
             var categoryAxis = this.GetCategoryAxis();
+            var valueAxis = this.GetValueAxis();
 
             double minValue = double.MaxValue, maxValue = double.MinValue;
             if (this.IsStacked)
@@ -333,21 +335,21 @@ namespace OxyPlot.Series
                     var maxTemp = values.Where(v => v >= 0).Sum();
 
                     int stackIndex = categoryAxis.GetStackIndex(this.StackGroup);
-                    var stackedMinValue = categoryAxis.GetCurrentMinValue(stackIndex, i);
+                    var stackedMinValue = categoryAxis.GetCurrentMinValue(valueAxis, stackIndex, i);
                     if (!double.IsNaN(stackedMinValue))
                     {
                         minTemp += stackedMinValue;
                     }
 
-                    categoryAxis.SetCurrentMinValue(stackIndex, i, minTemp);
+                    categoryAxis.SetCurrentMinValue(valueAxis, stackIndex, i, minTemp);
 
-                    var stackedMaxValue = categoryAxis.GetCurrentMaxValue(stackIndex, i);
+                    var stackedMaxValue = categoryAxis.GetCurrentMaxValue(valueAxis, stackIndex, i);
                     if (!double.IsNaN(stackedMaxValue))
                     {
                         maxTemp += stackedMaxValue;
                     }
 
-                    categoryAxis.SetCurrentMaxValue(stackIndex, i, maxTemp);
+                    categoryAxis.SetCurrentMaxValue(valueAxis, stackIndex, i, maxTemp);
 
                     minValue = Math.Min(minValue, minTemp + this.BaseValue);
                     maxValue = Math.Max(maxValue, maxTemp + this.BaseValue);
@@ -368,8 +370,7 @@ namespace OxyPlot.Series
                     maxValue = this.BaseValue;
                 }
             }
-
-            var valueAxis = this.GetValueAxis();
+            
             if (valueAxis.IsVertical())
             {
                 this.MinY = minValue;
@@ -441,12 +442,6 @@ namespace OxyPlot.Series
                 valueAxis.GetValue(barItem.Value));
             return text;
         }
-
-        /// <summary>
-        /// Gets the value axis.
-        /// </summary>
-        /// <returns>The value axis.</returns>
-        protected abstract Axis GetValueAxis();
 
         /// <summary>
         /// Checks if the specified value is valid.

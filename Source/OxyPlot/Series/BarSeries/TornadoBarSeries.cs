@@ -244,6 +244,7 @@ namespace OxyPlot.Series
 
             var clippingRect = this.GetClippingRect();
             var categoryAxis = this.GetCategoryAxis();
+            var valueAxis = this.GetValueAxis();
             var actualBarWidth = this.GetActualBarWidth();
 
             for (var i = 0; i < this.ValidItems.Count; i++)
@@ -253,7 +254,7 @@ namespace OxyPlot.Series
                 var categoryIndex = item.GetCategoryIndex(i);
 
                 var baseValue = double.IsNaN(item.BaseValue) ? this.BaseValue : item.BaseValue;
-                var barOffset = categoryAxis.GetCurrentBarOffset(categoryIndex);
+                var barOffset = categoryAxis.GetCurrentBarOffset(valueAxis, categoryIndex);
                 var p0 = this.Transform(item.Minimum, categoryIndex - 0.5 + barOffset);
                 var p1 = this.Transform(item.Maximum, categoryIndex - 0.5 + barOffset + actualBarWidth);
                 var p2 = this.Transform(baseValue, categoryIndex - 0.5 + barOffset);
@@ -358,6 +359,15 @@ namespace OxyPlot.Series
         internal override double GetBarWidth()
         {
             return this.BarWidth;
+        }
+
+        /// <summary>
+        /// Gets the value axis.
+        /// </summary>
+        /// <returns>The value axis.</returns>
+        internal override Axis GetValueAxis()
+        {
+            return this.XAxis;
         }
 
         /// <summary>
@@ -466,17 +476,6 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Gets the actual width/height of the items of this series.
-        /// </summary>
-        /// <returns>The width or height.</returns>
-        /// <remarks>The actual width is also influenced by the GapWidth of the CategoryAxis used by this series.</remarks>
-        protected override double GetActualBarWidth()
-        {
-            var categoryAxis = this.GetCategoryAxis();
-            return this.BarWidth / (1 + categoryAxis.GapWidth) / categoryAxis.GetMaxWidth();
-        }
-
-        /// <summary>
         /// Gets the category axis.
         /// </summary>
         /// <returns>The category axis.</returns>
@@ -504,15 +503,6 @@ namespace OxyPlot.Series
             }
 
             return this.Items[i];
-        }
-
-        /// <summary>
-        /// Gets the value axis.
-        /// </summary>
-        /// <returns>The value axis.</returns>
-        private Axis GetValueAxis()
-        {
-            return this.XAxis;
         }
     }
 }
