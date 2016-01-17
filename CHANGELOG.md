@@ -134,6 +134,7 @@ All notable changes to this project will be documented in this file.
 - Null reference exception in ScatterSeries{T} actual points (#636)
 - Code generation for HighLowItem (#634)
 - Axis.MinimumRange did not work correctly (#711)
+- FillColor in ErrorColumnSeries (#736)
 
 ## [2014.1.546] - 2014-10-22
 ### Added
