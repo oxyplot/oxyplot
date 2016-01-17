@@ -1426,13 +1426,37 @@ namespace ExampleLibrary
         [Example("#758: IntervalLength = 0")]
         public static PlotModel IntervalLength0()
         {
-            var model = new PlotModel { Title = "IntervalLength = 0", Subtitle = "An exception should be thrown. Should not go into infinite loop." };
+            var model = new PlotModel
+            {
+                Title = "IntervalLength = 0",
+                Subtitle = "An exception should be thrown. Should not go into infinite loop."
+            };
+            model.Axes.Add(new LinearAxis { IntervalLength = 0 });
+            return model;
+        }
+
+        [Example("#737: Wrong axis line when PositionAtZeroCrossing = true")]
+        public static PlotModel WrongAxisLineWhenPositionAtZeroCrossingIsSet()
+        {
+            var model = new PlotModel { Title = "PositionAtZeroCrossing" };
             model.Axes.Add(
                 new LinearAxis
                 {
-                    IntervalLength = 0
+                    Position = AxisPosition.Left
                 });
-
+            model.Axes.Add(
+                new LinearAxis
+                {
+                    Position = AxisPosition.Bottom,
+                    PositionAtZeroCrossing = true,
+                    AxislineStyle = LineStyle.Solid,
+                    AxislineThickness = 1
+                });
+            var lineSeries = new LineSeries();
+            lineSeries.Points.Add(new DataPoint(-10, 10));
+            lineSeries.Points.Add(new DataPoint(0, -10));
+            lineSeries.Points.Add(new DataPoint(10, 10));
+            model.Series.Add(lineSeries);
             return model;
         }
 
@@ -1466,7 +1490,7 @@ namespace ExampleLibrary
 
             return plotModel1;
         }
- 
+
         [Example("#453: Auto plot margin and width of labels")]
         public static PlotModel AutoPlotMarginAndAxisLabelWidths()
         {
