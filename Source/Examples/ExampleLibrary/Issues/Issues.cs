@@ -1337,6 +1337,33 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("#745: HeatMap not working in Windows Universal")]
+        public static PlotModel PlotHeatMap()
+        {
+            var model = new PlotModel { Title = "FOOBAR" };
+            model.Axes.Add(new LinearColorAxis
+            {
+                Position = AxisPosition.Right,
+                Palette = OxyPalettes.Jet(500),
+                HighColor = OxyColors.Gray,
+                LowColor = OxyColors.Black
+            });
+
+            var data = new double[,] { { 1, 2 }, { 1, 1 }, { 2, 1 }, { 2, 2 } };
+
+            var hs = new HeatMapSeries
+            {
+                Background = OxyColors.Red,
+                X0 = 0,
+                X1 = 2,
+                Y0 = 0,
+                Y1 = 3,
+                Data = data,
+            };
+            model.Series.Add(hs);
+            return model;
+        }
+
         /* NEW ISSUE TEMPLATE
          [Example("#123: Issue Description")]
          public static PlotModel IssueDescription()
