@@ -11,8 +11,8 @@ namespace OxyPlot.Windows
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
+    using System.Runtime.InteropServices.WindowsRuntime;
     using System.Threading.Tasks;
 
     using global::Windows.Foundation;
@@ -786,31 +786,24 @@ namespace OxyPlot.Windows
                 return src;
             }
 
-            // TODO: improve conversion from byte array to random access stream
-            using (var ms = new MemoryStream(image.GetData()))
-            {
-                var bitmapImage = new BitmapImage();
-                bitmapImage.SetSource(ConvertToRandomAccessStream(ms).Result);
-                this.imageCache.Add(image, bitmapImage);
-                return bitmapImage;
-            }
+            var bitmapImage = new BitmapImage();
+            var imageStream = ConvertToRandomAccessStream(image.GetData()).GetAwaiter().GetResult();
+            bitmapImage.SetSource(imageStream);
+            this.imageCache.Add(image, bitmapImage);
+            return bitmapImage;
         }
 
         /// <summary>
-        /// Converts the specified memory stream to a <see cref="IRandomAccessStream" />.
+        /// Converts the specified byte array to a <see cref="IRandomAccessStream" />.
         /// </summary>
-        /// <param name="memoryStream"></param>
+        /// <param name="buffer"></param>
         /// <returns></returns>
-        private static async Task<IRandomAccessStream> ConvertToRandomAccessStream(MemoryStream memoryStream)
+        private static async Task<IRandomAccessStream> ConvertToRandomAccessStream(byte[] buffer)
         {
-            // https://iamabhik.wordpress.com/tag/convert-stream-to-irandomaccessstream/
+            //https://stackoverflow.com/questions/16397509/how-to-convert-byte-array-to-inmemoryrandomaccessstream-or-irandomaccessstream-i
             var randomAccessStream = new InMemoryRandomAccessStream();
-            var outputStream = randomAccessStream.GetOutputStreamAt(0);
-            var dw = new DataWriter(outputStream);
-            var task = Task.Run(() => dw.WriteBytes(memoryStream.ToArray()));
-            await task;
-            await dw.StoreAsync();
-            await outputStream.FlushAsync();
+            await randomAccessStream.WriteAsync(buffer.AsBuffer());
+            randomAccessStream.Seek(0);
             return randomAccessStream;
         }
     }

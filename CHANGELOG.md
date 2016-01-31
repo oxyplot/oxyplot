@@ -136,6 +136,7 @@ All notable changes to this project will be documented in this file.
 - Axis.MinimumRange did not work correctly (#711)
 - FillColor in ErrorColumnSeries (#736)
 - XAxisKey and YAxisKey added to Wpf.Annotations (#743)
+- Fix HeatMapSeries cannot plot on Universal Windows (#745)
 
 ## [2014.1.546] - 2014-10-22
 ### Added
