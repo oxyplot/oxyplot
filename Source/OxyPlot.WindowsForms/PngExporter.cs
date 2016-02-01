@@ -91,6 +91,7 @@ namespace OxyPlot.WindowsForms
                         model.Render(rc, this.Width, this.Height);
                     }
 
+                    bm.SetResolution(this.Resolution, this.Resolution);
                     bm.Save(stream, ImageFormat.Png);
                 }
             }
