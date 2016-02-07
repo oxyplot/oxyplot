@@ -1593,12 +1593,12 @@ namespace OxyPlot.Axes
                 return maxIntervalSize;
             }
 
-            if (Math.Abs(maxIntervalSize) < Double.Epsilon)
+            if (Math.Abs(maxIntervalSize) < double.Epsilon)
             {
                 throw new ArgumentException("Maximum interval size cannot be zero.", "maxIntervalSize");
             }
 
-            if (Math.Abs(range) < Double.Epsilon)
+            if (Math.Abs(range) < double.Epsilon)
             {
                 throw new ArgumentException("Range cannot be zero.", "range");
             }

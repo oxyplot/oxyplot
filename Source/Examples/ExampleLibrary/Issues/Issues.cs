@@ -1364,17 +1364,30 @@ namespace ExampleLibrary
             return model;
         }
 
-        /* NEW ISSUE TEMPLATE
-         [Example("#123: Issue Description")]
-         public static PlotModel IssueDescription()
-         {
-             var plotModel1 = new PlotModel
-             {
-                 Title = "",
-             };
+        [Example("#758: IntervalLength = 0")]
+        public static PlotModel IntervalLength0()
+        {
+            var model = new PlotModel { Title = "IntervalLength = 0", Subtitle = "An exception should be thrown. Should not go into infinite loop." };
+            model.Axes.Add(
+                new LinearAxis
+                {
+                    IntervalLength = 0
+                });
 
-             return plotModel1;
-         }
-         */
+            return model;
+        }
+
+        /* NEW ISSUE TEMPLATE
+          [Example("#123: Issue Description")]
+          public static PlotModel IssueDescription()
+          {
+              var plotModel1 = new PlotModel
+              {
+                  Title = "",
+              };
+
+              return plotModel1;
+          }
+          */
     }
 }
