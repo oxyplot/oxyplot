@@ -26,10 +26,11 @@ namespace OxyPlot.Wpf.Tests
         /// if it does not exist.
         /// </summary>
         [Test]
-        public void CompareWithBaseline()
+        public void ExportPngAndCompareWithBaseline()
         {
-            const string DestinationDirectory = "ExampleLibrary";
+            const string DestinationDirectory = "ExampleLibrary.Actual";
             const string BaselineDirectory = "ExampleLibrary.Baseline";
+            const string DiffDirectory = "ExampleLibrary.Diff";
 
             if (!Directory.Exists(BaselineDirectory))
             {
@@ -41,6 +42,11 @@ namespace OxyPlot.Wpf.Tests
                 Directory.CreateDirectory(DestinationDirectory);
             }
 
+            if (!Directory.Exists(DiffDirectory))
+            {
+                Directory.CreateDirectory(DiffDirectory);
+            }
+
             foreach (var example in ExampleLibrary.Examples.GetList())
             {
                 if (example.PlotModel == null)
@@ -48,16 +54,11 @@ namespace OxyPlot.Wpf.Tests
                     continue;
                 }
 
-                var baselinePath = Path.Combine(
-                    BaselineDirectory,
-                    FileNameUtilities.CreateValidFileName(example.Category + " - " + example.Title, ".png"));
-                var path = Path.Combine(
-                    DestinationDirectory,
-                    FileNameUtilities.CreateValidFileName(example.Category + " - " + example.Title, ".png"));
-                var diffpath = Path.Combine(
-                    DestinationDirectory,
-                    FileNameUtilities.CreateValidFileName(example.Category + " - " + example.Title, ".DIFF.png"));
-                Console.WriteLine(path);
+                var filename = FileNameUtilities.CreateValidFileName(example.Category + " - " + example.Title, ".png");
+                var baselinePath = Path.Combine(BaselineDirectory, filename);
+                var path = Path.Combine(DestinationDirectory, filename);
+                var diffpath = Path.Combine(DiffDirectory, filename);
+
                 PngExporter.Export(example.PlotModel, path, 800, 500, OxyColors.White);
                 if (File.Exists(baselinePath))
                 {

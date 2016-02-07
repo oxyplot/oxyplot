@@ -66,15 +66,17 @@ namespace OxyPlot.Wpf.Tests
         {
             var resolution = (int)(96 * factor);
             var plotModel = TestModels.CreateTestModel1();
+            Directory.CreateDirectory("Actual");
             var fileName = string.Format(CultureInfo.InvariantCulture, "PngExporterTests_ExportWithResolution_{0}dpi.png", resolution);
             var exporter = new PngExporter { Width = (int)(400 * factor), Height = (int)(300 * factor), Resolution = resolution };
-            using (var stream = File.OpenWrite(fileName))
+            var actual = Path.Combine("Actual", fileName);
+            using (var stream = File.OpenWrite(actual))
             {
                 exporter.Export(plotModel, stream);
             }
 
-            Assert.IsTrue(File.Exists(fileName));
-            PngAssert.AreEqual(Path.Combine("Baseline", fileName), fileName, fileName, Path.Combine("Diff", fileName));
+            Assert.IsTrue(File.Exists(actual));
+            PngAssert.AreEqual(Path.Combine("Baseline", fileName), actual, fileName, Path.Combine("Diff", fileName));
         }
     }
 }
