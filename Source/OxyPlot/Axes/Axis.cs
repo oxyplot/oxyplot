@@ -1593,6 +1593,16 @@ namespace OxyPlot.Axes
                 return maxIntervalSize;
             }
 
+            if (Math.Abs(maxIntervalSize) < double.Epsilon)
+            {
+                throw new ArgumentException("Maximum interval size cannot be zero.", "maxIntervalSize");
+            }
+
+            if (Math.Abs(range) < double.Epsilon)
+            {
+                throw new ArgumentException("Range cannot be zero.", "range");
+            }
+
             Func<double, double> exponent = x => Math.Ceiling(Math.Log(x, 10));
             Func<double, double> mantissa = x => x / Math.Pow(10, exponent(x) - 1);
 
