@@ -946,7 +946,20 @@ namespace OxyPlot.Wpf
             FontFamily ff;
             if (!this.fontFamilyCache.TryGetValue(familyName, out ff))
             {
-                ff = new FontFamily(familyName);
+                var i = familyName.IndexOf("#", StringComparison.InvariantCulture);
+                if (i >= 0)
+                {
+                    // split the pack uri to a base uri and a font name (including #)
+                    // the font name must start with "./"
+                    var baseUri = familyName.Substring(0, i - 1) + "/";
+                    var name = "./" + familyName.Substring(i);
+                    ff = new FontFamily(new Uri(baseUri), name);
+                }
+                else
+                {
+                    ff = new FontFamily(familyName);
+                }
+
                 this.fontFamilyCache.Add(familyName, ff);
             }
 
@@ -985,7 +998,7 @@ namespace OxyPlot.Wpf
                         shape.StrokeLineJoin = PenLineJoin.Bevel;
                         break;
 
-                    // The default StrokeLineJoin is Miter
+                        // The default StrokeLineJoin is Miter
                 }
 
                 if (Math.Abs(thickness - 1) > double.Epsilon)
