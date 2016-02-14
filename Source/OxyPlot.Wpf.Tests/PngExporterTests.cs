@@ -66,6 +66,8 @@ namespace OxyPlot.Wpf.Tests
         {
             var resolution = (int)(96 * factor);
             var plotModel = TestModels.CreateTestModel1();
+            plotModel.DefaultFont = "pack://application:,,,/OxyPlot.Wpf.Tests;component/TestFonts/now/#Now";
+
             Directory.CreateDirectory("Actual");
             var fileName = string.Format(CultureInfo.InvariantCulture, "PngExporterTests_ExportWithResolution_{0}dpi.png", resolution);
             var exporter = new PngExporter { Width = (int)(400 * factor), Height = (int)(300 * factor), Resolution = resolution };
