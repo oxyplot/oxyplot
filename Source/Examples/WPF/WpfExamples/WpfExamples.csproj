@@ -69,6 +69,11 @@
     <Compile Include="Examples\AlignedAxesDemo\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Examples\AnimationsDemo\AnimationExtensions.cs" />
+    <Compile Include="Examples\AnimationsDemo\MainViewModel.cs" />
+    <Compile Include="Examples\AnimationsDemo\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Examples\ControllerDemo\CustomPlotController.cs" />
     <Compile Include="Examples\ControllerDemo\MainViewModel.cs" />
     <Compile Include="Examples\ControllerDemo\MainWindow.xaml.cs">
@@ -105,6 +110,10 @@
       <DependentUpon>PlotViewDataTemplateWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ScreenCapture.cs" />
+    <Page Include="Examples\AnimationsDemo\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Examples\AnnotationDemo\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -431,6 +440,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Images\AnimationsDemo.png" />
     <Resource Include="Images\ScrollViewerDemo.png" />
     <Resource Include="Images\ControllerDemo.png" />
     <Resource Include="Images\ToolTipDemo.png" />
