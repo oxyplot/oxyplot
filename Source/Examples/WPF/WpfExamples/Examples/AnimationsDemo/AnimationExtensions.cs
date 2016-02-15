@@ -63,7 +63,7 @@ namespace AnimationsDemo
                     }
 
                     var delta = measurePoint.Value - pointMinimum;
-                    var animationValues = CalculateEaseValues(delta, animationFrames - 1, easingFunction);
+                    var animationValues = CalculateEaseValues(delta, animationFrames - 1, easingFunction, pointMinimum);
                     animationValues.Add(measurePoint.Value);
 
                     valuesToAnimate.Add(animationValues);
@@ -92,7 +92,7 @@ namespace AnimationsDemo
             }
         }
 
-        private static List<double> CalculateEaseValues(double range, int count, EasingFunctionBase easingFunction)
+        private static List<double> CalculateEaseValues(double range, int count, EasingFunctionBase easingFunction, double baseValue = 0d)
         {
             var items = new List<double>();
 
@@ -103,7 +103,7 @@ namespace AnimationsDemo
                 var valueToEase = easePhase * i;
                 var easeValue = easingFunction.Ease(valueToEase);
 
-                items.Add(easeValue * range);
+                items.Add(baseValue + (easeValue * range));
             }
 
             return items;
