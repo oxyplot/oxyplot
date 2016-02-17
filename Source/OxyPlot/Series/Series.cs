@@ -24,6 +24,7 @@ namespace OxyPlot.Series
         {
             this.IsVisible = true;
             this.Background = OxyColors.Undefined;
+            this.RenderInLegend = true;
         }
 
         /// <summary>
@@ -40,8 +41,13 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets or sets the title of the series. The default is <c>null</c>.
         /// </summary>
-        /// <value>The title that is shown in the legend of the plot. The default value is <c>null</c>. When the value is <c>null</c>, this series will not be shown in the legend.</value>
+        /// <value>The title that is shown in the legend of the plot. The default value is <c>null</c>.</value>
         public string Title { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether the series should be rendered in legend. The default ist true.
+        /// </summary>
+        public bool RenderInLegend { get; set; }
 
         /// <summary>
         /// Gets or sets a format string used for the tracker. The default depends on the series.

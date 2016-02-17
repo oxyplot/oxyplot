@@ -367,7 +367,7 @@ namespace OxyPlot
             foreach (var s in items)
             {
                 // Skip series with empty title
-                if (string.IsNullOrEmpty(s.Title))
+                if (string.IsNullOrEmpty(s.Title) || !s.RenderInLegend)
                 {
                     continue;
                 }
