@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MainViewModel.cs" company="OxyPlot">
+// <copyright file="LineSeriesViewModel.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -15,9 +15,9 @@ namespace AnimationsDemo
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
-    public class LinearBarViewModel : AnimationViewModelBase
+    public class LineSeriesViewModel : AnimationViewModelBase
     {
-        public LinearBarViewModel()
+        public LineSeriesViewModel()
         {
             var pnls = new List<Pnl>();
 
@@ -37,18 +37,20 @@ namespace AnimationsDemo
             var maximum = pnls.Max(x => x.Value);
 
             var plotModel = this.PlotModel;
-            plotModel.Title = "Linear Bar Series Animation Demo";
+            plotModel.Title = "Line Series Animation Demo";
 
-            var series = new LinearBarSeries
+            var series = new LineSeries
             {
                 Title = "P & L",
                 ItemsSource = pnls,
                 DataFieldX = "Time",
                 DataFieldY = "Value",
-                FillColor = OxyColor.Parse("#454CAF50"),
-                StrokeColor = OxyColor.Parse("#4CAF50"),
+                Color = OxyColor.Parse("#4CAF50"),
+                MarkerSize = 8,
+                MarkerFill = OxyColor.Parse("#FFFFFFFF"),
+                MarkerStroke = OxyColor.Parse("#4CAF50"),
+                MarkerStrokeThickness = 4,
                 StrokeThickness = 1,
-                BarWidth = 5
             };
             plotModel.Series.Add(series);
 
@@ -81,7 +83,7 @@ namespace AnimationsDemo
         public override void Animate(IEasingFunction easingFunction, TimeSpan duration)
         {
             var plotModel = this.PlotModel;
-            var series = plotModel.Series.First() as LinearBarSeries;
+            var series = plotModel.Series.First() as LineSeries;
             if (series != null)
             {
                 plotModel.AnimateSeries(series, easingFunction, duration: duration);

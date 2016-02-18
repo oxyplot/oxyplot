@@ -13,7 +13,7 @@ namespace AnimationsDemo
 
     using OxyPlot;
 
-    public abstract class AnimationViewModelBase
+    public abstract class AnimationViewModelBase : IAnimationViewModel
     {
         protected AnimationViewModelBase()
         {

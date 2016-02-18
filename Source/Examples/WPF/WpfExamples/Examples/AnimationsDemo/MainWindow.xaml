@@ -15,9 +15,9 @@
                 <AnimationsDemo:LinearBarView />
             </TabItem>
 
-            <!--<TabItem Header="Line Series">
-                <AnimationsDemo:LinearBarView />
-            </TabItem>-->
+            <TabItem Header="Line Series">
+                <AnimationsDemo:LineSeriesView />
+            </TabItem>
         </TabControl>
         
         <AnimationsDemo:AnimationSettingsControl Grid.Row="1" DataContext="{Binding ElementName=tabControl, Path=SelectedItem.Content.DataContext}" />

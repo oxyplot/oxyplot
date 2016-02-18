@@ -17,7 +17,7 @@ namespace AnimationsDemo
 
         private void OnAnimateClick(object sender, RoutedEventArgs e)
         {
-            var vm = this.DataContext as LinearBarViewModel;
+            var vm = this.DataContext as IAnimationViewModel;
             if (vm != null)
             {
                 vm.Animate();

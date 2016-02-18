@@ -81,8 +81,16 @@
     <Compile Include="Examples\AnimationsDemo\EasingFunctions\BackEase.cs" />
     <Compile Include="Examples\AnimationsDemo\EasingFunctions\CircleEase.cs" />
     <Compile Include="Examples\AnimationsDemo\Extensions\AnimationExtensions.cs" />
+    <Compile Include="Examples\AnimationsDemo\Extensions\AnimationExtensions.lineseries.cs" />
+    <Compile Include="Examples\AnimationsDemo\Extensions\AnimationExtensions.linearbarseries.cs" />
+    <Compile Include="Examples\AnimationsDemo\Models\Pnl.cs" />
     <Compile Include="Examples\AnimationsDemo\ViewModels\AnimationViewModelBase.cs" />
     <Compile Include="Examples\AnimationsDemo\EasingFunctions\Interfaces\IEasingFunction.cs" />
+    <Compile Include="Examples\AnimationsDemo\ViewModels\Interfaces\IAnimationViewModel.cs" />
+    <Compile Include="Examples\AnimationsDemo\ViewModels\LineSeriesViewModel.cs" />
+    <Compile Include="Examples\AnimationsDemo\Views\LineSeriesView.xaml.cs">
+      <DependentUpon>LineSeriesView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Examples\AnimationsDemo\Views\LinearBarView.xaml.cs">
       <DependentUpon>LinearBarView.xaml</DependentUpon>
     </Compile>
@@ -129,6 +137,10 @@
     <Page Include="Examples\AnimationsDemo\Controls\AnimationSettingsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Examples\AnimationsDemo\Views\LineSeriesView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Examples\AnimationsDemo\Views\LinearBarView.xaml">
       <SubType>Designer</SubType>
