@@ -9,10 +9,29 @@ namespace AnimationsDemo
 {
     using System;
 
-    public class Pnl
+    using OxyPlot.Axes;
+
+    public class Pnl : IAnimatablePoint
     {
-        public DateTime Time { get; set; }
-        public double Value { get; set; }
+        public double FinalY { get; set; }
+        public double X { get; set; }
+        public double Y { get; set; }
+
+        public DateTime Time
+        {
+            get { return DateTimeAxis.ToDateTime(this.X); }
+            set { this.X = DateTimeAxis.ToDouble(value); }
+        }
+
+        public double Value
+        {
+            get { return this.Y;}
+            set
+            {
+                this.FinalY = value;
+                this.Y = value;
+            }
+        }
 
         public override string ToString()
         {

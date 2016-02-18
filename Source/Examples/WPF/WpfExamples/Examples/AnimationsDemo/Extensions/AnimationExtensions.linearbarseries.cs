@@ -38,8 +38,8 @@ namespace AnimationsDemo
 
             foreach (var point in items)
             {
-                var measurePoint = point as Pnl;
-                if (measurePoint != null)
+                var animatablePoint = point as IAnimatablePoint;
+                if (animatablePoint != null)
                 {
                     var pointMinimum = 0d;
                     if (minimumValue.HasValue)
@@ -47,12 +47,12 @@ namespace AnimationsDemo
                         pointMinimum = minimumValue.Value;
                     }
 
-                    var delta = measurePoint.Value - pointMinimum;
+                    var delta = animatablePoint.FinalY - pointMinimum;
                     var animationValues = CalculateEaseValues(delta, animationFrames - 1, easingFunction, pointMinimum);
-                    animationValues.Add(measurePoint.Value);
+                    animationValues.Add(animatablePoint.Y);
 
                     valuesToAnimate.Add(animationValues);
-                    measurePoint.Value = animationValues.First();
+                    animatablePoint.Y = animationValues.First();
                 }
             }
 
@@ -63,11 +63,11 @@ namespace AnimationsDemo
             {
                 for (var j = 0; j < items.Count; j++)
                 {
-                    var measurePoint = items[j] as Pnl;
-                    if (measurePoint != null)
+                    var animatablePoint = items[j] as IAnimatablePoint;
+                    if (animatablePoint != null)
                     {
                         var animationInfo = valuesToAnimate[j];
-                        measurePoint.Value = animationInfo[i];
+                        animatablePoint.Y = animationInfo[i];
                     }
                 }
 

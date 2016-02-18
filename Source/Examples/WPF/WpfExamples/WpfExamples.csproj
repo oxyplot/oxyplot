@@ -83,6 +83,7 @@
     <Compile Include="Examples\AnimationsDemo\Extensions\AnimationExtensions.cs" />
     <Compile Include="Examples\AnimationsDemo\Extensions\AnimationExtensions.lineseries.cs" />
     <Compile Include="Examples\AnimationsDemo\Extensions\AnimationExtensions.linearbarseries.cs" />
+    <Compile Include="Examples\AnimationsDemo\Models\Interfaces\IAnimatablePoint.cs" />
     <Compile Include="Examples\AnimationsDemo\Models\Pnl.cs" />
     <Compile Include="Examples\AnimationsDemo\ViewModels\AnimationViewModelBase.cs" />
     <Compile Include="Examples\AnimationsDemo\EasingFunctions\Interfaces\IEasingFunction.cs" />
