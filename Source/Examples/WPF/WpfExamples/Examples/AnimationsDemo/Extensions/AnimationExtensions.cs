@@ -8,6 +8,9 @@
 namespace AnimationsDemo
 {
     using System.Collections.Generic;
+    using System.Linq;
+
+    using OxyPlot.Series;
 
     public static partial class AnimationExtensions
     {
@@ -26,6 +29,21 @@ namespace AnimationsDemo
             }
 
             return items;
+        }
+
+        private static List<IAnimatablePoint> GetAnimatablePoints(this DataPointSeries series)
+        {
+            var points = new List<IAnimatablePoint>();
+
+            var itemsSource = series.ItemsSource;
+            if (itemsSource != null)
+            {
+                points.AddRange(from x in itemsSource.Cast<object>()
+                                where x is IAnimatablePoint
+                                select (IAnimatablePoint)x);
+            }
+
+            return points;
         }
     }
 }
