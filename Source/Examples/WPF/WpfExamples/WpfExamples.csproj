@@ -69,8 +69,17 @@
     <Compile Include="Examples\AlignedAxesDemo\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Examples\AnimationsDemo\AnimationExtensions.cs" />
-    <Compile Include="Examples\AnimationsDemo\MainViewModel.cs" />
+    <Compile Include="Examples\AnimationsDemo\Controls\AnimationSettingsControl.xaml.cs">
+      <DependentUpon>AnimationSettingsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\AnimationsDemo\EasingFunctions\CircleEase.cs" />
+    <Compile Include="Examples\AnimationsDemo\Extensions\AnimationExtensions.cs" />
+    <Compile Include="Examples\AnimationsDemo\ViewModels\AnimationViewModelBase.cs" />
+    <Compile Include="Examples\AnimationsDemo\EasingFunctions\Interfaces\IEasingFunction.cs" />
+    <Compile Include="Examples\AnimationsDemo\Views\LinearBarView.xaml.cs">
+      <DependentUpon>LinearBarView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\AnimationsDemo\ViewModels\LinearBarViewModel.cs" />
     <Compile Include="Examples\AnimationsDemo\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -110,6 +119,14 @@
       <DependentUpon>PlotViewDataTemplateWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ScreenCapture.cs" />
+    <Page Include="Examples\AnimationsDemo\Controls\AnimationSettingsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Examples\AnimationsDemo\Views\LinearBarView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Examples\AnimationsDemo\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

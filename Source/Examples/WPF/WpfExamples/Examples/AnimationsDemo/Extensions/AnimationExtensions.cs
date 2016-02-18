@@ -11,7 +11,6 @@ namespace AnimationsDemo
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using System.Windows.Media.Animation;
 
     using OxyPlot;
     using OxyPlot.Series;
@@ -24,7 +23,7 @@ namespace AnimationsDemo
             double? minimumValue = null,
             TimeSpan duration = default(TimeSpan),
             double animationFrameDurationInMs = 10) 
-            where TEase : EasingFunctionBase, new()
+            where TEase : IEasingFunction, new()
         {
             var easingFunction = new TEase();
 
@@ -34,7 +33,7 @@ namespace AnimationsDemo
         public static async void AnimateSeries(
             this PlotModel plotModel,
             ItemsSeries series,
-            EasingFunctionBase easingFunction,
+            IEasingFunction easingFunction,
             double? minimumValue = null,
             TimeSpan duration = default(TimeSpan),
             double animationFrameDurationInMs = 10)
@@ -92,7 +91,7 @@ namespace AnimationsDemo
             }
         }
 
-        private static List<double> CalculateEaseValues(double range, int count, EasingFunctionBase easingFunction, double baseValue = 0d)
+        private static List<double> CalculateEaseValues(double range, int count, IEasingFunction easingFunction, double baseValue = 0d)
         {
             var items = new List<double>();
 

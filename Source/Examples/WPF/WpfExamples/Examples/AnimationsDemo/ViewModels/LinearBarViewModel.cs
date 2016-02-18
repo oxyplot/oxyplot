@@ -9,17 +9,15 @@ namespace AnimationsDemo
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Windows.Input;
-    using System.Windows.Media.Animation;
 
     using OxyPlot;
     using OxyPlot.Annotations;
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
-    public class MainViewModel
+    public class LinearBarViewModel : AnimationViewModelBase
     {
-        public MainViewModel()
+        public LinearBarViewModel()
         {
             var pnls = new List<Pnl>();
 
@@ -38,10 +36,8 @@ namespace AnimationsDemo
             var minimum = pnls.Min(x => x.Value);
             var maximum = pnls.Max(x => x.Value);
 
-            var plotModel = new PlotModel
-            {
-                Title = "Animations demo",
-            };
+            var plotModel = this.PlotModel;
+            plotModel.Title = "Linear Bar Series Animation Demo";
 
             var series = new LinearBarSeries
             {
@@ -81,33 +77,15 @@ namespace AnimationsDemo
             };
             plotModel.Axes.Add(valueAxis);
 
-            this.EasingFunctions = (from type in typeof(CircleEase).Assembly.GetTypes()
-                                    where typeof(EasingFunctionBase).IsAssignableFrom(type) && !type.IsAbstract
-                                    select type).ToList();
-            this.SelectedEasingFunction = this.EasingFunctions.FirstOrDefault();
-
-            this.AnimationDuration = 250;
-            this.PlotModel = plotModel;
-
             this.Animate();
         }
 
-        public PlotModel PlotModel { get; private set; }
-
-        public List<Type> EasingFunctions { get; private set; }
-
-        public Type SelectedEasingFunction { get; set; }
-
-        public int AnimationDuration { get; set; }
-
-        public void Animate()
+        public override void Animate(IEasingFunction easingFunction, TimeSpan duration)
         {
             var plotModel = this.PlotModel;
             var series = plotModel.Series.First() as ItemsSeries;
 
-            var easingFunction = (EasingFunctionBase)Activator.CreateInstance(this.SelectedEasingFunction);
-
-            plotModel.AnimateSeries(series, easingFunction, duration: TimeSpan.FromMilliseconds(this.AnimationDuration));
+            plotModel.AnimateSeries(series, easingFunction, duration: duration);
         }
     }
 
