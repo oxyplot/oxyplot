@@ -9,7 +9,6 @@ namespace AnimationsDemo
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Threading.Tasks;
 
     using OxyPlot;
     using OxyPlot.Series;
@@ -29,52 +28,113 @@ namespace AnimationsDemo
                 duration = TimeSpan.FromMilliseconds(300);
             }
 
-            var animationDuration = TimeSpan.FromMilliseconds(animationFrameDurationInMs);
-            var animationFrames = (int)(duration.TotalMilliseconds / animationFrameDurationInMs);
-
-            var valuesToAnimate = new List<List<double>>();
-
-            var items = series.ItemsSource.Cast<object>().ToList();
-
-            foreach (var point in items)
+            var points = series.GetAnimatablePoints();
+            if (points.Count == 0)
             {
-                var animatablePoint = point as IAnimatablePoint;
-                if (animatablePoint != null)
-                {
-                    var pointMinimum = 0d;
-                    if (minimumValue.HasValue)
-                    {
-                        pointMinimum = minimumValue.Value;
-                    }
-
-                    var delta = animatablePoint.FinalY - pointMinimum;
-                    var animationValues = CalculateEaseValues(delta, animationFrames - 1, easingFunction, pointMinimum);
-                    animationValues.Add(animatablePoint.Y);
-
-                    valuesToAnimate.Add(animationValues);
-                    animatablePoint.Y = animationValues.First();
-                }
+                return;
             }
 
-            // First frame animation
-            await Task.Delay(animationDuration);
+            var animationFrames = new List<AnimationFrame>();
 
-            for (var i = 0; i < animationFrames; i++)
+            // This line might look a bit weird, but this way we can easily tweak the %
+            // it takes to animate the horizontal lines (in case we want to animate markers in the future)
+            var horizontalDuration = duration.TotalMilliseconds / 100 * 100;
+
+            var animationFrameCount = (int)(duration.TotalMilliseconds / animationFrameDurationInMs);
+            var animationFrameDuration = TimeSpan.FromMilliseconds(animationFrameDurationInMs);
+
+            var minX = (from point in points orderby point.X select point.X).Min();
+            var maxX = (from point in points orderby point.X select point.X).Max();
+            var deltaX = maxX - minX;
+
+            for (var i = 0; i < animationFrameCount; i++)
             {
-                for (var j = 0; j < items.Count; j++)
+                var animationFrame = new AnimationFrame
                 {
-                    var animatablePoint = items[j] as IAnimatablePoint;
-                    if (animatablePoint != null)
-                    {
-                        var animationInfo = valuesToAnimate[j];
-                        animatablePoint.Y = animationInfo[i];
-                    }
+                    Duration = animationFrameDuration
+                };
+
+                var currentTime = i * animationFrameDurationInMs;
+
+                var percentage = 100d / animationFrameCount * i;
+                var currentDeltaX = deltaX / 100d * percentage;
+                var currentX = minX + currentDeltaX;
+
+                // We need to ease against percentage (between 0 and 1), so the currentX is the x based on the time,
+                // the actualX is the value we are going to assign (the eased value, which might be negative)
+                var ease = easingFunction.Ease(percentage / 100);
+                var actualX = minX + (currentDeltaX * ease);
+                if (i == animationFrameCount - 1)
+                {
+                    actualX = maxX;
                 }
 
-                plotModel.InvalidatePlot(true);
+                // Get the last visible point. It should not be based on the index (can be really different), but on the X position
+                // since we want to draw a smooth animation
+                var lastVisibleHorizontalPoint = 0;
+                for (int j = 0; j < points.Count; j++)
+                {
+                    if (points[j].FinalX > currentX)
+                    {
+                        break;
+                    }
 
-                await Task.Delay(animationDuration);
+                    lastVisibleHorizontalPoint = j;
+                }
+
+                for (var j = 0; j < points.Count; j++)
+                {
+                    var point = points[j];
+
+                    var isVisible = true;
+                    var y = point.FinalY;
+                    var x = point.FinalX;
+
+                    var nextPointIndex = lastVisibleHorizontalPoint + 1;
+
+                    if (j > nextPointIndex)
+                    {
+                        isVisible = false;
+                    }
+
+                    // If we are back easing (so the x is further than our slowed down animation) or 
+                    // we hit the next point index that is not yet visible, calculate x and y manually
+                    if ((x > actualX) || (j == nextPointIndex))
+                    {
+                        // Calculate the position the y line is in currently (based on x1 and x2)
+                        var previousPoint = points[lastVisibleHorizontalPoint];
+                        var nextPoint = points[nextPointIndex];
+
+                        var previousX = previousPoint.FinalX;
+                        var nextX = nextPoint.FinalX;
+
+                        var totalDeltaX = nextX - previousX;
+                        var subDeltaX = currentX - previousX;
+
+                        var subPercentage = (subDeltaX * 100) / totalDeltaX;
+
+                        var previousY = previousPoint.FinalY;
+                        var nextY = nextPoint.FinalY;
+                        var totalDeltaY = nextY - previousY;
+
+                        var subDeltaY = totalDeltaY / 100 * subPercentage;
+
+                        y = previousY + subDeltaY;
+                        x = actualX;
+                    }
+
+                    animationFrame.AnimationPoints.Add(new AnimationPoint
+                    {
+                        X = x,
+                        Y = y,
+                        IsVisible = isVisible
+                    });
+                }
+
+                animationFrames.Add(animationFrame);
             }
+
+            await plotModel.AnimateSeriesAsync(series, animationFrames);
         }
     }
 }

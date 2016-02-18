@@ -8,11 +8,14 @@
 namespace AnimationsDemo
 {
     using System;
+    using System.Diagnostics;
 
     using OxyPlot.Axes;
 
+    [DebuggerDisplay("X: {X} => {FinalX} | Y: {Y} => {FinalY}")]
     public class Pnl : IAnimatablePoint
     {
+        public double FinalX { get; set; }
         public double FinalY { get; set; }
         public double X { get; set; }
         public double Y { get; set; }
@@ -20,7 +23,13 @@ namespace AnimationsDemo
         public DateTime Time
         {
             get { return DateTimeAxis.ToDateTime(this.X); }
-            set { this.X = DateTimeAxis.ToDouble(value); }
+            set
+            {
+                var finalX = DateTimeAxis.ToDouble(value);
+
+                this.FinalX = finalX;
+                this.X = finalX;
+            }
         }
 
         public double Value

@@ -9,6 +9,8 @@ namespace AnimationsDemo
 {
     public interface IAnimatablePoint
     {
+        double FinalX { get; set; }
+
         double FinalY { get; set; }
 
         double X { get; set; }

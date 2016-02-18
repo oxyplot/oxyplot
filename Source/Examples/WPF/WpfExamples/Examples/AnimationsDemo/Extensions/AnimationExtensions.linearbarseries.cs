@@ -8,8 +8,6 @@ namespace AnimationsDemo
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
 
     using OxyPlot;
     using OxyPlot.Series;
@@ -34,6 +32,7 @@ namespace AnimationsDemo
             {
                 return;
             }
+
             var animationFrames = new List<AnimationFrame>();
 
             // Animation assumptions:
@@ -73,6 +72,8 @@ namespace AnimationsDemo
 
                 var currentTime = i * animationFrameDurationInMs;
 
+                // TODO: Instead of assuming each point is evenly spread, use the actual x axis and the current %
+                // of the animation to determine which point should be visible
                 var lastVisibleHorizontalPoint = currentTime / horizontalMsPerPoint;
                 var firstHorizontalPointThatStillNeedsAnimation = (currentTime - verticalDuration) / horizontalMsPerPoint;
 
@@ -129,7 +130,7 @@ namespace AnimationsDemo
                 animationFrames.Add(animationFrame);
             }
 
-            plotModel.AnimateSeries(series, animationFrames);
+            await plotModel.AnimateSeriesAsync(series, animationFrames);
         }
     }
 }

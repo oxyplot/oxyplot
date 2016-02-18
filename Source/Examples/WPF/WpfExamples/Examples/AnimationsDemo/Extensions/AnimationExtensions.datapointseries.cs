@@ -14,7 +14,7 @@ namespace AnimationsDemo
 
     public static partial class AnimationExtensions
     {
-        public static async void AnimateSeries(
+        public static async Task AnimateSeriesAsync(
             this PlotModel plotModel,
             DataPointSeries series,
             List<AnimationFrame> animationFrames)
@@ -23,6 +23,20 @@ namespace AnimationsDemo
             {
                 return;
             }
+
+            var xAxis = plotModel.DefaultXAxis;
+            var oldXAxisMinimum = xAxis.Minimum;
+            var oldXAxisMaximum = xAxis.Maximum;
+
+            xAxis.Minimum = xAxis.ActualMinimum;
+            xAxis.Maximum = xAxis.ActualMaximum;
+
+            var yAxis = plotModel.DefaultYAxis;
+            var oldYAxisMinimum = yAxis.Minimum;
+            var oldYAxisMaximum = yAxis.Maximum;
+
+            yAxis.Minimum = yAxis.ActualMinimum;
+            yAxis.Maximum = yAxis.ActualMaximum;
 
             // First frame animation
             await Task.Delay(15);
@@ -35,6 +49,8 @@ namespace AnimationsDemo
 
             foreach (var animationFrame in animationFrames)
             {
+                // TODO: consider implementing the IsVisible feature
+
                 for (var j = 0; j < points.Count; j++)
                 {
                     var animatablePoint = points[j];
@@ -51,6 +67,12 @@ namespace AnimationsDemo
 
                 await Task.Delay(animationFrame.Duration);
             }
+
+            xAxis.Minimum = oldXAxisMinimum;
+            xAxis.Maximum = oldXAxisMaximum;
+
+            yAxis.Minimum = oldYAxisMinimum;
+            yAxis.Maximum = oldYAxisMaximum;
         }
     }
 }
