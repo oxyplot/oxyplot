@@ -19,6 +19,7 @@ namespace AnimationsDemo
         {
             this.EasingFunctions = (from type in typeof(CircleEase).Assembly.GetTypes()
                                     where type.GetInterfaces().Any(x => x == typeof(IEasingFunction)) && !type.IsAbstract
+                                    orderby type.Name
                                     select type).ToList();
             this.SelectedEasingFunction = this.EasingFunctions.FirstOrDefault();
 

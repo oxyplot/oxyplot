@@ -72,6 +72,13 @@
     <Compile Include="Examples\AnimationsDemo\Controls\AnimationSettingsControl.xaml.cs">
       <DependentUpon>AnimationSettingsControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Examples\AnimationsDemo\EasingFunctions\SineEase.cs" />
+    <Compile Include="Examples\AnimationsDemo\EasingFunctions\QuinticEase.cs" />
+    <Compile Include="Examples\AnimationsDemo\EasingFunctions\QuarticEase.cs" />
+    <Compile Include="Examples\AnimationsDemo\EasingFunctions\QuadraticEase.cs" />
+    <Compile Include="Examples\AnimationsDemo\EasingFunctions\PowerEase.cs" />
+    <Compile Include="Examples\AnimationsDemo\EasingFunctions\BounceEase.cs" />
+    <Compile Include="Examples\AnimationsDemo\EasingFunctions\BackEase.cs" />
     <Compile Include="Examples\AnimationsDemo\EasingFunctions\CircleEase.cs" />
     <Compile Include="Examples\AnimationsDemo\Extensions\AnimationExtensions.cs" />
     <Compile Include="Examples\AnimationsDemo\ViewModels\AnimationViewModelBase.cs" />
