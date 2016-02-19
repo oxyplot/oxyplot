@@ -1,19 +1,16 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IAnimationViewModel.cs" company="OxyPlot">
+// <copyright file="BackEase.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-
 namespace AnimationsDemo
 {
-    using System;
-
-    public interface IAnimationViewModel
+    public class NoEase : IEasingFunction
     {
-        bool SupportsEasingFunction { get; }
-
-        void Animate();
-        void Animate(IEasingFunction easingFunction, TimeSpan duration);
+        public double Ease(double value)
+        {
+            return 1d;
+        }
     }
 }

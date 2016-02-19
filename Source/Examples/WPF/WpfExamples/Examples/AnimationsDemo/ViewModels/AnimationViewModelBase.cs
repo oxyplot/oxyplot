@@ -23,10 +23,17 @@ namespace AnimationsDemo
                                     select type).ToList();
             this.SelectedEasingFunction = this.EasingFunctions.FirstOrDefault();
 
-            this.AnimationDuration = 250;
+            if (!this.SupportsEasingFunction)
+            {
+                this.SelectedEasingFunction = typeof(NoEase);
+            }
+
+            this.AnimationDuration = 450;
             
             this.PlotModel = new PlotModel();
         }
+
+        public abstract bool SupportsEasingFunction { get; }
 
         public PlotModel PlotModel { get; private set; }
 

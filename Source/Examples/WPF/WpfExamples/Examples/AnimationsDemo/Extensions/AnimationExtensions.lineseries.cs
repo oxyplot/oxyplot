@@ -38,7 +38,8 @@ namespace AnimationsDemo
 
             // This line might look a bit weird, but this way we can easily tweak the %
             // it takes to animate the horizontal lines (in case we want to animate markers in the future)
-            var horizontalDuration = duration.TotalMilliseconds / 100 * 100;
+            var horizontalDuration = duration.TotalMilliseconds / 100 * 70;
+            var verticalDuration = duration.TotalMilliseconds / 100 * 30;
 
             var animationFrameCount = (int)(duration.TotalMilliseconds / animationFrameDurationInMs);
             var animationFrameDuration = TimeSpan.FromMilliseconds(animationFrameDurationInMs);
@@ -54,20 +55,9 @@ namespace AnimationsDemo
                     Duration = animationFrameDuration
                 };
 
-                var currentTime = i * animationFrameDurationInMs;
-
                 var percentage = 100d / animationFrameCount * i;
                 var currentDeltaX = deltaX / 100d * percentage;
                 var currentX = minX + currentDeltaX;
-
-                // We need to ease against percentage (between 0 and 1), so the currentX is the x based on the time,
-                // the actualX is the value we are going to assign (the eased value, which might be negative)
-                var ease = easingFunction.Ease(percentage / 100);
-                var actualX = minX + (currentDeltaX * ease);
-                if (i == animationFrameCount - 1)
-                {
-                    actualX = maxX;
-                }
 
                 // Get the last visible point. It should not be based on the index (can be really different), but on the X position
                 // since we want to draw a smooth animation
@@ -97,9 +87,7 @@ namespace AnimationsDemo
                         isVisible = false;
                     }
 
-                    // If we are back easing (so the x is further than our slowed down animation) or 
-                    // we hit the next point index that is not yet visible, calculate x and y manually
-                    if ((x > actualX) || (j == nextPointIndex))
+                    if (j >= nextPointIndex)
                     {
                         // Calculate the position the y line is in currently (based on x1 and x2)
                         var previousPoint = points[lastVisibleHorizontalPoint];
@@ -120,7 +108,7 @@ namespace AnimationsDemo
                         var subDeltaY = totalDeltaY / 100 * subPercentage;
 
                         y = previousY + subDeltaY;
-                        x = actualX;
+                        x = currentX;
                     }
 
                     animationFrame.AnimationPoints.Add(new AnimationPoint

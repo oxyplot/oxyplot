@@ -80,6 +80,8 @@ namespace AnimationsDemo
             plotModel.Axes.Add(valueAxis);
         }
 
+        public override bool SupportsEasingFunction { get { return false; } }
+
         public override void Animate(IEasingFunction easingFunction, TimeSpan duration)
         {
             var plotModel = this.PlotModel;

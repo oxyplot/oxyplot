@@ -8,6 +8,7 @@ namespace AnimationsDemo
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using OxyPlot;
     using OxyPlot.Series;
@@ -55,13 +56,18 @@ namespace AnimationsDemo
             // <---------------- 70 % of time ---------------->
             //                     (210 ms)
 
-            var horizontalDuration = duration.TotalMilliseconds / 100 * 70;
-            var verticalDuration = duration.TotalMilliseconds / 100 * 30;
+            const double HorizontalPercentage = 70d;
+            const double VerticalPercentage = 30d;
 
-            var horizontalMsPerPoint = horizontalDuration / points.Count;
+            var horizontalDuration = duration.TotalMilliseconds / 100 * HorizontalPercentage;
+            var verticalDuration = duration.TotalMilliseconds / 100 * VerticalPercentage;
 
             var animationFrameCount = (int)(duration.TotalMilliseconds / animationFrameDurationInMs);
             var animationFrameDuration = TimeSpan.FromMilliseconds(animationFrameDurationInMs);
+
+            var minX = (from point in points orderby point.X select point.X).Min();
+            var maxX = (from point in points orderby point.X select point.X).Max();
+            var deltaX = maxX - minX;
 
             for (var i = 0; i < animationFrameCount; i++)
             {
@@ -70,37 +76,67 @@ namespace AnimationsDemo
                     Duration = animationFrameDuration
                 };
 
-                var currentTime = i * animationFrameDurationInMs;
+                var isLastAnimationFrame = i == animationFrameCount - 1;
+                var currentTime = animationFrameDurationInMs * i;
+                var percentage = i * 100d / animationFrameCount;
 
-                // TODO: Instead of assuming each point is evenly spread, use the actual x axis and the current %
-                // of the animation to determine which point should be visible
-                var lastVisibleHorizontalPoint = currentTime / horizontalMsPerPoint;
-                var firstHorizontalPointThatStillNeedsAnimation = (currentTime - verticalDuration) / horizontalMsPerPoint;
+                var horizontalPercentage = currentTime * 100d / horizontalDuration;
+                if (horizontalPercentage > 100d)
+                {
+                    horizontalPercentage = 100d;
+                }
+
+                var currentDeltaX = deltaX / 100d * horizontalPercentage;
+                var currentX = minX + currentDeltaX;
+
+                // Get the last visible point. It should not be based on the index (can be really different), but on the X position
+                // since we want to draw a smooth animation
+                var lastVisibleHorizontalPoint = 0;
+                for (int j = 0; j < points.Count; j++)
+                {
+                    var x = points[j].FinalX;
+                    if (x > currentX)
+                    {
+                        break;
+                    }
+
+                    lastVisibleHorizontalPoint = j;
+                }
 
                 for (var j = 0; j < points.Count; j++)
                 {
                     var point = points[j];
 
-                    var x = point.X;
+                    var isVisible = false;
+                    var x = point.FinalX;
                     var y = 0d;
 
-                    if (j <= lastVisibleHorizontalPoint)
+                    if (isLastAnimationFrame)
                     {
-                        if (j < firstHorizontalPointThatStillNeedsAnimation)
+                        isVisible = true;
+                        x = point.FinalX;
+                        y = point.FinalY;
+                    }
+                    else if (j <= lastVisibleHorizontalPoint)
+                    {
+                        isVisible = true;
+                        y = point.FinalY;
+
+                        // We know how long an y animation takes. We only have to calculate if this start time of this x animation
+                        // is longer than verticalDuration ago
+                        var localDeltaX = point.FinalX - minX;
+                        var localPercentageX = localDeltaX * 100d / deltaX;
+                        var startTime = horizontalDuration / 100 * localPercentageX;
+                        var endTime = startTime + verticalDuration;
+
+                        if (endTime > currentTime)
                         {
-                            y = point.Y;
-                        }
-                        else
-                        {
+                            var timeDeltaTotal = endTime - startTime;
+                            var timeDeltaCurrent = currentTime - startTime;
+                            var subPercentage = timeDeltaCurrent * 100d / timeDeltaTotal;
+
                             // This bar is part of the current animation, calculate the Y relative to 30 % of the time based on the current index
-                            var startTime = j * horizontalMsPerPoint;
-                            var endTime = startTime + verticalDuration;
-
-                            var totalTimeDelta = endTime - startTime;
-                            var offset = currentTime - startTime;
-
                             // Calculate the % that offset is based on totalTimeDelta
-                            var percentage = offset * 100 / totalTimeDelta;
 
                             // Calculate point to animate from
                             var maxY = point.FinalY;
@@ -113,7 +149,7 @@ namespace AnimationsDemo
                             var deltaY = maxY - minY;
 
                             // We need to ease against percentage (between 0 and 1)
-                            var ease = easingFunction.Ease(percentage / 100);
+                            var ease = easingFunction.Ease(subPercentage / 100);
                             var currentDeltaY = deltaY * ease;
 
                             y = minY + currentDeltaY;
@@ -122,6 +158,7 @@ namespace AnimationsDemo
 
                     animationFrame.AnimationPoints.Add(new AnimationPoint
                     {
+                        IsVisible = isVisible,
                         X = x,
                         Y = y
                     });
