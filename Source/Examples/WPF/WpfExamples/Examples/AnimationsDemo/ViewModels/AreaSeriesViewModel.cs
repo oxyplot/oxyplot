@@ -90,7 +90,7 @@ namespace AnimationsDemo
             var series = plotModel.Series.First() as AreaSeries;
             if (series != null)
             {
-                plotModel.AnimateSeries(series, easingFunction, duration: duration, animationFrameDurationInMs: animationFrameDuration);
+                plotModel.AnimateSeriesAsync(series, easingFunction, duration: duration, animationFrameDurationInMs: animationFrameDuration);
             }
         }
     }

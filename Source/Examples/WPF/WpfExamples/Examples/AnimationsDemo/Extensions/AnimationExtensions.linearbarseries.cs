@@ -9,13 +9,14 @@ namespace AnimationsDemo
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
 
     using OxyPlot;
     using OxyPlot.Series;
 
     public static partial class AnimationExtensions
     {
-        public static async void AnimateSeries(
+        public static async Task AnimateSeriesAsync(
             this PlotModel plotModel,
             LinearBarSeries series,
             IEasingFunction easingFunction,

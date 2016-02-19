@@ -86,7 +86,7 @@ namespace AnimationsDemo
             var series = plotModel.Series.First() as LinearBarSeries;
             if (series != null)
             {
-                plotModel.AnimateSeries(series, easingFunction, duration: duration, animationFrameDurationInMs: animationFrameDuration);
+                plotModel.AnimateSeriesAsync(series, easingFunction, duration: duration, animationFrameDurationInMs: animationFrameDuration);
             }
         }
     }
