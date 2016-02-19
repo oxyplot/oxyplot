@@ -6,6 +6,7 @@
 
 namespace AnimationsDemo
 {
+    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
@@ -14,6 +15,26 @@ namespace AnimationsDemo
 
     public static partial class AnimationExtensions
     {
+        public static AnimationFrame GetFinalAnimationFrame(DataPointSeries series)
+        {
+            var animationFrame = new AnimationFrame
+            {
+                Duration = TimeSpan.Zero
+            };
+
+            var points = series.GetAnimatablePoints();
+            foreach (var point in points)
+            {
+                animationFrame.AnimationPoints.Add(new AnimationPoint
+                {
+                    X = point.FinalX,
+                    Y = point.FinalY
+                });
+            }
+
+            return animationFrame;
+        }
+
         public static async Task AnimateSeriesAsync(
             this PlotModel plotModel,
             DataPointSeries series,
@@ -23,6 +44,9 @@ namespace AnimationsDemo
             {
                 return;
             }
+
+            var finalAnimationFrame = GetFinalAnimationFrame(series);
+            animationFrames.Add(finalAnimationFrame);
 
             var xAxis = plotModel.DefaultXAxis;
             var oldXAxisMinimum = xAxis.Minimum;

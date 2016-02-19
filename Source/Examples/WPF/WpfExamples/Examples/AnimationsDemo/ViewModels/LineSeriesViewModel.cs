@@ -46,10 +46,11 @@ namespace AnimationsDemo
                 DataFieldX = "Time",
                 DataFieldY = "Value",
                 Color = OxyColor.Parse("#4CAF50"),
-                MarkerSize = 8,
+                MarkerSize = 3,
                 MarkerFill = OxyColor.Parse("#FFFFFFFF"),
                 MarkerStroke = OxyColor.Parse("#4CAF50"),
-                MarkerStrokeThickness = 4,
+                MarkerStrokeThickness = 1.5,
+                MarkerType = MarkerType.Circle,
                 StrokeThickness = 1,
             };
             plotModel.Series.Add(series);

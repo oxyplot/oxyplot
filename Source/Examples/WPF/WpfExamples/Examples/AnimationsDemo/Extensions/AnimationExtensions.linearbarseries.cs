@@ -76,7 +76,6 @@ namespace AnimationsDemo
                     Duration = animationFrameDuration
                 };
 
-                var isLastAnimationFrame = i == animationFrameCount - 1;
                 var currentTime = animationFrameDurationInMs * i;
                 var percentage = i * 100d / animationFrameCount;
 
@@ -111,13 +110,7 @@ namespace AnimationsDemo
                     var x = point.FinalX;
                     var y = 0d;
 
-                    if (isLastAnimationFrame)
-                    {
-                        isVisible = true;
-                        x = point.FinalX;
-                        y = point.FinalY;
-                    }
-                    else if (j <= lastVisibleHorizontalPoint)
+                    if (j <= lastVisibleHorizontalPoint)
                     {
                         isVisible = true;
                         y = point.FinalY;
