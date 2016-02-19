@@ -7,6 +7,7 @@
 
 namespace AnimationsDemo
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -18,9 +19,12 @@ namespace AnimationsDemo
 
         static AnimationExtensions()
         {
-            DefaultAnimationFrameDuration = 750;
+            DefaultAnimationDelay = 0;
+            DefaultAnimationDuration = 750;
             DefaultAnimationFrameDuration = 10;
         }
+
+        public static int DefaultAnimationDelay { get; set; }
 
         public static int DefaultAnimationDuration { get; set; }
 
@@ -41,6 +45,26 @@ namespace AnimationsDemo
             }
 
             return items;
+        }
+
+        private static void InsertDelayAnimationFrame(this List<AnimationFrame> animationFrames, TimeSpan delay)
+        {
+            if (animationFrames.Count < 2)
+            {
+                return;
+            }
+
+            if (delay <= TimeSpan.Zero)
+            {
+                return;
+            }
+
+            var animationFrame = new AnimationFrame
+            {
+                Duration = delay
+            };
+
+            animationFrames.Insert(1, animationFrame);
         }
 
         private static List<IAnimatablePoint> GetAnimatablePoints(this DataPointSeries series)

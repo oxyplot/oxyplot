@@ -16,8 +16,9 @@ namespace AnimationsDemo
             this.HorizontalPercentage = 70;
             this.VerticalPercentage = 30;
 
-            this.Duration = TimeSpan.FromMilliseconds(750);
-            this.AnimationFrameDurationInMs = AnimationExtensions.DefaultAnimationFrameDuration;
+            this.Delay = TimeSpan.FromMilliseconds(AnimationExtensions.DefaultAnimationDelay);
+            this.Duration = TimeSpan.FromMilliseconds(AnimationExtensions.DefaultAnimationDuration);
+            this.FrameDuration = TimeSpan.FromMilliseconds(AnimationExtensions.DefaultAnimationFrameDuration);
         }
 
         public double? MinimumValue { get; set; }
@@ -26,10 +27,12 @@ namespace AnimationsDemo
 
         public double VerticalPercentage { get; set; }
 
+        public TimeSpan Delay { get; set; }
+
         public TimeSpan Duration { get; set; }
 
-        public IEasingFunction EasingFunction { get; set; }
+        public TimeSpan FrameDuration { get; set; }
 
-        public int AnimationFrameDurationInMs { get; set; }
+        public IEasingFunction EasingFunction { get; set; }
     }
 }

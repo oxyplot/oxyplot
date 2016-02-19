@@ -39,7 +39,7 @@ namespace AnimationsDemo
                 easingFunction = DefaultEasingFunction;
             }
 
-            var animationFrameDurationInMs = settings.AnimationFrameDurationInMs;
+            var animationFrameDurationInMs = (int)settings.FrameDuration.TotalMilliseconds;
             var minimumValue = settings.MinimumValue;
 
             var animationFrames = new List<AnimationFrame>();
@@ -180,6 +180,8 @@ namespace AnimationsDemo
 
                 animationFrames.Add(animationFrame);
             }
+
+            animationFrames.InsertDelayAnimationFrame(settings.Delay);
 
             await plotModel.AnimateSeriesAsync(series, animationFrames);
         }

@@ -75,15 +75,22 @@ namespace AnimationsDemo
             {
                 // TODO: consider implementing the IsVisible feature
 
-                for (var j = 0; j < points.Count; j++)
+                var animationPoints = animationFrame.AnimationPoints;
+                if (animationPoints.Count > 0)
                 {
-                    var animatablePoint = points[j];
-                    if (animatablePoint != null)
+                    for (var j = 0; j < points.Count; j++)
                     {
-                        var animationPoint = animationFrame.AnimationPoints[j];
+                        var animatablePoint = points[j];
+                        if (animatablePoint != null)
+                        {
+                            if (j < animationPoints.Count)
+                            {
+                                var animationPoint = animationPoints[j];
 
-                        animatablePoint.X = animationPoint.X;
-                        animatablePoint.Y = animationPoint.Y;
+                                animatablePoint.X = animationPoint.X;
+                                animatablePoint.Y = animationPoint.Y;
+                            }
+                        }
                     }
                 }
 

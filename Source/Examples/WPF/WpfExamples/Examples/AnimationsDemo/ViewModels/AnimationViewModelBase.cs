@@ -49,6 +49,8 @@ namespace AnimationsDemo
 
         public double VerticalPercentage { get; set; }
 
+        public int AnimationDelay { get; set; }
+
         public int AnimationDuration { get; set; }
 
         public int AnimationFrameDuration { get; set; }
@@ -61,7 +63,8 @@ namespace AnimationsDemo
             {
                 EasingFunction = easingFunction,
                 Duration = TimeSpan.FromMilliseconds(this.AnimationDuration),
-                AnimationFrameDurationInMs = this.AnimationFrameDuration,
+                FrameDuration = TimeSpan.FromMilliseconds(this.AnimationFrameDuration),
+                Delay = TimeSpan.FromMilliseconds(this.AnimationDelay),
                 HorizontalPercentage = this.HorizontalPercentage,
                 VerticalPercentage = this.VerticalPercentage
             };
