@@ -65,9 +65,6 @@ namespace AnimationsDemo
             var previousDataFieldX = series.DataFieldX;
             var previousDataFieldY = series.DataFieldY;
 
-            // First frame animation
-            await Task.Delay(15);
-
             // Always fix up the data fields (we are using IAnimatablePoint from now on)
             series.DataFieldX = "X";
             series.DataFieldY = "Y";
