@@ -28,7 +28,7 @@ namespace AnimationsDemo
                 this.SelectedEasingFunction = typeof(NoEase);
             }
 
-            this.AnimationDuration = 450;
+            this.AnimationDuration = 1000;
             
             this.PlotModel = new PlotModel();
         }

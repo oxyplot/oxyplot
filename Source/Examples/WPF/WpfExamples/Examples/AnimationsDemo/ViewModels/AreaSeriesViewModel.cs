@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LineSeriesViewModel.cs" company="OxyPlot">
+// <copyright file="AreaSeriesViewModel.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -15,9 +15,9 @@ namespace AnimationsDemo
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
-    public class LineSeriesViewModel : AnimationViewModelBase
+    public class AreaSeriesViewModel : AnimationViewModelBase
     {
-        public LineSeriesViewModel()
+        public AreaSeriesViewModel()
         {
             var pnls = new List<Pnl>();
 
@@ -37,15 +37,16 @@ namespace AnimationsDemo
             var maximum = pnls.Max(x => x.Value);
 
             var plotModel = this.PlotModel;
-            plotModel.Title = "Line Series Animation Demo";
+            plotModel.Title = "Area Series Animation Demo";
 
-            var series = new LineSeries
+            var series = new AreaSeries
             {
                 Title = "P & L",
                 ItemsSource = pnls,
                 DataFieldX = "Time",
                 DataFieldY = "Value",
                 Color = OxyColor.Parse("#4CAF50"),
+                Fill = OxyColor.Parse("#454CAF50"),
                 MarkerSize = 3,
                 MarkerFill = OxyColor.Parse("#FFFFFFFF"),
                 MarkerStroke = OxyColor.Parse("#4CAF50"),
@@ -86,7 +87,7 @@ namespace AnimationsDemo
         public override void Animate(IEasingFunction easingFunction, TimeSpan duration)
         {
             var plotModel = this.PlotModel;
-            var series = plotModel.Series.First() as LineSeries;
+            var series = plotModel.Series.First() as AreaSeries;
             if (series != null)
             {
                 plotModel.AnimateSeries(series, easingFunction, duration: duration);

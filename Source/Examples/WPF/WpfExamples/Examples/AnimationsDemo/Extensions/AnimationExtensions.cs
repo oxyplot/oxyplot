@@ -14,6 +14,13 @@ namespace AnimationsDemo
 
     public static partial class AnimationExtensions
     {
+        static AnimationExtensions()
+        {
+            DefaultAnimationFrameDuration = 10;
+        }
+
+        public static int DefaultAnimationFrameDuration { get; set; }
+
         private static List<double> CalculateEaseValues(double range, int count, IEasingFunction easingFunction, double baseValue = 0d)
         {
             var items = new List<double>();

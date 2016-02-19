@@ -92,7 +92,11 @@
     <Compile Include="Examples\AnimationsDemo\ViewModels\AnimationViewModelBase.cs" />
     <Compile Include="Examples\AnimationsDemo\EasingFunctions\Interfaces\IEasingFunction.cs" />
     <Compile Include="Examples\AnimationsDemo\ViewModels\Interfaces\IAnimationViewModel.cs" />
+    <Compile Include="Examples\AnimationsDemo\ViewModels\AreaSeriesViewModel.cs" />
     <Compile Include="Examples\AnimationsDemo\ViewModels\LineSeriesViewModel.cs" />
+    <Compile Include="Examples\AnimationsDemo\Views\AreaSeriesView.xaml.cs">
+      <DependentUpon>AreaSeriesView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Examples\AnimationsDemo\Views\LineSeriesView.xaml.cs">
       <DependentUpon>LineSeriesView.xaml</DependentUpon>
     </Compile>
@@ -142,6 +146,10 @@
     <Page Include="Examples\AnimationsDemo\Controls\AnimationSettingsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Examples\AnimationsDemo\Views\AreaSeriesView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Examples\AnimationsDemo\Views\LineSeriesView.xaml">
       <Generator>MSBuild:Compile</Generator>

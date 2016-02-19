@@ -21,7 +21,7 @@ namespace AnimationsDemo
             IEasingFunction easingFunction,
             double? minimumValue = null,
             TimeSpan duration = default(TimeSpan),
-            int animationFrameDurationInMs = 10)
+            int? animationFrameDurationInMs = null)
         {
             if (duration == default(TimeSpan))
             {
@@ -62,8 +62,13 @@ namespace AnimationsDemo
             var horizontalDuration = duration.TotalMilliseconds / 100 * HorizontalPercentage;
             var verticalDuration = duration.TotalMilliseconds / 100 * VerticalPercentage;
 
+            if (!animationFrameDurationInMs.HasValue)
+            {
+                animationFrameDurationInMs = DefaultAnimationFrameDuration;
+            }
+
             var animationFrameCount = (int)(duration.TotalMilliseconds / animationFrameDurationInMs);
-            var animationFrameDuration = TimeSpan.FromMilliseconds(animationFrameDurationInMs);
+            var animationFrameDuration = TimeSpan.FromMilliseconds(animationFrameDurationInMs.Value);
 
             var minX = (from point in points orderby point.X select point.X).Min();
             var maxX = (from point in points orderby point.X select point.X).Max();
@@ -76,7 +81,7 @@ namespace AnimationsDemo
                     Duration = animationFrameDuration
                 };
 
-                var currentTime = animationFrameDurationInMs * i;
+                var currentTime = animationFrameDurationInMs.Value * i;
                 var percentage = i * 100d / animationFrameCount;
 
                 var horizontalPercentage = currentTime * 100d / horizontalDuration;

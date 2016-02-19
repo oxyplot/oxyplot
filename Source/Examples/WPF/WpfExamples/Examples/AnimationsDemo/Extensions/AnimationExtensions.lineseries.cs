@@ -21,7 +21,7 @@ namespace AnimationsDemo
             IEasingFunction easingFunction,
             double? minimumValue = null,
             TimeSpan duration = default(TimeSpan),
-            double animationFrameDurationInMs = 10)
+            int? animationFrameDurationInMs = null)
         {
             if (duration == default(TimeSpan))
             {
@@ -36,13 +36,19 @@ namespace AnimationsDemo
 
             var animationFrames = new List<AnimationFrame>();
 
-            // This line might look a bit weird, but this way we can easily tweak the %
-            // it takes to animate the horizontal lines (in case we want to animate markers in the future)
-            var horizontalDuration = duration.TotalMilliseconds / 100 * 70;
-            var verticalDuration = duration.TotalMilliseconds / 100 * 30;
+            const double HorizontalPercentage = 80d;
+            const double VerticalPercentage = 20d;
 
-            var animationFrameCount = (int)(duration.TotalMilliseconds / animationFrameDurationInMs);
-            var animationFrameDuration = TimeSpan.FromMilliseconds(animationFrameDurationInMs);
+            var horizontalDuration = duration.TotalMilliseconds / 100 * HorizontalPercentage;
+            var verticalDuration = duration.TotalMilliseconds / 100 * VerticalPercentage;
+
+            if (!animationFrameDurationInMs.HasValue)
+            {
+                animationFrameDurationInMs = DefaultAnimationFrameDuration;
+            }
+
+            var animationFrameCount = (int)(duration.TotalMilliseconds / animationFrameDurationInMs.Value);
+            var animationFrameDuration = TimeSpan.FromMilliseconds(animationFrameDurationInMs.Value);
 
             var minX = (from point in points orderby point.X select point.X).Min();
             var maxX = (from point in points orderby point.X select point.X).Max();
@@ -55,8 +61,16 @@ namespace AnimationsDemo
                     Duration = animationFrameDuration
                 };
 
-                var percentage = 100d / animationFrameCount * i;
-                var currentDeltaX = deltaX / 100d * percentage;
+                var currentTime = animationFrameDurationInMs.Value * i;
+                var percentage = i * 100d / animationFrameCount;
+
+                var horizontalPercentage = currentTime * 100d / horizontalDuration;
+                if (horizontalPercentage > 100d)
+                {
+                    horizontalPercentage = 100d;
+                }
+
+                var currentDeltaX = deltaX / 100d * horizontalPercentage;
                 var currentX = minX + currentDeltaX;
 
                 // Get the last visible point. It should not be based on the index (can be really different), but on the X position
@@ -109,6 +123,42 @@ namespace AnimationsDemo
 
                         y = previousY + subDeltaY;
                         x = currentX;
+                    }
+
+                    // Calculate possible ease functions
+                    if (j < nextPointIndex)
+                    {
+                        // We know how long an y animation takes. We only have to calculate if this start time of this x animation
+                        // is longer than verticalDuration ago
+                        var localDeltaX = point.FinalX - minX;
+                        var localPercentageX = localDeltaX * 100d / deltaX;
+                        var startTime = horizontalDuration / 100 * localPercentageX;
+                        var endTime = startTime + verticalDuration;
+                        if (endTime > currentTime)
+                        {
+                            var timeDeltaTotal = endTime - startTime;
+                            var timeDeltaCurrent = currentTime - startTime;
+                            var easePercentage = timeDeltaCurrent * 100d / timeDeltaTotal;
+
+                            // This bar is part of the current animation, calculate the Y relative to 30 % of the time based on the current index
+                            // Calculate the % that offset is based on totalTimeDelta
+
+                            // Calculate point to animate from
+                            var maxY = point.FinalY;
+                            var minY = 0d;
+                            if (minimumValue.HasValue)
+                            {
+                                minY = minimumValue.Value;
+                            }
+
+                            var deltaY = maxY - minY;
+
+                            // We need to ease against percentage (between 0 and 1)
+                            var ease = easingFunction.Ease(easePercentage / 100);
+                            var currentDeltaY = deltaY * ease;
+
+                            y = minY + currentDeltaY;
+                        }
                     }
 
                     animationFrame.AnimationPoints.Add(new AnimationPoint

@@ -18,6 +18,10 @@
             <TabItem Header="Line Series">
                 <AnimationsDemo:LineSeriesView />
             </TabItem>
+
+            <TabItem Header="Area Series">
+                <AnimationsDemo:AreaSeriesView />
+            </TabItem>
         </TabControl>
         
         <AnimationsDemo:AnimationSettingsControl Grid.Row="1" DataContext="{Binding ElementName=tabControl, Path=SelectedItem.Content.DataContext}" />
