@@ -71,6 +71,20 @@ namespace AnimationsDemo
             var animationFrameCount = (int)(duration.TotalMilliseconds / animationFrameDurationInMs);
             var animationFrameDuration = TimeSpan.FromMilliseconds(animationFrameDurationInMs.Value);
 
+            if (!minimumValue.HasValue)
+            {
+                minimumValue = 0d;
+
+                var defaultYAxis = plotModel.DefaultYAxis;
+                if (defaultYAxis != null)
+                {
+                    if (defaultYAxis.Minimum > 0d)
+                    {
+                        minimumValue = defaultYAxis.Minimum;
+                    }
+                }
+            }
+
             var minX = (from point in points orderby point.X select point.X).Min();
             var maxX = (from point in points orderby point.X select point.X).Max();
             var deltaX = maxX - minX;
@@ -139,12 +153,7 @@ namespace AnimationsDemo
 
                             // Calculate point to animate from
                             var maxY = point.FinalY;
-                            var minY = 0d;
-                            if (minimumValue.HasValue)
-                            {
-                                minY = minimumValue.Value;
-                            }
-
+                            var minY = minimumValue.Value;
                             var deltaY = maxY - minY;
 
                             // We need to ease against percentage (between 0 and 1)
