@@ -19,37 +19,36 @@ namespace AnimationsDemo
         public static async Task AnimateSeriesAsync(
             this PlotModel plotModel,
             LineSeries series,
-            IEasingFunction easingFunction,
-            double? minimumValue = null,
-            TimeSpan duration = default(TimeSpan),
-            int? animationFrameDurationInMs = null)
+            AnimationSettings settings)
         {
-            if (duration == default(TimeSpan))
-            {
-                duration = TimeSpan.FromMilliseconds(300);
-            }
-
             var points = series.GetAnimatablePoints();
             if (points.Count == 0)
             {
                 return;
             }
 
-            var animationFrames = new List<AnimationFrame>();
-
-            const double HorizontalPercentage = 80d;
-            const double VerticalPercentage = 20d;
-
-            var horizontalDuration = duration.TotalMilliseconds / 100 * HorizontalPercentage;
-            var verticalDuration = duration.TotalMilliseconds / 100 * VerticalPercentage;
-
-            if (!animationFrameDurationInMs.HasValue)
+            var duration = settings.Duration;
+            if (duration == default(TimeSpan))
             {
-                animationFrameDurationInMs = DefaultAnimationFrameDuration;
+                duration = TimeSpan.FromMilliseconds(DefaultAnimationDuration);
             }
 
-            var animationFrameCount = (int)(duration.TotalMilliseconds / animationFrameDurationInMs.Value);
-            var animationFrameDuration = TimeSpan.FromMilliseconds(animationFrameDurationInMs.Value);
+            var easingFunction = settings.EasingFunction;
+            if (easingFunction == null)
+            {
+                easingFunction = DefaultEasingFunction;
+            }
+
+            var animationFrameDurationInMs = settings.AnimationFrameDurationInMs;
+            var minimumValue = settings.MinimumValue;
+
+            var animationFrames = new List<AnimationFrame>();
+
+            var horizontalDuration = duration.TotalMilliseconds / 100 * settings.HorizontalPercentage;
+            var verticalDuration = duration.TotalMilliseconds / 100 * settings.VerticalPercentage;
+
+            var animationFrameCount = (int)(duration.TotalMilliseconds / animationFrameDurationInMs);
+            var animationFrameDuration = TimeSpan.FromMilliseconds(animationFrameDurationInMs);
 
             if (!minimumValue.HasValue)
             {
@@ -76,7 +75,7 @@ namespace AnimationsDemo
                     Duration = animationFrameDuration
                 };
 
-                var currentTime = animationFrameDurationInMs.Value * i;
+                var currentTime = animationFrameDurationInMs * i;
                 var percentage = i * 100d / animationFrameCount;
 
                 var horizontalPercentage = currentTime * 100d / horizontalDuration;

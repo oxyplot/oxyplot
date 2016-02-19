@@ -9,6 +9,7 @@ namespace AnimationsDemo
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
 
     using OxyPlot;
     using OxyPlot.Annotations;
@@ -83,13 +84,13 @@ namespace AnimationsDemo
 
         public override bool SupportsEasingFunction { get { return true; } }
 
-        public override void Animate(IEasingFunction easingFunction, TimeSpan duration, int animationFrameDuration)
+        public override async Task AnimateAsync(AnimationSettings animationSettings)
         {
             var plotModel = this.PlotModel;
             var series = plotModel.Series.First() as LineSeries;
             if (series != null)
             {
-                plotModel.AnimateSeriesAsync(series, easingFunction, duration: duration, animationFrameDurationInMs: animationFrameDuration);
+                await plotModel.AnimateSeriesAsync(series, animationSettings);
             }
         }
     }

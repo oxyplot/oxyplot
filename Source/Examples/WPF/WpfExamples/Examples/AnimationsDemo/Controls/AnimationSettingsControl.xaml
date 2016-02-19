@@ -6,7 +6,13 @@
              mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300">
 
     <Grid>
-        <StackPanel Orientation="Horizontal">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
             <Label Content="Easing function" VerticalAlignment="Center" Margin="6,4,6,4" />
             <ComboBox ItemsSource="{Binding EasingFunctions}" SelectedItem="{Binding SelectedEasingFunction}" 
                       DisplayMemberPath="Name" Margin="6,4,6,4" Height="25" Width="100" VerticalContentAlignment="Center"
@@ -17,6 +23,14 @@
 
             <Label Content="Frame duration (ms)" VerticalAlignment="Center" Margin="6,4,6,4" />
             <TextBox Text="{Binding AnimationFrameDuration}" Margin="6,4,6,4" Height="25" Width="50" VerticalContentAlignment="Center" />
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <Label Content="Horizontal %" VerticalAlignment="Center" Margin="6,4,6,4" />
+            <TextBox Text="{Binding HorizontalPercentage}" Margin="6,4,6,4" Height="25" Width="50" VerticalContentAlignment="Center" />
+
+            <Label Content="Vertical %" VerticalAlignment="Center" Margin="6,4,6,4" />
+            <TextBox Text="{Binding VerticalPercentage}" Margin="6,4,6,4" Height="25" Width="50" VerticalContentAlignment="Center" />
 
             <Button Content="Animate" Click="OnAnimateClick" Width="75" Margin="6,4,6,4" Height="25" />
         </StackPanel>

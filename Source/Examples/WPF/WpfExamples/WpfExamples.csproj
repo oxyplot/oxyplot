@@ -87,6 +87,7 @@
     <Compile Include="Examples\AnimationsDemo\Extensions\AnimationExtensions.linearbarseries.cs" />
     <Compile Include="Examples\AnimationsDemo\Models\AnimationFrame.cs" />
     <Compile Include="Examples\AnimationsDemo\Models\AnimationPoint.cs" />
+    <Compile Include="Examples\AnimationsDemo\Models\AnimationSettings.cs" />
     <Compile Include="Examples\AnimationsDemo\Models\Interfaces\IAnimatablePoint.cs" />
     <Compile Include="Examples\AnimationsDemo\Models\Pnl.cs" />
     <Compile Include="Examples\AnimationsDemo\ViewModels\AnimationViewModelBase.cs" />

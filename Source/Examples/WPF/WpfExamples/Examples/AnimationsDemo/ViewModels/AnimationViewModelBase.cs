@@ -10,6 +10,7 @@ namespace AnimationsDemo
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
 
     using OxyPlot;
 
@@ -30,7 +31,9 @@ namespace AnimationsDemo
 
             this.AnimationDuration = 1000;
             this.AnimationFrameDuration = AnimationExtensions.DefaultAnimationFrameDuration;
-            
+            this.HorizontalPercentage = 70;
+            this.VerticalPercentage = 30;
+
             this.PlotModel = new PlotModel();
         }
 
@@ -42,18 +45,30 @@ namespace AnimationsDemo
 
         public Type SelectedEasingFunction { get; set; }
 
+        public double HorizontalPercentage { get; set; }
+
+        public double VerticalPercentage { get; set; }
+
         public int AnimationDuration { get; set; }
 
         public int AnimationFrameDuration { get; set; }
 
-        public void Animate()
+        public Task AnimateAsync()
         {
             var easingFunction = (IEasingFunction)Activator.CreateInstance(this.SelectedEasingFunction);
-            var timeSpan = TimeSpan.FromMilliseconds(this.AnimationDuration);
 
-            this.Animate(easingFunction, timeSpan, this.AnimationFrameDuration);
+            var animationSettings = new AnimationSettings
+            {
+                EasingFunction = easingFunction,
+                Duration = TimeSpan.FromMilliseconds(this.AnimationDuration),
+                AnimationFrameDurationInMs = this.AnimationFrameDuration,
+                HorizontalPercentage = this.HorizontalPercentage,
+                VerticalPercentage = this.VerticalPercentage
+            };
+
+            return this.AnimateAsync(animationSettings);
         }
 
-        public abstract void Animate(IEasingFunction easingFunction, TimeSpan duration, int animationFrameDuration);
+        public abstract Task AnimateAsync(AnimationSettings animationSettings);
     }
 }

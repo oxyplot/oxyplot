@@ -15,12 +15,12 @@ namespace AnimationsDemo
             this.InitializeComponent();
         }
 
-        private void OnAnimateClick(object sender, RoutedEventArgs e)
+        private async void OnAnimateClick(object sender, RoutedEventArgs e)
         {
             var vm = this.DataContext as IAnimationViewModel;
             if (vm != null)
             {
-                vm.Animate();
+                await vm.AnimateAsync();
             }
         }
     }

@@ -14,10 +14,15 @@ namespace AnimationsDemo
 
     public static partial class AnimationExtensions
     {
+        private static readonly IEasingFunction DefaultEasingFunction = new NoEase();
+
         static AnimationExtensions()
         {
+            DefaultAnimationFrameDuration = 750;
             DefaultAnimationFrameDuration = 10;
         }
+
+        public static int DefaultAnimationDuration { get; set; }
 
         public static int DefaultAnimationFrameDuration { get; set; }
 

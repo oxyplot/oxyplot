@@ -8,12 +8,13 @@
 namespace AnimationsDemo
 {
     using System;
+    using System.Threading.Tasks;
 
     public interface IAnimationViewModel
     {
         bool SupportsEasingFunction { get; }
 
-        void Animate();
-        void Animate(IEasingFunction easingFunction, TimeSpan duration, int animationFrameDuration);
+        Task AnimateAsync();
+        Task AnimateAsync(AnimationSettings animationSettings);
     }
 }
