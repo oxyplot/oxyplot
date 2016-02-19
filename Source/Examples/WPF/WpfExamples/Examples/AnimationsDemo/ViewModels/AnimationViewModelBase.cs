@@ -29,6 +29,7 @@ namespace AnimationsDemo
             }
 
             this.AnimationDuration = 1000;
+            this.AnimationFrameDuration = AnimationExtensions.DefaultAnimationFrameDuration;
             
             this.PlotModel = new PlotModel();
         }
@@ -43,14 +44,16 @@ namespace AnimationsDemo
 
         public int AnimationDuration { get; set; }
 
+        public int AnimationFrameDuration { get; set; }
+
         public void Animate()
         {
             var easingFunction = (IEasingFunction)Activator.CreateInstance(this.SelectedEasingFunction);
             var timeSpan = TimeSpan.FromMilliseconds(this.AnimationDuration);
 
-            this.Animate(easingFunction, timeSpan);
+            this.Animate(easingFunction, timeSpan, this.AnimationFrameDuration);
         }
 
-        public abstract void Animate(IEasingFunction easingFunction, TimeSpan duration);
+        public abstract void Animate(IEasingFunction easingFunction, TimeSpan duration, int animationFrameDuration);
     }
 }

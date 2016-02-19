@@ -14,6 +14,6 @@ namespace AnimationsDemo
         bool SupportsEasingFunction { get; }
 
         void Animate();
-        void Animate(IEasingFunction easingFunction, TimeSpan duration);
+        void Animate(IEasingFunction easingFunction, TimeSpan duration, int animationFrameDuration);
     }
 }

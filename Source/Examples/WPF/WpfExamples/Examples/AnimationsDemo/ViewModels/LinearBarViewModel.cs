@@ -80,13 +80,13 @@ namespace AnimationsDemo
 
         public override bool SupportsEasingFunction { get { return true; } }
 
-        public override void Animate(IEasingFunction easingFunction, TimeSpan duration)
+        public override void Animate(IEasingFunction easingFunction, TimeSpan duration, int animationFrameDuration)
         {
             var plotModel = this.PlotModel;
             var series = plotModel.Series.First() as LinearBarSeries;
             if (series != null)
             {
-                plotModel.AnimateSeries(series, easingFunction, duration: duration);
+                plotModel.AnimateSeries(series, easingFunction, duration: duration, animationFrameDurationInMs: animationFrameDuration);
             }
         }
     }

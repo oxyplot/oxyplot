@@ -12,8 +12,11 @@
                       DisplayMemberPath="Name" Margin="6,4,6,4" Height="25" Width="100" VerticalContentAlignment="Center"
                       IsEnabled="{Binding SupportsEasingFunction}"/>
 
-            <Label Content="Animation duration" VerticalAlignment="Center" Margin="6,4,6,4" />
+            <Label Content="Total duration (ms)" VerticalAlignment="Center" Margin="6,4,6,4" />
             <TextBox Text="{Binding AnimationDuration}" Margin="6,4,6,4" Height="25" Width="50" VerticalContentAlignment="Center" />
+
+            <Label Content="Frame duration (ms)" VerticalAlignment="Center" Margin="6,4,6,4" />
+            <TextBox Text="{Binding AnimationFrameDuration}" Margin="6,4,6,4" Height="25" Width="50" VerticalContentAlignment="Center" />
 
             <Button Content="Animate" Click="OnAnimateClick" Width="75" Margin="6,4,6,4" Height="25" />
         </StackPanel>
