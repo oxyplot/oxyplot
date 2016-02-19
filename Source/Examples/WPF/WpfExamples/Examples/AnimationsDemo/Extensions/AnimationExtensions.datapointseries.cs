@@ -62,6 +62,9 @@ namespace AnimationsDemo
             yAxis.Minimum = yAxis.ActualMinimum;
             yAxis.Maximum = yAxis.ActualMaximum;
 
+            var previousDataFieldX = series.DataFieldX;
+            var previousDataFieldY = series.DataFieldY;
+
             // First frame animation
             await Task.Delay(15);
 
@@ -97,6 +100,11 @@ namespace AnimationsDemo
 
             yAxis.Minimum = oldYAxisMinimum;
             yAxis.Maximum = oldYAxisMaximum;
+
+            series.DataFieldX = previousDataFieldX;
+            series.DataFieldY = previousDataFieldY;
+
+            plotModel.InvalidatePlot(true);
         }
     }
 }
