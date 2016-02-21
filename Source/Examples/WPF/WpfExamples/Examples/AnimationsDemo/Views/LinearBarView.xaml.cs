@@ -1,27 +1,17 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MainWindow.xaml.cs" company="OxyPlot">
+// <copyright file="LinearBarView.xaml.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
-// <summary>
-//   Interaction logic for MainWindow.xaml
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace AnimationsDemo
 {
-    using System.Windows;
-
-    using WpfExamples;
-
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    [Example(null, "Animations using extension methods on series.")]
-    public partial class MainWindow : Window
+    public partial class LinearBarView
     {
-        public MainWindow()
+        public LinearBarView()
         {
             this.InitializeComponent();
+            this.DataContext = new LinearBarViewModel();
         }
     }
 }

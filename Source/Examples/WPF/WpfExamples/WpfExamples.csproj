@@ -69,8 +69,42 @@
     <Compile Include="Examples\AlignedAxesDemo\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Examples\AnimationsDemo\AnimationExtensions.cs" />
-    <Compile Include="Examples\AnimationsDemo\MainViewModel.cs" />
+    <Compile Include="Examples\AnimationsDemo\Controls\AnimationSettingsControl.xaml.cs">
+      <DependentUpon>AnimationSettingsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\AnimationsDemo\EasingFunctions\NoEase.cs" />
+    <Compile Include="Examples\AnimationsDemo\EasingFunctions\SineEase.cs" />
+    <Compile Include="Examples\AnimationsDemo\EasingFunctions\QuinticEase.cs" />
+    <Compile Include="Examples\AnimationsDemo\EasingFunctions\QuarticEase.cs" />
+    <Compile Include="Examples\AnimationsDemo\EasingFunctions\QuadraticEase.cs" />
+    <Compile Include="Examples\AnimationsDemo\EasingFunctions\PowerEase.cs" />
+    <Compile Include="Examples\AnimationsDemo\EasingFunctions\BounceEase.cs" />
+    <Compile Include="Examples\AnimationsDemo\EasingFunctions\BackEase.cs" />
+    <Compile Include="Examples\AnimationsDemo\EasingFunctions\CircleEase.cs" />
+    <Compile Include="Examples\AnimationsDemo\Extensions\AnimationExtensions.cs" />
+    <Compile Include="Examples\AnimationsDemo\Extensions\AnimationExtensions.datapointseries.cs" />
+    <Compile Include="Examples\AnimationsDemo\Extensions\AnimationExtensions.lineseries.cs" />
+    <Compile Include="Examples\AnimationsDemo\Extensions\AnimationExtensions.linearbarseries.cs" />
+    <Compile Include="Examples\AnimationsDemo\Models\AnimationFrame.cs" />
+    <Compile Include="Examples\AnimationsDemo\Models\AnimationPoint.cs" />
+    <Compile Include="Examples\AnimationsDemo\Models\AnimationSettings.cs" />
+    <Compile Include="Examples\AnimationsDemo\Models\Interfaces\IAnimatablePoint.cs" />
+    <Compile Include="Examples\AnimationsDemo\Models\Pnl.cs" />
+    <Compile Include="Examples\AnimationsDemo\ViewModels\AnimationViewModelBase.cs" />
+    <Compile Include="Examples\AnimationsDemo\EasingFunctions\Interfaces\IEasingFunction.cs" />
+    <Compile Include="Examples\AnimationsDemo\ViewModels\Interfaces\IAnimationViewModel.cs" />
+    <Compile Include="Examples\AnimationsDemo\ViewModels\AreaSeriesViewModel.cs" />
+    <Compile Include="Examples\AnimationsDemo\ViewModels\LineSeriesViewModel.cs" />
+    <Compile Include="Examples\AnimationsDemo\Views\AreaSeriesView.xaml.cs">
+      <DependentUpon>AreaSeriesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\AnimationsDemo\Views\LineSeriesView.xaml.cs">
+      <DependentUpon>LineSeriesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\AnimationsDemo\Views\LinearBarView.xaml.cs">
+      <DependentUpon>LinearBarView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\AnimationsDemo\ViewModels\LinearBarViewModel.cs" />
     <Compile Include="Examples\AnimationsDemo\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -110,6 +144,22 @@
       <DependentUpon>PlotViewDataTemplateWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ScreenCapture.cs" />
+    <Page Include="Examples\AnimationsDemo\Controls\AnimationSettingsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Examples\AnimationsDemo\Views\AreaSeriesView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\AnimationsDemo\Views\LineSeriesView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\AnimationsDemo\Views\LinearBarView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Examples\AnimationsDemo\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

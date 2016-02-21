@@ -9,17 +9,16 @@ namespace AnimationsDemo
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Windows.Input;
-    using System.Windows.Media.Animation;
+    using System.Threading.Tasks;
 
     using OxyPlot;
     using OxyPlot.Annotations;
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
-    public class MainViewModel
+    public class LinearBarViewModel : AnimationViewModelBase
     {
-        public MainViewModel()
+        public LinearBarViewModel()
         {
             var pnls = new List<Pnl>();
 
@@ -38,10 +37,8 @@ namespace AnimationsDemo
             var minimum = pnls.Min(x => x.Value);
             var maximum = pnls.Max(x => x.Value);
 
-            var plotModel = new PlotModel
-            {
-                Title = "Animations demo",
-            };
+            var plotModel = this.PlotModel;
+            plotModel.Title = "Linear Bar Series Animation Demo";
 
             var series = new LinearBarSeries
             {
@@ -80,45 +77,18 @@ namespace AnimationsDemo
                 Maximum = maximum + margin,
             };
             plotModel.Axes.Add(valueAxis);
-
-            this.EasingFunctions = (from type in typeof(CircleEase).Assembly.GetTypes()
-                                    where typeof(EasingFunctionBase).IsAssignableFrom(type) && !type.IsAbstract
-                                    select type).ToList();
-            this.SelectedEasingFunction = this.EasingFunctions.FirstOrDefault();
-
-            this.AnimationDuration = 250;
-            this.PlotModel = plotModel;
-
-            this.Animate();
         }
 
-        public PlotModel PlotModel { get; private set; }
+        public override bool SupportsEasingFunction { get { return true; } }
 
-        public List<Type> EasingFunctions { get; private set; }
-
-        public Type SelectedEasingFunction { get; set; }
-
-        public int AnimationDuration { get; set; }
-
-        public void Animate()
+        public override async Task AnimateAsync(AnimationSettings animationSettings)
         {
             var plotModel = this.PlotModel;
-            var series = plotModel.Series.First() as ItemsSeries;
-
-            var easingFunction = (EasingFunctionBase)Activator.CreateInstance(this.SelectedEasingFunction);
-
-            plotModel.AnimateSeries(series, easingFunction, duration: TimeSpan.FromMilliseconds(this.AnimationDuration));
-        }
-    }
-
-    public class Pnl
-    {
-        public DateTime Time { get; set; }
-        public double Value { get; set; }
-
-        public override string ToString()
-        {
-            return String.Format("{0:HH:mm} {1:0.0}", this.Time, this.Value);
+            var series = plotModel.Series.First() as LinearBarSeries;
+            if (series != null)
+            {
+                await plotModel.AnimateSeriesAsync(series, animationSettings);
+            }
         }
     }
 }
