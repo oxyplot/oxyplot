@@ -43,6 +43,8 @@ namespace OxyPlot
             HoverSnapTrack = new DelegatePlotCommand<OxyMouseEventArgs>((view, controller, args) => controller.AddHoverManipulator(view, new TrackerManipulator(view) { LockToInitialSeries = false, Snap = true, PointsOnly = false }, args));
             HoverPointsOnlyTrack = new DelegatePlotCommand<OxyMouseEventArgs>((view, controller, args) => controller.AddHoverManipulator(view, new TrackerManipulator(view) { LockToInitialSeries = false, Snap = false, PointsOnly = true }, args));
 
+            // Touch events
+            SnapTrackTouch = new DelegatePlotCommand<OxyTouchEventArgs>((view, controller, args) => controller.AddTouchManipulator(view, new TouchTrackerManipulator(view) { Snap = true, PointsOnly = false }, args));
             PanZoomByTouch = new DelegatePlotCommand<OxyTouchEventArgs>((view, controller, args) => controller.AddTouchManipulator(view, new TouchManipulator(view), args));
 
             // commands that can be triggered from key events
@@ -115,6 +117,11 @@ namespace OxyPlot
         /// Gets the snap tracker command.
         /// </summary>
         public static IViewCommand<OxyMouseDownEventArgs> SnapTrack { get; private set; }
+
+        /// <summary>
+        /// Gets the snap tracker command.
+        /// </summary>
+        public static IViewCommand<OxyTouchEventArgs> SnapTrackTouch { get; private set; }
 
         /// <summary>
         /// Gets the points only tracker command.

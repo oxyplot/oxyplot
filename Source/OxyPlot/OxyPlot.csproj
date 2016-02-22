@@ -60,6 +60,7 @@
     <Compile Include="Graphics\IViewCommand{T}.cs" />
     <Compile Include="Graphics\IView.cs" />
     <Compile Include="PlotController\IPlotController.cs" />
+    <Compile Include="PlotController\Manipulators\TouchTrackerManipulator.cs" />
     <Compile Include="PlotModel\IPlotElement.cs" />
     <Compile Include="PlotModel\IPlotModel.cs" />
     <Compile Include="Rendering\OxySizeExtensions.cs" />
