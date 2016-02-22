@@ -1145,7 +1145,10 @@ namespace OxyPlot
         /// Raises the TrackerChanged event.
         /// </summary>
         /// <param name="result">The result.</param>
-        protected internal virtual void OnTrackerChanged(TrackerHitResult result)
+        /// <remarks>
+        /// This method is public so custom implementations of tracker manipulators can invoke this method.
+        /// </remarks>
+        public void RaiseTrackerChanged(TrackerHitResult result)
         {
             var handler = this.TrackerChanged;
             if (handler != null)
@@ -1153,6 +1156,15 @@ namespace OxyPlot
                 var args = new TrackerEventArgs { HitResult = result };
                 handler(this, args);
             }
+        }
+
+        /// <summary>
+        /// Raises the TrackerChanged event.
+        /// </summary>
+        /// <param name="result">The result.</param>
+        protected internal virtual void OnTrackerChanged(TrackerHitResult result)
+        {
+            RaiseTrackerChanged(result);
         }
 
         /// <summary>

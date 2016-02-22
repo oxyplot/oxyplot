@@ -60,7 +60,7 @@ namespace OxyPlot
             this.PlotView.HideTracker();
             if (this.PlotView.ActualModel != null)
             {
-                this.PlotView.ActualModel.OnTrackerChanged(null);
+                this.PlotView.ActualModel.RaiseTrackerChanged(null);
             }
         }
 
@@ -105,7 +105,7 @@ namespace OxyPlot
             {
                 result.PlotModel = this.PlotView.ActualModel;
                 this.PlotView.ShowTracker(result);
-                this.PlotView.ActualModel.OnTrackerChanged(result);
+                this.PlotView.ActualModel.RaiseTrackerChanged(result);
             }
         }
 
