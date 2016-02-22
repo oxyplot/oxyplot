@@ -191,8 +191,13 @@ namespace OxyPlot.Series
         public override void Render(IRenderContext rc)
         {
             var actualPoints = this.ActualPoints;
+            if (actualPoints == null || actualPoints.Count == 0)
+            {
+                return;
+            }
+
             var actualPoints2 = this.ActualPoints2;
-            if (actualPoints.Count == 0)
+            if (actualPoints2 == null || actualPoints2.Count == 0)
             {
                 return;
             }
