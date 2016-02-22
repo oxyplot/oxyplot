@@ -54,7 +54,6 @@ namespace OxyPlot
         public override void Completed(OxyTouchEventArgs e)
         {
             base.Completed(e);
-            e.Handled = true;
 
             this.currentSeries = null;
             this.PlotView.HideTracker();
@@ -64,13 +63,12 @@ namespace OxyPlot
             }
         }
 
-        /// <summary>
-        /// Occurs when the input device changes position during a manipulation.
-        /// </summary>
-        /// <param name="e">The <see cref="OxyPlot.OxyTouchEventArgs" /> instance containing the event data.</param>
         public override void Delta(OxyTouchEventArgs e)
         {
-            // For now don't support delta (it's used for other events)
+            base.Delta(e);
+
+            // This is touch, we want to hide the tracker because the user is probably panning / zooming now
+            this.PlotView.HideTracker();
         }
 
         /// <summary>
@@ -83,7 +81,6 @@ namespace OxyPlot
             this.currentSeries = this.PlotView.ActualModel != null ? this.PlotView.ActualModel.GetSeriesFromPoint(e.Position) : null;
 
             UpdateTracker(e.Position);
-            e.Handled = true;
         }
 
         /// <summary>

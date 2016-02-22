@@ -288,8 +288,27 @@ namespace OxyPlot.Windows
         {
             return new OxyTouchEventArgs
             {
-                Position = e.Position.ToScreenPoint()
+                Position = e.Position.ToScreenPoint(),
             };
+        }
+
+        /// <summary>
+        /// Converts <see cref="PointerRoutedEventArgs" /> to <see cref="OxyMouseEventArgs" /> for a touch event.
+        /// </summary>
+        /// <param name="e">The <see cref="ManipulationCompletedRoutedEventArgs" /> instance containing the event data.</param>
+        /// <param name="relativeTo">The <see cref="UIElement" /> that the event is relative to.</param>
+        /// <returns>A <see cref="OxyMouseEventArgs" /> containing the converted event arguments.</returns>
+        public static OxyTouchEventArgs ToTouchEventArgs(this PointerRoutedEventArgs e, UIElement relativeTo)
+        {
+            var point = e.GetCurrentPoint(relativeTo);
+
+            var eventArgs = new OxyTouchEventArgs
+            {
+                Position = point.Position.ToScreenPoint(),
+                ModifierKeys = e.GetModifierKeys(),
+            };
+
+            return eventArgs;
         }
 
         /// <summary>
