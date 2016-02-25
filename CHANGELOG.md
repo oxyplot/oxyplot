@@ -64,6 +64,7 @@ All notable changes to this project will be documented in this file.
 - Make struct types immutable (#692)
 - Implement IEquatable<T> for struct types (#692)
 - BoxPlotItem changed to reference type (#692)
+- Move Xamarin projects to new repository (#777)
 
 ### Removed
 - StyleCop tasks (#556)
