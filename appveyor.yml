@@ -11,8 +11,6 @@ install:
   - msiexec /i gtk-sharp-2.12.26.msi /qn /norestart
   - if not exist gtk-sharp-2.99.3.msi appveyor DownloadFile https://download.gnome.org/binaries/win32/gtk-sharp/2.99/gtk-sharp-2.99.3.msi
   - msiexec /i gtk-sharp-2.99.3.msi /qn /norestart
-  - cinst android-sdk
-  - ps: Build\install-android-sdk.ps1
 
 cache:
   - gtk-sharp-2.12.26.msi
@@ -20,7 +18,6 @@ cache:
 
 before_build:
   - appveyor DownloadFile https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
-  - git submodule update --init --recursive
   - NuGet restore Source/OxyPlot.AppVeyor.sln
   - gitversion /l console /output buildserver /updateAssemblyInfo
 
@@ -44,9 +41,6 @@ after_build:
   - NuGet pack Source\OxyPlot.Pdf\OxyPlot.Pdf.nuspec -version "%GitVersion_NuGetVersion%"
   - NuGet pack Source\OxyPlot.GtkSharp\OxyPlot.GtkSharp.nuspec -version "%GitVersion_NuGetVersion%"
   - NuGet pack Source\OxyPlot.GtkSharp\OxyPlot.GtkSharp3.nuspec -version "%GitVersion_NuGetVersion%"
-  - NuGet pack Source\OxyPlot.Xamarin.Android\OxyPlot.Xamarin.Android.nuspec -version "%GitVersion_NuGetVersion%"
-  - NuGet pack Source\OxyPlot.Xamarin.iOS\OxyPlot.Xamarin.iOS.nuspec -version "%GitVersion_NuGetVersion%"
-  - NuGet pack Source\OxyPlot.Xamarin.Forms\OxyPlot.Xamarin.Forms.nuspec -version "%GitVersion_NuGetVersion%"
 
 artifacts:
   - path: Output
