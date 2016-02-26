@@ -1499,6 +1499,35 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
+        /// <summary>
+        /// Creates a demo PlotModel with MinimumRange defined 
+        /// and with series with values which are within this range.
+        /// </summary>
+        /// <returns>The created PlotModel</returns>
+        [Example("#794: Axis alignment when MinimumRange is set")]
+        public static PlotModel MinimumRangeTest()
+        {
+            var model = new PlotModel();
+            var yaxis = new LinearAxis()
+            {
+                Position = AxisPosition.Left,
+                MinimumRange = 1,
+            };
+
+            model.Axes.Add(yaxis);
+
+            var series = new LineSeries();
+            series.Points.Add(new DataPoint(0, 10.1));
+            series.Points.Add(new DataPoint(1, 10.15));
+            series.Points.Add(new DataPoint(2, 10.3));
+            series.Points.Add(new DataPoint(3, 10.25));
+            series.Points.Add(new DataPoint(4, 10.1));
+
+            model.Series.Add(series);
+
+            return model;
+        }
+
         /* NEW ISSUE TEMPLATE
           [Example("#123: Issue Description")]
           public static PlotModel IssueDescription()
