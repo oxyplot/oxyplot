@@ -94,7 +94,7 @@ namespace OxyPlot.Wpf.Tests
                 var pd2 = p2[propertyName];
                 if (pd2 == null)
                 {
-                    Console.WriteLine(@"{0}: missing", propertyName);
+                    Console.WriteLine(@"{0}: missing in {1}", propertyName, o2.GetType());
                     continue;
                 }
 

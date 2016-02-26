@@ -2,9 +2,6 @@
 // <copyright file="Issues.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
-// <summary>
-//   Grids the lines both different colors.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace ExampleLibrary
@@ -1210,6 +1207,68 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("#19: The minimum value is not mentioned on the axis I")]
+        public static PlotModel MinimumValueOnAxis()
+        {
+            var model = new PlotModel { Title = "Show minimum and maximum values on axis" };
+            model.Axes.Add(new LinearAxis
+            {
+                Position = AxisPosition.Left,
+                //ShowMinimumValue = true,
+                //ShowMaximumValue = true,
+                //MinimumValueStringFormat = "0.###",
+                //MaximumValueStringFormat = "0.###",
+                MaximumPadding = 0,
+                MinimumPadding = 0
+            });
+            model.Axes.Add(new LinearAxis
+            {
+                Position = AxisPosition.Bottom,
+                //ShowMinimumValue = true,
+                //ShowMaximumValue = true,
+                //MinimumValueStringFormat = "0.###",
+                //MaximumValueStringFormat = "0.###",
+                MaximumPadding = 0,
+                MinimumPadding = 0
+            });
+            var ls = new LineSeries();
+            ls.Points.Add(new DataPoint(0.14645, 0.14645));
+            ls.Points.Add(new DataPoint(9.85745, 9.85745));
+            model.Series.Add(ls);
+            return model;
+        }
+
+        [Example("#19: The minimum value is not mentioned on the axis II")]
+        public static PlotModel MinimumValueOnAxis2()
+        {
+            var model = new PlotModel { Title = "Show minimum and maximum values on axis" };
+            model.Axes.Add(new LinearAxis
+            {
+                Position = AxisPosition.Left,
+                //ShowMinimumValue = true,
+                //ShowMaximumValue = true,
+                //MinimumValueStringFormat = "0.###",
+                //MaximumValueStringFormat = "0.###",
+                MaximumPadding = 0,
+                MinimumPadding = 0
+            });
+            model.Axes.Add(new LinearAxis
+            {
+                Position = AxisPosition.Bottom,
+                //ShowMinimumValue = true,
+                //ShowMaximumValue = true,
+                //MinimumValueStringFormat = "0.###",
+                //MaximumValueStringFormat = "0.###",
+                MaximumPadding = 0,
+                MinimumPadding = 0
+            });
+            var ls = new LineSeries();
+            ls.Points.Add(new DataPoint(-0.14645, -0.14645));
+            ls.Points.Add(new DataPoint(10.15745, 10.15745));
+            model.Series.Add(ls);
+            return model;
+        }
+
         [Example("#635: PositionAtZeroCrossing Forces Value Axis Label")]
         public static PlotModel PositionAtZeroCrossingForcesValueAxisLabel()
         {
@@ -1367,12 +1426,104 @@ namespace ExampleLibrary
         [Example("#758: IntervalLength = 0")]
         public static PlotModel IntervalLength0()
         {
-            var model = new PlotModel { Title = "IntervalLength = 0", Subtitle = "An exception should be thrown. Should not go into infinite loop." };
+            var model = new PlotModel
+            {
+                Title = "IntervalLength = 0",
+                Subtitle = "An exception should be thrown. Should not go into infinite loop."
+            };
+            model.Axes.Add(new LinearAxis { IntervalLength = 0 });
+            return model;
+        }
+
+        [Example("#737: Wrong axis line when PositionAtZeroCrossing = true")]
+        public static PlotModel WrongAxisLineWhenPositionAtZeroCrossingIsSet()
+        {
+            var model = new PlotModel { Title = "PositionAtZeroCrossing" };
             model.Axes.Add(
                 new LinearAxis
                 {
-                    IntervalLength = 0
+                    Position = AxisPosition.Left
                 });
+            model.Axes.Add(
+                new LinearAxis
+                {
+                    Position = AxisPosition.Bottom,
+                    PositionAtZeroCrossing = true,
+                    AxislineStyle = LineStyle.Solid,
+                    AxislineThickness = 1
+                });
+            var lineSeries = new LineSeries();
+            lineSeries.Points.Add(new DataPoint(-10, 10));
+            lineSeries.Points.Add(new DataPoint(0, -10));
+            lineSeries.Points.Add(new DataPoint(10, 10));
+            model.Series.Add(lineSeries);
+            return model;
+        }
+
+        [Example("#727: Axis Min/Max ignored")]
+        public static PlotModel AxisMinMaxIgnored()
+        {
+            var plotModel1 = new PlotModel
+            {
+                Title = "Axes min/max ignored",
+                PlotType = PlotType.Cartesian,
+            };
+            var ls = new LineSeries();
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = 0, Maximum = 866, Key = "Horizontal" });
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 103, Maximum = 37141, Key = "Vertical" });
+            ls.XAxisKey = "Horizontal";
+            ls.YAxisKey = "Vertical";
+            plotModel1.Series.Add(ls);
+
+            return plotModel1;
+        }
+
+        [Example("#727: Axis Min/Max")]
+        public static PlotModel AxisMinMax()
+        {
+            var plotModel1 = new PlotModel
+            {
+                Title = "Axes min/max",
+            };
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = 0, Maximum = 866 });
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 103, Maximum = 37141 });
+
+            return plotModel1;
+        }
+
+        [Example("#453: Auto plot margin and width of labels")]
+        public static PlotModel AutoPlotMarginAndAxisLabelWidths()
+        {
+            var plotModel1 = new PlotModel { Title = "Auto plot margin not taking width of axis tick labels into account" };
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -1e8, Maximum = 1e8 });
+            return plotModel1;
+        }
+
+        /// <summary>
+        /// Creates a demo PlotModel with MinimumRange defined 
+        /// and with series with values which are within this range.
+        /// </summary>
+        /// <returns>The created PlotModel</returns>
+        [Example("#794: Axis alignment when MinimumRange is set")]
+        public static PlotModel MinimumRangeTest()
+        {
+            var model = new PlotModel();
+            var yaxis = new LinearAxis()
+            {
+                Position = AxisPosition.Left,
+                MinimumRange = 1,
+            };
+
+            model.Axes.Add(yaxis);
+
+            var series = new LineSeries();
+            series.Points.Add(new DataPoint(0, 10.1));
+            series.Points.Add(new DataPoint(1, 10.15));
+            series.Points.Add(new DataPoint(2, 10.3));
+            series.Points.Add(new DataPoint(3, 10.25));
+            series.Points.Add(new DataPoint(4, 10.1));
+
+            model.Series.Add(series);
 
             return model;
         }
