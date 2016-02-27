@@ -73,27 +73,51 @@ namespace OxyPlot.WindowsForms
         /// <param name="stream">The output stream.</param>
         public void Export(IPlotModel model, Stream stream)
         {
-            using (var bm = new Bitmap(this.Width, this.Height))
+            using (var bm = this.ExportToBitmap(model))
             {
-                using (var g = Graphics.FromImage(bm))
+                bm.Save(stream, ImageFormat.Png);
+            }
+        }
+
+        /// <summary>
+        /// Exports the specified <see cref="PlotModel" /> to a file.
+        /// </summary>
+        /// <param name="model">The model to export.</param>
+        /// <param name="path">The path to the file.</param>
+        public void ExportToFile(IPlotModel model, string path)
+        {
+            using (var stream = File.OpenWrite(path))
+            {
+                this.Export(model, stream);
+            }
+        }
+
+        /// <summary>
+        /// Exports the specified <see cref="PlotModel" /> to a <see cref="Bitmap" />.
+        /// </summary>
+        /// <param name="model">The model to export.</param>
+        /// <returns>A bitmap.</returns>
+        public Bitmap ExportToBitmap(IPlotModel model)
+        {
+            var bm = new Bitmap(this.Width, this.Height);
+            using (var g = Graphics.FromImage(bm))
+            {
+                if (this.Background.IsVisible())
                 {
-                    if (this.Background.IsVisible())
+                    using (var brush = this.Background.ToBrush())
                     {
-                        using (var brush = this.Background.ToBrush())
-                        {
-                            g.FillRectangle(brush, 0, 0, this.Width, this.Height);
-                        }
+                        g.FillRectangle(brush, 0, 0, this.Width, this.Height);
                     }
-
-                    using (var rc = new GraphicsRenderContext(g) { RendersToScreen = false })
-                    {
-                        model.Update(true);
-                        model.Render(rc, this.Width, this.Height);
-                    }
-
-                    bm.SetResolution(this.Resolution, this.Resolution);
-                    bm.Save(stream, ImageFormat.Png);
                 }
+
+                using (var rc = new GraphicsRenderContext(g) { RendersToScreen = false })
+                {
+                    model.Update(true);
+                    model.Render(rc, this.Width, this.Height);
+                }
+
+                bm.SetResolution(this.Resolution, this.Resolution);
+                return bm;
             }
         }
     }
