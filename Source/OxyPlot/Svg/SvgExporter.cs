@@ -14,7 +14,7 @@ namespace OxyPlot
     /// <summary>
     /// Provides functionality to export plots to scalable vector graphics.
     /// </summary>
-    public class SvgExporter
+    public class SvgExporter : IExporter
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SvgExporter" /> class.

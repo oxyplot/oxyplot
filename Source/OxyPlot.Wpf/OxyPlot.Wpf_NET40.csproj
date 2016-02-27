@@ -79,6 +79,7 @@
     <Compile Include="Axes\TimeSpanAxis.cs" />
     <Compile Include="Axes\LinearAxis.cs" />
     <Compile Include="Axes\LogarithmicAxis.cs" />
+    <Compile Include="ExporterExtensions.cs" />
     <Compile Include="Extensions\DataPointExtension.cs" />
     <Compile Include="Converters\ThicknessConverter.cs" />
     <Compile Include="Converters\OxyColorConverter.cs" />

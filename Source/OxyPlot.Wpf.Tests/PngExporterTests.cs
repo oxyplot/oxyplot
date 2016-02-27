@@ -22,6 +22,20 @@ namespace OxyPlot.Wpf.Tests
     public class PngExporterTests
     {
         /// <summary>
+        /// Exports to a stream and verifies that the stream is not empty.
+        /// </summary>
+        [Test]
+        public void ExportToStream()
+        {
+            var plotModel = TestModels.CreateTestModel1();
+            var exporter = new PngExporter { Width = 400, Height = 300 };
+            var stream = new MemoryStream();
+            exporter.Export(plotModel, stream);
+
+            Assert.IsTrue(stream.Length > 0);
+        }
+
+        /// <summary>
         /// Exports to a file and verifies that the file exists.
         /// </summary>
         [Test]
@@ -30,10 +44,7 @@ namespace OxyPlot.Wpf.Tests
             var plotModel = TestModels.CreateTestModel1();
             const string FileName = "PngExporterTests_Plot1.png";
             var exporter = new PngExporter { Width = 400, Height = 300 };
-            using (var stream = File.OpenWrite(FileName))
-            {
-                exporter.Export(plotModel, stream);
-            }
+            exporter.ExportToFile(plotModel, FileName);
 
             Assert.IsTrue(File.Exists(FileName));
         }

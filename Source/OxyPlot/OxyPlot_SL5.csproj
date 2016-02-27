@@ -166,6 +166,7 @@
     <Compile Include="Series\ScatterErrorSeries.cs" />
     <Compile Include="Series\ScatterSeries{T}.cs" />
     <Compile Include="Series\ThreeColorLineSeries.cs" />
+    <Compile Include="Foundation\IExporter.cs" />
     <Compile Include="Utilities\ArrayExtensions.cs" />
     <Compile Include="Utilities\ComparerHelper.cs" />
     <Compile Include="Utilities\HashCodeBuilder.cs" />

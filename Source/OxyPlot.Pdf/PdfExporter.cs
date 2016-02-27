@@ -40,7 +40,7 @@ namespace OxyPlot.Pdf
         /// <param name="height">The height (points).</param>
         public static void Export(IPlotModel model, string path, double width, double height)
         {
-            using (var s = File.Create(path))
+            using (var s = File.OpenWrite(path))
             {
                 Export(model, s, width, height);
             }
