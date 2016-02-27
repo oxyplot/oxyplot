@@ -18,7 +18,7 @@ namespace OxyPlot.Wpf
     /// <summary>
     /// Provides functionality to export plots to png.
     /// </summary>
-    public class PngExporter
+    public class PngExporter : IExporter
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PngExporter" /> class.
@@ -115,19 +115,6 @@ namespace OxyPlot.Wpf
             var encoder = new PngBitmapEncoder();
             encoder.Frames.Add(BitmapFrame.Create(bmp));
             encoder.Save(stream);
-        }
-
-        /// <summary>
-        /// Exports the specified <see cref="PlotModel" /> to a file.
-        /// </summary>
-        /// <param name="model">The model to export.</param>
-        /// <param name="path">The path to the file.</param>
-        public void ExportToFile(IPlotModel model, string path)
-        {
-            using (var stream = File.OpenWrite(path))
-            {
-                this.Export(model, stream);
-            }
         }
 
         /// <summary>

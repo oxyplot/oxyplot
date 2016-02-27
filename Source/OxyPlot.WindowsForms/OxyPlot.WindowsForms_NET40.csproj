@@ -53,6 +53,7 @@
     <Compile Include="..\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="ExporterExtensions.cs" />
     <Compile Include="PlotView.cs">
       <SubType>Component</SubType>
     </Compile>
