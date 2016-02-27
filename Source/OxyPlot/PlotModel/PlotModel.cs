@@ -203,6 +203,11 @@ namespace OxyPlot
         private int currentColorIndex;
 
         /// <summary>
+        /// Flags if the data has been updated.
+        /// </summary>
+        private bool isDataUpdated;
+
+        /// <summary>
         /// The last update exception.
         /// </summary>
         /// <value>The exception or <c>null</c> if there was no exceptions during the last update.</value>
@@ -1037,12 +1042,14 @@ namespace OxyPlot
                     var visibleSeries = this.Series.Where(s => s.IsVisible).ToArray();
 
                     // Update data of the series
-                    if (updateData)
+                    if (updateData || !this.isDataUpdated)
                     {
                         foreach (var s in visibleSeries)
                         {
                             s.UpdateData();
                         }
+
+                        this.isDataUpdated = true;
                     }
 
                     // Updates axes with information from the series
