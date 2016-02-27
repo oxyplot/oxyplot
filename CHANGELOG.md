@@ -27,6 +27,7 @@ All notable changes to this project will be documented in this file.
 - F# example (#699)
 - Support for discontinuities in AreaSeries (#215)
 - Support for Windows Universal 10.0 apps (#615)
+- Support Unicode in OxyPlot.Pdf (#789)
 
 ### Changed
 - Renamed OxyPlot.WindowsUniversal to OxyPlot.Windows (#242)
