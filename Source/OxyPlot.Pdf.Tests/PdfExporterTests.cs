@@ -12,6 +12,7 @@ namespace OxyPlot.Pdf.Tests
     using ExampleLibrary;
     using NUnit.Framework;
 
+    using OxyPlot.Axes;
     using OxyPlot.Pdf;
     using OxyPlot.Tests;
 
@@ -47,6 +48,19 @@ namespace OxyPlot.Pdf.Tests
                 }
 
                 Assert.IsTrue(File.Exists(path));
+            }
+        }
+
+        [Test]
+        public void Export_Unicode()
+        {
+            var model = new PlotModel { Title = "Unicode support ☺", DefaultFont = "Arial" };
+            model.Axes.Add(new LinearAxis { Title = "λ", Position = AxisPosition.Bottom });
+            model.Axes.Add(new LinearAxis { Title = "Ж", Position = AxisPosition.Left });
+            var exporter = new PdfExporter { Width = 400, Height = 400 };
+            using (var stream = File.OpenWrite("Unicode.pdf"))
+            {
+                exporter.Export(model, stream);
             }
         }
     }
