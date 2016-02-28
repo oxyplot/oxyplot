@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 ### Added
+- Added support for vertical X axis to HeatMapSeries (#535) and example
+- Added fall-back rectangle rendering to HeatMapSeries (#801) and example
+- Added logarithmic HeatMapSeries support (#802) and example
 - MaximumRange to limit the zoom (#401)
 - A new OxyPlot.Mobile NuGet package to combine the mobile platforms into a single package (#362)
 - Support for XWT (#295)
