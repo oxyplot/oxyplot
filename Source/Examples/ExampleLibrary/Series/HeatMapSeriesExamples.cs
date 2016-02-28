@@ -43,15 +43,15 @@ namespace ExampleLibrary
             if (includeContours)
             {
                 var cs = new ContourSeries
-                             {
-                                 Color = OxyColors.Black,
-                                 FontSize = 0,
-                                 ContourLevelStep = 1,
-                                 LabelBackground = OxyColors.Undefined,
-                                 ColumnCoordinates = yvalues,
-                                 RowCoordinates = xvalues,
-                                 Data = peaksData
-                             };
+                {
+                    Color = OxyColors.Black,
+                    FontSize = 0,
+                    ContourLevelStep = 1,
+                    LabelBackground = OxyColors.Undefined,
+                    ColumnCoordinates = yvalues,
+                    RowCoordinates = xvalues,
+                    Data = peaksData
+                };
                 model.Series.Add(cs);
             }
 
@@ -138,7 +138,7 @@ namespace ExampleLibrary
             hms.Data[0, 1] = double.NaN;
             hms.Data[1, 0] = double.NaN;
             return model;
-        }	
+        }
 
         [Example("2×3, reversed x-axis")]
         public static PlotModel NotInterpolatedReversedX()
@@ -369,23 +369,34 @@ namespace ExampleLibrary
             return model;
         }
 
-        [Example("6×4, Transposed")]
+        [Example("6×4, not transposed")]
+        public static PlotModel Normal_6X4()
+        {
+            return Create6X4(false, "Normal 6×4 Heatmap");
+        }
+
+        [Example("6×4, transposed")]
         public static PlotModel Transposed_6X4()
         {
+            return Create6X4(true, "Transposed 6×4 Heatmap");
+        }
+
+        private static PlotModel Create6X4(bool transpose, string title)
+        {
             var data = new double[6, 4];
-            
+
             for (int i = 1; i <= 6; i++)
             {
                 for (int j = 1; j <= 4; j++)
                 {
-                    data[i-1, j-1] = i * j;
+                    data[i - 1, j - 1] = i * j;
                 }
             }
 
-            var model = new PlotModel { Title = "Transposed 6×4 Heatmap", Subtitle = "Note the positions of the axes" };
-            
-            var xaxis = new LinearAxis { Key = "x", Title = "X", Position = AxisPosition.Left };
-            var yaxis = new LinearAxis { Key = "y", Title = "Y", Position = AxisPosition.Bottom };
+            var model = new PlotModel { Title = title, Subtitle = "Note the positions of the axes" };
+
+            var xaxis = new LinearAxis { Key = "x", Title = "X", Position = transpose ? AxisPosition.Left : AxisPosition.Bottom };
+            var yaxis = new LinearAxis { Key = "y", Title = "Y", Position = transpose ? AxisPosition.Bottom : AxisPosition.Left };
 
             model.Axes.Add(xaxis);
             model.Axes.Add(yaxis);
@@ -395,7 +406,7 @@ namespace ExampleLibrary
 
             hms.XAxisKey = "x";
             hms.YAxisKey = "y";
-            
+
             model.Series.Add(hms);
             return model;
         }
