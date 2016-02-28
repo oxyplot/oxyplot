@@ -187,6 +187,58 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
+        /// Gets the clipping rectangle, transposed if the X acis is vertically orientated
+        /// </summary>
+        protected new OxyRect GetClippingRect()
+        {
+            double minX = Math.Min(this.XAxis.ScreenMin.X, this.XAxis.ScreenMax.X);
+            double minY = Math.Min(this.YAxis.ScreenMin.Y, this.YAxis.ScreenMax.Y);
+            double maxX = Math.Max(this.XAxis.ScreenMin.X, this.XAxis.ScreenMax.X);
+            double maxY = Math.Max(this.YAxis.ScreenMin.Y, this.YAxis.ScreenMax.Y);
+
+            if (XAxis.IsVertical())
+                return new OxyRect(minY, minX, maxY - minY, maxX - minX);
+            else
+                return new OxyRect(minX, minY, maxX - minX, maxY - minY);
+        }
+
+        /// <summary>
+        /// Transposes the ScreenPoint if the X axis is vertically orientated
+        /// </summary>
+        private ScreenPoint Orientate(ScreenPoint point)
+        {
+            if (XAxis.IsVertical())
+            {
+                point = new ScreenPoint(point.Y, point.X);
+            }
+            return point;
+        }
+
+        /// <summary>
+        /// Transforms DataSpace coords to orientated ScreenSpace coors
+        /// </summary>
+        public new ScreenPoint Transform(double x, double y)
+        {
+            return Orientate(base.Transform(x, y));
+        }
+
+        /// <summary>
+        /// Transforms DataSpace coords to orientated ScreenSpace coors
+        /// </summary>
+        public new ScreenPoint Transform(DataPoint p)
+        {
+            return Orientate(base.Transform(p));
+        }
+
+        /// <summary>
+        /// Transforms orientated ScreenSpace coords to DataSpace coors
+        /// </summary>
+        public new DataPoint InverseTransform(ScreenPoint point)
+        {
+            return base.InverseTransform(Orientate(point));
+        }
+
+        /// <summary>
         /// Renders the series on the specified render context.
         /// </summary>
         /// <param name="rc">The rendering context.</param>
@@ -244,7 +296,6 @@ namespace OxyPlot.Series
             var s11 = this.Transform(right, top);
             var rect = new OxyRect(s00, s11);
 
-
             bool needImage = Interpolate || !RenderDiscreteRectangles;
 
             var currentDataHash = this.Data.GetHashCode();
@@ -267,6 +318,9 @@ namespace OxyPlot.Series
             }
             else
             {
+                s00 = this.Orientate(s00); // disorientate
+                s11 = this.Orientate(s11); // disorientate
+
                 double sdx = (s11.X - s00.X) / m;
                 double sdy = (s11.Y - s00.Y) / n;
 
@@ -277,15 +331,14 @@ namespace OxyPlot.Series
                     {
                         OxyColor rectcolor = this.ColorAxis.GetColor(this.Data[i, j]);
 
-                        var pointa = new ScreenPoint(s00.X + i * sdx, s00.Y + j * sdy);
-                        var pointb = new ScreenPoint(s00.X + (i + 1) * sdx, s00.Y + (j + 1) * sdy);
+                        var pointa = this.Orientate(new ScreenPoint(s00.X + i * sdx, s00.Y + j * sdy)); // reorientate
+                        var pointb = this.Orientate(new ScreenPoint(s00.X + (i + 1) * sdx, s00.Y + (j + 1) * sdy)); // reorientate
                         OxyRect rectrect = new OxyRect(pointa, pointb);
 
                         rc.DrawClippedRectangle(clip, rectrect, rectcolor, OxyColors.Undefined, 0);
                     }
                 }
             }
-
 
             if (this.LabelFontSize > 0)
             {
@@ -313,7 +366,7 @@ namespace OxyPlot.Series
             {
                 return null;
             }
-            
+
             double i;
             double j;
 
@@ -497,8 +550,8 @@ namespace OxyPlot.Series
             double bottom = this.Y0;
             double top = this.Y1;
 
-            var s00 = this.Transform(left, bottom);
-            var s11 = this.Transform(right, top);
+            var s00 = this.Orientate(this.Transform(left, bottom)); // disorientate
+            var s11 = this.Orientate(this.Transform(right, top)); // disorientate
 
             double sdx = (s11.X - s00.X) / (m - 1);
             double sdy = (s11.Y - s00.Y) / (n - 1);
@@ -507,7 +560,7 @@ namespace OxyPlot.Series
             {
                 for (int j = 0; j < n; j++)
                 {
-                    var point = new ScreenPoint(s00.X + i * sdx, s00.Y + j * sdy);
+                    var point = this.Orientate(new ScreenPoint(s00.X + i * sdx, s00.Y + j * sdy)); // reorientate
                     var v = GetValue(this.Data, i, j);
                     var color = this.ColorAxis.GetColor(v);
                     var hsv = color.ToHsv();
@@ -656,17 +709,22 @@ namespace OxyPlot.Series
 
             // determine if the provided data should be reversed in y-direction
             var reverseY = this.YAxis.Transform(this.Y0) > this.YAxis.Transform(this.Y1);
-            
+
+            var swapXY = this.XAxis.IsVertical();
+
             int m = this.Data.GetLength(0);
             int n = this.Data.GetLength(1);
-            var buffer = new OxyColor[m, n];
+            var buffer = swapXY ? new OxyColor[n, m] : new OxyColor[m, n];
             for (int i = 0; i < m; i++)
             {
                 var ii = reverseX ? m - 1 - i : i;
                 for (int j = 0; j < n; j++)
                 {
                     var jj = reverseY ? n - 1 - j : j;
-                    buffer[i, j] = this.ColorAxis.GetColor(this.Data[ii, jj]);
+                    if (swapXY)
+                        buffer[j, i] = this.ColorAxis.GetColor(this.Data[ii, jj]);
+                    else
+                        buffer[i, j] = this.ColorAxis.GetColor(this.Data[ii, jj]);
                 }
             }
 
