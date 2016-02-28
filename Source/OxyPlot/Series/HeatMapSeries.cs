@@ -120,6 +120,16 @@ namespace OxyPlot.Series
         /// </summary>
         /// <remarks>This property is not supported on all platforms.</remarks>
         public bool Interpolate { get; set; }
+        
+        /// <summary>
+        /// Gets or sets a value indicating whether to treat the x dimension as logarithmic. The default value is <c>false</c>.
+        /// </summary>
+        public bool LogX { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to treat the y dimension as logarithmic. The default value is <c>false</c>.
+        /// </summary>
+        public bool LogY { get; set; }
 
         /// <summary>
         /// Gets the minimum value of the dataset.
@@ -200,16 +210,35 @@ namespace OxyPlot.Series
 
             if (this.CoordinateDefinition == HeatMapCoordinateDefinition.Center)
             {
-                left -= dx / 2;
-                right += dx / 2;
-                bottom -= dy / 2;
-                top += dy / 2;
+                if (LogX)
+                {
+                    double gx = Math.Log(this.X1 / this.X0) / (m - 1);
+                    left *= Math.Exp(gx / -2);
+                    right *= Math.Exp(gx / 2);
+                }
+                else
+                {
+                    left -= dx / 2;
+                    right += dx / 2;
+                }
+
+                if (LogY)
+                {
+                    double gy = Math.Log(this.Y1 / this.Y0) / (n - 1);
+                    bottom *= Math.Exp(gy / -2);
+                    top *= Math.Exp(gy / 2);
+                }
+                else
+                {
+                    bottom -= dy / 2;
+                    top += dy / 2;
+                }
             }
 
             var s00 = this.Transform(left, bottom);
             var s11 = this.Transform(right, top);
             var rect = new OxyRect(s00, s11);
-
+            
             var currentDataHash = this.Data.GetHashCode();
             var currentColorAxisHash = this.ColorAxis.GetElementHashCode();
             if (this.image == null || currentDataHash != this.dataHash || currentColorAxisHash != this.colorAxisHash)
@@ -251,18 +280,63 @@ namespace OxyPlot.Series
             {
                 return null;
             }
+            
+            double i;
+            double j;
 
-            double dx = (this.X1 - this.X0) / (this.Data.GetLength(0) - 1);
-            double dy = (this.Y1 - this.Y0) / (this.Data.GetLength(1) - 1);
+            if (LogX)
+            {
+                double gx = Math.Log(this.X1 / this.X0) / (this.Data.GetLength(0) - 1);
+                i = Math.Log(p.X / this.X0) / gx;
+            }
+            else
+            {
+                double dx = (this.X1 - this.X0) / (this.Data.GetLength(0) - 1);
+                i = (p.X - this.X0) / dx;
+            }
 
-            double i = (p.X - this.X0) / dx;
-            double j = (p.Y - this.Y0) / dy;
+            if (LogY)
+            {
+                double gy = Math.Log(this.Y1 / this.Y0) / (this.Data.GetLength(1) - 1);
+                j = Math.Log(p.Y / this.Y0) / gy;
+            }
+            else
+            {
+                double dy = (this.Y1 - this.Y0) / (this.Data.GetLength(1) - 1);
+                j = (p.Y - this.Y0) / dy;
+            }
 
             if (!interpolate)
             {
                 i = Math.Round(i);
                 j = Math.Round(j);
-                p = new DataPoint((i * dx) + this.X0, (j * dy) + this.Y0);
+
+                double px;
+                double py;
+
+                if (LogX)
+                {
+                    double gx = Math.Log(this.X1 / this.X0) / (this.Data.GetLength(0) - 1);
+                    px = this.X0 * Math.Exp((double)i * gx);
+                }
+                else
+                {
+                    double dx = (this.X1 - this.X0) / (this.Data.GetLength(0) - 1);
+                    px = (i * dx) + this.X0;
+                }
+
+                if (LogY)
+                {
+                    double gy = Math.Log(this.Y1 / this.Y0) / (this.Data.GetLength(1) - 1);
+                    py = this.Y0 * Math.Exp((double)j * gy);
+                }
+                else
+                {
+                    double dy = (this.Y1 - this.Y0) / (this.Data.GetLength(1) - 1);
+                    py = (j * dy) + this.Y0;
+                }
+
+                p = new DataPoint(px, py);
                 point = this.Transform(p);
             }
 
@@ -303,12 +377,10 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Updates the maximum and minimum values of the series.
+        /// Updates the maximum and minimum values of the series for the x and y dimensions only.
         /// </summary>
-        protected internal override void UpdateMaxMin()
+        protected internal void UpdateMaxMinXY()
         {
-            base.UpdateMaxMin();
-
             int m = this.Data.GetLength(0);
             int n = this.Data.GetLength(1);
 
@@ -320,13 +392,42 @@ namespace OxyPlot.Series
 
             if (this.CoordinateDefinition == HeatMapCoordinateDefinition.Center)
             {
-                double dx = Math.Abs(this.X1 - this.X0) / (m - 1);
-                double dy = Math.Abs(this.Y1 - this.Y0) / (n - 1);
-                this.MinX -= dx / 2;
-                this.MaxX += dx / 2;
-                this.MinY -= dy / 2;
-                this.MaxY += dy / 2;
+                if (LogX)
+                {
+                    double gx = Math.Log(this.MaxX / this.MinX) / (m - 1);
+                    this.MinX *= Math.Exp(gx / -2);
+                    this.MaxX *= Math.Exp(gx / 2);
+                }
+                else
+                {
+                    double dx = (this.MaxX - this.MinX) / (m - 1);
+                    this.MinX -= dx / 2;
+                    this.MaxX += dx / 2;
+                }
+
+                if (LogY)
+                {
+                    double gy = Math.Log(this.MaxY / this.MinY) / (n - 1);
+                    this.MinY *= Math.Exp(gy / -2);
+                    this.MaxY *= Math.Exp(gy / 2);
+                }
+                else
+                {
+                    double dy = (this.MaxY - this.MinY) / (n - 1);
+                    this.MinY -= dy / 2;
+                    this.MaxY += dy / 2;
+                }
             }
+        }
+
+        /// <summary>
+        /// Updates the maximum and minimum values of the series.
+        /// </summary>
+        protected internal override void UpdateMaxMin()
+        {
+            base.UpdateMaxMin();
+
+            UpdateMaxMinXY();
 
             this.MinValue = this.Data.Min2D(true);
             this.MaxValue = this.Data.Max2D();
@@ -356,16 +457,26 @@ namespace OxyPlot.Series
             var clip = this.GetClippingRect();
             int m = this.Data.GetLength(0);
             int n = this.Data.GetLength(1);
-            double dx = (this.X1 - this.X0) / (m - 1);
-            double dy = (this.Y1 - this.Y0) / (n - 1);
+            //double dx = (this.X1 - this.X0) / (m - 1);
+            //double dy = (this.Y1 - this.Y0) / (n - 1);
             double fontSize = (rect.Height / n) * this.LabelFontSize;
+
+            double left = this.X0;
+            double right = this.X1;
+            double bottom = this.Y0;
+            double top = this.Y1;
+
+            var s00 = this.Transform(left, bottom);
+            var s11 = this.Transform(right, top);
+
+            double sdx = (s11.X - s00.X) / (m - 1);
+            double sdy = (s11.Y - s00.Y) / (n - 1);
 
             for (int i = 0; i < m; i++)
             {
                 for (int j = 0; j < n; j++)
                 {
-                    var p = new DataPoint((i * dx) + this.X0, (j * dy) + this.Y0);
-                    var point = this.Transform(p);
+                    var point = new ScreenPoint(s00.X + i * sdx, s00.Y + j * sdy);
                     var v = GetValue(this.Data, i, j);
                     var color = this.ColorAxis.GetColor(v);
                     var hsv = color.ToHsv();
@@ -499,23 +610,9 @@ namespace OxyPlot.Series
         /// <returns><c>True</c> if the point is inside the heat map.</returns>
         private bool IsPointInRange(DataPoint p)
         {
-            double left = this.X0;
-            double right = this.X1;
-            double bottom = this.Y0;
-            double top = this.Y1;
+            UpdateMaxMinXY();
 
-            if (this.CoordinateDefinition == HeatMapCoordinateDefinition.Center)
-            {
-                double dx = (this.X1 - this.X0) / (this.Data.GetLength(0) - 1);
-                double dy = (this.Y1 - this.Y0) / (this.Data.GetLength(1) - 1);
-
-                left -= dx / 2;
-                right += dx / 2;
-                bottom -= dy / 2;
-                top += dy / 2;
-            }
-
-            return p.X >= left && p.X <= right && p.Y >= bottom && p.Y <= top;
+            return p.X >= this.MinX && p.X <= this.MaxX && p.Y >= this.MinY && p.Y <= this.MaxY;
         }
 
         /// <summary>
@@ -528,7 +625,7 @@ namespace OxyPlot.Series
 
             // determine if the provided data should be reversed in y-direction
             var reverseY = this.YAxis.Transform(this.Y0) > this.YAxis.Transform(this.Y1);
-
+            
             int m = this.Data.GetLength(0);
             int n = this.Data.GetLength(1);
             var buffer = new OxyColor[m, n];
