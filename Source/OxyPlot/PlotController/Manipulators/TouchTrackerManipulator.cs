@@ -63,6 +63,10 @@ namespace OxyPlot
             }
         }
 
+        /// <summary>
+        /// Occurs when a touch delta event is handled.
+        /// </summary>
+        /// <param name="e">The <see cref="OxyPlot.OxyTouchEventArgs" /> instance containing the event data.</param>
         public override void Delta(OxyTouchEventArgs e)
         {
             base.Delta(e);
