@@ -317,6 +317,94 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("Logarithmic X, interpolated")]
+        public static PlotModel LogXInterpolated()
+        {
+            var data = new double[11, 21];
+
+            double k = Math.Pow(2, 0.1);
+
+            for (int i = 0; i < 11; i++)
+            {
+                for (int j = 0; j < 21; j++)
+                {
+                    data[i, j] = Math.Pow(k, (double)i) * (double)j / 40.0;
+                }
+            }
+
+            var model = new PlotModel { Title = "Logarithmic X, interpolated" };
+            model.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Bottom });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+            model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Gray(500), HighColor = OxyColors.White, LowColor = OxyColors.Black });
+
+            var hms = new HeatMapSeries { X0 = 1.0, X1 = 2.0, Y0 = 0, Y1 = 20, Data = data, Interpolate = true, LogX = true, LogY = false };
+
+            model.Series.Add(hms);
+            return model;
+        }
+
+        [Example("Logarithmic X, discrete rectangles")]
+        public static PlotModel LogXNotInterpolated()
+        {
+            var data = new double[11, 21];
+
+            double k = Math.Pow(2, 0.1);
+
+            for (int i = 0; i < 11; i++)
+            {
+                for (int j = 0; j < 21; j++)
+                {
+                    data[i, j] = Math.Pow(k, (double)i) * (double)j / 40.0;
+                }
+            }
+
+            var model = new PlotModel { Title = "Logarithmic X, discrete rectangles" };
+            model.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Bottom });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+            model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Gray(500), HighColor = OxyColors.White, LowColor = OxyColors.Black });
+
+            var hms = new HeatMapSeries { X0 = 1.0, X1 = 2.0, Y0 = 0, Y1 = 20, Data = data, Interpolate = false, RenderDiscreteRectangles = true, LogX = true, LogY = false, LabelFontSize = 0.4 };
+
+            model.Series.Add(hms);
+            return model;
+        }
+
+        [Example("6×4, Transposed")]
+        public static PlotModel Transposed_6X4()
+        {
+            var data = new double[6, 4];
+            
+            for (int i = 1; i <= 6; i++)
+            {
+                for (int j = 1; j <= 4; j++)
+                {
+                    data[i-1, j-1] = i * j;
+                }
+            }
+
+            var model = new PlotModel { Title = "Transposed 6×4 Heatmap", Subtitle = "Note the positions of the axes" };
+            
+            var xaxis = new LinearAxis { Key = "x", Title = "X", Position = AxisPosition.Left };
+            var yaxis = new LinearAxis { Key = "y", Title = "Y", Position = AxisPosition.Bottom };
+
+            model.Axes.Add(xaxis);
+            model.Axes.Add(yaxis);
+            model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(500), HighColor = OxyColors.White, LowColor = OxyColors.Black });
+
+            var hms = new HeatMapSeries { X0 = 1, X1 = 6, Y0 = 1, Y1 = 4, Data = data, Interpolate = true, LabelFontSize = 0.2 };
+
+            hms.XAxisKey = "x";
+            hms.YAxisKey = "y";
+            
+            model.Series.Add(hms);
+            return model;
+        }
+
+        private static void DefaultXAxis_MouseDown(object sender, OxyMouseDownEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Creates a simple example heat map from a 2×3 matrix.
         /// </summary>
