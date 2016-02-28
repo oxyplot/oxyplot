@@ -120,7 +120,12 @@ namespace OxyPlot.Series
         /// </summary>
         /// <remarks>This property is not supported on all platforms.</remarks>
         public bool Interpolate { get; set; }
-        
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to use discrete rectangles when rendering (ignored if Interpolate is set to true). The default value is <c>false</c>.
+        /// </summary>
+        public bool RenderDiscreteRectangles { get; set; }
+
         /// <summary>
         /// Gets or sets a value indicating whether to treat the x dimension as logarithmic. The default value is <c>false</c>.
         /// </summary>
@@ -238,21 +243,49 @@ namespace OxyPlot.Series
             var s00 = this.Transform(left, bottom);
             var s11 = this.Transform(right, top);
             var rect = new OxyRect(s00, s11);
-            
+
+
+            bool needImage = Interpolate || !RenderDiscreteRectangles;
+
             var currentDataHash = this.Data.GetHashCode();
             var currentColorAxisHash = this.ColorAxis.GetElementHashCode();
-            if (this.image == null || currentDataHash != this.dataHash || currentColorAxisHash != this.colorAxisHash)
+            if ((needImage && this.image == null) || currentDataHash != this.dataHash || currentColorAxisHash != this.colorAxisHash)
             {
-                this.UpdateImage();
+                if (needImage)
+                    this.UpdateImage();
                 this.dataHash = currentDataHash;
                 this.colorAxisHash = currentColorAxisHash;
             }
 
             var clip = this.GetClippingRect();
-            if (this.image != null)
+            if (needImage)
             {
-                rc.DrawClippedImage(clip, this.image, rect.Left, rect.Top, rect.Width, rect.Height, 1, this.Interpolate);
+                if (this.image != null)
+                {
+                    rc.DrawClippedImage(clip, this.image, rect.Left, rect.Top, rect.Width, rect.Height, 1, this.Interpolate);
+                }
             }
+            else
+            {
+                double sdx = (s11.X - s00.X) / m;
+                double sdy = (s11.Y - s00.Y) / n;
+
+                // draw lots of rectangles
+                for (int i = 0; i < m; i++)
+                {
+                    for (int j = 0; j < n; j++)
+                    {
+                        OxyColor rectcolor = this.ColorAxis.GetColor(this.Data[i, j]);
+
+                        var pointa = new ScreenPoint(s00.X + i * sdx, s00.Y + j * sdy);
+                        var pointb = new ScreenPoint(s00.X + (i + 1) * sdx, s00.Y + (j + 1) * sdy);
+                        OxyRect rectrect = new OxyRect(pointa, pointb);
+
+                        rc.DrawClippedRectangle(clip, rectrect, rectcolor, OxyColors.Undefined, 0);
+                    }
+                }
+            }
+
 
             if (this.LabelFontSize > 0)
             {
@@ -457,8 +490,6 @@ namespace OxyPlot.Series
             var clip = this.GetClippingRect();
             int m = this.Data.GetLength(0);
             int n = this.Data.GetLength(1);
-            //double dx = (this.X1 - this.X0) / (m - 1);
-            //double dy = (this.Y1 - this.Y0) / (n - 1);
             double fontSize = (rect.Height / n) * this.LabelFontSize;
 
             double left = this.X0;
