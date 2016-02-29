@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TrackerManipulator.cs" company="OxyPlot">
+// <copyright file="TouchTrackerManipulator.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
@@ -12,7 +12,7 @@ namespace OxyPlot
     /// <summary>
     /// Provides a plot manipulator for tracker functionality.
     /// </summary>
-    public class TrackerManipulator : MouseManipulator
+    public class TouchTrackerManipulator : TouchManipulator
     {
         /// <summary>
         /// The current series.
@@ -20,10 +20,10 @@ namespace OxyPlot
         private Series.Series currentSeries;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TrackerManipulator" /> class.
+        /// Initializes a new instance of the <see cref="TouchTrackerManipulator" /> class.
         /// </summary>
         /// <param name="plotView">The plot view.</param>
-        public TrackerManipulator(IPlotView plotView)
+        public TouchTrackerManipulator(IPlotView plotView)
             : base(plotView)
         {
             this.Snap = true;
@@ -50,11 +50,10 @@ namespace OxyPlot
         /// <summary>
         /// Occurs when a manipulation is complete.
         /// </summary>
-        /// <param name="e">The <see cref="OxyPlot.OxyMouseEventArgs" /> instance containing the event data.</param>
-        public override void Completed(OxyMouseEventArgs e)
+        /// <param name="e">The <see cref="OxyPlot.OxyTouchEventArgs" /> instance containing the event data.</param>
+        public override void Completed(OxyTouchEventArgs e)
         {
             base.Completed(e);
-            e.Handled = true;
 
             this.currentSeries = null;
             this.PlotView.HideTracker();
@@ -65,18 +64,39 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Occurs when the input device changes position during a manipulation.
+        /// Occurs when a touch delta event is handled.
         /// </summary>
-        /// <param name="e">The <see cref="OxyPlot.OxyMouseEventArgs" /> instance containing the event data.</param>
-        public override void Delta(OxyMouseEventArgs e)
+        /// <param name="e">The <see cref="OxyPlot.OxyTouchEventArgs" /> instance containing the event data.</param>
+        public override void Delta(OxyTouchEventArgs e)
         {
             base.Delta(e);
-            e.Handled = true;
 
+            // This is touch, we want to hide the tracker because the user is probably panning / zooming now
+            this.PlotView.HideTracker();
+        }
+
+        /// <summary>
+        /// Occurs when an input device begins a manipulation on the plot.
+        /// </summary>
+        /// <param name="e">The <see cref="OxyPlot.OxyTouchEventArgs" /> instance containing the event data.</param>
+        public override void Started(OxyTouchEventArgs e)
+        {
+            base.Started(e);
+            this.currentSeries = this.PlotView.ActualModel != null ? this.PlotView.ActualModel.GetSeriesFromPoint(e.Position) : null;
+
+            UpdateTracker(e.Position);
+        }
+
+        /// <summary>
+        /// Updates the tracker to the specified position.
+        /// </summary>
+        /// <param name="position">The position.</param>
+        private void UpdateTracker(ScreenPoint position)
+        {
             if (this.currentSeries == null || !this.LockToInitialSeries)
             {
                 // get the nearest
-                this.currentSeries = this.PlotView.ActualModel != null ? this.PlotView.ActualModel.GetSeriesFromPoint(e.Position, 20) : null;
+                this.currentSeries = this.PlotView.ActualModel != null ? this.PlotView.ActualModel.GetSeriesFromPoint(position, 20) : null;
             }
 
             if (this.currentSeries == null)
@@ -95,29 +115,18 @@ namespace OxyPlot
                 return;
             }
 
-            if (!actualModel.PlotArea.Contains(e.Position.X, e.Position.Y))
+            if (!actualModel.PlotArea.Contains(position.X, position.Y))
             {
                 return;
             }
 
-            var result = GetNearestHit(this.currentSeries, e.Position, this.Snap, this.PointsOnly);
+            var result = GetNearestHit(this.currentSeries, position, this.Snap, this.PointsOnly);
             if (result != null)
             {
                 result.PlotModel = this.PlotView.ActualModel;
                 this.PlotView.ShowTracker(result);
                 this.PlotView.ActualModel.RaiseTrackerChanged(result);
             }
-        }
-
-        /// <summary>
-        /// Occurs when an input device begins a manipulation on the plot.
-        /// </summary>
-        /// <param name="e">The <see cref="OxyPlot.OxyMouseEventArgs" /> instance containing the event data.</param>
-        public override void Started(OxyMouseEventArgs e)
-        {
-            base.Started(e);
-            this.currentSeries = this.PlotView.ActualModel != null ? this.PlotView.ActualModel.GetSeriesFromPoint(e.Position) : null;
-            this.Delta(e);
         }
 
         /// <summary>
