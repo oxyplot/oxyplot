@@ -164,6 +164,15 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
+        /// Determines whether the axis is logarithmic.
+        /// </summary>
+        /// <returns><c>true</c> if it is a logarithmic axis; otherwise, <c>false</c> .</returns>
+        public override bool IsLogarithmic()
+        {
+            return true;
+        }
+
+        /// <summary>
         /// Pans the specified axis.
         /// </summary>
         /// <param name="ppt">The previous point (screen coordinates).</param>
