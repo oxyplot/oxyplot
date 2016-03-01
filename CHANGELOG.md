@@ -82,6 +82,7 @@ All notable changes to this project will be documented in this file.
 - ListFiller (#705)
 
 ### Fixed
+- Fixed test PngExporterTests.ExportWithResolution now working on windows 8 or newer (#759))
 - Fixed PDFRenderContext text alignment issues for rotated text (#723)
 - HeatMapSeries.GetValue returns NaN instead of calculating a wrong value in proximity to NaN (#256)
 - Tracker position is wrong when PlotView is offset from origin (#455)
