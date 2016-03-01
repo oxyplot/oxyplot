@@ -30,6 +30,22 @@ namespace OxyPlot.Series
     }
 
     /// <summary>
+    /// Specifies how the heat map coordinates are defined.
+    /// </summary>
+    public enum HeatMapRenderMethod
+    {
+        /// <summary>
+        /// The heat map is rendered as a bitmap
+        /// </summary>
+        Bitmap,
+
+        /// <summary>
+        /// The heat map is rendered as a collection of discrete rectangles
+        /// </summary>
+        Rectangles
+    }
+
+    /// <summary>
     /// Represents a heat map.
     /// </summary>
     public class HeatMapSeries : XYAxisSeries
@@ -118,13 +134,8 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets or sets a value indicating whether to interpolate when rendering. The default value is <c>true</c>.
         /// </summary>
-        /// <remarks>This property is not supported on all platforms.</remarks>
+        /// <remarks>This property is not supported on all platforms. Ignored (off) if <see cref="RenderingMethod" /> is <see cref="HeatMapRenderMethod.Rectangles" /></remarks>
         public bool Interpolate { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether to use discrete rectangles when rendering (ignored if Interpolate is set to true). The default value is <c>false</c>.
-        /// </summary>
-        public bool RenderDiscreteRectangles { get; set; }
 
         /// <summary>
         /// Gets the minimum value of the dataset.
@@ -153,6 +164,12 @@ namespace OxyPlot.Series
         /// </summary>
         /// <value>The coordinate definition.</value>
         public HeatMapCoordinateDefinition CoordinateDefinition { get; set; }
+
+        /// <summary>
+        /// Gets or sets the render method. The default value is <see cref="HeatMapRenderMethod.Bitmap" />.
+        /// </summary>
+        /// <value>The render method.</value>
+        public HeatMapRenderMethod RenderMethod { get; set; }
 
         /// <summary>
         /// Gets or sets the format string for the cell labels. The default value is <c>0.00</c>.
@@ -265,7 +282,7 @@ namespace OxyPlot.Series
             var s11 = this.Transform(right, top);
             var rect = new OxyRect(s00, s11);
 
-            bool needImage = this.Interpolate || !this.RenderDiscreteRectangles;
+            bool needImage = this.RenderMethod == HeatMapRenderMethod.Bitmap;
 
             var currentDataHash = this.Data.GetHashCode();
             var currentColorAxisHash = this.ColorAxis.GetElementHashCode();
@@ -716,6 +733,7 @@ namespace OxyPlot.Series
             // determine if the provided data should be reversed in y-direction
             var reverseY = this.YAxis.Transform(this.Y0) > this.YAxis.Transform(this.Y1);
 
+            // determine if the data should be transposed
             var swapXY = this.XAxis.IsVertical();
 
             int m = this.Data.GetLength(0);
