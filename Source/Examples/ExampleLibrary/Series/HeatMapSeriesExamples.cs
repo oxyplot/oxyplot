@@ -337,7 +337,7 @@ namespace ExampleLibrary
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
             model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Gray(500), HighColor = OxyColors.White, LowColor = OxyColors.Black });
 
-            var hms = new HeatMapSeries { X0 = 1.0, X1 = 2.0, Y0 = 0, Y1 = 20, Data = data, Interpolate = true, LogX = true, LogY = false };
+            var hms = new HeatMapSeries { X0 = 1.0, X1 = 2.0, Y0 = 0, Y1 = 20, Data = data, Interpolate = true };
 
             model.Series.Add(hms);
             return model;
@@ -363,7 +363,7 @@ namespace ExampleLibrary
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
             model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Gray(500), HighColor = OxyColors.White, LowColor = OxyColors.Black });
 
-            var hms = new HeatMapSeries { X0 = 1.0, X1 = 2.0, Y0 = 0, Y1 = 20, Data = data, Interpolate = false, RenderDiscreteRectangles = true, LogX = true, LogY = false, LabelFontSize = 0.4 };
+            var hms = new HeatMapSeries { X0 = 1.0, X1 = 2.0, Y0 = 0, Y1 = 20, Data = data, Interpolate = false, RenderDiscreteRectangles = true, LabelFontSize = 0.4 };
 
             model.Series.Add(hms);
             return model;

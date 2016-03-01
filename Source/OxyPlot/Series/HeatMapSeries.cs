@@ -127,16 +127,6 @@ namespace OxyPlot.Series
         public bool RenderDiscreteRectangles { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to treat the x dimension as logarithmic. The default value is <c>false</c>.
-        /// </summary>
-        public bool LogX { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether to treat the y dimension as logarithmic. The default value is <c>false</c>.
-        /// </summary>
-        public bool LogY { get; set; }
-
-        /// <summary>
         /// Gets the minimum value of the dataset.
         /// </summary>
         public double MinValue { get; private set; }
@@ -246,7 +236,7 @@ namespace OxyPlot.Series
 
             if (this.CoordinateDefinition == HeatMapCoordinateDefinition.Center)
             {
-                if (this.LogX)
+                if (this.XAxis.IsLogarithmic())
                 {
                     double gx = Math.Log(this.X1 / this.X0) / (m - 1);
                     left *= Math.Exp(gx / -2);
@@ -258,7 +248,7 @@ namespace OxyPlot.Series
                     right += dx / 2;
                 }
 
-                if (this.LogY)
+                if (this.YAxis.IsLogarithmic())
                 {
                     double gy = Math.Log(this.Y1 / this.Y0) / (n - 1);
                     bottom *= Math.Exp(gy / -2);
@@ -352,7 +342,7 @@ namespace OxyPlot.Series
             double i;
             double j;
 
-            if (this.LogX)
+            if (this.XAxis.IsLogarithmic())
             {
                 double gx = Math.Log(this.X1 / this.X0) / (this.Data.GetLength(0) - 1);
                 i = Math.Log(p.X / this.X0) / gx;
@@ -363,7 +353,7 @@ namespace OxyPlot.Series
                 i = (p.X - this.X0) / dx;
             }
 
-            if (this.LogY)
+            if (this.YAxis.IsLogarithmic())
             {
                 double gy = Math.Log(this.Y1 / this.Y0) / (this.Data.GetLength(1) - 1);
                 j = Math.Log(p.Y / this.Y0) / gy;
@@ -382,7 +372,7 @@ namespace OxyPlot.Series
                 double px;
                 double py;
 
-                if (this.LogX)
+                if (this.XAxis.IsLogarithmic())
                 {
                     double gx = Math.Log(this.X1 / this.X0) / (this.Data.GetLength(0) - 1);
                     px = this.X0 * Math.Exp(i * gx);
@@ -393,7 +383,7 @@ namespace OxyPlot.Series
                     px = (i * dx) + this.X0;
                 }
 
-                if (this.LogY)
+                if (this.YAxis.IsLogarithmic())
                 {
                     double gy = Math.Log(this.Y1 / this.Y0) / (this.Data.GetLength(1) - 1);
                     py = this.Y0 * Math.Exp(j * gy);
@@ -460,7 +450,7 @@ namespace OxyPlot.Series
 
             if (this.CoordinateDefinition == HeatMapCoordinateDefinition.Center)
             {
-                if (this.LogX)
+                if (this.XAxis.IsLogarithmic())
                 {
                     double gx = Math.Log(this.MaxX / this.MinX) / (m - 1);
                     this.MinX *= Math.Exp(gx / -2);
@@ -473,7 +463,7 @@ namespace OxyPlot.Series
                     this.MaxX += dx / 2;
                 }
 
-                if (this.LogY)
+                if (this.YAxis.IsLogarithmic())
                 {
                     double gy = Math.Log(this.MaxY / this.MinY) / (n - 1);
                     this.MinY *= Math.Exp(gy / -2);
