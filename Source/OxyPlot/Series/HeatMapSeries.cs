@@ -278,7 +278,7 @@ namespace OxyPlot.Series
                 Item = null,
                 Index = -1,
                 Text = StringHelper.Format(
-                this.ActualCulture, 
+                this.ActualCulture,
                 this.TrackerFormatString,
                 null,
                 this.Title,
@@ -425,7 +425,8 @@ namespace OxyPlot.Series
             {
                 return data[i0, j0];
             }
-            else if ((i != i0) && (j == j0))
+
+            if ((i != i0) && (j == j0))
             {
                 //// interpolate only by i
 
@@ -439,12 +440,11 @@ namespace OxyPlot.Series
                 {
                     return (data[i0, j0] * (1 - ifraction)) + (data[i1, j0] * ifraction);
                 }
-                else
-                {
-                    return data[i0, j0];
-                }
+
+                return data[i0, j0];
             }
-            else if ((i == i0) && (j != j0))
+
+            if ((i == i0) && (j != j0))
             {
                 //// interpolate only by j
 
@@ -458,10 +458,8 @@ namespace OxyPlot.Series
                 {
                     return (data[i0, j0] * (1 - jfraction)) + (data[i0, j1] * jfraction);
                 }
-                else
-                {
-                    return data[i0, j0];
-                }
+
+                return data[i0, j0];
             }
             else
             {
@@ -489,12 +487,10 @@ namespace OxyPlot.Series
                 {
                     return (v0 * (1 - jfraction)) + (v1 * jfraction);
                 }
-                else
-                {
-                    return v0;
-                }
+
+                return v0;
             }
-        }  
+        }
 
         /// <summary>
         /// Tests if a <see cref="DataPoint" /> is inside the heat map

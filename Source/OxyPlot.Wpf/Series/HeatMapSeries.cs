@@ -162,7 +162,7 @@ namespace OxyPlot.Wpf
         {
             get
             {
-                return (double)GetValue(X0Property);
+                return (double)this.GetValue(X0Property);
             }
 
             set
@@ -178,7 +178,7 @@ namespace OxyPlot.Wpf
         {
             get
             {
-                return (double)GetValue(X1Property);
+                return (double)this.GetValue(X1Property);
             }
 
             set
@@ -194,7 +194,7 @@ namespace OxyPlot.Wpf
         {
             get
             {
-                return (double)GetValue(Y0Property);
+                return (double)this.GetValue(Y0Property);
             }
 
             set
@@ -210,7 +210,7 @@ namespace OxyPlot.Wpf
         {
             get
             {
-                return (double)GetValue(Y1Property);
+                return (double)this.GetValue(Y1Property);
             }
 
             set
@@ -226,7 +226,7 @@ namespace OxyPlot.Wpf
         {
             get
             {
-                return (double[,])GetValue(DataProperty);
+                return (double[,])this.GetValue(DataProperty);
             }
 
             set

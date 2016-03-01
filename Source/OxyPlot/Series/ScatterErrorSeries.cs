@@ -140,6 +140,20 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
+        /// Selects all points for which the passed function returns true.
+        /// </summary>
+        /// <param name="func">
+        /// The function.
+        /// </param>
+        public void SelectAll(Func<ScatterErrorPoint, bool> func)
+        {
+            foreach (var dataPoint in this.Points.Where(func))
+            {
+                this.SelectItem(this.Points.IndexOf(dataPoint));
+            }
+        }
+
+        /// <summary>
         /// Updates from data fields.
         /// </summary>
         protected override void UpdateFromDataFields()
@@ -153,20 +167,6 @@ namespace OxyPlot.Series
             filler.Add(this.DataFieldValue, double.NaN);
             filler.Add(this.DataFieldTag, (object)null);
             filler.FillT(this.ItemsSourcePoints, this.ItemsSource, args => new ScatterErrorPoint(Convert.ToDouble(args[0]), Convert.ToDouble(args[1]), Convert.ToDouble(args[2]), Convert.ToDouble(args[3]), Convert.ToDouble(args[4]), Convert.ToDouble(args[5]), args[6]));
-        }
-
-        /// <summary>
-        /// Selects all points for which the passed function returns true.
-        /// </summary>
-        /// <param name="func">
-        /// The function.
-        /// </param>
-        public void SelectAll(Func<ScatterErrorPoint, bool> func)
-        {
-            foreach (var dataPoint in this.Points.Where(func))
-            {
-                this.SelectItem(this.Points.IndexOf(dataPoint));
-            }
         }
     }
 }

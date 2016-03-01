@@ -213,7 +213,7 @@ namespace OxyPlot.Series
         /// <param name="pt">The point.</param>
         /// <param name="xaxis">The x axis.</param>
         /// <param name="yaxis">The y axis.</param>
-        /// <returns><c>true</c> if [is valid point] [the specified pt]; otherwise, <c>false</c>.</returns>
+        /// <returns><c>true</c> if the specified point is valid; otherwise, <c>false</c>.</returns>
         public virtual bool IsValidItem(HighLowItem pt, Axis xaxis, Axis yaxis)
         {
             return !double.IsNaN(pt.X) && !double.IsInfinity(pt.X) && !double.IsNaN(pt.High)

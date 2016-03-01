@@ -69,7 +69,6 @@ namespace OxyPlot
         /// <param name="target">The target.</param>
         /// <param name="source">The source list.</param>
         /// <param name="instanceCreator">The instance creator.</param>
-        /// <exception cref="System.InvalidOperationException"></exception>
         public void Fill(IList target, IEnumerable source, Func<IList<object>, object> instanceCreator)
         {
             PropertyInfo[] pi = null;

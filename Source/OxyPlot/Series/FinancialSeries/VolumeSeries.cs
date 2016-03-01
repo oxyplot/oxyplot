@@ -445,7 +445,7 @@ namespace OxyPlot.Series
 
             var yquartile = (ymax - ymin) / 4.0;
 
-            switch (VolumeStyle)
+            switch (this.VolumeStyle)
             {
                 case VolumeStyle.PositiveNegative:
                     ymin = -(yavg + (yquartile / 2.0));
@@ -456,7 +456,6 @@ namespace OxyPlot.Series
                     ymin = 0;
                     break;
                 default:
-                case VolumeStyle.Combined:
                     ymax = yavg + (yquartile / 2.0);
                     ymin = 0;
                     break;

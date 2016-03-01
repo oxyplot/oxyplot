@@ -472,7 +472,9 @@ namespace OxyPlot.Series
             filler.Add(this.ValueField, double.NaN);
             filler.Add(this.ColorField, OxyColors.Automatic);
             filler.Add(this.IsExplodedField, false);
-            filler.FillT(this.slices, this.ItemsSource,
+            filler.FillT(
+                this.slices, 
+                this.ItemsSource,
                 args =>
                 new PieSlice((string)args[0], Convert.ToDouble(args[1]))
                 {

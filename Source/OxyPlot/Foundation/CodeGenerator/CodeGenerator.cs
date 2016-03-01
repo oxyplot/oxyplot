@@ -289,12 +289,7 @@ namespace OxyPlot
         /// <returns>The attribute, or <c>null</c> if no attribute was found.</returns>
         private T GetFirstAttribute<T>(PropertyInfo pi) where T : Attribute
         {
-            foreach (T a in pi.GetCustomAttributes(typeof(CodeGenerationAttribute), true))
-            {
-                return a;
-            }
-
-            return null;
+            return pi.GetCustomAttributes(typeof(CodeGenerationAttribute), true).OfType<T>().FirstOrDefault();
         }
 
         /// <summary>

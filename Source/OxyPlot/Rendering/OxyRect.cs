@@ -240,7 +240,7 @@ namespace OxyPlot
         /// <summary>
         /// Determines whether this instance and another specified <see cref="T:OxyRect" /> object have the same value.
         /// </summary>
-        /// <param name="other">The rect to compare to this instance.</param>
+        /// <param name="other">The rectangle to compare to this instance.</param>
         /// <returns><c>true</c> if the value of the <paramref name="other" /> parameter is the same as the value of this instance; otherwise, <c>false</c>.</returns>
         public bool Equals(OxyRect other)
         {
@@ -255,7 +255,7 @@ namespace OxyPlot
         /// <returns>The expanded/shrunk <see cref="OxyRect" />.</returns>
         public OxyRect Inflate(double dx, double dy)
         {
-            return new OxyRect(this.left - dx, this.top - dy, this.width + dx * 2, this.height + dy * 2);
+            return new OxyRect(this.left - dx, this.top - dy, this.width + (dx * 2), this.height + (dy * 2));
         }
 
         /// <summary>

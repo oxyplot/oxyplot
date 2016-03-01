@@ -1171,7 +1171,7 @@ namespace OxyPlot
         /// <param name="result">The result.</param>
         protected internal virtual void OnTrackerChanged(TrackerHitResult result)
         {
-            RaiseTrackerChanged(result);
+            this.RaiseTrackerChanged(result);
         }
 
         /// <summary>

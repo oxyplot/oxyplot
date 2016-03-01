@@ -115,10 +115,9 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the second
-        /// data collection should be reversed.
+        /// Gets or sets a value indicating whether the second data collection should be reversed.
         /// </summary>
-        /// <value><c>true</c> if the second data setshould be reversed; otherwise, <c>false</c>.</value>
+        /// <value><c>true</c> if the second data set should be reversed; otherwise, <c>false</c>.</value>
         /// <remarks>The first dataset is not reversed, and normally
         /// the second dataset should be reversed to get a
         /// closed polygon.</remarks>
@@ -213,6 +212,7 @@ namespace OxyPlot.Series
             var chunkedListsOfPoints = this.Split(actualPoints, p => double.IsNaN(p.Y));
             var chunkedListsOfPoints2 = this.Split(actualPoints2, p => double.IsNaN(p.Y));
 
+            // TODO: Possible multiple enumeration of IEnumerable...
             for (int chunkIndex = 0; chunkIndex < chunkedListsOfPoints.Count(); chunkIndex++)
             {
                 var chunkActualPoints = chunkedListsOfPoints.ElementAt(chunkIndex).ToList();
@@ -315,8 +315,6 @@ namespace OxyPlot.Series
                     pts1 = CanonicalSplineHelper.CreateSpline(rpts1, 0.5, null, false, 0.25);
                 }
 
-                var dashArray = this.ActualDashArray;
-
                 // combine the two lines and draw the clipped area
                 var pts = new List<ScreenPoint>();
                 pts.AddRange(pts1);
@@ -387,7 +385,9 @@ namespace OxyPlot.Series
                 if (this.points2.Count > 0)
                 {
                     this.actualPoints2 = this.points2;
-                } else { 
+                }
+                else
+                {
                     this.actualPoints2 = this.GetConstantPoints2().ToList();
                 }
 
@@ -400,8 +400,7 @@ namespace OxyPlot.Series
             // Using reflection on DataFieldX2 and DataFieldY2
             if (this.DataFieldX2 != null && this.DataFieldY2 != null)
             {
-                ReflectionExtensions.AddRange(this.itemsSourcePoints2, this.ItemsSource, this.DataFieldX2,
-                    this.DataFieldY2);
+                ReflectionExtensions.AddRange(this.itemsSourcePoints2, this.ItemsSource, this.DataFieldX2, this.DataFieldY2);
             }
             else
             {
@@ -446,6 +445,7 @@ namespace OxyPlot.Series
         private IEnumerable<IEnumerable<T>> Split<T>(IEnumerable<T> source, Func<T, bool> splitCondition)
         {
             source = source.SkipWhile(splitCondition);
+            // TODO: possible multiple enumeration of IEnumerable
             while (source.Any())
             {
                 yield return source.TakeWhile(x => !splitCondition(x));

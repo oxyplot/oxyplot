@@ -1278,8 +1278,15 @@ namespace OxyPlot.Wpf
         /// </value>
         public TitleHorizontalAlignment TitleHorizontalAlignment
         {
-            get { return (TitleHorizontalAlignment)GetValue(TitleAlignmentProperty); }
-            set { SetValue(TitleAlignmentProperty, value); }
+            get
+            {
+                return (TitleHorizontalAlignment)this.GetValue(TitleAlignmentProperty);
+            }
+
+            set
+            {
+                this.SetValue(TitleAlignmentProperty, value);
+            }
         }
 
         /// <summary>

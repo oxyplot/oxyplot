@@ -17,7 +17,7 @@ namespace OxyPlot.Series
     public class BoxPlotItem
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="BoxPlotItem" /> struct.
+        /// Initializes a new instance of the <see cref="BoxPlotItem" /> class.
         /// </summary>
         /// <param name="x">The x.</param>
         /// <param name="lowerWhisker">The lower whisker.</param>

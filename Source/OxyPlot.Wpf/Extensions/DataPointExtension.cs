@@ -15,7 +15,8 @@ namespace OxyPlot.Wpf
     /// <summary>
     /// Provides a markup extension for <see cref="DataPoint" />s.
     /// </summary>
-    public class DataPointExtension : MarkupExtension {
+    public class DataPointExtension : MarkupExtension
+    {
         /// <summary>
         /// The point
         /// </summary>
