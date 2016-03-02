@@ -134,7 +134,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets or sets a value indicating whether to interpolate when rendering. The default value is <c>true</c>.
         /// </summary>
-        /// <remarks>This property is not supported on all platforms. Ignored (off) if <see cref="RenderingMethod" /> is <see cref="HeatMapRenderMethod.Rectangles" /></remarks>
+        /// <remarks>This property is not supported on all platforms. Ignored (off) if <see cref="RenderMethod" /> is <see cref="HeatMapRenderMethod.Rectangles" />.</remarks>
         public bool Interpolate { get; set; }
 
         /// <summary>
