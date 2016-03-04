@@ -51,6 +51,15 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
+        /// Determines whether the axis is logarithmic.
+        /// </summary>
+        /// <returns><c>true</c> if it is a logarithmic axis; otherwise, <c>false</c> .</returns>
+        public override bool IsLogarithmic()
+        {
+            return false;
+        }
+
+        /// <summary>
         /// Formats the value to be used on the axis.
         /// </summary>
         /// <param name="x">The value to format.</param>

@@ -919,6 +919,15 @@ namespace OxyPlot.Axes
         public abstract bool IsXyAxis();
 
         /// <summary>
+        /// Determines whether the axis is logarithmic.
+        /// </summary>
+        /// <returns><c>true</c> if it is a logarithmic axis; otherwise, <c>false</c> .</returns>
+        public virtual bool IsLogarithmic()
+        {
+            return false;
+        }
+
+        /// <summary>
         /// Measures the size of the axis (maximum axis label width/height).
         /// </summary>
         /// <param name="rc">The render context.</param>
