@@ -146,6 +146,7 @@ All notable changes to this project will be documented in this file.
 - Set Resolution in WinForms PngExporter (#754)
 - Axis should never go into infinite loop (#758)
 - Exception in BarSeriesBase (#790)
+- Vertical Axes Title Font Bug (#474)
 
 ## [2014.1.546] - 2014-10-22
 ### Added
