@@ -1420,6 +1420,377 @@ namespace ExampleLibrary
                 Data = data,
             };
             model.Series.Add(hs);
+
+            return model;
+        }
+
+        [Example("#729: ColumnSeries / BarSeries not working with more than one value-axis")]
+        public static PlotModel TwoValueAxesStacked()
+        {
+            var model = new PlotModel
+            {
+                Title = "Two value axes (stacked)",
+                LegendPlacement = LegendPlacement.Outside,
+                LegendPosition = LegendPosition.BottomCenter,
+                LegendOrientation = LegendOrientation.Horizontal,
+                LegendBorderThickness = 0
+            };
+
+            var categoryAxis = new CategoryAxis { Position = AxisPosition.Bottom };
+            categoryAxis.Labels.Add("Category A");
+            categoryAxis.Labels.Add("Category B");
+            categoryAxis.Labels.Add("Category C");
+            categoryAxis.Labels.Add("Category D");
+            var valueAxis1 = new LinearAxis
+            {
+                Key = "v1",
+                Position = AxisPosition.Left,
+                MinimumPadding = 0,
+                MaximumPadding = 0.06,
+                AbsoluteMinimum = 0,
+                StartPosition = 0,
+                EndPosition = 0.5
+            };
+            var valueAxis2 = new LinearAxis
+            {
+                Key = "v2",
+                Position = AxisPosition.Left,
+                MinimumPadding = 0,
+                MaximumPadding = 0.06,
+                AbsoluteMinimum = 0,
+                StartPosition = 0.5,
+                EndPosition = 1
+            };
+
+            model.Axes.Add(categoryAxis);
+            model.Axes.Add(valueAxis1);
+            model.Axes.Add(valueAxis2);
+
+            var s1 = new ColumnSeries
+            {
+                Title = "Series 1",
+                IsStacked = true,
+                StrokeColor = OxyColors.Black,
+                StrokeThickness = 1
+            };
+            s1.Items.Add(new ColumnItem { Value = 25 });
+            s1.Items.Add(new ColumnItem { Value = 137 });
+            s1.Items.Add(new ColumnItem { Value = 18 });
+            s1.Items.Add(new ColumnItem { Value = 40 });
+            model.Series.Add(s1);
+
+            var s2 = new ColumnSeries
+            {
+                Title = "Series 2",
+                IsStacked = true,
+                StrokeColor = OxyColors.Black,
+                StrokeThickness = 1
+            };
+            s2.Items.Add(new ColumnItem { Value = 12 });
+            s2.Items.Add(new ColumnItem { Value = 14 });
+            s2.Items.Add(new ColumnItem { Value = 120 });
+            s2.Items.Add(new ColumnItem { Value = 26 });
+            model.Series.Add(s2);
+
+            var s3 = new ColumnSeries
+            {
+                Title = "Series 3",
+                IsStacked = true,
+                StrokeColor = OxyColors.Black,
+                StrokeThickness = 1
+            };
+            s3.Items.Add(new ColumnItem { Value = 25 });
+            s3.Items.Add(new ColumnItem { Value = 137 });
+            s3.Items.Add(new ColumnItem { Value = 18 });
+            s3.Items.Add(new ColumnItem { Value = 40 });
+            model.Series.Add(s3);
+
+            var s4 = new ColumnSeries
+            {
+                Title = "Series 4",
+                IsStacked = true,
+                StrokeColor = OxyColors.Black,
+                StrokeThickness = 1
+            };
+            s4.Items.Add(new ColumnItem { Value = 12 });
+            s4.Items.Add(new ColumnItem { Value = 14 });
+            s4.Items.Add(new ColumnItem { Value = 120 });
+            s4.Items.Add(new ColumnItem { Value = 26 });
+            model.Series.Add(s4);
+
+            s1.YAxisKey = "v1";
+            s2.YAxisKey = "v1";
+            s3.YAxisKey = "v2";
+            s4.YAxisKey = "v2";
+
+            return model;
+        }
+
+        [Example("#729: ColumnSeries / BarSeries not working with more than one value-axis")]
+        public static PlotModel TwoValueAxesStackedWithTwoStackGroups()
+        {
+            var model = new PlotModel
+            {
+                Title = "Two value axes (stacked / two stack groups)",
+                LegendPlacement = LegendPlacement.Outside,
+                LegendPosition = LegendPosition.BottomCenter,
+                LegendOrientation = LegendOrientation.Horizontal,
+                LegendBorderThickness = 0
+            };
+
+            var categoryAxis = new CategoryAxis { Position = AxisPosition.Bottom };
+            categoryAxis.Labels.Add("Category A");
+            categoryAxis.Labels.Add("Category B");
+            categoryAxis.Labels.Add("Category C");
+            categoryAxis.Labels.Add("Category D");
+            var valueAxis1 = new LinearAxis
+            {
+                Key = "v1",
+                Position = AxisPosition.Left,
+                MinimumPadding = 0,
+                MaximumPadding = 0.06,
+                AbsoluteMinimum = 0,
+                StartPosition = 0,
+                EndPosition = 0.5
+            };
+            var valueAxis2 = new LinearAxis
+            {
+                Key = "v2",
+                Position = AxisPosition.Left,
+                MinimumPadding = 0,
+                MaximumPadding = 0.06,
+                AbsoluteMinimum = 0,
+                StartPosition = 0.5,
+                EndPosition = 1
+            };
+
+            model.Axes.Add(categoryAxis);
+            model.Axes.Add(valueAxis1);
+            model.Axes.Add(valueAxis2);
+
+            var s1 = new ColumnSeries
+            {
+                Title = "Series 1",
+                IsStacked = true,
+                StrokeColor = OxyColors.Black,
+                StrokeThickness = 1,
+                StackGroup = "1"
+            };
+            s1.Items.Add(new ColumnItem { Value = 25 });
+            s1.Items.Add(new ColumnItem { Value = 137 });
+            s1.Items.Add(new ColumnItem { Value = 18 });
+            s1.Items.Add(new ColumnItem { Value = 40 });
+            model.Series.Add(s1);
+
+            var s2 = new ColumnSeries
+            {
+                Title = "Series 2",
+                IsStacked = true,
+                StrokeColor = OxyColors.Black,
+                StrokeThickness = 1,
+                StackGroup = "1"
+            };
+            s2.Items.Add(new ColumnItem { Value = 12 });
+            s2.Items.Add(new ColumnItem { Value = 14 });
+            s2.Items.Add(new ColumnItem { Value = 120 });
+            s2.Items.Add(new ColumnItem { Value = 26 });
+            model.Series.Add(s2);
+
+            var s5 = new ColumnSeries
+            {
+                Title = "Series 5",
+                IsStacked = true,
+                StrokeColor = OxyColors.Black,
+                StrokeThickness = 1,
+                StackGroup = "2"
+            };
+            s5.Items.Add(new ColumnItem { Value = 25 });
+            s5.Items.Add(new ColumnItem { Value = 137 });
+            s5.Items.Add(new ColumnItem { Value = 18 });
+            s5.Items.Add(new ColumnItem { Value = 40 });
+            model.Series.Add(s5);
+
+            var s6 = new ColumnSeries
+            {
+                Title = "Series 6",
+                IsStacked = true,
+                StrokeColor = OxyColors.Black,
+                StrokeThickness = 1,
+                StackGroup = "2"
+            };
+            s6.Items.Add(new ColumnItem { Value = 12 });
+            s6.Items.Add(new ColumnItem { Value = 14 });
+            s6.Items.Add(new ColumnItem { Value = 120 });
+            s6.Items.Add(new ColumnItem { Value = 26 });
+            model.Series.Add(s6);
+
+            var s3 = new ColumnSeries
+            {
+                Title = "Series 3",
+                IsStacked = true,
+                StrokeColor = OxyColors.Black,
+                StrokeThickness = 1,
+                StackGroup = "2"
+            };
+            s3.Items.Add(new ColumnItem { Value = 25 });
+            s3.Items.Add(new ColumnItem { Value = 137 });
+            s3.Items.Add(new ColumnItem { Value = 18 });
+            s3.Items.Add(new ColumnItem { Value = 40 });
+            model.Series.Add(s3);
+
+            var s4 = new ColumnSeries
+            {
+                Title = "Series 4",
+                IsStacked = true,
+                StrokeColor = OxyColors.Black,
+                StrokeThickness = 1,
+                StackGroup = "2"
+            };
+            s4.Items.Add(new ColumnItem { Value = 12 });
+            s4.Items.Add(new ColumnItem { Value = 14 });
+            s4.Items.Add(new ColumnItem { Value = 120 });
+            s4.Items.Add(new ColumnItem { Value = 26 });
+            model.Series.Add(s4);
+
+            var s7 = new ColumnSeries
+            {
+                Title = "Series 7",
+                IsStacked = true,
+                StrokeColor = OxyColors.Black,
+                StrokeThickness = 1,
+                StackGroup = "3"
+            };
+            s7.Items.Add(new ColumnItem { Value = 25 });
+            s7.Items.Add(new ColumnItem { Value = 137 });
+            s7.Items.Add(new ColumnItem { Value = 18 });
+            s7.Items.Add(new ColumnItem { Value = 40 });
+            model.Series.Add(s7);
+
+            var s8 = new ColumnSeries
+            {
+                Title = "Series 8",
+                IsStacked = true,
+                StrokeColor = OxyColors.Black,
+                StrokeThickness = 1,
+                StackGroup = "3"
+            };
+            s8.Items.Add(new ColumnItem { Value = 12 });
+            s8.Items.Add(new ColumnItem { Value = 14 });
+            s8.Items.Add(new ColumnItem { Value = 120 });
+            s8.Items.Add(new ColumnItem { Value = 26 });
+            model.Series.Add(s8);
+
+            s1.YAxisKey = "v1";
+            s2.YAxisKey = "v1";
+            s3.YAxisKey = "v2";
+            s4.YAxisKey = "v2";
+            s5.YAxisKey = "v1";
+            s6.YAxisKey = "v1";
+            s7.YAxisKey = "v2";
+            s8.YAxisKey = "v2";
+
+            return model;
+        }
+
+        [Example("#729: ColumnSeries / BarSeries not working with more than one value-axis 2")]
+        public static PlotModel TwoValueAxesNotStacked()
+        {
+            var model = new PlotModel
+            {
+                Title = "Two value axes (not stacked)",
+                LegendPlacement = LegendPlacement.Outside,
+                LegendPosition = LegendPosition.BottomCenter,
+                LegendOrientation = LegendOrientation.Horizontal,
+                LegendBorderThickness = 0
+            };
+
+            var categoryAxis = new CategoryAxis { Position = AxisPosition.Bottom };
+            categoryAxis.Labels.Add("Category A");
+            categoryAxis.Labels.Add("Category B");
+            categoryAxis.Labels.Add("Category C");
+            categoryAxis.Labels.Add("Category D");
+            var valueAxis1 = new LinearAxis
+            {
+                Key = "v1",
+                Position = AxisPosition.Left,
+                MinimumPadding = 0,
+                MaximumPadding = 0.06,
+                AbsoluteMinimum = 0,
+                StartPosition = 0,
+                EndPosition = 0.5
+            };
+            var valueAxis2 = new LinearAxis
+            {
+                Key = "v2",
+                Position = AxisPosition.Left,
+                MinimumPadding = 0,
+                MaximumPadding = 0.06,
+                AbsoluteMinimum = 0,
+                StartPosition = 0.5,
+                EndPosition = 1
+            };
+
+            model.Axes.Add(categoryAxis);
+            model.Axes.Add(valueAxis1);
+            model.Axes.Add(valueAxis2);
+
+            var s1 = new ColumnSeries
+            {
+                Title = "Series 1",
+                IsStacked = false,
+                StrokeColor = OxyColors.Black,
+                StrokeThickness = 1
+            };
+            s1.Items.Add(new ColumnItem { Value = 25 });
+            s1.Items.Add(new ColumnItem { Value = 137 });
+            s1.Items.Add(new ColumnItem { Value = 18 });
+            s1.Items.Add(new ColumnItem { Value = 40 });
+            model.Series.Add(s1);
+
+            var s2 = new ColumnSeries
+            {
+                Title = "Series 2",
+                IsStacked = false,
+                StrokeColor = OxyColors.Black,
+                StrokeThickness = 1
+            };
+            s2.Items.Add(new ColumnItem { Value = 12 });
+            s2.Items.Add(new ColumnItem { Value = 14 });
+            s2.Items.Add(new ColumnItem { Value = 120 });
+            s2.Items.Add(new ColumnItem { Value = 26 });
+            model.Series.Add(s2);
+
+            var s3 = new ColumnSeries
+            {
+                Title = "Series 3",
+                IsStacked = false,
+                StrokeColor = OxyColors.Black,
+                StrokeThickness = 1
+            };
+            s3.Items.Add(new ColumnItem { Value = 25 });
+            s3.Items.Add(new ColumnItem { Value = 137 });
+            s3.Items.Add(new ColumnItem { Value = 18 });
+            s3.Items.Add(new ColumnItem { Value = 40 });
+            model.Series.Add(s3);
+
+            var s4 = new ColumnSeries
+            {
+                Title = "Series 4",
+                IsStacked = false,
+                StrokeColor = OxyColors.Black,
+                StrokeThickness = 1
+            };
+            s4.Items.Add(new ColumnItem { Value = 12 });
+            s4.Items.Add(new ColumnItem { Value = 14 });
+            s4.Items.Add(new ColumnItem { Value = 120 });
+            s4.Items.Add(new ColumnItem { Value = 26 });
+            model.Series.Add(s4);
+
+            s1.YAxisKey = "v1";
+            s2.YAxisKey = "v1";
+            s3.YAxisKey = "v2";
+            s4.YAxisKey = "v2";
+
             return model;
         }
 
