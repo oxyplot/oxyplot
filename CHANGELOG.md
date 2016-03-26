@@ -32,6 +32,7 @@ All notable changes to this project will be documented in this file.
 - Support for Windows Universal 10.0 apps (#615)
 - Support Unicode in OxyPlot.Pdf (#789)
 - TouchTrackerManipulator (#787)
+- Optimized AreaSeries performance, added two colors mode (different from TwoColorAreaSeries).
 
 ### Changed
 - Renamed OxyPlot.WindowsUniversal to OxyPlot.Windows (#242)

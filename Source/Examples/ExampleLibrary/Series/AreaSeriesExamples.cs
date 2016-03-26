@@ -32,7 +32,20 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
-        [Example("Crossing lines")]
+		[Example("Two colors mode")]
+		public static PlotModel TwoColorsMode()
+		{
+			var plotModel1 = new PlotModel { Title = "AreaSeries with different area colors" };
+			var areaSeries1 = CreateExampleAreaSeries();
+			areaSeries1.TwoColorMode = true;
+			areaSeries1.ConstantY2 = 60;
+			areaSeries1.Color = OxyColors.Red;
+			areaSeries1.Color2 = OxyColors.Blue;
+			plotModel1.Series.Add(areaSeries1);
+			return plotModel1;
+		}
+
+		[Example("Crossing lines")]
         public static PlotModel CrossingLines()
         {
             var plotModel1 = new PlotModel { Title = "AreaSeries with crossing lines" };
