@@ -64,6 +64,8 @@ namespace OxyPlot.Axes
             this.Maximum = double.NaN;
             this.MinorStep = double.NaN;
             this.MajorStep = double.NaN;
+            this.MinimumMinorStep = 0;
+            this.MinimumMajorStep = 0;
 
             this.MinimumPadding = 0.01;
             this.MaximumPadding = 0.01;
@@ -371,6 +373,16 @@ namespace OxyPlot.Axes
         /// Gets or sets the minimum value of the axis. The default value is <c>double.NaN</c>.
         /// </summary>
         public double Minimum { get; set; }
+
+        /// <summary>
+        /// Gets or sets the minimum value for the interval between major ticks. The default value is <c>0</c>.
+        /// </summary>
+        public double MinimumMajorStep { get; set; }
+
+        /// <summary>
+        /// Gets or sets the minimum value for the interval between minor ticks. The default value is <c>0</c>.
+        /// </summary>
+        public double MinimumMinorStep { get; set; }
 
         /// <summary>
         /// Gets or sets the 'padding' fraction of the minimum value. The default value is <c>0.01</c>.
@@ -1387,6 +1399,9 @@ namespace OxyPlot.Axes
             {
                 this.ActualMajorStep = 10;
             }
+
+            this.ActualMinorStep = Math.Max(this.ActualMinorStep, this.MinimumMinorStep);
+            this.ActualMajorStep = Math.Max(this.ActualMajorStep, this.MinimumMajorStep);
 
             this.ActualStringFormat = this.StringFormat;
 
