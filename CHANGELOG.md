@@ -3,6 +3,7 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 ### Added
+- Added MinimumMajorStep and MinimumMinorStep to Axes.Axis (#816)
 - Added support for vertical X axis to HeatMapSeries (#535) and example
 - Added fall-back rectangle rendering to HeatMapSeries (#801) and example
 - Added logarithmic HeatMapSeries support (#802) and example
