@@ -208,7 +208,7 @@ namespace ExampleLibrary
             {
                 Maximum = 50,
                 Minimum = -30,
-                Position = AxisPosition.Left,                
+                Position = AxisPosition.Left,
                 PositionAtZeroCrossing = false,
             });
             plotModel1.Axes.Add(new LinearAxis
@@ -585,7 +585,7 @@ namespace ExampleLibrary
         [Example("MaximumRange")]
         public static PlotModel MaximumRange()
         {
-            var model = new PlotModel { Title = "MaximumRange = 40"};
+            var model = new PlotModel { Title = "MaximumRange = 40" };
             model.Axes.Add(
                 new LinearAxis
                 {
@@ -1086,6 +1086,34 @@ namespace ExampleLibrary
             plotModel1.Axes.Add(new LinearAxis { Title = "Title with^{super}_{sub}script" });
             plotModel1.Axes.Add(new LinearAxis { Title = "Title with^{super}_{sub}script", Position = AxisPosition.Bottom });
             return plotModel1;
+        }
+
+        [Example("MinimumMajorStep")]
+        public static PlotModel MinimumMajorStep()
+        {
+            var model = new PlotModel
+            {
+                Title = "Axes with MinimumMajorStep"
+            };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "MinimuMajorStep = 1", Minimum = 0, Maximum = 2, MinimumMajorStep = 1 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "MinimuMajorStep = 10", Minimum = 0, Maximum = 15, MinimumMajorStep = 10 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Top, Title = "MinimuMajorStep = 0 (default)", Minimum = 0, Maximum = 2 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Right, Title = "MinimuMajorStep = 0 (default)", Minimum = 0, Maximum = 15 });
+            return model;
+        }
+
+        [Example("MinimumMinorStep")]
+        public static PlotModel MinimumMinorStep()
+        {
+            var model = new PlotModel
+            {
+                Title = "Axes with MinimumMinorStep"
+            };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "MinimumMinorStep = 1", Minimum = 0, Maximum = 20, MinimumMinorStep = 1 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "MinimumMinorStep = 10", Minimum = 0, Maximum = 150, MinimumMinorStep = 10 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Top, Title = "MinimumMinorStep = 0 (default)", Minimum = 0, Maximum = 20 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Right, Title = "MinimumMinorStep = 0 (default)", Minimum = 0, Maximum = 150 });
+            return model;
         }
 
         /// <summary>
