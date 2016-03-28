@@ -2,6 +2,9 @@
 
 namespace OxyPlot.Series
 {
+	/// <summary>
+	/// Data point helper functions.
+	/// </summary>
 	public class DataPointHelper
 	{
 		/// <summary>
