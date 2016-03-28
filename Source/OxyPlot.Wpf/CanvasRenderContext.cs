@@ -331,6 +331,8 @@ namespace OxyPlot.Wpf
             StreamGeometryContext sgc = null;
             PathGeometry pathGeometry = null;
             int count = 0;
+	        bool fillDefined = !fill.IsUndefined();
+	        bool strokeDefined = !stroke.IsUndefined();
 
             foreach (var polygon in polygons)
             {
@@ -338,7 +340,7 @@ namespace OxyPlot.Wpf
                 {
                     path = this.CreateAndAdd<Path>();
                     this.SetStroke(path, stroke, thickness, lineJoin, dashArray, 0, aliased);
-                    if (!fill.IsUndefined())
+                    if (fillDefined)
                     {
                         path.Fill = this.GetCachedBrush(fill);
                     }
@@ -363,14 +365,14 @@ namespace OxyPlot.Wpf
                     {
                         if (usg)
                         {
-                            sgc.BeginFigure(point, !fill.IsUndefined(), true);
+                            sgc.BeginFigure(point, fillDefined, true);
                         }
                         else
                         {
                             figure = new PathFigure
                             {
                                 StartPoint = point,
-                                IsFilled = !fill.IsUndefined(),
+                                IsFilled = fillDefined,
                                 IsClosed = true
                             };
                             pathGeometry.Figures.Add(figure);
@@ -382,11 +384,11 @@ namespace OxyPlot.Wpf
                     {
                         if (usg)
                         {
-                            sgc.LineTo(point, !stroke.IsUndefined(), true);
+							sgc.LineTo(point, strokeDefined, true);
                         }
                         else
                         {
-                            figure.Segments.Add(new LineSegment(point, !stroke.IsUndefined()) { IsSmoothJoin = true });
+							figure.Segments.Add(new LineSegment(point, strokeDefined) { IsSmoothJoin = true });
                         }
                     }
                 }

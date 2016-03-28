@@ -27,10 +27,15 @@ namespace OxyPlot.Series
         /// </summary>
         private OxyColor defaultFillColor;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RectangleBarSeries" /> class.
-        /// </summary>
-        public RectangleBarSeries()
+		/// <summary>
+		/// The index of the data item at the start of visible window
+		/// </summary>
+		private int winIndex;
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="RectangleBarSeries" /> class.
+		/// </summary>
+		public RectangleBarSeries()
         {
             this.Items = new List<RectangleBarItem>();
 
@@ -152,15 +157,25 @@ namespace OxyPlot.Series
                 return;
             }
 
-            var clippingRect = this.GetClippingRect();
+			// determine render range
+			var xmin = this.XAxis.ActualMinimum;
+			var xmax = this.XAxis.ActualMaximum;
+			this.winIndex = FindBarIndex(Items, xmin, this.winIndex);
 
-            int i = 0;
+	        if (this.winIndex > 0)
+	        {
+		        this.winIndex--;
+	        }
+
+			var clippingRect = this.GetClippingRect();
 
             this.ActualBarRectangles = new List<OxyRect>();
 
-            foreach (var item in this.Items)
-            {
-                if (!this.IsValid(item.X0) || !this.IsValid(item.X1)
+	        bool stop = false;
+	        for (int i = this.winIndex; i < Items.Count; i++)
+	        {
+		        var item = Items[i];
+				if (!this.IsValid(item.X0) || !this.IsValid(item.X1)
                     || !this.IsValid(item.Y0) || !this.IsValid(item.Y1))
                 {
                     continue;
@@ -208,7 +223,14 @@ namespace OxyPlot.Series
                         VerticalAlignment.Middle);
                 }
 
-                i++;
+		        if (stop)
+		        {
+			        break;
+		        }
+		        if (item.X1 > xmax)
+		        {
+			        stop = true;
+		        }
             }
         }
 
@@ -302,5 +324,75 @@ namespace OxyPlot.Series
         {
             return !double.IsNaN(v) && !double.IsInfinity(v);
         }
-    }
+
+		/// <summary>
+		/// Find index of max(x) &lt;= target x in a list of data points
+		/// </summary>
+		/// <param name='items'>
+		/// vector of data points
+		/// </param>
+		/// <param name='targetX'>
+		/// target x.
+		/// </param>
+		/// <param name='guess'>
+		/// initial guess index.
+		/// </param>
+		/// <returns>
+		/// index of x with max(x) &lt;= target x or -1 if cannot find
+		/// </returns>
+		public static int FindBarIndex(IList<RectangleBarItem> items, double targetX, int guess)
+		{
+			int lastguess = 0;
+			int start = 0;
+			int end = items.Count - 1;
+
+			while (start <= end)
+			{
+				if (guess < start)
+				{
+					return lastguess;
+				}
+				else if (guess > end)
+				{
+					return end;
+				}
+
+				var guessX = items[guess].X0;
+				if (guessX.Equals(targetX))
+				{
+					return guess;
+				}
+				else if (guessX > targetX)
+				{
+					end = guess - 1;
+					if (end < start)
+					{
+						return lastguess;
+					}
+					else if (end == start)
+					{
+						return end;
+					}
+				}
+				else
+				{
+					start = guess + 1;
+					lastguess = guess;
+				}
+
+				if (start >= end)
+				{
+					return lastguess;
+				}
+
+				var endX = items[end].X0;
+				var startX = items[start].X0;
+
+				var m = (end - start + 1) / (endX - startX);
+				guess = start + (int)((targetX - startX) * m);
+			}
+
+			return lastguess;
+		}
+	}
 }
