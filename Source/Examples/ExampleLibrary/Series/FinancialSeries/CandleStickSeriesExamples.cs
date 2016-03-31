@@ -25,30 +25,28 @@ namespace ExampleLibrary
             pm.Axes.Add(timeSpanAxis1);
             var linearAxis1 = new LinearAxis { Position = AxisPosition.Left };
             pm.Axes.Add(linearAxis1);
-            var series = new CandleStickSeries
-            {
-                Color = OxyColors.Black,
-                IncreasingColor = OxyColors.DarkGreen,
-                DecreasingColor = OxyColors.Red,
-                DataFieldX = "Time",
-                DataFieldHigh = "H",
-                DataFieldLow = "L",
-                DataFieldOpen = "O",
-                DataFieldClose = "C",
-                TrackerFormatString = "High: {2:0.00}\nLow: {3:0.00}\nOpen: {4:0.00}\nClose: {5:0.00}",
-            };
-
             var n = 1000000;
-            foreach (var bar in HighLowItemGenerator.MRProcess(n))
-            {
-                series.Append(bar);
-            }
+            var items = HighLowItemGenerator.MRProcess(n).ToArray();
+            var series = new CandleStickSeries
+                             {
+                                 Color = OxyColors.Black,
+                                 IncreasingColor = OxyColors.DarkGreen,
+                                 DecreasingColor = OxyColors.Red,
+                                 DataFieldX = "Time",
+                                 DataFieldHigh = "H",
+                                 DataFieldLow = "L",
+                                 DataFieldOpen = "O",
+                                 DataFieldClose = "C",
+                                 TrackerFormatString =
+                                     "High: {2:0.00}\nLow: {3:0.00}\nOpen: {4:0.00}\nClose: {5:0.00}",
+                                 ItemsSource = items
+                             };
 
-            timeSpanAxis1.Minimum = series.Items[n - 200].X;
-            timeSpanAxis1.Maximum = series.Items[n - 130].X;
+            timeSpanAxis1.Minimum = items[n - 200].X;
+            timeSpanAxis1.Maximum = items[n - 130].X;
 
-            linearAxis1.Minimum = series.Items.Skip(n - 200).Take(70).Select(x => x.Low).Min();
-            linearAxis1.Maximum = series.Items.Skip(n - 200).Take(70).Select(x => x.High).Max();
+            linearAxis1.Minimum = items.Skip(n - 200).Take(70).Select(x => x.Low).Min();
+            linearAxis1.Maximum = items.Skip(n - 200).Take(70).Select(x => x.High).Max();
 
             pm.Series.Add(series);
 
@@ -69,30 +67,24 @@ namespace ExampleLibrary
             pm.Axes.Add(timeSpanAxis1);
             var linearAxis1 = new LinearAxis { Position = AxisPosition.Left };
             pm.Axes.Add(linearAxis1);
-            var series = new CandleStickSeries
-            {
-                Color = OxyColors.Black,
-                IncreasingColor = OxyColors.DarkGreen,
-                DecreasingColor = OxyColors.Red,
-                DataFieldX = "Time",
-                DataFieldHigh = "H",
-                DataFieldLow = "L",
-                DataFieldOpen = "O",
-                DataFieldClose = "C",
-                TrackerFormatString = "High: {2:0.00}\nLow: {3:0.00}\nOpen: {4:0.00}\nClose: {5:0.00}",
-            };
-
             var n = 1000000;
-            foreach (var bar in HighLowItemGenerator.MRProcess(n))
-            {
-                series.Append(bar);
-            }
+            var items = HighLowItemGenerator.MRProcess(n).ToArray();
+            var series = new CandleStickSeries
+                             {
+                                 Color = OxyColors.Black,
+                                 IncreasingColor = OxyColors.DarkGreen,
+                                 DecreasingColor = OxyColors.Red,
+                                 TrackerFormatString =
+                                     "High: {2:0.00}\nLow: {3:0.00}\nOpen: {4:0.00}\nClose: {5:0.00}",
+                                 ItemsSource = items
+                             };
 
-            timeSpanAxis1.Minimum = series.Items[0].X;
-            timeSpanAxis1.Maximum = series.Items[29].X;
 
-            linearAxis1.Minimum = series.Items.Take(30).Select(x => x.Low).Min();
-            linearAxis1.Maximum = series.Items.Take(30).Select(x => x.High).Max();
+            timeSpanAxis1.Minimum = items[0].X;
+            timeSpanAxis1.Maximum = items[29].X;
+
+            linearAxis1.Minimum = items.Take(30).Select(x => x.Low).Min();
+            linearAxis1.Maximum = items.Take(30).Select(x => x.High).Max();
 
             pm.Series.Add(series);
 
@@ -113,24 +105,22 @@ namespace ExampleLibrary
             pm.Axes.Add(timeSpanAxis1);
             var linearAxis1 = new LinearAxis { Position = AxisPosition.Left };
             pm.Axes.Add(linearAxis1);
-            var series = new CandleStickSeries
-            {
-                Color = OxyColors.Black,
-                IncreasingColor = OxyColors.DarkGreen,
-                DecreasingColor = OxyColors.Red,
-                DataFieldX = "Time",
-                DataFieldHigh = "H",
-                DataFieldLow = "L",
-                DataFieldOpen = "O",
-                DataFieldClose = "C",
-                TrackerFormatString = "High: {2:0.00}\nLow: {3:0.00}\nOpen: {4:0.00}\nClose: {5:0.00}",
-            };
-
             var n = 100;
-            foreach (var bar in HighLowItemGenerator.MRProcess(n))
-            {
-                series.Append(bar);
-            }
+            var items = HighLowItemGenerator.MRProcess(n).ToArray();
+            var series = new CandleStickSeries
+                             {
+                                 Color = OxyColors.Black,
+                                 IncreasingColor = OxyColors.DarkGreen,
+                                 DecreasingColor = OxyColors.Red,
+                                 DataFieldX = "X",
+                                 DataFieldHigh = "High",
+                                 DataFieldLow = "Low",
+                                 DataFieldOpen = "Open",
+                                 DataFieldClose = "Close",
+                                 TrackerFormatString =
+                                     "High: {2:0.00}\nLow: {3:0.00}\nOpen: {4:0.00}\nClose: {5:0.00}",
+                                 ItemsSource = items
+                             };
 
             pm.Series.Add(series);
 
