@@ -514,7 +514,7 @@ namespace OxyPlot.Axes
             if (this.ItemsSource != null)
             {
                 this.itemsSourceLabels.Clear();
-                this.itemsSourceLabels.AddFormattedRange(this.ItemsSource, this.LabelField, this.StringFormat, this.ActualCulture);
+                this.itemsSourceLabels.AddRange(this.ItemsSource.Format(this.LabelField, this.StringFormat, this.ActualCulture));
                 return;
             }
 

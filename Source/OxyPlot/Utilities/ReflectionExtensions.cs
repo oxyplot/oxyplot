@@ -13,6 +13,8 @@ namespace OxyPlot
     using System.Collections;
     using System.Collections.Generic;
     using System.Globalization;
+    using System.Linq;
+    using System.Net;
     using System.Reflection;
 
     using OxyPlot.Axes;
@@ -55,23 +57,31 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Fills a formatted string collection by the specified property of a source enumerable.
+        /// Formats each item in a sequence by the specified format string and property.
         /// </summary>
-        /// <param name="target">The target list to be filled.</param>
         /// <param name="source">The source target.</param>
         /// <param name="propertyName">The property name.</param>
-        /// <param name="formatString">The format string.</param>
-        /// <param name="provider">The provider.</param>
+        /// <param name="formatString">The format string. The format argument {0} can be used for the value of the property in each element of the sequence.</param>
+        /// <param name="provider">The format provider.</param>
         /// <exception cref="System.InvalidOperationException">Could not find property.</exception>
-        public static void AddFormattedRange(this List<string> target, IEnumerable source, string propertyName, string formatString, IFormatProvider provider)
+        public static IEnumerable<string> Format(this IEnumerable source, string propertyName, string formatString, IFormatProvider provider)
         {
-            var pi = new ReflectionPath(propertyName);
-            var fs = "{0:" + formatString + "}";
-            foreach (var o in source)
+            var fs = StringHelper.CreateValidFormatString(formatString);
+            if (string.IsNullOrEmpty(propertyName))
             {
-                var v = pi.GetValue(o);
-                var value = string.Format(provider, fs, v);
-                target.Add(value);
+                foreach (var element in source)
+                {
+                    yield return string.Format(provider, fs, element);
+                }
+            }
+            else
+            {
+                var reflectionPath = new ReflectionPath(propertyName);
+                foreach (var element in source)
+                {
+                    var value = reflectionPath.GetValue(element);
+                    yield return string.Format(provider, fs, value);
+                }
             }
         }
 
