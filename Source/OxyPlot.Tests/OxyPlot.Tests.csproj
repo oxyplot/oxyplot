@@ -90,7 +90,6 @@
     <Compile Include="Foundation\CohenSutherlandClippingTests.cs" />
     <Compile Include="Foundation\SutherlandHodgmanClippingTests.cs" />
     <Compile Include="Foundation\ScreenPointHelperTests.cs" />
-    <Compile Include="Utilities\ReflectionExtensionsTests.cs" />
     <Compile Include="Foundation\OxyPaletteTests.cs" />
     <Compile Include="Utilities\FractionHelperTests.cs" />
     <Compile Include="Utilities\StringHelperTests.cs" />

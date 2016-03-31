@@ -38,7 +38,7 @@ namespace OxyPlot
         /// <param name="path">The reflection path.</param>
         public ReflectionPath(string path)
         {
-            this.items = path.Split('.');
+            this.items = path != null ? path.Split('.') : new string[0];
             this.infos = new PropertyInfo[this.items.Length];
             this.reflectedTypes = new Type[this.items.Length];
         }
@@ -47,16 +47,38 @@ namespace OxyPlot
         /// Gets the value for the specified instance.
         /// </summary>
         /// <param name="instance">The instance.</param>
-        /// <returns>The value.</returns>
+        /// <returns>
+        /// The value.
+        /// </returns>
         /// <exception cref="System.InvalidOperationException">Could not find property.</exception>
         public object GetValue(object instance)
+        {
+            object result;
+            if (this.TryGetValue(instance, out result))
+            {
+                return result;
+            }
+
+            throw new InvalidOperationException("Could not find property " + string.Join(".", this.items) + " in " + instance);
+        }
+
+        /// <summary>
+        /// Tries to get the value for the specified instance.
+        /// </summary>
+        /// <param name="instance">The instance.</param>
+        /// <param name="result">The result.</param>
+        /// <returns>
+        /// <c>true</c> if the value was found.
+        /// </returns>
+        public bool TryGetValue(object instance, out object result)
         {
             var current = instance;
             for (int i = 0; i < this.items.Length; i++)
             {
                 if (current == null)
                 {
-                    return null;
+                    result = null;
+                    return true;
                 }
 
                 var currentType = current.GetType();
@@ -70,13 +92,15 @@ namespace OxyPlot
 
                 if (pi == null)
                 {
-                    throw new InvalidOperationException("Could not find property " + this.items[i] + " in " + current);
+                    result = null;
+                    return false;
                 }
 
                 current = pi.GetValue(current, null);
             }
 
-            return current;
+            result = current;
+            return true;
         }
     }
 }
