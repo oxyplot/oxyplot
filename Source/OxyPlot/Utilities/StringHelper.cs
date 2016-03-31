@@ -41,7 +41,7 @@ namespace OxyPlot
             // Replace items on the format {Property[:Formatstring]}
             var s = FormattingExpression.Replace(
                 formatString,
-                delegate(Match match)
+                delegate (Match match)
                 {
                     var property = match.Groups["Property"].Value;
                     if (property.Length > 0 && char.IsDigit(property[0]))
@@ -65,6 +65,26 @@ namespace OxyPlot
             // Also apply the standard formatting
             s = string.Format(provider, s, values);
             return s;
+        }
+
+        /// <summary>
+        /// Creates a valid format string on the form "{0:###}".
+        /// </summary>
+        /// <param name="input">The input format string.</param>
+        /// <returns>The corrected format string.</returns>
+        public static string CreateValidFormatString(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+            {
+                return "{0}";
+            }
+
+            if (input.Contains("{"))
+            {
+                return input;
+            }
+
+            return string.Concat("{0:", input, "}");
         }
     }
 }

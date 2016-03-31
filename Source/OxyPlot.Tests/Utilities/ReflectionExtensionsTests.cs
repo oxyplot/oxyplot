@@ -6,7 +6,9 @@
 
 namespace OxyPlot.Tests
 {
+    using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
 
@@ -17,16 +19,6 @@ namespace OxyPlot.Tests
     [TestFixture]
     public class ReflectionExtensionsTests
     {
-        [Test]
-        public void AddFormattedRangeWithSimpleProperties()
-        {
-            var items = new List<Item> { new Item { A = 1, B = 2 } };
-            var result = new List<string>();
-            result.AddFormattedRange(items, "A", "0.0", CultureInfo.InvariantCulture);
-            Assert.That(result.Count, Is.EqualTo(1));
-            Assert.That(result[0], Is.EqualTo("1.0"));
-        }
-
         [Test]
         public void AddRangeWithSimpleProperties()
         {
@@ -67,6 +59,23 @@ namespace OxyPlot.Tests
             Assert.That(result.Count, Is.EqualTo(1));
             Assert.That(result[0].X, Is.EqualTo(1.1));
             Assert.That(result[0].Y, Is.EqualTo(2.2));
+        }
+
+        [Test]
+        public void FormatIntegers()
+        {
+            var items = new[] { 1, 2, 3 };
+            CollectionAssert.AreEqual(new[] { "1", "2", "3" }, items.Format(null, null, CultureInfo.InvariantCulture));
+            CollectionAssert.AreEqual(new[] { "01", "02", "03" }, items.Format("", "00", CultureInfo.InvariantCulture));
+            CollectionAssert.AreEqual(new[] { "Item 1", "Item 2", "Item 3" }, items.Format(null, "Item {0}", CultureInfo.InvariantCulture));
+        }
+
+        [Test]
+        public void FormatStrings()
+        {
+            var items = new[] { "One", "Two", "Three" };
+            CollectionAssert.AreEqual(new[] { "3", "3", "5" }, items.Format("Length", null, CultureInfo.InvariantCulture));
+            CollectionAssert.AreEqual(new[] { "Item One", "Item Two", "Item Three" }, items.Format(null, "Item {0}", CultureInfo.InvariantCulture));
         }
 
         /// <summary>

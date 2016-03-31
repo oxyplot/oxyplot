@@ -37,6 +37,15 @@ namespace OxyPlot.Tests
                 StringHelper.Format(CultureInfo.InvariantCulture, "{Text}", item));
         }
 
+        [Test]
+        public void CreateValidFormatString()
+        {
+            Assert.AreEqual("{0}", StringHelper.CreateValidFormatString(null), "null");
+            Assert.AreEqual("{0}", StringHelper.CreateValidFormatString(string.Empty), "empty");
+            Assert.AreEqual("{0:0.00}", StringHelper.CreateValidFormatString("0.00"), "0.00");
+            Assert.AreEqual("Item {0}", StringHelper.CreateValidFormatString("Item {0}"), "Item {0}");
+        }
+
         public class Item
         {
             public string Text { get; set; }
