@@ -360,13 +360,20 @@ namespace OxyPlot.Series
                 return;
             }
 
+            var sequenceOfHighLowItems = this.ItemsSource as IEnumerable<HighLowItem>;
+            if (sequenceOfHighLowItems != null)
+            {
+                this.items.AddRange(sequenceOfHighLowItems);
+                return;
+            }
+
             var filler = new ListBuilder<HighLowItem>();
             filler.Add(this.DataFieldX, double.NaN);
             filler.Add(this.DataFieldHigh, double.NaN);
             filler.Add(this.DataFieldLow, double.NaN);
             filler.Add(this.DataFieldOpen, double.NaN);
             filler.Add(this.DataFieldClose, double.NaN);
-            filler.FillT(this.items, this.ItemsSource, args => new HighLowItem(Convert.ToDouble(args[0]), Convert.ToDouble(args[1]), Convert.ToDouble(args[2]), Convert.ToDouble(args[3]), Convert.ToDouble(args[4])));
+            filler.FillT(this.items, this.ItemsSource, args => new HighLowItem(Axis.ToDouble(args[0]), Convert.ToDouble(args[1]), Convert.ToDouble(args[2]), Convert.ToDouble(args[3]), Convert.ToDouble(args[4])));
         }
 
         /// <summary>

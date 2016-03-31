@@ -71,6 +71,7 @@ All notable changes to this project will be documented in this file.
 - Implement IEquatable<T> for struct types (#692)
 - BoxPlotItem changed to reference type (#692)
 - Move Xamarin projects to new repository (#777)
+- Remove CandleStickSeries.Append (#826)
 
 ### Removed
 - StyleCop tasks (#556)
@@ -149,7 +150,7 @@ All notable changes to this project will be documented in this file.
 - Axis should never go into infinite loop (#758)
 - Exception in BarSeriesBase (#790)
 - Vertical Axes Title Font Bug (#474)
-- Support string[] as ItemsSource in CategoryAxis #825
+- Support string[] as ItemsSource in CategoryAxis (#825)
 
 ## [2014.1.546] - 2014-10-22
 ### Added
