@@ -15,20 +15,31 @@ namespace ExampleLibrary
     [Examples("RangeColorAxis"), Tags("Axes")]
     public class RangeColorAxisExamples
     {
-        [Example("ScatterSeries with RangeColorAxis")]
-        public static PlotModel RangeColorAxis()
+        [Example("ScatterSeries with RangeColorAxis (Horizontal)")]
+        public static PlotModel HorizontalRangeColorAxis()
+        {
+            return RangeColorAxis(AxisPosition.Top);
+        }
+
+        [Example("ScatterSeries with RangeColorAxis (Vertical)")]
+        public static PlotModel VerticalRangeColorAxis()
+        {
+            return RangeColorAxis(AxisPosition.Right);
+        }
+
+        private static PlotModel RangeColorAxis(AxisPosition position)
         {
             int n = 1000;
             var model = new PlotModel
-                {
-                    Title = string.Format("ScatterSeries and RangeColorAxis (n={0})", n),
-                    Background = OxyColors.LightGray
-                };
+            {
+                Title = string.Format("ScatterSeries and RangeColorAxis (n={0})", n),
+                Background = OxyColors.LightGray
+            };
 
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
 
-            var rca = new RangeColorAxis { Position = AxisPosition.Right, Maximum = 2, Minimum = -2 };
+            var rca = new RangeColorAxis { Position = position, Maximum = 2, Minimum = -2 };
             rca.AddRange(0, 0.5, OxyColors.Blue);
             rca.AddRange(-0.2, -0.1, OxyColors.Red);
             model.Axes.Add(rca);

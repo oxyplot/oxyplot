@@ -151,6 +151,7 @@ All notable changes to this project will be documented in this file.
 - Exception in BarSeriesBase (#790)
 - Vertical Axes Title Font Bug (#474)
 - Support string[] as ItemsSource in CategoryAxis (#825)
+- Horizontal RangeColorAxis (#767)
 
 ## [2014.1.546] - 2014-10-22
 ### Added
