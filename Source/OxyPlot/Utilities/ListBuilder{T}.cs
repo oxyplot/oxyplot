@@ -12,7 +12,6 @@ namespace OxyPlot
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Reflection;
 
     /// <summary>
     /// Provides functionality to build a list by reflecting specified properties on a sequence.
@@ -71,14 +70,14 @@ namespace OxyPlot
         /// <param name="instanceCreator">The instance creator.</param>
         public void Fill(IList target, IEnumerable source, Func<IList<object>, object> instanceCreator)
         {
-            PropertyInfo[] pi = null;
+            ReflectionPath[] pi = null;
             Type t = null;
             foreach (var sourceItem in source)
             {
                 if (pi == null || sourceItem.GetType() != t)
                 {
                     t = sourceItem.GetType();
-                    pi = new PropertyInfo[this.properties.Count];
+                    pi = new ReflectionPath[this.properties.Count];
                     for (int i = 0; i < this.properties.Count; i++)
                     {
                         var p = this.properties[i];
@@ -88,26 +87,15 @@ namespace OxyPlot
                             continue;
                         }
 
-                        pi[i] = t.GetRuntimeProperty(p);
-                        if (pi[i] == null)
-                        {
-                            throw new InvalidOperationException(
-                                string.Format("Could not find field {0} on type {1}", p, t));
-                        }
+                        pi[i] = new ReflectionPath(p);
                     }
                 }
 
-                var args = new List<object>();
+                var args = new List<object>(pi.Length);
                 for (int j = 0; j < pi.Length; j++)
                 {
-                    if (pi[j] != null)
-                    {
-                        args.Add(pi[j].GetValue(sourceItem, null));
-                    }
-                    else
-                    {
-                        args.Add(this.defaultValues[j]);
-                    }
+                    object value;
+                    args.Add(pi[j].TryGetValue(sourceItem, out value) ? value : this.defaultValues[j]);
                 }
 
                 var item = instanceCreator(args);

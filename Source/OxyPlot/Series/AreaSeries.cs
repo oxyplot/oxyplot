@@ -400,7 +400,10 @@ namespace OxyPlot.Series
             // Using reflection on DataFieldX2 and DataFieldY2
             if (this.DataFieldX2 != null && this.DataFieldY2 != null)
             {
-                ReflectionExtensions.AddRange(this.itemsSourcePoints2, this.ItemsSource, this.DataFieldX2, this.DataFieldY2);
+                var filler = new ListBuilder<DataPoint>();
+                filler.Add(this.DataFieldX2, double.NaN);
+                filler.Add(this.DataFieldY2, double.NaN);
+                filler.Fill(this.itemsSourcePoints2, this.ItemsSource, args => new DataPoint(Convert.ToDouble(args[0]), Convert.ToDouble(args[1])));
             }
             else
             {
