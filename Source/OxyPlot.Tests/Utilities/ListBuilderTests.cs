@@ -50,8 +50,8 @@ namespace OxyPlot.Tests
             Assert.AreEqual(3.14, target[0].X);
         }
 
-        [Test, ExpectedException]
-        public void Fill_InvalidProperty_ThrowsException()
+        [Test]
+        public void Fill_InvalidProperty_UsesDefaultValue()
         {
             var target = new List<ScatterPoint>();
 

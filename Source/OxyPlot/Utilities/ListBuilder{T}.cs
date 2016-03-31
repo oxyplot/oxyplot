@@ -12,6 +12,7 @@ namespace OxyPlot
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Linq;
 
     /// <summary>
     /// Provides functionality to build a list by reflecting specified properties on a sequence.
@@ -77,25 +78,14 @@ namespace OxyPlot
                 if (pi == null || sourceItem.GetType() != t)
                 {
                     t = sourceItem.GetType();
-                    pi = new ReflectionPath[this.properties.Count];
-                    for (int i = 0; i < this.properties.Count; i++)
-                    {
-                        var p = this.properties[i];
-                        if (p == null)
-                        {
-                            pi[i] = null;
-                            continue;
-                        }
-
-                        pi[i] = new ReflectionPath(p);
-                    }
+                    pi = this.properties.Select(p => p != null ? new ReflectionPath(p) : null).ToArray();
                 }
 
                 var args = new List<object>(pi.Length);
                 for (int j = 0; j < pi.Length; j++)
                 {
                     object value;
-                    args.Add(pi[j].TryGetValue(sourceItem, out value) ? value : this.defaultValues[j]);
+                    args.Add(pi[j] != null && pi[j].TryGetValue(sourceItem, out value) ? value : this.defaultValues[j]);
                 }
 
                 var item = instanceCreator(args);

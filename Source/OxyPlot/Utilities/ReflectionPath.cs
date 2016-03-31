@@ -38,7 +38,7 @@ namespace OxyPlot
         /// <param name="path">The reflection path.</param>
         public ReflectionPath(string path)
         {
-            this.items = path.Split('.');
+            this.items = path != null ? path.Split('.') : new string[0];
             this.infos = new PropertyInfo[this.items.Length];
             this.reflectedTypes = new Type[this.items.Length];
         }
