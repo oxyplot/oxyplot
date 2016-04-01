@@ -11,6 +11,7 @@ namespace OxyPlot.Series
 {
     using System;
     using System.Reflection;
+    using System.Runtime.CompilerServices;
 
     using OxyPlot.Axes;
 
@@ -32,11 +33,6 @@ namespace OxyPlot.Series
         /// The minimum X gap between successive data items
         /// </summary>
         private double minDx;
-
-        /// <summary>
-        /// The index of the data item at the start of visible window
-        /// </summary>
-        private int winIndex;
 
         /// <summary>
         /// Initializes a new instance of the <see cref = "CandleStickSeries" /> class.
@@ -91,10 +87,10 @@ namespace OxyPlot.Series
         {
             if (startIndex < 0)
             {
-                startIndex = this.winIndex;
+                startIndex = this.WindowStartIndex;
             }
 
-            return HighLowItem.FindIndex(this.Items, x, startIndex);
+            return this.FindWindowStartIndex(this.Items, this.GetCandleX, x, startIndex);
         }
 
         /// <summary>
@@ -130,9 +126,9 @@ namespace OxyPlot.Series
             // determine render range
             var xmin = this.XAxis.ActualMinimum;
             var xmax = this.XAxis.ActualMaximum;
-            this.winIndex = HighLowItem.FindIndex(items, xmin, this.winIndex);
-
-            for (int i = this.winIndex; i < nitems; i++)
+            this.UpdateWindowStartIndex(items, this.GetCandleX, xmin);
+            
+            for (int i = this.WindowStartIndex; i < nitems; i++)
             {
                 var bar = items[i];
 
@@ -244,7 +240,7 @@ namespace OxyPlot.Series
                 return null;
             }
 
-            var pidx = HighLowItem.FindIndex(this.Items, targetX, this.winIndex);
+            var pidx = this.FindWindowStartIndex(this.Items, this.GetCandleX, targetX, this.WindowStartIndex);
             var nidx = ((pidx + 1) < this.Items.Count) ? pidx + 1 : pidx;
 
             Func<HighLowItem, double> distance = bar =>
@@ -295,8 +291,7 @@ namespace OxyPlot.Series
         protected internal override void UpdateData()
         {
             base.UpdateData();
-            this.winIndex = 0;
-
+            
             // determine minimum X gap between successive points
             var items = this.Items;
             var nitems = items.Count;
@@ -357,6 +352,12 @@ namespace OxyPlot.Series
             }
             
             return double.NaN;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private double GetCandleX(HighLowItem item)
+        {
+            return item.X;
         }
     }
 }
