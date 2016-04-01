@@ -72,6 +72,7 @@ All notable changes to this project will be documented in this file.
 - BoxPlotItem changed to reference type (#692)
 - Move Xamarin projects to new repository (#777)
 - Remove CandleStickSeries.Append (#826)
+- Change MinorInterval calculation, add unit test (#133)
 
 ### Removed
 - StyleCop tasks (#556)
