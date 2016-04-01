@@ -1685,22 +1685,13 @@ namespace OxyPlot.Axes
         /// <returns>The minor interval.</returns>
         protected double CalculateMinorInterval(double majorInterval)
         {
-            // if major interval is 100, the minor interval will be 20.
+            // check if majorInterval = 2*10^x
+            if (Math.Abs(((Math.Log10(majorInterval) + 1000) % 1) - Math.Log10(2)) < 1e-10)
+            {
+                return majorInterval / 4;
+            }
+
             return majorInterval / 5;
-
-            // The following obsolete code divided major intervals into 4 minor intervals, unless the major interval's mantissa was 5.
-            // e.g. Major interval 100 => minor interval 25.
-
-            // Func<double, double> exponent = x => Math.Ceiling(Math.Log(x, 10));
-            // Func<double, double> mantissa = x => x / Math.Pow(10, exponent(x) - 1);
-            // var m = (int)mantissa(majorInterval);
-            // switch (m)
-            // {
-            // case 5:
-            // return majorInterval / 5;
-            // default:
-            // return majorInterval / 4;
-            // }
         }
 
         /// <summary>

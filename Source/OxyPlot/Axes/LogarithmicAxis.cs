@@ -78,80 +78,211 @@ namespace OxyPlot.Axes
                 this.ActualMinimum = 0.1;
             }
 
-            double logBase = Math.Log(this.Base);
-            var e0 = (int)Math.Floor(Math.Log(this.ActualMinimum) / logBase);
-            var e1 = (int)Math.Ceiling(Math.Log(this.ActualMaximum) / logBase);
-
-            // find the min & max values for the specified base
-            // round to max 10 digits
-            double p0 = Math.Pow(this.Base, e0);
-            double p1 = Math.Pow(this.Base, e1);
-            double d0 = Math.Round(p0, 10);
-            double d1 = Math.Round(p1, 10);
-            if (d0 <= 0)
-            {
-                d0 = p0;
-            }
-
-            double d = d0;
             majorTickValues = new List<double>();
             minorTickValues = new List<double>();
 
-            double epsMin = this.ActualMinimum * 1e-6;
-            double epsMax = this.ActualMaximum * 1e-6;
+            double logMinimum = Math.Log(this.ActualMinimum, this.Base);
+            double logMaximum = Math.Log(this.ActualMaximum, this.Base);
 
-            while (d <= d1 + epsMax)
-            {
-                // d = RemoveNoiseFromDoubleMath(d);
-                if (d >= this.ActualMinimum - epsMin && d <= this.ActualMaximum + epsMax)
-                {
-                    majorTickValues.Add(d);
-                }
+            int logSmallestDecade = (int)Math.Floor(logMinimum);
+            int logLargestDecade = (int)Math.Ceiling(logMaximum);
+            double smallestDecade = Math.Pow(this.Base, logSmallestDecade);
+            double largestDecade = Math.Pow(this.Base, logLargestDecade);
 
-                for (int i = 1; i < this.Base; i++)
+            double logBandwidth = logMaximum - logMinimum;
+            double axisBandwidth = this.IsVertical() ? this.ScreenMax.Y - this.ScreenMin.Y : this.ScreenMax.X - this.ScreenMin.X;
+            double logAxisBandwidth = Math.Log(axisBandwidth, this.Base);
+
+            double desiredNumberOfTicks = axisBandwidth / this.IntervalLength;
+            double ticksPerDecade = desiredNumberOfTicks / logBandwidth;
+            double desiredStepSize = 1.0 / Convert.ToInt32(ticksPerDecade);
+
+            int intBase = Convert.ToInt32(this.Base);
+            
+            if (ticksPerDecade < 0.75)
+            {   // Minor Ticks at every decade, Major Ticks every few decades
+                int decadesPerMajorTick = Math.Max(2, Convert.ToInt32(1 / ticksPerDecade));
+                for (int c = logSmallestDecade; true; c++)
                 {
-                    double d2 = d * (i + 1);
-                    if (d2 > d1 + double.Epsilon)
+                    if (c < logMinimum)
+                    {
+                        continue;
+                    }
+
+                    if (c > logMaximum)
                     {
                         break;
                     }
 
-                    if (d2 > this.ActualMaximum)
+                    double currentValue = Math.Pow(this.Base, c);
+                    minorTickValues.Add(currentValue);
+
+                    if (c % decadesPerMajorTick == 0)
                     {
-                        break;
+                        majorTickValues.Add(currentValue);
                     }
-
-                    if (d2 >= this.ActualMinimum && d2 <= this.ActualMaximum)
-                    {
-                        minorTickValues.Add(d2);
-                    }
-                }
-
-                d *= this.Base;
-                if (double.IsInfinity(d))
-                {
-                    break;
-                }
-
-                if (d < double.Epsilon)
-                {
-                    break;
-                }
-
-                if (double.IsNaN(d))
-                {
-                    break;
                 }
             }
+            else if (Math.Abs(this.Base - intBase) > 1e-10)
+            {   // fractional Base, best guess: naively subdivide decades
+                for (double c = logSmallestDecade; true; c += desiredStepSize)
+                {
+                    if (c < logMinimum)
+                    {
+                        continue;
+                    }
 
-            if (majorTickValues.Count < 2)
-            {
+                    if (c > logMaximum)
+                    {
+                        break;
+                    }
+
+                    majorTickValues.Add(Math.Pow(this.Base, c));
+                    minorTickValues.Add(Math.Pow(this.Base, c));
+
+                    if (c + (0.5 * desiredStepSize) < logMaximum)
+                    {
+                        minorTickValues.Add(Math.Pow(this.Base, c + (0.5 * desiredStepSize)));
+                    }
+                }
+            }
+            else if (ticksPerDecade < 2)
+            {   // Major Ticks at every decade, Minor Ticks at fractions (not for fractional base)
+                for (int c = logSmallestDecade; true; c++)
+                {
+                    if (c < logMinimum)
+                    {
+                        continue;
+                    }
+
+                    if (c > logMaximum)
+                    {
+                        break;
+                    }
+
+                    double currentValue = Math.Pow(this.Base, c);
+                    minorTickValues.Add(currentValue);
+                    majorTickValues.Add(currentValue);
+
+                    for (int c1 = 2; c1 < this.Base; c1++)
+                    {
+                        minorTickValues.Add(currentValue * c1);
+                    }
+                }
+            }
+            else if (ticksPerDecade > this.Base * 1000)
+            {   // Fall back to linearly distributed tick values
                 base.GetTickValues(out majorLabelValues, out majorTickValues, out minorTickValues);
             }
             else
-            {
-                majorLabelValues = majorTickValues;
+            {   // integer Base, subdivide decades
+
+                List<double> logMajorCandidates = new List<double>();
+                List<double> logMinorCandidates = new List<double>();
+                
+                // loop through all visible decades
+                for (int c = logSmallestDecade; c <= logLargestDecade; c++)
+                {
+                    double logPreviousCandidate = c;
+
+                    // loop through the subdivisions for the current decade
+                    for (int c1 = 1; true; c1++)
+                    {
+                        double logCurrentCandidate = c + Math.Log(c1, intBase);
+
+                        if (logPreviousCandidate > logMaximum)
+                        {   // we are done with the last decade
+                            break;
+                        }
+
+                        if (logCurrentCandidate > logMinimum)
+                        {
+                            if (logCurrentCandidate > c)
+                            {   // this is not the first candidate in the current decade
+                                double stepRatio = (logCurrentCandidate - logPreviousCandidate) / desiredStepSize;
+                                if (stepRatio > 2)
+                                {   // Step size is too large... subdivide with minor ticks
+                                    this.LogSubdivide(logMinorCandidates, this.Base, logPreviousCandidate, logCurrentCandidate);
+                                }
+                            }
+
+                            if (c1 == intBase)
+                            {   // we are done with the current decade
+                                break;
+                            }
+
+                            // add the subdivision as possible candidates for minor and major ticks
+                            logMajorCandidates.Add(logCurrentCandidate);
+                            logMinorCandidates.Add(logCurrentCandidate);
+                        }
+
+                        logPreviousCandidate = logCurrentCandidate;
+                    }
+                }
+
+                if (logMajorCandidates.Count <= 1)
+                {   // should not happen normally, but if we should happen to have too few candidates, fall back to linear ticks
+                    base.GetTickValues(out majorLabelValues, out majorTickValues, out minorTickValues);
+                    return;
+                }
+
+                int candidateOffset = 0;
+                double previousMajorTick = double.NaN;
+
+                // loop through the minor tick candidates and add them to the minorTickValues List
+                foreach (double item in logMinorCandidates)
+                {
+                    if (item < logMinimum)
+                    {
+                        continue;
+                    }
+
+                    if (item > logMaximum)
+                    {
+                        break;
+                    }
+
+                    minorTickValues.Add(Math.Pow(this.Base, item));
+                }
+
+                // loop through all desired steps and find a suitable candidate
+                for (double d = logSmallestDecade; true; d += desiredStepSize)
+                {
+                    if (d < logMinimum)
+                    {
+                        continue;
+                    }
+
+                    if (d > logMaximum)
+                    {
+                        break;
+                    }
+
+                    // find closest candidate and add it to MajorTicks
+                    while (candidateOffset < logMajorCandidates.Count - 1 && logMajorCandidates[candidateOffset] < d)
+                    {
+                        candidateOffset++;
+                    }
+
+                    candidateOffset = Math.Max(candidateOffset, 1);
+                    double logNewMajorTick = 
+                        Math.Abs(logMajorCandidates[candidateOffset] - d) < Math.Abs(logMajorCandidates[candidateOffset - 1] - d) ?
+                        logMajorCandidates[candidateOffset] :
+                        logMajorCandidates[candidateOffset - 1];
+
+                    // calculate the new tick
+                    double newMajorTick = Math.Pow(this.Base, logNewMajorTick);
+
+                    if (newMajorTick != previousMajorTick)
+                    {
+                        majorTickValues.Add(newMajorTick);
+                    }
+
+                    previousMajorTick = newMajorTick;
+                }
             }
+
+            majorLabelValues = majorTickValues;
         }
 
         /// <summary>
@@ -281,6 +412,82 @@ namespace OxyPlot.Axes
             var deltaMaximum = this.ActualMaximum - oldMaximum;
 
             this.OnAxisChanged(new AxisChangedEventArgs(AxisChangeTypes.Zoom, deltaMinimum, deltaMaximum));
+        }
+
+        /// <summary>
+        /// Subdivides a logarithmic range into multiple, evenly-spaced (in linear space!) ticks. The number of ticks and the tick intervals are adapted so 
+        /// that the resulting steps are "nice" numbers.
+        /// </summary>
+        /// <param name="logTicks">The IList the computed steps are added to.</param>
+        /// <param name="steps">The minimum number of steps.</param>
+        /// <param name="logFrom">The start of the range.</param>
+        /// <param name="logTo">The end of the range.</param>
+        internal void LogSubdivide(IList<double> logTicks, double steps, double logFrom, double logTo)
+        {
+            int actualNumberOfSteps = 1;
+            int intBase = Convert.ToInt32(this.Base);
+
+            if (steps < 2)
+            {   // No Subdivision
+                return;
+            }
+            else if (Math.Abs(this.Base - intBase) > this.Base * 1e-10)
+            {   // fractional Base; just make a linear subdivision
+                actualNumberOfSteps = Convert.ToInt32(steps);
+            }
+            else if ((intBase & (intBase - 1)) == 0)
+            {   // base is a power of 2; use a power of 2 for the stepsize
+                while (actualNumberOfSteps < steps)
+                {
+                    actualNumberOfSteps *= 2;
+                }
+            }
+            else
+            {   // integer base, no power of two
+
+                // for bases != 10, first subdivide by the base
+                if (intBase != 10)
+                {
+                    actualNumberOfSteps = intBase;
+                }
+
+                // follow 1-2-5-10 pattern
+                while (true)
+                {   
+                    if (actualNumberOfSteps >= steps)
+                    {
+                        break;
+                    }
+
+                    actualNumberOfSteps *= 2;
+                    
+                    if (actualNumberOfSteps >= steps)
+                    {   
+                        break;
+                    }
+
+                    actualNumberOfSteps = Convert.ToInt32(actualNumberOfSteps * 2.5);
+                   
+                    if (actualNumberOfSteps >= steps)
+                    {
+                        break;
+                    }
+
+                    actualNumberOfSteps *= 2;
+                }
+            }
+
+            double from = Math.Pow(this.Base, logFrom);
+            double to = Math.Pow(this.Base, logTo);
+
+            // subdivide with the actual number of steps
+            for (int c = 1; c < actualNumberOfSteps; c++)
+            {
+                double newTick = (double)c / actualNumberOfSteps;
+                newTick = Math.Log(from + ((to - from) * newTick), this.Base);
+
+                logTicks.Add(newTick);
+            }
         }
 
         /// <summary>
