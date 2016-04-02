@@ -11,6 +11,7 @@ namespace OxyPlot.Series
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using OxyPlot.Axes;
 
@@ -91,9 +92,9 @@ namespace OxyPlot.Series
         public string YAxisKey { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether the X coordinate of all data point increases monotonically.
+        /// Gets or sets a value indicating whether the X coordinate of all data point increases monotonically.
         /// </summary>
-        protected bool IsXMonotonic { get; private set; }
+        protected bool IsXMonotonic { get; set; }
 
         /// <summary>
         /// Gets or sets the last visible window start position in the data points collection.
@@ -234,6 +235,19 @@ namespace OxyPlot.Series
         /// <remarks>The Text property of the result will not be set, since the formatting depends on the various series.</remarks>
         protected TrackerHitResult GetNearestInterpolatedPointInternal(List<DataPoint> points, ScreenPoint point)
         {
+            return this.GetNearestInterpolatedPointInternal(points, 0, point);
+        }
+
+        /// <summary>
+        /// Gets the point on the curve that is nearest the specified point.
+        /// </summary>
+        /// <param name="points">The point list.</param>
+        /// <param name="startIdx">The index to start from.</param>
+        /// <param name="point">The point.</param>
+        /// <returns>A tracker hit result if a point was found.</returns>
+        /// <remarks>The Text property of the result will not be set, since the formatting depends on the various series.</remarks>
+        protected TrackerHitResult GetNearestInterpolatedPointInternal(List<DataPoint> points, int startIdx, ScreenPoint point)
+        {
             if (this.XAxis == null || this.YAxis == null || points == null)
             {
                 return null;
@@ -245,7 +259,7 @@ namespace OxyPlot.Series
 
             double minimumDistance = double.MaxValue;
 
-            for (int i = 0; i + 1 < points.Count; i++)
+            for (int i = startIdx; i + 1 < points.Count; i++)
             {
                 var p1 = points[i];
                 var p2 = points[i + 1];
@@ -304,13 +318,26 @@ namespace OxyPlot.Series
         /// <remarks>The Text property of the result will not be set, since the formatting depends on the various series.</remarks>
         protected TrackerHitResult GetNearestPointInternal(IEnumerable<DataPoint> points, ScreenPoint point)
         {
+            return this.GetNearestPointInternal(points, 0, point);
+        }
+
+        /// <summary>
+        /// Gets the nearest point.
+        /// </summary>
+        /// <param name="points">The points (data coordinates).</param>
+        /// <param name="startIdx">The index to start from.</param>
+        /// <param name="point">The point (screen coordinates).</param>
+        /// <returns>A <see cref="TrackerHitResult" /> if a point was found, <c>null</c> otherwise.</returns>
+        /// <remarks>The Text property of the result will not be set, since the formatting depends on the various series.</remarks>
+        protected TrackerHitResult GetNearestPointInternal(IEnumerable<DataPoint> points, int startIdx, ScreenPoint point)
+        {
             var spn = default(ScreenPoint);
             var dpn = default(DataPoint);
             double index = -1;
 
             double minimumDistance = double.MaxValue;
             int i = 0;
-            foreach (var p in points)
+            foreach (var p in points.Skip(startIdx))
             {
                 if (!this.IsValidPoint(p))
                 {
@@ -743,7 +770,7 @@ namespace OxyPlot.Series
         /// <param name="targetX">X coordinate of visible window start.</param>
         /// <param name="lastIndex">Last window index.</param>
         /// <returns>The new window start index.</returns>
-        protected int UpdateWindowStartIndex<T>(List<T> items, Func<T, double> xgetter, double targetX, int lastIndex)
+        protected int UpdateWindowStartIndex<T>(IList<T> items, Func<T, double> xgetter, double targetX, int lastIndex)
         {
             lastIndex = this.FindWindowStartIndex(items, xgetter, targetX, lastIndex);
             if (lastIndex > 0)
@@ -765,7 +792,7 @@ namespace OxyPlot.Series
         /// <returns>
         /// index of x with max(x) &lt;= target x or -1 if cannot find
         /// </returns>
-        protected int FindWindowStartIndex<T>(List<T> items, Func<T, double> xgetter, double targetX, int initialGuess)
+        protected int FindWindowStartIndex<T>(IList<T> items, Func<T, double> xgetter, double targetX, int initialGuess)
         {
             int lastguess = 0;
             int start = 0;

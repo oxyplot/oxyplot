@@ -148,16 +148,25 @@ namespace OxyPlot.Series
         /// <returns>A TrackerHitResult for the current hit.</returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
+            var xy = this.InverseTransform(point);
+            var targetX = xy.X;
+            int startIdx = this.IsXMonotonic 
+                ? this.FindWindowStartIndex(this.ActualPoints, p => p.x, targetX, this.WindowStartIndex)
+                : 0;
+            int startIdx2 = this.IsXMonotonic
+                ? this.FindWindowStartIndex(this.ActualPoints2, p => p.x, targetX, this.WindowStartIndex2)
+                : 0;
+
             TrackerHitResult result1, result2;
             if (interpolate && this.CanTrackerInterpolatePoints)
             {
-                result1 = this.GetNearestInterpolatedPointInternal(this.ActualPoints, point);
-                result2 = this.GetNearestInterpolatedPointInternal(this.ActualPoints2, point);
+                result1 = this.GetNearestInterpolatedPointInternal(this.ActualPoints, startIdx, point);
+                result2 = this.GetNearestInterpolatedPointInternal(this.ActualPoints2, startIdx2, point);
             }
             else
             {
-                result1 = this.GetNearestPointInternal(this.ActualPoints, point);
-                result2 = this.GetNearestPointInternal(this.ActualPoints2, point);
+                result1 = this.GetNearestPointInternal(this.ActualPoints, startIdx, point);
+                result2 = this.GetNearestPointInternal(this.ActualPoints2, startIdx2, point);
             }
 
             TrackerHitResult result;
