@@ -75,7 +75,7 @@ namespace OxyPlot.Series
         /// Gets the actual color of the line for the second data set.
         /// </summary>
         /// <value>The actual color.</value>
-        public OxyColor ActualColor2
+        public virtual OxyColor ActualColor2
         {
             get
             {
@@ -139,6 +139,11 @@ namespace OxyPlot.Series
         /// Gets or sets the last visible window start position in second data points collection.
         /// </summary>
         protected int WindowStartIndex2 { get; set; }
+
+        /// <summary>
+        /// Gets a value indicating whether Points2 collection was defined by user.
+        /// </summary>
+        protected bool IsPoints2Defined { get; private set; }
 
         /// <summary>
         /// Gets the nearest point.
@@ -234,11 +239,27 @@ namespace OxyPlot.Series
             var clippingRect = this.GetClippingRect();
             rc.SetClip(clippingRect);
 
-            var chunksOfPoints = new List<List<ScreenPoint>>();
-            var chunksOfPoints2 = new List<List<ScreenPoint>>();
+            var areaContext = new AreaRenderContext
+            {
+                Points = actualPoints,
+                WindowStartIndex = startIdx,
+                XMax = xmax,
+                RenderContext = rc,
+                ClippingRect = clippingRect,
+                MinDistSquared = minDistSquared,
+                Reverse = false,
+                Color = this.ActualColor,
+                DashArray = this.ActualDashArray
+            };
 
-            this.RenderChunkedPoints(actualPoints, chunksOfPoints, startIdx, xmax, rc, clippingRect, minDistSquared, false, this.ActualColor);
-            this.RenderChunkedPoints(actualPoints2, chunksOfPoints2, startIdx2, xmax, rc, clippingRect, minDistSquared, this.Reverse2, this.ActualColor2);
+            var chunksOfPoints = this.RenderChunkedPoints(areaContext);
+
+            areaContext.Points = actualPoints2;
+            areaContext.WindowStartIndex = startIdx2;
+            areaContext.Reverse = this.Reverse2;
+            areaContext.Color = this.ActualColor2;
+            
+            var chunksOfPoints2 = this.RenderChunkedPoints(areaContext);
 
             if (chunksOfPoints.Count != chunksOfPoints2.Count)
             {
@@ -324,7 +345,9 @@ namespace OxyPlot.Series
 
             if (this.ItemsSource == null)
             {
-                if (this.points2.Count > 0)
+                this.IsPoints2Defined = this.points2.Count > 0;
+
+                if (this.IsPoints2Defined)
                 {
                     this.actualPoints2 = this.points2;
                 }
@@ -340,7 +363,9 @@ namespace OxyPlot.Series
 
             // TODO: make it consistent with DataPointSeries.UpdateItemsSourcePoints
             // Using reflection on DataFieldX2 and DataFieldY2
-            if (this.DataFieldX2 != null && this.DataFieldY2 != null)
+            this.IsPoints2Defined = this.DataFieldX2 != null && this.DataFieldY2 != null;
+
+            if (this.IsPoints2Defined)
             {
                 var filler = new ListBuilder<DataPoint>();
                 filler.Add(this.DataFieldX2, double.NaN);
@@ -363,52 +388,18 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Renders data points from the specified index to the specified maximum x, skipping NaN values.
+        /// Renders data points skipping NaN values.
         /// </summary>
-        /// <param name="actualPoints">Points list.</param>
-        /// <param name="chunksOfPoints">A list where chunks will be placed.</param>
-        /// <param name="startIndex">The start index of the points to render.</param>
-        /// <param name="maximumX">The maximum X coordinate to render.</param>
-        /// <param name="rc">Render context</param>
-        /// <param name="clippingRect">Clipping rectangle.</param>
-        /// <param name="minDistSquared">Minimal distance squared.</param>
-        /// <param name="reverse">Reverse points.</param>
-        /// <param name="color">Stroke color.</param>
-        private void RenderChunkedPoints(List<DataPoint> actualPoints, List<List<ScreenPoint>> chunksOfPoints, int startIndex, double maximumX, IRenderContext rc, OxyRect clippingRect, double minDistSquared, bool reverse, OxyColor color)
+        /// <param name="context">Area rendering context.</param>
+        /// <returns>The list of chunks.</returns>
+        protected List<List<ScreenPoint>> RenderChunkedPoints(AreaRenderContext context)
         {
-            var dashArray = this.ActualDashArray;
+            var result = new List<List<ScreenPoint>>();
             var screenPoints = new List<ScreenPoint>();
 
-            Action<List<ScreenPoint>> finalizeChunk = list =>
-            {
-                var final = list;
-
-                if (reverse)
-                {
-                    final.Reverse();
-                }
-
-                if (this.Smooth)
-                {
-                    var resampled = ScreenPointHelper.ResamplePoints(final, this.MinimumSegmentLength);
-                    final = CanonicalSplineHelper.CreateSpline(resampled, 0.5, null, false, 0.25);
-                }
-
-                chunksOfPoints.Add(final);
-
-                rc.DrawClippedLine(
-                    clippingRect,
-                    final,
-                    minDistSquared,
-                    this.GetSelectableColor(color),
-                    this.StrokeThickness,
-                    dashArray,
-                    this.LineJoin,
-                    false);
-            };
-
             int clipCount = 0;
-            for (int i = startIndex; i < actualPoints.Count; i++)
+            var actualPoints = context.Points;
+            for (int i = context.WindowStartIndex; i < actualPoints.Count; i++)
             {
                 var point = actualPoints[i];
 
@@ -419,7 +410,7 @@ namespace OxyPlot.Series
                         continue;
                     }
 
-                    finalizeChunk(screenPoints);
+                    result.Add(this.RenderScreenPoints(context, screenPoints));
                     screenPoints = new List<ScreenPoint>();
                 }
                 else
@@ -429,7 +420,7 @@ namespace OxyPlot.Series
                 }
 
                 // We break after two points were seen beyond xMax to ensure glitch-free rendering.
-                clipCount += point.x > maximumX ? 1 : 0;
+                clipCount += point.x > context.XMax ? 1 : 0;
                 if (clipCount > 1)
                 {
                     break;
@@ -438,8 +429,54 @@ namespace OxyPlot.Series
 
             if (screenPoints.Count > 0)
             {
-                finalizeChunk(screenPoints);
+                result.Add(this.RenderScreenPoints(context, screenPoints));
             }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Renders a chunk of points on the screen.
+        /// </summary>
+        /// <param name="context">Render context.</param>
+        /// <param name="points">Screen points.</param>
+        /// <returns>The list of resampled points.</returns>
+        protected virtual List<ScreenPoint> RenderScreenPoints(AreaRenderContext context, List<ScreenPoint> points)
+        {
+            var final = points;
+
+            if (context.Reverse)
+            {
+                final.Reverse();
+            }
+
+            if (this.Smooth)
+            {
+                var resampled = ScreenPointHelper.ResamplePoints(final, this.MinimumSegmentLength);
+                final = CanonicalSplineHelper.CreateSpline(resampled, 0.5, null, false, 0.25);
+            }
+
+            context.RenderContext.DrawClippedLine(
+                context.ClippingRect,
+                final,
+                context.MinDistSquared,
+                this.GetSelectableColor(context.Color),
+                this.StrokeThickness,
+                context.DashArray,
+                this.LineJoin,
+                false);
+
+            return final;
+        }
+
+        /// <summary>
+        /// Gets the x coordinate of a DataPoint.
+        /// </summary>
+        /// <param name="point">Data point.</param>
+        /// <returns>X coordinate.</returns>
+        protected double GetPointX(DataPoint point)
+        {
+            return point.x;
         }
 
         /// <summary>
@@ -457,6 +494,57 @@ namespace OxyPlot.Series
                 yield return new DataPoint(x0, this.ConstantY2);
                 yield return new DataPoint(x1, this.ConstantY2);
             }
+        }
+
+        /// <summary>
+        /// Holds parameters for point rendering.
+        /// </summary>
+        protected class AreaRenderContext
+        {
+            /// <summary>
+            /// Gets or sets source data points.
+            /// </summary>
+            public List<DataPoint> Points { get; set; }
+
+            /// <summary>
+            /// Gets or sets start index of a visible window.
+            /// </summary>
+            public int WindowStartIndex { get; set; }
+
+            /// <summary>
+            /// Gets or sets maximum visible X coordinate.
+            /// </summary>
+            public double XMax { get; set; }
+
+            /// <summary>
+            /// Gets or sets render context.
+            /// </summary>
+            public IRenderContext RenderContext { get; set; }
+
+            /// <summary>
+            /// Gets or sets clipping rectangle.
+            /// </summary>
+            public OxyRect ClippingRect { get; set; }
+
+            /// <summary>
+            /// Gets or sets minimum squared distance between points.
+            /// </summary>
+            public double MinDistSquared { get; set; }
+
+            /// <summary>
+            /// Gets or sets a value indicating whether to reverse the points.
+            /// </summary>
+            public bool Reverse { get; set; }
+
+            /// <summary>
+            /// Gets or sets line color.
+            /// </summary>
+            public OxyColor Color { get; set; }
+
+            /// <summary>
+            /// Gets or sets line dash array.
+            /// </summary>
+            public double[] DashArray { get; set; }
         }
     }
 }
