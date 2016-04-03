@@ -9,7 +9,7 @@
 
 namespace OxyPlot.Series
 {
-	/// <summary>
+    /// <summary>
     /// Represents an item in a <see cref="HighLowSeries" />.
     /// </summary>
     public class HighLowItem : ICodeGenerating
@@ -83,7 +83,7 @@ namespace OxyPlot.Series
         /// <value>The X value.</value>
         public double X { get; set; }
 
-	    /// <summary>
+        /// <summary>
         /// Returns C# code that generates this instance.
         /// </summary>
         /// <returns>The C# code.</returns>
