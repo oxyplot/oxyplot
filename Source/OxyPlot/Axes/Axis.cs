@@ -643,17 +643,9 @@ namespace OxyPlot.Axes
         /// </summary>
         /// <param name="majorInterval">The major interval.</param>
         /// <returns>The minor interval.</returns>
-        public double CalculateMinorInterval(double majorInterval)
+        protected virtual double CalculateMinorInterval(double majorInterval)
         {
-            // check if majorInterval = 2*10^x
-            // uses the mathematical identity log10(2 * 10^x) = x + log10(2)
-            // -> we just have to check if the modulo of log10(2*10^x) = log10(2)
-            if (Math.Abs(((Math.Log10(majorInterval) + 1000) % 1) - Math.Log10(2)) < 1e-10)
-            {
-                return majorInterval / 4;
-            }
-
-            return majorInterval / 5;
+            return AxisUtilities.CalculateMinorInterval(majorInterval);
         }
 
         /// <summary>

@@ -116,5 +116,24 @@ namespace OxyPlot.Tests
                 }
             }
         }
+
+        [Test]
+        [TestCase(1e-100, .2e-100)]
+        [TestCase(2e-100, .5e-100)]
+        [TestCase(5e-100, 1e-100)]
+        [TestCase(1, 0.2)]
+        [TestCase(2, 0.5)]
+        [TestCase(5, 1)]
+        [TestCase(20, 5)]
+        [TestCase(1e100, .2e100)]
+        [TestCase(2e100, .5e100)]
+        [TestCase(5e100, 1e100)]
+        public void CalculateMinorInterval(double majorInterval, double expectedMinorInterval)
+        {
+            Assert.That(AxisUtilities.CalculateMinorInterval(majorInterval), Is.EqualTo(expectedMinorInterval).Within(expectedMinorInterval * 1e-10), "minorInterval calculation");
+#if DEBUG
+            Assert.That(AxisUtilities.CalculateMinorInterval2(majorInterval), Is.EqualTo(expectedMinorInterval).Within(expectedMinorInterval * 1e-10), "minorInterval calculation 2");
+#endif
+        }
     }
 }
