@@ -73,6 +73,7 @@ All notable changes to this project will be documented in this file.
 - Move Xamarin projects to new repository (#777)
 - Remove CandleStickSeries.Append (#826)
 - Change MinorInterval calculation, add unit test (#133)
+- Rewrite LogarithmicAxis tick calculation (#820)
 
 ### Removed
 - StyleCop tasks (#556)
