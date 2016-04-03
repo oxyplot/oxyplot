@@ -671,115 +671,6 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Coerces the actual maximum and minimum values.
-        /// </summary>
-        public virtual void CoerceActualMaxMin()
-        {
-            // Coerce actual minimum
-            if (double.IsNaN(this.ActualMinimum) || double.IsInfinity(this.ActualMinimum))
-            {
-                this.ActualMinimum = 0;
-            }
-
-            // Coerce actual maximum
-            if (double.IsNaN(this.ActualMaximum) || double.IsInfinity(this.ActualMaximum))
-            {
-                this.ActualMaximum = 100;
-            }
-
-            if (this.AbsoluteMaximum - this.AbsoluteMinimum < this.MinimumRange)
-            {
-                throw new InvalidOperationException("MinimumRange should be larger than AbsoluteMaximum-AbsoluteMinimum.");
-            }
-
-            // Coerce the minimum range
-            if (this.ActualMaximum - this.ActualMinimum < this.MinimumRange)
-            {
-                if (this.ActualMinimum + this.MinimumRange < this.AbsoluteMaximum)
-                {
-                    if (this.ActualMinimum < this.AbsoluteMinimum)
-                    {
-                        this.ActualMinimum = this.AbsoluteMinimum;
-                    }
-
-                    this.ActualMaximum = this.ActualMinimum + this.MinimumRange;
-                }
-                else
-                {
-                    if (this.AbsoluteMaximum - this.MinimumRange > this.AbsoluteMinimum)
-                    {
-                        this.ActualMinimum = this.AbsoluteMaximum - this.MinimumRange;
-                        this.ActualMaximum = this.AbsoluteMaximum;
-                    }
-                    else
-                    {
-                        this.ActualMaximum = this.AbsoluteMaximum;
-                        this.ActualMinimum = this.AbsoluteMinimum;
-                    }
-                }
-            }
-
-            // Coerce the maximum range
-            if (this.ActualMaximum - this.ActualMinimum > this.MaximumRange)
-            {
-                if (this.ActualMinimum + this.MaximumRange < this.AbsoluteMaximum)
-                {
-                    if (this.ActualMinimum < this.AbsoluteMinimum)
-                    {
-                        this.ActualMinimum = this.AbsoluteMinimum;
-                    }
-
-                    // Adjust the actual maximum only
-                    this.ActualMaximum = this.ActualMinimum + this.MaximumRange;
-                }
-                else
-                {
-                    if (this.AbsoluteMaximum - this.MaximumRange > this.AbsoluteMinimum)
-                    {
-                        this.ActualMinimum = this.AbsoluteMaximum - this.MaximumRange;
-                        this.ActualMaximum = this.AbsoluteMaximum;
-                    }
-                    else
-                    {
-                        this.ActualMaximum = this.AbsoluteMaximum;
-                        this.ActualMinimum = this.AbsoluteMinimum;
-                    }
-                }
-            }
-
-            // Coerce the absolute maximum/minimum
-            if (this.AbsoluteMaximum <= this.AbsoluteMinimum)
-            {
-                throw new InvalidOperationException("AbsoluteMaximum should be larger than AbsoluteMinimum.");
-            }
-
-            if (this.ActualMaximum <= this.ActualMinimum)
-            {
-                this.ActualMaximum = this.ActualMinimum + 100;
-            }
-
-            if (this.ActualMinimum < this.AbsoluteMinimum)
-            {
-                this.ActualMinimum = this.AbsoluteMinimum;
-            }
-
-            if (this.ActualMinimum > this.AbsoluteMaximum)
-            {
-                this.ActualMinimum = this.AbsoluteMaximum;
-            }
-
-            if (this.ActualMaximum < this.AbsoluteMinimum)
-            {
-                this.ActualMaximum = this.AbsoluteMinimum;
-            }
-
-            if (this.ActualMaximum > this.AbsoluteMaximum)
-            {
-                this.ActualMaximum = this.AbsoluteMaximum;
-            }
-        }
-
-        /// <summary>
         /// Formats the value to be used on the axis.
         /// </summary>
         /// <param name="x">The value.</param>
@@ -803,8 +694,8 @@ namespace OxyPlot.Axes
         public virtual void GetTickValues(
             out IList<double> majorLabelValues, out IList<double> majorTickValues, out IList<double> minorTickValues)
         {
-            minorTickValues = CreateTickValues(this.ActualMinimum, this.ActualMaximum, this.ActualMinorStep);
-            majorTickValues = CreateTickValues(this.ActualMinimum, this.ActualMaximum, this.ActualMajorStep);
+            minorTickValues = this.CreateTickValues(this.ActualMinimum, this.ActualMaximum, this.ActualMinorStep);
+            majorTickValues = this.CreateTickValues(this.ActualMinimum, this.ActualMaximum, this.ActualMajorStep);
             majorLabelValues = majorTickValues;
         }
 
@@ -1455,7 +1346,6 @@ namespace OxyPlot.Axes
             return x;
         }
 
-
         /// <summary>
         /// Calculates the minor interval.
         /// </summary>
@@ -1478,6 +1368,115 @@ namespace OxyPlot.Axes
         protected virtual IList<double> CreateTickValues(double from, double to, double step, int maxTicks = 1000)
         {
             return AxisUtilities.CreateTickValues(from, to, step, maxTicks);
+        }
+
+        /// <summary>
+        /// Coerces the actual maximum and minimum values.
+        /// </summary>
+        protected virtual void CoerceActualMaxMin()
+        {
+            // Coerce actual minimum
+            if (double.IsNaN(this.ActualMinimum) || double.IsInfinity(this.ActualMinimum))
+            {
+                this.ActualMinimum = 0;
+            }
+
+            // Coerce actual maximum
+            if (double.IsNaN(this.ActualMaximum) || double.IsInfinity(this.ActualMaximum))
+            {
+                this.ActualMaximum = 100;
+            }
+
+            if (this.AbsoluteMaximum - this.AbsoluteMinimum < this.MinimumRange)
+            {
+                throw new InvalidOperationException("MinimumRange should be larger than AbsoluteMaximum-AbsoluteMinimum.");
+            }
+
+            // Coerce the minimum range
+            if (this.ActualMaximum - this.ActualMinimum < this.MinimumRange)
+            {
+                if (this.ActualMinimum + this.MinimumRange < this.AbsoluteMaximum)
+                {
+                    if (this.ActualMinimum < this.AbsoluteMinimum)
+                    {
+                        this.ActualMinimum = this.AbsoluteMinimum;
+                    }
+
+                    this.ActualMaximum = this.ActualMinimum + this.MinimumRange;
+                }
+                else
+                {
+                    if (this.AbsoluteMaximum - this.MinimumRange > this.AbsoluteMinimum)
+                    {
+                        this.ActualMinimum = this.AbsoluteMaximum - this.MinimumRange;
+                        this.ActualMaximum = this.AbsoluteMaximum;
+                    }
+                    else
+                    {
+                        this.ActualMaximum = this.AbsoluteMaximum;
+                        this.ActualMinimum = this.AbsoluteMinimum;
+                    }
+                }
+            }
+
+            // Coerce the maximum range
+            if (this.ActualMaximum - this.ActualMinimum > this.MaximumRange)
+            {
+                if (this.ActualMinimum + this.MaximumRange < this.AbsoluteMaximum)
+                {
+                    if (this.ActualMinimum < this.AbsoluteMinimum)
+                    {
+                        this.ActualMinimum = this.AbsoluteMinimum;
+                    }
+
+                    // Adjust the actual maximum only
+                    this.ActualMaximum = this.ActualMinimum + this.MaximumRange;
+                }
+                else
+                {
+                    if (this.AbsoluteMaximum - this.MaximumRange > this.AbsoluteMinimum)
+                    {
+                        this.ActualMinimum = this.AbsoluteMaximum - this.MaximumRange;
+                        this.ActualMaximum = this.AbsoluteMaximum;
+                    }
+                    else
+                    {
+                        this.ActualMaximum = this.AbsoluteMaximum;
+                        this.ActualMinimum = this.AbsoluteMinimum;
+                    }
+                }
+            }
+
+            // Coerce the absolute maximum/minimum
+            if (this.AbsoluteMaximum <= this.AbsoluteMinimum)
+            {
+                throw new InvalidOperationException("AbsoluteMaximum should be larger than AbsoluteMinimum.");
+            }
+
+            if (this.ActualMaximum <= this.ActualMinimum)
+            {
+                this.ActualMaximum = this.ActualMinimum + 100;
+            }
+
+            if (this.ActualMinimum < this.AbsoluteMinimum)
+            {
+                this.ActualMinimum = this.AbsoluteMinimum;
+            }
+
+            if (this.ActualMinimum > this.AbsoluteMaximum)
+            {
+                this.ActualMinimum = this.AbsoluteMaximum;
+            }
+
+            if (this.ActualMaximum < this.AbsoluteMinimum)
+            {
+                this.ActualMaximum = this.AbsoluteMinimum;
+            }
+
+            if (this.ActualMaximum > this.AbsoluteMaximum)
+            {
+                this.ActualMaximum = this.AbsoluteMaximum;
+            }
         }
 
         /// <summary>
