@@ -639,6 +639,24 @@ namespace OxyPlot.Axes
         protected double ViewMinimum { get; set; }
 
         /// <summary>
+        /// Calculates the minor interval.
+        /// </summary>
+        /// <param name="majorInterval">The major interval.</param>
+        /// <returns>The minor interval.</returns>
+        public double CalculateMinorInterval(double majorInterval)
+        {
+            // check if majorInterval = 2*10^x
+            // uses the mathematical identity log10(2 * 10^x) = x + log10(2)
+            // -> we just have to check if the modulo of log10(2*10^x) = log10(2)
+            if (Math.Abs(((Math.Log10(majorInterval) + 1000) % 1) - Math.Log10(2)) < 1e-10)
+            {
+                return majorInterval / 4;
+            }
+
+            return majorInterval / 5;
+        }
+
+        /// <summary>
         /// Creates tick values at the specified interval.
         /// </summary>
         /// <param name="from">The start value.</param>
@@ -1676,31 +1694,6 @@ namespace OxyPlot.Axes
             }
 
             return interval;
-        }
-
-        /// <summary>
-        /// Calculates the minor interval.
-        /// </summary>
-        /// <param name="majorInterval">The major interval.</param>
-        /// <returns>The minor interval.</returns>
-        protected double CalculateMinorInterval(double majorInterval)
-        {
-            // if major interval is 100, the minor interval will be 20.
-            return majorInterval / 5;
-
-            // The following obsolete code divided major intervals into 4 minor intervals, unless the major interval's mantissa was 5.
-            // e.g. Major interval 100 => minor interval 25.
-
-            // Func<double, double> exponent = x => Math.Ceiling(Math.Log(x, 10));
-            // Func<double, double> mantissa = x => x / Math.Pow(10, exponent(x) - 1);
-            // var m = (int)mantissa(majorInterval);
-            // switch (m)
-            // {
-            // case 5:
-            // return majorInterval / 5;
-            // default:
-            // return majorInterval / 4;
-            // }
         }
 
         /// <summary>
