@@ -12,12 +12,18 @@ namespace OxyPlot.Series
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Runtime.CompilerServices;
 
     /// <summary>
     /// Represents an area series that fills the polygon defined by two sets of points or one set of points and a constant.
     /// </summary>
     public class AreaSeries : LineSeries
     {
+        /// <summary>
+        /// Last visible window start position in second data points collection.
+        /// </summary>
+        private int windowStartIndex2;
+
         /// <summary>
         /// The second list of points.
         /// </summary>
@@ -189,6 +195,8 @@ namespace OxyPlot.Series
         /// <param name="rc">The rendering context.</param>
         public override void Render(IRenderContext rc)
         {
+            this.VerifyAxes();
+
             var actualPoints = this.ActualPoints;
             if (actualPoints == null || actualPoints.Count == 0)
             {
@@ -201,134 +209,64 @@ namespace OxyPlot.Series
                 return;
             }
 
-            this.VerifyAxes();
+            int startIdx = 0;
+            int startIdx2 = 0;
+            double xmax = double.MaxValue;
+
+            if (this.IsXMonotonic)
+            {
+                // determine render range
+                var xmin = this.XAxis.ActualMinimum;
+                xmax = this.XAxis.ActualMaximum;
+                this.UpdateWindowStartIndex(actualPoints, this.GetPointX, xmin);
+                this.UpdateWindowStartIndex(actualPoints2, this.GetPointX, xmin, ref this.windowStartIndex2);
+
+                startIdx = this.WindowStartIndex;
+                startIdx2 = this.windowStartIndex2;
+            }
 
             double minDistSquared = this.MinimumSegmentLength * this.MinimumSegmentLength;
 
             var clippingRect = this.GetClippingRect();
             rc.SetClip(clippingRect);
 
-            // Manage NaN's
-            var chunkedListsOfPoints = this.Split(actualPoints, p => double.IsNaN(p.Y));
-            var chunkedListsOfPoints2 = this.Split(actualPoints2, p => double.IsNaN(p.Y));
+            var chunksOfPoints = new List<List<ScreenPoint>>();
+            var chunksOfPoints2 = new List<List<ScreenPoint>>();
 
-            // TODO: Possible multiple enumeration of IEnumerable...
-            for (int chunkIndex = 0; chunkIndex < chunkedListsOfPoints.Count(); chunkIndex++)
-            {
-                var chunkActualPoints = chunkedListsOfPoints.ElementAt(chunkIndex).ToList();
+            this.RenderChunkedPoints(actualPoints, chunksOfPoints, startIdx, xmax, rc, clippingRect, minDistSquared, false, this.ActualColor);
+            this.RenderChunkedPoints(actualPoints2, chunksOfPoints2, startIdx2, xmax, rc, clippingRect, minDistSquared, this.Reverse2, this.ActualColor2);
 
-                // Transform all points to screen coordinates
-                int n0 = chunkActualPoints.Count;
-                IList<ScreenPoint> pts0 = new ScreenPoint[n0];
-                for (int i = 0; i < n0; i++)
-                {
-                    pts0[i] = this.XAxis.Transform(chunkActualPoints[i].X, chunkActualPoints[i].Y, this.YAxis);
-                }
-
-                if (this.Smooth)
-                {
-                    var rpts0 = ScreenPointHelper.ResamplePoints(pts0, this.MinimumSegmentLength);
-                    pts0 = CanonicalSplineHelper.CreateSpline(rpts0, 0.5, null, false, 0.25);
-                }
-
-                var dashArray = this.ActualDashArray;
-
-                // draw the clipped lines
-                rc.DrawClippedLine(
-                    clippingRect,
-                    pts0,
-                    minDistSquared,
-                    this.GetSelectableColor(this.ActualColor),
-                    this.StrokeThickness,
-                    dashArray,
-                    this.LineJoin,
-                    false);
-            }
-
-            for (int chunkIndex = 0; chunkIndex < chunkedListsOfPoints2.Count(); chunkIndex++)
-            {
-                var chunkActualPoints2 = chunkedListsOfPoints2.ElementAt(chunkIndex).ToList();
-
-                // Transform all points to screen coordinates
-                int n1 = chunkActualPoints2.Count;
-                IList<ScreenPoint> pts1 = new ScreenPoint[n1];
-                for (int i = 0; i < n1; i++)
-                {
-                    int j = this.Reverse2 ? n1 - 1 - i : i;
-                    pts1[j] = this.XAxis.Transform(chunkActualPoints2[i].X, chunkActualPoints2[i].Y, this.YAxis);
-                }
-
-                if (this.Smooth)
-                {
-                    var rpts1 = ScreenPointHelper.ResamplePoints(pts1, this.MinimumSegmentLength);
-                    pts1 = CanonicalSplineHelper.CreateSpline(rpts1, 0.5, null, false, 0.25);
-                }
-
-                var dashArray = this.ActualDashArray;
-
-                // draw the clipped lines
-                rc.DrawClippedLine(
-                    clippingRect,
-                    pts1,
-                    minDistSquared,
-                    this.GetSelectableColor(this.ActualColor2),
-                    this.StrokeThickness,
-                    dashArray,
-                    this.LineJoin,
-                    false);
-            }
-
-            if (chunkedListsOfPoints.Count() != chunkedListsOfPoints2.Count())
+            if (chunksOfPoints.Count != chunksOfPoints2.Count)
             {
                 rc.ResetClip();
                 return;
             }
 
             // Draw the fill
-            for (int chunkIndex = 0; chunkIndex < chunkedListsOfPoints.Count(); chunkIndex++)
+            for (int chunkIndex = 0; chunkIndex < chunksOfPoints.Count; chunkIndex++)
             {
-                var chunkActualPoints = chunkedListsOfPoints.ElementAt(chunkIndex).ToList();
-                var chunkActualPoints2 = chunkedListsOfPoints2.ElementAt(chunkIndex).ToList();
-
-                // Transform all points to screen coordinates
-                int n0 = chunkActualPoints.Count;
-                IList<ScreenPoint> pts0 = new ScreenPoint[n0];
-                for (int i = 0; i < n0; i++)
-                {
-                    pts0[i] = this.XAxis.Transform(chunkActualPoints[i].X, chunkActualPoints[i].Y, this.YAxis);
-                }
-
-                int n1 = chunkActualPoints2.Count;
-                IList<ScreenPoint> pts1 = new ScreenPoint[n1];
-                for (int i = 0; i < n1; i++)
-                {
-                    int j = this.Reverse2 ? n1 - 1 - i : i;
-                    pts1[j] = this.XAxis.Transform(chunkActualPoints2[i].X, chunkActualPoints2[i].Y, this.YAxis);
-                }
-
-                if (this.Smooth)
-                {
-                    var rpts0 = ScreenPointHelper.ResamplePoints(pts0, this.MinimumSegmentLength);
-                    var rpts1 = ScreenPointHelper.ResamplePoints(pts1, this.MinimumSegmentLength);
-
-                    pts0 = CanonicalSplineHelper.CreateSpline(rpts0, 0.5, null, false, 0.25);
-                    pts1 = CanonicalSplineHelper.CreateSpline(rpts1, 0.5, null, false, 0.25);
-                }
-
-                // combine the two lines and draw the clipped area
-                var pts = new List<ScreenPoint>();
-                pts.AddRange(pts1);
-                pts.AddRange(pts0);
+                var pts = chunksOfPoints[chunkIndex];
+                var pts2 = chunksOfPoints2[chunkIndex];
 
                 // pts = SutherlandHodgmanClipping.ClipPolygon(clippingRect, pts);
-                rc.DrawClippedPolygon(clippingRect, pts, minDistSquared, this.GetSelectableFillColor(this.ActualFill), OxyColors.Undefined);
+
+                // combine the two lines and draw the clipped area
+                var allPts = new List<ScreenPoint>();
+                allPts.AddRange(pts2);
+                allPts.AddRange(pts);
+                rc.DrawClippedPolygon(
+                    clippingRect,
+                    allPts,
+                    minDistSquared,
+                    this.GetSelectableFillColor(this.ActualFill),
+                    OxyColors.Undefined);
 
                 var markerSizes = new[] { this.MarkerSize };
 
                 // draw the markers on top
                 rc.DrawMarkers(
                     clippingRect,
-                    pts0,
+                    pts,
                     this.MarkerType,
                     null,
                     markerSizes,
@@ -338,7 +276,7 @@ namespace OxyPlot.Series
                     1);
                 rc.DrawMarkers(
                     clippingRect,
-                    pts1,
+                    pts2,
                     this.MarkerType,
                     null,
                     markerSizes,
@@ -349,6 +287,85 @@ namespace OxyPlot.Series
             }
 
             rc.ResetClip();
+        }
+
+        /// <summary>
+        /// Renders data points skipping NaN values.
+        /// </summary>
+        /// <param name="actualPoints">Points list.</param>
+        /// <param name="chunksOfPoints">A list where chunks will be placed.</param>
+        /// <param name="xMax"></param>
+        /// <param name="rc">Render context</param>
+        /// <param name="clippingRect">Clipping rect.</param>
+        /// <param name="minDistSquared">Minimal distance squared.</param>
+        /// <param name="reverse">Reverse points.</param>
+        /// <param name="color">Stroke color.</param>
+        /// <param name="startIdx"></param>
+        private void RenderChunkedPoints(List<DataPoint> actualPoints, List<List<ScreenPoint>> chunksOfPoints, int startIdx, double xMax, IRenderContext rc, OxyRect clippingRect, double minDistSquared, bool reverse, OxyColor color)
+        {
+            var dashArray = this.ActualDashArray;
+            var screenPoints = new List<ScreenPoint>();
+
+            Action<List<ScreenPoint>> finalizeChunk = list =>
+            {
+                var final = list;
+
+                if (reverse)
+                {
+                    final.Reverse();
+                }
+
+                if (this.Smooth)
+                {
+                    var resampled = ScreenPointHelper.ResamplePoints(final, this.MinimumSegmentLength);
+                    final = CanonicalSplineHelper.CreateSpline(resampled, 0.5, null, false, 0.25);
+                }
+
+                chunksOfPoints.Add(final);
+
+                rc.DrawClippedLine(clippingRect,
+                                    final,
+                                    minDistSquared,
+                                    this.GetSelectableColor(color),
+                                    this.StrokeThickness,
+                                    dashArray,
+                                    this.LineJoin,
+                                    false);
+            };
+
+            int clipCount = 0;
+            for (int i = startIdx; i < actualPoints.Count; i++)
+            {
+                var point = actualPoints[i];
+
+                if (double.IsNaN(point.Y))
+                {
+                    if (screenPoints.Count == 0)
+                    {
+                        continue;
+                    }
+
+                    finalizeChunk(screenPoints);
+                    screenPoints = new List<ScreenPoint>();
+                }
+                else
+                {
+                    var sp = this.XAxis.Transform(point.X, point.Y, this.YAxis);
+                    screenPoints.Add(sp);
+                }
+
+                // We break after two points were seen beyond xMax to ensure glitch-free rendering.
+                clipCount += point.x > xMax ? 1 : 0;
+                if (clipCount > 1)
+                {
+                    break;
+                }
+            }
+
+            if (screenPoints.Count > 0)
+            {
+                finalizeChunk(screenPoints);
+            }
         }
 
         /// <summary>
@@ -438,22 +455,13 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Split an IEnumerable<typeparamref name="T"/> into chunks (sub-lists), based on a split condition
-        /// (input items with splitCondition == true will not be included in output)
+        /// Gets the x coordinate of a DataPoint.
         /// </summary>
-        /// <typeparam name="T">The type of the input list item</typeparam>
-        /// <param name="source">The input list</param>
-        /// <param name="splitCondition">The split condition</param>
-        /// <returns>A collection of a collection of <typeparamref name="T"/> items</returns>
-        private IEnumerable<IEnumerable<T>> Split<T>(IEnumerable<T> source, Func<T, bool> splitCondition)
+        /// <param name="point">Data point.</param>
+        /// <returns>X coordinate.</returns>
+        private double GetPointX(DataPoint point)
         {
-            source = source.SkipWhile(splitCondition);
-            // TODO: possible multiple enumeration of IEnumerable
-            while (source.Any())
-            {
-                yield return source.TakeWhile(x => !splitCondition(x));
-                source = source.SkipWhile(x => !splitCondition(x)).SkipWhile(splitCondition);
-            }
+            return point.x;
         }
     }
 }

@@ -20,6 +20,16 @@ namespace OxyPlot.Series
     public abstract class XYAxisSeries : ItemsSeries
     {
         /// <summary>
+        /// Indicates whether the X coordinate of all data point increases monotonically.
+        /// </summary>
+        protected bool IsXMonotonic;
+
+        /// <summary>
+        /// Last visible window start position in data points collection.
+        /// </summary>
+        protected int WindowStartIndex;
+
+        /// <summary>
         /// The default tracker format string
         /// </summary>
         public const string DefaultTrackerFormatString = "{0}\n{1}: {2}\n{3}: {4}";
@@ -190,6 +200,7 @@ namespace OxyPlot.Series
         /// </summary>
         protected internal override void UpdateData()
         {
+            this.WindowStartIndex = 0;
         }
 
         /// <summary>
@@ -373,6 +384,8 @@ namespace OxyPlot.Series
                 throw new ArgumentNullException("points");
             }
 
+            this.IsXMonotonic = true;
+
             if (points.Count == 0)
             {
                 return;
@@ -403,6 +416,7 @@ namespace OxyPlot.Series
                 maxy = double.MinValue;
             }
 
+            double lastX = double.MinValue;
             foreach (var pt in points)
             {
                 double x = pt.X;
@@ -412,6 +426,11 @@ namespace OxyPlot.Series
                 if (!this.IsValidPoint(pt))
                 {
                     continue;
+                }
+
+                if (x < lastX)
+                {
+                    this.IsXMonotonic = false;
                 }
 
                 if (x < minx)
@@ -433,6 +452,8 @@ namespace OxyPlot.Series
                 {
                     maxy = y;
                 }
+
+                lastX = x;
             }
 
             if (minx < double.MaxValue)
@@ -491,6 +512,8 @@ namespace OxyPlot.Series
                 throw new ArgumentNullException("items");
             }
 
+            this.IsXMonotonic = true;
+
             if (items.Count == 0)
             {
                 return;
@@ -521,6 +544,7 @@ namespace OxyPlot.Series
                 maxy = double.MinValue;
             }
 
+            double lastX = double.MinValue;
             foreach (var item in items)
             {
                 double x = xf(item);
@@ -530,6 +554,11 @@ namespace OxyPlot.Series
                 if (!this.IsValidPoint(x, y))
                 {
                     continue;
+                }
+
+                if (x < lastX)
+                {
+                    this.IsXMonotonic = false;
                 }
 
                 if (x < minx)
@@ -551,6 +580,8 @@ namespace OxyPlot.Series
                 {
                     maxy = y;
                 }
+
+                lastX = x;
             }
 
             if (minx < double.MaxValue)
@@ -591,6 +622,8 @@ namespace OxyPlot.Series
                 throw new ArgumentNullException("items");
             }
 
+            this.IsXMonotonic = true;
+
             if (items.Count == 0)
             {
                 return;
@@ -621,6 +654,8 @@ namespace OxyPlot.Series
                 maxy = double.MinValue;
             }
 
+            double lastX0 = double.MinValue;
+            double lastX1 = double.MinValue;
             foreach (var item in items)
             {
                 double x0 = xmin(item);
@@ -631,6 +666,11 @@ namespace OxyPlot.Series
                 if (!this.IsValidPoint(x0, y0) || !this.IsValidPoint(x1, y1))
                 {
                     continue;
+                }
+
+                if (x0 < lastX0 || x1 < lastX1)
+                {
+                    this.IsXMonotonic = false;
                 }
 
                 if (x0 < minx)
@@ -652,6 +692,9 @@ namespace OxyPlot.Series
                 {
                     maxy = y1;
                 }
+
+                lastX0 = x0;
+                lastX1 = x1;
             }
 
             if (minx < double.MaxValue)
@@ -689,6 +732,105 @@ namespace OxyPlot.Series
             {
                 throw new InvalidOperationException("YAxis not defined.");
             }
+        }
+
+        /// <summary>
+        /// Updates visible window start index.
+        /// </summary>
+        /// <param name="items">Data points.</param>
+        /// <param name="xGetter">Function that gets data point X coordinate.</param>
+        /// <param name="targetX">X coordinate of visible window start.</param>
+        protected void UpdateWindowStartIndex<T>(List<T> items, Func<T, double> xGetter, double targetX)
+        {
+            this.UpdateWindowStartIndex(items, xGetter, targetX, ref this.WindowStartIndex);
+        }
+
+        /// <summary>
+        /// Updates visible window start index.
+        /// </summary>
+        /// <param name="items">Data points.</param>
+        /// <param name="xGetter">Function that gets data point X coordinate.</param>
+        /// <param name="targetX">X coordinate of visible window start.</param>
+        /// <param name="lastIndex">Last window index.</param>
+        protected void UpdateWindowStartIndex<T>(List<T> items, Func<T, double> xGetter, double targetX, ref int lastIndex)
+        {
+            lastIndex = this.FindWindowStartIndex(items, xGetter, targetX, lastIndex);
+            if (lastIndex > 0)
+            {
+                lastIndex--;
+            }
+        }
+
+        /// <summary>
+        /// Find index of max(x) &lt;= target x in a list of data points
+        /// </summary>
+        /// <param name='items'>
+        /// vector of data points
+        /// </param>
+        /// <param name="xGetter">Function that gets data point X coordinate.</param>
+        /// <param name='targetX'>
+        /// target x.
+        /// </param>
+        /// <param name='initialGuess'>
+        /// initial guess index.
+        /// </param>
+        /// <returns>
+        /// index of x with max(x) &lt;= target x or -1 if cannot find
+        /// </returns>
+        protected int FindWindowStartIndex<T>(List<T> items, Func<T, double> xGetter, double targetX, int initialGuess)
+        {
+            int lastguess = 0;
+            int start = 0;
+            int end = items.Count - 1;
+            int curGuess = initialGuess;
+
+            while (start <= end)
+            {
+                if (curGuess < start)
+                {
+                    return lastguess;
+                }
+                else if (curGuess > end)
+                {
+                    return end;
+                }
+
+                double guessX = xGetter(items[curGuess]);
+                if (guessX.Equals(targetX))
+                {
+                    return curGuess;
+                }
+                else if (guessX > targetX)
+                {
+                    end = curGuess - 1;
+                    if (end < start)
+                    {
+                        return lastguess;
+                    }
+                    else if (end == start)
+                    {
+                        return end;
+                    }
+                }
+                else
+                {
+                    start = curGuess + 1;
+                    lastguess = curGuess;
+                }
+
+                if (start >= end)
+                {
+                    return lastguess;
+                }
+
+                double endX = xGetter(items[end]);
+                double startX = xGetter(items[start]);
+
+                var m = (end - start + 1) / (endX - startX);
+                curGuess = start + (int)((targetX - startX) * m);
+            }
+
+            return lastguess;
         }
     }
 }
