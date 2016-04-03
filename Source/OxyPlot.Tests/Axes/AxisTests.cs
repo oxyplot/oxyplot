@@ -464,18 +464,5 @@ namespace OxyPlot.Tests
             Assert.That(yaxis.DesiredSize.Width, Is.EqualTo(50.0).Within(0.5), "y-axis width");
             Assert.That(yaxis.DesiredSize.Height, Is.EqualTo(0.0).Within(1e-6), "y-axis height");
         }
-
-        [Test]
-        public void Axis_CalculateMinorInterval()
-        {
-            var axis = new LinearAxis();
-            double[] points = new double[] { 1e-100,  2e-100, 5e-100, 1, 2, 5, 20, 1e100,  2e100, 5e100 };
-            double[] minorintervals = new double[] { .2e-100, .5e-100, 1e-100, .2, .5, 1, 5, .2e100, .5e100, 1e100 };
-
-            for (int c = 0; c < points.Length; c++) 
-            {
-                Assert.That(axis.CalculateMinorInterval(points[c]), Is.EqualTo(minorintervals[c]).Within(minorintervals[c] * 1e-10), "minorInterval calculation");
-            }
-        }
     }
 }

@@ -54,7 +54,7 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Coerces the actual maximum and minimum values.
         /// </summary>
-        public override void CoerceActualMaxMin()
+        protected override void CoerceActualMaxMin()
         {
             if (double.IsNaN(this.ActualMinimum) || double.IsInfinity(this.ActualMinimum))
             {

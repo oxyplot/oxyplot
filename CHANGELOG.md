@@ -74,6 +74,8 @@ All notable changes to this project will be documented in this file.
 - Remove CandleStickSeries.Append (#826)
 - Change MinorInterval calculation, add unit test (#133)
 - Rewrite LogarithmicAxis tick calculation (#820)
+- Change Axis methods to protected virtual (#837)
+- Move CalculateMinorInterval and CreateTickValues to AxisUtilities (#837)
 
 ### Removed
 - StyleCop tasks (#556)
