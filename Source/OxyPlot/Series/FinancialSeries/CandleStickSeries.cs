@@ -69,13 +69,13 @@ namespace OxyPlot.Series
         /// <param name="startIndex">starting index</param> 
         public int FindByX(double x, int startIndex = -1)
         {
-			if (startIndex < 0)
-			{
-				startIndex = this.WindowStartIndex;
-			}
+            if (startIndex < 0)
+            {
+                startIndex = this.WindowStartIndex;
+            }
 
-			return this.FindWindowStartIndex(this.Items, this.GetCandleX, x, startIndex);
-		}
+            return this.FindWindowStartIndex(this.Items, this.GetCandleX, x, startIndex);
+        }
 
         /// <summary>
         /// Renders the series on the specified rendering context.
@@ -110,9 +110,9 @@ namespace OxyPlot.Series
             // determine render range
             var xmin = this.XAxis.ActualMinimum;
             var xmax = this.XAxis.ActualMaximum;
-			this.UpdateWindowStartIndex(items, this.GetCandleX, xmin);
+            this.UpdateWindowStartIndex(items, this.GetCandleX, xmin);
 
-			for (int i = this.WindowStartIndex; i < nitems; i++)
+            for (int i = this.WindowStartIndex; i < nitems; i++)
             {
                 var bar = items[i];
 
@@ -296,12 +296,12 @@ namespace OxyPlot.Series
             }
         }
 
-		/// <summary>
-		/// Gets candle's X coordinate.
-		/// </summary>
-		private double GetCandleX(HighLowItem item)
-		{
-			return item.X;
-		}
-	}
+        /// <summary>
+        /// Gets candle's X coordinate.
+        /// </summary>
+        private double GetCandleX(HighLowItem item)
+        {
+            return item.X;
+        }
+    }
 }

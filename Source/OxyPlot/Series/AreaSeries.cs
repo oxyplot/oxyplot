@@ -14,20 +14,20 @@ namespace OxyPlot.Series
     using System.Linq;
     using System.Runtime.CompilerServices;
 
-	/// <summary>
+    /// <summary>
     /// Represents an area series that fills the polygon defined by two sets of points or one set of points and a constant.
     /// </summary>
     public class AreaSeries : LineSeries
     {
-		/// <summary>
-		/// Last visible window start position in second data points collection.
-		/// </summary>
-		private int windowStartIndex2;
+        /// <summary>
+        /// Last visible window start position in second data points collection.
+        /// </summary>
+        private int windowStartIndex2;
 
-		/// <summary>
-		/// The second list of points.
-		/// </summary>
-		private readonly List<DataPoint> points2 = new List<DataPoint>();
+        /// <summary>
+        /// The second list of points.
+        /// </summary>
+        private readonly List<DataPoint> points2 = new List<DataPoint>();
 
         /// <summary>
         /// The secondary data points from the <see cref="P:ItemsSource" /> collection.
@@ -195,176 +195,186 @@ namespace OxyPlot.Series
         /// <param name="rc">The rendering context.</param>
         public override void Render(IRenderContext rc)
         {
-			this.VerifyAxes();
+            this.VerifyAxes();
 
-			var actualPoints = this.ActualPoints;
-			if (actualPoints == null || actualPoints.Count == 0)
-			{
-				return;
-			}
+            var actualPoints = this.ActualPoints;
+            if (actualPoints == null || actualPoints.Count == 0)
+            {
+                return;
+            }
 
-			var actualPoints2 = this.ActualPoints2;
-			if (actualPoints2 == null || actualPoints2.Count == 0)
-			{
-				return;
-			}
+            var actualPoints2 = this.ActualPoints2;
+            if (actualPoints2 == null || actualPoints2.Count == 0)
+            {
+                return;
+            }
 
-			// determine render range
-			var xmin = this.XAxis.ActualMinimum;
-			var xmax = this.XAxis.ActualMaximum;
-			this.UpdateWindowStartIndex(actualPoints, this.GetPointX, xmin);
-			this.UpdateWindowStartIndex(this.actualPoints2, this.GetPointX, xmin, ref this.windowStartIndex2);
+            int startIdx = 0;
+            int startIdx2 = 0;
+            double xmax = double.MaxValue;
 
-			double minDistSquared = this.MinimumSegmentLength * this.MinimumSegmentLength;
+            if (this.IsXMonotonic)
+            {
+                // determine render range
+                var xmin = this.XAxis.ActualMinimum;
+                xmax = this.XAxis.ActualMaximum;
+                this.UpdateWindowStartIndex(actualPoints, this.GetPointX, xmin);
+                this.UpdateWindowStartIndex(actualPoints2, this.GetPointX, xmin, ref this.windowStartIndex2);
 
-			var clippingRect = this.GetClippingRect();
-			rc.SetClip(clippingRect);
+                startIdx = this.WindowStartIndex;
+                startIdx2 = this.windowStartIndex2;
+            }
 
-			var chunksOfPoints = new List<List<ScreenPoint>>();
-			var chunksOfPoints2 = new List<List<ScreenPoint>>();
+            double minDistSquared = this.MinimumSegmentLength * this.MinimumSegmentLength;
 
-			this.RenderChunkedPoints(actualPoints, chunksOfPoints, this.WindowStartIndex, xmax, rc, clippingRect, minDistSquared, false, this.ActualColor);
-			this.RenderChunkedPoints(actualPoints2, chunksOfPoints2, this.windowStartIndex2, xmax, rc, clippingRect, minDistSquared, this.Reverse2, this.ActualColor2);
+            var clippingRect = this.GetClippingRect();
+            rc.SetClip(clippingRect);
 
-			if (chunksOfPoints.Count != chunksOfPoints2.Count)
-			{
-				rc.ResetClip();
-				return;
-			}
+            var chunksOfPoints = new List<List<ScreenPoint>>();
+            var chunksOfPoints2 = new List<List<ScreenPoint>>();
 
-			// Draw the fill
-			for (int chunkIndex = 0; chunkIndex < chunksOfPoints.Count; chunkIndex++)
-			{
-				var pts = chunksOfPoints[chunkIndex];
-				var pts2 = chunksOfPoints2[chunkIndex];
+            this.RenderChunkedPoints(actualPoints, chunksOfPoints, startIdx, xmax, rc, clippingRect, minDistSquared, false, this.ActualColor);
+            this.RenderChunkedPoints(actualPoints2, chunksOfPoints2, startIdx2, xmax, rc, clippingRect, minDistSquared, this.Reverse2, this.ActualColor2);
 
-				// pts = SutherlandHodgmanClipping.ClipPolygon(clippingRect, pts);
+            if (chunksOfPoints.Count != chunksOfPoints2.Count)
+            {
+                rc.ResetClip();
+                return;
+            }
 
-				// combine the two lines and draw the clipped area
-				var allPts = new List<ScreenPoint>();
-				allPts.AddRange(pts2);
-				allPts.AddRange(pts);
-				rc.DrawClippedPolygon(
-					clippingRect,
-					allPts,
-					minDistSquared,
-					this.GetSelectableFillColor(this.ActualFill),
-					OxyColors.Undefined);
+            // Draw the fill
+            for (int chunkIndex = 0; chunkIndex < chunksOfPoints.Count; chunkIndex++)
+            {
+                var pts = chunksOfPoints[chunkIndex];
+                var pts2 = chunksOfPoints2[chunkIndex];
 
-				var markerSizes = new[] { this.MarkerSize };
+                // pts = SutherlandHodgmanClipping.ClipPolygon(clippingRect, pts);
 
-				// draw the markers on top
-				rc.DrawMarkers(
-					clippingRect,
-					pts,
-					this.MarkerType,
-					null,
-					markerSizes,
-					this.MarkerFill,
-					this.MarkerStroke,
-					this.MarkerStrokeThickness,
-					1);
-				rc.DrawMarkers(
-					clippingRect,
-					pts2,
-					this.MarkerType,
-					null,
-					markerSizes,
-					this.MarkerFill,
-					this.MarkerStroke,
-					this.MarkerStrokeThickness,
-					1);
-			}
+                // combine the two lines and draw the clipped area
+                var allPts = new List<ScreenPoint>();
+                allPts.AddRange(pts2);
+                allPts.AddRange(pts);
+                rc.DrawClippedPolygon(
+                    clippingRect,
+                    allPts,
+                    minDistSquared,
+                    this.GetSelectableFillColor(this.ActualFill),
+                    OxyColors.Undefined);
 
-			rc.ResetClip();
-		}
+                var markerSizes = new[] { this.MarkerSize };
 
-		/// <summary>
-		/// Renders data points skipping NaN values.
-		/// </summary>
-		/// <param name="actualPoints">Points list.</param>
-		/// <param name="chunksOfPoints">A list where chunks will be placed.</param>
-		/// <param name="xMax"></param>
-		/// <param name="rc">Render context</param>
-		/// <param name="clippingRect">Clipping rect.</param>
-		/// <param name="minDistSquared">Minimal distance squared.</param>
-		/// <param name="reverse">Reverse points.</param>
-		/// <param name="color">Stroke color.</param>
-		/// <param name="startIdx"></param>
-		private void RenderChunkedPoints(List<DataPoint> actualPoints, List<List<ScreenPoint>> chunksOfPoints, int startIdx, double xMax, IRenderContext rc, OxyRect clippingRect, double minDistSquared, bool reverse, OxyColor color)
-		{
-			var dashArray = this.ActualDashArray;
-			var screenPoints = new List<ScreenPoint>();
+                // draw the markers on top
+                rc.DrawMarkers(
+                    clippingRect,
+                    pts,
+                    this.MarkerType,
+                    null,
+                    markerSizes,
+                    this.MarkerFill,
+                    this.MarkerStroke,
+                    this.MarkerStrokeThickness,
+                    1);
+                rc.DrawMarkers(
+                    clippingRect,
+                    pts2,
+                    this.MarkerType,
+                    null,
+                    markerSizes,
+                    this.MarkerFill,
+                    this.MarkerStroke,
+                    this.MarkerStrokeThickness,
+                    1);
+            }
 
-			Action<List<ScreenPoint>> finalizeChunk = list =>
-			{
-				var final = list;
+            rc.ResetClip();
+        }
 
-				if (reverse)
-				{
-					final.Reverse();
-				}
+        /// <summary>
+        /// Renders data points skipping NaN values.
+        /// </summary>
+        /// <param name="actualPoints">Points list.</param>
+        /// <param name="chunksOfPoints">A list where chunks will be placed.</param>
+        /// <param name="xMax"></param>
+        /// <param name="rc">Render context</param>
+        /// <param name="clippingRect">Clipping rect.</param>
+        /// <param name="minDistSquared">Minimal distance squared.</param>
+        /// <param name="reverse">Reverse points.</param>
+        /// <param name="color">Stroke color.</param>
+        /// <param name="startIdx"></param>
+        private void RenderChunkedPoints(List<DataPoint> actualPoints, List<List<ScreenPoint>> chunksOfPoints, int startIdx, double xMax, IRenderContext rc, OxyRect clippingRect, double minDistSquared, bool reverse, OxyColor color)
+        {
+            var dashArray = this.ActualDashArray;
+            var screenPoints = new List<ScreenPoint>();
 
-				if (this.Smooth)
-				{
-					var resampled = ScreenPointHelper.ResamplePoints(final, this.MinimumSegmentLength);
-					final = CanonicalSplineHelper.CreateSpline(resampled, 0.5, null, false, 0.25);
-				}
+            Action<List<ScreenPoint>> finalizeChunk = list =>
+            {
+                var final = list;
 
-				chunksOfPoints.Add(final);
+                if (reverse)
+                {
+                    final.Reverse();
+                }
 
-				rc.DrawClippedLine(clippingRect,
-									final,
-									minDistSquared,
-									this.GetSelectableColor(color),
-									this.StrokeThickness,
-									dashArray,
-									this.LineJoin,
-									false);
-			};
+                if (this.Smooth)
+                {
+                    var resampled = ScreenPointHelper.ResamplePoints(final, this.MinimumSegmentLength);
+                    final = CanonicalSplineHelper.CreateSpline(resampled, 0.5, null, false, 0.25);
+                }
 
-			int clipCount = 0;
-			for (int i = startIdx; i < actualPoints.Count; i++)
-			{
-				var point = actualPoints[i];
+                chunksOfPoints.Add(final);
 
-				if (double.IsNaN(point.Y))
-				{
-					if (screenPoints.Count == 0)
-					{
-						continue;
-					}
+                rc.DrawClippedLine(clippingRect,
+                                    final,
+                                    minDistSquared,
+                                    this.GetSelectableColor(color),
+                                    this.StrokeThickness,
+                                    dashArray,
+                                    this.LineJoin,
+                                    false);
+            };
 
-					finalizeChunk(screenPoints);
-					screenPoints = new List<ScreenPoint>();
-				}
-				else
-				{
-					var sp = this.XAxis.Transform(point.X, point.Y, this.YAxis);
-					screenPoints.Add(sp);
-				}
+            int clipCount = 0;
+            for (int i = startIdx; i < actualPoints.Count; i++)
+            {
+                var point = actualPoints[i];
 
-				// We break after two points were seen beyond xMax to ensure glitch-free rendering.
-				clipCount += point.x > xMax ? 1 : 0;
-				if (clipCount > 1)
-				{
-					break;
-				}
-			}
+                if (double.IsNaN(point.Y))
+                {
+                    if (screenPoints.Count == 0)
+                    {
+                        continue;
+                    }
 
-			if (screenPoints.Count > 0)
-			{
-				finalizeChunk(screenPoints);
-			}
-		}
+                    finalizeChunk(screenPoints);
+                    screenPoints = new List<ScreenPoint>();
+                }
+                else
+                {
+                    var sp = this.XAxis.Transform(point.X, point.Y, this.YAxis);
+                    screenPoints.Add(sp);
+                }
 
-		/// <summary>
-		/// Renders the legend symbol for the line series on the
-		/// specified rendering context.
-		/// </summary>
-		/// <param name="rc">The rendering context.</param>
-		/// <param name="legendBox">The bounding rectangle of the legend box.</param>
-		public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
+                // We break after two points were seen beyond xMax to ensure glitch-free rendering.
+                clipCount += point.x > xMax ? 1 : 0;
+                if (clipCount > 1)
+                {
+                    break;
+                }
+            }
+
+            if (screenPoints.Count > 0)
+            {
+                finalizeChunk(screenPoints);
+            }
+        }
+
+        /// <summary>
+        /// Renders the legend symbol for the line series on the
+        /// specified rendering context.
+        /// </summary>
+        /// <param name="rc">The rendering context.</param>
+        /// <param name="legendBox">The bounding rectangle of the legend box.</param>
+        public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
         {
             double y0 = (legendBox.Top * 0.2) + (legendBox.Bottom * 0.8);
             double y1 = (legendBox.Top * 0.4) + (legendBox.Bottom * 0.6);
@@ -444,14 +454,14 @@ namespace OxyPlot.Series
             }
         }
 
-		/// <summary>
-		/// Gets the x coordinate of a DataPoint.
-		/// </summary>
-		/// <param name="point">Data point.</param>
-		/// <returns>X coordinate.</returns>
-		private double GetPointX(DataPoint point)
-		{
-			return point.x;
-		}
-	}
+        /// <summary>
+        /// Gets the x coordinate of a DataPoint.
+        /// </summary>
+        /// <param name="point">Data point.</param>
+        /// <returns>X coordinate.</returns>
+        private double GetPointX(DataPoint point)
+        {
+            return point.x;
+        }
+    }
 }
