@@ -77,6 +77,7 @@ All notable changes to this project will be documented in this file.
 - Rewrite LogarithmicAxis tick calculation (#820)
 - Change Axis methods to protected virtual (#837)
 - Move CalculateMinorInterval and CreateTickValues to AxisUtilities (#837)
+- Change default number format to "g6" in Axis base class (#841)
 
 ### Removed
 - StyleCop tasks (#556)
