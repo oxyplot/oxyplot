@@ -10,10 +10,6 @@
 namespace OxyPlot.Series
 {
     using System;
-    using System.Reflection;
-    using System.Runtime.CompilerServices;
-
-    using OxyPlot.Axes;
 
     /// <summary>
     /// Represents a "higher performance" ordered OHLC series for candlestick charts
@@ -74,7 +70,7 @@ namespace OxyPlot.Series
                 startIndex = this.WindowStartIndex;
             }
 
-            return this.FindWindowStartIndex(this.Items, this.GetCandleX, x, startIndex);
+            return this.FindWindowStartIndex(this.Items, item => item.X, x, startIndex);
         }
 
         /// <summary>
@@ -110,7 +106,7 @@ namespace OxyPlot.Series
             // determine render range
             var xmin = this.XAxis.ActualMinimum;
             var xmax = this.XAxis.ActualMaximum;
-            this.UpdateWindowStartIndex(items, this.GetCandleX, xmin);
+            this.WindowStartIndex = this.UpdateWindowStartIndex(items, item => item.X, xmin, this.WindowStartIndex);
 
             for (int i = this.WindowStartIndex; i < nitems; i++)
             {
@@ -224,7 +220,7 @@ namespace OxyPlot.Series
                 return null;
             }
 
-            var pidx = this.FindWindowStartIndex(this.Items, this.GetCandleX, targetX, this.WindowStartIndex);
+            var pidx = this.FindWindowStartIndex(this.Items, item => item.X, targetX, this.WindowStartIndex);
             var nidx = ((pidx + 1) < this.Items.Count) ? pidx + 1 : pidx;
 
             Func<HighLowItem, double> distance = bar =>
@@ -294,14 +290,6 @@ namespace OxyPlot.Series
             {
                 this.minDx = 1;
             }
-        }
-
-        /// <summary>
-        /// Gets candle's X coordinate.
-        /// </summary>
-        private double GetCandleX(HighLowItem item)
-        {
-            return item.X;
         }
     }
 }

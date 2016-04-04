@@ -139,5 +139,16 @@ namespace ExampleLibrary
             model.Series.Add(new FunctionSeries(Math.Sin, 0, 40, 1000));
             return model;
         }
+
+        [Example("Tick calculation")]
+        public static PlotModel TickCalculation()
+        {
+            var model = new PlotModel { Title = "Tick calculation for different bases" };
+            model.Axes.Add(new LogarithmicAxis { Title = "Base 10", Position = AxisPosition.Left, Minimum = 20, Maximum = 20000, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Solid});
+            model.Axes.Add(new LogarithmicAxis { Title = "Base 7", Position = AxisPosition.Bottom, Base = 7, Minimum = 2, Maximum = 10000, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Solid });
+            model.Axes.Add(new LogarithmicAxis { Title = "Base 5.5", Position = AxisPosition.Top, Base = 5.5, Minimum = 1, Maximum = 100 });
+            model.Axes.Add(new LogarithmicAxis { Title = "Base 2", Position = AxisPosition.Right, Base = 2, Minimum = 1, Maximum = 1000000 });
+            return model;
+        }
     }
 }

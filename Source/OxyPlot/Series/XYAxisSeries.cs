@@ -20,16 +20,6 @@ namespace OxyPlot.Series
     public abstract class XYAxisSeries : ItemsSeries
     {
         /// <summary>
-        /// Indicates whether the X coordinate of all data point increases monotonically.
-        /// </summary>
-        protected bool IsXMonotonic;
-
-        /// <summary>
-        /// Last visible window start position in data points collection.
-        /// </summary>
-        protected int WindowStartIndex;
-
-        /// <summary>
         /// The default tracker format string
         /// </summary>
         public const string DefaultTrackerFormatString = "{0}\n{1}: {2}\n{3}: {4}";
@@ -99,6 +89,16 @@ namespace OxyPlot.Series
         /// </summary>
         /// <value>The y-axis key.</value>
         public string YAxisKey { get; set; }
+
+        /// <summary>
+        /// Gets a value indicating whether the X coordinate of all data point increases monotonically.
+        /// </summary>
+        protected bool IsXMonotonic { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the last visible window start position in the data points collection.
+        /// </summary>
+        protected int WindowStartIndex { get; set; }
 
         /// <summary>
         /// Gets the rectangle the series uses on the screen (screen coordinates).
@@ -737,47 +737,35 @@ namespace OxyPlot.Series
         /// <summary>
         /// Updates visible window start index.
         /// </summary>
+        /// <typeparam name="T">The type of the list items.</typeparam>
         /// <param name="items">Data points.</param>
-        /// <param name="xGetter">Function that gets data point X coordinate.</param>
-        /// <param name="targetX">X coordinate of visible window start.</param>
-        protected void UpdateWindowStartIndex<T>(List<T> items, Func<T, double> xGetter, double targetX)
-        {
-            this.UpdateWindowStartIndex(items, xGetter, targetX, ref this.WindowStartIndex);
-        }
-
-        /// <summary>
-        /// Updates visible window start index.
-        /// </summary>
-        /// <param name="items">Data points.</param>
-        /// <param name="xGetter">Function that gets data point X coordinate.</param>
+        /// <param name="xgetter">Function that gets data point X coordinate.</param>
         /// <param name="targetX">X coordinate of visible window start.</param>
         /// <param name="lastIndex">Last window index.</param>
-        protected void UpdateWindowStartIndex<T>(List<T> items, Func<T, double> xGetter, double targetX, ref int lastIndex)
+        /// <returns>The new window start index.</returns>
+        protected int UpdateWindowStartIndex<T>(List<T> items, Func<T, double> xgetter, double targetX, int lastIndex)
         {
-            lastIndex = this.FindWindowStartIndex(items, xGetter, targetX, lastIndex);
+            lastIndex = this.FindWindowStartIndex(items, xgetter, targetX, lastIndex);
             if (lastIndex > 0)
             {
                 lastIndex--;
             }
+
+            return lastIndex;
         }
 
         /// <summary>
-        /// Find index of max(x) &lt;= target x in a list of data points
+        /// Finds the index of max(x) &lt;= target x in a list of data points
         /// </summary>
-        /// <param name='items'>
-        /// vector of data points
-        /// </param>
-        /// <param name="xGetter">Function that gets data point X coordinate.</param>
-        /// <param name='targetX'>
-        /// target x.
-        /// </param>
-        /// <param name='initialGuess'>
-        /// initial guess index.
-        /// </param>
+        /// <typeparam name="T">The type of the list items.</typeparam>
+        /// <param name="items">vector of data points</param>
+        /// <param name="xgetter">Function that gets data point X coordinate.</param>
+        /// <param name="targetX">target x.</param>
+        /// <param name="initialGuess">initial guess index.</param>
         /// <returns>
         /// index of x with max(x) &lt;= target x or -1 if cannot find
         /// </returns>
-        protected int FindWindowStartIndex<T>(List<T> items, Func<T, double> xGetter, double targetX, int initialGuess)
+        protected int FindWindowStartIndex<T>(List<T> items, Func<T, double> xgetter, double targetX, int initialGuess)
         {
             int lastguess = 0;
             int start = 0;
@@ -795,7 +783,7 @@ namespace OxyPlot.Series
                     return end;
                 }
 
-                double guessX = xGetter(items[curGuess]);
+                double guessX = xgetter(items[curGuess]);
                 if (guessX.Equals(targetX))
                 {
                     return curGuess;
@@ -823,8 +811,8 @@ namespace OxyPlot.Series
                     return lastguess;
                 }
 
-                double endX = xGetter(items[end]);
-                double startX = xGetter(items[start]);
+                double endX = xgetter(items[end]);
+                double startX = xgetter(items[start]);
 
                 var m = (end - start + 1) / (endX - startX);
                 curGuess = start + (int)((targetX - startX) * m);
