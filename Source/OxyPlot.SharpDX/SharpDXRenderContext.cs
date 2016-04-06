@@ -469,20 +469,7 @@ namespace OxyPlot.SharpDX
             garbage.Add(layout);
             garbage.Add(format);
 
-
-
-      
-
-
-
-
-
-
-
-
-
-
-
+            
 
         }
 
@@ -657,9 +644,9 @@ namespace OxyPlot.SharpDX
 
         StrokeStyle GetStroke(double[] dashArray, LineJoin lineJoin)
         {
-          //  if (dashArray == null)
+            if (dashArray == null)
                 return new StrokeStyle(d2dFactory, new StrokeStyleProperties { LineJoin = lineJoin.ToDXLineJoin() });
-            return new StrokeStyle(d2dFactory, new StrokeStyleProperties { LineJoin = lineJoin.ToDXLineJoin() }, dashArray.Select(x => (float)x).ToArray());
+            return new StrokeStyle(d2dFactory, new StrokeStyleProperties { LineJoin = lineJoin.ToDXLineJoin(), DashStyle=DashStyle.Custom }, dashArray.Select(x => (float)x).ToArray());
         }
 
 
