@@ -414,10 +414,52 @@ namespace OxyPlot.SharpDX
             }
 
 
+
+
+
             var layout = new TextLayout(dwFactory, text, format, maxWidth, maxHeight);
 
+            var size = new Size2F(layout.Metrics.Width, layout.Metrics.Height);
+            if (maxSize != null)
+            {
+                if (size.Width > maxSize.Value.Width)
+                {
+                    size.Width =(float) maxSize.Value.Width;
+                }
+
+                if (size.Height > maxSize.Value.Height)
+                {
+                    size.Height =(float) maxSize.Value.Height;
+                }
+                
+            }
+
+
+            float dx = 0;
+            if (halign == OxyPlot.HorizontalAlignment.Center)
+            {
+                dx = -size.Width / 2;
+            }
+
+            if (halign == OxyPlot.HorizontalAlignment.Right)
+            {
+                dx = -size.Width;
+            }
+
+            float dy = 0;
+            if (valign == OxyPlot.VerticalAlignment.Middle)
+            {
+                dy = -size.Height / 2;
+            }
+
+            if (valign == OxyPlot.VerticalAlignment.Bottom)
+            {
+                dy = -size.Height;
+            }
+
+
             var currentTransform = renderTarget.Transform;
-            renderTarget.Transform = Matrix3x2.Rotation((float)rotate) * Matrix3x2.Translation(p.ToVector2());
+            renderTarget.Transform = Matrix3x2.Translation(dx, dy)* Matrix3x2.Rotation((float)rotate) * Matrix3x2.Translation(p.ToVector2());
 
             renderTarget.DrawTextLayout(new Vector2(), layout, GetBrush(fill));
 
@@ -426,14 +468,22 @@ namespace OxyPlot.SharpDX
 
             garbage.Add(layout);
             garbage.Add(format);
-          
-
-            
 
 
 
+      
 
-           
+
+
+
+
+
+
+
+
+
+
+
         }
 
         /// <summary>
@@ -607,7 +657,7 @@ namespace OxyPlot.SharpDX
 
         StrokeStyle GetStroke(double[] dashArray, LineJoin lineJoin)
         {
-            if (dashArray == null)
+          //  if (dashArray == null)
                 return new StrokeStyle(d2dFactory, new StrokeStyleProperties { LineJoin = lineJoin.ToDXLineJoin() });
             return new StrokeStyle(d2dFactory, new StrokeStyleProperties { LineJoin = lineJoin.ToDXLineJoin() }, dashArray.Select(x => (float)x).ToArray());
         }

@@ -30,7 +30,7 @@ namespace OxyPlot.SharpDX
 
         public static RectangleF ToRectangleF(this OxyRect rect)
         {
-            return new RectangleF((float)rect.Top, (float)rect.Left, (float)rect.Width, (float)rect.Height);
+            return new RectangleF((float)rect.Left, (float)rect.Top, (float)rect.Width, (float)rect.Height);
         }
 
         public static DXLineJoin ToDXLineJoin(this LineJoin lineJoin)

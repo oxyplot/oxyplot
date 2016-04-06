@@ -639,7 +639,7 @@ namespace OxyPlot.SharpDX.WPF
    
         private void DoRender(IntPtr surface, bool isNewSurface)
         {
-            if (this.imageHost == null)
+            if (this.imageHost == null || this.ActualModel == null)
             {
                 return;
             }
@@ -650,7 +650,7 @@ namespace OxyPlot.SharpDX.WPF
                 backColor = this.ActualModel.Background;
             }
 
-            if (isNewSurface)
+            if (isNewSurface || renderTarget==null)
             {
                 if (renderTargetView != null)
                 {
@@ -673,15 +673,14 @@ namespace OxyPlot.SharpDX.WPF
 
 
 
-            if (this.ActualModel != null)
-            {
+         
                 this.renderTarget.BeginDraw();    
                 renderTarget.Clear(backColor.ToDXColor());
                 this.renderContext.BeginDraw(renderTarget);
                 ((IPlotModel)this.ActualModel).Render(this.renderContext, this.imageHost.ActualWidth, this.imageHost.ActualHeight);
                 this.renderContext.EndDraw();
                 this.renderTarget.EndDraw();
-            }
+            
             
         
 
@@ -700,6 +699,8 @@ namespace OxyPlot.SharpDX.WPF
 
         private void Cleanup()
         {
+            if (renderTargetView == null)
+                return;
             renderTargetView.Dispose();
           //  backBuffer.Dispose();
             device.ImmediateContext.ClearState();
