@@ -142,7 +142,7 @@ namespace OxyPlot.SharpDX.WPF
         /// <summary>
         /// The render context
         /// </summary>
-        private SharpDXRenderContext renderContext;
+        private CacherRenderContext renderContext;
 
         /// <summary>
         /// The zoom control.
@@ -378,11 +378,15 @@ namespace OxyPlot.SharpDX.WPF
         public void InvalidatePlot(bool update = true)
         {
             this.UpdateModel(update);
+            if (renderContext != null && this.renderTarget!=null)
+            {
 
-            if (this.image!=null)
-                this.image.RequestRender();
+                this.renderContext.ResetRenderUnits();
 
-           
+                ((IPlotModel)this.ActualModel).Render(this.renderContext, this.ActualWidth, this.ActualHeight);
+            }
+
+
         }
 
         /// <summary>
@@ -626,17 +630,14 @@ namespace OxyPlot.SharpDX.WPF
             image.WindowOwner = (new WindowInteropHelper(Window.GetWindow(this))).Handle;
             image.OnRender = this.DoRender;
             d2dFactory = new D2D1Factory();
-            renderContext = new SharpDXRenderContext(d2dFactory);///can pass factory here?
-
-
+            renderContext = new CacherRenderContext(d2dFactory);
             
-
             // Start rendering now!
             image.RequestRender();
         }
 
-       
-   
+
+
         private void DoRender(IntPtr surface, bool isNewSurface)
         {
             if (this.imageHost == null || this.ActualModel == null)
@@ -650,17 +651,15 @@ namespace OxyPlot.SharpDX.WPF
                 backColor = this.ActualModel.Background;
             }
 
-            if (isNewSurface || renderTarget==null)
+            if (isNewSurface || renderTarget == null)
             {
-                if (renderTargetView != null)
-                {
-                    renderTargetView.Dispose();
-                    renderTargetView = null;
-                }
+              
 
                 InitRenderTarget(surface);
 
-                
+                this.InvalidatePlot(false);
+
+
                 //device.ImmediateContext.Rasterizer.SetViewport(0, 0, (float)this.ActualWidth, (float)this.ActualHeight, 0.0f, 1.0f);
 
 
@@ -673,20 +672,20 @@ namespace OxyPlot.SharpDX.WPF
 
 
 
-         
-                this.renderTarget.BeginDraw();    
-                renderTarget.Clear(backColor.ToDXColor());
-                this.renderContext.BeginDraw(renderTarget);
-                ((IPlotModel)this.ActualModel).Render(this.renderContext, this.imageHost.ActualWidth, this.imageHost.ActualHeight);
-                this.renderContext.EndDraw();
-                this.renderTarget.EndDraw();
-            
-            
-        
+
+
+            this.renderTarget.BeginDraw();
+            renderTarget.Clear(backColor.ToDXColor());
+            this.renderContext.Render();
+
+            this.renderTarget.EndDraw();
+
+
+
 
             device.ImmediateContext.Flush();
 
-       
+
 
         }
 
@@ -741,6 +740,9 @@ namespace OxyPlot.SharpDX.WPF
         /// </summary>
         void InitRenderTarget(IntPtr surfacePtr)
         {
+            //MEMORY leaks here? dxgiResource, backbuffer etc?
+
+
             DXGIResource dxgiResource;
             using (var r = new ComObject(surfacePtr))
             {
@@ -748,12 +750,29 @@ namespace OxyPlot.SharpDX.WPF
             }
 
             var backBuffer = device.OpenSharedResource<Texture2D>(dxgiResource.SharedHandle);
+
+            if (renderTargetView != null)
+            {
+                renderTargetView.Dispose();
+                renderTargetView = null;
+            }
             renderTargetView = new RenderTargetView(device, backBuffer);
 
             var surface = backBuffer.QueryInterface<Surface>();
-            
+            if (renderTarget != null)
+                renderTarget.Dispose();
 
-           renderTarget = new RenderTarget(d2dFactory, surface, new RenderTargetProperties(new PixelFormat(Format.Unknown, AlphaMode.Premultiplied)));
+
+
+            renderTarget = new RenderTarget(d2dFactory, surface, new RenderTargetProperties(new PixelFormat(Format.Unknown, AlphaMode.Premultiplied)));
+
+            renderContext.ResetRenderTarget(renderTarget);
+
+
+            //dxgiResource.Dispose();
+            //backBuffer.Dispose();
+            //surface.Dispose();
+            
         }
 
        

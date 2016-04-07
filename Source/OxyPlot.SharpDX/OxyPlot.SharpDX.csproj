@@ -57,9 +57,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CacherRenderContext.cs" />
+    <Compile Include="RenderUnits\EllipseRenderUnit.cs" />
+    <Compile Include="RenderUnits\GeometryRenderUnit.cs" />
+    <Compile Include="RenderUnits\ImageRenderUnit.cs" />
+    <Compile Include="RenderUnits\IRenderUnit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RenderUnits\RectangleRenderUnit.cs" />
     <Compile Include="SharpDXOxyExtensions.cs" />
     <Compile Include="SharpDXRenderContext.cs" />
+    <Compile Include="RenderUnits\TextRenderUnit.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
