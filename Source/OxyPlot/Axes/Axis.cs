@@ -1252,11 +1252,10 @@ namespace OxyPlot.Axes
 
             this.ActualStringFormat = this.StringFormat;
 
-            // if (ActualStringFormat==null)
-            // {
-            // if (ActualMaximum > 1e6 || ActualMinimum < 1e-6)
-            // ActualStringFormat = "#.#e-0";
-            // }
+            if (this.ActualStringFormat == null)
+            {
+                this.ActualStringFormat = "g6";
+            }
         }
 
         /// <summary>
