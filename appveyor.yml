@@ -47,12 +47,5 @@ artifacts:
     name: OxyPlot-$(GitVersion_SemVer)
     type: zip
   - path: '*.nupkg'
-
-deploy:
-  provider: NuGet
-  server:                  # remove to push to NuGet.org
-  api_key:
-    secure: kM3Kse+ivuuE5RVoe6dPdw+aguWx56K2YeXujGa9tMPQTms3lv7QxNpTLFMALYNa
-  skip_symbols: false
-  symbol_server:           # remove to push symbols to SymbolSource.org
-  artifact: /.*\.nupkg/  
+    name: OxyPlot-packages-$(GitVersion_SemVer)
+    type: zip
