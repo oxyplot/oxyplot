@@ -14,7 +14,7 @@ namespace OxyPlot
     /// <summary>
     /// Provides functionality to export plots to pdf.
     /// </summary>
-    public class PdfExporter
+    public class PdfExporter : IExporter
     {
         /// <summary>
         /// Gets or sets the width (in points, 1/72 inch) of the output document.
