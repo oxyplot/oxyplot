@@ -29,12 +29,10 @@ build_script:
   
 after_build:
   - gitlink c:\projects\oxyplot -u https://github.com/oxyplot/oxyplot -f Source/OxyPlot.AppVeyor.sln -ignore OxyPlot.Windows10,OxyPlot.MonoTouch,OxyPlot.Xamarin.Android,OxyPlot.Xamarin.iOS,OxyPlot.Xamarin.Forms.Platform.Android,OxyPlot.Xamarin.Forms.Platform.iOS,OxyPlot.Xamarin.Forms.Platform.iOS.Classic
-  - NuGet pack Source\OxyPlot.nuspec -version "%GitVersion_NuGetVersion%"
   - NuGet pack Source\OxyPlot\OxyPlot.Core.nuspec -version "%GitVersion_NuGetVersion%"
   - NuGet pack Source\OxyPlot.Wpf\OxyPlot.Wpf.nuspec -version "%GitVersion_NuGetVersion%"
   - NuGet pack Source\OxyPlot.Windows\OxyPlot.Windows.nuspec -version "%GitVersion_NuGetVersion%"
   - NuGet pack Source\OxyPlot.WindowsForms\OxyPlot.WindowsForms.nuspec -version "%GitVersion_NuGetVersion%"
-  - NuGet pack Source\OxyPlot.WindowsUniversal\OxyPlot.WindowsUniversal.nuspec -version "%GitVersion_NuGetVersion%"
   - NuGet pack Source\OxyPlot.WP8\OxyPlot.WP8.nuspec -version "%GitVersion_NuGetVersion%"
   - NuGet pack Source\OxyPlot.Silverlight\OxyPlot.Silverlight.nuspec -version "%GitVersion_NuGetVersion%"
   - NuGet pack Source\OxyPlot.OpenXml\OxyPlot.OpenXml.nuspec -version "%GitVersion_NuGetVersion%"
