@@ -79,6 +79,7 @@ All notable changes to this project will be documented in this file.
 - Change Axis methods to protected virtual (#837)
 - Move CalculateMinorInterval and CreateTickValues to AxisUtilities (#837)
 - Change default number format to "g6" in Axis base class (#841)
+- Push packages to myget.org (#847)
 
 ### Removed
 - StyleCop tasks (#556)

@@ -49,3 +49,12 @@ artifacts:
   - path: '*.nupkg'
     name: OxyPlot-packages-$(GitVersion_SemVer)
     type: zip
+
+deploy:
+  provider: NuGet
+  server: https://www.myget.org/F/oxyplot/api/v2/package
+  api_key:
+    secure: 2GnqgfpkOUH6Umfn1WWlun0b021+QeInBXkgQOQfa4/wDOYHLT757rrjTsb0lmon
+  skip_symbols: false
+  symbol_server:           # remove to push symbols to SymbolSource.org
+  artifact: /.*\.nupkg/
