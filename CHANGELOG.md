@@ -34,6 +34,9 @@ All notable changes to this project will be documented in this file.
 - Support for Windows Universal 10.0 apps (#615)
 - Support Unicode in OxyPlot.Pdf (#789)
 - TouchTrackerManipulator (#787)
+- Extracted visible window search code from CandleStickSeries and made a generic version in XYSeries. Used it to omptimize AreaSeries performance. (#834)
+- Optimized rednering performance of RectangleBarSeries (#834).
+- PdfExporter implementing IExporter (#845)
 
 ### Changed
 - Renamed OxyPlot.WindowsUniversal to OxyPlot.Windows (#242)
@@ -73,6 +76,12 @@ All notable changes to this project will be documented in this file.
 - BoxPlotItem changed to reference type (#692)
 - Move Xamarin projects to new repository (#777)
 - Remove CandleStickSeries.Append (#826)
+- Change MinorInterval calculation, add unit test (#133)
+- Rewrite LogarithmicAxis tick calculation (#820)
+- Change Axis methods to protected virtual (#837)
+- Move CalculateMinorInterval and CreateTickValues to AxisUtilities (#837)
+- Change default number format to "g6" in Axis base class (#841)
+- Push packages to myget.org (#847)
 
 ### Removed
 - StyleCop tasks (#556)

@@ -71,6 +71,7 @@
     </Compile>
     <Compile Include="Annotations\PointAnnotation.cs" />
     <Compile Include="Annotations\ShapeAnnotation.cs" />
+    <Compile Include="Axes\AxisUtilities.cs" />
     <Compile Include="Graphics\DelegateViewCommand{T}.cs" />
     <Compile Include="Graphics\ElementCollectionChangedEventArgs{T}.cs" />
     <Compile Include="Graphics\ManipulatorBase.cs" />

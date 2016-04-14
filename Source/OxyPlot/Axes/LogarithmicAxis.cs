@@ -42,9 +42,19 @@ namespace OxyPlot.Axes
         public bool PowerPadding { get; set; }
 
         /// <summary>
+        /// Gets or sets the actual logarithmic maximum value of the axis.
+        /// </summary>
+        protected double LogActualMaximum { get; set; }
+
+        /// <summary>
+        /// Gets or sets the actual logarithmic minimum value of the axis.
+        /// </summary>
+        protected double LogActualMinimum { get; set; }
+        
+        /// <summary>
         /// Coerces the actual maximum and minimum values.
         /// </summary>
-        public override void CoerceActualMaxMin()
+        protected override void CoerceActualMaxMin()
         {
             if (double.IsNaN(this.ActualMinimum) || double.IsInfinity(this.ActualMinimum))
             {
@@ -70,88 +80,64 @@ namespace OxyPlot.Axes
         /// <param name="majorLabelValues">The major label values.</param>
         /// <param name="majorTickValues">The major tick values.</param>
         /// <param name="minorTickValues">The minor tick values.</param>
-        public override void GetTickValues(
-            out IList<double> majorLabelValues, out IList<double> majorTickValues, out IList<double> minorTickValues)
+        public override void GetTickValues(out IList<double> majorLabelValues, out IList<double> majorTickValues, out IList<double> minorTickValues)
         {
-            if (this.ActualMinimum <= 0)
-            {
-                this.ActualMinimum = 0.1;
+            // For easier readability, the nomenclature of this function and all related functions assumes a base of 10, and therefore uses the
+            // term "decade". However, the code supports all other bases as well.
+            double logBandwidth = this.LogActualMaximum - this.LogActualMinimum;
+            double axisBandwidth = this.IsVertical() ? this.ScreenMax.Y - this.ScreenMin.Y : this.ScreenMax.X - this.ScreenMin.X;
+
+            double desiredNumberOfTicks = axisBandwidth / this.IntervalLength;
+            double ticksPerDecade = desiredNumberOfTicks / logBandwidth;
+            double logDesiredStepSize = 1.0 / Convert.ToInt32(ticksPerDecade);
+
+            int intBase = Convert.ToInt32(this.Base);
+
+            if (ticksPerDecade < 0.75)
+            {   // Major Ticks every few decades (increase in powers of 2), up to eight minor tick subdivisions
+                int decadesPerMajorTick = (int)Math.Pow(2, Math.Ceiling(Math.Log(1 / ticksPerDecade, 2)));
+                majorTickValues = this.DecadeTicks(decadesPerMajorTick);
+                minorTickValues = this.DecadeTicks(Math.Ceiling(decadesPerMajorTick / 8.0));
             }
-
-            double logBase = Math.Log(this.Base);
-            var e0 = (int)Math.Floor(Math.Log(this.ActualMinimum) / logBase);
-            var e1 = (int)Math.Ceiling(Math.Log(this.ActualMaximum) / logBase);
-
-            // find the min & max values for the specified base
-            // round to max 10 digits
-            double p0 = Math.Pow(this.Base, e0);
-            double p1 = Math.Pow(this.Base, e1);
-            double d0 = Math.Round(p0, 10);
-            double d1 = Math.Round(p1, 10);
-            if (d0 <= 0)
-            {
-                d0 = p0;
+            else if (Math.Abs(this.Base - intBase) > 1e-10)
+            {   // fractional Base, best guess: naively subdivide decades
+                majorTickValues = this.DecadeTicks(logDesiredStepSize);
+                minorTickValues = this.DecadeTicks(0.5 * logDesiredStepSize);
             }
-
-            double d = d0;
-            majorTickValues = new List<double>();
-            minorTickValues = new List<double>();
-
-            double epsMin = this.ActualMinimum * 1e-6;
-            double epsMax = this.ActualMaximum * 1e-6;
-
-            while (d <= d1 + epsMax)
-            {
-                // d = RemoveNoiseFromDoubleMath(d);
-                if (d >= this.ActualMinimum - epsMin && d <= this.ActualMaximum + epsMax)
-                {
-                    majorTickValues.Add(d);
-                }
-
-                for (int i = 1; i < this.Base; i++)
-                {
-                    double d2 = d * (i + 1);
-                    if (d2 > d1 + double.Epsilon)
-                    {
-                        break;
-                    }
-
-                    if (d2 > this.ActualMaximum)
-                    {
-                        break;
-                    }
-
-                    if (d2 >= this.ActualMinimum && d2 <= this.ActualMaximum)
-                    {
-                        minorTickValues.Add(d2);
-                    }
-                }
-
-                d *= this.Base;
-                if (double.IsInfinity(d))
-                {
-                    break;
-                }
-
-                if (d < double.Epsilon)
-                {
-                    break;
-                }
-
-                if (double.IsNaN(d))
-                {
-                    break;
-                }
+            else if (ticksPerDecade < 2)
+            {   // Major Ticks at every decade, Minor Ticks at fractions (not for fractional base)
+                majorTickValues = this.DecadeTicks();
+                minorTickValues = this.SubdividedDecadeTicks();
             }
-
-            if (majorTickValues.Count < 2)
-            {
+            else if (ticksPerDecade > this.Base * 1.5)
+            {   // Fall back to linearly distributed tick values
                 base.GetTickValues(out majorLabelValues, out majorTickValues, out minorTickValues);
             }
             else
-            {
-                majorLabelValues = majorTickValues;
+            {   // integer Base, use a candidate model to find "nice" ticks
+                IList<double> logMajorCandidates;
+                IList<double> logMinorCandidates;
+
+                // use subdivided decades as major candidates
+                logMajorCandidates = this.LogSubdividedDecadeTicks(false);
+
+                if (logMajorCandidates.Count < 2)
+                {   // this should usually not be the case, but if for some reason we should happen to have too few candidates, fall back to linear ticks
+                    base.GetTickValues(out majorLabelValues, out majorTickValues, out minorTickValues);
+                    return;
+                }
+                
+                // check for large candidate intervals; if there are any, subdivide with minor ticks
+                logMinorCandidates = this.LogCalculateMinorCandidates(logMajorCandidates, logDesiredStepSize);
+
+                // use all minor tick candidates that are in the axis range
+                minorTickValues = this.PowList(logMinorCandidates, true);
+
+                // find suitable candidates for every desired major step
+                majorTickValues = this.AlignTicksToCandidates(logMajorCandidates, logDesiredStepSize);
             }
+
+            majorLabelValues = majorTickValues;
         }
 
         /// <summary>
@@ -284,6 +270,317 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
+        /// Raises all elements of a List to the power of <c>this.Base</c>.
+        /// </summary>
+        /// <param name="logInput">The input values.</param>
+        /// <param name="clip">If true, discards all values that are not in the axis range.</param>
+        /// <returns>A new IList containing the resulting values.</returns>
+        internal IList<double> PowList(IList<double> logInput, bool clip = false)
+        {
+            List<double> ret = new List<double>();
+            foreach (double item in logInput)
+            {
+                if (clip && item < this.LogActualMinimum)
+                {
+                    continue;
+                }
+
+                if (clip && item > this.LogActualMaximum)
+                {
+                    break;
+                }
+
+                ret.Add(Math.Pow(this.Base, item));
+            }
+
+            return ret;
+        }
+
+        /// <summary>
+        /// Applies the logarithm with <c>this.Base</c> to all elements of a List.
+        /// </summary>
+        /// <param name="input">The input values.</param>
+        /// <param name="clip">If true, discards all values that are not in the axis range.</param>
+        /// <returns>A new IList containing the resulting values.</returns>
+        internal IList<double> LogList(IList<double> input, bool clip = false)
+        {
+            List<double> ret = new List<double>();
+            foreach (double item in input)
+            {
+                if (clip && item < this.ActualMinimum)
+                {
+                    continue;
+                }
+
+                if (clip && item > this.ActualMaximum)
+                {
+                    break;
+                }
+
+                ret.Add(Math.Log(item, this.Base));
+            }
+
+            return ret;
+        }
+
+        /// <summary>
+        /// Calculates ticks of the decades in the axis range with a specified step size.
+        /// </summary>
+        /// <param name="step">The step size.</param>
+        /// <returns>A new IList containing the decade ticks.</returns>
+        internal IList<double> DecadeTicks(double step = 1)
+        {
+            return this.PowList(this.LogDecadeTicks(step));
+        }
+
+        /// <summary>
+        /// Calculates logarithmic ticks of the decades in the axis range with a specified step size.
+        /// </summary>
+        /// <param name="step">The step size.</param>
+        /// <returns>A new IList containing the logarithmic decade ticks.</returns>
+        internal IList<double> LogDecadeTicks(double step = 1)
+        {
+            List<double> ret = new List<double>();
+
+            for (double exponent = Math.Ceiling(this.LogActualMinimum); true; exponent += step)
+            {
+                if (exponent < this.LogActualMinimum)
+                {
+                    continue;
+                }
+
+                if (exponent > this.LogActualMaximum)
+                {
+                    break;
+                }
+
+                ret.Add(exponent);
+            }
+
+            return ret;
+        }
+
+        /// <summary>
+        /// Calculates logarithmic ticks of all decades in the axis range and their subdivisions.
+        /// </summary>
+        /// <param name="clip">If true (default), the lowest and highest decade are clipped to the axis range.</param>
+        /// <returns>A new IList containing the logarithmic decade ticks.</returns>
+        internal IList<double> LogSubdividedDecadeTicks(bool clip = true)
+        {
+            return this.LogList(this.SubdividedDecadeTicks(clip));
+        }
+
+        /// <summary>
+        /// Calculates ticks of all decades in the axis range and their subdivisions.
+        /// </summary>
+        /// <param name="clip">If true (default), the lowest and highest decade are clipped to the axis range.</param>
+        /// <returns>A new IList containing the decade ticks.</returns>
+        internal IList<double> SubdividedDecadeTicks(bool clip = true)
+        {
+            List<double> ret = new List<double>();
+            for (int exponent = (int)Math.Floor(this.LogActualMinimum); true; exponent++)
+            {
+                if (exponent > this.LogActualMaximum)
+                {
+                    break;
+                }
+
+                double currentDecade = Math.Pow(this.Base, exponent);
+                for (int mantissa = 1; mantissa < this.Base; mantissa++)
+                {
+                    double currentValue = currentDecade * mantissa;
+                    if (clip && currentValue < this.ActualMinimum)
+                    {
+                        continue;
+                    }
+
+                    if (clip && currentValue > this.ActualMaximum)
+                    {
+                        break;
+                    }
+
+                    ret.Add(currentDecade * mantissa);
+                }
+            }
+
+            return ret;
+        }
+
+        /// <summary>
+        /// Chooses from a list of candidates so that the resulting List matches the <paramref name="logDesiredStepSize"/> as far as possible.
+        /// </summary>
+        /// <param name="logCandidates">The candidates.</param>
+        /// <param name="logDesiredStepSize">The desired logarithmic step size.</param>
+        /// <returns>A new IList containing the chosen candidates.</returns>
+        internal IList<double> AlignTicksToCandidates(IList<double> logCandidates, double logDesiredStepSize)
+        {
+            return this.PowList(this.LogAlignTicksToCandidates(logCandidates, logDesiredStepSize));
+        }
+
+        /// <summary>
+        /// Chooses from a list of candidates so that the resulting List matches the <paramref name="logDesiredStepSize"/> as far as possible.
+        /// </summary>
+        /// <param name="logCandidates">The candidates.</param>
+        /// <param name="logDesiredStepSize">The desired logarithmic step size.</param>
+        /// <returns>A new IList containing the chosen logarithmic candidates.</returns>
+        internal IList<double> LogAlignTicksToCandidates(IList<double> logCandidates, double logDesiredStepSize)
+        {
+            List<double> ret = new List<double>();
+
+            int candidateOffset = 1;
+            double logPreviousMajorTick = double.NaN;
+
+            // loop through all desired steps and find a suitable candidate for each of them
+            for (double d = Math.Floor(this.LogActualMinimum); true; d += logDesiredStepSize)
+            {
+                if (d < this.LogActualMinimum - logDesiredStepSize)
+                {
+                    continue;
+                }
+
+                if (d > (this.LogActualMaximum + logDesiredStepSize))
+                {
+                    break;
+                }
+
+                // find closest candidate 
+                while (candidateOffset < logCandidates.Count - 1 && logCandidates[candidateOffset] < d)
+                {
+                    candidateOffset++;
+                }
+
+                double logNewMajorTick =
+                    Math.Abs(logCandidates[candidateOffset] - d) < Math.Abs(logCandidates[candidateOffset - 1] - d) ?
+                    logCandidates[candidateOffset] :
+                    logCandidates[candidateOffset - 1];
+                                
+                // don't add duplicates
+                if (logNewMajorTick != logPreviousMajorTick)
+                {
+                    ret.Add(logNewMajorTick);
+                }
+
+                logPreviousMajorTick = logNewMajorTick;
+            }
+
+            return ret;
+        }
+        
+        /// <summary>
+        /// Calculates minor tick candidates for a given set of major candidates.
+        /// </summary>
+        /// <param name="logMajorCandidates">The major candidates.</param>
+        /// <param name="logDesiredMajorStepSize">The desired major step size.</param>
+        /// <returns>A new IList containing the minor candidates.</returns>
+        internal IList<double> LogCalculateMinorCandidates(IList<double> logMajorCandidates, double logDesiredMajorStepSize)
+        {
+            List<double> ret = new List<double>();
+
+            for (int c = 1; c < logMajorCandidates.Count; c++)
+            {
+                double previous = logMajorCandidates[c - 1];
+                double current = logMajorCandidates[c];
+
+                if (current < this.LogActualMinimum)
+                {
+                    continue;
+                }
+
+                if (previous > this.LogActualMaximum)
+                {
+                    break;
+                }
+
+                double stepSizeRatio = (current - previous) / logDesiredMajorStepSize;
+                if (stepSizeRatio > 2)
+                {   // Step size is too large... subdivide with minor ticks
+                    this.LogSubdivideInterval(ret, this.Base, previous, current);
+                }
+
+                ret.Add(current);
+            }
+
+            return ret;
+        }
+
+        /// <summary>
+        /// Subdivides a logarithmic range into multiple, evenly-spaced (in linear scale!) ticks. The number of ticks and the tick intervals are adapted so 
+        /// that the resulting steps are "nice" numbers.
+        /// </summary>
+        /// <param name="logTicks">The IList the computed steps will be added to.</param>
+        /// <param name="steps">The minimum number of steps.</param>
+        /// <param name="logFrom">The start of the range.</param>
+        /// <param name="logTo">The end of the range.</param>
+        internal void LogSubdivideInterval(IList<double> logTicks, double steps, double logFrom, double logTo)
+        {
+            int actualNumberOfSteps = 1;
+            int intBase = Convert.ToInt32(this.Base);
+
+            // first, determine actual number of steps that gives a "nice" step size
+            if (steps < 2)
+            {   // No Subdivision
+                return;
+            }
+            else if (Math.Abs(this.Base - intBase) > this.Base * 1e-10)
+            {   // fractional Base; just make a linear subdivision
+                actualNumberOfSteps = Convert.ToInt32(steps);
+            }
+            else if ((intBase & (intBase - 1)) == 0)
+            {   // base is a power of 2; use a power of 2 for the stepsize
+                while (actualNumberOfSteps < steps)
+                {
+                    actualNumberOfSteps *= 2;
+                }
+            }
+            else
+            {   // integer base, no power of two
+
+                // for bases != 10, first subdivide by the base
+                if (intBase != 10)
+                {
+                    actualNumberOfSteps = intBase;
+                }
+
+                // follow 1-2-5-10 pattern
+                while (true)
+                {
+                    if (actualNumberOfSteps >= steps)
+                    {
+                        break;
+                    }
+
+                    actualNumberOfSteps *= 2;
+
+                    if (actualNumberOfSteps >= steps)
+                    {
+                        break;
+                    }
+
+                    actualNumberOfSteps = Convert.ToInt32(actualNumberOfSteps * 2.5);
+
+                    if (actualNumberOfSteps >= steps)
+                    {
+                        break;
+                    }
+
+                    actualNumberOfSteps *= 2;
+                }
+            }
+
+            double from = Math.Pow(this.Base, logFrom);
+            double to = Math.Pow(this.Base, logTo);
+
+            // subdivide with the actual number of steps
+            for (int c = 1; c < actualNumberOfSteps; c++)
+            {
+                double newTick = (double)c / actualNumberOfSteps;
+                newTick = Math.Log(from + ((to - from) * newTick), this.Base);
+
+                logTicks.Add(newTick);
+            }
+        }
+
+        /// <summary>
         /// Updates the <see cref="Axis.ActualMaximum" /> and <see cref="Axis.ActualMinimum" /> values.
         /// </summary>
         /// <remarks>
@@ -310,6 +607,14 @@ namespace OxyPlot.Axes
             }
 
             base.UpdateActualMaxMin();
+
+            if (this.ActualMinimum <= 0)
+            {
+                this.ActualMinimum = 0.1;
+            }
+
+            this.LogActualMinimum = Math.Log(this.ActualMinimum, this.Base);
+            this.LogActualMaximum = Math.Log(this.ActualMaximum, this.Base);
         }
 
         /// <summary>
