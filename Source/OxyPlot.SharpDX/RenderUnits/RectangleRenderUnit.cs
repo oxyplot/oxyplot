@@ -37,5 +37,10 @@ namespace OxyPlot.SharpDX
             if (fill != null)
                 renderTarget.FillRectangle(rectangle, fill);           
         }
+
+        public bool CheckBounds(RectangleF viewport)
+        {
+            return viewport.Intersects(rectangle);
+        }
     }
 }

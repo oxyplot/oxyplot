@@ -40,5 +40,10 @@ namespace OxyPlot.SharpDX
         {
             renderTarget.DrawBitmap(bitmap, dest, opacity, mode, src);
         }
+
+        public bool CheckBounds(RectangleF viewport)
+        {
+            return viewport.Intersects(dest);
+        }
     }
 }

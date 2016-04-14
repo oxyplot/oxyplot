@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SharpDX;
 using SharpDX.Direct2D1;
 
 namespace OxyPlot.SharpDX
@@ -10,6 +11,7 @@ namespace OxyPlot.SharpDX
     public class GeometryRenderUnit : IRenderUnit
     {
         Geometry geometry;
+        RectangleF bounds;
         Brush fill;
         Brush stroke;
         StrokeStyle strokeStyle;
@@ -17,11 +19,14 @@ namespace OxyPlot.SharpDX
 
         public GeometryRenderUnit(Geometry geometry, Brush stroke, Brush fill, float strokeWidth, StrokeStyle strokeStyle)
         {
+         
             this.geometry = geometry;
             this.fill = fill;
             this.stroke = stroke;
             this.strokeWidth = strokeWidth;
-            this.strokeStyle = strokeStyle;
+            this.strokeStyle = strokeStyle;            
+            var raw = geometry.GetBounds();
+            this.bounds = new RectangleF(raw.Left, raw.Top, raw.Right - raw.Left, raw.Bottom - raw.Top);
 
         }
 
@@ -49,6 +54,11 @@ namespace OxyPlot.SharpDX
             geometry = null;
             stroke = null;
             strokeStyle = null;
+        }
+
+        public bool CheckBounds(RectangleF viewport)
+        {
+            return bounds.Intersects(viewport);
         }
     }
 }

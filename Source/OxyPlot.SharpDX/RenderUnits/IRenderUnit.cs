@@ -1,4 +1,5 @@
-﻿using SharpDX.Direct2D1;
+﻿using SharpDX;
+using SharpDX.Direct2D1;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,5 +11,6 @@ namespace OxyPlot.SharpDX
     interface IRenderUnit:IDisposable
     {
         void Render(RenderTarget renderTarget);
+        bool CheckBounds(RectangleF viewport);
     }
 }

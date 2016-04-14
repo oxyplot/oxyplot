@@ -398,11 +398,11 @@ namespace OxyPlot.SharpDX.WPF
         /// <param name="e">The <see cref="MouseWheelEventArgs" /> instance containing the event data.</param>
         /// <param name="relativeTo">The <see cref="IInputElement" /> that the event is relative to.</param>
         /// <returns>A <see cref="OxyMouseWheelEventArgs" /> containing the converted event arguments.</returns>
-        public static OxyMouseWheelEventArgs ToMouseWheelEventArgs(this MouseWheelEventArgs e, IInputElement relativeTo)
+        public static OxyMouseWheelEventArgs ToMouseWheelEventArgs(this MouseWheelEventArgs e, IInputElement relativeTo, Vector offset)
         {
             return new OxyMouseWheelEventArgs
             {
-                Position = e.GetPosition(relativeTo).ToScreenPoint(),
+                Position = (e.GetPosition(relativeTo)+offset).ToScreenPoint(),
                 ModifierKeys = Keyboard.GetModifierKeys(),
                 Delta = e.Delta
             };
@@ -414,13 +414,13 @@ namespace OxyPlot.SharpDX.WPF
         /// <param name="e">The <see cref="MouseButtonEventArgs" /> instance containing the event data.</param>
         /// <param name="relativeTo">The <see cref="IInputElement" /> that the event is relative to.</param>
         /// <returns>A <see cref="OxyMouseEventArgs" /> containing the converted event arguments.</returns>
-        public static OxyMouseDownEventArgs ToMouseDownEventArgs(this MouseButtonEventArgs e, IInputElement relativeTo)
+        public static OxyMouseDownEventArgs ToMouseDownEventArgs(this MouseButtonEventArgs e, IInputElement relativeTo, Vector offset)
         {
             return new OxyMouseDownEventArgs
             {
                 ChangedButton = e.ChangedButton.Convert(),
                 ClickCount = e.ClickCount,
-                Position = e.GetPosition(relativeTo).ToScreenPoint(),
+                Position = (e.GetPosition(relativeTo)+offset).ToScreenPoint(),
                 ModifierKeys = Keyboard.GetModifierKeys()
             };
         }
@@ -431,11 +431,11 @@ namespace OxyPlot.SharpDX.WPF
         /// <param name="e">The <see cref="MouseButtonEventArgs" /> instance containing the event data.</param>
         /// <param name="relativeTo">The <see cref="IInputElement" /> that the event is relative to.</param>
         /// <returns>A <see cref="OxyMouseEventArgs" /> containing the converted event arguments.</returns>
-        public static OxyMouseEventArgs ToMouseReleasedEventArgs(this MouseButtonEventArgs e, IInputElement relativeTo)
+        public static OxyMouseEventArgs ToMouseReleasedEventArgs(this MouseButtonEventArgs e, IInputElement relativeTo, Vector offset)
         {
             return new OxyMouseEventArgs
             {
-                Position = e.GetPosition(relativeTo).ToScreenPoint(),
+                Position =( e.GetPosition(relativeTo)+offset).ToScreenPoint(),
                 ModifierKeys = Keyboard.GetModifierKeys()
             };
         }
@@ -446,11 +446,11 @@ namespace OxyPlot.SharpDX.WPF
         /// <param name="e">The <see cref="MouseEventArgs" /> instance containing the event data.</param>
         /// <param name="relativeTo">The <see cref="IInputElement" /> that the event is relative to.</param>
         /// <returns>A <see cref="OxyMouseEventArgs" /> containing the converted event arguments.</returns>
-        public static OxyMouseEventArgs ToMouseEventArgs(this MouseEventArgs e, IInputElement relativeTo)
+        public static OxyMouseEventArgs ToMouseEventArgs(this MouseEventArgs e, IInputElement relativeTo, Vector offset)
         {
             return new OxyMouseEventArgs
             {
-                Position = e.GetPosition(relativeTo).ToScreenPoint(),
+                Position = (e.GetPosition(relativeTo)+offset).ToScreenPoint(),
                 ModifierKeys = Keyboard.GetModifierKeys()
             };
         }
@@ -461,11 +461,11 @@ namespace OxyPlot.SharpDX.WPF
         /// <param name="e">The <see cref="ManipulationStartedEventArgs" /> instance containing the event data.</param>
         /// <param name="relativeTo">The <see cref="UIElement" /> that the event is relative to.</param>
         /// <returns>A <see cref="OxyMouseEventArgs" /> containing the converted event arguments.</returns>
-        public static OxyTouchEventArgs ToTouchEventArgs(this ManipulationStartedEventArgs e, FrameworkElement relativeTo)
+        public static OxyTouchEventArgs ToTouchEventArgs(this ManipulationStartedEventArgs e, FrameworkElement source, FrameworkElement relativeTo, Vector offset)
         {
             return new OxyTouchEventArgs
             {
-                Position = e.ManipulationOrigin.ToScreenPoint(),
+                Position = (source.TranslatePoint(e.ManipulationOrigin, relativeTo) + offset).ToScreenPoint(),
             };
         }
 
@@ -475,11 +475,13 @@ namespace OxyPlot.SharpDX.WPF
         /// <param name="e">The <see cref="ManipulationDeltaEventArgs" /> instance containing the event data.</param>
         /// <param name="relativeTo">The <see cref="UIElement" /> that the event is relative to.</param>
         /// <returns>A <see cref="OxyMouseEventArgs" /> containing the converted event arguments.</returns>
-        public static OxyTouchEventArgs ToTouchEventArgs(this ManipulationDeltaEventArgs e, FrameworkElement relativeTo)
+        public static OxyTouchEventArgs ToTouchEventArgs(this ManipulationDeltaEventArgs e,FrameworkElement source, FrameworkElement relativeTo, Vector offset)
         {
+            //TODO: does relativeTo rotation affects delta?
+                     
             return new OxyTouchEventArgs
             {
-                Position = e.ManipulationOrigin.ToScreenPoint(),
+                Position = (source.TranslatePoint(e.ManipulationOrigin, relativeTo)+offset).ToScreenPoint(),
                 DeltaTranslation = e.DeltaManipulation.Translation.ToScreenVector(),
                 DeltaScale = e.DeltaManipulation.Scale.ToScreenVector()
             };
@@ -491,11 +493,11 @@ namespace OxyPlot.SharpDX.WPF
         /// <param name="e">The <see cref="ManipulationCompletedEventArgs" /> instance containing the event data.</param>
         /// <param name="relativeTo">The <see cref="UIElement" /> that the event is relative to.</param>
         /// <returns>A <see cref="OxyMouseEventArgs" /> containing the converted event arguments.</returns>
-        public static OxyTouchEventArgs ToTouchEventArgs(this ManipulationCompletedEventArgs e, FrameworkElement relativeTo)
+        public static OxyTouchEventArgs ToTouchEventArgs(this ManipulationCompletedEventArgs e, FrameworkElement source, FrameworkElement relativeTo, Vector offset)
         {
             return new OxyTouchEventArgs
             {
-                Position = e.ManipulationOrigin.ToScreenPoint()
+                Position = (source.TranslatePoint(e.ManipulationOrigin, relativeTo) + offset).ToScreenPoint(),
             };
         }
     }

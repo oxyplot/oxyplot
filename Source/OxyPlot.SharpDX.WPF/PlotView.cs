@@ -1,5 +1,4 @@
 ﻿
-using Microsoft.Wpf.Interop.DirectX;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
@@ -17,24 +16,10 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-using AlphaMode = SharpDX.Direct2D1.AlphaMode;
-using Device = SharpDX.Direct3D11.Device;
-using Factory = SharpDX.DXGI.Factory;
-using D2D1Factory = SharpDX.Direct2D1.Factory;
-using RenderTarget = SharpDX.Direct2D1.RenderTarget;
-using D2D1Resource = SharpDX.Direct2D1.Resource;
-using DXGIResource = SharpDX.DXGI.Resource;
-using ComObject = SharpDX.ComObject;
-using RenderTargetProperties = SharpDX.Direct2D1.RenderTargetProperties;
-using PixelFormat = SharpDX.Direct2D1.PixelFormat;
-using SolidColorBrush = SharpDX.Direct2D1.SolidColorBrush;
-using Ellipse = SharpDX.Direct2D1.Ellipse;
-using Vector2 = SharpDX.Vector2;
-
 
 namespace OxyPlot.SharpDX.WPF
 {
-    [TemplatePart(Name = PartGrid, Type = typeof(Grid))]
+    [TemplatePart(Name = PartPlotImage, Type = typeof(PlotImage))]
     public class PlotView : Control, IPlotView
     {
 
@@ -42,6 +27,10 @@ namespace OxyPlot.SharpDX.WPF
         static PlotView()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(PlotView), new FrameworkPropertyMetadata(typeof(PlotView)));
+            global::SharpDX.Configuration.EnableReleaseOnFinalizer = true;
+#if DEBUG
+         //   global::SharpDX.Configuration.EnableReleaseOnFinalizer EnableObjectTracking = true;
+#endif
         }
 
 
@@ -84,6 +73,23 @@ namespace OxyPlot.SharpDX.WPF
                 "ZoomRectangleTemplate", typeof(ControlTemplate), typeof(PlotView), new PropertyMetadata(null));
 
 
+
+        /// <summary>
+        /// Identifies the <see cref="PlotHeight"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty PlotHeightProperty =
+            DependencyProperty.Register("PlotHeight", typeof(double), typeof(PlotView), new PropertyMetadata(double.NaN));
+
+
+
+        /// <summary>
+        /// Identifies the <see cref="PlotWidth"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty PlotWidthProperty =
+            DependencyProperty.Register("PlotWidth", typeof(double), typeof(PlotView), new PropertyMetadata(double.NaN));
+
+
+
         /// <summary>
         /// The mouse down point.
         /// </summary>
@@ -92,7 +98,7 @@ namespace OxyPlot.SharpDX.WPF
         /// <summary>
         /// The Grid PART constant.
         /// </summary>
-        private const string PartGrid = "PART_Grid";
+        private const string PartPlotImage = "PART_PlotImage";
 
         /// <summary>
         /// The model lock.
@@ -105,16 +111,6 @@ namespace OxyPlot.SharpDX.WPF
         private readonly ObservableCollection<TrackerDefinition> trackerDefinitions;
 
         /// <summary>
-        /// The canvas.
-        /// </summary>
-        private Image imageHost;
-
-        /// <summary>
-        /// The D3D surface
-        /// </summary>
-        private D3D11Image image;
-
-        /// <summary>
         /// The current model.
         /// </summary>
         private PlotModel currentModel;
@@ -124,41 +120,50 @@ namespace OxyPlot.SharpDX.WPF
         /// </summary>
         private FrameworkElement currentTracker;
 
-        /// <summary>
-        /// The grid.
-        /// </summary>
-        private Grid grid;
-
+   
         /// <summary>
         /// The default controller.
         /// </summary>
         private IPlotController defaultController;
 
-        /// <summary>
-        /// The overlays.
-        /// </summary>
-        private Canvas overlays;
 
-        /// <summary>
-        /// The render context
-        /// </summary>
-        private CacherRenderContext renderContext;
+
 
         /// <summary>
         /// The zoom control.
         /// </summary>
         private ContentControl zoomRectangle;
 
-      
+        /// <summary>
+        /// Plot DirectX rendering goes here
+        /// </summary>
+        private PlotImage _plotImage;
+
+
+
 
         /// <summary>
-        /// Last visibility state
+        /// Gets or sets the plot height
         /// </summary>
-        private bool lastVisible;
+        public double PlotHeight
+        {
+            get { return (double)GetValue(PlotHeightProperty); }
+            set { SetValue(PlotHeightProperty, value); }
+        }
 
-        RenderTarget renderTarget;
-        RenderTargetView renderTargetView;
-        D2D1Factory d2dFactory;
+      
+
+
+        /// <summary>
+        /// Gets or sets the plot width
+        /// </summary>
+        public double PlotWidth
+        {
+            get { return (double)GetValue(PlotWidthProperty); }
+            set { SetValue(PlotWidthProperty, value); }
+        }
+
+   
 
 
 
@@ -340,13 +345,10 @@ namespace OxyPlot.SharpDX.WPF
             this.DefaultStyleKey = typeof(PlotView);
 
             this.trackerDefinitions = new ObservableCollection<TrackerDefinition>();
-            if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
-                return;
 
-            this.Loaded += this.OnLoaded;
-            this.Unloaded += OnUnloaded;
-            this.SizeChanged += this.OnSizeChanged;
-
+            //this.SizeChanged += OnSizeChanged;
+            //this.Loaded += OnLoaded;
+           
         }
 
 
@@ -358,7 +360,7 @@ namespace OxyPlot.SharpDX.WPF
         {
             if (this.currentTracker != null)
             {
-                this.overlays.Children.Remove(this.currentTracker);
+                this._plotImage.Overlay.Children.Remove(this.currentTracker);
                 this.currentTracker = null;
             }
         }
@@ -371,6 +373,8 @@ namespace OxyPlot.SharpDX.WPF
             this.zoomRectangle.Visibility = Visibility.Collapsed;
         }
 
+        int _invalidated = 0;
+
         /// <summary>
         /// Invalidate the PlotView (not blocking the UI thread)
         /// </summary>
@@ -378,16 +382,28 @@ namespace OxyPlot.SharpDX.WPF
         public void InvalidatePlot(bool update = true)
         {
             this.UpdateModel(update);
-            if (renderContext != null && this.renderTarget!=null)
+            if (_plotImage != null)
             {
+                _plotImage.PlotModel = this.ActualModel;
 
-                this.renderContext.ResetRenderUnits();
 
-                ((IPlotModel)this.ActualModel).Render(this.renderContext, this.ActualWidth, this.ActualHeight);
+                if (Interlocked.Exchange(ref _invalidated, 1) == 1)
+                    return;
+
+                this.Dispatcher.InvokeAsync(() =>
+                {
+                    
+                    _plotImage.Invalidate();
+                    _invalidated = 0;
+                }, System.Windows.Threading.DispatcherPriority.Background);
+    
+                   
             }
-
-
         }
+
+      
+      
+
 
         /// <summary>
         /// Sets the cursor.
@@ -442,7 +458,6 @@ namespace OxyPlot.SharpDX.WPF
                     trackerTemplate = match.TrackerTemplate;
                 }
             }
-
             if (trackerTemplate == null)
             {
                 this.HideTracker();
@@ -454,7 +469,7 @@ namespace OxyPlot.SharpDX.WPF
             if (tracker != this.currentTracker)
             {
                 this.HideTracker();
-                this.overlays.Children.Add(tracker);
+                this._plotImage.Overlay.Children.Add(tracker);
                 this.currentTracker = tracker;
             }
 
@@ -514,39 +529,13 @@ namespace OxyPlot.SharpDX.WPF
             if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
                 return;
 
-            this.grid = this.GetTemplateChild(PartGrid) as Grid;
-            if (this.grid == null)
-            {
-                return;
-            }
-
-            this.imageHost = new Image
-            {
-                IsHitTestVisible = false,
-                HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch,
-                VerticalAlignment = System.Windows.VerticalAlignment.Stretch,
-                
-                 
-
-            };
-
-            this.Loaded += new RoutedEventHandler(this.Host_Loaded);
-            this.SizeChanged += new SizeChangedEventHandler(this.Host_SizeChanged);
+            this._plotImage= this.GetTemplateChild(PartPlotImage) as PlotImage;
+                    
 
 
-            this.image = new D3D11Image();
-            
-            this.grid.Children.Add(this.imageHost);
-            imageHost.Source = this.image;
-
-            
-
-
-            this.overlays = new Canvas();
-            this.grid.Children.Add(this.overlays);
-
+       
             this.zoomRectangle = new ContentControl();
-            this.overlays.Children.Add(this.zoomRectangle);
+            this._plotImage.Overlay.Children.Add(this.zoomRectangle);
 
             
         }
@@ -561,225 +550,19 @@ namespace OxyPlot.SharpDX.WPF
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
             this.InvalidatePlot();
-        }
-
-        private void OnUnloaded(object sender, RoutedEventArgs e)
-        {
-            this.UninitializeRendering();
-        }
-
-
-        private void Host_Loaded(object sender, RoutedEventArgs e)
-        {
-            InitDevice();
-            this.InitializeRendering();
-        }
-
-        private void Host_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            double dpiScale = 1.0; // default value for 96 dpi
-
-            // determine DPI
-            // (as of .NET 4.6.1, this returns the DPI of the primary monitor, if you have several different DPIs)
-            var hwndTarget = PresentationSource.FromVisual(this).CompositionTarget as HwndTarget;
-            if (hwndTarget != null)
-            {
-                dpiScale = hwndTarget.TransformToDevice.M11;
-            }
-
-            int surfWidth = (int)(this.ActualWidth < 0 ? 0 : Math.Ceiling(this.ActualWidth * dpiScale));
-            int surfHeight = (int)(this.ActualHeight < 0 ? 0 : Math.Ceiling(this.ActualHeight * dpiScale));
-
-            // Notify the D3D11Image of the pixel size desired for the DirectX rendering.
-            // The D3DRendering component will determine the size of the new surface it is given, at that point.
-            image.SetPixelSize(surfWidth, surfHeight);
-
-            // Stop rendering if the D3DImage isn't visible - currently just if width or height is 0
-            // TODO: more optimizations possible (scrolled off screen, etc...)
-            bool isVisible = (surfWidth != 0 && surfHeight != 0);
-            if (lastVisible != isVisible)
-            {
-                lastVisible = isVisible;
-                if (lastVisible)
-                {
-                    CompositionTarget.Rendering += CompositionTarget_Rendering;
-                }
-                else
-                {
-                    CompositionTarget.Rendering -= CompositionTarget_Rendering;
-                }
-            }
-        }
-
+        }   
         
-        void CompositionTarget_Rendering(object sender, EventArgs e)
-        {
-            //RenderingEventArgs args = (RenderingEventArgs)e;
-
-            //// It's possible for Rendering to call back twice in the same frame 
-            //// so only render when we haven't already rendered in this frame.
-            //if (this.lastRender != args.RenderingTime)
-            //{
-                image.RequestRender();
-            //    this.lastRender = args.RenderingTime;
-            //}
-        }
-
-        private void InitializeRendering()
-        {
-            image.WindowOwner = (new WindowInteropHelper(Window.GetWindow(this))).Handle;
-            image.OnRender = this.DoRender;
-            d2dFactory = new D2D1Factory();
-            renderContext = new CacherRenderContext(d2dFactory);
-            
-            // Start rendering now!
-            image.RequestRender();
-        }
-
-
-
-        private void DoRender(IntPtr surface, bool isNewSurface)
-        {
-            if (this.imageHost == null || this.ActualModel == null)
-            {
-                return;
-            }
-
-            var backColor = OxyColors.Transparent;
-            if (this.ActualModel != null && !this.ActualModel.Background.IsUndefined())
-            {
-                backColor = this.ActualModel.Background;
-            }
-
-            if (isNewSurface || renderTarget == null)
-            {
-              
-
-                InitRenderTarget(surface);
-
-                this.InvalidatePlot(false);
-
-
-                //device.ImmediateContext.Rasterizer.SetViewport(0, 0, (float)this.ActualWidth, (float)this.ActualHeight, 0.0f, 1.0f);
-
-
-                //device.ImmediateContext.OutputMerger.SetRenderTargets(renderTargetView);
-                //device.ImmediateContext.ClearRenderTargetView(renderTargetView, backColor.ToColor4());
-            }
-
-
-
-
-
-
-
-
-            this.renderTarget.BeginDraw();
-            renderTarget.Clear(backColor.ToDXColor());
-            this.renderContext.Render();
-
-            this.renderTarget.EndDraw();
-
-
-
-
-            device.ImmediateContext.Flush();
-
-
-
-        }
-
-        private void UninitializeRendering()
-        {
-            Cleanup();
-
-            CompositionTarget.Rendering -= this.CompositionTarget_Rendering;
-        }
-
-        private void Cleanup()
-        {
-            if (renderTargetView == null)
-                return;
-            renderTargetView.Dispose();
-          //  backBuffer.Dispose();
-            device.ImmediateContext.ClearState();
-            device.ImmediateContext.Flush();
-            device.Dispose();
-            swapChain.Dispose();
-            //factory.Dispose();
-        }
-
-
-        SwapChainDescription swapChainDescription;
-        SwapChain swapChain;
-        Device device;
-
-        private void InitDevice()
-        {
-  
-
-            swapChainDescription = new SwapChainDescription
-            {
-                OutputHandle = (new WindowInteropHelper(Window.GetWindow(this))).Handle,
-                BufferCount = 1,
-                Flags = SwapChainFlags.AllowModeSwitch,
-                IsWindowed = true,
-                ModeDescription = new ModeDescription(0, 0, new Rational(60, 1), Format.B8G8R8A8_UNorm),
-                SampleDescription = new SampleDescription(1, 0),
-                SwapEffect = SwapEffect.Discard,
-                Usage = Usage.RenderTargetOutput | Usage.Shared,
-            };
-
-            
-            Device.CreateWithSwapChain(DriverType.Hardware, DeviceCreationFlags.BgraSupport, swapChainDescription, out device, out swapChain);
-            var d2dFactory = new D2D1Factory();
-        }
-
         /// <summary>
-        /// Should be called, if new D3D11Image surface OnRender
+        /// Called when the size of the control is changed.
         /// </summary>
-        void InitRenderTarget(IntPtr surfacePtr)
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="SizeChangedEventArgs" /> instance containing the event data.</param>
+        private void OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            //MEMORY leaks here? dxgiResource, backbuffer etc?
-
-
-            DXGIResource dxgiResource;
-            using (var r = new ComObject(surfacePtr))
-            {
-                dxgiResource = r.QueryInterface<DXGIResource>();
-            }
-
-            var backBuffer = device.OpenSharedResource<Texture2D>(dxgiResource.SharedHandle);
-
-            if (renderTargetView != null)
-            {
-                renderTargetView.Dispose();
-                renderTargetView = null;
-            }
-            renderTargetView = new RenderTargetView(device, backBuffer);
-
-            var surface = backBuffer.QueryInterface<Surface>();
-            if (renderTarget != null)
-                renderTarget.Dispose();
-
-
-
-            renderTarget = new RenderTarget(d2dFactory, surface, new RenderTargetProperties(new PixelFormat(Format.Unknown, AlphaMode.Premultiplied)));
-
-            renderContext.ResetRenderTarget(renderTarget);
-
-
-            //dxgiResource.Dispose();
-            //backBuffer.Dispose();
-            //surface.Dispose();
-            
+            this.InvalidatePlot(false);
         }
 
-       
         
-
-
-
         /// <summary>
         /// Called when the model is changed.
         /// </summary>
@@ -803,15 +586,7 @@ namespace OxyPlot.SharpDX.WPF
             this.InvalidatePlot();
         }
 
-        /// <summary>
-        /// Called when the size of the control is changed.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="SizeChangedEventArgs" /> instance containing the event data.</param>
-        private void OnSizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            this.InvalidatePlot(false);
-        }
+
 
         /// <summary>
         /// Updates the model.
@@ -878,7 +653,7 @@ namespace OxyPlot.SharpDX.WPF
                 return;
             }
 
-            e.Handled = this.ActualController.HandleTouchStarted(this, e.ToTouchEventArgs(this));
+            e.Handled = this.ActualController.HandleTouchStarted(this, e.ToTouchEventArgs(this, _plotImage, _plotImage.Offset));
         }
 
         /// <summary>
@@ -892,8 +667,10 @@ namespace OxyPlot.SharpDX.WPF
             {
                 return;
             }
+            
+            
 
-            e.Handled = this.ActualController.HandleTouchDelta(this, e.ToTouchEventArgs(this));
+            e.Handled = this.ActualController.HandleTouchDelta(this, e.ToTouchEventArgs(this, _plotImage, _plotImage.Offset));
         }
 
         /// <summary>
@@ -908,7 +685,7 @@ namespace OxyPlot.SharpDX.WPF
                 return;
             }
 
-            e.Handled = this.ActualController.HandleTouchCompleted(this, e.ToTouchEventArgs(this));
+            e.Handled = this.ActualController.HandleTouchCompleted(this, e.ToTouchEventArgs(this, _plotImage, _plotImage.Offset));
         }
 
         /// <summary>
@@ -923,7 +700,7 @@ namespace OxyPlot.SharpDX.WPF
                 return;
             }
 
-            e.Handled = this.ActualController.HandleMouseWheel(this, e.ToMouseWheelEventArgs(this));
+            e.Handled = this.ActualController.HandleMouseWheel(this, e.ToMouseWheelEventArgs(this, _plotImage.Offset));
         }
 
         /// <summary>
@@ -944,7 +721,7 @@ namespace OxyPlot.SharpDX.WPF
             // store the mouse down point, check it when mouse button is released to determine if the context menu should be shown
             this.mouseDownPoint = e.GetPosition(this).ToScreenPoint();
 
-            e.Handled = this.ActualController.HandleMouseDown(this, e.ToMouseDownEventArgs(this));
+            e.Handled = this.ActualController.HandleMouseDown(this, e.ToMouseDownEventArgs(this, _plotImage.Offset));
         }
 
         /// <summary>
@@ -959,7 +736,7 @@ namespace OxyPlot.SharpDX.WPF
                 return;
             }
 
-            e.Handled = this.ActualController.HandleMouseMove(this, e.ToMouseEventArgs(this));
+            e.Handled = this.ActualController.HandleMouseMove(this, e.ToMouseEventArgs(this, _plotImage.Offset));
         }
 
         /// <summary>
@@ -976,7 +753,7 @@ namespace OxyPlot.SharpDX.WPF
 
             this.ReleaseMouseCapture();
 
-            e.Handled = this.ActualController.HandleMouseUp(this, e.ToMouseReleasedEventArgs(this));
+            e.Handled = this.ActualController.HandleMouseUp(this, e.ToMouseReleasedEventArgs(this, _plotImage.Offset));
 
             // Open the context menu
             var p = e.GetPosition(this).ToScreenPoint();
@@ -1012,7 +789,7 @@ namespace OxyPlot.SharpDX.WPF
                 return;
             }
 
-            e.Handled = this.ActualController.HandleMouseEnter(this, e.ToMouseEventArgs(this));
+            e.Handled = this.ActualController.HandleMouseEnter(this, e.ToMouseEventArgs(this, _plotImage.Offset));
         }
 
         /// <summary>
@@ -1027,7 +804,7 @@ namespace OxyPlot.SharpDX.WPF
                 return;
             }
 
-            e.Handled = this.ActualController.HandleMouseLeave(this, e.ToMouseEventArgs(this));
+            e.Handled = this.ActualController.HandleMouseLeave(this, e.ToMouseEventArgs(this, _plotImage.Offset));
         }
 
 

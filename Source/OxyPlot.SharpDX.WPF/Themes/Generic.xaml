@@ -59,7 +59,9 @@
                 <ControlTemplate TargetType="local:PlotView">
                     <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
                         <!-- Don't set CacheMode="BitmapCache" as this makes the text look ugly -->
-                        <Grid x:Name="PART_Grid" />
+                        <ScrollViewer Focusable="False" CanContentScroll="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" >
+                            <local:PlotImage x:Name="PART_PlotImage" PlotHeight="{TemplateBinding PlotHeight}" PlotWidth="{TemplateBinding PlotWidth}" PlotModel="{TemplateBinding Model}" IsHitTestVisible="False" />
+                        </ScrollViewer>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>

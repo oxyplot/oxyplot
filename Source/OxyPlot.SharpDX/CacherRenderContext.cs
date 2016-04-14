@@ -67,9 +67,9 @@ namespace OxyPlot.SharpDX
         /// <summary>
         /// Initializes a new instance of the <see cref="SharpDXRenderContext" /> class.
         /// </summary>      
-        public CacherRenderContext(D2DFactory factory)
+        public CacherRenderContext()
         {
-            this.d2dFactory = factory;
+            this.d2dFactory = new D2DFactory();
             this.dwFactory = new DWFactory();
             this.wicFactory = new WICFactory();
 
@@ -99,6 +99,19 @@ namespace OxyPlot.SharpDX
         /// </summary>
         /// <value><c>true</c> if the context renders to screen; otherwise, <c>false</c>.</value>
         public bool RendersToScreen { get; set; }
+
+        public D2DFactory D2dFactory
+        {
+            get
+            {
+                return d2dFactory;
+            }
+
+            set
+            {
+                d2dFactory = value;
+            }
+        }
 
         /// <summary>
         /// Draws an ellipse.
@@ -403,6 +416,7 @@ namespace OxyPlot.SharpDX
 
             this.renderUnits.Add(new TextRenderUnit(layout, GetBrush(fill), Matrix3x2.Translation(dx, dy) * Matrix3x2.Rotation((float)rotate) * Matrix3x2.Translation(p.ToVector2())));
             format.Dispose();
+            
 
         }
 
@@ -551,10 +565,10 @@ namespace OxyPlot.SharpDX
         {
             ResetRenderUnits();
 
+            if (this.renderTarget == renderTarget)
+                return;
 
-            foreach (var unit in this.renderUnits)
-                unit.Dispose();
-            renderUnits.Clear();
+          
 
             foreach (var brush in brushCache.Values)
                 brush.Dispose();
@@ -591,12 +605,23 @@ namespace OxyPlot.SharpDX
         /// Renders cached render units.
         /// This method should be called on redraw required
         /// </summary>
-        public void Render()
+        public void Render(RectangleF viewport)
         {
             if (this.renderTarget == null)
                 return;
+            var original = renderTarget.Transform;
+
+            renderTarget.Transform = original * Matrix3x2.Translation(-viewport.X,- viewport.Y);
+
+            //TODO: can be optimized to use something like quad-tree
+            //https://en.wikipedia.org/wiki/Quadtree
             foreach (var unit in this.renderUnits)
-                unit.Render(this.renderTarget);
+            {
+                if (unit.CheckBounds(viewport))
+                    unit.Render(this.renderTarget);
+            }
+
+            renderTarget.Transform = original;
         }
 
 
