@@ -355,7 +355,7 @@ namespace OxyPlot.SharpDX.WPF
             var surface = backBuffer.QueryInterface<Surface>();
 
 
-            _renderTarget = new RenderTarget(_oxyRenderContext.D2dFactory, surface,
+            _renderTarget = new RenderTarget(_oxyRenderContext.D2DFactory, surface,
                                                             new RenderTargetProperties(new PixelFormat(Format.Unknown, AlphaMode.Premultiplied)));
 
             _d3d9Device = new D3D9Device(
