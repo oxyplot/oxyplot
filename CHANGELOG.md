@@ -97,6 +97,7 @@ All notable changes to this project will be documented in this file.
 - ListFiller (#705)
 
 ### Fixed
+- Multiple mouse clicks not being reported in OxyPlot.GtkSharp (#854)
 - StemSeries Tracking to allow tracking on tiny stems (#809)
 - Fixed PDFRenderContext text alignment issues for rotated text (#723)
 - HeatMapSeries.GetValue returns NaN instead of calculating a wrong value in proximity to NaN (#256)
