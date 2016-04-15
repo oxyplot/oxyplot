@@ -311,12 +311,12 @@ namespace OxyPlot.WindowsForms
         {
             if (this.trackerLabel == null)
             {
-                this.trackerLabel = new Label { Parent = this, BackColor = Color.LightSkyBlue, AutoSize = true };
+                this.trackerLabel = new Label { Parent = this, BackColor = Color.LightSkyBlue, AutoSize = true, Padding = new Padding(5) };
             }
 
             this.trackerLabel.Text = data.ToString();
-            this.trackerLabel.Top = (int)data.Position.Y;
-            this.trackerLabel.Left = (int)data.Position.X;
+            this.trackerLabel.Top = (int)data.Position.Y - this.trackerLabel.Height;
+            this.trackerLabel.Left = (int)data.Position.X - this.trackerLabel.Width / 2;
             this.trackerLabel.Visible = true;
         }
 
