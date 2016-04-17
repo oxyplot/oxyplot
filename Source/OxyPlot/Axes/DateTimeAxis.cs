@@ -195,7 +195,7 @@ namespace OxyPlot.Axes
                 case DateTimeIntervalType.Years:
                     this.ActualMinorStep = 31;
                     this.actualMinorIntervalType = DateTimeIntervalType.Years;
-                    if (this.ActualStringFormat == null)
+                    if (this.StringFormat == null)
                     {
                         this.ActualStringFormat = "yyyy";
                     }
@@ -203,7 +203,7 @@ namespace OxyPlot.Axes
                     break;
                 case DateTimeIntervalType.Months:
                     this.actualMinorIntervalType = DateTimeIntervalType.Months;
-                    if (this.ActualStringFormat == null)
+                    if (this.StringFormat == null)
                     {
                         this.ActualStringFormat = "yyyy-MM-dd";
                     }
@@ -213,7 +213,7 @@ namespace OxyPlot.Axes
                     this.actualMinorIntervalType = DateTimeIntervalType.Days;
                     this.ActualMajorStep = 7;
                     this.ActualMinorStep = 1;
-                    if (this.ActualStringFormat == null)
+                    if (this.StringFormat == null)
                     {
                         this.ActualStringFormat = "yyyy/ww";
                     }
@@ -221,7 +221,7 @@ namespace OxyPlot.Axes
                     break;
                 case DateTimeIntervalType.Days:
                     this.ActualMinorStep = this.ActualMajorStep;
-                    if (this.ActualStringFormat == null)
+                    if (this.StringFormat == null)
                     {
                         this.ActualStringFormat = "yyyy-MM-dd";
                     }
@@ -229,7 +229,7 @@ namespace OxyPlot.Axes
                     break;
                 case DateTimeIntervalType.Hours:
                     this.ActualMinorStep = this.ActualMajorStep;
-                    if (this.ActualStringFormat == null)
+                    if (this.StringFormat == null)
                     {
                         this.ActualStringFormat = "HH:mm";
                     }
@@ -237,7 +237,7 @@ namespace OxyPlot.Axes
                     break;
                 case DateTimeIntervalType.Minutes:
                     this.ActualMinorStep = this.ActualMajorStep;
-                    if (this.ActualStringFormat == null)
+                    if (this.StringFormat == null)
                     {
                         this.ActualStringFormat = "HH:mm";
                     }
@@ -245,7 +245,7 @@ namespace OxyPlot.Axes
                     break;
                 case DateTimeIntervalType.Seconds:
                     this.ActualMinorStep = this.ActualMajorStep;
-                    if (this.ActualStringFormat == null)
+                    if (this.StringFormat == null)
                     {
                         this.ActualStringFormat = "HH:mm:ss";
                     }
