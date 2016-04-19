@@ -126,7 +126,7 @@ namespace OxyPlot.GtkSharp
             return new OxyMouseDownEventArgs
             {
                 ChangedButton = ConvertButton(e),
-                ClickCount = 1,
+                ClickCount = e.Type == EventType.ButtonPress ? 1 : e.Type == EventType.TwoButtonPress ? 2 : e.Type == EventType.ThreeButtonPress ? 3 : 1,
                 Position = new ScreenPoint(e.X, e.Y),
                 ModifierKeys = GetModifiers(e.State)
             };
