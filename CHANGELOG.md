@@ -81,6 +81,7 @@ All notable changes to this project will be documented in this file.
 - Move CalculateMinorInterval and CreateTickValues to AxisUtilities (#837)
 - Change default number format to "g6" in Axis base class (#841)
 - Push packages to myget.org (#847)
+- Improve tracker style (Windows Forms) (#106)
 
 ### Removed
 - StyleCop tasks (#556)
