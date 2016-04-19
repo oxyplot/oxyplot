@@ -455,7 +455,7 @@ namespace OxyPlot.Axes
                     logCandidates[candidateOffset - 1];
                                 
                 // don't add duplicates
-                if (logNewMajorTick != logPreviousMajorTick)
+                if ((logNewMajorTick != logPreviousMajorTick) && (logNewMajorTick >= this.LogActualMinimum) && (logNewMajorTick <= this.LogActualMaximum))
                 {
                     ret.Add(logNewMajorTick);
                 }

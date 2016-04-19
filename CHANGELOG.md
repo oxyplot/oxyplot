@@ -163,6 +163,7 @@ All notable changes to this project will be documented in this file.
 - Vertical Axes Title Font Bug (#474)
 - Support string[] as ItemsSource in CategoryAxis (#825)
 - Horizontal RangeColorAxis (#767)
+- LogarithmicAxis sometimes places major ticks outside of the axis range (#850)
 
 ## [2014.1.546] - 2014-10-22
 ### Added
