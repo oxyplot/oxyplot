@@ -349,7 +349,7 @@ namespace OxyPlot.Series
                 var filler = new ListBuilder<DataPoint>();
                 filler.Add(this.DataFieldX2, double.NaN);
                 filler.Add(this.DataFieldY2, double.NaN);
-                filler.Fill(this.itemsSourcePoints2, this.ItemsSource, args => new DataPoint(Convert.ToDouble(args[0]), Convert.ToDouble(args[1])));
+                filler.Fill(this.itemsSourcePoints2, this.ItemsSource, args => new DataPoint(Axes.Axis.ToDouble(args[0]), Axes.Axis.ToDouble(args[1])));
             }
             else
             {

@@ -236,7 +236,7 @@ namespace OxyPlot.Series
                 var filler = new ListBuilder<DataPoint>();
                 filler.Add(this.DataFieldX, double.NaN);
                 filler.Add(this.DataFieldY, double.NaN);
-                filler.Fill(this.itemsSourcePoints, this.ItemsSource, args => new DataPoint(Convert.ToDouble(args[0]), Convert.ToDouble(args[1])));
+                filler.Fill(this.itemsSourcePoints, this.ItemsSource, args => new DataPoint(Axes.Axis.ToDouble(args[0]), Axes.Axis.ToDouble(args[1])));
             }
         }
     }
