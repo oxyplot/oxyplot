@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>455376c6-4146-497c-bf77-61cbb67f5df9</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>OxyPlot.SharpDX</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)CacherRenderContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RenderUnits\EllipseRenderUnit.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RenderUnits\GeometryRenderUnit.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RenderUnits\ImageRenderUnit.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RenderUnits\IRenderUnit.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RenderUnits\RectangleRenderUnit.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RenderUnits\TextRenderUnit.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SharpDXOxyExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SharpDXRenderContext.cs" />
+  </ItemGroup>
+</Project>
