@@ -18,7 +18,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentat
 		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.SharpDX.WPF45", "OxyPlot.SharpDX.WPF45\OxyPlot.SharpDX.WPF45.csproj", "{92129D21-61E9-4952-AB75-6E5B27C8D3F7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.SharpDX.WPF", "OxyPlot.SharpDX.WPF\OxyPlot.SharpDX.WPF.csproj", "{92129D21-61E9-4952-AB75-6E5B27C8D3F7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.SharpDX.NET45", "OxyPlot.SharpDX.NET45\OxyPlot.SharpDX.NET45.csproj", "{01D15807-3F4F-41BD-AFA3-C82A6098BF4D}"
 EndProject
