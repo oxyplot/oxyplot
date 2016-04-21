@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace OxyPlot.Xps
+namespace OxyPlot.Wpf
 {
     using System.IO;
     using System.IO.Packaging;
@@ -18,12 +18,10 @@ namespace OxyPlot.Xps
     using System.Windows.Xps;
     using System.Windows.Xps.Packaging;
 
-    using OxyPlot.Wpf;
-
     /// <summary>
     /// Provides functionality to export plots to xps.
     /// </summary>
-    public class XpsExporter
+    public class XpsExporter : IExporter
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="XpsExporter" /> class.

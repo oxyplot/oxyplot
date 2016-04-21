@@ -568,10 +568,6 @@
       <Project>{698CCD8E-ADCC-4565-8517-5EDD36F07155}</Project>
       <Name>OxyPlot.Wpf</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\OxyPlot.Xps\OxyPlot.Xps.csproj">
-      <Project>{639E0B40-A307-4D4A-BB78-BE0019D8D7C1}</Project>
-      <Name>OxyPlot.Xps</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\OxyPlot\OxyPlot.csproj">
       <Project>{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}</Project>
       <Name>OxyPlot</Name>

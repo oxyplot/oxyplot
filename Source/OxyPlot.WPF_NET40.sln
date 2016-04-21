@@ -1,15 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Wpf_NET40", "OxyPlot.Wpf\OxyPlot.Wpf_NET40.csproj", "{0D7C7710-C58B-4713-BA18-8231A2F35A12}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{B630CA82-A785-49CA-8FA0-3D3AF4D6626A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Pdf_NET40", "OxyPlot.Pdf\OxyPlot.Pdf_NET40.csproj", "{AD0C93A1-7E0A-4311-8088-143FCC13CA3E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Xps_NET40", "OxyPlot.Xps\OxyPlot.Xps_NET40.csproj", "{87B7C658-12D9-4BD2-8FBB-9E4F2A670FB3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.OpenXml_NET40", "OxyPlot.OpenXml\OxyPlot.OpenXml_NET40.csproj", "{AF4DF6F4-FD99-4236-B0F1-CE8F5AD0D8A2}"
 EndProject
@@ -35,10 +33,6 @@ Global
 		{AD0C93A1-7E0A-4311-8088-143FCC13CA3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD0C93A1-7E0A-4311-8088-143FCC13CA3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD0C93A1-7E0A-4311-8088-143FCC13CA3E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{87B7C658-12D9-4BD2-8FBB-9E4F2A670FB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{87B7C658-12D9-4BD2-8FBB-9E4F2A670FB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{87B7C658-12D9-4BD2-8FBB-9E4F2A670FB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{87B7C658-12D9-4BD2-8FBB-9E4F2A670FB3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AF4DF6F4-FD99-4236-B0F1-CE8F5AD0D8A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AF4DF6F4-FD99-4236-B0F1-CE8F5AD0D8A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF4DF6F4-FD99-4236-B0F1-CE8F5AD0D8A2}.Release|Any CPU.ActiveCfg = Release|Any CPU

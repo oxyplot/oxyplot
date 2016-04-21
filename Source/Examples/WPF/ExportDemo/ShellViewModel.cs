@@ -25,7 +25,6 @@ namespace ExportDemo
     using OxyPlot.Pdf;
     using OxyPlot.Reporting;
     using OxyPlot.Wpf;
-    using OxyPlot.Xps;
 
     using PropertyTools.Wpf;
 
