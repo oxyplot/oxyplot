@@ -54,6 +54,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentat
 		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlotModelIssue", "Examples\WPF\PlotModelIssue\PlotModelIssue.csproj", "{984EF516-EA05-494E-96B5-992F01420AA5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -128,6 +130,10 @@ Global
 		{EDD52464-AD60-4EA1-B774-87AAFD930B6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EDD52464-AD60-4EA1-B774-87AAFD930B6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EDD52464-AD60-4EA1-B774-87AAFD930B6B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{984EF516-EA05-494E-96B5-992F01420AA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{984EF516-EA05-494E-96B5-992F01420AA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{984EF516-EA05-494E-96B5-992F01420AA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{984EF516-EA05-494E-96B5-992F01420AA5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -143,5 +149,6 @@ Global
 		{B86739B8-5DE9-406F-9418-0751BF7C166F} = {831970F4-9390-4214-848B-70E6250443DC}
 		{D301156F-622D-4821-8C9A-10B895057634} = {831970F4-9390-4214-848B-70E6250443DC}
 		{EDD52464-AD60-4EA1-B774-87AAFD930B6B} = {B630CA82-A785-49CA-8FA0-3D3AF4D6626A}
+		{984EF516-EA05-494E-96B5-992F01420AA5} = {831970F4-9390-4214-848B-70E6250443DC}
 	EndGlobalSection
 EndGlobal
