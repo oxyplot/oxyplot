@@ -84,9 +84,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OxyPlot.SharpDX\OxyPlot.SharpDX.csproj">
+    <ProjectReference Include="..\OxyPlot.SharpDX.NET45\OxyPlot.SharpDX.NET45.csproj">
       <Project>{01d15807-3f4f-41bd-afa3-c82a6098bf4d}</Project>
-      <Name>OxyPlot.SharpDX</Name>
+      <Name>OxyPlot.SharpDX.NET45</Name>
     </ProjectReference>
     <ProjectReference Include="..\OxyPlot\OxyPlot.csproj">
       <Project>{7a0b35c0-dd17-4964-8e9a-44d6cecdc692}</Project>

@@ -57,16 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CacherRenderContext.cs" />
-    <Compile Include="RenderUnits\EllipseRenderUnit.cs" />
-    <Compile Include="RenderUnits\GeometryRenderUnit.cs" />
-    <Compile Include="RenderUnits\ImageRenderUnit.cs" />
-    <Compile Include="RenderUnits\IRenderUnit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RenderUnits\RectangleRenderUnit.cs" />
-    <Compile Include="SharpDXOxyExtensions.cs" />
-    <Compile Include="SharpDXRenderContext.cs" />
-    <Compile Include="RenderUnits\TextRenderUnit.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -77,6 +68,7 @@
       <Name>OxyPlot</Name>
     </ProjectReference>
   </ItemGroup>
+  <Import Project="..\OxyPlot.SharpDX\OxyPlot.SharpDX.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
