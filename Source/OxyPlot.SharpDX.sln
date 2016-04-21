@@ -26,8 +26,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleDemo", "Examples\Shar
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "OxyPlot.SharpDX", "OxyPlot.SharpDX\OxyPlot.SharpDX.shproj", "{455376C6-4146-497C-BF77-61CBB67F5DF9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.SharpDX.Windows", "OxyPlot.SharpDX.Windows\OxyPlot.SharpDX.Windows.csproj", "{57C7DF1A-AD8D-4A56-904F-71B186FBA2C2}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		OxyPlot.SharpDX\OxyPlot.SharpDX.projitems*{57c7df1a-ad8d-4a56-904f-71b186fba2c2}*SharedItemsImports = 4
 		OxyPlot.SharpDX\OxyPlot.SharpDX.projitems*{01d15807-3f4f-41bd-afa3-c82a6098bf4d}*SharedItemsImports = 4
 		OxyPlot.SharpDX\OxyPlot.SharpDX.projitems*{455376c6-4146-497c-bf77-61cbb67f5df9}*SharedItemsImports = 13
 	EndGlobalSection
@@ -106,6 +109,22 @@ Global
 		{48C8FBE0-C817-43BE-AC11-895A69100A86}.Release|x64.Build.0 = Release|Any CPU
 		{48C8FBE0-C817-43BE-AC11-895A69100A86}.Release|x86.ActiveCfg = Release|Any CPU
 		{48C8FBE0-C817-43BE-AC11-895A69100A86}.Release|x86.Build.0 = Release|Any CPU
+		{57C7DF1A-AD8D-4A56-904F-71B186FBA2C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57C7DF1A-AD8D-4A56-904F-71B186FBA2C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57C7DF1A-AD8D-4A56-904F-71B186FBA2C2}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{57C7DF1A-AD8D-4A56-904F-71B186FBA2C2}.Debug|ARM.Build.0 = Debug|Any CPU
+		{57C7DF1A-AD8D-4A56-904F-71B186FBA2C2}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{57C7DF1A-AD8D-4A56-904F-71B186FBA2C2}.Debug|x64.Build.0 = Debug|Any CPU
+		{57C7DF1A-AD8D-4A56-904F-71B186FBA2C2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{57C7DF1A-AD8D-4A56-904F-71B186FBA2C2}.Debug|x86.Build.0 = Debug|Any CPU
+		{57C7DF1A-AD8D-4A56-904F-71B186FBA2C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57C7DF1A-AD8D-4A56-904F-71B186FBA2C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57C7DF1A-AD8D-4A56-904F-71B186FBA2C2}.Release|ARM.ActiveCfg = Release|Any CPU
+		{57C7DF1A-AD8D-4A56-904F-71B186FBA2C2}.Release|ARM.Build.0 = Release|Any CPU
+		{57C7DF1A-AD8D-4A56-904F-71B186FBA2C2}.Release|x64.ActiveCfg = Release|Any CPU
+		{57C7DF1A-AD8D-4A56-904F-71B186FBA2C2}.Release|x64.Build.0 = Release|Any CPU
+		{57C7DF1A-AD8D-4A56-904F-71B186FBA2C2}.Release|x86.ActiveCfg = Release|Any CPU
+		{57C7DF1A-AD8D-4A56-904F-71B186FBA2C2}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
