@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProjectGuid>{B86739B8-5DE9-406F-9418-0751BF7C166F}</ProjectGuid>
+    <ProjectGuid>{089A23D9-710F-4BD1-A520-B59702C998A3}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WpfExamples</RootNamespace>
