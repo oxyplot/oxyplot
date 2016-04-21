@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace OxyPlot.Xps
+namespace OxyPlot.Wpf
 {
     using System;
     using System.IO;
