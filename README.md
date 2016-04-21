@@ -55,4 +55,4 @@ Package | Targets
 
 #### Contribute
 
-See [Contributing](CONTRIBUTING.md) for information about how to contribute!
+See [Contributing](.github/CONTRIBUTING.md) for information about how to contribute!
