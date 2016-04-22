@@ -236,6 +236,11 @@ namespace OxyPlot.Axes
         public bool ClipTitle { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether to crop gridlines with perpendicular axes Start/EndPositions. The default value is <c>false</c>.
+        /// </summary>
+        public bool CropGridlines { get; set; }
+
+        /// <summary>
         /// Gets or sets the maximum value of the data displayed on this axis.
         /// </summary>
         public double DataMaximum { get; protected set; }
