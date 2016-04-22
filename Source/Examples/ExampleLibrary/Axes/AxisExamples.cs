@@ -1165,10 +1165,7 @@ namespace ExampleLibrary
                 StartPosition = 0.1,
                 EndPosition = 0.4,
                 CropGridlines = true
-               
-
             });
-
             plotModel1.Axes.Add(new LinearAxis
             {
                 MajorGridlineStyle = LineStyle.Solid,
@@ -1178,7 +1175,6 @@ namespace ExampleLibrary
                 StartPosition = 0.6,
                 EndPosition = 0.9,
                 CropGridlines = true
-
             });
             plotModel1.Axes.Add(new LinearAxis
             {
@@ -1200,8 +1196,7 @@ namespace ExampleLibrary
                 ExtraGridlineColor = OxyColors.Red,
                 StartPosition = 0.6,
                 EndPosition = 0.9,
-                CropGridlines = true
-                
+                CropGridlines = true                
             });
             return plotModel1;
         }
