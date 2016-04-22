@@ -329,15 +329,7 @@ namespace OxyPlot.SharpDX.WPF
 
        
 
-            _d3d11Device = new D3D11Device(
-                DriverType.Hardware, 
-                DeviceCreationFlags.BgraSupport,
-                FeatureLevel.Level_11_0, 
-                FeatureLevel.Level_10_1,
-                FeatureLevel.Level_10_0,
-                FeatureLevel.Level_9_3,
-                FeatureLevel.Level_9_2,
-                FeatureLevel.Level_9_1);
+            _d3d11Device = new D3D11Device(DriverType.Hardware, DeviceCreationFlags.BgraSupport, FeatureLevel.Level_11_0, FeatureLevel.Level_10_1);
 
             var backBuffer = new Texture2D(_d3d11Device, new Texture2DDescription
             {
@@ -411,20 +403,20 @@ namespace OxyPlot.SharpDX.WPF
 
         void Render(bool invalidateSurface, bool invalidateUnits)
         {
-            if (!this.IsLoaded)
-                return;
+            //if (!this.IsLoaded)
+            //    return;
 
             if (invalidateSurface || _renderTarget==null)
             {
-                //try
-                //{
+                try
+                {
                     CleanResources();
                     InitRendering();
-                //}
-                //catch
-                //{
-                //    return;
-                //}
+                }
+                catch
+                {
+                    return;
+                }
 
                 invalidateUnits = true;
 
