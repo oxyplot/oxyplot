@@ -105,6 +105,11 @@
       <DependentUpon>PlotViewDataTemplateWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ScreenCapture.cs" />
+    <Compile Include="Workitems\PlotModelAlreadyInUse\Item.cs" />
+    <Compile Include="Workitems\PlotModelAlreadyInUse\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Workitems\PlotModelAlreadyInUse\ViewModel.cs" />
     <Page Include="Examples\AnnotationDemo\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -416,6 +421,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Workitems\PlotModelAlreadyInUse\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyDescription.cs">
@@ -431,6 +440,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Images\PlotModelAlreadyInUse.png" />
     <Resource Include="Images\ScrollViewerDemo.png" />
     <Resource Include="Images\ControllerDemo.png" />
     <Resource Include="Images\ToolTipDemo.png" />
@@ -513,8 +523,6 @@
       <Name>OxyPlot</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Workitems\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
