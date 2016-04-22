@@ -6,7 +6,7 @@
         <!--<TextBlock DockPanel.Dock="Bottom" Text="Data from gapminder.org"/>-->
         <DockPanel DockPanel.Dock="Right" Margin="8" Width="500">
             <ComboBox DockPanel.Dock="Top" ItemsSource="{Binding Countries.Values}" SelectedItem="{Binding SelectedCountry}"/>
-            <pt:ItemsGrid Margin="0 8 0 0" ItemsSource="{Binding SelectedCountry.Statistics}" CanInsert="False" CanDelete="False"/>
+            <pt:DataGrid Margin="0 8 0 0" ItemsSource="{Binding SelectedCountry.Statistics}" CanInsert="False" CanDelete="False"/>
         </DockPanel>
         <Slider DockPanel.Dock="Bottom" Value="{Binding Year}" Minimum="1800" Maximum="2009" SmallChange="1" LargeChange="10" Margin="10" TickPlacement="Both" TickFrequency="25"/>
         <Grid>
