@@ -74,6 +74,7 @@ namespace OxyPlot.Axes
 
             this.TickStyle = TickStyle.Outside;
             this.TicklineColor = OxyColors.Black;
+            this.MinorTicklineColor = OxyColors.Automatic;
 
             this.AxislineStyle = LineStyle.None;
             this.AxislineColor = OxyColors.Black;
@@ -414,6 +415,11 @@ namespace OxyPlot.Axes
         /// Gets or sets the interval between minor ticks. The default value is <c>double.NaN</c>.
         /// </summary>
         public double MinorStep { get; set; }
+
+        /// <summary>
+        /// Gets or sets the color of the minor ticks. The default value is <see cref="OxyColors.Automatic"/>.
+        /// </summary>
+        public OxyColor MinorTicklineColor { get; set; }
 
         /// <summary>
         /// Gets or sets the size of the minor ticks. The default value is <c>4</c>.

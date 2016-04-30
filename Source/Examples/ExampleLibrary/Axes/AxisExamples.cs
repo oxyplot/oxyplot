@@ -51,6 +51,29 @@ namespace ExampleLibrary
             return CreateTickStyleExample(TickStyle.Outside);
         }
 
+        [Example("TickStyle: Color major and minor ticks differently")]
+        public static PlotModel TickLineColor()
+        {
+            var plotModel1 = new PlotModel { Title = "Color major and minor ticks differently" };
+            plotModel1.Axes.Add(new LinearAxis
+            {
+                Position = AxisPosition.Left,
+                MajorGridlineThickness = 3,
+                MinorGridlineThickness = 3,
+                TicklineColor = OxyColors.Blue,
+                MinorTicklineColor = OxyColors.Gray,
+            });
+            plotModel1.Axes.Add(new LinearAxis
+            {
+                Position = AxisPosition.Bottom,
+                MajorGridlineThickness = 3,
+                MinorGridlineThickness = 3,
+                TicklineColor = OxyColors.Blue,
+                MinorTicklineColor = OxyColors.Gray,
+            });
+            return plotModel1;
+        }
+
         [Example("GridLinestyle: None (default)")]
         public static PlotModel GridlineStyleNone()
         {
