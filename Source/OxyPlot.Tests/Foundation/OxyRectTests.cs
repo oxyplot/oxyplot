@@ -44,6 +44,7 @@ namespace OxyPlot.Tests
         public void Deflate()
         {
             Assert.That(new OxyRect(10, 20, 30, 40).Deflate(new OxyThickness(1, 2, 3, 4)), Is.EqualTo(new OxyRect(11, 22, 26, 34)));
+            Assert.That(new OxyRect(10, 20, 30, 40).Deflate(new OxyThickness(15)), Is.EqualTo(new OxyRect(25, 35, 0, 10)));
         }
 
         /// <summary>

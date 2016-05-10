@@ -275,7 +275,7 @@ namespace OxyPlot
         /// <returns>The deflated <see cref="OxyRect" />.</returns>
         public OxyRect Deflate(OxyThickness t)
         {
-            return new OxyRect(this.left + t.Left, this.top + t.Top, this.width - t.Left - t.Right, this.height - t.Top - t.Bottom);
+            return new OxyRect(this.left + t.Left, this.top + t.Top, Math.Max(0, this.width - t.Left - t.Right), Math.Max(0, this.height - t.Top - t.Bottom));
         }
 
         /// <summary>

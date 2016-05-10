@@ -166,6 +166,7 @@ All notable changes to this project will be documented in this file.
 - Horizontal RangeColorAxis (#767)
 - LogarithmicAxis sometimes places major ticks outside of the axis range (#850)
 - LineSeries with smoothing raises exception (#72)
+- Exception when legend is outside and plot area is small (#880)
 
 ## [2014.1.546] - 2014-10-22
 ### Added
