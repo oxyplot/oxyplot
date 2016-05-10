@@ -1544,6 +1544,34 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("#880: Too much padding")]
+        public static PlotModel TooMuchPadding()
+        {
+            return new PlotModel { Title = "Too much padding", Padding = new OxyThickness(0, 0, 0, 10000) };
+        }
+
+        [Example("#880: Too much padding with legend outside")]
+        public static PlotModel TooMuchPaddingWithLegend()
+        {
+            var model = new PlotModel
+            {
+                Title = "Too much padding with legend outside",
+                LegendPlacement = LegendPlacement.Outside,
+                Padding = new OxyThickness(500)
+            };
+            model.Series.Add(new LineSeries { Title = "Series 1" });
+            model.Series.Add(new LineSeries { Title = "Series 2" });
+            return model;
+        }
+
+        [Example("#880: Too much title padding")]
+        public static PlotModel TooMuchTitlePadding()
+        {
+            var model = new PlotModel { Title = "Too much title padding", TitlePadding = 10000 };
+            return model;
+        }
+
+
         /* NEW ISSUE TEMPLATE
            [Example("#123: Issue Description")]
            public static PlotModel IssueDescription()
