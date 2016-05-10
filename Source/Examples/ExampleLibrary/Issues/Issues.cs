@@ -1528,17 +1528,33 @@ namespace ExampleLibrary
             return model;
         }
 
-        /* NEW ISSUE TEMPLATE
-          [Example("#123: Issue Description")]
-          public static PlotModel IssueDescription()
-          {
-              var plotModel1 = new PlotModel
-              {
-                  Title = "",
-              };
+        [Example("#72: Smooth")]
+        public static PlotModel Smooth()
+        {
+            var model = new PlotModel { Title = "LineSeries with Smooth = true (zoomed in)", LegendSymbolLength = 24 };
 
-              return plotModel1;
-          }
-          */
+            var s1 = new LineSeries();
+            s1.Points.Add(new DataPoint(0, 0));
+            s1.Points.Add(new DataPoint(10, 2));
+            s1.Points.Add(new DataPoint(40, 1));
+            s1.Smooth = true;
+            model.Series.Add(s1);
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = 10.066564180257437, Maximum = 10.081628088306001 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 2.0013430243084067, Maximum = 2.00209808854281 });
+            return model;
+        }
+
+        /* NEW ISSUE TEMPLATE
+           [Example("#123: Issue Description")]
+           public static PlotModel IssueDescription()
+           {
+               var plotModel1 = new PlotModel
+               {
+                   Title = "",
+               };
+
+               return plotModel1;
+           }
+           */
     }
 }
