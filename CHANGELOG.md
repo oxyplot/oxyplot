@@ -37,6 +37,7 @@ All notable changes to this project will be documented in this file.
 - Extracted visible window search code from CandleStickSeries and made a generic version in XYSeries. Used it to omptimize AreaSeries performance. (#834)
 - Optimized rednering performance of RectangleBarSeries (#834).
 - PdfExporter implementing IExporter (#845)
+- Color minor and major ticks differently (#417)
 
 ### Changed
 - Renamed OxyPlot.WindowsUniversal to OxyPlot.Windows (#242)
