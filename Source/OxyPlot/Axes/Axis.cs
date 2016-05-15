@@ -419,6 +419,8 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Gets or sets the color of the minor ticks. The default value is <see cref="OxyColors.Automatic"/>.
         /// </summary>
+        /// <remarks>If the value is <see cref="OxyColors.Automatic"/>, the value of
+        /// <see cref="Axis.TicklineColor"/> will be used.</remarks>
         public OxyColor MinorTicklineColor { get; set; }
 
         /// <summary>
