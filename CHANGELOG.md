@@ -39,6 +39,7 @@ All notable changes to this project will be documented in this file.
 - PdfExporter implementing IExporter (#845)
 - Color minor and major ticks differently (#417)
 - Support for PieSeries in OxyPlot.Wpf (#878)
+- Filter in example browser (#118)
 
 ### Changed
 - Renamed OxyPlot.WindowsUniversal to OxyPlot.Windows (#242)
