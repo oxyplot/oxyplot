@@ -1402,12 +1402,24 @@ namespace OxyPlot.Axes
             {
                 if (this.ActualMinimum + this.MinimumRange < this.AbsoluteMaximum)
                 {
+                    var average = (this.ActualMaximum + this.ActualMinimum) * 0.5;
+                    var delta = this.MinimumRange / 2;
+                    this.ActualMinimum = average - delta;
+                    this.ActualMaximum = average + delta;
+
                     if (this.ActualMinimum < this.AbsoluteMinimum)
                     {
+                        var diff = this.AbsoluteMinimum - this.ActualMinimum;
                         this.ActualMinimum = this.AbsoluteMinimum;
+                        this.ActualMaximum += diff;
                     }
 
-                    this.ActualMaximum = this.ActualMinimum + this.MinimumRange;
+                    if (this.ActualMaximum > this.AbsoluteMaximum)
+                    {
+                        var diff = this.AbsoluteMaximum - this.ActualMaximum;
+                        this.ActualMaximum = this.AbsoluteMaximum;
+                        this.ActualMinimum += diff;
+                    }
                 }
                 else
                 {
@@ -1429,13 +1441,24 @@ namespace OxyPlot.Axes
             {
                 if (this.ActualMinimum + this.MaximumRange < this.AbsoluteMaximum)
                 {
+                    var average = (this.ActualMaximum + this.ActualMinimum) * 0.5;
+                    var delta = this.MaximumRange / 2;
+                    this.ActualMinimum = average - delta;
+                    this.ActualMaximum = average + delta;
+
                     if (this.ActualMinimum < this.AbsoluteMinimum)
                     {
+                        var diff = this.AbsoluteMinimum - this.ActualMinimum;
                         this.ActualMinimum = this.AbsoluteMinimum;
+                        this.ActualMaximum += diff;
                     }
 
-                    // Adjust the actual maximum only
-                    this.ActualMaximum = this.ActualMinimum + this.MaximumRange;
+                    if (this.ActualMaximum > this.AbsoluteMaximum)
+                    {
+                        var diff = this.AbsoluteMaximum - this.ActualMaximum;
+                        this.ActualMaximum = this.AbsoluteMaximum;
+                        this.ActualMinimum += diff;
+                    }
                 }
                 else
                 {
