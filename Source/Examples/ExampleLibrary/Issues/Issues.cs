@@ -1157,38 +1157,27 @@ namespace ExampleLibrary
             return model;
         }
 
+        /// <summary>
+        /// Contains example code for https://github.com/oxyplot/oxyplot/issues/42
+        /// </summary>
+        /// <returns>The plot model.</returns>
         [Example("#42: ContourSeries not working for not square data array")]
-        public static PlotModel IssueDescription()
+        public static PlotModel IndexOutOfRangeContour()
         {
-            int n = 100;
-            double x0 = -3.1;
-            double x1 = 3.1;
-            double y0 = -3;
-            double y1 = 3;
-            Func<double, double, double> peaks = (x, y) => 3 * (1 - x) * (1 - x) * Math.Exp(-(x * x) - (y + 1) * (y + 1)) - 10 * (x / 5 - x * x * x - y * y * y * y * y) * Math.Exp(-x * x - y * y) - 1.0 / 3 * Math.Exp(-(x + 1) * (x + 1) - y * y);
-            // see https://github.com/oxyplot/oxyplot/issues/511
-            var xvalues = ArrayBuilder.CreateVector(x0, x1, n * 10);
-            var yvalues = ArrayBuilder.CreateVector(y0, y1, n);
-            var peaksData = ArrayBuilder.Evaluate(peaks, xvalues, yvalues);
-            var model = new PlotModel { Title = "Peaks" };
-            model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
+            var model = new PlotModel { Title = "Issue #42" };
+            model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(5) });
 
-            var hms = new HeatMapSeries { X0 = x0, X1 = x1, Y0 = y0, Y1 = y1, Data = peaksData };
-            model.Series.Add(hms);
-            //if (includeContours)
+            var x = ArrayBuilder.CreateVector(0, 1, 20);
+            var y = ArrayBuilder.CreateVector(-1, 1, 2);
+            var data = ArrayBuilder.Evaluate((a, b) => a * b, x, y);
+
+            var contour = new ContourSeries
             {
-                var cs = new ContourSeries
-                {
-                    Color = OxyColors.Black,
-                    FontSize = 0,
-                    ContourLevelStep = 1,
-                    LabelBackground = OxyColors.Undefined,
-                    ColumnCoordinates = yvalues,
-                    RowCoordinates = xvalues,
-                    Data = peaksData
-                };
-                model.Series.Add(cs);
-            }
+                ColumnCoordinates = y,
+                RowCoordinates = x,
+                Data = data
+            };
+            model.Series.Add(contour);
 
             return model;
         }
@@ -1627,6 +1616,37 @@ namespace ExampleLibrary
             series.Points.Add(new DataPoint(4, 10.1));
 
             model.Series.Add(series);
+
+            return model;
+        }
+
+        /// Creates a demo PlotModel with the data from the issue.
+        /// </summary>
+        /// <returns>The created PlotModel</returns>
+        [Example("#589: LogarithmicAxis glitches with multiple series containing small data")]
+        public static PlotModel LogaritmicAxesSuperExponentialFormatTest()
+        {
+            var model = new PlotModel();
+            model.Axes.Add(new LogarithmicAxis
+            {
+                UseSuperExponentialFormat = true,
+                Position = AxisPosition.Bottom,
+                MajorGridlineStyle = LineStyle.Dot,
+                PowerPadding = true
+            });
+
+            model.Axes.Add(new LogarithmicAxis
+            {
+                UseSuperExponentialFormat = true,
+                Position = AxisPosition.Left,
+                MajorGridlineStyle = LineStyle.Dot,
+                PowerPadding = true
+            });
+
+            var series1 = new LineSeries();
+            series1.Points.Add(new DataPoint(1e5, 1e-14));
+            series1.Points.Add(new DataPoint(4e7, 1e-12));
+            model.Series.Add(series1);
 
             return model;
         }

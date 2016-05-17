@@ -22,12 +22,17 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Exponent function.
         /// </summary>
-        protected static readonly Func<double, double> Exponent = x => Math.Floor(Math.Log(Math.Abs(x), 10));
+        protected static readonly Func<double, double> Exponent = x => Math.Floor(ThresholdRound(Math.Log(Math.Abs(x), 10)));
 
         /// <summary>
         /// Mantissa function.
         /// </summary>
-        protected static readonly Func<double, double> Mantissa = x => x / Math.Pow(10, Exponent(x));
+        protected static readonly Func<double, double> Mantissa = x => ThresholdRound(x / Math.Pow(10, Exponent(x)));
+
+        /// <summary>
+        /// Rounds a value if the difference between the rounded value and the original value is less than 1e-6.
+        /// </summary>
+        protected static readonly Func<double, double> ThresholdRound = x => Math.Abs(Math.Round(x) - x) < 1e-6 ? Math.Round(x) : x;
 
         /// <summary>
         /// The offset.
