@@ -168,6 +168,7 @@ All notable changes to this project will be documented in this file.
 - LogarithmicAxis sometimes places major ticks outside of the axis range (#850)
 - LineSeries with smoothing raises exception (#72)
 - Exception when legend is outside and plot area is small (#880)
+- Axis alignment with MinimumRange (#794)
 
 ## [2014.1.546] - 2014-10-22
 ### Added
