@@ -1,0 +1,17 @@
+﻿<Window x:Class="SimpleDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SimpleDemo"
+        xmlns:sharpDX="clr-namespace:OxyPlot.SharpDX.WPF;assembly=OxyPlot.SharpDX.WPF"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525" Background="Green">
+    <Window.DataContext>
+        <local:MainViewModel />        
+    </Window.DataContext>
+    <Grid>
+        <sharpDX:PlotView Model="{Binding Model}" />
+
+    </Grid>
+</Window>

@@ -144,6 +144,11 @@
       <DependentUpon>PlotViewDataTemplateWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ScreenCapture.cs" />
+    <Compile Include="Workitems\PlotModelAlreadyInUse\Item.cs" />
+    <Compile Include="Workitems\PlotModelAlreadyInUse\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Workitems\PlotModelAlreadyInUse\ViewModel.cs" />
     <Page Include="Examples\AnimationsDemo\Controls\AnimationSettingsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -475,6 +480,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Workitems\PlotModelAlreadyInUse\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyDescription.cs">
@@ -490,6 +499,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Images\PlotModelAlreadyInUse.png" />
     <Resource Include="Images\AnimationsDemo.png" />
     <Resource Include="Images\ScrollViewerDemo.png" />
     <Resource Include="Images\ControllerDemo.png" />
@@ -568,17 +578,11 @@
       <Project>{698CCD8E-ADCC-4565-8517-5EDD36F07155}</Project>
       <Name>OxyPlot.Wpf</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\OxyPlot.Xps\OxyPlot.Xps.csproj">
-      <Project>{639E0B40-A307-4D4A-BB78-BE0019D8D7C1}</Project>
-      <Name>OxyPlot.Xps</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\OxyPlot\OxyPlot.csproj">
       <Project>{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}</Project>
       <Name>OxyPlot</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Workitems\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

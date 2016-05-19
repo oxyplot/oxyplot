@@ -23,18 +23,13 @@ before_build:
 
 build_script:
   - msbuild Source/OxyPlot.AppVeyor.sln "/property:Platform=Any CPU" /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
-#  - msbuild Source/OxyPlot.AppVeyor.sln /property:Platform=x86 /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
-#  - msbuild Source/OxyPlot.AppVeyor.sln /property:Platform=x64 /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
-#  - msbuild Source/OxyPlot.AppVeyor.sln /property:Platform=ARM /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
-  
+ 
 after_build:
   - gitlink c:\projects\oxyplot -u https://github.com/oxyplot/oxyplot -f Source/OxyPlot.AppVeyor.sln -ignore OxyPlot.Windows10,OxyPlot.MonoTouch,OxyPlot.Xamarin.Android,OxyPlot.Xamarin.iOS,OxyPlot.Xamarin.Forms.Platform.Android,OxyPlot.Xamarin.Forms.Platform.iOS,OxyPlot.Xamarin.Forms.Platform.iOS.Classic
-  - NuGet pack Source\OxyPlot.nuspec -version "%GitVersion_NuGetVersion%"
   - NuGet pack Source\OxyPlot\OxyPlot.Core.nuspec -version "%GitVersion_NuGetVersion%"
   - NuGet pack Source\OxyPlot.Wpf\OxyPlot.Wpf.nuspec -version "%GitVersion_NuGetVersion%"
   - NuGet pack Source\OxyPlot.Windows\OxyPlot.Windows.nuspec -version "%GitVersion_NuGetVersion%"
   - NuGet pack Source\OxyPlot.WindowsForms\OxyPlot.WindowsForms.nuspec -version "%GitVersion_NuGetVersion%"
-  - NuGet pack Source\OxyPlot.WindowsUniversal\OxyPlot.WindowsUniversal.nuspec -version "%GitVersion_NuGetVersion%"
   - NuGet pack Source\OxyPlot.WP8\OxyPlot.WP8.nuspec -version "%GitVersion_NuGetVersion%"
   - NuGet pack Source\OxyPlot.Silverlight\OxyPlot.Silverlight.nuspec -version "%GitVersion_NuGetVersion%"
   - NuGet pack Source\OxyPlot.OpenXml\OxyPlot.OpenXml.nuspec -version "%GitVersion_NuGetVersion%"
@@ -47,12 +42,14 @@ artifacts:
     name: OxyPlot-$(GitVersion_SemVer)
     type: zip
   - path: '*.nupkg'
+    name: OxyPlot-packages-$(GitVersion_SemVer)
+    type: zip
 
 deploy:
   provider: NuGet
-  server:                  # remove to push to NuGet.org
+  server: https://www.myget.org/F/oxyplot/api/v2/package
   api_key:
-    secure: kM3Kse+ivuuE5RVoe6dPdw+aguWx56K2YeXujGa9tMPQTms3lv7QxNpTLFMALYNa
+    secure: 2GnqgfpkOUH6Umfn1WWlun0b021+QeInBXkgQOQfa4/wDOYHLT757rrjTsb0lmon
   skip_symbols: false
   symbol_server:           # remove to push symbols to SymbolSource.org
-  artifact: /.*\.nupkg/  
+  artifact: /.*\.nupkg/

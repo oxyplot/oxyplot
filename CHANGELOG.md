@@ -3,6 +3,7 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 ### Added
+- Added SharpDX based renderer and WPF control with SharpDX render (#124)
 - Added MinimumMajorStep and MinimumMinorStep to Axes.Axis (#816)
 - Added support for vertical X axis to HeatMapSeries (#535) and example
 - Added fall-back rectangle rendering to HeatMapSeries (#801) and example
@@ -33,7 +34,10 @@ All notable changes to this project will be documented in this file.
 - Support for Windows Universal 10.0 apps (#615)
 - Support Unicode in OxyPlot.Pdf (#789)
 - TouchTrackerManipulator (#787)
-- Extracted visible window search code from CandleStickSeries and made a generic version in XYSeries. Used it to omptimize AreaSeries performance. (#819)
+- Extracted visible window search code from CandleStickSeries and made a generic version in XYSeries. Used it to omptimize AreaSeries performance. (#834)
+- Optimized rednering performance of RectangleBarSeries (#834).
+- PdfExporter implementing IExporter (#845)
+- Color minor and major ticks differently (#417)
 
 ### Changed
 - Renamed OxyPlot.WindowsUniversal to OxyPlot.Windows (#242)
@@ -77,6 +81,9 @@ All notable changes to this project will be documented in this file.
 - Rewrite LogarithmicAxis tick calculation (#820)
 - Change Axis methods to protected virtual (#837)
 - Move CalculateMinorInterval and CreateTickValues to AxisUtilities (#837)
+- Change default number format to "g6" in Axis base class (#841)
+- Push packages to myget.org (#847)
+- Improve tracker style (Windows Forms) (#106)
 
 ### Removed
 - StyleCop tasks (#556)
@@ -93,6 +100,7 @@ All notable changes to this project will be documented in this file.
 - ListFiller (#705)
 
 ### Fixed
+- Multiple mouse clicks not being reported in OxyPlot.GtkSharp (#854)
 - StemSeries Tracking to allow tracking on tiny stems (#809)
 - Fixed PDFRenderContext text alignment issues for rotated text (#723)
 - HeatMapSeries.GetValue returns NaN instead of calculating a wrong value in proximity to NaN (#256)
@@ -157,6 +165,11 @@ All notable changes to this project will be documented in this file.
 - Vertical Axes Title Font Bug (#474)
 - Support string[] as ItemsSource in CategoryAxis (#825)
 - Horizontal RangeColorAxis (#767)
+- LogarithmicAxis sometimes places major ticks outside of the axis range (#850)
+- LineSeries with smoothing raises exception (#72)
+- Exception when legend is outside and plot area is small (#880)
+- Axis alignment with MinimumRange (#794)
+- Fixed strange number formatting when using LogarithmicAxis with very large or very small Series (#589)
 
 ## [2014.1.546] - 2014-10-22
 ### Added

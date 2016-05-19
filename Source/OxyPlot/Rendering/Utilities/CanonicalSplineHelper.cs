@@ -146,6 +146,7 @@ namespace OxyPlot
         /// <param name="t1">The t 1.</param>
         /// <param name="t2">The t 2.</param>
         /// <param name="tolerance">The tolerance.</param>
+        /// <param name="maxSegments">The maximum number of segments. Default is <c>1000</c>.</param>
         private static void Segment(
             IList<ScreenPoint> points,
             ScreenPoint pt0,
@@ -154,7 +155,8 @@ namespace OxyPlot
             ScreenPoint pt3,
             double t1,
             double t2,
-            double tolerance)
+            double tolerance,
+            int maxSegments = 1000)
         {
             // See Petzold, "Programming Microsoft Windows with C#", pages 645-646 or
             // Petzold, "Programming Microsoft Windows with Microsoft Visual Basic .NET", pages 638-639
@@ -174,7 +176,7 @@ namespace OxyPlot
             double dx = pt1.X;
             double dy = pt1.Y;
 
-            var num = (int)((Math.Abs(pt1.X - pt2.X) + Math.Abs(pt1.Y - pt2.Y)) / tolerance);
+            var num = Math.Min(maxSegments, (int)((Math.Abs(pt1.X - pt2.X) + Math.Abs(pt1.Y - pt2.Y)) / tolerance));
 
             // Notice begins at 1 so excludes the first point (which is just pt1)
             for (int i = 1; i < num; i++)
