@@ -40,6 +40,7 @@ All notable changes to this project will be documented in this file.
 - Color minor and major ticks differently (#417)
 
 ### Changed
+- Fixed closing file stream for PdfReportWriter when PdfReportWriter is closed or disposed of. (#891)
 - Renamed OxyPlot.WindowsUniversal to OxyPlot.Windows (#242)
 - Changed OxyPlot.Xamarin.Forms to require OxyPlot.Mobile dependency instead of each separate NuGet. (#362)
 - Renamed OxyPlot.XamarinIOS to OxyPlot.MonoTouch (#327)
