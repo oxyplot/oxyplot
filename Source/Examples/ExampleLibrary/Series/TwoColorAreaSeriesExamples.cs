@@ -136,5 +136,34 @@ namespace ExampleLibrary
 
             return model;
         }
-    }
+
+		/// <summary>
+		/// Creates an example showing temperatures by a red/blue area chart.
+		/// </summary>
+		/// <returns>A <see cref="PlotModel" />.</returns>
+		[Example("Two polygons")]
+		public static PlotModel TwoColorAreaSeriesTwoPolygons()
+		{
+			var model = new PlotModel { Title = "Two polygons", LegendSymbolLength = 24 };
+			var s1 = new TwoColorAreaSeries
+			{
+				Color = OxyColors.Tomato,
+				Color2 = OxyColors.LightBlue,
+				MarkerFill = OxyColors.Tomato,
+				MarkerFill2 = OxyColors.LightBlue,
+				StrokeThickness = 2,
+				MarkerType = MarkerType.Circle,
+				MarkerSize = 3,
+			};
+
+			s1.Points.AddRange(new []{new DataPoint(0, 3), new DataPoint(1, 5), new DataPoint(2, 1), new DataPoint(3, 0), new DataPoint(4, 3) });
+			s1.Points2.AddRange(new[] { new DataPoint(0, -3), new DataPoint(1, -1), new DataPoint(2, 0), new DataPoint(3, -6), new DataPoint(4, -4) });
+
+			model.Series.Add(s1);
+			model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+			model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom});
+
+			return model;
+		}
+	}
 }
