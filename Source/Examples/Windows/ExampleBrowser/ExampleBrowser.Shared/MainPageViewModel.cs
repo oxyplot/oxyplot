@@ -6,6 +6,7 @@
 
 namespace ExampleBrowser
 {
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Diagnostics.CodeAnalysis;
@@ -21,18 +22,20 @@ namespace ExampleBrowser
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class MainPageViewModel : INotifyPropertyChanged
     {
+        private readonly IList<IGrouping<string, ExampleInfo>> exampleGroups;
+
         private double frameRate;
-
-        private IEnumerable<ExampleInfo> examples;
-
+        
         private ExampleInfo selectedExample;
 
+        private string filterString;
+        
         public MainPageViewModel()
         {
-            this.Examples = ExampleLibrary.Examples.GetList();
-            var groups = this.Examples.GroupBy(example => example.Category).OrderBy(g => g.Key);
-            var ex = new CollectionViewSource { Source = groups, IsSourceGrouped = true };
-            this.ExamplesView = ex.View;
+            var examples = Examples.GetList();
+            this.exampleGroups = examples.GroupBy(example => example.Category).OrderBy(g => g.Key).ToList();
+            var examplesViewSource = new CollectionViewSource { Source = this.exampleGroups, IsSourceGrouped = true };
+            this.ExamplesView = examplesViewSource.View;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -49,24 +52,12 @@ namespace ExampleBrowser
             set
             {
                 this.frameRate = value;
-                this.RaisePropertyChanged("FrameRate");
+                this.RaisePropertyChanged(nameof(this.FrameRate));
             }
         }
 
-        public IEnumerable<ExampleInfo> Examples
-        {
-            get
-            {
-                return this.examples;
-            }
-
-            set
-            {
-                this.examples = value;
-                this.RaisePropertyChanged("Examples");
-            }
-        }
-
+        public IEnumerable<IGrouping<string, ExampleInfo>> ExampleGroups => this.exampleGroups;
+        
         public ICollectionView ExamplesView { get; set; }
 
         public ExampleInfo SelectedExample
@@ -79,43 +70,58 @@ namespace ExampleBrowser
             set
             {
                 this.selectedExample = value;
-                this.RaisePropertyChanged("SelectedExample");
-                this.RaisePropertyChanged("PlotModel");
-                this.RaisePropertyChanged("PlotController");
+
+                this.RaisePropertyChanged(nameof(this.SelectedExample));
+                this.RaisePropertyChanged(nameof(this.PlotModel));
+                this.RaisePropertyChanged(nameof(this.PlotController));
             }
         }
 
-        public PlotModel PlotModel
+        public string FilterString
         {
             get
             {
-                return this.SelectedExample != null ? this.SelectedExample.PlotModel : null;
+                return this.filterString;
+            }
+
+            set
+            {
+                this.filterString = value;
+                this.UpdateFilter();
+
+                this.RaisePropertyChanged(nameof(this.FilterString));
+                this.RaisePropertyChanged(nameof(this.ExamplesView));
             }
         }
 
-        public IPlotController PlotController
-        {
-            get
-            {
-                return this.SelectedExample != null ? this.SelectedExample.PlotController : null;
-            }
-        }
+        public PlotModel PlotModel => this.SelectedExample?.PlotModel;
 
-        public string Version
+        public IPlotController PlotController => this.SelectedExample?.PlotController;
+
+        public string Version => typeof(PlotModel).GetTypeInfo().Assembly.FullName.Split(',')[1];
+
+        /// <summary>
+        /// Case-insensitively filters the groups based on the given filter string and updates the <see cref="ICollectionView"/> containing the examples.
+        /// </summary>
+        protected void UpdateFilter()
         {
-            get
+            var result = new List<IGrouping<string, ExampleInfo>>();
+
+            foreach (var group in this.ExampleGroups)
             {
-                return typeof(PlotModel).GetTypeInfo().Assembly.FullName.Split(',')[1];
+                result.AddRange(
+                    group.Where(item => item.Title.IndexOf(this.FilterString, StringComparison.OrdinalIgnoreCase) >= 0)
+                        .ToLookup(item => group.Key));
             }
+
+            var source = new CollectionViewSource { Source = result, IsSourceGrouped = true };
+            this.ExamplesView = source.View;
         }
 
         protected void RaisePropertyChanged(string property)
         {
             var handler = this.PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(property));
-            }
+            handler?.Invoke(this, new PropertyChangedEventArgs(property));
         }
     }
 }

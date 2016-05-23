@@ -20,14 +20,30 @@
         <Hub>
             <Hub.Header>
                 <Grid Margin="0,20,0,0">
-                    <TextBlock Text="OxyPlot Example Browser" Style="{StaticResource TitleTextBlockStyle}" Margin="10,20,30,40"/>
-                    <TextBlock HorizontalAlignment="Right" Text="{Binding Version}" Style="{StaticResource TitleTextBlockStyle}" FontSize="11"/>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Text="OxyPlot Example Browser" Style="{StaticResource TitleTextBlockStyle}" Margin="20"/>
+                    <TextBlock Grid.Row="1" HorizontalAlignment="Right" Text="{Binding Version}" Style="{StaticResource TitleTextBlockStyle}" FontSize="11" Margin="5, 10"/>
+                    <TextBox Grid.Row="2" PlaceholderText="Search..." FontSize="11" Text="{Binding FilterString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </Grid>
             </Hub.Header>
             <HubSection Width="300">
                 <DataTemplate>
-                    <ListView ItemsSource="{Binding ExamplesView}" SelectedItem="{Binding SelectedExample, Mode=TwoWay}" 
-                            BorderThickness="0,0,0,1" ItemTemplate="{StaticResource ListViewDataTemplate}"/>
+                    <ListView ItemsSource="{Binding ExamplesView}" SelectedItem="{Binding SelectedExample, Mode=TwoWay}"
+                              BorderThickness="0, 0, 0, 1" ItemTemplate="{StaticResource ListViewDataTemplate}">
+                        <ListView.GroupStyle>
+                            <GroupStyle>
+                                <GroupStyle.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Key}" />
+                                    </DataTemplate>
+                                </GroupStyle.HeaderTemplate>
+                            </GroupStyle>
+                        </ListView.GroupStyle>
+                    </ListView>
                 </DataTemplate>
             </HubSection>
             <HubSection Header="Sample" Width="1000"
