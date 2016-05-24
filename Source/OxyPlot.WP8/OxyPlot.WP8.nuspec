@@ -9,7 +9,7 @@
     <releaseNotes></releaseNotes>
     <licenseUrl>https://raw.githubusercontent.com/oxyplot/oxyplot/master/LICENSE</licenseUrl>
     <projectUrl>http://oxyplot.org/</projectUrl>
-    <iconUrl>http://resources.oxyplot.org/icons/oxyplot_128.png</iconUrl>
+    <iconUrl>https://raw.githubusercontent.com/oxyplot/oxyplot/develop/Icons/OxyPlot_128.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <tags>wp8 windows phone 8 windowsphone winphone plotting plot charting chart</tags>
     <dependencies>
