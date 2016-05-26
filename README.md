@@ -36,8 +36,8 @@ You can find examples in the `/Source/Examples` folder in the code repository.
 
 #### NuGet packages
 
-The latest pre-release packages are pushed by AppVeyor CI to [myget.org](https://www.myget.org/feed/Packages/oxyplot)
-To use these packages, add the [myget source](https://www.myget.org/feed/Details/oxyplot) and remember the "-pre" flag when installing. 
+The latest pre-release packages are pushed by AppVeyor CI to [myget.org](https://www.myget.org/)
+To install these packages, set the myget.org package source `https://www.myget.org/F/oxyplot` and remember the "-pre" flag. 
 
 The stable release packages will be pushed to [nuget.org](https://www.nuget.org/packages?q=oxyplot).
 Note that we have currently have a lot of old (v2015.*) and pre-release packages on this feed, this will be cleaned up as soon as we release [v1.0](https://github.com/oxyplot/oxyplot/milestones/v1.0).
