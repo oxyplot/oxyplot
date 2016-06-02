@@ -106,7 +106,7 @@ namespace OxyPlot
 
                 if (pointsRendered != null)
                 {
-                    pointsRendered(outputBuffer);
+                    pointsRendered(points);
                 }
 
                 return;
