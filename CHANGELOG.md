@@ -92,6 +92,7 @@ All notable changes to this project will be documented in this file.
 - Improve tracker style (Windows Forms) (#106)
 - Change the default format string to `null` for TimeSpanAxis and DateTimeAxis (#951)
 - Font rendering in OxyPlot.GtkSharp improved by using Pango (#972)
+- Improved LinearSeries performance (#834)
 
 ### Removed
 - StyleCop tasks (#556)
