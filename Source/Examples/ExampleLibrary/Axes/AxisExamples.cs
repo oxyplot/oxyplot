@@ -1151,5 +1151,54 @@ namespace ExampleLibrary
             plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, TickStyle = tickStyle });
             return plotModel1;
         }
+        
+        [Example("Gridlines Cropping: Horizontal and vertical")]
+        public static PlotModel GridlineCroppingBoth()
+        {
+            var plotModel1 = new PlotModel { Title = "Gridline cropping" };
+            plotModel1.Axes.Add(new LinearAxis
+            {
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Dot,
+                ExtraGridlines = new double[] { 46d },
+                ExtraGridlineColor = OxyColors.Red,
+                StartPosition = 0.1,
+                EndPosition = 0.4,
+                CropGridlines = true
+            });
+            plotModel1.Axes.Add(new LinearAxis
+            {
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Dot,
+                ExtraGridlines = new double[] { 46d },
+                ExtraGridlineColor = OxyColors.Red,
+                StartPosition = 0.6,
+                EndPosition = 0.9,
+                CropGridlines = true
+            });
+            plotModel1.Axes.Add(new LinearAxis
+            {
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Dot,
+                Position = AxisPosition.Bottom,
+                ExtraGridlines = new double[] { 46d },
+                ExtraGridlineColor = OxyColors.Red,
+                StartPosition = 0.1,
+                EndPosition = 0.4,
+                CropGridlines = true
+            });
+            plotModel1.Axes.Add(new LinearAxis
+            {
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Dot,
+                Position = AxisPosition.Bottom,
+                ExtraGridlines = new double[] { 46d },
+                ExtraGridlineColor = OxyColors.Red,
+                StartPosition = 0.6,
+                EndPosition = 0.9,
+                CropGridlines = true                
+            });
+            return plotModel1;
+        }
     }
 }
