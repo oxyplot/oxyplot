@@ -299,9 +299,13 @@ namespace OxyPlot.Axes
             if (cropGridlines)
             {
                 if (isHorizontal)
+                {
                     perpAxes = this.Plot.Axes.Where(x => x.IsXyAxis() && x.IsVertical()).ToList();
+                }
                 else
+                {
                     perpAxes = this.Plot.Axes.Where(x => x.IsXyAxis() && x.IsHorizontal()).ToList();
+                }
             }
 
             foreach (double value in this.MajorTickValues)
@@ -444,8 +448,6 @@ namespace OxyPlot.Axes
                     va);
             }
 
-
-
             // Draw extra grid lines
             if (axis.ExtraGridlines != null && this.ExtraPen != null)
             {
@@ -474,7 +476,6 @@ namespace OxyPlot.Axes
                                 extraSegments.Add(new ScreenPoint(transformedValue, perpAxis.Transform(perpAxis.ActualMaximum)));
                             }
                         }
-
                     }
                     else
                     {
@@ -491,14 +492,11 @@ namespace OxyPlot.Axes
                                 extraSegments.Add(new ScreenPoint(perpAxis.Transform(perpAxis.ActualMaximum), transformedValue));
                             }
                         }
-
                     }
                 }
 
                 this.RenderContext.DrawLineSegments(extraSegments, this.ExtraPen);
             }
-
-
 
             if (drawAxisLine)
             {
@@ -561,9 +559,13 @@ namespace OxyPlot.Axes
             if (cropGridlines)
             {
                 if (isHorizontal)
+                {
                     perpAxes = this.Plot.Axes.Where(x => x.IsXyAxis() && x.IsVertical()).ToList();
+                }
                 else
+                {
                     perpAxes = this.Plot.Axes.Where(x => x.IsXyAxis() && x.IsHorizontal()).ToList();
+                }
             }
 
             this.GetTickPositions(axis, axis.TickStyle, axis.MinorTickSize, axis.Position, out a0, out a1);
@@ -614,7 +616,6 @@ namespace OxyPlot.Axes
                             {
                                 minorSegments.Add(new ScreenPoint(transformedValue, perpAxis.Transform(perpAxis.ActualMinimum)));
                                 minorSegments.Add(new ScreenPoint(transformedValue, perpAxis.Transform(perpAxis.ActualMaximum)));
-
                             }
                         }
                     }
