@@ -3,6 +3,7 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 ### Added
+- Added DirectX 9.1-10.1 feature level support for SharpDX renderer
 - Added SharpDX based renderer and WPF control with SharpDX render (#124)
 - Added MinimumMajorStep and MinimumMinorStep to Axes.Axis (#816)
 - Added support for vertical X axis to HeatMapSeries (#535) and example
