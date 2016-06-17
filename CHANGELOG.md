@@ -104,6 +104,7 @@ All notable changes to this project will be documented in this file.
 - ListFiller (#705)
 
 ### Fixed
+- Fixed test PngExporterTests.ExportWithResolution now working on windows 8 or newer (#759))
 - Multiple mouse clicks not being reported in OxyPlot.GtkSharp (#854)
 - StemSeries Tracking to allow tracking on tiny stems (#809)
 - Fixed PDFRenderContext text alignment issues for rotated text (#723)

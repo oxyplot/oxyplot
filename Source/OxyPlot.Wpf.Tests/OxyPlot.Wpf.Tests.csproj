@@ -70,6 +70,12 @@
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
+    <Resource Include="TestFonts\now\Now-Regular.otf" />
+    <Resource Include="TestFonts\now\Now-Black.otf" />
+    <Resource Include="TestFonts\now\Now-Bold.otf" />
+    <Resource Include="TestFonts\now\Now-Light.otf" />
+    <Resource Include="TestFonts\now\Now-Medium.otf" />
+    <Resource Include="TestFonts\now\Now-Thin.otf" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Examples\ExampleLibrary\ExampleLibrary.csproj">
@@ -102,5 +108,3 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
-
-

@@ -10,6 +10,8 @@
 namespace OxyPlot.Tests
 {
     using System;
+    using System.IO;
+    using System.Reflection;
 
     using OxyPlot.Series;
 
@@ -24,9 +26,25 @@ namespace OxyPlot.Tests
         /// <returns>A plot model.</returns>
         public static PlotModel CreateTestModel1()
         {
-            var model = new PlotModel { Title = "Test 1" };
+            var assemblyPath = Assembly.GetExecutingAssembly().CodeBase;
+            var sourceFolderPath = Path.GetDirectoryName(
+                    GetParentDirectoryPath(
+                        GetParentDirectoryPath(
+                            GetParentDirectoryPath(assemblyPath.Substring(8)))));
+            var defaultFont = sourceFolderPath + "/OxyPlot.Wpf.Tests/TestFonts/now/#Now";
+            var model = new PlotModel { Title = "Test 1", DefaultFont = defaultFont };
             model.Series.Add(new FunctionSeries(Math.Sin, 0, Math.PI * 8, 200, "sin(x)"));
             return model;
+        }
+
+        /// <summary>
+        /// Returns the parent directory path
+        /// </summary>
+        /// <param name="path">The current directory path</param>
+        /// <returns>The parent directory path</returns>
+        private static string GetParentDirectoryPath(string path)
+        {
+            return Directory.GetParent(path).FullName;
         }
     }
 }
