@@ -3,10 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-//using WICFactory = SharpDX.WIC.ImagingFactory;
-//using DXGIFactory = SharpDX.DXGI.Factory;
-//using DWFactory = SharpDX.DirectWrite.Factory;
-
 using D3D11Device = SharpDX.Direct3D11.Device;
 using DXGIResource = SharpDX.DXGI.Resource;
 
@@ -17,7 +13,6 @@ using D3D9CreateFlags = SharpDX.Direct3D9.CreateFlags;
 using D3D9PresentParameters = SharpDX.Direct3D9.PresentParameters;
 using D3D9PresentInterval = SharpDX.Direct3D9.PresentInterval;
 using D3D9SwapEffect = SharpDX.Direct3D9.SwapEffect;
-
 
 using RenderTarget = SharpDX.Direct2D1.RenderTarget;
 using RenderTargetProperties = SharpDX.Direct2D1.RenderTargetProperties;
@@ -61,10 +56,6 @@ namespace OxyPlot.SharpDX.WPF
         internal const double _scrollLineDelta = 16.0;   // Default physical amount to scroll with one Up/Down/Left/Right key
         internal const double _mouseWheelDelta = 48.0;   // Default physical amount to scroll with one MouseWheel.
 
-
-
-
-
         D3D11Device _d3d11Device;
         D3D9Device _d3d9Device;       
         RenderTarget _renderTarget;
@@ -78,16 +69,10 @@ namespace OxyPlot.SharpDX.WPF
         Size _viewport;
         Vector _offset;
 
-
-
-
-
-
         internal System.Windows.Controls.Canvas Overlay
         {
             get; private set;
         }
-
 
         public IPlotModel PlotModel
         {
@@ -114,7 +99,6 @@ namespace OxyPlot.SharpDX.WPF
                 return 1;
             }
         }
-
         public bool CanVerticallyScroll
         {
             get; set;
@@ -186,7 +170,6 @@ namespace OxyPlot.SharpDX.WPF
             get; set;
         }
 
-
         public PlotImage()
         {
             _oxyRenderContext = new CacherRenderContext();
@@ -194,15 +177,11 @@ namespace OxyPlot.SharpDX.WPF
             Overlay = new System.Windows.Controls.Canvas
             {
                 RenderTransform = _overlayTransform,
-               
-
             };
 
 
             this.AddVisualChild(Overlay);
             this.AddLogicalChild(Overlay);
-
-
 
             //this.Loaded += (s, e) => OnLoaded();
             //this.SizeChanged += (s, e) => OnResize();
@@ -214,11 +193,7 @@ namespace OxyPlot.SharpDX.WPF
             if (index != 0)
                 throw new ArgumentOutOfRangeException(nameof(index));
             return this.Overlay;
-         //   return base.GetVisualChild(index);
         }
-
-       
-
 
         protected override void OnRender(DrawingContext drawingContext)
         {
@@ -236,29 +211,23 @@ namespace OxyPlot.SharpDX.WPF
             {
                 _extent.Height = PlotHeight;
                 desiredHeight = Math.Min(PlotHeight, availableSize.Height);
-                //Viewport?
             }
             else
             {
                 _extent.Height = !double.IsInfinity(availableSize.Height) ? availableSize.Height : 1;
                 desiredHeight = _extent.Height;
-
             }
-
-
+            
             if (!double.IsNaN(PlotWidth))
             {
                 _extent.Width = PlotWidth;
                 desiredWidth = Math.Min(PlotWidth, availableSize.Width);
-                //Viewport?
             }
             else
             {
                 _extent.Width = !double.IsInfinity(availableSize.Width) ? availableSize.Width : 1;
                 desiredWidth = _extent.Width;
-
             }
-
 
             var desired = new Size(desiredWidth, desiredHeight);
 
@@ -278,7 +247,9 @@ namespace OxyPlot.SharpDX.WPF
                 _offset.Y = 0;
             }
             else
+            {
                 this._overlayTransform.X = -_offset.X;
+            }
 
 
             if (!CanHorizontallyScroll)
@@ -287,7 +258,9 @@ namespace OxyPlot.SharpDX.WPF
                 _offset.X = 0;
             }
             else
+            {
                 this._overlayTransform.Y = -_offset.Y;
+            }
 
 
             this.Overlay.Arrange(new Rect(overlaySize));
@@ -309,9 +282,6 @@ namespace OxyPlot.SharpDX.WPF
         void InitRendering()
         {
             double dpiScale = 1.0; // default value for 96 dpi
-
-
-
          
             var hwndTarget = PresentationSource.FromVisual(this).CompositionTarget as HwndTarget;
             if (hwndTarget != null)
@@ -322,12 +292,7 @@ namespace OxyPlot.SharpDX.WPF
             int surfWidth = (int)(_viewport.Width < 0 ? 0 : Math.Ceiling(_viewport.Width * dpiScale));
             int surfHeight = (int)(_viewport.Height < 0 ? 0 : Math.Ceiling(_viewport.Height * dpiScale));
 
-          
-
             var windowHandle = (new System.Windows.Interop.WindowInteropHelper(System.Windows.Window.GetWindow(this))).Handle;
-
-
-       
 
             _d3d11Device = new D3D11Device(
                 DriverType.Hardware, 
@@ -354,18 +319,9 @@ namespace OxyPlot.SharpDX.WPF
                 CpuAccessFlags = 0
             });
             
-
-            //D3D11Device.CreateWithSwapChain(DriverType.Hardware, DeviceCreationFlags.BgraSupport, swapChainDescription, out _d3d11Device, out _swapChain);
-
-
-
-            //var backBuffer = Texture2D.FromSwapChain<Texture2D>(_swapChain, 0);
             var surface = backBuffer.QueryInterface<Surface>();
-
-
             _renderTarget = new RenderTarget(_oxyRenderContext.D2DFactory, surface,
                                                             new RenderTargetProperties(new PixelFormat(Format.Unknown, AlphaMode.Premultiplied)));
-
             _d3d9Device = new D3D9Device(
                 new Direct3D(),
                 0, 
@@ -378,11 +334,8 @@ namespace OxyPlot.SharpDX.WPF
                     SwapEffect = D3D9SwapEffect.Discard,
                     Windowed = true
                 });
-
-
-
+            
             _imageSource = new D3D11Image(_d3d9Device, backBuffer);
-         //   _imageControl.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri("D:\\tits.jpg"));
 
             _oxyRenderContext.ResetRenderTarget(_renderTarget);
         }
@@ -394,19 +347,15 @@ namespace OxyPlot.SharpDX.WPF
             _d3d11Device?.ImmediateContext.ClearState();
             _d3d11Device?.ImmediateContext.Flush();
 
-
-
             _imageSource?.Dispose();
             _d3d9Device?.Dispose();
             _renderTarget?.Dispose();
             _d3d11Device?.Dispose();
 
-
             _imageSource = null;
             _d3d9Device = null;
             _renderTarget = null;
             _d3d11Device = null;
-
         }
 
         void Render(bool invalidateSurface, bool invalidateUnits)
@@ -414,20 +363,12 @@ namespace OxyPlot.SharpDX.WPF
             if (!this.IsLoaded)
                 return;
 
-            if (invalidateSurface || _renderTarget==null)
+            if (invalidateSurface || _renderTarget == null)
             {
-                //try
-                //{
-                    CleanResources();
-                    InitRendering();
-                //}
-                //catch
-                //{
-                //    return;
-                //}
+                CleanResources();
+                InitRendering();
 
                 invalidateUnits = true;
-
             }
 
             if (this.PlotModel == null)
@@ -435,7 +376,6 @@ namespace OxyPlot.SharpDX.WPF
 
             if (invalidateUnits)
             {
-
                 _oxyRenderContext.ResetRenderUnits();
 
                 //Creates renderUnits that can be rendered later
@@ -456,8 +396,7 @@ namespace OxyPlot.SharpDX.WPF
             _renderTarget.EndDraw();
 
             _d3d11Device.ImmediateContext.Flush();
-
-
+            
             _imageSource.Lock();
             _imageSource.AddDirtyRect(new Int32Rect()
             {
@@ -467,35 +406,19 @@ namespace OxyPlot.SharpDX.WPF
                 Width = _imageSource.PixelWidth
             });
             _imageSource.Unlock();
-
-
         }
-
-
-     
-        
 
         public void Invalidate()
         {
-
             Render(false, true);
             InvalidateVisual();
         }
-
-
-
-
-
-
-
+                
         void OnUnloaded()
         {
-
             CleanResources();
-
         }
-
-
+        
         void AddOffset(double deltaX, double deltaY)
         {
             this._offset.X += deltaX;
@@ -515,13 +438,11 @@ namespace OxyPlot.SharpDX.WPF
 
             this.InvalidateVisual();
         }
-
-
+        
         //Scroll Info implementation
-
         public void LineUp()
         {
-            AddOffset( 0,- _scrollLineDelta);
+            AddOffset(0, -_scrollLineDelta);
         }
 
         public void LineDown()
@@ -588,7 +509,6 @@ namespace OxyPlot.SharpDX.WPF
         public void SetVerticalOffset(double offset)
         {
             this._offset.Y = offset;
-
             this.InvalidateVisual();
         }
 
