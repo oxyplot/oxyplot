@@ -427,14 +427,14 @@ namespace OxyPlot.SharpDX.WPF
             if (this._offset.X < 0)
                 this._offset.X = 0;
 
-            if (this._offset.X > _extent.Width)
-                this._offset.X = _extent.Width;
+            if (this._offset.X + _viewport.Width > _extent.Width)
+                this._offset.X = Math.Max(0, _extent.Width - _viewport.Width);
 
             if (this._offset.Y < 0)
                 this._offset.Y = 0;
 
-            if (this._offset.Y > _extent.Height)
-                this._offset.Y = _extent.Height;
+            if (this._offset.Y + _viewport.Height > _extent.Height)
+                this._offset.Y = Math.Max(0, _extent.Height - _viewport.Height);
 
             this.InvalidateVisual();
         }
