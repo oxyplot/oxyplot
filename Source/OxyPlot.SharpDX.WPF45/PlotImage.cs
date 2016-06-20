@@ -183,7 +183,7 @@ namespace OxyPlot.SharpDX.WPF
             this.AddVisualChild(Overlay);
             this.AddLogicalChild(Overlay);
 
-            this.Loaded += (s, e) => InvalidateVisual();
+            this.Loaded += (s, e) => Dispatcher.Invoke(InvalidateVisual, System.Windows.Threading.DispatcherPriority.Background);
             this.Unloaded += (s, e) => OnUnloaded();
         }
 
