@@ -183,8 +183,7 @@ namespace OxyPlot.SharpDX.WPF
             this.AddVisualChild(Overlay);
             this.AddLogicalChild(Overlay);
 
-            //this.Loaded += (s, e) => OnLoaded();
-            //this.SizeChanged += (s, e) => OnResize();
+            this.Loaded += (s, e) => Dispatcher.Invoke(InvalidateVisual, System.Windows.Threading.DispatcherPriority.Background);
             this.Unloaded += (s, e) => OnUnloaded();
         }
 
@@ -206,6 +205,8 @@ namespace OxyPlot.SharpDX.WPF
         {
             double desiredHeight;
             double desiredWidth;
+
+            
 
             if (!double.IsNaN(PlotHeight))
             {
@@ -229,6 +230,11 @@ namespace OxyPlot.SharpDX.WPF
                 desiredWidth = _extent.Width;
             }
 
+            //this.ScrollOwner.Vi
+            ////making extend a bit smaller then desired size, to avoid scrollbars not valid visibility
+            //_extent.Height -= 5;
+            //_extent.Width -= 5;
+
             var desired = new Size(desiredWidth, desiredHeight);
 
             this.Overlay.Measure(desired);
@@ -248,7 +254,7 @@ namespace OxyPlot.SharpDX.WPF
             }
             else
             {
-                this._overlayTransform.X = -_offset.X;
+                this._overlayTransform.Y = -_offset.Y;
             }
 
 
@@ -259,7 +265,7 @@ namespace OxyPlot.SharpDX.WPF
             }
             else
             {
-                this._overlayTransform.Y = -_offset.Y;
+                this._overlayTransform.X = -_offset.X;
             }
 
 
@@ -267,7 +273,8 @@ namespace OxyPlot.SharpDX.WPF
 
             bool sizeChanged = _viewport != finalSize;
 
-            _viewport = finalSize;
+            _viewport =finalSize;
+            
             if (this.ScrollOwner != null)
                 this.ScrollOwner.InvalidateScrollInfo();
 
@@ -427,14 +434,14 @@ namespace OxyPlot.SharpDX.WPF
             if (this._offset.X < 0)
                 this._offset.X = 0;
 
-            if (this._offset.X > _extent.Width)
-                this._offset.X = _extent.Width;
+            if (this._offset.X + _viewport.Width > _extent.Width)
+                this._offset.X = Math.Max(0, _extent.Width - _viewport.Width);
 
             if (this._offset.Y < 0)
                 this._offset.Y = 0;
 
-            if (this._offset.Y > _extent.Height)
-                this._offset.Y = _extent.Height;
+            if (this._offset.Y + _viewport.Height > _extent.Height)
+                this._offset.Y = Math.Max(0, _extent.Height - _viewport.Height);
 
             this.InvalidateVisual();
         }
