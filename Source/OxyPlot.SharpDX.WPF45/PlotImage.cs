@@ -28,27 +28,33 @@ using System.Windows.Interop;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 
 namespace OxyPlot.SharpDX.WPF
 {
+    /// <summary>
+    /// Control, that renders Plot using SharpDX renderer, renders Tracker using WPF controls.
+    /// Adds scrolling support.
+    /// </summary>
     public class PlotImage: FrameworkElement, System.Windows.Controls.Primitives.IScrollInfo
     {
-        //AffectsMeasure/AffectsArrange
-
-        // Using a DependencyProperty as the backing store for PlotWidth.  This enables animation, styling, binding, etc...
+        /// <summary>
+        /// DependencyProperty as the backing store for PlotWidth
+        /// </summary>
         public static readonly DependencyProperty PlotWidthProperty =
-            DependencyProperty.Register("PlotWidth", typeof(double), typeof(PlotImage), new FrameworkPropertyMetadata(double.NaN, FrameworkPropertyMetadataOptions.AffectsMeasure));
+            DependencyProperty.Register(nameof(PlotWidth), typeof(double), typeof(PlotImage), new FrameworkPropertyMetadata(double.NaN, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
-        // Using a DependencyProperty as the backing store for PlotHeight.  This enables animation, styling, binding, etc...
+        /// <summary>
+        /// Using a DependencyProperty as the backing store for PlotHeight.
+        /// </summary>
         public static readonly DependencyProperty PlotHeightProperty =
-            DependencyProperty.Register("PlotHeight", typeof(double), typeof(PlotImage), new FrameworkPropertyMetadata(double.NaN, FrameworkPropertyMetadataOptions.AffectsMeasure));
+            DependencyProperty.Register(nameof(PlotHeight), typeof(double), typeof(PlotImage), new FrameworkPropertyMetadata(double.NaN, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
-             
-
-        // Using a DependencyProperty as the backing store for PlotModel.  This enables animation, styling, binding, etc...
+        /// <summary>
+        /// DependencyProperty as the backing store for PlotModel
+        /// </summary>
         public static readonly DependencyProperty PlotModelProperty =
-            DependencyProperty.Register("PlotModel", typeof(IPlotModel), typeof(PlotImage), new PropertyMetadata(null));
-
+            DependencyProperty.Register(nameof(PlotModel), typeof(IPlotModel), typeof(PlotImage), new PropertyMetadata(null));
 
         //stolen from scrollviewer MS source code
 
@@ -69,29 +75,43 @@ namespace OxyPlot.SharpDX.WPF
         Size _viewport;
         Vector _offset;
 
+        BitmapImage _designModeImage;
+
         internal System.Windows.Controls.Canvas Overlay
         {
             get; private set;
         }
 
+        /// <summary>
+        /// The Plot Model
+        /// </summary>
         public IPlotModel PlotModel
         {
             get { return (IPlotModel)GetValue(PlotModelProperty); }
             set { SetValue(PlotModelProperty, value); }
         }
 
+        /// <summary>
+        /// The Plot Heigth
+        /// </summary>
         public double PlotHeight
         {
             get { return (double)GetValue(PlotHeightProperty); }
             set { SetValue(PlotHeightProperty, value); }
         }
 
+        /// <summary>
+        /// The Plot Width
+        /// </summary>
         public double PlotWidth
         {
             get { return (double)GetValue(PlotWidthProperty); }
             set { SetValue(PlotWidthProperty, value); }
         }
 
+        /// <summary>
+        /// Gets the number of visual child elements within this element.
+        /// </summary>
         protected override int VisualChildrenCount
         {
             get
@@ -99,16 +119,25 @@ namespace OxyPlot.SharpDX.WPF
                 return 1;
             }
         }
+        /// <summary>
+        /// 
+        /// </summary>
         public bool CanVerticallyScroll
         {
             get; set;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public bool CanHorizontallyScroll
         {
             get; set;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public double ExtentWidth
         {
             get
@@ -186,27 +215,68 @@ namespace OxyPlot.SharpDX.WPF
             this.Loaded += (s, e) => Dispatcher.Invoke(InvalidateVisual, System.Windows.Threading.DispatcherPriority.Background);
             this.Unloaded += (s, e) => OnUnloaded();
         }
-
+               
+        /// <summary>
+        /// Overrides System.Windows.Media.Visual.GetVisualChild(System.Int32), and returns a child at the specified index from a collection of child elements.
+        /// </summary>
+        /// <param name="index">The zero-based index of the requested child element in the collection.</param>
+        /// <returns>The requested child element. This should not return null; if the provided index is out of range, an exception is thrown.</returns>
         protected override Visual GetVisualChild(int index)
         {
             if (index != 0)
                 throw new ArgumentOutOfRangeException(nameof(index));
             return this.Overlay;
         }
-
+       
+        /// <summary>
+        /// When overridden in a derived class, participates in rendering operations that
+        /// are directed by the layout system. The rendering instructions for this element
+        /// are not used directly when this method is invoked, and are instead preserved
+        /// for later asynchronous use by layout and drawing.
+        /// </summary>
+        /// <param name="drawingContext"> The drawing instructions for a specific element. This context is provided to the layout system.</param>
         protected override void OnRender(DrawingContext drawingContext)
         {
             base.OnRender(drawingContext);
+            if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
+            {
+                if (_designModeImage == null)
+                {
+                   var stream= System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("OxyPlot.SharpDX.WPF.Resources.designmode.png");
+                    
+                    _designModeImage = new BitmapImage();
+                    
+                    _designModeImage.BeginInit();
+                    _designModeImage.StreamSource = stream;
+                    _designModeImage.EndInit();
+                }
+
+                drawingContext.DrawImage(_designModeImage, new Rect(0, 0, this.ActualWidth, this.ActualHeight));
+            }
+
             if (_imageSource != null)
                 drawingContext.DrawImage(_imageSource, new Rect(0, 0, _imageSource.Width, _imageSource.Height));
         }
 
+        //
+        // Summary:
+        //     When overridden in a derived class, measures the size in layout required for
+        //     child elements and determines a size for the System.Windows.FrameworkElement-derived
+        //     class.
+        //
+        // Parameters:
+        //   availableSize:
+        //     The available size that this element can give to child elements. Infinity can
+        //     be specified as a value to indicate that the element will size to whatever content
+        //     is available.
+        //
+        // Returns:
+        //     The size that this element determines it needs during layout, based on its calculations
+        //     of child element sizes.
         protected override Size MeasureOverride(Size availableSize)
         {
             double desiredHeight;
             double desiredWidth;
-
-            
 
             if (!double.IsNaN(PlotHeight))
             {
@@ -230,11 +300,6 @@ namespace OxyPlot.SharpDX.WPF
                 desiredWidth = _extent.Width;
             }
 
-            //this.ScrollOwner.Vi
-            ////making extend a bit smaller then desired size, to avoid scrollbars not valid visibility
-            //_extent.Height -= 5;
-            //_extent.Width -= 5;
-
             var desired = new Size(desiredWidth, desiredHeight);
 
             this.Overlay.Measure(desired);
@@ -243,6 +308,18 @@ namespace OxyPlot.SharpDX.WPF
             return desired;
         }
 
+        //
+        // Summary:
+        //     When overridden in a derived class, positions child elements and determines a
+        //     size for a System.Windows.FrameworkElement derived class.
+        //
+        // Parameters:
+        //   finalSize:
+        //     The final area within the parent that this element should use to arrange itself
+        //     and its children.
+        //
+        // Returns:
+        //     The actual size used.
         protected override Size ArrangeOverride(Size finalSize)
         {
             var overlaySize = _extent;
@@ -257,7 +334,6 @@ namespace OxyPlot.SharpDX.WPF
                 this._overlayTransform.Y = -_offset.Y;
             }
 
-
             if (!CanHorizontallyScroll)
             {
                 overlaySize.Width = finalSize.Width;
@@ -267,7 +343,6 @@ namespace OxyPlot.SharpDX.WPF
             {
                 this._overlayTransform.X = -_offset.X;
             }
-
 
             this.Overlay.Arrange(new Rect(overlaySize));
 
@@ -283,11 +358,8 @@ namespace OxyPlot.SharpDX.WPF
             return finalSize;
         }
 
-
-
-
         void InitRendering()
-        {
+        {           
             double dpiScale = 1.0; // default value for 96 dpi
          
             var hwndTarget = PresentationSource.FromVisual(this).CompositionTarget as HwndTarget;
@@ -367,6 +439,8 @@ namespace OxyPlot.SharpDX.WPF
 
         void Render(bool invalidateSurface, bool invalidateUnits)
         {
+            if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
+                return;
             if (!this.IsLoaded)
                 return;
 
@@ -415,7 +489,7 @@ namespace OxyPlot.SharpDX.WPF
             _imageSource.Unlock();
         }
 
-        public void Invalidate()
+        internal void Invalidate()
         {
             Render(false, true);
             InvalidateVisual();

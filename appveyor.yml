@@ -36,6 +36,7 @@ after_build:
   - NuGet pack Source\OxyPlot.Pdf\OxyPlot.Pdf.nuspec -version "%GitVersion_NuGetVersion%"
   - NuGet pack Source\OxyPlot.GtkSharp\OxyPlot.GtkSharp.nuspec -version "%GitVersion_NuGetVersion%"
   - NuGet pack Source\OxyPlot.GtkSharp\OxyPlot.GtkSharp3.nuspec -version "%GitVersion_NuGetVersion%"
+  - NuGet pack Source\OxyPlot.SharpDX.WPF45\OxyPlot.SharpDX.WPF45.nuspec -version "%GitVersion_NuGetVersion%"
 
 artifacts:
   - path: Output

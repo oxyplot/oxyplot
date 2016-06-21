@@ -8,7 +8,7 @@ using SharpDX.Direct2D1;
 
 namespace OxyPlot.SharpDX
 {
-    public class GeometryRenderUnit : IRenderUnit
+    internal class GeometryRenderUnit : IRenderUnit
     {
         Geometry geometry;
         RectangleF bounds;

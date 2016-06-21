@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace OxyPlot.SharpDX
 {
-    interface IRenderUnit:IDisposable
+    internal interface IRenderUnit :IDisposable
     {
         void Render(RenderTarget renderTarget);
         bool CheckBounds(RectangleF viewport);

@@ -8,7 +8,7 @@ using SharpDX;
 
 namespace OxyPlot.SharpDX
 {
-    class EllipseRenderUnit : IRenderUnit
+    internal class EllipseRenderUnit : IRenderUnit
     {
         RectangleF bounds;
         Ellipse ellipse;

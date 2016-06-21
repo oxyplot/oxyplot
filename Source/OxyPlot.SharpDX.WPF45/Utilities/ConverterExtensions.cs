@@ -18,9 +18,6 @@ using DXColor = SharpDX.Color;
 
 namespace OxyPlot.SharpDX.WPF
 {
-    
-    
-
     /// <summary>
     /// Extension method used to convert to/from Windows/Windows.Media classes.
     /// </summary>

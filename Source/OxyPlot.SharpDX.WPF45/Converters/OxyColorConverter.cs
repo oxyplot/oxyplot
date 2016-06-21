@@ -14,14 +14,19 @@ using System.Windows.Media;
 
 namespace OxyPlot.SharpDX.WPF
 {
-    
-    
-
     /// <summary>
     /// Converts from OxyPlot colors to Windows.UI.Color and vice versa.
     /// </summary>
     public class OxyColorConverter : IValueConverter
     {
+        /// <summary>
+        /// Converts the specified value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="targetType">Type of the target.</param>
+        /// <param name="parameter">The parameter.</param>
+        /// <param name="culture">The language.</param>
+        /// <returns>The maximum value of the thickness.</returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (!(value is OxyColor))
@@ -49,9 +54,8 @@ namespace OxyPlot.SharpDX.WPF
         /// <param name="value">The value.</param>
         /// <param name="targetType">The target type.</param>
         /// <param name="parameter">The parameter.</param>
-        /// <param name="language">The language.</param>
-        /// <returns>The converted value.</returns>   
-
+        /// <param name="culture">The language.</param>
+        /// <returns>The converted value.</returns> 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (targetType != typeof(OxyColor))
@@ -74,7 +78,5 @@ namespace OxyPlot.SharpDX.WPF
 
             return null;
         }
-
-
     }
 }

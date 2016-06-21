@@ -13,9 +13,7 @@ using System.Windows;
 using System.Windows.Data;
 
 namespace OxyPlot.SharpDX.WPF
-{
-   
-    
+{    
     /// <summary>
     /// Converts Thickness to double.
     /// </summary>
@@ -29,7 +27,7 @@ namespace OxyPlot.SharpDX.WPF
         /// <param name="value">The value.</param>
         /// <param name="targetType">Type of the target.</param>
         /// <param name="parameter">The parameter.</param>
-        /// <param name="language">The language.</param>
+        /// <param name="culture">The language.</param>
         /// <returns>The maximum value of the thickness.</returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -45,22 +43,17 @@ namespace OxyPlot.SharpDX.WPF
             return null;
         }
 
-
-
         /// <summary>
         /// Converts back.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <param name="targetType">Type of the target.</param>
         /// <param name="parameter">The parameter.</param>
-        /// <param name="language">The language.</param>
+        /// <param name="culture">The language.</param>
         /// <returns>Not implemented.</returns>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }
-
-     
-       
     }
 }

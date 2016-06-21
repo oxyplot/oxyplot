@@ -8,7 +8,7 @@ using SharpDX;
 
 namespace OxyPlot.SharpDX
 {
-    class ImageRenderUnit : IRenderUnit
+    internal class ImageRenderUnit : IRenderUnit
     {
         Bitmap bitmap;
         RectangleF src;

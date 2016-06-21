@@ -18,7 +18,7 @@ using System.IO;
 
 namespace OxyPlot.SharpDX
 {
-    public class SharpDXRenderContext : IRenderContext, IDisposable
+    internal class SharpDXRenderContext : IRenderContext, IDisposable
     {
         D2DFactory d2dFactory;
         DWFactory dwFactory;

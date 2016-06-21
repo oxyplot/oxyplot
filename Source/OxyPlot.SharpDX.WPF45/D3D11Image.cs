@@ -15,7 +15,7 @@ using System.Windows;
 namespace OxyPlot.SharpDX.WPF
 {
 
-    class D3D11Image : D3DImage, IDisposable
+    internal class D3D11Image : D3DImage, IDisposable
     {
 
 

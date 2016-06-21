@@ -8,7 +8,7 @@ using SharpDX;
 
 namespace OxyPlot.SharpDX
 {
-    class RectangleRenderUnit : IRenderUnit
+    internal class RectangleRenderUnit : IRenderUnit
     {
         RectangleF rectangle;
         Brush stroke;

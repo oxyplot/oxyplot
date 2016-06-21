@@ -9,7 +9,7 @@ using DXLineJoin = SharpDX.Direct2D1.LineJoin;
 
 namespace OxyPlot.SharpDX
 {
-    public static class SharpDXOxyExtensions
+    internal static class SharpDXOxyExtensions
     {
         public static Vector2 ToVector2(this ScreenPoint point, bool aliased = false)
         {

@@ -9,7 +9,7 @@ using SharpDX.DirectWrite;
 
 namespace OxyPlot.SharpDX
 {
-    class TextRenderUnit : IRenderUnit
+    internal class TextRenderUnit : IRenderUnit
     {
 
         Matrix3x2 transform;
