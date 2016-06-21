@@ -31,6 +31,7 @@ EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		OxyPlot.SharpDX\OxyPlot.SharpDX.projitems*{57c7df1a-ad8d-4a56-904f-71b186fba2c2}*SharedItemsImports = 4
+		OxyPlot.SharpDX\OxyPlot.SharpDX.projitems*{92129d21-61e9-4952-ab75-6e5b27c8d3f7}*SharedItemsImports = 4
 		OxyPlot.SharpDX\OxyPlot.SharpDX.projitems*{01d15807-3f4f-41bd-afa3-c82a6098bf4d}*SharedItemsImports = 4
 		OxyPlot.SharpDX\OxyPlot.SharpDX.projitems*{455376c6-4146-497c-bf77-61cbb67f5df9}*SharedItemsImports = 13
 	EndGlobalSection

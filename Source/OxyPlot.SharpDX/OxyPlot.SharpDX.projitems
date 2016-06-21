@@ -17,6 +17,5 @@
     <Compile Include="$(MSBuildThisFileDirectory)RenderUnits\RectangleRenderUnit.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RenderUnits\TextRenderUnit.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharpDXOxyExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SharpDXRenderContext.cs" />
   </ItemGroup>
 </Project>
