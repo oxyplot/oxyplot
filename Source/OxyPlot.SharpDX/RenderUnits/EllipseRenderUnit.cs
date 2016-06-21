@@ -22,8 +22,6 @@ namespace OxyPlot.SharpDX
             this.stroke = stroke;
             this.fill = fill;
             this.thickness = thickness;
-
-
         }
         public void Dispose()
         {
@@ -34,10 +32,14 @@ namespace OxyPlot.SharpDX
         public void Render(RenderTarget renderTarget)
         {
             if (stroke != null)
+            {
                 renderTarget.DrawEllipse(ellipse, stroke, thickness);
+            }
 
             if (fill != null)
+            {
                 renderTarget.FillEllipse(ellipse, fill);
+            }
         }
 
         public bool CheckBounds(RectangleF viewport)

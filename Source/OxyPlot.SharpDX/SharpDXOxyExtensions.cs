@@ -46,7 +46,6 @@ namespace OxyPlot.SharpDX
                 default:
                     return DXLineJoin.MiterOrBevel;
             }
-
         }
 
         public static Color4 ToDXColor(this OxyColor color)

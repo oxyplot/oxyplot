@@ -57,11 +57,21 @@ namespace OxyPlot.SharpDX.WPF
         }
         static readonly float ByteToFloat = 1f / 255f;
 
+        /// <summary>
+        ///  Converts an <see cref="OxyColor" /> to a <see cref="Color4" />.
+        /// </summary>
+        /// <param name="c">The color.</param>
+        /// <returns>A Color.</returns>
         public static Color4 ToColor4(this OxyColor c)
         {
             return new Color4(c.R * ByteToFloat, c.G * ByteToFloat, c.B * ByteToFloat, c.A * ByteToFloat);
         }
 
+        /// <summary>
+        ///  Converts an <see cref="OxyColor" /> to a <see cref="DXColor" />.
+        /// </summary>
+        /// <param name="c">The color.</param>
+        /// <returns>A Color.</returns>
         public static DXColor ToDXColor(this OxyColor c)
         {
             return new DXColor(c.R , c.G , c.B , c.A);
@@ -394,6 +404,7 @@ namespace OxyPlot.SharpDX.WPF
         /// </summary>
         /// <param name="e">The <see cref="MouseWheelEventArgs" /> instance containing the event data.</param>
         /// <param name="relativeTo">The <see cref="IInputElement" /> that the event is relative to.</param>
+        /// <param name="offset">The <see cref="Vector" /> offset that event is relative to.</param>
         /// <returns>A <see cref="OxyMouseWheelEventArgs" /> containing the converted event arguments.</returns>
         public static OxyMouseWheelEventArgs ToMouseWheelEventArgs(this MouseWheelEventArgs e, IInputElement relativeTo, Vector offset)
         {
@@ -410,6 +421,7 @@ namespace OxyPlot.SharpDX.WPF
         /// </summary>
         /// <param name="e">The <see cref="MouseButtonEventArgs" /> instance containing the event data.</param>
         /// <param name="relativeTo">The <see cref="IInputElement" /> that the event is relative to.</param>
+        /// <param name="offset">The <see cref="Vector" /> offset that event is relative to.</param>
         /// <returns>A <see cref="OxyMouseEventArgs" /> containing the converted event arguments.</returns>
         public static OxyMouseDownEventArgs ToMouseDownEventArgs(this MouseButtonEventArgs e, IInputElement relativeTo, Vector offset)
         {
@@ -427,6 +439,7 @@ namespace OxyPlot.SharpDX.WPF
         /// </summary>
         /// <param name="e">The <see cref="MouseButtonEventArgs" /> instance containing the event data.</param>
         /// <param name="relativeTo">The <see cref="IInputElement" /> that the event is relative to.</param>
+        /// <param name="offset">The <see cref="Vector" /> offset that event is relative to.</param>
         /// <returns>A <see cref="OxyMouseEventArgs" /> containing the converted event arguments.</returns>
         public static OxyMouseEventArgs ToMouseReleasedEventArgs(this MouseButtonEventArgs e, IInputElement relativeTo, Vector offset)
         {
@@ -442,6 +455,7 @@ namespace OxyPlot.SharpDX.WPF
         /// </summary>
         /// <param name="e">The <see cref="MouseEventArgs" /> instance containing the event data.</param>
         /// <param name="relativeTo">The <see cref="IInputElement" /> that the event is relative to.</param>
+        /// <param name="offset">The <see cref="Vector" /> offset that event is relative to.</param>
         /// <returns>A <see cref="OxyMouseEventArgs" /> containing the converted event arguments.</returns>
         public static OxyMouseEventArgs ToMouseEventArgs(this MouseEventArgs e, IInputElement relativeTo, Vector offset)
         {
@@ -456,7 +470,9 @@ namespace OxyPlot.SharpDX.WPF
         /// Converts <see cref="ManipulationStartedEventArgs" /> to <see cref="OxyMouseEventArgs" /> for a touch started event.
         /// </summary>
         /// <param name="e">The <see cref="ManipulationStartedEventArgs" /> instance containing the event data.</param>
+        /// <param name="source">The <see cref="FrameworkElement"/> that is event source</param>
         /// <param name="relativeTo">The <see cref="UIElement" /> that the event is relative to.</param>
+        /// <param name="offset">The <see cref="Vector" /> offset that event is relative to.</param>
         /// <returns>A <see cref="OxyMouseEventArgs" /> containing the converted event arguments.</returns>
         public static OxyTouchEventArgs ToTouchEventArgs(this ManipulationStartedEventArgs e, FrameworkElement source, FrameworkElement relativeTo, Vector offset)
         {
@@ -470,7 +486,9 @@ namespace OxyPlot.SharpDX.WPF
         /// Converts <see cref="ManipulationDeltaEventArgs" /> to <see cref="OxyMouseEventArgs" /> for a touch delta event.
         /// </summary>
         /// <param name="e">The <see cref="ManipulationDeltaEventArgs" /> instance containing the event data.</param>
+        /// <param name="source">The <see cref="FrameworkElement"/> that is event source</param>
         /// <param name="relativeTo">The <see cref="UIElement" /> that the event is relative to.</param>
+        /// <param name="offset">The <see cref="Vector" /> offset that event is relative to.</param>
         /// <returns>A <see cref="OxyMouseEventArgs" /> containing the converted event arguments.</returns>
         public static OxyTouchEventArgs ToTouchEventArgs(this ManipulationDeltaEventArgs e,FrameworkElement source, FrameworkElement relativeTo, Vector offset)
         {
@@ -488,7 +506,9 @@ namespace OxyPlot.SharpDX.WPF
         /// Converts <see cref="ManipulationCompletedEventArgs" /> to <see cref="OxyMouseEventArgs" /> for a touch completed event.
         /// </summary>
         /// <param name="e">The <see cref="ManipulationCompletedEventArgs" /> instance containing the event data.</param>
+        /// <param name="source">The <see cref="FrameworkElement"/> that is event source</param>
         /// <param name="relativeTo">The <see cref="UIElement" /> that the event is relative to.</param>
+        /// <param name="offset">The <see cref="Vector" /> offset that event is relative to.</param>
         /// <returns>A <see cref="OxyMouseEventArgs" /> containing the converted event arguments.</returns>
         public static OxyTouchEventArgs ToTouchEventArgs(this ManipulationCompletedEventArgs e, FrameworkElement source, FrameworkElement relativeTo, Vector offset)
         {

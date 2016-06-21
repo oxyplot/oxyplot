@@ -11,7 +11,6 @@ namespace OxyPlot.SharpDX
 {
     internal class TextRenderUnit : IRenderUnit
     {
-
         Matrix3x2 transform;
         TextLayout layout;
         Brush brush;
@@ -23,7 +22,6 @@ namespace OxyPlot.SharpDX
             this.brush = brush;
             this.transform = transform;
 
-
             var topleft = Matrix3x2.TransformPoint(transform, new Vector2(0, 0));
             var bottomRight = Matrix3x2.TransformPoint(transform, new Vector2(textLayout.Metrics.Width, textLayout.Metrics.Height));
 
@@ -34,9 +32,6 @@ namespace OxyPlot.SharpDX
                 Right = bottomRight.X,
                 Bottom = bottomRight.Y
             };
-                
-
-
         }
         public void Dispose()
         {
@@ -52,7 +47,6 @@ namespace OxyPlot.SharpDX
             renderTarget.DrawTextLayout(new Vector2(), layout, brush);
 
             renderTarget.Transform = currentTransform;
-
         }
 
         public bool CheckBounds(RectangleF viewport)

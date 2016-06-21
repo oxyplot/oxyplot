@@ -119,8 +119,9 @@ namespace OxyPlot.SharpDX.WPF
                 return 1;
             }
         }
+
         /// <summary>
-        /// 
+        /// Gets or sets a value that indicates whether scrolling on the vertical axis is possible.
         /// </summary>
         public bool CanVerticallyScroll
         {
@@ -128,7 +129,7 @@ namespace OxyPlot.SharpDX.WPF
         }
 
         /// <summary>
-        /// 
+        /// Gets or sets a value that indicates whether scrolling on the vertical axis is possible.
         /// </summary>
         public bool CanHorizontallyScroll
         {
@@ -136,7 +137,7 @@ namespace OxyPlot.SharpDX.WPF
         }
 
         /// <summary>
-        /// 
+        /// Gets the horizontal size of the extent.
         /// </summary>
         public double ExtentWidth
         {
@@ -146,6 +147,9 @@ namespace OxyPlot.SharpDX.WPF
             }
         }
 
+        /// <summary>
+        /// Gets the vertical size of the extent.
+        /// </summary>
         public double ExtentHeight
         {
             get
@@ -154,6 +158,9 @@ namespace OxyPlot.SharpDX.WPF
             }
         }
 
+        /// <summary>
+        /// Gets the horizontal size of the viewport for this content.
+        /// </summary>
         public double ViewportWidth
         {
             get
@@ -162,6 +169,9 @@ namespace OxyPlot.SharpDX.WPF
             }
         }
 
+        /// <summary>
+        /// Gets the vertical size of the viewport for this content.
+        /// </summary>
         public double ViewportHeight
         {
             get
@@ -170,6 +180,9 @@ namespace OxyPlot.SharpDX.WPF
             }
         }
 
+        /// <summary>
+        /// Gets the horizontal offset of the scrolled content.
+        /// </summary>
         public double HorizontalOffset
         {
             get
@@ -178,6 +191,9 @@ namespace OxyPlot.SharpDX.WPF
             }
         }
 
+        /// <summary>
+        /// Gets the vertical offset of the scrolled content.
+        /// </summary>
         public double VerticalOffset
         {
             get
@@ -186,6 +202,9 @@ namespace OxyPlot.SharpDX.WPF
             }
         }
 
+        /// <summary>
+        ///  Gets the offset vector of the scrolled content.
+        /// </summary>
         public Vector Offset
         {
             get
@@ -194,11 +213,17 @@ namespace OxyPlot.SharpDX.WPF
             }
         }
 
+        /// <summary>
+        /// Gets or sets a System.Windows.Controls.ScrollViewer element that controls scrolling behavior.
+        /// </summary>
         public ScrollViewer ScrollOwner
         {
             get; set;
         }
 
+        /// <summary>
+        /// The default constructor
+        /// </summary>
         public PlotImage()
         {
             _oxyRenderContext = new CacherRenderContext();
@@ -207,7 +232,6 @@ namespace OxyPlot.SharpDX.WPF
             {
                 RenderTransform = _overlayTransform,
             };
-
 
             this.AddVisualChild(Overlay);
             this.AddLogicalChild(Overlay);
@@ -224,7 +248,9 @@ namespace OxyPlot.SharpDX.WPF
         protected override Visual GetVisualChild(int index)
         {
             if (index != 0)
+            {
                 throw new ArgumentOutOfRangeException(nameof(index));
+            }
             return this.Overlay;
         }
        
@@ -234,7 +260,7 @@ namespace OxyPlot.SharpDX.WPF
         /// are not used directly when this method is invoked, and are instead preserved
         /// for later asynchronous use by layout and drawing.
         /// </summary>
-        /// <param name="drawingContext"> The drawing instructions for a specific element. This context is provided to the layout system.</param>
+        /// <param name="drawingContext">The drawing instructions for a specific element. This context is provided to the layout system.</param>
         protected override void OnRender(DrawingContext drawingContext)
         {
             base.OnRender(drawingContext);
@@ -255,24 +281,22 @@ namespace OxyPlot.SharpDX.WPF
             }
 
             if (_imageSource != null)
+            {
                 drawingContext.DrawImage(_imageSource, new Rect(0, 0, _imageSource.Width, _imageSource.Height));
+            }
         }
 
-        //
-        // Summary:
-        //     When overridden in a derived class, measures the size in layout required for
-        //     child elements and determines a size for the System.Windows.FrameworkElement-derived
-        //     class.
-        //
-        // Parameters:
-        //   availableSize:
-        //     The available size that this element can give to child elements. Infinity can
-        //     be specified as a value to indicate that the element will size to whatever content
-        //     is available.
-        //
-        // Returns:
-        //     The size that this element determines it needs during layout, based on its calculations
-        //     of child element sizes.
+        /// <summary>
+        /// When overridden in a derived class, measures the size in layout required for
+        /// child elements and determines a size for the System.Windows.FrameworkElement-derived
+        /// class.
+        /// </summary>
+        /// <param name="availableSize">The available size that this element can give to child elements. Infinity can
+        /// be specified as a value to indicate that the element will size to whatever content
+        /// is available.
+        /// </param>
+        /// <returns>The size that this element determines it needs during layout, based on its calculations
+        /// of child element sizes.</returns>
         protected override Size MeasureOverride(Size availableSize)
         {
             double desiredHeight;
@@ -304,22 +328,21 @@ namespace OxyPlot.SharpDX.WPF
 
             this.Overlay.Measure(desired);
             if (this.ScrollOwner != null)
+            {
                 this.ScrollOwner.InvalidateScrollInfo();
+            }
             return desired;
         }
 
-        //
-        // Summary:
-        //     When overridden in a derived class, positions child elements and determines a
-        //     size for a System.Windows.FrameworkElement derived class.
-        //
-        // Parameters:
-        //   finalSize:
-        //     The final area within the parent that this element should use to arrange itself
-        //     and its children.
-        //
-        // Returns:
-        //     The actual size used.
+        /// <summary>
+        /// When overridden in a derived class, positions child elements and determines a
+        /// size for a System.Windows.FrameworkElement derived class.
+        /// </summary>
+        /// <param name="finalSize">
+        /// The final area within the parent that this element should use to arrange itself
+        /// and its children.
+        /// </param>
+        /// <returns>The actual size used.</returns>
         protected override Size ArrangeOverride(Size finalSize)
         {
             var overlaySize = _extent;
@@ -349,9 +372,11 @@ namespace OxyPlot.SharpDX.WPF
             bool sizeChanged = _viewport != finalSize;
 
             _viewport =finalSize;
-            
+
             if (this.ScrollOwner != null)
+            {
                 this.ScrollOwner.InvalidateScrollInfo();
+            }
 
             Render(sizeChanged, false);
 
@@ -440,9 +465,13 @@ namespace OxyPlot.SharpDX.WPF
         void Render(bool invalidateSurface, bool invalidateUnits)
         {
             if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
+            {
                 return;
+            }
             if (!this.IsLoaded)
+            {
                 return;
+            }
 
             if (invalidateSurface || _renderTarget == null)
             {
@@ -453,7 +482,9 @@ namespace OxyPlot.SharpDX.WPF
             }
 
             if (this.PlotModel == null)
+            {
                 return;
+            }
 
             if (invalidateUnits)
             {
@@ -506,93 +537,153 @@ namespace OxyPlot.SharpDX.WPF
             this._offset.Y += deltaY;
 
             if (this._offset.X < 0)
+            {
                 this._offset.X = 0;
+            }
 
             if (this._offset.X + _viewport.Width > _extent.Width)
+            {
                 this._offset.X = Math.Max(0, _extent.Width - _viewport.Width);
+            }
 
             if (this._offset.Y < 0)
+            {
                 this._offset.Y = 0;
+            }
 
             if (this._offset.Y + _viewport.Height > _extent.Height)
+            {
                 this._offset.Y = Math.Max(0, _extent.Height - _viewport.Height);
+            }
 
             this.InvalidateVisual();
         }
-        
+
         //Scroll Info implementation
+
+        /// <summary>
+        /// Scrolls up within content by one logical unit.
+        /// </summary>
         public void LineUp()
         {
             AddOffset(0, -_scrollLineDelta);
         }
 
+        /// <summary>
+        /// Scrolls down within content by one logical unit.
+        /// </summary>
         public void LineDown()
         {
             AddOffset(0, _scrollLineDelta);
         }
 
+        /// <summary>
+        /// Scrolls left within content by one logical unit.
+        /// </summary>
         public void LineLeft()
         {
             AddOffset(-_scrollLineDelta, 0);
         }
 
+        /// <summary>
+        /// Scrolls right within content by one logical unit.
+        /// </summary>
         public void LineRight()
         {
             AddOffset(_scrollLineDelta, 0);
         }
 
+        /// <summary>
+        /// Scrolls up within content by one page.
+        /// </summary>
         public void PageUp()
         {
             AddOffset(0, -_viewport.Height);
         }
 
+        /// <summary>
+        /// Scrolls down within content by one page.
+        /// </summary>
         public void PageDown()
         {
             AddOffset(0, _viewport.Height);
         }
 
+        /// <summary>
+        /// Scrolls left within content by one page.
+        /// </summary>
         public void PageLeft()
         {
             AddOffset(-_viewport.Height,0);
         }
 
+        /// <summary>
+        /// Scrolls right within content by one page.
+        /// </summary>
         public void PageRight()
         {
             AddOffset(_viewport.Height, 0);
         }
 
+        /// <summary>
+        /// Scrolls up within content after a user clicks the wheel button on a mouse.
+        /// </summary>
         public void MouseWheelUp()
         {
             AddOffset(0,-_mouseWheelDelta);
         }
 
+        /// <summary>
+        /// Scrolls down within content after a user clicks the wheel button on a mouse.
+        /// </summary>
         public void MouseWheelDown()
         {
             AddOffset(0, _mouseWheelDelta);
         }
 
+        /// <summary>
+        /// Scrolls left within content after a user clicks the wheel button on a mouse.
+        /// </summary>
         public void MouseWheelLeft()
         {
             AddOffset(-_mouseWheelDelta, 0);
         }
 
+        /// <summary>
+        /// Scrolls right within content after a user clicks the wheel button on a mouse.
+        /// </summary>
         public void MouseWheelRight()
         {
             AddOffset(_mouseWheelDelta, 0);
         }
 
+        /// <summary>
+        /// Sets the amount of horizontal offset.
+        /// </summary>
+        /// <param name="offset">The degree to which content is horizontally offset from the containing viewport.</param>
         public void SetHorizontalOffset(double offset)
         {
             this._offset.X = offset;
             this.InvalidateVisual();
         }
 
+        /// <summary>
+        /// Sets the amount of vertical offset.
+        /// </summary>
+        /// <param name="offset">The degree to which content is vertically offset from the containing viewport.</param>
         public void SetVerticalOffset(double offset)
         {
             this._offset.Y = offset;
             this.InvalidateVisual();
         }
 
+        /// <summary>
+        /// Forces content to scroll until the coordinate space of a System.Windows.Media.Visual
+        /// object is visible.
+        /// </summary>
+        /// <param name="visual">A System.Windows.Media.Visual that becomes visible.</param>
+        /// <param name="rectangle">A bounding rectangle that identifies the coordinate space to make visible.</param>
+        /// <returns>A System.Windows.Rect that is visible.</returns>
         public Rect MakeVisible(Visual visual, Rect rectangle)
         {
             return rectangle;

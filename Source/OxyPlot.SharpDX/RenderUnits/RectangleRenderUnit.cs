@@ -20,8 +20,6 @@ namespace OxyPlot.SharpDX
             this.stroke = stroke;
             this.fill = fill;
             this.thickness = thickness;
-
-
         }
         public void Dispose()
         {
@@ -31,11 +29,15 @@ namespace OxyPlot.SharpDX
 
         public void Render(RenderTarget renderTarget)
         {
-            if (stroke!=null)
-                renderTarget.DrawRectangle(rectangle,stroke, thickness);
+            if (stroke != null)
+            {
+                renderTarget.DrawRectangle(rectangle, stroke, thickness);
+            }
 
             if (fill != null)
-                renderTarget.FillRectangle(rectangle, fill);           
+            {
+                renderTarget.FillRectangle(rectangle, fill);
+            }        
         }
 
         public bool CheckBounds(RectangleF viewport)

@@ -19,11 +19,12 @@ using System.Windows.Media.Imaging;
 
 namespace OxyPlot.SharpDX.WPF
 {
-    [TemplatePart(Name = PartPlotImage, Type = typeof(PlotImage))]
+    /// <summary>
+    /// Represents a control that displays a <see cref="PlotModel" /> using SharpDX based renderer.
+    /// </summary>
+    [TemplatePart(Name = PartPlotImage, Type = typeof(PlotImage))]    
     public class PlotView : Control, IPlotView
     {
-
-
         static PlotView()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(PlotView), new FrameworkPropertyMetadata(typeof(PlotView)));
@@ -32,7 +33,6 @@ namespace OxyPlot.SharpDX.WPF
          //   global::SharpDX.Configuration.EnableReleaseOnFinalizer EnableObjectTracking = true;
 #endif
         }
-
 
         /// <summary>
         /// Identifies the <see cref="Controller"/> dependency property.
@@ -71,24 +71,18 @@ namespace OxyPlot.SharpDX.WPF
         public static readonly DependencyProperty ZoomRectangleTemplateProperty =
             DependencyProperty.Register(
                 "ZoomRectangleTemplate", typeof(ControlTemplate), typeof(PlotView), new PropertyMetadata(null));
-
-
-
+        
         /// <summary>
         /// Identifies the <see cref="PlotHeight"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PlotHeightProperty =
             DependencyProperty.Register("PlotHeight", typeof(double), typeof(PlotView), new PropertyMetadata(double.NaN));
-
-
-
+        
         /// <summary>
         /// Identifies the <see cref="PlotWidth"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PlotWidthProperty =
             DependencyProperty.Register("PlotWidth", typeof(double), typeof(PlotView), new PropertyMetadata(double.NaN));
-
-
 
         /// <summary>
         /// The mouse down point.
@@ -119,15 +113,11 @@ namespace OxyPlot.SharpDX.WPF
         /// The current tracker.
         /// </summary>
         private FrameworkElement currentTracker;
-
    
         /// <summary>
         /// The default controller.
         /// </summary>
         private IPlotController defaultController;
-
-
-
 
         /// <summary>
         /// The zoom control.
@@ -139,9 +129,6 @@ namespace OxyPlot.SharpDX.WPF
         /// </summary>
         private PlotImage _plotImage;
 
-
-
-
         /// <summary>
         /// Gets or sets the plot height
         /// </summary>
@@ -150,10 +137,7 @@ namespace OxyPlot.SharpDX.WPF
             get { return (double)GetValue(PlotHeightProperty); }
             set { SetValue(PlotHeightProperty, value); }
         }
-
-      
-
-
+        
         /// <summary>
         /// Gets or sets the plot width
         /// </summary>
@@ -161,14 +145,7 @@ namespace OxyPlot.SharpDX.WPF
         {
             get { return (double)GetValue(PlotWidthProperty); }
             set { SetValue(PlotWidthProperty, value); }
-        }
-
-   
-
-
-
-
-
+        }        
 
         /// <summary>
         /// Gets or sets the PlotView controller.
@@ -189,7 +166,6 @@ namespace OxyPlot.SharpDX.WPF
             {
                 return (ControlTemplate)this.GetValue(DefaultTrackerTemplateProperty);
             }
-
             set
             {
                 this.SetValue(DefaultTrackerTemplateProperty, value);
@@ -205,7 +181,6 @@ namespace OxyPlot.SharpDX.WPF
             {
                 return (bool)this.GetValue(HandleRightClicksProperty);
             }
-
             set
             {
                 this.SetValue(HandleRightClicksProperty, value);
@@ -221,7 +196,6 @@ namespace OxyPlot.SharpDX.WPF
             {
                 return (bool)this.GetValue(IsMouseWheelEnabledProperty);
             }
-
             set
             {
                 this.SetValue(IsMouseWheelEnabledProperty, value);
@@ -238,7 +212,6 @@ namespace OxyPlot.SharpDX.WPF
             {
                 return (PlotModel)this.GetValue(ModelProperty);
             }
-
             set
             {
                 this.SetValue(ModelProperty, value);
@@ -255,7 +228,6 @@ namespace OxyPlot.SharpDX.WPF
             {
                 return (ControlTemplate)this.GetValue(ZoomRectangleTemplateProperty);
             }
-
             set
             {
                 this.SetValue(ZoomRectangleTemplateProperty, value);
@@ -345,10 +317,6 @@ namespace OxyPlot.SharpDX.WPF
             this.DefaultStyleKey = typeof(PlotView);
 
             this.trackerDefinitions = new ObservableCollection<TrackerDefinition>();
-
-            //this.SizeChanged += OnSizeChanged;
-            //this.Loaded += OnLoaded;
-           
         }
 
 
@@ -386,24 +354,19 @@ namespace OxyPlot.SharpDX.WPF
             {
                 _plotImage.PlotModel = this.ActualModel;
 
-
                 if (Interlocked.Exchange(ref _invalidated, 1) == 1)
+                {
                     return;
+                }
 
                 this.Dispatcher.InvokeAsync(() =>
                 {
                     
                     _plotImage.Invalidate();
                     _invalidated = 0;
-                }, System.Windows.Threading.DispatcherPriority.Background);
-    
-                   
+                }, System.Windows.Threading.DispatcherPriority.Background);  
             }
         }
-
-      
-      
-
 
         /// <summary>
         /// Sets the cursor.
@@ -411,8 +374,6 @@ namespace OxyPlot.SharpDX.WPF
         /// <param name="cursor">The cursor.</param>
         public void SetCursorType(CursorType cursor)
         {
-          
-
             var type = Cursors.Arrow;
             switch (cursor)
             {
@@ -433,8 +394,7 @@ namespace OxyPlot.SharpDX.WPF
                     break;
             }
 
-            Mouse.OverrideCursor = type;
-           
+            Mouse.OverrideCursor = type;           
         }
 
         /// <summary>
@@ -500,11 +460,6 @@ namespace OxyPlot.SharpDX.WPF
         public WriteableBitmap ToBitmap()
         {
             throw new NotImplementedException();
-
-            // var bmp = new RenderTargetBitmap(
-            // (int)this.ActualWidth, (int)this.ActualHeight, 96, 96, PixelFormats.Pbgra32);
-            // bmp.Render(this);
-            // return bmp;
         }
 
         /// <summary>
@@ -516,9 +471,6 @@ namespace OxyPlot.SharpDX.WPF
             Clipboard.SetText(text);
         }
 
-
-
-
         /// <summary>
         /// Invoked whenever application code or internal processes (such as a rebuilding layout pass) call ApplyTemplate. In simplest terms, this means the method is called just before a UI element displays in your app. Override this method to influence the default post-template logic of a class.
         /// </summary>
@@ -527,20 +479,15 @@ namespace OxyPlot.SharpDX.WPF
             base.OnApplyTemplate();
 
             if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
+            {
                 return;
+            }
 
-            this._plotImage= this.GetTemplateChild(PartPlotImage) as PlotImage;
-                    
+            this._plotImage = this.GetTemplateChild(PartPlotImage) as PlotImage;
 
-
-       
             this.zoomRectangle = new ContentControl();
             this._plotImage.Overlay.Children.Add(this.zoomRectangle);
-
-            
         }
-
-     
 
         /// <summary>
         /// Called when the control is loaded.
@@ -561,8 +508,7 @@ namespace OxyPlot.SharpDX.WPF
         {
             this.InvalidatePlot(false);
         }
-
-        
+                
         /// <summary>
         /// Called when the model is changed.
         /// </summary>
@@ -586,8 +532,6 @@ namespace OxyPlot.SharpDX.WPF
             this.InvalidatePlot();
         }
 
-
-
         /// <summary>
         /// Updates the model.
         /// </summary>
@@ -599,32 +543,7 @@ namespace OxyPlot.SharpDX.WPF
                 ((IPlotModel)this.ActualModel).Update(update);
             }
         }
-
-      
-      
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        
         /// <summary>
         /// Called before the <see cref="E:System.Windows.UIElement.KeyDown" /> event occurs.
         /// </summary>
@@ -667,8 +586,6 @@ namespace OxyPlot.SharpDX.WPF
             {
                 return;
             }
-            
-            
 
             e.Handled = this.ActualController.HandleTouchDelta(this, e.ToTouchEventArgs(this, _plotImage, _plotImage.Offset));
         }
@@ -806,10 +723,7 @@ namespace OxyPlot.SharpDX.WPF
 
             e.Handled = this.ActualController.HandleMouseLeave(this, e.ToMouseEventArgs(this, _plotImage.Offset));
         }
-
-
-
-
+                
         /// <summary>
         /// Called when the <see cref="Model" /> property is changed.
         /// </summary>
@@ -819,9 +733,7 @@ namespace OxyPlot.SharpDX.WPF
         {
             ((PlotView)sender).OnModelChanged();
         }
-
-
-        
+                
         /// <summary>
         /// Invokes the specified action on the UI Thread (without blocking the calling thread).
         /// </summary>
@@ -829,8 +741,6 @@ namespace OxyPlot.SharpDX.WPF
         private void BeginInvoke(Action action)
         {
             this.Dispatcher.InvokeAsync(action, System.Windows.Threading.DispatcherPriority.Background);
-            
-        
         }
     }
 }

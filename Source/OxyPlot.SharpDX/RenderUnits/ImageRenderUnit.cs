@@ -16,7 +16,6 @@ namespace OxyPlot.SharpDX
         float opacity;
         BitmapInterpolationMode mode;
 
-
         public ImageRenderUnit(Bitmap bitmap,
                 RectangleF src,
                 RectangleF dest,
@@ -28,7 +27,6 @@ namespace OxyPlot.SharpDX
             this.dest = dest;
             this.opacity = opacity;
             this.mode = mode;
-
         }
 
         public void Dispose()
