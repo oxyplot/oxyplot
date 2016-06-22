@@ -7,13 +7,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Globalization;
-using System.Windows.Data;
-using System.Windows.Media;
-
 namespace OxyPlot.SharpDX.WPF
 {
+    using System;
+    using System.Globalization;
+    using System.Windows.Data;
+    using System.Windows.Media;
+
     /// <summary>
     /// Converts from OxyPlot colors to Windows.UI.Color and vice versa.
     /// </summary>

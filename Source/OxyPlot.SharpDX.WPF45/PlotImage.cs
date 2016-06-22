@@ -1,42 +1,45 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using D3D11Device = SharpDX.Direct3D11.Device;
-using DXGIResource = SharpDX.DXGI.Resource;
-
-using D3D9Device = SharpDX.Direct3D9.DeviceEx;
-using Direct3D = SharpDX.Direct3D9.Direct3DEx;
-using D3D9DeviceType = SharpDX.Direct3D9.DeviceType;
-using D3D9CreateFlags = SharpDX.Direct3D9.CreateFlags;
-using D3D9PresentParameters = SharpDX.Direct3D9.PresentParameters;
-using D3D9PresentInterval = SharpDX.Direct3D9.PresentInterval;
-using D3D9SwapEffect = SharpDX.Direct3D9.SwapEffect;
-
-using RenderTarget = SharpDX.Direct2D1.RenderTarget;
-using RenderTargetProperties = SharpDX.Direct2D1.RenderTargetProperties;
-using PixelFormat = SharpDX.Direct2D1.PixelFormat;
-using AlphaMode = SharpDX.Direct2D1.AlphaMode;
-
-using SharpDX.DXGI;
-using SharpDX.Direct3D11;
-using SharpDX.Direct3D;
-using SharpDX;
-using OxyPlot.SharpDX;
-using System.Windows.Interop;
-using System.Windows;
-using System.Windows.Media;
-using System.Windows.Controls;
-using System.Windows.Media.Imaging;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="PlotImage.cs" company="OxyPlot">
+//   Copyright (c) 2014 OxyPlot contributors
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.SharpDX.WPF
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Interop;
+    using System.Windows.Media;
+    using System.Windows.Media.Imaging;
+    using OxyPlot.SharpDX;
+    using global::SharpDX;
+    using global::SharpDX.Direct3D;
+    using global::SharpDX.Direct3D11;
+    using global::SharpDX.DXGI;
+    using AlphaMode = global::SharpDX.Direct2D1.AlphaMode;
+    using D3D11Device = global::SharpDX.Direct3D11.Device;
+    using D3D9CreateFlags = global::SharpDX.Direct3D9.CreateFlags;
+    using D3D9Device = global::SharpDX.Direct3D9.DeviceEx;
+    using D3D9DeviceType = global::SharpDX.Direct3D9.DeviceType;
+    using D3D9PresentInterval = global::SharpDX.Direct3D9.PresentInterval;
+    using D3D9PresentParameters = global::SharpDX.Direct3D9.PresentParameters;
+    using D3D9SwapEffect = global::SharpDX.Direct3D9.SwapEffect;
+    using Direct3D = global::SharpDX.Direct3D9.Direct3DEx;
+    using DXGIResource = global::SharpDX.DXGI.Resource;
+    using PixelFormat = global::SharpDX.Direct2D1.PixelFormat;
+    using RenderTarget = global::SharpDX.Direct2D1.RenderTarget;
+    using RenderTargetProperties = global::SharpDX.Direct2D1.RenderTargetProperties;
+
     /// <summary>
     /// Control, that renders Plot using SharpDX renderer, renders Tracker using WPF controls.
     /// Adds scrolling support.
     /// </summary>
-    public class PlotImage: FrameworkElement, System.Windows.Controls.Primitives.IScrollInfo
+    public class PlotImage : FrameworkElement, System.Windows.Controls.Primitives.IScrollInfo
     {
         /// <summary>
         /// DependencyProperty as the backing store for PlotWidth
@@ -56,57 +59,223 @@ namespace OxyPlot.SharpDX.WPF
         public static readonly DependencyProperty PlotModelProperty =
             DependencyProperty.Register(nameof(PlotModel), typeof(IPlotModel), typeof(PlotImage), new PropertyMetadata(null));
 
-        //stolen from scrollviewer MS source code
+        // stolen from scrollviewer MS source code
 
         // Scrolling physical "line" metrics.
-        internal const double _scrollLineDelta = 16.0;   // Default physical amount to scroll with one Up/Down/Left/Right key
-        internal const double _mouseWheelDelta = 48.0;   // Default physical amount to scroll with one MouseWheel.
 
-        D3D11Device _d3d11Device;
-        D3D9Device _d3d9Device;       
-        RenderTarget _renderTarget;
+        /// <summary>
+        /// The scroll line delta.
+        /// </summary>
+        internal const double ScrollLineDelta = 16.0;   // Default physical amount to scroll with one Up/Down/Left/Right key
 
-        CacherRenderContext _oxyRenderContext;
-        D3D11Image _imageSource;
+        /// <summary>
+        /// The mouse wheel delta/
+        /// </summary>
+        internal const double MouseWheelDelta = 48.0;   // Default physical amount to scroll with one MouseWheel.
 
-        TranslateTransform _overlayTransform;
+        /// <summary>
+        /// The Direct3D11 device.
+        /// </summary>
+        private D3D11Device d3d11Device;
 
-        Size _extent;
-        Size _viewport;
-        Vector _offset;
+        /// <summary>
+        /// The Direct3D9 device.
+        /// </summary>
+        private D3D9Device d3d9Device;
 
-        BitmapImage _designModeImage;
+        /// <summary>
+        /// The render target.
+        /// </summary>
+        private RenderTarget renderTarget;
 
-        internal System.Windows.Controls.Canvas Overlay
+        /// <summary>
+        /// The oxy render target.
+        /// </summary>
+        private CacherRenderContext oxyRenderContext;
+
+        /// <summary>
+        /// The image source.
+        /// </summary>
+        private D3D11Image imageSource;
+
+        /// <summary>
+        /// The overlay transform.
+        /// </summary>
+        private TranslateTransform overlayTransform;
+
+        /// <summary>
+        /// The extent.
+        /// </summary>
+        private Size extent;
+
+        /// <summary>
+        /// The viewport.
+        /// </summary>
+        private Size viewport;
+
+        /// <summary>
+        /// The offset vector.
+        /// </summary>
+        private Vector offset;
+
+        /// <summary>
+        /// The placeholder image for design time.
+        /// </summary>
+        private BitmapImage designModeImage;
+
+        /// <summary>
+        ///  Initializes a new instance of the <see cref = "PlotImage" /> class.
+        /// </summary>
+        public PlotImage()
         {
-            get; private set;
+            this.oxyRenderContext = new CacherRenderContext();
+            this.overlayTransform = new TranslateTransform();
+            this.Overlay = new System.Windows.Controls.Canvas
+            {
+                RenderTransform = this.overlayTransform,
+            };
+
+            this.AddVisualChild(this.Overlay);
+            this.AddLogicalChild(this.Overlay);
+
+            this.Loaded += (s, e) => this.Dispatcher.Invoke(this.InvalidateVisual, System.Windows.Threading.DispatcherPriority.Background);
+            this.Unloaded += (s, e) => this.OnUnloaded();
         }
 
         /// <summary>
-        /// The Plot Model
+        /// Gets or sets  the plot model.
         /// </summary>
         public IPlotModel PlotModel
         {
             get { return (IPlotModel)GetValue(PlotModelProperty); }
-            set { SetValue(PlotModelProperty, value); }
+            set { this.SetValue(PlotModelProperty, value); }
         }
 
         /// <summary>
-        /// The Plot Heigth
+        /// Gets or sets the plot height.
         /// </summary>
         public double PlotHeight
         {
             get { return (double)GetValue(PlotHeightProperty); }
-            set { SetValue(PlotHeightProperty, value); }
+            set { this.SetValue(PlotHeightProperty, value); }
         }
 
         /// <summary>
-        /// The Plot Width
+        /// Gets or sets the plot width.
         /// </summary>
         public double PlotWidth
         {
             get { return (double)GetValue(PlotWidthProperty); }
-            set { SetValue(PlotWidthProperty, value); }
+            set { this.SetValue(PlotWidthProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether scrolling on the vertical axis is possible.
+        /// </summary>
+        public bool CanVerticallyScroll
+        {
+            get; set;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether scrolling on the vertical axis is possible.
+        /// </summary>
+        public bool CanHorizontallyScroll
+        {
+            get; set;
+        }
+
+        /// <summary>
+        /// Gets the horizontal size of the extent.
+        /// </summary>
+        public double ExtentWidth
+        {
+            get
+            {
+                return this.extent.Width;
+            }
+        }
+
+        /// <summary>
+        /// Gets the vertical size of the extent.
+        /// </summary>
+        public double ExtentHeight
+        {
+            get
+            {
+                return this.extent.Height;
+            }
+        }
+
+        /// <summary>
+        /// Gets the horizontal size of the viewport for this content.
+        /// </summary>
+        public double ViewportWidth
+        {
+            get
+            {
+                return this.viewport.Width;
+            }
+        }
+
+        /// <summary>
+        /// Gets the vertical size of the viewport for this content.
+        /// </summary>
+        public double ViewportHeight
+        {
+            get
+            {
+                return this.viewport.Height;
+            }
+        }
+
+        /// <summary>
+        /// Gets the horizontal offset of the scrolled content.
+        /// </summary>
+        public double HorizontalOffset
+        {
+            get
+            {
+                return this.offset.X;
+            }
+        }
+
+        /// <summary>
+        /// Gets the vertical offset of the scrolled content.
+        /// </summary>
+        public double VerticalOffset
+        {
+            get
+            {
+                return this.offset.Y;
+            }
+        }
+
+        /// <summary>
+        ///  Gets the offset vector of the scrolled content.
+        /// </summary>
+        public Vector Offset
+        {
+            get
+            {
+                return this.offset;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a System.Windows.Controls.ScrollViewer element that controls scrolling behavior.
+        /// </summary>
+        public ScrollViewer ScrollOwner
+        {
+            get; set;
+        }
+
+        /// <summary>
+        /// Gets the overlay canvas.
+        /// </summary>
+        internal System.Windows.Controls.Canvas Overlay
+        {
+            get; private set;
         }
 
         /// <summary>
@@ -121,127 +290,208 @@ namespace OxyPlot.SharpDX.WPF
         }
 
         /// <summary>
-        /// Gets or sets a value that indicates whether scrolling on the vertical axis is possible.
+        /// Renders <see cref="PlotModel"/> to <see cref="D3D11Image"/> surface.
         /// </summary>
-        public bool CanVerticallyScroll
+        /// <param name="invalidateSurface">Indicates whether on not surface should be recreated.</param>
+        /// <param name="invalidateUnits">Indicates whether on not render units should be recreated.</param>
+        public void Render(bool invalidateSurface, bool invalidateUnits)
         {
-            get; set;
-        }
-
-        /// <summary>
-        /// Gets or sets a value that indicates whether scrolling on the vertical axis is possible.
-        /// </summary>
-        public bool CanHorizontallyScroll
-        {
-            get; set;
-        }
-
-        /// <summary>
-        /// Gets the horizontal size of the extent.
-        /// </summary>
-        public double ExtentWidth
-        {
-            get
+            if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
             {
-                return _extent.Width;
+                return;
             }
-        }
 
-        /// <summary>
-        /// Gets the vertical size of the extent.
-        /// </summary>
-        public double ExtentHeight
-        {
-            get
+            if (!this.IsLoaded)
             {
-                return _extent.Height;
+                return;
             }
-        }
 
-        /// <summary>
-        /// Gets the horizontal size of the viewport for this content.
-        /// </summary>
-        public double ViewportWidth
-        {
-            get
+            if (invalidateSurface || this.renderTarget == null)
             {
-                return _viewport.Width;
+                this.CleanResources();
+                this.InitRendering();
+
+                invalidateUnits = true;
             }
-        }
 
-        /// <summary>
-        /// Gets the vertical size of the viewport for this content.
-        /// </summary>
-        public double ViewportHeight
-        {
-            get
+            if (this.PlotModel == null)
             {
-                return _viewport.Height;
+                return;
             }
-        }
 
-        /// <summary>
-        /// Gets the horizontal offset of the scrolled content.
-        /// </summary>
-        public double HorizontalOffset
-        {
-            get
+            if (invalidateUnits)
             {
-                return _offset.X;
+                this.oxyRenderContext.ResetRenderUnits();
+
+                // Creates renderUnits that can be rendered later
+                this.PlotModel.Render(this.oxyRenderContext, this.extent.Width, this.extent.Height);
             }
-        }
 
-        /// <summary>
-        /// Gets the vertical offset of the scrolled content.
-        /// </summary>
-        public double VerticalOffset
-        {
-            get
+            var backColor = OxyColors.White;
+            if (!this.PlotModel.Background.IsUndefined())
             {
-                return _offset.Y;
+                backColor = this.PlotModel.Background;
             }
-        }
 
-        /// <summary>
-        ///  Gets the offset vector of the scrolled content.
-        /// </summary>
-        public Vector Offset
-        {
-            get
+            this.renderTarget.BeginDraw();
+            this.renderTarget.Clear(backColor.ToDXColor());
+            this.oxyRenderContext.Render(new RectangleF((float)this.offset.X, (float)this.offset.Y, (float)this.viewport.Width, (float)this.viewport.Height)); // TODO: add clip rectangle
+            this.renderTarget.EndDraw();
+
+            this.d3d11Device.ImmediateContext.Flush();
+
+            this.imageSource.Lock();
+            this.imageSource.AddDirtyRect(new Int32Rect()
             {
-                return _offset;
-            }
+                X = 0,
+                Y = 0,
+                Height = this.imageSource.PixelHeight,
+                Width = this.imageSource.PixelWidth
+            });
+            this.imageSource.Unlock();
         }
 
         /// <summary>
-        /// Gets or sets a System.Windows.Controls.ScrollViewer element that controls scrolling behavior.
+        /// Scrolls up within content by one logical unit.
         /// </summary>
-        public ScrollViewer ScrollOwner
+        public void LineUp()
         {
-            get; set;
+            this.AddOffset(0, -ScrollLineDelta);
         }
 
         /// <summary>
-        /// The default constructor
+        /// Scrolls down within content by one logical unit.
         /// </summary>
-        public PlotImage()
+        public void LineDown()
         {
-            _oxyRenderContext = new CacherRenderContext();
-            _overlayTransform = new TranslateTransform();
-            Overlay = new System.Windows.Controls.Canvas
-            {
-                RenderTransform = _overlayTransform,
-            };
-
-            this.AddVisualChild(Overlay);
-            this.AddLogicalChild(Overlay);
-
-            this.Loaded += (s, e) => Dispatcher.Invoke(InvalidateVisual, System.Windows.Threading.DispatcherPriority.Background);
-            this.Unloaded += (s, e) => OnUnloaded();
+            this.AddOffset(0, ScrollLineDelta);
         }
-               
+
         /// <summary>
-        /// Overrides System.Windows.Media.Visual.GetVisualChild(System.Int32), and returns a child at the specified index from a collection of child elements.
+        /// Scrolls left within content by one logical unit.
+        /// </summary>
+        public void LineLeft()
+        {
+            this.AddOffset(-ScrollLineDelta, 0);
+        }
+
+        /// <summary>
+        /// Scrolls right within content by one logical unit.
+        /// </summary>
+        public void LineRight()
+        {
+            this.AddOffset(ScrollLineDelta, 0);
+        }
+
+        /// <summary>
+        /// Scrolls up within content by one page.
+        /// </summary>
+        public void PageUp()
+        {
+            this.AddOffset(0, -this.viewport.Height);
+        }
+
+        /// <summary>
+        /// Scrolls down within content by one page.
+        /// </summary>
+        public void PageDown()
+        {
+            this.AddOffset(0, this.viewport.Height);
+        }
+
+        /// <summary>
+        /// Scrolls left within content by one page.
+        /// </summary>
+        public void PageLeft()
+        {
+            this.AddOffset(-this.viewport.Height, 0);
+        }
+
+        /// <summary>
+        /// Scrolls right within content by one page.
+        /// </summary>
+        public void PageRight()
+        {
+            this.AddOffset(this.viewport.Height, 0);
+        }
+
+        /// <summary>
+        /// Scrolls up within content after a user clicks the wheel button on a mouse.
+        /// </summary>
+        public void MouseWheelUp()
+        {
+            this.AddOffset(0, -MouseWheelDelta);
+        }
+
+        /// <summary>
+        /// Scrolls down within content after a user clicks the wheel button on a mouse.
+        /// </summary>
+        public void MouseWheelDown()
+        {
+            this.AddOffset(0, MouseWheelDelta);
+        }
+
+        /// <summary>
+        /// Scrolls left within content after a user clicks the wheel button on a mouse.
+        /// </summary>
+        public void MouseWheelLeft()
+        {
+            this.AddOffset(-MouseWheelDelta, 0);
+        }
+
+        /// <summary>
+        /// Scrolls right within content after a user clicks the wheel button on a mouse.
+        /// </summary>
+        public void MouseWheelRight()
+        {
+            this.AddOffset(MouseWheelDelta, 0);
+        }
+
+        /// <summary>
+        /// Sets the amount of horizontal offset.
+        /// </summary>
+        /// <param name="offset">The degree to which content is horizontally offset from the containing viewport.</param>
+        public void SetHorizontalOffset(double offset)
+        {
+            this.offset.X = offset;
+            this.InvalidateVisual();
+        }
+
+        /// <summary>
+        /// Sets the amount of vertical offset.
+        /// </summary>
+        /// <param name="offset">The degree to which content is vertically offset from the containing viewport.</param>
+        public void SetVerticalOffset(double offset)
+        {
+            this.offset.Y = offset;
+            this.InvalidateVisual();
+        }
+
+        /// <summary>
+        /// Forces content to scroll until the coordinate space of a System.Windows.Media.Visual
+        /// object is visible.
+        /// </summary>
+        /// <param name="visual">A System.Windows.Media.Visual that becomes visible.</param>
+        /// <param name="rectangle">A bounding rectangle that identifies the coordinate space to make visible.</param>
+        /// <returns>A <see cref="System.Windows.Rect"/> that is visible.</returns>
+        public Rect MakeVisible(Visual visual, Rect rectangle)
+        {
+            return rectangle;
+
+            // TODO: implement this????????
+        }
+
+        /// <summary>
+        /// Invalidates <see cref="PlotImage"/> current instance.
+        /// </summary>
+        internal void Invalidate()
+        {
+            this.Render(false, true);
+            this.InvalidateVisual();
+        }
+
+        /// <summary>
+        /// Overrides System.Windows.Media.Visual.GetVisualChild(<see cref="int"/>), and returns a child at the specified index from a collection of child elements.
         /// </summary>
         /// <param name="index">The zero-based index of the requested child element in the collection.</param>
         /// <returns>The requested child element. This should not return null; if the provided index is out of range, an exception is thrown.</returns>
@@ -251,9 +501,10 @@ namespace OxyPlot.SharpDX.WPF
             {
                 throw new ArgumentOutOfRangeException(nameof(index));
             }
+
             return this.Overlay;
         }
-       
+
         /// <summary>
         /// When overridden in a derived class, participates in rendering operations that
         /// are directed by the layout system. The rendering instructions for this element
@@ -266,23 +517,23 @@ namespace OxyPlot.SharpDX.WPF
             base.OnRender(drawingContext);
             if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
             {
-                if (_designModeImage == null)
+                if (this.designModeImage == null)
                 {
-                   var stream= System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("OxyPlot.SharpDX.WPF.Resources.designmode.png");
-                    
-                    _designModeImage = new BitmapImage();
-                    
-                    _designModeImage.BeginInit();
-                    _designModeImage.StreamSource = stream;
-                    _designModeImage.EndInit();
+                    var stream = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("OxyPlot.SharpDX.WPF.Resources.designmode.png");
+
+                    this.designModeImage = new BitmapImage();
+
+                    this.designModeImage.BeginInit();
+                    this.designModeImage.StreamSource = stream;
+                    this.designModeImage.EndInit();
                 }
 
-                drawingContext.DrawImage(_designModeImage, new Rect(0, 0, this.ActualWidth, this.ActualHeight));
+                drawingContext.DrawImage(this.designModeImage, new Rect(0, 0, this.ActualWidth, this.ActualHeight));
             }
 
-            if (_imageSource != null)
+            if (this.imageSource != null)
             {
-                drawingContext.DrawImage(_imageSource, new Rect(0, 0, _imageSource.Width, _imageSource.Height));
+                drawingContext.DrawImage(this.imageSource, new Rect(0, 0, this.imageSource.Width, this.imageSource.Height));
             }
         }
 
@@ -302,26 +553,26 @@ namespace OxyPlot.SharpDX.WPF
             double desiredHeight;
             double desiredWidth;
 
-            if (!double.IsNaN(PlotHeight))
+            if (!double.IsNaN(this.PlotHeight))
             {
-                _extent.Height = PlotHeight;
-                desiredHeight = Math.Min(PlotHeight, availableSize.Height);
+                this.extent.Height = this.PlotHeight;
+                desiredHeight = Math.Min(this.PlotHeight, availableSize.Height);
             }
             else
             {
-                _extent.Height = !double.IsInfinity(availableSize.Height) ? availableSize.Height : 1;
-                desiredHeight = _extent.Height;
+                this.extent.Height = !double.IsInfinity(availableSize.Height) ? availableSize.Height : 1;
+                desiredHeight = this.extent.Height;
             }
-            
-            if (!double.IsNaN(PlotWidth))
+
+            if (!double.IsNaN(this.PlotWidth))
             {
-                _extent.Width = PlotWidth;
-                desiredWidth = Math.Min(PlotWidth, availableSize.Width);
+                this.extent.Width = this.PlotWidth;
+                desiredWidth = Math.Min(this.PlotWidth, availableSize.Width);
             }
             else
             {
-                _extent.Width = !double.IsInfinity(availableSize.Width) ? availableSize.Width : 1;
-                desiredWidth = _extent.Width;
+                this.extent.Width = !double.IsInfinity(availableSize.Width) ? availableSize.Width : 1;
+                desiredWidth = this.extent.Width;
             }
 
             var desired = new Size(desiredWidth, desiredHeight);
@@ -331,6 +582,7 @@ namespace OxyPlot.SharpDX.WPF
             {
                 this.ScrollOwner.InvalidateScrollInfo();
             }
+
             return desired;
         }
 
@@ -345,349 +597,173 @@ namespace OxyPlot.SharpDX.WPF
         /// <returns>The actual size used.</returns>
         protected override Size ArrangeOverride(Size finalSize)
         {
-            var overlaySize = _extent;
+            var overlaySize = this.extent;
 
-            if (!CanVerticallyScroll)
+            if (!this.CanVerticallyScroll)
             {
                 overlaySize.Height = finalSize.Height;
-                _offset.Y = 0;
+                this.offset.Y = 0;
             }
             else
             {
-                this._overlayTransform.Y = -_offset.Y;
+                this.overlayTransform.Y = -this.offset.Y;
             }
 
-            if (!CanHorizontallyScroll)
+            if (!this.CanHorizontallyScroll)
             {
                 overlaySize.Width = finalSize.Width;
-                _offset.X = 0;
+                this.offset.X = 0;
             }
             else
             {
-                this._overlayTransform.X = -_offset.X;
+                this.overlayTransform.X = -this.offset.X;
             }
 
             this.Overlay.Arrange(new Rect(overlaySize));
 
-            bool sizeChanged = _viewport != finalSize;
+            bool sizeChanged = this.viewport != finalSize;
 
-            _viewport =finalSize;
+            this.viewport = finalSize;
 
             if (this.ScrollOwner != null)
             {
                 this.ScrollOwner.InvalidateScrollInfo();
             }
 
-            Render(sizeChanged, false);
+            this.Render(sizeChanged, false);
 
             return finalSize;
         }
 
-        void InitRendering()
-        {           
+        /// <summary>
+        /// Initializes DirectX rendering resources.
+        /// </summary>
+        private void InitRendering()
+        {
             double dpiScale = 1.0; // default value for 96 dpi
-         
+
             var hwndTarget = PresentationSource.FromVisual(this).CompositionTarget as HwndTarget;
             if (hwndTarget != null)
             {
                 dpiScale = hwndTarget.TransformToDevice.M11;
             }
 
-            int surfWidth = (int)(_viewport.Width < 0 ? 0 : Math.Ceiling(_viewport.Width * dpiScale));
-            int surfHeight = (int)(_viewport.Height < 0 ? 0 : Math.Ceiling(_viewport.Height * dpiScale));
+            int surfWidth = (int)(this.viewport.Width < 0 ? 0 : Math.Ceiling(this.viewport.Width * dpiScale));
+            int surfHeight = (int)(this.viewport.Height < 0 ? 0 : Math.Ceiling(this.viewport.Height * dpiScale));
 
             var windowHandle = (new System.Windows.Interop.WindowInteropHelper(System.Windows.Window.GetWindow(this))).Handle;
 
-            _d3d11Device = new D3D11Device(
-                DriverType.Hardware, 
+            this.d3d11Device = new D3D11Device(
+                DriverType.Hardware,
                 DeviceCreationFlags.BgraSupport,
-                FeatureLevel.Level_11_0, 
+                FeatureLevel.Level_11_0,
                 FeatureLevel.Level_10_1,
                 FeatureLevel.Level_10_0,
                 FeatureLevel.Level_9_3,
                 FeatureLevel.Level_9_2,
                 FeatureLevel.Level_9_1);
 
-            var backBuffer = new Texture2D(_d3d11Device, new Texture2DDescription
-            {
-                Height = surfHeight,
-                Width = surfWidth,
-                ArraySize = 1,
-                MipLevels = 1,
+            var backBuffer = new Texture2D(
+                this.d3d11Device, 
+                new Texture2DDescription
+                {
+                    Height = surfHeight,
+                    Width = surfWidth,
+                    ArraySize = 1,
+                    MipLevels = 1,
+                    Format = Format.B8G8R8A8_UNorm,
+                    SampleDescription = { Count = 1, Quality = 0 },
+                    Usage = ResourceUsage.Default,
+                    OptionFlags = ResourceOptionFlags.Shared,
+                    BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
+                    CpuAccessFlags = 0
+                });
 
-                Format = Format.B8G8R8A8_UNorm,
-                SampleDescription = { Count = 1, Quality = 0 },
-                Usage = ResourceUsage.Default,
-                OptionFlags = ResourceOptionFlags.Shared,
-                BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
-                CpuAccessFlags = 0
-            });
-            
             var surface = backBuffer.QueryInterface<Surface>();
-            _renderTarget = new RenderTarget(_oxyRenderContext.D2DFactory, surface,
-                                                            new RenderTargetProperties(new PixelFormat(Format.Unknown, AlphaMode.Premultiplied)));
-            _d3d9Device = new D3D9Device(
+            this.renderTarget = new RenderTarget(
+                this.oxyRenderContext.D2DFactory, 
+                surface,
+                new RenderTargetProperties(new PixelFormat(Format.Unknown, AlphaMode.Premultiplied)));
+
+            this.d3d9Device = new D3D9Device(
                 new Direct3D(),
-                0, 
+                0,
                 D3D9DeviceType.Hardware,
                 windowHandle,
-                D3D9CreateFlags.HardwareVertexProcessing | D3D9CreateFlags.Multithreaded |D3D9CreateFlags.FpuPreserve,
-                new D3D9PresentParameters(surfWidth, surfHeight) {
+                D3D9CreateFlags.HardwareVertexProcessing | D3D9CreateFlags.Multithreaded | D3D9CreateFlags.FpuPreserve,
+                new D3D9PresentParameters(surfWidth, surfHeight)
+                {
                     PresentationInterval = D3D9PresentInterval.Immediate,
                     DeviceWindowHandle = windowHandle,
                     SwapEffect = D3D9SwapEffect.Discard,
                     Windowed = true
                 });
-            
-            _imageSource = new D3D11Image(_d3d9Device, backBuffer);
 
-            _oxyRenderContext.ResetRenderTarget(_renderTarget);
+            this.imageSource = new D3D11Image(this.d3d9Device, backBuffer);
+
+            this.oxyRenderContext.ResetRenderTarget(this.renderTarget);
         }
 
-        void CleanResources()
+        /// <summary>
+        /// Free used resources.
+        /// </summary>
+        private void CleanResources()
         {
-            _oxyRenderContext.ResetRenderTarget(null);
+            this.oxyRenderContext.ResetRenderTarget(null);
 
-            _d3d11Device?.ImmediateContext.ClearState();
-            _d3d11Device?.ImmediateContext.Flush();
+            this.d3d11Device?.ImmediateContext.ClearState();
+            this.d3d11Device?.ImmediateContext.Flush();
 
-            _imageSource?.Dispose();
-            _d3d9Device?.Dispose();
-            _renderTarget?.Dispose();
-            _d3d11Device?.Dispose();
+            this.imageSource?.Dispose();
+            this.d3d9Device?.Dispose();
+            this.renderTarget?.Dispose();
+            this.d3d11Device?.Dispose();
 
-            _imageSource = null;
-            _d3d9Device = null;
-            _renderTarget = null;
-            _d3d11Device = null;
+            this.imageSource = null;
+            this.d3d9Device = null;
+            this.renderTarget = null;
+            this.d3d11Device = null;
         }
 
-        void Render(bool invalidateSurface, bool invalidateUnits)
+        /// <summary>
+        /// Called when control unloaded.
+        /// </summary>
+        private void OnUnloaded()
         {
-            if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
-            {
-                return;
-            }
-            if (!this.IsLoaded)
-            {
-                return;
-            }
-
-            if (invalidateSurface || _renderTarget == null)
-            {
-                CleanResources();
-                InitRendering();
-
-                invalidateUnits = true;
-            }
-
-            if (this.PlotModel == null)
-            {
-                return;
-            }
-
-            if (invalidateUnits)
-            {
-                _oxyRenderContext.ResetRenderUnits();
-
-                //Creates renderUnits that can be rendered later
-                this.PlotModel.Render(this._oxyRenderContext, this._extent.Width, this._extent.Height);
-            }
-
-
-            var backColor = OxyColors.White;
-            if (!this.PlotModel.Background.IsUndefined())
-            {
-                backColor = this.PlotModel.Background;
-            }
-
-
-            _renderTarget.BeginDraw();
-            _renderTarget.Clear(backColor.ToDXColor());
-            _oxyRenderContext.Render(new RectangleF((float)_offset.X, (float)_offset.Y, (float)_viewport.Width, (float)_viewport.Height));//todo: add clip rectangle
-            _renderTarget.EndDraw();
-
-            _d3d11Device.ImmediateContext.Flush();
-            
-            _imageSource.Lock();
-            _imageSource.AddDirtyRect(new Int32Rect()
-            {
-                X = 0,
-                Y = 0,
-                Height = _imageSource.PixelHeight,
-                Width = _imageSource.PixelWidth
-            });
-            _imageSource.Unlock();
+            this.CleanResources();
         }
 
-        internal void Invalidate()
+        /// <summary>
+        /// Changes offset by <paramref name="deltaX"/>, <paramref name="deltaY"/> vector.
+        /// </summary>
+        /// <param name="deltaX">The X axis delta.</param>
+        /// <param name="deltaY">The Y axis delta.</param>
+        private void AddOffset(double deltaX, double deltaY)
         {
-            Render(false, true);
-            InvalidateVisual();
-        }
-                
-        void OnUnloaded()
-        {
-            CleanResources();
-        }
-        
-        void AddOffset(double deltaX, double deltaY)
-        {
-            this._offset.X += deltaX;
-            this._offset.Y += deltaY;
+            this.offset.X += deltaX;
+            this.offset.Y += deltaY;
 
-            if (this._offset.X < 0)
+            if (this.offset.X < 0)
             {
-                this._offset.X = 0;
+                this.offset.X = 0;
             }
 
-            if (this._offset.X + _viewport.Width > _extent.Width)
+            if (this.offset.X + this.viewport.Width > this.extent.Width)
             {
-                this._offset.X = Math.Max(0, _extent.Width - _viewport.Width);
+                this.offset.X = Math.Max(0, this.extent.Width - this.viewport.Width);
             }
 
-            if (this._offset.Y < 0)
+            if (this.offset.Y < 0)
             {
-                this._offset.Y = 0;
+                this.offset.Y = 0;
             }
 
-            if (this._offset.Y + _viewport.Height > _extent.Height)
+            if (this.offset.Y + this.viewport.Height > this.extent.Height)
             {
-                this._offset.Y = Math.Max(0, _extent.Height - _viewport.Height);
+                this.offset.Y = Math.Max(0, this.extent.Height - this.viewport.Height);
             }
 
             this.InvalidateVisual();
-        }
-
-        //Scroll Info implementation
-
-        /// <summary>
-        /// Scrolls up within content by one logical unit.
-        /// </summary>
-        public void LineUp()
-        {
-            AddOffset(0, -_scrollLineDelta);
-        }
-
-        /// <summary>
-        /// Scrolls down within content by one logical unit.
-        /// </summary>
-        public void LineDown()
-        {
-            AddOffset(0, _scrollLineDelta);
-        }
-
-        /// <summary>
-        /// Scrolls left within content by one logical unit.
-        /// </summary>
-        public void LineLeft()
-        {
-            AddOffset(-_scrollLineDelta, 0);
-        }
-
-        /// <summary>
-        /// Scrolls right within content by one logical unit.
-        /// </summary>
-        public void LineRight()
-        {
-            AddOffset(_scrollLineDelta, 0);
-        }
-
-        /// <summary>
-        /// Scrolls up within content by one page.
-        /// </summary>
-        public void PageUp()
-        {
-            AddOffset(0, -_viewport.Height);
-        }
-
-        /// <summary>
-        /// Scrolls down within content by one page.
-        /// </summary>
-        public void PageDown()
-        {
-            AddOffset(0, _viewport.Height);
-        }
-
-        /// <summary>
-        /// Scrolls left within content by one page.
-        /// </summary>
-        public void PageLeft()
-        {
-            AddOffset(-_viewport.Height,0);
-        }
-
-        /// <summary>
-        /// Scrolls right within content by one page.
-        /// </summary>
-        public void PageRight()
-        {
-            AddOffset(_viewport.Height, 0);
-        }
-
-        /// <summary>
-        /// Scrolls up within content after a user clicks the wheel button on a mouse.
-        /// </summary>
-        public void MouseWheelUp()
-        {
-            AddOffset(0,-_mouseWheelDelta);
-        }
-
-        /// <summary>
-        /// Scrolls down within content after a user clicks the wheel button on a mouse.
-        /// </summary>
-        public void MouseWheelDown()
-        {
-            AddOffset(0, _mouseWheelDelta);
-        }
-
-        /// <summary>
-        /// Scrolls left within content after a user clicks the wheel button on a mouse.
-        /// </summary>
-        public void MouseWheelLeft()
-        {
-            AddOffset(-_mouseWheelDelta, 0);
-        }
-
-        /// <summary>
-        /// Scrolls right within content after a user clicks the wheel button on a mouse.
-        /// </summary>
-        public void MouseWheelRight()
-        {
-            AddOffset(_mouseWheelDelta, 0);
-        }
-
-        /// <summary>
-        /// Sets the amount of horizontal offset.
-        /// </summary>
-        /// <param name="offset">The degree to which content is horizontally offset from the containing viewport.</param>
-        public void SetHorizontalOffset(double offset)
-        {
-            this._offset.X = offset;
-            this.InvalidateVisual();
-        }
-
-        /// <summary>
-        /// Sets the amount of vertical offset.
-        /// </summary>
-        /// <param name="offset">The degree to which content is vertically offset from the containing viewport.</param>
-        public void SetVerticalOffset(double offset)
-        {
-            this._offset.Y = offset;
-            this.InvalidateVisual();
-        }
-
-        /// <summary>
-        /// Forces content to scroll until the coordinate space of a System.Windows.Media.Visual
-        /// object is visible.
-        /// </summary>
-        /// <param name="visual">A System.Windows.Media.Visual that becomes visible.</param>
-        /// <param name="rectangle">A bounding rectangle that identifies the coordinate space to make visible.</param>
-        /// <returns>A System.Windows.Rect that is visible.</returns>
-        public Rect MakeVisible(Visual visual, Rect rectangle)
-        {
-            return rectangle;
-            //TODO: implement this????????
-        }
+        } 
     }
 }

@@ -7,13 +7,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Globalization;
-using System.Windows;
-using System.Windows.Data;
-
 namespace OxyPlot.SharpDX.WPF
-{    
+{
+    using System;
+    using System.Globalization;
+    using System.Windows;
+    using System.Windows.Data;
+
     /// <summary>
     /// Converts Thickness to double.
     /// </summary>

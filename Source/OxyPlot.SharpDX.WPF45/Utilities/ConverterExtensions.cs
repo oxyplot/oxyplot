@@ -6,23 +6,28 @@
 //   Extension method used to convert to/from Windows/Windows.Media classes.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-using System;
-using System.Windows;
-using System.Windows.Input;
-using System.Windows.Media;
-
-using HorizontalAlignment = OxyPlot.HorizontalAlignment;
-using VerticalAlignment = OxyPlot.VerticalAlignment;
-using Color4 = SharpDX.Color4;
-using DXColor = SharpDX.Color;
 
 namespace OxyPlot.SharpDX.WPF
 {
+    using System;
+    using System.Windows;
+    using System.Windows.Input;
+    using System.Windows.Media;
+    using Color4 = global::SharpDX.Color4;
+    using DXColor = global::SharpDX.Color;
+    using HorizontalAlignment = OxyPlot.HorizontalAlignment;
+    using VerticalAlignment = OxyPlot.VerticalAlignment;
+
     /// <summary>
     /// Extension method used to convert to/from Windows/Windows.Media classes.
     /// </summary>
     public static class ConverterExtensions
     {
+        /// <summary>
+        /// Byte to float converting coefficient.
+        /// </summary>
+        private static readonly float ByteToFloat = 1f / 255f;
+
         /// <summary>
         /// Calculate the distance between two points.
         /// </summary>
@@ -55,7 +60,6 @@ namespace OxyPlot.SharpDX.WPF
         {
             return Color.FromArgb(c.A, c.R, c.G, c.B);
         }
-        static readonly float ByteToFloat = 1f / 255f;
 
         /// <summary>
         ///  Converts an <see cref="OxyColor" /> to a <see cref="Color4" />.
@@ -74,7 +78,7 @@ namespace OxyPlot.SharpDX.WPF
         /// <returns>A Color.</returns>
         public static DXColor ToDXColor(this OxyColor c)
         {
-            return new DXColor(c.R , c.G , c.B , c.A);
+            return new DXColor(c.R, c.G, c.B, c.A);
         }
 
         /// <summary>
@@ -410,7 +414,7 @@ namespace OxyPlot.SharpDX.WPF
         {
             return new OxyMouseWheelEventArgs
             {
-                Position = (e.GetPosition(relativeTo)+offset).ToScreenPoint(),
+                Position = (e.GetPosition(relativeTo) + offset).ToScreenPoint(),
                 ModifierKeys = Keyboard.GetModifierKeys(),
                 Delta = e.Delta
             };
@@ -429,7 +433,7 @@ namespace OxyPlot.SharpDX.WPF
             {
                 ChangedButton = e.ChangedButton.Convert(),
                 ClickCount = e.ClickCount,
-                Position = (e.GetPosition(relativeTo)+offset).ToScreenPoint(),
+                Position = (e.GetPosition(relativeTo) + offset).ToScreenPoint(),
                 ModifierKeys = Keyboard.GetModifierKeys()
             };
         }
@@ -445,7 +449,7 @@ namespace OxyPlot.SharpDX.WPF
         {
             return new OxyMouseEventArgs
             {
-                Position =( e.GetPosition(relativeTo)+offset).ToScreenPoint(),
+                Position = (e.GetPosition(relativeTo) + offset).ToScreenPoint(),
                 ModifierKeys = Keyboard.GetModifierKeys()
             };
         }
@@ -461,7 +465,7 @@ namespace OxyPlot.SharpDX.WPF
         {
             return new OxyMouseEventArgs
             {
-                Position = (e.GetPosition(relativeTo)+offset).ToScreenPoint(),
+                Position = (e.GetPosition(relativeTo) + offset).ToScreenPoint(),
                 ModifierKeys = Keyboard.GetModifierKeys()
             };
         }
@@ -490,13 +494,12 @@ namespace OxyPlot.SharpDX.WPF
         /// <param name="relativeTo">The <see cref="UIElement" /> that the event is relative to.</param>
         /// <param name="offset">The <see cref="Vector" /> offset that event is relative to.</param>
         /// <returns>A <see cref="OxyMouseEventArgs" /> containing the converted event arguments.</returns>
-        public static OxyTouchEventArgs ToTouchEventArgs(this ManipulationDeltaEventArgs e,FrameworkElement source, FrameworkElement relativeTo, Vector offset)
+        public static OxyTouchEventArgs ToTouchEventArgs(this ManipulationDeltaEventArgs e, FrameworkElement source, FrameworkElement relativeTo, Vector offset)
         {
-            //TODO: does relativeTo rotation affects delta?
-                     
+            // TODO: does relativeTo rotation affects delta?
             return new OxyTouchEventArgs
             {
-                Position = (source.TranslatePoint(e.ManipulationOrigin, relativeTo)+offset).ToScreenPoint(),
+                Position = (source.TranslatePoint(e.ManipulationOrigin, relativeTo) + offset).ToScreenPoint(),
                 DeltaTranslation = e.DeltaManipulation.Translation.ToScreenVector(),
                 DeltaScale = e.DeltaManipulation.Scale.ToScreenVector()
             };
