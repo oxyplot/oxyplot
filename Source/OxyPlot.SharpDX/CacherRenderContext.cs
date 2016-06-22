@@ -52,7 +52,7 @@ namespace OxyPlot.SharpDX
         /// <summary>
         /// The DirectWrite factory
         /// </summary>
-        private DWFactory dwFactory;
+        private DWFactory dwtFactory;
 
         /// <summary>
         /// The WIC factory
@@ -85,7 +85,7 @@ namespace OxyPlot.SharpDX
         public CacherRenderContext()
         {
             this.d2dFactory = new D2DFactory();
-            this.dwFactory = new DWFactory();
+            this.dwtFactory = new DWFactory();
             this.wicFactory = new WICFactory();
             this.RendersToScreen = true;
         }
@@ -117,6 +117,7 @@ namespace OxyPlot.SharpDX
             {
                 return this.d2dFactory;
             }
+
             set
             {
                 this.d2dFactory = value;
@@ -363,7 +364,7 @@ namespace OxyPlot.SharpDX
                 text = string.Empty;
             }
 
-            var format = new TextFormat(this.dwFactory, fontFamily, GetFontWeight(fontWeight), FontStyle.Normal, FontStretch.Normal, (float)fontSize);
+            var format = new TextFormat(this.dwtFactory, fontFamily, GetFontWeight(fontWeight), FontStyle.Normal, FontStretch.Normal, (float)fontSize);
             var maxWidth = 1000f;
             var maxHeight = 1000f;
             if (maxSize != null)
@@ -372,7 +373,7 @@ namespace OxyPlot.SharpDX
                 maxWidth = (float)maxSize.Value.Width;
             }
 
-            var layout = new TextLayout(this.dwFactory, text, format, maxWidth, maxHeight);
+            var layout = new TextLayout(this.dwtFactory, text, format, maxWidth, maxHeight);
 
             var size = new Size2F(layout.Metrics.Width, layout.Metrics.Height);
             if (maxSize != null)
@@ -410,7 +411,7 @@ namespace OxyPlot.SharpDX
                 dy = -size.Height;
             }
 
-            this.renderUnits.Add(new TextRenderUnit(layout, GetBrush(fill), Matrix3x2.Translation(dx, dy) * Matrix3x2.Rotation((float)rotate) * Matrix3x2.Translation(p.ToVector2())));
+            this.renderUnits.Add(new TextRenderUnit(layout, this.GetBrush(fill), Matrix3x2.Translation(dx, dy) * Matrix3x2.Rotation((float)rotate) * Matrix3x2.Translation(p.ToVector2())));
             format.Dispose();
         }
 
@@ -425,13 +426,18 @@ namespace OxyPlot.SharpDX
         public OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
         {
             if (string.IsNullOrWhiteSpace(fontFamily))
+            {
                 fontFamily = "Arial";
+            }
+
             if (text == null)
+            {
                 text = string.Empty;
+            }
 
-            var format = new TextFormat(dwFactory, fontFamily, GetFontWeight(fontWeight), FontStyle.Normal, FontStretch.Normal, (float)fontSize);
+            var format = new TextFormat(this.dwtFactory, fontFamily, GetFontWeight(fontWeight), FontStyle.Normal, FontStretch.Normal, (float)fontSize);
 
-            var layout = new TextLayout(dwFactory, text, format, 1000f, 1000f);
+            var layout = new TextLayout(this.dwtFactory, text, format, 1000f, 1000f);
             var res = new OxySize(layout.Metrics.Width, layout.Metrics.Height);
 
             format.Dispose();
@@ -483,11 +489,13 @@ namespace OxyPlot.SharpDX
             
             var bmp = this.GetBitmap(source);
 
-            this.renderUnits.Add(new ImageRenderUnit(bmp,
-                new RectangleF((float)srcX, (float)srcY, (float)srcWidth, (float)srcHeight),
-                new RectangleF((float)destX, (float)destY, (float)destWidth, (float)destHeight),
-                 (float)opacity,
-                 interpolate ? BitmapInterpolationMode.Linear : BitmapInterpolationMode.NearestNeighbor));
+            this.renderUnits.Add(
+                new ImageRenderUnit(
+                    bmp,
+                    new RectangleF((float)srcX, (float)srcY, (float)srcWidth, (float)srcHeight),
+                    new RectangleF((float)destX, (float)destY, (float)destWidth, (float)destHeight),
+                    (float)opacity,
+                    interpolate ? BitmapInterpolationMode.Linear : BitmapInterpolationMode.NearestNeighbor));
         }
 
         /// <summary>
@@ -505,8 +513,7 @@ namespace OxyPlot.SharpDX
         /// Resets the clipping rectangle.
         /// </summary>
         public void ResetClip()
-        {
-            //this.clip = false;
+        {            
         }
 
         /// <summary>
@@ -528,43 +535,34 @@ namespace OxyPlot.SharpDX
         }
         
         /// <summary>
-        /// Gets the font weight.
-        /// </summary>
-        /// <param name="fontWeight">The font weight.</param>
-        /// <returns>A <see cref="FontWeight" /></returns>
-        private static FontWeight GetFontWeight(double fontWeight)
-        {
-            return fontWeight > (int)FontWeight.Normal ? FontWeight.Bold : FontWeight.Normal;
-        }
-        
-        /// <summary>
         /// On changing renderTarget (on resize for example), this method should be called.
         /// Clears invalid for new renderTarget resources (like brushes).
         /// </summary>
-        /// <param name="renderTarget"></param>
+        /// <param name="renderTarget">The render target.</param>
         public void ResetRenderTarget(RenderTarget renderTarget)
         {
-            ResetRenderUnits();
+            this.ResetRenderUnits();
 
             if (this.renderTarget == renderTarget)
             {
                 return;
             }
 
-            foreach (var brush in brushCache.Values)
+            foreach (var brush in this.brushCache.Values)
             {
                 brush.Dispose();
             }
-            brushCache.Clear();
 
-            foreach (var image in imageCache.Values)
+            this.brushCache.Clear();
+
+            foreach (var image in this.imageCache.Values)
             {
                 image.Dispose();
             }
 
-            imageCache.Clear();
+            this.imageCache.Clear();
 
-            imagesInUse.Clear();
+            this.imagesInUse.Clear();
 
             this.renderTarget = renderTarget;          
         }
@@ -579,26 +577,28 @@ namespace OxyPlot.SharpDX
             {
                 unit.Dispose();
             }
-            renderUnits.Clear();
 
+            this.renderUnits.Clear();
         }
-        
+
         /// <summary>
         /// Renders cached render units.
         /// This method should be called on redraw required
         /// </summary>
+        /// <param name="viewport">The viewport.</param>
         public void Render(RectangleF viewport)
         {
             if (this.renderTarget == null)
             {
                 return;
             }
-            var original = renderTarget.Transform;
 
-            renderTarget.Transform = original * Matrix3x2.Translation(-viewport.X,- viewport.Y);
+            var original = this.renderTarget.Transform;
 
-            //TODO: can be optimized to use something like quad-tree
-            //https://en.wikipedia.org/wiki/Quadtree
+            this.renderTarget.Transform = original * Matrix3x2.Translation(-viewport.X, -viewport.Y);
+
+            // TODO: can be optimized to use something like quad-tree
+            // https://en.wikipedia.org/wiki/Quadtree
             foreach (var unit in this.renderUnits)
             {
                 if (unit.CheckBounds(viewport))
@@ -607,34 +607,103 @@ namespace OxyPlot.SharpDX
                 }
             }
 
-            renderTarget.Transform = original;
+            this.renderTarget.Transform = original;
         }
-        
-        StrokeStyle GetStroke(double[] dashArray, OxyPlot.LineJoin lineJoin)
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting
+        /// unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            foreach (var item in this.brushCache.Values)
+            {
+                item.Dispose();
+            }
+
+            foreach (var item in this.imageCache.Values)
+            {
+                item.Dispose();
+            }
+
+            this.imageCache.Clear();
+            this.brushCache.Clear();
+            if (this.renderTarget != null)
+            {
+                this.renderTarget.Dispose();
+            }
+
+            foreach (var unit in this.renderUnits)
+            {
+                unit.Dispose();
+            }
+
+            this.renderUnits.Clear();
+
+            // d2dFactory.Dispose();
+            this.dwtFactory.Dispose();
+            this.wicFactory.Dispose();
+
+            this.renderTarget = null;
+            this.d2dFactory = null;
+            this.dwtFactory = null;
+            this.wicFactory = null;
+        }
+
+        /// <summary>
+        /// Gets the font weight.
+        /// </summary>
+        /// <param name="fontWeight">The font weight.</param>
+        /// <returns>A <see cref="FontWeight" /></returns>
+        private static FontWeight GetFontWeight(double fontWeight)
+        {
+            return fontWeight > (int)FontWeight.Normal ? FontWeight.Bold : FontWeight.Normal;
+        }
+
+        /// <summary>
+        /// Gets the stroke.
+        /// </summary>
+        /// <param name="dashArray">The dashes array.</param>
+        /// <param name="lineJoin">The line join type.</param>
+        /// <returns>Returns stroke stroke style.</returns>
+        private StrokeStyle GetStroke(double[] dashArray, OxyPlot.LineJoin lineJoin)
         {
             if (dashArray == null)
             {
-                return new StrokeStyle(d2dFactory, new StrokeStyleProperties { LineJoin = lineJoin.ToDXLineJoin() });
+                return new StrokeStyle(this.d2dFactory, new StrokeStyleProperties { LineJoin = lineJoin.ToDXLineJoin() });
             }
-            return new StrokeStyle(d2dFactory, new StrokeStyleProperties { LineJoin = lineJoin.ToDXLineJoin(), DashStyle = DashStyle.Custom }, dashArray.Select(x => (float)x).ToArray());
+
+            return new StrokeStyle(this.d2dFactory, new StrokeStyleProperties { LineJoin = lineJoin.ToDXLineJoin(), DashStyle = DashStyle.Custom }, dashArray.Select(x => (float)x).ToArray());
         }
-        
-        Brush GetBrush(OxyColor color)
+
+        /// <summary>
+        /// Get the brush with <paramref name="color"/> color.
+        /// </summary>
+        /// <param name="color">The color.</param>
+        /// <returns>Return the brush.</returns>
+        private Brush GetBrush(OxyColor color)
         {
             if (!color.IsVisible())
             {
                 return null;
             }
+
             Brush brush;
             if (!this.brushCache.TryGetValue(color, out brush))
             {
-                brush = new SolidColorBrush(renderTarget, color.ToDXColor());
+                brush = new SolidColorBrush(this.renderTarget, color.ToDXColor());
                 this.brushCache.Add(color, brush);
             }
 
             return brush;
         }
-        Bitmap GetBitmap(OxyImage image)
+
+        /// <summary>
+        /// Gets bitmap.
+        /// </summary>
+        /// <param name="image">The image.</param>
+        /// <returns>Returns bitmap.</returns>
+        private Bitmap GetBitmap(OxyImage image)
         {
             if (image == null)
             {
@@ -649,53 +718,16 @@ namespace OxyPlot.SharpDX
             Bitmap res;
             using (var stream = new MemoryStream(image.GetData()))
             {
-
-                var decoder = new BitmapDecoder(wicFactory, stream, DecodeOptions.CacheOnDemand);
+                var decoder = new BitmapDecoder(this.wicFactory, stream, DecodeOptions.CacheOnDemand);
                 var frame = decoder.GetFrame(0);
-                var converter = new FormatConverter(wicFactory);
+                var converter = new FormatConverter(this.wicFactory);
                 converter.Initialize(frame, dx.WIC.PixelFormat.Format32bppPRGBA);
 
-                res = Bitmap.FromWicBitmap(renderTarget, converter);
+                res = Bitmap.FromWicBitmap(this.renderTarget, converter);
             }
+
             this.imageCache.Add(image, res);
             return res;
-        }
-
-
-
-        public void Dispose()
-        {
-            foreach (var item in brushCache.Values)
-            {
-                item.Dispose();
-            }
-
-            foreach (var item in imageCache.Values)
-            {
-                item.Dispose();
-            }
-
-            imageCache.Clear();
-            brushCache.Clear();
-            if (renderTarget != null)
-            {
-                renderTarget.Dispose();
-            }
-
-            foreach (var unit in renderUnits)
-            {
-                unit.Dispose();
-            }
-            renderUnits.Clear();
-
-            // d2dFactory.Dispose();
-            dwFactory.Dispose();
-            wicFactory.Dispose();
-
-            renderTarget = null;
-            d2dFactory = null;
-            dwFactory = null;
-            wicFactory = null;
         }
     }
 }
