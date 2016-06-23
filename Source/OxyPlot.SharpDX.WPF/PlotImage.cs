@@ -4,7 +4,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace OxyPlot.SharpDX.WPF
+namespace OxyPlot.SharpDX.Wpf
 {
     using System;
     using System.Collections.Generic;
@@ -519,7 +519,7 @@ namespace OxyPlot.SharpDX.WPF
             {
                 if (this.designModeImage == null)
                 {
-                    var stream = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("OxyPlot.SharpDX.WPF.Resources.designmode.png");
+                    var stream = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("OxyPlot.SharpDX.Wpf.Resources.designmode.png");
 
                     this.designModeImage = new BitmapImage();
 

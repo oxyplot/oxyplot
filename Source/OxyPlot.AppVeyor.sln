@@ -55,7 +55,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Windows10", "OxyPlo
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "OxyPlot.SharpDX", "OxyPlot.SharpDX\OxyPlot.SharpDX.shproj", "{455376C6-4146-497C-BF77-61CBB67F5DF9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.SharpDX.WPF", "OxyPlot.SharpDX.WPF\OxyPlot.SharpDX.WPF.csproj", "{92129D21-61E9-4952-AB75-6E5B27C8D3F7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.SharpDX.Wpf", "OxyPlot.SharpDX.Wpf\OxyPlot.SharpDX.Wpf.csproj", "{92129D21-61E9-4952-AB75-6E5B27C8D3F7}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution

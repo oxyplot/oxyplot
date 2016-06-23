@@ -7,8 +7,8 @@
     <ProjectGuid>{92129D21-61E9-4952-AB75-6E5B27C8D3F7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OxyPlot.SharpDX.WPF</RootNamespace>
-    <AssemblyName>OxyPlot.SharpDX.WPF</AssemblyName>
+    <RootNamespace>OxyPlot.SharpDX.Wpf</RootNamespace>
+    <AssemblyName>OxyPlot.SharpDX.Wpf</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -31,14 +31,14 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\Output\NET45\OxyPlot.SharpDX.WPF.XML</DocumentationFile>
+    <DocumentationFile>..\..\Output\NET45\OxyPlot.SharpDX.Wpf.XML</DocumentationFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>OxyPlot.SharpDX.WPF.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>OxyPlot.SharpDX.Wpf.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationCore" />
@@ -91,7 +91,7 @@
     <Compile Include="Utilities\Keyboard.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="OxyPlot.SharpDX.WPF.snk" />
+    <None Include="OxyPlot.SharpDX.Wpf.snk" />
     <Resource Include="packages.config">
       <SubType>Designer</SubType>
     </Resource>

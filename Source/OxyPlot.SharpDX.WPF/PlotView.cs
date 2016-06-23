@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot.SharpDX.WPF
+namespace OxyPlot.SharpDX.Wpf
 {
     using System;
     using System.Collections.Generic;

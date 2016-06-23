@@ -107,9 +107,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\OxyPlot.SharpDX.WPF\OxyPlot.SharpDX.WPF.csproj">
+    <ProjectReference Include="..\..\..\OxyPlot.SharpDX.Wpf\OxyPlot.SharpDX.Wpf.csproj">
       <Project>{92129d21-61e9-4952-ab75-6e5b27c8d3f7}</Project>
-      <Name>OxyPlot.SharpDX.WPF</Name>
+      <Name>OxyPlot.SharpDX.Wpf</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\OxyPlot\OxyPlot.csproj">
       <Project>{7a0b35c0-dd17-4964-8e9a-44d6cecdc692}</Project>

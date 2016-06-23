@@ -17,7 +17,7 @@ using System.Windows.Markup;
 [assembly: CLSCompliant(true)]
 
 [assembly: XmlnsPrefix("http://oxyplot.org/sharpdx/wpf", "oxydx")]
-[assembly: XmlnsDefinition("http://oxyplot.org/sharpdx/wpf", "OxyPlot.SharpDX.WPF")]
+[assembly: XmlnsDefinition("http://oxyplot.org/sharpdx/wpf", "OxyPlot.SharpDX.Wpf")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
