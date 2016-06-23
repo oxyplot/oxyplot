@@ -1,39 +1,33 @@
-﻿
-using SharpDX.Direct3D;
-using SharpDX.Direct3D11;
-using SharpDX.DXGI;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Interop;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-
-
-namespace OxyPlot.SharpDX.WPF
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="PlotView.cs" company="OxyPlot">
+//   Copyright (c) 2014 OxyPlot contributors
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+namespace OxyPlot.SharpDX.Wpf
 {
-    [TemplatePart(Name = PartPlotImage, Type = typeof(PlotImage))]
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Linq;
+    using System.Text;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Input;
+    using System.Windows.Interop;
+    using System.Windows.Media;
+    using System.Windows.Media.Imaging;
+    using global::SharpDX.Direct3D;
+    using global::SharpDX.Direct3D11;
+    using global::SharpDX.DXGI;
+
+    /// <summary>
+    /// Represents a control that displays a <see cref="PlotModel" /> using SharpDX based renderer.
+    /// </summary>
+    [TemplatePart(Name = PartPlotImage, Type = typeof(PlotImage))]    
     public class PlotView : Control, IPlotView
     {
-
-
-        static PlotView()
-        {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(PlotView), new FrameworkPropertyMetadata(typeof(PlotView)));
-            global::SharpDX.Configuration.EnableReleaseOnFinalizer = true;
-#if DEBUG
-         //   global::SharpDX.Configuration.EnableReleaseOnFinalizer EnableObjectTracking = true;
-#endif
-        }
-
-
         /// <summary>
         /// Identifies the <see cref="Controller"/> dependency property.
         /// </summary>
@@ -71,29 +65,18 @@ namespace OxyPlot.SharpDX.WPF
         public static readonly DependencyProperty ZoomRectangleTemplateProperty =
             DependencyProperty.Register(
                 "ZoomRectangleTemplate", typeof(ControlTemplate), typeof(PlotView), new PropertyMetadata(null));
-
-
-
+        
         /// <summary>
         /// Identifies the <see cref="PlotHeight"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PlotHeightProperty =
             DependencyProperty.Register("PlotHeight", typeof(double), typeof(PlotView), new PropertyMetadata(double.NaN));
-
-
-
+        
         /// <summary>
         /// Identifies the <see cref="PlotWidth"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PlotWidthProperty =
             DependencyProperty.Register("PlotWidth", typeof(double), typeof(PlotView), new PropertyMetadata(double.NaN));
-
-
-
-        /// <summary>
-        /// The mouse down point.
-        /// </summary>
-        private ScreenPoint mouseDownPoint;
 
         /// <summary>
         /// The Grid PART constant.
@@ -111,6 +94,11 @@ namespace OxyPlot.SharpDX.WPF
         private readonly ObservableCollection<TrackerDefinition> trackerDefinitions;
 
         /// <summary>
+        /// The mouse down point.
+        /// </summary>
+        private ScreenPoint mouseDownPoint;
+
+        /// <summary>
         /// The current model.
         /// </summary>
         private PlotModel currentModel;
@@ -119,15 +107,11 @@ namespace OxyPlot.SharpDX.WPF
         /// The current tracker.
         /// </summary>
         private FrameworkElement currentTracker;
-
    
         /// <summary>
         /// The default controller.
         /// </summary>
         private IPlotController defaultController;
-
-
-
 
         /// <summary>
         /// The zoom control.
@@ -137,10 +121,34 @@ namespace OxyPlot.SharpDX.WPF
         /// <summary>
         /// Plot DirectX rendering goes here
         /// </summary>
-        private PlotImage _plotImage;
+        private PlotImage plotImage;
 
+        /// <summary>
+        /// Invalidate count.
+        /// </summary>
+        private int invalidated = 0;
 
+        /// <summary>
+        /// Initializes static members of the <see cref="PlotView"/> class.
+        /// </summary>
+        static PlotView()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(PlotView), new FrameworkPropertyMetadata(typeof(PlotView)));
+            global::SharpDX.Configuration.EnableReleaseOnFinalizer = true;
+#if DEBUG
+         //   global::SharpDX.Configuration.EnableReleaseOnFinalizer EnableObjectTracking = true;
+#endif
+        }
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref = "PlotView" /> class.
+        /// </summary>
+        public PlotView()
+        {
+            this.DefaultStyleKey = typeof(PlotView);
 
+            this.trackerDefinitions = new ObservableCollection<TrackerDefinition>();
+        }
 
         /// <summary>
         /// Gets or sets the plot height
@@ -148,11 +156,8 @@ namespace OxyPlot.SharpDX.WPF
         public double PlotHeight
         {
             get { return (double)GetValue(PlotHeightProperty); }
-            set { SetValue(PlotHeightProperty, value); }
+            set { this.SetValue(PlotHeightProperty, value); }
         }
-
-      
-
 
         /// <summary>
         /// Gets or sets the plot width
@@ -160,15 +165,8 @@ namespace OxyPlot.SharpDX.WPF
         public double PlotWidth
         {
             get { return (double)GetValue(PlotWidthProperty); }
-            set { SetValue(PlotWidthProperty, value); }
+            set { this.SetValue(PlotWidthProperty, value); }
         }
-
-   
-
-
-
-
-
 
         /// <summary>
         /// Gets or sets the PlotView controller.
@@ -338,29 +336,13 @@ namespace OxyPlot.SharpDX.WPF
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref = "PlotView" /> class.
-        /// </summary>
-        public PlotView()
-        {
-            this.DefaultStyleKey = typeof(PlotView);
-
-            this.trackerDefinitions = new ObservableCollection<TrackerDefinition>();
-
-            //this.SizeChanged += OnSizeChanged;
-            //this.Loaded += OnLoaded;
-           
-        }
-
-
-
-        /// <summary>
         /// Hides the tracker.
         /// </summary>
         public void HideTracker()
         {
             if (this.currentTracker != null)
             {
-                this._plotImage.Overlay.Children.Remove(this.currentTracker);
+                this.plotImage.Overlay.Children.Remove(this.currentTracker);
                 this.currentTracker = null;
             }
         }
@@ -373,8 +355,6 @@ namespace OxyPlot.SharpDX.WPF
             this.zoomRectangle.Visibility = Visibility.Collapsed;
         }
 
-        int _invalidated = 0;
-
         /// <summary>
         /// Invalidate the PlotView (not blocking the UI thread)
         /// </summary>
@@ -382,59 +362,52 @@ namespace OxyPlot.SharpDX.WPF
         public void InvalidatePlot(bool update = true)
         {
             this.UpdateModel(update);
-            if (_plotImage != null)
+            if (this.plotImage != null)
             {
-                _plotImage.PlotModel = this.ActualModel;
+                this.plotImage.PlotModel = this.ActualModel;
 
-
-                if (Interlocked.Exchange(ref _invalidated, 1) == 1)
-                    return;
-
-                this.Dispatcher.InvokeAsync(() =>
+                if (Interlocked.Exchange(ref this.invalidated, 1) == 1)
                 {
-                    
-                    _plotImage.Invalidate();
-                    _invalidated = 0;
-                }, System.Windows.Threading.DispatcherPriority.Background);
-    
-                   
+                    return;
+                }
+
+                this.Dispatcher.InvokeAsync(
+                    () =>
+                    {
+                        this.plotImage.Invalidate();
+                        this.invalidated = 0;
+                    },
+                    System.Windows.Threading.DispatcherPriority.Background);
             }
         }
-
-      
-      
-
 
         /// <summary>
         /// Sets the cursor.
         /// </summary>
         /// <param name="cursor">The cursor.</param>
-        public void SetCursorType(CursorType cursor)
+        public void SetCursorType(OxyPlot.CursorType cursor)
         {
-          
-
             var type = Cursors.Arrow;
             switch (cursor)
             {
-                case CursorType.Default:
-                    type = null;//Cursors.Arrow;
+                case OxyPlot.CursorType.Default:
+                    type = null;
                     break;
-                case CursorType.Pan:
+                case OxyPlot.CursorType.Pan:
                     type = Cursors.Hand;
                     break;
-                case CursorType.ZoomHorizontal:
+                case OxyPlot.CursorType.ZoomHorizontal:
                     type = Cursors.SizeWE;
                     break;
-                case CursorType.ZoomVertical:
+                case OxyPlot.CursorType.ZoomVertical:
                     type = Cursors.SizeNS;
                     break;
-                case CursorType.ZoomRectangle:
+                case OxyPlot.CursorType.ZoomRectangle:
                     type = Cursors.SizeNWSE;
                     break;
             }
 
-            Mouse.OverrideCursor = type;
-           
+            Mouse.OverrideCursor = type;           
         }
 
         /// <summary>
@@ -458,6 +431,7 @@ namespace OxyPlot.SharpDX.WPF
                     trackerTemplate = match.TrackerTemplate;
                 }
             }
+
             if (trackerTemplate == null)
             {
                 this.HideTracker();
@@ -469,7 +443,7 @@ namespace OxyPlot.SharpDX.WPF
             if (tracker != this.currentTracker)
             {
                 this.HideTracker();
-                this._plotImage.Overlay.Children.Add(tracker);
+                this.plotImage.Overlay.Children.Add(tracker);
                 this.currentTracker = tracker;
             }
 
@@ -500,11 +474,6 @@ namespace OxyPlot.SharpDX.WPF
         public WriteableBitmap ToBitmap()
         {
             throw new NotImplementedException();
-
-            // var bmp = new RenderTargetBitmap(
-            // (int)this.ActualWidth, (int)this.ActualHeight, 96, 96, PixelFormats.Pbgra32);
-            // bmp.Render(this);
-            // return bmp;
         }
 
         /// <summary>
@@ -516,9 +485,6 @@ namespace OxyPlot.SharpDX.WPF
             Clipboard.SetText(text);
         }
 
-
-
-
         /// <summary>
         /// Invoked whenever application code or internal processes (such as a rebuilding layout pass) call ApplyTemplate. In simplest terms, this means the method is called just before a UI element displays in your app. Override this method to influence the default post-template logic of a class.
         /// </summary>
@@ -527,104 +493,16 @@ namespace OxyPlot.SharpDX.WPF
             base.OnApplyTemplate();
 
             if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
+            {
                 return;
+            }
 
-            this._plotImage= this.GetTemplateChild(PartPlotImage) as PlotImage;
-                    
+            this.plotImage = this.GetTemplateChild(PartPlotImage) as PlotImage;
 
-
-       
             this.zoomRectangle = new ContentControl();
-            this._plotImage.Overlay.Children.Add(this.zoomRectangle);
-
-            
+            this.plotImage.Overlay.Children.Add(this.zoomRectangle);
         }
-
-     
-
-        /// <summary>
-        /// Called when the control is loaded.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="RoutedEventArgs" /> instance containing the event data.</param>
-        private void OnLoaded(object sender, RoutedEventArgs e)
-        {
-            this.InvalidatePlot();
-        }   
-        
-        /// <summary>
-        /// Called when the size of the control is changed.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="SizeChangedEventArgs" /> instance containing the event data.</param>
-        private void OnSizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            this.InvalidatePlot(false);
-        }
-
-        
-        /// <summary>
-        /// Called when the model is changed.
-        /// </summary>
-        private void OnModelChanged()
-        {
-            lock (this.modelLock)
-            {
-                if (this.currentModel != null)
-                {
-                    ((IPlotModel)this.currentModel).AttachPlotView(null);
-                    this.currentModel = null;
-                }
-
-                if (this.Model != null)
-                {
-                    ((IPlotModel)this.Model).AttachPlotView(this);
-                    this.currentModel = this.Model;
-                }
-            }
-
-            this.InvalidatePlot();
-        }
-
-
-
-        /// <summary>
-        /// Updates the model.
-        /// </summary>
-        /// <param name="update">if set to <c>true</c>, the data collections will be updated.</param>
-        private void UpdateModel(bool update)
-        {
-            if (this.ActualModel != null)
-            {
-                ((IPlotModel)this.ActualModel).Update(update);
-            }
-        }
-
-      
-      
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+   
         /// <summary>
         /// Called before the <see cref="E:System.Windows.UIElement.KeyDown" /> event occurs.
         /// </summary>
@@ -653,7 +531,7 @@ namespace OxyPlot.SharpDX.WPF
                 return;
             }
 
-            e.Handled = this.ActualController.HandleTouchStarted(this, e.ToTouchEventArgs(this, _plotImage, _plotImage.Offset));
+            e.Handled = this.ActualController.HandleTouchStarted(this, e.ToTouchEventArgs(this, this.plotImage, this.plotImage.Offset));
         }
 
         /// <summary>
@@ -667,10 +545,8 @@ namespace OxyPlot.SharpDX.WPF
             {
                 return;
             }
-            
-            
 
-            e.Handled = this.ActualController.HandleTouchDelta(this, e.ToTouchEventArgs(this, _plotImage, _plotImage.Offset));
+            e.Handled = this.ActualController.HandleTouchDelta(this, e.ToTouchEventArgs(this, this.plotImage, this.plotImage.Offset));
         }
 
         /// <summary>
@@ -685,7 +561,7 @@ namespace OxyPlot.SharpDX.WPF
                 return;
             }
 
-            e.Handled = this.ActualController.HandleTouchCompleted(this, e.ToTouchEventArgs(this, _plotImage, _plotImage.Offset));
+            e.Handled = this.ActualController.HandleTouchCompleted(this, e.ToTouchEventArgs(this, this.plotImage, this.plotImage.Offset));
         }
 
         /// <summary>
@@ -700,7 +576,7 @@ namespace OxyPlot.SharpDX.WPF
                 return;
             }
 
-            e.Handled = this.ActualController.HandleMouseWheel(this, e.ToMouseWheelEventArgs(this, _plotImage.Offset));
+            e.Handled = this.ActualController.HandleMouseWheel(this, e.ToMouseWheelEventArgs(this, this.plotImage.Offset));
         }
 
         /// <summary>
@@ -721,7 +597,7 @@ namespace OxyPlot.SharpDX.WPF
             // store the mouse down point, check it when mouse button is released to determine if the context menu should be shown
             this.mouseDownPoint = e.GetPosition(this).ToScreenPoint();
 
-            e.Handled = this.ActualController.HandleMouseDown(this, e.ToMouseDownEventArgs(this, _plotImage.Offset));
+            e.Handled = this.ActualController.HandleMouseDown(this, e.ToMouseDownEventArgs(this, this.plotImage.Offset));
         }
 
         /// <summary>
@@ -736,7 +612,7 @@ namespace OxyPlot.SharpDX.WPF
                 return;
             }
 
-            e.Handled = this.ActualController.HandleMouseMove(this, e.ToMouseEventArgs(this, _plotImage.Offset));
+            e.Handled = this.ActualController.HandleMouseMove(this, e.ToMouseEventArgs(this, this.plotImage.Offset));
         }
 
         /// <summary>
@@ -753,7 +629,7 @@ namespace OxyPlot.SharpDX.WPF
 
             this.ReleaseMouseCapture();
 
-            e.Handled = this.ActualController.HandleMouseUp(this, e.ToMouseReleasedEventArgs(this, _plotImage.Offset));
+            e.Handled = this.ActualController.HandleMouseUp(this, e.ToMouseReleasedEventArgs(this, this.plotImage.Offset));
 
             // Open the context menu
             var p = e.GetPosition(this).ToScreenPoint();
@@ -789,7 +665,7 @@ namespace OxyPlot.SharpDX.WPF
                 return;
             }
 
-            e.Handled = this.ActualController.HandleMouseEnter(this, e.ToMouseEventArgs(this, _plotImage.Offset));
+            e.Handled = this.ActualController.HandleMouseEnter(this, e.ToMouseEventArgs(this, this.plotImage.Offset));
         }
 
         /// <summary>
@@ -804,12 +680,9 @@ namespace OxyPlot.SharpDX.WPF
                 return;
             }
 
-            e.Handled = this.ActualController.HandleMouseLeave(this, e.ToMouseEventArgs(this, _plotImage.Offset));
+            e.Handled = this.ActualController.HandleMouseLeave(this, e.ToMouseEventArgs(this, this.plotImage.Offset));
         }
-
-
-
-
+                
         /// <summary>
         /// Called when the <see cref="Model" /> property is changed.
         /// </summary>
@@ -819,9 +692,7 @@ namespace OxyPlot.SharpDX.WPF
         {
             ((PlotView)sender).OnModelChanged();
         }
-
-
-        
+                
         /// <summary>
         /// Invokes the specified action on the UI Thread (without blocking the calling thread).
         /// </summary>
@@ -829,8 +700,61 @@ namespace OxyPlot.SharpDX.WPF
         private void BeginInvoke(Action action)
         {
             this.Dispatcher.InvokeAsync(action, System.Windows.Threading.DispatcherPriority.Background);
-            
-        
+        }
+
+        /// <summary>
+        /// Called when the control is loaded.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs" /> instance containing the event data.</param>
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            this.InvalidatePlot();
+        }
+
+        /// <summary>
+        /// Called when the size of the control is changed.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="SizeChangedEventArgs" /> instance containing the event data.</param>
+        private void OnSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            this.InvalidatePlot(false);
+        }
+
+        /// <summary>
+        /// Called when the model is changed.
+        /// </summary>
+        private void OnModelChanged()
+        {
+            lock (this.modelLock)
+            {
+                if (this.currentModel != null)
+                {
+                    ((IPlotModel)this.currentModel).AttachPlotView(null);
+                    this.currentModel = null;
+                }
+
+                if (this.Model != null)
+                {
+                    ((IPlotModel)this.Model).AttachPlotView(this);
+                    this.currentModel = this.Model;
+                }
+            }
+
+            this.InvalidatePlot();
+        }
+
+        /// <summary>
+        /// Updates the model.
+        /// </summary>
+        /// <param name="update">if set to <c>true</c>, the data collections will be updated.</param>
+        private void UpdateModel(bool update)
+        {
+            if (this.ActualModel != null)
+            {
+                ((IPlotModel)this.ActualModel).Update(update);
+            }
         }
     }
 }

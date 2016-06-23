@@ -18,7 +18,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentat
 		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.SharpDX.WPF45", "OxyPlot.SharpDX.WPF45\OxyPlot.SharpDX.WPF45.csproj", "{92129D21-61E9-4952-AB75-6E5B27C8D3F7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.SharpDX.Wpf", "OxyPlot.SharpDX.Wpf\OxyPlot.SharpDX.Wpf.csproj", "{92129D21-61E9-4952-AB75-6E5B27C8D3F7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.SharpDX.NET45", "OxyPlot.SharpDX.NET45\OxyPlot.SharpDX.NET45.csproj", "{01D15807-3F4F-41BD-AFA3-C82A6098BF4D}"
 EndProject
@@ -31,6 +31,7 @@ EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		OxyPlot.SharpDX\OxyPlot.SharpDX.projitems*{57c7df1a-ad8d-4a56-904f-71b186fba2c2}*SharedItemsImports = 4
+		OxyPlot.SharpDX\OxyPlot.SharpDX.projitems*{92129d21-61e9-4952-ab75-6e5b27c8d3f7}*SharedItemsImports = 4
 		OxyPlot.SharpDX\OxyPlot.SharpDX.projitems*{01d15807-3f4f-41bd-afa3-c82a6098bf4d}*SharedItemsImports = 4
 		OxyPlot.SharpDX\OxyPlot.SharpDX.projitems*{455376c6-4146-497c-bf77-61cbb67f5df9}*SharedItemsImports = 13
 	EndGlobalSection

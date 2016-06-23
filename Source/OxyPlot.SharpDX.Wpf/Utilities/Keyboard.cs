@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace OxyPlot.SharpDX.WPF
+namespace OxyPlot.SharpDX.Wpf
 {
     using System.Windows.Input;
 

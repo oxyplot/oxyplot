@@ -1,15 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Shapes;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="TrackerControl.cs" company="OxyPlot">
+//   Copyright (c) 2014 OxyPlot contributors
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
 
-namespace OxyPlot.SharpDX.WPF
+namespace OxyPlot.SharpDX.Wpf
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Media;
+    using System.Windows.Shapes;
+
     /// <summary>
     /// Provides a tracker control.
     /// </summary>
@@ -158,8 +164,7 @@ namespace OxyPlot.SharpDX.WPF
             DefaultStyleKeyProperty.OverrideMetadata(
                 typeof(TrackerControl), new FrameworkPropertyMetadata(typeof(TrackerControl)));
         }
-
-
+        
         /// <summary>
         /// Gets or sets BorderEdgeMode.
         /// </summary>
@@ -506,11 +511,9 @@ namespace OxyPlot.SharpDX.WPF
                 X = dx * contentSize.Width,
                 Y = dy * contentSize.Height
             };
-
-
+            
             ScreenPoint pos = this.Position;
-
-
+            
             if (this.horizontalLine != null)
             {
                 if (this.LineExtents.Width > 0)
