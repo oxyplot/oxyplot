@@ -21,7 +21,7 @@ namespace OxyPlot.SharpDX.WPF
     /// <summary>
     /// Extension method used to convert to/from Windows/Windows.Media classes.
     /// </summary>
-    public static class ConverterExtensions
+    internal static class ConverterExtensions
     {
         /// <summary>
         /// Byte to float converting coefficient.

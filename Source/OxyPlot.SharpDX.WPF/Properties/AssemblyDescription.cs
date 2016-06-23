@@ -1,25 +1,23 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AssemblyInfo.cs" company="OxyPlot">
+// <copyright file="AssemblyDescription.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Markup;
 
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyProduct("OxyPlot")]
-[assembly: AssemblyCompany("OxyPlot")]
-[assembly: AssemblyCopyright("Copyright (c) 2014 OxyPlot contributors")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
+[assembly: AssemblyTitle("OxyPlot for WPF with SharpDX based renderer")]
+[assembly: AssemblyDescription("OxyPlot controls for WPF with SharpDX based renderer")]
+[assembly: ThemeInfo(ResourceDictionaryLocation.None, ResourceDictionaryLocation.SourceAssembly)]
 
-// The version numbers are updated by the build script. See ~/appveyor.yml
-[assembly: AssemblyVersion("0.0.1")]
-[assembly: AssemblyInformationalVersion("0.0.1-alpha")]
-[assembly: AssemblyFileVersion("0.0.1")]
+[assembly: CLSCompliant(true)]
+
+[assembly: XmlnsPrefix("http://oxyplot.org/sharpdx/wpf", "oxydx")]
+[assembly: XmlnsDefinition("http://oxyplot.org/sharpdx/wpf", "OxyPlot.SharpDX.WPF")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
