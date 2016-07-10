@@ -157,9 +157,10 @@ namespace OxyPlot.Series
             int startIdx = 0;
             double xmax = double.MaxValue;
 
+            this.ActualBarRectangles = new List<OxyRect>();
+
             if (this.IsXMonotonic)
             {
-                this.ActualBarRectangles = new List<OxyRect>();
                 var xmin = this.XAxis.ActualMinimum;
                 xmax = this.XAxis.ActualMaximum;
                 this.WindowStartIndex = this.UpdateWindowStartIndex(this.Items, rect => rect.X0, xmin, this.WindowStartIndex);
