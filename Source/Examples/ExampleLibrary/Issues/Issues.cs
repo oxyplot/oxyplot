@@ -1620,6 +1620,7 @@ namespace ExampleLibrary
             return model;
         }
 
+        /// <summary>
         /// Creates a demo PlotModel with the data from the issue.
         /// </summary>
         /// <returns>The created PlotModel</returns>
@@ -1647,6 +1648,19 @@ namespace ExampleLibrary
             series1.Points.Add(new DataPoint(1e5, 1e-14));
             series1.Points.Add(new DataPoint(4e7, 1e-12));
             model.Series.Add(series1);
+
+            return model;
+        }
+
+        /// <summary>
+        /// Attempts to create a logarithmic axis starting at 1 and going to 0.
+        /// </summary>
+        /// <returns>The plot model.</returns>
+        [Example("#925: WPF app freezes when LogarithmicAxis is reversed.")]
+        public static PlotModel LogarithmicAxisReversed()
+        {
+            var model = new PlotModel();
+            model.Axes.Add(new LogarithmicAxis { StartPosition = 1, EndPosition = 0});
 
             return model;
         }
