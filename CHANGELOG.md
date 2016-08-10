@@ -89,6 +89,7 @@ All notable changes to this project will be documented in this file.
 - Change default number format to "g6" in Axis base class (#841)
 - Push packages to myget.org (#847)
 - Improve tracker style (Windows Forms) (#106)
+- Change the default axis format string to "g" instead of "g6" (#951)
 
 ### Removed
 - StyleCop tasks (#556)
