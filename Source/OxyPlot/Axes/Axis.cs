@@ -1272,7 +1272,7 @@ namespace OxyPlot.Axes
 
             if (this.ActualStringFormat == null)
             {
-                this.ActualStringFormat = "g6";
+                this.ActualStringFormat = "g";
             }
         }
 
