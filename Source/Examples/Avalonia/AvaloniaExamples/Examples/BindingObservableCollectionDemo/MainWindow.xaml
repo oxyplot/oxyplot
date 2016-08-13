@@ -1,0 +1,31 @@
+﻿<Window 
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:oxy="clr-namespace:OxyPlot.Avalonia;assembly=OxyPlot.Avalonia"
+        Title="BindingDemo" Width="640"
+        Height="480">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+    <Button Command="{Binding LoadCommand}" Content="Load next points" />
+    <oxy:Plot Title="Binding ItemsSource" Grid.Row="1"
+              Subtitle="{Binding Subtitle}">
+      <oxy:Plot.Series>
+        <oxy:LineSeries Title="Value" DataFieldX="Time"
+                        DataFieldY="Value"
+                        Items="{Binding Measurements}"
+                        StrokeThickness="2" Color="Blue" />
+        <oxy:LineSeries Title="Maximum" DataFieldX="Time"
+                        DataFieldY="Maximum"
+                        Items="{Binding Measurements}"
+                        LineStyle="Dash" StrokeThickness="2"
+                        Color="Red" />
+        <oxy:LineSeries Title="Minimum" DataFieldX="Time"
+                        DataFieldY="Minimum"
+                        Items="{Binding Measurements}"
+                        LineStyle="Dot" StrokeThickness="2"
+                        Color="Green" />
+      </oxy:Plot.Series>
+    </oxy:Plot>
+  </Grid>
+</Window>
