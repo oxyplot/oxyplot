@@ -9,25 +9,18 @@
 
 namespace ExportDemo
 {
-    using System.Windows;
+    using WpfExamples;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class ShellView : Window
+    [Example("Export demo")]
+    public partial class ShellView
     {
-        private readonly ShellViewModel vm = new ShellViewModel();
-
         public ShellView()
         {
             this.InitializeComponent();
-            this.DataContextChanged += this.OnDataContextChanged;
-        }
-
-        private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            var svm = e.NewValue as ShellViewModel;
-            svm.Attach(this, plot1);
+            this.DataContext = new ShellViewModel { Owner = this, Plot = this.plot1 };
         }
     }
 }

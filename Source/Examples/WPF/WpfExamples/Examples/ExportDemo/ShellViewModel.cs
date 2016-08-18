@@ -8,15 +8,13 @@ namespace ExportDemo
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.Composition;
     using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
+    using System.Windows.Input;
     using System.Windows.Media.Imaging;
-
-    using Caliburn.Micro;
 
     using Microsoft.Win32;
 
@@ -28,24 +26,71 @@ namespace ExportDemo
 
     using PropertyTools.Wpf;
 
+    using WpfExamples;
+
+    using DelegateCommand = WpfExamples.DelegateCommand;
     using SvgExporter = OxyPlot.SvgExporter;
 
-    [Export(typeof(IShell))]
-    public class ShellViewModel : PropertyChangedBase, IShell
+    public class ShellViewModel : Observable
     {
 
         private ModelType currentModel;
 
         private PlotModel model;
 
-
-
         public ShellViewModel()
         {
             this.CurrentModel = ModelType.SineWave;
+            this.ExitCommand = new DelegateCommand(this.Exit);
+            this.SaveSvgCommand = new DelegateCommand(this.SaveSvg);
+            this.SavePdfCommand = new DelegateCommand(this.SavePdf);
+            this.SavePdf_PdfSharpCommand = new DelegateCommand(this.SavePdf_PdfSharp);
+            this.SavePngCommand = new DelegateCommand(this.SavePng);
+            this.SaveXamlCommand = new DelegateCommand(this.SaveXaml);
+            this.SaveXpsCommand = new DelegateCommand(this.SaveXps);
+            this.PrintCommand = new DelegateCommand(this.Print);
+            this.SaveTextReportCommand = new DelegateCommand(this.SaveTextReport);
+            this.SaveHtmlReportCommand = new DelegateCommand(this.SaveHtmlReport);
+            this.SaveLatexReportCommand = new DelegateCommand(this.SaveLatexReport);
+            this.SavePdfReportCommand = new DelegateCommand(this.SavePdfReport);
+            this.SaveRtfReportCommand = new DelegateCommand(this.SaveRtfReport);
+            this.SaveXpsReportCommand = new DelegateCommand(this.SaveXpsReport);
+            this.SaveDocxReportCommand = new DelegateCommand(this.SaveDocxReport);
+            this.CopySvgCommand = new DelegateCommand(this.CopySvg);
+            this.CopyBitmapCommand = new DelegateCommand(this.CopyBitmap);
+            this.CopyXamlCommand = new DelegateCommand(this.CopyXaml);
+            this.HelpHomeCommand = new DelegateCommand(this.HelpHome);
+            this.HelpDocumentationCommand = new DelegateCommand(this.HelpDocumentation);
+            this.HelpAboutCommand = new DelegateCommand(this.HelpAbout);
+            this.ContextCopySvgCommand = new DelegateCommand(this.CopySvg);
+            this.ContextCopyBitmapCommand = new DelegateCommand(this.CopyBitmap);
+            this.ContextCopyXamlCommand = new DelegateCommand(this.CopyXaml);
         }
 
-
+        public ICommand ExitCommand { get; }
+        public ICommand SaveSvgCommand { get; }
+        public ICommand SavePdfCommand { get; }
+        public ICommand SavePdf_PdfSharpCommand { get; }
+        public ICommand SavePngCommand { get; }
+        public ICommand SaveXamlCommand { get; }
+        public ICommand SaveXpsCommand { get; }
+        public ICommand PrintCommand { get; }
+        public ICommand SaveTextReportCommand { get; }
+        public ICommand SaveHtmlReportCommand { get; }
+        public ICommand SaveLatexReportCommand { get; }
+        public ICommand SavePdfReportCommand { get; }
+        public ICommand SaveRtfReportCommand { get; }
+        public ICommand SaveXpsReportCommand { get; }
+        public ICommand SaveDocxReportCommand { get; }
+        public ICommand CopySvgCommand { get; }
+        public ICommand CopyBitmapCommand { get; }
+        public ICommand CopyXamlCommand { get; }
+        public ICommand HelpHomeCommand { get; }
+        public ICommand HelpDocumentationCommand { get; }
+        public ICommand HelpAboutCommand { get; }
+        public ICommand ContextCopySvgCommand { get; }
+        public ICommand ContextCopyBitmapCommand { get; }
+        public ICommand ContextCopyXamlCommand { get; }
 
         public ModelType CurrentModel
         {
@@ -73,15 +118,15 @@ namespace ExportDemo
                 if (this.model != value)
                 {
                     this.model = value;
-                    this.NotifyOfPropertyChange(() => this.Model);
-                    this.NotifyOfPropertyChange(() => this.TotalNumberOfPoints);
+                    this.RaisePropertyChanged(() => this.Model);
+                    this.RaisePropertyChanged(() => this.TotalNumberOfPoints);
                 }
             }
         }
 
-        public Window Owner { get; private set; }
+        public Window Owner { get; set; }
 
-        public PlotView Plot { get; private set; }
+        public PlotView Plot { get; set; }
 
         public int TotalNumberOfPoints
         {
@@ -94,14 +139,6 @@ namespace ExportDemo
 
                 return this.Model.Series.Sum(ls => ((OxyPlot.Series.DataPointSeries)ls).Points.Count);
             }
-        }
-
-
-
-        public void Attach(Window owner, PlotView plot)
-        {
-            this.Owner = owner;
-            this.Plot = plot;
         }
 
         public void CopyBitmap()
@@ -133,10 +170,10 @@ namespace ExportDemo
         public void HelpAbout()
         {
             var dlg = new AboutDialog(this.Owner)
-                {
-                    Title = "About OxyPlot ExportDemo",
-                    Image = new BitmapImage(new Uri(@"pack://application:,,,/ExportDemo;component/Images/oxyplot.png"))
-                };
+            {
+                Title = "About OxyPlot ExportDemo",
+                Image = new BitmapImage(new Uri(@"pack://application:,,,/ExportDemo;component/Images/oxyplot.png"))
+            };
             dlg.Show();
         }
 
