@@ -7,20 +7,20 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-using System.Windows;
-
 namespace WorldStatisticsDemo
 {
+    using WpfExamples;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    [Example("World statistics.")]
+    public partial class MainWindow
     {
         public MainWindow()
         {
-            InitializeComponent();
-            DataContext = new MainViewModel();
+            this.InitializeComponent();
+            this.DataContext = new MainViewModel();
         }
     }
 }

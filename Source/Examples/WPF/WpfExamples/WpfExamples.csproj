@@ -156,6 +156,14 @@
     <Compile Include="Examples\DataTemplateDemo\PlotViewDataTemplateWindow.xaml.cs">
       <DependentUpon>PlotViewDataTemplateWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Examples\WorldStatisticsDemo\CsvDocument.cs" />
+    <Compile Include="Examples\WorldStatisticsDemo\MainViewModel.cs" />
+    <Compile Include="Examples\WorldStatisticsDemo\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\WorldStatisticsDemo\Model\Country.cs" />
+    <Compile Include="Examples\WorldStatisticsDemo\Model\Statistics.cs" />
+    <Compile Include="Examples\WorldStatisticsDemo\Observable.cs" />
     <Compile Include="ScreenCapture.cs" />
     <Compile Include="Workitems\PlotModelAlreadyInUse\Item.cs" />
     <Compile Include="Workitems\PlotModelAlreadyInUse\MainWindow.xaml.cs">
@@ -374,6 +382,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Examples\WorldStatisticsDemo\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -528,6 +540,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Images\WorldStatisticsDemo.png" />
     <Resource Include="Images\MemoryTest.png" />
     <Resource Include="Images\MathBlockDemo.png" />
     <Resource Include="Images\PlotModelAlreadyInUse.png" />
@@ -543,6 +556,15 @@
     <Resource Include="Images\PerformanceDemo.png" />
     <Resource Include="Images\ScatterErrorSeriesDemo.png" />
     <Resource Include="Images\ResizeDemo.png" />
+    <Content Include="Examples\WorldStatisticsDemo\Data\gdp_per_capita_ppp.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\WorldStatisticsDemo\Data\life_expectancy_at_birth.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\WorldStatisticsDemo\Data\population.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="packages.config" />
     <None Include="ReadMe.txt" />
     <Resource Include="Images\HeatMapDemo.png" />
