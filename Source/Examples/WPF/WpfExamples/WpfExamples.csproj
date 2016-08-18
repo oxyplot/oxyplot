@@ -124,6 +124,10 @@
     <Compile Include="Examples\BoxPlotSeriesDemo\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Examples\MathBlockDemo\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\MathBlockDemo\MathBlock.cs" />
     <Compile Include="Examples\ScrollViewerDemo\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -198,6 +202,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Examples\BoxPlotSeriesDemo\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\MathBlockDemo\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -499,6 +507,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Images\MathBlockDemo.png" />
     <Resource Include="Images\PlotModelAlreadyInUse.png" />
     <Resource Include="Images\AnimationsDemo.png" />
     <Resource Include="Images\ScrollViewerDemo.png" />
