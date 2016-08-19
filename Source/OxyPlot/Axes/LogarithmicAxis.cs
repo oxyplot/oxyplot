@@ -293,19 +293,14 @@ namespace OxyPlot.Axes
         {
             var ret = new List<double>();
 
-            for (var exponent = Math.Ceiling(this.LogActualMinimum);; exponent += step)
+            var last = double.NaN;
+            for (var exponent = Math.Ceiling(this.LogActualMinimum); exponent <= this.LogActualMaximum; exponent += step)
             {
-                if (exponent < this.LogActualMinimum)
-                {
-                    continue;
-                }
-
-                if (exponent > this.LogActualMaximum)
-                {
+                if (exponent <= last)
                     break;
-                }
-
-                ret.Add(exponent);
+                last = exponent;
+                if (exponent >= this.LogActualMinimum)
+                    ret.Add(exponent);
             }
 
             return ret;
