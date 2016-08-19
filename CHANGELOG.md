@@ -179,6 +179,7 @@ All notable changes to this project will be documented in this file.
 - Axis alignment with MinimumRange (#794)
 - Fixed strange number formatting when using LogarithmicAxis with very large or very small Series (#589)
 - Fixed LogarithmicAxis to no longer freeze when the axis is reversed (#925)
+- Prevent endless loop in LogarithmicAxis (#957)
 
 ## [2014.1.546] - 2014-10-22
 ### Added
