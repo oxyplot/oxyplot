@@ -292,17 +292,18 @@ namespace OxyPlot.Axes
         internal IList<double> LogDecadeTicks(double step = 1)
         {
             var ret = new List<double>();
-
-            var last = double.NaN;
-            for (var exponent = Math.Ceiling(this.LogActualMinimum); exponent <= this.LogActualMaximum; exponent += step)
+            if (step > 0)
             {
-                if (exponent <= last)
-                    break;
-                last = exponent;
-                if (exponent >= this.LogActualMinimum)
-                    ret.Add(exponent);
+                var last = double.NaN;
+                for (var exponent = Math.Ceiling(this.LogActualMinimum); exponent <= this.LogActualMaximum; exponent += step)
+                {
+                    if (exponent <= last)
+                        break;
+                    last = exponent;
+                    if (exponent >= this.LogActualMinimum)
+                        ret.Add(exponent);
+                }
             }
-
             return ret;
         }
 
