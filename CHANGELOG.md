@@ -42,6 +42,7 @@ All notable changes to this project will be documented in this file.
 - Color minor and major ticks differently (#417)
 - Support for PieSeries in OxyPlot.Wpf (#878)
 - Filter in example browser (#118)
+- Support for tooltips on WPF annotations
 
 ### Changed
 - Fixed closing file stream for PdfReportWriter when PdfReportWriter is closed or disposed of. (#892)
@@ -180,6 +181,7 @@ All notable changes to this project will be documented in this file.
 - Fixed strange number formatting when using LogarithmicAxis with very large or very small Series (#589)
 - Fixed LogarithmicAxis to no longer freeze when the axis is reversed (#925)
 - Prevent endless loop in LogarithmicAxis (#957)
+- Fixed WPF series data not refreshed when not visible (included WPF LiveDemo)
 
 ## [2014.1.546] - 2014-10-22
 ### Added
