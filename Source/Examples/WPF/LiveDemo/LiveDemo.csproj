@@ -111,11 +111,11 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OxyPlot.Wpf\OxyPlot.Wpf.csproj">
+    <ProjectReference Include="..\..\..\OxyPlot.Wpf\OxyPlot.Wpf.csproj">
       <Project>{698ccd8e-adcc-4565-8517-5edd36f07155}</Project>
       <Name>OxyPlot.Wpf</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OxyPlot\OxyPlot.csproj">
+    <ProjectReference Include="..\..\..\OxyPlot\OxyPlot.csproj">
       <Project>{7a0b35c0-dd17-4964-8e9a-44d6cecdc692}</Project>
       <Name>OxyPlot</Name>
     </ProjectReference>

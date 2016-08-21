@@ -66,7 +66,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleBrowser_NET40", "Exa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfExamples_NET40", "Examples\WPF\WpfExamples\WpfExamples_NET40.csproj", "{089A23D9-710F-4BD1-A520-B59702C998A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiveDemo", "LiveDemo\LiveDemo.csproj", "{590FD9F3-C119-4047-80C1-89A060C44E66}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiveDemo", "Examples\WPF\LiveDemo\LiveDemo.csproj", "{590FD9F3-C119-4047-80C1-89A060C44E66}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
