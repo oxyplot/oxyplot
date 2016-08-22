@@ -181,9 +181,11 @@ namespace OxyPlot.Axes
         /// <param name="axis">The axis.</param>
         protected virtual void CreatePens(Axis axis)
         {
+            var minorTickColor = axis.MinorTicklineColor.IsAutomatic() ? axis.TicklineColor : axis.MinorTicklineColor;
+
             this.MinorPen = OxyPen.Create(axis.MinorGridlineColor, axis.MinorGridlineThickness, axis.MinorGridlineStyle);
             this.MajorPen = OxyPen.Create(axis.MajorGridlineColor, axis.MajorGridlineThickness, axis.MajorGridlineStyle);
-            this.MinorTickPen = OxyPen.Create(axis.TicklineColor, axis.MinorGridlineThickness);
+            this.MinorTickPen = OxyPen.Create(minorTickColor, axis.MinorGridlineThickness);
             this.MajorTickPen = OxyPen.Create(axis.TicklineColor, axis.MajorGridlineThickness);
             this.ZeroPen = OxyPen.Create(axis.TicklineColor, axis.MajorGridlineThickness);
             this.ExtraPen = OxyPen.Create(axis.ExtraGridlineColor, axis.ExtraGridlineThickness, axis.ExtraGridlineStyle);

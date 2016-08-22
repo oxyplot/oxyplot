@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B8A34A2F-E505-4517-8EFF-7F80E39CF425}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ExampleLibrary</RootNamespace>
+    <AssemblyName>ExampleLibrary</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\NET40\</OutputPath>
+    <IntermediateOutputPath>obj\Debug\NET40\</IntermediateOutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\NET40\</OutputPath>
+    <IntermediateOutputPath>obj\Release\NET40\</IntermediateOutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>ExampleLibrary.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Annotations\ArrowAnnotationExamples.cs" />
+    <Compile Include="Annotations\EllipseAnnotationExamples.cs" />
+    <Compile Include="Annotations\FunctionAnnotationExamples.cs" />
+    <Compile Include="Annotations\ImageAnnotationExamples.cs" />
+    <Compile Include="Annotations\LineAnnotationExamples.cs" />
+    <Compile Include="Annotations\PointAnnotationExamples.cs" />
+    <Compile Include="Annotations\PolygonAnnotationExamples.cs" />
+    <Compile Include="Annotations\PolylineAnnotationExamples.cs" />
+    <Compile Include="Annotations\RectangleAnnotationExamples.cs" />
+    <Compile Include="Annotations\TextAnnotationExamples.cs" />
+    <Compile Include="Annotations\TileMapAnnotationExamples.cs" />
+    <Compile Include="Attributes\ExampleAttribute.cs" />
+    <Compile Include="Attributes\TagsAttribute.cs" />
+    <Compile Include="Annotations\TileMapAnnotation.cs" />
+    <Compile Include="CustomSeries\ErrorItem.cs" />
+    <Compile Include="CustomSeries\ErrorSeries.cs" />
+    <Compile Include="CustomSeries\FlagSeries.cs" />
+    <Compile Include="CustomSeries\LineSegmentSeries.cs" />
+    <Compile Include="CustomSeries\MatrixSeries.cs" />
+    <Compile Include="CustomSeries\PolarHeatMapSeries.cs" />
+    <Compile Include="Example.cs" />
+    <Compile Include="ExampleInfo.cs" />
+    <Compile Include="Examples.cs" />
+    <Compile Include="Attributes\ExamplesAttribute.cs" />
+    <Compile Include="Discussions\DiscussionExamples.cs" />
+    <Compile Include="Annotations\AnnotationExamples.cs" />
+    <Compile Include="Series\BarAndColumnSeriesExamples.cs" />
+    <Compile Include="Series\BarSeriesExamples.cs" />
+    <Compile Include="Series\ColumnSeriesExamples.cs" />
+    <Compile Include="Series\ErrorColumnSeriesExamples.cs" />
+    <Compile Include="Examples\RenderingCapabilities.cs" />
+    <Compile Include="Series\FinancialSeries\HighLowItemGenerator.cs" />
+    <Compile Include="Series\FinancialSeries\OhlcvItemGenerator.cs" />
+    <Compile Include="Series\LinearBarSeriesExamples.cs" />
+    <Compile Include="Series\ScatterErrorSeriesExamples.cs" />
+    <Compile Include="Series\BoxPlotSeriesExamples.cs" />
+    <Compile Include="Axes\CartesianAxesExamples.cs" />
+    <Compile Include="Axes\CategoryAxisExamples.cs" />
+    <Compile Include="Axes\AxisExamples.cs" />
+    <Compile Include="Series\AreaSeriesExamples.cs" />
+    <Compile Include="Axes\CategoryColorAxisExamples.cs" />
+    <Compile Include="Series\ContourSeriesExamples.cs" />
+    <Compile Include="Series\IntervalBarSeriesExamples.cs" />
+    <Compile Include="Series\RectangleBarSeriesExamples.cs" />
+    <Compile Include="Series\ThreeColorLineSeriesExamples.cs" />
+    <Compile Include="Series\TornadoBarSeriesExamples.cs" />
+    <Compile Include="Examples\PlotControllerExamples.cs" />
+    <Compile Include="Axes\CustomAxisExamples.cs" />
+    <Compile Include="Series\HeatMapSeriesExamples.cs" />
+    <Compile Include="Axes\LinearColorAxisExamples.cs" />
+    <Compile Include="Misc\MiscExamples.cs" />
+    <Compile Include="Examples\MouseEventExamples.cs" />
+    <Compile Include="Examples\ItemsSourceExamples.cs" />
+    <Compile Include="Series\FunctionSeriesExamples.cs" />
+    <Compile Include="Examples\PerformanceExamples.cs" />
+    <Compile Include="Examples\PlotModelExamples.cs" />
+    <Compile Include="Axes\RangeColorAxisExamples.cs" />
+    <Compile Include="Series\FinancialSeries\VolumeSeriesExamples.cs" />
+    <Compile Include="Showcases\ShowCases.cs" />
+    <Compile Include="Showcases\ShowMeTheNumbersExamples.cs" />
+    <Compile Include="Series\StairStepSeriesExamples.cs" />
+    <Compile Include="Examples\FilteringExamples.cs" />
+    <Compile Include="Series\FinancialSeries\HighLowSeriesExamples.cs" />
+    <Compile Include="Axes\LinearAxisExamples.cs" />
+    <Compile Include="Examples\LegendExamples.cs" />
+    <Compile Include="CustomSeries\CustomSeriesExamples.cs" />
+    <Compile Include="Axes\DateTimeAxisExamples.cs" />
+    <Compile Include="Series\LineSeriesExamples.cs" />
+    <Compile Include="Axes\LogarithmicAxisExamples.cs" />
+    <Compile Include="Series\PieSeriesExamples.cs" />
+    <Compile Include="Axes\PolarPlotExamples.cs" />
+    <Compile Include="Series\ScatterSeriesExamples.cs" />
+    <Compile Include="Series\StemSeriesExamples.cs" />
+    <Compile Include="Axes\TimeSpanAxisExamples.cs" />
+    <Compile Include="Examples\TrackerExamples.cs" />
+    <Compile Include="Series\TwoColorAreaSeriesExamples.cs" />
+    <Compile Include="Series\TwoColorLineSeriesExamples.cs" />
+    <Compile Include="Misc\XkcdExamples.cs" />
+    <Compile Include="Utilities\Sun.cs" />
+    <Compile Include="Issues\Issues.cs" />
+    <Compile Include="Properties\AssemblyDescription.cs" />
+    <Compile Include="Series\FinancialSeries\OldCandleStickSeriesExamples.cs" />
+    <Compile Include="Series\FinancialSeries\CandleStickSeriesExamples.cs" />
+    <Compile Include="Series\FinancialSeries\CandleStickAndVolumeSeriesExamples.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Bergensbanen.csv" />
+    <EmbeddedResource Include="Resources\OxyPlot.png" />
+    <EmbeddedResource Include="Resources\west0479.mtx" />
+    <EmbeddedResource Include="Resources\WorldPopulation.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ExampleLibrary.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\OxyPlot\OxyPlot_NET40.csproj">
+      <Project>{1c1d9807-be39-40a4-87de-3f81e7c651e5}</Project>
+      <Name>OxyPlot_NET40</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
+

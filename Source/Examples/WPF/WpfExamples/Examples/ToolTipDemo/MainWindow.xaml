@@ -1,0 +1,18 @@
+﻿<Window x:Class="ToolTipDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf"
+        Title="PerformanceDemo" Height="480" Width="640">
+
+    <StackPanel>
+        <GroupBox Header="Model with tool tip title" Height="200">
+            <oxy:PlotView Model="{Binding Model}" />
+        </GroupBox>
+
+        <GroupBox Header="Plot with tool tip title" Height="200">
+            <oxy:Plot Title="Hover to see tool tip" TitleToolTip="Custom title tool tip via xaml">
+                <oxy:AreaSeries ItemsSource="{Binding Measurements}" Title="Maximum/Minimum" DataFieldX="Time" DataFieldY="Maximum" DataFieldX2="Time" DataFieldY2="Minimum" Fill="LightBlue" StrokeThickness="0"/>
+                <oxy:LineSeries ItemsSource="{Binding Measurements}" Title="Average" DataFieldX="Time" DataFieldY="Value" Color="Blue" StrokeThickness="2" Smooth="False"/>
+            </oxy:Plot>
+        </GroupBox>
+    </StackPanel>
+</Window>

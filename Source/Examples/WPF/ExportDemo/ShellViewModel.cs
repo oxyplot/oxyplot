@@ -25,7 +25,6 @@ namespace ExportDemo
     using OxyPlot.Pdf;
     using OxyPlot.Reporting;
     using OxyPlot.Wpf;
-    using OxyPlot.Xps;
 
     using PropertyTools.Wpf;
 
@@ -114,7 +113,7 @@ namespace ExportDemo
 
         public void CopySvg()
         {
-            var rc = new ShapesRenderContext(null);
+            var rc = new CanvasRenderContext(null);
             var svg = SvgExporter.ExportToString(this.Model, this.Plot.ActualWidth, this.Plot.ActualHeight, true, rc);
             Clipboard.SetText(svg);
         }
@@ -329,7 +328,7 @@ namespace ExportDemo
             if (path != null)
             {
                 // Using a WPF render context to measure the text
-                var textMeasurer = new ShapesRenderContext(new Canvas());
+                var textMeasurer = new CanvasRenderContext(new Canvas());
                 using (var s = File.Create(path))
                 {
                     var exporter = new SvgExporter

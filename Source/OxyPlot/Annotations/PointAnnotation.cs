@@ -66,10 +66,9 @@ namespace OxyPlot.Annotations
         /// Renders the polygon annotation.
         /// </summary>
         /// <param name="rc">The render context.</param>
-        /// <param name="model">The plot model.</param>
-        public override void Render(IRenderContext rc, PlotModel model)
+        public override void Render(IRenderContext rc)
         {
-            base.Render(rc, model);
+            base.Render(rc);
 
             this.screenPosition = this.Transform(this.X, this.Y);
 

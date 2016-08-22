@@ -2,15 +2,15 @@
 // <copyright file="Issues.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
-// <summary>
-//   Grids the lines both different colors.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace ExampleLibrary
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
+    using System.Threading;
+    using System.Threading.Tasks;
 
     using OxyPlot;
     using OxyPlot.Annotations;
@@ -122,12 +122,12 @@ namespace ExampleLibrary
             plotModel1.Axes.Add(linearAxis1);
 
             var dateTimeAxis1 = new DateTimeAxis
-                                    {
-                                        IntervalType = DateTimeIntervalType.Minutes,
-                                        EndPosition = 0,
-                                        StartPosition = 1,
-                                        StringFormat = "hh:mm:ss"
-                                    };
+            {
+                IntervalType = DateTimeIntervalType.Minutes,
+                EndPosition = 0,
+                StartPosition = 1,
+                StringFormat = "hh:mm:ss"
+            };
             plotModel1.Axes.Add(dateTimeAxis1);
             var time0 = new DateTime(2013, 5, 6, 3, 24, 0);
             var time1 = new DateTime(2013, 5, 6, 3, 28, 0);
@@ -354,7 +354,7 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
-        [Example("#79: LegendItemAlignment = Center")]
+        [Example("#79: LegendItemAlignment = Center (closed)")]
         public static PlotModel LegendItemAlignmentCenter()
         {
             var plotModel1 = new PlotModel { Title = "LegendItemAlignment = Center" };
@@ -748,6 +748,63 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
+        [Example("#301: Wrong label placement for category axis when Angle = 45 (closed)")]
+        public static PlotModel LabelPlacementCategoryAxisWhenAxisAngleIs45()
+        {
+            var plotModel1 = new PlotModel { Title = "Wrong label placement for category axis when Angle = 45", Subtitle = "The labels should not be clipped. Click on text annotation to change the angle." };
+
+            Action<AxisPosition> createAxis = (AxisPosition position) =>
+            {
+                var categoryAxis = new CategoryAxis() { Position = position, Angle = 45 };
+
+                categoryAxis.Labels.Add("Very looooong and big label");
+                categoryAxis.Labels.Add("Very looooong and big label");
+                categoryAxis.Labels.Add("Very looooong and big label");
+                categoryAxis.Labels.Add("Very looooong and big label");
+                plotModel1.Axes.Add(categoryAxis);
+            };
+
+            createAxis(AxisPosition.Bottom);
+            createAxis(AxisPosition.Left);
+            createAxis(AxisPosition.Right);
+            createAxis(AxisPosition.Top);
+
+            var textAnnotation = new TextAnnotation() { Text = "Hold mouse button here to increase angle", TextPosition = new DataPoint(0, 6), TextHorizontalAlignment = HorizontalAlignment.Left, TextVerticalAlignment = VerticalAlignment.Top };
+            plotModel1.Annotations.Add(textAnnotation);
+
+            var abort = new ManualResetEvent(false);
+
+            Action action = () =>
+            {
+                do
+                {
+                    // Angles are the same for all axes.
+                    double angle = 0;
+
+                    foreach (var axis in plotModel1.Axes)
+                    {
+                        angle = (axis.Angle + 181) % 360 - 180;
+                        axis.Angle = angle;
+                    }
+
+                    plotModel1.Subtitle = string.Format("Current angle is {0}", angle);
+                    plotModel1.InvalidatePlot(false);
+                }
+                while (!abort.WaitOne(50));
+            };
+
+            textAnnotation.MouseDown += (o, e) => { abort.Reset(); Task.Factory.StartNew(action); };
+            plotModel1.MouseUp += (o, e) => { abort.Set(); };
+
+            var columnSeries = new ColumnSeries();
+            columnSeries.Items.Add(new ColumnItem(5));
+            columnSeries.Items.Add(new ColumnItem(3));
+            columnSeries.Items.Add(new ColumnItem(7));
+            columnSeries.Items.Add(new ColumnItem(2));
+            plotModel1.Series.Add(columnSeries);
+            return plotModel1;
+        }
+
         [Example("#180: Two vertical axes on the same position")]
         public static PlotModel TwoVerticalAxisOnTheSamePosition()
         {
@@ -775,7 +832,7 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
-        [Example("#220: Tracker strings not correctly showing date/times")]
+        [Example("#220: Tracker strings not correctly showing date/times (closed)")]
         public static PlotModel TrackerStringsNotCorrectlySHowingDateTimes()
         {
             var plotModel1 = new PlotModel { Title = "Tracker strings not correctly showing date/times" };
@@ -791,5 +848,834 @@ namespace ExampleLibrary
             plotModel1.Series.Add(ls);
             return plotModel1;
         }
+
+        [Example("#226: LineSeries exception when smoothing")]
+        public static PlotModel LineSeriesExceptionWhenSmoothing()
+        {
+            var plotModel1 = new PlotModel
+            {
+                Title = "LineSeries null reference exception when smoothing is enabled and all datapoints have the same y value",
+                Subtitle = "Click on the plot to reproduce the issue."
+            };
+            var ls = new LineSeries { Smooth = true };
+            ls.Points.Add(new DataPoint(0, 0));
+            ls.Points.Add(new DataPoint(1, 0));
+            ls.Points.Add(new DataPoint(10, 0));
+            plotModel1.Series.Add(ls);
+            return plotModel1;
+        }
+
+        [Example("#79: Center aligned legends (closed)")]
+        public static PlotModel CenterAlignedLegends()
+        {
+            var plotModel1 = new PlotModel
+            {
+                Title = "Center aligned legends",
+                LegendPosition = LegendPosition.BottomCenter,
+                LegendItemAlignment = HorizontalAlignment.Center
+            };
+            plotModel1.Series.Add(new LineSeries { Title = "LineSeries 1" });
+            plotModel1.Series.Add(new LineSeries { Title = "LS2" });
+            return plotModel1;
+        }
+
+        [Example("#356: Draw legend line with custom pattern")]
+        public static PlotModel LegendWithCustomPattern()
+        {
+            var plotModel1 = new PlotModel
+            {
+                Title = "Draw legend line with custom pattern",
+            };
+            var solid = new LineSeries
+            {
+                Title = "Solid",
+                LineStyle = LineStyle.Solid
+                // without dashes
+            };
+            var custom = new LineSeries
+            {
+                Title = "Custom",
+                LineStyle = LineStyle.Solid,
+                // dashd-dot pattern
+                Dashes = new[] { 10.0, 2.0, 4.0, 2.0 },
+            };
+            solid.Points.Add(new DataPoint(0, 2));
+            solid.Points.Add(new DataPoint(100, 1));
+            custom.Points.Add(new DataPoint(0, 3));
+            custom.Points.Add(new DataPoint(100, 2));
+            plotModel1.Series.Add(solid);
+            plotModel1.Series.Add(custom);
+            plotModel1.LegendSymbolLength = 100; // wide enough to see pattern
+            return plotModel1;
+        }
+
+        [Example("#409: ImageAnnotation width width/height crashes")]
+        public static PlotModel ImageAnnotationWithWidthHeightCrashes()
+        {
+            var myModel = new PlotModel { Title = "Example 1" };
+            myModel.Series.Add(new FunctionSeries(Math.Cos, 0, 10, 0.1, "cos(x)"));
+
+            var rng = new Random();
+            var buf = new byte[100, 100];
+            for (int i = 0; i < 100; i++)
+            {
+                for (int j = 0; j < 100; j++)
+                {
+                    buf[i, j] = (byte)rng.Next();
+                }
+            }
+
+            var palette = new OxyColor[256];
+            for (int i = 0; i < palette.Length; i++)
+            {
+                palette[i] = OxyColor.FromArgb(128, (byte)i, 0, 0);
+            }
+
+            var image = OxyImage.Create(buf, palette, ImageFormat.Bmp);
+            myModel.Annotations.Add(new ImageAnnotation
+            {
+                ImageSource = image,
+
+                X = new PlotLength(1, PlotLengthUnit.Data),
+                Y = new PlotLength(0, PlotLengthUnit.Data),
+                Width = new PlotLength(1, PlotLengthUnit.Data),
+                Height = new PlotLength(1, PlotLengthUnit.Data)
+            });
+
+            myModel.Annotations.Add(new ImageAnnotation
+            {
+                ImageSource = image,
+
+                X = new PlotLength(5, PlotLengthUnit.Data),
+                Y = new PlotLength(0, PlotLengthUnit.Data),
+            });
+
+            return myModel;
+        }
+
+        [Example("#413: HeatMap tracker format string")]
+        public static PlotModel HeatMapTrackerFormatString()
+        {
+            var plotModel1 = new PlotModel
+            {
+                Title = "HeatMap tracker format string",
+            };
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Left, StringFormat = "0.000", Minimum = 0, Maximum = 1 });
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, StringFormat = "0.000", Minimum = 0, Maximum = 1 });
+            plotModel1.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Minimum = 0, Maximum = 5 });
+            var data = new double[,] { { 1, 2 }, { 3, 4 } };
+            plotModel1.Series.Add(new HeatMapSeries
+            {
+                Data = data,
+                CoordinateDefinition = HeatMapCoordinateDefinition.Edge,
+                X0 = 0.1,
+                X1 = 0.9,
+                Y0 = 0.1,
+                Y1 = 0.9,
+                TrackerFormatString = "{0}\n{1}: {2:0.000}\n{3}: {4:0.000}\n{5}: {6:0.0000}"
+            });
+            return plotModel1;
+        }
+
+        [Example("#413: Using axis format strings in tracker")]
+        public static PlotModel AxisFormatStringInTracker()
+        {
+            var plotModel1 = new PlotModel
+            {
+                Title = "Using axis format strings in tracker",
+            };
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Left, StringFormat = "0.000", Minimum = 0, Maximum = 1 });
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, StringFormat = "0.000", Minimum = 0, Maximum = 1 });
+            plotModel1.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Minimum = 0, Maximum = 5 });
+            var data = new double[,] { { 1, 2 }, { 3, 4 } };
+            plotModel1.Series.Add(new HeatMapSeries
+            {
+                Data = data,
+                CoordinateDefinition = HeatMapCoordinateDefinition.Edge,
+                X0 = 0.1,
+                X1 = 0.9,
+                Y0 = 0.1,
+                Y1 = 0.9,
+
+                // IDEA: add new arguments for axis formatted values
+                // TODO: this will throw an exception, argument 7 and 8 is not implemented
+                TrackerFormatString = "{0}\n{1}: {7}\n{3}: {8}\n{5}: {6:0.0000}"
+            });
+            return plotModel1;
+        }
+
+        [Example("#408: CategoryAxis label clipped on left margin")]
+        public static PlotModel CategoryAxisLabelClipped()
+        {
+            var plotModel1 = new PlotModel
+            {
+                Title = "CategoryAxis label clipped on left margin",
+            };
+            var axis = new CategoryAxis { Position = AxisPosition.Left, Angle = -52 };
+            axis.Labels.Add("Very very very very long label");
+            axis.Labels.Add("Short label");
+            axis.Labels.Add("Short label");
+            axis.Labels.Add("Short label");
+            plotModel1.Axes.Add(axis);
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            return plotModel1;
+        }
+
+        [Example("#402: ColumnSeries with dates")]
+        public static PlotModel ColumnSeriesWithDates()
+        {
+            var plotModel1 = new PlotModel
+            {
+                Title = "ColumnSeries with dates",
+                Culture = CultureInfo.InvariantCulture
+            };
+            var data = new[]
+            {
+                new TimeValue { Time = new DateTime(2015, 1, 1), Value = 700 },
+                new TimeValue { Time = new DateTime(2015, 1, 2), Value = 710 },
+                new TimeValue { Time = new DateTime(2015, 1, 3), Value = 580},
+                new TimeValue { Time = new DateTime(2015, 1, 4), Value = 710 },
+                new TimeValue { Time = new DateTime(2015, 1, 5), Value = 715 },
+                new TimeValue { Time = new DateTime(2015, 1, 6), Value = 580 },
+            };
+
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 0, Maximum = 1000 });
+            plotModel1.Axes.Add(new CategoryAxis { ItemsSource = data, LabelField = "Time", StringFormat = "ddd" });
+            plotModel1.Series.Add(new ColumnSeries { ItemsSource = data, ValueField = "Value" });
+            return plotModel1;
+        }
+
+        private class TimeValue
+        {
+            public DateTime Time { get; set; }
+            public double Value { get; set; }
+        }
+
+        [Example("#474: Vertical Axis Title Font Bug")]
+        public static PlotModel VerticalAxisTitleFontBug()
+        {
+            var plotModel1 = new PlotModel
+            {
+                Title = "Vertical Axis Title Font Bug",
+            };
+
+            plotModel1.Axes.Add(new LinearAxis
+            {
+                Title = "X_Axe",
+                Position = AxisPosition.Bottom,
+                MajorGridlineStyle = LineStyle.Solid,
+                TitleFont = "Times New Roman"
+            });
+
+            plotModel1.Axes.Add(new LinearAxis
+            {
+                Title = "Y_Axe",
+                Position = AxisPosition.Left,
+                MajorGridlineStyle = LineStyle.Solid,
+                TitleFont = "Times New Roman"
+            });
+
+            return plotModel1;
+        }
+
+
+        [Example("#535: Transposed HeatMap")]
+        public static PlotModel TransposedHeatMap()
+        {
+            int n = 100;
+
+            double x0 = -3.1;
+            double x1 = 3.1;
+            double y0 = -3;
+            double y1 = 3;
+            Func<double, double, double> peaks = (x, y) => 3 * (1 - x) * (1 - x) * Math.Exp(-(x * x) - (y + 1) * (y + 1)) - 10 * (x / 5 - x * x * x - y * y * y * y * y) * Math.Exp(-x * x - y * y) - 1.0 / 3 * Math.Exp(-(x + 1) * (x + 1) - y * y);
+            var xvalues = ArrayBuilder.CreateVector(x0, x1, n);
+            var yvalues = ArrayBuilder.CreateVector(y0, y1, n);
+            var peaksData = ArrayBuilder.Evaluate(peaks, xvalues, yvalues);
+
+            var model = new PlotModel { Title = "Normal Heatmap" };
+
+            model.Axes.Add(
+                new LinearAxis() { Key = "x_axis", AbsoluteMinimum = x0, AbsoluteMaximum = x1, Position = AxisPosition.Left });
+
+            model.Axes.Add(
+                new LinearAxis() { Key = "y_axis", AbsoluteMinimum = y0, AbsoluteMaximum = y1, Position = AxisPosition.Top });
+
+            model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
+
+            var hms = new HeatMapSeries
+            {
+                X0 = x0,
+                X1 = x1,
+                Y0 = y0,
+                Y1 = y1,
+                Data = peaksData,
+                XAxisKey = "x_axis",
+                YAxisKey = "y_axis"
+            };
+            model.Series.Add(hms);
+
+            return model;
+        }
+
+        [Example("#535: Normal HeatMap")]
+        public static PlotModel NormalHeatMap()
+        {
+            int n = 100;
+
+            double x0 = -3.1;
+            double x1 = 3.1;
+            double y0 = -3;
+            double y1 = 3;
+            Func<double, double, double> peaks = (x, y) => 3 * (1 - x) * (1 - x) * Math.Exp(-(x * x) - (y + 1) * (y + 1)) - 10 * (x / 5 - x * x * x - y * y * y * y * y) * Math.Exp(-x * x - y * y) - 1.0 / 3 * Math.Exp(-(x + 1) * (x + 1) - y * y);
+            var xvalues = ArrayBuilder.CreateVector(x0, x1, n);
+            var yvalues = ArrayBuilder.CreateVector(y0, y1, n);
+            var peaksData = ArrayBuilder.Evaluate(peaks, xvalues, yvalues);
+
+            var model = new PlotModel { Title = "Peaks" };
+
+            model.Axes.Add(
+    new LinearAxis() { Key = "x_axis", AbsoluteMinimum = x0, AbsoluteMaximum = x1, Position = AxisPosition.Top });
+
+            model.Axes.Add(
+                new LinearAxis() { Key = "y_axis", AbsoluteMinimum = y0, AbsoluteMaximum = y1, Position = AxisPosition.Left });
+
+            model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
+
+            var hms = new HeatMapSeries
+            {
+                X0 = x0,
+                X1 = x1,
+                Y0 = y0,
+                Y1 = y1,
+                Data = peaksData,
+                XAxisKey = "x_axis",
+                YAxisKey = "y_axis"
+            };
+            model.Series.Add(hms);
+
+            return model;
+        }
+
+        /// <summary>
+        /// Contains example code for https://github.com/oxyplot/oxyplot/issues/42
+        /// </summary>
+        /// <returns>The plot model.</returns>
+        [Example("#42: ContourSeries not working for not square data array")]
+        public static PlotModel IndexOutOfRangeContour()
+        {
+            var model = new PlotModel { Title = "Issue #42" };
+            model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(5) });
+
+            var x = ArrayBuilder.CreateVector(0, 1, 20);
+            var y = ArrayBuilder.CreateVector(-1, 1, 2);
+            var data = ArrayBuilder.Evaluate((a, b) => a * b, x, y);
+
+            var contour = new ContourSeries
+            {
+                ColumnCoordinates = y,
+                RowCoordinates = x,
+                Data = data
+            };
+            model.Series.Add(contour);
+
+            return model;
+        }
+
+        [Example("#624: Rendering math text with syntax error gets stuck in an endless loop")]
+        public static PlotModel MathTextWithSyntaxError()
+        {
+            var model = new PlotModel { Title = "Math text syntax errors" };
+            model.Series.Add(new LineSeries { Title = "x_{1" });
+            model.Series.Add(new LineSeries { Title = "x^{2" });
+            model.Series.Add(new LineSeries { Title = "x^{2_{1" });
+            model.Series.Add(new LineSeries { Title = "x^{ x^" });
+            model.Series.Add(new LineSeries { Title = "x_{ x_" });
+            model.Series.Add(new LineSeries { Title = "" });
+            model.Series.Add(new LineSeries { Title = "x^{ x_{ x^_" });
+            return model;
+        }
+
+        [Example("#19: The minimum value is not mentioned on the axis I")]
+        public static PlotModel MinimumValueOnAxis()
+        {
+            var model = new PlotModel { Title = "Show minimum and maximum values on axis" };
+            model.Axes.Add(new LinearAxis
+            {
+                Position = AxisPosition.Left,
+                //ShowMinimumValue = true,
+                //ShowMaximumValue = true,
+                //MinimumValueStringFormat = "0.###",
+                //MaximumValueStringFormat = "0.###",
+                MaximumPadding = 0,
+                MinimumPadding = 0
+            });
+            model.Axes.Add(new LinearAxis
+            {
+                Position = AxisPosition.Bottom,
+                //ShowMinimumValue = true,
+                //ShowMaximumValue = true,
+                //MinimumValueStringFormat = "0.###",
+                //MaximumValueStringFormat = "0.###",
+                MaximumPadding = 0,
+                MinimumPadding = 0
+            });
+            var ls = new LineSeries();
+            ls.Points.Add(new DataPoint(0.14645, 0.14645));
+            ls.Points.Add(new DataPoint(9.85745, 9.85745));
+            model.Series.Add(ls);
+            return model;
+        }
+
+        [Example("#19: The minimum value is not mentioned on the axis II")]
+        public static PlotModel MinimumValueOnAxis2()
+        {
+            var model = new PlotModel { Title = "Show minimum and maximum values on axis" };
+            model.Axes.Add(new LinearAxis
+            {
+                Position = AxisPosition.Left,
+                //ShowMinimumValue = true,
+                //ShowMaximumValue = true,
+                //MinimumValueStringFormat = "0.###",
+                //MaximumValueStringFormat = "0.###",
+                MaximumPadding = 0,
+                MinimumPadding = 0
+            });
+            model.Axes.Add(new LinearAxis
+            {
+                Position = AxisPosition.Bottom,
+                //ShowMinimumValue = true,
+                //ShowMaximumValue = true,
+                //MinimumValueStringFormat = "0.###",
+                //MaximumValueStringFormat = "0.###",
+                MaximumPadding = 0,
+                MinimumPadding = 0
+            });
+            var ls = new LineSeries();
+            ls.Points.Add(new DataPoint(-0.14645, -0.14645));
+            ls.Points.Add(new DataPoint(10.15745, 10.15745));
+            model.Series.Add(ls);
+            return model;
+        }
+
+        [Example("#635: PositionAtZeroCrossing Forces Value Axis Label")]
+        public static PlotModel PositionAtZeroCrossingForcesValueAxisLabel()
+        {
+            var plotModel = new PlotModel
+            {
+                Title = "PositionAtZeroCrossing Forces Value Axis Label",
+            };
+
+            var categoryAxis = new CategoryAxis
+            {
+                Position = AxisPosition.Bottom,
+                AxislineStyle = LineStyle.Solid,
+                PositionAtZeroCrossing = true
+            };
+            var valueAxis = new LinearAxis
+            {
+                Position = AxisPosition.Left,
+                MinimumPadding = 0,
+                Minimum = -14,
+                Maximum = 14,
+                IsAxisVisible = false
+            };
+            plotModel.Axes.Add(categoryAxis);
+            plotModel.Axes.Add(valueAxis);
+            var series = new ColumnSeries();
+            series.Items.Add(new ColumnItem { Value = 3 });
+            series.Items.Add(new ColumnItem { Value = 14 });
+            series.Items.Add(new ColumnItem { Value = 11 });
+            series.Items.Add(new ColumnItem { Value = 12 });
+            series.Items.Add(new ColumnItem { Value = 7 });
+            plotModel.Series.Add(series);
+
+            return plotModel;
+        }
+
+        [Example("#550: MinimumRange with Minimum")]
+        public static PlotModel MinimumRangeWithMinimum()
+        {
+            var model = new PlotModel { Title = "MinimumRange of 500 with a Minimum of 50", Subtitle = "Should initially show a range from 50 to 550." };
+            model.Axes.Add(
+                new LinearAxis
+                {
+                    Position = AxisPosition.Left,
+                    Minimum = 50,
+                    MinimumRange = 500
+                });
+
+            return model;
+        }
+
+
+        [Example("#710: MinimumRange and MaximumRange with Minimum")]
+        public static PlotModel MinimumRangeAndMaximumRangeWithMinimum()
+        {
+            var model = new PlotModel { Title = "MinimumRange of 5 and MaximumRange of 200 with a Minimum of 0", Subtitle = "Should show a range from 0 to 5 minimum and a range of 200 maximum." };
+            model.Axes.Add(
+                new LinearAxis
+                {
+                    Position = AxisPosition.Left,
+                    Minimum = 0,
+                    MinimumRange = 5,
+                    MaximumRange = 200
+                });
+
+            return model;
+        }
+
+        [Example("#711: MinimumRange with AbsoluteMinimum")]
+        public static PlotModel MinimumRangeWithAbsoluteMinimum()
+        {
+            var model = new PlotModel { Title = "MinimumRange of 500 with a AbsoluteMinimum of 50", Subtitle = "Should initially show a range from 50 to 550. It should not be possible to pan below 50." };
+            model.Axes.Add(
+                new LinearAxis
+                {
+                    Position = AxisPosition.Left,
+                    AbsoluteMinimum = 50,
+                    MinimumRange = 500
+                });
+
+            return model;
+        }
+
+        [Example("#711: MinimumRange with AbsoluteMaximum")]
+        public static PlotModel MinimumRangeWithAbsoluteMaximum()
+        {
+            var model = new PlotModel { Title = "MinimumRange of 500 with a AbsoluteMaximum of 200", Subtitle = "Should initially show a range from -300 to 200. It should not be possible to pan above 200." };
+            model.Axes.Add(
+                new LinearAxis
+                {
+                    Position = AxisPosition.Left,
+                    AbsoluteMaximum = 200,
+                    MinimumRange = 500
+                });
+
+            return model;
+        }
+
+        [Example("#711: MaximumRange with AbsoluteMinimum")]
+        public static PlotModel MaximumRangeWithAbsoluteMinimum()
+        {
+            var model = new PlotModel { Title = "MaximumRange of 50 with a AbsoluteMinimum of 20", Subtitle = "Should initially show a range from 20 to 70. It should not be possible to pan below 20." };
+            model.Axes.Add(
+                new LinearAxis
+                {
+                    Position = AxisPosition.Left,
+                    AbsoluteMinimum = 20,
+                    MaximumRange = 50
+                });
+
+            return model;
+        }
+
+        [Example("#711: MaximumRange with AbsoluteMaximum")]
+        public static PlotModel MaximumRangeWithAbsoluteMaximum()
+        {
+            var model = new PlotModel { Title = "MaximumRange of 25 with a AbsoluteMaximum of -20", Subtitle = "Should initially show a range from -45 to -20. It should not be possible to pan above -20." };
+            model.Axes.Add(
+                new LinearAxis
+                {
+                    Position = AxisPosition.Left,
+                    AbsoluteMaximum = -20,
+                    MaximumRange = 25
+                });
+
+            return model;
+        }
+
+        [Example("#745: HeatMap not working in Windows Universal")]
+        public static PlotModel PlotHeatMap()
+        {
+            var model = new PlotModel { Title = "FOOBAR" };
+            model.Axes.Add(new LinearColorAxis
+            {
+                Position = AxisPosition.Right,
+                Palette = OxyPalettes.Jet(500),
+                HighColor = OxyColors.Gray,
+                LowColor = OxyColors.Black
+            });
+
+            var data = new double[,] { { 1, 2 }, { 1, 1 }, { 2, 1 }, { 2, 2 } };
+
+            var hs = new HeatMapSeries
+            {
+                Background = OxyColors.Red,
+                X0 = 0,
+                X1 = 2,
+                Y0 = 0,
+                Y1 = 3,
+                Data = data,
+            };
+            model.Series.Add(hs);
+            return model;
+        }
+
+        [Example("#758: IntervalLength = 0")]
+        public static PlotModel IntervalLength0()
+        {
+            var model = new PlotModel
+            {
+                Title = "IntervalLength = 0",
+                Subtitle = "An exception should be thrown. Should not go into infinite loop."
+            };
+            model.Axes.Add(new LinearAxis { IntervalLength = 0 });
+            return model;
+        }
+
+        [Example("#737: Wrong axis line when PositionAtZeroCrossing = true")]
+        public static PlotModel WrongAxisLineWhenPositionAtZeroCrossingIsSet()
+        {
+            var model = new PlotModel { Title = "PositionAtZeroCrossing" };
+            model.Axes.Add(
+                new LinearAxis
+                {
+                    Position = AxisPosition.Left
+                });
+            model.Axes.Add(
+                new LinearAxis
+                {
+                    Position = AxisPosition.Bottom,
+                    PositionAtZeroCrossing = true,
+                    AxislineStyle = LineStyle.Solid,
+                    AxislineThickness = 1
+                });
+            var lineSeries = new LineSeries();
+            lineSeries.Points.Add(new DataPoint(-10, 10));
+            lineSeries.Points.Add(new DataPoint(0, -10));
+            lineSeries.Points.Add(new DataPoint(10, 10));
+            model.Series.Add(lineSeries);
+            return model;
+        }
+
+        [Example("#727: Axis Min/Max ignored")]
+        public static PlotModel AxisMinMaxIgnored()
+        {
+            var plotModel1 = new PlotModel
+            {
+                Title = "Axes min/max ignored",
+                PlotType = PlotType.Cartesian,
+            };
+            var ls = new LineSeries();
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = 0, Maximum = 866, Key = "Horizontal" });
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 103, Maximum = 37141, Key = "Vertical" });
+            ls.XAxisKey = "Horizontal";
+            ls.YAxisKey = "Vertical";
+            plotModel1.Series.Add(ls);
+
+            return plotModel1;
+        }
+
+        [Example("#727: Axis Min/Max")]
+        public static PlotModel AxisMinMax()
+        {
+            var plotModel1 = new PlotModel
+            {
+                Title = "Axes min/max",
+            };
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = 0, Maximum = 866 });
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 103, Maximum = 37141 });
+
+            return plotModel1;
+        }
+
+        [Example("#453: Auto plot margin and width of labels")]
+        public static PlotModel AutoPlotMarginAndAxisLabelWidths()
+        {
+            var plotModel1 = new PlotModel { Title = "Auto plot margin not taking width of axis tick labels into account" };
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -1e8, Maximum = 1e8 });
+            return plotModel1;
+        }
+
+        /// <summary>
+        /// Creates a demo PlotModel with MinimumRange defined
+        /// and with series with values which are within this range.
+        /// </summary>
+        /// <returns>The created PlotModel</returns>
+        [Example("#794: Axis alignment when MinimumRange is set")]
+        public static PlotModel MinimumRangeTest()
+        {
+            var model = new PlotModel();
+            var yaxis = new LinearAxis()
+            {
+                Position = AxisPosition.Left,
+                MinimumRange = 1,
+            };
+
+            model.Axes.Add(yaxis);
+
+            var series = new LineSeries();
+            series.Points.Add(new DataPoint(0, 10.1));
+            series.Points.Add(new DataPoint(1, 10.15));
+            series.Points.Add(new DataPoint(2, 10.3));
+            series.Points.Add(new DataPoint(3, 10.25));
+            series.Points.Add(new DataPoint(4, 10.1));
+
+            model.Series.Add(series);
+
+            return model;
+        }
+
+        [Example("#72: Smooth")]
+        public static PlotModel Smooth()
+        {
+            var model = new PlotModel { Title = "LineSeries with Smooth = true (zoomed in)", LegendSymbolLength = 24 };
+
+            var s1 = new LineSeries();
+            s1.Points.Add(new DataPoint(0, 0));
+            s1.Points.Add(new DataPoint(10, 2));
+            s1.Points.Add(new DataPoint(40, 1));
+            s1.Smooth = true;
+            model.Series.Add(s1);
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = 10.066564180257437, Maximum = 10.081628088306001 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 2.0013430243084067, Maximum = 2.00209808854281 });
+            return model;
+        }
+
+        [Example("#880: Too much padding")]
+        public static PlotModel TooMuchPadding()
+        {
+            return new PlotModel { Title = "Too much padding", Padding = new OxyThickness(0, 0, 0, 10000) };
+        }
+
+        [Example("#880: Too much padding with legend outside")]
+        public static PlotModel TooMuchPaddingWithLegend()
+        {
+            var model = new PlotModel
+            {
+                Title = "Too much padding with legend outside",
+                LegendPlacement = LegendPlacement.Outside,
+                Padding = new OxyThickness(500)
+            };
+            model.Series.Add(new LineSeries { Title = "Series 1" });
+            model.Series.Add(new LineSeries { Title = "Series 2" });
+            return model;
+        }
+
+        [Example("#880: Too much title padding")]
+        public static PlotModel TooMuchTitlePadding()
+        {
+            var model = new PlotModel { Title = "Too much title padding", TitlePadding = 10000 };
+            return model;
+        }
+
+        /// <summary>
+        /// Creates a demo PlotModel with MinimumRange defined
+        /// and with series with values which are within this range.
+        /// </summary>
+        /// <returns>The created PlotModel</returns>
+        [Example("#794: Axis alignment when MinimumRange is set with AbsoluteMaximum")]
+        public static PlotModel MinimumRangeAbsoluteMaximumTest()
+        {
+            var model = new PlotModel();
+            var yaxis = new LinearAxis()
+            {
+                Position = AxisPosition.Left,
+                MinimumRange = 1,
+                AbsoluteMaximum = 10.5
+            };
+
+            model.Axes.Add(yaxis);
+
+            var series = new LineSeries();
+            series.Points.Add(new DataPoint(0, 10.1));
+            series.Points.Add(new DataPoint(1, 10.15));
+            series.Points.Add(new DataPoint(2, 10.3));
+            series.Points.Add(new DataPoint(3, 10.25));
+            series.Points.Add(new DataPoint(4, 10.1));
+
+            model.Series.Add(series);
+
+            return model;
+        }
+
+        /// <summary>
+        /// Creates a demo PlotModel with MinimumRange defined
+        /// and with series with values which are within this range.
+        /// </summary>
+        /// <returns>The created PlotModel</returns>
+        [Example("#794: Axis alignment when MinimumRange is set with AbsoluteMinimum")]
+        public static PlotModel MinimumRangeAbsoluteMinimumTest()
+        {
+            var model = new PlotModel();
+            var yaxis = new LinearAxis()
+            {
+                Position = AxisPosition.Left,
+                MinimumRange = 1,
+                AbsoluteMinimum = 10,
+            };
+
+            model.Axes.Add(yaxis);
+
+            var series = new LineSeries();
+            series.Points.Add(new DataPoint(0, 10.1));
+            series.Points.Add(new DataPoint(1, 10.15));
+            series.Points.Add(new DataPoint(2, 10.3));
+            series.Points.Add(new DataPoint(3, 10.25));
+            series.Points.Add(new DataPoint(4, 10.1));
+
+            model.Series.Add(series);
+
+            return model;
+        }
+
+        /// <summary>
+        /// Creates a demo PlotModel with the data from the issue.
+        /// </summary>
+        /// <returns>The created PlotModel</returns>
+        [Example("#589: LogarithmicAxis glitches with multiple series containing small data")]
+        public static PlotModel LogaritmicAxesSuperExponentialFormatTest()
+        {
+            var model = new PlotModel();
+            model.Axes.Add(new LogarithmicAxis
+            {
+                UseSuperExponentialFormat = true,
+                Position = AxisPosition.Bottom,
+                MajorGridlineStyle = LineStyle.Dot,
+                PowerPadding = true
+            });
+
+            model.Axes.Add(new LogarithmicAxis
+            {
+                UseSuperExponentialFormat = true,
+                Position = AxisPosition.Left,
+                MajorGridlineStyle = LineStyle.Dot,
+                PowerPadding = true
+            });
+
+            var series1 = new LineSeries();
+            series1.Points.Add(new DataPoint(1e5, 1e-14));
+            series1.Points.Add(new DataPoint(4e7, 1e-12));
+            model.Series.Add(series1);
+
+            return model;
+        }
+
+        /// <summary>
+        /// Attempts to create a logarithmic axis starting at 1 and going to 0.
+        /// </summary>
+        /// <returns>The plot model.</returns>
+        [Example("#925: WPF app freezes when LogarithmicAxis is reversed.")]
+        public static PlotModel LogarithmicAxisReversed()
+        {
+            var model = new PlotModel();
+            model.Axes.Add(new LogarithmicAxis { StartPosition = 1, EndPosition = 0});
+
+            return model;
+        }
+
+        /* NEW ISSUE TEMPLATE
+           [Example("#123: Issue Description")]
+           public static PlotModel IssueDescription()
+           {
+               var plotModel1 = new PlotModel
+               {
+                   Title = "",
+               };
+
+               return plotModel1;
+           }
+           */
     }
 }

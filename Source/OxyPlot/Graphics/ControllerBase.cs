@@ -61,7 +61,7 @@ namespace OxyPlot
         /// <param name="gesture">The gesture.</param>
         /// <param name="args">The <see cref="OxyInputEventArgs" /> instance containing the event data.</param>
         /// <returns><c>true</c> if the event was handled.</returns>
-        public bool HandleGesture(IView view, OxyInputGesture gesture, OxyInputEventArgs args)
+        public virtual bool HandleGesture(IView view, OxyInputGesture gesture, OxyInputEventArgs args)
         {
             var command = this.GetCommand(gesture);
             return this.HandleCommand(command, view, args);
@@ -140,7 +140,7 @@ namespace OxyPlot
                     this.MouseHoverManipulators.Remove(m);
                 }
 
-                return true;
+                return args.Handled;
             }
         }
 
@@ -173,7 +173,7 @@ namespace OxyPlot
                     m.Delta(args);
                 }
 
-                return true;
+                return args.Handled;
             }
         }
 
@@ -202,7 +202,7 @@ namespace OxyPlot
                     this.MouseDownManipulators.Remove(m);
                 }
 
-                return true;
+                return args.Handled;
             }
         }
 
@@ -227,7 +227,7 @@ namespace OxyPlot
         /// <param name="view">The plot view.</param>
         /// <param name="args">The <see cref="OxyTouchEventArgs" /> instance containing the event data.</param>
         /// <returns><c>true</c> if the event was handled.</returns>
-        public bool HandleTouchStarted(IView view, OxyTouchEventArgs args)
+        public virtual bool HandleTouchStarted(IView view, OxyTouchEventArgs args)
         {
             lock (this.GetSyncRoot(view))
             {
@@ -251,7 +251,7 @@ namespace OxyPlot
         /// <param name="view">The plot view.</param>
         /// <param name="args">The <see cref="OxyTouchEventArgs" /> instance containing the event data.</param>
         /// <returns><c>true</c> if the event was handled.</returns>
-        public bool HandleTouchDelta(IView view, OxyTouchEventArgs args)
+        public virtual bool HandleTouchDelta(IView view, OxyTouchEventArgs args)
         {
             lock (this.GetSyncRoot(view))
             {
@@ -269,7 +269,7 @@ namespace OxyPlot
                     m.Delta(args);
                 }
 
-                return true;
+                return args.Handled;
             }
         }
 
@@ -279,7 +279,7 @@ namespace OxyPlot
         /// <param name="view">The plot view.</param>
         /// <param name="args">The <see cref="OxyTouchEventArgs" /> instance containing the event data.</param>
         /// <returns><c>true</c> if the event was handled.</returns>
-        public bool HandleTouchCompleted(IView view, OxyTouchEventArgs args)
+        public virtual bool HandleTouchCompleted(IView view, OxyTouchEventArgs args)
         {
             lock (this.GetSyncRoot(view))
             {
@@ -298,7 +298,7 @@ namespace OxyPlot
                     this.TouchManipulators.Remove(m);
                 }
 
-                return true;
+                return args.Handled;
             }
         }
 
@@ -508,9 +508,7 @@ namespace OxyPlot
             }
 
             command.Execute(view, this, args);
-
-            args.Handled = true;
-            return true;
+            return args.Handled;
         }
 
         /// <summary>

@@ -23,9 +23,24 @@ namespace OxyPlot.Series
     public class PieSeries : ItemsSeries
     {
         /// <summary>
+        /// The default tracker format string
+        /// </summary>
+        public const string DefaultTrackerFormatString = "{1}: {2:0.###} ({3:P1})";
+
+        /// <summary>
         /// The slices.
         /// </summary>
         private IList<PieSlice> slices;
+
+        /// <summary>
+        /// The actual points of the slices.
+        /// </summary>
+        private List<IList<ScreenPoint>> slicePoints = new List<IList<ScreenPoint>>();
+
+        /// <summary>
+        /// The total value of all the pie slices.
+        /// </summary>
+        private double total;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PieSeries" /> class.
@@ -52,21 +67,21 @@ namespace OxyPlot.Series
             this.TickLabelDistance = 4;
             this.InsideLabelPosition = 0.5;
             this.FontSize = 12;
-            this.TrackerFormatString = "{0}: {1:0.###}";
+            this.TrackerFormatString = DefaultTrackerFormatString;
         }
 
         /// <summary>
-        /// Gets or sets AngleIncrement.
+        /// Gets or sets the angle increment.
         /// </summary>
         public double AngleIncrement { get; set; }
 
         /// <summary>
-        /// Gets or sets AngleSpan.
+        /// Gets or sets the angle span.
         /// </summary>
         public double AngleSpan { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether AreInsideLabelsAngled.
+        /// Gets or sets a value indicating whether inside labels are angled.
         /// </summary>
         public bool AreInsideLabelsAngled { get; set; }
 
@@ -163,7 +178,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets or sets the stroke color.
         /// </summary>
-        /// <value>The stroke.</value>
+        /// <value>The stroke color.</value>
         public OxyColor Stroke { get; set; }
 
         /// <summary>
@@ -210,7 +225,23 @@ namespace OxyPlot.Series
         /// <returns>A TrackerHitResult for the current hit.</returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
-            // TODO
+            for (int i = 0; i < this.slicePoints.Count; i++)
+            {
+                if (ScreenPointHelper.IsPointInPolygon(point, this.slicePoints[i]))
+                {
+                    var slice = this.slices[i];
+                    var item = this.GetItem(i);
+                    return new TrackerHitResult
+                    {
+                        Series = this,
+                        Position = point,
+                        Item = item,
+                        Index = i,
+                        Text = StringHelper.Format(this.ActualCulture, this.TrackerFormatString, slice, this.Title, slice.Label, slice.Value, slice.Value / this.total)
+                    };
+                }
+            }
+
             return null;
         }
 
@@ -218,36 +249,37 @@ namespace OxyPlot.Series
         /// Renders the series on the specified render context.
         /// </summary>
         /// <param name="rc">The rendering context.</param>
-        /// <param name="model">The model.</param>
-        public override void Render(IRenderContext rc, PlotModel model)
+        public override void Render(IRenderContext rc)
         {
+            this.slicePoints.Clear();
+
             if (this.Slices.Count == 0)
             {
                 return;
             }
 
-            double total = this.slices.Sum(slice => slice.Value);
-            if (Math.Abs(total) < double.Epsilon)
+            this.total = this.slices.Sum(slice => slice.Value);
+            if (Math.Abs(this.total) < double.Epsilon)
             {
                 return;
             }
 
             // todo: reduce available size due to the labels
-            double radius = Math.Min(model.PlotArea.Width, model.PlotArea.Height) / 2;
+            double radius = Math.Min(this.PlotModel.PlotArea.Width, this.PlotModel.PlotArea.Height) / 2;
 
             double outerRadius = radius * (this.Diameter - this.ExplodedDistance);
             double innerRadius = radius * this.InnerDiameter;
 
             double angle = this.StartAngle;
             var midPoint = new ScreenPoint(
-                (model.PlotArea.Left + model.PlotArea.Right) * 0.5, (model.PlotArea.Top + model.PlotArea.Bottom) * 0.5);
+                (this.PlotModel.PlotArea.Left + this.PlotModel.PlotArea.Right) * 0.5, (this.PlotModel.PlotArea.Top + this.PlotModel.PlotArea.Bottom) * 0.5);
 
             foreach (var slice in this.slices)
             {
                 var outerPoints = new List<ScreenPoint>();
                 var innerPoints = new List<ScreenPoint>();
 
-                double sliceAngle = slice.Value / total * this.AngleSpan;
+                double sliceAngle = slice.Value / this.total * this.AngleSpan;
                 double endAngle = angle + sliceAngle;
                 double explodedRadius = slice.IsExploded ? this.ExplodedDistance * radius : 0.0;
 
@@ -297,11 +329,14 @@ namespace OxyPlot.Series
 
                 rc.DrawPolygon(points, slice.ActualFillColor, this.Stroke, this.StrokeThickness, null, LineJoin.Bevel);
 
+                // keep the point for hit testing
+                this.slicePoints.Add(points);
+
                 // Render label outside the slice
                 if (this.OutsideLabelFormat != null)
                 {
                     string label = string.Format(
-                        this.OutsideLabelFormat, slice.Value, slice.Label, slice.Value / total * 100);
+                        this.OutsideLabelFormat, slice.Value, slice.Label, slice.Value / this.total * 100);
                     int sign = Math.Sign(Math.Cos(midAngleRadians));
 
                     // tick points
@@ -334,7 +369,7 @@ namespace OxyPlot.Series
                 if (this.InsideLabelFormat != null && !this.InsideLabelColor.IsUndefined())
                 {
                     string label = string.Format(
-                        this.InsideLabelFormat, slice.Value, slice.Label, slice.Value / total * 100);
+                        this.InsideLabelFormat, slice.Value, slice.Label, slice.Value / this.total * 100);
                     double r = (innerRadius * (1 - this.InsideLabelPosition)) + (outerRadius * this.InsideLabelPosition);
                     var labelPosition = new ScreenPoint(
                         mp.X + (r * Math.Cos(midAngleRadians)), mp.Y + (r * Math.Sin(midAngleRadians)));
@@ -402,14 +437,13 @@ namespace OxyPlot.Series
         /// <summary>
         /// Sets the default values.
         /// </summary>
-        /// <param name="model">The model.</param>
-        protected internal override void SetDefaultValues(PlotModel model)
+        protected internal override void SetDefaultValues()
         {
             foreach (var slice in this.Slices)
             {
                 if (slice.Fill.IsAutomatic())
                 {
-                    slice.DefaultFillColor = model.GetDefaultColor();
+                    slice.DefaultFillColor = this.PlotModel.GetDefaultColor();
                 }
             }
         }
@@ -433,12 +467,20 @@ namespace OxyPlot.Series
 
             this.slices.Clear();
 
-            var filler = new ListFiller<PieSlice>();
-            filler.Add(this.LabelField, (item, value) => item.Label = Convert.ToString(value));
-            filler.Add(this.ValueField, (item, value) => item.Value = Convert.ToDouble(value));
-            filler.Add(this.ColorField, (item, value) => item.Fill = (OxyColor)value);
-            filler.Add(this.IsExplodedField, (item, value) => item.IsExploded = (bool)value);
-            filler.FillT(this.slices, this.ItemsSource);
+            var filler = new ListBuilder<PieSlice>();
+            filler.Add(this.LabelField, (string)null);
+            filler.Add(this.ValueField, double.NaN);
+            filler.Add(this.ColorField, OxyColors.Automatic);
+            filler.Add(this.IsExplodedField, false);
+            filler.FillT(
+                this.slices, 
+                this.ItemsSource,
+                args =>
+                new PieSlice((string)args[0], Convert.ToDouble(args[1]))
+                {
+                    Fill = (OxyColor)args[2],
+                    IsExploded = (bool)args[3]
+                });
         }
 
         /// <summary>

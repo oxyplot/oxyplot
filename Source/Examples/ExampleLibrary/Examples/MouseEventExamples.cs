@@ -415,7 +415,7 @@ namespace ExampleLibrary
 
             OxyImage image;
 #if UNIVERSAL
-            var assembly = typeof(PlotModel).GetTypeInfo().Assembly;
+            var assembly = typeof(MouseEventExamples).GetTypeInfo().Assembly;
 #else
             var assembly = Assembly.GetExecutingAssembly();
 #endif

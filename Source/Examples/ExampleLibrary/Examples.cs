@@ -16,31 +16,17 @@ namespace ExampleLibrary
     /// </summary>
     public static class Examples
     {
-        /// <summary>
-        /// Gets the first or default attribute of the specified type.
-        /// </summary>
-        /// <typeparam name="T">The attribute type.</typeparam>
-        /// <param name="type">The type to reflect.</param>
-        /// <returns>The attribute.</returns>
-        public static T FirstOrDefault<T>(this Type type) where T : Attribute
+#if !UNIVERSAL
+        public static IEnumerable<T> GetCustomAttributes<T>(this Type type) where T : Attribute
         {
-            var attributes = type.GetCustomAttributes(typeof(T), true).ToArray();
-            return attributes.Length == 0 ? null : (T)attributes[0];
+            return type.GetCustomAttributes(typeof(T), true).Cast<T>();
         }
 
-        /// <summary>
-        /// Gets the first or default attribute of the specified type.
-        /// </summary>
-        /// <typeparam name="T">The attribute type.</typeparam>
-        /// <param name="info">The information.</param>
-        /// <returns>
-        /// The attribute.
-        /// </returns>
-        public static T FirstOrDefault<T>(this MethodInfo info) where T : Attribute
+        public static IEnumerable<T> GetCustomAttributes<T>(this MethodInfo info) where T : Attribute
         {
-            var attributes = info.GetCustomAttributes(typeof(T), true).ToArray();
-            return attributes.Length == 0 ? null : (T)attributes[0];
+            return info.GetCustomAttributes(typeof(T), true).Cast<T>();
         }
+#endif
 
         /// <summary>
         /// Gets the list of examples.
@@ -57,13 +43,13 @@ namespace ExampleLibrary
 
             foreach (var type in assemblyTypes)
             {
-                var examplesAttribute = type.FirstOrDefault<ExamplesAttribute>();
+                var examplesAttribute = type.GetCustomAttributes<ExamplesAttribute>().FirstOrDefault();
                 if (examplesAttribute == null)
                 {
                     continue;
                 }
 
-                var examplesTags = type.FirstOrDefault<TagsAttribute>() ?? new TagsAttribute();
+                var examplesTags = type.GetCustomAttributes<TagsAttribute>().FirstOrDefault() ?? new TagsAttribute();
 
                 var types = new List<Type>();
                 var baseType = type;
@@ -71,7 +57,7 @@ namespace ExampleLibrary
                 {
 #if UNIVERSAL
                     types.Add(baseType.AsType());
-                    baseType = null;
+                    baseType = baseType.BaseType != null ? baseType.BaseType.GetTypeInfo() : null;
 #else
                     types.Add(baseType);
                     baseType = baseType.BaseType;
@@ -90,10 +76,10 @@ namespace ExampleLibrary
                     {
                         try
                         {
-                            var exampleAttribute = method.FirstOrDefault<ExampleAttribute>();
+                            var exampleAttribute = method.GetCustomAttributes<ExampleAttribute>().FirstOrDefault();
                             if (exampleAttribute != null)
                             {
-                                var exampleTags = method.FirstOrDefault<TagsAttribute>() ?? new TagsAttribute();
+                                var exampleTags = method.GetCustomAttributes<TagsAttribute>().FirstOrDefault() ?? new TagsAttribute();
                                 var tags = new List<string>(examplesTags.Tags);
                                 tags.AddRange(exampleTags.Tags);
                                 list.Add(

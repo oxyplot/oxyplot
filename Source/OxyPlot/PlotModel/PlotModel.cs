@@ -12,13 +12,10 @@ namespace OxyPlot
     using System;
     using System.Collections.Generic;
     using System.Globalization;
-    using System.IO;
     using System.Linq;
-    using System.Reflection;
 
     using OxyPlot.Annotations;
     using OxyPlot.Axes;
-    using OxyPlot.Reporting;
     using OxyPlot.Series;
 
     /// <summary>
@@ -206,10 +203,15 @@ namespace OxyPlot
         private int currentColorIndex;
 
         /// <summary>
+        /// Flags if the data has been updated.
+        /// </summary>
+        private bool isDataUpdated;
+
+        /// <summary>
         /// The last update exception.
         /// </summary>
         /// <value>The exception or <c>null</c> if there was no exceptions during the last update.</value>
-        private Exception updateException;
+        private Exception lastPlotException;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PlotModel" /> class.
@@ -235,6 +237,7 @@ namespace OxyPlot
             this.DefaultFont = "Segoe UI";
             this.DefaultFontSize = 12;
 
+            this.TitleToolTip = null;
             this.TitleFont = null;
             this.TitleFontSize = 18;
             this.TitleFontWeight = FontWeights.Bold;
@@ -258,6 +261,7 @@ namespace OxyPlot
             this.LegendPadding = 8;
             this.LegendColumnSpacing = 8;
             this.LegendItemSpacing = 24;
+            this.LegendLineSpacing = 0;
             this.LegendMargin = 8;
 
             this.LegendBackground = OxyColors.Undefined;
@@ -268,6 +272,7 @@ namespace OxyPlot
             this.LegendTitleColor = OxyColors.Automatic;
 
             this.LegendMaxWidth = double.NaN;
+            this.LegendMaxHeight = double.NaN;
             this.LegendPlacement = LegendPlacement.Inside;
             this.LegendPosition = LegendPosition.RightTop;
             this.LegendOrientation = LegendOrientation.Vertical;
@@ -291,19 +296,6 @@ namespace OxyPlot
                 };
 
             this.AxisTierDistance = 4.0;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PlotModel" /> class.
-        /// </summary>
-        /// <param name="title">The title.</param>
-        /// <param name="subtitle">The subtitle.</param>
-        [Obsolete]
-        public PlotModel(string title, string subtitle = null)
-            : this()
-        {
-            this.Title = title;
-            this.Subtitle = subtitle;
         }
 
         /// <summary>
@@ -425,9 +417,9 @@ namespace OxyPlot
         public double LegendBorderThickness { get; set; }
 
         /// <summary>
-        /// Gets or sets the legend column spacing.
+        /// Gets or sets the spacing between columns of legend items (only for vertical orientation).
         /// </summary>
-        /// <value>The legend column spacing.</value>
+        /// <value>The spacing in device independent units.</value>
         public double LegendColumnSpacing { get; set; }
 
         /// <summary>
@@ -468,10 +460,16 @@ namespace OxyPlot
         public LegendItemOrder LegendItemOrder { get; set; }
 
         /// <summary>
-        /// Gets or sets the legend spacing.
+        /// Gets or sets the horizontal spacing between legend items when the orientation is horizontal.
         /// </summary>
-        /// <value>The legend spacing.</value>
+        /// <value>The horizontal distance between items in device independent units.</value>
         public double LegendItemSpacing { get; set; }
+
+        /// <summary>
+        /// Gets or sets the vertical spacing between legend items.
+        /// </summary>
+        /// <value>The spacing in device independent units.</value>
+        public double LegendLineSpacing { get; set; }
 
         /// <summary>
         /// Gets or sets the legend margin.
@@ -484,6 +482,12 @@ namespace OxyPlot
         /// </summary>
         /// <value>The max width of the legend.</value>
         public double LegendMaxWidth { get; set; }
+
+        /// <summary>
+        /// Gets or sets the max height of the legend.
+        /// </summary>
+        /// <value>The max height of the legend.</value>
+        public double LegendMaxHeight { get; set; }
 
         /// <summary>
         /// Gets or sets the legend orientation.
@@ -670,6 +674,12 @@ namespace OxyPlot
         public string Title { get; set; }
 
         /// <summary>
+        /// Gets or sets the title tool tip.
+        /// </summary>
+        /// <value>The title tool tip.</value>
+        public string TitleToolTip { get; set; }
+
+        /// <summary>
         /// Gets or sets the color of the title.
         /// </summary>
         /// <value>The color of the title.</value>
@@ -773,30 +783,6 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets the visible series.
-        /// </summary>
-        /// <value>The visible series.</value>
-        private IEnumerable<Series.Series> VisibleSeries
-        {
-            get
-            {
-                return this.Series.Where(s => s.IsVisible);
-            }
-        }
-
-        /// <summary>
-        /// Gets the visible axes.
-        /// </summary>
-        /// <value>The visible axes.</value>
-        private IEnumerable<Axis> VisibleAxes
-        {
-            get
-            {
-                return this.Axes.Where(s => s.IsAxisVisible);
-            }
-        }
-
-        /// <summary>
         /// Attaches this model to the specified plot view.
         /// </summary>
         /// <param name="plotView">The plot view.</param>
@@ -804,71 +790,16 @@ namespace OxyPlot
         /// The plot model contains data (e.g. axis scaling) that is only relevant to the current plot view.</remarks>
         void IPlotModel.AttachPlotView(IPlotView plotView)
         {
+            var currentPlotView = this.PlotView;
+            if (!object.ReferenceEquals(currentPlotView, null) &&
+                !object.ReferenceEquals(plotView, null) &&
+                !object.ReferenceEquals(currentPlotView, plotView))
+            {
+                throw new InvalidOperationException(
+                    "This PlotModel is already in use by some other PlotView control.");
+            }
+
             this.plotViewReference = (plotView == null) ? null : new WeakReference(plotView);
-        }
-
-        /// <summary>
-        /// Creates a report for the plot.
-        /// </summary>
-        /// <returns>A report.</returns>
-        public Report CreateReport()
-        {
-            var r = new Report { Culture = CultureInfo.InvariantCulture };
-
-            r.AddHeader(1, "P L O T   R E P O R T");
-            r.AddHeader(2, "=== PlotModel ===");
-            r.AddPropertyTable("PlotModel", this);
-
-            r.AddHeader(2, "=== Axes ===");
-            foreach (Axis a in this.Axes)
-            {
-                r.AddPropertyTable(a.GetType().Name, a);
-            }
-
-            r.AddHeader(2, "=== Annotations ===");
-            foreach (var a in this.Annotations)
-            {
-                r.AddPropertyTable(a.GetType().Name, a);
-            }
-
-            r.AddHeader(2, "=== Series ===");
-            foreach (var s in this.Series)
-            {
-                r.AddPropertyTable(s.GetType().Name, s);
-                var ds = s as DataPointSeries;
-                if (ds != null)
-                {
-                    var fields = new List<ItemsTableField> { new ItemsTableField("X", "X"), new ItemsTableField("Y", "Y") };
-                    r.AddItemsTable("Data", ds.Points, fields);
-                }
-            }
-
-#if UNIVERSAL
-            var assemblyName = new AssemblyName(typeof(PlotModel).GetTypeInfo().Assembly.FullName);
-#else
-            var assemblyName = new AssemblyName(Assembly.GetExecutingAssembly().FullName);
-#endif
-            r.AddParagraph(string.Format("Report generated by OxyPlot {0}", assemblyName.Version.ToString(3)));
-
-            return r;
-        }
-
-        /// <summary>
-        /// Creates a text report for the plot model.
-        /// </summary>
-        /// <returns>A text report that contains information about the contents of the plot model.</returns>
-        public string CreateTextReport()
-        {
-            using (var ms = new MemoryStream())
-            {
-                var trw = new TextReportWriter(ms);
-                Report report = this.CreateReport();
-                report.Write(trw);
-                trw.Flush();
-                ms.Position = 0;
-                var r = new StreamReader(ms);
-                return r.ReadToEnd();
-            }
         }
 
         /// <summary>
@@ -1034,7 +965,7 @@ namespace OxyPlot
         {
             double mindist = double.MaxValue;
             Series.Series nearestSeries = null;
-            foreach (var series in this.VisibleSeries.Reverse())
+            foreach (var series in this.Series.Reverse().Where(s => s.IsVisible))
             {
                 var thr = series.GetNearestPoint(point, true) ?? series.GetNearestPoint(point, false);
 
@@ -1080,63 +1011,12 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Creates an svg model and return it as a string.
-        /// </summary>
-        /// <param name="width">The width (points).</param>
-        /// <param name="height">The height (points).</param>
-        /// <param name="isDocument">if set to <c>true</c>, the xml headers will be included (?xml and !DOCTYPE).</param>
-        /// <param name="textMeasurer">The text measurer.</param>
-        /// <returns>The svg string.</returns>
-        [Obsolete("Use SvgExporter instead")]
-        public string ToSvg(double width, double height, bool isDocument, IRenderContext textMeasurer = null)
-        {
-            return SvgExporter.ExportToString(this, width, height, isDocument, textMeasurer);
-        }
-
-        /// <summary>
-        /// Gets all elements of the model, sorted by rendering priority.
-        /// </summary>
-        /// <returns>An enumerator of the elements.</returns>
-        public override IEnumerable<PlotElement> GetElements()
-        {
-            foreach (var annotation in this.Annotations.Where(a => a.Layer == AnnotationLayer.BelowAxes))
-            {
-                yield return annotation;
-            }
-
-            foreach (var axis in this.VisibleAxes.Where(a => a.Layer == AxisLayer.BelowSeries))
-            {
-                yield return axis;
-            }
-
-            foreach (var annotation in this.Annotations.Where(a => a.Layer == AnnotationLayer.BelowSeries))
-            {
-                yield return annotation;
-            }
-
-            foreach (var s in this.VisibleSeries)
-            {
-                yield return s;
-            }
-
-            foreach (var annotation in this.Annotations.Where(a => a.Layer == AnnotationLayer.AboveSeries))
-            {
-                yield return annotation;
-            }
-
-            foreach (var axis in this.VisibleAxes.Where(a => a.Layer == AxisLayer.AboveSeries))
-            {
-                yield return axis;
-            }
-        }
-
-        /// <summary>
         /// Gets any exception thrown during the last <see cref="IPlotModel.Update" /> call.
         /// </summary>
         /// <returns>The exception or <c>null</c> if there was no exception.</returns>
-        public Exception GetLastUpdateException()
+        public Exception GetLastPlotException()
         {
-            return this.updateException;
+            return this.lastPlotException;
         }
 
         /// <summary>
@@ -1153,24 +1033,24 @@ namespace OxyPlot
             {
                 try
                 {
-                    this.updateException = null;
+                    this.lastPlotException = null;
                     this.OnUpdating();
 
                     // Updates the default axes
                     this.EnsureDefaultAxes();
 
-                    var visibleSeries = this.VisibleSeries.ToArray();
+                    var visibleSeries = this.Series.Where(s => s.IsVisible).ToArray();
 
                     // Update data of the series
-                    if (updateData)
+                    if (updateData || !this.isDataUpdated)
                     {
                         foreach (var s in visibleSeries)
                         {
                             s.UpdateData();
                         }
-                    }
 
-                    // TODO: clean this up :-)
+                        this.isDataUpdated = true;
+                    }
 
                     // Updates axes with information from the series
                     // This is used by the category axis that need to know the number of series using the axis.
@@ -1195,16 +1075,16 @@ namespace OxyPlot
 
                     // Update undefined colors
                     this.ResetDefaultColor();
-                    foreach (var s in this.VisibleSeries)
+                    foreach (var s in visibleSeries)
                     {
-                        s.SetDefaultValues(this);
+                        s.SetDefaultValues();
                     }
 
                     this.OnUpdated();
                 }
                 catch (Exception e)
                 {
-                    this.updateException = e;
+                    this.lastPlotException = e;
                 }
             }
         }
@@ -1272,13 +1152,64 @@ namespace OxyPlot
         /// Raises the TrackerChanged event.
         /// </summary>
         /// <param name="result">The result.</param>
-        protected internal virtual void OnTrackerChanged(TrackerHitResult result)
+        /// <remarks>
+        /// This method is public so custom implementations of tracker manipulators can invoke this method.
+        /// </remarks>
+        public void RaiseTrackerChanged(TrackerHitResult result)
         {
             var handler = this.TrackerChanged;
             if (handler != null)
             {
                 var args = new TrackerEventArgs { HitResult = result };
                 handler(this, args);
+            }
+        }
+
+        /// <summary>
+        /// Raises the TrackerChanged event.
+        /// </summary>
+        /// <param name="result">The result.</param>
+        protected internal virtual void OnTrackerChanged(TrackerHitResult result)
+        {
+            this.RaiseTrackerChanged(result);
+        }
+
+        /// <summary>
+        /// Gets all elements of the model, top-level elements first.
+        /// </summary>
+        /// <returns>
+        /// An enumerator of the elements.
+        /// </returns>
+        protected override IEnumerable<PlotElement> GetHitTestElements()
+        {
+            foreach (var axis in this.Axes.Reverse().Where(a => a.IsAxisVisible && a.Layer == AxisLayer.AboveSeries))
+            {
+                yield return axis;
+            }
+
+            foreach (var annotation in this.Annotations.Reverse().Where(a => a.Layer == AnnotationLayer.AboveSeries))
+            {
+                yield return annotation;
+            }
+
+            foreach (var s in this.Series.Reverse().Where(s => s.IsVisible))
+            {
+                yield return s;
+            }
+
+            foreach (var annotation in this.Annotations.Reverse().Where(a => a.Layer == AnnotationLayer.BelowSeries))
+            {
+                yield return annotation;
+            }
+
+            foreach (var axis in this.Axes.Reverse().Where(a => a.IsAxisVisible && a.Layer == AxisLayer.BelowSeries))
+            {
+                yield return axis;
+            }
+
+            foreach (var annotation in this.Annotations.Reverse().Where(a => a.Layer == AnnotationLayer.BelowAxes))
+            {
+                yield return annotation;
             }
         }
 
@@ -1397,7 +1328,7 @@ namespace OxyPlot
                 bool createdlinearyaxis = false;
                 if (this.DefaultXAxis == null)
                 {
-                    if (this.VisibleSeries.Any(series => series is ColumnSeries))
+                    if (this.Series.Any(s => s.IsVisible && s is ColumnSeries))
                     {
                         this.DefaultXAxis = new CategoryAxis { Position = AxisPosition.Bottom };
                     }
@@ -1410,7 +1341,7 @@ namespace OxyPlot
 
                 if (this.DefaultYAxis == null)
                 {
-                    if (this.VisibleSeries.Any(series => series is BarSeries))
+                    if (this.Series.Any(s => s.IsVisible && s is BarSeries))
                     {
                         this.DefaultYAxis = new CategoryAxis { Position = AxisPosition.Left };
                     }
@@ -1432,7 +1363,7 @@ namespace OxyPlot
                 }
             }
 
-            var areAxesRequired = this.VisibleSeries.Any(s => s.AreAxesRequired());
+            var areAxesRequired = this.Series.Any(s => s.IsVisible && s.AreAxesRequired());
 
             if (areAxesRequired)
             {
@@ -1456,9 +1387,9 @@ namespace OxyPlot
             }
 
             // Update the axes of series without axes defined
-            foreach (var s in this.VisibleSeries)
+            foreach (var s in this.Series)
             {
-                if (s.AreAxesRequired())
+                if (s.IsVisible && s.AreAxesRequired())
                 {
                     s.EnsureAxes();
                 }
@@ -1493,13 +1424,13 @@ namespace OxyPlot
                 }
 
                 // data has been updated, so we need to calculate the max/min of the series again
-                foreach (var s in this.VisibleSeries)
+                foreach (var s in this.Series.Where(s => s.IsVisible))
                 {
                     s.UpdateMaxMin();
                 }
             }
 
-            foreach (var s in this.VisibleSeries)
+            foreach (var s in this.Series.Where(s => s.IsVisible))
             {
                 s.UpdateAxisMaxMin();
             }

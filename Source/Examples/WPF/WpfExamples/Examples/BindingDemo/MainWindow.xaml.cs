@@ -11,6 +11,8 @@ namespace BindingDemo
 {
     using System.Windows;
 
+    using global::BindingDemo;
+
     using WpfExamples;
 
     /// <summary>

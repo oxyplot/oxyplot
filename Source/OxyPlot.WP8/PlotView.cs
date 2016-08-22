@@ -19,12 +19,9 @@ namespace OxyPlot.WP8
     using System.Windows.Markup;
     using System.Windows.Media.Imaging;
 
-    using OxyPlot.Series;
-
     /// <summary>
     /// Represents a control that displays a <see cref="PlotModel" />.
     /// </summary>
-    [ContentProperty("Series")]
     [TemplatePart(Name = PartGrid, Type = typeof(Grid))]
     public class PlotView : Control, IPlotView
     {
@@ -111,7 +108,7 @@ namespace OxyPlot.WP8
         /// <summary>
         /// The render context
         /// </summary>
-        private PhoneRenderContext renderContext;
+        private CanvasRenderContext renderContext;
 
         /// <summary>
         /// The canvas.
@@ -452,7 +449,7 @@ namespace OxyPlot.WP8
             this.canvas = new Canvas();
             this.grid.Children.Add(this.canvas);
             this.canvas.UpdateLayout();
-            this.renderContext = new PhoneRenderContext(this.canvas);
+            this.renderContext = new CanvasRenderContext(this.canvas);
 
             this.overlays = new Canvas();
             this.grid.Children.Add(this.overlays);
@@ -850,17 +847,10 @@ namespace OxyPlot.WP8
                     this.currentModel = null;
                 }
 
-                this.currentModel = this.Model;
-
-                if (this.currentModel != null)
+                if (this.Model != null)
                 {
-                    if (this.currentModel.PlotView != null)
-                    {
-                        throw new InvalidOperationException(
-                            "This PlotModel is already in use by some other PlotView control.");
-                    }
-
-                    ((IPlotModel)this.currentModel).AttachPlotView(this);
+                    ((IPlotModel)this.Model).AttachPlotView(this);
+                    this.currentModel = this.Model;
                 }
             }
 
@@ -901,11 +891,23 @@ namespace OxyPlot.WP8
 
             // Clear the canvas
             this.canvas.Children.Clear();
-
-            if (this.ActualModel != null)
+            var actualModel = (IPlotModel)this.ActualModel;
+            if (actualModel == null)
             {
-                ((IPlotModel)this.ActualModel).Render(this.renderContext, this.canvas.ActualWidth, this.canvas.ActualHeight);
+                this.canvas.Background = null;
+                return;
             }
+
+            if (!actualModel.Background.IsUndefined())
+            {
+                this.canvas.Background = actualModel.Background.ToBrush();
+            }
+            else
+            {
+                this.canvas.Background = null;
+            }
+
+            actualModel.Render(this.renderContext, this.canvas.ActualWidth, this.canvas.ActualHeight);
         }
 
         /// <summary>

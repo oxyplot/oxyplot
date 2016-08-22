@@ -20,15 +20,31 @@ namespace OxyPlot.Axes
         /// Initializes a new instance of the <see cref="AxisChangedEventArgs" /> class.
         /// </summary>
         /// <param name="changeType">Type of the change.</param>
-        public AxisChangedEventArgs(AxisChangeTypes changeType)
+        /// <param name="deltaMinimum">The delta minimum.</param>
+        /// <param name="deltaMaximum">The delta maximum.</param>
+        public AxisChangedEventArgs(AxisChangeTypes changeType, double deltaMinimum, double deltaMaximum)
         {
             this.ChangeType = changeType;
+            this.DeltaMinimum = deltaMinimum;
+            this.DeltaMaximum = deltaMaximum;
         }
 
         /// <summary>
-        /// Gets or sets the type of the change.
+        /// Gets the type of the change.
         /// </summary>
         /// <value>The type of the change.</value>
-        public AxisChangeTypes ChangeType { get; set; }
+        public AxisChangeTypes ChangeType { get; private set; }
+
+        /// <summary>
+        /// Gets the delta for the minimum.
+        /// </summary>
+        /// <value>The delta.</value>
+        public double DeltaMinimum { get; private set; }
+
+        /// <summary>
+        /// Gets the delta for the maximum.
+        /// </summary>
+        /// <value>The delta.</value>
+        public double DeltaMaximum { get; private set; }
     }
 }

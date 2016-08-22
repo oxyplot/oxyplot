@@ -301,18 +301,23 @@ namespace OxyPlot.WindowsForms
                     dy = -size.Height;
                 }
 
+                var graphicsState = this.g.Save();
+
                 this.g.TranslateTransform((float)p.X, (float)p.Y);
+                
+                var layoutRectangle = new RectangleF(0, 0, size.Width, size.Height);
                 if (Math.Abs(rotate) > double.Epsilon)
                 {
                     this.g.RotateTransform((float)rotate);
+                    
+                    layoutRectangle.Height += (float)(fontSize / 18.0);
                 }
 
                 this.g.TranslateTransform(dx, dy);
 
-                var layoutRectangle = new RectangleF(0, 0, size.Width + 0.1f, size.Height + 0.1f);
                 this.g.DrawString(text, font, fill.ToBrush(), layoutRectangle, this.stringFormat);
 
-                this.g.ResetTransform();
+                this.g.Restore(graphicsState);
             }
         }
 

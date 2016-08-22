@@ -16,27 +16,27 @@ namespace OxyPlot
     /// <summary>
     /// Describes the width, height, and point origin of a rectangle.
     /// </summary>
-    public struct OxyRect : IFormattable
+    public struct OxyRect : IFormattable, IEquatable<OxyRect>
     {
         /// <summary>
         /// The height of the rectangle.
         /// </summary>
-        private double height;
+        private readonly double height;
 
         /// <summary>
         /// The x-coordinate location of the left side of the rectangle.
         /// </summary>
-        private double left;
+        private readonly double left;
 
         /// <summary>
         /// The y-coordinate location of the top side of the rectangle.
         /// </summary>
-        private double top;
+        private readonly double top;
 
         /// <summary>
         /// The width of the rectangle.
         /// </summary>
-        private double width;
+        private readonly double width;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OxyRect" /> structure that has the specified x-coordinate, y-coordinate, width, and height.
@@ -87,7 +87,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets or sets the y-axis value of the bottom of the rectangle.
+        /// Gets the y-axis value of the bottom of the rectangle.
         /// </summary>
         /// <value>The bottom.</value>
         public double Bottom
@@ -96,15 +96,10 @@ namespace OxyPlot
             {
                 return this.top + this.height;
             }
-
-            set
-            {
-                this.height = value - this.top;
-            }
         }
 
         /// <summary>
-        /// Gets or sets the height of the rectangle.
+        /// Gets the height of the rectangle.
         /// </summary>
         /// <value>The height.</value>
         public double Height
@@ -113,15 +108,10 @@ namespace OxyPlot
             {
                 return this.height;
             }
-
-            set
-            {
-                this.height = value;
-            }
         }
 
         /// <summary>
-        /// Gets or sets the x-axis value of the left side of the rectangle.
+        /// Gets the x-axis value of the left side of the rectangle.
         /// </summary>
         /// <value>The left.</value>
         public double Left
@@ -130,15 +120,10 @@ namespace OxyPlot
             {
                 return this.left;
             }
-
-            set
-            {
-                this.left = value;
-            }
         }
 
         /// <summary>
-        /// Gets or sets the x-axis value of the right side of the rectangle.
+        /// Gets the x-axis value of the right side of the rectangle.
         /// </summary>
         /// <value>The right.</value>
         public double Right
@@ -147,15 +132,10 @@ namespace OxyPlot
             {
                 return this.left + this.width;
             }
-
-            set
-            {
-                this.width = value - this.left;
-            }
         }
 
         /// <summary>
-        /// Gets or sets the y-axis position of the top of the rectangle.
+        /// Gets the y-axis position of the top of the rectangle.
         /// </summary>
         /// <value>The top.</value>
         public double Top
@@ -164,15 +144,10 @@ namespace OxyPlot
             {
                 return this.top;
             }
-
-            set
-            {
-                this.top = value;
-            }
         }
 
         /// <summary>
-        /// Gets or sets the width of the rectangle.
+        /// Gets the width of the rectangle.
         /// </summary>
         /// <value>The width.</value>
         public double Width
@@ -180,11 +155,6 @@ namespace OxyPlot
             get
             {
                 return this.width;
-            }
-
-            set
-            {
-                this.width = value;
             }
         }
 
@@ -265,6 +235,58 @@ namespace OxyPlot
             builder.Append(this.Height.ToString(format, formatProvider));
             builder.Append(")");
             return builder.ToString();
+        }
+
+        /// <summary>
+        /// Determines whether this instance and another specified <see cref="T:OxyRect" /> object have the same value.
+        /// </summary>
+        /// <param name="other">The rectangle to compare to this instance.</param>
+        /// <returns><c>true</c> if the value of the <paramref name="other" /> parameter is the same as the value of this instance; otherwise, <c>false</c>.</returns>
+        public bool Equals(OxyRect other)
+        {
+            return this.Left.Equals(other.Left) && this.Top.Equals(other.Top) && this.Width.Equals(other.Width) && this.Height.Equals(other.Height);
+        }
+
+        /// <summary>
+        /// Returns a rectangle that is expanded or shrunk by the specified width and height amounts, in all directions.
+        /// </summary>
+        /// <param name="dx">The amount by which to expand or shrink the left and right sides of the rectangle.</param>
+        /// <param name="dy">The amount by which to expand or shrink the top and bottom sides of the rectangle.</param>
+        /// <returns>The expanded/shrunk <see cref="OxyRect" />.</returns>
+        public OxyRect Inflate(double dx, double dy)
+        {
+            return new OxyRect(this.left - dx, this.top - dy, this.width + (dx * 2), this.height + (dy * 2));
+        }
+
+        /// <summary>
+        /// Returns a rectangle that is expanded by the specified thickness, in all directions.
+        /// </summary>
+        /// <param name="t">The thickness to apply to the rectangle.</param>
+        /// <returns>The inflated <see cref="OxyRect" />.</returns>
+        public OxyRect Inflate(OxyThickness t)
+        {
+            return new OxyRect(this.left - t.Left, this.top - t.Top, this.width + t.Left + t.Right, this.height + t.Top + t.Bottom);
+        }
+
+        /// <summary>
+        /// Returns a rectangle that is shrunk by the specified thickness, in all directions.
+        /// </summary>
+        /// <param name="t">The thickness to apply to the rectangle.</param>
+        /// <returns>The deflated <see cref="OxyRect" />.</returns>
+        public OxyRect Deflate(OxyThickness t)
+        {
+            return new OxyRect(this.left + t.Left, this.top + t.Top, Math.Max(0, this.width - t.Left - t.Right), Math.Max(0, this.height - t.Top - t.Bottom));
+        }
+
+        /// <summary>
+        /// Returns a rectangle that is moved by the specified horizontal and vertical amounts.
+        /// </summary>
+        /// <param name="offsetX">The amount to move the rectangle horizontally.</param>
+        /// <param name="offsetY">The amount to move the rectangle vertically.</param>
+        /// <returns>The moved <see cref="OxyRect" />.</returns>
+        public OxyRect Offset(double offsetX, double offsetY)
+        {
+            return new OxyRect(this.left + offsetX, this.top + offsetY, this.width, this.height);
         }
     }
 }

@@ -12,30 +12,22 @@ namespace OxyPlot.Series
     /// <summary>
     /// Represent a slice of a <see cref="PieSeries" />.
     /// </summary>
-    public class PieSlice
+    public class PieSlice : ICodeGenerating
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref = "PieSlice" /> class.
-        /// </summary>
-        public PieSlice()
-        {
-            this.Fill = OxyColors.Automatic;
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="PieSlice" /> class.
         /// </summary>
         /// <param name="label">The label.</param>
         /// <param name="value">The value.</param>
         public PieSlice(string label, double value)
-            : this()
         {
+            this.Fill = OxyColors.Automatic;
             this.Label = label;
             this.Value = value;
         }
 
         /// <summary>
-        /// Gets or sets Fill.
+        /// Gets or sets the fill color.
         /// </summary>
         public OxyColor Fill { get; set; }
 
@@ -49,24 +41,34 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether IsExploded.
+        /// Gets or sets a value indicating whether the slice is exploded.
         /// </summary>
         public bool IsExploded { get; set; }
 
         /// <summary>
-        /// Gets or sets Label.
+        /// Gets the label.
         /// </summary>
-        public string Label { get; set; }
+        public string Label { get; private set; }
 
         /// <summary>
-        /// Gets or sets Value.
+        /// Gets the value.
         /// </summary>
-        public double Value { get; set; }
+        public double Value { get; private set; }
 
         /// <summary>
         /// Gets or sets the default fill color.
         /// </summary>
         /// <value>The default fill color.</value>
         internal OxyColor DefaultFillColor { get; set; }
+
+        /// <summary>
+        /// Returns C# code that generates this instance.
+        /// </summary>
+        /// <returns>C# code.</returns>
+        public string ToCode()
+        {
+            return CodeGenerator.FormatConstructor(
+                this.GetType(), "{0}, {1}", this.Label, this.Value);
+        }
     }
 }

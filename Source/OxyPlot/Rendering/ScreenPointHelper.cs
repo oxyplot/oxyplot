@@ -9,6 +9,7 @@
 
 namespace OxyPlot
 {
+    using System;
     using System.Collections.Generic;
 
     /// <summary>
@@ -22,8 +23,14 @@ namespace OxyPlot
         /// <param name="point">The point.</param>
         /// <param name="points">The points.</param>
         /// <returns>The nearest point.</returns>
+        /// <exception cref="ArgumentNullException">The <paramref name="points"/> is <c>null</c>.</exception>
         public static ScreenPoint FindNearestPointOnPolyline(ScreenPoint point, IList<ScreenPoint> points)
         {
+            if (points == null)
+            {
+                throw new ArgumentNullException("points");
+            }
+
             double minimumDistance = double.MaxValue;
             var nearestPoint = default(ScreenPoint);
 

@@ -81,34 +81,7 @@ namespace OxyPlot.Series
 
             this.CanTrackerInterpolatePoints = true;
             this.LabelMargin = 6;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LineSeries" /> class.
-        /// </summary>
-        /// <param name="title">The title.</param>
-        [Obsolete]
-        public LineSeries(string title)
-            : this()
-        {
-            this.Title = title;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LineSeries" /> class.
-        /// </summary>
-        /// <param name="color">The color of the line stroke.</param>
-        /// <param name="strokeThickness">The stroke thickness (optional).</param>
-        /// <param name="title">The title (optional).</param>
-        [Obsolete]
-        public LineSeries(OxyColor color, double strokeThickness = 1, string title = null)
-            : this()
-        {
-            this.Color = color;
-            this.StrokeThickness = strokeThickness;
-            this.BrokenLineThickness = 0;
-            this.BrokenLineStyle = LineStyle.Solid;
-            this.Title = title;
+            this.smoothedPoints = new List<DataPoint>();
         }
 
         /// <summary>
@@ -289,7 +262,7 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Gets or sets the smoothed points.
+        /// Gets the smoothed points.
         /// </summary>
         /// <value>The smoothed points.</value>
         protected List<DataPoint> SmoothedPoints
@@ -297,11 +270,6 @@ namespace OxyPlot.Series
             get
             {
                 return this.smoothedPoints;
-            }
-
-            set
-            {
-                this.smoothedPoints = value;
             }
         }
 
@@ -327,17 +295,23 @@ namespace OxyPlot.Series
                 }
             }
 
-            if (interpolate && this.Smooth && this.SmoothedPoints != null)
+            if (interpolate && this.Smooth)
             {
                 var result = this.GetNearestInterpolatedPointInternal(this.SmoothedPoints, point);
-                result.Text = this.Format(
-                    this.TrackerFormatString,
-                    result.Item,
-                    this.Title,
-                    this.XAxis.Title ?? XYAxisSeries.DefaultXAxisTitle,
-                    this.XAxis.GetValue(result.DataPoint.X),
-                    this.YAxis.Title ?? XYAxisSeries.DefaultYAxisTitle,
-                    this.YAxis.GetValue(result.DataPoint.Y));
+                if (result != null)
+                {
+                    result.Text = StringHelper.Format(
+                        this.ActualCulture,
+                        this.TrackerFormatString,
+                        result.Item,
+                        this.Title,
+                        this.XAxis.Title ?? XYAxisSeries.DefaultXAxisTitle,
+                        this.XAxis.GetValue(result.DataPoint.X),
+                        this.YAxis.Title ?? XYAxisSeries.DefaultYAxisTitle,
+                        this.YAxis.GetValue(result.DataPoint.Y));
+                }
+
+                return result;
             }
 
             return base.GetNearestPoint(point, interpolate);
@@ -347,11 +321,10 @@ namespace OxyPlot.Series
         /// Renders the series on the specified rendering context.
         /// </summary>
         /// <param name="rc">The rendering context.</param>
-        /// <param name="model">The owner plot model.</param>
-        public override void Render(IRenderContext rc, PlotModel model)
+        public override void Render(IRenderContext rc)
         {
             var actualPoints = this.ActualPoints;
-            if (actualPoints.Count == 0)
+            if (actualPoints == null || actualPoints.Count == 0)
             {
                 return;
             }
@@ -393,7 +366,7 @@ namespace OxyPlot.Series
                 pts,
                 this.GetSelectableColor(this.ActualColor),
                 this.StrokeThickness,
-                this.ActualLineStyle.GetDashArray());
+                this.ActualDashArray);
             var midpt = new ScreenPoint(xmid, ymid);
             rc.DrawMarker(
                 legendBox,
@@ -409,17 +382,16 @@ namespace OxyPlot.Series
         /// <summary>
         /// Sets default values from the plot model.
         /// </summary>
-        /// <param name="model">The plot model.</param>
-        protected internal override void SetDefaultValues(PlotModel model)
+        protected internal override void SetDefaultValues()
         {
             if (this.LineStyle == LineStyle.Automatic)
             {
-                this.defaultLineStyle = model.GetDefaultLineStyle();
+                this.defaultLineStyle = this.PlotModel.GetDefaultLineStyle();
             }
 
             if (this.Color.IsAutomatic())
             {
-                this.defaultColor = model.GetDefaultColor();
+                this.defaultColor = this.PlotModel.GetDefaultColor();
 
                 if (this.MarkerFill.IsAutomatic())
                 {
@@ -441,16 +413,16 @@ namespace OxyPlot.Series
                 // Make sure the smooth points are re-evaluated.
                 this.ResetSmoothedPoints();
 
-                if (this.smoothedPoints.Count == 0)
+                if (this.SmoothedPoints.Count == 0)
                 {
                     return;
                 }
 
                 // Update the max/min from the smoothed points
-                this.MinX = this.smoothedPoints.Where(x => !double.IsNaN(x.X)).Min(x => x.X);
-                this.MinY = this.smoothedPoints.Where(x => !double.IsNaN(x.Y)).Min(x => x.Y);
-                this.MaxX = this.smoothedPoints.Where(x => !double.IsNaN(x.X)).Max(x => x.X);
-                this.MaxY = this.smoothedPoints.Where(x => !double.IsNaN(x.Y)).Max(x => x.Y);
+                this.MinX = this.SmoothedPoints.Where(x => !double.IsNaN(x.X)).Min(x => x.X);
+                this.MinY = this.SmoothedPoints.Where(x => !double.IsNaN(x.Y)).Min(x => x.Y);
+                this.MaxX = this.SmoothedPoints.Where(x => !double.IsNaN(x.X)).Max(x => x.X);
+                this.MaxY = this.SmoothedPoints.Where(x => !double.IsNaN(x.Y)).Max(x => x.Y);
             }
             else
             {
@@ -557,7 +529,7 @@ namespace OxyPlot.Series
             }
 
             // First valid point
-            var screenPoint = Transform(currentPoint);
+            var screenPoint = this.Transform(currentPoint);
 
             // Handle broken line segment if exists
             if (previousContiguousLineSegmentEndPoint.HasValue)
@@ -606,7 +578,7 @@ namespace OxyPlot.Series
                 }
 
                 var item = this.GetItem(index);
-                var s = this.Format(this.LabelFormatString, item, point.X, point.Y);
+                var s = StringHelper.Format(this.ActualCulture, this.LabelFormatString, item, point.X, point.Y);
 
 #if SUPPORTLABELPLACEMENT
                     switch (this.LabelPlacement)
@@ -671,7 +643,7 @@ namespace OxyPlot.Series
                     break;
             }
 
-            var pt = Transform(point) + new ScreenVector(dx, 0);
+            var pt = this.Transform(point) + new ScreenVector(dx, 0);
 
             // Render the legend
             rc.DrawText(
@@ -710,7 +682,7 @@ namespace OxyPlot.Series
 
             if (this.MarkerType != MarkerType.None)
             {
-                var markerBinOffset = this.MarkerResolution > 0 ? Transform(this.MinX, this.MinY) : default(ScreenPoint);
+                var markerBinOffset = this.MarkerResolution > 0 ? this.Transform(this.MinX, this.MinY) : default(ScreenPoint);
 
                 rc.DrawMarkers(
                     clippingRect,

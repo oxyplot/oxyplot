@@ -88,7 +88,13 @@ namespace OxyPlot.Wpf.Tests
                     File.WriteAllBytes(output, encoder.Encode(differenceImage));
                 }
 
-                Assert.Fail("Pixel differences: {0}\n{1}", differences, message);
+                Assert.Fail(
+                    "{0}:\nPixel differences: {1}\nExpected image: {2}\nActual image: {3}\nDiff image: {4}",
+                    message,
+                    differences,
+                    Path.GetFullPath(expected),
+                    Path.GetFullPath(actual),
+                    Path.GetFullPath(output));
             }
         }
 

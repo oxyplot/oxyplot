@@ -1,0 +1,377 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0957B392-2CAD-4788-90F8-05E55328D06C}</ProjectGuid>
+    <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>OxyPlot</RootNamespace>
+    <AssemblyName>OxyPlot</AssemblyName>
+    <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
+    <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
+    <SilverlightApplication>false</SilverlightApplication>
+    <ValidateXaml>true</ValidateXaml>
+    <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+  </PropertyGroup>
+  <!-- This property group is only here to support building this project using the 
+       MSBuild 3.5 toolset. In order to work correctly with this older toolset, it needs 
+       to set the TargetFrameworkVersion to v3.5 -->
+  <PropertyGroup Condition="'$(MSBuildToolsVersion)' == '3.5'">
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\Debug\SL5\</OutputPath>
+    <IntermediateOutputPath>obj\Debug\SL5\</IntermediateOutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\Output\SL5\</OutputPath>
+    <IntermediateOutputPath>obj\Release\SL5\</IntermediateOutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\Output\SL5\OxyPlot.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>OxyPlot.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib" />
+    <Reference Include="System.Windows" />
+    <Reference Include="system" />
+    <Reference Include="System.Core">
+      <HintPath>$(TargetFrameworkDirectory)System.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Windows.Browser" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Annotations\PointAnnotation.cs" />
+    <Compile Include="Annotations\ShapeAnnotation.cs" />
+    <Compile Include="Axes\AxisUtilities.cs" />
+    <Compile Include="Graphics\DelegateViewCommand{T}.cs" />
+    <Compile Include="Graphics\ElementCollectionChangedEventArgs{T}.cs" />
+    <Compile Include="Graphics\ManipulatorBase.cs" />
+    <Compile Include="PlotController\DelegatePlotCommand.cs" />
+    <Compile Include="Graphics\Element.cs" />
+    <Compile Include="Graphics\ElementCollection{T}.cs" />
+    <Compile Include="Graphics\Model.cs" />
+    <Compile Include="Graphics\IController.cs" />
+    <Compile Include="Graphics\IViewCommand.cs" />
+    <Compile Include="Graphics\IViewCommand{T}.cs" />
+    <Compile Include="Graphics\IView.cs" />
+    <Compile Include="PlotController\IPlotController.cs" />
+    <Compile Include="PlotController\Manipulators\TouchTrackerManipulator.cs" />
+    <Compile Include="PlotModel\IPlotElement.cs" />
+    <Compile Include="PlotModel\IPlotModel.cs" />
+    <Compile Include="Rendering\OxySizeExtensions.cs" />
+    <Compile Include="Reporting\PlotModelExtensions.cs" />
+    <Compile Include="Series\BarSeries\LinearBarSeries.cs" />
+    <Compile Include="Series\IScatterPointProvider.cs" />
+    <Compile Include="Input\Gestures\OxyMouseEnterGesture.cs" />
+    <Compile Include="PlotController\EventArgs\OxyInputEventArgs.cs" />
+    <Compile Include="PlotController\EventArgs\OxyKeyEventArgs.cs" />
+    <Compile Include="PlotController\EventArgs\OxyMouseDownEventArgs.cs" />
+    <Compile Include="PlotController\EventArgs\OxyMouseWheelEventArgs.cs" />
+    <Compile Include="PlotController\EventArgs\OxyTouchEventArgs.cs" />
+    <Compile Include="Graphics\InputCommandBinding.cs" />
+    <Compile Include="PlotController\PlotController.cs" />
+    <Compile Include="PlotController\Manipulators\MouseManipulator.cs" />
+    <Compile Include="PlotController\Manipulators\TouchManipulator.cs" />
+    <Compile Include="PlotController\PlotCommands.cs" />
+    <Compile Include="Graphics\ControllerExtensions.cs" />
+    <Compile Include="Graphics\HitTestArguments.cs" />
+    <Compile Include="Properties\AssemblyDescription.cs" />
+    <Compile Include="LibraryDoc.cs" />
+    <Compile Include="NamespaceDoc.cs" />
+    <None Include="ClassDiagrams\Axes.cd" />
+    <Compile Include="Foundation\PlotLength.cs" />
+    <Compile Include="Foundation\PlotLengthUnit.cs" />
+    <Compile Include="Foundation\CodeGenerator\CodeGenerationAttribute.cs" />
+    <Compile Include="Foundation\CodeGenerator\CodeGenerator.cs" />
+    <Compile Include="Foundation\CodeGenerator\CodeGeneratorStringExtensions.cs" />
+    <Compile Include="Foundation\CodeGenerator\ICodeGenerating.cs" />
+    <Compile Include="Foundation\IDataPointProvider.cs" />
+    <Compile Include="Foundation\DataPoint.cs" />
+    <Compile Include="Foundation\MarkerType.cs" />
+    <Compile Include="Rendering\OxyColorExtensions.cs" />
+    <Compile Include="Rendering\OxyPalette.cs" />
+    <Compile Include="Rendering\OxyPalettes.cs" />
+    <Compile Include="Rendering\ScreenVector.cs" />
+    <Compile Include="Rendering\ScreenPointHelper.cs" />
+    <Compile Include="Rendering\Utilities\CanonicalSplineHelper.cs" />
+    <Compile Include="Rendering\FontWeights.cs" />
+    <Compile Include="Rendering\OxyThickness.cs" />
+    <Compile Include="Rendering\ScreenPoint.cs" />
+    <Compile Include="Rendering\OxyRect.cs" />
+    <Compile Include="Rendering\OxySize.cs" />
+    <Compile Include="Rendering\Utilities\Decimator.cs" />
+    <Compile Include="Rendering\Utilities\SutherlandHodgmanClipping.cs" />
+    <Compile Include="Rendering\Utilities\CohenSutherlandClipping.cs" />
+    <Compile Include="Rendering\LineJoin.cs" />
+    <Compile Include="Rendering\HorizontalAlignment.cs" />
+    <Compile Include="Rendering\VerticalAlignment.cs" />
+    <Compile Include="Rendering\OxyColor.cs" />
+    <Compile Include="Rendering\OxyColors.cs" />
+    <Compile Include="Rendering\OxyPen.cs" />
+    <Compile Include="Rendering\LineStyleHelper.cs" />
+    <Compile Include="Rendering\LineStyle.cs" />
+    <Compile Include="Rendering\RenderContext\MathRenderingExtensions.cs" />
+    <Compile Include="Rendering\RenderContext\RenderContextBase.cs" />
+    <Compile Include="Rendering\RenderContext\RenderingExtensions.cs" />
+    <Compile Include="Rendering\RenderContext\IRenderContext.cs" />
+    <Compile Include="Rendering\RenderContext\XkcdRenderingDecorator.cs" />
+    <Compile Include="Input\OxyKey.cs" />
+    <Compile Include="Input\OxyModifierKeys.cs" />
+    <Compile Include="Input\OxyMouseButton.cs" />
+    <Compile Include="Input\Gestures\OxyInputGesture.cs" />
+    <Compile Include="Input\Gestures\OxyKeyGesture.cs" />
+    <Compile Include="Input\Gestures\OxyMouseDownGesture.cs" />
+    <Compile Include="Input\Gestures\OxyMouseWheelGesture.cs" />
+    <Compile Include="Input\Gestures\OxyShakeGesture.cs" />
+    <Compile Include="Input\Gestures\OxyTouchGesture.cs" />
+    <Compile Include="Pdf\FontSubType.cs" />
+    <Compile Include="Pdf\PortableDocumentExtensions.cs" />
+    <Compile Include="Pdf\PortableDocumentFont.cs" />
+    <Compile Include="Pdf\PortableDocumentFontFamily.cs" />
+    <Compile Include="Pdf\PortableDocumentImage.cs" />
+    <Compile Include="Pdf\PdfExporter.cs" />
+    <Compile Include="Pdf\PdfRenderContext.cs" />
+    <Compile Include="Pdf\PdfWriter.cs" />
+    <Compile Include="Pdf\PortableDocument.cs" />
+    <Compile Include="Pdf\PortableDocumentImageUtilities.cs" />
+    <Compile Include="Pdf\StandardFonts.cs" />
+    <Compile Include="Series\ScatterErrorPoint.cs" />
+    <Compile Include="Series\ScatterErrorSeries.cs" />
+    <Compile Include="Series\ScatterSeries{T}.cs" />
+    <Compile Include="Series\ThreeColorLineSeries.cs" />
+    <Compile Include="Foundation\IExporter.cs" />
+    <Compile Include="Utilities\ArrayExtensions.cs" />
+    <Compile Include="Utilities\ComparerHelper.cs" />
+    <Compile Include="Utilities\HashCodeBuilder.cs" />
+    <Compile Include="Utilities\ListBuilder{T}.cs" />
+    <Compile Include="Utilities\ReflectionPath.cs" />
+    <Compile Include="Utilities\XmlWriterBase.cs" />
+    <Compile Include="Utilities\BinaryReaderExtensions.cs" />
+    <Compile Include="Utilities\StreamExtensions.cs" />
+    <Compile Include="Utilities\StringHelper.cs" />
+    <Compile Include="Utilities\FractionHelper.cs" />
+    <Compile Include="Utilities\ArrayBuilder.cs" />
+    <Compile Include="Utilities\TypeExtensions.cs" />
+    <Compile Include="Utilities\Conrec.cs" />
+    <Compile Include="Imaging\OxyImage.cs" />
+    <Compile Include="Imaging\OxyImageInfo.cs" />
+    <Compile Include="Imaging\ImageEncoderOptions.cs" />
+    <Compile Include="Imaging\ImageFormat.cs" />
+    <Compile Include="Imaging\IImageDecoder.cs" />
+    <Compile Include="Imaging\IImageEncoder.cs" />
+    <Compile Include="Imaging\Bmp\BmpDecoder.cs" />
+    <Compile Include="Imaging\Bmp\BmpEncoder.cs" />
+    <Compile Include="Imaging\Bmp\BmpEncoderOptions.cs" />
+    <Compile Include="Imaging\Png\PngDecoder.cs" />
+    <Compile Include="Imaging\Png\PngEncoder.cs" />
+    <Compile Include="Imaging\Png\PngEncoderOptions.cs" />
+    <None Include="Imaging\Jpeg\JpegDecoder.cs" />
+    <Compile Include="Imaging\Deflate\Arrays.cs" />
+    <Compile Include="Imaging\Deflate\BitReader.cs" />
+    <Compile Include="Imaging\Deflate\ByteBitReader.cs" />
+    <Compile Include="Imaging\Deflate\CanonicalCode.cs" />
+    <Compile Include="Imaging\Deflate\CircularDictionary.cs" />
+    <Compile Include="Imaging\Deflate\CodeTree.cs" />
+    <Compile Include="Imaging\Deflate\Deflate.cs" />
+    <Compile Include="Imaging\Deflate\InternalNode.cs" />
+    <Compile Include="Imaging\Deflate\Leaf.cs" />
+    <Compile Include="Imaging\Deflate\Node.cs" />
+    <Compile Include="Svg\SvgRenderContext.cs" />
+    <Compile Include="Svg\SvgWriter.cs" />
+    <Compile Include="Svg\SvgExporter.cs" />
+    <Compile Include="Annotations\NamespaceDoc.cs" />
+    <Compile Include="Annotations\RectangleAnnotation.cs" />
+    <Compile Include="Annotations\TextAnnotation.cs" />
+    <Compile Include="Annotations\PolygonAnnotation.cs" />
+    <Compile Include="Annotations\LineAnnotation.cs" />
+    <Compile Include="Annotations\LineAnnotationType.cs" />
+    <Compile Include="Annotations\TextualAnnotation.cs" />
+    <Compile Include="Annotations\Annotation.cs" />
+    <Compile Include="Annotations\AnnotationLayer.cs" />
+    <Compile Include="Annotations\AnnotationTextOrientation.cs" />
+    <Compile Include="Annotations\ArrowAnnotation.cs" />
+    <Compile Include="Annotations\EllipseAnnotation.cs" />
+    <Compile Include="Annotations\FunctionAnnotation.cs" />
+    <Compile Include="Annotations\FunctionAnnotationType.cs" />
+    <Compile Include="Annotations\ImageAnnotation.cs" />
+    <Compile Include="Annotations\PathAnnotation.cs" />
+    <Compile Include="Annotations\PolyLineAnnotation.cs" />
+    <Compile Include="Axes\NamespaceDoc.cs" />
+    <Compile Include="Axes\LogarithmicAxis.cs" />
+    <Compile Include="Axes\RangeColorAxis.cs" />
+    <Compile Include="Axes\AngleAxis.cs" />
+    <Compile Include="Axes\Axis.cs" />
+    <Compile Include="Axes\AxisChangedEventArgs.cs" />
+    <Compile Include="Axes\AxisChangeTypes.cs" />
+    <Compile Include="Axes\AxisLayer.cs" />
+    <Compile Include="Axes\AxisPosition.cs" />
+    <Compile Include="Axes\CategoryAxis.cs" />
+    <Compile Include="Axes\CategoryColorAxis.cs" />
+    <Compile Include="Axes\IColorAxis.cs" />
+    <Compile Include="Axes\ColorAxisExtensions.cs" />
+    <Compile Include="Axes\LinearColorAxis.cs" />
+    <Compile Include="Axes\DateTimeAxis.cs" />
+    <Compile Include="Axes\DateTimeIntervalType.cs" />
+    <Compile Include="Axes\LinearAxis.cs" />
+    <Compile Include="Axes\MagnitudeAxis.cs" />
+    <Compile Include="Axes\TickStyle.cs" />
+    <Compile Include="Axes\TimeSpanAxis.cs" />
+    <Compile Include="Axes\Rendering\AxisRendererBase.cs" />
+    <Compile Include="Axes\Rendering\AngleAxisRenderer.cs" />
+    <Compile Include="Axes\Rendering\MagnitudeAxisRenderer.cs" />
+    <Compile Include="Axes\Rendering\HorizontalAndVerticalAxisRenderer.cs" />
+    <Compile Include="PlotController\Manipulators\PlotManipulator.cs" />
+    <Compile Include="PlotController\Manipulators\PanManipulator.cs" />
+    <Compile Include="PlotController\Manipulators\TrackerHitResult.cs" />
+    <Compile Include="PlotController\Manipulators\TrackerManipulator.cs" />
+    <Compile Include="PlotController\Manipulators\ZoomRectangleManipulator.cs" />
+    <Compile Include="PlotController\Manipulators\ZoomStepManipulator.cs" />
+    <Compile Include="Graphics\ControllerBase.cs" />
+    <Compile Include="Graphics\HitTestResult.cs" />
+    <Compile Include="Graphics\Selection.cs" />
+    <Compile Include="Graphics\SelectionMode.cs" />
+    <Compile Include="PlotModel\TrackerEventArgs.cs" />
+    <Compile Include="PlotView\IPlotView.cs" />
+    <Compile Include="Graphics\CursorType.cs" />
+    <Compile Include="Series\BarSeries\BarItem.cs" />
+    <Compile Include="Series\BarSeries\BarItemBase.cs" />
+    <Compile Include="Series\BarSeries\BarSeriesBase{T}.cs" />
+    <Compile Include="Series\BarSeries\CategorizedItem.cs" />
+    <Compile Include="Series\BarSeries\CategorizedSeries.cs" />
+    <Compile Include="Series\BarSeries\ErrorColumnItem.cs" />
+    <Compile Include="Series\BarSeries\ColumnItem.cs" />
+    <Compile Include="Series\BarSeries\ErrorColumnSeries.cs" />
+    <Compile Include="Series\BarSeries\IStackableSeries.cs" />
+    <Compile Include="Series\BoxPlotItem.cs" />
+    <Compile Include="Series\BoxPlotSeries.cs" />
+    <Compile Include="Series\HeatMapSeries.cs" />
+    <Compile Include="Series\LineLegendPosition.cs" />
+    <Compile Include="Graphics\Model.MouseEvents.cs" />
+    <Compile Include="PlotController\EventArgs\OxyMouseEventArgs.cs" />
+    <Compile Include="PlotModel\PlotElement.cs" />
+    <Compile Include="PlotModel\PlotModel.Legends.cs" />
+    <Compile Include="PlotModel\PlotModel.Rendering.cs" />
+    <Compile Include="PlotModel\PlotModel.cs" />
+    <Compile Include="Graphics\SelectableElement.cs" />
+    <Compile Include="Graphics\UIElement.cs" />
+    <Compile Include="Reporting\NamespaceDoc.cs" />
+    <Compile Include="Reporting\ReportWriters\WikiReportWriter.cs" />
+    <Compile Include="Reporting\ReportWriters\HtmlReportWriter.cs" />
+    <Compile Include="Reporting\ReportWriters\IReportWriter.cs" />
+    <Compile Include="Reporting\ReportWriters\StringExtensions.cs" />
+    <Compile Include="Reporting\ReportWriters\TextReportWriter.cs" />
+    <Compile Include="Reporting\Report\ItemsTable.cs" />
+    <Compile Include="Reporting\Report\ParagraphStyle.cs" />
+    <Compile Include="Reporting\Report\ReportStyle.cs" />
+    <Compile Include="Reporting\Report\TableOfContents.cs" />
+    <Compile Include="Reporting\Report\DrawingFigure.cs" />
+    <Compile Include="Reporting\Report\Equation.cs" />
+    <Compile Include="Reporting\Report\Figure.cs" />
+    <Compile Include="Reporting\Report\Header.cs" />
+    <Compile Include="Reporting\Report\HeaderHelper.cs" />
+    <Compile Include="Reporting\Report\Image.cs" />
+    <Compile Include="Reporting\Report\Paragraph.cs" />
+    <Compile Include="Reporting\Report\PlotFigure.cs" />
+    <Compile Include="Reporting\Report\PropertyTable.cs" />
+    <Compile Include="Reporting\Report\Report.cs" />
+    <Compile Include="Reporting\Report\ReportItem.cs" />
+    <Compile Include="Reporting\Report\ReportSection.cs" />
+    <Compile Include="Reporting\Report\Table.cs" />
+    <Compile Include="Reporting\Report\ItemsTableField.cs" />
+    <Compile Include="Reporting\Report\Alignment.cs" />
+    <Compile Include="Reporting\Report\TableCell.cs" />
+    <Compile Include="Reporting\Report\TableColumn.cs" />
+    <Compile Include="Reporting\Report\TableRow.cs" />
+    <Compile Include="Series\NamespaceDoc.cs" />
+    <Compile Include="Series\AreaSeries.cs" />
+    <Compile Include="Series\BarSeries\LabelPlacement.cs" />
+    <Compile Include="Series\ContourSeries.cs" />
+    <Compile Include="Series\BarSeries\ColumnSeries.cs" />
+    <Compile Include="Series\BarSeries\BarSeries.cs" />
+    <Compile Include="Series\BarSeries\BarSeriesBase.cs" />
+    <Compile Include="Series\BarSeries\IntervalBarItem.cs" />
+    <Compile Include="Series\BarSeries\RectangleBarItem.cs" />
+    <Compile Include="Series\BarSeries\RectangleBarSeries.cs" />
+    <Compile Include="Series\BarSeries\IntervalBarSeries.cs" />
+    <Compile Include="Series\BarSeries\TornadoBarItem.cs" />
+    <Compile Include="Series\BarSeries\TornadoBarSeries.cs" />
+    <Compile Include="Series\ItemsSeries.cs" />
+    <Compile Include="Series\DataPointSeries.cs" />
+    <Compile Include="Series\ScatterPoint.cs" />
+    <Compile Include="Series\Series.cs" />
+    <Compile Include="Series\StemSeries.cs" />
+    <Compile Include="Series\StairStepSeries.cs" />
+    <Compile Include="Series\ScatterSeries.cs" />
+    <Compile Include="Series\TwoColorLineSeries.cs" />
+    <Compile Include="Series\TwoColorAreaSeries.cs" />
+    <Compile Include="Series\XYAxisSeries.cs" />
+    <Compile Include="Series\PieSeries.cs" />
+    <Compile Include="Series\FunctionSeries.cs" />
+    <Compile Include="Series\PieSlice.cs" />
+    <Compile Include="Series\LineSeries.cs" />
+    <Compile Include="Series\FinancialSeries\CandleStickAndVolumeSeries.cs" />
+    <Compile Include="Series\FinancialSeries\VolumeSeries.cs" />
+    <Compile Include="Series\FinancialSeries\VolumeStyle.cs" />
+    <Compile Include="Series\FinancialSeries\CandleStickSeries.cs" />
+    <Compile Include="Series\FinancialSeries\OldCandleStickSeries.cs" />
+    <Compile Include="Series\FinancialSeries\OhlcvItem.cs" />
+    <Compile Include="Series\FinancialSeries\HighLowItem.cs" />
+    <Compile Include="Series\FinancialSeries\HighLowSeries.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagrams\Series.cd" />
+    <None Include="ClassDiagrams\PlotModel.cd" />
+    <None Include="ClassDiagrams\Reporting.cd" />
+    <None Include="OxyPlot.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Pdf\ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Imaging\Deflate\Readme.md" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
+        <SilverlightProjectProperties />
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

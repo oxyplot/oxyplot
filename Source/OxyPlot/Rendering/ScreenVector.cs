@@ -15,7 +15,7 @@ namespace OxyPlot
     /// <summary>
     /// Represents a vector defined in screen space.
     /// </summary>
-    public struct ScreenVector
+    public struct ScreenVector : IEquatable<ScreenVector>
     {
         /// <summary>
         /// The x-coordinate.
@@ -100,6 +100,38 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Adds a vector to another vector.
+        /// </summary>
+        /// <param name="v">The vector to add to.</param>
+        /// <param name="d">The vector to be added.</param>
+        /// <returns>The result of the operation.</returns>
+        public static ScreenVector operator +(ScreenVector v, ScreenVector d)
+        {
+            return new ScreenVector(v.x + d.x, v.y + d.y);
+        }
+
+        /// <summary>
+        /// Subtracts one specified vector from another.
+        /// </summary>
+        /// <param name="v">The vector to subtract from.</param>
+        /// <param name="d">The vector to be subtracted.</param>
+        /// <returns>The result of operation.</returns>
+        public static ScreenVector operator -(ScreenVector v, ScreenVector d)
+        {
+            return new ScreenVector(v.x - d.x, v.y - d.y);
+        }
+
+        /// <summary>
+        /// Negates the specified vector.
+        /// </summary>
+        /// <param name="v">The vector to negate.</param>
+        /// <returns>The result of operation.</returns>
+        public static ScreenVector operator -(ScreenVector v)
+        {
+            return new ScreenVector(-v.x, -v.y);
+        }
+
+        /// <summary>
         /// Normalizes this vector.
         /// </summary>
         public void Normalize()
@@ -119,6 +151,16 @@ namespace OxyPlot
         public override string ToString()
         {
             return this.x + " " + this.y;
+        }
+
+        /// <summary>
+        /// Determines whether this instance and another specified <see cref="T:ScreenVector" /> object have the same value.
+        /// </summary>
+        /// <param name="other">The point to compare to this instance.</param>
+        /// <returns><c>true</c> if the value of the <paramref name="other" /> parameter is the same as the value of this instance; otherwise, <c>false</c>.</returns>
+        public bool Equals(ScreenVector other)
+        {
+            return this.x.Equals(other.x) && this.y.Equals(other.y);
         }
     }
 }

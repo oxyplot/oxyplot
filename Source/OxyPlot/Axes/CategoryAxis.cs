@@ -9,7 +9,6 @@
 
 namespace OxyPlot.Axes
 {
-    using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Globalization;
@@ -86,38 +85,6 @@ namespace OxyPlot.Axes
             this.MaximumPadding = 0;
             this.MajorStep = 1;
             this.GapWidth = 1;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CategoryAxis" /> class.
-        /// </summary>
-        /// <param name="position">The position.</param>
-        /// <param name="title">The title.</param>
-        /// <param name="categories">The categories.</param>
-        [Obsolete]
-        public CategoryAxis(AxisPosition position, string title = null, params string[] categories)
-            : this(title, categories)
-        {
-            this.Position = position;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CategoryAxis" /> class.
-        /// </summary>
-        /// <param name="title">The title.</param>
-        /// <param name="categories">The categories.</param>
-        [Obsolete]
-        public CategoryAxis(string title, params string[] categories)
-            : this()
-        {
-            this.Title = title;
-            if (categories != null)
-            {
-                foreach (var c in categories)
-                {
-                    this.Labels.Add(c);
-                }
-            }
         }
 
         /// <summary>
@@ -547,7 +514,7 @@ namespace OxyPlot.Axes
             if (this.ItemsSource != null)
             {
                 this.itemsSourceLabels.Clear();
-                this.itemsSourceLabels.AddRange(this.ItemsSource, this.LabelField);
+                this.itemsSourceLabels.AddRange(this.ItemsSource.Format(this.LabelField, this.StringFormat, this.ActualCulture));
                 return;
             }
 

@@ -10,7 +10,6 @@
 namespace OxyPlot
 {
     using System.Collections.Generic;
-    using System.Linq;
 
     /// <summary>
     /// Provides an abstract base class for graphics models.
@@ -60,16 +59,11 @@ namespace OxyPlot
         /// </returns>
         public IEnumerable<HitTestResult> HitTest(HitTestArguments args)
         {
-            // Revert the order to handle the top-level elements first
-            foreach (var element in this.GetElements().Reverse())
-            {
-                var uiElement = element as UIElement;
-                if (uiElement == null)
-                {
-                    continue;
-                }
+            var hitTestElements = this.GetHitTestElements();
 
-                var result = uiElement.HitTest(args);
+            foreach (var element in hitTestElements)
+            {
+                var result = element.HitTest(args);
                 if (result != null)
                 {
                     yield return result;
@@ -78,9 +72,9 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets all elements of the model, sorted by rendering priority.
+        /// Gets all elements of the model, top-level elements first.
         /// </summary>
         /// <returns>An enumerator of the elements.</returns>
-        public abstract IEnumerable<PlotElement> GetElements();
+        protected abstract IEnumerable<PlotElement> GetHitTestElements();
     }
 }

@@ -10,7 +10,6 @@
 namespace OxyPlot
 {
     using System;
-    using System.Linq;
 
     /// <summary>
     /// Provides an abstract base class for graphics models.
@@ -233,16 +232,9 @@ namespace OxyPlot
         /// <param name="e">The <see cref="OxyKeyEventArgs" /> instance containing the event data.</param>
         public virtual void HandleKeyDown(object sender, OxyKeyEventArgs e)
         {
-            // Revert the order to handle the top-level elements first
-            foreach (var element in this.GetElements().Reverse())
+            foreach (var element in this.GetHitTestElements())
             {
-                var uiElement = element as UIElement;
-                if (uiElement == null)
-                {
-                    continue;
-                }
-
-                uiElement.OnKeyDown(e);
+                element.OnKeyDown(e);
 
                 if (e.Handled)
                 {

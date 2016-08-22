@@ -67,48 +67,5 @@ namespace OxyPlot
             var format = string.IsNullOrEmpty(formatString) ? "{0}{1}" : "{0:" + formatString + "}{1}";
             return string.Format(formatProvider ?? CultureInfo.CurrentCulture, format, value, unitSymbol);
         }
-
-        /// <summary>
-        /// Calculates the greatest common divisor.
-        /// </summary>
-        /// <param name="a">The a.</param>
-        /// <param name="b">The b.</param>
-        /// <returns>The greatest common divisor.</returns>
-        [Obsolete]
-        public static int GreatestCommonDivisor(int a, int b)
-        {
-            if (b == 0)
-            {
-                return a;
-            }
-
-            return GreatestCommonDivisor(b, a % b);
-        }
-
-        /// <summary>
-        /// Calculates the greatest common factor.
-        /// </summary>
-        /// <param name="x">The x.</param>
-        /// <param name="y">The y.</param>
-        /// <returns>The greatest common factor.</returns>
-        [Obsolete]
-        public static int GreatestCommonFactor(int x, int y)
-        {
-            x = Math.Abs(x);
-            y = Math.Abs(y);
-            int z;
-            do
-            {
-                z = x % y;
-                if (z == 0)
-                {
-                    return y;
-                }
-
-                x = y;
-                y = z;
-            }
-            while (true);
-        }
     }
 }

@@ -13,15 +13,16 @@ namespace ExampleBrowser
 
     using Gtk;
 
+    #if GTK3
+    using TreeModel = Gtk.ITreeModel;
+    #endif
+
     public partial class MainWindow : Window
     {
-        private HBox hbox1;
-
-        private TreeView treeView1;
-
-        private OxyPlot.GtkSharp.PlotView plotView1;
-
-        private ExampleInfo selectedExample;
+        HPaned paned;
+        TreeView treeView;
+        OxyPlot.GtkSharp.PlotView plotView;
+        ExampleInfo selectedExample;
 
         public MainWindow()
             : base("Example Browser")
@@ -43,19 +44,18 @@ namespace ExampleBrowser
             set
             {
                 this.selectedExample = value;
-                this.plotView1.Model = this.selectedExample != null ? this.selectedExample.PlotModel : null;
-                this.plotView1.Controller = this.selectedExample != null ? this.selectedExample.PlotController : null;
+                this.plotView.Model = this.selectedExample != null ? this.selectedExample.PlotModel : null;
+                this.plotView.Controller = this.selectedExample != null ? this.selectedExample.PlotController : null;
             }
         }
 
         private void InitializeComponent()
         {
-            this.plotView1 = new OxyPlot.GtkSharp.PlotView();
-            this.plotView1.SetSizeRequest(625, 554);
+            this.plotView = new OxyPlot.GtkSharp.PlotView();
+            this.plotView.SetSizeRequest(300, 300);
 
-            this.treeView1 = new TreeView();
-            this.treeView1.SetSizeRequest(314, 554);
-            this.treeView1.Visible = true;
+            this.treeView = new TreeView();
+            this.treeView.Visible = true;
 
             var treeModel = new TreeStore(typeof(string), typeof(string));
             var iter = new TreeIter();
@@ -71,23 +71,24 @@ namespace ExampleBrowser
                 treeModel.AppendValues(iter, ex.Title);
             }
 
-            this.treeView1.Model = treeModel;
+            this.treeView.Model = treeModel;
             var exampleNameColumn = new TreeViewColumn { Title = "Example" };
             var exampleNameCell = new CellRendererText();
             exampleNameColumn.PackStart(exampleNameCell, true);
-            this.treeView1.AppendColumn(exampleNameColumn);
+            this.treeView.AppendColumn(exampleNameColumn);
             exampleNameColumn.AddAttribute(exampleNameCell, "text", 0);
 
-            this.treeView1.Selection.Changed += (s, e) =>
+            this.treeView.Selection.Changed += (s, e) =>
             {
                 TreeIter selectedNode;
                 TreeModel selectedModel;
-                if (treeView1.Selection.GetSelected(out selectedModel, out selectedNode))
+                if (treeView.Selection.GetSelected(out selectedModel, out selectedNode))
                 {
                     string val1 = (string)selectedModel.GetValue(selectedNode, 0);
                     string val2 = (string)selectedModel.GetValue(selectedNode, 1);
 
-                    var info = this.Examples.FirstOrDefault(ex => ex.Title == val1);
+                    var info = this.Examples.FirstOrDefault(ex => ex.Title == val1)
+                            ?? this.Examples.FirstOrDefault(ex => ex.Category == val1);
                     if (info != null)
                     {
                         this.SelectedExample = info;
@@ -95,13 +96,23 @@ namespace ExampleBrowser
                 }
             };
 
-            this.hbox1 = new HBox(false, 6);
-            this.hbox1.SetSizeRequest(943, 554);
+            var scrollwin = new ScrolledWindow ();
+            scrollwin.Add (this.treeView);
+            scrollwin.SetSizeRequest(250, 300);
 
-            this.hbox1.PackStart(this.treeView1, false, false, 6);
-            this.hbox1.PackStart(this.plotView1, false, false, 6);
+            var txtSearch = new Entry ();
+            treeView.SearchEntry = txtSearch;
+            var treeVbox = new VBox (false, 0);
+            treeVbox.BorderWidth = 6;
+            treeVbox.PackStart (txtSearch, false, true, 0);
+            treeVbox.PackStart (scrollwin, true, true, 0);
 
-            this.Add(this.hbox1);
+            this.paned = new HPaned ();
+            this.paned.Pack1 (treeVbox, false, false);
+            this.paned.Pack2 (this.plotView, true, false);
+            this.paned.Position = 300;
+
+            this.Add(this.paned);
 
             //this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             //this.AutoScaleMode = Gtk.AutoScaleMode.Font;

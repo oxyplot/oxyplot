@@ -327,7 +327,7 @@ namespace ExampleLibrary
             return s1;
         }
 
-        private static Series CreateRandomLineSeries(int n, string title, MarkerType markerType)
+        private static OxyPlot.Series.Series CreateRandomLineSeries(int n, string title, MarkerType markerType)
         {
             var s1 = new LineSeries { Title = title, MarkerType = markerType, MarkerStroke = OxyColors.Black, MarkerStrokeThickness = 1.0 };
             double x = 0;

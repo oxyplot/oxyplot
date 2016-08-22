@@ -22,7 +22,7 @@ namespace OxyPlot.GtkSharp
     /// Represents a control that displays a <see cref="PlotModel" />.
     /// </summary>
     [Serializable]
-    public class PlotView : DrawingArea, IPlotView
+    public partial class PlotView : DrawingArea, IPlotView
     {
         /// <summary>
         /// The category for the properties of this control.
@@ -76,16 +76,6 @@ namespace OxyPlot.GtkSharp
         private OxyRect? zoomRectangle;
 
         /// <summary>
-        /// The current width of the widget.
-        /// </summary>
-        private int width;
-
-        /// <summary>
-        /// The current height of the widget.
-        /// </summary>
-        private int height;
-
-        /// <summary>
         /// The default controller
         /// </summary>
         private IPlotController defaultController;
@@ -106,7 +96,6 @@ namespace OxyPlot.GtkSharp
             this.ZoomVerticalCursor = new Cursor(CursorType.SbVDoubleArrow);
             this.AddEvents((int)(EventMask.ButtonPressMask | EventMask.ButtonReleaseMask | EventMask.EnterNotifyMask | EventMask.LeaveNotifyMask | EventMask.ScrollMask | EventMask.KeyPressMask | EventMask.PointerMotionMask));
             this.CanFocus = true;
-            this.SizeAllocated += this.PlotSizeAllocated;
         }
 
         /// <summary>
@@ -175,7 +164,7 @@ namespace OxyPlot.GtkSharp
         {
             get
             {
-                return new OxyRect(0, 0, this.width, this.height);
+                return new OxyRect(0, 0, Allocation.Width, Allocation.Height);
             }
         }
 
@@ -262,48 +251,17 @@ namespace OxyPlot.GtkSharp
                 if (this.currentModel != null)
                 {
                     ((IPlotModel)this.currentModel).AttachPlotView(null);
+                    this.currentModel = null;
                 }
 
                 if (this.Model != null)
                 {
-                    if (this.Model.PlotView != null)
-                    {
-                        throw new InvalidOperationException(
-                            "This PlotModel is already in use by some other plot view.");
-                    }
-
                     ((IPlotModel)this.Model).AttachPlotView(this);
                     this.currentModel = this.Model;
                 }
             }
 
             this.InvalidatePlot(true);
-        }
-
-        /// <summary>
-        /// Sets the cursor type.
-        /// </summary>
-        /// <param name="cursorType">The cursor type.</param>
-        public void SetCursorType(OxyPlot.CursorType cursorType)
-        {
-            switch (cursorType)
-            {
-                case OxyPlot.CursorType.Pan:
-                    this.GdkWindow.Cursor = this.PanCursor;
-                    break;
-                case OxyPlot.CursorType.ZoomRectangle:
-                    this.GdkWindow.Cursor = this.ZoomRectangleCursor;
-                    break;
-                case OxyPlot.CursorType.ZoomHorizontal:
-                    this.GdkWindow.Cursor = this.ZoomHorizontalCursor;
-                    break;
-                case OxyPlot.CursorType.ZoomVertical:
-                    this.GdkWindow.Cursor = this.ZoomVerticalCursor;
-                    break;
-                default:
-                    this.GdkWindow.Cursor = new Cursor(CursorType.Arrow);
-                    break;
-            }
         }
 
         /// <summary>
@@ -417,79 +375,62 @@ namespace OxyPlot.GtkSharp
         }
 
         /// <summary>
-        /// Called when the widget needs to be (fully or partially) redrawn.
+        /// Draws the plot to a cairo context within the specified bounds.
         /// </summary>
-        /// <param name="e">An instance that contains the event data.</param>
-        /// <returns><c>true</c> if the event was handled.</returns>
-        protected override bool OnExposeEvent(EventExpose e)
+        /// <param name="cr">The cairo context to use for drawing.</param>
+        void DrawPlot (Cairo.Context cr)
         {
-            using (var g = CairoHelper.Create(e.Window))
+            try
             {
-                try
+                lock (this.invalidateLock)
                 {
-                    lock (this.invalidateLock)
+                    if (this.isModelInvalidated)
                     {
-                        if (this.isModelInvalidated)
-                        {
-                            if (this.model != null)
-                            {
-                                ((IPlotModel)this.model).Update(this.updateDataFlag);
-                                this.updateDataFlag = false;
-                            }
-
-                            this.isModelInvalidated = false;
-                        }
-                    }
-
-                    lock (this.renderingLock)
-                    {
-                        this.renderContext.SetGraphicsTarget(g);
                         if (this.model != null)
                         {
-                            if (!this.model.Background.IsUndefined())
-                            {
-                                this.renderContext.DrawRectangle(new OxyRect(e.Area.Left, e.Area.Top, e.Area.Width, e.Area.Height), this.model.Background, OxyColors.Undefined, 0);
-                            }
-
-                            ((IPlotModel)this.model).Render(this.renderContext, this.width, this.height);
+                            ((IPlotModel)this.model).Update(this.updateDataFlag);
+                            this.updateDataFlag = false;
                         }
 
-                        if (this.zoomRectangle.HasValue)
-                        {
-                            this.renderContext.DrawRectangle(this.zoomRectangle.Value, OxyColor.FromArgb(0x40, 0xFF, 0xFF, 0x00), OxyColors.Transparent, 1.0);
-                        }
+                        this.isModelInvalidated = false;
                     }
                 }
-                catch (Exception paintException)
+
+                lock (this.renderingLock)
                 {
-                    var trace = new StackTrace(paintException);
-                    Debug.WriteLine(paintException);
-                    Debug.WriteLine(trace);
-
-                    // using (var font = new Font("Arial", 10))
+                    this.renderContext.SetGraphicsTarget(cr);
+                    if (this.model != null)
                     {
-                        // int width; int height;
-                        // this.GetSizeRequest(out width, out height);
-                        Debug.Assert(false, "OxyPlot paint exception: " + paintException.Message);
+                        if (!this.model.Background.IsUndefined())
+                        {
+                            this.renderContext.DrawRectangle(Allocation.ToOxyRect(), this.model.Background, OxyColors.Undefined, 0);
+                        }
 
-                        // g.ResetTransform();
-                        // g.DrawString(, font, Brushes.Red, width / 2, height / 2, new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });
+                        ((IPlotModel)this.model).Render(this.renderContext, Allocation.Width, Allocation.Height);
+                    }
+
+                    if (this.zoomRectangle.HasValue)
+                    {
+                        this.renderContext.DrawRectangle(this.zoomRectangle.Value, OxyColor.FromArgb(0x40, 0xFF, 0xFF, 0x00), OxyColors.Transparent, 1.0);
                     }
                 }
             }
+            catch (Exception paintException)
+            {
+                var trace = new StackTrace(paintException);
+                Debug.WriteLine(paintException);
+                Debug.WriteLine(trace);
 
-            return true;
-        }
+                // using (var font = new Font("Arial", 10))
+                {
+                    // int width; int height;
+                    // this.GetSizeRequest(out width, out height);
+                    Debug.Assert(false, "OxyPlot paint exception: " + paintException.Message);
 
-        /// <summary>
-        /// Handles the size allocated event.
-        /// </summary>
-        /// <param name="source">The source.</param>
-        /// <param name="args">The arguments.</param>
-        private void PlotSizeAllocated(object source, SizeAllocatedArgs args)
-        {
-            this.width = args.Allocation.Width;
-            this.height = args.Allocation.Height;
+                    // g.ResetTransform();
+                    // g.DrawString(, font, Brushes.Red, width / 2, height / 2, new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });
+                }
+            }
         }
     }
 }

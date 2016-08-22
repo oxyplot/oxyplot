@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <id>OxyPlot.Windows</id>
+    <title>OxyPlot for Windows apps</title>
+    <version>$version$</version>
+    <authors>Oystein Bjorke</authors>
+    <description>OxyPlot is a plotting library for .NET. This package targets the Universal Windows Platform (UAP10), Windows 8.1 and Windows Phone 8.1 apps.</description>
+    <releaseNotes></releaseNotes>
+    <licenseUrl>https://raw.githubusercontent.com/oxyplot/oxyplot/master/LICENSE</licenseUrl>
+    <projectUrl>http://oxyplot.org/</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/oxyplot/oxyplot/develop/Icons/OxyPlot_128.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <language>en-US</language>
+    <tags>winrt uap uap10 UWP win10 win81 wpa81 win8 metro plotting plot charting chart</tags>
+    <dependencies>
+      <dependency id="OxyPlot.Core" version="[$version$]"/>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\..\Output\Windows\OxyPlot.Windows.???" target="lib\portable-windows8+wpa81" />
+    <file src="..\..\Output\Windows\OxyPlot.Windows.xr.xml" target="lib\portable-windows8+wpa81\OxyPlot.Windows" />
+    <file src="..\..\Output\Windows\Themes\*.*" target="lib\portable-windows8+wpa81\OxyPlot.Windows\Themes" />
+
+    <file src="..\..\Output\Windows10\OxyPlot.Windows.???" target="lib\uap10.0" />
+    <file src="..\..\Output\Windows10\OxyPlot.Windows.xr.xml" target="lib\uap10.0\OxyPlot.Windows" />
+    <file src="..\..\Output\Windows10\Properties\*.*" target="lib\uap10.0\OxyPlot.Windows\Properties" />
+    <file src="..\..\Output\Windows10\Themes\*.*" target="lib\uap10.0\OxyPlot.Windows\Themes" />
+
+    <file src="..\..\LICENSE" />
+    <file src="..\..\AUTHORS" />
+    <file src="..\..\CONTRIBUTORS" />
+    <file src="..\..\README.md" />
+    <file src="..\..\CHANGELOG.md" />
+  </files>
+</package>

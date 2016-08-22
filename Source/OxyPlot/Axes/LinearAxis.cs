@@ -9,8 +9,6 @@
 
 namespace OxyPlot.Axes
 {
-    using System;
-
     /// <summary>
     /// Represents an axis with linear scale.
     /// </summary>
@@ -24,51 +22,6 @@ namespace OxyPlot.Axes
             this.FractionUnit = 1.0;
             this.FractionUnitSymbol = null;
             this.FormatAsFractions = false;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LinearAxis" /> class.
-        /// </summary>
-        /// <param name="position">The position of the axis.</param>
-        /// <param name="title">The title.</param>
-        [Obsolete]
-        public LinearAxis(AxisPosition position, string title)
-            : this()
-        {
-            this.Position = position;
-            this.Title = title;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LinearAxis" /> class.
-        /// </summary>
-        /// <param name="position">The position of the axis.</param>
-        /// <param name="minimum">The minimum value.</param>
-        /// <param name="maximum">The maximum value.</param>
-        /// <param name="title">The title.</param>
-        [Obsolete]
-        public LinearAxis(AxisPosition position, double minimum = double.NaN, double maximum = double.NaN, string title = null)
-            : this(position, minimum, maximum, double.NaN, double.NaN, title)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LinearAxis" /> class.
-        /// </summary>
-        /// <param name="position">The position of the axis.</param>
-        /// <param name="minimum">The minimum value.</param>
-        /// <param name="maximum">The maximum value.</param>
-        /// <param name="majorStep">The major step.</param>
-        /// <param name="minorStep">The minor step.</param>
-        /// <param name="title">The title.</param>
-        [Obsolete]
-        public LinearAxis(AxisPosition position, double minimum, double maximum, double majorStep, double minorStep, string title = null)
-            : this(position, title)
-        {
-            this.Minimum = minimum;
-            this.Maximum = maximum;
-            this.MajorStep = majorStep;
-            this.MinorStep = minorStep;
         }
 
         /// <summary>
@@ -95,6 +48,15 @@ namespace OxyPlot.Axes
         public override bool IsXyAxis()
         {
             return true;
+        }
+
+        /// <summary>
+        /// Determines whether the axis is logarithmic.
+        /// </summary>
+        /// <returns><c>true</c> if it is a logarithmic axis; otherwise, <c>false</c> .</returns>
+        public override bool IsLogarithmic()
+        {
+            return false;
         }
 
         /// <summary>

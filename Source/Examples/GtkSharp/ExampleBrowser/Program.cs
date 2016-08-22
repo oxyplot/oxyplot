@@ -23,7 +23,7 @@ namespace ExampleBrowser
         {
             Application.Init();
             var window = new MainWindow();
-            window.SetSizeRequest(943 + 100, 554 + 100);
+            window.SetDefaultSize (800, 600);
             window.Visible = true;
             window.ShowAll();
             Application.Run();

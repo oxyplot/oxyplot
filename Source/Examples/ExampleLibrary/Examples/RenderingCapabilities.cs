@@ -15,6 +15,7 @@ namespace ExampleLibrary
 
     using OxyPlot;
     using OxyPlot.Annotations;
+    using System.Linq;
 
     /// <summary>
     /// Provides rendering capability examples.
@@ -140,6 +141,69 @@ namespace ExampleLibrary
                         var origin = new ScreenPoint((((int)ha + 1) * 200) + 20, (((int)va + 1) * FontSize * 3) + 20);
                         rc.FillCircle(origin, 3, OxyColors.Blue);
                         rc.DrawText(origin, ha + "-" + va, OxyColors.Black, fontSize: FontSize, horizontalAlignment: ha, verticalAlignment: va);
+                    }
+                }
+            }));
+            return model;
+        }
+
+        /// <summary>
+        /// Shows rotation capabilities for the DrawMathText method.
+        /// </summary>
+        /// <returns>A plot model.</returns>
+        [Example("DrawMathText - Rotation")]
+        public static PlotModel MathTextRotation()
+        {
+            var model = new PlotModel();
+            var fontFamily = "Arial";
+            var fontSize = 24;
+            var fontWeight = FontWeights.Normal;
+            model.Annotations.Add(new DelegateAnnotation(rc =>
+            {
+                var origin = new ScreenPoint(200, 200);
+                var origin2 = new ScreenPoint(400, 200);
+                rc.FillCircle(origin, 3, OxyColors.Blue);
+                for (int rotation = 0; rotation < 360; rotation += 45)
+                {
+                    var text = "     A_{2}^{3}B";
+                    rc.DrawMathText(origin, text, OxyColors.Black, fontFamily, fontSize, fontWeight, rotation, HorizontalAlignment.Left, VerticalAlignment.Middle);
+                    var size = rc.MeasureMathText(text, fontFamily, fontSize, fontWeight);
+                    var outline1 = size.GetPolygon(origin, rotation, HorizontalAlignment.Left, VerticalAlignment.Middle).ToArray();
+                    rc.DrawPolygon(outline1, OxyColors.Undefined, OxyColors.Blue);
+
+                    // Compare with normal text
+                    var text2 = "     A B";
+                    rc.DrawText(origin2, text2, OxyColors.Red, fontFamily, fontSize, fontWeight, rotation, HorizontalAlignment.Left, VerticalAlignment.Middle);
+                    var size2 = rc.MeasureText(text2, fontFamily, fontSize, fontWeight);
+                    var outline2 = size2.GetPolygon(origin2, rotation, HorizontalAlignment.Left, VerticalAlignment.Middle).ToArray();
+                    rc.DrawPolygon(outline2, OxyColors.Undefined, OxyColors.Blue);
+                }
+            }));
+            return model;
+        }
+
+        /// <summary>
+        /// Shows alignment capabilities for the DrawMathText method.
+        /// </summary>
+        /// <returns>A plot model.</returns>
+        [Example("DrawMathText - Alignment")]
+        public static PlotModel DrawMathTextAlignment()
+        {
+            var text = "A_{2}^{3}B";
+            var model = new PlotModel();
+            model.Annotations.Add(new DelegateAnnotation(rc =>
+            {
+                const string FontFamily = "Arial";
+                const double FontSize = 20d;
+                const double FontWeight = FontWeights.Normal;
+
+                for (var ha = HorizontalAlignment.Left; ha <= HorizontalAlignment.Right; ha++)
+                {
+                    for (var va = VerticalAlignment.Top; va <= VerticalAlignment.Bottom; va++)
+                    {
+                        var origin = new ScreenPoint((((int)ha + 1) * 200) + 20, (((int)va + 1) * FontSize * 3) + 20);
+                        rc.FillCircle(origin, 3, OxyColors.Blue);
+                        rc.DrawMathText(origin, text, OxyColors.Black, FontFamily, FontSize, FontWeight, 0, ha, va);
                     }
                 }
             }));
@@ -368,10 +432,9 @@ namespace ExampleLibrary
             /// Renders the annotation on the specified context.
             /// </summary>
             /// <param name="rc">The render context.</param>
-            /// <param name="model">The model.</param>
-            public override void Render(IRenderContext rc, PlotModel model)
+            public override void Render(IRenderContext rc)
             {
-                base.Render(rc, model);
+                base.Render(rc);
                 this.Rendering(rc);
             }
         }

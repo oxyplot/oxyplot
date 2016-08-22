@@ -171,12 +171,12 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Draws the clipped line segments.
+        /// Draws clipped line segments.
         /// </summary>
         /// <param name="rc">The render context.</param>
         /// <param name="clippingRectangle">The clipping rectangle.</param>
-        /// <param name="points">The points.</param>
-        /// <param name="stroke">The stroke.</param>
+        /// <param name="points">The points defining the line segments. Lines are drawn from point 0 to 1, point 2 to 3 and so on.</param>
+        /// <param name="stroke">The stroke color.</param>
         /// <param name="strokeThickness">The stroke thickness.</param>
         /// <param name="dashArray">The dash array (in device independent units, 1/96 inch).</param>
         /// <param name="lineJoin">The line join.</param>
@@ -240,7 +240,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Draws the clipped image.
+        /// Draws a clipped image.
         /// </summary>
         /// <param name="rc">The render context.</param>
         /// <param name="clippingRectangle">The clipping rectangle.</param>
@@ -314,8 +314,8 @@ namespace OxyPlot
         /// <param name="clippingRectangle">The clipping rectangle.</param>
         /// <param name="points">The points.</param>
         /// <param name="minDistSquared">The squared minimum distance between points.</param>
-        /// <param name="fill">The fill.</param>
-        /// <param name="stroke">The stroke.</param>
+        /// <param name="fill">The fill color.</param>
+        /// <param name="stroke">The stroke color.</param>
         /// <param name="strokeThickness">The stroke thickness.</param>
         /// <param name="lineStyle">The line style.</param>
         /// <param name="lineJoin">The line join.</param>
@@ -773,8 +773,8 @@ namespace OxyPlot
         /// </summary>
         /// <param name="rc">The render context.</param>
         /// <param name="rect">The rectangle.</param>
-        /// <param name="fill">The fill.</param>
-        /// <param name="stroke">The stroke.</param>
+        /// <param name="fill">The fill color.</param>
+        /// <param name="stroke">The stroke color.</param>
         /// <param name="thickness">The thickness.</param>
         public static void DrawRectangleAsPolygon(this IRenderContext rc, OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
@@ -838,13 +838,12 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Draws the rectangle as an aliased polygon.
-        /// (makes sure pixel alignment is the same as for lines)
+        /// Draws the rectangle as an aliased polygon. Makes sure pixel alignment is the same as for aliased lines.
         /// </summary>
         /// <param name="rc">The render context.</param>
         /// <param name="rect">The rectangle.</param>
-        /// <param name="fill">The fill.</param>
-        /// <param name="stroke">The stroke.</param>
+        /// <param name="fill">The fill color.</param>
+        /// <param name="stroke">The stroke color.</param>
         /// <param name="thickness">The thickness.</param>
         public static void DrawRectangleAsPolygon(this IRenderContext rc, OxyRect rect, OxyColor fill, OxyColor stroke, OxyThickness thickness)
         {
@@ -866,16 +865,32 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Adds a marker geometry.
+        /// Measures the size of the specified text.
+        /// </summary>
+        /// <param name="rc">The render context.</param>
+        /// <param name="text">The text.</param>
+        /// <param name="fontFamily">The font family.</param>
+        /// <param name="fontSize">Size of the font (in device independent units, 1/96 inch).</param>
+        /// <param name="fontWeight">The font weight.</param>
+        /// <param name="angle">The angle of measured text (degrees).</param>
+        /// <returns>The size of the text (in device independent units, 1/96 inch).</returns>
+        public static OxySize MeasureText(this IRenderContext rc, string text, string fontFamily, double fontSize, double fontWeight, double angle)
+        {
+            var bounds = rc.MeasureText(text, fontFamily, fontSize, fontWeight);
+            return MeasureRotatedRectangleBound(bounds, angle);
+        }
+
+        /// <summary>
+        /// Adds a marker geometry to the specified collections.
         /// </summary>
         /// <param name="p">The position of the marker.</param>
-        /// <param name="type">The type.</param>
-        /// <param name="outline">The outline.</param>
-        /// <param name="size">The size.</param>
-        /// <param name="ellipses">The ellipse collection.</param>
-        /// <param name="rects">The rectangle collection.</param>
-        /// <param name="polygons">The polygon collection.</param>
-        /// <param name="lines">The line collection.</param>
+        /// <param name="type">The marker type.</param>
+        /// <param name="outline">The custom outline, if <paramref name="type" /> is <see cref="MarkerType.Custom" />.</param>
+        /// <param name="size">The size of the marker.</param>
+        /// <param name="ellipses">The output ellipse collection.</param>
+        /// <param name="rects">The output rectangle collection.</param>
+        /// <param name="polygons">The output polygon collection.</param>
+        /// <param name="lines">The output line collection.</param>
         private static void AddMarkerGeometry(
             ScreenPoint p,
             MarkerType type,
@@ -987,26 +1002,31 @@ namespace OxyPlot
                 return null;
             }
 
-            if (rect.Right > clippingRectangle.Right)
+            var width = rect.Width;
+            var left = rect.Left;
+            var top = rect.Top;
+            var height = rect.Height;
+
+            if (left + width > clippingRectangle.Right)
             {
-                rect.Right = clippingRectangle.Right;
+                width = clippingRectangle.Right - left;
             }
 
-            if (rect.Left < clippingRectangle.Left)
+            if (left < clippingRectangle.Left)
             {
-                rect.Width = rect.Right - clippingRectangle.Left;
-                rect.Left = clippingRectangle.Left;
+                width = rect.Right - clippingRectangle.Left;
+                left = clippingRectangle.Left;
             }
 
-            if (rect.Top < clippingRectangle.Top)
+            if (top < clippingRectangle.Top)
             {
-                rect.Height = rect.Bottom - clippingRectangle.Top;
-                rect.Top = clippingRectangle.Top;
+                height = rect.Bottom - clippingRectangle.Top;
+                top = clippingRectangle.Top;
             }
 
-            if (rect.Bottom > clippingRectangle.Bottom)
+            if (top + height > clippingRectangle.Bottom)
             {
-                rect.Bottom = clippingRectangle.Bottom;
+                height = clippingRectangle.Bottom - top;
             }
 
             if (rect.Width <= 0 || rect.Height <= 0)
@@ -1014,7 +1034,7 @@ namespace OxyPlot
                 return null;
             }
 
-            return rect;
+            return new OxyRect(left, top, width, height);
         }
 
         /// <summary>
@@ -1043,6 +1063,18 @@ namespace OxyPlot
                 pts.Add(new ScreenPoint(pts[0].X + 1, pts[0].Y));
                 pts[0] = new ScreenPoint(pts[0].X - 1, pts[0].Y);
             }
+        }
+
+        /// <summary>
+        /// Calculates the bounds with respect to rotation angle and horizontal/vertical alignment.
+        /// </summary>
+        /// <param name="bounds">The size of the object to calculate bounds for.</param>
+        /// <param name="angle">The rotation angle (degrees).</param>
+        /// <returns>A minimum bounding rectangle.</returns>
+        private static OxySize MeasureRotatedRectangleBound(OxySize bounds, double angle)
+        {
+            var oxyRect = bounds.GetBounds(angle, HorizontalAlignment.Center, VerticalAlignment.Middle);
+            return new OxySize(oxyRect.Width, oxyRect.Height);
         }
     }
 }

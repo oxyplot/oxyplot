@@ -87,81 +87,95 @@ namespace OxyPlot.Tests
         }
 
         /// <summary>
-        /// Tests the <see cref="PlotModel.Render" /> method.
+        /// Tests rendering on a collapsed output surface.
         /// </summary>
-        public class Render
+        [Test]
+        public void Collapsed()
         {
-            /// <summary>
-            /// Tests rendering on a collapsed output surface.
-            /// </summary>
-            [Test]
-            public void Collapsed()
-            {
-                var model = new PlotModel();
-                var rc = Substitute.For<IRenderContext>();
-                ((IPlotModel)model).Render(rc, 0, 0);
-            }
-
-            /// <summary>
-            /// Tests rendering on a small output surface.
-            /// </summary>
-            [Test]
-            public void NoPadding()
-            {
-                var model = new PlotModel { Padding = new OxyThickness(0) };
-                var rc = Substitute.For<IRenderContext>();
-                ((IPlotModel)model).Render(rc, double.Epsilon, double.Epsilon);
-            }
+            var model = new PlotModel();
+            var rc = Substitute.For<IRenderContext>();
+            ((IPlotModel)model).Render(rc, 0, 0);
         }
 
         /// <summary>
-        /// Tests the <see cref="PlotModel.Axes" /> collection.
+        /// Tests rendering on a small output surface.
         /// </summary>
-        public class Axes
+        [Test]
+        public void NoPadding()
         {
-            /// <summary>
-            /// The same axis cannot be added more than once.
-            /// </summary>
-            [Test]
-            public void AddAxisTwice()
-            {
-                var model = new PlotModel();
-                var axis = new LinearAxis();
-                model.Axes.Add(axis);
-                Assert.Throws<InvalidOperationException>(() => model.Axes.Add(axis));
-            }
-
-            /// <summary>
-            /// The same axis cannot be added to different PlotModels.
-            /// </summary>
-            [Test]
-            public void AddAxisToDifferentModels()
-            {
-                var model1 = new PlotModel();
-                var model2 = new PlotModel();
-                var axis = new LinearAxis();
-                model1.Axes.Add(axis);
-                Assert.Throws<InvalidOperationException>(() => model2.Axes.Add(axis));
-            }
+            var model = new PlotModel { Padding = new OxyThickness(0) };
+            var rc = Substitute.For<IRenderContext>();
+            ((IPlotModel)model).Render(rc, double.Epsilon, double.Epsilon);
         }
 
         /// <summary>
-        /// Tests the <see cref="PlotModel.GetAxisOrDefault" /> method.
+        /// The same axis cannot be added more than once.
         /// </summary>
-        public class GetAxisOrDefault
+        [Test]
+        public void AddAxisTwice()
         {
-            /// <summary>
-            /// An exception should be thrown when the axis key is invalid.
-            /// </summary>
-            [Test]
-            public void InvalidAxisKey()
-            {
-                var model = new PlotModel();
-                model.Axes.Add(new LinearAxis());
-                model.Series.Add(new LineSeries { XAxisKey = "invalidKey" });
-                ((IPlotModel)model).Update(true);
-                Assert.IsNotNull(model.GetLastUpdateException() as InvalidOperationException);
-            }
+            var model = new PlotModel();
+            var axis = new LinearAxis();
+            model.Axes.Add(axis);
+            Assert.Throws<InvalidOperationException>(() => model.Axes.Add(axis));
+        }
+
+        /// <summary>
+        /// The same axis cannot be added to different PlotModels.
+        /// </summary>
+        [Test]
+        public void AddAxisToDifferentModels()
+        {
+            var model1 = new PlotModel();
+            var model2 = new PlotModel();
+            var axis = new LinearAxis();
+            model1.Axes.Add(axis);
+            Assert.Throws<InvalidOperationException>(() => model2.Axes.Add(axis));
+        }
+
+        /// <summary>
+        /// An exception should be thrown when the axis key is invalid.
+        /// </summary>
+        [Test]
+        public void InvalidAxisKey()
+        {
+            var model = new PlotModel();
+            model.Axes.Add(new LinearAxis());
+            model.Series.Add(new LineSeries { XAxisKey = "invalidKey" });
+            ((IPlotModel)model).Update(true);
+            Assert.IsNotNull(model.GetLastPlotException() as InvalidOperationException);
+        }
+
+        /// <summary>
+        /// When PlotMargins is not set, the ActualPlotMargins should use the desired size of the axes.
+        /// </summary>
+        [Test]
+        public void AutoPlotMargins()
+        {
+            var plot = new PlotModel { Title = "Auto PlotMargins" };
+            var verticalAxis = new LinearAxis { Position = AxisPosition.Left };
+            var horizontalAxis = new LinearAxis { Position = AxisPosition.Bottom };
+            plot.Axes.Add(verticalAxis);
+            plot.Axes.Add(horizontalAxis);
+            plot.UpdateAndRenderToNull(800, 600);
+            Assert.That(plot.ActualPlotMargins.Left, Is.EqualTo(26).Within(1), "left");
+            Assert.That(plot.ActualPlotMargins.Top, Is.EqualTo(0).Within(1), "top");
+            Assert.That(plot.ActualPlotMargins.Right, Is.EqualTo(0).Within(1), "right");
+            Assert.That(plot.ActualPlotMargins.Bottom, Is.EqualTo(21).Within(1), "bottom");
+        }
+
+        /// <summary>
+        /// When PlotMargins is not set, the ActualPlotMargins should have the same value.
+        /// </summary>
+        [Test]
+        public void FixedPlotMargins()
+        {
+            var plot = new PlotModel { PlotMargins = new OxyThickness(23, 19, 17, 31) };
+            plot.UpdateAndRenderToNull(800, 600);
+            Assert.That(plot.ActualPlotMargins.Left, Is.EqualTo(plot.PlotMargins.Left), "left");
+            Assert.That(plot.ActualPlotMargins.Top, Is.EqualTo(plot.PlotMargins.Top), "top");
+            Assert.That(plot.ActualPlotMargins.Right, Is.EqualTo(plot.PlotMargins.Right), "right");
+            Assert.That(plot.ActualPlotMargins.Bottom, Is.EqualTo(plot.PlotMargins.Bottom), "bottom");
         }
     }
 }

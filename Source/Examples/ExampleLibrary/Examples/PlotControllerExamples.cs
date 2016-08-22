@@ -24,7 +24,7 @@ namespace ExampleLibrary
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
             var controller = new PlotController();
-            controller.InputCommandBindings.Clear();
+            controller.UnbindAll();
             controller.BindMouseDown(OxyMouseButton.Left, PlotCommands.PanAt);
             return new Example(model, controller);
         }
@@ -54,9 +54,10 @@ namespace ExampleLibrary
             model.Series.Add(series);
 
             // Create a command that adds points to the scatter series
-            var command = new DelegatePlotCommand<OxyMouseEventArgs>(
+            var command = new DelegatePlotCommand<OxyMouseDownEventArgs>(
                 (v, c, a) =>
                 {
+                    a.Handled = true;
                     var point = series.InverseTransform(a.Position);
                     series.Points.Add(new ScatterPoint(point.X, point.Y));
                     model.InvalidatePlot(true);
@@ -99,6 +100,7 @@ namespace ExampleLibrary
                     var firstHit = v.ActualModel.HitTest(args).FirstOrDefault(x => x.Element is RectangleAnnotation);
                     if (firstHit != null)
                     {
+                        e.Handled = true;
                         plotModel.Subtitle = "You clicked " + ((RectangleAnnotation)firstHit.Element).Text;
                         plotModel.InvalidatePlot(false);
                     }

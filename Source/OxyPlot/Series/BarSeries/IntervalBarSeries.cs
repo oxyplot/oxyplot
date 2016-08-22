@@ -21,6 +21,11 @@ namespace OxyPlot.Series
     public class IntervalBarSeries : CategorizedSeries, IStackableSeries
     {
         /// <summary>
+        /// The default tracker format string
+        /// </summary>
+        public new const string DefaultTrackerFormatString = "{0}\n{1}: {2}\n{3}: {4}";
+
+        /// <summary>
         /// The default fill color.
         /// </summary>
         private OxyColor defaultFillColor;
@@ -38,7 +43,7 @@ namespace OxyPlot.Series
             this.StrokeThickness = 1;
             this.BarWidth = 1;
 
-            this.TrackerFormatString = "{0}\n{1}: {2:0.###}\n{3}: {4:0.###}";
+            this.TrackerFormatString = DefaultTrackerFormatString;
             this.LabelMargin = 4;
 
             this.LabelFormatString = "{2}"; // title
@@ -177,7 +182,8 @@ namespace OxyPlot.Series
                         Position = point,
                         Item = item,
                         Index = i,
-                        Text = this.Format(
+                        Text = StringHelper.Format(
+                        this.ActualCulture, 
                         this.TrackerFormatString,
                         item,
                         this.Title,
@@ -209,8 +215,7 @@ namespace OxyPlot.Series
         /// Renders the Series on the specified rendering context.
         /// </summary>
         /// <param name="rc">The rendering context.</param>
-        /// <param name="model">The model.</param>
-        public override void Render(IRenderContext rc, PlotModel model)
+        public override void Render(IRenderContext rc)
         {
             this.ActualBarRectangles = new List<OxyRect>();
 
@@ -248,7 +253,7 @@ namespace OxyPlot.Series
 
                 if (this.LabelFormatString != null)
                 {
-                    var s = this.Format(this.LabelFormatString, this.GetItem(i), item.Start, item.End, item.Title);
+                    var s = StringHelper.Format(this.ActualCulture, this.LabelFormatString, this.GetItem(i), item.Start, item.End, item.Title);
 
                     var pt = new ScreenPoint(
                         (rectangle.Left + rectangle.Right) / 2, (rectangle.Top + rectangle.Bottom) / 2);
@@ -319,12 +324,11 @@ namespace OxyPlot.Series
         /// <summary>
         /// Sets the default values.
         /// </summary>
-        /// <param name="model">The model.</param>
-        protected internal override void SetDefaultValues(PlotModel model)
+        protected internal override void SetDefaultValues()
         {
             if (this.FillColor.IsAutomatic())
             {
-                this.defaultFillColor = model.GetDefaultColor();
+                this.defaultFillColor = this.PlotModel.GetDefaultColor();
             }
         }
 
@@ -346,10 +350,10 @@ namespace OxyPlot.Series
             {
                 this.Items.Clear();
 
-                var filler = new ListFiller<IntervalBarItem>();
-                filler.Add(this.MinimumField, (item, value) => item.Start = Convert.ToDouble(value));
-                filler.Add(this.MaximumField, (item, value) => item.End = Convert.ToDouble(value));
-                filler.FillT(this.Items, this.ItemsSource);
+                var filler = new ListBuilder<IntervalBarItem>();
+                filler.Add(this.MinimumField, double.NaN);
+                filler.Add(this.MaximumField, double.NaN);
+                filler.FillT(this.Items, this.ItemsSource, args => new IntervalBarItem() { Start = Convert.ToDouble(args[0]), End = Convert.ToDouble(args[1]) });
             }
         }
 

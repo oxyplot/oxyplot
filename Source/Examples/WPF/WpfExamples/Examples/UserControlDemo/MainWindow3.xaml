@@ -4,11 +4,15 @@
         xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf" Title="Plot in DataTemplate" Height="480" Width="640">
     <Window.Resources>
         <DataTemplate DataType="{x:Type UserControlDemo:ViewModel}">
-            <oxy:PlotView Title="{Binding Title}">
-                <oxy:PlotView.Series>
+            <oxy:Plot Title="{Binding Title}">
+                <oxy:Plot.Series>
                     <oxy:LineSeries ItemsSource="{Binding Points}"/>
-                </oxy:PlotView.Series>
-            </oxy:PlotView>
+                </oxy:Plot.Series>
+                <oxy:Plot.Axes>
+                    <oxy:LinearAxis Position="Bottom"/>
+                    <oxy:LinearAxis Position="Left"/>
+                </oxy:Plot.Axes>
+            </oxy:Plot>
         </DataTemplate>
     </Window.Resources>
     <TabControl ItemsSource="{Binding Models}" DisplayMemberPath="Title"/>

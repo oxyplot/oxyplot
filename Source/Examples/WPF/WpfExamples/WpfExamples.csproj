@@ -13,7 +13,6 @@
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>..\..\..\..\Icons\OxyPlot.ico</ApplicationIcon>
@@ -37,13 +36,13 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PropertyTools, Version=0.0.0.0, Culture=neutral, PublicKeyToken=ea0c9f2b460934d0, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\PropertyTools.Wpf.2013.1.17.1\lib\NET45\PropertyTools.dll</HintPath>
+    <Reference Include="PropertyTools, Version=2015.2.0.0, Culture=neutral, PublicKeyToken=ea0c9f2b460934d0, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\PropertyTools.Wpf.2015.2.0\lib\net45\PropertyTools.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="PropertyTools.Wpf, Version=2013.1.1.1, Culture=neutral, PublicKeyToken=ea0c9f2b460934d0, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\PropertyTools.Wpf.2013.1.17.1\lib\NET45\PropertyTools.Wpf.dll</HintPath>
+    <Reference Include="PropertyTools.Wpf, Version=2015.2.0.0, Culture=neutral, PublicKeyToken=ea0c9f2b460934d0, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\PropertyTools.Wpf.2015.2.0\lib\net45\PropertyTools.Wpf.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -67,14 +66,118 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="BitmapTools.cs" />
+    <Compile Include="Examples\AlignedAxesDemo\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\AnimationsDemo\Controls\AnimationSettingsControl.xaml.cs">
+      <DependentUpon>AnimationSettingsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\AnimationsDemo\EasingFunctions\NoEase.cs" />
+    <Compile Include="Examples\AnimationsDemo\EasingFunctions\SineEase.cs" />
+    <Compile Include="Examples\AnimationsDemo\EasingFunctions\QuinticEase.cs" />
+    <Compile Include="Examples\AnimationsDemo\EasingFunctions\QuarticEase.cs" />
+    <Compile Include="Examples\AnimationsDemo\EasingFunctions\QuadraticEase.cs" />
+    <Compile Include="Examples\AnimationsDemo\EasingFunctions\PowerEase.cs" />
+    <Compile Include="Examples\AnimationsDemo\EasingFunctions\BounceEase.cs" />
+    <Compile Include="Examples\AnimationsDemo\EasingFunctions\BackEase.cs" />
+    <Compile Include="Examples\AnimationsDemo\EasingFunctions\CircleEase.cs" />
+    <Compile Include="Examples\AnimationsDemo\Extensions\AnimationExtensions.cs" />
+    <Compile Include="Examples\AnimationsDemo\Extensions\AnimationExtensions.datapointseries.cs" />
+    <Compile Include="Examples\AnimationsDemo\Extensions\AnimationExtensions.lineseries.cs" />
+    <Compile Include="Examples\AnimationsDemo\Extensions\AnimationExtensions.linearbarseries.cs" />
+    <Compile Include="Examples\AnimationsDemo\Models\AnimationFrame.cs" />
+    <Compile Include="Examples\AnimationsDemo\Models\AnimationPoint.cs" />
+    <Compile Include="Examples\AnimationsDemo\Models\AnimationSettings.cs" />
+    <Compile Include="Examples\AnimationsDemo\Models\Interfaces\IAnimatablePoint.cs" />
+    <Compile Include="Examples\AnimationsDemo\Models\Pnl.cs" />
+    <Compile Include="Examples\AnimationsDemo\ViewModels\AnimationViewModelBase.cs" />
+    <Compile Include="Examples\AnimationsDemo\EasingFunctions\Interfaces\IEasingFunction.cs" />
+    <Compile Include="Examples\AnimationsDemo\ViewModels\Interfaces\IAnimationViewModel.cs" />
+    <Compile Include="Examples\AnimationsDemo\ViewModels\AreaSeriesViewModel.cs" />
+    <Compile Include="Examples\AnimationsDemo\ViewModels\LineSeriesViewModel.cs" />
+    <Compile Include="Examples\AnimationsDemo\Views\AreaSeriesView.xaml.cs">
+      <DependentUpon>AreaSeriesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\AnimationsDemo\Views\LineSeriesView.xaml.cs">
+      <DependentUpon>LineSeriesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\AnimationsDemo\Views\LinearBarView.xaml.cs">
+      <DependentUpon>LinearBarView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\AnimationsDemo\ViewModels\LinearBarViewModel.cs" />
+    <Compile Include="Examples\AnimationsDemo\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\ControllerDemo\CustomPlotController.cs" />
+    <Compile Include="Examples\ControllerDemo\MainViewModel.cs" />
+    <Compile Include="Examples\ControllerDemo\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\LinearBarSeriesDemo\MainViewModel.cs" />
+    <Compile Include="Examples\LinearBarSeriesDemo\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\BindingObservableCollectionDemo\MainViewModel.cs" />
+    <Compile Include="Examples\BindingObservableCollectionDemo\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\BoxPlotSeriesDemo\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\ScrollViewerDemo\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\ToolTipDemo\MainViewModel.cs" />
+    <Compile Include="Examples\ToolTipDemo\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\PerformanceDemo\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Examples\ScatterErrorSeriesDemo\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Examples\ResizeDemo\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Examples\DataTemplateDemo\PlotViewDataTemplateWindow.xaml.cs">
+      <DependentUpon>PlotViewDataTemplateWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ScreenCapture.cs" />
+    <Compile Include="Workitems\PlotModelAlreadyInUse\Item.cs" />
+    <Compile Include="Workitems\PlotModelAlreadyInUse\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Workitems\PlotModelAlreadyInUse\ViewModel.cs" />
+    <Page Include="Examples\AnimationsDemo\Controls\AnimationSettingsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Examples\AnimationsDemo\Views\AreaSeriesView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\AnimationsDemo\Views\LineSeriesView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\AnimationsDemo\Views\LinearBarView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Examples\AnimationsDemo\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Examples\AnnotationDemo\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\ControllerDemo\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\LinearBarSeriesDemo\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -83,6 +186,30 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Examples\AxesDemo\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\AlignedAxesDemo\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\BindingObservableCollectionDemo\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\BoxPlotSeriesDemo\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\ScrollViewerDemo\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\ToolTipDemo\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\PerformanceDemo\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -194,6 +321,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Examples\DataTemplateDemo\PlotViewDataTemplateWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Examples\UserControlDemo\MainWindow3.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -210,12 +341,16 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Examples\TwoColorAreaDemo\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="..\..\..\GlobalAssemblyInfo.cs">
-      <Link>Properties\GlobalAssemblyInfo.cs</Link>
+    <Compile Include="..\..\..\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
@@ -248,6 +383,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Examples\ContextMenuDemo\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\TwoColorAreaDemo\MainViewModel.cs" />
+    <Compile Include="Examples\TwoColorAreaDemo\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Examples\ContourDemo\MainViewModel.cs" />
@@ -341,9 +480,13 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Workitems\PlotModelAlreadyInUse\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs">
+    <Compile Include="Properties\AssemblyDescription.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
@@ -356,8 +499,20 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Images\PlotModelAlreadyInUse.png" />
+    <Resource Include="Images\AnimationsDemo.png" />
+    <Resource Include="Images\ScrollViewerDemo.png" />
+    <Resource Include="Images\ControllerDemo.png" />
+    <Resource Include="Images\ToolTipDemo.png" />
+    <Resource Include="Images\LinearBarSeriesDemo.png" />
+    <Resource Include="Images\DataTemplateDemo.png" />
+    <Resource Include="Images\BoxPlotSeriesDemo.png" />
+    <Resource Include="Images\BindingObservableCollectionDemo.png" />
+    <Resource Include="Images\AlignedAxesDemo.png" />
+    <Resource Include="Images\PerformanceDemo.png" />
     <Resource Include="Images\ScatterErrorSeriesDemo.png" />
     <Resource Include="Images\ResizeDemo.png" />
+    <None Include="packages.config" />
     <None Include="ReadMe.txt" />
     <Resource Include="Images\HeatMapDemo.png" />
     <Resource Include="Images\ContextMenuDemo.png" />
@@ -383,6 +538,7 @@
     <Resource Include="Images\RefreshDemo.png" />
     <Resource Include="Images\ScatterDemo.png" />
     <Resource Include="Examples\HistogramDemo\hare.jpg" />
+    <Resource Include="Images\TwoColorAreaDemo.png" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -400,7 +556,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="app.config" />
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -423,18 +578,11 @@
       <Project>{698CCD8E-ADCC-4565-8517-5EDD36F07155}</Project>
       <Name>OxyPlot.Wpf</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\OxyPlot.Xps\OxyPlot.Xps.csproj">
-      <Project>{639E0B40-A307-4D4A-BB78-BE0019D8D7C1}</Project>
-      <Name>OxyPlot.Xps</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\OxyPlot\OxyPlot.csproj">
       <Project>{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}</Project>
       <Name>OxyPlot</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Workitems\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
 </Project>

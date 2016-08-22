@@ -26,7 +26,7 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// Gets or sets the fill color.
         /// </summary>
-        /// <value>The fill.</value>
+        /// <value>The fill color.</value>
         public OxyColor Fill { get; set; }
 
         /// <summary>

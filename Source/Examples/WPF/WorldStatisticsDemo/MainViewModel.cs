@@ -2,22 +2,19 @@
 // <copyright file="MainViewModel.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
-// <summary>
-//   www.gapminder.org
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System;
-using System.Collections.Generic;
-using OxyPlot;
 
 namespace WorldStatisticsDemo
 {
+    using System.Collections.Generic;
+    using System.Globalization;
+
+    using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
     /// <summary>
-    /// www.gapminder.org
+    /// Provides a view model for the main view.
     /// </summary>
     public class MainViewModel : Observable
     {
@@ -54,12 +51,13 @@ namespace WorldStatisticsDemo
         {
             var pm = new PlotModel { Title = this.year.ToString(), Subtitle = "data from gapminder.org", LegendPosition = LegendPosition.RightBottom };
             var ss = new ScatterSeries
-                {
-                    MarkerType = MarkerType.Circle,
-                    MarkerFill = OxyColors.Transparent,
-                    MarkerStroke = OxyColors.Blue,
-                    MarkerStrokeThickness = 1
-                };
+            {
+                MarkerType = MarkerType.Circle,
+                MarkerFill = OxyColors.Transparent,
+                MarkerStroke = OxyColors.Blue,
+                MarkerStrokeThickness = 1,
+                TrackerFormatString = "{Tag}\n{1}:{2:0.0}\n{3}:{4:0.0}"
+            };
 
             var piX = typeof(Statistics).GetProperty("GdpPerCapitaPpp");
             var piY = typeof(Statistics).GetProperty("LifeExpectancyAtBirth");
@@ -68,10 +66,10 @@ namespace WorldStatisticsDemo
 
             foreach (var kvp in Countries)
             {
-                Country country = kvp.Value;
-                double x = country.FindValue(year, piX);
-                double y = country.FindValue(year, piY);
-                double size = country.FindValue(year, piSize);
+                var country = kvp.Value;
+                var x = country.FindValue(year, piX);
+                var y = country.FindValue(year, piY);
+                var size = country.FindValue(year, piSize);
 
                 if (double.IsNaN(x) || double.IsNaN(y))
                     continue;
@@ -88,13 +86,14 @@ namespace WorldStatisticsDemo
             pm.Series.Add(ss);
             if (SelectedCountry != null)
             {
-                var ls = new LineSeries { Title = SelectedCountry.Name };
-                ls.LineJoin = LineJoin.Bevel;
+                var ls = new LineSeries { Title = SelectedCountry.Name, LineJoin = LineJoin.Bevel };
+
                 foreach (var p in SelectedCountry.Statistics)
                 {
                     if (double.IsNaN(p.GdpPerCapitaPpp) || double.IsNaN(p.LifeExpectancyAtBirth)) continue;
                     ls.Points.Add(new DataPoint(p.GdpPerCapitaPpp, p.LifeExpectancyAtBirth));
                 }
+
                 pm.Series.Add(ls);
                 var ss2 = new ScatterSeries();
                 double x = SelectedCountry.FindValue(year, piX);
@@ -154,7 +153,7 @@ namespace WorldStatisticsDemo
                     if (!country.StatisticsByYear.ContainsKey(year))
                         country.StatisticsByYear[year] = new Statistics(year);
                     double value;
-                    if (double.TryParse(item[i], out value))
+                    if (double.TryParse(item[i], NumberStyles.Float, CultureInfo.InvariantCulture, out value))
                     {
                         var statistics = country.StatisticsByYear[year];
                         pi.SetValue(statistics, value, null);

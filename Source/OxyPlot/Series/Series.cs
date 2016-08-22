@@ -24,6 +24,7 @@ namespace OxyPlot.Series
         {
             this.IsVisible = true;
             this.Background = OxyColors.Undefined;
+            this.RenderInLegend = true;
         }
 
         /// <summary>
@@ -40,8 +41,13 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets or sets the title of the series. The default is <c>null</c>.
         /// </summary>
-        /// <value>The title that is shown in the legend of the plot. The default value is <c>null</c>. When the value is <c>null</c>, this series will not be shown in the legend.</value>
+        /// <value>The title that is shown in the legend of the plot. The default value is <c>null</c>.</value>
         public string Title { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the series should be rendered in the legend. The default is <c>true</c>.
+        /// </summary>
+        public bool RenderInLegend { get; set; }
 
         /// <summary>
         /// Gets or sets a format string used for the tracker. The default depends on the series.
@@ -74,8 +80,7 @@ namespace OxyPlot.Series
         /// Renders the series on the specified render context.
         /// </summary>
         /// <param name="rc">The rendering context.</param>
-        /// <param name="model">The model.</param>
-        public abstract void Render(IRenderContext rc, PlotModel model);
+        public abstract void Render(IRenderContext rc);
 
         /// <summary>
         /// Renders the legend symbol on the specified render context.
@@ -105,8 +110,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Sets the default values (colors, line style etc.) from the plot model.
         /// </summary>
-        /// <param name="model">A plot model.</param>
-        protected internal abstract void SetDefaultValues(PlotModel model);
+        protected internal abstract void SetDefaultValues();
 
         /// <summary>
         /// Updates the maximum and minimum values of the axes used by this series.

@@ -24,6 +24,34 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
+        [Example("ItemsSource - string[]")]
+        public static PlotModel ItemsSourceStrings()
+        {
+            var model = new PlotModel { Title = "CategoryAxis with string[] as ItemsSource" };
+            model.Axes.Add(new CategoryAxis
+            {
+                StringFormat = "Item {0}",
+                ItemsSource = new[] { "A", "B", "C" }
+            });
+            var linearAxis = new LinearAxis { Position = AxisPosition.Left };
+            model.Axes.Add(linearAxis);
+            return model;
+        }
+
+        [Example("ItemsSource - int[]")]
+        public static PlotModel ItemsSourceValues()
+        {
+            var model = new PlotModel { Title = "CategoryAxis with int[] as ItemsSource" };
+            model.Axes.Add(new CategoryAxis
+            {
+                StringFormat = "Item {0}",
+                ItemsSource = new[] { 10, 100, 123 }
+            });
+            var linearAxis = new LinearAxis { Position = AxisPosition.Left };
+            model.Axes.Add(linearAxis);
+            return model;
+        }
+
         [Example("MajorStep")]
         public static PlotModel MajorStepCategoryAxis()
         {

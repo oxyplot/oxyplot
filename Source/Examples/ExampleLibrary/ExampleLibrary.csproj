@@ -10,11 +10,11 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ExampleLibrary</RootNamespace>
     <AssemblyName>ExampleLibrary</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Profile328</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Profile259</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <ProductVersion>10.0.0</ProductVersion>
+    <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -22,7 +22,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\PCL\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;PCL</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;UNIVERSAL</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -30,7 +30,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\PCL\Release\</OutputPath>
-    <DefineConstants>TRACE;PCL</DefineConstants>
+    <DefineConstants>TRACE;UNIVERSAL</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -41,8 +41,8 @@
     <AssemblyOriginatorKeyFile>ExampleLibrary.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\..\GlobalAssemblyInfo.cs">
-      <Link>Properties\GlobalAssemblyInfo.cs</Link>
+    <Compile Include="..\..\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Annotations\ArrowAnnotationExamples.cs" />
     <Compile Include="Annotations\EllipseAnnotationExamples.cs" />
@@ -57,6 +57,7 @@
     <Compile Include="Annotations\TileMapAnnotationExamples.cs" />
     <Compile Include="Attributes\ExampleAttribute.cs" />
     <Compile Include="Attributes\TagsAttribute.cs" />
+    <Compile Include="Annotations\TileMapAnnotation.cs" />
     <Compile Include="CustomSeries\ErrorItem.cs" />
     <Compile Include="CustomSeries\ErrorSeries.cs" />
     <Compile Include="CustomSeries\FlagSeries.cs" />
@@ -74,9 +75,11 @@
     <Compile Include="Series\ColumnSeriesExamples.cs" />
     <Compile Include="Series\ErrorColumnSeriesExamples.cs" />
     <Compile Include="Examples\RenderingCapabilities.cs" />
+    <Compile Include="Series\FinancialSeries\HighLowItemGenerator.cs" />
+    <Compile Include="Series\FinancialSeries\OhlcvItemGenerator.cs" />
+    <Compile Include="Series\LinearBarSeriesExamples.cs" />
     <Compile Include="Series\ScatterErrorSeriesExamples.cs" />
     <Compile Include="Series\BoxPlotSeriesExamples.cs" />
-    <Compile Include="Series\CandleStickSeriesExamples.cs" />
     <Compile Include="Axes\CartesianAxesExamples.cs" />
     <Compile Include="Axes\CategoryAxisExamples.cs" />
     <Compile Include="Axes\AxisExamples.cs" />
@@ -85,6 +88,7 @@
     <Compile Include="Series\ContourSeriesExamples.cs" />
     <Compile Include="Series\IntervalBarSeriesExamples.cs" />
     <Compile Include="Series\RectangleBarSeriesExamples.cs" />
+    <Compile Include="Series\ThreeColorLineSeriesExamples.cs" />
     <Compile Include="Series\TornadoBarSeriesExamples.cs" />
     <Compile Include="Examples\PlotControllerExamples.cs" />
     <Compile Include="Axes\CustomAxisExamples.cs" />
@@ -97,11 +101,12 @@
     <Compile Include="Examples\PerformanceExamples.cs" />
     <Compile Include="Examples\PlotModelExamples.cs" />
     <Compile Include="Axes\RangeColorAxisExamples.cs" />
+    <Compile Include="Series\FinancialSeries\VolumeSeriesExamples.cs" />
     <Compile Include="Showcases\ShowCases.cs" />
     <Compile Include="Showcases\ShowMeTheNumbersExamples.cs" />
     <Compile Include="Series\StairStepSeriesExamples.cs" />
     <Compile Include="Examples\FilteringExamples.cs" />
-    <Compile Include="Series\HighLowSeriesExamples.cs" />
+    <Compile Include="Series\FinancialSeries\HighLowSeriesExamples.cs" />
     <Compile Include="Axes\LinearAxisExamples.cs" />
     <Compile Include="Examples\LegendExamples.cs" />
     <Compile Include="CustomSeries\CustomSeriesExamples.cs" />
@@ -114,11 +119,15 @@
     <Compile Include="Series\StemSeriesExamples.cs" />
     <Compile Include="Axes\TimeSpanAxisExamples.cs" />
     <Compile Include="Examples\TrackerExamples.cs" />
+    <Compile Include="Series\TwoColorAreaSeriesExamples.cs" />
     <Compile Include="Series\TwoColorLineSeriesExamples.cs" />
     <Compile Include="Misc\XkcdExamples.cs" />
     <Compile Include="Utilities\Sun.cs" />
     <Compile Include="Issues\Issues.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\AssemblyDescription.cs" />
+    <Compile Include="Series\FinancialSeries\OldCandleStickSeriesExamples.cs" />
+    <Compile Include="Series\FinancialSeries\CandleStickSeriesExamples.cs" />
+    <Compile Include="Series\FinancialSeries\CandleStickAndVolumeSeriesExamples.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Bergensbanen.csv" />
@@ -139,3 +148,4 @@
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
 </Project>
+

@@ -110,6 +110,7 @@ namespace ExportDemo
                     model.PlotType = PlotType.XY;
                     break;
             }
+
             return model;
         }
 

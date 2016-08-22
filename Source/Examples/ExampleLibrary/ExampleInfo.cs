@@ -110,7 +110,7 @@ namespace ExampleLibrary
         {
             get
             {
-                return this.PlotModel.ToCode();
+                return this.PlotModel != null ? this.PlotModel.ToCode() : null;
             }
         }
 

@@ -93,6 +93,13 @@ namespace OxyPlot.Wpf.Tests
                 OxyAssert.PropertiesAreEqual(s1, s2);
             }
 
+            [Test]
+            public void PieSeries()
+            {
+                var s1 = new OxyPlot.Series.PieSeries();
+                var s2 = new PieSeries();
+                OxyAssert.PropertiesAreEqual(s1, s2);
+            }
             /*
         [Test]
         public void CandleStickSeries()
@@ -113,13 +120,6 @@ namespace OxyPlot.Wpf.Tests
         {
             var s1 = new OxyPlot.HighLowSeries();
             var s2 = new OxyPlot.Wpf.HighLowSeries();
-            Assert.PropertiesAreEqual(s1, s2);
-        }
-        [Test]
-        public void PieSeries()
-        {
-            var s1 = new OxyPlot.PieSeries();
-            var s2 = new OxyPlot.Wpf.PieSeries();
             Assert.PropertiesAreEqual(s1, s2);
         }
         [Test]

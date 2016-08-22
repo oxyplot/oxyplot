@@ -16,24 +16,24 @@ namespace ExampleLibrary
     {
         public class ArrowAxis : LinearAxis
         {
-            public override void Render(IRenderContext rc, PlotModel model, AxisLayer axisLayer, int pass)
+            public override void Render(IRenderContext rc, int pass)
             {
-                base.Render(rc, model, axisLayer, pass);
+                base.Render(rc, pass);
                 var points = new List<ScreenPoint>();
                 if (this.IsHorizontal())
                 {
                     var xmax = this.Transform(this.ActualMaximum);
-                    points.Add(new ScreenPoint(xmax + 4, model.PlotArea.Bottom - 4));
-                    points.Add(new ScreenPoint(xmax + 18, model.PlotArea.Bottom));
-                    points.Add(new ScreenPoint(xmax + 4, model.PlotArea.Bottom + 4));
+                    points.Add(new ScreenPoint(xmax + 4, this.PlotModel.PlotArea.Bottom - 4));
+                    points.Add(new ScreenPoint(xmax + 18, this.PlotModel.PlotArea.Bottom));
+                    points.Add(new ScreenPoint(xmax + 4, this.PlotModel.PlotArea.Bottom + 4));
                     //// etc.
                 }
                 else
                 {
                     var ymax = this.Transform(this.ActualMaximum);
-                    points.Add(new ScreenPoint(model.PlotArea.Left - 4, ymax - 4));
-                    points.Add(new ScreenPoint(model.PlotArea.Left, ymax - 18));
-                    points.Add(new ScreenPoint(model.PlotArea.Left + 4, ymax - 4));
+                    points.Add(new ScreenPoint(this.PlotModel.PlotArea.Left - 4, ymax - 4));
+                    points.Add(new ScreenPoint(this.PlotModel.PlotArea.Left, ymax - 18));
+                    points.Add(new ScreenPoint(this.PlotModel.PlotArea.Left + 4, ymax - 4));
                     //// etc.
                 }
 

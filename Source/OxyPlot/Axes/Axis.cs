@@ -22,12 +22,17 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Exponent function.
         /// </summary>
-        protected static readonly Func<double, double> Exponent = x => Math.Floor(Math.Log(Math.Abs(x), 10));
+        protected static readonly Func<double, double> Exponent = x => Math.Floor(ThresholdRound(Math.Log(Math.Abs(x), 10)));
 
         /// <summary>
         /// Mantissa function.
         /// </summary>
-        protected static readonly Func<double, double> Mantissa = x => x / Math.Pow(10, Exponent(x));
+        protected static readonly Func<double, double> Mantissa = x => ThresholdRound(x / Math.Pow(10, Exponent(x)));
+
+        /// <summary>
+        /// Rounds a value if the difference between the rounded value and the original value is less than 1e-6.
+        /// </summary>
+        protected static readonly Func<double, double> ThresholdRound = x => Math.Abs(Math.Round(x) - x) < 1e-6 ? Math.Round(x) : x;
 
         /// <summary>
         /// The offset.
@@ -64,13 +69,17 @@ namespace OxyPlot.Axes
             this.Maximum = double.NaN;
             this.MinorStep = double.NaN;
             this.MajorStep = double.NaN;
+            this.MinimumMinorStep = 0;
+            this.MinimumMajorStep = 0;
 
             this.MinimumPadding = 0.01;
             this.MaximumPadding = 0.01;
             this.MinimumRange = 0;
+            this.MaximumRange = double.PositiveInfinity;
 
             this.TickStyle = TickStyle.Outside;
             this.TicklineColor = OxyColors.Black;
+            this.MinorTicklineColor = OxyColors.Automatic;
 
             this.AxislineStyle = LineStyle.None;
             this.AxislineColor = OxyColors.Black;
@@ -227,6 +236,11 @@ namespace OxyPlot.Axes
         public bool ClipTitle { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether to crop gridlines with perpendicular axes Start/EndPositions. The default value is <c>false</c>.
+        /// </summary>
+        public bool CropGridlines { get; set; }
+
+        /// <summary>
         /// Gets or sets the maximum value of the data displayed on this axis.
         /// </summary>
         public double DataMaximum { get; protected set; }
@@ -362,9 +376,24 @@ namespace OxyPlot.Axes
         public double MaximumPadding { get; set; }
 
         /// <summary>
+        /// Gets or sets the maximum range of the axis. Setting this property ensures that <c>ActualMaximum-ActualMinimum &lt; MaximumRange</c>. The default value is <c>double.PositiveInfinity</c>.
+        /// </summary>
+        public double MaximumRange { get; set; }
+
+        /// <summary>
         /// Gets or sets the minimum value of the axis. The default value is <c>double.NaN</c>.
         /// </summary>
         public double Minimum { get; set; }
+
+        /// <summary>
+        /// Gets or sets the minimum value for the interval between major ticks. The default value is <c>0</c>.
+        /// </summary>
+        public double MinimumMajorStep { get; set; }
+
+        /// <summary>
+        /// Gets or sets the minimum value for the interval between minor ticks. The default value is <c>0</c>.
+        /// </summary>
+        public double MinimumMinorStep { get; set; }
 
         /// <summary>
         /// Gets or sets the 'padding' fraction of the minimum value. The default value is <c>0.01</c>.
@@ -396,6 +425,13 @@ namespace OxyPlot.Axes
         /// Gets or sets the interval between minor ticks. The default value is <c>double.NaN</c>.
         /// </summary>
         public double MinorStep { get; set; }
+
+        /// <summary>
+        /// Gets or sets the color of the minor ticks. The default value is <see cref="OxyColors.Automatic"/>.
+        /// </summary>
+        /// <remarks>If the value is <see cref="OxyColors.Automatic"/>, the value of
+        /// <see cref="Axis.TicklineColor"/> will be used.</remarks>
+        public OxyColor MinorTicklineColor { get; set; }
 
         /// <summary>
         /// Gets or sets the size of the minor ticks. The default value is <c>4</c>.
@@ -460,23 +496,6 @@ namespace OxyPlot.Axes
         /// Gets or sets the screen coordinate of the minimum end of the axis.
         /// </summary>
         public ScreenPoint ScreenMin { get; protected set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether minor ticks should be shown. The default value is <c>true</c>.
-        /// </summary>
-        [Obsolete("Set MinorTickSize = 0 instead")]
-        public bool ShowMinorTicks
-        {
-            get
-            {
-                return this.MinorTickSize > 0;
-            }
-
-            set
-            {
-                this.MinorTickSize = value ? 4 : 0;
-            }
-        }
 
         /// <summary>
         /// Gets or sets the start position of the axis on the plot area. The default value is <c>0</c>.
@@ -560,6 +579,13 @@ namespace OxyPlot.Axes
         public bool UseSuperExponentialFormat { get; set; }
 
         /// <summary>
+        /// Gets or sets the "desired" size by the renderer such that the axis text &amp; ticks will not be clipped.  This
+        /// size is distinct from the margin settings or the size which is actually rendered, as in: ActualWidth / ActualSize.  
+        /// Actual rendered size may be smaller or larger than the desired size if the margins are set manually.
+        /// </summary>
+        public OxySize DesiredSize { get; protected set; }
+
+        /// <summary>
         /// Gets or sets the position tier max shift.
         /// </summary>
         internal double PositionTierMaxShift { get; set; }
@@ -631,46 +657,6 @@ namespace OxyPlot.Axes
         protected double ViewMinimum { get; set; }
 
         /// <summary>
-        /// Creates tick values at the specified interval.
-        /// </summary>
-        /// <param name="from">The start value.</param>
-        /// <param name="to">The end value.</param>
-        /// <param name="step">The interval.</param>
-        /// <param name="maxTicks">The maximum number of ticks (optional). The default value is 1000.</param>
-        /// <returns>A sequence of values.</returns>
-        /// <exception cref="System.ArgumentException">Step cannot be zero or negative.;step</exception>
-        public static IList<double> CreateTickValues(double from, double to, double step, int maxTicks = 1000)
-        {
-            if (step <= 0)
-            {
-                throw new ArgumentException("Step cannot be zero or negative.", "step");
-            }
-
-            if (to <= from && step > 0)
-            {
-                step *= -1;
-            }
-
-            var value = Math.Round(from / step) * step;
-            var numberOfValues = Math.Max((int)((to - from) / step), 1);
-            var epsilon = step * 1e-3 * Math.Sign(step);
-            var values = new List<double>(numberOfValues);
-            var i = 0;
-
-            while (value <= to + epsilon && i < maxTicks)
-            {
-                i++;
-
-                // try to get rid of numerical noise
-                var v = Math.Round(value / step, 14) * step;
-                values.Add(v);
-                value += step;
-            }
-
-            return values;
-        }
-
-        /// <summary>
         /// Converts the value of the specified object to a double precision floating point number. DateTime objects are converted using DateTimeAxis.ToDouble and TimeSpan objects are converted using TimeSpanAxis.ToDouble
         /// </summary>
         /// <param name="value">The value.</param>
@@ -703,44 +689,6 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Coerces the actual maximum and minimum values.
-        /// </summary>
-        public virtual void CoerceActualMaxMin()
-        {
-            // Coerce actual minimum
-            if (double.IsNaN(this.ActualMinimum) || double.IsInfinity(this.ActualMinimum))
-            {
-                this.ActualMinimum = 0;
-            }
-
-            // Coerce actual maximum
-            if (double.IsNaN(this.ActualMaximum) || double.IsInfinity(this.ActualMaximum))
-            {
-                this.ActualMaximum = 100;
-            }
-
-            if (this.ActualMaximum <= this.ActualMinimum)
-            {
-                this.ActualMaximum = this.ActualMinimum + 100;
-            }
-
-            // Coerce the minimum range
-            var range = this.ActualMaximum - this.ActualMinimum;
-            if (range < this.MinimumRange)
-            {
-                var average = (this.ActualMaximum + this.ActualMinimum) * 0.5;
-                var delta = this.MinimumRange / 2;
-                this.ActualMinimum = average - delta;
-                this.ActualMaximum = average + delta;
-            }
-
-            if (this.AbsoluteMaximum <= this.AbsoluteMinimum)
-            {
-                throw new InvalidOperationException("AbsoluteMaximum should be larger than AbsoluteMinimum.");
-            }
-        }
-
-        /// <summary>
         /// Formats the value to be used on the axis.
         /// </summary>
         /// <param name="x">The value.</param>
@@ -764,8 +712,8 @@ namespace OxyPlot.Axes
         public virtual void GetTickValues(
             out IList<double> majorLabelValues, out IList<double> majorTickValues, out IList<double> minorTickValues)
         {
-            minorTickValues = CreateTickValues(this.ActualMinimum, this.ActualMaximum, this.ActualMinorStep);
-            majorTickValues = CreateTickValues(this.ActualMinimum, this.ActualMaximum, this.ActualMajorStep);
+            minorTickValues = this.CreateTickValues(this.ActualMinimum, this.ActualMaximum, this.ActualMinorStep);
+            majorTickValues = this.CreateTickValues(this.ActualMinimum, this.ActualMaximum, this.ActualMajorStep);
             majorLabelValues = majorTickValues;
         }
 
@@ -848,6 +796,15 @@ namespace OxyPlot.Axes
         public abstract bool IsXyAxis();
 
         /// <summary>
+        /// Determines whether the axis is logarithmic.
+        /// </summary>
+        /// <returns><c>true</c> if it is a logarithmic axis; otherwise, <c>false</c> .</returns>
+        public virtual bool IsLogarithmic()
+        {
+            return false;
+        }
+
+        /// <summary>
         /// Measures the size of the axis (maximum axis label width/height).
         /// </summary>
         /// <param name="rc">The render context.</param>
@@ -864,15 +821,15 @@ namespace OxyPlot.Axes
             foreach (double v in majorLabelValues)
             {
                 string s = this.FormatValue(v);
-                var size = rc.MeasureText(s, this.ActualFont, this.ActualFontSize, this.ActualFontWeight);
+                var size = rc.MeasureText(s, this.ActualFont, this.ActualFontSize, this.ActualFontWeight, this.Angle);
                 if (size.Width > maximumTextSize.Width)
                 {
-                    maximumTextSize.Width = size.Width;
+                    maximumTextSize = new OxySize(size.Width, maximumTextSize.Height);
                 }
 
                 if (size.Height > maximumTextSize.Height)
                 {
-                    maximumTextSize.Height = size.Height;
+                    maximumTextSize = new OxySize(maximumTextSize.Width, size.Height);
                 }
             }
 
@@ -926,7 +883,7 @@ namespace OxyPlot.Axes
                 }
             }
 
-            return new OxySize(width, height);
+            return this.DesiredSize = new OxySize(width, height);
         }
 
         /// <summary>
@@ -958,6 +915,9 @@ namespace OxyPlot.Axes
                 return;
             }
 
+            var oldMinimum = this.ActualMinimum;
+            var oldMaximum = this.ActualMaximum;
+
             double dx = delta / this.Scale;
 
             double newMinimum = this.ActualMinimum - dx;
@@ -978,19 +938,20 @@ namespace OxyPlot.Axes
             this.ViewMaximum = newMaximum;
             this.UpdateActualMaxMin();
 
-            this.OnAxisChanged(new AxisChangedEventArgs(AxisChangeTypes.Pan));
+            var deltaMinimum = this.ActualMinimum - oldMinimum;
+            var deltaMaximum = this.ActualMaximum - oldMaximum;
+
+            this.OnAxisChanged(new AxisChangedEventArgs(AxisChangeTypes.Pan, deltaMinimum, deltaMaximum));
         }
 
         /// <summary>
         /// Renders the axis on the specified render context.
         /// </summary>
         /// <param name="rc">The render context.</param>
-        /// <param name="model">The model.</param>
-        /// <param name="axisLayer">The rendering order.</param>
         /// <param name="pass">The pass.</param>
-        public virtual void Render(IRenderContext rc, PlotModel model, AxisLayer axisLayer, int pass)
+        public virtual void Render(IRenderContext rc, int pass)
         {
-            var r = new HorizontalAndVerticalAxisRenderer(rc, model);
+            var r = new HorizontalAndVerticalAxisRenderer(rc, this.PlotModel);
             r.Render(this, pass);
         }
 
@@ -999,10 +960,17 @@ namespace OxyPlot.Axes
         /// </summary>
         public virtual void Reset()
         {
+            var oldMinimum = this.ActualMinimum;
+            var oldMaximum = this.ActualMinimum;
+
             this.ViewMinimum = double.NaN;
             this.ViewMaximum = double.NaN;
             this.UpdateActualMaxMin();
-            this.OnAxisChanged(new AxisChangedEventArgs(AxisChangeTypes.Reset));
+
+            var deltaMinimum = this.ActualMinimum - oldMinimum;
+            var deltaMaximum = this.ActualMaximum - oldMaximum;
+
+            this.OnAxisChanged(new AxisChangedEventArgs(AxisChangeTypes.Reset, deltaMinimum, deltaMaximum));
         }
 
         /// <summary>
@@ -1054,6 +1022,9 @@ namespace OxyPlot.Axes
         /// <param name="newScale">The new scale.</param>
         public virtual void Zoom(double newScale)
         {
+            var oldMinimum = this.ActualMinimum;
+            var oldMaximum = this.ActualMaximum;
+
             double sx1 = this.Transform(this.ActualMaximum);
             double sx0 = this.Transform(this.ActualMinimum);
 
@@ -1099,6 +1070,11 @@ namespace OxyPlot.Axes
             this.ViewMaximum = newMaximum;
             this.ViewMinimum = newMinimum;
             this.UpdateActualMaxMin();
+
+            var deltaMinimum = this.ActualMinimum - oldMinimum;
+            var deltaMaximum = this.ActualMaximum - oldMaximum;
+
+            this.OnAxisChanged(new AxisChangedEventArgs(AxisChangeTypes.Zoom, deltaMinimum, deltaMaximum));
         }
 
         /// <summary>
@@ -1113,6 +1089,9 @@ namespace OxyPlot.Axes
                 return;
             }
 
+            var oldMinimum = this.ActualMinimum;
+            var oldMaximum = this.ActualMaximum;
+
             double newMinimum = Math.Max(Math.Min(x0, x1), this.AbsoluteMinimum);
             double newMaximum = Math.Min(Math.Max(x0, x1), this.AbsoluteMaximum);
 
@@ -1120,7 +1099,10 @@ namespace OxyPlot.Axes
             this.ViewMaximum = newMaximum;
             this.UpdateActualMaxMin();
 
-            this.OnAxisChanged(new AxisChangedEventArgs(AxisChangeTypes.Zoom));
+            var deltaMinimum = this.ActualMinimum - oldMinimum;
+            var deltaMaximum = this.ActualMaximum - oldMaximum;
+
+            this.OnAxisChanged(new AxisChangedEventArgs(AxisChangeTypes.Zoom, deltaMinimum, deltaMaximum));
         }
 
         /// <summary>
@@ -1135,18 +1117,41 @@ namespace OxyPlot.Axes
                 return;
             }
 
+            var oldMinimum = this.ActualMinimum;
+            var oldMaximum = this.ActualMaximum;
+
             double dx0 = (this.ActualMinimum - x) * this.scale;
             double dx1 = (this.ActualMaximum - x) * this.scale;
             this.scale *= factor;
 
-            double newMinimum = Math.Max((dx0 / this.scale) + x, this.AbsoluteMinimum);
-            double newMaximum = Math.Min((dx1 / this.scale) + x, this.AbsoluteMaximum);
+            double newMinimum = (dx0 / this.scale) + x;
+            double newMaximum = (dx1 / this.scale) + x;
+
+            if (newMaximum - newMinimum > this.MaximumRange)
+            {
+                var mid = (newMinimum + newMaximum) * 0.5;
+                newMaximum = mid + (this.MaximumRange * 0.5);
+                newMinimum = mid - (this.MaximumRange * 0.5);
+            }
+
+            if (newMaximum - newMinimum < this.MinimumRange)
+            {
+                var mid = (newMinimum + newMaximum) * 0.5;
+                newMaximum = mid + (this.MinimumRange * 0.5);
+                newMinimum = mid - (this.MinimumRange * 0.5);
+            }
+
+            newMinimum = Math.Max(newMinimum, this.AbsoluteMinimum);
+            newMaximum = Math.Min(newMaximum, this.AbsoluteMaximum);
 
             this.ViewMinimum = newMinimum;
             this.ViewMaximum = newMaximum;
             this.UpdateActualMaxMin();
 
-            this.OnAxisChanged(new AxisChangedEventArgs(AxisChangeTypes.Zoom));
+            var deltaMinimum = this.ActualMinimum - oldMinimum;
+            var deltaMaximum = this.ActualMaximum - oldMaximum;
+
+            this.OnAxisChanged(new AxisChangedEventArgs(AxisChangeTypes.Zoom, deltaMinimum, deltaMaximum));
         }
 
         /// <summary>
@@ -1260,13 +1265,15 @@ namespace OxyPlot.Axes
                 this.ActualMajorStep = 10;
             }
 
+            this.ActualMinorStep = Math.Max(this.ActualMinorStep, this.MinimumMinorStep);
+            this.ActualMajorStep = Math.Max(this.ActualMajorStep, this.MinimumMajorStep);
+
             this.ActualStringFormat = this.StringFormat;
 
-            // if (ActualStringFormat==null)
-            // {
-            // if (ActualMaximum > 1e6 || ActualMinimum < 1e-6)
-            // ActualStringFormat = "#.#e-0";
-            // }
+            if (this.ActualStringFormat == null)
+            {
+                this.ActualStringFormat = "g6";
+            }
         }
 
         /// <summary>
@@ -1354,6 +1361,162 @@ namespace OxyPlot.Axes
         protected virtual double PreTransform(double x)
         {
             return x;
+        }
+
+        /// <summary>
+        /// Calculates the minor interval.
+        /// </summary>
+        /// <param name="majorInterval">The major interval.</param>
+        /// <returns>The minor interval.</returns>
+        protected virtual double CalculateMinorInterval(double majorInterval)
+        {
+            return AxisUtilities.CalculateMinorInterval(majorInterval);
+        }
+
+        /// <summary>
+        /// Creates tick values at the specified interval.
+        /// </summary>
+        /// <param name="from">The start value.</param>
+        /// <param name="to">The end value.</param>
+        /// <param name="step">The interval.</param>
+        /// <param name="maxTicks">The maximum number of ticks (optional). The default value is 1000.</param>
+        /// <returns>A sequence of values.</returns>
+        /// <exception cref="System.ArgumentException">Step cannot be zero or negative.;step</exception>
+        protected virtual IList<double> CreateTickValues(double from, double to, double step, int maxTicks = 1000)
+        {
+            return AxisUtilities.CreateTickValues(from, to, step, maxTicks);
+        }
+
+        /// <summary>
+        /// Coerces the actual maximum and minimum values.
+        /// </summary>
+        protected virtual void CoerceActualMaxMin()
+        {
+            // Coerce actual minimum
+            if (double.IsNaN(this.ActualMinimum) || double.IsInfinity(this.ActualMinimum))
+            {
+                this.ActualMinimum = 0;
+            }
+
+            // Coerce actual maximum
+            if (double.IsNaN(this.ActualMaximum) || double.IsInfinity(this.ActualMaximum))
+            {
+                this.ActualMaximum = 100;
+            }
+
+            if (this.AbsoluteMaximum - this.AbsoluteMinimum < this.MinimumRange)
+            {
+                throw new InvalidOperationException("MinimumRange should be larger than AbsoluteMaximum-AbsoluteMinimum.");
+            }
+
+            // Coerce the minimum range
+            if (this.ActualMaximum - this.ActualMinimum < this.MinimumRange)
+            {
+                if (this.ActualMinimum + this.MinimumRange < this.AbsoluteMaximum)
+                {
+                    var average = (this.ActualMaximum + this.ActualMinimum) * 0.5;
+                    var delta = this.MinimumRange / 2;
+                    this.ActualMinimum = average - delta;
+                    this.ActualMaximum = average + delta;
+
+                    if (this.ActualMinimum < this.AbsoluteMinimum)
+                    {
+                        var diff = this.AbsoluteMinimum - this.ActualMinimum;
+                        this.ActualMinimum = this.AbsoluteMinimum;
+                        this.ActualMaximum += diff;
+                    }
+
+                    if (this.ActualMaximum > this.AbsoluteMaximum)
+                    {
+                        var diff = this.AbsoluteMaximum - this.ActualMaximum;
+                        this.ActualMaximum = this.AbsoluteMaximum;
+                        this.ActualMinimum += diff;
+                    }
+                }
+                else
+                {
+                    if (this.AbsoluteMaximum - this.MinimumRange > this.AbsoluteMinimum)
+                    {
+                        this.ActualMinimum = this.AbsoluteMaximum - this.MinimumRange;
+                        this.ActualMaximum = this.AbsoluteMaximum;
+                    }
+                    else
+                    {
+                        this.ActualMaximum = this.AbsoluteMaximum;
+                        this.ActualMinimum = this.AbsoluteMinimum;
+                    }
+                }
+            }
+
+            // Coerce the maximum range
+            if (this.ActualMaximum - this.ActualMinimum > this.MaximumRange)
+            {
+                if (this.ActualMinimum + this.MaximumRange < this.AbsoluteMaximum)
+                {
+                    var average = (this.ActualMaximum + this.ActualMinimum) * 0.5;
+                    var delta = this.MaximumRange / 2;
+                    this.ActualMinimum = average - delta;
+                    this.ActualMaximum = average + delta;
+
+                    if (this.ActualMinimum < this.AbsoluteMinimum)
+                    {
+                        var diff = this.AbsoluteMinimum - this.ActualMinimum;
+                        this.ActualMinimum = this.AbsoluteMinimum;
+                        this.ActualMaximum += diff;
+                    }
+
+                    if (this.ActualMaximum > this.AbsoluteMaximum)
+                    {
+                        var diff = this.AbsoluteMaximum - this.ActualMaximum;
+                        this.ActualMaximum = this.AbsoluteMaximum;
+                        this.ActualMinimum += diff;
+                    }
+                }
+                else
+                {
+                    if (this.AbsoluteMaximum - this.MaximumRange > this.AbsoluteMinimum)
+                    {
+                        this.ActualMinimum = this.AbsoluteMaximum - this.MaximumRange;
+                        this.ActualMaximum = this.AbsoluteMaximum;
+                    }
+                    else
+                    {
+                        this.ActualMaximum = this.AbsoluteMaximum;
+                        this.ActualMinimum = this.AbsoluteMinimum;
+                    }
+                }
+            }
+
+            // Coerce the absolute maximum/minimum
+            if (this.AbsoluteMaximum <= this.AbsoluteMinimum)
+            {
+                throw new InvalidOperationException("AbsoluteMaximum should be larger than AbsoluteMinimum.");
+            }
+
+            if (this.ActualMaximum <= this.ActualMinimum)
+            {
+                this.ActualMaximum = this.ActualMinimum + 100;
+            }
+
+            if (this.ActualMinimum < this.AbsoluteMinimum)
+            {
+                this.ActualMinimum = this.AbsoluteMinimum;
+            }
+
+            if (this.ActualMinimum > this.AbsoluteMaximum)
+            {
+                this.ActualMinimum = this.AbsoluteMaximum;
+            }
+
+            if (this.ActualMaximum < this.AbsoluteMinimum)
+            {
+                this.ActualMaximum = this.AbsoluteMinimum;
+            }
+
+            if (this.ActualMaximum > this.AbsoluteMaximum)
+            {
+                this.ActualMaximum = this.AbsoluteMaximum;
+            }
         }
 
         /// <summary>
@@ -1474,6 +1637,16 @@ namespace OxyPlot.Axes
                 return maxIntervalSize;
             }
 
+            if (Math.Abs(maxIntervalSize) < double.Epsilon)
+            {
+                throw new ArgumentException("Maximum interval size cannot be zero.", "maxIntervalSize");
+            }
+
+            if (Math.Abs(range) < double.Epsilon)
+            {
+                throw new ArgumentException("Range cannot be zero.", "range");
+            }
+
             Func<double, double> exponent = x => Math.Ceiling(Math.Log(x, 10));
             Func<double, double> mantissa = x => x / Math.Pow(10, exponent(x) - 1);
 
@@ -1523,31 +1696,6 @@ namespace OxyPlot.Axes
             }
 
             return interval;
-        }
-
-        /// <summary>
-        /// Calculates the minor interval.
-        /// </summary>
-        /// <param name="majorInterval">The major interval.</param>
-        /// <returns>The minor interval.</returns>
-        protected double CalculateMinorInterval(double majorInterval)
-        {
-            // if major interval is 100, the minor interval will be 20.
-            return majorInterval / 5;
-
-            // The following obsolete code divided major intervals into 4 minor intervals, unless the major interval's mantissa was 5.
-            // e.g. Major interval 100 => minor interval 25.
-
-            // Func<double, double> exponent = x => Math.Ceiling(Math.Log(x, 10));
-            // Func<double, double> mantissa = x => x / Math.Pow(10, exponent(x) - 1);
-            // var m = (int)mantissa(majorInterval);
-            // switch (m)
-            // {
-            // case 5:
-            // return majorInterval / 5;
-            // default:
-            // return majorInterval / 4;
-            // }
         }
 
         /// <summary>

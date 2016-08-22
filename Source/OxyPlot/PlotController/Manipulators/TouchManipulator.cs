@@ -15,11 +15,6 @@ namespace OxyPlot
     public class TouchManipulator : PlotManipulator<OxyTouchEventArgs>
     {
         /// <summary>
-        /// The previous position
-        /// </summary>
-        private ScreenPoint previousPosition;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="TouchManipulator" /> class.
         /// </summary>
         /// <param name="plotView">The plot view.</param>
@@ -29,23 +24,48 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether panning is enabled.
+        /// </summary>
+        private bool IsPanEnabled { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether zooming is enabled.
+        /// </summary>
+        private bool IsZoomEnabled { get; set; }
+
+        /// <summary>
+        /// Occurs when a manipulation is complete.
+        /// </summary>
+        /// <param name="e">The <see cref="OxyInputEventArgs" /> instance containing the event data.</param>
+        public override void Completed(OxyTouchEventArgs e)
+        {
+            base.Completed(e);
+            e.Handled |= this.IsPanEnabled || this.IsZoomEnabled;
+        }
+
+        /// <summary>
         /// Occurs when a touch delta event is handled.
         /// </summary>
         /// <param name="e">The <see cref="OxyPlot.OxyTouchEventArgs" /> instance containing the event data.</param>
         public override void Delta(OxyTouchEventArgs e)
         {
             base.Delta(e);
+            if (!this.IsPanEnabled && !this.IsZoomEnabled)
+            {
+                return;
+            }
 
-            var newPosition = this.previousPosition + e.DeltaTranslation;
+            var newPosition = e.Position;
+            var previousPosition = newPosition - e.DeltaTranslation;
 
             if (this.XAxis != null)
             {
-                this.XAxis.Pan(this.previousPosition, newPosition);
+                this.XAxis.Pan(previousPosition, newPosition);
             }
 
             if (this.YAxis != null)
             {
-                this.YAxis.Pan(this.previousPosition, newPosition);
+                this.YAxis.Pan(previousPosition, newPosition);
             }
 
             var current = this.InverseTransform(newPosition.X, newPosition.Y);
@@ -61,8 +81,7 @@ namespace OxyPlot
             }
 
             this.PlotView.InvalidatePlot(false);
-
-            this.previousPosition = newPosition;
+            e.Handled = true;
         }
 
         /// <summary>
@@ -73,7 +92,14 @@ namespace OxyPlot
         {
             this.AssignAxes(e.Position);
             base.Started(e);
-            this.previousPosition = e.Position;
+
+            this.IsPanEnabled = (this.XAxis != null && this.XAxis.IsPanEnabled)
+                                || (this.YAxis != null && this.YAxis.IsPanEnabled);
+
+            this.IsZoomEnabled = (this.XAxis != null && this.XAxis.IsZoomEnabled)
+                                 || (this.YAxis != null && this.YAxis.IsZoomEnabled);
+
+            e.Handled |= this.IsPanEnabled || this.IsZoomEnabled;
         }
     }
 }

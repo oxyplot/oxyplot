@@ -22,8 +22,8 @@ namespace OxyPlot
         static MathRenderingExtensions()
         {
             SubAlignment = 0.6;
-            SubSize = 0.62;
             SuperAlignment = 0;
+            SubSize = 0.62;
             SuperSize = 0.62;
         }
 
@@ -60,7 +60,7 @@ namespace OxyPlot
         /// <param name="angle">The angle.</param>
         /// <param name="ha">The horizontal alignment.</param>
         /// <param name="va">The vertical alignment.</param>
-        /// <param name="maxsize">The maximum size of the text.</param>
+        /// <param name="maxSize">The maximum size of the text.</param>
         /// <param name="measure">Measure the size of the text if set to <c>true</c>.</param>
         /// <returns>The size of the text.</returns>
         /// <example>Subscript: H_{2}O
@@ -77,7 +77,7 @@ namespace OxyPlot
             double angle,
             HorizontalAlignment ha,
             VerticalAlignment va,
-            OxySize? maxsize,
+            OxySize? maxSize,
             bool measure)
         {
             if (string.IsNullOrEmpty(text))
@@ -87,37 +87,40 @@ namespace OxyPlot
 
             if (text.Contains("^{") || text.Contains("_{"))
             {
-                double x = pt.X;
-                double y = pt.Y;
+                var x = pt.X;
+                var y = pt.Y;
 
                 // Measure
-                var size = InternalDrawMathText(rc, x, y, text, textColor, fontFamily, fontSize, fontWeight, true, angle);
+                var size = InternalDrawMathText(rc, x, y, 0, 0, text, textColor, fontFamily, fontSize, fontWeight, true, angle);
+
+                var dx = 0d;
+                var dy = 0d;
 
                 switch (ha)
                 {
                     case HorizontalAlignment.Right:
-                        x -= size.Width;
+                        dx = -size.Width;
                         break;
                     case HorizontalAlignment.Center:
-                        x -= size.Width * 0.5;
+                        dx = -size.Width * 0.5;
                         break;
                 }
 
                 switch (va)
                 {
                     case VerticalAlignment.Bottom:
-                        y -= size.Height;
+                        dy = -size.Height;
                         break;
                     case VerticalAlignment.Middle:
-                        y -= size.Height * 0.5;
+                        dy = -size.Height * 0.5;
                         break;
                 }
 
-                InternalDrawMathText(rc, x, y, text, textColor, fontFamily, fontSize, fontWeight, false, angle);
+                InternalDrawMathText(rc, x, y, dx, dy, text, textColor, fontFamily, fontSize, fontWeight, false, angle);
                 return measure ? size : OxySize.Empty;
             }
 
-            rc.DrawText(pt, text, textColor, fontFamily, fontSize, fontWeight, angle, ha, va, maxsize);
+            rc.DrawText(pt, text, textColor, fontFamily, fontSize, fontWeight, angle, ha, va, maxSize);
             if (measure)
             {
                 return rc.MeasureText(text, fontFamily, fontSize, fontWeight);
@@ -139,7 +142,7 @@ namespace OxyPlot
         /// <param name="angle">The angle.</param>
         /// <param name="ha">The horizontal alignment.</param>
         /// <param name="va">The vertical alignment.</param>
-        /// <param name="maxsize">The maximum size of the text.</param>
+        /// <param name="maxSize">The maximum size of the text.</param>
         /// <example>Subscript: H_{2}O
         /// Superscript: E=mc^{2}
         /// Both: A^{2}_{i,j}</example>
@@ -154,9 +157,9 @@ namespace OxyPlot
             double angle,
             HorizontalAlignment ha,
             VerticalAlignment va,
-            OxySize? maxsize = null)
+            OxySize? maxSize = null)
         {
-            DrawMathText(rc, pt, text, textColor, fontFamily, fontSize, fontWeight, angle, ha, va, maxsize, false);
+            DrawMathText(rc, pt, text, textColor, fontFamily, fontSize, fontWeight, angle, ha, va, maxSize, false);
         }
 
         /// <summary>
@@ -173,30 +176,34 @@ namespace OxyPlot
         {
             if (text.Contains("^{") || text.Contains("_{"))
             {
-                return InternalDrawMathText(rc, 0, 0, text, OxyColors.Black, fontFamily, fontSize, fontWeight, true, 0.0);
+                return InternalDrawMathText(rc, 0, 0, 0, 0, text, OxyColors.Black, fontFamily, fontSize, fontWeight, true, 0.0);
             }
 
             return rc.MeasureText(text, fontFamily, fontSize, fontWeight);
         }
 
         /// <summary>
-        /// The internal draw math text.
+        /// Draws text with sub- and superscript items.
         /// </summary>
         /// <param name="rc">The render context.</param>
         /// <param name="x">The x.</param>
         /// <param name="y">The y.</param>
+        /// <param name="dx">The x offset (in rotated coordinates).</param>
+        /// <param name="dy">The y offset (in rotated coordinates).</param>
         /// <param name="s">The s.</param>
         /// <param name="textColor">The text color.</param>
         /// <param name="fontFamily">The font family.</param>
         /// <param name="fontSize">The font size.</param>
         /// <param name="fontWeight">The font weight.</param>
-        /// <param name="measureOnly">The measure only.</param>
+        /// <param name="measureOnly">Only measure if set to <c>true</c>.</param>
         /// <param name="angle">The angle of the text (degrees).</param>
         /// <returns>The size of the text.</returns>
         private static OxySize InternalDrawMathText(
             IRenderContext rc,
             double x,
             double y,
+            double dx,
+            double dy,
             string s,
             OxyColor textColor,
             string fontFamily,
@@ -205,35 +212,37 @@ namespace OxyPlot
             bool measureOnly,
             double angle)
         {
-            int i = 0;
-            double angleRadian = (angle * Math.PI) / 180.0;
-            double cosAngle = Math.Round(Math.Cos(angleRadian), 5);
-            double sinAngle = Math.Round(Math.Sin(angleRadian), 5);
+            var i = 0;
+            var angleRadian = (angle * Math.PI) / 180.0;
+            var cosAngle = Math.Round(Math.Cos(angleRadian), 5);
+            var sinAngle = Math.Round(Math.Sin(angleRadian), 5);
 
-            double currentX = x, maximumX = x, minimumX = x;
-            double currentY = y, maximumY = y, minimumY = y;
+            var currentX = x;
+            var maximumX = x;
+            var minimumX = x;
+            var currentY = y;
+            var maximumY = y;
+            var minimumY = y;
 
             // http://en.wikipedia.org/wiki/Subscript_and_superscript
-            double superScriptXDisplacement = sinAngle * fontSize * SuperAlignment;
-            double superScriptYDisplacement = cosAngle * fontSize * SuperAlignment;
+            var superScriptYDisplacement = fontSize * SuperAlignment;
 
-            double subscriptXDisplacement = sinAngle * fontSize * SubAlignment;
-            double subscriptYDisplacement = cosAngle * fontSize * SubAlignment;
+            var subscriptYDisplacement = fontSize * SubAlignment;
 
-            double superscriptFontSize = fontSize * SuperSize;
-            double subscriptFontSize = fontSize * SubSize;
+            var superscriptFontSize = fontSize * SuperSize;
+            var subscriptFontSize = fontSize * SubSize;
 
             Func<double, double, string, double, OxySize> drawText = (xb, yb, text, fSize) =>
                 {
                     if (!measureOnly)
                     {
-                        rc.DrawText(new ScreenPoint(xb, yb), text, textColor, fontFamily, fSize, fontWeight, angle);
+                        var xr = x + ((xb - x + dx) * cosAngle) - ((yb - y + dy) * sinAngle);
+                        var yr = y + ((xb - x + dx) * sinAngle) + ((yb - y + dy) * cosAngle);
+                        rc.DrawText(new ScreenPoint(xr, yr), text, textColor, fontFamily, fSize, fontWeight, angle);
                     }
 
                     var flatSize = rc.MeasureText(text, fontFamily, fSize, fontWeight);
-                    double width = Math.Abs((flatSize.Width * cosAngle) + (flatSize.Height * sinAngle));
-                    double height = Math.Abs((flatSize.Width * sinAngle) + (flatSize.Height * cosAngle));
-                    return new OxySize(width, height);
+                    return new OxySize(flatSize.Width, flatSize.Height);
                 };
 
             while (i < s.Length)
@@ -241,33 +250,18 @@ namespace OxyPlot
                 // Superscript
                 if (i + 1 < s.Length && s[i] == '^' && s[i + 1] == '{')
                 {
-                    int i1 = s.IndexOf('}', i);
+                    var i1 = s.IndexOf('}', i);
                     if (i1 != -1)
                     {
-                        string supString = s.Substring(i + 2, i1 - i - 2);
+                        var supString = s.Substring(i + 2, i1 - i - 2);
                         i = i1 + 1;
-                        double sx = currentX + superScriptXDisplacement;
-                        double sy = currentY + superScriptYDisplacement;
+                        var sx = currentX;
+                        var sy = currentY + superScriptYDisplacement;
                         var size = drawText(sx, sy, supString, superscriptFontSize);
-                        if (currentX + size.Width > maximumX)
-                        {
-                            maximumX = currentX + size.Width;
-                        }
-
-                        if (currentX + size.Width < minimumX)
-                        {
-                            minimumX = currentX + size.Width;
-                        }
-
-                        if (currentY + size.Height > maximumY)
-                        {
-                            maximumY = currentY + size.Height;
-                        }
-
-                        if (currentY + size.Height < minimumY)
-                        {
-                            minimumY = currentY + size.Height;
-                        }
+                        maximumX = Math.Max(sx + size.Width, maximumX);
+                        maximumY = Math.Max(sy + size.Height, maximumY);
+                        minimumX = Math.Min(sx, minimumX);
+                        minimumY = Math.Min(sy, minimumY);
 
                         continue;
                     }
@@ -276,40 +270,25 @@ namespace OxyPlot
                 // Subscript
                 if (i + 1 < s.Length && s[i] == '_' && s[i + 1] == '{')
                 {
-                    int i1 = s.IndexOf('}', i);
+                    var i1 = s.IndexOf('}', i);
                     if (i1 != -1)
                     {
-                        string subString = s.Substring(i + 2, i1 - i - 2);
+                        var subString = s.Substring(i + 2, i1 - i - 2);
                         i = i1 + 1;
-                        double sx = currentX - subscriptXDisplacement;
-                        double sy = currentY + subscriptYDisplacement;
+                        var sx = currentX;
+                        var sy = currentY + subscriptYDisplacement;
                         var size = drawText(sx, sy, subString, subscriptFontSize);
-                        if (currentX + (size.Width * cosAngle) > maximumX)
-                        {
-                            maximumX = currentX + (size.Width * cosAngle);
-                        }
-
-                        if (currentX + (size.Width * cosAngle) < minimumX)
-                        {
-                            minimumX = currentX + (size.Width * cosAngle);
-                        }
-
-                        if (currentY + (size.Height * sinAngle) > maximumY)
-                        {
-                            maximumY = currentY + (size.Height * sinAngle);
-                        }
-
-                        if (currentY + (size.Height * sinAngle) < minimumY)
-                        {
-                            minimumY = currentY + (size.Height * sinAngle);
-                        }
+                        maximumX = Math.Max(sx + size.Width, maximumX);
+                        maximumY = Math.Max(sy + size.Height, maximumY);
+                        minimumX = Math.Min(sx, minimumX);
+                        minimumY = Math.Min(sy, minimumY);
 
                         continue;
                     }
                 }
 
                 // Regular text
-                int i2 = s.IndexOfAny("^_".ToCharArray(), i);
+                var i2 = s.IndexOfAny("^_".ToCharArray(), i + 1);
                 string regularString;
                 if (i2 == -1)
                 {
@@ -322,17 +301,15 @@ namespace OxyPlot
                     i = i2;
                 }
 
-                currentX = maximumX + (2 * cosAngle);
-                currentY = maximumY + (2 * sinAngle);
+                currentX = maximumX + 2;
                 var size2 = drawText(currentX, currentY, regularString, fontSize);
 
-                currentX += (size2.Width + 2) * cosAngle;
-                currentY += (size2.Height + 2) * sinAngle;
-
-                maximumX = Math.Max(currentX, maximumX);
-                maximumY = Math.Max(currentY, maximumY);
+                maximumX = Math.Max(currentX + size2.Width, maximumX);
+                maximumY = Math.Max(currentY + size2.Height, maximumY);
                 minimumX = Math.Min(currentX, minimumX);
                 minimumY = Math.Min(currentY, minimumY);
+
+                currentX = maximumX;
             }
 
             return new OxySize(maximumX - minimumX, maximumY - minimumY);

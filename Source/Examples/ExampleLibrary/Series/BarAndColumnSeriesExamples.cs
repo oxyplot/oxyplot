@@ -15,7 +15,7 @@ namespace ExampleLibrary
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
-    public class BarAndColumnSeriesExamples<TSeries, TItem>
+    public abstract class BarAndColumnSeriesExamples<TSeries, TItem>
         where TSeries : BarSeriesBase<TItem>, new()
         where TItem : BarItemBase, new()
     {
@@ -281,6 +281,39 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("Logarithmic axis (not stacked)")]
+        public static PlotModel LogAxis2()
+        {
+            var model = new PlotModel { Title = "Logarithmic axis", LegendPlacement = LegendPlacement.Outside };
+
+            var items = new Collection<Item>
+                            {
+                                new Item {Label = "Apples", Value1 = 37, Value2 = 12, Value3 = 19},
+                                new Item {Label = "Pears", Value1 = 7, Value2 = 21, Value3 = 9},
+                                new Item {Label = "Bananas", Value1 = 23, Value2 = 2, Value3 = 29}
+                            };
+
+            model.Series.Add(new TSeries { Title = "2009", ItemsSource = items, ValueField = "Value1" });
+            model.Series.Add(new TSeries { Title = "2010", ItemsSource = items, ValueField = "Value2" });
+            model.Series.Add(new TSeries { Title = "2011", ItemsSource = items, ValueField = "Value3" });
+
+            model.Axes.Add(new CategoryAxis { Position = CategoryAxisPosition(), ItemsSource = items, LabelField = "Label" });
+            model.Axes.Add(new LogarithmicAxis { Position = ValueAxisPosition(), Minimum = 1 });
+            return model;
+        }
+
+        [Example("Logarithmic axis (stacked series)")]
+        public static PlotModel LogAxis3()
+        {
+            var model = LogAxis2();
+            foreach (var s in model.Series.OfType<TSeries>())
+            {
+                s.IsStacked = true;
+            }
+
+            return model;
+        }
+
         private static PlotModel CreateSimpleModel(bool stacked, string title)
         {
             var model = new PlotModel
@@ -359,15 +392,15 @@ namespace ExampleLibrary
             categoryAxis.Labels.Add("Category D");
 
             var valueAxis = new LinearAxis
-                {
-                    Position = ValueAxisPosition(),
-                    MinimumPadding = 0.06,
-                    MaximumPadding = 0.06,
-                    ExtraGridlines = new[] { 0.0 },
-                    ExtraGridlineStyle = LineStyle.Solid,
-                    ExtraGridlineColor = OxyColors.Black,
-                    ExtraGridlineThickness = 1
-                };
+            {
+                Position = ValueAxisPosition(),
+                MinimumPadding = 0.06,
+                MaximumPadding = 0.06,
+                ExtraGridlines = new[] { 0.0 },
+                ExtraGridlineStyle = LineStyle.Solid,
+                ExtraGridlineColor = OxyColors.Black,
+                ExtraGridlineThickness = 1
+            };
 
             model.Series.Add(s1);
             model.Series.Add(s2);

@@ -19,7 +19,7 @@ namespace OxyPlot.Series
         /// </summary>
         public ErrorColumnItem()
         {
-            this.Color = OxyColors.Undefined;
+            this.Color = OxyColors.Automatic;
         }
 
         /// <summary>

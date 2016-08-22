@@ -81,7 +81,7 @@ namespace CsvDemo
                         plot1.SaveBitmap(dlg.FileName, 0, 0, OxyColors.Automatic);
                         break;
                     case ".svg":
-                        var rc = new ShapesRenderContext(null);
+                        var rc = new CanvasRenderContext(null);
                         var svg = OxyPlot.SvgExporter.ExportToString(this.vm.Model, plot1.ActualWidth, plot1.ActualHeight, false, rc);
                         File.WriteAllText(dlg.FileName, svg);
                         break;
@@ -120,7 +120,7 @@ namespace CsvDemo
 
         private void CopySvg_Click(object sender, RoutedEventArgs e)
         {
-            var rc = new ShapesRenderContext(null);
+            var rc = new CanvasRenderContext(null);
             var svg = OxyPlot.SvgExporter.ExportToString(this.vm.Model, plot1.ActualWidth, plot1.ActualHeight, true, rc);
             Clipboard.SetText(svg);
         }

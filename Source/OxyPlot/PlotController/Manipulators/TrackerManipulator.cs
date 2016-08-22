@@ -54,12 +54,13 @@ namespace OxyPlot
         public override void Completed(OxyMouseEventArgs e)
         {
             base.Completed(e);
+            e.Handled = true;
 
             this.currentSeries = null;
             this.PlotView.HideTracker();
             if (this.PlotView.ActualModel != null)
             {
-                this.PlotView.ActualModel.OnTrackerChanged(null);
+                this.PlotView.ActualModel.RaiseTrackerChanged(null);
             }
         }
 
@@ -70,6 +71,7 @@ namespace OxyPlot
         public override void Delta(OxyMouseEventArgs e)
         {
             base.Delta(e);
+            e.Handled = true;
 
             if (this.currentSeries == null || !this.LockToInitialSeries)
             {
@@ -103,17 +105,8 @@ namespace OxyPlot
             {
                 result.PlotModel = this.PlotView.ActualModel;
                 this.PlotView.ShowTracker(result);
-                this.PlotView.ActualModel.OnTrackerChanged(result);
+                this.PlotView.ActualModel.RaiseTrackerChanged(result);
             }
-        }
-
-        /// <summary>
-        /// Gets the cursor for the manipulation.
-        /// </summary>
-        /// <returns>The cursor.</returns>
-        public override CursorType GetCursorType()
-        {
-            return CursorType.Default;
         }
 
         /// <summary>

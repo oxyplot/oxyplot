@@ -30,7 +30,7 @@ namespace OxyPlot.Axes
         /// The time origin.
         /// </summary>
         /// <remarks>This gives the same numeric date values as Excel</remarks>
-        private static readonly DateTime TimeOrigin = new DateTime(1900, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        private static readonly DateTime TimeOrigin = new DateTime(1899, 12, 31, 0, 0, 0, DateTimeKind.Utc);
 
         /// <summary>
         /// The maximum day value
@@ -61,51 +61,6 @@ namespace OxyPlot.Axes
             this.IntervalType = DateTimeIntervalType.Auto;
             this.FirstDayOfWeek = DayOfWeek.Monday;
             this.CalendarWeekRule = CalendarWeekRule.FirstFourDayWeek;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DateTimeAxis" /> class.
-        /// </summary>
-        /// <param name="position">The position of the axis.</param>
-        /// <param name="title">The axis title.</param>
-        /// <param name="format">The string format for the axis values.</param>
-        /// <param name="intervalType">The interval type.</param>
-        [Obsolete]
-        public DateTimeAxis(
-            AxisPosition position,
-            string title = null,
-            string format = null,
-            DateTimeIntervalType intervalType = DateTimeIntervalType.Auto)
-            : base(position, title)
-        {
-            this.FirstDayOfWeek = DayOfWeek.Monday;
-            this.CalendarWeekRule = CalendarWeekRule.FirstFourDayWeek;
-
-            this.StringFormat = format;
-            this.IntervalType = intervalType;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DateTimeAxis" /> class.
-        /// </summary>
-        /// <param name="position">The position of the axis.</param>
-        /// <param name="firstDateTime">The first date/time on the axis.</param>
-        /// <param name="lastDateTime">The last date/time on the axis.</param>
-        /// <param name="title">The axis title.</param>
-        /// <param name="format">The string format for the axis values.</param>
-        /// <param name="intervalType">The interval type.</param>
-        [Obsolete]
-        public DateTimeAxis(
-            AxisPosition position,
-            DateTime firstDateTime,
-            DateTime lastDateTime,
-            string title = null,
-            string format = null,
-            DateTimeIntervalType intervalType = DateTimeIntervalType.Auto)
-            : this(position, title, format, intervalType)
-        {
-            this.Minimum = ToDouble(firstDateTime);
-            this.Maximum = ToDouble(lastDateTime);
         }
 
         /// <summary>
@@ -240,7 +195,7 @@ namespace OxyPlot.Axes
                 case DateTimeIntervalType.Years:
                     this.ActualMinorStep = 31;
                     this.actualMinorIntervalType = DateTimeIntervalType.Years;
-                    if (this.ActualStringFormat == null)
+                    if (this.StringFormat == null)
                     {
                         this.ActualStringFormat = "yyyy";
                     }
@@ -248,7 +203,7 @@ namespace OxyPlot.Axes
                     break;
                 case DateTimeIntervalType.Months:
                     this.actualMinorIntervalType = DateTimeIntervalType.Months;
-                    if (this.ActualStringFormat == null)
+                    if (this.StringFormat == null)
                     {
                         this.ActualStringFormat = "yyyy-MM-dd";
                     }
@@ -258,7 +213,7 @@ namespace OxyPlot.Axes
                     this.actualMinorIntervalType = DateTimeIntervalType.Days;
                     this.ActualMajorStep = 7;
                     this.ActualMinorStep = 1;
-                    if (this.ActualStringFormat == null)
+                    if (this.StringFormat == null)
                     {
                         this.ActualStringFormat = "yyyy/ww";
                     }
@@ -266,7 +221,7 @@ namespace OxyPlot.Axes
                     break;
                 case DateTimeIntervalType.Days:
                     this.ActualMinorStep = this.ActualMajorStep;
-                    if (this.ActualStringFormat == null)
+                    if (this.StringFormat == null)
                     {
                         this.ActualStringFormat = "yyyy-MM-dd";
                     }
@@ -274,7 +229,7 @@ namespace OxyPlot.Axes
                     break;
                 case DateTimeIntervalType.Hours:
                     this.ActualMinorStep = this.ActualMajorStep;
-                    if (this.ActualStringFormat == null)
+                    if (this.StringFormat == null)
                     {
                         this.ActualStringFormat = "HH:mm";
                     }
@@ -282,7 +237,7 @@ namespace OxyPlot.Axes
                     break;
                 case DateTimeIntervalType.Minutes:
                     this.ActualMinorStep = this.ActualMajorStep;
-                    if (this.ActualStringFormat == null)
+                    if (this.StringFormat == null)
                     {
                         this.ActualStringFormat = "HH:mm";
                     }
@@ -290,7 +245,7 @@ namespace OxyPlot.Axes
                     break;
                 case DateTimeIntervalType.Seconds:
                     this.ActualMinorStep = this.ActualMajorStep;
-                    if (this.ActualStringFormat == null)
+                    if (this.StringFormat == null)
                     {
                         this.ActualStringFormat = "HH:mm:ss";
                     }
@@ -370,7 +325,7 @@ namespace OxyPlot.Axes
                 }
 
                 double nextInterval = goodIntervals.FirstOrDefault(i => i > interval);
-                if (Math.Abs(nextInterval) < double.Epsilon)
+                if (Math.Abs(nextInterval) <= double.Epsilon)
                 {
                     nextInterval = interval * 2;
                 }
@@ -558,7 +513,7 @@ namespace OxyPlot.Axes
             }
 
             // For shorter step sizes we use the method from Axis
-            return Axis.CreateTickValues(min, max, interval);
+            return this.CreateTickValues(min, max, interval);
         }
 
         /// <summary>

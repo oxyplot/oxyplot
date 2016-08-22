@@ -29,12 +29,38 @@ namespace OxyPlot
         private ScreenPoint PreviousPosition { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether panning is enabled.
+        /// </summary>
+        private bool IsPanEnabled { get; set; }
+
+        /// <summary>
+        /// Occurs when a manipulation is complete.
+        /// </summary>
+        /// <param name="e">The <see cref="OxyInputEventArgs" /> instance containing the event data.</param>
+        public override void Completed(OxyMouseEventArgs e)
+        {
+            base.Completed(e);
+            if (!this.IsPanEnabled)
+            {
+                return;
+            }
+
+            this.View.SetCursorType(CursorType.Default);
+            e.Handled = true;
+        }
+
+        /// <summary>
         /// Occurs when the input device changes position during a manipulation.
         /// </summary>
         /// <param name="e">The <see cref="OxyPlot.OxyMouseEventArgs" /> instance containing the event data.</param>
         public override void Delta(OxyMouseEventArgs e)
         {
             base.Delta(e);
+            if (!this.IsPanEnabled)
+            {
+                return;
+            }
+
             if (this.XAxis != null)
             {
                 this.XAxis.Pan(this.PreviousPosition, e.Position);
@@ -47,15 +73,7 @@ namespace OxyPlot
 
             this.PlotView.InvalidatePlot(false);
             this.PreviousPosition = e.Position;
-        }
-
-        /// <summary>
-        /// Gets the cursor for the manipulation.
-        /// </summary>
-        /// <returns>The cursor.</returns>
-        public override CursorType GetCursorType()
-        {
-            return CursorType.Pan;
+            e.Handled = true;
         }
 
         /// <summary>
@@ -66,6 +84,15 @@ namespace OxyPlot
         {
             base.Started(e);
             this.PreviousPosition = e.Position;
+
+            this.IsPanEnabled = (this.XAxis != null && this.XAxis.IsPanEnabled)
+                                || (this.YAxis != null && this.YAxis.IsPanEnabled);
+
+            if (this.IsPanEnabled)
+            {
+                this.View.SetCursorType(CursorType.Pan);
+                e.Handled = true;
+            }
         }
     }
 }

@@ -12,6 +12,7 @@ namespace OxyPlot.Reporting
     using System;
     using System.Collections;
     using System.Linq;
+    using System.Reflection;
 
     /// <summary>
     /// Represents a table of auto generated property values.
@@ -72,7 +73,12 @@ namespace OxyPlot.Reporting
 
             this.Columns.Clear();
 
-            foreach (var pi in type.GetProperties())
+#if UNIVERSAL
+            var properties = type.GetRuntimeProperties().Where(pi => pi.GetMethod.IsPublic && !pi.GetMethod.IsStatic);
+#else
+            var properties = type.GetProperties(BindingFlags.Instance | BindingFlags.Public);
+#endif
+            foreach (var pi in properties)
             {
                 // TODO: support Browsable and Displayname attributes
                 var header = pi.Name;

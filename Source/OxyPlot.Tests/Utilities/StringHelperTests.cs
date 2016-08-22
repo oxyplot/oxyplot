@@ -37,6 +37,32 @@ namespace OxyPlot.Tests
                 StringHelper.Format(CultureInfo.InvariantCulture, "{Text}", item));
         }
 
+        [Test]
+        public void CreateValidFormatString()
+        {
+            Assert.AreEqual("{0}", StringHelper.CreateValidFormatString(null), "null");
+            Assert.AreEqual("{0}", StringHelper.CreateValidFormatString(string.Empty), "empty");
+            Assert.AreEqual("{0:0.00}", StringHelper.CreateValidFormatString("0.00"), "0.00");
+            Assert.AreEqual("Item {0}", StringHelper.CreateValidFormatString("Item {0}"), "Item {0}");
+        }
+
+        [Test]
+        public void FormatIntegers()
+        {
+            var items = new[] { 1, 2, 3 };
+            CollectionAssert.AreEqual(new[] { "1", "2", "3" }, items.Format(null, null, CultureInfo.InvariantCulture));
+            CollectionAssert.AreEqual(new[] { "01", "02", "03" }, items.Format("", "00", CultureInfo.InvariantCulture));
+            CollectionAssert.AreEqual(new[] { "Item 1", "Item 2", "Item 3" }, items.Format(null, "Item {0}", CultureInfo.InvariantCulture));
+        }
+
+        [Test]
+        public void FormatStrings()
+        {
+            var items = new[] { "One", "Two", "Three" };
+            CollectionAssert.AreEqual(new[] { "3", "3", "5" }, items.Format("Length", null, CultureInfo.InvariantCulture));
+            CollectionAssert.AreEqual(new[] { "Item One", "Item Two", "Item Three" }, items.Format(null, "Item {0}", CultureInfo.InvariantCulture));
+        }
+
         public class Item
         {
             public string Text { get; set; }
