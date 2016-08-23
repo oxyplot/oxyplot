@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ShellView.xaml.cs" company="OxyPlot">
+// <copyright file="MainWindow.xaml.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
@@ -7,27 +7,20 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace ExportDemo
+namespace WorldStatisticsDemo
 {
-    using System.Windows;
+    using WpfExamples;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class ShellView : Window
+    [Example("World statistics.")]
+    public partial class MainWindow
     {
-        private readonly ShellViewModel vm = new ShellViewModel();
-
-        public ShellView()
+        public MainWindow()
         {
             this.InitializeComponent();
-            this.DataContextChanged += this.OnDataContextChanged;
-        }
-
-        private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            var svm = e.NewValue as ShellViewModel;
-            svm.Attach(this, plot1);
+            this.DataContext = new MainViewModel();
         }
     }
 }

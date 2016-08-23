@@ -3,6 +3,21 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:oxy="clr-namespace:OxyPlot.Wpf"
         Title="MathBlock demo" Height="480" Width="720">
+    <Window.Resources>
+        <Style TargetType="{x:Type oxy:MathBlock}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type oxy:MathBlock}">
+                        <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                            <Canvas x:Name="PART_Canvas"></Canvas>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
     <GroupBox Header="MathBlock" Margin="8" Padding="8">
         <StackPanel>
             <oxy:MathBlock FontSize="40" Foreground="DarkRed" Background="Lavender" FontStyle="Italic" FontWeight="ExtraBold" HorizontalAlignment="Left" Padding="40 0 0 0" ToolTip="HorizontalAlignment=Left">E=mc^{2}</oxy:MathBlock>

@@ -125,9 +125,9 @@ namespace WorldStatisticsDemo
             this.Countries = new Dictionary<string, Country>();
 
             // Load CSV files
-            Load(@"Data\gdp_per_capita_ppp.csv", "GdpPerCapitaPpp");
-            Load(@"Data\life_expectancy_at_birth.csv", "LifeExpectancyAtBirth");
-            Load(@"Data\population.csv", "Population");
+            Load(@"Examples\WorldStatisticsDemo\Data\gdp_per_capita_ppp.csv", "GdpPerCapitaPpp");
+            Load(@"Examples\WorldStatisticsDemo\Data\life_expectancy_at_birth.csv", "LifeExpectancyAtBirth");
+            Load(@"Examples\WorldStatisticsDemo\Data\population.csv", "Population");
 
             foreach (var country in Countries.Values)
                 country.SortStatistics();

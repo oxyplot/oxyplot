@@ -7,30 +7,30 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-
-namespace MathBlockDemo
+namespace MemoryTest
 {
+    using System;
+    using System.Windows;
+    using System.Windows.Controls;
+
+    using WpfExamples;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    [Example(null, "Memory test")]
+    public partial class MainWindow
     {
         public MainWindow()
         {
-            InitializeComponent();
+            this.InitializeComponent();
+        }
+
+        private void OpenWindow_Click(object sender, RoutedEventArgs e)
+        {
+            var type = ((Button)sender).Tag as Type;
+            var win = Activator.CreateInstance(type) as Window;
+            win.Show();
         }
     }
 }
