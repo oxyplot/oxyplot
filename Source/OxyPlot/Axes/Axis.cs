@@ -1268,12 +1268,7 @@ namespace OxyPlot.Axes
             this.ActualMinorStep = Math.Max(this.ActualMinorStep, this.MinimumMinorStep);
             this.ActualMajorStep = Math.Max(this.ActualMajorStep, this.MinimumMajorStep);
 
-            this.ActualStringFormat = this.StringFormat;
-
-            if (this.ActualStringFormat == null)
-            {
-                this.ActualStringFormat = "g";
-            }
+            this.ActualStringFormat = this.StringFormat ?? this.GetDefaultStringFormat();
         }
 
         /// <summary>
@@ -1337,6 +1332,16 @@ namespace OxyPlot.Axes
         /// <remarks>The current values may be modified during update of max/min and rendering.</remarks>
         protected internal virtual void ResetCurrentValues()
         {
+        }
+
+        /// <summary>
+        /// Gets the default format string.
+        /// </summary>
+        /// <returns>A format string.</returns>
+        /// <remarks>This format string is used if the StringFormat is not set.</remarks>
+        protected virtual string GetDefaultStringFormat()
+        {
+            return "g6";
         }
 
         /// <summary>

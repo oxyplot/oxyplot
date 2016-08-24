@@ -52,6 +52,17 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
+        /// Gets the default format string.
+        /// </summary>
+        /// <returns>
+        /// The default format string.
+        /// </returns>
+        protected override string GetDefaultStringFormat()
+        {
+            return null;
+        }
+
+        /// <summary>
         /// Formats the value to be used on the axis.
         /// </summary>
         /// <param name="x">The value to format.</param>
