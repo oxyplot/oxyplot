@@ -22,8 +22,19 @@ namespace ExampleLibrary
             public double Value { get; set; }
         }
 
-        [Example("TimeSpan axis")]
-        public static PlotModel TimeSpanaxisPlotModel()
+        [Example("Default StringFormat")]
+        public static PlotModel TimeSpanaxisPlotModelDefault()
+        {
+            return TimeSpanaxisPlotModel(null);
+        }
+
+        [Example("StringFormat = 'h:mm'")]
+        public static PlotModel TimeSpanaxisPlotModel1()
+        {
+            return TimeSpanaxisPlotModel("h:mm");
+        }
+
+        private static PlotModel TimeSpanaxisPlotModel(string stringFormat)
         {
             var start = new TimeSpan(0, 0, 0, 0);
             var end = new TimeSpan(0, 24, 0, 0);
@@ -40,7 +51,7 @@ namespace ExampleLibrary
             }
 
             var plotModel1 = new PlotModel { Title = "TimeSpan axis" };
-            var timeSpanAxis1 = new TimeSpanAxis { Position = AxisPosition.Bottom, StringFormat = "h:mm" };
+            var timeSpanAxis1 = new TimeSpanAxis { Position = AxisPosition.Bottom, StringFormat = stringFormat };
             plotModel1.Axes.Add(timeSpanAxis1);
             var linearAxis1 = new LinearAxis { Position = AxisPosition.Left };
             plotModel1.Axes.Add(linearAxis1);

@@ -12,6 +12,38 @@ namespace ExampleLibrary
     [Examples("LinearAxis"), Tags("Axes")]
     public static class LinearAxisExamples
     {
+        [Example("Default StringFormat ('g6')")]
+        public static PlotModel StringFormat()
+        {
+            return CreateExample(1.2345678901234567890e5, 1.2345678901234567890e6, null);
+        }
+
+        [Example("StringFormat = 'g2'")]
+        public static PlotModel StringFormatG2()
+        {
+            return CreateExample(1.2345678901234567890e5, 1.2345678901234567890e6, "g2");
+        }
+
+        [Example("StringFormat = 'g10'")]
+        public static PlotModel StringFormatG10()
+        {
+            return CreateExample(1.2345678901234567890e5, 1.2345678901234567890e6, "g10");
+        }
+
+        [Example("StringFormat = 'f2'")]
+        public static PlotModel StringFormatF2()
+        {
+            return CreateExample(1.2345678901234567890e5, 1.2345678901234567890e6, "f2");
+        }
+
+        private static PlotModel CreateExample(double min, double max, string stringFormat)
+        {
+            var m = new PlotModel();
+            m.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = min, Maximum = max, StringFormat = stringFormat });
+            m.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = min, Maximum = max, StringFormat = stringFormat });
+            return m;
+        }
+
         [Example("TickStyle: None")]
         public static PlotModel TickStyleNone()
         {
