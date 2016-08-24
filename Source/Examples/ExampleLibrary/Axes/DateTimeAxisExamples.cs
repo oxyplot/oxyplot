@@ -25,6 +25,29 @@ namespace ExampleLibrary
             public double Value { get; set; }
         }
 
+        [Example("Default StringFormat")]
+        public static PlotModel DefaultValues()
+        {
+            return CreateExample(7, null);
+        }
+
+        [Example("StringFormat 'MMM dd\\nyyyy'")]
+        public static PlotModel StringFormat()
+        {
+            return CreateExample(7, "MMM dd\nyyyy");
+        }
+
+        private static PlotModel CreateExample(int days, string stringFormat)
+        {
+            var m = new PlotModel();
+            var startTime = new DateTime(2000, 1, 1);
+            var min = DateTimeAxis.ToDouble(startTime);
+            var max = min + days;
+            m.Axes.Add(new DateTimeAxis { Position = AxisPosition.Bottom, Minimum = min, Maximum = max, StringFormat = stringFormat });
+            m.Axes.Add(new DateTimeAxis { Position = AxisPosition.Left, Minimum = min, Maximum = max, StringFormat = stringFormat });
+            return m;
+        }
+
         // [Example("DateTime Minimum bug")]
         public static PlotModel Example1()
         {
@@ -109,25 +132,25 @@ namespace ExampleLibrary
 
             var plotModel1 = new PlotModel { Title = "DateTime axis" };
             var dateTimeAxis1 = new DateTimeAxis
-                {
-                    CalendarWeekRule = CalendarWeekRule.FirstFourDayWeek,
-                    FirstDayOfWeek = DayOfWeek.Monday,
-                    Position = AxisPosition.Bottom
-                };
+            {
+                CalendarWeekRule = CalendarWeekRule.FirstFourDayWeek,
+                FirstDayOfWeek = DayOfWeek.Monday,
+                Position = AxisPosition.Bottom
+            };
             plotModel1.Axes.Add(dateTimeAxis1);
             var linearAxis1 = new LinearAxis();
             plotModel1.Axes.Add(linearAxis1);
             var lineSeries1 = new LineSeries
-                {
-                    Color = OxyColor.FromArgb(255, 78, 154, 6),
-                    MarkerFill = OxyColor.FromArgb(255, 78, 154, 6),
-                    MarkerStroke = OxyColors.ForestGreen,
-                    MarkerType = MarkerType.Plus,
-                    StrokeThickness = 1,
-                    DataFieldX = "Date",
-                    DataFieldY = "Value",
-                    ItemsSource = data
-                };
+            {
+                Color = OxyColor.FromArgb(255, 78, 154, 6),
+                MarkerFill = OxyColor.FromArgb(255, 78, 154, 6),
+                MarkerStroke = OxyColors.ForestGreen,
+                MarkerType = MarkerType.Plus,
+                StrokeThickness = 1,
+                DataFieldX = "Date",
+                DataFieldY = "Value",
+                ItemsSource = data
+            };
             plotModel1.Series.Add(lineSeries1);
             return plotModel1;
         }
@@ -179,27 +202,27 @@ namespace ExampleLibrary
             var plotModel1 = new PlotModel { Title = "Sunrise and sunset in Oslo", Subtitle = "UTC time" };
 
             var dateTimeAxis1 = new DateTimeAxis
-                {
-                    CalendarWeekRule = CalendarWeekRule.FirstFourDayWeek,
-                    FirstDayOfWeek = DayOfWeek.Monday,
-                    IntervalType = DateTimeIntervalType.Months,
-                    MajorGridlineStyle = LineStyle.Solid,
-                    Position = AxisPosition.Bottom,
-                    StringFormat = "MMM"
-                };
+            {
+                CalendarWeekRule = CalendarWeekRule.FirstFourDayWeek,
+                FirstDayOfWeek = DayOfWeek.Monday,
+                IntervalType = DateTimeIntervalType.Months,
+                MajorGridlineStyle = LineStyle.Solid,
+                Position = AxisPosition.Bottom,
+                StringFormat = "MMM"
+            };
             plotModel1.Axes.Add(dateTimeAxis1);
             var timeSpanAxis1 = new TimeSpanAxis { MajorGridlineStyle = LineStyle.Solid, Maximum = 86400, Minimum = 0, StringFormat = "h:mm" };
             plotModel1.Axes.Add(timeSpanAxis1);
             var areaSeries1 = new AreaSeries
-                {
-                    ItemsSource = sunData,
-                    DataFieldX = "Day",
-                    DataFieldY = "Sunrise",
-                    DataFieldX2 = "Day",
-                    DataFieldY2 = "Sunset",
-                    Fill = OxyColor.FromArgb(128, 255, 255, 0),
-                    Color = OxyColors.Black
-                };
+            {
+                ItemsSource = sunData,
+                DataFieldX = "Day",
+                DataFieldY = "Sunrise",
+                DataFieldX2 = "Day",
+                DataFieldY2 = "Sunset",
+                Fill = OxyColor.FromArgb(128, 255, 255, 0),
+                Color = OxyColors.Black
+            };
             plotModel1.Series.Add(areaSeries1);
             return plotModel1;
         }
