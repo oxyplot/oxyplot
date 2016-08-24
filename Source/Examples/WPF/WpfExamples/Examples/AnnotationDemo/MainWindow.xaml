@@ -9,7 +9,7 @@
                     <oxy:LinearAxis Position="Left" Minimum="0" Maximum="100" />
                 </oxy:Plot.Axes>
                 <oxy:Plot.Annotations>
-                    <oxy:ArrowAnnotation Color="Green" Text="Arrow 1" StartPoint="{oxy:DataPoint 10,10}" EndPoint="{oxy:DataPoint 60,30}" />
+                    <oxy:ArrowAnnotation Color="Green" Text="Arrow 1" StartPoint="{oxy:DataPoint 10,10}" EndPoint="{oxy:DataPoint 60,30}" ToolTip="Arrow annotation" />
                 </oxy:Plot.Annotations>
             </oxy:Plot>
         </TabItem>
