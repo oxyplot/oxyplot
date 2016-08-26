@@ -15,6 +15,7 @@ namespace OxyPlot.GtkSharp
     using System.Linq;
 
     using Cairo;
+    using Pango;
 
     using Gdk;
 
@@ -23,11 +24,6 @@ namespace OxyPlot.GtkSharp
     /// </summary>
     public class GraphicsRenderContext : RenderContextBase
     {
-        /// <summary>
-        /// The font size factor.
-        /// </summary>
-        private const double FontsizeFactor = 1.0;
-
         /// <summary>
         /// The image cache.
         /// </summary>
@@ -41,13 +37,13 @@ namespace OxyPlot.GtkSharp
         /// <summary>
         /// The GDI+ drawing surface.
         /// </summary>
-        private Context g;
+        private Cairo.Context g;
 
         /// <summary>
         /// Sets the graphics target.
         /// </summary>
         /// <param name="graphics">The graphics surface.</param>
-        public void SetGraphicsTarget(Context graphics)
+        public void SetGraphicsTarget(Cairo.Context graphics)
         {
             this.g = graphics;
             this.g.Antialias = Antialias.Subpixel; // TODO  .TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
@@ -262,20 +258,24 @@ namespace OxyPlot.GtkSharp
             VerticalAlignment valign,
             OxySize? maxSize)
         {
-            var fw = fontWeight >= 700 ? FontWeight.Bold : FontWeight.Normal;
-
-            this.g.Save();
-            this.g.SetFontSize(fontSize * FontsizeFactor);
-            this.g.SelectFontFace(fontFamily, FontSlant.Normal, fw);
-
-            // using (var sf = new StringFormat { Alignment = StringAlignment.Near })
-            var size = this.g.TextExtents(text);
+            Pango.Layout layout = Pango.CairoHelper.CreateLayout(this.g);
+            Pango.FontDescription font = new Pango.FontDescription();
+            font.Family = fontFamily;
+            font.Weight = (fontWeight >= 700) ? Pango.Weight.Bold : Pango.Weight.Normal;
+            font.AbsoluteSize = (int)(fontSize * Pango.Scale.PangoScale);
+            layout.FontDescription = font;
+            layout.SetText(text);
+            Pango.Rectangle inkRect;
+            Pango.Rectangle size;
+            layout.GetExtents(out inkRect, out size);
+            size.Width /= (int)Pango.Scale.PangoScale;
+            size.Height /= (int)Pango.Scale.PangoScale;
             if (maxSize != null)
             {
-                size.Width = Math.Min(size.Width, maxSize.Value.Width);
-                size.Height = Math.Min(size.Height, maxSize.Value.Height);
+                size.Width = Math.Min(size.Width, (int)maxSize.Value.Width);
+                size.Height = Math.Min(size.Height, (int)maxSize.Value.Height);
             }
-
+            this.g.Save();
             double dx = 0;
             if (halign == HorizontalAlignment.Center)
             {
@@ -306,11 +306,10 @@ namespace OxyPlot.GtkSharp
 
             this.g.Translate(dx, dy);
 
-            // g.Rectangle(0, 0, size.Width + 0.1f, size.Height + 0.1f);
-            this.g.MoveTo(0, size.Height + 0.1f);
+            g.Rectangle(0, 0, size.Width + 0.1f, size.Height + 0.1f);
+            g.Clip();
             this.g.SetSourceColor(fill);
-            this.g.ShowText(text);
-
+            Pango.CairoHelper.ShowLayout(this.g, layout);
             this.g.Restore();
         }
 
@@ -328,15 +327,19 @@ namespace OxyPlot.GtkSharp
             {
                 return OxySize.Empty;
             }
-
-            var fs = (fontWeight >= 700) ? FontWeight.Bold : FontWeight.Normal;
-
             this.g.Save();
-            this.g.SetFontSize((float)fontSize * FontsizeFactor);
-            this.g.SelectFontFace(fontFamily, FontSlant.Normal, fs);
-            var size = this.g.TextExtents(text);
+            Pango.Layout layout = Pango.CairoHelper.CreateLayout(this.g);
+            Pango.FontDescription font = new Pango.FontDescription();
+            font.Family = fontFamily;
+            font.Weight = (fontWeight >= 700) ? Pango.Weight.Bold : Pango.Weight.Normal;
+            font.AbsoluteSize = (int)(fontSize * Pango.Scale.PangoScale);
+            layout.FontDescription = font;
+            layout.SetText(text);
+            Pango.Rectangle inkRect;
+            Pango.Rectangle logicalRect;
+            layout.GetExtents(out inkRect, out logicalRect);
             this.g.Restore();
-            return new OxySize(size.Width, size.Height);
+            return new OxySize(logicalRect.Width / Pango.Scale.PangoScale, logicalRect.Height / Pango.Scale.PangoScale);
         }
 
         /// <summary>
@@ -413,7 +416,7 @@ namespace OxyPlot.GtkSharp
                 this.g.Translate(x, y);
                 this.g.Scale(scalex, scaley);
                 this.g.Rectangle(0, 0, rectw, recth);
-                CairoHelper.SetSourcePixbuf(
+                Gdk.CairoHelper.SetSourcePixbuf(
                     this.g,
                     image,
                     (rectw - image.Width) / 2.0,
