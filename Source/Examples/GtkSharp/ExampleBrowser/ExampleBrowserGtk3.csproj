@@ -49,11 +49,12 @@
     <Reference Include="gtk-sharp, Version=3.0.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
       <Package>gtk-sharp-3.0</Package>
     </Reference>
-    <Reference Include="pango-sharp, Version=3.0.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
-      <Package>gtk-sharp-3.0</Package>
-    </Reference>
     <Reference Include="gio-sharp, Version=3.0.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
       <Package>gio-sharp-3.0</Package>
+    </Reference>
+    <Reference Include="pango-sharp, Version=3.0.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=x86">
+      <Package>gtk-sharp-3.0</Package>
+      <HintPath>C:\Program Files (x86)\GtkSharp\3.0\lib\gtk-sharp-3.0\pango-sharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>
@@ -88,4 +89,3 @@
   </Target>
   -->
 </Project>
-

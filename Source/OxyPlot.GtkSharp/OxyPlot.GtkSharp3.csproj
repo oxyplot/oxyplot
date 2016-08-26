@@ -64,6 +64,9 @@
     <Reference Include="gio-sharp, Version=3.0.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
       <Package>gio-sharp-3.0</Package>
     </Reference>
+    <Reference Include="pango-sharp, Version=3.0.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <Package>gtk-sharp-3.0</Package>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyInfo.cs">

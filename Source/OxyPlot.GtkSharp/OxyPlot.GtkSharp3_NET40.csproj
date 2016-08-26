@@ -64,6 +64,10 @@
     <Reference Include="cairo-sharp, Version=1.10.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756">
       <Package>gtk-sharp-3.0</Package>
     </Reference>
+    <Reference Include="pango-sharp, Version=3.0.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\GtkSharp\3.0\lib\gtk-sharp-3.0\pango-sharp.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyInfo.cs">
@@ -95,5 +99,8 @@
       <Project>{1C1D9807-BE39-40A4-87DE-3F81E7C651E5}</Project>
       <Name>OxyPlot_NET40</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
 </Project>
