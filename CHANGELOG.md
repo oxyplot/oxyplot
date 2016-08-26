@@ -91,6 +91,7 @@ All notable changes to this project will be documented in this file.
 - Push packages to myget.org (#847)
 - Improve tracker style (Windows Forms) (#106)
 - Change the default format string to `null` for TimeSpanAxis and DateTimeAxis (#951)
+- Font rendering in OxyPlot.GtkSharp improved by using Pango (#972)
 
 ### Removed
 - StyleCop tasks (#556)
