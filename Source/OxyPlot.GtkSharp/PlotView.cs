@@ -22,7 +22,7 @@ namespace OxyPlot.GtkSharp
     /// Represents a control that displays a <see cref="PlotModel" />.
     /// </summary>
     [Serializable]
-    public partial class PlotView : DrawingArea, IPlotView
+    public partial class PlotView : Layout, IPlotView
     {
         /// <summary>
         /// The category for the properties of this control.
@@ -48,6 +48,12 @@ namespace OxyPlot.GtkSharp
         /// The render context.
         /// </summary>
         private readonly GraphicsRenderContext renderContext;
+
+        /// <summary>
+        /// The tracker label
+        /// </summary>
+        [NonSerialized]
+        private Gtk.Label trackerLabel = null;
 
         /// <summary>
         /// The current model (holding a reference to this plot view).
@@ -83,7 +89,7 @@ namespace OxyPlot.GtkSharp
         /// <summary>
         /// Initializes a new instance of the <see cref="PlotView" /> class.
         /// </summary>
-        public PlotView()
+        public PlotView() : base(null, null)
         {
             this.renderContext = new GraphicsRenderContext();
 
@@ -215,6 +221,8 @@ namespace OxyPlot.GtkSharp
         /// </summary>
         public void HideTracker()
         {
+            if (this.trackerLabel != null)
+                this.trackerLabel.Parent.Visible = false;
         }
 
         /// <summary>
@@ -270,7 +278,27 @@ namespace OxyPlot.GtkSharp
         /// <param name="data">The data.</param>
         public void ShowTracker(TrackerHitResult data)
         {
-            // not implemented for GtkSharp
+            if (this.trackerLabel == null)
+            {
+                // Holding the tracker label inside an EventBox allows
+                // us to set the background color
+                Gtk.EventBox labelHolder = new Gtk.EventBox();
+                this.trackerLabel = new Gtk.Label();
+                this.trackerLabel.SetPadding(3, 3);
+                OxyColor bgColor = OxyColors.LightSkyBlue;
+                labelHolder.ModifyBg(StateType.Normal, new Gdk.Color(bgColor.R, bgColor.G, bgColor.B));
+                labelHolder.Add(this.trackerLabel);
+                this.Add(labelHolder);
+                labelHolder.ShowAll();
+            }
+            this.trackerLabel.Parent.Visible = true;
+            this.trackerLabel.Text = data.ToString();
+            Gtk.Requisition req = this.trackerLabel.Parent.SizeRequest();
+            int xPos = (int)data.Position.X - req.Width / 2;
+            int yPos = (int)data.Position.Y - req.Height;
+            xPos = Math.Max(0, Math.Min(xPos, this.Allocation.Width - req.Width));
+            yPos = Math.Max(0, Math.Min(yPos, this.Allocation.Height - req.Height));
+            this.Move(trackerLabel.Parent, xPos, yPos);
         }
 
         /// <summary>
