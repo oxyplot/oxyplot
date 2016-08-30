@@ -5,8 +5,8 @@
         Title="Refresh by changing InvalidateFlag property on the Plot" Height="480" Width="640">
     <DockPanel>
         <TextBlock DockPanel.Dock="Top" Text="{Binding Title}"/>
-        <oxy:PlotView InvalidateFlag="{Binding Refresh}">
+        <oxy:Plot InvalidateFlag="{Binding Refresh}">
             <oxy:LineSeries ItemsSource="{Binding Points}"/>
-        </oxy:PlotView>
+        </oxy:Plot>
     </DockPanel>
 </Window>

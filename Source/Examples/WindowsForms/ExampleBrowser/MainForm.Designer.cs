@@ -65,6 +65,7 @@ namespace ExampleBrowser
             // 
             // treeView1
             // 
+            this.treeView1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeView1.Location = new System.Drawing.Point(0, 0);
             this.treeView1.Name = "treeView1";
@@ -73,17 +74,15 @@ namespace ExampleBrowser
             // 
             // plot1
             // 
+            this.plot1.BackColor = System.Drawing.Color.White;
             this.plot1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.plot1.Location = new System.Drawing.Point(0, 0);
             plotModel1.AxisTierDistance = 4D;
-            plotModel1.Background = OxyColors.Transparent;
             plotModel1.Culture = null;
             plotModel1.DefaultColors = null;
             plotModel1.DefaultFont = "Segoe UI";
             plotModel1.DefaultFontSize = 12D;
             plotModel1.IsLegendVisible = true;
-            plotModel1.LegendBackground = OxyColors.Undefined;
-            plotModel1.LegendBorder = OxyColors.Undefined;
             plotModel1.LegendBorderThickness = 1D;
             plotModel1.LegendColumnSpacing = 0D;
             plotModel1.LegendFont = null;
@@ -92,6 +91,7 @@ namespace ExampleBrowser
             plotModel1.LegendItemAlignment = OxyPlot.HorizontalAlignment.Left;
             plotModel1.LegendItemOrder = OxyPlot.LegendItemOrder.Normal;
             plotModel1.LegendItemSpacing = 24D;
+            plotModel1.LegendLineSpacing = 0D;
             plotModel1.LegendMargin = 8D;
             plotModel1.LegendMaxWidth = double.NaN;
             plotModel1.LegendOrientation = OxyPlot.LegendOrientation.Vertical;
@@ -101,29 +101,23 @@ namespace ExampleBrowser
             plotModel1.LegendSymbolLength = 16D;
             plotModel1.LegendSymbolMargin = 4D;
             plotModel1.LegendSymbolPlacement = OxyPlot.LegendSymbolPlacement.Left;
-            plotModel1.LegendTextColor = OxyColors.Undefined;
             plotModel1.LegendTitle = null;
-            plotModel1.LegendTitleColor = OxyColors.Undefined;
             plotModel1.LegendTitleFont = null;
             plotModel1.LegendTitleFontSize = 12D;
             plotModel1.LegendTitleFontWeight = 700D;
-            plotModel1.PlotAreaBackground = OxyColors.Undefined;
-            plotModel1.PlotAreaBorderColor = OxyColors.Undefined;
-            plotModel1.PlotAreaBorderThickness = new OxyThickness(1);
             plotModel1.PlotType = OxyPlot.PlotType.XY;
-            plotModel1.SelectionColor = OxyColors.Undefined;
+            plotModel1.RenderingDecorator = null;
             plotModel1.Subtitle = null;
-            plotModel1.SubtitleColor = OxyColors.Undefined;
             plotModel1.SubtitleFont = null;
             plotModel1.SubtitleFontSize = 14D;
             plotModel1.SubtitleFontWeight = 400D;
-            plotModel1.TextColor = OxyColors.Undefined;
             plotModel1.Title = null;
-            plotModel1.TitleColor = OxyColors.Undefined;
             plotModel1.TitleFont = null;
             plotModel1.TitleFontSize = 18D;
             plotModel1.TitleFontWeight = 700D;
+            plotModel1.TitleHorizontalAlignment = OxyPlot.TitleHorizontalAlignment.CenteredWithinPlotArea;
             plotModel1.TitlePadding = 6D;
+            plotModel1.TitleToolTip = null;
             this.plot1.Model = plotModel1;
             this.plot1.Name = "plot1";
             this.plot1.PanCursor = System.Windows.Forms.Cursors.Hand;

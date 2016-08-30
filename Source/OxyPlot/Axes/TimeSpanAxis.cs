@@ -22,46 +22,6 @@ namespace OxyPlot.Axes
     public class TimeSpanAxis : LinearAxis
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref = "TimeSpanAxis" /> class.
-        /// </summary>
-        public TimeSpanAxis()
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TimeSpanAxis" /> class.
-        /// </summary>
-        /// <param name="position">The position of the axis.</param>
-        /// <param name="title">The axis title.</param>
-        /// <param name="format">The string format for the axis values.</param>
-        [Obsolete]
-        public TimeSpanAxis(AxisPosition position, string title = null, string format = "m:ss")
-            : base(position, title)
-        {
-            this.StringFormat = format;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TimeSpanAxis" /> class.
-        /// </summary>
-        /// <param name="position">The position of the axis.</param>
-        /// <param name="minimum">The minimum value.</param>
-        /// <param name="maximum">The maximum value.</param>
-        /// <param name="title">The axis title.</param>
-        /// <param name="format">The string format for the axis values.</param>
-        [Obsolete]
-        public TimeSpanAxis(
-            AxisPosition position,
-            double minimum,
-            double maximum = double.NaN,
-            string title = null,
-            string format = "m:ss")
-            : base(position, minimum, maximum, title)
-        {
-            this.StringFormat = format;
-        }
-
-        /// <summary>
         /// Converts a time span to a double.
         /// </summary>
         /// <param name="s">The time span.</param>
@@ -92,23 +52,30 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
+        /// Gets the default format string.
+        /// </summary>
+        /// <returns>
+        /// The default format string.
+        /// </returns>
+        protected override string GetDefaultStringFormat()
+        {
+            return null;
+        }
+
+        /// <summary>
         /// Formats the value to be used on the axis.
         /// </summary>
         /// <param name="x">The value to format.</param>
         /// <returns>The formatted value.</returns>
         protected override string FormatValueOverride(double x)
         {
-            var span = TimeSpan.FromSeconds(x);
-            var s = this.ActualStringFormat ?? "h:mm:ss";
+            var span = ToTimeSpan(x);
 
-            s = s.Replace("mm", span.Minutes.ToString("00"));
-            s = s.Replace("ss", span.Seconds.ToString("00"));
-            s = s.Replace("hh", span.Hours.ToString("00"));
-            s = s.Replace("msec", span.Milliseconds.ToString("000"));
-            s = s.Replace("m", ((int)span.TotalMinutes).ToString("0"));
-            s = s.Replace("s", ((int)span.TotalSeconds).ToString("0"));
-            s = s.Replace("h", ((int)span.TotalHours).ToString("0"));
-            return s;
+            var fmt = this.ActualStringFormat ?? this.StringFormat ?? string.Empty;
+            fmt = fmt.Replace(":", "\\:");
+            fmt = string.Concat("{0:", fmt, "}");
+
+            return string.Format(this.ActualCulture, fmt, span);
         }
 
         /// <summary>

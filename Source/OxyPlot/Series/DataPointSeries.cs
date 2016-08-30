@@ -106,7 +106,8 @@ namespace OxyPlot.Series
 
             if (result != null)
             {
-                result.Text = this.Format(
+                result.Text = StringHelper.Format(
+                    this.ActualCulture, 
                     this.TrackerFormatString,
                     result.Item,
                     this.Title,
@@ -232,11 +233,10 @@ namespace OxyPlot.Series
             }
             else
             {
-                // TODO: is there a better way to do this?
-                // http://msdn.microsoft.com/en-us/library/bb613546.aspx
-
-                // Using reflection on DataFieldX and DataFieldY
-                this.itemsSourcePoints.AddRange(this.ItemsSource, this.DataFieldX, this.DataFieldY);
+                var filler = new ListBuilder<DataPoint>();
+                filler.Add(this.DataFieldX, double.NaN);
+                filler.Add(this.DataFieldY, double.NaN);
+                filler.Fill(this.itemsSourcePoints, this.ItemsSource, args => new DataPoint(Axes.Axis.ToDouble(args[0]), Axes.Axis.ToDouble(args[1])));
             }
         }
     }

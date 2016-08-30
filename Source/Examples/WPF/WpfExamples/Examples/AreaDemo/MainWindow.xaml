@@ -4,9 +4,9 @@
         xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf" 
         Title="AreaDemo" Height="480" Width="640">
     <DockPanel>
-        <oxy:PlotView Title="LineSeries and AreaSeries">
+        <oxy:Plot Title="LineSeries and AreaSeries">
             <oxy:AreaSeries ItemsSource="{Binding Measurements}" Title="Maximum/Minimum" DataFieldX="Time" DataFieldY="Maximum" DataFieldX2="Time" DataFieldY2="Minimum" Fill="LightBlue" StrokeThickness="0"/>
             <oxy:LineSeries ItemsSource="{Binding Measurements}" Title="Average" DataFieldX="Time" DataFieldY="Value" Color="Blue" StrokeThickness="2" Smooth="False"/>
-        </oxy:PlotView>
+        </oxy:Plot>
     </DockPanel>
 </Window>

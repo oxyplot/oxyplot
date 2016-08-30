@@ -59,10 +59,9 @@ namespace OxyPlot.Annotations
         /// Renders the polygon annotation.
         /// </summary>
         /// <param name="rc">The render context.</param>
-        /// <param name="model">The plot model.</param>
-        public override void Render(IRenderContext rc, PlotModel model)
+        public override void Render(IRenderContext rc)
         {
-            base.Render(rc, model);
+            base.Render(rc);
 
             double x0 = double.IsNaN(this.MinimumX) || this.MinimumX.Equals(double.MinValue)
                             ? this.XAxis.ActualMinimum

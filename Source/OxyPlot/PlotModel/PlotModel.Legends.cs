@@ -170,8 +170,15 @@ namespace OxyPlot
         /// <param name="rect">The position and size of the legend.</param>
         private void RenderLegend(IRenderContext rc, Series.Series s, OxyRect rect)
         {
+            var actualItemAlignment = this.LegendItemAlignment;
+            if (this.LegendOrientation == LegendOrientation.Horizontal)
+            {
+                // center/right alignment is not supported for horizontal orientation
+                actualItemAlignment = HorizontalAlignment.Left;
+            }
+
             double x = rect.Left;
-            switch (this.LegendItemAlignment)
+            switch (actualItemAlignment)
             {
                 case HorizontalAlignment.Center:
                     x = (rect.Left + rect.Right) / 2;
@@ -199,7 +206,7 @@ namespace OxyPlot
             }
 
             double y = rect.Top;
-            var maxsize = new OxySize(Math.Max(rect.Right - x, 0), Math.Max(rect.Bottom - y, 0));
+            var maxsize = new OxySize(Math.Max(rect.Width - this.LegendSymbolLength - this.LegendSymbolMargin, 0), rect.Height);
 
             rc.SetToolTip(s.ToolTip);
             var textSize = rc.DrawMathText(
@@ -210,12 +217,12 @@ namespace OxyPlot
                 this.LegendFontSize,
                 this.LegendFontWeight,
                 0,
-                this.LegendItemAlignment,
+                actualItemAlignment,
                 VerticalAlignment.Top,
                 maxsize,
                 true);
             double x0 = x;
-            switch (this.LegendItemAlignment)
+            switch (actualItemAlignment)
             {
                 case HorizontalAlignment.Center:
                     x0 = x - (textSize.Width * 0.5);
@@ -311,8 +318,7 @@ namespace OxyPlot
                 }
 
                 top += titleSize.Height;
-                size.Width = x + titleSize.Width + this.LegendPadding;
-                size.Height = top + titleSize.Height;
+                size = new OxySize(x + titleSize.Width + this.LegendPadding, top + titleSize.Height);
             }
 
             double y = top;
@@ -325,7 +331,9 @@ namespace OxyPlot
             // the maximum item with in the column being rendered (only used for vertical orientation)
             double maxItemWidth = 0;
 
-            var items = this.LegendItemOrder == LegendItemOrder.Reverse ? this.VisibleSeries.Reverse() : this.VisibleSeries;
+            var items = this.LegendItemOrder == LegendItemOrder.Reverse
+                ? this.Series.Reverse().Where(s => s.IsVisible)
+                : this.Series.Where(s => s.IsVisible);
 
             // When orientation is vertical and alignment is center or right, the items cannot be rendered before
             // the max item width has been calculated. Render the items for each column, and at the end.
@@ -337,7 +345,7 @@ namespace OxyPlot
                         var itemRect = sr.Value;
                         var itemSeries = sr.Key;
 
-                        double rwidth = itemRect.Width;
+                        double rwidth = availableWidth;
                         if (itemRect.Left + rwidth + this.LegendPadding > rect.Left + availableWidth)
                         {
                             rwidth = rect.Left + availableWidth - itemRect.Left - this.LegendPadding;
@@ -359,7 +367,7 @@ namespace OxyPlot
             foreach (var s in items)
             {
                 // Skip series with empty title
-                if (string.IsNullOrEmpty(s.Title))
+                if (string.IsNullOrEmpty(s.Title) || !s.RenderInLegend)
                 {
                     continue;
                 }
@@ -381,7 +389,7 @@ namespace OxyPlot
                     {
                         // new line
                         x = this.LegendPadding;
-                        y += lineHeight;
+                        y += lineHeight + this.LegendLineSpacing;
                         lineHeight = 0;
                     }
 
@@ -395,11 +403,8 @@ namespace OxyPlot
 
                     x += itemWidth;
 
-                    // Update the max width of the legend box
-                    size.Width = Math.Max(size.Width, x);
-
-                    // Update the max height of the legend box
-                    size.Height = Math.Max(size.Height, y + textSize.Height);
+                    // Update the max width and height of the legend box
+                    size = new OxySize(Math.Max(size.Width, x), Math.Max(size.Height, y + textSize.Height));
                 }
                 else
                 {
@@ -417,16 +422,13 @@ namespace OxyPlot
                         seriesToRender.Add(s, new OxyRect(rect.Left + x, rect.Top + y, itemWidth, itemHeight));
                     }
 
-                    y += itemHeight;
+                    y += itemHeight + this.LegendLineSpacing;
 
                     // Update the max size of the items in the current column
                     maxItemWidth = Math.Max(maxItemWidth, itemWidth);
 
-                    // Update the max width of the legend box
-                    size.Width = Math.Max(size.Width, x + itemWidth);
-
-                    // Update the max height of the legend box
-                    size.Height = Math.Max(size.Height, y);
+                    // Update the max width and height of the legend box
+                    size = new OxySize(Math.Max(size.Width, x + itemWidth), Math.Max(size.Height, y));
                 }
             }
 
@@ -434,27 +436,32 @@ namespace OxyPlot
 
             if (size.Width > 0)
             {
-                size.Width += this.LegendPadding;
+                size = new OxySize(size.Width + this.LegendPadding, size.Height);
             }
 
             if (size.Height > 0)
             {
-                size.Height += this.LegendPadding;
+                size = new OxySize(size.Width, size.Height + this.LegendPadding);
             }
 
             if (size.Width > availableWidth)
             {
-                size.Width = availableWidth;
+                size = new OxySize(availableWidth, size.Height);
             }
 
             if (size.Height > availableHeight)
             {
-                size.Height = availableHeight;
+                size = new OxySize(size.Width, availableHeight);
             }
 
             if (!double.IsNaN(this.LegendMaxWidth) && size.Width > this.LegendMaxWidth)
             {
-                size.Width = this.LegendMaxWidth;
+                size = new OxySize(this.LegendMaxWidth, size.Height);
+            }
+
+            if (!double.IsNaN(this.LegendMaxHeight) && size.Height > this.LegendMaxHeight)
+            {
+                size = new OxySize(size.Width, this.LegendMaxHeight);
             }
 
             return size;

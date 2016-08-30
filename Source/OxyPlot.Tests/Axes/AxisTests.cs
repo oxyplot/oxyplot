@@ -395,7 +395,7 @@ namespace OxyPlot.Tests
             var plot = new PlotModel { Title = "Simple plot" };
             plot.Axes.Add(new LinearAxis { AbsoluteMaximum = 0, AbsoluteMinimum = 0 });
             ((IPlotModel)plot).Update(true);
-            Assert.IsNotNull(plot.GetLastUpdateException() as InvalidOperationException);
+            Assert.IsNotNull(plot.GetLastPlotException() as InvalidOperationException);
         }
 
         [Test]
@@ -426,6 +426,241 @@ namespace OxyPlot.Tests
             ((IPlotModel)plot).Update(true);
             Assert.AreEqual(100, plot.Axes[0].ActualMaximum);
             Assert.AreEqual(1, plot.Axes[0].ActualMinimum);
+        }
+
+        /// <summary>
+        /// Test DesiredSize property to see if working property
+        /// </summary>
+        [Test]
+        public void Axis_DesiredSize()
+        {
+            var xaxis = new LinearAxis { Position = AxisPosition.Bottom, Title = "X-axis" };
+            var yaxis = new LinearAxis { Position = AxisPosition.Left, Title = "Y-axis" };
+
+            var plot = new PlotModel { Title = "Simple plot" };
+            plot.Axes.Add(xaxis);
+            plot.Axes.Add(yaxis);
+
+            var ls = new LineSeries();
+            ls.Points.Add(new DataPoint(3, 13));
+            ls.Points.Add(new DataPoint(10, 47));
+            ls.Points.Add(new DataPoint(30, 23));
+            ls.Points.Add(new DataPoint(40, 65));
+            ls.Points.Add(new DataPoint(80, 10));
+            plot.Series.Add(ls);
+
+            // initial setting
+            plot.UpdateAndRenderToNull(800, 600);
+            Assert.That(yaxis.DesiredSize.Width, Is.EqualTo(35.0).Within(0.5), "y-axis width");
+            Assert.That(yaxis.DesiredSize.Height, Is.EqualTo(0.0).Within(1e-6), "y-axis height");
+
+            Assert.That(xaxis.DesiredSize.Width, Is.EqualTo(0.0).Within(1e-6), "x-axis width");
+            Assert.That(xaxis.DesiredSize.Height, Is.EqualTo(35.0).Within(0.5), "x-axis height");
+
+            // larger numbers on axis -> larger desired size
+            yaxis.Zoom(10000, 11000);
+            plot.UpdateAndRenderToNull(800, 600);
+
+            Assert.That(yaxis.DesiredSize.Width, Is.EqualTo(50.0).Within(0.5), "y-axis width");
+            Assert.That(yaxis.DesiredSize.Height, Is.EqualTo(0.0).Within(1e-6), "y-axis height");
+        }
+
+        /// <summary>
+        /// Tests the alignment of the series, if minimum range is set
+        /// </summary>
+        [Test]
+        public void Axis_VerticalAlignment_MinimumRange()
+        {
+            var plot = new PlotModel();
+            var yaxis = new LinearAxis()
+            {
+                Position = AxisPosition.Left,
+                MinimumRange = 1,
+            };
+
+            plot.Axes.Add(yaxis);
+
+            var series = new LineSeries();
+            series.Points.Add(new DataPoint(0, 10.1));
+            series.Points.Add(new DataPoint(1, 10.15));
+            series.Points.Add(new DataPoint(2, 10.3));
+            series.Points.Add(new DataPoint(3, 10.25));
+
+            plot.Series.Add(series);
+
+            ((IPlotModel)plot).Update(true);
+
+            double dataMin = 10.1;
+            double dataMax = 10.3;
+            double dataCenter = (dataMax + dataMin) / 2;
+
+            // Center should be the between data min and max
+            Assert.AreEqual(dataCenter, (plot.Axes[0].ActualMaximum + plot.Axes[0].ActualMinimum) / 2, 1e-5, "center");
+            Assert.AreEqual(dataCenter - 0.5, plot.Axes[0].ActualMinimum, 1e-5, "minimum");
+            Assert.AreEqual(dataCenter + 0.5, plot.Axes[0].ActualMaximum, 1e-5, "maximum");
+        }
+
+        /// <summary>
+        /// Tests the alignment of the series, if MinimumRange and the AbsoluteMaximum are set
+        /// </summary>
+        [Test]
+        public void Axis_VerticalAlignment_MinimumRange_AbsoluteMaximum()
+        {
+            var plot = new PlotModel();
+            var yaxis = new LinearAxis()
+            {
+                Position = AxisPosition.Left,
+                MinimumRange = 1,
+                AbsoluteMaximum = 10.5,
+            };
+
+            plot.Axes.Add(yaxis);
+
+            var series = new LineSeries();
+            series.Points.Add(new DataPoint(0, 10.1));
+            series.Points.Add(new DataPoint(1, 10.15));
+            series.Points.Add(new DataPoint(2, 10.3));
+            series.Points.Add(new DataPoint(3, 10.25));
+
+            plot.Series.Add(series);
+
+            ((IPlotModel)plot).Update(true);
+
+            // Center should be the between AbsoluteMaximum and the (AboluteMaximum - MinimumRange)
+            Assert.AreEqual(yaxis.AbsoluteMaximum, plot.Axes[0].ActualMaximum, 0, "absolute maximum");
+            Assert.AreEqual(yaxis.AbsoluteMaximum - (yaxis.MinimumRange / 2), (plot.Axes[0].ActualMaximum + plot.Axes[0].ActualMinimum) / 2, 1e-5, "center");
+            Assert.AreEqual(yaxis.AbsoluteMaximum - yaxis.MinimumRange, plot.Axes[0].ActualMinimum, 1e-5, "minimum");
+        }
+
+        /// <summary>
+        /// Tests the alignment of the series, if MinimumRange and the AbsoluteMaximum are set
+        /// </summary>
+        [Test]
+        public void Axis_VerticalAlignment_MinimumRange_AbsoluteMinimum()
+        {
+            var plot = new PlotModel();
+            var yaxis = new LinearAxis()
+            {
+                Position = AxisPosition.Left,
+                MinimumRange = 1,
+                AbsoluteMinimum = 10,
+            };
+
+            plot.Axes.Add(yaxis);
+
+            var series = new LineSeries();
+            series.Points.Add(new DataPoint(0, 10.1));
+            series.Points.Add(new DataPoint(1, 10.15));
+            series.Points.Add(new DataPoint(2, 10.3));
+            series.Points.Add(new DataPoint(3, 10.25));
+
+            plot.Series.Add(series);
+
+            ((IPlotModel)plot).Update(true);
+
+            // Center should be the between AbsoluteMinimum and the (AboluteMinimum + MinimumRange)
+            Assert.AreEqual(yaxis.AbsoluteMinimum, plot.Axes[0].ActualMinimum, 0, "absolute minimum");
+            Assert.AreEqual(yaxis.AbsoluteMinimum + (yaxis.MinimumRange / 2), (plot.Axes[0].ActualMaximum + plot.Axes[0].ActualMinimum) / 2, 1e-5, "center");
+            Assert.AreEqual(yaxis.AbsoluteMinimum + yaxis.MinimumRange, plot.Axes[0].ActualMaximum, 1e-5, "maximum");
+        }
+
+        /// <summary>
+        /// Tests the alignment of the series, if maximum range is set.
+        /// </summary>
+        [Test]
+        public void Axis_VerticalAlignment_MaximumRange()
+        {
+            var plot = new PlotModel();
+            var yaxis = new LinearAxis()
+            {
+                Position = AxisPosition.Left,
+                MaximumRange = 0.1,
+            };
+
+            plot.Axes.Add(yaxis);
+
+            var series = new LineSeries();
+            series.Points.Add(new DataPoint(0, 10.1));
+            series.Points.Add(new DataPoint(1, 10.15));
+            series.Points.Add(new DataPoint(2, 10.3));
+            series.Points.Add(new DataPoint(3, 10.25));
+
+            plot.Series.Add(series);
+
+            ((IPlotModel)plot).Update(true);
+
+            double dataMin = 10.1;
+            double dataMax = 10.3;
+            double dataCenter = (dataMax + dataMin) / 2;
+
+            // Center should be the between data min and max
+            Assert.AreEqual(dataCenter, (plot.Axes[0].ActualMaximum + plot.Axes[0].ActualMinimum) / 2, 1e-5, "center");
+            Assert.AreEqual(dataCenter - 0.05, plot.Axes[0].ActualMinimum, 1e-5, "minimum");
+            Assert.AreEqual(dataCenter + 0.05, plot.Axes[0].ActualMaximum, 1e-5, "maximum");
+        }
+
+        /// <summary>
+        /// Tests the alignment of the series, if MaximumRange and the AbsoluteMaximum are set.
+        /// </summary>
+        [Test]
+        public void Axis_VerticalAlignment_MaximumRange_AbsoluteMaximum()
+        {
+            var plot = new PlotModel();
+            var yaxis = new LinearAxis()
+            {
+                Position = AxisPosition.Left,
+                MaximumRange = 0.1,
+                AbsoluteMaximum = 10.22,
+            };
+
+            plot.Axes.Add(yaxis);
+
+            var series = new LineSeries();
+            series.Points.Add(new DataPoint(0, 10.1));
+            series.Points.Add(new DataPoint(1, 10.15));
+            series.Points.Add(new DataPoint(2, 10.3));
+            series.Points.Add(new DataPoint(3, 10.25));
+
+            plot.Series.Add(series);
+
+            ((IPlotModel)plot).Update(true);
+
+            // Range is between AbsoluteMaximum and the (AboluteMaximum - MaximumRange)
+            Assert.AreEqual(yaxis.AbsoluteMaximum, plot.Axes[0].ActualMaximum, 0, "absolute maximum");
+            Assert.AreEqual(yaxis.AbsoluteMaximum - (yaxis.MaximumRange / 2), (plot.Axes[0].ActualMaximum + plot.Axes[0].ActualMinimum) / 2, 1e-6, "center");
+            Assert.AreEqual(yaxis.AbsoluteMaximum - yaxis.MaximumRange, plot.Axes[0].ActualMinimum, 1e-6, "minimum");
+        }
+
+        /// <summary>
+        /// Tests the alignment of the series, if MaximumRange and the AbsoluteMinimum are set.
+        /// </summary>
+        [Test]
+        public void Axis_VerticalAlignment_MaximumRange_AbsoluteMinimum()
+        {
+            var plot = new PlotModel();
+            var yaxis = new LinearAxis()
+            {
+                Position = AxisPosition.Left,
+                MaximumRange = 0.1,
+                AbsoluteMinimum = 10.16,
+            };
+
+            plot.Axes.Add(yaxis);
+
+            var series = new LineSeries();
+            series.Points.Add(new DataPoint(0, 10.1));
+            series.Points.Add(new DataPoint(1, 10.15));
+            series.Points.Add(new DataPoint(2, 10.3));
+            series.Points.Add(new DataPoint(3, 10.25));
+
+            plot.Series.Add(series);
+
+            ((IPlotModel)plot).Update(true);
+
+            // Range is between AbsoluteMinimum and the (AboluteMinimum + MaximumRange)
+            Assert.AreEqual(yaxis.AbsoluteMinimum, plot.Axes[0].ActualMinimum, 0, "absolute minimum");
+            Assert.AreEqual(yaxis.AbsoluteMinimum + (yaxis.MaximumRange / 2), (plot.Axes[0].ActualMaximum + plot.Axes[0].ActualMinimum) / 2, 1e-6, "center");
+            Assert.AreEqual(yaxis.AbsoluteMinimum + yaxis.MaximumRange, plot.Axes[0].ActualMaximum, 1e-6, "maximum");
         }
     }
 }

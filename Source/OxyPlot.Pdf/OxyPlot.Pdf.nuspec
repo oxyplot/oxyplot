@@ -2,19 +2,28 @@
 <package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <id>OxyPlot.Pdf</id>
-    <title>OxyPlot PDF export</title>
-    <version>0.0.0</version>
+    <title>OxyPlot PDF extensions (for Silverlight and NET4)</title>
+    <version>$version$</version>
     <authors>Oystein Bjorke</authors>
-    <description>OxyPlot is an open source plotting library for .NET. This package contains the .pdf export extensions for Silverlight, .NET 4.0 and .NET 4.5.</description>
+    <description>OxyPlot is a plotting library for .NET. This package contains .pdf export extensions for .NET 4 (based on PDFsharp) and Silverlight (based on SilverPDF).</description>
     <releaseNotes></releaseNotes>
     <licenseUrl>https://raw.githubusercontent.com/oxyplot/oxyplot/master/LICENSE</licenseUrl>
     <projectUrl>http://oxyplot.org/</projectUrl>
-    <iconUrl>http://resources.oxyplot.org/icons/oxyplot_128.png</iconUrl>
+    <iconUrl>https://raw.githubusercontent.com/oxyplot/oxyplot/develop/Icons/OxyPlot_128.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <tags>pdf plotting plot charting chart</tags>
     <dependencies>
-      <dependency id="OxyPlot.Core" version="[0.0.0]"/>
-      <dependency id="PDFsharp-MigraDoc-GDI"/>
+      <group targetFramework="net40">
+        <dependency id="PDFsharp-MigraDoc-GDI" version="[1.32.4334]"/>
+        <dependency id="OxyPlot.Core" version="[$version$]"/>
+      </group>
+      <group targetFramework="net45">
+        <dependency id="PDFsharp-MigraDoc-GDI" version="[1.32.4334]"/>
+        <dependency id="OxyPlot.Core" version="[$version$]"/>
+      </group>
+      <group>
+        <dependency id="OxyPlot.Core" version="[$version$]"/>
+      </group>
     </dependencies>
   </metadata>
   <files>
@@ -22,6 +31,11 @@
     <file src="..\..\Output\NET40\OxyPlot.Pdf.???" target="lib\net40" />
     <file src="..\..\Output\SL5\OxyPlot.Pdf.???" target="lib\sl5" />
     <file src="..\..\Output\SL5\silverPDF.*" target="lib\sl5" />
+
+    <file src="..\..\LICENSE" />
+    <file src="..\..\AUTHORS" />
+    <file src="..\..\CONTRIBUTORS" />
     <file src="..\..\README.md" />
+    <file src="..\..\CHANGELOG.md" />
   </files>
 </package>

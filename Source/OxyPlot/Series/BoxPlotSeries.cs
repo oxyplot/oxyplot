@@ -20,25 +20,43 @@ namespace OxyPlot.Series
     public class BoxPlotSeries : XYAxisSeries
     {
         /// <summary>
+        /// The default tracker format string
+        /// </summary>
+        public new const string DefaultTrackerFormatString = "{0}\n{1}: {2}\nUpper Whisker: {3:N2}\nThird Quartil: {4:N2}\nMedian: {5:N2}\nFirst Quartil: {6:N2}\nLower Whisker: {7:N2}\nMean: {8:N2}";
+
+        /// <summary>
+        /// The items from the items source.
+        /// </summary>
+        private List<BoxPlotItem> itemsSourceItems;
+
+        /// <summary>
+        /// Specifies if the ownsItemsSourceItems list can be modified.
+        /// </summary>
+        private bool ownsItemsSourceItems;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="BoxPlotSeries" /> class.
         /// </summary>
         public BoxPlotSeries()
         {
             this.Items = new List<BoxPlotItem>();
-            this.TrackerFormatString = "{0}\n{1}: {2:0.00}\nUpper Whisker: {3:0.00}\nThird Quartil: {4:0.00}\nMedian: {5:0.00}\nFirst Quartil: {6:0.00}\nLower Whisker: {7:0.00}";
-            this.OutlierTrackerFormatString = "{0}\n{1}: {2:0.00}\nY: {3:0.00}";
+            this.TrackerFormatString = DefaultTrackerFormatString;
+            this.OutlierTrackerFormatString = "{0}\n{1}: {2}\nY: {3:0.00}";
             this.Title = null;
             this.Fill = OxyColors.Automatic;
             this.Stroke = OxyColors.Black;
             this.BoxWidth = 0.3;
             this.StrokeThickness = 1;
             this.MedianThickness = 2;
+            this.MeanThickness = 2;
             this.OutlierSize = 2;
             this.OutlierType = MarkerType.Circle;
             this.MedianPointSize = 2;
+            this.MeanPointSize = 2;
             this.WhiskerWidth = 0.5;
             this.LineStyle = LineStyle.Solid;
             this.ShowMedianAsDot = false;
+            this.ShowMeanAsDot = false;
             this.ShowBox = true;
         }
 
@@ -69,7 +87,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets or sets the size of the median point.
         /// </summary>
-        /// <remarks>This property is only used when MedianStyle = Dot.</remarks>
+        /// <remarks>This property is only used when ShowMedianAsDot = true.</remarks>
         public double MedianPointSize { get; set; }
 
         /// <summary>
@@ -77,6 +95,18 @@ namespace OxyPlot.Series
         /// </summary>
         /// <value>The median thickness.</value>
         public double MedianThickness { get; set; }
+
+        /// <summary>
+        /// Gets or sets the size of the mean point.
+        /// </summary>
+        /// <remarks>This property is only used when ShowMeanAsDot = true.</remarks>
+        public double MeanPointSize { get; set; }
+
+        /// <summary>
+        /// Gets or sets the mean thickness, relative to the StrokeThickness.
+        /// </summary>
+        /// <value>The mean thickness.</value>
+        public double MeanThickness { get; set; }
 
         /// <summary>
         /// Gets or sets the diameter of the outlier circles (specified in points).
@@ -115,9 +145,14 @@ namespace OxyPlot.Series
         public bool ShowMedianAsDot { get; set; }
 
         /// <summary>
-        /// Gets or sets the stroke.
+        /// Gets or sets a value indicating whether to show the mean as a dot.
         /// </summary>
-        /// <value>The stroke.</value>
+        public bool ShowMeanAsDot { get; set; }
+
+        /// <summary>
+        /// Gets or sets the stroke color.
+        /// </summary>
+        /// <value>The stroke color.</value>
         public OxyColor Stroke { get; set; }
 
         /// <summary>
@@ -131,6 +166,17 @@ namespace OxyPlot.Series
         /// </summary>
         /// <value>The width of the whiskers.</value>
         public double WhiskerWidth { get; set; }
+
+        /// <summary>
+        /// Gets the list of items that should be rendered.
+        /// </summary>
+        protected IList<BoxPlotItem> ActualItems
+        {
+            get
+            {
+                return this.ItemsSource != null ? this.itemsSourceItems : this.Items;
+            }
+        }
 
         /// <summary>
         /// Gets the nearest point.
@@ -147,7 +193,7 @@ namespace OxyPlot.Series
 
             double minimumDistance = double.MaxValue;
             TrackerHitResult result = null;
-            foreach (var item in this.Items)
+            foreach (var item in this.ActualItems)
             {
                 foreach (var outlier in item.Outliers)
                 {
@@ -217,7 +263,8 @@ namespace OxyPlot.Series
                                 this.YAxis.GetValue(item.BoxTop),
                                 this.YAxis.GetValue(item.Median),
                                 this.YAxis.GetValue(item.BoxBottom),
-                                this.YAxis.GetValue(item.LowerWhisker))
+                                this.YAxis.GetValue(item.LowerWhisker),
+                                this.YAxis.GetValue(item.Mean))
                     };
                 }
             }
@@ -248,10 +295,9 @@ namespace OxyPlot.Series
         /// Renders the series on the specified render context.
         /// </summary>
         /// <param name="rc">The rendering context.</param>
-        /// <param name="model">The model.</param>
-        public override void Render(IRenderContext rc, PlotModel model)
+        public override void Render(IRenderContext rc)
         {
-            if (this.Items.Count == 0)
+            if (this.ActualItems.Count == 0)
             {
                 return;
             }
@@ -266,7 +312,7 @@ namespace OxyPlot.Series
 
             var dashArray = this.LineStyle.GetDashArray();
 
-            foreach (var item in this.Items)
+            foreach (var item in this.ActualItems)
             {
                 // Add the outlier points
                 outlierScreenPoints.AddRange(item.Outliers.Select(outlier => this.Transform(item.X, outlier)));
@@ -354,6 +400,35 @@ namespace OxyPlot.Series
                             mc.Y - this.MedianPointSize,
                             this.MedianPointSize * 2,
                             this.MedianPointSize * 2);
+                        rc.DrawEllipse(ellipseRect, fillColor, OxyColors.Undefined, 0);
+                    }
+                }
+
+                if (!this.ShowMeanAsDot && !double.IsNaN(item.Mean))
+                {
+                    // Draw the median line
+                    var meanLeft = this.Transform(item.X - halfBoxWidth, item.Mean);
+                    var meanRight = this.Transform(item.X + halfBoxWidth, item.Mean);
+                    rc.DrawClippedLine(
+                        clippingRect,
+                        new[] { meanLeft, meanRight },
+                        0,
+                        strokeColor,
+                        this.StrokeThickness * this.MeanThickness,
+                        LineStyle.Dash.GetDashArray(),
+                        LineJoin.Miter,
+                        true);
+                }
+                else if (!double.IsNaN(item.Mean))
+                {
+                    var mc = this.Transform(item.X, item.Mean);
+                    if (clippingRect.Contains(mc))
+                    {
+                        var ellipseRect = new OxyRect(
+                            mc.X - this.MeanPointSize,
+                            mc.Y - this.MeanPointSize,
+                            this.MeanPointSize * 2,
+                            this.MeanPointSize * 2);
                         rc.DrawEllipse(ellipseRect, fillColor, OxyColors.Undefined, 0);
                     }
                 }
@@ -471,12 +546,35 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
+        /// Updates the data.
+        /// </summary>
+        protected internal override void UpdateData()
+        {
+            if (this.ItemsSource == null)
+            {
+                return;
+            }
+
+            var sourceAsListOfT = this.ItemsSource as IEnumerable<BoxPlotItem>;
+            if (sourceAsListOfT != null)
+            {
+                this.itemsSourceItems = sourceAsListOfT.ToList();
+                this.ownsItemsSourceItems = false;
+                return;
+            }
+
+            this.ClearItemsSourceItems();
+
+            this.itemsSourceItems.AddRange(this.ItemsSource.OfType<BoxPlotItem>());
+        }
+
+        /// <summary>
         /// Updates the maximum and minimum values of the series.
         /// </summary>
         protected internal override void UpdateMaxMin()
         {
             base.UpdateMaxMin();
-            this.InternalUpdateMaxMin(this.Items);
+            this.InternalUpdateMaxMin(this.ActualItems);
         }
 
         /// <summary>
@@ -534,6 +632,21 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
+        /// Gets the item at the specified index.
+        /// </summary>
+        /// <param name="i">The index of the item.</param>
+        /// <returns>The item of the index.</returns>
+        protected override object GetItem(int i)
+        {
+            if (this.ItemsSource != null || this.ActualItems == null || this.ActualItems.Count == 0)
+            {
+                return base.GetItem(i);
+            }
+
+            return this.ActualItems[i];
+        }
+
+        /// <summary>
         /// Gets the screen rectangle for the box.
         /// </summary>
         /// <param name="item">The box item.</param>
@@ -547,6 +660,23 @@ namespace OxyPlot.Series
 
             var rect = new OxyRect(boxTop.X, boxTop.Y, boxBottom.X - boxTop.X, boxBottom.Y - boxTop.Y);
             return rect;
+        }
+
+        /// <summary>
+        /// Clears or creates the <see cref="itemsSourceItems"/> list.
+        /// </summary>
+        private void ClearItemsSourceItems()
+        {
+            if (!this.ownsItemsSourceItems || this.itemsSourceItems == null)
+            {
+                this.itemsSourceItems = new List<BoxPlotItem>();
+            }
+            else
+            {
+                this.itemsSourceItems.Clear();
+            }
+
+            this.ownsItemsSourceItems = true;
         }
     }
 }

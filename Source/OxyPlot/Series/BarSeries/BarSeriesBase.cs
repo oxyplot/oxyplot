@@ -23,7 +23,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// The default tracker format string
         /// </summary>
-        public new const string DefaultTrackerFormatString = "{0}\n{1}: {2:0.###}";
+        public new const string DefaultTrackerFormatString = "{0}\n{1}: {2}";
 
         /// <summary>
         /// The default fill color.
@@ -152,18 +152,22 @@ namespace OxyPlot.Series
             {
                 if (rectangle.Contains(point))
                 {
-                    var categoryIndex = this.ValidItems[i].GetCategoryIndex(i);
-
+                    // get the item corresponding to this bar/column rectangle
+                    var item = this.ValidItems[i];
+                    var categoryIndex = item.GetCategoryIndex(i);
                     var dp = new DataPoint(categoryIndex, this.ValidItems[i].Value);
-                    var item = this.GetItem(this.ValidItemsIndexInversion[i]);
+
+                    // get the item that the bar/column is bound to, or the item from the Items collection
+                    var boundItem = this.GetItem(this.ValidItemsIndexInversion[i]);
+
                     return new TrackerHitResult
                     {
                         Series = this,
                         DataPoint = dp,
                         Position = point,
-                        Item = item,
+                        Item = boundItem,
                         Index = i,
-                        Text = this.GetTrackerText(item, categoryIndex)
+                        Text = this.GetTrackerText(item, boundItem, categoryIndex)
                     };
                 }
 
@@ -177,8 +181,7 @@ namespace OxyPlot.Series
         /// Renders the series on the specified rendering context.
         /// </summary>
         /// <param name="rc">The rendering context.</param>
-        /// <param name="model">The model.</param>
-        public override void Render(IRenderContext rc, PlotModel model)
+        public override void Render(IRenderContext rc)
         {
             this.ActualBarRectangles = new List<OxyRect>();
 
@@ -277,12 +280,11 @@ namespace OxyPlot.Series
         /// <summary>
         /// Sets the default values.
         /// </summary>
-        /// <param name="model">The model.</param>
-        protected internal override void SetDefaultValues(PlotModel model)
+        protected internal override void SetDefaultValues()
         {
             if (this.FillColor.IsAutomatic())
             {
-                this.defaultFillColor = model.GetDefaultColor();
+                this.defaultFillColor = this.PlotModel.GetDefaultColor();
             }
         }
 
@@ -419,21 +421,19 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets the tracker text for the specified item.
         /// </summary>
-        /// <param name="item">The item.</param>
+        /// <param name="barItem">The bar/column item.</param>
+        /// <param name="item">The bound item.</param>
         /// <param name="categoryIndex">Category index of the item.</param>
-        /// <returns>The tracker text.</returns>
-        protected virtual string GetTrackerText(object item, int categoryIndex)
+        /// <returns>
+        /// The tracker text.
+        /// </returns>
+        protected virtual string GetTrackerText(BarItemBase barItem, object item, int categoryIndex)
         {
-            var barItem = item as BarItemBase;
-            if (barItem == null)
-            {
-                return null;
-            }
-
             var categoryAxis = this.GetCategoryAxis();
             var valueAxis = this.GetValueAxis();
 
-            var text = this.Format(
+            var text = StringHelper.Format(
+                this.ActualCulture, 
                 this.TrackerFormatString,
                 item,
                 this.Title,

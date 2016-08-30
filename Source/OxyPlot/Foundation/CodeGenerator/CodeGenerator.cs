@@ -13,6 +13,7 @@ namespace OxyPlot
     using System.Collections;
     using System.Collections.Generic;
     using System.Globalization;
+    using System.Linq;
     using System.Reflection;
     using System.Text;
     using System.Text.RegularExpressions;
@@ -134,9 +135,19 @@ namespace OxyPlot
         /// <returns>The variable name.</returns>
         private string Add(object obj)
         {
-            Type type = obj.GetType();
-            object defaultInstance = Activator.CreateInstance(type);
-            string varName = this.GetNewVariableName(type);
+            var type = obj.GetType();
+#if UNIVERSAL
+            var hasParameterLessCtor = type.GetTypeInfo().DeclaredConstructors.Any(ci => ci.GetParameters().Length == 0);
+#else
+            var hasParameterLessCtor = type.GetConstructors().Any(ci => ci.GetParameters().Length == 0);
+#endif
+            if (!hasParameterLessCtor)
+            {
+                return string.Format("/* Cannot generate code for {0} constructor */", type.Name);
+            }
+
+            var defaultInstance = Activator.CreateInstance(type);
+            var varName = this.GetNewVariableName(type);
             this.variables.Add(varName, true);
             this.AppendLine("var {0} = new {1}();", varName, type.Name);
             this.SetProperties(obj, varName, defaultInstance);
@@ -278,12 +289,7 @@ namespace OxyPlot
         /// <returns>The attribute, or <c>null</c> if no attribute was found.</returns>
         private T GetFirstAttribute<T>(PropertyInfo pi) where T : Attribute
         {
-            foreach (T a in pi.GetCustomAttributes(typeof(CodeGenerationAttribute), true))
-            {
-                return a;
-            }
-
-            return null;
+            return pi.GetCustomAttributes(typeof(CodeGenerationAttribute), true).OfType<T>().FirstOrDefault();
         }
 
         /// <summary>
@@ -341,7 +347,13 @@ namespace OxyPlot
             var instanceType = instance.GetType();
             var listsToAdd = new Dictionary<string, IList>();
             var arraysToAdd = new Dictionary<string, Array>();
-            foreach (var pi in instanceType.GetProperties())
+
+#if UNIVERSAL
+            var properties = instanceType.GetRuntimeProperties().Where(pi => pi.GetMethod.IsPublic && !pi.GetMethod.IsStatic);
+#else
+            var properties = instanceType.GetProperties(BindingFlags.Instance | BindingFlags.Public);
+#endif
+            foreach (var pi in properties)
             {
                 // check the [CodeGeneration] attribute
                 var cga = this.GetFirstAttribute<CodeGenerationAttribute>(pi);
@@ -376,7 +388,11 @@ namespace OxyPlot
                 }
 
                 // only properties with public setters are used
+#if UNIVERSAL
+                var setter = pi.SetMethod;
+#else
                 var setter = pi.GetSetMethod();
+#endif
                 if (setter == null || !setter.IsPublic)
                 {
                     continue;

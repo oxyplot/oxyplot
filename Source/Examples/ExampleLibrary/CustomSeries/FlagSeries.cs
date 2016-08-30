@@ -110,7 +110,7 @@ namespace ExampleLibrary
                         Series = this,
                         DataPoint = new DataPoint(v, double.NaN),
                         Position = new ScreenPoint(x, this.symbolPosition - this.symbolSize.Height),
-                        Text = this.Format(this.TrackerFormatString, null, this.Title, v)
+                        Text = StringHelper.Format(this.ActualCulture, this.TrackerFormatString, null, this.Title, v)
                     };
                 }
             }
@@ -122,15 +122,14 @@ namespace ExampleLibrary
         /// Renders the series on the specified render context.
         /// </summary>
         /// <param name="rc">The rendering context.</param>
-        /// <param name="model">The model.</param>
-        public override void Render(IRenderContext rc, PlotModel model)
+        public override void Render(IRenderContext rc)
         {
             if (this.XAxis == null)
             {
                 return;
             }
 
-            this.symbolPosition = model.PlotArea.Bottom;
+            this.symbolPosition = this.PlotModel.PlotArea.Bottom;
             this.symbolSize = rc.MeasureText(this.Symbol, this.ActualFont, this.ActualFontSize);
             foreach (var v in this.Values)
             {
@@ -202,8 +201,7 @@ namespace ExampleLibrary
         /// <summary>
         /// Sets default values (colors, line style etc) from the plot model.
         /// </summary>
-        /// <param name="model">A plot model.</param>
-        protected override void SetDefaultValues(PlotModel model)
+        protected override void SetDefaultValues()
         {
         }
 

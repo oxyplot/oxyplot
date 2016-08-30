@@ -9,7 +9,9 @@
 
 namespace OxyPlot.Series
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     /// <summary>
     /// Represents an area series that fills the polygon defined by two sets of points or one set of points and a constant.
@@ -22,9 +24,14 @@ namespace OxyPlot.Series
         private readonly List<DataPoint> points2 = new List<DataPoint>();
 
         /// <summary>
-        /// The secondary data points from the items source.
+        /// The secondary data points from the <see cref="P:ItemsSource" /> collection.
         /// </summary>
         private readonly List<DataPoint> itemsSourcePoints2 = new List<DataPoint>();
+
+        /// <summary>
+        /// The secondary data points from the <see cref="P:Points2" /> list.
+        /// </summary>
+        private List<DataPoint> actualPoints2;
 
         /// <summary>
         /// Initializes a new instance of the <see cref = "AreaSeries" /> class.
@@ -41,29 +48,34 @@ namespace OxyPlot.Series
         /// This is used if DataFieldBase and BaselineValues are <c>null</c>.
         /// </summary>
         /// <value>The baseline.</value>
+        /// <remarks><see cref="P:ConstantY2" /> is used if <see cref="P:ItemsSource" /> is set 
+        /// and <see cref="P:DataFieldX2" /> or <see cref="P:DataFieldY2" /> are <c>null</c>, 
+        /// or if <see cref="P:ItemsSource" /> is <c>null</c> and <see cref="P:Points2" /> is empty.</remarks>
         public double ConstantY2 { get; set; }
 
         /// <summary>
-        /// Gets or sets the second X data field.
+        /// Gets or sets the data field to use for the X-coordinates of the second data set.
         /// </summary>
+        /// <remarks>This property is used if <see cref="P:ItemsSource" /> is set.</remarks>
         public string DataFieldX2 { get; set; }
 
         /// <summary>
-        /// Gets or sets the second Y data field.
+        /// Gets or sets the data field to use for the Y-coordinates of the second data set.
         /// </summary>
+        /// <remarks>This property is used if <see cref="P:ItemsSource" /> is set.</remarks>
         public string DataFieldY2 { get; set; }
 
         /// <summary>
-        /// Gets or sets the color of the second line.
+        /// Gets or sets the color of the line for the second data set.
         /// </summary>
         /// <value>The color.</value>
         public OxyColor Color2 { get; set; }
 
         /// <summary>
-        /// Gets the actual color of the second line.
+        /// Gets the actual color of the line for the second data set.
         /// </summary>
         /// <value>The actual color.</value>
-        public OxyColor ActualColor2
+        public virtual OxyColor ActualColor2
         {
             get
             {
@@ -72,15 +84,15 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Gets or sets the area fill color.
+        /// Gets or sets the fill color of the area.
         /// </summary>
-        /// <value>The fill.</value>
+        /// <value>The fill color.</value>
         public OxyColor Fill { get; set; }
 
         /// <summary>
-        /// Gets the actual fill color.
+        /// Gets the actual fill color of the area.
         /// </summary>
-        /// <value>The actual fill.</value>
+        /// <value>The actual fill color.</value>
         public OxyColor ActualFill
         {
             get
@@ -93,6 +105,7 @@ namespace OxyPlot.Series
         /// Gets the second list of points.
         /// </summary>
         /// <value>The second list of points.</value>
+        /// <remarks>This property is not used if <see cref="P:ItemsSource" /> is set.</remarks>
         public List<DataPoint> Points2
         {
             get
@@ -102,25 +115,35 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the second
-        /// data collection should be reversed.
-        /// The first dataset is not reversed, and normally
-        /// the second dataset should be reversed to get a
-        /// closed polygon.
+        /// Gets or sets a value indicating whether the second data collection should be reversed.
         /// </summary>
+        /// <value><c>true</c> if the second data set should be reversed; otherwise, <c>false</c>.</value>
+        /// <remarks>The first dataset is not reversed, and normally
+        /// the second dataset should be reversed to get a
+        /// closed polygon.</remarks>
         public bool Reverse2 { get; set; }
 
         /// <summary>
-        /// Gets the second list of points.
+        /// Gets the actual points of the second data set.
         /// </summary>
-        /// <value>The second list of points.</value>
+        /// <value>A list of data points.</value>
         protected List<DataPoint> ActualPoints2
         {
             get
             {
-                return this.ItemsSource != null ? this.itemsSourcePoints2 : this.points2;
+                return this.ItemsSource != null ? this.itemsSourcePoints2 : this.actualPoints2;
             }
         }
+
+        /// <summary>
+        /// Gets or sets the last visible window start position in second data points collection.
+        /// </summary>
+        protected int WindowStartIndex2 { get; set; }
+
+        /// <summary>
+        /// Gets a value indicating whether Points2 collection was defined by user.
+        /// </summary>
+        protected bool IsPoints2Defined { get; private set; }
 
         /// <summary>
         /// Gets the nearest point.
@@ -130,16 +153,25 @@ namespace OxyPlot.Series
         /// <returns>A TrackerHitResult for the current hit.</returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
+            var xy = this.InverseTransform(point);
+            var targetX = xy.X;
+            int startIdx = this.IsXMonotonic 
+                ? this.FindWindowStartIndex(this.ActualPoints, p => p.x, targetX, this.WindowStartIndex)
+                : 0;
+            int startIdx2 = this.IsXMonotonic
+                ? this.FindWindowStartIndex(this.ActualPoints2, p => p.x, targetX, this.WindowStartIndex2)
+                : 0;
+
             TrackerHitResult result1, result2;
             if (interpolate && this.CanTrackerInterpolatePoints)
             {
-                result1 = this.GetNearestInterpolatedPointInternal(this.ActualPoints, point);
-                result2 = this.GetNearestInterpolatedPointInternal(this.ActualPoints2, point);
+                result1 = this.GetNearestInterpolatedPointInternal(this.ActualPoints, startIdx, point);
+                result2 = this.GetNearestInterpolatedPointInternal(this.ActualPoints2, startIdx2, point);
             }
             else
             {
-                result1 = this.GetNearestPointInternal(this.ActualPoints, point);
-                result2 = this.GetNearestPointInternal(this.ActualPoints2, point);
+                result1 = this.GetNearestPointInternal(this.ActualPoints, startIdx, point);
+                result2 = this.GetNearestPointInternal(this.ActualPoints2, startIdx2, point);
             }
 
             TrackerHitResult result;
@@ -156,7 +188,8 @@ namespace OxyPlot.Series
 
             if (result != null)
             {
-                result.Text = this.Format(
+                result.Text = StringHelper.Format(
+                    this.ActualCulture,
                     this.TrackerFormatString,
                     result.Item,
                     this.Title,
@@ -173,101 +206,114 @@ namespace OxyPlot.Series
         /// Renders the series on the specified rendering context.
         /// </summary>
         /// <param name="rc">The rendering context.</param>
-        /// <param name="model">The owner plot model.</param>
-        public override void Render(IRenderContext rc, PlotModel model)
+        public override void Render(IRenderContext rc)
         {
+            this.VerifyAxes();
+
             var actualPoints = this.ActualPoints;
-            var actualPoints2 = this.ActualPoints2;
-            int n0 = actualPoints.Count;
-            if (n0 == 0)
+            if (actualPoints == null || actualPoints.Count == 0)
             {
                 return;
             }
 
-            this.VerifyAxes();
+            var actualPoints2 = this.ActualPoints2;
+            if (actualPoints2 == null || actualPoints2.Count == 0)
+            {
+                return;
+            }
+
+            int startIdx = 0;
+            int startIdx2 = 0;
+            double xmax = double.MaxValue;
+
+            if (this.IsXMonotonic)
+            {
+                // determine render range
+                var xmin = this.XAxis.ActualMinimum;
+                xmax = this.XAxis.ActualMaximum;
+                this.WindowStartIndex = this.UpdateWindowStartIndex(actualPoints, point => point.X, xmin, this.WindowStartIndex);
+                this.WindowStartIndex2 = this.UpdateWindowStartIndex(actualPoints2, point => point.X, xmin, this.WindowStartIndex2);
+
+                startIdx = this.WindowStartIndex;
+                startIdx2 = this.WindowStartIndex2;
+            }
 
             double minDistSquared = this.MinimumSegmentLength * this.MinimumSegmentLength;
 
             var clippingRect = this.GetClippingRect();
             rc.SetClip(clippingRect);
 
-            // Transform all points to screen coordinates
-            IList<ScreenPoint> pts0 = new ScreenPoint[n0];
-            for (int i = 0; i < n0; i++)
+            var areaContext = new AreaRenderContext
             {
-                pts0[i] = this.XAxis.Transform(actualPoints[i].X, actualPoints[i].Y, this.YAxis);
+                Points = actualPoints,
+                WindowStartIndex = startIdx,
+                XMax = xmax,
+                RenderContext = rc,
+                ClippingRect = clippingRect,
+                MinDistSquared = minDistSquared,
+                Reverse = false,
+                Color = this.ActualColor,
+                DashArray = this.ActualDashArray
+            };
+
+            var chunksOfPoints = this.RenderChunkedPoints(areaContext);
+
+            areaContext.Points = actualPoints2;
+            areaContext.WindowStartIndex = startIdx2;
+            areaContext.Reverse = this.Reverse2;
+            areaContext.Color = this.ActualColor2;
+            
+            var chunksOfPoints2 = this.RenderChunkedPoints(areaContext);
+
+            if (chunksOfPoints.Count != chunksOfPoints2.Count)
+            {
+                rc.ResetClip();
+                return;
             }
 
-            int n1 = actualPoints2.Count;
-            IList<ScreenPoint> pts1 = new ScreenPoint[n1];
-            for (int i = 0; i < n1; i++)
+            // Draw the fill
+            for (int chunkIndex = 0; chunkIndex < chunksOfPoints.Count; chunkIndex++)
             {
-                int j = this.Reverse2 ? n1 - 1 - i : i;
-                pts1[j] = this.XAxis.Transform(actualPoints2[i].X, actualPoints2[i].Y, this.YAxis);
+                var pts = chunksOfPoints[chunkIndex];
+                var pts2 = chunksOfPoints2[chunkIndex];
+
+                // pts = SutherlandHodgmanClipping.ClipPolygon(clippingRect, pts);
+
+                // combine the two lines and draw the clipped area
+                var allPts = new List<ScreenPoint>();
+                allPts.AddRange(pts2);
+                allPts.AddRange(pts);
+                rc.DrawClippedPolygon(
+                    clippingRect,
+                    allPts,
+                    minDistSquared,
+                    this.GetSelectableFillColor(this.ActualFill),
+                    OxyColors.Undefined);
+
+                var markerSizes = new[] { this.MarkerSize };
+
+                // draw the markers on top
+                rc.DrawMarkers(
+                    clippingRect,
+                    pts,
+                    this.MarkerType,
+                    null,
+                    markerSizes,
+                    this.MarkerFill,
+                    this.MarkerStroke,
+                    this.MarkerStrokeThickness,
+                    1);
+                rc.DrawMarkers(
+                    clippingRect,
+                    pts2,
+                    this.MarkerType,
+                    null,
+                    markerSizes,
+                    this.MarkerFill,
+                    this.MarkerStroke,
+                    this.MarkerStrokeThickness,
+                    1);
             }
-
-            if (this.Smooth)
-            {
-                var rpts0 = ScreenPointHelper.ResamplePoints(pts0, this.MinimumSegmentLength);
-                var rpts1 = ScreenPointHelper.ResamplePoints(pts1, this.MinimumSegmentLength);
-
-                pts0 = CanonicalSplineHelper.CreateSpline(rpts0, 0.5, null, false, 0.25);
-                pts1 = CanonicalSplineHelper.CreateSpline(rpts1, 0.5, null, false, 0.25);
-            }
-
-            var dashArray = this.ActualDashArray;
-
-            // draw the clipped lines
-            rc.DrawClippedLine(
-                clippingRect,
-                pts0,
-                minDistSquared,
-                this.GetSelectableColor(this.ActualColor),
-                this.StrokeThickness,
-                dashArray,
-                this.LineJoin,
-                false);
-            rc.DrawClippedLine(
-                clippingRect,
-                pts1,
-                minDistSquared,
-                this.GetSelectableColor(this.ActualColor2),
-                this.StrokeThickness,
-                dashArray,
-                this.LineJoin,
-                false);
-
-            // combine the two lines and draw the clipped area
-            var pts = new List<ScreenPoint>();
-            pts.AddRange(pts1);
-            pts.AddRange(pts0);
-
-            // pts = SutherlandHodgmanClipping.ClipPolygon(clippingRect, pts);
-            rc.DrawClippedPolygon(clippingRect, pts, minDistSquared, this.GetSelectableFillColor(this.ActualFill), OxyColors.Undefined);
-
-            var markerSizes = new[] { this.MarkerSize };
-
-            // draw the markers on top
-            rc.DrawMarkers(
-                clippingRect,
-                pts0,
-                this.MarkerType,
-                null,
-                markerSizes,
-                this.MarkerFill,
-                this.MarkerStroke,
-                this.MarkerStrokeThickness,
-                1);
-            rc.DrawMarkers(
-                clippingRect,
-                pts1,
-                this.MarkerType,
-                null,
-                markerSizes,
-                this.MarkerFill,
-                this.MarkerStroke,
-                this.MarkerStrokeThickness,
-                1);
 
             rc.ResetClip();
         }
@@ -303,13 +349,37 @@ namespace OxyPlot.Series
 
             if (this.ItemsSource == null)
             {
+                this.IsPoints2Defined = this.points2.Count > 0;
+
+                if (this.IsPoints2Defined)
+                {
+                    this.actualPoints2 = this.points2;
+                }
+                else
+                {
+                    this.actualPoints2 = this.GetConstantPoints2().ToList();
+                }
+
                 return;
             }
 
             this.itemsSourcePoints2.Clear();
 
+            // TODO: make it consistent with DataPointSeries.UpdateItemsSourcePoints
             // Using reflection on DataFieldX2 and DataFieldY2
-            ReflectionExtensions.AddRange(this.itemsSourcePoints2, this.ItemsSource, this.DataFieldX2, this.DataFieldY2);
+            this.IsPoints2Defined = this.DataFieldX2 != null && this.DataFieldY2 != null;
+
+            if (this.IsPoints2Defined)
+            {
+                var filler = new ListBuilder<DataPoint>();
+                filler.Add(this.DataFieldX2, double.NaN);
+                filler.Add(this.DataFieldY2, double.NaN);
+                filler.Fill(this.itemsSourcePoints2, this.ItemsSource, args => new DataPoint(Axes.Axis.ToDouble(args[0]), Axes.Axis.ToDouble(args[1])));
+            }
+            else
+            {
+                this.itemsSourcePoints2.AddRange(this.GetConstantPoints2());
+            }
         }
 
         /// <summary>
@@ -319,6 +389,166 @@ namespace OxyPlot.Series
         {
             base.UpdateMaxMin();
             this.InternalUpdateMaxMin(this.ActualPoints2);
+        }
+
+        /// <summary>
+        /// Renders data points skipping NaN values.
+        /// </summary>
+        /// <param name="context">Area rendering context.</param>
+        /// <returns>The list of chunks.</returns>
+        protected List<List<ScreenPoint>> RenderChunkedPoints(AreaRenderContext context)
+        {
+            var result = new List<List<ScreenPoint>>();
+            var screenPoints = new List<ScreenPoint>();
+
+            int clipCount = 0;
+            var actualPoints = context.Points;
+            for (int i = context.WindowStartIndex; i < actualPoints.Count; i++)
+            {
+                var point = actualPoints[i];
+
+                if (double.IsNaN(point.Y))
+                {
+                    if (screenPoints.Count == 0)
+                    {
+                        continue;
+                    }
+
+                    result.Add(this.RenderScreenPoints(context, screenPoints));
+                    screenPoints = new List<ScreenPoint>();
+                }
+                else
+                {
+                    var sp = this.XAxis.Transform(point.X, point.Y, this.YAxis);
+                    screenPoints.Add(sp);
+                }
+
+                // We break after two points were seen beyond xMax to ensure glitch-free rendering.
+                clipCount += point.x > context.XMax ? 1 : 0;
+                if (clipCount > 1)
+                {
+                    break;
+                }
+            }
+
+            if (screenPoints.Count > 0)
+            {
+                result.Add(this.RenderScreenPoints(context, screenPoints));
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Renders a chunk of points on the screen.
+        /// </summary>
+        /// <param name="context">Render context.</param>
+        /// <param name="points">Screen points.</param>
+        /// <returns>The list of resampled points.</returns>
+        protected virtual List<ScreenPoint> RenderScreenPoints(AreaRenderContext context, List<ScreenPoint> points)
+        {
+            var final = points;
+
+            if (context.Reverse)
+            {
+                final.Reverse();
+            }
+
+            if (this.Smooth)
+            {
+                var resampled = ScreenPointHelper.ResamplePoints(final, this.MinimumSegmentLength);
+                final = CanonicalSplineHelper.CreateSpline(resampled, 0.5, null, false, 0.25);
+            }
+
+            context.RenderContext.DrawClippedLine(
+                context.ClippingRect,
+                final,
+                context.MinDistSquared,
+                this.GetSelectableColor(context.Color),
+                this.StrokeThickness,
+                context.DashArray,
+                this.LineJoin,
+                false);
+
+            return final;
+        }
+
+        /// <summary>
+        /// Gets the x coordinate of a DataPoint.
+        /// </summary>
+        /// <param name="point">Data point.</param>
+        /// <returns>X coordinate.</returns>
+        protected double GetPointX(DataPoint point)
+        {
+            return point.x;
+        }
+
+        /// <summary>
+        /// Gets the points when <see cref="P:ConstantY2" /> is used.
+        /// </summary>
+        /// <returns>A sequence of <see cref="T:DataPoint"/>.</returns>
+        private IEnumerable<DataPoint> GetConstantPoints2()
+        {
+            var actualPoints = this.ActualPoints;
+            if (!double.IsNaN(this.ConstantY2) && actualPoints.Count > 0)
+            {
+                // Use ConstantY2
+                var x0 = actualPoints[0].X;
+                var x1 = actualPoints[actualPoints.Count - 1].X;
+                yield return new DataPoint(x0, this.ConstantY2);
+                yield return new DataPoint(x1, this.ConstantY2);
+            }
+        }
+
+        /// <summary>
+        /// Holds parameters for point rendering.
+        /// </summary>
+        protected class AreaRenderContext
+        {
+            /// <summary>
+            /// Gets or sets source data points.
+            /// </summary>
+            public List<DataPoint> Points { get; set; }
+
+            /// <summary>
+            /// Gets or sets start index of a visible window.
+            /// </summary>
+            public int WindowStartIndex { get; set; }
+
+            /// <summary>
+            /// Gets or sets maximum visible X coordinate.
+            /// </summary>
+            public double XMax { get; set; }
+
+            /// <summary>
+            /// Gets or sets render context.
+            /// </summary>
+            public IRenderContext RenderContext { get; set; }
+
+            /// <summary>
+            /// Gets or sets clipping rectangle.
+            /// </summary>
+            public OxyRect ClippingRect { get; set; }
+
+            /// <summary>
+            /// Gets or sets minimum squared distance between points.
+            /// </summary>
+            public double MinDistSquared { get; set; }
+
+            /// <summary>
+            /// Gets or sets a value indicating whether to reverse the points.
+            /// </summary>
+            public bool Reverse { get; set; }
+
+            /// <summary>
+            /// Gets or sets line color.
+            /// </summary>
+            public OxyColor Color { get; set; }
+
+            /// <summary>
+            /// Gets or sets line dash array.
+            /// </summary>
+            public double[] DashArray { get; set; }
         }
     }
 }

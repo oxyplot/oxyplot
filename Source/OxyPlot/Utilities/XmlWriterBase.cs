@@ -71,7 +71,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The write attribute string.
+        /// Writes an attribute string.
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="value">The value.</param>
@@ -93,7 +93,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The write doc type.
+        /// Writes the doc type.
         /// </summary>
         /// <param name="name">The name of the DOCTYPE. This must be non-empty.</param>
         /// <param name="pubid">If non-<c>null</c> it also writes PUBLIC "pubid" "sysid" where pubid and sysid are replaced with the value of the given arguments.</param>
@@ -105,7 +105,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The write element string.
+        /// Writes an element string.
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="text">The text.</param>
@@ -115,7 +115,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The write end document.
+        /// Writes the end document.
         /// </summary>
         protected void WriteEndDocument()
         {
@@ -123,7 +123,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The write end element.
+        /// Writes an element end tag.
         /// </summary>
         protected void WriteEndElement()
         {
@@ -131,7 +131,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The write raw.
+        /// Writes raw text.
         /// </summary>
         /// <param name="text">The text.</param>
         protected void WriteRaw(string text)
@@ -140,7 +140,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The write start document.
+        /// Writes the start document.
         /// </summary>
         /// <param name="standalone">The standalone.</param>
         protected void WriteStartDocument(bool standalone)
@@ -149,7 +149,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The write start element.
+        /// Writes an element start tag.
         /// </summary>
         /// <param name="name">The name.</param>
         protected void WriteStartElement(string name)
@@ -158,7 +158,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The write start element.
+        /// Writes an element tag with the specified name and namespace.
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="ns">The ns.</param>
@@ -168,7 +168,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The write string.
+        /// Writes a string.
         /// </summary>
         /// <param name="text">The text.</param>
         protected void WriteString(string text)

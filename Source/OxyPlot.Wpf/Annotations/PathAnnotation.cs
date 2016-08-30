@@ -23,25 +23,25 @@ namespace OxyPlot.Wpf
         /// Identifies the <see cref="Color"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ColorProperty = DependencyProperty.Register(
-            "Color", typeof(Color), typeof(LineAnnotation), new PropertyMetadata(Colors.Blue, AppearanceChanged));
+            "Color", typeof(Color), typeof(PathAnnotation), new PropertyMetadata(Colors.Blue, AppearanceChanged));
 
         /// <summary>
         /// Identifies the <see cref="ClipByXAxis"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ClipByXAxisProperty = DependencyProperty.Register(
-            "ClipByXAxis", typeof(bool), typeof(LineAnnotation), new UIPropertyMetadata(true, AppearanceChanged));
+            "ClipByXAxis", typeof(bool), typeof(PathAnnotation), new UIPropertyMetadata(true, AppearanceChanged));
 
         /// <summary>
         /// Identifies the <see cref="ClipByYAxis"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ClipByYAxisProperty = DependencyProperty.Register(
-            "ClipByYAxis", typeof(bool), typeof(LineAnnotation), new UIPropertyMetadata(true, AppearanceChanged));
+            "ClipByYAxis", typeof(bool), typeof(PathAnnotation), new UIPropertyMetadata(true, AppearanceChanged));
 
         /// <summary>
         /// Identifies the <see cref="ClipText"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ClipTextProperty =
-            DependencyProperty.Register("ClipText", typeof(bool), typeof(LineAnnotation), new PropertyMetadata(true));
+            DependencyProperty.Register("ClipText", typeof(bool), typeof(PathAnnotation), new PropertyMetadata(true));
 
         /// <summary>
         /// Identifies the <see cref="LineJoin"/> dependency property.
@@ -49,7 +49,7 @@ namespace OxyPlot.Wpf
         public static readonly DependencyProperty LineJoinProperty = DependencyProperty.Register(
             "LineJoin",
             typeof(LineJoin),
-            typeof(LineAnnotation),
+            typeof(PathAnnotation),
             new UIPropertyMetadata(LineJoin.Miter, AppearanceChanged));
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace OxyPlot.Wpf
         public static readonly DependencyProperty LineStyleProperty = DependencyProperty.Register(
             "LineStyle",
             typeof(LineStyle),
-            typeof(LineAnnotation),
+            typeof(PathAnnotation),
             new PropertyMetadata(LineStyle.Dash, AppearanceChanged));
 
         /// <summary>
@@ -66,13 +66,13 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty StrokeThicknessProperty =
             DependencyProperty.Register(
-                "StrokeThickness", typeof(double), typeof(LineAnnotation), new PropertyMetadata(1.0, AppearanceChanged));
+                "StrokeThickness", typeof(double), typeof(PathAnnotation), new PropertyMetadata(1.0, AppearanceChanged));
 
         /// <summary>
         /// Identifies the <see cref="TextMargin"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TextMarginProperty = DependencyProperty.Register(
-            "TextMargin", typeof(double), typeof(LineAnnotation), new UIPropertyMetadata(12.0, AppearanceChanged));
+            "TextMargin", typeof(double), typeof(PathAnnotation), new UIPropertyMetadata(12.0, AppearanceChanged));
 
         /// <summary>
         /// Identifies the <see cref="TextOrientation"/> dependency property.
@@ -81,14 +81,14 @@ namespace OxyPlot.Wpf
             DependencyProperty.Register(
                 "TextOrientation",
                 typeof(AnnotationTextOrientation),
-                typeof(LineAnnotation),
+                typeof(PathAnnotation),
                 new UIPropertyMetadata(AnnotationTextOrientation.AlongLine, AppearanceChanged));
 
         /// <summary>
         /// Identifies the <see cref="TextLinePosition"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TextLinePositionProperty = DependencyProperty.Register(
-            "TextLinePosition", typeof(double), typeof(LineAnnotation), new UIPropertyMetadata(1.0, AppearanceChanged));
+            "TextLinePosition", typeof(double), typeof(PathAnnotation), new UIPropertyMetadata(1.0, AppearanceChanged));
 
         /// <summary>
         /// Gets or sets a value indicating whether to clip the annotation line by the X axis range.
@@ -130,8 +130,15 @@ namespace OxyPlot.Wpf
         /// <value><c>true</c> if text should be clipped; otherwise, <c>false</c>.</value>
         public bool ClipText
         {
-            get { return (bool)GetValue(ClipTextProperty); }
-            set { this.SetValue(ClipTextProperty, value); }
+            get
+            {
+                return (bool)this.GetValue(ClipTextProperty);
+            }
+
+            set
+            {
+                this.SetValue(ClipTextProperty, value);
+            }
         }
 
         /// <summary>
@@ -140,8 +147,15 @@ namespace OxyPlot.Wpf
         /// <value>The color.</value>
         public Color Color
         {
-            get { return (Color)this.GetValue(ColorProperty); }
-            set { this.SetValue(ColorProperty, value); }
+            get
+            {
+                return (Color)this.GetValue(ColorProperty);
+            }
+
+            set
+            {
+                this.SetValue(ColorProperty, value);
+            }
         }
 
         /// <summary>

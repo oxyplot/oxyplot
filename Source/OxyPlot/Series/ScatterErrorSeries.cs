@@ -14,12 +14,12 @@ namespace OxyPlot.Series
     using System.Linq;
 
     /// <summary>
-    ///     Represents a series for scatter plots with the possibility to display error bars.
+    /// Represents a series for scatter plots with the possibility to display error bars.
     /// </summary>
     public class ScatterErrorSeries : ScatterSeries<ScatterErrorPoint>
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="ScatterErrorSeries" /> class.
+        /// Initializes a new instance of the <see cref="ScatterErrorSeries" /> class.
         /// </summary>
         public ScatterErrorSeries()
         {
@@ -30,48 +30,51 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        ///     Gets or sets the data field for the X error property.
+        /// Gets or sets the data field for the X error property.
         /// </summary>
         /// <value>
-        ///     The data field.
+        /// The data field.
         /// </value>
         public string DataFieldErrorX { get; set; }
 
         /// <summary>
-        ///     Gets or sets the data field for the Y error property.
+        /// Gets or sets the data field for the Y error property.
         /// </summary>
         /// <value>
-        ///     The data field.
+        /// The data field.
         /// </value>
         public string DataFieldErrorY { get; set; }
 
         /// <summary>
-        ///     Gets or sets the color of the error bar.
+        /// Gets or sets the color of the error bar.
         /// </summary>
         /// <value>
-        ///     The color of the error bar.
+        /// The color of the error bar.
         /// </value>
         public OxyColor ErrorBarColor { get; set; }
 
         /// <summary>
-        ///     Gets or sets the width of the error bar stop.
+        /// Gets or sets the width of the error bar stop.
         /// </summary>
         /// <value>
-        ///     The width of the error bar stop.
+        /// The width of the error bar stop.
         /// </value>
         public double ErrorBarStopWidth { get; set; }
 
         /// <summary>
-        ///     Gets or sets the error bar stroke thickness.
+        /// Gets or sets the error bar stroke thickness.
         /// </summary>
         /// <value>
-        ///     The error bar stroke thickness.
+        /// The error bar stroke thickness.
         /// </value>
         public double ErrorBarStrokeThickness { get; set; }
 
         /// <summary>
-        /// Gets or sets the minimum size (relative to <see cref="ScatterSeries{T}.MarkerSize" />) of the error bars to be shown. 
+        /// Gets or sets the minimum size (relative to <see cref="ScatterSeries{T}.MarkerSize" />) of the error bars to be shown.
         /// </summary>
+        /// <value>
+        /// The minimum size of the error.
+        /// </value>
         public double MinimumErrorSize { get; set; }
 
         /// <summary>
@@ -80,17 +83,20 @@ namespace OxyPlot.Series
         /// <param name="rc">
         /// The rendering context.
         /// </param>
-        /// <param name="model">
-        /// The owner plot model.
-        /// </param>
-        public override void Render(IRenderContext rc, PlotModel model)
+        public override void Render(IRenderContext rc)
         {
-            base.Render(rc, model);
+            base.Render(rc);
+
+            var actualPoints = this.ActualPointsList;
+            if (actualPoints == null || actualPoints.Count == 0)
+            {
+                return;
+            }
 
             var clippingRectangle = this.GetClippingRect();
 
             var segments = new List<ScreenPoint>();
-            foreach (var point in this.ActualPointsList)
+            foreach (var point in actualPoints)
             {
                 if (point == null)
                 {
@@ -148,14 +154,19 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Defines the data fields used by the code that reflects on the <see cref="ItemsSeries.ItemsSource" />.
+        /// Updates from data fields.
         /// </summary>
-        /// <param name="filler">The list filler.</param>
-        protected override void DefineDataFields(ListFiller<ScatterErrorPoint> filler)
+        protected override void UpdateFromDataFields()
         {
-            base.DefineDataFields(filler);
-            filler.Add(this.DataFieldErrorX, (item, value) => item.ErrorX = Convert.ToDouble(value));
-            filler.Add(this.DataFieldErrorY, (item, value) => item.ErrorY = Convert.ToDouble(value));
+            var filler = new ListBuilder<ScatterErrorPoint>();
+            filler.Add(this.DataFieldX, double.NaN);
+            filler.Add(this.DataFieldY, double.NaN);
+            filler.Add(this.DataFieldErrorX, double.NaN);
+            filler.Add(this.DataFieldErrorY, double.NaN);
+            filler.Add(this.DataFieldSize, double.NaN);
+            filler.Add(this.DataFieldValue, double.NaN);
+            filler.Add(this.DataFieldTag, (object)null);
+            filler.FillT(this.ItemsSourcePoints, this.ItemsSource, args => new ScatterErrorPoint(Convert.ToDouble(args[0]), Convert.ToDouble(args[1]), Convert.ToDouble(args[2]), Convert.ToDouble(args[3]), Convert.ToDouble(args[4]), Convert.ToDouble(args[5]), args[6]));
         }
     }
 }

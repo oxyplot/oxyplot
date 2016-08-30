@@ -10,21 +10,20 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>OxyPlot</RootNamespace>
     <AssemblyName>OxyPlot</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Profile328</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Profile259</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <ProductVersion>10.0.0</ProductVersion>
+    <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <StyleCopTreatErrorsAsWarnings>false</StyleCopTreatErrorsAsWarnings>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\PCL\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;PCL</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;UNIVERSAL</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -32,7 +31,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\Output\PCL\</OutputPath>
-    <DefineConstants>TRACE;PCL</DefineConstants>
+    <DefineConstants>TRACE;UNIVERSAL</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\..\Output\PCL\OxyPlot.xml</DocumentationFile>
@@ -44,12 +43,14 @@
     <AssemblyOriginatorKeyFile>OxyPlot.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\GlobalAssemblyInfo.cs">
-      <Link>Properties\GlobalAssemblyInfo.cs</Link>
+    <Compile Include="..\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Annotations\PointAnnotation.cs" />
     <Compile Include="Annotations\ShapeAnnotation.cs" />
+    <Compile Include="Axes\AxisUtilities.cs" />
     <Compile Include="Graphics\DelegateViewCommand{T}.cs" />
+    <Compile Include="Graphics\ElementCollectionChangedEventArgs{T}.cs" />
     <Compile Include="Graphics\ManipulatorBase.cs" />
     <Compile Include="PlotController\DelegatePlotCommand.cs" />
     <Compile Include="Graphics\Element.cs" />
@@ -60,8 +61,12 @@
     <Compile Include="Graphics\IViewCommand{T}.cs" />
     <Compile Include="Graphics\IView.cs" />
     <Compile Include="PlotController\IPlotController.cs" />
+    <Compile Include="PlotController\Manipulators\TouchTrackerManipulator.cs" />
     <Compile Include="PlotModel\IPlotElement.cs" />
     <Compile Include="PlotModel\IPlotModel.cs" />
+    <Compile Include="Rendering\OxySizeExtensions.cs" />
+    <Compile Include="Reporting\PlotModelExtensions.cs" />
+    <Compile Include="Series\BarSeries\LinearBarSeries.cs" />
     <Compile Include="Series\IScatterPointProvider.cs" />
     <Compile Include="Input\Gestures\OxyMouseEnterGesture.cs" />
     <Compile Include="PlotController\EventArgs\OxyInputEventArgs.cs" />
@@ -76,7 +81,7 @@
     <Compile Include="PlotController\PlotCommands.cs" />
     <Compile Include="Graphics\ControllerExtensions.cs" />
     <Compile Include="Graphics\HitTestArguments.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\AssemblyDescription.cs" />
     <Compile Include="LibraryDoc.cs" />
     <Compile Include="NamespaceDoc.cs" />
     <None Include="ClassDiagrams\Axes.cd" />
@@ -139,17 +144,19 @@
     <Compile Include="Series\ScatterErrorPoint.cs" />
     <Compile Include="Series\ScatterErrorSeries.cs" />
     <Compile Include="Series\ScatterSeries{T}.cs" />
+    <Compile Include="Series\ThreeColorLineSeries.cs" />
+    <Compile Include="Foundation\IExporter.cs" />
     <Compile Include="Utilities\ArrayExtensions.cs" />
+    <Compile Include="Utilities\ComparerHelper.cs" />
     <Compile Include="Utilities\HashCodeBuilder.cs" />
+    <Compile Include="Utilities\ListBuilder{T}.cs" />
     <Compile Include="Utilities\ReflectionPath.cs" />
     <Compile Include="Utilities\XmlWriterBase.cs" />
     <Compile Include="Utilities\BinaryReaderExtensions.cs" />
-    <Compile Include="Utilities\ListFiller.cs" />
     <Compile Include="Utilities\StreamExtensions.cs" />
     <Compile Include="Utilities\StringHelper.cs" />
     <Compile Include="Utilities\FractionHelper.cs" />
     <Compile Include="Utilities\ArrayBuilder.cs" />
-    <Compile Include="Utilities\ReflectionExtensions.cs" />
     <Compile Include="Utilities\Conrec.cs" />
     <Compile Include="Imaging\OxyImage.cs" />
     <Compile Include="Imaging\OxyImageInfo.cs" />
@@ -193,8 +200,7 @@
     <Compile Include="Annotations\FunctionAnnotationType.cs" />
     <Compile Include="Annotations\ImageAnnotation.cs" />
     <Compile Include="Annotations\PathAnnotation.cs" />
-    <Compile Include="Annotations\PolylineAnnotation.cs" />
-    <Compile Include="Annotations\TileMapAnnotation.cs" />
+    <Compile Include="Annotations\PolyLineAnnotation.cs" />
     <Compile Include="Axes\NamespaceDoc.cs" />
     <Compile Include="Axes\LogarithmicAxis.cs" />
     <Compile Include="Axes\RangeColorAxis.cs" />
@@ -284,7 +290,6 @@
     <Compile Include="Series\NamespaceDoc.cs" />
     <Compile Include="Series\AreaSeries.cs" />
     <Compile Include="Series\BarSeries\LabelPlacement.cs" />
-    <Compile Include="Series\CandleStickSeries.cs" />
     <Compile Include="Series\ContourSeries.cs" />
     <Compile Include="Series\BarSeries\ColumnSeries.cs" />
     <Compile Include="Series\BarSeries\BarSeries.cs" />
@@ -297,19 +302,26 @@
     <Compile Include="Series\BarSeries\TornadoBarSeries.cs" />
     <Compile Include="Series\ItemsSeries.cs" />
     <Compile Include="Series\DataPointSeries.cs" />
-    <Compile Include="Series\HighLowItem.cs" />
-    <Compile Include="Series\HighLowSeries.cs" />
     <Compile Include="Series\ScatterPoint.cs" />
     <Compile Include="Series\Series.cs" />
     <Compile Include="Series\StemSeries.cs" />
     <Compile Include="Series\StairStepSeries.cs" />
     <Compile Include="Series\ScatterSeries.cs" />
     <Compile Include="Series\TwoColorLineSeries.cs" />
+    <Compile Include="Series\TwoColorAreaSeries.cs" />
     <Compile Include="Series\XYAxisSeries.cs" />
     <Compile Include="Series\PieSeries.cs" />
     <Compile Include="Series\FunctionSeries.cs" />
     <Compile Include="Series\PieSlice.cs" />
     <Compile Include="Series\LineSeries.cs" />
+    <Compile Include="Series\FinancialSeries\CandleStickAndVolumeSeries.cs" />
+    <Compile Include="Series\FinancialSeries\VolumeSeries.cs" />
+    <Compile Include="Series\FinancialSeries\VolumeStyle.cs" />
+    <Compile Include="Series\FinancialSeries\CandleStickSeries.cs" />
+    <Compile Include="Series\FinancialSeries\OldCandleStickSeries.cs" />
+    <Compile Include="Series\FinancialSeries\OhlcvItem.cs" />
+    <Compile Include="Series\FinancialSeries\HighLowItem.cs" />
+    <Compile Include="Series\FinancialSeries\HighLowSeries.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagrams\Series.cd" />
@@ -324,7 +336,6 @@
     <None Include="Imaging\Deflate\Readme.md" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
-  <Import Project="$(ProjectDir)\..\StyleCop.targets" Condition=" '$(OS)' == 'Windows_NT' " />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
@@ -332,4 +343,5 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ItemGroup />
 </Project>

@@ -1,0 +1,21 @@
+﻿<Window x:Class="DataTemplateDemo.PlotViewDataTemplateWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf"
+        Title="PlotView in DataTemplate"
+        Height="480"
+        Width="640">
+
+    <TabControl ItemsSource="{Binding Models}">
+        <TabControl.ItemTemplate>
+            <DataTemplate>
+                <TextBlock Text="{Binding PlotModel.Title}"/>
+            </DataTemplate>
+        </TabControl.ItemTemplate>
+        <TabControl.ContentTemplate>
+            <DataTemplate>
+                <oxy:PlotView Model="{Binding PlotModel}" Controller="{Binding PlotController}" />
+            </DataTemplate>
+        </TabControl.ContentTemplate>
+    </TabControl>
+</Window>

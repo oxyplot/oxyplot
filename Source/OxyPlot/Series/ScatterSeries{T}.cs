@@ -10,7 +10,6 @@
 namespace OxyPlot.Series
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
 
     using OxyPlot.Axes;
@@ -19,7 +18,7 @@ namespace OxyPlot.Series
     /// Provides a base class for scatter series.
     /// </summary>
     /// <typeparam name="T">The type of the data points.</typeparam>
-    public abstract class ScatterSeries<T> : XYAxisSeries where T : ScatterPoint, new()
+    public abstract class ScatterSeries<T> : XYAxisSeries where T : ScatterPoint
     {
         /// <summary>
         /// The default color-axis title
@@ -46,7 +45,6 @@ namespace OxyPlot.Series
             this.MarkerType = MarkerType.Square;
             this.MarkerStroke = OxyColors.Automatic;
             this.MarkerStrokeThickness = 1;
-            this.TrackerFormatString = "{0}\n{1}: {2:0.###}\n{3}: {4:0.###}";
             this.LabelMargin = 6;
         }
 
@@ -204,7 +202,7 @@ namespace OxyPlot.Series
         {
             get
             {
-                return new System.Collections.ObjectModel.ReadOnlyCollection<T>(this.ActualPointsList);
+                return this.ActualPointsList != null ? new System.Collections.ObjectModel.ReadOnlyCollection<T>(this.ActualPointsList) : null;
             }
         }
 
@@ -248,6 +246,12 @@ namespace OxyPlot.Series
                 return null;
             }
 
+            var actualPoints = this.ActualPointsList;
+            if (actualPoints == null || actualPoints.Count == 0)
+            {
+                return null;
+            }
+
             TrackerHitResult result = null;
             double minimumDistance = double.MaxValue;
             int i = 0;
@@ -256,7 +260,7 @@ namespace OxyPlot.Series
             var yaxisTitle = this.YAxis.Title ?? DefaultYAxisTitle;
             var colorAxisTitle = (this.ColorAxis != null ? ((Axis)this.ColorAxis).Title : null) ?? DefaultColorAxisTitle;
 
-            foreach (var p in this.ActualPointsList)
+            foreach (var p in actualPoints)
             {
                 if (p.X < this.XAxis.ActualMinimum || p.X > this.XAxis.ActualMaximum || p.Y < this.YAxis.ActualMinimum || p.Y > this.YAxis.ActualMaximum)
                 {
@@ -314,18 +318,18 @@ namespace OxyPlot.Series
         /// Renders the series on the specified rendering context.
         /// </summary>
         /// <param name="rc">The rendering context.</param>
-        /// <param name="model">The owner plot model.</param>
-        public override void Render(IRenderContext rc, PlotModel model)
+        public override void Render(IRenderContext rc)
         {
             var actualPoints = this.ActualPointsList;
-            int n = actualPoints.Count;
-            if (n == 0)
+
+            if (actualPoints == null || actualPoints.Count == 0)
             {
                 return;
             }
 
             var clippingRect = this.GetClippingRect();
 
+            int n = actualPoints.Count;
             var allPoints = new List<ScreenPoint>(n);
             var allMarkerSizes = new List<double>(n);
             var selectedPoints = new List<ScreenPoint>();
@@ -415,7 +419,7 @@ namespace OxyPlot.Series
                         this.MarkerType,
                         this.MarkerOutline,
                         groupSizes[group.Key],
-                        color,
+                        this.MarkerFill.GetActualColor(color),
                         markerIsStrokedOnly ? color : this.MarkerStroke,
                         this.MarkerStrokeThickness,
                         this.BinSize,
@@ -494,12 +498,11 @@ namespace OxyPlot.Series
         /// <summary>
         /// Sets the default values.
         /// </summary>
-        /// <param name="model">The model.</param>
-        protected internal override void SetDefaultValues(PlotModel model)
+        protected internal override void SetDefaultValues()
         {
             if (this.MarkerFill.IsAutomatic())
             {
-                this.defaultMarkerFillColor = model.GetDefaultColor();
+                this.defaultMarkerFillColor = this.PlotModel.GetDefaultColor();
             }
         }
 
@@ -532,9 +535,15 @@ namespace OxyPlot.Series
         /// <param name="clippingRect">The clipping rectangle.</param>
         protected void RenderPointLabels(IRenderContext rc, OxyRect clippingRect)
         {
+            var actualPoints = this.ActualPointsList;
+            if (actualPoints == null || actualPoints.Count == 0)
+            {
+                return;
+            }
+
             // TODO: share code with LineSeries
             int index = -1;
-            foreach (var point in this.ActualPointsList)
+            foreach (var point in actualPoints)
             {
                 index++;
                 var dataPoint = new DataPoint(point.X, point.Y);
@@ -551,7 +560,7 @@ namespace OxyPlot.Series
                 }
 
                 var item = this.GetItem(index);
-                var s = this.Format(this.LabelFormatString, item, point.X, point.Y);
+                var s = StringHelper.Format(this.ActualCulture, this.LabelFormatString, item, point.X, point.Y);
 
 #if SUPPORTLABELPLACEMENT
                     switch (this.LabelPlacement)
@@ -654,7 +663,7 @@ namespace OxyPlot.Series
                     continue;
                 }
 
-                double value = pt.value;
+                double value = pt.Value;
 
                 if (x < minx)
                 {
@@ -726,34 +735,6 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Adds scatter points specified by a items source and data fields.
-        /// </summary>
-        /// <param name="target">The destination collection.</param>
-        /// <param name="itemsSource">The items source.</param>
-        /// <param name="dataFieldX">The data field x.</param>
-        /// <param name="dataFieldY">The data field y.</param>
-        /// <param name="dataFieldSize">The data field size.</param>
-        /// <param name="dataFieldValue">The data field value.</param>
-        /// <param name="dataFieldTag">The data field tag.</param>
-        protected void AddScatterPoints(
-            IList<T> target,
-            IEnumerable itemsSource,
-            string dataFieldX,
-            string dataFieldY,
-            string dataFieldSize,
-            string dataFieldValue,
-            string dataFieldTag)
-        {
-            var filler = new ListFiller<T>();
-            filler.Add(dataFieldX, (item, value) => item.X = Convert.ToDouble(value));
-            filler.Add(dataFieldY, (item, value) => item.Y = Convert.ToDouble(value));
-            filler.Add(dataFieldSize, (item, value) => item.Size = Convert.ToDouble(value));
-            filler.Add(dataFieldValue, (item, value) => item.Value = Convert.ToDouble(value));
-            filler.Add(dataFieldTag, (item, value) => item.Tag = value);
-            filler.FillT(target, itemsSource);
-        }
-
-        /// <summary>
         /// Updates the Max/Min limits from the values in the specified point list.
         /// </summary>
         /// <param name="pts">The points.</param>
@@ -769,7 +750,7 @@ namespace OxyPlot.Series
 
             foreach (var pt in pts)
             {
-                double value = pt.value;
+                double value = pt.Value;
 
                 if (value < minvalue || double.IsNaN(minvalue))
                 {
@@ -811,17 +792,9 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Defines the data fields used by the code that reflects on the <see cref="ItemsSeries.ItemsSource" />.
+        /// Updates the <see cref="F:ItemsSourcePoints" /> from the <see cref="P:ItemsSource" /> and data fields.
         /// </summary>
-        /// <param name="filler">The list filler.</param>
-        protected virtual void DefineDataFields(ListFiller<T> filler)
-        {
-            filler.Add(this.DataFieldX, (item, value) => item.X = Convert.ToDouble(value));
-            filler.Add(this.DataFieldY, (item, value) => item.Y = Convert.ToDouble(value));
-            filler.Add(this.DataFieldSize, (item, value) => item.Size = Convert.ToDouble(value));
-            filler.Add(this.DataFieldValue, (item, value) => item.Value = Convert.ToDouble(value));
-            filler.Add(this.DataFieldTag, (item, value) => item.Tag = value);
-        }
+        protected abstract void UpdateFromDataFields();
 
         /// <summary>
         /// Updates the points from the <see cref="ItemsSeries.ItemsSource" />.
@@ -862,10 +835,9 @@ namespace OxyPlot.Series
             {
                 foreach (var item in this.ItemsSource)
                 {
-                    var point = item as T;
-                    if (point != null)
+                    if (item is T)
                     {
-                        this.ItemsSourcePoints.Add(point);
+                        this.ItemsSourcePoints.Add((T)item);
                         continue;
                     }
 
@@ -880,9 +852,7 @@ namespace OxyPlot.Series
             }
 
             // Use reflection to add scatter points
-            var filler = new ListFiller<T>();
-            this.DefineDataFields(filler);
-            filler.Fill(this.ItemsSourcePoints, this.ItemsSource);
+            this.UpdateFromDataFields();
         }
     }
 }

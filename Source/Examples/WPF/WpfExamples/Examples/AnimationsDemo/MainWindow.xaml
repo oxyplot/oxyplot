@@ -1,0 +1,30 @@
+﻿<Window x:Class="AnimationsDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:AnimationsDemo="clr-namespace:AnimationsDemo"
+        Title="AnimationsDemo" Height="480" Width="740">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        
+        <TabControl x:Name="tabControl" Grid.Row="0">
+            <TabItem Header="Linear Bar Series">
+                <AnimationsDemo:LinearBarView />
+            </TabItem>
+
+            <TabItem Header="Line Series">
+                <AnimationsDemo:LineSeriesView />
+            </TabItem>
+
+            <TabItem Header="Area Series">
+                <AnimationsDemo:AreaSeriesView />
+            </TabItem>
+        </TabControl>
+        
+        <AnimationsDemo:AnimationSettingsControl Grid.Row="1" DataContext="{Binding ElementName=tabControl, Path=SelectedItem.Content.DataContext}" />
+    </Grid>
+
+</Window>

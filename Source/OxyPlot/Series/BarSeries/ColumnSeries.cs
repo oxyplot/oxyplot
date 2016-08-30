@@ -101,7 +101,7 @@ namespace OxyPlot.Series
         /// <param name="i">The index.</param>
         protected override void RenderLabel(IRenderContext rc, OxyRect clippingRect, OxyRect rect, double value, int i)
         {
-            var s = this.Format(this.LabelFormatString, this.GetItem(this.ValidItemsIndexInversion[i]), value);
+            var s = StringHelper.Format(this.ActualCulture, this.LabelFormatString, this.GetItem(this.ValidItemsIndexInversion[i]), value);
             ScreenPoint pt;
             VerticalAlignment va;
             switch (this.LabelPlacement)
@@ -135,6 +135,18 @@ namespace OxyPlot.Series
                 0,
                 HorizontalAlignment.Center,
                 va);
+        }
+
+        /// <summary>
+        /// Updates the <see cref="F:itemsSourceItems" /> from the <see cref="P:ItemsSource" /> and data fields.
+        /// </summary>
+        protected override void UpdateFromDataFields()
+        {
+            // Using reflection to add items by value and color (optional)
+            var filler = new ListBuilder<ColumnItem>();
+            filler.Add(this.ValueField, double.NaN);
+            filler.Add(this.ColorField, OxyColors.Automatic);
+            filler.Fill(this.ItemsSourceItems, this.ItemsSource, args => new ColumnItem(Convert.ToDouble(args[0])) { Color = (OxyColor)args[1] });
         }
     }
 }

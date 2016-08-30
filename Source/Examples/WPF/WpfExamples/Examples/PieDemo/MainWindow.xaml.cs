@@ -15,6 +15,7 @@ namespace PieDemo
     using OxyPlot.Series;
 
     using WpfExamples;
+    using System.Collections.ObjectModel;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -44,10 +45,28 @@ namespace PieDemo
             pieSeries.StartAngle = 0;
             plotModel.Series.Add(pieSeries);
 
+            Continents = new ObservableCollection<ContinentItem>();
+            Continents.Add(new ContinentItem { Name = "Africa", PopulationInMillions = 1030, IsExploded = true });
+            Continents.Add(new ContinentItem { Name = "Americas", PopulationInMillions = 929, IsExploded = true });
+            Continents.Add(new ContinentItem { Name = "Asia", PopulationInMillions = 4157 });
+            Continents.Add(new ContinentItem { Name = "Europe", PopulationInMillions = 739, IsExploded = true });
+            Continents.Add(new ContinentItem { Name = "Oceania", PopulationInMillions = 35, IsExploded = true });
+
             this.PieModel = plotModel;
             this.DataContext = this;
         }
 
         public PlotModel PieModel { get; set; }
+
+        public ObservableCollection<ContinentItem> Continents { get; private set; }
+    }
+
+    public class ContinentItem
+    {
+        public string Name { get; set; }
+
+        public double PopulationInMillions { get; set; }
+
+        public bool IsExploded { get; set; }
     }
 }

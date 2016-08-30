@@ -63,6 +63,45 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("Constant baseline (empty Points2)")]
+        public static PlotModel ConstantBaseline()
+        {
+            var plotModel1 = new PlotModel { Title = "AreaSeries with constant baseline", Subtitle = "Empty Points2, ConstantY2 = 0 (default)" };
+            var areaSeries1 = new AreaSeries();
+            areaSeries1.Points.Add(new DataPoint(0, 50));
+            areaSeries1.Points.Add(new DataPoint(10, 140));
+            areaSeries1.Points.Add(new DataPoint(20, 60));
+            plotModel1.Series.Add(areaSeries1);
+            return plotModel1;
+        }
+
+        [Example("Constant baseline (empty Points2, ConstantY2=NaN)")]
+        public static PlotModel ConstantBaselineNaN()
+        {
+            var plotModel1 = new PlotModel { Title = "AreaSeries with constant baseline", Subtitle = "Empty Points2, ConstantY2 = NaN" };
+            var areaSeries1 = new AreaSeries();
+            areaSeries1.Points.Add(new DataPoint(0, 50));
+            areaSeries1.Points.Add(new DataPoint(10, 140));
+            areaSeries1.Points.Add(new DataPoint(20, 60));
+            areaSeries1.ConstantY2 = double.NaN;
+            plotModel1.Series.Add(areaSeries1);
+            return plotModel1;
+        }
+
+        [Example("Constant baseline (ItemsSource and DataField2 not set)")]
+        public static PlotModel ConstantBaselineItemsSource()
+        {
+            var plotModel1 = new PlotModel { Title = "AreaSeries with constant baseline", Subtitle = "ItemsSource and DataField2 not set, ConstantY2 = -20" };
+            var areaSeries1 = new AreaSeries();
+            var points = new[] { new DataPoint(0, 50), new DataPoint(10, 140), new DataPoint(20, 60) };
+            areaSeries1.ItemsSource = points;
+            areaSeries1.DataFieldX = "X";
+            areaSeries1.DataFieldY = "Y";
+            areaSeries1.ConstantY2 = -20;
+            plotModel1.Series.Add(areaSeries1);
+            return plotModel1;
+        }
+
         [Example("LineSeries and AreaSeries")]
         public static PlotModel LineSeriesAndAreaSeries()
         {
@@ -72,16 +111,16 @@ namespace ExampleLibrary
             var linearAxis2 = new LinearAxis();
             plotModel1.Axes.Add(linearAxis2);
             var areaSeries1 = new AreaSeries
-                {
-                    Fill = OxyColors.LightBlue,
-                    DataFieldX2 = "Time",
-                    DataFieldY2 = "Minimum",
-                    Color = OxyColors.Red,
-                    StrokeThickness = 0,
-                    MarkerFill = OxyColors.Transparent,
-                    DataFieldX = "Time",
-                    DataFieldY = "Maximum"
-                };
+            {
+                Fill = OxyColors.LightBlue,
+                DataFieldX2 = "Time",
+                DataFieldY2 = "Minimum",
+                Color = OxyColors.Red,
+                StrokeThickness = 0,
+                MarkerFill = OxyColors.Transparent,
+                DataFieldX = "Time",
+                DataFieldY = "Maximum"
+            };
             areaSeries1.Points2.Add(new DataPoint(0, -5.04135905692417));
             areaSeries1.Points2.Add(new DataPoint(2.5, -4.91731850813018));
             areaSeries1.Points2.Add(new DataPoint(5, -4.45266314658926));
@@ -286,12 +325,12 @@ namespace ExampleLibrary
             plotModel1.Series.Add(areaSeries1);
 
             var lineSeries1 = new LineSeries
-                {
-                    Color = OxyColors.Blue,
-                    MarkerFill = OxyColors.Transparent,
-                    DataFieldX = "Time",
-                    DataFieldY = "Value"
-                };
+            {
+                Color = OxyColors.Blue,
+                MarkerFill = OxyColors.Transparent,
+                DataFieldX = "Time",
+                DataFieldY = "Value"
+            };
             lineSeries1.Points.Add(new DataPoint(0, -0.011447056784037));
             lineSeries1.Points.Add(new DataPoint(2.5, 0.179770542275985));
             lineSeries1.Points.Add(new DataPoint(5, 0.6808537498493));

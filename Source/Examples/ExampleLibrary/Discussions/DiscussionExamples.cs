@@ -329,11 +329,11 @@ namespace ExampleLibrary
 
             public double StrokeThickness { get; set; }
 
-            protected override void SetDefaultValues(PlotModel model)
+            protected override void SetDefaultValues()
             {
                 if (this.Color.IsAutomatic())
                 {
-                    this.defaultColor = model.GetDefaultColor();
+                    this.defaultColor = this.PlotModel.GetDefaultColor();
                 }
             }
 
@@ -345,7 +345,7 @@ namespace ExampleLibrary
                 }
             }
 
-            public override void Render(IRenderContext rc, PlotModel model)
+            public override void Render(IRenderContext rc)
             {
                 // transform to screen coordinates
                 var p0 = this.Transform(this.StartPoint);

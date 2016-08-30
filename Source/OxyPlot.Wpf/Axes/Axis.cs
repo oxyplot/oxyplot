@@ -253,6 +253,12 @@ namespace OxyPlot.Wpf
             "Maximum", typeof(double), typeof(Axis), new PropertyMetadata(double.NaN, AppearanceChanged));
 
         /// <summary>
+        /// Identifies the <see cref="MaximumRange"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty MaximumRangeProperty = DependencyProperty.Register(
+            "MaximumRange", typeof(double), typeof(Axis), new PropertyMetadata(double.PositiveInfinity, AppearanceChanged));
+
+        /// <summary>
         /// Identifies the <see cref="MinimumPadding"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MinimumPaddingProperty = DependencyProperty.Register(
@@ -340,6 +346,12 @@ namespace OxyPlot.Wpf
         public static readonly DependencyProperty StringFormatProperty = DependencyProperty.Register(
             "StringFormat", typeof(string), typeof(Axis), new PropertyMetadata(null, AppearanceChanged));
 
+        /// <summary>
+        /// Identifies the <see cref="TextColor"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty TextColorProperty = DependencyProperty.Register(
+            "TextColor", typeof(Color), typeof(Axis), new PropertyMetadata(MoreColors.Automatic, AppearanceChanged));
+        
         /// <summary>
         /// Identifies the <see cref="TickStyle"/> dependency property.
         /// </summary>
@@ -987,6 +999,22 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
+        /// Gets or sets MaximumRange.
+        /// </summary>
+        public double MaximumRange
+        {
+            get
+            {
+                return (double)this.GetValue(MaximumRangeProperty);
+            }
+
+            set
+            {
+                this.SetValue(MaximumRangeProperty, value);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets Minimum.
         /// </summary>
         public double Minimum
@@ -1192,6 +1220,22 @@ namespace OxyPlot.Wpf
             set
             {
                 this.SetValue(StringFormatProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the text color
+        /// </summary>
+        public Color TextColor
+        {
+            get
+            {
+                return (Color)this.GetValue(TextColorProperty);
+            }
+
+            set
+            {
+                this.SetValue(TextColorProperty, value);
             }
         }
 
@@ -1442,7 +1486,7 @@ namespace OxyPlot.Wpf
                 var fpm = e.Property.GetMetadata(e.Property.OwnerType) as FrameworkPropertyMetadata;
                 if (fpm != null && fpm.AffectsRender)
                 {
-                    var plot = this.Parent as PlotView;
+                    var plot = this.Parent as IPlotView;
                     if (plot != null)
                     {
                         plot.InvalidatePlot();
@@ -1509,6 +1553,7 @@ namespace OxyPlot.Wpf
             a.Minimum = this.Minimum;
             a.Maximum = this.Maximum;
             a.MinimumRange = this.MinimumRange;
+            a.MaximumRange = this.MaximumRange;
             a.MinimumPadding = this.MinimumPadding;
             a.MaximumPadding = this.MaximumPadding;
             a.Position = this.Position;
@@ -1516,6 +1561,7 @@ namespace OxyPlot.Wpf
             a.PositionAtZeroCrossing = this.PositionAtZeroCrossing;
             a.StartPosition = this.StartPosition;
             a.StringFormat = this.StringFormat;
+            a.TextColor = this.TextColor.ToOxyColor();
             a.TicklineColor = this.TicklineColor.ToOxyColor();
             a.TitleClippingLength = this.TitleClippingLength;
             a.TitleColor = this.TitleColor.ToOxyColor();

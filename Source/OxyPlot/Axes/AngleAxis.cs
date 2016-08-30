@@ -33,30 +33,6 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AngleAxis" /> class.
-        /// </summary>
-        /// <param name="minimum">The minimum value.</param>
-        /// <param name="maximum">The maximum value.</param>
-        /// <param name="majorStep">The major step.</param>
-        /// <param name="minorStep">The minor step.</param>
-        /// <param name="title">The title.</param>
-        [Obsolete]
-        public AngleAxis(
-            double minimum = double.NaN,
-            double maximum = double.NaN,
-            double majorStep = double.NaN,
-            double minorStep = double.NaN,
-            string title = null)
-            : this()
-        {
-            this.Minimum = minimum;
-            this.Maximum = maximum;
-            this.MajorStep = majorStep;
-            this.MinorStep = minorStep;
-            this.Title = title;
-        }
-
-        /// <summary>
         /// Gets or sets the start angle (degrees).
         /// </summary>
         public double StartAngle { get; set; }
@@ -78,9 +54,9 @@ namespace OxyPlot.Axes
             var minimum = this.StartAngle / this.Scale;
             var maximum = this.EndAngle / this.Scale;
 
-            minorTickValues = Axis.CreateTickValues(minimum, maximum, this.ActualMinorStep);
-            majorTickValues = Axis.CreateTickValues(minimum, maximum, this.ActualMajorStep);
-            majorLabelValues = Axis.CreateTickValues(this.Minimum, this.Maximum, this.ActualMajorStep);
+            minorTickValues = this.CreateTickValues(minimum, maximum, this.ActualMinorStep);
+            majorTickValues = this.CreateTickValues(minimum, maximum, this.ActualMajorStep);
+            majorLabelValues = this.CreateTickValues(this.Minimum, this.Maximum, this.ActualMajorStep);
         }
 
         /// <summary>
@@ -109,17 +85,10 @@ namespace OxyPlot.Axes
         /// Renders the axis on the specified render context.
         /// </summary>
         /// <param name="rc">The render context.</param>
-        /// <param name="model">The model.</param>
-        /// <param name="axisLayer">The rendering order.</param>
         /// <param name="pass">The pass.</param>
-        public override void Render(IRenderContext rc, PlotModel model, AxisLayer axisLayer, int pass)
+        public override void Render(IRenderContext rc, int pass)
         {
-            if (this.Layer != axisLayer)
-            {
-                return;
-            }
-
-            var r = new AngleAxisRenderer(rc, model);
+            var r = new AngleAxisRenderer(rc, this.PlotModel);
             r.Render(this, pass);
         }
 

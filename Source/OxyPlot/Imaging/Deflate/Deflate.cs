@@ -17,7 +17,7 @@ namespace OxyPlot
     /// </summary>
     /// <remarks>The code is a c# port of the DEFLATE project by Nayuki Minase at <a href="https://github.com/nayuki/DEFLATE">github</a>.
     /// Original source code: <a href="https://github.com/nayuki/DEFLATE/blob/master/src/nayuki/deflate/Decompressor.java"><c>Decompressor.java</c></a>.</remarks>
-    public class Deflate
+    public class Deflate : IDisposable
     {
         /// <summary>
         /// The fixed literal length code.
@@ -48,6 +48,11 @@ namespace OxyPlot
         /// The output stream.
         /// </summary>
         private readonly MemoryStream outputStream;
+
+        /// <summary>
+        /// The disposed flag.
+        /// </summary>
+        private bool disposed;
 
         /// <summary>
         /// Initializes static members of the <see cref="Deflate" /> class.
@@ -152,6 +157,15 @@ namespace OxyPlot
         public static byte[] Decompress(byte[] input)
         {
             return Decompress(new MemoryStream(input));
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>
@@ -417,6 +431,24 @@ namespace OxyPlot
             }
 
             throw new FormatException("Invalid distance symbol: " + sym);
+        }
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources
+        /// </summary>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        private void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    this.output.Dispose();
+                    this.outputStream.Dispose();
+                }
+            }
+
+            this.disposed = true;
         }
 
         /* Utility method */

@@ -16,7 +16,6 @@ namespace ExampleLibrary
     using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
-    using System.Xml;
     using System.Xml.Serialization;
 
     using OxyPlot;
@@ -186,34 +185,31 @@ namespace ExampleLibrary
 
 
 #if UNIVERSAL
-            using (var stream = typeof(MiscExamples).GetTypeInfo().Assembly.GetManifestResourceStream("ExampleLibrary.Resources.west0479.mtx"))
+            using (var reader = new StreamReader(typeof(MiscExamples).GetTypeInfo().Assembly.GetManifestResourceStream("ExampleLibrary.Resources.west0479.mtx")))
 #else
-            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("ExampleLibrary.Resources.west0479.mtx"))
+            using (var reader = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream("ExampleLibrary.Resources.west0479.mtx")))
 #endif
             {
-                using (var reader = new StreamReader(stream))
+                while (!reader.EndOfStream)
                 {
-                    while (!reader.EndOfStream)
+                    var line = reader.ReadLine();
+                    if (line.StartsWith("%"))
                     {
-                        var line = reader.ReadLine();
-                        if (line.StartsWith("%"))
-                        {
-                            continue;
-                        }
-
-                        var v = line.Split(' ');
-                        if (matrix == null)
-                        {
-                            int m = int.Parse(v[0]);
-                            int n = int.Parse(v[1]);
-                            matrix = new double[m, n];
-                            continue;
-                        }
-
-                        int i = int.Parse(v[0]) - 1;
-                        int j = int.Parse(v[1]) - 1;
-                        matrix[i, j] = double.Parse(v[2], CultureInfo.InvariantCulture);
+                        continue;
                     }
+
+                    var v = line.Split(' ');
+                    if (matrix == null)
+                    {
+                        int m = int.Parse(v[0]);
+                        int n = int.Parse(v[1]);
+                        matrix = new double[m, n];
+                        continue;
+                    }
+
+                    int i = int.Parse(v[0]) - 1;
+                    int j = int.Parse(v[1]) - 1;
+                    matrix[i, j] = double.Parse(v[2], CultureInfo.InvariantCulture);
                 }
             }
 
@@ -271,123 +267,120 @@ namespace ExampleLibrary
                 });
 
             // Read the train schedule from a .csv resource
-            using (var stream = GetResourceStream("Bergensbanen.csv"))
+            using (var reader = new StreamReader(GetResourceStream("Bergensbanen.csv")))
             {
-                using (var reader = new StreamReader(stream))
-                {
-                    string header = reader.ReadLine();
-                    var headerFields = header.Split(';');
-                    int lines = headerFields.Length - 3;
-                    var stations = new LineSeries()
-                                       {
-                                           StrokeThickness = 0,
-                                           MarkerType = MarkerType.Circle,
-                                           MarkerFill = OxyColor.FromAColor(200, OxyColors.Black),
-                                           MarkerSize = 4,
-                                       };
+                string header = reader.ReadLine();
+                var headerFields = header.Split(';');
+                int lines = headerFields.Length - 3;
+                var stations = new LineSeries()
+                                   {
+                                       StrokeThickness = 0,
+                                       MarkerType = MarkerType.Circle,
+                                       MarkerFill = OxyColor.FromAColor(200, OxyColors.Black),
+                                       MarkerSize = 4,
+                                   };
 
-                    // Add the line series for each train line
-                    var series = new LineSeries[lines];
-                    for (int i = 0; i < series.Length; i++)
+                // Add the line series for each train line
+                var series = new LineSeries[lines];
+                for (int i = 0; i < series.Length; i++)
+                {
+                    series[i] = new LineSeries
+                                    {
+                                        Title = headerFields[3 + i],
+                                        Color =
+                                            OxyColor.FromAColor(
+                                                180, OxyColors.Black),
+                                        StrokeThickness = 2,
+                                        TrackerFormatString =
+                                            "Train {0}\nTime: {2}\nDistance from Oslo S: {4:0.0} km",
+                                    };
+                    model.Series.Add(series[i]);
+                }
+
+                // Parse the train schedule
+                while (!reader.EndOfStream)
+                {
+                    var line = reader.ReadLine();
+
+                    // skip comments
+                    if (line == null || line.StartsWith("//"))
                     {
-                        series[i] = new LineSeries
-                                        {
-                                            Title = headerFields[3 + i],
-                                            Color =
-                                                OxyColor.FromAColor(
-                                                    180, OxyColors.Black),
-                                            StrokeThickness = 2,
-                                            TrackerFormatString =
-                                                "Train {0}\nTime: {2}\nDistance from Oslo S: {4:0.0} km",
-                                        };
-                        model.Series.Add(series[i]);
+                        continue;
                     }
 
-                    // Parse the train schedule
-                    while (!reader.EndOfStream)
+                    var fields = line.Split(';');
+                    double x = double.Parse(fields[1], CultureInfo.InvariantCulture);
+                    if (!string.IsNullOrEmpty(fields[0]))
                     {
-                        var line = reader.ReadLine();
+                        // Add a horizontal annotation line for the station
+                        model.Annotations.Add(
+                            new LineAnnotation
+                                {
+                                    Type = LineAnnotationType.Horizontal,
+                                    Y = x,
+                                    Layer = AnnotationLayer.BelowSeries,
+                                    LineStyle = LineStyle.Solid,
+                                    Color = OxyColors.LightGray,
+                                    Text = fields[0] + "  ",
+                                    TextVerticalAlignment = VerticalAlignment.Middle,
+                                    TextLinePosition = 1,
+                                    TextMargin = 0,
+                                    TextPadding = 4,
+                                    ClipText = false,
+                                    TextHorizontalAlignment = HorizontalAlignment.Left
+                                });
+                    }
 
-                        // skip comments
-                        if (line == null || line.StartsWith("//"))
+                    for (int i = 0; i < series.Length; i++)
+                    {
+                        if (string.IsNullOrEmpty(fields[i + 3]))
                         {
                             continue;
                         }
 
-                        var fields = line.Split(';');
-                        double x = double.Parse(fields[1], CultureInfo.InvariantCulture);
-                        if (!string.IsNullOrEmpty(fields[0]))
-                        {
-                            // Add a horizontal annotation line for the station
-                            model.Annotations.Add(
-                                new LineAnnotation
-                                    {
-                                        Type = LineAnnotationType.Horizontal,
-                                        Y = x,
-                                        Layer = AnnotationLayer.BelowSeries,
-                                        LineStyle = LineStyle.Solid,
-                                        Color = OxyColors.LightGray,
-                                        Text = fields[0] + "  ",
-                                        TextVerticalAlignment = VerticalAlignment.Middle,
-                                        TextLinePosition = 1,
-                                        TextMargin = 0,
-                                        TextPadding = 4,
-                                        ClipText = false,
-                                        TextHorizontalAlignment = HorizontalAlignment.Left
-                                    });
-                        }
+                        // Convert time from hhmm to a time span
+                        int hhmm = int.Parse(fields[i + 3]);
+                        var span = new TimeSpan(0, hhmm / 100, (hhmm % 100), 0);
+                        double t = TimeSpanAxis.ToDouble(span);
 
-                        for (int i = 0; i < series.Length; i++)
-                        {
-                            if (string.IsNullOrEmpty(fields[i + 3]))
-                            {
-                                continue;
-                            }
+                        // Add the point to the line
+                        series[i].Points.Add(new DataPoint(t, x));
 
-                            // Convert time from hhmm to a time span
-                            int hhmm = int.Parse(fields[i + 3]);
-                            var span = new TimeSpan(0, hhmm / 100, (hhmm % 100), 0);
-                            double t = TimeSpanAxis.ToDouble(span);
-
-                            // Add the point to the line
-                            series[i].Points.Add(new DataPoint(t, x));
-
-                            // Add the point for the station
-                            stations.Points.Add(new DataPoint(t, x));
-                        }
+                        // Add the point for the station
+                        stations.Points.Add(new DataPoint(t, x));
                     }
-
-                    // add points and NaN (to make a line break) when passing midnight
-                    double tmidnight = TimeSpanAxis.ToDouble(TimeSpan.FromHours(24));
-                    foreach (LineSeries s in model.Series)
-                    {
-                        for (int i = 0; i + 1 < s.Points.Count; i++)
-                        {
-                            if (Math.Abs(s.Points[i].X - s.Points[i + 1].X) > tmidnight / 2)
-                            {
-                                double x0 = s.Points[i].X;
-                                if (x0 > tmidnight / 2)
-                                {
-                                    x0 -= tmidnight;
-                                }
-
-                                double x1 = s.Points[i + 1].X;
-                                if (x1 > tmidnight / 2)
-                                {
-                                    x1 -= tmidnight;
-                                }
-
-                                double y = s.Points[i].Y + (s.Points[i + 1].Y - s.Points[i].Y) / (x1 - x0) * (0 - x0);
-                                s.Points.Insert(i + 1, new DataPoint(x0 < x1 ? 0 : tmidnight, y));
-                                s.Points.Insert(i + 1, new DataPoint(double.NaN, y));
-                                s.Points.Insert(i + 1, new DataPoint(x0 < x1 ? tmidnight : 0, y));
-                                i += 3;
-                            }
-                        }
-                    }
-
-                    model.Series.Add(stations);
                 }
+
+                // add points and NaN (to make a line break) when passing midnight
+                double tmidnight = TimeSpanAxis.ToDouble(TimeSpan.FromHours(24));
+                foreach (LineSeries s in model.Series)
+                {
+                    for (int i = 0; i + 1 < s.Points.Count; i++)
+                    {
+                        if (Math.Abs(s.Points[i].X - s.Points[i + 1].X) > tmidnight / 2)
+                        {
+                            double x0 = s.Points[i].X;
+                            if (x0 > tmidnight / 2)
+                            {
+                                x0 -= tmidnight;
+                            }
+
+                            double x1 = s.Points[i + 1].X;
+                            if (x1 > tmidnight / 2)
+                            {
+                                x1 -= tmidnight;
+                            }
+
+                            double y = s.Points[i].Y + (s.Points[i + 1].Y - s.Points[i].Y) / (x1 - x0) * (0 - x0);
+                            s.Points.Insert(i + 1, new DataPoint(x0 < x1 ? 0 : tmidnight, y));
+                            s.Points.Insert(i + 1, new DataPoint(double.NaN, y));
+                            s.Points.Insert(i + 1, new DataPoint(x0 < x1 ? tmidnight : 0, y));
+                            i += 3;
+                        }
+                    }
+                }
+
+                model.Series.Add(stations);
             }
 
             return model;
@@ -2229,7 +2222,7 @@ namespace ExampleLibrary
                     Position = point,
                     Item = null,
                     Index = -1,
-                    Text = this.Format(this.TrackerFormatString, null, p.X, p.Y, it)
+                    Text = StringHelper.Format(this.ActualCulture, this.TrackerFormatString, null, p.X, p.Y, it)
                 };
             }
 
@@ -2237,8 +2230,7 @@ namespace ExampleLibrary
             /// Renders the series on the specified render context.
             /// </summary>
             /// <param name="rc">The rendering context.</param>
-            /// <param name="model">The model.</param>
-            public override void Render(IRenderContext rc, PlotModel model)
+            public override void Render(IRenderContext rc)
             {
                 var p0 = this.Transform(this.XAxis.ActualMinimum, this.YAxis.ActualMinimum);
                 var p1 = this.Transform(this.XAxis.ActualMaximum, this.YAxis.ActualMaximum);
@@ -2247,7 +2239,6 @@ namespace ExampleLibrary
                 int maxIterations = (int)this.ColorAxis.ActualMaximum + 1;
                 var pixels = new OxyColor[w, h];
 
-#if !UNIVERSAL
                 ParallelFor(
                     0,
                     h,
@@ -2263,23 +2254,6 @@ namespace ExampleLibrary
                             pixels[j, i] = this.ColorAxis.GetColor((double)iterations);
                         }
                     });
-#else
-                Parallel.For(
-                    0,
-                    h,
-                    i =>
-                    {
-                        double y = this.YAxis.ActualMaximum - ((double)i / (h - 1) * (this.YAxis.ActualMaximum - this.YAxis.ActualMinimum));
-                        for (int j = 0; j < w; j++)
-                        {
-                            double x = this.XAxis.ActualMinimum
-                                       + ((double)j / (w - 1)
-                                          * (this.XAxis.ActualMaximum - this.XAxis.ActualMinimum));
-                            var iterations = Solve(x, y, maxIterations);
-                            pixels[j, i] = this.ColorAxis.GetColor((double)iterations);
-                        }
-                    });
-#endif
 
                 var bitmap = OxyImage.Create(pixels, ImageFormat.Png);
                 rc.DrawImage(bitmap, p0.X, p1.Y, p1.X - p0.X, p0.Y - p1.Y, 1, true);
@@ -2331,7 +2305,6 @@ namespace ExampleLibrary
                 }
             }
 
-#if !UNIVERSAL
             /// <summary>
             /// Executes a parallel for loop using ThreadPool.
             /// </summary>
@@ -2368,7 +2341,11 @@ namespace ExampleLibrary
                     int k = i;
                     int j0 = i0 + (i * n);
                     var j1 = Math.Min(j0 + n, i1);
-                    ThreadPool.QueueUserWorkItem(state => invokePartition(k, j0, j1));
+                    Task.Factory.StartNew(
+                        () => invokePartition(k, j0, j1),
+                        CancellationToken.None,
+                        TaskCreationOptions.LongRunning,
+                        TaskScheduler.Default);
                 }
 
                 // Wait for the threads to finish
@@ -2377,7 +2354,6 @@ namespace ExampleLibrary
                     wh.WaitOne();
                 }
             }
-#endif
         }
 
 

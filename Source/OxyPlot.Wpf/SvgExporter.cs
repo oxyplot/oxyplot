@@ -21,7 +21,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         public SvgExporter()
         {
-            this.TextMeasurer = new ShapesRenderContext(new Canvas());
+            this.TextMeasurer = new CanvasRenderContext(new Canvas());
         }
     }
 }

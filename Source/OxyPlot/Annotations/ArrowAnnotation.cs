@@ -99,10 +99,9 @@ namespace OxyPlot.Annotations
         /// Renders the arrow annotation.
         /// </summary>
         /// <param name="rc">The render context.</param>
-        /// <param name="model">The plot model.</param>
-        public override void Render(IRenderContext rc, PlotModel model)
+        public override void Render(IRenderContext rc)
         {
-            base.Render(rc, model);
+            base.Render(rc);
 
             this.screenEndPoint = this.Transform(this.EndPoint);
 

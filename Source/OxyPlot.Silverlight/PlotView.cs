@@ -22,7 +22,6 @@ namespace OxyPlot.Silverlight
     /// <summary>
     /// Represents a control that displays a <see cref="PlotModel" />.
     /// </summary>
-    [ContentProperty("Series")]
     [TemplatePart(Name = PartGrid, Type = typeof(Grid))]
     public class PlotView : Control, IPlotView
     {
@@ -109,7 +108,7 @@ namespace OxyPlot.Silverlight
         /// <summary>
         /// The render context
         /// </summary>
-        private SilverlightRenderContext renderContext;
+        private CanvasRenderContext renderContext;
 
         /// <summary>
         /// The canvas.
@@ -450,7 +449,7 @@ namespace OxyPlot.Silverlight
             this.canvas = new Canvas();
             this.grid.Children.Add(this.canvas);
             this.canvas.UpdateLayout();
-            this.renderContext = new SilverlightRenderContext(this.canvas);
+            this.renderContext = new CanvasRenderContext(this.canvas);
 
             this.overlays = new Canvas();
             this.grid.Children.Add(this.overlays);
@@ -848,17 +847,10 @@ namespace OxyPlot.Silverlight
                     this.currentModel = null;
                 }
 
-                this.currentModel = this.Model;
-
-                if (this.currentModel != null)
+                if (this.Model != null)
                 {
-                    if (this.currentModel.PlotView != null)
-                    {
-                        throw new InvalidOperationException(
-                            "This PlotModel is already in use by some other PlotView control.");
-                    }
-
-                    ((IPlotModel)this.currentModel).AttachPlotView(this);
+                    ((IPlotModel)this.Model).AttachPlotView(this);
+                    this.currentModel = this.Model;
                 }
             }
 
@@ -900,7 +892,7 @@ namespace OxyPlot.Silverlight
             // Clear the canvas
             this.canvas.Children.Clear();
 
-            if (this.ActualModel != null && !this.ActualModel.Background.IsUndefined())
+            if (this.ActualModel != null && !this.ActualModel.Background.IsVisible())
             {
                 this.canvas.Background = this.ActualModel.Background.ToBrush();
             }

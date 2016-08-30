@@ -12,6 +12,7 @@ namespace OxyPlot.Axes
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Linq;
 
     /// <summary>
     /// Provides functionality to render horizontal and vertical axes.
@@ -219,52 +220,6 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Gets the alignments given the specified rotation angle.
-        /// </summary>
-        /// <param name="angle">The angle.</param>
-        /// <param name="defaultHorizontalAlignment">The default horizontal alignment.</param>
-        /// <param name="defaultVerticalAlignment">The default vertical alignment.</param>
-        /// <param name="ha">The rotated horizontal alignment.</param>
-        /// <param name="va">The rotated vertical alignment.</param>
-        protected virtual void GetRotatedAlignments(
-            double angle,
-            HorizontalAlignment defaultHorizontalAlignment,
-            VerticalAlignment defaultVerticalAlignment,
-            out HorizontalAlignment ha,
-            out VerticalAlignment va)
-        {
-            ha = defaultHorizontalAlignment;
-            va = defaultVerticalAlignment;
-
-            Debug.Assert(angle <= 180 && angle >= -180, "Axis angle should be in the interval [-180,180] degrees.");
-
-            if (angle > -45 && angle < 45)
-            {
-                return;
-            }
-
-            if (angle > 135 || angle < -135)
-            {
-                ha = (HorizontalAlignment)(-(int)defaultHorizontalAlignment);
-                va = (VerticalAlignment)(-(int)defaultVerticalAlignment);
-                return;
-            }
-
-            if (angle > 45)
-            {
-                ha = (HorizontalAlignment)((int)defaultVerticalAlignment);
-                va = (VerticalAlignment)(-(int)defaultHorizontalAlignment);
-                return;
-            }
-
-            if (angle < -45)
-            {
-                ha = (HorizontalAlignment)(-(int)defaultVerticalAlignment);
-                va = (VerticalAlignment)((int)defaultHorizontalAlignment);
-            }
-        }
-
-        /// <summary>
         /// Renders the axis title.
         /// </summary>
         /// <param name="axis">The axis.</param>
@@ -329,12 +284,29 @@ namespace OxyPlot.Axes
             double plotAreaTop = this.Plot.PlotArea.Top;
             double plotAreaBottom = this.Plot.PlotArea.Bottom;
             bool isHorizontal = axis.IsHorizontal();
+            bool cropGridlines = axis.CropGridlines;
 
             double a0;
             double a1;
             var majorSegments = new List<ScreenPoint>();
             var majorTickSegments = new List<ScreenPoint>();
             this.GetTickPositions(axis, axis.TickStyle, axis.MajorTickSize, axis.Position, out a0, out a1);
+
+            var perpendicularAxis = axis.IsHorizontal() ? this.Plot.DefaultYAxis : this.Plot.DefaultXAxis;
+            var dontRenderZero = axis.PositionAtZeroCrossing && perpendicularAxis.PositionAtZeroCrossing;
+
+            List<Axis> perpAxes = null;
+            if (cropGridlines)
+            {
+                if (isHorizontal)
+                {
+                    perpAxes = this.Plot.Axes.Where(x => x.IsXyAxis() && x.IsVertical()).ToList();
+                }
+                else
+                {
+                    perpAxes = this.Plot.Axes.Where(x => x.IsXyAxis() && x.IsHorizontal()).ToList();
+                }
+            }
 
             foreach (double value in this.MajorTickValues)
             {
@@ -343,7 +315,7 @@ namespace OxyPlot.Axes
                     continue;
                 }
 
-                if (axis.PositionAtZeroCrossing && Math.Abs(value) < eps)
+                if (dontRenderZero && Math.Abs(value) < eps)
                 {
                     continue;
                 }
@@ -362,16 +334,16 @@ namespace OxyPlot.Axes
 
                 if (this.MajorPen != null)
                 {
-                    if (isHorizontal)
-                    {
-                        majorSegments.Add(new ScreenPoint(transformedValue, plotAreaTop));
-                        majorSegments.Add(new ScreenPoint(transformedValue, plotAreaBottom));
-                    }
-                    else
-                    {
-                        majorSegments.Add(new ScreenPoint(plotAreaLeft, transformedValue));
-                        majorSegments.Add(new ScreenPoint(plotAreaRight, transformedValue));
-                    }
+                    this.AddSegments(
+                        majorSegments, 
+                        perpAxes, 
+                        isHorizontal, 
+                        cropGridlines, 
+                        transformedValue, 
+                        plotAreaLeft, 
+                        plotAreaRight, 
+                        plotAreaTop, 
+                        plotAreaBottom);
                 }
 
                 if (axis.TickStyle != TickStyle.None && axis.MajorTickSize > 0)
@@ -397,7 +369,7 @@ namespace OxyPlot.Axes
                     continue;
                 }
 
-                if (axis.PositionAtZeroCrossing && Math.Abs(value) < eps)
+                if (dontRenderZero && Math.Abs(value) < eps)
                 {
                     continue;
                 }
@@ -421,39 +393,23 @@ namespace OxyPlot.Axes
                 {
                     case AxisPosition.Left:
                         pt = new ScreenPoint(axisPosition + a1 - axis.AxisTickToLabelDistance, transformedValue);
-                        this.GetRotatedAlignments(
-                            axis.Angle,
-                            HorizontalAlignment.Right,
-                            VerticalAlignment.Middle,
-                            out ha,
-                            out va);
+                        this.GetRotatedAlignments(axis.Angle, -90, out ha, out va);
+
                         break;
                     case AxisPosition.Right:
                         pt = new ScreenPoint(axisPosition + a1 + axis.AxisTickToLabelDistance, transformedValue);
-                        this.GetRotatedAlignments(
-                            axis.Angle,
-                            HorizontalAlignment.Left,
-                            VerticalAlignment.Middle,
-                            out ha,
-                            out va);
+                        this.GetRotatedAlignments(axis.Angle, 90, out ha, out va);
+
                         break;
                     case AxisPosition.Top:
                         pt = new ScreenPoint(transformedValue, axisPosition + a1 - axis.AxisTickToLabelDistance);
-                        this.GetRotatedAlignments(
-                            axis.Angle,
-                            HorizontalAlignment.Center,
-                            VerticalAlignment.Bottom,
-                            out ha,
-                            out va);
+                        this.GetRotatedAlignments(axis.Angle, 0, out ha, out va);
+
                         break;
                     case AxisPosition.Bottom:
                         pt = new ScreenPoint(transformedValue, axisPosition + a1 + axis.AxisTickToLabelDistance);
-                        this.GetRotatedAlignments(
-                            axis.Angle,
-                            HorizontalAlignment.Center,
-                            VerticalAlignment.Top,
-                            out ha,
-                            out va);
+                        this.GetRotatedAlignments(axis.Angle, -180, out ha, out va);
+
                         break;
                 }
 
@@ -470,23 +426,11 @@ namespace OxyPlot.Axes
                     va);
             }
 
-            // Draw the zero crossing line
-            if (axis.PositionAtZeroCrossing && this.ZeroPen != null && this.IsWithin(0, actualMinimum, actualMaximum))
-            {
-                double t0 = axis.Transform(0);
-                if (isHorizontal)
-                {
-                    this.RenderContext.DrawLine(t0, plotAreaTop, t0, plotAreaBottom, this.ZeroPen);
-                }
-                else
-                {
-                    this.RenderContext.DrawLine(plotAreaLeft, t0, plotAreaRight, t0, this.ZeroPen);
-                }
-            }
-
             // Draw extra grid lines
             if (axis.ExtraGridlines != null && this.ExtraPen != null)
             {
+                var extraSegments = new List<ScreenPoint>();
+
                 foreach (double value in axis.ExtraGridlines)
                 {
                     if (!this.IsWithin(value, actualMinimum, actualMaximum))
@@ -495,25 +439,19 @@ namespace OxyPlot.Axes
                     }
 
                     double transformedValue = axis.Transform(value);
-                    if (isHorizontal)
-                    {
-                        this.RenderContext.DrawLine(
-                            transformedValue,
-                            plotAreaTop,
-                            transformedValue,
-                            plotAreaBottom,
-                            this.ExtraPen);
-                    }
-                    else
-                    {
-                        this.RenderContext.DrawLine(
-                            plotAreaLeft,
-                            transformedValue,
-                            plotAreaRight,
-                            transformedValue,
-                            this.ExtraPen);
-                    }
+                    this.AddSegments(
+                        extraSegments,
+                        perpAxes,
+                        isHorizontal,
+                        cropGridlines,
+                        transformedValue,
+                        plotAreaLeft,
+                        plotAreaRight,
+                        plotAreaTop,
+                        plotAreaBottom);
                 }
+
+                this.RenderContext.DrawLineSegments(extraSegments, this.ExtraPen);
             }
 
             if (drawAxisLine)
@@ -565,12 +503,26 @@ namespace OxyPlot.Axes
             double plotAreaRight = this.Plot.PlotArea.Right;
             double plotAreaTop = this.Plot.PlotArea.Top;
             double plotAreaBottom = this.Plot.PlotArea.Bottom;
+            bool cropGridlines = axis.CropGridlines;
             bool isHorizontal = axis.IsHorizontal();
 
             double a0;
             double a1;
             var minorSegments = new List<ScreenPoint>();
             var minorTickSegments = new List<ScreenPoint>();
+
+            List<Axis> perpAxes = null;
+            if (cropGridlines)
+            {
+                if (isHorizontal)
+                {
+                    perpAxes = this.Plot.Axes.Where(x => x.IsXyAxis() && x.IsVertical()).ToList();
+                }
+                else
+                {
+                    perpAxes = this.Plot.Axes.Where(x => x.IsXyAxis() && x.IsHorizontal()).ToList();
+                }
+            }
 
             this.GetTickPositions(axis, axis.TickStyle, axis.MinorTickSize, axis.Position, out a0, out a1);
 
@@ -607,20 +559,16 @@ namespace OxyPlot.Axes
                 // Draw the minor grid line
                 if (this.MinorPen != null)
                 {
-                    if (isHorizontal)
-                    {
-                        minorSegments.Add(new ScreenPoint(transformedValue, plotAreaTop));
-                        minorSegments.Add(new ScreenPoint(transformedValue, plotAreaBottom));
-                    }
-                    else
-                    {
-                        if (transformedValue < plotAreaTop || transformedValue > plotAreaBottom)
-                        {
-                        }
-
-                        minorSegments.Add(new ScreenPoint(plotAreaLeft, transformedValue));
-                        minorSegments.Add(new ScreenPoint(plotAreaRight, transformedValue));
-                    }
+                    this.AddSegments(
+                        minorSegments,
+                        perpAxes,
+                        isHorizontal,
+                        cropGridlines,
+                        transformedValue,
+                        plotAreaLeft,
+                        plotAreaRight,
+                        plotAreaTop,
+                        plotAreaBottom);
                 }
 
                 // Draw the minor tick
@@ -648,6 +596,125 @@ namespace OxyPlot.Axes
             if (this.MinorTickPen != null)
             {
                 this.RenderContext.DrawLineSegments(minorTickSegments, this.MinorTickPen);
+            }
+        }
+
+        /// <summary>
+        /// Adds segments to <paramref name="segments"/> array. 
+        /// If <paramref name="cropGridlines"/> is true, then lines will be cropped with <paramref name="perpAxes"/> lists axes.
+        /// </summary>
+        /// <param name="segments">The target segments.</param>
+        /// <param name="perpAxes">Perpendicular axes list.</param>
+        /// <param name="isHorizontal">True, if current axis is horizontal.</param>
+        /// <param name="cropGridlines">True, if gridlines should be cropped.</param>
+        /// <param name="transformedValue">Starting point position.</param>
+        /// <param name="plotAreaLeft">Plot area left position.</param>
+        /// <param name="plotAreaRight">Plot area right position.</param>
+        /// <param name="plotAreaTop">Plot area top position.</param>
+        /// <param name="plotAreaBottom">Plot area bottom position.</param>
+        private void AddSegments(
+            List<ScreenPoint> segments, 
+            List<Axis> perpAxes,
+            bool isHorizontal,
+            bool cropGridlines,
+            double transformedValue,
+            double plotAreaLeft,
+            double plotAreaRight,
+            double plotAreaTop,
+            double plotAreaBottom)
+        {
+            if (isHorizontal)
+            {
+                if (!cropGridlines)
+                {
+                    segments.Add(new ScreenPoint(transformedValue, plotAreaTop));
+                    segments.Add(new ScreenPoint(transformedValue, plotAreaBottom));
+                }
+                else
+                {
+                    foreach (var perpAxis in perpAxes)
+                    {
+                        segments.Add(new ScreenPoint(transformedValue, perpAxis.Transform(perpAxis.ActualMinimum)));
+                        segments.Add(new ScreenPoint(transformedValue, perpAxis.Transform(perpAxis.ActualMaximum)));
+                    }
+                }
+            }
+            else
+            {
+                if (!cropGridlines)
+                {
+                    segments.Add(new ScreenPoint(plotAreaLeft, transformedValue));
+                    segments.Add(new ScreenPoint(plotAreaRight, transformedValue));
+                }
+                else
+                {
+                    foreach (var perpAxis in perpAxes)
+                    {
+                        segments.Add(new ScreenPoint(perpAxis.Transform(perpAxis.ActualMinimum), transformedValue));
+                        segments.Add(new ScreenPoint(perpAxis.Transform(perpAxis.ActualMaximum), transformedValue));
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the alignments given the specified rotation angle.
+        /// </summary>
+        /// <param name="boxAngle">The angle of a box to rotate (usually it is label angle).</param>
+        /// <param name="axisAngle">
+        /// The axis angle, the original angle belongs to. The Top axis should have 0, next angles are computed clockwise. 
+        /// The angle should be in [-180, 180). (T, R, B, L) is (0, 90, -180, -90). 
+        /// </param>
+        /// <param name="ha">Horizontal alignment.</param>
+        /// <param name="va">Vertical alignment.</param>
+        /// <remarks>
+        /// This method is supposed to compute the alignment of the labels that are put near axis. 
+        /// Because such labels can have different angles, and the axis can have different angles as well,
+        /// computing the alignment is not straightforward.
+        /// </remarks>
+        private void GetRotatedAlignments(
+            double boxAngle,
+            double axisAngle,
+            out HorizontalAlignment ha,
+            out VerticalAlignment va)
+        {
+            const double AngleTolerance = 10.0;
+
+            Debug.Assert(new[] { 0.0, 90.0, -180.0, -90.0 }.Contains(axisAngle), "The axis angles should be one of 0, 90, -180, -90");
+
+            // The axis angle if it would have been turned on 180 and leave it in [-180, 180)
+            double flippedAxisAngle = ((axisAngle + 360.0) % 360.0) - 180.0;
+
+            // When the box (assuming the axis and box have the same angle) box starts to turn clockwise near the axis
+            // It leans on the right until it gets to 180 rotation, when it is started to lean on the left.
+            // In real computation we need to compute this in relation with axisAngle
+            // So if axisAngle <= boxAngle < (axisAngle + 180), we align Right, else - left.
+            // The check looks inverted because flippedAxisAngle has the opposite sign.
+            ha = boxAngle >= Math.Min(axisAngle, flippedAxisAngle) && boxAngle < Math.Max(axisAngle, flippedAxisAngle) ? HorizontalAlignment.Left : HorizontalAlignment.Right;
+
+            // If axisAngle was < 0, we need to shift the previous computation on 180.
+            if (axisAngle < 0)
+            {
+                ha = (HorizontalAlignment)((int)ha * -1);
+            }
+
+            va = VerticalAlignment.Middle;
+
+            // If the angle almost the same as axisAngle (or axisAngle + 180) - set horizontal alignment to Center
+            if (Math.Abs(boxAngle - flippedAxisAngle) < AngleTolerance || Math.Abs(boxAngle - axisAngle) < AngleTolerance)
+            {
+                ha = HorizontalAlignment.Center;
+            }
+
+            // And vertical alignment according to whether it is near to axisAngle or flippedAxisAngle
+            if (Math.Abs(boxAngle - axisAngle) < AngleTolerance)
+            {
+                va = VerticalAlignment.Bottom;
+            }
+
+            if (Math.Abs(boxAngle - flippedAxisAngle) < AngleTolerance)
+            {
+                va = VerticalAlignment.Top;
             }
         }
     }

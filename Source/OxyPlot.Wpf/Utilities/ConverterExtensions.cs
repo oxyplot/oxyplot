@@ -10,8 +10,6 @@
 namespace OxyPlot.Wpf
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Windows;
     using System.Windows.Input;
     using System.Windows.Media;
@@ -442,7 +440,6 @@ namespace OxyPlot.Wpf
             };
         }
 
-#if !NET35
         /// <summary>
         /// Converts <see cref="ManipulationStartedEventArgs" /> to <see cref="OxyMouseEventArgs" /> for a touch started event.
         /// </summary>
@@ -486,6 +483,5 @@ namespace OxyPlot.Wpf
                 Position = e.ManipulationOrigin.ToScreenPoint()
             };
         }
-#endif
     }
 }

@@ -44,7 +44,7 @@ namespace OxyPlot
             {
                 try
                 {
-                    if (this.updateException != null)
+                    if (this.lastPlotException != null)
                     {
                         // There was an exception during plot model update. 
                         // This could happen when OxyPlot is given invalid input data. 
@@ -52,16 +52,9 @@ namespace OxyPlot
                         // If the client application submitted invalid data, show the exception message and stack trace.
                         var errorMessage = string.Format(
                                 "An exception of type {0} was thrown when updating the plot model.\r\n{1}",
-                                this.updateException.GetType(),
-                                this.updateException.GetBaseException().StackTrace);
-                        this.RenderErrorMessage(rc, string.Format("OxyPlot exception: {0}", this.updateException.Message), errorMessage);
-                        return;
-                    }
-
-                    var minimumWidth = this.Padding.Left + this.Padding.Right;
-                    var minimumHeight = this.Padding.Top + this.Padding.Bottom;
-                    if (width <= minimumWidth || height <= minimumHeight)
-                    {
+                                this.lastPlotException.GetType(),
+                                this.lastPlotException.GetBaseException().StackTrace);
+                        this.RenderErrorMessage(rc, string.Format("OxyPlot exception: {0}", this.lastPlotException.Message), errorMessage);
                         return;
                     }
 
@@ -127,6 +120,7 @@ namespace OxyPlot
                             "An exception of type {0} was thrown when rendering the plot model.\r\n{1}",
                             exception.GetType(),
                             exception.GetBaseException().StackTrace);
+                    this.lastPlotException = exception;
                     this.RenderErrorMessage(rc, string.Format("OxyPlot exception: {0}", exception.Message), errorMessage);
                 }
                 finally
@@ -148,19 +142,19 @@ namespace OxyPlot
             switch (borderPosition)
             {
                 case AxisPosition.Bottom:
-                    currentMargin.Bottom = Math.Max(currentMargin.Bottom, minBorderSize);
+                    currentMargin = new OxyThickness(currentMargin.Left, currentMargin.Top, currentMargin.Right, Math.Max(currentMargin.Bottom, minBorderSize));
                     break;
 
                 case AxisPosition.Left:
-                    currentMargin.Left = Math.Max(currentMargin.Left, minBorderSize);
+                    currentMargin = new OxyThickness(Math.Max(currentMargin.Left, minBorderSize), currentMargin.Top, currentMargin.Right, currentMargin.Bottom);
                     break;
 
                 case AxisPosition.Right:
-                    currentMargin.Right = Math.Max(currentMargin.Right, minBorderSize);
+                    currentMargin = new OxyThickness(currentMargin.Left, currentMargin.Top, Math.Max(currentMargin.Right, minBorderSize), currentMargin.Bottom);
                     break;
 
                 case AxisPosition.Top:
-                    currentMargin.Top = Math.Max(currentMargin.Top, minBorderSize);
+                    currentMargin = new OxyThickness(currentMargin.Left, Math.Max(currentMargin.Top, minBorderSize), currentMargin.Right, currentMargin.Bottom);
                     break;
 
                 default:
@@ -247,7 +241,7 @@ namespace OxyPlot
 
             for (var position = AxisPosition.Left; position <= AxisPosition.Bottom; position++)
             {
-                var axesOfPosition = this.VisibleAxes.Where(a => a.Position == position).ToList();
+                var axesOfPosition = this.Axes.Where(a => a.IsAxisVisible && a.Position == position).ToList();
                 var requiredSize = this.AdjustAxesPositions(rc, axesOfPosition);
 
                 if (!this.IsPlotMarginAutoSized(position))
@@ -259,7 +253,7 @@ namespace OxyPlot
             }
 
             // Special case for AngleAxis which is all around the plot
-            var angularAxes = this.VisibleAxes.OfType<AngleAxis>().Cast<Axis>().ToList();
+            var angularAxes = this.Axes.Where(a => a.IsAxisVisible).OfType<AngleAxis>().Cast<Axis>().ToList();
 
             if (angularAxes.Any())
             {
@@ -343,7 +337,7 @@ namespace OxyPlot
             foreach (var a in this.Annotations.Where(a => a.Layer == layer))
             {
                 rc.SetToolTip(a.ToolTip);
-                a.Render(rc, this);
+                a.Render(rc);
             }
 
             rc.SetToolTip(null);
@@ -356,17 +350,18 @@ namespace OxyPlot
         /// <param name="layer">The layer.</param>
         private void RenderAxes(IRenderContext rc, AxisLayer layer)
         {
-            for (int i = 0; i < 2; i++)
+            // render pass 0
+            foreach (var a in this.Axes.Where(a => a.IsAxisVisible && a.Layer == layer))
             {
-                foreach (var a in this.VisibleAxes)
-                {
-                    rc.SetToolTip(a.ToolTip);
+                rc.SetToolTip(a.ToolTip);
+                a.Render(rc, 0);
+            }
 
-                    if (a.Layer == layer)
-                    {
-                        a.Render(rc, this, layer, i);
-                    }
-                }
+            // render pass 1
+            foreach (var a in this.Axes.Where(a => a.IsAxisVisible && a.Layer == layer))
+            {
+                rc.SetToolTip(a.ToolTip);
+                a.Render(rc, 1);
             }
 
             rc.SetToolTip(null);
@@ -385,7 +380,7 @@ namespace OxyPlot
                 rc.DrawRectangleAsPolygon(this.PlotArea, this.PlotAreaBackground, OxyColors.Undefined, 0);
             }
 
-            foreach (var s in this.VisibleSeries.Where(s => s is XYAxisSeries && s.Background.IsVisible()).Cast<XYAxisSeries>())
+            foreach (var s in this.Series.Where(s => s.IsVisible && s is XYAxisSeries && s.Background.IsVisible()).Cast<XYAxisSeries>())
             {
                 rc.DrawRectangle(s.GetScreenRectangle(), s.Background, OxyColors.Undefined, 0);
             }
@@ -411,10 +406,10 @@ namespace OxyPlot
         /// <param name="rc">The render context.</param>
         private void RenderSeries(IRenderContext rc)
         {
-            foreach (var s in this.VisibleSeries)
+            foreach (var s in this.Series.Where(s => s.IsVisible))
             {
                 rc.SetToolTip(s.ToolTip);
-                s.Render(rc, this);
+                s.Render(rc);
             }
 
             rc.SetToolTip(null);
@@ -433,6 +428,8 @@ namespace OxyPlot
 
             if (!string.IsNullOrEmpty(this.Title))
             {
+                rc.SetToolTip(this.TitleToolTip);
+
                 rc.DrawMathText(
                     new ScreenPoint(x, y),
                     this.Title,
@@ -444,6 +441,8 @@ namespace OxyPlot
                     HorizontalAlignment.Center,
                     VerticalAlignment.Top);
                 y += titleSize.Height;
+
+                rc.SetToolTip(null);
             }
 
             if (!string.IsNullOrEmpty(this.Subtitle))
@@ -470,49 +469,31 @@ namespace OxyPlot
             var plotArea = new OxyRect(
                 this.Padding.Left,
                 this.Padding.Top,
-                this.Width - this.Padding.Left - this.Padding.Right,
-                this.Height - this.Padding.Top - this.Padding.Bottom);
+                Math.Max(0, this.Width - this.Padding.Left - this.Padding.Right),
+                Math.Max(0, this.Height - this.Padding.Top - this.Padding.Bottom));
 
             var titleSize = this.MeasureTitles(rc);
 
             if (titleSize.Height > 0)
             {
                 var titleHeight = titleSize.Height + this.TitlePadding;
-                plotArea.Height -= titleHeight;
-                plotArea.Top += titleHeight;
+                plotArea = new OxyRect(plotArea.Left, plotArea.Top + titleHeight, plotArea.Width, Math.Max(0, plotArea.Height - titleHeight));
             }
 
-            plotArea.Top += this.ActualPlotMargins.Top;
-            plotArea.Height -= this.ActualPlotMargins.Top;
-
-            plotArea.Height -= this.ActualPlotMargins.Bottom;
-
-            plotArea.Left += this.ActualPlotMargins.Left;
-            plotArea.Width -= this.ActualPlotMargins.Left;
-
-            plotArea.Width -= this.ActualPlotMargins.Right;
+            plotArea = plotArea.Deflate(this.ActualPlotMargins);
 
             // Find the available size for the legend box
             var availableLegendWidth = plotArea.Width;
-            var availableLegendHeight = plotArea.Height;
+            var availableLegendHeight = double.IsNaN(this.LegendMaxHeight) ?
+                plotArea.Height : Math.Min(plotArea.Height, this.LegendMaxHeight);
             if (this.LegendPlacement == LegendPlacement.Inside)
             {
                 availableLegendWidth -= this.LegendMargin * 2;
                 availableLegendHeight -= this.LegendMargin * 2;
             }
 
-            if (availableLegendWidth < 0)
-            {
-                availableLegendWidth = 0;
-            }
-
-            if (availableLegendHeight < 0)
-            {
-                availableLegendHeight = 0;
-            }
-
             // Calculate the size of the legend box
-            var legendSize = this.MeasureLegends(rc, new OxySize(availableLegendWidth, availableLegendHeight));
+            var legendSize = this.MeasureLegends(rc, new OxySize(Math.Max(0, availableLegendWidth), Math.Max(0, availableLegendHeight)));
 
             // Adjust the plot area after the size of the legend box has been calculated
             if (this.IsLegendVisible && this.LegendPlacement == LegendPlacement.Outside)
@@ -522,24 +503,22 @@ namespace OxyPlot
                     case LegendPosition.LeftTop:
                     case LegendPosition.LeftMiddle:
                     case LegendPosition.LeftBottom:
-                        plotArea.Left += legendSize.Width + this.LegendMargin;
-                        plotArea.Width -= legendSize.Width + this.LegendMargin;
+                        plotArea = new OxyRect(plotArea.Left + legendSize.Width + this.LegendMargin, plotArea.Top, Math.Max(0, plotArea.Width - (legendSize.Width + this.LegendMargin)), plotArea.Height);
                         break;
                     case LegendPosition.RightTop:
                     case LegendPosition.RightMiddle:
                     case LegendPosition.RightBottom:
-                        plotArea.Width -= legendSize.Width + this.LegendMargin;
+                        plotArea = new OxyRect(plotArea.Left, plotArea.Top, Math.Max(0, plotArea.Width - (legendSize.Width + this.LegendMargin)), plotArea.Height);
                         break;
                     case LegendPosition.TopLeft:
                     case LegendPosition.TopCenter:
                     case LegendPosition.TopRight:
-                        plotArea.Top += legendSize.Height + this.LegendMargin;
-                        plotArea.Height -= legendSize.Height + this.LegendMargin;
+                        plotArea = new OxyRect(plotArea.Left, plotArea.Top + legendSize.Height + this.LegendMargin, plotArea.Width, Math.Max(0, plotArea.Height - (legendSize.Height + this.LegendMargin)));
                         break;
                     case LegendPosition.BottomLeft:
                     case LegendPosition.BottomCenter:
                     case LegendPosition.BottomRight:
-                        plotArea.Height -= legendSize.Height + this.LegendMargin;
+                        plotArea = new OxyRect(plotArea.Left, plotArea.Top, plotArea.Width, Math.Max(0, plotArea.Height - (legendSize.Height + this.LegendMargin)));
                         break;
                 }
             }
@@ -547,20 +526,16 @@ namespace OxyPlot
             // Ensure the plot area is valid
             if (plotArea.Height < 0)
             {
-                plotArea.Bottom = plotArea.Top + 1;
+                plotArea = new OxyRect(plotArea.Left, plotArea.Top, plotArea.Width, 1);
             }
 
             if (plotArea.Width < 0)
             {
-                plotArea.Right = plotArea.Left + 1;
+                plotArea = new OxyRect(plotArea.Left, plotArea.Top, 1, plotArea.Height);
             }
 
             this.PlotArea = plotArea;
-            this.PlotAndAxisArea = new OxyRect(
-                plotArea.Left - this.ActualPlotMargins.Left,
-                plotArea.Top - this.ActualPlotMargins.Top,
-                plotArea.Width + this.ActualPlotMargins.Left + this.ActualPlotMargins.Right,
-                plotArea.Height + this.ActualPlotMargins.Top + this.ActualPlotMargins.Bottom);
+            this.PlotAndAxisArea = plotArea.Inflate(this.ActualPlotMargins);
 
             switch (this.TitleHorizontalAlignment)
             {

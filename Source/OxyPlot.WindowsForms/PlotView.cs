@@ -264,16 +264,11 @@ namespace OxyPlot.WindowsForms
                 if (this.currentModel != null)
                 {
                     ((IPlotModel)this.currentModel).AttachPlotView(null);
+                    this.currentModel = null;
                 }
 
                 if (this.Model != null)
                 {
-                    if (this.Model.PlotView != null)
-                    {
-                        throw new InvalidOperationException(
-                            "This PlotModel is already in use by some other plot view.");
-                    }
-
                     ((IPlotModel)this.Model).AttachPlotView(this);
                     this.currentModel = this.Model;
                 }
@@ -316,12 +311,12 @@ namespace OxyPlot.WindowsForms
         {
             if (this.trackerLabel == null)
             {
-                this.trackerLabel = new Label { Parent = this, BackColor = Color.LightSkyBlue, AutoSize = true };
+                this.trackerLabel = new Label { Parent = this, BackColor = Color.LightSkyBlue, AutoSize = true, Padding = new Padding(5) };
             }
 
             this.trackerLabel.Text = data.ToString();
-            this.trackerLabel.Top = (int)data.Position.Y - this.Top;
-            this.trackerLabel.Left = (int)data.Position.X - this.Left;
+            this.trackerLabel.Top = (int)data.Position.Y - this.trackerLabel.Height;
+            this.trackerLabel.Left = (int)data.Position.X - this.trackerLabel.Width / 2;
             this.trackerLabel.Visible = true;
         }
 

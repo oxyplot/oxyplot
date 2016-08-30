@@ -14,10 +14,10 @@ namespace OxyPlot.Series
     /// <summary>
     /// Represents an item in a <see cref="BoxPlotSeries" />.
     /// </summary>
-    public struct BoxPlotItem
+    public class BoxPlotItem
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="BoxPlotItem" /> struct.
+        /// Initializes a new instance of the <see cref="BoxPlotItem" /> class.
         /// </summary>
         /// <param name="x">The x.</param>
         /// <param name="lowerWhisker">The lower whisker.</param>
@@ -25,18 +25,13 @@ namespace OxyPlot.Series
         /// <param name="median">The median.</param>
         /// <param name="boxTop">The box top.</param>
         /// <param name="upperWhisker">The upper whisker.</param>
-        /// <param name="outliers">The outliers.</param>
-        /// <param name="tag">The tag.</param>
         public BoxPlotItem(
             double x,
             double lowerWhisker,
             double boxBottom,
             double median,
             double boxTop,
-            double upperWhisker,
-            IList<double> outliers,
-            object tag = null)
-            : this()
+            double upperWhisker)
         {
             this.X = x;
             this.LowerWhisker = lowerWhisker;
@@ -44,8 +39,8 @@ namespace OxyPlot.Series
             this.Median = median;
             this.BoxTop = boxTop;
             this.UpperWhisker = upperWhisker;
-            this.Outliers = outliers;
-            this.Tag = tag;
+            this.Mean = double.NaN;
+            this.Outliers = new List<double>();
         }
 
         /// <summary>
@@ -73,6 +68,12 @@ namespace OxyPlot.Series
         public double Median { get; set; }
 
         /// <summary>
+        /// Gets or sets the mean.
+        /// </summary>
+        /// <value>The mean.</value>
+        public double Mean { get; set; }
+
+        /// <summary>
         /// Gets or sets the outliers.
         /// </summary>
         /// <value>The outliers.</value>
@@ -98,7 +99,15 @@ namespace OxyPlot.Series
             get
             {
                 var values = new List<double> { this.LowerWhisker, this.BoxBottom, this.Median, this.BoxTop, this.UpperWhisker };
+
+                // As mean is an optional value and should not be checked for validation if not set don't add it if NaN
+                if (!double.IsNaN(this.Mean))
+                {
+                    values.Add(this.Mean);
+                }
+
                 values.AddRange(this.Outliers);
+
                 return values;
             }
         }
@@ -116,11 +125,12 @@ namespace OxyPlot.Series
         public override string ToString()
         {
             return string.Format(
-                "{0} {1} {2} {3} {4} {5} ",
+                "{0} {1} {2} {3} {4} {5} {6} ",
                 this.X,
                 this.LowerWhisker,
                 this.BoxBottom,
                 this.Median,
+                this.Mean,
                 this.BoxTop,
                 this.UpperWhisker);
         }

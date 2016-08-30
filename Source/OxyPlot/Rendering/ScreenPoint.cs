@@ -16,7 +16,7 @@ namespace OxyPlot
     /// Represents a point defined in screen space.
     /// </summary>
     /// <remarks>The rendering methods transforms <see cref="DataPoint" />s to <see cref="ScreenPoint" />s.</remarks>
-    public struct ScreenPoint
+    public struct ScreenPoint : IEquatable<ScreenPoint>
     {
         /// <summary>
         /// The undefined point.
@@ -148,6 +148,16 @@ namespace OxyPlot
         public override string ToString()
         {
             return this.x + " " + this.y;
+        }
+
+        /// <summary>
+        /// Determines whether this instance and another specified <see cref="T:ScreenPoint" /> object have the same value.
+        /// </summary>
+        /// <param name="other">The point to compare to this instance.</param>
+        /// <returns><c>true</c> if the value of the <paramref name="other" /> parameter is the same as the value of this instance; otherwise, <c>false</c>.</returns>
+        public bool Equals(ScreenPoint other)
+        {
+            return this.x.Equals(other.x) && this.y.Equals(other.y);
         }
     }
 }

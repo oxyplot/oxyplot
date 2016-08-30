@@ -9,8 +9,6 @@
 
 namespace OxyPlot
 {
-    using System;
-
     using OxyPlot.Series;
 
     /// <summary>
@@ -20,33 +18,6 @@ namespace OxyPlot
     /// The TrackerControl is visible when the user use the left mouse button to "track" points on the series.</remarks>
     public class TrackerHitResult
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TrackerHitResult"/> class.
-        /// </summary>
-        public TrackerHitResult()
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TrackerHitResult" /> class.
-        /// </summary>
-        /// <param name="series">The series.</param>
-        /// <param name="dp">The data point.</param>
-        /// <param name="sp">The screen point.</param>
-        /// <param name="item">The item.</param>
-        /// <param name="index">The index.</param>
-        /// <param name="text">The text.</param>
-        [Obsolete("Replace with parameterless constructor")]
-        public TrackerHitResult(Series.Series series, DataPoint dp, ScreenPoint sp, object item = null, double index = -1, string text = null)
-        {
-            this.DataPoint = dp;
-            this.Position = sp;
-            this.Item = item;
-            this.Index = index;
-            this.Series = series;
-            this.Text = text;
-        }
-
         /// <summary>
         /// Gets or sets the nearest or interpolated data point.
         /// </summary>

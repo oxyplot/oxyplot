@@ -19,13 +19,18 @@ namespace OxyPlot.Series
     public class ErrorColumnSeries : ColumnSeries
     {
         /// <summary>
+        /// The default tracker format string
+        /// </summary>
+        public new const string DefaultTrackerFormatString = "{0}\n{1}: {2}, Error: {Error:0.###}";
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ErrorColumnSeries" /> class.
         /// </summary>
         public ErrorColumnSeries()
         {
             this.ErrorWidth = 0.4;
             this.ErrorStrokeThickness = 1;
-            this.TrackerFormatString = "{0}\n{1}: {2:0.###}, Error: {Error:0.###}";
+            this.TrackerFormatString = DefaultTrackerFormatString;
         }
 
         /// <summary>

@@ -72,7 +72,7 @@ namespace OxyPlot.GtkSharp
         /// <param name="r">The rectangle.</param>
         /// <param name="aliased">Use pixel alignment if set to <c>true</c>.</param>
         /// <returns>The converted rectangle.</returns>
-        public static Rectangle ToRect(this OxyRect r, bool aliased)
+        public static Rectangle ToRect(this OxyRect r, bool aliased = false)
         {
             if (aliased)
             {
@@ -84,6 +84,26 @@ namespace OxyPlot.GtkSharp
             }
 
             return new Rectangle(r.Left, r.Top, r.Width, r.Height);
+        }
+
+        /// <summary>
+        /// Converts an <see cref="Gdk.Rectangle" /> to a <see cref="OxyRect" />.
+        /// </summary>
+        /// <param name="r">The rectangle.</param>
+        /// <param name="aliased">Use pixel alignment if set to <c>true</c>.</param>
+        /// <returns>The converted rectangle.</returns>
+        public static OxyRect ToOxyRect(this Gdk.Rectangle r, bool aliased = false)
+        {
+            if (aliased)
+            {
+                var x = 0.5 + (int)r.Left;
+                var y = 0.5 + (int)r.Top;
+                var ri = 0.5 + (int)r.Right;
+                var bo = 0.5 + (int)r.Bottom;
+                return new OxyRect(x, y, ri - x, bo - y);
+            }
+
+            return new OxyRect(r.Left, r.Top, r.Width, r.Height);
         }
 
         /// <summary>
@@ -106,7 +126,7 @@ namespace OxyPlot.GtkSharp
             return new OxyMouseDownEventArgs
             {
                 ChangedButton = ConvertButton(e),
-                ClickCount = 1,
+                ClickCount = e.Type == EventType.ButtonPress ? 1 : e.Type == EventType.TwoButtonPress ? 2 : e.Type == EventType.ThreeButtonPress ? 3 : 1,
                 Position = new ScreenPoint(e.X, e.Y),
                 ModifierKeys = GetModifiers(e.State)
             };

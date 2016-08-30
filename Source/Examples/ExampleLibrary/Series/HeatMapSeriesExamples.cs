@@ -43,15 +43,15 @@ namespace ExampleLibrary
             if (includeContours)
             {
                 var cs = new ContourSeries
-                             {
-                                 Color = OxyColors.Black,
-                                 FontSize = 0,
-                                 ContourLevelStep = 1,
-                                 LabelBackground = OxyColors.Undefined,
-                                 ColumnCoordinates = yvalues,
-                                 RowCoordinates = xvalues,
-                                 Data = peaksData
-                             };
+                {
+                    Color = OxyColors.Black,
+                    FontSize = 0,
+                    ContourLevelStep = 1,
+                    LabelBackground = OxyColors.Undefined,
+                    ColumnCoordinates = yvalues,
+                    RowCoordinates = xvalues,
+                    Data = peaksData
+                };
                 model.Series.Add(cs);
             }
 
@@ -82,6 +82,25 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("2×3, interpolated with two NaN values, flat data")]
+        public static PlotModel InterpolatedWithNanValueFlat()
+        {
+            var model = CreateExample("Interpolated including two NaN values, otherwise 4.71", true);
+            var hms = (HeatMapSeries)model.Series[0];
+
+            double datum = 4.71d;
+            hms.Data[0, 0] = datum;
+            hms.Data[0, 1] = datum;
+            hms.Data[0, 2] = datum;
+            hms.Data[1, 0] = datum;
+            hms.Data[1, 1] = datum;
+            hms.Data[1, 2] = datum;
+
+            hms.Data[0, 1] = double.NaN;
+            hms.Data[1, 0] = double.NaN;
+            return model;
+        }
+
         [Example("2×3, not interpolated")]
         public static PlotModel NotInterpolated()
         {
@@ -95,6 +114,27 @@ namespace ExampleLibrary
             var ca = (LinearColorAxis)model.Axes[0];
             ca.InvalidNumberColor = OxyColors.Transparent;
             var hms = (HeatMapSeries)model.Series[0];
+            hms.Data[0, 1] = double.NaN;
+            hms.Data[1, 0] = double.NaN;
+            return model;
+        }
+
+        [Example("2×3, not interpolated with two NaN values, flat data")]
+        public static PlotModel NotInterpolatedWithNanValueFlat()
+        {
+            var model = CreateExample("Not interpolated values including two NaN values, otherwise 4.71", false);
+            var ca = (LinearColorAxis)model.Axes[0];
+            ca.InvalidNumberColor = OxyColors.Transparent;
+            var hms = (HeatMapSeries)model.Series[0];
+
+            double datum = 4.71d;
+            hms.Data[0, 0] = datum;
+            hms.Data[0, 1] = datum;
+            hms.Data[0, 2] = datum;
+            hms.Data[1, 0] = datum;
+            hms.Data[1, 1] = datum;
+            hms.Data[1, 2] = datum;
+
             hms.Data[0, 1] = double.NaN;
             hms.Data[1, 0] = double.NaN;
             return model;
@@ -275,6 +315,105 @@ namespace ExampleLibrary
 
             model.Series.Add(hms);
             return model;
+        }
+
+        [Example("Logarithmic X, interpolated")]
+        public static PlotModel LogXInterpolated()
+        {
+            var data = new double[11, 21];
+
+            double k = Math.Pow(2, 0.1);
+
+            for (int i = 0; i < 11; i++)
+            {
+                for (int j = 0; j < 21; j++)
+                {
+                    data[i, j] = Math.Pow(k, (double)i) * (double)j / 40.0;
+                }
+            }
+
+            var model = new PlotModel { Title = "Logarithmic X, interpolated" };
+            model.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Bottom });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+            model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Gray(500), HighColor = OxyColors.White, LowColor = OxyColors.Black });
+
+            var hms = new HeatMapSeries { X0 = 1.0, X1 = 2.0, Y0 = 0, Y1 = 20, Data = data, Interpolate = true };
+
+            model.Series.Add(hms);
+            return model;
+        }
+
+        [Example("Logarithmic X, discrete rectangles")]
+        public static PlotModel LogXNotInterpolated()
+        {
+            var data = new double[11, 21];
+
+            double k = Math.Pow(2, 0.1);
+
+            for (int i = 0; i < 11; i++)
+            {
+                for (int j = 0; j < 21; j++)
+                {
+                    data[i, j] = Math.Pow(k, (double)i) * (double)j / 40.0;
+                }
+            }
+
+            var model = new PlotModel { Title = "Logarithmic X, discrete rectangles" };
+            model.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Bottom });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+            model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Gray(500), HighColor = OxyColors.White, LowColor = OxyColors.Black });
+
+            var hms = new HeatMapSeries { X0 = 1.0, X1 = 2.0, Y0 = 0, Y1 = 20, Data = data, Interpolate = false, RenderMethod = HeatMapRenderMethod.Rectangles, LabelFontSize = 0.4 };
+
+            model.Series.Add(hms);
+            return model;
+        }
+
+        [Example("6×4, not transposed")]
+        public static PlotModel Normal_6X4()
+        {
+            return Create6X4(false, "Normal 6×4 Heatmap");
+        }
+
+        [Example("6×4, transposed")]
+        public static PlotModel Transposed_6X4()
+        {
+            return Create6X4(true, "Transposed 6×4 Heatmap");
+        }
+
+        private static PlotModel Create6X4(bool transpose, string title)
+        {
+            var data = new double[6, 4];
+
+            for (int i = 1; i <= 6; i++)
+            {
+                for (int j = 1; j <= 4; j++)
+                {
+                    data[i - 1, j - 1] = i * j;
+                }
+            }
+
+            var model = new PlotModel { Title = title, Subtitle = "Note the positions of the axes" };
+
+            var xaxis = new LinearAxis { Key = "x", Title = "X", Position = transpose ? AxisPosition.Left : AxisPosition.Bottom };
+            var yaxis = new LinearAxis { Key = "y", Title = "Y", Position = transpose ? AxisPosition.Bottom : AxisPosition.Left };
+
+            model.Axes.Add(xaxis);
+            model.Axes.Add(yaxis);
+            model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(500), HighColor = OxyColors.White, LowColor = OxyColors.Black });
+
+            var hms = new HeatMapSeries { X0 = 1, X1 = 6, Y0 = 1, Y1 = 4, Data = data, Interpolate = true, LabelFontSize = 0.2 };
+
+            hms.XAxisKey = "x";
+            hms.YAxisKey = "y";
+
+            model.Series.Add(hms);
+            return model;
+        }
+
+        private static void DefaultXAxis_MouseDown(object sender, OxyMouseDownEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>

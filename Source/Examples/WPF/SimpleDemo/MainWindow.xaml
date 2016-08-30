@@ -9,6 +9,6 @@
     </Window.DataContext>
     <Grid>
         <!-- The OxyPlot control is binding to a PlotModel in the MainViewModel -->
-        <oxy:PlotView Model="{Binding Model}"/>
+        <oxy:PlotView Model="{Binding Model}" />
     </Grid>
 </Window>

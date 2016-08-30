@@ -39,74 +39,6 @@ namespace OxyPlot.Annotations
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ImageAnnotation" /> class.
-        /// </summary>
-        /// <param name="image">The image.</param>
-        /// <param name="position">The position in screen coordinates.</param>
-        /// <param name="horizontalAlignment">The horizontal alignment.</param>
-        /// <param name="verticalAlignment">The vertical alignment.</param>
-        [Obsolete]
-        public ImageAnnotation(
-            OxyImage image,
-            ScreenPoint position,
-            HorizontalAlignment horizontalAlignment = HorizontalAlignment.Center,
-            VerticalAlignment verticalAlignment = VerticalAlignment.Middle)
-            : this()
-        {
-            this.ImageSource = image;
-            this.X = new PlotLength(position.X, PlotLengthUnit.ScreenUnits);
-            this.Y = new PlotLength(position.Y, PlotLengthUnit.ScreenUnits);
-            this.HorizontalAlignment = horizontalAlignment;
-            this.VerticalAlignment = verticalAlignment;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ImageAnnotation" /> class.
-        /// </summary>
-        /// <param name="image">The image.</param>
-        /// <param name="position">The position in data coordinates.</param>
-        /// <param name="horizontalAlignment">The horizontal alignment.</param>
-        /// <param name="verticalAlignment">The vertical alignment.</param>
-        [Obsolete]
-        public ImageAnnotation(
-            OxyImage image,
-            DataPoint position,
-            HorizontalAlignment horizontalAlignment = HorizontalAlignment.Center,
-            VerticalAlignment verticalAlignment = VerticalAlignment.Middle)
-            : this()
-        {
-            this.ImageSource = image;
-            this.X = new PlotLength(position.X, PlotLengthUnit.Data);
-            this.Y = new PlotLength(position.Y, PlotLengthUnit.Data);
-            this.HorizontalAlignment = horizontalAlignment;
-            this.VerticalAlignment = verticalAlignment;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ImageAnnotation" /> class.
-        /// </summary>
-        /// <param name="image">The image.</param>
-        /// <param name="relativeX">The x-coordinate relative to the plot area (0-1).</param>
-        /// <param name="relativeY">The y-coordinate relative to the plot area (0-1).</param>
-        /// <param name="horizontalAlignment">The horizontal alignment.</param>
-        /// <param name="verticalAlignment">The vertical alignment.</param>
-        [Obsolete]
-        public ImageAnnotation(
-            OxyImage image,
-            double relativeX,
-            double relativeY,
-            HorizontalAlignment horizontalAlignment = HorizontalAlignment.Center,
-            VerticalAlignment verticalAlignment = VerticalAlignment.Middle)
-            : this()
-        {
-            this.ImageSource = image;
-            this.X = new PlotLength(relativeX, PlotLengthUnit.RelativeToPlotArea);
-            this.Y = new PlotLength(relativeY, PlotLengthUnit.RelativeToPlotArea);
-            this.HorizontalAlignment = horizontalAlignment;
-            this.VerticalAlignment = verticalAlignment;
-        }
-
-        /// <summary>
         /// Gets or sets the image source.
         /// </summary>
         /// <value>The image source.</value>
@@ -176,18 +108,17 @@ namespace OxyPlot.Annotations
         /// Renders the image annotation.
         /// </summary>
         /// <param name="rc">The render context.</param>
-        /// <param name="model">The plot model.</param>
-        public override void Render(IRenderContext rc, PlotModel model)
+        public override void Render(IRenderContext rc)
         {
-            base.Render(rc, model);
+            base.Render(rc);
 
-            var p = this.GetPoint(this.X, this.Y, rc, model);
-            var o = this.GetVector(this.OffsetX, this.OffsetY, rc, model);
+            var p = this.GetPoint(this.X, this.Y, rc, this.PlotModel);
+            var o = this.GetVector(this.OffsetX, this.OffsetY, rc, this.PlotModel);
             var position = p + o;
 
             var clippingRectangle = this.GetClippingRect();
 
-            var s = this.GetVector(this.Width, this.Height, rc, model);
+            var s = this.GetVector(this.Width, this.Height, rc, this.PlotModel);
 
             var width = s.X;
             var height = s.Y;

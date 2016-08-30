@@ -19,22 +19,22 @@ namespace OxyPlot
         /// <summary>
         /// The bottom.
         /// </summary>
-        private double bottom;
+        private readonly double bottom;
 
         /// <summary>
         /// The left.
         /// </summary>
-        private double left;
+        private readonly double left;
 
         /// <summary>
         /// The right.
         /// </summary>
-        private double right;
+        private readonly double right;
 
         /// <summary>
         /// The top.
         /// </summary>
-        private double top;
+        private readonly double top;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OxyThickness" /> struct.
@@ -61,7 +61,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets or sets the bottom thickness.
+        /// Gets the bottom thickness.
         /// </summary>
         /// <value>The bottom thickness.</value>
         public double Bottom
@@ -69,11 +69,6 @@ namespace OxyPlot
             get
             {
                 return this.bottom;
-            }
-
-            set
-            {
-                this.bottom = value;
             }
         }
 
@@ -89,7 +84,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets or sets the left thickness.
+        /// Gets the left thickness.
         /// </summary>
         /// <value>The left thickness.</value>
         public double Left
@@ -98,15 +93,10 @@ namespace OxyPlot
             {
                 return this.left;
             }
-
-            set
-            {
-                this.left = value;
-            }
         }
 
         /// <summary>
-        /// Gets or sets the right thickness.
+        /// Gets the right thickness.
         /// </summary>
         /// <value>The right thickness.</value>
         public double Right
@@ -115,15 +105,10 @@ namespace OxyPlot
             {
                 return this.right;
             }
-
-            set
-            {
-                this.right = value;
-            }
         }
 
         /// <summary>
-        /// Gets or sets the top thickness.
+        /// Gets the top thickness.
         /// </summary>
         /// <value>The top thickness.</value>
         public double Top
@@ -131,11 +116,6 @@ namespace OxyPlot
             get
             {
                 return this.top;
-            }
-
-            set
-            {
-                this.top = value;
             }
         }
 
@@ -173,6 +153,16 @@ namespace OxyPlot
         {
             return string.Format(
                 CultureInfo.InvariantCulture, "({0}, {1}, {2}, {3})", this.left, this.top, this.right, this.bottom);
+        }
+
+        /// <summary>
+        /// Determines whether this instance and another specified <see cref="T:OxyThickness" /> object have the same value.
+        /// </summary>
+        /// <param name="other">The thickness to compare to this instance.</param>
+        /// <returns><c>true</c> if the value of the <paramref name="other" /> parameter is the same as the value of this instance; otherwise, <c>false</c>.</returns>
+        public bool Equals(OxyThickness other)
+        {
+            return this.Left.Equals(other.Left) && this.Top.Equals(other.Top) && this.Width.Equals(other.Width) && this.Height.Equals(other.Height);
         }
     }
 }

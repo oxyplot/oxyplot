@@ -123,7 +123,7 @@ namespace ExampleLibrary
                     Position = point,
                     Item = null,
                     Index = -1,
-                    Text = this.Format(this.TrackerFormatString, null, this.Title, i, j, value)
+                    Text = StringHelper.Format(this.ActualCulture, this.TrackerFormatString, null, this.Title, i, j, value)
                 };
             }
 
@@ -134,8 +134,7 @@ namespace ExampleLibrary
         /// Renders the series on the specified render context.
         /// </summary>
         /// <param name="rc">The rendering context.</param>
-        /// <param name="model">The model.</param>
-        public override void Render(IRenderContext rc, PlotModel model)
+        public override void Render(IRenderContext rc)
         {
             if (this.Matrix == null)
             {

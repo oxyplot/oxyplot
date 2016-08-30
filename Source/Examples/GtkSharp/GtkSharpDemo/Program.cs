@@ -28,33 +28,35 @@ namespace GtkSharpDemo
         {
             Application.Init();
 
-            var window = new Window("GtkSharpDemo");
-            var plotModel = new PlotModel
-                         {
-                             Title = "Trigonometric functions",
-                             Subtitle = "Example using the FunctionSeries",
-                             PlotType = PlotType.Cartesian,
-                             Background = OxyColors.White
-                         };
-            plotModel.Series.Add(new FunctionSeries(Math.Sin, -10, 10, 0.1, "sin(x)") { Color = OxyColors.Black });
-            plotModel.Series.Add(new FunctionSeries(Math.Cos, -10, 10, 0.1, "cos(x)") { Color = OxyColors.Green });
-            plotModel.Series.Add(new FunctionSeries(t => 5 * Math.Cos(t), t => 5 * Math.Sin(t), 0, 2 * Math.PI, 0.1, "cos(t),sin(t)") { Color = OxyColors.Yellow });
-            
-            var plotView = new OxyPlot.GtkSharp.PlotView { Model = plotModel };
-            plotView.SetSizeRequest(400, 400);
-            plotView.Visible = true;
-
-            window.SetSizeRequest(600, 600);
-            window.Add(plotView);
-            window.Focus = plotView;
-            window.Show();
-            window.DeleteEvent += (s, a) =>
+            using (var window = new Window("GtkSharp Demo"))
+            {
+                var plotModel = new PlotModel
                 {
-                    Application.Quit();
-                    a.RetVal = true;
+                    Title = "Trigonometric functions",
+                    Subtitle = "Example using the FunctionSeries",
+                    PlotType = PlotType.Cartesian,
+                    Background = OxyColors.White
                 };
+                plotModel.Series.Add(new FunctionSeries(Math.Sin, -10, 10, 0.1, "sin(x)"));
+                plotModel.Series.Add(new FunctionSeries(Math.Cos, -10, 10, 0.1, "cos(x)"));
+                plotModel.Series.Add(new FunctionSeries(t => 5 * Math.Cos(t), t => 5 * Math.Sin(t), 0, 2 * Math.PI, 0.1,
+                    "cos(t),sin(t)"));
 
-            Application.Run();
+                using (var plotView = new OxyPlot.GtkSharp.PlotView { Model = plotModel, Visible = true })
+                {
+                    window.SetSizeRequest(800, 600);
+                    window.Add(plotView);
+                    window.Focus = plotView;
+                    window.Show();
+                    window.DeleteEvent += (s, a) =>
+                    {
+                        Application.Quit();
+                        a.RetVal = true;
+                    };
+
+                    Application.Run();
+                }
+            }
         }
     }
 }

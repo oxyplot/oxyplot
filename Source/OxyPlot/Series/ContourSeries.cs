@@ -20,6 +20,11 @@ namespace OxyPlot.Series
     public class ContourSeries : XYAxisSeries
     {
         /// <summary>
+        /// The default tracker format string
+        /// </summary>
+        public new const string DefaultTrackerFormatString = "{0}\n{1}: {2}\n{3}: {4}\n{5}: {6}";
+
+        /// <summary>
         /// The contour collection.
         /// </summary>
         private List<Contour> contours;
@@ -49,7 +54,7 @@ namespace OxyPlot.Series
             this.StrokeThickness = 1.0;
             this.LineStyle = LineStyle.Solid;
 
-            this.TrackerFormatString = "{0}\n{1}: {2:0.####}\n{3}: {4:0.####}\n{5}: {6:0.####}";
+            this.TrackerFormatString = DefaultTrackerFormatString;
         }
 
         /// <summary>
@@ -228,7 +233,8 @@ namespace OxyPlot.Series
                     if (result == null || result.Position.DistanceToSquared(point) > r.Position.DistanceToSquared(point))
                     {
                         result = r;
-                        result.Text = this.Format(
+                        result.Text = StringHelper.Format(
+                            this.ActualCulture, 
                             this.TrackerFormatString,
                             null,
                             this.Title,
@@ -249,8 +255,7 @@ namespace OxyPlot.Series
         /// Renders the series on the specified rendering context.
         /// </summary>
         /// <param name="rc">The rendering context.</param>
-        /// <param name="model">The model.</param>
-        public override void Render(IRenderContext rc, PlotModel model)
+        public override void Render(IRenderContext rc)
         {
             if (this.contours == null)
             {
@@ -311,13 +316,12 @@ namespace OxyPlot.Series
         /// <summary>
         /// Sets default values from the plot model.
         /// </summary>
-        /// <param name="model">The plot model.</param>
-        protected internal override void SetDefaultValues(PlotModel model)
+        protected internal override void SetDefaultValues()
         {
             if (this.Color.IsAutomatic())
             {
-                this.LineStyle = model.GetDefaultLineStyle();
-                this.defaultColor = model.GetDefaultColor();
+                this.LineStyle = this.PlotModel.GetDefaultLineStyle();
+                this.defaultColor = this.PlotModel.GetDefaultColor();
             }
         }
 

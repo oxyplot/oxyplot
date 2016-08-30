@@ -30,30 +30,6 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MagnitudeAxis" /> class.
-        /// </summary>
-        /// <param name="minimum">The minimum.</param>
-        /// <param name="maximum">The maximum.</param>
-        /// <param name="majorStep">The major step.</param>
-        /// <param name="minorStep">The minor step.</param>
-        /// <param name="title">The title.</param>
-        [Obsolete]
-        public MagnitudeAxis(
-            double minimum = double.NaN,
-            double maximum = double.NaN,
-            double majorStep = double.NaN,
-            double minorStep = double.NaN,
-            string title = null)
-            : this()
-        {
-            this.Minimum = minimum;
-            this.Maximum = maximum;
-            this.MajorStep = majorStep;
-            this.MinorStep = minorStep;
-            this.Title = title;
-        }
-
-        /// <summary>
         /// Gets or sets the midpoint (screen coordinates) of the plot area. This is used by polar coordinate systems.
         /// </summary>
         internal ScreenPoint MidPoint { get; set; }
@@ -96,17 +72,10 @@ namespace OxyPlot.Axes
         /// Renders the axis on the specified render context.
         /// </summary>
         /// <param name="rc">The render context.</param>
-        /// <param name="model">The model.</param>
-        /// <param name="axisLayer">The rendering order.</param>
         /// <param name="pass">The rendering pass.</param>
-        public override void Render(IRenderContext rc, PlotModel model, AxisLayer axisLayer, int pass)
+        public override void Render(IRenderContext rc, int pass)
         {
-            if (this.Layer != axisLayer)
-            {
-                return;
-            }
-
-            var r = new MagnitudeAxisRenderer(rc, model);
+            var r = new MagnitudeAxisRenderer(rc, this.PlotModel);
             r.Render(this, pass);
         }
 

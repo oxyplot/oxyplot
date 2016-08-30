@@ -101,7 +101,7 @@ namespace OxyPlot.Series
         /// <param name="index">The index of the bar item.</param>
         protected override void RenderLabel(IRenderContext rc, OxyRect clippingRect, OxyRect rect, double value, int index)
         {
-            var s = this.Format(this.LabelFormatString, this.GetItem(this.ValidItemsIndexInversion[index]), value);
+            var s = StringHelper.Format(this.ActualCulture, this.LabelFormatString, this.GetItem(this.ValidItemsIndexInversion[index]), value);
             HorizontalAlignment ha;
             ScreenPoint pt;
             switch (this.LabelPlacement)
@@ -135,6 +135,18 @@ namespace OxyPlot.Series
                 0,
                 ha,
                 VerticalAlignment.Middle);
+        }
+
+        /// <summary>
+        /// Updates the <see cref="F:itemsSourceItems" /> from the <see cref="P:ItemsSource" /> and data fields.
+        /// </summary>
+        protected override void UpdateFromDataFields()
+        {
+            // Using reflection to add items by value and color (optional)
+            var filler = new ListBuilder<BarItem>();
+            filler.Add(this.ValueField, double.NaN);
+            filler.Add(this.ColorField, OxyColors.Automatic);
+            filler.Fill(this.ItemsSourceItems, this.ItemsSource, args => new BarItem(Convert.ToDouble(args[0])) { Color = (OxyColor)args[1] });
         }
     }
 }

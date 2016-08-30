@@ -41,6 +41,46 @@ namespace ExampleLibrary
             return plot;
         }
 
+        [Example("Filtering NaN points with AreaSeries")]
+        public static PlotModel FilteringInvalidPointsAreaSeries()
+        {
+            var plot = new PlotModel { Title = "Filtering NaN points in an AreaSeries" };
+            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+
+            var as1 = new AreaSeries();
+            as1.Points.Add(new DataPoint(1, 0));
+            as1.Points.Add(new DataPoint(2, 10));
+            as1.Points.Add(new DataPoint(3, 10));
+            as1.Points.Add(new DataPoint(4, 0));
+            as1.Points.Add(new DataPoint(5, 0));
+            as1.Points.Add(new DataPoint(6, 7));
+            as1.Points.Add(new DataPoint(7, 7));
+            as1.Points.Add(new DataPoint(double.NaN, double.NaN));
+            as1.Points.Add(new DataPoint(double.NaN, double.NaN));
+            as1.Points.Add(new DataPoint(8, 0));
+            as1.Points.Add(new DataPoint(9, 0));
+            as1.Points.Add(new DataPoint(double.NaN, double.NaN));
+
+            as1.Points2.Add(new DataPoint(1, 10));
+            as1.Points2.Add(new DataPoint(2, 110));
+            as1.Points2.Add(new DataPoint(3, 110));
+            as1.Points2.Add(new DataPoint(4, 10));
+            as1.Points2.Add(new DataPoint(5, 10));
+            as1.Points2.Add(new DataPoint(6, 17));
+            as1.Points2.Add(new DataPoint(7, 17));
+            as1.Points2.Add(new DataPoint(double.NaN, double.NaN));
+            as1.Points2.Add(new DataPoint(double.NaN, double.NaN));
+            as1.Points2.Add(new DataPoint(8, 10));
+            as1.Points2.Add(new DataPoint(9, 10));
+            as1.Points2.Add(new DataPoint(double.NaN, double.NaN));
+
+            plot.Series.Add(as1);
+
+            return plot;
+        }
+
+
         [Example("Filtering undefined points")]
         public static PlotModel FilteringUndefinedPoints()
         {
