@@ -43,6 +43,7 @@ All notable changes to this project will be documented in this file.
 - Support for PieSeries in OxyPlot.Wpf (#878)
 - Filter in example browser (#118)
 - Support for tooltips on WPF annotations
+- Support for tracker in OxyPlot.GtkSharp
 
 ### Changed
 - Fixed closing file stream for PdfReportWriter when PdfReportWriter is closed or disposed of. (#892)
