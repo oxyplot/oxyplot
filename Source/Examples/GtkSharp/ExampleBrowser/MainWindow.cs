@@ -68,7 +68,7 @@ namespace ExampleBrowser
                     last = ex.Category;
                 }
 
-                treeModel.AppendValues(iter, ex.Title);
+                treeModel.AppendValues(iter, ex.Title, ex.Category);
             }
 
             this.treeView.Model = treeModel;
@@ -87,12 +87,7 @@ namespace ExampleBrowser
                     string val1 = (string)selectedModel.GetValue(selectedNode, 0);
                     string val2 = (string)selectedModel.GetValue(selectedNode, 1);
 
-                    var info = this.Examples.FirstOrDefault(ex => ex.Title == val1)
-                            ?? this.Examples.FirstOrDefault(ex => ex.Category == val1);
-                    if (info != null)
-                    {
-                        this.SelectedExample = info;
-                    }
+                    this.SelectedExample = this.Examples.FirstOrDefault(ex => ex.Category == val2 && ex.Title == val1);
                 }
             };
 
