@@ -409,22 +409,29 @@ namespace OxyPlot.GtkSharp
                                 }
 
                 */
-                var scalex = w / image.Width;
-                var scaley = h / image.Height;
-                var rectw = w / scalex;
-                var recth = h / scaley;
+                double scalex = w / image.Width;
+                double scaley = h / image.Height;
+
+                // This alternative handles opacity, but can exhibit unattractive antialiasing artifacts when scaling up by large factors.
+                // Pixbuf imageScaled = new Pixbuf(image.Colorspace, image.HasAlpha, image.BitsPerSample, (int)w, (int)h);
+                // image.Composite(image, 0, 0, (int)w, (int)h, srcX, srcY, scalex, scaley, interpolate ? InterpType.Bilinear : InterpType.Nearest, (int)(opacity * 255));
+                // image = imageScaled;
+                
+                if (!interpolate)
+                {
+                    image = image.ScaleSimple((int)w, (int)h, InterpType.Nearest);
+                    scalex = 1.0;
+                    scaley = 1.0;
+                }
                 this.g.Translate(x, y);
                 this.g.Scale(scalex, scaley);
-                this.g.Rectangle(0, 0, rectw, recth);
+                this.g.Rectangle(0, 0, image.Width, image.Height);
                 Gdk.CairoHelper.SetSourcePixbuf(
                     this.g,
                     image,
-                    (rectw - image.Width) / 2.0,
-                    (recth - image.Height) / 2.0);
+                    0.0,
+                    0.0);
                 this.g.Fill();
-
-                // TODO: InterpolationMode
-                // g.InterpolationMode = interpolate ? InterpolationMode.HighQualityBicubic : InterpolationMode.NearestNeighbor;
                 this.g.Restore();
             }
         }
