@@ -21,7 +21,7 @@ namespace OxyPlot
         /// <summary>
         /// The undefined.
         /// </summary>
-        public static readonly DataRect Undefined = new DataRect(DataPoint.Undefined, DataPoint.Undefined);
+        public static readonly DataRect Undefined = new DataRect(DataPoint.Undefined, DataPoint.Undefined, 0);
 
         /// <summary>
         /// The x-coordinate.
@@ -38,16 +38,22 @@ namespace OxyPlot
         internal readonly DataPoint b;
 
         /// <summary>
+        /// The value.
+        /// </summary>
+        internal readonly double value;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="DataRect" /> struct.
         /// </summary>
         /// <param name="x1">The x coordinate of the first corner.</param>
         /// <param name="x2">The x coordinate of the diagonally-opposite corner.</param>
         /// <param name="y1">The y coordinate of the first corner.</param>
         /// <param name="y2">The y coordinate of the diagonally-opposite corner.</param>
-        public DataRect(double x1, double x2, double y1, double y2)
+        public DataRect(double x1, double x2, double y1, double y2, double value)
         {
             this.a = new DataPoint(x1, y1);
             this.b = new DataPoint(x2, y2);
+            this.value = value;
         }
 
         /// <summary>
@@ -55,10 +61,11 @@ namespace OxyPlot
         /// </summary>
         /// <param name="a">The first corner.</param>
         /// <param name="b">The diagonally-opposite corner.</param>
-        public DataRect(DataPoint a, DataPoint b)
+        public DataRect(DataPoint a, DataPoint b, double value)
         {
             this.a = a;
             this.b = b;
+            this.value = value;
         }
 
         /// <summary>

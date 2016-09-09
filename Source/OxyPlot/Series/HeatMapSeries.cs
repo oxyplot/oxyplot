@@ -10,6 +10,7 @@
 namespace OxyPlot.Series
 {
     using System;
+    using System.Collections.Generic;
 
     using OxyPlot.Axes;
 
@@ -48,7 +49,7 @@ namespace OxyPlot.Series
     /// <summary>
     /// Represents a heat map.
     /// </summary>
-    public class HeatMapSeries : XYAxisSeries
+    public class HeatMapSeries : DataRectSeries
     {
         /// <summary>
         /// The default tracker format string
@@ -225,10 +226,56 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Renders the series on the specified render context.
+        /// Renders the series on the specified rendering context.
         /// </summary>
         /// <param name="rc">The rendering context.</param>
         public override void Render(IRenderContext rc)
+        {
+            var actualRects = this.ActualRects;
+            if (actualRects == null || actualRects.Count == 0)
+            {
+                this.RenderOld(rc);
+                return;
+            }
+
+            this.VerifyAxes();
+
+            var clippingRect = this.GetClippingRect();
+            rc.SetClip(clippingRect);
+
+            this.RenderRects(rc, clippingRect, actualRects);
+
+            rc.ResetClip();
+        }
+
+        /// <summary>
+        /// Renders the points as line, broken line and markers.
+        /// </summary>
+        /// <param name="rc">The rendering context.</param>
+        /// <param name="clippingRect">The clipping rectangle.</param>
+        /// <param name="rects">The rects to render.</param>
+        protected void RenderRects(IRenderContext rc, OxyRect clippingRect, ICollection<DataRect> rects)
+        {
+            var rectEnumerator = rects.GetEnumerator();
+
+            while (rectEnumerator.MoveNext())
+            {
+                var dataRect = rectEnumerator.Current;
+                var rectcolor = this.ColorAxis.GetColor(dataRect.value);
+
+                var pointa = this.Orientate(new ScreenPoint(dataRect.A.X, dataRect.A.Y)); // re-orientate
+                var pointb = this.Orientate(new ScreenPoint(dataRect.B.X, dataRect.B.Y)); // re-orientate
+                var rectrect = new OxyRect(pointa, pointb);
+
+                rc.DrawClippedRectangle(clippingRect, rectrect, rectcolor, OxyColors.Undefined, 0);
+            }
+        }
+
+        /// <summary>
+        /// Renders the series on the specified render context.
+        /// </summary>
+        /// <param name="rc">The rendering context.</param>
+        public void RenderOld(IRenderContext rc)
         {
             if (this.Data == null)
             {
