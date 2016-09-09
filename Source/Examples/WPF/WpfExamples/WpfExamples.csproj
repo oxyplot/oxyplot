@@ -118,6 +118,9 @@
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Examples\ExportDemo\ShellViewModel.cs" />
+    <Compile Include="Examples\HeatMapMappingDemo\HeatMapMappingWindow.xaml.cs">
+      <DependentUpon>HeatMapMappingWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Examples\LinearBarSeriesDemo\MainViewModel.cs" />
     <Compile Include="Examples\LinearBarSeriesDemo\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -209,6 +212,10 @@
     <Page Include="Examples\ExportDemo\ShellView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\HeatMapMappingDemo\HeatMapMappingWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Examples\LinearBarSeriesDemo\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
