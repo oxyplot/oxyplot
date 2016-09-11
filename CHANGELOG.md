@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [1.0.0] - 2016-09-11
 ### Added
 - Added OxyPlot.SharpDX.Wpf NuGet package
 - Added DirectX 9.1-10.1 feature level support for SharpDX renderer
@@ -212,5 +212,6 @@ All notable changes to this project will be documented in this file.
 - Add overridable Axis.FormatValueOverride (#181)
 - PngExporter text formatting (#170)
 
-[Unreleased]: https://github.com/oxyplot/oxyplot/compare/v0.2014.1.546...HEAD
+[Unreleased]: https://github.com/oxyplot/oxyplot/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/oxyplot/oxyplot/compare/v0.2014.1.546...v1.0.0
 [0.2014.1.546]: https://github.com/oxyplot/oxyplot/compare/v0.0.1...v0.2014.1.546
