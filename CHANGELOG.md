@@ -1,6 +1,22 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+### Added
+- 
+
+### Changed
+- 
+
+### Deprecated
+- 
+
+### Removed
+- 
+
+### Fixed
+- 
+
 ## [1.0.0] - 2016-09-11
 ### Added
 - Added OxyPlot.SharpDX.Wpf NuGet package
