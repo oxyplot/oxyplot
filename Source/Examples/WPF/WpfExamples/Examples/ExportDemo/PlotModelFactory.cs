@@ -196,26 +196,26 @@ namespace ExportDemo
         private static PlotModel CreateSineModel(double stepSize)
         {
             var plot = new PlotModel
-                           {
-                               Title = "Sine wave"
-                           };
+            {
+                Title = "Sine wave"
+            };
 
             var ls = CreateLineSeries(Math.Sin, 0, 10, stepSize, "sin(x)");
             plot.Series.Add(ls);
             plot.Axes.Add(new LinearAxis
-                              {
-                                  Title = "Y",
-                                  Position = AxisPosition.Left,
-                                  MaximumPadding = 0.3,
-                                  MinimumPadding = 0.3,
-                                  MajorGridlineStyle = LineStyle.Solid
-                              });
+            {
+                Title = "Y",
+                Position = AxisPosition.Left,
+                MaximumPadding = 0.3,
+                MinimumPadding = 0.3,
+                MajorGridlineStyle = LineStyle.Solid
+            });
             plot.Axes.Add(new LinearAxis
-                              {
-                                  Title = "X",
-                                  Position = AxisPosition.Bottom,
-                                  MajorGridlineStyle = LineStyle.Solid
-                              });
+            {
+                Title = "X",
+                Position = AxisPosition.Bottom,
+                MajorGridlineStyle = LineStyle.Solid
+            });
 
             return plot;
         }
@@ -234,29 +234,29 @@ namespace ExportDemo
             // http://en.wikipedia.org/wiki/Normal_distribution
 
             var plot = new PlotModel
-                           {
-                               Title = "Normal distribution",
-                               Subtitle = "Probability density function"
-                           };
+            {
+                Title = "Normal distribution",
+                Subtitle = "Probability density function"
+            };
 
             plot.Axes.Add(new LinearAxis
-                              {
-                                  Position = AxisPosition.Left,
-                                  Minimum = -0.05,
-                                  Maximum = 1.05,
-                                  MajorStep = 0.2,
-                                  MinorStep = 0.05,
-                                  TickStyle = TickStyle.Inside
-                              });
+            {
+                Position = AxisPosition.Left,
+                Minimum = -0.05,
+                Maximum = 1.05,
+                MajorStep = 0.2,
+                MinorStep = 0.05,
+                TickStyle = TickStyle.Inside
+            });
             plot.Axes.Add(new LinearAxis
-                              {
-                                  Position = AxisPosition.Bottom,
-                                  Minimum = -5.25,
-                                  Maximum = 5.25,
-                                  MajorStep = 1,
-                                  MinorStep = 0.25,
-                                  TickStyle = TickStyle.Inside
-                              });
+            {
+                Position = AxisPosition.Bottom,
+                Minimum = -5.25,
+                Maximum = 5.25,
+                MajorStep = 1,
+                MinorStep = 0.25,
+                TickStyle = TickStyle.Inside
+            });
             plot.Series.Add(CreateNormalDistributionSeries(-5, 5, 0, 0.2));
             plot.Series.Add(CreateNormalDistributionSeries(-5, 5, 0, 1));
             plot.Series.Add(CreateNormalDistributionSeries(-5, 5, 0, 5));
@@ -268,9 +268,9 @@ namespace ExportDemo
                                                                  int n = 1000)
         {
             var ls = new LineSeries
-                         {
-                             Title = String.Format("μ={0}, σ²={1}", mean, variance)
-                         };
+            {
+                Title = String.Format("μ={0}, σ²={1}", mean, variance)
+            };
 
             for (int i = 0; i < n; i++)
             {
@@ -286,9 +286,9 @@ namespace ExportDemo
             var plot = new PlotModel { Title = "Square wave (Gibbs phenomenon)" };
 
             var ls = new LineSeries
-                         {
-                             Title = "sin(x)+sin(3x)/3+sin(5x)/5+...+sin(" + (2 * n - 1) + ")/" + (2 * n - 1)
-                         };
+            {
+                Title = "sin(x)+sin(3x)/3+sin(5x)/5+...+sin(" + (2 * n - 1) + ")/" + (2 * n - 1)
+            };
 
             for (double x = -10; x < 10; x += 0.0001)
             {
@@ -301,15 +301,15 @@ namespace ExportDemo
                 ls.Points.Add(new DataPoint(x, y));
             }
             plot.Axes.Add(new LinearAxis
-                              {
-                                  Position = AxisPosition.Left,
-                                  Minimum = -4,
-                                  Maximum = 4
-                              });
+            {
+                Position = AxisPosition.Left,
+                Minimum = -4,
+                Maximum = 4
+            });
             plot.Axes.Add(new LinearAxis
-                              {
-                                  Position = AxisPosition.Bottom
-                              });
+            {
+                Position = AxisPosition.Bottom
+            });
 
             plot.Series.Add(ls);
 
@@ -321,7 +321,8 @@ namespace ExportDemo
                                                       string seriesTitle)
         {
             var plot = new PlotModel { Title = title, Subtitle = subtitle, PlotType = PlotType.Cartesian };
-
+            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Left, StringFormat = "g10" });
+            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
             var ls = new LineSeries { Title = seriesTitle };
 
             for (double t = t0; t <= t1; t += dt)
@@ -343,21 +344,21 @@ namespace ExportDemo
             plot.Series.Add(CreateLineSeries(x => x * x * x, 0.1, 100, 0.1, "y=x³"));
 
             plot.Axes.Add(new LogarithmicAxis
-                              {
-                                  Position = AxisPosition.Left,
-                                  Minimum = 0.1,
-                                  Maximum = 100,
-                                  MajorGridlineStyle = LineStyle.Solid,
-                                  MinorGridlineStyle = LineStyle.Solid
-                              });
+            {
+                Position = AxisPosition.Left,
+                Minimum = 0.1,
+                Maximum = 100,
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Solid
+            });
             plot.Axes.Add(new LinearAxis
-                              {
-                                  Position = AxisPosition.Bottom,
-                                  Minimum = 0.1,
-                                  Maximum = 100,
-                                  MajorGridlineStyle = LineStyle.Solid,
-                                  MinorGridlineStyle = LineStyle.Solid
-                              });
+            {
+                Position = AxisPosition.Bottom,
+                Minimum = 0.1,
+                Maximum = 100,
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Solid
+            });
 
             return plot;
         }
@@ -372,21 +373,21 @@ namespace ExportDemo
             plot.Series.Add(CreateLineSeries(x => x * x * x, 0.1, 100, 0.1, "y=x³"));
 
             plot.Axes.Add(new LogarithmicAxis
-                              {
-                                  Position = AxisPosition.Bottom,
-                                  Minimum = 0.1,
-                                  Maximum = 100,
-                                  MajorGridlineStyle = LineStyle.Solid,
-                                  MinorGridlineStyle = LineStyle.Solid
-                              });
+            {
+                Position = AxisPosition.Bottom,
+                Minimum = 0.1,
+                Maximum = 100,
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Solid
+            });
             plot.Axes.Add(new LinearAxis
-                              {
-                                  Position = AxisPosition.Left,
-                                  Minimum = 0.1,
-                                  Maximum = 100,
-                                  MajorGridlineStyle = LineStyle.Solid,
-                                  MinorGridlineStyle = LineStyle.Solid
-                              });
+            {
+                Position = AxisPosition.Left,
+                Minimum = 0.1,
+                Maximum = 100,
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Solid
+            });
 
             return plot;
         }
@@ -401,23 +402,23 @@ namespace ExportDemo
             plot.Series.Add(CreateLineSeries(x => x * x * x, 0.1, 100, 0.1, "y=x³"));
 
             plot.Axes.Add(new LogarithmicAxis
-                              {
-                                  Position = AxisPosition.Left,
-                                  Minimum = 0.1,
-                                  Maximum = 100,
-                                  // UseSuperExponentialFormat = true,
-                                  MajorGridlineStyle = LineStyle.Solid,
-                                  MinorGridlineStyle = LineStyle.Solid
-                              });
+            {
+                Position = AxisPosition.Left,
+                Minimum = 0.1,
+                Maximum = 100,
+                // UseSuperExponentialFormat = true,
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Solid
+            });
             plot.Axes.Add(new LogarithmicAxis
-                              {
-                                  Position = AxisPosition.Bottom,
-                                  Minimum = 0.1,
-                                  Maximum = 100,
-                                  // UseSuperExponentialFormat = true,
-                                  MajorGridlineStyle = LineStyle.Solid,
-                                  MinorGridlineStyle = LineStyle.Solid
-                              });
+            {
+                Position = AxisPosition.Bottom,
+                Minimum = 0.1,
+                Maximum = 100,
+                // UseSuperExponentialFormat = true,
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Solid
+            });
 
             return plot;
         }
@@ -426,39 +427,39 @@ namespace ExportDemo
         {
             // http://en.wikipedia.org/wiki/Log-log_plot
             var plot = new PlotModel
-                           {
-                               Title = "E_{r}^{2} - (pc)^{2} = (m_{0}c^{2})^{2}",
-                               TitleFontSize = 24,
-                               LegendFontSize = 14,
-                               LegendPosition = LegendPosition.RightTop,
-                               LegendPlacement = LegendPlacement.Outside,
-                               PlotMargins = new OxyThickness(30, 4, 0, 30)
-                           };
+            {
+                Title = "E_{r}^{2} - (pc)^{2} = (m_{0}c^{2})^{2}",
+                TitleFontSize = 24,
+                LegendFontSize = 14,
+                LegendPosition = LegendPosition.RightTop,
+                LegendPlacement = LegendPlacement.Outside,
+                PlotMargins = new OxyThickness(30, 4, 0, 30)
+            };
 
             plot.Series.Add(CreateLineSeries(x => x, 0.1, 100, 0.1, "H_{2}O"));
             plot.Series.Add(CreateLineSeries(x => x * x, 0.1, 100, 0.1, "C_{6}H_{12}O_{6}"));
             plot.Series.Add(CreateLineSeries(x => x * x * x, 0.1, 100, 0.1, "A^{2}_{i,j}"));
 
             plot.Axes.Add(new LogarithmicAxis
-                              {
-                                  Position = AxisPosition.Left,
-                                  Minimum = 0.1,
-                                  Maximum = 100,
-                                  UseSuperExponentialFormat = true,
-                                  FontSize = 14,
-                                  MajorGridlineStyle = LineStyle.Solid,
-                                  MinorGridlineStyle = LineStyle.Solid
-                              });
+            {
+                Position = AxisPosition.Left,
+                Minimum = 0.1,
+                Maximum = 100,
+                UseSuperExponentialFormat = true,
+                FontSize = 14,
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Solid
+            });
             plot.Axes.Add(new LogarithmicAxis
-                              {
-                                  Position = AxisPosition.Bottom,
-                                  Minimum = 0.1,
-                                  Maximum = 100,
-                                  FontSize = 14,
-                                  UseSuperExponentialFormat = true,
-                                  MajorGridlineStyle = LineStyle.Solid,
-                                  MinorGridlineStyle = LineStyle.Solid
-                              });
+            {
+                Position = AxisPosition.Bottom,
+                Minimum = 0.1,
+                Maximum = 100,
+                FontSize = 14,
+                UseSuperExponentialFormat = true,
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Solid
+            });
 
             return plot;
         }

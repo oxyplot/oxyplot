@@ -10,6 +10,7 @@
 namespace ControllerDemo
 {
     using OxyPlot;
+    using OxyPlot.Axes;
     using OxyPlot.Series;
 
     /// <summary>
@@ -33,7 +34,10 @@ namespace ControllerDemo
         private static PlotModel CreatePlotModel(string title, string subtitle)
         {
             // Create the plot model
-            var tmp = new PlotModel { Title = title, Subtitle = subtitle};
+            var tmp = new PlotModel { Title = title, Subtitle = subtitle };
+
+            tmp.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            tmp.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
 
             // Create two line series (markers are hidden by default)
             var series1 = new LineSeries { Title = "Series 1", MarkerType = MarkerType.Circle };

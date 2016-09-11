@@ -5,6 +5,10 @@
         Title="TwoColorAreaDemo" Height="480" Width="640">
     <DockPanel>
         <oxy:Plot Title="TwoColorAreaSeries">
+            <oxy:Plot.Axes>
+                <oxy:LinearAxis Position="Bottom"/>
+                <oxy:LinearAxis Position="Left"/>
+            </oxy:Plot.Axes>
             <oxy:TwoColorAreaSeries ItemsSource="{Binding Measurements}" Title="Values" DataFieldX="Time" DataFieldY="Value" Fill="LightBlue" StrokeThickness="2" LineStyle="Solid" Limit="25" MarkerSize="2" MarkerFill="Blue" MarkerFill2="Red" MarkerType="Circle" Fill2="Tomato" Color="Blue" Color2="Red"/>            
         </oxy:Plot>
     </DockPanel>
