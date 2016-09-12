@@ -63,6 +63,7 @@ All notable changes to this project will be documented in this file.
 - Improve tracker style (Windows Forms) (#106)
 - Font rendering in OxyPlot.GtkSharp improved by using Pango (#972)
 - Improved LineSeries performance (#834)
+- Fixed bug causing axes titles to not display in OxyPlot.GtkSharp (#989)
 
 ### Changed
 - Fixed closing file stream for PdfReportWriter when PdfReportWriter is closed or disposed of. (#892)
