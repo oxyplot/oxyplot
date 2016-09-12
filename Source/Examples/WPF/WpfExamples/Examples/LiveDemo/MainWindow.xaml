@@ -4,10 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:oxy="http://oxyplot.org/wpf"
-        xmlns:local="clr-namespace:LiveDemo"
         mc:Ignorable="d"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
-        Title="MainWindow" Height="350" Width="525">
+        Title="LiveDemo" Height="480" Width="640">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="bool2vis"/>
     </Window.Resources>

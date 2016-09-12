@@ -9,7 +9,7 @@
                 <MenuItem Header="Open csv..." Click="OpenCsv_Click"/>
                 <Separator/>
                 <MenuItem Header="Save plot..." Click="SavePlot_Click"/>
-                <MenuItem Header="Save report..." Click="SaveReport_Click"/>
+                <!--<MenuItem Header="Save report..." Click="SaveReport_Click"/>-->
                 <Separator/>
                 <MenuItem Header="Exit" Click="Exit_Click"/>
             </MenuItem>
