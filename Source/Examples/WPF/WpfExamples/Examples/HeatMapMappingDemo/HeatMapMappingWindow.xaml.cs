@@ -9,6 +9,8 @@
     using WpfExamples;
     using System.Collections.Generic;
 
+    using OxyPlot.Axes;
+
     public class HeatMapItem
     {
         public double X1;
@@ -53,6 +55,12 @@
             }
 
             this.PlotModel = new PlotModel();
+
+            this.PlotModel.Axes.Add(new LinearColorAxis()
+            {
+                Position = AxisPosition.Right,
+                Palette = OxyPalettes.Jet(100)
+            });
 
             this.PlotModel.Series.Add(new HeatMapSeries()
             {

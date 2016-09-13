@@ -11,6 +11,7 @@ namespace OxyPlot.Series
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using OxyPlot.Axes;
 
@@ -503,6 +504,15 @@ namespace OxyPlot.Series
         /// </summary>
         protected internal void UpdateMaxMinXY()
         {
+            if (this.ActualRects != null)
+            {
+                this.MinX = Math.Min(this.ActualRects.Min(r => r.A.X), this.ActualRects.Min(r => r.B.X));
+                this.MaxX = Math.Max(this.ActualRects.Max(r => r.A.X), this.ActualRects.Max(r => r.B.X));
+                this.MinY = Math.Min(this.ActualRects.Min(r => r.A.Y), this.ActualRects.Min(r => r.B.Y));
+                this.MaxY = Math.Max(this.ActualRects.Max(r => r.A.Y), this.ActualRects.Max(r => r.B.Y));
+                return;
+            }
+            
             int m = this.Data.GetLength(0);
             int n = this.Data.GetLength(1);
 
@@ -551,8 +561,16 @@ namespace OxyPlot.Series
 
             this.UpdateMaxMinXY();
 
-            this.MinValue = this.Data.Min2D(true);
-            this.MaxValue = this.Data.Max2D();
+            if (this.ActualRects != null)
+            {
+                this.MinValue = this.ActualRects.Min(r => r.Value);
+                this.MaxValue = this.ActualRects.Max(r => r.Value);
+            }
+            else
+            {
+                this.MinValue = this.Data.Min2D(true);
+                this.MaxValue = this.Data.Max2D();
+            }
         }
 
         /// <summary>

@@ -49,6 +49,7 @@ namespace OxyPlot
         /// <param name="x2">The x coordinate of the diagonally-opposite corner.</param>
         /// <param name="y1">The y coordinate of the first corner.</param>
         /// <param name="y2">The y coordinate of the diagonally-opposite corner.</param>
+        /// <param name="value">The value of the data rect.</param>
         public DataRect(double x1, double x2, double y1, double y2, double value)
         {
             this.a = new DataPoint(x1, y1);
@@ -61,6 +62,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="a">The first corner.</param>
         /// <param name="b">The diagonally-opposite corner.</param>
+        /// <param name="value">The value of the data rect.</param>
         public DataRect(DataPoint a, DataPoint b, double value)
         {
             this.a = a;
@@ -89,6 +91,18 @@ namespace OxyPlot
             get
             {
                 return this.b;
+            }
+        }
+
+        /// <summary>
+        /// Gets the value of the DataRect.
+        /// </summary>
+        /// <value>The value of the DataRect.</value>
+        public double Value
+        {
+            get
+            {
+                return this.value;
             }
         }
 
