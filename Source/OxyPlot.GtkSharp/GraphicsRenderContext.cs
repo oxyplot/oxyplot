@@ -272,8 +272,10 @@ namespace OxyPlot.GtkSharp
             size.Height /= (int)Pango.Scale.PangoScale;
             if (maxSize != null)
             {
-                size.Width = Math.Min(size.Width, (int)maxSize.Value.Width);
-                size.Height = Math.Min(size.Height, (int)maxSize.Value.Height);
+                int maxWidth = (int)Math.Min((Double)Int32.MaxValue, maxSize.Value.Width);
+                int maxHeight = (int)Math.Min((Double)Int32.MaxValue, maxSize.Value.Height);
+                size.Width = Math.Min(size.Width, maxWidth);
+                size.Height = Math.Min(size.Height, maxHeight);
             }
             this.g.Save();
             double dx = 0;
