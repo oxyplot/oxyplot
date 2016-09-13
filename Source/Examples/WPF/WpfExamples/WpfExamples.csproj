@@ -563,6 +563,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Images\HeatMapMappingDemo.png" />
     <Resource Include="Images\LiveDemo.png" />
     <Resource Include="Images\ExportDemo.png" />
     <Resource Include="Images\WorldStatisticsDemo.png" />

@@ -264,8 +264,12 @@ namespace OxyPlot.Series
                 var dataRect = rectEnumerator.Current;
                 var rectcolor = this.ColorAxis.GetColor(dataRect.value);
 
-                var pointa = this.Orientate(new ScreenPoint(dataRect.A.X, dataRect.A.Y)); // re-orientate
-                var pointb = this.Orientate(new ScreenPoint(dataRect.B.X, dataRect.B.Y)); // re-orientate
+                // transform the data points to screen points
+                var s00 = this.Transform(dataRect.A.X, dataRect.A.Y);
+                var s11 = this.Transform(dataRect.B.X, dataRect.B.Y);
+ 
+                var pointa = this.Orientate(new ScreenPoint(s00.X, s00.Y)); // re-orientate
+                var pointb = this.Orientate(new ScreenPoint(s11.X, s11.Y)); // re-orientate
                 var rectrect = new OxyRect(pointa, pointb);
 
                 rc.DrawClippedRectangle(clippingRect, rectrect, rectcolor, OxyColors.Undefined, 0);
@@ -401,6 +405,12 @@ namespace OxyPlot.Series
 
             if (!this.IsPointInRange(p))
             {
+                return null;
+            }
+
+            if (this.Data == null && this.ActualRects != null)
+            {
+                // not supported yet as we would have to iterate through the entire list of points
                 return null;
             }
 
