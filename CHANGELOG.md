@@ -204,6 +204,7 @@ All notable changes to this project will be documented in this file.
 - Fixed bug in selection of plot to display in OxyPlot.GtkSharp ExampleBrowser (#979)
 - Fixed non-interpolation of HeatMapSeries in OxyPlot.GtkSharp (#980)
 - Fixed axis min/max calc and axis assignment for CandleStick + VolumeSeries (#389)
+- Fixed drawing of plot backgrounds in OxyPlot.GtkSharp (#990)
 
 ## [0.2014.1.546] - 2014-10-22
 ### Added
