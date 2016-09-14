@@ -431,7 +431,8 @@ namespace OxyPlot.GtkSharp
                     {
                         if (!this.model.Background.IsUndefined())
                         {
-                            this.renderContext.DrawRectangle(Allocation.ToOxyRect(), this.model.Background, OxyColors.Undefined, 0);
+                            OxyRect rect = new OxyRect(0, 0, Allocation.Width, Allocation.Height);
+                            this.renderContext.DrawRectangle(rect, this.model.Background, OxyColors.Undefined, 0);
                         }
 
                         ((IPlotModel)this.model).Render(this.renderContext, Allocation.Width, Allocation.Height);
