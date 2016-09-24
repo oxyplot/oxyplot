@@ -975,7 +975,7 @@ namespace OxyPlot.Wpf
 
             set
             {
-                this.SetValue(LegendTitleFontProperty, value);
+                this.SetValue(SelectionColorProperty, value);
             }
         }
 
