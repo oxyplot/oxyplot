@@ -408,9 +408,39 @@ namespace OxyPlot.Series
                 return null;
             }
 
+            var colorAxis = this.ColorAxis as Axis;
+            var colorAxisTitle = (colorAxis != null ? colorAxis.Title : null) ?? DefaultColorAxisTitle;
+
             if (this.Data == null && this.ActualRects != null)
             {
-                // not supported yet as we would have to iterate through the entire list of points
+                // iterate through the DataRects and return the first one that contains the point
+                foreach (DataRect dataRect in this.ActualRects)
+                {
+                    if (dataRect.Contains(p))
+                    {
+                        return new TrackerHitResult
+                        {
+                            Series = this,
+                            DataPoint = p,
+                            Position = point,
+                            Item = null,
+                            Index = -1,
+                            Text = StringHelper.Format(
+                            this.ActualCulture,
+                            this.TrackerFormatString,
+                            null,
+                            this.Title,
+                            this.XAxis.Title ?? DefaultXAxisTitle,
+                            this.XAxis.GetValue(p.X),
+                            this.YAxis.Title ?? DefaultYAxisTitle,
+                            this.YAxis.GetValue(p.Y),
+                            colorAxisTitle,
+                            dataRect.Value)
+                        };
+                    }
+                }
+
+                // if no DataRects contain the point, return nukk
                 return null;
             }
 
@@ -474,8 +504,6 @@ namespace OxyPlot.Series
             }
 
             var value = GetValue(this.Data, i, j);
-            var colorAxis = this.ColorAxis as Axis;
-            var colorAxisTitle = (colorAxis != null ? colorAxis.Title : null) ?? DefaultColorAxisTitle;
 
             return new TrackerHitResult
             {

@@ -107,6 +107,16 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Determines whether the DataPoint lies within the boundary of the DataRect.
+        /// </summary>
+        /// <returns><c>true</c> if the value of the <param name="p"/> parameter is inside the bounds of this instance.</returns>
+        public bool Contains(DataPoint p)
+        {
+            return (p.X <= this.B.X && p.X >= this.A.X && p.Y <= this.B.Y && p.Y >= this.A.Y) ||
+                   (p.X <= this.A.X && p.X >= this.B.X && p.Y <= this.A.Y && p.Y >= this.B.Y);
+        }
+
+        /// <summary>
         /// Returns C# code that generates this instance.
         /// </summary>
         /// <returns>The to code.</returns>
