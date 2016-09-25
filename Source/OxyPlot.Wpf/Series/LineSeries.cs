@@ -152,6 +152,12 @@ namespace OxyPlot.Wpf
             "Smooth", typeof(bool), typeof(LineSeries), new UIPropertyMetadata(false));
 
         /// <summary>
+        /// Identifies the <see cref="InterpolationAlgorithm"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty InterpolationAlgorithmProperty = DependencyProperty.Register(
+            "InterpolationAlgorithm", typeof(InterpolationAlgorithm), typeof(LineSeries), new PropertyMetadata(InterpolationAlgorithm.Canonical, DataChanged));
+
+        /// <summary>
         /// Identifies the <see cref="StrokeThickness"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty StrokeThicknessProperty =
@@ -470,7 +476,24 @@ namespace OxyPlot.Wpf
                 this.SetValue(SmoothProperty, value);
             }
         }
-        
+
+        /// <summary>
+        /// Gets or sets a value indicating what interpolation algorithm should be used for smoothing.
+        /// </summary>
+        /// <value>Interpolation algorithm.</value>
+        public InterpolationAlgorithm InterpolationAlgorithm 
+        {
+            get
+            {
+                return (InterpolationAlgorithm)this.GetValue(InterpolationAlgorithmProperty);
+            }
+
+            set
+            {
+                this.SetValue(InterpolationAlgorithmProperty, value);
+            }
+        }
+
         /// <summary>
         /// Gets or sets StrokeThickness.
         /// </summary>
@@ -526,6 +549,7 @@ namespace OxyPlot.Wpf
             s.BrokenLineThickness = this.BrokenLineThickness;
             s.Decimator = this.Decimator;
             s.Smooth = this.Smooth;
+            s.InterpolationAlgorithm = this.InterpolationAlgorithm;
         }
     }
 }

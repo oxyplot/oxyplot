@@ -18,6 +18,14 @@ namespace OxyPlot.Annotations
     public class PolylineAnnotation : PathAnnotation
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref = "PolylineAnnotation" /> class.
+        /// </summary>
+        public PolylineAnnotation()
+        {
+            this.InterpolationAlgorithm = InterpolationAlgorithm.Canonical;
+        }
+
+        /// <summary>
         /// The points.
         /// </summary>
         private readonly List<DataPoint> points = new List<DataPoint>();
@@ -49,6 +57,12 @@ namespace OxyPlot.Annotations
         public bool Smooth { get; set; }
 
         /// <summary>
+        /// Gets or sets a type of interpolation algorithm used for smoothing this <see cref = "PolylineAnnotation" />.
+        /// </summary>
+        /// <value>Type of interpolation algorithm.</value>
+        public InterpolationAlgorithm InterpolationAlgorithm { get; set; }
+
+        /// <summary>
         /// Gets the screen points.
         /// </summary>
         /// <returns>The list of points to display on screen for this path.</returns>
@@ -59,7 +73,7 @@ namespace OxyPlot.Annotations
             if (this.Smooth)
             {
                 var resampledPoints = ScreenPointHelper.ResamplePoints(screenPoints, this.MinimumSegmentLength);
-                return CanonicalSplineHelper.CreateSpline(resampledPoints, 0.5, null, false, 0.25);
+                return InterpolationAlgorithm.CreateSpline(resampledPoints, false, 0.25);
             }
 
             return this.Points.Select(this.Transform).ToList();

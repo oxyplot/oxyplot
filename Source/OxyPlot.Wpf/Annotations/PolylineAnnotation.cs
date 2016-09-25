@@ -24,6 +24,12 @@ namespace OxyPlot.Wpf
             "Smooth", typeof(bool), typeof(PolylineAnnotation), new PropertyMetadata(false, DataChanged));
 
         /// <summary>
+        /// Identifies the <see cref="InterpolationAlgorithm"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty InterpolationAlgorithmProperty = DependencyProperty.Register(
+            "InterpolationAlgorithm", typeof(InterpolationAlgorithm), typeof(PolylineAnnotation), new PropertyMetadata(InterpolationAlgorithm.Canonical, DataChanged));
+
+        /// <summary>
         /// Identifies the <see cref="MinimumSegmentLength"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MinimumSegmentLengthProperty =
@@ -93,6 +99,16 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
+        /// Gets or sets a value indicating what interpolation algorithm should be used for smoothing.
+        /// </summary>
+        /// <value>Interpolation algorithm.</value>
+        public InterpolationAlgorithm InterpolationAlgorithm 
+        {
+            get { return (InterpolationAlgorithm)this.GetValue(InterpolationAlgorithmProperty); }
+            set { this.SetValue(InterpolationAlgorithmProperty, value); }
+        }
+
+        /// <summary>
         /// Creates the internal annotation object.
         /// </summary>
         /// <returns>The annotation.</returns>
@@ -113,6 +129,7 @@ namespace OxyPlot.Wpf
             a.Points.Clear();
             a.Points.AddRange(this.Points);
             a.Smooth = this.Smooth;
+            a.InterpolationAlgorithm = this.InterpolationAlgorithm;
             a.MinimumSegmentLength = this.MinimumSegmentLength;
         }
     }

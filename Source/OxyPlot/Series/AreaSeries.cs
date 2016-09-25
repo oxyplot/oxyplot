@@ -457,7 +457,7 @@ namespace OxyPlot.Series
             if (this.Smooth)
             {
                 var resampled = ScreenPointHelper.ResamplePoints(final, this.MinimumSegmentLength);
-                final = CanonicalSplineHelper.CreateSpline(resampled, 0.5, null, false, 0.25);
+                final = InterpolationAlgorithm.CreateSpline(resampled, false, 0.25);
             }
 
             context.RenderContext.DrawClippedLine(
