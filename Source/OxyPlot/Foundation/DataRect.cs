@@ -13,9 +13,9 @@ namespace OxyPlot
     using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
-    /// Represents a point in the data space.
+    /// Represents a rectangle in the data space.
     /// </summary>
-    /// <remarks><see cref="DataRect" />s are transformed to <see cref="ScreenRect" />s.</remarks>
+    /// <remarks><see cref="DataRect" />s are transformed to <see cref="OxyRect" />s.</remarks>
     public struct DataRect : ICodeGenerating, IEquatable<DataRect>
     {
         /// <summary>
