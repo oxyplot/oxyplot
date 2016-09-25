@@ -76,6 +76,7 @@
     <Compile Include="PlotModel\IPlotElement.cs" />
     <Compile Include="PlotModel\IPlotModel.cs" />
     <Compile Include="Rendering\InterpolationAlgorithm.cs" />
+    <Compile Include="Rendering\InterpolationAlgorithmExtensions.cs" />
     <Compile Include="Rendering\OxySizeExtensions.cs" />
     <Compile Include="Rendering\Utilities\CatmullRomSplineHelper.cs" />
     <Compile Include="Reporting\PlotModelExtensions.cs" />
