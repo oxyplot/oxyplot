@@ -20,20 +20,20 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\Output\Avalonia\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\Output\Avalonia\OxyPlot.Avalonia.xml</DocumentationFile>
+    <DocumentationFile>bin/Debug/OxyPlot.Avalonia.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\Output\NET45\</OutputPath>
+    <OutputPath>..\..\Output\Avalonia\</OutputPath>
     <DefineConstants>TRACE;AVALONIA</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\Output\NET45\OxyPlot.Avalonia.XML</DocumentationFile>
+    <DocumentationFile>..\..\Output\Avalonia\OxyPlot.Avalonia.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyInfo.cs">
