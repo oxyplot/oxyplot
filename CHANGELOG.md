@@ -3,7 +3,7 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 ### Added
-- 
+- Added ability to map objects in an ItemsSource to a HeatMapSeries (#911)
 
 ### Changed
 - 
