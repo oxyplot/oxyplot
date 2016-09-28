@@ -46,9 +46,9 @@ namespace OxyPlot.Series
         public Func<object, DataRect> Mapping { get; set; }
 
         /// <summary>
-        /// Gets the list of points.
+        /// Gets the list of rectangles.
         /// </summary>
-        /// <value>A list of <see cref="DataPoint" />.</value>
+        /// <value>A list of <see cref="DataRect" />.</value>
         public List<DataRect> Rects
         {
             get
@@ -58,9 +58,9 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Gets the list of points that should be rendered.
+        /// Gets the list of rectangles that should be rendered.
         /// </summary>
-        /// <value>A list of <see cref="DataPoint" />.</value>
+        /// <value>A list of <see cref="DataRect" />.</value>
         protected List<DataRect> ActualRects
         {
             get
