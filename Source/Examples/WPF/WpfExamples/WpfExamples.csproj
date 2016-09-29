@@ -118,6 +118,9 @@
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Examples\ExportDemo\ShellViewModel.cs" />
+    <Compile Include="Examples\InterpolationDemo\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Examples\LinearBarSeriesDemo\MainViewModel.cs" />
     <Compile Include="Examples\LinearBarSeriesDemo\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -207,6 +210,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Examples\ExportDemo\ShellView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\InterpolationDemo\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -556,6 +563,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Images\InterpolationDemo.png" />
     <Resource Include="Images\LiveDemo.png" />
     <Resource Include="Images\ExportDemo.png" />
     <Resource Include="Images\WorldStatisticsDemo.png" />

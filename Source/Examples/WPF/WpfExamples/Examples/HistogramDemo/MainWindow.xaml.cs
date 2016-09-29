@@ -45,9 +45,9 @@ namespace HistogramDemo
             this.redLine = new LineSeries { Color = OxyColors.Red };
             this.greenLine = new LineSeries { Color = OxyColors.Green };
             this.blueLine = new LineSeries { Color = OxyColors.Blue };
-            this.redLine.Smooth = true;
-            this.greenLine.Smooth = true;
-            this.blueLine.Smooth = true;
+            this.redLine.InterpolationAlgorithm = InterpolationAlgorithms.CanonicalSpline;
+            this.greenLine.InterpolationAlgorithm = InterpolationAlgorithms.CanonicalSpline;
+            this.blueLine.InterpolationAlgorithm = InterpolationAlgorithms.CanonicalSpline;
             pm.Series.Add(this.redLine);
             pm.Series.Add(this.greenLine);
             pm.Series.Add(this.blueLine);
