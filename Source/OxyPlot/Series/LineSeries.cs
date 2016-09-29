@@ -82,8 +82,6 @@ namespace OxyPlot.Series
             this.CanTrackerInterpolatePoints = true;
             this.LabelMargin = 6;
             this.smoothedPoints = new List<DataPoint>();
-
-            this.InterpolationAlgorithm = InterpolationAlgorithm.Canonical;
         }
 
         /// <summary>
@@ -208,13 +206,17 @@ namespace OxyPlot.Series
         /// Gets or sets a value indicating whether this <see cref = "DataPointSeries" /> is smooth.
         /// </summary>
         /// <value><c>true</c> if smooth; otherwise, <c>false</c>.</value>
-        public bool Smooth { get; set; }
+        [Obsolete("Use the InterpolationAlgorithm property instead")]
+        public bool Smooth {
+            get { return this.InterpolationAlgorithm is CanonicalSpline; }
+            set { this.InterpolationAlgorithm = value ? InterpolationAlgorithms.CanonicalSpline : null; }
+        }
 
         /// <summary>
         /// Gets or sets a type of interpolation algorithm used for smoothing this <see cref = "DataPointSeries" />.
         /// </summary>
         /// <value>Type of interpolation algorithm.</value>
-        public InterpolationAlgorithm InterpolationAlgorithm { get; set; }
+        public IInterpolationAlgorithm InterpolationAlgorithm { get; set; }
 
         /// <summary>
         /// Gets or sets the thickness of the curve.
@@ -303,7 +305,7 @@ namespace OxyPlot.Series
                 }
             }
 
-            if (interpolate && this.Smooth)
+            if (interpolate && this.InterpolationAlgorithm != null)
             {
                 var result = this.GetNearestInterpolatedPointInternal(this.SmoothedPoints, point);
                 if (result != null)
@@ -413,7 +415,7 @@ namespace OxyPlot.Series
         /// </summary>
         protected internal override void UpdateMaxMin()
         {
-            if (this.Smooth)
+            if (this.InterpolationAlgorithm != null)
             {
                 // Update the max/min from the control points
                 base.UpdateMaxMin();
@@ -713,7 +715,7 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Renders the transformed points as a line (smoothed if <see cref="LineSeries.Smooth"/> is <c>true</c>) and markers (if <see cref="MarkerType"/> is not <c>None</c>).
+        /// Renders the transformed points as a line (smoothed if <see cref="InterpolationAlgorithm"/> isn’t <c>null</c>) and markers (if <see cref="MarkerType"/> is not <c>None</c>).
         /// </summary>
         /// <param name="rc">The render context.</param>
         /// <param name="clippingRect">The clipping rectangle.</param>
@@ -721,7 +723,7 @@ namespace OxyPlot.Series
         protected virtual void RenderLineAndMarkers(IRenderContext rc, OxyRect clippingRect, IList<ScreenPoint> pointsToRender)
         {
             var screenPoints = pointsToRender;
-            if (this.Smooth)
+            if (this.InterpolationAlgorithm != null)
             {
                 // spline smoothing (should only be used on small datasets)
                 var resampledPoints = ScreenPointHelper.ResamplePoints(pointsToRender, this.MinimumSegmentLength);

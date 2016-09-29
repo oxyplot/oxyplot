@@ -18,8 +18,44 @@ namespace OxyPlot
     /// </summary>
     /// <remarks>Based on CanonicalSplineHelper.cs (c) 2009 by Charles Petzold (WPF and Silverlight)
     /// See also <a href="http://www.charlespetzold.com/blog/2009/01/Canonical-Splines-in-WPF-and-Silverlight.html">blog post</a>.</remarks>
-    internal static class CatmullRomSplineHelper
+    public class CatmullRomSpline : IInterpolationAlgorithm
     {
+        /// <summary>
+        /// The alpha.
+        /// </summary>
+        public double Alpha { get; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref = "CatmullRomSpline" /> class.
+        /// </summary>
+        /// <param name="alpha">The alpha.</param>
+        public CatmullRomSpline(double alpha)
+        {
+            Alpha = alpha;
+        }
+
+        /// <summary>
+        /// Creates a spline of data points.
+        /// </summary>
+        /// <param name="points">The points.</param>
+        /// <param name="isClosed">True if the spline is closed.</param>
+        /// <param name="tolerance">The tolerance.</param>
+        /// <returns>A list of data points.</returns>
+        public List<DataPoint> CreateSpline(List<DataPoint> points, bool isClosed, double tolerance) {
+            return CreateSpline(points, Alpha, isClosed, tolerance);
+        }
+
+        /// <summary>
+        /// Creates a spline of screen points.
+        /// </summary>
+        /// <param name="points">The points.</param>
+        /// <param name="isClosed">True if the spline is closed.</param>
+        /// <param name="tolerance">The tolerance.</param>
+        /// <returns>A list of screen points.</returns>
+        public List<ScreenPoint> CreateSpline(IList<ScreenPoint> points, bool isClosed, double tolerance) {
+            return CreateSpline(points, Alpha, isClosed, tolerance);
+        }
+
         /// <summary>
         /// Creates a spline of data points.
         /// </summary>
@@ -163,31 +199,31 @@ namespace OxyPlot
                 pt3 = Prev(pt2, pt1);
             }
 
-            var t0 = 0d;
-            var t1 = GetT(t0, pt0, pt1, alpha);
-            var t2 = GetT(t1, pt1, pt2, alpha);
-            var t3 = GetT(t2, pt2, pt3, alpha);
+            double t0 = 0d;
+            double t1 = GetT(t0, pt0, pt1, alpha);
+            double t2 = GetT(t1, pt1, pt2, alpha);
+            double t3 = GetT(t2, pt2, pt3, alpha);
 
-            var iterations = Math.Min((int)((Math.Abs(pt1.X - pt2.X) + Math.Abs(pt1.Y - pt2.Y)) / tolerance), maxSegments);
-            for (var t = t1; t < t2; t += (t2 - t1) / iterations)
+            int iterations = Math.Min((int)((Math.Abs(pt1.X - pt2.X) + Math.Abs(pt1.Y - pt2.Y)) / tolerance), maxSegments);
+            for (double t = t1; t < t2; t += (t2 - t1) / iterations)
             {
-                var a1 = Sum(Mult((t1 - t) / (t1 - t0), pt0), Mult((t - t0) / (t1 - t0), pt1));
-                var a2 = Sum(Mult((t2 - t) / (t2 - t1), pt1), Mult((t - t1) / (t2 - t1), pt2));
-                var a3 = Sum(Mult((t3 - t) / (t3 - t2), pt2), Mult((t - t2) / (t3 - t2), pt3));
+                ScreenPoint a1 = Sum(Mult((t1 - t) / (t1 - t0), pt0), Mult((t - t0) / (t1 - t0), pt1));
+                ScreenPoint a2 = Sum(Mult((t2 - t) / (t2 - t1), pt1), Mult((t - t1) / (t2 - t1), pt2));
+                ScreenPoint a3 = Sum(Mult((t3 - t) / (t3 - t2), pt2), Mult((t - t2) / (t3 - t2), pt3));
 
-                var b1 = Sum(Mult((t2 - t) / (t2 - t0), a1), Mult((t - t0) / (t2 - t0), a2));
-                var b2 = Sum(Mult((t3 - t) / (t3 - t1), a2), Mult((t - t1) / (t3 - t1), a3));
+                ScreenPoint b1 = Sum(Mult((t2 - t) / (t2 - t0), a1), Mult((t - t0) / (t2 - t0), a2));
+                ScreenPoint b2 = Sum(Mult((t3 - t) / (t3 - t1), a2), Mult((t - t1) / (t3 - t1), a3));
 
-                var c1 = Sum(Mult((t2 - t) / (t2 - t1), b1), Mult((t - t1) / (t2 - t1), b2));
+                ScreenPoint c1 = Sum(Mult((t2 - t) / (t2 - t1), b1), Mult((t - t1) / (t2 - t1), b2));
                 points.Add(c1);
             }
         }
 
         private static double GetT(double t, ScreenPoint p0, ScreenPoint p1, double alpha)
         {
-            var a = Math.Pow(p1.X - p0.X, 2d) + Math.Pow(p1.Y - p0.Y, 2d);
-            var b = Math.Pow(a, 0.5);
-            var c = Math.Pow(b, alpha);
+            double a = Math.Pow(p1.X - p0.X, 2d) + Math.Pow(p1.Y - p0.Y, 2d);
+            double b = Math.Pow(a, 0.5);
+            double c = Math.Pow(b, alpha);
             return c + t;
         }
 

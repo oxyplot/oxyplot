@@ -9,6 +9,7 @@
 
 namespace OxyPlot.Wpf
 {
+    using System;
     using System.Collections.Generic;
     using System.Windows;
 
@@ -27,7 +28,7 @@ namespace OxyPlot.Wpf
         /// Identifies the <see cref="InterpolationAlgorithm"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty InterpolationAlgorithmProperty = DependencyProperty.Register(
-            "InterpolationAlgorithm", typeof(InterpolationAlgorithm), typeof(PolylineAnnotation), new PropertyMetadata(InterpolationAlgorithm.Canonical, DataChanged));
+            "InterpolationAlgorithm", typeof(IInterpolationAlgorithm), typeof(PolylineAnnotation), new PropertyMetadata(null, DataChanged));
 
         /// <summary>
         /// Identifies the <see cref="MinimumSegmentLength"/> dependency property.
@@ -97,14 +98,14 @@ namespace OxyPlot.Wpf
             get { return (bool)this.GetValue(SmoothProperty); }
             set { this.SetValue(SmoothProperty, value); }
         }
-
+        
         /// <summary>
-        /// Gets or sets a value indicating what interpolation algorithm should be used for smoothing.
+        /// Gets or sets a interpolation algorithm that should be used for smoothing.
         /// </summary>
         /// <value>Interpolation algorithm.</value>
-        public InterpolationAlgorithm InterpolationAlgorithm 
+        public IInterpolationAlgorithm InterpolationAlgorithm 
         {
-            get { return (InterpolationAlgorithm)this.GetValue(InterpolationAlgorithmProperty); }
+            get { return (IInterpolationAlgorithm)this.GetValue(InterpolationAlgorithmProperty); }
             set { this.SetValue(InterpolationAlgorithmProperty, value); }
         }
 
@@ -128,8 +129,13 @@ namespace OxyPlot.Wpf
             var a = (Annotations.PolylineAnnotation)this.InternalAnnotation;
             a.Points.Clear();
             a.Points.AddRange(this.Points);
-            a.Smooth = this.Smooth;
-            a.InterpolationAlgorithm = this.InterpolationAlgorithm;
+
+            if (this.InterpolationAlgorithm == null && this.Smooth) {
+                a.InterpolationAlgorithm = InterpolationAlgorithms.CanonicalSpline;
+            } else {
+                a.InterpolationAlgorithm = this.InterpolationAlgorithm;
+            }
+
             a.MinimumSegmentLength = this.MinimumSegmentLength;
         }
     }

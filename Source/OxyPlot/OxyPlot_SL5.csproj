@@ -122,7 +122,6 @@
     <Compile Include="Rendering\OxyPalettes.cs" />
     <Compile Include="Rendering\ScreenVector.cs" />
     <Compile Include="Rendering\ScreenPointHelper.cs" />
-    <Compile Include="Rendering\Utilities\CanonicalSplineHelper.cs" />
     <Compile Include="Rendering\FontWeights.cs" />
     <Compile Include="Rendering\OxyThickness.cs" />
     <Compile Include="Rendering\ScreenPoint.cs" />
@@ -144,9 +143,6 @@
     <Compile Include="Rendering\RenderContext\RenderingExtensions.cs" />
     <Compile Include="Rendering\RenderContext\IRenderContext.cs" />
     <Compile Include="Rendering\RenderContext\XkcdRenderingDecorator.cs" />
-    <Compile Include="Rendering\InterpolationAlgorithm.cs" />
-    <Compile Include="Rendering\InterpolationAlgorithmExtensions.cs" />
-    <Compile Include="Rendering\Utilities\CatmullRomSplineHelper.cs" />
     <Compile Include="Input\OxyKey.cs" />
     <Compile Include="Input\OxyModifierKeys.cs" />
     <Compile Include="Input\OxyMouseButton.cs" />
@@ -264,6 +260,10 @@
     <Compile Include="Graphics\SelectionMode.cs" />
     <Compile Include="PlotModel\TrackerEventArgs.cs" />
     <Compile Include="PlotView\IPlotView.cs" />
+    <Compile Include="Rendering\IInterpolationAlgorithm.cs" />
+    <Compile Include="Rendering\InterpolationAlgorithms.cs" />
+    <Compile Include="Rendering\Utilities\CanonicalSpline.cs" />
+    <Compile Include="Rendering\Utilities\CatmullRomSpline.cs" />
     <Compile Include="Graphics\CursorType.cs" />
     <Compile Include="Series\BarSeries\BarItem.cs" />
     <Compile Include="Series\BarSeries\BarItemBase.cs" />

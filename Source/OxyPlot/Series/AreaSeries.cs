@@ -9,7 +9,6 @@
 
 namespace OxyPlot.Series
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -454,7 +453,7 @@ namespace OxyPlot.Series
                 final.Reverse();
             }
 
-            if (this.Smooth)
+            if (this.InterpolationAlgorithm != null)
             {
                 var resampled = ScreenPointHelper.ResamplePoints(final, this.MinimumSegmentLength);
                 final = InterpolationAlgorithm.CreateSpline(resampled, false, 0.25);
