@@ -20,6 +20,124 @@ namespace ExampleLibrary
     [Examples("Z1 Issues")]
     public class Issues
     {
+        [Example("#977 RectangleAnnotation Axis Clipping not configurable")]
+        public static PlotModel RectangleAnnotationAxisClipping()
+        {
+            var model = new PlotModel
+            {
+                Title = "RectangleAnnotation Axis Clipping",
+                PlotAreaBorderThickness = new OxyThickness(0),
+                Axes =
+                {
+                    new LinearAxis
+                    {
+                        Position = AxisPosition.Bottom,
+                        AxislineStyle = LineStyle.Solid,
+                        EndPosition = 0.45
+                    },
+                    new LinearAxis
+                    {
+                        Position = AxisPosition.Bottom,
+                        AxislineStyle = LineStyle.Solid,
+                        StartPosition = 0.55,
+                        Key = "X2"
+                    },
+                    new LinearAxis
+                    {
+                        Position = AxisPosition.Left,
+                        AxislineStyle = LineStyle.Solid,
+                        EndPosition = 0.45,
+                    },
+                    new LinearAxis
+                    {
+                        Position = AxisPosition.Left,
+                        AxislineStyle = LineStyle.Solid,
+                        StartPosition = 0.55,
+                        Key = "Y2"
+                    }
+                },
+                Annotations =
+                {
+                    new LineAnnotation
+                    {
+                        Type = LineAnnotationType.Vertical,
+                        Color = OxyColors.DarkCyan,
+                        StrokeThickness = 2,
+                        LineStyle = LineStyle.Solid,
+                        X = 10,
+                        Text = "LineAnnotation (default clipping)"
+                    },
+                    new LineAnnotation
+                    {
+                        Type = LineAnnotationType.Vertical,
+                        Color = OxyColors.DarkGreen,
+                        StrokeThickness = 2,
+                        LineStyle = LineStyle.Solid,
+                        X = 20,
+                        ClipByYAxis = false,
+                        Text = "LineAnnotation (ClipByYAxis = false)",
+                        TextLinePosition = 0.5
+                    },
+                    new RectangleAnnotation
+                    {
+                        Fill = OxyColor.FromArgb(100, 255, 0, 0),
+                        Stroke = OxyColors.Black,
+                        StrokeThickness = 1,
+                        MinimumX = 40,
+                        MaximumX = 60,
+                        Text = "RectangleAnnotation (default clipping)",
+                        TextRotation = -90,
+                    },
+                    new RectangleAnnotation
+                    {
+                        Fill = OxyColor.FromArgb(100, 0, 0, 255),
+                        Stroke = OxyColors.Black,
+                        StrokeThickness = 1,
+                        MinimumX = 70,
+                        MaximumX = 90,
+                        ClipByYAxis = false,
+                        Text = "RectangleAnnotation (ClipByYAxis = false)",
+                        TextRotation = -90
+                    },
+                    new RectangleAnnotation
+                    {
+                        Fill = OxyColor.FromArgb(100, 0, 255, 0),
+                        Stroke = OxyColors.Black,
+                        StrokeThickness = 1,
+                        MinimumY = 80,
+                        MaximumY = 85,
+                        Text = "RectangleAnnotation (default clipping)",
+                        XAxisKey = "X2",
+                        YAxisKey = "Y2"
+                    },
+                    new RectangleAnnotation
+                    {
+                        Fill = OxyColor.FromArgb(100, 0, 255, 0),
+                        Stroke = OxyColors.Black,
+                        StrokeThickness = 1,
+                        MinimumY = 90,
+                        MaximumY = 95,
+                        ClipByXAxis = false,
+                        Text = "RectangleAnnotation (ClipByXAxis = false)",
+                        XAxisKey = "X2",
+                        YAxisKey = "Y2"
+                    },
+                    new RectangleAnnotation
+                    {
+                        Fill = OxyColor.FromArgb(50, 100, 100, 100),
+                        Stroke = OxyColors.Black,
+                        StrokeThickness = 1,
+                        MinimumX = 92, MaximumX = 140,
+                        MinimumY = 45, MaximumY = 140,
+                        ClipByXAxis = false, ClipByYAxis = false,
+                        Text = "no clipping at all"
+                    }
+                }
+            };
+            return model;
+        }
+
+
         [Example("Support colour coding on scatter plots (Closed)")]
         public static PlotModel ColorCodingOnScatterPlots()
         {
