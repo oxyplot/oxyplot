@@ -9,6 +9,7 @@
 
 namespace OxyPlot.Wpf
 {
+    using System;
     using System.Collections.Generic;
     using System.Windows;
 
@@ -22,6 +23,12 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty SmoothProperty = DependencyProperty.Register(
             "Smooth", typeof(bool), typeof(PolylineAnnotation), new PropertyMetadata(false, DataChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="InterpolationAlgorithm"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty InterpolationAlgorithmProperty = DependencyProperty.Register(
+            "InterpolationAlgorithm", typeof(IInterpolationAlgorithm), typeof(PolylineAnnotation), new PropertyMetadata(null, DataChanged));
 
         /// <summary>
         /// Identifies the <see cref="MinimumSegmentLength"/> dependency property.
@@ -91,6 +98,16 @@ namespace OxyPlot.Wpf
             get { return (bool)this.GetValue(SmoothProperty); }
             set { this.SetValue(SmoothProperty, value); }
         }
+        
+        /// <summary>
+        /// Gets or sets a interpolation algorithm that should be used for smoothing.
+        /// </summary>
+        /// <value>Interpolation algorithm.</value>
+        public IInterpolationAlgorithm InterpolationAlgorithm 
+        {
+            get { return (IInterpolationAlgorithm)this.GetValue(InterpolationAlgorithmProperty); }
+            set { this.SetValue(InterpolationAlgorithmProperty, value); }
+        }
 
         /// <summary>
         /// Creates the internal annotation object.
@@ -112,7 +129,13 @@ namespace OxyPlot.Wpf
             var a = (Annotations.PolylineAnnotation)this.InternalAnnotation;
             a.Points.Clear();
             a.Points.AddRange(this.Points);
-            a.Smooth = this.Smooth;
+
+            if (this.InterpolationAlgorithm == null && this.Smooth) {
+                a.InterpolationAlgorithm = InterpolationAlgorithms.CanonicalSpline;
+            } else {
+                a.InterpolationAlgorithm = this.InterpolationAlgorithm;
+            }
+
             a.MinimumSegmentLength = this.MinimumSegmentLength;
         }
     }
