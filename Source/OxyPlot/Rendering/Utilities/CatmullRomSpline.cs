@@ -31,7 +31,7 @@ namespace OxyPlot
         /// <param name="alpha">The alpha.</param>
         public CatmullRomSpline(double alpha)
         {
-            Alpha = alpha;
+            this.Alpha = alpha;
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace OxyPlot
         /// <param name="tolerance">The tolerance.</param>
         /// <returns>A list of data points.</returns>
         public List<DataPoint> CreateSpline(List<DataPoint> points, bool isClosed, double tolerance) {
-            return CreateSpline(points, Alpha, isClosed, tolerance);
+            return CreateSpline(points, this.Alpha, isClosed, tolerance);
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace OxyPlot
         /// <param name="tolerance">The tolerance.</param>
         /// <returns>A list of screen points.</returns>
         public List<ScreenPoint> CreateSpline(IList<ScreenPoint> points, bool isClosed, double tolerance) {
-            return CreateSpline(points, Alpha, isClosed, tolerance);
+            return CreateSpline(points, this.Alpha, isClosed, tolerance);
         }
 
         /// <summary>

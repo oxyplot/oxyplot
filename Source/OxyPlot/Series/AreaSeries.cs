@@ -456,7 +456,7 @@ namespace OxyPlot.Series
             if (this.InterpolationAlgorithm != null)
             {
                 var resampled = ScreenPointHelper.ResamplePoints(final, this.MinimumSegmentLength);
-                final = InterpolationAlgorithm.CreateSpline(resampled, false, 0.25);
+                final = this.InterpolationAlgorithm.CreateSpline(resampled, false, 0.25);
             }
 
             context.RenderContext.DrawClippedLine(

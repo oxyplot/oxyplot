@@ -1,13 +1,22 @@
-﻿namespace OxyPlot
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="IInterpolationAlgorithm.cs" company="OxyPlot">
+//   Copyright (c) 2014 OxyPlot contributors
+// </copyright>
+// <summary>
+//   Defines an interpolation algorithm.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace OxyPlot
 {
     using System.Collections.Generic;
 
     /// <summary>
-    /// Defines interpolation algorithm for smoothing a line.
+    /// Defines an interpolation algorithm.
     /// </summary>
     public interface IInterpolationAlgorithm {
         /// <summary>
-        /// Creates a spline using specific interpolation algorithm.
+        /// Creates a spline from data points.
         /// </summary>
         /// <param name="points">Data points.</param>
         /// <param name="isClosed">True if the spline is closed.</param>
@@ -16,7 +25,7 @@
         List<DataPoint> CreateSpline(List<DataPoint> points, bool isClosed, double tolerance);
 
         /// <summary>
-        /// Creates a spline using specific interpolation algorithm.
+        /// Creates a spline from points in screen space.
         /// </summary>
         /// <param name="points">Resampled points.</param>
         /// <param name="isClosed">True if the spline is closed.</param>

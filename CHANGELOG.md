@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 ### Added
 - Added Avalonia based renderer and control library (based off OxyPlot.Wpf).
+- New `InterpolationAlgorithm` property in LineSeries and PolylineAnnotation (#494)
+- Catmull-Rom spline interpolation algorithms (#494)
 
 ### Changed
 - 
@@ -12,7 +14,7 @@ All notable changes to this project will be documented in this file.
 - 
 
 ### Removed
-- 
+- The `Smooth` property in LineSeries and PolylineAnnotation (#494)
 
 ### Fixed
 - 

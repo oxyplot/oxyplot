@@ -31,7 +31,7 @@ namespace OxyPlot
         /// <param name="tension">The tension.</param>
         public CanonicalSpline(double tension)
         {
-            Tension = tension;
+            this.Tension = tension;
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace OxyPlot
         /// <returns>A list of data points.</returns>
         public List<DataPoint> CreateSpline(List<DataPoint> points, bool isClosed, double tolerance)
         {
-            return CreateSpline(points, Tension, null, isClosed, tolerance);
+            return CreateSpline(points, this.Tension, null, isClosed, tolerance);
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace OxyPlot
         /// <returns>A list of screen points.</returns>
         public List<ScreenPoint> CreateSpline(IList<ScreenPoint> points, bool isClosed, double tolerance)
         {
-            return CreateSpline(points, Tension, null, isClosed, tolerance);
+            return CreateSpline(points, this.Tension, null, isClosed, tolerance);
         }
 
         /// <summary>

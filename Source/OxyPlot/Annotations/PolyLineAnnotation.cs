@@ -9,7 +9,6 @@
 
 namespace OxyPlot.Annotations
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -44,19 +43,9 @@ namespace OxyPlot.Annotations
         public double MinimumSegmentLength { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref = "PolylineAnnotation" /> is smooth.
+        /// Gets or sets the interpolation algorithm.
         /// </summary>
-        /// <value><c>true</c> if smooth; otherwise, <c>false</c>.</value>
-        [Obsolete("Use the InterpolationAlgorithm property instead")]
-        public bool Smooth {
-            get { return this.InterpolationAlgorithm is CanonicalSpline; }
-            set { this.InterpolationAlgorithm = value ? InterpolationAlgorithms.CanonicalSpline : null; }
-        }
-
-        /// <summary>
-        /// Gets or sets a type of interpolation algorithm used for smoothing this <see cref = "PolylineAnnotation" />.
-        /// </summary>
-        /// <value>Type of interpolation algorithm.</value>
+        /// <value>An interpolation algorithm.</value>
         public IInterpolationAlgorithm InterpolationAlgorithm { get; set; }
 
         /// <summary>
@@ -70,7 +59,7 @@ namespace OxyPlot.Annotations
             if (this.InterpolationAlgorithm != null)
             {
                 var resampledPoints = ScreenPointHelper.ResamplePoints(screenPoints, this.MinimumSegmentLength);
-                return InterpolationAlgorithm.CreateSpline(resampledPoints, false, 0.25);
+                return this.InterpolationAlgorithm.CreateSpline(resampledPoints, false, 0.25);
             }
 
             return this.Points.Select(this.Transform).ToList();
