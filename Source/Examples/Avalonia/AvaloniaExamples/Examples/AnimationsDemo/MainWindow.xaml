@@ -1,0 +1,32 @@
+﻿<Window 
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:AnimationsDemoViews="clr-namespace:AvaloniaExamples.Examples.AnimationsDemo.Views;assembly=AvaloniaExamples"
+     xmlns:AnimationsDemoControls="clr-namespace:AvaloniaExamples.Examples.AnimationsDemo.Controls;assembly=AvaloniaExamples"
+        Title="AnimationsDemo" Height="480" Width="740">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        
+        <TabControl Name="tabControl" Grid.Row="0">
+            <TabItem Header="Linear Bar Series">
+                <AnimationsDemoViews:LinearBarView />
+            </TabItem>
+
+            <TabItem Header="Line Series">
+                <AnimationsDemoViews:LineSeriesView />
+            </TabItem>
+
+            <TabItem Header="Area Series">
+                <AnimationsDemoViews:AreaSeriesView />
+            </TabItem>
+        </TabControl>
+        <ContentControl Grid.Row="1" DataContext="{Binding ElementName=tabControl, Path=SelectedItem.Content.DataContext}" >
+            <AnimationsDemoControls:AnimationSettingsControl />
+        </ContentControl>
+    </Grid>
+
+</Window>

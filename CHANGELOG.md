@@ -3,7 +3,7 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 ### Added
-- 
+- Added Avalonia based renderer and control library (based off OxyPlot.Wpf).
 
 ### Changed
 - 

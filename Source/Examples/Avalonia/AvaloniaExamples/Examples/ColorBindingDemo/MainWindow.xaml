@@ -1,0 +1,27 @@
+﻿<Window 
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:oxy="http://oxyplot.org/avalonia"
+        xmlns:ColorBindingDemo="clr-namespace:AvaloniaExamples.Examples.ColorBindingDemo;assembly=AvaloniaExamples"
+        Title="ColorBindingDemo" Height="480" Width="640">
+    <Window.DataContext>
+        <ColorBindingDemo:MainViewModel/>
+    </Window.DataContext>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Black" Command="{Binding SetBlackCommand}"/>
+            <MenuItem Header="White" Command="{Binding SetWhiteCommand}"/>
+            <MenuItem Header="Rasta" Command="{Binding SetRastaCommand}"/>
+        </Menu>
+        <oxy:Plot 
+            Background="{Binding Background, Converter={Static ColorBindingDemo:MainWindow.OxyColorConverter}}" 
+            PlotAreaBorderColor="{Binding PlotAreaBorderColor, Converter={Static ColorBindingDemo:MainWindow.OxyColorConverter}}" 
+            TextColor="{Binding TextColor, Converter={Static ColorBindingDemo:MainWindow.OxyColorConverter}}" 
+            Foreground="Orange">
+            <oxy:Plot.Axes>
+                <oxy:LinearAxis Position="Bottom" TicklineColor="{Binding TicklineColor, Converter={Static ColorBindingDemo:MainWindow.OxyColorConverter}}"/>
+                <oxy:LinearAxis Position="Left" TicklineColor="{Binding TicklineColor, Converter={Static ColorBindingDemo:MainWindow.OxyColorConverter}}"/>
+            </oxy:Plot.Axes>
+        </oxy:Plot>
+    </DockPanel>
+</Window>

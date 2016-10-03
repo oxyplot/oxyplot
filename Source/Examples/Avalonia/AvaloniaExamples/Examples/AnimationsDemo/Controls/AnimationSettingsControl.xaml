@@ -1,0 +1,40 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             d:DesignHeight="300" d:DesignWidth="300">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
+            <TextBlock Text="Total duration (ms)" VerticalAlignment="Center" Margin="6,4,6,4" />
+            <TextBox Text="{Binding AnimationDuration}" Margin="6,4,6,4" Width="50" TextAlignment="Center" />
+
+            <TextBlock Text="Frame duration (ms)" VerticalAlignment="Center" Margin="6,4,6,4" />
+            <TextBox Text="{Binding AnimationFrameDuration}" Margin="6,4,6,4" Width="50" TextAlignment="Center" />
+
+            <TextBlock Text="Delay (ms)" VerticalAlignment="Center" Margin="6,4,6,4" />
+            <TextBox Text="{Binding AnimationDelay}" Margin="6,4,6,4" Width="50" TextAlignment="Center" />
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <TextBlock Text="Easing function" VerticalAlignment="Center" Margin="6,4,6,4" />
+            <DropDown Items="{Binding EasingFunctions}" SelectedItem="{Binding SelectedEasingFunction}" 
+                      Margin="6,4,6,4" Width="100"
+                      IsEnabled="{Binding SupportsEasingFunction}"/>            
+            
+            <TextBlock Text="Horizontal %" VerticalAlignment="Center" Margin="6,4,6,4" />
+            <TextBox Text="{Binding HorizontalPercentage}" Margin="6,4,6,4" Width="50" TextAlignment="Center" />
+
+            <TextBlock Text="Vertical %" VerticalAlignment="Center" Margin="6,4,6,4" />
+            <TextBox Text="{Binding VerticalPercentage}" Margin="6,4,6,4" Width="50" TextAlignment="Center" />
+
+            <Button Content="Animate" Name="Animate"  Width="75" Margin="6,4,6,4" />
+        </StackPanel>
+    </Grid>
+
+</UserControl>
