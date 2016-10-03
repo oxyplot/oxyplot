@@ -727,7 +727,7 @@ namespace OxyPlot.Series
             {
                 // spline smoothing (should only be used on small datasets)
                 var resampledPoints = ScreenPointHelper.ResamplePoints(pointsToRender, this.MinimumSegmentLength);
-                screenPoints = InterpolationAlgorithm.CreateSpline(resampledPoints, false, 0.25);
+                screenPoints = this.InterpolationAlgorithm.CreateSpline(resampledPoints, false, 0.25);
             }
 
             // clip the line segments with the clipping rectangle
@@ -768,7 +768,7 @@ namespace OxyPlot.Series
         protected virtual void ResetSmoothedPoints()
         {
             double tolerance = Math.Abs(Math.Max(this.MaxX - this.MinX, this.MaxY - this.MinY) / ToleranceDivisor);
-            this.smoothedPoints = InterpolationAlgorithm.CreateSpline(this.ActualPoints, false, tolerance);
+            this.smoothedPoints = this.InterpolationAlgorithm.CreateSpline(this.ActualPoints, false, tolerance);
         }
 
         /// <summary>

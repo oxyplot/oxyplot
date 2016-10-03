@@ -10,7 +10,6 @@
 namespace InterpolationDemo
 {
     using System.Collections.Generic;
-    using System.Windows;
     using System.Linq;
 
     using OxyPlot;
@@ -23,24 +22,24 @@ namespace InterpolationDemo
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     [Example("Shows different types of interpolation including a custom one.")]
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
-        Random r = new Random(13);
+        private readonly Random r = new Random(13);
 
         public MainWindow()
         {
             this.InitializeComponent();
 
-            List<DataPoint> points = GeneratePoints(50);
+            List<DataPoint> points = this.GeneratePoints(50);
 
-            PlotModels = new List<PlotModel>
+            this.PlotModels = new List<PlotModel>
             {
-                GenerateRandomPlotModel(points, "None", null),
-                GenerateRandomPlotModel(points, "Canonical aka Cardinal",
+                this.GenerateRandomPlotModel(points, "None", null),
+                this.GenerateRandomPlotModel(points, "Canonical aka Cardinal",
                     new Entry("0.5 (default)", InterpolationAlgorithms.CanonicalSpline),
                     new Entry("0.1", new CanonicalSpline(0.1)),
                     new Entry("1.0", new CanonicalSpline(1.0))),
-                GenerateRandomPlotModel(points, "Catmull–Rom",
+                this.GenerateRandomPlotModel(points, "Catmull–Rom",
                     new Entry("Standard", InterpolationAlgorithms.CatmullRomSpline),
                     new Entry("Uniform", InterpolationAlgorithms.UniformCatmullRomSpline),
                     new Entry("Chordal", InterpolationAlgorithms.ChordalCatmullRomSpline))
@@ -53,8 +52,8 @@ namespace InterpolationDemo
         {
             public Entry(string title, IInterpolationAlgorithm algorithm)
             {
-                Title = title;
-                Algorithm = algorithm;
+                this.Title = title;
+                this.Algorithm = algorithm;
             }
 
             public string Title { get; }
@@ -70,20 +69,21 @@ namespace InterpolationDemo
                 if (i < 5)
                 {
                     result.Add(new DataPoint(i, 0.0));
-                } 
+                }
                 else if (i < 10)
                 {
                     result.Add(new DataPoint(i, 1.0));
-                } 
+                }
                 else if (i < 12)
                 {
                     result.Add(new DataPoint(i, 0.0));
                 }
                 else
                 {
-                    result.Add(new DataPoint(i, r.NextDouble()));
+                    result.Add(new DataPoint(i, this.r.NextDouble()));
                 }
             }
+
             return result;
         }
 
@@ -102,7 +102,7 @@ namespace InterpolationDemo
                 var lineSeries = new LineSeries();
                 lineSeries.Points.AddRange(points);
                 plotModel.Series.Add(lineSeries);
-            } 
+            }
             else
             {
 

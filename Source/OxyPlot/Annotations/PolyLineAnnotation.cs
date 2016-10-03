@@ -70,7 +70,7 @@ namespace OxyPlot.Annotations
             if (this.InterpolationAlgorithm != null)
             {
                 var resampledPoints = ScreenPointHelper.ResamplePoints(screenPoints, this.MinimumSegmentLength);
-                return InterpolationAlgorithm.CreateSpline(resampledPoints, false, 0.25);
+                return this.InterpolationAlgorithm.CreateSpline(resampledPoints, false, 0.25);
             }
 
             return this.Points.Select(this.Transform).ToList();

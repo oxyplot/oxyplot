@@ -1,9 +1,18 @@
-﻿namespace OxyPlot
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="IInterpolationAlgorithm.cs" company="OxyPlot">
+//   Copyright (c) 2014 OxyPlot contributors
+// </copyright>
+// <summary>
+//   Defines an interpolation algorithm for smoothing a line.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace OxyPlot
 {
     using System.Collections.Generic;
 
     /// <summary>
-    /// Defines interpolation algorithm for smoothing a line.
+    /// Defines an interpolation algorithm for smoothing a line.
     /// </summary>
     public interface IInterpolationAlgorithm {
         /// <summary>
