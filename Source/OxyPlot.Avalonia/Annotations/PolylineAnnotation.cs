@@ -20,9 +20,9 @@ namespace OxyPlot.Avalonia
     public class PolylineAnnotation : PathAnnotation
     {
         /// <summary>
-        /// Identifies the <see cref="Smooth"/> dependency property.
+        /// Identifies the <see cref="InterpolationAlgorithm"/> dependency property.
         /// </summary>
-        public static readonly StyledProperty<bool> SmoothProperty = AvaloniaProperty.Register<PolylineAnnotation, bool>(nameof(Smooth), false);
+        public static readonly StyledProperty<IInterpolationAlgorithm> InterpolationAlgorithmProperty = AvaloniaProperty.Register<PolylineAnnotation, IInterpolationAlgorithm>(nameof(InterpolationAlgorithm), null);
 
         /// <summary>
         /// Identifies the <see cref="MinimumSegmentLength"/> dependency property.
@@ -46,7 +46,7 @@ namespace OxyPlot.Avalonia
             TextVerticalAlignmentProperty.OverrideDefaultValue<PolylineAnnotation>(VerticalAlignment.Top);
             TextVerticalAlignmentProperty.Changed.AddClassHandler<PolylineAnnotation>(AppearanceChanged);
 
-            SmoothProperty.Changed.AddClassHandler<PolylineAnnotation>(DataChanged);
+            InterpolationAlgorithmProperty.Changed.AddClassHandler<PolylineAnnotation>(DataChanged);
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace OxyPlot.Avalonia
         /// </summary>
         public PolylineAnnotation()
         {
-            InternalAnnotation = new Annotations.PolylineAnnotation();
+            this.InternalAnnotation = new Annotations.PolylineAnnotation();
         }
 
         /// <summary>
@@ -87,13 +87,13 @@ namespace OxyPlot.Avalonia
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the polyline should be smoothed.
+        /// Gets or sets the interpolation algorithm.
         /// </summary>
-        /// <value><c>true</c> if smooth; otherwise, <c>false</c>.</value>
-        public bool Smooth
+        /// <value>Interpolation algorithm.</value>
+        public IInterpolationAlgorithm InterpolationAlgorithm
         {
-            get { return GetValue(SmoothProperty); }
-            set { SetValue(SmoothProperty, value); }
+            get { return this.GetValue(InterpolationAlgorithmProperty); }
+            set { this.SetValue(InterpolationAlgorithmProperty, value); }
         }
 
         /// <summary>
@@ -102,8 +102,8 @@ namespace OxyPlot.Avalonia
         /// <returns>The annotation.</returns>
         public override Annotations.Annotation CreateModel()
         {
-            SynchronizeProperties();
-            return InternalAnnotation;
+            this.SynchronizeProperties();
+            return this.InternalAnnotation;
         }
 
         /// <summary>
@@ -113,11 +113,11 @@ namespace OxyPlot.Avalonia
         {
             base.SynchronizeProperties();
 
-            var a = (Annotations.PolylineAnnotation)InternalAnnotation;
+            var a = (Annotations.PolylineAnnotation)this.InternalAnnotation;
             a.Points.Clear();
-            a.Points.AddRange(Points);
-            a.Smooth = Smooth;
-            a.MinimumSegmentLength = MinimumSegmentLength;
+            a.Points.AddRange(this.Points);
+            a.InterpolationAlgorithm = this.InterpolationAlgorithm;
+            a.MinimumSegmentLength = this.MinimumSegmentLength;
         }
     }
 }

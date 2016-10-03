@@ -181,14 +181,14 @@ namespace ExampleLibrary
             return pm;
         }
 
-        [Example("Smooth")]
+        [Example("CanonicalSpline interpolation")]
         public static PlotModel Smooth()
         {
-            var model = new PlotModel { Title = "LineSeries with Smooth = true", LegendSymbolLength = 24 };
+            var model = new PlotModel { Title = "LineSeries with canonical spline interpolation", LegendSymbolLength = 24 };
 
             var s1 = CreateExampleLineSeries();
             s1.MarkerType = MarkerType.Circle;
-            s1.Smooth = true;
+            s1.InterpolationAlgorithm = InterpolationAlgorithms.CanonicalSpline;
             model.Series.Add(s1);
 
             return model;
@@ -197,12 +197,12 @@ namespace ExampleLibrary
         [Example("Smooth (complex curve)")]
         public static PlotModel ComplexSmoothLine()
         {
-            var model = new PlotModel { Title = "LineSeries with Smooth = true", Subtitle = "complex curve" };
+            var model = new PlotModel { Title = "LineSeries with canonical spline interpolation", Subtitle = "complex curve" };
 
             var s1 = new LineSeries
             {
                 Title = "Series 1",
-                Smooth = true
+                InterpolationAlgorithm = InterpolationAlgorithms.CanonicalSpline
             };
             s1.Points.Add(new DataPoint(-0.03, 22695655));
             s1.Points.Add(new DataPoint(-0.02, 34005991));

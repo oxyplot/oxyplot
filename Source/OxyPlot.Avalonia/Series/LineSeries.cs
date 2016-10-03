@@ -113,9 +113,9 @@ namespace OxyPlot.Avalonia
         public static readonly StyledProperty<double> MinimumSegmentLengthProperty = AvaloniaProperty.Register<LineSeries, double>(nameof(MinimumSegmentLength), 2.0);
 
         /// <summary>
-        /// Identifies the <see cref="Smooth"/> dependency property.
+        /// Identifies the <see cref="InterpolationAlgorithm"/> dependency property.
         /// </summary>
-        public static readonly StyledProperty<bool> SmoothProperty = AvaloniaProperty.Register<LineSeries, bool>(nameof(Smooth), false);
+        public static readonly StyledProperty<IInterpolationAlgorithm> InterpolationAlgorithmProperty = AvaloniaProperty.Register<LineSeries, IInterpolationAlgorithm>(nameof(InterpolationAlgorithm), null);
 
         /// <summary>
         /// Identifies the <see cref="StrokeThickness"/> dependency property.
@@ -152,7 +152,7 @@ namespace OxyPlot.Avalonia
         /// </summary>
         public LineSeries()
         {
-            InternalSeries = new OxyPlot.Series.LineSeries();
+            this.InternalSeries = new OxyPlot.Series.LineSeries();
         }
 
         /// <summary>
@@ -436,22 +436,22 @@ namespace OxyPlot.Avalonia
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="DataPointSeries" /> is smooth.
+        /// Gets or sets a value the interpolation algorithm.
         /// </summary>
-        /// <value><c>true</c> if smooth; otherwise, <c>false</c> .</value>
-        public bool Smooth
+        /// <value>Interpolation algorithm.</value>
+        public IInterpolationAlgorithm InterpolationAlgorithm
         {
             get
             {
-                return GetValue(SmoothProperty);
+                return this.GetValue(InterpolationAlgorithmProperty);
             }
 
             set
             {
-                SetValue(SmoothProperty, value);
+                this.SetValue(InterpolationAlgorithmProperty, value);
             }
         }
-        
+
         /// <summary>
         /// Gets or sets StrokeThickness.
         /// </summary>
@@ -506,7 +506,7 @@ namespace OxyPlot.Avalonia
             s.BrokenLineStyle = BrokenLineStyle;
             s.BrokenLineThickness = BrokenLineThickness;
             s.Decimator = Decimator;
-            s.Smooth = Smooth;
+            s.InterpolationAlgorithm = this.InterpolationAlgorithm;
         }
     }
 }

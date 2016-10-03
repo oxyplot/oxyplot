@@ -272,7 +272,7 @@ namespace ExampleLibrary
                 MarkerStroke = OxyColors.White,
                 MarkerFill = OxyColors.SkyBlue,
                 MarkerStrokeThickness = 1.5,
-                Smooth = true
+                InterpolationAlgorithm = InterpolationAlgorithms.CanonicalSpline
             };
             s1.Points.Add(new DataPoint(100, 100));
             s1.Points.Add(new DataPoint(400, 200));
@@ -534,7 +534,10 @@ namespace ExampleLibrary
         public static PlotModel EmptyLineSeriesWithSmoothing_ThrowsException()
         {
             var plotModel1 = new PlotModel { Title = "Empty LineSeries with smoothing" };
-            plotModel1.Series.Add(new LineSeries { Smooth = true });
+            plotModel1.Series.Add(new LineSeries
+            {
+                InterpolationAlgorithm = InterpolationAlgorithms.CanonicalSpline
+            });
             return plotModel1;
         }
 
@@ -688,14 +691,14 @@ namespace ExampleLibrary
             var referenceCurve = new LineSeries
             {
                 Title = "Reference",
-                Smooth = true,
+                InterpolationAlgorithm = InterpolationAlgorithms.CanonicalSpline,
                 Color = OxyColor.FromArgb(255, 89, 128, 168)
             };
             var upperBoundary = new LineSeries
             {
                 LineStyle = LineStyle.Dot,
                 Color = OxyColors.LightGray,
-                Smooth = true,
+                InterpolationAlgorithm = InterpolationAlgorithms.CanonicalSpline,
                 Title = string.Empty
             };
 
@@ -703,7 +706,7 @@ namespace ExampleLibrary
             {
                 LineStyle = LineStyle.Dot,
                 Color = OxyColors.LightGray,
-                Smooth = true,
+                InterpolationAlgorithm = InterpolationAlgorithms.CanonicalSpline,
                 Title = "+/- 15 %"
             };
 
@@ -975,7 +978,10 @@ namespace ExampleLibrary
                 Title = "LineSeries null reference exception when smoothing is enabled and all datapoints have the same y value",
                 Subtitle = "Click on the plot to reproduce the issue."
             };
-            var ls = new LineSeries { Smooth = true };
+            var ls = new LineSeries
+            {
+                InterpolationAlgorithm = InterpolationAlgorithms.CanonicalSpline,
+            };
             ls.Points.Add(new DataPoint(0, 0));
             ls.Points.Add(new DataPoint(1, 0));
             ls.Points.Add(new DataPoint(10, 0));
@@ -1640,11 +1646,10 @@ namespace ExampleLibrary
         {
             var model = new PlotModel { Title = "LineSeries with Smooth = true (zoomed in)", LegendSymbolLength = 24 };
 
-            var s1 = new LineSeries();
+            var s1 = new LineSeries { InterpolationAlgorithm = InterpolationAlgorithms.CanonicalSpline };
             s1.Points.Add(new DataPoint(0, 0));
             s1.Points.Add(new DataPoint(10, 2));
             s1.Points.Add(new DataPoint(40, 1));
-            s1.Smooth = true;
             model.Series.Add(s1);
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = 10.066564180257437, Maximum = 10.081628088306001 });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 2.0013430243084067, Maximum = 2.00209808854281 });
@@ -1778,7 +1783,7 @@ namespace ExampleLibrary
         public static PlotModel LogarithmicAxisReversed()
         {
             var model = new PlotModel();
-            model.Axes.Add(new LogarithmicAxis { StartPosition = 1, EndPosition = 0});
+            model.Axes.Add(new LogarithmicAxis { StartPosition = 1, EndPosition = 0 });
 
             return model;
         }

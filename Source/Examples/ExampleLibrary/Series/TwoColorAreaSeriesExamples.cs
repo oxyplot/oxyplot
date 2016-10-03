@@ -37,7 +37,6 @@ namespace ExampleLibrary
                              MarkerFill2 = OxyColors.LightBlue,
                              StrokeThickness = 2,
                              Limit = -1,
-                             Smooth = false,
                              MarkerType = MarkerType.Circle,
                              MarkerSize = 3,
                          };
@@ -77,7 +76,6 @@ namespace ExampleLibrary
                 MarkerStroke2 = OxyColors.Black,
                 StrokeThickness = 2,
                 Limit = 0,
-                Smooth = false,
                 MarkerType = MarkerType.Circle,
                 MarkerSize = 3,
             };
@@ -118,7 +116,7 @@ namespace ExampleLibrary
                 MarkerStroke2 = OxyColors.Black,
                 StrokeThickness = 1,
                 Limit = 0,
-                Smooth = true,
+                InterpolationAlgorithm = InterpolationAlgorithms.CanonicalSpline,
                 MarkerType = MarkerType.Circle,
                 MarkerSize = 1,
             };

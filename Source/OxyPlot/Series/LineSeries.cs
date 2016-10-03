@@ -203,16 +203,6 @@ namespace OxyPlot.Series
         public double MinimumSegmentLength { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref = "DataPointSeries" /> is smooth.
-        /// </summary>
-        /// <value><c>true</c> if smooth; otherwise, <c>false</c>.</value>
-        [Obsolete("Use the InterpolationAlgorithm property instead")]
-        public bool Smooth {
-            get { return this.InterpolationAlgorithm is CanonicalSpline; }
-            set { this.InterpolationAlgorithm = value ? InterpolationAlgorithms.CanonicalSpline : null; }
-        }
-
-        /// <summary>
         /// Gets or sets a type of interpolation algorithm used for smoothing this <see cref = "DataPointSeries" />.
         /// </summary>
         /// <value>Type of interpolation algorithm.</value>
