@@ -1201,6 +1201,19 @@ namespace OxyPlot.Axes
                 // The user has zoomed/panned the axis, use the ViewMaximum value.
                 this.ActualMaximum = this.ViewMaximum;
             }
+            else if (this.Maximum == 0 && this.Minimum == 0)
+            {
+                // The Maximum value has not been set
+                if (this.DataMaximum >= 0)
+                {
+                    this.ActualMaximum = this.DataMaximum * 1.5;
+                }
+                else
+                {
+                    this.ActualMaximum = this.DataMaximum * 0.5;
+                }
+
+            }
             else if (!double.IsNaN(this.Maximum))
             {
                 // The Maximum value has been set
@@ -1215,6 +1228,18 @@ namespace OxyPlot.Axes
             if (!double.IsNaN(this.ViewMinimum))
             {
                 this.ActualMinimum = this.ViewMinimum;
+            }
+            else if (this.Maximum == 0 && this.Minimum == 0)
+            {
+                // The Minimum value has not been set
+                if (this.DataMinimum >= 0)
+                {
+                    this.ActualMinimum = this.DataMinimum * 0.5;
+                }
+                else
+                {
+                    this.ActualMinimum = this.DataMinimum * 1.5;
+                }
             }
             else if (!double.IsNaN(this.Minimum))
             {
