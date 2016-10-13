@@ -17,7 +17,7 @@ All notable changes to this project will be documented in this file.
 - The `Smooth` property in LineSeries and PolylineAnnotation (#494)
 
 ### Fixed
-- 
+- Manipulation when using touch is not working in Windows (#1011)
 
 ## [1.0.0] - 2016-09-11
 ### Added
