@@ -83,6 +83,7 @@ namespace OxyPlot.Annotations
                     break;
                 default:
                     fx = x => (this.Slope * x) + this.Intercept;
+                    fy = y => (y - this.Intercept) / this.Slope;
                     break;
             }
 
@@ -95,13 +96,16 @@ namespace OxyPlot.Annotations
                 // we only need to calculate two points if it is a straight line
                 if (fx != null)
                 {
-                    points.Add(new DataPoint(this.ActualMinimumX, fx(this.ActualMinimumX)));
-                    points.Add(new DataPoint(this.ActualMaximumX, fx(this.ActualMaximumX)));
+                    // Calculate minimum and maximum x any y values clipped to min/max range
+                    double ymin = Clamp(fx(this.ActualMinimumX), this.ActualMinimumY, this.ActualMaximumY);
+                    double ymax = Clamp(fx(this.ActualMaximumX),this.ActualMinimumY,this.ActualMaximumY);
+                    points.Add(new DataPoint(fy(ymin), ymin));
+                    points.Add(new DataPoint(fy(ymax), ymax));
                 }
                 else
                 {
-                    points.Add(new DataPoint(fy(this.ActualMinimumY), this.ActualMinimumY));
-                    points.Add(new DataPoint(fy(this.ActualMaximumY), this.ActualMaximumY));
+                    points.Add(new DataPoint(fy(this.ActualMinimumX), this.ActualMinimumY));
+                    points.Add(new DataPoint(fy(this.ActualMaximumX), this.ActualMaximumY));
                 }
 
                 if (this.Type == LineAnnotationType.Horizontal || this.Type == LineAnnotationType.Vertical)
@@ -150,6 +154,20 @@ namespace OxyPlot.Annotations
 
             // transform to screen coordinates
             return points.Select(this.Transform).ToList();
+        }
+
+        /// <summary>
+        /// Limits value to within Min and Maximum
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="min"></param>
+        /// <param name="max"></param>
+        /// <returns></returns>
+        static double Clamp(double value, double min, double max)
+        {
+            if (value < min) return min;
+            if (value > max) return max;
+            return value;
         }
     }
 }
