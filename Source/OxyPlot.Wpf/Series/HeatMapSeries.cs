@@ -15,7 +15,7 @@ namespace OxyPlot.Wpf
     /// <summary>
     /// HeatMapSeries WPF wrapper
     /// </summary>
-    public class HeatMapSeries : XYAxisSeries
+    public class HeatMapSeries : DataRectSeries
     {
         /// <summary>
         /// Identifies this <see cref="DataProperty"/> dependency property.
