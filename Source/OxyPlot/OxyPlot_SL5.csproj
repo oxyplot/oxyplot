@@ -116,6 +116,7 @@
     <Compile Include="Foundation\CodeGenerator\ICodeGenerating.cs" />
     <Compile Include="Foundation\IDataPointProvider.cs" />
     <Compile Include="Foundation\DataPoint.cs" />
+	<Compile Include="Foundation\DataRect.cs" />
     <Compile Include="Foundation\MarkerType.cs" />
     <Compile Include="Rendering\OxyColorExtensions.cs" />
     <Compile Include="Rendering\OxyPalette.cs" />
@@ -326,6 +327,7 @@
     <Compile Include="Series\BarSeries\TornadoBarSeries.cs" />
     <Compile Include="Series\ItemsSeries.cs" />
     <Compile Include="Series\DataPointSeries.cs" />
+	<Compile Include="Series\DataRectSeries.cs" />
     <Compile Include="Series\ScatterPoint.cs" />
     <Compile Include="Series\Series.cs" />
     <Compile Include="Series\StemSeries.cs" />
