@@ -542,7 +542,7 @@ namespace OxyPlot.Series
         /// </summary>
         protected internal void UpdateMaxMinXY()
         {
-            if (this.ActualRects != null)
+            if (this.ActualRects != null && this.ActualRects.Count > 0)
             {
                 this.MinX = Math.Min(this.ActualRects.Min(r => r.A.X), this.ActualRects.Min(r => r.B.X));
                 this.MaxX = Math.Max(this.ActualRects.Max(r => r.A.X), this.ActualRects.Max(r => r.B.X));
