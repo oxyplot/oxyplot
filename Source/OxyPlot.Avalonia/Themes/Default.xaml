@@ -1,0 +1,104 @@
+<Styles xmlns="https://github.com/avaloniaui" 
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="http://oxyplot.org/avalonia"
+        xmlns:converters="clr-namespace:OxyPlot.Avalonia.Converters;assembly=OxyPlot.Avalonia">
+
+    <Style Selector="local|TrackerControl">
+        <Setter Property="Background" Value="#E0FFFFA0" />
+        <Setter Property="BorderBrush" Value="Black" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="LineStroke" Value="#80000000" />
+        <Setter Property="HorizontalLineVisibility" Value="true" />
+        <Setter Property="VerticalLineVisibility" Value="true" />
+        <Setter Property="Distance" Value="7" />
+        <Setter Property="CornerRadius" Value="0" />
+        <Setter Property="ShowPointer" Value="true" />
+        <Setter Property="CanCenterHorizontally" Value="true" />
+        <Setter Property="CanCenterVertically" Value="true" />
+        <Setter Property="IsHitTestVisible" Value="false" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Panel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ClipToBounds="False">
+                        <Line Name="PART_HorizontalLine" IsVisible="{TemplateBinding HorizontalLineVisibility}"
+                  Stroke="{TemplateBinding LineStroke}"
+                  StrokeDashArray="{TemplateBinding LineDashArray}" />
+                        <Line Name="PART_VerticalLine" IsVisible="{TemplateBinding VerticalLineVisibility}"
+                  Stroke="{TemplateBinding LineStroke}"
+                  StrokeDashArray="{TemplateBinding LineDashArray}" />
+                        <Panel Name="PART_ContentContainer" ClipToBounds="False">
+                            <Path Name="PART_Path" Fill="{TemplateBinding Background}" Stroke="{TemplateBinding BorderBrush}"
+                    StrokeThickness="{TemplateBinding BorderThickness, Converter={Static converters:ThicknessConverter.Instance}}" />
+                            <ContentPresenter Name="PART_Content" Content="{TemplateBinding Content}" HorizontalAlignment="Center" />
+                        </Panel>
+                    </Panel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style Selector="local|PlotView">
+        <Setter Property="Background" Value="White" />
+        <Setter Property="DefaultTrackerTemplate">
+            <Setter.Value>
+                <ControlTemplate>
+                    <local:TrackerControl Position="{Binding Position}" LineExtents="{Binding PlotModel.PlotArea}">
+                        <local:TrackerControl.Content>
+                            <TextBlock Text="{Binding Text}" Margin="7" />
+                        </local:TrackerControl.Content>
+                    </local:TrackerControl>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ZoomRectangleTemplate">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Rectangle Fill="#40FFFF00" Stroke="Black" StrokeDashArray="3,1" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}">
+                        <Panel Name="PART_Panel" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style Selector="local|Plot">
+        <Setter Property="Background" Value="White" />
+        <Setter Property="DefaultTrackerTemplate">
+            <Setter.Value>
+                <ControlTemplate>
+                    <local:TrackerControl Position="{Binding Position}" LineExtents="{Binding PlotModel.PlotArea}">
+                        <local:TrackerControl.Content>
+                            <TextBlock Text="{Binding Text}" />
+                        </local:TrackerControl.Content>
+                    </local:TrackerControl>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ZoomRectangleTemplate">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Rectangle Fill="#40FFFF00" Stroke="Black" StrokeDashArray="3,1" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}">
+                        <Panel Name="PART_Panel" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</Styles>

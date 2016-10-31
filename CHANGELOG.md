@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 ### Added
+- Added Avalonia based renderer and control library (based off OxyPlot.Wpf).
+- New `InterpolationAlgorithm` property in LineSeries and PolylineAnnotation (#494)
+- Catmull-Rom spline interpolation algorithms (#494)
 - Added ability to map objects in an ItemsSource to a HeatMapSeries (#911)
 
 ### Changed
@@ -12,10 +15,10 @@ All notable changes to this project will be documented in this file.
 - 
 
 ### Removed
-- 
+- The `Smooth` property in LineSeries and PolylineAnnotation (#494)
 
 ### Fixed
-- 
+- Manipulation when using touch is not working in Windows (#1011)
 
 ## [1.0.0] - 2016-09-11
 ### Added
@@ -63,6 +66,7 @@ All notable changes to this project will be documented in this file.
 - Improve tracker style (Windows Forms) (#106)
 - Font rendering in OxyPlot.GtkSharp improved by using Pango (#972)
 - Improved LineSeries performance (#834)
+- Fixed bug causing axes titles to not display in OxyPlot.GtkSharp (#989)
 
 ### Changed
 - Fixed closing file stream for PdfReportWriter when PdfReportWriter is closed or disposed of. (#892)
@@ -203,6 +207,7 @@ All notable changes to this project will be documented in this file.
 - Fixed bug in selection of plot to display in OxyPlot.GtkSharp ExampleBrowser (#979)
 - Fixed non-interpolation of HeatMapSeries in OxyPlot.GtkSharp (#980)
 - Fixed axis min/max calc and axis assignment for CandleStick + VolumeSeries (#389)
+- Fixed drawing of plot backgrounds in OxyPlot.GtkSharp (#990)
 
 ## [0.2014.1.546] - 2014-10-22
 ### Added

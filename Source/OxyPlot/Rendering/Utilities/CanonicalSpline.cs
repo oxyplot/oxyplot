@@ -18,8 +18,46 @@ namespace OxyPlot
     /// </summary>
     /// <remarks>CanonicalSplineHelper.cs (c) 2009 by Charles Petzold (WPF and Silverlight)
     /// See also <a href="http://www.charlespetzold.com/blog/2009/01/Canonical-Splines-in-WPF-and-Silverlight.html">blog post</a>.</remarks>
-    internal static class CanonicalSplineHelper
+    public class CanonicalSpline : IInterpolationAlgorithm 
     {
+        /// <summary>
+        /// The tension.
+        /// </summary>
+        public double Tension { get; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref = "CanonicalSpline" /> class.
+        /// </summary>
+        /// <param name="tension">The tension.</param>
+        public CanonicalSpline(double tension)
+        {
+            this.Tension = tension;
+        }
+
+        /// <summary>
+        /// Creates a spline of data points.
+        /// </summary>
+        /// <param name="points">The points.</param>
+        /// <param name="isClosed">True if the spline is closed.</param>
+        /// <param name="tolerance">The tolerance.</param>
+        /// <returns>A list of data points.</returns>
+        public List<DataPoint> CreateSpline(List<DataPoint> points, bool isClosed, double tolerance)
+        {
+            return CreateSpline(points, this.Tension, null, isClosed, tolerance);
+        }
+
+        /// <summary>
+        /// Creates a spline of screen points.
+        /// </summary>
+        /// <param name="points">The points.</param>
+        /// <param name="isClosed">True if the spline is closed.</param>
+        /// <param name="tolerance">The tolerance.</param>
+        /// <returns>A list of screen points.</returns>
+        public List<ScreenPoint> CreateSpline(IList<ScreenPoint> points, bool isClosed, double tolerance)
+        {
+            return CreateSpline(points, this.Tension, null, isClosed, tolerance);
+        }
+
         /// <summary>
         /// Creates a spline of data points.
         /// </summary>

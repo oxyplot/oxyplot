@@ -1,0 +1,18 @@
+﻿<Window xmlns="https://github.com/avaloniaui" xmlns:oxy="http://oxyplot.org/avalonia" MinWidth="500" MinHeight="300">
+  <Grid>
+    <ScrollViewer>
+      <ItemsControl Items="{Binding .}">
+        <ItemsControl.ItemsPanel>
+          <ItemsPanelTemplate>
+            <StackPanel Orientation="Vertical" />
+          </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <oxy:PlotView Model="{Binding}" Height="300" Width="500"/>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </ScrollViewer>
+  </Grid>
+</Window>

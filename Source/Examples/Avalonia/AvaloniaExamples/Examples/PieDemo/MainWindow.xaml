@@ -1,0 +1,22 @@
+﻿<Window 
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:oxy="clr-namespace:OxyPlot.Avalonia;assembly=OxyPlot.Avalonia" Title="PieDemo" Height="480" Width="640">
+    <TabControl>
+        <TabItem Header="Binding to PlotModel">
+            <oxy:PlotView Model="{Binding PieModel}"/>
+        </TabItem>
+        <TabItem Header="Define plot in XAML">
+            <oxy:Plot Title="World population by continent">
+                <oxy:Plot.Series>
+                    <oxy:PieSeries
+                        InnerDiameter="0.2"
+                        ExplodedDistance="0"
+                        Stroke="Black" StrokeThickness="1"
+                        StartAngle="0" AngleSpan="360"
+                        Items="{Binding Continents}"
+                        LabelField="Name" ValueField="PopulationInMillions" IsExplodedField="IsExploded" />
+                </oxy:Plot.Series>
+            </oxy:Plot>
+        </TabItem>
+    </TabControl>
+</Window>

@@ -1,0 +1,124 @@
+﻿<Window  
+        xmlns:oxy="clr-namespace:OxyPlot.Avalonia;assembly=OxyPlot.Avalonia" xmlns:OxyPlot="clr-namespace:OxyPlot;assembly=OxyPlot"
+        Title="AnnotationDemo" Height="480" Width="640">
+    <TabControl>
+        <TabItem Header="ArrowAnnotation">
+            <oxy:Plot Title="ArrowAnnotation">
+                <oxy:Plot.Axes>
+                    <oxy:LinearAxis Position="Bottom" Minimum="0" Maximum="100" />
+                    <oxy:LinearAxis Position="Left" Minimum="0" Maximum="100" />
+                </oxy:Plot.Axes>
+                <oxy:Plot.Annotations>
+                    <oxy:ArrowAnnotation Color="Green" Text="Arrow 1" StartPoint="{oxy:DataPoint 10,10}" EndPoint="{oxy:DataPoint 60,30}" />
+                </oxy:Plot.Annotations>
+            </oxy:Plot>
+        </TabItem>
+        <TabItem Header="EllipseAnnotation">
+            <oxy:Plot Title="EllipseAnnotation">
+                <oxy:Plot.Axes>
+                    <oxy:LinearAxis Position="Bottom" Minimum="0" Maximum="100" />
+                    <oxy:LinearAxis Position="Left" Minimum="0" Maximum="100" />
+                </oxy:Plot.Axes>
+                <oxy:Plot.Annotations>
+                    <oxy:EllipseAnnotation Text="EllipseAnnotation1" X="50" Y="50" Width="20" Height="10"/>
+                </oxy:Plot.Annotations>
+            </oxy:Plot>
+        </TabItem>
+        <TabItem Header="LineAnnotation">
+            <TabItem.Styles>
+                <Style Selector="oxy|LineAnnotation.CustomStyle">
+                    <Setter Property="LineStyle" Value="Dot"/>
+                    <Setter Property="Color" Value="Black"/>
+                </Style>
+            </TabItem.Styles>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <oxy:Plot Title="Linear axes">
+                    <oxy:Plot.Axes>
+                        <oxy:LinearAxis Position="Bottom" Minimum="-20" Maximum="80" />
+                        <oxy:LinearAxis Position="Left" Minimum="-10" Maximum="10" />
+                    </oxy:Plot.Axes>
+                    <oxy:Plot.Annotations>
+                        <oxy:LineAnnotation Slope="0.1" Intercept="1" Text="First" />
+                        <oxy:LineAnnotation Slope="0.3" Intercept="2" MaximumX="40" Color="Red" Text="Second" />
+                        <oxy:LineAnnotation Slope="0.3" Intercept="-6" Classes="CustomStyle" Text="Black/Dotted by style" />
+                        <oxy:LineAnnotation Type="Vertical" X="4" MaximumY="10" Color="Green" Text="Vertical" />
+                        <oxy:LineAnnotation Type="Horizontal" Y="2" MinimumX="0" Color="Gold" Text="Horizontal" />
+                    </oxy:Plot.Annotations>
+                </oxy:Plot>
+                <oxy:Plot Grid.Column="1" Title="Logarithmic axes">
+                    <oxy:Plot.Axes>
+                        <oxy:LogarithmicAxis Position="Bottom" Minimum="1" Maximum="100" />
+                        <oxy:LogarithmicAxis Position="Left" Minimum="1" Maximum="100" />
+                    </oxy:Plot.Axes>
+                    <oxy:Plot.Annotations>
+                        <oxy:LineAnnotation Slope="0.1" Intercept="1" Text="First" />
+                        <oxy:LineAnnotation Slope="0.3" Intercept="2" MaximumX="40" Color="Red" Text="Second" />
+                        <oxy:LineAnnotation Type="Vertical" X="4" MaximumY="10" Color="Green" Text="Vertical" />
+                        <oxy:LineAnnotation Type="Horizontal" Y="2" MinimumX="0" Color="Gold" Text="Horizontal" />
+                    </oxy:Plot.Annotations>
+                </oxy:Plot>
+            </Grid>
+        </TabItem>
+        <TabItem Header="PointAnnotation">
+            <oxy:Plot Title="PointAnnotation">
+                <oxy:Plot.Axes>
+                    <oxy:LinearAxis Position="Bottom" Minimum="0" Maximum="100" />
+                    <oxy:LinearAxis Position="Left" Minimum="0" Maximum="100" />
+                </oxy:Plot.Axes>
+                <oxy:Plot.Annotations>
+                    <oxy:PointAnnotation Text="P1" X="50" Y="50"/>
+                </oxy:Plot.Annotations>
+            </oxy:Plot>
+        </TabItem>
+        <TabItem Header="PolygonAnnotation">
+            <oxy:Plot Title="PolygonAnnotation">
+                <oxy:Plot.Axes>
+                    <oxy:LinearAxis Position="Bottom" Minimum="0" Maximum="100" />
+                    <oxy:LinearAxis Position="Left" Minimum="0" Maximum="100" />
+                </oxy:Plot.Axes>
+                <oxy:Plot.Annotations>
+                    <oxy:PolygonAnnotation Text="PolygonAnnotation1"  Points="{Binding Points}"/>
+                </oxy:Plot.Annotations>
+            </oxy:Plot>
+        </TabItem>
+        <TabItem Header="PolylineAnnotation">
+            <oxy:Plot Title="PolylineAnnotation">
+                <oxy:Plot.Axes>
+                    <oxy:LinearAxis Position="Bottom" Minimum="0" Maximum="100" />
+                    <oxy:LinearAxis Position="Left" Minimum="0" Maximum="100" />
+                </oxy:Plot.Axes>
+                <oxy:Plot.Annotations>
+                    <oxy:PolylineAnnotation Text="PolylineAnnotation1"  Points="{Binding Points}"/>
+                </oxy:Plot.Annotations>
+            </oxy:Plot>
+        </TabItem>
+        <TabItem Header="RectangleAnnotation">
+            <oxy:Plot Title="RectangleAnnotation">
+                <oxy:Plot.Axes>
+                    <oxy:LinearAxis Position="Bottom" Minimum="0" Maximum="100" />
+                    <oxy:LinearAxis Position="Left" Minimum="0" Maximum="100" />
+                </oxy:Plot.Axes>
+                <oxy:Plot.Annotations>
+                    <oxy:RectangleAnnotation Fill="IndianRed" Text="Rectangle 1" MinimumX="10" MinimumY="10" MaximumX="60" MaximumY="40"/>
+                    <oxy:RectangleAnnotation Fill="#40004684" Text="Rectangle 2" MinimumX="20" MinimumY="30" MaximumX="50" MaximumY="60"/>
+                </oxy:Plot.Annotations>
+            </oxy:Plot>
+        </TabItem>
+        <TabItem Header="TextAnnotation">
+            <oxy:Plot Title="TextAnnotation">
+                <oxy:Plot.Axes>
+                    <oxy:LinearAxis Position="Bottom" Minimum="0" Maximum="100" />
+                    <oxy:LinearAxis Position="Left" Minimum="0" Maximum="100" />
+                </oxy:Plot.Axes>
+                <oxy:Plot.Annotations>
+                    <oxy:TextAnnotation TextColor="Green" Text="Hello" TextPosition="{oxy:DataPoint 30,70}" />
+                    <oxy:TextAnnotation TextColor="Orange" Text="world!" TextRotation="20" TextPosition="{oxy:DataPoint 50,70}" />
+                </oxy:Plot.Annotations>
+            </oxy:Plot>
+        </TabItem>
+    </TabControl>
+</Window>

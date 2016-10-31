@@ -1,0 +1,10 @@
+﻿<Window 
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:oxy="clr-namespace:OxyPlot.Avalonia;assembly=OxyPlot.Avalonia"
+        Title="LegendsDemo" Height="720" Width="1280">
+    <DockPanel>
+        <Grid>
+            <oxy:PlotView Model="{Binding Model}" Background="White"/>
+        </Grid>
+    </DockPanel>
+</Window>

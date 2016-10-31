@@ -1,0 +1,13 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:oxy="clr-namespace:OxyPlot.Avalonia;assembly=OxyPlot.Avalonia" Title="ContourDemo" Height="480" Width="640">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="File">
+                <MenuItem Header="E_xit" Name="Exit"/>
+            </MenuItem>
+            <MenuItem Name="ExamplesMenu" Header="Examples" Items="{Binding Examples}">
+            </MenuItem>
+        </Menu>
+        <oxy:PlotView Model="{Binding SelectedExample.PlotModel}"/>
+    </DockPanel>
+</Window>

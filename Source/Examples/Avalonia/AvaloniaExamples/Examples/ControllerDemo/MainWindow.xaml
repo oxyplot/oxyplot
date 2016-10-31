@@ -1,0 +1,27 @@
+﻿<Window 
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:oxy="clr-namespace:OxyPlot.Avalonia;assembly=OxyPlot.Avalonia" 
+        xmlns:local="clr-namespace:AvaloniaExamples.Examples.ControllerDemo;assembly=AvaloniaExamples"
+        Title="OxyPlot Controller Demo" Height="480" Width="640">
+    <Window.DataContext>
+        <local:MainViewModel />
+    </Window.DataContext>
+    <TabControl>
+        <TabItem Header="Custom controller">
+            <!-- The OxyPlot control is binding to a PlotModel and a PlotController in the MainViewModel -->
+            <oxy:PlotView Model="{Binding Model}"
+                          Controller="{Binding Controller}" />
+        </TabItem>
+        <TabItem Header="Default controllers">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <oxy:PlotView Model="{Binding Model1}" />
+                <oxy:PlotView Grid.Column="1" Name="plotView2" Model="{Binding Model2}" />
+            </Grid>
+        </TabItem>
+    </TabControl>
+</Window>

@@ -1,0 +1,39 @@
+﻿<Window 
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:oxy="clr-namespace:OxyPlot.Avalonia;assembly=OxyPlot.Avalonia" Title="BarSeriesDemo" Height="480" Width="640">
+    <TabControl>
+        <TabItem Header="ItemsSource (reflection)">
+            <oxy:Plot Title="ScatterErrorSeriesDemo" Subtitle="Binding to an items source and specifying data fields">
+                <oxy:Plot.Axes>
+                    <oxy:LinearAxis Position="Bottom"/>
+                    <oxy:LinearAxis Position="Left"/>
+                </oxy:Plot.Axes>
+                <oxy:Plot.Series>
+                    <oxy:ScatterErrorSeries Items="{Binding Points}" DataFieldX="V1" DataFieldY="V2" DataFieldErrorX="E1" DataFieldErrorY="E2"/>
+                </oxy:Plot.Series>
+            </oxy:Plot>
+        </TabItem>
+        <TabItem Header="ItemsSource (List{ScatterErrorPoint})">
+            <oxy:Plot Title="ScatterErrorSeriesDemo" Subtitle="Binding to a List{ScatterErrorPoint}">
+                <oxy:Plot.Axes>
+                    <oxy:LinearAxis Position="Bottom"/>
+                    <oxy:LinearAxis Position="Left"/>
+                </oxy:Plot.Axes>
+                <oxy:Plot.Series>
+                    <oxy:ScatterErrorSeries Items="{Binding PointList}" />
+                </oxy:Plot.Series>
+            </oxy:Plot>
+        </TabItem>
+        <TabItem Header="ItemsSource (ScatterErrorPoint[])">
+            <oxy:Plot Title="ScatterErrorSeriesDemo" Subtitle="Binding to an array of ScatterErrorPoint">
+                <oxy:Plot.Axes>
+                    <oxy:LinearAxis Position="Bottom"/>
+                    <oxy:LinearAxis Position="Left"/>
+                </oxy:Plot.Axes>
+                <oxy:Plot.Series>
+                    <oxy:ScatterErrorSeries Items="{Binding PointArray}" />
+                </oxy:Plot.Series>
+            </oxy:Plot>
+        </TabItem>
+    </TabControl>
+</Window>

@@ -1,0 +1,169 @@
+﻿<Window  
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:oxy="clr-namespace:OxyPlot.Avalonia;assembly=OxyPlot.Avalonia" 
+    xmlns:local="clr-namespace:AvaloniaExamples.Examples.CustomTrackerDemo;assembly=AvaloniaExamples"    
+    Title="CustomTrackerDemo" Height="480" Width="640">
+    <TabControl Margin="4">
+        <TabItem Header="Custom background brush">
+            <oxy:PlotView Model="{Binding Model}">
+                <oxy:PlotView.DefaultTrackerTemplate>
+                    <ControlTemplate>
+                        <oxy:TrackerControl Position="{Binding Position}" LineExtents="{Binding PlotModel.PlotArea}">
+                            <oxy:TrackerControl.Background>
+                                <LinearGradientBrush EndPoint="0,1">
+                                    <GradientStop Color="#f0e0e0ff" />
+                                    <GradientStop Offset="1" Color="#f0ffffff" />
+                                </LinearGradientBrush>
+                            </oxy:TrackerControl.Background>
+                            <oxy:TrackerControl.Content>
+                                <TextBlock Text="{Binding}" Margin="7" />
+                            </oxy:TrackerControl.Content>
+                        </oxy:TrackerControl>
+                    </ControlTemplate>
+                </oxy:PlotView.DefaultTrackerTemplate>
+            </oxy:PlotView>
+        </TabItem>
+        <TabItem Header="Border by series color">
+            <oxy:PlotView Model="{Binding Model}">
+                <oxy:PlotView.DefaultTrackerTemplate>
+                    <ControlTemplate>
+                        <oxy:TrackerControl Position="{Binding Position}" LineExtents="{Binding PlotModel.PlotArea}" BorderBrush="{Binding Series.ActualColor, Converter={Static local:MainWindow.OxyColorConverter}}" BorderThickness="3">
+                            <oxy:TrackerControl.Content>
+                                <TextBlock Text="{Binding}" Margin="7" />
+                            </oxy:TrackerControl.Content>
+                        </oxy:TrackerControl>
+                    </ControlTemplate>
+                </oxy:PlotView.DefaultTrackerTemplate>
+            </oxy:PlotView>
+        </TabItem>
+        <TabItem Header="No tracker">
+            <oxy:PlotView Model="{Binding Model}" DefaultTrackerTemplate="{local:Null}" />
+        </TabItem>
+        <TabItem Header="Rounded box">
+            <oxy:PlotView Model="{Binding Model}">
+                <oxy:PlotView.DefaultTrackerTemplate>
+                    <ControlTemplate>
+                        <oxy:TrackerControl Position="{Binding Position}" ShowPointer="False" CornerRadius="8" LineExtents="{Binding PlotModel.PlotArea}">
+                            <oxy:TrackerControl.Content>
+                                <TextBlock Text="{Binding}" Margin="7" />
+                            </oxy:TrackerControl.Content>
+                        </oxy:TrackerControl>
+                    </ControlTemplate>
+                </oxy:PlotView.DefaultTrackerTemplate>
+            </oxy:PlotView>
+        </TabItem>
+        <TabItem Header="No vertical line">
+            <oxy:PlotView Model="{Binding Model}">
+                <oxy:PlotView.DefaultTrackerTemplate>
+                    <ControlTemplate>
+                        <oxy:TrackerControl Position="{Binding Position}" VerticalLineVisibility="False" LineExtents="{Binding PlotModel.PlotArea}">
+                            <oxy:TrackerControl.Content>
+                                <TextBlock Text="{Binding}" Margin="7" />
+                            </oxy:TrackerControl.Content>
+                        </oxy:TrackerControl>
+                    </ControlTemplate>
+                </oxy:PlotView.DefaultTrackerTemplate>
+            </oxy:PlotView>
+        </TabItem>
+        <TabItem Header="Border">
+            <oxy:PlotView Model="{Binding Model}">
+                <oxy:PlotView.DefaultTrackerTemplate>
+                    <ControlTemplate>
+                        <Canvas>
+                            <Border CornerRadius="6" BorderBrush="Black" BorderThickness="1" Background="White" Canvas.Left="{Binding Position.X}" Canvas.Top="{Binding Position.Y}" Margin="5">
+                                <TextBlock Text="{Binding}" />
+                            </Border>
+                        </Canvas>
+                    </ControlTemplate>
+                </oxy:PlotView.DefaultTrackerTemplate>
+            </oxy:PlotView>
+        </TabItem>
+        <TabItem Header="TextBlock">
+            <oxy:PlotView Model="{Binding Model}">
+                <oxy:PlotView.DefaultTrackerTemplate>
+                    <ControlTemplate>
+                        <Canvas>
+                            <TextBlock Canvas.Left="{Binding Position.X}" Canvas.Top="{Binding Position.Y}" Margin="13" Background="#a0ffffff" Text="{Binding}" />
+                        </Canvas>
+                    </ControlTemplate>
+                </oxy:PlotView.DefaultTrackerTemplate>
+            </oxy:PlotView>
+        </TabItem>
+        <TabItem Header="Circle">
+            <oxy:PlotView Model="{Binding Model}">
+                <oxy:PlotView.DefaultTrackerTemplate>
+                    <ControlTemplate>
+                        <Canvas>
+                            <Grid Canvas.Left="{Binding Position.X}" Canvas.Top="{Binding Position.Y}">
+                                <Ellipse Fill="Black" Width="12" Height="12" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                    <Ellipse.RenderTransform>
+                                        <TranslateTransform X="-6" Y="-6" />
+                                    </Ellipse.RenderTransform>
+                                </Ellipse>
+                                <TextBlock Text="{Binding DataPoint.Y}" Margin="6 6 0 0" />
+                            </Grid>
+                        </Canvas>
+                    </ControlTemplate>
+                </oxy:PlotView.DefaultTrackerTemplate>
+            </oxy:PlotView>
+        </TabItem>
+        <TabItem Header="UniformPanel">
+            <oxy:PlotView Model="{Binding Model}">
+                <oxy:PlotView.DefaultTrackerTemplate>
+                    <ControlTemplate>
+                        <oxy:TrackerControl Position="{Binding Position}" LineExtents="{Binding PlotModel.PlotArea}">
+
+                            <oxy:TrackerControl.Content>
+                                <StackPanel Orientation="Horizontal" Canvas.Left="{Binding Position.X}" Canvas.Top="{Binding Position.Y}" Margin="6">
+                                    <TextBlock Text="X:" FontWeight="Bold" />
+                                    <TextBlock Text="{Binding DataPoint.X}" />
+                                    <TextBlock Text="Y:" FontWeight="Bold" />
+                                    <TextBlock Text="{Binding DataPoint.Y}" />
+                                    <TextBlock Text="Dataset:" FontWeight="Bold" />
+                                    <TextBlock Text="{Binding Series.Title}" />
+                                </StackPanel>
+                            </oxy:TrackerControl.Content>
+                        </oxy:TrackerControl>
+                    </ControlTemplate>
+                </oxy:PlotView.DefaultTrackerTemplate>
+            </oxy:PlotView>
+        </TabItem>
+        <TabItem Header="Different trackers">
+            <oxy:PlotView Model="{Binding Model}">
+                <oxy:PlotView.TrackerDefinitions>
+                    <oxy:TrackerDefinition TrackerKey="Tracker1">
+                        <oxy:TrackerDefinition.TrackerTemplate>
+                            <ControlTemplate>
+                                <Canvas>
+                                    <TextBlock Canvas.Left="{Binding Position.X}" Canvas.Top="{Binding Position.Y}" Margin="13" Background="LightBlue" Text="{Binding}" />
+                                </Canvas>
+                            </ControlTemplate>
+                        </oxy:TrackerDefinition.TrackerTemplate>
+                    </oxy:TrackerDefinition>
+                    <oxy:TrackerDefinition TrackerKey="Tracker2">
+                        <oxy:TrackerDefinition.TrackerTemplate>
+                            <ControlTemplate>
+                                <Canvas>
+                                    <TextBlock Canvas.Left="{Binding Position.X}" Canvas.Top="{Binding Position.Y}" Margin="13" Background="LightGreen" Text="{Binding}" />
+                                </Canvas>
+                            </ControlTemplate>
+                        </oxy:TrackerDefinition.TrackerTemplate>
+                    </oxy:TrackerDefinition>
+                </oxy:PlotView.TrackerDefinitions>
+            </oxy:PlotView>
+        </TabItem>
+        <TabItem Header="Bind to Item">
+            <oxy:PlotView Model="{Binding Model}">
+                <oxy:PlotView.DefaultTrackerTemplate>
+                    <ControlTemplate>
+                        <oxy:TrackerControl Position="{Binding Position}" LineExtents="{Binding LineExtents}">
+                            <oxy:TrackerControl.Content>
+                                <!-- We can bind to the items from the ItemsSource -->
+                                <TextBlock Text="{Binding Item}" Margin="8"/>
+                            </oxy:TrackerControl.Content>
+                        </oxy:TrackerControl>
+                    </ControlTemplate>
+                </oxy:PlotView.DefaultTrackerTemplate>
+            </oxy:PlotView>
+        </TabItem>
+    </TabControl>
+</Window>
