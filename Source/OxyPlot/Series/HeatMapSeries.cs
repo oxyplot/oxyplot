@@ -550,7 +550,9 @@ namespace OxyPlot.Series
                 this.MaxY = Math.Max(this.ActualRects.Max(r => r.A.Y), this.ActualRects.Max(r => r.B.Y));
                 return;
             }
-            
+
+            if (this.Data == null) return;
+
             int m = this.Data.GetLength(0);
             int n = this.Data.GetLength(1);
 

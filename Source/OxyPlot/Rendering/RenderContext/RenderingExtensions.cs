@@ -380,20 +380,26 @@ namespace OxyPlot
             OxyColor stroke,
             double thickness)
         {
-            if (rc.SetClip(clippingRectangle))
-            {
-                rc.DrawRectangle(rect, fill, stroke, thickness);
-                rc.ResetClip();
-                return;
-            }
+            //if (rc.SetClip(clippingRectangle))
+            //{
+            //    rc.DrawRectangle(rect, fill, stroke, thickness);
+            //    rc.ResetClip();
+            //    return;
+            //}
 
-            var clippedRect = ClipRect(rect, clippingRectangle);
-            if (clippedRect == null)
-            {
-                return;
-            }
+            //var clippedRect = ClipRect(rect, clippingRectangle);
+            //if (clippedRect == null)
+            //{
+            //    return;
+            //}
 
-            rc.DrawRectangle(clippedRect.Value, fill, stroke, thickness);
+            // override the clipping
+            if (rect.Left > clippingRectangle.Right) return;
+            if (rect.Right < clippingRectangle.Left) return;
+            if (rect.Height < 1) return;
+            if (rect.Width < 1) return;
+
+            rc.DrawRectangle(rect, fill, stroke, thickness);
         }
 
         /// <summary>
