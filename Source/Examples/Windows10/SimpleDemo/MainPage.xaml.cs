@@ -1,19 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.Xaml;
+using System.Diagnostics;
+using Windows.UI.Core;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
-
-// The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
 namespace SimpleDemo
 {
@@ -25,6 +14,26 @@ namespace SimpleDemo
         public MainPage()
         {
             this.InitializeComponent();
+        }
+
+        private void OnPlotViewManipulationStarted(object sender, ManipulationStartedRoutedEventArgs e)
+        {
+            WriteLog("Manipulation started");
+        }
+
+        private void OnPlotViewManipulationCompleted(object sender, ManipulationCompletedRoutedEventArgs e)
+        {
+            WriteLog("Manipulation ended");
+        }
+
+        private void WriteLog(string text)
+        {
+            Debug.WriteLine(text);
+
+            outputLogging.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                outputLogging.Text += $"{text}{Environment.NewLine}";
+            });
         }
     }
 }
