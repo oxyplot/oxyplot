@@ -10,8 +10,6 @@
 namespace OxyPlot.Series
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
 
     using OxyPlot.Axes;
 
@@ -50,7 +48,7 @@ namespace OxyPlot.Series
     /// <summary>
     /// Represents a heat map.
     /// </summary>
-    public class HeatMapSeries : DataRectSeries
+    public class HeatMapSeries : XYAxisSeries
     {
         /// <summary>
         /// The default tracker format string
@@ -227,60 +225,10 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Renders the series on the specified rendering context.
-        /// </summary>
-        /// <param name="rc">The rendering context.</param>
-        public override void Render(IRenderContext rc)
-        {
-            var actualRects = this.ActualRects;
-            if (actualRects == null || actualRects.Count == 0)
-            {
-                this.RenderOld(rc);
-                return;
-            }
-
-            this.VerifyAxes();
-
-            var clippingRect = this.GetClippingRect();
-            rc.SetClip(clippingRect);
-
-            this.RenderRects(rc, clippingRect, actualRects);
-
-            rc.ResetClip();
-        }
-
-        /// <summary>
-        /// Renders the points as line, broken line and markers.
-        /// </summary>
-        /// <param name="rc">The rendering context.</param>
-        /// <param name="clippingRect">The clipping rectangle.</param>
-        /// <param name="rects">The rects to render.</param>
-        protected void RenderRects(IRenderContext rc, OxyRect clippingRect, ICollection<DataRect> rects)
-        {
-            var rectEnumerator = rects.GetEnumerator();
-
-            while (rectEnumerator.MoveNext())
-            {
-                var dataRect = rectEnumerator.Current;
-                var rectcolor = this.ColorAxis.GetColor(dataRect.value);
-
-                // transform the data points to screen points
-                var s00 = this.Transform(dataRect.A.X, dataRect.A.Y);
-                var s11 = this.Transform(dataRect.B.X, dataRect.B.Y);
- 
-                var pointa = this.Orientate(new ScreenPoint(s00.X, s00.Y)); // re-orientate
-                var pointb = this.Orientate(new ScreenPoint(s11.X, s11.Y)); // re-orientate
-                var rectrect = new OxyRect(pointa, pointb);
-
-                rc.DrawClippedRectangle(clippingRect, rectrect, rectcolor, OxyColors.Undefined, 0);
-            }
-        }
-
-        /// <summary>
         /// Renders the series on the specified render context.
         /// </summary>
         /// <param name="rc">The rendering context.</param>
-        public void RenderOld(IRenderContext rc)
+        public override void Render(IRenderContext rc)
         {
             if (this.Data == null)
             {
@@ -408,42 +356,6 @@ namespace OxyPlot.Series
                 return null;
             }
 
-            var colorAxis = this.ColorAxis as Axis;
-            var colorAxisTitle = (colorAxis != null ? colorAxis.Title : null) ?? DefaultColorAxisTitle;
-
-            if (this.Data == null && this.ActualRects != null)
-            {
-                // iterate through the DataRects and return the first one that contains the point
-                foreach (DataRect dataRect in this.ActualRects)
-                {
-                    if (dataRect.Contains(p))
-                    {
-                        return new TrackerHitResult
-                        {
-                            Series = this,
-                            DataPoint = p,
-                            Position = point,
-                            Item = null,
-                            Index = -1,
-                            Text = StringHelper.Format(
-                            this.ActualCulture,
-                            this.TrackerFormatString,
-                            null,
-                            this.Title,
-                            this.XAxis.Title ?? DefaultXAxisTitle,
-                            this.XAxis.GetValue(p.X),
-                            this.YAxis.Title ?? DefaultYAxisTitle,
-                            this.YAxis.GetValue(p.Y),
-                            colorAxisTitle,
-                            dataRect.Value)
-                        };
-                    }
-                }
-
-                // if no DataRects contain the point, return nukk
-                return null;
-            }
-
             double i;
             double j;
 
@@ -504,6 +416,8 @@ namespace OxyPlot.Series
             }
 
             var value = GetValue(this.Data, i, j);
+            var colorAxis = this.ColorAxis as Axis;
+            var colorAxisTitle = (colorAxis != null ? colorAxis.Title : null) ?? DefaultColorAxisTitle;
 
             return new TrackerHitResult
             {
@@ -542,17 +456,6 @@ namespace OxyPlot.Series
         /// </summary>
         protected internal void UpdateMaxMinXY()
         {
-            if (this.ActualRects != null && this.ActualRects.Count > 0)
-            {
-                this.MinX = Math.Min(this.ActualRects.Min(r => r.A.X), this.ActualRects.Min(r => r.B.X));
-                this.MaxX = Math.Max(this.ActualRects.Max(r => r.A.X), this.ActualRects.Max(r => r.B.X));
-                this.MinY = Math.Min(this.ActualRects.Min(r => r.A.Y), this.ActualRects.Min(r => r.B.Y));
-                this.MaxY = Math.Max(this.ActualRects.Max(r => r.A.Y), this.ActualRects.Max(r => r.B.Y));
-                return;
-            }
-
-            if (this.Data == null) return;
-
             int m = this.Data.GetLength(0);
             int n = this.Data.GetLength(1);
 
@@ -601,16 +504,8 @@ namespace OxyPlot.Series
 
             this.UpdateMaxMinXY();
 
-            if (this.ActualRects != null)
-            {
-                this.MinValue = this.ActualRects.Min(r => r.Value);
-                this.MaxValue = this.ActualRects.Max(r => r.Value);
-            }
-            else
-            {
-                this.MinValue = this.Data.Min2D(true);
-                this.MaxValue = this.Data.Max2D();
-            }
+            this.MinValue = this.Data.Min2D(true);
+            this.MaxValue = this.Data.Max2D();
         }
 
         /// <summary>

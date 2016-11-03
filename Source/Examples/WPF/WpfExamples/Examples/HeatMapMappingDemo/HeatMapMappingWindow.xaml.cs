@@ -62,7 +62,7 @@
                 Palette = OxyPalettes.Jet(100)
             });
 
-            this.PlotModel.Series.Add(new HeatMapSeries()
+            this.PlotModel.Series.Add(new RectangleSeries()
             {
                 ItemsSource = this.Items,
                 Mapping = this.HeatMapItemToDataRectMapping

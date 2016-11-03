@@ -120,6 +120,7 @@
     <Compile Include="Examples\ExportDemo\ShellViewModel.cs" />
     <Compile Include="Examples\HeatMapMappingDemo\HeatMapMappingWindow.xaml.cs">
       <DependentUpon>HeatMapMappingWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Examples\InterpolationDemo\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -216,8 +217,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Examples\HeatMapMappingDemo\HeatMapMappingWindow.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Examples\InterpolationDemo\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

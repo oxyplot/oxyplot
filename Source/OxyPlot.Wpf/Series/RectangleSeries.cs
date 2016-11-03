@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="HeatMapSeries.cs" company="OxyPlot">
+// <copyright file="RectangleSeries.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
-//   HeatMapSeries WPF wrapper
+//   RectangleSeries WPF wrapper
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -13,27 +13,17 @@ namespace OxyPlot.Wpf
     using System.Windows.Media;
 
     /// <summary>
-    /// HeatMapSeries WPF wrapper
+    /// RectangleSeries WPF wrapper
     /// </summary>
-    public class HeatMapSeries : XYAxisSeries
+    public class RectangleSeries : DataRectSeries
     {
-        /// <summary>
-        /// Identifies this <see cref="DataProperty"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty DataProperty = DependencyProperty.Register(
-            "Data",
-            typeof(double[,]),
-            typeof(HeatMapSeries),
-            new PropertyMetadata(new double[0, 0], DataChanged),
-            value => value != null);
-
         /// <summary>
         /// Identifies this <see cref="X0Property"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty X0Property = DependencyProperty.Register(
             "X0",
             typeof(double),
-            typeof(HeatMapSeries),
+            typeof(RectangleSeries),
             new PropertyMetadata(default(double), AppearanceChanged));
 
         /// <summary>
@@ -42,7 +32,7 @@ namespace OxyPlot.Wpf
         public static readonly DependencyProperty X1Property = DependencyProperty.Register(
             "X1",
             typeof(double),
-            typeof(HeatMapSeries),
+            typeof(RectangleSeries),
             new PropertyMetadata(default(double), AppearanceChanged));
 
         /// <summary>
@@ -51,7 +41,7 @@ namespace OxyPlot.Wpf
         public static readonly DependencyProperty Y0Property = DependencyProperty.Register(
             "Y0",
             typeof(double),
-            typeof(HeatMapSeries),
+            typeof(RectangleSeries),
             new PropertyMetadata(default(double), AppearanceChanged));
 
         /// <summary>
@@ -60,7 +50,7 @@ namespace OxyPlot.Wpf
         public static readonly DependencyProperty Y1Property = DependencyProperty.Register(
             "Y1",
             typeof(double),
-            typeof(HeatMapSeries),
+            typeof(RectangleSeries),
             new PropertyMetadata(default(double), AppearanceChanged));
 
         /// <summary>
@@ -69,7 +59,7 @@ namespace OxyPlot.Wpf
         public static readonly DependencyProperty ColorAxisKeyProperty = DependencyProperty.Register(
             "ColorAxisKey",
             typeof(string),
-            typeof(HeatMapSeries),
+            typeof(RectangleSeries),
             new PropertyMetadata(default(string)));
 
         /// <summary>
@@ -78,7 +68,7 @@ namespace OxyPlot.Wpf
         public static readonly DependencyProperty LowColorProperty = DependencyProperty.Register(
             "LowColor",
             typeof(Color),
-            typeof(HeatMapSeries),
+            typeof(RectangleSeries),
             new PropertyMetadata(default(Color)));
 
         /// <summary>
@@ -87,24 +77,23 @@ namespace OxyPlot.Wpf
         public static readonly DependencyProperty HighColorProperty = DependencyProperty.Register(
             "HighColor",
             typeof(Color),
-            typeof(HeatMapSeries),
+            typeof(RectangleSeries),
             new PropertyMetadata(default(Color)));
 
         /// <summary>
-        /// Initializes static members of the <see cref="HeatMapSeries"/> class.
+        /// Initializes static members of the <see cref="RectangleSeries"/> class.
         /// </summary>
-        static HeatMapSeries()
+        static RectangleSeries()
         {
-            TrackerFormatStringProperty.OverrideMetadata(typeof(HeatMapSeries), new PropertyMetadata(OxyPlot.Series.HeatMapSeries.DefaultTrackerFormatString, AppearanceChanged));
+            TrackerFormatStringProperty.OverrideMetadata(typeof(RectangleSeries), new PropertyMetadata(OxyPlot.Series.RectangleSeries.DefaultTrackerFormatString, AppearanceChanged));
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref = "HeatMapSeries" /> class.
+        /// Initializes a new instance of the <see cref = "RectangleSeries" /> class.
         /// </summary>
-        public HeatMapSeries()
+        public RectangleSeries()
         {
-            this.Data = new double[0, 0];
-            this.InternalSeries = new OxyPlot.Series.HeatMapSeries { Data = this.Data };
+            this.InternalSeries = new OxyPlot.Series.RectangleSeries();
         }
 
         /// <summary>
@@ -220,22 +209,6 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets Data
-        /// </summary>
-        public double[,] Data
-        {
-            get
-            {
-                return (double[,])this.GetValue(DataProperty);
-            }
-
-            set
-            {
-                this.SetValue(DataProperty, value);
-            }
-        }
-
-        /// <summary>
         /// The create model.
         /// </summary>
         /// <returns>
@@ -257,8 +230,7 @@ namespace OxyPlot.Wpf
         {
             base.SynchronizeProperties(series);
 
-            var s = (OxyPlot.Series.HeatMapSeries)series;
-            s.Data = this.Data ?? new double[0, 0];
+            var s = (OxyPlot.Series.RectangleSeries)series;
             s.X0 = this.X0;
             s.X1 = this.X1;
             s.Y0 = this.Y0;
