@@ -5,6 +5,9 @@
     using System.Linq;
     using Axes;
 
+    /// <summary>
+    /// Represents a series that can be bound to a collection of <see cref="DataRect"/>.
+    /// </summary>
     public class RectangleSeries : DataRectSeries
     {
         /// <summary>
