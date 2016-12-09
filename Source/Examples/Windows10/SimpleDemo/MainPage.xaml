@@ -12,7 +12,16 @@
     </Page.DataContext>
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-            <windows:PlotView Model="{Binding Model}"/>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="250" />
+            </Grid.RowDefinitions>
+            
+            <windows:PlotView Grid.Row="0" Model="{Binding Model}" 
+                              ManipulationStarted="OnPlotViewManipulationStarted"
+                              ManipulationCompleted="OnPlotViewManipulationCompleted" />
+
+            <TextBox Grid.Row="1" x:Name="outputLogging" AcceptsReturn="True" IsReadOnly="True" />
         </Grid>
     </Grid>
 </Page>
