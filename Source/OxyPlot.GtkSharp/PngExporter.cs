@@ -101,7 +101,7 @@ namespace OxyPlot.GtkSharp
                     model.Render(rc, this.Width, this.Height);
 
                     // write to a temporary file
-                    var tmp = Guid.NewGuid() + ".png";
+                    var tmp = System.IO.Path.Combine(System.IO.Path.GetTempPath(), Guid.NewGuid() + ".png");
                     bm.WriteToPng(tmp);
                     var bytes = File.ReadAllBytes(tmp);
 

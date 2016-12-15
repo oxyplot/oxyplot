@@ -18,6 +18,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 - Manipulation when using touch is not working in Windows (#1011)
+- Ensure a suitable folder is used when creating a temporary file for PNG export in Oxyplot.GtkSharp (#1034)
 
 ## [1.0.0] - 2016-09-11
 ### Added
