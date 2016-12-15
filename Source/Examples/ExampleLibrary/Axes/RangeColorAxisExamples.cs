@@ -15,24 +15,41 @@ namespace ExampleLibrary
     [Examples("RangeColorAxis"), Tags("Axes")]
     public class RangeColorAxisExamples
     {
+        [Example("ScatterSeries with Reversed RangeColorAxis (Horizontal)")]
+        public static PlotModel ReversedHorizontalRangeColorAxis()
+        {
+            return RangeColorAxis(AxisPosition.Top, true);
+        }
+
+        [Example("ScatterSeries with Reversed  RangeColorAxis (Vertical)")]
+        public static PlotModel ReversedVerticalRangeColorAxis()
+        {
+            return RangeColorAxis(AxisPosition.Right, true);
+        }
+
         [Example("ScatterSeries with RangeColorAxis (Horizontal)")]
         public static PlotModel HorizontalRangeColorAxis()
         {
-            return RangeColorAxis(AxisPosition.Top);
+            return RangeColorAxis(AxisPosition.Top, false);
         }
 
         [Example("ScatterSeries with RangeColorAxis (Vertical)")]
         public static PlotModel VerticalRangeColorAxis()
         {
-            return RangeColorAxis(AxisPosition.Right);
+            return RangeColorAxis(AxisPosition.Right, false);
         }
 
-        private static PlotModel RangeColorAxis(AxisPosition position)
+        private static PlotModel RangeColorAxis(AxisPosition position, bool reverseAxis)
         {
             int n = 1000;
+
+            string modelTitle = reverseAxis
+                                    ? string.Format("ScatterSeries and Reversed RangeColorAxis (n={0})", n)
+                                    : string.Format("ScatterSeries and RangeColorAxis (n={0})", n);
+
             var model = new PlotModel
             {
-                Title = string.Format("ScatterSeries and RangeColorAxis (n={0})", n),
+                Title = modelTitle,
                 Background = OxyColors.LightGray
             };
 
@@ -42,6 +59,13 @@ namespace ExampleLibrary
             var rca = new RangeColorAxis { Position = position, Maximum = 2, Minimum = -2 };
             rca.AddRange(0, 0.5, OxyColors.Blue);
             rca.AddRange(-0.2, -0.1, OxyColors.Red);
+
+            if (reverseAxis)
+            {
+                rca.StartPosition = 1;
+                rca.EndPosition = 0;
+            }
+
             model.Axes.Add(rca);
 
             var s1 = new ScatterSeries { MarkerType = MarkerType.Square, MarkerSize = 6, };
