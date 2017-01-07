@@ -11,7 +11,7 @@ All notable changes to this project will be documented in this file.
 - 
 
 ### Deprecated
-- 
+- OxyPlot.WP8 package. Use OxyPlot.Windows instead (#996)
 
 ### Removed
 - The `Smooth` property in LineSeries and PolylineAnnotation (#494)
