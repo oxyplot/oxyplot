@@ -8,11 +8,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace OxyPlot.SharpDX
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using global::SharpDX;
     using global::SharpDX.Direct2D1;
     using global::SharpDX.DirectWrite;
@@ -25,12 +20,12 @@ namespace OxyPlot.SharpDX
         /// <summary>
         /// The text transform.
         /// </summary>
-        private Matrix3x2 transform;
+        private readonly Matrix3x2 transform;
 
         /// <summary>
         /// The text layout.
         /// </summary>
-        private TextLayout layout;
+        private readonly TextLayout layout;
 
         /// <summary>
         /// The brush.
@@ -40,7 +35,7 @@ namespace OxyPlot.SharpDX
         /// <summary>
         /// The bounds.
         /// </summary>
-        private RectangleF bounds;
+        private readonly RectangleF bounds;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TextRenderUnit" /> class.

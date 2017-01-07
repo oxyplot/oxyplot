@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{07CE67B3-8AA2-4572-865F-B3F7FA80CE19}"
 EndProject
@@ -13,36 +13,42 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleLibrary", "Examples\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SimpleDemo", "SimpleDemo", "{3C900E6A-F5E1-43B9-B30D-5D342AAAA798}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Windows", "OxyPlot.Windows\OxyPlot.Windows.csproj", "{667573F6-B2DC-487D-998C-78DD3DAD0650}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Windows8", "OxyPlot.Windows8\OxyPlot.Windows8.csproj", "{667573F6-B2DC-487D-998C-78DD3DAD0650}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "ExampleBrowser.Shared", "Examples\Windows\ExampleBrowser\ExampleBrowser.Shared\ExampleBrowser.Shared.shproj", "{67834C80-0149-454A-8B16-16139C201119}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "ExampleBrowser.Shared", "Examples\Windows8\ExampleBrowser\ExampleBrowser.Shared\ExampleBrowser.Shared.shproj", "{67834C80-0149-454A-8B16-16139C201119}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleBrowser.Windows", "Examples\Windows\ExampleBrowser\ExampleBrowser.Windows\ExampleBrowser.Windows.csproj", "{999231D6-E60A-4AA7-AF49-F29F1F671ADB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleBrowser.Windows", "Examples\Windows8\ExampleBrowser\ExampleBrowser.Windows\ExampleBrowser.Windows.csproj", "{999231D6-E60A-4AA7-AF49-F29F1F671ADB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleBrowser.WindowsPhone", "Examples\Windows\ExampleBrowser\ExampleBrowser.WindowsPhone\ExampleBrowser.WindowsPhone.csproj", "{3902B8DF-17B4-4AA6-B0BB-91CF0CB780E5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleBrowser.WindowsPhone", "Examples\Windows8\ExampleBrowser\ExampleBrowser.WindowsPhone\ExampleBrowser.WindowsPhone.csproj", "{3902B8DF-17B4-4AA6-B0BB-91CF0CB780E5}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SimpleDemo.Shared", "Examples\Windows\SimpleDemo\SimpleDemo.Shared\SimpleDemo.Shared.shproj", "{535857BB-814B-4951-9B4E-594C194CC6DA}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SimpleDemo.Shared", "Examples\Windows8\SimpleDemo\SimpleDemo.Shared\SimpleDemo.Shared.shproj", "{535857BB-814B-4951-9B4E-594C194CC6DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleDemo.Windows", "Examples\Windows\SimpleDemo\SimpleDemo.Windows\SimpleDemo.Windows.csproj", "{BFA00F10-1122-4086-BFA5-93B7CB10BBD6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleDemo.Windows", "Examples\Windows8\SimpleDemo\SimpleDemo.Windows\SimpleDemo.Windows.csproj", "{BFA00F10-1122-4086-BFA5-93B7CB10BBD6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleDemo.WindowsPhone", "Examples\Windows\SimpleDemo\SimpleDemo.WindowsPhone\SimpleDemo.WindowsPhone.csproj", "{40412464-4C19-4110-AA1B-1EF9B2305EAD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleDemo.WindowsPhone", "Examples\Windows8\SimpleDemo\SimpleDemo.WindowsPhone\SimpleDemo.WindowsPhone.csproj", "{40412464-4C19-4110-AA1B-1EF9B2305EAD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Windows10", "OxyPlot.Windows10\OxyPlot.Windows10.csproj", "{280C05F8-7E1F-4D11-89E4-B5319CA2CDE6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.UWP", "OxyPlot.UWP\OxyPlot.UWP.csproj", "{280C05F8-7E1F-4D11-89E4-B5319CA2CDE6}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Windows 10", "Windows 10", "{D5BAB3CB-EDAE-4304-B546-E6B282F07003}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Universal Windows", "Universal Windows", "{D5BAB3CB-EDAE-4304-B546-E6B282F07003}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Windows 8.1", "Windows 8.1", "{9065AA3B-25F3-4AB2-833F-D536186409EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleDemo", "Examples\Windows10\SimpleDemo\SimpleDemo.csproj", "{F6515980-1EA2-45D4-9680-DC65BF388BFA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.WP8", "OxyPlot.WP8\OxyPlot.WP8.csproj", "{66493B76-2850-4035-9449-0E2F95229C48}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Windows Phone 8.0", "Windows Phone 8.0", "{E759EF43-E774-4555-AA98-70E89B1B7FE0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleDemo.UWP", "Examples\UWP\SimpleDemo.UWP\SimpleDemo.UWP.csproj", "{B47165EB-4C5F-4BA3-AEE5-7C0003509F9E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SimpleDemo", "SimpleDemo", "{D708F202-B28A-4EBF-A1B4-F16631A5D0B1}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		Examples\Windows\SimpleDemo\SimpleDemo.Shared\SimpleDemo.Shared.projitems*{535857bb-814b-4951-9b4e-594c194cc6da}*SharedItemsImports = 13
-		Examples\Windows\ExampleBrowser\ExampleBrowser.Shared\ExampleBrowser.Shared.projitems*{999231d6-e60a-4aa7-af49-f29f1f671adb}*SharedItemsImports = 4
-		Examples\Windows\ExampleBrowser\ExampleBrowser.Shared\ExampleBrowser.Shared.projitems*{3902b8df-17b4-4aa6-b0bb-91cf0cb780e5}*SharedItemsImports = 4
-		Examples\Windows\SimpleDemo\SimpleDemo.Shared\SimpleDemo.Shared.projitems*{40412464-4c19-4110-aa1b-1ef9b2305ead}*SharedItemsImports = 4
-		Examples\Windows\SimpleDemo\SimpleDemo.Shared\SimpleDemo.Shared.projitems*{bfa00f10-1122-4086-bfa5-93b7cb10bbd6}*SharedItemsImports = 4
-		Examples\Windows\ExampleBrowser\ExampleBrowser.Shared\ExampleBrowser.Shared.projitems*{67834c80-0149-454a-8b16-16139c201119}*SharedItemsImports = 13
+		Examples\Windows8\ExampleBrowser\ExampleBrowser.Shared\ExampleBrowser.Shared.projitems*{3902b8df-17b4-4aa6-b0bb-91cf0cb780e5}*SharedItemsImports = 4
+		Examples\Windows8\SimpleDemo\SimpleDemo.Shared\SimpleDemo.Shared.projitems*{40412464-4c19-4110-aa1b-1ef9b2305ead}*SharedItemsImports = 4
+		Examples\Windows8\SimpleDemo\SimpleDemo.Shared\SimpleDemo.Shared.projitems*{535857bb-814b-4951-9b4e-594c194cc6da}*SharedItemsImports = 13
+		Examples\Windows8\ExampleBrowser\ExampleBrowser.Shared\ExampleBrowser.Shared.projitems*{67834c80-0149-454a-8b16-16139c201119}*SharedItemsImports = 13
+		Examples\Windows8\ExampleBrowser\ExampleBrowser.Shared\ExampleBrowser.Shared.projitems*{999231d6-e60a-4aa7-af49-f29f1f671adb}*SharedItemsImports = 4
+		Examples\Windows8\SimpleDemo\SimpleDemo.Shared\SimpleDemo.Shared.projitems*{bfa00f10-1122-4086-bfa5-93b7cb10bbd6}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -194,27 +200,42 @@ Global
 		{280C05F8-7E1F-4D11-89E4-B5319CA2CDE6}.Release|x64.Build.0 = Release|x64
 		{280C05F8-7E1F-4D11-89E4-B5319CA2CDE6}.Release|x86.ActiveCfg = Release|Any CPU
 		{280C05F8-7E1F-4D11-89E4-B5319CA2CDE6}.Release|x86.Build.0 = Release|Any CPU
-		{F6515980-1EA2-45D4-9680-DC65BF388BFA}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{F6515980-1EA2-45D4-9680-DC65BF388BFA}.Debug|ARM.ActiveCfg = Debug|ARM
-		{F6515980-1EA2-45D4-9680-DC65BF388BFA}.Debug|ARM.Build.0 = Debug|ARM
-		{F6515980-1EA2-45D4-9680-DC65BF388BFA}.Debug|ARM.Deploy.0 = Debug|ARM
-		{F6515980-1EA2-45D4-9680-DC65BF388BFA}.Debug|x64.ActiveCfg = Debug|x64
-		{F6515980-1EA2-45D4-9680-DC65BF388BFA}.Debug|x64.Build.0 = Debug|x64
-		{F6515980-1EA2-45D4-9680-DC65BF388BFA}.Debug|x64.Deploy.0 = Debug|x64
-		{F6515980-1EA2-45D4-9680-DC65BF388BFA}.Debug|x86.ActiveCfg = Debug|x86
-		{F6515980-1EA2-45D4-9680-DC65BF388BFA}.Debug|x86.Build.0 = Debug|x86
-		{F6515980-1EA2-45D4-9680-DC65BF388BFA}.Debug|x86.Deploy.0 = Debug|x86
-		{F6515980-1EA2-45D4-9680-DC65BF388BFA}.Release|Any CPU.ActiveCfg = Release|x86
-		{F6515980-1EA2-45D4-9680-DC65BF388BFA}.Release|Any CPU.Deploy.0 = Release|x86
-		{F6515980-1EA2-45D4-9680-DC65BF388BFA}.Release|ARM.ActiveCfg = Release|ARM
-		{F6515980-1EA2-45D4-9680-DC65BF388BFA}.Release|ARM.Build.0 = Release|ARM
-		{F6515980-1EA2-45D4-9680-DC65BF388BFA}.Release|ARM.Deploy.0 = Release|ARM
-		{F6515980-1EA2-45D4-9680-DC65BF388BFA}.Release|x64.ActiveCfg = Release|x64
-		{F6515980-1EA2-45D4-9680-DC65BF388BFA}.Release|x64.Build.0 = Release|x64
-		{F6515980-1EA2-45D4-9680-DC65BF388BFA}.Release|x64.Deploy.0 = Release|x64
-		{F6515980-1EA2-45D4-9680-DC65BF388BFA}.Release|x86.ActiveCfg = Release|x86
-		{F6515980-1EA2-45D4-9680-DC65BF388BFA}.Release|x86.Build.0 = Release|x86
-		{F6515980-1EA2-45D4-9680-DC65BF388BFA}.Release|x86.Deploy.0 = Release|x86
+		{66493B76-2850-4035-9449-0E2F95229C48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66493B76-2850-4035-9449-0E2F95229C48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66493B76-2850-4035-9449-0E2F95229C48}.Debug|ARM.ActiveCfg = Debug|ARM
+		{66493B76-2850-4035-9449-0E2F95229C48}.Debug|ARM.Build.0 = Debug|ARM
+		{66493B76-2850-4035-9449-0E2F95229C48}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{66493B76-2850-4035-9449-0E2F95229C48}.Debug|x64.Build.0 = Debug|Any CPU
+		{66493B76-2850-4035-9449-0E2F95229C48}.Debug|x86.ActiveCfg = Debug|x86
+		{66493B76-2850-4035-9449-0E2F95229C48}.Debug|x86.Build.0 = Debug|x86
+		{66493B76-2850-4035-9449-0E2F95229C48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66493B76-2850-4035-9449-0E2F95229C48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66493B76-2850-4035-9449-0E2F95229C48}.Release|ARM.ActiveCfg = Release|ARM
+		{66493B76-2850-4035-9449-0E2F95229C48}.Release|ARM.Build.0 = Release|ARM
+		{66493B76-2850-4035-9449-0E2F95229C48}.Release|x64.ActiveCfg = Release|Any CPU
+		{66493B76-2850-4035-9449-0E2F95229C48}.Release|x64.Build.0 = Release|Any CPU
+		{66493B76-2850-4035-9449-0E2F95229C48}.Release|x86.ActiveCfg = Release|x86
+		{66493B76-2850-4035-9449-0E2F95229C48}.Release|x86.Build.0 = Release|x86
+		{B47165EB-4C5F-4BA3-AEE5-7C0003509F9E}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{B47165EB-4C5F-4BA3-AEE5-7C0003509F9E}.Debug|ARM.ActiveCfg = Debug|ARM
+		{B47165EB-4C5F-4BA3-AEE5-7C0003509F9E}.Debug|ARM.Build.0 = Debug|ARM
+		{B47165EB-4C5F-4BA3-AEE5-7C0003509F9E}.Debug|ARM.Deploy.0 = Debug|ARM
+		{B47165EB-4C5F-4BA3-AEE5-7C0003509F9E}.Debug|x64.ActiveCfg = Debug|x64
+		{B47165EB-4C5F-4BA3-AEE5-7C0003509F9E}.Debug|x64.Build.0 = Debug|x64
+		{B47165EB-4C5F-4BA3-AEE5-7C0003509F9E}.Debug|x64.Deploy.0 = Debug|x64
+		{B47165EB-4C5F-4BA3-AEE5-7C0003509F9E}.Debug|x86.ActiveCfg = Debug|x86
+		{B47165EB-4C5F-4BA3-AEE5-7C0003509F9E}.Debug|x86.Build.0 = Debug|x86
+		{B47165EB-4C5F-4BA3-AEE5-7C0003509F9E}.Debug|x86.Deploy.0 = Debug|x86
+		{B47165EB-4C5F-4BA3-AEE5-7C0003509F9E}.Release|Any CPU.ActiveCfg = Release|x86
+		{B47165EB-4C5F-4BA3-AEE5-7C0003509F9E}.Release|ARM.ActiveCfg = Release|ARM
+		{B47165EB-4C5F-4BA3-AEE5-7C0003509F9E}.Release|ARM.Build.0 = Release|ARM
+		{B47165EB-4C5F-4BA3-AEE5-7C0003509F9E}.Release|ARM.Deploy.0 = Release|ARM
+		{B47165EB-4C5F-4BA3-AEE5-7C0003509F9E}.Release|x64.ActiveCfg = Release|x64
+		{B47165EB-4C5F-4BA3-AEE5-7C0003509F9E}.Release|x64.Build.0 = Release|x64
+		{B47165EB-4C5F-4BA3-AEE5-7C0003509F9E}.Release|x64.Deploy.0 = Release|x64
+		{B47165EB-4C5F-4BA3-AEE5-7C0003509F9E}.Release|x86.ActiveCfg = Release|x86
+		{B47165EB-4C5F-4BA3-AEE5-7C0003509F9E}.Release|x86.Build.0 = Release|x86
+		{B47165EB-4C5F-4BA3-AEE5-7C0003509F9E}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -231,6 +252,8 @@ Global
 		{40412464-4C19-4110-AA1B-1EF9B2305EAD} = {3C900E6A-F5E1-43B9-B30D-5D342AAAA798}
 		{D5BAB3CB-EDAE-4304-B546-E6B282F07003} = {07CE67B3-8AA2-4572-865F-B3F7FA80CE19}
 		{9065AA3B-25F3-4AB2-833F-D536186409EF} = {07CE67B3-8AA2-4572-865F-B3F7FA80CE19}
-		{F6515980-1EA2-45D4-9680-DC65BF388BFA} = {D5BAB3CB-EDAE-4304-B546-E6B282F07003}
+		{E759EF43-E774-4555-AA98-70E89B1B7FE0} = {07CE67B3-8AA2-4572-865F-B3F7FA80CE19}
+		{B47165EB-4C5F-4BA3-AEE5-7C0003509F9E} = {D708F202-B28A-4EBF-A1B4-F16631A5D0B1}
+		{D708F202-B28A-4EBF-A1B4-F16631A5D0B1} = {D5BAB3CB-EDAE-4304-B546-E6B282F07003}
 	EndGlobalSection
 EndGlobal

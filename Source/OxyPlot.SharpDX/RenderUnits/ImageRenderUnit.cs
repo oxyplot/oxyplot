@@ -8,11 +8,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace OxyPlot.SharpDX
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using global::SharpDX;
     using global::SharpDX.Direct2D1;
 
@@ -29,22 +24,22 @@ namespace OxyPlot.SharpDX
         /// <summary>
         /// The source rectangle.
         /// </summary>
-        private RectangleF src;
+        private readonly RectangleF src;
 
         /// <summary>
         /// The destination rectangle.
         /// </summary>
-        private RectangleF dest;
+        private readonly RectangleF dest;
 
         /// <summary>
         /// The opacity.
         /// </summary>
-        private float opacity;
+        private readonly float opacity;
 
         /// <summary>
         /// The interpolation mode.
         /// </summary>
-        private BitmapInterpolationMode mode;
+        private readonly BitmapInterpolationMode mode;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ImageRenderUnit" /> class.

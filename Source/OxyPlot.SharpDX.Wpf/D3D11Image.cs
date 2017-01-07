@@ -26,15 +26,10 @@
 namespace OxyPlot.SharpDX.Wpf
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Interop;
     using global::SharpDX.Direct3D11;
     using global::SharpDX.Direct3D9;
-    using Device = global::SharpDX.Direct3D9.Device;
     using DXGIResource = global::SharpDX.DXGI.Resource;
 
     /// <summary>

@@ -75,11 +75,8 @@
     <Compile Include="PlotController\Manipulators\TouchTrackerManipulator.cs" />
     <Compile Include="PlotModel\IPlotElement.cs" />
     <Compile Include="PlotModel\IPlotModel.cs" />
-    <Compile Include="Rendering\IInterpolationAlgorithm.cs" />
     <Compile Include="Rendering\InterpolationAlgorithms.cs" />
     <Compile Include="Rendering\OxySizeExtensions.cs" />
-    <Compile Include="Rendering\Utilities\CanonicalSpline.cs" />
-    <Compile Include="Rendering\Utilities\CatmullRomSpline.cs" />
     <Compile Include="Reporting\PlotModelExtensions.cs" />
     <Compile Include="Series\BarSeries\LinearBarSeries.cs" />
     <Compile Include="Series\IScatterPointProvider.cs" />
@@ -97,7 +94,6 @@
     <Compile Include="Graphics\ControllerExtensions.cs" />
     <Compile Include="Graphics\HitTestArguments.cs" />
     <Compile Include="Properties\AssemblyDescription.cs" />
-    <Compile Include="LibraryDoc.cs" />
     <Compile Include="NamespaceDoc.cs" />
     <None Include="ClassDiagrams\Axes.cd" />
     <Compile Include="Foundation\PlotLength.cs" />
@@ -114,6 +110,7 @@
     <Compile Include="Rendering\OxyPalettes.cs" />
     <Compile Include="Rendering\ScreenVector.cs" />
     <Compile Include="Rendering\ScreenPointHelper.cs" />
+    <Compile Include="Rendering\Utilities\CanonicalSpline.cs" />
     <Compile Include="Rendering\FontWeights.cs" />
     <Compile Include="Rendering\OxyThickness.cs" />
     <Compile Include="Rendering\ScreenPoint.cs" />
@@ -135,6 +132,8 @@
     <Compile Include="Rendering\RenderContext\RenderingExtensions.cs" />
     <Compile Include="Rendering\RenderContext\IRenderContext.cs" />
     <Compile Include="Rendering\RenderContext\XkcdRenderingDecorator.cs" />
+    <Compile Include="Rendering\IInterpolationAlgorithm.cs" />
+    <Compile Include="Rendering\Utilities\CatmullRomSpline.cs" />
     <Compile Include="Input\OxyKey.cs" />
     <Compile Include="Input\OxyModifierKeys.cs" />
     <Compile Include="Input\OxyMouseButton.cs" />
