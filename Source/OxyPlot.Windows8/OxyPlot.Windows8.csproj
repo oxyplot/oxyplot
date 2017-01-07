@@ -28,11 +28,11 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\Output\Windows\</OutputPath>
+    <OutputPath>..\..\Output\Windows8\</OutputPath>
     <DefineConstants>TRACE;NETFX_CORE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\Output\Windows\OxyPlot.Windows.xml</DocumentationFile>
+    <DocumentationFile>..\..\Output\Windows8\OxyPlot.Windows.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>

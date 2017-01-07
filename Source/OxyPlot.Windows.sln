@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleLibrary", "Examples\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SimpleDemo", "SimpleDemo", "{3C900E6A-F5E1-43B9-B30D-5D342AAAA798}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Windows", "OxyPlot.Windows\OxyPlot.Windows.csproj", "{667573F6-B2DC-487D-998C-78DD3DAD0650}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Windows8", "OxyPlot.Windows8\OxyPlot.Windows8.csproj", "{667573F6-B2DC-487D-998C-78DD3DAD0650}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "ExampleBrowser.Shared", "Examples\Windows\ExampleBrowser\ExampleBrowser.Shared\ExampleBrowser.Shared.shproj", "{67834C80-0149-454A-8B16-16139C201119}"
 EndProject
@@ -27,7 +27,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleDemo.Windows", "Examp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleDemo.WindowsPhone", "Examples\Windows\SimpleDemo\SimpleDemo.WindowsPhone\SimpleDemo.WindowsPhone.csproj", "{40412464-4C19-4110-AA1B-1EF9B2305EAD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Windows10", "OxyPlot.Windows10\OxyPlot.Windows10.csproj", "{280C05F8-7E1F-4D11-89E4-B5319CA2CDE6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.UWP", "OxyPlot.UWP\OxyPlot.UWP.csproj", "{280C05F8-7E1F-4D11-89E4-B5319CA2CDE6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Windows 10", "Windows 10", "{D5BAB3CB-EDAE-4304-B546-E6B282F07003}"
 EndProject

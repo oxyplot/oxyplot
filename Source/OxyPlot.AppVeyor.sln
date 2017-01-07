@@ -47,11 +47,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.GtkSharp3_NET40", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.WP8", "OxyPlot.WP8\OxyPlot.WP8.csproj", "{66493B76-2850-4035-9449-0E2F95229C48}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Windows", "OxyPlot.Windows\OxyPlot.Windows.csproj", "{667573F6-B2DC-487D-998C-78DD3DAD0650}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Windows8", "OxyPlot.Windows8\OxyPlot.Windows8.csproj", "{667573F6-B2DC-487D-998C-78DD3DAD0650}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot_SL5", "OxyPlot\OxyPlot_SL5.csproj", "{0957B392-2CAD-4788-90F8-05E55328D06C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Windows10", "OxyPlot.Windows10\OxyPlot.Windows10.csproj", "{280C05F8-7E1F-4D11-89E4-B5319CA2CDE6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.UWP", "OxyPlot.UWP\OxyPlot.UWP.csproj", "{280C05F8-7E1F-4D11-89E4-B5319CA2CDE6}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "OxyPlot.SharpDX", "OxyPlot.SharpDX\OxyPlot.SharpDX.shproj", "{455376C6-4146-497C-BF77-61CBB67F5DF9}"
 EndProject

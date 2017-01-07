@@ -20,14 +20,14 @@
   <files>
     <file src="..\..\Output\WP8\OxyPlot.WP8.???" target="lib\windowsphone8" />
 
-    <file src="..\..\Output\Windows\OxyPlot.Windows.???" target="lib\portable-windows8+wpa81" />
-    <file src="..\..\Output\Windows\OxyPlot.Windows.xr.xml" target="lib\portable-windows8+wpa81\OxyPlot.Windows" />
-    <file src="..\..\Output\Windows\Themes\*.*" target="lib\portable-windows8+wpa81\OxyPlot.Windows\Themes" />
+    <file src="..\..\Output\Windows8\OxyPlot.Windows.???" target="lib\portable-windows8+wpa81" />
+    <file src="..\..\Output\Windows8\OxyPlot.Windows.xr.xml" target="lib\portable-windows8+wpa81\OxyPlot.Windows" />
+    <file src="..\..\Output\Windows8\Themes\*.*" target="lib\portable-windows8+wpa81\OxyPlot.Windows\Themes" />
 
-    <file src="..\..\Output\Windows10\OxyPlot.Windows.???" target="lib\uap10.0" />
-    <file src="..\..\Output\Windows10\OxyPlot.Windows.xr.xml" target="lib\uap10.0\OxyPlot.Windows" />
-    <file src="..\..\Output\Windows10\Properties\*.*" target="lib\uap10.0\OxyPlot.Windows\Properties" />
-    <file src="..\..\Output\Windows10\Themes\*.*" target="lib\uap10.0\OxyPlot.Windows\Themes" />
+    <file src="..\..\Output\UWP\OxyPlot.Windows.???" target="lib\uap10.0" />
+    <file src="..\..\Output\UWP\OxyPlot.Windows.xr.xml" target="lib\uap10.0\OxyPlot.Windows" />
+    <file src="..\..\Output\UWP\Properties\*.*" target="lib\uap10.0\OxyPlot.Windows\Properties" />
+    <file src="..\..\Output\UWP\Themes\*.*" target="lib\uap10.0\OxyPlot.Windows\Themes" />
 
     <file src="..\..\LICENSE" />
     <file src="..\..\AUTHORS" />

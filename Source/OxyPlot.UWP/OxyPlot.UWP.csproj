@@ -31,7 +31,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\Output\Windows10\</OutputPath>
+    <OutputPath>..\..\Output\UWP\</OutputPath>
     <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -49,7 +49,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <PlatformTarget>x86</PlatformTarget>
-    <OutputPath>..\..\Output\Windows10\x86\</OutputPath>
+    <OutputPath>..\..\Output\UWP\x86\</OutputPath>
     <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
     <Optimize>true</Optimize>
     <NoWarn>;2008</NoWarn>
@@ -72,7 +72,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
     <PlatformTarget>ARM</PlatformTarget>
-    <OutputPath>..\..\Output\Windows10\ARM\</OutputPath>
+    <OutputPath>..\..\Output\UWP\ARM\</OutputPath>
     <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
     <Optimize>true</Optimize>
     <NoWarn>;2008</NoWarn>
@@ -94,7 +94,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <PlatformTarget>x64</PlatformTarget>
-    <OutputPath>..\..\Output\Windows10\x64\</OutputPath>
+    <OutputPath>..\..\Output\UWP\x64\</OutputPath>
     <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
     <Optimize>true</Optimize>
     <NoWarn>;2008</NoWarn>
@@ -105,7 +105,7 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-    <None Include="..\OxyPlot.Windows\OxyPlot.Windows.snk">
+    <None Include="..\OxyPlot.Windows8\OxyPlot.Windows.snk">
       <Link>OxyPlot.Windows.snk</Link>
     </None>
     <None Include="project.json" />
@@ -114,28 +114,28 @@
     <Compile Include="..\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="..\OxyPlot.Windows\Converters\OxyColorConverter.cs">
+    <Compile Include="..\OxyPlot.Windows8\Converters\OxyColorConverter.cs">
       <Link>OxyColorConverter.cs</Link>
     </Compile>
-    <Compile Include="..\OxyPlot.Windows\Converters\ThicknessConverter.cs">
+    <Compile Include="..\OxyPlot.Windows8\Converters\ThicknessConverter.cs">
       <Link>ThicknessConverter.cs</Link>
     </Compile>
-    <Compile Include="..\OxyPlot.Windows\PlotView.cs">
+    <Compile Include="..\OxyPlot.Windows8\PlotView.cs">
       <Link>PlotView.cs</Link>
     </Compile>
-    <Compile Include="..\OxyPlot.Windows\RenderContext.cs">
+    <Compile Include="..\OxyPlot.Windows8\RenderContext.cs">
       <Link>RenderContext.cs</Link>
     </Compile>
-    <Compile Include="..\OxyPlot.Windows\Tracker\TrackerControl.cs">
+    <Compile Include="..\OxyPlot.Windows8\Tracker\TrackerControl.cs">
       <Link>TrackerControl.cs</Link>
     </Compile>
-    <Compile Include="..\OxyPlot.Windows\Tracker\TrackerDefinition.cs">
+    <Compile Include="..\OxyPlot.Windows8\Tracker\TrackerDefinition.cs">
       <Link>TrackerDefinition.cs</Link>
     </Compile>
-    <Compile Include="..\OxyPlot.Windows\Utilities\ConverterExtensions.cs">
+    <Compile Include="..\OxyPlot.Windows8\Utilities\ConverterExtensions.cs">
       <Link>ConverterExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\OxyPlot.Windows\Utilities\MouseButtonHelper.cs">
+    <Compile Include="..\OxyPlot.Windows8\Utilities\MouseButtonHelper.cs">
       <Link>MouseButtonHelper.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyDescription.cs" />
@@ -150,7 +150,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="..\OxyPlot.Windows\Themes\Generic.xaml">
+    <Page Include="..\OxyPlot.Windows8\Themes\Generic.xaml">
       <Link>Themes\Generic.xaml</Link>
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -164,7 +164,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\OxyPlot.Windows\OxyPlot.Windows.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\OxyPlot.Windows8\OxyPlot.Windows.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
