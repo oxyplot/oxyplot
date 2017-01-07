@@ -83,7 +83,6 @@
     <Compile Include="Graphics\ControllerExtensions.cs" />
     <Compile Include="Graphics\HitTestArguments.cs" />
     <Compile Include="Properties\AssemblyDescription.cs" />
-    <Compile Include="LibraryDoc.cs" />
     <Compile Include="NamespaceDoc.cs" />
     <None Include="ClassDiagrams\Axes.cd" />
     <Compile Include="Foundation\PlotLength.cs" />
@@ -346,5 +345,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <ItemGroup />
 </Project>
