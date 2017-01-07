@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <metadata>
-    <id>OxyPlot.Example</id>
+    <id>OxyPlot.ExampleLibrary</id>
     <title>OxyPlot example library (PCL)</title>
     <version>$version$</version>
     <authors>Oystein Bjorke</authors>
