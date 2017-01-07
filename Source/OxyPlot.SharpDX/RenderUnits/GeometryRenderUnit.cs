@@ -8,11 +8,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace OxyPlot.SharpDX
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using global::SharpDX;
     using global::SharpDX.Direct2D1;
 
@@ -49,7 +44,7 @@ namespace OxyPlot.SharpDX
         /// <summary>
         /// The stroke width.
         /// </summary>
-        private float strokeWidth;
+        private readonly float strokeWidth;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GeometryRenderUnit" /> class.

@@ -8,11 +8,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace OxyPlot.SharpDX
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using global::SharpDX;
     using global::SharpDX.Direct2D1;
 
@@ -24,7 +19,7 @@ namespace OxyPlot.SharpDX
         /// <summary>
         /// The rectangle.
         /// </summary>
-        private RectangleF rectangle;
+        private readonly RectangleF rectangle;
 
         /// <summary>
         /// The stroke.
@@ -39,7 +34,7 @@ namespace OxyPlot.SharpDX
         /// <summary>
         /// The thickness.
         /// </summary>
-        private float thickness;
+        private readonly float thickness;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RectangleRenderUnit" /> class.

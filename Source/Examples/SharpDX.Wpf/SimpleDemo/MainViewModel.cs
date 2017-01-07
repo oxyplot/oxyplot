@@ -8,7 +8,7 @@
     {
         public MainViewModel()
         {
-            var model = new PlotModel { Title = "Hello Windows 10" };
+            var model = new PlotModel { Title = "Hello SharpDX from WPF" };
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
             var lineSeries = new LineSeries { Title = "LineSeries", MarkerType = MarkerType.Circle };

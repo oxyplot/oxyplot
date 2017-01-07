@@ -7,10 +7,6 @@
 namespace OxyPlot.SharpDX.Wpf
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Interop;
@@ -91,7 +87,7 @@ namespace OxyPlot.SharpDX.Wpf
         /// <summary>
         /// The oxy render target.
         /// </summary>
-        private CacherRenderContext oxyRenderContext;
+        private readonly CacherRenderContext oxyRenderContext;
 
         /// <summary>
         /// The image source.
@@ -101,7 +97,7 @@ namespace OxyPlot.SharpDX.Wpf
         /// <summary>
         /// The overlay transform.
         /// </summary>
-        private TranslateTransform overlayTransform;
+        private readonly TranslateTransform overlayTransform;
 
         /// <summary>
         /// The extent.
@@ -130,7 +126,7 @@ namespace OxyPlot.SharpDX.Wpf
         {
             this.oxyRenderContext = new CacherRenderContext();
             this.overlayTransform = new TranslateTransform();
-            this.Overlay = new System.Windows.Controls.Canvas
+            this.Overlay = new Canvas
             {
                 RenderTransform = this.overlayTransform,
             };
@@ -147,7 +143,7 @@ namespace OxyPlot.SharpDX.Wpf
         /// </summary>
         public IPlotModel PlotModel
         {
-            get { return (IPlotModel)GetValue(PlotModelProperty); }
+            get { return (IPlotModel)this.GetValue(PlotModelProperty); }
             set { this.SetValue(PlotModelProperty, value); }
         }
 
@@ -156,7 +152,7 @@ namespace OxyPlot.SharpDX.Wpf
         /// </summary>
         public double PlotHeight
         {
-            get { return (double)GetValue(PlotHeightProperty); }
+            get { return (double)this.GetValue(PlotHeightProperty); }
             set { this.SetValue(PlotHeightProperty, value); }
         }
 
@@ -165,7 +161,7 @@ namespace OxyPlot.SharpDX.Wpf
         /// </summary>
         public double PlotWidth
         {
-            get { return (double)GetValue(PlotWidthProperty); }
+            get { return (double)this.GetValue(PlotWidthProperty); }
             set { this.SetValue(PlotWidthProperty, value); }
         }
 
@@ -188,106 +184,52 @@ namespace OxyPlot.SharpDX.Wpf
         /// <summary>
         /// Gets the horizontal size of the extent.
         /// </summary>
-        public double ExtentWidth
-        {
-            get
-            {
-                return this.extent.Width;
-            }
-        }
+        public double ExtentWidth => this.extent.Width;
 
         /// <summary>
         /// Gets the vertical size of the extent.
         /// </summary>
-        public double ExtentHeight
-        {
-            get
-            {
-                return this.extent.Height;
-            }
-        }
+        public double ExtentHeight => this.extent.Height;
 
         /// <summary>
         /// Gets the horizontal size of the viewport for this content.
         /// </summary>
-        public double ViewportWidth
-        {
-            get
-            {
-                return this.viewport.Width;
-            }
-        }
+        public double ViewportWidth => this.viewport.Width;
 
         /// <summary>
         /// Gets the vertical size of the viewport for this content.
         /// </summary>
-        public double ViewportHeight
-        {
-            get
-            {
-                return this.viewport.Height;
-            }
-        }
+        public double ViewportHeight => this.viewport.Height;
 
         /// <summary>
         /// Gets the horizontal offset of the scrolled content.
         /// </summary>
-        public double HorizontalOffset
-        {
-            get
-            {
-                return this.offset.X;
-            }
-        }
+        public double HorizontalOffset => this.offset.X;
 
         /// <summary>
         /// Gets the vertical offset of the scrolled content.
         /// </summary>
-        public double VerticalOffset
-        {
-            get
-            {
-                return this.offset.Y;
-            }
-        }
+        public double VerticalOffset => this.offset.Y;
 
         /// <summary>
         ///  Gets the offset vector of the scrolled content.
         /// </summary>
-        public Vector Offset
-        {
-            get
-            {
-                return this.offset;
-            }
-        }
+        public Vector Offset => this.offset;
 
         /// <summary>
         /// Gets or sets a System.Windows.Controls.ScrollViewer element that controls scrolling behavior.
         /// </summary>
-        public ScrollViewer ScrollOwner
-        {
-            get; set;
-        }
+        public ScrollViewer ScrollOwner { get; set; }
 
         /// <summary>
         /// Gets the overlay canvas.
         /// </summary>
-        internal System.Windows.Controls.Canvas Overlay
-        {
-            get; private set;
-        }
+        internal Canvas Overlay { get; }
 
         /// <summary>
         /// Gets the number of visual child elements within this element.
         /// </summary>
-        protected override int VisualChildrenCount
-        {
-            get
-            {
-                return 1;
-            }
-        }
+        protected override int VisualChildrenCount => 1;
 
         /// <summary>
         /// Renders <see cref="PlotModel"/> to <see cref="D3D11Image"/> surface.
@@ -651,7 +593,7 @@ namespace OxyPlot.SharpDX.Wpf
             int surfWidth = (int)(this.viewport.Width < 0 ? 0 : Math.Ceiling(this.viewport.Width * dpiScale));
             int surfHeight = (int)(this.viewport.Height < 0 ? 0 : Math.Ceiling(this.viewport.Height * dpiScale));
 
-            var windowHandle = (new System.Windows.Interop.WindowInteropHelper(System.Windows.Window.GetWindow(this))).Handle;
+            var windowHandle = (new WindowInteropHelper(Window.GetWindow(this))).Handle;
 
             this.d3d11Device = new D3D11Device(
                 DriverType.Hardware,
@@ -664,7 +606,7 @@ namespace OxyPlot.SharpDX.Wpf
                 FeatureLevel.Level_9_1);
 
             var backBuffer = new Texture2D(
-                this.d3d11Device, 
+                this.d3d11Device,
                 new Texture2DDescription
                 {
                     Height = surfHeight,
@@ -681,7 +623,7 @@ namespace OxyPlot.SharpDX.Wpf
 
             var surface = backBuffer.QueryInterface<Surface>();
             this.renderTarget = new RenderTarget(
-                this.oxyRenderContext.D2DFactory, 
+                this.oxyRenderContext.D2DFactory,
                 surface,
                 new RenderTargetProperties(new PixelFormat(Format.Unknown, AlphaMode.Premultiplied)));
 
@@ -764,6 +706,6 @@ namespace OxyPlot.SharpDX.Wpf
             }
 
             this.InvalidateVisual();
-        } 
+        }
     }
 }
