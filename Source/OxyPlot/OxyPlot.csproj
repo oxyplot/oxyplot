@@ -84,6 +84,7 @@
     <Compile Include="Graphics\HitTestArguments.cs" />
     <Compile Include="Properties\AssemblyDescription.cs" />
     <Compile Include="NamespaceDoc.cs" />
+    <None Include="ClassDiagrams\Annotations.cd" />
     <None Include="ClassDiagrams\Axes.cd" />
     <Compile Include="Foundation\PlotLength.cs" />
     <Compile Include="Foundation\PlotLengthUnit.cs" />
@@ -327,7 +328,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagrams\Series.cd" />
-    <None Include="ClassDiagrams\PlotModel.cd" />
     <None Include="ClassDiagrams\Reporting.cd" />
     <None Include="OxyPlot.snk" />
   </ItemGroup>

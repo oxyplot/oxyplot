@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="OxyPlot.Annotations.Annotation" Collapsed="true">
+    <Position X="8.5" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>gAAQAAAFAAAAgAAAAEAAQAQAAAAAAAAEABAAAAACAAA=</HashCode>
+      <FileName>Annotations\Annotation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OxyPlot.Annotations.ArrowAnnotation" Collapsed="true">
+    <Position X="15.25" Y="3.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAQACAAAACAAwEAAQBAAAAAAABAAAAAAgDAAgAAAAAg=</HashCode>
+      <FileName>Annotations\ArrowAnnotation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OxyPlot.Annotations.EllipseAnnotation" Collapsed="true">
+    <Position X="14.25" Y="4.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAgAAAAAAAAEAAAAAAAAAAABAAAAACYAA=</HashCode>
+      <FileName>Annotations\EllipseAnnotation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OxyPlot.Annotations.FunctionAnnotation" Collapsed="true">
+    <Position X="0.75" Y="4.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAEAAgAAAAIQAAAAAAAAA=</HashCode>
+      <FileName>Annotations\FunctionAnnotation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OxyPlot.Annotations.ImageAnnotation" Collapsed="true">
+    <Position X="7.25" Y="2" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAMAAgBAAAgAAAgAEAAEQAAAIAAADAABAAAABAYAA=</HashCode>
+      <FileName>Annotations\ImageAnnotation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OxyPlot.Annotations.LineAnnotation" Collapsed="true">
+    <Position X="3" Y="4.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIQAAAgAAYEA=</HashCode>
+      <FileName>Annotations\LineAnnotation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OxyPlot.Annotations.PathAnnotation" Collapsed="true">
+    <Position X="3" Y="3.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AACEGAAAAKQwgIAAABiAoAAABKAAAAQAKDAAlCAAACA=</HashCode>
+      <FileName>Annotations\PathAnnotation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OxyPlot.Annotations.PointAnnotation" Collapsed="true">
+    <Position X="9.75" Y="4.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>ACAEAAAAAAAIgAAAAAgAAAAAAAAAAAAAABAAAAAAYAA=</HashCode>
+      <FileName>Annotations\PointAnnotation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OxyPlot.Annotations.PolygonAnnotation" Collapsed="true">
+    <Position X="12" Y="4.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAggAAAABAAAAAAAAAAAAAAADAAAAAAAAA=</HashCode>
+      <FileName>Annotations\PolygonAnnotation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OxyPlot.Annotations.PolylineAnnotation" Collapsed="true">
+    <Position X="5.25" Y="4.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAgCAAAAAAAAAAACAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>Annotations\PolyLineAnnotation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OxyPlot.Annotations.RectangleAnnotation" Collapsed="true">
+    <Position X="7.5" Y="4.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAQgIAAAAAAgAAAAAAAAAAAABAAEAACACA=</HashCode>
+      <FileName>Annotations\RectangleAnnotation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OxyPlot.Annotations.ShapeAnnotation" Collapsed="true">
+    <Position X="10.75" Y="3.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAgACAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Annotations\ShapeAnnotation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OxyPlot.Annotations.TextAnnotation" Collapsed="true">
+    <Position X="13" Y="3.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAgAAAAAAAAAAAAAoAAAIAABIgAAAAgAA=</HashCode>
+      <FileName>Annotations\TextAnnotation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OxyPlot.Annotations.TextualAnnotation" Collapsed="true">
+    <Position X="9.75" Y="2" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>BAAQgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACBAgAAA=</HashCode>
+      <FileName>Annotations\TextualAnnotation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
