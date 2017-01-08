@@ -1,4 +1,4 @@
-﻿<Window x:Class="HeatMapMappingDemo.HeatMapMappingWindow"
+﻿<Window x:Class="RectangleSeriesDemo.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,7 +6,7 @@
         xmlns:oxy="http://oxyplot.org/wpf"
         mc:Ignorable="d"
         x:Name="self"
-        Title="Heat Map Mapping Window" Height="300" Width="300">
+        Title="RectangleSeries Demo" Height="480" Width="640">
     <Window.DataContext>
         <Binding ElementName="self" />
     </Window.DataContext>

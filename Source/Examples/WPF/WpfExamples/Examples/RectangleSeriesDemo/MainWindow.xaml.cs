@@ -1,8 +1,5 @@
-﻿namespace HeatMapMappingDemo
+﻿namespace RectangleSeriesDemo
 {
-    using System;
-    using System.Windows;
-
     using OxyPlot;
     using OxyPlot.Series;
 
@@ -11,7 +8,7 @@
 
     using OxyPlot.Axes;
 
-    public class HeatMapItem
+    public class RectangleWithValue
     {
         public double X1;
 
@@ -23,7 +20,7 @@
 
         public double Value;
 
-        public HeatMapItem(int seed)
+        public RectangleWithValue(int seed)
         {
             this.X1 = seed;
             this.X2 = 2 * seed;
@@ -34,53 +31,51 @@
     }
 
     /// <summary>
-    /// Interaction logic for HeatMapMappingWindow.xaml
+    /// Interaction logic for RectangleSeries.xaml
     /// </summary>
-    [Example("Demonstrates the HeatMapSeries with mapped ItemsSource.")]
-    public partial class HeatMapMappingWindow : Window
+    [Example("Demonstrates the RectangleSeries with mapped ItemsSource.")]
+    public partial class MainWindow
     {
         public const int NumberOfItems = 10;
 
         public PlotModel PlotModel { get; set; }
 
-        public IList<HeatMapItem> Items;
+        public IList<RectangleWithValue> Items;
 
-        public HeatMapMappingWindow()
+        public MainWindow()
         {
             // generate some dummy items
-            this.Items = new List<HeatMapItem>();
+            this.Items = new List<RectangleWithValue>();
             for (int i = 0; i < NumberOfItems; i++)
             {
-                this.Items.Add(new HeatMapItem(i));
+                this.Items.Add(new RectangleWithValue(i));
             }
 
             this.PlotModel = new PlotModel();
 
-            this.PlotModel.Axes.Add(new LinearColorAxis()
+            this.PlotModel.Axes.Add(new LinearColorAxis
             {
                 Position = AxisPosition.Right,
                 Palette = OxyPalettes.Jet(100)
             });
 
-            this.PlotModel.Series.Add(new RectangleSeries()
+            this.PlotModel.Series.Add(new RectangleSeries
             {
                 ItemsSource = this.Items,
-                Mapping = this.HeatMapItemToDataRectMapping
+                Mapping = obj =>
+                {
+                    var rectangleWithValue = (RectangleWithValue)obj;
+
+                    return new DataRect(
+                        rectangleWithValue.X1,
+                        rectangleWithValue.X2,
+                        rectangleWithValue.Y1,
+                        rectangleWithValue.Y2,
+                        rectangleWithValue.Value);
+                }
             });
 
             this.InitializeComponent();
-        }
-
-        private DataRect HeatMapItemToDataRectMapping(object obj)
-        {
-            HeatMapItem heatMapItem = (HeatMapItem)obj;
-
-            return new DataRect(
-                heatMapItem.X1,
-                heatMapItem.X2,
-                heatMapItem.Y1,
-                heatMapItem.Y2,
-                heatMapItem.Value);
         }
     }
 }
