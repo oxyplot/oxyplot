@@ -60,6 +60,7 @@
     <Compile Include="Annotations\PointAnnotation.cs" />
     <Compile Include="Annotations\ShapeAnnotation.cs" />
     <Compile Include="Axes\AxisUtilities.cs" />
+    <Compile Include="Foundation\DataRect.cs" />
     <Compile Include="Graphics\DelegateViewCommand{T}.cs" />
     <Compile Include="Graphics\ElementCollectionChangedEventArgs{T}.cs" />
     <Compile Include="Graphics\ManipulatorBase.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="Rendering\OxySizeExtensions.cs" />
     <Compile Include="Reporting\PlotModelExtensions.cs" />
     <Compile Include="Series\BarSeries\LinearBarSeries.cs" />
+    <Compile Include="Series\DataRectSeries.cs" />
     <Compile Include="Series\IScatterPointProvider.cs" />
     <Compile Include="Input\Gestures\OxyMouseEnterGesture.cs" />
     <Compile Include="PlotController\EventArgs\OxyInputEventArgs.cs" />
@@ -154,6 +156,7 @@
     <Compile Include="Pdf\PortableDocument.cs" />
     <Compile Include="Pdf\PortableDocumentImageUtilities.cs" />
     <Compile Include="Pdf\StandardFonts.cs" />
+    <Compile Include="Series\RectangleSeries.cs" />
     <Compile Include="Series\ScatterErrorPoint.cs" />
     <Compile Include="Series\ScatterErrorSeries.cs" />
     <Compile Include="Series\ScatterSeries{T}.cs" />
