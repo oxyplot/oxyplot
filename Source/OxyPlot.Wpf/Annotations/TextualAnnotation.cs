@@ -62,6 +62,36 @@ namespace OxyPlot.Wpf
                 new UIPropertyMetadata(VerticalAlignment.Center, AppearanceChanged));
 
         /// <summary>
+        /// Identifies the <see cref="FontFamily"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty FontFamilyProperty =
+            DependencyProperty.Register(
+                "FontFamily",
+                typeof(FontFamily),
+                typeof(TextualAnnotation),
+                new UIPropertyMetadata(null, AppearanceChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="FontWeight"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty FontWeightProperty =
+            DependencyProperty.Register(
+                "FontWeight",
+                typeof(FontWeight),
+                typeof(TextualAnnotation),
+                new UIPropertyMetadata(FontWeights.Normal, AppearanceChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="FontSize"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty FontSizeProperty =
+            DependencyProperty.Register(
+                "FontSize",
+                typeof(double),
+                typeof(TextualAnnotation),
+                new UIPropertyMetadata(double.NaN, AppearanceChanged));
+        
+        /// <summary>
         /// Gets or sets the text.
         /// </summary>
         public string Text
@@ -153,6 +183,63 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
+        /// Gets or sets the font family.
+        /// </summary>
+        /// <value>
+        /// The font family.
+        /// </value>
+        public FontFamily FontFamily
+        {
+            get
+            {
+                return (FontFamily)this.GetValue(FontFamilyProperty);
+            }
+
+            set
+            {
+                this.SetValue(FontFamilyProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the font weight.
+        /// </summary>
+        /// <value>
+        /// The font weight.
+        /// </value>
+        public FontWeight FontWeight
+        {
+            get
+            {
+                return (FontWeight)this.GetValue(FontWeightProperty);
+            }
+
+            set
+            {
+                this.SetValue(FontWeightProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the size of the font.
+        /// </summary>
+        /// <value>
+        /// The size of the font.
+        /// </value>
+        public double FontSize
+        {
+            get
+            {
+                return (double)this.GetValue(FontSizeProperty);
+            }
+
+            set
+            {
+                this.SetValue(FontSizeProperty, value);
+            }
+        }
+
+        /// <summary>
         /// Synchronizes the properties.
         /// </summary>
         public override void SynchronizeProperties()
@@ -165,6 +252,9 @@ namespace OxyPlot.Wpf
             a.TextRotation = this.TextRotation;
             a.TextHorizontalAlignment = this.TextHorizontalAlignment.ToHorizontalAlignment();
             a.TextVerticalAlignment = this.TextVerticalAlignment.ToVerticalAlignment();
+            a.Font = this.FontFamily?.Source;
+            a.FontSize = this.FontSize;
+            a.FontWeight = this.FontWeight.ToOpenTypeWeight();
         }
     }
 }
