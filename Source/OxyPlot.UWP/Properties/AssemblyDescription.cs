@@ -7,6 +7,6 @@
 using System.Reflection;
 using System.Resources;
 
-[assembly: AssemblyTitle("OxyPlot.Windows10")]
-[assembly: AssemblyDescription("OxyPlot for Windows 10 Apps")]
+[assembly: AssemblyTitle("OxyPlot.Windows")]
+[assembly: AssemblyDescription("OxyPlot for Universal Windows Apps")]
 [assembly: NeutralResourcesLanguage("en")]
