@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="OxyPlot.Axes.Axis" Collapsed="true">
-    <Position X="9" Y="3" Width="2" />
+    <Position X="7.5" Y="0.5" Width="2" />
     <TypeIdentifier>
-      <HashCode>gEeXCAHRedQgH2V0ttJAe5yCkhCEgABEG1cgwZQB4S0=</HashCode>
+      <HashCode>gEeXCAHQedQgH2V0vtJJexyCkhiUgABFG1c04zQB4S0=</HashCode>
       <FileName>Axes\Axis.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="OxyPlot.Axes.LinearColorAxis" Collapsed="true">
-    <Position X="8" Y="7.25" Width="2" />
+    <Position X="9.5" Y="3.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAABAAAQAAIAAAAQIAACAAAAAAAAiAABAAAQAAACA=</HashCode>
       <FileName>Axes\LinearColorAxis.cs</FileName>
@@ -16,48 +16,69 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="OxyPlot.Axes.RangeColorAxis" Collapsed="true">
-    <Position X="10.25" Y="7.25" Width="2" />
+    <Position X="11.25" Y="3.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAIAAAAAAAAAAIAAAAAAAAAAAiAABAAAQAEACA=</HashCode>
+      <HashCode>AAAAAAAIAAAAAAAAAAIAAAIAAAAAAAiAABAAAQAEACA=</HashCode>
       <FileName>Axes\RangeColorAxis.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="OxyPlot.Axes.LinearAxis" Collapsed="true">
-    <Position X="10.25" Y="4.5" Width="2" />
+    <Position X="9.25" Y="2.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAAAAAAQAAACAAAAAAAAAAAAAAAAAAAAEAAAAAQAA=</HashCode>
+      <HashCode>AAQAAAAAAQAAACAACAAAAAAAAAAAAAAAAAAAACAAQAA=</HashCode>
       <FileName>Axes\LinearAxis.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="OxyPlot.Axes.LogarithmicAxis" Collapsed="true">
-    <Position X="7.75" Y="4.5" Width="2" />
+    <Position X="6" Y="2.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAQAAEgAAAIAAABQAAAAAQAAAAAAAABQAQAA=</HashCode>
+      <HashCode>AAABAAABIQEAEgAAHYAAQRwAAAAAQAAAAAACABAQQBA=</HashCode>
       <FileName>Axes\LogarithmicAxis.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="OxyPlot.Axes.CategoryAxis" Collapsed="true">
-    <Position X="12.5" Y="6" Width="2" />
+    <Position X="7.75" Y="3.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AIEAEIABMAAFEEgAIJAAAFABBAAElAAAgAEgAJAAABE=</HashCode>
+      <HashCode>AIAAAEAQsAAUEBAAIBQICFAIAggEnIAACAIAMKAAEAM=</HashCode>
       <FileName>Axes\CategoryAxis.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="OxyPlot.Axes.CategoryColorAxis" Collapsed="true">
-    <Position X="12.5" Y="7.25" Width="2" />
+    <Position X="7.75" Y="5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAABAAAAAAAAAAAQAAACAAAAAAAAiQABAAAAAAAAA=</HashCode>
       <FileName>Axes\CategoryColorAxis.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Interface Name="OxyPlot.Axes.IColorAxis">
-    <Position X="5.75" Y="7.25" Width="2" />
+  <Class Name="OxyPlot.Axes.AngleAxis" Collapsed="true">
+    <Position X="15.5" Y="3.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAiAAAAAAAAAAAA=</HashCode>
-      <FileName>Axes\IColorAxis.cs</FileName>
+      <HashCode>AAAAAAAAAQAAEAAAAAAAQAQAAAAEAAAAABAIAIAAAAA=</HashCode>
+      <FileName>Axes\AngleAxis.cs</FileName>
     </TypeIdentifier>
-  </Interface>
+  </Class>
+  <Class Name="OxyPlot.Axes.DateTimeAxis" Collapsed="true">
+    <Position X="4.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAIAIkGAEBAAAQIAAAghgAAAAAABAAAKAVAAA=</HashCode>
+      <FileName>Axes\DateTimeAxis.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OxyPlot.Axes.MagnitudeAxis" Collapsed="true">
+    <Position X="13.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAAAAAAAAQAQAAAAEAIAAABAAAAAAAAA=</HashCode>
+      <FileName>Axes\MagnitudeAxis.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OxyPlot.Axes.TimeSpanAxis" Collapsed="true">
+    <Position X="6" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAAEAAAAAAAAAAAkAAAAAABAAACAAAAA=</HashCode>
+      <FileName>Axes\TimeSpanAxis.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>
