@@ -38,10 +38,6 @@
     {
         public const int NumberOfItems = 10;
 
-        public PlotModel PlotModel { get; set; }
-
-        public IList<RectangleWithValue> Items;
-
         public MainWindow()
         {
             // generate some dummy items
@@ -77,5 +73,10 @@
 
             this.InitializeComponent();
         }
+
+        public PlotModel PlotModel { get; }
+
+        public IList<RectangleWithValue> Items { get; }
+
     }
 }
