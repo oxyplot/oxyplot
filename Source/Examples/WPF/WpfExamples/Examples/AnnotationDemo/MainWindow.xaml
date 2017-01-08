@@ -115,8 +115,12 @@
                     <oxy:LinearAxis Position="Left" Minimum="0" Maximum="100" />
                 </oxy:Plot.Axes>
                 <oxy:Plot.Annotations>
-                    <oxy:TextAnnotation TextColor="Green" Text="Hello" TextPosition="{oxy:DataPoint 30,70}" />
-                    <oxy:TextAnnotation TextColor="Orange" Text="world!" TextRotation="20" TextPosition="{oxy:DataPoint 50,70}" />
+                    <oxy:TextAnnotation Text="Hello world!" TextPosition="{oxy:DataPoint 20,80}" />
+                    <oxy:TextAnnotation TextColor="Green" Text="TextColor" TextPosition="{oxy:DataPoint 30,50}" />
+                    <oxy:TextAnnotation Text="TextRotation" TextRotation="20" TextPosition="{oxy:DataPoint 60,50}" />
+                    <oxy:TextAnnotation FontFamily="Courier New" Text="Courier New" TextPosition="{oxy:DataPoint 30,20}" />
+                    <oxy:TextAnnotation FontSize="25" Text="FontSize=25" TextPosition="{oxy:DataPoint 50,20}" />
+                    <oxy:TextAnnotation FontWeight="Bold" Text="Bold" TextPosition="{oxy:DataPoint 80,20}" />
                 </oxy:Plot.Annotations>
             </oxy:Plot>
         </TabItem>
