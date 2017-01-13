@@ -7,12 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 namespace OxyPlot.SharpDX
-{    
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+{
     using global::SharpDX;
     using global::SharpDX.Direct2D1;
 
@@ -24,12 +19,17 @@ namespace OxyPlot.SharpDX
         /// <summary>
         /// The bounds.
         /// </summary>
-        private RectangleF bounds;
+        private readonly RectangleF bounds;
 
         /// <summary>
         /// The ellipse.
         /// </summary>
-        private Ellipse ellipse;
+        private readonly Ellipse ellipse;
+
+        /// <summary>
+        /// The thickness;
+        /// </summary>
+        private readonly float thickness;
 
         /// <summary>
         /// The stroke.
@@ -40,11 +40,6 @@ namespace OxyPlot.SharpDX
         /// The fill.
         /// </summary>
         private Brush fill;
-
-        /// <summary>
-        /// The thickness;
-        /// </summary>
-        private float thickness;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EllipseRenderUnit" /> class.

@@ -7,12 +7,13 @@ All notable changes to this project will be documented in this file.
 - New `InterpolationAlgorithm` property in LineSeries and PolylineAnnotation (#494)
 - Catmull-Rom spline interpolation algorithms (#494)
 - Added ability to map objects in an ItemsSource to a HeatMapSeries (#911)
+- FontSize, FontWeight and FontFamily on Wpf.TextAnnotation (#1023)
 
 ### Changed
 - 
 
 ### Deprecated
-- 
+- OxyPlot.WP8 package. Use OxyPlot.Windows instead (#996)
 
 ### Removed
 - The `Smooth` property in LineSeries and PolylineAnnotation (#494)
@@ -20,6 +21,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - Manipulation when using touch is not working in Windows (#1011)
 - Ensure a suitable folder is used when creating a temporary file for PNG export in Oxyplot.GtkSharp (#1034)
+- RangeColorAxis is not rendered correctly if the axis is reversed (#1035)
 
 ## [1.0.0] - 2016-09-11
 ### Added

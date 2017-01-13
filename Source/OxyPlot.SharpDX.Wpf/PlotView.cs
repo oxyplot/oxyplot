@@ -6,21 +6,13 @@
 namespace OxyPlot.SharpDX.Wpf
 {
     using System;
-    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
-    using System.Text;
     using System.Threading;
-    using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
-    using System.Windows.Interop;
-    using System.Windows.Media;
     using System.Windows.Media.Imaging;
-    using global::SharpDX.Direct3D;
-    using global::SharpDX.Direct3D11;
-    using global::SharpDX.DXGI;
 
     /// <summary>
     /// Represents a control that displays a <see cref="PlotModel" /> using SharpDX based renderer.
@@ -155,7 +147,7 @@ namespace OxyPlot.SharpDX.Wpf
         /// </summary>
         public double PlotHeight
         {
-            get { return (double)GetValue(PlotHeightProperty); }
+            get { return (double)this.GetValue(PlotHeightProperty); }
             set { this.SetValue(PlotHeightProperty, value); }
         }
 
@@ -164,7 +156,7 @@ namespace OxyPlot.SharpDX.Wpf
         /// </summary>
         public double PlotWidth
         {
-            get { return (double)GetValue(PlotWidthProperty); }
+            get { return (double)this.GetValue(PlotWidthProperty); }
             set { this.SetValue(PlotWidthProperty, value); }
         }
 
@@ -497,7 +489,7 @@ namespace OxyPlot.SharpDX.Wpf
                 return;
             }
 
-            this.plotImage = this.GetTemplateChild(PartPlotImage) as PlotImage;
+            this.plotImage = (PlotImage)this.GetTemplateChild(PartPlotImage);
 
             this.zoomRectangle = new ContentControl();
             this.plotImage.Overlay.Children.Add(this.zoomRectangle);
@@ -642,12 +634,12 @@ namespace OxyPlot.SharpDX.Wpf
                     // TODO: why is the data context not passed to the context menu??
                     this.ContextMenu.DataContext = this.DataContext;
                     this.ContextMenu.PlacementTarget = this;
-                    this.ContextMenu.Visibility = System.Windows.Visibility.Visible;
+                    this.ContextMenu.Visibility = Visibility.Visible;
                     this.ContextMenu.IsOpen = true;
                 }
                 else
                 {
-                    this.ContextMenu.Visibility = System.Windows.Visibility.Collapsed;
+                    this.ContextMenu.Visibility = Visibility.Collapsed;
                     this.ContextMenu.IsOpen = false;
                 }
             }

@@ -7,10 +7,6 @@
 namespace OxyPlot.SharpDX.Wpf
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Media;
@@ -443,58 +439,58 @@ namespace OxyPlot.SharpDX.Wpf
             // Minimum allowed margins around the tracker
             const double MarginLimit = 10;
 
-            var ha = System.Windows.HorizontalAlignment.Center;
+            var ha = HorizontalAlignment.Center;
             if (this.CanCenterHorizontally)
             {
                 if (this.Position.X - (contentWidth / 2) < MarginLimit)
                 {
-                    ha = System.Windows.HorizontalAlignment.Left;
+                    ha = HorizontalAlignment.Left;
                 }
 
                 if (this.Position.X + (contentWidth / 2) > canvasWidth - MarginLimit)
                 {
-                    ha = System.Windows.HorizontalAlignment.Right;
+                    ha = HorizontalAlignment.Right;
                 }
             }
             else
             {
-                ha = this.Position.X < canvasWidth / 2 ? System.Windows.HorizontalAlignment.Left : System.Windows.HorizontalAlignment.Right;
+                ha = this.Position.X < canvasWidth / 2 ? HorizontalAlignment.Left : HorizontalAlignment.Right;
             }
 
-            var va = System.Windows.VerticalAlignment.Center;
+            var va = VerticalAlignment.Center;
             if (this.CanCenterVertically)
             {
                 if (this.Position.Y - (contentHeight / 2) < MarginLimit)
                 {
-                    va = System.Windows.VerticalAlignment.Top;
+                    va = VerticalAlignment.Top;
                 }
 
-                if (ha == System.Windows.HorizontalAlignment.Center)
+                if (ha == HorizontalAlignment.Center)
                 {
-                    va = System.Windows.VerticalAlignment.Bottom;
+                    va = VerticalAlignment.Bottom;
                     if (this.Position.Y - contentHeight < MarginLimit)
                     {
-                        va = System.Windows.VerticalAlignment.Top;
+                        va = VerticalAlignment.Top;
                     }
                 }
 
-                if (va == System.Windows.VerticalAlignment.Center && this.Position.Y + (contentHeight / 2) > canvasHeight - MarginLimit)
+                if (va == VerticalAlignment.Center && this.Position.Y + (contentHeight / 2) > canvasHeight - MarginLimit)
                 {
-                    va = System.Windows.VerticalAlignment.Bottom;
+                    va = VerticalAlignment.Bottom;
                 }
 
-                if (va == System.Windows.VerticalAlignment.Top && this.Position.Y + contentHeight > canvasHeight - MarginLimit)
+                if (va == VerticalAlignment.Top && this.Position.Y + contentHeight > canvasHeight - MarginLimit)
                 {
-                    va = System.Windows.VerticalAlignment.Bottom;
+                    va = VerticalAlignment.Bottom;
                 }
             }
             else
             {
-                va = this.Position.Y < canvasHeight / 2 ? System.Windows.VerticalAlignment.Top : System.Windows.VerticalAlignment.Bottom;
+                va = this.Position.Y < canvasHeight / 2 ? VerticalAlignment.Top : VerticalAlignment.Bottom;
             }
 
-            double dx = ha == System.Windows.HorizontalAlignment.Center ? -0.5 : ha == System.Windows.HorizontalAlignment.Left ? 0 : -1;
-            double dy = va == System.Windows.VerticalAlignment.Center ? -0.5 : va == System.Windows.VerticalAlignment.Top ? 0 : -1;
+            double dx = ha == HorizontalAlignment.Center ? -0.5 : ha == HorizontalAlignment.Left ? 0 : -1;
+            double dy = va == VerticalAlignment.Center ? -0.5 : va == VerticalAlignment.Top ? 0 : -1;
 
             Thickness margin;
             this.path.Data = this.ShowPointer
@@ -559,17 +555,17 @@ namespace OxyPlot.SharpDX.Wpf
         /// <param name="margin">The margin.</param>
         /// <returns>The border geometry.</returns>
         private Geometry CreateBorderGeometry(
-            System.Windows.HorizontalAlignment ha, System.Windows.VerticalAlignment va, double width, double height, out Thickness margin)
+            HorizontalAlignment ha, VerticalAlignment va, double width, double height, out Thickness margin)
         {
             double m = this.Distance;
             var rect = new Rect(
-                ha == System.Windows.HorizontalAlignment.Left ? m : 0, va == System.Windows.VerticalAlignment.Top ? m : 0, width, height);
+                ha == HorizontalAlignment.Left ? m : 0, va == VerticalAlignment.Top ? m : 0, width, height);
             margin = new Thickness
             {
-                Left = ha == System.Windows.HorizontalAlignment.Left ? m : 0,
-                Top = va == System.Windows.VerticalAlignment.Top ? m : 0,
-                Right = ha == System.Windows.HorizontalAlignment.Right ? m : 0,
-                Bottom = va == System.Windows.VerticalAlignment.Bottom ? m : 0
+                Left = ha == HorizontalAlignment.Left ? m : 0,
+                Top = va == VerticalAlignment.Top ? m : 0,
+                Right = ha == HorizontalAlignment.Right ? m : 0,
+                Bottom = va == VerticalAlignment.Bottom ? m : 0
             };
             return new RectangleGeometry { Rect = rect /*, RadiusX = this.CornerRadius, RadiusY = this.CornerRadius*/ };
         }
@@ -584,13 +580,13 @@ namespace OxyPlot.SharpDX.Wpf
         /// <param name="margin">The margin.</param>
         /// <returns>The border geometry.</returns>
         private Geometry CreatePointerBorderGeometry(
-            System.Windows.HorizontalAlignment ha, System.Windows.VerticalAlignment va, double width, double height, out Thickness margin)
+            HorizontalAlignment ha, VerticalAlignment va, double width, double height, out Thickness margin)
         {
             Point[] points = null;
             double m = this.Distance;
             margin = new Thickness();
 
-            if (ha == System.Windows.HorizontalAlignment.Center && va == System.Windows.VerticalAlignment.Bottom)
+            if (ha == HorizontalAlignment.Center && va == VerticalAlignment.Bottom)
             {
                 double x0 = 0;
                 double x1 = width;
@@ -605,7 +601,7 @@ namespace OxyPlot.SharpDX.Wpf
                     };
             }
 
-            if (ha == System.Windows.HorizontalAlignment.Center && va == System.Windows.VerticalAlignment.Top)
+            if (ha == HorizontalAlignment.Center && va == VerticalAlignment.Top)
             {
                 double x0 = 0;
                 double x1 = width;
@@ -620,7 +616,7 @@ namespace OxyPlot.SharpDX.Wpf
                     };
             }
 
-            if (ha == System.Windows.HorizontalAlignment.Left && va == System.Windows.VerticalAlignment.Center)
+            if (ha == HorizontalAlignment.Left && va == VerticalAlignment.Center)
             {
                 double x0 = m;
                 double x1 = m + width;
@@ -635,7 +631,7 @@ namespace OxyPlot.SharpDX.Wpf
                     };
             }
 
-            if (ha == System.Windows.HorizontalAlignment.Right && va == System.Windows.VerticalAlignment.Center)
+            if (ha == HorizontalAlignment.Right && va == VerticalAlignment.Center)
             {
                 double x0 = 0;
                 double x1 = width;
@@ -650,7 +646,7 @@ namespace OxyPlot.SharpDX.Wpf
                     };
             }
 
-            if (ha == System.Windows.HorizontalAlignment.Left && va == System.Windows.VerticalAlignment.Top)
+            if (ha == HorizontalAlignment.Left && va == VerticalAlignment.Top)
             {
                 m *= 0.67;
                 double x0 = m;
@@ -665,7 +661,7 @@ namespace OxyPlot.SharpDX.Wpf
                     };
             }
 
-            if (ha == System.Windows.HorizontalAlignment.Right && va == System.Windows.VerticalAlignment.Top)
+            if (ha == HorizontalAlignment.Right && va == VerticalAlignment.Top)
             {
                 m *= 0.67;
                 double x0 = 0;
@@ -680,7 +676,7 @@ namespace OxyPlot.SharpDX.Wpf
                     };
             }
 
-            if (ha == System.Windows.HorizontalAlignment.Left && va == System.Windows.VerticalAlignment.Bottom)
+            if (ha == HorizontalAlignment.Left && va == VerticalAlignment.Bottom)
             {
                 m *= 0.67;
                 double x0 = m;
@@ -695,7 +691,7 @@ namespace OxyPlot.SharpDX.Wpf
                     };
             }
 
-            if (ha == System.Windows.HorizontalAlignment.Right && va == System.Windows.VerticalAlignment.Bottom)
+            if (ha == HorizontalAlignment.Right && va == VerticalAlignment.Bottom)
             {
                 m *= 0.67;
                 double x0 = 0;
