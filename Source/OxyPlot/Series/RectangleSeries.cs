@@ -31,42 +31,6 @@
         }
 
         /// <summary>
-        /// Gets or sets the x-coordinate of the elements at index [0,*] in the data set.
-        /// </summary>
-        /// <value>
-        /// If <see cref="CoordinateDefinition" /> equals <see cref="HeatMapCoordinateDefinition.Center"/>, the value defines the mid point of the element at index [0,*] in the data set.
-        /// If <see cref="CoordinateDefinition" /> equals <see cref="HeatMapCoordinateDefinition.Edge"/>, the value defines the coordinate of the left edge of the element at index [0,*] in the data set.
-        /// </value>
-        public double X0 { get; set; }
-
-        /// <summary>
-        /// Gets or sets the x-coordinate of the mid point for the elements at index [m-1,*] in the data set.
-        /// </summary>
-        /// <value>
-        /// If <see cref="CoordinateDefinition" /> equals <see cref="HeatMapCoordinateDefinition.Center"/>, the value defines the mid point of the element at index [m-1,*] in the data set.
-        /// If <see cref="CoordinateDefinition" /> equals <see cref="HeatMapCoordinateDefinition.Edge"/>, the value defines the coordinate of the right edge of the element at index [m-1,*] in the data set.
-        /// </value>
-        public double X1 { get; set; }
-
-        /// <summary>
-        /// Gets or sets the y-coordinate of the mid point for the elements at index [*,0] in the data set.
-        /// </summary>
-        /// <value>
-        /// If <see cref="CoordinateDefinition" /> equals <see cref="HeatMapCoordinateDefinition.Center"/>, the value defines the mid point of the element at index [*,0] in the data set.
-        /// If <see cref="CoordinateDefinition" /> equals <see cref="HeatMapCoordinateDefinition.Edge"/>, the value defines the coordinate of the bottom edge of the element at index [*,0] in the data set.
-        /// </value>
-        public double Y0 { get; set; }
-
-        /// <summary>
-        /// Gets or sets the y-coordinate of the mid point for the elements at index [*,n-1] in the data set.
-        /// </summary>
-        /// <value>
-        /// If <see cref="CoordinateDefinition" /> equals <see cref="HeatMapCoordinateDefinition.Center"/>, the value defines the mid point of the element at index [*,n-1] in the data set.
-        /// If <see cref="CoordinateDefinition" /> equals <see cref="HeatMapCoordinateDefinition.Edge"/>, the value defines the coordinate of the top edge of the element at index [*,n-1] in the data set.
-        /// </value>
-        public double Y1 { get; set; }
-
-        /// <summary>
         /// Gets the minimum value of the dataset.
         /// </summary>
         public double MinValue { get; private set; }
@@ -87,18 +51,6 @@
         /// </summary>
         /// <value>The color axis key.</value>
         public string ColorAxisKey { get; set; }
-
-        /// <summary>
-        /// Gets or sets the coordinate definition. The default value is <see cref="HeatMapCoordinateDefinition.Center" />.
-        /// </summary>
-        /// <value>The coordinate definition.</value>
-        public HeatMapCoordinateDefinition CoordinateDefinition { get; set; }
-
-        /// <summary>
-        /// Gets or sets the render method. The default value is <see cref="HeatMapRenderMethod.Bitmap" />.
-        /// </summary>
-        /// <value>The render method.</value>
-        public HeatMapRenderMethod RenderMethod { get; set; }
 
         /// <summary>
         /// Gets or sets the format string for the cell labels. The default value is <c>0.00</c>.
@@ -170,7 +122,7 @@
         /// <param name="rects">The rects to render.</param>
         protected void RenderRects(IRenderContext rc, OxyRect clippingRect, ICollection<DataRect> rects)
         {
-            foreach (DataRect dataRect in rects)
+            foreach (var dataRect in rects)
             {
                 var rectcolor = this.ColorAxis.GetColor(dataRect.value);
 
@@ -207,7 +159,7 @@
             if (this.ActualRects != null)
             {
                 // iterate through the DataRects and return the first one that contains the point
-                foreach (DataRect dataRect in this.ActualRects)
+                foreach (var dataRect in this.ActualRects)
                 {
                     if (dataRect.Contains(p))
                     {

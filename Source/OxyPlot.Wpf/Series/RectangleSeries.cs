@@ -18,42 +18,6 @@ namespace OxyPlot.Wpf
     public class RectangleSeries : DataRectSeries
     {
         /// <summary>
-        /// Identifies this <see cref="X0Property"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty X0Property = DependencyProperty.Register(
-            "X0",
-            typeof(double),
-            typeof(RectangleSeries),
-            new PropertyMetadata(default(double), AppearanceChanged));
-
-        /// <summary>
-        /// Identifies this <see cref="X1Property"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty X1Property = DependencyProperty.Register(
-            "X1",
-            typeof(double),
-            typeof(RectangleSeries),
-            new PropertyMetadata(default(double), AppearanceChanged));
-
-        /// <summary>
-        /// Identifies this <see cref="Y0Property"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty Y0Property = DependencyProperty.Register(
-            "Y0",
-            typeof(double),
-            typeof(RectangleSeries),
-            new PropertyMetadata(default(double), AppearanceChanged));
-
-        /// <summary>
-        /// Identifies this <see cref="Y1Property"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty Y1Property = DependencyProperty.Register(
-            "Y1",
-            typeof(double),
-            typeof(RectangleSeries),
-            new PropertyMetadata(default(double), AppearanceChanged));
-
-        /// <summary>
         /// Identifies this <see cref="ColorAxisKeyProperty"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ColorAxisKeyProperty = DependencyProperty.Register(
@@ -145,70 +109,6 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets X0.
-        /// </summary>
-        public double X0
-        {
-            get
-            {
-                return (double)this.GetValue(X0Property);
-            }
-
-            set
-            {
-                this.SetValue(X0Property, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets X1
-        /// </summary>
-        public double X1
-        {
-            get
-            {
-                return (double)this.GetValue(X1Property);
-            }
-
-            set
-            {
-                this.SetValue(X1Property, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets Y0
-        /// </summary>
-        public double Y0
-        {
-            get
-            {
-                return (double)this.GetValue(Y0Property);
-            }
-
-            set
-            {
-                this.SetValue(Y0Property, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets Y1
-        /// </summary>
-        public double Y1
-        {
-            get
-            {
-                return (double)this.GetValue(Y1Property);
-            }
-
-            set
-            {
-                this.SetValue(Y1Property, value);
-            }
-        }
-
-        /// <summary>
         /// The create model.
         /// </summary>
         /// <returns>
@@ -218,23 +118,6 @@ namespace OxyPlot.Wpf
         {
             this.SynchronizeProperties(this.InternalSeries);
             return this.InternalSeries;
-        }
-
-        /// <summary>
-        /// The synchronize properties.
-        /// </summary>
-        /// <param name="series">
-        /// The series.
-        /// </param>
-        protected override void SynchronizeProperties(OxyPlot.Series.Series series)
-        {
-            base.SynchronizeProperties(series);
-
-            var s = (OxyPlot.Series.RectangleSeries)series;
-            s.X0 = this.X0;
-            s.X1 = this.X1;
-            s.Y0 = this.Y0;
-            s.Y1 = this.Y1;
         }
     }
 }

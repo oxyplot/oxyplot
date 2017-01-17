@@ -120,6 +120,8 @@
     <Compile Include="Examples\ExportDemo\ShellViewModel.cs" />
     <Compile Include="Examples\HeatMapMappingDemo\HeatMapMappingWindow.xaml.cs">
       <DependentUpon>HeatMapMappingWindow.xaml</DependentUpon>
+    <Compile Include="Examples\RectangleSeriesDemo\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Examples\InterpolationDemo\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -217,6 +219,7 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Examples\HeatMapMappingDemo\HeatMapMappingWindow.xaml">
+    <Page Include="Examples\RectangleSeriesDemo\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -571,6 +574,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Resource Include="Images\HeatMapMappingDemo.png" />
+    <Resource Include="Images\RectangleSeriesDemo.png" />
     <Resource Include="Images\InterpolationDemo.png" />
     <Resource Include="Images\LiveDemo.png" />
     <Resource Include="Images\ExportDemo.png" />

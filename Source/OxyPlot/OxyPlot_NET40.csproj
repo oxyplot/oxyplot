@@ -155,6 +155,7 @@
     <Compile Include="Pdf\PortableDocument.cs" />
     <Compile Include="Pdf\PortableDocumentImageUtilities.cs" />
     <Compile Include="Pdf\StandardFonts.cs" />
+    <Compile Include="Series\RectangleSeries.cs" />
     <Compile Include="Series\ScatterErrorPoint.cs" />
     <Compile Include="Series\ScatterErrorSeries.cs" />
     <Compile Include="Series\ScatterSeries{T}.cs" />
