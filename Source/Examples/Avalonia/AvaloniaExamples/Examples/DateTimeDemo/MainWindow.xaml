@@ -1,0 +1,43 @@
+﻿<Window 
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:oxy="clr-namespace:OxyPlot.Avalonia;assembly=OxyPlot.Avalonia" Title="DateTimeDemo" Height="480" Width="640">
+    <TabControl Margin="4">
+        <TabItem Header="DateTime axis (PlotModel)">
+            <oxy:PlotView Model="{Binding ExampleModel}"/>
+        </TabItem>
+        <TabItem Header="DateTime (XAML)">
+            <oxy:Plot Title="DateTime axis (XAML binding)">
+                <oxy:Plot.Axes>
+                    <oxy:DateTimeAxis Position="Bottom" StringFormat="yyyy-MM-dd"/>
+                </oxy:Plot.Axes>
+                <oxy:Plot.Series>
+                    <oxy:LineSeries Items="{Binding Data}" DataFieldX="Date" DataFieldY="Value" StrokeThickness="1" MarkerSize="3" MarkerType="Plus" TrackerFormatString="Time: {2:yyyy-MM-dd HH:mm:ss}&#x0a;Value: {4}"/>
+                </oxy:Plot.Series>
+            </oxy:Plot>
+        </TabItem>
+        <TabItem Header="TimeSpan (PlotModel)">
+            <oxy:PlotView Model="{Binding ExampleModel2}"/>
+        </TabItem>
+        <TabItem Header="TimeSpan (XAML)">
+            <oxy:Plot Title="TimeSpan axis (XAML binding)">
+                <oxy:Plot.Axes>
+                    <oxy:TimeSpanAxis Position="Bottom" StringFormat="h:mm"/>
+                </oxy:Plot.Axes>
+                <oxy:Plot.Series>
+                    <oxy:LineSeries Items="{Binding Data2}" DataFieldX="Time" DataFieldY="Value" StrokeThickness="1" MarkerSize="3" MarkerType="Plus"/>
+                </oxy:Plot.Series>
+            </oxy:Plot>
+        </TabItem>
+        <TabItem Header="Sun">
+            <oxy:Plot Title="Sunrise and sunset in Oslo">
+                <oxy:Plot.Axes>
+                    <oxy:DateTimeAxis Position="Bottom" IntervalType="Months" StringFormat="MMM" MajorGridlineStyle="Solid"/>
+                    <oxy:TimeSpanAxis Position="Left" StringFormat="h:mm" Minimum="0" Maximum="86400" MajorGridlineStyle="Solid"/>
+                </oxy:Plot.Axes>
+                <oxy:Plot.Series>
+                    <oxy:AreaSeries Items="{Binding SunData}" DataFieldX="Day" DataFieldY="Sunrise" DataFieldX2="Day" DataFieldY2="Sunset" StrokeThickness="2" MarkerType="None" Color="Black" Fill="#80FFFF00"/>
+                </oxy:Plot.Series>
+            </oxy:Plot>
+        </TabItem>
+    </TabControl>
+</Window>

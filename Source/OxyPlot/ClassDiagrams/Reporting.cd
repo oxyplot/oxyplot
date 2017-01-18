@@ -10,7 +10,7 @@
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>AAQAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAABgQAA=</HashCode>
+      <HashCode>AAQAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAABAQAA=</HashCode>
       <FileName>Reporting\Report\TableOfContents.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -108,14 +108,14 @@
   <Class Name="OxyPlot.Reporting.Report" Collapsed="true">
     <Position X="4.75" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAEAAgAAAAEAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAEAAgAAAAEAAAQAAAAAAAAAABAEAAAA=</HashCode>
       <FileName>Reporting\Report\Report.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="OxyPlot.Reporting.ReportItem" Collapsed="true">
     <Position X="2.5" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAcGAAAAAACCAAAAAAAEAEAAAAAAAAAAAAAAAAELCAA=</HashCode>
+      <HashCode>AAcGAAAAAACCAAAAAAAEAEAEAIAAAAAAAAAAAAELDAA=</HashCode>
       <FileName>Reporting\Report\ReportItem.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -150,16 +150,8 @@
   <Class Name="OxyPlot.Reporting.HtmlReportWriter" Collapsed="true" BaseTypeListCollapsed="true">
     <Position X="7.75" Y="2.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>ACAAgAAAAAAgAIQAAAAQAAAAAAoUAABAIEIkAAigAAA=</HashCode>
+      <HashCode>ACAAgAAAACAgAIQAAAAQAAAAEBoUAABAIEIkAAigAAA=</HashCode>
       <FileName>Reporting\ReportWriters\HtmlReportWriter.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" />
-  </Class>
-  <Class Name="OxyPlot.Reporting.LatexReportWriter" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="11.25" Y="2.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>ACABgAAAACAsAAQABAAAAAQAAAAAIAAAAEAkAAAiAAA=</HashCode>
-      <FileName>Reporting\ReportWriters\LatexReportWriter.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
@@ -181,7 +173,7 @@
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>AAAAAgAAIAAACAAAACgIAEAAAAAAAAAAAAAAAAhAgAA=</HashCode>
+      <HashCode>AAQAAgAAIAAACAAAACAIAEAAAAAAAAAAAAAAAAhAgAA=</HashCode>
       <FileName>Reporting\Report\ItemsTable.cs</FileName>
     </TypeIdentifier>
   </Class>

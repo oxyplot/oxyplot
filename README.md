@@ -12,7 +12,7 @@ OxyPlot is a cross-platform plotting library for .NET
 - [Gitter](https://gitter.im/oxyplot/oxyplot) (chat)
 
 ![License](https://img.shields.io/badge/license-MIT-red.svg)
-[![Build status](https://img.shields.io/appveyor/ci/objorke/oxyplot.svg)](https://ci.appveyor.com/project/objorke/oxyplot)
+[![Build status](https://img.shields.io/appveyor/ci/objorke/oxyplot/develop.svg)](https://ci.appveyor.com/project/objorke/oxyplot)
 
 ![Plot](http://oxyplot.org/public/images/normal-distributions.png)
 
@@ -25,7 +25,7 @@ See '[A successful git branching model](http://nvie.com/posts/a-successful-git-b
 
 #### Getting started
 
-1. Use the NuGet package manager to add a reference to OxyPlot
+1. Use the NuGet package manager to add a reference to OxyPlot (see details below if you want to use pre-release packages)
 2. Add a `PlotView` to your user interface
 3. Create a `PlotModel` in your code
 4. Bind the `PlotModel` to the `Model` property of your `PlotView`
@@ -36,23 +36,29 @@ You can find examples in the `/Source/Examples` folder in the code repository.
 
 #### NuGet packages
 
+The latest pre-release packages are pushed by AppVeyor CI to [myget.org](https://www.myget.org/)
+To install these packages, set the myget.org package source `https://www.myget.org/F/oxyplot` and remember the "-pre" flag. 
+
+The stable release packages will be pushed to [nuget.org](https://www.nuget.org/packages?q=oxyplot).
+Note that we have currently have a lot of old (v2015.*) and pre-release packages on this feed, this will be cleaned up as soon as we release [v1.0](https://github.com/oxyplot/oxyplot/milestones/v1.0).
+
 Package | Targets
 --------|---------------
-[OxyPlot.Core](https://www.nuget.org/packages/OxyPlot.Core) | Portable class library
-[OxyPlot.Wpf](https://www.nuget.org/packages/OxyPlot.Wpf) | WPF (NET40, NET45)  
-[OxyPlot.WindowsForms](https://www.nuget.org/packages/OxyPlot.WindowsForms) | Windows Forms (NET40, NET45)
-[OxyPlot.Windows](https://www.nuget.org/packages/OxyPlot.Windows) | Windows 8.1 and Windows Phone 8.1
-[OxyPlot.WP8](https://www.nuget.org/packages/OxyPlot.WP8) | Windows Phone Silverlight
-[OxyPlot.Silverlight](https://www.nuget.org/packages/OxyPlot.Silverlight) | Silverlight 5 
-[OxyPlot.GtkSharp](https://www.nuget.org/packages/OxyPlot.GtkSharp) | GTK# 2 and 3 (NET40, NET45)
-[OxyPlot.Xamarin.Android](https://www.nuget.org/packages/OxyPlot.Xamarin.Android) | MonoAndroid
-[OxyPlot.Xamarin.iOS](https://www.nuget.org/packages/OxyPlot.Xamarin.iOS) | MonoTouch and iOS10
-[OxyPlot.Xamarin.Mac](https://www.nuget.org/packages/OxyPlot.Xamarin.Mac) | Mac20
-[OxyPlot.Xamarin.Forms](https://www.nuget.org/packages/OxyPlot.Xamarin.Forms) | MonoTouch, iOS10, MonoAndroid, WP8
-[OxyPlot.Xwt](https://www.nuget.org/packages/OxyPlot.Xwt) | NET40, NET45
-[OxyPlot.OpenXML](https://www.nuget.org/packages/OxyPlot.OpenXML) | NET40, NET45
-[OxyPlot.Pdf](https://www.nuget.org/packages/OxyPlot.Pdf) | PdfSharp (NET40, NET45, SL5)
+OxyPlot.Core | Portable class library
+OxyPlot.Wpf | WPF (NET40, NET45)  
+OxyPlot.WindowsForms | Windows Forms (NET40, NET45)
+OxyPlot.Windows | Windows 8.1 and Windows Phone 8.1
+OxyPlot.WP8 | Windows Phone Silverlight
+OxyPlot.Silverlight | Silverlight 5 
+OxyPlot.GtkSharp | GTK# 2 and 3 (NET40, NET45)
+OxyPlot.Xamarin.Android | MonoAndroid
+OxyPlot.Xamarin.iOS | MonoTouch and iOS10
+OxyPlot.Xamarin.Mac | Mac20
+OxyPlot.Xamarin.Forms | MonoTouch, iOS10, MonoAndroid, WP8
+OxyPlot.Xwt | NET40, NET45
+OxyPlot.OpenXML | NET40, NET45
+OxyPlot.Pdf | PdfSharp (NET40, NET45, SL5)
 
 #### Contribute
 
-See [Contributing](CONTRIBUTING.md) for information about how to contribute!
+See [Contributing](.github/CONTRIBUTING.md) for information about how to contribute!

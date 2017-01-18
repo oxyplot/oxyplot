@@ -146,10 +146,10 @@ namespace OxyPlot.Wpf
                 "MinimumSegmentLength", typeof(double), typeof(LineSeries), new PropertyMetadata(2.0, AppearanceChanged));
 
         /// <summary>
-        /// Identifies the <see cref="Smooth"/> dependency property.
+        /// Identifies the <see cref="InterpolationAlgorithm"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty SmoothProperty = DependencyProperty.Register(
-            "Smooth", typeof(bool), typeof(LineSeries), new UIPropertyMetadata(false));
+        public static readonly DependencyProperty InterpolationAlgorithmProperty = DependencyProperty.Register(
+            "InterpolationAlgorithm", typeof(IInterpolationAlgorithm), typeof(LineSeries), new PropertyMetadata(null, DataChanged));
 
         /// <summary>
         /// Identifies the <see cref="StrokeThickness"/> dependency property.
@@ -455,22 +455,22 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="DataPointSeries" /> is smooth.
+        /// Gets or sets a value the interpolation algorithm.
         /// </summary>
-        /// <value><c>true</c> if smooth; otherwise, <c>false</c> .</value>
-        public bool Smooth
+        /// <value>Interpolation algorithm.</value>
+        public IInterpolationAlgorithm InterpolationAlgorithm
         {
             get
             {
-                return (bool)this.GetValue(SmoothProperty);
+                return (IInterpolationAlgorithm)this.GetValue(InterpolationAlgorithmProperty);
             }
 
             set
             {
-                this.SetValue(SmoothProperty, value);
+                this.SetValue(InterpolationAlgorithmProperty, value);
             }
         }
-        
+
         /// <summary>
         /// Gets or sets StrokeThickness.
         /// </summary>
@@ -525,7 +525,7 @@ namespace OxyPlot.Wpf
             s.BrokenLineStyle = this.BrokenLineStyle;
             s.BrokenLineThickness = this.BrokenLineThickness;
             s.Decimator = this.Decimator;
-            s.Smooth = this.Smooth;
+            s.InterpolationAlgorithm = this.InterpolationAlgorithm;
         }
     }
 }

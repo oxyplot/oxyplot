@@ -603,7 +603,7 @@ namespace OxyPlot.Wpf
         {
             if (!this.Dispatcher.CheckAccess())
             {
-                this.Dispatcher.BeginInvoke(DispatcherPriority.Background, action);
+                this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, action);
             }
             else
             {

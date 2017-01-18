@@ -1,0 +1,8 @@
+﻿<Window 
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:oxy="clr-namespace:OxyPlot.Avalonia;assembly=OxyPlot.Avalonia" Title="OverlayDemo" Height="480" Width="640">
+    <Grid>
+        <Canvas x:Name="canvas1"/>
+        <oxy:PlotView x:Name="plot1" Background="Transparent"/>
+    </Grid>
+</Window>

@@ -1,0 +1,24 @@
+﻿<UserControl 
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:oxy="clr-namespace:OxyPlot.Avalonia;assembly=OxyPlot.Avalonia" mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <oxy:Plot Title="{Binding Title}">
+            <oxy:Plot.Series>
+                <oxy:LineSeries Items="{Binding Points}"/>
+            </oxy:Plot.Series>
+            <oxy:Plot.Axes>
+                <oxy:LinearAxis Position="Bottom"/>
+                <oxy:LinearAxis Position="Left"/>
+            </oxy:Plot.Axes>
+        </oxy:Plot>
+        <!--<ItemsControl Grid.Column="2" Items="{Binding Points}"/>-->
+    </Grid>
+</UserControl>

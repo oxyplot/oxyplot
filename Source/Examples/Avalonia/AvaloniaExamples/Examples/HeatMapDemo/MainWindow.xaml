@@ -1,0 +1,26 @@
+﻿<Window 
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:oxy="http://oxyplot.org/avalonia"
+        Title="HeatMapDemo" Height="480" Width="640">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <oxy:Plot Grid.Row="1">
+            <oxy:Plot.Axes>
+                <oxy:LinearAxis Key="x" Position="Bottom"/>
+                <oxy:LinearAxis Key="y" Position="Left" />
+                <oxy:LinearColorAxis Key="z" Position="Top" LowColor="White" HighColor="Red" PaletteSize="100">
+                    <GradientStop Color="Aqua" Offset="0.0" />
+                    <GradientStop Color="Red" Offset="0.5" />
+                    <GradientStop Color="Black" Offset="1.0" />
+                </oxy:LinearColorAxis>
+            </oxy:Plot.Axes>
+            <oxy:Plot.Series>
+                <oxy:HeatMapSeries ColorAxisKey="Z" Data="{Binding Data}" X0="-1" X1="1" Y0="-1" Y1="1"/>
+            </oxy:Plot.Series>
+        </oxy:Plot>
+    </Grid>
+</Window>

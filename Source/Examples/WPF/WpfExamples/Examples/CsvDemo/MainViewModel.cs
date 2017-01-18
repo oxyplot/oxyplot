@@ -78,9 +78,5 @@ namespace CsvDemo
 
             return double.NaN;
         }
-
-        public void SaveReport(string fileName)
-        {
-        }
     }
 }

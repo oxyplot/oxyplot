@@ -1,0 +1,22 @@
+﻿<Window 
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:oxy="clr-namespace:OxyPlot.Avalonia;assembly=OxyPlot.Avalonia" Title="BarSeriesDemo" Height="480" Width="640">
+    <TabControl>
+        <TabItem Header="Binding to PlotModel">
+            <oxy:PlotView Model="{Binding Model1}"/>
+        </TabItem>
+        <TabItem Header="Define plot in XAML">
+            <oxy:Plot Title="Bar series (XAML)" LegendPlacement="Outside" LegendPosition="RightTop" LegendOrientation="Vertical">
+                <oxy:Plot.Axes>
+                    <oxy:CategoryAxis Position="Left" Items="{Binding Items}" LabelField="Label"/>
+                    <oxy:LinearAxis Position="Bottom" MinimumPadding="0" AbsoluteMinimum="0"/>
+                </oxy:Plot.Axes>
+                <oxy:Plot.Series>
+                    <oxy:BarSeries Title="2009" Items="{Binding Items}" ValueField="Value1"/>
+                    <oxy:BarSeries Title="2010" Items="{Binding Items}" ValueField="Value2"/>
+                    <oxy:BarSeries Title="2011" Items="{Binding Items}" ValueField="Value3"/>
+                </oxy:Plot.Series>
+            </oxy:Plot>
+        </TabItem>
+    </TabControl>
+</Window>

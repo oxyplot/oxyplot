@@ -1,0 +1,62 @@
+﻿<Window x:Class="ExportDemo.ShellView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf" 
+        xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf" 
+        Title="OxyPlot ExportDemo" Height="480" Width="640">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="File">
+                <MenuItem Header="Save svg..." Command="{Binding SaveSvgCommand}"/>
+                <MenuItem Header="Save pdf..." Command="{Binding SavePdfCommand}"/>
+                <MenuItem Header="Save pdf with PdfSharp..." Command="{Binding SavePdf_PdfSharpCommand}"/>
+                <MenuItem Header="Save png..." Command="{Binding SavePngCommand}"/>
+                <MenuItem Header="Save xaml..." Command="{Binding SaveXamlCommand}"/>
+                <MenuItem Header="Save xps..." Command="{Binding SaveXpsCommand}"/>
+                <Separator/>
+                <MenuItem Header="Print..." Command="{Binding PrintCommand}"/>
+                <Separator/>
+                <MenuItem Header="Save text report..." Command="{Binding SaveTextReportCommand}"/>
+                <MenuItem Header="Save html5 report..." Command="{Binding SaveHtmlReportCommand}"/>
+                <MenuItem Header="Save LaTeX report..." Command="{Binding SaveLatexReportCommand}"/>
+                <MenuItem Header="Save pdf report..." Command="{Binding SavePdfReportCommand}"/>
+                <MenuItem Header="Save rtf report..." Command="{Binding SaveRtfReportCommand}"/>
+                <MenuItem Header="Save xps report..." Command="{Binding SaveXpsReportCommand}"/>
+                <MenuItem Header="Save docx report..." Command="{Binding SaveDocxReportCommand}"/>
+                <Separator/>
+                <MenuItem Header="Exit" Command="{Binding ExitCommand}"/>
+            </MenuItem>
+            <MenuItem Header="Edit">
+                <MenuItem Header="Copy svg" Command="{Binding CopySvgCommand}"/>
+                <MenuItem Header="Copy bitmap" Command="{Binding CopyBitmapCommand}"/>
+                <MenuItem Header="Copy xaml" Command="{Binding CopyXamlCommand}"/>
+            </MenuItem>
+            <MenuItem Header="View">
+                <MenuItem Header="Reset axes" Command="oxy:PlotCommands.ResetAxes"/>
+            </MenuItem>
+            <p:EnumMenuItem x:Name="ModelMenu" Header="Model" SelectedValue="{Binding CurrentModel}"/>
+            <MenuItem Header="Help">
+                <MenuItem Header="Home page" Command="{Binding HelpHomeCommand}"/>
+                <MenuItem Header="Documentation" Command="{Binding HelpDocumentationCommand}"/>
+                <Separator/>
+                <MenuItem Header="About" Command="{Binding HelpAboutCommand}"/>
+            </MenuItem>
+        </Menu>
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem>
+                <TextBlock Text="{Binding TotalNumberOfPoints, StringFormat='Total number of data points: {0}'}"/>
+            </StatusBarItem>
+        </StatusBar>
+        <Grid>
+            <oxy:PlotView x:Name="plot1" Model="{Binding Model}">
+                <oxy:PlotView.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Copy svg" Command="{Binding ContextCopySvgCommand}"/>
+                        <MenuItem Header="Copy bitmap" Command="{Binding ContextCopyBitmapCommand}"/>
+                        <MenuItem Header="Copy xaml" Command="{Binding ContextCopyXamlCommand}"/>
+                    </ContextMenu>
+                </oxy:PlotView.ContextMenu>
+            </oxy:PlotView>
+        </Grid>
+    </DockPanel>
+</Window>

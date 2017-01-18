@@ -35,7 +35,7 @@ namespace ExampleLibrary
                              Color2 = OxyColors.LightBlue,
                              StrokeThickness = 3,
                              Limit = 0,
-                             Smooth = true,
+                             InterpolationAlgorithm = InterpolationAlgorithms.CanonicalSpline,
                              MarkerType = MarkerType.Circle,
                              MarkerSize = 4,
                              MarkerStroke = OxyColors.Black,

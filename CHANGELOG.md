@@ -3,12 +3,36 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 ### Added
+- Added Avalonia based renderer and control library (based off OxyPlot.Wpf).
+- New `InterpolationAlgorithm` property in LineSeries and PolylineAnnotation (#494)
+- Catmull-Rom spline interpolation algorithms (#494)
+- FontSize, FontWeight and FontFamily on Wpf.TextAnnotation (#1023)
+
+### Changed
+- 
+
+### Deprecated
+- OxyPlot.WP8 package. Use OxyPlot.Windows instead (#996)
+
+### Removed
+- The `Smooth` property in LineSeries and PolylineAnnotation (#494)
+
+### Fixed
+- Manipulation when using touch is not working in Windows (#1011)
+- Ensure a suitable folder is used when creating a temporary file for PNG export in Oxyplot.GtkSharp (#1034)
+- RangeColorAxis is not rendered correctly if the axis is reversed (#1035)
+
+## [1.0.0] - 2016-09-11
+### Added
+- Added OxyPlot.SharpDX.Wpf NuGet package
+- Added DirectX 9.1-10.1 feature level support for SharpDX renderer
+- Added SharpDX based renderer and WPF control with SharpDX render (#124)
 - Added MinimumMajorStep and MinimumMinorStep to Axes.Axis (#816)
-- Added support for vertical X axis to HeatMapSeries (#535) and example
-- Added fall-back rectangle rendering to HeatMapSeries (#801) and example
+- Added support for vertical X axis to HeatMapSeries (#535)
+- Added fall-back rectangle rendering to HeatMapSeries (#801)
 - Added logarithmic HeatMapSeries support (#802) and example
-- MaximumRange to limit the zoom (#401)
-- A new OxyPlot.Mobile NuGet package to combine the mobile platforms into a single package (#362)
+- Axis.MaximumRange to limit the zoom (#401)
+- Added OxyPlot.Mobile NuGet package to combine the mobile platforms into a single package (#362)
 - Support for XWT (#295)
 - TwoColorAreaSeries (#299)
 - Delta values in AxisChangedEventArgs (#276)
@@ -16,11 +40,11 @@ All notable changes to this project will be documented in this file.
 - iOS PlotView ZoomThreshold/AllowPinchPastZero for use with KeepAspectRatioWhenPinching=false (#359)
 - CandleStickAndVolumeSeries and VolumeSeries (#377)
 - Axis.DesiredSize property (#383)
-- WPF Wrapper for BoxPlot (#434)
-- Capability to display mean value to BoxPlot (#440)
+- WPF wrapper for BoxPlotSeries (#434)
+- Capability to display mean value to BoxPlotSeries (#440)
 - LinearBarSeries for WPF (#506)
 - TitleToolTip in PlotModel (#508)
-- TextColor property on WPF.Axes.Axis (#452)
+- TextColor property on WPF Axis (#452)
 - ThreeColorLineSeries (#378)
 - CI of the Xamarin.Android, Xamarin.iOS and Xamarin.Forms packages (#274)
 - PlotModel.LegendLineSpacing (#622)
@@ -33,11 +57,21 @@ All notable changes to this project will be documented in this file.
 - Support for Windows Universal 10.0 apps (#615)
 - Support Unicode in OxyPlot.Pdf (#789)
 - TouchTrackerManipulator (#787)
-- Extracted visible window search code from CandleStickSeries and made a generic version in XYSeries. Used it to omptimize AreaSeries performance. (#834)
-- Optimized rednering performance of RectangleBarSeries (#834).
+- Extracted visible window search code from CandleStickSeries and made a generic version in XYSeries. Used it to optimize AreaSeries performance. (#834)
+- Optimized rendering performance of RectangleBarSeries (#834).
 - PdfExporter implementing IExporter (#845)
+- Color minor and major ticks differently (#417)
+- Support for PieSeries in OxyPlot.Wpf (#878)
+- Filter in example browser (#118)
+- Support for tooltips on WPF annotations
+- Support for tracker in OxyPlot.GtkSharp
+- Improve tracker style (Windows Forms) (#106)
+- Font rendering in OxyPlot.GtkSharp improved by using Pango (#972)
+- Improved LineSeries performance (#834)
+- Fixed bug causing axes titles to not display in OxyPlot.GtkSharp (#989)
 
 ### Changed
+- Fixed closing file stream for PdfReportWriter when PdfReportWriter is closed or disposed of. (#892)
 - Renamed OxyPlot.WindowsUniversal to OxyPlot.Windows (#242)
 - Changed OxyPlot.Xamarin.Forms to require OxyPlot.Mobile dependency instead of each separate NuGet. (#362)
 - Renamed OxyPlot.XamarinIOS to OxyPlot.MonoTouch (#327)
@@ -50,7 +84,6 @@ All notable changes to this project will be documented in this file.
 - Changed OxyPlot.Xamarin.Android target to Android level 10 (#223)
 - Separated WPF Plot and PlotView (#252, #239)
 - Current CandleStickSeries renamed to OldCandleStickSeries, replaced by a faster implementation (#369)
-- Fixed axis min/max calc and axis assignment for CandleStick + VolumeSeries (#389)
 - Invalidate plot when ItemsSource contents change (INotifyCollectionChanged) on WPF only (#406)
 - Xamarin.Forms references updated to 1.5.0.6447 (#293, #439)
 - Change OxyPlot.Xamarin.Forms.Platform.Android target to Android level 15 (#439)
@@ -81,7 +114,7 @@ All notable changes to this project will be documented in this file.
 - Move CalculateMinorInterval and CreateTickValues to AxisUtilities (#837)
 - Change default number format to "g6" in Axis base class (#841)
 - Push packages to myget.org (#847)
-- Improve tracker style (Windows Forms) (#106)
+- Change the default format string to `null` for TimeSpanAxis and DateTimeAxis (#951)
 
 ### Removed
 - StyleCop tasks (#556)
@@ -98,6 +131,8 @@ All notable changes to this project will be documented in this file.
 - ListFiller (#705)
 
 ### Fixed
+- SharpDX control not being rendered when loaded
+- SharpDX out of viewport scrolling.
 - Multiple mouse clicks not being reported in OxyPlot.GtkSharp (#854)
 - StemSeries Tracking to allow tracking on tiny stems (#809)
 - Fixed PDFRenderContext text alignment issues for rotated text (#723)
@@ -164,8 +199,19 @@ All notable changes to this project will be documented in this file.
 - Support string[] as ItemsSource in CategoryAxis (#825)
 - Horizontal RangeColorAxis (#767)
 - LogarithmicAxis sometimes places major ticks outside of the axis range (#850)
+- LineSeries with smoothing raises exception (#72)
+- Exception when legend is outside and plot area is small (#880)
+- Axis alignment with MinimumRange (#794)
+- Fixed strange number formatting when using LogarithmicAxis with very large or very small Series (#589)
+- Fixed LogarithmicAxis to no longer freeze when the axis is reversed (#925)
+- Prevent endless loop in LogarithmicAxis (#957)
+- Fixed WPF series data not refreshed when not visible (included WPF LiveDemo)
+- Fixed bug in selection of plot to display in OxyPlot.GtkSharp ExampleBrowser (#979)
+- Fixed non-interpolation of HeatMapSeries in OxyPlot.GtkSharp (#980)
+- Fixed axis min/max calc and axis assignment for CandleStick + VolumeSeries (#389)
+- Fixed drawing of plot backgrounds in OxyPlot.GtkSharp (#990)
 
-## [2014.1.546] - 2014-10-22
+## [0.2014.1.546] - 2014-10-22
 ### Added
 - Support data binding paths ("Point.X") (#210)
 - Support for Xamarin.Forms (#204)
@@ -189,5 +235,6 @@ All notable changes to this project will be documented in this file.
 - Add overridable Axis.FormatValueOverride (#181)
 - PngExporter text formatting (#170)
 
-[Unreleased]: https://github.com/oxyplot/oxyplot/compare/v2014.1.546...HEAD
-[2014.1.546]: https://github.com/oxyplot/oxyplot/compare/v2014.1.319...v2014.1.546
+[Unreleased]: https://github.com/oxyplot/oxyplot/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/oxyplot/oxyplot/compare/v0.2014.1.546...v1.0.0
+[0.2014.1.546]: https://github.com/oxyplot/oxyplot/compare/v0.0.1...v0.2014.1.546

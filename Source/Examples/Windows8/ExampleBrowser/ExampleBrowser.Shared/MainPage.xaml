@@ -1,0 +1,57 @@
+﻿<Page
+    x:Class="ExampleBrowser.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:oxy="using:OxyPlot.Windows"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    
+    <Page.Resources>
+        <DataTemplate x:Key="ListViewDataTemplate">
+            <TextBlock Text="{Binding Title}" Style="{StaticResource TitleTextBlockStyle}"
+                       Margin="10,0,0,0"  TextTrimming="WordEllipsis" TextWrapping="Wrap" 
+                       HorizontalAlignment="Left" Width="190"/>
+        </DataTemplate>
+    </Page.Resources>
+
+    <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+        <Hub>
+            <Hub.Header>
+                <Grid Margin="0,20,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Text="OxyPlot Example Browser" Style="{StaticResource TitleTextBlockStyle}" Margin="20"/>
+                    <TextBlock Grid.Row="1" HorizontalAlignment="Right" Text="{Binding Version}" Style="{StaticResource TitleTextBlockStyle}" FontSize="11" Margin="5, 10"/>
+                    <TextBox Grid.Row="2" PlaceholderText="Search..." FontSize="11" Text="{Binding FilterString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                </Grid>
+            </Hub.Header>
+            <HubSection Width="300">
+                <DataTemplate>
+                    <ListView ItemsSource="{Binding ExamplesView}" SelectedItem="{Binding SelectedExample, Mode=TwoWay}"
+                              BorderThickness="0, 0, 0, 1" ItemTemplate="{StaticResource ListViewDataTemplate}">
+                        <ListView.GroupStyle>
+                            <GroupStyle>
+                                <GroupStyle.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Key}" />
+                                    </DataTemplate>
+                                </GroupStyle.HeaderTemplate>
+                            </GroupStyle>
+                        </ListView.GroupStyle>
+                    </ListView>
+                </DataTemplate>
+            </HubSection>
+            <HubSection Header="Sample" Width="1000"
+                        HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                <DataTemplate>
+                    <oxy:PlotView Model="{Binding PlotModel}" Controller="{Binding PlotController}"/>
+                </DataTemplate>
+            </HubSection>
+        </Hub>
+    </Grid>
+</Page>

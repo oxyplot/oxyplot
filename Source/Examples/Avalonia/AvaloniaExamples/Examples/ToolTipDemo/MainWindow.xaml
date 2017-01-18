@@ -1,0 +1,18 @@
+﻿<Window 
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:oxy="clr-namespace:OxyPlot.Avalonia;assembly=OxyPlot.Avalonia"
+        Title="PerformanceDemo" Height="480" Width="640">
+
+    <StackPanel>
+        <TextBlock Text="Model with tool tip title"/>
+        <oxy:PlotView  Height="200" Model="{Binding Model}" />
+
+        <TextBlock Text="Plot with tool tip title" />
+        <oxy:Plot Title="Hover to see tool tip" Height="200" TitleToolTip="Custom title tool tip via xaml">
+            <oxy:Plot.Series>
+                <oxy:AreaSeries Items="{Binding Measurements}" Title="Maximum/Minimum" DataFieldX="Time" DataFieldY="Maximum" DataFieldX2="Time" DataFieldY2="Minimum" Fill="LightBlue" StrokeThickness="0"/>
+                <oxy:LineSeries Items="{Binding Measurements}" Title="Average" DataFieldX="Time" DataFieldY="Value" Color="Blue" StrokeThickness="2" Smooth="False"/>
+            </oxy:Plot.Series>
+        </oxy:Plot>
+    </StackPanel>
+</Window>

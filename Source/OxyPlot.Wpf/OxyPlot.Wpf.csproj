@@ -40,7 +40,9 @@
     <AssemblyOriginatorKeyFile>OxyPlot.Wpf.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ReachFramework" />
     <Reference Include="System" />
+    <Reference Include="System.Printing" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xaml">
@@ -49,6 +51,12 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OxyPlot\OxyPlot.csproj">
+      <Project>{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}</Project>
+      <Name>OxyPlot</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyInfo.cs">
@@ -86,9 +94,11 @@
     <Compile Include="PlotCommands.cs" />
     <Compile Include="PlotView.cs" />
     <Compile Include="Plot.Properties.cs" />
+    <Compile Include="Reporting\FlowDocumentReportWriter.cs" />
     <Compile Include="Series\BarSeries\LinearBarSeries.cs" />
     <Compile Include="Series\BoxPlotSeries.cs" />
     <Compile Include="Series\HeatMapSeries.cs" />
+    <Compile Include="Series\PieSeries.cs" />
     <Compile Include="Series\ScatterSeries{T}.cs" />
     <Compile Include="Series\StairStepSeries.cs" />
     <Compile Include="Series\ScatterErrorSeries.cs" />
@@ -113,6 +123,7 @@
     <Compile Include="Series\Series.cs" />
     <Compile Include="Tracker\TrackerControl.cs" />
     <Compile Include="Tracker\TrackerDefinition.cs" />
+    <Compile Include="XpsExporter.cs" />
     <None Include="OxyPlot.Wpf.snk" />
     <Compile Include="Series\AreaSeries.cs" />
     <Compile Include="Series\LineSeries.cs" />
@@ -151,12 +162,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\OxyPlot\OxyPlot.csproj">
-      <Project>{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}</Project>
-      <Name>OxyPlot</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

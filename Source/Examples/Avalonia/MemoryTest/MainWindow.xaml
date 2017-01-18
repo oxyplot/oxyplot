@@ -1,0 +1,6 @@
+﻿<Window xmlns="https://github.com/avaloniaui" MinWidth="500" MinHeight="300">
+  <StackPanel>
+    <Button Content="Test 1" Name="Window1" />
+    <Button Content="Test 2" Name="Window2" />
+  </StackPanel>
+</Window>

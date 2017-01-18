@@ -12,6 +12,7 @@ namespace CsvDemo
     using System.Diagnostics;
     using System.IO;
     using System.Windows;
+    using System.Windows.Controls;
 
     using Microsoft.Win32;
 
@@ -24,9 +25,9 @@ namespace CsvDemo
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     [Example("Plotting data from CSV files.")]
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
-        MainViewModel vm = new MainViewModel();
+        private readonly MainViewModel vm = new MainViewModel();
 
         public MainWindow()
         {
@@ -81,7 +82,7 @@ namespace CsvDemo
                         plot1.SaveBitmap(dlg.FileName, 0, 0, OxyColors.Automatic);
                         break;
                     case ".svg":
-                        var rc = new CanvasRenderContext(null);
+                        var rc = new CanvasRenderContext(new Canvas());
                         var svg = OxyPlot.SvgExporter.ExportToString(this.vm.Model, plot1.ActualWidth, plot1.ActualHeight, false, rc);
                         File.WriteAllText(dlg.FileName, svg);
                         break;
@@ -108,15 +109,15 @@ namespace CsvDemo
             Process.Start(psi);
         }
 
-        private void SaveReport_Click(object sender, RoutedEventArgs e)
-        {
-            var dlg = new SaveFileDialog { Filter = ".html files|*.html", DefaultExt = ".html" };
-            if (dlg.ShowDialog(this).Value)
-            {
-                this.vm.SaveReport(dlg.FileName);
-                this.OpenContainingFolder(dlg.FileName);
-            }
-        }
+        //private void SaveReport_Click(object sender, RoutedEventArgs e)
+        //{
+        //    var dlg = new SaveFileDialog { Filter = ".html files|*.html", DefaultExt = ".html" };
+        //    if (dlg.ShowDialog(this).Value)
+        //    {
+        //        this.vm.SaveReport(dlg.FileName);
+        //        this.OpenContainingFolder(dlg.FileName);
+        //    }
+        //}
 
         private void CopySvg_Click(object sender, RoutedEventArgs e)
         {
@@ -142,7 +143,7 @@ namespace CsvDemo
 
         private void HelpWeb_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start("http://oxyplot.codeplex.com");
+            Process.Start("http://oxyplot.org");
         }
     }
 }

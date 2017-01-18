@@ -1,0 +1,11 @@
+﻿<Window 
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:UserControlDemo="clr-namespace:AvaloniaExamples.Examples.UserControlDemo;assembly=AvaloniaExamples"
+        Title="Plot in DataTemplate/UserControl" Height="480" Width="640">
+    <Window.DataTemplates>
+        <DataTemplate DataType="{x:Type UserControlDemo:ViewModel}">
+            <UserControlDemo:UserControl1 DataContext="{Binding}"/>
+        </DataTemplate>
+    </Window.DataTemplates>
+    <ContentControl Content="{Binding Models[0]}" />
+</Window>

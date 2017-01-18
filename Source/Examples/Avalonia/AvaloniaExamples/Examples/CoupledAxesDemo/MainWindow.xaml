@@ -1,0 +1,14 @@
+﻿<Window 
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:oxy="http://oxyplot.org/avalonia"
+        Title="CoupledAxesDemo" Height="480" Width="640">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <oxy:PlotView Model="{Binding Model1}"/>
+        <oxy:PlotView Model="{Binding Model2}" Grid.Column="1"/>
+    </Grid>
+</Window>

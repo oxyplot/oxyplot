@@ -93,6 +93,25 @@ namespace OxyPlot
                 return;
             }
 
+            if (rc.SetClip(clippingRectangle))
+            {
+                rc.DrawLine(points, stroke, strokeThickness, dashArray, lineJoin, aliased);
+                rc.ResetClip();
+
+                if (outputBuffer != null)
+                {
+                    outputBuffer.Clear();
+                    outputBuffer.AddRange(points);
+                }
+
+                if (pointsRendered != null)
+                {
+                    pointsRendered(points);
+                }
+
+                return;
+            }
+
             if (outputBuffer != null)
             {
                 outputBuffer.Clear();

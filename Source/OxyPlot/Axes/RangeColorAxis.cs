@@ -185,36 +185,37 @@ namespace OxyPlot.Axes
                         OxyColors.Undefined);
                 };
 
+                // if the axis is reversed then the min and max values need to be swapped.
+                double effectiveMaxY = this.Transform(this.IsReversed ? this.ActualMinimum : this.ActualMaximum);
+                double effectiveMinY = this.Transform(this.IsReversed ? this.ActualMaximum : this.ActualMinimum);
+
                 foreach (ColorRange range in this.ranges)
                 {
                     double ylow = this.Transform(range.LowerBound);
                     double yhigh = this.Transform(range.UpperBound);
 
-                    double ymax = this.Transform(this.ActualMaximum);
-                    double ymin = this.Transform(this.ActualMinimum);
-
                     if (this.IsHorizontal())
                     {
-                        if (ylow < ymin)
+                        if (ylow < effectiveMinY)
                         {
-                            ylow = ymin;
+                            ylow = effectiveMinY;
                         }
 
-                        if (yhigh > ymax)
+                        if (yhigh > effectiveMaxY)
                         {
-                            yhigh = ymax;
+                            yhigh = effectiveMaxY;
                         }
                     }
                     else
                     {
-                        if (ylow > ymin)
+                        if (ylow > effectiveMinY)
                         {
-                            ylow = ymin;
+                            ylow = effectiveMinY;
                         }
 
-                        if (yhigh < ymax)
+                        if (yhigh < effectiveMaxY)
                         {
-                            yhigh = ymax;
+                            yhigh = effectiveMaxY;
                         }
                     }
 

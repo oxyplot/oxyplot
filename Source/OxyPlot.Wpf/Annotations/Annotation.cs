@@ -113,6 +113,7 @@ namespace OxyPlot.Wpf
             a.Layer = this.Layer;
             a.XAxisKey = this.XAxisKey;
             a.YAxisKey = this.YAxisKey;
+            a.ToolTip = this.ToolTip as string;
         }
 
         /// <summary>

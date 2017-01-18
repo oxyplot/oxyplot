@@ -22,12 +22,17 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Exponent function.
         /// </summary>
-        protected static readonly Func<double, double> Exponent = x => Math.Floor(Math.Log(Math.Abs(x), 10));
+        protected static readonly Func<double, double> Exponent = x => Math.Floor(ThresholdRound(Math.Log(Math.Abs(x), 10)));
 
         /// <summary>
         /// Mantissa function.
         /// </summary>
-        protected static readonly Func<double, double> Mantissa = x => x / Math.Pow(10, Exponent(x));
+        protected static readonly Func<double, double> Mantissa = x => ThresholdRound(x / Math.Pow(10, Exponent(x)));
+
+        /// <summary>
+        /// Rounds a value if the difference between the rounded value and the original value is less than 1e-6.
+        /// </summary>
+        protected static readonly Func<double, double> ThresholdRound = x => Math.Abs(Math.Round(x) - x) < 1e-6 ? Math.Round(x) : x;
 
         /// <summary>
         /// The offset.
@@ -74,6 +79,7 @@ namespace OxyPlot.Axes
 
             this.TickStyle = TickStyle.Outside;
             this.TicklineColor = OxyColors.Black;
+            this.MinorTicklineColor = OxyColors.Automatic;
 
             this.AxislineStyle = LineStyle.None;
             this.AxislineColor = OxyColors.Black;
@@ -228,6 +234,11 @@ namespace OxyPlot.Axes
         /// Gets or sets a value indicating whether to clip the axis title. The default value is <c>true</c>.
         /// </summary>
         public bool ClipTitle { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to crop gridlines with perpendicular axes Start/EndPositions. The default value is <c>false</c>.
+        /// </summary>
+        public bool CropGridlines { get; set; }
 
         /// <summary>
         /// Gets or sets the maximum value of the data displayed on this axis.
@@ -414,6 +425,13 @@ namespace OxyPlot.Axes
         /// Gets or sets the interval between minor ticks. The default value is <c>double.NaN</c>.
         /// </summary>
         public double MinorStep { get; set; }
+
+        /// <summary>
+        /// Gets or sets the color of the minor ticks. The default value is <see cref="OxyColors.Automatic"/>.
+        /// </summary>
+        /// <remarks>If the value is <see cref="OxyColors.Automatic"/>, the value of
+        /// <see cref="Axis.TicklineColor"/> will be used.</remarks>
+        public OxyColor MinorTicklineColor { get; set; }
 
         /// <summary>
         /// Gets or sets the size of the minor ticks. The default value is <c>4</c>.
@@ -1250,12 +1268,7 @@ namespace OxyPlot.Axes
             this.ActualMinorStep = Math.Max(this.ActualMinorStep, this.MinimumMinorStep);
             this.ActualMajorStep = Math.Max(this.ActualMajorStep, this.MinimumMajorStep);
 
-            this.ActualStringFormat = this.StringFormat;
-
-            if (this.ActualStringFormat == null)
-            {
-                this.ActualStringFormat = "g6";
-            }
+            this.ActualStringFormat = this.StringFormat ?? this.GetDefaultStringFormat();
         }
 
         /// <summary>
@@ -1319,6 +1332,16 @@ namespace OxyPlot.Axes
         /// <remarks>The current values may be modified during update of max/min and rendering.</remarks>
         protected internal virtual void ResetCurrentValues()
         {
+        }
+
+        /// <summary>
+        /// Gets the default format string.
+        /// </summary>
+        /// <returns>A format string.</returns>
+        /// <remarks>This format string is used if the StringFormat is not set.</remarks>
+        protected virtual string GetDefaultStringFormat()
+        {
+            return "g6";
         }
 
         /// <summary>
@@ -1396,12 +1419,24 @@ namespace OxyPlot.Axes
             {
                 if (this.ActualMinimum + this.MinimumRange < this.AbsoluteMaximum)
                 {
+                    var average = (this.ActualMaximum + this.ActualMinimum) * 0.5;
+                    var delta = this.MinimumRange / 2;
+                    this.ActualMinimum = average - delta;
+                    this.ActualMaximum = average + delta;
+
                     if (this.ActualMinimum < this.AbsoluteMinimum)
                     {
+                        var diff = this.AbsoluteMinimum - this.ActualMinimum;
                         this.ActualMinimum = this.AbsoluteMinimum;
+                        this.ActualMaximum += diff;
                     }
 
-                    this.ActualMaximum = this.ActualMinimum + this.MinimumRange;
+                    if (this.ActualMaximum > this.AbsoluteMaximum)
+                    {
+                        var diff = this.AbsoluteMaximum - this.ActualMaximum;
+                        this.ActualMaximum = this.AbsoluteMaximum;
+                        this.ActualMinimum += diff;
+                    }
                 }
                 else
                 {
@@ -1423,13 +1458,24 @@ namespace OxyPlot.Axes
             {
                 if (this.ActualMinimum + this.MaximumRange < this.AbsoluteMaximum)
                 {
+                    var average = (this.ActualMaximum + this.ActualMinimum) * 0.5;
+                    var delta = this.MaximumRange / 2;
+                    this.ActualMinimum = average - delta;
+                    this.ActualMaximum = average + delta;
+
                     if (this.ActualMinimum < this.AbsoluteMinimum)
                     {
+                        var diff = this.AbsoluteMinimum - this.ActualMinimum;
                         this.ActualMinimum = this.AbsoluteMinimum;
+                        this.ActualMaximum += diff;
                     }
 
-                    // Adjust the actual maximum only
-                    this.ActualMaximum = this.ActualMinimum + this.MaximumRange;
+                    if (this.ActualMaximum > this.AbsoluteMaximum)
+                    {
+                        var diff = this.AbsoluteMaximum - this.ActualMaximum;
+                        this.ActualMaximum = this.AbsoluteMaximum;
+                        this.ActualMinimum += diff;
+                    }
                 }
                 else
                 {

@@ -46,6 +46,8 @@ namespace OxyPlot.GtkSharp
                 cr.Rectangle(evnt.Area.X, evnt.Area.Y, evnt.Area.Width, evnt.Area.Height);
                 cr.Clip();
                 this.DrawPlot(cr);
+                if (this.trackerLabel != null && this.trackerLabel.Visible)
+                    this.trackerLabel.Parent.QueueDraw();
             }
 
             return base.OnExposeEvent(evnt);

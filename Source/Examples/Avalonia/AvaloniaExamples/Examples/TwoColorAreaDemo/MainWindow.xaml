@@ -1,0 +1,13 @@
+﻿<Window 
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:oxy="clr-namespace:OxyPlot.Avalonia;assembly=OxyPlot.Avalonia" 
+        Title="TwoColorAreaDemo" Height="480" Width="640">
+    <DockPanel>
+        <oxy:Plot Title="TwoColorAreaSeries">
+            <oxy:Plot.Series>
+                <oxy:TwoColorAreaSeries Items="{Binding Measurements}" Title="Values" DataFieldX="Time" DataFieldY="Value" Fill="LightBlue" StrokeThickness="2" LineStyle="Solid" Limit="25" MarkerSize="2" MarkerFill="Blue" MarkerFill2="Red" MarkerType="Circle" Fill2="Tomato" Color="Blue" Color2="Red"/>
+            </oxy:Plot.Series>
+        </oxy:Plot>
+    </DockPanel>
+</Window>

@@ -9,6 +9,7 @@
 
 namespace OxyPlot.Wpf
 {
+    using System;
     using System.Collections.Generic;
     using System.Windows;
 
@@ -18,10 +19,10 @@ namespace OxyPlot.Wpf
     public class PolylineAnnotation : PathAnnotation
     {
         /// <summary>
-        /// Identifies the <see cref="Smooth"/> dependency property.
+        /// Identifies the <see cref="InterpolationAlgorithm"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty SmoothProperty = DependencyProperty.Register(
-            "Smooth", typeof(bool), typeof(PolylineAnnotation), new PropertyMetadata(false, DataChanged));
+        public static readonly DependencyProperty InterpolationAlgorithmProperty = DependencyProperty.Register(
+            "InterpolationAlgorithm", typeof(IInterpolationAlgorithm), typeof(PolylineAnnotation), new PropertyMetadata(null, DataChanged));
 
         /// <summary>
         /// Identifies the <see cref="MinimumSegmentLength"/> dependency property.
@@ -44,7 +45,7 @@ namespace OxyPlot.Wpf
             TextHorizontalAlignmentProperty.OverrideMetadata(typeof(PolylineAnnotation), new FrameworkPropertyMetadata(HorizontalAlignment.Right, AppearanceChanged));
             TextVerticalAlignmentProperty.OverrideMetadata(typeof(PolylineAnnotation), new FrameworkPropertyMetadata(VerticalAlignment.Top, AppearanceChanged));
         }
-        
+
         /// <summary>
         /// Initializes a new instance of the <see cref="PolylineAnnotation" /> class.
         /// </summary>
@@ -83,13 +84,13 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the polyline should be smoothed.
+        /// Gets or sets the interpolation algorithm.
         /// </summary>
-        /// <value><c>true</c> if smooth; otherwise, <c>false</c>.</value>
-        public bool Smooth
+        /// <value>Interpolation algorithm.</value>
+        public IInterpolationAlgorithm InterpolationAlgorithm
         {
-            get { return (bool)this.GetValue(SmoothProperty); }
-            set { this.SetValue(SmoothProperty, value); }
+            get { return (IInterpolationAlgorithm)this.GetValue(InterpolationAlgorithmProperty); }
+            set { this.SetValue(InterpolationAlgorithmProperty, value); }
         }
 
         /// <summary>
@@ -112,7 +113,7 @@ namespace OxyPlot.Wpf
             var a = (Annotations.PolylineAnnotation)this.InternalAnnotation;
             a.Points.Clear();
             a.Points.AddRange(this.Points);
-            a.Smooth = this.Smooth;
+            a.InterpolationAlgorithm = this.InterpolationAlgorithm;
             a.MinimumSegmentLength = this.MinimumSegmentLength;
         }
     }

@@ -12,6 +12,7 @@ namespace OxyPlot.Axes
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Linq;
 
     /// <summary>
     /// Represents an axis with logarithmic scale.
@@ -50,29 +51,6 @@ namespace OxyPlot.Axes
         /// Gets or sets the actual logarithmic minimum value of the axis.
         /// </summary>
         protected double LogActualMinimum { get; set; }
-        
-        /// <summary>
-        /// Coerces the actual maximum and minimum values.
-        /// </summary>
-        protected override void CoerceActualMaxMin()
-        {
-            if (double.IsNaN(this.ActualMinimum) || double.IsInfinity(this.ActualMinimum))
-            {
-                this.ActualMinimum = 1;
-            }
-
-            if (this.ActualMinimum <= 0)
-            {
-                this.ActualMinimum = 1;
-            }
-
-            if (this.ActualMaximum <= this.ActualMinimum)
-            {
-                this.ActualMaximum = this.ActualMinimum * 100;
-            }
-
-            base.CoerceActualMaxMin();
-        }
 
         /// <summary>
         /// Gets the coordinates used to draw ticks and tick labels (numbers or category names).
@@ -84,18 +62,18 @@ namespace OxyPlot.Axes
         {
             // For easier readability, the nomenclature of this function and all related functions assumes a base of 10, and therefore uses the
             // term "decade". However, the code supports all other bases as well.
-            double logBandwidth = this.LogActualMaximum - this.LogActualMinimum;
-            double axisBandwidth = this.IsVertical() ? this.ScreenMax.Y - this.ScreenMin.Y : this.ScreenMax.X - this.ScreenMin.X;
+            var logBandwidth = Math.Abs(this.LogActualMaximum - this.LogActualMinimum);
+            var axisBandwidth = Math.Abs(this.IsVertical() ? this.ScreenMax.Y - this.ScreenMin.Y : this.ScreenMax.X - this.ScreenMin.X);
 
-            double desiredNumberOfTicks = axisBandwidth / this.IntervalLength;
-            double ticksPerDecade = desiredNumberOfTicks / logBandwidth;
-            double logDesiredStepSize = 1.0 / Convert.ToInt32(ticksPerDecade);
+            var desiredNumberOfTicks = axisBandwidth / this.IntervalLength;
+            var ticksPerDecade = desiredNumberOfTicks / logBandwidth;
+            var logDesiredStepSize = 1.0 / Convert.ToInt32(ticksPerDecade);
 
-            int intBase = Convert.ToInt32(this.Base);
+            var intBase = Convert.ToInt32(this.Base);
 
             if (ticksPerDecade < 0.75)
             {   // Major Ticks every few decades (increase in powers of 2), up to eight minor tick subdivisions
-                int decadesPerMajorTick = (int)Math.Pow(2, Math.Ceiling(Math.Log(1 / ticksPerDecade, 2)));
+                var decadesPerMajorTick = (int)Math.Pow(2, Math.Ceiling(Math.Log(1 / ticksPerDecade, 2)));
                 majorTickValues = this.DecadeTicks(decadesPerMajorTick);
                 minorTickValues = this.DecadeTicks(Math.Ceiling(decadesPerMajorTick / 8.0));
             }
@@ -114,21 +92,18 @@ namespace OxyPlot.Axes
                 base.GetTickValues(out majorLabelValues, out majorTickValues, out minorTickValues);
             }
             else
-            {   // integer Base, use a candidate model to find "nice" ticks
-                IList<double> logMajorCandidates;
-                IList<double> logMinorCandidates;
-
+            {
                 // use subdivided decades as major candidates
-                logMajorCandidates = this.LogSubdividedDecadeTicks(false);
+                var logMajorCandidates = this.LogSubdividedDecadeTicks(false);
 
                 if (logMajorCandidates.Count < 2)
                 {   // this should usually not be the case, but if for some reason we should happen to have too few candidates, fall back to linear ticks
                     base.GetTickValues(out majorLabelValues, out majorTickValues, out minorTickValues);
                     return;
                 }
-                
+
                 // check for large candidate intervals; if there are any, subdivide with minor ticks
-                logMinorCandidates = this.LogCalculateMinorCandidates(logMajorCandidates, logDesiredStepSize);
+                var logMinorCandidates = this.LogCalculateMinorCandidates(logMajorCandidates, logDesiredStepSize);
 
                 // use all minor tick candidates that are in the axis range
                 minorTickValues = this.PowList(logMinorCandidates, true);
@@ -170,10 +145,10 @@ namespace OxyPlot.Axes
                 return;
             }
 
-            bool isHorizontal = this.IsHorizontal();
+            var isHorizontal = this.IsHorizontal();
 
-            double x0 = this.InverseTransform(isHorizontal ? ppt.X : ppt.Y);
-            double x1 = this.InverseTransform(isHorizontal ? cpt.X : cpt.Y);
+            var x0 = this.InverseTransform(isHorizontal ? ppt.X : ppt.Y);
+            var x1 = this.InverseTransform(isHorizontal ? cpt.X : cpt.Y);
 
             if (Math.Abs(x1) < double.Epsilon)
             {
@@ -183,10 +158,10 @@ namespace OxyPlot.Axes
             var oldMinimum = this.ActualMinimum;
             var oldMaximum = this.ActualMaximum;
 
-            double dx = x0 / x1;
+            var dx = x0 / x1;
 
-            double newMinimum = this.ActualMinimum * dx;
-            double newMaximum = this.ActualMaximum * dx;
+            var newMinimum = this.ActualMinimum * dx;
+            var newMaximum = this.ActualMaximum * dx;
             if (newMinimum < this.AbsoluteMinimum)
             {
                 newMinimum = this.AbsoluteMinimum;
@@ -250,14 +225,14 @@ namespace OxyPlot.Axes
             var oldMinimum = this.ActualMinimum;
             var oldMaximum = this.ActualMaximum;
 
-            double px = this.PreTransform(x);
-            double dx0 = this.PreTransform(this.ActualMinimum) - px;
-            double dx1 = this.PreTransform(this.ActualMaximum) - px;
-            double newViewMinimum = this.PostInverseTransform((dx0 / factor) + px);
-            double newViewMaximum = this.PostInverseTransform((dx1 / factor) + px);
+            var px = this.PreTransform(x);
+            var dx0 = this.PreTransform(this.ActualMinimum) - px;
+            var dx1 = this.PreTransform(this.ActualMaximum) - px;
+            var newViewMinimum = this.PostInverseTransform((dx0 / factor) + px);
+            var newViewMaximum = this.PostInverseTransform((dx1 / factor) + px);
 
-            double newMinimum = Math.Max(newViewMinimum, this.AbsoluteMinimum);
-            double newMaximum = Math.Min(newViewMaximum, this.AbsoluteMaximum);
+            var newMinimum = Math.Max(newViewMinimum, this.AbsoluteMinimum);
+            var newMaximum = Math.Min(newViewMaximum, this.AbsoluteMaximum);
 
             this.ViewMinimum = newMinimum;
             this.ViewMaximum = newMaximum;
@@ -277,23 +252,11 @@ namespace OxyPlot.Axes
         /// <returns>A new IList containing the resulting values.</returns>
         internal IList<double> PowList(IList<double> logInput, bool clip = false)
         {
-            List<double> ret = new List<double>();
-            foreach (double item in logInput)
-            {
-                if (clip && item < this.LogActualMinimum)
-                {
-                    continue;
-                }
-
-                if (clip && item > this.LogActualMaximum)
-                {
-                    break;
-                }
-
-                ret.Add(Math.Pow(this.Base, item));
-            }
-
-            return ret;
+            return
+                logInput.Where(item => !clip || !(item < this.LogActualMinimum))
+                    .TakeWhile(item => !clip || !(item > this.LogActualMaximum))
+                    .Select(item => Math.Pow(this.Base, item))
+                    .ToList();
         }
 
         /// <summary>
@@ -304,23 +267,11 @@ namespace OxyPlot.Axes
         /// <returns>A new IList containing the resulting values.</returns>
         internal IList<double> LogList(IList<double> input, bool clip = false)
         {
-            List<double> ret = new List<double>();
-            foreach (double item in input)
-            {
-                if (clip && item < this.ActualMinimum)
-                {
-                    continue;
-                }
-
-                if (clip && item > this.ActualMaximum)
-                {
-                    break;
-                }
-
-                ret.Add(Math.Log(item, this.Base));
-            }
-
-            return ret;
+            return
+                input.Where(item => !clip || !(item < this.ActualMinimum))
+                    .TakeWhile(item => !clip || !(item > this.ActualMaximum))
+                    .Select(item => Math.Log(item, this.Base))
+                    .ToList();
         }
 
         /// <summary>
@@ -340,23 +291,19 @@ namespace OxyPlot.Axes
         /// <returns>A new IList containing the logarithmic decade ticks.</returns>
         internal IList<double> LogDecadeTicks(double step = 1)
         {
-            List<double> ret = new List<double>();
-
-            for (double exponent = Math.Ceiling(this.LogActualMinimum); true; exponent += step)
+            var ret = new List<double>();
+            if (step > 0)
             {
-                if (exponent < this.LogActualMinimum)
+                var last = double.NaN;
+                for (var exponent = Math.Ceiling(this.LogActualMinimum); exponent <= this.LogActualMaximum; exponent += step)
                 {
-                    continue;
+                    if (exponent <= last)
+                        break;
+                    last = exponent;
+                    if (exponent >= this.LogActualMinimum)
+                        ret.Add(exponent);
                 }
-
-                if (exponent > this.LogActualMaximum)
-                {
-                    break;
-                }
-
-                ret.Add(exponent);
             }
-
             return ret;
         }
 
@@ -377,18 +324,18 @@ namespace OxyPlot.Axes
         /// <returns>A new IList containing the decade ticks.</returns>
         internal IList<double> SubdividedDecadeTicks(bool clip = true)
         {
-            List<double> ret = new List<double>();
-            for (int exponent = (int)Math.Floor(this.LogActualMinimum); true; exponent++)
+            var ret = new List<double>();
+            for (var exponent = (int)Math.Floor(this.LogActualMinimum);; exponent++)
             {
                 if (exponent > this.LogActualMaximum)
                 {
                     break;
                 }
 
-                double currentDecade = Math.Pow(this.Base, exponent);
-                for (int mantissa = 1; mantissa < this.Base; mantissa++)
+                var currentDecade = Math.Pow(this.Base, exponent);
+                for (var mantissa = 1; mantissa < this.Base; mantissa++)
                 {
-                    double currentValue = currentDecade * mantissa;
+                    var currentValue = currentDecade * mantissa;
                     if (clip && currentValue < this.ActualMinimum)
                     {
                         continue;
@@ -425,13 +372,13 @@ namespace OxyPlot.Axes
         /// <returns>A new IList containing the chosen logarithmic candidates.</returns>
         internal IList<double> LogAlignTicksToCandidates(IList<double> logCandidates, double logDesiredStepSize)
         {
-            List<double> ret = new List<double>();
+            var ret = new List<double>();
 
-            int candidateOffset = 1;
-            double logPreviousMajorTick = double.NaN;
+            var candidateOffset = 1;
+            var logPreviousMajorTick = double.NaN;
 
             // loop through all desired steps and find a suitable candidate for each of them
-            for (double d = Math.Floor(this.LogActualMinimum); true; d += logDesiredStepSize)
+            for (var d = Math.Floor(this.LogActualMinimum);; d += logDesiredStepSize)
             {
                 if (d < this.LogActualMinimum - logDesiredStepSize)
                 {
@@ -449,11 +396,11 @@ namespace OxyPlot.Axes
                     candidateOffset++;
                 }
 
-                double logNewMajorTick =
+                var logNewMajorTick =
                     Math.Abs(logCandidates[candidateOffset] - d) < Math.Abs(logCandidates[candidateOffset - 1] - d) ?
                     logCandidates[candidateOffset] :
                     logCandidates[candidateOffset - 1];
-                                
+
                 // don't add duplicates
                 if ((logNewMajorTick != logPreviousMajorTick) && (logNewMajorTick >= this.LogActualMinimum) && (logNewMajorTick <= this.LogActualMaximum))
                 {
@@ -465,7 +412,7 @@ namespace OxyPlot.Axes
 
             return ret;
         }
-        
+
         /// <summary>
         /// Calculates minor tick candidates for a given set of major candidates.
         /// </summary>
@@ -474,12 +421,12 @@ namespace OxyPlot.Axes
         /// <returns>A new IList containing the minor candidates.</returns>
         internal IList<double> LogCalculateMinorCandidates(IList<double> logMajorCandidates, double logDesiredMajorStepSize)
         {
-            List<double> ret = new List<double>();
+            var ret = new List<double>();
 
-            for (int c = 1; c < logMajorCandidates.Count; c++)
+            for (var c = 1; c < logMajorCandidates.Count; c++)
             {
-                double previous = logMajorCandidates[c - 1];
-                double current = logMajorCandidates[c];
+                var previous = logMajorCandidates[c - 1];
+                var current = logMajorCandidates[c];
 
                 if (current < this.LogActualMinimum)
                 {
@@ -491,7 +438,7 @@ namespace OxyPlot.Axes
                     break;
                 }
 
-                double stepSizeRatio = (current - previous) / logDesiredMajorStepSize;
+                var stepSizeRatio = (current - previous) / logDesiredMajorStepSize;
                 if (stepSizeRatio > 2)
                 {   // Step size is too large... subdivide with minor ticks
                     this.LogSubdivideInterval(ret, this.Base, previous, current);
@@ -513,15 +460,17 @@ namespace OxyPlot.Axes
         /// <param name="logTo">The end of the range.</param>
         internal void LogSubdivideInterval(IList<double> logTicks, double steps, double logFrom, double logTo)
         {
-            int actualNumberOfSteps = 1;
-            int intBase = Convert.ToInt32(this.Base);
+            var actualNumberOfSteps = 1;
+            var intBase = Convert.ToInt32(this.Base);
 
             // first, determine actual number of steps that gives a "nice" step size
             if (steps < 2)
-            {   // No Subdivision
+            {
+                // No Subdivision
                 return;
             }
-            else if (Math.Abs(this.Base - intBase) > this.Base * 1e-10)
+
+            if (Math.Abs(this.Base - intBase) > this.Base * 1e-10)
             {   // fractional Base; just make a linear subdivision
                 actualNumberOfSteps = Convert.ToInt32(steps);
             }
@@ -567,13 +516,13 @@ namespace OxyPlot.Axes
                 }
             }
 
-            double from = Math.Pow(this.Base, logFrom);
-            double to = Math.Pow(this.Base, logTo);
+            var from = Math.Pow(this.Base, logFrom);
+            var to = Math.Pow(this.Base, logTo);
 
             // subdivide with the actual number of steps
-            for (int c = 1; c < actualNumberOfSteps; c++)
+            for (var c = 1; c < actualNumberOfSteps; c++)
             {
-                double newTick = (double)c / actualNumberOfSteps;
+                var newTick = (double)c / actualNumberOfSteps;
                 newTick = Math.Log(from + ((to - from) * newTick), this.Base);
 
                 logTicks.Add(newTick);
@@ -592,7 +541,7 @@ namespace OxyPlot.Axes
         {
             if (this.PowerPadding)
             {
-                double logBase = Math.Log(this.Base);
+                var logBase = Math.Log(this.Base);
                 var e0 = (int)Math.Floor(Math.Log(this.ActualMinimum) / logBase);
                 var e1 = (int)Math.Ceiling(Math.Log(this.ActualMaximum) / logBase);
                 if (!double.IsNaN(this.ActualMinimum))
@@ -636,12 +585,30 @@ namespace OxyPlot.Axes
         {
             Debug.Assert(x > 0, "Value should be positive.");
 
-            if (x <= 0)
+            return x <= 0 ? 0 : Math.Log(x);
+        }
+
+        /// <summary>
+        /// Coerces the actual maximum and minimum values.
+        /// </summary>
+        protected override void CoerceActualMaxMin()
+        {
+            if (double.IsNaN(this.ActualMinimum) || double.IsInfinity(this.ActualMinimum))
             {
-                return 0;
+                this.ActualMinimum = 1;
             }
 
-            return Math.Log(x);
+            if (this.ActualMinimum <= 0)
+            {
+                this.ActualMinimum = 1;
+            }
+
+            if (this.ActualMaximum <= this.ActualMinimum)
+            {
+                this.ActualMaximum = this.ActualMinimum * 100;
+            }
+
+            base.CoerceActualMaxMin();
         }
     }
 }

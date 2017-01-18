@@ -1,0 +1,27 @@
+﻿<Window x:Class="LiveDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:oxy="http://oxyplot.org/wpf"
+        mc:Ignorable="d"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        Title="LiveDemo" Height="480" Width="640">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="bool2vis"/>
+    </Window.Resources>
+    
+    <DockPanel>
+        <CheckBox DockPanel.Dock="Top" Margin="10" Content="Show data" x:Name="cbShow"/>
+        <CheckBox DockPanel.Dock="Top" Margin="10" Content="Generate data" Unchecked="CheckBox_Changed" Checked="CheckBox_Changed"/>
+        <oxy:Plot>
+            <oxy:Plot.Axes>
+                <oxy:TimeSpanAxis Title="Time" StringFormat="g" Position="Bottom"/>
+                <oxy:LinearAxis Title="Position" Position="Left"/>
+            </oxy:Plot.Axes>
+            <oxy:Plot.Series>
+                <oxy:LineSeries ItemsSource="{Binding Data}" Visibility="{Binding IsChecked, ElementName=cbShow, Converter={StaticResource bool2vis}}"/>
+            </oxy:Plot.Series>
+        </oxy:Plot>
+    </DockPanel>
+</Window>

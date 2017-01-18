@@ -1,0 +1,9 @@
+﻿<Window 
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:oxy="clr-namespace:OxyPlot.Avalonia;assembly=OxyPlot.Avalonia" Title="RealtimeDemo" Height="480" Width="640">
+    <DockPanel>
+        <TextBlock DockPanel.Dock="Bottom" Margin="8" Text="{Binding TotalNumberOfPoints}"/>
+        <oxy:PlotView x:Name="plot1" Model="{Binding PlotModel}"/>
+    </DockPanel>
+</Window>

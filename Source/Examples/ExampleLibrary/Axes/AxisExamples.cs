@@ -51,6 +51,29 @@ namespace ExampleLibrary
             return CreateTickStyleExample(TickStyle.Outside);
         }
 
+        [Example("TickStyle: Color major and minor ticks differently")]
+        public static PlotModel TickLineColor()
+        {
+            var plotModel1 = new PlotModel { Title = "Color major and minor ticks differently" };
+            plotModel1.Axes.Add(new LinearAxis
+            {
+                Position = AxisPosition.Left,
+                MajorGridlineThickness = 3,
+                MinorGridlineThickness = 3,
+                TicklineColor = OxyColors.Blue,
+                MinorTicklineColor = OxyColors.Gray,
+            });
+            plotModel1.Axes.Add(new LinearAxis
+            {
+                Position = AxisPosition.Bottom,
+                MajorGridlineThickness = 3,
+                MinorGridlineThickness = 3,
+                TicklineColor = OxyColors.Blue,
+                MinorTicklineColor = OxyColors.Gray,
+            });
+            return plotModel1;
+        }
+
         [Example("GridLinestyle: None (default)")]
         public static PlotModel GridlineStyleNone()
         {
@@ -1126,6 +1149,55 @@ namespace ExampleLibrary
             var plotModel1 = new PlotModel { Title = "TickStyle = " + tickStyle };
             plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Left, TickStyle = tickStyle });
             plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, TickStyle = tickStyle });
+            return plotModel1;
+        }
+        
+        [Example("Gridlines Cropping: Horizontal and vertical")]
+        public static PlotModel GridlineCroppingBoth()
+        {
+            var plotModel1 = new PlotModel { Title = "Gridline cropping" };
+            plotModel1.Axes.Add(new LinearAxis
+            {
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Dot,
+                ExtraGridlines = new double[] { 46d },
+                ExtraGridlineColor = OxyColors.Red,
+                StartPosition = 0.1,
+                EndPosition = 0.4,
+                CropGridlines = true
+            });
+            plotModel1.Axes.Add(new LinearAxis
+            {
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Dot,
+                ExtraGridlines = new double[] { 46d },
+                ExtraGridlineColor = OxyColors.Red,
+                StartPosition = 0.6,
+                EndPosition = 0.9,
+                CropGridlines = true
+            });
+            plotModel1.Axes.Add(new LinearAxis
+            {
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Dot,
+                Position = AxisPosition.Bottom,
+                ExtraGridlines = new double[] { 46d },
+                ExtraGridlineColor = OxyColors.Red,
+                StartPosition = 0.1,
+                EndPosition = 0.4,
+                CropGridlines = true
+            });
+            plotModel1.Axes.Add(new LinearAxis
+            {
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Dot,
+                Position = AxisPosition.Bottom,
+                ExtraGridlines = new double[] { 46d },
+                ExtraGridlineColor = OxyColors.Red,
+                StartPosition = 0.6,
+                EndPosition = 0.9,
+                CropGridlines = true                
+            });
             return plotModel1;
         }
     }

@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>OxyPlot.Avalonia</id>
+    <title>OxyPlot for Avalonia</title>
+    <version>$version$</version>
+    <authors>Oystein Bjorke, Jeremy Koritzinsky</authors>
+    <description>OxyPlot is a plotting library for .NET. This package targets Avalonia applications.</description>
+    <releaseNotes></releaseNotes>
+    <licenseUrl>https://raw.githubusercontent.com/oxyplot/oxyplot/master/LICENSE</licenseUrl>
+    <projectUrl>http://oxyplot.org/</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/oxyplot/oxyplot/develop/Icons/OxyPlot_128.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <tags>wpf plotting plot charting chart</tags>
+    <dependencies>
+      <dependency id="OxyPlot.Core" version="[$version$]"/>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\..\Output\Avalonia\OxyPlot.Avalonia.dll" target="lib\portable-windows8+net45" />
+    <file src="..\..\Output\Avalonia\OxyPlot.Avalonia.xml" target="lib\portable-windows8+net45" />
+
+    <file src="..\..\LICENSE" />
+    <file src="..\..\AUTHORS" />
+    <file src="..\..\CONTRIBUTORS" />
+    <file src="..\..\README.md" />
+    <file src="..\..\CHANGELOG.md" />
+  </files>
+</package>
