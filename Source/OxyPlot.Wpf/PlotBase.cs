@@ -279,6 +279,12 @@ namespace OxyPlot.Wpf
 
             this.zoomControl = new ContentControl();
             this.overlays.Children.Add(this.zoomControl);
+
+            // add additional grid on top of everthing else to fix issue of mouse events getting lost
+            // it must be added last so it covers all other controls
+            var mouseGrid = new Grid();
+            mouseGrid.Background = Brushes.Transparent; // background must be set for hit test to work
+            this.grid.Children.Add(mouseGrid); 
         }
 
         /// <summary>
