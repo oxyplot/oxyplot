@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 - Added Avalonia based renderer and control library (based off OxyPlot.Wpf).
 - New `InterpolationAlgorithm` property in LineSeries and PolylineAnnotation (#494)
 - Catmull-Rom spline interpolation algorithms (#494)
+- Added ability to map objects in an ItemsSource to a HeatMapSeries (#911)
 - FontSize, FontWeight and FontFamily on Wpf.TextAnnotation (#1023)
 
 ### Changed

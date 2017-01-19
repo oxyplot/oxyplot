@@ -10,7 +10,7 @@
         {
             var model = new PlotModel { Title = "Hello SharpDX from WPF" };
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, IsPanEnabled = false});
             var lineSeries = new LineSeries { Title = "LineSeries", MarkerType = MarkerType.Circle };
             lineSeries.Points.Add(new DataPoint(0, 0));
             lineSeries.Points.Add(new DataPoint(10, 18));
