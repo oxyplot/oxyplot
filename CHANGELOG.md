@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 - New `InterpolationAlgorithm` property in LineSeries and PolylineAnnotation (#494)
 - Catmull-Rom spline interpolation algorithms (#494)
 - FontSize, FontWeight and FontFamily on Wpf.TextAnnotation (#1023)
+- RectangleSeries (#1060)
 
 ### Changed
 - 

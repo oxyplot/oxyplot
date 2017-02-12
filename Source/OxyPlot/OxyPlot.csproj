@@ -49,6 +49,7 @@
     <Compile Include="Annotations\PointAnnotation.cs" />
     <Compile Include="Annotations\ShapeAnnotation.cs" />
     <Compile Include="Axes\AxisUtilities.cs" />
+    <Compile Include="Series\RectangleItem.cs" />
     <Compile Include="Graphics\DelegateViewCommand{T}.cs" />
     <Compile Include="Graphics\ElementCollectionChangedEventArgs{T}.cs" />
     <Compile Include="Graphics\ManipulatorBase.cs" />
@@ -84,8 +85,6 @@
     <Compile Include="Graphics\HitTestArguments.cs" />
     <Compile Include="Properties\AssemblyDescription.cs" />
     <Compile Include="NamespaceDoc.cs" />
-    <None Include="ClassDiagrams\Annotations.cd" />
-    <None Include="ClassDiagrams\Axes.cd" />
     <Compile Include="Foundation\PlotLength.cs" />
     <Compile Include="Foundation\PlotLengthUnit.cs" />
     <Compile Include="Foundation\CodeGenerator\CodeGenerationAttribute.cs" />
@@ -144,6 +143,7 @@
     <Compile Include="Pdf\PortableDocument.cs" />
     <Compile Include="Pdf\PortableDocumentImageUtilities.cs" />
     <Compile Include="Pdf\StandardFonts.cs" />
+    <Compile Include="Series\RectangleSeries.cs" />
     <Compile Include="Series\ScatterErrorPoint.cs" />
     <Compile Include="Series\ScatterErrorSeries.cs" />
     <Compile Include="Series\ScatterSeries{T}.cs" />
@@ -329,6 +329,10 @@
   <ItemGroup>
     <None Include="ClassDiagrams\Series.cd" />
     <None Include="ClassDiagrams\Reporting.cd" />
+    <None Include="ClassDiagrams\Annotations.cd" />
+    <None Include="ClassDiagrams\Axes.cd" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="OxyPlot.snk" />
   </ItemGroup>
   <ItemGroup>
