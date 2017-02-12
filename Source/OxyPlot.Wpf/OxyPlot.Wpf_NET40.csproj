@@ -94,7 +94,6 @@
     <Compile Include="Reporting\FlowDocumentReportWriter.cs" />
     <Compile Include="Series\BarSeries\LinearBarSeries.cs" />
     <Compile Include="Series\BoxPlotSeries.cs" />
-    <Compile Include="Series\DataRectSeries.cs" />
     <Compile Include="Series\HeatMapSeries.cs" />
     <Compile Include="Series\PieSeries.cs" />
     <Compile Include="Series\RectangleSeries.cs" />

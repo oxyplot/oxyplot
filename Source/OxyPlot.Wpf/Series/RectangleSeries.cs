@@ -9,14 +9,32 @@
 
 namespace OxyPlot.Wpf
 {
+    using System;
     using System.Windows;
-    using System.Windows.Media;
+
+    using OxyPlot.Series;
 
     /// <summary>
     /// RectangleSeries WPF wrapper
     /// </summary>
-    public class RectangleSeries : DataRectSeries
+    public class RectangleSeries : XYAxisSeries
     {
+        /// <summary>
+        /// Identifies the <see cref="CanTrackerInterpolatePoints"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty CanTrackerInterpolatePointsProperty =
+            DependencyProperty.Register(
+                "CanTrackerInterpolatePoints",
+                typeof(bool),
+                typeof(RectangleSeries),
+                new PropertyMetadata(false, AppearanceChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="Mapping"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty MappingProperty = DependencyProperty.Register(
+            "Mapping", typeof(Func<object, RectangleItem>), typeof(RectangleSeries), new UIPropertyMetadata(null));
+
         /// <summary>
         /// Identifies this <see cref="ColorAxisKeyProperty"/> dependency property.
         /// </summary>
@@ -25,24 +43,6 @@ namespace OxyPlot.Wpf
             typeof(string),
             typeof(RectangleSeries),
             new PropertyMetadata(default(string)));
-
-        /// <summary>
-        /// Identifies this <see cref="LowColorProperty"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty LowColorProperty = DependencyProperty.Register(
-            "LowColor",
-            typeof(Color),
-            typeof(RectangleSeries),
-            new PropertyMetadata(default(Color)));
-
-        /// <summary>
-        /// Identifies this <see cref="HighColorProperty"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty HighColorProperty = DependencyProperty.Register(
-            "HighColor",
-            typeof(Color),
-            typeof(RectangleSeries),
-            new PropertyMetadata(default(Color)));
 
         /// <summary>
         /// Initializes static members of the <see cref="RectangleSeries"/> class.
@@ -61,36 +61,37 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets LowColor
+        /// Gets or sets a value indicating whether the tracker can interpolate points.
         /// </summary>
-        public Color LowColor
+        public bool CanTrackerInterpolatePoints
         {
             get
             {
-                return (Color)this.GetValue(LowColorProperty);
+                return (bool)this.GetValue(CanTrackerInterpolatePointsProperty);
             }
 
             set
             {
-                this.SetValue(LowColorProperty, value);
+                this.SetValue(CanTrackerInterpolatePointsProperty, value);
             }
         }
 
         /// <summary>
-        /// Gets or sets HighColor
+        /// Gets or sets the mapping.
         /// </summary>
-        public Color HighColor
+        /// <value>The mapping.</value>
+        public Func<object, RectangleItem> Mapping
         {
             get
             {
-                return (Color)this.GetValue(LowColorProperty);
+                return (Func<object, RectangleItem>)this.GetValue(MappingProperty);
             }
 
             set
             {
-                this.SetValue(LowColorProperty, value);
+                this.SetValue(MappingProperty, value);
             }
-        }
+        }        
 
         /// <summary>
         /// Gets or sets ColorAxisKey property.
@@ -118,6 +119,20 @@ namespace OxyPlot.Wpf
         {
             this.SynchronizeProperties(this.InternalSeries);
             return this.InternalSeries;
+        }
+
+        /// <summary>
+        /// Synchronizes the properties.
+        /// </summary>
+        /// <param name="series">The series.</param>
+        protected override void SynchronizeProperties(OxyPlot.Series.Series series)
+        {
+            base.SynchronizeProperties(series);
+            var s = (OxyPlot.Series.RectangleSeries)series;
+            s.ItemsSource = this.ItemsSource;
+            s.CanTrackerInterpolatePoints = this.CanTrackerInterpolatePoints;
+            s.Mapping = this.Mapping;
+            s.ColorAxisKey = this.ColorAxisKey;
         }
     }
 }

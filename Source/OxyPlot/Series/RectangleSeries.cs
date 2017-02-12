@@ -3,13 +3,24 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+
     using Axes;
 
     /// <summary>
-    /// Represents a series that can be bound to a collection of <see cref="DataRect"/>.
+    /// Represents a series that can be bound to a collection of <see cref="RectangleItem"/>.
     /// </summary>
-    public class RectangleSeries : DataRectSeries
+    public class RectangleSeries : XYAxisSeries
     {
+        /// <summary>
+        /// The items originating from the items source.
+        /// </summary>
+        private List<RectangleItem> actualItems;
+
+        /// <summary>
+        /// Specifies if the <see cref="actualItems" /> list can be modified.
+        /// </summary>
+        private bool ownsActualItems;
+
         /// <summary>
         /// The default tracker format string
         /// </summary>
@@ -66,6 +77,30 @@
         public double LabelFontSize { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the tracker can interpolate points.
+        /// </summary>
+        public bool CanTrackerInterpolatePoints { get; set; }
+
+        /// <summary>
+        /// Gets or sets the delegate used to map from <see cref="ItemsSeries.ItemsSource" /> to <see cref="RectangleItem" />. The default is <c>null</c>.
+        /// </summary>
+        /// <value>The mapping.</value>
+        /// <remarks>Example: series1.Mapping = item => new RectangleItem(new DataPoint((MyType)item).Time1, ((MyType)item).Value1), new DataPoint((MyType)item).Time2, ((MyType)item).Value2));</remarks>
+        public Func<object, RectangleItem> Mapping { get; set; }
+
+        /// <summary>
+        /// Gets the list of rectangles.
+        /// </summary>
+        /// <value>A list of <see cref="RectangleItem" />. This list is used if <see cref="ItemsSeries.ItemsSource" /> is not set.</value>
+        public List<RectangleItem> Items { get; } = new List<RectangleItem>();
+
+        /// <summary>
+        /// Gets the list of rectangles that should be rendered.
+        /// </summary>
+        /// <value>A list of <see cref="RectangleItem" />.</value>
+        protected List<RectangleItem> ActualItems => this.ItemsSource != null ? this.actualItems : this.Items;
+
+        /// <summary>
         /// Transforms data space coordinates to orientated screen space coordinates.
         /// </summary>
         /// <param name="x">The x coordinate.</param>
@@ -102,16 +137,96 @@
         /// <param name="rc">The rendering context.</param>
         public override void Render(IRenderContext rc)
         {
-            var actualRects = this.ActualRects;
+            var actualRects = this.ActualItems;
 
             this.VerifyAxes();
 
             var clippingRect = this.GetClippingRect();
             rc.SetClip(clippingRect);
 
-            this.RenderRects(rc, clippingRect, actualRects);
+            this.RenderRectangles(rc, clippingRect, actualRects);
 
             rc.ResetClip();
+        }
+
+        /// <summary>
+        /// Updates the data.
+        /// </summary>
+        protected internal override void UpdateData()
+        {
+            if (this.ItemsSource == null)
+            {
+                return;
+            }
+
+            this.UpdateActualItems();
+        }
+
+        /// <summary>
+        /// Gets the item at the specified index.
+        /// </summary>
+        /// <param name="i">The index of the item.</param>
+        /// <returns>The item of the index.</returns>
+        protected override object GetItem(int i)
+        {
+            var items = this.ActualItems;
+            if (this.ItemsSource == null && items != null && i < items.Count)
+            {
+                return items[i];
+            }
+
+            return base.GetItem(i);
+        }
+
+        /// <summary>
+        /// Clears or creates the <see cref="actualItems"/> list.
+        /// </summary>
+        private void ClearActualItems()
+        {
+            if (!this.ownsActualItems || this.actualItems == null)
+            {
+                this.actualItems = new List<RectangleItem>();
+            }
+            else
+            {
+                this.actualItems.Clear();
+            }
+
+            this.ownsActualItems = true;
+        }
+
+        /// <summary>
+        /// Updates the points from the <see cref="ItemsSeries.ItemsSource" />.
+        /// </summary>
+        private void UpdateActualItems()
+        {
+            // Use the Mapping property to generate the points
+            if (this.Mapping != null)
+            {
+                this.ClearActualItems();
+                foreach (var item in this.ItemsSource)
+                {
+                    this.actualItems.Add(this.Mapping(item));
+                }
+
+                return;
+            }
+
+            var sourceAsListOfDataRects = this.ItemsSource as List<RectangleItem>;
+            if (sourceAsListOfDataRects != null)
+            {
+                this.actualItems = sourceAsListOfDataRects;
+                this.ownsActualItems = false;
+                return;
+            }
+
+            this.ClearActualItems();
+
+            var sourceAsEnumerableDataRects = this.ItemsSource as IEnumerable<RectangleItem>;
+            if (sourceAsEnumerableDataRects != null)
+            {
+                this.actualItems.AddRange(sourceAsEnumerableDataRects);
+            }
         }
 
         /// <summary>
@@ -119,16 +234,16 @@
         /// </summary>
         /// <param name="rc">The rendering context.</param>
         /// <param name="clippingRect">The clipping rectangle.</param>
-        /// <param name="rects">The rects to render.</param>
-        protected void RenderRects(IRenderContext rc, OxyRect clippingRect, ICollection<DataRect> rects)
+        /// <param name="items">The Items to render.</param>
+        protected void RenderRectangles(IRenderContext rc, OxyRect clippingRect, ICollection<RectangleItem> items)
         {
-            foreach (var dataRect in rects)
+            foreach (var item in items)
             {
-                var rectcolor = this.ColorAxis.GetColor(dataRect.value);
+                var rectcolor = this.ColorAxis.GetColor(item.Value);
 
                 // transform the data points to screen points
-                var s00 = this.Transform(dataRect.A.X, dataRect.A.Y);
-                var s11 = this.Transform(dataRect.B.X, dataRect.B.Y);
+                var s00 = this.Transform(item.A.X, item.A.Y);
+                var s11 = this.Transform(item.B.X, item.B.Y);
 
                 var pointa = this.Orientate(new ScreenPoint(s00.X, s00.Y)); // re-orientate
                 var pointb = this.Orientate(new ScreenPoint(s11.X, s11.Y)); // re-orientate
@@ -154,14 +269,14 @@
             }
 
             var colorAxis = this.ColorAxis as Axis;
-            var colorAxisTitle = (colorAxis != null ? colorAxis.Title : null) ?? DefaultColorAxisTitle;
+            var colorAxisTitle = colorAxis?.Title ?? DefaultColorAxisTitle;
 
-            if (this.ActualRects != null)
+            if (this.ActualItems != null)
             {
                 // iterate through the DataRects and return the first one that contains the point
-                foreach (var dataRect in this.ActualRects)
+                foreach (var item in this.ActualItems)
                 {
-                    if (dataRect.Contains(p))
+                    if (item.Contains(p))
                     {
                         return new TrackerHitResult
                         {
@@ -180,7 +295,7 @@
                             this.YAxis.Title ?? DefaultYAxisTitle,
                             this.YAxis.GetValue(p.Y),
                             colorAxisTitle,
-                            dataRect.Value)
+                            item.Value)
                         };
                     }
                 }
@@ -196,8 +311,7 @@
         {
             base.EnsureAxes();
 
-            this.ColorAxis =
-                this.PlotModel.GetAxisOrDefault(this.ColorAxisKey, (Axis)this.PlotModel.DefaultColorAxis) as IColorAxis;
+            this.ColorAxis = this.PlotModel.GetAxisOrDefault(this.ColorAxisKey, (Axis)this.PlotModel.DefaultColorAxis) as IColorAxis;
         }
 
         /// <summary>
@@ -205,13 +319,12 @@
         /// </summary>
         protected internal void UpdateMaxMinXY()
         {
-            if (this.ActualRects != null && this.ActualRects.Count > 0)
+            if (this.ActualItems != null && this.ActualItems.Count > 0)
             {
-                this.MinX = Math.Min(this.ActualRects.Min(r => r.A.X), this.ActualRects.Min(r => r.B.X));
-                this.MaxX = Math.Max(this.ActualRects.Max(r => r.A.X), this.ActualRects.Max(r => r.B.X));
-                this.MinY = Math.Min(this.ActualRects.Min(r => r.A.Y), this.ActualRects.Min(r => r.B.Y));
-                this.MaxY = Math.Max(this.ActualRects.Max(r => r.A.Y), this.ActualRects.Max(r => r.B.Y));
-                return;
+                this.MinX = Math.Min(this.ActualItems.Min(r => r.A.X), this.ActualItems.Min(r => r.B.X));
+                this.MaxX = Math.Max(this.ActualItems.Max(r => r.A.X), this.ActualItems.Max(r => r.B.X));
+                this.MinY = Math.Min(this.ActualItems.Min(r => r.A.Y), this.ActualItems.Min(r => r.B.Y));
+                this.MaxY = Math.Max(this.ActualItems.Max(r => r.A.Y), this.ActualItems.Max(r => r.B.Y));
             }
         }
 
@@ -222,12 +335,18 @@
         {
             base.UpdateMaxMin();
 
+            var allDataPoints = new List<DataPoint>();
+            allDataPoints.AddRange(this.ActualItems.Select(rect => rect.A));
+            allDataPoints.AddRange(this.ActualItems.Select(rect => rect.B));
+            // var allDataPoints = this.ActualItems.Select(rect => rect.A).Concat(this.ActualItems.Select(rect => rect.B));
+            this.InternalUpdateMaxMin(allDataPoints);
+
             this.UpdateMaxMinXY();
 
-            if (this.ActualRects != null && this.ActualRects.Count > 0)
+            if (this.ActualItems != null && this.ActualItems.Count > 0)
             {
-                this.MinValue = this.ActualRects.Min(r => r.Value);
-                this.MaxValue = this.ActualRects.Max(r => r.Value);
+                this.MinValue = this.ActualItems.Min(r => r.Value);
+                this.MaxValue = this.ActualItems.Max(r => r.Value);
             }
         }
 

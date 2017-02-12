@@ -62,7 +62,7 @@
                 {
                     var rectangleWithValue = (RectangleWithValue)obj;
 
-                    return new DataRect(
+                    return new RectangleItem(
                         rectangleWithValue.X1,
                         rectangleWithValue.X2,
                         rectangleWithValue.Y1,

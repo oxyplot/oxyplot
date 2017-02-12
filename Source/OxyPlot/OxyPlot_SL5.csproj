@@ -72,7 +72,7 @@
     <Compile Include="Annotations\PointAnnotation.cs" />
     <Compile Include="Annotations\ShapeAnnotation.cs" />
     <Compile Include="Axes\AxisUtilities.cs" />
-    <Compile Include="Foundation\DataRect.cs" />
+    <Compile Include="Series\RectangleItem.cs" />
     <Compile Include="Graphics\DelegateViewCommand{T}.cs" />
     <Compile Include="Graphics\ElementCollectionChangedEventArgs{T}.cs" />
     <Compile Include="Graphics\ManipulatorBase.cs" />
@@ -92,7 +92,6 @@
     <Compile Include="Rendering\OxySizeExtensions.cs" />
     <Compile Include="Reporting\PlotModelExtensions.cs" />
     <Compile Include="Series\BarSeries\LinearBarSeries.cs" />
-    <Compile Include="Series\DataRectSeries.cs" />
     <Compile Include="Series\IScatterPointProvider.cs" />
     <Compile Include="Input\Gestures\OxyMouseEnterGesture.cs" />
     <Compile Include="PlotController\EventArgs\OxyInputEventArgs.cs" />
@@ -109,7 +108,6 @@
     <Compile Include="Graphics\HitTestArguments.cs" />
     <Compile Include="Properties\AssemblyDescription.cs" />
     <Compile Include="NamespaceDoc.cs" />
-    <None Include="ClassDiagrams\Axes.cd" />
     <Compile Include="Foundation\PlotLength.cs" />
     <Compile Include="Foundation\PlotLengthUnit.cs" />
     <Compile Include="Foundation\CodeGenerator\CodeGenerationAttribute.cs" />
@@ -118,7 +116,6 @@
     <Compile Include="Foundation\CodeGenerator\ICodeGenerating.cs" />
     <Compile Include="Foundation\IDataPointProvider.cs" />
     <Compile Include="Foundation\DataPoint.cs" />
-	<Compile Include="Foundation\DataRect.cs" />
     <Compile Include="Foundation\MarkerType.cs" />
     <Compile Include="Rendering\OxyColorExtensions.cs" />
     <Compile Include="Rendering\OxyPalette.cs" />
@@ -332,7 +329,6 @@
     <Compile Include="Series\BarSeries\TornadoBarSeries.cs" />
     <Compile Include="Series\ItemsSeries.cs" />
     <Compile Include="Series\DataPointSeries.cs" />
-	<Compile Include="Series\DataRectSeries.cs" />
     <Compile Include="Series\ScatterPoint.cs" />
     <Compile Include="Series\Series.cs" />
     <Compile Include="Series\StemSeries.cs" />
@@ -356,8 +352,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagrams\Series.cd" />
-    <None Include="ClassDiagrams\PlotModel.cd" />
     <None Include="ClassDiagrams\Reporting.cd" />
+    <None Include="ClassDiagrams\Annotations.cd" />
+    <None Include="ClassDiagrams\Axes.cd" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="OxyPlot.snk" />
   </ItemGroup>
   <ItemGroup>
