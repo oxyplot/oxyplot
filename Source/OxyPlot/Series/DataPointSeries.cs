@@ -125,8 +125,6 @@ namespace OxyPlot.Series
         /// </summary>
         protected internal override void UpdateData()
         {
-            base.UpdateData();
-            
             if (this.ItemsSource == null)
             {
                 return;

@@ -76,6 +76,17 @@
     <Compile Include="Examples\ControllerDemo\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Examples\ExportDemo\PlotModelFactory.cs" />
+    <Compile Include="Examples\ExportDemo\ShellView.xaml.cs">
+      <DependentUpon>ShellView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\ExportDemo\ShellViewModel.cs" />
+    <Compile Include="Examples\RectangleSeriesDemo\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\InterpolationDemo\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Examples\LinearBarSeriesDemo\MainViewModel.cs" />
     <Compile Include="Examples\LinearBarSeriesDemo\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -86,6 +97,22 @@
     </Compile>
     <Compile Include="Examples\BoxPlotSeriesDemo\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\LiveDemo\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\MathBlockDemo\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\MathBlockDemo\MathBlock.cs" />
+    <Compile Include="Examples\MemoryTest\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\MemoryTest\Window1.xaml.cs">
+      <DependentUpon>Window1.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\MemoryTest\Window2.xaml.cs">
+      <DependentUpon>Window2.xaml</DependentUpon>
     </Compile>
     <Compile Include="Examples\ScrollViewerDemo\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -106,6 +133,14 @@
     <Compile Include="Examples\DataTemplateDemo\PlotViewDataTemplateWindow.xaml.cs">
       <DependentUpon>PlotViewDataTemplateWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Examples\WorldStatisticsDemo\CsvDocument.cs" />
+    <Compile Include="Examples\WorldStatisticsDemo\MainViewModel.cs" />
+    <Compile Include="Examples\WorldStatisticsDemo\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\WorldStatisticsDemo\Model\Country.cs" />
+    <Compile Include="Examples\WorldStatisticsDemo\Model\Statistics.cs" />
+    <Compile Include="Examples\WorldStatisticsDemo\Observable.cs" />
     <Compile Include="ScreenCapture.cs" />
     <Compile Include="Workitems\PlotModelAlreadyInUse\Item.cs" />
     <Compile Include="Workitems\PlotModelAlreadyInUse\MainWindow.xaml.cs">
@@ -117,6 +152,18 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Examples\ControllerDemo\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\ExportDemo\ShellView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\RectangleSeriesDemo\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\InterpolationDemo\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -141,6 +188,26 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Examples\BoxPlotSeriesDemo\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\LiveDemo\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\MathBlockDemo\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\MemoryTest\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\MemoryTest\Window1.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\MemoryTest\Window2.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -285,6 +352,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Examples\TwoColorAreaDemo\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\WorldStatisticsDemo\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -442,6 +513,13 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Images\RectangleSeriesDemo.png" />
+    <Resource Include="Images\InterpolationDemo.png" />
+    <Resource Include="Images\LiveDemo.png" />
+    <Resource Include="Images\ExportDemo.png" />
+    <Resource Include="Images\WorldStatisticsDemo.png" />
+    <Resource Include="Images\MemoryTest.png" />
+    <Resource Include="Images\MathBlockDemo.png" />
     <Resource Include="Images\PlotModelAlreadyInUse.png" />
     <Resource Include="Images\ScrollViewerDemo.png" />
     <Resource Include="Images\ControllerDemo.png" />
@@ -454,6 +532,15 @@
     <Resource Include="Images\PerformanceDemo.png" />
     <Resource Include="Images\ScatterErrorSeriesDemo.png" />
     <Resource Include="Images\ResizeDemo.png" />
+    <Content Include="Examples\WorldStatisticsDemo\Data\gdp_per_capita_ppp.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\WorldStatisticsDemo\Data\life_expectancy_at_birth.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\WorldStatisticsDemo\Data\population.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="packages.config" />
     <None Include="ReadMe.txt" />
     <Resource Include="Images\HeatMapDemo.png" />
