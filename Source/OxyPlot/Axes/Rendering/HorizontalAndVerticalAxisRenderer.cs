@@ -133,6 +133,18 @@ namespace OxyPlot.Axes
                     break;
             }
 
+            switch (axis.Position)
+            {
+                case AxisPosition.Left:
+                case AxisPosition.Top:
+                    titlePosition += axis.AxisDistance;
+                    break;
+                case AxisPosition.Right:
+                case AxisPosition.Bottom:
+                    titlePosition -= axis.AxisDistance;
+                    break;
+            }
+
             if (pass == 0)
             {
                 this.RenderMinorItems(axis, axisPosition);
