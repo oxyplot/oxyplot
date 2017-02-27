@@ -1281,6 +1281,43 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("#1065: LinearColorAxis Title")]
+        public static PlotModel ColorAxisTitle()
+        {
+            int n = 100;
+
+            double x0 = -3.1;
+            double x1 = 3.1;
+            double y0 = -3;
+            double y1 = 3;
+            Func<double, double, double> peaks = (x, y) => 3 * (1 - x) * (1 - x) * Math.Exp(-(x * x) - (y + 1) * (y + 1)) - 10 * (x / 5 - x * x * x - y * y * y * y * y) * Math.Exp(-x * x - y * y) - 1.0 / 3 * Math.Exp(-(x + 1) * (x + 1) - y * y);
+            var xvalues = ArrayBuilder.CreateVector(x0, x1, n);
+            var yvalues = ArrayBuilder.CreateVector(y0, y1, n);
+            var peaksData = ArrayBuilder.Evaluate(peaks, xvalues, yvalues);
+
+            var model = new PlotModel { Title = "Peaks" };
+
+            model.Axes.Add(new LinearAxis() { Key = "x_axis", AbsoluteMinimum = x0, AbsoluteMaximum = x1, Position = AxisPosition.Top });
+
+            model.Axes.Add(new LinearAxis() { Key = "y_axis", AbsoluteMinimum = y0, AbsoluteMaximum = y1, Position = AxisPosition.Left });
+
+            model.Axes.Add(new LinearColorAxis { Title = "wrong Placement", Position = AxisPosition.Right, Palette = OxyPalettes.Jet(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
+
+            var hms = new HeatMapSeries
+            {
+                X0 = x0,
+                X1 = x1,
+                Y0 = y0,
+                Y1 = y1,
+                Data = peaksData,
+                XAxisKey = "x_axis",
+                YAxisKey = "y_axis"
+            };
+            model.Series.Add(hms);
+
+            return model;
+        }
+
         /// <summary>
         /// Contains example code for https://github.com/oxyplot/oxyplot/issues/42
         /// </summary>

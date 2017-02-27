@@ -133,6 +133,7 @@ All notable changes to this project will be documented in this file.
 - ListFiller (#705)
 
 ### Fixed
+- Incorrect placment of axis title of axes with AxisDistance (#1065)
 - SharpDX control not being rendered when loaded
 - SharpDX out of viewport scrolling.
 - Multiple mouse clicks not being reported in OxyPlot.GtkSharp (#854)
