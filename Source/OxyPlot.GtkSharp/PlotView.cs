@@ -22,6 +22,7 @@ namespace OxyPlot.GtkSharp
     /// Represents a control that displays a <see cref="PlotModel" />.
     /// </summary>
     [Serializable]
+    [System.ComponentModel.ToolboxItem(true)]
     public partial class PlotView : Layout, IPlotView
     {
         /// <summary>
