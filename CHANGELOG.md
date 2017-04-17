@@ -23,6 +23,7 @@ All notable changes to this project will be documented in this file.
 - Ensure a suitable folder is used when creating a temporary file for PNG export in Oxyplot.GtkSharp (#1034)
 - RangeColorAxis is not rendered correctly if the axis is reversed (#1035)
 - OxyMouseEvents not caught due to InvalidatePlot() in WPF (#382)
+- When Color Property of LineSeries is set Markers are not shown (#937)
 
 ## [1.0.0] - 2016-09-11
 ### Added
