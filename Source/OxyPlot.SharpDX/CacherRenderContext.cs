@@ -411,7 +411,7 @@ namespace OxyPlot.SharpDX
                 dy = -size.Height;
             }
 
-            this.renderUnits.Add(new TextRenderUnit(layout, this.GetBrush(fill), Matrix3x2.Translation(dx, dy) * Matrix3x2.Rotation((float)rotate) * Matrix3x2.Translation(p.ToVector2())));
+            this.renderUnits.Add(new TextRenderUnit(layout, this.GetBrush(fill), Matrix3x2.Translation(dx, dy) * Matrix3x2.Rotation(MathUtil.DegreesToRadians((float)rotate)) * Matrix3x2.Translation(p.ToVector2())));
             format.Dispose();
         }
 
