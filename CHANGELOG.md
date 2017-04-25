@@ -25,6 +25,7 @@ All notable changes to this project will be documented in this file.
 - OxyMouseEvents not caught due to InvalidatePlot() in WPF (#382)
 - SharpDX DrawText passed degrees to Matrix3x2.Rotation that requires radians (#1075)
 - When Color Property of LineSeries is set Markers are not shown (#937)
+- Change from linear to logarithmic axis does not work (#1067)
 
 ## [1.0.0] - 2016-09-11
 ### Added
