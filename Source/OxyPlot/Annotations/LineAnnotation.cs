@@ -92,23 +92,27 @@ namespace OxyPlot.Annotations
 
             if (!isCurvedLine)
             {
-                // we only need to calculate two points if it is a straight line
-                if (fx != null)
+                if (this.ActualMinimumX != this.ActualMaximumX)
                 {
-                    points.Add(new DataPoint(this.ActualMinimumX, fx(this.ActualMinimumX)));
-                    points.Add(new DataPoint(this.ActualMaximumX, fx(this.ActualMaximumX)));
-                }
-                else
-                {
-                    points.Add(new DataPoint(fy(this.ActualMinimumY), this.ActualMinimumY));
-                    points.Add(new DataPoint(fy(this.ActualMaximumY), this.ActualMaximumY));
-                }
+                    // we only need to calculate two points if it is a straight line
+                    if (fx != null)
+                    {
+                        points.Add(new DataPoint(this.ActualMinimumX, fx(this.ActualMinimumX)));
+                        points.Add(new DataPoint(this.ActualMaximumX, fx(this.ActualMaximumX)));
+                    }
+                    else
+                    {
+                        points.Add(new DataPoint(fy(this.ActualMinimumY), this.ActualMinimumY));
+                        points.Add(new DataPoint(fy(this.ActualMaximumY), this.ActualMaximumY));
+                    }
 
-                if (this.Type == LineAnnotationType.Horizontal || this.Type == LineAnnotationType.Vertical)
-                {
-                    // use aliased line drawing for horizontal and vertical lines
-                    this.Aliased = true;
+                    if (this.Type == LineAnnotationType.Horizontal || this.Type == LineAnnotationType.Vertical)
+                    {
+                        // use aliased line drawing for horizontal and vertical lines
+                        this.Aliased = true;
+                    }
                 }
+                
             }
             else
             {
