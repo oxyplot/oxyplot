@@ -336,6 +336,40 @@ namespace ExampleLibrary
             return plotModel;
         }
 
+        [Example("Marker color options")]
+        public static PlotModel MarkerColorOptions()
+        {
+            var result = CreateRandomPoints();
+
+            var model = new PlotModel { Title = "Marker color options" };
+
+            // Dont specify line or marker color. Defaults will be used.
+            var s1 = CreateExampleLineSeries(1);
+            s1.MarkerType = MarkerType.Circle;
+            model.Series.Add(s1);
+
+            // Specify line color but not marker color. Marker color should be the same as line color.
+            var s2 = CreateExampleLineSeries(4);
+            s2.MarkerType = MarkerType.Square;
+            s2.Color = OxyColors.LightBlue;
+            model.Series.Add(s2);
+
+            // Specify marker color but not line color. Default color should be used for line.
+            var s3 = CreateExampleLineSeries(13);
+            s3.MarkerType = MarkerType.Square;
+            s3.MarkerFill = OxyColors.Black;
+            model.Series.Add(s3);
+
+            // Specify line and marker color. Specified colors should be used.
+            var s4 = CreateExampleLineSeries(5);
+            s4.MarkerType = MarkerType.Square;
+            s4.MarkerFill = OxyColors.OrangeRed;
+            s4.Color = OxyColors.Orange;
+            model.Series.Add(s4);
+
+            return model;
+        }
+
         private static List<DataPoint> CreateRandomPoints(int numberOfPoints = 50)
         {
             var r = new Random(13);

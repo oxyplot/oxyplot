@@ -392,11 +392,12 @@ namespace OxyPlot.Series
             if (this.Color.IsAutomatic())
             {
                 this.defaultColor = this.PlotModel.GetDefaultColor();
+            }
 
-                if (this.MarkerFill.IsAutomatic())
-                {
-                    this.defaultMarkerFill = this.defaultColor;
-                }
+            if (this.MarkerFill.IsAutomatic())
+            {
+                // No color was explicitly provided. Use the line color if it was set, else use default.
+                this.defaultMarkerFill = this.Color.IsAutomatic() ? this.defaultColor : this.Color;
             }
         }
 

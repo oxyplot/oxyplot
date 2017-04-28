@@ -24,6 +24,7 @@ All notable changes to this project will be documented in this file.
 - RangeColorAxis is not rendered correctly if the axis is reversed (#1035)
 - OxyMouseEvents not caught due to InvalidatePlot() in WPF (#382)
 - SharpDX DrawText passed degrees to Matrix3x2.Rotation that requires radians (#1075)
+- When Color Property of LineSeries is set Markers are not shown (#937)
 
 ## [1.0.0] - 2016-09-11
 ### Added
