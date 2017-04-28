@@ -40,6 +40,7 @@ namespace SimpleDemo
             series2.Points.Add(new DataPoint(30, 25));
             series2.Points.Add(new DataPoint(40, 5));
 
+
             // Add the series to the plot model
             tmp.Series.Add(series1);
             tmp.Series.Add(series2);
