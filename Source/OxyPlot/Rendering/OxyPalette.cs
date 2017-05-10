@@ -57,10 +57,19 @@ namespace OxyPlot
         /// <returns>A palette.</returns>
         public static OxyPalette Interpolate(int paletteSize, params OxyColor[] colors)
         {
+            if (colors == null || colors.Length == 0 || paletteSize < 1)
+            {
+                // There is no color to interpolate or no color required.
+                return new OxyPalette(new OxyColor[0]);
+            }
+
             var palette = new OxyColor[paletteSize];
+
+            double incrementStepSize = (paletteSize == 1) ? 0 : (1.0d / (paletteSize - 1));
+
             for (int i = 0; i < paletteSize; i++)
             {
-                double y = (double)i / (paletteSize - 1);
+                double y = i * incrementStepSize;
                 double x = y * (colors.Length - 1);
                 int i0 = (int)x;
                 int i1 = i0 + 1 < colors.Length ? i0 + 1 : i0;
