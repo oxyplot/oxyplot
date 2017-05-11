@@ -125,6 +125,9 @@ namespace OxyPlot.Axes
             this.AxisDistance = 0;
             this.AxisTitleDistance = 4;
             this.AxisTickToLabelDistance = 4;
+
+            this.DataMaximum = double.NaN;
+            this.DataMinimum = double.NaN;
         }
 
         /// <summary>

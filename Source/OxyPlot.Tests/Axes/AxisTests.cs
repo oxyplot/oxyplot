@@ -662,5 +662,36 @@ namespace OxyPlot.Tests
             Assert.AreEqual(yaxis.AbsoluteMinimum + (yaxis.MaximumRange / 2), (plot.Axes[0].ActualMaximum + plot.Axes[0].ActualMinimum) / 2, 1e-6, "center");
             Assert.AreEqual(yaxis.AbsoluteMinimum + yaxis.MaximumRange, plot.Axes[0].ActualMaximum, 1e-6, "maximum");
         }
+
+        [Test]
+        public void Axis_Toggle_Between_Linear_And_Log_Axis()
+        {
+            // Setting up test data per repro steps for issue 1067.
+            // https://github.com/oxyplot/oxyplot/issues/1067
+
+            var plot = new PlotModel();
+            var linearAxis = new LinearAxis()
+            {
+                Position = AxisPosition.Left
+            };
+
+            plot.Axes.Add(linearAxis);
+
+            var series = new LineSeries();
+            series.Points.Add(new DataPoint(0.005, 0.004));
+            series.Points.Add(new DataPoint(0.99, 0.98));
+
+            plot.Series.Add(series);
+
+            ((IPlotModel)plot).Update(true);
+
+            // Now toggle from linear to log axis.
+            plot.Axes[0] = new LogarithmicAxis { Position = AxisPosition.Left };
+
+            ((IPlotModel)plot).Update(false);
+
+            // Changing the axis type should not cause the data minimum to be invalid.
+            Assert.AreEqual(0.004, plot.Axes[0].DataMinimum);
+        }
     }
 }
