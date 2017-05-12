@@ -64,6 +64,7 @@
     <Compile Include="Foundation\DataPointTests.cs" />
     <Compile Include="Foundation\OxyColorTests.cs" />
     <Compile Include="Foundation\OxySizeTests.cs" />
+    <Compile Include="Series\LineSeriesTests.cs" />
     <Compile Include="Utilities\ComparerHelperTests.cs" />
     <Compile Include="Utilities\ListBuilderTests.cs" />
     <Compile Include="Foundation\RenderingExtensionsTests.cs" />
@@ -134,9 +135,7 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Series\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Examples\ExampleLibrary\ExampleLibrary.csproj">
       <Project>{facb89e5-53a5-4748-9f5b-e0714ebb37b2}</Project>
