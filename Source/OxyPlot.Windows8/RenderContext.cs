@@ -117,7 +117,11 @@ namespace OxyPlot.Windows
         /// <param name="thickness">The thickness.</param>
         public void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
-            var el = new Ellipse();
+            var el = new Ellipse
+            {
+                CompositeMode = ElementCompositeMode.SourceOver
+            };
+
             if (stroke.IsVisible())
             {
                 el.Stroke = new SolidColorBrush(stroke.ToColor());
@@ -146,7 +150,11 @@ namespace OxyPlot.Windows
         /// <param name="thickness">The stroke thickness.</param>
         public void DrawEllipses(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness)
         {
-            var path = new Path();
+            var path = new Path
+            {
+                CompositeMode = ElementCompositeMode.SourceOver
+            };
+
             this.SetStroke(path, stroke, thickness);
             if (fill.IsVisible())
             {
@@ -186,7 +194,11 @@ namespace OxyPlot.Windows
             LineJoin lineJoin,
             bool aliased)
         {
-            var e = new Polyline();
+            var e = new Polyline
+            {
+                CompositeMode = ElementCompositeMode.SourceOver
+            };
+
             this.SetStroke(e, stroke, thickness, lineJoin, dashArray, aliased);
 
             var pc = new PointCollection();
@@ -218,7 +230,11 @@ namespace OxyPlot.Windows
             LineJoin lineJoin,
             bool aliased)
         {
-            var path = new Path();
+            var path = new Path
+            {
+                CompositeMode = ElementCompositeMode.SourceOver
+            };
+
             this.SetStroke(path, stroke, thickness, lineJoin, dashArray, aliased);
             var pg = new PathGeometry();
             for (int i = 0; i + 1 < points.Count; i += 2)
@@ -263,7 +279,11 @@ namespace OxyPlot.Windows
             LineJoin lineJoin,
             bool aliased)
         {
-            var po = new Polygon();
+            var po = new Polygon
+            {
+                CompositeMode = ElementCompositeMode.SourceOver
+            };
+
             this.SetStroke(po, stroke, thickness, lineJoin, dashArray, aliased);
 
             if (fill.IsVisible())
@@ -302,7 +322,11 @@ namespace OxyPlot.Windows
             LineJoin lineJoin,
             bool aliased)
         {
-            var path = new Path();
+            var path = new Path
+            {
+                CompositeMode = ElementCompositeMode.SourceOver
+            };
+
             this.SetStroke(path, stroke, thickness, lineJoin, dashArray, aliased);
             if (fill.IsVisible())
             {
@@ -343,7 +367,11 @@ namespace OxyPlot.Windows
         /// <param name="thickness">The stroke thickness.</param>
         public void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
-            var el = new Rectangle();
+            var el = new Rectangle
+            {
+                CompositeMode = ElementCompositeMode.SourceOver
+            };
+
             if (stroke.IsVisible())
             {
                 el.Stroke = new SolidColorBrush(stroke.ToColor());
@@ -372,7 +400,11 @@ namespace OxyPlot.Windows
         /// <param name="thickness">The stroke thickness.</param>
         public void DrawRectangles(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness)
         {
-            var path = new Path();
+            var path = new Path
+            {
+                CompositeMode = ElementCompositeMode.SourceOver
+            };
+
             this.SetStroke(path, stroke, thickness);
             if (fill.IsVisible())
             {
