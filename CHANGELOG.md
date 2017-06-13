@@ -18,6 +18,7 @@ All notable changes to this project will be documented in this file.
 
 ### Removed
 - The `Smooth` property in LineSeries and PolylineAnnotation (#494)
+- Support for Silverlight (#1049)
 
 ### Fixed
 - Manipulation when using touch is not working in Windows (#1011)

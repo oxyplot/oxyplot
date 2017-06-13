@@ -18,7 +18,6 @@
     <file src="..\..\Output\PCL\OxyPlot.???" target="lib\net45" />
     <file src="..\..\Output\NET40\OxyPlot.???" target="lib\net40-client" />
     <file src="..\..\Output\NET40\OxyPlot.???" target="lib\net40" />
-    <file src="..\..\Output\SL5\OxyPlot.???" target="lib\sl5" />
 
     <file src="..\..\LICENSE" />
     <file src="..\..\AUTHORS" />

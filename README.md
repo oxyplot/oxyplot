@@ -49,7 +49,6 @@ OxyPlot.Wpf | WPF (NET40, NET45)
 OxyPlot.WindowsForms | Windows Forms (NET40, NET45)
 OxyPlot.Windows | Windows 8.1 and Windows Phone 8.1
 OxyPlot.WP8 | Windows Phone Silverlight
-OxyPlot.Silverlight | Silverlight 5 
 OxyPlot.GtkSharp | GTK# 2 and 3 (NET40, NET45)
 OxyPlot.Xamarin.Android | MonoAndroid
 OxyPlot.Xamarin.iOS | MonoTouch and iOS10
@@ -57,7 +56,7 @@ OxyPlot.Xamarin.Mac | Mac20
 OxyPlot.Xamarin.Forms | MonoTouch, iOS10, MonoAndroid, WP8
 OxyPlot.Xwt | NET40, NET45
 OxyPlot.OpenXML | NET40, NET45
-OxyPlot.Pdf | PdfSharp (NET40, NET45, SL5)
+OxyPlot.Pdf | PdfSharp (NET40, NET45)
 
 #### Contribute
 
