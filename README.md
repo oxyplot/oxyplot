@@ -56,7 +56,7 @@ OxyPlot.Xamarin.Mac | Mac20
 OxyPlot.Xamarin.Forms | MonoTouch, iOS10, MonoAndroid, WP8
 OxyPlot.Xwt | NET40, NET45
 OxyPlot.OpenXML | NET40, NET45
-OxyPlot.Pdf | PdfSharp (NET40, NET45, SL5)
+OxyPlot.Pdf | PdfSharp (NET40, NET45)
 
 #### Contribute
 
