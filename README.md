@@ -16,13 +16,6 @@ OxyPlot is a cross-platform plotting library for .NET
 
 ![Plot](http://oxyplot.org/public/images/normal-distributions.png)
 
-#### Branches
-
-`master` - the release branch (stable channel)  
-`develop` -  the main branch with the latest development changes (pre-release channel)
-
-See '[A successful git branching model](http://nvie.com/posts/a-successful-git-branching-model/)' for more information about the branching model in use.
-
 #### Getting started
 
 1. Use the NuGet package manager to add a reference to OxyPlot (see details below if you want to use pre-release packages)
@@ -47,7 +40,7 @@ Package | Targets
 OxyPlot.Core | Portable class library
 OxyPlot.Wpf | WPF (NET45)  
 OxyPlot.WindowsForms | Windows Forms (NET45)
-OxyPlot.Windows | Windows 8.1 and Windows Phone 8.1
+OxyPlot.Windows | Universal Windows (UAP10)
 OxyPlot.WP8 | Windows Phone Silverlight
 OxyPlot.GtkSharp | GTK# 2 and 3 (NET45)
 OxyPlot.Xamarin.Android | MonoAndroid

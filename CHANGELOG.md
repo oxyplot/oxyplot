@@ -21,6 +21,7 @@ All notable changes to this project will be documented in this file.
 - Support for Silverlight (#1049)
 - Support for WP8 (#1050)
 - Support for NET40 (#960)
+- Support for Windows8 (#1103)
 
 ### Fixed
 - Manipulation when using touch is not working in Windows (#1011)
