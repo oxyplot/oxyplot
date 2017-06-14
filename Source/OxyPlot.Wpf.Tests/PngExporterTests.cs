@@ -70,6 +70,7 @@ namespace OxyPlot.Wpf.Tests
         /// Exports with higher resolution and verifies that the file exists.
         /// </summary>
         /// <param name="factor">The resolution factor.</param>
+        [Ignore("Issue #759")]
         [Test]
         [TestCase(2)]
         [TestCase(4)]
