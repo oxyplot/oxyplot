@@ -13,10 +13,6 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <tags>pdf plotting plot charting chart</tags>
     <dependencies>
-      <group targetFramework="net40">
-        <dependency id="PDFsharp-MigraDoc-GDI" version="[1.32.4334]"/>
-        <dependency id="OxyPlot.Core" version="[$version$]"/>
-      </group>
       <group targetFramework="net45">
         <dependency id="PDFsharp-MigraDoc-GDI" version="[1.32.4334]"/>
         <dependency id="OxyPlot.Core" version="[$version$]"/>
@@ -28,7 +24,6 @@
   </metadata>
   <files>
     <file src="..\..\Output\NET45\OxyPlot.Pdf.???" target="lib\net45" />
-    <file src="..\..\Output\NET40\OxyPlot.Pdf.???" target="lib\net40" />
 
     <file src="..\..\LICENSE" />
     <file src="..\..\AUTHORS" />
