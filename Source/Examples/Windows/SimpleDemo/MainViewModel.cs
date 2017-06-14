@@ -1,4 +1,4 @@
-﻿namespace SimpleDemo
+namespace SimpleDemo
 {
     using OxyPlot;
     using OxyPlot.Axes;
