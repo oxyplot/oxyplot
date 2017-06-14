@@ -21,7 +21,6 @@
     <file src="bin\Release\OxyPlot.Windows.???" target="lib\uap10.0" />
     <file src="bin\Release\OxyPlot.Windows\*.*" target="lib\uap10.0\OxyPlot.Windows" />
     <file src="bin\Release\OxyPlot.Windows\Themes\*.*" target="lib\uap10.0\OxyPlot.Windows\Themes" />
-    <file src="bin\Release\Properties\*.*" target="lib\uap10.0\OxyPlot.Windows\Properties" />
 
     <file src="..\..\LICENSE" />
     <file src="..\..\AUTHORS" />
