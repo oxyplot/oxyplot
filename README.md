@@ -47,7 +47,7 @@ Package | Targets
 OxyPlot.Core | Portable class library
 OxyPlot.Wpf | WPF (NET45)  
 OxyPlot.WindowsForms | Windows Forms (NET45)
-OxyPlot.Windows | Windows 8.1 and Windows Phone 8.1
+OxyPlot.Windows | Universal Windows (UAP10)
 OxyPlot.WP8 | Windows Phone Silverlight
 OxyPlot.GtkSharp | GTK# 2 and 3 (NET45)
 OxyPlot.Xamarin.Android | MonoAndroid
