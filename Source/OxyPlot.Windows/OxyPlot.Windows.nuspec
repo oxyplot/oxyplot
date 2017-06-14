@@ -5,23 +5,19 @@
     <title>OxyPlot for Windows apps</title>
     <version>$version$</version>
     <authors>Oystein Bjorke</authors>
-    <description>OxyPlot is a plotting library for .NET. This package targets the Universal Windows Platform (UAP10), Windows 8.1, Windows Phone 8.1 and Windows Phone Silverlight.</description>
+    <description>OxyPlot is a plotting library for .NET. This package targets the Universal Windows Platform (UAP10).</description>
     <releaseNotes></releaseNotes>
     <licenseUrl>https://raw.githubusercontent.com/oxyplot/oxyplot/master/LICENSE</licenseUrl>
     <projectUrl>http://oxyplot.org/</projectUrl>
     <iconUrl>https://raw.githubusercontent.com/oxyplot/oxyplot/develop/Icons/OxyPlot_128.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <language>en-US</language>
-    <tags>winrt uap uap10 UWP win10 win81 wpa81 win8 metro plotting plot charting chart</tags>
+    <tags>winrt uap uap10 UWP win10 plotting plot charting chart</tags>
     <dependencies>
       <dependency id="OxyPlot.Core" version="[$version$]"/>
     </dependencies>
   </metadata>
   <files>
-    <file src="..\..\Output\Windows8\OxyPlot.Windows.???" target="lib\portable-windows8+wpa81" />
-    <file src="..\..\Output\Windows8\OxyPlot.Windows.xr.xml" target="lib\portable-windows8+wpa81\OxyPlot.Windows" />
-    <file src="..\..\Output\Windows8\Themes\*.*" target="lib\portable-windows8+wpa81\OxyPlot.Windows\Themes" />
-
     <file src="..\..\Output\UWP\OxyPlot.Windows.???" target="lib\uap10.0" />
     <file src="..\..\Output\UWP\OxyPlot.Windows\*.*" target="lib\uap10.0\OxyPlot.Windows" />
     <file src="..\..\Output\UWP\OxyPlot.Windows\Properties\*.*" target="lib\uap10.0\OxyPlot.Windows\Properties" />

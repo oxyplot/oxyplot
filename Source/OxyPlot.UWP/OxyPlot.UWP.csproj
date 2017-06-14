@@ -122,28 +122,28 @@
     <Compile Include="..\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="..\OxyPlot.Windows8\Converters\OxyColorConverter.cs">
+    <Compile Include="Converters\OxyColorConverter.cs">
       <Link>OxyColorConverter.cs</Link>
     </Compile>
-    <Compile Include="..\OxyPlot.Windows8\Converters\ThicknessConverter.cs">
+    <Compile Include="Converters\ThicknessConverter.cs">
       <Link>ThicknessConverter.cs</Link>
     </Compile>
-    <Compile Include="..\OxyPlot.Windows8\PlotView.cs">
+    <Compile Include="PlotView.cs">
       <Link>PlotView.cs</Link>
     </Compile>
-    <Compile Include="..\OxyPlot.Windows8\RenderContext.cs">
+    <Compile Include="RenderContext.cs">
       <Link>RenderContext.cs</Link>
     </Compile>
-    <Compile Include="..\OxyPlot.Windows8\Tracker\TrackerControl.cs">
+    <Compile Include="TrackerControl.cs">
       <Link>TrackerControl.cs</Link>
     </Compile>
-    <Compile Include="..\OxyPlot.Windows8\Tracker\TrackerDefinition.cs">
+    <Compile Include="Tracker\TrackerDefinition.cs">
       <Link>TrackerDefinition.cs</Link>
     </Compile>
-    <Compile Include="..\OxyPlot.Windows8\Utilities\ConverterExtensions.cs">
+    <Compile Include="Utilities\ConverterExtensions.cs">
       <Link>ConverterExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\OxyPlot.Windows8\Utilities\MouseButtonHelper.cs">
+    <Compile Include="Utilities\MouseButtonHelper.cs">
       <Link>MouseButtonHelper.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyDescription.cs" />
@@ -158,7 +158,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="..\OxyPlot.Windows8\Themes\Generic.xaml">
+    <Page Include="Themes\Generic.xaml">
       <Link>Themes\Generic.xaml</Link>
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -172,7 +172,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\OxyPlot.Windows8\OxyPlot.Windows.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>OxyPlot.Windows.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
