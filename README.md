@@ -16,13 +16,6 @@ OxyPlot is a cross-platform plotting library for .NET
 
 ![Plot](http://oxyplot.org/public/images/normal-distributions.png)
 
-#### Branches
-
-`master` - the release branch (stable channel)  
-`develop` -  the main branch with the latest development changes (pre-release channel)
-
-See '[A successful git branching model](http://nvie.com/posts/a-successful-git-branching-model/)' for more information about the branching model in use.
-
 #### Getting started
 
 1. Use the NuGet package manager to add a reference to OxyPlot (see details below if you want to use pre-release packages)
