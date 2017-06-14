@@ -41,15 +41,18 @@ OxyPlot.Core | Portable class library
 OxyPlot.Wpf | WPF (NET45)  
 OxyPlot.WindowsForms | Windows Forms (NET45)
 OxyPlot.Windows | Universal Windows (UAP10)
-OxyPlot.WP8 | Windows Phone Silverlight
-OxyPlot.GtkSharp | GTK# 2 and 3 (NET45)
+OxyPlot.GtkSharp | GTK# 2 (NET45)
+OxyPlot.GtkSharp3 | GTK# 3 (NET45)
 OxyPlot.Xamarin.Android | MonoAndroid
 OxyPlot.Xamarin.iOS | MonoTouch and iOS10
 OxyPlot.Xamarin.Mac | Mac20
 OxyPlot.Xamarin.Forms | MonoTouch, iOS10, MonoAndroid, WP8
 OxyPlot.Xwt | NET45
+OxyPlot.SharpDX.Wpf | NET45
+OxyPlot.Avalonia | NET45
 OxyPlot.OpenXML | NET45
 OxyPlot.Pdf | PdfSharp (NET45)
+OxyPlot.Contrib | PCL
 
 #### Contribute
 
