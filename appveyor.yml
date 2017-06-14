@@ -37,7 +37,6 @@ after_build:
   - NuGet pack Source\OxyPlot.GtkSharp\OxyPlot.GtkSharp.nuspec -version "%GitVersion_NuGetVersion%"
   - NuGet pack Source\OxyPlot.GtkSharp\OxyPlot.GtkSharp3.nuspec -version "%GitVersion_NuGetVersion%"
   - NuGet pack Source\OxyPlot.SharpDX.Wpf\OxyPlot.SharpDX.Wpf.nuspec -version "%GitVersion_NuGetVersion%"
-  - NuGet pack Source\OxyPlot.Avalonia\OxyPlot.Avalonia.nuspec -version "%GitVersion_NuGetVersion%"
   - NuGet pack Source\Examples\ExampleLibrary\OxyPlot.ExampleLibrary.nuspec -version "%GitVersion_NuGetVersion%"
 
 artifacts:
