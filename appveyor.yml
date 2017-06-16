@@ -19,13 +19,13 @@ build_script:
   - msbuild Source/OxyPlot.AppVeyor.sln "/property:Platform=Any CPU" "/property:Version=%GitVersion_NuGetVersion%" /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
  
 after_build:
-  - gitlink c:\projects\oxyplot -u https://github.com/oxyplot/oxyplot -f Source/OxyPlot.AppVeyor.sln -ignore OxyPlot.Windows10,OxyPlot.MonoTouch,OxyPlot.Xamarin.Android,OxyPlot.Xamarin.iOS,OxyPlot.Xamarin.Forms.Platform.Android,OxyPlot.Xamarin.Forms.Platform.iOS,OxyPlot.Xamarin.Forms.Platform.iOS.Classic
-  - NuGet pack Source\OxyPlot.Wpf\OxyPlot.Wpf.nuspec -version "%GitVersion_NuGetVersion%"
-  - NuGet pack Source\OxyPlot.Windows\OxyPlot.Windows.nuspec -version "%GitVersion_NuGetVersion%"
-  - NuGet pack Source\OxyPlot.WindowsForms\OxyPlot.WindowsForms.nuspec -version "%GitVersion_NuGetVersion%"
-  - NuGet pack Source\OxyPlot.OpenXml\OxyPlot.OpenXml.nuspec -version "%GitVersion_NuGetVersion%"
-  - NuGet pack Source\OxyPlot.Pdf\OxyPlot.Pdf.nuspec -version "%GitVersion_NuGetVersion%"
-  - NuGet pack Source\OxyPlot.SharpDX.Wpf\OxyPlot.SharpDX.Wpf.nuspec -version "%GitVersion_NuGetVersion%"
+  - gitlink c:\projects\oxyplot -u https://github.com/oxyplot/oxyplot -f Source/OxyPlot.AppVeyor.sln
+  - NuGet pack Source\OxyPlot.Wpf\OxyPlot.Wpf.nuspec -version "%GitVersion_NuGetVersion%" -OutputDirectory Source\OxyPlot.Wpf\bin\Release
+  - NuGet pack Source\OxyPlot.Windows\OxyPlot.Windows.nuspec -version "%GitVersion_NuGetVersion%" -OutputDirectory Source\OxyPlot.Windows\bin\Release
+  - NuGet pack Source\OxyPlot.WindowsForms\OxyPlot.WindowsForms.nuspec -version "%GitVersion_NuGetVersion%" -OutputDirectory Source\OxyPlot.WindowsForms\bin\Release
+  - NuGet pack Source\OxyPlot.OpenXml\OxyPlot.OpenXml.nuspec -version "%GitVersion_NuGetVersion%" -OutputDirectory Source\OxyPlot.OpenXml\bin\Release
+  - NuGet pack Source\OxyPlot.Pdf\OxyPlot.Pdf.nuspec -version "%GitVersion_NuGetVersion%" -OutputDirectory Source\OxyPlot.Pdf\bin\Release
+  - NuGet pack Source\OxyPlot.SharpDX.Wpf\OxyPlot.SharpDX.Wpf.nuspec -version "%GitVersion_NuGetVersion%" -OutputDirectory Source\OxyPlot.SharpDX.Wpf\bin\Release
 
 artifacts:
   - path: '**/bin/Release/**/*.nupkg'
