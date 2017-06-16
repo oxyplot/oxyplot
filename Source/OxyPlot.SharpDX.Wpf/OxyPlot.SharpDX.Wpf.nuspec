@@ -23,7 +23,7 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="..\..\Output\NET45\OxyPlot.SharpDX.WPF.???" target="lib\net45" />
+    <file src="bin\Release\OxyPlot.SharpDX.WPF.???" target="lib\net452" />
 
     <file src="..\..\LICENSE" />
     <file src="..\..\AUTHORS" />

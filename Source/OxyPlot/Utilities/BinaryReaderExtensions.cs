@@ -41,7 +41,6 @@ namespace OxyPlot
         /// <param name="r">The reader.</param>
         /// <param name="isLittleEndian">Read as little endian (Intel convention) if set to <c>true</c>.</param>
         /// <returns>The unsigned integer.</returns>
-        [CLSCompliant(false)]
         public static uint ReadUInt32(this BinaryReader r, bool isLittleEndian)
         {
             return isLittleEndian ? r.ReadUInt32() : r.ReadBigEndianUInt32();
@@ -64,7 +63,6 @@ namespace OxyPlot
         /// <param name="r">The reader.</param>
         /// <param name="isLittleEndian">Read as little endian (Intel convention) if set to <c>true</c>.</param>
         /// <returns>The unsigned integer.</returns>
-        [CLSCompliant(false)]
         public static ushort ReadUInt16(this BinaryReader r, bool isLittleEndian)
         {
             return isLittleEndian ? r.ReadUInt16() : r.ReadBigEndianUInt16();
@@ -88,7 +86,6 @@ namespace OxyPlot
         /// <param name="count">The number of values to read.</param>
         /// <param name="isLittleEndian">Read as little endian (Intel convention) if set to <c>true</c>.</param>
         /// <returns>The unsigned integer array.</returns>
-        [CLSCompliant(false)]
         public static uint[] ReadUInt32Array(this BinaryReader r, int count, bool isLittleEndian)
         {
             var result = new uint[count];
@@ -107,7 +104,6 @@ namespace OxyPlot
         /// <param name="count">The number of values to read.</param>
         /// <param name="isLittleEndian">Read as little endian (Intel convention) if set to <c>true</c>.</param>
         /// <returns>The unsigned integer array.</returns>
-        [CLSCompliant(false)]
         public static ushort[] ReadUInt16Array(this BinaryReader r, int count, bool isLittleEndian)
         {
             var result = new ushort[count];
@@ -124,7 +120,6 @@ namespace OxyPlot
         /// </summary>
         /// <param name="r">The reader.</param>
         /// <returns>The unsigned integer.</returns>
-        [CLSCompliant(false)]
         public static uint ReadBigEndianUInt32(this BinaryReader r)
         {
             byte[] a32 = r.ReadBytes(4);
@@ -149,7 +144,6 @@ namespace OxyPlot
         /// </summary>
         /// <param name="r">The reader.</param>
         /// <returns>The unsigned integer.</returns>
-        [CLSCompliant(false)]
         public static ushort ReadBigEndianUInt16(this BinaryReader r)
         {
             byte[] a16 = r.ReadBytes(2);

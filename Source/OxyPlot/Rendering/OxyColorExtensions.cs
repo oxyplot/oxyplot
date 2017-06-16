@@ -132,7 +132,6 @@ namespace OxyPlot
         /// </summary>
         /// <param name="color">The color.</param>
         /// <returns>The color as an unsigned integer.</returns>
-        [CLSCompliant(false)]
         public static uint ToUint(this OxyColor color)
         {
             var u = (uint)color.A << 24;
@@ -176,11 +175,7 @@ namespace OxyPlot
         public static string GetColorName(this OxyColor color)
         {
             var t = typeof(OxyColors);
-#if UNIVERSAL
             var colors = t.GetRuntimeFields().Where(fi => fi.IsPublic && fi.IsStatic);
-#else
-            var colors = t.GetFields(BindingFlags.Public | BindingFlags.Static);
-#endif
 
             var colorField = colors.FirstOrDefault(field => color.Equals(field.GetValue(null)));
             return colorField != null ? colorField.Name : null;

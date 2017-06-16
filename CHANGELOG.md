@@ -12,6 +12,9 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 - Let Gtk# PlotView show up in Ui editor ToolBox of MonoDevelop and XamarinStudio (#1071)
+- OxyPlot.Core changed to target netstandard 1.0 (#946)
+- OxyPlot.ExampleLibrary changed to target netstandard 1.0 (#946)
+- OxyPlot.Wpf, OxyPlot.WindowsForms, OxyPlot.Pdf changet to .NET 4.5.2 (#946)
 
 ### Deprecated
 - OxyPlot.WP8 package. Use OxyPlot.Windows instead (#996)
