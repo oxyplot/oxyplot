@@ -28,9 +28,7 @@ after_build:
   - NuGet pack Source\OxyPlot.SharpDX.Wpf\OxyPlot.SharpDX.Wpf.nuspec -version "%GitVersion_NuGetVersion%"
 
 artifacts:
-  - path: '**/*.nupkg'
-    name: OxyPlot-packages-$(GitVersion_SemVer)
-    type: zip
+  - path: '**/bin/Release/**/*.nupkg'
 
 deploy:
   provider: NuGet
@@ -39,4 +37,4 @@ deploy:
     secure: 2GnqgfpkOUH6Umfn1WWlun0b021+QeInBXkgQOQfa4/wDOYHLT757rrjTsb0lmon
   skip_symbols: false
   symbol_server:           # remove to push symbols to SymbolSource.org
-  artifact: /.*\.nupkg/
+  artifact: '**/bin/Release/**/*.nupkg'
