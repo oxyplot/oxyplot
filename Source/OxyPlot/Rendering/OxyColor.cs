@@ -165,7 +165,6 @@ namespace OxyPlot
         /// </summary>
         /// <param name="color">The unsigned integer color value.</param>
         /// <returns>The <see cref="OxyColor" />.</returns>
-        [CLSCompliant(false)]
         public static OxyColor FromUInt32(uint color)
         {
             var a = (byte)(color >> 24);

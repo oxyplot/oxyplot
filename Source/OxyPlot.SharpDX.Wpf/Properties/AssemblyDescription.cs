@@ -14,7 +14,7 @@ using System.Windows.Markup;
 [assembly: AssemblyDescription("OxyPlot controls for WPF with SharpDX based renderer")]
 [assembly: ThemeInfo(ResourceDictionaryLocation.None, ResourceDictionaryLocation.SourceAssembly)]
 
-[assembly: CLSCompliant(true)]
+[assembly: CLSCompliant(false)]
 
 [assembly: XmlnsPrefix("http://oxyplot.org/sharpdx/wpf", "oxydx")]
 [assembly: XmlnsDefinition("http://oxyplot.org/sharpdx/wpf", "OxyPlot.SharpDX.Wpf")]

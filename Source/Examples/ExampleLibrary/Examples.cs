@@ -16,18 +16,6 @@ namespace ExampleLibrary
     /// </summary>
     public static class Examples
     {
-#if !UNIVERSAL
-        public static IEnumerable<T> GetCustomAttributes<T>(this Type type) where T : Attribute
-        {
-            return type.GetCustomAttributes(typeof(T), true).Cast<T>();
-        }
-
-        public static IEnumerable<T> GetCustomAttributes<T>(this MethodInfo info) where T : Attribute
-        {
-            return info.GetCustomAttributes(typeof(T), true).Cast<T>();
-        }
-#endif
-
         /// <summary>
         /// Gets the list of examples.
         /// </summary>
@@ -35,11 +23,7 @@ namespace ExampleLibrary
         public static List<ExampleInfo> GetList()
         {
             var list = new List<ExampleInfo>();
-#if UNIVERSAL
             var assemblyTypes = typeof(Examples).GetTypeInfo().Assembly.DefinedTypes;
-#else
-            var assemblyTypes = typeof(Examples).Assembly.GetTypes();
-#endif
 
             foreach (var type in assemblyTypes)
             {
@@ -55,22 +39,13 @@ namespace ExampleLibrary
                 var baseType = type;
                 while (baseType != null)
                 {
-#if UNIVERSAL
                     types.Add(baseType.AsType());
                     baseType = baseType.BaseType != null ? baseType.BaseType.GetTypeInfo() : null;
-#else
-                    types.Add(baseType);
-                    baseType = baseType.BaseType;
-#endif
                 }
 
                 foreach (var t in types)
                 {
-#if UNIVERSAL
                     var methods = t.GetRuntimeMethods();
-#else
-                    var methods = t.GetMethods(BindingFlags.Public | BindingFlags.Static);
-#endif
 
                     foreach (var method in methods)
                     {

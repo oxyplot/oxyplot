@@ -17,7 +17,7 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="..\..\Output\NET45\OxyPlot.WindowsForms.???" target="lib\net45" />
+    <file src="..\..\Output\NET452\OxyPlot.WindowsForms.???" target="lib\net45" />
 
     <file src="..\..\LICENSE" />
     <file src="..\..\AUTHORS" />

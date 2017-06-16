@@ -35,24 +35,25 @@ To install these packages, set the myget.org package source `https://www.myget.o
 The stable release packages will be pushed to [nuget.org](https://www.nuget.org/packages?q=oxyplot).
 Note that we have currently have a lot of old (v2015.*) and pre-release packages on this feed, this will be cleaned up as soon as we release [v1.0](https://github.com/oxyplot/oxyplot/milestones/v1.0).
 
-Package | Targets
+Package | Targets | Dependencies
 --------|---------------
-OxyPlot.Core | Portable class library
-OxyPlot.Wpf | WPF (NET45)  
-OxyPlot.WindowsForms | Windows Forms (NET45)
-OxyPlot.Windows | Universal Windows (UAP10)
-OxyPlot.GtkSharp | GTK# 2 (NET45)
-OxyPlot.GtkSharp3 | GTK# 3 (NET45)
-OxyPlot.Xamarin.Android | MonoAndroid
-OxyPlot.Xamarin.iOS | MonoTouch and iOS10
-OxyPlot.Xamarin.Mac | Mac20
-OxyPlot.Xamarin.Forms | MonoTouch, iOS10, MonoAndroid, WP8
-OxyPlot.Xwt | NET45
-OxyPlot.SharpDX.Wpf | NET45
-OxyPlot.Avalonia | NET45
-OxyPlot.OpenXML | NET45
-OxyPlot.Pdf | PdfSharp (NET45)
-OxyPlot.Contrib | PCL
+OxyPlot.Core | .NET Standard 1.0 |
+OxyPlot.Wpf | .NET 4.5.2 |
+OxyPlot.WindowsForms | .NET 4.5.2 |
+OxyPlot.Windows | Universal Windows 10.0 |
+OxyPlot.GtkSharp | .NET 4.5.2 | GTK# 2
+OxyPlot.GtkSharp3 | .NET 4.5.2 | GTK# 3
+OxyPlot.Xamarin.Android | MonoAndroid |
+OxyPlot.Xamarin.iOS | MonoTouch and iOS10 |
+OxyPlot.Xamarin.Mac | Mac20 |
+OxyPlot.Xamarin.Forms | MonoTouch, iOS10, MonoAndroid, WP8 |
+OxyPlot.Xwt | .NET 4.5.2 |
+OxyPlot.SharpDX.Wpf | .NET 4.5.2 |
+OxyPlot.Avalonia | .NET 4.5.2 |
+OxyPlot.OpenXML | .NET 4.5.2 |
+OxyPlot.Pdf | .NET 4.5.2 | PdfSharp
+OxyPlot.Contrib | .NET Standard 1.0 | 
+OxyPlot.ExampleLibrary | .NET Standard 1.0 |
 
 #### Contribute
 
