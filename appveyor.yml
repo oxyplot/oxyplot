@@ -16,7 +16,7 @@ before_build:
   - gitversion /l console /output buildserver /updateAssemblyInfo
 
 build_script:
-  - msbuild Source/OxyPlot.AppVeyor.sln "/property:Platform=Any CPU" /verbosity:minimal /property:Version=$(GitVersion_SemVer) /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+  - msbuild Source/OxyPlot.AppVeyor.sln "/property:Platform=Any CPU" /verbosity:minimal "/property:Version=%GitVersion_NuGetVersion%"" /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
  
 after_build:
   - gitlink c:\projects\oxyplot -u https://github.com/oxyplot/oxyplot -f Source/OxyPlot.AppVeyor.sln -ignore OxyPlot.Windows10,OxyPlot.MonoTouch,OxyPlot.Xamarin.Android,OxyPlot.Xamarin.iOS,OxyPlot.Xamarin.Forms.Platform.Android,OxyPlot.Xamarin.Forms.Platform.iOS,OxyPlot.Xamarin.Forms.Platform.iOS.Classic
