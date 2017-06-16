@@ -15,6 +15,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Bergensbanen.csv" />
+    <None Remove="Resources\OxyPlot.png" />
+    <None Remove="Resources\west0479.mtx" />
+    <None Remove="Resources\WorldPopulation.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Bergensbanen.csv" />
+    <EmbeddedResource Include="Resources\OxyPlot.png" />
+    <EmbeddedResource Include="Resources\west0479.mtx" />
+    <EmbeddedResource Include="Resources\WorldPopulation.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="System.Net.Requests" Version="4.3.0" />
     <PackageReference Include="System.Xml.XmlSerializer" Version="4.3.0" />
   </ItemGroup>
