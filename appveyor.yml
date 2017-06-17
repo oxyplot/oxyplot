@@ -25,7 +25,6 @@ after_build:
   - NuGet pack Source\OxyPlot.WindowsForms\OxyPlot.WindowsForms.nuspec -version "%GitVersion_NuGetVersion%" -OutputDirectory Source\OxyPlot.WindowsForms\bin\Release
   - NuGet pack Source\OxyPlot.OpenXml\OxyPlot.OpenXml.nuspec -version "%GitVersion_NuGetVersion%" -OutputDirectory Source\OxyPlot.OpenXml\bin\Release
   - NuGet pack Source\OxyPlot.Pdf\OxyPlot.Pdf.nuspec -version "%GitVersion_NuGetVersion%" -OutputDirectory Source\OxyPlot.Pdf\bin\Release
-  - NuGet pack Source\OxyPlot.SharpDX.Wpf\OxyPlot.SharpDX.Wpf.nuspec -version "%GitVersion_NuGetVersion%" -OutputDirectory Source\OxyPlot.SharpDX.Wpf\bin\Release
 
 artifacts:
   - path: '**/bin/Release/**/*.nupkg'
