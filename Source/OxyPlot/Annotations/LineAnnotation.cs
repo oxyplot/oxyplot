@@ -137,7 +137,7 @@ namespace OxyPlot.Annotations
             }
 
             // transform to screen coordinates
-            return points.Select(this.Transform).ToList();
+            return points.Select(this.Transform).ToArray();
         }
     }
 }
