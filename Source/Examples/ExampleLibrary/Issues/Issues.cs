@@ -1825,6 +1825,34 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("#1029: LineAnnotation (loglin axes)")]
+        public static PlotModel Issue1029LogLin()
+        {
+            var plotModel1 = new PlotModel
+            {
+                Title = "Possible Infinite Loop in LineAnnotation.GetPoints() when Minimum=Maximum",
+            };
+            plotModel1.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Left, Minimum = 0, Maximum = 10 });
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = 0, Maximum = 8 });
+            plotModel1.Annotations.Add(new LineAnnotation { Type = LineAnnotationType.Vertical, X = 4, MinimumY = 2, MaximumY = 2 });
+            plotModel1.Annotations.Add(new LineAnnotation { Type = LineAnnotationType.Horizontal, Y = 2, MinimumX = 2, MaximumX = 2 });
+            return plotModel1;
+        }
+
+        [Example("#1029: LineAnnotation (linlin axes)")]
+        public static PlotModel Issue1029LinLin()
+        {
+            var plotModel1 = new PlotModel
+            {
+                Title = "Possible Infinite Loop in LineAnnotation.GetPoints() when Minimum=Maximum",
+            };
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 0, Maximum = 10 });
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = 0, Maximum = 8 });
+            plotModel1.Annotations.Add(new LineAnnotation { Type = LineAnnotationType.Vertical, X = 4, MinimumY = 2, MaximumY = 2 });
+            plotModel1.Annotations.Add(new LineAnnotation { Type = LineAnnotationType.Horizontal, Y = 2, MinimumX = 2, MaximumX = 2 });
+            return plotModel1;
+        }
+
         /* NEW ISSUE TEMPLATE
            [Example("#123: Issue Description")]
            public static PlotModel IssueDescription()
