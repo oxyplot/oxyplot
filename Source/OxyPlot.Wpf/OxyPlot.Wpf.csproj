@@ -99,7 +99,6 @@
     <Compile Include="Series\StairStepSeries.cs" />
     <Compile Include="Series\ScatterErrorSeries.cs" />
     <Compile Include="MoreColors.cs" />
-    <Compile Include="NamespaceDoc.cs" />
     <Compile Include="Series\BarSeries\ColumnSeries.cs" />
     <Compile Include="Series\BarSeries\CategorizedSeries.cs" />
     <Compile Include="Series\BarSeries\BarSeriesBase.cs" />
