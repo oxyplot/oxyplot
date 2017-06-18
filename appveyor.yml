@@ -28,6 +28,7 @@ after_build:
 
 artifacts:
   - path: '**/bin/Release/**/*.nupkg'
+    name: packages
 
 deploy:
   provider: NuGet
@@ -36,4 +37,4 @@ deploy:
     secure: 2GnqgfpkOUH6Umfn1WWlun0b021+QeInBXkgQOQfa4/wDOYHLT757rrjTsb0lmon
   skip_symbols: false
   symbol_server:           # remove to push symbols to SymbolSource.org
-  artifact: '**/bin/Release/**/*.nupkg'
+  artifact: packages
