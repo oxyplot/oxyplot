@@ -145,6 +145,7 @@ All notable changes to this project will be documented in this file.
 - ListFiller (#705)
 
 ### Fixed
+- Added check to LineAnnotation.GetScreenPoints to check if ActualMaximumX==ActualMinimumX for non-curved lines. (#1029)
 - Incorrect placment of axis title of axes with AxisDistance (#1065)
 - SharpDX control not being rendered when loaded
 - SharpDX out of viewport scrolling.
