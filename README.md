@@ -36,7 +36,7 @@ The stable release packages will be pushed to [nuget.org](https://www.nuget.org/
 Note that we have currently have a lot of old (v2015.*) and pre-release packages on this feed, this will be cleaned up as soon as we release [v1.0](https://github.com/oxyplot/oxyplot/milestones/v1.0).
 
 Package | Targets | Dependencies
---------|---------------
+--------|---------|-------------
 OxyPlot.Core | .NET Standard 1.0 |
 OxyPlot.Wpf | .NET 4.5.2 |
 OxyPlot.WindowsForms | .NET 4.5.2 |
