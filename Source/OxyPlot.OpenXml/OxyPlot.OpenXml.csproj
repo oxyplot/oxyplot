@@ -45,7 +45,6 @@
     <Compile Include="..\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="NamespaceDoc.cs" />
     <Compile Include="Properties\AssemblyDescription.cs" />
     <Compile Include="Reporting\WordDocumentReportWriter.cs" />
   </ItemGroup>
