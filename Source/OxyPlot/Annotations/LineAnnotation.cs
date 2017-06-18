@@ -92,62 +92,46 @@ namespace OxyPlot.Annotations
 
             if (!isCurvedLine)
             {
-                if (this.ActualMinimumX != this.ActualMaximumX)
+                // we only need to calculate two points if it is a straight line
+                if (fx != null)
                 {
-                    // we only need to calculate two points if it is a straight line
-                    if (fx != null)
-                    {
-                        points.Add(new DataPoint(this.ActualMinimumX, fx(this.ActualMinimumX)));
-                        points.Add(new DataPoint(this.ActualMaximumX, fx(this.ActualMaximumX)));
-                    }
-                    else
-                    {
-                        points.Add(new DataPoint(fy(this.ActualMinimumY), this.ActualMinimumY));
-                        points.Add(new DataPoint(fy(this.ActualMaximumY), this.ActualMaximumY));
-                    }
-
-                    if (this.Type == LineAnnotationType.Horizontal || this.Type == LineAnnotationType.Vertical)
-                    {
-                        // use aliased line drawing for horizontal and vertical lines
-                        this.Aliased = true;
-                    }
+                    points.Add(new DataPoint(this.ActualMinimumX, fx(this.ActualMinimumX)));
+                    points.Add(new DataPoint(this.ActualMaximumX, fx(this.ActualMaximumX)));
                 }
-                
+                else
+                {
+                    points.Add(new DataPoint(fy(this.ActualMinimumY), this.ActualMinimumY));
+                    points.Add(new DataPoint(fy(this.ActualMaximumY), this.ActualMaximumY));
+                }
+
+                if (this.Type == LineAnnotationType.Horizontal || this.Type == LineAnnotationType.Vertical)
+                {
+                    // use aliased line drawing for horizontal and vertical lines
+                    this.Aliased = true;
+                }
             }
             else
             {
                 if (fx != null)
                 {
-                    double x = this.ActualMinimumX;
-
                     // todo: the step size should be adaptive
-                    double dx = (this.ActualMaximumX - this.ActualMinimumX) / 100;
-                    while (true)
+                    var n = 100;
+                    var dx = (this.ActualMaximumX - this.ActualMinimumX) / 100;
+                    for (int i = 0; i <= n; i++)
                     {
+                        var x = this.ActualMinimumX + i * dx;
                         points.Add(new DataPoint(x, fx(x)));
-                        if (x > this.ActualMaximumX)
-                        {
-                            break;
-                        }
-
-                        x += dx;
                     }
                 }
                 else
                 {
-                    double y = this.ActualMinimumY;
-
                     // todo: the step size should be adaptive
-                    double dy = (this.ActualMaximumY - this.ActualMinimumY) / 100;
-                    while (true)
+                    var n = 100;
+                    var dy = (this.ActualMaximumY - this.ActualMinimumY) / n;
+                    for (int i = 0; i <= n; i++)
                     {
+                        var y = this.ActualMinimumY + i * dy;
                         points.Add(new DataPoint(fy(y), y));
-                        if (y > this.ActualMaximumY)
-                        {
-                            break;
-                        }
-
-                        y += dy;
                     }
                 }
             }

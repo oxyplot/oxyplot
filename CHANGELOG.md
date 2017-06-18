@@ -35,6 +35,7 @@ All notable changes to this project will be documented in this file.
 - When Color Property of LineSeries is set Markers are not shown (#937)
 - Change from linear to logarithmic axis does not work (#1067)
 - OxyPalette.Interpolate() throws exception when paletteSize = 1 (#1068)
+- Infinite loop in LineAnnotation (#1029)
 
 ## [1.0.0] - 2016-09-11
 ### Added
