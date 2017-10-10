@@ -10,4 +10,4 @@ using System.Reflection;
 [assembly: AssemblyTitle("OxyPlot for Windows Forms")]
 [assembly: AssemblyDescription("OxyPlot controls for Windows Forms.")]
 
-[assembly: CLSCompliant(true)]
+[assembly: CLSCompliant(false)]

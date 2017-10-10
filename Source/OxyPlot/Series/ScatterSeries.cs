@@ -28,7 +28,7 @@ namespace OxyPlot.Series
             filler.Add(this.DataFieldSize, double.NaN);
             filler.Add(this.DataFieldValue, double.NaN);
             filler.Add(this.DataFieldTag, (object)null);
-            filler.FillT(this.ItemsSourcePoints, this.ItemsSource, args => new ScatterPoint(Convert.ToDouble(args[0]), Convert.ToDouble(args[1]), Convert.ToDouble(args[2]), Convert.ToDouble(args[3]), args[4]));
+            filler.FillT(this.ItemsSourcePoints, this.ItemsSource, args => new ScatterPoint(Axes.Axis.ToDouble(args[0]), Axes.Axis.ToDouble(args[1]), Axes.Axis.ToDouble(args[2]), Axes.Axis.ToDouble(args[3]), args[4]));
         }
     }
 }

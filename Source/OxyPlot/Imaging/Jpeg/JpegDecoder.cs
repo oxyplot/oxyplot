@@ -419,7 +419,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="s">The stream.</param>
         /// <returns>The 32-bit pixel data.</returns>
-        public OxyColor[,] Decode(Stream s)
+        public OxyColor[,] Decode(byte[] bytes)
         {
             throw new NotImplementedException();
         }

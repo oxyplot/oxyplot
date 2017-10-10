@@ -56,7 +56,7 @@ namespace ExportDemo
 
                     var ls2 = CreateLineSeries(Math.Sin,
                                                0, 10, 1, "interpolated curve");
-                    ls2.Smooth = true;
+                    ls2.InterpolationAlgorithm = InterpolationAlgorithms.CanonicalSpline;
                     model.Series.Add(ls2);
                     break;
                 case ModelType.NormalDistribution:

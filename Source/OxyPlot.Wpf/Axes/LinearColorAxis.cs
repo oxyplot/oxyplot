@@ -60,12 +60,37 @@ namespace OxyPlot.Wpf
             ValidatePaletteSize);
 
         /// <summary>
+        /// Identifies the <see cref="InvalidNumberColor"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty InvalidNumberColorProperty = DependencyProperty.Register(
+            "InvalidNumberColor",
+            typeof(Color),
+            typeof(LinearColorAxis),
+            new PropertyMetadata(Colors.Gray, AppearanceChanged));
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="LinearColorAxis"/> class.
         /// </summary>
         public LinearColorAxis()
         {
             this.InternalAxis = new Axes.LinearColorAxis();
             this.GradientStops = new GradientStopCollection();
+        }
+
+        /// <summary>
+        /// Gets or sets the color used to represent NaN values.
+        /// </summary>
+        public Color InvalidNumberColor
+        {
+            get
+            {
+                return (Color)this.GetValue(InvalidNumberColorProperty);
+            }
+
+            set
+            {
+                this.SetValue(InvalidNumberColorProperty, value);
+            }
         }
 
         /// <summary>
@@ -161,6 +186,7 @@ namespace OxyPlot.Wpf
 
             axis.HighColor = this.HighColor.ToOxyColor();
             axis.LowColor = this.LowColor.ToOxyColor();
+            axis.InvalidNumberColor = this.InvalidNumberColor.ToOxyColor();
             axis.Minimum = this.Minimum;
             axis.Maximum = this.Maximum;
         }

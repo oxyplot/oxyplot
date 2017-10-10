@@ -119,8 +119,17 @@ namespace OxyPlot.Series
                     va = VerticalAlignment.Bottom;
                     break;
                 default: // outside
-                    pt = new ScreenPoint((rect.Left + rect.Right) / 2, rect.Top - this.LabelMargin);
-                    va = VerticalAlignment.Bottom;
+                    // Puts label below for negative series, above for positive
+                    if (value < 0)
+                    {
+                        pt = new ScreenPoint((rect.Left + rect.Right) / 2, rect.Bottom + this.LabelMargin);
+                        va = VerticalAlignment.Top;
+                    }
+                    else
+                    {
+                        pt = new ScreenPoint((rect.Left + rect.Right) / 2, rect.Top - this.LabelMargin);
+                        va = VerticalAlignment.Bottom;
+                    }
                     break;
             }
 

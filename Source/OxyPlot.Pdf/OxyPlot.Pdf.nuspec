@@ -2,10 +2,10 @@
 <package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <id>OxyPlot.Pdf</id>
-    <title>OxyPlot PDF extensions (for Silverlight and NET4)</title>
+    <title>OxyPlot PDF extensions</title>
     <version>$version$</version>
     <authors>Oystein Bjorke</authors>
-    <description>OxyPlot is a plotting library for .NET. This package contains .pdf export extensions for .NET 4 (based on PDFsharp) and Silverlight (based on SilverPDF).</description>
+    <description>OxyPlot is a plotting library for .NET. This package contains .pdf export extensions for .NET 4 (based on PDFsharp).</description>
     <releaseNotes></releaseNotes>
     <licenseUrl>https://raw.githubusercontent.com/oxyplot/oxyplot/master/LICENSE</licenseUrl>
     <projectUrl>http://oxyplot.org/</projectUrl>
@@ -13,10 +13,6 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <tags>pdf plotting plot charting chart</tags>
     <dependencies>
-      <group targetFramework="net40">
-        <dependency id="PDFsharp-MigraDoc-GDI" version="[1.32.4334]"/>
-        <dependency id="OxyPlot.Core" version="[$version$]"/>
-      </group>
       <group targetFramework="net45">
         <dependency id="PDFsharp-MigraDoc-GDI" version="[1.32.4334]"/>
         <dependency id="OxyPlot.Core" version="[$version$]"/>
@@ -27,10 +23,7 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="..\..\Output\NET45\OxyPlot.Pdf.???" target="lib\net45" />
-    <file src="..\..\Output\NET40\OxyPlot.Pdf.???" target="lib\net40" />
-    <file src="..\..\Output\SL5\OxyPlot.Pdf.???" target="lib\sl5" />
-    <file src="..\..\Output\SL5\silverPDF.*" target="lib\sl5" />
+    <file src="bin\Release\OxyPlot.Pdf.???" target="lib\net452" />
 
     <file src="..\..\LICENSE" />
     <file src="..\..\AUTHORS" />

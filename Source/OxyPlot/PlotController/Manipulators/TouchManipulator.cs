@@ -24,6 +24,12 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether <c>e.Handled</c> should be set to <c>true</c>
+        /// in case pan or zoom is enabled.
+        /// </summary>
+        protected bool SetHandledForPanOrZoom { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether panning is enabled.
         /// </summary>
         private bool IsPanEnabled { get; set; }
@@ -40,7 +46,11 @@ namespace OxyPlot
         public override void Completed(OxyTouchEventArgs e)
         {
             base.Completed(e);
-            e.Handled |= this.IsPanEnabled || this.IsZoomEnabled;
+
+            if (this.SetHandledForPanOrZoom)
+            {
+                e.Handled |= this.IsPanEnabled || this.IsZoomEnabled;
+            }
         }
 
         /// <summary>
@@ -93,13 +103,16 @@ namespace OxyPlot
             this.AssignAxes(e.Position);
             base.Started(e);
 
-            this.IsPanEnabled = (this.XAxis != null && this.XAxis.IsPanEnabled)
-                                || (this.YAxis != null && this.YAxis.IsPanEnabled);
+            if (this.SetHandledForPanOrZoom)
+            {
+                this.IsPanEnabled = (this.XAxis != null && this.XAxis.IsPanEnabled)
+                                    || (this.YAxis != null && this.YAxis.IsPanEnabled);
 
-            this.IsZoomEnabled = (this.XAxis != null && this.XAxis.IsZoomEnabled)
-                                 || (this.YAxis != null && this.YAxis.IsZoomEnabled);
+                this.IsZoomEnabled = (this.XAxis != null && this.XAxis.IsZoomEnabled)
+                                     || (this.YAxis != null && this.YAxis.IsZoomEnabled);
 
-            e.Handled |= this.IsPanEnabled || this.IsZoomEnabled;
+                e.Handled |= this.IsPanEnabled || this.IsZoomEnabled;
+            }
         }
     }
 }

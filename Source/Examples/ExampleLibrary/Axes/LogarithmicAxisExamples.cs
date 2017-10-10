@@ -34,7 +34,7 @@ namespace ExampleLibrary
             Func<double, LineSeries> createSpeedupCurve = p =>
             {
                 // todo: tracker does not work when smoothing = true (too few points interpolated on the left end of the curve)
-                var ls = new LineSeries { Title = p.ToString("P0"), Smooth = false };
+                var ls = new LineSeries { Title = p.ToString("P0") };
                 for (int n = 1; n <= 65536; n *= 2) ls.Points.Add(new DataPoint(n, maxSpeedup(p, n)));
                 return ls;
             };

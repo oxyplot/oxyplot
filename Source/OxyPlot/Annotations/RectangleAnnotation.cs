@@ -29,6 +29,8 @@ namespace OxyPlot.Annotations
             this.MinimumY = double.MinValue;
             this.MaximumY = double.MaxValue;
             this.TextRotation = 0;
+            this.ClipByXAxis = true;
+            this.ClipByYAxis = true;
         }
 
         /// <summary>
@@ -56,7 +58,19 @@ namespace OxyPlot.Annotations
         public double MaximumY { get; set; }
 
         /// <summary>
-        /// Renders the polygon annotation.
+        /// Gets or sets a value indicating whether to clip the annotation by the X axis range.
+        /// </summary>
+        /// <value><c>true</c> if clipping by the X axis is enabled; otherwise, <c>false</c>.</value>
+        public bool ClipByXAxis { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to clip the annotation by the Y axis range.
+        /// </summary>
+        /// <value><c>true</c> if clipping by the Y axis is enabled; otherwise, <c>false</c>.</value>
+        public bool ClipByYAxis { get; set; }
+
+        /// <summary>
+        /// Renders the rectangle annotation.
         /// </summary>
         /// <param name="rc">The render context.</param>
         public override void Render(IRenderContext rc)
@@ -64,22 +78,34 @@ namespace OxyPlot.Annotations
             base.Render(rc);
 
             double x0 = double.IsNaN(this.MinimumX) || this.MinimumX.Equals(double.MinValue)
-                            ? this.XAxis.ActualMinimum
+                            ? this.ClipByXAxis
+                                ? this.XAxis.ActualMinimum
+                                : this.XAxis.InverseTransform(this.PlotModel.PlotArea.Left)
                             : this.MinimumX;
             double x1 = double.IsNaN(this.MaximumX) || this.MaximumX.Equals(double.MaxValue)
-                            ? this.XAxis.ActualMaximum
+                            ? this.ClipByXAxis
+                                ? this.XAxis.ActualMaximum
+                                : this.XAxis.InverseTransform(this.PlotModel.PlotArea.Right)
                             : this.MaximumX;
             double y0 = double.IsNaN(this.MinimumY) || this.MinimumY.Equals(double.MinValue)
-                            ? this.YAxis.ActualMinimum
+                            ? this.ClipByYAxis
+                                ? this.YAxis.ActualMinimum
+                                : this.YAxis.InverseTransform(this.PlotModel.PlotArea.Bottom)
                             : this.MinimumY;
             double y1 = double.IsNaN(this.MaximumY) || this.MaximumY.Equals(double.MaxValue)
-                            ? this.YAxis.ActualMaximum
+                            ? this.ClipByYAxis 
+                                ? this.YAxis.ActualMaximum
+                                : this.YAxis.InverseTransform(this.PlotModel.PlotArea.Top)
                             : this.MaximumY;
 
             this.screenRectangle = new OxyRect(this.Transform(x0, y0), this.Transform(x1, y1));
 
             // clip to the area defined by the axes
-            var clippingRectangle = this.GetClippingRect();
+            var clippingRectangle = OxyRect.Create(
+                this.ClipByXAxis ? this.XAxis.ScreenMin.X : this.PlotModel.PlotArea.Left,
+                this.ClipByYAxis ? this.YAxis.ScreenMin.Y : this.PlotModel.PlotArea.Top,
+                this.ClipByXAxis ? this.XAxis.ScreenMax.X : this.PlotModel.PlotArea.Right,
+                this.ClipByYAxis ? this.YAxis.ScreenMax.Y : this.PlotModel.PlotArea.Bottom);
 
             rc.DrawClippedRectangle(
                 clippingRectangle,

@@ -29,6 +29,9 @@ namespace OxyPlot
             this.Snap = true;
             this.PointsOnly = false;
             this.LockToInitialSeries = true;
+
+            // Note: the tracker manipulator should not handle pan or zoom
+            this.SetHandledForPanOrZoom = false;
         }
 
         /// <summary>
