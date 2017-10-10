@@ -1853,6 +1853,20 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
+        /// <summary>
+        /// Creates a plot model as described in issue 1090.
+        /// </summary>
+        /// <returns>The plot model.</returns>
+        [Example("#1090: Overflow when zoomed in on logarithmic scale")]
+        public static PlotModel Issue1090()
+        {
+            var plotModel = new PlotModel();
+            plotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, AbsoluteMinimum = 0 });
+            plotModel.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Left });
+
+            return plotModel;
+        }
+
         /* NEW ISSUE TEMPLATE
            [Example("#123: Issue Description")]
            public static PlotModel IssueDescription()
