@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.0</TargetFramework>
+    <TargetFrameworks>netstandard1.0;net45</TargetFrameworks>
     <PackageId>OxyPlot.Core</PackageId>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Description>OxyPlot is a plotting library for .NET. This is the portable core library that is referenced by the platform-specific OxyPlot packages.</Description>
