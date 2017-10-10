@@ -38,6 +38,7 @@ All notable changes to this project will be documented in this file.
 - OxyPalette.Interpolate() throws exception when paletteSize = 1 (#1068)
 - Infinite loop in LineAnnotation (#1029)
 - OverflowException when zoomed in on logarithmic axis (#1090)
+- ScatterSeries with DateTimeAxis/TimeSpanAxis (#1132)
 
 ## [1.0.0] - 2016-09-11
 ### Added

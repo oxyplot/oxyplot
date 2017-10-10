@@ -1867,6 +1867,53 @@ namespace ExampleLibrary
             return plotModel;
         }
 
+        [Example("#1132: ScatterSeries with TimeSpanAxis")]
+        public static PlotModel ScatterSeriesWithTimeSpanAxis()
+        {
+            var plotModel1 = new PlotModel();
+            plotModel1.Axes.Add(new TimeSpanAxis { Position = AxisPosition.Bottom });
+            plotModel1.Axes.Add(new TimeSpanAxis { Position = AxisPosition.Left });
+
+            var points = new[]
+                             {
+                                 new TimeSpanPoint { X = TimeSpan.FromSeconds(0), Y = TimeSpan.FromHours(1) },
+                                 new TimeSpanPoint { X = TimeSpan.FromSeconds(0), Y = TimeSpan.FromHours(1) }
+                             };
+
+            plotModel1.Series.Add(new ScatterSeries { ItemsSource = points, DataFieldX = "X", DataFieldY = "Y" });
+
+            return plotModel1;
+        }
+
+        [Example("#1132: ScatterSeries with DateTimeAxis")]
+        public static PlotModel ScatterSeriesWithDateTimeAxis()
+        {
+            var plotModel1 = new PlotModel();
+            plotModel1.Axes.Add(new DateTimeAxis { Position = AxisPosition.Bottom });
+            plotModel1.Axes.Add(new DateTimeAxis { Position = AxisPosition.Left });
+
+            var points = new[]
+                             {
+                                 new DateTimePoint { X = new DateTime(2017,10,10), Y = new DateTime(2017,10,11) },
+                                 new DateTimePoint { X = new DateTime(2017,1,1), Y = new DateTime(2018,1,1) }
+                             };
+
+            plotModel1.Series.Add(new ScatterSeries { ItemsSource = points, DataFieldX = "X", DataFieldY = "Y" });
+
+            return plotModel1;
+        }
+
+        private class TimeSpanPoint
+        {
+            public TimeSpan X { get; set; }
+            public TimeSpan Y { get; set; }
+        }
+
+        private class DateTimePoint
+        {
+            public DateTime X { get; set; }
+            public DateTime Y { get; set; }
+        }
         /* NEW ISSUE TEMPLATE
            [Example("#123: Issue Description")]
            public static PlotModel IssueDescription()
