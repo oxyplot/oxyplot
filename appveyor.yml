@@ -7,7 +7,7 @@ pull_requests:
   do_not_increment_build_number: true
 
 install:
-  - cinst gitversion.portable --version=3.6.1 -y
+  - cinst gitversion.portable --version=3.6.4 -y
   - cinst gitlink --version=2.3.0 -y
 
 before_build:
