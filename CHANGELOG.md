@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 - FontSize, FontWeight and FontFamily on Wpf.TextAnnotation (#1023)
 - RectangleSeries (#1060)
 - InvalidNumberColor on Wpf.LinearColorAxis (#1087)
+- ContinuousHistogramSeries (#1145)
 
 ### Changed
 - Let Gtk# PlotView show up in Ui editor ToolBox of MonoDevelop and XamarinStudio (#1071)
