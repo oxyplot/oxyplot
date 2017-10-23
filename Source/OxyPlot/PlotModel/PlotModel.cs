@@ -1117,8 +1117,8 @@ namespace OxyPlot
         /// <param name="key">The axis key.</param>
         /// <param name="defaultAxis">The default axis.</param>
         /// <returns>defaultAxis if key is empty or does not exist; otherwise, the axis that corresponds with the key.</returns>
-         public Axis GetAxisOrDefault(string key, Axis defaultAxis)
-         {
+        public Axis GetAxisOrDefault(string key, Axis defaultAxis)
+        {
             if (key != null)
             {
                 var axis = this.Axes.FirstOrDefault(a => a.Key == key);                
