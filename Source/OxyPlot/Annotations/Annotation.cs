@@ -60,8 +60,13 @@ namespace OxyPlot.Annotations
         /// </summary>
         public void EnsureAxes()
         {
-            this.XAxis = this.PlotModel.GetAxis(this.XAxisKey);
-            this.YAxis = this.PlotModel.GetAxis(this.YAxisKey);
+            this.XAxis = this.XAxisKey != null ?
+                         this.PlotModel.GetAxis(this.XAxisKey) :
+                         this.PlotModel.DefaultXAxis;
+
+            this.YAxis = this.YAxisKey != null ?
+                         this.PlotModel.GetAxis(this.YAxisKey) :
+                         this.PlotModel.DefaultYAxis;
         }
 
         /// <summary>
