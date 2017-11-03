@@ -1903,6 +1903,45 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
+        [Example("#1160: Exporting TextAnnotation with transparent TextColor to SVG produces opaque text")]
+        public static PlotModel ExportTransparentTextAnnotationToSvg()
+        {
+            var plot = new PlotModel();
+            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            plot.Background = OxyColors.Black;
+            plot.Annotations.Add(new TextAnnotation
+            {
+                TextPosition = new DataPoint(25, 0),
+                Text = "Opaque",
+                TextColor = OxyColor.FromRgb(255, 0, 0),
+                FontSize = 10,
+            });
+            plot.Annotations.Add(new TextAnnotation
+            {
+                TextPosition = new DataPoint(25, 20),
+                Text = "Semi transparent",
+                TextColor = OxyColor.FromArgb(125, 255, 0, 0),
+                FontSize = 10,
+            });
+            plot.Annotations.Add(new TextAnnotation
+            {
+                TextPosition = new DataPoint(25, 40),
+                Text = "Transparent1",
+                TextColor = OxyColor.FromArgb(0, 255, 0, 0),
+                FontSize = 10,
+            });
+            plot.Annotations.Add(new TextAnnotation
+            {
+                TextPosition = new DataPoint(25, 60),
+                Text = "Transparent2",
+                TextColor = OxyColors.Transparent,
+                FontSize = 10,
+            });
+
+            return plot;
+        }
+
         private class TimeSpanPoint
         {
             public TimeSpan X { get; set; }

@@ -421,7 +421,19 @@ namespace OxyPlot
                 this.WriteAttributeString("font-weight", fontWeight);
             }
 
-            this.WriteAttributeString("fill", this.ColorToString(fill));
+            if (fill.IsInvisible())
+            {
+                this.WriteAttributeString("fill", "none");
+            }
+            else
+            {
+                this.WriteAttributeString("fill", this.ColorToString(fill));
+                if (fill.A != 0xFF)
+                {
+                    this.WriteAttributeString("fill-opacity", fill.A / 255.0);
+                }
+            }
+
             this.WriteClipPathAttribute();
 
             // WriteAttributeString("style", style);
