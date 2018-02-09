@@ -21,6 +21,7 @@ namespace OxyPlot
         public TouchManipulator(IPlotView plotView)
             : base(plotView)
         {
+            SetHandledForPanOrZoom = true;
         }
 
         /// <summary>
