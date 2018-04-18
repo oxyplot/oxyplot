@@ -179,6 +179,22 @@ namespace OxyPlot.Tests
         }
 
         /// <summary>
+        /// When GetAxis is called with an unknown key, an InvalidOperationException should be thrown.
+        /// </summary>
+        [Test]
+        public void GetAxis()
+        {
+            var plot = new PlotModel { Title = "Get Axis Or Default" };
+            var verticalAxis = new LinearAxis { Key = "YAxis", Position = AxisPosition.Left };
+            var horizontalAxis = new LinearAxis { Key = "XAxis", Position = AxisPosition.Bottom };
+
+            plot.Axes.Add(verticalAxis);
+            plot.Axes.Add(horizontalAxis);
+
+            Assert.That(() => plot.GetAxis("ThisIsAnInvalidKey"), Throws.InvalidOperationException);
+        }
+
+        /// <summary>
         /// When GetAxisOrDefault is called with an unknown key, the provided default value should
         /// be returned.
         /// </summary>
