@@ -324,7 +324,8 @@ namespace OxyPlot.Series
                         var pointb = this.Orientate(new ScreenPoint(s00.X + ((i + 1) * sdx), s00.Y + ((j + 1) * sdy))); // re-orientate
                         var rectrect = new OxyRect(pointa, pointb);
 
-                        rc.DrawClippedRectangle(clip, rectrect, rectcolor, OxyColors.Undefined, 0);
+                        // stroke is necessary to ensure there is no rendered gap between rectangles
+                        rc.DrawClippedRectangleAsPolygon(clip, rectrect, rectcolor, rectcolor, 1);
                     }
                 }
             }

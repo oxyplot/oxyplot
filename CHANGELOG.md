@@ -41,6 +41,7 @@ All notable changes to this project will be documented in this file.
 - OverflowException when zoomed in on logarithmic axis (#1090)
 - ScatterSeries with DateTimeAxis/TimeSpanAxis (#1132)
 - Exporting TextAnnotation with TextColor having 255 alpha to SVG produces opaque text (#1160)
+- Change method used to render Rectanges in HeatmapSeries to prevent unsightly gaps when rendering (#1191)
 
 ## [1.0.0] - 2016-09-11
 ### Added
