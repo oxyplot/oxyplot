@@ -2280,7 +2280,9 @@ namespace ExampleLibrary
             protected override void EnsureAxes()
             {
                 base.EnsureAxes();
-                this.ColorAxis = this.PlotModel.GetAxisOrDefault(this.ColorAxisKey, (Axis)this.PlotModel.DefaultColorAxis) as LinearColorAxis;
+                this.ColorAxis = this.ColorAxisKey != null ?
+                                 this.PlotModel.GetAxis(this.ColorAxisKey) as LinearColorAxis :
+                                 this.PlotModel.DefaultColorAxis as LinearColorAxis;
             }
 
             /// <summary>

@@ -311,7 +311,9 @@
         {
             base.EnsureAxes();
 
-            this.ColorAxis = this.PlotModel.GetAxisOrDefault(this.ColorAxisKey, (Axis)this.PlotModel.DefaultColorAxis) as IColorAxis;
+            this.ColorAxis = this.ColorAxisKey != null ?
+                             this.PlotModel.GetAxis(this.ColorAxisKey) as IColorAxis :
+                             this.PlotModel.DefaultColorAxis as IColorAxis;
         }
 
         /// <summary>
