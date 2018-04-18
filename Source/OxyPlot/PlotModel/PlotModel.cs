@@ -1093,8 +1093,7 @@ namespace OxyPlot
         /// Gets the axis for the specified key.
         /// </summary>
         /// <param name="key">The axis key.</param>
-        /// <param name="defaultAxis">The default axis.</param>
-        /// <returns>defaultAxis if key is empty or does not exist; otherwise, the axis that corresponds with the key.</returns>
+        /// <returns>The axis that corresponds with the key.</returns>
         /// <exception cref="System.InvalidOperationException">Cannot find axis with the specified key.</exception>
         public Axis GetAxis(string key)
         {
@@ -1106,7 +1105,7 @@ namespace OxyPlot
             var axis = this.Axes.FirstOrDefault(a => a.Key == key);
             if (axis == null)
             {
-                throw new InvalidOperationException(string.Format("Cannot find axis with Key = \"{0}\"", key));
+                throw new InvalidOperationException($"Cannot find axis with Key = \"{key}\"");
             }
             return axis;
         }
