@@ -9,6 +9,8 @@
 
 namespace OxyPlot
 {
+    using System.Text.RegularExpressions;
+
     /// <summary>
     /// Represents a font that can be used in a <see cref="PortableDocument" />.
     /// </summary>
@@ -102,21 +104,35 @@ namespace OxyPlot
         /// <param name="height">The height of the text.</param>
         public void Measure(string text, double fontSize, out double width, out double height)
         {
-            int w = 0;
+            int wmax = 0;
 
-            for (int i = 0; i < text.Length; i++)
+            var lines = Regex.Split(text, "\r\n");
+
+            int lineCount = lines.Length;
+
+            foreach (string line in lines)
             {
-                var c = text[i];
-                if (c >= this.FirstChar + this.Widths.Length)
+                int w = 0;
+
+                for (int i = 0; i < line.Length; i++)
                 {
-                    continue;
+                    var c = line[i];
+                    if (c >= this.FirstChar + this.Widths.Length)
+                    {
+                        continue;
+                    }
+
+                    w += this.Widths[c - this.FirstChar];
                 }
 
-                w += this.Widths[text[i] - this.FirstChar];
+                if (w > wmax)
+                {
+                    wmax = w;
+                }
             }
 
-            width = w * fontSize / 1000;
-            height = (this.Ascent - this.Descent) * fontSize / 1000;
+            width = wmax * fontSize / 1000;
+            height = lineCount * (this.Ascent - this.Descent) * fontSize / 1000;
         }
     }
 }
