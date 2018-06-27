@@ -453,7 +453,7 @@ namespace OxyPlot.Wpf
 
             var bounds = element.TransformToAncestor(container).TransformBounds(new Rect(0.0, 0.0, element.ActualWidth, element.ActualHeight));
             var rect = new Rect(0.0, 0.0, container.ActualWidth, container.ActualHeight);
-            return rect.Contains(bounds.TopLeft) || rect.Contains(bounds.BottomRight);
+            return bounds.Left < rect.Right && bounds.Right > rect.Left && bounds.Top < rect.Bottom && bounds.Bottom > rect.Top;
         }
 
         /// <summary>
