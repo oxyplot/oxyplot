@@ -40,6 +40,7 @@ All notable changes to this project will be documented in this file.
 - OverflowException when zoomed in on logarithmic axis (#1090)
 - ScatterSeries with DateTimeAxis/TimeSpanAxis (#1132)
 - Exporting TextAnnotation with TextColor having 255 alpha to SVG produces opaque text (#1160)
+- Chart is not updated when top and bottom are not visible (#1219)
 
 ## [1.0.0] - 2016-09-11
 ### Added
