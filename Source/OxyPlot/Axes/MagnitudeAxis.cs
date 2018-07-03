@@ -55,7 +55,7 @@ namespace OxyPlot.Axes
             double th = Math.Atan2(y, x);
             double r = Math.Sqrt((x * x) + (y * y));
             x = (r / this.Scale) + this.Offset;
-            y = (th / angleAxis.Scale) + angleAxis.Offset;
+            y = (th / angleAxis.Scale) + angleAxis.Offset*Math.PI/180;
             return new DataPoint(x, y);
         }
 
