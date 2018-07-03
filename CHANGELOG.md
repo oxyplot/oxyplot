@@ -13,6 +13,8 @@ All notable changes to this project will be documented in this file.
 - RectangleSeries (#1060)
 - InvalidNumberColor on Wpf.LinearColorAxis (#1087)
 - ContinuousHistogramSeries (#1145)
+- Multiline text support for PortableDocumentFont (#1146)
+- Workaround for text vertical alignment in SVG Export to accomodate viewers which don't support dominant-baseline (#459, #1198)
 
 ### Changed
 - Let Gtk# PlotView show up in Ui editor ToolBox of MonoDevelop and XamarinStudio (#1071)
