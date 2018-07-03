@@ -333,6 +333,7 @@ namespace OxyPlot.Series
             var allPoints = new List<ScreenPoint>(n);
             var allMarkerSizes = new List<double>(n);
             var selectedPoints = new List<ScreenPoint>();
+            var reducedPoints = new HashSet<Tuple<int, int>>();
             var selectedMarkerSizes = new List<double>(n);
             var groupPoints = new Dictionary<int, IList<ScreenPoint>>();
             var groupSizes = new Dictionary<int, IList<double>>();
@@ -368,6 +369,10 @@ namespace OxyPlot.Series
 
                 // Transform from data to screen coordinates
                 var screenPoint = this.XAxis.Transform(dp.X, dp.Y, this.YAxis);
+                if (!reducedPoints.Add(new Tuple<int, int>((int) Math.Round(screenPoint.X), (int) Math.Round(screenPoint.Y))))
+                {
+                    continue;
+                }
 
                 if (isSelected && this.IsItemSelected(i))
                 {
