@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 ### Added
+- New PolarPlot filling the full plot area (#1056)
+
+### Added
 - Added Avalonia based renderer and control library (based off OxyPlot.Wpf).
 - New `InterpolationAlgorithm` property in LineSeries and PolylineAnnotation (#494)
 - Catmull-Rom spline interpolation algorithms (#494)
@@ -10,6 +13,8 @@ All notable changes to this project will be documented in this file.
 - RectangleSeries (#1060)
 - InvalidNumberColor on Wpf.LinearColorAxis (#1087)
 - ContinuousHistogramSeries (#1145)
+- Multiline text support for PortableDocumentFont (#1146)
+- Workaround for text vertical alignment in SVG Export to accomodate viewers which don't support dominant-baseline (#459, #1198)
 
 ### Changed
 - Let Gtk# PlotView show up in Ui editor ToolBox of MonoDevelop and XamarinStudio (#1071)
