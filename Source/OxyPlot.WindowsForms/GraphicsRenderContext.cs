@@ -171,7 +171,7 @@ namespace OxyPlot.WindowsForms
             var pts = this.ToPoints(points);
             if (fill.IsVisible())
             {
-                this.g.FillPolygon(fill.ToBrush(), pts);
+                this.g.FillPolygon(this.GetCachedBrush(fill), pts);
             }
 
             if (stroke.IsInvisible() || thickness <= 0)
@@ -214,7 +214,7 @@ namespace OxyPlot.WindowsForms
             if (fill.IsVisible())
             {
                 this.g.FillRectangle(
-                    fill.ToBrush(), (float)rect.Left, (float)rect.Top, (float)rect.Width, (float)rect.Height);
+                    this.GetCachedBrush(fill), (float)rect.Left, (float)rect.Top, (float)rect.Width, (float)rect.Height);
             }
 
             if (stroke.IsInvisible() || thickness <= 0)
@@ -304,18 +304,18 @@ namespace OxyPlot.WindowsForms
                 var graphicsState = this.g.Save();
 
                 this.g.TranslateTransform((float)p.X, (float)p.Y);
-                
+
                 var layoutRectangle = new RectangleF(0, 0, size.Width, size.Height);
                 if (Math.Abs(rotate) > double.Epsilon)
                 {
                     this.g.RotateTransform((float)rotate);
-                    
+
                     layoutRectangle.Height += (float)(fontSize / 18.0);
                 }
 
                 this.g.TranslateTransform(dx, dy);
 
-                this.g.DrawString(text, font, fill.ToBrush(), layoutRectangle, this.stringFormat);
+                this.g.DrawString(text, font, this.GetCachedBrush(fill), layoutRectangle, this.stringFormat);
 
                 this.g.Restore(graphicsState);
             }
