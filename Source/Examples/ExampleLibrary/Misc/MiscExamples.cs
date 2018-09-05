@@ -53,13 +53,13 @@ namespace ExampleLibrary
             Func<double, double, double> f)
         {
             var model = new PlotModel
-                            {
-                                Title = title,
-                                Subtitle = subtitle,
-                                LegendPosition = LegendPosition.BottomCenter,
-                                LegendPlacement = LegendPlacement.Outside,
-                                LegendOrientation = LegendOrientation.Horizontal
-                            };
+            {
+                Title = title,
+                Subtitle = subtitle,
+                LegendPosition = LegendPosition.BottomCenter,
+                LegendPlacement = LegendPlacement.Outside,
+                LegendOrientation = LegendOrientation.Horizontal
+            };
             model.Series.Add(new FunctionSeries(exact, 0, 4, 100) { Title = "Exact solution", StrokeThickness = 5 });
             var eulerSeries = new LineSeries
             {
@@ -184,11 +184,7 @@ namespace ExampleLibrary
 
 
 
-#if UNIVERSAL
             using (var reader = new StreamReader(typeof(MiscExamples).GetTypeInfo().Assembly.GetManifestResourceStream("ExampleLibrary.Resources.west0479.mtx")))
-#else
-            using (var reader = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream("ExampleLibrary.Resources.west0479.mtx")))
-#endif
             {
                 while (!reader.EndOfStream)
                 {
@@ -273,27 +269,27 @@ namespace ExampleLibrary
                 var headerFields = header.Split(';');
                 int lines = headerFields.Length - 3;
                 var stations = new LineSeries()
-                                   {
-                                       StrokeThickness = 0,
-                                       MarkerType = MarkerType.Circle,
-                                       MarkerFill = OxyColor.FromAColor(200, OxyColors.Black),
-                                       MarkerSize = 4,
-                                   };
+                {
+                    StrokeThickness = 0,
+                    MarkerType = MarkerType.Circle,
+                    MarkerFill = OxyColor.FromAColor(200, OxyColors.Black),
+                    MarkerSize = 4,
+                };
 
                 // Add the line series for each train line
                 var series = new LineSeries[lines];
                 for (int i = 0; i < series.Length; i++)
                 {
                     series[i] = new LineSeries
-                                    {
-                                        Title = headerFields[3 + i],
-                                        Color =
+                    {
+                        Title = headerFields[3 + i],
+                        Color =
                                             OxyColor.FromAColor(
                                                 180, OxyColors.Black),
-                                        StrokeThickness = 2,
-                                        TrackerFormatString =
+                        StrokeThickness = 2,
+                        TrackerFormatString =
                                             "Train {0}\nTime: {2}\nDistance from Oslo S: {4:0.0} km",
-                                    };
+                    };
                     model.Series.Add(series[i]);
                 }
 
@@ -315,20 +311,20 @@ namespace ExampleLibrary
                         // Add a horizontal annotation line for the station
                         model.Annotations.Add(
                             new LineAnnotation
-                                {
-                                    Type = LineAnnotationType.Horizontal,
-                                    Y = x,
-                                    Layer = AnnotationLayer.BelowSeries,
-                                    LineStyle = LineStyle.Solid,
-                                    Color = OxyColors.LightGray,
-                                    Text = fields[0] + "  ",
-                                    TextVerticalAlignment = VerticalAlignment.Middle,
-                                    TextLinePosition = 1,
-                                    TextMargin = 0,
-                                    TextPadding = 4,
-                                    ClipText = false,
-                                    TextHorizontalAlignment = HorizontalAlignment.Left
-                                });
+                            {
+                                Type = LineAnnotationType.Horizontal,
+                                Y = x,
+                                Layer = AnnotationLayer.BelowSeries,
+                                LineStyle = LineStyle.Solid,
+                                Color = OxyColors.LightGray,
+                                Text = fields[0] + "  ",
+                                TextVerticalAlignment = VerticalAlignment.Middle,
+                                TextLinePosition = 1,
+                                TextMargin = 0,
+                                TextPadding = 4,
+                                ClipText = false,
+                                TextHorizontalAlignment = HorizontalAlignment.Left
+                            });
                     }
 
                     for (int i = 0; i < series.Length; i++)
@@ -386,22 +382,22 @@ namespace ExampleLibrary
             return model;
         }
 
-        [Example("World population")]
-        public static PlotModel WorldPopulation()
-        {
-            WorldPopulationDataSet dataSet;
-            using (var stream = GetResourceStream("WorldPopulation.xml"))
-            {
-                var serializer = new XmlSerializer(typeof(WorldPopulationDataSet));
-                dataSet = (WorldPopulationDataSet)serializer.Deserialize(stream);
-            }
+        /*        [Example("World population")]
+                public static PlotModel WorldPopulation()
+                {
+                    WorldPopulationDataSet dataSet;
+                    using (var stream = GetResourceStream("WorldPopulation.xml"))
+                    {
+                        var serializer = new XmlSerializer(typeof(WorldPopulationDataSet));
+                        dataSet = (WorldPopulationDataSet)serializer.Deserialize(stream);
+                    }
 
-            var model = new PlotModel { Title = "World population" };
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "millions" });
-            var series1 = new LineSeries { ItemsSource = dataSet.Items, DataFieldX = "Year", DataFieldY = "Population", StrokeThickness = 3, MarkerType = MarkerType.Circle };
-            model.Series.Add(series1);
-            return model;
-        }
+                    var model = new PlotModel { Title = "World population" };
+                    model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "millions" });
+                    var series1 = new LineSeries { ItemsSource = dataSet.Items, DataFieldX = "Year", DataFieldY = "Population", StrokeThickness = 3, MarkerType = MarkerType.Circle };
+                    model.Series.Add(series1);
+                    return model;
+                }*/
 
         [Example("La Linea (AreaSeries)")]
         public static PlotModel LaLineaAreaSeries()
@@ -1394,13 +1390,13 @@ namespace ExampleLibrary
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -2, Maximum = 1 });
             model.Axes.Add(
                 new LinearColorAxis
-                    {
-                        Position = AxisPosition.Right,
-                        Minimum = 0,
-                        Maximum = 64,
-                        Palette = OxyPalettes.Jet(64),
-                        HighColor = OxyColors.Black
-                    });
+                {
+                    Position = AxisPosition.Right,
+                    Minimum = 0,
+                    Maximum = 64,
+                    Palette = OxyPalettes.Jet(64),
+                    HighColor = OxyColors.Black
+                });
             model.Series.Add(new MandelbrotSetSeries());
             return model;
         }
@@ -2172,11 +2168,7 @@ namespace ExampleLibrary
         /// <returns>A stream.</returns>
         private static Stream GetResourceStream(string name)
         {
-#if UNIVERSAL
             return typeof(MiscExamples).GetTypeInfo().Assembly.GetManifestResourceStream("ExampleLibrary.Resources." + name);
-#else
-            return Assembly.GetExecutingAssembly().GetManifestResourceStream("ExampleLibrary.Resources." + name);
-#endif
         }
 
         /// <summary>
@@ -2288,7 +2280,9 @@ namespace ExampleLibrary
             protected override void EnsureAxes()
             {
                 base.EnsureAxes();
-                this.ColorAxis = this.PlotModel.GetAxisOrDefault(this.ColorAxisKey, (Axis)this.PlotModel.DefaultColorAxis) as LinearColorAxis;
+                this.ColorAxis = this.ColorAxisKey != null ?
+                                 this.PlotModel.GetAxis(this.ColorAxisKey) as LinearColorAxis :
+                                 this.PlotModel.DefaultColorAxis as LinearColorAxis;
             }
 
             /// <summary>
@@ -2381,21 +2375,21 @@ namespace ExampleLibrary
             }
         }
 
-        [XmlRoot("DataSet")]
-        [XmlInclude(typeof(Data))]
-        public class WorldPopulationDataSet
-        {
-            [XmlElement("Data")]
-            public List<Data> Items { get; set; }
+        /*        [XmlRoot("DataSet")]
+                [XmlInclude(typeof(Data))]
+                public class WorldPopulationDataSet
+                {
+                    [XmlElement("Data")]
+                    public List<Data> Items { get; set; }
 
-            public class Data
-            {
-                [XmlAttribute("Year")]
-                public int Year { get; set; }
+                    public class Data
+                    {
+                        [XmlAttribute("Year")]
+                        public int Year { get; set; }
 
-                [XmlAttribute("Population")]
-                public double Population { get; set; }
-            }
-        }
+                        [XmlAttribute("Population")]
+                        public double Population { get; set; }
+                    }
+                }*/
     }
 }

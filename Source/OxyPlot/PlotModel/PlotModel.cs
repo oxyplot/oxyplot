@@ -1093,20 +1093,35 @@ namespace OxyPlot
         /// Gets the axis for the specified key.
         /// </summary>
         /// <param name="key">The axis key.</param>
-        /// <param name="defaultAxis">The default axis.</param>
-        /// <returns>The axis, or the defaultAxis if the key is not specified.</returns>
+        /// <returns>The axis that corresponds with the key.</returns>
         /// <exception cref="System.InvalidOperationException">Cannot find axis with the specified key.</exception>
+        public Axis GetAxis(string key)
+        {
+            if (key == null)
+            {
+                throw new ArgumentException("Axis key cannot be null.");
+            }
+
+            var axis = this.Axes.FirstOrDefault(a => a.Key == key);
+            if (axis == null)
+            {
+                throw new InvalidOperationException($"Cannot find axis with Key = \"{key}\"");
+            }
+            return axis;
+        }
+
+        /// <summary>
+        /// Gets the axis for the specified key, or returns a default value.
+        /// </summary>
+        /// <param name="key">The axis key.</param>
+        /// <param name="defaultAxis">The default axis.</param>
+        /// <returns>defaultAxis if key is empty or does not exist; otherwise, the axis that corresponds with the key.</returns>
         public Axis GetAxisOrDefault(string key, Axis defaultAxis)
         {
             if (key != null)
             {
-                var axis = this.Axes.FirstOrDefault(a => a.Key == key);
-                if (axis == null)
-                {
-                    throw new InvalidOperationException(string.Format("Cannot find axis with Key = \"{0}\"", key));
-                }
-
-                return axis;
+                var axis = this.Axes.FirstOrDefault(a => a.Key == key);                
+                return axis != null ? axis : defaultAxis;
             }
 
             return defaultAxis;

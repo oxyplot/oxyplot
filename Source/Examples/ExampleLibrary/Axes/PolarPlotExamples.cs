@@ -243,5 +243,76 @@ namespace ExampleLibrary
             model.Series.Add(new FunctionSeries(x => Math.Sin(x / 180 * Math.PI), t => t, 0, 180, 0.01));
             return model;
         }
+
+        [Example("Semi-circle full plot area")]
+        public static PlotModel SemiCircleFullPlotArea()
+        {
+            var model = new PlotModel
+            {
+                Title = "Semi-circle polar plot filling the plot area",
+                Subtitle = "The center can be move using the right mouse button",
+                PlotType = PlotType.Polar,
+                PlotAreaBorderThickness = new OxyThickness(1),
+                PlotMargins = new OxyThickness(60, 20, 4, 40)
+            };
+            model.Axes.Add(
+                new AngleAxisFullPlotArea
+                {
+                    Minimum = 0,
+                    Maximum = 180,
+                    MajorStep = 45,
+                    MinorStep = 9,
+                    StartAngle = 0,
+                    EndAngle = 180,
+                    MajorGridlineStyle = LineStyle.Solid,
+                    MinorGridlineStyle = LineStyle.Solid
+                });
+            model.Axes.Add(new MagnitudeAxisFullPlotArea
+            {
+                Minimum = 0,
+                Maximum = 1,
+                MidshiftH = 0,
+                MidshiftV = 0.9d,
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Solid
+            });
+            model.Series.Add(new FunctionSeries(x => Math.Sin(x / 180 * Math.PI), t => t, 0, 180, 0.01));
+            return model;
+        }
+
+        [Example("Spiral full plot area")]
+        public static PlotModel ArchimedeanSpiralFullPlotArea()
+        {
+            var model = new PlotModel
+            {
+                Title = "Polar plot filling the plot area",
+                Subtitle = "The center can be move using the right mouse button",
+                PlotType = PlotType.Polar,
+                PlotAreaBorderThickness = new OxyThickness(1),
+                PlotMargins = new OxyThickness(60, 20, 4, 40)
+            };
+            model.Axes.Add(
+                new AngleAxisFullPlotArea
+                {
+                    MajorStep = Math.PI / 4,
+                    MinorStep = Math.PI / 16,
+                    MajorGridlineStyle = LineStyle.Solid,
+                    MinorGridlineStyle = LineStyle.Solid,
+                    FormatAsFractions = true,
+                    FractionUnit = Math.PI,
+                    FractionUnitSymbol = "π",
+                    Minimum = 0,
+                    Maximum = 2 * Math.PI
+                });
+            model.Axes.Add(new MagnitudeAxisFullPlotArea
+            {
+                MidshiftH = -0.1d,
+                MidshiftV = -0.25d,
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Solid
+            });
+            model.Series.Add(new FunctionSeries(t => t, t => t, 0, Math.PI * 6, 0.01));
+            return model;
+        }
     }
 }

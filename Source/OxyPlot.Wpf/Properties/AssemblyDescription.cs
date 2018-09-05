@@ -13,7 +13,7 @@ using System.Windows.Markup;
 [assembly: AssemblyDescription("OxyPlot controls for WPF")]
 [assembly: ThemeInfo(ResourceDictionaryLocation.None, ResourceDictionaryLocation.SourceAssembly)]
 
-[assembly: CLSCompliant(true)]
+[assembly: CLSCompliant(false)]
 
 [assembly: XmlnsPrefix("http://oxyplot.org/wpf", "oxy")]
 [assembly: XmlnsDefinition("http://oxyplot.org/wpf", "OxyPlot.Wpf")]

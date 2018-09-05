@@ -11,7 +11,7 @@
             </oxy:Plot.Axes>
             <oxy:Plot.Series>
                 <oxy:AreaSeries ItemsSource="{Binding Measurements}" Title="Maximum/Minimum" DataFieldX="Time" DataFieldY="Maximum" DataFieldX2="Time" DataFieldY2="Minimum" Fill="LightBlue" StrokeThickness="0"/>
-                <oxy:LineSeries ItemsSource="{Binding Measurements}" Title="Average" DataFieldX="Time" DataFieldY="Value" Color="Blue" StrokeThickness="2" Smooth="False"/>
+                <oxy:LineSeries ItemsSource="{Binding Measurements}" Title="Average" DataFieldX="Time" DataFieldY="Value" Color="Blue" StrokeThickness="2"/>
             </oxy:Plot.Series>
         </oxy:Plot>
     </DockPanel>

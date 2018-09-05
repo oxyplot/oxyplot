@@ -279,6 +279,12 @@ namespace OxyPlot.Wpf
 
             this.zoomControl = new ContentControl();
             this.overlays.Children.Add(this.zoomControl);
+
+            // add additional grid on top of everthing else to fix issue of mouse events getting lost
+            // it must be added last so it covers all other controls
+            var mouseGrid = new Grid();
+            mouseGrid.Background = Brushes.Transparent; // background must be set for hit test to work
+            this.grid.Children.Add(mouseGrid); 
         }
 
         /// <summary>
@@ -447,7 +453,7 @@ namespace OxyPlot.Wpf
 
             var bounds = element.TransformToAncestor(container).TransformBounds(new Rect(0.0, 0.0, element.ActualWidth, element.ActualHeight));
             var rect = new Rect(0.0, 0.0, container.ActualWidth, container.ActualHeight);
-            return rect.Contains(bounds.TopLeft) || rect.Contains(bounds.BottomRight);
+            return bounds.Left < rect.Right && bounds.Right > rect.Left && bounds.Top < rect.Bottom && bounds.Bottom > rect.Top;
         }
 
         /// <summary>

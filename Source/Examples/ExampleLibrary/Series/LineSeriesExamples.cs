@@ -4,9 +4,15 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+
+using OxyPlot;
+using OxyPlot.Series;
+
 namespace ExampleLibrary
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
 
     using OxyPlot;
@@ -181,36 +187,14 @@ namespace ExampleLibrary
             return pm;
         }
 
-        [Example("Smooth")]
+        [Example("Interpolation")]
         public static PlotModel Smooth()
         {
-            var model = new PlotModel { Title = "LineSeries with Smooth = true", LegendSymbolLength = 24 };
+            var model = new PlotModel { Title = "LineSeries with interpolation", Subtitle = "InterpolationAlgorithm = CanonicalSpline", LegendSymbolLength = 24 };
 
             var s1 = CreateExampleLineSeries();
             s1.MarkerType = MarkerType.Circle;
-            s1.Smooth = true;
-            model.Series.Add(s1);
-
-            return model;
-        }
-
-        [Example("Smooth (complex curve)")]
-        public static PlotModel ComplexSmoothLine()
-        {
-            var model = new PlotModel { Title = "LineSeries with Smooth = true", Subtitle = "complex curve" };
-
-            var s1 = new LineSeries
-            {
-                Title = "Series 1",
-                Smooth = true
-            };
-            s1.Points.Add(new DataPoint(-0.03, 22695655));
-            s1.Points.Add(new DataPoint(-0.02, 34005991));
-            s1.Points.Add(new DataPoint(-0.01, 40209650));
-            s1.Points.Add(new DataPoint(0, 41306630));
-            s1.Points.Add(new DataPoint(0.01, 37296932));
-            s1.Points.Add(new DataPoint(0.02, 28180557));
-            s1.Points.Add(new DataPoint(0.03, 13957503));
+            s1.InterpolationAlgorithm = InterpolationAlgorithms.CanonicalSpline;
             model.Series.Add(s1);
 
             return model;
@@ -257,7 +241,7 @@ namespace ExampleLibrary
             s2.BrokenLineThickness = 1;
             s2.BrokenLineStyle = LineStyle.Dot;
             model.Series.Add(s2);
-            
+
             return model;
         }
 
@@ -278,6 +262,138 @@ namespace ExampleLibrary
             s1.Decimator = Decimator.Decimate;
             model.Series.Add(s1);
             return model;
+        }
+
+        [Example("Canonical spline interpolation")]
+        public static PlotModel CanonicalSplineInterpolation()
+        {
+            var result = CreateRandomPoints();
+
+            var plotModel = new PlotModel
+            {
+                Title = "Canonical spline interpolation",
+                Series =
+                {
+                    new LineSeries
+                    {
+                        ItemsSource = result,
+                        Title = "Default (0.5)",
+                        InterpolationAlgorithm = InterpolationAlgorithms.CanonicalSpline,
+                        MarkerType = MarkerType.Circle,
+                        MarkerFill = OxyColors.Black
+                    },
+                    new LineSeries
+                    {
+                        ItemsSource = result,
+                        Title = "0.1",
+                        InterpolationAlgorithm = new CanonicalSpline(0.1)
+                    },
+                    new LineSeries
+                    {
+                        ItemsSource = result,
+                        Title = "1.0",
+                        InterpolationAlgorithm = new CanonicalSpline(1)
+                    }
+                }
+            };
+
+            return plotModel;
+        }
+
+        [Example("Catmull-Rom interpolation")]
+        public static PlotModel CatmullRomInterpolation()
+        {
+            var result = CreateRandomPoints();
+
+            var plotModel = new PlotModel
+            {
+                Title = "Catmull-Rom interpolation",
+                Series =
+                {
+                    new LineSeries
+                    {
+                        ItemsSource = result,
+                        Title = "Standard",
+                        InterpolationAlgorithm = InterpolationAlgorithms.CatmullRomSpline,
+                        MarkerType = MarkerType.Circle,
+                        MarkerFill = OxyColors.Black
+                    },
+                    new LineSeries
+                    {
+                        ItemsSource = result,
+                        Title = "Chordal",
+                        InterpolationAlgorithm = InterpolationAlgorithms.ChordalCatmullRomSpline
+                    },
+                    new LineSeries
+                    {
+                        ItemsSource = result,
+                        Title = "Uniform",
+                        InterpolationAlgorithm = InterpolationAlgorithms.UniformCatmullRomSpline
+                    }
+                }
+            };
+
+            return plotModel;
+        }
+
+        [Example("Marker color options")]
+        public static PlotModel MarkerColorOptions()
+        {
+            var result = CreateRandomPoints();
+
+            var model = new PlotModel { Title = "Marker color options" };
+
+            // Dont specify line or marker color. Defaults will be used.
+            var s1 = CreateExampleLineSeries(1);
+            s1.MarkerType = MarkerType.Circle;
+            model.Series.Add(s1);
+
+            // Specify line color but not marker color. Marker color should be the same as line color.
+            var s2 = CreateExampleLineSeries(4);
+            s2.MarkerType = MarkerType.Square;
+            s2.Color = OxyColors.LightBlue;
+            model.Series.Add(s2);
+
+            // Specify marker color but not line color. Default color should be used for line.
+            var s3 = CreateExampleLineSeries(13);
+            s3.MarkerType = MarkerType.Square;
+            s3.MarkerFill = OxyColors.Black;
+            model.Series.Add(s3);
+
+            // Specify line and marker color. Specified colors should be used.
+            var s4 = CreateExampleLineSeries(5);
+            s4.MarkerType = MarkerType.Square;
+            s4.MarkerFill = OxyColors.OrangeRed;
+            s4.Color = OxyColors.Orange;
+            model.Series.Add(s4);
+
+            return model;
+        }
+
+        private static List<DataPoint> CreateRandomPoints(int numberOfPoints = 50)
+        {
+            var r = new Random(13);
+            var result = new List<DataPoint>(numberOfPoints);
+            for (int i = 0; i < numberOfPoints; i++)
+            {
+                if (i < 5)
+                {
+                    result.Add(new DataPoint(i, 0.0));
+                }
+                else if (i < 10)
+                {
+                    result.Add(new DataPoint(i, 1.0));
+                }
+                else if (i < 12)
+                {
+                    result.Add(new DataPoint(i, 0.0));
+                }
+                else
+                {
+                    result.Add(new DataPoint(i, r.NextDouble()));
+                }
+            }
+            return result;
         }
 
         /// <summary>

@@ -1,6 +1,53 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+### Added
+- New PolarPlot filling the full plot area (#1056)
+
+### Added
+- Added Avalonia based renderer and control library (based off OxyPlot.Wpf).
+- New `InterpolationAlgorithm` property in LineSeries and PolylineAnnotation (#494)
+- Catmull-Rom spline interpolation algorithms (#494)
+- FontSize, FontWeight and FontFamily on Wpf.TextAnnotation (#1023)
+- RectangleSeries (#1060)
+- InvalidNumberColor on Wpf.LinearColorAxis (#1087)
+- ContinuousHistogramSeries (#1145)
+- Multiline text support for PortableDocumentFont (#1146)
+- Workaround for text vertical alignment in SVG Export to accomodate viewers which don't support dominant-baseline (#459, #1198)
+
+### Changed
+- Let Gtk# PlotView show up in Ui editor ToolBox of MonoDevelop and XamarinStudio (#1071)
+- OxyPlot.Core changed to target netstandard 1.0 and net45 (#946, #1147)
+- OxyPlot.ExampleLibrary changed to target netstandard 1.0 and net45 (#946, #1147)
+- OxyPlot.Wpf, OxyPlot.WindowsForms, OxyPlot.Pdf changet to .NET 4.5.2 (#946)
+- Place label below negative ColumnSeries (#1119)
+
+### Deprecated
+- OxyPlot.WP8 package. Use OxyPlot.Windows instead (#996)
+
+### Removed
+- The `Smooth` property in LineSeries and PolylineAnnotation (#494)
+- Support for Silverlight (#1049)
+- Support for WP8 (#1050)
+- Support for NET40 (#960)
+- Support for Windows8 (#1103)
+
+### Fixed
+- Manipulation when using touch is not working in Windows (#1011)
+- Ensure a suitable folder is used when creating a temporary file for PNG export in Oxyplot.GtkSharp (#1034)
+- RangeColorAxis is not rendered correctly if the axis is reversed (#1035)
+- OxyMouseEvents not caught due to InvalidatePlot() in WPF (#382)
+- SharpDX DrawText passed degrees to Matrix3x2.Rotation that requires radians (#1075)
+- When Color Property of LineSeries is set Markers are not shown (#937)
+- Change from linear to logarithmic axis does not work (#1067)
+- OxyPalette.Interpolate() throws exception when paletteSize = 1 (#1068)
+- Infinite loop in LineAnnotation (#1029)
+- OverflowException when zoomed in on logarithmic axis (#1090)
+- ScatterSeries with DateTimeAxis/TimeSpanAxis (#1132)
+- Exporting TextAnnotation with TextColor having 255 alpha to SVG produces opaque text (#1160)
+- Chart is not updated when top and bottom are not visible (#1219)
+
 ## [1.0.0] - 2016-09-11
 ### Added
 - Added OxyPlot.SharpDX.Wpf NuGet package
@@ -47,6 +94,7 @@ All notable changes to this project will be documented in this file.
 - Improve tracker style (Windows Forms) (#106)
 - Font rendering in OxyPlot.GtkSharp improved by using Pango (#972)
 - Improved LineSeries performance (#834)
+- Fixed bug causing axes titles to not display in OxyPlot.GtkSharp (#989)
 
 ### Changed
 - Fixed closing file stream for PdfReportWriter when PdfReportWriter is closed or disposed of. (#892)
@@ -109,6 +157,8 @@ All notable changes to this project will be documented in this file.
 - ListFiller (#705)
 
 ### Fixed
+- Added check to LineAnnotation.GetScreenPoints to check if ActualMaximumX==ActualMinimumX for non-curved lines. (#1029)
+- Incorrect placment of axis title of axes with AxisDistance (#1065)
 - SharpDX control not being rendered when loaded
 - SharpDX out of viewport scrolling.
 - Multiple mouse clicks not being reported in OxyPlot.GtkSharp (#854)
@@ -187,6 +237,7 @@ All notable changes to this project will be documented in this file.
 - Fixed bug in selection of plot to display in OxyPlot.GtkSharp ExampleBrowser (#979)
 - Fixed non-interpolation of HeatMapSeries in OxyPlot.GtkSharp (#980)
 - Fixed axis min/max calc and axis assignment for CandleStick + VolumeSeries (#389)
+- Fixed drawing of plot backgrounds in OxyPlot.GtkSharp (#990)
 
 ## [0.2014.1.546] - 2014-10-22
 ### Added

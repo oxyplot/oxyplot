@@ -17,7 +17,7 @@ namespace OxyPlot.Axes
     /// <summary>
     /// Represents an axis with logarithmic scale.
     /// </summary>
-    /// <remarks>See http://en.wikipedia.org/wiki/Logarithmic_scale.</remarks>
+    /// <see href="http://en.wikipedia.org/wiki/Logarithmic_scale"/>
     public class LogarithmicAxis : Axis
     {
         /// <summary>
@@ -34,7 +34,7 @@ namespace OxyPlot.Axes
         /// Gets or sets the logarithmic base (normally 10).
         /// </summary>
         /// <value>The logarithmic base.</value>
-        /// <remarks>See http://en.wikipedia.org/wiki/Logarithm.</remarks>
+        /// <see href="http://en.wikipedia.org/wiki/Logarithm"/>
         public double Base { get; set; }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace OxyPlot.Axes
 
             var desiredNumberOfTicks = axisBandwidth / this.IntervalLength;
             var ticksPerDecade = desiredNumberOfTicks / logBandwidth;
-            var logDesiredStepSize = 1.0 / Convert.ToInt32(ticksPerDecade);
+            var logDesiredStepSize = 1.0 / Math.Floor(ticksPerDecade);
 
             var intBase = Convert.ToInt32(this.Base);
 
@@ -298,12 +298,18 @@ namespace OxyPlot.Axes
                 for (var exponent = Math.Ceiling(this.LogActualMinimum); exponent <= this.LogActualMaximum; exponent += step)
                 {
                     if (exponent <= last)
+                    {
                         break;
+                    }
+
                     last = exponent;
                     if (exponent >= this.LogActualMinimum)
+                    {
                         ret.Add(exponent);
+                    }
                 }
             }
+
             return ret;
         }
 

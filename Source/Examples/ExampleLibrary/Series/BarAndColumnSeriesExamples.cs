@@ -38,6 +38,39 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("With labels (negative values)")]
+        public static PlotModel WithLabelsNegativeValues()
+        {
+            var model = new PlotModel
+            {
+                Title = "With labels (negative values)",
+            };
+
+            var s1 = new TSeries { LabelFormatString = "{0}" };
+            s1.Items.Add(new TItem { Value = 25 });
+            s1.Items.Add(new TItem { Value = 137 });
+            s1.Items.Add(new TItem { Value = -18 });
+            s1.Items.Add(new TItem { Value = 40 });
+
+            var s2 = new TSeries { LabelFormatString = "{0:0.00}" };
+            s2.Items.Add(new TItem { Value = 12 });
+            s2.Items.Add(new TItem { Value = 14 });
+            s2.Items.Add(new TItem { Value = 120 });
+            s2.Items.Add(new TItem { Value = -26 });
+
+            var categoryAxis = new CategoryAxis { Position = CategoryAxisPosition() };
+            categoryAxis.Labels.Add("Category A");
+            categoryAxis.Labels.Add("Category B");
+            categoryAxis.Labels.Add("Category C");
+            categoryAxis.Labels.Add("Category D");
+            var valueAxis = new LinearAxis { Position = ValueAxisPosition(), MinimumPadding = 0.06, MaximumPadding = 0.06, ExtraGridlines = new[] { 0d } };
+            model.Series.Add(s1);
+            model.Series.Add(s2);
+            model.Axes.Add(categoryAxis);
+            model.Axes.Add(valueAxis);
+            return model;
+        }
+
         [Example("Stacked")]
         public static PlotModel StackedSeries()
         {

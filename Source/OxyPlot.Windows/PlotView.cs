@@ -791,30 +791,44 @@ namespace OxyPlot.Windows
             e.Handled = this.ActualController.HandleMouseLeave(this, e.ToMouseEventArgs(this));
         }
 
-        /// <summary>
-        /// Provides the behavior for the Arrange pass of layout. Classes can override this method to define their own Arrange pass behavior.
-        /// </summary>
-        /// <param name="finalSize">The final area within the parent that this object should use to arrange itself and its children.</param>
-        /// <returns>The actual size that is used after the element is arranged in layout.</returns>
-        protected override Size ArrangeOverride(Size finalSize)
-        {
-            if (this.ActualWidth > 0 && this.ActualHeight > 0)
-            {
-                if (Interlocked.CompareExchange(ref this.isPlotInvalidated, 0, 1) == 1)
-                {
-                    this.UpdateVisuals();
-                }
-            }
+		/// <summary>
+		/// A one time condition for update visuals so it is called no matter the state of the control
+		/// Currently with out this, the plotview on Xamarin Forms UWP does not render until the app's window resizes
+		/// </summary>
+		private bool isUpdateVisualsCalledOnce = false;
 
-            return base.ArrangeOverride(finalSize);
-        }
+		/// <summary>
+		/// Provides the behavior for the Arrange pass of layout. Classes can override this method to define their own Arrange pass behavior.
+		/// </summary>
+		/// <param name="finalSize">The final area within the parent that this object should use to arrange itself and its children.</param>
+		/// <returns>The actual size that is used after the element is arranged in layout.</returns>
+		protected override Size ArrangeOverride(Size finalSize)
+		{
+			if (this.ActualWidth > 0 && this.ActualHeight > 0)
+			{
+				if (Interlocked.CompareExchange(ref this.isPlotInvalidated, 0, 1) == 1)
+				{
+					this.UpdateVisuals();
+				}
+			}
 
-        /// <summary>
-        /// Called when the <see cref="Model" /> property is changed.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
-        private static void ModelChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+			//see summary for isUpdateVisualsCalledOnce
+			if (!isUpdateVisualsCalledOnce)
+			{
+				this.UpdateVisuals();
+
+				isUpdateVisualsCalledOnce = true;
+			}
+
+			return base.ArrangeOverride(finalSize);
+		}
+
+		/// <summary>
+		/// Called when the <see cref="Model" /> property is changed.
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="e">The <see cref="DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
+		private static void ModelChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
             ((PlotView)sender).OnModelChanged();
         }

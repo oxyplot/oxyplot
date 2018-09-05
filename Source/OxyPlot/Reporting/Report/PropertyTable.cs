@@ -73,11 +73,7 @@ namespace OxyPlot.Reporting
 
             this.Columns.Clear();
 
-#if UNIVERSAL
             var properties = type.GetRuntimeProperties().Where(pi => pi.GetMethod.IsPublic && !pi.GetMethod.IsStatic);
-#else
-            var properties = type.GetProperties(BindingFlags.Instance | BindingFlags.Public);
-#endif
             foreach (var pi in properties)
             {
                 // TODO: support Browsable and Displayname attributes

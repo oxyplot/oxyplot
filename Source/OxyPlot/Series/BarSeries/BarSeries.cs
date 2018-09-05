@@ -119,8 +119,17 @@ namespace OxyPlot.Series
                     ha = HorizontalAlignment.Left;
                     break;
                 default: // Outside
-                    pt = new ScreenPoint(rect.Right + this.LabelMargin, (rect.Top + rect.Bottom) / 2);
-                    ha = HorizontalAlignment.Left;
+                    // Puts label left for negative series, right for positive
+                    if (value < 0)
+                    {
+                        pt = new ScreenPoint(rect.Left - this.LabelMargin, (rect.Top + rect.Bottom) / 2);
+                        ha = HorizontalAlignment.Right;
+                    }
+                    else
+                    {
+                        pt = new ScreenPoint(rect.Right + this.LabelMargin, (rect.Top + rect.Bottom) / 2);
+                        ha = HorizontalAlignment.Left;
+                    }
                     break;
             }
 
@@ -128,11 +137,12 @@ namespace OxyPlot.Series
                 clippingRect,
                 pt,
                 s,
+
                 this.ActualTextColor,
                 this.ActualFont,
                 this.ActualFontSize,
                 this.ActualFontWeight,
-                0,
+                    0,
                 ha,
                 VerticalAlignment.Middle);
         }

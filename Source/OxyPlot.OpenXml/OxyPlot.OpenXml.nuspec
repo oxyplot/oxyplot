@@ -18,8 +18,7 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="..\..\Output\NET45\OxyPlot.OpenXml.???" target="lib\net45" />
-    <file src="..\..\Output\NET40\OxyPlot.OpenXml.???" target="lib\net40" />
+    <file src="bin\Release\OxyPlot.OpenXml.???" target="lib\net452" />
 
     <file src="..\..\LICENSE" />
     <file src="..\..\AUTHORS" />
