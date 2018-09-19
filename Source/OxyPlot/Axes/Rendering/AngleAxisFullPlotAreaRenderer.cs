@@ -17,6 +17,9 @@ namespace OxyPlot.Axes
     /// </summary>
     public class AngleAxisFullPlotAreaRenderer : AxisRendererBase
     {
+        const double degree = 180.0d / Math.PI;
+        const double rad = Math.PI / 180.0d;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AngleAxisFullPlotAreaRenderer" /> class.
         /// </summary>
@@ -95,8 +98,6 @@ namespace OxyPlot.Axes
                 ScreenPoint pt = TransformToClientRectangle(magnitudeAxis.ActualMaximum, value, axis, this.Plot.PlotArea, magnitudeAxis.MidPoint);
 
                 var angle = Math.Atan2(pt.y - magnitudeAxis.MidPoint.y, pt.x - magnitudeAxis.MidPoint.x);
-
-                double degree = Math.PI / 180d;
                 // Convert to degrees
                 angle /= degree;
 
@@ -155,8 +156,7 @@ namespace OxyPlot.Axes
                 }
 
                 ScreenPoint outsideposition = pt;
-                this.RenderContext.DrawMathText(
-                    outsideposition, text, axis.ActualTextColor, axis.ActualFont, axis.ActualFontSize, axis.ActualFontWeight, 0, ha, va);
+                this.RenderContext.DrawMathText(outsideposition, text, axis.ActualTextColor, axis.ActualFont, axis.ActualFontSize, axis.ActualFontWeight, 0, ha, va);
             }
         }
 
