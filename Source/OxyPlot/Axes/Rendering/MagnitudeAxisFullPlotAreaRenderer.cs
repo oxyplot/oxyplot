@@ -90,6 +90,22 @@ namespace OxyPlot.Axes
             double maxtick = Math.Max(maxtick_topright, Math.Max(maxtick_topleft, Math.Max(maxtick_bottomleft, maxtick_bottomright)));
             double mintick = Math.Min(maxtick_topright, Math.Min(maxtick_topleft, Math.Min(maxtick_bottomleft, maxtick_bottomright)));
 
+            double maxtexttick = maxtick;
+            double magnitudeaxis_angle = angleAxis.StartAngle % 360d;
+            while (magnitudeaxis_angle < 0)
+                magnitudeaxis_angle += 360d;
+
+            double cos = Math.Cos(rad * magnitudeaxis_angle);
+            double sin = Math.Sin(rad * magnitudeaxis_angle);
+            if (magnitudeaxis_angle >= 0 && magnitudeaxis_angle < 90)//first quadrant
+                maxtexttick = Math.Min(maxtick_right/ cos, maxtick_top/ sin);
+            else if (magnitudeaxis_angle >= 90 && magnitudeaxis_angle < 180)//second quadrant
+                maxtexttick = Math.Min(maxtick_left/ -cos, maxtick_top/ sin);
+            else if (magnitudeaxis_angle >= 180 && magnitudeaxis_angle < 270)//third quadrant
+                maxtexttick = Math.Min(maxtick_left/ -cos, maxtick_bottom/ -sin);
+            else//fourth quadrant
+                maxtexttick = Math.Min(maxtick_right/ cos, maxtick_bottom/ -sin);
+
             List<double> majorticks = new List<double>();
             majorticks.AddRange(this.MajorTickValues);
             ExtendTickList(ref majorticks, maxtick);
@@ -100,7 +116,7 @@ namespace OxyPlot.Axes
 
             List<double> textticks = new List<double>();
             textticks.AddRange(this.MajorTickValues);
-            ExtendTickList(ref textticks, maxtick);
+            ExtendTickList(ref textticks, maxtexttick);
 
             var majorTicks = majorticks.Where(x => x > axis.ActualMinimum && x <= maxtick).ToArray();
 
@@ -283,6 +299,8 @@ namespace OxyPlot.Axes
         private void ExtendTickList(ref List<double> ticks, double maximum)
         {
             double tickdelta = ticks[ticks.Count - 1] - ticks[ticks.Count - 2];
+            ticks.Clear();
+            ticks.Add(tickdelta);
             while (ticks.Last() < maximum)
             {
                 ticks.Add(ticks.Last() + tickdelta);
