@@ -315,13 +315,22 @@ namespace OxyPlot.Series
 
                 // Body
                 var openLeft = open + new ScreenVector(-candlewidth * 0.5, 0);
-                var rect = new OxyRect(openLeft.X, min.Y, candlewidth, max.Y - min.Y);
-                rc.DrawClippedRectangleAsPolygon(
-                    clippingBar,
-                    rect,
-                    fillColor,
-                    lineColor,
-                    this.StrokeThickness);
+
+                if (max.Y - min.Y < 1.0)
+                {
+                    var leftPoint = new ScreenPoint(openLeft.X - this.StrokeThickness, min.Y);
+                    var rightPoint = new ScreenPoint(openLeft.X + this.StrokeThickness + candlewidth, min.Y);
+                    rc.DrawClippedLine(clippingBar, new[] { leftPoint, rightPoint }, leftPoint.DistanceToSquared(rightPoint), lineColor, this.StrokeThickness, null, LineJoin.Miter, true);
+
+                    leftPoint = new ScreenPoint(openLeft.X - this.StrokeThickness, max.Y);
+                    rightPoint = new ScreenPoint(openLeft.X + this.StrokeThickness + candlewidth, max.Y);
+                    rc.DrawClippedLine(clippingBar, new[] { leftPoint, rightPoint }, leftPoint.DistanceToSquared(rightPoint), lineColor, this.StrokeThickness, null, LineJoin.Miter, true);
+                }
+                else
+                {
+                    var rect = new OxyRect(openLeft.X, min.Y, candlewidth, max.Y - min.Y);
+                    rc.DrawClippedRectangleAsPolygon(clippingBar, rect, fillColor, lineColor, this.StrokeThickness);
+                }
 
                 // Volume Part
                 if (this.VolumeAxis == null || this.VolumeStyle == VolumeStyle.None)
