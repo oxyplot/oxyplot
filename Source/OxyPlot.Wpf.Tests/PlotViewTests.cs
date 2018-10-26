@@ -107,5 +107,32 @@ namespace OxyPlot.Wpf.Tests
                 OxyAssert.PropertiesAreEqual(model, view);
             }
         }
+
+        /// <summary>
+        /// There is a bug in the presentation framework that returns a size
+        /// with infinity for the polyline given by the two points in this test.
+        /// This results in an exception and an app-crash. The origin is (probably) that
+        /// the measure code of the presentation converts values to single precision, leading 
+        /// to floating point overflow. 
+        /// 
+        /// This problem has been solved using the new implementation of the Polyline shape 
+        /// </summary>
+        public class InfinityPolyline
+        {
+            [Test]
+            public void PlotInifityPolyline()
+            {
+                var model = new PlotModel();
+                var series = new OxyPlot.Series.LineSeries();
+                series.Points.Add(new DataPoint(0, 0));
+                series.Points.Add(new DataPoint(1, -1e40));
+                model.Series.Add(series);
+
+                var view = new PlotView { Model = model };
+                var window = new Window { Height = 350, Width = 500, Content = view };
+
+                Assert.DoesNotThrow(() => window.Show());
+            }
+        }
     }
 }

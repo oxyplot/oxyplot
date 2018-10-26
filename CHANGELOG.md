@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+
+### Fixed
+- A problem with plotting large ranges in OxyPlot.WPF, leading to exceptions and app crashes, has been solved (no issue number).
+
 ### Added
 - New PolarPlot filling the full plot area (#1056)
 

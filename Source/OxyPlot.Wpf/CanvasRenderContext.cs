@@ -210,7 +210,7 @@ namespace OxyPlot.Wpf
                 return;
             }
 
-            var e = this.CreateAndAdd<Polyline>();
+            var e = this.CreateAndAdd<Polyline2>();
             this.SetStroke(e, stroke, thickness, lineJoin, dashArray, 0, aliased);
 
             e.Points = this.ToPointCollection(points, aliased);
@@ -1059,7 +1059,7 @@ namespace OxyPlot.Wpf
             // balance the number of points per polyline and the number of polylines
             var numPointsPerPolyline = Math.Max(points.Count / MaxPolylinesPerLine, MinPointsPerPolyline);
 
-            var polyline = this.CreateAndAdd<Polyline>();
+            var polyline = this.CreateAndAdd<Polyline2>();
             this.SetStroke(polyline, stroke, thickness, lineJoin, dashArray, 0, aliased);
             var pc = new PointCollection(numPointsPerPolyline);
 
@@ -1100,7 +1100,7 @@ namespace OxyPlot.Wpf
 
                         // start a new polyline at last point so there is no gap (it is not necessary to use the % operator)
                         var dashOffset = dashPatternLength > 0 ? lineLength / thickness : 0;
-                        polyline = this.CreateAndAdd<Polyline>();
+                        polyline = this.CreateAndAdd<Polyline2>();
                         this.SetStroke(polyline, stroke, thickness, lineJoin, dashArray, dashOffset, aliased);
                         pc = new PointCollection(numPointsPerPolyline) { pc.Last() };
                     }
