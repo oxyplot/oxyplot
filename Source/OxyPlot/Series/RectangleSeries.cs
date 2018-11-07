@@ -288,7 +288,7 @@
                             Text = StringHelper.Format(
                             this.ActualCulture,
                             this.TrackerFormatString,
-                            null,
+                            item,
                             this.Title,
                             this.XAxis.Title ?? DefaultXAxisTitle,
                             this.XAxis.GetValue(p.X),
