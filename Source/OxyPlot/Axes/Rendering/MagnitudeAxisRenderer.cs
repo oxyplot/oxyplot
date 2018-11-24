@@ -49,6 +49,18 @@ namespace OxyPlot.Axes
 
             var majorTicks = this.MajorTickValues.Where(x => x > axis.ActualMinimum && x <= axis.ActualMaximum).ToArray();
 
+            if (pass == 0 && this.ExtraPen != null)
+            {
+                var extraTicks = axis.ExtraGridlines;
+                if (extraTicks != null)
+                {
+                    for (int i = 0; i < extraTicks.Length; i++)
+                    {
+                        this.RenderTick(axis, angleAxis, extraTicks[i], this.ExtraPen);
+                    }
+                }
+            }
+
             if (pass == 0 && this.MinorPen != null)
             {
                 var minorTicks = this.MinorTickValues.Where(x => x >= axis.ActualMinimum && x <= axis.ActualMaximum && !majorTicks.Contains(x)).ToArray();

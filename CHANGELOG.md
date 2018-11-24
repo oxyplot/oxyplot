@@ -51,6 +51,8 @@ All notable changes to this project will be documented in this file.
 - ScatterSeries with DateTimeAxis/TimeSpanAxis (#1132)
 - Exporting TextAnnotation with TextColor having 255 alpha to SVG produces opaque text (#1160)
 - Chart is not updated when top and bottom are not visible (#1219)
+- Candle overlap each candle (#623)
+- CandleStick is overlapped when item.open == item.close in the CandleStickAndVolumeSeries (#1245)
 
 ## [1.0.0] - 2016-09-11
 ### Added

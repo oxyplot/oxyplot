@@ -856,6 +856,11 @@ namespace OxyPlot
 
             foreach (var axis in this.Axes)
             {
+                if(!axis.IsAxisVisible)
+                {
+                    continue;
+                }
+
                 if (axis is IColorAxis)
                 {
                     continue;
