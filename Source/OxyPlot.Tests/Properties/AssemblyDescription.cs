@@ -5,10 +5,10 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Reflection;
-
+using System.Threading;
 using NUnit.Framework;
 
 [assembly: AssemblyTitle("OxyPlot.Tests")]
 [assembly: AssemblyDescription("Unit tests for OxyPlot")]
 
-[assembly: RequiresSTA]
+[assembly: Apartment(ApartmentState.STA)]

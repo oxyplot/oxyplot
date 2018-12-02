@@ -288,6 +288,8 @@ namespace OxyPlot
                 }
             }
 
+#pragma warning disable CS0162 // Unreachable code detected
+            // Analyzer isn't properly detecting break in infinite loop and therefore shows a warning.
             return new OxyImageInfo
             {
                 Width = width,
@@ -297,6 +299,7 @@ namespace OxyPlot
                 BitsPerPixel = bitDepth
             };
         }
+#pragma warning restore CS0162 // Unreachable code detected
 
         private static object ReadValue(
             BinaryReader inputReader,
