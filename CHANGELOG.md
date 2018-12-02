@@ -22,6 +22,7 @@ All notable changes to this project will be documented in this file.
 - OxyPlot.ExampleLibrary changed to target netstandard 1.0 and net45 (#946, #1147)
 - OxyPlot.Wpf, OxyPlot.WindowsForms, OxyPlot.Pdf changet to .NET 4.5.2 (#946)
 - Place label below negative ColumnSeries (#1119)
+- Use PackageReference instead of packages.config
 
 ### Deprecated
 - OxyPlot.WP8 package. Use OxyPlot.Windows instead (#996)
