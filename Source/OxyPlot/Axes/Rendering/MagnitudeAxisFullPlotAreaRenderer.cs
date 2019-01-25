@@ -11,6 +11,7 @@ namespace OxyPlot.Axes
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
     using System.Text;
 
@@ -64,22 +65,19 @@ namespace OxyPlot.Axes
             double bottomdistance = Math.Abs(axis.PlotModel.PlotArea.Bottom - magnitudeAxis.MidPoint.Y);
             double leftdistance = Math.Abs(axis.PlotModel.PlotArea.Left - magnitudeAxis.MidPoint.X);
             double rightdistance = Math.Abs(axis.PlotModel.PlotArea.Right - magnitudeAxis.MidPoint.X);
+            OxyRect plotrect = axis.PlotModel.PlotArea;
+            OxyRect distancerect = axis.PlotModel.PlotArea.Offset(-magnitudeAxis.MidPoint.X, -magnitudeAxis.MidPoint.Y);
+            OxyRect maxtickrect = new OxyRect(new ScreenPoint(axis.InverseTransform(distancerect.Left), axis.InverseTransform(distancerect.Top)), new ScreenPoint(axis.InverseTransform(distancerect.Right), axis.InverseTransform(distancerect.Bottom)));
 
-            double maxtick_right = axis.InverseTransform(rightdistance);
-            double maxtick_left = axis.InverseTransform(leftdistance);
-            double maxtick_top = axis.InverseTransform(topdistance);
-            double maxtick_bottom = axis.InverseTransform(bottomdistance);
+            double cornerangle_topright = -degree * Math.Atan2(maxtickrect.Top, maxtickrect.Right);
+            double cornerangle_topleft = -degree * Math.Atan2(maxtickrect.Top, maxtickrect.Left);
+            double cornerangle_bottomleft = 360-degree * Math.Atan2(maxtickrect.Bottom, maxtickrect.Left);
+            double cornerangle_bottomright = 360-degree * Math.Atan2(maxtickrect.Bottom, maxtickrect.Right);
 
-
-            double cornerangle_topright = degree * Math.Atan(topdistance / rightdistance);
-            double cornerangle_topleft = 180 - degree * Math.Atan(topdistance / leftdistance);
-            double cornerangle_bottomleft = 180 + degree * Math.Atan(bottomdistance / leftdistance);
-            double cornerangle_bottomright = 360 - degree * Math.Atan(bottomdistance / rightdistance);
-
-            double cornerdistance_topright = Math.Sqrt(Math.Pow(topdistance, 2) + Math.Pow(rightdistance, 2));
-            double cornerdistance_topleft = Math.Sqrt(Math.Pow(topdistance, 2) + Math.Pow(leftdistance, 2));
-            double cornerdistance_bottomleft = Math.Sqrt(Math.Pow(bottomdistance, 2) + Math.Pow(leftdistance, 2));
-            double cornerdistance_bottomright = Math.Sqrt(Math.Pow(bottomdistance, 2) + Math.Pow(rightdistance, 2));
+            double cornerdistance_topright = Math.Sqrt(Math.Pow(distancerect.Top, 2) + Math.Pow(distancerect.Right, 2));
+            double cornerdistance_topleft = Math.Sqrt(Math.Pow(distancerect.Top, 2) + Math.Pow(distancerect.Left, 2));
+            double cornerdistance_bottomleft = Math.Sqrt(Math.Pow(distancerect.Bottom, 2) + Math.Pow(distancerect.Left, 2));
+            double cornerdistance_bottomright = Math.Sqrt(Math.Pow(distancerect.Bottom, 2) + Math.Pow(distancerect.Right, 2));
 
             double maxtick_topright = axis.InverseTransform(cornerdistance_topright);
             double maxtick_topleft = axis.InverseTransform(cornerdistance_topleft);
@@ -87,8 +85,8 @@ namespace OxyPlot.Axes
             double maxtick_bottomright = axis.InverseTransform(cornerdistance_bottomright);
 
             double maxdistance = Math.Max(cornerdistance_topright, Math.Max(cornerdistance_topleft, Math.Max(cornerdistance_bottomleft, cornerdistance_bottomright)));
-            double maxtick = Math.Max(maxtick_topright, Math.Max(maxtick_topleft, Math.Max(maxtick_bottomleft, maxtick_bottomright)));
-            double mintick = Math.Min(maxtick_topright, Math.Min(maxtick_topleft, Math.Min(maxtick_bottomleft, maxtick_bottomright)));
+            double maxtick = new double[] { maxtick_topright, maxtick_topleft, maxtick_bottomleft, maxtick_bottomright }.Max();
+            double mintick = new double[] { maxtick_topright, maxtick_topleft, maxtick_bottomleft, maxtick_bottomright }.Min();
 
             List<double> majorticks = new List<double>();
             majorticks.AddRange(this.MajorTickValues);
@@ -99,8 +97,11 @@ namespace OxyPlot.Axes
             ExtendTickList(ref minorticks, maxtick);
 
             List<double> textticks = new List<double>();
+            //now the axis angle is relevant
+            double axisorientation = (360 + angleAxis.StartAngle) % 360;
+            double textticklength = GetTickLength(axisorientation, maxtickrect);
             textticks.AddRange(this.MajorTickValues);
-            ExtendTickList(ref textticks, maxtick);
+            ExtendTickList(ref textticks, textticklength);
 
             var majorTicks = majorticks.Where(x => x > axis.ActualMinimum && x <= maxtick).ToArray();
 
@@ -278,6 +279,56 @@ namespace OxyPlot.Axes
                     this.RenderTickText(axis, tickValue, angleAxis);
                 }
             }
+        }
+
+        /// <summary>
+        /// Computes the length in ticks at which the maxtickrect is reached
+        /// </summary>
+        /// <param name="axisorientation">angluar orientation of the axis in degrees</param>
+        /// <param name="maxtickrect">the boundsrect including offset by midpoint converted to ticks</param>
+        /// <returns></returns>
+        private double GetTickLength(double axisorientation, OxyRect maxtickrect)
+        {
+            axisorientation %= 360d;
+            if(axisorientation < 0)
+                axisorientation += 360d;
+            double result = 0;
+
+            double sin = 0;
+            double cos = 0;
+            if (axisorientation > 270)
+            {
+                //below
+                sin = -Math.Sin(rad * axisorientation) * maxtickrect.Bottom;
+                //right
+                cos = Math.Cos(rad * axisorientation) * maxtickrect.Right;
+                result = Math.Sqrt(sin * sin + cos * cos);
+            }
+            else if (axisorientation > 180)
+            {
+                //below
+                sin = -Math.Sin(rad * axisorientation) * maxtickrect.Bottom;
+                //left
+                cos = -Math.Cos(rad * axisorientation) * maxtickrect.Left;
+                result = Math.Sqrt(sin * sin + cos * cos);
+            }
+            else if (axisorientation > 90)
+            {
+                //above
+                sin = Math.Sin(rad * axisorientation) * maxtickrect.Top;
+                //left
+                cos = -Math.Cos(rad * axisorientation) * maxtickrect.Left;
+                result = Math.Sqrt(sin * sin + cos * cos);
+            }
+            else
+            {
+                //above
+                sin = Math.Sin(rad * axisorientation) * maxtickrect.Top;
+                //right
+                cos = Math.Cos(rad * axisorientation) * maxtickrect.Right;
+                result = Math.Sqrt(sin * sin + cos * cos);
+            }
+            return result;
         }
 
         private void ExtendTickList(ref List<double> ticks, double maximum)
