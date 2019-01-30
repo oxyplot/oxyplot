@@ -46,6 +46,11 @@ namespace OxyPlot.WindowsForms
         private readonly Dictionary<OxyColor, Brush> brushes = new Dictionary<OxyColor, Brush>();
 
         /// <summary>
+        /// The pen cache.
+        /// </summary>
+        private readonly Dictionary<GraphicsPenDescription, Pen> pens = new Dictionary<GraphicsPenDescription, Pen>();
+
+        /// <summary>
         /// The string format.
         /// </summary>
         private readonly StringFormat stringFormat;
@@ -105,12 +110,10 @@ namespace OxyPlot.WindowsForms
             {
                 return;
             }
-
-            using (var pen = this.CreatePen(stroke, thickness))
-            {
-                this.g.SmoothingMode = SmoothingMode.HighQuality;
-                this.g.DrawEllipse(pen, (float)rect.Left, (float)rect.Top, (float)rect.Width, (float)rect.Height);
-            }
+            
+            var pen = this.GetCachedPen(stroke, thickness);
+            this.g.SmoothingMode = SmoothingMode.HighQuality;
+            this.g.DrawEllipse(pen, (float)rect.Left, (float)rect.Top, (float)rect.Width, (float)rect.Height);
         }
 
         /// <summary>
@@ -136,10 +139,8 @@ namespace OxyPlot.WindowsForms
             }
 
             this.g.SmoothingMode = aliased ? SmoothingMode.None : SmoothingMode.HighQuality;
-            using (var pen = this.CreatePen(stroke, thickness, dashArray, lineJoin))
-            {
-                this.g.DrawLines(pen, this.ToPoints(points));
-            }
+            var pen = this.GetCachedPen(stroke, thickness, dashArray, lineJoin);
+            this.g.DrawLines(pen, this.ToPoints(points));
         }
 
         /// <summary>
@@ -179,27 +180,8 @@ namespace OxyPlot.WindowsForms
                 return;
             }
 
-            using (var pen = this.CreatePen(stroke, thickness))
-            {
-                if (dashArray != null)
-                {
-                    pen.DashPattern = this.ToFloatArray(dashArray);
-                }
-
-                switch (lineJoin)
-                {
-                    case OxyPlot.LineJoin.Round:
-                        pen.LineJoin = System.Drawing.Drawing2D.LineJoin.Round;
-                        break;
-                    case OxyPlot.LineJoin.Bevel:
-                        pen.LineJoin = System.Drawing.Drawing2D.LineJoin.Bevel;
-                        break;
-
-                    // The default LineJoin is Miter
-                }
-
-                this.g.DrawPolygon(pen, pts);
-            }
+            var pen = this.GetCachedPen(stroke, thickness, dashArray, lineJoin);
+            this.g.DrawPolygon(pen, pts);
         }
 
         /// <summary>
@@ -222,10 +204,8 @@ namespace OxyPlot.WindowsForms
                 return;
             }
 
-            using (var pen = this.CreatePen(stroke, thickness))
-            {
-                this.g.DrawRectangle(pen, (float)rect.Left, (float)rect.Top, (float)rect.Width, (float)rect.Height);
-            }
+            var pen = this.GetCachedPen(stroke, thickness);
+            this.g.DrawRectangle(pen, (float)rect.Left, (float)rect.Top, (float)rect.Width, (float)rect.Height);
         }
 
         /// <summary>
@@ -437,6 +417,7 @@ namespace OxyPlot.WindowsForms
             {
                 i.Value.Dispose();
             }
+            this.imageCache.Clear();
 
             // dispose pens, brushes etc.
             this.stringFormat.Dispose();
@@ -445,6 +426,13 @@ namespace OxyPlot.WindowsForms
             {
                 brush.Dispose();
             }
+            this.brushes.Clear();
+
+            foreach (var pen in this.pens.Values)
+            {
+                pen.Dispose();
+            }
+            this.pens.Clear();
         }
 
         /// <summary>
@@ -509,7 +497,28 @@ namespace OxyPlot.WindowsForms
         }
 
         /// <summary>
-        /// Gets a cached pen.
+        /// Gets the cached pen.
+        /// </summary>
+        /// <param name="stroke">The stroke color.</param>
+        /// <param name="thickness">The thickness.</param>
+        /// <param name="dashArray">The dash array.</param>
+        /// <param name="lineJoin">The line join.</param>
+        /// <returns>A <see cref="Pen" />.</returns>
+        private Pen GetCachedPen(OxyColor stroke, double thickness, double[] dashArray = null, OxyPlot.LineJoin lineJoin = OxyPlot.LineJoin.Miter)
+        {
+            GraphicsPenDescription description = new GraphicsPenDescription(stroke, thickness, dashArray, lineJoin);
+
+            Pen pen;
+            if (this.pens.TryGetValue(description, out pen))
+            {
+                return pen;
+            }
+
+            return this.pens[description] = CreatePen(stroke, thickness, dashArray, lineJoin);
+        }
+
+        /// <summary>
+        /// Creates a pen.
         /// </summary>
         /// <param name="stroke">The stroke.</param>
         /// <param name="thickness">The thickness.</param>
@@ -519,6 +528,7 @@ namespace OxyPlot.WindowsForms
         private Pen CreatePen(OxyColor stroke, double thickness, double[] dashArray = null, OxyPlot.LineJoin lineJoin = OxyPlot.LineJoin.Miter)
         {
             var pen = new Pen(stroke.ToColor(), (float)thickness);
+
             if (dashArray != null)
             {
                 pen.DashPattern = this.ToFloatArray(dashArray);
@@ -532,7 +542,7 @@ namespace OxyPlot.WindowsForms
                 case OxyPlot.LineJoin.Bevel:
                     pen.LineJoin = System.Drawing.Drawing2D.LineJoin.Bevel;
                     break;
-                //// The default LineJoin is Miter
+                // The default LineJoin is Miter
             }
 
             return pen;
