@@ -1,15 +1,15 @@
 OxyPlot is a cross-platform plotting library for .NET
 
--   [Web page](http://oxyplot.org)\
--   [Documentation](http://docs.oxyplot.org/)
--   [Announcements](http://oxyplot.org/announcements) / [atom](http://oxyplot.org/atom.xml)
--   [Discussion forum](http://discussion.oxyplot.org)
--   [Source repository](http://github.com/oxyplot/oxyplot)
--   [Issue tracker](http://github.com/oxyplot/oxyplot/issues)
--   [NuGet packages](http://www.nuget.org/packages?q=oxyplot)
--   [Stack Overflow](http://stackoverflow.com/questions/tagged/oxyplot)
--   [Twitter](https://twitter.com/hashtag/oxyplot)
--   [Gitter](https://gitter.im/oxyplot/oxyplot) (chat)
+- [Web page](http://oxyplot.org/)
+- [Documentation](http://docs.oxyplot.org/)
+- [Announcements](http://oxyplot.org/announcements) / [atom](http://oxyplot.org/atom.xml)
+- [Discussion forum](http://discussion.oxyplot.org/)
+- [Source repository](http://github.com/oxyplot/oxyplot)
+- [Issue tracker](http://github.com/oxyplot/oxyplot/issues)
+- [NuGet packages](http://www.nuget.org/packages?q=oxyplot)
+- [Stack Overflow](http://stackoverflow.com/questions/tagged/oxyplot)
+- [Twitter](https://twitter.com/hashtag/oxyplot)
+- [Gitter](https://gitter.im/oxyplot/oxyplot) (chat)
 
 ![License](https://img.shields.io/badge/license-MIT-red.svg) [![Build status](https://img.shields.io/appveyor/ci/objorke/oxyplot/develop.svg)](https://ci.appveyor.com/project/objorke/oxyplot)
 
@@ -18,9 +18,9 @@ OxyPlot is a cross-platform plotting library for .NET
 #### Getting started
 
 1.  Use the NuGet package manager to add a reference to OxyPlot (see details below if you want to use pre-release packages)
-2.  Add a `PlotView` to your user interface
-3.  Create a `PlotModel` in your code
-4.  Bind the `PlotModel` to the `Model` property of your `PlotView`
+2. Add a `PlotView` to your user interface
+3. Create a `PlotModel` in your code
+4. Bind the `PlotModel` to the `Model` property of your `PlotView`
 
 #### Examples
 
@@ -28,9 +28,9 @@ You can find examples in the `/Source/Examples` folder in the code repository.
 
 #### NuGet packages
 
-The latest pre-release packages are pushed by AppVeyor CI to [myget.org](https://www.myget.org/) To install these packages, set the myget.org package source `https://www.myget.org/F/oxyplot` and remember the "-pre" flag.
+The latest pre-release packages are pushed by AppVeyor CI to [myget.org](https://www.myget.org/). To install these packages, set the myget.org package source `https://www.myget.org/F/oxyplot` and remember the "-pre" flag.
 
-The stable release packages will be pushed to [nuget.org](https://www.nuget.org/packages?q=oxyplot). Note that we have currently have a lot of old (v2015.\*) and pre-release packages on this feed, this will be cleaned up as soon as we release [v1.0](https://github.com/oxyplot/oxyplot/milestones/v1.0).
+The stable release packages will be pushed to [nuget.org](https://www.nuget.org/packages?q=oxyplot). Note that we have  have a lot of old (v2015.\*) and pre-release packages on this feed, and sometimes these show up even if they are unlisted.
 
 | Package                 | Targets                            | Dependencies |
 |-------------------------|------------------------------------|--------------|
