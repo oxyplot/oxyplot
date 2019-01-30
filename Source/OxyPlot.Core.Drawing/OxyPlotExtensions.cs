@@ -1,8 +1,4 @@
-﻿using System.Drawing;
-
-namespace OxyPlot.Core.Drawing
-{
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright company="OxyPlot">
 //   The MIT License (MIT)
 //
@@ -29,52 +25,52 @@ namespace OxyPlot.Core.Drawing
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-   public static class OxyPlotExtensions
-   {
-      /// <summary>
-      /// Converts an OxyRect to a <see cref="Rect"/>.
-      /// </summary>
-      /// <param name="r">
-      /// The rectangle.
-      /// </param>
-      /// <param name="aliased">
-      /// use pixel alignment if set to <c>true</c>.
-      /// </param>
-      /// <returns>
-      /// The converted rectangle.
-      /// </returns>
-      public static Rectangle ToRect(this OxyRect r)
-      {
-         return new Rectangle((int)r.Left, (int)r.Top, (int)r.Width, (int)r.Height);
-      }
+namespace OxyPlot.Core.Drawing
+{
+    using System.Drawing;
 
-      /// <summary>
-      /// Converts a color to a Brush.
-      /// </summary>
-      /// <param name="c">
-      /// The color.
-      /// </param>
-      /// <returns>
-      /// A SolidColorBrush.
-      /// </returns>
-      public static Brush ToBrush(this OxyColor c)
-      {
-         return new SolidBrush(c.ToColor());
-      }
-      
-      /// <summary>
-      /// Converts an OxyColor to a Color.
-      /// </summary>
-      /// <param name="c">
-      /// The color.
-      /// </param>
-      /// <returns>
-      /// A Color.
-      /// </returns>
-      public static Color ToColor(this OxyColor c)
-      {
-         return Color.FromArgb(c.A, c.R, c.G, c.B);
-      }
+    public static class OxyPlotExtensions
+    {
+        /// <summary>
+        /// Converts an <see cref="OxyRect"/> to a <see cref="Rectangle"/>.
+        /// </summary>
+        /// <param name="r">
+        /// The rectangle.
+        /// </param>
+        /// <returns>
+        /// The converted rectangle.
+        /// </returns>
+        public static Rectangle ToRect(this OxyRect r)
+        {
+            return new Rectangle((int)r.Left, (int)r.Top, (int)r.Width, (int)r.Height);
+        }
 
-   }
+        /// <summary>
+        /// Converts a color to a Brush.
+        /// </summary>
+        /// <param name="c">
+        /// The color.
+        /// </param>
+        /// <returns>
+        /// A SolidColorBrush.
+        /// </returns>
+        public static Brush ToBrush(this OxyColor c)
+        {
+            return new SolidBrush(c.ToColor());
+        }
+
+        /// <summary>
+        /// Converts an OxyColor to a Color.
+        /// </summary>
+        /// <param name="c">
+        /// The color.
+        /// </param>
+        /// <returns>
+        /// A Color.
+        /// </returns>
+        public static Color ToColor(this OxyColor c)
+        {
+            return Color.FromArgb(c.A, c.R, c.G, c.B);
+        }
+    }
 }

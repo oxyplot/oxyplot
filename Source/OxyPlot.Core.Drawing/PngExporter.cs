@@ -1,41 +1,21 @@
-﻿using System.Drawing;
-using System.IO;
-
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright company="OxyPlot">
-//   The MIT License (MIT)
-//
-//   Copyright (c) 2012 Oystein Bjorke
-//
-//   Permission is hereby granted, free of charge, to any person obtaining a
-//   copy of this software and associated documentation files (the
-//   "Software"), to deal in the Software without restriction, including
-//   without limitation the rights to use, copy, modify, merge, publish,
-//   distribute, sublicense, and/or sell copies of the Software, and to
-//   permit persons to whom the Software is furnished to do so, subject to
-//   the following conditions:
-//
-//   The above copyright notice and this permission notice shall be included
-//   in all copies or substantial portions of the Software.
-//
-//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-//   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-//   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-//   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-//   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-//   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-//   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="PngExporter.cs" company="OxyPlot">
+//   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
-//   The png exporter.
+//   Provides functionality to export plots to png.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot.Core.Drawing
 {
+    using System.Drawing;
+    using System.IO;
+
     /// <summary>
-    /// The png exporter.
+    /// Provides functionality to export plots to png.
     /// </summary>
-    public class PngExporter
+    public class PngExporter : IExporter
     {
         /// <summary>
         /// The export.
@@ -59,7 +39,7 @@ namespace OxyPlot.Core.Drawing
         {
             using (var bm = new Bitmap(width, height))
             {
-                using (Graphics g = Graphics.FromImage(bm))
+                using (var g = Graphics.FromImage(bm))
                 {
                     if (background != null)
                     {
@@ -75,86 +55,97 @@ namespace OxyPlot.Core.Drawing
             }
         }
 
-       /// <summary>
-       /// Exports the specified <see cref="PlotModel" /> to the specified <see cref="Stream" />.
-       /// </summary>
-       /// <param name="model">The model.</param>
-       /// <param name="stream">The output stream.</param>
-       /// <param name="width"></param>
-       /// <param name="height"></param>
-       /// <param name="background"></param>
-       /// <param name="resolution"></param>
-       public static void Export(IPlotModel model, Stream stream, int width, int height, OxyColor background, float resolution)
-       {
-          using (var bm = ExportToBitmap(model, width, height, background, resolution))
-          {
-             bm.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
-          }
-       }       
-       
-       /// <summary>
-       /// Exports the specified <see cref="PlotModel" /> to the specified <see cref="Stream" />.
-       /// </summary>
-       /// <param name="model">The model.</param>
-       /// <param name="stream">The output stream.</param>
-       /// <param name="width"></param>
-       /// <param name="height"></param>
-       /// <param name="background"></param>
-       /// <param name="resolution"></param>
-       public static Stream ExportToStream(IPlotModel model, int width, int height, OxyColor background, float resolution = 96)
-       {
-          var stream = new MemoryStream();
-          using (var bm = ExportToBitmap(model, width, height, background, resolution))
-          {
-             bm.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
-             stream.Position = 0;
-             return stream;
-          }
-       }
+        /// <summary>
+        /// Exports the specified <see cref="PlotModel" /> to the specified <see cref="Stream" />.
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <param name="stream">The output stream.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="background">The background color.</param>
+        /// <param name="resolution">The resolution in dpi (defaults to 96dpi).</param>
+        public static void Export(IPlotModel model, Stream stream, int width, int height, OxyColor background, double resolution = 96)
+        {
+            using (var bm = ExportToBitmap(model, width, height, background, resolution))
+            {
+                bm.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
+            }
+        }
 
-       /// <summary>
-       /// Exports the specified <see cref="PlotModel" /> to a <see cref="Bitmap" />.
-       /// </summary>
-       /// <param name="model">The model to export.</param>
-       /// <param name="width"></param>
-       /// <param name="height"></param>
-       /// <param name="background"></param>
-       /// <param name="resolution"></param>
-       /// <returns>A bitmap.</returns>
-       public static Bitmap ExportToBitmap(IPlotModel model, int width, int height, OxyColor background, float resolution)
-       {
-          var bm = new Bitmap(width, height);
-          using (var g = Graphics.FromImage(bm))
-          {
-             if (background.IsVisible())
-             {
-                using (var brush = background.ToBrush())
+        /// <summary>
+        /// Exports the specified <see cref="PlotModel" /> to the specified <see cref="Stream" />.
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="background">The background color.</param>
+        /// <param name="resolution">The resolution in dpi (defaults to 96dpi).</param>
+        public static Stream ExportToStream(IPlotModel model, int width, int height, OxyColor background, double resolution = 96)
+        {
+            var stream = new MemoryStream();
+            using (var bm = ExportToBitmap(model, width, height, background, resolution))
+            {
+                bm.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
+                stream.Position = 0;
+                return stream;
+            }
+        }
+
+        /// <summary>
+        /// Exports the specified <see cref="PlotModel" /> to a <see cref="Bitmap" />.
+        /// </summary>
+        /// <param name="model">The model to export.</param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="background"></param>
+        /// <param name="resolution"></param>
+        /// <returns>A bitmap.</returns>
+        public static Bitmap ExportToBitmap(IPlotModel model, int width, int height, OxyColor background, double resolution = 96)
+        {
+            var bm = new Bitmap(width, height);
+            using (var g = Graphics.FromImage(bm))
+            {
+                if (background.IsVisible())
                 {
-                   g.FillRectangle(brush, 0, 0, width, height);
+                    using (var brush = background.ToBrush())
+                    {
+                        g.FillRectangle(brush, 0, 0, width, height);
+                    }
                 }
-             }
 
-             using (var rc = new GraphicsRenderContext(g) { RendersToScreen = false })
-             {
-                model.Update(true);
-                model.Render(rc, width, height);
-             }
+                using (var rc = new GraphicsRenderContext(g) { RendersToScreen = false })
+                {
+                    model.Update(true);
+                    model.Render(rc, width, height);
+                }
 
-             bm.SetResolution(resolution, resolution);
-             return bm;
-          }
-       }
+                // this throws an exception
+                // bm.SetResolution(resolution, resolution);
+                return bm;
+            }
+        }
 
-       public PngExporter()
-       {
-       }
+        /// <summary>
+        /// Gets or sets the width in pixels of the exported png.
+        /// </summary>
+        public int Width { get; set; }
 
-       public int Width { get; set; }
-       public int Height { get; set; }
-       public OxyColor Background { get; set; }
-       public float Resolution { get; set; }
+        /// <summary>
+        /// Gets or sets the height in pixels of the exported png.
+        /// </summary>
+        public int Height { get; set; }
 
-       public void Export(IPlotModel model, Stream stream) => Export(model, stream, Width, Height, OxyColors.White, Resolution);
-       public void ExportToFile(IPlotModel model, string filename) => Export(model, filename, Width, Height, Background.ToBrush());
+        /// <summary>
+        /// Gets or sets the background color of the exported png.
+        /// </summary>
+        public OxyColor Background { get; set; }
+        
+        /// <summary>
+        /// Gets or sets the resolution in dpi of the exported png.
+        /// </summary>
+        public double Resolution { get; set; }
+
+        public void Export(IPlotModel model, Stream stream) => Export(model, stream, this.Width, this.Height, OxyColors.White, this.Resolution);
+        public void ExportToFile(IPlotModel model, string filename) => Export(model, filename, this.Width, this.Height, this.Background.ToBrush());
     }
 }
