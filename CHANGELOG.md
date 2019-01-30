@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+### Added 
+- added .NET Core port of PngExporter
+
 ### Added
 - New PolarPlot filling the full plot area (#1056)
 
