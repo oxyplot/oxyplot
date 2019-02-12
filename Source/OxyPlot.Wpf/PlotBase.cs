@@ -52,6 +52,11 @@ namespace OxyPlot.Wpf
         private FrameworkElement currentTracker;
 
         /// <summary>
+        /// The current tracker template.
+        /// </summary>
+        private ControlTemplate currentTrackerTemplate;
+
+        /// <summary>
         /// The grid.
         /// </summary>
         private Grid grid;
@@ -181,6 +186,7 @@ namespace OxyPlot.Wpf
             {
                 this.overlays.Children.Remove(this.currentTracker);
                 this.currentTracker = null;
+                this.currentTrackerTemplate = null;
             }
         }
 
@@ -341,14 +347,15 @@ namespace OxyPlot.Wpf
                 return;
             }
 
-            var tracker = new ContentControl { Template = trackerTemplate };
-
             // ReSharper disable once RedundantNameQualifier
-            if (!object.ReferenceEquals(tracker, this.currentTracker))
+            if (!object.ReferenceEquals(trackerTemplate, this.currentTrackerTemplate))
             {
                 this.HideTracker();
+
+                var tracker = new ContentControl { Template = trackerTemplate };
                 this.overlays.Children.Add(tracker);
                 this.currentTracker = tracker;
+                this.currentTrackerTemplate = trackerTemplate;
             }
 
             if (this.currentTracker != null)
