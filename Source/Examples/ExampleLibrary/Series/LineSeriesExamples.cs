@@ -206,7 +206,7 @@ namespace ExampleLibrary
             var model = new PlotModel { Title = "LineSeries with LineLegendPosition" };
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, MinimumPadding = 0.1, MaximumPadding = 0.1 });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
-            var s1 = CreateExampleLineSeries();
+            var s1 = CreateExampleLineSeries(246);
             s1.Title = "Start";
             s1.MarkerType = MarkerType.Circle;
             s1.LineLegendPosition = LineLegendPosition.Start;
@@ -217,7 +217,36 @@ namespace ExampleLibrary
             s2.MarkerType = MarkerType.Circle;
             s2.LineLegendPosition = LineLegendPosition.End;
             model.Series.Add(s2);
+            var s3 = CreateExampleLineSeries(82);
+            s3.Title = "StartInside";
+            s3.MarkerType = MarkerType.Circle;
+            s3.LineLegendPosition = LineLegendPosition.StartInside;
+            model.Series.Add(s3);
 
+            var s4 = CreateExampleLineSeries(50);
+            s4.Title = "HalfWayAbove";
+            s4.MarkerType = MarkerType.Circle;
+            s4.LineLegendPosition = LineLegendPosition.HalfWayAbove;
+            model.Series.Add(s4);
+
+            var s5 = CreateExampleLineSeries(164);
+            s5.Title = "HalfWayBelow";
+            s5.MarkerType = MarkerType.Circle;
+            s5.LineLegendPosition = LineLegendPosition.HalfWayBelow;
+            model.Series.Add(s5);
+
+            var s6 = CreateExampleLineSeries(123);
+            s6.Title = "HalfWayBelowSloped";
+            s6.MarkerType = MarkerType.Circle;
+            s6.LineLegendPosition = LineLegendPosition.HalfWayBelowSloped;
+            model.Series.Add(s6);
+
+            var s7 = CreateExampleLineSeries();
+            s7.Title = "HalfWayAboveSloped";
+            s7.MarkerType = MarkerType.Circle;
+            s7.LineLegendPosition = LineLegendPosition.HalfWayAboveSloped;
+            model.Series.Add(s7);
+            
             return model;
         }
 

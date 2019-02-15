@@ -25,6 +25,30 @@ namespace OxyPlot.Series
         Start,
 
         /// <summary>
+        /// Render legend at the start of the line inside the plot area.
+        /// </summary>
+        StartInside,
+
+        /// <summary>
+        /// Render legend above the midpoint of the line inside the plot area.
+        /// </summary>
+        HalfWayAbove,
+
+        /// <summary>
+        /// Render legend above the midpoint of the line inside the plot area. This will follow the slope of the line
+        /// </summary>
+        HalfWayAboveSloped,
+
+        /// <summary>
+        /// Render legend below the midpoint of the line inside the plot area.
+        /// </summary>
+        HalfWayBelow,
+
+        /// <summary>
+        /// Render legend below the midpoint of the line inside the plot area. This will follow the slope of the line.
+        /// </summary>
+        HalfWayBelowSloped,
+        /// <summary>
         /// Render legend at the end of the line.
         /// </summary>
         End

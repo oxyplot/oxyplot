@@ -672,25 +672,70 @@ namespace OxyPlot.Series
             // Find the position
             DataPoint point;
             var ha = HorizontalAlignment.Left;
-            double dx;
+            var va = VerticalAlignment.Middle;
+            double dx = 0;
+            double dy = 0;
+            double rotation = 0;
+            DataPoint point2;
             switch (this.LineLegendPosition)
             {
                 case LineLegendPosition.Start:
-
                     // start position
                     point = this.ActualPoints[0];
                     ha = HorizontalAlignment.Right;
                     dx = -4;
                     break;
-                default:
+                case LineLegendPosition.StartInside:
 
-                    // end position
-                    point = this.ActualPoints[this.ActualPoints.Count - 1];
+                    // start position
+                    point = this.ActualPoints[0];
+                    ha = HorizontalAlignment.Left;
+                    va = VerticalAlignment.Bottom;
                     dx = 4;
                     break;
+                case LineLegendPosition.HalfWayAbove:
+                    point = this.ActualPoints[this.ActualPoints.Count / 2];
+                    dx = 0;
+                    dy = -4;
+                    ha = HorizontalAlignment.Center;
+                    va = VerticalAlignment.Bottom;
+                    break;
+                case LineLegendPosition.HalfWayAboveSloped:
+                    point = this.ActualPoints[this.ActualPoints.Count / 2];
+                    point2 = this.ActualPoints[this.ActualPoints.Count / 2 - 1];
+                    rotation = Math.Atan2(point.y - point2.y, point.x - point2.x) * -360 / Math.PI;
+                    dx = 0;
+                    dy = -4;
+                    ha = HorizontalAlignment.Center;
+                    va = VerticalAlignment.Bottom;
+                    break;
+                case LineLegendPosition.HalfWayBelow:
+                    point = this.ActualPoints[this.ActualPoints.Count / 2 - 1];
+                    dx = 0;
+                    dy = 4;
+                    ha = HorizontalAlignment.Center;
+                    va = VerticalAlignment.Top;
+                    break;
+                case LineLegendPosition.HalfWayBelowSloped:
+                    point = this.ActualPoints[this.ActualPoints.Count / 2];
+                    point2 = this.ActualPoints[this.ActualPoints.Count / 2 - 1];
+                    rotation = Math.Atan2(point.y - point2.y, point.x - point2.x) * -360 / Math.PI;
+                    dx = 0;
+                    dy = 4;
+                    ha = HorizontalAlignment.Center;
+                    va = VerticalAlignment.Top;
+                    break;
+                case LineLegendPosition.End:
+                    // end position
+                    dy = 4;
+                    point = this.ActualPoints[this.ActualPoints.Count - 1];
+                    break;
+                default:
+                    //was end previously
+                    throw new Exception("Line legend position not supported");
             }
 
-            var pt = this.Transform(point) + new ScreenVector(dx, 0);
+            var pt = this.Transform(point) + new ScreenVector(dx, dy);
 
             // Render the legend
             rc.DrawText(
@@ -700,9 +745,9 @@ namespace OxyPlot.Series
                 this.ActualFont,
                 this.ActualFontSize,
                 this.ActualFontWeight,
-                0,
+                rotation,
                 ha,
-                VerticalAlignment.Middle);
+                va);
         }
 
         /// <summary>

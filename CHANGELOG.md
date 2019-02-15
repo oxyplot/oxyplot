@@ -270,6 +270,9 @@ All notable changes to this project will be documented in this file.
 - Add overridable Axis.FormatValueOverride (#181)
 - PngExporter text formatting (#170)
 
+### Added
+  Added additional line legend positions to line series. It was previously only Start and End.
+
 [Unreleased]: https://github.com/oxyplot/oxyplot/compare/v1.0.0...HEAD
 [1.0.0]: https://github.com/oxyplot/oxyplot/compare/v0.2014.1.546...v1.0.0
 [0.2014.1.546]: https://github.com/oxyplot/oxyplot/compare/v0.0.1...v0.2014.1.546
