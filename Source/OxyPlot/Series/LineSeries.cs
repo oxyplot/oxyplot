@@ -18,7 +18,7 @@ namespace OxyPlot.Series
     /// </summary>
     public class LineSeries : DataPointSeries
     {
-        /// <summary>
+        /// <summary>C:\Users\mehringer\source\repos\SecondShiftEngineer\oxyplot\Source\OxyPlot\Series\LineSeries.cs
         /// The divisor value used to calculate tolerance for line smoothing.
         /// </summary>
         private const double ToleranceDivisor = 200;
@@ -685,12 +685,16 @@ namespace OxyPlot.Series
                     ha = HorizontalAlignment.Right;
                     dx = -4;
                     break;
-                case LineLegendPosition.StartInside:
-
-                    // start position
+                case LineLegendPosition.StartInside:                    
                     point = this.ActualPoints[0];
                     ha = HorizontalAlignment.Left;
                     va = VerticalAlignment.Bottom;
+                    dx = 4;
+                    break;
+                case LineLegendPosition.StartInsideBelow:
+                    point = this.ActualPoints[0];
+                    ha = HorizontalAlignment.Left;
+                    va = VerticalAlignment.Top;
                     dx = 4;
                     break;
                 case LineLegendPosition.HalfWayAbove:
@@ -698,6 +702,20 @@ namespace OxyPlot.Series
                     dx = 0;
                     dy = -4;
                     ha = HorizontalAlignment.Center;
+                    va = VerticalAlignment.Bottom;
+                    break;
+                case LineLegendPosition.HalfWayAboveRight:
+                    point = this.ActualPoints[this.ActualPoints.Count / 2];
+                    dx = 0;
+                    dy = -4;
+                    ha = HorizontalAlignment.Left;
+                    va = VerticalAlignment.Bottom;
+                    break;
+                case LineLegendPosition.HalfWayAboveLeft:
+                    point = this.ActualPoints[this.ActualPoints.Count / 2];
+                    dx = 0;
+                    dy = -4;
+                    ha = HorizontalAlignment.Right;
                     va = VerticalAlignment.Bottom;
                     break;
                 case LineLegendPosition.HalfWayAboveSloped:
@@ -714,6 +732,20 @@ namespace OxyPlot.Series
                     dx = 0;
                     dy = 4;
                     ha = HorizontalAlignment.Center;
+                    va = VerticalAlignment.Top;
+                    break;
+                case LineLegendPosition.HalfWayBelowRight:
+                    point = this.ActualPoints[this.ActualPoints.Count / 2 - 1];
+                    dx = 0;
+                    dy = 4;
+                    ha = HorizontalAlignment.Left;
+                    va = VerticalAlignment.Top;
+                    break;
+                case LineLegendPosition.HalfWayBelowLeft:
+                    point = this.ActualPoints[this.ActualPoints.Count / 2 - 1];
+                    dx = 0;
+                    dy = 4;
+                    ha = HorizontalAlignment.Right;
                     va = VerticalAlignment.Top;
                     break;
                 case LineLegendPosition.HalfWayBelowSloped:
