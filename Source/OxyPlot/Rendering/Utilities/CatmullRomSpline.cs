@@ -24,6 +24,7 @@ namespace OxyPlot
         /// The alpha.
         /// </summary>
         public double Alpha { get; }
+        public int MaxSegments { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref = "CatmullRomSpline" /> class.
@@ -32,6 +33,7 @@ namespace OxyPlot
         public CatmullRomSpline(double alpha)
         {
             this.Alpha = alpha;
+            this.MaxSegments = 100;
         }
 
         /// <summary>
@@ -41,8 +43,9 @@ namespace OxyPlot
         /// <param name="isClosed">True if the spline is closed.</param>
         /// <param name="tolerance">The tolerance.</param>
         /// <returns>A list of data points.</returns>
-        public List<DataPoint> CreateSpline(List<DataPoint> points, bool isClosed, double tolerance) {
-            return CreateSpline(points, this.Alpha, isClosed, tolerance);
+        public List<DataPoint> CreateSpline(List<DataPoint> points, bool isClosed, double tolerance)
+        {
+            return CreateSpline(points, this.Alpha, isClosed, tolerance, MaxSegments);
         }
 
         /// <summary>
@@ -52,8 +55,9 @@ namespace OxyPlot
         /// <param name="isClosed">True if the spline is closed.</param>
         /// <param name="tolerance">The tolerance.</param>
         /// <returns>A list of screen points.</returns>
-        public List<ScreenPoint> CreateSpline(IList<ScreenPoint> points, bool isClosed, double tolerance) {
-            return CreateSpline(points, this.Alpha, isClosed, tolerance);
+        public List<ScreenPoint> CreateSpline(IList<ScreenPoint> points, bool isClosed, double tolerance)
+        {
+            return CreateSpline(points, this.Alpha, isClosed, tolerance, MaxSegments);
         }
 
         /// <summary>
@@ -64,10 +68,10 @@ namespace OxyPlot
         /// <param name="isClosed">True if the spline is closed.</param>
         /// <param name="tolerance">The tolerance.</param>
         /// <returns>A list of data points.</returns>
-        internal static List<DataPoint> CreateSpline(List<DataPoint> points, double alpha, bool isClosed, double tolerance)
+        internal static List<DataPoint> CreateSpline(List<DataPoint> points, double alpha, bool isClosed, double tolerance, int maxSegments)
         {
             var screenPoints = points.Select(p => new ScreenPoint(p.X, p.Y)).ToList();
-            var interpolatedScreenPoints = CreateSpline(screenPoints, alpha, isClosed, tolerance);
+            var interpolatedScreenPoints = CreateSpline(screenPoints, alpha, isClosed, tolerance, maxSegments);
             var interpolatedDataPoints = new List<DataPoint>(interpolatedScreenPoints.Count);
 
             foreach (var s in interpolatedScreenPoints)
@@ -87,7 +91,7 @@ namespace OxyPlot
         /// <param name="tolerance">The tolerance.</param>
         /// <returns>A list of screen points.</returns>
         internal static List<ScreenPoint> CreateSpline(
-            IList<ScreenPoint> points, double alpha, bool isClosed, double tolerance)
+            IList<ScreenPoint> points, double alpha, bool isClosed, double tolerance, int maxSegments)
         {
             var result = new List<ScreenPoint>();
             if (points == null)
@@ -111,12 +115,12 @@ namespace OxyPlot
             {
                 if (!isClosed)
                 {
-                    Segment(result, points[0], points[0], points[1], points[1], alpha, tolerance);
+                    Segment(result, points[0], points[0], points[1], points[1], alpha, tolerance, maxSegments);
                 }
                 else
                 {
-                    Segment(result, points[1], points[0], points[1], points[0], alpha, tolerance);
-                    Segment(result, points[0], points[1], points[0], points[1], alpha, tolerance);
+                    Segment(result, points[1], points[0], points[1], points[0], alpha, tolerance, maxSegments);
+                    Segment(result, points[0], points[1], points[0], points[1], alpha, tolerance, maxSegments);
                 }
             }
             else
@@ -132,7 +136,8 @@ namespace OxyPlot
                             points[1],
                             points[2],
                             alpha,
-                            tolerance);
+                            tolerance,
+                            maxSegments);
                     }
                     else if (i == n - 2)
                     {
@@ -143,18 +148,19 @@ namespace OxyPlot
                             points[i + 1],
                             isClosed ? points[0] : points[i + 1],
                             alpha,
-                            tolerance);
+                            tolerance,
+                            maxSegments);
                     }
                     else if (i == n - 1)
                     {
                         if (isClosed)
                         {
-                            Segment(result, points[i - 1], points[i], points[0], points[1], alpha, tolerance);
+                            Segment(result, points[i - 1], points[i], points[0], points[1], alpha, tolerance, maxSegments);
                         }
                     }
                     else
                     {
-                        Segment(result, points[i - 1], points[i], points[i + 1], points[i + 2], alpha, tolerance);
+                        Segment(result, points[i - 1], points[i], points[i + 1], points[i + 2], alpha, tolerance, maxSegments);
                     }
                 }
             }
@@ -172,7 +178,7 @@ namespace OxyPlot
         /// <param name="pt3">The pt 3.</param>
         /// <param name="alpha">The alpha.</param>
         /// <param name="tolerance">The tolerance.</param>
-        /// <param name="maxSegments">The maximum number of segments. Default is <c>1000</c>.</param>
+        /// <param name="maxSegments">The maximum number of segments.</param>
         private static void Segment(
             IList<ScreenPoint> points,
             ScreenPoint pt0,
@@ -181,7 +187,7 @@ namespace OxyPlot
             ScreenPoint pt3,
             double alpha,
             double tolerance,
-            int maxSegments = 1000)
+            int maxSegments)
         {
             if (Equals(pt1, pt2))
             {
@@ -204,7 +210,12 @@ namespace OxyPlot
             double t2 = GetT(t1, pt1, pt2, alpha);
             double t3 = GetT(t2, pt2, pt3, alpha);
 
-            int iterations = Math.Min((int)((Math.Abs(pt1.X - pt2.X) + Math.Abs(pt1.Y - pt2.Y)) / tolerance), maxSegments);
+
+            int iterations = (int)((Math.Abs(pt1.X - pt2.X) + Math.Abs(pt1.Y - pt2.Y)) / tolerance);
+            //Make sure it is positive (negative means an integer overflow)
+            iterations = Math.Max(0, iterations);
+            //Never more iterations than maxSegments
+            iterations = Math.Min(maxSegments, iterations);
             for (double t = t1; t < t2; t += (t2 - t1) / iterations)
             {
                 ScreenPoint a1 = Sum(Mult((t1 - t) / (t1 - t0), pt0), Mult((t - t0) / (t1 - t0), pt1));
