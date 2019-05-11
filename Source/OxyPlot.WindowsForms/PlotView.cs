@@ -316,7 +316,7 @@ namespace OxyPlot.WindowsForms
 
             this.trackerLabel.Text = data.ToString();
             this.trackerLabel.Top = (int)data.Position.Y - this.trackerLabel.Height;
-            this.trackerLabel.Left = (int)data.Position.X - this.trackerLabel.Width / 2;
+            this.trackerLabel.Left = (int)data.Position.X - (this.trackerLabel.Width / 2);
             this.trackerLabel.Visible = true;
         }
 
@@ -504,12 +504,34 @@ namespace OxyPlot.WindowsForms
         }
 
         /// <summary>
+        /// Disposes the PlotView.
+        /// </summary>
+        /// <param name="disposing">Whether to dispose managed resources or not.</param>
+        protected override void Dispose(bool disposing)
+        {
+            bool disposed = this.IsDisposed;
+
+            base.Dispose(disposing);
+
+            if (disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                this.renderContext.Dispose();
+            }
+        }
+
+        /// <summary>
         /// Gets the current modifier keys.
         /// </summary>
         /// <returns>A <see cref="OxyModifierKeys" /> value.</returns>
         private static OxyModifierKeys GetModifiers()
         {
             var modifiers = OxyModifierKeys.None;
+
             // ReSharper disable once RedundantNameQualifier
             if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift)
             {
