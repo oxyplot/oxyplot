@@ -98,6 +98,9 @@ namespace OxyPlot.WindowsForms
             this.ZoomRectangleCursor = Cursors.SizeNWSE;
             this.ZoomHorizontalCursor = Cursors.SizeWE;
             this.ZoomVerticalCursor = Cursors.SizeNS;
+
+            var DoCopy = new DelegatePlotCommand<OxyKeyEventArgs>((view, controller, args) => this.DoCopy(view, args));
+            ActualController.BindKeyDown(OxyKey.C, OxyModifierKeys.Control, DoCopy);
         }
 
         /// <summary>
@@ -551,6 +554,28 @@ namespace OxyPlot.WindowsForms
             }
 
             return modifiers;
+        }
+
+        /// <summary>
+        /// Performs the copy operation.
+        /// </summary>
+        private void DoCopy(IPlotView view, OxyInputEventArgs args)
+        {
+            var background = this.ActualModel.Background.IsVisible() ? this.ActualModel.Background : ActualModel.Background;
+            if (background.IsInvisible())
+            {
+                background = OxyColors.White;
+            }
+
+            var exporter = new PngExporter
+            {
+                Width = this.ClientRectangle.Width,
+                Height = this.ClientRectangle.Height,
+                Background = background
+            };
+
+            var bitmap = exporter.ExportToBitmap(this.ActualModel);
+            Clipboard.SetImage(bitmap);
         }
     }
 }
