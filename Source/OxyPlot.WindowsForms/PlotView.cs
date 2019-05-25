@@ -100,7 +100,7 @@ namespace OxyPlot.WindowsForms
             this.ZoomVerticalCursor = Cursors.SizeNS;
 
             var DoCopy = new DelegatePlotCommand<OxyKeyEventArgs>((view, controller, args) => this.DoCopy(view, args));
-            ActualController.BindKeyDown(OxyKey.C, OxyModifierKeys.Control, DoCopy);
+            this.ActualController.BindKeyDown(OxyKey.C, OxyModifierKeys.Control, DoCopy);
         }
 
         /// <summary>
@@ -561,7 +561,7 @@ namespace OxyPlot.WindowsForms
         /// </summary>
         private void DoCopy(IPlotView view, OxyInputEventArgs args)
         {
-            var background = this.ActualModel.Background.IsVisible() ? this.ActualModel.Background : ActualModel.Background;
+            var background = this.ActualModel.Background.IsVisible() ? this.ActualModel.Background : this.ActualModel.Background;
             if (background.IsInvisible())
             {
                 background = OxyColors.White;
