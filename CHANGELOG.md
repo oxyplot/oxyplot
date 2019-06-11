@@ -9,7 +9,7 @@ All notable changes to this project will be documented in this file.
 - New PolarPlot filling the full plot area (#1056)
 
 ### Added
-- Command to copy plot to clipboard in winforms the same as wpf (Ctrl-C) (#1297)
+- Command to copy plot to the clipboard in Windows Forms (Ctrl-C) (#1297)
 - Added Avalonia based renderer and control library (based off OxyPlot.Wpf).
 - New `InterpolationAlgorithm` property in LineSeries and PolylineAnnotation (#494)
 - Catmull-Rom spline interpolation algorithms (#494)
