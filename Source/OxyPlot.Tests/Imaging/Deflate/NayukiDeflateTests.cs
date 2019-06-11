@@ -27,18 +27,18 @@ namespace OxyPlot.Tests
     {
         /* Test cases */
 
-        [Test, ExpectedException]
+        [Test]
         public void testReservedBlockType()
         {
             // Reserved block type
-            test("1 11 00000", string.Empty);
+            Assert.Throws<FormatException>(() => test("1 11 00000", string.Empty));
         }
 
-        [Test, ExpectedException]
+        [Test]
         public void testEofInBlockType()
         {
             // Partial block type
-            test("1 0", string.Empty);
+            Assert.Throws<Exception>(() => test("1 0", string.Empty));
         }
 
         [Test]
@@ -55,7 +55,7 @@ namespace OxyPlot.Tests
             test("1 00 00000   1100000000000000 0011111111111111   10100000 00101000 11000100", "05 14 23");
         }
 
-        [Test, Ignore]
+        [Test, Ignore("")] // TODO: add ignore reason.
         public void testUncompressedTwoBlocks()
         {
             // Uncompressed block len=1: 05
@@ -63,33 +63,33 @@ namespace OxyPlot.Tests
             test("0 00 00000   0100000000000000 1011111111111111   10100000 00101000   1 00 00000   1000000000000000 0111111111111111   11000100", "05 14 23");
         }
 
-        [Test, ExpectedException, Ignore]
+        [Test, Ignore("")] // TODO: add ignore reason.
         public void testUncompressedEofBeforeLength()
         {
             // Uncompressed block (partial padding) (no length)
-            test("1 00 000", string.Empty);
+            Assert.Throws<FormatException>(() => test("1 00 000", string.Empty));
         }
 
-        [Test, ExpectedException]
+        [Test]
         public void testUncompressedEofInLength()
         {
             // Uncompressed block (partial length)
-            test("1 00 00000 0000000000", string.Empty);
+            Assert.Throws<Exception>(() => test("1 00 00000 0000000000", string.Empty));
         }
 
-        [Test, ExpectedException]
+        [Test]
         public void testUncompressedMismatchedLength()
         {
             // Uncompressed block (mismatched len and nlen)
-            test("1 00 00000 0010000000010000 1111100100110101", string.Empty);
+            Assert.Throws<FormatException>(() => test("1 00 00000 0010000000010000 1111100100110101", string.Empty));
         }
 
-        [Test, ExpectedException, Ignore]
+        [Test, Ignore("")] // TODO: add ignore reason.
         public void testUncompressedBlockNoFinalBlock()
         {
             // Uncompressed block len=0: (empty)
             // No final block
-            test("0 00 00000   0000000000000000 1111111111111111", string.Empty);
+            Assert.Throws<FormatException>(() => test("0 00 00000   0000000000000000 1111111111111111", string.Empty));
         }
 
         [Test]
@@ -127,32 +127,32 @@ namespace OxyPlot.Tests
             test("1 10 10111110 10111111 0000011 00001 0000000", "8E 8F 8E 8F 8E 8F 8E");
         }
 
-        [Test, ExpectedException]
+        [Test]
         public void testFixedHuffmanInvalidLengthCode286()
         {
             // Fixed Huffman block: #286
-            test("1 10 11000110", string.Empty);
+            Assert.Throws<FormatException>(() => test("1 10 11000110", string.Empty));
         }
 
-        [Test, ExpectedException]
+        [Test]
         public void testFixedHuffmanInvalidLengthCode287()
         {
             // Fixed Huffman block: #287
-            test("1 10 11000111", string.Empty);
+            Assert.Throws<FormatException>(() => test("1 10 11000111", string.Empty));
         }
 
-        [Test, ExpectedException]
+        [Test]
         public void testFixedHuffmanInvalidDistanceCode30()
         {
             // Fixed Huffman block: 00 #257 #30
-            test("1 10 00110000 0000001 11110", string.Empty);
+            Assert.Throws<FormatException>(() => test("1 10 00110000 0000001 11110", string.Empty));
         }
 
-        [Test, ExpectedException]
+        [Test]
         public void testFixedHuffmanInvalidDistanceCode31()
         {
             // Fixed Huffman block: 00 #257 #31
-            test("1 10 00110000 0000001 11111", string.Empty);
+            Assert.Throws<FormatException>(() => test("1 10 00110000 0000001 11111", string.Empty));
         }
 
         [Test]
@@ -191,7 +191,7 @@ namespace OxyPlot.Tests
             test(blockHeader + codeCounts + codeLenCodeLens + codeLens + data, string.Empty);
         }
 
-        [Test, ExpectedException]
+        [Test]
         public void testDynamicHuffmanCodeLengthRepeatAtStart()
         {
             // Dynamic Huffman block:
@@ -202,10 +202,10 @@ namespace OxyPlot.Tests
             var codeCounts = "00000 00000 0111";
             var codeLenCodeLens = "100 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 100";
             var codeLens = "1";
-            test(blockHeader + codeCounts + codeLenCodeLens + codeLens, string.Empty);
+            Assert.Throws<FormatException>(() => test(blockHeader + codeCounts + codeLenCodeLens + codeLens, string.Empty));
         }
 
-        [Test, ExpectedException]
+        [Test]
         public void testDynamicHuffmanTooManyCodeLengthItems()
         {
             // Dynamic Huffman block:
@@ -216,7 +216,7 @@ namespace OxyPlot.Tests
             var codeCounts = "00000 00000 0111";
             var codeLenCodeLens = "000 000 100 000 000 000 000 000 000 000 000 000 000 000 000 000 000 100";
             var codeLens = "0 0 11111111 10011011";
-            test(blockHeader + codeCounts + codeLenCodeLens + codeLens, string.Empty);
+            Assert.Throws<FormatException>(() => test(blockHeader + codeCounts + codeLenCodeLens + codeLens, string.Empty));
         }
 
         /* Utility method */

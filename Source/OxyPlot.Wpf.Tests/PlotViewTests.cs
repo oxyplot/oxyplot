@@ -28,7 +28,7 @@ namespace OxyPlot.Wpf.Tests
             /// <summary>
             /// Gets the actual model when model is not set.
             /// </summary>
-            [Test, Ignore]
+            [Test, Ignore("")] // TODO: add ignore reason.
             public void GetDefault()
             {
                 var w = new Window();

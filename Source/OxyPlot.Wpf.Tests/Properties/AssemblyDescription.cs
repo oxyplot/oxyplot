@@ -5,7 +5,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Reflection;
-
+using System.Threading;
 using NUnit.Framework;
 
 // General Information about an assembly is controlled through the following 
@@ -14,5 +14,4 @@ using NUnit.Framework;
 [assembly: AssemblyTitle("OxyPlot.Wpf.Tests")]
 [assembly: AssemblyDescription("")]
 
-// http://www.nunit.org/index.php?p=requiresSTA&r=2.5
-[assembly: RequiresSTA]
+[assembly: Apartment(ApartmentState.STA)]

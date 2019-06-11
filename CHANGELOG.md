@@ -4,12 +4,12 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Fixed
-- A problem with plotting large ranges in OxyPlot.WPF, leading to exceptions and app crashes, has been solved (no issue number).
+- A problem with plotting large ranges in OxyPlot.WPF, leading to exceptions and app crashes (#1303)
 
 ### Added
+- .NET Core port of PngExporter
 - New PolarPlot filling the full plot area (#1056)
-
-### Added
+- Command to copy plot to the clipboard in Windows Forms (Ctrl-C) (#1297)
 - Added Avalonia based renderer and control library (based off OxyPlot.Wpf).
 - New `InterpolationAlgorithm` property in LineSeries and PolylineAnnotation (#494)
 - Catmull-Rom spline interpolation algorithms (#494)
@@ -26,6 +26,9 @@ All notable changes to this project will be documented in this file.
 - OxyPlot.ExampleLibrary changed to target netstandard 1.0 and net45 (#946, #1147)
 - OxyPlot.Wpf, OxyPlot.WindowsForms, OxyPlot.Pdf changet to .NET 4.5.2 (#946)
 - Place label below negative ColumnSeries (#1119)
+- Use PackageReference instead of packages.config
+- Migrated NUnit v2 to v3 and added test adapter
+- TrackerControl reuses existing ContentControl when a new hit tracker result uses the same template as the currently shown tracker (#1281)
 
 ### Deprecated
 - OxyPlot.WP8 package. Use OxyPlot.Windows instead (#996)
@@ -53,6 +56,8 @@ All notable changes to this project will be documented in this file.
 - Chart is not updated when top and bottom are not visible (#1219)
 - Candle overlap each candle (#623)
 - CandleStick is overlapped when item.open == item.close in the CandleStickAndVolumeSeries (#1245)
+- Out of memory exception and performance issue with Catmull-Rom Spline (#1237)
+- Cache and Dispose Brush and Pen objects used by GraphicsRenderContext (#1230)
 
 ## [1.0.0] - 2016-09-11
 ### Added
