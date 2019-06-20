@@ -53,6 +53,10 @@ namespace OxyPlot.Series
             this.LabelFormatString = null;
             this.LabelFontSize = 0;
             this.LabelPlacement = LabelPlacement.Outside;
+            this.LimitHi = double.PositiveInfinity;
+            this.LimitLo = double.NegativeInfinity;
+            this.ColorHi = OxyColors.Undefined;
+            this.ColorLo = OxyColors.Undefined;
         }
         
         /// <summary>
@@ -120,6 +124,28 @@ namespace OxyPlot.Series
         /// Gets or sets label placements.
         /// </summary>
         public LabelPlacement LabelPlacement { get; set; }
+
+        /// <summary>
+        /// Gets or sets the high limit.
+        /// </summary>
+        /// <remarks>The bar above this limit will be rendered with ColorHi.</remarks>
+        public double LimitHi { get; set; }
+
+        /// <summary>
+        /// Gets or sets the low limit.
+        /// </summary>
+        /// <remarks>The bar below this limit will be rendered with ColorLo.</remarks>
+        public double LimitLo { get; set; }
+
+        /// <summary>
+        /// Gets or sets the color for the bars above the limit.
+        /// </summary>
+        public OxyColor ColorHi { get; set; }
+
+        /// <summary>
+        /// Gets or sets the color for the bars below the limit.
+        /// </summary>
+        public OxyColor ColorLo { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the tracker can interpolate points.
@@ -381,6 +407,14 @@ namespace OxyPlot.Series
                 if (item.Value < 0 && !this.NegativeFillColor.IsUndefined())
                 {
                     actualFillColor = this.NegativeFillColor;
+                }
+                else if (item.RangeCenter > this.LimitHi && !this.ColorHi.IsUndefined())
+                {
+                    actualFillColor = this.ColorHi;
+                }
+                else if (item.RangeCenter < this.LimitLo && !this.ColorLo.IsUndefined())
+                {
+                    actualFillColor = this.ColorLo;
                 }
 
                 // transform the data points to screen points

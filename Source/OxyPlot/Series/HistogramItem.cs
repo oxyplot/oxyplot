@@ -46,6 +46,11 @@ namespace OxyPlot.Series
         public double Area { get; set; }
 
         /// <summary>
+        /// RangeCenter Gets the center of the item.
+        /// </summary>
+        public double RangeCenter => this.RangeStart + ((this.RangeEnd - this.RangeStart) / 2);
+
+        /// <summary>
         /// Gets the computed width of the item.
         /// </summary>
         public double Width => this.RangeEnd - this.RangeStart;
