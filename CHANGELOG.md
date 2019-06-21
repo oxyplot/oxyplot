@@ -9,7 +9,7 @@ All notable changes to this project will be documented in this file.
 - New PolarPlot filling the full plot area (#1056)
 
 ### Added
-- Support for three colors in histogram series
+- Support for three colors in histogram series (#1305)
 - Command to copy plot to the clipboard in Windows Forms (Ctrl-C) (#1297)
 - Added Avalonia based renderer and control library (based off OxyPlot.Wpf).
 - New `InterpolationAlgorithm` property in LineSeries and PolylineAnnotation (#494)
