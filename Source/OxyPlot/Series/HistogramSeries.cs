@@ -142,7 +142,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets the list of <see cref="HistogramItem" /> that should be rendered.
         /// </summary>
-        /// <value>A list of <see cref="RectangleItem" />.</value>
+        /// <value>A list of <see cref="HistogramItem" />.</value>
         protected List<HistogramItem> ActualItems => this.ItemsSource != null ? this.actualItems : this.Items;
         
         /// <summary>
@@ -211,7 +211,7 @@ namespace OxyPlot.Series
             
             if (this.ActualItems != null)
             {
-                // iterate through the DataRects and return the first one that contains the point
+                // iterate through the HistogramItems and return the first one that contains the point
                 foreach (var item in this.ActualItems)
                 {
                     if (item.Contains(p))
@@ -536,20 +536,20 @@ namespace OxyPlot.Series
                 return;
             }
 
-            var sourceAsListOfDataRects = this.ItemsSource as List<HistogramItem>;
-            if (sourceAsListOfDataRects != null)
+            var sourceAsListOfHistogramItems = this.ItemsSource as List<HistogramItem>;
+            if (sourceAsListOfHistogramItems != null)
             {
-                this.actualItems = sourceAsListOfDataRects;
+                this.actualItems = sourceAsListOfHistogramItems;
                 this.ownsActualItems = false;
                 return;
             }
 
             this.ClearActualItems();
 
-            var sourceAsEnumerableDataRects = this.ItemsSource as IEnumerable<HistogramItem>;
-            if (sourceAsEnumerableDataRects != null)
+            var sourceAsEnumerableHistogramItems = this.ItemsSource as IEnumerable<HistogramItem>;
+            if (sourceAsEnumerableHistogramItems != null)
             {
-                this.actualItems.AddRange(sourceAsEnumerableDataRects);
+                this.actualItems.AddRange(sourceAsEnumerableHistogramItems);
             }
         }
     }
