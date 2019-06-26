@@ -19,6 +19,7 @@ All notable changes to this project will be documented in this file.
 - ContinuousHistogramSeries (#1145)
 - Multiline text support for PortableDocumentFont (#1146)
 - Workaround for text vertical alignment in SVG Export to accomodate viewers which don't support dominant-baseline (#459, #1198)
+- Issues Example demonstrating the rendering of Line and Arrow annotations with all LineStyles (#1312)
 
 ### Changed
 - Let Gtk# PlotView show up in Ui editor ToolBox of MonoDevelop and XamarinStudio (#1071)
