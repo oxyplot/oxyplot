@@ -189,17 +189,20 @@ namespace OxyPlot.Annotations
             var clippedPoints = new List<ScreenPoint>();
             var dashArray = this.LineStyle.GetDashArray();
 
-            rc.DrawClippedLine(
-               clippingRectangle,
-               this.screenPoints,
-               MinimumSegmentLength * MinimumSegmentLength,
-               this.GetSelectableColor(this.Color),
-               this.StrokeThickness,
-               dashArray,
-               this.LineJoin,
-               this.Aliased,
-               null,
-               clippedPoints.AddRange);
+            if (this.StrokeThickness > 0 && this.LineStyle != LineStyle.None)
+            {
+                rc.DrawClippedLine(
+                   clippingRectangle,
+                   this.screenPoints,
+                   MinimumSegmentLength * MinimumSegmentLength,
+                   this.GetSelectableColor(this.Color),
+                   this.StrokeThickness,
+                   dashArray,
+                   this.LineJoin,
+                   this.Aliased,
+                   null,
+                   clippedPoints.AddRange);
+            }
 
             ScreenPoint position;
             double angle;

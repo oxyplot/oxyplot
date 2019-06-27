@@ -351,6 +351,11 @@ namespace OxyPlot
             LineJoin lineJoin = LineJoin.Miter,
             bool aliased = false)
         {
+            if (lineStyle == LineStyle.None)
+            {
+                return;
+            }
+
             // TODO: minDistSquared should be implemented or removed
             if (rc.SetClip(clippingRectangle))
             {
