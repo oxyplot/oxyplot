@@ -79,14 +79,14 @@ namespace ExampleLibrary
 
         public static PlotModel CreateNormalDistribution(double mean = 0, double std = 1, int n = 1000000)
         {
-            var model = new PlotModel { Title = "Normal Distribution (μ=0, σ=1)", Subtitle = "95% of the distribution (" + n + " samples)" };
+            var model = new PlotModel { Title = $"Normal Distribution (μ={mean}, σ={std})", Subtitle = "95% of the distribution (" + n + " samples)" };
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Frequency" });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "x" });
 
             Random rnd = new Random();
 
             HistogramSeries chs = new HistogramSeries();
-            chs.Items.AddRange(HistogramHelpers.Collect(SampleNormal(rnd, mean, std, n), -4, 4, 100, true));
+            chs.Items.AddRange(HistogramHelpers.Collect(SampleNormal(rnd, mean, std, n), -std * 4, std * 4, 100, true));
             chs.StrokeThickness = 1;
 
             chs.LimitHi = mean + 1.96 * std;
