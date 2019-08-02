@@ -59,6 +59,8 @@ All notable changes to this project will be documented in this file.
 - Out of memory exception and performance issue with Catmull-Rom Spline (#1237)
 - Cache and Dispose Brush and Pen objects used by GraphicsRenderContext (#1230)
 - Add checks for non-positive StrokeThickess and LineStyle.None in various places (#1312)
+- Fixed references to RectangleItem in HistogramSeries
+- Fix AxisChangedEventArgs.DeltaMaximum in Axes.Reset (#1306)
 
 ## [1.0.0] - 2016-09-11
 ### Added
