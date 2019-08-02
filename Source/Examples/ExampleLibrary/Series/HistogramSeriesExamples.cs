@@ -89,10 +89,23 @@ namespace ExampleLibrary
             chs.Items.AddRange(HistogramHelpers.Collect(SampleNormal(rnd, mean, std, n), -std * 4, std * 4, 100, true));
             chs.StrokeThickness = 1;
 
-            chs.LimitHi = mean + 1.96 * std;
-            chs.LimitLo = mean - 1.96 * std;
-            chs.ColorHi = OxyColors.DarkRed;
-            chs.ColorLo = OxyColors.DarkRed;
+            double LimitHi = mean + 1.96 * std;
+            double LimitLo = mean - 1.96 * std;
+            OxyColor ColorHi = OxyColors.DarkRed;
+            OxyColor ColorLo = OxyColors.DarkRed;
+
+            chs.ColorMapping = (item) =>
+            {
+                if (item.RangeCenter > LimitHi)
+                {
+                    return ColorHi;
+                }
+                else if (item.RangeCenter < LimitLo)
+                {
+                    return ColorLo;
+                }
+                return chs.ActualFillColor;
+            };
 
             model.Series.Add(chs);
 

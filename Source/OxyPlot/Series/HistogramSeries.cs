@@ -39,24 +39,25 @@ namespace OxyPlot.Series
         /// Specifies if the <see cref="actualItems" /> list can be modified.
         /// </summary>
         private bool ownsActualItems;
-        
+
+        /// <summary>
+        /// The default color mapping.
+        /// </summary>
+        private OxyColor defaultColorMapping(HistogramItem item) => ActualFillColor;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="HistogramSeries" /> class.
         /// </summary>
         public HistogramSeries()
         {
             this.FillColor = OxyColors.Automatic;
-            this.NegativeFillColor = OxyColors.Undefined;
             this.StrokeColor = OxyColors.Black;
             this.StrokeThickness = 0;
             this.TrackerFormatString = DefaultTrackerFormatString;
             this.LabelFormatString = null;
             this.LabelFontSize = 0;
             this.LabelPlacement = LabelPlacement.Outside;
-            this.LimitHi = double.PositiveInfinity;
-            this.LimitLo = double.NegativeInfinity;
-            this.ColorHi = OxyColors.Undefined;
-            this.ColorLo = OxyColors.Undefined;
+            this.ColorMapping = defaultColorMapping;
         }
         
         /// <summary>
@@ -73,12 +74,6 @@ namespace OxyPlot.Series
         {
             get { return this.FillColor.GetActualColor(this.defaultFillColor); }
         }
-        
-        /// <summary>
-        /// Gets or sets the color of the interior of the bars when the value is negative.
-        /// </summary>
-        /// <value>The color.</value>
-        public OxyColor NegativeFillColor { get; set; }
 
         /// <summary>
         /// Gets or sets the color of the border around the bars.
@@ -126,32 +121,15 @@ namespace OxyPlot.Series
         public LabelPlacement LabelPlacement { get; set; }
 
         /// <summary>
-        /// Gets or sets the high limit.
-        /// </summary>
-        /// <remarks>The bar above this limit will be rendered with ColorHi.</remarks>
-        public double LimitHi { get; set; }
-
-        /// <summary>
-        /// Gets or sets the low limit.
-        /// </summary>
-        /// <remarks>The bar below this limit will be rendered with ColorLo.</remarks>
-        public double LimitLo { get; set; }
-
-        /// <summary>
-        /// Gets or sets the color for the bars above the limit.
-        /// </summary>
-        public OxyColor ColorHi { get; set; }
-
-        /// <summary>
-        /// Gets or sets the color for the bars below the limit.
-        /// </summary>
-        public OxyColor ColorLo { get; set; }
-
-        /// <summary>
         /// Gets or sets a value indicating whether the tracker can interpolate points.
         /// </summary>
         public bool CanTrackerInterpolatePoints { get; set; }
-        
+
+        /// <summary>
+        /// Gets or sets the delegate used to map from histogram item to color.
+        /// </summary>
+        public Func<HistogramItem, OxyColor> ColorMapping { get; set; }
+
         /// <summary>
         /// Gets or sets the delegate used to map from <see cref="ItemsSeries.ItemsSource" /> to <see cref="HistogramSeries" />. The default is <c>null</c>.
         /// </summary>
@@ -402,20 +380,7 @@ namespace OxyPlot.Series
         {
             foreach (var item in items)
             {
-                // Get the color of the item
-                var actualFillColor = this.ActualFillColor;
-                if (item.Value < 0 && !this.NegativeFillColor.IsUndefined())
-                {
-                    actualFillColor = this.NegativeFillColor;
-                }
-                else if (item.RangeCenter > this.LimitHi && !this.ColorHi.IsUndefined())
-                {
-                    actualFillColor = this.ColorHi;
-                }
-                else if (item.RangeCenter < this.LimitLo && !this.ColorLo.IsUndefined())
-                {
-                    actualFillColor = this.ColorLo;
-                }
+                var actualFillColor = ColorMapping(item);
 
                 // transform the data points to screen points
                 var s00 = this.Transform(item.RangeStart, 0);
