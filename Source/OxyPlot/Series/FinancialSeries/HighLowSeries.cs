@@ -302,27 +302,31 @@ namespace OxyPlot.Series
             double yclose = legendBox.Top + ((legendBox.Bottom - legendBox.Top) * 0.3);
             double[] dashArray = this.LineStyle.GetDashArray();
             var color = this.GetSelectableColor(this.ActualColor);
-            rc.DrawLine(
-                new[] { new ScreenPoint(xmid, legendBox.Top), new ScreenPoint(xmid, legendBox.Bottom) },
-                color,
-                this.StrokeThickness,
-                dashArray,
-                LineJoin.Miter,
-                true);
-            rc.DrawLine(
-                new[] { new ScreenPoint(xmid - this.TickLength, yopen), new ScreenPoint(xmid, yopen) },
-                color,
-                this.StrokeThickness,
-                dashArray,
-                LineJoin.Miter,
-                true);
-            rc.DrawLine(
-                new[] { new ScreenPoint(xmid + this.TickLength, yclose), new ScreenPoint(xmid, yclose) },
-                color,
-                this.StrokeThickness,
-                dashArray,
-                LineJoin.Miter,
-                true);
+
+            if (this.StrokeThickness > 0 && this.LineStyle != LineStyle.None)
+            {
+                rc.DrawLine(
+                    new[] { new ScreenPoint(xmid, legendBox.Top), new ScreenPoint(xmid, legendBox.Bottom) },
+                    color,
+                    this.StrokeThickness,
+                    dashArray,
+                    LineJoin.Miter,
+                    true);
+                rc.DrawLine(
+                    new[] { new ScreenPoint(xmid - this.TickLength, yopen), new ScreenPoint(xmid, yopen) },
+                    color,
+                    this.StrokeThickness,
+                    dashArray,
+                    LineJoin.Miter,
+                    true);
+                rc.DrawLine(
+                    new[] { new ScreenPoint(xmid + this.TickLength, yclose), new ScreenPoint(xmid, yclose) },
+                    color,
+                    this.StrokeThickness,
+                    dashArray,
+                    LineJoin.Miter,
+                    true);
+            }
         }
 
         /// <summary>

@@ -132,26 +132,33 @@ namespace OxyPlot.Series
             var dashArray = this.ActualDashArray;
             var dashArray2 = this.ActualDashArray2;
 
-            clippingRect = new OxyRect(clippingRect.Left, clippingRect.Top, clippingRect.Width, y - clippingRect.Top);
-            rc.DrawClippedLine(
-                clippingRect,
-                pointsToRender,
-                this.MinimumSegmentLength * this.MinimumSegmentLength,
-                this.GetSelectableColor(this.ActualColor),
-                this.StrokeThickness,
-                dashArray,
-                this.LineJoin,
-                false);
-            clippingRect = new OxyRect(clippingRect.Left, y, clippingRect.Width, bottom - y);
-            rc.DrawClippedLine(
-                clippingRect,
-                pointsToRender,
-                this.MinimumSegmentLength * this.MinimumSegmentLength,
-                this.GetSelectableColor(this.ActualColor2),
-                this.StrokeThickness,
-                dashArray2,
-                this.LineJoin,
-                false);
+            if (this.StrokeThickness > 0 && this.ActualLineStyle != LineStyle.None)
+            {
+                clippingRect = new OxyRect(clippingRect.Left, clippingRect.Top, clippingRect.Width, y - clippingRect.Top);
+                rc.DrawClippedLine(
+                    clippingRect,
+                    pointsToRender,
+                    this.MinimumSegmentLength * this.MinimumSegmentLength,
+                    this.GetSelectableColor(this.ActualColor),
+                    this.StrokeThickness,
+                    dashArray,
+                    this.LineJoin,
+                    false);
+            }
+
+            if (this.StrokeThickness > 0 && this.ActualLineStyle2 != LineStyle.None)
+            {
+                clippingRect = new OxyRect(clippingRect.Left, y, clippingRect.Width, bottom - y);
+                rc.DrawClippedLine(
+                    clippingRect,
+                    pointsToRender,
+                    this.MinimumSegmentLength * this.MinimumSegmentLength,
+                    this.GetSelectableColor(this.ActualColor2),
+                    this.StrokeThickness,
+                    dashArray2,
+                    this.LineJoin,
+                    false);
+            }
         }
     }
 }
