@@ -130,7 +130,7 @@ Please contribute by creating pull requests!
 
 ## Contributing to the website
 
-The source of the [oxyplot.org](http://oxyplot.org) web site can be found in the [oxyplot.github.io](http://github.com/oxyplot/oxyplot.github.io) repository.
+The source of the [oxyplot.github.io](https://oxyplot.github.io/) web site can be found in the [oxyplot.github.io](http://github.com/oxyplot/oxyplot.github.io) repository.
 Please contribute by creating pull requests!
 
 The web-site is built by [GitHub](http://github.com/) with [Jekyll](http://jekyllrb.com/).
