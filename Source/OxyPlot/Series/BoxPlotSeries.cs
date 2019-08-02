@@ -321,24 +321,28 @@ namespace OxyPlot.Series
                 var topWhiskerBottom = this.Transform(item.X, item.BoxTop);
                 var bottomWhiskerTop = this.Transform(item.X, item.BoxBottom);
                 var bottomWhiskerBottom = this.Transform(item.X, item.LowerWhisker);
-                rc.DrawClippedLine(
-                    clippingRect,
-                    new[] { topWhiskerTop, topWhiskerBottom },
-                    0,
-                    strokeColor,
-                    this.StrokeThickness,
-                    dashArray,
-                    LineJoin.Miter,
-                    true);
-                rc.DrawClippedLine(
-                    clippingRect,
-                    new[] { bottomWhiskerTop, bottomWhiskerBottom },
-                    0,
-                    strokeColor,
-                    this.StrokeThickness,
-                    dashArray,
-                    LineJoin.Miter,
-                    true);
+
+                if (this.StrokeThickness > 0 && this.LineStyle != LineStyle.None)
+                {
+                    rc.DrawClippedLine(
+                        clippingRect,
+                        new[] { topWhiskerTop, topWhiskerBottom },
+                        0,
+                        strokeColor,
+                        this.StrokeThickness,
+                        dashArray,
+                        LineJoin.Miter,
+                        true);
+                    rc.DrawClippedLine(
+                        clippingRect,
+                        new[] { bottomWhiskerTop, bottomWhiskerBottom },
+                        0,
+                        strokeColor,
+                        this.StrokeThickness,
+                        dashArray,
+                        LineJoin.Miter,
+                        true);
+                }
 
                 // Draw the whiskers
                 if (this.WhiskerWidth > 0)

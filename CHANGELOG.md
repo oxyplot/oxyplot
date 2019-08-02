@@ -20,6 +20,7 @@ All notable changes to this project will be documented in this file.
 - ContinuousHistogramSeries (#1145)
 - Multiline text support for PortableDocumentFont (#1146)
 - Workaround for text vertical alignment in SVG Export to accomodate viewers which don't support dominant-baseline (#459, #1198)
+- Issues Example demonstrating the rendering of Line and Arrow annotations with all LineStyles (#1312)
 
 ### Changed
 - Let Gtk# PlotView show up in Ui editor ToolBox of MonoDevelop and XamarinStudio (#1071)
@@ -59,6 +60,9 @@ All notable changes to this project will be documented in this file.
 - CandleStick is overlapped when item.open == item.close in the CandleStickAndVolumeSeries (#1245)
 - Out of memory exception and performance issue with Catmull-Rom Spline (#1237)
 - Cache and Dispose Brush and Pen objects used by GraphicsRenderContext (#1230)
+- Add checks for non-positive StrokeThickess and LineStyle.None in various places (#1312)
+- Fixed references to RectangleItem in HistogramSeries
+- Fix AxisChangedEventArgs.DeltaMaximum in Axes.Reset (#1306)
 
 ## [1.0.0] - 2016-09-11
 ### Added

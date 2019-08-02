@@ -334,8 +334,12 @@ namespace OxyPlot.Series
             var pts = new List<ScreenPoint>();
             pts.AddRange(pts0);
             pts.AddRange(pts1);
-            rc.DrawLine(pts0, this.GetSelectableColor(this.ActualColor), this.StrokeThickness, this.ActualLineStyle.GetDashArray());
-            rc.DrawLine(pts1, this.GetSelectableColor(this.ActualColor2), this.StrokeThickness, this.ActualLineStyle.GetDashArray());
+
+            if (this.StrokeThickness > 0 && this.ActualLineStyle != LineStyle.None)
+            {
+                rc.DrawLine(pts0, this.GetSelectableColor(this.ActualColor), this.StrokeThickness, this.ActualLineStyle.GetDashArray());
+                rc.DrawLine(pts1, this.GetSelectableColor(this.ActualColor2), this.StrokeThickness, this.ActualLineStyle.GetDashArray());
+            }
             rc.DrawPolygon(pts, this.GetSelectableFillColor(this.ActualFill), OxyColors.Undefined);
         }
 

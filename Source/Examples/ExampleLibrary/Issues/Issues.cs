@@ -1942,6 +1942,57 @@ namespace ExampleLibrary
             return plot;
         }
 
+        [Example("#1312: Annotations ignore LineStyle.None and draw as if Solid")]
+        public static PlotModel DrawArrowAnnotationsWithDifferentLineStyles()
+        {
+            LineStyle[] lineStyles = new []
+            {
+                LineStyle.Solid,
+                LineStyle.Dash,
+                LineStyle.Dot,
+                LineStyle.DashDot,
+                LineStyle.DashDashDot,
+                LineStyle.DashDotDot,
+                LineStyle.DashDashDotDot,
+                LineStyle.LongDash,
+                LineStyle.LongDashDotDot,
+                LineStyle.None,
+                LineStyle.Automatic
+            };
+
+            var plot = new PlotModel() { Title = "Annotation Line Styles", Subtitle = "'None' should produce nothing" };
+            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 0, Maximum = lineStyles.Length * 10 + 10 });
+            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = 0, Maximum = 100 });
+            
+            double y = 10;
+            foreach (var lineStyle in lineStyles)
+            {
+                plot.Annotations.Add(new LineAnnotation()
+                    {
+                        LineStyle = lineStyle,
+                        Type = LineAnnotationType.Horizontal,
+                        Y = y,
+                        MinimumX = 10,
+                        MaximumX = 45
+                    });
+                
+                plot.Annotations.Add(new ArrowAnnotation()
+                    {
+                        LineStyle = lineStyle,
+                        Text = lineStyle.ToString(),
+                        TextHorizontalAlignment = HorizontalAlignment.Center,
+                        TextVerticalAlignment = VerticalAlignment.Bottom,
+                        TextPosition = new DataPoint(50, y),
+                        StartPoint = new DataPoint(55, y),
+                        EndPoint = new DataPoint(90, y)
+                    });
+
+                y += 10;
+            }
+
+            return plot;
+        }
+
         private class TimeSpanPoint
         {
             public TimeSpan X { get; set; }

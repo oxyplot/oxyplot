@@ -196,36 +196,40 @@ namespace OxyPlot.Series
             double yopen = legendBox.Top + ((legendBox.Bottom - legendBox.Top) * 0.7);
             double yclose = legendBox.Top + ((legendBox.Bottom - legendBox.Top) * 0.3);
             double[] dashArray = this.LineStyle.GetDashArray();
-            rc.DrawLine(
-                new[] { new ScreenPoint(xmid, legendBox.Top), new ScreenPoint(xmid, legendBox.Bottom) },
-                this.GetSelectableColor(this.ActualColor),
-                this.StrokeThickness,
-                dashArray,
-                LineJoin.Miter,
-                true);
 
-            // Shadow ends
-            if (this.ShadowEndColor.IsVisible() && this.ShadowEndLength > 0)
+            if (this.StrokeThickness > 0 && this.LineStyle != LineStyle.None)
             {
-                var highLeft = new ScreenPoint(xmid - (this.CandleWidth * 0.5 * this.ShadowEndLength) - 1, legendBox.Top);
-                var highRight = new ScreenPoint(xmid + (this.CandleWidth * 0.5 * this.ShadowEndLength), legendBox.Top);
                 rc.DrawLine(
-                     new[] { highLeft, highRight },
-                     this.GetSelectableColor(this.ShadowEndColor),
-                     this.StrokeThickness,
-                     dashArray,
-                     this.LineJoin,
-                     true);
-
-                var lowLeft = new ScreenPoint(xmid - (this.CandleWidth * 0.5 * this.ShadowEndLength) - 1, legendBox.Bottom);
-                var lowRight = new ScreenPoint(xmid + (this.CandleWidth * 0.5 * this.ShadowEndLength), legendBox.Bottom);
-                rc.DrawLine(
-                    new[] { lowLeft, lowRight },
-                    this.GetSelectableColor(this.ShadowEndColor),
+                    new[] { new ScreenPoint(xmid, legendBox.Top), new ScreenPoint(xmid, legendBox.Bottom) },
+                    this.GetSelectableColor(this.ActualColor),
                     this.StrokeThickness,
                     dashArray,
-                    this.LineJoin,
+                    LineJoin.Miter,
                     true);
+
+                // Shadow ends
+                if (this.ShadowEndColor.IsVisible() && this.ShadowEndLength > 0)
+                {
+                    var highLeft = new ScreenPoint(xmid - (this.CandleWidth * 0.5 * this.ShadowEndLength) - 1, legendBox.Top);
+                    var highRight = new ScreenPoint(xmid + (this.CandleWidth * 0.5 * this.ShadowEndLength), legendBox.Top);
+                    rc.DrawLine(
+                         new[] { highLeft, highRight },
+                         this.GetSelectableColor(this.ShadowEndColor),
+                         this.StrokeThickness,
+                         dashArray,
+                         this.LineJoin,
+                         true);
+
+                    var lowLeft = new ScreenPoint(xmid - (this.CandleWidth * 0.5 * this.ShadowEndLength) - 1, legendBox.Bottom);
+                    var lowRight = new ScreenPoint(xmid + (this.CandleWidth * 0.5 * this.ShadowEndLength), legendBox.Bottom);
+                    rc.DrawLine(
+                        new[] { lowLeft, lowRight },
+                        this.GetSelectableColor(this.ShadowEndColor),
+                        this.StrokeThickness,
+                        dashArray,
+                        this.LineJoin,
+                        true);
+                }
             }
 
             rc.DrawRectangleAsPolygon(
