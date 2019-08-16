@@ -62,6 +62,7 @@ All notable changes to this project will be documented in this file.
 - Add checks for non-positive StrokeThickess and LineStyle.None in various places (#1312)
 - Fixed references to RectangleItem in HistogramSeries
 - Fix AxisChangedEventArgs.DeltaMaximum in Axes.Reset (#1306)
+- Fixed Tracker for RectangleBarSeries (#1171)
 
 ## [1.0.0] - 2016-09-11
 ### Added

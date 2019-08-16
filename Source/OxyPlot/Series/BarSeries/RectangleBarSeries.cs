@@ -46,6 +46,7 @@ namespace OxyPlot.Series
             // this.LabelFormatString = "{0}-{1},{2}-{3}"; // X0-X1,Y0-Y1
         }
 
+
         /// <summary>
         /// Gets or sets the default color of the interior of the rectangles.
         /// </summary>
@@ -94,6 +95,10 @@ namespace OxyPlot.Series
         internal IList<OxyRect> ActualBarRectangles { get; set; }
 
         /// <summary>
+        /// Gets or sets the actual rectangle bar items.
+        /// </summary>
+        internal IList<RectangleBarItem> ActualItems { get; set; }
+        /// <summary>
         /// Gets the point in the dataset that is nearest the specified point.
         /// </summary>
         /// <param name="point">The point.</param>
@@ -111,10 +116,10 @@ namespace OxyPlot.Series
                 var r = this.ActualBarRectangles[i];
                 if (r.Contains(point))
                 {
-                    double value = (this.Items[i].Y0 + this.Items[i].Y1) / 2;
+                    double value = (this.ActualItems[i].Y0 + this.ActualItems[i].Y1) / 2;
                     var sp = point;
                     var dp = new DataPoint(i, value);
-                    var item = this.GetItem(i);
+                    var item = this.ActualItems[i];
                     return new TrackerHitResult
                     {
                         Series = this,
@@ -123,17 +128,17 @@ namespace OxyPlot.Series
                         Item = item,
                         Index = i,
                         Text = StringHelper.Format(
-                        this.ActualCulture, 
+                        this.ActualCulture,
                         this.TrackerFormatString,
                         item,
                         this.Title,
                         this.XAxis.Title ?? DefaultXAxisTitle,
-                        this.XAxis.GetValue(this.Items[i].X0),
-                        this.XAxis.GetValue(this.Items[i].X1),
+                        this.XAxis.GetValue(this.ActualItems[i].X0),
+                        this.XAxis.GetValue(this.ActualItems[i].X1),
                         this.YAxis.Title ?? DefaultYAxisTitle,
-                        this.YAxis.GetValue(this.Items[i].Y0),
-                        this.YAxis.GetValue(this.Items[i].Y1),
-                        this.Items[i].Title)
+                        this.YAxis.GetValue(this.ActualItems[i].Y0),
+                        this.YAxis.GetValue(this.ActualItems[i].Y1),
+                        this.ActualItems[i].Title)
                     };
                 }
             }
@@ -158,6 +163,7 @@ namespace OxyPlot.Series
             double xmax = double.MaxValue;
 
             this.ActualBarRectangles = new List<OxyRect>();
+            this.ActualItems = new List<RectangleBarItem>();
 
             if (this.IsXMonotonic)
             {
@@ -169,8 +175,7 @@ namespace OxyPlot.Series
             }
 
             int clipCount = 0;
-            for (int i = startIdx; i < this.Items.Count; i++)
-            {
+            for (int i = startIdx; i < this.Items.Count; i++){
                 var item = this.Items[i];
                 if (!this.IsValid(item.X0) || !this.IsValid(item.X1)
                     || !this.IsValid(item.Y0) || !this.IsValid(item.Y1))
@@ -184,6 +189,7 @@ namespace OxyPlot.Series
                 var rectangle = OxyRect.Create(p0.X, p0.Y, p1.X, p1.Y);
 
                 this.ActualBarRectangles.Add(rectangle);
+                this.ActualItems.Add(item);
 
                 rc.DrawClippedRectangleAsPolygon(
                     clippingRect,
