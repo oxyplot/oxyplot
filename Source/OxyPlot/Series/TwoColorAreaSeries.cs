@@ -230,7 +230,7 @@ namespace OxyPlot.Series
                 for (int i = this.markerStartIndex; i < points.Count; i++)
                 {
                     var point = points[i];
-                    (point.y >= limit ? aboveMarkers : belowMarkers).Add(this.XAxis.Transform(point.x, point.y, this.YAxis));
+                    (point.y >= limit ? aboveMarkers : belowMarkers).Add(this.Transform(point.x, point.y));
 
                     markerClipCount += point.x > xmax ? 1 : 0;
                     if (markerClipCount > 1)
@@ -391,9 +391,13 @@ namespace OxyPlot.Series
                 return result;
             }
 
-            double y = this.YAxis.Transform(baseline);
-            result.Add(new ScreenPoint(source[0].X, y));
-            result.Add(new ScreenPoint(source[source.Count - 1].X, y));
+            var p1 = this.InverseTransform(source[0]);
+            p1 = new DataPoint(p1.X, baseline);
+            result.Add(this.Transform(p1));
+
+            var p2 = this.InverseTransform(source[source.Count - 1]);
+            p2 = new DataPoint(p2.X, baseline);
+            result.Add(this.Transform(p2));
 
             if (this.Reverse2)
             {

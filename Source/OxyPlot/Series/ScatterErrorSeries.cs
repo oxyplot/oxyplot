@@ -103,35 +103,38 @@ namespace OxyPlot.Series
                     continue;
                 }
 
+                var errorBarVectorX = this.Orientate(new ScreenVector(0, this.ErrorBarStopWidth));
+                var errorBarVectorY = this.Orientate(new ScreenVector(this.ErrorBarStopWidth, 0));
+
                 if (point.ErrorX > 0.0)
                 {
-                    var leftErrorPoint = this.XAxis.Transform(point.X - (point.ErrorX * 0.5), point.Y, this.YAxis);
-                    var rightErrorPoint = this.XAxis.Transform(point.X + (point.ErrorX * 0.5), point.Y, this.YAxis);
+                    var leftErrorPoint = this.Transform(point.X - (point.ErrorX * 0.5), point.Y);
+                    var rightErrorPoint = this.Transform(point.X + (point.ErrorX * 0.5), point.Y);
 
-                    if (Math.Abs(rightErrorPoint.X - leftErrorPoint.X) > this.MarkerSize * this.MinimumErrorSize)
+                    if (rightErrorPoint.DistanceTo(leftErrorPoint) > this.MarkerSize * this.MinimumErrorSize)
                     {
                         segments.Add(leftErrorPoint);
                         segments.Add(rightErrorPoint);
-                        segments.Add(new ScreenPoint(leftErrorPoint.X, leftErrorPoint.Y - this.ErrorBarStopWidth));
-                        segments.Add(new ScreenPoint(leftErrorPoint.X, leftErrorPoint.Y + this.ErrorBarStopWidth));
-                        segments.Add(new ScreenPoint(rightErrorPoint.X, rightErrorPoint.Y - this.ErrorBarStopWidth));
-                        segments.Add(new ScreenPoint(rightErrorPoint.X, rightErrorPoint.Y + this.ErrorBarStopWidth));
+                        segments.Add(leftErrorPoint - errorBarVectorX);
+                        segments.Add(leftErrorPoint + errorBarVectorX);
+                        segments.Add(rightErrorPoint - errorBarVectorX);
+                        segments.Add(rightErrorPoint + errorBarVectorX);
                     }
                 }
 
                 if (point.ErrorY > 0.0)
                 {
-                    var topErrorPoint = this.XAxis.Transform(point.X, point.Y - (point.ErrorY * 0.5), this.YAxis);
-                    var bottomErrorPoint = this.XAxis.Transform(point.X, point.Y + (point.ErrorY * 0.5), this.YAxis);
+                    var topErrorPoint = this.Transform(point.X, point.Y - (point.ErrorY * 0.5));
+                    var bottomErrorPoint = this.Transform(point.X, point.Y + (point.ErrorY * 0.5));
 
-                    if (Math.Abs(topErrorPoint.Y - bottomErrorPoint.Y) > this.MarkerSize * this.MinimumErrorSize)
+                    if (topErrorPoint.DistanceTo(bottomErrorPoint) > this.MarkerSize * this.MinimumErrorSize)
                     {
                         segments.Add(topErrorPoint);
                         segments.Add(bottomErrorPoint);
-                        segments.Add(new ScreenPoint(topErrorPoint.X - this.ErrorBarStopWidth, topErrorPoint.Y));
-                        segments.Add(new ScreenPoint(topErrorPoint.X + this.ErrorBarStopWidth, topErrorPoint.Y));
-                        segments.Add(new ScreenPoint(bottomErrorPoint.X - this.ErrorBarStopWidth, bottomErrorPoint.Y));
-                        segments.Add(new ScreenPoint(bottomErrorPoint.X + this.ErrorBarStopWidth, bottomErrorPoint.Y));
+                        segments.Add(topErrorPoint - errorBarVectorY);
+                        segments.Add(topErrorPoint + errorBarVectorY);
+                        segments.Add(bottomErrorPoint - errorBarVectorY);
+                        segments.Add(bottomErrorPoint + errorBarVectorY);
                     }
                 }
             }

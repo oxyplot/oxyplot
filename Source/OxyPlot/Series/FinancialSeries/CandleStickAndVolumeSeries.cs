@@ -229,6 +229,11 @@ namespace OxyPlot.Series
         // ReSharper disable once FunctionComplexityOverflow
         public override void Render(IRenderContext rc)
         {
+            if (this.IsTransposed())
+            {
+                throw new Exception("CandleStickAndVolumeSeries does not support transposed mode. It can only be used with horizontal X axis and vertical Y axis.");
+            }
+
             if (this.data == null || this.data.Count == 0)
             {
                 return;

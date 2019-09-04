@@ -20,6 +20,7 @@ All notable changes to this project will be documented in this file.
 - Multiline text support for PortableDocumentFont (#1146)
 - Workaround for text vertical alignment in SVG Export to accomodate viewers which don't support dominant-baseline (#459, #1198)
 - Issues Example demonstrating the rendering of Line and Arrow annotations with all LineStyles (#1312)
+- Add support for transposed (X and Y axis switched) plots with XYAxisSeries (#1334)
 
 ### Changed
 - Let Gtk# PlotView show up in Ui editor ToolBox of MonoDevelop and XamarinStudio (#1071)
@@ -63,6 +64,10 @@ All notable changes to this project will be documented in this file.
 - Fixed references to RectangleItem in HistogramSeries
 - Fix AxisChangedEventArgs.DeltaMaximum in Axes.Reset (#1306)
 - Fixed Tracker for RectangleBarSeries (#1171)
+- Fix: RectangleSeries doesn't render Labels (related to #1334)
+- Fix: LineSeries line legend placement with reversed X axis (related to #1334)
+- Fix: HistogramSeries label placement inconsistent (related to #1334)
+- Fix: TwoColorLineSeries and ThreeColorLineSeries don't work with reversed Y axis (related to #1334)
 
 ## [1.0.0] - 2016-09-11
 ### Added

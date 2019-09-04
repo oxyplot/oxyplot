@@ -11,7 +11,10 @@ namespace ExampleLibrary
 {
     using System;
 
+    using ExampleLibrary.Utilities;
+
     using OxyPlot;
+    using OxyPlot.Axes;
     using OxyPlot.Series;
 
     /// <summary>
@@ -26,10 +29,22 @@ namespace ExampleLibrary
             return CreateExampleModel(new StairStepSeries());
         }
 
+        [Example("StairStepSeries (transposed)")]
+        public static PlotModel StairStepSeriesTransposed()
+        {
+            return StairStepSeries().Transpose();
+        }
+
         [Example("StairStepSeries with labels")]
         public static PlotModel StairStepSeriesWithLabels()
         {
             return CreateExampleModel(new StairStepSeries { LabelFormatString = "{1:0.00}" });
+        }
+
+        [Example("StairStepSeries with labels (transposed)")]
+        public static PlotModel StairStepSeriesWithLabelsTransposed()
+        {
+            return StairStepSeriesWithLabels().Transpose();
         }
 
         [Example("StairStepSeries with markers")]

@@ -11,6 +11,8 @@ namespace ExampleLibrary
 {
     using System;
 
+    using ExampleLibrary.Utilities;
+
     using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
@@ -105,6 +107,12 @@ namespace ExampleLibrary
         public static PlotModel NotInterpolated()
         {
             return CreateExample("Not interpolated values", false);
+        }
+
+        [Example("2×3, transposed")]
+        public static PlotModel NotInterpolatedTransposed()
+        {
+            return NotInterpolated().Transpose();
         }
 
         [Example("2×3, not interpolated with two NaN values")]
@@ -372,16 +380,16 @@ namespace ExampleLibrary
         [Example("6×4, not transposed")]
         public static PlotModel Normal_6X4()
         {
-            return Create6X4(false, "Normal 6×4 Heatmap");
+            return Create6X4("Normal 6×4 Heatmap");
         }
 
         [Example("6×4, transposed")]
         public static PlotModel Transposed_6X4()
         {
-            return Create6X4(true, "Transposed 6×4 Heatmap");
+            return Normal_6X4().Transpose();
         }
 
-        private static PlotModel Create6X4(bool transpose, string title)
+        private static PlotModel Create6X4(string title)
         {
             var data = new double[6, 4];
 
@@ -394,26 +402,9 @@ namespace ExampleLibrary
             }
 
             var model = new PlotModel { Title = title, Subtitle = "Note the positions of the axes" };
-
-            var xaxis = new LinearAxis { Key = "x", Title = "X", Position = transpose ? AxisPosition.Left : AxisPosition.Bottom };
-            var yaxis = new LinearAxis { Key = "y", Title = "Y", Position = transpose ? AxisPosition.Bottom : AxisPosition.Left };
-
-            model.Axes.Add(xaxis);
-            model.Axes.Add(yaxis);
             model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(500), HighColor = OxyColors.White, LowColor = OxyColors.Black });
-
-            var hms = new HeatMapSeries { X0 = 1, X1 = 6, Y0 = 1, Y1 = 4, Data = data, Interpolate = true, LabelFontSize = 0.2 };
-
-            hms.XAxisKey = "x";
-            hms.YAxisKey = "y";
-
-            model.Series.Add(hms);
+            model.Series.Add(new HeatMapSeries { X0 = 1, X1 = 6, Y0 = 1, Y1 = 4, Data = data, Interpolate = true, LabelFontSize = 0.2 });
             return model;
-        }
-
-        private static void DefaultXAxis_MouseDown(object sender, OxyMouseDownEventArgs e)
-        {
-            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -445,8 +436,9 @@ namespace ExampleLibrary
                 Y1 = 2.5,
                 Data = data,
                 Interpolate = interpolate,
-                LabelFontSize = 0.2
+                LabelFontSize = 0.2,
             };
+
             model.Series.Add(hms);
             return model;
         }

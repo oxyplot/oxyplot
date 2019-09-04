@@ -194,37 +194,6 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Transforms data space coordinates to orientated screen space coordinates.
-        /// </summary>
-        /// <param name="x">The x coordinate.</param>
-        /// <param name="y">The y coordinate.</param>
-        /// <returns>The transformed point.</returns>
-        public new ScreenPoint Transform(double x, double y)
-        {
-            return this.Orientate(base.Transform(x, y));
-        }
-
-        /// <summary>
-        /// Transforms data space coordinates to orientated screen space coordinates.
-        /// </summary>
-        /// <param name="point">The point to transform.</param>
-        /// <returns>The transformed point.</returns>
-        public new ScreenPoint Transform(DataPoint point)
-        {
-            return this.Orientate(base.Transform(point));
-        }
-
-        /// <summary>
-        /// Transforms orientated screen space coordinates to data space coordinates.
-        /// </summary>
-        /// <param name="point">The point to inverse transform.</param>
-        /// <returns>The inverse transformed point.</returns>
-        public new DataPoint InverseTransform(ScreenPoint point)
-        {
-            return base.InverseTransform(this.Orientate(point));
-        }
-
-        /// <summary>
         /// Renders the series on the specified render context.
         /// </summary>
         /// <param name="rc">The rendering context.</param>
@@ -584,25 +553,6 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Gets the clipping rectangle, transposed if the X axis is vertically orientated.
-        /// </summary>
-        /// <returns>The clipping rectangle.</returns>
-        protected new OxyRect GetClippingRect()
-        {
-            double minX = Math.Min(this.XAxis.ScreenMin.X, this.XAxis.ScreenMax.X);
-            double minY = Math.Min(this.YAxis.ScreenMin.Y, this.YAxis.ScreenMax.Y);
-            double maxX = Math.Max(this.XAxis.ScreenMin.X, this.XAxis.ScreenMax.X);
-            double maxY = Math.Max(this.YAxis.ScreenMin.Y, this.YAxis.ScreenMax.Y);
-
-            if (this.XAxis.IsVertical())
-            {
-                return new OxyRect(minY, minX, maxY - minY, maxX - minX);
-            }
-
-            return new OxyRect(minX, minY, maxX - minX, maxY - minY);
-        }
-
-        /// <summary>
         /// Gets the interpolated value at the specified position in the data array (by bilinear interpolation).
         /// Where interpolation is impossible, return NaN, rather than a calculated nonsense value.
         /// </summary>
@@ -697,21 +647,6 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Transposes the ScreenPoint if the X axis is vertically orientated
-        /// </summary>
-        /// <param name="point">The <see cref="ScreenPoint" /> to orientate.</param>
-        /// <returns>The oriented point.</returns>
-        private ScreenPoint Orientate(ScreenPoint point)
-        {
-            if (this.XAxis.IsVertical())
-            {
-                point = new ScreenPoint(point.Y, point.X);
-            }
-
-            return point;
-        }
-
-        /// <summary>
         /// Tests if a <see cref="DataPoint" /> is inside the heat map
         /// </summary>
         /// <param name="p">The <see cref="DataPoint" /> to test.</param>
@@ -735,7 +670,7 @@ namespace OxyPlot.Series
             var reverseY = this.YAxis.Transform(this.Y0) > this.YAxis.Transform(this.Y1);
 
             // determine if the data should be transposed
-            var swapXY = this.XAxis.IsVertical();
+            var swapXY = this.IsTransposed();
 
             int m = this.Data.GetLength(0);
             int n = this.Data.GetLength(1);

@@ -126,6 +126,7 @@ namespace OxyPlot.Series
         /// <returns>A data point.</returns>
         public DataPoint InverseTransform(ScreenPoint p)
         {
+            p = this.Orientate(p);
             return this.XAxis.InverseTransform(p.X, p.Y, this.YAxis);
         }
 
@@ -137,7 +138,7 @@ namespace OxyPlot.Series
         /// <returns>A screen point.</returns>
         public ScreenPoint Transform(double x, double y)
         {
-            return this.XAxis.Transform(x, y, this.YAxis);
+            return this.Orientate(this.XAxis.Transform(x, y, this.YAxis));
         }
 
         /// <summary>
@@ -147,7 +148,7 @@ namespace OxyPlot.Series
         /// <returns>A screen point.</returns>
         public ScreenPoint Transform(DataPoint p)
         {
-            return this.XAxis.Transform(p.X, p.Y, this.YAxis);
+            return this.Transform(p.X, p.Y);
         }
 
         /// <summary>
@@ -223,12 +224,9 @@ namespace OxyPlot.Series
         /// <returns>The clipping rectangle.</returns>
         protected OxyRect GetClippingRect()
         {
-            double minX = Math.Min(this.XAxis.ScreenMin.X, this.XAxis.ScreenMax.X);
-            double minY = Math.Min(this.YAxis.ScreenMin.Y, this.YAxis.ScreenMax.Y);
-            double maxX = Math.Max(this.XAxis.ScreenMin.X, this.XAxis.ScreenMax.X);
-            double maxY = Math.Max(this.YAxis.ScreenMin.Y, this.YAxis.ScreenMax.Y);
-
-            return new OxyRect(minX, minY, maxX - minX, maxY - minY);
+            var p1 = new ScreenPoint(this.XAxis.ScreenMin.X, this.YAxis.ScreenMin.Y);
+            var p2 = new ScreenPoint(this.XAxis.ScreenMax.X, this.YAxis.ScreenMax.Y);
+            return new OxyRect(this.Orientate(p1), this.Orientate(p2));
         }
 
         /// <summary>
@@ -350,7 +348,7 @@ namespace OxyPlot.Series
                     continue;
                 }
 
-                var sp = this.XAxis.Transform(p.x, p.y, this.YAxis);
+                var sp = this.Transform(p.x, p.y);
                 double d2 = (sp - point).LengthSquared;
 
                 if (d2 < minimumDistance)
@@ -851,6 +849,61 @@ namespace OxyPlot.Series
             }
 
             return lastguess;
+        }
+
+        /// <summary>
+        /// Transposes the ScreenPoint if the series is transposed.
+        /// </summary>
+        /// <param name="point">The <see cref="ScreenPoint" /> to orientate.</param>
+        /// <returns>The oriented point.</returns>
+        protected ScreenPoint Orientate(ScreenPoint point)
+        {
+            return this.IsTransposed() ? new ScreenPoint(point.Y, point.X) : point;
+        }
+
+        /// <summary>
+        /// Transposes the ScreenVector if the series is transposed. Reverses the respective direction if X or Y axis are reversed.
+        /// </summary>
+        /// <param name="vector">The <see cref="ScreenVector" /> to orientate.</param>
+        /// <returns>The oriented vector.</returns>
+        protected ScreenVector Orientate(ScreenVector vector)
+        {
+            vector = new ScreenVector(this.XAxis.IsReversed ? -vector.X : vector.X, this.YAxis.IsReversed ? -vector.Y : vector.Y);
+            return this.IsTransposed() ? new ScreenVector(-vector.Y, -vector.X) : vector;
+        }
+
+        /// <summary>
+        /// Orientates a HorizontalAlignment and a VerticalAlignment according to whether the Series is transposed or the Axes are reversed.
+        /// </summary>
+        /// <param name="ha">The <see cref="HorizontalAlignment" /> to orientate.</param>
+        /// <param name="va">The <see cref="VerticalAlignment" /> to orientate.</param>
+        protected void Orientate(ref HorizontalAlignment ha, ref VerticalAlignment va)
+        {
+            if (this.XAxis.IsReversed)
+            {
+                ha = (HorizontalAlignment)(-(int)ha);
+            }
+
+            if (this.YAxis.IsReversed)
+            {
+                va = (VerticalAlignment)(-(int)va);
+            }
+
+            if (this.IsTransposed())
+            {
+                var orientatedHa = (HorizontalAlignment)(-(int)va);
+                va = (VerticalAlignment)(-(int)ha);
+                ha = orientatedHa;
+            }
+        }
+
+        /// <summary>
+        /// Checks if the series is transposed.
+        /// </summary>
+        /// <returns>True if the series is transposed, False otherwise.</returns>
+        protected bool IsTransposed()
+        {
+            return this.XAxis.IsVertical();
         }
     }
 }

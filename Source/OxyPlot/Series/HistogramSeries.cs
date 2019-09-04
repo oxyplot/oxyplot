@@ -146,37 +146,6 @@ namespace OxyPlot.Series
         protected List<HistogramItem> ActualItems => this.ItemsSource != null ? this.actualItems : this.Items;
         
         /// <summary>
-        /// Transforms data space coordinates to orientated screen space coordinates.
-        /// </summary>
-        /// <param name="x">The x coordinate.</param>
-        /// <param name="y">The y coordinate.</param>
-        /// <returns>The transformed point.</returns>
-        public new ScreenPoint Transform(double x, double y)
-        {
-            return this.Orientate(base.Transform(x, y));
-        }
-
-        /// <summary>
-        /// Transforms data space coordinates to orientated screen space coordinates.
-        /// </summary>
-        /// <param name="point">The point to transform.</param>
-        /// <returns>The transformed point.</returns>
-        public new ScreenPoint Transform(DataPoint point)
-        {
-            return this.Orientate(base.Transform(point));
-        }
-
-        /// <summary>
-        /// Transforms orientated screen space coordinates to data space coordinates.
-        /// </summary>
-        /// <param name="point">The point to inverse transform.</param>
-        /// <returns>The inverse transformed point.</returns>
-        public new DataPoint InverseTransform(ScreenPoint point)
-        {
-            return base.InverseTransform(this.Orientate(point));
-        }
-
-        /// <summary>
         /// Renders the series on the specified rendering context.
         /// </summary>
         /// <param name="rc">The rendering context.</param>
@@ -337,18 +306,6 @@ namespace OxyPlot.Series
         {
             base.UpdateAxisMaxMin();
         }
-
-        /// <summary>
-        /// Gets the label for the specified cell.
-        /// </summary>
-        /// <param name="v">The value of the cell.</param>
-        /// <param name="i">The first index.</param>
-        /// <param name="j">The second index.</param>
-        /// <returns>The label string.</returns>
-        protected virtual string GetLabel(double v, int i, int j)
-        {
-            return v.ToString(this.LabelFormatString, this.ActualCulture);
-        }
         
         /// <summary>
         /// Gets the item at the specified index.
@@ -384,41 +341,20 @@ namespace OxyPlot.Series
                 }
 
                 // transform the data points to screen points
-                var s00 = this.Transform(item.RangeStart, 0);
-                var s11 = this.Transform(item.RangeEnd, item.Height);
+                var p1 = this.Transform(item.RangeStart, 0);
+                var p2 = this.Transform(item.RangeEnd, item.Height);
 
-                var pointa = new ScreenPoint(s00.X, s00.Y);
-                var pointb = new ScreenPoint(s11.X, s11.Y);
-                var rectrect = new OxyRect(pointa, pointb);
+                var rectrect = new OxyRect(p1, p2);
 
                 rc.DrawClippedRectangleAsPolygon(clippingRect, rectrect, actualFillColor, this.StrokeColor, this.StrokeThickness);
                 
                 if (this.LabelFormatString != null)
                 {
-                    this.RenderLabel(rc, clippingRect, rectrect, item.Value, item);
+                    this.RenderLabel(rc, clippingRect, rectrect, item);
                 }
             }
         }
 
-        /// <summary>
-        /// Gets the clipping rectangle, transposed if the X axis is vertically orientated.
-        /// </summary>
-        /// <returns>The clipping rectangle.</returns>
-        protected new OxyRect GetClippingRect()
-        {
-            double minX = Math.Min(this.XAxis.ScreenMin.X, this.XAxis.ScreenMax.X);
-            double minY = Math.Min(this.YAxis.ScreenMin.Y, this.YAxis.ScreenMax.Y);
-            double maxX = Math.Max(this.XAxis.ScreenMin.X, this.XAxis.ScreenMax.X);
-            double maxY = Math.Max(this.YAxis.ScreenMin.Y, this.YAxis.ScreenMax.Y);
-
-            if (this.XAxis.IsVertical())
-            {
-                return new OxyRect(minY, minX, maxY - minY, maxX - minX);
-            }
-
-            return new OxyRect(minX, minY, maxX - minX, maxY - minY);
-        }
-        
         /// <summary>
         /// Draws the label.
         /// </summary>
@@ -427,67 +363,57 @@ namespace OxyPlot.Series
         /// <param name="rect">The column rectangle.</param>
         /// <param name="value">The value.</param>
         /// <param name="item">The item.</param>
-        protected void RenderLabel(IRenderContext rc, OxyRect clippingRect, OxyRect rect, double value, object item)
+        protected void RenderLabel(IRenderContext rc, OxyRect clippingRect, OxyRect rect, HistogramItem item)
         {
-            var s = StringHelper.Format(this.ActualCulture, this.LabelFormatString, item, value);
-            ScreenPoint pt;
+            var s = StringHelper.Format(this.ActualCulture, this.LabelFormatString, item, item.Value);
+            DataPoint dp;
             VerticalAlignment va;
+            var ha = HorizontalAlignment.Center;
+
+            var midX = (item.RangeStart + item.RangeEnd) / 2;
+            var sign = Math.Sign(item.Value);
+            var dy = sign * this.LabelMargin;
+
             switch (this.LabelPlacement)
             {
                 case LabelPlacement.Inside:
-                    pt = new ScreenPoint((rect.Left + rect.Right) / 2, rect.Top + this.LabelMargin);
-                    va = VerticalAlignment.Top;
+                    dp = new DataPoint(midX, item.Value);
+                    va = (VerticalAlignment)(-sign);
                     break;
                 case LabelPlacement.Middle:
-                    pt = new ScreenPoint((rect.Left + rect.Right) / 2, (rect.Bottom + rect.Top) / 2);
+                    var p1 = this.InverseTransform(rect.TopLeft);
+                    var p2 = this.InverseTransform(rect.BottomRight);
+                    dp = new DataPoint(midX, (p1.Y + p2.Y) / 2);
                     va = VerticalAlignment.Middle;
                     break;
                 case LabelPlacement.Base:
-                    pt = new ScreenPoint((rect.Left + rect.Right) / 2, rect.Bottom - this.LabelMargin);
-                    va = VerticalAlignment.Bottom;
+                    dp = new DataPoint(midX, 0);
+                    dy = -dy;
+                    va = (VerticalAlignment)sign;
                     break;
-                default: // outside
-                    // Puts label below for negative series, above for positive
-                    if (value < 0)
-                    {
-                        pt = new ScreenPoint((rect.Left + rect.Right) / 2, rect.Bottom + this.LabelMargin);
-                        va = VerticalAlignment.Top;
-                    }
-                    else
-                    {
-                        pt = new ScreenPoint((rect.Left + rect.Right) / 2, rect.Top - this.LabelMargin);
-                        va = VerticalAlignment.Bottom;
-                    }
-
+                case LabelPlacement.Outside:
+                    dp = new DataPoint(midX, item.Value);
+                    dy = -dy;
+                    va = (VerticalAlignment)sign;
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
+
+            this.Orientate(ref ha, ref va);
+            var sp = this.Transform(dp) + this.Orientate(new ScreenVector(0, dy));
 
             rc.DrawClippedText(
                 clippingRect,
-                pt,
+                sp,
                 s,
                 this.ActualTextColor,
                 this.ActualFont,
                 this.ActualFontSize,
                 this.ActualFontWeight,
                 0,
-                HorizontalAlignment.Center,
+                ha,
                 va);
-        }
-
-        /// <summary>
-        /// Transposes the ScreenPoint if the X axis is vertically orientated
-        /// </summary>
-        /// <param name="point">The <see cref="ScreenPoint" /> to orientate.</param>
-        /// <returns>The oriented point.</returns>
-        private ScreenPoint Orientate(ScreenPoint point)
-        {
-            if (this.XAxis.IsVertical())
-            {
-                point = new ScreenPoint(point.Y, point.X);
-            }
-
-            return point;
         }
 
         /// <summary>

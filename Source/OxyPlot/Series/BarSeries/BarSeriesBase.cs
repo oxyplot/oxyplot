@@ -183,6 +183,11 @@ namespace OxyPlot.Series
         /// <param name="rc">The rendering context.</param>
         public override void Render(IRenderContext rc)
         {
+            if (this.IsTransposed())
+            {
+                throw new Exception("This series does not support transposed mode. It can only be used with horizontal X axis and vertical Y axis.");
+            }
+
             this.ActualBarRectangles = new List<OxyRect>();
 
             if (this.ValidItems == null || this.ValidItems.Count == 0)

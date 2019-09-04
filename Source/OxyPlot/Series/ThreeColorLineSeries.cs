@@ -9,6 +9,7 @@
 
 namespace OxyPlot.Series
 {
+    using System;
     using System.Collections.Generic;
 
     /// <summary>
@@ -189,39 +190,25 @@ namespace OxyPlot.Series
         /// <param name="pointsToRender">The points.</param>
         protected override void RenderLine(IRenderContext rc, OxyRect clippingRect, IList<ScreenPoint> pointsToRender)
         {
-            var bottom = clippingRect.Bottom;
-            var top = clippingRect.Top;
+            var p1 = this.InverseTransform(clippingRect.BottomLeft);
+            var p2 = this.InverseTransform(clippingRect.TopRight);
 
-            // todo: this does not work when y axis is reversed
-            var yLo = this.YAxis.Transform(this.LimitLo);
-            var yHi = this.YAxis.Transform(this.LimitHi);
+            var clippingRectLo = new OxyRect(
+                this.Transform(p1.X, Math.Min(p1.Y, p2.Y)),
+                this.Transform(p2.X, this.LimitLo)).Clip(clippingRect);
 
-            if (yLo < clippingRect.Top)
-            {
-                yLo = clippingRect.Top;
-            }
+            var clippingRectMid = new OxyRect(
+                this.Transform(p1.X, this.LimitLo),
+                this.Transform(p2.X, this.LimitHi)).Clip(clippingRect);
 
-            if (yLo > clippingRect.Bottom)
-            {
-                yLo = clippingRect.Bottom;
-            }
-
-            if (yHi < clippingRect.Top)
-            {
-                yHi = clippingRect.Top;
-            }
-
-            if (yHi > clippingRect.Bottom)
-            {
-                yHi = clippingRect.Bottom;
-            }
+            var clippingRectHi = new OxyRect(
+                this.Transform(p1.X, Math.Max(p1.Y, p2.Y)),
+                this.Transform(p2.X, this.LimitHi)).Clip(clippingRect);
 
             if (this.StrokeThickness > 0 && this.ActualLineStyle != LineStyle.None)
             {
-                clippingRect = new OxyRect(clippingRect.Left, yHi, clippingRect.Width, yLo - yHi);
-
                 rc.DrawClippedLine(
-                    clippingRect,
+                    clippingRectMid,
                     pointsToRender,
                     this.MinimumSegmentLength * this.MinimumSegmentLength,
                     this.GetSelectableColor(this.ActualColor),
@@ -233,10 +220,8 @@ namespace OxyPlot.Series
 
             if (this.StrokeThickness > 0 && this.ActualLineStyleLo != LineStyle.None)
             {
-                clippingRect = new OxyRect(clippingRect.Left, yLo, clippingRect.Width, bottom - yLo);
-
                 rc.DrawClippedLine(
-                    clippingRect,
+                    clippingRectLo,
                     pointsToRender,
                     this.MinimumSegmentLength * this.MinimumSegmentLength,
                     this.GetSelectableColor(this.ActualColorLo),
@@ -248,10 +233,8 @@ namespace OxyPlot.Series
 
             if (this.StrokeThickness > 0 && this.ActualLineStyleHi != LineStyle.None)
             {
-                clippingRect = new OxyRect(clippingRect.Left, top, clippingRect.Width, yHi - top);
-
                 rc.DrawClippedLine(
-                    clippingRect,
+                    clippingRectHi,
                     pointsToRender,
                     this.MinimumSegmentLength * this.MinimumSegmentLength,
                     this.GetSelectableColor(this.ActualColorHi),

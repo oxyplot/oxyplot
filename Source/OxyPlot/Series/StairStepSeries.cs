@@ -241,12 +241,12 @@ namespace OxyPlot.Series
                 if (!double.IsNaN(previousY))
                 {
                     // Horizontal line from the previous point to the current x-coordinate
-                    linePoints.Add(new ScreenPoint(transformedPoint.X, previousY));
+                    linePoints.Add(this.Transform(new DataPoint(point.X, previousY)));
                 }
 
                 linePoints.Add(transformedPoint);
                 markerPoints.Add(transformedPoint);
-                previousY = transformedPoint.Y;
+                previousY = point.Y;
             }
 
             renderPoints(linePoints, markerPoints);
