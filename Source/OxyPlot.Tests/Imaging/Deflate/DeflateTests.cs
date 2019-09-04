@@ -34,18 +34,12 @@ namespace OxyPlot.Tests
                     var compressedData = input.Compress();
 
                     // Decompress with System.IO.Compression
-                    var w1 = Stopwatch.StartNew();
                     var deflated1 = compressedData.Decompress();
-                    var t1 = w1.ElapsedTicks;
                     AssertArrayEquals(deflated1, input);
 
                     // Decompress with local Deflate implementation
-                    var w2 = Stopwatch.StartNew();
                     var deflated2 = Deflate.Decompress(compressedData);
-                    var t2 = w2.ElapsedTicks;
                     AssertArrayEquals(deflated2, input);
-
-                    Console.WriteLine("{0}:{1}/{2}", n, t1, t2);
                 }
             }
         }
