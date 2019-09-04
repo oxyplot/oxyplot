@@ -1,3 +1,4 @@
+skip_branch_with_pr: true
 image: Visual Studio 2017
 
 configuration: 
@@ -20,11 +21,7 @@ build_script:
  
 after_build:
   - gitlink c:\projects\oxyplot -u https://github.com/oxyplot/oxyplot -f Source/OxyPlot.AppVeyor.sln
-  - NuGet pack Source\OxyPlot.Wpf\OxyPlot.Wpf.nuspec -version "%GitVersion_NuGetVersion%" -OutputDirectory Source\OxyPlot.Wpf\bin\Release
   - NuGet pack Source\OxyPlot.Windows\OxyPlot.Windows.nuspec -version "%GitVersion_NuGetVersion%" -OutputDirectory Source\OxyPlot.Windows\bin\Release
-  - NuGet pack Source\OxyPlot.WindowsForms\OxyPlot.WindowsForms.nuspec -version "%GitVersion_NuGetVersion%" -OutputDirectory Source\OxyPlot.WindowsForms\bin\Release
-  - NuGet pack Source\OxyPlot.OpenXml\OxyPlot.OpenXml.nuspec -version "%GitVersion_NuGetVersion%" -OutputDirectory Source\OxyPlot.OpenXml\bin\Release
-  - NuGet pack Source\OxyPlot.Pdf\OxyPlot.Pdf.nuspec -version "%GitVersion_NuGetVersion%" -OutputDirectory Source\OxyPlot.Pdf\bin\Release
 
 artifacts:
   - path: '**/bin/Release/**/*.nupkg'

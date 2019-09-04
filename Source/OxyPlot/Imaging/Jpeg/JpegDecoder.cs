@@ -171,6 +171,8 @@ namespace OxyPlot
         /// Invalid TIFF identifier</exception>
         public OxyImageInfo GetImageInfo(byte[] bytes)
         {
+            throw new NotImplementedException(); 
+            /*
             int width = -1;
             int height = -1;
             double dpix = double.NaN;
@@ -298,6 +300,7 @@ namespace OxyPlot
                 DpiY = dpiy,
                 BitsPerPixel = bitDepth
             };
+            */
         }
 #pragma warning restore CS0162 // Unreachable code detected
 
