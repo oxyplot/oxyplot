@@ -15,7 +15,7 @@ install:
 before_build:
   - appveyor DownloadFile https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
   - NuGet restore Source/OxyPlot.AppVeyor.sln
-  - gitversion /l console /output buildserver /updateAssemblyInfo
+  - gitversion /l console /output buildserver
 
 build_script:
   - msbuild Source/OxyPlot.AppVeyor.sln "/p:Platform=Any CPU" "/p:Configuration=Release" "/p:Version=%GitVersion_NuGetVersion%"  /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
