@@ -22,7 +22,6 @@ build_script:
  
 after_build:
   - gitlink c:\projects\oxyplot -u https://github.com/oxyplot/oxyplot -f Source/OxyPlot.AppVeyor.sln
-  - NuGet pack Source\OxyPlot.Windows\OxyPlot.Windows.nuspec -version "%GitVersion_NuGetVersion%" -OutputDirectory Source\OxyPlot.Windows\bin\Release
 
 artifacts:
   - path: '**/bin/Release/**/*.nupkg'
