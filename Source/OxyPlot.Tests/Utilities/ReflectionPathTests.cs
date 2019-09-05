@@ -94,7 +94,7 @@ namespace OxyPlot.Tests
                 rp.GetValue(item);
             }
 
-            Assert.IsTrue(w.ElapsedMilliseconds < 1000);
+            Assert.Less(w.ElapsedMilliseconds, 2000);
         }
 
         /// <summary>
