@@ -1,588 +1,78 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProjectGuid>{B86739B8-5DE9-406F-9418-0751BF7C166F}</ProjectGuid>
+    <TargetFramework>net452</TargetFramework>
     <OutputType>WinExe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WpfExamples</RootNamespace>
-    <AssemblyName>WpfExamples</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <WarningLevel>4</WarningLevel>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\</SolutionDir>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationIcon>..\..\..\..\Icons\OxyPlot.ico</ApplicationIcon>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <ProjectReference Include="..\..\..\OxyPlot.OpenXml\OxyPlot.OpenXml.csproj" />
+    <ProjectReference Include="..\..\..\OxyPlot.Pdf\OxyPlot.Pdf.csproj" />
+    <ProjectReference Include="..\..\..\OxyPlot.Wpf\OxyPlot.Wpf.csproj" />
+    <ProjectReference Include="..\..\..\OxyPlot\OxyPlot.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="PropertyTools.Wpf" Version="3.0.0" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Xaml">
-      <RequiredTargetFramework>4.0</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="System.Xaml" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <!-- App.xaml -->
     <ApplicationDefinition Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </ApplicationDefinition>
-    <Compile Include="BitmapTools.cs" />
-    <Compile Include="Examples\AlignedAxesDemo\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\AnimationsDemo\Controls\AnimationSettingsControl.xaml.cs">
-      <DependentUpon>AnimationSettingsControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\AnimationsDemo\EasingFunctions\NoEase.cs" />
-    <Compile Include="Examples\AnimationsDemo\EasingFunctions\SineEase.cs" />
-    <Compile Include="Examples\AnimationsDemo\EasingFunctions\QuinticEase.cs" />
-    <Compile Include="Examples\AnimationsDemo\EasingFunctions\QuarticEase.cs" />
-    <Compile Include="Examples\AnimationsDemo\EasingFunctions\QuadraticEase.cs" />
-    <Compile Include="Examples\AnimationsDemo\EasingFunctions\PowerEase.cs" />
-    <Compile Include="Examples\AnimationsDemo\EasingFunctions\BounceEase.cs" />
-    <Compile Include="Examples\AnimationsDemo\EasingFunctions\BackEase.cs" />
-    <Compile Include="Examples\AnimationsDemo\EasingFunctions\CircleEase.cs" />
-    <Compile Include="Examples\AnimationsDemo\Extensions\AnimationExtensions.cs" />
-    <Compile Include="Examples\AnimationsDemo\Extensions\AnimationExtensions.datapointseries.cs" />
-    <Compile Include="Examples\AnimationsDemo\Extensions\AnimationExtensions.lineseries.cs" />
-    <Compile Include="Examples\AnimationsDemo\Extensions\AnimationExtensions.linearbarseries.cs" />
-    <Compile Include="Examples\AnimationsDemo\Models\AnimationFrame.cs" />
-    <Compile Include="Examples\AnimationsDemo\Models\AnimationPoint.cs" />
-    <Compile Include="Examples\AnimationsDemo\Models\AnimationSettings.cs" />
-    <Compile Include="Examples\AnimationsDemo\Models\Interfaces\IAnimatablePoint.cs" />
-    <Compile Include="Examples\AnimationsDemo\Models\Pnl.cs" />
-    <Compile Include="Examples\AnimationsDemo\ViewModels\AnimationViewModelBase.cs" />
-    <Compile Include="Examples\AnimationsDemo\EasingFunctions\Interfaces\IEasingFunction.cs" />
-    <Compile Include="Examples\AnimationsDemo\ViewModels\Interfaces\IAnimationViewModel.cs" />
-    <Compile Include="Examples\AnimationsDemo\ViewModels\AreaSeriesViewModel.cs" />
-    <Compile Include="Examples\AnimationsDemo\ViewModels\LineSeriesViewModel.cs" />
-    <Compile Include="Examples\AnimationsDemo\Views\AreaSeriesView.xaml.cs">
-      <DependentUpon>AreaSeriesView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\AnimationsDemo\Views\LineSeriesView.xaml.cs">
-      <DependentUpon>LineSeriesView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\AnimationsDemo\Views\LinearBarView.xaml.cs">
-      <DependentUpon>LinearBarView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\AnimationsDemo\ViewModels\LinearBarViewModel.cs" />
-    <Compile Include="Examples\AnimationsDemo\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\ControllerDemo\CustomPlotController.cs" />
-    <Compile Include="Examples\ControllerDemo\MainViewModel.cs" />
-    <Compile Include="Examples\ControllerDemo\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\ExportDemo\PlotModelFactory.cs" />
-    <Compile Include="Examples\ExportDemo\ShellView.xaml.cs">
-      <DependentUpon>ShellView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\ExportDemo\ShellViewModel.cs" />
-    <Compile Include="Examples\RectangleSeriesDemo\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\InterpolationDemo\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\LinearBarSeriesDemo\MainViewModel.cs" />
-    <Compile Include="Examples\LinearBarSeriesDemo\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\BindingObservableCollectionDemo\MainViewModel.cs" />
-    <Compile Include="Examples\BindingObservableCollectionDemo\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\BoxPlotSeriesDemo\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\LiveDemo\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\MathBlockDemo\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\MathBlockDemo\MathBlock.cs" />
-    <Compile Include="Examples\MemoryTest\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\MemoryTest\Window1.xaml.cs">
-      <DependentUpon>Window1.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\MemoryTest\Window2.xaml.cs">
-      <DependentUpon>Window2.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\ScrollViewerDemo\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\ToolTipDemo\MainViewModel.cs" />
-    <Compile Include="Examples\ToolTipDemo\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\PerformanceDemo\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\ScatterErrorSeriesDemo\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\ResizeDemo\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\DataTemplateDemo\PlotViewDataTemplateWindow.xaml.cs">
-      <DependentUpon>PlotViewDataTemplateWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\WorldStatisticsDemo\CsvDocument.cs" />
-    <Compile Include="Examples\WorldStatisticsDemo\MainViewModel.cs" />
-    <Compile Include="Examples\WorldStatisticsDemo\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\WorldStatisticsDemo\Model\Country.cs" />
-    <Compile Include="Examples\WorldStatisticsDemo\Model\Statistics.cs" />
-    <Compile Include="Examples\WorldStatisticsDemo\Observable.cs" />
-    <Compile Include="ScreenCapture.cs" />
-    <Compile Include="Workitems\PlotModelAlreadyInUse\Item.cs" />
-    <Compile Include="Workitems\PlotModelAlreadyInUse\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Workitems\PlotModelAlreadyInUse\ViewModel.cs" />
-    <Page Include="Examples\AnimationsDemo\Controls\AnimationSettingsControl.xaml">
+
+    <!-- XAML elements -->
+    <Page Include="**\*.xaml" Exclude="App.xaml">
       <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </Page>
-    <Page Include="Examples\AnimationsDemo\Views\AreaSeriesView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\AnimationsDemo\Views\LineSeriesView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\AnimationsDemo\Views\LinearBarView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Examples\AnimationsDemo\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\AnnotationDemo\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\ControllerDemo\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\ExportDemo\ShellView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\RectangleSeriesDemo\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\InterpolationDemo\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\LinearBarSeriesDemo\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\AreaDemo\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\AxesDemo\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\AlignedAxesDemo\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\BindingObservableCollectionDemo\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\BoxPlotSeriesDemo\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\LiveDemo\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\MathBlockDemo\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\MemoryTest\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\MemoryTest\Window1.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\MemoryTest\Window2.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\ScrollViewerDemo\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\ToolTipDemo\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\PerformanceDemo\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\ScatterErrorSeriesDemo\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\BarSeriesDemo\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\BindingDemo\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\ColorBindingDemo\MainWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Examples\ContextMenuDemo\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\ContourDemo\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\ColumnSeriesDemo\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\ResizeDemo\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\HeatMapDemo\MainWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Examples\OverlayDemo\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\RefreshDemo\Window6.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\TaskDemo\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\CoupledAxesDemo\MainWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Examples\CsvDemo\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\CustomTrackerDemo\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\DateTimeDemo\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\HistogramDemo\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\LegendsDemo\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\PieDemo\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\PolarDemo\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\RealtimeDemo\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\RefreshDemo\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\RefreshDemo\Window1.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\RefreshDemo\Window2.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\RefreshDemo\Window3.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\RefreshDemo\Window4.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\ScatterDemo\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\DataTemplateDemo\PlotViewDataTemplateWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\UserControlDemo\MainWindow3.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\UserControlDemo\MainWindow2.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\UserControlDemo\MainWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Examples\UserControlDemo\UserControl1.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Examples\TwoColorAreaDemo\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\WorldStatisticsDemo\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Compile Include="..\..\..\AssemblyInfo.cs">
-      <Link>Properties\AssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DelegateCommand.cs" />
-    <Compile Include="Example.cs" />
-    <Compile Include="ExampleAttribute.cs" />
-    <Compile Include="Examples\AnnotationDemo\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\AreaDemo\MainViewModel.cs" />
-    <Compile Include="Examples\AreaDemo\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\AxesDemo\MainViewModel.cs" />
-    <Compile Include="Examples\AxesDemo\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\BarSeriesDemo\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\BindingDemo\MainViewModel.cs" />
-    <Compile Include="Examples\BindingDemo\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\BindingDemo\Measurement.cs" />
-    <Compile Include="Examples\ColorBindingDemo\MainViewModel.cs" />
-    <Compile Include="Examples\ColorBindingDemo\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\ContextMenuDemo\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\TwoColorAreaDemo\MainViewModel.cs" />
-    <Compile Include="Examples\TwoColorAreaDemo\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\ContourDemo\MainViewModel.cs" />
-    <Compile Include="Examples\ContourDemo\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\ColumnSeriesDemo\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\HeatMapDemo\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\OverlayDemo\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\RefreshDemo\Window6ViewModel.cs" />
-    <Compile Include="Examples\RefreshDemo\Window6.xaml.cs">
-      <DependentUpon>Window6.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\TaskDemo\MainViewModel.cs" />
-    <Compile Include="Examples\TaskDemo\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\CoupledAxesDemo\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\CsvDemo\CsvDocument.cs" />
-    <Compile Include="Examples\CsvDemo\MainViewModel.cs" />
-    <Compile Include="Examples\CsvDemo\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Observable.cs" />
-    <Compile Include="Examples\CustomTrackerDemo\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\DateTimeDemo\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\DateTimeDemo\Sun.cs" />
-    <Compile Include="Examples\HistogramDemo\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\HistogramDemo\ThrottledMouseEvent.cs" />
-    <Compile Include="Examples\LegendsDemo\MainViewModel.cs" />
-    <Compile Include="Examples\LegendsDemo\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\PieDemo\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\PolarDemo\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\RealtimeDemo\MainViewModel.cs" />
-    <Compile Include="Examples\RealtimeDemo\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\RefreshDemo\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\RefreshDemo\Window1.xaml.cs">
-      <DependentUpon>Window1.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\RefreshDemo\Window2.xaml.cs">
-      <DependentUpon>Window2.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\RefreshDemo\Window3.xaml.cs">
-      <DependentUpon>Window3.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\RefreshDemo\Window4.xaml.cs">
-      <DependentUpon>Window4.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\ScatterDemo\Fern.cs" />
-    <Compile Include="Examples\ScatterDemo\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\UserControlDemo\MainWindow3.xaml.cs">
-      <DependentUpon>MainWindow3.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\UserControlDemo\MainWindow2.xaml.cs">
-      <DependentUpon>MainWindow2.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\UserControlDemo\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\UserControlDemo\UserControl1.xaml.cs">
-      <DependentUpon>UserControl1.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\UserControlDemo\ViewModel.cs" />
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Page Include="Workitems\PlotModelAlreadyInUse\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
+    <Compile Update="**\*.xaml.cs" SubType="Code" DependentUpon="%(Filename)" />
+
+    <!-- Resources -->
+    <EmbeddedResource Update="Properties\Resources.resx" Generator="ResXFileCodeGenerator" LastGenOutput="Resources.Designer.cs" />
+    <Compile Update="Properties\Resources.Designer.cs" AutoGen="True" DependentUpon="Resources.resx" DesignTime="True" />
+
+    <!-- Settings -->
+    <None Update="Properties\Settings.settings" Generator="SettingsSingleFileGenerator" LastGenOutput="Settings.Designer.cs" />
+    <Compile Update="Properties\Settings.Designer.cs" AutoGen="True" DependentUpon="Settings.settings" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Properties\AssemblyDescription.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <Resource Include="Images\RectangleSeriesDemo.png" />
-    <Resource Include="Images\InterpolationDemo.png" />
-    <Resource Include="Images\LiveDemo.png" />
-    <Resource Include="Images\ExportDemo.png" />
-    <Resource Include="Images\WorldStatisticsDemo.png" />
-    <Resource Include="Images\MemoryTest.png" />
-    <Resource Include="Images\MathBlockDemo.png" />
-    <Resource Include="Images\PlotModelAlreadyInUse.png" />
-    <Resource Include="Images\AnimationsDemo.png" />
-    <Resource Include="Images\ScrollViewerDemo.png" />
-    <Resource Include="Images\ControllerDemo.png" />
-    <Resource Include="Images\ToolTipDemo.png" />
-    <Resource Include="Images\LinearBarSeriesDemo.png" />
-    <Resource Include="Images\DataTemplateDemo.png" />
-    <Resource Include="Images\BoxPlotSeriesDemo.png" />
-    <Resource Include="Images\BindingObservableCollectionDemo.png" />
-    <Resource Include="Images\AlignedAxesDemo.png" />
-    <Resource Include="Images\PerformanceDemo.png" />
-    <Resource Include="Images\ScatterErrorSeriesDemo.png" />
-    <Resource Include="Images\ResizeDemo.png" />
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\..\..\Icons\OxyPlot_64.png" Link="OxyPlot_64.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\WorldStatisticsDemo\Data\gdp_per_capita_ppp.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\WorldStatisticsDemo\Data\life_expectancy_at_birth.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\WorldStatisticsDemo\Data\population.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\CsvDemo\Data\GlobalTemperatureAnomaly.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\CsvDemo\Data\RiverFlow.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\CsvDemo\Data\WorldPopulation.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\*.png" />
     <Content Include="Examples\WorldStatisticsDemo\Data\gdp_per_capita_ppp.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -593,79 +83,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="ReadMe.txt" />
-    <Resource Include="Images\HeatMapDemo.png" />
-    <Resource Include="Images\ContextMenuDemo.png" />
-    <Resource Include="Images\OverlayDemo.png" />
-    <Resource Include="Images\ColorBindingDemo.png" />
-    <Resource Include="Images\ColumnSeriesDemo.png" />
-    <Resource Include="Images\TaskDemo.png" />
-    <Resource Include="Images\AxesDemo.png" />
-    <Resource Include="Images\CoupledAxesDemo.png" />
-    <Resource Include="Images\UserControlDemo.png" />
-    <Resource Include="Images\AreaDemo.png" />
-    <Resource Include="Images\BarSeriesDemo.png" />
-    <Resource Include="Images\BindingDemo.png" />
-    <Resource Include="Images\ContourDemo.png" />
-    <Resource Include="Images\CsvDemo.png" />
-    <Resource Include="Images\CustomTrackerDemo.png" />
-    <Resource Include="Images\DateTimeDemo.png" />
-    <Resource Include="Images\HistogramDemo.png" />
-    <Resource Include="Images\LegendsDemo.png" />
-    <Resource Include="Images\PieDemo.png" />
-    <Resource Include="Images\PolarDemo.png" />
-    <Resource Include="Images\RealtimeDemo.png" />
-    <Resource Include="Images\RefreshDemo.png" />
-    <Resource Include="Images\ScatterDemo.png" />
     <Resource Include="Examples\HistogramDemo\hare.jpg" />
-    <Resource Include="Images\TwoColorAreaDemo.png" />
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <Resource Include="..\..\..\..\Icons\OxyPlot_64.png">
-      <Link>OxyPlot_64.png</Link>
-    </Resource>
-    <Content Include="Examples\CsvDemo\Data\GlobalTemperatureAnomaly.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Examples\CsvDemo\Data\RiverFlow.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Examples\CsvDemo\Data\WorldPopulation.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <None Include="app.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <AppDesigner Include="Properties\" />
   </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\AnnotationDemo.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\OxyPlot.OpenXml\OxyPlot.OpenXml.csproj">
-      <Project>{BB4FA452-A96A-4C47-AA65-7E88F6FAE873}</Project>
-      <Name>OxyPlot.OpenXml</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\OxyPlot.Pdf\OxyPlot.Pdf.csproj">
-      <Project>{12737C3F-5770-403F-90A1-BC12EBD1BB31}</Project>
-      <Name>OxyPlot.Pdf</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\OxyPlot.Wpf\OxyPlot.Wpf.csproj">
-      <Project>{698CCD8E-ADCC-4565-8517-5EDD36F07155}</Project>
-      <Name>OxyPlot.Wpf</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\OxyPlot\OxyPlot.csproj">
-      <Project>{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}</Project>
-      <Name>OxyPlot</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="PropertyTools.Wpf">
-      <Version>2015.2.0</Version>
-    </PackageReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

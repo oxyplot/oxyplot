@@ -117,9 +117,8 @@ namespace ExportDemo
             {
                 if (this.model != value)
                 {
-                    this.model = value;
-                    this.RaisePropertyChanged(() => this.Model);
-                    this.RaisePropertyChanged(() => this.TotalNumberOfPoints);
+                    this.SetValue(ref this.model, value);
+                    this.RaisePropertyChanged(nameof(this.TotalNumberOfPoints));
                 }
             }
         }

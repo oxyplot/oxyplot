@@ -1,43 +1,19 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{12737C3F-5770-403F-90A1-BC12EBD1BB31}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OxyPlot.Pdf</RootNamespace>
-    <AssemblyName>OxyPlot.Pdf</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\OxyPlot.Pdf.XML</DocumentationFile>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
+    <TargetFramework>net452</TargetFramework>
+    <Product>OxyPlot PDF extensions</Product>
+    <Description>OxyPlot is a plotting library for .NET. This package contains .pdf export extensions for .NET 4 (based on PDFsharp).</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Copyright>Copyright (c) 2014 OxyPlot contributors</Copyright>
+    <PackageProjectUrl>http://oxyplot.org/</PackageProjectUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/oxyplot/oxyplot/develop/Icons/OxyPlot_128.png</PackageIconUrl>
+    <PackageTags>pdf plotting plot charting chart</PackageTags>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/oxyplot/oxyplot.git</RepositoryUrl>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>OxyPlot.Pdf.snk</AssemblyOriginatorKeyFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -48,30 +24,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\AssemblyInfo.cs">
-      <Link>Properties\AssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="LatexReportWriter.cs" />
-    <Compile Include="PdfSharpExtensions.cs" />
-    <Compile Include="RtfReportWriter.cs" />
-    <Compile Include="PdfExporter.cs" />
-    <Compile Include="PdfRenderContext.cs" />
-    <Compile Include="PdfReportWriter.cs" />
-    <Compile Include="Properties\AssemblyDescription.cs" />
+    <ProjectReference Include="..\OxyPlot\OxyPlot.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OxyPlot\OxyPlot.csproj">
-      <Project>{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}</Project>
-      <Name>OxyPlot</Name>
-    </ProjectReference>
+    <PackageReference Include="PDFsharp-MigraDoc-GDI" Version="1.32.4334.0" />
   </ItemGroup>
   <ItemGroup>
     <None Include="OxyPlot.Pdf.snk" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="PDFsharp-MigraDoc-GDI">
-      <Version>1.32.4334</Version>
+      <Version>1.50.5147</Version>
     </PackageReference>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

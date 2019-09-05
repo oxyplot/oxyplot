@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AssemblyDescription.cs" company="OxyPlot">
+// <copyright file="AssemblyInfo.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Reflection;
+using System.Threading;
+using NUnit.Framework;
 
-[assembly: AssemblyTitle("OxyPlot WinForms Demo")]
-[assembly: AssemblyDescription("")]
+[assembly: Apartment(ApartmentState.STA)]

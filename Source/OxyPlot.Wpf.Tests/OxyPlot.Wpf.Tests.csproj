@@ -1,106 +1,50 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{4ED9A511-669D-47B1-97F5-4FCAFE8EB178}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OxyPlot.Wpf.Tests</RootNamespace>
-    <AssemblyName>OxyPlot.Wpf.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\AssemblyInfo.cs">
-      <Link>Properties\AssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="Annotations\AnnotationsTests.cs" />
-    <Compile Include="Axes\LinearAxisTests.cs" />
-    <Compile Include="ExampleLibraryTests.cs" />
-    <Compile Include="MySetupClass.cs" />
-    <Compile Include="OxyAssert.cs" />
-    <Compile Include="Axes\AxesTests.cs" />
-    <Compile Include="PlotViewTests.cs" />
-    <Compile Include="PngAssert.cs" />
-    <Compile Include="PngExporterTests.cs" />
-    <Compile Include="Series\SeriesTests.cs" />
-    <Compile Include="Properties\AssemblyDescription.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Examples\ExampleLibrary\ExampleLibrary.csproj">
-      <Project>{FACB89E5-53A5-4748-9F5B-E0714EBB37B2}</Project>
-      <Name>ExampleLibrary</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OxyPlot.Tests\OxyPlot.Tests.csproj">
-      <Project>{e6218b88-69f5-4e3f-9abc-93ab82fd77ad}</Project>
-      <Name>OxyPlot.Tests</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OxyPlot.Wpf\OxyPlot.Wpf.csproj">
-      <Project>{698ccd8e-adcc-4565-8517-5edd36f07155}</Project>
-      <Name>OxyPlot.Wpf</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OxyPlot\OxyPlot.csproj">
-      <Project>{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}</Project>
-      <Name>OxyPlot</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Baseline\PngExporterTests_ExportWithResolution_192dpi.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Baseline\PngExporterTests_ExportWithResolution_384dpi.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="NUnit">
-      <Version>3.11.0</Version>
-    </PackageReference>
-    <PackageReference Include="NUnit3TestAdapter">
-      <Version>3.11.2</Version>
-    </PackageReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
+    <PropertyGroup>
+        <TargetFramework>net461</TargetFramework>
+        <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+        <Description>OxyPlot WPF unit tests</Description>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <Copyright>OxyPlot contributors</Copyright>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    </PropertyGroup>
+    <ItemGroup>
+        <Reference Include="PresentationCore" />
+        <Reference Include="PresentationFramework" />
+        <Reference Include="System" />
+        <Reference Include="System.Core" />
+        <Reference Include="System.Xaml" />
+        <Reference Include="System.Xml" />
+        <Reference Include="WindowsBase" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Examples\ExampleLibrary\ExampleLibrary.csproj" />
+        <ProjectReference Include="..\OxyPlot\OxyPlot.csproj" />
+        <ProjectReference Include="..\OxyPlot.Tests\OxyPlot.Tests.csproj" />
+        <ProjectReference Include="..\OxyPlot.Wpf\OxyPlot.Wpf.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="app.config" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Examples\ExampleLibrary\ExampleLibrary.csproj">
+            <Project>{FACB89E5-53A5-4748-9F5B-E0714EBB37B2}</Project>
+            <Name>ExampleLibrary</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\OxyPlot.Tests\OxyPlot.Tests.csproj">
+            <Project>{e6218b88-69f5-4e3f-9abc-93ab82fd77ad}</Project>
+            <Name>OxyPlot.Tests</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\OxyPlot.Wpf\OxyPlot.Wpf.csproj">
+            <Project>{698ccd8e-adcc-4565-8517-5edd36f07155}</Project>
+            <Name>OxyPlot.Wpf</Name>
+        </ProjectReference>
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="Baseline\PngExporterTests_ExportWithResolution_192dpi.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Include="Baseline\PngExporterTests_ExportWithResolution_384dpi.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
 </Project>

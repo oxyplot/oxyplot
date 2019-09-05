@@ -1,156 +1,61 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E6218B88-69F5-4E3F-9ABC-93AB82FD77AD}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OxyPlot.Tests</RootNamespace>
-    <AssemblyName>OxyPlot.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\AssemblyInfo.cs">
-      <Link>Properties\AssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="Axes\AxisTests.cs" />
-    <Compile Include="Axes\AxisUtilitiesTests.cs" />
-    <Compile Include="Axes\LinearAxisTests.cs" />
-    <Compile Include="Axes\TimeSpanAxisTests.cs" />
-    <Compile Include="Foundation\CodeGeneratorTests.cs" />
-    <Compile Include="Foundation\OxyRectTests.cs" />
-    <Compile Include="Graphics\ElementCollectionTests.cs" />
-    <Compile Include="MySetupClass.cs" />
-    <Compile Include="NullRenderContext.cs" />
-    <Compile Include="PlotModelExtensions.cs" />
-    <Compile Include="Foundation\DataPointTests.cs" />
-    <Compile Include="Foundation\OxyColorTests.cs" />
-    <Compile Include="Foundation\OxySizeTests.cs" />
-    <Compile Include="Utilities\ComparerHelperTests.cs" />
-    <Compile Include="Utilities\ListBuilderTests.cs" />
-    <Compile Include="Foundation\RenderingExtensionsTests.cs" />
-    <Compile Include="Imaging\Deflate\DeflateStreamExtensions.cs" />
-    <Compile Include="Imaging\Deflate\NayukiDeflateTests.cs" />
-    <Compile Include="Imaging\Deflate\DeflateTests.cs" />
-    <Compile Include="Imaging\Deflate\StringBitReader.cs" />
-    <Compile Include="Imaging\Png\PngDecoderTests.cs" />
-    <Compile Include="Imaging\TestImages\OxyImageTests.cs" />
-    <Compile Include="OxyAssert.cs" />
-    <Compile Include="Pdf\PdfExporterTests.cs" />
-    <Compile Include="Pdf\PortableDocumentExtensions.cs" />
-    <Compile Include="Pdf\PortableDocumentTests.cs" />
-    <Compile Include="PlotController\PlotControllerTests.cs" />
-    <Compile Include="Rendering\Utilities\DecimatorTests.cs" />
-    <Compile Include="FileNameUtilities.cs" />
-    <Compile Include="Utilities\ReflectionPathTests.cs" />
-    <Compile Include="TestModels.cs" />
-    <Compile Include="Svg\SvgAssert.cs" />
-    <Compile Include="Svg\SvgExporterTests.cs" />
-    <Compile Include="Utilities\ArrayBuilderTests.cs" />
-    <Compile Include="Axes\DateTimeAxisTests.cs" />
-    <Compile Include="Utilities\ConrecTests.cs" />
-    <Compile Include="Foundation\CohenSutherlandClippingTests.cs" />
-    <Compile Include="Foundation\SutherlandHodgmanClippingTests.cs" />
-    <Compile Include="Foundation\ScreenPointHelperTests.cs" />
-    <Compile Include="Foundation\OxyPaletteTests.cs" />
-    <Compile Include="Utilities\FractionHelperTests.cs" />
-    <Compile Include="Utilities\StringHelperTests.cs" />
-    <Compile Include="PlotModel\PlotModelTests.cs" />
-    <Compile Include="Properties\AssemblyDescription.cs" />
-    <Compile Include="Svg\SvgValidator.cs" />
-    <Compile Include="Svg\SvgWriterTests.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Schemas\svg.xsd">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Schemas\xlink.xsd">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Schemas\xml.xsd">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Imaging\TestImages\test_32bit.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Imaging\TestImages\test.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Imaging\TestImages\test_24bit.bmp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Imaging\TestImages\test_32bit.bmp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Imaging\TestImages\test_8bit.bmp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Imaging\TestImages\test_8bit.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <None Include="app.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Series\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Examples\ExampleLibrary\ExampleLibrary.csproj">
-      <Project>{facb89e5-53a5-4748-9f5b-e0714ebb37b2}</Project>
-      <Name>ExampleLibrary</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OxyPlot\OxyPlot.csproj">
-      <Project>{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}</Project>
-      <Name>OxyPlot</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="NSubstitute">
-      <Version>3.1.0</Version>
-    </PackageReference>
-    <PackageReference Include="NUnit">
-      <Version>3.11.0</Version>
-    </PackageReference>
-    <PackageReference Include="NUnit3TestAdapter">
-      <Version>3.11.2</Version>
-    </PackageReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
+    <PropertyGroup>
+        <TargetFramework>net461</TargetFramework>
+        <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+        <Description>OxyPlot unit tests</Description>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <Copyright>OxyPlot contributors</Copyright>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    </PropertyGroup>
+    <ItemGroup>
+        <Reference Include="PresentationCore" />
+        <Reference Include="PresentationFramework" />
+        <Reference Include="System" />
+        <Reference Include="System.Core" />
+        <Reference Include="System.Xaml" />
+        <Reference Include="System.Xml" />
+        <Reference Include="WindowsBase" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Examples\ExampleLibrary\ExampleLibrary.csproj" />
+        <ProjectReference Include="..\OxyPlot\OxyPlot.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="NSubstitute" Version="4.2.1" />
+        <PackageReference Include="NUnit" Version="3.12.0" />
+        <PackageReference Include="NUnit3TestAdapter" Version="3.15.1" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="Schemas\svg.xsd">
+            <SubType>Designer</SubType>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Include="Schemas\xlink.xsd">
+            <SubType>Designer</SubType>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Include="Schemas\xml.xsd">
+            <SubType>Designer</SubType>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Include="Imaging\TestImages\test_32bit.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Include="Imaging\TestImages\test.jpg">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Include="Imaging\TestImages\test_24bit.bmp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Include="Imaging\TestImages\test_32bit.bmp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Include="Imaging\TestImages\test_8bit.bmp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Include="Imaging\TestImages\test_8bit.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Include="app.config" />
+    </ItemGroup>
 </Project>
