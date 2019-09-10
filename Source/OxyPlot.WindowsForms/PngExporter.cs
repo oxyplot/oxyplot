@@ -87,6 +87,8 @@ namespace OxyPlot.WindowsForms
         public Bitmap ExportToBitmap(IPlotModel model)
         {
             var bm = new Bitmap(this.Width, this.Height);
+            bm.SetResolution(this.Resolution, this.Resolution);
+
             using (var g = Graphics.FromImage(bm))
             {
                 if (this.Background.IsVisible())
@@ -96,14 +98,12 @@ namespace OxyPlot.WindowsForms
                         g.FillRectangle(brush, 0, 0, this.Width, this.Height);
                     }
                 }
-
-                using (var rc = new GraphicsRenderContext(g) { RendersToScreen = false })
-                {
+                
+                using (var rc = new GraphicsRenderContext(g) { RendersToScreen = false})
+                {   
                     model.Update(true);
                     model.Render(rc, this.Width, this.Height);
                 }
-
-                bm.SetResolution(this.Resolution, this.Resolution);
                 return bm;
             }
         }

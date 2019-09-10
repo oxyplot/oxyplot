@@ -25,9 +25,19 @@ namespace OxyPlot.Series
         Start,
 
         /// <summary>
+        /// Render legend at the end of the line.
+        /// </summary>
+        End,
+
+        /// <summary>
         /// Render legend at the start of the line inside the plot area.
         /// </summary>
         StartInside,
+
+        /// <summary>
+        /// Render legend at the start of the line inside the plot area over the line.
+        /// </summary>
+        StartInsideCentered,
 
         /// <summary>
         /// Render legend at the start of the line inside the plot area.
@@ -37,7 +47,61 @@ namespace OxyPlot.Series
         /// <summary>
         /// Render legend above the midpoint of the line inside the plot area.
         /// </summary>
+        QuarterWayAbove,
+
+        /// <summary>
+        /// Render legend above the midpoint of the line inside the plot area.
+        /// </summary>
+        QuarterWayCentered,
+
+        /// <summary>
+        /// Render legend centered at 25% of the line inside the plot area.
+        /// </summary>
+        QuarterWayCenteredSloped,
+
+        /// <summary>
+        /// Render legend above the midpoint of the line inside the plot area. Text is right justified.
+        /// </summary>
+        QuarterWayAboveRight,
+
+        /// <summary>
+        /// Render legend above the midpoint of the line inside the plot area. Text is left justified.
+        /// </summary>
+        QuarterWayAboveLeft,
+
+        /// <summary>
+        /// Render legend above the midpoint of the line inside the plot area. This will follow the slope of the line
+        /// </summary>
+        QuarterWayAboveSloped,
+
+        /// <summary>
+        /// Render legend below the midpoint of the line inside the plot area.
+        /// </summary>
+        QuarterWayBelow,
+
+        /// <summary>
+        /// Render legend below the midpoint of the line inside the plot area. Text is right justified.
+        /// </summary>
+        QuarterWayBelowRight,
+
+        /// <summary>
+        /// Render legend below the midpoint of the line inside the plot area. Text is left justified.
+        /// </summary>
+        QuarterWayBelowLeft,
+        /// <summary>
+        /// Render legend below the midpoint of the line inside the plot area. This will follow the slope of the line.
+        /// </summary>
+        QuarterWayBelowSloped,
+
+        /// <summary>
+        /// Render legend above the midpoint of the line inside the plot area.
+        /// </summary>
         HalfWayAbove,
+
+        /// <summary>
+        /// Render legend above the midpoint of the line inside the plot area.
+        /// </summary>
+        HalfWayCentered,
 
         /// <summary>
         /// Render legend above the midpoint of the line inside the plot area. Text is right justified.
@@ -68,13 +132,11 @@ namespace OxyPlot.Series
         /// Render legend below the midpoint of the line inside the plot area. Text is left justified.
         /// </summary>
         HalfWayBelowLeft,
+
         /// <summary>
         /// Render legend below the midpoint of the line inside the plot area. This will follow the slope of the line.
         /// </summary>
-        HalfWayBelowSloped,
-        /// <summary>
-        /// Render legend at the end of the line.
-        /// </summary>
-        End
+        HalfWayBelowSloped
+
     }
 }

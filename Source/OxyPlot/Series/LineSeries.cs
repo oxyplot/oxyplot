@@ -691,11 +691,93 @@ namespace OxyPlot.Series
                     va = VerticalAlignment.Bottom;
                     dx = 4;
                     break;
+                case LineLegendPosition.StartInsideCentered:
+                    point = this.ActualPoints[0];
+                    ha = HorizontalAlignment.Left;
+                    va = VerticalAlignment.Middle;
+                    dx = 4;
+                    break;
                 case LineLegendPosition.StartInsideBelow:
                     point = this.ActualPoints[0];
                     ha = HorizontalAlignment.Left;
                     va = VerticalAlignment.Top;
                     dx = 4;
+                    break;
+                case LineLegendPosition.QuarterWayAbove:
+                    point = this.ActualPoints[this.ActualPoints.Count / 4];
+                    dx = 0;
+                    dy = -4;
+                    ha = HorizontalAlignment.Center;
+                    va = VerticalAlignment.Bottom;
+                    break;
+                case LineLegendPosition.QuarterWayCentered:
+                    point = this.ActualPoints[this.ActualPoints.Count / 4];
+                    dx = 0;
+                    dy = 0;
+                    ha = HorizontalAlignment.Center;
+                    va = VerticalAlignment.Middle;
+                    break;
+                case LineLegendPosition.QuarterWayCenteredSloped:
+                    point = this.ActualPoints[this.ActualPoints.Count / 4];
+                    point2 = this.ActualPoints[this.ActualPoints.Count / 4 - 1];
+                    rotation = Math.Atan2(point.y - point2.y, point.x - point2.x) * -360 / Math.PI;
+                    dx = 0;
+                    dy = 0;
+                    ha = HorizontalAlignment.Center;
+                    va = VerticalAlignment.Middle;
+                    break;
+                case LineLegendPosition.QuarterWayAboveRight:
+                    point = this.ActualPoints[this.ActualPoints.Count / 4];
+                    dx = 0;
+                    dy = -4;
+                    ha = HorizontalAlignment.Left;
+                    va = VerticalAlignment.Bottom;
+                    break;
+                case LineLegendPosition.QuarterWayAboveLeft:
+                    point = this.ActualPoints[this.ActualPoints.Count / 4];
+                    dx = 0;
+                    dy = -4;
+                    ha = HorizontalAlignment.Right;
+                    va = VerticalAlignment.Bottom;
+                    break;
+                case LineLegendPosition.QuarterWayAboveSloped:
+                    point = this.ActualPoints[this.ActualPoints.Count / 4];
+                    point2 = this.ActualPoints[this.ActualPoints.Count / 4 - 1];
+                    rotation = Math.Atan2(point.y - point2.y, point.x - point2.x) * -360 / Math.PI;
+                    dx = 0;
+                    dy = -4;
+                    ha = HorizontalAlignment.Center;
+                    va = VerticalAlignment.Bottom;
+                    break;
+                case LineLegendPosition.QuarterWayBelow:
+                    point = this.ActualPoints[this.ActualPoints.Count / 4 - 1];
+                    dx = 0;
+                    dy = 4;
+                    ha = HorizontalAlignment.Center;
+                    va = VerticalAlignment.Top;
+                    break;
+                case LineLegendPosition.QuarterWayBelowRight:
+                    point = this.ActualPoints[this.ActualPoints.Count / 4 - 1];
+                    dx = 0;
+                    dy = 4;
+                    ha = HorizontalAlignment.Left;
+                    va = VerticalAlignment.Top;
+                    break;
+                case LineLegendPosition.QuarterWayBelowLeft:
+                    point = this.ActualPoints[this.ActualPoints.Count / 4 - 1];
+                    dx = 0;
+                    dy = 4;
+                    ha = HorizontalAlignment.Right;
+                    va = VerticalAlignment.Top;
+                    break;
+                case LineLegendPosition.QuarterWayBelowSloped:
+                    point = this.ActualPoints[this.ActualPoints.Count / 4];
+                    point2 = this.ActualPoints[this.ActualPoints.Count / 4 - 1];
+                    rotation = Math.Atan2(point.y - point2.y, point.x - point2.x) * -360 / Math.PI;
+                    dx = 0;
+                    dy = 4;
+                    ha = HorizontalAlignment.Center;
+                    va = VerticalAlignment.Top;
                     break;
                 case LineLegendPosition.HalfWayAbove:
                     point = this.ActualPoints[this.ActualPoints.Count / 2];
@@ -763,7 +845,6 @@ namespace OxyPlot.Series
                     point = this.ActualPoints[this.ActualPoints.Count - 1];
                     break;
                 default:
-                    //was end previously
                     throw new Exception("Line legend position not supported");
             }
 
