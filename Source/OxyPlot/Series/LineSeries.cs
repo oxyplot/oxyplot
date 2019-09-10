@@ -449,119 +449,119 @@ namespace OxyPlot.Series
                 this.contiguousScreenPointsBuffer = new List<ScreenPoint>(points.Count);
             }
 
-			int startIdx = 0;
-			double xmax = double.MaxValue;
+            int startIdx = 0;
+            double xmax = double.MaxValue;
 
-			if (this.IsXMonotonic)
-			{
-				// determine render range
-				var xmin = this.XAxis.ActualMinimum;
-				xmax = this.XAxis.ActualMaximum;
-				this.WindowStartIndex = this.UpdateWindowStartIndex(points, point => point.X, xmin, this.WindowStartIndex);
-				
-				startIdx = this.WindowStartIndex;
-			}
+            if (this.IsXMonotonic)
+            {
+                // determine render range
+                var xmin = this.XAxis.ActualMinimum;
+                xmax = this.XAxis.ActualMaximum;
+                this.WindowStartIndex = this.UpdateWindowStartIndex(points, point => point.X, xmin, this.WindowStartIndex);
 
-			for (int i = startIdx; i < points.Count; i++)
-	        {
-				if (!this.ExtractNextContiguousLineSegment(points, ref i, ref lastValidPoint, xmax, broken, this.contiguousScreenPointsBuffer))
-		        {
-			        break;
-		        }
+                startIdx = this.WindowStartIndex;
+            }
 
-				if (areBrokenLinesRendered)
-				{
-					if (broken.Count > 0)
-					{
-						var actualBrokenLineColor = this.BrokenLineColor.IsAutomatic()
-														? this.ActualColor
-														: this.BrokenLineColor;
+            for (int i = startIdx; i < points.Count; i++)
+            {
+                if (!this.ExtractNextContiguousLineSegment(points, ref i, ref lastValidPoint, xmax, broken, this.contiguousScreenPointsBuffer))
+                {
+                    break;
+                }
 
-						rc.DrawClippedLineSegments(
-							clippingRect,
-							broken,
-							actualBrokenLineColor,
-							this.BrokenLineThickness,
-							dashArray,
-							this.LineJoin,
-							false);
-						broken.Clear();
-					}
-				}
-				else
-				{
-					lastValidPoint = null;
-				}
+                if (areBrokenLinesRendered)
+                {
+                    if (broken.Count > 0)
+                    {
+                        var actualBrokenLineColor = this.BrokenLineColor.IsAutomatic()
+                                                        ? this.ActualColor
+                                                        : this.BrokenLineColor;
 
-				if (this.Decimator != null)
-				{
-					if (this.decimatorBuffer == null)
-					{
-						this.decimatorBuffer = new List<ScreenPoint>(this.contiguousScreenPointsBuffer.Count);
-					}
-					else
-					{
-						this.decimatorBuffer.Clear();
-					}
+                        rc.DrawClippedLineSegments(
+                            clippingRect,
+                            broken,
+                            actualBrokenLineColor,
+                            this.BrokenLineThickness,
+                            dashArray,
+                            this.LineJoin,
+                            false);
+                        broken.Clear();
+                    }
+                }
+                else
+                {
+                    lastValidPoint = null;
+                }
 
-					this.Decimator(this.contiguousScreenPointsBuffer, this.decimatorBuffer);
-					this.RenderLineAndMarkers(rc, clippingRect, this.decimatorBuffer);
-				}
-				else
-				{
-					this.RenderLineAndMarkers(rc, clippingRect, this.contiguousScreenPointsBuffer);
-				}
+                if (this.Decimator != null)
+                {
+                    if (this.decimatorBuffer == null)
+                    {
+                        this.decimatorBuffer = new List<ScreenPoint>(this.contiguousScreenPointsBuffer.Count);
+                    }
+                    else
+                    {
+                        this.decimatorBuffer.Clear();
+                    }
 
-				this.contiguousScreenPointsBuffer.Clear();
-			}
+                    this.Decimator(this.contiguousScreenPointsBuffer, this.decimatorBuffer);
+                    this.RenderLineAndMarkers(rc, clippingRect, this.decimatorBuffer);
+                }
+                else
+                {
+                    this.RenderLineAndMarkers(rc, clippingRect, this.contiguousScreenPointsBuffer);
+                }
+
+                this.contiguousScreenPointsBuffer.Clear();
+            }
         }
 
-	    /// <summary>
-	    /// Extracts a single contiguous line segment beginning with the element at the position of the enumerator when the method
-	    /// is called. Initial invalid data points are ignored.
-	    /// </summary>
-	    /// <param name="pointIdx">Current point index</param>
-	    /// <param name="previousContiguousLineSegmentEndPoint">Initially set to null, but I will update I won't give a broken line if this is null</param>
-	    /// <param name="xmax">Maximum visible X value</param>
-	    /// <param name="broken">place to put broken segment</param>
-	    /// <param name="contiguous">place to put contiguous segment</param>
-	    /// <param name="points">Points collection</param>
-	    /// <returns>
-	    ///   <c>true</c> if line segments are extracted, <c>false</c> if reached end.
-	    /// </returns>
-	    protected bool ExtractNextContiguousLineSegment(
-			IList<DataPoint> points,
-			ref int pointIdx,
-			ref ScreenPoint? previousContiguousLineSegmentEndPoint,
-			double xmax,
+        /// <summary>
+        /// Extracts a single contiguous line segment beginning with the element at the position of the enumerator when the method
+        /// is called. Initial invalid data points are ignored.
+        /// </summary>
+        /// <param name="pointIdx">Current point index</param>
+        /// <param name="previousContiguousLineSegmentEndPoint">Initially set to null, but I will update I won't give a broken line if this is null</param>
+        /// <param name="xmax">Maximum visible X value</param>
+        /// <param name="broken">place to put broken segment</param>
+        /// <param name="contiguous">place to put contiguous segment</param>
+        /// <param name="points">Points collection</param>
+        /// <returns>
+        ///   <c>true</c> if line segments are extracted, <c>false</c> if reached end.
+        /// </returns>
+        protected bool ExtractNextContiguousLineSegment(
+            IList<DataPoint> points,
+            ref int pointIdx,
+            ref ScreenPoint? previousContiguousLineSegmentEndPoint,
+            double xmax,
             // ReSharper disable SuggestBaseTypeForParameter
             List<ScreenPoint> broken,
             List<ScreenPoint> contiguous)
         // ReSharper restore SuggestBaseTypeForParameter
         {
             DataPoint currentPoint = default(DataPoint);
-		    bool hasValidPoint = false;
-		    
-            // Skip all undefined points
-		    for (; pointIdx < points.Count; pointIdx++)
-		    {
-				currentPoint = points[pointIdx];
-			    if (currentPoint.X > xmax)
-			    {
-				    return false;
-			    }
-			    
-				// ReSharper disable once AssignmentInConditionalExpression
-			    if (hasValidPoint = this.IsValidPoint(currentPoint))
-			    {
-				    break;
-			    }
-		    }
+            bool hasValidPoint = false;
 
-		    if (!hasValidPoint)
-		    {
-			    return false;
-		    }
+            // Skip all undefined points
+            for (; pointIdx < points.Count; pointIdx++)
+            {
+                currentPoint = points[pointIdx];
+                if (currentPoint.X > xmax)
+                {
+                    return false;
+                }
+
+                // ReSharper disable once AssignmentInConditionalExpression
+                if (hasValidPoint = this.IsValidPoint(currentPoint))
+                {
+                    break;
+                }
+            }
+
+            if (!hasValidPoint)
+            {
+                return false;
+            }
 
             // First valid point
             var screenPoint = this.Transform(currentPoint);
@@ -576,26 +576,26 @@ namespace OxyPlot.Series
             // Add first point
             contiguous.Add(screenPoint);
 
-			// Add all points up until the next invalid one
-			int clipCount = 0;
-			for (pointIdx++; pointIdx < points.Count; pointIdx++)
-		    {
-				currentPoint = points[pointIdx];
-				clipCount += currentPoint.X > xmax ? 1 : 0;
-				if (clipCount > 1)
-				{
-					break;
-				}
-				if (!this.IsValidPoint(currentPoint))
-			    {
-				    break;
-			    }
+            // Add all points up until the next invalid one
+            int clipCount = 0;
+            for (pointIdx++; pointIdx < points.Count; pointIdx++)
+            {
+                currentPoint = points[pointIdx];
+                clipCount += currentPoint.X > xmax ? 1 : 0;
+                if (clipCount > 1)
+                {
+                    break;
+                }
+                if (!this.IsValidPoint(currentPoint))
+                {
+                    break;
+                }
 
-				screenPoint = this.Transform(currentPoint);
-				contiguous.Add(screenPoint);
-			}
+                screenPoint = this.Transform(currentPoint);
+                contiguous.Add(screenPoint);
+            }
 
-			previousContiguousLineSegmentEndPoint = screenPoint;
+            previousContiguousLineSegmentEndPoint = screenPoint;
 
             return true;
         }
@@ -685,7 +685,7 @@ namespace OxyPlot.Series
                     ha = HorizontalAlignment.Right;
                     dx = -4;
                     break;
-                case LineLegendPosition.StartInside:                    
+                case LineLegendPosition.StartInside:
                     point = this.ActualPoints[0];
                     ha = HorizontalAlignment.Left;
                     va = VerticalAlignment.Bottom;
