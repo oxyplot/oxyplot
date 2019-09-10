@@ -3,13 +3,9 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 ### Added 
-- added .NET Core port of PngExporter
-  Added additional line legend positions to line series. It was previously only Start and End.
-
-### Added
+- Added .NET Core port of PngExporter
 - New PolarPlot filling the full plot area (#1056)
-
-### Added
+- Command to copy plot to the clipboard in Windows Forms (Ctrl-C) (#1297)
 - Added Avalonia based renderer and control library (based off OxyPlot.Wpf).
 - New `InterpolationAlgorithm` property in LineSeries and PolylineAnnotation (#494)
 - Catmull-Rom spline interpolation algorithms (#494)
@@ -19,7 +15,8 @@ All notable changes to this project will be documented in this file.
 - ContinuousHistogramSeries (#1145)
 - Multiline text support for PortableDocumentFont (#1146)
 - Workaround for text vertical alignment in SVG Export to accomodate viewers which don't support dominant-baseline (#459, #1198)
-
+- Issues Example demonstrating the rendering of Line and Arrow annotations with all LineStyles (#1312)
+- Added additional line legend positions to line series. It was previously only Start and End.
 ### Changed
 - Let Gtk# PlotView show up in Ui editor ToolBox of MonoDevelop and XamarinStudio (#1071)
 - OxyPlot.Core changed to target netstandard 1.0 and net45 (#946, #1147)
@@ -28,6 +25,7 @@ All notable changes to this project will be documented in this file.
 - Place label below negative ColumnSeries (#1119)
 - Use PackageReference instead of packages.config
 - Migrated NUnit v2 to v3 and added test adapter
+- TrackerControl reuses existing ContentControl when a new hit tracker result uses the same template as the currently shown tracker (#1281)
 
 ### Deprecated
 - OxyPlot.WP8 package. Use OxyPlot.Windows instead (#996)
@@ -55,6 +53,12 @@ All notable changes to this project will be documented in this file.
 - Chart is not updated when top and bottom are not visible (#1219)
 - Candle overlap each candle (#623)
 - CandleStick is overlapped when item.open == item.close in the CandleStickAndVolumeSeries (#1245)
+- Out of memory exception and performance issue with Catmull-Rom Spline (#1237)
+- Cache and Dispose Brush and Pen objects used by GraphicsRenderContext (#1230)
+- Add checks for non-positive StrokeThickess and LineStyle.None in various places (#1312)
+- Fixed references to RectangleItem in HistogramSeries
+- Fix AxisChangedEventArgs.DeltaMaximum in Axes.Reset (#1306)
+- Fixed Tracker for RectangleBarSeries (#1171)
 
 ## [1.0.0] - 2016-09-11
 ### Added

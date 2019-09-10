@@ -29,8 +29,7 @@ namespace CsvDemo
             {
                 if (this.model != value)
                 {
-                    this.model = value;
-                    this.RaisePropertyChanged(() => this.Model);
+                    this.SetValue(ref this.model, value);
                 }
             }
         }

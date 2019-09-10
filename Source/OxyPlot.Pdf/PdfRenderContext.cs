@@ -465,7 +465,7 @@ namespace OxyPlot.Pdf
         /// <returns>The font.</returns>
         private static XFont CreateFont(string fontFamily, double fontSize, XFontStyle fontStyle)
         {
-            var pdfOptions = new XPdfFontOptions(PdfFontEncoding.Unicode, PdfFontEmbedding.Default);
+            var pdfOptions = new XPdfFontOptions(PdfFontEncoding.Unicode);
             var font = new XFont(fontFamily, (float)fontSize * FontsizeFactor, fontStyle, pdfOptions);
             return font;
         }

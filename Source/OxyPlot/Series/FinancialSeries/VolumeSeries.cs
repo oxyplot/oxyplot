@@ -296,17 +296,20 @@ namespace OxyPlot.Series
                 }
             }
 
-            // draw volume y=0 line
-            var intercept = this.YAxis.Transform(0);
-            rc.DrawClippedLine(
-                clipping,
-                new[] { new ScreenPoint(clipping.Left, intercept), new ScreenPoint(clipping.Right, intercept) },
-                0,
-                this.InterceptColor,
-                this.InterceptStrokeThickness,
-                this.InterceptLineStyle.GetDashArray(),
-                LineJoin.Miter,
-                true);
+            if (this.InterceptStrokeThickness > 0 && this.InterceptLineStyle != LineStyle.None)
+            {
+                // draw volume y=0 line
+                var intercept = this.YAxis.Transform(0);
+                rc.DrawClippedLine(
+                    clipping,
+                    new[] { new ScreenPoint(clipping.Left, intercept), new ScreenPoint(clipping.Right, intercept) },
+                    0,
+                    this.InterceptColor,
+                    this.InterceptStrokeThickness,
+                    this.InterceptLineStyle.GetDashArray(),
+                    LineJoin.Miter,
+                    true);
+            }
         }
 
         /// <summary>
@@ -330,19 +333,22 @@ namespace OxyPlot.Series
                 this.XAxis.Transform(this.data[0].X + datacandlewidth) -
                 this.XAxis.Transform(this.data[0].X);
 
-            rc.DrawLine(
-                new[] { new ScreenPoint(xmid, legendBox.Top), new ScreenPoint(xmid, legendBox.Bottom) },
-                lineUp,
-                this.StrokeThickness,
-                dashArray,
-                LineJoin.Miter,
-                true);
+            if (this.StrokeThickness > 0)
+            {
+                rc.DrawLine(
+                    new[] { new ScreenPoint(xmid, legendBox.Top), new ScreenPoint(xmid, legendBox.Bottom) },
+                    lineUp,
+                    this.StrokeThickness,
+                    dashArray,
+                    LineJoin.Miter,
+                    true);
 
-            rc.DrawRectangleAsPolygon(
-                new OxyRect(xmid - (candlewidth * 0.5), yclose, candlewidth, yopen - yclose),
-                fillUp,
-                lineUp,
-                this.StrokeThickness);
+                rc.DrawRectangleAsPolygon(
+                    new OxyRect(xmid - (candlewidth * 0.5), yclose, candlewidth, yopen - yclose),
+                    fillUp,
+                    lineUp,
+                    this.StrokeThickness);
+            }
         }
 
         /// <summary>

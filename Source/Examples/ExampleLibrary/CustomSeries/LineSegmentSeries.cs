@@ -82,8 +82,15 @@ namespace ExampleLibrary
                 }
             }
 
-            rc.DrawClippedLineSegments(clippingRect, screenPoints, this.ActualColor, this.StrokeThickness, this.LineStyle.GetDashArray(), this.LineJoin, false);
-            rc.DrawClippedLineSegments(clippingRect, verticalLines, this.ActualColor, this.StrokeThickness / 3, LineStyle.Dash.GetDashArray(), this.LineJoin, false);
+            if (this.StrokeThickness > 0)
+            {
+                if (this.LineStyle != LineStyle.None)
+                {
+                    rc.DrawClippedLineSegments(clippingRect, screenPoints, this.ActualColor, this.StrokeThickness, this.LineStyle.GetDashArray(), this.LineJoin, false);
+                }
+
+                rc.DrawClippedLineSegments(clippingRect, verticalLines, this.ActualColor, this.StrokeThickness / 3, LineStyle.Dash.GetDashArray(), this.LineJoin, false);
+            }
 
             rc.DrawMarkers(screenPoints, clippingRect, this.MarkerType, null, this.MarkerSize, this.MarkerFill, this.MarkerStroke, this.MarkerStrokeThickness);
         }

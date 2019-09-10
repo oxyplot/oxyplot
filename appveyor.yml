@@ -1,10 +1,12 @@
-image: Visual Studio 2017
+image: Visual Studio 2019
 
-configuration: 
-  - Release
+skip_branch_with_pr: true
 
 pull_requests:
   do_not_increment_build_number: true
+
+platform: Any CPU
+configuration: Release
 
 install:
   - cinst gitversion.portable --version=3.6.4 -y
@@ -13,18 +15,13 @@ install:
 before_build:
   - appveyor DownloadFile https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
   - NuGet restore Source/OxyPlot.AppVeyor.sln
-  - gitversion /l console /output buildserver /updateAssemblyInfo
+  - gitversion /l console /output buildserver
 
 build_script:
-  - msbuild Source/OxyPlot.AppVeyor.sln "/property:Platform=Any CPU" "/property:Version=%GitVersion_NuGetVersion%" /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+  - msbuild Source/OxyPlot.AppVeyor.sln "/p:Platform=Any CPU" "/p:Configuration=Release" "/p:Version=%GitVersion_NuGetVersion%"  /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
  
 after_build:
   - gitlink c:\projects\oxyplot -u https://github.com/oxyplot/oxyplot -f Source/OxyPlot.AppVeyor.sln
-  - NuGet pack Source\OxyPlot.Wpf\OxyPlot.Wpf.nuspec -version "%GitVersion_NuGetVersion%" -OutputDirectory Source\OxyPlot.Wpf\bin\Release
-  - NuGet pack Source\OxyPlot.Windows\OxyPlot.Windows.nuspec -version "%GitVersion_NuGetVersion%" -OutputDirectory Source\OxyPlot.Windows\bin\Release
-  - NuGet pack Source\OxyPlot.WindowsForms\OxyPlot.WindowsForms.nuspec -version "%GitVersion_NuGetVersion%" -OutputDirectory Source\OxyPlot.WindowsForms\bin\Release
-  - NuGet pack Source\OxyPlot.OpenXml\OxyPlot.OpenXml.nuspec -version "%GitVersion_NuGetVersion%" -OutputDirectory Source\OxyPlot.OpenXml\bin\Release
-  - NuGet pack Source\OxyPlot.Pdf\OxyPlot.Pdf.nuspec -version "%GitVersion_NuGetVersion%" -OutputDirectory Source\OxyPlot.Pdf\bin\Release
 
 artifacts:
   - path: '**/bin/Release/**/*.nupkg'

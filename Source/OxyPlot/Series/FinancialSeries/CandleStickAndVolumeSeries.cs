@@ -390,34 +390,37 @@ namespace OxyPlot.Series
                 }
             }
 
-            // draw volume & bar separation line
-            if (this.VolumeStyle != VolumeStyle.None)
+            if (this.SeparatorStrokeThickness > 0 && this.SeparatorLineStyle != LineStyle.None)
             {
-                var ysep = (clippingSep.Bottom + clippingSep.Top) / 2.0;
-                rc.DrawClippedLine(
-                    clippingSep,
-                    new[] { new ScreenPoint(clippingSep.Left, ysep), new ScreenPoint(clippingSep.Right, ysep) },
-                    0,
-                    this.SeparatorColor,
-                    this.SeparatorStrokeThickness,
-                    this.SeparatorLineStyle.GetDashArray(),
-                    LineJoin.Miter,
-                    true);
-            }
+                // draw volume & bar separation line
+                if (this.VolumeStyle != VolumeStyle.None)
+                {
+                    var ysep = (clippingSep.Bottom + clippingSep.Top) / 2.0;
+                    rc.DrawClippedLine(
+                        clippingSep,
+                        new[] { new ScreenPoint(clippingSep.Left, ysep), new ScreenPoint(clippingSep.Right, ysep) },
+                        0,
+                        this.SeparatorColor,
+                        this.SeparatorStrokeThickness,
+                        this.SeparatorLineStyle.GetDashArray(),
+                        LineJoin.Miter,
+                        true);
+                }
 
-            // draw volume y=0 line
-            if (this.VolumeAxis != null && this.VolumeStyle == VolumeStyle.PositiveNegative)
-            {
-                var y0 = this.VolumeAxis.Transform(0);
-                rc.DrawClippedLine(
-                    clippingVol,
-                    new[] { new ScreenPoint(clippingVol.Left, y0), new ScreenPoint(clippingVol.Right, y0) },
-                    0,
-                    OxyColors.Goldenrod,
-                    this.SeparatorStrokeThickness,
-                    this.SeparatorLineStyle.GetDashArray(),
-                    LineJoin.Miter,
-                    true);
+                // draw volume y=0 line
+                if (this.VolumeAxis != null && this.VolumeStyle == VolumeStyle.PositiveNegative)
+                {
+                    var y0 = this.VolumeAxis.Transform(0);
+                    rc.DrawClippedLine(
+                        clippingVol,
+                        new[] { new ScreenPoint(clippingVol.Left, y0), new ScreenPoint(clippingVol.Right, y0) },
+                        0,
+                        OxyColors.Goldenrod,
+                        this.SeparatorStrokeThickness,
+                        this.SeparatorLineStyle.GetDashArray(),
+                        LineJoin.Miter,
+                        true);
+                }
             }
         }
 
@@ -442,19 +445,22 @@ namespace OxyPlot.Series
                 legendBox.Width,
                 this.XAxis.Transform(this.data[0].X + datacandlewidth) - this.XAxis.Transform(this.data[0].X));
 
-            rc.DrawLine(
-                new[] { new ScreenPoint(xmid, legendBox.Top), new ScreenPoint(xmid, legendBox.Bottom) },
-                lineUp,
-                this.StrokeThickness,
-                dashArray,
-                LineJoin.Miter,
-                true);
+            if (this.StrokeThickness > 0)
+            {
+                rc.DrawLine(
+                    new[] { new ScreenPoint(xmid, legendBox.Top), new ScreenPoint(xmid, legendBox.Bottom) },
+                    lineUp,
+                    this.StrokeThickness,
+                    dashArray,
+                    LineJoin.Miter,
+                    true);
 
-            rc.DrawRectangleAsPolygon(
-                new OxyRect(xmid - (candlewidth * 0.5), yclose, candlewidth, yopen - yclose),
-                fillUp,
-                lineUp,
-                this.StrokeThickness);
+                rc.DrawRectangleAsPolygon(
+                    new OxyRect(xmid - (candlewidth * 0.5), yclose, candlewidth, yopen - yclose),
+                    fillUp,
+                    lineUp,
+                    this.StrokeThickness);
+            }
         }
 
         /// <summary>

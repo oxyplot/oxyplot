@@ -964,7 +964,7 @@ namespace OxyPlot.Axes
         public virtual void Reset()
         {
             var oldMinimum = this.ActualMinimum;
-            var oldMaximum = this.ActualMinimum;
+            var oldMaximum = this.ActualMaximum;
 
             this.ViewMinimum = double.NaN;
             this.ViewMaximum = double.NaN;
