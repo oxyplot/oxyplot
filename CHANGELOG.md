@@ -59,6 +59,7 @@ All notable changes to this project will be documented in this file.
 - Fixed references to RectangleItem in HistogramSeries
 - Fix AxisChangedEventArgs.DeltaMaximum in Axes.Reset (#1306)
 - Fixed Tracker for RectangleBarSeries (#1171)
+- Fixed issue with svg always containing the xml headers (#1212)
 
 ## [1.0.0] - 2016-09-11
 ### Added
