@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 ### Added 
 - added .NET Core port of PngExporter
+  Added additional line legend positions to line series. It was previously only Start and End.
 
 ### Added
 - New PolarPlot filling the full plot area (#1056)
@@ -271,7 +272,7 @@ All notable changes to this project will be documented in this file.
 - PngExporter text formatting (#170)
 
 ### Added
-  Added additional line legend positions to line series. It was previously only Start and End.
+
 
 [Unreleased]: https://github.com/oxyplot/oxyplot/compare/v1.0.0...HEAD
 [1.0.0]: https://github.com/oxyplot/oxyplot/compare/v0.2014.1.546...v1.0.0
