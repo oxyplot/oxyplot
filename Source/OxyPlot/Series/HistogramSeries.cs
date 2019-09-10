@@ -13,8 +13,6 @@ namespace OxyPlot.Series
     using System.Collections.Generic;
     using System.Linq;
 
-    using Axes;
-
     /// <summary>
     /// Represents a series that can be bound to a collection of <see cref="HistogramItem"/>.
     /// </summary>
@@ -23,8 +21,8 @@ namespace OxyPlot.Series
         /// <summary>
         /// The default tracker format string
         /// </summary>
-        public new const string DefaultTrackerFormatString = "Start: {5}\nEnd: {6}\nValue: {7}\nArea: {8}";
-        
+        public new const string DefaultTrackerFormatString = "Start: {5}\nEnd: {6}\nValue: {7}\nArea: {8}\nCount: {9}";
+
         /// <summary>
         /// The default fill color.
         /// </summary>
@@ -39,7 +37,7 @@ namespace OxyPlot.Series
         /// Specifies if the <see cref="actualItems" /> list can be modified.
         /// </summary>
         private bool ownsActualItems;
-        
+
         /// <summary>
         /// Initializes a new instance of the <see cref="HistogramSeries" /> class.
         /// </summary>
@@ -54,7 +52,7 @@ namespace OxyPlot.Series
             this.LabelFontSize = 0;
             this.LabelPlacement = LabelPlacement.Outside;
         }
-        
+
         /// <summary>
         /// Gets or sets the color of the interior of the bars.
         /// </summary>
@@ -69,7 +67,7 @@ namespace OxyPlot.Series
         {
             get { return this.FillColor.GetActualColor(this.defaultFillColor); }
         }
-        
+
         /// <summary>
         /// Gets or sets the color of the interior of the bars when the value is negative.
         /// </summary>
@@ -110,7 +108,7 @@ namespace OxyPlot.Series
         /// </summary>
         /// <value>The font size relative to the cell height.</value>
         public double LabelFontSize { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the label margins.
         /// </summary>
@@ -125,12 +123,12 @@ namespace OxyPlot.Series
         /// Gets or sets a value indicating whether the tracker can interpolate points.
         /// </summary>
         public bool CanTrackerInterpolatePoints { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the delegate used to map from <see cref="ItemsSeries.ItemsSource" /> to <see cref="HistogramSeries" />. The default is <c>null</c>.
         /// </summary>
         /// <value>The mapping.</value>
-        /// <remarks>Example: series1.Mapping = item => new HistogramItem((double)item.BinStart, (double)item.BinStart + item.BinWidth, (double)item.Count);</remarks>
+        /// <remarks>Example: series1.Mapping = item => new HistogramItem((double)item.BinStart, (double)item.BinStart + item.BinWidth, (double)item.Count / totalCount, item.Count);</remarks>
         public Func<object, HistogramItem> Mapping { get; set; }
 
         /// <summary>
@@ -144,7 +142,7 @@ namespace OxyPlot.Series
         /// </summary>
         /// <value>A list of <see cref="HistogramItem" />.</value>
         protected List<HistogramItem> ActualItems => this.ItemsSource != null ? this.actualItems : this.Items;
-        
+
         /// <summary>
         /// Transforms data space coordinates to orientated screen space coordinates.
         /// </summary>
@@ -208,7 +206,7 @@ namespace OxyPlot.Series
             {
                 return null;
             }
-            
+
             if (this.ActualItems != null)
             {
                 // iterate through the HistogramItems and return the first one that contains the point
@@ -235,7 +233,8 @@ namespace OxyPlot.Series
                             item.RangeStart,
                             item.RangeEnd,
                             item.Value,
-                            item.Area)
+                            item.Area,
+                            item.Count)
                         };
                     }
                 }
@@ -349,7 +348,7 @@ namespace OxyPlot.Series
         {
             return v.ToString(this.LabelFormatString, this.ActualCulture);
         }
-        
+
         /// <summary>
         /// Gets the item at the specified index.
         /// </summary>
@@ -392,7 +391,7 @@ namespace OxyPlot.Series
                 var rectrect = new OxyRect(pointa, pointb);
 
                 rc.DrawClippedRectangleAsPolygon(clippingRect, rectrect, actualFillColor, this.StrokeColor, this.StrokeThickness);
-                
+
                 if (this.LabelFormatString != null)
                 {
                     this.RenderLabel(rc, clippingRect, rectrect, item.Value, item);
@@ -418,7 +417,7 @@ namespace OxyPlot.Series
 
             return new OxyRect(minX, minY, maxX - minX, maxY - minY);
         }
-        
+
         /// <summary>
         /// Draws the label.
         /// </summary>
@@ -476,7 +475,7 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Transposes the ScreenPoint if the X axis is vertically orientated
+        /// Transposes the ScreenPoint if the X axis is vertically orientated.
         /// </summary>
         /// <param name="point">The <see cref="ScreenPoint" /> to orientate.</param>
         /// <returns>The oriented point.</returns>
@@ -491,7 +490,7 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Tests if a <see cref="DataPoint" /> is inside the heat map
+        /// Tests if a <see cref="DataPoint" /> is inside the histogram.
         /// </summary>
         /// <param name="p">The <see cref="DataPoint" /> to test.</param>
         /// <returns><c>True</c> if the point is inside the heat map.</returns>
@@ -501,7 +500,7 @@ namespace OxyPlot.Series
 
             return p.X >= this.MinX && p.X <= this.MaxX && p.Y >= this.MinY && p.Y <= this.MaxY;
         }
-        
+
         /// <summary>
         /// Clears or creates the <see cref="actualItems"/> list.
         /// </summary>
