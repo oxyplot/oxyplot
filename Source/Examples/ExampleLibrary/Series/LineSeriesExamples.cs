@@ -206,6 +206,7 @@ namespace ExampleLibrary
             var model = new PlotModel { Title = "LineSeries with LineLegendPosition" };
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, MinimumPadding = 0.1, MaximumPadding = 0.1 });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+
             var s1 = CreateExampleLineSeries(246);
             s1.Title = "Start";
             s1.MarkerType = MarkerType.Circle;
