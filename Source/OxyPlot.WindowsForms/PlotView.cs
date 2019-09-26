@@ -84,6 +84,8 @@ namespace OxyPlot.WindowsForms
         /// </summary>
         private Rectangle zoomRectangle;
 
+        private ToolTip toolTip;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="PlotView" /> class.
         /// </summary>
@@ -98,6 +100,12 @@ namespace OxyPlot.WindowsForms
             this.ZoomRectangleCursor = Cursors.SizeNWSE;
             this.ZoomHorizontalCursor = Cursors.SizeWE;
             this.ZoomVerticalCursor = Cursors.SizeNS;
+
+            this.toolTip = new ToolTip(); // TODO: pass a parameter, this or this.FindForm() ?
+            this.toolTip.InitialDelay = 1000;
+            this.toolTip.AutoPopDelay = 1000;
+            this.toolTip.AutomaticDelay = 1000;
+            this.toolTip.ReshowDelay = 1000;
 
             var DoCopy = new DelegatePlotCommand<OxyKeyEventArgs>((view, controller, args) => this.DoCopy(view, args));
             this.ActualController.BindKeyDown(OxyKey.C, OxyModifierKeys.Control, DoCopy);
@@ -375,6 +383,108 @@ namespace OxyPlot.WindowsForms
             base.OnMouseMove(e);
 
             this.ActualController.HandleMouseMove(this, e.ToMouseEventArgs(GetModifiers()));
+
+            UpdateToolTip();
+        }
+
+        private PlotElement PreviouslyHoveredPlotElement = null;
+
+        /// <summary>
+        /// Returns true if the event is handled.
+        /// </summary>
+        /// <returns></returns>
+        private bool HandleTitleToolTip(ScreenPoint sp)
+        {
+            bool v = this.Model.TitleArea.Contains(sp);
+
+            if (v)
+            {
+                if (string.IsNullOrEmpty(toolTip.GetToolTip(this)))
+                {
+                    toolTip.SetToolTip(this, this.Model.TitleToolTip);
+                }
+
+                PreviouslyHoveredPlotElement = null;
+
+                return true;
+            }
+
+            return false;
+        }
+        
+        private bool HandleAxisXToolTip(ScreenPoint sp)
+        {
+            HitTestResult r = this.Model.DefaultXAxis.HitTest(new HitTestArguments(sp, 5));
+            bool v = r.Element != null;
+
+            if (v)
+            {
+                if (string.IsNullOrEmpty(toolTip.GetToolTip(this)))
+                {
+                    toolTip.SetToolTip(this, this.Model.DefaultXAxis.ToolTip);
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Returns true if the event is handled.
+        /// </summary>
+        /// <returns></returns>
+        private bool HandlePlotElementsToolTip(ScreenPoint sp)
+        {
+            bool found = false;
+
+            System.Collections.Generic.IEnumerable<HitTestResult> r = this.Model.HitTest(new HitTestArguments(sp, 5));
+            
+            foreach (HitTestResult rtr in r)
+            {
+                if (rtr.Element != null)
+                {
+                    if (rtr.Element is PlotElement pe)
+                    {
+                        if (pe != PreviouslyHoveredPlotElement)
+                        {
+                            toolTip.SetToolTip(this, pe.ToolTip);
+                        }
+                        PreviouslyHoveredPlotElement = pe;
+                        found = true;
+                    }
+                    break;
+                }
+            }
+
+            if (!found)
+            {
+                PreviouslyHoveredPlotElement = null;
+            }
+
+            return found;
+        }
+
+        private void UpdateToolTip()
+        {
+            ScreenPoint sp = PointToClient(MousePosition).ToScreenPoint();
+
+
+            if (HandleTitleToolTip(sp))
+            {
+                return;
+            }
+
+            // temporary `if`:
+            //if (HandleAxisXToolTip(sp))
+            //{
+            //    return;
+            //}
+
+            if (!HandlePlotElementsToolTip(sp))
+            {
+                toolTip.RemoveAll();
+            }
         }
 
         /// <summary>
@@ -396,6 +506,8 @@ namespace OxyPlot.WindowsForms
         {
             base.OnMouseEnter(e);
             this.ActualController.HandleMouseEnter(this, e.ToMouseEventArgs(GetModifiers()));
+
+            UpdateToolTip();
         }
 
         /// <summary>
@@ -406,6 +518,8 @@ namespace OxyPlot.WindowsForms
         {
             base.OnMouseLeave(e);
             this.ActualController.HandleMouseLeave(this, e.ToMouseEventArgs(GetModifiers()));
+
+            UpdateToolTip();
         }
 
         /// <summary>
