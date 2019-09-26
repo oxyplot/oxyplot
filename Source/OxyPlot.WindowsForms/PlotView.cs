@@ -84,6 +84,9 @@ namespace OxyPlot.WindowsForms
         /// </summary>
         private Rectangle zoomRectangle;
 
+        /// <summary>
+        /// The tool tip component.
+        /// </summary>
         private ToolTip toolTip;
 
         /// <summary>
@@ -102,6 +105,7 @@ namespace OxyPlot.WindowsForms
             this.ZoomVerticalCursor = Cursors.SizeNS;
 
             this.toolTip = new ToolTip(); // TODO: pass a parameter, this or this.FindForm() ?
+            // should there be other values for some of the following four properties?:
             this.toolTip.InitialDelay = 1000;
             this.toolTip.AutoPopDelay = 1000;
             this.toolTip.AutomaticDelay = 1000;
@@ -411,7 +415,11 @@ namespace OxyPlot.WindowsForms
 
             return false;
         }
-        
+
+        /// <summary>
+        /// Returns true if the event is handled.
+        /// </summary>
+        /// <returns></returns>
         private bool HandleAxisXToolTip(ScreenPoint sp)
         {
             HitTestResult r = this.Model.DefaultXAxis.HitTest(new HitTestArguments(sp, 5));
