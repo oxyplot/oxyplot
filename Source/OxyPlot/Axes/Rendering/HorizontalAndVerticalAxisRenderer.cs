@@ -344,6 +344,7 @@ namespace OxyPlot.Axes
                     SnapTo(plotAreaBottom, ref transformedValue);
                 }
 
+                // Draw the major grid line
                 if (this.MajorPen != null)
                 {
                     this.AddSegments(
@@ -491,6 +492,7 @@ namespace OxyPlot.Axes
 
             if (this.MajorPen != null)
             {
+                // the grid lines
                 this.RenderContext.DrawLineSegments(majorSegments, this.MajorPen);
             }
 
@@ -599,9 +601,10 @@ namespace OxyPlot.Axes
                 }
             }
 
-            // Draw all the line segments);
+            // Draw all the line segments
             if (this.MinorPen != null)
             {
+                // the grid lines
                 this.RenderContext.DrawLineSegments(minorSegments, this.MinorPen);
             }
 
