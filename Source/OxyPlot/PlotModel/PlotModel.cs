@@ -818,12 +818,13 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets the first axes that covers the area of the specified point.
+        /// Does hit testing for axes or gets the first axes that cover the area of the specified point.
         /// </summary>
         /// <param name="pt">The point.</param>
         /// <param name="xaxis">The x-axis.</param>
         /// <param name="yaxis">The y-axis.</param>
-        public void GetAxesFromPoint(ScreenPoint pt, out Axis xaxis, out Axis yaxis)
+        /// <param name="hitTestMode">Whether this method will do hit testing for axes.</param>
+        public void GetAxesFromPoint(ScreenPoint pt, out Axis xaxis, out Axis yaxis, bool hitTestMode = false)
         {
             xaxis = yaxis = null;
 
@@ -856,25 +857,34 @@ namespace OxyPlot
 
             foreach (var axis in this.Axes)
             {
-                if(!axis.IsAxisVisible)
+                if (!axis.IsAxisVisible)
                 {
                     continue;
                 }
 
                 if (axis is IColorAxis)
                 {
-                    continue;
+                    if (!hitTestMode)
+                    {
+                        continue;
+                    }
                 }
 
                 if (axis is MagnitudeAxis)
                 {
-                    xaxis = axis;
+                    if (!hitTestMode)
+                    {
+                        xaxis = axis;
+                    }
                     continue;
                 }
 
                 if (axis is AngleAxis)
                 {
-                    yaxis = axis;
+                    if (!hitTestMode)
+                    {
+                        yaxis = axis;
+                    }
                     continue;
                 }
 
@@ -891,7 +901,7 @@ namespace OxyPlot
 
                 if (x >= axis.ActualMinimum && x <= axis.ActualMaximum)
                 {
-                    if (position == null)
+                    if (position == null && !hitTestMode)
                     {
                         if (axis.IsHorizontal())
                         {

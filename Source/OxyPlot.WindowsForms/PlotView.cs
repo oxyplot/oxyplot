@@ -401,7 +401,7 @@ namespace OxyPlot.WindowsForms
         {
             bool v = this.Model.TitleArea.Contains(sp);
 
-            if (v)
+            if (v && !string.IsNullOrEmpty(this.Model.Title))
             {
                 if (string.IsNullOrEmpty(toolTip.GetToolTip(this)))
                 {
@@ -420,33 +420,12 @@ namespace OxyPlot.WindowsForms
         /// Returns true if the event is handled.
         /// </summary>
         /// <returns></returns>
-        private bool HandleAxisXToolTip(ScreenPoint sp)
-        {
-            HitTestResult r = this.Model.DefaultXAxis.HitTest(new HitTestArguments(sp, 5));
-            bool v = r.Element != null;
-
-            if (v)
-            {
-                if (string.IsNullOrEmpty(toolTip.GetToolTip(this)))
-                {
-                    toolTip.SetToolTip(this, this.Model.DefaultXAxis.ToolTip);
-                }
-
-                return true;
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Returns true if the event is handled.
-        /// </summary>
-        /// <returns></returns>
         private bool HandlePlotElementsToolTip(ScreenPoint sp)
         {
             bool found = false;
 
-            System.Collections.Generic.IEnumerable<HitTestResult> r = this.Model.HitTest(new HitTestArguments(sp, 5));
+            System.Collections.Generic.IEnumerable<HitTestResult> r =
+                this.Model.HitTest(new HitTestArguments(sp, 5));
             
             foreach (HitTestResult rtr in r)
             {
@@ -483,15 +462,10 @@ namespace OxyPlot.WindowsForms
                 return;
             }
 
-            // temporary `if`:
-            //if (HandleAxisXToolTip(sp))
-            //{
-            //    return;
-            //}
-
             if (!HandlePlotElementsToolTip(sp))
             {
                 toolTip.RemoveAll();
+                return;
             }
         }
 
