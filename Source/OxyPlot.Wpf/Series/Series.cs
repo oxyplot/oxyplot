@@ -238,6 +238,7 @@ namespace OxyPlot.Wpf
             s.IsVisible = this.Visibility == Visibility.Visible;
             s.Font = this.FontFamily.ToString();
             s.TextColor = this.Foreground.ToOxyColor();
+            s.ToolTip = this.ToolTip != null ? this.ToolTip.ToString() : null;
         }
 
         /// <summary>
