@@ -66,6 +66,13 @@ namespace OxyPlot.Wpf
                 "ZoomVerticalCursor", typeof(Cursor), typeof(PlotBase), new PropertyMetadata(Cursors.SizeNS));
 
         /// <summary>
+        /// Identifies the <see cref="UseCustomToolTipSystem"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty UseCustomToolTipSystemProperty =
+            DependencyProperty.Register(
+                "UseCustomToolTipSystem", typeof(bool), typeof(PlotBase), new PropertyMetadata(false));
+
+        /// <summary>
         /// Gets or sets the default tracker template.
         /// </summary>
         public ControlTemplate DefaultTrackerTemplate
@@ -179,6 +186,23 @@ namespace OxyPlot.Wpf
             set
             {
                 this.SetValue(ZoomVerticalCursorProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets whether the custom tooltip system is used.
+        /// (It is useful when dealing with very frequent plot updates.)
+        /// </summary>
+        /// <value>The zoom vertical cursor.</value>
+        public bool UseCustomToolTipSystem
+        {
+            get
+            {
+                return (bool)this.GetValue(UseCustomToolTipSystemProperty);
+            }
+            set
+            {
+                this.SetValue(UseCustomToolTipSystemProperty, value);
             }
         }
     }
