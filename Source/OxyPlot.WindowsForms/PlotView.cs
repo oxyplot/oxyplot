@@ -424,6 +424,7 @@ namespace OxyPlot.WindowsForms
         {
             bool found = false;
 
+            // should we use other value than 5 in this line?
             System.Collections.Generic.IEnumerable<HitTestResult> r =
                 this.Model.HitTest(new HitTestArguments(sp, 5));
             
