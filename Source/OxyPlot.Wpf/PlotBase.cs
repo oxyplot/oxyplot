@@ -97,6 +97,12 @@ namespace OxyPlot.Wpf
         private FrameworkElement containerCache;
 
         /// <summary>
+        /// The previously hovered plot element used
+        /// in the optional custom tooltip system.
+        /// </summary>
+        private PlotElement previouslyHoveredPlotElement = null;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="PlotBase" /> class.
         /// </summary>
         protected PlotBase()
@@ -270,7 +276,10 @@ namespace OxyPlot.Wpf
                 }
             }
 
-            this.mouseGrid.IsHitTestVisible = false;
+            this.BeginInvoke(new Action(() =>
+            {
+                this.mouseGrid.IsHitTestVisible = false;
+            }));
         }
 
         /// <summary>

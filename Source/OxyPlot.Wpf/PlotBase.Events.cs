@@ -121,12 +121,127 @@ namespace OxyPlot.Wpf
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
+            UpdateToolTip();
+
             if (e.Handled)
             {
                 return;
             }
 
             e.Handled = this.ActualController.HandleMouseMove(this, e.ToMouseEventArgs(this));
+        }
+
+        /// <summary>
+        /// Returns true if the event is handled.
+        /// </summary>
+        /// <returns></returns>
+        private bool HandleTitleToolTip(ScreenPoint sp)
+        {
+            bool v = this.ActualModel.TitleArea.Contains(sp);
+
+            if (v)
+            {
+                if (this.ToolTip == null || string.IsNullOrEmpty(this.ToolTip.ToString()))
+                {
+                    this.ToolTip = this.ActualModel.TitleToolTip;
+                }
+
+                this.previouslyHoveredPlotElement = null;
+
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Returns true if the event is handled.
+        /// </summary>
+        /// <returns></returns>
+        private bool HandlePlotElementsToolTip(ScreenPoint sp)
+        {
+            bool found = false;
+
+            // it may be possible that the 5 constant in this line needs to be replaced with some other value
+            System.Collections.Generic.IEnumerable<HitTestResult> r = this.ActualModel.HitTest(new HitTestArguments(sp, 5));
+
+            foreach (HitTestResult rtr in r)
+            {
+                if (rtr.Element != null)
+                {
+                    if (rtr.Element is PlotElement pe)
+                    {
+                        if (pe != this.previouslyHoveredPlotElement)
+                        {
+                            this.ToolTip = pe.ToolTip;
+                        }
+                        this.previouslyHoveredPlotElement = pe;
+                        found = true;
+                    }
+                    break;
+                }
+            }
+
+            if (!found)
+            {
+                this.previouslyHoveredPlotElement = null;
+            }
+
+            return found;
+        }
+
+        /// <summary>
+        /// Updates the custom tooltip system's tooltip.
+        /// </summary>
+        private void UpdateToolTip()
+        {
+            if (this.ActualModel == null || !this.UseCustomToolTipSystem)
+            {
+                return;
+            }
+
+            ScreenPoint sp = Mouse.GetPosition(this).ToScreenPoint();
+
+
+            bool handleTitle = HandleTitleToolTip(sp);
+            bool handleOthers = HandlePlotElementsToolTip(sp);
+
+            if (!handleTitle && !handleOthers)
+            {
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    System.Windows.Controls.ToolTipService.SetIsEnabled(this, false);
+                }), System.Windows.Threading.DispatcherPriority.Render);
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    this.ToolTip = null;
+                }), System.Windows.Threading.DispatcherPriority.Render);
+                return;
+            }
+
+            if (handleTitle)
+            {
+                UpdateToolTipVisibility();
+            }
+            else if (handleOthers)
+            {
+                UpdateToolTipVisibility();
+            }
+        }
+
+        private void UpdateToolTipVisibility()
+        {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                if (this.ToolTip == null)
+                {
+                    System.Windows.Controls.ToolTipService.SetIsEnabled(this, false);
+                }
+                else
+                {
+                    System.Windows.Controls.ToolTipService.SetIsEnabled(this, true);
+                }
+            }), System.Windows.Threading.DispatcherPriority.Render);
         }
 
         /// <summary>
@@ -174,6 +289,7 @@ namespace OxyPlot.Wpf
         protected override void OnMouseEnter(MouseEventArgs e)
         {
             base.OnMouseEnter(e);
+            UpdateToolTip();
             if (e.Handled)
             {
                 return;
@@ -189,6 +305,7 @@ namespace OxyPlot.Wpf
         protected override void OnMouseLeave(MouseEventArgs e)
         {
             base.OnMouseEnter(e);
+            UpdateToolTip();
             if (e.Handled)
             {
                 return;
