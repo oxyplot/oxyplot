@@ -245,7 +245,10 @@ namespace OxyPlot.Wpf
         {
             if (this.ActualModel == null || !this.UseCustomToolTipSystem)
             {
-                this.OxyToolTip = null;
+                if (this.UseCustomToolTipSystem)
+                {
+                    this.OxyToolTip = null;
+                }
                 return;
             }
 
@@ -262,12 +265,10 @@ namespace OxyPlot.Wpf
 
             if (!handleTitle && !handleOthers)
             {
-                //Dispatcher.BeginInvoke(new Action(() =>
-                //{
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
                     this.OxyToolTip = null;
-                //}), System.Windows.Threading.DispatcherPriority.Send);
-
-                return;
+                }), System.Windows.Threading.DispatcherPriority.Send);
             }
         }
 

@@ -70,6 +70,12 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+
+        <Style.Triggers>
+            <Trigger Property="UseCustomToolTipSystem" Value="True">
+                <Setter Property="ToolTipService.IsEnabled" Value="False"/>
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
     <Style TargetType="{x:Type local:Plot}">
@@ -103,6 +109,12 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+
+        <Style.Triggers>
+            <Trigger Property="UseCustomToolTipSystem" Value="True">
+                <Setter Property="ToolTipService.IsEnabled" Value="False"/>
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
 </ResourceDictionary>
