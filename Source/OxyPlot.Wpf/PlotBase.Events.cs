@@ -10,6 +10,7 @@
 namespace OxyPlot.Wpf
 {
     using System;
+    using System.Windows.Controls;
     using System.Windows.Input;
 
     /// <summary>
@@ -132,6 +133,51 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
+        /// The string representation of the ToolTip.
+        /// </summary>
+        protected string OxyToolTip
+        {
+            get
+            {
+                var t = ToolTipService.GetToolTip(this) as ToolTip;
+
+                return t != null ? t.Content.ToString() : null;
+            }
+            set
+            {
+                var t = ToolTipService.GetToolTip(this) as ToolTip;
+
+                // tooltip removal
+                if (value == null)
+                {
+                    if (t != null)
+                    {
+                        t.IsOpen = false;
+                        t = null;
+                    }
+                    ToolTipService.SetToolTip(this, null);
+                }
+                // setting the tooltip string
+                else if (value != null)
+                {
+                    if (t == null)
+                    {
+                        t = new ToolTip();
+                        t.Content = value;
+                        // here after playing with the tooltips,
+                        // I get "'ToolTip' cannot have a logical or visual parent"
+                        // (I improved the code since then):
+                        ToolTipService.SetToolTip(this, t);
+                    }
+                    else
+                    {
+                        t.Content = value;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Returns true if the event is handled.
         /// </summary>
         /// <returns></returns>
@@ -141,9 +187,11 @@ namespace OxyPlot.Wpf
 
             if (v)
             {
-                if (this.ToolTip == null || string.IsNullOrEmpty(this.ToolTip.ToString()))
+                // if no tooltip is set, or no tooltip is to be set
+                if (this.OxyToolTip == null || string.IsNullOrEmpty(this.OxyToolTip.ToString()))
                 {
-                    this.ToolTip = this.ActualModel.TitleToolTip;
+                    // set the tooltip to be the tooltip of the plot title
+                    this.OxyToolTip = this.ActualModel.TitleToolTip;
                 }
 
                 this.previouslyHoveredPlotElement = null;
@@ -173,7 +221,7 @@ namespace OxyPlot.Wpf
                     {
                         if (pe != this.previouslyHoveredPlotElement)
                         {
-                            this.ToolTip = pe.ToolTip;
+                            this.OxyToolTip = pe.ToolTip;
                         }
                         this.previouslyHoveredPlotElement = pe;
                         found = true;
@@ -197,6 +245,7 @@ namespace OxyPlot.Wpf
         {
             if (this.ActualModel == null || !this.UseCustomToolTipSystem)
             {
+                this.OxyToolTip = null;
                 return;
             }
 
@@ -204,44 +253,22 @@ namespace OxyPlot.Wpf
 
 
             bool handleTitle = HandleTitleToolTip(sp);
-            bool handleOthers = HandlePlotElementsToolTip(sp);
+            bool handleOthers = false;
+
+            if (!handleTitle)
+            {
+                handleOthers = HandlePlotElementsToolTip(sp);
+            }
 
             if (!handleTitle && !handleOthers)
             {
-                Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    System.Windows.Controls.ToolTipService.SetIsEnabled(this, false);
-                }), System.Windows.Threading.DispatcherPriority.Render);
-                Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    this.ToolTip = null;
-                }), System.Windows.Threading.DispatcherPriority.Render);
+                //Dispatcher.BeginInvoke(new Action(() =>
+                //{
+                    this.OxyToolTip = null;
+                //}), System.Windows.Threading.DispatcherPriority.Send);
+
                 return;
             }
-
-            if (handleTitle)
-            {
-                UpdateToolTipVisibility();
-            }
-            else if (handleOthers)
-            {
-                UpdateToolTipVisibility();
-            }
-        }
-
-        private void UpdateToolTipVisibility()
-        {
-            Dispatcher.BeginInvoke(new Action(() =>
-            {
-                if (this.ToolTip == null)
-                {
-                    System.Windows.Controls.ToolTipService.SetIsEnabled(this, false);
-                }
-                else
-                {
-                    System.Windows.Controls.ToolTipService.SetIsEnabled(this, true);
-                }
-            }), System.Windows.Threading.DispatcherPriority.Render);
         }
 
         /// <summary>
