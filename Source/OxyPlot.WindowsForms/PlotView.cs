@@ -235,6 +235,12 @@ namespace OxyPlot.WindowsForms
         public Cursor ZoomVerticalCursor { get; set; }
 
         /// <summary>
+        /// Gets whether the custom tooltip system is used.
+        /// </summary>
+        [Browsable(false)]
+        public bool UseCustomToolTipSystem { get => true; }
+
+        /// <summary>
         /// Hides the tracker.
         /// </summary>
         public void HideTracker()
