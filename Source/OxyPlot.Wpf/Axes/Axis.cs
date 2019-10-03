@@ -316,6 +316,15 @@ namespace OxyPlot.Wpf
             "MinorTickSize", typeof(double), typeof(Axis), new PropertyMetadata(4.0, AppearanceChanged));
 
         /// <summary>
+        /// Identifies the <see cref="OxyToolTip"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty OxyToolTipProperty = DependencyProperty.Register(
+            "OxyToolTip",
+            typeof(string),
+            typeof(Axis),
+            new PropertyMetadata(null, AppearanceChanged)); // is AppearanceChanged here needed?
+
+        /// <summary>
         /// Identifies the <see cref="PositionAtZeroCrossing"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PositionAtZeroCrossingProperty =
@@ -1143,6 +1152,22 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
+        /// Gets or sets the tooltip in the custom tooltip system.
+        /// </summary>
+        public string OxyToolTip
+        {
+            get
+            {
+                return (string)this.GetValue(OxyToolTipProperty);
+            }
+
+            set
+            {
+                this.SetValue(OxyToolTipProperty, value);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets Position.
         /// </summary>
         public Axes.AxisPosition Position
@@ -1570,12 +1595,20 @@ namespace OxyPlot.Wpf
             a.TitleFontWeight = this.TitleFontWeight.ToOpenTypeWeight();
             a.TitleFormatString = this.TitleFormatString;
             a.Title = this.Title;
-            a.ToolTip = this.ToolTip != null ? this.ToolTip.ToString() : null;
             a.TickStyle = this.TickStyle;
             a.TitlePosition = this.TitlePosition;
             a.Unit = this.Unit;
             a.UseSuperExponentialFormat = this.UseSuperExponentialFormat;
             a.LabelFormatter = this.LabelFormatter;
+
+            if ((this.Parent as IPlotView).UseCustomToolTipSystem)
+            {
+                a.ToolTip = this.OxyToolTip != null ? this.OxyToolTip.ToString() : null;
+            }
+            else
+            {
+                a.ToolTip = this.ToolTip != null ? this.ToolTip.ToString() : null;
+            }
         }
     }
 }

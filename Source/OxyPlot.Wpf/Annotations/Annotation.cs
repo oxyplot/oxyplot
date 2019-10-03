@@ -28,6 +28,15 @@ namespace OxyPlot.Wpf
             new PropertyMetadata(AnnotationLayer.AboveSeries, AppearanceChanged));
 
         /// <summary>
+        /// Identifies the <see cref="OxyToolTip"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty OxyToolTipProperty = DependencyProperty.Register(
+            "OxyToolTip",
+            typeof(string),
+            typeof(Annotation),
+            new PropertyMetadata(null, AppearanceChanged)); // is AppearanceChanged here needed?
+
+        /// <summary>
         /// Identifies the <see cref="XAxisKey"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty XAxisKeyProperty = DependencyProperty.Register(
@@ -58,6 +67,22 @@ namespace OxyPlot.Wpf
             set
             {
                 this.SetValue(LayerProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the tooltip in the custom tooltip system.
+        /// </summary>
+        public string OxyToolTip
+        {
+            get
+            {
+                return (string)this.GetValue(OxyToolTipProperty);
+            }
+
+            set
+            {
+                this.SetValue(OxyToolTipProperty, value);
             }
         }
 
@@ -113,7 +138,15 @@ namespace OxyPlot.Wpf
             a.Layer = this.Layer;
             a.XAxisKey = this.XAxisKey;
             a.YAxisKey = this.YAxisKey;
-            a.ToolTip = this.ToolTip != null ? this.ToolTip.ToString() : null;
+
+            if ((this.Parent as IPlotView).UseCustomToolTipSystem)
+            {
+                a.ToolTip = this.OxyToolTip != null ? this.OxyToolTip.ToString() : null;
+            }
+            else
+            {
+                a.ToolTip = this.ToolTip != null ? this.ToolTip.ToString() : null;
+            }
         }
 
         /// <summary>

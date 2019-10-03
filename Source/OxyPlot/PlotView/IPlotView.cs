@@ -41,5 +41,11 @@ namespace OxyPlot
         /// </summary>
         /// <param name="text">The text.</param>
         void SetClipboardText(string text);
+
+        /// <summary>
+        /// Gets or sets whether the custom tooltip system is used.
+        /// (It is useful when dealing with very frequent plot updates.)
+        /// </summary>
+        bool UseCustomToolTipSystem { get; set; }
     }
 }

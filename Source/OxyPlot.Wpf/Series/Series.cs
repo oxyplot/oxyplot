@@ -27,6 +27,15 @@ namespace OxyPlot.Wpf
             "Color", typeof(Color), typeof(Series), new PropertyMetadata(MoreColors.Automatic, AppearanceChanged));
 
         /// <summary>
+        /// Identifies the <see cref="OxyToolTip"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty OxyToolTipProperty = DependencyProperty.Register(
+            "OxyToolTip",
+            typeof(string),
+            typeof(Series),
+            new PropertyMetadata(null, AppearanceChanged)); // is AppearanceChanged here needed?
+
+        /// <summary>
         /// Identifies the <see cref="Title"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
@@ -89,6 +98,22 @@ namespace OxyPlot.Wpf
             set
             {
                 this.SetValue(ColorProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the tooltip in the custom tooltip system.
+        /// </summary>
+        public string OxyToolTip
+        {
+            get
+            {
+                return (string)this.GetValue(OxyToolTipProperty);
+            }
+
+            set
+            {
+                this.SetValue(OxyToolTipProperty, value);
             }
         }
 
@@ -238,7 +263,15 @@ namespace OxyPlot.Wpf
             s.IsVisible = this.Visibility == Visibility.Visible;
             s.Font = this.FontFamily.ToString();
             s.TextColor = this.Foreground.ToOxyColor();
-            s.ToolTip = this.ToolTip != null ? this.ToolTip.ToString() : null;
+
+            if ((this.Parent as IPlotView).UseCustomToolTipSystem)
+            {
+                s.ToolTip = this.OxyToolTip != null ? this.OxyToolTip.ToString() : null;
+            }
+            else
+            {
+                s.ToolTip = this.ToolTip != null ? this.ToolTip.ToString() : null;
+            }
         }
 
         /// <summary>

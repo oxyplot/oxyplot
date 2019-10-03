@@ -135,44 +135,41 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// The string representation of the ToolTip.
         /// </summary>
-        protected string OxyToolTip
+        protected string OxyToolTipString
         {
             get
             {
-                var t = ToolTipService.GetToolTip(this) as ToolTip;
-
-                return t != null ? t.Content.ToString() : null;
+                return oxyToolTip != null ? oxyToolTip.Content.ToString() : null;
             }
             set
             {
-                var t = ToolTipService.GetToolTip(this) as ToolTip;
-
                 // tooltip removal
                 if (value == null)
                 {
-                    if (t != null)
+                    if (oxyToolTip != null)
                     {
-                        t.IsOpen = false;
-                        t = null;
+                        oxyToolTip.IsOpen = false;
+                        //t = null;
                     }
-                    ToolTipService.SetToolTip(this, null);
+                    //ToolTipService.SetToolTip(this, null);
                 }
                 // setting the tooltip string
                 else if (value != null)
                 {
-                    if (t == null)
+                    if (oxyToolTip == null)
                     {
-                        t = new ToolTip();
-                        t.Content = value;
+                        oxyToolTip = new ToolTip();
+                        oxyToolTip.Content = value;
                         // here after playing with the tooltips,
                         // I get "'ToolTip' cannot have a logical or visual parent"
                         // (I improved the code since then):
-                        ToolTipService.SetToolTip(this, t);
+                        //ToolTipService.SetToolTip(this, t);
                     }
                     else
                     {
-                        t.Content = value;
+                        oxyToolTip.Content = value;
                     }
+                    oxyToolTip.IsOpen = true;
                 }
             }
         }
@@ -188,10 +185,10 @@ namespace OxyPlot.Wpf
             if (v)
             {
                 // if no tooltip is set, or no tooltip is to be set
-                if (this.OxyToolTip == null || string.IsNullOrEmpty(this.OxyToolTip.ToString()))
+                if (this.OxyToolTipString == null || string.IsNullOrEmpty(this.OxyToolTipString.ToString()))
                 {
                     // set the tooltip to be the tooltip of the plot title
-                    this.OxyToolTip = this.ActualModel.TitleToolTip;
+                    this.OxyToolTipString = this.ActualModel.TitleToolTip;
                 }
 
                 this.previouslyHoveredPlotElement = null;
@@ -221,7 +218,7 @@ namespace OxyPlot.Wpf
                     {
                         if (pe != this.previouslyHoveredPlotElement)
                         {
-                            this.OxyToolTip = pe.ToolTip;
+                            this.OxyToolTipString = pe.ToolTip;
                         }
                         this.previouslyHoveredPlotElement = pe;
                         found = true;
@@ -247,7 +244,7 @@ namespace OxyPlot.Wpf
             {
                 if (this.UseCustomToolTipSystem)
                 {
-                    this.OxyToolTip = null;
+                    this.OxyToolTipString = null;
                 }
                 return;
             }
@@ -267,7 +264,7 @@ namespace OxyPlot.Wpf
             {
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    this.OxyToolTip = null;
+                    this.OxyToolTipString = null;
                 }), System.Windows.Threading.DispatcherPriority.Send);
             }
         }

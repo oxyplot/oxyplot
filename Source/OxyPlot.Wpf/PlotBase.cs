@@ -103,6 +103,12 @@ namespace OxyPlot.Wpf
         private PlotElement previouslyHoveredPlotElement = null;
 
         /// <summary>
+        /// The current WPF ToolTip object representing the current
+        /// tooltip in the custom tooltip system.
+        /// </summary>
+        private ToolTip oxyToolTip = null;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="PlotBase" /> class.
         /// </summary>
         protected PlotBase()
