@@ -846,10 +846,15 @@ namespace OxyPlot.Wpf
         /// <param name="element">The element.</param>
         private void ApplyToolTip(FrameworkElement element)
         {
-            if (!string.IsNullOrEmpty(this.currentToolTip))
-            {
-                element.ToolTip = this.currentToolTip;
-            }
+            // TODO: extract this code from the render context into PlotBase
+
+            // The problem is that here the canvas.Parent is null so an
+            // exception is thrown without setting the ToolTip:
+            //if (!(this.canvas.Parent as IPlotView).UseCustomToolTipSystem ||
+            //    !string.IsNullOrEmpty(this.currentToolTip))
+            //{
+            //    element.ToolTip = this.currentToolTip;
+            //}
         }
 
         /// <summary>

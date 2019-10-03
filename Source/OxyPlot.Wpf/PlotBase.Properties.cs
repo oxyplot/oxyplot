@@ -70,7 +70,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty UseCustomToolTipSystemProperty =
             DependencyProperty.Register(
-                "UseCustomToolTipSystem", typeof(bool), typeof(PlotBase), new PropertyMetadata(false));
+                "UseCustomToolTipSystem", typeof(bool), typeof(PlotBase), new PropertyMetadata(true));
 
         /// <summary>
         /// Gets or sets the default tracker template.
@@ -193,7 +193,7 @@ namespace OxyPlot.Wpf
         /// Gets or sets whether the custom tooltip system is used.
         /// (It is useful when dealing with very frequent plot updates.)
         /// </summary>
-        /// <value>The zoom vertical cursor.</value>
+        /// <value>Whether the custom tooltip system is used.</value>
         public bool UseCustomToolTipSystem
         {
             get
