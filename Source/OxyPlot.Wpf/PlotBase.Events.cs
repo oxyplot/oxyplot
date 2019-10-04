@@ -257,10 +257,9 @@ namespace OxyPlot.Wpf
 
             if (!handleTitle && !handleOthers)
             {
-                Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    this.OxyToolTipString = null;
-                }), System.Windows.Threading.DispatcherPriority.Send);
+
+                this.OxyToolTipString = null;
+
             }
         }
 
