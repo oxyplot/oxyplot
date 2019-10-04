@@ -428,6 +428,11 @@ namespace OxyPlot.WindowsForms
         /// <returns></returns>
         private bool HandleTitleToolTip(ScreenPoint sp)
         {
+            if (this.Model == null)
+            {
+                return false;
+            }
+
             bool v = this.Model.TitleArea.Contains(sp);
 
             if (v && !string.IsNullOrEmpty(this.Model.Title))
@@ -451,6 +456,11 @@ namespace OxyPlot.WindowsForms
         /// <returns></returns>
         private bool HandlePlotElementsToolTip(ScreenPoint sp)
         {
+            if (this.Model == null)
+            {
+                return false;
+            }
+
             bool found = false;
 
             // should we use other value than 5 in this line?
