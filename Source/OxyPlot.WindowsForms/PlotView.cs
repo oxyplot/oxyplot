@@ -494,18 +494,29 @@ namespace OxyPlot.WindowsForms
 
         private void UpdateToolTip()
         {
-            ScreenPoint sp = PointToClient(MousePosition).ToScreenPoint();
-
-
-            if (HandleTitleToolTip(sp))
+            if (this.ActualModel == null || !this.UseCustomToolTipSystem)
             {
+                if (this.UseCustomToolTipSystem)
+                {
+                    this.OxyToolTipString = null;
+                }
                 return;
             }
 
-            if (!HandlePlotElementsToolTip(sp))
+            ScreenPoint sp = PointToClient(MousePosition).ToScreenPoint();
+
+
+            bool handleTitle = HandleTitleToolTip(sp);
+            bool handleOthers = false;
+
+            if (!handleTitle)
             {
-                OxyToolTipString = null;
-                return;
+                handleOthers = HandlePlotElementsToolTip(sp);
+            }
+
+            if (!handleTitle && !handleOthers)
+            {
+                this.OxyToolTipString = null;
             }
         }
 

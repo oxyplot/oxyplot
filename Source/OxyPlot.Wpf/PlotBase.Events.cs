@@ -257,9 +257,7 @@ namespace OxyPlot.Wpf
 
             if (!handleTitle && !handleOthers)
             {
-
                 this.OxyToolTipString = null;
-
             }
         }
 
