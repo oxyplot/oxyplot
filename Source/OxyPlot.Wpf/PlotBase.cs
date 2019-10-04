@@ -103,12 +103,6 @@ namespace OxyPlot.Wpf
         private PlotElement previouslyHoveredPlotElement = null;
 
         /// <summary>
-        /// The current WPF ToolTip object representing the current
-        /// tooltip in the custom tooltip system.
-        /// </summary>
-        private ToolTip oxyToolTip = null;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="PlotBase" /> class.
         /// </summary>
         protected PlotBase()
@@ -123,6 +117,8 @@ namespace OxyPlot.Wpf
             this.CommandBindings.Add(new CommandBinding(PlotCommands.ResetAxes, (s, e) => this.ResetAllAxes()));
 
             this.IsManipulationEnabled = true;
+
+            this.OxyToolTip = new ToolTip();
         }
 
         /// <summary>

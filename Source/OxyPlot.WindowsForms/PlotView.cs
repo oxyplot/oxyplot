@@ -48,6 +48,11 @@ namespace OxyPlot.WindowsForms
         private readonly GraphicsRenderContext renderContext;
 
         /// <summary>
+        /// The previously hovered plot element.
+        /// </summary>
+        private PlotElement previouslyHoveredPlotElement = null;
+
+        /// <summary>
         /// The tracker label.
         /// </summary>
         [NonSerialized]
@@ -85,11 +90,6 @@ namespace OxyPlot.WindowsForms
         private Rectangle zoomRectangle;
 
         /// <summary>
-        /// The tool tip component.
-        /// </summary>
-        private ToolTip toolTip;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="PlotView" /> class.
         /// </summary>
         public PlotView()
@@ -104,15 +104,10 @@ namespace OxyPlot.WindowsForms
             this.ZoomHorizontalCursor = Cursors.SizeWE;
             this.ZoomVerticalCursor = Cursors.SizeNS;
 
-            this.toolTip = new ToolTip();
-            // should there be non-default values for some of the following four properties?:
-            //this.toolTip.InitialDelay = 1000;
-            //this.toolTip.AutoPopDelay = 1000;
-            //this.toolTip.AutomaticDelay = 1000;
-            //this.toolTip.ReshowDelay = 1000;
-
             var DoCopy = new DelegatePlotCommand<OxyKeyEventArgs>((view, controller, args) => this.DoCopy(view, args));
             this.ActualController.BindKeyDown(OxyKey.C, OxyModifierKeys.Control, DoCopy);
+
+            this.OxyToolTip = new ToolTip();
         }
 
         /// <summary>
@@ -209,6 +204,13 @@ namespace OxyPlot.WindowsForms
         [DefaultValue(null)]
         [Category(OxyPlotCategory)]
         public IPlotController Controller { get; set; }
+
+        /// <summary>
+        /// The tool tip component.
+        /// </summary>
+        [DefaultValue(null)]
+        [Category(OxyPlotCategory)]
+        public ToolTip OxyToolTip { get; set; }
 
         /// <summary>
         /// Gets or sets the pan cursor.
@@ -397,8 +399,6 @@ namespace OxyPlot.WindowsForms
             UpdateToolTip();
         }
 
-        private PlotElement previouslyHoveredPlotElement = null;
-
         /// <summary>
         /// The string representation of the ToolTip. In its setter there isn't any check of the value to be different than the previous value, and in the setter, if the value is null or empty string, the ToolTip is removed from the PlotView. The ToolTip shows up naturally if the mouse is over the PlotView, using the configuration in the PlotView's c-tor.
         /// </summary>
@@ -406,17 +406,17 @@ namespace OxyPlot.WindowsForms
         {
             get
             {
-                return toolTip.GetToolTip(this);
+                return OxyToolTip.GetToolTip(this);
             }
             set
             {
                 if (value == null)
                 {
-                    toolTip.RemoveAll();
+                    OxyToolTip.RemoveAll();
                 }
                 else
                 {
-                    toolTip.SetToolTip(this, value);
+                    OxyToolTip.SetToolTip(this, value);
                     //toolTip.Active = true;
                 }
             }
@@ -670,6 +670,7 @@ namespace OxyPlot.WindowsForms
 
             if (disposing)
             {
+                this.OxyToolTip?.Dispose();
                 this.renderContext.Dispose();
             }
         }
