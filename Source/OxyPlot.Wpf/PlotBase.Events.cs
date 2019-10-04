@@ -133,7 +133,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// The string representation of the ToolTip.
+        /// The string representation of the ToolTip. In its setter there isn't any check of the value to be different than the previous value, and the ToolTip is always made visible from the setter.
         /// </summary>
         protected string OxyToolTipString
         {
@@ -184,13 +184,8 @@ namespace OxyPlot.Wpf
 
             if (v)
             {
-                // if no tooltip is set, or no tooltip is to be set
-                if (this.OxyToolTipString == null || string.IsNullOrEmpty(this.OxyToolTipString.ToString()))
-                {
-                    // set the tooltip to be the tooltip of the plot title
-                    this.OxyToolTipString = this.ActualModel.TitleToolTip;
-                }
-
+                // set the tooltip to be the tooltip of the plot title
+                this.OxyToolTipString = this.ActualModel.TitleToolTip;
                 this.previouslyHoveredPlotElement = null;
 
                 return true;
