@@ -104,12 +104,12 @@ namespace OxyPlot.WindowsForms
             this.ZoomHorizontalCursor = Cursors.SizeWE;
             this.ZoomVerticalCursor = Cursors.SizeNS;
 
-            this.toolTip = new ToolTip(); // TODO: pass a parameter, this or this.FindForm() ?
-            // should there be other values for some of the following four properties?:
-            this.toolTip.InitialDelay = 1000;
-            this.toolTip.AutoPopDelay = 1000;
-            this.toolTip.AutomaticDelay = 1000;
-            this.toolTip.ReshowDelay = 1000;
+            this.toolTip = new ToolTip();
+            // should there be non-default values for some of the following four properties?:
+            //this.toolTip.InitialDelay = 1000;
+            //this.toolTip.AutoPopDelay = 1000;
+            //this.toolTip.AutomaticDelay = 1000;
+            //this.toolTip.ReshowDelay = 1000;
 
             var DoCopy = new DelegatePlotCommand<OxyKeyEventArgs>((view, controller, args) => this.DoCopy(view, args));
             this.ActualController.BindKeyDown(OxyKey.C, OxyModifierKeys.Control, DoCopy);
@@ -397,7 +397,30 @@ namespace OxyPlot.WindowsForms
             UpdateToolTip();
         }
 
-        private PlotElement PreviouslyHoveredPlotElement = null;
+        private PlotElement previouslyHoveredPlotElement = null;
+
+        /// <summary>
+        /// The string representation of the ToolTip. In its setter there isn't any check of the value to be different than the previous value, and in the setter, if the value is null or empty string, the ToolTip is removed from the PlotView. The ToolTip shows up naturally if the mouse is over the PlotView, using the configuration in the PlotView's c-tor.
+        /// </summary>
+        protected string OxyToolTipString
+        {
+            get
+            {
+                return toolTip.GetToolTip(this);
+            }
+            set
+            {
+                if (value == null)
+                {
+                    toolTip.RemoveAll();
+                }
+                else
+                {
+                    toolTip.SetToolTip(this, value);
+                    //toolTip.Active = true;
+                }
+            }
+        }
 
         /// <summary>
         /// Returns true if the event is handled.
@@ -409,12 +432,12 @@ namespace OxyPlot.WindowsForms
 
             if (v && !string.IsNullOrEmpty(this.Model.Title))
             {
-                if (string.IsNullOrEmpty(toolTip.GetToolTip(this)))
+                if (string.IsNullOrEmpty(this.OxyToolTipString))
                 {
-                    toolTip.SetToolTip(this, this.Model.TitleToolTip);
+                    this.OxyToolTipString = this.Model.TitleToolTip;
                 }
 
-                PreviouslyHoveredPlotElement = null;
+                previouslyHoveredPlotElement = null;
 
                 return true;
             }
@@ -440,11 +463,11 @@ namespace OxyPlot.WindowsForms
                 {
                     if (rtr.Element is PlotElement pe)
                     {
-                        if (pe != PreviouslyHoveredPlotElement)
+                        if (pe != previouslyHoveredPlotElement)
                         {
-                            toolTip.SetToolTip(this, pe.ToolTip);
+                            OxyToolTipString = pe.ToolTip;
                         }
-                        PreviouslyHoveredPlotElement = pe;
+                        previouslyHoveredPlotElement = pe;
                         found = true;
                     }
                     break;
@@ -453,7 +476,7 @@ namespace OxyPlot.WindowsForms
 
             if (!found)
             {
-                PreviouslyHoveredPlotElement = null;
+                previouslyHoveredPlotElement = null;
             }
 
             return found;
@@ -471,7 +494,7 @@ namespace OxyPlot.WindowsForms
 
             if (!HandlePlotElementsToolTip(sp))
             {
-                toolTip.RemoveAll();
+                OxyToolTipString = null;
                 return;
             }
         }
