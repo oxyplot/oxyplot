@@ -133,7 +133,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// The string representation of the ToolTip. In its setter there isn't any check of the value to be different than the previous value, and the ToolTip is always made visible from the setter.
+        /// The string representation of the ToolTip. In its setter there isn't any check of the value to be different than the previous value, and the ToolTip is always made visible from the setter if it is not null and not empty, else it is hidden.
         /// </summary>
         protected string OxyToolTipString
         {
