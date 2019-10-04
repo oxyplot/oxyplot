@@ -139,37 +139,23 @@ namespace OxyPlot.Wpf
         {
             get
             {
-                return oxyToolTip != null ? oxyToolTip.Content.ToString() : null;
+                return this.OxyToolTip != null ? this.OxyToolTip.Content.ToString() : null;
             }
             set
             {
                 // tooltip removal
                 if (value == null)
                 {
-                    if (oxyToolTip != null)
+                    if (this.OxyToolTip != null)
                     {
-                        oxyToolTip.IsOpen = false;
-                        //t = null;
+                        this.OxyToolTip.IsOpen = false;
                     }
-                    //ToolTipService.SetToolTip(this, null);
                 }
                 // setting the tooltip string
                 else if (value != null)
                 {
-                    if (oxyToolTip == null)
-                    {
-                        oxyToolTip = new ToolTip();
-                        oxyToolTip.Content = value;
-                        // here after playing with the tooltips,
-                        // I get "'ToolTip' cannot have a logical or visual parent"
-                        // (I improved the code since then):
-                        //ToolTipService.SetToolTip(this, t);
-                    }
-                    else
-                    {
-                        oxyToolTip.Content = value;
-                    }
-                    oxyToolTip.IsOpen = true;
+                    this.OxyToolTip.Content = value;
+                    this.OxyToolTip.IsOpen = true;
                 }
             }
         }
