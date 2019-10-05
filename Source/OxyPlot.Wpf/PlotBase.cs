@@ -13,6 +13,7 @@ namespace OxyPlot.Wpf
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Threading;
+    using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
@@ -101,6 +102,21 @@ namespace OxyPlot.Wpf
         /// in the optional custom tooltip system.
         /// </summary>
         private PlotElement previouslyHoveredPlotElement = null;
+
+        /// <summary>
+        /// The Task for the initial delay of the tooltip.
+        /// </summary>
+        private Task toolTipTask;
+
+        /// <summary>
+        /// The cancellation token source used to cancel the task that shows the tooltip after an initial delay.
+        /// </summary>
+        private CancellationTokenSource tokenSource;
+
+        /// <summary>
+        /// The cancellation token used to check if the tooltip-showing task is canceled.
+        /// </summary>
+        private CancellationToken ct;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PlotBase" /> class.
