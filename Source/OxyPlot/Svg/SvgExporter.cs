@@ -68,7 +68,7 @@ namespace OxyPlot
                 textMeasurer = new PdfRenderContext(width, height, model.Background);
             }
 
-            using (var rc = new SvgRenderContext(stream, width, height, true, textMeasurer, model.Background, useVerticalTextAlignmentWorkaround))
+            using (var rc = new SvgRenderContext(stream, width, height, isDocument, textMeasurer, model.Background, useVerticalTextAlignmentWorkaround))
             {
                 model.Update(true);
                 model.Render(rc, width, height);
