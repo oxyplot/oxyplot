@@ -10,6 +10,8 @@
 namespace OxyPlot.Wpf
 {
     using System;
+    using System.Threading;
+    using System.Threading.Tasks;
     using System.Windows.Controls;
     using System.Windows.Input;
 
@@ -146,18 +148,75 @@ namespace OxyPlot.Wpf
                 // tooltip removal
                 if (value == null)
                 {
+                    if (this.tokenSource != null)
+                    {
+                        this.tokenSource.Cancel();
+                        this.tokenSource.Dispose();
+                        this.tokenSource = null;
+                    }
+
                     if (this.OxyToolTip != null)
                     {
-                        this.OxyToolTip.IsOpen = false;
+                        this.Dispatcher.Invoke(new Action(() =>
+                        {
+                            this.OxyToolTip.IsOpen = false;
+                        }), System.Windows.Threading.DispatcherPriority.Send);
                     }
                 }
                 // setting the tooltip string
                 else if (value != null)
                 {
-                    this.OxyToolTip.Content = value;
-                    this.OxyToolTip.IsOpen = true;
+                    if (this.tokenSource != null)
+                    {
+                        this.tokenSource.Cancel();
+                        this.tokenSource.Dispose();
+                        this.tokenSource = null;
+                    }
+
+                    this.tokenSource = new CancellationTokenSource();
+                    this.ct = tokenSource.Token;
+                    this.toolTipTask = ShowToolTip(value, this.ct);
                 }
             }
+        }
+
+        public async Task ShowToolTip(string value, CancellationToken ct)
+        {
+            if (this.ct.IsCancellationRequested)
+            {
+                return;
+            }
+
+            this.Dispatcher.Invoke(new Action(() =>
+            {
+                this.OxyToolTip.IsOpen = false;
+            }));
+
+            if (this.ct.IsCancellationRequested)
+            {
+                return;
+            }
+
+            var delay = ToolTipService.GetInitialShowDelay(this);
+
+            await Task.Delay(delay, ct);
+
+            if (this.ct.IsCancellationRequested)
+            {
+                return;
+            }
+
+            this.OxyToolTip.Content = value;
+
+            if (this.ct.IsCancellationRequested)
+            {
+                return;
+            }
+
+            this.Dispatcher.Invoke(new Action(() =>
+            {
+                this.OxyToolTip.IsOpen = true;
+            }));
         }
 
         /// <summary>
