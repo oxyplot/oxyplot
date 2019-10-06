@@ -109,14 +109,15 @@ namespace OxyPlot.Wpf
         private Task toolTipTask;
 
         /// <summary>
-        /// The cancellation token source used to cancel the task that shows the tooltip after an initial delay.
+        /// The Task for the minimum delay between tooltip showings.
         /// </summary>
-        private CancellationTokenSource tokenSource;
+        private Task secondToolTipTask;
 
         /// <summary>
-        /// The cancellation token used to check if the tooltip-showing task is canceled.
+        /// The cancellation token source used to cancel the task that shows the tooltip after an initial delay,
+        /// and the task that hides the tooltip after the show duration.
         /// </summary>
-        private CancellationToken ct;
+        private CancellationTokenSource tokenSource;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PlotBase" /> class.

@@ -174,15 +174,19 @@ namespace OxyPlot.Wpf
                     }
 
                     this.tokenSource = new CancellationTokenSource();
-                    this.ct = tokenSource.Token;
-                    this.toolTipTask = ShowToolTip(value, this.ct);
+                    this.toolTipTask = ShowToolTip(value, tokenSource.Token);
                 }
             }
         }
 
-        public async Task ShowToolTip(string value, CancellationToken ct)
+        protected async Task ShowToolTip(string value, CancellationToken ct)
         {
-            if (this.ct.IsCancellationRequested)
+            if (secondToolTipTask != null)
+            {
+                await secondToolTipTask;
+            }
+
+            if (ct.IsCancellationRequested)
             {
                 return;
             }
@@ -192,23 +196,23 @@ namespace OxyPlot.Wpf
                 this.OxyToolTip.IsOpen = false;
             }));
 
-            if (this.ct.IsCancellationRequested)
+            if (ct.IsCancellationRequested)
             {
                 return;
             }
 
-            var delay = ToolTipService.GetInitialShowDelay(this);
+            int initialShowDelay = ToolTipService.GetInitialShowDelay(this);
 
-            await Task.Delay(delay, ct);
+            await Task.Delay(initialShowDelay, ct);
 
-            if (this.ct.IsCancellationRequested)
+            if (ct.IsCancellationRequested)
             {
                 return;
             }
 
             this.OxyToolTip.Content = value;
 
-            if (this.ct.IsCancellationRequested)
+            if (ct.IsCancellationRequested)
             {
                 return;
             }
@@ -217,6 +221,53 @@ namespace OxyPlot.Wpf
             {
                 this.OxyToolTip.IsOpen = true;
             }));
+
+            _ = HideToolTip(ct);
+        }
+
+        protected async Task HideToolTip(CancellationToken ct)
+        {
+            if (ct.IsCancellationRequested)
+            {
+                return;
+            }
+
+            int betweenShowDelay = ToolTipService.GetBetweenShowDelay(this);
+
+            secondToolTipTask = Task.Delay(betweenShowDelay);
+            _ = secondToolTipTask.ContinueWith(new Action<Task>((t) =>
+            {
+                secondToolTipTask = null;
+            }));
+
+            if (ct.IsCancellationRequested)
+            {
+                return;
+            }
+
+            int showDuration = ToolTipService.GetShowDuration(this);
+
+            if (ct.IsCancellationRequested)
+            {
+                return;
+            }
+
+            await Task.Delay(showDuration, ct);
+
+            if (ct.IsCancellationRequested)
+            {
+                return;
+            }
+
+            this.Dispatcher.Invoke(new Action(() =>
+            {
+                this.OxyToolTip.IsOpen = false;
+            }));
+
+            if (ct.IsCancellationRequested)
+            {
+                return;
+            }
         }
 
         /// <summary>
