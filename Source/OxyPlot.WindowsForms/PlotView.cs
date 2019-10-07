@@ -14,6 +14,8 @@ namespace OxyPlot.WindowsForms
     using System.Diagnostics;
     using System.Drawing;
     using System.Runtime.InteropServices;
+    using System.Threading;
+    using System.Threading.Tasks;
     using System.Windows.Forms;
 
     /// <summary>
@@ -399,6 +401,17 @@ namespace OxyPlot.WindowsForms
             UpdateToolTip();
         }
 
+        [NonSerialized]
+        private CancellationTokenSource tokenSource;
+
+        [NonSerialized]
+        private Task firstToolTipTask;
+
+        [NonSerialized]
+        private Task secondToolTipTask;
+
+        private string lastToolTipString = null;
+
         /// <summary>
         /// The string representation of the ToolTip. In its setter there isn't any check of the value to be different than the previous value, and in the setter, if the value is null or empty string, the ToolTip is removed from the PlotView. The ToolTip shows up naturally if the mouse is over the PlotView, using the configuration in the PlotView's c-tor.
         /// </summary>
@@ -406,19 +419,136 @@ namespace OxyPlot.WindowsForms
         {
             get
             {
-                return OxyToolTip.GetToolTip(this);
+                return lastToolTipString;
             }
             set
             {
                 if (value == null)
                 {
-                    OxyToolTip.RemoveAll();
+                    if (lastToolTipString != null)
+                    {
+                        if (tokenSource != null)
+                        {
+                            tokenSource.Cancel();
+                            tokenSource.Dispose();
+                            tokenSource = null;
+                        }
+
+                        lastToolTipString = null;
+
+                        OxyToolTip.Hide(this);
+                        //OxyToolTip.RemoveAll();
+                        //Application.DoEvents();
+                    }
                 }
                 else
                 {
-                    OxyToolTip.SetToolTip(this, value);
-                    //toolTip.Active = true;
+                    if (lastToolTipString != value)
+                    {
+                        if (tokenSource != null)
+                        {
+                            tokenSource.Cancel();
+                            tokenSource.Dispose();
+                            tokenSource = null;
+                        }
+
+                        lastToolTipString = value;
+
+                        //OxyToolTip.Active = false;
+                        //OxyToolTip.Hide(this);
+                        //Application.DoEvents();
+
+                        tokenSource = new CancellationTokenSource();
+                        firstToolTipTask = ShowToolTip(value, tokenSource.Token);
+
+                        //OxyToolTip.Active = true;
+
+                        //Application.DoEvents();
+                    }
+                    //Application.DoEvents();
                 }
+            }
+        }
+
+        protected async Task ShowToolTip(string value, CancellationToken ct)
+        {
+            if (secondToolTipTask != null)
+            {
+                await secondToolTipTask;
+            }
+
+            if (ct.IsCancellationRequested)
+            {
+                return;
+            }
+
+            //this.OxyToolTip.Hide(this);
+            //Application.DoEvents();
+
+            if (ct.IsCancellationRequested)
+            {
+                return;
+            }
+
+            await Task.Delay(OxyToolTip.InitialDelay, ct);
+
+            if (ct.IsCancellationRequested)
+            {
+                return;
+            }
+
+            Point pos = PointToClient(MousePosition);
+            pos.Y += Cursor.Current.Size.Height;
+
+            OxyToolTip.Show(value, this, pos, OxyToolTip.AutoPopDelay);
+            //OxyToolTip.SetToolTip(this, value);
+            //Application.DoEvents();
+
+            _ = HideToolTip(ct);
+
+            //tokenSource = null;
+        }
+
+        protected async Task HideToolTip(CancellationToken ct)
+        {
+            if (ct.IsCancellationRequested)
+            {
+                return;
+            }
+
+            int betweenShowDelay = OxyToolTip.ReshowDelay;
+
+            secondToolTipTask = Task.Delay(betweenShowDelay);
+            _ = secondToolTipTask.ContinueWith(new Action<Task>((t) =>
+            {
+                secondToolTipTask = null;
+            }));
+
+            if (ct.IsCancellationRequested)
+            {
+                return;
+            }
+
+            int showDuration = OxyToolTip.AutoPopDelay;
+
+            if (ct.IsCancellationRequested)
+            {
+                return;
+            }
+
+            await Task.Delay(showDuration, ct);
+
+            if (ct.IsCancellationRequested)
+            {
+                return;
+            }
+
+            this.OxyToolTip.Hide(this);
+            //Application.DoEvents();
+
+            if (ct.IsCancellationRequested)
+            {
+                return;
             }
         }
 
@@ -437,7 +567,8 @@ namespace OxyPlot.WindowsForms
 
             if (v && !string.IsNullOrEmpty(this.Model.Title))
             {
-                if (string.IsNullOrEmpty(this.OxyToolTipString))
+                if (string.IsNullOrEmpty(this.OxyToolTipString) ||
+                    this.Model.TitleToolTip != this.OxyToolTipString)
                 {
                     this.OxyToolTipString = this.Model.TitleToolTip;
                 }
