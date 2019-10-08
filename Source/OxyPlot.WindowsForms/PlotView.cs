@@ -606,18 +606,28 @@ namespace OxyPlot.WindowsForms
             
             foreach (HitTestResult rtr in r)
             {
+                // if an element is found under the mouse cursor
                 if (rtr.Element != null)
                 {
+                    // if it is a PlotElement (not just an UIElement)
                     if (rtr.Element is PlotElement pe)
                     {
+                        // if the mouse was not over it previously
                         if (pe != previouslyHoveredPlotElement)
                         {
+                            // show the tooltip
                             OxyToolTipString = pe.ToolTip;
+                            previouslyHoveredPlotElement = pe;
                         }
-                        previouslyHoveredPlotElement = pe;
+                        else
+                        {
+                        }
                         found = true;
+                        break;
                     }
-                    break;
+                    else
+                    {
+                    }
                 }
             }
 
