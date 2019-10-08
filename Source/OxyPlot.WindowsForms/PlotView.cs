@@ -425,41 +425,41 @@ namespace OxyPlot.WindowsForms
             {
                 if (value == null)
                 {
-                    if (lastToolTipString != null)
+                    if (this.lastToolTipString != null)
                     {
-                        if (tokenSource != null)
+                        if (this.tokenSource != null)
                         {
-                            tokenSource.Cancel();
-                            tokenSource.Dispose();
-                            tokenSource = null;
+                            this.tokenSource.Cancel();
+                            this.tokenSource.Dispose();
+                            this.tokenSource = null;
                         }
 
-                        lastToolTipString = null;
+                        this.lastToolTipString = null;
 
-                        OxyToolTip.Hide(this);
+                        this.OxyToolTip.Hide(this);
                         //OxyToolTip.RemoveAll();
                         //Application.DoEvents();
                     }
                 }
                 else
                 {
-                    if (lastToolTipString != value)
+                    if (this.lastToolTipString != value)
                     {
-                        if (tokenSource != null)
+                        if (this.tokenSource != null)
                         {
-                            tokenSource.Cancel();
-                            tokenSource.Dispose();
-                            tokenSource = null;
+                            this.tokenSource.Cancel();
+                            this.tokenSource.Dispose();
+                            this.tokenSource = null;
                         }
 
-                        lastToolTipString = value;
+                        this.lastToolTipString = value;
 
                         //OxyToolTip.Active = false;
                         //OxyToolTip.Hide(this);
                         //Application.DoEvents();
 
-                        tokenSource = new CancellationTokenSource();
-                        firstToolTipTask = ShowToolTip(value, tokenSource.Token);
+                        this.tokenSource = new CancellationTokenSource();
+                        this.firstToolTipTask = ShowToolTip(value, this.tokenSource.Token);
 
                         //OxyToolTip.Active = true;
 
@@ -472,9 +472,9 @@ namespace OxyPlot.WindowsForms
 
         protected async Task ShowToolTip(string value, CancellationToken ct)
         {
-            if (secondToolTipTask != null)
+            if (this.secondToolTipTask != null)
             {
-                await secondToolTipTask;
+                await this.secondToolTipTask;
             }
 
             if (ct.IsCancellationRequested)
@@ -490,19 +490,25 @@ namespace OxyPlot.WindowsForms
                 return;
             }
 
-            await Task.Delay(OxyToolTip.InitialDelay, ct);
+            await Task.Delay(this.OxyToolTip.InitialDelay, ct);
 
             if (ct.IsCancellationRequested)
             {
                 return;
             }
 
-            Point pos = PointToClient(MousePosition);
+            Point pos = this.PointToClient(Control.MousePosition);
             pos.Y += Cursor.Current.Size.Height;
 
-            OxyToolTip.Show(value, this, pos, OxyToolTip.AutoPopDelay);
+            // Without the -2000, the duration of the tooltip is too long (because of the animation, probably)
+            this.OxyToolTip.Show(value, this, pos, Math.Max(0, OxyToolTip.AutoPopDelay - 2000));
             //OxyToolTip.SetToolTip(this, value);
             //Application.DoEvents();
+
+            if (ct.IsCancellationRequested)
+            {
+                return;
+            }
 
             _ = HideToolTip(ct);
 
@@ -516,12 +522,12 @@ namespace OxyPlot.WindowsForms
                 return;
             }
 
-            int betweenShowDelay = OxyToolTip.ReshowDelay;
+            int betweenShowDelay = this.OxyToolTip.ReshowDelay;
 
-            secondToolTipTask = Task.Delay(betweenShowDelay);
-            _ = secondToolTipTask.ContinueWith(new Action<Task>((t) =>
+            this.secondToolTipTask = Task.Delay(betweenShowDelay);
+            _ = this.secondToolTipTask.ContinueWith(new Action<Task>((t) =>
             {
-                secondToolTipTask = null;
+                this.secondToolTipTask = null;
             }));
 
             if (ct.IsCancellationRequested)
@@ -529,7 +535,7 @@ namespace OxyPlot.WindowsForms
                 return;
             }
 
-            int showDuration = OxyToolTip.AutoPopDelay;
+            int showDuration = this.OxyToolTip.AutoPopDelay;
 
             if (ct.IsCancellationRequested)
             {
