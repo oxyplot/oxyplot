@@ -145,6 +145,11 @@ namespace OxyPlot.Wpf
             }
             set
             {
+                if (this.previouslyHoveredPlotElement == this.currentlyHoveredPlotElement)
+                {
+                    return;
+                }
+
                 // tooltip removal
                 if (value == null)
                 {
@@ -278,11 +283,14 @@ namespace OxyPlot.Wpf
         {
             bool v = this.ActualModel.TitleArea.Contains(sp);
 
-            if (v)
+            if (v && this.ActualModel.Title != null)
             {
+                // these 2 lines must be before the third which calls the setter of OxyToolTipString
+                this.previouslyHoveredPlotElement = this.currentlyHoveredPlotElement;
+                this.currentlyHoveredPlotElement = new ToolTippedPlotElement(true);
+
                 // set the tooltip to be the tooltip of the plot title
                 this.OxyToolTipString = this.ActualModel.TitleToolTip;
-                this.previouslyHoveredPlotElement = null;
 
                 return true;
             }
@@ -309,18 +317,23 @@ namespace OxyPlot.Wpf
                     {
                         if (pe != this.previouslyHoveredPlotElement)
                         {
+                            // these 2 lines must be before the third which calls the setter of OxyToolTipString
+                            this.previouslyHoveredPlotElement = this.currentlyHoveredPlotElement;
+                            this.currentlyHoveredPlotElement = new ToolTippedPlotElement(pe);
+
+                            // show the tooltip
                             this.OxyToolTipString = pe.ToolTip;
                         }
-                        this.previouslyHoveredPlotElement = pe;
                         found = true;
+                        break;
                     }
-                    break;
                 }
             }
 
             if (!found)
             {
-                this.previouslyHoveredPlotElement = null;
+                this.previouslyHoveredPlotElement = this.currentlyHoveredPlotElement;
+                this.currentlyHoveredPlotElement = new ToolTippedPlotElement();
             }
 
             return found;

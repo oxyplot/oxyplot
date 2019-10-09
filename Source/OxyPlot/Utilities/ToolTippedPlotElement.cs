@@ -1,11 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ReflectionPath.cs" company="OxyPlot">
+//   Copyright (c) 2019 OxyPlot contributors
+// </copyright>
+// <summary>
+//   Provides functionality to reflect a path of properties.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
-namespace OxyPlot.WindowsForms
+namespace OxyPlot
 {
+    using System;
+
     public class ToolTippedPlotElement
     {
         public PlotElement PlotElement { get; private set; } = null;
