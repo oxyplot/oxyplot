@@ -98,10 +98,14 @@ namespace OxyPlot.Wpf
         private FrameworkElement containerCache;
 
         /// <summary>
-        /// The previously hovered plot element used
-        /// in the optional custom tooltip system.
+        /// A reference to the previously hovered plot element wrapped by ToolTippedPlotElement and used in the tooltip system.
         /// </summary>
-        private PlotElement previouslyHoveredPlotElement = null;
+        private ToolTippedPlotElement previouslyHoveredPlotElement;
+
+        /// <summary>
+        /// A reference to the currently hovered plot element wrapped by ToolTippedPlotElement and used in the tooltip system.
+        /// </summary>
+        private ToolTippedPlotElement currentlyHoveredPlotElement;
 
         /// <summary>
         /// The Task for the initial delay of the tooltip.
@@ -135,6 +139,9 @@ namespace OxyPlot.Wpf
 
             this.IsManipulationEnabled = true;
 
+            // related to tooltips:
+            this.previouslyHoveredPlotElement = new ToolTippedPlotElement();
+            this.currentlyHoveredPlotElement = new ToolTippedPlotElement();
             this.OxyToolTip = new ToolTip();
         }
 
