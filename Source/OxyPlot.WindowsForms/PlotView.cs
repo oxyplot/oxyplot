@@ -52,7 +52,12 @@ namespace OxyPlot.WindowsForms
         /// <summary>
         /// The previously hovered plot element.
         /// </summary>
-        private PlotElement previouslyHoveredPlotElement = null;
+        private ToolTippedPlotElement previouslyHoveredPlotElement;
+
+        /// <summary>
+        /// The currently hovered plot element.
+        /// </summary>
+        private ToolTippedPlotElement currentlyHoveredPlotElement;
 
         /// <summary>
         /// The tracker label.
@@ -109,6 +114,9 @@ namespace OxyPlot.WindowsForms
             var DoCopy = new DelegatePlotCommand<OxyKeyEventArgs>((view, controller, args) => this.DoCopy(view, args));
             this.ActualController.BindKeyDown(OxyKey.C, OxyModifierKeys.Control, DoCopy);
 
+            // related to tooltips:
+            this.previouslyHoveredPlotElement = new ToolTippedPlotElement();
+            this.currentlyHoveredPlotElement = new ToolTippedPlotElement();
             this.OxyToolTip = new ToolTip();
         }
 
@@ -401,6 +409,95 @@ namespace OxyPlot.WindowsForms
             UpdateToolTip();
         }
 
+        public class ToolTippedPlotElement
+        {
+            public PlotElement PlotElement { get; private set; } = null;
+
+            public bool IsPlotTitle { get; private set; } = false;
+
+            public bool Exists
+            {
+                get
+                {
+                    return PlotElement != null || IsPlotTitle;
+                }
+            }
+
+            public ToolTippedPlotElement(PlotElement el)
+            {
+                PlotElement = el;
+            }
+
+            public ToolTippedPlotElement(bool isPlotTitle = false)
+            {
+                IsPlotTitle = isPlotTitle;
+            }
+
+            public static bool operator ==(ToolTippedPlotElement t1, ToolTippedPlotElement t2)
+            {
+                return t1.Exists && t2.Exists &&
+                    (t1.PlotElement == t2.PlotElement ||
+                    (t1.IsPlotTitle == true && t2.IsPlotTitle == true));
+            }
+            public static bool operator !=(ToolTippedPlotElement t1, ToolTippedPlotElement t2)
+            {
+                return !(t1 == t2);
+            }
+
+            public static bool operator ==(PlotElement t1, ToolTippedPlotElement t2)
+            {
+                return t1 == t2.PlotElement;
+            }
+            public static bool operator !=(PlotElement t1, ToolTippedPlotElement t2)
+            {
+                return !(t1 == t2);
+            }
+
+            public static bool operator ==(ToolTippedPlotElement t1, PlotElement t2)
+            {
+                return t1.Exists && t1.PlotElement == t2;
+            }
+            public static bool operator !=(ToolTippedPlotElement t1, PlotElement t2)
+            {
+                return !(t1 == t2);
+            }
+
+            public override bool Equals(object obj)
+            {
+                if (ReferenceEquals(this, obj))
+                {
+                    return true;
+                }
+
+                if (ReferenceEquals(obj, null))
+                {
+                    return false;
+                }
+
+                throw new NotImplementedException();
+            }
+
+            public override int GetHashCode()
+            {
+                throw new NotImplementedException();
+            }
+
+            public override string ToString()
+            {
+                if (PlotElement != null)
+                {
+                    return $"PlotElement";
+                }
+
+                if (IsPlotTitle)
+                {
+                    return "PlotTitle";
+                }
+
+                return "None";
+            }
+        }
+
         [NonSerialized]
         private CancellationTokenSource tokenSource;
 
@@ -425,7 +522,7 @@ namespace OxyPlot.WindowsForms
             {
                 if (value == null)
                 {
-                    if (this.lastToolTipString != null)
+                    if (previouslyHoveredPlotElement != currentlyHoveredPlotElement)
                     {
                         if (this.tokenSource != null)
                         {
@@ -443,7 +540,7 @@ namespace OxyPlot.WindowsForms
                 }
                 else
                 {
-                    if (this.lastToolTipString != value)
+                    if (previouslyHoveredPlotElement != currentlyHoveredPlotElement)
                     {
                         if (this.tokenSource != null)
                         {
@@ -482,7 +579,8 @@ namespace OxyPlot.WindowsForms
                 return;
             }
 
-            //this.OxyToolTip.Hide(this);
+            // necessary hiding for when the user moves the mouse from over a plot element to another element without empty space between them:
+            this.OxyToolTip.Hide(this);
             //Application.DoEvents();
 
             if (ct.IsCancellationRequested)
@@ -571,15 +669,14 @@ namespace OxyPlot.WindowsForms
 
             bool v = this.Model.TitleArea.Contains(sp);
 
-            if (v && !string.IsNullOrEmpty(this.Model.Title))
+            if (v && this.Model.Title != null)
             {
-                if (string.IsNullOrEmpty(this.OxyToolTipString) ||
-                    this.Model.TitleToolTip != this.OxyToolTipString)
-                {
-                    this.OxyToolTipString = this.Model.TitleToolTip;
-                }
+                // these 2 lines must be before the third which calls the setter of OxyToolTipString
+                previouslyHoveredPlotElement = currentlyHoveredPlotElement;
+                currentlyHoveredPlotElement = new ToolTippedPlotElement(true);
 
-                previouslyHoveredPlotElement = null;
+                // show the tooltip
+                this.OxyToolTipString = this.Model.TitleToolTip;
 
                 return true;
             }
@@ -613,11 +710,14 @@ namespace OxyPlot.WindowsForms
                     if (rtr.Element is PlotElement pe)
                     {
                         // if the mouse was not over it previously
-                        if (pe != previouslyHoveredPlotElement)
+                        if (pe != this.currentlyHoveredPlotElement)
                         {
+                            // these 2 lines must be before the third which calls the setter of OxyToolTipString
+                            this.previouslyHoveredPlotElement = currentlyHoveredPlotElement;
+                            this.currentlyHoveredPlotElement = new ToolTippedPlotElement(pe);
+
                             // show the tooltip
-                            OxyToolTipString = pe.ToolTip;
-                            previouslyHoveredPlotElement = pe;
+                            this.OxyToolTipString = pe.ToolTip;
                         }
                         else
                         {
@@ -633,7 +733,8 @@ namespace OxyPlot.WindowsForms
 
             if (!found)
             {
-                previouslyHoveredPlotElement = null;
+                this.previouslyHoveredPlotElement = this.currentlyHoveredPlotElement;
+                this.currentlyHoveredPlotElement = new ToolTippedPlotElement();
             }
 
             return found;
