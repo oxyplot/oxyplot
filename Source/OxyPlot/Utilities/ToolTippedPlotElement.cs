@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ReflectionPath.cs" company="OxyPlot">
+// <copyright file="ToolTippedPlotElement.cs" company="OxyPlot">
 //   Copyright (c) 2019 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Provides functionality to reflect a path of properties.
+//   A wrapper around PlotElement that can also represent elements of the Plot that are not exposed (currently just the plot title) or the absence of an element.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -11,6 +11,9 @@ namespace OxyPlot
 {
     using System;
 
+    /// <summary>
+    /// A wrapper around PlotElement that can also represent elements of the Plot that are not exposed (currently just the plot title) or the absence of an element.
+    /// </summary>
     public class ToolTippedPlotElement
     {
         public PlotElement PlotElement { get; private set; } = null;
