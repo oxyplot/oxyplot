@@ -309,7 +309,7 @@ namespace OxyPlot.Wpf
 
             // it may be possible that the 5 constant in this line needs to be replaced with some other value
             System.Collections.Generic.IEnumerable<HitTestResult> r =
-                this.ActualModel.HitTest(new HitTestArguments(sp, 5)).Reverse();
+                this.ActualModel.HitTest(new HitTestArguments(sp, 5));
 
             foreach (HitTestResult rtr in r)
             {
