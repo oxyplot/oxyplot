@@ -1759,9 +1759,9 @@ namespace OxyPlot.Axes
         {
             PlotModel.GetAxesFromPoint(args.Point, out Axes.Axis xaxis, out Axes.Axis yaxis, true);
 
-            if (xaxis != null || yaxis != null)
+            if (xaxis == this || yaxis == this)
             {
-                return new HitTestResult(xaxis != null ? xaxis : yaxis, args.Point);
+                return new HitTestResult(this, args.Point);
             }
 
             return null;

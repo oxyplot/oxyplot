@@ -13,6 +13,7 @@ namespace OxyPlot.WindowsForms
     using System.ComponentModel;
     using System.Diagnostics;
     using System.Drawing;
+    using System.Linq;
     using System.Runtime.InteropServices;
     using System.Threading;
     using System.Threading.Tasks;
@@ -623,7 +624,7 @@ namespace OxyPlot.WindowsForms
 
             // should we use other value than 5 in this line?
             System.Collections.Generic.IEnumerable<HitTestResult> r =
-                this.Model.HitTest(new HitTestArguments(sp, 5));
+                this.Model.HitTest(new HitTestArguments(sp, 5)).Reverse();
             
             foreach (HitTestResult rtr in r)
             {
