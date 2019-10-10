@@ -39,18 +39,23 @@ namespace OxyPlot.Series
         private bool ownsActualItems;
 
         /// <summary>
+        /// The default color mapping.
+        /// </summary>
+        private OxyColor defaultColorMapping(HistogramItem item) => ActualFillColor;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="HistogramSeries" /> class.
         /// </summary>
         public HistogramSeries()
         {
             this.FillColor = OxyColors.Automatic;
-            this.NegativeFillColor = OxyColors.Undefined;
             this.StrokeColor = OxyColors.Black;
             this.StrokeThickness = 0;
             this.TrackerFormatString = DefaultTrackerFormatString;
             this.LabelFormatString = null;
             this.LabelFontSize = 0;
             this.LabelPlacement = LabelPlacement.Outside;
+            this.ColorMapping = defaultColorMapping;
         }
 
         /// <summary>
@@ -123,6 +128,11 @@ namespace OxyPlot.Series
         /// Gets or sets a value indicating whether the tracker can interpolate points.
         /// </summary>
         public bool CanTrackerInterpolatePoints { get; set; }
+
+        /// <summary>
+        /// Gets or sets the delegate used to map from histogram item to color.
+        /// </summary>
+        public Func<HistogramItem, OxyColor> ColorMapping { get; set; }
 
         /// <summary>
         /// Gets or sets the delegate used to map from <see cref="ItemsSeries.ItemsSource" /> to <see cref="HistogramSeries" />. The default is <c>null</c>.
@@ -375,12 +385,7 @@ namespace OxyPlot.Series
         {
             foreach (var item in items)
             {
-                // Get the color of the item
-                var actualFillColor = this.ActualFillColor;
-                if (item.Value < 0 && !this.NegativeFillColor.IsUndefined())
-                {
-                    actualFillColor = this.NegativeFillColor;
-                }
+                var actualFillColor = ColorMapping(item);
 
                 // transform the data points to screen points
                 var s00 = this.Transform(item.RangeStart, 0);
