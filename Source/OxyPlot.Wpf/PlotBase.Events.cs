@@ -14,6 +14,7 @@ namespace OxyPlot.Wpf
     using System.Threading.Tasks;
     using System.Windows.Controls;
     using System.Windows.Input;
+    using System.Linq;
 
     /// <summary>
     /// Represents a control that displays a <see cref="PlotModel" />.
@@ -307,7 +308,8 @@ namespace OxyPlot.Wpf
             bool found = false;
 
             // it may be possible that the 5 constant in this line needs to be replaced with some other value
-            System.Collections.Generic.IEnumerable<HitTestResult> r = this.ActualModel.HitTest(new HitTestArguments(sp, 5));
+            System.Collections.Generic.IEnumerable<HitTestResult> r =
+                this.ActualModel.HitTest(new HitTestArguments(sp, 5)).Reverse();
 
             foreach (HitTestResult rtr in r)
             {
