@@ -99,7 +99,10 @@ namespace ExampleLibrary
             Random rnd = new Random(1);
 
             HistogramSeries chs = new HistogramSeries();
-            chs.Items.AddRange(HistogramHelpers.Collect(SampleExps(rnd, 1.0, n), 0, 5, 15, true));
+
+            var binningOptions = new BinningOptions(BinningOutlierMode.CountOutliers, BinningIntervalType.InclusiveLowerBound, BinningExtremeValueMode.ExcludeExtremeValues);
+            var binBreaks = HistogramHelpers.CreateUniformBins(0, 5, 15);
+            chs.Items.AddRange(HistogramHelpers.Collect(SampleExps(rnd, 1.0, n), binBreaks, binningOptions));
             chs.StrokeThickness = 1;
             model.Series.Add(chs);
 
@@ -116,7 +119,8 @@ namespace ExampleLibrary
 
             HistogramSeries chs = new HistogramSeries();
 
-            chs.Items.AddRange(HistogramHelpers.Collect(SampleExps(rnd, 1.0, n), new double[] { 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.75, 1.0, 2.0, 3.0, 4.0, 5.0 }, true));
+            var binningOptions = new BinningOptions(BinningOutlierMode.CountOutliers, BinningIntervalType.InclusiveLowerBound, BinningExtremeValueMode.ExcludeExtremeValues);
+            chs.Items.AddRange(HistogramHelpers.Collect(SampleExps(rnd, 1.0, n), new double[] { 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.75, 1.0, 2.0, 3.0, 4.0, 5.0 }, binningOptions));
             chs.StrokeThickness = 1;
             chs.FillColor = OxyColors.Purple;
             model.Series.Add(chs);
@@ -131,7 +135,7 @@ namespace ExampleLibrary
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "x" });
 
             HistogramSeries chs = new HistogramSeries();
-            chs.Items.AddRange(new[] { new HistogramItem(0, 0.5, 10), new HistogramItem(0.75, 1.0, 10) });
+            chs.Items.AddRange(new[] { new HistogramItem(0, 0.5, 10, 7), new HistogramItem(0.75, 1.0, 10, 7) });
             chs.LabelFormatString = "{0:0.00}";
             chs.LabelPlacement = LabelPlacement.Middle;
             model.Series.Add(chs);

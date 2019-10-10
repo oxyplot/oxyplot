@@ -69,8 +69,8 @@ namespace ColorBindingDemo
 
             set
             {
+                this.SetValue(ref this.textColor, value);
                 this.textColor = value;
-                this.RaisePropertyChanged(() => this.TextColor);
             }
         }
 
@@ -83,8 +83,7 @@ namespace ColorBindingDemo
 
             set
             {
-                this.ticklineColor = value;
-                this.RaisePropertyChanged(() => this.TicklineColor);
+                this.SetValue(ref this.ticklineColor, value);
             }
         }
 
@@ -97,8 +96,7 @@ namespace ColorBindingDemo
 
             set
             {
-                this.plotAreaBorderColor = value;
-                this.RaisePropertyChanged(() => this.PlotAreaBorderColor);
+                this.SetValue(ref this.plotAreaBorderColor, value);
             }
         }
 
@@ -111,8 +109,7 @@ namespace ColorBindingDemo
 
             set
             {
-                this.background = value;
-                this.RaisePropertyChanged(() => this.Background);
+                this.SetValue(ref this.background, value);
             }
         }
     }
