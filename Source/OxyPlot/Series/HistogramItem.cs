@@ -48,6 +48,10 @@ namespace OxyPlot.Series
         public double Area { get; set; }
 
         /// <summary>
+        /// Gets the center of the item.
+        /// </summary>
+        public double RangeCenter => this.RangeStart + ((this.RangeEnd - this.RangeStart) / 2);
+
         /// Gets or sets the count.
         /// </summary>
         /// <value>The count.</value>
