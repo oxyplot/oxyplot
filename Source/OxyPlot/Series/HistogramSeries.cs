@@ -447,22 +447,6 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Tests if a <see cref="DataPoint" /> is inside the heat map
-        /// Transposes the ScreenPoint if the X axis is vertically orientated.
-        /// </summary>
-        /// <param name="point">The <see cref="ScreenPoint" /> to orientate.</param>
-        /// <returns>The oriented point.</returns>
-        private ScreenPoint Orientate(ScreenPoint point)
-        {
-            if (this.XAxis.IsVertical())
-            {
-                point = new ScreenPoint(point.Y, point.X);
-            }
-
-            return point;
-        }
-
-        /// <summary>
         /// Tests if a <see cref="DataPoint" /> is inside the histogram.
         /// </summary>
         /// <param name="p">The <see cref="DataPoint" /> to test.</param>

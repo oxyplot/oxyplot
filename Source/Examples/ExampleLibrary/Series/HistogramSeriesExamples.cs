@@ -38,19 +38,19 @@ namespace ExampleLibrary
         {
             var model = new PlotModel { Title = "Label Placement" };
 
-            var s1 = new HistogramSeries { LabelPlacement = LabelPlacement.Base, LabelFormatString = "Base", StrokeThickness = 1, LabelMargin = 5 }; 
+            var s1 = new HistogramSeries { LabelPlacement = LabelPlacement.Base, LabelFormatString = "Base", StrokeThickness = 1, LabelMargin = 5 };
             var s2 = new HistogramSeries { LabelPlacement = LabelPlacement.Inside, LabelFormatString = "Inside", StrokeThickness = 1, LabelMargin = 5 };
             var s3 = new HistogramSeries { LabelPlacement = LabelPlacement.Middle, LabelFormatString = "Middle", StrokeThickness = 1, LabelMargin = 5 };
             var s4 = new HistogramSeries { LabelPlacement = LabelPlacement.Outside, LabelFormatString = "Outside", StrokeThickness = 1, LabelMargin = 5 };
 
-            s1.Items.Add(new HistogramItem(1, 2, 4));
-            s1.Items.Add(new HistogramItem(2, 3, -4));
-            s2.Items.Add(new HistogramItem(3, 4, 2));
-            s2.Items.Add(new HistogramItem(4, 5, -2));
-            s3.Items.Add(new HistogramItem(5, 6, 3));
-            s3.Items.Add(new HistogramItem(6, 7, -3));
-            s4.Items.Add(new HistogramItem(7, 8, 1));
-            s4.Items.Add(new HistogramItem(8, 9, -1));
+            s1.Items.Add(new HistogramItem(1, 2, 4, 4));
+            s1.Items.Add(new HistogramItem(2, 3, -4, 4));
+            s2.Items.Add(new HistogramItem(3, 4, 2, 2));
+            s2.Items.Add(new HistogramItem(4, 5, -2, 2));
+            s3.Items.Add(new HistogramItem(5, 6, 3, 3));
+            s3.Items.Add(new HistogramItem(6, 7, -3, 3));
+            s4.Items.Add(new HistogramItem(7, 8, 1, 1));
+            s4.Items.Add(new HistogramItem(8, 9, -1, -1));
 
             model.Series.Add(s1);
             model.Series.Add(s2);
@@ -142,7 +142,7 @@ namespace ExampleLibrary
 
             return model;
         }
-        
+
         private static IEnumerable<double> SampleExps(Random rnd, double mean, int count)
         {
             for (int i = 0; i < count; i++)
