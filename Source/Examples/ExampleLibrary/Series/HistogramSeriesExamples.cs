@@ -90,7 +90,9 @@ namespace ExampleLibrary
             Random rnd = new Random();
 
             HistogramSeries chs = new HistogramSeries();
-            chs.Items.AddRange(HistogramHelpers.Collect(SampleNormal(rnd, mean, std, n), -std * 4, std * 4, 100, true));
+            var binningOptions = new BinningOptions(BinningOutlierMode.CountOutliers, BinningIntervalType.InclusiveLowerBound, BinningExtremeValueMode.ExcludeExtremeValues);
+            var binBreaks = HistogramHelpers.CreateUniformBins(-std * 4, std * 4, 100);
+            chs.Items.AddRange(HistogramHelpers.Collect(SampleNormal(rnd, mean, std, n), binBreaks, binningOptions));
             chs.StrokeThickness = 1;
 
             double LimitHi = mean + 1.96 * std;
@@ -132,7 +134,7 @@ namespace ExampleLibrary
 
             return model;
         }
-        
+
         private static IEnumerable<double> SampleExps(Random rnd, double mean, int count)
         {
             for (int i = 0; i < count; i++)
