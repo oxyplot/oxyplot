@@ -1,43 +1,24 @@
-﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
     <PropertyGroup>
-        <TargetFramework>net461</TargetFramework>
-        <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+        <TargetFramework>netcoreapp3.0</TargetFramework>
+        <UseWPF>true</UseWPF>
         <Description>OxyPlot WPF unit tests</Description>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <Copyright>OxyPlot contributors</Copyright>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
     <ItemGroup>
-        <Reference Include="PresentationCore" />
-        <Reference Include="PresentationFramework" />
-        <Reference Include="System" />
-        <Reference Include="System.Core" />
-        <Reference Include="System.Xaml" />
-        <Reference Include="System.Xml" />
-        <Reference Include="WindowsBase" />
-    </ItemGroup>
-    <ItemGroup>
         <ProjectReference Include="..\Examples\ExampleLibrary\ExampleLibrary.csproj" />
         <ProjectReference Include="..\OxyPlot\OxyPlot.csproj" />
-        <ProjectReference Include="..\OxyPlot.Tests\OxyPlot.Tests.csproj" />
         <ProjectReference Include="..\OxyPlot.Wpf\OxyPlot.Wpf.csproj" />
     </ItemGroup>
     <ItemGroup>
-        <None Include="app.config" />
+        <PackageReference Include="NSubstitute" Version="4.2.1" />
+        <PackageReference Include="NUnit" Version="3.12.0" />
+        <PackageReference Include="NUnit3TestAdapter" Version="3.15.1" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\Examples\ExampleLibrary\ExampleLibrary.csproj">
-            <Project>{FACB89E5-53A5-4748-9F5B-E0714EBB37B2}</Project>
-            <Name>ExampleLibrary</Name>
-        </ProjectReference>
-        <ProjectReference Include="..\OxyPlot.Tests\OxyPlot.Tests.csproj">
-            <Project>{e6218b88-69f5-4e3f-9abc-93ab82fd77ad}</Project>
-            <Name>OxyPlot.Tests</Name>
-        </ProjectReference>
-        <ProjectReference Include="..\OxyPlot.Wpf\OxyPlot.Wpf.csproj">
-            <Project>{698ccd8e-adcc-4565-8517-5edd36f07155}</Project>
-            <Name>OxyPlot.Wpf</Name>
-        </ProjectReference>
+        <None Include="app.config" />
     </ItemGroup>
     <ItemGroup>
         <Content Include="Baseline\PngExporterTests_ExportWithResolution_192dpi.png">

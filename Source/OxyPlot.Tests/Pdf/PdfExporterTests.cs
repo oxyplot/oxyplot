@@ -21,7 +21,7 @@ namespace OxyPlot.Tests
         [Test]
         public void Export_AllExamplesInExampleLibrary_CheckThatAllFilesExist()
         {
-            const string DestinationDirectory = "PdfExporterTests_ExampleLibrary";
+            var DestinationDirectory = Path.Combine(TestContext.CurrentContext.WorkDirectory, "PdfExporterTests_ExampleLibrary");
             if (!Directory.Exists(DestinationDirectory))
             {
                 Directory.CreateDirectory(DestinationDirectory);

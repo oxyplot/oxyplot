@@ -1053,7 +1053,6 @@ namespace OxyPlot.Wpf
         /// <param name="dashArray">The dash array. Use <c>null</c> to get a solid line.</param>
         /// <param name="lineJoin">The line join.</param>
         /// <param name="aliased">Render aliased if set to <c>true</c>.</param>
-        /// <remarks>See <a href="https://oxyplot.codeplex.com/discussions/456679">discussion</a>.</remarks>
         private void DrawLineBalanced(IList<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray, LineJoin lineJoin, bool aliased)
         {
             // balance the number of points per polyline and the number of polylines

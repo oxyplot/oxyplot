@@ -33,8 +33,8 @@ The stable release packages will be pushed to [nuget.org](https://www.nuget.org/
 |-------------------------|------------------------------------|--------------|
 | OxyPlot.Core            | .NET Standard 1.0                  |              |
 | OxyPlot.Core.Drawing    | .NET Standard 2.0                  |              |
-| OxyPlot.Wpf             | .NET 4.5.2                         |              |
-| OxyPlot.WindowsForms    | .NET 4.5.2                         |              |
+| OxyPlot.Wpf             | .NET Core 3.0, .NET 4.5            |              |
+| OxyPlot.WindowsForms    | .NET Core 3.0, .NET 4.5            |              |
 | OxyPlot.Windows         | Universal Windows 10.0             |              |
 | OxyPlot.GtkSharp        | .NET 4.5.2                         | GTK\# 2      |
 | OxyPlot.GtkSharp3       | .NET 4.5.2                         | GTK\# 3      |
