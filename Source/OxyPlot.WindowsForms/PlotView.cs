@@ -97,6 +97,30 @@ namespace OxyPlot.WindowsForms
         private Rectangle zoomRectangle;
 
         /// <summary>
+        /// The cancellation token source used to cancel the task that shows the tooltip after an initial delay,
+        /// and the task that hides the tooltip after the show duration.
+        /// </summary>
+        [NonSerialized]
+        private CancellationTokenSource tokenSource;
+
+        /// <summary>
+        /// The Task for the initial delay of the tooltip.
+        /// </summary>
+        [NonSerialized]
+        private Task firstToolTipTask;
+
+        /// <summary>
+        /// The Task for the minimum delay between tooltip showings.
+        /// </summary>
+        [NonSerialized]
+        private Task secondToolTipTask;
+
+        /// <summary>
+        /// The storage for the OxyToolTipString property.
+        /// </summary>
+        private string lastToolTipString = null;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="PlotView" /> class.
         /// </summary>
         public PlotView()
@@ -408,17 +432,6 @@ namespace OxyPlot.WindowsForms
 
             UpdateToolTip();
         }
-
-        [NonSerialized]
-        private CancellationTokenSource tokenSource;
-
-        [NonSerialized]
-        private Task firstToolTipTask;
-
-        [NonSerialized]
-        private Task secondToolTipTask;
-
-        private string lastToolTipString = null;
 
         /// <summary>
         /// The string representation of the ToolTip. In its setter there isn't any check of the value to be different than the previous value, and in the setter, if the value is null or empty string, the ToolTip is removed from the PlotView. The ToolTip shows up naturally if the mouse is over the PlotView, using the configuration in the PlotView's c-tor.
