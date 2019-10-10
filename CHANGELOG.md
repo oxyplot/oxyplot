@@ -3,6 +3,7 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 ### Added 
+- WindowsForms and Wpf support .NET Core 3.0 (#1331)
 - Added .NET Core port of PngExporter
 - New PolarPlot filling the full plot area (#1056)
 - Command to copy plot to the clipboard in Windows Forms (Ctrl-C) (#1297)
