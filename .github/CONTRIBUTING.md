@@ -16,14 +16,14 @@ Note that your contributions must be your own work and licensed under the same t
 ## Reporting bugs
 
 First, search the issue tracker to see if the bug is already there.
-Please use the [discussion forums](http://discussion.oxyplot.org/) if you are unsure whether it is a bug in the library or a problem in your code.
+Please use the [discussion forums](https://oxyplot.userecho.com/) if you are unsure whether it is a bug in the library or a problem in your code.
 When you are sure, please add defects in the issue tracker.
 
 It is very helpful to get the generated code (use `CTRL+ALT+C` in the plot control) and report (`CTRL+ALT+R`) of the bug plot. You can also take a screen shot and paste it into the description.
 
 Please use markdown to format your code blocks with [syntax highlighting](https://help.github.com/articles/github-flavored-markdown/#syntax-highlighting) to make it easier for everyone to read. 
 
-You could also use services like http://snipt.org or https://gist.github.com to share code snippets.
+You could also use services like https://snipt.org or https://gist.github.com to share code snippets.
 
 A bug report should include:
 
@@ -36,7 +36,7 @@ A bug report should include:
 
 ## Suggesting new features
 
-Please use the [discussion forums](http://discussion.oxyplot.org/) or add it directly in the issue tracker in the same way as bug reports.
+Please use the [discussion forums](https://oxyplot.userecho.com/) or add it directly in the issue tracker in the same way as bug reports.
 
 
 ## Create your own fork
@@ -54,7 +54,7 @@ The repository contains two branches:
 
 You should base your work on the `develop` branch.
 
-See [A successful git branching model](http://nvie.com/posts/a-successful-git-branching-model/) for more information about the branching model in use.
+See [A successful git branching model](https://nvie.com/posts/a-successful-git-branching-model/) for more information about the branching model in use.
 
 Create a branch for the bugfix/feature you want to work on: `git branch bugfix-some-error`
 
@@ -86,7 +86,7 @@ More info about rebasing
 
 - https://git-scm.com/book/en/v2/Git-Branching-Rebasing
 - https://blog.sourcetreeapp.com/2012/08/21/merge-or-rebase/
-- http://gitready.com/advanced/2009/02/10/squashing-commits-with-rebase.html
+- https://gitready.com/advanced/2009/02/10/squashing-commits-with-rebase.html
 - https://ariejan.net/2011/07/05/git-squash-your-latests-commits-into-one/
 - https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History
 - https://www.atlassian.com/git/tutorials/rewriting-history/git-rebase-i
@@ -130,10 +130,10 @@ Please contribute by creating pull requests!
 
 ## Contributing to the website
 
-The source of the [oxyplot.github.io](https://oxyplot.github.io/) web site can be found in the [oxyplot.github.io](http://github.com/oxyplot/oxyplot.github.io) repository.
+The source of the [oxyplot.github.io](https://oxyplot.github.io/) web site can be found in the [oxyplot.github.io](https://github.com/oxyplot/oxyplot.github.io) repository.
 Please contribute by creating pull requests!
 
-The web-site is built by [GitHub](http://github.com/) with [Jekyll](http://jekyllrb.com/).
+The web-site is built by [GitHub](https://github.com/) with [Jekyll](https://jekyllrb.com/).
 
 
 ## Common rules
