@@ -624,7 +624,7 @@ namespace OxyPlot.WindowsForms
 
             // should we use other value than 5 in this line?
             System.Collections.Generic.IEnumerable<HitTestResult> r =
-                this.Model.HitTest(new HitTestArguments(sp, 5)).Reverse();
+                this.Model.HitTest(new HitTestArguments(sp, 5));
             
             foreach (HitTestResult rtr in r)
             {
