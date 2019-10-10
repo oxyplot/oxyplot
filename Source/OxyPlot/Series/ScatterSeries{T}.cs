@@ -268,7 +268,7 @@ namespace OxyPlot.Series
                     continue;
                 }
 
-                var sp = this.XAxis.Transform(p.X, p.Y, this.YAxis);
+                var sp = this.Transform(p.X, p.Y);
                 double dx = sp.x - point.x;
                 double dy = sp.y - point.y;
                 double d2 = (dx * dx) + (dy * dy);
@@ -367,7 +367,7 @@ namespace OxyPlot.Series
                 }
 
                 // Transform from data to screen coordinates
-                var screenPoint = this.XAxis.Transform(dp.X, dp.Y, this.YAxis);
+                var screenPoint = this.Transform(dp.X, dp.Y);
 
                 if (isSelected && this.IsItemSelected(i))
                 {
@@ -402,7 +402,7 @@ namespace OxyPlot.Series
             }
 
             // Offset of the bins
-            var binOffset = this.XAxis.Transform(this.MinX, this.MaxY, this.YAxis);
+            var binOffset = this.Transform(this.MinX, this.MaxY);
 
             rc.SetClip(clippingRect);
 

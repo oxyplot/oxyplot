@@ -8,6 +8,8 @@ namespace ExampleLibrary
 {
     using System;
 
+    using ExampleLibrary.Utilities;
+
     using OxyPlot;
     using OxyPlot.Annotations;
     using OxyPlot.Axes;
@@ -17,9 +19,15 @@ namespace ExampleLibrary
     public class FunctionSeriesExamples
     {
         [Example("Square wave")]
-        public static PlotModel CreateSquareWave()
+        public static PlotModel SquareWave()
         {
             return CreateSquareWave(25);
+        }
+
+        [Example("Square wave (transposed)")]
+        public static PlotModel SquareWaveTransposed()
+        {
+            return SquareWave().Transpose();
         }
 
         private static PlotModel CreateSquareWave(int n = 25)

@@ -422,7 +422,7 @@ namespace OxyPlot.Series
                 }
                 else
                 {
-                    var sp = this.XAxis.Transform(point.X, point.Y, this.YAxis);
+                    var sp = this.Transform(point.X, point.Y);
                     screenPoints.Add(sp);
                 }
 

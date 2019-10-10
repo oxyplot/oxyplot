@@ -257,10 +257,12 @@ namespace OxyPlot.Series
                         dashArray,
                         this.LineJoin,
                         true);
+
+                    var tickVector = this.Orientate(new ScreenVector(this.TickLength, 0));
                     if (!double.IsNaN(v.Open))
                     {
                         var open = this.Transform(v.X, v.Open);
-                        var openTick = open + new ScreenVector(-this.TickLength, 0);
+                        var openTick = open - tickVector;
                         rc.DrawClippedLine(
                             clippingRect,
                             new[] { open, openTick },
@@ -275,7 +277,7 @@ namespace OxyPlot.Series
                     if (!double.IsNaN(v.Close))
                     {
                         var close = this.Transform(v.X, v.Close);
-                        var closeTick = close + new ScreenVector(this.TickLength, 0);
+                        var closeTick = close + tickVector;
                         rc.DrawClippedLine(
                             clippingRect,
                             new[] { close, closeTick },

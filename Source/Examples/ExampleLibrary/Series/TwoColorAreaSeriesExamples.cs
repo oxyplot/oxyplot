@@ -9,6 +9,8 @@
 
 namespace ExampleLibrary
 {
+    using ExampleLibrary.Utilities;
+
     using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
@@ -24,22 +26,23 @@ namespace ExampleLibrary
         /// </summary>
         /// <returns>A <see cref="PlotModel" />.</returns>
         [Example("Temperatures")]
-        public static PlotModel TwoColorAreaSeries1()
+        public static PlotModel TwoColorAreaSeries()
         {
             var model = new PlotModel { Title = "TwoColorAreaSeries", LegendSymbolLength = 24 };
             var s1 = new TwoColorAreaSeries
-                         {
-                             Title = "Temperature at Eidesmoen, December 1986.",
-                             TrackerFormatString = "December {2:0}: {4:0.0} °C",
-                             Color = OxyColors.Tomato,
-                             Color2 = OxyColors.LightBlue,
-                             MarkerFill = OxyColors.Tomato,
-                             MarkerFill2 = OxyColors.LightBlue,
-                             StrokeThickness = 2,
-                             Limit = -1,
-                             MarkerType = MarkerType.Circle,
-                             MarkerSize = 3,
-                         };
+            {
+                Title = "Temperature at Eidesmoen, December 1986.",
+                TrackerFormatString = "December {2:0}: {4:0.0} °C",
+                Color = OxyColors.Tomato,
+                Color2 = OxyColors.LightBlue,
+                MarkerFill = OxyColors.Tomato,
+                MarkerFill2 = OxyColors.LightBlue,
+                StrokeThickness = 2,
+                Limit = -1,
+                MarkerType = MarkerType.Circle,
+                MarkerSize = 3,
+            };
+
             var temperatures = new[] { 5, 0, 7, 7, 4, 3, 5, 5, 11, 4, 2, 3, 2, 1, 0, 2, -1, 0, 0, -3, -6, -13, -10, -10, 0, -4, -5, -4, 3, 0, -5 };
 
             for (int i = 0; i < temperatures.Length; i++)
@@ -48,10 +51,16 @@ namespace ExampleLibrary
             }
 
             model.Series.Add(s1);
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Temperature", Unit = "°C", MinorGridlineStyle = LineStyle.Solid, MajorGridlineStyle = LineStyle.Solid, MinorTickSize = 0 });
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "Date", MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Solid });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Temperature", Unit = "°C", ExtraGridlines = new[] { 0.0 } });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "Date" });
 
             return model;
+        }
+
+        [Example("Temperatures (transposed)")]
+        public static PlotModel TwoColorAreaSeriesTransposed()
+        {
+            return TwoColorAreaSeries().Transpose();
         }
 
         /// <summary>
@@ -163,5 +172,5 @@ namespace ExampleLibrary
 
 			return model;
 		}
-	}
+    }
 }

@@ -4,16 +4,13 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-
-using OxyPlot;
-using OxyPlot.Series;
-
 namespace ExampleLibrary
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
+
+    using ExampleLibrary.Utilities;
 
     using OxyPlot;
     using OxyPlot.Axes;
@@ -35,6 +32,12 @@ namespace ExampleLibrary
             model.Series.Add(lineSeries1);
 
             return model;
+        }
+
+        [Example("Default style (transposed)")]
+        public static PlotModel DefaultStyleTransposed()
+        {
+            return DefaultStyle().Transpose();
         }
 
         [Example("Custom style")]
@@ -170,6 +173,12 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("Labels (transposed)")]
+        public static PlotModel LabelsTransposed()
+        {
+            return Labels().Transpose();
+        }
+
         [Example("LineStyle")]
         public static PlotModel LineStyles()
         {
@@ -204,8 +213,8 @@ namespace ExampleLibrary
         public static PlotModel CustomLineLegendPosition()
         {
             var model = new PlotModel { Title = "LineSeries with LineLegendPosition" };
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, MinimumPadding = 0.1, MaximumPadding = 0.1 });
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, MinimumPadding = 0.05, MaximumPadding = 0.05 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, MinimumPadding = 0.05, MaximumPadding = 0.05 });
             var s1 = CreateExampleLineSeries();
             s1.Title = "Start";
             s1.MarkerType = MarkerType.Circle;
@@ -219,6 +228,24 @@ namespace ExampleLibrary
             model.Series.Add(s2);
 
             return model;
+        }
+
+        [Example("LineLegendPosition (transposed)")]
+        public static PlotModel CustomLineLegendPositionTransposed()
+        {
+            return CustomLineLegendPosition().Transpose();
+        }
+
+        [Example("LineLegendPosition (reversed X Axis)")]
+        public static PlotModel CustomLineLegendPositionReversed()
+        {
+            return CustomLineLegendPosition().ReverseXAxis();
+        }
+
+        [Example("LineLegendPosition (reversed X Axis, transposed)")]
+        public static PlotModel CustomLineLegendPositionReversedTransposed()
+        {
+            return CustomLineLegendPositionReversed().Transpose();
         }
 
         [Example("Broken lines")]

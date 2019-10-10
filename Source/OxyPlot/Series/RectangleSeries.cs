@@ -101,37 +101,6 @@
         protected List<RectangleItem> ActualItems => this.ItemsSource != null ? this.actualItems : this.Items;
 
         /// <summary>
-        /// Transforms data space coordinates to orientated screen space coordinates.
-        /// </summary>
-        /// <param name="x">The x coordinate.</param>
-        /// <param name="y">The y coordinate.</param>
-        /// <returns>The transformed point.</returns>
-        public new ScreenPoint Transform(double x, double y)
-        {
-            return this.Orientate(base.Transform(x, y));
-        }
-
-        /// <summary>
-        /// Transforms data space coordinates to orientated screen space coordinates.
-        /// </summary>
-        /// <param name="point">The point to transform.</param>
-        /// <returns>The transformed point.</returns>
-        public new ScreenPoint Transform(DataPoint point)
-        {
-            return this.Orientate(base.Transform(point));
-        }
-
-        /// <summary>
-        /// Transforms orientated screen space coordinates to data space coordinates.
-        /// </summary>
-        /// <param name="point">The point to inverse transform.</param>
-        /// <returns>The inverse transformed point.</returns>
-        public new DataPoint InverseTransform(ScreenPoint point)
-        {
-            return base.InverseTransform(this.Orientate(point));
-        }
-
-        /// <summary>
         /// Renders the series on the specified rendering context.
         /// </summary>
         /// <param name="rc">The rendering context.</param>
@@ -242,14 +211,26 @@
                 var rectcolor = this.ColorAxis.GetColor(item.Value);
 
                 // transform the data points to screen points
-                var s00 = this.Transform(item.A.X, item.A.Y);
-                var s11 = this.Transform(item.B.X, item.B.Y);
+                var p1 = this.Transform(item.A.X, item.A.Y);
+                var p2 = this.Transform(item.B.X, item.B.Y);
 
-                var pointa = this.Orientate(new ScreenPoint(s00.X, s00.Y)); // re-orientate
-                var pointb = this.Orientate(new ScreenPoint(s11.X, s11.Y)); // re-orientate
-                var rectrect = new OxyRect(pointa, pointb);
+                var rectrect = new OxyRect(p1, p2);
 
                 rc.DrawClippedRectangle(clippingRect, rectrect, rectcolor, OxyColors.Undefined, 0);
+                if (this.LabelFontSize > 0)
+                {
+                    rc.DrawClippedText(
+                        clippingRect, 
+                        rectrect.Center, 
+                        item.Value.ToString(this.LabelFormatString), 
+                        this.ActualTextColor, 
+                        this.ActualFont, 
+                        this.LabelFontSize, 
+                        this.ActualFontWeight, 
+                        0, 
+                        HorizontalAlignment.Center, 
+                        VerticalAlignment.Middle);
+                }
             }
         }
 
@@ -364,33 +345,6 @@
                 colorAxis.Include(this.MinValue);
                 colorAxis.Include(this.MaxValue);
             }
-        }
-
-        /// <summary>
-        /// Gets the label for the specified cell.
-        /// </summary>
-        /// <param name="v">The value of the cell.</param>
-        /// <param name="i">The first index.</param>
-        /// <param name="j">The second index.</param>
-        /// <returns>The label string.</returns>
-        protected virtual string GetLabel(double v, int i, int j)
-        {
-            return v.ToString(this.LabelFormatString, this.ActualCulture);
-        }
-
-        /// <summary>
-        /// Transposes the ScreenPoint if the X axis is vertically orientated
-        /// </summary>
-        /// <param name="point">The <see cref="ScreenPoint" /> to orientate.</param>
-        /// <returns>The oriented point.</returns>
-        private ScreenPoint Orientate(ScreenPoint point)
-        {
-            if (this.XAxis.IsVertical())
-            {
-                point = new ScreenPoint(point.Y, point.X);
-            }
-
-            return point;
         }
 
         /// <summary>

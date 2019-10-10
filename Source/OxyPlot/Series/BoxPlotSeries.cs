@@ -9,6 +9,7 @@
 
 namespace OxyPlot.Series
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -227,7 +228,8 @@ namespace OxyPlot.Series
                 var rect = this.GetBoxRect(item);
                 if (rect.Contains(point))
                 {
-                    hitPoint = new DataPoint(item.X, this.YAxis.InverseTransform(point.Y));
+                    var dp = this.InverseTransform(point);
+                    hitPoint = new DataPoint(item.X, dp.Y);
                     minimumDistance = 0;
                 }
 
@@ -659,11 +661,10 @@ namespace OxyPlot.Series
         {
             var halfBoxWidth = this.BoxWidth * 0.5;
 
-            var boxTop = this.Transform(item.X - halfBoxWidth, item.BoxTop);
-            var boxBottom = this.Transform(item.X + halfBoxWidth, item.BoxBottom);
+            var p1 = this.Transform(item.X - halfBoxWidth, item.BoxTop);
+            var p2 = this.Transform(item.X + halfBoxWidth, item.BoxBottom);
 
-            var rect = new OxyRect(boxTop.X, boxTop.Y, boxBottom.X - boxTop.X, boxBottom.Y - boxTop.Y);
-            return rect;
+            return new OxyRect(p1, p2);
         }
 
         /// <summary>

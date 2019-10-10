@@ -347,7 +347,7 @@ namespace OxyPlot.Series
             if (this.LineLegendPosition != LineLegendPosition.None && !string.IsNullOrEmpty(this.Title))
             {
                 // renders a legend on the line
-                this.RenderLegendOnLine(rc);
+                this.RenderLegendOnLine(rc, clippingRect);
             }
         }
 
@@ -667,33 +667,38 @@ namespace OxyPlot.Series
         /// Renders a legend on the line.
         /// </summary>
         /// <param name="rc">The render context.</param>
-        protected void RenderLegendOnLine(IRenderContext rc)
+        /// <param name="clippingRect">The clipping rectangle.</param>
+        protected void RenderLegendOnLine(IRenderContext rc, OxyRect clippingRect)
         {
             // Find the position
             DataPoint point;
-            var ha = HorizontalAlignment.Left;
-            double dx;
+            HorizontalAlignment ha;
+            var va = VerticalAlignment.Middle;
+            double dx = 4;
+
             switch (this.LineLegendPosition)
             {
                 case LineLegendPosition.Start:
-
-                    // start position
                     point = this.ActualPoints[0];
                     ha = HorizontalAlignment.Right;
-                    dx = -4;
+                    dx = -dx;
                     break;
-                default:
-
-                    // end position
+                case LineLegendPosition.End:
                     point = this.ActualPoints[this.ActualPoints.Count - 1];
-                    dx = 4;
+                    ha = HorizontalAlignment.Left;
                     break;
+                case LineLegendPosition.None:
+                    return;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
 
-            var pt = this.Transform(point) + new ScreenVector(dx, 0);
+            this.Orientate(ref ha, ref va);
+            var pt = this.Transform(point) + this.Orientate(new ScreenVector(dx, 0));
 
             // Render the legend
-            rc.DrawText(
+            rc.DrawClippedText(
+                clippingRect,
                 pt,
                 this.Title,
                 this.ActualTextColor,
@@ -702,7 +707,7 @@ namespace OxyPlot.Series
                 this.ActualFontWeight,
                 0,
                 ha,
-                VerticalAlignment.Middle);
+                va);
         }
 
         /// <summary>

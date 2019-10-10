@@ -14,6 +14,8 @@ namespace ExampleLibrary.Series
     using OxyPlot.Series;
     using System;
 
+    using ExampleLibrary.Utilities;
+
     /// <summary>
     /// Provides examples for the <see cref="ThreeColorLineSeries" />.
     /// </summary>
@@ -27,66 +29,43 @@ namespace ExampleLibrary.Series
         [Example("Temperatures")]
         public static PlotModel ThreeColorLineSeries()
         {
-            var plotModel1 = new PlotModel();
-            plotModel1.LegendSymbolLength = 24;
-            plotModel1.Title = "ThreeColorLineSeries";
-            var linearAxis1 = new LinearAxis();
-            linearAxis1.Title = "Temperature";
-            linearAxis1.Unit = "°C";
-            linearAxis1.ExtraGridlines = new Double[1];
-            linearAxis1.ExtraGridlines[0] = 0;
-            plotModel1.Axes.Add(linearAxis1);
-            var linearAxis2 = new LinearAxis();
-            linearAxis2.Position = AxisPosition.Bottom;
-            linearAxis2.Title = "Date";
-            plotModel1.Axes.Add(linearAxis2);
-            var twoColorLineSeries1 = new ThreeColorLineSeries();
-            twoColorLineSeries1.MarkerSize = 4;
-            twoColorLineSeries1.MarkerStroke = OxyColors.Black;
-            twoColorLineSeries1.MarkerStrokeThickness = 1.5;
-            twoColorLineSeries1.MarkerType = MarkerType.Circle;
-            //twoColorLineSeries1.Smooth = true;
-            twoColorLineSeries1.StrokeThickness = 3;
-            twoColorLineSeries1.Title = "Temperature Example";
-            twoColorLineSeries1.TrackerFormatString = "December {2:0}: {4:0.0} °C";
-            twoColorLineSeries1.Points.Add(new DataPoint(1, 5));
-            twoColorLineSeries1.Points.Add(new DataPoint(2, 0));
-            twoColorLineSeries1.Points.Add(new DataPoint(3, 7));
-            twoColorLineSeries1.Points.Add(new DataPoint(4, 7));
-            twoColorLineSeries1.Points.Add(new DataPoint(5, 4));
-            twoColorLineSeries1.Points.Add(new DataPoint(6, 3));
-            twoColorLineSeries1.Points.Add(new DataPoint(7, 5));
-            twoColorLineSeries1.Points.Add(new DataPoint(8, 5));
-            twoColorLineSeries1.Points.Add(new DataPoint(9, 11));
-            twoColorLineSeries1.Points.Add(new DataPoint(10, 4));
-            twoColorLineSeries1.Points.Add(new DataPoint(11, 2));
-            twoColorLineSeries1.Points.Add(new DataPoint(12, 3));
-            twoColorLineSeries1.Points.Add(new DataPoint(13, 2));
-            twoColorLineSeries1.Points.Add(new DataPoint(14, 1));
-            twoColorLineSeries1.Points.Add(new DataPoint(15, 0));
-            twoColorLineSeries1.Points.Add(new DataPoint(16, 2));
-            twoColorLineSeries1.Points.Add(new DataPoint(17, -1));
-            twoColorLineSeries1.Points.Add(new DataPoint(18, 0));
-            twoColorLineSeries1.Points.Add(new DataPoint(19, 0));
-            twoColorLineSeries1.Points.Add(new DataPoint(20, -3));
-            twoColorLineSeries1.Points.Add(new DataPoint(21, -6));
-            twoColorLineSeries1.Points.Add(new DataPoint(22, -13));
-            twoColorLineSeries1.Points.Add(new DataPoint(23, -10));
-            twoColorLineSeries1.Points.Add(new DataPoint(24, -10));
-            twoColorLineSeries1.Points.Add(new DataPoint(25, 0));
-            twoColorLineSeries1.Points.Add(new DataPoint(26, -4));
-            twoColorLineSeries1.Points.Add(new DataPoint(27, -5));
-            twoColorLineSeries1.Points.Add(new DataPoint(28, -4));
-            twoColorLineSeries1.Points.Add(new DataPoint(29, 3));
-            twoColorLineSeries1.Points.Add(new DataPoint(30, 0));
-            twoColorLineSeries1.Points.Add(new DataPoint(31, -5));
+            var model = new PlotModel { Title = "ThreeColorLineSeries", LegendSymbolLength = 24 };
+            var s1 = new ThreeColorLineSeries
+            {
+                Title = "Temperature at Eidesmoen, December 1986.",
+                TrackerFormatString = "December {2:0}: {4:0.0} °C",
+                MarkerSize = 4,
+                MarkerStroke = OxyColors.Black,
+                MarkerStrokeThickness = 1.5,
+                MarkerType = MarkerType.Circle,
+                InterpolationAlgorithm = InterpolationAlgorithms.CanonicalSpline,
+                StrokeThickness = 3,
+            };
 
-            twoColorLineSeries1.Points.Add(new DataPoint(32, -20));
-            twoColorLineSeries1.Points.Add(new DataPoint(33, -20));
-            twoColorLineSeries1.Points.Add(new DataPoint(34, 20));
-            twoColorLineSeries1.Points.Add(new DataPoint(35, 20));
-            plotModel1.Series.Add(twoColorLineSeries1);
-            return plotModel1;
+            var temperatures = new[] { 5, 0, 7, 7, 4, 3, 5, 5, 11, 4, 2, 3, 2, 1, 0, 2, -1, 0, 0, -3, -6, -13, -10, -10, 0, -4, -5, -4, 3, 0, -5 };
+
+            for (int i = 0; i < temperatures.Length; i++)
+            {
+                s1.Points.Add(new DataPoint(i + 1, temperatures[i]));
+            }
+
+            model.Series.Add(s1);
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Temperature", Unit = "°C", ExtraGridlines = new[] { 0.0 } });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "Date" });
+
+            return model;
+        }
+
+        [Example("Temperatures (transposed)")]
+        public static PlotModel ThreeColorLineSeriesTransposed()
+        {
+            return ThreeColorLineSeries().Transpose();
+        }
+
+        [Example("Temperatures (Y Axis reversed)")]
+        public static PlotModel TwoColorLineSeriesReversed()
+        {
+            return ThreeColorLineSeries().ReverseYAxis();
         }
     }
 }
