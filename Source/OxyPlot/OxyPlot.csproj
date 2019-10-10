@@ -5,7 +5,7 @@
         <Description>OxyPlot is a plotting library for .NET. This is the core library including the foundation classes and plot model. To display the plots, you also need to add a platform-specific OxyPlot package that contains a PlotView component.</Description>
         <Copyright>Copyright (c) 2014 OxyPlot contributors</Copyright>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <PackageProjectUrl>http://oxyplot.org/</PackageProjectUrl>
+        <PackageProjectUrl>https://oxyplot.github.io/</PackageProjectUrl>
         <PackageIcon>OxyPlot_128.png</PackageIcon>
         <PackageTags>plotting plot charting chart</PackageTags>
         <RepositoryType>git</RepositoryType>

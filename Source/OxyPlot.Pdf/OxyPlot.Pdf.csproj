@@ -5,7 +5,7 @@
     <Description>OxyPlot is a plotting library for .NET. This package contains .pdf export extensions for .NET 4 (based on PDFsharp).</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright>Copyright (c) 2014 OxyPlot contributors</Copyright>
-    <PackageProjectUrl>http://oxyplot.org/</PackageProjectUrl>
+    <PackageProjectUrl>https://oxyplot.github.io/</PackageProjectUrl>
     <PackageIcon>OxyPlot_128.png</PackageIcon>
     <PackageTags>pdf plotting plot charting chart</PackageTags>
     <RepositoryType>git</RepositoryType>
