@@ -27,6 +27,8 @@ All notable changes to this project will be documented in this file.
 - Use PackageReference instead of packages.config
 - Migrated NUnit v2 to v3 and added test adapter
 - TrackerControl reuses existing ContentControl when a new hit tracker result uses the same template as the currently shown tracker (#1281)
+- Add Count to HistogramSeries (#1347)
+- Overhaul HistogramHelpers (#1345)
 
 ### Deprecated
 - OxyPlot.WP8 package. Use OxyPlot.Windows instead (#996)
