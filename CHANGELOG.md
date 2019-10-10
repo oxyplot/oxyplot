@@ -3,12 +3,9 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 ### Added 
-- added .NET Core port of PngExporter
-
-### Added
+- WindowsForms and Wpf support .NET Core 3.0 (#1331)
+- Added .NET Core port of PngExporter
 - New PolarPlot filling the full plot area (#1056)
-
-### Added
 - Support for three colors in histogram series (#1305)
 - Command to copy plot to the clipboard in Windows Forms (Ctrl-C) (#1297)
 - Added Avalonia based renderer and control library (based off OxyPlot.Wpf).
@@ -31,6 +28,8 @@ All notable changes to this project will be documented in this file.
 - Use PackageReference instead of packages.config
 - Migrated NUnit v2 to v3 and added test adapter
 - TrackerControl reuses existing ContentControl when a new hit tracker result uses the same template as the currently shown tracker (#1281)
+- Add Count to HistogramSeries (#1347)
+- Overhaul HistogramHelpers (#1345)
 
 ### Deprecated
 - OxyPlot.WP8 package. Use OxyPlot.Windows instead (#996)
@@ -63,6 +62,8 @@ All notable changes to this project will be documented in this file.
 - Add checks for non-positive StrokeThickess and LineStyle.None in various places (#1312)
 - Fixed references to RectangleItem in HistogramSeries
 - Fix AxisChangedEventArgs.DeltaMaximum in Axes.Reset (#1306)
+- Fixed Tracker for RectangleBarSeries (#1171)
+- Fixed issue with svg always containing the xml headers (#1212)
 
 ## [1.0.0] - 2016-09-11
 ### Added

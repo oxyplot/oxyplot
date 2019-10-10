@@ -5,36 +5,28 @@
     <PackageId>OxyPlot.ExampleLibrary</PackageId>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Description>Example models for OxyPlot.</Description>
-    <PackageLicenseUrl>https://raw.githubusercontent.com/oxyplot/oxyplot/master/LICENSE</PackageLicenseUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright>OxyPlot contributors</Copyright>
-    <PackageProjectUrl>http://oxyplot.org/</PackageProjectUrl>
-    <PackageIconUrl>https://raw.githubusercontent.com/oxyplot/oxyplot/develop/Icons/OxyPlot_128.png</PackageIconUrl>
+    <PackageProjectUrl>https://oxyplot.github.io/</PackageProjectUrl>
+    <PackageIcon>OxyPlot_128.png</PackageIcon>
     <PackageTags>plotting plot charting chart</PackageTags>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/oxyplot/oxyplot.git</RepositoryUrl>
   </PropertyGroup>
-
   <ItemGroup>
-    <None Remove="Resources\Bergensbanen.csv" />
-    <None Remove="Resources\OxyPlot.png" />
-    <None Remove="Resources\west0479.mtx" />
-    <None Remove="Resources\WorldPopulation.xml" />
+    <None Include="..\..\..\Icons\OxyPlot_128.png" Pack="true" PackagePath="\"/>
   </ItemGroup>
-
   <ItemGroup>
     <EmbeddedResource Include="Resources\Bergensbanen.csv" />
     <EmbeddedResource Include="Resources\OxyPlot.png" />
     <EmbeddedResource Include="Resources\west0479.mtx" />
     <EmbeddedResource Include="Resources\WorldPopulation.xml" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="System.Net.Requests" Version="4.3.0" />
     <PackageReference Include="System.Xml.XmlSerializer" Version="4.3.0" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\OxyPlot\OxyPlot.csproj" />
   </ItemGroup>
-
 </Project>

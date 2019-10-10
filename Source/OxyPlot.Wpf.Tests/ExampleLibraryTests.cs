@@ -14,8 +14,6 @@ namespace OxyPlot.Wpf.Tests
 
     using NUnit.Framework;
 
-    using OxyPlot.Tests;
-
     /// <summary>
     /// Provides unit tests for the example library.
     /// </summary>
@@ -54,7 +52,7 @@ namespace OxyPlot.Wpf.Tests
                     continue;
                 }
 
-                var filename = FileNameUtilities.CreateValidFileName(example.Category + " - " + example.Title, ".png");
+                var filename = CreateValidFileName(example.Category + " - " + example.Title, ".png");
                 var baselinePath = Path.Combine(BaselineDirectory, filename);
                 var path = Path.Combine(DestinationDirectory, filename);
                 var diffpath = Path.Combine(DiffDirectory, filename);
@@ -69,6 +67,35 @@ namespace OxyPlot.Wpf.Tests
                     File.Copy(path, baselinePath);
                 }
             }
+        }
+
+        /// <summary>
+        /// Creates a valid file name.
+        /// </summary>
+        /// <param name="title">The title.</param>
+        /// <param name="extension">The extension.</param>
+        /// <returns>A file name.</returns>
+        private static string CreateValidFileName(string title, string extension)
+        {
+            string validFileName = title.Trim();
+            var invalidFileNameChars = "/?<>\\:*|\0\t\r\n".ToCharArray();
+            foreach (var invalChar in invalidFileNameChars)
+            {
+                validFileName = validFileName.Replace(invalChar.ToString(), string.Empty);
+            }
+
+            foreach (var invalChar in invalidFileNameChars)
+            {
+                validFileName = validFileName.Replace(invalChar.ToString(), string.Empty);
+            }
+
+            if (validFileName.Length > 160)
+            {
+                // safe value threshold is 260
+                validFileName = validFileName.Remove(156) + "...";
+            }
+
+            return validFileName + extension;
         }
     }
 }

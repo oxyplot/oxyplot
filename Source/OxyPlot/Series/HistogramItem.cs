@@ -20,11 +20,13 @@ namespace OxyPlot.Series
         /// <param name="rangeStart">The range start.</param>
         /// <param name="rangeEnd">The range end.</param>
         /// <param name="area">The area.</param>
-        public HistogramItem(double rangeStart, double rangeEnd, double area)
+        /// <param name="count">The count.</param>
+        public HistogramItem(double rangeStart, double rangeEnd, double area, int count)
         {
             this.RangeStart = rangeStart;
             this.RangeEnd = rangeEnd;
             this.Area = area;
+            this.Count = count;
         }
 
         /// <summary>
@@ -32,13 +34,13 @@ namespace OxyPlot.Series
         /// </summary>
         /// <value>The range start.</value>
         public double RangeStart { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the range end.
         /// </summary>
         /// <value>The range end.</value>
         public double RangeEnd { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the area.
         /// </summary>
@@ -46,21 +48,26 @@ namespace OxyPlot.Series
         public double Area { get; set; }
 
         /// <summary>
-        /// RangeCenter Gets the center of the item.
+        /// Gets the center of the item.
         /// </summary>
         public double RangeCenter => this.RangeStart + ((this.RangeEnd - this.RangeStart) / 2);
+
+        /// Gets or sets the count.
+        /// </summary>
+        /// <value>The count.</value>
+        public int Count { get; set; }
 
         /// <summary>
         /// Gets the computed width of the item.
         /// </summary>
         public double Width => this.RangeEnd - this.RangeStart;
-        
+
         /// <summary>
         /// Gets the computed height of the item.
         /// </summary>
         /// <value>The computed height of the item</value>
         public double Height => this.Area / this.Width;
-        
+
         /// <summary>
         /// Gets the value of the item. Equivalent to the Height;
         /// </summary>
@@ -86,14 +93,14 @@ namespace OxyPlot.Series
                        (p.X <= this.RangeStart && p.X >= this.RangeEnd && p.Y <= this.Height && p.Y >= 0);
             }
         }
-        
+
         /// <summary>
         /// Returns C# code that generates this instance.
         /// </summary>
         /// <returns>The to code.</returns>
         public string ToCode()
         {
-            return CodeGenerator.FormatConstructor(this.GetType(), "{0},{1},{2}", this.RangeStart, this.RangeEnd, this.Area);
+            return CodeGenerator.FormatConstructor(this.GetType(), "{0},{1},{2},{3}", this.RangeStart, this.RangeEnd, this.Area, this.Count);
         }
 
         /// <summary>
@@ -103,10 +110,11 @@ namespace OxyPlot.Series
         public override string ToString()
         {
             return string.Format(
-                "{0} {1} {2}",
+                "{0} {1} {2} {3}",
                 this.RangeStart,
                 this.RangeEnd,
-                this.Area);
+                this.Area,
+                this.Count);
         }
     }
 }
