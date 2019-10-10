@@ -1,11 +1,12 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
     <PropertyGroup>
-        <TargetFramework>net452</TargetFramework>
+        <TargetFrameworks>net45;netcoreapp3.0</TargetFrameworks>
+        <UseWindowsForms>true</UseWindowsForms>
         <Description>OxyPlot is a plotting library for .NET. This is the portable core library that is referenced by the platform-specific OxyPlot packages.</Description>
         <Copyright>Copyright (c) 2014 OxyPlot contributors</Copyright>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageProjectUrl>http://oxyplot.org/</PackageProjectUrl>
-        <PackageIconUrl>https://raw.githubusercontent.com/oxyplot/oxyplot/develop/Icons/OxyPlot_128.png</PackageIconUrl>
+        <PackageIcon>OxyPlot_128.png</PackageIcon>
         <PackageTags>plotting plot charting chart</PackageTags>
         <RepositoryType>git</RepositoryType>
         <RepositoryUrl>https://github.com/oxyplot/oxyplot.git</RepositoryUrl>
@@ -18,7 +19,7 @@
         <ProjectReference Include="..\OxyPlot\OxyPlot.csproj" />
     </ItemGroup>
     <ItemGroup>
-        <Reference Include="System.Windows.Forms" />
+        <None Include="..\..\Icons\OxyPlot_128.png" Pack="true" PackagePath="\"/>
     </ItemGroup>
     <ItemGroup>
         <None Include="OxyPlot.WindowsForms.snk" />
