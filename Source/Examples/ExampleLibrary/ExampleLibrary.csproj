@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard1.0;net45</TargetFrameworks>
-    <TargetFramework>netstandard1.0</TargetFramework>
     <PackageId>OxyPlot.ExampleLibrary</PackageId>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Description>Example models for OxyPlot.</Description>
