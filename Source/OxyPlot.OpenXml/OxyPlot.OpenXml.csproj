@@ -5,31 +5,16 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright>Copyright (c) 2014 OxyPlot contributors</Copyright>
     <PackageProjectUrl>http://oxyplot.org/</PackageProjectUrl>
-    <PackageIconUrl>https://raw.githubusercontent.com/oxyplot/oxyplot/develop/Icons/OxyPlot_128.png</PackageIconUrl>
+    <PackageIcon>OxyPlot_128.png</PackageIcon>
     <PackageTags>plotting plot charting chart</PackageTags>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/oxyplot/oxyplot.git</RepositoryUrl>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\OxyPlot.OpenXml.XML</DocumentationFile>
-  </PropertyGroup>
+  <ItemGroup>
+      <None Include="..\..\Icons\OxyPlot_128.png" Pack="true" PackagePath="\"/>
+  </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />

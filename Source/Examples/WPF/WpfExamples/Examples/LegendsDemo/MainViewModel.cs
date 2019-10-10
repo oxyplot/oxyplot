@@ -7,7 +7,6 @@
 namespace LegendsDemo
 {
     using System;
-
     using OxyPlot;
     using OxyPlot.Series;
 

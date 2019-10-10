@@ -1,38 +1,11 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
-    <TargetFramework>net452</TargetFramework>
-    <OutputType>WinExe</OutputType>
+      <TargetFramework>netcoreapp3.0</TargetFramework>
+      <UseWPF>true</UseWPF>
+      <OutputType>WinExe</OutputType>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\OxyPlot.Wpf\OxyPlot.Wpf.csproj" />
     <ProjectReference Include="..\..\..\OxyPlot\OxyPlot.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Xaml" />
-    <Reference Include="WindowsBase" />
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-  </ItemGroup>
-  <ItemGroup>
-    <!-- App.xaml -->
-    <ApplicationDefinition Include="App.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </ApplicationDefinition>
-
-    <!-- XAML elements -->
-    <Page Include="**\*.xaml" Exclude="App.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </Page>
-    <Compile Update="**\*.xaml.cs" SubType="Code" DependentUpon="%(Filename)" />
-
-    <!-- Resources -->
-    <EmbeddedResource Update="Properties\Resources.resx" Generator="ResXFileCodeGenerator" LastGenOutput="Resources.Designer.cs" />
-    <Compile Update="Properties\Resources.Designer.cs" AutoGen="True" DependentUpon="Resources.resx" DesignTime="True" />
-
-    <!-- Settings -->
-    <None Update="Properties\Settings.settings" Generator="SettingsSingleFileGenerator" LastGenOutput="Settings.Designer.cs" />
-    <Compile Update="Properties\Settings.Designer.cs" AutoGen="True" DependentUpon="Settings.settings" />
   </ItemGroup>
 </Project>

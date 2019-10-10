@@ -1,11 +1,13 @@
-﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
-    <TargetFramework>net452</TargetFramework>
+    <TargetFrameworks>net45;netcoreapp3.0</TargetFrameworks>
+    <UseWPF>true</UseWPF>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>OxyPlot is a plotting library for .NET. This package targets WPF applications.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright>OxyPlot contributors</Copyright>
     <PackageProjectUrl>http://oxyplot.org/</PackageProjectUrl>
-    <PackageIconUrl>https://raw.githubusercontent.com/oxyplot/oxyplot/develop/Icons/OxyPlot_128.png</PackageIconUrl>
+    <PackageIcon>OxyPlot_128.png</PackageIcon>
     <PackageTags>plotting plot charting chart</PackageTags>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/oxyplot/oxyplot.git</RepositoryUrl>
@@ -13,34 +15,17 @@
     <AssemblyOriginatorKeyFile>OxyPlot.Wpf.snk</AssemblyOriginatorKeyFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
-  
+  <ItemGroup>
+      <None Include="..\..\Icons\OxyPlot_128.png" Pack="true" PackagePath="\" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
+    <Reference Include="ReachFramework" />
+    <Reference Include="System.Printing" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OxyPlot\OxyPlot.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="ReachFramework" />
-    <Reference Include="System.Printing" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="WindowsBase" />
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-  </ItemGroup>
-  <ItemGroup>
-   <!-- XAML elements -->
-    <Page Include="**\*.xaml" Exclude="App.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </Page>
-    <Compile Update="**\*.xaml.cs" SubType="Code" DependentUpon="%(Filename)" />
-
-    <!-- Resources -->
-    <EmbeddedResource Update="Properties\Resources.resx" Generator="ResXFileCodeGenerator" LastGenOutput="Resources.Designer.cs" />
-    <Compile Update="Properties\Resources.Designer.cs" AutoGen="True" DependentUpon="Resources.resx" DesignTime="True" />
-
-    <!-- Settings -->
-    <None Update="Properties\Settings.settings" Generator="SettingsSingleFileGenerator" LastGenOutput="Settings.Designer.cs" />
-    <Compile Update="Properties\Settings.Designer.cs" AutoGen="True" DependentUpon="Settings.settings" />
-
     <None Include="OxyPlot.Wpf.snk" />
   </ItemGroup>
 </Project>
