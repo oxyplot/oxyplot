@@ -16,7 +16,7 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
-      <None Include="..\..\Icons\OxyPlot_128.png" Pack="true" PackagePath="\"/>
+      <None Include="..\..\Icons\OxyPlot_128.png" Pack="true" PackagePath="\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -30,14 +30,9 @@
     <ProjectReference Include="..\OxyPlot\OxyPlot.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="PDFsharp-MigraDoc-GDI" Version="1.32.4334.0" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="OxyPlot.Pdf.snk" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="PDFsharp-MigraDoc-GDI">
-      <Version>1.50.5147</Version>
-    </PackageReference>
+    <PackageReference Include="PDFsharp-MigraDoc-GDI" Version="1.50.5147" />
   </ItemGroup>
 </Project>
