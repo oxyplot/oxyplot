@@ -64,11 +64,12 @@ All notable changes to this project will be documented in this file.
 - Fixed references to RectangleItem in HistogramSeries
 - Fix AxisChangedEventArgs.DeltaMaximum in Axes.Reset (#1306)
 - Fixed Tracker for RectangleBarSeries (#1171)
-- Fix: RectangleSeries doesn't render Labels (related to #1334)
-- Fix: LineSeries line legend placement with reversed X axis (related to #1334)
-- Fix: HistogramSeries label placement inconsistent (related to #1334)
-- Fix: TwoColorLineSeries and ThreeColorLineSeries don't work with reversed Y axis (related to #1334)
+- RectangleSeries doesn't render Labels (related to #1334)
+- LineSeries line legend placement with reversed X axis (related to #1334)
+- HistogramSeries label placement inconsistent (related to #1334)
+- TwoColorLineSeries and ThreeColorLineSeries don't work with reversed Y axis (related to #1334)
 - Fixed issue with svg always containing the xml headers (#1212)
+- In WPF, make sure the axes are initalized when the Model is set before the PlotView has been loaded (#1303)
 
 ## [1.0.0] - 2016-09-11
 ### Added
