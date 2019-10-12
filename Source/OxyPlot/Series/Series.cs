@@ -142,6 +142,11 @@ namespace OxyPlot.Series
         /// </returns>
         protected override HitTestResult HitTestOverride(HitTestArguments args)
         {
+            if (!PlotModel.PlotArea.Contains(args.Point))
+            {
+                return null;
+            }
+
             var thr = this.GetNearestPoint(args.Point, true) ?? this.GetNearestPoint(args.Point, false);
 
             if (thr != null)
