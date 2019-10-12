@@ -109,30 +109,24 @@ namespace OxyPlot.Wpf.Tests
         }
 
         /// <summary>
-        /// There is a bug in the presentation framework that returns a size
-        /// with infinity for the polyline given by the two points in this test.
-        /// This results in an exception and an app-crash. The origin is (probably) that
-        /// the measure code of the presentation converts values to single precision, leading 
-        /// to floating point overflow. 
-        /// 
-        /// This problem has been solved using the new implementation of the Polyline shape 
+        /// Make sure that the axis transforms has been initialized when showing a PlotView from a unit test.
+        /// In this case, the Loaded event is not fired.
         /// </summary>
-        public class InfinityPolyline
+        [Test]
+        [RequiresThread(System.Threading.ApartmentState.STA)]
+        public void PlotInifityPolyline()
         {
-            [Test]
-            public void PlotInifityPolyline()
-            {
-                var model = new PlotModel();
-                var series = new OxyPlot.Series.LineSeries();
-                series.Points.Add(new DataPoint(0, 0));
-                series.Points.Add(new DataPoint(1, -1e40));
-                model.Series.Add(series);
+            var model = new PlotModel();
+            var series = new OxyPlot.Series.LineSeries();
+            series.Points.Add(new DataPoint(0, 0));
+            series.Points.Add(new DataPoint(1, -1e40));
+            model.Series.Add(series);
 
-                var view = new PlotView { Model = model };
-                var window = new Window { Height = 350, Width = 500, Content = view };
+            var view = new PlotView { Model = model };
+            var window = new Window { Height = 350, Width = 500, Content = view };
 
-                Assert.DoesNotThrow(() => window.Show());
-            }
+            Assert.DoesNotThrow(() => window.Show());
+            Assert.IsNull(model.GetLastPlotException());
         }
     }
 }
