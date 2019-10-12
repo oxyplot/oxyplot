@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Issues.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
@@ -20,6 +20,17 @@ namespace ExampleLibrary
     [Examples("Z1 Issues")]
     public class Issues
     {
+        [Example("#1303 Problem with infinity size polyline")]
+        public static PlotModel InfinitySizePolyline()
+        {
+            var model = new PlotModel();
+            var series = new OxyPlot.Series.LineSeries();
+            series.Points.Add(new DataPoint(0, 0));
+            series.Points.Add(new DataPoint(1, -1e40));
+            model.Series.Add(series);
+            return model;
+        }
+
         [Example("#977 RectangleAnnotation Axis Clipping not configurable")]
         public static PlotModel RectangleAnnotationAxisClipping()
         {
