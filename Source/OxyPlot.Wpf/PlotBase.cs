@@ -245,19 +245,17 @@ namespace OxyPlot.Wpf
         /// <param name="updateData">The update Data.</param>
         public void InvalidatePlot(bool updateData = true)
         {
-            if (this.ActualWidth <= 0 || this.ActualHeight <= 0)
-            {
-                return;
-            }
-
             this.UpdateModel(updateData);
 
-            if (Interlocked.CompareExchange(ref this.isPlotInvalidated, 1, 0) == 0)
+            if (this.ActualWidth > 0 && this.ActualHeight > 0)
             {
-                // Invalidate the arrange state for the element.
-                // After the invalidation, the element will have its layout updated,
-                // which will occur asynchronously unless subsequently forced by UpdateLayout.
-                this.BeginInvoke(this.InvalidateArrange);
+                if (Interlocked.CompareExchange(ref this.isPlotInvalidated, 1, 0) == 0)
+                {
+                    // Invalidate the arrange state for the element.
+                    // After the invalidation, the element will have its layout updated,
+                    // which will occur asynchronously unless subsequently forced by UpdateLayout.
+                    this.BeginInvoke(this.InvalidateArrange);
+                }
             }
         }
 
