@@ -93,9 +93,20 @@ namespace OxyPlot
                 return;
             }
 
+            if (outputBuffer != null)
+            {
+                outputBuffer.Clear();
+                outputBuffer.Capacity = n;
+            }
+            else
+            {
+                outputBuffer = new List<ScreenPoint>(n);
+            }
+
             if (rc.SetClip(clippingRectangle))
             {
-                rc.DrawLine(points, stroke, strokeThickness, dashArray, lineJoin, aliased);
+                ReducePoints(points, minDistSquared, outputBuffer);
+                rc.DrawLine(outputBuffer, stroke, strokeThickness, dashArray, lineJoin, aliased);
                 rc.ResetClip();
 
                 if (outputBuffer != null)
@@ -104,21 +115,9 @@ namespace OxyPlot
                     outputBuffer.AddRange(points);
                 }
 
-                if (pointsRendered != null)
-                {
-                    pointsRendered(points);
-                }
+                pointsRendered?.Invoke(outputBuffer);
 
                 return;
-            }
-
-            if (outputBuffer != null)
-            {
-                outputBuffer.Clear();
-            }
-            else
-            {
-                outputBuffer = new List<ScreenPoint>(n);
             }
 
             // draws the points in the output buffer and calls the callback (if specified)
@@ -356,15 +355,17 @@ namespace OxyPlot
                 return;
             }
 
-            // TODO: minDistSquared should be implemented or removed
+            var outputBuffer = new List<ScreenPoint>();
+            ReducePoints(points, minDistSquared, outputBuffer);
+
             if (rc.SetClip(clippingRectangle))
             {
-                rc.DrawPolygon(points, fill, stroke, strokeThickness, lineStyle.GetDashArray(), lineJoin, aliased);
+                rc.DrawPolygon(outputBuffer, fill, stroke, strokeThickness, lineStyle.GetDashArray(), lineJoin, aliased);
                 rc.ResetClip();
                 return;
             }
 
-            var clippedPoints = SutherlandHodgmanClipping.ClipPolygon(clippingRectangle, points);
+            var clippedPoints = SutherlandHodgmanClipping.ClipPolygon(clippingRectangle, outputBuffer);
             rc.DrawPolygon(clippedPoints, fill, stroke, strokeThickness, lineStyle.GetDashArray(), lineJoin, aliased);
         }
 
@@ -1099,6 +1100,34 @@ namespace OxyPlot
         {
             var oxyRect = bounds.GetBounds(angle, HorizontalAlignment.Center, VerticalAlignment.Middle);
             return new OxySize(oxyRect.Width, oxyRect.Height);
+        }
+
+        /// <summary>
+        /// Reduces the specified list of points by the specified minimum squared distance. 
+        /// </summary>
+        /// <param name="points">The points that should be evaluated.</param>
+        /// <param name="minDistSquared">The minimum line segment length (squared).</param>
+        /// <param name="outputBuffer">The output buffer. Cannot be <c>null</c>.</param>
+        /// <remarks>Points that are closer than the specified distance will not be included in the output buffer.</remarks>
+        private static void ReducePoints(IList<ScreenPoint> points, double minDistSquared, List<ScreenPoint> outputBuffer)
+        {
+            outputBuffer.Add(points[0]);
+            int lastPointIndex = 0;
+            var n = points.Count;
+            for (int i = 1; i < n; i++)
+            {
+                var sc1 = points[i];
+
+                // length calculation (inlined for performance)
+                var dx = sc1.X - points[lastPointIndex].X;
+                var dy = sc1.Y - points[lastPointIndex].Y;
+
+                if ((dx * dx) + (dy * dy) > minDistSquared || i == n - 1)
+                {
+                    outputBuffer.Add(new ScreenPoint(sc1.X, sc1.Y));
+                    lastPointIndex = i;
+                }
+            }
         }
     }
 }
