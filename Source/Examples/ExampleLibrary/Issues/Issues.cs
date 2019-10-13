@@ -20,6 +20,45 @@ namespace ExampleLibrary
     [Examples("Z1 Issues")]
     public class Issues
     {
+        [Example("#91 AxisTitleDistance")]
+        public static PlotModel AxisTitleDistance()
+        {
+            var plotModel = new PlotModel
+            {
+                Title = "AxisTitleDistance",
+                LegendFontSize = 12,
+                LegendFontWeight = FontWeights.Bold
+            };
+
+            //var series = new LineSeries() { Title = "Push-Over Curve" };
+            //series.Points.AddRange(pushOverPoints);
+            //plotModel.Series.Add(series);
+
+            plotModel.Axes.Add(new LinearAxis
+            {
+                Title = "Base Shear",
+                Unit = "KN",
+                TitleFontSize = 12,
+                TitleFontWeight = FontWeights.Bold,
+                Position = AxisPosition.Left,
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Solid,
+                AxisTitleDistance = 15
+            });
+            plotModel.Axes.Add(new LinearAxis
+            {
+                Title = "Displacement",
+                Unit = "mm",
+                TitleFontSize = 12,
+                TitleFontWeight = FontWeights.Bold,
+                Position = AxisPosition.Bottom,
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Solid,
+                AxisTitleDistance = 10
+            });
+            return plotModel;
+        }
+
         [Example("#1044 MinimumSegmentLength not working with AreaSeries")]
         public static PlotModel MinimumSegmentLengthInAreaSeries()
         {

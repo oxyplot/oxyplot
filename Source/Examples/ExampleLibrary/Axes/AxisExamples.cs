@@ -1139,6 +1139,34 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("Default AxisTitleDistance")]
+        public static PlotModel DefaultAxisTitleDistance()
+        {
+            var model = new PlotModel
+            {
+                Title = "AxisTitleDistance = 4 (default)"
+            };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "Bottom", Minimum = 0, Maximum = 20 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Left", Minimum = 0, Maximum = 150 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Top, Title = "Top", Minimum = 0, Maximum = 20 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Right, Title = "Right", Minimum = 0, Maximum = 150 });
+            return model;
+        }
+
+        [Example("Custom AxisTitleDistance")]
+        public static PlotModel CustomAxisTitleDistance()
+        {
+            var model = new PlotModel
+            {
+                Title = "AxisTitleDistance = 40"
+            };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "Bottom", Minimum = 0, Maximum = 20, AxisTitleDistance = 40 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Left", Minimum = 0, Maximum = 150, AxisTitleDistance = 40 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Top, Title = "Top", Minimum = 0, Maximum = 20, AxisTitleDistance = 40 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Right, Title = "Right", Minimum = 0, Maximum = 150, AxisTitleDistance = 40 });
+            return model;
+        }
+
         /// <summary>
         /// Creates an example with the specified <see cref="TickStyle" />.
         /// </summary>
@@ -1151,7 +1179,7 @@ namespace ExampleLibrary
             plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, TickStyle = tickStyle });
             return plotModel1;
         }
-        
+
         [Example("Gridlines Cropping: Horizontal and vertical")]
         public static PlotModel GridlineCroppingBoth()
         {
@@ -1196,7 +1224,7 @@ namespace ExampleLibrary
                 ExtraGridlineColor = OxyColors.Red,
                 StartPosition = 0.6,
                 EndPosition = 0.9,
-                CropGridlines = true                
+                CropGridlines = true
             });
             return plotModel1;
         }
@@ -1325,12 +1353,12 @@ namespace ExampleLibrary
                 for (int i = 1; i <= countPoints; i++)
                 {
                     double temperature = 20 + Math.Sin(i);
-                    double pressure = 760 +  1.5 * Math.Cos(1.5 * i);
-                    double humidity = 50 +  2.0 * Math.Sin(2.0 * i);
+                    double pressure = 760 + 1.5 * Math.Cos(1.5 * i);
+                    double humidity = 50 + 2.0 * Math.Sin(2.0 * i);
 
                     lineSeriesTemperature.Points.Add(DateTimeAxis.CreateDataPoint(time, temperature));
                     lineSeriesPressure.Points.Add(DateTimeAxis.CreateDataPoint(time, pressure));
-                    lineSeriesHumidity.Points.Add(DateTimeAxis.CreateDataPoint(time,  humidity));
+                    lineSeriesHumidity.Points.Add(DateTimeAxis.CreateDataPoint(time, humidity));
 
                     time += timeSpan;
                 }
