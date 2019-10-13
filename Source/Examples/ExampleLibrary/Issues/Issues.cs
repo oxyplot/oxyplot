@@ -20,6 +20,53 @@ namespace ExampleLibrary
     [Examples("Z1 Issues")]
     public class Issues
     {
+        [Example("#1044 MinimumSegmentLength not working with AreaSeries")]
+        public static PlotModel MinimumSegmentLengthInAreaSeries()
+        {
+            var model = new PlotModel() { Title = "MinimumSegmentLength in AreaSeries", Subtitle = "Three different areas should be visible" };
+            for (var msl = 0; msl <= 200; msl += 100)
+            {
+                var series = new AreaSeries
+                {
+                    Title = $"MinimumSegmentLength = {msl}",
+                    MinimumSegmentLength = msl
+                };
+
+                for (int i = 0; i < 1000; i++)
+                {
+                    series.Points.Add(new DataPoint(i, Math.Sin(i * 0.01) + 1));
+                    series.Points2.Add(new DataPoint(i, Math.Sin(i * 0.01)));
+                }
+
+                model.Series.Add(series);
+            }
+
+            return model;
+        }
+
+        [Example("#1044 MinimumSegmentLength not working with LinesSeries")]
+        public static PlotModel MinimumSegmentLengthInLineSeries()
+        {
+            var model = new PlotModel() { Title = "MinimumSegmentLength in LineSeries", Subtitle = "Three different curves should be visible" };
+            for (var msl = 0; msl <= 200; msl += 100)
+            {
+                var series = new LineSeries
+                {
+                    Title = $"MinimumSegmentLength = {msl}",
+                    MinimumSegmentLength = msl
+                };
+
+                for (int i = 0; i < 1000; i++)
+                {
+                    series.Points.Add(new DataPoint(i, Math.Sin(i * 0.01)));
+                }
+
+                model.Series.Add(series);
+            }
+
+            return model;
+        }
+
         [Example("#1303 Problem with infinity size polyline")]
         public static PlotModel InfinitySizePolyline()
         {
@@ -1956,7 +2003,7 @@ namespace ExampleLibrary
         [Example("#1312: Annotations ignore LineStyle.None and draw as if Solid")]
         public static PlotModel DrawArrowAnnotationsWithDifferentLineStyles()
         {
-            LineStyle[] lineStyles = new []
+            LineStyle[] lineStyles = new[]
             {
                 LineStyle.Solid,
                 LineStyle.Dash,
@@ -1974,29 +2021,29 @@ namespace ExampleLibrary
             var plot = new PlotModel() { Title = "Annotation Line Styles", Subtitle = "'None' should produce nothing" };
             plot.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 0, Maximum = lineStyles.Length * 10 + 10 });
             plot.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = 0, Maximum = 100 });
-            
+
             double y = 10;
             foreach (var lineStyle in lineStyles)
             {
                 plot.Annotations.Add(new LineAnnotation()
-                    {
-                        LineStyle = lineStyle,
-                        Type = LineAnnotationType.Horizontal,
-                        Y = y,
-                        MinimumX = 10,
-                        MaximumX = 45
-                    });
-                
+                {
+                    LineStyle = lineStyle,
+                    Type = LineAnnotationType.Horizontal,
+                    Y = y,
+                    MinimumX = 10,
+                    MaximumX = 45
+                });
+
                 plot.Annotations.Add(new ArrowAnnotation()
-                    {
-                        LineStyle = lineStyle,
-                        Text = lineStyle.ToString(),
-                        TextHorizontalAlignment = HorizontalAlignment.Center,
-                        TextVerticalAlignment = VerticalAlignment.Bottom,
-                        TextPosition = new DataPoint(50, y),
-                        StartPoint = new DataPoint(55, y),
-                        EndPoint = new DataPoint(90, y)
-                    });
+                {
+                    LineStyle = lineStyle,
+                    Text = lineStyle.ToString(),
+                    TextHorizontalAlignment = HorizontalAlignment.Center,
+                    TextVerticalAlignment = VerticalAlignment.Bottom,
+                    TextPosition = new DataPoint(50, y),
+                    StartPoint = new DataPoint(55, y),
+                    EndPoint = new DataPoint(90, y)
+                });
 
                 y += 10;
             }
