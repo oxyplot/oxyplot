@@ -20,10 +20,34 @@ namespace ExampleLibrary
     [Examples("Z1 Issues")]
     public class Issues
     {
-        [Example("#1044 MinimumSegmentLength not working")]
-        public static PlotModel MinimumSegmentLength()
+        [Example("#1044 MinimumSegmentLength not working with AreaSeries")]
+        public static PlotModel MinimumSegmentLengthInAreaSeries()
         {
-            var model = new PlotModel() { Title = "MinimumSegmentLength", Subtitle = "Three different curves should be visible" };
+            var model = new PlotModel() { Title = "MinimumSegmentLength in AreaSeries", Subtitle = "Three different areas should be visible" };
+            for (var msl = 0; msl <= 200; msl += 100)
+            {
+                var series = new AreaSeries
+                {
+                    Title = $"MinimumSegmentLength = {msl}",
+                    MinimumSegmentLength = msl
+                };
+
+                for (int i = 0; i < 1000; i++)
+                {
+                    series.Points.Add(new DataPoint(i, Math.Sin(i * 0.01) + 1));
+                    series.Points2.Add(new DataPoint(i, Math.Sin(i * 0.01)));
+                }
+
+                model.Series.Add(series);
+            }
+
+            return model;
+        }
+
+        [Example("#1044 MinimumSegmentLength not working with LinesSeries")]
+        public static PlotModel MinimumSegmentLengthInLineSeries()
+        {
+            var model = new PlotModel() { Title = "MinimumSegmentLength in LineSeries", Subtitle = "Three different curves should be visible" };
             for (var msl = 0; msl <= 200; msl += 100)
             {
                 var series = new LineSeries
