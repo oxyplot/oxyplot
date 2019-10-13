@@ -19,6 +19,7 @@ All notable changes to this project will be documented in this file.
 - Workaround for text vertical alignment in SVG Export to accomodate viewers which don't support dominant-baseline (#459, #1198)
 - Issues Example demonstrating the rendering of Line and Arrow annotations with all LineStyles (#1312)
 - Add support for transposed (X and Y axis switched) plots with XYAxisSeries (#1334)
+- Add Color property to HistogramItem (#1347)
 
 ### Changed
 - Let Gtk# PlotView show up in Ui editor ToolBox of MonoDevelop and XamarinStudio (#1071)
