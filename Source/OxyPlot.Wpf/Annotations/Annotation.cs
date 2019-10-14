@@ -138,15 +138,7 @@ namespace OxyPlot.Wpf
             a.Layer = this.Layer;
             a.XAxisKey = this.XAxisKey;
             a.YAxisKey = this.YAxisKey;
-
-            if ((this.Parent as IPlotView).UseCustomToolTipSystem)
-            {
-                a.ToolTip = this.OxyToolTip != null ? this.OxyToolTip.ToString() : null;
-            }
-            else
-            {
-                a.ToolTip = this.ToolTip != null ? this.ToolTip.ToString() : null;
-            }
+            a.ToolTip = this.OxyToolTip != null ? this.OxyToolTip.ToString() : null;
         }
 
         /// <summary>

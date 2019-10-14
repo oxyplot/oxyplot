@@ -1600,15 +1600,7 @@ namespace OxyPlot.Wpf
             a.Unit = this.Unit;
             a.UseSuperExponentialFormat = this.UseSuperExponentialFormat;
             a.LabelFormatter = this.LabelFormatter;
-
-            if ((this.Parent as IPlotView).UseCustomToolTipSystem)
-            {
-                a.ToolTip = this.OxyToolTip != null ? this.OxyToolTip.ToString() : null;
-            }
-            else
-            {
-                a.ToolTip = this.ToolTip != null ? this.ToolTip.ToString() : null;
-            }
+            a.ToolTip = this.OxyToolTip != null ? this.OxyToolTip.ToString() : null;
         }
     }
 }

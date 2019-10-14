@@ -346,12 +346,8 @@ namespace OxyPlot.Wpf
         /// </summary>
         private void UpdateToolTip()
         {
-            if (this.ActualModel == null || !this.UseCustomToolTipSystem)
+            if (this.ActualModel == null)
             {
-                if (this.UseCustomToolTipSystem)
-                {
-                    this.OxyToolTipString = null;
-                }
                 return;
             }
 
