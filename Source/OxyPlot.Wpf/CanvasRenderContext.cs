@@ -836,25 +836,7 @@ namespace OxyPlot.Wpf
 
             this.canvas.Children.Add(element);
 
-            this.ApplyToolTip(element);
             return element;
-        }
-
-        /// <summary>
-        /// Applies the current tool tip to the specified element.
-        /// </summary>
-        /// <param name="element">The element.</param>
-        private void ApplyToolTip(FrameworkElement element)
-        {
-            // TODO: extract this code from the render context into PlotBase
-
-            // The problem is that here the canvas.Parent is null so an
-            // exception is thrown without setting the ToolTip:
-            //if (!(this.canvas.Parent as IPlotView).UseCustomToolTipSystem ||
-            //    !string.IsNullOrEmpty(this.currentToolTip))
-            //{
-            //    element.ToolTip = this.currentToolTip;
-            //}
         }
 
         /// <summary>
