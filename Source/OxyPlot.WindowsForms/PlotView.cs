@@ -51,16 +51,6 @@ namespace OxyPlot.WindowsForms
         private readonly GraphicsRenderContext renderContext;
 
         /// <summary>
-        /// A reference to the previously hovered plot element wrapped by ToolTippedPlotElement and used in the tooltip system.
-        /// </summary>
-        private ToolTippedPlotElement previouslyHoveredPlotElement;
-
-        /// <summary>
-        /// A reference to the currently hovered plot element wrapped by ToolTippedPlotElement and used in the tooltip system.
-        /// </summary>
-        private ToolTippedPlotElement currentlyHoveredPlotElement;
-
-        /// <summary>
         /// The tracker label.
         /// </summary>
         [NonSerialized]
@@ -98,33 +88,10 @@ namespace OxyPlot.WindowsForms
         private Rectangle zoomRectangle;
 
         /// <summary>
-        /// The cancellation token source used to cancel the task that shows the tooltip after an initial delay,
-        /// and the task that hides the tooltip after the show duration.
-        /// </summary>
-        [NonSerialized]
-        private CancellationTokenSource tokenSource;
-
-        /// <summary>
-        /// The Task for the initial delay of the tooltip.
-        /// </summary>
-        [NonSerialized]
-        private Task firstToolTipTask;
-
-        /// <summary>
-        /// The Task for the minimum delay between tooltip showings.
-        /// </summary>
-        [NonSerialized]
-        private Task secondToolTipTask;
-
-        /// <summary>
-        /// The storage for the OxyToolTipString property.
-        /// </summary>
-        private string lastToolTipString = null;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="PlotView" /> class.
         /// </summary>
-        public PlotView()
+        /// <param name="tt">The IToolTip object used as tooltip.</param>
+        public PlotView(IToolTip tt = null)
         {
             this.renderContext = new GraphicsRenderContext();
 
@@ -139,10 +106,14 @@ namespace OxyPlot.WindowsForms
             var DoCopy = new DelegatePlotCommand<OxyKeyEventArgs>((view, controller, args) => this.DoCopy(view, args));
             this.ActualController.BindKeyDown(OxyKey.C, OxyModifierKeys.Control, DoCopy);
 
-            // related to tooltips:
-            this.previouslyHoveredPlotElement = new ToolTippedPlotElement();
-            this.currentlyHoveredPlotElement = new ToolTippedPlotElement();
-            this.OxyToolTip = new ToolTip();
+            if (tt == null)
+            {
+                this.OxyToolTip = new CustomToolTip(this);
+            }
+            else
+            {
+                this.OxyToolTip = tt;
+            }
         }
 
         /// <summary>
@@ -245,7 +216,7 @@ namespace OxyPlot.WindowsForms
         /// </summary>
         [DefaultValue(null)]
         [Category(OxyPlotCategory)]
-        public ToolTip OxyToolTip { get; set; }
+        public IToolTip OxyToolTip { get; set; }
 
         /// <summary>
         /// Gets or sets the pan cursor.
@@ -270,12 +241,6 @@ namespace OxyPlot.WindowsForms
         /// </summary>
         [Category(OxyPlotCategory)]
         public Cursor ZoomVerticalCursor { get; set; }
-
-        /// <summary>
-        /// Gets whether the custom tooltip system is used.
-        /// </summary>
-        [Browsable(false)]
-        public bool UseCustomToolTipSystem { get => true; }
 
         /// <summary>
         /// Hides the tracker.
@@ -430,267 +395,6 @@ namespace OxyPlot.WindowsForms
             base.OnMouseMove(e);
 
             this.ActualController.HandleMouseMove(this, e.ToMouseEventArgs(GetModifiers()));
-
-            UpdateToolTip();
-        }
-
-        /// <summary>
-        /// The string representation of the ToolTip. In its setter there isn't any check of the value to be different than the previous value, and in the setter, if the value is null or empty string, the ToolTip is removed from the PlotView. The ToolTip shows up naturally if the mouse is over the PlotView, using the configuration in the PlotView's c-tor.
-        /// </summary>
-        protected string OxyToolTipString
-        {
-            get
-            {
-                return lastToolTipString;
-            }
-            set
-            {
-                if (value == null)
-                {
-                    if (this.previouslyHoveredPlotElement != this.currentlyHoveredPlotElement)
-                    {
-                        if (this.tokenSource != null)
-                        {
-                            this.tokenSource.Cancel();
-                            this.tokenSource.Dispose();
-                            this.tokenSource = null;
-                        }
-
-                        this.lastToolTipString = null;
-
-                        this.OxyToolTip.Hide(this);
-                        //OxyToolTip.RemoveAll();
-                        //Application.DoEvents();
-                    }
-                }
-                else
-                {
-                    if (this.previouslyHoveredPlotElement != this.currentlyHoveredPlotElement)
-                    {
-                        if (this.tokenSource != null)
-                        {
-                            this.tokenSource.Cancel();
-                            this.tokenSource.Dispose();
-                            this.tokenSource = null;
-                        }
-
-                        this.lastToolTipString = value;
-
-                        //OxyToolTip.Active = false;
-                        //OxyToolTip.Hide(this);
-                        //Application.DoEvents();
-
-                        this.tokenSource = new CancellationTokenSource();
-                        this.firstToolTipTask = ShowToolTip(value, this.tokenSource.Token);
-
-                        //OxyToolTip.Active = true;
-
-                        //Application.DoEvents();
-                    }
-                    //Application.DoEvents();
-                }
-            }
-        }
-
-        protected async Task ShowToolTip(string value, CancellationToken ct)
-        {
-            if (this.secondToolTipTask != null)
-            {
-                await this.secondToolTipTask;
-            }
-
-            if (ct.IsCancellationRequested)
-            {
-                return;
-            }
-
-            // necessary hiding for when the user moves the mouse from over a plot element to another element without empty space between them:
-            this.OxyToolTip.Hide(this);
-            //Application.DoEvents();
-
-            if (ct.IsCancellationRequested)
-            {
-                return;
-            }
-
-            await Task.Delay(this.OxyToolTip.InitialDelay, ct);
-
-            if (ct.IsCancellationRequested)
-            {
-                return;
-            }
-
-            Point pos = this.PointToClient(Control.MousePosition);
-            pos.Y += Cursor.Current.Size.Height;
-
-            // Without the -2000, the duration of the tooltip is too long (because of the animation, probably)
-            this.OxyToolTip.Show(value, this, pos, Math.Max(0, OxyToolTip.AutoPopDelay - 2000));
-            //OxyToolTip.SetToolTip(this, value);
-            //Application.DoEvents();
-
-            if (ct.IsCancellationRequested)
-            {
-                return;
-            }
-
-            _ = HideToolTip(ct);
-
-            //tokenSource = null;
-        }
-
-        protected async Task HideToolTip(CancellationToken ct)
-        {
-            if (ct.IsCancellationRequested)
-            {
-                return;
-            }
-
-            int betweenShowDelay = this.OxyToolTip.ReshowDelay;
-
-            this.secondToolTipTask = Task.Delay(betweenShowDelay);
-            _ = this.secondToolTipTask.ContinueWith(new Action<Task>((t) =>
-            {
-                this.secondToolTipTask = null;
-            }));
-
-            if (ct.IsCancellationRequested)
-            {
-                return;
-            }
-
-            int showDuration = this.OxyToolTip.AutoPopDelay;
-
-            if (ct.IsCancellationRequested)
-            {
-                return;
-            }
-
-            await Task.Delay(showDuration, ct);
-
-            if (ct.IsCancellationRequested)
-            {
-                return;
-            }
-
-            this.OxyToolTip.Hide(this);
-            //Application.DoEvents();
-
-            if (ct.IsCancellationRequested)
-            {
-                return;
-            }
-        }
-
-        /// <summary>
-        /// Returns true if the event is handled.
-        /// </summary>
-        /// <returns></returns>
-        private bool HandleTitleToolTip(ScreenPoint sp)
-        {
-            if (this.Model == null)
-            {
-                return false;
-            }
-
-            bool v = this.Model.TitleArea.Contains(sp);
-
-            if (v && this.Model.Title != null)
-            {
-                // these 2 lines must be before the third which calls the setter of OxyToolTipString
-                this.previouslyHoveredPlotElement = this.currentlyHoveredPlotElement;
-                this.currentlyHoveredPlotElement = new ToolTippedPlotElement(true);
-
-                // show the tooltip
-                this.OxyToolTipString = this.Model.TitleToolTip;
-
-                return true;
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Returns true if the event is handled.
-        /// </summary>
-        /// <returns></returns>
-        private bool HandlePlotElementsToolTip(ScreenPoint sp)
-        {
-            if (this.Model == null)
-            {
-                return false;
-            }
-
-            bool found = false;
-
-            // should we use other value than 5 in this line?
-            System.Collections.Generic.IEnumerable<HitTestResult> r =
-                this.Model.HitTest(new HitTestArguments(sp, 5));
-            
-            foreach (HitTestResult rtr in r)
-            {
-                // if an element is found under the mouse cursor
-                if (rtr.Element != null)
-                {
-                    // if it is a PlotElement (not just an UIElement)
-                    if (rtr.Element is PlotElement pe)
-                    {
-                        // if the mouse was not over it previously
-                        if (pe != this.currentlyHoveredPlotElement)
-                        {
-                            // these 2 lines must be before the third which calls the setter of OxyToolTipString
-                            this.previouslyHoveredPlotElement = this.currentlyHoveredPlotElement;
-                            this.currentlyHoveredPlotElement = new ToolTippedPlotElement(pe);
-
-                            // show the tooltip
-                            this.OxyToolTipString = pe.ToolTip;
-                        }
-                        else
-                        {
-                        }
-                        found = true;
-                        break;
-                    }
-                    else
-                    {
-                    }
-                }
-            }
-
-            if (!found)
-            {
-                this.previouslyHoveredPlotElement = this.currentlyHoveredPlotElement;
-                this.currentlyHoveredPlotElement = new ToolTippedPlotElement();
-            }
-
-            return found;
-        }
-
-        private void UpdateToolTip()
-        {
-            if (this.ActualModel == null || !this.UseCustomToolTipSystem)
-            {
-                if (this.UseCustomToolTipSystem)
-                {
-                    this.OxyToolTipString = null;
-                }
-                return;
-            }
-
-            ScreenPoint sp = PointToClient(MousePosition).ToScreenPoint();
-
-
-            bool handleTitle = HandleTitleToolTip(sp);
-            bool handleOthers = false;
-
-            if (!handleTitle)
-            {
-                handleOthers = HandlePlotElementsToolTip(sp);
-            }
-
-            if (!handleTitle && !handleOthers)
-            {
-                this.OxyToolTipString = null;
-            }
         }
 
         /// <summary>
@@ -712,8 +416,6 @@ namespace OxyPlot.WindowsForms
         {
             base.OnMouseEnter(e);
             this.ActualController.HandleMouseEnter(this, e.ToMouseEventArgs(GetModifiers()));
-
-            UpdateToolTip();
         }
 
         /// <summary>
@@ -724,8 +426,6 @@ namespace OxyPlot.WindowsForms
         {
             base.OnMouseLeave(e);
             this.ActualController.HandleMouseLeave(this, e.ToMouseEventArgs(GetModifiers()));
-
-            UpdateToolTip();
         }
 
         /// <summary>
