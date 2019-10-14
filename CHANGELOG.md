@@ -73,6 +73,7 @@ All notable changes to this project will be documented in this file.
 - Fixed issue with svg always containing the xml headers (#1212)
 - In WPF, make sure the axes are initalized when the Model is set before the PlotView has been loaded (#1303)
 - Fixed MinimumSegmentLength not working for LineSeries (#1044)
+- Fixed rendering issues with MagnitudeAxisFullPlotArea (#1364)
 
 ## [1.0.0] - 2016-09-11
 ### Added
