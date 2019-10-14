@@ -22,11 +22,25 @@ namespace OxyPlot.Series
         /// <param name="area">The area.</param>
         /// <param name="count">The count.</param>
         public HistogramItem(double rangeStart, double rangeEnd, double area, int count)
+            : this(rangeStart, rangeEnd, area, count, OxyColors.Automatic)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HistogramItem" /> class.
+        /// </summary>
+        /// <param name="rangeStart">The range start.</param>
+        /// <param name="rangeEnd">The range end.</param>
+        /// <param name="area">The area.</param>
+        /// <param name="count">The count.</param>
+        /// <param name="color">The color.</param>
+        public HistogramItem(double rangeStart, double rangeEnd, double area, int count, OxyColor color)
         {
             this.RangeStart = rangeStart;
             this.RangeEnd = rangeEnd;
             this.Area = area;
             this.Count = count;
+            this.Color = color;
         }
 
         /// <summary>
@@ -52,10 +66,18 @@ namespace OxyPlot.Series
         /// </summary>
         public double RangeCenter => this.RangeStart + ((this.RangeEnd - this.RangeStart) / 2);
 
+        /// <summary>
         /// Gets or sets the count.
         /// </summary>
         /// <value>The count.</value>
         public int Count { get; set; }
+
+        /// <summary>
+        /// Gets or sets the color.
+        /// </summary>
+        /// <value>The color.</value>
+        /// <remarks>If set to Automatic, the FillColor of the RectangleBarSeries will be used.</remarks>
+        public OxyColor Color { get; set; }
 
         /// <summary>
         /// Gets the computed width of the item.
@@ -65,11 +87,11 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets the computed height of the item.
         /// </summary>
-        /// <value>The computed height of the item</value>
+        /// <value>The computed height of the item.</value>
         public double Height => this.Area / this.Width;
 
         /// <summary>
-        /// Gets the value of the item. Equivalent to the Height;
+        /// Gets the value of the item. Equivalent to the Height.
         /// </summary>
         /// <value>The value of the item.</value>
         public double Value => this.Height;
@@ -100,7 +122,14 @@ namespace OxyPlot.Series
         /// <returns>The to code.</returns>
         public string ToCode()
         {
-            return CodeGenerator.FormatConstructor(this.GetType(), "{0},{1},{2},{3}", this.RangeStart, this.RangeEnd, this.Area, this.Count);
+            if (!this.Color.IsAutomatic())
+            {
+                return CodeGenerator.FormatConstructor(this.GetType(), "{0},{1},{2},{3},{4}", this.RangeStart, this.RangeEnd, this.Area, this.Count, this.Color);
+            }
+            else
+            {
+                return CodeGenerator.FormatConstructor(this.GetType(), "{0},{1},{2},{3}", this.RangeStart, this.RangeEnd, this.Area, this.Count);
+            }
         }
 
         /// <summary>

@@ -19,7 +19,7 @@ namespace OxyPlot.Series
     public class HistogramSeries : XYAxisSeries
     {
         /// <summary>
-        /// The default tracker format string
+        /// The default tracker format string.
         /// </summary>
         public new const string DefaultTrackerFormatString = "Start: {5}\nEnd: {6}\nValue: {7}\nArea: {8}\nCount: {9}";
 
@@ -41,7 +41,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// The default color mapping.
         /// </summary>
-        private OxyColor defaultColorMapping(HistogramItem item) => ActualFillColor;
+        private OxyColor defaultColorMapping(HistogramItem item) => this.ActualFillColor;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HistogramSeries" /> class.
@@ -55,7 +55,7 @@ namespace OxyPlot.Series
             this.LabelFormatString = null;
             this.LabelFontSize = 0;
             this.LabelPlacement = LabelPlacement.Outside;
-            this.ColorMapping = defaultColorMapping;
+            this.ColorMapping = this.defaultColorMapping;
         }
 
         /// <summary>
@@ -138,7 +138,7 @@ namespace OxyPlot.Series
         /// Gets or sets the delegate used to map from <see cref="ItemsSeries.ItemsSource" /> to <see cref="HistogramSeries" />. The default is <c>null</c>.
         /// </summary>
         /// <value>The mapping.</value>
-        /// <remarks>Example: series1.Mapping = item => new HistogramItem((double)item.BinStart, (double)item.BinStart + item.BinWidth, (double)item.Count / totalCount, item.Count);</remarks>
+        /// <remarks>Example: series1.Mapping = item => new HistogramItem((double)item.BinStart, (double)item.BinStart + item.BinWidth, (double)item.Count / totalCount, item.Count).</remarks>
         public Func<object, HistogramItem> Mapping { get; set; }
 
         /// <summary>
@@ -213,7 +213,7 @@ namespace OxyPlot.Series
                             item.RangeEnd,
                             item.Value,
                             item.Area,
-                            item.Count)
+                            item.Count),
                         };
                     }
                 }
@@ -222,7 +222,7 @@ namespace OxyPlot.Series
             // if no HistogramItems contain the point, return null
             return null;
         }
-        
+
         /// <summary>
         /// Renders the legend symbol on the specified rendering context.
         /// </summary>
@@ -354,7 +354,7 @@ namespace OxyPlot.Series
         {
             foreach (var item in items)
             {
-                var actualFillColor = ColorMapping(item);
+                var actualFillColor = this.GetItemFillColor(item);
 
                 // transform the data points to screen points
                 var p1 = this.Transform(item.RangeStart, 0);
@@ -368,6 +368,23 @@ namespace OxyPlot.Series
                 {
                     this.RenderLabel(rc, clippingRect, rectrect, item);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Gets the fill color of the given <see cref="HistogramItem"/>.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <returns>The fill color of the item.</returns>
+        protected OxyColor GetItemFillColor(HistogramItem item)
+        {
+            if (!item.Color.IsAutomatic())
+            {
+                return item.Color;
+            }
+            else
+            {
+                return this.ColorMapping(item);
             }
         }
 
@@ -396,7 +413,6 @@ namespace OxyPlot.Series
         /// <param name="rc">The render context.</param>
         /// <param name="clippingRect">The clipping rectangle.</param>
         /// <param name="rect">The column rectangle.</param>
-        /// <param name="value">The value.</param>
         /// <param name="item">The item.</param>
         protected void RenderLabel(IRenderContext rc, OxyRect clippingRect, OxyRect rect, HistogramItem item)
         {
