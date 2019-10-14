@@ -32,6 +32,7 @@ All notable changes to this project will be documented in this file.
 - TrackerControl reuses existing ContentControl when a new hit tracker result uses the same template as the currently shown tracker (#1281)
 - Add Count to HistogramSeries (#1347)
 - Overhaul HistogramHelpers (#1345)
+- Remove unused LabelFontSize property from HistogramSeries (#1309)
 
 ### Deprecated
 - OxyPlot.WP8 package. Use OxyPlot.Windows instead (#996)
