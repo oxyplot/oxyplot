@@ -74,6 +74,12 @@ namespace OxyPlot.Axes
             double cornerangle_bottomleft = 360-degree * Math.Atan2(maxtickrect.Bottom, maxtickrect.Left);
             double cornerangle_bottomright = 360-degree * Math.Atan2(maxtickrect.Bottom, maxtickrect.Right);
 
+            // detect and filter dodgy values (these checks appear to be sufficient)
+            if (cornerangle_topleft < 0)
+                cornerangle_topleft += 360;
+            if (cornerangle_bottomleft > 360)
+                cornerangle_bottomleft -= 360;
+
             double cornerdistance_topright = Math.Sqrt(Math.Pow(distancerect.Top, 2) + Math.Pow(distancerect.Right, 2));
             double cornerdistance_topleft = Math.Sqrt(Math.Pow(distancerect.Top, 2) + Math.Pow(distancerect.Left, 2));
             double cornerdistance_bottomleft = Math.Sqrt(Math.Pow(distancerect.Bottom, 2) + Math.Pow(distancerect.Left, 2));
@@ -165,28 +171,40 @@ namespace OxyPlot.Axes
                     }
 
                     //Top right
-                    if (startangle_0_90 < cornerangle_topright)
-                        this.RenderTickArc(axis, angleAxis, tickValue, pen, (startangle_0_90 + angleAxis.Offset), (cornerangle_topright + angleAxis.Offset));
-                    if (cornerangle_topright < endangle_0_90)
-                        this.RenderTickArc(axis, angleAxis, tickValue, pen, (cornerangle_topright + angleAxis.Offset), (endangle_0_90 + angleAxis.Offset));
+                    if (r <= cornerdistance_topright)
+                    {
+                        if (startangle_0_90 < cornerangle_topright)
+                            this.RenderTickArc(axis, angleAxis, tickValue, pen, (startangle_0_90 + angleAxis.Offset), (cornerangle_topright + angleAxis.Offset));
+                        if (cornerangle_topright < endangle_0_90)
+                            this.RenderTickArc(axis, angleAxis, tickValue, pen, (cornerangle_topright + angleAxis.Offset), (endangle_0_90 + angleAxis.Offset));
+                    }
 
                     //Top left
-                    if (startangle_90_180 < cornerangle_topleft)
-                        this.RenderTickArc(axis, angleAxis, tickValue, pen, startangle_90_180 + angleAxis.Offset, cornerangle_topleft + angleAxis.Offset);
-                    if (cornerangle_topleft < endangle_90_180)
-                        this.RenderTickArc(axis, angleAxis, tickValue, pen, cornerangle_topleft + angleAxis.Offset, endangle_90_180 + angleAxis.Offset);
+                    if (r <= cornerdistance_topleft)
+                    {
+                        if (startangle_90_180 < cornerangle_topleft)
+                            this.RenderTickArc(axis, angleAxis, tickValue, pen, startangle_90_180 + angleAxis.Offset, cornerangle_topleft + angleAxis.Offset);
+                        if (cornerangle_topleft < endangle_90_180)
+                            this.RenderTickArc(axis, angleAxis, tickValue, pen, cornerangle_topleft + angleAxis.Offset, endangle_90_180 + angleAxis.Offset);
+                    }
 
                     //Bottom left
-                    if (startangle_180_270 < cornerangle_bottomleft)
-                        this.RenderTickArc(axis, angleAxis, tickValue, pen, startangle_180_270 + angleAxis.Offset, cornerangle_bottomleft + angleAxis.Offset);
-                    if (cornerangle_bottomleft < endangle_180_270)
-                        this.RenderTickArc(axis, angleAxis, tickValue, pen, cornerangle_bottomleft + angleAxis.Offset, endangle_180_270 + angleAxis.Offset);
+                    if (r <= cornerdistance_bottomleft)
+                    {
+                        if (startangle_180_270 < cornerangle_bottomleft)
+                            this.RenderTickArc(axis, angleAxis, tickValue, pen, startangle_180_270 + angleAxis.Offset, cornerangle_bottomleft + angleAxis.Offset);
+                        if (cornerangle_bottomleft < endangle_180_270)
+                            this.RenderTickArc(axis, angleAxis, tickValue, pen, cornerangle_bottomleft + angleAxis.Offset, endangle_180_270 + angleAxis.Offset);
+                    }
 
                     //Bottom right
-                    if (startangle_270_360 < cornerangle_bottomright)
-                        this.RenderTickArc(axis, angleAxis, tickValue, pen, startangle_270_360 + angleAxis.Offset, cornerangle_bottomright + angleAxis.Offset);
-                    if (cornerangle_bottomright < endangle_270_360)
-                        this.RenderTickArc(axis, angleAxis, tickValue, pen, cornerangle_bottomright + angleAxis.Offset, endangle_270_360 + angleAxis.Offset);
+                    if (r <= cornerdistance_bottomright)
+                    {
+                        if (startangle_270_360 < cornerangle_bottomright)
+                            this.RenderTickArc(axis, angleAxis, tickValue, pen, startangle_270_360 + angleAxis.Offset, cornerangle_bottomright + angleAxis.Offset);
+                        if (cornerangle_bottomright < endangle_270_360)
+                            this.RenderTickArc(axis, angleAxis, tickValue, pen, cornerangle_bottomright + angleAxis.Offset, endangle_270_360 + angleAxis.Offset);
+                    }
                 }
             }
 
@@ -247,28 +265,40 @@ namespace OxyPlot.Axes
                     }
 
                     //Top right
-                    if (startangle_0_90 < cornerangle_topright)
-                        this.RenderTickArc(axis, angleAxis, tickValue, pen, (startangle_0_90 + angleAxis.Offset), (cornerangle_topright + angleAxis.Offset));
-                    if (cornerangle_topright < endangle_0_90)
-                        this.RenderTickArc(axis, angleAxis, tickValue, pen, (cornerangle_topright + angleAxis.Offset), (endangle_0_90 + angleAxis.Offset));
+                    if (r <= cornerdistance_topright)
+                    {
+                        if (startangle_0_90 < cornerangle_topright)
+                            this.RenderTickArc(axis, angleAxis, tickValue, pen, (startangle_0_90 + angleAxis.Offset), (cornerangle_topright + angleAxis.Offset));
+                        if (cornerangle_topright < endangle_0_90)
+                            this.RenderTickArc(axis, angleAxis, tickValue, pen, (cornerangle_topright + angleAxis.Offset), (endangle_0_90 + angleAxis.Offset));
+                    }
 
                     //Top left
-                    if (startangle_90_180 < cornerangle_topleft)
-                        this.RenderTickArc(axis, angleAxis, tickValue, pen, startangle_90_180 + angleAxis.Offset, cornerangle_topleft + angleAxis.Offset);
-                    if (cornerangle_topleft < endangle_90_180)
-                        this.RenderTickArc(axis, angleAxis, tickValue, pen, cornerangle_topleft + angleAxis.Offset, endangle_90_180 + angleAxis.Offset);
+                    if (r <= cornerdistance_topleft)
+                    {
+                        if (startangle_90_180 < cornerangle_topleft)
+                            this.RenderTickArc(axis, angleAxis, tickValue, pen, startangle_90_180 + angleAxis.Offset, cornerangle_topleft + angleAxis.Offset);
+                        if (cornerangle_topleft < endangle_90_180)
+                            this.RenderTickArc(axis, angleAxis, tickValue, pen, cornerangle_topleft + angleAxis.Offset, endangle_90_180 + angleAxis.Offset);
+                    }
 
                     //Bottom left
-                    if (startangle_180_270 < cornerangle_bottomleft)
-                        this.RenderTickArc(axis, angleAxis, tickValue, pen, startangle_180_270 + angleAxis.Offset, cornerangle_bottomleft + angleAxis.Offset);
-                    if (cornerangle_bottomleft < endangle_180_270)
-                        this.RenderTickArc(axis, angleAxis, tickValue, pen, cornerangle_bottomleft + angleAxis.Offset, endangle_180_270 + angleAxis.Offset);
+                    if (r <= cornerdistance_bottomleft)
+                    {
+                        if (startangle_180_270 < cornerangle_bottomleft)
+                            this.RenderTickArc(axis, angleAxis, tickValue, pen, startangle_180_270 + angleAxis.Offset, cornerangle_bottomleft + angleAxis.Offset);
+                        if (cornerangle_bottomleft < endangle_180_270)
+                            this.RenderTickArc(axis, angleAxis, tickValue, pen, cornerangle_bottomleft + angleAxis.Offset, endangle_180_270 + angleAxis.Offset);
+                    }
 
                     //Bottom right
-                    if (startangle_270_360 < cornerangle_bottomright)
-                        this.RenderTickArc(axis, angleAxis, tickValue, pen, startangle_270_360 + angleAxis.Offset, cornerangle_bottomright + angleAxis.Offset);
-                    if (cornerangle_bottomright < endangle_270_360)
-                        this.RenderTickArc(axis, angleAxis, tickValue, pen, cornerangle_bottomright + angleAxis.Offset, endangle_270_360 + angleAxis.Offset);
+                    if (r <= cornerdistance_bottomright)
+                    {
+                        if (startangle_270_360 < cornerangle_bottomright)
+                            this.RenderTickArc(axis, angleAxis, tickValue, pen, startangle_270_360 + angleAxis.Offset, cornerangle_bottomright + angleAxis.Offset);
+                        if (cornerangle_bottomright < endangle_270_360)
+                            this.RenderTickArc(axis, angleAxis, tickValue, pen, cornerangle_bottomright + angleAxis.Offset, endangle_270_360 + angleAxis.Offset);
+                    }
                 }
             }
 
