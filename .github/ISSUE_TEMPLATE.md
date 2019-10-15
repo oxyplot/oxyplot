@@ -1,4 +1,10 @@
-*IF BUG, INCLUDE THIS PART:*
+<!-- 
+Please see https://github.com/oxyplot/oxyplot/wiki/Contributing before creating issues.
+For issues related to Xamarin, please use https://github.com/oxyplot/oxyplot-xamarin/issues
+For issues related to other platforms, please add to the correct repository.
+-->
+
+<!-- IF THE ISSUE IS A BUG, INCLUDE THIS PART: -->
 
 ### Steps to reproduce
 
@@ -19,8 +25,7 @@ Tell us what happens instead
 Can you also include a screen shot?
 
 
-
-*IF IT IS A NEW FEATURE REQUEST, INCLUDE THIS PART:*
+<!-- IF THE ISSUE IS A NEW FEATURE REQUEST, INCLUDE THIS PART: -->
 
 ### Feature description
 
