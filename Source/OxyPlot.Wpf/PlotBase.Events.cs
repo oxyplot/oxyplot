@@ -125,247 +125,12 @@ namespace OxyPlot.Wpf
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
-            UpdateToolTip();
-
             if (e.Handled)
             {
                 return;
             }
 
             e.Handled = this.ActualController.HandleMouseMove(this, e.ToMouseEventArgs(this));
-        }
-
-        /// <summary>
-        /// The string representation of the ToolTip. In its setter there isn't any check of the value to be different than the previous value, and the ToolTip is always made visible from the setter if it is not null and not empty, else it is hidden.
-        /// </summary>
-        protected string OxyToolTipString
-        {
-            get
-            {
-                return this.OxyToolTip != null ? this.OxyToolTip.Content.ToString() : null;
-            }
-            set
-            {
-                if (this.previouslyHoveredPlotElement == this.currentlyHoveredPlotElement)
-                {
-                    return;
-                }
-
-                // tooltip removal
-                if (value == null)
-                {
-                    if (this.tokenSource != null)
-                    {
-                        this.tokenSource.Cancel();
-                        this.tokenSource.Dispose();
-                        this.tokenSource = null;
-                    }
-
-                    if (this.OxyToolTip != null)
-                    {
-                        this.Dispatcher.Invoke(new Action(() =>
-                        {
-                            this.OxyToolTip.IsOpen = false;
-                        }), System.Windows.Threading.DispatcherPriority.Send);
-                    }
-                }
-                // setting the tooltip string
-                else if (value != null)
-                {
-                    if (this.tokenSource != null)
-                    {
-                        this.tokenSource.Cancel();
-                        this.tokenSource.Dispose();
-                        this.tokenSource = null;
-                    }
-
-                    this.tokenSource = new CancellationTokenSource();
-                    this.toolTipTask = ShowToolTip(value, tokenSource.Token);
-                }
-            }
-        }
-
-        protected async Task ShowToolTip(string value, CancellationToken ct)
-        {
-            if (secondToolTipTask != null)
-            {
-                await secondToolTipTask;
-            }
-
-            if (ct.IsCancellationRequested)
-            {
-                return;
-            }
-
-            this.Dispatcher.Invoke(new Action(() =>
-            {
-                this.OxyToolTip.IsOpen = false;
-            }));
-
-            if (ct.IsCancellationRequested)
-            {
-                return;
-            }
-
-            int initialShowDelay = ToolTipService.GetInitialShowDelay(this);
-
-            await Task.Delay(initialShowDelay, ct);
-
-            if (ct.IsCancellationRequested)
-            {
-                return;
-            }
-
-            this.OxyToolTip.Content = value;
-
-            if (ct.IsCancellationRequested)
-            {
-                return;
-            }
-
-            this.Dispatcher.Invoke(new Action(() =>
-            {
-                this.OxyToolTip.IsOpen = true;
-            }));
-
-            _ = HideToolTip(ct);
-        }
-
-        protected async Task HideToolTip(CancellationToken ct)
-        {
-            if (ct.IsCancellationRequested)
-            {
-                return;
-            }
-
-            int betweenShowDelay = ToolTipService.GetBetweenShowDelay(this);
-
-            secondToolTipTask = Task.Delay(betweenShowDelay);
-            _ = secondToolTipTask.ContinueWith(new Action<Task>((t) =>
-            {
-                secondToolTipTask = null;
-            }));
-
-            if (ct.IsCancellationRequested)
-            {
-                return;
-            }
-
-            int showDuration = ToolTipService.GetShowDuration(this);
-
-            if (ct.IsCancellationRequested)
-            {
-                return;
-            }
-
-            await Task.Delay(showDuration, ct);
-
-            if (ct.IsCancellationRequested)
-            {
-                return;
-            }
-
-            this.Dispatcher.Invoke(new Action(() =>
-            {
-                this.OxyToolTip.IsOpen = false;
-            }));
-
-            if (ct.IsCancellationRequested)
-            {
-                return;
-            }
-        }
-
-        /// <summary>
-        /// Returns true if the event is handled.
-        /// </summary>
-        /// <returns></returns>
-        private bool HandleTitleToolTip(ScreenPoint sp)
-        {
-            bool v = this.ActualModel.TitleArea.Contains(sp);
-
-            if (v && this.ActualModel.Title != null)
-            {
-                // these 2 lines must be before the third which calls the setter of OxyToolTipString
-                this.previouslyHoveredPlotElement = this.currentlyHoveredPlotElement;
-                this.currentlyHoveredPlotElement = new ToolTippedPlotElement(true);
-
-                // set the tooltip to be the tooltip of the plot title
-                this.OxyToolTipString = this.ActualModel.TitleToolTip;
-
-                return true;
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Returns true if the event is handled.
-        /// </summary>
-        /// <returns></returns>
-        private bool HandlePlotElementsToolTip(ScreenPoint sp)
-        {
-            bool found = false;
-
-            // it may be possible that the 5 constant in this line needs to be replaced with some other value
-            System.Collections.Generic.IEnumerable<HitTestResult> r =
-                this.ActualModel.HitTest(new HitTestArguments(sp, 5));
-
-            foreach (HitTestResult rtr in r)
-            {
-                if (rtr.Element != null)
-                {
-                    if (rtr.Element is PlotElement pe)
-                    {
-                        if (pe != this.previouslyHoveredPlotElement)
-                        {
-                            // these 2 lines must be before the third which calls the setter of OxyToolTipString
-                            this.previouslyHoveredPlotElement = this.currentlyHoveredPlotElement;
-                            this.currentlyHoveredPlotElement = new ToolTippedPlotElement(pe);
-
-                            // show the tooltip
-                            this.OxyToolTipString = pe.ToolTip;
-                        }
-                        found = true;
-                        break;
-                    }
-                }
-            }
-
-            if (!found)
-            {
-                this.previouslyHoveredPlotElement = this.currentlyHoveredPlotElement;
-                this.currentlyHoveredPlotElement = new ToolTippedPlotElement();
-            }
-
-            return found;
-        }
-
-        /// <summary>
-        /// Updates the custom tooltip system's tooltip.
-        /// </summary>
-        private void UpdateToolTip()
-        {
-            if (this.ActualModel == null)
-            {
-                return;
-            }
-
-            ScreenPoint sp = Mouse.GetPosition(this).ToScreenPoint();
-
-
-            bool handleTitle = HandleTitleToolTip(sp);
-            bool handleOthers = false;
-
-            if (!handleTitle)
-            {
-                handleOthers = HandlePlotElementsToolTip(sp);
-            }
-
-            if (!handleTitle && !handleOthers)
-            {
-                this.OxyToolTipString = null;
-            }
         }
 
         /// <summary>
@@ -413,7 +178,6 @@ namespace OxyPlot.Wpf
         protected override void OnMouseEnter(MouseEventArgs e)
         {
             base.OnMouseEnter(e);
-            UpdateToolTip();
             if (e.Handled)
             {
                 return;
@@ -429,7 +193,6 @@ namespace OxyPlot.Wpf
         protected override void OnMouseLeave(MouseEventArgs e)
         {
             base.OnMouseEnter(e);
-            UpdateToolTip();
             if (e.Handled)
             {
                 return;

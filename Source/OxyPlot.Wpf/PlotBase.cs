@@ -98,35 +98,9 @@ namespace OxyPlot.Wpf
         private FrameworkElement containerCache;
 
         /// <summary>
-        /// A reference to the previously hovered plot element wrapped by ToolTippedPlotElement and used in the tooltip system.
-        /// </summary>
-        private ToolTippedPlotElement previouslyHoveredPlotElement;
-
-        /// <summary>
-        /// A reference to the currently hovered plot element wrapped by ToolTippedPlotElement and used in the tooltip system.
-        /// </summary>
-        private ToolTippedPlotElement currentlyHoveredPlotElement;
-
-        /// <summary>
-        /// The Task for the initial delay of the tooltip.
-        /// </summary>
-        private Task toolTipTask;
-
-        /// <summary>
-        /// The Task for the minimum delay between tooltip showings.
-        /// </summary>
-        private Task secondToolTipTask;
-
-        /// <summary>
-        /// The cancellation token source used to cancel the task that shows the tooltip after an initial delay,
-        /// and the task that hides the tooltip after the show duration.
-        /// </summary>
-        private CancellationTokenSource tokenSource;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="PlotBase" /> class.
         /// </summary>
-        protected PlotBase()
+        protected PlotBase(IToolTip tt = null)
         {
             this.DisconnectCanvasWhileUpdating = true;
             this.trackerDefinitions = new ObservableCollection<TrackerDefinition>();
@@ -139,10 +113,14 @@ namespace OxyPlot.Wpf
 
             this.IsManipulationEnabled = true;
 
-            // related to tooltips:
-            this.previouslyHoveredPlotElement = new ToolTippedPlotElement();
-            this.currentlyHoveredPlotElement = new ToolTippedPlotElement();
-            this.OxyToolTip = new ToolTip();
+            if (tt == null)
+            {
+                this.OxyToolTip = new CustomToolTip(this);
+            }
+            else
+            {
+                this.OxyToolTip = tt;
+            }
         }
 
         /// <summary>
