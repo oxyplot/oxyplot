@@ -2,7 +2,6 @@ OxyPlot is a cross-platform plotting library for .NET
 
 - [Web page](https://oxyplot.github.io)
 - [Documentation](https://oxyplot.readthedocs.io/en/latest/)
-- [Discussion forum](https://oxyplot.userecho.com/)
 - [NuGet packages](https://www.nuget.org/packages?q=oxyplot)
 - [Stack Overflow](https://stackoverflow.com/questions/tagged/oxyplot)
 - [Twitter](https://twitter.com/hashtag/oxyplot)
