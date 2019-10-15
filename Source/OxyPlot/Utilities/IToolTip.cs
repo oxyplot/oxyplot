@@ -1,9 +1,21 @@
-﻿namespace OxyPlot
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="IToolTip.cs" company="OxyPlot">
+//   Copyright (c) 2019 OxyPlot contributors
+// </copyright>
+// <summary>
+//   A wrapper around native ToolTip objects.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace OxyPlot
 {
     using System;
     using System.Collections.Generic;
     using System.Text;
 
+    /// <summary>
+    /// A wrapper around native ToolTip objects.
+    /// </summary>
     public interface IToolTip
     {
         /// <summary>

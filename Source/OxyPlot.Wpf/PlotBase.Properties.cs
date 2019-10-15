@@ -35,7 +35,7 @@ namespace OxyPlot.Wpf
         /// Identifies the <see cref="OxyToolTip"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty OxyToolTipProperty =
-            DependencyProperty.Register("OxyToolTip", typeof(ToolTip), typeof(PlotBase), new PropertyMetadata(null));
+            DependencyProperty.Register("OxyToolTip", typeof(IToolTip), typeof(PlotBase), new PropertyMetadata(null));
 
         /// <summary>
         /// Identifies the <see cref="PanCursor"/> dependency property.
@@ -104,14 +104,14 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// The current WPF ToolTip object representing the current
+        /// The current IToolTip object representing the current
         /// tooltip in the custom tooltip system.
         /// </summary>
-        public ToolTip OxyToolTip
+        public IToolTip OxyToolTip
         {
             get
             {
-                return (ToolTip)this.GetValue(OxyToolTipProperty);
+                return (IToolTip)this.GetValue(OxyToolTipProperty);
             }
             set
             {
