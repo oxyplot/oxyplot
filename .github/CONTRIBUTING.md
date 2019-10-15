@@ -16,8 +16,6 @@ Note that your contributions must be your own work and licensed under the same t
 ## Reporting bugs
 
 First, search the issue tracker to see if the bug is already there.
-Please use the [discussion forums](https://oxyplot.userecho.com/) if you are unsure whether it is a bug in the library or a problem in your code.
-When you are sure, please add defects in the issue tracker.
 
 It is very helpful to get the generated code (use `CTRL+ALT+C` in the plot control) and report (`CTRL+ALT+R`) of the bug plot. You can also take a screen shot and paste it into the description.
 
@@ -36,8 +34,9 @@ A bug report should include:
 
 ## Suggesting new features
 
-Please use the [discussion forums](https://oxyplot.userecho.com/) or add it directly in the issue tracker in the same way as bug reports.
+First, search the issue tracker to see if the feature is already there.
 
+Wait for some feedback before starting to work on something that might not be merged in the end.
 
 ## Create your own fork
 
@@ -96,26 +95,25 @@ Finally, push your commits: `git push`
 
 ## Requirements for a pull request
 
+- Include the issue number
 - Include examples or unit tests for the change / new feature
 - Update the CHANGELOG.md file
 - Update the CONTRIBUTORS and AUTHORS files if you are not already listed there
-- Commits are rebased and squashed
 
 
 ## Creating a pull request
 
 - Open the GitHub page for your fork and create a "Pull Request" (PR)
-- Include the issue number in the pull request *comment* (not in the *title* where it will not be linked!)
 
 
 ## Merging
 
-When the PR is submitted, Appveyor will build the code and report if the build was successful.
+When the PR is submitted, a build will automatically be trigged.
 A team member will then review the PR, and merge the branch if everything looks OK.
 
-If there are some issues with the PR, you must
+If there are some issues with the PR, you should
 - update your code and commit changes
-- rebase and squash again
+- clean up the git history with rebase or squash
 - force push: `git push -f`
 
 The PR will be updated automatically when you push your changes.
