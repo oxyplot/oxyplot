@@ -97,6 +97,9 @@
             UpdateToolTip();
         }
 
+        /// <summary>
+        /// Hides the tooltip if it is the case.
+        /// </summary>
         public void Hide()
         {
             if (this.previouslyHoveredPlotElement != this.currentlyHoveredPlotElement)
@@ -108,15 +111,19 @@
                     this.tokenSource = null;
                 }
 
-                this.lastToolTipString = null;
+                this.Text = null;
 
                 this.NativeToolTip.Hide(this.pv);
             }
         }
 
+        /// <summary>
+        /// Shows the tooltip if it is the case.
+        /// </summary>
         public void Show()
         {
-            if (this.previouslyHoveredPlotElement != this.currentlyHoveredPlotElement)
+            if (this.Text != null &&
+                this.previouslyHoveredPlotElement != this.currentlyHoveredPlotElement)
             {
                 if (this.tokenSource != null)
                 {
@@ -131,7 +138,7 @@
         }
 
         /// <summary>
-        /// The string representation of the ToolTip. In its setter there isn't any check of the value to be different than the previous value, and in the setter, if the value is null or empty string, the ToolTip is removed from the PlotView. The ToolTip shows up naturally if the mouse is over the PlotView, using the configuration in the PlotView's c-tor.
+        /// The string representation of the ToolTip.
         /// </summary>
         public string Text
         {
@@ -141,18 +148,7 @@
             }
             set
             {
-                if (value == null)
-                {
-                    Hide();
-                }
-                else
-                {
-                    if (this.previouslyHoveredPlotElement != this.currentlyHoveredPlotElement)
-                    {
-                        this.lastToolTipString = value;
-                        Show();
-                    }
-                }
+                this.lastToolTipString = value;
             }
         }
 
@@ -273,12 +269,13 @@
 
             if (v && this.pv.Model.Title != null)
             {
-                // these 2 lines must be before the third which calls the setter of OxyToolTipString
+                // these 2 lines must be before the third which calls the setter of Text
                 this.previouslyHoveredPlotElement = this.currentlyHoveredPlotElement;
                 this.currentlyHoveredPlotElement = new ToolTippedPlotElement(true);
 
                 // show the tooltip
                 this.Text = this.pv.Model.TitleToolTip;
+                this.Show();
 
                 return true;
             }
@@ -314,12 +311,13 @@
                         // if the mouse was not over it previously
                         if (pe != this.currentlyHoveredPlotElement)
                         {
-                            // these 2 lines must be before the third which calls the setter of OxyToolTipString
+                            // these 2 lines must be before the third which calls the setter of Text
                             this.previouslyHoveredPlotElement = this.currentlyHoveredPlotElement;
                             this.currentlyHoveredPlotElement = new ToolTippedPlotElement(pe);
 
                             // show the tooltip
                             this.Text = pe.ToolTip;
+                            this.Show();
                         }
                         else
                         {
@@ -343,7 +341,7 @@
         }
 
         /// <summary>
-        /// Does hit-testing and hides or shows the tooltip if needed.
+        /// Does hit-testing and hides or hides/shows the tooltip if needed.
         /// </summary>
         protected void UpdateToolTip()
         {
@@ -365,7 +363,7 @@
 
             if (!handleTitle && !handleOthers)
             {
-                this.Text = null;
+                this.Hide();
             }
         }
     }
