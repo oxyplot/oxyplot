@@ -17,22 +17,22 @@ namespace OxyPlot
     using System.Windows.Forms;
 
     /// <summary>
-    /// Wrapper around WinForms' ToolTip class.
+    /// Wrapper around WinForms' <see cref="ToolTip"/> class.
     /// </summary>
     public class CustomToolTip : IToolTip
     {
         /// <summary>
-        /// The associated PlotView on which the tooltip is shown.
+        /// The associated <see cref="PlotView"/> on which the tooltip is shown.
         /// </summary>
         private PlotView pv;
 
         /// <summary>
-        /// A reference to the previously hovered plot element wrapped by ToolTippedPlotElement and used in the tooltip system.
+        /// A reference to the previously hovered plot element wrapped by <see cref="ToolTippedPlotElement"/> and used in the tooltip system.
         /// </summary>
         private ToolTippedPlotElement previouslyHoveredPlotElement;
 
         /// <summary>
-        /// A reference to the currently hovered plot element wrapped by ToolTippedPlotElement and used in the tooltip system.
+        /// A reference to the currently hovered plot element wrapped by <see cref="ToolTippedPlotElement"/> and used in the tooltip system.
         /// </summary>
         private ToolTippedPlotElement currentlyHoveredPlotElement;
 
@@ -43,29 +43,34 @@ namespace OxyPlot
         private CancellationTokenSource tokenSource;
 
         /// <summary>
-        /// The Task for the initial delay of the tooltip.
+        /// The <see cref="Task"/> for the initial delay of the tooltip.
         /// </summary>
         private Task firstToolTipTask;
 
         /// <summary>
-        /// The Task for the minimum delay between tooltip showings.
+        /// The <see cref="Task"/> for the minimum delay between tooltip showings.
         /// </summary>
         private Task secondToolTipTask;
 
         /// <summary>
-        /// The storage for the Text property.
+        /// The storage for the <see cref="Text"/> property.
         /// </summary>
         private string lastToolTipString = null;
 
         /// <summary>
-        /// The native WinForms ToolTip object.
+        /// The native WinForms <see cref="ToolTip"/> object.
         /// </summary>
         public ToolTip NativeToolTip { get; set; }
 
         /// <summary>
-        /// Constructs this IToolTip implementation and associates it with the given PlotView.
+        /// Hit testing tolerance for usual <see cref="PlotElement"/>s (more precisely, excluding the plot title area).
         /// </summary>
-        /// <param name="v">The WinForms-based PlotView instance to which to associate the tooltip.</param>
+        public double UsualPlotElementHitTestingTolerance { get; set; } = 10;
+
+        /// <summary>
+        /// Constructs this <see cref="IToolTip"/> implementation and associates it with the given <see cref="PlotView"/>.
+        /// </summary>
+        /// <param name="v">The WinForms-based <see cref="PlotView"/> instance to which to associate the tooltip.</param>
         public CustomToolTip(PlotView v)
         {
             this.pv = v;
@@ -80,7 +85,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// When the mouse enters, leaves or moves over the associated PlotView, update the tooltip visibility and contents.
+        /// When the mouse enters, leaves or moves over the associated <see cref="PlotView"/>, update the tooltip visibility and contents.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -90,7 +95,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// When the mouse enters, leaves or moves over the associated PlotView, update the tooltip visibility and contents.
+        /// When the mouse enters, leaves or moves over the associated <see cref="PlotView"/>, update the tooltip visibility and contents.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -100,7 +105,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// When the mouse enters, leaves or moves over the associated PlotView, update the tooltip visibility and contents.
+        /// When the mouse enters, leaves or moves over the associated <see cref="PlotView"/>, update the tooltip visibility and contents.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -150,7 +155,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The string representation of the ToolTip.
+        /// The string representation of the tooltip.
         /// </summary>
         public string Text
         {
@@ -165,7 +170,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Disposes the tool tip if possible.
+        /// Disposes the tooltip if possible.
         /// </summary>
         public void Dispose()
         {
@@ -173,7 +178,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Internal asynchronous method for showing the ToolTip.
+        /// Internal asynchronous method for showing the tooltip.
         /// </summary>
         /// <param name="value"></param>
         /// <param name="ct"></param>
@@ -220,7 +225,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Internal asynchronous method for hiding the ToolTip.
+        /// Internal asynchronous method for hiding the tooltip.
         /// </summary>
         /// <param name="ct"></param>
         /// <returns></returns>
@@ -315,9 +320,8 @@ namespace OxyPlot
 
             bool found = false;
 
-            // should we use other value than 5 in this line?
             System.Collections.Generic.IEnumerable<HitTestResult> r =
-                this.pv.Model.HitTest(new HitTestArguments(sp, 5));
+                this.pv.Model.HitTest(new HitTestArguments(sp, UsualPlotElementHitTestingTolerance));
 
             foreach (HitTestResult rtr in r)
             {

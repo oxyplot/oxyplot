@@ -15,6 +15,11 @@ namespace OxyPlot
     public interface IToolTip
     {
         /// <summary>
+        /// Hit testing tolerance for usual <see cref="PlotElement"/>s (more precisely, excluding the plot title area).
+        /// </summary>
+        double UsualPlotElementHitTestingTolerance { get; set; }
+
+        /// <summary>
         /// Shows the tooltip if it is the case.
         /// </summary>
         void Show();
