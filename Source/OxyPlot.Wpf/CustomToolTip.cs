@@ -69,7 +69,7 @@ namespace OxyPlot
         public CustomToolTip(PlotBase v)
         {
             this.pb = v;
-            this.pb.MouseMove += Pb_MouseMove;
+            this.pb.PreviewMouseMove += Pb_PreviewMouseMove;
             this.pb.MouseLeave += Pb_MouseLeave;
             this.pb.MouseEnter += Pb_MouseEnter;
 
@@ -104,7 +104,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Pb_MouseMove(object sender, MouseEventArgs e)
+        private void Pb_PreviewMouseMove(object sender, MouseEventArgs e)
         {
             UpdateToolTip();
         }

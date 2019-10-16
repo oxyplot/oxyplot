@@ -10,11 +10,7 @@
 namespace OxyPlot.Wpf
 {
     using System;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using System.Windows.Controls;
     using System.Windows.Input;
-    using System.Linq;
 
     /// <summary>
     /// Represents a control that displays a <see cref="PlotModel" />.
