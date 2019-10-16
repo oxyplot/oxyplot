@@ -9,10 +9,6 @@
 
 namespace OxyPlot
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-
     /// <summary>
     /// A wrapper around native ToolTip objects.
     /// </summary>
@@ -29,7 +25,7 @@ namespace OxyPlot
         void Hide();
 
         /// <summary>
-        /// The string representation of the ToolTip. In its setter there isn't any check of the value to be different than the previous value, and in the setter, if the value is null or empty string, the ToolTip is removed from the PlotView. The ToolTip shows up naturally if the mouse is over the PlotView, using the configuration in the PlotView's c-tor.
+        /// The string representation of the ToolTip.
         /// </summary>
         string Text { get; set; }
 
