@@ -119,7 +119,7 @@ namespace OxyPlot
         /// </summary>
         public void Hide()
         {
-            if (this.previouslyHoveredPlotElement != this.currentlyHoveredPlotElement)
+            if (!this.previouslyHoveredPlotElement.IsEquivalentWith(this.currentlyHoveredPlotElement))
             {
                 if (this.tokenSource != null)
                 {
@@ -143,7 +143,7 @@ namespace OxyPlot
         public void Show()
         {
             if (this.Text != null &&
-                this.previouslyHoveredPlotElement != this.currentlyHoveredPlotElement)
+                !this.previouslyHoveredPlotElement.IsEquivalentWith(this.currentlyHoveredPlotElement))
             {
                 if (this.tokenSource != null)
                 {
@@ -186,9 +186,9 @@ namespace OxyPlot
         /// <param name="ct">The cancellation token for when the user moves the cursor.</param>
         protected async Task ShowToolTip(string value, CancellationToken ct)
         {
-            if (secondToolTipTask != null)
+            if (this.secondToolTipTask != null)
             {
-                await secondToolTipTask;
+                await CancelableTaskAsync(this.secondToolTipTask);
             }
 
             if (ct.IsCancellationRequested)
@@ -208,7 +208,7 @@ namespace OxyPlot
 
             int initialShowDelay = ToolTipService.GetInitialShowDelay(this.pb);
 
-            await Task.Delay(initialShowDelay, ct);
+            await CancelableTaskAsync(Task.Delay(initialShowDelay, ct));
 
             if (ct.IsCancellationRequested)
             {
@@ -230,11 +230,22 @@ namespace OxyPlot
             _ = HideToolTip(ct);
         }
 
+        protected static async Task CancelableTaskAsync(Task t)
+        {
+            try
+            {
+                await t;
+            }
+            catch (OperationCanceledException)
+            {
+                // nothing special to do
+            }
+        }
+
         /// <summary>
         /// Internal asynchronous method for hiding the tooltip.
         /// </summary>
-        /// <param name="ct"></param>
-        /// <returns></returns>
+        /// <param name="ct">The cancellation token for when the user moves the cursor.</param>
         protected async Task HideToolTip(CancellationToken ct)
         {
             if (ct.IsCancellationRequested)
@@ -262,7 +273,7 @@ namespace OxyPlot
                 return;
             }
 
-            await Task.Delay(showDuration, ct);
+            await CancelableTaskAsync(Task.Delay(showDuration, ct));
 
             if (ct.IsCancellationRequested)
             {
@@ -328,7 +339,7 @@ namespace OxyPlot
                 {
                     if (rtr.Element is PlotElement pe)
                     {
-                        if (pe != this.previouslyHoveredPlotElement)
+                        if (!this.previouslyHoveredPlotElement.IsEquivalentWith(pe))
                         {
                             // these 2 lines must be before the third which calls the setter of Text
                             this.previouslyHoveredPlotElement = this.currentlyHoveredPlotElement;
