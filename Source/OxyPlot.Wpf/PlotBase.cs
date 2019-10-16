@@ -13,7 +13,6 @@ namespace OxyPlot.Wpf
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Threading;
-    using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
@@ -100,6 +99,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Initializes a new instance of the <see cref="PlotBase" /> class.
         /// </summary>
+        /// <param name="tt">The <see cref="IToolTip"/> object used as tooltip.</param>
         protected PlotBase(IToolTip tt = null)
         {
             this.DisconnectCanvasWhileUpdating = true;

@@ -90,7 +90,7 @@ namespace OxyPlot.WindowsForms
         /// <summary>
         /// Initializes a new instance of the <see cref="PlotView" /> class.
         /// </summary>
-        /// <param name="tt">The IToolTip object used as tooltip.</param>
+        /// <param name="tt">The <see cref="IToolTip"/> object used as tooltip.</param>
         public PlotView(IToolTip tt = null)
         {
             this.renderContext = new GraphicsRenderContext();

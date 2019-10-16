@@ -30,12 +30,12 @@ namespace OxyPlot
         void Hide();
 
         /// <summary>
-        /// The string representation of the ToolTip.
+        /// The string representation of the tooltip.
         /// </summary>
         string Text { get; set; }
 
         /// <summary>
-        /// Disposes the tool tip if possible.
+        /// Disposes the tooltip if possible.
         /// </summary>
         void Dispose();
     }
