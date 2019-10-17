@@ -14,14 +14,14 @@ install:
 
 before_build:
   - appveyor DownloadFile https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
-  - NuGet restore Source/OxyPlot.AppVeyor.sln
+  - NuGet restore Source/OxyPlot.CI.sln
   - gitversion /l console /output buildserver
 
 build_script:
-  - msbuild Source/OxyPlot.AppVeyor.sln "/p:Platform=Any CPU" "/p:Configuration=Release" "/p:Version=%GitVersion_NuGetVersion%"  /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+  - msbuild Source/OxyPlot.CI.sln "/p:Platform=Any CPU" "/p:Configuration=Release" "/p:Version=%GitVersion_NuGetVersion%"  /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
  
 after_build:
-  - gitlink c:\projects\oxyplot -u https://github.com/oxyplot/oxyplot -f Source/OxyPlot.AppVeyor.sln
+  - gitlink c:\projects\oxyplot -u https://github.com/oxyplot/oxyplot -f Source/OxyPlot.CI.sln
 
 artifacts:
   - path: '**/bin/Release/**/*.nupkg'
