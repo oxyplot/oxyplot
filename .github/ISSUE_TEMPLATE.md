@@ -2,6 +2,10 @@
 Please see https://github.com/oxyplot/oxyplot/wiki/Contributing before creating issues.
 For issues related to Xamarin, please use https://github.com/oxyplot/oxyplot-xamarin/issues
 For issues related to other platforms, please add to the correct repository.
+
+PLEASE DO NOT USE THE ISSUES TO ADD QUESTIONS ABOUT HOW TO USE THE LIBRARY.
+YOU SHOULD FORMULATE THE ISSUE AS A "BUG REPORT" OR "NEW FEATURE REQUEST",
+PLEASE USE ONE OF THE SECTIONS BELOW:
 -->
 
 <!-- IF THE ISSUE IS A BUG, INCLUDE THIS PART: -->

@@ -6,8 +6,9 @@ OxyPlot is driven by the community and contributors like you. We are excited tha
 The flow when contributing to OxyPlot is as follows:
 
 1. Add issue (bug or new feature)
-2. Wait for issue to be tagged `you-take-it`
-3. Commit your changes and rebase
+2. If the issue needs to be clarified, wait for some feedback
+3. Commit your changes
+4. Update the change log and contributors files
 4. Create a pull request
 
 Note that your contributions must be your own work and licensed under the same terms as OxyPlot.
@@ -25,20 +26,29 @@ You could also use services like https://snipt.org or https://gist.github.com to
 
 A bug report should include:
 
-- used platform and tools version
-- used OxyPlot version
-- version of dependencies (e.g. Xamarin.Forms and Android SDK)
+- the platform you are building for (Windows Forms, WPF, Xamarin Forms etc.)
+- the framework version (netcore3, net47 etc.)
+- the version of OxyPlot you are using
 - description of the issue
 - sample code to reproduce the issue
+- what you expect and what is the actual behaviour
 
 
 ## Suggesting new features
 
 First, search the issue tracker to see if the feature is already there.
 
-Wait for some feedback before starting to work on something that might not be merged in the end.
+A feature request should include:
 
-## Create your own fork
+- description of the feature
+- a drawing/image, if possible
+
+It could be a good idea to wait for some feedback before starting to work on a new feature.
+Not all features are general enough to fit into this library. 
+We don't want you to waste time on something that might not be merged in the end.
+
+
+## Creating your own fork
 
 1. Log in to GitHub and open the [oxyplot](https://github.com/oxyplot/oxyplot/) origin repository. Click the "Fork" button to create your own fork of the repository.
 2. Create a clone on your local system: `git clone https://github.com/yourusername/oxyplot.git`
