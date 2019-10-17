@@ -33,6 +33,7 @@ All notable changes to this project will be documented in this file.
 - Add Count to HistogramSeries (#1347)
 - Overhaul HistogramHelpers (#1345)
 - Remove unused LabelFontSize property from HistogramSeries (#1309)
+- OxyPlot.Windows (UWP) moved to oxyplot-uwp repository (#1378)
 
 ### Deprecated
 - OxyPlot.WP8 package. Use OxyPlot.Windows instead (#996)
