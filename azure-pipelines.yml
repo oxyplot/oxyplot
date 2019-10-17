@@ -12,7 +12,7 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  solution: '**/OxyPlot.AppVeyor.sln'
+  solution: '**/OxyPlot.CI.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
