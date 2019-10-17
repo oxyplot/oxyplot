@@ -1167,6 +1167,15 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("MajorGridlineStyle")]
+        public static PlotModel MajorGridlineStyle()
+        {
+            var pm = new PlotModel { Title = "MajorGridlineStyle and MajorGridlineThickness" };
+            pm.Axes.Add(new LinearAxis { MajorGridlineStyle = LineStyle.Solid, MajorGridlineThickness = 10 });
+            pm.Axes.Add(new LinearAxis { MajorGridlineStyle = LineStyle.Solid, MajorGridlineThickness = 10, Position = AxisPosition.Bottom });
+            return pm;
+        }
+
         /// <summary>
         /// Creates an example with the specified <see cref="TickStyle" />.
         /// </summary>
