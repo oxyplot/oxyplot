@@ -1,7 +1,6 @@
 ﻿namespace Example1
 {
     using System;
-    using System.Drawing;
     using System.IO;
     using System.Linq;
     using OxyPlot;
@@ -13,73 +12,46 @@
     {
         static void Main(string[] args)
         {
-            var outputUsingMemStream = "test-oxyplot-memstream.png";
-            var outputToFile = "test-oxyplot-file.png";
-            var outputToFileBrush = "test-oxyplot-file-brush.png";
-            var outputExportFileStream = "test-oxyplot-stream-export.png";
-            var outputExportBitmap = "test-oxyplot-exportobitmap.png";
-            var outputExportBitmapBrush = "test-oxyplot-exportobitmap-brush.png";
+            var outputToFile = "test-oxyplot-static-export-file.png";
             var outputExportStreamOOP = "test-oxyplot-ExportToStream.png";
             var outputExportFileOOP = "test-oxyplot-ExportToFile.png";
 
             var width = 1024;
             var height = 768;
+            var background = OxyColors.LightGray;
+            var resolution = 96d;
 
             var model = BuildPlotModel();
 
             // export to file using static methods
-            PngExporter.Export(model, outputToFile, width, height, OxyColors.LightGray);
-
-            PngExporter.Export(model, outputToFileBrush, width, height, Brushes.LightGray);
-
-            // export to stream using static methods
-            using (var stream = new MemoryStream())
-            {
-                PngExporter.Export(model, stream, width, height, OxyColors.LightGray, 96);
-                System.IO.File.WriteAllBytes(outputUsingMemStream, stream.ToArray());
-            }
-
-            using (var pngStream = PngExporter.ExportToStream(model, width, height, OxyColors.LightGray))
-            {
-                var fileStream = new System.IO.FileStream(outputExportFileStream, FileMode.Create);
-                pngStream.CopyTo(fileStream);
-                fileStream.Flush();
-            }
-
-            // export to bitmap using static methods
-            using (var bm = PngExporter.ExportToBitmap(model, width, height, OxyColors.LightGray))
-            {
-                bm.Save(outputExportBitmap);
-            }
-
-            using (var bm = PngExporter.ExportToBitmap(model, width, height, Brushes.LightGray))
-            {
-                bm.Save(outputExportBitmapBrush);
-            }
+            PngExporter.Export(model, outputToFile, width, height, background, resolution);
 
             // export using the instance methods
             using (var stream = new MemoryStream())
             {
-                var pngExporter = new PngExporter { Width = width, Height = height, Background = OxyColors.LightGray };
+                var pngExporter = new PngExporter { Width = width, Height = height, Background = background, Resolution = resolution };
                 pngExporter.Export(model, stream);
                 System.IO.File.WriteAllBytes(outputExportStreamOOP, stream.ToArray());
             }
 
-            var pngExporter2 = new PngExporter { Width = width, Height = height, Background = OxyColors.LightGray };
-            pngExporter2.ExportToFile(model, outputExportFileOOP);
+            var pngExporter2 = new PngExporter { Width = width, Height = height, Background = background, Resolution = resolution };
+            var bitmap = pngExporter2.ExportToBitmap(model);
+            bitmap.Save(outputExportFileOOP, System.Drawing.Imaging.ImageFormat.Png);
+            bitmap.Save(Path.ChangeExtension(outputExportFileOOP, ".gif"), System.Drawing.Imaging.ImageFormat.Gif);
         }
 
         private static IPlotModel BuildPlotModel()
         {
-            var rand = new Random();
+            var rand = new Random(21);
 
             var model = new PlotModel { Title = "Cake Type Popularity" };
 
             var cakePopularity = Enumerable.Range(1, 5).Select(i => rand.NextDouble()).ToArray();
             var sum = cakePopularity.Sum();
+            var barItems = cakePopularity.Select(cp => RandomBarItem(cp, sum)).ToArray();
             var barSeries = new BarSeries
             {
-                ItemsSource = cakePopularity.Select(cp => RandomBarItem(cp, sum)),
+                ItemsSource = barItems,
                 LabelPlacement = LabelPlacement.Base,
                 LabelFormatString = "{0:.00}%"
             };

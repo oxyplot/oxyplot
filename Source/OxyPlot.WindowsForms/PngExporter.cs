@@ -42,7 +42,7 @@ namespace OxyPlot.WindowsForms
         /// <summary>
         /// Gets or sets the resolution (dpi) of the output image.
         /// </summary>
-        public int Resolution { get; set; }
+        public double Resolution { get; set; }
 
         /// <summary>
         /// Gets or sets the background color.
@@ -57,9 +57,10 @@ namespace OxyPlot.WindowsForms
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
         /// <param name="background">The background.</param>
-        public static void Export(IPlotModel model, string fileName, int width, int height, Brush background = null)
+        /// <param name="resolution">The resolution.</param>
+        public static void Export(IPlotModel model, string fileName, int width, int height, OxyColor background, double resolution = 96)
         {
-            var exporter = new PngExporter { Width = width, Height = height, Background = background.ToOxyColor() };
+            var exporter = new PngExporter { Width = width, Height = height, Background = background, Resolution = resolution };
             using (var stream = File.Create(fileName))
             {
                 exporter.Export(model, stream);
@@ -103,7 +104,7 @@ namespace OxyPlot.WindowsForms
                     model.Render(rc, this.Width, this.Height);
                 }
 
-                bm.SetResolution(this.Resolution, this.Resolution);
+                bm.SetResolution((float)this.Resolution, (float)this.Resolution);
                 return bm;
             }
         }
