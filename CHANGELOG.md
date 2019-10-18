@@ -79,6 +79,7 @@ All notable changes to this project will be documented in this file.
 - Fixed rendering issues with MagnitudeAxisFullPlotArea (#1364)
 - OxyPlot.Core.Drawing PngExporter Export to Stream background (#1382)
 - Fixed Winforms clipping last line of rendered text (#1124, #1385)
+- Dispose background brush in OxyPlot.Core.Drawing PngExporter (#1392)
 
 ## [1.0.0] - 2016-09-11
 ### Added

@@ -80,7 +80,10 @@ namespace OxyPlot.Core.Drawing
             {
                 if (!this.Background.IsInvisible())
                 {
-                    g.FillRectangle(this.Background.ToBrush(), 0, 0, this.Width, this.Height);
+                    using (var brush = this.Background.ToBrush())
+                    {
+                        g.FillRectangle(brush, 0, 0, this.Width, this.Height);
+                    }
                 }
 
                 using (var rc = new GraphicsRenderContext(g) { RendersToScreen = false })
