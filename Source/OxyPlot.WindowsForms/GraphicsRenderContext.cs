@@ -451,7 +451,7 @@ namespace OxyPlot.WindowsForms
         /// Returns the ceiling of the given <see cref="SizeF"/> as a <see cref="SizeF"/>.
         /// </summary>
         /// <param name="size">The size.</param>
-        /// <returns>A <see cref="SizeF>"/></returns>
+        /// <returns>A <see cref="SizeF"/>.</returns>
         private static SizeF Ceiling(SizeF size)
         {
             var ceiling = Size.Ceiling(size);

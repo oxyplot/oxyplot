@@ -29,6 +29,9 @@ namespace OxyPlot.Core.Drawing
 {
     using System.Drawing;
 
+    /// <summary>
+    /// Implements extension methods coverting to/from OxyPlot data structures.
+    /// </summary>
     public static class OxyPlotExtensions
     {
         /// <summary>
