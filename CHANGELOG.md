@@ -20,6 +20,7 @@ All notable changes to this project will be documented in this file.
 - Issues Example demonstrating the rendering of Line and Arrow annotations with all LineStyles (#1312)
 - Add support for transposed (X and Y axis switched) plots with XYAxisSeries (#1334)
 - Add Color property to HistogramItem (#1347)
+- Example issue of Windows Forms clipping the last line of rendered text (#1124, #1385)
 
 ### Changed
 - Let Gtk# PlotView show up in Ui editor ToolBox of MonoDevelop and XamarinStudio (#1071)
@@ -76,6 +77,7 @@ All notable changes to this project will be documented in this file.
 - Fixed MinimumSegmentLength not working for LineSeries (#1044)
 - Fixed rendering issues with MagnitudeAxisFullPlotArea (#1364)
 - OxyPlot.Core.Drawing PngExporter Export to Stream background (#1382)
+- Fixed Winforms clipping last line of rendered text (#1124, #1385)
 
 ## [1.0.0] - 2016-09-11
 ### Added
