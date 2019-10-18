@@ -79,7 +79,8 @@ namespace OxyPlot.Wpf
         public BitmapSource ToBitmap()
         {
             var background = this.ActualModel.Background.IsVisible() ? this.ActualModel.Background : this.Background.ToOxyColor();
-            return PngExporter.ExportToBitmap(this.ActualModel, (int)this.ActualWidth, (int)this.ActualHeight, background);
+            var exporter = new PngExporter() { Background = background, Width = (int)this.ActualWidth, Height = (int)this.ActualHeight };
+            return exporter.ExportToBitmap(this.ActualModel);
         }
     }
 }

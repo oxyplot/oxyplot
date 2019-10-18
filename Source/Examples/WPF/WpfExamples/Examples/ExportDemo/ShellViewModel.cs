@@ -142,8 +142,8 @@ namespace ExportDemo
 
         public void CopyBitmap()
         {
-            var bitmap = PngExporter.ExportToBitmap(
-                this.Model, (int)this.Plot.ActualWidth, (int)this.Plot.ActualHeight, this.Model.Background);
+            var exporter = new PngExporter() { Background = this.Model.Background, Width = (int)this.Plot.ActualWidth, Height = (int)this.Plot.ActualHeight };
+            var bitmap = exporter.ExportToBitmap(this.Model);
             Clipboard.SetImage(bitmap);
         }
 
