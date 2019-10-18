@@ -10,6 +10,7 @@
         <RepositoryType>git</RepositoryType>
         <RepositoryUrl>https://github.com/oxyplot/oxyplot.git</RepositoryUrl>
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+        <GenerateDocumentationFile>True</GenerateDocumentationFile>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
     <ItemGroup>
