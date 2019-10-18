@@ -17,7 +17,7 @@ namespace OxyPlot
     /// <summary>
     /// Provides extension methods for <see cref="OxyColor" />.
     /// </summary>
-    /// <remarks>These are pure methods. They could also be placed in the <see cref="OxyColor" /> type with a <see cref="System.Diagnostics.Contracts.PureAttribute" />.</remarks>
+    /// <remarks>These are pure methods. They could also be placed in the <see cref="OxyColor" /> type with a PureAttribute.</remarks>
     public static class OxyColorExtensions
     {
         /// <summary>

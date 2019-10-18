@@ -32,6 +32,7 @@ namespace OxyPlot
         public enum ExifTags
         {
             // IFD0 items
+#pragma warning disable 1591
             ImageWidth = 0x100,
             ImageLength = 0x101,
             BitsPerSample = 0x102,
@@ -153,6 +154,7 @@ namespace OxyPlot
             GPSAreaInformation = 0x1C,
             GPSDateStamp = 0x1D,
             GPSDifferential = 0x1E
+#pragma warning restore 1591
         }
 
         /// <summary>
@@ -423,7 +425,7 @@ namespace OxyPlot
         /// <summary>
         /// Decodes an image from the specified stream.
         /// </summary>
-        /// <param name="s">The stream.</param>
+        /// <param name="bytes">The data to decode.</param>
         /// <returns>The 32-bit pixel data.</returns>
         public OxyColor[,] Decode(byte[] bytes)
         {

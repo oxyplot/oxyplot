@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace OxyPlot.Axes
+﻿namespace OxyPlot.Axes
 {
+    /// <summary>
+    /// Represents an angular axis that covers the whole plot area.
+    /// </summary>
     public class AngleAxisFullPlotArea : AngleAxis
     {
         /// <summary>

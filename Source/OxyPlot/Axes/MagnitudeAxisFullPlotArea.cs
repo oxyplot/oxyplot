@@ -10,9 +10,10 @@
 namespace OxyPlot.Axes
 {
     using System;
-    using System.Collections.Generic;
-    using System.Text;
 
+    /// <summary>
+    /// Represents a magnitude axis that covers the whole plot area.
+    /// </summary>
     public class MagnitudeAxisFullPlotArea : MagnitudeAxis
     {
         private double _midshiftH = 0;

@@ -425,9 +425,11 @@ namespace OxyPlot.Axes
         /// <param name="angleAxis">The angle axis.</param>
         /// <param name="x">The x-value.</param>
         /// <param name="pen">The pen.</param>
-        private void RenderTickArc(Axis axis, AngleAxis angleAxis, double x, OxyPen pen, double startangle, double endangle)
+        /// <param name="startAngle">The start angle.</param>
+        /// <param name="endAngle">The end angle.</param>
+        private void RenderTickArc(Axis axis, AngleAxis angleAxis, double x, OxyPen pen, double startAngle, double endAngle)
         {
-            if(startangle>endangle)
+            if(startAngle>endAngle)
             {
 
             }
@@ -439,23 +441,23 @@ namespace OxyPlot.Axes
             // (making a public property of it would be a great idea)
 
             // compute the actual number of segments
-            var segmentCount = (int)(MaxSegments * Math.Abs(endangle - startangle) / 360.0);
+            var segmentCount = (int)(MaxSegments * Math.Abs(endAngle - startAngle) / 360.0);
             if (angleAxis.FractionUnit == Math.PI || angleAxis.ActualMaximum == 2 * Math.PI)
             {
-                segmentCount = (int)(MaxSegments * Math.Abs(endangle - startangle) / (2 * Math.PI));
-                startangle *= rad;
-                endangle *= rad;
+                segmentCount = (int)(MaxSegments * Math.Abs(endAngle - startAngle) / (2 * Math.PI));
+                startAngle *= rad;
+                endAngle *= rad;
             }
 
             segmentCount = Math.Max(segmentCount, 2);
             segmentCount = Math.Min(segmentCount, (int)MaxSegments);
-            var angleStep = Math.Abs(endangle - startangle) / (segmentCount - 1);
+            var angleStep = Math.Abs(endAngle - startAngle) / (segmentCount - 1);
 
             var points = new List<ScreenPoint>();
 
             for (var i = 0; i < segmentCount; i++)
             {
-                var angle = startangle + (i * angleStep);
+                var angle = startAngle + (i * angleStep);
                 ScreenPoint toadd = axis.Transform(x, angle, angleAxis);
                 points.Add(toadd);
             }
