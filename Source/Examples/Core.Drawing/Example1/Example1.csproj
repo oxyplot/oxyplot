@@ -6,7 +6,7 @@
   </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="System.Drawing.Common" Version="4.6.0-preview.19073.11" />
+        <PackageReference Include="System.Drawing.Common" Version="4.6.0" />
     </ItemGroup>
 
     <ItemGroup>

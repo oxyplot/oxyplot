@@ -18,12 +18,12 @@ namespace OxyPlot.Core.Drawing
     public class PngExporter : IExporter
     {
         /// <summary>
-        /// The export.
+        /// Exports the specified <see cref="PlotModel" /> to the specified file.
         /// </summary>
         /// <param name="model">
         /// The model.
         /// </param>
-        /// <param name="fileName">
+        /// <param name="filename">
         /// The file name.
         /// </param>
         /// <param name="width">
@@ -33,25 +33,14 @@ namespace OxyPlot.Core.Drawing
         /// The height.
         /// </param>
         /// <param name="background">
-        /// The background.
+        /// The background color.
         /// </param>
-        public static void Export(IPlotModel model, string fileName, int width, int height, Brush background = null)
+        /// <param name="resolution">The resolution in dpi (defaults to 96dpi).</param>
+        public static void Export(IPlotModel model, string filename, int width, int height, OxyColor background, double resolution = 96)
         {
-            using (var bm = new Bitmap(width, height))
+            using (var bm = ExportToBitmap(model, width, height, background, resolution))
             {
-                using (var g = Graphics.FromImage(bm))
-                {
-                    if (background != null)
-                    {
-                        g.FillRectangle(background, 0, 0, width, height);
-                    }
-
-                    var rc = new GraphicsRenderContext(g) { RendersToScreen = false };
-                    rc.SetGraphicsTarget(g);
-                    model.Update(true);
-                    model.Render(rc, width, height);
-                    bm.Save(fileName, System.Drawing.Imaging.ImageFormat.Png);
-                }
+                bm.Save(filename, System.Drawing.Imaging.ImageFormat.Png);
             }
         }
 
@@ -94,11 +83,11 @@ namespace OxyPlot.Core.Drawing
         /// <summary>
         /// Exports the specified <see cref="PlotModel" /> to a <see cref="Bitmap" />.
         /// </summary>
-        /// <param name="model">The model to export.</param>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        /// <param name="background"></param>
-        /// <param name="resolution"></param>
+        /// <param name="model">The model.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="background">The background color.</param>
+        /// <param name="resolution">The resolution in dpi (defaults to 96dpi).</param>
         /// <returns>A bitmap.</returns>
         public static Bitmap ExportToBitmap(IPlotModel model, int width, int height, OxyColor background, double resolution = 96)
         {
@@ -121,6 +110,8 @@ namespace OxyPlot.Core.Drawing
 
                 // this throws an exception
                 // bm.SetResolution(resolution, resolution);
+                // https://github.com/dotnet/corefx/blob/master/src/System.Drawing.Common/src/System/Drawing/Bitmap.cs#L301
+
                 return bm;
             }
         }
@@ -139,13 +130,20 @@ namespace OxyPlot.Core.Drawing
         /// Gets or sets the background color of the exported png.
         /// </summary>
         public OxyColor Background { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the resolution in dpi of the exported png.
         /// </summary>
         public double Resolution { get; set; }
 
-        public void Export(IPlotModel model, Stream stream) => Export(model, stream, this.Width, this.Height, OxyColors.White, this.Resolution);
-        public void ExportToFile(IPlotModel model, string filename) => Export(model, filename, this.Width, this.Height, this.Background.ToBrush());
+        /// <inheritdoc />
+        public void Export(IPlotModel model, Stream stream) => Export(model, stream, this.Width, this.Height, this.Background, this.Resolution);
+
+        /// <summary>
+        /// Exports the specified <see cref="PlotModel" /> to a file.
+        /// </summary>
+        /// <param name="model">The model to export.</param>
+        /// <param name="filename">The file path.</param>
+        public void ExportToFile(IPlotModel model, string filename) => Export(model, filename, this.Width, this.Height, this.Background, this.Resolution);
     }
 }
