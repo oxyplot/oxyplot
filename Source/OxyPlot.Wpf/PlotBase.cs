@@ -62,11 +62,6 @@ namespace OxyPlot.Wpf
         private Grid grid;
 
         /// <summary>
-        /// The mouse grid. (This is an additional grid on top of everthing else to fix the issue of mouse events getting lost. It must be added last so it covers all other controls.)
-        /// </summary>
-        private Grid mouseGrid;
-
-        /// <summary>
         /// Invalidation flag (0: no update, 1: update visual elements).
         /// </summary>
         private int isPlotInvalidated;
@@ -265,8 +260,6 @@ namespace OxyPlot.Wpf
                 return;
             }
 
-            this.mouseGrid.IsHitTestVisible = true;
-
             this.UpdateModel(updateData);
 
             if (this.ActualWidth > 0 && this.ActualHeight > 0)
@@ -279,11 +272,6 @@ namespace OxyPlot.Wpf
                     this.BeginInvoke(this.InvalidateArrange);
                 }
             }
-
-            this.BeginInvoke(new Action(() =>
-            {
-                this.mouseGrid.IsHitTestVisible = false;
-            }));
         }
 
         /// <summary>
