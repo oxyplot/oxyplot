@@ -10,13 +10,14 @@
         <PackageTags>plotting plot charting chart</PackageTags>
         <RepositoryType>git</RepositoryType>
         <RepositoryUrl>https://github.com/oxyplot/oxyplot.git</RepositoryUrl>
-        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+        <GenerateDocumentationFile>True</GenerateDocumentationFile>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <SignAssembly>True</SignAssembly>
         <AssemblyOriginatorKeyFile>OxyPlot.snk</AssemblyOriginatorKeyFile>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
     <ItemGroup>
-        <None Include="..\..\Icons\OxyPlot_128.png" Pack="true" PackagePath="\"/>
+        <None Include="..\..\Icons\OxyPlot_128.png" Pack="true" PackagePath="\" />
     </ItemGroup>
     <ItemGroup>
         <None Include="OxyPlot.snk" />

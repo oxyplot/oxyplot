@@ -26,7 +26,7 @@ namespace OxyPlot
         /// <param name="start">The inclusive lower-bound of the first bin.</param>
         /// <param name="end">The exclusive upper-bound of the last bin, which must be strictly greater than <paramred name="start" />.</param>
         /// <param name="binCount">The number of bins to create.</param>
-        /// <returns>An <see cref="IReadOnlyList{double}"/> containing the breaks between bins of uniform size.</returns>
+        /// <returns>An <see cref="IReadOnlyList{T}"/> containing the breaks between bins of uniform size.</returns>
         public static IReadOnlyList<double> CreateUniformBins(double start, double end, int binCount)
         {
             if (binCount < 1)

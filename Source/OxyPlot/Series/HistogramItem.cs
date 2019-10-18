@@ -100,7 +100,7 @@ namespace OxyPlot.Series
         /// Determines whether the specified point lies within the boundary of the <see cref="HistogramItem" />.
         /// </summary>
         /// <param name="p">The DataPoint to determine whether or not lies within the boundary of the <see cref="HistogramItem" />.</param>
-        /// <returns><c>true</c> if the value of the <param name="p"/> parameter is inside the bounds of this instance.</returns>
+        /// <returns><c>true</c> if the value of the p parameter is inside the bounds of this instance.</returns>
         public bool Contains(DataPoint p)
         {
             // height is taken as one Y value, the other is 0

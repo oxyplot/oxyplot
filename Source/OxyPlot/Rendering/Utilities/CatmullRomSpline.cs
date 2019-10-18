@@ -21,9 +21,13 @@ namespace OxyPlot
     public class CatmullRomSpline : IInterpolationAlgorithm
     {
         /// <summary>
-        /// The alpha.
+        /// Gets the alpha value.
         /// </summary>
         public double Alpha { get; }
+        
+        /// <summary>
+        /// Gets or sets the maximum number of segments.
+        /// </summary>
         public int MaxSegments { get; set; }
 
         /// <summary>
@@ -67,6 +71,7 @@ namespace OxyPlot
         /// <param name="alpha">The alpha.</param>
         /// <param name="isClosed">True if the spline is closed.</param>
         /// <param name="tolerance">The tolerance.</param>
+        /// <param name="maxSegments">The maximum number of segments.</param>
         /// <returns>A list of data points.</returns>
         internal static List<DataPoint> CreateSpline(List<DataPoint> points, double alpha, bool isClosed, double tolerance, int maxSegments)
         {
@@ -89,6 +94,7 @@ namespace OxyPlot
         /// <param name="alpha">The alpha.</param>
         /// <param name="isClosed">True if the spline is closed.</param>
         /// <param name="tolerance">The tolerance.</param>
+        /// <param name="maxSegments">The maximum number of segments.</param>
         /// <returns>A list of screen points.</returns>
         internal static List<ScreenPoint> CreateSpline(
             IList<ScreenPoint> points, double alpha, bool isClosed, double tolerance, int maxSegments)
