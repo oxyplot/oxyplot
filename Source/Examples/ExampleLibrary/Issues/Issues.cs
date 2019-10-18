@@ -2090,6 +2090,22 @@ namespace ExampleLibrary
             return plot;
         }
 
+        [Example("#1385: GraphicsRenderContext sometimes clips last line of text")]
+        public static PlotModel DrawMultilineText()
+        {
+            var plot = new PlotModel() { Title = "GraphicsRenderContext\nsometimes clips last\nline of text" };
+            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 0, Maximum = 100 });
+            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = 0, Maximum = 100 });
+
+            double y = 0.0;
+            for (int i = 2; i < 50; i++)
+            {
+                plot.Annotations.Add(new TextAnnotation() { Text = "GraphicsRenderContext\nsometimes clips last\nline of text", TextPosition = new DataPoint(50, y += i), FontSize = i });
+            }
+
+            return plot;
+        }
+
         private class TimeSpanPoint
         {
             public TimeSpan X { get; set; }
