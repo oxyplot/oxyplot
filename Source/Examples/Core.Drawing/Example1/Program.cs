@@ -15,7 +15,11 @@
         {
             var outputUsingMemStream = "test-oxyplot-memstream.png";
             var outputToFile = "test-oxyplot-file.png";
+            var outputToFileBrush = "test-oxyplot-file-brush.png";
             var outputExportFileStream = "test-oxyplot-stream-export.png";
+            var outputExportBitmap = "test-oxyplot-exportobitmap.png";
+            var outputExportBitmapBrush = "test-oxyplot-exportobitmap-brush.png";
+            var outputExportStreamOOP = "test-oxyplot-ExportToStream.png";
             var outputExportFileOOP = "test-oxyplot-ExportToFile.png";
 
             var width = 1024;
@@ -23,28 +27,45 @@
 
             var model = BuildPlotModel();
 
+            // export to file using static methods
+            PngExporter.Export(model, outputToFile, width, height, OxyColors.LightGray);
 
-            PngExporter.Export(model, outputToFile, width, height, Brushes.White);
+            PngExporter.Export(model, outputToFileBrush, width, height, Brushes.LightGray);
 
+            // export to stream using static methods
             using (var stream = new MemoryStream())
             {
-                PngExporter.Export(model, stream, width, height, OxyColors.White, 96);
+                PngExporter.Export(model, stream, width, height, OxyColors.LightGray, 96);
                 System.IO.File.WriteAllBytes(outputUsingMemStream, stream.ToArray());
             }
 
-            using (var pngStream = PngExporter.ExportToStream(model, width, height, OxyColors.White))
+            using (var pngStream = PngExporter.ExportToStream(model, width, height, OxyColors.LightGray))
             {
                 var fileStream = new System.IO.FileStream(outputExportFileStream, FileMode.Create);
                 pngStream.CopyTo(fileStream);
                 fileStream.Flush();
             }
 
-            var stream2 = new MemoryStream();
-            var pngExporter = new PngExporter { Width = width, Height = height, Background = OxyColors.White };
-            pngExporter.Export(model, stream2);
+            // export to bitmap using static methods
+            using (var bm = PngExporter.ExportToBitmap(model, width, height, OxyColors.LightGray))
+            {
+                bm.Save(outputExportBitmap);
+            }
 
-            // Write to a file, OOP
-            var pngExporter2 = new PngExporter { Width = width, Height = height, Background = OxyColors.White };
+            using (var bm = PngExporter.ExportToBitmap(model, width, height, Brushes.LightGray))
+            {
+                bm.Save(outputExportBitmapBrush);
+            }
+
+            // export using the instance methods
+            using (var stream = new MemoryStream())
+            {
+                var pngExporter = new PngExporter { Width = width, Height = height, Background = OxyColors.LightGray };
+                pngExporter.Export(model, stream);
+                System.IO.File.WriteAllBytes(outputExportStreamOOP, stream.ToArray());
+            }
+
+            var pngExporter2 = new PngExporter { Width = width, Height = height, Background = OxyColors.LightGray };
             pngExporter2.ExportToFile(model, outputExportFileOOP);
         }
 
