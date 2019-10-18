@@ -244,7 +244,7 @@ namespace OxyPlot.WindowsForms
             {
                 this.stringFormat.Alignment = StringAlignment.Near;
                 this.stringFormat.LineAlignment = StringAlignment.Near;
-                var size = this.g.MeasureString(text, font, int.MaxValue, this.stringFormat);
+                var size = Ceiling(this.g.MeasureString(text, font, int.MaxValue, this.stringFormat));
                 if (maxSize != null)
                 {
                     if (size.Width > maxSize.Value.Width)
@@ -445,6 +445,17 @@ namespace OxyPlot.WindowsForms
         private static Font CreateFont(string fontFamily, double fontSize, FontStyle fontStyle)
         {
             return new Font(fontFamily, (float)fontSize * FontsizeFactor, fontStyle);
+        }
+
+        /// <summary>
+        /// Returns the ceiling of the given <see cref="SizeF"/> as a <see cref="SizeF"/>.
+        /// </summary>
+        /// <param name="size">The size.</param>
+        /// <returns>A <see cref="SizeF>"/></returns>
+        private static SizeF Ceiling(SizeF size)
+        {
+            var ceiling = Size.Ceiling(size);
+            return new SizeF(ceiling.Width, ceiling.Height);
         }
 
         /// <summary>
