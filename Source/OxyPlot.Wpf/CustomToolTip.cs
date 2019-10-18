@@ -173,6 +173,72 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Custom initial show delay storage.
+        /// </summary>
+        private int _InitialShowDelay = -1;
+
+        /// <summary>
+        /// Gets or sets the length of time before a tooltip opens.
+        /// </summary>
+        public int InitialShowDelay
+        {
+            get
+            {
+                return _InitialShowDelay < 0 ?
+                    ToolTipService.GetInitialShowDelay(this.pb) :
+                    _InitialShowDelay;
+            }
+            set
+            {
+                _InitialShowDelay = value;
+            }
+        }
+
+        /// <summary>
+        /// Custom show duration storage.
+        /// </summary>
+        private int _ShowDuration = -1;
+
+        /// <summary>
+        /// Gets or sets the amount of time that a tooltip remains visible.
+        /// </summary>
+        public int ShowDuration
+        {
+            get
+            {
+                return _ShowDuration < 0 ?
+                    ToolTipService.GetShowDuration(this.pb) :
+                    _ShowDuration;
+            }
+            set
+            {
+                _ShowDuration = value;
+            }
+        }
+
+        /// <summary>
+        /// Custom between show delay storage.
+        /// </summary>
+        private int _BetweenShowDelay = -1;
+
+        /// <summary>
+        /// Gets or sets the maximum time between the display of two tooltips where the second tooltip appears without a delay.
+        /// </summary>
+        public int BetweenShowDelay
+        {
+            get
+            {
+                return _BetweenShowDelay < 0 ?
+                    ToolTipService.GetBetweenShowDelay(this.pb) :
+                    _BetweenShowDelay;
+            }
+            set
+            {
+                _BetweenShowDelay = value;
+            }
+        }
+
+        /// <summary>
         /// Disposes the tooltip if possible.
         /// </summary>
         public void Dispose()
@@ -186,11 +252,6 @@ namespace OxyPlot
         /// <param name="ct">The cancellation token for when the user moves the cursor.</param>
         protected async Task ShowToolTip(string value, CancellationToken ct)
         {
-            if (this.secondToolTipTask != null)
-            {
-                await CancelableTaskAsync(this.secondToolTipTask);
-            }
-
             if (ct.IsCancellationRequested)
             {
                 return;
@@ -206,9 +267,14 @@ namespace OxyPlot
                 return;
             }
 
-            int initialShowDelay = ToolTipService.GetInitialShowDelay(this.pb);
-
-            await CancelableTaskAsync(Task.Delay(initialShowDelay, ct));
+            if (this.secondToolTipTask != null)
+            {
+                await CancelableTaskAsync(this.secondToolTipTask);
+            }
+            else
+            {
+                await CancelableTaskAsync(Task.Delay(this.InitialShowDelay, ct));
+            }
 
             if (ct.IsCancellationRequested)
             {
@@ -253,9 +319,7 @@ namespace OxyPlot
                 return;
             }
 
-            int betweenShowDelay = ToolTipService.GetBetweenShowDelay(this.pb);
-
-            secondToolTipTask = Task.Delay(betweenShowDelay);
+            secondToolTipTask = Task.Delay(this.BetweenShowDelay);
             _ = secondToolTipTask.ContinueWith(new Action<Task>((t) =>
             {
                 secondToolTipTask = null;
@@ -266,14 +330,7 @@ namespace OxyPlot
                 return;
             }
 
-            int showDuration = ToolTipService.GetShowDuration(this.pb);
-
-            if (ct.IsCancellationRequested)
-            {
-                return;
-            }
-
-            await CancelableTaskAsync(Task.Delay(showDuration, ct));
+            await CancelableTaskAsync(Task.Delay(this.ShowDuration, ct));
 
             if (ct.IsCancellationRequested)
             {

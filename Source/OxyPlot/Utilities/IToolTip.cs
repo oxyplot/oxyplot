@@ -35,6 +35,24 @@ namespace OxyPlot
         string Text { get; set; }
 
         /// <summary>
+        /// Gets or sets the length of time before a tooltip opens.
+        /// </summary>
+        int InitialShowDelay { get; set; }
+
+        /// <summary>
+        /// Gets or sets the amount of time that a tooltip remains visible.
+        /// </summary>
+        /// <remarks>
+        /// On both WinForms and WPF, the actual duration of the tooltip is longer than this with about 2 seconds, maybe because of the animations.
+        /// </remarks>
+        int ShowDuration { get; set; }
+
+        /// <summary>
+        /// Gets or sets the maximum time between the display of two tooltips where the second tooltip appears without a delay.
+        /// </summary>
+        int BetweenShowDelay { get; set; }
+
+        /// <summary>
         /// Disposes the tooltip if possible.
         /// </summary>
         void Dispose();
