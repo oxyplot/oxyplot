@@ -76,6 +76,7 @@ All notable changes to this project will be documented in this file.
 - In WPF, make sure the axes are initalized when the Model is set before the PlotView has been loaded (#1303)
 - Fixed MinimumSegmentLength not working for LineSeries (#1044)
 - Fixed rendering issues with MagnitudeAxisFullPlotArea (#1364)
+- OxyPlot.Core.Drawing PngExporter Export to Stream background (#1382)
 - Fixed Winforms clipping last line of rendered text (#1124, #1385)
 
 ## [1.0.0] - 2016-09-11
