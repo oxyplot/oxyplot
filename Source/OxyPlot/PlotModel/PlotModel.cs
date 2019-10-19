@@ -251,10 +251,10 @@ namespace OxyPlot
 
             this.IsLegendVisible = true;
             this.LegendTitleFont = null;
-            this.LegendTitleFontSize = 12;
+            this.LegendTitleFontSize = double.NaN;
             this.LegendTitleFontWeight = FontWeights.Bold;
             this.LegendFont = null;
-            this.LegendFontSize = 12;
+            this.LegendFontSize = double.NaN;
             this.LegendFontWeight = FontWeights.Normal;
             this.LegendSymbolLength = 16;
             this.LegendSymbolMargin = 4;

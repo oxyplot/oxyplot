@@ -156,6 +156,16 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("Legend with DefaultFontSize")]
+        public static PlotModel LegendDefaultFontSize()
+        {
+            var model = CreateModel();
+            model.LegendFontSize = double.NaN;
+            model.LegendTitle = "Title in DefaultFontSize";
+            model.DefaultFontSize = 20;
+            return model;
+        }
+
         private static PlotModel CreateModel(int n = 20)
         {
             var model = new PlotModel { Title = "LineSeries", LegendBackground = OxyColor.FromAColor(200, OxyColors.White), LegendBorder = OxyColors.Black };
