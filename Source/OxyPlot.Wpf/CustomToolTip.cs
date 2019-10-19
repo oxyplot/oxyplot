@@ -296,6 +296,10 @@ namespace OxyPlot
             _ = HideToolTip(ct);
         }
 
+        /// <summary>
+        /// Runs a <see cref="Task"/> and ignores the cancellation exception.
+        /// </summary>
+        /// <param name="t">The <see cref="Task"/>.</param>
         protected static async Task CancelableTaskAsync(Task t)
         {
             try
