@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [2.0.0]
+## [2.0.0] - 2019-10-19
 ### Added 
 - WindowsForms and Wpf support .NET Core 3.0 (#1331)
 - PngExporter based on System.Common.Drawing (.NET Core) (#1263)
