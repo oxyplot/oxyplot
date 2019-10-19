@@ -171,6 +171,30 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Gets the top left corner of the rectangle.
+        /// </summary>
+        /// <value>The top left corner.</value>
+        public ScreenPoint TopLeft => new ScreenPoint(this.Left, this.Top);
+
+        /// <summary>
+        /// Gets the top right corner of the rectangle.
+        /// </summary>
+        /// <value>The top right corner.</value>
+        public ScreenPoint TopRight => new ScreenPoint(this.Right, this.Top);
+
+        /// <summary>
+        /// Gets the bottom left corner of the rectangle.
+        /// </summary>
+        /// <value>The bottom left corner.</value>
+        public ScreenPoint BottomLeft => new ScreenPoint(this.Left, this.Bottom);
+
+        /// <summary>
+        /// Gets the bottom right corner of the rectangle.
+        /// </summary>
+        /// <value>The bottom right corner.</value>
+        public ScreenPoint BottomRight => new ScreenPoint(this.Right, this.Bottom);
+
+        /// <summary>
         /// Creates a rectangle from the specified corner coordinates.
         /// </summary>
         /// <param name="x0">The x0.</param>
@@ -287,6 +311,20 @@ namespace OxyPlot
         public OxyRect Offset(double offsetX, double offsetY)
         {
             return new OxyRect(this.left + offsetX, this.top + offsetY, this.width, this.height);
+        }
+
+        /// <summary>
+        /// Returns a rectangle that is clipped to the outer bounds of the specified rectangle.
+        /// </summary>
+        /// <param name="clipRect">The rectangle that defines the outermost allowed coordinates for the clipped rectangle.</param>
+        /// <returns>The clipped rectangle.</returns>
+        public OxyRect Clip(OxyRect clipRect)
+        {
+            return Create(
+                Math.Max(Math.Min(this.Left, clipRect.Right), clipRect.Left),
+                Math.Max(Math.Min(this.Top, clipRect.Bottom), clipRect.Top),
+                Math.Max(Math.Min(this.Right, clipRect.Right), clipRect.Left),
+                Math.Max(Math.Min(this.Bottom, clipRect.Bottom), clipRect.Top));
         }
     }
 }

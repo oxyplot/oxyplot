@@ -6,8 +6,9 @@ OxyPlot is driven by the community and contributors like you. We are excited tha
 The flow when contributing to OxyPlot is as follows:
 
 1. Add issue (bug or new feature)
-2. Wait for issue to be tagged `you-take-it`
-3. Commit your changes and rebase
+2. If the issue needs to be clarified, wait for some feedback
+3. Commit your changes
+4. Update the change log and contributors files
 4. Create a pull request
 
 Note that your contributions must be your own work and licensed under the same terms as OxyPlot.
@@ -16,30 +17,38 @@ Note that your contributions must be your own work and licensed under the same t
 ## Reporting bugs
 
 First, search the issue tracker to see if the bug is already there.
-Please use the [discussion forums](http://discussion.oxyplot.org/) if you are unsure whether it is a bug in the library or a problem in your code.
-When you are sure, please add defects in the issue tracker.
 
 It is very helpful to get the generated code (use `CTRL+ALT+C` in the plot control) and report (`CTRL+ALT+R`) of the bug plot. You can also take a screen shot and paste it into the description.
 
 Please use markdown to format your code blocks with [syntax highlighting](https://help.github.com/articles/github-flavored-markdown/#syntax-highlighting) to make it easier for everyone to read. 
 
-You could also use services like http://snipt.org or https://gist.github.com to share code snippets.
+You could also use services like https://snipt.org or https://gist.github.com to share code snippets.
 
 A bug report should include:
 
-- used platform and tools version
-- used OxyPlot version
-- version of dependencies (e.g. Xamarin.Forms and Android SDK)
+- the platform you are building for (Windows Forms, WPF, Xamarin Forms etc.)
+- the framework version (netcore3, net47 etc.)
+- the version of OxyPlot you are using
 - description of the issue
 - sample code to reproduce the issue
+- what you expect and what is the actual behaviour
 
 
 ## Suggesting new features
 
-Please use the [discussion forums](http://discussion.oxyplot.org/) or add it directly in the issue tracker in the same way as bug reports.
+First, search the issue tracker to see if the feature is already there.
+
+A feature request should include:
+
+- description of the feature
+- a drawing/image, if possible
+
+It could be a good idea to wait for some feedback before starting to work on a new feature.
+Not all features are general enough to fit into this library. 
+We don't want you to waste time on something that might not be merged in the end.
 
 
-## Create your own fork
+## Creating your own fork
 
 1. Log in to GitHub and open the [oxyplot](https://github.com/oxyplot/oxyplot/) origin repository. Click the "Fork" button to create your own fork of the repository.
 2. Create a clone on your local system: `git clone https://github.com/yourusername/oxyplot.git`
@@ -54,7 +63,7 @@ The repository contains two branches:
 
 You should base your work on the `develop` branch.
 
-See [A successful git branching model](http://nvie.com/posts/a-successful-git-branching-model/) for more information about the branching model in use.
+See [A successful git branching model](https://nvie.com/posts/a-successful-git-branching-model/) for more information about the branching model in use.
 
 Create a branch for the bugfix/feature you want to work on: `git branch bugfix-some-error`
 
@@ -86,7 +95,7 @@ More info about rebasing
 
 - https://git-scm.com/book/en/v2/Git-Branching-Rebasing
 - https://blog.sourcetreeapp.com/2012/08/21/merge-or-rebase/
-- http://gitready.com/advanced/2009/02/10/squashing-commits-with-rebase.html
+- https://gitready.com/advanced/2009/02/10/squashing-commits-with-rebase.html
 - https://ariejan.net/2011/07/05/git-squash-your-latests-commits-into-one/
 - https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History
 - https://www.atlassian.com/git/tutorials/rewriting-history/git-rebase-i
@@ -96,26 +105,25 @@ Finally, push your commits: `git push`
 
 ## Requirements for a pull request
 
+- Include the issue number
 - Include examples or unit tests for the change / new feature
 - Update the CHANGELOG.md file
 - Update the CONTRIBUTORS and AUTHORS files if you are not already listed there
-- Commits are rebased and squashed
 
 
 ## Creating a pull request
 
 - Open the GitHub page for your fork and create a "Pull Request" (PR)
-- Include the issue number in the pull request *comment* (not in the *title* where it will not be linked!)
 
 
 ## Merging
 
-When the PR is submitted, Appveyor will build the code and report if the build was successful.
+When the PR is submitted, a build will automatically be trigged.
 A team member will then review the PR, and merge the branch if everything looks OK.
 
-If there are some issues with the PR, you must
+If there are some issues with the PR, you should
 - update your code and commit changes
-- rebase and squash again
+- clean up the git history with rebase or squash
 - force push: `git push -f`
 
 The PR will be updated automatically when you push your changes.
@@ -130,10 +138,10 @@ Please contribute by creating pull requests!
 
 ## Contributing to the website
 
-The source of the [oxyplot.org](http://oxyplot.org) web site can be found in the [oxyplot.github.io](http://github.com/oxyplot/oxyplot.github.io) repository.
+The source of the [oxyplot.github.io](https://oxyplot.github.io/) web site can be found in the [oxyplot.github.io](https://github.com/oxyplot/oxyplot.github.io) repository.
 Please contribute by creating pull requests!
 
-The web-site is built by [GitHub](http://github.com/) with [Jekyll](http://jekyllrb.com/).
+The web-site is built by [GitHub](https://github.com/) with [Jekyll](https://jekyllrb.com/).
 
 
 ## Common rules

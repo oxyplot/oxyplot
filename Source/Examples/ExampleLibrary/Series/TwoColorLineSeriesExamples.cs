@@ -9,6 +9,8 @@
 
 namespace ExampleLibrary
 {
+    using ExampleLibrary.Utilities;
+
     using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
@@ -28,19 +30,20 @@ namespace ExampleLibrary
         {
             var model = new PlotModel { Title = "TwoColorLineSeries", LegendSymbolLength = 24 };
             var s1 = new TwoColorLineSeries
-                         {
-                             Title = "Temperature at Eidesmoen, December 1986.",
-                             TrackerFormatString = "December {2:0}: {4:0.0} °C",
-                             Color = OxyColors.Red,
-                             Color2 = OxyColors.LightBlue,
-                             StrokeThickness = 3,
-                             Limit = 0,
-                             Smooth = true,
-                             MarkerType = MarkerType.Circle,
-                             MarkerSize = 4,
-                             MarkerStroke = OxyColors.Black,
-                             MarkerStrokeThickness = 1.5
-                         };
+            {
+                Title = "Temperature at Eidesmoen, December 1986.",
+                TrackerFormatString = "December {2:0}: {4:0.0} °C",
+                Color = OxyColors.Red,
+                Color2 = OxyColors.LightBlue,
+                StrokeThickness = 3,
+                Limit = 0,
+                InterpolationAlgorithm = InterpolationAlgorithms.CanonicalSpline,
+                MarkerType = MarkerType.Circle,
+                MarkerSize = 4,
+                MarkerStroke = OxyColors.Black,
+                MarkerStrokeThickness = 1.5,
+            };
+
             var temperatures = new[] { 5, 0, 7, 7, 4, 3, 5, 5, 11, 4, 2, 3, 2, 1, 0, 2, -1, 0, 0, -3, -6, -13, -10, -10, 0, -4, -5, -4, 3, 0, -5 };
 
             for (int i = 0; i < temperatures.Length; i++)
@@ -53,6 +56,18 @@ namespace ExampleLibrary
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "Date" });
 
             return model;
+        }
+
+        [Example("Temperatures (transposed)")]
+        public static PlotModel TwoColorLineSeriesTransposed()
+        {
+            return TwoColorLineSeries().Transpose();
+        }
+
+        [Example("Temperatures (Y Axis reversed)")]
+        public static PlotModel TwoColorLineSeriesReversed()
+        {
+            return TwoColorLineSeries().ReverseYAxis();
         }
     }
 }

@@ -257,10 +257,12 @@ namespace OxyPlot.Series
                         dashArray,
                         this.LineJoin,
                         true);
+
+                    var tickVector = this.Orientate(new ScreenVector(this.TickLength, 0));
                     if (!double.IsNaN(v.Open))
                     {
                         var open = this.Transform(v.X, v.Open);
-                        var openTick = open + new ScreenVector(-this.TickLength, 0);
+                        var openTick = open - tickVector;
                         rc.DrawClippedLine(
                             clippingRect,
                             new[] { open, openTick },
@@ -275,7 +277,7 @@ namespace OxyPlot.Series
                     if (!double.IsNaN(v.Close))
                     {
                         var close = this.Transform(v.X, v.Close);
-                        var closeTick = close + new ScreenVector(this.TickLength, 0);
+                        var closeTick = close + tickVector;
                         rc.DrawClippedLine(
                             clippingRect,
                             new[] { close, closeTick },
@@ -302,27 +304,31 @@ namespace OxyPlot.Series
             double yclose = legendBox.Top + ((legendBox.Bottom - legendBox.Top) * 0.3);
             double[] dashArray = this.LineStyle.GetDashArray();
             var color = this.GetSelectableColor(this.ActualColor);
-            rc.DrawLine(
-                new[] { new ScreenPoint(xmid, legendBox.Top), new ScreenPoint(xmid, legendBox.Bottom) },
-                color,
-                this.StrokeThickness,
-                dashArray,
-                LineJoin.Miter,
-                true);
-            rc.DrawLine(
-                new[] { new ScreenPoint(xmid - this.TickLength, yopen), new ScreenPoint(xmid, yopen) },
-                color,
-                this.StrokeThickness,
-                dashArray,
-                LineJoin.Miter,
-                true);
-            rc.DrawLine(
-                new[] { new ScreenPoint(xmid + this.TickLength, yclose), new ScreenPoint(xmid, yclose) },
-                color,
-                this.StrokeThickness,
-                dashArray,
-                LineJoin.Miter,
-                true);
+
+            if (this.StrokeThickness > 0 && this.LineStyle != LineStyle.None)
+            {
+                rc.DrawLine(
+                    new[] { new ScreenPoint(xmid, legendBox.Top), new ScreenPoint(xmid, legendBox.Bottom) },
+                    color,
+                    this.StrokeThickness,
+                    dashArray,
+                    LineJoin.Miter,
+                    true);
+                rc.DrawLine(
+                    new[] { new ScreenPoint(xmid - this.TickLength, yopen), new ScreenPoint(xmid, yopen) },
+                    color,
+                    this.StrokeThickness,
+                    dashArray,
+                    LineJoin.Miter,
+                    true);
+                rc.DrawLine(
+                    new[] { new ScreenPoint(xmid + this.TickLength, yclose), new ScreenPoint(xmid, yclose) },
+                    color,
+                    this.StrokeThickness,
+                    dashArray,
+                    LineJoin.Miter,
+                    true);
+            }
         }
 
         /// <summary>

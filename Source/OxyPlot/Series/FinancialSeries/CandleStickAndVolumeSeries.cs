@@ -229,6 +229,11 @@ namespace OxyPlot.Series
         // ReSharper disable once FunctionComplexityOverflow
         public override void Render(IRenderContext rc)
         {
+            if (this.IsTransposed())
+            {
+                throw new Exception("CandleStickAndVolumeSeries does not support transposed mode. It can only be used with horizontal X axis and vertical Y axis.");
+            }
+
             if (this.data == null || this.data.Count == 0)
             {
                 return;
@@ -315,13 +320,22 @@ namespace OxyPlot.Series
 
                 // Body
                 var openLeft = open + new ScreenVector(-candlewidth * 0.5, 0);
-                var rect = new OxyRect(openLeft.X, min.Y, candlewidth, max.Y - min.Y);
-                rc.DrawClippedRectangleAsPolygon(
-                    clippingBar,
-                    rect,
-                    fillColor,
-                    lineColor,
-                    this.StrokeThickness);
+
+                if (max.Y - min.Y < 1.0)
+                {
+                    var leftPoint = new ScreenPoint(openLeft.X - this.StrokeThickness, min.Y);
+                    var rightPoint = new ScreenPoint(openLeft.X + this.StrokeThickness + candlewidth, min.Y);
+                    rc.DrawClippedLine(clippingBar, new[] { leftPoint, rightPoint }, leftPoint.DistanceToSquared(rightPoint), lineColor, this.StrokeThickness, null, LineJoin.Miter, true);
+
+                    leftPoint = new ScreenPoint(openLeft.X - this.StrokeThickness, max.Y);
+                    rightPoint = new ScreenPoint(openLeft.X + this.StrokeThickness + candlewidth, max.Y);
+                    rc.DrawClippedLine(clippingBar, new[] { leftPoint, rightPoint }, leftPoint.DistanceToSquared(rightPoint), lineColor, this.StrokeThickness, null, LineJoin.Miter, true);
+                }
+                else
+                {
+                    var rect = new OxyRect(openLeft.X, min.Y, candlewidth, max.Y - min.Y);
+                    rc.DrawClippedRectangleAsPolygon(clippingBar, rect, fillColor, lineColor, this.StrokeThickness);
+                }
 
                 // Volume Part
                 if (this.VolumeAxis == null || this.VolumeStyle == VolumeStyle.None)
@@ -381,34 +395,37 @@ namespace OxyPlot.Series
                 }
             }
 
-            // draw volume & bar separation line
-            if (this.VolumeStyle != VolumeStyle.None)
+            if (this.SeparatorStrokeThickness > 0 && this.SeparatorLineStyle != LineStyle.None)
             {
-                var ysep = (clippingSep.Bottom + clippingSep.Top) / 2.0;
-                rc.DrawClippedLine(
-                    clippingSep,
-                    new[] { new ScreenPoint(clippingSep.Left, ysep), new ScreenPoint(clippingSep.Right, ysep) },
-                    0,
-                    this.SeparatorColor,
-                    this.SeparatorStrokeThickness,
-                    this.SeparatorLineStyle.GetDashArray(),
-                    LineJoin.Miter,
-                    true);
-            }
+                // draw volume & bar separation line
+                if (this.VolumeStyle != VolumeStyle.None)
+                {
+                    var ysep = (clippingSep.Bottom + clippingSep.Top) / 2.0;
+                    rc.DrawClippedLine(
+                        clippingSep,
+                        new[] { new ScreenPoint(clippingSep.Left, ysep), new ScreenPoint(clippingSep.Right, ysep) },
+                        0,
+                        this.SeparatorColor,
+                        this.SeparatorStrokeThickness,
+                        this.SeparatorLineStyle.GetDashArray(),
+                        LineJoin.Miter,
+                        true);
+                }
 
-            // draw volume y=0 line
-            if (this.VolumeAxis != null && this.VolumeStyle == VolumeStyle.PositiveNegative)
-            {
-                var y0 = this.VolumeAxis.Transform(0);
-                rc.DrawClippedLine(
-                    clippingVol,
-                    new[] { new ScreenPoint(clippingVol.Left, y0), new ScreenPoint(clippingVol.Right, y0) },
-                    0,
-                    OxyColors.Goldenrod,
-                    this.SeparatorStrokeThickness,
-                    this.SeparatorLineStyle.GetDashArray(),
-                    LineJoin.Miter,
-                    true);
+                // draw volume y=0 line
+                if (this.VolumeAxis != null && this.VolumeStyle == VolumeStyle.PositiveNegative)
+                {
+                    var y0 = this.VolumeAxis.Transform(0);
+                    rc.DrawClippedLine(
+                        clippingVol,
+                        new[] { new ScreenPoint(clippingVol.Left, y0), new ScreenPoint(clippingVol.Right, y0) },
+                        0,
+                        OxyColors.Goldenrod,
+                        this.SeparatorStrokeThickness,
+                        this.SeparatorLineStyle.GetDashArray(),
+                        LineJoin.Miter,
+                        true);
+                }
             }
         }
 
@@ -433,19 +450,22 @@ namespace OxyPlot.Series
                 legendBox.Width,
                 this.XAxis.Transform(this.data[0].X + datacandlewidth) - this.XAxis.Transform(this.data[0].X));
 
-            rc.DrawLine(
-                new[] { new ScreenPoint(xmid, legendBox.Top), new ScreenPoint(xmid, legendBox.Bottom) },
-                lineUp,
-                this.StrokeThickness,
-                dashArray,
-                LineJoin.Miter,
-                true);
+            if (this.StrokeThickness > 0)
+            {
+                rc.DrawLine(
+                    new[] { new ScreenPoint(xmid, legendBox.Top), new ScreenPoint(xmid, legendBox.Bottom) },
+                    lineUp,
+                    this.StrokeThickness,
+                    dashArray,
+                    LineJoin.Miter,
+                    true);
 
-            rc.DrawRectangleAsPolygon(
-                new OxyRect(xmid - (candlewidth * 0.5), yclose, candlewidth, yopen - yclose),
-                fillUp,
-                lineUp,
-                this.StrokeThickness);
+                rc.DrawRectangleAsPolygon(
+                    new OxyRect(xmid - (candlewidth * 0.5), yclose, candlewidth, yopen - yclose),
+                    fillUp,
+                    lineUp,
+                    this.StrokeThickness);
+            }
         }
 
         /// <summary>

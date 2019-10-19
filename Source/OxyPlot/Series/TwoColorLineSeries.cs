@@ -9,6 +9,7 @@
 
 namespace OxyPlot.Series
 {
+    using System;
     using System.Collections.Generic;
 
     /// <summary>
@@ -114,44 +115,42 @@ namespace OxyPlot.Series
         /// <param name="pointsToRender">The points.</param>
         protected override void RenderLine(IRenderContext rc, OxyRect clippingRect, IList<ScreenPoint> pointsToRender)
         {
-            double bottom = clippingRect.Bottom;
+            var p1 = this.InverseTransform(clippingRect.BottomLeft);
+            var p2 = this.InverseTransform(clippingRect.TopRight);
+                       
+            var clippingRectLo = new OxyRect(
+                this.Transform(p1.X, Math.Min(p1.Y, p2.Y)),
+                this.Transform(p2.X, this.Limit)).Clip(clippingRect);
 
-            // todo: this does not work when y axis is reversed
-            double y = this.YAxis.Transform(this.Limit);
+            var clippingRectHi = new OxyRect(
+                this.Transform(p1.X, Math.Max(p1.Y, p2.Y)),
+                this.Transform(p2.X, this.Limit)).Clip(clippingRect);
 
-            if (y < clippingRect.Top)
+            if (this.StrokeThickness > 0 && this.ActualLineStyle != LineStyle.None)
             {
-                y = clippingRect.Top;
+                rc.DrawClippedLine(
+                    clippingRectHi,
+                    pointsToRender,
+                    this.MinimumSegmentLength * this.MinimumSegmentLength,
+                    this.GetSelectableColor(this.ActualColor),
+                    this.StrokeThickness,
+                    this.ActualDashArray,
+                    this.LineJoin,
+                    false);
             }
 
-            if (y > clippingRect.Bottom)
+            if (this.StrokeThickness > 0 && this.ActualLineStyle2 != LineStyle.None)
             {
-                y = clippingRect.Bottom;
+                rc.DrawClippedLine(
+                    clippingRectLo,
+                    pointsToRender,
+                    this.MinimumSegmentLength * this.MinimumSegmentLength,
+                    this.GetSelectableColor(this.ActualColor2),
+                    this.StrokeThickness,
+                    this.ActualDashArray2,
+                    this.LineJoin,
+                    false);
             }
-
-            var dashArray = this.ActualDashArray;
-            var dashArray2 = this.ActualDashArray2;
-
-            clippingRect = new OxyRect(clippingRect.Left, clippingRect.Top, clippingRect.Width, y - clippingRect.Top);
-            rc.DrawClippedLine(
-                clippingRect,
-                pointsToRender,
-                this.MinimumSegmentLength * this.MinimumSegmentLength,
-                this.GetSelectableColor(this.ActualColor),
-                this.StrokeThickness,
-                dashArray,
-                this.LineJoin,
-                false);
-            clippingRect = new OxyRect(clippingRect.Left, y, clippingRect.Width, bottom - y);
-            rc.DrawClippedLine(
-                clippingRect,
-                pointsToRender,
-                this.MinimumSegmentLength * this.MinimumSegmentLength,
-                this.GetSelectableColor(this.ActualColor2),
-                this.StrokeThickness,
-                dashArray2,
-                this.LineJoin,
-                false);
         }
     }
 }

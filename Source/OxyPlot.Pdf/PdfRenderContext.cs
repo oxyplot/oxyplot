@@ -261,11 +261,6 @@ namespace OxyPlot.Pdf
 
             var size = this.g.MeasureString(text, font);
 
-#if SILVERLIGHT
-            // Correct the height, MeasureString returns 2x height
-            size.Height *= 0.5;
-#endif
-
             if (maxSize != null)
             {
                 if (size.Width > maxSize.Value.Width)
@@ -340,11 +335,6 @@ namespace OxyPlot.Pdf
 
             var font = CreateFont(fontFamily, fontSize, fs);
             var size = this.g.MeasureString(text, font);
-
-#if SILVERLIGHT
-            // Correct the height, MeasureString returns 2x height
-            size.Height *= 0.5;
-#endif
 
             return new OxySize(size.Width, size.Height);
         }
@@ -475,8 +465,8 @@ namespace OxyPlot.Pdf
         /// <returns>The font.</returns>
         private static XFont CreateFont(string fontFamily, double fontSize, XFontStyle fontStyle)
         {
-            var pdfOptions = new XPdfFontOptions(PdfFontEncoding.Unicode, PdfFontEmbedding.Default);
-            var font = new XFont(fontFamily, (float)fontSize * FontsizeFactor, fontStyle, pdfOptions);
+            var pdfOptions = new XPdfFontOptions(PdfFontEncoding.Unicode);
+            var font = new XFont(fontFamily ?? "Arial", (float)fontSize * FontsizeFactor, fontStyle, pdfOptions);
             return font;
         }
 
@@ -503,7 +493,6 @@ namespace OxyPlot.Pdf
                 return src;
             }
 
-#if !SILVERLIGHT
             XImage bitmap;
             using (var ms = new MemoryStream(source.GetData()))
             {
@@ -513,14 +502,6 @@ namespace OxyPlot.Pdf
 
             this.imageCache.Add(source, bitmap);
             return bitmap;
-#else
-            using (var ms = new MemoryStream(source.GetData()))
-            {
-                var bitmap = XImage.FromStream(ms);
-                this.imageCache.Add(source, bitmap);
-                return bitmap;
-            }
-#endif
         }
 
         /// <summary>

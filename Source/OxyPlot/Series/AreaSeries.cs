@@ -9,7 +9,6 @@
 
 namespace OxyPlot.Series
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -335,8 +334,12 @@ namespace OxyPlot.Series
             var pts = new List<ScreenPoint>();
             pts.AddRange(pts0);
             pts.AddRange(pts1);
-            rc.DrawLine(pts0, this.GetSelectableColor(this.ActualColor), this.StrokeThickness, this.ActualLineStyle.GetDashArray());
-            rc.DrawLine(pts1, this.GetSelectableColor(this.ActualColor2), this.StrokeThickness, this.ActualLineStyle.GetDashArray());
+
+            if (this.StrokeThickness > 0 && this.ActualLineStyle != LineStyle.None)
+            {
+                rc.DrawLine(pts0, this.GetSelectableColor(this.ActualColor), this.StrokeThickness, this.ActualLineStyle.GetDashArray());
+                rc.DrawLine(pts1, this.GetSelectableColor(this.ActualColor2), this.StrokeThickness, this.ActualLineStyle.GetDashArray());
+            }
             rc.DrawPolygon(pts, this.GetSelectableFillColor(this.ActualFill), OxyColors.Undefined);
         }
 
@@ -419,7 +422,7 @@ namespace OxyPlot.Series
                 }
                 else
                 {
-                    var sp = this.XAxis.Transform(point.X, point.Y, this.YAxis);
+                    var sp = this.Transform(point.X, point.Y);
                     screenPoints.Add(sp);
                 }
 
@@ -454,10 +457,10 @@ namespace OxyPlot.Series
                 final.Reverse();
             }
 
-            if (this.Smooth)
+            if (this.InterpolationAlgorithm != null)
             {
                 var resampled = ScreenPointHelper.ResamplePoints(final, this.MinimumSegmentLength);
-                final = CanonicalSplineHelper.CreateSpline(resampled, 0.5, null, false, 0.25);
+                final = this.InterpolationAlgorithm.CreateSpline(resampled, false, 0.25);
             }
 
             context.RenderContext.DrawClippedLine(

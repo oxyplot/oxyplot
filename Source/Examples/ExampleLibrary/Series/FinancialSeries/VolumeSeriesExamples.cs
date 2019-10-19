@@ -6,6 +6,8 @@
 
 namespace ExampleLibrary
 {
+    using ExampleLibrary.Utilities;
+
     using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
@@ -26,6 +28,12 @@ namespace ExampleLibrary
             return CreateVolumeSeries("Just Volume (combined)", VolumeStyle.Combined, natural: true);
         }
 
+        [Example("Just Volume (combined), natural axis, transposed")]
+        public static Example JustVolumeCombined_NaturalTransposed()
+        {
+            return CreateVolumeSeries("Just Volume (combined)", VolumeStyle.Combined, natural: true, transposed: true);
+        }
+
         [Example("Just Volume (stacked), fixed axis")]
         public static Example JustVolumeStacked_Fixed()
         {
@@ -36,6 +44,12 @@ namespace ExampleLibrary
         public static Example JustVolumeStacked_Natural()
         {
             return CreateVolumeSeries("Just Volume (stacked)", VolumeStyle.Stacked, natural: true);
+        }
+
+        [Example("Just Volume (stacked), natural axis, transposed")]
+        public static Example JustVolumeStacked_NaturalTransposed()
+        {
+            return CreateVolumeSeries("Just Volume (stacked)", VolumeStyle.Stacked, natural: true, transposed: true);
         }
 
         [Example("Just Volume (+/-), fixed axis")]
@@ -49,6 +63,12 @@ namespace ExampleLibrary
         {
             return CreateVolumeSeries("Just Volume (+/-)", VolumeStyle.PositiveNegative, natural: true);
         }
+        
+        [Example("Just Volume (+/-), natural axis, transposed")]
+        public static Example JustVolumePositiveNegative_NaturalTransposed()
+        {
+            return CreateVolumeSeries("Just Volume (+/-)", VolumeStyle.PositiveNegative, natural: true, transposed: true);
+        }
 
         /// <summary>
         /// Creates the volume series.
@@ -58,11 +78,13 @@ namespace ExampleLibrary
         /// <param name="style">Style.</param>
         /// <param name="n">N.</param>
         /// <param name="natural">If set to <c>true</c> natural.</param>
+        /// <param name="transposed">If set to <c>true</c> transposed.</param>
         private static Example CreateVolumeSeries(
             string title, 
             VolumeStyle style, 
             int n = 10000,
-            bool natural = false)
+            bool natural = false,
+            bool transposed = false)
         {
             var pm = new PlotModel { Title = title };
 
@@ -72,7 +94,8 @@ namespace ExampleLibrary
                 NegativeColor = OxyColors.Red,
                 PositiveHollow = false,
                 NegativeHollow = false,
-                VolumeStyle = style
+                VolumeStyle = style,
+                Title = "VolumeSeries",
             };
 
             // create bars
@@ -94,10 +117,10 @@ namespace ExampleLibrary
                 Minimum = Xmin,
                 Maximum = Xmax
             };
+
             var volAxis = new LinearAxis
             {
                 Position = AxisPosition.Left,
-                Key = "Volume",
                 StartPosition = 0.0,
                 EndPosition = 1.0,
                 Minimum = natural ? double.NaN : 0,
@@ -120,6 +143,11 @@ namespace ExampleLibrary
             }
 
             pm.Series.Add(series);
+
+            if (transposed)
+            {
+                pm.Transpose();
+            }
 
             var controller = new PlotController();
             controller.UnbindAll();

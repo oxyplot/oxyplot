@@ -28,7 +28,7 @@ namespace OxyPlot.Wpf.Tests
             /// <summary>
             /// Gets the actual model when model is not set.
             /// </summary>
-            [Test, Ignore]
+            [Test, Ignore("")] // TODO: add ignore reason.
             public void GetDefault()
             {
                 var w = new Window();
@@ -106,6 +106,27 @@ namespace OxyPlot.Wpf.Tests
                 var view = new PlotView();
                 OxyAssert.PropertiesAreEqual(model, view);
             }
+        }
+
+        /// <summary>
+        /// Make sure that the axis transforms has been initialized when showing a PlotView from a unit test.
+        /// In this case, the Loaded event is not fired.
+        /// </summary>
+        [Test]
+        [RequiresThread(System.Threading.ApartmentState.STA)]
+        public void PlotInifityPolyline()
+        {
+            var model = new PlotModel();
+            var series = new OxyPlot.Series.LineSeries();
+            series.Points.Add(new DataPoint(0, 0));
+            series.Points.Add(new DataPoint(1, -1e40));
+            model.Series.Add(series);
+
+            var view = new PlotView { Model = model };
+            var window = new Window { Height = 350, Width = 500, Content = view };
+
+            Assert.DoesNotThrow(() => window.Show());
+            Assert.IsNull(model.GetLastPlotException());
         }
     }
 }

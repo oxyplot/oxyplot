@@ -128,22 +128,25 @@ namespace OxyPlot.Annotations
 
             var dashArray = this.LineStyle.GetDashArray();
 
-            rc.DrawClippedLine(
-                clippingRectangle,
-                new[] { this.screenStartPoint, p4 },
-                MinimumSegmentLength * MinimumSegmentLength,
-                this.GetSelectableColor(this.Color),
-                this.StrokeThickness,
-                dashArray,
-                this.LineJoin,
-                false);
+            if (this.StrokeThickness > 0 && this.LineStyle != LineStyle.None)
+            {
+                rc.DrawClippedLine(
+                    clippingRectangle,
+                    new[] { this.screenStartPoint, p4 },
+                    MinimumSegmentLength * MinimumSegmentLength,
+                    this.GetSelectableColor(this.Color),
+                    this.StrokeThickness,
+                    dashArray,
+                    this.LineJoin,
+                    false);
 
-            rc.DrawClippedPolygon(
-                clippingRectangle,
-                new[] { p3, this.screenEndPoint, p2, p4 },
-                MinimumSegmentLength * MinimumSegmentLength,
-                this.GetSelectableColor(this.Color),
-                OxyColors.Undefined);
+                rc.DrawClippedPolygon(
+                    clippingRectangle,
+                    new[] { p3, this.screenEndPoint, p2, p4 },
+                    MinimumSegmentLength * MinimumSegmentLength,
+                    this.GetSelectableColor(this.Color),
+                    OxyColors.Undefined);
+            }
 
             if (!string.IsNullOrEmpty(this.Text))
             {

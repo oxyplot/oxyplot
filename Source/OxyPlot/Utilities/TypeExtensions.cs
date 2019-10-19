@@ -10,6 +10,7 @@
 namespace OxyPlot
 {
     using System;
+    using System.Linq;
     using System.Reflection;
 
     /// <summary>
@@ -25,7 +26,12 @@ namespace OxyPlot
         /// <returns>An object that represents the specified property, or null if the property is not found.</returns>
         public static PropertyInfo GetRuntimeProperty(this Type type, string name)
         {
-            return type.GetProperty(name);
+            var typeInfo = type.GetTypeInfo();
+            var source = typeInfo.AsType().GetRuntimeProperties();
+
+            return (from x in source
+                    where x.Name == name
+                    select x).FirstOrDefault();
         }
     }
 }

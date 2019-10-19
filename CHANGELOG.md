@@ -1,6 +1,86 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2.0.0]
+### Added 
+- WindowsForms and Wpf support .NET Core 3.0 (#1331)
+- PngExporter based on System.Common.Drawing (.NET Core) (#1263)
+- New polar plot axes filling the full plot area (#1056)
+- Support for three colors in histogram series (#1305)
+- Command to copy plot to the clipboard in Windows Forms (Ctrl-C) (#1297)
+- New `InterpolationAlgorithm` property in LineSeries and PolylineAnnotation (#494)
+- Catmull-Rom spline interpolation algorithms (#494)
+- FontSize, FontWeight and FontFamily on Wpf.TextAnnotation (#1023)
+- RectangleSeries (#1060)
+- InvalidNumberColor on Wpf.LinearColorAxis (#1087)
+- ContinuousHistogramSeries (#1145)
+- Multiline text support for PortableDocumentFont (#1146)
+- Workaround for text vertical alignment in SVG Export to accomodate viewers which don't support dominant-baseline (#459, #1198)
+- Support for transposed (X and Y axis switched) plots with XYAxisSeries (#1334)
+- Color property on HistogramItem (#1347)
+- Count property on HistogramSeries (#1347)
+
+### Changed
+- OxyPlot.Core changed to target netstandard 1.0 and net45 (#946, #1147)
+- OxyPlot.ExampleLibrary changed to target netstandard 1.0 and net45 (#946, #1147)
+- OxyPlot.Wpf, OxyPlot.WindowsForms, OxyPlot.Pdf changed to target net45 (#946)
+- Place label below negative ColumnSeries (#1119)
+- Use PackageReference instead of packages.config
+- Migrated NUnit v2 to v3 and added test adapter
+- TrackerControl reuses existing ContentControl when a new hit tracker result uses the same template as the currently shown tracker (#1281)
+- Overhaul HistogramHelpers (#1345)
+- OxyPlot.Windows (UWP) moved to oxyplot-uwp repository (#1378)
+- Make the PngExporters consistent (#1390)
+- Silverlight project moved to separate repository (#1049)
+- WP8 project moved to separate repository (#1050)
+- Windows8 project moved to separate repository (#1103)
+- Avalonia project moved to separate repository
+- Xamarin projects moved to separate repository
+- Xwt project moved to separate repository
+- GTK# projects moved to separate repository
+- SharpDX project moved to separate repository
+
+### Deprecated
+- OxyPlot.WP8 package. Use OxyPlot.Windows (UWP) instead (#996)
+
+### Removed
+- LabelFontSize property from HistogramSeries (#1309)
+- Smooth property from LineSeries and PolylineAnnotation (#494)
+- Support for net40 (#960)
+
+### Fixed
+- Manipulation when using touch is not working in Windows (#1011)
+- Ensure a suitable folder is used when creating a temporary file for PNG export in Oxyplot.GtkSharp (#1034)
+- RangeColorAxis is not rendered correctly if the axis is reversed (#1035)
+- OxyMouseEvents not caught due to InvalidatePlot() in WPF (#382)
+- When Color Property of LineSeries is set Markers are not shown (#937)
+- Change from linear to logarithmic axis does not work (#1067)
+- OxyPalette.Interpolate() throws exception when paletteSize = 1 (#1068)
+- Infinite loop in LineAnnotation (#1029)
+- OverflowException when zoomed in on logarithmic axis (#1090)
+- ScatterSeries with DateTimeAxis/TimeSpanAxis (#1132)
+- Exporting TextAnnotation with TextColor having 255 alpha to SVG produces opaque text (#1160)
+- Chart is not updated when top and bottom are not visible (#1219)
+- Candle overlap each candle (#623)
+- CandleStick is overlapped when item.Open == item.Close in the CandleStickAndVolumeSeries (#1245)
+- Out of memory exception and performance issue with Catmull-Rom Spline (#1237)
+- Cache and Dispose Brush and Pen objects used by GraphicsRenderContext (#1230)
+- Add checks for non-positive StrokeThickess and LineStyle.None in various places (#1312)
+- Fixed references to RectangleItem in HistogramSeries
+- Fix AxisChangedEventArgs.DeltaMaximum in Axes.Reset (#1306)
+- Fixed Tracker for RectangleBarSeries (#1171)
+- RectangleSeries doesn't render Labels (related to #1334)
+- LineSeries line legend placement with reversed X axis (related to #1334)
+- HistogramSeries label placement inconsistent (related to #1334)
+- TwoColorLineSeries and ThreeColorLineSeries don't work with reversed Y axis (related to #1334)
+- Issue with SVG always containing the xml headers (#1212)
+- In WPF, make sure the axes are initalized when the Model is set before the PlotView has been loaded (#1303)
+- MinimumSegmentLength not working for LineSeries (#1044)
+- rendering issues with MagnitudeAxisFullPlotArea (#1364)
+- OxyPlot.Core.Drawing PngExporter background when exporting to stream (#1382)
+- Windows Forms clipping last line of rendered text (#1124, #1385)
+- Dispose background brush in OxyPlot.Core.Drawing PngExporter (#1392)
+
 ## [1.0.0] - 2016-09-11
 ### Added
 - Added OxyPlot.SharpDX.Wpf NuGet package
@@ -47,6 +127,7 @@ All notable changes to this project will be documented in this file.
 - Improve tracker style (Windows Forms) (#106)
 - Font rendering in OxyPlot.GtkSharp improved by using Pango (#972)
 - Improved LineSeries performance (#834)
+- Fixed bug causing axes titles to not display in OxyPlot.GtkSharp (#989)
 
 ### Changed
 - Fixed closing file stream for PdfReportWriter when PdfReportWriter is closed or disposed of. (#892)
@@ -109,6 +190,8 @@ All notable changes to this project will be documented in this file.
 - ListFiller (#705)
 
 ### Fixed
+- Added check to LineAnnotation.GetScreenPoints to check if ActualMaximumX==ActualMinimumX for non-curved lines. (#1029)
+- Incorrect placment of axis title of axes with AxisDistance (#1065)
 - SharpDX control not being rendered when loaded
 - SharpDX out of viewport scrolling.
 - Multiple mouse clicks not being reported in OxyPlot.GtkSharp (#854)
@@ -187,6 +270,7 @@ All notable changes to this project will be documented in this file.
 - Fixed bug in selection of plot to display in OxyPlot.GtkSharp ExampleBrowser (#979)
 - Fixed non-interpolation of HeatMapSeries in OxyPlot.GtkSharp (#980)
 - Fixed axis min/max calc and axis assignment for CandleStick + VolumeSeries (#389)
+- Fixed drawing of plot backgrounds in OxyPlot.GtkSharp (#990)
 
 ## [0.2014.1.546] - 2014-10-22
 ### Added
@@ -212,6 +296,7 @@ All notable changes to this project will be documented in this file.
 - Add overridable Axis.FormatValueOverride (#181)
 - PngExporter text formatting (#170)
 
-[Unreleased]: https://github.com/oxyplot/oxyplot/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/oxyplot/oxyplot/compare/v2.0.0...HEAD
+[2.0.0]: https://github.com/oxyplot/oxyplot/compare/v1.0.0...v2.0.0
 [1.0.0]: https://github.com/oxyplot/oxyplot/compare/v0.2014.1.546...v1.0.0
 [0.2014.1.546]: https://github.com/oxyplot/oxyplot/compare/v0.0.1...v0.2014.1.546

@@ -163,9 +163,13 @@ namespace OxyPlot.Series
                     {
                         angle = xy.Y / Math.PI * 180;
                         magnitude = xy.X;
-                        if (angle < 0)
+                        while (angle < 0)
                         {
                             angle += 360;
+                        }
+                        while (angle > 360)
+                        {
+                            angle -= 360;
                         }
                     }
 
@@ -234,9 +238,13 @@ namespace OxyPlot.Series
                         double angle = Math.Atan2(y, x) / Math.PI * 180;
                         double magnitude = Math.Sqrt(x * x + y * y);
 
-                        if (angle < 0)
+                        while (angle < 0)
                         {
                             angle += 360;
+                        }
+                        while (angle > 360)
+                        {
+                            angle -= 360;
                         }
 
                         // transform to indices in the Data array
@@ -342,7 +350,9 @@ namespace OxyPlot.Series
         {
             base.EnsureAxes();
 
-            this.ColorAxis = this.PlotModel.GetAxisOrDefault(this.ColorAxisKey, (Axis)this.PlotModel.DefaultColorAxis) as IColorAxis;
+            this.ColorAxis = this.ColorAxisKey != null ?
+                             this.PlotModel.GetAxis(this.ColorAxisKey) as IColorAxis :
+                             this.PlotModel.DefaultColorAxis as IColorAxis;
         }
 
         /// <summary>

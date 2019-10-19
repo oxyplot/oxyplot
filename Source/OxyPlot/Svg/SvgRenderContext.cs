@@ -32,13 +32,14 @@ namespace OxyPlot
         /// <summary>
         /// Initializes a new instance of the <see cref="SvgRenderContext" /> class.
         /// </summary>
-        /// <param name="s">The s.</param>
+        /// <param name="s">The stream.</param>
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
         /// <param name="isDocument">Create an SVG document if set to <c>true</c>.</param>
         /// <param name="textMeasurer">The text measurer.</param>
         /// <param name="background">The background.</param>
-        public SvgRenderContext(Stream s, double width, double height, bool isDocument, IRenderContext textMeasurer, OxyColor background)
+        /// <param name="useVerticalTextAlignmentWorkaround">Whether to use the workaround for vertical text alignment.</param>
+        public SvgRenderContext(Stream s, double width, double height, bool isDocument, IRenderContext textMeasurer, OxyColor background, bool useVerticalTextAlignmentWorkaround = false)
         {
             if (textMeasurer == null)
             {
@@ -47,6 +48,8 @@ namespace OxyPlot
 
             this.w = new SvgWriter(s, width, height, isDocument);
             this.TextMeasurer = textMeasurer;
+            this.UseVerticalTextAlignmentWorkaround = useVerticalTextAlignmentWorkaround;
+
             if (background.IsVisible())
             {
                 this.w.WriteRectangle(0, 0, width, height, this.w.CreateStyle(background, OxyColors.Undefined, 0));
@@ -58,6 +61,11 @@ namespace OxyPlot
         /// </summary>
         /// <value>The text measurer.</value>
         public IRenderContext TextMeasurer { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to use a workaround for vertical text alignment to support renderers with limited support for the dominate-baseline attribute.
+        /// </summary>
+        public bool UseVerticalTextAlignmentWorkaround { get; set; }
 
         /// <summary>
         /// Closes the svg writer.
@@ -181,25 +189,49 @@ namespace OxyPlot
             }
 
             var lines = Regex.Split(text, "\r\n");
-            if (valign == VerticalAlignment.Bottom)
+            
+            var textSize = this.MeasureText(text, fontFamily, fontSize, fontWeight);
+            var lineHeight = textSize.Height / lines.Length;
+            var lineOffset = new ScreenVector(-Math.Sin(rotate / 180.0 * Math.PI) * lineHeight, +Math.Cos(rotate / 180.0 * Math.PI) * lineHeight);
+            
+            if (this.UseVerticalTextAlignmentWorkaround)
             {
-                for (var i = lines.Length - 1; i >= 0; i--)
-                {
-                    var line = lines[i];
-                    var size = this.MeasureText(line, fontFamily, fontSize, fontWeight);
-                    this.w.WriteText(p, line, c, fontFamily, fontSize, fontWeight, rotate, halign, valign);
+                // offset the position, and set the valign to neutral value of `Bottom`
+                double offsetRatio = valign == VerticalAlignment.Bottom ? (1.0 - lines.Length) : valign == VerticalAlignment.Top ? 1.0 : (1.0 - (lines.Length / 2.0));
+                valign = VerticalAlignment.Bottom;
 
-                    p += new ScreenVector(Math.Sin(rotate / 180.0 * Math.PI) * size.Height, Math.Cos(rotate / 180.0 * Math.PI) * size.Height);
-                }
-            }
-            else
-            {
+                p += lineOffset * offsetRatio;
+
                 foreach (var line in lines)
                 {
                     var size = this.MeasureText(line, fontFamily, fontSize, fontWeight);
                     this.w.WriteText(p, line, c, fontFamily, fontSize, fontWeight, rotate, halign, valign);
 
-                    p += new ScreenVector(-Math.Sin(rotate / 180.0 * Math.PI) * size.Height, Math.Cos(rotate / 180.0 * Math.PI) * size.Height);
+                    p += lineOffset;
+                }
+            }
+            else
+            {
+                if (valign == VerticalAlignment.Bottom)
+                {
+                    for (var i = lines.Length - 1; i >= 0; i--)
+                    {
+                        var line = lines[i];
+                        var size = this.MeasureText(line, fontFamily, fontSize, fontWeight);
+                        this.w.WriteText(p, line, c, fontFamily, fontSize, fontWeight, rotate, halign, valign);
+
+                        p -= lineOffset;
+                    }
+                }
+                else
+                {
+                    foreach (var line in lines)
+                    {
+                        var size = this.MeasureText(line, fontFamily, fontSize, fontWeight);
+                        this.w.WriteText(p, line, c, fontFamily, fontSize, fontWeight, rotate, halign, valign);
+
+                        p += lineOffset;
+                    }
                 }
             }
         }

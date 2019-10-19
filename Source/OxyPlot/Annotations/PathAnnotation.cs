@@ -18,31 +18,6 @@ namespace OxyPlot.Annotations
     public abstract class PathAnnotation : TextualAnnotation
     {
         /// <summary>
-        /// Defines whether or not the path should be aliased.
-        /// </summary>
-        private bool aliased;
-
-        /// <summary>
-        /// The actual minimum value on the x axis.
-        /// </summary>
-        private double actualMinimumX;
-
-        /// <summary>
-        /// The actual minimum value on the y axis.
-        /// </summary>
-        private double actualMinimumY;
-
-        /// <summary>
-        /// The actual maximum value on the x axis.
-        /// </summary>
-        private double actualMaximumX;
-
-        /// <summary>
-        /// The actual maximum value on the y axis.
-        /// </summary>
-        private double actualMaximumY;
-
-        /// <summary>
         /// The points of the line, transformed to screen coordinates.
         /// </summary>
         private IList<ScreenPoint> screenPoints;
@@ -62,7 +37,7 @@ namespace OxyPlot.Annotations
             this.LineJoin = LineJoin.Miter;
             this.ClipByXAxis = true;
             this.ClipByYAxis = true;
-            this.aliased = false;
+            this.Aliased = false;
 
             this.TextLinePosition = 1;
             this.TextOrientation = AnnotationTextOrientation.AlongLine;
@@ -164,86 +139,31 @@ namespace OxyPlot.Annotations
         /// Gets or sets a value indicating whether the path is aliased.
         /// </summary>
         /// <value><c>true</c> if is aliased; otherwise, <c>false</c>.</value>
-        protected bool Aliased
-        {
-            get
-            {
-                return this.aliased;
-            }
-
-            set
-            {
-                this.aliased = value;
-            }
-        }
+        protected bool Aliased { get; set; }
 
         /// <summary>
         /// Gets or sets the actual minimum value on the x axis.
         /// </summary>
         /// <value>The actual minimum value on the x axis.</value>
-        protected double ActualMinimumX
-        {
-            get
-            {
-                return this.actualMinimumX;
-            }
-
-            set
-            {
-                this.actualMinimumX = value;
-            }
-        }
+        protected double ActualMinimumX { get; set; }
 
         /// <summary>
         /// Gets or sets the actual minimum value on the y axis.
         /// </summary>
         /// <value>The actual minimum value on the y axis.</value>
-        protected double ActualMinimumY
-        {
-            get
-            {
-                return this.actualMinimumY;
-            }
-
-            set
-            {
-                this.actualMinimumY = value;
-            }
-        }
+        protected double ActualMinimumY { get; set; }
 
         /// <summary>
         /// Gets or sets the actual maximum value on the x axis.
         /// </summary>
         /// <value>The actual maximum value on the x axis.</value>
-        protected double ActualMaximumX
-        {
-            get
-            {
-                return this.actualMaximumX;
-            }
-
-            set
-            {
-                this.actualMaximumX = value;
-            }
-        }
+        protected double ActualMaximumX { get; set; }
 
         /// <summary>
         /// Gets or sets the actual maximum value on the y axis.
         /// </summary>
         /// <value>The actual maximum value on the y axis.</value>
-        protected double ActualMaximumY
-        {
-            get
-            {
-                return this.actualMaximumY;
-            }
-
-            set
-            {
-                this.actualMaximumY = value;
-            }
-        }
+        protected double ActualMaximumY { get; set; }
 
         /// <summary>
         /// Renders the annotation on the specified context.
@@ -269,17 +189,20 @@ namespace OxyPlot.Annotations
             var clippedPoints = new List<ScreenPoint>();
             var dashArray = this.LineStyle.GetDashArray();
 
-            rc.DrawClippedLine(
-               clippingRectangle,
-               this.screenPoints,
-               MinimumSegmentLength * MinimumSegmentLength,
-               this.GetSelectableColor(this.Color),
-               this.StrokeThickness,
-               dashArray,
-               this.LineJoin,
-               this.aliased,
-               null,
-               clippedPoints.AddRange);
+            if (this.StrokeThickness > 0 && this.LineStyle != LineStyle.None)
+            {
+                rc.DrawClippedLine(
+                   clippingRectangle,
+                   this.screenPoints,
+                   MinimumSegmentLength * MinimumSegmentLength,
+                   this.GetSelectableColor(this.Color),
+                   this.StrokeThickness,
+                   dashArray,
+                   this.LineJoin,
+                   this.Aliased,
+                   null,
+                   clippedPoints.AddRange);
+            }
 
             ScreenPoint position;
             double angle;
@@ -411,25 +334,25 @@ namespace OxyPlot.Annotations
         /// </summary>
         protected virtual void CalculateActualMinimumsMaximums()
         {
-            this.actualMinimumX = Math.Max(this.MinimumX, this.XAxis.ActualMinimum);
-            this.actualMaximumX = Math.Min(this.MaximumX, this.XAxis.ActualMaximum);
-            this.actualMinimumY = Math.Max(this.MinimumY, this.YAxis.ActualMinimum);
-            this.actualMaximumY = Math.Min(this.MaximumY, this.YAxis.ActualMaximum);
+            this.ActualMinimumX = Math.Max(this.MinimumX, this.XAxis.ActualMinimum);
+            this.ActualMaximumX = Math.Min(this.MaximumX, this.XAxis.ActualMaximum);
+            this.ActualMinimumY = Math.Max(this.MinimumY, this.YAxis.ActualMinimum);
+            this.ActualMaximumY = Math.Min(this.MaximumY, this.YAxis.ActualMaximum);
 
             if (!this.ClipByXAxis)
             {
                 double right = this.XAxis.InverseTransform(this.PlotModel.PlotArea.Right);
                 double left = this.XAxis.InverseTransform(this.PlotModel.PlotArea.Left);
-                this.actualMaximumX = Math.Max(left, right);
-                this.actualMinimumX = Math.Min(left, right);
+                this.ActualMaximumX = Math.Max(left, right);
+                this.ActualMinimumX = Math.Min(left, right);
             }
 
             if (!this.ClipByYAxis)
             {
                 double bottom = this.YAxis.InverseTransform(this.PlotModel.PlotArea.Bottom);
                 double top = this.YAxis.InverseTransform(this.PlotModel.PlotArea.Top);
-                this.actualMaximumY = Math.Max(top, bottom);
-                this.actualMinimumY = Math.Min(top, bottom);
+                this.ActualMaximumY = Math.Max(top, bottom);
+                this.ActualMinimumY = Math.Min(top, bottom);
             }
         }
 

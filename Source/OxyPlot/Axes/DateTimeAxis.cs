@@ -251,6 +251,18 @@ namespace OxyPlot.Axes
                     }
 
                     break;
+                    
+                    
+                    
+                case DateTimeIntervalType.Milliseconds:
+                    this.ActualMinorStep = this.ActualMajorStep;
+                    if (this.ActualStringFormat == null)
+                    {
+                        this.ActualStringFormat = "HH:mm:ss.fff";
+                    }
+
+                    break;
+                    
                 case DateTimeIntervalType.Manual:
                     break;
                 case DateTimeIntervalType.Auto:
@@ -313,11 +325,12 @@ namespace OxyPlot.Axes
             const double Hour = Day / 24;
             const double Minute = Hour / 60;
             const double Second = Minute / 60;
+            const double MilliSecond = Second / 1000;
 
             double range = Math.Abs(this.ActualMinimum - this.ActualMaximum);
 
             var goodIntervals = new[]
-                                    {
+                                    {   MilliSecond, 2 * MilliSecond, 10 * MilliSecond, 100 * MilliSecond,
                                         Second, 2 * Second, 5 * Second, 10 * Second, 30 * Second, Minute, 2 * Minute,
                                         5 * Minute, 10 * Minute, 30 * Minute, Hour, 4 * Hour, 8 * Hour, 12 * Hour, Day,
                                         2 * Day, 5 * Day, Week, 2 * Week, Month, 2 * Month, 3 * Month, 4 * Month,
@@ -349,7 +362,13 @@ namespace OxyPlot.Axes
 
             if (this.IntervalType == DateTimeIntervalType.Auto)
             {
-                this.actualIntervalType = DateTimeIntervalType.Seconds;
+                this.actualIntervalType = DateTimeIntervalType.Milliseconds;
+
+                if (interval >= 1.0 / 24 / 60 / 60)
+                {
+                    this.actualIntervalType = DateTimeIntervalType.Seconds;
+                }
+                    
                 if (interval >= 1.0 / 24 / 60)
                 {
                     this.actualIntervalType = DateTimeIntervalType.Minutes;

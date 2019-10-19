@@ -8,6 +8,8 @@ namespace ExampleLibrary
 {
     using System;
 
+    using ExampleLibrary.Utilities;
+
     using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
@@ -36,6 +38,24 @@ namespace ExampleLibrary
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, MaximumPadding = 0.3, MinimumPadding = 0.3 });
 
             return model;
+        }
+
+        [Example("HighLowSeries (transposed)")]
+        public static PlotModel HighLowSeriesTransposed()
+        {
+            return HighLowSeries().Transpose();
+        }
+
+        [Example("HighLowSeries (reversed X Axis)")]
+        public static PlotModel HighLowSeriesReversedXAxis()
+        {
+            return HighLowSeries().ReverseXAxis();
+        }
+
+        [Example("HighLowSeries (reversed X Axis, transposed)")]
+        public static PlotModel HighLowSeriesReversedXAxisTransposed()
+        {
+            return HighLowSeriesReversedXAxis().Transpose();
         }
 
         [Example("HighLowSeries (DateTime axis)")]

@@ -6,6 +6,8 @@
 
 namespace ExampleLibrary
 {
+    using ExampleLibrary.Utilities;
+
     using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
@@ -19,6 +21,12 @@ namespace ExampleLibrary
             var plotModel1 = new PlotModel { Title = "AreaSeries with default style" };
             plotModel1.Series.Add(CreateExampleAreaSeries());
             return plotModel1;
+        }
+
+        [Example("Default style (transposed)")]
+        public static PlotModel DefaultStyleTransposed()
+        {
+            return DefaultStyle().Transpose();
         }
 
         [Example("Different stroke colors")]

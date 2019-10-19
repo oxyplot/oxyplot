@@ -45,7 +45,7 @@ namespace OxyPlot.Wpf
         /// Gets or sets the resolution of the output image.
         /// </summary>
         /// <value>The resolution in dots per inch (dpi).</value>
-        public int Resolution { get; set; }
+        public double Resolution { get; set; }
 
         /// <summary>
         /// Gets or sets the background color.
@@ -61,47 +61,13 @@ namespace OxyPlot.Wpf
         /// <param name="height">The height of the output bitmap.</param>
         /// <param name="background">The background color. The default value is <c>null</c>.</param>
         /// <param name="resolution">The resolution (resolution). The default value is 96.</param>
-        public static void Export(IPlotModel model, string fileName, int width, int height, OxyColor background, int resolution = 96)
+        public static void Export(IPlotModel model, string fileName, int width, int height, OxyColor background, double resolution = 96)
         {
-            using (var s = File.Create(fileName))
+            var exporter = new PngExporter { Width = width, Height = height, Background = background, Resolution = resolution };
+            using (var stream = File.Create(fileName))
             {
-                Export(model, s, width, height, background, resolution);
+                exporter.Export(model, stream);
             }
-        }
-
-        /// <summary>
-        /// Exports the specified plot model to a stream.
-        /// </summary>
-        /// <param name="model">The model to export.</param>
-        /// <param name="stream">The stream.</param>
-        /// <param name="width">The width of the output bitmap.</param>
-        /// <param name="height">The height of the output bitmap.</param>
-        /// <param name="background">The background color. The default value is <c>null</c>.</param>
-        /// <param name="resolution">The resolution (resolution). The default value is 96.</param>
-        public static void Export(IPlotModel model, Stream stream, int width, int height, OxyColor background, int resolution = 96)
-        {
-            var exporter = new PngExporter { Width = width, Height = height, Background = background, Resolution = resolution };
-            exporter.Export(model, stream);
-        }
-
-        /// <summary>
-        /// Exports the specified plot model to a bitmap.
-        /// </summary>
-        /// <param name="model">The plot model.</param>
-        /// <param name="width">The width.</param>
-        /// <param name="height">The height.</param>
-        /// <param name="background">The background.</param>
-        /// <param name="resolution">The resolution (dpi).</param>
-        /// <returns>A bitmap.</returns>
-        public static BitmapSource ExportToBitmap(
-            IPlotModel model,
-            int width,
-            int height,
-            OxyColor background,
-            int resolution = 96)
-        {
-            var exporter = new PngExporter { Width = width, Height = height, Background = background, Resolution = resolution };
-            return exporter.ExportToBitmap(model);
         }
 
         /// <summary>

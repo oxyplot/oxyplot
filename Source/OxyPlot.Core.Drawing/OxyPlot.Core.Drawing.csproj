@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <Description>OxyPlot is a plotting library for .NET. This is package contains the Core.Drawing extensions.</Description>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <Copyright>Copyright (c) 2014 OxyPlot contributors</Copyright>
+        <PackageProjectUrl>https://oxyplot.github.io/</PackageProjectUrl>
+        <PackageIcon>OxyPlot_128.png</PackageIcon>
+        <PackageTags>plotting plot charting chart</PackageTags>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/oxyplot/oxyplot.git</RepositoryUrl>
+        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+        <GenerateDocumentationFile>True</GenerateDocumentationFile>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    </PropertyGroup>
+    <ItemGroup>
+        <None Include="..\..\Icons\OxyPlot_128.png" Pack="true" PackagePath="\" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="System.Drawing.Common" Version="4.6.0" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\OxyPlot\OxyPlot.csproj" />
+    </ItemGroup>
+</Project>

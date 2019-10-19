@@ -203,10 +203,10 @@ namespace OxyPlot.Series
         public double MinimumSegmentLength { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref = "DataPointSeries" /> is smooth.
+        /// Gets or sets a type of interpolation algorithm used for smoothing this <see cref = "DataPointSeries" />.
         /// </summary>
-        /// <value><c>true</c> if smooth; otherwise, <c>false</c>.</value>
-        public bool Smooth { get; set; }
+        /// <value>Type of interpolation algorithm.</value>
+        public IInterpolationAlgorithm InterpolationAlgorithm { get; set; }
 
         /// <summary>
         /// Gets or sets the thickness of the curve.
@@ -295,7 +295,7 @@ namespace OxyPlot.Series
                 }
             }
 
-            if (interpolate && this.Smooth)
+            if (interpolate && this.InterpolationAlgorithm != null)
             {
                 var result = this.GetNearestInterpolatedPointInternal(this.SmoothedPoints, point);
                 if (result != null)
@@ -347,7 +347,7 @@ namespace OxyPlot.Series
             if (this.LineLegendPosition != LineLegendPosition.None && !string.IsNullOrEmpty(this.Title))
             {
                 // renders a legend on the line
-                this.RenderLegendOnLine(rc);
+                this.RenderLegendOnLine(rc, clippingRect);
             }
         }
 
@@ -392,11 +392,12 @@ namespace OxyPlot.Series
             if (this.Color.IsAutomatic())
             {
                 this.defaultColor = this.PlotModel.GetDefaultColor();
+            }
 
-                if (this.MarkerFill.IsAutomatic())
-                {
-                    this.defaultMarkerFill = this.defaultColor;
-                }
+            if (this.MarkerFill.IsAutomatic())
+            {
+                // No color was explicitly provided. Use the line color if it was set, else use default.
+                this.defaultMarkerFill = this.Color.IsAutomatic() ? this.defaultColor : this.Color;
             }
         }
 
@@ -405,7 +406,7 @@ namespace OxyPlot.Series
         /// </summary>
         protected internal override void UpdateMaxMin()
         {
-            if (this.Smooth)
+            if (this.InterpolationAlgorithm != null)
             {
                 // Update the max/min from the control points
                 base.UpdateMaxMin();
@@ -666,33 +667,38 @@ namespace OxyPlot.Series
         /// Renders a legend on the line.
         /// </summary>
         /// <param name="rc">The render context.</param>
-        protected void RenderLegendOnLine(IRenderContext rc)
+        /// <param name="clippingRect">The clipping rectangle.</param>
+        protected void RenderLegendOnLine(IRenderContext rc, OxyRect clippingRect)
         {
             // Find the position
             DataPoint point;
-            var ha = HorizontalAlignment.Left;
-            double dx;
+            HorizontalAlignment ha;
+            var va = VerticalAlignment.Middle;
+            double dx = 4;
+
             switch (this.LineLegendPosition)
             {
                 case LineLegendPosition.Start:
-
-                    // start position
                     point = this.ActualPoints[0];
                     ha = HorizontalAlignment.Right;
-                    dx = -4;
+                    dx = -dx;
                     break;
-                default:
-
-                    // end position
+                case LineLegendPosition.End:
                     point = this.ActualPoints[this.ActualPoints.Count - 1];
-                    dx = 4;
+                    ha = HorizontalAlignment.Left;
                     break;
+                case LineLegendPosition.None:
+                    return;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
 
-            var pt = this.Transform(point) + new ScreenVector(dx, 0);
+            this.Orientate(ref ha, ref va);
+            var pt = this.Transform(point) + this.Orientate(new ScreenVector(dx, 0));
 
             // Render the legend
-            rc.DrawText(
+            rc.DrawClippedText(
+                clippingRect,
                 pt,
                 this.Title,
                 this.ActualTextColor,
@@ -701,11 +707,11 @@ namespace OxyPlot.Series
                 this.ActualFontWeight,
                 0,
                 ha,
-                VerticalAlignment.Middle);
+                va);
         }
 
         /// <summary>
-        /// Renders the transformed points as a line (smoothed if <see cref="LineSeries.Smooth"/> is <c>true</c>) and markers (if <see cref="MarkerType"/> is not <c>None</c>).
+        /// Renders the transformed points as a line (smoothed if <see cref="InterpolationAlgorithm"/> isn’t <c>null</c>) and markers (if <see cref="MarkerType"/> is not <c>None</c>).
         /// </summary>
         /// <param name="rc">The render context.</param>
         /// <param name="clippingRect">The clipping rectangle.</param>
@@ -713,11 +719,11 @@ namespace OxyPlot.Series
         protected virtual void RenderLineAndMarkers(IRenderContext rc, OxyRect clippingRect, IList<ScreenPoint> pointsToRender)
         {
             var screenPoints = pointsToRender;
-            if (this.Smooth)
+            if (this.InterpolationAlgorithm != null)
             {
                 // spline smoothing (should only be used on small datasets)
                 var resampledPoints = ScreenPointHelper.ResamplePoints(pointsToRender, this.MinimumSegmentLength);
-                screenPoints = CanonicalSplineHelper.CreateSpline(resampledPoints, 0.5, null, false, 0.25);
+                screenPoints = this.InterpolationAlgorithm.CreateSpline(resampledPoints, false, 0.25);
             }
 
             // clip the line segments with the clipping rectangle
@@ -730,17 +736,7 @@ namespace OxyPlot.Series
             {
                 var markerBinOffset = this.MarkerResolution > 0 ? this.Transform(this.MinX, this.MinY) : default(ScreenPoint);
 
-                rc.DrawMarkers(
-                    clippingRect,
-                    pointsToRender,
-                    this.MarkerType,
-                    this.MarkerOutline,
-                    new[] { this.MarkerSize },
-                    this.ActualMarkerFill,
-                    this.MarkerStroke,
-                    this.MarkerStrokeThickness,
-                    this.MarkerResolution,
-                    markerBinOffset);
+                rc.DrawMarkers(clippingRect, pointsToRender, this.MarkerType, this.MarkerOutline, new[] { this.MarkerSize }, this.ActualMarkerFill, this.MarkerStroke, this.MarkerStrokeThickness, this.MarkerResolution, markerBinOffset);
             }
         }
 
@@ -759,16 +755,7 @@ namespace OxyPlot.Series
                 this.outputBuffer = new List<ScreenPoint>(pointsToRender.Count);
             }
 
-            rc.DrawClippedLine(
-                clippingRect,
-                pointsToRender,
-                this.MinimumSegmentLength * this.MinimumSegmentLength,
-                this.GetSelectableColor(this.ActualColor),
-                this.StrokeThickness,
-                dashArray,
-                this.LineJoin,
-                false,
-                this.outputBuffer);
+            rc.DrawClippedLine(clippingRect, pointsToRender, this.MinimumSegmentLength * this.MinimumSegmentLength, this.GetSelectableColor(this.ActualColor), this.StrokeThickness, dashArray, this.LineJoin, false, this.outputBuffer);
         }
 
         /// <summary>
@@ -777,7 +764,7 @@ namespace OxyPlot.Series
         protected virtual void ResetSmoothedPoints()
         {
             double tolerance = Math.Abs(Math.Max(this.MaxX - this.MinX, this.MaxY - this.MinY) / ToleranceDivisor);
-            this.smoothedPoints = CanonicalSplineHelper.CreateSpline(this.ActualPoints, 0.5, null, false, tolerance);
+            this.smoothedPoints = this.InterpolationAlgorithm.CreateSpline(this.ActualPoints, false, tolerance);
         }
 
         /// <summary>

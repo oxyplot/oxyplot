@@ -32,6 +32,7 @@ namespace OxyPlot
         public enum ExifTags
         {
             // IFD0 items
+#pragma warning disable 1591
             ImageWidth = 0x100,
             ImageLength = 0x101,
             BitsPerSample = 0x102,
@@ -153,6 +154,7 @@ namespace OxyPlot
             GPSAreaInformation = 0x1C,
             GPSDateStamp = 0x1D,
             GPSDifferential = 0x1E
+#pragma warning restore 1591
         }
 
         /// <summary>
@@ -171,6 +173,8 @@ namespace OxyPlot
         /// Invalid TIFF identifier</exception>
         public OxyImageInfo GetImageInfo(byte[] bytes)
         {
+            throw new NotImplementedException(); 
+            /*
             int width = -1;
             int height = -1;
             double dpix = double.NaN;
@@ -288,6 +292,8 @@ namespace OxyPlot
                 }
             }
 
+#pragma warning disable CS0162 // Unreachable code detected
+            // Analyzer isn't properly detecting break in infinite loop and therefore shows a warning.
             return new OxyImageInfo
             {
                 Width = width,
@@ -296,7 +302,9 @@ namespace OxyPlot
                 DpiY = dpiy,
                 BitsPerPixel = bitDepth
             };
+            */
         }
+#pragma warning restore CS0162 // Unreachable code detected
 
         private static object ReadValue(
             BinaryReader inputReader,
@@ -417,9 +425,9 @@ namespace OxyPlot
         /// <summary>
         /// Decodes an image from the specified stream.
         /// </summary>
-        /// <param name="s">The stream.</param>
+        /// <param name="bytes">The data to decode.</param>
         /// <returns>The 32-bit pixel data.</returns>
-        public OxyColor[,] Decode(Stream s)
+        public OxyColor[,] Decode(byte[] bytes)
         {
             throw new NotImplementedException();
         }

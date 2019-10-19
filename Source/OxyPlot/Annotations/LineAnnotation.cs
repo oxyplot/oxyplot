@@ -114,42 +114,30 @@ namespace OxyPlot.Annotations
             {
                 if (fx != null)
                 {
-                    double x = this.ActualMinimumX;
-
                     // todo: the step size should be adaptive
-                    double dx = (this.ActualMaximumX - this.ActualMinimumX) / 100;
-                    while (true)
+                    var n = 100;
+                    var dx = (this.ActualMaximumX - this.ActualMinimumX) / 100;
+                    for (int i = 0; i <= n; i++)
                     {
+                        var x = this.ActualMinimumX + i * dx;
                         points.Add(new DataPoint(x, fx(x)));
-                        if (x > this.ActualMaximumX)
-                        {
-                            break;
-                        }
-
-                        x += dx;
                     }
                 }
                 else
                 {
-                    double y = this.ActualMinimumY;
-
                     // todo: the step size should be adaptive
-                    double dy = (this.ActualMaximumY - this.ActualMinimumY) / 100;
-                    while (true)
+                    var n = 100;
+                    var dy = (this.ActualMaximumY - this.ActualMinimumY) / n;
+                    for (int i = 0; i <= n; i++)
                     {
+                        var y = this.ActualMinimumY + i * dy;
                         points.Add(new DataPoint(fy(y), y));
-                        if (y > this.ActualMaximumY)
-                        {
-                            break;
-                        }
-
-                        y += dy;
                     }
                 }
             }
 
             // transform to screen coordinates
-            return points.Select(this.Transform).ToList();
+            return points.Select(this.Transform).ToArray();
         }
     }
 }

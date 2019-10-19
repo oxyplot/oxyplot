@@ -9,6 +9,8 @@ namespace ExampleLibrary
     using System;
     using System.Linq;
 
+    using ExampleLibrary.Utilities;
+
     using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
@@ -142,8 +144,15 @@ namespace ExampleLibrary
             var series = new CandleStickSeries();
             series.Items.Add(new HighLowItem(startTimeValue, 100, 80, 92, 94));
             series.Items.Add(new HighLowItem(startTimeValue + 1, 102, 77, 94, 93));
+            series.Items.Add(new HighLowItem(startTimeValue + 2, 99, 85, 93, 93));
             pm.Series.Add(series);
             return pm;
+        }
+
+        [Example("Simple CandleStickSeries example (transposed)")]
+        public static PlotModel SimpleExampleTransposed()
+        {
+            return SimpleExample().Transpose();
         }
 
         /// <summary>

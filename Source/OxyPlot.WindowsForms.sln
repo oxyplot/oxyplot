@@ -1,19 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29403.142
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{B630CA82-A785-49CA-8FA0-3D3AF4D6626A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot", "OxyPlot\OxyPlot.csproj", "{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OxyPlot", "OxyPlot\OxyPlot.csproj", "{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsFormsDemo", "Examples\WindowsForms\WindowsFormsDemo\WindowsFormsDemo.csproj", "{BBAECBB8-149A-42EE-A4F4-6207D7954F8B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WindowsFormsDemo", "Examples\WindowsForms\WindowsFormsDemo\WindowsFormsDemo.csproj", "{BBAECBB8-149A-42EE-A4F4-6207D7954F8B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.WindowsForms", "OxyPlot.WindowsForms\OxyPlot.WindowsForms.csproj", "{8BC521AD-81CF-4E6C-8898-BE67527E7064}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OxyPlot.WindowsForms", "OxyPlot.WindowsForms\OxyPlot.WindowsForms.csproj", "{8BC521AD-81CF-4E6C-8898-BE67527E7064}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleLibrary", "Examples\ExampleLibrary\ExampleLibrary.csproj", "{FACB89E5-53A5-4748-9F5B-E0714EBB37B2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExampleLibrary", "Examples\ExampleLibrary\ExampleLibrary.csproj", "{FACB89E5-53A5-4748-9F5B-E0714EBB37B2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleBrowser", "Examples\WindowsForms\ExampleBrowser\ExampleBrowser.csproj", "{138BFD13-0ED1-49F5-B902-78770CB3D66B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExampleBrowser", "Examples\WindowsForms\ExampleBrowser\ExampleBrowser.csproj", "{138BFD13-0ED1-49F5-B902-78770CB3D66B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Change log", "Change log", "{718F324B-6F99-45AD-B4D8-99EBCB9D5F65}"
 	ProjectSection(SolutionItems) = preProject
@@ -28,15 +28,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentat
 		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Tests", "OxyPlot.Tests\OxyPlot.Tests.csproj", "{E6218B88-69F5-4E3F-9ABC-93AB82FD77AD}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot_NET40", "OxyPlot\OxyPlot_NET40.csproj", "{1C1D9807-BE39-40A4-87DE-3F81E7C651E5}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.WindowsForms_NET40", "OxyPlot.WindowsForms\OxyPlot.WindowsForms_NET40.csproj", "{D4554296-094E-4CAC-8EAE-44EB250666C6}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleLibrary_NET40", "Examples\ExampleLibrary\ExampleLibrary_NET40.csproj", "{B8A34A2F-E505-4517-8EFF-7F80E39CF425}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleBrowser_NET40", "Examples\WindowsForms\ExampleBrowser\ExampleBrowser_NET40.csproj", "{44DC1E63-C7D0-4068-9FAE-1F18A4CEA918}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OxyPlot.Tests", "OxyPlot.Tests\OxyPlot.Tests.csproj", "{E6218B88-69F5-4E3F-9ABC-93AB82FD77AD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -68,22 +60,6 @@ Global
 		{E6218B88-69F5-4E3F-9ABC-93AB82FD77AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E6218B88-69F5-4E3F-9ABC-93AB82FD77AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E6218B88-69F5-4E3F-9ABC-93AB82FD77AD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1C1D9807-BE39-40A4-87DE-3F81E7C651E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1C1D9807-BE39-40A4-87DE-3F81E7C651E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1C1D9807-BE39-40A4-87DE-3F81E7C651E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1C1D9807-BE39-40A4-87DE-3F81E7C651E5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D4554296-094E-4CAC-8EAE-44EB250666C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D4554296-094E-4CAC-8EAE-44EB250666C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D4554296-094E-4CAC-8EAE-44EB250666C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D4554296-094E-4CAC-8EAE-44EB250666C6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B8A34A2F-E505-4517-8EFF-7F80E39CF425}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B8A34A2F-E505-4517-8EFF-7F80E39CF425}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B8A34A2F-E505-4517-8EFF-7F80E39CF425}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B8A34A2F-E505-4517-8EFF-7F80E39CF425}.Release|Any CPU.Build.0 = Release|Any CPU
-		{44DC1E63-C7D0-4068-9FAE-1F18A4CEA918}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{44DC1E63-C7D0-4068-9FAE-1F18A4CEA918}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{44DC1E63-C7D0-4068-9FAE-1F18A4CEA918}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{44DC1E63-C7D0-4068-9FAE-1F18A4CEA918}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -92,7 +68,8 @@ Global
 		{BBAECBB8-149A-42EE-A4F4-6207D7954F8B} = {B630CA82-A785-49CA-8FA0-3D3AF4D6626A}
 		{FACB89E5-53A5-4748-9F5B-E0714EBB37B2} = {B630CA82-A785-49CA-8FA0-3D3AF4D6626A}
 		{138BFD13-0ED1-49F5-B902-78770CB3D66B} = {B630CA82-A785-49CA-8FA0-3D3AF4D6626A}
-		{B8A34A2F-E505-4517-8EFF-7F80E39CF425} = {B630CA82-A785-49CA-8FA0-3D3AF4D6626A}
-		{44DC1E63-C7D0-4068-9FAE-1F18A4CEA918} = {B630CA82-A785-49CA-8FA0-3D3AF4D6626A}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {248F16EA-57DA-4799-A5C0-23578EF1FD12}
 	EndGlobalSection
 EndGlobal
