@@ -80,6 +80,7 @@ All notable changes to this project will be documented in this file.
 - OxyPlot.Core.Drawing PngExporter background when exporting to stream (#1382)
 - Windows Forms clipping last line of rendered text (#1124, #1385)
 - Dispose background brush in OxyPlot.Core.Drawing PngExporter (#1392)
+- Legend font size is not affected by DefaultFontSize (#1396)
 
 ## [1.0.0] - 2016-09-11
 ### Added

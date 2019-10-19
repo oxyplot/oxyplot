@@ -207,6 +207,7 @@ namespace OxyPlot
 
             double y = rect.Top;
             var maxsize = new OxySize(Math.Max(rect.Width - this.LegendSymbolLength - this.LegendSymbolMargin, 0), rect.Height);
+            var actualLegendFontSize = double.IsNaN(this.LegendFontSize) ? this.DefaultFontSize : this.LegendFontSize;
 
             rc.SetToolTip(s.ToolTip);
             var textSize = rc.DrawMathText(
@@ -214,7 +215,7 @@ namespace OxyPlot
                 s.Title,
                 this.LegendTextColor.GetActualColor(this.TextColor),
                 this.LegendFont ?? this.DefaultFont,
-                this.LegendFontSize,
+                actualLegendFontSize,
                 this.LegendFontWeight,
                 0,
                 actualItemAlignment,
@@ -289,6 +290,9 @@ namespace OxyPlot
 
             var size = new OxySize();
 
+            var actualLegendFontSize = double.IsNaN(this.LegendFontSize) ? this.DefaultFontSize : this.LegendFontSize;
+            var actualLegendTitleFontSize = double.IsNaN(this.LegendTitleFontSize) ? actualLegendFontSize : this.LegendTitleFontSize;
+
             // Render/measure the legend title
             if (!string.IsNullOrEmpty(this.LegendTitle))
             {
@@ -298,7 +302,7 @@ namespace OxyPlot
                     titleSize = rc.MeasureMathText(
                         this.LegendTitle,
                         this.LegendTitleFont ?? this.DefaultFont,
-                        this.LegendTitleFontSize,
+                        actualLegendTitleFontSize,
                         this.LegendTitleFontWeight);
                 }
                 else
@@ -308,7 +312,7 @@ namespace OxyPlot
                         this.LegendTitle,
                         this.LegendTitleColor.GetActualColor(this.TextColor),
                         this.LegendTitleFont ?? this.DefaultFont,
-                        this.LegendTitleFontSize,
+                        actualLegendTitleFontSize,
                         this.LegendTitleFontWeight,
                         0,
                         HorizontalAlignment.Left,
@@ -372,7 +376,7 @@ namespace OxyPlot
                     continue;
                 }
 
-                var textSize = rc.MeasureMathText(s.Title, this.LegendFont ?? this.DefaultFont, this.LegendFontSize, this.LegendFontWeight);
+                var textSize = rc.MeasureMathText(s.Title, this.LegendFont ?? this.DefaultFont, actualLegendFontSize, this.LegendFontWeight);
                 double itemWidth = this.LegendSymbolLength + this.LegendSymbolMargin + textSize.Width;
                 double itemHeight = textSize.Height;
 
