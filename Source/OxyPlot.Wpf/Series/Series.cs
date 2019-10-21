@@ -33,7 +33,7 @@ namespace OxyPlot.Wpf
             "OxyToolTip",
             typeof(string),
             typeof(Series),
-            new PropertyMetadata(null, AppearanceChanged)); // is AppearanceChanged here needed?
+            new PropertyMetadata(null));
 
         /// <summary>
         /// Identifies the <see cref="Title"/> dependency property.

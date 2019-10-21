@@ -322,7 +322,7 @@ namespace OxyPlot.Wpf
             "OxyToolTip",
             typeof(string),
             typeof(Axis),
-            new PropertyMetadata(null, AppearanceChanged)); // is AppearanceChanged here needed?
+            new PropertyMetadata(null));
 
         /// <summary>
         /// Identifies the <see cref="PositionAtZeroCrossing"/> dependency property.

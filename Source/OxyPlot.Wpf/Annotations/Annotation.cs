@@ -34,7 +34,7 @@ namespace OxyPlot.Wpf
             "OxyToolTip",
             typeof(string),
             typeof(Annotation),
-            new PropertyMetadata(null, AppearanceChanged)); // is AppearanceChanged here needed?
+            new PropertyMetadata(null));
 
         /// <summary>
         /// Identifies the <see cref="XAxisKey"/> dependency property.
