@@ -94,8 +94,8 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Initializes a new instance of the <see cref="PlotBase" /> class.
         /// </summary>
-        /// <param name="tt">The <see cref="IToolTip"/> object used as tooltip.</param>
-        protected PlotBase(IToolTip tt = null)
+        /// <param name="toolTip">The <see cref="IToolTip"/> object used as tooltip.</param>
+        protected PlotBase(IToolTip toolTip = null)
         {
             this.DisconnectCanvasWhileUpdating = true;
             this.trackerDefinitions = new ObservableCollection<TrackerDefinition>();
@@ -108,13 +108,13 @@ namespace OxyPlot.Wpf
 
             this.IsManipulationEnabled = true;
 
-            if (tt == null)
+            if (toolTip == null)
             {
                 this.OxyToolTip = new CustomToolTip(this);
             }
             else
             {
-                this.OxyToolTip = tt;
+                this.OxyToolTip = toolTip;
             }
         }
 
