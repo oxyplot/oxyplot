@@ -12,12 +12,12 @@ namespace OxyPlot
     using System;
 
     /// <summary>
-    /// A wrapper around <see cref="PlotElement"/> that can also represent elements of the plot that are not exposed (currently just the plot title) or the absence of an element.
+    /// A wrapper around <see cref="OxyPlot.PlotElement"/> that can also represent elements of the plot that are not exposed (currently just the plot title) or the absence of an element.
     /// </summary>
     public class ToolTippedPlotElement
     {
         /// <summary>
-        /// The wrapped <see cref="PlotElement"/>, or null if there is no wrapped <see cref="PlotElement"/> or if this represents the plot title.
+        /// The wrapped <see cref="OxyPlot.PlotElement"/>, or null if there is no wrapped <see cref="OxyPlot.PlotElement"/> or if this represents the plot title.
         /// </summary>
         public PlotElement PlotElement { get; private set; } = null;
 
@@ -67,10 +67,10 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Verifies the equivalence of a <see cref="ToolTippedPlotElement"/> and a <see cref="PlotElement"/>.
+        /// Verifies the equivalence of a <see cref="ToolTippedPlotElement"/> and a <see cref="OxyPlot.PlotElement"/>.
         /// </summary>
-        /// <param name="el">The <see cref="PlotElement"/>.</param>
-        /// <returns>True if the <see cref="ToolTippedPlotElement"/> is equivalent with the <see cref="PlotElement"/>.</returns>
+        /// <param name="el">The <see cref="OxyPlot.PlotElement"/>.</param>
+        /// <returns>True if the <see cref="ToolTippedPlotElement"/> is equivalent with the <see cref="OxyPlot.PlotElement"/>.</returns>
         public bool IsEquivalentWith(PlotElement el)
         {
             return this.Exists && this.PlotElement == el;
