@@ -12,7 +12,7 @@ namespace OxyPlot
     /// <summary>
     /// A wrapper around native ToolTip objects.
     /// </summary>
-    public interface IToolTip
+    public interface IToolTip : System.IDisposable
     {
         /// <summary>
         /// Hit testing tolerance for usual <see cref="PlotElement"/>s (more precisely, excluding the plot title area).
@@ -51,10 +51,5 @@ namespace OxyPlot
         /// Gets or sets the maximum time between the display of two tooltips where the second tooltip appears without a delay.
         /// </summary>
         int BetweenShowDelay { get; set; }
-
-        /// <summary>
-        /// Disposes the tooltip if possible.
-        /// </summary>
-        void Dispose();
     }
 }
