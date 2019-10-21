@@ -345,11 +345,6 @@ namespace OxyPlot
             {
                 this.NativeToolTip.IsOpen = false;
             }));
-
-            if (ct.IsCancellationRequested)
-            {
-                return;
-            }
         }
 
         /// <summary>
