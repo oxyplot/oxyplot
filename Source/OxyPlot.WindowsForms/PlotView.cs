@@ -90,8 +90,8 @@ namespace OxyPlot.WindowsForms
         /// <summary>
         /// Initializes a new instance of the <see cref="PlotView" /> class.
         /// </summary>
-        /// <param name="tt">The <see cref="IToolTip"/> object used as tooltip.</param>
-        public PlotView(IToolTip tt = null)
+        /// <param name="toolTip">The <see cref="IToolTip"/> object used as tooltip.</param>
+        public PlotView(IToolTip toolTip = null)
         {
             this.renderContext = new GraphicsRenderContext();
 
@@ -106,13 +106,13 @@ namespace OxyPlot.WindowsForms
             var DoCopy = new DelegatePlotCommand<OxyKeyEventArgs>((view, controller, args) => this.DoCopy(view, args));
             this.ActualController.BindKeyDown(OxyKey.C, OxyModifierKeys.Control, DoCopy);
 
-            if (tt == null)
+            if (toolTip == null)
             {
                 this.OxyToolTip = new CustomToolTip(this);
             }
             else
             {
-                this.OxyToolTip = tt;
+                this.OxyToolTip = toolTip;
             }
         }
 
