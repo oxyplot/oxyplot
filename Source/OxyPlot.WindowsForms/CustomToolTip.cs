@@ -326,11 +326,6 @@ namespace OxyPlot
             }
 
             this.NativeToolTip.Hide(this.pv);
-
-            if (ct.IsCancellationRequested)
-            {
-                return;
-            }
         }
 
         /// <summary>
