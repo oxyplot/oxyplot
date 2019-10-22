@@ -9,12 +9,12 @@
 
 namespace OxyPlot
 {
-    using OxyPlot.Wpf;
     using System;
     using System.Threading;
     using System.Threading.Tasks;
     using System.Windows.Controls;
     using System.Windows.Input;
+    using OxyPlot.Wpf;
 
     /// <summary>
     /// Wrapper around WPF's <see cref="ToolTip"/> class.
@@ -53,30 +53,36 @@ namespace OxyPlot
         private PlotBase pb;
 
         /// <summary>
-        /// The native WPF <see cref="ToolTip"/> object.
-        /// </summary>
-        public ToolTip NativeToolTip { get; set; }
-
-        /// <summary>
         /// The storage for the <see cref="Text"/> property.
         /// </summary>
         private string lastToolTipString = null;
 
         /// <summary>
-        /// Hit testing tolerance for usual <see cref="PlotElement"/>s (more precisely, excluding the plot title area).
+        /// Custom initial show delay storage.
         /// </summary>
-        public double UsualPlotElementHitTestingTolerance { get; set; } = 10;
+        private int initialShowDelay = -1;
 
         /// <summary>
-        /// Constructs this <see cref="IToolTip"/> implementation and associates it with the given <see cref="PlotBase"/>.
+        /// Custom show duration storage.
+        /// </summary>
+        private int showDuration = -1;
+
+        /// <summary>
+        /// Custom between show delay storage.
+        /// </summary>
+        private int betweenShowDelay = -1;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CustomToolTip"/> class.
+        /// It also associates it with the given <see cref="PlotBase"/>.
         /// </summary>
         /// <param name="v">The WPF-based <see cref="PlotBase"/> instance to which to associate the tooltip.</param>
         public CustomToolTip(PlotBase v)
         {
             this.pb = v;
-            this.pb.PreviewMouseMove += Pb_PreviewMouseMove;
-            this.pb.MouseLeave += Pb_MouseLeave;
-            this.pb.MouseEnter += Pb_MouseEnter;
+            this.pb.PreviewMouseMove += this.Pb_PreviewMouseMove;
+            this.pb.MouseLeave += this.Pb_MouseLeave;
+            this.pb.MouseEnter += this.Pb_MouseEnter;
 
             this.previouslyHoveredPlotElement = new ToolTippedPlotElement();
             this.currentlyHoveredPlotElement = new ToolTippedPlotElement();
@@ -85,33 +91,83 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// When the mouse enters, leaves or moves over the associated <see cref="PlotBase"/>, update the tooltip visibility and contents.
+        /// Gets or sets the native WPF <see cref="ToolTip"/> object.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Pb_MouseEnter(object sender, MouseEventArgs e)
+        public ToolTip NativeToolTip { get; set; }
+
+        /// <summary>
+        /// Gets or sets the hit testing tolerance for usual <see cref="PlotElement"/>s (more precisely, excluding the plot title area).
+        /// </summary>
+        public double UsualPlotElementHitTestingTolerance { get; set; } = 10;
+
+        /// <summary>
+        /// Gets or sets the string representation of the tooltip.
+        /// </summary>
+        public string Text
         {
-            UpdateToolTip();
+            get
+            {
+                return this.lastToolTipString;
+            }
+
+            set
+            {
+                this.lastToolTipString = value;
+            }
         }
 
         /// <summary>
-        /// When the mouse enters, leaves or moves over the associated <see cref="PlotBase"/>, update the tooltip visibility and contents.
+        /// Gets or sets the length of time before a tooltip opens.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Pb_MouseLeave(object sender, MouseEventArgs e)
+        public int InitialShowDelay
         {
-            UpdateToolTip();
+            get
+            {
+                return this.initialShowDelay < 0 ?
+                    ToolTipService.GetInitialShowDelay(this.pb) :
+                    this.initialShowDelay;
+            }
+
+            set
+            {
+                this.initialShowDelay = value;
+            }
         }
 
         /// <summary>
-        /// When the mouse enters, leaves or moves over the associated <see cref="PlotBase"/>, update the tooltip visibility and contents.
+        /// Gets or sets the amount of time that a tooltip remains visible.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Pb_PreviewMouseMove(object sender, MouseEventArgs e)
+        public int ShowDuration
         {
-            UpdateToolTip();
+            get
+            {
+                return this.showDuration < 0 ?
+                    ToolTipService.GetShowDuration(this.pb) :
+                    this.showDuration;
+            }
+
+            set
+            {
+                this.showDuration = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the maximum time between the display of two tooltips where the second tooltip appears without a delay.
+        /// </summary>
+        public int BetweenShowDelay
+        {
+            get
+            {
+                return this.betweenShowDelay < 0 ?
+                    ToolTipService.GetBetweenShowDelay(this.pb) :
+                    this.betweenShowDelay;
+            }
+
+            set
+            {
+                this.betweenShowDelay = value;
+            }
         }
 
         /// <summary>
@@ -130,10 +186,11 @@ namespace OxyPlot
 
                 this.Text = null;
 
-                this.NativeToolTip.Dispatcher.Invoke(new Action(() =>
-                {
-                    this.NativeToolTip.IsOpen = false;
-                }), System.Windows.Threading.DispatcherPriority.Send);
+                this.NativeToolTip.Dispatcher.Invoke(
+                    new Action(() =>
+                    {
+                        this.NativeToolTip.IsOpen = false;
+                    }), System.Windows.Threading.DispatcherPriority.Send);
             }
         }
 
@@ -153,88 +210,7 @@ namespace OxyPlot
                 }
 
                 this.tokenSource = new CancellationTokenSource();
-                this.firstToolTipTask = ShowToolTip(this.Text, tokenSource.Token);
-            }
-        }
-
-        /// <summary>
-        /// The string representation of the tooltip.
-        /// </summary>
-        public string Text
-        {
-            get
-            {
-                return lastToolTipString;
-            }
-            set
-            {
-                lastToolTipString = value;
-            }
-        }
-
-        /// <summary>
-        /// Custom initial show delay storage.
-        /// </summary>
-        private int _InitialShowDelay = -1;
-
-        /// <summary>
-        /// Gets or sets the length of time before a tooltip opens.
-        /// </summary>
-        public int InitialShowDelay
-        {
-            get
-            {
-                return _InitialShowDelay < 0 ?
-                    ToolTipService.GetInitialShowDelay(this.pb) :
-                    _InitialShowDelay;
-            }
-            set
-            {
-                _InitialShowDelay = value;
-            }
-        }
-
-        /// <summary>
-        /// Custom show duration storage.
-        /// </summary>
-        private int _ShowDuration = -1;
-
-        /// <summary>
-        /// Gets or sets the amount of time that a tooltip remains visible.
-        /// </summary>
-        public int ShowDuration
-        {
-            get
-            {
-                return _ShowDuration < 0 ?
-                    ToolTipService.GetShowDuration(this.pb) :
-                    _ShowDuration;
-            }
-            set
-            {
-                _ShowDuration = value;
-            }
-        }
-
-        /// <summary>
-        /// Custom between show delay storage.
-        /// </summary>
-        private int _BetweenShowDelay = -1;
-
-        /// <summary>
-        /// Gets or sets the maximum time between the display of two tooltips where the second tooltip appears without a delay.
-        /// </summary>
-        public int BetweenShowDelay
-        {
-            get
-            {
-                return _BetweenShowDelay < 0 ?
-                    ToolTipService.GetBetweenShowDelay(this.pb) :
-                    _BetweenShowDelay;
-            }
-            set
-            {
-                _BetweenShowDelay = value;
+                this.firstToolTipTask = this.ShowToolTip(this.Text, this.tokenSource.Token);
             }
         }
 
@@ -243,6 +219,33 @@ namespace OxyPlot
         /// </summary>
         public void Dispose()
         {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Runs a <see cref="Task"/> and ignores the cancellation exception.
+        /// </summary>
+        /// <param name="t">The <see cref="Task"/>.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        protected static async Task CancelableTaskAsync(Task t)
+        {
+            try
+            {
+                await t;
+            }
+            catch (OperationCanceledException)
+            {
+                // nothing special to do
+            }
+        }
+
+        /// <summary>
+        /// Protected implementation of Dispose pattern.
+        /// </summary>
+        /// <param name="disposing">Whether the method call comes from a Dispose method (its value is true) or from a finalizer (its value is false).</param>
+        protected virtual void Dispose(bool disposing)
+        {
         }
 
         /// <summary>
@@ -250,6 +253,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="value">The string to show as a tooltip.</param>
         /// <param name="ct">The cancellation token for when the user moves the cursor.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         protected async Task ShowToolTip(string value, CancellationToken ct)
         {
             if (ct.IsCancellationRequested)
@@ -293,29 +297,14 @@ namespace OxyPlot
                 this.NativeToolTip.IsOpen = true;
             }));
 
-            _ = HideToolTip(ct);
-        }
-
-        /// <summary>
-        /// Runs a <see cref="Task"/> and ignores the cancellation exception.
-        /// </summary>
-        /// <param name="t">The <see cref="Task"/>.</param>
-        protected static async Task CancelableTaskAsync(Task t)
-        {
-            try
-            {
-                await t;
-            }
-            catch (OperationCanceledException)
-            {
-                // nothing special to do
-            }
+            _ = this.HideToolTip(ct);
         }
 
         /// <summary>
         /// Internal asynchronous method for hiding the tooltip.
         /// </summary>
         /// <param name="ct">The cancellation token for when the user moves the cursor.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         protected async Task HideToolTip(CancellationToken ct)
         {
             if (ct.IsCancellationRequested)
@@ -323,10 +312,10 @@ namespace OxyPlot
                 return;
             }
 
-            secondToolTipTask = Task.Delay(this.BetweenShowDelay);
-            _ = secondToolTipTask.ContinueWith(new Action<Task>((t) =>
+            this.secondToolTipTask = Task.Delay(this.BetweenShowDelay);
+            _ = this.secondToolTipTask.ContinueWith(new Action<Task>((t) =>
             {
-                secondToolTipTask = null;
+                this.secondToolTipTask = null;
             }));
 
             if (ct.IsCancellationRequested)
@@ -350,7 +339,8 @@ namespace OxyPlot
         /// <summary>
         /// Returns true if the event is handled.
         /// </summary>
-        /// <returns></returns>
+        /// <param name="sp">The point for hit-testing.</param>
+        /// <returns>Whether there is a plot title and the plot title's area contains <paramref name="sp"/>.</returns>
         private bool HandleTitleToolTip(ScreenPoint sp)
         {
             bool v = this.pb.ActualModel.TitleArea.Contains(sp);
@@ -381,13 +371,14 @@ namespace OxyPlot
         /// <summary>
         /// Returns true if the event is handled.
         /// </summary>
-        /// <returns></returns>
+        /// <param name="sp">The point for hit-testing.</param>
+        /// <returns>Whether there is a <see cref="PlotElement"/> that contains the point <paramref name="sp"/>.</returns>
         private bool HandlePlotElementsToolTip(ScreenPoint sp)
         {
             bool found = false;
 
             System.Collections.Generic.IEnumerable<HitTestResult> r =
-                this.pb.ActualModel.HitTest(new HitTestArguments(sp, UsualPlotElementHitTestingTolerance));
+                this.pb.ActualModel.HitTest(new HitTestArguments(sp, this.UsualPlotElementHitTestingTolerance));
 
             foreach (HitTestResult rtr in r)
             {
@@ -412,6 +403,7 @@ namespace OxyPlot
                                 this.Show();
                             }
                         }
+
                         found = true;
                         break;
                     }
@@ -439,19 +431,49 @@ namespace OxyPlot
 
             ScreenPoint sp = Mouse.GetPosition(this.pb).ToScreenPoint();
 
-
-            bool handleTitle = HandleTitleToolTip(sp);
+            // do the hit-testing:
+            bool handleTitle = this.HandleTitleToolTip(sp);
             bool handleOthers = false;
 
             if (!handleTitle)
             {
-                handleOthers = HandlePlotElementsToolTip(sp);
+                handleOthers = this.HandlePlotElementsToolTip(sp);
             }
 
             if (!handleTitle && !handleOthers)
             {
                 this.Hide();
             }
+        }
+
+        /// <summary>
+        /// When the mouse enters, leaves or moves over the associated <see cref="PlotBase"/>, update the tooltip visibility and contents.
+        /// </summary>
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="e">The event arguments.</param>
+        private void Pb_MouseEnter(object sender, MouseEventArgs e)
+        {
+            this.UpdateToolTip();
+        }
+
+        /// <summary>
+        /// When the mouse enters, leaves or moves over the associated <see cref="PlotBase"/>, update the tooltip visibility and contents.
+        /// </summary>
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="e">The event arguments.</param>
+        private void Pb_MouseLeave(object sender, MouseEventArgs e)
+        {
+            this.UpdateToolTip();
+        }
+
+        /// <summary>
+        /// When the mouse enters, leaves or moves over the associated <see cref="PlotBase"/>, update the tooltip visibility and contents.
+        /// </summary>
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="e">The event arguments.</param>
+        private void Pb_PreviewMouseMove(object sender, MouseEventArgs e)
+        {
+            this.UpdateToolTip();
         }
     }
 }

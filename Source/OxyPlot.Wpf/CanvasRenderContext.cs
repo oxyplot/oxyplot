@@ -75,7 +75,7 @@ namespace OxyPlot.Wpf
         private Rect? clip;
 
         /// <summary>
-        /// The current tool tip
+        /// The current tooltip.
         /// </summary>
         private string currentToolTip;
 

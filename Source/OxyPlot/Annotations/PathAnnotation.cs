@@ -308,7 +308,7 @@ namespace OxyPlot.Annotations
         /// </returns>
         protected override HitTestResult HitTestOverride(HitTestArguments args)
         {
-            if (!PlotModel.PlotArea.Contains(args.Point))
+            if (!this.PlotModel.PlotArea.Contains(args.Point))
             {
                 return null;
             }

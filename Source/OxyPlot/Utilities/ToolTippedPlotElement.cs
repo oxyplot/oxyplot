@@ -17,41 +17,42 @@ namespace OxyPlot
     public class ToolTippedPlotElement
     {
         /// <summary>
-        /// The wrapped <see cref="OxyPlot.PlotElement"/>, or null if there is no wrapped <see cref="OxyPlot.PlotElement"/> or if this represents the plot title.
+        /// Initializes a new instance of the <see cref="ToolTippedPlotElement"/> class.
+        /// </summary>
+        /// <param name="el">The PlotElement to be wrapped.</param>
+        public ToolTippedPlotElement(PlotElement el)
+        {
+            this.PlotElement = el;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ToolTippedPlotElement"/> class.
+        /// </summary>
+        /// <param name="isPlotTitleArea">Whether this will be the plot title area or the absence of an element.</param>
+        public ToolTippedPlotElement(bool isPlotTitleArea = false)
+        {
+            this.IsPlotTitleArea = isPlotTitleArea;
+        }
+
+        /// <summary>
+        /// Gets the wrapped <see cref="OxyPlot.PlotElement"/>, or null if there is no wrapped <see cref="OxyPlot.PlotElement"/> or if this represents the plot title.
         /// </summary>
         public PlotElement PlotElement { get; private set; } = null;
 
         /// <summary>
-        /// True if this represents the plot title area.
+        /// Gets a value indicating whether this represents the plot title area.
         /// </summary>
         public bool IsPlotTitleArea { get; private set; } = false;
 
         /// <summary>
-        /// True if this represents something in the plot.
+        /// Gets a value indicating whether this represents something in the plot.
         /// </summary>
         public bool Exists
         {
             get
             {
-                return PlotElement != null || IsPlotTitleArea;
+                return this.PlotElement != null || this.IsPlotTitleArea;
             }
-        }
-
-        /// <summary>
-        /// Constructs an instance of <see cref="ToolTippedPlotElement"/>.
-        /// </summary>
-        /// <param name="el">The PlotElement to be wrapped</param>
-        public ToolTippedPlotElement(PlotElement el)
-        {
-            PlotElement = el;
-        }
-        /// <summary>
-        /// Constructs an instance of <see cref="ToolTippedPlotElement"/>.
-        /// </summary>
-        /// <param name="isPlotTitleArea">Whether this will be the plot title area or the absence of an element.</param>
-        public ToolTippedPlotElement(bool isPlotTitleArea = false)
-        {
-            IsPlotTitleArea = isPlotTitleArea;
         }
 
         /// <summary>
@@ -92,12 +93,12 @@ namespace OxyPlot
         /// <returns>A string representation of the <see cref="ToolTippedPlotElement"/>.</returns>
         public override string ToString()
         {
-            if (PlotElement != null)
+            if (this.PlotElement != null)
             {
                 return $"PlotElement";
             }
 
-            if (IsPlotTitleArea)
+            if (this.IsPlotTitleArea)
             {
                 return "PlotTitleArea";
             }
