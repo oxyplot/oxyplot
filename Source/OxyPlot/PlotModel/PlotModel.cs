@@ -876,6 +876,7 @@ namespace OxyPlot
                     {
                         xaxis = axis;
                     }
+
                     continue;
                 }
 
@@ -885,6 +886,7 @@ namespace OxyPlot
                     {
                         yaxis = axis;
                     }
+
                     continue;
                 }
 

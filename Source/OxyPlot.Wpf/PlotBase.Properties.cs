@@ -104,8 +104,8 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// The current IToolTip object representing the current
-        /// tooltip in the custom tooltip system.
+        /// Gets or sets the current IToolTip object representing the current
+        /// tooltip view in the custom tooltip system.
         /// </summary>
         public IToolTip OxyToolTip
         {
@@ -113,6 +113,7 @@ namespace OxyPlot.Wpf
             {
                 return (IToolTip)this.GetValue(OxyToolTipProperty);
             }
+
             set
             {
                 this.SetValue(OxyToolTipProperty, value);

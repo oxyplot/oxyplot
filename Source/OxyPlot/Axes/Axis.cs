@@ -1755,7 +1755,7 @@ namespace OxyPlot.Axes
         /// </returns>
         protected override HitTestResult HitTestOverride(HitTestArguments args)
         {
-            PlotModel.GetAxesFromPoint(args.Point, out Axes.Axis xaxis, out Axes.Axis yaxis, true);
+            this.PlotModel.GetAxesFromPoint(args.Point, out Axes.Axis xaxis, out Axes.Axis yaxis, true);
 
             if (xaxis == this || yaxis == this)
             {
