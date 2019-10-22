@@ -13,10 +13,7 @@ namespace OxyPlot.WindowsForms
     using System.ComponentModel;
     using System.Diagnostics;
     using System.Drawing;
-    using System.Linq;
     using System.Runtime.InteropServices;
-    using System.Threading;
-    using System.Threading.Tasks;
     using System.Windows.Forms;
 
     /// <summary>
@@ -90,8 +87,7 @@ namespace OxyPlot.WindowsForms
         /// <summary>
         /// Initializes a new instance of the <see cref="PlotView" /> class.
         /// </summary>
-        /// <param name="toolTip">The <see cref="IToolTip"/> object used as tooltip.</param>
-        public PlotView(IToolTip toolTip = null)
+        public PlotView()
         {
             this.renderContext = new GraphicsRenderContext();
 
@@ -105,15 +101,6 @@ namespace OxyPlot.WindowsForms
 
             var DoCopy = new DelegatePlotCommand<OxyKeyEventArgs>((view, controller, args) => this.DoCopy(view, args));
             this.ActualController.BindKeyDown(OxyKey.C, OxyModifierKeys.Control, DoCopy);
-
-            if (toolTip == null)
-            {
-                this.OxyToolTip = new CustomToolTip(this);
-            }
-            else
-            {
-                this.OxyToolTip = toolTip;
-            }
         }
 
         /// <summary>
@@ -212,11 +199,11 @@ namespace OxyPlot.WindowsForms
         public IPlotController Controller { get; set; }
 
         /// <summary>
-        /// The tool tip component.
+        /// The tooltip component.
         /// </summary>
         [DefaultValue(null)]
         [Category(OxyPlotCategory)]
-        public IToolTip OxyToolTip { get; set; }
+        public ToolTipController ToolTipController { get; set; }
 
         /// <summary>
         /// Gets or sets the pan cursor.
@@ -294,6 +281,8 @@ namespace OxyPlot.WindowsForms
                 {
                     ((IPlotModel)this.Model).AttachPlotView(this);
                     this.currentModel = this.Model;
+
+                    this.ToolTipController = new ToolTipController(this.Model, new WinFormsToolTipView(this));
                 }
             }
 
@@ -543,7 +532,7 @@ namespace OxyPlot.WindowsForms
 
             if (disposing)
             {
-                this.OxyToolTip?.Dispose();
+                this.ToolTipController?.ToolTipView?.Dispose();
                 this.renderContext.Dispose();
             }
         }
@@ -597,6 +586,15 @@ namespace OxyPlot.WindowsForms
 
             var bitmap = exporter.ExportToBitmap(this.ActualModel);
             Clipboard.SetImage(bitmap);
+        }
+
+        /// <summary>
+        /// Gets a <see cref="ScreenPoint"/> for client mouse screen coordinates.
+        /// </summary>
+        /// <returns>The <see cref="ScreenPoint"/>.</returns>
+        public ScreenPoint GetClientScreenPointForMouse()
+        {
+            return PointToClient(Control.MousePosition).ToScreenPoint();
         }
     }
 }

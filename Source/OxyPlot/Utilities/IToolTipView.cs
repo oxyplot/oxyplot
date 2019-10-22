@@ -9,10 +9,12 @@
 
 namespace OxyPlot
 {
+    using System.Threading;
+
     /// <summary>
     /// A wrapper around native ToolTip objects.
     /// </summary>
-    public interface IToolTip : System.IDisposable
+    public interface IToolTipView : System.IDisposable
     {
         /// <summary>
         /// Gets or sets the string representation of the tooltip.
@@ -38,17 +40,12 @@ namespace OxyPlot
         int BetweenShowDelay { get; set; }
 
         /// <summary>
-        /// Gets or sets hit testing tolerance for usual <see cref="PlotElement"/>s (more precisely, excluding the plot title area).
+        /// Shows the tooltip.
         /// </summary>
-        double UsualPlotElementHitTestingTolerance { get; set; }
+        void Show(CancellationToken ct);
 
         /// <summary>
-        /// Shows the tooltip if it is the case.
-        /// </summary>
-        void Show();
-
-        /// <summary>
-        /// Hides the tooltip if it is the case.
+        /// Hides the tooltip.
         /// </summary>
         void Hide();
     }

@@ -41,5 +41,11 @@ namespace OxyPlot
         /// </summary>
         /// <param name="text">The text.</param>
         void SetClipboardText(string text);
+
+        /// <summary>
+        /// Gets a <see cref="ScreenPoint"/> for client mouse screen coordinates.
+        /// </summary>
+        /// <returns>The <see cref="ScreenPoint"/>.</returns>
+        ScreenPoint GetClientScreenPointForMouse();
     }
 }
