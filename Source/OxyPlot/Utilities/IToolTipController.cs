@@ -15,6 +15,16 @@ namespace OxyPlot
     public interface IToolTipController
     {
         /// <summary>
+        /// Gets or sets the associated tooltip view.
+        /// </summary>
+        IToolTipView ToolTipView { get; set; }
+
+        /// <summary>
+        /// Gets or sets the associated plot model.
+        /// </summary>
+        PlotModel PlotModel { get; set; }
+
+        /// <summary>
         /// Gets or sets the hit testing tolerance for usual <see cref="PlotElement"/>s (more precisely, excluding the plot title area).
         /// </summary>
         double UsualPlotElementHitTestingTolerance { get; set; }

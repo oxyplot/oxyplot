@@ -17,11 +17,6 @@ namespace OxyPlot
     public interface IToolTipView : System.IDisposable
     {
         /// <summary>
-        /// Gets or sets the string representation of the tooltip.
-        /// </summary>
-        string Text { get; set; }
-
-        /// <summary>
         /// Gets or sets the length of time before a tooltip opens.
         /// </summary>
         int InitialShowDelay { get; set; }
@@ -40,13 +35,14 @@ namespace OxyPlot
         int BetweenShowDelay { get; set; }
 
         /// <summary>
-        /// Shows the tooltip with the initial delay.
+        /// Shows the tooltip.
         /// </summary>
-        void ShowWithInitialDelay(CancellationToken ct);
+        /// <param name="str">The string to show as tooltip.</param>
+        void ShowToolTip(string str);
 
         /// <summary>
         /// Hides the tooltip.
         /// </summary>
-        void Hide();
+        void HideToolTip();
     }
 }

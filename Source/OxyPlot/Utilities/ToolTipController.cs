@@ -9,7 +9,9 @@
 
 namespace OxyPlot
 {
+    using System;
     using System.Threading;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// Controller for <see cref="IToolTipView"/>s.
@@ -25,6 +27,27 @@ namespace OxyPlot
         /// A reference to the currently hovered plot element wrapped by <see cref="ToolTippedPlotElement"/> and used in the tooltip system.
         /// </summary>
         private ToolTippedPlotElement currentlyHoveredPlotElement;
+
+        /// <summary>
+        /// The cancellation token source used to cancel the task that shows the tooltip after an initial delay,
+        /// and the task that hides the tooltip after the show duration.
+        /// </summary>
+        private CancellationTokenSource tokenSource;
+
+        /// <summary>
+        /// The <see cref="Task"/> for the initial delay of the tooltip.
+        /// </summary>
+        private Task firstToolTipTask;
+
+        /// <summary>
+        /// The <see cref="Task"/> for the minimum delay between tooltip showings.
+        /// </summary>
+        private Task secondToolTipTask;
+
+        /// <summary>
+        /// The last shown tooltip string.
+        /// </summary>
+        private string lastShownToolTipString;
 
         /// <summary>
         /// Gets or sets the associated tooltip view.
@@ -140,8 +163,8 @@ namespace OxyPlot
                 this.currentlyHoveredPlotElement = new ToolTippedPlotElement(true);
 
                 // show the tooltip
-                this.ToolTipView.Text = this.PlotModel.TitleToolTip;
-                if (this.ToolTipView.Text == null)
+                this.lastShownToolTipString = this.PlotModel.TitleToolTip;
+                if (this.lastShownToolTipString == null)
                 {
                     this.HideToolTipChecked();
                 }
@@ -189,8 +212,8 @@ namespace OxyPlot
                             this.currentlyHoveredPlotElement = new ToolTippedPlotElement(pe);
 
                             // show the tooltip
-                            this.ToolTipView.Text = pe.ToolTip;
-                            if (this.ToolTipView.Text == null)
+                            this.lastShownToolTipString = pe.ToolTip;
+                            if (this.lastShownToolTipString == null)
                             {
                                 this.HideToolTipChecked();
                             }
@@ -224,9 +247,9 @@ namespace OxyPlot
         /// <summary>
         /// Shows the tooltip if it is the case.
         /// </summary>
-        public void ShowToolTipChecked()
+        protected void ShowToolTipChecked()
         {
-            if (this.ToolTipView.Text != null &&
+            if (this.lastShownToolTipString != null &&
                 !this.previouslyHoveredPlotElement.IsEquivalentWith(this.currentlyHoveredPlotElement))
             {
                 if (this.tokenSource != null)
@@ -237,14 +260,14 @@ namespace OxyPlot
                 }
 
                 this.tokenSource = new CancellationTokenSource();
-                this.ToolTipView.ShowWithInitialDelay(this.tokenSource.Token);
+                this.ShowWithInitialDelayInternal(this.tokenSource.Token);
             }
         }
 
         /// <summary>
         /// Hides the tooltip if it is the case.
         /// </summary>
-        public void HideToolTipChecked()
+        protected void HideToolTipChecked()
         {
             if (!this.previouslyHoveredPlotElement.IsEquivalentWith(this.currentlyHoveredPlotElement))
             {
@@ -255,14 +278,98 @@ namespace OxyPlot
                     this.tokenSource = null;
                 }
 
-                this.ToolTipView.Hide();
+                this.HideInternal();
             }
         }
 
         /// <summary>
-        /// The cancellation token source used to cancel the task that shows the tooltip after an initial delay,
-        /// and the task that hides the tooltip after the show duration.
+        /// Hides the tooltip if it is the case.
         /// </summary>
-        private CancellationTokenSource tokenSource;
+        protected void HideInternal()
+        {
+            lastShownToolTipString = null;
+            this.ToolTipView.HideToolTip();
+        }
+
+        /// <summary>
+        /// Shows the tooltip after an initial delay.
+        /// </summary>
+        protected void ShowWithInitialDelayInternal(CancellationToken ct)
+        {
+            this.firstToolTipTask = this.ShowToolTipBase(lastShownToolTipString, ct);
+        }
+
+        /// <summary>
+        /// Internal asynchronous method for showing the tooltip.
+        /// </summary>
+        /// <param name="value">The string to show as a tooltip.</param>
+        /// <param name="ct">The cancellation token for when the user moves the cursor.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        protected async Task ShowToolTipBase(string value, CancellationToken ct)
+        {
+            if (ct.IsCancellationRequested)
+            {
+                return;
+            }
+
+            // necessary hiding for when the user moves the mouse from over a plot element to another element without empty space between them:
+            this.ToolTipView.HideToolTip();
+
+            if (ct.IsCancellationRequested)
+            {
+                return;
+            }
+
+            if (this.secondToolTipTask != null)
+            {
+                await this.secondToolTipTask;
+            }
+            else
+            {
+                await Task.Delay(this.ToolTipView.InitialShowDelay, ct);
+            }
+
+            if (ct.IsCancellationRequested)
+            {
+                return;
+            }
+
+            this.ToolTipView.ShowToolTip(value);
+
+            _ = this.HideToolTipBase(ct);
+        }
+
+        /// <summary>
+        /// Internal asynchronous method for hiding the tooltip after a delay.
+        /// </summary>
+        /// <param name="ct">The cancellation token for when the user moves the cursor.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        protected async Task HideToolTipBase(CancellationToken ct)
+        {
+            if (ct.IsCancellationRequested)
+            {
+                return;
+            }
+
+            this.secondToolTipTask = Task.Delay(this.ToolTipView.BetweenShowDelay);
+            _ = this.secondToolTipTask.ContinueWith(new Action<Task>((t) =>
+            {
+                this.secondToolTipTask = null;
+            }));
+
+            if (ct.IsCancellationRequested)
+            {
+                return;
+            }
+
+            await Task.Delay(this.ToolTipView.ShowDuration, ct);
+
+            if (ct.IsCancellationRequested)
+            {
+                return;
+            }
+
+            this.ToolTipView.HideToolTip();
+        }
     }
 }
