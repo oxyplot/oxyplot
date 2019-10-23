@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CustomToolTip.cs" company="OxyPlot">
+// <copyright file="ToolTipController.cs" company="OxyPlot">
 //   Copyright (c) 2019 OxyPlot contributors
 // </copyright>
 // <summary>
@@ -50,21 +50,6 @@ namespace OxyPlot
         private string lastShownToolTipString;
 
         /// <summary>
-        /// Gets or sets the associated tooltip view.
-        /// </summary>
-        public IToolTipView ToolTipView { get; set; }
-
-        /// <summary>
-        /// Gets or sets the associated plot model.
-        /// </summary>
-        public PlotModel PlotModel { get; set; }
-
-        /// <summary>
-        /// Gets or sets the hit testing tolerance for usual <see cref="PlotElement"/>s (more precisely, excluding the plot title area).
-        /// </summary>
-        public double UsualPlotElementHitTestingTolerance { get; set; } = 10;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="ToolTipController"/> class.
         /// It also associates it with the given <see cref="IToolTipView"/>.
         /// </summary>
@@ -78,42 +63,27 @@ namespace OxyPlot
             this.previouslyHoveredPlotElement = new ToolTippedPlotElement();
             this.currentlyHoveredPlotElement = new ToolTippedPlotElement();
 
-            this.PlotModel.MouseEnter += PlotModel_MouseEnter;
-            this.PlotModel.MouseMove += PlotModel_MouseMove;
-            this.PlotModel.MouseLeave += PlotModel_MouseLeave;
+            this.PlotModel.MouseEnter += this.PlotModel_MouseEnter;
+            this.PlotModel.MouseMove += this.PlotModel_MouseMove;
+            this.PlotModel.MouseLeave += this.PlotModel_MouseLeave;
 
             // TODO: unregister and reregister when one of the two properties (ToolTipView and PlotModel) change.
         }
 
         /// <summary>
-        /// When the mouse enters, leaves or moves over the associated <see cref="OxyPlot.PlotModel"/>, update the tooltip visibility and contents.
+        /// Gets or sets the associated tooltip view.
         /// </summary>
-        /// <param name="sender">The sender of the event.</param>
-        /// <param name="e">The event arguments.</param>
-        private void PlotModel_MouseLeave(object sender, OxyMouseEventArgs e)
-        {
-            this.UpdateToolTip();
-        }
+        public IToolTipView ToolTipView { get; set; }
 
         /// <summary>
-        /// When the mouse enters, leaves or moves over the associated <see cref="OxyPlot.PlotModel"/>, update the tooltip visibility and contents.
+        /// Gets or sets the associated plot model.
         /// </summary>
-        /// <param name="sender">The sender of the event.</param>
-        /// <param name="e">The event arguments.</param>
-        private void PlotModel_MouseEnter(object sender, OxyMouseEventArgs e)
-        {
-            this.UpdateToolTip();
-        }
+        public PlotModel PlotModel { get; set; }
 
         /// <summary>
-        /// When the mouse enters, leaves or moves over the associated <see cref="OxyPlot.PlotModel"/>, update the tooltip visibility and contents.
+        /// Gets or sets the hit testing tolerance for usual <see cref="PlotElement"/>s (more precisely, excluding the plot title area).
         /// </summary>
-        /// <param name="sender">The sender of the event.</param>
-        /// <param name="e">The event arguments.</param>
-        private void PlotModel_MouseMove(object sender, OxyMouseEventArgs e)
-        {
-            this.UpdateToolTip();
-        }
+        public double UsualPlotElementHitTestingTolerance { get; set; } = 10;
 
         /// <summary>
         /// Does hit-testing and hides or hides/shows the tooltip if needed.
@@ -287,16 +257,17 @@ namespace OxyPlot
         /// </summary>
         protected void HideInternal()
         {
-            lastShownToolTipString = null;
+            this.lastShownToolTipString = null;
             this.ToolTipView.HideToolTip();
         }
 
         /// <summary>
         /// Shows the tooltip after an initial delay.
         /// </summary>
+        /// <param name="ct">The cancellation token which can be used to cancel the tooltip display or hiding.</param>
         protected void ShowWithInitialDelayInternal(CancellationToken ct)
         {
-            this.firstToolTipTask = this.ShowToolTipBase(lastShownToolTipString, ct);
+            this.firstToolTipTask = this.ShowToolTipBase(this.lastShownToolTipString, ct);
         }
 
         /// <summary>
@@ -370,6 +341,36 @@ namespace OxyPlot
             }
 
             this.ToolTipView.HideToolTip();
+        }
+
+        /// <summary>
+        /// When the mouse enters, leaves or moves over the associated <see cref="OxyPlot.PlotModel"/>, update the tooltip visibility and contents.
+        /// </summary>
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="e">The event arguments.</param>
+        private void PlotModel_MouseLeave(object sender, OxyMouseEventArgs e)
+        {
+            this.UpdateToolTip();
+        }
+
+        /// <summary>
+        /// When the mouse enters, leaves or moves over the associated <see cref="OxyPlot.PlotModel"/>, update the tooltip visibility and contents.
+        /// </summary>
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="e">The event arguments.</param>
+        private void PlotModel_MouseEnter(object sender, OxyMouseEventArgs e)
+        {
+            this.UpdateToolTip();
+        }
+
+        /// <summary>
+        /// When the mouse enters, leaves or moves over the associated <see cref="OxyPlot.PlotModel"/>, update the tooltip visibility and contents.
+        /// </summary>
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="e">The event arguments.</param>
+        private void PlotModel_MouseMove(object sender, OxyMouseEventArgs e)
+        {
+            this.UpdateToolTip();
         }
     }
 }

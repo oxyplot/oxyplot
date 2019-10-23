@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="WinFormsToolTip.cs" company="OxyPlot">
+// <copyright file="WinFormsToolTipView.cs" company="OxyPlot">
 //   Copyright (c) 2019 OxyPlot contributors
 // </copyright>
 // <summary>
@@ -140,15 +140,6 @@ namespace OxyPlot.WindowsForms
         }
 
         /// <summary>
-        /// Protected implementation of Dispose pattern.
-        /// </summary>
-        /// <param name="disposing">Whether the method call comes from a Dispose method (its value is true) or from a finalizer (its value is false).</param>
-        protected virtual void Dispose(bool disposing)
-        {
-            this.NativeToolTip.Dispose();
-        }
-
-        /// <summary>
         /// Shows the tooltip.
         /// </summary>
         /// <param name="value">The string to show as tooltip.</param>
@@ -166,6 +157,15 @@ namespace OxyPlot.WindowsForms
         public void HideToolTip()
         {
             this.NativeToolTip.Hide(this.pv);
+        }
+
+        /// <summary>
+        /// Protected implementation of Dispose pattern.
+        /// </summary>
+        /// <param name="disposing">Whether the method call comes from a Dispose method (its value is true) or from a finalizer (its value is false).</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            this.NativeToolTip.Dispose();
         }
     }
 }

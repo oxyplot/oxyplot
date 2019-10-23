@@ -391,6 +391,15 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
+        /// Gets a <see cref="ScreenPoint"/> for client mouse screen coordinates.
+        /// </summary>
+        /// <returns>The <see cref="ScreenPoint"/>.</returns>
+        public ScreenPoint GetClientScreenPointForMouse()
+        {
+            return Mouse.GetPosition(this).ToScreenPoint();
+        }
+
+        /// <summary>
         /// Provides the behavior for the Arrange pass of Silverlight layout. Classes can override this method to define their own Arrange pass behavior.
         /// </summary>
         /// <param name="finalSize">The final area within the parent that this object should use to arrange itself and its children.</param>
@@ -625,15 +634,6 @@ namespace OxyPlot.Wpf
             {
                 action();
             }
-        }
-
-        /// <summary>
-        /// Gets a <see cref="ScreenPoint"/> for client mouse screen coordinates.
-        /// </summary>
-        /// <returns>The <see cref="ScreenPoint"/>.</returns>
-        public ScreenPoint GetClientScreenPointForMouse()
-        {
-            return Mouse.GetPosition(this).ToScreenPoint();
         }
     }
 }
