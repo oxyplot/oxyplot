@@ -9,8 +9,6 @@
 
 namespace OxyPlot
 {
-    using System.Threading;
-
     /// <summary>
     /// A wrapper around native ToolTip objects.
     /// </summary>
