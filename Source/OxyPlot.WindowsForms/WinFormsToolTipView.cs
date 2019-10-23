@@ -11,8 +11,6 @@ namespace OxyPlot.WindowsForms
 {
     using System;
     using System.Drawing;
-    using System.Threading;
-    using System.Threading.Tasks;
     using System.Windows.Forms;
 
     /// <summary>
@@ -24,16 +22,6 @@ namespace OxyPlot.WindowsForms
         /// The associated <see cref="PlotView"/> on which the tooltip is shown.
         /// </summary>
         private PlotView pv;
-
-        /// <summary>
-        /// The <see cref="Task"/> for the initial delay of the tooltip.
-        /// </summary>
-        private Task firstToolTipTask;
-
-        /// <summary>
-        /// The <see cref="Task"/> for the minimum delay between tooltip showings.
-        /// </summary>
-        private Task secondToolTipTask;
 
         /// <summary>
         /// The storage for the <see cref="Text"/> property.
@@ -143,46 +131,12 @@ namespace OxyPlot.WindowsForms
         }
 
         /// <summary>
-        /// Hides the tooltip if it is the case.
-        /// </summary>
-        public void Hide()
-        {
-            this.Text = null;
-            this.NativeToolTip.Hide(this.pv);
-        }
-
-        /// <summary>
-        /// Shows the tooltip if it is the case.
-        /// </summary>
-        public void Show(CancellationToken ct)
-        {
-            this.firstToolTipTask = this.ShowToolTip(this.Text, ct);
-        }
-
-        /// <summary>
         /// Disposes the tooltip if possible.
         /// </summary>
         public void Dispose()
         {
             this.Dispose(true);
             GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// Runs a <see cref="Task"/> and ignores the cancellation exception.
-        /// </summary>
-        /// <param name="t">The <see cref="Task"/>.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        protected static async Task CancelableTaskAsync(Task t)
-        {
-            try
-            {
-                await t;
-            }
-            catch (OperationCanceledException)
-            {
-                // nothing special to do
-            }
         }
 
         /// <summary>
@@ -195,73 +149,22 @@ namespace OxyPlot.WindowsForms
         }
 
         /// <summary>
-        /// Internal asynchronous method for showing the ToolTip.
+        /// Shows the tooltip.
         /// </summary>
-        /// <param name="value">The string to show as a tooltip.</param>
-        /// <param name="ct">The cancellation token for when the user moves the cursor.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        protected async Task ShowToolTip(string value, CancellationToken ct)
+        /// <param name="value">The string to show as tooltip.</param>
+        public void ShowToolTip(string value)
         {
-            // necessary hiding for when the user moves the mouse from over a plot element to another element without empty space between them:
-            this.NativeToolTip.Hide(this.pv);
-
-            if (ct.IsCancellationRequested)
-            {
-                return;
-            }
-
-            if (this.secondToolTipTask != null)
-            {
-                await CancelableTaskAsync(this.secondToolTipTask);
-            }
-            else
-            {
-                await CancelableTaskAsync(Task.Delay(this.InitialShowDelay, ct));
-            }
-
-            if (ct.IsCancellationRequested)
-            {
-                return;
-            }
-
             Point pos = this.pv.PointToClient(Control.MousePosition);
             pos.Y += Cursor.Current.Size.Height;
 
             this.NativeToolTip.Show(value, this.pv, pos, this.ShowDuration);
-
-            _ = this.HideToolTip(ct);
         }
 
         /// <summary>
-        /// Internal asynchronous method for hiding the ToolTip.
+        /// Hides the tooltip.
         /// </summary>
-        /// <param name="ct">The cancellation token for when the user moves the cursor.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        protected async Task HideToolTip(CancellationToken ct)
+        public void HideToolTip()
         {
-            if (ct.IsCancellationRequested)
-            {
-                return;
-            }
-
-            this.secondToolTipTask = Task.Delay(this.BetweenShowDelay);
-            _ = this.secondToolTipTask.ContinueWith(new Action<Task>((t) =>
-            {
-                this.secondToolTipTask = null;
-            }));
-
-            if (ct.IsCancellationRequested)
-            {
-                return;
-            }
-
-            await CancelableTaskAsync(Task.Delay(this.ShowDuration, ct));
-
-            if (ct.IsCancellationRequested)
-            {
-                return;
-            }
-
             this.NativeToolTip.Hide(this.pv);
         }
     }
