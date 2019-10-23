@@ -94,8 +94,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Initializes a new instance of the <see cref="PlotBase" /> class.
         /// </summary>
-        /// <param name="toolTip">The <see cref="IToolTip"/> object used as tooltip.</param>
-        protected PlotBase(IToolTip toolTip = null)
+        protected PlotBase()
         {
             this.DisconnectCanvasWhileUpdating = true;
             this.trackerDefinitions = new ObservableCollection<TrackerDefinition>();
@@ -107,15 +106,6 @@ namespace OxyPlot.Wpf
             this.CommandBindings.Add(new CommandBinding(PlotCommands.ResetAxes, (s, e) => this.ResetAllAxes()));
 
             this.IsManipulationEnabled = true;
-
-            if (toolTip == null)
-            {
-                this.OxyToolTip = new CustomToolTip(this);
-            }
-            else
-            {
-                this.OxyToolTip = toolTip;
-            }
         }
 
         /// <summary>
@@ -635,6 +625,15 @@ namespace OxyPlot.Wpf
             {
                 action();
             }
+        }
+
+        /// <summary>
+        /// Gets a <see cref="ScreenPoint"/> for client mouse screen coordinates.
+        /// </summary>
+        /// <returns>The <see cref="ScreenPoint"/>.</returns>
+        public ScreenPoint GetClientScreenPointForMouse()
+        {
+            return Mouse.GetPosition(this).ToScreenPoint();
         }
     }
 }
