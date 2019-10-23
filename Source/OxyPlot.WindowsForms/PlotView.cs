@@ -199,7 +199,7 @@ namespace OxyPlot.WindowsForms
         public IPlotController Controller { get; set; }
 
         /// <summary>
-        /// The tooltip component.
+        /// Gets or sets the tooltip component.
         /// </summary>
         [DefaultValue(null)]
         [Category(OxyPlotCategory)]
@@ -359,6 +359,15 @@ namespace OxyPlot.WindowsForms
                 // Requested Clipboard operation did not succeed.
                 MessageBox.Show(this, ee.Message, "OxyPlot");
             }
+        }
+
+        /// <summary>
+        /// Gets a <see cref="ScreenPoint"/> for client mouse screen coordinates.
+        /// </summary>
+        /// <returns>The <see cref="ScreenPoint"/>.</returns>
+        public ScreenPoint GetClientScreenPointForMouse()
+        {
+            return this.PointToClient(Control.MousePosition).ToScreenPoint();
         }
 
         /// <summary>
@@ -586,15 +595,6 @@ namespace OxyPlot.WindowsForms
 
             var bitmap = exporter.ExportToBitmap(this.ActualModel);
             Clipboard.SetImage(bitmap);
-        }
-
-        /// <summary>
-        /// Gets a <see cref="ScreenPoint"/> for client mouse screen coordinates.
-        /// </summary>
-        /// <returns>The <see cref="ScreenPoint"/>.</returns>
-        public ScreenPoint GetClientScreenPointForMouse()
-        {
-            return PointToClient(Control.MousePosition).ToScreenPoint();
         }
     }
 }

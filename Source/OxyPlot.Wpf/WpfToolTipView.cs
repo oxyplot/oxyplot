@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CustomToolTip.cs" company="OxyPlot">
+// <copyright file="WpfToolTipView.cs" company="OxyPlot">
 //   Copyright (c) 2019 OxyPlot contributors
 // </copyright>
 // <summary>

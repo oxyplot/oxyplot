@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IToolTip.cs" company="OxyPlot">
+// <copyright file="IToolTipView.cs" company="OxyPlot">
 //   Copyright (c) 2019 OxyPlot contributors
 // </copyright>
 // <summary>
