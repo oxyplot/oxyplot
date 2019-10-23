@@ -19,18 +19,8 @@ namespace OxyPlot
     /// <summary>
     /// Wrapper around WPF's <see cref="ToolTip"/> class.
     /// </summary>
-    public class CustomToolTip : IToolTip
+    public class WpfToolTipView : IToolTipView
     {
-        /// <summary>
-        /// A reference to the previously hovered plot element wrapped by <see cref="ToolTippedPlotElement"/> and used in the tooltip system.
-        /// </summary>
-        private ToolTippedPlotElement previouslyHoveredPlotElement;
-
-        /// <summary>
-        /// A reference to the currently hovered plot element wrapped by <see cref="ToolTippedPlotElement"/> and used in the tooltip system.
-        /// </summary>
-        private ToolTippedPlotElement currentlyHoveredPlotElement;
-
         /// <summary>
         /// The <see cref="Task"/> for the initial delay of the tooltip.
         /// </summary>
@@ -40,12 +30,6 @@ namespace OxyPlot
         /// The <see cref="Task"/> for the minimum delay between tooltip showings.
         /// </summary>
         private Task secondToolTipTask;
-
-        /// <summary>
-        /// The cancellation token source used to cancel the task that shows the tooltip after an initial delay,
-        /// and the task that hides the tooltip after the show duration.
-        /// </summary>
-        private CancellationTokenSource tokenSource;
 
         /// <summary>
         /// The associated <see cref="PlotBase"/> on which the tooltip is shown.
@@ -73,19 +57,13 @@ namespace OxyPlot
         private int betweenShowDelay = -1;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CustomToolTip"/> class.
+        /// Initializes a new instance of the <see cref="WpfToolTipView"/> class.
         /// It also associates it with the given <see cref="PlotBase"/>.
         /// </summary>
         /// <param name="v">The WPF-based <see cref="PlotBase"/> instance to which to associate the tooltip.</param>
-        public CustomToolTip(PlotBase v)
+        public WpfToolTipView(PlotBase v)
         {
             this.pb = v;
-            this.pb.PreviewMouseMove += this.Pb_PreviewMouseMove;
-            this.pb.MouseLeave += this.Pb_MouseLeave;
-            this.pb.MouseEnter += this.Pb_MouseEnter;
-
-            this.previouslyHoveredPlotElement = new ToolTippedPlotElement();
-            this.currentlyHoveredPlotElement = new ToolTippedPlotElement();
 
             this.NativeToolTip = new ToolTip();
         }
@@ -94,11 +72,6 @@ namespace OxyPlot
         /// Gets or sets the native WPF <see cref="ToolTip"/> object.
         /// </summary>
         public ToolTip NativeToolTip { get; set; }
-
-        /// <summary>
-        /// Gets or sets the hit testing tolerance for usual <see cref="PlotElement"/>s (more precisely, excluding the plot title area).
-        /// </summary>
-        public double UsualPlotElementHitTestingTolerance { get; set; } = 10;
 
         /// <summary>
         /// Gets or sets the string representation of the tooltip.
@@ -175,43 +148,20 @@ namespace OxyPlot
         /// </summary>
         public void Hide()
         {
-            if (!this.previouslyHoveredPlotElement.IsEquivalentWith(this.currentlyHoveredPlotElement))
-            {
-                if (this.tokenSource != null)
+            this.Text = null;
+            this.NativeToolTip.Dispatcher.Invoke(
+                new Action(() =>
                 {
-                    this.tokenSource.Cancel();
-                    this.tokenSource.Dispose();
-                    this.tokenSource = null;
-                }
-
-                this.Text = null;
-
-                this.NativeToolTip.Dispatcher.Invoke(
-                    new Action(() =>
-                    {
-                        this.NativeToolTip.IsOpen = false;
-                    }), System.Windows.Threading.DispatcherPriority.Send);
-            }
+                    this.NativeToolTip.IsOpen = false;
+                }), System.Windows.Threading.DispatcherPriority.Send);
         }
 
         /// <summary>
         /// Shows the tooltip if it is the case.
         /// </summary>
-        public void Show()
+        public void ShowWithInitialDelay(CancellationToken ct)
         {
-            if (this.Text != null &&
-                !this.previouslyHoveredPlotElement.IsEquivalentWith(this.currentlyHoveredPlotElement))
-            {
-                if (this.tokenSource != null)
-                {
-                    this.tokenSource.Cancel();
-                    this.tokenSource.Dispose();
-                    this.tokenSource = null;
-                }
-
-                this.tokenSource = new CancellationTokenSource();
-                this.firstToolTipTask = this.ShowToolTip(this.Text, this.tokenSource.Token);
-            }
+            this.firstToolTipTask = this.ShowToolTip(this.Text, ct);
         }
 
         /// <summary>
@@ -334,146 +284,6 @@ namespace OxyPlot
             {
                 this.NativeToolTip.IsOpen = false;
             }));
-        }
-
-        /// <summary>
-        /// Returns true if the event is handled.
-        /// </summary>
-        /// <param name="sp">The point for hit-testing.</param>
-        /// <returns>Whether there is a plot title and the plot title's area contains <paramref name="sp"/>.</returns>
-        private bool HandleTitleToolTip(ScreenPoint sp)
-        {
-            bool v = this.pb.ActualModel.TitleArea.Contains(sp);
-
-            if (v && this.pb.ActualModel.Title != null)
-            {
-                // these 2 lines must be before the third which calls the setter of Text
-                this.previouslyHoveredPlotElement = this.currentlyHoveredPlotElement;
-                this.currentlyHoveredPlotElement = new ToolTippedPlotElement(true);
-
-                // set the tooltip to be the tooltip of the plot title
-                this.Text = this.pb.ActualModel.TitleToolTip;
-                if (this.Text == null)
-                {
-                    this.Hide();
-                }
-                else
-                {
-                    this.Show();
-                }
-
-                return true;
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Returns true if the event is handled.
-        /// </summary>
-        /// <param name="sp">The point for hit-testing.</param>
-        /// <returns>Whether there is a <see cref="PlotElement"/> that contains the point <paramref name="sp"/>.</returns>
-        private bool HandlePlotElementsToolTip(ScreenPoint sp)
-        {
-            bool found = false;
-
-            System.Collections.Generic.IEnumerable<HitTestResult> r =
-                this.pb.ActualModel.HitTest(new HitTestArguments(sp, this.UsualPlotElementHitTestingTolerance));
-
-            foreach (HitTestResult rtr in r)
-            {
-                if (rtr.Element != null)
-                {
-                    if (rtr.Element is PlotElement pe)
-                    {
-                        if (!this.previouslyHoveredPlotElement.IsEquivalentWith(pe))
-                        {
-                            // these 2 lines must be before the third which calls the setter of Text
-                            this.previouslyHoveredPlotElement = this.currentlyHoveredPlotElement;
-                            this.currentlyHoveredPlotElement = new ToolTippedPlotElement(pe);
-
-                            // show the tooltip
-                            this.Text = pe.ToolTip;
-                            if (this.Text == null)
-                            {
-                                this.Hide();
-                            }
-                            else
-                            {
-                                this.Show();
-                            }
-                        }
-
-                        found = true;
-                        break;
-                    }
-                }
-            }
-
-            if (!found)
-            {
-                this.previouslyHoveredPlotElement = this.currentlyHoveredPlotElement;
-                this.currentlyHoveredPlotElement = new ToolTippedPlotElement();
-            }
-
-            return found;
-        }
-
-        /// <summary>
-        /// Updates the custom tooltip system's tooltip.
-        /// </summary>
-        private void UpdateToolTip()
-        {
-            if (this.pb.ActualModel == null)
-            {
-                return;
-            }
-
-            ScreenPoint sp = Mouse.GetPosition(this.pb).ToScreenPoint();
-
-            // do the hit-testing:
-            bool handleTitle = this.HandleTitleToolTip(sp);
-            bool handleOthers = false;
-
-            if (!handleTitle)
-            {
-                handleOthers = this.HandlePlotElementsToolTip(sp);
-            }
-
-            if (!handleTitle && !handleOthers)
-            {
-                this.Hide();
-            }
-        }
-
-        /// <summary>
-        /// When the mouse enters, leaves or moves over the associated <see cref="PlotBase"/>, update the tooltip visibility and contents.
-        /// </summary>
-        /// <param name="sender">The sender of the event.</param>
-        /// <param name="e">The event arguments.</param>
-        private void Pb_MouseEnter(object sender, MouseEventArgs e)
-        {
-            this.UpdateToolTip();
-        }
-
-        /// <summary>
-        /// When the mouse enters, leaves or moves over the associated <see cref="PlotBase"/>, update the tooltip visibility and contents.
-        /// </summary>
-        /// <param name="sender">The sender of the event.</param>
-        /// <param name="e">The event arguments.</param>
-        private void Pb_MouseLeave(object sender, MouseEventArgs e)
-        {
-            this.UpdateToolTip();
-        }
-
-        /// <summary>
-        /// When the mouse enters, leaves or moves over the associated <see cref="PlotBase"/>, update the tooltip visibility and contents.
-        /// </summary>
-        /// <param name="sender">The sender of the event.</param>
-        /// <param name="e">The event arguments.</param>
-        private void Pb_PreviewMouseMove(object sender, MouseEventArgs e)
-        {
-            this.UpdateToolTip();
         }
     }
 }

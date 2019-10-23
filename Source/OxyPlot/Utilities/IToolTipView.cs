@@ -40,9 +40,9 @@ namespace OxyPlot
         int BetweenShowDelay { get; set; }
 
         /// <summary>
-        /// Shows the tooltip.
+        /// Shows the tooltip with the initial delay.
         /// </summary>
-        void Show(CancellationToken ct);
+        void ShowWithInitialDelay(CancellationToken ct);
 
         /// <summary>
         /// Hides the tooltip.

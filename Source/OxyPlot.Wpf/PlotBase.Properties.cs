@@ -32,10 +32,10 @@ namespace OxyPlot.Wpf
             DependencyProperty.Register("IsMouseWheelEnabled", typeof(bool), typeof(PlotBase), new PropertyMetadata(true));
 
         /// <summary>
-        /// Identifies the <see cref="OxyToolTip"/> dependency property.
+        /// Identifies the <see cref="ToolTipController"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty OxyToolTipProperty =
-            DependencyProperty.Register("OxyToolTip", typeof(IToolTip), typeof(PlotBase), new PropertyMetadata(null));
+        public static readonly DependencyProperty ToolTipControllerProperty =
+            DependencyProperty.Register("ToolTipController", typeof(IToolTipController), typeof(PlotBase), new PropertyMetadata(null));
 
         /// <summary>
         /// Identifies the <see cref="PanCursor"/> dependency property.
@@ -104,19 +104,19 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the current IToolTip object representing the current
-        /// tooltip view in the custom tooltip system.
+        /// Gets or sets the current IToolTipController object representing the current
+        /// tooltip in the custom tooltip system.
         /// </summary>
-        public IToolTip OxyToolTip
+        public IToolTipController ToolTipController
         {
             get
             {
-                return (IToolTip)this.GetValue(OxyToolTipProperty);
+                return (IToolTipController)this.GetValue(ToolTipControllerProperty);
             }
 
             set
             {
-                this.SetValue(OxyToolTipProperty, value);
+                this.SetValue(ToolTipControllerProperty, value);
             }
         }
 

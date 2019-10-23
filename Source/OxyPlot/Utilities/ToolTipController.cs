@@ -237,7 +237,7 @@ namespace OxyPlot
                 }
 
                 this.tokenSource = new CancellationTokenSource();
-                this.ToolTipView.Show(this.tokenSource.Token);
+                this.ToolTipView.ShowWithInitialDelay(this.tokenSource.Token);
             }
         }
 
