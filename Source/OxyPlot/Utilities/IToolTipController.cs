@@ -20,9 +20,9 @@ namespace OxyPlot
         IToolTipView ToolTipView { get; set; }
 
         /// <summary>
-        /// Gets or sets the associated plot model.
+        /// Gets the associated plot model.
         /// </summary>
-        PlotModel PlotModel { get; set; }
+        PlotModel PlotModel { get; }
 
         /// <summary>
         /// Gets or sets the hit testing tolerance for usual <see cref="PlotElement"/>s (more precisely, excluding the plot title area).

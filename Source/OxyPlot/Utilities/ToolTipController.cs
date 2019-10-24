@@ -50,6 +50,16 @@ namespace OxyPlot
         private string lastShownToolTipString;
 
         /// <summary>
+        /// Storage for the property <see cref="ToolTipView"/>.
+        /// </summary>
+        private IToolTipView currentToolTipView = null;
+
+        /// <summary>
+        /// Storage for the property <see cref="PlotModel"/>.
+        /// </summary>
+        private PlotModel currentPlotModel = null;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ToolTipController"/> class.
         /// It also associates it with the given <see cref="IToolTipView"/>.
         /// </summary>
@@ -66,19 +76,47 @@ namespace OxyPlot
             this.PlotModel.MouseEnter += this.PlotModel_MouseEnter;
             this.PlotModel.MouseMove += this.PlotModel_MouseMove;
             this.PlotModel.MouseLeave += this.PlotModel_MouseLeave;
-
-            // TODO: unregister and reregister when one of the two properties (ToolTipView and PlotModel) change.
         }
 
         /// <summary>
         /// Gets or sets the associated tooltip view.
         /// </summary>
-        public IToolTipView ToolTipView { get; set; }
+        public IToolTipView ToolTipView
+        {
+            get
+            {
+                return currentToolTipView;
+            }
+
+            set
+            {
+                if (currentToolTipView != value)
+                {
+                    IToolTipView old = currentToolTipView;
+                    currentToolTipView = value;
+                    HandleToolTipViewChanged(old, value);
+                }
+            }
+        }
 
         /// <summary>
         /// Gets or sets the associated plot model.
         /// </summary>
-        public PlotModel PlotModel { get; set; }
+        public PlotModel PlotModel
+        {
+            get
+            {
+                return currentPlotModel;
+            }
+
+            private set
+            {
+                if (currentPlotModel != value)
+                {
+                    currentPlotModel = value;
+                }
+            }
+        }
 
         /// <summary>
         /// Gets or sets the hit testing tolerance for usual <see cref="PlotElement"/>s (more precisely, excluding the plot title area).
@@ -371,6 +409,14 @@ namespace OxyPlot
         private void PlotModel_MouseMove(object sender, OxyMouseEventArgs e)
         {
             this.UpdateToolTip();
+        }
+
+        private void HandleToolTipViewChanged(IToolTipView oldView, IToolTipView newView)
+        {
+            if (oldView != null)
+            {
+                oldView.Dispose();
+            }
         }
     }
 }
