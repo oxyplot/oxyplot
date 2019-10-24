@@ -203,7 +203,7 @@ namespace OxyPlot.WindowsForms
         /// </summary>
         [DefaultValue(null)]
         [Category(OxyPlotCategory)]
-        public ToolTipController ToolTipController { get; set; }
+        public IToolTipController ToolTipController { get; set; }
 
         /// <summary>
         /// Gets or sets the pan cursor.
