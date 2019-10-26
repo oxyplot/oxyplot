@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <Description>OxyPlot is a plotting library for .NET. This is package is based on SixLabors.ImageSharp.</Description>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <Copyright>Copyright (c) 2014 OxyPlot contributors</Copyright>
+        <PackageProjectUrl>https://oxyplot.github.io/</PackageProjectUrl>
+        <PackageIcon>OxyPlot_128.png</PackageIcon>
+        <PackageTags>plotting plot charting chart imagesharp</PackageTags>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/oxyplot/oxyplot.git</RepositoryUrl>
+        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+        <GenerateDocumentationFile>True</GenerateDocumentationFile>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <NoWarn>NU5104</NoWarn>
+        <WarningsAsErrors />
+    </PropertyGroup>
+    <ItemGroup>
+        <None Include="..\..\Icons\OxyPlot_128.png" Pack="true" PackagePath="\" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-beta0007" />
+        <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta0007" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\OxyPlot\OxyPlot.csproj" />
+    </ItemGroup>
+</Project>

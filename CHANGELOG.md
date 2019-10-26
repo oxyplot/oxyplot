@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Added
+- OxyPlot.ImageSharp (#1188)
+
 ## [2.0.0] - 2019-10-19
 ### Added 
 - WindowsForms and Wpf support .NET Core 3.0 (#1331)
