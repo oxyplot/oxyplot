@@ -9,18 +9,12 @@ platform: Any CPU
 configuration: Release
 version: '2.1.0-unstable.{build}'
 
-install:
-  - cinst gitlink --version=2.3.0 -y
-
 before_build:
   - nuget restore Source/OxyPlot.CI.sln
 
 build_script:
   - msbuild Source/OxyPlot.CI.sln "/p:Platform=Any CPU" "/p:Configuration=Release" "/p:Version=%APPVEYOR_BUILD_VERSION%"  /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
  
-after_build:
-  - gitlink c:\projects\oxyplot -u https://github.com/oxyplot/oxyplot -f Source/OxyPlot.CI.sln
-
 artifacts:
   - path: '**/bin/Release/**/*.nupkg'
     name: packages
