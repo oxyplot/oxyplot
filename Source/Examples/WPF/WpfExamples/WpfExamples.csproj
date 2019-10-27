@@ -6,7 +6,6 @@
       <OutputType>WinExe</OutputType>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\OxyPlot.Contrib.Wpf\OxyPlot.Contrib.Wpf.csproj" />
     <ProjectReference Include="..\..\..\OxyPlot.Pdf\OxyPlot.Pdf.csproj" />
     <ProjectReference Include="..\..\..\OxyPlot.Wpf\OxyPlot.Wpf.csproj" />
     <ProjectReference Include="..\..\..\OxyPlot\OxyPlot.csproj" />
