@@ -14,7 +14,6 @@ namespace OxyPlot.Pdf.Tests
 
     using OxyPlot.Axes;
     using OxyPlot.Pdf;
-    using OxyPlot.Tests;
 
     // ReSharper disable InconsistentNaming
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]

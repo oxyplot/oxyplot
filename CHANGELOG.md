@@ -6,6 +6,13 @@ All notable changes to this project will be documented in this file.
 ### Added
 - OxyPlot.ImageSharp (#1188)
 
+### Changed
+- Moved reporting functionality to separate projects (#1403)
+- Moved reporting functionality to oxyplot-reporting repository (#1403)
+
+### Removed
+- Copy to text report Ctrl+Alt+R (#1403)
+
 ## [2.0.0] - 2019-10-19
 ### Added 
 - WindowsForms and Wpf support .NET Core 3.0 (#1331)
