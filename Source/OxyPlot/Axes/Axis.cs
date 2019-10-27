@@ -133,11 +133,13 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Occurs when the axis has been changed (by zooming, panning or resetting).
         /// </summary>
+        [Obsolete("May be removed in v4.0 (#111)")]
         public event EventHandler<AxisChangedEventArgs> AxisChanged;
 
         /// <summary>
         /// Occurs when the transform changed (size or axis range was changed).
         /// </summary>
+        [Obsolete("May be removed in v4.0 (#111)")]
         public event EventHandler TransformChanged;
 
         /// <summary>

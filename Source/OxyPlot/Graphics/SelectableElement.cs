@@ -34,6 +34,7 @@ namespace OxyPlot
         /// <summary>
         /// Occurs when the selected items is changed.
         /// </summary>
+        [Obsolete("May be removed in v4.0 (#111)")]
         public event EventHandler SelectionChanged;
 
         /// <summary>
