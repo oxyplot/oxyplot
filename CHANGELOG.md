@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 - Moved reporting functionality to separate projects (#1403)
+- Moved reporting functionality to oxyplot-reporting repository (#1403)
 
 ### Removed
 - Copy to text report Ctrl+Alt+R (#1403)
