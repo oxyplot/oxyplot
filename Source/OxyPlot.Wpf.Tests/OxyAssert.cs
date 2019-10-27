@@ -22,7 +22,7 @@ namespace OxyPlot.Wpf.Tests
     /// <summary>
     /// Provides specialized unit test assertion methods.
     /// </summary>
-    public class OxyAssert
+    internal class OxyAssert
     {
         /// <summary>
         /// Check that all public properties in t1 exists in t2.
