@@ -3,22 +3,22 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf" mc:Ignorable="d" 
+             xmlns:contrib="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Contrib.Wpf" mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <oxy:Plot Title="{Binding Title}">
-            <oxy:Plot.Series>
-                <oxy:LineSeries ItemsSource="{Binding Points}"/>
-            </oxy:Plot.Series>
-            <oxy:Plot.Axes>
-                <oxy:LinearAxis Position="Bottom"/>
-                <oxy:LinearAxis Position="Left"/>
-            </oxy:Plot.Axes>
-        </oxy:Plot>
+        <contrib:Plot Title="{Binding Title}">
+            <contrib:Plot.Series>
+                <contrib:LineSeries ItemsSource="{Binding Points}"/>
+            </contrib:Plot.Series>
+            <contrib:Plot.Axes>
+                <contrib:LinearAxis Position="Bottom"/>
+                <contrib:LinearAxis Position="Left"/>
+            </contrib:Plot.Axes>
+        </contrib:Plot>
         <DataGrid Grid.Column="1" ItemsSource="{Binding Points}"/>
         <!--<ItemsControl Grid.Column="2" ItemsSource="{Binding Points}"/>-->
     </Grid>

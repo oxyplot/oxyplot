@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:oxy="http://oxyplot.org/wpf"
+        xmlns:contrib="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Contrib.Wpf"
         mc:Ignorable="d"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         Title="LiveDemo" Height="480" Width="640">
@@ -14,14 +14,14 @@
     <DockPanel>
         <CheckBox DockPanel.Dock="Top" Margin="10" Content="Show data" x:Name="cbShow"/>
         <CheckBox DockPanel.Dock="Top" Margin="10" Content="Generate data" Unchecked="CheckBox_Changed" Checked="CheckBox_Changed"/>
-        <oxy:Plot>
-            <oxy:Plot.Axes>
-                <oxy:TimeSpanAxis Title="Time" StringFormat="g" Position="Bottom"/>
-                <oxy:LinearAxis Title="Position" Position="Left"/>
-            </oxy:Plot.Axes>
-            <oxy:Plot.Series>
-                <oxy:LineSeries ItemsSource="{Binding Data}" Visibility="{Binding IsChecked, ElementName=cbShow, Converter={StaticResource bool2vis}}"/>
-            </oxy:Plot.Series>
-        </oxy:Plot>
+        <contrib:Plot>
+            <contrib:Plot.Axes>
+                <contrib:TimeSpanAxis Title="Time" StringFormat="g" Position="Bottom"/>
+                <contrib:LinearAxis Title="Position" Position="Left"/>
+            </contrib:Plot.Axes>
+            <contrib:Plot.Series>
+                <contrib:LineSeries ItemsSource="{Binding Data}" Visibility="{Binding IsChecked, ElementName=cbShow, Converter={StaticResource bool2vis}}"/>
+            </contrib:Plot.Series>
+        </contrib:Plot>
     </DockPanel>
 </Window>

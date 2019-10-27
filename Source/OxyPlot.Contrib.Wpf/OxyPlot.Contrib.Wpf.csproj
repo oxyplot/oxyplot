@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <TargetFrameworks>net45;netcoreapp3.0</TargetFrameworks>
+    <UseWPF>true</UseWPF>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>OxyPlot is a plotting library for .NET. This package contains contributions for WPF.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Copyright>OxyPlot contributors</Copyright>
+    <PackageProjectUrl>https://oxyplot.github.io/</PackageProjectUrl>
+    <PackageIcon>OxyPlot_128.png</PackageIcon>
+    <PackageTags>plotting plot charting chart</PackageTags>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/oxyplot/oxyplot.git</RepositoryUrl>
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>OxyPlot.Contrib.Wpf.snk</AssemblyOriginatorKeyFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+      <None Include="..\..\Icons\OxyPlot_128.png" Pack="true" PackagePath="\" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
+    <Reference Include="ReachFramework" />
+    <Reference Include="System.Printing" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OxyPlot\OxyPlot.csproj" />
+    <ProjectReference Include="..\OxyPlot.Wpf\OxyPlot.Wpf.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="OxyPlot.Contrib.Wpf.snk" />
+  </ItemGroup>
+</Project>

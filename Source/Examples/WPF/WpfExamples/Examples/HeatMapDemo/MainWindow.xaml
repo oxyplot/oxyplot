@@ -1,7 +1,7 @@
 ﻿<Window x:Class="HeatMapDemo.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:oxy="http://oxyplot.org/wpf"
+        xmlns:contrib="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Contrib.Wpf"
         Title="HeatMapDemo" Height="480" Width="640">
     <TabControl>
         <TabItem Header="HeatMap">
@@ -11,20 +11,20 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <Slider Maximum="1.0" Minimum="0" x:Name="Slider" Value="0.5"/>
-                <oxy:Plot Grid.Row="1">
-                    <oxy:Plot.Axes>
-                        <oxy:LinearAxis Key="x" Position="Bottom"/>
-                        <oxy:LinearAxis Key="y" Position="Left" />
-                        <oxy:LinearColorAxis Key="z" Position="Top" LowColor="White" HighColor="Red" PaletteSize="100">
+                <contrib:Plot Grid.Row="1">
+                    <contrib:Plot.Axes>
+                        <contrib:LinearAxis Key="x" Position="Bottom"/>
+                        <contrib:LinearAxis Key="y" Position="Left" />
+                        <contrib:LinearColorAxis Key="z" Position="Top" LowColor="White" HighColor="Red" PaletteSize="100">
                             <GradientStop Color="Aqua" Offset="0" />
                             <GradientStop Color="Red" Offset="{Binding ElementName=Slider, Path=Value}" />
                             <GradientStop Color="Black" Offset="1.0" />
-                        </oxy:LinearColorAxis>
-                    </oxy:Plot.Axes>
-                    <oxy:Plot.Series>
-                        <oxy:HeatMapSeries ColorAxisKey="Z" Data="{Binding Data}" X0="-1" X1="1" Y0="-1" Y1="1"/>
-                    </oxy:Plot.Series>
-                </oxy:Plot>
+                        </contrib:LinearColorAxis>
+                    </contrib:Plot.Axes>
+                    <contrib:Plot.Series>
+                        <contrib:HeatMapSeries ColorAxisKey="Z" Data="{Binding Data}" X0="-1" X1="1" Y0="-1" Y1="1"/>
+                    </contrib:Plot.Series>
+                </contrib:Plot>
             </Grid>
         </TabItem>
         <TabItem Header="HeatMap With NaN Values">
@@ -44,20 +44,20 @@
                         <ComboBoxItem Content="Yellow"/>
                     </ComboBox>
                 </StackPanel>
-                <oxy:Plot Grid.Row="1">
-                    <oxy:Plot.Axes>
-                        <oxy:LinearAxis Key="x" Position="Bottom"/>
-                        <oxy:LinearAxis Key="y" Position="Left" />
-                        <oxy:LinearColorAxis Key="z" Position="Top" LowColor="White" HighColor="Red" PaletteSize="100" InvalidNumberColor="{Binding ElementName=Colors, Path=SelectedItem.Content}">
+                <contrib:Plot Grid.Row="1">
+                    <contrib:Plot.Axes>
+                        <contrib:LinearAxis Key="x" Position="Bottom"/>
+                        <contrib:LinearAxis Key="y" Position="Left" />
+                        <contrib:LinearColorAxis Key="z" Position="Top" LowColor="White" HighColor="Red" PaletteSize="100" InvalidNumberColor="{Binding ElementName=Colors, Path=SelectedItem.Content}">
                             <GradientStop Color="Aqua" Offset="0" />
                             <GradientStop Color="Red" Offset="0.5" />
                             <GradientStop Color="Black" Offset="1.0" />
-                        </oxy:LinearColorAxis>
-                    </oxy:Plot.Axes>
-                    <oxy:Plot.Series>
-                        <oxy:HeatMapSeries ColorAxisKey="Z" Data="{Binding DataNaNValues}" X0="-1" X1="1" Y0="-1" Y1="1"/>
-                    </oxy:Plot.Series>
-                </oxy:Plot>
+                        </contrib:LinearColorAxis>
+                    </contrib:Plot.Axes>
+                    <contrib:Plot.Series>
+                        <contrib:HeatMapSeries ColorAxisKey="Z" Data="{Binding DataNaNValues}" X0="-1" X1="1" Y0="-1" Y1="1"/>
+                    </contrib:Plot.Series>
+                </contrib:Plot>
             </Grid>
         </TabItem>
     </TabControl>

@@ -1,12 +1,12 @@
 ﻿<Window x:Class="RefreshDemo.Window6"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:oxy="http://oxyplot.org/wpf"
+        xmlns:contrib="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Contrib.Wpf"
         Title="Refresh by changing InvalidateFlag property on the Plot" Height="480" Width="640">
     <DockPanel>
         <TextBlock DockPanel.Dock="Top" Text="{Binding Title}"/>
-        <oxy:Plot InvalidateFlag="{Binding Refresh}">
-            <oxy:LineSeries ItemsSource="{Binding Points}"/>
-        </oxy:Plot>
+        <contrib:Plot InvalidateFlag="{Binding Refresh}">
+            <contrib:LineSeries ItemsSource="{Binding Points}"/>
+        </contrib:Plot>
     </DockPanel>
 </Window>
