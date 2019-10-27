@@ -6,6 +6,7 @@
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <Copyright>OxyPlot contributors</Copyright>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <NoWarn>CS0618</NoWarn>
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\Examples\ExampleLibrary\ExampleLibrary.csproj" />

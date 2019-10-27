@@ -301,16 +301,19 @@ namespace OxyPlot
         /// <summary>
         /// Occurs when the tracker has been changed.
         /// </summary>
+        [Obsolete("May be removed in v4.0 (#111)")]
         public event EventHandler<TrackerEventArgs> TrackerChanged;
 
         /// <summary>
         /// Occurs when the plot has been updated.
         /// </summary>
+        [Obsolete("May be removed in v4.0 (#111)")]
         public event EventHandler Updated;
 
         /// <summary>
         /// Occurs when the plot is about to be updated.
         /// </summary>
+        [Obsolete("May be removed in v4.0 (#111)")]
         public event EventHandler Updating;
 
         /// <summary>

@@ -15,6 +15,7 @@
         <SignAssembly>True</SignAssembly>
         <AssemblyOriginatorKeyFile>OxyPlot.snk</AssemblyOriginatorKeyFile>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <NoWarn>618</NoWarn>
     </PropertyGroup>
     <ItemGroup>
         <None Include="..\..\Icons\OxyPlot_128.png" Pack="true" PackagePath="\" />

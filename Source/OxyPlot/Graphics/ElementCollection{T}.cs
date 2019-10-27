@@ -41,6 +41,7 @@ namespace OxyPlot
         /// <summary>
         /// Raised when the collection changes.
         /// </summary>
+        [Obsolete("May be removed in v4.0 (#111)")]
         public event EventHandler<ElementCollectionChangedEventArgs<T>> CollectionChanged;
 
         /// <summary>

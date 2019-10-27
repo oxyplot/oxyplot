@@ -34,46 +34,55 @@ namespace OxyPlot
         /// <summary>
         /// Occurs when a key is pressed down when the plot view is focused.
         /// </summary>
+        [Obsolete("Will be removed in v4.0 (#111)")]
         public event EventHandler<OxyKeyEventArgs> KeyDown;
 
         /// <summary>
         /// Occurs when a mouse button is pressed down on the model.
         /// </summary>
+        [Obsolete("Will be removed in v4.0 (#111)")]
         public event EventHandler<OxyMouseDownEventArgs> MouseDown;
 
         /// <summary>
         /// Occurs when the mouse is moved on the plot element (only occurs after MouseDown).
         /// </summary>
+        [Obsolete("Will be removed in v4.0 (#111)")]
         public event EventHandler<OxyMouseEventArgs> MouseMove;
 
         /// <summary>
         /// Occurs when the mouse button is released on the plot element.
         /// </summary>
+        [Obsolete("Will be removed in v4.0 (#111)")]
         public event EventHandler<OxyMouseEventArgs> MouseUp;
 
         /// <summary>
         /// Occurs when the mouse cursor enters the plot area.
         /// </summary>
+        [Obsolete("Will be removed in v4.0 (#111)")]
         public event EventHandler<OxyMouseEventArgs> MouseEnter;
 
         /// <summary>
         /// Occurs when the mouse cursor leaves the plot area.
         /// </summary>
+        [Obsolete("Will be removed in v4.0 (#111)")]
         public event EventHandler<OxyMouseEventArgs> MouseLeave;
 
         /// <summary>
         /// Occurs when a touch gesture is started.
         /// </summary>
+        [Obsolete("Will be removed in v4.0 (#111)")]
         public event EventHandler<OxyTouchEventArgs> TouchStarted;
 
         /// <summary>
         /// Occurs when a touch gesture is changed.
         /// </summary>
+        [Obsolete("Will be removed in v4.0 (#111)")]
         public event EventHandler<OxyTouchEventArgs> TouchDelta;
 
         /// <summary>
         /// Occurs when a touch gesture is completed.
         /// </summary>
+        [Obsolete("Will be removed in v4.0 (#111)")]
         public event EventHandler<OxyTouchEventArgs> TouchCompleted;
 
         /// <summary>
@@ -81,6 +90,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="OxyPlot.OxyMouseEventArgs" /> instance containing the event data.</param>
+        [Obsolete("Will be removed in v4.0 (#111)")]
         public virtual void HandleMouseDown(object sender, OxyMouseDownEventArgs e)
         {
             var args = new HitTestArguments(e.Position, MouseHitTolerance);
@@ -106,6 +116,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="OxyPlot.OxyMouseEventArgs" /> instance containing the event data.</param>
+        [Obsolete("Will be removed in v4.0 (#111)")]
         public virtual void HandleMouseMove(object sender, OxyMouseEventArgs e)
         {
             if (this.currentMouseEventElement != null)
@@ -124,6 +135,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="OxyPlot.OxyMouseEventArgs" /> instance containing the event data.</param>
+        [Obsolete("Will be removed in v4.0 (#111)")]
         public virtual void HandleMouseUp(object sender, OxyMouseEventArgs e)
         {
             if (this.currentMouseEventElement != null)
@@ -143,6 +155,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="OxyPlot.OxyMouseEventArgs" /> instance containing the event data.</param>
+        [Obsolete("Will be removed in v4.0 (#111)")]
         public virtual void HandleMouseEnter(object sender, OxyMouseEventArgs e)
         {
             if (!e.Handled)
@@ -156,6 +169,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="OxyPlot.OxyMouseEventArgs" /> instance containing the event data.</param>
+        [Obsolete("Will be removed in v4.0 (#111)")]
         public virtual void HandleMouseLeave(object sender, OxyMouseEventArgs e)
         {
             if (!e.Handled)
@@ -169,6 +183,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">A <see cref="OxyPlot.OxyTouchEventArgs" /> instance containing the event data.</param>
+        [Obsolete("Will be removed in v4.0 (#111)")]
         public virtual void HandleTouchStarted(object sender, OxyTouchEventArgs e)
         {
             var args = new HitTestArguments(e.Position, MouseHitTolerance);
@@ -193,6 +208,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">A <see cref="OxyPlot.OxyTouchEventArgs" /> instance containing the event data.</param>
+        [Obsolete("Will be removed in v4.0 (#111)")]
         public virtual void HandleTouchDelta(object sender, OxyTouchEventArgs e)
         {
             if (this.currentTouchEventElement != null)
@@ -211,6 +227,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">A <see cref="OxyPlot.OxyTouchEventArgs" /> instance containing the event data.</param>
+        [Obsolete("Will be removed in v4.0 (#111)")]
         public virtual void HandleTouchCompleted(object sender, OxyTouchEventArgs e)
         {
             if (this.currentTouchEventElement != null)
@@ -230,6 +247,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="OxyKeyEventArgs" /> instance containing the event data.</param>
+        [Obsolete("Will be removed in v4.0 (#111)")]
         public virtual void HandleKeyDown(object sender, OxyKeyEventArgs e)
         {
             foreach (var element in this.GetHitTestElements())
@@ -253,6 +271,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="OxyMouseEventArgs" /> instance containing the event data.</param>
+        [Obsolete("Will be removed in v4.0 (#111)")]
         protected virtual void OnKeyDown(object sender, OxyKeyEventArgs e)
         {
             var handler = this.KeyDown;
@@ -267,6 +286,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="OxyMouseEventArgs" /> instance containing the event data.</param>
+        [Obsolete("Will be removed in v4.0 (#111)")]
         protected virtual void OnMouseDown(object sender, OxyMouseDownEventArgs e)
         {
             var handler = this.MouseDown;
@@ -281,6 +301,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="OxyMouseEventArgs" /> instance containing the event data.</param>
+        [Obsolete("Will be removed in v4.0 (#111)")]
         protected virtual void OnMouseMove(object sender, OxyMouseEventArgs e)
         {
             var handler = this.MouseMove;
@@ -295,6 +316,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="OxyMouseEventArgs" /> instance containing the event data.</param>
+        [Obsolete("Will be removed in v4.0 (#111)")]
         protected virtual void OnMouseUp(object sender, OxyMouseEventArgs e)
         {
             var handler = this.MouseUp;
@@ -309,6 +331,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="OxyMouseEventArgs" /> instance containing the event data.</param>
+        [Obsolete("Will be removed in v4.0 (#111)")]
         protected virtual void OnMouseEnter(object sender, OxyMouseEventArgs e)
         {
             var handler = this.MouseEnter;
@@ -323,6 +346,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="OxyMouseEventArgs" /> instance containing the event data.</param>
+        [Obsolete("Will be removed in v4.0 (#111)")]
         protected virtual void OnMouseLeave(object sender, OxyMouseEventArgs e)
         {
             var handler = this.MouseLeave;
@@ -337,6 +361,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="OxyMouseEventArgs" /> instance containing the event data.</param>
+        [Obsolete("Will be removed in v4.0 (#111)")]
         protected virtual void OnTouchStarted(object sender, OxyTouchEventArgs e)
         {
             var handler = this.TouchStarted;
@@ -351,6 +376,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="OxyMouseEventArgs" /> instance containing the event data.</param>
+        [Obsolete("Will be removed in v4.0 (#111)")]
         protected virtual void OnTouchDelta(object sender, OxyTouchEventArgs e)
         {
             var handler = this.TouchDelta;
@@ -365,6 +391,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="OxyMouseEventArgs" /> instance containing the event data.</param>
+        [Obsolete("Will be removed in v4.0 (#111)")]
         protected virtual void OnTouchCompleted(object sender, OxyTouchEventArgs e)
         {
             var handler = this.TouchCompleted;
