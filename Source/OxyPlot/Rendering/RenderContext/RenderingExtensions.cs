@@ -350,6 +350,12 @@ namespace OxyPlot
             LineJoin lineJoin = LineJoin.Miter,
             bool aliased = false)
         {
+            var n = points.Count;
+            if (n == 0)
+            {
+                return;
+            }
+
             if (lineStyle == LineStyle.None)
             {
                 return;
@@ -1111,9 +1117,14 @@ namespace OxyPlot
         /// <remarks>Points that are closer than the specified distance will not be included in the output buffer.</remarks>
         private static void ReducePoints(IList<ScreenPoint> points, double minDistSquared, List<ScreenPoint> outputBuffer)
         {
+            var n = points.Count;
+            if (n == 0)
+            {
+                return;
+            }
+
             outputBuffer.Add(points[0]);
             int lastPointIndex = 0;
-            var n = points.Count;
             for (int i = 1; i < n; i++)
             {
                 var sc1 = points[i];

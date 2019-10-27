@@ -14,6 +14,9 @@ All notable changes to this project will be documented in this file.
 ### Removed
 - Copy to text report Ctrl+Alt+R (#1403)
 
+### Fixed
+- Exception when rendering polygon with no points (#1410)
+
 ## [2.0.0] - 2019-10-19
 ### Added 
 - WindowsForms and Wpf support .NET Core 3.0 (#1331)
