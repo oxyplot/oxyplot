@@ -9,8 +9,6 @@
 
 namespace OxyPlot
 {
-    using OxyPlot.Reporting;
-
     /// <summary>
     /// Defines common commands for the plots.
     /// </summary>
@@ -23,7 +21,6 @@ namespace OxyPlot
         {
             // commands that can be triggered from key events
             Reset = new DelegatePlotCommand<OxyKeyEventArgs>((view, controller, args) => HandleReset(view, args));
-            CopyTextReport = new DelegatePlotCommand<OxyKeyEventArgs>((view, controller, args) => HandleCopyTextReport(view, args));
             CopyCode = new DelegatePlotCommand<OxyKeyEventArgs>((view, controller, args) => HandleCopyCode(view, args));
 
             // commands that can be triggered from mouse down events
@@ -73,11 +70,6 @@ namespace OxyPlot
         /// Gets the reset axes command (for mouse events).
         /// </summary>
         public static IViewCommand<OxyMouseEventArgs> ResetAt { get; private set; }
-
-        /// <summary>
-        /// Gets the copy text report command.
-        /// </summary>
-        public static IViewCommand<OxyKeyEventArgs> CopyTextReport { get; private set; }
 
         /// <summary>
         /// Gets the copy code command.
@@ -229,18 +221,6 @@ namespace OxyPlot
             args.Handled = true;
             view.ActualModel.ResetAllAxes();
             view.InvalidatePlot(false);
-        }
-
-        /// <summary>
-        /// Handles the copy text report event.
-        /// </summary>
-        /// <param name="view">The view.</param>
-        /// <param name="args">The <see cref="OxyInputEventArgs"/> instance containing the event data.</param>
-        private static void HandleCopyTextReport(IPlotView view, OxyInputEventArgs args)
-        {
-            args.Handled = true;
-            var text = view.ActualModel.CreateTextReport();
-            view.SetClipboardText(text);
         }
 
         /// <summary>
