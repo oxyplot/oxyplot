@@ -10,6 +10,8 @@
     <ItemGroup>
         <ProjectReference Include="..\Examples\ExampleLibrary\ExampleLibrary.csproj" />
         <ProjectReference Include="..\OxyPlot.Pdf\OxyPlot.Pdf.csproj" />
+        <ProjectReference Include="..\OxyPlot.Reporting.Pdf\OxyPlot.Reporting.Pdf.csproj" />
+        <ProjectReference Include="..\OxyPlot.ReportModel\OxyPlot.ReportModel.csproj" />
         <ProjectReference Include="..\OxyPlot\OxyPlot.csproj" />
     </ItemGroup>
     <ItemGroup>

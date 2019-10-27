@@ -6,6 +6,9 @@ All notable changes to this project will be documented in this file.
 ### Added
 - OxyPlot.ImageSharp (#1188)
 
+### Changed
+- Moved reporting functionality to separate projects (#1403)
+
 ### Removed
 - Copy to text report Ctrl+Alt+R (#1403)
 

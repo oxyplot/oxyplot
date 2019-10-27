@@ -1,35 +1,33 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26430.13
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29403.142
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Wpf", "OxyPlot.Wpf\OxyPlot.Wpf.csproj", "{698CCD8E-ADCC-4565-8517-5EDD36F07155}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OxyPlot.Wpf", "OxyPlot.Wpf\OxyPlot.Wpf.csproj", "{698CCD8E-ADCC-4565-8517-5EDD36F07155}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Tests", "OxyPlot.Tests\OxyPlot.Tests.csproj", "{E6218B88-69F5-4E3F-9ABC-93AB82FD77AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OxyPlot.Tests", "OxyPlot.Tests\OxyPlot.Tests.csproj", "{E6218B88-69F5-4E3F-9ABC-93AB82FD77AD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{B630CA82-A785-49CA-8FA0-3D3AF4D6626A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleDemo", "Examples\WPF\SimpleDemo\SimpleDemo.csproj", "{F97B3093-EBDD-46C9-890E-0501922B9168}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleDemo", "Examples\WPF\SimpleDemo\SimpleDemo.csproj", "{F97B3093-EBDD-46C9-890E-0501922B9168}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OxyPlot", "OxyPlot\OxyPlot.csproj", "{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Pdf", "OxyPlot.Pdf\OxyPlot.Pdf.csproj", "{12737C3F-5770-403F-90A1-BC12EBD1BB31}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.OpenXml", "OxyPlot.OpenXml\OxyPlot.OpenXml.csproj", "{BB4FA452-A96A-4C47-AA65-7E88F6FAE873}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OxyPlot.Pdf", "OxyPlot.Pdf\OxyPlot.Pdf.csproj", "{12737C3F-5770-403F-90A1-BC12EBD1BB31}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExampleLibrary", "Examples\ExampleLibrary\ExampleLibrary.csproj", "{FACB89E5-53A5-4748-9F5B-E0714EBB37B2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleBrowser", "Examples\WPF\ExampleBrowser\ExampleBrowser.csproj", "{4BB6F831-E215-488E-8ED8-F73C98C4B23F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExampleBrowser", "Examples\WPF\ExampleBrowser\ExampleBrowser.csproj", "{4BB6F831-E215-488E-8ED8-F73C98C4B23F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Wpf.Tests", "OxyPlot.Wpf.Tests\OxyPlot.Wpf.Tests.csproj", "{4ED9A511-669D-47B1-97F5-4FCAFE8EB178}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OxyPlot.Wpf.Tests", "OxyPlot.Wpf.Tests\OxyPlot.Wpf.Tests.csproj", "{4ED9A511-669D-47B1-97F5-4FCAFE8EB178}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DemoApplications", "DemoApplications", "{831970F4-9390-4214-848B-70E6250443DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfExamples", "Examples\WPF\WpfExamples\WpfExamples.csproj", "{B86739B8-5DE9-406F-9418-0751BF7C166F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfExamples", "Examples\WPF\WpfExamples\WpfExamples.csproj", "{B86739B8-5DE9-406F-9418-0751BF7C166F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Pdf.Tests", "OxyPlot.Pdf.Tests\OxyPlot.Pdf.Tests.csproj", "{FF600107-3DEB-404F-8A37-F63473BDFCB8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OxyPlot.Pdf.Tests", "OxyPlot.Pdf.Tests\OxyPlot.Pdf.Tests.csproj", "{FF600107-3DEB-404F-8A37-F63473BDFCB8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerformanceTest", "Examples\PerformanceTest\PerformanceTest.csproj", "{EDD52464-AD60-4EA1-B774-87AAFD930B6B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PerformanceTest", "Examples\PerformanceTest\PerformanceTest.csproj", "{EDD52464-AD60-4EA1-B774-87AAFD930B6B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Change log", "Change log", "{4334530D-EBDE-4F04-838A-DA5A8A598124}"
 	ProjectSection(SolutionItems) = preProject
@@ -70,10 +68,6 @@ Global
 		{12737C3F-5770-403F-90A1-BC12EBD1BB31}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{12737C3F-5770-403F-90A1-BC12EBD1BB31}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{12737C3F-5770-403F-90A1-BC12EBD1BB31}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BB4FA452-A96A-4C47-AA65-7E88F6FAE873}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BB4FA452-A96A-4C47-AA65-7E88F6FAE873}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BB4FA452-A96A-4C47-AA65-7E88F6FAE873}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BB4FA452-A96A-4C47-AA65-7E88F6FAE873}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FACB89E5-53A5-4748-9F5B-E0714EBB37B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FACB89E5-53A5-4748-9F5B-E0714EBB37B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FACB89E5-53A5-4748-9F5B-E0714EBB37B2}.Release|Any CPU.ActiveCfg = Release|Any CPU

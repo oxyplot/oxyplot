@@ -9,12 +9,9 @@
 
 namespace ExportDemo
 {
-    using WpfExamples;
-
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    [Example("Export demo")]
     public partial class ShellView
     {
         public ShellView()

@@ -24,11 +24,9 @@ namespace ExportDemo
     using OxyPlot.Reporting;
     using OxyPlot.Wpf;
 
+    using PropertyTools;
     using PropertyTools.Wpf;
 
-    using WpfExamples;
-
-    using DelegateCommand = WpfExamples.DelegateCommand;
     using SvgExporter = OxyPlot.SvgExporter;
 
     public class ShellViewModel : Observable

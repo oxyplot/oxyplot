@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net452</TargetFramework>
+    <Product>OxyPlot PDF extensions</Product>
+    <Description>OxyPlot is a plotting library for .NET. This package contains report writers for .NET 4 (based on PDFsharp).</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Copyright>Copyright (c) 2014 OxyPlot contributors</Copyright>
+    <PackageProjectUrl>https://oxyplot.github.io/</PackageProjectUrl>
+    <PackageIcon>OxyPlot_128.png</PackageIcon>
+    <PackageTags>pdf plotting plot charting chart</PackageTags>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/oxyplot/oxyplot.git</RepositoryUrl>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <SignAssembly>True</SignAssembly>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+      <None Include="..\..\Icons\OxyPlot_128.png" Pack="true" PackagePath="\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OxyPlot.Pdf\OxyPlot.Pdf.csproj" />
+    <ProjectReference Include="..\OxyPlot.ReportModel\OxyPlot.ReportModel.csproj" />
+    <ProjectReference Include="..\OxyPlot\OxyPlot.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="OxyPlot.Reporting.Pdf.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="PDFsharp-MigraDoc-GDI" Version="1.50.5147" />
+  </ItemGroup>
+</Project>
