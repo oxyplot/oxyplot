@@ -19,19 +19,47 @@ namespace OxyPlot
         /// <summary>
         /// Initializes a new instance of the <see cref="ToolTippedPlotElement"/> class.
         /// </summary>
-        /// <param name="el">The PlotElement to be wrapped.</param>
-        public ToolTippedPlotElement(PlotElement el)
+        /// <param name="type">The type of element that the new instance will represent.</param>
+        /// <param name="el">What <see cref="OxyPlot.PlotElement"/> the new instance will represent.</param>
+        protected ToolTippedPlotElement(ToolTippedPlotElementType type, PlotElement el = null)
         {
-            this.PlotElement = el;
+            switch (type)
+            {
+                case ToolTippedPlotElementType.Null:
+                    break;
+
+                case ToolTippedPlotElementType.PlotElement:
+                    this.PlotElement = el;
+                    break;
+
+                case ToolTippedPlotElementType.PlotTitleArea:
+                    this.IsPlotTitleArea = true;
+                    break;
+
+                default:
+                    throw new NotImplementedException();
+            }
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ToolTippedPlotElement"/> class.
+        /// The types of things that a <see cref="ToolTippedPlotElement"/> can represent.
         /// </summary>
-        /// <param name="isPlotTitleArea">Whether this will be the plot title area or the absence of an element.</param>
-        public ToolTippedPlotElement(bool isPlotTitleArea = false)
+        protected enum ToolTippedPlotElementType
         {
-            this.IsPlotTitleArea = isPlotTitleArea;
+            /// <summary>
+            /// Represents the absence of an element.
+            /// </summary>
+            Null,
+
+            /// <summary>
+            /// Represents the plot title area pseudo-element.
+            /// </summary>
+            PlotTitleArea,
+
+            /// <summary>
+            /// Represents a plot element.
+            /// </summary>
+            PlotElement
         }
 
         /// <summary>
@@ -53,6 +81,28 @@ namespace OxyPlot
             {
                 return this.PlotElement != null || this.IsPlotTitleArea;
             }
+        }
+
+        /// <summary>
+        /// Creates and returns a new instance of the <see cref="ToolTippedPlotElement"/> class that represents a <see cref="OxyPlot.PlotElement"/>.
+        /// </summary>
+        /// <param name="el">The PlotElement to be wrapped.</param>
+        public static ToolTippedPlotElement FromElement(PlotElement el)
+        {
+            return new ToolTippedPlotElement(ToolTippedPlotElementType.PlotElement, el);
+        }
+
+        /// <summary>
+        /// Creates and returns a new instance of the <see cref="ToolTippedPlotElement"/> class that represents a pseudo-element (the plot title area or nothing).
+        /// </summary>
+        /// <param name="isPlotTitleArea">Whether the returned <see cref="ToolTippedPlotElement"/> will be the plot title area or the absence of an element.</param>
+        public static ToolTippedPlotElement FromPseudoElement(bool isPlotTitleArea = false)
+        {
+            if (isPlotTitleArea)
+            {
+                return new ToolTippedPlotElement(ToolTippedPlotElementType.PlotTitleArea);
+            }
+            return new ToolTippedPlotElement(ToolTippedPlotElementType.Null);
         }
 
         /// <summary>

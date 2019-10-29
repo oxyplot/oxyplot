@@ -70,8 +70,8 @@ namespace OxyPlot
             this.ToolTipView = toolTipView;
             this.PlotModel = plotModel;
 
-            this.previouslyHoveredPlotElement = new ToolTippedPlotElement();
-            this.currentlyHoveredPlotElement = new ToolTippedPlotElement();
+            this.previouslyHoveredPlotElement = ToolTippedPlotElement.FromPseudoElement();
+            this.currentlyHoveredPlotElement = ToolTippedPlotElement.FromPseudoElement();
 
             this.PlotModel.MouseEnter += this.PlotModel_MouseEnter;
             this.PlotModel.MouseMove += this.PlotModel_MouseMove;
@@ -168,7 +168,7 @@ namespace OxyPlot
             {
                 // these 2 lines must be before the third which calls the setter of Text
                 this.previouslyHoveredPlotElement = this.currentlyHoveredPlotElement;
-                this.currentlyHoveredPlotElement = new ToolTippedPlotElement(true);
+                this.currentlyHoveredPlotElement = ToolTippedPlotElement.FromPseudoElement(true);
 
                 // show the tooltip
                 this.lastShownToolTipString = this.PlotModel.TitleToolTip;
@@ -217,7 +217,7 @@ namespace OxyPlot
                         {
                             // these 2 lines must be before the third which calls the setter of Text
                             this.previouslyHoveredPlotElement = this.currentlyHoveredPlotElement;
-                            this.currentlyHoveredPlotElement = new ToolTippedPlotElement(pe);
+                            this.currentlyHoveredPlotElement = ToolTippedPlotElement.FromElement(pe);
 
                             // show the tooltip
                             this.lastShownToolTipString = pe.ToolTip;
@@ -246,7 +246,7 @@ namespace OxyPlot
             if (!found)
             {
                 this.previouslyHoveredPlotElement = this.currentlyHoveredPlotElement;
-                this.currentlyHoveredPlotElement = new ToolTippedPlotElement();
+                this.currentlyHoveredPlotElement = ToolTippedPlotElement.FromPseudoElement();
             }
 
             return found;
