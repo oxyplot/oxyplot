@@ -362,15 +362,6 @@ namespace OxyPlot.WindowsForms
         }
 
         /// <summary>
-        /// Gets a <see cref="ScreenPoint"/> for client mouse screen coordinates.
-        /// </summary>
-        /// <returns>The <see cref="ScreenPoint"/>.</returns>
-        public ScreenPoint GetClientScreenPointForMouse()
-        {
-            return this.PointToClient(Control.MousePosition).ToScreenPoint();
-        }
-
-        /// <summary>
         /// Raises the <see cref="E:System.Windows.Forms.Control.MouseDown" /> event.
         /// </summary>
         /// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs" /> that contains the event data.</param>

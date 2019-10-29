@@ -126,14 +126,13 @@ namespace OxyPlot
         /// <summary>
         /// Does hit-testing and hides or hides/shows the tooltip if needed.
         /// </summary>
-        protected void UpdateToolTip()
+        /// <param name="sp">The screen point where the mouse cursor sits.</param>
+        protected void UpdateToolTip(ScreenPoint sp)
         {
             if (this.PlotModel == null)
             {
                 return;
             }
-
-            ScreenPoint sp = this.PlotModel.PlotView.GetClientScreenPointForMouse();
 
             // do the hit-testing:
             bool handleTitle = this.HandleTitleToolTip(sp);
@@ -388,7 +387,7 @@ namespace OxyPlot
         /// <param name="e">The event arguments.</param>
         private void PlotModel_MouseLeave(object sender, OxyMouseEventArgs e)
         {
-            this.UpdateToolTip();
+            this.UpdateToolTip(e.Position);
         }
 
         /// <summary>
@@ -398,7 +397,7 @@ namespace OxyPlot
         /// <param name="e">The event arguments.</param>
         private void PlotModel_MouseEnter(object sender, OxyMouseEventArgs e)
         {
-            this.UpdateToolTip();
+            this.UpdateToolTip(e.Position);
         }
 
         /// <summary>
@@ -408,7 +407,7 @@ namespace OxyPlot
         /// <param name="e">The event arguments.</param>
         private void PlotModel_MouseMove(object sender, OxyMouseEventArgs e)
         {
-            this.UpdateToolTip();
+            this.UpdateToolTip(e.Position);
         }
 
         private void HandleToolTipViewChanged(IToolTipView oldView, IToolTipView newView)
