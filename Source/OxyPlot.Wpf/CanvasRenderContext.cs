@@ -75,11 +75,6 @@ namespace OxyPlot.Wpf
         private Rect? clip;
 
         /// <summary>
-        /// The current tooltip.
-        /// </summary>
-        private string currentToolTip;
-
-        /// <summary>
         /// The pixel scale
         /// </summary>
         private double pixelScale;
@@ -624,15 +619,6 @@ namespace OxyPlot.Wpf
             tb.Measure(new Size(1000, 1000));
 
             return new OxySize(tb.DesiredSize.Width, tb.DesiredSize.Height);
-        }
-
-        /// <summary>
-        /// Sets the tool tip for the following items.
-        /// </summary>
-        /// <param name="text">The text in the tool tip.</param>
-        public void SetToolTip(string text)
-        {
-            this.currentToolTip = text;
         }
 
         /// <summary>

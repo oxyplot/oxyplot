@@ -181,12 +181,6 @@ namespace OxyPlot
         OxySize MeasureText(string text, string fontFamily = null, double fontSize = 10, double fontWeight = 500);
 
         /// <summary>
-        /// Sets the tool tip for the following items.
-        /// </summary>
-        /// <param name="text">The text in the tool tip, or <c>null</c> if no tool tip should be shown.</param>
-        void SetToolTip(string text);
-
-        /// <summary>
         /// Cleans up resources not in use.
         /// </summary>
         /// <remarks>This method is called at the end of each rendering.</remarks>

@@ -203,14 +203,6 @@ namespace PerformanceTest
         }
 
         /// <summary>
-        /// Sets the tool tip for the following items.
-        /// </summary>
-        /// <param name="text">The text in the tooltip.</param>
-        public void SetToolTip(string text)
-        {
-        }
-
-        /// <summary>
         /// Cleans up resources not in use.
         /// </summary>
         /// <remarks>

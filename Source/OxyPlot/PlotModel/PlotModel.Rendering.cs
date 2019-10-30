@@ -336,11 +336,8 @@ namespace OxyPlot
         {
             foreach (var a in this.Annotations.Where(a => a.Layer == layer))
             {
-                rc.SetToolTip(a.ToolTip);
                 a.Render(rc);
             }
-
-            rc.SetToolTip(null);
         }
 
         /// <summary>
@@ -353,18 +350,14 @@ namespace OxyPlot
             // render pass 0
             foreach (var a in this.Axes.Where(a => a.IsAxisVisible && a.Layer == layer))
             {
-                rc.SetToolTip(a.ToolTip);
                 a.Render(rc, 0);
             }
 
             // render pass 1
             foreach (var a in this.Axes.Where(a => a.IsAxisVisible && a.Layer == layer))
             {
-                rc.SetToolTip(a.ToolTip);
                 a.Render(rc, 1);
             }
-
-            rc.SetToolTip(null);
         }
 
         /// <summary>
@@ -408,11 +401,8 @@ namespace OxyPlot
         {
             foreach (var s in this.Series.Where(s => s.IsVisible))
             {
-                rc.SetToolTip(s.ToolTip);
                 s.Render(rc);
             }
-
-            rc.SetToolTip(null);
         }
 
         /// <summary>
@@ -428,8 +418,6 @@ namespace OxyPlot
 
             if (!string.IsNullOrEmpty(this.Title))
             {
-                rc.SetToolTip(this.TitleToolTip);
-
                 rc.DrawMathText(
                     new ScreenPoint(x, y),
                     this.Title,
@@ -441,8 +429,6 @@ namespace OxyPlot
                     HorizontalAlignment.Center,
                     VerticalAlignment.Top);
                 y += titleSize.Height;
-
-                rc.SetToolTip(null);
             }
 
             if (!string.IsNullOrEmpty(this.Subtitle))
