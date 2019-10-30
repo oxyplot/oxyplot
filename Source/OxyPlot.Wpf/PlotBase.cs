@@ -245,11 +245,6 @@ namespace OxyPlot.Wpf
         /// <param name="updateData">The update Data.</param>
         public void InvalidatePlot(bool updateData = true)
         {
-            if (this.ActualWidth <= 0 || this.ActualHeight <= 0)
-            {
-                return;
-            }
-
             this.UpdateModel(updateData);
 
             if (this.ActualWidth > 0 && this.ActualHeight > 0)
