@@ -23,10 +23,10 @@ namespace OxyPlot.Pdf.Tests
         [Test]
         public void Export_AllExamplesInExampleLibrary_CheckThatAllFilesExist()
         {
-            var DestinationDirectory = Path.Combine(TestContext.CurrentContext.WorkDirectory, "PdfExporterTests_ExampleLibrary");
-            if (!Directory.Exists(DestinationDirectory))
+            var destinationDirectory = Path.Combine(TestContext.CurrentContext.WorkDirectory, "PdfExporterTests_ExampleLibrary");
+            if (!Directory.Exists(destinationDirectory))
             {
-                Directory.CreateDirectory(DestinationDirectory);
+                Directory.CreateDirectory(destinationDirectory);
             }
 
             // A4
@@ -35,18 +35,24 @@ namespace OxyPlot.Pdf.Tests
 
             foreach (var example in Examples.GetList())
             {
-                if (example.PlotModel == null)
+                void ExportModelAndCheckFileExists(PlotModel model, string fileName)
                 {
-                    continue;
+                    if (model == null)
+                    {
+                        return;
+                    }
+
+                    var path = Path.Combine(destinationDirectory, FileNameUtilities.CreateValidFileName(fileName, ".pdf"));
+                    using (var s = File.Create(path))
+                    {
+                        PdfExporter.Export(model, s, Width, Height);
+                    }
+
+                    Assert.IsTrue(File.Exists(path));
                 }
 
-                var path = Path.Combine(DestinationDirectory, FileNameUtilities.CreateValidFileName(example.Category + " - " + example.Title, ".pdf"));
-                using (var s = File.Create(path))
-                {
-                    PdfExporter.Export(example.PlotModel, s, Width, Height);
-                }
-
-                Assert.IsTrue(File.Exists(path));
+                ExportModelAndCheckFileExists(example.PlotModel, $"{example.Category} - {example.Title}");
+                ExportModelAndCheckFileExists(example.TransposedPlotModel, $"{example.Category} - {example.Title} - Transposed");
             }
         }
 

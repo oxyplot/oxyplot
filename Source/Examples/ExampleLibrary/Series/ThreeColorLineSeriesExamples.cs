@@ -12,7 +12,6 @@ namespace ExampleLibrary.Series
     using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
-    using System;
 
     using ExampleLibrary.Utilities;
 
@@ -54,12 +53,6 @@ namespace ExampleLibrary.Series
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "Date" });
 
             return model;
-        }
-
-        [Example("Temperatures (transposed)")]
-        public static PlotModel ThreeColorLineSeriesTransposed()
-        {
-            return ThreeColorLineSeries().Transpose();
         }
 
         [Example("Temperatures (Y Axis reversed)")]

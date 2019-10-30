@@ -13,8 +13,6 @@ namespace ExampleLibrary
     using System.Collections.Generic;
     using System.Linq;
 
-    using ExampleLibrary.Utilities;
-
     using OxyPlot;
     using OxyPlot.Annotations;
     using OxyPlot.Axes;
@@ -27,12 +25,6 @@ namespace ExampleLibrary
         public static PlotModel CorrelatedScatter()
         {
             return CreateCorrelatedScatter(1000);
-        }
-
-        [Example("Correlated points (transposed)")]
-        public static PlotModel CorrelatedScatterTransposed()
-        {
-            return CorrelatedScatter().Transpose();
         }
 
         [Example("Random points")]
@@ -90,12 +82,6 @@ namespace ExampleLibrary
             s.LabelFormatString = "{1:0.###}";
             model.Series.Add(s);
             return model;
-        }
-
-        [Example("LabelFormatString (transposed)")]
-        public static PlotModel LabelFormatStringTransposed()
-        {
-            return LabelFormatString().Transpose();
         }
 
         private static PlotModel CreateRandomScatterSeriesWithColorAxisPlotModel(int n, OxyPalette palette, MarkerType markerType, AxisPosition colorAxisPosition, OxyColor highColor, OxyColor lowColor)

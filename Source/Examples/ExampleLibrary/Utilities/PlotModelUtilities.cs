@@ -10,15 +10,47 @@
 namespace ExampleLibrary.Utilities
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
+
     using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
+
 
     public static class PlotModelUtilities
     {
         private const string XAXIS_KEY = "x";
         private const string YAXIS_KEY = "y";
+
+        /// <summary>
+        /// Lists all XYAxisSeries from the core library that are NOT transposable
+        /// </summary>
+        private static readonly HashSet<Type> NonTransposableSeriesTypes = new HashSet<Type>
+        {
+            typeof(CandleStickAndVolumeSeries),
+            typeof(OldCandleStickSeries),
+        };
+
+        /// <summary>
+        /// Returns a value indicating whether a plot model is transposable.
+        /// </summary>
+        /// <param name="model">The plot model.</param>
+        /// <returns>True if the plot model in transposable; false otherwise.</returns>
+        public static bool IsTransposable(this PlotModel model)
+        {                   
+            return (model.Axes.Count > 0 || model.Series.Count > 0)
+                && model.Annotations.Count == 0
+                && model.Axes.All(a => a.Position != AxisPosition.None)
+                && model.Series.All(s =>
+                   {
+                       var type = s.GetType();
+                       return s is XYAxisSeries
+                              && type.GetTypeInfo().Assembly == typeof(PlotModel).GetTypeInfo().Assembly
+                              && !NonTransposableSeriesTypes.Contains(type);
+                   });
+        }
 
         /// <summary>
         /// Reverses the X Axis of a PlotModel. The given PlotModel is mutated and returned for convenience.
@@ -130,8 +162,8 @@ namespace ExampleLibrary.Utilities
                 model.Title += " (transposed)";
             }
 
-            var foundXAxis = false;
-            var foundYAxis = false;
+            // Update plot to generate default axes etc.
+            ((IPlotModel)model).Update(false);
 
             foreach (var axis in model.Axes)
             {
@@ -139,24 +171,16 @@ namespace ExampleLibrary.Utilities
                 {
                     case AxisPosition.Bottom:
                         axis.Position = AxisPosition.Left;
-                        if (axis.Key == null)
-                        {
-                            axis.Key = XAXIS_KEY;
-                        }
-
-                        foundXAxis = true;
                         break;
                     case AxisPosition.Left:
                         axis.Position = AxisPosition.Bottom;
-                        if (axis.Key == null)
-                        {
-                            axis.Key = YAXIS_KEY;
-                        }
-
-                        foundYAxis = true;
                         break;
                     case AxisPosition.Right:
+                        axis.Position = AxisPosition.Top;
+                        break;
                     case AxisPosition.Top:
+                        axis.Position = AxisPosition.Right;
+                        break;
                     case AxisPosition.None:
                         break;
                     default:
@@ -164,26 +188,26 @@ namespace ExampleLibrary.Utilities
                 }
             }
 
-            if (!foundXAxis)
-            {
-                model.Axes.Add(new LinearAxis { Key = XAXIS_KEY, Position = AxisPosition.Left });
-            }
-
-            if (!foundYAxis)
-            {
-                model.Axes.Add(new LinearAxis { Key = YAXIS_KEY, Position = AxisPosition.Bottom });
-            }
-
             foreach (var series in model.Series.OfType<XYAxisSeries>())
             {
-                if (series.XAxisKey == null)
+                if (series.XAxis != null && series.XAxisKey == null)
                 {
-                    series.XAxisKey = XAXIS_KEY;
+                    if (series.XAxis.Key == null)
+                    {
+                        series.XAxis.Key = XAXIS_KEY;
+                    }
+
+                    series.XAxisKey = series.XAxis.Key;
                 }
 
-                if (series.YAxisKey == null)
+                if (series.YAxis != null && series.YAxisKey == null)
                 {
-                    series.YAxisKey = YAXIS_KEY;
+                    if (series.YAxis.Key == null)
+                    {
+                        series.YAxis.Key = YAXIS_KEY;
+                    }
+
+                    series.YAxisKey = series.YAxis.Key;
                 }
             }
 

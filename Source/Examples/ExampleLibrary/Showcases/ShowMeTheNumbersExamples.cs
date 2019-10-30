@@ -32,7 +32,8 @@ namespace ExampleLibrary
             var categoryAxis = new CategoryAxis
                     {
                         AxislineStyle = LineStyle.Solid,
-                        TickStyle = TickStyle.None
+                        TickStyle = TickStyle.None,
+                        Key = "y"
                     };
             categoryAxis.Labels.AddRange(new[] { "North", "East", "South", "West" });
             pm.Axes.Add(categoryAxis);
@@ -46,13 +47,14 @@ namespace ExampleLibrary
                     MinorStep = 1000,
                     AxislineStyle = LineStyle.Solid,
                     TickStyle = TickStyle.Outside,
-                    StringFormat = "#,0"
+                    StringFormat = "#,0",
+                    Key = "x"
                 });
-            var series = new ColumnSeries { FillColor = OxyColors.Black };
-            series.Items.Add(new ColumnItem { Value = 3000 });
-            series.Items.Add(new ColumnItem { Value = 4500 });
-            series.Items.Add(new ColumnItem { Value = 2100 });
-            series.Items.Add(new ColumnItem { Value = 4800 });
+            var series = new BarSeries { FillColor = OxyColors.Black, XAxisKey = "x", YAxisKey = "y" };
+            series.Items.Add(new BarItem { Value = 3000 });
+            series.Items.Add(new BarItem { Value = 4500 });
+            series.Items.Add(new BarItem { Value = 2100 });
+            series.Items.Add(new BarItem { Value = 4800 });
             pm.Series.Add(series);
             return pm;
         }
@@ -158,7 +160,8 @@ namespace ExampleLibrary
             var categoryAxis = new CategoryAxis
             {
                 TickStyle = TickStyle.None,
-                GapWidth = 0
+                GapWidth = 0,
+                Key = "y"
             };
             categoryAxis.Labels.AddRange(new[] { "West\n34%", "East\n30%", "North\n20%", "South\n16%" });
             pm.Axes.Add(categoryAxis);
@@ -173,20 +176,23 @@ namespace ExampleLibrary
                     MinorStep = 0.05,
                     AxislineStyle = LineStyle.Solid,
                     TickStyle = TickStyle.Outside,
-                    StringFormat = "P0"
+                    StringFormat = "P0",
+                    Key = "x"
                 });
 
-            var series = new ColumnSeries
+            var series = new BarSeries
                     {
-                        ColumnWidth = 1.0,
+                        BarWidth = 1.0,
                         StrokeColor = OxyColors.DarkGray,
                         StrokeThickness = 1.0,
                         FillColor = OxyColors.Black,
+                        XAxisKey = "x",
+                        YAxisKey = "y"
                     };
-            series.Items.Add(new ColumnItem { Value = 0.34 });
-            series.Items.Add(new ColumnItem { Value = 0.3 });
-            series.Items.Add(new ColumnItem { Value = 0.2 });
-            series.Items.Add(new ColumnItem { Value = 0.16 });
+            series.Items.Add(new BarItem { Value = 0.34 });
+            series.Items.Add(new BarItem { Value = 0.3 });
+            series.Items.Add(new BarItem { Value = 0.2 });
+            series.Items.Add(new BarItem { Value = 0.16 });
             pm.Series.Add(series);
             return pm;
         }
@@ -205,7 +211,7 @@ namespace ExampleLibrary
             values.Add("Systems", -2);
             values.Add("HR", -17);
             values.Add("Finance", 5);
-            pm.Axes.Add(new CategoryAxis { ItemsSource = values, LabelField = "Key", TickStyle = TickStyle.None });
+            pm.Axes.Add(new CategoryAxis { ItemsSource = values, LabelField = "Key", TickStyle = TickStyle.None, Key = "y" });
             pm.Axes.Add(
                 new LinearAxis
                 {
@@ -220,15 +226,18 @@ namespace ExampleLibrary
                     ExtraGridlineColor = OxyColors.Black,
                     ExtraGridlineThickness = 3,
                     TickStyle = TickStyle.Outside,
-                    StringFormat = "+0;-0;0"
+                    StringFormat = "+0;-0;0",
+                    Key = "x"
                 });
             pm.Series.Add(
-                new ColumnSeries
+                new BarSeries
                     {
                         FillColor = OxyColors.Orange,
                         NegativeFillColor = OxyColors.Gray,
                         ItemsSource = values,
                         ValueField = "Value",
+                        XAxisKey = "x",
+                        YAxisKey = "y"
                     });
             return pm;
         }
@@ -259,7 +268,8 @@ namespace ExampleLibrary
                 AxislineStyle = LineStyle.Solid,
                 ItemsSource = values,
                 LabelField = "Key",
-                TickStyle = TickStyle.None
+                TickStyle = TickStyle.None,
+                Key = "y"
             });
             pm.Axes.Add(
                 new LinearAxis
@@ -271,9 +281,10 @@ namespace ExampleLibrary
                     MinorStep = 1000,
                     AxislineStyle = LineStyle.Solid,
                     TickStyle = TickStyle.Outside,
-                    StringFormat = "+0;-0;0"
+                    StringFormat = "+0;-0;0",
+                    Key = "x"
                 });
-            pm.Series.Add(new ColumnSeries { FillColor = OxyColors.Orange, ItemsSource = values, ValueField = "Value" });
+            pm.Series.Add(new BarSeries { FillColor = OxyColors.Orange, ItemsSource = values, ValueField = "Value", XAxisKey = "x", YAxisKey = "y" });
             return pm;
         }
 

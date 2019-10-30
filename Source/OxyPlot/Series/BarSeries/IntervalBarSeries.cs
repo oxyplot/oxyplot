@@ -235,12 +235,12 @@ namespace OxyPlot.Series
                 var item = this.ValidItems[i];
 
                 var categoryIndex = item.GetCategoryIndex(i);
-                double categoryValue = categoryAxis.GetCategoryValue(categoryIndex, stackIndex, actualBarWidth);
+                var categoryValue = categoryAxis.GetCategoryValue(categoryIndex, stackIndex, actualBarWidth);
 
                 var p0 = this.Transform(item.Start, categoryValue);
                 var p1 = this.Transform(item.End, categoryValue + actualBarWidth);
 
-                var rectangle = OxyRect.Create(p0.X, p0.Y, p1.X, p1.Y);
+                var rectangle = new OxyRect(p0, p1);
 
                 this.ActualBarRectangles.Add(rectangle);
 

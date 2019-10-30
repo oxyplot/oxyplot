@@ -2,8 +2,6 @@
 {
     using System.Collections.Generic;
 
-    using ExampleLibrary.Utilities;
-
     using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
@@ -34,12 +32,6 @@
             model.Series.Add(s);
 
             return model;
-        }
-
-        [Example("RectangleSeries (transposed)")]
-        public static PlotModel RectangleSeriesTransposed()
-        {
-            return FromItems().Transpose();
         }
 
         [Example("RectangleSeries from ItemsSource and Mapping")]

@@ -52,6 +52,7 @@ namespace OxyPlot.Tests
             SvgAssert.IsValidFile(FileName);
         }
 
+
         [Test]
         public void Export_AllExamplesInExampleLibrary_CheckThatAllFilesExist()
         {
@@ -63,18 +64,24 @@ namespace OxyPlot.Tests
 
             foreach (var example in Examples.GetList())
             {
-                if (example.PlotModel == null)
+                void ExportModelAndCheckFileExists(PlotModel model, string fileName)
                 {
-                    continue;
+                    if (model == null)
+                    {
+                        return;
+                    }
+
+                    var path = Path.Combine(DestinationDirectory, FileNameUtilities.CreateValidFileName(fileName, ".svg"));
+                    using (var s = File.Create(path))
+                    {
+                        SvgExporter.Export(model, s, 800, 500, true);
+                    }
+
+                    Assert.IsTrue(File.Exists(path));
                 }
 
-                var path = Path.Combine(DestinationDirectory, FileNameUtilities.CreateValidFileName(example.Category + " - " + example.Title, ".svg"));
-                using (var s = File.Create(path))
-                {
-                    SvgExporter.Export(example.PlotModel, s, 800, 500, true);
-                }
-
-                Assert.IsTrue(File.Exists(path));
+                ExportModelAndCheckFileExists(example.PlotModel, $"{example.Category} - {example.Title}");
+                ExportModelAndCheckFileExists(example.TransposedPlotModel, $"{example.Category} - {example.Title} - Transposed");
             }
         }
     }

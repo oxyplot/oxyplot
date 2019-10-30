@@ -31,12 +31,8 @@ namespace OxyPlot.Tests
         {
             foreach (var example in Examples.GetList())
             {
-                if (example.PlotModel == null)
-                {
-                    continue;
-                }
-
-                ((IPlotModel)example.PlotModel).Update(true);
+                ((IPlotModel)example.PlotModel)?.Update(true);
+                ((IPlotModel)example.TransposedPlotModel)?.Update(true);
             }
         }
 

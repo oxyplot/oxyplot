@@ -13,8 +13,6 @@ namespace ExampleLibrary
     using System.Collections.Generic;
     using System.Linq;
 
-    using ExampleLibrary.Utilities;
-
     using OxyPlot;
     using OxyPlot.Annotations;
     using OxyPlot.Axes;
@@ -70,12 +68,6 @@ namespace ExampleLibrary
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, MinimumPadding = 0.1, MaximumPadding = 0.1 });
             return model;
-        }
-
-        [Example("BoxPlot (transposed)")]
-        public static PlotModel BoxPlotTransposed()
-        {
-            return BoxPlot().Transpose();
         }
 
         /// <summary>

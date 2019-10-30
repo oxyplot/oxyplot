@@ -11,8 +11,6 @@ namespace ExampleLibrary
 {
     using System;
 
-    using ExampleLibrary.Utilities;
-
     using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
@@ -107,12 +105,6 @@ namespace ExampleLibrary
         public static PlotModel NotInterpolated()
         {
             return CreateExample("Not interpolated values", false);
-        }
-
-        [Example("2×3, transposed")]
-        public static PlotModel NotInterpolatedTransposed()
-        {
-            return NotInterpolated().Transpose();
         }
 
         [Example("2×3, not interpolated with two NaN values")]
@@ -381,12 +373,6 @@ namespace ExampleLibrary
         public static PlotModel Normal_6X4()
         {
             return Create6X4("Normal 6×4 Heatmap");
-        }
-
-        [Example("6×4, transposed")]
-        public static PlotModel Transposed_6X4()
-        {
-            return Normal_6X4().Transpose();
         }
 
         private static PlotModel Create6X4(string title)

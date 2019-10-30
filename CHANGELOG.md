@@ -5,17 +5,22 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - OxyPlot.ImageSharp (#1188)
+- WPF ExampleBrowser can display transposed versions of examples (#1402)
 
 ### Changed
 - Moved reporting functionality to separate projects (#1403)
 - Moved reporting functionality to oxyplot-reporting repository (#1403)
 - Moved WPF Plot component to Oxyplot.Contrib.Wpf (#1399)
+- ErrorColumnSeries changed to ErrorBarSeries, also works in transposed mode (#1402)
 
 ### Removed
 - Copy to text report Ctrl+Alt+R (#1403)
+- ColumnSeries - functionality is replaced by transposed BarSeries (#1402)
 
 ### Fixed
+- Legend font size is not affected by DefaultFontSize (#1396)
 - Exception when rendering polygon with no points (#1410)
+- ErrorBarSeries, IntervalBarSeries and TornadoBarSeries work correctly in transposed mode (#1402)
 
 ## [2.0.0] - 2019-10-19
 ### Added 
@@ -96,7 +101,6 @@ All notable changes to this project will be documented in this file.
 - OxyPlot.Core.Drawing PngExporter background when exporting to stream (#1382)
 - Windows Forms clipping last line of rendered text (#1124, #1385)
 - Dispose background brush in OxyPlot.Core.Drawing PngExporter (#1392)
-- Legend font size is not affected by DefaultFontSize (#1396)
 
 ## [1.0.0] - 2016-09-11
 ### Added

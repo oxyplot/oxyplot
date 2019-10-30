@@ -254,13 +254,16 @@ namespace OxyPlot.Series
 
                 var baseValue = double.IsNaN(item.BaseValue) ? this.BaseValue : item.BaseValue;
                 var barOffset = categoryAxis.GetCurrentBarOffset(categoryIndex);
-                var p0 = this.Transform(item.Minimum, categoryIndex - 0.5 + barOffset);
-                var p1 = this.Transform(item.Maximum, categoryIndex - 0.5 + barOffset + actualBarWidth);
-                var p2 = this.Transform(baseValue, categoryIndex - 0.5 + barOffset);
-                p2 = new ScreenPoint((int)p2.X, p2.Y);
+                var barStart = categoryIndex - 0.5 + barOffset;
+                var barEnd = barStart + actualBarWidth;
+                var barMid = (barStart + barEnd) / 2;
 
-                var minimumRectangle = OxyRect.Create(p0.X, p0.Y, p2.X, p1.Y);
-                var maximumRectangle = OxyRect.Create(p2.X, p0.Y, p1.X, p1.Y);
+                var pMin = this.Transform(item.Minimum, barStart);
+                var pMax = this.Transform(item.Maximum, barStart);
+                var pBase = this.Transform(baseValue, barStart + actualBarWidth);
+
+                var minimumRectangle = new OxyRect(pMin, pBase);
+                var maximumRectangle = new OxyRect(pMax, pBase);
 
                 this.ActualMinimumBarRectangles.Add(minimumRectangle);
                 this.ActualMaximumBarRectangles.Add(maximumRectangle);
@@ -278,6 +281,8 @@ namespace OxyPlot.Series
                     this.StrokeColor,
                     this.StrokeThickness);
 
+                var marginVector = this.Orientate(new ScreenVector(this.LabelMargin, 0));
+
                 if (this.MinimumLabelFormatString != null)
                 {
                     var s = StringHelper.Format(
@@ -285,8 +290,11 @@ namespace OxyPlot.Series
                         this.MinimumLabelFormatString,
                         this.GetItem(this.ValidItemsIndexInversion[i]),
                         item.Minimum);
-                    var pt = new ScreenPoint(
-                        minimumRectangle.Left - this.LabelMargin, (minimumRectangle.Top + minimumRectangle.Bottom) / 2);
+
+                    var pt = this.Transform(item.Minimum, barMid) - marginVector;
+                    var ha = HorizontalAlignment.Right;
+                    var va = VerticalAlignment.Middle;
+                    this.Orientate(ref ha, ref va);
 
                     rc.DrawClippedText(
                         clippingRect,
@@ -297,8 +305,8 @@ namespace OxyPlot.Series
                         this.ActualFontSize,
                         this.ActualFontWeight,
                         0,
-                        HorizontalAlignment.Right,
-                        VerticalAlignment.Middle);
+                        ha,
+                        va);
                 }
 
                 if (this.MaximumLabelFormatString != null)
@@ -308,8 +316,11 @@ namespace OxyPlot.Series
                         this.MaximumLabelFormatString,
                         this.GetItem(this.ValidItemsIndexInversion[i]),
                         item.Maximum);
-                    var pt = new ScreenPoint(
-                        maximumRectangle.Right + this.LabelMargin, (maximumRectangle.Top + maximumRectangle.Bottom) / 2);
+                    
+                    var pt = this.Transform(item.Maximum, barMid) + marginVector;
+                    var ha = HorizontalAlignment.Left;
+                    var va = VerticalAlignment.Middle;
+                    this.Orientate(ref ha, ref va);
 
                     rc.DrawClippedText(
                         clippingRect,
@@ -320,8 +331,8 @@ namespace OxyPlot.Series
                         this.ActualFontSize,
                         this.ActualFontWeight,
                         0,
-                        HorizontalAlignment.Left,
-                        VerticalAlignment.Middle);
+                        ha,
+                        va);
                 }
             }
         }

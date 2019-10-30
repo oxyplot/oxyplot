@@ -28,12 +28,6 @@ namespace ExampleLibrary
             return CreateExponentialDistribution();
         }
 
-        [Example("Exponential Distribution (transposed)")]
-        public static PlotModel ExponentialDistributionTransposed()
-        {
-            return ExponentialDistribution().Transpose();
-        }
-
         [Example("Label Placement")]
         public static PlotModel HistogramLabelPlacement()
         {
@@ -61,22 +55,10 @@ namespace ExampleLibrary
             return model;
         }
 
-        [Example("Label Placement (transposed)")]
-        public static PlotModel LabelPlacementTransposed()
-        {
-            return HistogramLabelPlacement().Transpose();
-        }
-
         [Example("Label Placement (reversed Y Axis)")]
         public static PlotModel LabelPlacementReversed()
         {
             return HistogramLabelPlacement().ReverseYAxis();
-        }
-
-        [Example("Label Placement (reversed Y Axis, transposed)")]
-        public static PlotModel LabelPlacementReversedTransposed()
-        {
-            return LabelPlacementReversed().Transpose();
         }
 
         [Example("Custom Bins")]

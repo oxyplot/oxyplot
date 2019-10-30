@@ -23,12 +23,6 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
-        [Example("Default style (transposed)")]
-        public static PlotModel DefaultStyleTransposed()
-        {
-            return DefaultStyle().Transpose();
-        }
-
         [Example("Different stroke colors")]
         public static PlotModel DifferentColors()
         {

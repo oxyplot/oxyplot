@@ -8,8 +8,6 @@ namespace ExampleLibrary
 {
     using System;
 
-    using ExampleLibrary.Utilities;
-
     using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
@@ -35,12 +33,6 @@ namespace ExampleLibrary
             model.Subtitle = cs.Data.GetLength(0) + "×" + cs.Data.GetLength(1);
             model.Series.Add(cs);
             return model;
-        }
-
-        [Example("Peaks (transposed)")]
-        public static PlotModel PeaksTransposed()
-        {
-            return Peaks().Transpose();
         }
 
         [Example("Peaks (different contour colors)")]

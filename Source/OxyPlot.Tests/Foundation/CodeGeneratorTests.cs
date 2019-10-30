@@ -25,14 +25,19 @@ namespace OxyPlot.Tests
         {
             foreach (var ei in ExampleLibrary.Examples.GetList())
             {
-                var pm = ei.PlotModel;
-                if (pm == null)
+                void CheckCode(PlotModel model)
                 {
-                    continue;
+                    if (model == null)
+                    {
+                        return;
+                    }
+
+                    var code = model.ToCode();
+                    Assert.That(code, Is.Not.Null, ei.Title);
                 }
 
-                var code = pm.ToCode();
-                Assert.That(code, Is.Not.Null, ei.Title);
+                CheckCode(ei.PlotModel);
+                CheckCode(ei.TransposedPlotModel);
             }
         }
     }

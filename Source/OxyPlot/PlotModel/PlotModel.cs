@@ -1351,15 +1351,8 @@ namespace OxyPlot
                 bool createdlinearyaxis = false;
                 if (this.DefaultXAxis == null)
                 {
-                    if (this.Series.Any(s => s.IsVisible && s is ColumnSeries))
-                    {
-                        this.DefaultXAxis = new CategoryAxis { Position = AxisPosition.Bottom };
-                    }
-                    else
-                    {
-                        this.DefaultXAxis = new LinearAxis { Position = AxisPosition.Bottom };
-                        createdlinearxaxis = true;
-                    }
+                    this.DefaultXAxis = new LinearAxis { Position = AxisPosition.Bottom };
+                    createdlinearxaxis = true;
                 }
 
                 if (this.DefaultYAxis == null)

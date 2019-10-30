@@ -13,12 +13,8 @@ namespace ExampleBrowser
 
     using ExampleLibrary;
 
-    using OxyPlot;
-
     public class MainWindowViewModel : INotifyPropertyChanged
     {
-        private IPlotController defaultController;
-
         private IEnumerable<ExampleInfo> examples;
 
         private double frameRate;
@@ -27,7 +23,6 @@ namespace ExampleBrowser
 
         public MainWindowViewModel()
         {
-            this.defaultController = new PlotController();
             this.Examples = ExampleLibrary.Examples.GetList();
             this.ExamplesView = CollectionViewSource.GetDefaultView(this.Examples.OrderBy(e => e.Category));
             this.ExamplesView.GroupDescriptions.Add(new PropertyGroupDescription("Category"));
@@ -39,29 +34,21 @@ namespace ExampleBrowser
 
         public double FrameRate
         {
-            get
-            {
-                return this.frameRate;
-            }
-
+            get => this.frameRate;
             set
             {
                 this.frameRate = value;
-                this.RaisePropertyChanged("FrameRate");
+                this.RaisePropertyChanged(nameof(this.FrameRate));
             }
         }
 
         public IEnumerable<ExampleInfo> Examples
         {
-            get
-            {
-                return this.examples;
-            }
-
+            get => this.examples;
             set
             {
                 this.examples = value;
-                this.RaisePropertyChanged("Examples");
+                this.RaisePropertyChanged(nameof(this.Examples));
             }
         }
 
@@ -69,43 +56,17 @@ namespace ExampleBrowser
 
         public ExampleInfo SelectedExample
         {
-            get
-            {
-                return this.selectedExample;
-            }
-
+            get => this.selectedExample;
             set
             {
                 this.selectedExample = value;
-                this.RaisePropertyChanged("Model");
-                this.RaisePropertyChanged("Controller");
-                this.RaisePropertyChanged("SelectedExample");
-            }
-        }
-
-        public PlotModel Model
-        {
-            get
-            {
-                return this.SelectedExample != null ? this.SelectedExample.PlotModel : null;
-            }
-        }
-
-        public IPlotController Controller
-        {
-            get
-            {
-                return this.SelectedExample != null && this.SelectedExample.PlotController != null ? this.SelectedExample.PlotController : this.defaultController;
+                this.RaisePropertyChanged(nameof(this.SelectedExample));
             }
         }
 
         protected void RaisePropertyChanged(string property)
         {
-            var handler = this.PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(property));
-            }
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
         }
     }
 }
