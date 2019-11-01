@@ -169,8 +169,13 @@ namespace OxyPlot
                 this.previouslyHoveredPlotElement = this.currentlyHoveredPlotElement;
                 this.currentlyHoveredPlotElement = ToolTippedPlotElement.FromPseudoElement(true);
 
-                // show the tooltip
-                this.lastShownToolTipString = this.PlotModel.TitleToolTip;
+                // show the tooltip if available
+                this.lastShownToolTipString =
+                    this.PlotModel.TitleToolTip is null ?
+                    (this.PlotModel.TitleToolTipFormatter is null ?
+                        null :
+                        this.PlotModel.TitleToolTipFormatter(this.PlotModel)) :
+                    this.PlotModel.TitleToolTip;
                 if (this.lastShownToolTipString == null)
                 {
                     this.HideToolTipChecked();
@@ -218,8 +223,13 @@ namespace OxyPlot
                             this.previouslyHoveredPlotElement = this.currentlyHoveredPlotElement;
                             this.currentlyHoveredPlotElement = ToolTippedPlotElement.FromElement(pe);
 
-                            // show the tooltip
-                            this.lastShownToolTipString = pe.ToolTip;
+                            // show the tooltip if available
+                            this.lastShownToolTipString =
+                                pe.ToolTip is null ?
+                                (pe.ToolTipFormatter is null ?
+                                    null :
+                                    pe.ToolTipFormatter(rtr)) :
+                                pe.ToolTip;
                             if (this.lastShownToolTipString == null)
                             {
                                 this.HideToolTipChecked();

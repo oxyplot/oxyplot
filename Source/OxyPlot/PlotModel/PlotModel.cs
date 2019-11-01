@@ -683,6 +683,11 @@ namespace OxyPlot
         public string TitleToolTip { get; set; }
 
         /// <summary>
+        /// Gets or sets a function that gets a <see cref="PlotModel"/> and returns a <see cref="string"/> that is set as the tooltip of the plot title area.
+        /// </summary>
+        public Func<PlotModel, string> TitleToolTipFormatter { get; set; }
+
+        /// <summary>
         /// Gets or sets the color of the title.
         /// </summary>
         /// <value>The color of the title.</value>

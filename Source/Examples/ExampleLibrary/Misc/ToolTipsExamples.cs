@@ -193,5 +193,40 @@ namespace ExampleLibrary
 
             return pm;
         }
+
+        [Example("Tooltip formatters")]
+        public static PlotModel ToolTipFormatters()
+        {
+            var rnd = new Random();
+
+            var pm = new PlotModel
+            {
+                Title = "Tooltip formatters",
+                TitleToolTipFormatter = (PlotModel m) =>
+                {
+                    return rnd.Next(100000).ToString();
+                },
+                TitleToolTip = "This tooltip overrides the TitleToolTipFormatter of the PlotModel"
+            };
+
+            pm.Axes.Add(new LinearAxis() { Position = AxisPosition.Bottom });
+            pm.Axes.Add(new LinearAxis() { Position = AxisPosition.Left });
+
+            pm.Annotations.Add(new RectangleAnnotation()
+            {
+                Fill = OxyColors.Blue,
+                MinimumX = 0,
+                MinimumY = 0,
+                MaximumX = 50,
+                MaximumY = 50,
+                Text = "Hover Me",
+                ToolTipFormatter = (HitTestResult r) =>
+                {
+                    return "Random Number: " + rnd.Next(100000);
+                }
+            });
+
+            return pm;
+        }
     }
 }
