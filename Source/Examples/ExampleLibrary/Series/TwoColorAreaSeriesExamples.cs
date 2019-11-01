@@ -9,8 +9,6 @@
 
 namespace ExampleLibrary
 {
-    using ExampleLibrary.Utilities;
-
     using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
@@ -55,12 +53,6 @@ namespace ExampleLibrary
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "Date" });
 
             return model;
-        }
-
-        [Example("Temperatures (transposed)")]
-        public static PlotModel TwoColorAreaSeriesTransposed()
-        {
-            return TwoColorAreaSeries().Transpose();
         }
 
         /// <summary>

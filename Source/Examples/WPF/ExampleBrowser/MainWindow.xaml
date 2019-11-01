@@ -115,14 +115,25 @@
             </StackPanel>
         </Grid>
         <TabControl Grid.Column="1" TabStripPlacement="Bottom">
+            <TabControl.Resources>
+                <Style TargetType="{x:Type TextBox}" x:Key="CodeTextBox">
+                    <Setter Property="AcceptsReturn" Value="True"></Setter>
+                    <Setter Property="FontFamily" Value="Consolas"></Setter>
+                    <Setter Property="BorderThickness" Value="0"></Setter>
+                    <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"></Setter>
+                </Style>
+            </TabControl.Resources>
             <TabItem Header="Plot">
-                <oxy:PlotView x:Name="Plot1" Model="{Binding Model}" Controller="{Binding Controller}"/>
+                <oxy:PlotView x:Name="Plot1" Model="{Binding SelectedExample.PlotModel}" Controller="{Binding SelectedExample.Controller}"/>
+            </TabItem>
+            <TabItem Header="Plot (Transposed)" IsEnabled="{Binding SelectedExample.IsTransposable}">
+                <oxy:PlotView x:Name="Plot2" Model="{Binding SelectedExample.TransposedPlotModel}" Controller="{Binding SelectedExample.TransposedPlotController}"/>
             </TabItem>
             <TabItem Header="Code">
-                <TextBox AcceptsReturn="True" FontFamily="Consolas" 
-                         Text="{Binding SelectedExample.Code, Mode=OneWay}" BorderThickness="0"
-                         ScrollViewer.VerticalScrollBarVisibility="Auto"
-                         />
+                <TextBox Text="{Binding SelectedExample.Code, Mode=OneWay}" Style="{StaticResource CodeTextBox}" />
+            </TabItem>
+            <TabItem Header="Code (Transposed)" IsEnabled="{Binding SelectedExample.IsTransposable}">
+                <TextBox Text="{Binding SelectedExample.TransposedCode, Mode=OneWay}" Style="{StaticResource CodeTextBox}" />
             </TabItem>
         </TabControl>
     </Grid>

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ErrorColumnSeries.cs" company="OxyPlot">
+// <copyright file="ErrorBarSeries.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
@@ -16,7 +16,7 @@ namespace OxyPlot.Series
     /// <summary>
     /// Represents a series for clustered or stacked column charts with an error value.
     /// </summary>
-    public class ErrorColumnSeries : ColumnSeries
+    public class ErrorBarSeries : BarSeries
     {
         /// <summary>
         /// The default tracker format string
@@ -24,9 +24,9 @@ namespace OxyPlot.Series
         public new const string DefaultTrackerFormatString = "{0}\n{1}: {2}, Error: {Error:0.###}";
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ErrorColumnSeries" /> class.
+        /// Initializes a new instance of the <see cref="ErrorBarSeries" /> class.
         /// </summary>
-        public ErrorColumnSeries()
+        public ErrorBarSeries()
         {
             this.ErrorWidth = 0.4;
             this.ErrorStrokeThickness = 1;
@@ -70,7 +70,7 @@ namespace OxyPlot.Series
                     var items = this.ValidItems.Where(item => item.GetCategoryIndex(j++) == i).ToList();
                     var values = items.Select(item => item.Value).Concat(new[] { 0d }).ToList();
                     var minTemp = values.Where(v => v <= 0).Sum();
-                    var maxTemp = values.Where(v => v >= 0).Sum() + ((ErrorColumnItem)items.Last()).Error;
+                    var maxTemp = values.Where(v => v >= 0).Sum() + ((ErrorBarItem)items.Last()).Error;
 
                     int stackIndex = categoryAxis.GetStackIndex(this.StackGroup);
                     var stackedMinValue = categoryAxis.GetCurrentMinValue(stackIndex, i);
@@ -95,8 +95,8 @@ namespace OxyPlot.Series
             }
             else
             {
-                var valuesMin = this.ValidItems.Select(item => item.Value - ((ErrorColumnItem)item).Error).Concat(new[] { 0d }).ToList();
-                var valuesMax = this.ValidItems.Select(item => item.Value + ((ErrorColumnItem)item).Error).Concat(new[] { 0d }).ToList();
+                var valuesMin = this.ValidItems.Select(item => item.Value - ((ErrorBarItem)item).Error).Concat(new[] { 0d }).ToList();
+                var valuesMax = this.ValidItems.Select(item => item.Value + ((ErrorBarItem)item).Error).Concat(new[] { 0d }).ToList();
                 minValue = valuesMin.Min();
                 maxValue = valuesMax.Max();
                 if (this.BaseValue < minValue)
@@ -128,7 +128,7 @@ namespace OxyPlot.Series
         /// </summary>
         /// <param name="rc">The render context.</param>
         /// <param name="clippingRect">The clipping rectangle.</param>
-        /// <param name="topValue">The end value of the bar.</param>
+        /// <param name="barValue">The end value of the bar.</param>
         /// <param name="categoryValue">The category value.</param>
         /// <param name="actualBarWidth">The actual width of the bar.</param>
         /// <param name="item">The item.</param>
@@ -136,31 +136,30 @@ namespace OxyPlot.Series
         protected override void RenderItem(
             IRenderContext rc,
             OxyRect clippingRect,
-            double topValue,
+            double barValue,
             double categoryValue,
             double actualBarWidth,
-            BarItemBase item,
+            BarItem item,
             OxyRect rect)
         {
-            base.RenderItem(rc, clippingRect, topValue, categoryValue, actualBarWidth, item, rect);
+            base.RenderItem(rc, clippingRect, barValue, categoryValue, actualBarWidth, item, rect);
 
-            var errorItem = item as ErrorColumnItem;
-            if (errorItem == null)
+            if (!(item is ErrorBarItem errorItem))
             {
                 return;
             }
 
             // Render the error
-            var lowerValue = topValue - errorItem.Error;
-            var upperValue = topValue + errorItem.Error;
-            var left = 0.5 - (this.ErrorWidth / 2);
-            var right = 0.5 + (this.ErrorWidth / 2);
-            var leftValue = categoryValue + (left * actualBarWidth);
-            var middleValue = categoryValue + (0.5 * actualBarWidth);
-            var rightValue = categoryValue + (right * actualBarWidth);
+            var errorStart = barValue - errorItem.Error;
+            var errorEnd = barValue + errorItem.Error;
+            var start = 0.5 - (this.ErrorWidth / 2);
+            var end = 0.5 + (this.ErrorWidth / 2);
+            var categoryStart = categoryValue + (start * actualBarWidth);
+            var categoryMiddle = categoryValue + (0.5 * actualBarWidth);
+            var categoryEnd = categoryValue + (end * actualBarWidth);
 
-            var lowerErrorPoint = this.Transform(middleValue, lowerValue);
-            var upperErrorPoint = this.Transform(middleValue, upperValue);
+            var lowerErrorPoint = this.Transform(errorStart, categoryMiddle);
+            var upperErrorPoint = this.Transform(errorEnd, categoryMiddle);
 
             rc.DrawClippedLine(
                 clippingRect,
@@ -174,8 +173,8 @@ namespace OxyPlot.Series
 
             if (this.ErrorWidth > 0)
             {
-                var lowerLeftErrorPoint = this.Transform(leftValue, lowerValue);
-                var lowerRightErrorPoint = this.Transform(rightValue, lowerValue);
+                var lowerLeftErrorPoint = this.Transform(errorStart, categoryStart);
+                var lowerRightErrorPoint = this.Transform(errorStart, categoryEnd);
                 rc.DrawClippedLine(
                     clippingRect,
                     new List<ScreenPoint> { lowerLeftErrorPoint, lowerRightErrorPoint },
@@ -186,8 +185,8 @@ namespace OxyPlot.Series
                     LineJoin.Miter,
                     true);
 
-                var upperLeftErrorPoint = this.Transform(leftValue, upperValue);
-                var upperRightErrorPoint = this.Transform(rightValue, upperValue);
+                var upperLeftErrorPoint = this.Transform(errorEnd, categoryStart);
+                var upperRightErrorPoint = this.Transform(errorEnd, categoryEnd);
                 rc.DrawClippedLine(
                     clippingRect,
                     new List<ScreenPoint> { upperLeftErrorPoint, upperRightErrorPoint },

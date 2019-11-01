@@ -34,12 +34,6 @@ namespace ExampleLibrary
             return model;
         }
 
-        [Example("Default style (transposed)")]
-        public static PlotModel DefaultStyleTransposed()
-        {
-            return DefaultStyle().Transpose();
-        }
-
         [Example("Custom style")]
         public static PlotModel CustomStyle()
         {
@@ -173,12 +167,6 @@ namespace ExampleLibrary
             return model;
         }
 
-        [Example("Labels (transposed)")]
-        public static PlotModel LabelsTransposed()
-        {
-            return Labels().Transpose();
-        }
-
         [Example("LineStyle")]
         public static PlotModel LineStyles()
         {
@@ -230,22 +218,10 @@ namespace ExampleLibrary
             return model;
         }
 
-        [Example("LineLegendPosition (transposed)")]
-        public static PlotModel CustomLineLegendPositionTransposed()
-        {
-            return CustomLineLegendPosition().Transpose();
-        }
-
         [Example("LineLegendPosition (reversed X Axis)")]
         public static PlotModel CustomLineLegendPositionReversed()
         {
             return CustomLineLegendPosition().ReverseXAxis();
-        }
-
-        [Example("LineLegendPosition (reversed X Axis, transposed)")]
-        public static PlotModel CustomLineLegendPositionReversedTransposed()
-        {
-            return CustomLineLegendPositionReversed().Transpose();
         }
 
         [Example("Broken lines")]

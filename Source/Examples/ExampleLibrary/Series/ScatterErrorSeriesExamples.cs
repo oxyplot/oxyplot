@@ -13,10 +13,7 @@ namespace ExampleLibrary
     using System.Collections.Generic;
     using System.Linq;
 
-    using ExampleLibrary.Utilities;
-
     using OxyPlot;
-    using OxyPlot.Axes;
     using OxyPlot.Series;
 
     [Examples("ScatterErrorSeries"), Tags("Series")]
@@ -26,12 +23,6 @@ namespace ExampleLibrary
         public static PlotModel RandomPointsAndError20()
         {
             return RandomPointsAndError(20);
-        }
-
-        [Example("Random points and errors (n=20, transposed)")]
-        public static PlotModel RandomPointsAndError20Transposed()
-        {
-            return RandomPointsAndError20().Transpose();
         }
 
         [Example("Random points and errors (n=2000)")]

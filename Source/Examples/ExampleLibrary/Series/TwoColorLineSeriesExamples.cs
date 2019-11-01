@@ -58,12 +58,6 @@ namespace ExampleLibrary
             return model;
         }
 
-        [Example("Temperatures (transposed)")]
-        public static PlotModel TwoColorLineSeriesTransposed()
-        {
-            return TwoColorLineSeries().Transpose();
-        }
-
         [Example("Temperatures (Y Axis reversed)")]
         public static PlotModel TwoColorLineSeriesReversed()
         {

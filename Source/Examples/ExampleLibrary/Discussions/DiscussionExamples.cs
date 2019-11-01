@@ -121,9 +121,9 @@ namespace ExampleLibrary
             var r = new Random(37);
             for (var i = 0; i < model.DefaultColors.Count; i++)
             {
-                var columnSeries = new ColumnSeries();
-                columnSeries.Items.Add(new ColumnItem(50 + r.Next(50)));
-                columnSeries.Items.Add(new ColumnItem(40 + r.Next(50)));
+                var columnSeries = new BarSeries();
+                columnSeries.Items.Add(new BarItem(50 + r.Next(50)));
+                columnSeries.Items.Add(new BarItem(40 + r.Next(50)));
                 model.Series.Add(columnSeries);
             }
 
@@ -156,9 +156,9 @@ namespace ExampleLibrary
             var r = new Random(37);
             for (var i = 0; i < model.DefaultColors.Count; i++)
             {
-                var columnSeries = new ColumnSeries();
-                columnSeries.Items.Add(new ColumnItem(50 + r.Next(50)));
-                columnSeries.Items.Add(new ColumnItem(40 + r.Next(50)));
+                var columnSeries = new BarSeries();
+                columnSeries.Items.Add(new BarItem(50 + r.Next(50)));
+                columnSeries.Items.Add(new BarItem(40 + r.Next(50)));
                 model.Series.Add(columnSeries);
             }
 
@@ -187,9 +187,9 @@ namespace ExampleLibrary
             var r = new Random(37);
             for (var i = 0; i < model.DefaultColors.Count; i++)
             {
-                var columnSeries = new ColumnSeries();
-                columnSeries.Items.Add(new ColumnItem(50 + r.Next(50)));
-                columnSeries.Items.Add(new ColumnItem(40 + r.Next(50)));
+                var columnSeries = new BarSeries();
+                columnSeries.Items.Add(new BarItem(50 + r.Next(50)));
+                columnSeries.Items.Add(new BarItem(40 + r.Next(50)));
                 model.Series.Add(columnSeries);
             }
 
@@ -220,9 +220,9 @@ namespace ExampleLibrary
             var r = new Random(37);
             for (var i = 0; i < model.DefaultColors.Count; i++)
             {
-                var columnSeries = new ColumnSeries();
-                columnSeries.Items.Add(new ColumnItem(50 + r.Next(50)));
-                columnSeries.Items.Add(new ColumnItem(40 + r.Next(50)));
+                var columnSeries = new BarSeries();
+                columnSeries.Items.Add(new BarItem(50 + r.Next(50)));
+                columnSeries.Items.Add(new BarItem(40 + r.Next(50)));
                 model.Series.Add(columnSeries);
             }
 

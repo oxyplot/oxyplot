@@ -47,25 +47,30 @@ namespace OxyPlot.Wpf.Tests
 
             foreach (var example in ExampleLibrary.Examples.GetList())
             {
-                if (example.PlotModel == null)
+                void ExportAndCompareToBaseline(PlotModel model, string fileName)
                 {
-                    continue;
+                    if (model == null)
+                    {
+                        return;
+                    }
+
+                    var baselinePath = Path.Combine(BaselineDirectory, fileName);
+                    var path = Path.Combine(DestinationDirectory, fileName);
+                    var diffpath = Path.Combine(DiffDirectory, fileName);
+
+                    PngExporter.Export(model, path, 800, 500, OxyColors.White);
+                    if (File.Exists(baselinePath))
+                    {
+                        PngAssert.AreEqual(baselinePath, path, example.Title, diffpath);
+                    }
+                    else
+                    {
+                        File.Copy(path, baselinePath);
+                    }
                 }
 
-                var filename = CreateValidFileName(example.Category + " - " + example.Title, ".png");
-                var baselinePath = Path.Combine(BaselineDirectory, filename);
-                var path = Path.Combine(DestinationDirectory, filename);
-                var diffpath = Path.Combine(DiffDirectory, filename);
-
-                PngExporter.Export(example.PlotModel, path, 800, 500, OxyColors.White);
-                if (File.Exists(baselinePath))
-                {
-                    PngAssert.AreEqual(baselinePath, path, example.Title, diffpath);
-                }
-                else
-                {
-                    File.Copy(path, baselinePath);
-                }
+                ExportAndCompareToBaseline(example.PlotModel, CreateValidFileName($"{example.Category} - {example.Title}", ".png"));
+                ExportAndCompareToBaseline(example.TransposedPlotModel, CreateValidFileName($"{example.Category} - {example.Title} - Transposed", ".png"));
             }
         }
 

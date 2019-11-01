@@ -11,10 +11,7 @@ namespace ExampleLibrary
 {
     using System;
 
-    using ExampleLibrary.Utilities;
-
     using OxyPlot;
-    using OxyPlot.Axes;
     using OxyPlot.Series;
 
     /// <summary>
@@ -35,12 +32,6 @@ namespace ExampleLibrary
                              MarkerFill = OxyColors.SkyBlue,
                              MarkerStrokeThickness = 1.5
                          });
-        }
-
-        [Example("StemSeries (transposed)")]
-        public static PlotModel StemSeriesTransposed()
-        {
-            return StemSeries().Transpose();
         }
 
         /// <summary>

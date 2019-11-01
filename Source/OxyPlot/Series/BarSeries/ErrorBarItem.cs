@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ErrorColumnItem.cs" company="OxyPlot">
+// <copyright file="ErrorBarItem.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
@@ -12,23 +12,23 @@ namespace OxyPlot.Series
     /// <summary>
     /// Represents an item used in the ErrorColumnSeries.
     /// </summary>
-    public class ErrorColumnItem : ColumnItem
+    public class ErrorBarItem : BarItem
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ErrorColumnItem" /> class.
+        /// Initializes a new instance of the <see cref="ErrorBarItem" /> class.
         /// </summary>
-        public ErrorColumnItem()
+        public ErrorBarItem()
         {
             this.Color = OxyColors.Automatic;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ErrorColumnItem" /> class.
+        /// Initializes a new instance of the <see cref="ErrorBarItem" /> class.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <param name="error">The error.</param>
         /// <param name="categoryIndex">Index of the category.</param>
-        public ErrorColumnItem(double value, double error, int categoryIndex = -1)
+        public ErrorBarItem(double value, double error, int categoryIndex = -1)
             : this()
         {
             this.Value = value;

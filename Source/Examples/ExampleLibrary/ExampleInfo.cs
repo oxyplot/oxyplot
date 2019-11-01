@@ -8,6 +8,8 @@ namespace ExampleLibrary
 {
     using System.Reflection;
 
+    using ExampleLibrary.Utilities;
+
     using OxyPlot;
 
     /// <summary>
@@ -21,9 +23,29 @@ namespace ExampleLibrary
         private readonly MethodInfo method;
 
         /// <summary>
-        /// The result of the method call.
+        /// Indicates whether this instance was already initialized.
         /// </summary>
-        private object result;
+        private bool initialized;
+
+        /// <summary>
+        /// The plot model.
+        /// </summary>
+        private PlotModel model;
+
+        /// <summary>
+        /// The plot controller.
+        /// </summary>
+        private IPlotController plotController;
+
+        /// <summary>
+        /// The transposed plot model.
+        /// </summary>
+        private PlotModel transposedModel;
+
+        /// <summary>
+        /// The plot controller for the transposed model.
+        /// </summary>
+        private IPlotController transposedPlotController;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ExampleInfo"/> class.
@@ -46,44 +68,35 @@ namespace ExampleLibrary
         /// <value>
         /// The category.
         /// </value>
-        public string Category { get; private set; }
+        public string Category { get; }
 
         /// <summary>
-        /// Gets the title.
+        /// Gets the code.
         /// </summary>
         /// <value>
-        /// The title.
+        /// The code.
         /// </value>
-        public string Title { get; private set; }
+        public string Code => this.PlotModel?.ToCode();
 
         /// <summary>
-        /// Gets the tags.
+        /// Gets a value indicating whether the plot model is transposable.
         /// </summary>
-        /// <value>
-        /// The tags.
-        /// </value>
-        public string[] Tags { get; private set; }
-
-        /// <summary>
-        /// Gets the plot model.
-        /// </summary>
-        /// <value>
-        /// The plot model.
-        /// </value>
-        public PlotModel PlotModel
+        public bool IsTransposable
         {
             get
             {
-                var plotModel = this.Result as PlotModel;
-                if (plotModel != null)
-                {
-                    return plotModel;
-                }
-
-                var example = this.Result as Example;
-                return example != null ? example.Model : null;
+                this.EnsureInitialized();
+                return this.transposedModel != null;
             }
         }
+
+        /// <summary>
+        /// Gets the code.
+        /// </summary>
+        /// <value>
+        /// The code.
+        /// </value>
+        public string TransposedCode => this.TransposedPlotModel?.ToCode();
 
         /// <summary>
         /// Gets the plot controller.
@@ -95,36 +108,69 @@ namespace ExampleLibrary
         {
             get
             {
-                var example = this.Result as Example;
-                return example != null ? example.Controller : null;
+                this.EnsureInitialized();
+                return this.plotController;
             }
         }
 
         /// <summary>
-        /// Gets the code.
+        /// Gets the plot model.
         /// </summary>
         /// <value>
-        /// The code.
+        /// The plot model.
         /// </value>
-        public string Code
+        public PlotModel PlotModel
         {
             get
             {
-                return this.PlotModel != null ? this.PlotModel.ToCode() : null;
+                this.EnsureInitialized();
+                return this.model;
             }
         }
 
         /// <summary>
-        /// Gets the result.
+        /// Gets the tags.
         /// </summary>
         /// <value>
-        /// The result.
+        /// The tags.
         /// </value>
-        private object Result
+        public string[] Tags { get; }
+
+        /// <summary>
+        /// Gets the title.
+        /// </summary>
+        /// <value>
+        /// The title.
+        /// </value>
+        public string Title { get; }
+
+        /// <summary>
+        /// Gets the plot controller for the transposed plot model.
+        /// </summary>
+        /// <value>
+        /// The plot controller for the transposed plot model, or null if the plot model is not transposable.
+        /// </value>
+        public IPlotController TransposedPlotController
         {
             get
             {
-                return this.result ?? (this.result = this.method.Invoke(null, null));
+                this.EnsureInitialized();
+                return this.transposedPlotController;
+            }
+        }
+
+        /// <summary>
+        /// Gets the transposed plot model.
+        /// </summary>
+        /// <value>
+        /// The transposed plot model, or null if the plot model is not transposable.
+        /// </value>
+        public PlotModel TransposedPlotModel
+        {
+            get
+            {
+                this.EnsureInitialized();
+                return this.transposedModel;
             }
         }
 
@@ -137,6 +183,55 @@ namespace ExampleLibrary
         public override string ToString()
         {
             return this.Title;
+        }
+
+        /// <summary>
+        /// Initializes this instance if it is not already initialized.
+        /// </summary>
+        private void EnsureInitialized()
+        {
+            if (this.initialized)
+            {
+                return;
+            }
+
+            this.initialized = true;
+
+            var result = this.GetResult();
+            if (result is PlotModel plotModel)
+            {
+                this.model = plotModel;
+            }
+            else if (result is Example example)
+            {
+                this.model = example.Model;
+                this.plotController = example.Controller;
+            }
+
+            if (this.model?.IsTransposable() != true)
+            {
+                return;
+            }
+
+            var result2 = this.GetResult();
+            if (result2 is PlotModel plotModel2)
+            {
+                this.transposedModel = plotModel2.Transpose();
+            }
+            else if (result2 is Example example2)
+            {
+                this.transposedModel = example2.Model.Transpose();
+                this.transposedPlotController = example2.Controller;
+            }
+        }
+
+        /// <summary>
+        /// Gets the result of the method call.
+        /// </summary>
+        /// <returns>Either a <see cref="Example"/> or a <see cref="OxyPlot.PlotModel"/>.</returns>
+        private object GetResult()
+        {
+            return this.method.Invoke(null, null);
         }
     }
 }

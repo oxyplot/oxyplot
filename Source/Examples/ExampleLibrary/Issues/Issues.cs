@@ -966,63 +966,6 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
-        [Example("#301: Wrong label placement for category axis when Angle = 45 (closed)")]
-        public static PlotModel LabelPlacementCategoryAxisWhenAxisAngleIs45()
-        {
-            var plotModel1 = new PlotModel { Title = "Wrong label placement for category axis when Angle = 45", Subtitle = "The labels should not be clipped. Click on text annotation to change the angle." };
-
-            Action<AxisPosition> createAxis = (AxisPosition position) =>
-            {
-                var categoryAxis = new CategoryAxis() { Position = position, Angle = 45 };
-
-                categoryAxis.Labels.Add("Very looooong and big label");
-                categoryAxis.Labels.Add("Very looooong and big label");
-                categoryAxis.Labels.Add("Very looooong and big label");
-                categoryAxis.Labels.Add("Very looooong and big label");
-                plotModel1.Axes.Add(categoryAxis);
-            };
-
-            createAxis(AxisPosition.Bottom);
-            createAxis(AxisPosition.Left);
-            createAxis(AxisPosition.Right);
-            createAxis(AxisPosition.Top);
-
-            var textAnnotation = new TextAnnotation() { Text = "Hold mouse button here to increase angle", TextPosition = new DataPoint(0, 6), TextHorizontalAlignment = HorizontalAlignment.Left, TextVerticalAlignment = VerticalAlignment.Top };
-            plotModel1.Annotations.Add(textAnnotation);
-
-            var abort = new ManualResetEvent(false);
-
-            Action action = () =>
-            {
-                do
-                {
-                    // Angles are the same for all axes.
-                    double angle = 0;
-
-                    foreach (var axis in plotModel1.Axes)
-                    {
-                        angle = (axis.Angle + 181) % 360 - 180;
-                        axis.Angle = angle;
-                    }
-
-                    plotModel1.Subtitle = string.Format("Current angle is {0}", angle);
-                    plotModel1.InvalidatePlot(false);
-                }
-                while (!abort.WaitOne(50));
-            };
-
-            textAnnotation.MouseDown += (o, e) => { abort.Reset(); Task.Factory.StartNew(action); };
-            plotModel1.MouseUp += (o, e) => { abort.Set(); };
-
-            var columnSeries = new ColumnSeries();
-            columnSeries.Items.Add(new ColumnItem(5));
-            columnSeries.Items.Add(new ColumnItem(3));
-            columnSeries.Items.Add(new ColumnItem(7));
-            columnSeries.Items.Add(new ColumnItem(2));
-            plotModel1.Series.Add(columnSeries);
-            return plotModel1;
-        }
-
         [Example("#180: Two vertical axes on the same position")]
         public static PlotModel TwoVerticalAxisOnTheSamePosition()
         {
@@ -1239,30 +1182,6 @@ namespace ExampleLibrary
             axis.Labels.Add("Short label");
             plotModel1.Axes.Add(axis);
             plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
-            return plotModel1;
-        }
-
-        [Example("#402: ColumnSeries with dates")]
-        public static PlotModel ColumnSeriesWithDates()
-        {
-            var plotModel1 = new PlotModel
-            {
-                Title = "ColumnSeries with dates",
-                Culture = CultureInfo.InvariantCulture
-            };
-            var data = new[]
-            {
-                new TimeValue { Time = new DateTime(2015, 1, 1), Value = 700 },
-                new TimeValue { Time = new DateTime(2015, 1, 2), Value = 710 },
-                new TimeValue { Time = new DateTime(2015, 1, 3), Value = 580},
-                new TimeValue { Time = new DateTime(2015, 1, 4), Value = 710 },
-                new TimeValue { Time = new DateTime(2015, 1, 5), Value = 715 },
-                new TimeValue { Time = new DateTime(2015, 1, 6), Value = 580 },
-            };
-
-            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 0, Maximum = 1000 });
-            plotModel1.Axes.Add(new CategoryAxis { ItemsSource = data, LabelField = "Time", StringFormat = "ddd" });
-            plotModel1.Series.Add(new ColumnSeries { ItemsSource = data, ValueField = "Value" });
             return plotModel1;
         }
 
@@ -1514,41 +1433,6 @@ namespace ExampleLibrary
             ls.Points.Add(new DataPoint(10.15745, 10.15745));
             model.Series.Add(ls);
             return model;
-        }
-
-        [Example("#635: PositionAtZeroCrossing Forces Value Axis Label")]
-        public static PlotModel PositionAtZeroCrossingForcesValueAxisLabel()
-        {
-            var plotModel = new PlotModel
-            {
-                Title = "PositionAtZeroCrossing Forces Value Axis Label",
-            };
-
-            var categoryAxis = new CategoryAxis
-            {
-                Position = AxisPosition.Bottom,
-                AxislineStyle = LineStyle.Solid,
-                PositionAtZeroCrossing = true
-            };
-            var valueAxis = new LinearAxis
-            {
-                Position = AxisPosition.Left,
-                MinimumPadding = 0,
-                Minimum = -14,
-                Maximum = 14,
-                IsAxisVisible = false
-            };
-            plotModel.Axes.Add(categoryAxis);
-            plotModel.Axes.Add(valueAxis);
-            var series = new ColumnSeries();
-            series.Items.Add(new ColumnItem { Value = 3 });
-            series.Items.Add(new ColumnItem { Value = 14 });
-            series.Items.Add(new ColumnItem { Value = 11 });
-            series.Items.Add(new ColumnItem { Value = 12 });
-            series.Items.Add(new ColumnItem { Value = 7 });
-            plotModel.Series.Add(series);
-
-            return plotModel;
         }
 
         [Example("#550: MinimumRange with Minimum")]

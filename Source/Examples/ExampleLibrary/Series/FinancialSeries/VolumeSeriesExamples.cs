@@ -6,8 +6,6 @@
 
 namespace ExampleLibrary
 {
-    using ExampleLibrary.Utilities;
-
     using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
@@ -28,12 +26,6 @@ namespace ExampleLibrary
             return CreateVolumeSeries("Just Volume (combined)", VolumeStyle.Combined, natural: true);
         }
 
-        [Example("Just Volume (combined), natural axis, transposed")]
-        public static Example JustVolumeCombined_NaturalTransposed()
-        {
-            return CreateVolumeSeries("Just Volume (combined)", VolumeStyle.Combined, natural: true, transposed: true);
-        }
-
         [Example("Just Volume (stacked), fixed axis")]
         public static Example JustVolumeStacked_Fixed()
         {
@@ -46,12 +38,6 @@ namespace ExampleLibrary
             return CreateVolumeSeries("Just Volume (stacked)", VolumeStyle.Stacked, natural: true);
         }
 
-        [Example("Just Volume (stacked), natural axis, transposed")]
-        public static Example JustVolumeStacked_NaturalTransposed()
-        {
-            return CreateVolumeSeries("Just Volume (stacked)", VolumeStyle.Stacked, natural: true, transposed: true);
-        }
-
         [Example("Just Volume (+/-), fixed axis")]
         public static Example JustVolumePositiveNegative_Fixed()
         {
@@ -62,12 +48,6 @@ namespace ExampleLibrary
         public static Example JustVolumePositiveNegative_Natural()
         {
             return CreateVolumeSeries("Just Volume (+/-)", VolumeStyle.PositiveNegative, natural: true);
-        }
-        
-        [Example("Just Volume (+/-), natural axis, transposed")]
-        public static Example JustVolumePositiveNegative_NaturalTransposed()
-        {
-            return CreateVolumeSeries("Just Volume (+/-)", VolumeStyle.PositiveNegative, natural: true, transposed: true);
         }
 
         /// <summary>
@@ -83,8 +63,7 @@ namespace ExampleLibrary
             string title, 
             VolumeStyle style, 
             int n = 10000,
-            bool natural = false,
-            bool transposed = false)
+            bool natural = false)
         {
             var pm = new PlotModel { Title = title };
 
@@ -143,11 +122,6 @@ namespace ExampleLibrary
             }
 
             pm.Series.Add(series);
-
-            if (transposed)
-            {
-                pm.Transpose();
-            }
 
             var controller = new PlotController();
             controller.UnbindAll();
