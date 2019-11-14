@@ -5,13 +5,20 @@ jobs:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v1
+    
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.0.100
+    
     - name: Build
       run: dotnet build Source/OxyPlot.CI.sln --configuration Release
+    
     - name: Run unit tests
       run: dotnet test Source/OxyPlot.CI.sln --configuration Release
+    
+    - name: Setup MSBuild.exe
+      uses: warrenbuckley/Setup-MSBuild@v1
+    
     - name: MSBuild
       run: msbuild Source\OxyPlot.CI.sln -p:Configuration=Release
