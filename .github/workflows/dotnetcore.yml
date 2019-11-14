@@ -1,12 +1,8 @@
 name: Build on Windows
-
 on: [push]
-
 jobs:
   build:
-
     runs-on: windows-latest
-
     steps:
     - uses: actions/checkout@v1
     - name: Setup .NET Core
@@ -17,5 +13,5 @@ jobs:
       run: dotnet build Source/OxyPlot.CI.sln --configuration Release
     - name: Run unit tests
       run: dotnet test Source/OxyPlot.CI.sln --configuration Release
-    - name: Publish
-      run: dotnet publish Source/OxyPlot.CI.sln --configuration Release
+    - name: MSBuild
+      run: msbuild Source\OxyPlot.CI.sln -p:Configuration=Release
