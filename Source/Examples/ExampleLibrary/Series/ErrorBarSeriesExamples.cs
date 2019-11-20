@@ -9,6 +9,7 @@ namespace ExampleLibrary
     using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
+    using OxyPlot.Legends;
 
     [Examples("ErrorBarSeries"), Tags("Series")]
     public class ErrorBarSeriesExamples
@@ -18,12 +19,18 @@ namespace ExampleLibrary
         {
             var model = new PlotModel
             {
-                Title = "ErrorBarSeries",
+                Title = "ErrorBarSeries"
+            };
+
+            var l = new Legend
+            {
                 LegendPlacement = LegendPlacement.Outside,
                 LegendPosition = LegendPosition.BottomCenter,
                 LegendOrientation = LegendOrientation.Horizontal,
                 LegendBorderThickness = 0
             };
+
+            model.Legends.Add(l);
 
             var s1 = new ErrorBarSeries { Title = "Series 1", IsStacked = false, StrokeColor = OxyColors.Black, StrokeThickness = 1 };
             s1.Items.Add(new ErrorBarItem { Value = 25, Error = 2 });

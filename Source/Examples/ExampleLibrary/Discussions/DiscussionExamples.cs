@@ -13,6 +13,7 @@ namespace ExampleLibrary
     using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
+    using OxyPlot.Legends;
 
     [Examples("Z0 Discussions")]
     public class DiscussionExamples
@@ -257,8 +258,12 @@ namespace ExampleLibrary
         [Example("MarkerType = Circle problem")]
         public static PlotModel MarkerTypeCircleProblem()
         {
-            var plotModel = new PlotModel { LegendSymbolLength = 30, PlotType = PlotType.Cartesian, PlotAreaBorderThickness = new OxyThickness(0) };
+            var plotModel = new PlotModel { PlotType = PlotType.Cartesian, PlotAreaBorderThickness = new OxyThickness(0) };
 
+            var l = new Legend
+            {
+                LegendSymbolLength = 30
+            };
 
             var xaxis = new DateTimeAxis
                             {

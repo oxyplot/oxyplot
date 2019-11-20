@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PlotModel.Rendering.cs" company="OxyPlot">
-//   Copyright (c) 2014 OxyPlot contributors
+//   Copyright (c) 2019 OxyPlot contributors
 // </copyright>
 // <summary>
 //   Renders the plot with the specified rendering context.
@@ -17,6 +17,7 @@ namespace OxyPlot
     using OxyPlot.Annotations;
     using OxyPlot.Axes;
     using OxyPlot.Series;
+    using OxyPlot.Legends;
 
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1601:PartialElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public partial class PlotModel
@@ -73,7 +74,10 @@ namespace OxyPlot
                             double.IsNaN(this.PlotMargins.Right) ? 0 : this.PlotMargins.Right,
                             double.IsNaN(this.PlotMargins.Bottom) ? 0 : this.PlotMargins.Bottom);
 
-                    this.EnsureLegendProperties();
+                    foreach (var l in this.Legends)
+                    {
+                        l.EnsureLegendProperties();
+                    }
 
                     while (true)
                     {
@@ -110,7 +114,7 @@ namespace OxyPlot
 
                     if (this.IsLegendVisible)
                     {
-                        this.RenderLegends(rc, this.LegendArea);
+                        this.RenderLegends(rc);
                     }
                 }
                 catch (Exception exception)
@@ -367,6 +371,18 @@ namespace OxyPlot
             rc.SetToolTip(null);
         }
 
+        private void RenderLegends(IRenderContext rc)
+        {
+            if (this.IsLegendVisible)
+            {
+                foreach (var l in this.Legends.Where(l => l.IsLegendVisible))
+                {
+                    rc.SetToolTip(l.ToolTip);
+                    l.RenderLegends(rc);
+                }
+            }
+        }
+
         /// <summary>
         /// Renders the series backgrounds.
         /// </summary>
@@ -482,44 +498,125 @@ namespace OxyPlot
 
             plotArea = plotArea.Deflate(this.ActualPlotMargins);
 
-            // Find the available size for the legend box
-            var availableLegendWidth = plotArea.Width;
-            var availableLegendHeight = double.IsNaN(this.LegendMaxHeight) ?
-                plotArea.Height : Math.Min(plotArea.Height, this.LegendMaxHeight);
-            if (this.LegendPlacement == LegendPlacement.Inside)
+            if (this.IsLegendVisible)
             {
-                availableLegendWidth -= this.LegendMargin * 2;
-                availableLegendHeight -= this.LegendMargin * 2;
-            }
+                // Make space for legends
 
-            // Calculate the size of the legend box
-            var legendSize = this.MeasureLegends(rc, new OxySize(Math.Max(0, availableLegendWidth), Math.Max(0, availableLegendHeight)));
-
-            // Adjust the plot area after the size of the legend box has been calculated
-            if (this.IsLegendVisible && this.LegendPlacement == LegendPlacement.Outside)
-            {
-                switch (this.LegendPosition)
+                OxySize legendSize = new OxySize(0, 0);
+                double legendMargin = 0;
+                // first run Outside Left-Side legends
+                foreach (var legend in this.Legends.Where(l =>
+                    l.LegendPlacement == LegendPlacement.Outside && (l.IsLegendVisible &&
+                    (l.LegendPosition == LegendPosition.LeftTop || l.LegendPosition == LegendPosition.LeftMiddle || l.LegendPosition == LegendPosition.LeftBottom))))
                 {
-                    case LegendPosition.LeftTop:
-                    case LegendPosition.LeftMiddle:
-                    case LegendPosition.LeftBottom:
-                        plotArea = new OxyRect(plotArea.Left + legendSize.Width + this.LegendMargin, plotArea.Top, Math.Max(0, plotArea.Width - (legendSize.Width + this.LegendMargin)), plotArea.Height);
-                        break;
-                    case LegendPosition.RightTop:
-                    case LegendPosition.RightMiddle:
-                    case LegendPosition.RightBottom:
-                        plotArea = new OxyRect(plotArea.Left, plotArea.Top, Math.Max(0, plotArea.Width - (legendSize.Width + this.LegendMargin)), plotArea.Height);
-                        break;
-                    case LegendPosition.TopLeft:
-                    case LegendPosition.TopCenter:
-                    case LegendPosition.TopRight:
-                        plotArea = new OxyRect(plotArea.Left, plotArea.Top + legendSize.Height + this.LegendMargin, plotArea.Width, Math.Max(0, plotArea.Height - (legendSize.Height + this.LegendMargin)));
-                        break;
-                    case LegendPosition.BottomLeft:
-                    case LegendPosition.BottomCenter:
-                    case LegendPosition.BottomRight:
-                        plotArea = new OxyRect(plotArea.Left, plotArea.Top, plotArea.Width, Math.Max(0, plotArea.Height - (legendSize.Height + this.LegendMargin)));
-                        break;
+                    // Find the available size for the legend box
+                    var availableLegendWidth = plotArea.Width;
+                    var availableLegendHeight = double.IsNaN(legend.LegendMaxHeight) ?
+                        plotArea.Height : Math.Min(plotArea.Height, legend.LegendMaxHeight);
+
+                    var lsiz = legend.GetLegendSize(rc, new OxySize(availableLegendWidth, availableLegendHeight));
+                    legendSize = new OxySize(legendSize.Width > lsiz.Width ? legendSize.Width : lsiz.Width, legendSize.Height > lsiz.Height ? legendSize.Height : lsiz.Height);
+
+                    if (legend.LegendMargin > legendMargin)
+                        legendMargin = legend.LegendMargin;
+                }
+
+                // Adjust the plot area after the size of the legend has been calculated
+                if (legendSize.Width > 0 || legendSize.Height > 0)
+                {
+                    plotArea = new OxyRect(plotArea.Left + legendSize.Width + legendMargin, plotArea.Top, Math.Max(0, plotArea.Width - (legendSize.Width + legendMargin)), plotArea.Height);
+                }
+
+                legendSize = new OxySize(0, 0);
+                legendMargin = 0;
+                // second run Outside Right-Side legends
+                foreach (var legend in this.Legends.Where(l =>
+                    l.LegendPlacement == LegendPlacement.Outside && (l.IsLegendVisible &&
+                    (l.LegendPosition == LegendPosition.RightTop || l.LegendPosition == LegendPosition.RightMiddle || l.LegendPosition == LegendPosition.RightBottom))))
+                {
+                    // Find the available size for the legend box
+                    var availableLegendWidth = plotArea.Width;
+                    var availableLegendHeight = double.IsNaN(legend.LegendMaxHeight) ?
+                        plotArea.Height : Math.Min(plotArea.Height, legend.LegendMaxHeight);
+
+                    var lsiz = legend.GetLegendSize(rc, new OxySize(availableLegendWidth, availableLegendHeight));
+                    legendSize = new OxySize(legendSize.Width > lsiz.Width ? legendSize.Width : lsiz.Width, legendSize.Height > lsiz.Height ? legendSize.Height : lsiz.Height);
+
+                    if (legend.LegendMargin > legendMargin)
+                        legendMargin = legend.LegendMargin;
+                }
+
+                // Adjust the plot area after the size of the legend has been calculated
+                if (legendSize.Width > 0 || legendSize.Height > 0)
+                {
+                    plotArea = new OxyRect(plotArea.Left, plotArea.Top, Math.Max(0, plotArea.Width - (legendSize.Width + legendMargin)), plotArea.Height);
+                }
+
+                legendSize = new OxySize(0, 0);
+                legendMargin = 0;
+                // third run Outside Top legends
+                foreach (var legend in this.Legends.Where(l =>
+                    l.LegendPlacement == LegendPlacement.Outside && (l.IsLegendVisible &&
+                    (l.LegendPosition == LegendPosition.TopLeft || l.LegendPosition == LegendPosition.TopCenter || l.LegendPosition == LegendPosition.TopRight))))
+                {
+                    // Find the available size for the legend box
+                    var availableLegendWidth = plotArea.Width;
+                    var availableLegendHeight = double.IsNaN(legend.LegendMaxHeight) ?
+                        plotArea.Height : Math.Min(plotArea.Height, legend.LegendMaxHeight);
+
+                    var lsiz = legend.GetLegendSize(rc, new OxySize(availableLegendWidth, availableLegendHeight));
+                    legendSize = new OxySize(legendSize.Width > lsiz.Width ? legendSize.Width : lsiz.Width, legendSize.Height > lsiz.Height ? legendSize.Height : lsiz.Height);
+
+                    if (legend.LegendMargin > legendMargin)
+                        legendMargin = legend.LegendMargin;
+                }
+
+                // Adjust the plot area after the size of the legend has been calculated
+                if (legendSize.Width > 0 || legendSize.Height > 0)
+                {
+                    plotArea = new OxyRect(plotArea.Left, plotArea.Top + legendSize.Height + legendMargin, plotArea.Width, Math.Max(0, plotArea.Height - (legendSize.Height + legendMargin)));
+                }
+
+                legendSize = new OxySize(0, 0);
+                legendMargin = 0;
+                // fourth run Outside Bottom legends
+                foreach (var legend in this.Legends.Where(l =>
+                    l.LegendPlacement == LegendPlacement.Outside && (l.IsLegendVisible &&
+                    (l.LegendPosition == LegendPosition.BottomLeft || l.LegendPosition == LegendPosition.BottomCenter || l.LegendPosition == LegendPosition.BottomRight))))
+                {
+                    // Find the available size for the legend box
+                    var availableLegendWidth = plotArea.Width;
+                    var availableLegendHeight = double.IsNaN(legend.LegendMaxHeight) ?
+                        plotArea.Height : Math.Min(plotArea.Height, legend.LegendMaxHeight);
+
+                    var lsiz = legend.GetLegendSize(rc, new OxySize(availableLegendWidth, availableLegendHeight));
+                    legendSize = new OxySize(legendSize.Width > lsiz.Width ? legendSize.Width : lsiz.Width, legendSize.Height > lsiz.Height ? legendSize.Height : lsiz.Height);
+
+                    if (legend.LegendMargin > legendMargin)
+                        legendMargin = legend.LegendMargin;
+                }
+
+                // Adjust the plot area after the size of the legend has been calculated
+                if (legendSize.Width > 0 || legendSize.Height > 0)
+                {
+                    plotArea = new OxyRect(plotArea.Left, plotArea.Top, plotArea.Width, Math.Max(0, plotArea.Height - (legendSize.Height + legendMargin)));
+                }
+
+                // Finally calculate size of inside legends
+                foreach (var legend in this.Legends.Where(l => l.LegendPlacement == LegendPlacement.Inside && l.IsLegendVisible))
+                {
+                    // Find the available size for the legend box
+                    var availableLegendWidth = plotArea.Width;
+                    var availableLegendHeight = double.IsNaN(legend.LegendMaxHeight) ?
+                        plotArea.Height : Math.Min(plotArea.Height, legend.LegendMaxHeight);
+
+                    if (legend.LegendPlacement == LegendPlacement.Inside)
+                    {
+                        availableLegendWidth -= legend.LegendMargin * 2;
+                        availableLegendHeight -= legend.LegendMargin * 2;
+                    }
+
+                    legend.GetLegendSize(rc, new OxySize(availableLegendWidth, availableLegendHeight));
                 }
             }
 
@@ -554,8 +651,6 @@ namespace OxyPlot
                         titleSize.Height + (this.TitlePadding * 2));
                     break;
             }
-
-            this.LegendArea = this.GetLegendRectangle(legendSize);
         }
     }
 }

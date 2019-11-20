@@ -15,6 +15,7 @@ namespace ExampleLibrary
     using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
+    using OxyPlot.Legends;
 
     [Examples("LineSeries"), Tags("Series")]
     public class LineSeriesExamples
@@ -37,7 +38,14 @@ namespace ExampleLibrary
         [Example("Custom style")]
         public static PlotModel CustomStyle()
         {
-            var model = new PlotModel { Title = "LineSeries with custom style", LegendSymbolLength = 24 };
+            var model = new PlotModel { Title = "LineSeries with custom style" };
+            var l = new Legend
+            {
+                LegendSymbolLength = 24
+            };
+
+            model.Legends.Add(l);
+
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
             var lineSeries1 = CreateExampleLineSeries();
@@ -112,8 +120,13 @@ namespace ExampleLibrary
         [Example("Custom markers")]
         public static PlotModel CustomMarkers()
         {
-            var model = new PlotModel { Title = "LineSeries with custom markers", LegendSymbolLength = 30 };
+            var model = new PlotModel { Title = "LineSeries with custom markers" };
+            var l = new Legend
+            {
+                LegendSymbolLength = 30
+            };
 
+            model.Legends.Add(l);
             const int N = 6;
             var customMarkerOutline = new ScreenPoint[N];
             for (int i = 0; i < N; i++)
@@ -138,9 +151,16 @@ namespace ExampleLibrary
         public static PlotModel MarkerTypes()
         {
             var pm = CreateModel("LineSeries with different MarkerType", (int)MarkerType.Custom);
-            pm.LegendBackground = OxyColor.FromAColor(220, OxyColors.White);
-            pm.LegendBorder = OxyColors.Black;
-            pm.LegendBorderThickness = 1.0;
+
+            var l = new Legend
+            {
+                LegendBackground = OxyColor.FromAColor(220, OxyColors.White),
+                LegendBorder = OxyColors.Black,
+                LegendBorderThickness = 1.0
+            };
+
+            pm.Legends.Add(l);
+
             int i = 0;
             foreach (var ls in pm.Series.Cast<LineSeries>())
             {
@@ -157,7 +177,13 @@ namespace ExampleLibrary
         [Example("Labels")]
         public static PlotModel Labels()
         {
-            var model = new PlotModel { Title = "LineSeries with labels", Subtitle = "Use the 'LabelFormatString' property", LegendSymbolLength = 24 };
+            var model = new PlotModel { Title = "LineSeries with labels", Subtitle = "Use the 'LabelFormatString' property" };
+            var l = new Legend
+            {
+                LegendSymbolLength = 24
+            };
+
+            model.Legends.Add(l);
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, MaximumPadding = 0.1 }); // increase the top padding to make sure the labels are visible
             var s1 = CreateExampleLineSeries();
@@ -171,8 +197,14 @@ namespace ExampleLibrary
         public static PlotModel LineStyles()
         {
             var pm = CreateModel("LineSeries with LineStyle", (int)LineStyle.None);
-            pm.LegendPlacement = LegendPlacement.Outside;
-            pm.LegendSymbolLength = 50;
+            var l = new Legend
+            {
+                LegendPlacement = LegendPlacement.Outside,
+                LegendSymbolLength = 50
+            };
+
+            pm.Legends.Add(l);
+
             int i = 0;
             foreach (var lineSeries in pm.Series.Cast<LineSeries>())
             {
@@ -187,8 +219,13 @@ namespace ExampleLibrary
         [Example("Interpolation")]
         public static PlotModel Smooth()
         {
-            var model = new PlotModel { Title = "LineSeries with interpolation", Subtitle = "InterpolationAlgorithm = CanonicalSpline", LegendSymbolLength = 24 };
+            var model = new PlotModel { Title = "LineSeries with interpolation", Subtitle = "InterpolationAlgorithm = CanonicalSpline" };
+            var l = new Legend
+            {
+                LegendSymbolLength = 24
+            };
 
+            model.Legends.Add(l);
             var s1 = CreateExampleLineSeries();
             s1.MarkerType = MarkerType.Circle;
             s1.InterpolationAlgorithm = InterpolationAlgorithms.CanonicalSpline;

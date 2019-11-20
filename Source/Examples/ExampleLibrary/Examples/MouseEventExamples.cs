@@ -13,6 +13,7 @@ namespace ExampleLibrary
     using OxyPlot.Annotations;
     using OxyPlot.Axes;
     using OxyPlot.Series;
+    using OxyPlot.Legends;
 
     [Examples("Mouse Events")]
     public class MouseEventExamples
@@ -104,7 +105,13 @@ namespace ExampleLibrary
         [Example("LineSeries and PlotModel MouseDown event")]
         public static PlotModel MouseDownEvent()
         {
-            var model = new PlotModel { Title = "MouseDown", Subtitle = "Left click to edit or add points.", LegendSymbolLength = 40 };
+            var model = new PlotModel { Title = "MouseDown", Subtitle = "Left click to edit or add points." };
+            var l = new Legend
+            {
+                LegendSymbolLength = 40
+            };
+
+            model.Legends.Add(l);
 
             // Add a line series
             var s1 = new LineSeries
@@ -442,7 +449,13 @@ namespace ExampleLibrary
         [Example("Add Series")]
         public static PlotModel AddSeriesByMouseDownEvent()
         {
-            var model = new PlotModel { Title = "MouseDown", Subtitle = "Left click to add series.", LegendSymbolLength = 40 };
+            var model = new PlotModel { Title = "MouseDown", Subtitle = "Left click to add series." };
+            var l = new Legend
+            {
+                LegendSymbolLength = 40
+            };
+
+            model.Legends.Add(l);
 
             model.MouseDown += (s, e) =>
             {

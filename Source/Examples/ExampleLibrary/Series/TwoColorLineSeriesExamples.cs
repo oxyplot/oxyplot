@@ -14,6 +14,7 @@ namespace ExampleLibrary
     using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
+    using OxyPlot.Legends;
 
     /// <summary>
     /// Provides examples for the <see cref="TwoColorLineSeries" />.
@@ -28,7 +29,14 @@ namespace ExampleLibrary
         [Example("Temperatures")]
         public static PlotModel TwoColorLineSeries()
         {
-            var model = new PlotModel { Title = "TwoColorLineSeries", LegendSymbolLength = 24 };
+            var model = new PlotModel { Title = "TwoColorLineSeries" };
+            var l = new Legend
+            {
+                LegendSymbolLength = 24
+            };
+
+            model.Legends.Add(l);
+
             var s1 = new TwoColorLineSeries
             {
                 Title = "Temperature at Eidesmoen, December 1986.",

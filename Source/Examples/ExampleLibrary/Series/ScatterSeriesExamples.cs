@@ -17,6 +17,7 @@ namespace ExampleLibrary
     using OxyPlot.Annotations;
     using OxyPlot.Axes;
     using OxyPlot.Series;
+    using OxyPlot.Legends;
 
     [Examples("ScatterSeries"), Tags("Series")]
     public class ScatterSeriesExamples
@@ -146,7 +147,13 @@ namespace ExampleLibrary
         public static PlotModel RandomWithFit()
         {
             const int n = 20;
-            var model = new PlotModel { Title = string.Format("Random data (n={0})", n), LegendPosition = LegendPosition.LeftTop };
+            var model = new PlotModel { Title = string.Format("Random data (n={0})", n) };
+            var l = new Legend
+            {
+                LegendPosition = LegendPosition.LeftTop
+            };
+
+            model.Legends.Add(l);
 
             var s1 = new ScatterSeries { Title = "Measurements" };
             var random = new Random(7);

@@ -1,27 +1,25 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PlotModel.Legends.cs" company="OxyPlot">
-//   Copyright (c) 2014 OxyPlot contributors
+// <copyright file="PlotModel.cs" company="OxyPlot">
+//   Copyright (c) 2019 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Makes the LegendOrientation property safe.
+//   Specifies part of the Legend implementation.
 // </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
-namespace OxyPlot
+// --
+namespace OxyPlot.Legends
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using System.Text;
 
-    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1601:PartialElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    public partial class PlotModel
+    public partial class Legend
     {
         /// <summary>
         /// Makes the LegendOrientation property safe.
         /// </summary>
         /// <remarks>If Legend is positioned left or right, force it to vertical orientation</remarks>
-        private void EnsureLegendProperties()
+        public override void EnsureLegendProperties()
         {
             switch (this.LegendPosition)
             {
@@ -41,6 +39,36 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Renders or measures the legends.
+        /// </summary>
+        /// <param name="rc">The render context.</param>
+        public override void RenderLegends(IRenderContext rc)
+        {
+            this.RenderOrMeasureLegends(rc, this.LegendArea);
+        }
+
+        /// <summary>
+        /// Measures the legend area and gets the legend size.
+        /// </summary>
+        /// <param name="rc">The rendering context.</param>
+        /// <param name="availableLegendArea">The area available to legend.</param>
+        public override OxySize GetLegendSize(IRenderContext rc, OxySize availableLegendArea)
+        {
+            var availableLegendWidth = availableLegendArea.Width;
+            var availableLegendHeight = availableLegendArea.Height;
+
+            // Calculate the size of the legend box
+            var legendSize = this.MeasureLegends(rc, new OxySize(Math.Max(0, availableLegendWidth), Math.Max(0, availableLegendHeight)));
+
+            // Ensure legend size is valid
+            legendSize = new OxySize(Math.Max(0, legendSize.Width), Math.Max(0, legendSize.Height));
+
+            this.LegendArea = this.GetLegendRectangle(legendSize);
+
+            return legendSize;
+        }
+
+        /// <summary>
         /// Gets the rectangle of the legend box.
         /// </summary>
         /// <param name="legendSize">Size of the legend box.</param>
@@ -56,22 +84,22 @@ namespace OxyPlot
                     case LegendPosition.LeftTop:
                     case LegendPosition.LeftMiddle:
                     case LegendPosition.LeftBottom:
-                        left = this.PlotAndAxisArea.Left - legendSize.Width - this.LegendMargin;
+                        left = this.PlotModel.PlotAndAxisArea.Left - legendSize.Width - this.LegendMargin;
                         break;
                     case LegendPosition.RightTop:
                     case LegendPosition.RightMiddle:
                     case LegendPosition.RightBottom:
-                        left = this.PlotAndAxisArea.Right + this.LegendMargin;
+                        left = this.PlotModel.PlotAndAxisArea.Right + this.LegendMargin;
                         break;
                     case LegendPosition.TopLeft:
                     case LegendPosition.TopCenter:
                     case LegendPosition.TopRight:
-                        top = this.PlotAndAxisArea.Top - legendSize.Height - this.LegendMargin;
+                        top = this.PlotModel.PlotAndAxisArea.Top - legendSize.Height - this.LegendMargin;
                         break;
                     case LegendPosition.BottomLeft:
                     case LegendPosition.BottomCenter:
                     case LegendPosition.BottomRight:
-                        top = this.PlotAndAxisArea.Bottom + this.LegendMargin;
+                        top = this.PlotModel.PlotAndAxisArea.Bottom + this.LegendMargin;
                         break;
                 }
 
@@ -79,27 +107,27 @@ namespace OxyPlot
                 {
                     case LegendPosition.TopLeft:
                     case LegendPosition.BottomLeft:
-                        left = this.PlotArea.Left;
+                        left = this.PlotModel.PlotArea.Left;
                         break;
                     case LegendPosition.TopRight:
                     case LegendPosition.BottomRight:
-                        left = this.PlotArea.Right - legendSize.Width;
+                        left = this.PlotModel.PlotArea.Right - legendSize.Width;
                         break;
                     case LegendPosition.LeftTop:
                     case LegendPosition.RightTop:
-                        top = this.PlotArea.Top;
+                        top = this.PlotModel.PlotArea.Top;
                         break;
                     case LegendPosition.LeftBottom:
                     case LegendPosition.RightBottom:
-                        top = this.PlotArea.Bottom - legendSize.Height;
+                        top = this.PlotModel.PlotArea.Bottom - legendSize.Height;
                         break;
                     case LegendPosition.LeftMiddle:
                     case LegendPosition.RightMiddle:
-                        top = (this.PlotArea.Top + this.PlotArea.Bottom - legendSize.Height) * 0.5;
+                        top = (this.PlotModel.PlotArea.Top + this.PlotModel.PlotArea.Bottom - legendSize.Height) * 0.5;
                         break;
                     case LegendPosition.TopCenter:
                     case LegendPosition.BottomCenter:
-                        left = (this.PlotArea.Left + this.PlotArea.Right - legendSize.Width) * 0.5;
+                        left = (this.PlotModel.PlotArea.Left + this.PlotModel.PlotArea.Right - legendSize.Width) * 0.5;
                         break;
                 }
             }
@@ -110,22 +138,22 @@ namespace OxyPlot
                     case LegendPosition.LeftTop:
                     case LegendPosition.LeftMiddle:
                     case LegendPosition.LeftBottom:
-                        left = this.PlotArea.Left + this.LegendMargin;
+                        left = this.PlotModel.PlotArea.Left + this.LegendMargin;
                         break;
                     case LegendPosition.RightTop:
                     case LegendPosition.RightMiddle:
                     case LegendPosition.RightBottom:
-                        left = this.PlotArea.Right - legendSize.Width - this.LegendMargin;
+                        left = this.PlotModel.PlotArea.Right - legendSize.Width - this.LegendMargin;
                         break;
                     case LegendPosition.TopLeft:
                     case LegendPosition.TopCenter:
                     case LegendPosition.TopRight:
-                        top = this.PlotArea.Top + this.LegendMargin;
+                        top = this.PlotModel.PlotArea.Top + this.LegendMargin;
                         break;
                     case LegendPosition.BottomLeft:
                     case LegendPosition.BottomCenter:
                     case LegendPosition.BottomRight:
-                        top = this.PlotArea.Bottom - legendSize.Height - this.LegendMargin;
+                        top = this.PlotModel.PlotArea.Bottom - legendSize.Height - this.LegendMargin;
                         break;
                 }
 
@@ -133,28 +161,28 @@ namespace OxyPlot
                 {
                     case LegendPosition.TopLeft:
                     case LegendPosition.BottomLeft:
-                        left = this.PlotArea.Left + this.LegendMargin;
+                        left = this.PlotModel.PlotArea.Left + this.LegendMargin;
                         break;
                     case LegendPosition.TopRight:
                     case LegendPosition.BottomRight:
-                        left = this.PlotArea.Right - legendSize.Width - this.LegendMargin;
+                        left = this.PlotModel.PlotArea.Right - legendSize.Width - this.LegendMargin;
                         break;
                     case LegendPosition.LeftTop:
                     case LegendPosition.RightTop:
-                        top = this.PlotArea.Top + this.LegendMargin;
+                        top = this.PlotModel.PlotArea.Top + this.LegendMargin;
                         break;
                     case LegendPosition.LeftBottom:
                     case LegendPosition.RightBottom:
-                        top = this.PlotArea.Bottom - legendSize.Height - this.LegendMargin;
+                        top = this.PlotModel.PlotArea.Bottom - legendSize.Height - this.LegendMargin;
                         break;
 
                     case LegendPosition.LeftMiddle:
                     case LegendPosition.RightMiddle:
-                        top = (this.PlotArea.Top + this.PlotArea.Bottom - legendSize.Height) * 0.5;
+                        top = (this.PlotModel.PlotArea.Top + this.PlotModel.PlotArea.Bottom - legendSize.Height) * 0.5;
                         break;
                     case LegendPosition.TopCenter:
                     case LegendPosition.BottomCenter:
-                        left = (this.PlotArea.Left + this.PlotArea.Right - legendSize.Width) * 0.5;
+                        left = (this.PlotModel.PlotArea.Left + this.PlotModel.PlotArea.Right - legendSize.Width) * 0.5;
                         break;
                 }
             }
@@ -207,14 +235,15 @@ namespace OxyPlot
 
             double y = rect.Top;
             var maxsize = new OxySize(Math.Max(rect.Width - this.LegendSymbolLength - this.LegendSymbolMargin, 0), rect.Height);
-            var actualLegendFontSize = double.IsNaN(this.LegendFontSize) ? this.DefaultFontSize : this.LegendFontSize;
+            var actualLegendFontSize = double.IsNaN(this.LegendFontSize) ? this.PlotModel.DefaultFontSize : this.LegendFontSize;
+            var legendTextColor = s.IsVisible ? this.LegendTextColor : this.SeriesInvisibleTextColor;
 
             rc.SetToolTip(s.ToolTip);
             var textSize = rc.DrawMathText(
                 new ScreenPoint(x, y),
                 s.Title,
-                this.LegendTextColor.GetActualColor(this.TextColor),
-                this.LegendFont ?? this.DefaultFont,
+                legendTextColor.GetActualColor(this.PlotModel.TextColor),
+                this.LegendFont ?? this.PlotModel.DefaultFont,
                 actualLegendFontSize,
                 this.LegendFontWeight,
                 0,
@@ -222,6 +251,8 @@ namespace OxyPlot
                 VerticalAlignment.Top,
                 maxsize,
                 true);
+
+            this.SeriesPosMap.Add(s, new OxyRect(new ScreenPoint(x, y), textSize));
             double x0 = x;
             switch (actualItemAlignment)
             {
@@ -233,16 +264,19 @@ namespace OxyPlot
                     break;
             }
 
-            var symbolRect =
-                new OxyRect(
-                    this.LegendSymbolPlacement == LegendSymbolPlacement.Right
-                        ? x0 + textSize.Width + this.LegendSymbolMargin
-                        : x0 - this.LegendSymbolMargin - this.LegendSymbolLength,
-                    rect.Top,
-                    this.LegendSymbolLength,
-                    textSize.Height);
+            if (s.IsVisible)
+            {
+                var symbolRect =
+                    new OxyRect(
+                        this.LegendSymbolPlacement == LegendSymbolPlacement.Right
+                            ? x0 + textSize.Width + this.LegendSymbolMargin
+                            : x0 - this.LegendSymbolMargin - this.LegendSymbolLength,
+                        rect.Top,
+                        this.LegendSymbolLength,
+                        textSize.Height);
 
-            s.RenderLegend(rc, symbolRect);
+                s.RenderLegend(rc, symbolRect);
+            }
             rc.SetToolTip(null);
         }
 
@@ -261,16 +295,6 @@ namespace OxyPlot
         /// Renders or measures the legends.
         /// </summary>
         /// <param name="rc">The render context.</param>
-        /// <param name="rect">The rectangle.</param>
-        private void RenderLegends(IRenderContext rc, OxyRect rect)
-        {
-            this.RenderOrMeasureLegends(rc, rect);
-        }
-
-        /// <summary>
-        /// Renders or measures the legends.
-        /// </summary>
-        /// <param name="rc">The render context.</param>
         /// <param name="rect">Provides the available size if measuring, otherwise it provides the position and size of the legend.</param>
         /// <param name="measureOnly">Specify if the size of the legend box should be measured only (not rendered).</param>
         /// <returns>The size of the legend box.</returns>
@@ -279,6 +303,7 @@ namespace OxyPlot
             // Render background and border around legend
             if (!measureOnly && rect.Width > 0 && rect.Height > 0)
             {
+                this.legendBox = rect;
                 rc.DrawRectangleAsPolygon(rect, this.LegendBackground, this.LegendBorder, this.LegendBorderThickness);
             }
 
@@ -290,8 +315,9 @@ namespace OxyPlot
 
             var size = new OxySize();
 
-            var actualLegendFontSize = double.IsNaN(this.LegendFontSize) ? this.DefaultFontSize : this.LegendFontSize;
+            var actualLegendFontSize = double.IsNaN(this.LegendFontSize) ? this.PlotModel.DefaultFontSize : this.LegendFontSize;
             var actualLegendTitleFontSize = double.IsNaN(this.LegendTitleFontSize) ? actualLegendFontSize : this.LegendTitleFontSize;
+            var actualGroupNameFontSize = double.IsNaN(this.GroupNameFontSize) ? actualLegendFontSize : this.GroupNameFontSize;
 
             // Render/measure the legend title
             if (!string.IsNullOrEmpty(this.LegendTitle))
@@ -301,7 +327,7 @@ namespace OxyPlot
                 {
                     titleSize = rc.MeasureMathText(
                         this.LegendTitle,
-                        this.LegendTitleFont ?? this.DefaultFont,
+                        this.LegendTitleFont ?? this.PlotModel.DefaultFont,
                         actualLegendTitleFontSize,
                         this.LegendTitleFontWeight);
                 }
@@ -310,8 +336,8 @@ namespace OxyPlot
                     titleSize = rc.DrawMathText(
                         new ScreenPoint(rect.Left + x, rect.Top + top),
                         this.LegendTitle,
-                        this.LegendTitleColor.GetActualColor(this.TextColor),
-                        this.LegendTitleFont ?? this.DefaultFont,
+                        this.LegendTitleColor.GetActualColor(this.PlotModel.TextColor),
+                        this.LegendTitleFont ?? this.PlotModel.DefaultFont,
                         actualLegendTitleFontSize,
                         this.LegendTitleFontWeight,
                         0,
@@ -336,107 +362,166 @@ namespace OxyPlot
             double maxItemWidth = 0;
 
             var items = this.LegendItemOrder == LegendItemOrder.Reverse
-                ? this.Series.Reverse().Where(s => s.IsVisible)
-                : this.Series.Where(s => s.IsVisible);
+                ? this.PlotModel.Series.Reverse().Where(s => s.RenderInLegend && s.LegendKey == this.Key)
+                : this.PlotModel.Series.Where(s => s.RenderInLegend && s.LegendKey == this.Key);
+
+            List<string> itemGroupNames = new List<string>();
+            foreach (Series.Series s in items)
+            {
+                if (!itemGroupNames.Contains(s.SeriesGroupName))
+                {
+                    itemGroupNames.Add(s.SeriesGroupName);
+                }
+            }
+
+            // Clear the series position map.
+            this.SeriesPosMap.Clear();
 
             // When orientation is vertical and alignment is center or right, the items cannot be rendered before
             // the max item width has been calculated. Render the items for each column, and at the end.
             var seriesToRender = new Dictionary<Series.Series, OxyRect>();
             Action renderItems = () =>
-                {
-                    foreach (var sr in seriesToRender)
-                    {
-                        var itemRect = sr.Value;
-                        var itemSeries = sr.Key;
-
-                        double rwidth = availableWidth;
-                        if (itemRect.Left + rwidth + this.LegendPadding > rect.Left + availableWidth)
-                        {
-                            rwidth = rect.Left + availableWidth - itemRect.Left - this.LegendPadding;
-                        }
-
-                        double rheight = itemRect.Height;
-                        if (rect.Top + rheight + this.LegendPadding > rect.Top + availableHeight)
-                        {
-                            rheight = rect.Top + availableHeight - rect.Top - this.LegendPadding;
-                        }
-
-                        var r = new OxyRect(itemRect.Left, itemRect.Top, Math.Max(rwidth, 0), Math.Max(rheight, 0));
-                        this.RenderLegend(rc, itemSeries, r);
-                    }
-
-                    seriesToRender.Clear();
-                };
-
-            foreach (var s in items)
             {
-                // Skip series with empty title
-                if (string.IsNullOrEmpty(s.Title) || !s.RenderInLegend)
+                List<string> usedGroupNames = new List<string>();
+                foreach (var sr in seriesToRender)
                 {
-                    continue;
+                    var itemRect = sr.Value;
+                    var itemSeries = sr.Key;
+
+                    if (!string.IsNullOrEmpty(itemSeries.SeriesGroupName) && !usedGroupNames.Contains(itemSeries.SeriesGroupName))
+                    {
+                        usedGroupNames.Add(itemSeries.SeriesGroupName);
+                        var groupNameTextSize = rc.MeasureMathText(itemSeries.SeriesGroupName, this.GroupNameFont ?? this.PlotModel.DefaultFont, actualGroupNameFontSize, this.GroupNameFontWeight);
+                        double ypos = itemRect.Top;
+                        double xpos = itemRect.Left;
+                        if (this.LegendOrientation == LegendOrientation.Vertical)
+                            ypos -= (groupNameTextSize.Height + this.LegendLineSpacing / 2);
+                        else
+                            xpos -= (groupNameTextSize.Width + this.LegendItemSpacing / 2);
+                        rc.DrawMathText(
+                        new ScreenPoint(xpos, ypos),
+                        itemSeries.SeriesGroupName,
+                        this.LegendTitleColor.GetActualColor(this.PlotModel.TextColor),
+                         this.GroupNameFont ?? this.PlotModel.DefaultFont,
+                        actualGroupNameFontSize,
+                        this.GroupNameFontWeight,
+                        0,
+                        HorizontalAlignment.Left,
+                        VerticalAlignment.Top,
+                        null,
+                        true);
+                    }
+
+                    double rwidth = availableWidth;
+                    if (itemRect.Left + rwidth + this.LegendPadding > rect.Left + availableWidth)
+                    {
+                        rwidth = rect.Left + availableWidth - itemRect.Left - this.LegendPadding;
+                    }
+
+                    double rheight = itemRect.Height;
+                    if (rect.Top + rheight + this.LegendPadding > rect.Top + availableHeight)
+                    {
+                        rheight = rect.Top + availableHeight - rect.Top - this.LegendPadding;
+                    }
+
+                    var r = new OxyRect(itemRect.Left, itemRect.Top, Math.Max(rwidth, 0), Math.Max(rheight, 0));
+
+                    this.RenderLegend(rc, itemSeries, r);
                 }
 
-                var textSize = rc.MeasureMathText(s.Title, this.LegendFont ?? this.DefaultFont, actualLegendFontSize, this.LegendFontWeight);
-                double itemWidth = this.LegendSymbolLength + this.LegendSymbolMargin + textSize.Width;
-                double itemHeight = textSize.Height;
+                usedGroupNames.Clear();
+                seriesToRender.Clear();
+            };
 
-                if (this.LegendOrientation == LegendOrientation.Horizontal)
+            foreach (var g in itemGroupNames)
+            {
+                var itemGroup = items.Where(i => i.SeriesGroupName == g);
+                OxySize groupNameTextSize = new OxySize(0, 0);
+                if (itemGroup.Count() > 0 && !string.IsNullOrEmpty(g))
                 {
-                    // Add spacing between items
-                    if (x > this.LegendPadding)
-                    {
-                        x += this.LegendItemSpacing;
-                    }
-
-                    // Check if the item is too large to fit within the available width
-                    if (x + itemWidth > availableWidth - this.LegendPadding + Epsilon)
-                    {
-                        // new line
-                        x = this.LegendPadding;
-                        y += lineHeight + this.LegendLineSpacing;
-                        lineHeight = 0;
-                    }
-
-                    // Update the max size of the current line
-                    lineHeight = Math.Max(lineHeight, textSize.Height);
-
-                    if (!measureOnly)
-                    {
-                        seriesToRender.Add(s, new OxyRect(rect.Left + x, rect.Top + y, itemWidth, itemHeight));
-                    }
-
-                    x += itemWidth;
-
-                    // Update the max width and height of the legend box
-                    size = new OxySize(Math.Max(size.Width, x), Math.Max(size.Height, y + textSize.Height));
+                    groupNameTextSize = rc.MeasureMathText(g, this.GroupNameFont ?? this.PlotModel.DefaultFont, actualGroupNameFontSize, this.GroupNameFontWeight);
+                    if (this.LegendOrientation == LegendOrientation.Vertical)
+                        y += groupNameTextSize.Height;
+                    else
+                        x += groupNameTextSize.Width;
                 }
-                else
+
+                int count = 0;
+                foreach (var s in itemGroup)
                 {
-                    if (y + itemHeight > availableHeight - this.LegendPadding + Epsilon)
+                    // Skip series with empty title
+                    if (string.IsNullOrEmpty(s.Title) || !s.RenderInLegend)
                     {
-                        renderItems();
-
-                        y = top;
-                        x += maxItemWidth + this.LegendColumnSpacing;
-                        maxItemWidth = 0;
+                        continue;
                     }
 
-                    if (!measureOnly)
+                    var textSize = rc.MeasureMathText(s.Title, this.LegendFont ?? this.PlotModel.DefaultFont, actualLegendFontSize, this.LegendFontWeight);
+                    double itemWidth = this.LegendSymbolLength + this.LegendSymbolMargin + textSize.Width;
+                    double itemHeight = textSize.Height;
+
+                    if (this.LegendOrientation == LegendOrientation.Horizontal)
                     {
-                        seriesToRender.Add(s, new OxyRect(rect.Left + x, rect.Top + y, itemWidth, itemHeight));
+                        // Add spacing between items
+                        if (x > this.LegendPadding)
+                        {
+                            x += this.LegendItemSpacing;
+                        }
+
+                        // Check if the item is too large to fit within the available width
+                        if (x + itemWidth > availableWidth - this.LegendPadding + Epsilon)
+                        {
+                            // new line
+                            x = this.LegendPadding;
+                            if (count == 0)
+                                x += (groupNameTextSize.Width + this.LegendItemSpacing);
+                            y += lineHeight + this.LegendLineSpacing;
+                            lineHeight = 0;
+                        }
+
+                        // Update the max size of the current line
+                        lineHeight = Math.Max(lineHeight, textSize.Height);
+
+                        if (!measureOnly)
+                        {
+                            seriesToRender.Add(s, new OxyRect(rect.Left + x, rect.Top + y, itemWidth, itemHeight));
+                        }
+
+                        x += itemWidth;
+
+                        x = Math.Max(groupNameTextSize.Width, x);
+                        // Update the max width and height of the legend box
+                        size = new OxySize(Math.Max(size.Width, x), Math.Max(size.Height, y + textSize.Height));
+                    }
+                    else
+                    {
+                        if (y + itemHeight > availableHeight - this.LegendPadding + Epsilon)
+                        {
+                            renderItems();
+
+                            y = top + groupNameTextSize.Height;
+                            x += maxItemWidth + this.LegendColumnSpacing;
+                            maxItemWidth = 0;
+                        }
+
+                        if (!measureOnly)
+                        {
+                            seriesToRender.Add(s, new OxyRect(rect.Left + x, rect.Top + y, itemWidth, itemHeight));
+                        }
+
+                        y += itemHeight + this.LegendLineSpacing;
+
+                        // Update the max size of the items in the current column
+                        maxItemWidth = Math.Max(maxItemWidth, itemWidth);
+
+                        // Update the max width and height of the legend box
+                        size = new OxySize(Math.Max(size.Width, x + itemWidth), Math.Max(size.Height, y));
                     }
 
-                    y += itemHeight + this.LegendLineSpacing;
-
-                    // Update the max size of the items in the current column
-                    maxItemWidth = Math.Max(maxItemWidth, itemWidth);
-
-                    // Update the max width and height of the legend box
-                    size = new OxySize(Math.Max(size.Width, x + itemWidth), Math.Max(size.Height, y));
+                    count++;
                 }
+
+                renderItems();
             }
-
-            renderItems();
 
             if (size.Width > 0)
             {
