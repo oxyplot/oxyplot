@@ -16,6 +16,7 @@ namespace ExampleLibrary
     using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
+    using OxyPlot.Legends;
 
     /// <summary>
     /// Provides examples for general axis properties.
@@ -800,8 +801,14 @@ namespace ExampleLibrary
             var model = new PlotModel
             {
                 Title = "Auto adjusting plot margins",
+            };
+
+            Legend l = new Legend
+            {
                 LegendPosition = LegendPosition.RightBottom
             };
+            model.Legends.Add(l);
+
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "X", TickStyle = TickStyle.Outside });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Y", TickStyle = TickStyle.Outside });
             model.Series.Add(new LineSeries { Title = "Butterfly curve", ItemsSource = ButterflyCurve(0, Math.PI * 4, 1000) });
@@ -814,9 +821,15 @@ namespace ExampleLibrary
             var model = new PlotModel
             {
                 Title = "Auto adjusting left plot margin",
-                LegendPosition = LegendPosition.RightBottom,
                 PlotMargins = new OxyThickness(double.NaN, 40, 40, 40)
             };
+
+            Legend l = new Legend
+            {
+                LegendPosition = LegendPosition.RightBottom
+            };
+            model.Legends.Add(l);
+
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "X", TickStyle = TickStyle.Outside });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Y", TickStyle = TickStyle.Outside });
             model.Series.Add(new LineSeries { Title = "Butterfly curve", ItemsSource = ButterflyCurve(0, Math.PI * 4, 1000) });
@@ -830,9 +843,15 @@ namespace ExampleLibrary
             var model = new PlotModel
             {
                 Title = "Manual plot margins",
-                LegendPosition = LegendPosition.RightBottom,
                 PlotMargins = new OxyThickness(60, 4, 4, 40)
             };
+
+            Legend l = new Legend
+            {
+                LegendPosition = LegendPosition.RightBottom
+            };
+            model.Legends.Add(l);
+
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "X", TickStyle = TickStyle.Outside });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Y", TickStyle = TickStyle.Outside });
             model.Series.Add(new LineSeries { Title = "Butterfly curve", ItemsSource = ButterflyCurve(0, Math.PI * 4, 1000) });
@@ -1248,8 +1267,14 @@ namespace ExampleLibrary
             var plotModel = new PlotModel()
             {
                 Title = "Multi vertical axes with lineSeries",
-                LegendBackground = OxyColors.White,
             };
+
+            Legend l = new Legend
+            {
+                LegendBackground = OxyColors.White
+            };
+            plotModel.Legends.Add(l);
+
             var axisX_Time = new DateTimeAxis()
             {
                 Title = "Time",

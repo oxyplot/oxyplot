@@ -11,6 +11,7 @@ namespace ExampleLibrary
 
     using OxyPlot;
     using OxyPlot.Series;
+    using OxyPlot.Legends;
 
     [Examples("Legends")]
     public static class LegendExamples
@@ -19,8 +20,14 @@ namespace ExampleLibrary
         public static PlotModel LegendRightTopInside()
         {
             var model = CreateModel();
-            model.LegendPlacement = LegendPlacement.Inside;
-            model.LegendPosition = LegendPosition.RightTop;
+            var l = new Legend
+            {
+                LegendPlacement = LegendPlacement.Inside,
+                LegendPosition = LegendPosition.RightTop
+            };
+
+            model.Legends.Add(l);
+
             return model;
         }
 
@@ -28,8 +35,13 @@ namespace ExampleLibrary
         public static PlotModel LegendRightTopOutside()
         {
             var model = CreateModel();
-            model.LegendPlacement = LegendPlacement.Outside;
-            model.LegendPosition = LegendPosition.RightTop;
+            var l = new Legend
+            {
+                LegendPlacement = LegendPlacement.Outside,
+                LegendPosition = LegendPosition.RightTop
+            };
+
+            model.Legends.Add(l);
             return model;
         }
 
@@ -37,9 +49,15 @@ namespace ExampleLibrary
         public static PlotModel LegendBottomLeftHorizontal()
         {
             var model = CreateModel(4);
-            model.LegendPlacement = LegendPlacement.Outside;
-            model.LegendPosition = LegendPosition.BottomLeft;
-            model.LegendOrientation = LegendOrientation.Horizontal;
+
+            var l = new Legend
+            {
+                LegendPlacement = LegendPlacement.Outside,
+                LegendPosition = LegendPosition.BottomLeft,
+                LegendOrientation = LegendOrientation.Horizontal
+            };
+
+            model.Legends.Add(l);
             return model;
         }
 
@@ -47,9 +65,15 @@ namespace ExampleLibrary
         public static PlotModel LegendTopLeftVertical()
         {
             var model = CreateModel(4);
-            model.LegendPlacement = LegendPlacement.Outside;
-            model.LegendPosition = LegendPosition.TopLeft;
-            model.LegendOrientation = LegendOrientation.Vertical;
+            var l = new Legend
+            {
+                LegendPlacement = LegendPlacement.Outside,
+                LegendPosition = LegendPosition.TopLeft,
+                LegendOrientation = LegendOrientation.Vertical
+            };
+
+            model.Legends.Add(l);
+
             return model;
         }
 
@@ -57,6 +81,10 @@ namespace ExampleLibrary
         public static PlotModel LegendDefault()
         {
             var model = CreateModel();
+            var l = new Legend();
+
+            model.Legends.Add(l);
+
             return model;
         }
 
@@ -64,9 +92,15 @@ namespace ExampleLibrary
         public static PlotModel LegendItemSpacing()
         {
             var model = CreateModel();
-            model.LegendOrientation = LegendOrientation.Horizontal;
-            model.LegendPosition = LegendPosition.BottomLeft;
-            model.LegendItemSpacing = 100;
+            var l = new Legend
+            {
+                LegendItemSpacing = 100,
+                LegendPosition = LegendPosition.BottomLeft,
+                LegendOrientation = LegendOrientation.Horizontal
+            };
+
+            model.Legends.Add(l);
+
             return model;
         }
 
@@ -74,9 +108,14 @@ namespace ExampleLibrary
         public static PlotModel LegendLineSpacingVertical()
         {
             var model = CreateModel();
-            model.LegendOrientation = LegendOrientation.Vertical;
-            model.LegendPosition = LegendPosition.TopLeft;
-            model.LegendLineSpacing = 30;
+            var l = new Legend
+            {
+                LegendLineSpacing = 30,
+                LegendPosition = LegendPosition.TopLeft,
+                LegendOrientation = LegendOrientation.Vertical
+            };
+
+            model.Legends.Add(l);
             return model;
         }
 
@@ -84,9 +123,14 @@ namespace ExampleLibrary
         public static PlotModel LegendLineSpacingHorizontal()
         {
             var model = CreateModel();
-            model.LegendOrientation = LegendOrientation.Horizontal;
-            model.LegendPosition = LegendPosition.TopLeft;
-            model.LegendLineSpacing = 30;
+            var l = new Legend
+            {
+                LegendLineSpacing = 30,
+                LegendPosition = LegendPosition.TopLeft,
+                LegendOrientation = LegendOrientation.Horizontal
+            };
+
+            model.Legends.Add(l);
             return model;
         }
 
@@ -94,9 +138,14 @@ namespace ExampleLibrary
         public static PlotModel LegendColumnSpacing()
         {
             var model = CreateModel(60);
-            model.LegendOrientation = LegendOrientation.Vertical;
-            model.LegendPosition = LegendPosition.TopRight;
-            model.LegendColumnSpacing = 100;
+            var l = new Legend
+            {
+                LegendColumnSpacing = 100,
+                LegendPosition = LegendPosition.TopRight,
+                LegendOrientation = LegendOrientation.Vertical
+            };
+
+            model.Legends.Add(l);
             return model;
         }
 
@@ -113,7 +162,12 @@ namespace ExampleLibrary
         {
             var model = CreateModel();
             model.DefaultColors = new List<OxyColor> { OxyColors.Black, OxyColors.Gray };
-            model.LegendSymbolLength = 32;
+            var l = new Legend
+            {
+                LegendSymbolLength = 32
+            };
+
+            model.Legends.Add(l);
             return model;
         }
 
@@ -122,8 +176,13 @@ namespace ExampleLibrary
         {
             var model = CreateModel(1);
             model.Series[0].Title = "1234567890 abcdefghijklmnopqrstuvwxyzæøå ABCDEFGHIJKLMNOPQRSTUVWXYZÆØÅ 1234567890 abcdefghijklmnopqrstuvwxyzæøå ABCDEFGHIJKLMNOPQRSTUVWXYZÆØÅ";
-            model.LegendPlacement = LegendPlacement.Inside;
-            model.LegendPosition = LegendPosition.RightTop;
+            var l = new Legend
+            {
+                LegendPlacement = LegendPlacement.Inside,
+                LegendPosition = LegendPosition.RightTop
+            };
+
+            model.Legends.Add(l);
             return model;
         }
 
@@ -131,8 +190,10 @@ namespace ExampleLibrary
         public static PlotModel ClippedLegendsOutside()
         {
             var model = ClippedLegends();
-            model.LegendPlacement = LegendPlacement.Outside;
-            model.LegendMaxWidth = 200;
+            model.Legends[0].LegendPlacement = LegendPlacement.Outside;
+            model.Legends[0].LegendPosition = LegendPosition.RightTop;
+            model.Legends[0].LegendMaxWidth = 200;
+
             return model;
         }
 
@@ -140,8 +201,9 @@ namespace ExampleLibrary
         public static PlotModel ClippedLegendsRight()
         {
             var model = ClippedLegends();
-            model.LegendPlacement = LegendPlacement.Outside;
-            model.LegendPosition = LegendPosition.TopRight;
+            model.Legends[0].LegendPlacement = LegendPlacement.Outside;
+            model.Legends[0].LegendPosition = LegendPosition.TopRight;
+
             return model;
         }
 
@@ -149,10 +211,15 @@ namespace ExampleLibrary
         public static PlotModel LegendBottomCenterOutsideWithMaxHeight()
         {
             var model = CreateModel();
-            model.LegendPlacement = LegendPlacement.Outside;
-            model.LegendPosition = LegendPosition.BottomCenter;
-            model.LegendOrientation = LegendOrientation.Vertical;
-            model.LegendMaxHeight = 75.0;
+            var l = new Legend
+            {
+                LegendPlacement = LegendPlacement.Outside,
+                LegendPosition = LegendPosition.BottomCenter,
+                LegendOrientation = LegendOrientation.Vertical,
+                LegendMaxHeight = 75.0
+            };
+
+            model.Legends.Add(l);
             return model;
         }
 
@@ -160,15 +227,27 @@ namespace ExampleLibrary
         public static PlotModel LegendDefaultFontSize()
         {
             var model = CreateModel();
-            model.LegendFontSize = double.NaN;
-            model.LegendTitle = "Title in DefaultFontSize";
+            var l = new Legend
+            {
+                LegendFontSize = double.NaN,
+                LegendTitle = "Title in DefaultFontSize"
+            };
+
+            model.Legends.Add(l);
             model.DefaultFontSize = 20;
             return model;
         }
 
         private static PlotModel CreateModel(int n = 20)
         {
-            var model = new PlotModel { Title = "LineSeries", LegendBackground = OxyColor.FromAColor(200, OxyColors.White), LegendBorder = OxyColors.Black };
+            var model = new PlotModel { Title = "LineSeries" };
+            //var l = new Legend
+            //{
+            //    LegendBackground = OxyColor.FromAColor(200, OxyColors.White),
+            //    LegendBorder = OxyColors.Black
+            //};
+
+            //model.Legends.Add(l);
             for (int i = 1; i <= n; i++)
             {
                 var s = new LineSeries { Title = "Series " + i };

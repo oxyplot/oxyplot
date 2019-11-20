@@ -17,6 +17,7 @@ namespace ExampleLibrary
     using OxyPlot.Annotations;
     using OxyPlot.Axes;
     using OxyPlot.Series;
+    using OxyPlot.Legends;
 
     [Examples("BoxPlotSeries"), Tags("Series")]
     public class BoxPlotSeriesExamples
@@ -26,7 +27,13 @@ namespace ExampleLibrary
         {
             const int boxes = 10;
 
-            var model = new PlotModel { Title = string.Format("BoxPlot (n={0})", boxes), LegendPlacement = LegendPlacement.Outside };
+            var model = new PlotModel { Title = string.Format("BoxPlot (n={0})", boxes) };
+            var l = new Legend
+            {
+                LegendPlacement = LegendPlacement.Outside
+            };
+
+            model.Legends.Add(l);
 
             var s1 = new BoxPlotSeries
             {

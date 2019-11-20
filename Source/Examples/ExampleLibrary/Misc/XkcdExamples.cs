@@ -14,6 +14,7 @@ namespace ExampleLibrary
     using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
+    using OxyPlot.Legends;
 
     /// <summary>
     /// Plot examples in XKCD style.
@@ -104,13 +105,18 @@ namespace ExampleLibrary
             var model = new PlotModel
             {
                 Title = "Test #3",
-                LegendPlacement = LegendPlacement.Outside,
-                LegendPosition = LegendPosition.BottomCenter,
-                LegendOrientation = LegendOrientation.Horizontal,
-                LegendBorderThickness = 0,
                 RenderingDecorator = rc => new XkcdRenderingDecorator(rc)
             };
 
+            var l = new Legend
+            {
+                LegendPlacement = LegendPlacement.Outside,
+                LegendPosition = LegendPosition.BottomCenter,
+                LegendOrientation = LegendOrientation.Horizontal,
+                LegendBorderThickness = 0
+            };
+
+            model.Legends.Add(l);
             var s1 = new BarSeries { Title = "Series 1", IsStacked = false, StrokeColor = OxyColors.Black, StrokeThickness = 1, XAxisKey = "x", YAxisKey = "y" };
             s1.Items.Add(new BarItem { Value = 25 });
             s1.Items.Add(new BarItem { Value = 137 });

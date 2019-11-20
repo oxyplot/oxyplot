@@ -12,6 +12,7 @@ namespace ExampleLibrary
     using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
+    using OxyPlot.Legends;
 
     [Examples("Old CandleStickSeries"), Tags("Series")]
     [Obsolete]
@@ -20,7 +21,14 @@ namespace ExampleLibrary
         [Example("CandleStickSeries")]
         public static PlotModel CandleStickSeries()
         {
-            var model = new PlotModel { Title = "CandleStickSeries", LegendSymbolLength = 24 };
+            var model = new PlotModel { Title = "CandleStickSeries" };
+            var l = new Legend
+            {
+                LegendSymbolLength = 24
+            };
+
+            model.Legends.Add(l);
+
             var s1 = new OldCandleStickSeries
                 {
                     Title = "CandleStickSeries 1",

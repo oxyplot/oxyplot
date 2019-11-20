@@ -9,6 +9,7 @@ namespace ExampleLibrary
     using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
+    using OxyPlot.Legends;
 
     [Examples("IntervalBarSeries"), Tags("Series")]
     public static class IntervalBarSeriesExamples
@@ -16,7 +17,13 @@ namespace ExampleLibrary
         [Example("IntervalBarSeries")]
         public static PlotModel IntervalBarSeries()
         {
-            var model = new PlotModel { Title = "IntervalBarSeries", LegendPlacement = LegendPlacement.Outside };
+            var model = new PlotModel { Title = "IntervalBarSeries" };
+            var l = new Legend
+            {
+                LegendPlacement = LegendPlacement.Outside
+            };
+
+            model.Legends.Add(l);
 
             var s1 = new IntervalBarSeries { Title = "IntervalBarSeries 1", LabelFormatString = "{0} - {1}"};
             s1.Items.Add(new IntervalBarItem { Start = 6, End = 8 });

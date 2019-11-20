@@ -12,6 +12,7 @@ namespace ExampleLibrary.Series
     using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
+    using OxyPlot.Legends;
 
     using ExampleLibrary.Utilities;
 
@@ -28,7 +29,14 @@ namespace ExampleLibrary.Series
         [Example("Temperatures")]
         public static PlotModel ThreeColorLineSeries()
         {
-            var model = new PlotModel { Title = "ThreeColorLineSeries", LegendSymbolLength = 24 };
+            var model = new PlotModel { Title = "ThreeColorLineSeries" };
+            var l = new Legend
+            {
+                LegendSymbolLength = 24
+            };
+
+            model.Legends.Add(l);
+
             var s1 = new ThreeColorLineSeries
             {
                 Title = "Temperature at Eidesmoen, December 1986.",

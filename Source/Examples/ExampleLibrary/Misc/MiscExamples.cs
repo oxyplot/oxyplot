@@ -22,6 +22,7 @@ namespace ExampleLibrary
     using OxyPlot.Annotations;
     using OxyPlot.Axes;
     using OxyPlot.Series;
+    using OxyPlot.Legends;
 
     [Examples("Misc")]
     public static class MiscExamples
@@ -56,10 +57,16 @@ namespace ExampleLibrary
             {
                 Title = title,
                 Subtitle = subtitle,
+            };
+
+            var l = new Legend
+            {
                 LegendPosition = LegendPosition.BottomCenter,
                 LegendPlacement = LegendPlacement.Outside,
                 LegendOrientation = LegendOrientation.Horizontal
             };
+
+            model.Legends.Add(l);
             model.Series.Add(new FunctionSeries(exact, 0, 4, 100) { Title = "Exact solution", StrokeThickness = 5 });
             var eulerSeries = new LineSeries
             {

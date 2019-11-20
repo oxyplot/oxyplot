@@ -12,6 +12,7 @@ namespace ExampleLibrary
     using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
+    using OxyPlot.Legends;
 
     /// <summary>
     /// Provides examples for the <see cref="TwoColorAreaSeries" />.
@@ -26,7 +27,14 @@ namespace ExampleLibrary
         [Example("Temperatures")]
         public static PlotModel TwoColorAreaSeries()
         {
-            var model = new PlotModel { Title = "TwoColorAreaSeries", LegendSymbolLength = 24 };
+            var model = new PlotModel { Title = "TwoColorAreaSeries" };
+            var l = new Legend
+            {
+                LegendSymbolLength = 24
+            };
+
+            model.Legends.Add(l);
+
             var s1 = new TwoColorAreaSeries
             {
                 Title = "Temperature at Eidesmoen, December 1986.",
@@ -62,7 +70,14 @@ namespace ExampleLibrary
         [Example("Temperatures ver2")]
         public static PlotModel TwoColorAreaSeries2()
         {
-            var model = new PlotModel { Title = "TwoColorAreaSeries", LegendSymbolLength = 24 };
+            var model = new PlotModel { Title = "TwoColorAreaSeries" };
+            var l = new Legend
+            {
+                LegendSymbolLength = 24
+            };
+
+            model.Legends.Add(l);
+
             var s1 = new TwoColorAreaSeries
             {
                 Title = "Temperature at Eidesmoen, December 1986.",
@@ -102,7 +117,14 @@ namespace ExampleLibrary
         [Example("Temperatures ver3")]
         public static PlotModel TwoColorAreaSeries3()
         {
-            var model = new PlotModel { Title = "TwoColorAreaSeries", LegendSymbolLength = 24 };
+            var model = new PlotModel { Title = "TwoColorAreaSeries" };
+            var l = new Legend
+            {
+                LegendSymbolLength = 24
+            };
+
+            model.Legends.Add(l);
+
             var s1 = new TwoColorAreaSeries
             {
                 Title = "Temperature at Eidesmoen, December 1986.",
@@ -143,8 +165,15 @@ namespace ExampleLibrary
 		[Example("Two polygons")]
 		public static PlotModel TwoColorAreaSeriesTwoPolygons()
 		{
-			var model = new PlotModel { Title = "Two polygons", LegendSymbolLength = 24 };
-			var s1 = new TwoColorAreaSeries
+			var model = new PlotModel { Title = "Two polygons" };
+            var l = new Legend
+            {
+                LegendSymbolLength = 24
+            };
+
+            model.Legends.Add(l);
+
+            var s1 = new TwoColorAreaSeries
 			{
 				Color = OxyColors.Tomato,
 				Color2 = OxyColors.LightBlue,
