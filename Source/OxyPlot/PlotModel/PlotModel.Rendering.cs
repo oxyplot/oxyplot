@@ -373,10 +373,13 @@ namespace OxyPlot
 
         private void RenderLegends(IRenderContext rc)
         {
-            foreach (var l in this.Legends.Where(l => l.IsLegendVisible))
+            if (this.IsLegendVisible)
             {
-                rc.SetToolTip(l.ToolTip);
-                l.RenderLegends(rc);
+                foreach (var l in this.Legends.Where(l => l.IsLegendVisible))
+                {
+                    rc.SetToolTip(l.ToolTip);
+                    l.RenderLegends(rc);
+                }
             }
         }
 

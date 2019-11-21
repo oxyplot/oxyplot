@@ -23,7 +23,9 @@ namespace ExampleLibrary
             var l = new Legend
             {
                 LegendPlacement = LegendPlacement.Inside,
-                LegendPosition = LegendPosition.RightTop
+                LegendPosition = LegendPosition.RightTop,
+                LegendBackground = OxyColor.FromAColor(200, OxyColors.White),
+                LegendBorder = OxyColors.Black,
             };
 
             model.Legends.Add(l);
@@ -38,7 +40,9 @@ namespace ExampleLibrary
             var l = new Legend
             {
                 LegendPlacement = LegendPlacement.Outside,
-                LegendPosition = LegendPosition.RightTop
+                LegendPosition = LegendPosition.RightTop,
+                LegendBackground = OxyColor.FromAColor(200, OxyColors.White),
+                LegendBorder = OxyColors.Black,
             };
 
             model.Legends.Add(l);
@@ -54,7 +58,9 @@ namespace ExampleLibrary
             {
                 LegendPlacement = LegendPlacement.Outside,
                 LegendPosition = LegendPosition.BottomLeft,
-                LegendOrientation = LegendOrientation.Horizontal
+                LegendOrientation = LegendOrientation.Horizontal,
+                LegendBackground = OxyColor.FromAColor(200, OxyColors.White),
+                LegendBorder = OxyColors.Black,
             };
 
             model.Legends.Add(l);
@@ -69,7 +75,9 @@ namespace ExampleLibrary
             {
                 LegendPlacement = LegendPlacement.Outside,
                 LegendPosition = LegendPosition.TopLeft,
-                LegendOrientation = LegendOrientation.Vertical
+                LegendOrientation = LegendOrientation.Vertical,
+                LegendBackground = OxyColor.FromAColor(200, OxyColors.White),
+                LegendBorder = OxyColors.Black,
             };
 
             model.Legends.Add(l);
@@ -96,7 +104,9 @@ namespace ExampleLibrary
             {
                 LegendItemSpacing = 100,
                 LegendPosition = LegendPosition.BottomLeft,
-                LegendOrientation = LegendOrientation.Horizontal
+                LegendOrientation = LegendOrientation.Horizontal,
+                LegendBackground = OxyColor.FromAColor(200, OxyColors.White),
+                LegendBorder = OxyColors.Black,
             };
 
             model.Legends.Add(l);
@@ -112,7 +122,9 @@ namespace ExampleLibrary
             {
                 LegendLineSpacing = 30,
                 LegendPosition = LegendPosition.TopLeft,
-                LegendOrientation = LegendOrientation.Vertical
+                LegendOrientation = LegendOrientation.Vertical,
+                LegendBackground = OxyColor.FromAColor(200, OxyColors.White),
+                LegendBorder = OxyColors.Black,
             };
 
             model.Legends.Add(l);
@@ -127,7 +139,9 @@ namespace ExampleLibrary
             {
                 LegendLineSpacing = 30,
                 LegendPosition = LegendPosition.TopLeft,
-                LegendOrientation = LegendOrientation.Horizontal
+                LegendOrientation = LegendOrientation.Horizontal,
+                LegendBackground = OxyColor.FromAColor(200, OxyColors.White),
+                LegendBorder = OxyColors.Black,
             };
 
             model.Legends.Add(l);
@@ -142,7 +156,9 @@ namespace ExampleLibrary
             {
                 LegendColumnSpacing = 100,
                 LegendPosition = LegendPosition.TopRight,
-                LegendOrientation = LegendOrientation.Vertical
+                LegendOrientation = LegendOrientation.Vertical,
+                LegendBackground = OxyColor.FromAColor(200, OxyColors.White),
+                LegendBorder = OxyColors.Black,
             };
 
             model.Legends.Add(l);
@@ -153,6 +169,13 @@ namespace ExampleLibrary
         public static PlotModel LegendHidden()
         {
             var model = CreateModel();
+            var l = new Legend
+            {
+                LegendBackground = OxyColor.FromAColor(200, OxyColors.White),
+                LegendBorder = OxyColors.Black,
+            };
+            model.Legends.Add(l);
+
             model.IsLegendVisible = false;
             return model;
         }
@@ -164,7 +187,9 @@ namespace ExampleLibrary
             model.DefaultColors = new List<OxyColor> { OxyColors.Black, OxyColors.Gray };
             var l = new Legend
             {
-                LegendSymbolLength = 32
+                LegendSymbolLength = 32,
+                LegendBackground = OxyColor.FromAColor(200, OxyColors.White),
+                LegendBorder = OxyColors.Black,
             };
 
             model.Legends.Add(l);
@@ -179,7 +204,9 @@ namespace ExampleLibrary
             var l = new Legend
             {
                 LegendPlacement = LegendPlacement.Inside,
-                LegendPosition = LegendPosition.RightTop
+                LegendPosition = LegendPosition.RightTop,
+                LegendBackground = OxyColor.FromAColor(200, OxyColors.White),
+                LegendBorder = OxyColors.Black,
             };
 
             model.Legends.Add(l);
@@ -216,7 +243,9 @@ namespace ExampleLibrary
                 LegendPlacement = LegendPlacement.Outside,
                 LegendPosition = LegendPosition.BottomCenter,
                 LegendOrientation = LegendOrientation.Vertical,
-                LegendMaxHeight = 75.0
+                LegendMaxHeight = 75.0,
+                LegendBackground = OxyColor.FromAColor(200, OxyColors.White),
+                LegendBorder = OxyColors.Black,
             };
 
             model.Legends.Add(l);
@@ -230,7 +259,9 @@ namespace ExampleLibrary
             var l = new Legend
             {
                 LegendFontSize = double.NaN,
-                LegendTitle = "Title in DefaultFontSize"
+                LegendTitle = "Title in DefaultFontSize",
+                LegendBackground = OxyColor.FromAColor(200, OxyColors.White),
+                LegendBorder = OxyColors.Black,
             };
 
             model.Legends.Add(l);
@@ -238,16 +269,128 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("Legend with grouped Series Horizontal")]
+        public static PlotModel SingleLegendWithSeriesGroupsHorizontal()
+        {
+            var model = CreateModel(21);
+            for (int i = 0; i < 7; i++)
+                model.Series[i].SeriesGroupName = "group 1";
+            for (int i = 7; i < 14; i++)
+                model.Series[i].SeriesGroupName = "group 2";
+            for (int i = 14; i < 21; i++)
+                model.Series[i].SeriesGroupName = "group 3";
+
+            var l = new Legend
+            {
+                LegendFontSize = double.NaN,
+                LegendTitle = "Legend with groups of Series",
+                LegendBackground = OxyColor.FromAColor(200, OxyColors.White),
+                LegendBorder = OxyColors.Black,
+                GroupNameFont="Segoe UI Black",
+                LegendPosition = LegendPosition.TopLeft,
+                LegendOrientation = LegendOrientation.Horizontal
+            };
+
+            model.Legends.Add(l);
+            return model;
+        }
+
+        [Example("Legend with grouped Series")]
+        public static PlotModel SingleLegendWithSeriesGroups()
+        {
+            var model = CreateModel(21);
+            for (int i = 0; i < 7; i++)
+                model.Series[i].SeriesGroupName = "group 1";
+            for (int i = 7; i < 14; i++)
+                model.Series[i].SeriesGroupName = "group 2";
+            for (int i = 14; i < 21; i++)
+                model.Series[i].SeriesGroupName = "group 3";
+
+            var l = new Legend
+            {
+                LegendFontSize = double.NaN,
+                LegendTitle = "Legend with groups of Series",
+                LegendBackground = OxyColor.FromAColor(200, OxyColors.White),
+                LegendBorder = OxyColors.Black,
+            };
+
+            model.Legends.Add(l);
+            return model;
+        }
+
+        [Example("Legend with grouped Series and MaxHeight")]
+        public static PlotModel SingleLegendWithSeriesGroupsMaxHeight()
+        {
+            var model = CreateModel(21);
+            for (int i = 0; i < 7; i++)
+                model.Series[i].SeriesGroupName = "group 1";
+            for (int i = 7; i < 14; i++)
+                model.Series[i].SeriesGroupName = "group 2";
+            for (int i = 14; i < 21; i++)
+                model.Series[i].SeriesGroupName = "group 3";
+
+            var l = new Legend
+            {
+                LegendFontSize = double.NaN,
+                LegendTitle = "Legend with groups of Series",
+                LegendBackground = OxyColor.FromAColor(200, OxyColors.White),
+                LegendBorder = OxyColors.Black,
+                LegendMaxHeight = 275.0
+            };
+
+            model.Legends.Add(l);
+            return model;
+        }
+
+        [Example("Multiple Legends with grouped Series")]
+        public static PlotModel MultipleLegendsWithSeriesGroups()
+        {
+            var model = CreateModel(21);
+            for (int i = 0; i < 7; i++)
+            {
+                model.Series[i].SeriesGroupName = "group 1";
+                model.Series[i].LegendKey = "Legend 1";
+            }
+            for (int i = 7; i < 14; i++)
+            {
+                model.Series[i].SeriesGroupName = "group 2";
+                model.Series[i].LegendKey = "Legend 1";
+            }
+            for (int i = 14; i < 21; i++)
+            {
+                model.Series[i].SeriesGroupName = "group 3";
+                model.Series[i].LegendKey = "Legend 2";
+            }
+
+            var l1 = new Legend
+            {
+                Key="Legend 1",
+                LegendFontSize = double.NaN,
+                LegendTitle = "Legend 1 Series",
+                LegendPlacement = LegendPlacement.Inside,
+                LegendBackground = OxyColor.FromAColor(200, OxyColors.White),
+                LegendBorder = OxyColors.Black,
+            };
+
+            var l2 = new Legend
+            {
+                Key = "Legend 2",
+                LegendFontSize = double.NaN,
+                LegendTitle = "Legend 2 Series",
+                LegendPlacement = LegendPlacement.Outside,
+                LegendBackground = OxyColor.FromAColor(200, OxyColors.White),
+                LegendBorder = OxyColors.Black,
+            };
+
+            model.Legends.Add(l1);
+            model.Legends.Add(l2);
+            return model;
+        }
+
         private static PlotModel CreateModel(int n = 20)
         {
             var model = new PlotModel { Title = "LineSeries" };
-            //var l = new Legend
-            //{
-            //    LegendBackground = OxyColor.FromAColor(200, OxyColors.White),
-            //    LegendBorder = OxyColors.Black
-            //};
 
-            //model.Legends.Add(l);
             for (int i = 1; i <= n; i++)
             {
                 var s = new LineSeries { Title = "Series " + i };

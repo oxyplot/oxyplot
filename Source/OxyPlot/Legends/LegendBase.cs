@@ -175,6 +175,7 @@ namespace OxyPlot.Legends
         /// Gets or sets the legend orientation.
         /// </summary>
         /// <value>The legend orientation.</value>
+        /// <remarks>Horizontal orientation is reverted to Vertical if Legend is positioned Left or Right of the plot.</remarks>
         public LegendOrientation LegendOrientation { get; set; }
 
         /// <summary>
