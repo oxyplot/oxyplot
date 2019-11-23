@@ -62,7 +62,7 @@ namespace ExampleLibrary
                 throw new InvalidOperationException("Axis has not been defined.");
             }
 
-            var clippingRect = GetClippingRect();
+            var clippingRect = this.GetClippingRect();
 
             var screenPoints = Points.Select(this.Transform).ToList();
             var verticalLines = new List<ScreenPoint>();

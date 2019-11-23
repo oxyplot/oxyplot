@@ -9,6 +9,8 @@
 
 namespace OxyPlot.Annotations
 {
+    using System;
+
     /// <summary>
     /// Represents an annotation that shows a rectangle.
     /// </summary>
@@ -24,13 +26,13 @@ namespace OxyPlot.Annotations
         /// </summary>
         public RectangleAnnotation()
         {
-            this.MinimumX = double.MinValue;
-            this.MaximumX = double.MaxValue;
-            this.MinimumY = double.MinValue;
-            this.MaximumY = double.MaxValue;
+            this.MinimumX = double.NegativeInfinity;
+            this.MaximumX = double.PositiveInfinity;
+            this.MinimumY = double.NegativeInfinity;
+            this.MaximumY = double.PositiveInfinity;
             this.TextRotation = 0;
-            this.ClipByXAxis = true;
-            this.ClipByYAxis = true;
+            this.TextHorizontalAlignment = HorizontalAlignment.Center;
+            this.TextVerticalAlignment = VerticalAlignment.Middle;
         }
 
         /// <summary>
@@ -58,18 +60,6 @@ namespace OxyPlot.Annotations
         public double MaximumY { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to clip the annotation by the X axis range.
-        /// </summary>
-        /// <value><c>true</c> if clipping by the X axis is enabled; otherwise, <c>false</c>.</value>
-        public bool ClipByXAxis { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether to clip the annotation by the Y axis range.
-        /// </summary>
-        /// <value><c>true</c> if clipping by the Y axis is enabled; otherwise, <c>false</c>.</value>
-        public bool ClipByYAxis { get; set; }
-
-        /// <summary>
         /// Renders the rectangle annotation.
         /// </summary>
         /// <param name="rc">The render context.</param>
@@ -77,36 +67,18 @@ namespace OxyPlot.Annotations
         {
             base.Render(rc);
 
-            double x0 = double.IsNaN(this.MinimumX) || this.MinimumX.Equals(double.MinValue)
-                            ? this.ClipByXAxis
-                                ? this.XAxis.ActualMinimum
-                                : this.XAxis.InverseTransform(this.PlotModel.PlotArea.Left)
-                            : this.MinimumX;
-            double x1 = double.IsNaN(this.MaximumX) || this.MaximumX.Equals(double.MaxValue)
-                            ? this.ClipByXAxis
-                                ? this.XAxis.ActualMaximum
-                                : this.XAxis.InverseTransform(this.PlotModel.PlotArea.Right)
-                            : this.MaximumX;
-            double y0 = double.IsNaN(this.MinimumY) || this.MinimumY.Equals(double.MinValue)
-                            ? this.ClipByYAxis
-                                ? this.YAxis.ActualMinimum
-                                : this.YAxis.InverseTransform(this.PlotModel.PlotArea.Bottom)
-                            : this.MinimumY;
-            double y1 = double.IsNaN(this.MaximumY) || this.MaximumY.Equals(double.MaxValue)
-                            ? this.ClipByYAxis 
-                                ? this.YAxis.ActualMaximum
-                                : this.YAxis.InverseTransform(this.PlotModel.PlotArea.Top)
-                            : this.MaximumY;
+            var clippingRectangle = this.GetClippingRect();
 
-            this.screenRectangle = new OxyRect(this.Transform(x0, y0), this.Transform(x1, y1));
+            var p1 = this.InverseTransform(clippingRectangle.TopLeft);
+            var p2 = this.InverseTransform(clippingRectangle.BottomRight);
 
-            // clip to the area defined by the axes
-            var clippingRectangle = OxyRect.Create(
-                this.ClipByXAxis ? this.XAxis.ScreenMin.X : this.PlotModel.PlotArea.Left,
-                this.ClipByYAxis ? this.YAxis.ScreenMin.Y : this.PlotModel.PlotArea.Top,
-                this.ClipByXAxis ? this.XAxis.ScreenMax.X : this.PlotModel.PlotArea.Right,
-                this.ClipByYAxis ? this.YAxis.ScreenMax.Y : this.PlotModel.PlotArea.Bottom);
+            var x1 = double.IsNegativeInfinity(this.MinimumX) || double.IsNaN(this.MinimumX) ? Math.Min(p1.X, p2.X) : this.MinimumX;
+            var x2 = double.IsPositiveInfinity(this.MaximumX) || double.IsNaN(this.MaximumX) ? Math.Max(p1.X, p2.X) : this.MaximumX;
+            var y1 = double.IsNegativeInfinity(this.MinimumY) || double.IsNaN(this.MinimumY) ? Math.Min(p1.Y, p2.Y) : this.MinimumY;
+            var y2 = double.IsPositiveInfinity(this.MaximumY) || double.IsNaN(this.MaximumY) ? Math.Max(p1.Y, p2.Y) : this.MaximumY;
 
+            this.screenRectangle = new OxyRect(this.Transform(x1, y1), this.Transform(x2, y2));
+            
             rc.DrawClippedRectangle(
                 clippingRectangle,
                 this.screenRectangle,
@@ -114,21 +86,24 @@ namespace OxyPlot.Annotations
                 this.GetSelectableColor(this.Stroke),
                 this.StrokeThickness);
 
-            if (!string.IsNullOrEmpty(this.Text))
+            if (string.IsNullOrEmpty(this.Text))
             {
-                var textPosition = this.GetActualTextPosition(() => this.screenRectangle.Center);
-                rc.DrawClippedText(
-                    clippingRectangle,
-                    textPosition,
-                    this.Text,
-                    this.ActualTextColor,
-                    this.ActualFont,
-                    this.ActualFontSize,
-                    this.ActualFontWeight,
-                    this.TextRotation,
-                    HorizontalAlignment.Center,
-                    VerticalAlignment.Middle);
+                return;
             }
+
+            this.GetActualTextAlignment(out var ha, out var va);
+            var textPosition = this.GetActualTextPosition(() => this.screenRectangle.Center);
+            rc.DrawClippedText(
+                clippingRectangle,
+                textPosition,
+                this.Text,
+                this.ActualTextColor,
+                this.ActualFont,
+                this.ActualFontSize,
+                this.ActualFontWeight,
+                this.TextRotation,
+                ha,
+                va);
         }
 
         /// <summary>

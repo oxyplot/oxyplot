@@ -72,7 +72,7 @@ namespace ExampleLibrary
 
             this.VerifyAxes();
 
-            var clippingRect = GetClippingRect();
+            var clippingRect = this.GetClippingRect();
 
             int n = points.Count;
 

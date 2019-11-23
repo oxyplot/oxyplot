@@ -381,25 +381,6 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Gets the clipping rectangle, transposed if the X axis is vertically orientated.
-        /// </summary>
-        /// <returns>The clipping rectangle.</returns>
-        protected new OxyRect GetClippingRect()
-        {
-            double minX = Math.Min(this.XAxis.ScreenMin.X, this.XAxis.ScreenMax.X);
-            double minY = Math.Min(this.YAxis.ScreenMin.Y, this.YAxis.ScreenMax.Y);
-            double maxX = Math.Max(this.XAxis.ScreenMin.X, this.XAxis.ScreenMax.X);
-            double maxY = Math.Max(this.YAxis.ScreenMin.Y, this.YAxis.ScreenMax.Y);
-
-            if (this.XAxis.IsVertical())
-            {
-                return new OxyRect(minY, minX, maxY - minY, maxX - minX);
-            }
-
-            return new OxyRect(minX, minY, maxX - minX, maxY - minY);
-        }
-
-        /// <summary>
         /// Draws the label.
         /// </summary>
         /// <param name="rc">The render context.</param>

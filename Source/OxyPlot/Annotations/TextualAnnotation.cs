@@ -64,5 +64,17 @@ namespace OxyPlot.Annotations
         {
             return this.TextPosition.IsDefined() ? this.Transform(this.TextPosition) : defaultPosition();
         }
+
+        /// <summary>
+        /// Gets the actual text alignment.
+        /// </summary>
+        /// <param name="ha">The horizontal alignment.</param>
+        /// <param name="va">The vertical alignment.</param>
+        protected void GetActualTextAlignment(out HorizontalAlignment ha, out VerticalAlignment va)
+        {
+            ha = this.TextHorizontalAlignment;
+            va = this.TextVerticalAlignment;
+            //this.Orientate(ref ha, ref va);
+        }
     }
 }

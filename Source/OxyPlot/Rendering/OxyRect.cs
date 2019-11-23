@@ -320,11 +320,19 @@ namespace OxyPlot
         /// <returns>The clipped rectangle.</returns>
         public OxyRect Clip(OxyRect clipRect)
         {
+            var clipRight = double.IsNegativeInfinity(clipRect.Left) && double.IsPositiveInfinity(clipRect.Width)
+                            ? double.PositiveInfinity
+                            : clipRect.Right;            
+            
+            var clipBottom = double.IsNegativeInfinity(clipRect.Top) && double.IsPositiveInfinity(clipRect.Height)
+                            ? double.PositiveInfinity
+                            : clipRect.Bottom;
+
             return Create(
-                Math.Max(Math.Min(this.Left, clipRect.Right), clipRect.Left),
-                Math.Max(Math.Min(this.Top, clipRect.Bottom), clipRect.Top),
-                Math.Max(Math.Min(this.Right, clipRect.Right), clipRect.Left),
-                Math.Max(Math.Min(this.Bottom, clipRect.Bottom), clipRect.Top));
+                Math.Max(Math.Min(this.Left, clipRight), clipRect.Left),
+                Math.Max(Math.Min(this.Top, clipBottom), clipRect.Top),
+                Math.Max(Math.Min(this.Right, clipRight), clipRect.Left),
+                Math.Max(Math.Min(this.Bottom, clipBottom), clipRect.Top));
         }
     }
 }

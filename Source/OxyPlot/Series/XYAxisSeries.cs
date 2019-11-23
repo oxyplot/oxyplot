@@ -18,7 +18,7 @@ namespace OxyPlot.Series
     /// <summary>
     /// Provides an abstract base class for series that are related to an X-axis and a Y-axis.
     /// </summary>
-    public abstract class XYAxisSeries : ItemsSeries
+    public abstract class XYAxisSeries : ItemsSeries, ITransposablePlotElement
     {
         /// <summary>
         /// The default tracker format string
@@ -120,38 +120,6 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Transforms from a screen point to a data point by the axes of this series.
-        /// </summary>
-        /// <param name="p">The screen point.</param>
-        /// <returns>A data point.</returns>
-        public DataPoint InverseTransform(ScreenPoint p)
-        {
-            p = this.Orientate(p);
-            return this.XAxis.InverseTransform(p.X, p.Y, this.YAxis);
-        }
-
-        /// <summary>
-        /// Transforms the specified coordinates to a screen point by the axes of this series.
-        /// </summary>
-        /// <param name="x">The x coordinate.</param>
-        /// <param name="y">The y coordinate.</param>
-        /// <returns>A screen point.</returns>
-        public ScreenPoint Transform(double x, double y)
-        {
-            return this.Orientate(this.XAxis.Transform(x, y, this.YAxis));
-        }
-
-        /// <summary>
-        /// Transforms the specified data point to a screen point by the axes of this series.
-        /// </summary>
-        /// <param name="p">The point.</param>
-        /// <returns>A screen point.</returns>
-        public ScreenPoint Transform(DataPoint p)
-        {
-            return this.Transform(p.X, p.Y);
-        }
-
-        /// <summary>
         /// Check if this data series requires X/Y axes. (e.g. Pie series do not require axes)
         /// </summary>
         /// <returns>The are axes required.</returns>
@@ -216,17 +184,6 @@ namespace OxyPlot.Series
         protected internal override void UpdateMaxMin()
         {
             this.MinX = this.MinY = this.MaxX = this.MaxY = double.NaN;
-        }
-
-        /// <summary>
-        /// Gets the clipping rectangle.
-        /// </summary>
-        /// <returns>The clipping rectangle.</returns>
-        protected OxyRect GetClippingRect()
-        {
-            var p1 = new ScreenPoint(this.XAxis.ScreenMin.X, this.YAxis.ScreenMin.Y);
-            var p2 = new ScreenPoint(this.XAxis.ScreenMax.X, this.YAxis.ScreenMax.Y);
-            return new OxyRect(this.Orientate(p1), this.Orientate(p2));
         }
 
         /// <summary>
@@ -849,61 +806,6 @@ namespace OxyPlot.Series
             }
 
             return lastguess;
-        }
-
-        /// <summary>
-        /// Transposes the ScreenPoint if the series is transposed.
-        /// </summary>
-        /// <param name="point">The <see cref="ScreenPoint" /> to orientate.</param>
-        /// <returns>The oriented point.</returns>
-        protected ScreenPoint Orientate(ScreenPoint point)
-        {
-            return this.IsTransposed() ? new ScreenPoint(point.Y, point.X) : point;
-        }
-
-        /// <summary>
-        /// Transposes the ScreenVector if the series is transposed. Reverses the respective direction if X or Y axis are reversed.
-        /// </summary>
-        /// <param name="vector">The <see cref="ScreenVector" /> to orientate.</param>
-        /// <returns>The oriented vector.</returns>
-        protected ScreenVector Orientate(ScreenVector vector)
-        {
-            vector = new ScreenVector(this.XAxis.IsReversed ? -vector.X : vector.X, this.YAxis.IsReversed ? -vector.Y : vector.Y);
-            return this.IsTransposed() ? new ScreenVector(-vector.Y, -vector.X) : vector;
-        }
-
-        /// <summary>
-        /// Orientates a HorizontalAlignment and a VerticalAlignment according to whether the Series is transposed or the Axes are reversed.
-        /// </summary>
-        /// <param name="ha">The <see cref="HorizontalAlignment" /> to orientate.</param>
-        /// <param name="va">The <see cref="VerticalAlignment" /> to orientate.</param>
-        protected void Orientate(ref HorizontalAlignment ha, ref VerticalAlignment va)
-        {
-            if (this.XAxis.IsReversed)
-            {
-                ha = (HorizontalAlignment)(-(int)ha);
-            }
-
-            if (this.YAxis.IsReversed)
-            {
-                va = (VerticalAlignment)(-(int)va);
-            }
-
-            if (this.IsTransposed())
-            {
-                var orientatedHa = (HorizontalAlignment)(-(int)va);
-                va = (VerticalAlignment)(-(int)ha);
-                ha = orientatedHa;
-            }
-        }
-
-        /// <summary>
-        /// Checks if the series is transposed.
-        /// </summary>
-        /// <returns>True if the series is transposed, False otherwise.</returns>
-        protected bool IsTransposed()
-        {
-            return this.XAxis.IsVertical();
         }
     }
 }

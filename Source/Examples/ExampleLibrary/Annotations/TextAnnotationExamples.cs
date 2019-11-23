@@ -61,5 +61,26 @@ namespace ExampleLibrary
 
             return model;
         }
+
+        [Example("Rotations")]
+        public static PlotModel Rotations()
+        {
+            var model = new PlotModel { Title = "TextAnnotation Rotations" };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -5, Maximum = 45 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, StartPosition = 1, EndPosition = 0, Minimum = -1, Maximum = 8 });
+            for (var i = 0; i < 360; i += 5)
+            {
+                model.Annotations.Add(new TextAnnotation
+                                          {
+                                              TextRotation = i, 
+                                              TextPosition = new DataPoint(i % 45, i / 45), 
+                                              Text = $"{i}°", 
+                                              TextVerticalAlignment = VerticalAlignment.Middle, 
+                                              TextHorizontalAlignment = HorizontalAlignment.Center
+                                          });
+            }
+
+            return model;
+        }
     }
 }
