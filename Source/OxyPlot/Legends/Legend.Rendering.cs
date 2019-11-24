@@ -63,8 +63,6 @@ namespace OxyPlot.Legends
             // Ensure legend size is valid
             legendSize = new OxySize(Math.Max(0, legendSize.Width), Math.Max(0, legendSize.Height));
 
-            this.LegendArea = this.GetLegendRectangle(legendSize);
-
             return legendSize;
         }
 
@@ -73,7 +71,7 @@ namespace OxyPlot.Legends
         /// </summary>
         /// <param name="legendSize">Size of the legend box.</param>
         /// <returns>A rectangle.</returns>
-        private OxyRect GetLegendRectangle(OxySize legendSize)
+        public override OxyRect GetLegendRectangle(OxySize legendSize)
         {
             double top = 0;
             double left = 0;
@@ -472,7 +470,7 @@ namespace OxyPlot.Legends
                         {
                             // new line
                             x = this.LegendPadding;
-                            if (count == 0)
+                            if (count == 0 && groupNameTextSize.Width > 0)
                                 x += (groupNameTextSize.Width + this.LegendItemSpacing);
                             y += lineHeight + this.LegendLineSpacing;
                             lineHeight = 0;

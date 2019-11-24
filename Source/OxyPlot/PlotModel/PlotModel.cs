@@ -16,6 +16,7 @@ namespace OxyPlot
 
     using OxyPlot.Annotations;
     using OxyPlot.Axes;
+    using OxyPlot.Legends;
     using OxyPlot.Series;
 
     /// <summary>
@@ -91,7 +92,7 @@ namespace OxyPlot
             this.Axes = new ElementCollection<Axis>(this);
             this.Series = new ElementCollection<Series.Series>(this);
             this.Annotations = new ElementCollection<Annotation>(this);
-            this.Legends = new ElementCollection<Legends.LegendBase>(this);
+            this.Legends = new ElementCollection<LegendBase>(this);
             this.PlotType = PlotType.XY;
 
             this.PlotMargins = new OxyThickness(double.NaN);
@@ -216,7 +217,7 @@ namespace OxyPlot
         /// Gets or sets the legends.
         /// </summary>
         /// <value>The legends.</value>
-        public ElementCollection<Legends.LegendBase> Legends { get; set; }
+        public ElementCollection<LegendBase> Legends { get; set; }
 
         /// <summary>
         /// Gets or sets the color of the background of the plot.
@@ -694,6 +695,27 @@ namespace OxyPlot
         public override string ToString()
         {
             return this.Title;
+        }
+
+        /// <summary>
+        /// Gets the legend for the specified key.
+        /// </summary>
+        /// <param name="key">The legend key.</param>
+        /// <returns>The legend that corresponds with the key.</returns>
+        /// <exception cref="System.InvalidOperationException">Cannot find legend with the specified key.</exception>
+        public LegendBase GetLegend(string key)
+        {
+            if (key == null)
+            {
+                throw new ArgumentException("Axis key cannot be null.");
+            }
+
+            var legend = this.Legends.FirstOrDefault(l => l.Key == key);
+            if (legend == null)
+            {
+                throw new InvalidOperationException($"Cannot find legend with Key = \"{key}\"");
+            }
+            return legend;
         }
 
         /// <summary>

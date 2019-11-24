@@ -239,6 +239,11 @@ namespace OxyPlot.Legends
         public OxyRect LegendArea { get; set; }
 
         /// <summary>
+        /// Gets or sets the size of the legend.
+        /// </summary>
+        public OxySize LegendSize { get; set; }
+
+        /// <summary>
         /// Gets or sets the background color of the legend. Use <c>null</c> for no background.
         /// </summary>
         /// <value>The legend background.</value>
@@ -353,6 +358,13 @@ namespace OxyPlot.Legends
         /// <param name="rc">The rendering context.</param>
         /// <param name="availableLegendArea">The area available to legend.</param>
         public abstract OxySize GetLegendSize(IRenderContext rc, OxySize availableLegendArea);
+
+        /// <summary>
+        /// Gets the rectangle of the legend box.
+        /// </summary>
+        /// <param name="legendSize">Size of the legend box.</param>
+        /// <returns>The legend area rectangle.</returns>
+        public abstract OxyRect GetLegendRectangle(OxySize legendSize);
 
         /// <summary>
         /// Renders or measures the legends.

@@ -68,6 +68,7 @@ namespace OxyPlot
             this.AddChildren(modelName, "Axes", model.Axes);
             this.AddChildren(modelName, "Series", model.Series);
             this.AddChildren(modelName, "Annotations", model.Annotations);
+            this.AddChildren(modelName, "Legends", model.Legends);
             this.AppendLine("return {0};", modelName);
             this.Indents -= 4;
             this.AppendLine("}");
