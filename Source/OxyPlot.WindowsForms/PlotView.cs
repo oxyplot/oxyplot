@@ -199,6 +199,13 @@ namespace OxyPlot.WindowsForms
         public IPlotController Controller { get; set; }
 
         /// <summary>
+        /// Gets or sets the tooltip component.
+        /// </summary>
+        [DefaultValue(null)]
+        [Category(OxyPlotCategory)]
+        public IToolTipController ToolTipController { get; set; }
+
+        /// <summary>
         /// Gets or sets the pan cursor.
         /// </summary>
         [Category(OxyPlotCategory)]
@@ -274,6 +281,8 @@ namespace OxyPlot.WindowsForms
                 {
                     ((IPlotModel)this.Model).AttachPlotView(this);
                     this.currentModel = this.Model;
+
+                    this.ToolTipController = new ToolTipController(this.Model, new WinFormsToolTipView(this));
                 }
             }
 
@@ -523,6 +532,7 @@ namespace OxyPlot.WindowsForms
 
             if (disposing)
             {
+                this.ToolTipController?.ToolTipView?.Dispose();
                 this.renderContext.Dispose();
             }
         }

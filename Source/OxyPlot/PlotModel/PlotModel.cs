@@ -683,6 +683,11 @@ namespace OxyPlot
         public string TitleToolTip { get; set; }
 
         /// <summary>
+        /// Gets or sets a function that gets a <see cref="PlotModel"/> and returns a <see cref="string"/> that is set as the tooltip of the plot title area.
+        /// </summary>
+        public Func<PlotModel, string> TitleToolTipFormatter { get; set; }
+
+        /// <summary>
         /// Gets or sets the color of the title.
         /// </summary>
         /// <value>The color of the title.</value>
@@ -821,12 +826,13 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets the first axes that covers the area of the specified point.
+        /// Does hit testing for axes or gets the first axes that cover the area of the specified point.
         /// </summary>
         /// <param name="pt">The point.</param>
         /// <param name="xaxis">The x-axis.</param>
         /// <param name="yaxis">The y-axis.</param>
-        public void GetAxesFromPoint(ScreenPoint pt, out Axis xaxis, out Axis yaxis)
+        /// <param name="hitTestMode">Whether this method will do hit testing for axes.</param>
+        public void GetAxesFromPoint(ScreenPoint pt, out Axis xaxis, out Axis yaxis, bool hitTestMode = false)
         {
             xaxis = yaxis = null;
 
@@ -859,25 +865,36 @@ namespace OxyPlot
 
             foreach (var axis in this.Axes)
             {
-                if(!axis.IsAxisVisible)
+                if (!axis.IsAxisVisible)
                 {
                     continue;
                 }
 
                 if (axis is IColorAxis)
                 {
-                    continue;
+                    if (!hitTestMode)
+                    {
+                        continue;
+                    }
                 }
 
                 if (axis is MagnitudeAxis)
                 {
-                    xaxis = axis;
+                    if (!hitTestMode)
+                    {
+                        xaxis = axis;
+                    }
+
                     continue;
                 }
 
                 if (axis is AngleAxis)
                 {
-                    yaxis = axis;
+                    if (!hitTestMode)
+                    {
+                        yaxis = axis;
+                    }
+
                     continue;
                 }
 
@@ -894,7 +911,7 @@ namespace OxyPlot
 
                 if (x >= axis.ActualMinimum && x <= axis.ActualMaximum)
                 {
-                    if (position == null)
+                    if (position == null && !hitTestMode)
                     {
                         if (axis.IsHorizontal())
                         {
@@ -1205,32 +1222,38 @@ namespace OxyPlot
         /// </returns>
         protected override IEnumerable<PlotElement> GetHitTestElements()
         {
+            // axes above series
             foreach (var axis in this.Axes.Reverse().Where(a => a.IsAxisVisible && a.Layer == AxisLayer.AboveSeries))
             {
                 yield return axis;
             }
 
+            // annotations above series
             foreach (var annotation in this.Annotations.Reverse().Where(a => a.Layer == AnnotationLayer.AboveSeries))
             {
                 yield return annotation;
             }
 
+            // series
             foreach (var s in this.Series.Reverse().Where(s => s.IsVisible))
             {
                 yield return s;
             }
 
-            foreach (var annotation in this.Annotations.Reverse().Where(a => a.Layer == AnnotationLayer.BelowSeries))
-            {
-                yield return annotation;
-            }
-
+            // axes below series
             foreach (var axis in this.Axes.Reverse().Where(a => a.IsAxisVisible && a.Layer == AxisLayer.BelowSeries))
             {
                 yield return axis;
             }
 
+            // annotations below axes
             foreach (var annotation in this.Annotations.Reverse().Where(a => a.Layer == AnnotationLayer.BelowAxes))
+            {
+                yield return annotation;
+            }
+
+            // annotations below series
+            foreach (var annotation in this.Annotations.Reverse().Where(a => a.Layer == AnnotationLayer.BelowSeries))
             {
                 yield return annotation;
             }

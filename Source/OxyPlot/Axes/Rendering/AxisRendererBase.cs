@@ -193,7 +193,7 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Gets the tick positions.
+        /// Gets the positions of the two points that determine a tick segment.
         /// </summary>
         /// <param name="axis">The axis.</param>
         /// <param name="tickStyle">The tick style.</param>

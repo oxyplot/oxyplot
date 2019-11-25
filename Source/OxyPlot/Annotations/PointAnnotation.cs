@@ -106,6 +106,11 @@ namespace OxyPlot.Annotations
         /// </returns>
         protected override HitTestResult HitTestOverride(HitTestArguments args)
         {
+            if (!this.PlotModel.PlotArea.Contains(args.Point))
+            {
+                return null;
+            }
+
             if (this.screenPosition.DistanceTo(args.Point) < this.Size)
             {
                 return new HitTestResult(this, this.screenPosition);

@@ -209,7 +209,6 @@ namespace OxyPlot
             var maxsize = new OxySize(Math.Max(rect.Width - this.LegendSymbolLength - this.LegendSymbolMargin, 0), rect.Height);
             var actualLegendFontSize = double.IsNaN(this.LegendFontSize) ? this.DefaultFontSize : this.LegendFontSize;
 
-            rc.SetToolTip(s.ToolTip);
             var textSize = rc.DrawMathText(
                 new ScreenPoint(x, y),
                 s.Title,
@@ -243,7 +242,6 @@ namespace OxyPlot
                     textSize.Height);
 
             s.RenderLegend(rc, symbolRect);
-            rc.SetToolTip(null);
         }
 
         /// <summary>

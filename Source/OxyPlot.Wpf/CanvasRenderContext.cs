@@ -75,11 +75,6 @@ namespace OxyPlot.Wpf
         private Rect? clip;
 
         /// <summary>
-        /// The current tool tip
-        /// </summary>
-        private string currentToolTip;
-
-        /// <summary>
         /// The pixel scale
         /// </summary>
         private double pixelScale;
@@ -627,15 +622,6 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Sets the tool tip for the following items.
-        /// </summary>
-        /// <param name="text">The text in the tool tip.</param>
-        public void SetToolTip(string text)
-        {
-            this.currentToolTip = text;
-        }
-
-        /// <summary>
         /// Draws a portion of the specified <see cref="OxyImage" />.
         /// </summary>
         /// <param name="source">The source.</param>
@@ -836,20 +822,7 @@ namespace OxyPlot.Wpf
 
             this.canvas.Children.Add(element);
 
-            this.ApplyToolTip(element);
             return element;
-        }
-
-        /// <summary>
-        /// Applies the current tool tip to the specified element.
-        /// </summary>
-        /// <param name="element">The element.</param>
-        private void ApplyToolTip(FrameworkElement element)
-        {
-            if (!string.IsNullOrEmpty(this.currentToolTip))
-            {
-                element.ToolTip = this.currentToolTip;
-            }
         }
 
         /// <summary>

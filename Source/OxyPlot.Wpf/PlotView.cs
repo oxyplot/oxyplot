@@ -157,6 +157,8 @@ namespace OxyPlot.Wpf
                 {
                     ((IPlotModel)this.Model).AttachPlotView(this);
                     this.currentModel = this.Model;
+
+                    this.ToolTipController = new ToolTipController(this.Model, new WpfToolTipView(this));
                 }
             }
 

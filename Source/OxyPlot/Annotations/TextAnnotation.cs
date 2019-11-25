@@ -114,6 +114,11 @@ namespace OxyPlot.Annotations
         /// </returns>
         protected override HitTestResult HitTestOverride(HitTestArguments args)
         {
+            if (!this.PlotModel.PlotArea.Contains(args.Point))
+            {
+                return null;
+            }
+
             if (this.actualBounds == null)
             {
                 return null;

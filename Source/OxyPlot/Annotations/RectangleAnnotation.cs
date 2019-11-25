@@ -115,6 +115,11 @@ namespace OxyPlot.Annotations
         /// </returns>
         protected override HitTestResult HitTestOverride(HitTestArguments args)
         {
+            if (!this.PlotModel.PlotArea.Contains(args.Point))
+            {
+                return null;
+            }
+
             if (this.screenRectangle.Contains(args.Point))
             {
                 return new HitTestResult(this, args.Point);

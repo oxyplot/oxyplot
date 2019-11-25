@@ -9,6 +9,7 @@
 
 namespace OxyPlot
 {
+    using System;
     using System.Globalization;
     using System.Linq;
     using System.Reflection;
@@ -81,6 +82,11 @@ namespace OxyPlot
         /// The tool tip string.
         /// </value>
         public string ToolTip { get; set; }
+
+        /// <summary>
+        /// Gets or sets a function that gets a <see cref="HitTestResult"/> and returns a <see cref="string"/> that is set as the tooltip of the plot element.
+        /// </summary>
+        public Func<HitTestResult, string> ToolTipFormatter { get; set; }
 
         /// <summary>
         /// Gets the actual font.

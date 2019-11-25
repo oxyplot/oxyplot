@@ -211,14 +211,6 @@ namespace OxyPlot
         public abstract OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight);
 
         /// <summary>
-        /// Sets the tool tip for the following items.
-        /// </summary>
-        /// <param name="text">The text in the tooltip.</param>
-        public virtual void SetToolTip(string text)
-        {
-        }
-
-        /// <summary>
         /// Cleans up resources not in use.
         /// </summary>
         /// <remarks>This method is called at the end of each rendering.</remarks>
