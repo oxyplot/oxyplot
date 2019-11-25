@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 - OxyPlot.ImageSharp (#1188)
 - WPF ExampleBrowser can display transposed versions of examples (#1402)
+- Support for transposable Annotations (#1417)
 
 ### Changed
 - Moved reporting functionality to separate projects (#1403)

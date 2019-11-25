@@ -72,15 +72,13 @@ namespace OxyPlot.Annotations
         {
             base.Render(rc);
 
-            var position = this.Transform(this.TextPosition) + this.Offset;
-
+            var position = this.Transform(this.TextPosition) + this.Orientate(this.Offset);
             var clippingRectangle = this.GetClippingRect();
-
             var textSize = rc.MeasureText(this.Text, this.ActualFont, this.ActualFontSize, this.ActualFontWeight);
+            this.GetActualTextAlignment(out var ha, out var va);
 
             rc.SetClip(clippingRectangle);
-            this.actualBounds = GetTextBounds(
-                position, textSize, this.Padding, this.TextRotation, this.TextHorizontalAlignment, this.TextVerticalAlignment);
+            this.actualBounds = GetTextBounds(position, textSize, this.Padding, this.TextRotation, ha, va);
 
             if ((this.TextRotation % 90).Equals(0))
             {
@@ -92,6 +90,7 @@ namespace OxyPlot.Annotations
                 rc.DrawPolygon(this.actualBounds, this.Background, this.Stroke, this.StrokeThickness);
             }
 
+
             rc.DrawMathText(
                 position,
                 this.Text,
@@ -100,8 +99,8 @@ namespace OxyPlot.Annotations
                 this.ActualFontSize,
                 this.ActualFontWeight,
                 this.TextRotation,
-                this.TextHorizontalAlignment,
-                this.TextVerticalAlignment);
+                ha,
+                va);
 
             rc.ResetClip();
         }

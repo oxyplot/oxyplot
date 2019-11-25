@@ -18,7 +18,9 @@ namespace ExampleLibrary.Utilities
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
-
+    /// <summary>
+    /// Provides utility functions for PlotModel used in examples.
+    /// </summary>
     public static class PlotModelUtilities
     {
         private const string XAXIS_KEY = "x";
@@ -40,8 +42,7 @@ namespace ExampleLibrary.Utilities
         /// <returns>True if the plot model in transposable; false otherwise.</returns>
         public static bool IsTransposable(this PlotModel model)
         {                   
-            return (model.Axes.Count > 0 || model.Series.Count > 0)
-                && model.Annotations.Count == 0
+            return (model.Axes.Count > 0 || model.Series.Count > 0 || model.Annotations.Count > 0)
                 && model.Axes.All(a => a.Position != AxisPosition.None)
                 && model.Series.All(s =>
                    {
@@ -185,6 +186,29 @@ namespace ExampleLibrary.Utilities
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
+                }
+            }
+
+            foreach (var annotation in model.Annotations)
+            {
+                if (annotation.XAxis != null && annotation.XAxisKey == null)
+                {
+                    if (annotation.XAxis.Key == null)
+                    {
+                        annotation.XAxis.Key = XAXIS_KEY;
+                    }
+
+                    annotation.XAxisKey = annotation.XAxis.Key;
+                }
+
+                if (annotation.YAxis != null && annotation.YAxisKey == null)
+                {
+                    if (annotation.YAxis.Key == null)
+                    {
+                        annotation.YAxis.Key = YAXIS_KEY;
+                    }
+
+                    annotation.YAxisKey = annotation.YAxis.Key;
                 }
             }
 

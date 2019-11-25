@@ -79,8 +79,9 @@ namespace OxyPlot.Annotations
 
             if (!string.IsNullOrEmpty(this.Text))
             {
-                var dx = -(int)this.TextHorizontalAlignment * (this.Size + this.TextMargin);
-                var dy = -(int)this.TextVerticalAlignment * (this.Size + this.TextMargin);
+                this.GetActualTextAlignment(out var ha, out var va);
+                var dx = -(int)ha * (this.Size + this.TextMargin);
+                var dy = -(int)va * (this.Size + this.TextMargin);
                 var textPosition = this.screenPosition + new ScreenVector(dx, dy);
                 rc.DrawClippedText(
                     clippingRectangle,
@@ -91,8 +92,8 @@ namespace OxyPlot.Annotations
                     this.ActualFontSize,
                     this.ActualFontWeight,
                     this.TextRotation,
-                    this.TextHorizontalAlignment,
-                    this.TextVerticalAlignment);
+                    ha,
+                    va);
             }
         }
 

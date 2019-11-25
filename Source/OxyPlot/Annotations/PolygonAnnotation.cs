@@ -86,6 +86,7 @@ namespace OxyPlot.Annotations
 
             if (!string.IsNullOrEmpty(this.Text))
             {
+                this.GetActualTextAlignment(out var ha, out var va);
                 var textPosition = this.GetActualTextPosition(() => ScreenPointHelper.GetCentroid(this.screenPoints));
 
                 rc.DrawClippedText(
@@ -97,8 +98,8 @@ namespace OxyPlot.Annotations
                     this.ActualFontSize,
                     this.ActualFontWeight,
                     this.TextRotation,
-                    this.TextHorizontalAlignment,
-                    this.TextVerticalAlignment);
+                    ha,
+                    va);
             }
         }
 

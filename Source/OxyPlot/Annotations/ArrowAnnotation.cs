@@ -9,6 +9,8 @@
 
 namespace OxyPlot.Annotations
 {
+    using System;
+
     /// <summary>
     /// Represents an annotation that shows an arrow.
     /// </summary>
@@ -107,7 +109,7 @@ namespace OxyPlot.Annotations
 
             if (this.ArrowDirection.LengthSquared > 0)
             {
-                this.screenStartPoint = this.screenEndPoint - this.ArrowDirection;
+                this.screenStartPoint = this.screenEndPoint - this.Orientate(this.ArrowDirection);
             }
             else
             {
@@ -148,30 +150,61 @@ namespace OxyPlot.Annotations
                     OxyColors.Undefined);
             }
 
-            if (!string.IsNullOrEmpty(this.Text))
+            if (string.IsNullOrEmpty(this.Text))
             {
-                var ha = this.TextHorizontalAlignment;
-                var va = this.TextVerticalAlignment;
-                if (!this.TextPosition.IsDefined())
+                return;
+            }
+
+            HorizontalAlignment ha;
+            VerticalAlignment va;
+
+            if (this.TextPosition.IsDefined())
+            {
+                this.GetActualTextAlignment(out ha, out va);
+            }
+            else
+            {
+                var angle = Math.Atan2(d.Y, d.X);
+                var piOver8 = Math.PI / 8;
+                if (angle < 3 * piOver8 && angle > -3 * piOver8)
                 {
-                    // automatic position => use automatic alignment
-                    ha = d.X < 0 ? HorizontalAlignment.Left : HorizontalAlignment.Right;
-                    va = d.Y < 0 ? VerticalAlignment.Top : VerticalAlignment.Bottom;
+                    ha = HorizontalAlignment.Right;
+                }
+                else if (angle > 5 * piOver8 || angle < -5 * piOver8)
+                {
+                    ha = HorizontalAlignment.Left;
+                }
+                else
+                {
+                    ha = HorizontalAlignment.Center;
                 }
 
-                var textPoint = this.GetActualTextPosition(() => this.screenStartPoint);
-                rc.DrawClippedText(
-                    clippingRectangle,
-                    textPoint,
-                    this.Text,
-                    this.ActualTextColor,
-                    this.ActualFont,
-                    this.ActualFontSize,
-                    this.ActualFontWeight,
-                    this.TextRotation,
-                    ha,
-                    va);
+                if (angle > piOver8 && angle < 7 * piOver8)
+                {
+                    va = VerticalAlignment.Bottom;
+                }
+                else if (angle < -piOver8 && angle > -7 * piOver8)
+                {
+                    va = VerticalAlignment.Top;
+                }
+                else
+                {
+                    va = VerticalAlignment.Middle;
+                }
             }
+
+            var textPoint = this.GetActualTextPosition(() => this.screenStartPoint);
+            rc.DrawClippedText(
+                clippingRectangle,
+                textPoint,
+                this.Text,
+                this.ActualTextColor,
+                this.ActualFont,
+                this.ActualFontSize,
+                this.ActualFontWeight,
+                this.TextRotation,
+                ha,
+                va);
         }
 
         /// <summary>

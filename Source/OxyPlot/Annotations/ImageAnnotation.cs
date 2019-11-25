@@ -112,13 +112,13 @@ namespace OxyPlot.Annotations
         {
             base.Render(rc);
 
-            var p = this.GetPoint(this.X, this.Y, rc, this.PlotModel);
-            var o = this.GetVector(this.OffsetX, this.OffsetY, rc, this.PlotModel);
+            var p = this.GetPoint(this.X, this.Y, this.PlotModel);
+            var o = this.GetVector(this.OffsetX, this.OffsetY, this.PlotModel);
             var position = p + o;
 
             var clippingRectangle = this.GetClippingRect();
 
-            var s = this.GetVector(this.Width, this.Height, rc, this.PlotModel);
+            var s = this.GetVector(this.Width, this.Height, this.PlotModel);
 
             var width = s.X;
             var height = s.Y;
@@ -142,25 +142,26 @@ namespace OxyPlot.Annotations
             width = Math.Abs(width);
             height = Math.Abs(height);
 
-            double x = position.X;
-            double y = position.Y;
+            var x = position.X;
+            var y = position.Y;
 
-            if (this.HorizontalAlignment == HorizontalAlignment.Center)
+            var ha = this.HorizontalAlignment;
+            var va = this.VerticalAlignment;
+
+            if (ha == HorizontalAlignment.Center)
             {
                 x -= width * 0.5;
             }
-
-            if (this.HorizontalAlignment == HorizontalAlignment.Right)
+            else if (ha == HorizontalAlignment.Right)
             {
                 x -= width;
             }
 
-            if (this.VerticalAlignment == VerticalAlignment.Middle)
+            if (va == VerticalAlignment.Middle)
             {
                 y -= height * 0.5;
             }
-
-            if (this.VerticalAlignment == VerticalAlignment.Bottom)
+            else if (va == VerticalAlignment.Bottom)
             {
                 y -= height;
             }
@@ -199,45 +200,57 @@ namespace OxyPlot.Annotations
         /// </summary>
         /// <param name="x">The x.</param>
         /// <param name="y">The y.</param>
-        /// <param name="rc">The render context.</param>
         /// <param name="model">The model.</param>
         /// <returns>The point in screen coordinates.</returns>
-        protected ScreenPoint GetPoint(PlotLength x, PlotLength y, IRenderContext rc, PlotModel model)
+        protected ScreenPoint GetPoint(PlotLength x, PlotLength y, PlotModel model)
         {
+            var xd = double.NaN;
+            var yd = double.NaN;
+
             if (x.Unit == PlotLengthUnit.Data || y.Unit == PlotLengthUnit.Data)
             {
-                return this.XAxis.Transform(x.Value, y.Value, this.YAxis);
+                var dataX = x.Unit == PlotLengthUnit.Data ? x.Value : double.NaN;
+                var dataY = y.Unit == PlotLengthUnit.Data ? y.Value : double.NaN;
+                var p = this.Transform(dataX, dataY);
+                xd = p.X;
+                yd = p.Y;
             }
 
-            double sx;
-            double sy;
             switch (x.Unit)
             {
-                case PlotLengthUnit.RelativeToPlotArea:
-                    sx = model.PlotArea.Left + (model.PlotArea.Width * x.Value);
+                case PlotLengthUnit.Data:
+                    break;
+                case PlotLengthUnit.ScreenUnits:
+                    xd = x.Value;
                     break;
                 case PlotLengthUnit.RelativeToViewport:
-                    sx = model.Width * x.Value;
+                    xd = model.Width * x.Value;
+                    break;
+                case PlotLengthUnit.RelativeToPlotArea:
+                    xd = model.PlotArea.Left + (model.PlotArea.Width * x.Value);
                     break;
                 default:
-                    sx = x.Value;
-                    break;
+                    throw new ArgumentOutOfRangeException();
             }
 
             switch (y.Unit)
             {
-                case PlotLengthUnit.RelativeToPlotArea:
-                    sy = model.PlotArea.Top + (model.PlotArea.Height * y.Value);
+                case PlotLengthUnit.Data:
+                    break;
+                case PlotLengthUnit.ScreenUnits:
+                    yd = y.Value;
                     break;
                 case PlotLengthUnit.RelativeToViewport:
-                    sy = model.Height * y.Value;
+                    yd = model.Height * y.Value;
+                    break;
+                case PlotLengthUnit.RelativeToPlotArea:
+                    yd = model.PlotArea.Top + (model.PlotArea.Height * y.Value);
                     break;
                 default:
-                    sy = y.Value;
-                    break;
+                    throw new ArgumentOutOfRangeException();
             }
 
-            return new ScreenPoint(sx, sy);
+            return new ScreenPoint(xd, yd);
         }
 
         /// <summary>
@@ -245,47 +258,57 @@ namespace OxyPlot.Annotations
         /// </summary>
         /// <param name="x">The x component.</param>
         /// <param name="y">The y component.</param>
-        /// <param name="rc">The render context.</param>
         /// <param name="model">The model.</param>
         /// <returns>The vector in screen coordinates.</returns>
-        protected ScreenVector GetVector(PlotLength x, PlotLength y, IRenderContext rc, PlotModel model)
+        protected ScreenVector GetVector(PlotLength x, PlotLength y, PlotModel model)
         {
-            double sx;
-            double sy;
+            var xd = double.NaN;
+            var yd = double.NaN;
+
+            if (x.Unit == PlotLengthUnit.Data || y.Unit == PlotLengthUnit.Data)
+            {
+                var dataX = x.Unit == PlotLengthUnit.Data ? x.Value : double.NaN;
+                var dataY = y.Unit == PlotLengthUnit.Data ? y.Value : double.NaN;
+                var v = this.Transform(dataX, dataY) - this.Transform(0, 0);
+                xd = v.X;
+                yd = v.Y;
+            }
 
             switch (x.Unit)
             {
                 case PlotLengthUnit.Data:
-                    sx = this.XAxis.Transform(x.Value) - this.XAxis.Transform(0);
                     break;
-                case PlotLengthUnit.RelativeToPlotArea:
-                    sx = model.PlotArea.Width * x.Value;
+                case PlotLengthUnit.ScreenUnits:
+                    xd = x.Value;
                     break;
                 case PlotLengthUnit.RelativeToViewport:
-                    sx = model.Width * x.Value;
+                    xd = model.Width * x.Value;
+                    break;
+                case PlotLengthUnit.RelativeToPlotArea:
+                    xd = model.PlotArea.Width * x.Value;
                     break;
                 default:
-                    sx = x.Value;
-                    break;
+                    throw new ArgumentOutOfRangeException();
             }
 
             switch (y.Unit)
             {
                 case PlotLengthUnit.Data:
-                    sy = -this.YAxis.Transform(y.Value) + this.YAxis.Transform(0);
                     break;
-                case PlotLengthUnit.RelativeToPlotArea:
-                    sy = model.PlotArea.Height * y.Value;
+                case PlotLengthUnit.ScreenUnits:
+                    yd = y.Value;
                     break;
                 case PlotLengthUnit.RelativeToViewport:
-                    sy = model.Height * y.Value;
+                    yd = model.Height * y.Value;
+                    break;
+                case PlotLengthUnit.RelativeToPlotArea:
+                    yd = model.PlotArea.Height * y.Value;
                     break;
                 default:
-                    sy = y.Value;
-                    break;
+                    throw new ArgumentOutOfRangeException();
             }
 
-            return new ScreenVector(sx, sy);
+            return new ScreenVector(xd, yd);
         }
     }
 }
