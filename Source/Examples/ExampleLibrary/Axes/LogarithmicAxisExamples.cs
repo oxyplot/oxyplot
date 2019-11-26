@@ -11,6 +11,7 @@ namespace ExampleLibrary
     using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
+    using OxyPlot.Legends;
 
     [Examples("LogarithmicAxis"), Tags("Axes")]
     public static class LogarithmicAxisExamples
@@ -27,7 +28,13 @@ namespace ExampleLibrary
         [Example("Amdahl's Law")]
         public static PlotModel AmdahlsLaw()
         {
-            var model = new PlotModel { Title = "Amdahl's law", LegendTitle = "Parallel portion" };
+            var model = new PlotModel { Title = "Amdahl's law" };
+
+            Legend l = new Legend
+            {
+                LegendTitle = "Parallel portion"
+            };
+            model.Legends.Add(l);
 
             // http://en.wikipedia.org/wiki/Amdahl's_law
             Func<double, int, double> maxSpeedup = (p, n) => 1.0 / ((1.0 - p) + (double)p / n);
@@ -57,11 +64,17 @@ namespace ExampleLibrary
             {
                 Title = "The Richter magnitude scale",
                 PlotMargins = new OxyThickness(80, 0, 80, 40),
+            };
+
+            Legend l = new Legend
+            {
                 LegendPlacement = LegendPlacement.Inside,
                 LegendPosition = LegendPosition.TopCenter,
                 LegendOrientation = LegendOrientation.Horizontal,
                 LegendSymbolLength = 24
             };
+
+            model.Legends.Add(l);
 
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "Richter magnitude scale", MajorGridlineStyle = LineStyle.None, TickStyle = TickStyle.None });
 

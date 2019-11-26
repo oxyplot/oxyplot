@@ -16,6 +16,7 @@ namespace ExampleLibrary
     using OxyPlot.Annotations;
     using OxyPlot.Axes;
     using OxyPlot.Series;
+    using OxyPlot.Legends;
 
     [Examples("Z1 Issues")]
     public class Issues
@@ -25,10 +26,16 @@ namespace ExampleLibrary
         {
             var plotModel = new PlotModel
             {
-                Title = "AxisTitleDistance",
+                Title = "AxisTitleDistance"
+            };
+
+            var l = new Legend
+            {
                 LegendFontSize = 12,
                 LegendFontWeight = FontWeights.Bold
             };
+
+            plotModel.Legends.Add(l);
 
             //var series = new LineSeries() { Title = "Push-Over Curve" };
             //series.Points.AddRange(pushOverPoints);
@@ -388,14 +395,21 @@ namespace ExampleLibrary
         {
             var plotModel1 = new PlotModel
             {
-                LegendBackground = OxyColor.FromArgb(200, 255, 255, 255),
-                LegendBorder = OxyColors.Black,
-                LegendPlacement = LegendPlacement.Outside,
                 PlotAreaBackground = OxyColors.Gray,
                 PlotAreaBorderColor = OxyColors.Gainsboro,
                 PlotAreaBorderThickness = new OxyThickness(2),
                 Title = "Value / Time"
             };
+
+            var l = new Legend
+            {
+                LegendBackground = OxyColor.FromArgb(200, 255, 255, 255),
+                LegendBorder = OxyColors.Black,
+                LegendPlacement = LegendPlacement.Outside
+            };
+
+            plotModel1.Legends.Add(l);
+
             var linearAxis1 = new LinearAxis
             {
                 AbsoluteMaximum = 45,
@@ -573,9 +587,15 @@ namespace ExampleLibrary
         public static PlotModel LegendItemAlignmentCenter()
         {
             var plotModel1 = new PlotModel { Title = "LegendItemAlignment = Center" };
-            plotModel1.LegendItemAlignment = HorizontalAlignment.Center;
-            plotModel1.LegendBorder = OxyColors.Black;
-            plotModel1.LegendBorderThickness = 1;
+            var l = new Legend
+            {
+                LegendItemAlignment = HorizontalAlignment.Center,
+                LegendBorder = OxyColors.Black,
+                LegendBorderThickness = 1
+            };
+
+            plotModel1.Legends.Add(l);
+
             plotModel1.Series.Add(new FunctionSeries(x => Math.Sin(x) / x, 0, 10, 100, "sin(x)/x"));
             plotModel1.Series.Add(new FunctionSeries(Math.Cos, 0, 10, 100, "cos(x)"));
             return plotModel1;
@@ -759,11 +779,18 @@ namespace ExampleLibrary
                 Padding = new OxyThickness(0),
                 PlotAreaBorderThickness = new OxyThickness(1, 1, 1, 1),
                 PlotAreaBorderColor = OxyColors.Black,
-                TextColor = OxyColors.Black,
+                TextColor = OxyColors.Black
+            };
+
+            var l = new Legend
+            {
                 LegendOrientation = LegendOrientation.Horizontal,
                 LegendPosition = LegendPosition.TopRight,
                 LegendMargin = 0
             };
+
+            plotModel1.Legends.Add(l);
+
             plotModel1.Axes.Add(new LinearAxis
             {
                 IsAxisVisible = true,
@@ -919,9 +946,14 @@ namespace ExampleLibrary
             plotModel.Series.Add(new LineSeries { Title = "LineSeries 2" });
             plotModel.Series.Add(new LineSeries { Title = "LineSeries 3" });
             plotModel.IsLegendVisible = true;
-            plotModel.LegendPlacement = LegendPlacement.Inside;
-            plotModel.LegendPosition = LegendPosition.RightMiddle;
-            plotModel.LegendOrientation = LegendOrientation.Vertical;
+            var l = new Legend
+            {
+                LegendPlacement = LegendPlacement.Inside,
+                LegendPosition = LegendPosition.RightMiddle,
+                LegendOrientation = LegendOrientation.Vertical
+            };
+
+            plotModel.Legends.Add(l);
             return plotModel;
         }
 
@@ -1034,10 +1066,17 @@ namespace ExampleLibrary
         {
             var plotModel1 = new PlotModel
             {
-                Title = "Center aligned legends",
+                Title = "Center aligned legends"
+            };
+
+            var l = new Legend
+            {
                 LegendPosition = LegendPosition.BottomCenter,
                 LegendItemAlignment = HorizontalAlignment.Center
             };
+
+            plotModel1.Legends.Add(l);
+
             plotModel1.Series.Add(new LineSeries { Title = "LineSeries 1" });
             plotModel1.Series.Add(new LineSeries { Title = "LS2" });
             return plotModel1;
@@ -1069,7 +1108,13 @@ namespace ExampleLibrary
             custom.Points.Add(new DataPoint(100, 2));
             plotModel1.Series.Add(solid);
             plotModel1.Series.Add(custom);
-            plotModel1.LegendSymbolLength = 100; // wide enough to see pattern
+
+            var l = new Legend
+            {
+                LegendSymbolLength = 100 // wide enough to see pattern
+            };
+
+            plotModel1.Legends.Add(l);
             return plotModel1;
         }
 
@@ -1662,7 +1707,13 @@ namespace ExampleLibrary
         [Example("#72: Smooth")]
         public static PlotModel Smooth()
         {
-            var model = new PlotModel { Title = "LineSeries with Smooth = true (zoomed in)", LegendSymbolLength = 24 };
+            var model = new PlotModel { Title = "LineSeries with Smooth = true (zoomed in)" };
+            var l = new Legend
+            {
+                LegendSymbolLength = 24 
+            };
+
+            model.Legends.Add(l);
 
             var s1 = new LineSeries { InterpolationAlgorithm = InterpolationAlgorithms.CanonicalSpline };
             s1.Points.Add(new DataPoint(0, 0));
@@ -1686,9 +1737,15 @@ namespace ExampleLibrary
             var model = new PlotModel
             {
                 Title = "Too much padding with legend outside",
-                LegendPlacement = LegendPlacement.Outside,
                 Padding = new OxyThickness(500)
             };
+
+            var l = new Legend
+            {
+                LegendPlacement = LegendPlacement.Outside
+            };
+
+            model.Legends.Add(l);
             model.Series.Add(new LineSeries { Title = "Series 1" });
             model.Series.Add(new LineSeries { Title = "Series 2" });
             return model;

@@ -10,6 +10,7 @@ namespace ExampleLibrary
 
     using OxyPlot;
     using OxyPlot.Series;
+    using OxyPlot.Legends;
 
     [Examples("Tracker")]
     public static class TrackerExamples
@@ -17,7 +18,14 @@ namespace ExampleLibrary
         [Example("No interpolation")]
         public static PlotModel NoInterpolation()
         {
-            var model = new PlotModel { Title = "No tracker interpolation", Subtitle = "Used for discrete values or scatter plots.", LegendSymbolLength = 30 };
+            var model = new PlotModel { Title = "No tracker interpolation", Subtitle = "Used for discrete values or scatter plots." };
+            var l = new Legend
+            {
+                LegendSymbolLength = 30
+            };
+
+            model.Legends.Add(l);
+
             var s1 = new LineSeries
                          {
                              Title = "Series 1",

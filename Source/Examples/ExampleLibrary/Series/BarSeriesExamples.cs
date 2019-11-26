@@ -16,6 +16,7 @@ namespace ExampleLibrary
     using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
+    using OxyPlot.Legends;
 
     [Examples("BarSeries"), Tags("Series")]
     public class BarSeriesExamples
@@ -114,7 +115,14 @@ namespace ExampleLibrary
                                 new Item { Label = "Bananas", Value1 = 23, Value2 = 2, Value3 = 29 }
                             };
 
-            var plotModel1 = new PlotModel { LegendPlacement = LegendPlacement.Outside, Title = "Binding to ItemsSource" };
+            var plotModel1 = new PlotModel { Title = "Binding to ItemsSource" };
+            var l = new Legend
+            {
+                LegendPlacement = LegendPlacement.Outside
+            };
+
+            plotModel1.Legends.Add(l);
+
             var categoryAxis1 = new CategoryAxis { Position = AxisPosition.Left, LabelField = "Label", ItemsSource = items, MajorStep = 1, MinorStep = 1 };
             plotModel1.Axes.Add(categoryAxis1);
             var linearAxis1 = new LinearAxis { Position = AxisPosition.Bottom, AbsoluteMinimum = 0, MinimumPadding = 0 };
@@ -277,13 +285,18 @@ namespace ExampleLibrary
         {
             var model = new PlotModel
             {
-                Title = "Logarithmic axis",
+                Title = "Logarithmic axis"
+            };
+
+            var l = new Legend
+            {
                 LegendPlacement = LegendPlacement.Outside,
                 LegendPosition = LegendPosition.BottomCenter,
                 LegendOrientation = LegendOrientation.Horizontal,
                 LegendBorderThickness = 0
             };
 
+            model.Legends.Add(l);
             var s1 = new BarSeries { Title = "Series 1", BaseValue = 0.1, StrokeColor = OxyColors.Black, StrokeThickness = 1 };
             s1.Items.Add(new BarItem { Value = 25 });
             s1.Items.Add(new BarItem { Value = 37 });
@@ -304,8 +317,13 @@ namespace ExampleLibrary
         [Example("Logarithmic axis (not stacked)")]
         public static PlotModel LogAxis2()
         {
-            var model = new PlotModel { Title = "Logarithmic axis", LegendPlacement = LegendPlacement.Outside };
+            var model = new PlotModel { Title = "Logarithmic axis" };
+            var l = new Legend
+            {
+                LegendPlacement = LegendPlacement.Outside
+            };
 
+            model.Legends.Add(l);
             var items = new Collection<Item>
                             {
                                 new Item {Label = "Apples", Value1 = 37, Value2 = 12, Value3 = 19},
@@ -338,12 +356,18 @@ namespace ExampleLibrary
         {
             var model = new PlotModel
             {
-                Title = title,
+                Title = title
+            };
+
+            var l = new Legend
+            {
                 LegendPlacement = LegendPlacement.Outside,
                 LegendPosition = LegendPosition.BottomCenter,
                 LegendOrientation = LegendOrientation.Horizontal,
                 LegendBorderThickness = 0
             };
+
+            model.Legends.Add(l);
 
             var s1 = new BarSeries { Title = "Series 1", IsStacked = stacked, StrokeColor = OxyColors.Black, StrokeThickness = 1 };
             s1.Items.Add(new BarItem { Value = 25 });
@@ -374,12 +398,18 @@ namespace ExampleLibrary
         {
             var model = new PlotModel
             {
-                Title = title,
+                Title = title
+            };
+
+            var l = new Legend
+            {
                 LegendPlacement = LegendPlacement.Outside,
                 LegendPosition = LegendPosition.BottomCenter,
                 LegendOrientation = LegendOrientation.Horizontal,
                 LegendBorderThickness = 0
             };
+
+            model.Legends.Add(l);
 
             var s1 = new BarSeries { Title = "Series 1", IsStacked = stacked, StrokeColor = OxyColors.Black, StrokeThickness = 1 };
             s1.Items.Add(new BarItem { Value = 25 });
@@ -813,12 +843,18 @@ namespace ExampleLibrary
         {
             var model = new PlotModel
             {
-                Title = "All in one",
+                Title = "All in one"
+            };
+
+            var l = new Legend
+            {
                 LegendPlacement = LegendPlacement.Outside,
                 LegendPosition = LegendPosition.BottomCenter,
                 LegendOrientation = LegendOrientation.Horizontal,
                 LegendBorderThickness = 0
             };
+
+            model.Legends.Add(l);
 
             var categoryAxis = new CategoryAxis { Position = AxisPosition.Left, GapWidth = 0.01 };
             categoryAxis.Labels.Add("Category A");

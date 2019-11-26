@@ -3,6 +3,18 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Changed
+- Made legends open for extension (#644)
+- Added Oxyplot.Legends namespace
+- Added abstract base class LegendBase
+- Added default implementation Legend and Legend.Rendering
+- Added Legends ElementCollection to PlotModel
+- PlotModel now accommodate multiple Legends, although same positions as before. Legends sharing position are placed on top of eachother
+- Made Legend Items clickable to toggle series visibility
+- Added properties LegendKey and SeriesGroupName to Series, allowing grouping series between multiple legends and/or within same legend
+- Remove PlotModel.Legends
+- Default behaviour is now plot without Legend.
+
 ### Added
 - OxyPlot.ImageSharp (#1188)
 - WPF ExampleBrowser can display transposed versions of examples (#1402)

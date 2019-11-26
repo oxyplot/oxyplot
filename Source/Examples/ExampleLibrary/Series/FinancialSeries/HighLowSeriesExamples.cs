@@ -13,6 +13,7 @@ namespace ExampleLibrary
     using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
+    using OxyPlot.Legends;
 
     [Examples("HighLowSeries"), Tags("Series")]
     public static class HighLowSeriesExamples
@@ -20,7 +21,14 @@ namespace ExampleLibrary
         [Example("HighLowSeries")]
         public static PlotModel HighLowSeries()
         {
-            var model = new PlotModel { Title = "HighLowSeries", LegendSymbolLength = 24 };
+            var model = new PlotModel { Title = "HighLowSeries" };
+            var l = new Legend
+            {
+                LegendSymbolLength = 24
+            };
+
+            model.Legends.Add(l);
+
             var s1 = new HighLowSeries { Title = "HighLowSeries 1", Color = OxyColors.Black, };
             var r = new Random(314);
             var price = 100.0;

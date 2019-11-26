@@ -12,6 +12,7 @@ namespace WorldStatisticsDemo
     using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
+    using OxyPlot.Legends;
 
     /// <summary>
     /// Provides a view model for the main view.
@@ -49,7 +50,14 @@ namespace WorldStatisticsDemo
 
         private void UpdatePlot()
         {
-            var pm = new PlotModel { Title = this.year.ToString(), Subtitle = "data from gapminder.org", LegendPosition = LegendPosition.RightBottom };
+            var pm = new PlotModel { Title = this.year.ToString(), Subtitle = "data from gapminder.org" };
+            var l = new Legend
+            {
+                LegendPosition = LegendPosition.RightBottom
+            };
+
+            pm.Legends.Add(l);
+
             var ss = new ScatterSeries
             {
                 MarkerType = MarkerType.Circle,

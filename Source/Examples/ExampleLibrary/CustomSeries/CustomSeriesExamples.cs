@@ -11,6 +11,7 @@ namespace ExampleLibrary
     using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
+    using OxyPlot.Legends;
 
     [Examples("Custom series"), Tags("Series")]
     public static class CustomSeriesExamples
@@ -20,7 +21,13 @@ namespace ExampleLibrary
         {
             int n = 20;
 
-            var model = new PlotModel { Title = "ErrorSeries", LegendPosition = LegendPosition.BottomRight };
+            var model = new PlotModel { Title = "ErrorSeries" };
+            var l = new Legend
+            {
+                LegendPosition = LegendPosition.BottomRight
+            };
+
+            model.Legends.Add(l);
 
             var s1 = new ErrorSeries { Title = "Measurements" };
             var random = new Random(31);
