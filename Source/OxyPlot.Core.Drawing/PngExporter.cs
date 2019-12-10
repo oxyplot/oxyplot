@@ -28,11 +28,6 @@ namespace OxyPlot.Core.Drawing
         public int Height { get; set; }
 
         /// <summary>
-        /// Gets or sets the background color of the exported png.
-        /// </summary>
-        public OxyColor Background { get; set; }
-
-        /// <summary>
         /// Gets or sets the resolution in dpi of the exported png.
         /// </summary>
         public double Resolution { get; set; }
@@ -44,11 +39,10 @@ namespace OxyPlot.Core.Drawing
         /// <param name="fileName">The file name.</param>
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
-        /// <param name="background">The background color.</param>
         /// <param name="resolution">The resolution in dpi (defaults to 96dpi).</param>
-        public static void Export(IPlotModel model, string fileName, int width, int height, OxyColor background, double resolution = 96)
+        public static void Export(IPlotModel model, string fileName, int width, int height, double resolution = 96)
         {
-            var exporter = new PngExporter { Width = width, Height = height, Background = background, Resolution = resolution };
+            var exporter = new PngExporter { Width = width, Height = height, Resolution = resolution };
             using (var stream = File.Create(fileName))
             {
                 exporter.Export(model, stream);
@@ -78,9 +72,9 @@ namespace OxyPlot.Core.Drawing
             var bm = new Bitmap(this.Width, this.Height);
             using (var g = Graphics.FromImage(bm))
             {
-                if (!this.Background.IsInvisible())
+                if (!model.Background.IsInvisible())
                 {
-                    using (var brush = this.Background.ToBrush())
+                    using (var brush = model.Background.ToBrush())
                     {
                         g.FillRectangle(brush, 0, 0, this.Width, this.Height);
                     }

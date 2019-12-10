@@ -27,11 +27,6 @@ namespace OxyPlot.Pdf
         public double Height { get; set; }
 
         /// <summary>
-        /// Gets or sets the background color.
-        /// </summary>
-        public OxyColor Background { get; set; }
-
-        /// <summary>
         /// Exports the specified model to a file.
         /// </summary>
         /// <param name="model">The model.</param>
@@ -55,7 +50,7 @@ namespace OxyPlot.Pdf
         /// <param name="height">The height (points).</param>
         public static void Export(IPlotModel model, Stream stream, double width, double height)
         {
-            var exporter = new PdfExporter { Width = width, Height = height, Background = model.Background };
+            var exporter = new PdfExporter { Width = width, Height = height };
             exporter.Export(model, stream);
         }
 
@@ -66,7 +61,7 @@ namespace OxyPlot.Pdf
         /// <param name="stream">The stream.</param>
         public void Export(IPlotModel model, Stream stream)
         {
-            using (var rc = new PdfRenderContext(this.Width, this.Height, this.Background))
+            using (var rc = new PdfRenderContext(this.Width, this.Height, model.Background))
             {
                 model.Update(true);
                 model.Render(rc, this.Width, this.Height);

@@ -24,17 +24,17 @@
             var model = BuildPlotModel();
 
             // export to file using static methods
-            PngExporter.Export(model, outputToFile, width, height, background, resolution);
+            PngExporter.Export(model, outputToFile, width, height, resolution);
 
             // export using the instance methods
             using (var stream = new MemoryStream())
             {
-                var pngExporter = new PngExporter { Width = width, Height = height, Background = background, Resolution = resolution };
+                var pngExporter = new PngExporter { Width = width, Height = height, Resolution = resolution };
                 pngExporter.Export(model, stream);
                 System.IO.File.WriteAllBytes(outputExportStreamOOP, stream.ToArray());
             }
 
-            var pngExporter2 = new PngExporter { Width = width, Height = height, Background = background, Resolution = resolution };
+            var pngExporter2 = new PngExporter { Width = width, Height = height, Resolution = resolution };
             var bitmap = pngExporter2.ExportToBitmap(model);
             bitmap.Save(outputExportFileOOP, System.Drawing.Imaging.ImageFormat.Png);
             bitmap.Save(Path.ChangeExtension(outputExportFileOOP, ".gif"), System.Drawing.Imaging.ImageFormat.Gif);
@@ -63,13 +63,13 @@
                 Position = AxisPosition.Left,
                 Key = "CakeAxis",
                 ItemsSource = new[]
-               {
-               "Apple cake",
-               "Baumkuchen",
-               "Bundt Cake",
-               "Chocolate cake",
-               "Carrot cake"
-            }
+                {
+                    "Apple cake",
+                    "Baumkuchen",
+                    "Bundt Cake",
+                    "Chocolate cake",
+                    "Carrot cake"
+                }
             });
             return model;
         }
