@@ -89,7 +89,7 @@ namespace OxyPlot.Core.Drawing
                 using (var rc = new GraphicsRenderContext(g) { RendersToScreen = false })
                 {
                     model.Update(true);
-                    model.Render(rc, this.Width, this.Height);
+                    model.Render(rc, new OxyRect(0, 0, this.Width, this.Height));
                 }
 
                 // this throws an exception

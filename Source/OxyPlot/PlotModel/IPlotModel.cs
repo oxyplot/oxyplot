@@ -27,12 +27,11 @@ namespace OxyPlot
         void Update(bool updateData);
 
         /// <summary>
-        /// Renders the plot with the specified rendering context.
+        /// Renders the plot with the specified rendering context within the given rectangle.
         /// </summary>
         /// <param name="rc">The rendering context.</param>
-        /// <param name="width">The width.</param>
-        /// <param name="height">The height.</param>
-        void Render(IRenderContext rc, double width, double height);
+        /// <param name="rect">The plot bounds.</param>
+        void Render(IRenderContext rc, OxyRect rect);
 
         /// <summary>
         /// Attaches this model to the specified plot view.

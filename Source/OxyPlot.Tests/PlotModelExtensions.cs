@@ -25,7 +25,7 @@ namespace OxyPlot.Tests
         {
             var rc = new NullRenderContext();
             model.Update(true);
-            model.Render(rc, width, height);
+            model.Render(rc, new OxyRect(0, 0, width, height));
         }
     }
 }
