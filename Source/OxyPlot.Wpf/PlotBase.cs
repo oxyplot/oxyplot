@@ -468,13 +468,7 @@ namespace OxyPlot.Wpf
         /// <param name="e">The <see cref="System.Windows.Input.ExecutedRoutedEventArgs" /> instance containing the event data.</param>
         private void DoCopy(object sender, ExecutedRoutedEventArgs e)
         {
-            var background = this.ActualModel.Background.IsVisible() ? this.ActualModel.Background : this.Background.ToOxyColor();
-            if (background.IsInvisible())
-            {
-                background = OxyColors.White;
-            }
-
-            var exporter = new PngExporter() { Background = background, Width = (int)this.ActualWidth, Height = (int)this.ActualHeight };
+            var exporter = new PngExporter() { Width = (int)this.ActualWidth, Height = (int)this.ActualHeight };
             var bitmap = exporter.ExportToBitmap(this.ActualModel);
             Clipboard.SetImage(bitmap);
         }

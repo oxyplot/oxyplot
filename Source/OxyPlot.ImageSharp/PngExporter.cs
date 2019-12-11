@@ -27,11 +27,6 @@ namespace OxyPlot.ImageSharp
         public int Height { get; set; }
 
         /// <summary>
-        /// Gets or sets the background color of the exported png.
-        /// </summary>
-        public OxyColor Background { get; set; }
-
-        /// <summary>
         /// Gets or sets the resolution in dpi of the exported png.
         /// </summary>
         public double Resolution { get; set; }
@@ -43,11 +38,10 @@ namespace OxyPlot.ImageSharp
         /// <param name="fileName">The file name.</param>
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
-        /// <param name="background">The background color.</param>
         /// <param name="resolution">The resolution in dpi (defaults to 96dpi).</param>
-        public static void Export(IPlotModel model, string fileName, int width, int height, OxyColor background, double resolution = 96)
+        public static void Export(IPlotModel model, string fileName, int width, int height, double resolution = 96)
         {
-            var exporter = new PngExporter { Width = width, Height = height, Background = background, Resolution = resolution };
+            var exporter = new PngExporter { Width = width, Height = height, Resolution = resolution };
             using (var stream = File.Create(fileName))
             {
                 exporter.Export(model, stream);
@@ -61,7 +55,7 @@ namespace OxyPlot.ImageSharp
         /// <param name="stream">The output stream.</param>
         public void Export(IPlotModel model, Stream stream)
         {
-            using (var rc = new PngRenderingContext(this.Width, this.Height, this.Background, this.Resolution))
+            using (var rc = new PngRenderingContext(this.Width, this.Height, model.Background, this.Resolution))
             {
                 model.Update(true);
                 model.Render(rc, this.Width, this.Height);

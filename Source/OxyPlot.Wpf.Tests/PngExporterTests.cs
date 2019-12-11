@@ -57,8 +57,9 @@ namespace OxyPlot.Wpf.Tests
         public void ExportWithDifferentBackground()
         {
             var plotModel = CreateTestModel1();
+            plotModel.Background = OxyColors.Yellow;
             const string FileName = "PngExporterTests_BackgroundYellow.png";
-            var exporter = new PngExporter { Width = 400, Height = 300, Background = OxyColors.Yellow };
+            var exporter = new PngExporter { Width = 400, Height = 300 };
             using (var stream = File.OpenWrite(FileName))
             {
                 exporter.Export(plotModel, stream);

@@ -30,7 +30,6 @@ namespace OxyPlot.Wpf
         {
             this.Width = 600;
             this.Height = 400;
-            this.Background = OxyColors.White;
         }
 
         /// <summary>
@@ -42,11 +41,6 @@ namespace OxyPlot.Wpf
         /// Gets or sets the height of the output document.
         /// </summary>
         public double Height { get; set; }
-
-        /// <summary>
-        /// Gets or sets the background color.
-        /// </summary>
-        public OxyColor Background { get; set; }
 
         /// <summary>
         /// Gets or sets the text formatting mode.
@@ -61,12 +55,11 @@ namespace OxyPlot.Wpf
         /// <param name="fileName">The file name.</param>
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
-        /// <param name="background">The background color.</param>
-        public static void Export(IPlotModel model, string fileName, double width, double height, OxyColor background)
+        public static void Export(IPlotModel model, string fileName, double width, double height)
         {
             using (var stream = File.Open(fileName, FileMode.Create, FileAccess.ReadWrite))
             {
-                var exporter = new XpsExporter { Width = width, Height = height, Background = background };
+                var exporter = new XpsExporter { Width = width, Height = height };
                 exporter.Export(model, stream);
             }
         }
@@ -92,7 +85,7 @@ namespace OxyPlot.Wpf
         /// <param name="height">The height (using the actual media height if set to NaN).</param>
         public static void Print(IPlotModel model, double width, double height)
         {
-            var exporter = new XpsExporter { Width = width, Height = height, Background = model.Background };
+            var exporter = new XpsExporter { Width = width, Height = height };
             exporter.Print(model);
         }
 
@@ -144,7 +137,7 @@ namespace OxyPlot.Wpf
         /// <param name="writer">The document writer.</param>
         private void Write(IPlotModel model, XpsDocumentWriter writer)
         {
-            var canvas = new Canvas { Width = this.Width, Height = this.Height, Background = this.Background.ToBrush() };
+            var canvas = new Canvas { Width = this.Width, Height = this.Height, Background = model.Background.ToBrush() };
             canvas.Measure(new Size(this.Width, this.Height));
             canvas.Arrange(new Rect(0, 0, this.Width, this.Height));
 

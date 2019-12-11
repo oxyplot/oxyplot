@@ -28,15 +28,14 @@ namespace OxyPlot.Wpf
         /// <param name="model">The model.</param>
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
-        /// <param name="background">The background.</param>
         /// <returns>A xaml string.</returns>
-        public static string ExportToString(IPlotModel model, double width, double height, OxyColor background)
+        public static string ExportToString(IPlotModel model, double width, double height)
         {
             var sb = new StringBuilder();
             using (var sw = new StringWriter(sb))
             {
                 var xw = XmlWriter.Create(sw, new XmlWriterSettings { Indent = true });
-                Export(model, xw, width, height, background);
+                Export(model, xw, width, height);
             }
 
             return sb.ToString();
@@ -49,13 +48,12 @@ namespace OxyPlot.Wpf
         /// <param name="fileName">Name of the file.</param>
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
-        /// <param name="background">The background.</param>
-        public static void Export(PlotModel model, string fileName, double width, double height, OxyColor background)
+        public static void Export(PlotModel model, string fileName, double width, double height)
         {
             using (var sw = new StreamWriter(fileName))
             {
                 var xw = XmlWriter.Create(sw, new XmlWriterSettings { Indent = true });
-                Export(model, xw, width, height, background);
+                Export(model, xw, width, height);
             }
         }
 
@@ -66,13 +64,12 @@ namespace OxyPlot.Wpf
         /// <param name="writer">The xml writer.</param>
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
-        /// <param name="background">The background.</param>
-        private static void Export(IPlotModel model, XmlWriter writer, double width, double height, OxyColor background)
+        private static void Export(IPlotModel model, XmlWriter writer, double width, double height)
         {
             var c = new Canvas();
-            if (background.IsVisible())
+            if (model.Background.IsVisible())
             {
-                c.Background = background.ToBrush();
+                c.Background = model.Background.ToBrush();
             }
 
             c.Measure(new Size(width, height));

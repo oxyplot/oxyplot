@@ -58,7 +58,7 @@ namespace OxyPlot.Wpf.Tests
                     var path = Path.Combine(DestinationDirectory, fileName);
                     var diffpath = Path.Combine(DiffDirectory, fileName);
 
-                    PngExporter.Export(model, path, 800, 500, OxyColors.White);
+                    PngExporter.Export(model, path, 800, 500);
                     if (File.Exists(baselinePath))
                     {
                         PngAssert.AreEqual(baselinePath, path, example.Title, diffpath);
