@@ -73,17 +73,6 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets the height.
-        /// </summary>
-        public double Height
-        {
-            get
-            {
-                return this.Bottom - this.Top;
-            }
-        }
-
-        /// <summary>
         /// Gets the left thickness.
         /// </summary>
         /// <value>The left thickness.</value>
@@ -120,17 +109,6 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets the width.
-        /// </summary>
-        public double Width
-        {
-            get
-            {
-                return this.Right - this.Left;
-            }
-        }
-
-        /// <summary>
         /// Returns C# code that generates this instance.
         /// </summary>
         /// <returns>The to code.</returns>
@@ -162,7 +140,7 @@ namespace OxyPlot
         /// <returns><c>true</c> if the value of the <paramref name="other" /> parameter is the same as the value of this instance; otherwise, <c>false</c>.</returns>
         public bool Equals(OxyThickness other)
         {
-            return this.Left.Equals(other.Left) && this.Top.Equals(other.Top) && this.Width.Equals(other.Width) && this.Height.Equals(other.Height);
+            return this.Left.Equals(other.Left) && this.Top.Equals(other.Top) && this.Right.Equals(other.Right) && this.Bottom.Equals(other.Bottom);
         }
     }
 }
