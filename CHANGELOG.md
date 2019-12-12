@@ -30,6 +30,7 @@ All notable changes to this project will be documented in this file.
 - Copy to text report Ctrl+Alt+R (#1403)
 - ColumnSeries - functionality is replaced by transposed BarSeries (#1402)
 - Remove exporter Background properties (#1409)
+- Remove OxyThickness Width and Height properties (#1429)
 
 ### Fixed
 - Legend font size is not affected by DefaultFontSize (#1396)
