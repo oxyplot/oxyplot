@@ -84,5 +84,43 @@ namespace OxyPlot.Tests
                 ExportModelAndCheckFileExists(example.TransposedPlotModel, $"{example.Category} - {example.Title} - Transposed");
             }
         }
+
+        [Test]
+        public void Export_BoundedTest()
+        {
+            const string DestinationDirectory = "SvgExporterTests_Meh";
+            if (!Directory.Exists(DestinationDirectory))
+            {
+                Directory.CreateDirectory(DestinationDirectory);
+            }
+
+            var fileName = "BoundedTest";
+            var path = Path.Combine(DestinationDirectory, FileNameUtilities.CreateValidFileName(fileName, ".svg"));
+
+            var width = 550;
+            var height = 550;
+            var whole = new OxyRect(0, 0, width, height);
+
+            var rect = new OxyRect(50, 50, 400, 400);
+            //var model = ExampleLibrary.PolarPlotExamples.ArchimedeanSpiral();
+            var model = ExampleLibrary.AxisExamples.PositionTier();
+            model.Title = "Title";
+            model.Subtitle = "SubTitle";
+            model.PlotAreaBorderColor = OxyColors.Black;
+            model.PlotAreaBorderThickness = new OxyThickness(1.0);
+            var textMeasurer = new PdfRenderContext(width, height, model.Background);
+            
+            using (var stream = new FileStream(path, FileMode.Create))
+            using (var rc = new SvgRenderContext(stream, width, height, false, textMeasurer, model.Background, true))
+            {
+                ((IPlotModel)model).Update(true);
+                ((IPlotModel)model).Render(rc, rect);
+                rc.DrawClippedRectangle(whole, rect.Inflate(2.0, 2.0), OxyColors.Transparent, OxyColors.Blue, 1.0);
+                rc.DrawClippedRectangle(whole, model.PlotBounds, OxyColors.Transparent, OxyColors.Black, 1.0);
+                rc.DrawClippedRectangle(whole, whole, OxyColors.Transparent, OxyColors.Black, 1.0);
+                rc.Complete();
+                rc.Flush();
+            }
+        }
     }
 }

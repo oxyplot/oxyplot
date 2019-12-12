@@ -48,7 +48,7 @@ namespace OxyPlot
         {
             var rc = new PdfRenderContext(this.Width, this.Height, model.Background);
             model.Update(true);
-            model.Render(rc, this.Width, this.Height);
+            model.Render(rc, new OxyRect(0, 0, this.Width, this.Height));
             rc.Save(stream);
         }
     }

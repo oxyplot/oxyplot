@@ -80,7 +80,7 @@ namespace OxyPlot.Wpf
             rc.TextFormattingMode = TextFormattingMode.Ideal;
 
             model.Update(true);
-            model.Render(rc, width, height);
+            model.Render(rc, new OxyRect(0, 0, width, height));
 
             c.UpdateLayout();
 

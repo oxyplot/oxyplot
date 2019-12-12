@@ -23,23 +23,21 @@ namespace OxyPlot
     public partial class PlotModel
     {
         /// <summary>
-        /// Renders the plot with the specified rendering context.
+        /// Renders the plot with the specified rendering context within the given rectangle.
         /// </summary>
         /// <param name="rc">The rendering context.</param>
-        /// <param name="width">The width.</param>
-        /// <param name="height">The height.</param>
-        void IPlotModel.Render(IRenderContext rc, double width, double height)
+        /// <param name="rect">The plot bounds.</param>
+        void IPlotModel.Render(IRenderContext rc, OxyRect rect)
         {
-            this.RenderOverride(rc, width, height);
+            this.RenderOverride(rc, rect);
         }
 
         /// <summary>
         /// Renders the plot with the specified rendering context.
         /// </summary>
         /// <param name="rc">The rendering context.</param>
-        /// <param name="width">The width.</param>
-        /// <param name="height">The height.</param>
-        protected virtual void RenderOverride(IRenderContext rc, double width, double height)
+        /// <param name="rect">The plot bounds.</param>
+        protected virtual void RenderOverride(IRenderContext rc, OxyRect rect)
         {
             lock (this.SyncRoot)
             {
@@ -64,8 +62,7 @@ namespace OxyPlot
                         rc = this.RenderingDecorator(rc);
                     }
 
-                    this.Width = width;
-                    this.Height = height;
+                    this.PlotBounds = rect;
 
                     this.ActualPlotMargins =
                         new OxyThickness(
@@ -483,8 +480,8 @@ namespace OxyPlot
         private void UpdatePlotArea(IRenderContext rc)
         {
             var plotArea = new OxyRect(
-                this.Padding.Left,
-                this.Padding.Top,
+                this.PlotBounds.Left + this.Padding.Left,
+                this.PlotBounds.Top + this.Padding.Top,
                 Math.Max(0, this.Width - this.Padding.Left - this.Padding.Right),
                 Math.Max(0, this.Height - this.Padding.Top - this.Padding.Bottom));
 
@@ -642,15 +639,15 @@ namespace OxyPlot
             {
                 case TitleHorizontalAlignment.CenteredWithinView:
                     this.TitleArea = new OxyRect(
-                        0,
-                        this.Padding.Top,
+                        this.PlotBounds.Left,
+                        this.PlotBounds.Top + this.Padding.Top,
                         this.Width,
                         titleSize.Height + (this.TitlePadding * 2));
                     break;
                 default:
                     this.TitleArea = new OxyRect(
                         this.PlotArea.Left,
-                        this.Padding.Top,
+                        this.PlotBounds.Top + this.Padding.Top,
                         this.PlotArea.Width,
                         titleSize.Height + (this.TitlePadding * 2));
                     break;

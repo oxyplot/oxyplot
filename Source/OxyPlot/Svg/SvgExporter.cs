@@ -71,7 +71,7 @@ namespace OxyPlot
             using (var rc = new SvgRenderContext(stream, width, height, isDocument, textMeasurer, model.Background, useVerticalTextAlignmentWorkaround))
             {
                 model.Update(true);
-                model.Render(rc, width, height);
+                model.Render(rc, new OxyRect(0, 0, width, height));
                 rc.Complete();
                 rc.Flush();
             }

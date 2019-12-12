@@ -93,7 +93,7 @@ namespace OxyPlot.Wpf
             rc.TextFormattingMode = TextFormattingMode.Ideal;
 
             model.Update(true);
-            model.Render(rc, canvas.Width, canvas.Height);
+            model.Render(rc, new OxyRect(0, 0, canvas.Width, canvas.Height));
 
             canvas.UpdateLayout();
 

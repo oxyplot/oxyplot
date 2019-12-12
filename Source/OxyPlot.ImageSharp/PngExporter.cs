@@ -58,7 +58,7 @@ namespace OxyPlot.ImageSharp
             using (var rc = new PngRenderingContext(this.Width, this.Height, model.Background, this.Resolution))
             {
                 model.Update(true);
-                model.Render(rc, this.Width, this.Height);
+                model.Render(rc, new OxyRect(0, 0, this.Width, this.Height));
                 rc.Save(stream);
             }
         }

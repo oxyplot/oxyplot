@@ -585,7 +585,7 @@ namespace OxyPlot.Wpf
                         this.grid.Children.RemoveAt(idx);
                     }
 
-                    ((IPlotModel)this.ActualModel).Render(this.renderContext, this.canvas.ActualWidth, this.canvas.ActualHeight);
+                    ((IPlotModel)this.ActualModel).Render(this.renderContext, new OxyRect(0, 0, this.canvas.ActualWidth, this.canvas.ActualHeight));
 
                     // reinsert the canvas again
                     if (idx != -1)
@@ -595,7 +595,7 @@ namespace OxyPlot.Wpf
                 }
                 else
                 {
-                    ((IPlotModel)this.ActualModel).Render(this.renderContext, this.canvas.ActualWidth, this.canvas.ActualHeight);
+                    ((IPlotModel)this.ActualModel).Render(this.renderContext, new OxyRect(0, 0, this.canvas.ActualWidth, this.canvas.ActualHeight));
                 }
             }
         }

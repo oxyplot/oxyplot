@@ -455,7 +455,7 @@ namespace OxyPlot.WindowsForms
                             }
                         }
 
-                        ((IPlotModel)this.model).Render(this.renderContext, this.Width, this.Height);
+                        ((IPlotModel)this.model).Render(this.renderContext, new OxyRect(0, 0, this.Width, this.Height));
                     }
 
                     if (this.zoomRectangle != Rectangle.Empty)

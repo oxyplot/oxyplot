@@ -25,6 +25,7 @@ All notable changes to this project will be documented in this file.
 - Moved reporting functionality to oxyplot-reporting repository (#1403)
 - Moved WPF Plot component to Oxyplot.Contrib.Wpf (#1399)
 - ErrorColumnSeries changed to ErrorBarSeries, also works in transposed mode (#1402)
+- Change IPlotModel.Render to take an OxyRect (#1425)
 
 ### Removed
 - Copy to text report Ctrl+Alt+R (#1403)
