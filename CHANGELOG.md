@@ -37,6 +37,7 @@ All notable changes to this project will be documented in this file.
 - Legend font size is not affected by DefaultFontSize (#1396)
 - Exception when rendering polygon with no points (#1410)
 - ErrorBarSeries, IntervalBarSeries and TornadoBarSeries work correctly in transposed mode (#1402)
+- OxyPlot.WindowsForms package description (#1457)
 
 ## [2.0.0] - 2019-10-19
 ### Added 

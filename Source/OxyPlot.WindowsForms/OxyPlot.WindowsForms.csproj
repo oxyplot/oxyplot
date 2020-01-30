@@ -2,7 +2,7 @@
     <PropertyGroup>
         <TargetFrameworks>net45;netcoreapp3.0</TargetFrameworks>
         <UseWindowsForms>true</UseWindowsForms>
-        <Description>OxyPlot is a plotting library for .NET. This is the portable core library that is referenced by the platform-specific OxyPlot packages.</Description>
+        <Description>OxyPlot is a plotting library for .NET. This package targets Windows Forms applications.</Description>
         <Copyright>Copyright (c) 2014 OxyPlot contributors</Copyright>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageProjectUrl>https://oxyplot.github.io/</PackageProjectUrl>
