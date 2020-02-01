@@ -15,6 +15,8 @@ namespace ExampleGenerator
 
         public static string OutputDirectory { get; set; }
 
+        public static bool DoOptimizePng { get; set; }
+
         public static bool ExportPng { get; set; }
 
         public static bool ExportPdf { get; set; }
@@ -26,6 +28,7 @@ namespace ExampleGenerator
             ExportPng = true;
             ExportPdf = true;
             ExportSvg = true;
+            //DoOptimizePng = true;
             OutputDirectory = @".";
             if (args.Length > 0)
             {
@@ -74,7 +77,8 @@ namespace ExampleGenerator
                     exporter.Export(model, stream);
                 }
 
-                //await OptimizePng(fileName);
+                if (DoOptimizePng)
+                    await OptimizePng(fileName);
             }
 
             if (ExportPdf)
