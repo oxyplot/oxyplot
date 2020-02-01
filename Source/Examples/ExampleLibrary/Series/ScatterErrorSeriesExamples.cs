@@ -21,6 +21,7 @@ namespace ExampleLibrary
     public class ScatterErrorSeriesExamples
     {
         [Example("Random points and errors (n=20)")]
+        [DocumentationExample("Series/ScatterErrorSeries")]
         public static PlotModel RandomPointsAndError20()
         {
             return RandomPointsAndError(20);

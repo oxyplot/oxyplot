@@ -23,6 +23,7 @@ namespace ExampleLibrary
     public class HistogramSeriesExamples
     {
         [Example("Exponential Distribution")]
+        [DocumentationExample("Series/HistogramSeries")]
         public static PlotModel ExponentialDistribution()
         {
             return CreateExponentialDistribution();

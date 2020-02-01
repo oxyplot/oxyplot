@@ -27,6 +27,7 @@ namespace ExampleLibrary.Series
         /// </summary>
         /// <returns>A <see cref="PlotModel" />.</returns>
         [Example("Temperatures")]
+        [DocumentationExample("Series/ThreeColorLineSeries")]
         public static PlotModel ThreeColorLineSeries()
         {
             var model = new PlotModel { Title = "ThreeColorLineSeries" };

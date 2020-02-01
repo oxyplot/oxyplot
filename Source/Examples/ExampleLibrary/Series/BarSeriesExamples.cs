@@ -70,6 +70,7 @@ namespace ExampleLibrary
         }
 
         [Example("Stacked")]
+        [DocumentationExample("Series/BarSeries")]
         public static PlotModel StackedSeries()
         {
             return CreateSimpleModel(true, "Simple stacked model");

@@ -15,6 +15,7 @@ namespace ExampleLibrary
     public static class TornadoBarSeriesExamples
     {
         [Example("Tornado diagram 1")]
+        [DocumentationExample("Series/TornadoBarSeries")]
         public static PlotModel TornadoDiagram1()
         {
             // http://en.wikipedia.org/wiki/Tornado_diagram

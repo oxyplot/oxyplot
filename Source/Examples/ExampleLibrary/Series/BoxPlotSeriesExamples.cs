@@ -173,6 +173,7 @@ namespace ExampleLibrary
         }
 
         [Example("BoxPlot (DateTime axis)")]
+        [DocumentationExample("Series/BoxPlotSeries")]
         public static PlotModel BoxPlotSeries_DateTimeAxis()
         {
             var m = new PlotModel();

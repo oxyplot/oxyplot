@@ -10,6 +10,7 @@
     public static class RectangleSeriesExamples
     {
         [Example("RectangleSeries")]
+        [DocumentationExample("Series/RectangleSeries")]
         public static PlotModel FromItems()
         {
             const int NumberOfItems = 10;

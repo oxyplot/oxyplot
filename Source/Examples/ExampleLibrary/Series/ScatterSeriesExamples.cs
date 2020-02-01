@@ -23,6 +23,7 @@ namespace ExampleLibrary
     public class ScatterSeriesExamples
     {
         [Example("Correlated points")]
+        [DocumentationExample("Series/ScatterSeries")]
         public static PlotModel CorrelatedScatter()
         {
             return CreateCorrelatedScatter(1000);

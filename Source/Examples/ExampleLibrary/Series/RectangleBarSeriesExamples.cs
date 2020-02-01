@@ -14,6 +14,7 @@ namespace ExampleLibrary
     public static class RectangleBarSeriesExamples
     {
         [Example("RectangleBarSeries")]
+        [DocumentationExample("Series/RectangleBarSeries")]
         public static PlotModel RectangleBarSeries()
         {
             var model = new PlotModel { Title = "RectangleBarSeries" };

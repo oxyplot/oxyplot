@@ -19,6 +19,7 @@ namespace ExampleLibrary
     public class HeatMapSeriesExamples
     {
         [Example("Peaks")]
+        [DocumentationExample("Series/HeatMapSeries")]
         public static PlotModel Peaks()
         {
             return CreatePeaks();

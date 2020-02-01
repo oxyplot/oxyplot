@@ -13,6 +13,7 @@ namespace ExampleLibrary
     public static class PieSeriesExamples
     {
         [Example("PieSeries")]
+        [DocumentationExample("Series/PieSeries")]
         public static PlotModel PieSeries()
         {
             return CreateExample();

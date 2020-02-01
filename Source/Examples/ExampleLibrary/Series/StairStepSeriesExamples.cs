@@ -22,6 +22,7 @@ namespace ExampleLibrary
     public static class StairStepSeriesExamples
     {
         [Example("StairStepSeries")]
+        [DocumentationExample("Series/StairStepSeries")]
         public static PlotModel StairStepSeries()
         {
             return CreateExampleModel(new StairStepSeries());
