@@ -34,7 +34,8 @@ namespace ExampleGenerator
 
             var exportTasks = new List<Task>();
 
-            foreach (var type in Assembly.GetExecutingAssembly().GetTypes())
+            var exampleAssembly = typeof(DocumentationExampleAttribute).Assembly;
+            foreach (var type in exampleAssembly.GetTypes())
             {
                 foreach (var method in type.GetMethods(BindingFlags.Static | BindingFlags.Public))
                 {
