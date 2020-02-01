@@ -12,6 +12,7 @@ namespace ExampleGenerator
 {
     public static class Program
     {
+        private static readonly OxyColor defaultBackground = OxyColor.Parse("#00000000");
 
         public static string OutputDirectory { get; set; }
 
@@ -60,6 +61,9 @@ namespace ExampleGenerator
 
         private static async Task Export(PlotModel model, string name)
         {
+            if (model.Background == defaultBackground) 
+                model.Background = OxyColors.White;
+
             var fileName = Path.Combine(OutputDirectory, name + ".png");
             var directory = Path.GetDirectoryName(fileName) ?? ".";
 
