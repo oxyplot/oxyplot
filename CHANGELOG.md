@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 - Added properties LegendKey and SeriesGroupName to Series, allowing grouping series between multiple legends and/or within same legend
 - Remove PlotModel.Legends
 - Default behaviour is now plot without Legend.
+- Generate documentation images from ExampleLibrary
 
 ### Added
 - OxyPlot.ImageSharp (#1188)
