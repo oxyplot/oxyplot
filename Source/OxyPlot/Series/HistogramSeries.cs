@@ -39,11 +39,6 @@ namespace OxyPlot.Series
         private bool ownsActualItems;
 
         /// <summary>
-        /// The default color mapping.
-        /// </summary>
-        private OxyColor defaultColorMapping(HistogramItem item) => this.ActualFillColor;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="HistogramSeries" /> class.
         /// </summary>
         public HistogramSeries()
@@ -54,7 +49,7 @@ namespace OxyPlot.Series
             this.TrackerFormatString = DefaultTrackerFormatString;
             this.LabelFormatString = null;
             this.LabelPlacement = LabelPlacement.Outside;
-            this.ColorMapping = this.defaultColorMapping;
+            this.ColorMapping = this.GetDefaultColor;
         }
 
         /// <summary>
@@ -67,16 +62,7 @@ namespace OxyPlot.Series
         /// Gets the actual fill color.
         /// </summary>
         /// <value>The actual color.</value>
-        public OxyColor ActualFillColor
-        {
-            get { return this.FillColor.GetActualColor(this.defaultFillColor); }
-        }
-
-        /// <summary>
-        /// Gets or sets the color of the interior of the bars when the value is negative.
-        /// </summary>
-        /// <value>The color.</value>
-        public OxyColor NegativeFillColor { get; set; }
+        public OxyColor ActualFillColor => this.FillColor.GetActualColor(this.defaultFillColor);
 
         /// <summary>
         /// Gets or sets the color of the border around the bars.
@@ -115,11 +101,6 @@ namespace OxyPlot.Series
         /// Gets or sets label placements.
         /// </summary>
         public LabelPlacement LabelPlacement { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the tracker can interpolate points.
-        /// </summary>
-        public bool CanTrackerInterpolatePoints { get; set; }
 
         /// <summary>
         /// Gets or sets the delegate used to map from histogram item to color.
@@ -178,24 +159,29 @@ namespace OxyPlot.Series
                 return null;
             }
 
-            if (this.ActualItems != null)
+            if (this.ActualItems == null)
             {
-                // iterate through the HistogramItems and return the first one that contains the point
-                foreach (var item in this.ActualItems)
+                return null;
+            }
+
+            // iterate through the HistogramItems and return the first one that contains the point
+            for (var i = 0; i < this.ActualItems.Count; i++)
+            {
+                var item = this.ActualItems[i];
+                if (item.Contains(p))
                 {
-                    if (item.Contains(p))
+                    var itemsSourceItem = this.GetItem(i);
+                    return new TrackerHitResult
                     {
-                        return new TrackerHitResult
-                        {
-                            Series = this,
-                            DataPoint = p,
-                            Position = point,
-                            Item = null,
-                            Index = -1,
-                            Text = StringHelper.Format(
+                        Series = this,
+                        DataPoint = p,
+                        Position = point,
+                        Item = itemsSourceItem,
+                        Index = i,
+                        Text = StringHelper.Format(
                             this.ActualCulture,
                             this.TrackerFormatString,
-                            null,
+                            itemsSourceItem,
                             this.Title,
                             this.XAxis.Title ?? DefaultXAxisTitle,
                             this.XAxis.GetValue(p.X),
@@ -206,8 +192,7 @@ namespace OxyPlot.Series
                             item.Value,
                             item.Area,
                             item.Count),
-                        };
-                    }
+                    };
                 }
             }
 
@@ -258,14 +243,6 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Ensures that the axes of the series is defined.
-        /// </summary>
-        protected internal override void EnsureAxes()
-        {
-            base.EnsureAxes();
-        }
-
-        /// <summary>
         /// Updates the maximum and minimum values of the series for the x and y dimensions only.
         /// </summary>
         protected internal void UpdateMaxMinXY()
@@ -298,26 +275,6 @@ namespace OxyPlot.Series
                 this.MinValue = this.ActualItems.Min(r => r.Value);
                 this.MaxValue = this.ActualItems.Max(r => r.Value);
             }
-        }
-
-        /// <summary>
-        /// Updates the axes to include the max and min of this series.
-        /// </summary>
-        protected internal override void UpdateAxisMaxMin()
-        {
-            base.UpdateAxisMaxMin();
-        }
-
-        /// <summary>
-        /// Gets the label for the specified cell.
-        /// </summary>
-        /// <param name="v">The value of the cell.</param>
-        /// <param name="i">The first index.</param>
-        /// <param name="j">The second index.</param>
-        /// <returns>The label string.</returns>
-        protected virtual string GetLabel(double v, int i, int j)
-        {
-            return v.ToString(this.LabelFormatString, this.ActualCulture);
         }
 
         /// <summary>
@@ -370,14 +327,7 @@ namespace OxyPlot.Series
         /// <returns>The fill color of the item.</returns>
         protected OxyColor GetItemFillColor(HistogramItem item)
         {
-            if (!item.Color.IsAutomatic())
-            {
-                return item.Color;
-            }
-            else
-            {
-                return this.ColorMapping(item);
-            }
+            return item.Color.IsAutomatic() ? this.ColorMapping(item) : item.Color;
         }
 
         /// <summary>
@@ -470,6 +420,15 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
+        /// Gets the default color for a HistogramItem.
+        /// </summary>
+        /// <returns>The default color.</returns>
+        private OxyColor GetDefaultColor(HistogramItem item)
+        {
+            return this.ActualFillColor;
+        }
+
+        /// <summary>
         /// Updates the points from the <see cref="ItemsSeries.ItemsSource" />.
         /// </summary>
         private void UpdateActualItems()
@@ -486,8 +445,7 @@ namespace OxyPlot.Series
                 return;
             }
 
-            var sourceAsListOfHistogramItems = this.ItemsSource as List<HistogramItem>;
-            if (sourceAsListOfHistogramItems != null)
+            if (this.ItemsSource is List<HistogramItem> sourceAsListOfHistogramItems)
             {
                 this.actualItems = sourceAsListOfHistogramItems;
                 this.ownsActualItems = false;
@@ -496,8 +454,7 @@ namespace OxyPlot.Series
 
             this.ClearActualItems();
 
-            var sourceAsEnumerableHistogramItems = this.ItemsSource as IEnumerable<HistogramItem>;
-            if (sourceAsEnumerableHistogramItems != null)
+            if (this.ItemsSource is IEnumerable<HistogramItem> sourceAsEnumerableHistogramItems)
             {
                 this.actualItems.AddRange(sourceAsEnumerableHistogramItems);
             }

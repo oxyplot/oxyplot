@@ -38,6 +38,7 @@ All notable changes to this project will be documented in this file.
 - Exception when rendering polygon with no points (#1410)
 - ErrorBarSeries, IntervalBarSeries and TornadoBarSeries work correctly in transposed mode (#1402)
 - OxyPlot.WindowsForms package description (#1457)
+- Custom tracker strings can cause exception in histogram chart (#1455)
 
 ## [2.0.0] - 2019-10-19
 ### Added 
