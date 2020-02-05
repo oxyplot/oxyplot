@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
@@ -128,17 +129,25 @@ namespace ExampleGenerator
 
         private static async Task OptimizePngWithTruePNG(string pngFile)
         {
-            var truePngExecutable = Path.GetFullPath("TruePNG.exe");
             // /o max : optimization level
             // /nc : don't change ColorType and BitDepth
             // /md keep pHYs : keep pHYs metadata
-            var psi = new ProcessStartInfo(truePngExecutable, pngFile + " /o max /nc /md keep pHYs")
+            var psi = new ProcessStartInfo("TruePNG.exe", pngFile + " /o max /nc /md keep pHYs")
             {
                 CreateNoWindow = true,
                 WindowStyle = ProcessWindowStyle.Hidden
             };
-            var p = Process.Start(psi);
-            await Task.Run(() => p.WaitForExit());
+            try
+            {
+                var p = Process.Start(psi);
+                await Task.Run(() => p.WaitForExit());
+            }
+            catch (Win32Exception e)
+            {
+                throw new Win32Exception(
+                    "Failed to run TruePNG optimization. Please ensure that TruePNG is installed and registered in the PATH variable.",
+                    e);
+            }
         }
 
         private static async Task OptimizePngWithOptiPNG(string pngFile)
