@@ -9,8 +9,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Examples\ExampleLibrary\ExampleLibrary.csproj" />
-      <ProjectReference Include="..\OxyPlot.WindowsForms\OxyPlot.WindowsForms.csproj" />
+      <ProjectReference Include="..\..\OxyPlot.WindowsForms\OxyPlot.WindowsForms.csproj" />
+      <ProjectReference Include="..\ExampleLibrary\ExampleLibrary.csproj" />
     </ItemGroup>
     <!--<ItemGroup>
         <Content Include="..\TruePNG\TruePNG.exe">
