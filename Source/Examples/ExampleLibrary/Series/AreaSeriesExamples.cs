@@ -16,6 +16,7 @@ namespace ExampleLibrary
     public static class AreaSeriesExamples
     {
         [Example("Default style")]
+        [DocumentationExample("Series/AreaSeries")]
         public static PlotModel DefaultStyle()
         {
             var plotModel1 = new PlotModel { Title = "AreaSeries with default style" };

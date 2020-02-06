@@ -15,6 +15,7 @@ namespace ExampleLibrary
     public class ErrorBarSeriesExamples
     {
         [Example("ErrorBarSeries")]
+        [DocumentationExample("Series/ErrorBarSeries")]
         public static PlotModel GetErrorBarSeries()
         {
             var model = new PlotModel

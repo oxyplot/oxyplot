@@ -23,6 +23,7 @@ namespace ExampleLibrary
         private static readonly Random Randomizer = new Random(13);
 
         [Example("Default style")]
+        [DocumentationExample("Series/LineSeries")]
         public static PlotModel DefaultStyle()
         {
             var model = new PlotModel { Title = "LineSeries with default style" };

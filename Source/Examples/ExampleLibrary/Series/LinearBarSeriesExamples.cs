@@ -12,6 +12,7 @@
         //private static readonly Random Randomizer = new Random(13);
 
         [Example("Default style")]
+        [DocumentationExample("Series/LinearBarSeries")]
         public static PlotModel DefaultStyle()
         {
             var model = new PlotModel { Title = "LinearBarSeries with default style" };

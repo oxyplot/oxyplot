@@ -68,6 +68,7 @@ namespace ExampleLibrary
         /// </summary>
         /// <returns>A <see cref="PlotModel" />.</returns>
         [Example("Temperatures ver2")]
+        [DocumentationExample("Series/TwoColorAreaSeries")]
         public static PlotModel TwoColorAreaSeries2()
         {
             var model = new PlotModel { Title = "TwoColorAreaSeries" };

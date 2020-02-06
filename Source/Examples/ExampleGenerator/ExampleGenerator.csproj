@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.0</TargetFramework>
+        <!--<UseWindowsForms>true</UseWindowsForms>-->
+        <OutputType>Exe</OutputType>
+        <ApplicationIcon />
+        <StartupObject />
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\OxyPlot.WindowsForms\OxyPlot.WindowsForms.csproj" />
+      <ProjectReference Include="..\ExampleLibrary\ExampleLibrary.csproj" />
+    </ItemGroup>
+    <!--<ItemGroup>
+        <Content Include="..\TruePNG\TruePNG.exe">
+            <Link>TruePNG.exe</Link>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>-->
+
+</Project>

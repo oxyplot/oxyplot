@@ -158,6 +158,7 @@ namespace ExampleLibrary
         }
 
         [Example("Limaçon of Pascal")]
+        [DocumentationExample("Series/FunctionSeries")]
         public static PlotModel LimaconOfPascal()
         {
             // http://en.wikipedia.org/wiki/Lima%C3%A7on

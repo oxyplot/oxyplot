@@ -15,6 +15,7 @@ namespace ExampleLibrary
     public static class IntervalBarSeriesExamples
     {
         [Example("IntervalBarSeries")]
+        [DocumentationExample("Series/IntervalBarSeries")]
         public static PlotModel IntervalBarSeries()
         {
             var model = new PlotModel { Title = "IntervalBarSeries" };

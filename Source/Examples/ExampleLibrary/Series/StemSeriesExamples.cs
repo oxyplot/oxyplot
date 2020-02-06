@@ -22,6 +22,7 @@ namespace ExampleLibrary
     public static class StemSeriesExamples
     {
         [Example("StemSeries")]
+        [DocumentationExample("Series/StemSeries")]
         public static PlotModel StemSeries()
         {
             return CreateExampleModel(new StemSeries

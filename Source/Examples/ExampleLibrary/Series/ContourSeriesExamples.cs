@@ -36,6 +36,7 @@ namespace ExampleLibrary
         }
 
         [Example("Peaks (different contour colors)")]
+        [DocumentationExample("Series/ContourSeries")]
         public static PlotModel PeaksWithColors()
         {
             var model = new PlotModel { Title = "Peaks" };
