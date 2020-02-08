@@ -21,7 +21,7 @@ namespace ExampleLibrary
     [Examples("Z1 Issues")]
     public class Issues
     {
-        [Example("#1095: Issue 1095")]
+        [Example("#1095: Issue 1095 Part 1")]
         public static PlotModel IssueHalfPolarReversedAxesPart1()
         {
             var plotModel = new PlotModel { Title = "", };
@@ -50,7 +50,7 @@ namespace ExampleLibrary
             return plotModel;
         }
 
-        [Example("#1095: Issue 1095")]
+        [Example("#1095: Issue 1095 Part 2")]
         public static PlotModel IssueHalfPolarReversedAxesPart2()
         {
             var plotModel = new PlotModel { Title = "", };
