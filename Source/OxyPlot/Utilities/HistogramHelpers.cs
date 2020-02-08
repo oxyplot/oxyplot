@@ -15,7 +15,6 @@ namespace OxyPlot
 
     using OxyPlot.Series;
 
-#if !NET40
     /// <summary>
     /// Provides methods to collect data samples into bins for use with a <see cref="HistogramSeries" />.
     /// </summary>
@@ -27,8 +26,8 @@ namespace OxyPlot
         /// <param name="start">The inclusive lower-bound of the first bin.</param>
         /// <param name="end">The exclusive upper-bound of the last bin, which must be strictly greater than <paramred name="start" />.</param>
         /// <param name="binCount">The number of bins to create.</param>
-        /// <returns>An <see cref="IReadOnlyList{T}"/> containing the breaks between bins of uniform size.</returns>
-        public static IReadOnlyList<double> CreateUniformBins(double start, double end, int binCount)
+        /// <returns>An <see cref="List{T}"/> containing the breaks between bins of uniform size.</returns>
+        public static List<double> CreateUniformBins(double start, double end, int binCount)
         {
             if (binCount < 1)
             {
@@ -73,7 +72,7 @@ namespace OxyPlot
         /// <param name="binBreaks">The start and end values for the bins.</param>
         /// <param name="binningOptions">The binning options to use.</param>
         /// <returns>A list of <see cref="HistogramItem" /> corresponding to the generated bins with areas computed from the proportion of samples placed within.</returns>
-        public static IList<HistogramItem> Collect(IEnumerable<double> samples, IReadOnlyList<double> binBreaks, BinningOptions binningOptions)
+        public static IList<HistogramItem> Collect(IEnumerable<double> samples, IEnumerable<double> binBreaks, BinningOptions binningOptions)
         {
             if (samples is null)
             {
@@ -104,7 +103,7 @@ namespace OxyPlot
             }
 
             // count and assign samples to bins
-            int[] counts = new int[binBreaks.Count - 1];
+            int[] counts = new int[orderedBreaks.Count - 1];
             long total = 0;
 
             foreach (double sample in samples)
@@ -191,14 +190,13 @@ namespace OxyPlot
             // create actual items
             List<HistogramItem> items = new List<HistogramItem>(counts.Length);
 
-            for (int i = 0; i < binBreaks.Count - 1; i++)
+            for (int i = 0; i < orderedBreaks.Count - 1; i++)
             {
                 int count = counts[i];
-                items.Add(new HistogramItem(binBreaks[i], binBreaks[i + 1], (double)count / total, count));
+                items.Add(new HistogramItem(orderedBreaks[i], orderedBreaks[i + 1], (double)count / total, count));
             }
 
             return items;
         }
     }
-#endif
 }
