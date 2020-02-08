@@ -15,6 +15,7 @@ namespace OxyPlot
 
     using OxyPlot.Series;
 
+#if !NET40
     /// <summary>
     /// Provides methods to collect data samples into bins for use with a <see cref="HistogramSeries" />.
     /// </summary>
@@ -199,4 +200,5 @@ namespace OxyPlot
             return items;
         }
     }
+#endif
 }
