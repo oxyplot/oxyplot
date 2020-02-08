@@ -22,6 +22,12 @@ namespace OxyPlot.Tests
             Assert.AreEqual(OxyColors.Red, OxyColor.Parse("#FFFF0000"));
             Assert.AreEqual(OxyColors.Red, OxyColor.Parse("255,0,0"));
             Assert.AreEqual(OxyColors.Red, OxyColor.Parse("255,255,0,0"));
+            Assert.AreEqual(OxyColors.Undefined, OxyColor.Parse(null));
+            Assert.AreEqual(OxyColors.Undefined, OxyColor.Parse("None"));
+            Assert.AreEqual(OxyColors.Automatic, OxyColor.Parse("Auto"));
+            Assert.AreEqual(OxyColors.Undefined, OxyColor.Parse("#00000000"));
+            Assert.AreEqual(OxyColors.Automatic, OxyColor.Parse("#00000001"));
+            Assert.AreEqual(OxyColors.White, OxyColor.Parse("#FFF"));
         }
 
         [Test]
@@ -113,6 +119,8 @@ namespace OxyPlot.Tests
         public new void ToString()
         {
             Assert.AreEqual("#ffff0000", OxyColors.Red.ToString());
+            Assert.AreEqual("#00000001", OxyColors.Automatic.ToString());
+            Assert.AreEqual("#00000000", OxyColors.Undefined.ToString());
         }
 
         [Test]

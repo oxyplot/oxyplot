@@ -108,10 +108,26 @@ namespace OxyPlot
         /// <exception cref="System.FormatException">Invalid format.</exception>
         public static OxyColor Parse(string value)
         {
+            if (value == null || string.Equals(value, "none", StringComparison.OrdinalIgnoreCase))
+            {
+                return OxyColors.Undefined;
+            }
+
+            if (string.Equals(value, "auto", StringComparison.OrdinalIgnoreCase))
+            {
+                return OxyColors.Automatic;
+            }
+
             value = value.Trim();
             if (value.StartsWith("#"))
             {
                 value = value.Trim('#');
+                if (value.Length == 3)
+                {
+                    // replicate digits
+                    value = string.Format("{0}{0}{1}{1}{2}{2}", value[0], value[1], value[2]);
+                }
+
                 var u = uint.Parse(value, NumberStyles.HexNumber, CultureInfo.InvariantCulture);
                 if (value.Length < 8)
                 {
@@ -461,7 +477,7 @@ namespace OxyPlot
         {
             return this.IsAutomatic() ? defaultColor : this;
         }
- 
+
         /// <summary>
         /// Returns C# code that generates this instance.
         /// </summary>
