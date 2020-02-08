@@ -21,6 +21,64 @@ namespace ExampleLibrary
     [Examples("Z1 Issues")]
     public class Issues
     {
+        [Example("#1095: Issue 1095 Part 1")]
+        public static PlotModel IssueHalfPolarReversedAxesPart1()
+        {
+            var plotModel = new PlotModel { Title = "", };
+            plotModel.PlotType = OxyPlot.PlotType.Polar;
+            plotModel.Axes.Add(
+                new AngleAxis()
+                {
+                    MajorGridlineStyle = LineStyle.Solid,
+                    MinorGridlineStyle = LineStyle.Dot,
+                    MajorStep = 30,
+                    MinorStep = 10,
+                    CropGridlines = false,
+                    StartAngle = 270 + 360,
+                    EndAngle = 270,
+                    Minimum = -180,
+                    Maximum = +180,
+                    LabelFormatter = (d) => d.ToString("F0")
+                });
+            plotModel.Axes.Add(
+                new MagnitudeAxis()
+                {
+                    MajorGridlineStyle = LineStyle.Solid,
+                    MinorGridlineStyle = LineStyle.Solid,
+                });
+
+            return plotModel;
+        }
+
+        [Example("#1095: Issue 1095 Part 2")]
+        public static PlotModel IssueHalfPolarReversedAxesPart2()
+        {
+            var plotModel = new PlotModel { Title = "", };
+            plotModel.PlotType = OxyPlot.PlotType.Polar;
+            plotModel.Axes.Add(
+                new AngleAxis()
+                {
+                    MajorGridlineStyle = LineStyle.Solid,
+                    MinorGridlineStyle = LineStyle.Dot,
+                    MajorStep = 30,
+                    MinorStep = 10,
+                    CropGridlines = false,
+                    StartAngle = 180,
+                    EndAngle = 0,
+                    Minimum = -90,
+                    Maximum = +90,
+                    LabelFormatter = (d) => d.ToString("F0")
+                });
+            plotModel.Axes.Add(
+                new MagnitudeAxis()
+                {
+                    MajorGridlineStyle = LineStyle.Solid,
+                    MinorGridlineStyle = LineStyle.Solid,
+                });
+
+            return plotModel;
+        }
+
         [Example("#91 AxisTitleDistance")]
         public static PlotModel AxisTitleDistance()
         {
