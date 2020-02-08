@@ -2105,6 +2105,81 @@ namespace ExampleLibrary
             return plot;
         }
 
+        [Example("#1441: Zero crossing quadrant axes disappear on zoom and pan")]
+        public static PlotModel ZeroCrossingQuadrantAxes()
+        {
+            var plot = new PlotModel() { Title = "Zoom or Pan axes to make them disappear" };
+
+            var xaxis = new LinearAxis
+            {
+                Position = AxisPosition.Top,
+                PositionTier = 0,
+                AxislineStyle = LineStyle.Solid,
+                Minimum = 0,
+                AxislineColor = OxyColors.Red,
+                StartPosition = 0.5,
+                EndPosition = 1,
+                PositionAtZeroCrossing = true,
+                AbsoluteMinimum = 0,
+                Title = "ABC",
+
+            };
+            plot.Axes.Add(xaxis);
+
+            var xaxis2 = new LinearAxis
+            {
+                Position = AxisPosition.Top,
+                PositionTier = 0,
+                AxislineStyle = LineStyle.Solid,
+                Minimum = 0,
+                AxislineColor = OxyColors.Gold,
+                StartPosition = 0.5,
+                EndPosition = 0,
+                PositionAtZeroCrossing = true,
+                IsAxisVisible = true,
+                AbsoluteMinimum = 0,
+                Title = "DCS",
+
+            };
+            plot.Axes.Add(xaxis2);
+
+            var yaxis = new LinearAxis
+            {
+                Position = AxisPosition.Left,
+                AxislineStyle = LineStyle.Solid,
+                Minimum = 0,
+                AxislineColor = OxyColors.Green,
+                PositionTier = 0,
+                StartPosition = 0.5,
+                EndPosition = 1,
+                PositionAtZeroCrossing = true,
+                AbsoluteMinimum = 0,
+                AbsoluteMaximum = 1000,
+                Title = "DSDC",
+
+            };
+            plot.Axes.Add(yaxis);
+
+            var yaxis2 = new LinearAxis
+            {
+                Position = AxisPosition.Right,
+                AxislineStyle = LineStyle.Solid,
+                Minimum = 0,
+                AxislineColor = OxyColors.Violet,
+                PositionTier = 0,
+                StartPosition = 0.5,
+                EndPosition = 0,
+                PositionAtZeroCrossing = true,
+                AbsoluteMinimum = 0,
+
+            };
+            plot.Axes.Add(yaxis2);
+
+            plot.PlotAreaBorderThickness = new OxyThickness(1, 1, 1, 1);
+
+            return plot;
+        }
+
         private class TimeSpanPoint
         {
             public TimeSpan X { get; set; }
