@@ -148,7 +148,7 @@ namespace OxyPlot
         public virtual int GetElementHashCode()
         {
 #if NET40
-            var properties = this.GetType().GetProperties(BindingFlags.Public|BindingFlags.Instance);
+            var properties = this.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
 #else
             // Get the values of all properties in the object (this is slow, any better ideas?)
             var properties = this.GetType().GetRuntimeProperties().Where(pi => pi.GetMethod.IsPublic && !pi.GetMethod.IsStatic);
