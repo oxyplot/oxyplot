@@ -60,6 +60,7 @@ All notable changes to this project will be documented in this file.
 - Support for transposed (X and Y axis switched) plots with XYAxisSeries (#1334)
 - Color property on HistogramItem (#1347)
 - Count property on HistogramSeries (#1347)
+- Bug in HistogramHelpers.Collect when using out-of-order bin breaks (#1476)
 
 ### Changed
 - OxyPlot.Core changed to target netstandard 1.0 and net45 (#946, #1147)

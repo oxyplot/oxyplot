@@ -190,8 +190,24 @@ namespace OxyPlot.Tests
 
             foreach (var binningMode in new[] { BinningOutlierMode.CountOutliers, BinningOutlierMode.IgnoreOutliers })
             {
-                var binningOptions = new BinningOptions(BinningOutlierMode.IgnoreOutliers, BinningIntervalType.InclusiveLowerBound, BinningExtremeValueMode.ExcludeExtremeValues);
+                var binningOptions = new BinningOptions(binningMode, BinningIntervalType.InclusiveLowerBound, BinningExtremeValueMode.ExcludeExtremeValues);
                 TestCollect(emptySample, breaks, expectedCounts, expectedAreas, binningOptions);
+            }
+        }
+
+        [Test]
+        public void Collect_OutOfOrderBinBreaks()
+        {
+            // binBreaks should be ordered by Collect
+            var sample = new double[] { 2, 3, 9, 8, 7 };
+            var outOfOrderBreaks = new double[] { 0.0, 10.0, 5.0, 15.0 };
+            var expectedCounts = new int[] { 2, 3, 0 };
+            var expectedAreas = new double[] { 0.4, 0.6, 0.0 };
+
+            foreach (var binningMode in new[] { BinningOutlierMode.CountOutliers, BinningOutlierMode.IgnoreOutliers })
+            {
+                var binningOptions = new BinningOptions(binningMode, BinningIntervalType.InclusiveLowerBound, BinningExtremeValueMode.ExcludeExtremeValues);
+                TestCollect(sample, outOfOrderBreaks, expectedCounts, expectedAreas, binningOptions);
             }
         }
 
@@ -207,7 +223,7 @@ namespace OxyPlot.Tests
 
             foreach (var binningMode in new[] { BinningOutlierMode.CountOutliers, BinningOutlierMode.IgnoreOutliers })
             {
-                var binningOptions = new BinningOptions(BinningOutlierMode.IgnoreOutliers, BinningIntervalType.InclusiveLowerBound, BinningExtremeValueMode.ExcludeExtremeValues);
+                var binningOptions = new BinningOptions(binningMode, BinningIntervalType.InclusiveLowerBound, BinningExtremeValueMode.ExcludeExtremeValues);
                 TestCollect(outlierSamples, breaks, expectedCounts, expectedAreas, binningOptions);
             }
         }
