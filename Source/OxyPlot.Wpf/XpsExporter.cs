@@ -9,6 +9,7 @@
 
 namespace OxyPlot.Wpf
 {
+#if !NET40
     using System.IO;
     using System.IO.Packaging;
     using System.Printing;
@@ -152,4 +153,5 @@ namespace OxyPlot.Wpf
             writer.Write(canvas);
         }
     }
+#endif
 }
