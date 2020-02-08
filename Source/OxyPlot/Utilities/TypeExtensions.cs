@@ -27,8 +27,7 @@ namespace OxyPlot
         public static PropertyInfo GetRuntimeProperty(this Type type, string name)
         {
 #if NET40
-            var source = type.GetProperties();
-
+            var source = type.GetProperties(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance);
 #else
             var typeInfo = type.GetTypeInfo();
             var source = typeInfo.AsType().GetRuntimeProperties();
