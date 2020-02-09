@@ -15,7 +15,7 @@ namespace OxyPlot.Wpf
     /// <summary>
     /// Represents a control that displays a <see cref="PlotModel" />.
     /// </summary>
-    public partial class PlotBase
+    public abstract partial class PlotBase
     {
         /// <summary>
         /// Called before the <see cref="E:System.Windows.UIElement.KeyDown" /> event occurs.
