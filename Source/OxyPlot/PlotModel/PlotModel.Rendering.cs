@@ -11,7 +11,6 @@ namespace OxyPlot
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
     using OxyPlot.Annotations;
@@ -19,7 +18,9 @@ namespace OxyPlot
     using OxyPlot.Series;
     using OxyPlot.Legends;
 
-    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1601:PartialElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
+    /// <summary>
+    /// Represents a plot.
+    /// </summary>
     public partial class PlotModel
     {
         /// <summary>

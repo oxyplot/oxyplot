@@ -10,7 +10,7 @@
 namespace OxyPlot
 {
     /// <summary>
-    /// Defines the mode of selection used by <see cref="SelectableElement" />.
+    /// Defines the mode of selection used by <see cref="Element.SelectionMode" />.
     /// </summary>
     public enum SelectionMode
     {

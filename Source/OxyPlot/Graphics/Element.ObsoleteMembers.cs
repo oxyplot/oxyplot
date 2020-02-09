@@ -12,10 +12,9 @@ namespace OxyPlot
     using System;
 
     /// <summary>
-    /// Provides an abstract base class for elements that handle mouse events.
+    /// Provides an abstract base class for graphics elements.
     /// </summary>
-    // ReSharper disable once InconsistentNaming
-    public abstract class UIElement : SelectableElement
+    public abstract partial class Element
     {
         /// <summary>
         /// Occurs when a key is pressed down when the plot view is in focus.
@@ -58,18 +57,6 @@ namespace OxyPlot
         /// </summary>
         [Obsolete("Will be removed in v4.0 (#111)")]
         public event EventHandler<OxyTouchEventArgs> TouchCompleted;
-
-        /// <summary>
-        /// Tests if the plot element is hit by the specified point.
-        /// </summary>
-        /// <param name="args">The hit test arguments.</param>
-        /// <returns>
-        /// A hit test result.
-        /// </returns>
-        public HitTestResult HitTest(HitTestArguments args)
-        {
-            return this.HitTestOverride(args);
-        }
 
         /// <summary>
         /// Raises the <see cref="MouseDown" /> event.
@@ -167,18 +154,6 @@ namespace OxyPlot
             {
                 handler(this, e);
             }
-        }
-
-        /// <summary>
-        /// When overridden in a derived class, tests if the plot element is hit by the specified point.
-        /// </summary>
-        /// <param name="args">The hit test arguments.</param>
-        /// <returns>
-        /// The result of the hit test.
-        /// </returns>
-        protected virtual HitTestResult HitTestOverride(HitTestArguments args)
-        {
-            return null;
         }
     }
 }

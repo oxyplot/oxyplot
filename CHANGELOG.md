@@ -3,44 +3,37 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
-### Changed
-- Made legends open for extension (#644)
-- Added Oxyplot.Legends namespace
-- Added abstract base class LegendBase
-- Added default implementation Legend and Legend.Rendering
-- Added Legends ElementCollection to PlotModel
-- PlotModel now accommodate multiple Legends, although same positions as before. Legends sharing position are placed on top of eachother
-- Made Legend Items clickable to toggle series visibility
-- Added properties LegendKey and SeriesGroupName to Series, allowing grouping series between multiple legends and/or within same legend
-- Remove PlotModel.Legends
-- Default behaviour is now plot without Legend.
-- Generate documentation images from ExampleLibrary
-
 ### Added
+- Made Legend Items clickable to toggle series visibility (#644)
+- Added properties LegendKey and SeriesGroupName to Series, allowing grouping series between multiple legends and/or within same legend (#644)
 - OxyPlot.ImageSharp (#1188)
 - WPF ExampleBrowser can display transposed versions of examples (#1402)
 - Support for transposable Annotations (#1417)
 - Support for NET40 (#1452)
 
 ### Changed
-- Moved reporting functionality to separate projects (#1403)
-- Moved reporting functionality to oxyplot-reporting repository (#1403)
+- Legends model (#644)
+- Default behaviour is now plot without Legend (#644)
 - Moved WPF Plot component to Oxyplot.Contrib.Wpf (#1399)
 - ErrorColumnSeries changed to ErrorBarSeries, also works in transposed mode (#1402)
+- Moved reporting functionality to separate projects (#1403)
+- Moved reporting functionality to oxyplot-reporting repository (#1403)
 - Change IPlotModel.Render to take an OxyRect (#1425)
+- Merge UIElement and SelectableElement into Element (#1426)
 
 ### Removed
-- Copy to text report Ctrl+Alt+R (#1403)
+- Remove PlotModel.Legends (#644)
 - ColumnSeries - functionality is replaced by transposed BarSeries (#1402)
+- Copy to text report Ctrl+Alt+R (#1403)
 - Remove exporter Background properties (#1409)
 - Remove OxyThickness Width and Height properties (#1429)
 
 ### Fixed
 - Legend font size is not affected by DefaultFontSize (#1396)
-- Exception when rendering polygon with no points (#1410)
 - ErrorBarSeries, IntervalBarSeries and TornadoBarSeries work correctly in transposed mode (#1402)
-- OxyPlot.WindowsForms package description (#1457)
+- Exception when rendering polygon with no points (#1410)
 - Custom tracker strings can cause exception in histogram chart (#1455)
+- OxyPlot.WindowsForms package description (#1457)
 
 ## [2.0.0] - 2019-10-19
 ### Added 
