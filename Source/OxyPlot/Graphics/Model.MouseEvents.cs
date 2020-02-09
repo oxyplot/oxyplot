@@ -24,12 +24,12 @@ namespace OxyPlot
         /// <summary>
         /// The element that receives mouse move events.
         /// </summary>
-        private UIElement currentMouseEventElement;
+        private Element currentMouseEventElement;
 
         /// <summary>
         /// The element that receives touch delta events.
         /// </summary>
-        private UIElement currentTouchEventElement;
+        private Element currentTouchEventElement;
 
         /// <summary>
         /// Occurs when a key is pressed down when the plot view is focused.

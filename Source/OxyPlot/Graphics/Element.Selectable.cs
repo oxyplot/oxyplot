@@ -13,23 +13,14 @@ namespace OxyPlot
     using System.Collections.Generic;
 
     /// <summary>
-    /// Provides an abstract base class for elements that support selection.
+    /// Provides an abstract base class for graphics elements.
     /// </summary>
-    public abstract class SelectableElement : Element
+    public abstract partial class Element 
     {
         /// <summary>
         /// The selection
         /// </summary>
         private Selection selection;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SelectableElement" /> class.
-        /// </summary>
-        protected SelectableElement()
-        {
-            this.Selectable = true;
-            this.SelectionMode = SelectionMode.All;
-        }
 
         /// <summary>
         /// Occurs when the selected items is changed.
@@ -40,14 +31,14 @@ namespace OxyPlot
         /// <summary>
         /// Gets or sets a value indicating whether this element can be selected. The default is <c>true</c>.
         /// </summary>
-        public bool Selectable { get; set; }
+        public bool Selectable { get; set; } = true;
 
         /// <summary>
         /// Gets or sets the selection mode of items in this element. The default is <c>SelectionMode.All</c>.
         /// </summary>
         /// <value>The selection mode.</value>
         /// <remarks>This is only used by the select/unselect functionality, not by the rendering.</remarks>
-        public SelectionMode SelectionMode { get; set; }
+        public SelectionMode SelectionMode { get; set; } = SelectionMode.All;
 
 #if X
         // Not yet implemented - must make sure that Selection.Everything is not modified...

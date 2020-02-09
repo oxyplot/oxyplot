@@ -21,7 +21,7 @@ namespace OxyPlot
         /// <param name="nearestHitPoint">The nearest hit point.</param>
         /// <param name="item">The item.</param>
         /// <param name="index">The index.</param>
-        public HitTestResult(UIElement element, ScreenPoint nearestHitPoint, object item = null, double index = 0)
+        public HitTestResult(Element element, ScreenPoint nearestHitPoint, object item = null, double index = 0)
         {
             this.Element = element;
             this.NearestHitPoint = nearestHitPoint;
@@ -48,7 +48,7 @@ namespace OxyPlot
         /// <value>
         /// The element.
         /// </value>
-        public UIElement Element { get; private set; }
+        public Element Element { get; private set; }
 
         /// <summary>
         /// Gets the position of the nearest hit point.
