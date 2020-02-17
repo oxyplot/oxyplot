@@ -14,7 +14,7 @@ namespace OxyPlot.Wpf
     /// <summary>
     /// Represents a control that displays a <see cref="PlotModel" />.
     /// </summary>
-    public partial class PlotBase
+    public abstract partial class PlotBase
     {
         /// <summary>
         /// Saves the PlotView as a bitmap.

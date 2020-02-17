@@ -16,7 +16,7 @@ namespace OxyPlot.Wpf
     /// <summary>
     /// Represents a control that displays a <see cref="PlotModel" />.
     /// </summary>
-    public partial class PlotBase
+    public abstract partial class PlotBase
     {
         /// <summary>
         /// Identifies the <see cref="DefaultTrackerTemplate"/> dependency property.

@@ -14,7 +14,7 @@ namespace OxyPlot
     /// <summary>
     /// Provides an abstract base class for graphics models.
     /// </summary>
-    public partial class Model
+    public abstract partial class Model
     {
         /// <summary>
         /// The mouse hit tolerance.
