@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 - WPF ExampleBrowser can display transposed versions of examples (#1402)
 - Support for transposable Annotations (#1417)
 - Support for NET40 (#1452)
+- Support for high DPI for WPF (#149)
 
 ### Changed
 - Legends model (#644)

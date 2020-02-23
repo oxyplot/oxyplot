@@ -576,6 +576,9 @@ namespace OxyPlot.Wpf
 
             if (this.ActualModel != null)
             {
+                // must be invoked before canvas disconnection
+                this.renderContext.UpdateState();
+
                 if (this.DisconnectCanvasWhileUpdating)
                 {
                     // TODO: profile... not sure if this makes any difference
