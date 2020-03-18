@@ -34,6 +34,7 @@ All notable changes to this project will be documented in this file.
 - Exception when rendering polygon with no points (#1410)
 - Custom tracker strings can cause exception in histogram chart (#1455)
 - OxyPlot.WindowsForms package description (#1457)
+- NullReference in VolumeSeries if no data in Items list (#1491)
 
 ## [2.0.0] - 2019-10-19
 ### Added 
