@@ -20,6 +20,7 @@ All notable changes to this project will be documented in this file.
 - Moved reporting functionality to oxyplot-reporting repository (#1403)
 - Change IPlotModel.Render to take an OxyRect (#1425)
 - Merge UIElement and SelectableElement into Element (#1426)
+- Upgrade to .NET Core 3.1 (#1488)
 
 ### Removed
 - Remove PlotModel.Legends (#644)
