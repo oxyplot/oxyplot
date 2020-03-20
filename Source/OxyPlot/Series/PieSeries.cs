@@ -253,7 +253,7 @@ namespace OxyPlot.Series
         {
             this.slicePoints.Clear();
 
-            if (this.Slices.Count == 0)
+            if (this.slices.Count == 0)
             {
                 return;
             }
@@ -274,8 +274,9 @@ namespace OxyPlot.Series
             var midPoint = new ScreenPoint(
                 (this.PlotModel.PlotArea.Left + this.PlotModel.PlotArea.Right) * 0.5, (this.PlotModel.PlotArea.Top + this.PlotModel.PlotArea.Bottom) * 0.5);
 
-            foreach (var slice in this.slices)
+            for (int i = 0; i < this.slices.Count; ++i)
             {
+                var slice = slices[i];
                 var outerPoints = new List<ScreenPoint>();
                 var innerPoints = new List<ScreenPoint>();
 
@@ -439,11 +440,11 @@ namespace OxyPlot.Series
         /// </summary>
         protected internal override void SetDefaultValues()
         {
-            foreach (var slice in this.Slices)
+            for (int i = 0; i < this.slices.Count; ++i)
             {
-                if (slice.Fill.IsAutomatic())
+                if (slices[i].Fill.IsAutomatic())
                 {
-                    slice.DefaultFillColor = this.PlotModel.GetDefaultColor();
+                    slices[i].DefaultFillColor = this.PlotModel.GetDefaultColor();
                 }
             }
         }
@@ -473,7 +474,7 @@ namespace OxyPlot.Series
             filler.Add(this.ColorField, OxyColors.Automatic);
             filler.Add(this.IsExplodedField, false);
             filler.FillT(
-                this.slices, 
+                this.slices,
                 this.ItemsSource,
                 args =>
                 new PieSlice((string)args[0], Convert.ToDouble(args[1]))

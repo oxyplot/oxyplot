@@ -299,10 +299,11 @@ namespace OxyPlot.Series
         /// <param name="rc">The rendering context.</param>
         /// <param name="clippingRect">The clipping rectangle.</param>
         /// <param name="items">The Items to render.</param>
-        protected void RenderBins(IRenderContext rc, OxyRect clippingRect, ICollection<HistogramItem> items)
+        protected void RenderBins(IRenderContext rc, OxyRect clippingRect, List<HistogramItem> items)
         {
-            foreach (var item in items)
+            for (int i = 0; i < items.Count; ++i)
             {
+                var item = items[i];
                 var actualFillColor = this.GetItemFillColor(item);
 
                 // transform the data points to screen points

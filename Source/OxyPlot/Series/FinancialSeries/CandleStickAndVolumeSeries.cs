@@ -632,8 +632,10 @@ namespace OxyPlot.Series
             var nvol = 0.0;
             var cumvol = 0.0;
 
-            foreach (var bar in this.Items)
+            var items = this.Items;
+            for (int i = 0; i < items.Count; ++i)
             {
+                var bar = items[i];
                 if (!bar.IsValid())
                 {
                     continue;

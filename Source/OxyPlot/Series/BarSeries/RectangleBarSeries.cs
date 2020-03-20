@@ -175,7 +175,8 @@ namespace OxyPlot.Series
             }
 
             int clipCount = 0;
-            for (int i = startIdx; i < this.Items.Count; i++){
+            for (int i = startIdx; i < this.Items.Count; i++)
+            {
                 var item = this.Items[i];
                 if (!this.IsValid(item.X0) || !this.IsValid(item.X1)
                     || !this.IsValid(item.Y0) || !this.IsValid(item.Y1))
@@ -293,7 +294,8 @@ namespace OxyPlot.Series
 
             this.IsXMonotonic = true;
 
-            if (this.Items == null || this.Items.Count == 0)
+            var items = this.Items;
+            if (items == null || items.Count == 0)
             {
                 return;
             }
@@ -305,8 +307,10 @@ namespace OxyPlot.Series
 
             double lastX0 = double.MinValue;
             double lastX1 = double.MinValue;
-            foreach (var item in this.Items)
+
+            for (int i = 0; i < items.Count; ++i)
             {
+                var item = items[i];
                 if (item.X0 < lastX0 || item.X1 < lastX1)
                 {
                     this.IsXMonotonic = false;

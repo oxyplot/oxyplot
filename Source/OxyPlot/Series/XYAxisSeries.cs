@@ -276,7 +276,7 @@ namespace OxyPlot.Series
         /// <param name="point">The point (screen coordinates).</param>
         /// <returns>A <see cref="TrackerHitResult" /> if a point was found, <c>null</c> otherwise.</returns>
         /// <remarks>The Text property of the result will not be set, since the formatting depends on the various series.</remarks>
-        protected TrackerHitResult GetNearestPointInternal(IEnumerable<DataPoint> points, ScreenPoint point)
+        protected TrackerHitResult GetNearestPointInternal(List<DataPoint> points, ScreenPoint point)
         {
             return this.GetNearestPointInternal(points, 0, point);
         }
@@ -289,34 +289,30 @@ namespace OxyPlot.Series
         /// <param name="point">The point (screen coordinates).</param>
         /// <returns>A <see cref="TrackerHitResult" /> if a point was found, <c>null</c> otherwise.</returns>
         /// <remarks>The Text property of the result will not be set, since the formatting depends on the various series.</remarks>
-        protected TrackerHitResult GetNearestPointInternal(IEnumerable<DataPoint> points, int startIdx, ScreenPoint point)
+        protected TrackerHitResult GetNearestPointInternal(List<DataPoint> points, int startIdx, ScreenPoint point)
         {
             var spn = default(ScreenPoint);
             var dpn = default(DataPoint);
             double index = -1;
 
             double minimumDistance = double.MaxValue;
-            int i = 0;
-            foreach (var p in points.Skip(startIdx))
+            for (int i = startIdx; i < points.Count; ++i)
             {
-                if (!this.IsValidPoint(p))
+                if (!this.IsValidPoint(points[i]))
                 {
-                    i++;
                     continue;
                 }
 
-                var sp = this.Transform(p.x, p.y);
+                var sp = this.Transform(points[i].x, points[i].y);
                 double d2 = (sp - point).LengthSquared;
 
                 if (d2 < minimumDistance)
                 {
-                    dpn = p;
+                    dpn = points[i];
                     spn = sp;
                     minimumDistance = d2;
-                    index = i;
+                    index = i - startIdx;
                 }
-
-                i++;
             }
 
             if (minimumDistance < double.MaxValue)
@@ -404,13 +400,13 @@ namespace OxyPlot.Series
             }
 
             double lastX = double.MinValue;
-            foreach (var pt in points)
+            for (int i = 0; i < points.Count; ++i)
             {
-                double x = pt.X;
-                double y = pt.Y;
+                double x = points[i].X;
+                double y = points[i].Y;
 
                 // Check if the point is valid
-                if (!this.IsValidPoint(pt))
+                if (!this.IsValidPoint(points[i]))
                 {
                     continue;
                 }
@@ -532,10 +528,10 @@ namespace OxyPlot.Series
             }
 
             double lastX = double.MinValue;
-            foreach (var item in items)
+            for (int i = 0; i < items.Count; ++i)
             {
-                double x = xf(item);
-                double y = yf(item);
+                double x = xf(items[i]);
+                double y = yf(items[i]);
 
                 // Check if the point is valid
                 if (!this.IsValidPoint(x, y))
@@ -643,12 +639,12 @@ namespace OxyPlot.Series
 
             double lastX0 = double.MinValue;
             double lastX1 = double.MinValue;
-            foreach (var item in items)
+            for (int i = 0; i < items.Count; ++i)
             {
-                double x0 = xmin(item);
-                double x1 = xmax(item);
-                double y0 = ymin(item);
-                double y1 = ymax(item);
+                double x0 = xmin(items[i]);
+                double x1 = xmax(items[i]);
+                double y0 = ymin(items[i]);
+                double y1 = ymax(items[i]);
 
                 if (!this.IsValidPoint(x0, y0) || !this.IsValidPoint(x1, y1))
                 {

@@ -112,7 +112,7 @@ namespace OxyPlot.Series
         /// </summary>
         /// <value>The color.</value>
         public OxyColor NegativeFillColor { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the stack index indication to which stack the series belongs. Default is 0. Hence, all stacked series belong to the same stack.
         /// </summary>
@@ -168,15 +168,15 @@ namespace OxyPlot.Series
         /// <returns>A TrackerHitResult for the current hit.</returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
-            if (this.ActualBarRectangles == null || this.ValidItems == null)
+            var rectangles = this.ActualBarRectangles;
+            if (rectangles == null || this.ValidItems == null)
             {
                 return null;
             }
 
-            var i = 0;
-            foreach (var rectangle in this.ActualBarRectangles)
+            for (int i = 0; i < rectangles.Count; ++i)
             {
-                if (rectangle.Contains(point))
+                if (rectangles[i].Contains(point))
                 {
                     // get the item corresponding to this bar/column rectangle
                     var item = this.ValidItems[i];
@@ -187,17 +187,15 @@ namespace OxyPlot.Series
                     var boundItem = this.GetItem(this.ValidItemsIndexInversion[i]);
 
                     return new TrackerHitResult
-                               {
-                                   Series = this,
-                                   DataPoint = dp,
-                                   Position = point,
-                                   Item = boundItem,
-                                   Index = i,
-                                   Text = this.GetTrackerText(item, boundItem, categoryIndex)
-                               };
+                    {
+                        Series = this,
+                        DataPoint = dp,
+                        Position = point,
+                        Item = boundItem,
+                        Index = i,
+                        Text = this.GetTrackerText(item, boundItem, categoryIndex)
+                    };
                 }
-
-                i++;
             }
 
             return null;
@@ -474,17 +472,15 @@ namespace OxyPlot.Series
             var categories = this.GetCategoryAxis().ActualLabels.Count;
             var valueAxis = this.GetValueAxis();
 
-            int i = 0;
-            foreach (var item in this.GetItems())
+            var items = this.GetItems();
+            for (int i = 0; i < items.Count; ++i)
             {
-                if (item is BarItem barSeriesItem && item.GetCategoryIndex(i) < categories
+                if (items[i] is BarItem barSeriesItem && items[i].GetCategoryIndex(i) < categories
                                                   && valueAxis.IsValidValue(barSeriesItem.Value))
                 {
                     this.ValidItemsIndexInversion.Add(this.ValidItems.Count, i);
                     this.ValidItems.Add(barSeriesItem);
                 }
-
-                i++;
             }
         }
 

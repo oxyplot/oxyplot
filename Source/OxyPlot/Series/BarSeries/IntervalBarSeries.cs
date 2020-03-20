@@ -183,7 +183,7 @@ namespace OxyPlot.Series
                         Item = item,
                         Index = i,
                         Text = StringHelper.Format(
-                        this.ActualCulture, 
+                        this.ActualCulture,
                         this.TrackerFormatString,
                         item,
                         this.Title,
@@ -372,8 +372,10 @@ namespace OxyPlot.Series
             double minValue = double.MaxValue;
             double maxValue = double.MinValue;
 
-            foreach (var item in this.ValidItems)
+            var items = this.ValidItems;
+            for (int i = 0; i < items.Count; ++i)
             {
+                var item = items[i];
                 minValue = Math.Min(minValue, item.Start);
                 minValue = Math.Min(minValue, item.End);
                 maxValue = Math.Max(maxValue, item.Start);

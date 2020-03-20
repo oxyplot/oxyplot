@@ -202,7 +202,7 @@ namespace OxyPlot.Series
                         Index = i,
                         Text =
                             StringHelper.Format(
-                                this.ActualCulture, 
+                                this.ActualCulture,
                                 this.TrackerFormatString,
                                 item,
                                 this.Title,
@@ -286,7 +286,7 @@ namespace OxyPlot.Series
                 if (this.MinimumLabelFormatString != null)
                 {
                     var s = StringHelper.Format(
-                        this.ActualCulture, 
+                        this.ActualCulture,
                         this.MinimumLabelFormatString,
                         this.GetItem(this.ValidItemsIndexInversion[i]),
                         item.Minimum);
@@ -312,11 +312,11 @@ namespace OxyPlot.Series
                 if (this.MaximumLabelFormatString != null)
                 {
                     var s = StringHelper.Format(
-                        this.ActualCulture, 
+                        this.ActualCulture,
                         this.MaximumLabelFormatString,
                         this.GetItem(this.ValidItemsIndexInversion[i]),
                         item.Maximum);
-                    
+
                     var pt = this.Transform(item.Maximum, barMid) + marginVector;
                     var ha = HorizontalAlignment.Left;
                     var va = VerticalAlignment.Middle;
@@ -438,7 +438,8 @@ namespace OxyPlot.Series
         {
             base.UpdateMaxMin();
 
-            if (this.ValidItems == null || this.ValidItems.Count == 0)
+            var items = this.ValidItems;
+            if (items == null || items.Count == 0)
             {
                 return;
             }
@@ -446,10 +447,10 @@ namespace OxyPlot.Series
             double minValue = double.MaxValue;
             double maxValue = double.MinValue;
 
-            foreach (var item in this.ValidItems)
+            for (int i = 0; i < items.Count; ++i)
             {
-                minValue = Math.Min(minValue, item.Minimum);
-                maxValue = Math.Max(maxValue, item.Maximum);
+                minValue = Math.Min(minValue, items[i].Minimum);
+                maxValue = Math.Max(maxValue, items[i].Maximum);
             }
 
             this.MinX = minValue;

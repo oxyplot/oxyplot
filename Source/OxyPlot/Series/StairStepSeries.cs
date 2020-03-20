@@ -61,7 +61,7 @@ namespace OxyPlot.Series
             if (!interpolate && result != null && result.Position.DistanceToSquared(point) < minimumDistanceSquared)
             {
                 result.Text = StringHelper.Format(
-                    this.ActualCulture, 
+                    this.ActualCulture,
                     this.TrackerFormatString,
                     result.Item,
                     this.Title,
@@ -141,7 +141,8 @@ namespace OxyPlot.Series
         /// <param name="rc">The rendering context.</param>
         public override void Render(IRenderContext rc)
         {
-            if (this.ActualPoints == null || this.ActualPoints.Count == 0)
+            var actualPoints = this.ActualPoints;
+            if (actualPoints == null || actualPoints.Count == 0)
             {
                 return;
             }
@@ -226,8 +227,9 @@ namespace OxyPlot.Series
             var linePoints = new List<ScreenPoint>();
             var markerPoints = new List<ScreenPoint>();
             double previousY = double.NaN;
-            foreach (var point in this.ActualPoints)
+            for (int i = 0; i < actualPoints.Count; ++i)
             {
+                var point = actualPoints[i];
                 if (!this.IsValidPoint(point))
                 {
                     renderPoints(linePoints, markerPoints);

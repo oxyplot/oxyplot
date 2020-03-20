@@ -190,13 +190,14 @@ namespace OxyPlot.Series
                         minimumDistance = d2;
                     }
                 };
-            int i = 0;
-            foreach (var item in this.items)
+
+            for (int i = 0; i < this.items.Count; ++i)
             {
+                var item = items[i];
                 check(new DataPoint(item.X, item.High), item, i);
                 check(new DataPoint(item.X, item.Low), item, i);
                 check(new DataPoint(item.X, item.Open), item, i);
-                check(new DataPoint(item.X, item.Close), item, i++);
+                check(new DataPoint(item.X, item.Close), item, i);
             }
 
             if (minimumDistance < double.MaxValue)
@@ -236,8 +237,9 @@ namespace OxyPlot.Series
             var clippingRect = this.GetClippingRect();
             var dashArray = this.LineStyle.GetDashArray();
             var actualColor = this.GetSelectableColor(this.ActualColor);
-            foreach (var v in this.items)
+            for (int i = 0; i < this.items.Count; ++i)
             {
+                var v = items[i];
                 if (!this.IsValidItem(v, this.XAxis, this.YAxis))
                 {
                     continue;

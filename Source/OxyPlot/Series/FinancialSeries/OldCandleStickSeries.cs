@@ -94,8 +94,10 @@ namespace OxyPlot.Series
 
             if (this.StrokeThickness > 0 && this.LineStyle != LineStyle.None)
             {
-                foreach (var v in this.Items)
+                var items = this.Items;
+                for (int i = 0; i < items.Count; ++i)
                 {
+                    var v = items[i];
                     if (!this.IsValidItem(v, this.XAxis, this.YAxis))
                     {
                         continue;

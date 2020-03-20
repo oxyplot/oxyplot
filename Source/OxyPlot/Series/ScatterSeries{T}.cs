@@ -254,17 +254,16 @@ namespace OxyPlot.Series
 
             TrackerHitResult result = null;
             double minimumDistance = double.MaxValue;
-            int i = 0;
 
             var xaxisTitle = this.XAxis.Title ?? DefaultXAxisTitle;
             var yaxisTitle = this.YAxis.Title ?? DefaultYAxisTitle;
             var colorAxisTitle = (this.ColorAxis != null ? ((Axis)this.ColorAxis).Title : null) ?? DefaultColorAxisTitle;
 
-            foreach (var p in actualPoints)
+            for (int i = 0; i < actualPoints.Count; ++i)
             {
+                var p = actualPoints[i];
                 if (p.X < this.XAxis.ActualMinimum || p.X > this.XAxis.ActualMaximum || p.Y < this.YAxis.ActualMinimum || p.Y > this.YAxis.ActualMaximum)
                 {
-                    i++;
                     continue;
                 }
 
@@ -307,8 +306,6 @@ namespace OxyPlot.Series
 
                     minimumDistance = d2;
                 }
-
-                i++;
             }
 
             return result;
@@ -544,10 +541,9 @@ namespace OxyPlot.Series
             }
 
             // TODO: share code with LineSeries
-            int index = -1;
-            foreach (var point in actualPoints)
+            for (int i = 0; i < actualPoints.Count; ++i)
             {
-                index++;
+                var point = actualPoints[i];
                 var dataPoint = new DataPoint(point.X, point.Y);
                 if (!this.IsValidPoint(dataPoint))
                 {
@@ -561,7 +557,7 @@ namespace OxyPlot.Series
                     continue;
                 }
 
-                var item = this.GetItem(index);
+                var item = this.GetItem(i);
                 var s = StringHelper.Format(this.ActualCulture, this.LabelFormatString, item, point.X, point.Y);
 
 #if SUPPORTLABELPLACEMENT
@@ -648,8 +644,9 @@ namespace OxyPlot.Series
                 maxvalue = double.MinValue;
             }
 
-            foreach (var pt in pts)
+            for (int i = 0; i < pts.Count; ++i)
             {
+                var pt = pts[i];
                 double x = pt.X;
                 double y = pt.Y;
 
@@ -750,9 +747,9 @@ namespace OxyPlot.Series
             double minvalue = double.NaN;
             double maxvalue = double.NaN;
 
-            foreach (var pt in pts)
+            for (int i = 0; i < pts.Count; ++i)
             {
-                double value = pt.Value;
+                double value = pts[i].Value;
 
                 if (value < minvalue || double.IsNaN(minvalue))
                 {

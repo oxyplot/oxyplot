@@ -197,15 +197,15 @@ namespace OxyPlot.Series
 
             if (this.ContourColors != null && this.ContourColors.Length > 0)
             {
-                foreach (var c in this.contours)
+                for (int i = 0; i < this.contours.Count; ++i)
                 {
                     // get the index of the contour's level
-                    var index = IndexOf(actualContourLevels, c.ContourLevel);
+                    var index = IndexOf(actualContourLevels, this.contours[i].ContourLevel);
                     if (index >= 0)
                     {
                         // clamp the index to the range of the ContourColors array
                         index = index % this.ContourColors.Length;
-                        c.Color = this.ContourColors[index];
+                        this.contours[i].Color = this.ContourColors[index];
                     }
                 }
             }
@@ -225,16 +225,16 @@ namespace OxyPlot.Series
             var yaxisTitle = this.YAxis.Title ?? "Y";
             var zaxisTitle = "Z";
 
-            foreach (var c in this.contours)
+            for (int i = 0; i < this.contours.Count; ++i)
             {
-                var r = interpolate ? this.GetNearestInterpolatedPointInternal(c.Points, point) : this.GetNearestPointInternal(c.Points, point);
+                var r = interpolate ? this.GetNearestInterpolatedPointInternal(this.contours[i].Points, point) : this.GetNearestPointInternal(this.contours[i].Points, point);
                 if (r != null)
                 {
                     if (result == null || result.Position.DistanceToSquared(point) > r.Position.DistanceToSquared(point))
                     {
                         result = r;
                         result.Text = StringHelper.Format(
-                            this.ActualCulture, 
+                            this.ActualCulture,
                             this.TrackerFormatString,
                             null,
                             this.Title,
@@ -243,7 +243,7 @@ namespace OxyPlot.Series
                             yaxisTitle,
                             this.YAxis.GetValue(r.DataPoint.Y),
                             zaxisTitle,
-                            c.ContourLevel);
+                            this.contours[i].ContourLevel);
                     }
                 }
             }
@@ -275,8 +275,9 @@ namespace OxyPlot.Series
             var contourLabels = new List<ContourLabel>();
             var dashArray = this.LineStyle.GetDashArray();
 
-            foreach (var contour in this.contours)
+            for (int i = 0; i < this.contours.Count; ++i)
             {
+                var contour = this.contours[i];
                 if (this.StrokeThickness > 0 && this.LineStyle != LineStyle.None)
                 {
                     var transformedPoints = contour.Points.Select(this.Transform).ToArray();
@@ -300,14 +301,14 @@ namespace OxyPlot.Series
                 }
             }
 
-            foreach (var cl in contourLabels)
+            for (int i = 0; i < contourLabels.Count; ++i)
             {
-                this.RenderLabelBackground(rc, cl);
+                this.RenderLabelBackground(rc, contourLabels[i]);
             }
 
-            foreach (var cl in contourLabels)
+            for (int i = 0; i < contourLabels.Count; ++i)
             {
-                this.RenderLabel(rc, cl);
+                this.RenderLabel(rc, contourLabels[i]);
             }
 
             rc.ResetClip();
@@ -442,8 +443,9 @@ namespace OxyPlot.Series
         private ContourSegment FindConnectedSegment(DataPoint point, double contourLevel, double eps, out bool reverse)
         {
             reverse = false;
-            foreach (var s in this.segments)
+            for (int i = 0; i < this.segments.Count; ++i)
             {
+                var s = this.segments[i];
                 if (!AreClose(s.ContourLevel, contourLevel, eps))
                 {
                     continue;

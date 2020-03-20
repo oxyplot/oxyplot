@@ -194,8 +194,10 @@ namespace OxyPlot.Series
 
             double minimumDistance = double.MaxValue;
             TrackerHitResult result = null;
-            foreach (var item in this.ActualItems)
+            var items = this.ActualItems;
+            for (int i = 0; i < items.Count; ++i)
             {
+                var item = items[i];
                 foreach (var outlier in item.Outliers)
                 {
                     var sp = this.Transform(item.X, outlier);
@@ -299,7 +301,8 @@ namespace OxyPlot.Series
         /// <param name="rc">The rendering context.</param>
         public override void Render(IRenderContext rc)
         {
-            if (this.ActualItems.Count == 0)
+            var items = this.ActualItems;
+            if (items.Count == 0)
             {
                 return;
             }
@@ -314,8 +317,9 @@ namespace OxyPlot.Series
 
             var dashArray = this.LineStyle.GetDashArray();
 
-            foreach (var item in this.ActualItems)
+            for (int i = 0; i < items.Count; ++i)
             {
+                var item = items[i];
                 // Add the outlier points
                 outlierScreenPoints.AddRange(item.Outliers.Select(outlier => this.Transform(item.X, outlier)));
 
@@ -599,8 +603,9 @@ namespace OxyPlot.Series
             double maxx = this.MaxX;
             double maxy = this.MaxY;
 
-            foreach (var pt in items)
+            for (int i = 0; i < items.Count; ++i)
             {
+                var pt = items[i];
                 if (!this.IsValidPoint(pt, this.XAxis, this.YAxis))
                 {
                     continue;

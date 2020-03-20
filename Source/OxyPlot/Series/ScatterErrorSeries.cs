@@ -96,8 +96,9 @@ namespace OxyPlot.Series
             var clippingRectangle = this.GetClippingRect();
 
             var segments = new List<ScreenPoint>();
-            foreach (var point in actualPoints)
+            for (int i = 0; i < actualPoints.Count; ++i)
             {
+                var point = actualPoints[i];
                 if (point == null)
                 {
                     continue;

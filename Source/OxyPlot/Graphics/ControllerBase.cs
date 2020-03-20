@@ -63,8 +63,18 @@ namespace OxyPlot
         /// <returns><c>true</c> if the event was handled.</returns>
         public virtual bool HandleGesture(IView view, OxyInputGesture gesture, OxyInputEventArgs args)
         {
-            var command = this.GetCommand(gesture);
-            return this.HandleCommand(command, view, args);
+            lock (this.GetSyncRoot(view))
+            {
+                try
+                {
+                    var command = this.GetCommand(gesture);
+                    return this.HandleCommand(command, view, args);
+                }
+                catch
+                {
+                    return false;
+                }
+            }
         }
 
         /// <summary>
@@ -77,17 +87,24 @@ namespace OxyPlot
         {
             lock (this.GetSyncRoot(view))
             {
-                if (view.ActualModel != null)
+                try
                 {
-                    view.ActualModel.HandleMouseDown(this, args);
-                    if (args.Handled)
+                    if (view.ActualModel != null)
                     {
-                        return true;
+                        view.ActualModel.HandleMouseDown(this, args);
+                        if (args.Handled)
+                        {
+                            return true;
+                        }
                     }
-                }
 
-                var command = this.GetCommand(new OxyMouseDownGesture(args.ChangedButton, args.ModifierKeys, args.ClickCount));
-                return this.HandleCommand(command, view, args);
+                    var command = this.GetCommand(new OxyMouseDownGesture(args.ChangedButton, args.ModifierKeys, args.ClickCount));
+                    return this.HandleCommand(command, view, args);
+                }
+                catch
+                {
+                    return false;
+                }
             }
         }
 
@@ -101,17 +118,24 @@ namespace OxyPlot
         {
             lock (this.GetSyncRoot(view))
             {
-                if (view.ActualModel != null)
+                try
                 {
-                    view.ActualModel.HandleMouseEnter(this, args);
-                    if (args.Handled)
+                    if (view.ActualModel != null)
                     {
-                        return true;
+                        view.ActualModel.HandleMouseEnter(this, args);
+                        if (args.Handled)
+                        {
+                            return true;
+                        }
                     }
-                }
 
-                var command = this.GetCommand(new OxyMouseEnterGesture(args.ModifierKeys));
-                return this.HandleCommand(command, view, args);
+                    var command = this.GetCommand(new OxyMouseEnterGesture(args.ModifierKeys));
+                    return this.HandleCommand(command, view, args);
+                }
+                catch
+                {
+                    return false;
+                }
             }
         }
 
@@ -125,22 +149,29 @@ namespace OxyPlot
         {
             lock (this.GetSyncRoot(view))
             {
-                if (view.ActualModel != null)
+                try
                 {
-                    view.ActualModel.HandleMouseLeave(this, args);
-                    if (args.Handled)
+                    if (view.ActualModel != null)
                     {
-                        return true;
+                        view.ActualModel.HandleMouseLeave(this, args);
+                        if (args.Handled)
+                        {
+                            return true;
+                        }
                     }
-                }
 
-                foreach (var m in this.MouseHoverManipulators.ToArray())
+                    foreach (var m in this.MouseHoverManipulators.ToArray())
+                    {
+                        m.Completed(args);
+                        this.MouseHoverManipulators.Remove(m);
+                    }
+
+                    return args.Handled;
+                }
+                catch
                 {
-                    m.Completed(args);
-                    this.MouseHoverManipulators.Remove(m);
+                    return false;
                 }
-
-                return args.Handled;
             }
         }
 
@@ -154,26 +185,33 @@ namespace OxyPlot
         {
             lock (this.GetSyncRoot(view))
             {
-                if (view.ActualModel != null)
+                try
                 {
-                    view.ActualModel.HandleMouseMove(this, args);
-                    if (args.Handled)
+                    if (view.ActualModel != null)
                     {
-                        return true;
+                        view.ActualModel.HandleMouseMove(this, args);
+                        if (args.Handled)
+                        {
+                            return true;
+                        }
                     }
-                }
 
-                foreach (var m in this.MouseDownManipulators)
+                    foreach (var m in this.MouseDownManipulators)
+                    {
+                        m.Delta(args);
+                    }
+
+                    foreach (var m in this.MouseHoverManipulators)
+                    {
+                        m.Delta(args);
+                    }
+
+                    return args.Handled;
+                }
+                catch
                 {
-                    m.Delta(args);
+                    return false;
                 }
-
-                foreach (var m in this.MouseHoverManipulators)
-                {
-                    m.Delta(args);
-                }
-
-                return args.Handled;
             }
         }
 
@@ -187,22 +225,29 @@ namespace OxyPlot
         {
             lock (this.GetSyncRoot(view))
             {
-                if (view.ActualModel != null)
+                try
                 {
-                    view.ActualModel.HandleMouseUp(this, args);
-                    if (args.Handled)
+                    if (view.ActualModel != null)
                     {
-                        return true;
+                        view.ActualModel.HandleMouseUp(this, args);
+                        if (args.Handled)
+                        {
+                            return true;
+                        }
                     }
-                }
 
-                foreach (var m in this.MouseDownManipulators.ToArray())
+                    foreach (var m in this.MouseDownManipulators.ToArray())
+                    {
+                        m.Completed(args);
+                        this.MouseDownManipulators.Remove(m);
+                    }
+
+                    return args.Handled;
+                }
+                catch
                 {
-                    m.Completed(args);
-                    this.MouseDownManipulators.Remove(m);
+                    return false;
                 }
-
-                return args.Handled;
             }
         }
 
@@ -216,8 +261,15 @@ namespace OxyPlot
         {
             lock (this.GetSyncRoot(view))
             {
-                var command = this.GetCommand(new OxyMouseWheelGesture(args.ModifierKeys));
-                return this.HandleCommand(command, view, args);
+                try
+                {
+                    var command = this.GetCommand(new OxyMouseWheelGesture(args.ModifierKeys));
+                    return this.HandleCommand(command, view, args);
+                }
+                catch
+                {
+                    return false;
+                }
             }
         }
 
@@ -231,17 +283,24 @@ namespace OxyPlot
         {
             lock (this.GetSyncRoot(view))
             {
-                if (view.ActualModel != null)
+                try
                 {
-                    view.ActualModel.HandleTouchStarted(this, args);
-                    if (args.Handled)
+                    if (view.ActualModel != null)
                     {
-                        return true;
+                        view.ActualModel.HandleTouchStarted(this, args);
+                        if (args.Handled)
+                        {
+                            return true;
+                        }
                     }
-                }
 
-                var command = this.GetCommand(new OxyTouchGesture());
-                return this.HandleCommand(command, view, args);
+                    var command = this.GetCommand(new OxyTouchGesture());
+                    return this.HandleCommand(command, view, args);
+                }
+                catch
+                {
+                    return false;
+                }
             }
         }
 
@@ -255,21 +314,28 @@ namespace OxyPlot
         {
             lock (this.GetSyncRoot(view))
             {
-                if (view.ActualModel != null)
+                try
                 {
-                    view.ActualModel.HandleTouchDelta(this, args);
-                    if (args.Handled)
+                    if (view.ActualModel != null)
                     {
-                        return true;
+                        view.ActualModel.HandleTouchDelta(this, args);
+                        if (args.Handled)
+                        {
+                            return true;
+                        }
                     }
-                }
 
-                foreach (var m in this.TouchManipulators)
+                    foreach (var m in this.TouchManipulators)
+                    {
+                        m.Delta(args);
+                    }
+
+                    return args.Handled;
+                }
+                catch
                 {
-                    m.Delta(args);
+                    return false;
                 }
-
-                return args.Handled;
             }
         }
 
@@ -283,22 +349,29 @@ namespace OxyPlot
         {
             lock (this.GetSyncRoot(view))
             {
-                if (view.ActualModel != null)
+                try
                 {
-                    view.ActualModel.HandleTouchCompleted(this, args);
-                    if (args.Handled)
+                    if (view.ActualModel != null)
                     {
-                        return true;
+                        view.ActualModel.HandleTouchCompleted(this, args);
+                        if (args.Handled)
+                        {
+                            return true;
+                        }
                     }
-                }
 
-                foreach (var m in this.TouchManipulators.ToArray())
+                    foreach (var m in this.TouchManipulators.ToArray())
+                    {
+                        m.Completed(args);
+                        this.TouchManipulators.Remove(m);
+                    }
+
+                    return args.Handled;
+                }
+                catch
                 {
-                    m.Completed(args);
-                    this.TouchManipulators.Remove(m);
+                    return false;
                 }
-
-                return args.Handled;
             }
         }
 
@@ -312,19 +385,26 @@ namespace OxyPlot
         {
             lock (this.GetSyncRoot(view))
             {
-                if (view.ActualModel == null)
+                try
+                {
+                    if (view.ActualModel == null)
+                    {
+                        return false;
+                    }
+
+                    view.ActualModel.HandleKeyDown(this, args);
+                    if (args.Handled)
+                    {
+                        return true;
+                    }
+
+                    var command = this.GetCommand(new OxyKeyGesture(args.Key, args.ModifierKeys));
+                    return this.HandleCommand(command, view, args);
+                }
+                catch
                 {
                     return false;
                 }
-
-                view.ActualModel.HandleKeyDown(this, args);
-                if (args.Handled)
-                {
-                    return true;
-                }
-
-                var command = this.GetCommand(new OxyKeyGesture(args.Key, args.ModifierKeys));
-                return this.HandleCommand(command, view, args);
             }
         }
 
@@ -492,7 +572,7 @@ namespace OxyPlot
 
             return binding.Command;
         }
-        
+
         /// <summary>
         /// Handles a command triggered by an input gesture.
         /// </summary>

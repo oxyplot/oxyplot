@@ -36,7 +36,7 @@ namespace OxyPlot.Series
         /// Start index of a visible rendering window for markers.
         /// </summary>
         private int markerStartIndex;
-        
+
         /// <summary>
         /// Initializes a new instance of the <see cref = "TwoColorAreaSeries" /> class.
         /// </summary>
@@ -244,8 +244,8 @@ namespace OxyPlot.Series
                     aboveMarkers,
                     this.MarkerType,
                     null,
-                    markerSizes, 
-                    this.MarkerFill, 
+                    markerSizes,
+                    this.MarkerFill,
                     this.MarkerStroke,
                     this.MarkerStrokeThickness,
                     1);
@@ -355,8 +355,9 @@ namespace OxyPlot.Series
 
             bool lastAbove = false;
             DataPoint? lastPoint = null;
-            foreach (var point in source)
+            for (int i = 0; i < source.Count; ++i)
             {
+                var point = source[i];
                 bool isAbove = point.y >= limit;
 
                 if (lastPoint != null && isAbove != lastAbove)

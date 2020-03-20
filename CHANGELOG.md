@@ -33,6 +33,9 @@ All notable changes to this project will be documented in this file.
 - ErrorBarSeries, IntervalBarSeries and TornadoBarSeries work correctly in transposed mode (#1402)
 - Exception when rendering polygon with no points (#1410)
 - Custom tracker strings can cause exception in histogram chart (#1455)
+- XYAxisSeries.GetNearestPointInternal is not thread safe (#1482)
+- MouseWheel and change in RectangleAnnotation data properties causes IOE: Collection was modified (#1074)
+- InvalidOperationException while rendering plot model (#1039)
 - OxyPlot.WindowsForms package description (#1457)
 
 ## [2.0.0] - 2019-10-19

@@ -88,7 +88,7 @@ namespace OxyPlot.Series
                         Index = i,
                         Text =
                             StringHelper.Format(
-                                this.ActualCulture, 
+                                this.ActualCulture,
                                 this.TrackerFormatString,
                                 item,
                                 this.Title,
@@ -110,7 +110,8 @@ namespace OxyPlot.Series
         /// <param name="rc">The rendering context.</param>
         public override void Render(IRenderContext rc)
         {
-            if (this.ActualPoints.Count == 0)
+            var actualPoints = this.ActualPoints;
+            if (actualPoints.Count == 0)
             {
                 return;
             }
@@ -126,9 +127,11 @@ namespace OxyPlot.Series
             var dashArray = this.ActualDashArray;
             var actualColor = this.GetSelectableColor(this.ActualColor);
             var points = new ScreenPoint[2];
-            var markerPoints = this.MarkerType != MarkerType.None ? new List<ScreenPoint>(this.ActualPoints.Count) : null;
-            foreach (var point in this.ActualPoints)
+            var markerPoints = this.MarkerType != MarkerType.None ? new List<ScreenPoint>(actualPoints.Count) : null;
+
+            for (int i = 0; i < actualPoints.Count; ++i)
             {
+                var point = actualPoints[i];
                 if (!this.IsValidPoint(point))
                 {
                     continue;

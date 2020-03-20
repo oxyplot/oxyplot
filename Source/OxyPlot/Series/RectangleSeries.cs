@@ -204,10 +204,11 @@
         /// <param name="rc">The rendering context.</param>
         /// <param name="clippingRect">The clipping rectangle.</param>
         /// <param name="items">The Items to render.</param>
-        protected void RenderRectangles(IRenderContext rc, OxyRect clippingRect, ICollection<RectangleItem> items)
+        protected void RenderRectangles(IRenderContext rc, OxyRect clippingRect, List<RectangleItem> items)
         {
-            foreach (var item in items)
+            for (int i = 0; i < items.Count; ++i)
             {
+                var item = items[i];
                 var rectcolor = this.ColorAxis.GetColor(item.Value);
 
                 // transform the data points to screen points
@@ -220,15 +221,15 @@
                 if (this.LabelFontSize > 0)
                 {
                     rc.DrawClippedText(
-                        clippingRect, 
-                        rectrect.Center, 
-                        item.Value.ToString(this.LabelFormatString), 
-                        this.ActualTextColor, 
-                        this.ActualFont, 
-                        this.LabelFontSize, 
-                        this.ActualFontWeight, 
-                        0, 
-                        HorizontalAlignment.Center, 
+                        clippingRect,
+                        rectrect.Center,
+                        item.Value.ToString(this.LabelFormatString),
+                        this.ActualTextColor,
+                        this.ActualFont,
+                        this.LabelFontSize,
+                        this.ActualFontWeight,
+                        0,
+                        HorizontalAlignment.Center,
                         VerticalAlignment.Middle);
                 }
             }
@@ -255,9 +256,10 @@
             if (this.ActualItems != null)
             {
                 // iterate through the DataRects and return the first one that contains the point
-                foreach (var item in this.ActualItems)
+                var items = this.ActualItems;
+                for (int i = 0; i < items.Count; ++i)
                 {
-                    if (item.Contains(p))
+                    if (items[i].Contains(p))
                     {
                         return new TrackerHitResult
                         {
@@ -269,14 +271,14 @@
                             Text = StringHelper.Format(
                             this.ActualCulture,
                             this.TrackerFormatString,
-                            item,
+                            items[i],
                             this.Title,
                             this.XAxis.Title ?? DefaultXAxisTitle,
                             this.XAxis.GetValue(p.X),
                             this.YAxis.Title ?? DefaultYAxisTitle,
                             this.YAxis.GetValue(p.Y),
                             colorAxisTitle,
-                            item.Value)
+                            items[i].Value)
                         };
                     }
                 }
