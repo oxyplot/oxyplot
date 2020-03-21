@@ -365,7 +365,7 @@ namespace OxyPlot.Series
         /// <returns>A TrackerHitResult for the current hit.</returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
-            if (this.XAxis == null || this.YAxis == null || interpolate || this.data.Count == 0)
+            if (this.XAxis == null || this.YAxis == null || interpolate || this.data == null || this.data.Count == 0)
             {
                 return null;
             }
@@ -422,6 +422,11 @@ namespace OxyPlot.Series
         {
             base.UpdateData();
             this.winIndex = 0;
+
+            if (this.data == null || this.data.Count == 0)
+            {
+                return;
+            }
 
             // determine minimum X gap between successive points
             var items = this.data;
