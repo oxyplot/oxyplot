@@ -193,7 +193,7 @@ namespace OxyPlot.Series
         /// <param name="point">The point.</param>
         /// <returns>A tracker hit result if a point was found.</returns>
         /// <remarks>The Text property of the result will not be set, since the formatting depends on the various series.</remarks>
-        protected TrackerHitResult GetNearestInterpolatedPointInternal(List<DataPoint> points, ScreenPoint point)
+        protected TrackerHitResult GetNearestInterpolatedPointInternal(IList<DataPoint> points, ScreenPoint point)
         {
             return this.GetNearestInterpolatedPointInternal(points, 0, point);
         }
@@ -206,7 +206,7 @@ namespace OxyPlot.Series
         /// <param name="point">The point.</param>
         /// <returns>A tracker hit result if a point was found.</returns>
         /// <remarks>The Text property of the result will not be set, since the formatting depends on the various series.</remarks>
-        protected TrackerHitResult GetNearestInterpolatedPointInternal(List<DataPoint> points, int startIdx, ScreenPoint point)
+        protected TrackerHitResult GetNearestInterpolatedPointInternal(IList<DataPoint> points, int startIdx, ScreenPoint point)
         {
             if (this.XAxis == null || this.YAxis == null || points == null)
             {
@@ -276,7 +276,7 @@ namespace OxyPlot.Series
         /// <param name="point">The point (screen coordinates).</param>
         /// <returns>A <see cref="TrackerHitResult" /> if a point was found, <c>null</c> otherwise.</returns>
         /// <remarks>The Text property of the result will not be set, since the formatting depends on the various series.</remarks>
-        protected TrackerHitResult GetNearestPointInternal(List<DataPoint> points, ScreenPoint point)
+        protected TrackerHitResult GetNearestPointInternal(IList<DataPoint> points, ScreenPoint point)
         {
             return this.GetNearestPointInternal(points, 0, point);
         }
@@ -289,7 +289,7 @@ namespace OxyPlot.Series
         /// <param name="point">The point (screen coordinates).</param>
         /// <returns>A <see cref="TrackerHitResult" /> if a point was found, <c>null</c> otherwise.</returns>
         /// <remarks>The Text property of the result will not be set, since the formatting depends on the various series.</remarks>
-        protected TrackerHitResult GetNearestPointInternal(List<DataPoint> points, int startIdx, ScreenPoint point)
+        protected TrackerHitResult GetNearestPointInternal(IList<DataPoint> points, int startIdx, ScreenPoint point)
         {
             var spn = default(ScreenPoint);
             var dpn = default(DataPoint);
@@ -402,11 +402,12 @@ namespace OxyPlot.Series
             double lastX = double.MinValue;
             for (int i = 0; i < points.Count; ++i)
             {
-                double x = points[i].X;
-                double y = points[i].Y;
+                var point = points[i];
+                double x = point.X;
+                double y = point.Y;
 
                 // Check if the point is valid
-                if (!this.IsValidPoint(points[i]))
+                if (!this.IsValidPoint(point))
                 {
                     continue;
                 }
@@ -530,8 +531,9 @@ namespace OxyPlot.Series
             double lastX = double.MinValue;
             for (int i = 0; i < items.Count; ++i)
             {
-                double x = xf(items[i]);
-                double y = yf(items[i]);
+                var item = items[i];
+                double x = xf(item);
+                double y = yf(item);
 
                 // Check if the point is valid
                 if (!this.IsValidPoint(x, y))
@@ -641,10 +643,11 @@ namespace OxyPlot.Series
             double lastX1 = double.MinValue;
             for (int i = 0; i < items.Count; ++i)
             {
-                double x0 = xmin(items[i]);
-                double x1 = xmax(items[i]);
-                double y0 = ymin(items[i]);
-                double y1 = ymax(items[i]);
+                var item = items[i];
+                double x0 = xmin(item);
+                double x1 = xmax(item);
+                double y0 = ymin(item);
+                double y1 = ymax(item);
 
                 if (!this.IsValidPoint(x0, y0) || !this.IsValidPoint(x1, y1))
                 {

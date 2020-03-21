@@ -204,7 +204,7 @@
         /// <param name="rc">The rendering context.</param>
         /// <param name="clippingRect">The clipping rectangle.</param>
         /// <param name="items">The Items to render.</param>
-        protected void RenderRectangles(IRenderContext rc, OxyRect clippingRect, List<RectangleItem> items)
+        protected void RenderRectangles(IRenderContext rc, OxyRect clippingRect, IList<RectangleItem> items)
         {
             for (int i = 0; i < items.Count; ++i)
             {
@@ -259,7 +259,8 @@
                 var items = this.ActualItems;
                 for (int i = 0; i < items.Count; ++i)
                 {
-                    if (items[i].Contains(p))
+                    var item = items[i];
+                    if (item.Contains(p))
                     {
                         return new TrackerHitResult
                         {
@@ -271,14 +272,14 @@
                             Text = StringHelper.Format(
                             this.ActualCulture,
                             this.TrackerFormatString,
-                            items[i],
+                            item,
                             this.Title,
                             this.XAxis.Title ?? DefaultXAxisTitle,
                             this.XAxis.GetValue(p.X),
                             this.YAxis.Title ?? DefaultYAxisTitle,
                             this.YAxis.GetValue(p.Y),
                             colorAxisTitle,
-                            items[i].Value)
+                            item.Value)
                         };
                     }
                 }

@@ -449,8 +449,9 @@ namespace OxyPlot.Series
 
             for (int i = 0; i < items.Count; ++i)
             {
-                minValue = Math.Min(minValue, items[i].Minimum);
-                maxValue = Math.Max(maxValue, items[i].Maximum);
+                var item = items[i];
+                minValue = Math.Min(minValue, item.Minimum);
+                maxValue = Math.Max(maxValue, item.Maximum);
             }
 
             this.MinX = minValue;

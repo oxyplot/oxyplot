@@ -199,13 +199,14 @@ namespace OxyPlot.Series
             {
                 for (int i = 0; i < this.contours.Count; ++i)
                 {
+                    var contour = this.contours[i];
                     // get the index of the contour's level
-                    var index = IndexOf(actualContourLevels, this.contours[i].ContourLevel);
+                    var index = IndexOf(actualContourLevels, contour.ContourLevel);
                     if (index >= 0)
                     {
                         // clamp the index to the range of the ContourColors array
                         index = index % this.ContourColors.Length;
-                        this.contours[i].Color = this.ContourColors[index];
+                        contour.Color = this.ContourColors[index];
                     }
                 }
             }
@@ -227,7 +228,8 @@ namespace OxyPlot.Series
 
             for (int i = 0; i < this.contours.Count; ++i)
             {
-                var r = interpolate ? this.GetNearestInterpolatedPointInternal(this.contours[i].Points, point) : this.GetNearestPointInternal(this.contours[i].Points, point);
+                var contour = this.contours[i];
+                var r = interpolate ? this.GetNearestInterpolatedPointInternal(contour.Points, point) : this.GetNearestPointInternal(contour.Points, point);
                 if (r != null)
                 {
                     if (result == null || result.Position.DistanceToSquared(point) > r.Position.DistanceToSquared(point))
@@ -243,7 +245,7 @@ namespace OxyPlot.Series
                             yaxisTitle,
                             this.YAxis.GetValue(r.DataPoint.Y),
                             zaxisTitle,
-                            this.contours[i].ContourLevel);
+                            contour.ContourLevel);
                     }
                 }
             }

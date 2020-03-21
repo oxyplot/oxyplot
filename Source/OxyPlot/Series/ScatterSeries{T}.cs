@@ -340,7 +340,13 @@ namespace OxyPlot.Series
             // Transform all points to screen coordinates
             for (int i = 0; i < n; i++)
             {
-                var dp = new DataPoint(actualPoints[i].X, actualPoints[i].Y);
+                var point = actualPoints[i];
+                if (point == null)
+                {
+                    continue;
+                }
+
+                var dp = new DataPoint(point.X, point.Y);
 
                 // Skip invalid points
                 if (!this.IsValidPoint(dp))
@@ -348,15 +354,8 @@ namespace OxyPlot.Series
                     continue;
                 }
 
-                double size = double.NaN;
-                double value = double.NaN;
-
-                var scatterPoint = actualPoints[i];
-                if (scatterPoint != null)
-                {
-                    size = scatterPoint.Size;
-                    value = scatterPoint.Value;
-                }
+                double size = point.Size;
+                double value = point.Value;
 
                 if (double.IsNaN(size))
                 {

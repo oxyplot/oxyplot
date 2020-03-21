@@ -475,7 +475,8 @@ namespace OxyPlot.Series
             var items = this.GetItems();
             for (int i = 0; i < items.Count; ++i)
             {
-                if (items[i] is BarItem barSeriesItem && items[i].GetCategoryIndex(i) < categories
+                var item = items[i];
+                if (item is BarItem barSeriesItem && item.GetCategoryIndex(i) < categories
                                                   && valueAxis.IsValidValue(barSeriesItem.Value))
                 {
                     this.ValidItemsIndexInversion.Add(this.ValidItems.Count, i);

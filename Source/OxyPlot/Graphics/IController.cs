@@ -9,11 +9,18 @@
 
 namespace OxyPlot
 {
+    using System;
+
     /// <summary>
     /// Specifies functionality to interact with a graphics view.
     /// </summary>
     public interface IController
     {
+        /// <summary>
+        /// Occurs when an exception is thrown in any of the handling methods.
+        /// </summary>
+        event EventHandler<OxyExceptionEventArgs> OnException;
+
         /// <summary>
         /// Handles mouse down events.
         /// </summary>
