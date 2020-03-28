@@ -80,9 +80,14 @@ namespace OxyPlot.Wpf
         private string currentToolTip;
 
         /// <summary>
-        /// The pixel scale
+        /// The dpi scales
         /// </summary>
-        private double pixelScale;
+        private Point dpiScales;
+
+        /// <summary>
+        /// The visual offset relative to visual root
+        /// </summary>
+        private Point visualOffset;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CanvasRenderContext" /> class.
@@ -96,17 +101,6 @@ namespace OxyPlot.Wpf
             this.UseStreamGeometry = true;
             this.RendersToScreen = true;
             this.BalancedLineDrawingThicknessLimit = 3.5;
-
-            // TODO: issue 10221 - try to find the size of physical pixels
-            var presentationSource = PresentationSource.FromVisual(canvas);
-            if (presentationSource != null && presentationSource.CompositionTarget != null)
-            {
-                this.pixelScale = presentationSource.CompositionTarget.TransformToDevice.M11;
-            }
-            else
-            {
-                this.pixelScale = 1;
-            }
         }
 
         /// <summary>
@@ -702,7 +696,7 @@ namespace OxyPlot.Wpf
         /// <returns><c>true</c> if the clip rectangle was set.</returns>
         public bool SetClip(OxyRect clippingRect)
         {
-            this.clip = this.ToRect(clippingRect);
+            this.clip = this.ToPixelAlignedRect(clippingRect);
             return true;
         }
 
@@ -712,6 +706,24 @@ namespace OxyPlot.Wpf
         public void ResetClip()
         {
             this.clip = null;
+        }
+        
+        /// <summary>
+        /// Updates render context state
+        /// </summary>
+        /// <remarks>This method is called at the beginning of each rendering.</remarks>
+        public void UpdateState()
+        {
+            if (this.canvas != null)
+            {
+                this.dpiScales = PixelLayout.GetDpiScales(this.canvas);
+                this.visualOffset = PixelLayout.GetVisualOffset(this.canvas, Window.GetWindow(this.canvas));
+            }
+            else
+            {
+                this.dpiScales = new Point(1, 1);
+                this.visualOffset = new Point(0, 0);
+            }
         }
 
         /// <summary>
@@ -988,6 +1000,8 @@ namespace OxyPlot.Wpf
                     // The default StrokeLineJoin is Miter
                 }
 
+                thickness /= (this.dpiScales.X + this.dpiScales.Y) / 2;
+
                 if (Math.Abs(thickness - 1) > double.Epsilon)
                 {
                     // only set if different from the default value (1)
@@ -1129,11 +1143,7 @@ namespace OxyPlot.Wpf
         /// <returns>A pixel aligned <see cref="Point" />.</returns>
         private Point ToPixelAlignedPoint(ScreenPoint pt)
         {
-            // adding 0.5 to get pixel boundary alignment, seems to work
-            // http://weblogs.asp.net/mschwarz/archive/2008/01/04/silverlight-rectangles-paths-and-line-comparison.aspx
-            // http://www.wynapse.com/Silverlight/Tutor/Silverlight_Rectangles_Paths_And_Lines_Comparison.aspx
-            // TODO: issue 10221 - should consider line thickness and logical to physical size of pixels
-            return new Point(0.5 + (int)pt.X, 0.5 + (int)pt.Y);
+            return PixelLayout.Snap(this.ToPoint(pt), ref this.visualOffset, ref this.dpiScales);
         }
 
         /// <summary>
@@ -1153,12 +1163,7 @@ namespace OxyPlot.Wpf
         /// <returns>A pixel aligned<see cref="Rect" />.</returns>
         private Rect ToPixelAlignedRect(OxyRect r)
         {
-            // TODO: similar changes as in ToPixelAlignedPoint
-            double x = 0.5 + (int)r.Left;
-            double y = 0.5 + (int)r.Top;
-            double ri = 0.5 + (int)r.Right;
-            double bo = 0.5 + (int)r.Bottom;
-            return new Rect(x, y, ri - x, bo - y);
+            return PixelLayout.Snap(this.ToRect(r), ref this.visualOffset, ref this.dpiScales);
         }
 
         /// <summary>
