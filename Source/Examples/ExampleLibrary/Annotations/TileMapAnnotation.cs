@@ -167,7 +167,12 @@ namespace ExampleLibrary
             // draw the copyright notice
             var p = new ScreenPoint(clippingRectangle.Right - 5, clippingRectangle.Bottom - 5);
             var textSize = rc.MeasureText(this.CopyrightNotice, this.ActualFont, this.ActualFontSize, this.ActualFontWeight);
-            rc.DrawRectangle(new OxyRect(p.X - textSize.Width - 2, p.Y - textSize.Height - 2, textSize.Width + 4, textSize.Height + 4), OxyColor.FromAColor(200, OxyColors.White), OxyColors.Undefined);
+            rc.DrawRectangle(
+                new OxyRect(p.X - textSize.Width - 2, p.Y - textSize.Height - 2, textSize.Width + 4, textSize.Height + 4), 
+                OxyColor.FromAColor(200, OxyColors.White), 
+                OxyColors.Undefined,
+                0,
+                this.EdgeRenderingMode);
 
             rc.DrawText(
                 p,

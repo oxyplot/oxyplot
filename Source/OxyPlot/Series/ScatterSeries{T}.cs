@@ -422,6 +422,7 @@ namespace OxyPlot.Series
                         this.MarkerFill.GetActualColor(color),
                         markerIsStrokedOnly ? color : this.MarkerStroke,
                         this.MarkerStrokeThickness,
+                        this.EdgeRenderingMode,
                         this.BinSize,
                         binOffset);
                 }
@@ -437,6 +438,7 @@ namespace OxyPlot.Series
                 this.ActualMarkerFillColor,
                 this.MarkerStroke,
                 this.MarkerStrokeThickness,
+                this.EdgeRenderingMode,
                 this.BinSize,
                 binOffset);
 
@@ -450,6 +452,7 @@ namespace OxyPlot.Series
                 this.PlotModel.SelectionColor,
                 this.PlotModel.SelectionColor,
                 this.MarkerStrokeThickness,
+                this.EdgeRenderingMode,
                 this.BinSize,
                 binOffset);
 
@@ -482,7 +485,8 @@ namespace OxyPlot.Series
                 this.MarkerSize,
                 this.IsSelected() ? this.PlotModel.SelectionColor : this.ActualMarkerFillColor,
                 this.IsSelected() ? this.PlotModel.SelectionColor : this.MarkerStroke,
-                this.MarkerStrokeThickness);
+                this.MarkerStrokeThickness,
+                this.EdgeRenderingMode);
         }
 
         /// <summary>

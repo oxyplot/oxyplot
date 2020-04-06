@@ -197,7 +197,7 @@ namespace ExampleLibrary
                 points.Add(this.Transform(n, m));
             }
 
-            rc.DrawClippedLineSegments(clip, points, this.GridColor, 1, null, LineJoin.Miter, true);
+            rc.DrawClippedLineSegments(clip, points, this.GridColor, 1, this.EdgeRenderingMode, null, LineJoin.Miter);
 
             if (this.BorderColor.IsVisible())
             {
@@ -213,7 +213,7 @@ namespace ExampleLibrary
                         this.Transform(m, n)
                     };
 
-                rc.DrawClippedLineSegments(clip, borderPoints, this.BorderColor, 1, null, LineJoin.Miter, true);
+                rc.DrawClippedLineSegments(clip, borderPoints, this.BorderColor, 1, this.EdgeRenderingMode, null, LineJoin.Miter);
             }
         }
 

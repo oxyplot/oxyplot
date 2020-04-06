@@ -138,16 +138,18 @@ namespace OxyPlot.Annotations
                     MinimumSegmentLength * MinimumSegmentLength,
                     this.GetSelectableColor(this.Color),
                     this.StrokeThickness,
+                    this.EdgeRenderingMode,
                     dashArray,
-                    this.LineJoin,
-                    false);
+                    this.LineJoin);
 
                 rc.DrawClippedPolygon(
                     clippingRectangle,
                     new[] { p3, this.screenEndPoint, p2, p4 },
                     MinimumSegmentLength * MinimumSegmentLength,
                     this.GetSelectableColor(this.Color),
-                    OxyColors.Undefined);
+                    OxyColors.Undefined,
+                    0,
+                    this.EdgeRenderingMode);
             }
 
             if (string.IsNullOrEmpty(this.Text))

@@ -181,17 +181,17 @@ namespace OxyPlot.Series
                                 hlpts,
                                 actualColor,
                                 this.StrokeThickness,
+                                this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness),
                                 dashArray,
-                                this.LineJoin,
-                                false);
+                                this.LineJoin);
                             rc.DrawClippedLineSegments(
                                 clippingRect,
                                 vlpts,
                                 actualColor,
                                 verticalStrokeThickness,
+                                this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness),
                                 verticalLineDashArray,
-                                this.LineJoin,
-                                false);
+                                this.LineJoin);
                         }
                         else
                         {
@@ -201,9 +201,9 @@ namespace OxyPlot.Series
                                 0,
                                 actualColor,
                                 this.StrokeThickness,
+                                this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness),
                                 dashArray,
-                                this.LineJoin,
-                                false);
+                                this.LineJoin);
                         }
                     }
 
@@ -217,7 +217,8 @@ namespace OxyPlot.Series
                             new[] { this.MarkerSize },
                             this.MarkerFill,
                             this.MarkerStroke,
-                            this.MarkerStrokeThickness);
+                            this.MarkerStrokeThickness,
+                            this.EdgeRenderingMode);
                     }
                 };
 

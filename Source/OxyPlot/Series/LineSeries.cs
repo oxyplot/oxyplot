@@ -366,6 +366,7 @@ namespace OxyPlot.Series
                 pts,
                 this.GetSelectableColor(this.ActualColor),
                 this.StrokeThickness,
+                this.EdgeRenderingMode,
                 this.ActualDashArray);
             var midpt = new ScreenPoint(xmid, ymid);
             rc.DrawMarker(
@@ -376,7 +377,8 @@ namespace OxyPlot.Series
                 this.MarkerSize,
                 this.ActualMarkerFill,
                 this.MarkerStroke,
-                this.MarkerStrokeThickness);
+                this.MarkerStrokeThickness,
+                this.EdgeRenderingMode);
         }
 
         /// <summary>
@@ -482,9 +484,9 @@ namespace OxyPlot.Series
 							broken,
 							actualBrokenLineColor,
 							this.BrokenLineThickness,
+                            this.EdgeRenderingMode,
 							dashArray,
-							this.LineJoin,
-							false);
+							this.LineJoin);
 						broken.Clear();
 					}
 				}
@@ -736,7 +738,18 @@ namespace OxyPlot.Series
             {
                 var markerBinOffset = this.MarkerResolution > 0 ? this.Transform(this.MinX, this.MinY) : default(ScreenPoint);
 
-                rc.DrawMarkers(clippingRect, pointsToRender, this.MarkerType, this.MarkerOutline, new[] { this.MarkerSize }, this.ActualMarkerFill, this.MarkerStroke, this.MarkerStrokeThickness, this.MarkerResolution, markerBinOffset);
+                rc.DrawMarkers(
+                    clippingRect, 
+                    pointsToRender, 
+                    this.MarkerType, 
+                    this.MarkerOutline, 
+                    new[] { this.MarkerSize }, 
+                    this.ActualMarkerFill, 
+                    this.MarkerStroke, 
+                    this.MarkerStrokeThickness, 
+                    this.EdgeRenderingMode,
+                    this.MarkerResolution, 
+                    markerBinOffset);
             }
         }
 
@@ -755,7 +768,16 @@ namespace OxyPlot.Series
                 this.outputBuffer = new List<ScreenPoint>(pointsToRender.Count);
             }
 
-            rc.DrawClippedLine(clippingRect, pointsToRender, this.MinimumSegmentLength * this.MinimumSegmentLength, this.GetSelectableColor(this.ActualColor), this.StrokeThickness, dashArray, this.LineJoin, false, this.outputBuffer);
+            rc.DrawClippedLine(
+                clippingRect, 
+                pointsToRender, 
+                this.MinimumSegmentLength * this.MinimumSegmentLength, 
+                this.GetSelectableColor(this.ActualColor), 
+                this.StrokeThickness, 
+                this.EdgeRenderingMode,
+                dashArray, 
+                this.LineJoin, 
+                this.outputBuffer);
         }
 
         /// <summary>

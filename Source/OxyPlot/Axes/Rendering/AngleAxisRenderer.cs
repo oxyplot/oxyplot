@@ -63,7 +63,7 @@ namespace OxyPlot.Axes
 
                 foreach (var screenPoint in screenPoints)
                 {
-                    this.RenderContext.DrawLine(magnitudeAxis.MidPoint.x, magnitudeAxis.MidPoint.y, screenPoint.x, screenPoint.y, this.MinorPen, false);
+                    this.RenderContext.DrawLine(magnitudeAxis.MidPoint.x, magnitudeAxis.MidPoint.y, screenPoint.x, screenPoint.y, this.MinorPen, axis.EdgeRenderingMode);
                 }
             }
 
@@ -84,7 +84,7 @@ namespace OxyPlot.Axes
 
                 foreach (var point in screenPoints)
                 {
-                    this.RenderContext.DrawLine(magnitudeAxis.MidPoint.x, magnitudeAxis.MidPoint.y, point.x, point.y, this.MajorPen, false);
+                    this.RenderContext.DrawLine(magnitudeAxis.MidPoint.x, magnitudeAxis.MidPoint.y, point.x, point.y, this.MajorPen, axis.EdgeRenderingMode);
                 }
             }
 

@@ -52,7 +52,7 @@ namespace OxyPlot
 
             if (background.IsVisible())
             {
-                this.w.WriteRectangle(0, 0, width, height, this.w.CreateStyle(background, OxyColors.Undefined, 0));
+                this.w.WriteRectangle(0, 0, width, height, this.w.CreateStyle(background, OxyColors.Undefined, 0), EdgeRenderingMode.Adaptive);
             }
         }
 
@@ -92,70 +92,41 @@ namespace OxyPlot
             GC.SuppressFinalize(this);
         }
 
-        /// <summary>
-        /// Draws an ellipse.
-        /// </summary>
-        /// <param name="rect">The rectangle.</param>
-        /// <param name="fill">The fill color.</param>
-        /// <param name="stroke">The stroke color.</param>
-        /// <param name="thickness">The thickness.</param>
-        public override void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
+        /// <inheritdoc/>
+        public override void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
         {
-            this.w.WriteEllipse(rect.Left, rect.Top, rect.Width, rect.Height, this.w.CreateStyle(fill, stroke, thickness));
+            this.w.WriteEllipse(rect.Left, rect.Top, rect.Width, rect.Height, this.w.CreateStyle(fill, stroke, thickness), edgeRenderingMode);
         }
 
-        /// <summary>
-        /// Draws the polyline from the specified points.
-        /// </summary>
-        /// <param name="points">The points.</param>
-        /// <param name="stroke">The stroke color.</param>
-        /// <param name="thickness">The stroke thickness.</param>
-        /// <param name="dashArray">The dash array.</param>
-        /// <param name="lineJoin">The line join type.</param>
-        /// <param name="aliased">if set to <c>true</c> the shape will be aliased.</param>
+        /// <inheritdoc/>
         public override void DrawLine(
             IList<ScreenPoint> points,
             OxyColor stroke,
             double thickness,
+            EdgeRenderingMode edgeRenderingMode,
             double[] dashArray,
-            LineJoin lineJoin,
-            bool aliased)
+            LineJoin lineJoin)
         {
-            this.w.WritePolyline(points, this.w.CreateStyle(OxyColors.Undefined, stroke, thickness, dashArray, lineJoin));
+            this.w.WritePolyline(points, this.w.CreateStyle(OxyColors.Undefined, stroke, thickness, dashArray, lineJoin), edgeRenderingMode);
         }
 
-        /// <summary>
-        /// Draws the polygon from the specified points. The polygon can have stroke and/or fill.
-        /// </summary>
-        /// <param name="points">The points.</param>
-        /// <param name="fill">The fill color.</param>
-        /// <param name="stroke">The stroke color.</param>
-        /// <param name="thickness">The stroke thickness.</param>
-        /// <param name="dashArray">The dash array.</param>
-        /// <param name="lineJoin">The line join type.</param>
-        /// <param name="aliased">if set to <c>true</c> the shape will be aliased.</param>
+        /// <inheritdoc/>
         public override void DrawPolygon(
             IList<ScreenPoint> points,
             OxyColor fill,
             OxyColor stroke,
             double thickness,
+            EdgeRenderingMode edgeRenderingMode,
             double[] dashArray,
-            LineJoin lineJoin,
-            bool aliased)
+            LineJoin lineJoin)
         {
-            this.w.WritePolygon(points, this.w.CreateStyle(fill, stroke, thickness, dashArray, lineJoin));
+            this.w.WritePolygon(points, this.w.CreateStyle(fill, stroke, thickness, dashArray, lineJoin), edgeRenderingMode);
         }
 
-        /// <summary>
-        /// Draws the rectangle.
-        /// </summary>
-        /// <param name="rect">The rectangle.</param>
-        /// <param name="fill">The fill color.</param>
-        /// <param name="stroke">The stroke color.</param>
-        /// <param name="thickness">The stroke thickness.</param>
-        public override void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
+        /// <inheritdoc/>
+        public override void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
         {
-            this.w.WriteRectangle(rect.Left, rect.Top, rect.Width, rect.Height, this.w.CreateStyle(fill, stroke, thickness));
+            this.w.WriteRectangle(rect.Left, rect.Top, rect.Width, rect.Height, this.w.CreateStyle(fill, stroke, thickness), edgeRenderingMode);
         }
 
         /// <summary>

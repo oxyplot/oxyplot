@@ -288,9 +288,9 @@ namespace OxyPlot.Series
                         4,
                         this.GetSelectableColor(strokeColor),
                         this.StrokeThickness,
+                        this.EdgeRenderingMode,
                         dashArray,
-                        LineJoin.Miter,
-                        false);
+                        LineJoin.Miter);
 
                     // rc.DrawClippedPolygon(transformedPoints, clippingRect, 4, model.GetDefaultColor(), OxyColors.Black);
                     if (transformedPoints.Length > 10)
@@ -583,7 +583,7 @@ namespace OxyPlot.Series
                                new ScreenPoint(x + (size.Width * ux) + (size.Height * vx), y + (size.Width * uy) + (size.Height * vy)),
                                new ScreenPoint(x - (size.Width * ux) + (size.Height * vx), y - (size.Width * uy) + (size.Height * vy))
                            };
-            rc.DrawPolygon(bpts, this.LabelBackground, OxyColors.Undefined);
+            rc.DrawPolygon(bpts, this.LabelBackground, OxyColors.Undefined, 0, this.EdgeRenderingMode);
         }
 
         /// <summary>

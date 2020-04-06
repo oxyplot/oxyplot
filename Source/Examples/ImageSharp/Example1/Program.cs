@@ -17,18 +17,17 @@
 
             var width = 1024;
             var height = 768;
-            var background = OxyColors.LightGray;
             var resolution = 96d;
 
             var model = BuildPlotModel();
 
             // export to file using static methods
-            PngExporter.Export(model, outputToFile, width, height, background, resolution);
+            PngExporter.Export(model, outputToFile, width, height, resolution);
 
             // export using the instance methods
             using (var stream = new MemoryStream())
             {
-                var pngExporter = new PngExporter { Width = width, Height = height, Background = background, Resolution = resolution };
+                var pngExporter = new PngExporter { Width = width, Height = height, Resolution = resolution };
                 pngExporter.Export(model, stream);
                 System.IO.File.WriteAllBytes(outputExportStreamOOP, stream.ToArray());
             }

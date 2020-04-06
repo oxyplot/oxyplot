@@ -254,9 +254,9 @@ namespace OxyPlot.Series
                         0,
                         actualColor,
                         this.StrokeThickness,
+                        this.EdgeRenderingMode,
                         dashArray,
-                        this.LineJoin,
-                        true);
+                        this.LineJoin);
 
                     var tickVector = this.Orientate(new ScreenVector(this.TickLength, 0));
                     if (!double.IsNaN(v.Open))
@@ -269,9 +269,9 @@ namespace OxyPlot.Series
                             0,
                             actualColor,
                             this.StrokeThickness,
+                            this.EdgeRenderingMode,
                             dashArray,
-                            this.LineJoin,
-                            true);
+                            this.LineJoin);
                     }
 
                     if (!double.IsNaN(v.Close))
@@ -284,9 +284,9 @@ namespace OxyPlot.Series
                             0,
                             actualColor,
                             this.StrokeThickness,
+                            this.EdgeRenderingMode,
                             dashArray,
-                            this.LineJoin,
-                            true);
+                            this.LineJoin);
                     }
                 }
             }
@@ -311,23 +311,23 @@ namespace OxyPlot.Series
                     new[] { new ScreenPoint(xmid, legendBox.Top), new ScreenPoint(xmid, legendBox.Bottom) },
                     color,
                     this.StrokeThickness,
+                    this.EdgeRenderingMode,
                     dashArray,
-                    LineJoin.Miter,
-                    true);
+                    LineJoin.Miter);
                 rc.DrawLine(
                     new[] { new ScreenPoint(xmid - this.TickLength, yopen), new ScreenPoint(xmid, yopen) },
                     color,
                     this.StrokeThickness,
+                    this.EdgeRenderingMode,
                     dashArray,
-                    LineJoin.Miter,
-                    true);
+                    LineJoin.Miter);
                 rc.DrawLine(
                     new[] { new ScreenPoint(xmid + this.TickLength, yclose), new ScreenPoint(xmid, yclose) },
                     color,
                     this.StrokeThickness,
+                    this.EdgeRenderingMode,
                     dashArray,
-                    LineJoin.Miter,
-                    true);
+                    LineJoin.Miter);
             }
         }
 

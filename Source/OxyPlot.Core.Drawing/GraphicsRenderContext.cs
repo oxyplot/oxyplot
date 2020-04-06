@@ -38,6 +38,9 @@ namespace OxyPlot.Core.Drawing
     /// </summary>
     internal class GraphicsRenderContext : RenderContextBase, IDisposable
     {
+        private readonly HashSet<OxyImage> imagesInUse = new HashSet<OxyImage>();
+        private readonly Dictionary<OxyImage, Image> imageCache = new Dictionary<OxyImage, Image>();
+
         /// <summary>
         /// The font size factor.
         /// </summary>
@@ -65,19 +68,13 @@ namespace OxyPlot.Core.Drawing
             this.g = graphics;
         }
 
-        /// <summary>
-        /// Draws an ellipse.
-        /// </summary>
-        /// <param name="rect">The rectangle.</param>
-        /// <param name="fill">The fill color.</param>
-        /// <param name="stroke">The stroke color.</param>
-        /// <param name="thickness">The thickness.</param>
-        public override void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
+        /// <inheritdoc/>
+        public override void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
         {
+            this.SetSmoothingMode(this.ShouldUseAntiAliasingForEllipse(edgeRenderingMode));
             if (fill != null)
             {
-                this.g.FillEllipse(
-               fill.ToBrush(), (float)rect.Left, (float)rect.Top, (float)rect.Width, (float)rect.Height);
+                this.g.FillEllipse(fill.ToBrush(), (float)rect.Left, (float)rect.Top, (float)rect.Width, (float)rect.Height);
             }
 
             if (stroke == null || thickness <= 0)
@@ -92,29 +89,21 @@ namespace OxyPlot.Core.Drawing
             }
         }
 
-        /// <summary>
-        /// Draws the polyline from the specified points.
-        /// </summary>
-        /// <param name="points">The points.</param>
-        /// <param name="stroke">The stroke color.</param>
-        /// <param name="thickness">The stroke thickness.</param>
-        /// <param name="dashArray">The dash array.</param>
-        /// <param name="lineJoin">The line join type.</param>
-        /// <param name="aliased">if set to <c>true</c> the shape will be aliased.</param>
+        /// <inheritdoc/>
         public override void DrawLine(
            IList<ScreenPoint> points,
            OxyColor stroke,
            double thickness,
+           EdgeRenderingMode edgeRenderingMode,
            double[] dashArray,
-           OxyPlot.LineJoin lineJoin,
-           bool aliased)
+           OxyPlot.LineJoin lineJoin)
         {
             if (stroke == null || thickness <= 0 || points.Count < 2)
             {
                 return;
             }
 
-            this.g.SmoothingMode = aliased ? SmoothingMode.None : SmoothingMode.HighQuality;
+            this.SetSmoothingMode(this.ShouldUseAntiAliasingForLine(edgeRenderingMode, points));
             using (var pen = new Pen(stroke.ToColor(), (float)thickness))
             {
 
@@ -139,31 +128,22 @@ namespace OxyPlot.Core.Drawing
             }
         }
 
-        /// <summary>
-        /// Draws the polygon from the specified points. The polygon can have stroke and/or fill.
-        /// </summary>
-        /// <param name="points">The points.</param>
-        /// <param name="fill">The fill color.</param>
-        /// <param name="stroke">The stroke color.</param>
-        /// <param name="thickness">The stroke thickness.</param>
-        /// <param name="dashArray">The dash array.</param>
-        /// <param name="lineJoin">The line join type.</param>
-        /// <param name="aliased">if set to <c>true</c> the shape will be aliased.</param>
+        /// <inheritdoc/>
         public override void DrawPolygon(
            IList<ScreenPoint> points,
            OxyColor fill,
            OxyColor stroke,
            double thickness,
+           EdgeRenderingMode edgeRenderingMode,
            double[] dashArray,
-           OxyPlot.LineJoin lineJoin,
-           bool aliased)
+           OxyPlot.LineJoin lineJoin)
         {
             if (points.Count < 2)
             {
                 return;
             }
 
-            this.g.SmoothingMode = aliased ? SmoothingMode.None : SmoothingMode.HighQuality;
+            this.SetSmoothingMode(this.ShouldUseAntiAliasingForLine(edgeRenderingMode, points));
 
             var pts = this.ToPoints(points);
             if (fill != null)
@@ -198,15 +178,10 @@ namespace OxyPlot.Core.Drawing
             }
         }
 
-        /// <summary>
-        /// Draws the rectangle.
-        /// </summary>
-        /// <param name="rect">The rectangle.</param>
-        /// <param name="fill">The fill color.</param>
-        /// <param name="stroke">The stroke color.</param>
-        /// <param name="thickness">The stroke thickness.</param>
-        public override void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
+        /// <inheritdoc/>
+        public override void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
         {
+            this.SetSmoothingMode(this.ShouldUseAntiAliasingForRect(edgeRenderingMode));
             if (fill != null)
             {
                 this.g.FillRectangle(
@@ -340,7 +315,30 @@ namespace OxyPlot.Core.Drawing
             }
         }
 
+        /// <inheritdoc />
+        public override bool SetClip(OxyRect rect)
+        {
+            this.g.SetClip(rect.ToRect());
+            return true;
+        }
 
+        /// <inheritdoc />
+        public override void ResetClip()
+        {
+            this.g.ResetClip();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void Dispose()
+        {
+            // dispose images
+            foreach (var i in this.imageCache)
+            {
+                i.Value.Dispose();
+            }
+        }
 
         /// <summary>
         /// Converts a double array to a float array.
@@ -393,6 +391,7 @@ namespace OxyPlot.Core.Drawing
             return r;
         }
 
+        /// <inheritdoc />
         public override void CleanUp()
         {
             var imagesToRelease = this.imageCache.Keys.Where(i => !this.imagesInUse.Contains(i));
@@ -405,47 +404,6 @@ namespace OxyPlot.Core.Drawing
 
             this.imagesInUse.Clear();
         }
-
-        //public override OxyImageInfo GetImageInfo(OxyImage source)
-        //{
-        //    var image = this.GetImage(source);
-        //    return image == null ? null : new OxyImageInfo { Width = (uint)image.Width, Height = (uint)image.Height, DpiX = image.HorizontalResolution, DpiY = image.VerticalResolution };
-        //}
-
-        //public override void DrawImage(OxyImage source, uint srcX, uint srcY, uint srcWidth, uint srcHeight, double x, double y, double w, double h, double opacity, bool interpolate)
-        //{
-        //    var image = this.GetImage(source);
-        //    if (image != null)
-        //    {
-        //        ImageAttributes ia = null;
-        //        if (opacity < 1)
-        //        {
-        //            var cm = new ColorMatrix
-        //                         {
-        //                             Matrix00 = 1f,
-        //                             Matrix11 = 1f,
-        //                             Matrix22 = 1f,
-        //                             Matrix33 = 1f,
-        //                             Matrix44 = (float)opacity
-        //                         };
-
-        //            ia = new ImageAttributes();
-        //            ia.SetColorMatrix(cm, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
-        //        }
-
-        //        g.InterpolationMode = interpolate ? InterpolationMode.HighQualityBicubic : InterpolationMode.NearestNeighbor;
-        //        int sx = (int)Math.Round(x);
-        //        int sy = (int)Math.Round(y);
-        //        int sw = (int)Math.Round(x + w) - sx;
-        //        int sh = (int)Math.Round(y + h) - sy;
-        //        g.DrawImage(image, new Rectangle(sx, sy, sw, sh), srcX, srcY, srcWidth, srcHeight, GraphicsUnit.Pixel, ia);
-        //    }
-        //}
-
-        private readonly HashSet<OxyImage> imagesInUse = new HashSet<OxyImage>();
-
-        private readonly Dictionary<OxyImage, Image> imageCache = new Dictionary<OxyImage, Image>();
-
 
         private Image GetImage(OxyImage source)
         {
@@ -479,24 +437,14 @@ namespace OxyPlot.Core.Drawing
             return null;
         }
 
-        public override bool SetClip(OxyRect rect)
+        /// <summary>
+        /// Sets the smoothing mode.
+        /// </summary>
+        /// <param name="useAntiAliasing">A value indicating whether to use Anti-Aliasing.</param>
+        private void SetSmoothingMode(bool useAntiAliasing)
         {
-            this.g.SetClip(rect.ToRect());
-            return true;
+            this.g.SmoothingMode = useAntiAliasing ? SmoothingMode.HighQuality : SmoothingMode.None;
         }
 
-        public override void ResetClip()
-        {
-            this.g.ResetClip();
-        }
-
-        public void Dispose()
-        {
-            // dispose images
-            foreach (var i in this.imageCache)
-            {
-                i.Value.Dispose();
-            }
-        }
     }
 }

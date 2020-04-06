@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 - Support for transposable Annotations (#1417)
 - Support for NET40 (#1452)
 - Support for high DPI for WPF (#149)
+- EdgeRenderingMode property to PlotElement, allowing customization of the way edges are treated by the renderer (#1428, #1358, #1077, #843, #145)
 
 ### Changed
 - Legends model (#644)
@@ -22,6 +23,7 @@ All notable changes to this project will be documented in this file.
 - Change IPlotModel.Render to take an OxyRect (#1425)
 - Merge UIElement and SelectableElement into Element (#1426)
 - Upgrade to .NET Core 3.1 (#1488)
+- DrawRectangle(...), DrawLine(...), DrawEllipse(...), DrawPolygon(...) and related overloads in IRenderContext and related extensions in RenderingExtensions now require an EdgeRenderingMode
 
 ### Removed
 - Remove PlotModel.Legends (#644)
@@ -29,6 +31,7 @@ All notable changes to this project will be documented in this file.
 - Copy to text report Ctrl+Alt+R (#1403)
 - Remove exporter Background properties (#1409)
 - Remove OxyThickness Width and Height properties (#1429)
+- RenderingExtensions.DrawRectangleAsPolygon(...) extension methods. IRenderContext.DrawRectangle(...) with an appropriate EdgeRenderingMode can be used instead.
 
 ### Fixed
 - Legend font size is not affected by DefaultFontSize (#1396)

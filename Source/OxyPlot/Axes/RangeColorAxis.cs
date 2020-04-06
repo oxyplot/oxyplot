@@ -182,7 +182,9 @@ namespace OxyPlot.Axes
                             ? new OxyRect(ymin, top, ymax - ymin, height)
                             : new OxyRect(left, ymin, width, ymax - ymin),
                         color,
-                        OxyColors.Undefined);
+                        OxyColors.Undefined,
+                        0,
+                        this.EdgeRenderingMode);
                 };
 
                 // if the axis is reversed then the min and max values need to be swapped.

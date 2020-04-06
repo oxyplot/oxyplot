@@ -75,6 +75,11 @@ namespace OxyPlot
         public OxyColor TextColor { get; set; }
 
         /// <summary>
+        /// Gets or sets the edge rendering mode that is used for rendering the plot element.
+        /// </summary>
+        public EdgeRenderingMode EdgeRenderingMode { get; set; }
+
+        /// <summary>
         /// Gets or sets the tool tip. The default is <c>null</c>.
         /// </summary>
         /// <value>

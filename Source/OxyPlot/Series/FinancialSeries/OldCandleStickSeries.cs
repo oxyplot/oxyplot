@@ -117,9 +117,9 @@ namespace OxyPlot.Series
                             0,
                             actualColor,
                             this.StrokeThickness,
+                            this.EdgeRenderingMode,
                             dashArray,
-                            this.LineJoin,
-                            false);
+                            this.LineJoin);
                     }
                     else
                     {
@@ -135,9 +135,9 @@ namespace OxyPlot.Series
                             0,
                             actualColor,
                             this.StrokeThickness,
+                            this.EdgeRenderingMode,
                             dashArray,
-                            this.LineJoin,
-                            true);
+                            this.LineJoin);
 
                         // Lower shadow
                         rc.DrawClippedLine(
@@ -146,9 +146,9 @@ namespace OxyPlot.Series
                             0,
                             actualColor,
                             this.StrokeThickness,
+                            this.EdgeRenderingMode,
                             dashArray,
-                            this.LineJoin,
-                            true);
+                            this.LineJoin);
 
                         // Shadow ends
                         if (this.ShadowEndColor.IsVisible() && this.ShadowEndLength > 0)
@@ -161,9 +161,9 @@ namespace OxyPlot.Series
                                  0,
                                  shadowEndColor,
                                  this.StrokeThickness,
+                                 this.EdgeRenderingMode,
                                  dashArray,
-                                 this.LineJoin,
-                                 true);
+                                 this.LineJoin);
 
                             var lowLeft = new ScreenPoint(low.X - (this.CandleWidth * 0.5 * this.ShadowEndLength) - 1, low.Y);
                             var lowRight = new ScreenPoint(low.X + (this.CandleWidth * 0.5 * this.ShadowEndLength), low.Y);
@@ -173,9 +173,9 @@ namespace OxyPlot.Series
                                 0,
                                 shadowEndColor,
                                 this.StrokeThickness,
+                                this.EdgeRenderingMode,
                                 dashArray,
-                                this.LineJoin,
-                                true);
+                                this.LineJoin);
                         }
 
                         // Body
@@ -184,7 +184,7 @@ namespace OxyPlot.Series
                         var fillColor = v.Close > v.Open
                                             ? this.GetSelectableFillColor(this.ActualIncreasingFill)
                                             : this.GetSelectableFillColor(this.DecreasingFill);
-                        rc.DrawClippedRectangleAsPolygon(clippingRect, rect, fillColor, actualColor, this.StrokeThickness);
+                        rc.DrawClippedRectangle(clippingRect, rect, fillColor, actualColor, this.StrokeThickness, this.EdgeRenderingMode);
                     }
                 }
             }
@@ -208,9 +208,9 @@ namespace OxyPlot.Series
                     new[] { new ScreenPoint(xmid, legendBox.Top), new ScreenPoint(xmid, legendBox.Bottom) },
                     this.GetSelectableColor(this.ActualColor),
                     this.StrokeThickness,
+                    this.EdgeRenderingMode,
                     dashArray,
-                    LineJoin.Miter,
-                    true);
+                    LineJoin.Miter);
 
                 // Shadow ends
                 if (this.ShadowEndColor.IsVisible() && this.ShadowEndLength > 0)
@@ -221,9 +221,9 @@ namespace OxyPlot.Series
                          new[] { highLeft, highRight },
                          this.GetSelectableColor(this.ShadowEndColor),
                          this.StrokeThickness,
+                         this.EdgeRenderingMode,
                          dashArray,
-                         this.LineJoin,
-                         true);
+                         this.LineJoin);
 
                     var lowLeft = new ScreenPoint(xmid - (this.CandleWidth * 0.5 * this.ShadowEndLength) - 1, legendBox.Bottom);
                     var lowRight = new ScreenPoint(xmid + (this.CandleWidth * 0.5 * this.ShadowEndLength), legendBox.Bottom);
@@ -231,17 +231,18 @@ namespace OxyPlot.Series
                         new[] { lowLeft, lowRight },
                         this.GetSelectableColor(this.ShadowEndColor),
                         this.StrokeThickness,
+                        this.EdgeRenderingMode,
                         dashArray,
-                        this.LineJoin,
-                        true);
+                        this.LineJoin);
                 }
             }
 
-            rc.DrawRectangleAsPolygon(
+            rc.DrawRectangle(
                 new OxyRect(xmid - (this.CandleWidth * 0.5), yclose, this.CandleWidth, yopen - yclose),
                 this.GetSelectableFillColor(this.ActualIncreasingFill),
                 this.GetSelectableColor(this.ActualColor),
-                this.StrokeThickness);
+                this.StrokeThickness,
+                this.EdgeRenderingMode);
         }
     }
 }

@@ -463,7 +463,7 @@ namespace OxyPlot.Axes
                         plotAreaBottom);
                 }
 
-                this.RenderContext.DrawLineSegments(extraSegments, this.ExtraPen);
+                this.RenderContext.DrawLineSegments(extraSegments, this.ExtraPen, axis.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness));
             }
 
             if (drawAxisLine)
@@ -476,7 +476,8 @@ namespace OxyPlot.Axes
                         axisPosition,
                         axis.Transform(actualMaximum),
                         axisPosition,
-                        this.AxislinePen);
+                        this.AxislinePen,
+                        axis.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness));
                 }
                 else
                 {
@@ -485,18 +486,19 @@ namespace OxyPlot.Axes
                         axis.Transform(actualMinimum),
                         axisPosition,
                         axis.Transform(actualMaximum),
-                        this.AxislinePen);
+                        this.AxislinePen,
+                        axis.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness));
                 }
             }
 
             if (this.MajorPen != null)
             {
-                this.RenderContext.DrawLineSegments(majorSegments, this.MajorPen);
+                this.RenderContext.DrawLineSegments(majorSegments, this.MajorPen, axis.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness));
             }
 
             if (this.MajorTickPen != null)
             {
-                this.RenderContext.DrawLineSegments(majorTickSegments, this.MajorTickPen);
+                this.RenderContext.DrawLineSegments(majorTickSegments, this.MajorTickPen, axis.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness));
             }
         }
 
@@ -602,12 +604,12 @@ namespace OxyPlot.Axes
             // Draw all the line segments);
             if (this.MinorPen != null)
             {
-                this.RenderContext.DrawLineSegments(minorSegments, this.MinorPen);
+                this.RenderContext.DrawLineSegments(minorSegments, this.MinorPen, axis.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness));
             }
 
             if (this.MinorTickPen != null)
             {
-                this.RenderContext.DrawLineSegments(minorTickSegments, this.MinorTickPen);
+                this.RenderContext.DrawLineSegments(minorTickSegments, this.MinorTickPen, axis.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness));
             }
         }
 

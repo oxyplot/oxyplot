@@ -16,6 +16,7 @@ namespace ExampleLibrary
     using OxyPlot;
     using OxyPlot.Annotations;
     using System.Linq;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Provides rendering capability examples.
@@ -46,7 +47,7 @@ namespace ExampleLibrary
                 rc.DrawText(new ScreenPoint(X, y += D), "Green", OxyColors.Green, Font, FontSize, FontWeight);
                 rc.DrawText(new ScreenPoint(X, y += D), "Blue", OxyColors.Blue, Font, FontSize, FontWeight);
 
-                rc.FillRectangle(new OxyRect(X, y + D + 15, 200, 10), OxyColors.Black);
+                rc.FillRectangle(new OxyRect(X, y + D + 15, 200, 10), OxyColors.Black, EdgeRenderingMode.Adaptive);
                 rc.DrawText(new ScreenPoint(X, y + D), "Yellow 50%", OxyColor.FromAColor(128, OxyColors.Yellow), Font, FontSize, FontWeight);
             }));
             return model;
@@ -113,7 +114,7 @@ namespace ExampleLibrary
             model.Annotations.Add(new DelegateAnnotation(rc =>
             {
                 var origin = new ScreenPoint(200, 200);
-                rc.FillCircle(origin, 3, OxyColors.Blue);
+                rc.FillCircle(origin, 3, OxyColors.Blue, EdgeRenderingMode.Adaptive);
                 for (int rotation = 0; rotation < 360; rotation += 45)
                 {
                     rc.DrawText(origin, string.Format("Rotation {0}", rotation), OxyColors.Black, fontSize: 20d, rotation: rotation);
@@ -139,7 +140,7 @@ namespace ExampleLibrary
                     for (var va = VerticalAlignment.Top; va <= VerticalAlignment.Bottom; va++)
                     {
                         var origin = new ScreenPoint((((int)ha + 1) * 200) + 20, (((int)va + 1) * FontSize * 3) + 20);
-                        rc.FillCircle(origin, 3, OxyColors.Blue);
+                        rc.FillCircle(origin, 3, OxyColors.Blue, EdgeRenderingMode.Adaptive);
                         rc.DrawText(origin, ha + "-" + va, OxyColors.Black, fontSize: FontSize, horizontalAlignment: ha, verticalAlignment: va);
                     }
                 }
@@ -162,21 +163,21 @@ namespace ExampleLibrary
             {
                 var origin = new ScreenPoint(200, 200);
                 var origin2 = new ScreenPoint(400, 200);
-                rc.FillCircle(origin, 3, OxyColors.Blue);
+                rc.FillCircle(origin, 3, OxyColors.Blue, EdgeRenderingMode.Adaptive);
                 for (int rotation = 0; rotation < 360; rotation += 45)
                 {
                     var text = "     A_{2}^{3}B";
                     rc.DrawMathText(origin, text, OxyColors.Black, fontFamily, fontSize, fontWeight, rotation, HorizontalAlignment.Left, VerticalAlignment.Middle);
                     var size = rc.MeasureMathText(text, fontFamily, fontSize, fontWeight);
                     var outline1 = size.GetPolygon(origin, rotation, HorizontalAlignment.Left, VerticalAlignment.Middle).ToArray();
-                    rc.DrawPolygon(outline1, OxyColors.Undefined, OxyColors.Blue);
+                    rc.DrawPolygon(outline1, OxyColors.Undefined, OxyColors.Blue, 1, EdgeRenderingMode.Adaptive);
 
                     // Compare with normal text
                     var text2 = "     A B";
                     rc.DrawText(origin2, text2, OxyColors.Red, fontFamily, fontSize, fontWeight, rotation, HorizontalAlignment.Left, VerticalAlignment.Middle);
                     var size2 = rc.MeasureText(text2, fontFamily, fontSize, fontWeight);
                     var outline2 = size2.GetPolygon(origin2, rotation, HorizontalAlignment.Left, VerticalAlignment.Middle).ToArray();
-                    rc.DrawPolygon(outline2, OxyColors.Undefined, OxyColors.Blue);
+                    rc.DrawPolygon(outline2, OxyColors.Undefined, OxyColors.Blue, 1, EdgeRenderingMode.Adaptive);
                 }
             }));
             return model;
@@ -202,7 +203,7 @@ namespace ExampleLibrary
                     for (var va = VerticalAlignment.Top; va <= VerticalAlignment.Bottom; va++)
                     {
                         var origin = new ScreenPoint((((int)ha + 1) * 200) + 20, (((int)va + 1) * FontSize * 3) + 20);
-                        rc.FillCircle(origin, 3, OxyColors.Blue);
+                        rc.FillCircle(origin, 3, OxyColors.Blue, EdgeRenderingMode.Adaptive);
                         rc.DrawMathText(origin, text, OxyColors.Black, FontFamily, FontSize, FontWeight, 0, ha, va);
                     }
                 }
@@ -225,7 +226,7 @@ namespace ExampleLibrary
                     for (var va = VerticalAlignment.Top; va <= VerticalAlignment.Bottom; va++)
                     {
                         var origin = new ScreenPoint(((int)ha + 2) * 130, ((int)va + 2) * 130);
-                        rc.FillCircle(origin, 3, OxyColors.Blue);
+                        rc.FillCircle(origin, 3, OxyColors.Blue, EdgeRenderingMode.Adaptive);
                         for (int rotation = 0; rotation < 360; rotation += 90)
                         {
                             rc.DrawText(origin, string.Format("R{0:000}", rotation), OxyColors.Black, fontSize: 20d, rotation: rotation, horizontalAlignment: ha, verticalAlignment: va);
@@ -260,13 +261,13 @@ namespace ExampleLibrary
                         var p = new ScreenPoint(X, y);
                         rc.DrawText(p, text, OxyColors.Black, Font, FontSize, FontWeight, maxSize: maxSize);
                         var rect = new OxyRect(p, maxSize);
-                        rc.DrawRectangle(rect, OxyColors.Undefined, OxyColors.Black);
+                        rc.DrawRectangle(rect, OxyColors.Undefined, OxyColors.Black, 1, EdgeRenderingMode.Adaptive);
 
                         var p2 = new ScreenPoint(X2, y);
                         var maxSize2 = new OxySize(maxSize.Width / 2, maxSize.Height / 2);
                         rc.DrawText(p2, text, OxyColors.Black, Font, FontSize, FontWeight, maxSize: maxSize2);
                         var rect2 = new OxyRect(p2, maxSize2);
-                        rc.DrawRectangle(rect2, OxyColors.Undefined, OxyColors.Black);
+                        rc.DrawRectangle(rect2, OxyColors.Undefined, OxyColors.Black, 1, EdgeRenderingMode.Adaptive);
 
                         y += D;
                     }
@@ -326,7 +327,7 @@ namespace ExampleLibrary
                     {
                         var size = rc.MeasureText(s, Font, fontSize);
                         maxWidth = Math.Max(maxWidth, size.Width);
-                        rc.DrawRectangle(new OxyRect(x, y, size.Width, size.Height), OxyColors.LightYellow, OxyColors.Black);
+                        rc.DrawRectangle(new OxyRect(x, y, size.Width, size.Height), OxyColors.LightYellow, OxyColors.Black, 1, EdgeRenderingMode.Adaptive);
                         rc.DrawText(new ScreenPoint(x, y), s, OxyColors.Black, Font, fontSize);
                         y += size.Height + 20;
                     }
@@ -375,13 +376,13 @@ namespace ExampleLibrary
                         var p = new ScreenPoint(20, 50);
                         rc.DrawText(p, text, OxyColors.Black, font, fontSize);
 
-                        rc.FillCircle(p, 3, OxyColors.Black);
+                        rc.FillCircle(p, 3, OxyColors.Black, EdgeRenderingMode.Adaptive);
 
                         // actual bounds
-                        rc.DrawRectangle(new OxyRect(p, size), OxyColors.Undefined, OxyColors.Black);
+                        rc.DrawRectangle(new OxyRect(p, size), OxyColors.Undefined, OxyColors.Black, 1, EdgeRenderingMode.Adaptive);
 
                         // Expected bounds (WPF)
-                        rc.DrawRectangle(new OxyRect(p, expectedSize), OxyColors.Undefined, OxyColors.Green);
+                        rc.DrawRectangle(new OxyRect(p, expectedSize), OxyColors.Undefined, OxyColors.Green, 1, EdgeRenderingMode.Adaptive);
 
                         var color = OxyColor.FromAColor(180, OxyColors.Red);
                         var pen = new OxyPen(color);
@@ -389,20 +390,178 @@ namespace ExampleLibrary
                         // Expected vertical positions (WPF)
                         var x1 = p.X - 10;
                         var x2 = p.X + expectedSize.Width + 10;
-                        rc.DrawLine(x1, baseline, x2, baseline, pen);
-                        rc.DrawLine(x1, xheight, x2, xheight, pen);
-                        rc.DrawLine(x1, ascent, x2, ascent, pen);
-                        rc.DrawLine(x1, descent, x2, descent, pen);
+                        rc.DrawLine(x1, baseline, x2, baseline, pen, EdgeRenderingMode.Adaptive);
+                        rc.DrawLine(x1, xheight, x2, xheight, pen, EdgeRenderingMode.Adaptive);
+                        rc.DrawLine(x1, ascent, x2, ascent, pen, EdgeRenderingMode.Adaptive);
+                        rc.DrawLine(x1, descent, x2, descent, pen, EdgeRenderingMode.Adaptive);
 
                         // Expected horizonal positions (WPF)
                         var y1 = p.Y - 10;
                         var y2 = p.Y + expectedSize.Height + 10;
-                        rc.DrawLine(before, y1, before, y2, pen);
-                        rc.DrawLine(after, y1, after, y2, pen);
+                        rc.DrawLine(before, y1, before, y2, pen, EdgeRenderingMode.Adaptive);
+                        rc.DrawLine(after, y1, after, y2, pen, EdgeRenderingMode.Adaptive);
                     }));
 
             model.MouseDown += (s, e) => Debug.WriteLine(e.Position);
 
+            return model;
+        }
+
+        private const double GRID_SIZE = 40;
+        private const double TILE_SIZE = 30;
+        private const int THICKNESS_STEPS = 10;
+        private const double THICKNESS_STEP = .5;
+        private const double OFFSET_LEFT = 150;
+        private const double OFFSET_TOP = 20;
+        private static readonly OxyColor FILL_COLOR = OxyColors.LightBlue;
+
+        /// <summary>
+        /// Shows capabilities for the MeasureText method.
+        /// </summary>
+        /// <returns>A plot model.</returns>
+        [Example("Rectangles - EdgeRenderingMode")]
+        public static PlotModel Rectangles()
+        {
+            var model = new PlotModel();
+            model.Annotations.Add(new DelegateAnnotation(rc =>
+            {
+                for (int i = 0; i < THICKNESS_STEPS; i++)
+                {
+                    var left = OFFSET_LEFT + i * GRID_SIZE + TILE_SIZE / 2;
+                    var strokeThickness = i * THICKNESS_STEP;
+                    rc.DrawText(new ScreenPoint(left, OFFSET_TOP / 2), strokeThickness.ToString(), OxyColors.Black, horizontalAlignment: HorizontalAlignment.Center, verticalAlignment: VerticalAlignment.Middle);
+                }
+
+                foreach (EdgeRenderingMode edgeRenderingMode in Enum.GetValues(typeof(EdgeRenderingMode)))
+                {
+                    var top = OFFSET_TOP + (int)edgeRenderingMode * GRID_SIZE;
+                    rc.DrawText(new ScreenPoint(10, top + 10), edgeRenderingMode.ToString(), OxyColors.Black, verticalAlignment: VerticalAlignment.Middle);
+                    for (int i = 0; i < THICKNESS_STEPS; i++)
+                    {
+                        var left = OFFSET_LEFT + i * GRID_SIZE;
+                        var rect = new OxyRect(left, top, TILE_SIZE, TILE_SIZE);
+                        var strokeThickness = i * THICKNESS_STEP;
+                        rc.DrawRectangle(rect, FILL_COLOR, OxyColors.Black, strokeThickness, edgeRenderingMode);
+                    }
+                }
+                
+            }));
+            return model;
+        }
+
+        /// <summary>
+        /// Shows capabilities for the MeasureText method.
+        /// </summary>
+        /// <returns>A plot model.</returns>
+        [Example("Lines - EdgeRenderingMode")]
+        public static PlotModel Lines()
+        {
+            var model = new PlotModel();
+            model.Annotations.Add(new DelegateAnnotation(rc =>
+            {
+                for (int i = 0; i < THICKNESS_STEPS; i++)
+                {
+                    var left = OFFSET_LEFT + i * GRID_SIZE + TILE_SIZE / 2;
+                    var strokeThickness = i * THICKNESS_STEP;
+                    rc.DrawText(new ScreenPoint(left, OFFSET_TOP / 2), strokeThickness.ToString(), OxyColors.Black, horizontalAlignment: HorizontalAlignment.Center, verticalAlignment: VerticalAlignment.Middle);
+                }
+
+                foreach (EdgeRenderingMode edgeRenderingMode in Enum.GetValues(typeof(EdgeRenderingMode)))
+                {
+                    var top = OFFSET_TOP + (int)edgeRenderingMode * GRID_SIZE;
+                    rc.DrawText(new ScreenPoint(10, top + 10), edgeRenderingMode.ToString(), OxyColors.Black, verticalAlignment: VerticalAlignment.Middle);
+                    for (int i = 0; i < THICKNESS_STEPS; i++)
+                    {
+                        var left = OFFSET_LEFT + i * GRID_SIZE;
+                        var topLeft = new ScreenPoint(left, top);
+                        var bottomLeft = new ScreenPoint(left, top + TILE_SIZE);
+                        var topRight = new ScreenPoint(left + TILE_SIZE, top);
+                        var bottomRight = new ScreenPoint(left + TILE_SIZE, top + TILE_SIZE);
+                        var middleLeft = new ScreenPoint(left, top + TILE_SIZE / 2);
+                        var strokeThickness = i * THICKNESS_STEP;
+
+                        rc.DrawLine(new[] { bottomLeft, topLeft, topRight }, OxyColors.Black, strokeThickness, edgeRenderingMode);
+                        rc.DrawLine(new[] { middleLeft, bottomRight, topLeft }, OxyColors.Black, strokeThickness, edgeRenderingMode, lineJoin: LineJoin.Bevel);
+                    }
+                }
+
+            }));
+            return model;
+        }
+
+        /// <summary>
+        /// Shows capabilities for the MeasureText method.
+        /// </summary>
+        /// <returns>A plot model.</returns>
+        [Example("Polygons - EdgeRenderingMode")]
+        public static PlotModel Polygons()
+        {
+            var model = new PlotModel();
+            model.Annotations.Add(new DelegateAnnotation(rc =>
+            {
+                for (int i = 0; i < THICKNESS_STEPS; i++)
+                {
+                    var left = OFFSET_LEFT + i * GRID_SIZE + TILE_SIZE / 2;
+                    var strokeThickness = i * THICKNESS_STEP;
+                    rc.DrawText(new ScreenPoint(left, OFFSET_TOP / 2), strokeThickness.ToString(), OxyColors.Black, horizontalAlignment: HorizontalAlignment.Center, verticalAlignment: VerticalAlignment.Middle);
+                }
+
+                foreach (EdgeRenderingMode edgeRenderingMode in Enum.GetValues(typeof(EdgeRenderingMode)))
+                {
+                    var top = OFFSET_TOP + (int)edgeRenderingMode * GRID_SIZE;
+                    rc.DrawText(new ScreenPoint(10, top + 10), edgeRenderingMode.ToString(), OxyColors.Black, verticalAlignment: VerticalAlignment.Middle);
+                    for (int i = 0; i < THICKNESS_STEPS; i++)
+                    {
+                        var left = OFFSET_LEFT + i * GRID_SIZE;
+                        var points = new []
+                        {
+                            new ScreenPoint(left + TILE_SIZE * .4, top),
+                            new ScreenPoint(left + TILE_SIZE, top + TILE_SIZE * .2),
+                            new ScreenPoint(left + TILE_SIZE * .9, top + TILE_SIZE * .8),
+                            new ScreenPoint(left + TILE_SIZE * .5, top + TILE_SIZE),
+                            new ScreenPoint(left, top + TILE_SIZE * .6),
+                        };
+
+                        var strokeThickness = i * THICKNESS_STEP;
+                        rc.DrawPolygon(points, FILL_COLOR, OxyColors.Black, strokeThickness, edgeRenderingMode);
+                    }
+                }
+
+            }));
+            return model;
+        }
+
+        /// <summary>
+        /// Shows capabilities for the MeasureText method.
+        /// </summary>
+        /// <returns>A plot model.</returns>
+        [Example("Ellipses - EdgeRenderingMode")]
+        public static PlotModel Ellipses()
+        {
+            var model = new PlotModel();
+            model.Annotations.Add(new DelegateAnnotation(rc =>
+            {
+                for (int i = 0; i < THICKNESS_STEPS; i++)
+                {
+                    var left = OFFSET_LEFT + i * GRID_SIZE + TILE_SIZE / 2;
+                    var strokeThickness = i * THICKNESS_STEP;
+                    rc.DrawText(new ScreenPoint(left, OFFSET_TOP / 2), strokeThickness.ToString(), OxyColors.Black, horizontalAlignment: HorizontalAlignment.Center, verticalAlignment: VerticalAlignment.Middle);
+                }
+
+                foreach (EdgeRenderingMode edgeRenderingMode in Enum.GetValues(typeof(EdgeRenderingMode)))
+                {
+                    var top = OFFSET_TOP + (int)edgeRenderingMode * GRID_SIZE;
+                    rc.DrawText(new ScreenPoint(10, top + 10), edgeRenderingMode.ToString(), OxyColors.Black, verticalAlignment: VerticalAlignment.Middle);
+                    for (int i = 0; i < THICKNESS_STEPS; i++)
+                    {
+                        var left = OFFSET_LEFT + i * GRID_SIZE;
+                        var rect = new OxyRect(left, top + TILE_SIZE * .1, TILE_SIZE, TILE_SIZE * .8);
+                        var strokeThickness = i * THICKNESS_STEP;
+                        rc.DrawEllipse(rect, FILL_COLOR, OxyColors.Black, strokeThickness, edgeRenderingMode);
+                    }
+                }
+
+            }));
             return model;
         }
 

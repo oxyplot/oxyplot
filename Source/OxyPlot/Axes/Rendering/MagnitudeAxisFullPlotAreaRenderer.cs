@@ -462,7 +462,7 @@ namespace OxyPlot.Axes
                 points.Add(toadd);
             }
 
-            this.RenderContext.DrawLine(points, pen.Color, pen.Thickness, pen.ActualDashArray);
+            this.RenderContext.DrawLine(points, pen.Color, pen.Thickness, axis.EdgeRenderingMode, pen.ActualDashArray);
         }
 
         /// <summary>

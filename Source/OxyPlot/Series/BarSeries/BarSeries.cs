@@ -293,11 +293,12 @@ namespace OxyPlot.Series
             var ymid = (legendBox.Top + legendBox.Bottom) / 2;
             var height = (legendBox.Bottom - legendBox.Top) * 0.8;
             var width = height;
-            rc.DrawRectangleAsPolygon(
+            rc.DrawRectangle(
                 new OxyRect(xmid - (0.5 * width), ymid - (0.5 * height), width, height),
                 this.GetSelectableColor(this.ActualFillColor),
                 this.StrokeColor,
-                this.StrokeThickness);
+                this.StrokeThickness,
+                this.EdgeRenderingMode);
         }
 
         /// <summary>
@@ -604,12 +605,13 @@ namespace OxyPlot.Series
                 }
             }
 
-            rc.DrawClippedRectangleAsPolygon(
+            rc.DrawClippedRectangle(
                 clippingRect,
                 rect,
                 this.GetSelectableFillColor(actualFillColor),
                 this.StrokeColor,
-                this.StrokeThickness);
+                this.StrokeThickness,
+                this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness));
         }
 
         /// <summary>

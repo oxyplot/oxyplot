@@ -239,6 +239,11 @@ namespace OxyPlot
         public IList<OxyColor> DefaultColors { get; set; }
 
         /// <summary>
+        /// Gets or sets the edge rendering mode that is used for rendering the plot bounds and backgrounds.
+        /// </summary>
+        public EdgeRenderingMode EdgeRenderingMode { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the legend is visible. The titles of the series must be set to use the legend.
         /// </summary>
         public bool IsLegendVisible { get; set; }

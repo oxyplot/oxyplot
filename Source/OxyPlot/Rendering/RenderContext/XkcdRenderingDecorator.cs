@@ -71,51 +71,34 @@ namespace OxyPlot
         /// </value>
         public double ThicknessScale { get; set; }
 
-        /// <summary>
-        /// Draws a polyline.
-        /// </summary>
-        /// <param name="points">The points.</param>
-        /// <param name="stroke">The stroke color.</param>
-        /// <param name="thickness">The stroke thickness.</param>
-        /// <param name="dashArray">The dash array.</param>
-        /// <param name="lineJoin">The line join type.</param>
-        /// <param name="aliased">if set to <c>true</c> the shape will be aliased.</param>
+        /// <inheritdoc/>
         public override void DrawLine(
             IList<ScreenPoint> points,
             OxyColor stroke,
             double thickness,
+            EdgeRenderingMode edgeRenderingMode,
             double[] dashArray,
-            LineJoin lineJoin,
-            bool aliased)
+            LineJoin lineJoin)
         {
             var xckdPoints = this.Distort(points);
-            this.rc.DrawLine(xckdPoints, stroke, thickness * this.ThicknessScale, dashArray, lineJoin);
+            this.rc.DrawLine(xckdPoints, stroke, thickness * this.ThicknessScale, edgeRenderingMode, dashArray, lineJoin);
         }
 
-        /// <summary>
-        /// Draws a polygon. The polygon can have stroke and/or fill.
-        /// </summary>
-        /// <param name="points">The points.</param>
-        /// <param name="fill">The fill color.</param>
-        /// <param name="stroke">The stroke color.</param>
-        /// <param name="thickness">The stroke thickness.</param>
-        /// <param name="dashArray">The dash array.</param>
-        /// <param name="lineJoin">The line join type.</param>
-        /// <param name="aliased">If set to <c>true</c> the shape will be aliased.</param>
+        /// <inheritdoc/>
         public override void DrawPolygon(
             IList<ScreenPoint> points,
             OxyColor fill,
             OxyColor stroke,
             double thickness,
+            EdgeRenderingMode edgeRenderingMode,
             double[] dashArray,
-            LineJoin lineJoin,
-            bool aliased)
+            LineJoin lineJoin)
         {
             var p = new List<ScreenPoint>(points);
             p.Add(p[0]);
 
             var xckdPoints = this.Distort(p);
-            this.rc.DrawPolygon(xckdPoints, fill, stroke, thickness * this.ThicknessScale, dashArray, lineJoin);
+            this.rc.DrawPolygon(xckdPoints, fill, stroke, thickness * this.ThicknessScale, edgeRenderingMode, dashArray, lineJoin);
         }
 
         /// <summary>

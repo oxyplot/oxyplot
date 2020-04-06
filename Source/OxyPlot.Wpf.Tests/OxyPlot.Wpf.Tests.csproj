@@ -21,10 +21,13 @@
         <None Include="app.config" />
     </ItemGroup>
     <ItemGroup>
+        <Content Include="Baseline\PngExporterTests_ExportWithResolution_115dpi.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
         <Content Include="Baseline\PngExporterTests_ExportWithResolution_192dpi.png">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Include="Baseline\PngExporterTests_ExportWithResolution_384dpi.png">
+        <Content Include="Baseline\PngExporterTests_ExportWithResolution_301dpi.png">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
     </ItemGroup>

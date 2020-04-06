@@ -388,15 +388,14 @@ namespace OxyPlot
         private void RenderBackgrounds(IRenderContext rc)
         {
             // Render the main background of the plot area (only if there are axes)
-            // The border is rendered by DrawRectangleAsPolygon to ensure that it is pixel aligned with the tick marks.
             if (this.Axes.Count > 0 && this.PlotAreaBackground.IsVisible())
             {
-                rc.DrawRectangleAsPolygon(this.PlotArea, this.PlotAreaBackground, OxyColors.Undefined, 0);
+                rc.DrawRectangle(this.PlotArea, this.PlotAreaBackground, OxyColors.Undefined, 0, this.EdgeRenderingMode);
             }
 
             foreach (var s in this.Series.Where(s => s.IsVisible && s is XYAxisSeries && s.Background.IsVisible()).Cast<XYAxisSeries>())
             {
-                rc.DrawRectangle(s.GetScreenRectangle(), s.Background, OxyColors.Undefined, 0);
+                rc.DrawRectangle(s.GetScreenRectangle(), s.Background, OxyColors.Undefined, 0, this.EdgeRenderingMode);
             }
         }
 
@@ -407,10 +406,9 @@ namespace OxyPlot
         /// <remarks>The border will only by rendered if there are axes in the plot.</remarks>
         private void RenderBox(IRenderContext rc)
         {
-            // The border is rendered by DrawRectangleAsPolygon to ensure that it is pixel aligned with the tick marks (cannot use DrawRectangle here).
             if (this.Axes.Count > 0)
             {
-                rc.DrawRectangleAsPolygon(this.PlotArea, OxyColors.Undefined, this.PlotAreaBorderColor, this.PlotAreaBorderThickness);
+                rc.DrawRectangle(this.PlotArea, this.PlotAreaBorderColor, this.PlotAreaBorderThickness, this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness));
             }
         }
 

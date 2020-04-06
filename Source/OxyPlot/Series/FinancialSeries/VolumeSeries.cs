@@ -251,7 +251,7 @@ namespace OxyPlot.Series
                             var fillcolor = (bar.BuyVolume > bar.SellVolume) ? barfillUp : barfillDown;
                             var linecolor = (bar.BuyVolume > bar.SellVolume) ? lineUp : lineDown;
                             var rect1 = new OxyRect(p1, p2);
-                            rc.DrawClippedRectangleAsPolygon(clippingRect, rect1, fillcolor, linecolor, this.StrokeThickness);
+                            rc.DrawClippedRectangle(clippingRect, rect1, fillcolor, linecolor, this.StrokeThickness, this.EdgeRenderingMode);
                         }
 
                         break;
@@ -264,8 +264,8 @@ namespace OxyPlot.Series
                             var rectBuy = new OxyRect(p1, p2Buy);
                             var rectSell = new OxyRect(p1, p2Bell);
 
-                            rc.DrawClippedRectangleAsPolygon(clippingRect, rectBuy, fillUp, lineUp, this.StrokeThickness);
-                            rc.DrawClippedRectangleAsPolygon(clippingRect, rectSell, fillDown, lineDown, this.StrokeThickness);
+                            rc.DrawClippedRectangle(clippingRect, rectBuy, fillUp, lineUp, this.StrokeThickness, this.EdgeRenderingMode);
+                            rc.DrawClippedRectangle(clippingRect, rectSell, fillDown, lineDown, this.StrokeThickness, this.EdgeRenderingMode);
                         }
 
                         break;
@@ -290,8 +290,8 @@ namespace OxyPlot.Series
                                 rectSell = new OxyRect(p2Buy, pBoth);
                             }
 
-                            rc.DrawClippedRectangleAsPolygon(clippingRect, rectBuy, fillUp, lineUp, this.StrokeThickness);
-                            rc.DrawClippedRectangleAsPolygon(clippingRect, rectSell, fillDown, lineDown, this.StrokeThickness);
+                            rc.DrawClippedRectangle(clippingRect, rectBuy, fillUp, lineUp, this.StrokeThickness, this.EdgeRenderingMode);
+                            rc.DrawClippedRectangle(clippingRect, rectSell, fillDown, lineDown, this.StrokeThickness, this.EdgeRenderingMode);
 
                             break;
                         }
@@ -316,9 +316,9 @@ namespace OxyPlot.Series
                     0,
                     this.InterceptColor,
                     this.InterceptStrokeThickness,
+                    this.EdgeRenderingMode,
                     this.InterceptLineStyle.GetDashArray(),
-                    LineJoin.Miter,
-                    true);
+                    LineJoin.Miter);
             }
         }
 
@@ -345,15 +345,16 @@ namespace OxyPlot.Series
                     new[] { new ScreenPoint(xmid, legendBox.Top), new ScreenPoint(xmid, legendBox.Bottom) },
                     lineUp,
                     this.StrokeThickness,
+                    this.EdgeRenderingMode,
                     dashArray,
-                    LineJoin.Miter,
-                    true);
+                    LineJoin.Miter);
 
-                rc.DrawRectangleAsPolygon(
+                rc.DrawRectangle(
                     new OxyRect(xmid - (candlewidth * 0.5), yclose, candlewidth, yopen - yclose),
                     fillUp,
                     lineUp,
-                    this.StrokeThickness);
+                    this.StrokeThickness,
+                    this.EdgeRenderingMode);
             }
         }
 

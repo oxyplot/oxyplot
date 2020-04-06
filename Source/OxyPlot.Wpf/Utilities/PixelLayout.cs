@@ -59,6 +59,64 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
+        /// Snaps a screen point to a pixel grid.
+        /// </summary>
+        /// <remarks>
+        /// Depending on the stroke thickness, the point is snapped either to the middle or the border of a pixel.
+        /// </remarks>
+        /// <param name="x">The x coordinate of the point.</param>
+        /// <param name="y">The y coordinate of the point.</param>
+        /// <param name="strokeThickness">The stroke thickness.</param>
+        /// <param name="visualOffset">A point structure which represents X and Y visual offsets relative to visual root</param>
+        /// <param name="dpiScales">A point structure which represents X and Y pixel grid scales</param>
+        /// <returns>Snapped point</returns>
+        public static Point Snap(double x, double y, double strokeThickness, Point visualOffset, Point dpiScales)
+        {
+            var offsetX = visualOffset.X + GetPixelOffset(strokeThickness, dpiScales.X);
+            var offsetY = visualOffset.Y + GetPixelOffset(strokeThickness, dpiScales.Y);
+
+            x = Snap(x, offsetX, dpiScales.X);
+            y = Snap(y, offsetY, dpiScales.Y);
+            return new Point(x, y);
+        }
+
+        /// <summary>
+        /// Snaps a rectangle structure to a pixel grid.
+        /// </summary>
+        /// <remarks>
+        /// Depending on the stroke thickness, the rectangle bounds are snapped either to the middle or the border of pixels.
+        /// </remarks>
+        /// <param name="rect">Rectangle structure</param>
+        /// <param name="strokeThickness">The stroke thickness.</param>
+        /// <param name="visualOffset">A point structure which represents X and Y visual offsets relative to visual root</param>
+        /// <param name="dpiScales">A point structure which represents X and Y pixel grid scales</param>
+        /// <returns>Snapped rectangle structure</returns>
+        public static Rect Snap(Rect rect, double strokeThickness, Point visualOffset, Point dpiScales)
+        {
+            var offsetX = visualOffset.X + GetPixelOffset(strokeThickness, dpiScales.X);
+            var offsetY = visualOffset.Y + GetPixelOffset(strokeThickness, dpiScales.Y);
+
+            var l = Snap(rect.Left, offsetX, dpiScales.X);
+            var t = Snap(rect.Top, offsetY, dpiScales.Y);
+            var r = Snap(rect.Right, offsetX, dpiScales.X);
+            var b = Snap(rect.Bottom, offsetY, dpiScales.Y);
+
+            return new Rect(l, t, r - l, b - t);
+        }
+
+        /// <summary>
+        /// Snaps a stroke thickness to an integer multiple of device pixels.
+        /// </summary>
+        /// <param name="strokeThickness">The stroke thickness.</param>
+        /// <param name="dpiScales">A point structure which represents X and Y pixel grid scales</param>
+        /// <returns>The snapped stroke thickness.</returns>
+        public static double SnapStrokeThickness(double strokeThickness, Point dpiScales)
+        {
+            var scale = (dpiScales.X + dpiScales.Y) / 2;
+            return Math.Round(strokeThickness * scale, MidpointRounding.AwayFromZero) / scale;
+        }
+
+        /// <summary>
         /// Snaps a screen coordinate to a pixel grid
         /// </summary>
         /// <param name="value">Screen coordinate</param>
@@ -71,44 +129,20 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Snaps a screen point to a pixel grid
+        /// Gets the pixel offset for the given scale and stroke thickness.
         /// </summary>
-        /// <param name="point">Screen point</param>
-        /// <param name="visualOffset">A point structure which represents X and Y visual offsets relative to visual root</param>
-        /// <param name="dpiScales">A point structure which represents X and Y pixel grid scales</param>
-        /// <returns>Snapped point</returns>
-        public static Point Snap(Point point, ref Point visualOffset, ref Point dpiScales)
+        /// <remarks>
+        /// This takes into account that lines with even width should be rendered on the border between two pixels, while lines with odd width should be rendered
+        /// in the middle of a pixel.
+        /// </remarks>
+        /// <param name="strokeThickness">The stroke thickness.</param>
+        /// <param name="scale">Pixel grid scale</param>
+        /// <returns>The pixel offset.</returns>
+        private static double GetPixelOffset(double strokeThickness, double scale)
         {
-            return new Point(Snap(point.X, visualOffset.X, dpiScales.X) + 0.5 / dpiScales.X, Snap(point.Y, visualOffset.Y, dpiScales.Y) + 0.5 / dpiScales.Y);
-        }
-
-        /// <summary>
-        /// Snaps a size structure to a pixel grid
-        /// </summary>
-        /// <param name="size">Size structure</param>
-        /// <param name="visualOffset">A point structure which represents X and Y visual offsets relative to visual root</param>
-        /// <param name="dpiScales">A point structure which represents X and Y pixel grid scales</param>
-        /// <returns>Snapped size structure</returns>
-        public static Size Snap(Size size, ref Point visualOffset, ref Point dpiScales)
-        {
-            return new Size(Snap(size.Width, visualOffset.X, dpiScales.X), Snap(size.Height, visualOffset.Y, dpiScales.Y));
-        }
-
-        /// <summary>
-        /// Snaps a rectangle structure to a pixel grid
-        /// </summary>
-        /// <param name="rect">Rectangle structure</param>
-        /// <param name="visualOffset">A point structure which represents X and Y visual offsets relative to visual root</param>
-        /// <param name="dpiScales">A point structure which represents X and Y pixel grid scales</param>
-        /// <returns>Snapped rectangle structure</returns>
-        public static Rect Snap(Rect rect, ref Point visualOffset, ref Point dpiScales)
-        {
-            var l = Snap(rect.Left, visualOffset.X, dpiScales.X);
-            var t = Snap(rect.Top, visualOffset.Y, dpiScales.Y);
-            var r = Snap(rect.Right, visualOffset.X, dpiScales.X);
-            var b = Snap(rect.Bottom, visualOffset.Y, dpiScales.Y);
-
-            return new Rect(l, t, r - l, b - t);
+            var mod = strokeThickness * scale % 2;
+            var isOdd = mod >= 0.5 && mod < 1.5;
+            return isOdd ? 0.5 / scale : 0;
         }
     }
 }

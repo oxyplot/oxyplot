@@ -139,9 +139,9 @@ namespace OxyPlot.Series
                         0,
                         lineColor,
                         this.StrokeThickness,
+                        this.EdgeRenderingMode,
                         dashArray,
-                        this.LineJoin,
-                        true);
+                        this.LineJoin);
 
                     // Lower extent
                     rc.DrawClippedLine(
@@ -150,15 +150,15 @@ namespace OxyPlot.Series
                         0,
                         lineColor,
                         this.StrokeThickness,
+                        this.EdgeRenderingMode,
                         dashArray,
-                        this.LineJoin,
-                        true);
+                        this.LineJoin);
                 }
 
                 var p1 = this.Transform(bar.X - halfDataCandlewidth, bar.Open);
                 var p2 = this.Transform(bar.X + halfDataCandlewidth, bar.Close);
                 var rect = new OxyRect(p1, p2);
-                rc.DrawClippedRectangleAsPolygon(clippingRect, rect, fillColor, lineColor, this.StrokeThickness);
+                rc.DrawClippedRectangle(clippingRect, rect, fillColor, lineColor, this.StrokeThickness, this.EdgeRenderingMode);
             }
         }
 
@@ -182,16 +182,17 @@ namespace OxyPlot.Series
                     new[] { new ScreenPoint(xmid, legendBox.Top), new ScreenPoint(xmid, legendBox.Bottom) },
                     this.GetSelectableColor(this.ActualColor),
                     this.StrokeThickness,
+                    this.EdgeRenderingMode,
                     dashArray,
-                    LineJoin.Miter,
-                    true);
+                    LineJoin.Miter);
             }
 
-            rc.DrawRectangleAsPolygon(
+            rc.DrawRectangle(
                 new OxyRect(xmid - (candlewidth * 0.5), yclose, candlewidth, yopen - yclose),
                 this.GetSelectableFillColor(this.IncreasingColor),
                 this.GetSelectableColor(this.ActualColor),
-                this.StrokeThickness);
+                this.StrokeThickness,
+                this.EdgeRenderingMode);
         }
 
         /// <summary>

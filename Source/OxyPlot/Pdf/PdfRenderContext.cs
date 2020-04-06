@@ -64,7 +64,8 @@ namespace OxyPlot
         /// <param name="fill">The fill color.</param>
         /// <param name="stroke">The stroke color.</param>
         /// <param name="thickness">The thickness.</param>
-        public override void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
+        /// <param name="edgeRenderingMode">The edge rendering mode. This is not supported and will be ignored.</param>
+        public override void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
         {
             var isStroked = stroke.IsVisible() && thickness > 0;
             var isFilled = fill.IsVisible();
@@ -101,16 +102,16 @@ namespace OxyPlot
         /// <param name="points">The points.</param>
         /// <param name="stroke">The stroke color.</param>
         /// <param name="thickness">The stroke thickness.</param>
+        /// <param name="edgeRenderingMode">The edge rendering mode. This is not supported and will be ignored.</param>
         /// <param name="dashArray">The dash array.</param>
         /// <param name="lineJoin">The line join type.</param>
-        /// <param name="aliased">if set to <c>true</c> the shape will be aliased.</param>
         public override void DrawLine(
             IList<ScreenPoint> points,
             OxyColor stroke,
             double thickness,
+            EdgeRenderingMode edgeRenderingMode,
             double[] dashArray,
-            LineJoin lineJoin,
-            bool aliased)
+            LineJoin lineJoin)
         {
             this.doc.SetColor(stroke);
             this.SetLineWidth(thickness);
@@ -141,17 +142,17 @@ namespace OxyPlot
         /// <param name="fill">The fill color.</param>
         /// <param name="stroke">The stroke color.</param>
         /// <param name="thickness">The stroke thickness.</param>
+        /// <param name="edgeRenderingMode">The edge rendering mode. This is not supported and will be ignored.</param>
         /// <param name="dashArray">The dash array.</param>
         /// <param name="lineJoin">The line join type.</param>
-        /// <param name="aliased">If set to <c>true</c> the shape will be aliased.</param>
         public override void DrawPolygon(
             IList<ScreenPoint> points,
             OxyColor fill,
             OxyColor stroke,
             double thickness,
+            EdgeRenderingMode edgeRenderingMode,
             double[] dashArray,
-            LineJoin lineJoin,
-            bool aliased)
+            LineJoin lineJoin)
         {
             var isStroked = stroke.IsVisible() && thickness > 0;
             var isFilled = fill.IsVisible();
@@ -206,7 +207,8 @@ namespace OxyPlot
         /// <param name="fill">The fill color.</param>
         /// <param name="stroke">The stroke color.</param>
         /// <param name="thickness">The stroke thickness.</param>
-        public override void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
+        /// <param name="edgeRenderingMode">The edge rendering mode. This is not supported and will be ignored.</param>
+        public override void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
         {
             var isStroked = stroke.IsVisible() && thickness > 0;
             var isFilled = fill.IsVisible();

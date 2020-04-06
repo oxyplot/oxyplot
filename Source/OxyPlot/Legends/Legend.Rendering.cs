@@ -302,7 +302,12 @@ namespace OxyPlot.Legends
             if (!measureOnly && rect.Width > 0 && rect.Height > 0)
             {
                 this.legendBox = rect;
-                rc.DrawRectangleAsPolygon(rect, this.LegendBackground, this.LegendBorder, this.LegendBorderThickness);
+                rc.DrawRectangle(
+                    rect, 
+                    this.LegendBackground, 
+                    this.LegendBorder, 
+                    this.LegendBorderThickness, 
+                    this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness));
             }
 
             double availableWidth = rect.Width;

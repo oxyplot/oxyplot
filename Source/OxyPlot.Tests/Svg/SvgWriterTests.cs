@@ -30,7 +30,8 @@ namespace OxyPlot.Tests
                         10,
                         100,
                         60,
-                        w.CreateStyle(OxyColors.Blue, OxyColors.Black, 2, LineStyle.Solid.GetDashArray()));
+                        w.CreateStyle(OxyColors.Blue, OxyColors.Black, 2, LineStyle.Solid.GetDashArray()), 
+                        EdgeRenderingMode.Adaptive);
                 }
             }
 
@@ -48,7 +49,8 @@ namespace OxyPlot.Tests
                     w.WriteLine(
                         new ScreenPoint(10, 10),
                         new ScreenPoint(150, 80),
-                        w.CreateStyle(OxyColors.Undefined, OxyColors.Black, 2, LineStyle.Solid.GetDashArray()));
+                        w.CreateStyle(OxyColors.Undefined, OxyColors.Black, 2, LineStyle.Solid.GetDashArray()), 
+                        EdgeRenderingMode.Adaptive);
                 }
             }
 
@@ -65,7 +67,8 @@ namespace OxyPlot.Tests
                 {
                     w.WritePolygon(
                         CreatePointList(),
-                        w.CreateStyle(OxyColors.Blue, OxyColors.Black, 2, LineStyleHelper.GetDashArray(LineStyle.Solid)));
+                        w.CreateStyle(OxyColors.Blue, OxyColors.Black, 2, LineStyleHelper.GetDashArray(LineStyle.Solid)), 
+                        EdgeRenderingMode.Adaptive);
                 }
             }
 
@@ -82,7 +85,8 @@ namespace OxyPlot.Tests
                 {
                     w.WritePolyline(
                         CreatePointList(),
-                        w.CreateStyle(OxyColors.Blue, OxyColors.Black, 2, LineStyleHelper.GetDashArray(LineStyle.Solid)));
+                        w.CreateStyle(OxyColors.Blue, OxyColors.Black, 2, LineStyleHelper.GetDashArray(LineStyle.Solid)), 
+                        EdgeRenderingMode.Adaptive);
                 }
             }
 
@@ -102,7 +106,8 @@ namespace OxyPlot.Tests
                         20,
                         150,
                         80,
-                        w.CreateStyle(OxyColors.Green, OxyColors.Black, 2, LineStyle.Solid.GetDashArray()));
+                        w.CreateStyle(OxyColors.Green, OxyColors.Black, 2, LineStyle.Solid.GetDashArray()),
+                        EdgeRenderingMode.Adaptive);
                 }
             }
 
@@ -132,9 +137,9 @@ namespace OxyPlot.Tests
             {
                 using (var w = new SvgWriter(s, 200, 200))
                 {
-                    w.WriteRectangle(5, 5, 95, 45, w.CreateStyle(OxyColors.LightGreen, OxyColors.Undefined, 0));
+                    w.WriteRectangle(5, 5, 95, 45, w.CreateStyle(OxyColors.LightGreen, OxyColors.Undefined, 0), EdgeRenderingMode.Adaptive);
                     w.BeginClip(5, 5, 95, 45);
-                    w.WriteEllipse(10, 10, 100, 60, w.CreateStyle(OxyColors.Blue, OxyColors.Black, 2));
+                    w.WriteEllipse(10, 10, 100, 60, w.CreateStyle(OxyColors.Blue, OxyColors.Black, 2), EdgeRenderingMode.Adaptive);
                     w.EndClip();
                     w.Flush();
                 }
@@ -154,7 +159,7 @@ namespace OxyPlot.Tests
                 {
                     for (int y = 0; y <= 200; y += 20)
                     {
-                        w.WriteLine(new ScreenPoint(0, y), new ScreenPoint(400, y), w.CreateStyle(OxyColors.Undefined, OxyColors.Black, 1));
+                        w.WriteLine(new ScreenPoint(0, y), new ScreenPoint(400, y), w.CreateStyle(OxyColors.Undefined, OxyColors.Black, 1), EdgeRenderingMode.Adaptive);
                     }
 
                     w.WriteImage(0, 0, 400, 200, image);
@@ -174,7 +179,7 @@ namespace OxyPlot.Tests
                 using (var w = new SvgWriter(s, 400, 400))
                 {
                     w.WriteImage(0, 0, 400, 200, image);
-                    w.WriteRectangle(100, 50, 200, 100, w.CreateStyle(OxyColors.Undefined, OxyColors.Black, 1));
+                    w.WriteRectangle(100, 50, 200, 100, w.CreateStyle(OxyColors.Undefined, OxyColors.Black, 1), EdgeRenderingMode.Adaptive);
                     w.WriteImage(1, 0.5, 2, 1, 100, 250, 200, 100, image);
                 }
             }

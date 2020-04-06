@@ -248,6 +248,7 @@ namespace OxyPlot.Series
                     this.MarkerFill, 
                     this.MarkerStroke,
                     this.MarkerStrokeThickness,
+                    this.EdgeRenderingMode,
                     1);
                 rc.DrawMarkers(
                     clippingRect,
@@ -258,6 +259,7 @@ namespace OxyPlot.Series
                     this.MarkerFill2,
                     this.MarkerStroke2,
                     this.MarkerStrokeThickness,
+                    this.EdgeRenderingMode,
                     1);
             }
 
@@ -320,7 +322,9 @@ namespace OxyPlot.Series
                 poligon,
                 context.MinDistSquared,
                 this.GetSelectableFillColor(twoColorContext.Fill),
-                OxyColors.Undefined);
+                OxyColors.Undefined,
+                0,
+                this.EdgeRenderingMode);
 
             if (this.IsPoints2Defined)
             {
@@ -336,6 +340,7 @@ namespace OxyPlot.Series
                     twoColorContext.MarkerFill,
                     twoColorContext.MarkerStroke,
                     this.MarkerStrokeThickness,
+                    this.EdgeRenderingMode,
                     1);
             }
 

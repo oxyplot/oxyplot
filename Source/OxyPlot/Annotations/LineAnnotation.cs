@@ -65,8 +65,6 @@ namespace OxyPlot.Annotations
         /// <returns>The list of points to display on screen for this path.</returns>
         protected override IList<ScreenPoint> GetScreenPoints()
         {
-            this.Aliased = false;
-
             // y=f(x)
             Func<double, double> fx = null;
 
@@ -102,12 +100,6 @@ namespace OxyPlot.Annotations
                 {
                     points.Add(new DataPoint(fy(this.ActualMinimumY), this.ActualMinimumY));
                     points.Add(new DataPoint(fy(this.ActualMaximumY), this.ActualMaximumY));
-                }
-
-                if (this.Type == LineAnnotationType.Horizontal || this.Type == LineAnnotationType.Vertical)
-                {
-                    // use aliased line drawing for horizontal and vertical lines
-                    this.Aliased = true;
                 }
             }
             else
