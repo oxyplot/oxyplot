@@ -1,4 +1,13 @@
-﻿namespace OxyPlot
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="EdgeRenderingMode.cs" company="OxyPlot">
+//   Copyright (c) 2020 OxyPlot contributors
+// </copyright>
+// <summary>
+//   Defines the edge rendering mode.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace OxyPlot
 {
     /// <summary>
     /// Enumerates the available edge rendering modes. This gives an indication to the renderer which tradoffs to make between sharpness, speed and geomitric accuracy

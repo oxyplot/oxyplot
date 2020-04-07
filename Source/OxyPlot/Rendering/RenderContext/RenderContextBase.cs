@@ -28,6 +28,11 @@ namespace OxyPlot
         /// <summary>
         /// Gets a value indicating whether the specified points form a straight line (i.e. parallel to the pixel raster).
         /// </summary>
+        /// <remarks>
+        /// To determine whether a line is straight, the coordinates of <paramref name="p1"/> and <paramref name="p2"/> are compared. If either the X or the Y
+        /// coordinates (or both) of both points are very close together, the line is considered straight. The threshold of what is considered 'very close' 
+        /// is fixed at 1e-5.
+        /// </remarks>
         /// <param name="p1">The first point.</param>
         /// <param name="p2">The second point.</param>
         /// <returns>true if the points form a straight line; false otherwise.</returns>

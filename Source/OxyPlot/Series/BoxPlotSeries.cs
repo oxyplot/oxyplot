@@ -555,7 +555,7 @@ namespace OxyPlot.Series
                     ymid - this.MedianPointSize,
                     this.MedianPointSize * 2,
                     this.MedianPointSize * 2);
-                rc.DrawEllipse(ellipseRect, fillColor, OxyColors.Undefined, 0, this.EdgeRenderingMode);
+                rc.DrawEllipse(ellipseRect, fillColor, OxyColors.Undefined, 0, this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferGeometricAccuracy));
             }
         }
 
