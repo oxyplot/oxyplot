@@ -37,7 +37,7 @@ namespace ExampleLibrary
                     //// etc.
                 }
 
-                rc.DrawPolygon(points, OxyColors.Black, OxyColors.Undefined);
+                rc.DrawPolygon(points, OxyColors.Black, OxyColors.Undefined, 0, this.EdgeRenderingMode);
             }
         }
 

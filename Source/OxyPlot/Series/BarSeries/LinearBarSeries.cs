@@ -177,11 +177,12 @@ namespace OxyPlot.Series
             var ymid = (legendBox.Top + legendBox.Bottom) / 2;
             var height = (legendBox.Bottom - legendBox.Top) * 0.8;
             var width = height;
-            rc.DrawRectangleAsPolygon(
+            rc.DrawRectangle(
                 new OxyRect(xmid - (0.5 * width), ymid - (0.5 * height), width, height),
                 this.GetSelectableColor(this.ActualColor),
                 this.StrokeColor,
-                this.StrokeThickness);
+                this.StrokeThickness,
+                this.EdgeRenderingMode);
         }
 
         /// <summary>
@@ -280,7 +281,13 @@ namespace OxyPlot.Series
 
                 var barColors = this.GetBarColors(actualPoint.Y);
 
-                rc.DrawClippedRectangleAsPolygon(clippingRect, rectangle, barColors.FillColor, barColors.StrokeColor, this.StrokeThickness);
+                rc.DrawClippedRectangle(
+                    clippingRect, 
+                    rectangle, 
+                    barColors.FillColor, 
+                    barColors.StrokeColor, 
+                    this.StrokeThickness, 
+                    this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness));
             }
         }
 

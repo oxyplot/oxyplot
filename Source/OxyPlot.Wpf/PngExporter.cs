@@ -91,6 +91,7 @@ namespace OxyPlot.Wpf
             var rc = new CanvasRenderContext(canvas) { RendersToScreen = false };
 
             rc.TextFormattingMode = TextFormattingMode.Ideal;
+            rc.SetDpi(this.Resolution);
 
             model.Update(true);
             model.Render(rc, new OxyRect(0, 0, canvas.Width, canvas.Height));

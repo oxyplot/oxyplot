@@ -72,10 +72,10 @@ namespace OxyPlot.Wpf.Tests
         /// Exports with higher resolution and verifies that the file exists.
         /// </summary>
         /// <param name="factor">The resolution factor.</param>
-        [Ignore("Issue #759")]
         [Test]
+        [TestCase(1.2)]
         [TestCase(2)]
-        [TestCase(4)]
+        [TestCase(3.1415)]
         public void ExportWithResolution(double factor)
         {
             var resolution = (int)(96 * factor);

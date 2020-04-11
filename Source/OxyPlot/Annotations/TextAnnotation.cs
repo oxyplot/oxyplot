@@ -83,11 +83,11 @@ namespace OxyPlot.Annotations
             if ((this.TextRotation % 90).Equals(0))
             {
                 var actualRect = new OxyRect(this.actualBounds[0], this.actualBounds[2]);
-                rc.DrawRectangle(actualRect, this.Background, this.Stroke, this.StrokeThickness);
+                rc.DrawRectangle(actualRect, this.Background, this.Stroke, this.StrokeThickness, this.EdgeRenderingMode);
             }
             else
             {
-                rc.DrawPolygon(this.actualBounds, this.Background, this.Stroke, this.StrokeThickness);
+                rc.DrawPolygon(this.actualBounds, this.Background, this.Stroke, this.StrokeThickness, this.EdgeRenderingMode);
             }
 
 

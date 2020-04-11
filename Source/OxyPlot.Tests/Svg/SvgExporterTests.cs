@@ -115,9 +115,9 @@ namespace OxyPlot.Tests
             {
                 ((IPlotModel)model).Update(true);
                 ((IPlotModel)model).Render(rc, rect);
-                rc.DrawClippedRectangle(whole, rect.Inflate(2.0, 2.0), OxyColors.Transparent, OxyColors.Blue, 1.0);
-                rc.DrawClippedRectangle(whole, model.PlotBounds, OxyColors.Transparent, OxyColors.Black, 1.0);
-                rc.DrawClippedRectangle(whole, whole, OxyColors.Transparent, OxyColors.Black, 1.0);
+                rc.DrawClippedRectangle(whole, rect.Inflate(2.0, 2.0), OxyColors.Transparent, OxyColors.Blue, 1.0, EdgeRenderingMode.Adaptive);
+                rc.DrawClippedRectangle(whole, model.PlotBounds, OxyColors.Transparent, OxyColors.Black, 1.0, EdgeRenderingMode.Adaptive);
+                rc.DrawClippedRectangle(whole, whole, OxyColors.Transparent, OxyColors.Black, 1.0, EdgeRenderingMode.Adaptive);
                 rc.Complete();
                 rc.Flush();
             }

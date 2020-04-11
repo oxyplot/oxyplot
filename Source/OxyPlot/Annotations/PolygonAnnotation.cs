@@ -9,6 +9,7 @@
 
 namespace OxyPlot.Annotations
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -81,6 +82,7 @@ namespace OxyPlot.Annotations
                 this.GetSelectableFillColor(this.Fill),
                 this.GetSelectableColor(this.Stroke),
                 this.StrokeThickness,
+                this.EdgeRenderingMode,
                 this.LineStyle,
                 this.LineJoin);
 

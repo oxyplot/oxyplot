@@ -244,12 +244,13 @@ namespace OxyPlot.Series
 
                 this.ActualBarRectangles.Add(rectangle);
 
-                rc.DrawClippedRectangleAsPolygon(
+                rc.DrawClippedRectangle(
                     clippingRect,
                     rectangle,
                     this.GetSelectableFillColor(item.Color.GetActualColor(this.ActualFillColor)),
                     this.StrokeColor,
-                    this.StrokeThickness);
+                    this.StrokeThickness,
+                    this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness));
 
                 if (this.LabelFormatString != null)
                 {
@@ -284,11 +285,12 @@ namespace OxyPlot.Series
             double ymid = (legendBox.Top + legendBox.Bottom) / 2;
             double height = (legendBox.Bottom - legendBox.Top) * 0.8;
             double width = height;
-            rc.DrawRectangleAsPolygon(
+            rc.DrawRectangle(
                 new OxyRect(xmid - (0.5 * width), ymid - (0.5 * height), width, height),
                 this.GetSelectableFillColor(this.ActualFillColor),
                 this.StrokeColor,
-                this.StrokeThickness);
+                this.StrokeThickness,
+                this.EdgeRenderingMode);
         }
 
         /// <summary>

@@ -86,13 +86,13 @@ namespace ExampleLibrary
             {
                 if (this.LineStyle != LineStyle.None)
                 {
-                    rc.DrawClippedLineSegments(clippingRect, screenPoints, this.ActualColor, this.StrokeThickness, this.LineStyle.GetDashArray(), this.LineJoin, false);
+                    rc.DrawClippedLineSegments(clippingRect, screenPoints, this.ActualColor, this.StrokeThickness, this.EdgeRenderingMode, this.LineStyle.GetDashArray(), this.LineJoin);
                 }
 
-                rc.DrawClippedLineSegments(clippingRect, verticalLines, this.ActualColor, this.StrokeThickness / 3, LineStyle.Dash.GetDashArray(), this.LineJoin, false);
+                rc.DrawClippedLineSegments(clippingRect, verticalLines, this.ActualColor, this.StrokeThickness / 3, this.EdgeRenderingMode, LineStyle.Dash.GetDashArray(), this.LineJoin);
             }
 
-            rc.DrawMarkers(screenPoints, clippingRect, this.MarkerType, null, this.MarkerSize, this.MarkerFill, this.MarkerStroke, this.MarkerStrokeThickness);
+            rc.DrawMarkers(screenPoints, clippingRect, this.MarkerType, null, this.MarkerSize, this.MarkerFill, this.MarkerStroke, this.MarkerStrokeThickness, this.EdgeRenderingMode);
         }
 
         /// <summary>

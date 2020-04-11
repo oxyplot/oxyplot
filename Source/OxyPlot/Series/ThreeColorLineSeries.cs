@@ -213,9 +213,9 @@ namespace OxyPlot.Series
                     this.MinimumSegmentLength * this.MinimumSegmentLength,
                     this.GetSelectableColor(this.ActualColor),
                     this.StrokeThickness,
+                    this.EdgeRenderingMode,
                     this.ActualDashArray,
-                    this.LineJoin,
-                    false);
+                    this.LineJoin);
             }
 
             if (this.StrokeThickness > 0 && this.ActualLineStyleLo != LineStyle.None)
@@ -226,9 +226,9 @@ namespace OxyPlot.Series
                     this.MinimumSegmentLength * this.MinimumSegmentLength,
                     this.GetSelectableColor(this.ActualColorLo),
                     this.StrokeThickness,
+                    this.EdgeRenderingMode,
                     this.ActualDashArrayLo,
-                    this.LineJoin,
-                    false);
+                    this.LineJoin);
             }
 
             if (this.StrokeThickness > 0 && this.ActualLineStyleHi != LineStyle.None)
@@ -239,9 +239,9 @@ namespace OxyPlot.Series
                     this.MinimumSegmentLength * this.MinimumSegmentLength,
                     this.GetSelectableColor(this.ActualColorHi),
                     this.StrokeThickness,
+                    this.EdgeRenderingMode,
                     this.ActualDashArrayHi,
-                    this.LineJoin,
-                    false);
+                    this.LineJoin);
             }
         }
     }

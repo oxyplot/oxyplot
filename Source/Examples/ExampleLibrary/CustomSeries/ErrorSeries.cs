@@ -120,9 +120,9 @@ namespace ExampleLibrary
                     2,
                     this.GetSelectableColor(this.Color),
                     this.StrokeThickness,
+                    this.EdgeRenderingMode,
                     null,
-                    LineJoin.Bevel,
-                    true);
+                    LineJoin.Bevel);
             }
         }
 
@@ -151,7 +151,7 @@ namespace ExampleLibrary
                               new ScreenPoint(xmid - 2, legendBox.Bottom),
                               new ScreenPoint(xmid + 3, legendBox.Bottom)
                           };
-            rc.DrawLineSegments(pts, this.GetSelectableColor(this.Color), this.StrokeThickness, null, LineJoin.Miter, true);
+            rc.DrawLineSegments(pts, this.GetSelectableColor(this.Color), this.StrokeThickness, this.EdgeRenderingMode, null, LineJoin.Miter);
         }
 
         /// <summary>

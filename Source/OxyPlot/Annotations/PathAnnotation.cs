@@ -36,7 +36,6 @@ namespace OxyPlot.Annotations
             this.StrokeThickness = 1;
             this.LineStyle = LineStyle.Dash;
             this.LineJoin = LineJoin.Miter;
-            this.Aliased = false;
 
             this.TextLinePosition = 1;
             this.TextOrientation = AnnotationTextOrientation.AlongLine;
@@ -123,12 +122,6 @@ namespace OxyPlot.Annotations
         public bool ClipText { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the path is aliased.
-        /// </summary>
-        /// <value><c>true</c> if is aliased; otherwise, <c>false</c>.</value>
-        protected bool Aliased { get; set; }
-
-        /// <summary>
         /// Gets or sets the actual minimum value on the x axis.
         /// </summary>
         /// <value>The actual minimum value on the x axis.</value>
@@ -179,9 +172,9 @@ namespace OxyPlot.Annotations
                    MinimumSegmentLength * MinimumSegmentLength,
                    this.GetSelectableColor(this.Color),
                    this.StrokeThickness,
+                   this.EdgeRenderingMode,
                    dashArray,
                    this.LineJoin,
-                   this.Aliased,
                    null,
                    clippedPoints.AddRange);
             }

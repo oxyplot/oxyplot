@@ -170,7 +170,7 @@ namespace OxyPlot.Axes
             var top = center.Y - radius;
             var height = width;
 
-            this.RenderContext.DrawEllipse(new OxyRect(left, top, width, height), OxyColors.Undefined, pen.Color, pen.Thickness);
+            this.RenderContext.DrawEllipse(new OxyRect(left, top, width, height), OxyColors.Undefined, pen.Color, pen.Thickness, axis.EdgeRenderingMode);
         }
 
         /// <summary>
@@ -205,7 +205,7 @@ namespace OxyPlot.Axes
                 points.Add(axis.Transform(x, angle, angleAxis));
             }
 
-            this.RenderContext.DrawLine(points, pen.Color, pen.Thickness, pen.ActualDashArray);
+            this.RenderContext.DrawLine(points, pen.Color, pen.Thickness, axis.EdgeRenderingMode, pen.ActualDashArray);
         }
 
         /// <summary>

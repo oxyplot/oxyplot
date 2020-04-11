@@ -25,6 +25,16 @@ namespace ExampleLibrary
             AddPoints(s1.Points, 1000000);
             model.Series.Add(s1);
             return model;
+        }        
+        
+        [Example("LineSeries, 1M points, EdgeRenderingMode==PreferSpeed")]
+        public static PlotModel LineSeries1MSpeed()
+        {
+            var model = new PlotModel { Title = "LineSeries, 1M points" };
+            var s1 = new LineSeries() { EdgeRenderingMode = EdgeRenderingMode.PreferSpeed };
+            AddPoints(s1.Points, 1000000);
+            model.Series.Add(s1);
+            return model;
         }
 
         [Example("LineSeries, 100k points")]

@@ -268,18 +268,20 @@ namespace OxyPlot.Series
                 this.ActualMinimumBarRectangles.Add(minimumRectangle);
                 this.ActualMaximumBarRectangles.Add(maximumRectangle);
 
-                rc.DrawClippedRectangleAsPolygon(
+                rc.DrawClippedRectangle(
                     clippingRect,
                     minimumRectangle,
                     item.MinimumColor.GetActualColor(this.ActualMinimumFillColor),
                     this.StrokeColor,
-                    this.StrokeThickness);
-                rc.DrawClippedRectangleAsPolygon(
+                    this.StrokeThickness,
+                    this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness));
+                rc.DrawClippedRectangle(
                     clippingRect,
                     maximumRectangle,
                     item.MaximumColor.GetActualColor(this.ActualMaximumFillColor),
                     this.StrokeColor,
-                    this.StrokeThickness);
+                    this.StrokeThickness,
+                    this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness));
 
                 var marginVector = this.Orientate(new ScreenVector(this.LabelMargin, 0));
 
@@ -348,16 +350,18 @@ namespace OxyPlot.Series
             double ymid = (legendBox.Top + legendBox.Bottom) / 2;
             double height = (legendBox.Bottom - legendBox.Top) * 0.8;
             double width = height;
-            rc.DrawRectangleAsPolygon(
+            rc.DrawRectangle(
                 new OxyRect(xmid - (0.5 * width), ymid - (0.5 * height), 0.5 * width, height),
                 this.ActualMinimumFillColor,
                 this.StrokeColor,
-                this.StrokeThickness);
-            rc.DrawRectangleAsPolygon(
+                this.StrokeThickness,
+                this.EdgeRenderingMode);
+            rc.DrawRectangle(
                 new OxyRect(xmid, ymid - (0.5 * height), 0.5 * width, height),
                 this.ActualMaximumFillColor,
                 this.StrokeColor,
-                this.StrokeThickness);
+                this.StrokeThickness,
+                this.EdgeRenderingMode);
         }
 
         /// <summary>

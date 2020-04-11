@@ -61,6 +61,17 @@ namespace OxyPlot
         private static readonly double M3 = Math.Tan(Math.PI / 4);
 
         /// <summary>
+        /// Gets the actual edge rendering mode.
+        /// </summary>
+        /// <param name="edgeRenderingMode">The edge rendering mode.</param>
+        /// <param name="defaultValue">The default value that is used if edgeRenderingMode is <see cref="EdgeRenderingMode.Automatic"/>.</param>
+        /// <returns>The value of edgeRenderingMode if it is not <see cref="EdgeRenderingMode.Automatic"/>; the <paramref name="defaultValue"/> otherwise.</returns>
+        public static EdgeRenderingMode GetActual(this EdgeRenderingMode edgeRenderingMode, EdgeRenderingMode defaultValue)
+        {
+            return edgeRenderingMode == EdgeRenderingMode.Automatic ? defaultValue : edgeRenderingMode;
+        }
+
+        /// <summary>
         /// Draws a clipped polyline through the specified points.
         /// </summary>
         /// <param name="rc">The render context.</param>
@@ -69,9 +80,9 @@ namespace OxyPlot
         /// <param name="minDistSquared">The minimum line segment length (squared).</param>
         /// <param name="stroke">The stroke color.</param>
         /// <param name="strokeThickness">The stroke thickness.</param>
+        /// <param name="edgeRenderingMode">The edge rendering mode.</param>
         /// <param name="dashArray">The dash array (in device independent units, 1/96 inch).</param>
         /// <param name="lineJoin">The line join.</param>
-        /// <param name="aliased">Set to <c>true</c> to draw as an aliased line.</param>
         /// <param name="outputBuffer">The output buffer.</param>
         /// <param name="pointsRendered">The points rendered callback.</param>
         public static void DrawClippedLine(
@@ -81,9 +92,9 @@ namespace OxyPlot
             double minDistSquared,
             OxyColor stroke,
             double strokeThickness,
+            EdgeRenderingMode edgeRenderingMode,
             double[] dashArray,
             LineJoin lineJoin,
-            bool aliased,
             List<ScreenPoint> outputBuffer = null,
             Action<IList<ScreenPoint>> pointsRendered = null)
         {
@@ -106,7 +117,7 @@ namespace OxyPlot
             if (rc.SetClip(clippingRectangle))
             {
                 ReducePoints(points, minDistSquared, outputBuffer);
-                rc.DrawLine(outputBuffer, stroke, strokeThickness, dashArray, lineJoin, aliased);
+                rc.DrawLine(outputBuffer, stroke, strokeThickness, edgeRenderingMode, dashArray, lineJoin);
                 rc.ResetClip();
 
                 if (outputBuffer != null)
@@ -124,7 +135,7 @@ namespace OxyPlot
             Action drawLine = () =>
             {
                 EnsureNonEmptyLineIsVisible(outputBuffer);
-                rc.DrawLine(outputBuffer, stroke, strokeThickness, dashArray, lineJoin, aliased);
+                rc.DrawLine(outputBuffer, stroke, strokeThickness, edgeRenderingMode, dashArray, lineJoin);
 
                 // Execute the 'callback'
                 if (pointsRendered != null)
@@ -196,22 +207,22 @@ namespace OxyPlot
         /// <param name="points">The points defining the line segments. Lines are drawn from point 0 to 1, point 2 to 3 and so on.</param>
         /// <param name="stroke">The stroke color.</param>
         /// <param name="strokeThickness">The stroke thickness.</param>
+        /// <param name="edgeRenderingMode">The edge rendering mode.</param>
         /// <param name="dashArray">The dash array (in device independent units, 1/96 inch).</param>
         /// <param name="lineJoin">The line join.</param>
-        /// <param name="aliased">Set to <c>true</c> to draw as an aliased line.</param>
         public static void DrawClippedLineSegments(
             this IRenderContext rc,
             OxyRect clippingRectangle,
             IList<ScreenPoint> points,
             OxyColor stroke,
             double strokeThickness,
+            EdgeRenderingMode edgeRenderingMode,
             double[] dashArray,
-            LineJoin lineJoin,
-            bool aliased)
+            LineJoin lineJoin)
         {
             if (rc.SetClip(clippingRectangle))
             {
-                rc.DrawLineSegments(points, stroke, strokeThickness, dashArray, lineJoin, aliased);
+                rc.DrawLineSegments(points, stroke, strokeThickness, edgeRenderingMode, dashArray, lineJoin);
                 rc.ResetClip();
                 return;
             }
@@ -230,7 +241,7 @@ namespace OxyPlot
                 }
             }
 
-            rc.DrawLineSegments(clippedPoints, stroke, strokeThickness, dashArray, lineJoin, aliased);
+            rc.DrawLineSegments(clippedPoints, stroke, strokeThickness, edgeRenderingMode, dashArray, lineJoin);
         }
 
         /// <summary>
@@ -335,9 +346,9 @@ namespace OxyPlot
         /// <param name="fill">The fill color.</param>
         /// <param name="stroke">The stroke color.</param>
         /// <param name="strokeThickness">The stroke thickness.</param>
+        /// <param name="edgeRenderingMode">The edge rendering mode.</param>
         /// <param name="lineStyle">The line style.</param>
         /// <param name="lineJoin">The line join.</param>
-        /// <param name="aliased">The aliased.</param>
         public static void DrawClippedPolygon(
             this IRenderContext rc,
             OxyRect clippingRectangle,
@@ -345,10 +356,10 @@ namespace OxyPlot
             double minDistSquared,
             OxyColor fill,
             OxyColor stroke,
-            double strokeThickness = 1.0,
+            double strokeThickness,
+            EdgeRenderingMode edgeRenderingMode,
             LineStyle lineStyle = LineStyle.Solid,
-            LineJoin lineJoin = LineJoin.Miter,
-            bool aliased = false)
+            LineJoin lineJoin = LineJoin.Miter)
         {
             var n = points.Count;
             if (n == 0)
@@ -366,13 +377,13 @@ namespace OxyPlot
 
             if (rc.SetClip(clippingRectangle))
             {
-                rc.DrawPolygon(outputBuffer, fill, stroke, strokeThickness, lineStyle.GetDashArray(), lineJoin, aliased);
+                rc.DrawPolygon(outputBuffer, fill, stroke, strokeThickness, edgeRenderingMode, lineStyle.GetDashArray(), lineJoin);
                 rc.ResetClip();
                 return;
             }
 
             var clippedPoints = SutherlandHodgmanClipping.ClipPolygon(clippingRectangle, outputBuffer);
-            rc.DrawPolygon(clippedPoints, fill, stroke, strokeThickness, lineStyle.GetDashArray(), lineJoin, aliased);
+            rc.DrawPolygon(clippedPoints, fill, stroke, strokeThickness, edgeRenderingMode, lineStyle.GetDashArray(), lineJoin);
         }
 
         /// <summary>
@@ -384,17 +395,19 @@ namespace OxyPlot
         /// <param name="fill">The fill color.</param>
         /// <param name="stroke">The stroke color.</param>
         /// <param name="thickness">The stroke thickness.</param>
+        /// <param name="edgeRenderingMode">The edge rendering mode.</param>
         public static void DrawClippedRectangle(
             this IRenderContext rc,
             OxyRect clippingRectangle,
             OxyRect rect,
             OxyColor fill,
             OxyColor stroke,
-            double thickness)
+            double thickness,
+            EdgeRenderingMode edgeRenderingMode)
         {
             if (rc.SetClip(clippingRectangle))
             {
-                rc.DrawRectangle(rect, fill, stroke, thickness);
+                rc.DrawRectangle(rect, fill, stroke, thickness, edgeRenderingMode);
                 rc.ResetClip();
                 return;
             }
@@ -405,40 +418,7 @@ namespace OxyPlot
                 return;
             }
 
-            rc.DrawRectangle(clippedRect.Value, fill, stroke, thickness);
-        }
-
-        /// <summary>
-        /// Draws the clipped rectangle as a polygon.
-        /// </summary>
-        /// <param name="rc">The render context.</param>
-        /// <param name="clippingRectangle">The clipping rectangle.</param>
-        /// <param name="rect">The rectangle to draw.</param>
-        /// <param name="fill">The fill color.</param>
-        /// <param name="stroke">The stroke color.</param>
-        /// <param name="thickness">The stroke thickness.</param>
-        public static void DrawClippedRectangleAsPolygon(
-            this IRenderContext rc,
-            OxyRect clippingRectangle,
-            OxyRect rect,
-            OxyColor fill,
-            OxyColor stroke,
-            double thickness)
-        {
-            if (rc.SetClip(clippingRectangle))
-            {
-                rc.DrawRectangleAsPolygon(rect, fill, stroke, thickness);
-                rc.ResetClip();
-                return;
-            }
-
-            var clippedRect = ClipRect(rect, clippingRectangle);
-            if (clippedRect == null)
-            {
-                return;
-            }
-
-            rc.DrawRectangleAsPolygon(clippedRect.Value, fill, stroke, thickness);
+            rc.DrawRectangle(clippedRect.Value, fill, stroke, thickness, edgeRenderingMode);
         }
 
         /// <summary>
@@ -450,6 +430,7 @@ namespace OxyPlot
         /// <param name="fill">The fill color.</param>
         /// <param name="stroke">The stroke color.</param>
         /// <param name="thickness">The stroke thickness.</param>
+        /// <param name="edgeRenderingMode">The edge rendering mode.</param>
         /// <param name="n">The number of points around the ellipse.</param>
         public static void DrawClippedEllipse(
             this IRenderContext rc,
@@ -458,11 +439,12 @@ namespace OxyPlot
             OxyColor fill,
             OxyColor stroke,
             double thickness,
+            EdgeRenderingMode edgeRenderingMode,
             int n = 100)
         {
             if (rc.SetClip(clippingRectangle))
             {
-                rc.DrawEllipse(rect, fill, stroke, thickness);
+                rc.DrawEllipse(rect, fill, stroke, thickness, edgeRenderingMode);
                 rc.ResetClip();
                 return;
             }
@@ -478,7 +460,7 @@ namespace OxyPlot
                 points[i] = new ScreenPoint(cx + (rx * Math.Cos(a)), cy + (ry * Math.Sin(a)));
             }
 
-            rc.DrawClippedPolygon(clippingRectangle, points, 4, fill, stroke, thickness);
+            rc.DrawClippedPolygon(clippingRectangle, points, 4, fill, stroke, thickness, edgeRenderingMode);
         }
 
         /// <summary>
@@ -601,9 +583,9 @@ namespace OxyPlot
         /// <param name="x1">The x1.</param>
         /// <param name="y1">The y1.</param>
         /// <param name="pen">The pen.</param>
-        /// <param name="aliased">Aliased line if set to <c>true</c>.</param>
+        /// <param name="edgeRenderingMode">The edge rendering mode.</param>
         public static void DrawLine(
-            this IRenderContext rc, double x0, double y0, double x1, double y1, OxyPen pen, bool aliased = true)
+            this IRenderContext rc, double x0, double y0, double x1, double y1, OxyPen pen, EdgeRenderingMode edgeRenderingMode)
         {
             if (pen == null)
             {
@@ -614,9 +596,9 @@ namespace OxyPlot
                 new[] { new ScreenPoint(x0, y0), new ScreenPoint(x1, y1) },
                 pen.Color,
                 pen.Thickness,
+                edgeRenderingMode,
                 pen.ActualDashArray,
-                pen.LineJoin,
-                aliased);
+                pen.LineJoin);
         }
 
         /// <summary>
@@ -625,16 +607,16 @@ namespace OxyPlot
         /// <param name="rc">The render context.</param>
         /// <param name="points">The points.</param>
         /// <param name="pen">The pen.</param>
-        /// <param name="aliased">if set to <c>true</c> [aliased].</param>
+        /// <param name="edgeRenderingMode">The edge rendering mode.</param>
         public static void DrawLineSegments(
-            this IRenderContext rc, IList<ScreenPoint> points, OxyPen pen, bool aliased = true)
+            this IRenderContext rc, IList<ScreenPoint> points, OxyPen pen, EdgeRenderingMode edgeRenderingMode)
         {
             if (pen == null)
             {
                 return;
             }
 
-            rc.DrawLineSegments(points, pen.Color, pen.Thickness, pen.ActualDashArray, pen.LineJoin, aliased);
+            rc.DrawLineSegments(points, pen.Color, pen.Thickness, edgeRenderingMode, pen.ActualDashArray, pen.LineJoin);
         }
 
         /// <summary>
@@ -649,6 +631,7 @@ namespace OxyPlot
         /// <param name="fill">The fill color.</param>
         /// <param name="stroke">The stroke color.</param>
         /// <param name="strokeThickness">The stroke thickness.</param>
+        /// <param name="edgeRenderingMode">The edge rendering mode.</param>
         public static void DrawMarker(
             this IRenderContext rc,
             OxyRect clippingRectangle,
@@ -658,9 +641,10 @@ namespace OxyPlot
             double size,
             OxyColor fill,
             OxyColor stroke,
-            double strokeThickness)
+            double strokeThickness,
+            EdgeRenderingMode edgeRenderingMode)
         {
-            rc.DrawMarkers(clippingRectangle, new[] { p }, type, outline, new[] { size }, fill, stroke, strokeThickness);
+            rc.DrawMarkers(clippingRectangle, new[] { p }, type, outline, new[] { size }, fill, stroke, strokeThickness, edgeRenderingMode);
         }
 
         /// <summary>
@@ -675,6 +659,7 @@ namespace OxyPlot
         /// <param name="markerFill">The marker fill.</param>
         /// <param name="markerStroke">The marker stroke.</param>
         /// <param name="markerStrokeThickness">The marker stroke thickness.</param>
+        /// <param name="edgeRenderingMode">The edge rendering mode.</param>
         /// <param name="resolution">The resolution.</param>
         /// <param name="binOffset">The bin Offset.</param>
         public static void DrawMarkers(
@@ -687,6 +672,7 @@ namespace OxyPlot
             OxyColor markerFill,
             OxyColor markerStroke,
             double markerStrokeThickness,
+            EdgeRenderingMode edgeRenderingMode,
             int resolution = 0,
             ScreenPoint binOffset = new ScreenPoint())
         {
@@ -700,6 +686,7 @@ namespace OxyPlot
                 markerFill,
                 markerStroke,
                 markerStrokeThickness,
+                edgeRenderingMode,
                 resolution,
                 binOffset);
         }
@@ -716,6 +703,7 @@ namespace OxyPlot
         /// <param name="markerFill">The marker fill.</param>
         /// <param name="markerStroke">The marker stroke.</param>
         /// <param name="markerStrokeThickness">The marker stroke thickness.</param>
+        /// <param name="edgeRenderingMode">The edge rendering mode.</param>
         /// <param name="resolution">The resolution.</param>
         /// <param name="binOffset">The bin Offset.</param>
         public static void DrawMarkers(
@@ -728,6 +716,7 @@ namespace OxyPlot
             OxyColor markerFill,
             OxyColor markerStroke,
             double markerStrokeThickness,
+            EdgeRenderingMode edgeRenderingMode,
             int resolution = 0,
             ScreenPoint binOffset = new ScreenPoint())
         {
@@ -777,43 +766,30 @@ namespace OxyPlot
                 i++;
             }
 
+            if (edgeRenderingMode == EdgeRenderingMode.Automatic)
+            {
+                edgeRenderingMode = EdgeRenderingMode.PreferGeometricAccuracy;
+            }
+
             if (ellipses.Count > 0)
             {
-                rc.DrawEllipses(ellipses, markerFill, markerStroke, markerStrokeThickness);
+                rc.DrawEllipses(ellipses, markerFill, markerStroke, markerStrokeThickness, edgeRenderingMode);
             }
 
             if (rects.Count > 0)
             {
-                rc.DrawRectangles(rects, markerFill, markerStroke, markerStrokeThickness);
+                rc.DrawRectangles(rects, markerFill, markerStroke, markerStrokeThickness, edgeRenderingMode);
             }
 
             if (polygons.Count > 0)
             {
-                rc.DrawPolygons(polygons, markerFill, markerStroke, markerStrokeThickness);
+                rc.DrawPolygons(polygons, markerFill, markerStroke, markerStrokeThickness, edgeRenderingMode);
             }
 
             if (lines.Count > 0)
             {
-                rc.DrawLineSegments(lines, markerStroke, markerStrokeThickness);
+                rc.DrawLineSegments(lines, markerStroke, markerStrokeThickness, edgeRenderingMode);
             }
-        }
-
-        /// <summary>
-        /// Draws the rectangle as an aliased polygon.
-        /// (makes sure pixel alignment is the same as for lines)
-        /// </summary>
-        /// <param name="rc">The render context.</param>
-        /// <param name="rect">The rectangle.</param>
-        /// <param name="fill">The fill color.</param>
-        /// <param name="stroke">The stroke color.</param>
-        /// <param name="thickness">The thickness.</param>
-        public static void DrawRectangleAsPolygon(this IRenderContext rc, OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
-        {
-            var sp0 = new ScreenPoint(rect.Left, rect.Top);
-            var sp1 = new ScreenPoint(rect.Right, rect.Top);
-            var sp2 = new ScreenPoint(rect.Right, rect.Bottom);
-            var sp3 = new ScreenPoint(rect.Left, rect.Bottom);
-            rc.DrawPolygon(new[] { sp0, sp1, sp2, sp3 }, fill, stroke, thickness, null, LineJoin.Miter, true);
         }
 
         /// <summary>
@@ -826,9 +802,10 @@ namespace OxyPlot
         /// <param name="fill">The fill color.</param>
         /// <param name="stroke">The stroke color.</param>
         /// <param name="thickness">The thickness.</param>
-        public static void DrawCircle(this IRenderContext rc, double x, double y, double r, OxyColor fill, OxyColor stroke, double thickness = 1)
+        /// <param name="edgeRenderingMode">The edge rendering mode.</param>
+        public static void DrawCircle(this IRenderContext rc, double x, double y, double r, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
         {
-            rc.DrawEllipse(new OxyRect(x - r, y - r, r * 2, r * 2), fill, stroke, thickness);
+            rc.DrawEllipse(new OxyRect(x - r, y - r, r * 2, r * 2), fill, stroke, thickness, edgeRenderingMode);
         }
 
         /// <summary>
@@ -840,9 +817,10 @@ namespace OxyPlot
         /// <param name="fill">The fill color.</param>
         /// <param name="stroke">The stroke color.</param>
         /// <param name="thickness">The thickness.</param>
-        public static void DrawCircle(this IRenderContext rc, ScreenPoint center, double r, OxyColor fill, OxyColor stroke, double thickness = 1)
+        /// <param name="edgeRenderingMode">The edge rendering mode.</param>
+        public static void DrawCircle(this IRenderContext rc, ScreenPoint center, double r, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
         {
-            DrawCircle(rc, center.X, center.Y, r, fill, stroke, thickness);
+            DrawCircle(rc, center.X, center.Y, r, fill, stroke, thickness, edgeRenderingMode);
         }
 
         /// <summary>
@@ -852,9 +830,10 @@ namespace OxyPlot
         /// <param name="center">The center.</param>
         /// <param name="r">The radius.</param>
         /// <param name="fill">The fill color.</param>
-        public static void FillCircle(this IRenderContext rc, ScreenPoint center, double r, OxyColor fill)
+        /// <param name="edgeRenderingMode">The edge rendering mode.</param>
+        public static void FillCircle(this IRenderContext rc, ScreenPoint center, double r, OxyColor fill, EdgeRenderingMode edgeRenderingMode)
         {
-            DrawCircle(rc, center.X, center.Y, r, fill, OxyColors.Undefined, 0d);
+            DrawCircle(rc, center.X, center.Y, r, fill, OxyColors.Undefined, 0d, edgeRenderingMode);
         }
 
         /// <summary>
@@ -863,36 +842,42 @@ namespace OxyPlot
         /// <param name="rc">The render context.</param>
         /// <param name="rectangle">The rectangle.</param>
         /// <param name="fill">The fill color.</param>
-        public static void FillRectangle(this IRenderContext rc, OxyRect rectangle, OxyColor fill)
+        /// <param name="edgeRenderingMode">The edge rendering mode.</param>
+        public static void FillRectangle(this IRenderContext rc, OxyRect rectangle, OxyColor fill, EdgeRenderingMode edgeRenderingMode)
         {
-            rc.DrawRectangle(rectangle, fill, OxyColors.Undefined, 0d);
+            rc.DrawRectangle(rectangle, fill, OxyColors.Undefined, 0d, edgeRenderingMode);
         }
 
         /// <summary>
-        /// Draws the rectangle as an aliased polygon. Makes sure pixel alignment is the same as for aliased lines.
+        /// Draws the outline of a rectangle with individual stroke thickness for each side.
         /// </summary>
         /// <param name="rc">The render context.</param>
         /// <param name="rect">The rectangle.</param>
-        /// <param name="fill">The fill color.</param>
         /// <param name="stroke">The stroke color.</param>
         /// <param name="thickness">The thickness.</param>
-        public static void DrawRectangleAsPolygon(this IRenderContext rc, OxyRect rect, OxyColor fill, OxyColor stroke, OxyThickness thickness)
+        /// <param name="edgeRenderingMode">The edge rendering mode.</param>
+        public static void DrawRectangle(this IRenderContext rc, OxyRect rect, OxyColor stroke, OxyThickness thickness, EdgeRenderingMode edgeRenderingMode)
         {
             if (thickness.Left.Equals(thickness.Right) && thickness.Left.Equals(thickness.Top) && thickness.Left.Equals(thickness.Bottom))
             {
-                DrawRectangleAsPolygon(rc, rect, fill, stroke, thickness.Left);
+                rc.DrawRectangle(rect, OxyColors.Undefined, stroke, thickness.Left, edgeRenderingMode);
                 return;
             }
 
-            var sp0 = new ScreenPoint(rect.Left, rect.Top);
-            var sp1 = new ScreenPoint(rect.Right, rect.Top);
-            var sp2 = new ScreenPoint(rect.Right, rect.Bottom);
-            var sp3 = new ScreenPoint(rect.Left, rect.Bottom);
-            rc.DrawPolygon(new[] { sp0, sp1, sp2, sp3 }, fill, OxyColors.Undefined, 0, null, LineJoin.Miter, true);
-            rc.DrawLine(new[] { sp0, sp1 }, stroke, thickness.Top, null, LineJoin.Miter, true);
-            rc.DrawLine(new[] { sp1, sp2 }, stroke, thickness.Right, null, LineJoin.Miter, true);
-            rc.DrawLine(new[] { sp2, sp3 }, stroke, thickness.Bottom, null, LineJoin.Miter, true);
-            rc.DrawLine(new[] { sp3, sp0 }, stroke, thickness.Left, null, LineJoin.Miter, true);
+            var adjustedLeft = rect.Left - thickness.Left / 2 + 0.5;
+            var adjustedRight = rect.Right + thickness.Right / 2 - 0.5;
+            var adjustedTop = rect.Top - thickness.Top / 2 + 0.5;
+            var adjustedBottom = rect.Bottom + thickness.Bottom / 2 - 0.5;
+
+            var pointsTop = new[] { new ScreenPoint(adjustedLeft, rect.Top), new ScreenPoint(adjustedRight, rect.Top) };
+            var pointsRight = new[] { new ScreenPoint(rect.Right, adjustedTop), new ScreenPoint(rect.Right, adjustedBottom) };
+            var pointsBottom = new[] { new ScreenPoint(adjustedLeft, rect.Bottom), new ScreenPoint(adjustedRight, rect.Bottom) };
+            var pointsLeft = new[] { new ScreenPoint(rect.Left, adjustedTop), new ScreenPoint(rect.Left, adjustedBottom) };
+
+            rc.DrawLine(pointsTop, stroke, thickness.Top, edgeRenderingMode, null, LineJoin.Miter);
+            rc.DrawLine(pointsRight, stroke, thickness.Right, edgeRenderingMode, null, LineJoin.Miter);
+            rc.DrawLine(pointsBottom, stroke, thickness.Bottom, edgeRenderingMode, null, LineJoin.Miter);
+            rc.DrawLine(pointsLeft, stroke, thickness.Left, edgeRenderingMode, null, LineJoin.Miter);
         }
 
         /// <summary>

@@ -332,18 +332,18 @@ namespace OxyPlot.Series
                         0,
                         strokeColor,
                         this.StrokeThickness,
+                        this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness),
                         dashArray,
-                        LineJoin.Miter,
-                        true);
+                        LineJoin.Miter);
                     rc.DrawClippedLine(
                         clippingRect,
                         new[] { bottomWhiskerTop, bottomWhiskerBottom },
                         0,
                         strokeColor,
                         this.StrokeThickness,
+                        this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness),
                         dashArray,
-                        LineJoin.Miter,
-                        true);
+                        LineJoin.Miter);
                 }
 
                 // Draw the whiskers
@@ -360,25 +360,30 @@ namespace OxyPlot.Series
                         0,
                         strokeColor,
                         this.StrokeThickness,
+                        this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness),
                         null,
-                        LineJoin.Miter,
-                        true);
+                        LineJoin.Miter);
                     rc.DrawClippedLine(
                         clippingRect,
                         new[] { bottomWhiskerLine1, bottomWhiskerLine2 },
                         0,
                         strokeColor,
                         this.StrokeThickness,
+                        this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness),
                         null,
-                        LineJoin.Miter,
-                        true);
+                        LineJoin.Miter);
                 }
 
                 if (this.ShowBox)
                 {
                     // Draw the box
                     var rect = this.GetBoxRect(item);
-                    rc.DrawClippedRectangleAsPolygon(clippingRect, rect, fillColor, strokeColor, this.StrokeThickness);
+                    rc.DrawClippedRectangle(
+                        clippingRect, 
+                        rect, fillColor, 
+                        strokeColor, 
+                        this.StrokeThickness, 
+                        this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness));
                 }
 
                 if (!this.ShowMedianAsDot)
@@ -392,9 +397,9 @@ namespace OxyPlot.Series
                         0,
                         strokeColor,
                         this.StrokeThickness * this.MedianThickness,
+                        this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness),
                         null,
-                        LineJoin.Miter,
-                        true);
+                        LineJoin.Miter);
                 }
                 else
                 {
@@ -406,7 +411,7 @@ namespace OxyPlot.Series
                             mc.Y - this.MedianPointSize,
                             this.MedianPointSize * 2,
                             this.MedianPointSize * 2);
-                        rc.DrawEllipse(ellipseRect, fillColor, OxyColors.Undefined, 0);
+                        rc.DrawEllipse(ellipseRect, fillColor, OxyColors.Undefined, 0, this.EdgeRenderingMode);
                     }
                 }
 
@@ -421,9 +426,9 @@ namespace OxyPlot.Series
                         0,
                         strokeColor,
                         this.StrokeThickness * this.MeanThickness,
+                        this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness),
                         LineStyle.Dash.GetDashArray(),
-                        LineJoin.Miter,
-                        true);
+                        LineJoin.Miter);
                 }
                 else if (!double.IsNaN(item.Mean))
                 {
@@ -435,7 +440,7 @@ namespace OxyPlot.Series
                             mc.Y - this.MeanPointSize,
                             this.MeanPointSize * 2,
                             this.MeanPointSize * 2);
-                        rc.DrawEllipse(ellipseRect, fillColor, OxyColors.Undefined, 0);
+                        rc.DrawEllipse(ellipseRect, fillColor, OxyColors.Undefined, 0, this.EdgeRenderingMode);
                     }
                 }
             }
@@ -452,7 +457,8 @@ namespace OxyPlot.Series
                     markerSizes,
                     fillColor,
                     strokeColor,
-                    this.StrokeThickness);
+                    this.StrokeThickness,
+                    this.EdgeRenderingMode);
             }
         }
 
@@ -474,21 +480,22 @@ namespace OxyPlot.Series
             var strokeColor = this.GetSelectableColor(this.Stroke);
             var fillColor = this.GetSelectableFillColor(this.Fill);
 
+            // render the legend with EdgeRenderingMode.PreferGeometricAccuracy, because otherwise the fine geometry can look 'weird'
             rc.DrawLine(
                 new[] { new ScreenPoint(xmid, legendBox.Top), new ScreenPoint(xmid, ytop) },
                 strokeColor,
                 LegendStrokeThickness,
+                this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferGeometricAccuracy),
                 LineStyle.Solid.GetDashArray(),
-                LineJoin.Miter,
-                true);
+                LineJoin.Miter);
 
             rc.DrawLine(
                 new[] { new ScreenPoint(xmid, ybottom), new ScreenPoint(xmid, legendBox.Bottom) },
                 strokeColor,
                 LegendStrokeThickness,
+                this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferGeometricAccuracy),
                 LineStyle.Solid.GetDashArray(),
-                LineJoin.Miter,
-                true);
+                LineJoin.Miter);
 
             if (this.WhiskerWidth > 0)
             {
@@ -496,37 +503,38 @@ namespace OxyPlot.Series
                 rc.DrawLine(
                     new[]
                         {
-                            new ScreenPoint(xmid - halfWhiskerWidth - 1, legendBox.Bottom),
+                            new ScreenPoint(xmid - halfWhiskerWidth, legendBox.Bottom),
                             new ScreenPoint(xmid + halfWhiskerWidth, legendBox.Bottom)
                         },
                     strokeColor,
                     LegendStrokeThickness,
+                    this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferGeometricAccuracy),
                     LineStyle.Solid.GetDashArray(),
-                    LineJoin.Miter,
-                    true);
+                    LineJoin.Miter);
 
                 // bottom whisker
                 rc.DrawLine(
                     new[]
                         {
-                            new ScreenPoint(xmid - halfWhiskerWidth - 1, legendBox.Top),
+                            new ScreenPoint(xmid - halfWhiskerWidth, legendBox.Top),
                             new ScreenPoint(xmid + halfWhiskerWidth, legendBox.Top)
                         },
                     strokeColor,
                     LegendStrokeThickness,
+                    this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferGeometricAccuracy),
                     LineStyle.Solid.GetDashArray(),
-                    LineJoin.Miter,
-                    true);
+                    LineJoin.Miter);
             }
 
             if (this.ShowBox)
             {
                 // box
-                rc.DrawRectangleAsPolygon(
+                rc.DrawRectangle(
                     new OxyRect(xmid - halfBoxWidth, ytop, 2 * halfBoxWidth, ybottom - ytop),
                     fillColor,
                     strokeColor,
-                    LegendStrokeThickness);
+                    LegendStrokeThickness,
+                    this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferGeometricAccuracy));
             }
 
             // median
@@ -536,9 +544,9 @@ namespace OxyPlot.Series
                     new[] { new ScreenPoint(xmid - halfBoxWidth, ymid), new ScreenPoint(xmid + halfBoxWidth, ymid) },
                     strokeColor,
                     LegendStrokeThickness * this.MedianThickness,
+                    this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferGeometricAccuracy),
                     LineStyle.Solid.GetDashArray(),
-                    LineJoin.Miter,
-                    true);
+                    LineJoin.Miter);
             }
             else
             {
@@ -547,7 +555,7 @@ namespace OxyPlot.Series
                     ymid - this.MedianPointSize,
                     this.MedianPointSize * 2,
                     this.MedianPointSize * 2);
-                rc.DrawEllipse(ellipseRect, fillColor, OxyColors.Undefined);
+                rc.DrawEllipse(ellipseRect, fillColor, OxyColors.Undefined, 0, this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferGeometricAccuracy));
             }
         }
 

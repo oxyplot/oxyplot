@@ -75,7 +75,7 @@ namespace OxyPlot.Annotations
             // clip to the area defined by the axes
             var clippingRectangle = this.GetClippingRect();
 
-            rc.DrawMarker(clippingRectangle, this.screenPosition, this.Shape, this.CustomOutline, this.Size, this.Fill, this.Stroke, this.StrokeThickness);
+            rc.DrawMarker(clippingRectangle, this.screenPosition, this.Shape, this.CustomOutline, this.Size, this.Fill, this.Stroke, this.StrokeThickness, this.EdgeRenderingMode);
 
             if (!string.IsNullOrEmpty(this.Text))
             {

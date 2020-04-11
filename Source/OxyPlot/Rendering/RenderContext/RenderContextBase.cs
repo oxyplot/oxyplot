@@ -26,152 +26,125 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Gets a value indicating whether the specified points form a straight line (i.e. parallel to the pixel raster).
+        /// </summary>
+        /// <remarks>
+        /// To determine whether a line is straight, the coordinates of <paramref name="p1"/> and <paramref name="p2"/> are compared. If either the X or the Y
+        /// coordinates (or both) of both points are very close together, the line is considered straight. The threshold of what is considered 'very close' 
+        /// is fixed at 1e-5.
+        /// </remarks>
+        /// <param name="p1">The first point.</param>
+        /// <param name="p2">The second point.</param>
+        /// <returns>true if the points form a straight line; false otherwise.</returns>
+        public static bool IsStraightLine(ScreenPoint p1, ScreenPoint p2)
+        {
+            const double epsilon = 1e-5;
+            return Math.Abs(p1.X - p2.X) < epsilon || Math.Abs(p1.Y - p2.Y) < epsilon;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified points form a straight line (i.e. parallel to the pixel raster).
+        /// </summary>
+        /// <param name="points">The points.</param>
+        /// <returns>true if the points form a straight line; false otherwise.</returns>
+        public static bool IsStraightLine(IList<ScreenPoint> points)
+        {
+            for (int i = 1; i < points.Count; i++)
+            {
+                if (!IsStraightLine(points[i - 1], points[i]))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the context renders to screen.
         /// </summary>
         /// <value><c>true</c> if the context renders to screen; otherwise, <c>false</c>.</value>
         public bool RendersToScreen { get; set; }
 
-        /// <summary>
-        /// Draws an ellipse.
-        /// </summary>
-        /// <param name="rect">The rectangle.</param>
-        /// <param name="fill">The fill color.</param>
-        /// <param name="stroke">The stroke color.</param>
-        /// <param name="thickness">The thickness.</param>
-        public virtual void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
+        /// <inheritdoc/>
+        public virtual void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
         {
             var polygon = CreateEllipse(rect);
-            this.DrawPolygon(polygon, fill, stroke, thickness, null, LineJoin.Miter, false);
+            this.DrawPolygon(polygon, fill, stroke, thickness, edgeRenderingMode, null, LineJoin.Miter);
         }
 
-        /// <summary>
-        /// Draws the collection of ellipses, where all have the same stroke and fill.
-        /// This performs better than calling DrawEllipse multiple times.
-        /// </summary>
-        /// <param name="rectangles">The rectangles.</param>
-        /// <param name="fill">The fill color.</param>
-        /// <param name="stroke">The stroke color.</param>
-        /// <param name="thickness">The stroke thickness.</param>
-        public virtual void DrawEllipses(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness)
+        /// <inheritdoc/>
+        public virtual void DrawEllipses(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
         {
             foreach (var r in rectangles)
             {
-                this.DrawEllipse(r, fill, stroke, thickness);
+                this.DrawEllipse(r, fill, stroke, thickness, edgeRenderingMode);
             }
         }
 
-        /// <summary>
-        /// Draws a polyline.
-        /// </summary>
-        /// <param name="points">The points.</param>
-        /// <param name="stroke">The stroke color.</param>
-        /// <param name="thickness">The stroke thickness.</param>
-        /// <param name="dashArray">The dash array.</param>
-        /// <param name="lineJoin">The line join type.</param>
-        /// <param name="aliased">if set to <c>true</c> the shape will be aliased.</param>
+        /// <inheritdoc/>
         public abstract void DrawLine(
             IList<ScreenPoint> points,
             OxyColor stroke,
             double thickness,
+            EdgeRenderingMode edgeRenderingMode,
             double[] dashArray,
-            LineJoin lineJoin,
-            bool aliased);
+            LineJoin lineJoin);
 
-        /// <summary>
-        /// Draws multiple line segments defined by points (0,1) (2,3) (4,5) etc.
-        /// This should have better performance than calling DrawLine for each segment.
-        /// </summary>
-        /// <param name="points">The points.</param>
-        /// <param name="stroke">The stroke color.</param>
-        /// <param name="thickness">The stroke thickness.</param>
-        /// <param name="dashArray">The dash array.</param>
-        /// <param name="lineJoin">The line join type.</param>
-        /// <param name="aliased">If set to <c>true</c> the shape will be aliased.</param>
+        /// <inheritdoc/>
         public virtual void DrawLineSegments(
             IList<ScreenPoint> points,
             OxyColor stroke,
-            double thickness,
+            double thickness, 
+            EdgeRenderingMode edgeRenderingMode,
             double[] dashArray,
-            LineJoin lineJoin,
-            bool aliased)
+            LineJoin lineJoin)
         {
             for (int i = 0; i + 1 < points.Count; i += 2)
             {
-                this.DrawLine(new[] { points[i], points[i + 1] }, stroke, thickness, dashArray, lineJoin, aliased);
+                this.DrawLine(new[] { points[i], points[i + 1] }, stroke, thickness, edgeRenderingMode, dashArray, lineJoin);
             }
         }
 
-        /// <summary>
-        /// Draws a polygon. The polygon can have stroke and/or fill.
-        /// </summary>
-        /// <param name="points">The points.</param>
-        /// <param name="fill">The fill color.</param>
-        /// <param name="stroke">The stroke color.</param>
-        /// <param name="thickness">The stroke thickness.</param>
-        /// <param name="dashArray">The dash array.</param>
-        /// <param name="lineJoin">The line join type.</param>
-        /// <param name="aliased">If set to <c>true</c> the shape will be aliased.</param>
+        /// <inheritdoc/>
         public abstract void DrawPolygon(
             IList<ScreenPoint> points,
             OxyColor fill,
             OxyColor stroke,
             double thickness,
+            EdgeRenderingMode edgeRenderingMode,
             double[] dashArray,
-            LineJoin lineJoin,
-            bool aliased);
+            LineJoin lineJoin);
 
-        /// <summary>
-        /// Draws a collection of polygons, where all polygons have the same stroke and fill.
-        /// This performs better than calling DrawPolygon multiple times.
-        /// </summary>
-        /// <param name="polygons">The polygons.</param>
-        /// <param name="fill">The fill color.</param>
-        /// <param name="stroke">The stroke color.</param>
-        /// <param name="thickness">The stroke thickness.</param>
-        /// <param name="dashArray">The dash array.</param>
-        /// <param name="lineJoin">The line join type.</param>
-        /// <param name="aliased">if set to <c>true</c> the shape will be aliased.</param>
+        /// <inheritdoc/>
         public virtual void DrawPolygons(
             IList<IList<ScreenPoint>> polygons,
             OxyColor fill,
             OxyColor stroke,
-            double thickness,
+            double thickness, 
+            EdgeRenderingMode edgeRenderingMode,
             double[] dashArray,
-            LineJoin lineJoin,
-            bool aliased)
+            LineJoin lineJoin)
         {
             foreach (var polygon in polygons)
             {
-                this.DrawPolygon(polygon, fill, stroke, thickness, dashArray, lineJoin, aliased);
+                this.DrawPolygon(polygon, fill, stroke, thickness, edgeRenderingMode, dashArray, lineJoin);
             }
         }
 
-        /// <summary>
-        /// Draws a rectangle.
-        /// </summary>
-        /// <param name="rect">The rectangle.</param>
-        /// <param name="fill">The fill color.</param>
-        /// <param name="stroke">The stroke color.</param>
-        /// <param name="thickness">The stroke thickness.</param>
-        public virtual void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
+        /// <inheritdoc/>
+        public virtual void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
         {
             var polygon = CreateRectangle(rect);
-            this.DrawPolygon(polygon, fill, stroke, thickness, null, LineJoin.Miter, true);
+            this.DrawPolygon(polygon, fill, stroke, thickness, edgeRenderingMode, null, LineJoin.Miter);
         }
 
-        /// <summary>
-        /// Draws a collection of rectangles, where all have the same stroke and fill.
-        /// This performs better than calling DrawRectangle multiple times.
-        /// </summary>
-        /// <param name="rectangles">The rectangles.</param>
-        /// <param name="fill">The fill color.</param>
-        /// <param name="stroke">The stroke color.</param>
-        /// <param name="thickness">The stroke thickness.</param>
-        public virtual void DrawRectangles(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness)
+        /// <inheritdoc/>
+        public virtual void DrawRectangles(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
         {
             foreach (var r in rectangles)
             {
-                this.DrawRectangle(r, fill, stroke, thickness);
+                this.DrawRectangle(r, fill, stroke, thickness, edgeRenderingMode);
             }
         }
 
@@ -307,6 +280,58 @@ namespace OxyPlot
                            new ScreenPoint(rect.Left, rect.Top), new ScreenPoint(rect.Left, rect.Bottom),
                            new ScreenPoint(rect.Right, rect.Bottom), new ScreenPoint(rect.Right, rect.Top)
                        };
+        }
+
+        /// <summary>
+        /// Returns a value indicating whether anti-aliasing should be used for the given edge rendering mode.
+        /// </summary>
+        /// <param name="edgeRenderingMode">The edge rendering mode.</param>
+        /// <returns>true if anti-aliasing should be used; false otherwise.</returns>
+        protected virtual bool ShouldUseAntiAliasingForRect(EdgeRenderingMode edgeRenderingMode)
+        {
+            switch (edgeRenderingMode)
+            {
+                case EdgeRenderingMode.PreferGeometricAccuracy:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        /// <summary>
+        /// Returns a value indicating whether anti-aliasing should be used for the given edge rendering mode.
+        /// </summary>
+        /// <param name="edgeRenderingMode">The edge rendering mode.</param>
+        /// <returns>true if anti-aliasing should be used; false otherwise.</returns>
+        protected virtual bool ShouldUseAntiAliasingForEllipse(EdgeRenderingMode edgeRenderingMode)
+        {
+            switch (edgeRenderingMode)
+            {
+                case EdgeRenderingMode.PreferSpeed:
+                    return false;
+                default:
+                    return true;
+            }
+        }
+
+        /// <summary>
+        /// Returns a value indicating whether anti-aliasing should be used for the given edge rendering mode.
+        /// </summary>
+        /// <param name="edgeRenderingMode">The edge rendering mode.</param>
+        /// <param name="points">The points.</param>
+        /// <returns>true if anti-aliasing should be used; false otherwise.</returns>
+        protected virtual bool ShouldUseAntiAliasingForLine(EdgeRenderingMode edgeRenderingMode, IList<ScreenPoint> points)
+        {
+            switch (edgeRenderingMode)
+            {
+                case EdgeRenderingMode.PreferSpeed:
+                case EdgeRenderingMode.PreferSharpness:
+                case EdgeRenderingMode.Automatic when IsStraightLine(points):
+                case EdgeRenderingMode.Adaptive when IsStraightLine(points):
+                    return false;
+                default:
+                    return true;
+            }
         }
     }
 }

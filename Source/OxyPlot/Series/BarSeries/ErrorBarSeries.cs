@@ -167,9 +167,9 @@ namespace OxyPlot.Series
                 0,
                 this.StrokeColor,
                 this.ErrorStrokeThickness,
+                this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness),
                 null,
-                LineJoin.Miter,
-                true);
+                LineJoin.Miter);
 
             if (this.ErrorWidth > 0)
             {
@@ -181,9 +181,9 @@ namespace OxyPlot.Series
                     0,
                     this.StrokeColor,
                     this.ErrorStrokeThickness,
+                    this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness),
                     null,
-                    LineJoin.Miter,
-                    true);
+                    LineJoin.Miter);
 
                 var upperLeftErrorPoint = this.Transform(errorEnd, categoryStart);
                 var upperRightErrorPoint = this.Transform(errorEnd, categoryEnd);
@@ -193,9 +193,9 @@ namespace OxyPlot.Series
                     0,
                     this.StrokeColor,
                     this.ErrorStrokeThickness,
+                    this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness),
                     null,
-                    LineJoin.Miter,
-                    true);
+                    LineJoin.Miter);
             }
         }
     }

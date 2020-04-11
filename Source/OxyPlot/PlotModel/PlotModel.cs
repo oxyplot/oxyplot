@@ -119,6 +119,7 @@ namespace OxyPlot
 
             this.PlotAreaBorderColor = OxyColors.Black;
             this.PlotAreaBorderThickness = new OxyThickness(1);
+            this.EdgeRenderingMode = EdgeRenderingMode.Automatic;
 
             this.IsLegendVisible = true;
 
@@ -237,6 +238,12 @@ namespace OxyPlot
         /// </summary>
         /// <value>The default colors.</value>
         public IList<OxyColor> DefaultColors { get; set; }
+
+        /// <summary>
+        /// Gets or sets the edge rendering mode that is used for rendering the plot bounds and backgrounds.
+        /// </summary>
+        /// <value>The edge rendering mode. The default is <see cref="EdgeRenderingMode.Automatic"/>.</value>
+        public EdgeRenderingMode EdgeRenderingMode { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the legend is visible. The titles of the series must be set to use the legend.

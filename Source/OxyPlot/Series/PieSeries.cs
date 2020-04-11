@@ -327,7 +327,7 @@ namespace OxyPlot.Series
                 var points = outerPoints;
                 points.AddRange(innerPoints);
 
-                rc.DrawPolygon(points, slice.ActualFillColor, this.Stroke, this.StrokeThickness, null, LineJoin.Bevel);
+                rc.DrawPolygon(points, slice.ActualFillColor, this.Stroke, this.StrokeThickness, this.EdgeRenderingMode, null, LineJoin.Bevel);
 
                 // keep the point for hit testing
                 this.slicePoints.Add(points);
@@ -349,7 +349,7 @@ namespace OxyPlot.Series
                     var tp2 = new ScreenPoint(tp1.X + (this.TickHorizontalLength * sign), tp1.Y);
 
                     // draw the tick line with the same color as the text
-                    rc.DrawLine(new[] { tp0, tp1, tp2 }, this.ActualTextColor, 1, null, LineJoin.Bevel);
+                    rc.DrawLine(new[] { tp0, tp1, tp2 }, this.ActualTextColor, 1, this.EdgeRenderingMode, null, LineJoin.Bevel);
 
                     // label
                     var labelPosition = new ScreenPoint(tp2.X + (this.TickLabelDistance * sign), tp2.Y);

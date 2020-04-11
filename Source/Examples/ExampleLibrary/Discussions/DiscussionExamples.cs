@@ -364,7 +364,7 @@ namespace ExampleLibrary
                 var p3 = p1 - (direction * 0.2) - (normal * 0.1);
 
                 // draw the line segments
-                rc.DrawLineSegments(new[] { p0, p1, p1, p2, p1, p3 }, this.ActualColor, this.StrokeThickness);
+                rc.DrawLineSegments(new[] { p0, p1, p1, p2, p1, p3 }, this.ActualColor, this.StrokeThickness, this.EdgeRenderingMode);
             }
         }
     }

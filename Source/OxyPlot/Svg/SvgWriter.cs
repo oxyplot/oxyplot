@@ -164,7 +164,8 @@ namespace OxyPlot
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
         /// <param name="style">The style.</param>
-        public void WriteEllipse(double x, double y, double width, double height, string style)
+        /// <param name="edgeRenderingMode">The edge rendering mode.</param>
+        public void WriteEllipse(double x, double y, double width, double height, string style, EdgeRenderingMode edgeRenderingMode)
         {
             // http://www.w3.org/TR/SVG/shapes.html#EllipseElement
             this.WriteStartElement("ellipse");
@@ -173,6 +174,7 @@ namespace OxyPlot
             this.WriteAttributeString("rx", width / 2);
             this.WriteAttributeString("ry", height / 2);
             this.WriteAttributeString("style", style);
+            this.WriteEdgeRenderingModeAttribute(edgeRenderingMode);
             this.WriteClipPathAttribute();
             this.WriteEndElement();
         }
@@ -278,7 +280,8 @@ namespace OxyPlot
         /// <param name="p1">The first point.</param>
         /// <param name="p2">The second point.</param>
         /// <param name="style">The style.</param>
-        public void WriteLine(ScreenPoint p1, ScreenPoint p2, string style)
+        /// <param name="edgeRenderingMode">The edge rendering mode.</param>
+        public void WriteLine(ScreenPoint p1, ScreenPoint p2, string style, EdgeRenderingMode edgeRenderingMode)
         {
             // http://www.w3.org/TR/SVG/shapes.html#LineElement
             // http://www.w3schools.com/svg/svg_line.asp
@@ -288,6 +291,7 @@ namespace OxyPlot
             this.WriteAttributeString("x2", p2.X);
             this.WriteAttributeString("y2", p2.Y);
             this.WriteAttributeString("style", style);
+            this.WriteEdgeRenderingModeAttribute(edgeRenderingMode);
             this.WriteClipPathAttribute();
             this.WriteEndElement();
         }
@@ -297,12 +301,14 @@ namespace OxyPlot
         /// </summary>
         /// <param name="points">The points.</param>
         /// <param name="style">The style.</param>
-        public void WritePolygon(IEnumerable<ScreenPoint> points, string style)
+        /// <param name="edgeRenderingMode">The edge rendering mode.</param>
+        public void WritePolygon(IEnumerable<ScreenPoint> points, string style, EdgeRenderingMode edgeRenderingMode)
         {
             // http://www.w3.org/TR/SVG/shapes.html#PolygonElement
             this.WriteStartElement("polygon");
             this.WriteAttributeString("points", this.PointsToString(points));
             this.WriteAttributeString("style", style);
+            this.WriteEdgeRenderingModeAttribute(edgeRenderingMode);
             this.WriteClipPathAttribute();
             this.WriteEndElement();
         }
@@ -312,12 +318,14 @@ namespace OxyPlot
         /// </summary>
         /// <param name="pts">The points.</param>
         /// <param name="style">The style.</param>
-        public void WritePolyline(IEnumerable<ScreenPoint> pts, string style)
+        /// <param name="edgeRenderingMode">The edge rendering mode.</param>
+        public void WritePolyline(IEnumerable<ScreenPoint> pts, string style, EdgeRenderingMode edgeRenderingMode)
         {
             // http://www.w3.org/TR/SVG/shapes.html#PolylineElement
             this.WriteStartElement("polyline");
             this.WriteAttributeString("points", this.PointsToString(pts));
             this.WriteAttributeString("style", style);
+            this.WriteEdgeRenderingModeAttribute(edgeRenderingMode);
             this.WriteClipPathAttribute();
             this.WriteEndElement();
         }
@@ -330,7 +338,8 @@ namespace OxyPlot
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
         /// <param name="style">The style.</param>
-        public void WriteRectangle(double x, double y, double width, double height, string style)
+        /// <param name="edgeRenderingMode">The edge rendering mode.</param>
+        public void WriteRectangle(double x, double y, double width, double height, string style, EdgeRenderingMode edgeRenderingMode)
         {
             // http://www.w3.org/TR/SVG/shapes.html#RectangleElement
             this.WriteStartElement("rect");
@@ -339,6 +348,7 @@ namespace OxyPlot
             this.WriteAttributeString("width", width);
             this.WriteAttributeString("height", height);
             this.WriteAttributeString("style", style);
+            this.WriteEdgeRenderingModeAttribute(edgeRenderingMode);
             this.WriteClipPathAttribute();
             this.WriteEndElement();
         }
@@ -478,6 +488,31 @@ namespace OxyPlot
             }
 
             this.WriteAttributeString("clip-path", string.Format("url(#{0})", this.clipPath));
+        }
+
+        /// <summary>
+        /// Writes the edge rendering mode attribute if necessary.
+        /// </summary>
+        /// <param name="edgeRenderingMode">The edge rendering mode.</param>
+        private void WriteEdgeRenderingModeAttribute(EdgeRenderingMode edgeRenderingMode)
+        {
+            string value;
+            switch (edgeRenderingMode)
+            {
+                case EdgeRenderingMode.PreferSharpness:
+                    value = "crispEdges";
+                    break;
+                case EdgeRenderingMode.PreferSpeed:
+                    value = "optimizeSpeed";
+                    break;
+                case EdgeRenderingMode.PreferGeometricAccuracy:
+                    value = "geometricPrecision";
+                    break;
+                default:
+                    return;
+            }
+
+            this.WriteAttributeString("shape-rendering", value);
         }
 
         /// <summary>

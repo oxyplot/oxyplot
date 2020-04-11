@@ -101,6 +101,7 @@ namespace OxyPlot.Wpf
             this.UseStreamGeometry = true;
             this.RendersToScreen = true;
             this.BalancedLineDrawingThicknessLimit = 3.5;
+            this.dpiScales = new Point(1, 1);
         }
 
         /// <summary>
@@ -133,17 +134,11 @@ namespace OxyPlot.Wpf
         /// <value><c>true</c> if the context renders to screen; otherwise, <c>false</c>.</value>
         public bool RendersToScreen { get; set; }
 
-        /// <summary>
-        /// Draws an ellipse.
-        /// </summary>
-        /// <param name="rect">The rectangle.</param>
-        /// <param name="fill">The fill color. If set to <c>OxyColors.Undefined</c>, the ellipse will not be filled.</param>
-        /// <param name="stroke">The stroke color. If set to <c>OxyColors.Undefined</c>, the ellipse will not be stroked.</param>
-        /// <param name="thickness">The thickness (in device independent units, 1/96 inch).</param>
-        public void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
+        ///<inheritdoc/>
+        public void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
         {
             var e = this.CreateAndAdd<Ellipse>(rect.Left, rect.Top);
-            this.SetStroke(e, stroke, thickness);
+            this.SetStroke(e, stroke, thickness, edgeRenderingMode);
             if (fill.IsVisible())
             {
                 e.Fill = this.GetCachedBrush(fill);
@@ -155,18 +150,11 @@ namespace OxyPlot.Wpf
             Canvas.SetTop(e, rect.Top);
         }
 
-        /// <summary>
-        /// Draws a collection of ellipses, where all have the same stroke and fill.
-        /// This performs better than calling DrawEllipse multiple times.
-        /// </summary>
-        /// <param name="rectangles">The rectangles.</param>
-        /// <param name="fill">The fill color. If set to <c>OxyColors.Undefined</c>, the ellipses will not be filled.</param>
-        /// <param name="stroke">The stroke color. If set to <c>OxyColors.Undefined</c>, the ellipses will not be stroked.</param>
-        /// <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
-        public void DrawEllipses(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness)
+        ///<inheritdoc/>
+        public void DrawEllipses(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
         {
             var path = this.CreateAndAdd<Path>();
-            this.SetStroke(path, stroke, thickness);
+            this.SetStroke(path, stroke, thickness, edgeRenderingMode);
             if (!fill.IsUndefined())
             {
                 path.Fill = this.GetCachedBrush(fill);
@@ -175,62 +163,44 @@ namespace OxyPlot.Wpf
             var gg = new GeometryGroup { FillRule = FillRule.Nonzero };
             foreach (var rect in rectangles)
             {
-                gg.Children.Add(new EllipseGeometry(this.ToRect(rect)));
+                gg.Children.Add(new EllipseGeometry(ToRect(rect)));
             }
 
             path.Data = gg;
         }
 
-        /// <summary>
-        /// Draws a polyline.
-        /// </summary>
-        /// <param name="points">The points.</param>
-        /// <param name="stroke">The stroke color.</param>
-        /// <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
-        /// <param name="dashArray">The dash array (in device independent units, 1/96 inch). Use <c>null</c> to get a solid line.</param>
-        /// <param name="lineJoin">The line join type.</param>
-        /// <param name="aliased">if set to <c>true</c> the shape will be aliased.</param>
+        ///<inheritdoc/>
         public void DrawLine(
             IList<ScreenPoint> points,
             OxyColor stroke,
             double thickness,
+            EdgeRenderingMode edgeRenderingMode,
             double[] dashArray,
-            LineJoin lineJoin,
-            bool aliased)
+            LineJoin lineJoin)
         {
             if (thickness < this.BalancedLineDrawingThicknessLimit)
             {
-                this.DrawLineBalanced(points, stroke, thickness, dashArray, lineJoin, aliased);
+                this.DrawLineBalanced(points, stroke, thickness, edgeRenderingMode, dashArray, lineJoin);
                 return;
             }
 
             var e = this.CreateAndAdd<Polyline>();
-            this.SetStroke(e, stroke, thickness, lineJoin, dashArray, 0, aliased);
-
-            e.Points = this.ToPointCollection(points, aliased);
+            this.SetStroke(e, stroke, thickness, edgeRenderingMode, lineJoin, dashArray, 0);
+            e.Points = this.ToPointCollection(points, e.StrokeThickness, edgeRenderingMode);
         }
 
-        /// <summary>
-        /// Draws line segments defined by points (0,1) (2,3) (4,5) etc.
-        /// This should have better performance than calling DrawLine for each segment.
-        /// </summary>
-        /// <param name="points">The points.</param>
-        /// <param name="stroke">The stroke color.</param>
-        /// <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
-        /// <param name="dashArray">The dash array (in device independent units, 1/96 inch).</param>
-        /// <param name="lineJoin">The line join type.</param>
-        /// <param name="aliased">if set to <c>true</c> the shape will be aliased.</param>
+        ///<inheritdoc/>
         public void DrawLineSegments(
             IList<ScreenPoint> points,
             OxyColor stroke,
             double thickness,
+            EdgeRenderingMode edgeRenderingMode,
             double[] dashArray,
-            LineJoin lineJoin,
-            bool aliased)
+            LineJoin lineJoin)
         {
             if (this.UseStreamGeometry)
             {
-                this.DrawLineSegmentsByStreamGeometry(points, stroke, thickness, dashArray, lineJoin, aliased);
+                this.DrawLineSegmentsByStreamGeometry(points, stroke, thickness, edgeRenderingMode, dashArray, lineJoin);
                 return;
             }
 
@@ -244,12 +214,14 @@ namespace OxyPlot.Wpf
                 if (path == null)
                 {
                     path = this.CreateAndAdd<Path>();
-                    this.SetStroke(path, stroke, thickness, lineJoin, dashArray, 0, aliased);
+                    this.SetStroke(path, stroke, thickness, edgeRenderingMode, lineJoin, dashArray, 0);
                     pathGeometry = new PathGeometry();
                 }
 
-                var figure = new PathFigure { StartPoint = this.ToPoint(points[i], aliased), IsClosed = false };
-                figure.Segments.Add(new LineSegment(this.ToPoint(points[i + 1], aliased), true) { IsSmoothJoin = false });
+                var actualPoints = this.GetActualPoints( new[] { points[i], points[i + 1] }, path.StrokeThickness, edgeRenderingMode).ToList();
+
+                var figure = new PathFigure { StartPoint = actualPoints[0], IsClosed = false };
+                figure.Segments.Add(new LineSegment(actualPoints[1], true) { IsSmoothJoin = false });
                 pathGeometry.Figures.Add(figure);
 
                 count++;
@@ -269,55 +241,36 @@ namespace OxyPlot.Wpf
             }
         }
 
-        /// <summary>
-        /// Draws a polygon.
-        /// </summary>
-        /// <param name="points">The points.</param>
-        /// <param name="fill">The fill color. If set to <c>OxyColors.Undefined</c>, the polygon will not be filled.</param>
-        /// <param name="stroke">The stroke color. If set to <c>OxyColors.Undefined</c>, the polygon will not be stroked.</param>
-        /// <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
-        /// <param name="dashArray">The dash array (in device independent units, 1/96 inch).</param>
-        /// <param name="lineJoin">The line join type.</param>
-        /// <param name="aliased">If set to <c>true</c> the polygon will be aliased.</param>
+        ///<inheritdoc/>
         public void DrawPolygon(
             IList<ScreenPoint> points,
             OxyColor fill,
             OxyColor stroke,
             double thickness,
+            EdgeRenderingMode edgeRenderingMode,
             double[] dashArray,
-            LineJoin lineJoin,
-            bool aliased)
+            LineJoin lineJoin)
         {
             var e = this.CreateAndAdd<Polygon>();
-            this.SetStroke(e, stroke, thickness, lineJoin, dashArray, 0, aliased);
+            this.SetStroke(e, stroke, thickness, edgeRenderingMode, lineJoin, dashArray, 0);
 
             if (!fill.IsUndefined())
             {
                 e.Fill = this.GetCachedBrush(fill);
             }
 
-            e.Points = this.ToPointCollection(points, aliased);
+            e.Points = this.ToPointCollection(points, e.StrokeThickness, edgeRenderingMode);
         }
 
-        /// <summary>
-        /// Draws a collection of polygons, where all polygons have the same stroke and fill.
-        /// This performs better than calling DrawPolygon multiple times.
-        /// </summary>
-        /// <param name="polygons">The polygons.</param>
-        /// <param name="fill">The fill color. If set to <c>OxyColors.Undefined</c>, the polygons will not be filled.</param>
-        /// <param name="stroke">The stroke color. If set to <c>OxyColors.Undefined</c>, the polygons will not be stroked.</param>
-        /// <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
-        /// <param name="dashArray">The dash array (in device independent units, 1/96 inch).</param>
-        /// <param name="lineJoin">The line join type.</param>
-        /// <param name="aliased">if set to <c>true</c> the shape will be aliased.</param>
+        ///<inheritdoc/>
         public void DrawPolygons(
             IList<IList<ScreenPoint>> polygons,
             OxyColor fill,
             OxyColor stroke,
             double thickness,
+            EdgeRenderingMode edgeRenderingMode,
             double[] dashArray,
-            LineJoin lineJoin,
-            bool aliased)
+            LineJoin lineJoin)
         {
             var usg = this.UseStreamGeometry;
             Path path = null;
@@ -331,7 +284,7 @@ namespace OxyPlot.Wpf
                 if (path == null)
                 {
                     path = this.CreateAndAdd<Path>();
-                    this.SetStroke(path, stroke, thickness, lineJoin, dashArray, 0, aliased);
+                    this.SetStroke(path, stroke, thickness, edgeRenderingMode, lineJoin, dashArray, 0);
                     if (!fill.IsUndefined())
                     {
                         path.Fill = this.GetCachedBrush(fill);
@@ -350,9 +303,8 @@ namespace OxyPlot.Wpf
 
                 PathFigure figure = null;
                 bool first = true;
-                foreach (var p in polygon)
+                foreach (var point in GetActualPoints(polygon, path.StrokeThickness, edgeRenderingMode))
                 {
-                    var point = aliased ? this.ToPixelAlignedPoint(p) : this.ToPoint(p);
                     if (first)
                     {
                         if (usg)
@@ -419,41 +371,27 @@ namespace OxyPlot.Wpf
             }
         }
 
-        /// <summary>
-        /// Draws a rectangle.
-        /// </summary>
-        /// <param name="rect">The rectangle.</param>
-        /// <param name="fill">The fill color. If set to <c>OxyColors.Undefined</c>, the rectangle will not be filled.</param>
-        /// <param name="stroke">The stroke color. If set to <c>OxyColors.Undefined</c>, the rectangle will not be stroked.</param>
-        /// <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
-        public void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
+        ///<inheritdoc/>
+        public void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
         {
-            var e = this.CreateAndAdd<Rectangle>(rect.Left, rect.Top);
-            this.SetStroke(e, stroke, thickness, LineJoin.Miter, null, 0, true);
+            var e = this.CreateAndAdd<Path>();
+            this.SetStroke(e, stroke, thickness, edgeRenderingMode);
 
             if (!fill.IsUndefined())
             {
                 e.Fill = this.GetCachedBrush(fill);
             }
 
-            e.Width = rect.Width;
-            e.Height = rect.Height;
-            Canvas.SetLeft(e, rect.Left);
-            Canvas.SetTop(e, rect.Top);
+            var gg = new GeometryGroup { FillRule = FillRule.Nonzero };
+            gg.Children.Add(new RectangleGeometry { Rect = this.GetActualRect(rect, e.StrokeThickness, edgeRenderingMode) });
+            e.Data = gg;
         }
 
-        /// <summary>
-        /// Draws a collection of rectangles, where all have the same stroke and fill.
-        /// This performs better than calling DrawRectangle multiple times.
-        /// </summary>
-        /// <param name="rectangles">The rectangles.</param>
-        /// <param name="fill">The fill color. If set to <c>OxyColors.Undefined</c>, the rectangles will not be filled.</param>
-        /// <param name="stroke">The stroke color. If set to <c>OxyColors.Undefined</c>, the rectangles will not be stroked.</param>
-        /// <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
-        public void DrawRectangles(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness)
+        ///<inheritdoc/>
+        public void DrawRectangles(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
         {
             var path = this.CreateAndAdd<Path>();
-            this.SetStroke(path, stroke, thickness);
+            this.SetStroke(path, stroke, thickness, edgeRenderingMode);
             if (!fill.IsUndefined())
             {
                 path.Fill = this.GetCachedBrush(fill);
@@ -462,7 +400,7 @@ namespace OxyPlot.Wpf
             var gg = new GeometryGroup { FillRule = FillRule.Nonzero };
             foreach (var rect in rectangles)
             {
-                gg.Children.Add(new RectangleGeometry { Rect = this.ToPixelAlignedRect(rect) });
+                gg.Children.Add(new RectangleGeometry { Rect = this.GetActualRect(rect, path.StrokeThickness, edgeRenderingMode) });
             }
 
             path.Data = gg;
@@ -696,7 +634,7 @@ namespace OxyPlot.Wpf
         /// <returns><c>true</c> if the clip rectangle was set.</returns>
         public bool SetClip(OxyRect clippingRect)
         {
-            this.clip = this.ToPixelAlignedRect(clippingRect);
+            this.clip = ToRect(clippingRect);
             return true;
         }
 
@@ -707,7 +645,7 @@ namespace OxyPlot.Wpf
         {
             this.clip = null;
         }
-        
+
         /// <summary>
         /// Updates render context state
         /// </summary>
@@ -724,6 +662,17 @@ namespace OxyPlot.Wpf
                 this.dpiScales = new Point(1, 1);
                 this.visualOffset = new Point(0, 0);
             }
+        }
+
+        /// <summary>
+        /// Sets the DPI used for rendering.
+        /// </summary>
+        /// <param name="dpi">The DPI.</param>
+        public void SetDpi(double dpi)
+        {
+            var scale = dpi / 96;
+            this.dpiScales = new Point(scale, scale);
+            this.visualOffset = new Point(0, 0);
         }
 
         /// <summary>
@@ -762,8 +711,7 @@ namespace OxyPlot.Wpf
             var typeface = new Typeface(
                 new FontFamily(fontFamily), FontStyles.Normal, GetFontWeight(fontWeight), FontStretches.Normal);
 
-            GlyphTypeface glyphTypeface;
-            if (!typeface.TryGetGlyphTypeface(out glyphTypeface))
+            if (!typeface.TryGetGlyphTypeface(out var glyphTypeface))
             {
                 throw new InvalidOperationException("No glyph typeface found");
             }
@@ -870,21 +818,22 @@ namespace OxyPlot.Wpf
         /// <param name="points">The points.</param>
         /// <param name="stroke">The stroke color.</param>
         /// <param name="thickness">The thickness.</param>
+        /// <param name="edgeRenderingMode">The edge rendering mode.</param>
         /// <param name="dashArray">The dash array. Use <c>null</c> to get a solid line.</param>
         /// <param name="lineJoin">The line join.</param>
-        /// <param name="aliased">Draw aliased line if set to <c>true</c> .</param>
         private void DrawLineSegmentsByStreamGeometry(
             IList<ScreenPoint> points,
             OxyColor stroke,
             double thickness,
+            EdgeRenderingMode edgeRenderingMode,
             double[] dashArray,
-            LineJoin lineJoin,
-            bool aliased)
+            LineJoin lineJoin)
         {
             StreamGeometry streamGeometry = null;
             StreamGeometryContext streamGeometryContext = null;
 
             int count = 0;
+            var actualStrokeThickness = this.GetActualStrokeThickness(thickness, edgeRenderingMode);
 
             for (int i = 0; i + 1 < points.Count; i += 2)
             {
@@ -894,8 +843,10 @@ namespace OxyPlot.Wpf
                     streamGeometryContext = streamGeometry.Open();
                 }
 
-                streamGeometryContext.BeginFigure(this.ToPoint(points[i], aliased), false, false);
-                streamGeometryContext.LineTo(this.ToPoint(points[i + 1], aliased), true, false);
+                var actualPoints = this.GetActualPoints(new[] { points[i], points[i + 1] }, actualStrokeThickness, edgeRenderingMode).ToList();
+
+                streamGeometryContext.BeginFigure(actualPoints[0], false, false);
+                streamGeometryContext.LineTo(actualPoints[1], true, false);
 
                 count++;
 
@@ -904,7 +855,7 @@ namespace OxyPlot.Wpf
                 {
                     streamGeometryContext.Close();
                     var path = this.CreateAndAdd<Path>();
-                    this.SetStroke(path, stroke, thickness, lineJoin, dashArray, 0, aliased);
+                    this.SetStroke(path, stroke, thickness, edgeRenderingMode, lineJoin, dashArray, 0);
                     path.Data = streamGeometry;
                     streamGeometry = null;
                     count = 0;
@@ -915,7 +866,7 @@ namespace OxyPlot.Wpf
             {
                 streamGeometryContext.Close();
                 var path = this.CreateAndAdd<Path>();
-                this.SetStroke(path, stroke, thickness, lineJoin, null, 0, aliased);
+                this.SetStroke(path, stroke, thickness, edgeRenderingMode, lineJoin, null, 0);
                 path.Data = streamGeometry;
             }
         }
@@ -932,8 +883,7 @@ namespace OxyPlot.Wpf
                 return null;
             }
 
-            Brush brush;
-            if (!this.brushCache.TryGetValue(color, out brush))
+            if (!this.brushCache.TryGetValue(color, out var brush))
             {
                 brush = new SolidColorBrush(color.ToColor());
                 brush.Freeze();
@@ -955,8 +905,7 @@ namespace OxyPlot.Wpf
                 return null;
             }
 
-            FontFamily ff;
-            if (!this.fontFamilyCache.TryGetValue(familyName, out ff))
+            if (!this.fontFamilyCache.TryGetValue(familyName, out var ff))
             {
                 ff = new FontFamily(familyName);
                 this.fontFamilyCache.Add(familyName, ff);
@@ -971,18 +920,18 @@ namespace OxyPlot.Wpf
         /// <param name="shape">The shape.</param>
         /// <param name="stroke">The stroke color.</param>
         /// <param name="thickness">The thickness.</param>
+        /// <param name="edgeRenderingMode">The edge rendering mode.</param>
         /// <param name="lineJoin">The line join.</param>
         /// <param name="dashArray">The dash array. Use <c>null</c> to get a solid line.</param>
         /// <param name="dashOffset">The dash offset.</param>
-        /// <param name="aliased">The aliased.</param>
         private void SetStroke(
             Shape shape,
             OxyColor stroke,
             double thickness,
+            EdgeRenderingMode edgeRenderingMode,
             LineJoin lineJoin = LineJoin.Miter,
             IEnumerable<double> dashArray = null,
-            double dashOffset = 0,
-            bool aliased = false)
+            double dashOffset = 0)
         {
             if (!stroke.IsUndefined() && thickness > 0)
             {
@@ -999,14 +948,8 @@ namespace OxyPlot.Wpf
 
                     // The default StrokeLineJoin is Miter
                 }
-
-                thickness /= (this.dpiScales.X + this.dpiScales.Y) / 2;
-
-                if (Math.Abs(thickness - 1) > double.Epsilon)
-                {
-                    // only set if different from the default value (1)
-                    shape.StrokeThickness = thickness;
-                }
+                
+                shape.StrokeThickness = this.GetActualStrokeThickness(thickness, edgeRenderingMode);
 
                 if (dashArray != null)
                 {
@@ -1014,8 +957,12 @@ namespace OxyPlot.Wpf
                     shape.StrokeDashOffset = dashOffset;
                 }
             }
+            else
+            {
+                shape.StrokeThickness = 0;
+            }
 
-            if (aliased)
+            if (edgeRenderingMode == EdgeRenderingMode.PreferSpeed)
             {
                 shape.SetValue(RenderOptions.EdgeModeProperty, EdgeMode.Aliased);
                 shape.SnapsToDevicePixels = true;
@@ -1039,8 +986,7 @@ namespace OxyPlot.Wpf
                 this.imagesInUse.Add(image);
             }
 
-            BitmapSource src;
-            if (this.imageCache.TryGetValue(image, out src))
+            if (this.imageCache.TryGetValue(image, out BitmapSource src))
             {
                 return src;
             }
@@ -1064,25 +1010,25 @@ namespace OxyPlot.Wpf
         /// <param name="points">The points.</param>
         /// <param name="stroke">The stroke color.</param>
         /// <param name="thickness">The thickness.</param>
+        /// <param name="edgeRenderingMode">The edge rendering mode.</param>
         /// <param name="dashArray">The dash array. Use <c>null</c> to get a solid line.</param>
         /// <param name="lineJoin">The line join.</param>
-        /// <param name="aliased">Render aliased if set to <c>true</c>.</param>
-        private void DrawLineBalanced(IList<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray, LineJoin lineJoin, bool aliased)
+        private void DrawLineBalanced(IList<ScreenPoint> points, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode, double[] dashArray, LineJoin lineJoin)
         {
             // balance the number of points per polyline and the number of polylines
             var numPointsPerPolyline = Math.Max(points.Count / MaxPolylinesPerLine, MinPointsPerPolyline);
 
             var polyline = this.CreateAndAdd<Polyline>();
-            this.SetStroke(polyline, stroke, thickness, lineJoin, dashArray, 0, aliased);
+            this.SetStroke(polyline, stroke, thickness, edgeRenderingMode, lineJoin, dashArray, 0);
             var pc = new PointCollection(numPointsPerPolyline);
 
             var n = points.Count;
             double lineLength = 0;
             var dashPatternLength = (dashArray != null) ? dashArray.Sum() : 0;
             var last = new Point();
-            for (int i = 0; i < n; i++)
+            var i = 0;
+            foreach (var p in this.GetActualPoints(points, thickness, edgeRenderingMode))
             {
-                var p = aliased ? this.ToPixelAlignedPoint(points[i]) : this.ToPoint(points[i]);
                 pc.Add(p);
 
                 // alt. 1
@@ -1114,10 +1060,12 @@ namespace OxyPlot.Wpf
                         // start a new polyline at last point so there is no gap (it is not necessary to use the % operator)
                         var dashOffset = dashPatternLength > 0 ? lineLength / thickness : 0;
                         polyline = this.CreateAndAdd<Polyline>();
-                        this.SetStroke(polyline, stroke, thickness, lineJoin, dashArray, dashOffset, aliased);
+                        this.SetStroke(polyline, stroke, thickness, edgeRenderingMode, lineJoin, dashArray, dashOffset);
                         pc = new PointCollection(numPointsPerPolyline) { pc.Last() };
                     }
                 }
+
+                i++;
             }
 
             if (pc.Count > 1 || n == 1)
@@ -1127,65 +1075,81 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Converts a <see cref="ScreenPoint" /> to a <see cref="Point" />.
-        /// </summary>
-        /// <param name="pt">The screen point.</param>
-        /// <returns>A <see cref="Point" />.</returns>
-        private Point ToPoint(ScreenPoint pt)
-        {
-            return new Point(pt.X, pt.Y);
-        }
-
-        /// <summary>
-        /// Converts a <see cref="ScreenPoint" /> to a pixel aligned<see cref="Point" />.
-        /// </summary>
-        /// <param name="pt">The screen point.</param>
-        /// <returns>A pixel aligned <see cref="Point" />.</returns>
-        private Point ToPixelAlignedPoint(ScreenPoint pt)
-        {
-            return PixelLayout.Snap(this.ToPoint(pt), ref this.visualOffset, ref this.dpiScales);
-        }
-
-        /// <summary>
         /// Converts an <see cref="OxyRect" /> to a <see cref="Rect" />.
         /// </summary>
         /// <param name="r">The rectangle.</param>
         /// <returns>A <see cref="Rect" />.</returns>
-        private Rect ToRect(OxyRect r)
+        private static Rect ToRect(OxyRect r)
         {
             return new Rect(r.Left, r.Top, r.Width, r.Height);
         }
 
         /// <summary>
-        /// Converts an <see cref="OxyRect" /> to a pixel aligned <see cref="Rect" />.
+        /// Snaps points to pixels if required by the edge rendering mode.
         /// </summary>
-        /// <param name="r">The rectangle.</param>
-        /// <returns>A pixel aligned<see cref="Rect" />.</returns>
-        private Rect ToPixelAlignedRect(OxyRect r)
+        /// <param name="points">The points.</param>
+        /// <param name="strokeThickness">The stroke thickness.</param>
+        /// <param name="edgeRenderingMode">The edge rendering mode.</param>
+        /// <returns>The processed points.</returns>
+        private IEnumerable<Point> GetActualPoints(IList<ScreenPoint> points, double strokeThickness, EdgeRenderingMode edgeRenderingMode)
         {
-            return PixelLayout.Snap(this.ToRect(r), ref this.visualOffset, ref this.dpiScales);
+            switch (edgeRenderingMode)
+            {
+                case EdgeRenderingMode.Adaptive when RenderContextBase.IsStraightLine(points):
+                case EdgeRenderingMode.Automatic when RenderContextBase.IsStraightLine(points):
+                case EdgeRenderingMode.PreferSharpness:
+                    return points.Select(p => PixelLayout.Snap(p.X, p.Y, strokeThickness, this.visualOffset, this.dpiScales));
+                default:
+                    return points.Select(p => new Point(p.X, p.Y));
+            }
         }
 
         /// <summary>
-        /// Converts a <see cref="ScreenPoint" /> to a <see cref="Point" />.
+        /// Snaps a rectangle to device pixels if required by the edge rendering mode.
         /// </summary>
-        /// <param name="pt">The screen point.</param>
-        /// <param name="aliased">use pixel alignment conversion if set to <c>true</c>.</param>
-        /// <returns>A <see cref="Point" />.</returns>
-        private Point ToPoint(ScreenPoint pt, bool aliased)
+        /// <param name="rect">The rectangle.</param>
+        /// <param name="strokeThickness">The stroke thickness.</param>
+        /// <param name="edgeRenderingMode">The edge rendering mode.</param>
+        /// <returns>The processed rectangle.</returns>
+        private Rect GetActualRect(OxyRect rect, double strokeThickness, EdgeRenderingMode edgeRenderingMode)
         {
-            return aliased ? this.ToPixelAlignedPoint(pt) : this.ToPoint(pt);
+            switch (edgeRenderingMode)
+            {
+                case EdgeRenderingMode.PreferGeometricAccuracy:
+                case EdgeRenderingMode.PreferSpeed:
+                    return ToRect(rect);
+                default:
+                    return PixelLayout.Snap(ToRect(rect), strokeThickness, this.visualOffset, this.dpiScales);
+            }
         }
 
         /// <summary>
-        /// Creates a point collection from the specified points.
+        /// Snaps a stroke thickness to device pixels if required by the edge rendering mode.
+        /// </summary>
+        /// <param name="strokeThickness">The stroke thickness.</param>
+        /// <param name="edgeRenderingMode">The edge rendering mode.</param>
+        /// <returns>The processed stroke thickness.</returns>
+        private double GetActualStrokeThickness(double strokeThickness, EdgeRenderingMode edgeRenderingMode)
+        {
+            switch (edgeRenderingMode)
+            {
+                case EdgeRenderingMode.PreferSharpness:
+                    return PixelLayout.SnapStrokeThickness(strokeThickness, this.dpiScales);
+                default:
+                    return strokeThickness;
+            }
+        }
+
+        /// <summary>
+        /// Creates a point collection from the specified points. The points are snapped to pixels if required by the edge rendering mode,
         /// </summary>
         /// <param name="points">The points to convert.</param>
-        /// <param name="aliased">convert to pixel aligned points if set to <c>true</c>.</param>
+        /// <param name="strokeThickness">The stroke thickness.</param>
+        /// <param name="edgeRenderingMode">The edge rendering mode.</param>
         /// <returns>The point collection.</returns>
-        private PointCollection ToPointCollection(IEnumerable<ScreenPoint> points, bool aliased)
+        private PointCollection ToPointCollection(IList<ScreenPoint> points, double strokeThickness, EdgeRenderingMode edgeRenderingMode)
         {
-            return new PointCollection(aliased ? points.Select(this.ToPixelAlignedPoint) : points.Select(this.ToPoint));
+            return new PointCollection(GetActualPoints(points, strokeThickness, edgeRenderingMode));
         }
     }
 }

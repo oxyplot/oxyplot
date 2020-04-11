@@ -216,7 +216,14 @@
 
                 var rectrect = new OxyRect(p1, p2);
 
-                rc.DrawClippedRectangle(clippingRect, rectrect, rectcolor, OxyColors.Undefined, 0);
+                rc.DrawClippedRectangle(
+                    clippingRect, 
+                    rectrect, 
+                    rectcolor, 
+                    OxyColors.Undefined,
+                    0, 
+                    this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness));
+
                 if (this.LabelFontSize > 0)
                 {
                     rc.DrawClippedText(

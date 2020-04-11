@@ -116,7 +116,9 @@ namespace OxyPlot.Axes
                             ? new OxyRect(ymin, top, ymax - ymin, height)
                             : new OxyRect(left, ymin, width, ymax - ymin),
                         color,
-                        OxyColors.Undefined);
+                        OxyColors.Undefined,
+                        0,
+                        this.EdgeRenderingMode);
                 };
 
                 IList<double> majorLabelValues;

@@ -131,30 +131,31 @@ namespace OxyPlot.ImageSharp
         }
 
         /// <inheritdoc/>
-        public override void DrawLine(IList<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray, LineJoin lineJoin, bool aliased)
+        public override void DrawLine(IList<ScreenPoint> points, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode, double[] dashArray, LineJoin lineJoin)
         {
             image.Mutate(img =>
             {
                 var brush = Brushes.Solid(new Rgba32(stroke.R, stroke.G, stroke.B, stroke.A));
                 PointF[] mappedPoints = points.Select(p => new PointF((float)p.X, (float)p.Y)).ToArray();
-                var options = new GraphicsOptions(true);
+                var options = new GraphicsOptions(this.ShouldUseAntiAliasingForLine(edgeRenderingMode, points));
 
                 img.DrawLines(options, brush, (float)thickness, mappedPoints);
             });
         }
 
         /// <inheritdoc/>
-        public override void DrawPolygon(IList<ScreenPoint> points, OxyColor fill, OxyColor stroke, double thickness, double[] dashArray, LineJoin lineJoin, bool aliased)
+        public override void DrawPolygon(IList<ScreenPoint> points, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode, double[] dashArray, LineJoin lineJoin)
         {
             image.Mutate(img =>
             {
                 var mappedPoints = points.Select(point => new PointF((float)point.X, (float)point.Y)).ToArray();
 
                 var brush = Brushes.Solid(new Rgba32(fill.R, fill.G, fill.B, fill.A));
-                img.FillPolygon(brush, mappedPoints);
+                var options = new GraphicsOptions(this.ShouldUseAntiAliasingForLine(edgeRenderingMode, points));
+                img.FillPolygon(options, brush, mappedPoints);
 
                 var pen = Pens.Solid(new Rgba32(stroke.R, stroke.G, stroke.B, stroke.A), (float)thickness);
-                img.DrawPolygon(pen, mappedPoints);
+                img.DrawPolygon(options, pen, mappedPoints);
             });
         }
 

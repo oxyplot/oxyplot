@@ -84,7 +84,8 @@ namespace OxyPlot.Annotations
                 this.screenRectangle,
                 this.GetSelectableFillColor(this.Fill),
                 this.GetSelectableColor(this.Stroke),
-                this.StrokeThickness);
+                this.StrokeThickness,
+                this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness));
 
             if (string.IsNullOrEmpty(this.Text))
             {

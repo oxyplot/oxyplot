@@ -287,7 +287,9 @@ namespace OxyPlot.Series
                     allPts,
                     minDistSquared,
                     this.GetSelectableFillColor(this.ActualFill),
-                    OxyColors.Undefined);
+                    OxyColors.Undefined,
+                    0,
+                    this.EdgeRenderingMode);
 
                 var markerSizes = new[] { this.MarkerSize };
 
@@ -301,6 +303,7 @@ namespace OxyPlot.Series
                     this.MarkerFill,
                     this.MarkerStroke,
                     this.MarkerStrokeThickness,
+                    this.EdgeRenderingMode,
                     1);
                 rc.DrawMarkers(
                     clippingRect,
@@ -311,6 +314,7 @@ namespace OxyPlot.Series
                     this.MarkerFill,
                     this.MarkerStroke,
                     this.MarkerStrokeThickness,
+                    this.EdgeRenderingMode,
                     1);
             }
 
@@ -337,10 +341,10 @@ namespace OxyPlot.Series
 
             if (this.StrokeThickness > 0 && this.ActualLineStyle != LineStyle.None)
             {
-                rc.DrawLine(pts0, this.GetSelectableColor(this.ActualColor), this.StrokeThickness, this.ActualLineStyle.GetDashArray());
-                rc.DrawLine(pts1, this.GetSelectableColor(this.ActualColor2), this.StrokeThickness, this.ActualLineStyle.GetDashArray());
+                rc.DrawLine(pts0, this.GetSelectableColor(this.ActualColor), this.StrokeThickness, this.EdgeRenderingMode, this.ActualLineStyle.GetDashArray());
+                rc.DrawLine(pts1, this.GetSelectableColor(this.ActualColor2), this.StrokeThickness, this.EdgeRenderingMode, this.ActualLineStyle.GetDashArray());
             }
-            rc.DrawPolygon(pts, this.GetSelectableFillColor(this.ActualFill), OxyColors.Undefined);
+            rc.DrawPolygon(pts, this.GetSelectableFillColor(this.ActualFill), OxyColors.Undefined, 0, this.EdgeRenderingMode);
         }
 
         /// <summary>
@@ -469,9 +473,9 @@ namespace OxyPlot.Series
                 context.MinDistSquared,
                 this.GetSelectableColor(context.Color),
                 this.StrokeThickness,
+                this.EdgeRenderingMode,
                 context.DashArray,
-                this.LineJoin,
-                false);
+                this.LineJoin);
 
             return final;
         }

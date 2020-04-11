@@ -27,6 +27,7 @@ namespace OxyPlot
             this.FontSize = double.NaN;
             this.FontWeight = FontWeights.Normal;
             this.TextColor = OxyColors.Automatic;
+            this.EdgeRenderingMode = EdgeRenderingMode.Automatic;
         }
 
         /// <summary>
@@ -73,6 +74,12 @@ namespace OxyPlot
         /// <value>The color of the text.</value>
         /// <remarks>If the value is <c>OxyColors.Automatic</c>, the TextColor of the parent PlotModel will be used.</remarks>
         public OxyColor TextColor { get; set; }
+
+        /// <summary>
+        /// Gets or sets the edge rendering mode that is used for rendering the plot element.
+        /// </summary>
+        /// <value>The edge rendering mode. The default is <see cref="EdgeRenderingMode.Automatic"/>.</value>
+        public EdgeRenderingMode EdgeRenderingMode { get; set; }
 
         /// <summary>
         /// Gets or sets the tool tip. The default is <c>null</c>.

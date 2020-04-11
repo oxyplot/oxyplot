@@ -29,7 +29,8 @@ namespace OxyPlot
         /// <param name="fill">The fill color. If set to <c>OxyColors.Undefined</c>, the extents will not be filled.</param>
         /// <param name="stroke">The stroke color. If set to <c>OxyColors.Undefined</c>, the extents will not be stroked.</param>
         /// <param name="thickness">The thickness (in device independent units, 1/96 inch).</param>
-        void DrawEllipse(OxyRect extents, OxyColor fill, OxyColor stroke, double thickness = 1.0);
+        /// <param name="edgeRenderingMode">The edge rendering mode.</param>
+        void DrawEllipse(OxyRect extents, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode);
 
         /// <summary>
         /// Draws a collection of ellipses, where all have the same stroke and fill.
@@ -38,10 +39,11 @@ namespace OxyPlot
         /// <param name="fill">The fill color. If set to <c>OxyColors.Undefined</c>, the ellipses will not be filled.</param>
         /// <param name="stroke">The stroke color. If set to <c>OxyColors.Undefined</c>, the ellipses will not be stroked.</param>
         /// <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
+        /// <param name="edgeRenderingMode">The edge rendering mode.</param>
         /// <remarks>
         /// This should have better performance than calling <see cref="DrawEllipse" /> multiple times.
         /// </remarks>
-        void DrawEllipses(IList<OxyRect> extents, OxyColor fill, OxyColor stroke, double thickness = 1.0);
+        void DrawEllipses(IList<OxyRect> extents, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode);
 
         /// <summary>
         /// Draws a polyline.
@@ -49,16 +51,16 @@ namespace OxyPlot
         /// <param name="points">The points defining the polyline. The polyline is drawn from point 0, to point 1, to point 2 and so on.</param>
         /// <param name="stroke">The stroke color.</param>
         /// <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
+        /// <param name="edgeRenderingMode">The edge rendering mode.</param>
         /// <param name="dashArray">The dash array (in device independent units, 1/96 inch). Use <c>null</c> to get a solid line.</param>
         /// <param name="lineJoin">The line join type.</param>
-        /// <param name="aliased">if set to <c>true</c> the shape will be aliased.</param>
         void DrawLine(
             IList<ScreenPoint> points,
             OxyColor stroke,
-            double thickness = 1.0,
+            double thickness,
+            EdgeRenderingMode edgeRenderingMode,
             double[] dashArray = null,
-            LineJoin lineJoin = LineJoin.Miter,
-            bool aliased = false);
+            LineJoin lineJoin = LineJoin.Miter);
 
         /// <summary>
         /// Draws line segments.
@@ -66,19 +68,19 @@ namespace OxyPlot
         /// <param name="points">The points defining the line segments. Lines are drawn from point 0 to 1, point 2 to 3 and so on.</param>
         /// <param name="stroke">The stroke color.</param>
         /// <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
+        /// <param name="edgeRenderingMode">The edge rendering mode.</param>
         /// <param name="dashArray">The dash array (in device independent units, 1/96 inch).</param>
         /// <param name="lineJoin">The line join type.</param>
-        /// <param name="aliased">if set to <c>true</c> the shape will be aliased.</param>
         /// <remarks>
         /// This should have better performance than calling <see cref="DrawLine" /> for each segment.
         /// </remarks>
         void DrawLineSegments(
             IList<ScreenPoint> points,
             OxyColor stroke,
-            double thickness = 1.0,
+            double thickness,
+            EdgeRenderingMode edgeRenderingMode,
             double[] dashArray = null,
-            LineJoin lineJoin = LineJoin.Miter,
-            bool aliased = false);
+            LineJoin lineJoin = LineJoin.Miter);
 
         /// <summary>
         /// Draws a polygon.
@@ -87,17 +89,17 @@ namespace OxyPlot
         /// <param name="fill">The fill color. If set to <c>OxyColors.Undefined</c>, the polygon will not be filled.</param>
         /// <param name="stroke">The stroke color. If set to <c>OxyColors.Undefined</c>, the polygon will not be stroked.</param>
         /// <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
+        /// <param name="edgeRenderingMode">The edge rendering mode.</param>
         /// <param name="dashArray">The dash array (in device independent units, 1/96 inch).</param>
         /// <param name="lineJoin">The line join type.</param>
-        /// <param name="aliased">If set to <c>true</c> the polygon will be aliased.</param>
         void DrawPolygon(
             IList<ScreenPoint> points,
             OxyColor fill,
             OxyColor stroke,
-            double thickness = 1.0,
+            double thickness,
+            EdgeRenderingMode edgeRenderingMode,
             double[] dashArray = null,
-            LineJoin lineJoin = LineJoin.Miter,
-            bool aliased = false);
+            LineJoin lineJoin = LineJoin.Miter);
 
         /// <summary>
         /// Draws a collection of polygons, where all polygons have the same stroke and fill.
@@ -106,9 +108,9 @@ namespace OxyPlot
         /// <param name="fill">The fill color. If set to <c>OxyColors.Undefined</c>, the polygons will not be filled.</param>
         /// <param name="stroke">The stroke color. If set to <c>OxyColors.Undefined</c>, the polygons will not be stroked.</param>
         /// <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
+        /// <param name="edgeRenderingMode">The edge rendering mode.</param>
         /// <param name="dashArray">The dash array (in device independent units, 1/96 inch).</param>
         /// <param name="lineJoin">The line join type.</param>
-        /// <param name="aliased">if set to <c>true</c> the shape will be aliased.</param>
         /// <remarks>
         /// This performs better than calling <see cref="DrawPolygon" /> multiple times.
         /// </remarks>
@@ -116,10 +118,10 @@ namespace OxyPlot
             IList<IList<ScreenPoint>> polygons,
             OxyColor fill,
             OxyColor stroke,
-            double thickness = 1.0,
+            double thickness,
+            EdgeRenderingMode edgeRenderingMode,
             double[] dashArray = null,
-            LineJoin lineJoin = LineJoin.Miter,
-            bool aliased = false);
+            LineJoin lineJoin = LineJoin.Miter);
 
         /// <summary>
         /// Draws a rectangle.
@@ -128,7 +130,8 @@ namespace OxyPlot
         /// <param name="fill">The fill color. If set to <c>OxyColors.Undefined</c>, the rectangle will not be filled.</param>
         /// <param name="stroke">The stroke color. If set to <c>OxyColors.Undefined</c>, the rectangle will not be stroked.</param>
         /// <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
-        void DrawRectangle(OxyRect rectangle, OxyColor fill, OxyColor stroke, double thickness = 1.0);
+        /// <param name="edgeRenderingMode">The edge rendering mode.</param>
+        void DrawRectangle(OxyRect rectangle, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode);
 
         /// <summary>
         /// Draws a collection of extents, where all have the same stroke and fill.
@@ -137,10 +140,11 @@ namespace OxyPlot
         /// <param name="fill">The fill color. If set to <c>OxyColors.Undefined</c>, the extents will not be filled.</param>
         /// <param name="stroke">The stroke color. If set to <c>OxyColors.Undefined</c>, the extents will not be stroked.</param>
         /// <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
+        /// <param name="edgeRenderingMode">The edge rendering mode.</param>
         /// <remarks>
         /// This should have better performance than calling <see cref="DrawRectangle" /> multiple times.
         /// </remarks>
-        void DrawRectangles(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness = 1.0);
+        void DrawRectangles(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode);
 
         /// <summary>
         /// Draws text.
