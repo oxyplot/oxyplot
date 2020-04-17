@@ -786,6 +786,7 @@ namespace OxyPlot.Series
                     {
                         return end;
                     }
+                    lastguess = curGuess;
                 }
                 else
                 {
