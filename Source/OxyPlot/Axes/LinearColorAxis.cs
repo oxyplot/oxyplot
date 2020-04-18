@@ -27,7 +27,7 @@ namespace OxyPlot.Axes
 
             this.IsPanEnabled = false;
             this.IsZoomEnabled = false;
-            this.Palette = OxyPalettes.Jet(200);
+            this.Palette = OxyPalettes.Viridis();
 
             this.LowColor = OxyColors.Undefined;
             this.HighColor = OxyColors.Undefined;

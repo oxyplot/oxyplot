@@ -12,7 +12,7 @@ namespace OxyPlot
     /// <summary>
     /// Provides predefined palettes.
     /// </summary>
-    public static class OxyPalettes
+    public static partial class OxyPalettes
     {
         /// <summary>
         /// Initializes static members of the <see cref="OxyPalettes" /> class.
