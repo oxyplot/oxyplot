@@ -224,7 +224,7 @@ namespace OxyPlot
         /// Gets or sets the color of the background of the plot.
         /// </summary>
         /// <value>The color. The default is <see cref="OxyColors.Undefined" />.</value>
-        /// <remarks>If the background color is set to <see cref="OxyColors.Undefined" />, the default color of the plot view will be used.</remarks>
+        /// <remarks>If the background color is set to <see cref="OxyColors.Undefined" /> or is otherwise invisible then the background will be determined by the plot view or exporter.</remarks>
         public OxyColor Background { get; set; }
 
         /// <summary>
