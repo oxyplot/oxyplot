@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 - Support for NET40 (#1452)
 - Support for high DPI for WPF (#149)
 - EdgeRenderingMode property to PlotElement, allowing customization of the way edges are treated by the renderer (#1428, #1358, #1077, #843, #145)
+- Color palettes Viridis, Plasma, Magma, Inferno and Cividis (#1505)
 
 ### Changed
 - Legends model (#644)
@@ -24,6 +25,7 @@ All notable changes to this project will be documented in this file.
 - Merge UIElement and SelectableElement into Element (#1426)
 - Upgrade to .NET Core 3.1 (#1488)
 - DrawRectangle(...), DrawLine(...), DrawEllipse(...), DrawPolygon(...) and related overloads in IRenderContext and related extensions in RenderingExtensions now require an EdgeRenderingMode
+- Default color palette for LinearColorAxis from Jet to Viridis (#1505)
 
 ### Removed
 - Remove PlotModel.Legends (#644)

@@ -350,6 +350,36 @@ namespace ExampleLibrary
             return CreateRandomScatterSeriesWithColorAxisPlotModel(2500, OxyPalettes.BlackWhiteRed(9), MarkerType.Square, AxisPosition.Top, OxyColors.Undefined, OxyColors.Undefined);
         }
 
+        [Example("ScatterSeries with ColorAxis Viridis")]
+        public static PlotModel ColorMapViridis()
+        {
+            return CreateRandomScatterSeriesWithColorAxisPlotModel(2500, OxyPalettes.Viridis(), MarkerType.Square, AxisPosition.Right, OxyColors.Undefined, OxyColors.Undefined);
+        }
+
+        [Example("ScatterSeries with ColorAxis Plasma")]
+        public static PlotModel ColorMapPlasma()
+        {
+            return CreateRandomScatterSeriesWithColorAxisPlotModel(2500, OxyPalettes.Plasma(), MarkerType.Square, AxisPosition.Right, OxyColors.Undefined, OxyColors.Undefined);
+        }
+
+        [Example("ScatterSeries with ColorAxis Magma")]
+        public static PlotModel ColorMapMagma()
+        {
+            return CreateRandomScatterSeriesWithColorAxisPlotModel(2500, OxyPalettes.Magma(), MarkerType.Square, AxisPosition.Right, OxyColors.Undefined, OxyColors.Undefined);
+        }
+
+        [Example("ScatterSeries with ColorAxis Inferno")]
+        public static PlotModel ColorMapInferno()
+        {
+            return CreateRandomScatterSeriesWithColorAxisPlotModel(2500, OxyPalettes.Inferno(), MarkerType.Square, AxisPosition.Right, OxyColors.Undefined, OxyColors.Undefined);
+        }
+
+        [Example("ScatterSeries with ColorAxis Cividis")]
+        public static PlotModel ColorMapCividis()
+        {
+            return CreateRandomScatterSeriesWithColorAxisPlotModel(2500, OxyPalettes.Cividis(), MarkerType.Square, AxisPosition.Right, OxyColors.Undefined, OxyColors.Undefined);
+        }
+
         [Example("ScatterSeries with single-selected items")]
         public static PlotModel SingleSelectItems()
         {
