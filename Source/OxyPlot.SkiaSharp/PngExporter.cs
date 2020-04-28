@@ -30,6 +30,11 @@ namespace OxyPlot.SkiaSharp
         public int Width { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether text shaping should be used when rendering text.
+        /// </summary>
+        public bool UseTextShaping { get; set; } = true;
+
+        /// <summary>
         /// Exports the specified model to a file.
         /// </summary>
         /// <param name="model">The model.</param>
@@ -63,7 +68,7 @@ namespace OxyPlot.SkiaSharp
             using var bitmap = new SKBitmap(this.Width, this.Height);
 
             using (var canvas = new SKCanvas(bitmap))
-            using (var context = new SkiaRenderContext { RendersToScreen = false, SkCanvas = canvas })
+            using (var context = new SkiaRenderContext { RendersToScreen = false, SkCanvas = canvas, UseTextShaping = this.UseTextShaping })
             {
                 var dpiScale = this.Dpi / 96;
                 context.DpiScale = dpiScale;

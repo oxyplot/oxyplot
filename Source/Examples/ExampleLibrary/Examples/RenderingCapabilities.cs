@@ -356,7 +356,7 @@ namespace ExampleLibrary
         /// <returns>
         /// A plot model.
         /// </returns>
-        private static PlotModel DrawTextWithMetrics(string text, string font, double fontSize, double expectedWidth, double expectedHeight, double baseline, double xheight, double ascent, double descent, double before, double after, string platform)
+        public static PlotModel DrawTextWithMetrics(string text, string font, double fontSize, double expectedWidth, double expectedHeight, double baseline, double xheight, double ascent, double descent, double before, double after, string platform)
         {
             // http://msdn.microsoft.com/en-us/library/ms742190(v=vs.110).aspx
             // http://msdn.microsoft.com/en-us/library/xwf9s90b(v=vs.110).aspx
