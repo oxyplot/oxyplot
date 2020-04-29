@@ -7,6 +7,7 @@
 namespace OxyPlot.SkiaSharp
 {
     using global::SkiaSharp;
+    using global::SkiaSharp.HarfBuzz;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -16,6 +17,7 @@ namespace OxyPlot.SkiaSharp
     /// </summary>
     public class SkiaRenderContext : IRenderContext, IDisposable
     {
+        private readonly Dictionary<FontDescriptor, SKShaper> shaperCache = new Dictionary<FontDescriptor, SKShaper>();
         private readonly Dictionary<FontDescriptor, SKTypeface> typefaceCache = new Dictionary<FontDescriptor, SKTypeface>();
         private SKPaint paint = new SKPaint();
         private SKPath path = new SKPath();
@@ -32,6 +34,11 @@ namespace OxyPlot.SkiaSharp
         /// Gets or sets the <see cref="SKCanvas"/> the <see cref="SkiaRenderContext"/> renders to. This must be set before any draw calls.
         /// </summary>
         public SKCanvas SkCanvas { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether text shaping should be used when rendering text.
+        /// </summary>
+        public bool UseTextShaping { get; set; } = true;
 
         /// <inheritdoc/>
         public void CleanUp()
@@ -341,18 +348,11 @@ namespace OxyPlot.SkiaSharp
                 return;
             }
 
-            var paint = this.GetTextPaint(fontFamily, fontSize, fontWeight);
+            var paint = this.GetTextPaint(fontFamily, fontSize, fontWeight, out var shaper);
             paint.Color = fill.ToSKColor();
 
-            var width = paint.MeasureText(text);
-
-            var deltaX = horizontalAlignment switch
-            {
-                HorizontalAlignment.Left => 0,
-                HorizontalAlignment.Center => -width / 2,
-                HorizontalAlignment.Right => -width,
-                _ => throw new ArgumentOutOfRangeException(nameof(horizontalAlignment))
-            };
+            var x = this.Convert(p.X);
+            var y = this.Convert(p.Y);
 
             var metrics = paint.FontMetrics;
             var deltaY = verticalAlignment switch
@@ -363,13 +363,35 @@ namespace OxyPlot.SkiaSharp
                 _ => throw new ArgumentOutOfRangeException(nameof(verticalAlignment))
             };
 
-            var x = this.Convert(p.X);
-            var y = this.Convert(p.Y);
-            using (new SKAutoCanvasRestore(this.SkCanvas))
+            using var _ = new SKAutoCanvasRestore(this.SkCanvas);
+            this.SkCanvas.Translate(x, y);
+            this.SkCanvas.RotateDegrees((float)rotation);
+
+            if (this.UseTextShaping)
             {
-                this.SkCanvas.Translate(x, y);
-                this.SkCanvas.RotateDegrees((float)rotation);
-                this.SkCanvas.DrawText(text, new SKPoint(deltaX, deltaY), paint);
+                var width = this.MeasureText(text, shaper, paint);
+                var deltaX = horizontalAlignment switch
+                {
+                    HorizontalAlignment.Left => 0,
+                    HorizontalAlignment.Center => -width / 2,
+                    HorizontalAlignment.Right => -width,
+                    _ => throw new ArgumentOutOfRangeException(nameof(horizontalAlignment))
+                };
+
+                this.paint.TextAlign = SKTextAlign.Left;
+                this.SkCanvas.DrawShapedText(shaper, text, deltaX, deltaY, paint);
+            }
+            else
+            {
+                paint.TextAlign = horizontalAlignment switch
+                {
+                    HorizontalAlignment.Left => SKTextAlign.Left,
+                    HorizontalAlignment.Center => SKTextAlign.Center,
+                    HorizontalAlignment.Right => SKTextAlign.Right,
+                    _ => throw new ArgumentOutOfRangeException(nameof(horizontalAlignment))
+                };
+
+                this.SkCanvas.DrawText(text, 0, deltaY, paint);
             }
         }
 
@@ -381,8 +403,8 @@ namespace OxyPlot.SkiaSharp
                 return new OxySize(0, 0);
             }
 
-            var paint = this.GetTextPaint(fontFamily, fontSize, fontWeight);
-            var width = paint.MeasureText(text);
+            var paint = this.GetTextPaint(fontFamily, fontSize, fontWeight, out var shaper);
+            var width = this.MeasureText(text, shaper, paint);
             var height = paint.GetFontMetrics(out _);
             return new OxySize(this.ConvertBack(width), this.ConvertBack(height));
         }
@@ -434,6 +456,13 @@ namespace OxyPlot.SkiaSharp
             }
 
             this.typefaceCache.Clear();
+
+            foreach (var shaper in this.shaperCache.Values)
+            {
+                shaper.Dispose();
+            }
+
+            this.shaperCache.Clear();
         }
 
         /// <summary>
@@ -507,23 +536,6 @@ namespace OxyPlot.SkiaSharp
         }
 
         /// <summary>
-        /// Converts <see cref="double"/> dash array to a <see cref="float"/> array, taking into account DPI scaling.
-        /// </summary>
-        /// <param name="values">The array of values.</param>
-        /// <param name="strokeThickness">The stroke thickness.</param>
-        /// <returns>The array of converted values.</returns>
-        private float[] ConvertDashArray(double[] values, float strokeThickness)
-        {
-            var ret = new float[values.Length];
-            for (var i = 0; i < values.Length; i++)
-            {
-                ret[i] = this.Convert(values[i]) * strokeThickness;
-            }
-
-            return ret;
-        }
-
-        /// <summary>
         /// Converts <see cref="ScreenPoint"/> to a <see cref="SKPoint"/>, taking into account DPI scaling.
         /// </summary>
         /// <param name="point">The point.</param>
@@ -541,6 +553,23 @@ namespace OxyPlot.SkiaSharp
         private double ConvertBack(float value)
         {
             return value / this.DpiScale;
+        }
+
+        /// <summary>
+        /// Converts <see cref="double"/> dash array to a <see cref="float"/> array, taking into account DPI scaling.
+        /// </summary>
+        /// <param name="values">The array of values.</param>
+        /// <param name="strokeThickness">The stroke thickness.</param>
+        /// <returns>The array of converted values.</returns>
+        private float[] ConvertDashArray(double[] values, float strokeThickness)
+        {
+            var ret = new float[values.Length];
+            for (var i = 0; i < values.Length; i++)
+            {
+                ret[i] = this.Convert(values[i]) * strokeThickness;
+            }
+
+            return ret;
         }
 
         /// <summary>
@@ -786,8 +815,9 @@ namespace OxyPlot.SkiaSharp
         /// <param name="fontFamily">The font family.</param>
         /// <param name="fontSize">The font size.</param>
         /// <param name="fontWeight">The font weight.</param>
+        /// <param name="shaper">The font shaper.</param>
         /// <returns>The paint.</returns>
-        private SKPaint GetTextPaint(string fontFamily, double fontSize, double fontWeight)
+        private SKPaint GetTextPaint(string fontFamily, double fontSize, double fontWeight, out SKShaper shaper)
         {
             var fontDescriptor = new FontDescriptor(fontFamily, fontWeight);
             if (!this.typefaceCache.TryGetValue(fontDescriptor, out var typeface))
@@ -796,14 +826,63 @@ namespace OxyPlot.SkiaSharp
                 this.typefaceCache.Add(fontDescriptor, typeface);
             }
 
+            if (this.UseTextShaping)
+            {
+                if (!this.shaperCache.TryGetValue(fontDescriptor, out shaper))
+                {
+                    shaper = new SKShaper(typeface);
+                    this.shaperCache.Add(fontDescriptor, shaper);
+                }
+            }
+            else
+            {
+                shaper = null;
+            }
+
             this.paint.Typeface = typeface;
             this.paint.TextSize = this.Convert(fontSize);
             this.paint.IsAntialias = true;
             this.paint.Style = SKPaintStyle.Fill;
             this.paint.HintingLevel = this.RendersToScreen ? SKPaintHinting.Full : SKPaintHinting.NoHinting;
             this.paint.SubpixelText = this.RendersToScreen;
-            this.paint.TextAlign = SKTextAlign.Left;
             return this.paint;
+        }
+
+        /// <summary>
+        /// Measures text using the specified <see cref="SKShaper"/> and <see cref="SKPaint"/>.
+        /// </summary>
+        /// <param name="text">The text to measure.</param>
+        /// <param name="shaper">The text shaper.</param>
+        /// <param name="paint">The paint.</param>
+        /// <returns>The width of the text when rendered using the specified shaper and paint.</returns>
+        private float MeasureText(string text, SKShaper shaper, SKPaint paint)
+        {
+            if (!this.UseTextShaping)
+            {
+                return paint.MeasureText(text);
+            }
+
+            // we have to get a bit creative here as SKShaper does not offer a direct overload for this.
+            // see also https://github.com/mono/SkiaSharp/blob/master/source/SkiaSharp.HarfBuzz/SkiaSharp.HarfBuzz.Shared/SKShaper.cs
+            using var buffer = new HarfBuzzSharp.Buffer();
+            switch (paint.TextEncoding)
+            {
+                case SKTextEncoding.Utf8:
+                    buffer.AddUtf8(text);
+                    break;
+                case SKTextEncoding.Utf16:
+                    buffer.AddUtf16(text);
+                    break;
+                case SKTextEncoding.Utf32:
+                    buffer.AddUtf32(text);
+                    break;
+                default:
+                    throw new NotSupportedException("TextEncoding is not supported.");
+            }
+
+            buffer.GuessSegmentProperties();
+            shaper.Shape(buffer, paint);
+            return buffer.GlyphPositions.Sum(gp => gp.XAdvance) * paint.TextSize / 512;
         }
 
         /// <summary>
