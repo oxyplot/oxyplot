@@ -10,7 +10,7 @@
     <ItemGroup>
         <ProjectReference Include="..\Examples\ExampleLibrary\ExampleLibrary.csproj" />
         <ProjectReference Include="..\OxyPlot.Pdf\OxyPlot.Pdf.csproj" />
-        <ProjectReference Include="..\OxyPlot\OxyPlot.csproj" />
+        <ProjectReference Include="..\OxyPlot.Core\OxyPlot.Core.csproj" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="NUnit" Version="3.12.0" />

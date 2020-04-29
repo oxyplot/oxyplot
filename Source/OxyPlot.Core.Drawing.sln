@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.26430.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{07CE67B3-8AA2-4572-865F-B3F7FA80CE19}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OxyPlot", "OxyPlot\OxyPlot.csproj", "{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OxyPlot.Core", "OxyPlot.Core\OxyPlot.Core.csproj", "{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OxyPlot.Core.Drawing", "OxyPlot.Core.Drawing\OxyPlot.Core.Drawing.csproj", "{9EC4B481-7377-4A32-91E0-53DB4FC963B0}"
 EndProject

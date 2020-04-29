@@ -24,7 +24,7 @@
     <Reference Include="System.Printing" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OxyPlot\OxyPlot.csproj" />
+    <ProjectReference Include="..\OxyPlot.Core\OxyPlot.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Include="OxyPlot.Wpf.snk" />

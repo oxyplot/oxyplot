@@ -6,7 +6,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\OxyPlot.WindowsForms\OxyPlot.WindowsForms.csproj" />
-    <ProjectReference Include="..\..\..\OxyPlot\OxyPlot.csproj" />
+    <ProjectReference Include="..\..\..\OxyPlot.Core\OxyPlot.Core.csproj" />
     <ProjectReference Include="..\..\ExampleLibrary\ExampleLibrary.csproj" />
   </ItemGroup>
 </Project>

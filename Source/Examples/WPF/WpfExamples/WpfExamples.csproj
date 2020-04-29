@@ -7,7 +7,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\OxyPlot.Wpf\OxyPlot.Wpf.csproj" />
-    <ProjectReference Include="..\..\..\OxyPlot\OxyPlot.csproj" />
+    <ProjectReference Include="..\..\..\OxyPlot.Core\OxyPlot.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="PropertyTools.Wpf" Version="3.1.0-alpha0009" />

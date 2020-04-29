@@ -20,6 +20,6 @@
         <PackageReference Include="System.Drawing.Common" Version="4.6.0" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\OxyPlot\OxyPlot.csproj" />
+        <ProjectReference Include="..\OxyPlot.Core\OxyPlot.Core.csproj" />
     </ItemGroup>
 </Project>

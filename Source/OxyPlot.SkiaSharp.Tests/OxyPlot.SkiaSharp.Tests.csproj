@@ -20,7 +20,7 @@
     <ItemGroup>
         <ProjectReference Include="..\Examples\ExampleLibrary\ExampleLibrary.csproj" />
         <ProjectReference Include="..\OxyPlot.SkiaSharp\OxyPlot.SkiaSharp.csproj" />
-        <ProjectReference Include="..\OxyPlot\OxyPlot.csproj" />
+        <ProjectReference Include="..\OxyPlot.Core\OxyPlot.Core.csproj" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.0" />

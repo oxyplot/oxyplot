@@ -9,7 +9,7 @@
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\Examples\ExampleLibrary\ExampleLibrary.csproj" />
-        <ProjectReference Include="..\OxyPlot\OxyPlot.csproj" />
+        <ProjectReference Include="..\OxyPlot.Core\OxyPlot.Core.csproj" />
         <ProjectReference Include="..\OxyPlot.Wpf\OxyPlot.Wpf.csproj" />
     </ItemGroup>
     <ItemGroup>

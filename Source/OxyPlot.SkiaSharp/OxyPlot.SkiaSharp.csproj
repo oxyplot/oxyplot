@@ -17,6 +17,6 @@
     <PackageReference Include="SkiaSharp" Version="1.68.1.1" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OxyPlot\OxyPlot.csproj" />
+    <ProjectReference Include="..\OxyPlot.Core\OxyPlot.Core.csproj" />
   </ItemGroup>
 </Project>

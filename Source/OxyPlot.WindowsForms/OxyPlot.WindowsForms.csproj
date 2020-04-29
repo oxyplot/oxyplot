@@ -17,10 +17,10 @@
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
     <ItemGroup>
-        <ProjectReference Include="..\OxyPlot\OxyPlot.csproj" />
+        <ProjectReference Include="..\OxyPlot.Core\OxyPlot.Core.csproj" />
     </ItemGroup>
     <ItemGroup>
-        <None Include="..\..\Icons\OxyPlot_128.png" Pack="true" PackagePath="\"/>
+        <None Include="..\..\Icons\OxyPlot_128.png" Pack="true" PackagePath="\" />
     </ItemGroup>
     <ItemGroup>
         <None Include="OxyPlot.WindowsForms.snk" />

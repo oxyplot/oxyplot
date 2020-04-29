@@ -14,7 +14,7 @@
     <RepositoryUrl>https://github.com/oxyplot/oxyplot.git</RepositoryUrl>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="..\..\..\Icons\OxyPlot_128.png" Pack="true" PackagePath="\"/>
+    <None Include="..\..\..\Icons\OxyPlot_128.png" Pack="true" PackagePath="\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Bergensbanen.csv" />
@@ -27,6 +27,6 @@
     <PackageReference Include="System.Xml.XmlSerializer" Version="4.3.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\OxyPlot\OxyPlot.csproj" />
+    <ProjectReference Include="..\..\OxyPlot.Core\OxyPlot.Core.csproj" />
   </ItemGroup>
 </Project>

@@ -6,6 +6,6 @@
         <StartupObject />
     </PropertyGroup>
     <ItemGroup>
-        <ProjectReference Include="..\..\OxyPlot\OxyPlot.csproj" />
+        <ProjectReference Include="..\..\OxyPlot.Core\OxyPlot.Core.csproj" />
     </ItemGroup>
 </Project>
