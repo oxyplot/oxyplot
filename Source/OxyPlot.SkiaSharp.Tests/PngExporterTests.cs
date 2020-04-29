@@ -8,7 +8,7 @@ namespace OxyPlot.SkiaSharp.Tests
 {
     using System;
     using System.IO;
-
+    using ExampleLibrary;
     using NUnit.Framework;
 
     using OxyPlot.Series;
@@ -88,6 +88,41 @@ namespace OxyPlot.SkiaSharp.Tests
             using (var stream = File.OpenWrite(fileName))
             {
                 exporter.Export(plotModel, stream);
+            }
+
+            Assert.IsTrue(File.Exists(fileName));
+        }
+
+        [Test]
+        [TestCase(true)]
+        [TestCase(false)]
+        public void ExportUseTextShapingAlignment(bool useTextShaping)
+        {
+            var model = RenderingCapabilities.DrawTextAlignment();
+            model.Background = OxyColors.White;
+            var fileName = Path.Combine(this.outputDirectory, $"Alignment, UseTextShaping={useTextShaping}.png");
+            var exporter = new PngExporter { Width = 450, Height = 200, UseTextShaping = useTextShaping };
+            using (var stream = File.OpenWrite(fileName))
+            {
+                exporter.Export(model, stream);
+            }
+
+            Assert.IsTrue(File.Exists(fileName));
+        }
+
+        [Test]
+        [TestCase(true)]
+        [TestCase(false)]
+        public void ExportUseTextShapingMeasurements(bool useTextShaping)
+        {
+            var model = RenderingCapabilities.DrawTextWithMetrics("TeffVAll", "Arial", 60, double.NaN, double.NaN, 105, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, "");
+
+            model.Background = OxyColors.White;
+            var fileName = Path.Combine(this.outputDirectory, $"Measurements, UseTextShaping={useTextShaping}.png");
+            var exporter = new PngExporter { Width = 450, Height = 150, UseTextShaping = useTextShaping };
+            using (var stream = File.OpenWrite(fileName))
+            {
+                exporter.Export(model, stream);
             }
 
             Assert.IsTrue(File.Exists(fileName));

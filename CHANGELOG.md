@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file.
 - Color palettes Viridis, Plasma, Magma, Inferno and Cividis (#1505)
 - Renderer based on SkiaSharp, including exporters for PNG, JPEG, PDF and SVG (#1509)
 - Example for Issue #1524: HitTracker IndexOutOfRangeException with HeatMapSeries
+- Text shaping support to SkiaRenderContext (#1520)
 
 ### Changed
 - Legends model (#644)
