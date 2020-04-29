@@ -2180,6 +2180,91 @@ namespace ExampleLibrary
             return plot;
         }
 
+        [Example("#1524: HitTracker IndexOutOfRangeException with HeatMapSeries")]
+        public static PlotModel HitTrackerIndexOutOfRangeExceptionWithHeatMapSeries()
+        {
+            List<string> xAxisLabels = new List<string>() { "1", "2", "3", "4", "5", "1", "2", "3", "4", "5" };
+            List<string> yAxisLabels = new List<string>() { "1", "2", "3", "4", "5", "1", "2", "3", "4", "5" };
+
+            var plot = new PlotModel() { Title = "Place the tracker to the far top or right of the series\nwith a small window size." };
+
+            List<OxyColor> jetTransparent = new List<OxyColor>();
+            foreach (var item in OxyPalettes.Jet(1000).Colors)
+            {
+                jetTransparent.Add(OxyColor.FromAColor(220, item));
+            }
+            OxyPalette myPalette = new OxyPalette(jetTransparent);
+
+            plot.PlotAreaBackground = OxyColors.White;
+            plot.DefaultFontSize = 14;
+            //plotModel.DefaultColors = SeriesColors;
+            plot.Padding = new OxyThickness(0);
+            plot.TitlePadding = 0;
+
+
+            plot.Axes.Add(new CategoryAxis
+            {
+                Position = AxisPosition.Bottom,
+                Key = "HorizontalAxis",
+                ItemsSource = xAxisLabels,
+                MajorGridlineColor = OxyColors.Black,
+                MajorGridlineStyle = LineStyle.Solid,
+                IsZoomEnabled = false,
+                IsPanEnabled = false,
+                Angle = -45,
+                FontSize = 14,
+                TitleFontSize = 14,
+                AxisTitleDistance = 0
+            });
+
+            plot.Axes.Add(new CategoryAxis
+            {
+                Position = AxisPosition.Left,
+                Key = "VerticalAxis",
+                ItemsSource = yAxisLabels,
+                MajorGridlineColor = OxyColors.Black,
+                MajorGridlineStyle = LineStyle.Solid,
+                IsZoomEnabled = false,
+                IsPanEnabled = false,
+                FontSize = 14,
+                TitleFontSize = 14
+            });
+
+            // Color axis
+            plot.Axes.Add(new LinearColorAxis()
+            {
+                Palette = myPalette,
+            });
+
+            var rand = new Random();
+            var data = new double[yAxisLabels.Count, xAxisLabels.Count];
+            for (int x = 0; x < xAxisLabels.Count; ++x)
+            {
+                for (int y = 0; y < yAxisLabels.Count; ++y)
+                {
+                    data[y, x] = rand.Next(0, 200) * (0.13876876848794587508758879 * (y + 1));
+                }
+            }
+
+            var heatMapSeries = new HeatMapSeries
+            {
+                X0 = 0,
+                X1 = xAxisLabels.Count - 1,
+                Y0 = 0,
+                Y1 = yAxisLabels.Count - 1,
+                XAxisKey = "HorizontalAxis",
+                YAxisKey = "VerticalAxis",
+                RenderMethod = HeatMapRenderMethod.Bitmap,
+                Interpolate = true,
+                Data = data,
+                TrackerFormatString = "{3}: {4}\n{1}: {2}\n{5}: {6:N1}%",
+            };
+
+            plot.Series.Add(heatMapSeries);
+
+            return plot;
+        }
+
         private class TimeSpanPoint
         {
             public TimeSpan X { get; set; }
