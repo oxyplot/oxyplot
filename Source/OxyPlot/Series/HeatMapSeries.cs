@@ -384,6 +384,12 @@ namespace OxyPlot.Series
                 point = this.Transform(p);
             }
 
+            // perform a second range check in index space to accomodate rounding
+            if (i < -0.5 || i > this.Data.GetLength(0) - 0.5 || j < -0.5 || j > this.Data.GetLength(1) - 0.5)
+            {
+                return null;
+            }
+
             var value = GetValue(this.Data, i, j);
             var colorAxis = this.ColorAxis as Axis;
             var colorAxisTitle = (colorAxis != null ? colorAxis.Title : null) ?? DefaultColorAxisTitle;
