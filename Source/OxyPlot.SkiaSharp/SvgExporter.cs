@@ -6,27 +6,34 @@
 
 namespace OxyPlot.SkiaSharp
 {
-    using System;
+    using global::SkiaSharp;
+    using System.IO;
 
     /// <summary>
-    /// Provides functionality to export plots to scalable vector graphics using SkiaSharp-based text measuring.
+    /// Provides functionality to export plots to scalable vector graphics using the SkiaSharp SVG canvas.
     /// </summary>
-    public sealed class SvgExporter : OxyPlot.SvgExporter, IDisposable
+    public class SvgExporter : IExporter
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SvgExporter" /> class, using a <see cref="SkiaRenderContext"/> as text measurer.
+        /// Gets or sets the height (in user units) of the output area.
         /// </summary>
-        public SvgExporter()
-        {
-            this.TextMeasurer = new SkiaRenderContext();
-        }
+        public float Height { get; set; }
+
+        /// <summary>
+        /// Gets or sets the width (in user units) of the output area.
+        /// </summary>
+        public float Width { get; set; }
 
         /// <inheritdoc/>
-        public void Dispose()
+        public void Export(IPlotModel model, Stream stream)
         {
-            var skiaMeasurer = this.TextMeasurer as SkiaRenderContext;
-            skiaMeasurer?.Dispose();
-            this.TextMeasurer = null;
+            using var skStream = new SKManagedWStream(stream);
+            using var writer = new SKXmlStreamWriter(skStream);
+            using var canvas = SKSvgCanvas.Create(new SKRect(0, 0, this.Width, this.Height), writer);
+            // SVG export does not work with UseTextShaping=true. However SVG does text shaping by itself anyway, so we can just disable it
+            using var context = new SkiaRenderContext { RendersToScreen = false, SkCanvas = canvas, UseTextShaping = false };
+            model.Update(true);
+            model.Render(context, new OxyRect(0, 0, this.Width, this.Height));
         }
     }
 }
