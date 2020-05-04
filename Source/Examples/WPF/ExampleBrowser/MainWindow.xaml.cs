@@ -9,10 +9,8 @@
 
 namespace ExampleBrowser
 {
-    using System;
-    using System.Diagnostics;
+    using Microsoft.Win32;
     using System.Windows;
-    using System.Windows.Media;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -20,19 +18,9 @@ namespace ExampleBrowser
     public partial class MainWindow : Window
     {
         /// <summary>
-        /// The frame count.
-        /// </summary>
-        private int frameCount;
-
-        /// <summary>
         /// The vm.
         /// </summary>
-        private MainWindowViewModel vm = new MainWindowViewModel();
-
-        /// <summary>
-        /// The watch.
-        /// </summary>
-        private Stopwatch watch = new Stopwatch();
+        private readonly MainWindowViewModel vm = new MainWindowViewModel();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainWindow" /> class.
@@ -41,31 +29,12 @@ namespace ExampleBrowser
         {
             this.InitializeComponent();
             this.DataContext = this.vm;
-            CompositionTarget.Rendering += this.CompositionTargetRendering;
-            this.watch.Start();
+            SystemEvents.DisplaySettingsChanged += this.SystemEvents_DisplaySettingsChanged;
         }
 
-        /// <summary>
-        /// Handles the Rendering event of the CompositionTarget control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs" /> instance containing the event data.</param>
-        private void CompositionTargetRendering(object sender, EventArgs e)
+        private void SystemEvents_DisplaySettingsChanged(object sender, System.EventArgs e)
         {
-            this.frameCount++;
-            if (this.watch.ElapsedMilliseconds > 1000 && this.frameCount > 1)
-            {
-                this.vm.FrameRate = this.frameCount / (this.watch.ElapsedMilliseconds * 0.001);
-                this.frameCount = 0;
-                this.watch.Reset();
-                this.watch.Start();
-            }
-
-            if (this.vm.MeasureFrameRate)
-            {
-                this.Plot1.InvalidatePlot(true);
-            }
+            this.vm.ActiveModel?.PlotView?.InvalidatePlot(false);
         }
-
     }
 }

@@ -9,158 +9,121 @@
 
 namespace OxyPlot.Wpf
 {
+    using OxyPlot;
     using System.Windows;
     using System.Windows.Controls;
+    using System.Windows.Input;
+    using System.Windows.Media;
 
     /// <summary>
-    /// Represents a control that displays a <see cref="PlotModel" />.
+    /// Represents a control that displays a <see cref="PlotModel" />. This <see cref="IPlotView"/> is based on <see cref="CanvasRenderContext"/>.
     /// </summary>
-    [TemplatePart(Name = PartGrid, Type = typeof(Grid))]
-    public class PlotView : PlotBase
+    public partial class PlotView : PlotViewBase
     {
         /// <summary>
-        /// Identifies the <see cref="Controller"/> dependency property.
+        /// Initializes a new instance of the <see cref="PlotView" /> class.
         /// </summary>
-        public static readonly DependencyProperty ControllerProperty =
-            DependencyProperty.Register("Controller", typeof(IPlotController), typeof(PlotView));
-
-        /// <summary>
-        /// Identifies the <see cref="Model"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty ModelProperty =
-            DependencyProperty.Register("Model", typeof(PlotModel), typeof(PlotView), new PropertyMetadata(null, ModelChanged));
-
-        /// <summary>
-        /// The model lock.
-        /// </summary>
-        private readonly object modelLock = new object();
-
-        /// <summary>
-        /// The current model (synchronized with the <see cref="Model" /> property, but can be accessed from all threads.
-        /// </summary>
-        private PlotModel currentModel;
-
-        /// <summary>
-        /// The default plot controller.
-        /// </summary>
-        private IPlotController defaultController;
-
-        /// <summary>
-        /// Initializes static members of the <see cref="PlotView" /> class.
-        /// </summary>
-        static PlotView()
+        public PlotView()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(PlotView), new FrameworkPropertyMetadata(typeof(PlotView)));
-            PaddingProperty.OverrideMetadata(typeof(PlotView), new FrameworkPropertyMetadata(new Thickness(8), AppearanceChanged));
+            this.DisconnectCanvasWhileUpdating = true;
+            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Copy, this.DoCopy));
         }
 
         /// <summary>
-        /// Gets or sets the model.
+        /// Gets or sets a value indicating whether to disconnect the canvas while updating.
         /// </summary>
-        /// <value>The model.</value>
-        public PlotModel Model
-        {
-            get
-            {
-                return (PlotModel)this.GetValue(ModelProperty);
-            }
+        /// <value><c>true</c> if canvas should be disconnected while updating; otherwise, <c>false</c>.</value>
+        public bool DisconnectCanvasWhileUpdating { get; set; }
 
-            set
+        /// <summary>
+        /// Gets the Canvas.
+        /// </summary>
+        private Canvas Canvas => (Canvas)this.plotPresenter;
+
+        /// <summary>
+        /// Gets the CanvasRenderContext.
+        /// </summary>
+        private CanvasRenderContext RenderContext => (CanvasRenderContext)this.renderContext;
+
+        /// <inheritdoc/>
+        protected override void ClearBackground()
+        {
+            this.Canvas.Children.Clear();
+
+            if (this.ActualModel != null && this.ActualModel.Background.IsVisible())
             {
-                this.SetValue(ModelProperty, value);
+                this.Canvas.Background = this.ActualModel.Background.ToBrush();
+            }
+            else
+            {
+                this.Canvas.Background = null;
             }
         }
 
-        /// <summary>
-        /// Gets or sets the Plot controller.
-        /// </summary>
-        /// <value>The Plot controller.</value>
-        public IPlotController Controller
+        /// <inheritdoc/>
+        protected override FrameworkElement CreatePlotPresenter()
         {
-            get
+            return new Canvas();
+        }
+
+        /// <inheritdoc/>
+        protected override IRenderContext CreateRenderContext()
+        {
+            return new CanvasRenderContext(this.Canvas);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnRender(DrawingContext drawingContext)
+        {
+            this.Render();
+            base.OnRender(drawingContext);
+        }
+
+        /// <inheritdoc/>
+        protected override void RenderOverride()
+        {
+            if (this.DisconnectCanvasWhileUpdating)
             {
-                return (IPlotController)this.GetValue(ControllerProperty);
-            }
-
-            set
-            {
-                this.SetValue(ControllerProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets the actual model.
-        /// </summary>
-        /// <value>The actual model.</value>
-        public override PlotModel ActualModel
-        {
-            get
-            {
-                return this.currentModel;
-            }
-        }
-
-        /// <summary>
-        /// Gets the actual PlotView controller.
-        /// </summary>
-        /// <value>The actual PlotView controller.</value>
-        public override IPlotController ActualController
-        {
-            get
-            {
-                return this.Controller ?? (this.defaultController ?? (this.defaultController = new PlotController()));
-            }
-        }
-
-        /// <summary>
-        /// Called when the visual appearance is changed.
-        /// </summary>
-        protected void OnAppearanceChanged()
-        {
-            this.InvalidatePlot(false);
-        }
-
-        /// <summary>
-        /// Called when the visual appearance is changed.
-        /// </summary>
-        /// <param name="d">The d.</param>
-        /// <param name="e">The <see cref="System.Windows.DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
-        private static void AppearanceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ((PlotView)d).OnAppearanceChanged();
-        }
-
-        /// <summary>
-        /// Called when the model is changed.
-        /// </summary>
-        /// <param name="d">The sender.</param>
-        /// <param name="e">The <see cref="System.Windows.DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
-        private static void ModelChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ((PlotView)d).OnModelChanged();
-        }
-
-        /// <summary>
-        /// Called when the model is changed.
-        /// </summary>
-        private void OnModelChanged()
-        {
-            lock (this.modelLock)
-            {
-                if (this.currentModel != null)
+                // TODO: profile... not sure if this makes any difference
+                var idx = this.grid.Children.IndexOf(this.plotPresenter);
+                if (idx != -1)
                 {
-                    ((IPlotModel)this.currentModel).AttachPlotView(null);
-                    this.currentModel = null;
+                    this.grid.Children.RemoveAt(idx);
                 }
 
-                if (this.Model != null)
+                base.RenderOverride();
+
+                if (idx != -1)
                 {
-                    ((IPlotModel)this.Model).AttachPlotView(this);
-                    this.currentModel = this.Model;
+                    // reinsert the canvas again
+                    this.grid.Children.Insert(idx, this.plotPresenter);
                 }
             }
+            else
+            {
+                base.RenderOverride();
+            }
+        }
 
-            this.InvalidatePlot();
+        /// <inheritdoc/>
+        protected override double UpdateDpi()
+        {
+            var scale = base.UpdateDpi();
+            this.RenderContext.DpiScale = scale;
+            this.RenderContext.VisualOffset = this.TransformToAncestor(Window.GetWindow(this)).Transform(default);
+            return scale;
+        }
+
+        /// <summary>
+        /// Performs the copy operation.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="System.Windows.Input.ExecutedRoutedEventArgs" /> instance containing the event data.</param>
+        private void DoCopy(object sender, ExecutedRoutedEventArgs e)
+        {
+            var exporter = new PngExporter() { Width = (int)this.ActualWidth, Height = (int)this.ActualHeight };
+            var bitmap = exporter.ExportToBitmap(this.ActualModel);
+            Clipboard.SetImage(bitmap);
         }
     }
 }

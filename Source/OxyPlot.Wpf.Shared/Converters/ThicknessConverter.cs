@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="OxyColorConverter.cs" company="OxyPlot">
-//   Copyright (c) 2014 OxyPlot contributors
+// <copyright file="ThicknessConverter.cs" company="OxyPlot">
+//   Copyright (c) 2020 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Converts between <see cref="OxyColor" /> and <see cref="Color" />.
+//   Converts from <see cref="Thickness" /> to the maximum thicknesses.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -11,14 +11,15 @@ namespace OxyPlot.Wpf
 {
     using System;
     using System.Globalization;
+    using System.Windows;
     using System.Windows.Data;
-    using System.Windows.Media;
 
     /// <summary>
-    /// Converts between <see cref="OxyColor" /> and <see cref="Color" />.
+    /// Converts from <see cref="Thickness" /> to the maximum thicknesses.
     /// </summary>
-    [ValueConversion(typeof(OxyColor), typeof(Color))]
-    public class OxyColorConverter : IValueConverter
+    /// <remarks>This is used in the <see cref="TrackerControl" /> to convert BorderThickness properties to Path.StrokeThickness (double).
+    /// The maximum thickness value is used.</remarks>
+    public class ThicknessConverter : IValueConverter
     {
         /// <summary>
         /// Converts a value.
@@ -30,18 +31,9 @@ namespace OxyPlot.Wpf
         /// <returns>A converted value. If the method returns <c>null</c>, the valid <c>null</c> value is used.</returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is OxyColor)
+            if (value is Thickness t && targetType == typeof(double))
             {
-                var color = (OxyColor)value;
-                if (targetType == typeof(Color))
-                {
-                    return color.ToColor();
-                }
-
-                if (targetType == typeof(Brush))
-                {
-                    return color.ToBrush();
-                }
+                return Math.Max(Math.Max(t.Left, t.Right), Math.Max(t.Top, t.Bottom));
             }
 
             return null;
@@ -57,21 +49,6 @@ namespace OxyPlot.Wpf
         /// <returns>A converted value. If the method returns <c>null</c>, the valid <c>null</c> value is used.</returns>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (targetType == typeof(OxyColor))
-            {
-                if (value is Color)
-                {
-                    var color = (Color)value;
-                    return OxyColor.FromArgb(color.A, color.R, color.G, color.B);
-                }
-
-                var brush = value as SolidColorBrush;
-                if (brush != null)
-                {
-                    return OxyColor.FromArgb(brush.Color.A, brush.Color.R, brush.Color.G, brush.Color.B);
-                }
-            }
-
             return null;
         }
     }

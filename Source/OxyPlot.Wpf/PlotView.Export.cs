@@ -14,7 +14,7 @@ namespace OxyPlot.Wpf
     /// <summary>
     /// Represents a control that displays a <see cref="PlotModel" />.
     /// </summary>
-    public abstract partial class PlotBase
+    public partial class PlotView
     {
         /// <summary>
         /// Saves the PlotView as a bitmap.
@@ -70,7 +70,6 @@ namespace OxyPlot.Wpf
         /// <returns>A bitmap.</returns>
         public BitmapSource ToBitmap()
         {
-            var background = this.ActualModel.Background.IsVisible() ? this.ActualModel.Background : this.Background.ToOxyColor();
             var exporter = new PngExporter() { Width = (int)this.ActualWidth, Height = (int)this.ActualHeight };
             return exporter.ExportToBitmap(this.ActualModel);
         }

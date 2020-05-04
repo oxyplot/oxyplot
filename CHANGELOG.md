@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file.
 - Renderer based on SkiaSharp, including exporters for PNG, JPEG, PDF and SVG (#1509)
 - Example for Issue #1524: HitTracker IndexOutOfRangeException with HeatMapSeries
 - Text shaping support to SkiaRenderContext (#1520)
+- PlotView based on SkiaRenderContext (OxyPlot.SkiaSharp.Wpf) (#1515)
 
 ### Changed
 - Legends model (#644)
@@ -29,6 +30,8 @@ All notable changes to this project will be documented in this file.
 - Upgrade to .NET Core 3.1 (#1488)
 - DrawRectangle(...), DrawLine(...), DrawEllipse(...), DrawPolygon(...) and related overloads in IRenderContext and related extensions in RenderingExtensions now require an EdgeRenderingMode
 - Default color palette for LinearColorAxis from Jet to Viridis (#1505)
+- Extract most of the functionality from OxyPlot.Wpf into OxyPlot.Wpf.Shared to allow code sharing with other WPF PlotViews (#1515)
+- WPF ExampleBrowser can switch between Canvas and SkiaSharp renderers (#1515)
 
 ### Removed
 - Remove PlotModel.Legends (#644)

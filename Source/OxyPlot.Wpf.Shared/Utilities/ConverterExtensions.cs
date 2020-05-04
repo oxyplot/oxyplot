@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ConverterExtensions.cs" company="OxyPlot">
-//   Copyright (c) 2014 OxyPlot contributors
+//   Copyright (c) 2020 OxyPlot contributors
 // </copyright>
 // <summary>
 //   Extension method used to convert to/from Windows/Windows.Media classes.

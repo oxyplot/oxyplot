@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Keyboard.cs" company="OxyPlot">
-//   Copyright (c) 2014 OxyPlot contributors
+//   Copyright (c) 2020 OxyPlot contributors
 // </copyright>
 // <summary>
 //   Provides utility methods related to the keyboard.

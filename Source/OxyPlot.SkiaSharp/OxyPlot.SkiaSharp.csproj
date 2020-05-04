@@ -7,15 +7,22 @@
     <Authors>OxyPlot contributors</Authors>
     <Description>OxyPlot is a plotting library for .NET. This package provides rendering based on SkiaSharp.</Description>
     <RepositoryUrl>https://github.com/oxyplot/oxyplot.git</RepositoryUrl>
+    <PackageIcon>OxyPlot_128.png</PackageIcon>
     <RepositoryType>git</RepositoryType>
     <PackageTags>plotting plot charting chart skiasharp skia pdf</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://oxyplot.github.io/</PackageProjectUrl>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>OxyPlot.SkiaSharp.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="SkiaSharp" Version="1.68.1.1" />
     <PackageReference Include="SkiaSharp.HarfBuzz" Version="1.68.1.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Icons\OxyPlot_128.png" Pack="true" PackagePath="\" />
+    <None Include="OxyPlot.SkiaSharp.snk" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OxyPlot\OxyPlot.csproj" />
