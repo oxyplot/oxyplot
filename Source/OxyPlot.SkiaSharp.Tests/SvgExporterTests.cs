@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PngExporterTests.cs" company="OxyPlot">
+// <copyright file="SvgExporterTests.cs" company="OxyPlot">
 //   Copyright (c) 2020 OxyPlot contributors
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -11,19 +11,17 @@ namespace OxyPlot.SkiaSharp.Tests
     using System.IO;
 
     [TestFixture]
-    public class OxySvgExporterTests
+    public class SvgExporterTests
     {
-        private const string SVG_FOLDER = "OxySVG";
+        private const string SVG_FOLDER = "SVG";
         private string outputDirectory;
 
         [Test]
         public void Export_SomeExamplesInExampleLibrary_CheckThatAllFilesExist()
         {
-            using (var exporter = new SvgExporter { Width = 1000, Height = 750 })
-            {
-                var directory = Path.Combine(this.outputDirectory, "ExampleLibrary");
-                ExportTest.Export_FirstExampleOfEachExampleGroup_CheckThatAllFilesExist(exporter, directory, ".svg");
-            }
+            var exporter = new SvgExporter { Width = 1000, Height = 750 };
+            var directory = Path.Combine(this.outputDirectory, "ExampleLibrary");
+            ExportTest.Export_FirstExampleOfEachExampleGroup_CheckThatAllFilesExist(exporter, directory, ".svg");
         }
 
         [OneTimeSetUp]
