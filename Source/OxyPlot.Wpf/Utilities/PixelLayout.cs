@@ -11,53 +11,12 @@ namespace OxyPlot.Wpf
 {
     using System;
     using System.Windows;
-    using System.Windows.Media;
 
     /// <summary>
     /// Provides functionality to support non-default dpi scaling
     /// </summary>
     public static class PixelLayout
     {
-        /// <summary>
-        /// Determines a visual offset of one <see cref="Visual"/> relative to another
-        /// </summary>
-        /// <param name="visual">The <see cref="Visual"/> which offset is calculated</param>
-        /// <param name="root">The reference <see cref="Visual"/></param>
-        /// <returns>A point structure which contains X and Y offsets</returns>
-        public static Point GetVisualOffset(Visual visual, Visual root)
-        {
-            if (visual == null)
-                throw new ArgumentNullException(nameof(visual));
-
-            if (root == null)
-                return default;
-
-            return visual.TransformToAncestor(root).Transform(default);
-        }
-
-        /// <summary>
-        /// Determines visual dpi scales of a <see cref="Visual"/>
-        /// </summary>
-        /// <param name="visual">The <see cref="Visual"/> which dpi scales are determined</param>
-        /// <returns>A point structure which contains X and Y dpi scales</returns>
-        public static Point GetDpiScales(Visual visual)
-        {
-            if (visual == null)
-                throw new ArgumentNullException(nameof(visual));
-
-            var transformMatrix = PresentationSource.FromVisual(visual)?
-                .CompositionTarget?
-                .TransformToDevice;
-
-            if (!transformMatrix.HasValue)
-                return new Point(1, 1);
-
-            return new Point(
-                transformMatrix.Value.M11,
-                transformMatrix.Value.M22
-            );
-        }
-
         /// <summary>
         /// Snaps a screen point to a pixel grid.
         /// </summary>
@@ -68,15 +27,15 @@ namespace OxyPlot.Wpf
         /// <param name="y">The y coordinate of the point.</param>
         /// <param name="strokeThickness">The stroke thickness.</param>
         /// <param name="visualOffset">A point structure which represents X and Y visual offsets relative to visual root</param>
-        /// <param name="dpiScales">A point structure which represents X and Y pixel grid scales</param>
+        /// <param name="dpiScale">The DPI scale.</param>
         /// <returns>Snapped point</returns>
-        public static Point Snap(double x, double y, double strokeThickness, Point visualOffset, Point dpiScales)
+        public static Point Snap(double x, double y, double strokeThickness, Point visualOffset, double dpiScale)
         {
-            var offsetX = visualOffset.X + GetPixelOffset(strokeThickness, dpiScales.X);
-            var offsetY = visualOffset.Y + GetPixelOffset(strokeThickness, dpiScales.Y);
+            var offsetX = visualOffset.X + GetPixelOffset(strokeThickness, dpiScale);
+            var offsetY = visualOffset.Y + GetPixelOffset(strokeThickness, dpiScale);
 
-            x = Snap(x, offsetX, dpiScales.X);
-            y = Snap(y, offsetY, dpiScales.Y);
+            x = Snap(x, offsetX, dpiScale);
+            y = Snap(y, offsetY, dpiScale);
             return new Point(x, y);
         }
 
@@ -89,17 +48,17 @@ namespace OxyPlot.Wpf
         /// <param name="rect">Rectangle structure</param>
         /// <param name="strokeThickness">The stroke thickness.</param>
         /// <param name="visualOffset">A point structure which represents X and Y visual offsets relative to visual root</param>
-        /// <param name="dpiScales">A point structure which represents X and Y pixel grid scales</param>
+        /// <param name="dpiScale">The DPI scale.</param>
         /// <returns>Snapped rectangle structure</returns>
-        public static Rect Snap(Rect rect, double strokeThickness, Point visualOffset, Point dpiScales)
+        public static Rect Snap(Rect rect, double strokeThickness, Point visualOffset, double dpiScale)
         {
-            var offsetX = visualOffset.X + GetPixelOffset(strokeThickness, dpiScales.X);
-            var offsetY = visualOffset.Y + GetPixelOffset(strokeThickness, dpiScales.Y);
+            var offsetX = visualOffset.X + GetPixelOffset(strokeThickness, dpiScale);
+            var offsetY = visualOffset.Y + GetPixelOffset(strokeThickness, dpiScale);
 
-            var l = Snap(rect.Left, offsetX, dpiScales.X);
-            var t = Snap(rect.Top, offsetY, dpiScales.Y);
-            var r = Snap(rect.Right, offsetX, dpiScales.X);
-            var b = Snap(rect.Bottom, offsetY, dpiScales.Y);
+            var l = Snap(rect.Left, offsetX, dpiScale);
+            var t = Snap(rect.Top, offsetY, dpiScale);
+            var r = Snap(rect.Right, offsetX, dpiScale);
+            var b = Snap(rect.Bottom, offsetY, dpiScale);
 
             return new Rect(l, t, r - l, b - t);
         }
@@ -108,12 +67,11 @@ namespace OxyPlot.Wpf
         /// Snaps a stroke thickness to an integer multiple of device pixels.
         /// </summary>
         /// <param name="strokeThickness">The stroke thickness.</param>
-        /// <param name="dpiScales">A point structure which represents X and Y pixel grid scales</param>
+        /// <param name="dpiScale">The DPI scale.</param>
         /// <returns>The snapped stroke thickness.</returns>
-        public static double SnapStrokeThickness(double strokeThickness, Point dpiScales)
+        public static double SnapStrokeThickness(double strokeThickness, double dpiScale)
         {
-            var scale = (dpiScales.X + dpiScales.Y) / 2;
-            return Math.Round(strokeThickness * scale, MidpointRounding.AwayFromZero) / scale;
+            return Math.Round(strokeThickness * dpiScale, MidpointRounding.AwayFromZero) / dpiScale;
         }
 
         /// <summary>

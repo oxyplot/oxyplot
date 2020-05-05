@@ -1,7 +1,9 @@
 ﻿<Window x:Class="ExampleBrowser.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf" 
+        xmlns:oxyWpf="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf" 
+        xmlns:oxySkia="clr-namespace:OxyPlot.SkiaSharp.Wpf;assembly=OxyPlot.SkiaSharp.Wpf" 
+        xmlns:local="clr-namespace:ExampleBrowser" 
         Title="OxyPlot.WPF Example Browser"
         Height="720" Width="1280" Icon="OxyPlot_64.png">
     <Window.Resources>
@@ -66,26 +68,9 @@
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
         <Grid Background="#20000000">
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
             <ListBox ItemsSource="{Binding ExamplesView}" ItemContainerStyle="{DynamicResource ListboxItemStyle}" 
                      SelectedItem="{Binding SelectedExample}" BorderThickness="0,0,0,1">
                 <ListBox.GroupStyle>
-                    <!-- GroupStyle with headers -->
-                    <!--<GroupStyle>
-                        <GroupStyle.HeaderTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock FontWeight="Bold" Text="{Binding Name}" Padding="2 0 8 0"/>
-                                    <TextBlock Text="{Binding ItemCount, StringFormat='({0})'}" VerticalAlignment="Center"/>
-                                </StackPanel>
-                            </DataTemplate>
-                        </GroupStyle.HeaderTemplate>
-                    </GroupStyle>-->
-
-                    <!-- GroupStyle with expanders -->
                     <GroupStyle>
                         <GroupStyle.ContainerStyle>
                             <Style TargetType="{x:Type GroupItem}">
@@ -109,32 +94,35 @@
                     </GroupStyle>
                 </ListBox.GroupStyle>
             </ListBox>
-            <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="8">
-                <CheckBox IsChecked="{Binding MeasureFrameRate}" Content="Measure frame rate"/>
-                <TextBlock Margin="20 0 0 0" Text="{Binding FrameRate, StringFormat='{}{0:0.0} fps'}"/>
+        </Grid>
+        <Grid Grid.Column="1">
+            <TabControl TabStripPlacement="Bottom">
+                <TabControl.Resources>
+                    <Style TargetType="{x:Type TextBox}" x:Key="CodeTextBox">
+                        <Setter Property="AcceptsReturn" Value="True"></Setter>
+                        <Setter Property="FontFamily" Value="Consolas"></Setter>
+                        <Setter Property="BorderThickness" Value="0"></Setter>
+                        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"></Setter>
+                    </Style>
+                </TabControl.Resources>
+                <TabItem Header="Plot">
+                    <Grid>
+                        <Grid.Resources>
+                            <local:NotNullVisibilityConverter x:Key="NotNullVisibilityConverter" />
+                        </Grid.Resources>
+                        <oxySkia:PlotView Model="{Binding SkiaModel}" Controller="{Binding SelectedExample.Controller}" Visibility="{Binding SkiaModel, Converter={StaticResource NotNullVisibilityConverter}}" />
+                        <oxyWpf:PlotView x:Name="Plot1" Model="{Binding CanvasModel}" Controller="{Binding SelectedExample.Controller}" Visibility="{Binding CanvasModel, Converter={StaticResource NotNullVisibilityConverter}}" />
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Code">
+                    <TextBox Text="{Binding Code, Mode=OneWay}" Style="{StaticResource CodeTextBox}" />
+                </TabItem>
+            </TabControl>
+            <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Right" Orientation="Horizontal">
+                <TextBlock Text="Renderer:" VerticalAlignment="Center" />
+                <ComboBox SelectedItem="{Binding Renderer}" ItemsSource="{Binding Renderers}" Margin="3,0,0,0" Width="80" />
+                <CheckBox IsChecked="{Binding Transposed}" Content="Transposed" VerticalAlignment="Center" Margin="10,0,5,0" IsEnabled="{Binding CanTranspose}" />
             </StackPanel>
         </Grid>
-        <TabControl Grid.Column="1" TabStripPlacement="Bottom">
-            <TabControl.Resources>
-                <Style TargetType="{x:Type TextBox}" x:Key="CodeTextBox">
-                    <Setter Property="AcceptsReturn" Value="True"></Setter>
-                    <Setter Property="FontFamily" Value="Consolas"></Setter>
-                    <Setter Property="BorderThickness" Value="0"></Setter>
-                    <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"></Setter>
-                </Style>
-            </TabControl.Resources>
-            <TabItem Header="Plot">
-                <oxy:PlotView x:Name="Plot1" Model="{Binding SelectedExample.PlotModel}" Controller="{Binding SelectedExample.Controller}"/>
-            </TabItem>
-            <TabItem Header="Plot (Transposed)" IsEnabled="{Binding SelectedExample.IsTransposable}">
-                <oxy:PlotView x:Name="Plot2" Model="{Binding SelectedExample.TransposedPlotModel}" Controller="{Binding SelectedExample.TransposedPlotController}"/>
-            </TabItem>
-            <TabItem Header="Code">
-                <TextBox Text="{Binding SelectedExample.Code, Mode=OneWay}" Style="{StaticResource CodeTextBox}" />
-            </TabItem>
-            <TabItem Header="Code (Transposed)" IsEnabled="{Binding SelectedExample.IsTransposable}">
-                <TextBox Text="{Binding SelectedExample.TransposedCode, Mode=OneWay}" Style="{StaticResource CodeTextBox}" />
-            </TabItem>
-        </TabControl>
     </Grid>
 </Window>

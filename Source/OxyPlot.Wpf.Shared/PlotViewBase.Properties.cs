@@ -1,10 +1,7 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PlotBase.Properties.cs" company="OxyPlot">
-//   Copyright (c) 2014 OxyPlot contributors
+// <copyright file="PlotViewBase.Properties.cs" company="OxyPlot">
+//   Copyright (c) 2020 OxyPlot contributors
 // </copyright>
-// <summary>
-//   Represents a control that displays a <see cref="PlotModel" />.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Wpf
@@ -14,71 +11,86 @@ namespace OxyPlot.Wpf
     using System.Windows.Input;
 
     /// <summary>
-    /// Represents a control that displays a <see cref="PlotModel" />.
+    /// Base class for WPF PlotView implementations.
     /// </summary>
-    public abstract partial class PlotBase
+    public abstract partial class PlotViewBase
     {
+        /// <summary>
+        /// Identifies the <see cref="Controller"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ControllerProperty =
+            DependencyProperty.Register(nameof(Controller), typeof(IPlotController), typeof(PlotViewBase));
+
         /// <summary>
         /// Identifies the <see cref="DefaultTrackerTemplate"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DefaultTrackerTemplateProperty =
             DependencyProperty.Register(
-                "DefaultTrackerTemplate", typeof(ControlTemplate), typeof(PlotBase), new PropertyMetadata(null));
+                nameof(DefaultTrackerTemplate), typeof(ControlTemplate), typeof(PlotViewBase), new PropertyMetadata(null));
 
         /// <summary>
         /// Identifies the <see cref="IsMouseWheelEnabled"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsMouseWheelEnabledProperty =
-            DependencyProperty.Register("IsMouseWheelEnabled", typeof(bool), typeof(PlotBase), new PropertyMetadata(true));
+            DependencyProperty.Register(nameof(IsMouseWheelEnabled), typeof(bool), typeof(PlotViewBase), new PropertyMetadata(true));
+
+        /// <summary>
+        /// Identifies the <see cref="Model"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ModelProperty =
+            DependencyProperty.Register(nameof(Model), typeof(PlotModel), typeof(PlotViewBase), new PropertyMetadata(null, ModelChanged));
 
         /// <summary>
         /// Identifies the <see cref="PanCursor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PanCursorProperty = DependencyProperty.Register(
-            "PanCursor", typeof(Cursor), typeof(PlotBase), new PropertyMetadata(Cursors.Hand));
+            nameof(PanCursor), typeof(Cursor), typeof(PlotViewBase), new PropertyMetadata(Cursors.Hand));
 
         /// <summary>
         /// Identifies the <see cref="ZoomHorizontalCursor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ZoomHorizontalCursorProperty =
             DependencyProperty.Register(
-                "ZoomHorizontalCursor", typeof(Cursor), typeof(PlotBase), new PropertyMetadata(Cursors.SizeWE));
+                nameof(ZoomHorizontalCursor), typeof(Cursor), typeof(PlotViewBase), new PropertyMetadata(Cursors.SizeWE));
 
         /// <summary>
         /// Identifies the <see cref="ZoomRectangleCursor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ZoomRectangleCursorProperty =
             DependencyProperty.Register(
-                "ZoomRectangleCursor", typeof(Cursor), typeof(PlotBase), new PropertyMetadata(Cursors.SizeNWSE));
+                nameof(ZoomRectangleCursor), typeof(Cursor), typeof(PlotViewBase), new PropertyMetadata(Cursors.SizeNWSE));
 
         /// <summary>
         /// Identifies the <see cref="ZoomRectangleTemplate"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ZoomRectangleTemplateProperty =
             DependencyProperty.Register(
-                "ZoomRectangleTemplate", typeof(ControlTemplate), typeof(PlotBase), new PropertyMetadata(null));
+                nameof(ZoomRectangleTemplate), typeof(ControlTemplate), typeof(PlotViewBase), new PropertyMetadata(null));
 
         /// <summary>
         /// Identifies the <see cref="ZoomVerticalCursor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ZoomVerticalCursorProperty =
             DependencyProperty.Register(
-                "ZoomVerticalCursor", typeof(Cursor), typeof(PlotBase), new PropertyMetadata(Cursors.SizeNS));
+                nameof(ZoomVerticalCursor), typeof(Cursor), typeof(PlotViewBase), new PropertyMetadata(Cursors.SizeNS));
+
+        /// <summary>
+        /// Gets or sets the Plot controller.
+        /// </summary>
+        /// <value>The Plot controller.</value>
+        public IPlotController Controller
+        {
+            get => (IPlotController)this.GetValue(ControllerProperty);
+            set => this.SetValue(ControllerProperty, value);
+        }
 
         /// <summary>
         /// Gets or sets the default tracker template.
         /// </summary>
         public ControlTemplate DefaultTrackerTemplate
         {
-            get
-            {
-                return (ControlTemplate)this.GetValue(DefaultTrackerTemplateProperty);
-            }
-
-            set
-            {
-                this.SetValue(DefaultTrackerTemplateProperty, value);
-            }
+            get => (ControlTemplate)this.GetValue(DefaultTrackerTemplateProperty);
+            set => this.SetValue(DefaultTrackerTemplateProperty, value);
         }
 
         /// <summary>
@@ -86,15 +98,18 @@ namespace OxyPlot.Wpf
         /// </summary>
         public bool IsMouseWheelEnabled
         {
-            get
-            {
-                return (bool)this.GetValue(IsMouseWheelEnabledProperty);
-            }
+            get => (bool)this.GetValue(IsMouseWheelEnabledProperty);
+            set => this.SetValue(IsMouseWheelEnabledProperty, value);
+        }
 
-            set
-            {
-                this.SetValue(IsMouseWheelEnabledProperty, value);
-            }
+        /// <summary>
+        /// Gets or sets the model.
+        /// </summary>
+        /// <value>The model.</value>
+        public PlotModel Model
+        {
+            get => (PlotModel)this.GetValue(ModelProperty);
+            set => this.SetValue(ModelProperty, value);
         }
 
         /// <summary>
@@ -103,15 +118,8 @@ namespace OxyPlot.Wpf
         /// <value>The pan cursor.</value>
         public Cursor PanCursor
         {
-            get
-            {
-                return (Cursor)this.GetValue(PanCursorProperty);
-            }
-
-            set
-            {
-                this.SetValue(PanCursorProperty, value);
-            }
+            get => (Cursor)this.GetValue(PanCursorProperty);
+            set => this.SetValue(PanCursorProperty, value);
         }
 
         /// <summary>
@@ -120,15 +128,8 @@ namespace OxyPlot.Wpf
         /// <value>The zoom horizontal cursor.</value>
         public Cursor ZoomHorizontalCursor
         {
-            get
-            {
-                return (Cursor)this.GetValue(ZoomHorizontalCursorProperty);
-            }
-
-            set
-            {
-                this.SetValue(ZoomHorizontalCursorProperty, value);
-            }
+            get => (Cursor)this.GetValue(ZoomHorizontalCursorProperty);
+            set => this.SetValue(ZoomHorizontalCursorProperty, value);
         }
 
         /// <summary>
@@ -137,15 +138,8 @@ namespace OxyPlot.Wpf
         /// <value>The zoom rectangle cursor.</value>
         public Cursor ZoomRectangleCursor
         {
-            get
-            {
-                return (Cursor)this.GetValue(ZoomRectangleCursorProperty);
-            }
-
-            set
-            {
-                this.SetValue(ZoomRectangleCursorProperty, value);
-            }
+            get => (Cursor)this.GetValue(ZoomRectangleCursorProperty);
+            set => this.SetValue(ZoomRectangleCursorProperty, value);
         }
 
         /// <summary>
@@ -154,15 +148,8 @@ namespace OxyPlot.Wpf
         /// <value>The zoom rectangle template.</value>
         public ControlTemplate ZoomRectangleTemplate
         {
-            get
-            {
-                return (ControlTemplate)this.GetValue(ZoomRectangleTemplateProperty);
-            }
-
-            set
-            {
-                this.SetValue(ZoomRectangleTemplateProperty, value);
-            }
+            get => (ControlTemplate)this.GetValue(ZoomRectangleTemplateProperty);
+            set => this.SetValue(ZoomRectangleTemplateProperty, value);
         }
 
         /// <summary>
@@ -171,15 +158,8 @@ namespace OxyPlot.Wpf
         /// <value>The zoom vertical cursor.</value>
         public Cursor ZoomVerticalCursor
         {
-            get
-            {
-                return (Cursor)this.GetValue(ZoomVerticalCursorProperty);
-            }
-
-            set
-            {
-                this.SetValue(ZoomVerticalCursorProperty, value);
-            }
+            get => (Cursor)this.GetValue(ZoomVerticalCursorProperty);
+            set => this.SetValue(ZoomVerticalCursorProperty, value);
         }
     }
 }

@@ -1,10 +1,7 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PlotBase.Events.cs" company="OxyPlot">
-//   Copyright (c) 2014 OxyPlot contributors
+// <copyright file="PlotViewBase.Events.cs" company="OxyPlot">
+//   Copyright (c) 2020 OxyPlot contributors
 // </copyright>
-// <summary>
-//   Represents a control that displays a <see cref="PlotModel" />.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Wpf
@@ -13,9 +10,9 @@ namespace OxyPlot.Wpf
     using System.Windows.Input;
 
     /// <summary>
-    /// Represents a control that displays a <see cref="PlotModel" />.
+    /// Base class for WPF PlotView implementations.
     /// </summary>
-    public abstract partial class PlotBase
+    public abstract partial class PlotViewBase
     {
         /// <summary>
         /// Called before the <see cref="E:System.Windows.UIElement.KeyDown" /> event occurs.

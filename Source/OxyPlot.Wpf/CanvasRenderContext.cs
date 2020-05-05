@@ -80,14 +80,14 @@ namespace OxyPlot.Wpf
         private string currentToolTip;
 
         /// <summary>
-        /// The dpi scales
+        /// The dpi scale.
         /// </summary>
-        private Point dpiScales;
+        public double DpiScale { get; set; } = 1;
 
         /// <summary>
-        /// The visual offset relative to visual root
+        /// The visual offset relative to visual root.
         /// </summary>
-        private Point visualOffset;
+        public Point VisualOffset { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CanvasRenderContext" /> class.
@@ -101,7 +101,6 @@ namespace OxyPlot.Wpf
             this.UseStreamGeometry = true;
             this.RendersToScreen = true;
             this.BalancedLineDrawingThicknessLimit = 3.5;
-            this.dpiScales = new Point(1, 1);
         }
 
         /// <summary>
@@ -647,35 +646,6 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Updates render context state
-        /// </summary>
-        /// <remarks>This method is called at the beginning of each rendering.</remarks>
-        public void UpdateState()
-        {
-            if (this.canvas != null)
-            {
-                this.dpiScales = PixelLayout.GetDpiScales(this.canvas);
-                this.visualOffset = PixelLayout.GetVisualOffset(this.canvas, Window.GetWindow(this.canvas));
-            }
-            else
-            {
-                this.dpiScales = new Point(1, 1);
-                this.visualOffset = new Point(0, 0);
-            }
-        }
-
-        /// <summary>
-        /// Sets the DPI used for rendering.
-        /// </summary>
-        /// <param name="dpi">The DPI.</param>
-        public void SetDpi(double dpi)
-        {
-            var scale = dpi / 96;
-            this.dpiScales = new Point(scale, scale);
-            this.visualOffset = new Point(0, 0);
-        }
-
-        /// <summary>
         /// Cleans up resources not in use.
         /// </summary>
         /// <remarks>This method is called at the end of each rendering.</remarks>
@@ -1098,7 +1068,7 @@ namespace OxyPlot.Wpf
                 case EdgeRenderingMode.Adaptive when RenderContextBase.IsStraightLine(points):
                 case EdgeRenderingMode.Automatic when RenderContextBase.IsStraightLine(points):
                 case EdgeRenderingMode.PreferSharpness:
-                    return points.Select(p => PixelLayout.Snap(p.X, p.Y, strokeThickness, this.visualOffset, this.dpiScales));
+                    return points.Select(p => PixelLayout.Snap(p.X, p.Y, strokeThickness, this.VisualOffset, this.DpiScale));
                 default:
                     return points.Select(p => new Point(p.X, p.Y));
             }
@@ -1119,7 +1089,7 @@ namespace OxyPlot.Wpf
                 case EdgeRenderingMode.PreferSpeed:
                     return ToRect(rect);
                 default:
-                    return PixelLayout.Snap(ToRect(rect), strokeThickness, this.visualOffset, this.dpiScales);
+                    return PixelLayout.Snap(ToRect(rect), strokeThickness, this.VisualOffset, this.DpiScale);
             }
         }
 
@@ -1134,7 +1104,7 @@ namespace OxyPlot.Wpf
             switch (edgeRenderingMode)
             {
                 case EdgeRenderingMode.PreferSharpness:
-                    return PixelLayout.SnapStrokeThickness(strokeThickness, this.dpiScales);
+                    return PixelLayout.SnapStrokeThickness(strokeThickness, this.DpiScale);
                 default:
                     return strokeThickness;
             }

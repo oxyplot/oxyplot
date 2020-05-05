@@ -128,5 +128,23 @@ namespace OxyPlot.Wpf.Tests
             Assert.DoesNotThrow(() => window.Show());
             Assert.IsNull(model.GetLastPlotException());
         }
+
+        /// <summary>
+        /// Make sure the PlotView does not throw an exception if it is invalidated while not in the visual tree.
+        /// </summary>
+        [Test]
+        [RequiresThread(System.Threading.ApartmentState.STA)]
+        public void InvalidateDisconnected()
+        {
+            var model = new PlotModel();
+
+            var view = new PlotView { Model = model };
+            var window = new Window { Height = 350, Width = 500, Content = view };
+
+            Assert.DoesNotThrow(() => window.Show());
+            Assert.DoesNotThrow(() => view.InvalidatePlot());
+            window.Content = null;
+            Assert.DoesNotThrow(() => view.InvalidatePlot());
+        }
     }
 }

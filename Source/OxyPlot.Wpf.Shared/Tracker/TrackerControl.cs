@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="TrackerControl.cs" company="OxyPlot">
-//   Copyright (c) 2014 OxyPlot contributors
+//   Copyright (c) 2020 OxyPlot contributors
 // </copyright>
 // <summary>
 //   The tracker control.
@@ -25,7 +25,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty HorizontalLineVisibilityProperty =
             DependencyProperty.Register(
-                "HorizontalLineVisibility",
+                nameof(HorizontalLineVisibility),
                 typeof(Visibility),
                 typeof(TrackerControl),
                 new PropertyMetadata(Visibility.Visible));
@@ -35,7 +35,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty VerticalLineVisibilityProperty =
             DependencyProperty.Register(
-                "VerticalLineVisibility",
+                nameof(VerticalLineVisibility),
                 typeof(Visibility),
                 typeof(TrackerControl),
                 new PropertyMetadata(Visibility.Visible));
@@ -44,63 +44,63 @@ namespace OxyPlot.Wpf
         /// Identifies the <see cref="LineStroke"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LineStrokeProperty = DependencyProperty.Register(
-            "LineStroke", typeof(Brush), typeof(TrackerControl), new PropertyMetadata(null));
+            nameof(LineStroke), typeof(Brush), typeof(TrackerControl), new PropertyMetadata(null));
 
         /// <summary>
         /// Identifies the <see cref="LineExtents"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LineExtentsProperty = DependencyProperty.Register(
-            "LineExtents", typeof(OxyRect), typeof(TrackerControl), new PropertyMetadata(new OxyRect()));
+            nameof(LineExtents), typeof(OxyRect), typeof(TrackerControl), new PropertyMetadata(new OxyRect()));
 
         /// <summary>
         /// Identifies the <see cref="LineDashArray"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LineDashArrayProperty = DependencyProperty.Register(
-            "LineDashArray", typeof(DoubleCollection), typeof(TrackerControl), new PropertyMetadata(null));
+            nameof(LineDashArray), typeof(DoubleCollection), typeof(TrackerControl), new PropertyMetadata(null));
 
         /// <summary>
         /// Identifies the <see cref="BorderEdgeMode"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty BorderEdgeModeProperty = DependencyProperty.Register(
-            "BorderEdgeMode", typeof(EdgeMode), typeof(TrackerControl));
+            nameof(BorderEdgeMode), typeof(EdgeMode), typeof(TrackerControl));
 
         /// <summary>
         /// Identifies the <see cref="ShowPointer"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ShowPointerProperty = DependencyProperty.Register(
-            "ShowPointer", typeof(bool), typeof(TrackerControl), new PropertyMetadata(true));
+            nameof(ShowPointer), typeof(bool), typeof(TrackerControl), new PropertyMetadata(true));
 
         /// <summary>
         /// Identifies the <see cref="CornerRadius"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
-            "CornerRadius", typeof(double), typeof(TrackerControl), new PropertyMetadata(0.0));
+            nameof(CornerRadius), typeof(double), typeof(TrackerControl), new PropertyMetadata(0.0));
 
         /// <summary>
         /// Identifies the <see cref="Distance"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DistanceProperty = DependencyProperty.Register(
-            "Distance", typeof(double), typeof(TrackerControl), new PropertyMetadata(7.0));
+            nameof(Distance), typeof(double), typeof(TrackerControl), new PropertyMetadata(7.0));
 
         /// <summary>
         /// Identifies the <see cref="CanCenterHorizontally"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CanCenterHorizontallyProperty =
             DependencyProperty.Register(
-                "CanCenterHorizontally", typeof(bool), typeof(TrackerControl), new PropertyMetadata(true));
+                nameof(CanCenterHorizontally), typeof(bool), typeof(TrackerControl), new PropertyMetadata(true));
 
         /// <summary>
         /// Identifies the <see cref="CanCenterVertically"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CanCenterVerticallyProperty =
             DependencyProperty.Register(
-                "CanCenterVertically", typeof(bool), typeof(TrackerControl), new PropertyMetadata(true));
+                nameof(CanCenterVertically), typeof(bool), typeof(TrackerControl), new PropertyMetadata(true));
 
         /// <summary>
         /// Identifies the <see cref="Position"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PositionProperty = DependencyProperty.Register(
-            "Position",
+            nameof(Position),
             typeof(ScreenPoint),
             typeof(TrackerControl),
             new PropertyMetadata(new ScreenPoint(), PositionChanged));
@@ -169,15 +169,8 @@ namespace OxyPlot.Wpf
         /// </summary>
         public EdgeMode BorderEdgeMode
         {
-            get
-            {
-                return (EdgeMode)this.GetValue(BorderEdgeModeProperty);
-            }
-
-            set
-            {
-                this.SetValue(BorderEdgeModeProperty, value);
-            }
+            get => (EdgeMode)this.GetValue(BorderEdgeModeProperty);
+            set => this.SetValue(BorderEdgeModeProperty, value);
         }
 
         /// <summary>
@@ -185,15 +178,8 @@ namespace OxyPlot.Wpf
         /// </summary>
         public Visibility HorizontalLineVisibility
         {
-            get
-            {
-                return (Visibility)this.GetValue(HorizontalLineVisibilityProperty);
-            }
-
-            set
-            {
-                this.SetValue(HorizontalLineVisibilityProperty, value);
-            }
+            get => (Visibility)this.GetValue(HorizontalLineVisibilityProperty);
+            set => this.SetValue(HorizontalLineVisibilityProperty, value);
         }
 
         /// <summary>
@@ -201,15 +187,8 @@ namespace OxyPlot.Wpf
         /// </summary>
         public Visibility VerticalLineVisibility
         {
-            get
-            {
-                return (Visibility)this.GetValue(VerticalLineVisibilityProperty);
-            }
-
-            set
-            {
-                this.SetValue(VerticalLineVisibilityProperty, value);
-            }
+            get => (Visibility)this.GetValue(VerticalLineVisibilityProperty);
+            set => this.SetValue(VerticalLineVisibilityProperty, value);
         }
 
         /// <summary>
@@ -217,15 +196,8 @@ namespace OxyPlot.Wpf
         /// </summary>
         public Brush LineStroke
         {
-            get
-            {
-                return (Brush)this.GetValue(LineStrokeProperty);
-            }
-
-            set
-            {
-                this.SetValue(LineStrokeProperty, value);
-            }
+            get => (Brush)this.GetValue(LineStrokeProperty);
+            set => this.SetValue(LineStrokeProperty, value);
         }
 
         /// <summary>
@@ -233,15 +205,8 @@ namespace OxyPlot.Wpf
         /// </summary>
         public OxyRect LineExtents
         {
-            get
-            {
-                return (OxyRect)this.GetValue(LineExtentsProperty);
-            }
-
-            set
-            {
-                this.SetValue(LineExtentsProperty, value);
-            }
+            get => (OxyRect)this.GetValue(LineExtentsProperty);
+            set => this.SetValue(LineExtentsProperty, value);
         }
 
         /// <summary>
@@ -249,15 +214,8 @@ namespace OxyPlot.Wpf
         /// </summary>
         public DoubleCollection LineDashArray
         {
-            get
-            {
-                return (DoubleCollection)this.GetValue(LineDashArrayProperty);
-            }
-
-            set
-            {
-                this.SetValue(LineDashArrayProperty, value);
-            }
+            get => (DoubleCollection)this.GetValue(LineDashArrayProperty);
+            set => this.SetValue(LineDashArrayProperty, value);
         }
 
         /// <summary>
@@ -265,15 +223,8 @@ namespace OxyPlot.Wpf
         /// </summary>
         public bool ShowPointer
         {
-            get
-            {
-                return (bool)this.GetValue(ShowPointerProperty);
-            }
-
-            set
-            {
-                this.SetValue(ShowPointerProperty, value);
-            }
+            get => (bool)this.GetValue(ShowPointerProperty);
+            set => this.SetValue(ShowPointerProperty, value);
         }
 
         /// <summary>
@@ -281,15 +232,9 @@ namespace OxyPlot.Wpf
         /// </summary>
         public double CornerRadius
         {
-            get
-            {
-                return (double)this.GetValue(CornerRadiusProperty);
-            }
+            get => (double)this.GetValue(CornerRadiusProperty);
 
-            set
-            {
-                this.SetValue(CornerRadiusProperty, value);
-            }
+            set => this.SetValue(CornerRadiusProperty, value);
         }
 
         /// <summary>
@@ -297,15 +242,8 @@ namespace OxyPlot.Wpf
         /// </summary>
         public double Distance
         {
-            get
-            {
-                return (double)this.GetValue(DistanceProperty);
-            }
-
-            set
-            {
-                this.SetValue(DistanceProperty, value);
-            }
+            get => (double)this.GetValue(DistanceProperty);
+            set => this.SetValue(DistanceProperty, value);
         }
 
         /// <summary>
@@ -313,15 +251,8 @@ namespace OxyPlot.Wpf
         /// </summary>
         public bool CanCenterHorizontally
         {
-            get
-            {
-                return (bool)this.GetValue(CanCenterHorizontallyProperty);
-            }
-
-            set
-            {
-                this.SetValue(CanCenterHorizontallyProperty, value);
-            }
+            get => (bool)this.GetValue(CanCenterHorizontallyProperty);
+            set => this.SetValue(CanCenterHorizontallyProperty, value);
         }
 
         /// <summary>
@@ -329,15 +260,8 @@ namespace OxyPlot.Wpf
         /// </summary>
         public bool CanCenterVertically
         {
-            get
-            {
-                return (bool)this.GetValue(CanCenterVerticallyProperty);
-            }
-
-            set
-            {
-                this.SetValue(CanCenterVerticallyProperty, value);
-            }
+            get => (bool)this.GetValue(CanCenterVerticallyProperty);
+            set => this.SetValue(CanCenterVerticallyProperty, value);
         }
 
         /// <summary>
@@ -345,15 +269,8 @@ namespace OxyPlot.Wpf
         /// </summary>
         public ScreenPoint Position
         {
-            get
-            {
-                return (ScreenPoint)this.GetValue(PositionProperty);
-            }
-
-            set
-            {
-                this.SetValue(PositionProperty, value);
-            }
+            get => (ScreenPoint)this.GetValue(PositionProperty);
+            set => this.SetValue(PositionProperty, value);
         }
 
         /// <summary>
@@ -370,23 +287,17 @@ namespace OxyPlot.Wpf
 
             if (this.contentContainer == null)
             {
-                throw new InvalidOperationException(
-                    string.Format(
-                        "The TrackerControl template must contain a content container with name +'{0}'",
-                        PartContentcontainer));
+                throw new InvalidOperationException($"The TrackerControl template must contain a content container with name +'{PartContentcontainer}'");
             }
 
             if (this.path == null)
             {
-                throw new InvalidOperationException(
-                    string.Format("The TrackerControl template must contain a Path with name +'{0}'", PartPath));
+                throw new InvalidOperationException($"The TrackerControl template must contain a Path with name +'{PartPath}'");
             }
 
             if (this.content == null)
             {
-                throw new InvalidOperationException(
-                    string.Format(
-                        "The TrackerControl template must contain a ContentPresenter with name +'{0}'", PartContent));
+                throw new InvalidOperationException($"The TrackerControl template must contain a ContentPresenter with name +'{PartContent}'");
             }
 
             this.UpdatePositionAndBorder();
@@ -407,7 +318,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         /// <param name="dependencyPropertyChangedEventArgs">The dependency property changed event args.</param>
         // ReSharper disable once UnusedParameter.Local
-        private void OnPositionChanged(DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+        private void OnPositionChanged(DependencyPropertyChangedEventArgs _)
         {
             this.UpdatePositionAndBorder();
         }
@@ -501,9 +412,8 @@ namespace OxyPlot.Wpf
             double dx = ha == HorizontalAlignment.Center ? -0.5 : ha == HorizontalAlignment.Left ? 0 : -1;
             double dy = va == VerticalAlignment.Center ? -0.5 : va == VerticalAlignment.Top ? 0 : -1;
 
-            Thickness margin;
             this.path.Data = this.ShowPointer
-                                 ? this.CreatePointerBorderGeometry(ha, va, contentWidth, contentHeight, out margin)
+                                 ? this.CreatePointerBorderGeometry(ha, va, contentWidth, contentHeight, out Thickness margin)
                                  : this.CreateBorderGeometry(ha, va, contentWidth, contentHeight, out margin);
 
             this.content.Margin = margin;
