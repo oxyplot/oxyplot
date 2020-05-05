@@ -49,6 +49,7 @@ All notable changes to this project will be documented in this file.
 - OxyPlot.WindowsForms package description (#1457)
 - NullReference in VolumeSeries if no data in Items list (#1491)
 - Possible out-of-bounds exception in HeatMapSeries HitTest (#1524)
+- WPF CanvasRenderContext draws ellipses too small by half stroke thickness (#1537)
 
 ## [2.0.0] - 2019-10-19
 ### Added 
