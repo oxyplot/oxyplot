@@ -136,17 +136,7 @@ namespace OxyPlot.Wpf
         ///<inheritdoc/>
         public void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
         {
-            var e = this.CreateAndAdd<Ellipse>(rect.Left, rect.Top);
-            this.SetStroke(e, stroke, thickness, edgeRenderingMode);
-            if (fill.IsVisible())
-            {
-                e.Fill = this.GetCachedBrush(fill);
-            }
-
-            e.Width = rect.Width;
-            e.Height = rect.Height;
-            Canvas.SetLeft(e, rect.Left);
-            Canvas.SetTop(e, rect.Top);
+            this.DrawEllipses(new[] { rect }, fill, stroke, thickness, edgeRenderingMode);
         }
 
         ///<inheritdoc/>
