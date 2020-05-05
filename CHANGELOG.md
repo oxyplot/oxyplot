@@ -17,6 +17,11 @@ All notable changes to this project will be documented in this file.
 - Example for Issue #1524: HitTracker IndexOutOfRangeException with HeatMapSeries
 - Text shaping support to SkiaRenderContext (#1520)
 - PlotView based on SkiaRenderContext (OxyPlot.SkiaSharp.Wpf) (#1515)
+- DrawImage support to OxyPlot.ImageSharp (#1530)
+- Dpi support to OxyPlot.ImageSharp (#1530)
+- Dash support to OxyPlot.ImageSharp
+- Clipping support to OxyPlot.ImageSharp
+- JpegExporter for OxyPlot.ImageSharp
 
 ### Changed
 - Legends model (#644)
@@ -32,6 +37,7 @@ All notable changes to this project will be documented in this file.
 - Default color palette for LinearColorAxis from Jet to Viridis (#1505)
 - Extract most of the functionality from OxyPlot.Wpf into OxyPlot.Wpf.Shared to allow code sharing with other WPF PlotViews (#1515)
 - WPF ExampleBrowser can switch between Canvas and SkiaSharp renderers (#1515)
+- OxyPlot.ImageSharp now targets .NET Standard 1.3 (#1530)
 
 ### Removed
 - Remove PlotModel.Legends (#644)
@@ -50,6 +56,7 @@ All notable changes to this project will be documented in this file.
 - NullReference in VolumeSeries if no data in Items list (#1491)
 - Possible out-of-bounds exception in HeatMapSeries HitTest (#1524)
 - WPF CanvasRenderContext draws ellipses too small by half stroke thickness (#1537)
+- Text measurement and rendering in OxyPlot.ImageSharp
 
 ## [2.0.0] - 2019-10-19
 ### Added 
