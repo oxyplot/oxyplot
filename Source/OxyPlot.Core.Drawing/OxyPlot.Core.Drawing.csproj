@@ -12,9 +12,17 @@
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <GenerateDocumentationFile>True</GenerateDocumentationFile>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <DefineConstants>OXYPLOT_COREDRAWING</DefineConstants>
     </PropertyGroup>
     <ItemGroup>
         <None Include="..\..\Icons\OxyPlot_128.png" Pack="true" PackagePath="\" />
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Include="..\OxyPlot.WindowsForms\DrawingConverterExtensions.cs" />
+        <Compile Include="..\OxyPlot.WindowsForms\ExporterExtensions.cs" />
+        <Compile Include="..\OxyPlot.WindowsForms\PngExporter.cs" />
+        <Compile Include="..\OxyPlot.WindowsForms\GraphicsPenDescription.cs" />
+        <Compile Include="..\OxyPlot.WindowsForms\GraphicsRenderContext.cs" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="System.Drawing.Common" Version="4.6.0" />

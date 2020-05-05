@@ -1,11 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
+#if OXYPLOT_COREDRAWING
+namespace OxyPlot.Core.Drawing
+#else
 namespace OxyPlot.WindowsForms
+#endif
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+
     /// <summary>
     /// Describes a GDI+ Pen.
     /// </summary>
