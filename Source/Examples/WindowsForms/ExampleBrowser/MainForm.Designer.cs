@@ -40,10 +40,13 @@ namespace ExampleBrowser
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.plot1 = new OxyPlot.WindowsForms.PlotView();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.transposedCheck = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -59,6 +62,7 @@ namespace ExampleBrowser
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.plot1);
+            this.splitContainer1.Panel2.Controls.Add(this.panel1);
             this.splitContainer1.Size = new System.Drawing.Size(943, 554);
             this.splitContainer1.SplitterDistance = 314;
             this.splitContainer1.TabIndex = 0;
@@ -82,6 +86,7 @@ namespace ExampleBrowser
             plotModel1.DefaultColors = null;
             plotModel1.DefaultFont = "Segoe UI";
             plotModel1.DefaultFontSize = 12D;
+            plotModel1.EdgeRenderingMode = OxyPlot.EdgeRenderingMode.Automatic;
             plotModel1.IsLegendVisible = true;
             plotModel1.PlotType = OxyPlot.PlotType.XY;
             plotModel1.RenderingDecorator = null;
@@ -99,12 +104,32 @@ namespace ExampleBrowser
             this.plot1.Model = plotModel1;
             this.plot1.Name = "plot1";
             this.plot1.PanCursor = System.Windows.Forms.Cursors.Hand;
-            this.plot1.Size = new System.Drawing.Size(625, 554);
+            this.plot1.Size = new System.Drawing.Size(625, 525);
             this.plot1.TabIndex = 0;
             this.plot1.Text = "plot1";
             this.plot1.ZoomHorizontalCursor = System.Windows.Forms.Cursors.SizeWE;
             this.plot1.ZoomRectangleCursor = System.Windows.Forms.Cursors.SizeNWSE;
             this.plot1.ZoomVerticalCursor = System.Windows.Forms.Cursors.SizeNS;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.transposedCheck);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel1.Location = new System.Drawing.Point(0, 525);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(625, 29);
+            this.panel1.TabIndex = 1;
+            // 
+            // transposedCheck
+            // 
+            this.transposedCheck.AutoSize = true;
+            this.transposedCheck.Location = new System.Drawing.Point(531, 6);
+            this.transposedCheck.Name = "transposedCheck";
+            this.transposedCheck.Size = new System.Drawing.Size(82, 17);
+            this.transposedCheck.TabIndex = 0;
+            this.transposedCheck.Text = "Transposed";
+            this.transposedCheck.UseVisualStyleBackColor = true;
+            this.transposedCheck.CheckedChanged += new System.EventHandler(this.transposedCheck_CheckedChanged);
             // 
             // MainForm
             // 
@@ -118,6 +143,8 @@ namespace ExampleBrowser
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -127,5 +154,7 @@ namespace ExampleBrowser
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.TreeView treeView1;
         private OxyPlot.WindowsForms.PlotView plot1;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.CheckBox transposedCheck;
     }
 }
