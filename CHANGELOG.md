@@ -22,6 +22,7 @@ All notable changes to this project will be documented in this file.
 - Dash support to OxyPlot.ImageSharp
 - Clipping support to OxyPlot.ImageSharp
 - JpegExporter for OxyPlot.ImageSharp
+- Multi-line aligned text rendering example
 
 ### Changed
 - Legends model (#644)
