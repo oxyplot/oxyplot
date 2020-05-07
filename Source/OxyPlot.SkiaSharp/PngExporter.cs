@@ -68,7 +68,7 @@ namespace OxyPlot.SkiaSharp
             using var bitmap = new SKBitmap(this.Width, this.Height);
 
             using (var canvas = new SKCanvas(bitmap))
-            using (var context = new SkiaRenderContext { RendersToScreen = false, SkCanvas = canvas, UseTextShaping = this.UseTextShaping })
+            using (var context = new SkiaRenderContext { RenderTarget = RenderTarget.PixelGraphic, SkCanvas = canvas, UseTextShaping = this.UseTextShaping })
             {
                 var dpiScale = this.Dpi / 96;
                 context.DpiScale = dpiScale;

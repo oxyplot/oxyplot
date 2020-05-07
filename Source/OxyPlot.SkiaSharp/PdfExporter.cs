@@ -65,7 +65,7 @@ namespace OxyPlot.SkiaSharp
         {
             using var document = SKDocument.CreatePdf(stream, this.Dpi);
             using var pdfCanvas = document.BeginPage(this.Width, this.Height);
-            using var context = new SkiaRenderContext { RendersToScreen = false, SkCanvas = pdfCanvas, UseTextShaping = this.UseTextShaping };
+            using var context = new SkiaRenderContext { RenderTarget = RenderTarget.VectorGraphic, SkCanvas = pdfCanvas, UseTextShaping = this.UseTextShaping };
             var dpiScale = this.Dpi / 96;
             context.DpiScale = dpiScale;
             model.Update(true);

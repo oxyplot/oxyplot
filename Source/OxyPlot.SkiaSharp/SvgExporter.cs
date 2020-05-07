@@ -31,7 +31,7 @@ namespace OxyPlot.SkiaSharp
             using var writer = new SKXmlStreamWriter(skStream);
             using var canvas = SKSvgCanvas.Create(new SKRect(0, 0, this.Width, this.Height), writer);
             // SVG export does not work with UseTextShaping=true. However SVG does text shaping by itself anyway, so we can just disable it
-            using var context = new SkiaRenderContext { RendersToScreen = false, SkCanvas = canvas, UseTextShaping = false };
+            using var context = new SkiaRenderContext { RenderTarget = RenderTarget.VectorGraphic, SkCanvas = canvas, UseTextShaping = false };
             model.Update(true);
             model.Render(context, new OxyRect(0, 0, this.Width, this.Height));
         }
