@@ -12,28 +12,44 @@
     {
         static void Main(string[] args)
         {
-            var outputToFile = "test-oxyplot-static-export-file.png";
-            var outputExportStreamOOP = "test-oxyplot-export-stream.png";
+            var outputToFile = "test-oxyplot-static-export-file";
+            var outputExportStreamOOP = "test-oxyplot-export-stream";
 
             var width = 1024;
             var height = 768;
-            var resolution = 96d;
+            var resolutions = new[] { 72d, 96d, 182d };
 
             var model = BuildPlotModel();
 
-            // export to file using static methods
-            PngExporter.Export(model, outputToFile, width, height, resolution);
-
-            // export using the instance methods
-            using (var stream = new MemoryStream())
+            foreach (var resolution in resolutions)
             {
-                var pngExporter = new PngExporter { Width = width, Height = height, Resolution = resolution };
-                pngExporter.Export(model, stream);
-                System.IO.File.WriteAllBytes(outputExportStreamOOP, stream.ToArray());
+                // export to file using static methods
+                PngExporter.Export(model, $"{outputToFile}{resolution}.png", width, height, resolution);
+
+                // export using the instance methods
+                using (var stream = new MemoryStream())
+                {
+                    var pngExporter = new PngExporter(width, height, resolution);
+                    pngExporter.Export(model, stream);
+                    System.IO.File.WriteAllBytes($"{outputExportStreamOOP}{resolution}.png", stream.ToArray());
+                }
+
+                model.Background = OxyColors.White;
+
+                // export to file using static methods
+                JpegExporter.Export(model, $"{outputToFile}{resolution}.jpg", width, height, resolution);
+
+                // export using the instance methods
+                using (var stream = new MemoryStream())
+                {
+                    var jpegExporter = new JpegExporter(width, height, resolution);
+                    jpegExporter.Export(model, stream);
+                    System.IO.File.WriteAllBytes($"{outputExportStreamOOP}{resolution}.jpg", stream.ToArray());
+                }
             }
         }
 
-        private static IPlotModel BuildPlotModel()
+        private static PlotModel BuildPlotModel()
         {
             var rand = new Random(21);
 
@@ -56,19 +72,20 @@
                 Position = AxisPosition.Left,
                 Key = "CakeAxis",
                 ItemsSource = new[]
-               {
-               "Apple cake",
-               "Baumkuchen",
-               "Bundt Cake",
-               "Chocolate cake",
-               "Carrot cake"
-            }
+                {
+                    "Apple cake",
+                    "Baumkuchen",
+                    "Bundt Cake",
+                    "Chocolate cake",
+                    "Carrot cake"
+                }
             });
+
             return model;
         }
 
         private static BarItem RandomBarItem(double cp, double sum)
-           => new BarItem { Value = cp / sum * 100, Color = RandomColor() };
+            => new BarItem { Value = cp / sum * 100, Color = RandomColor() };
 
         private static OxyColor RandomColor()
         {
