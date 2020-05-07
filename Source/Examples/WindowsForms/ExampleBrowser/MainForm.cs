@@ -47,12 +47,32 @@ namespace ExampleBrowser
         {
             this.vm.SelectedExample = e.Node.Tag as ExampleInfo;
             this.InitPlot();
+
+            this.transposedCheck.Enabled = this.vm.SelectedExample?.IsTransposable ?? false;
         }
 
         private void InitPlot()
         {
-            this.plot1.Model = this.vm.SelectedExample != null ? this.vm.SelectedExample.PlotModel : null;
-            this.plot1.Controller = this.vm.SelectedExample != null ? this.vm.SelectedExample.PlotController : null;
+            if (this.vm.SelectedExample == null)
+            {
+                this.plot1.Model = null;
+                this.plot1.Controller = null;
+            }
+            else if (transposedCheck.Checked && this.vm.SelectedExample.IsTransposable)
+            {
+                this.plot1.Model = this.vm.SelectedExample.TransposedPlotModel;
+                this.plot1.Controller = this.vm.SelectedExample.TransposedPlotController;
+            }
+            else
+            {
+                this.plot1.Model = this.vm.SelectedExample.PlotModel;
+                this.plot1.Controller = this.vm.SelectedExample.PlotController;
+            }
+        }
+
+        private void transposedCheck_CheckedChanged(object sender, System.EventArgs e)
+        {
+            InitPlot();
         }
     }
 }

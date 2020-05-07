@@ -23,6 +23,7 @@ All notable changes to this project will be documented in this file.
 - Clipping support to OxyPlot.ImageSharp
 - JpegExporter for OxyPlot.ImageSharp
 - Multi-line aligned text rendering example
+- WindowsForms ExampleBrowser can display transposed versions of examples (#1535)
 
 ### Changed
 - Legends model (#644)
