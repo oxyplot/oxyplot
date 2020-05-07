@@ -149,6 +149,31 @@ namespace ExampleLibrary
         }
 
         /// <summary>
+        /// Shows alignment capabilities for the DrawText method with multi-line text.
+        /// </summary>
+        /// <returns>A plot model.</returns>
+        [Example("DrawText - Multi-line Alignment")]
+        public static PlotModel DrawTextMultiLineAlignment()
+        {
+            var model = new PlotModel();
+            model.Annotations.Add(new DelegateAnnotation(rc =>
+            {
+                const double FontSize = 20d;
+
+                for (var ha = HorizontalAlignment.Left; ha <= HorizontalAlignment.Right; ha++)
+                {
+                    for (var va = VerticalAlignment.Top; va <= VerticalAlignment.Bottom; va++)
+                    {
+                        var origin = new ScreenPoint((((int)ha + 1) * 200) + 20, (((int)va + 1) * FontSize * 6) + 20);
+                        rc.FillCircle(origin, 3, OxyColors.Blue, EdgeRenderingMode.Adaptive);
+                        rc.DrawText(origin, ha + "\r\n" + va, OxyColors.Black, fontSize: FontSize, horizontalAlignment: ha, verticalAlignment: va);
+                    }
+                }
+            }));
+            return model;
+        }
+
+        /// <summary>
         /// Shows rotation capabilities for the DrawMathText method.
         /// </summary>
         /// <returns>A plot model.</returns>
