@@ -7,7 +7,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#if OXYPLOT_COREDRAWING
+namespace OxyPlot.Core.Drawing
+#else
 namespace OxyPlot.WindowsForms
+#endif
 {
     using System.Drawing;
     using System.Drawing.Imaging;
