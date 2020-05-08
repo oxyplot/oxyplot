@@ -562,7 +562,7 @@ namespace OxyPlot
         /// <param name="dy">The line spacing.</param>
         public static void DrawMultilineText(this IRenderContext rc, ScreenPoint point, string text, OxyColor color, string fontFamily = null, double fontSize = 10, double fontWeight = FontWeights.Normal, double dy = 12)
         {
-            var lines = text.Split(new[] { "\r\n" }, StringSplitOptions.None);
+            var lines = StringHelper.SplitLines(text);
             for (int i = 0; i < lines.Length; i++)
             {
                 rc.DrawText(
