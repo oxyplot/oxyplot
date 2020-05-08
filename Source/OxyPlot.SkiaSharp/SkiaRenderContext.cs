@@ -27,8 +27,13 @@ namespace OxyPlot.SkiaSharp
         /// </summary>
         public float DpiScale { get; set; } = 1;
 
-        /// <inheritdoc/>
-        public bool RendersToScreen { get; set; } = true;
+        /// <inheritdoc />
+        public bool RendersToScreen => this.RenderTarget == RenderTarget.Screen;
+
+        /// <summary>
+        /// Gets or sets the render target.
+        /// </summary>
+        public RenderTarget RenderTarget { get; set; } = RenderTarget.Screen;
 
         /// <summary>
         /// Gets or sets the <see cref="SKCanvas"/> the <see cref="SkiaRenderContext"/> renders to. This must be set before any draw calls.
@@ -39,6 +44,12 @@ namespace OxyPlot.SkiaSharp
         /// Gets or sets a value indicating whether text shaping should be used when rendering text.
         /// </summary>
         public bool UseTextShaping { get; set; } = true;
+
+        /// <summary>
+        /// Gets a value indicating whether the context renders to pixels.
+        /// </summary>
+        /// <value><c>true</c> if the context renders to pixels; otherwise, <c>false</c>.</value>
+        private bool RendersToPixels => this.RenderTarget != RenderTarget.VectorGraphic;
 
         /// <inheritdoc/>
         public void CleanUp()
@@ -172,9 +183,9 @@ namespace OxyPlot.SkiaSharp
             var skPoints = new SKPoint[points.Count];
             switch (edgeRenderingMode)
             {
-                case EdgeRenderingMode.Automatic:
-                case EdgeRenderingMode.Adaptive:
-                case EdgeRenderingMode.PreferSharpness:
+                case EdgeRenderingMode.Automatic when this.RendersToPixels:
+                case EdgeRenderingMode.Adaptive when this.RendersToPixels:
+                case EdgeRenderingMode.PreferSharpness when this.RendersToPixels:
                     var snapOffset = this.GetSnapOffset(thickness, edgeRenderingMode);
                     for (var i = 0; i < points.Count - 1; i += 2)
                     {
@@ -620,9 +631,9 @@ namespace OxyPlot.SkiaSharp
         {
             switch (edgeRenderingMode)
             {
-                case EdgeRenderingMode.Automatic when RenderContextBase.IsStraightLine(screenPoints):
-                case EdgeRenderingMode.Adaptive when RenderContextBase.IsStraightLine(screenPoints):
-                case EdgeRenderingMode.PreferSharpness:
+                case EdgeRenderingMode.Automatic when this.RendersToPixels && RenderContextBase.IsStraightLine(screenPoints):
+                case EdgeRenderingMode.Adaptive when this.RendersToPixels && RenderContextBase.IsStraightLine(screenPoints):
+                case EdgeRenderingMode.PreferSharpness when this.RendersToPixels:
                     var snapOffset = this.GetSnapOffset(strokeThickness, edgeRenderingMode);
                     return screenPoints.Select(p => this.ConvertSnap(p, snapOffset));
                 default:
@@ -641,13 +652,14 @@ namespace OxyPlot.SkiaSharp
         {
             switch (edgeRenderingMode)
             {
-                case EdgeRenderingMode.PreferGeometricAccuracy:
-                case EdgeRenderingMode.PreferSpeed:
-                    return this.Convert(rect);
-                default:
+                case EdgeRenderingMode.Adaptive when this.RendersToPixels:
+                case EdgeRenderingMode.Automatic when this.RendersToPixels:
+                case EdgeRenderingMode.PreferSharpness when this.RendersToPixels:
                     var actualThickness = this.GetActualThickness(strokeThickness, edgeRenderingMode);
                     var snapOffset = GetSnapOffset(actualThickness);
                     return this.ConvertSnap(rect, snapOffset);
+                default:
+                    return this.Convert(rect);
             }
         }
 
@@ -662,13 +674,14 @@ namespace OxyPlot.SkiaSharp
         {
             switch (edgeRenderingMode)
             {
-                case EdgeRenderingMode.PreferGeometricAccuracy:
-                case EdgeRenderingMode.PreferSpeed:
-                    return rects.Select(this.Convert);
-                default:
+                case EdgeRenderingMode.Adaptive when this.RendersToPixels:
+                case EdgeRenderingMode.Automatic when this.RendersToPixels:
+                case EdgeRenderingMode.PreferSharpness when this.RendersToPixels:
                     var actualThickness = this.GetActualThickness(strokeThickness, edgeRenderingMode);
                     var snapOffset = GetSnapOffset(actualThickness);
                     return rects.Select(rect => this.ConvertSnap(rect, snapOffset));
+                default:
+                    return rects.Select(this.Convert);
             }
         }
 
@@ -681,7 +694,7 @@ namespace OxyPlot.SkiaSharp
         private float GetActualThickness(double strokeThickness, EdgeRenderingMode edgeRenderingMode)
         {
             var scaledThickness = this.Convert(strokeThickness);
-            if (edgeRenderingMode == EdgeRenderingMode.PreferSharpness)
+            if (edgeRenderingMode == EdgeRenderingMode.PreferSharpness && this.RendersToPixels)
             {
                 scaledThickness = Snap(scaledThickness, 0);
             }
