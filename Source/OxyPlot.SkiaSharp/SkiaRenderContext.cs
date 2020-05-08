@@ -365,12 +365,14 @@ namespace OxyPlot.SkiaSharp
             var x = this.Convert(p.X);
             var y = this.Convert(p.Y);
 
-            var metrics = paint.FontMetrics;
+            var lines = StringHelper.SplitLines(text);
+            var lineHeight = paint.GetFontMetrics(out var metrics);
+
             var deltaY = verticalAlignment switch
             {
                 VerticalAlignment.Top => -metrics.Ascent,
-                VerticalAlignment.Middle => -(metrics.Ascent + metrics.Descent) / 2,
-                VerticalAlignment.Bottom => -metrics.Descent,
+                VerticalAlignment.Middle => -(metrics.Ascent + metrics.Descent + lineHeight * (lines.Length - 1)) / 2,
+                VerticalAlignment.Bottom => -metrics.Descent - lineHeight * (lines.Length - 1),
                 _ => throw new ArgumentOutOfRangeException(nameof(verticalAlignment))
             };
 
@@ -378,31 +380,36 @@ namespace OxyPlot.SkiaSharp
             this.SkCanvas.Translate(x, y);
             this.SkCanvas.RotateDegrees((float)rotation);
 
-            if (this.UseTextShaping)
+            foreach (var line in lines)
             {
-                var width = this.MeasureText(text, shaper, paint);
-                var deltaX = horizontalAlignment switch
+                if (this.UseTextShaping)
                 {
-                    HorizontalAlignment.Left => 0,
-                    HorizontalAlignment.Center => -width / 2,
-                    HorizontalAlignment.Right => -width,
-                    _ => throw new ArgumentOutOfRangeException(nameof(horizontalAlignment))
-                };
+                    var width = this.MeasureText(line, shaper, paint);
+                    var deltaX = horizontalAlignment switch
+                    {
+                        HorizontalAlignment.Left => 0,
+                        HorizontalAlignment.Center => -width / 2,
+                        HorizontalAlignment.Right => -width,
+                        _ => throw new ArgumentOutOfRangeException(nameof(horizontalAlignment))
+                    };
 
-                this.paint.TextAlign = SKTextAlign.Left;
-                this.SkCanvas.DrawShapedText(shaper, text, deltaX, deltaY, paint);
-            }
-            else
-            {
-                paint.TextAlign = horizontalAlignment switch
+                    this.paint.TextAlign = SKTextAlign.Left;
+                    this.SkCanvas.DrawShapedText(shaper, line, deltaX, deltaY, paint);
+                }
+                else
                 {
-                    HorizontalAlignment.Left => SKTextAlign.Left,
-                    HorizontalAlignment.Center => SKTextAlign.Center,
-                    HorizontalAlignment.Right => SKTextAlign.Right,
-                    _ => throw new ArgumentOutOfRangeException(nameof(horizontalAlignment))
-                };
+                    paint.TextAlign = horizontalAlignment switch
+                    {
+                        HorizontalAlignment.Left => SKTextAlign.Left,
+                        HorizontalAlignment.Center => SKTextAlign.Center,
+                        HorizontalAlignment.Right => SKTextAlign.Right,
+                        _ => throw new ArgumentOutOfRangeException(nameof(horizontalAlignment))
+                    };
 
-                this.SkCanvas.DrawText(text, 0, deltaY, paint);
+                    this.SkCanvas.DrawText(line, 0, deltaY, paint);
+                }
+
+                deltaY += lineHeight;
             }
         }
 
@@ -414,9 +421,11 @@ namespace OxyPlot.SkiaSharp
                 return new OxySize(0, 0);
             }
 
+            var lines = StringHelper.SplitLines(text);
             var paint = this.GetTextPaint(fontFamily, fontSize, fontWeight, out var shaper);
-            var width = this.MeasureText(text, shaper, paint);
-            var height = paint.GetFontMetrics(out _);
+            var height = paint.GetFontMetrics(out _) * lines.Length;
+            var width = lines.Max(line => this.MeasureText(line, shaper, paint)); 
+
             return new OxySize(this.ConvertBack(width), this.ConvertBack(height));
         }
 

@@ -6,6 +6,7 @@
 
 namespace OxyPlot.SkiaSharp.Tests
 {
+    using ExampleLibrary;
     using NUnit.Framework;
     using OxyPlot.SkiaSharp;
     using System.IO;
@@ -22,6 +23,15 @@ namespace OxyPlot.SkiaSharp.Tests
             var exporter = new SvgExporter { Width = 1000, Height = 750 };
             var directory = Path.Combine(this.outputDirectory, "ExampleLibrary");
             ExportTest.Export_FirstExampleOfEachExampleGroup_CheckThatAllFilesExist(exporter, directory, ".svg");
+        }
+
+        [Test]
+        public void TestMultilineAlignment()
+        {
+            var exporter = new SvgExporter { Width = 1000, Height = 750 };
+            var model = RenderingCapabilities.DrawMultilineTextAlignmentRotation();
+            using var stream = File.Create(Path.Combine(this.outputDirectory, "Multiline-Alignment.svg"));
+            exporter.Export(model, stream);
         }
 
         [OneTimeSetUp]
