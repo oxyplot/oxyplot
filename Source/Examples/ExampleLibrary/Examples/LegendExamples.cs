@@ -12,6 +12,7 @@ namespace ExampleLibrary
     using OxyPlot;
     using OxyPlot.Series;
     using OxyPlot.Legends;
+    using ExampleLibrary.Utilities;
 
     [Examples("Legends")]
     public static class LegendExamples
@@ -389,7 +390,7 @@ namespace ExampleLibrary
 
         private static PlotModel CreateModel(int n = 20)
         {
-            var model = new PlotModel { Title = "LineSeries" };
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes("LineSeries");
 
             for (int i = 1; i <= n; i++)
             {

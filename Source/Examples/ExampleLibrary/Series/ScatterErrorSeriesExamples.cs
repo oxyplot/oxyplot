@@ -16,6 +16,7 @@ namespace ExampleLibrary
     using OxyPlot;
     using OxyPlot.Series;
     using OxyPlot.Legends;
+    using ExampleLibrary.Utilities;
 
     [Examples("ScatterErrorSeries"), Tags("Series")]
     public class ScatterErrorSeriesExamples
@@ -37,7 +38,7 @@ namespace ExampleLibrary
         public static PlotModel ItemsSourceMapping()
         {
             const int N = 20;
-            var model = new PlotModel { Title = "ScatterErrorSeries, points defined by ItemsSource and Mapping", Subtitle = string.Format("Random data (n={0})", N) };
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes("ScatterErrorSeries, points defined by ItemsSource and Mapping", string.Format("Random data (n={0})", N));
             var l = new Legend
             {
                 LegendPosition = LegendPosition.LeftTop
@@ -62,7 +63,7 @@ namespace ExampleLibrary
         public static PlotModel ItemsSourceList()
         {
             const int N = 20;
-            var model = new PlotModel { Title = "ScatterErrorSeries, points defined by ItemsSource (List)", Subtitle = string.Format("Random data (n={0})", N) };
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes("ScatterErrorSeries, points defined by ItemsSource (List)", string.Format("Random data (n={0})", N));
             var l = new Legend
             {
                 LegendPosition = LegendPosition.LeftTop
@@ -78,7 +79,7 @@ namespace ExampleLibrary
         public static PlotModel ItemsSourceEnumerable()
         {
             const int N = 20;
-            var model = new PlotModel { Title = "ScatterErrorSeries, points defined by ItemsSource (IEnumerable)", Subtitle = string.Format("Random data (n={0})", N) };
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes("ScatterErrorSeries, points defined by ItemsSource (IEnumerable)", string.Format("Random data (n={0})", N));
             var l = new Legend
             {
                 LegendPosition = LegendPosition.LeftTop
@@ -93,7 +94,7 @@ namespace ExampleLibrary
         public static PlotModel ItemsSourceReflection()
         {
             const int N = 20;
-            var model = new PlotModel { Title = "ScatterErrorSeries, points defined by ItemsSource (reflection)", Subtitle = string.Format("Random data (n={0})", N) };
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes("ScatterErrorSeries, points defined by ItemsSource (reflection)", string.Format("Random data (n={0})", N));
             var l = new Legend
             {
                 LegendPosition = LegendPosition.LeftTop
@@ -119,7 +120,7 @@ namespace ExampleLibrary
         /// <returns>A plot model.</returns>
         private static PlotModel RandomPointsAndError(int n)
         {
-            var model = new PlotModel { Title = "ScatterErrorSeries", Subtitle = string.Format("Random data (n={0})", n) };
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes("ScatterErrorSeries, points defined by ItemsSource (reflection)", string.Format("Random data (n={0})", n));
             var l = new Legend
             {
                 LegendPosition = LegendPosition.LeftTop

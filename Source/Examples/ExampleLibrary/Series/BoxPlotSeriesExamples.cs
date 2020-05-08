@@ -188,6 +188,7 @@ namespace ExampleLibrary
                 MinorStep = 1,
                 StringFormat = "yyyy-MM-dd"
             });
+            m.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
             var boxPlotSeries = new BoxPlotSeries
             {
                 TrackerFormatString = "X: {1:yyyy-MM-dd}\nUpper Whisker: {2:0.00}\nThird Quartil: {3:0.00}\nMedian: {4:0.00}\nFirst Quartil: {5:0.00}\nLower Whisker: {6:0.00}\nMean: {7:0.00}"

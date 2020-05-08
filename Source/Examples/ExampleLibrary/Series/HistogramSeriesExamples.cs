@@ -32,7 +32,7 @@ namespace ExampleLibrary
         [Example("Label Placement")]
         public static PlotModel HistogramLabelPlacement()
         {
-            var model = new PlotModel { Title = "Label Placement" };
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes("Label Placement");
 
             var s1 = new HistogramSeries { LabelPlacement = LabelPlacement.Base, LabelFormatString = "Base", StrokeThickness = 1, LabelMargin = 5 };
             var s2 = new HistogramSeries { LabelPlacement = LabelPlacement.Inside, LabelFormatString = "Inside", StrokeThickness = 1, LabelMargin = 5 };
@@ -89,7 +89,7 @@ namespace ExampleLibrary
         [Example("Custom Item Mapping")]
         public static PlotModel CustomItemMapping()
         {
-            var model = new PlotModel { Title = "Custom Item Mapping" };
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes("Custom Item Mapping");
 
             var s = new HistogramSeries { Mapping = obj => (HistogramItem)obj, TrackerFormatString = "{Description}"};
             s.Items.Add(new CustomHistogramItem(1, 2, 4, 4, "Item 1"));

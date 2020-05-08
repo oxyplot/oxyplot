@@ -1,7 +1,7 @@
 ﻿namespace ExampleLibrary
 {
     using System.Collections.Generic;
-
+    using ExampleLibrary.Utilities;
     using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
@@ -14,7 +14,7 @@
         public static PlotModel FromItems()
         {
             const int NumberOfItems = 10;
-            var model = new PlotModel { Title = "RectangleSeries" };
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes("RectangleSeries");
 
             // the RectangleSeries requires a color axis
             model.Axes.Add(new LinearColorAxis
@@ -39,7 +39,7 @@
         public static PlotModel FromItemsSource()
         {
             const int NumberOfItems = 10;
-            var model = new PlotModel { Title = "RectangleSeries" };
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes("RectangleSeries");
 
             // the RectangleSeries requires a color axis
             model.Axes.Add(new LinearColorAxis

@@ -237,5 +237,19 @@ namespace ExampleLibrary.Utilities
 
             return model;
         }
+
+        /// <summary>
+        /// Creates a <see cref="PlotModel"/> with 'default' axes.
+        /// </summary>
+        /// <param name="title">The title of plot.</param>
+        /// <param name="subtitle">The subtitle, if any, of the plot.</param>
+        /// <returns>A <see cref="PlotModel"/>.</returns>
+        public static PlotModel CreateModelWithDefaultAxes(string title, string subtitle = null)
+        {
+            var model = new PlotModel() { Title = title, Subtitle = subtitle };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+            return model;
+        }
     }
 }

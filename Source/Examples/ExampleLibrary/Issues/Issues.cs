@@ -17,6 +17,7 @@ namespace ExampleLibrary
     using OxyPlot.Axes;
     using OxyPlot.Series;
     using OxyPlot.Legends;
+    using ExampleLibrary.Utilities;
 
     [Examples("Z1 Issues")]
     public class Issues
@@ -24,7 +25,7 @@ namespace ExampleLibrary
         [Example("#1095: Issue 1095 Part 1")]
         public static PlotModel IssueHalfPolarReversedAxesPart1()
         {
-            var plotModel = new PlotModel { Title = "", };
+            var plotModel = new PlotModel() { Title = "" };
             plotModel.PlotType = OxyPlot.PlotType.Polar;
             plotModel.Axes.Add(
                 new AngleAxis()
@@ -53,7 +54,7 @@ namespace ExampleLibrary
         [Example("#1095: Issue 1095 Part 2")]
         public static PlotModel IssueHalfPolarReversedAxesPart2()
         {
-            var plotModel = new PlotModel { Title = "", };
+            var plotModel = new PlotModel() { Title = "" };
             plotModel.PlotType = OxyPlot.PlotType.Polar;
             plotModel.Axes.Add(
                 new AngleAxis()
@@ -82,10 +83,7 @@ namespace ExampleLibrary
         [Example("#91 AxisTitleDistance")]
         public static PlotModel AxisTitleDistance()
         {
-            var plotModel = new PlotModel
-            {
-                Title = "AxisTitleDistance"
-            };
+            var plotModel = new PlotModel() { Title = "AxisTitleDistance" };
 
             var l = new Legend
             {
@@ -127,7 +125,7 @@ namespace ExampleLibrary
         [Example("#1044 MinimumSegmentLength not working with AreaSeries")]
         public static PlotModel MinimumSegmentLengthInAreaSeries()
         {
-            var model = new PlotModel() { Title = "MinimumSegmentLength in AreaSeries", Subtitle = "Three different areas should be visible" };
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes("MinimumSegmentLength in AreaSeries", "Three different areas should be visible");
             for (var msl = 0; msl <= 200; msl += 100)
             {
                 var series = new AreaSeries
@@ -151,7 +149,7 @@ namespace ExampleLibrary
         [Example("#1044 MinimumSegmentLength not working with LinesSeries")]
         public static PlotModel MinimumSegmentLengthInLineSeries()
         {
-            var model = new PlotModel() { Title = "MinimumSegmentLength in LineSeries", Subtitle = "Three different curves should be visible" };
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes("MinimumSegmentLength in LineSeries", "Three different curves should be visible");
             for (var msl = 0; msl <= 200; msl += 100)
             {
                 var series = new LineSeries
@@ -174,7 +172,7 @@ namespace ExampleLibrary
         [Example("#1303 Problem with infinity size polyline")]
         public static PlotModel InfinitySizePolyline()
         {
-            var model = new PlotModel();
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes(null);
             var series = new OxyPlot.Series.LineSeries();
             series.Points.Add(new DataPoint(0, 0));
             series.Points.Add(new DataPoint(1, -1e40));
@@ -299,11 +297,10 @@ namespace ExampleLibrary
             return model;
         }
 
-
         [Example("Support colour coding on scatter plots (Closed)")]
         public static PlotModel ColorCodingOnScatterPlots()
         {
-            var model = new PlotModel { Title = "Colour coding on scatter plots" };
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes("Colour coding on scatter plots");
             var colorAxis = new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(500), Minimum = 0, Maximum = 5, HighColor = OxyColors.Gray, LowColor = OxyColors.Black };
             model.Axes.Add(colorAxis);
 
@@ -424,6 +421,8 @@ namespace ExampleLibrary
             var model = new PlotModel { Title = "LineSeries with smoothing", Subtitle = "Tracker uses wrong points" };
             var logarithmicAxis1 = new LogarithmicAxis { Position = AxisPosition.Bottom };
             model.Axes.Add(logarithmicAxis1);
+            var linearAxis1 = new LinearAxis { Position = AxisPosition.Left };
+            model.Axes.Add(linearAxis1);
 
             // Add a line series
             var s1 = new LineSeries
@@ -556,7 +555,7 @@ namespace ExampleLibrary
         [Example("Argument out of range in OxyPlot mouse over (Closed)")]
         public static PlotModel ArgumentOutOfRangeInMouseOver()
         {
-            var model = new PlotModel { Title = "Argument out of range in OxyPlot mouse over" };
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes("Argument out of range in OxyPlot mouse over");
             var ls = new LineSeries();
             ls.Points.Add(new DataPoint(10, 10));
             ls.Points.Add(new DataPoint(10, 10));
@@ -568,7 +567,7 @@ namespace ExampleLibrary
         [Example("Slow redraws with noisy data (Closed)")]
         public static PlotModel NoisyData()
         {
-            var model = new PlotModel { Title = "Noisy data" };
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes("Noisy data");
 
             var points = new List<DataPoint>();
             var rng = new Random(7);
@@ -584,7 +583,7 @@ namespace ExampleLibrary
         [Example("Dashed line test (Closed)")]
         public static PlotModel DashedLineTest()
         {
-            var model = new PlotModel { Title = "Dashed line test" };
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes("Dashed line test");
 
             for (int y = 1; y <= 24; y++)
             {
@@ -617,7 +616,7 @@ namespace ExampleLibrary
         [Example("AreaSeries draws on top of other elements (Closed)")]
         public static PlotModel DefaultAnnotationLayer()
         {
-            var plotModel1 = new PlotModel { Title = "Annotations should be drawn on top by default", Subtitle = "The line annotation should be on top!" };
+            var plotModel1 = PlotModelUtilities.CreateModelWithDefaultAxes("Annotations should be drawn on top by default", "The line annotation should be on top!");
             var areaSeries1 = new AreaSeries();
             areaSeries1.Points.Add(new DataPoint(0, 50));
             areaSeries1.Points.Add(new DataPoint(10, 40));
@@ -644,7 +643,7 @@ namespace ExampleLibrary
         [Example("#79: LegendItemAlignment = Center (closed)")]
         public static PlotModel LegendItemAlignmentCenter()
         {
-            var plotModel1 = new PlotModel { Title = "LegendItemAlignment = Center" };
+            var plotModel1 = PlotModelUtilities.CreateModelWithDefaultAxes("LegendItemAlignment = Center");
             var l = new Legend
             {
                 LegendItemAlignment = HorizontalAlignment.Center,
@@ -662,7 +661,7 @@ namespace ExampleLibrary
         [Example("AreaSeries should respect CanTrackerInterpolatePoints (Closed)")]
         public static PlotModel AreaSeries_CanTrackerInterpolatePointsFalse()
         {
-            var plotModel1 = new PlotModel { Title = "AreaSeries with CanTrackerInterpolatePoints=false" };
+            var plotModel1 = PlotModelUtilities.CreateModelWithDefaultAxes("AreaSeries with CanTrackerInterpolatePoints=false");
             var areaSeries1 = new AreaSeries { CanTrackerInterpolatePoints = false };
             areaSeries1.Points.Add(new DataPoint(0, 50));
             areaSeries1.Points.Add(new DataPoint(10, 40));
@@ -677,7 +676,7 @@ namespace ExampleLibrary
         [Example("AreaSeries should respect CanTrackerInterpolatePoints=true (Closed)")]
         public static PlotModel AreaSeries_CanTrackerInterpolatePointsTrue()
         {
-            var plotModel1 = new PlotModel { Title = "AreaSeries with CanTrackerInterpolatePoints=true" };
+            var plotModel1 = PlotModelUtilities.CreateModelWithDefaultAxes("AreaSeries with CanTrackerInterpolatePoints=true");
             var areaSeries1 = new AreaSeries { CanTrackerInterpolatePoints = true };
             areaSeries1.Points.Add(new DataPoint(0, 50));
             areaSeries1.Points.Add(new DataPoint(10, 40));
@@ -692,7 +691,7 @@ namespace ExampleLibrary
         [Example("GetNearestPoint return DataPoint even when custom IDataPoint used (closed)")]
         public static PlotModel GetNearestPointReturnsDataPoint()
         {
-            var plotModel1 = new PlotModel { Title = "GetNearestPoint" };
+            var plotModel1 = PlotModelUtilities.CreateModelWithDefaultAxes("GetNearestPoint");
             //// TODO: add code to reproduce
             return plotModel1;
         }
@@ -700,7 +699,7 @@ namespace ExampleLibrary
         [Example("#102: Selecting points changes the legend colours")]
         public static PlotModel SelectingPointsChangesTheLegendColors()
         {
-            var plotModel1 = new PlotModel { Title = "Selecting points changes the legend colours" };
+            var plotModel1 = PlotModelUtilities.CreateModelWithDefaultAxes("Selecting points changes the legend colours");
             //// TODO: add code to reproduce
             return plotModel1;
         }
@@ -708,7 +707,7 @@ namespace ExampleLibrary
         [Example("Empty LineSeries with smoothing (Closed)")]
         public static PlotModel EmptyLineSeriesWithSmoothing_ThrowsException()
         {
-            var plotModel1 = new PlotModel { Title = "Empty LineSeries with smoothing" };
+            var plotModel1 = PlotModelUtilities.CreateModelWithDefaultAxes("Empty LineSeries with smoothing");
             plotModel1.Series.Add(new LineSeries
             {
                 InterpolationAlgorithm = InterpolationAlgorithms.CanonicalSpline
@@ -766,13 +765,14 @@ namespace ExampleLibrary
         {
             var model = new PlotModel { Title = "Floating-point inaccuracy" };
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -0.0515724495834661, Maximum = 0.016609368598352, MajorStep = 0.02, MinorStep = 0.002 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
             return model;
         }
 
         [Example("LineSeries.Dashes property (Closed)")]
         public static PlotModel DashesTest()
         {
-            var model = new PlotModel { Title = "Dashed line test" };
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes("Dashed line test");
 
             for (int y = 1; y <= 10; y++)
             {
@@ -795,7 +795,7 @@ namespace ExampleLibrary
         [Example("ScatterSeries and LinearColorAxis on the same plot (Closed)")]
         public static PlotModel ScatterSeriesAndLinearColorAxis()
         {
-            var plotModel = new PlotModel { Title = "ScatterSeries and LinearColorAxis on the same plot" };
+            var plotModel = PlotModelUtilities.CreateModelWithDefaultAxes("ScatterSeries and LinearColorAxis on the same plot");
             int npoints = 100;
             var random = new Random();
 
@@ -822,7 +822,7 @@ namespace ExampleLibrary
         [Example("#133: MinorStep should not be MajorStep/5 when MajorStep is 2")]
         public static PlotModel MinorTicks()
         {
-            var plotModel1 = new PlotModel { Title = "Issue 10117" };
+            var plotModel1 = PlotModelUtilities.CreateModelWithDefaultAxes("Issue 10117");
             plotModel1.Axes.Add(new LinearAxis { Minimum = 0, Maximum = 16 });
             return plotModel1;
         }
@@ -960,10 +960,7 @@ namespace ExampleLibrary
         [Example("ScatterSeries with invalid point and marker type circle (closed)")]
         public static PlotModel ScatterSeriesWithInvalidPointAndMarkerTypeCircle()
         {
-            var plotModel1 = new PlotModel
-            {
-                Title = "ScatterSeries with invalid point and marker type circle",
-            };
+            var plotModel1 = PlotModelUtilities.CreateModelWithDefaultAxes("ScatterSeries with invalid point and marker type circle");
             plotModel1.Series.Add(new ScatterSeries
             {
                 MarkerType = MarkerType.Circle,
@@ -975,10 +972,7 @@ namespace ExampleLibrary
         [Example("RectangleBarSeries rendered on top layer (rejected)")]
         public static PlotModel RectangleBarSeriesRenderedOnTopLayer()
         {
-            var plotModel1 = new PlotModel
-            {
-                Title = "RectangleBarSeries rendered on top layer",
-            };
+            var plotModel1 = PlotModelUtilities.CreateModelWithDefaultAxes("RectangleBarSeries rendered on top layer");
             var lineSeries1 = new LineSeries();
             lineSeries1.Points.Add(new DataPoint(0, 1));
             lineSeries1.Points.Add(new DataPoint(1, 0));
@@ -996,10 +990,7 @@ namespace ExampleLibrary
         [Example("Legend is not visible (closed)")]
         public static PlotModel LegendIsNotVisible()
         {
-            var plotModel = new PlotModel
-            {
-                Title = "Legend is not visible",
-            };
+            var plotModel = PlotModelUtilities.CreateModelWithDefaultAxes("Legend is not visible");
             plotModel.Series.Add(new LineSeries { Title = "LineSeries 1" });
             plotModel.Series.Add(new LineSeries { Title = "LineSeries 2" });
             plotModel.Series.Add(new LineSeries { Title = "LineSeries 3" });
@@ -1103,11 +1094,10 @@ namespace ExampleLibrary
         [Example("#226: LineSeries exception when smoothing")]
         public static PlotModel LineSeriesExceptionWhenSmoothing()
         {
-            var plotModel1 = new PlotModel
-            {
-                Title = "LineSeries null reference exception when smoothing is enabled and all datapoints have the same y value",
-                Subtitle = "Click on the plot to reproduce the issue."
-            };
+            var plotModel1 = PlotModelUtilities.CreateModelWithDefaultAxes(
+                title: "LineSeries null reference exception when smoothing is enabled and all datapoints have the same y value",
+                subtitle: "Click on the plot to reproduce the issue."
+            );
             var ls = new LineSeries
             {
                 InterpolationAlgorithm = InterpolationAlgorithms.CanonicalSpline,
@@ -1122,10 +1112,7 @@ namespace ExampleLibrary
         [Example("#79: Center aligned legends (closed)")]
         public static PlotModel CenterAlignedLegends()
         {
-            var plotModel1 = new PlotModel
-            {
-                Title = "Center aligned legends"
-            };
+            var plotModel1 = PlotModelUtilities.CreateModelWithDefaultAxes("Center aligned legends");
 
             var l = new Legend
             {
@@ -1143,10 +1130,7 @@ namespace ExampleLibrary
         [Example("#356: Draw legend line with custom pattern")]
         public static PlotModel LegendWithCustomPattern()
         {
-            var plotModel1 = new PlotModel
-            {
-                Title = "Draw legend line with custom pattern",
-            };
+            var plotModel1 = PlotModelUtilities.CreateModelWithDefaultAxes("Draw legend line with custom pattern");
             var solid = new LineSeries
             {
                 Title = "Solid",
@@ -1179,7 +1163,7 @@ namespace ExampleLibrary
         [Example("#409: ImageAnnotation width width/height crashes")]
         public static PlotModel ImageAnnotationWithWidthHeightCrashes()
         {
-            var myModel = new PlotModel { Title = "Example 1" };
+            var myModel = PlotModelUtilities.CreateModelWithDefaultAxes("Example 1");
             myModel.Series.Add(new FunctionSeries(Math.Cos, 0, 10, 0.1, "cos(x)"));
 
             var rng = new Random();
@@ -1444,7 +1428,7 @@ namespace ExampleLibrary
         [Example("#42: ContourSeries not working for not square data array")]
         public static PlotModel IndexOutOfRangeContour()
         {
-            var model = new PlotModel { Title = "Issue #42" };
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes("Issue #42");
             model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(5) });
 
             var x = ArrayBuilder.CreateVector(0, 1, 20);
@@ -1465,7 +1449,7 @@ namespace ExampleLibrary
         [Example("#624: Rendering math text with syntax error gets stuck in an endless loop")]
         public static PlotModel MathTextWithSyntaxError()
         {
-            var model = new PlotModel { Title = "Math text syntax errors" };
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes("Math text syntax errors");
             model.Series.Add(new LineSeries { Title = "x_{1" });
             model.Series.Add(new LineSeries { Title = "x^{2" });
             model.Series.Add(new LineSeries { Title = "x^{2_{1" });
@@ -1549,6 +1533,7 @@ namespace ExampleLibrary
                     Minimum = 50,
                     MinimumRange = 500
                 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
 
             return model;
         }
@@ -1566,6 +1551,7 @@ namespace ExampleLibrary
                     MinimumRange = 5,
                     MaximumRange = 200
                 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
 
             return model;
         }
@@ -1581,6 +1567,7 @@ namespace ExampleLibrary
                     AbsoluteMinimum = 50,
                     MinimumRange = 500
                 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
 
             return model;
         }
@@ -1611,6 +1598,7 @@ namespace ExampleLibrary
                     AbsoluteMinimum = 20,
                     MaximumRange = 50
                 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
 
             return model;
         }
@@ -1626,6 +1614,7 @@ namespace ExampleLibrary
                     AbsoluteMaximum = -20,
                     MaximumRange = 25
                 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
 
             return model;
         }
@@ -1641,6 +1630,7 @@ namespace ExampleLibrary
                 HighColor = OxyColors.Gray,
                 LowColor = OxyColors.Black
             });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
 
             var data = new double[,] { { 1, 2 }, { 1, 1 }, { 2, 1 }, { 2, 2 } };
 
@@ -1665,7 +1655,8 @@ namespace ExampleLibrary
                 Title = "IntervalLength = 0",
                 Subtitle = "An exception should be thrown. Should not go into infinite loop."
             };
-            model.Axes.Add(new LinearAxis { IntervalLength = 0 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, IntervalLength = 0 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
             return model;
         }
 
@@ -1730,6 +1721,7 @@ namespace ExampleLibrary
         {
             var plotModel1 = new PlotModel { Title = "Auto plot margin not taking width of axis tick labels into account" };
             plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -1e8, Maximum = 1e8 });
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
             return plotModel1;
         }
 
@@ -1749,6 +1741,7 @@ namespace ExampleLibrary
             };
 
             model.Axes.Add(yaxis);
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
 
             var series = new LineSeries();
             series.Points.Add(new DataPoint(0, 10.1));
@@ -1786,17 +1779,16 @@ namespace ExampleLibrary
         [Example("#880: Too much padding")]
         public static PlotModel TooMuchPadding()
         {
-            return new PlotModel { Title = "Too much padding", Padding = new OxyThickness(0, 0, 0, 10000) };
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes("Too much padding");
+            model.Padding = new OxyThickness(0, 0, 0, 10000);
+            return model;
         }
 
         [Example("#880: Too much padding with legend outside")]
         public static PlotModel TooMuchPaddingWithLegend()
         {
-            var model = new PlotModel
-            {
-                Title = "Too much padding with legend outside",
-                Padding = new OxyThickness(500)
-            };
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes("much padding with legend outside");
+            model.Padding = new OxyThickness(0, 0, 0, 500);
 
             var l = new Legend
             {
@@ -1812,7 +1804,8 @@ namespace ExampleLibrary
         [Example("#880: Too much title padding")]
         public static PlotModel TooMuchTitlePadding()
         {
-            var model = new PlotModel { Title = "Too much title padding", TitlePadding = 10000 };
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes("Too much padding");
+            model.TitlePadding = 10000;
             return model;
         }
 
@@ -1833,6 +1826,7 @@ namespace ExampleLibrary
             };
 
             model.Axes.Add(yaxis);
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
 
             var series = new LineSeries();
             series.Points.Add(new DataPoint(0, 10.1));
@@ -1863,6 +1857,7 @@ namespace ExampleLibrary
             };
 
             model.Axes.Add(yaxis);
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
 
             var series = new LineSeries();
             series.Points.Add(new DataPoint(0, 10.1));
@@ -1916,7 +1911,8 @@ namespace ExampleLibrary
         public static PlotModel LogarithmicAxisReversed()
         {
             var model = new PlotModel();
-            model.Axes.Add(new LogarithmicAxis { StartPosition = 1, EndPosition = 0 });
+            model.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Bottom, StartPosition = 1, EndPosition = 0 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
 
             return model;
         }

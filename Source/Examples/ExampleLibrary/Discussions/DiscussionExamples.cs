@@ -14,6 +14,7 @@ namespace ExampleLibrary
     using OxyPlot.Axes;
     using OxyPlot.Series;
     using OxyPlot.Legends;
+    using ExampleLibrary.Utilities;
 
     [Examples("Z0 Discussions")]
     public class DiscussionExamples
@@ -21,7 +22,7 @@ namespace ExampleLibrary
         [Example("#445576: Invisible contour series")]
         public static PlotModel InvisibleContourSeries()
         {
-            var model = new PlotModel { Title = "Invisible contour series" };
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes("Invisible contour series");
             var cs = new ContourSeries
             {
                 IsVisible = false,
@@ -36,10 +37,10 @@ namespace ExampleLibrary
         [Example("#461507: StairStepSeries NullReferenceException")]
         public static PlotModel StairStepSeries_NullReferenceException()
         {
-            var plotModel1 = new PlotModel { Title = "StairStepSeries NullReferenceException" };
-            plotModel1.Series.Add(new StairStepSeries());
-            return plotModel1;
-        }
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes("StairStepSeries NullReferenceException");
+            model.Series.Add(new StairStepSeries());
+            return model;
+        }   
 
         [Example("#501409: Heatmap interpolation color")]
         public static PlotModel HeatMapSeriesInterpolationColor()
@@ -49,7 +50,7 @@ namespace ExampleLibrary
             data[0, 1] = 0;
             data[0, 2] = -10;
 
-            var model = new PlotModel { Title = "HeatMapSeries" };
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes("HeatMapSeries");
             model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = new OxyPalette(OxyColors.Red, OxyColors.Green, OxyColors.Blue) });
 
             var hms = new HeatMapSeries
@@ -114,7 +115,8 @@ namespace ExampleLibrary
                 Title = "Reduced color saturation",
             };
 
-            model.Axes.Add(new CategoryAxis { Position = AxisPosition.Bottom });
+            model.Axes.Add(new CategoryAxis { Position = AxisPosition.Left });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
 
             // modify the saturation of the default colors
             model.DefaultColors = model.DefaultColors.Select(c => c.ChangeSaturation(0.5)).ToList();
@@ -139,7 +141,8 @@ namespace ExampleLibrary
                 Title = "Medium intensity colors",
             };
 
-            model.Axes.Add(new CategoryAxis { Position = AxisPosition.Bottom });
+            model.Axes.Add(new CategoryAxis { Position = AxisPosition.Left });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
 
             // See http://www.perceptualedge.com/articles/visual_business_intelligence/rules_for_using_color.pdf
             model.DefaultColors = new[]
@@ -174,7 +177,8 @@ namespace ExampleLibrary
                 Title = "Brewer colors (Accent scheme)",
             };
 
-            model.Axes.Add(new CategoryAxis { Position = AxisPosition.Bottom });
+            model.Axes.Add(new CategoryAxis { Position = AxisPosition.Left });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
 
             // See http://colorbrewer2.org/?type=qualitative&scheme=Accent&n=4
             model.DefaultColors = new[]
@@ -205,7 +209,8 @@ namespace ExampleLibrary
                 Title = "Brewer colors (Paired scheme)",
             };
 
-            model.Axes.Add(new CategoryAxis { Position = AxisPosition.Bottom });
+            model.Axes.Add(new CategoryAxis { Position = AxisPosition.Left });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
 
             // See http://colorbrewer2.org/?type=qualitative&scheme=Paired&n=6
             model.DefaultColors = new[]

@@ -11,7 +11,7 @@ namespace ExampleLibrary
 {
     using System;
     using System.Collections.Generic;
-
+    using ExampleLibrary.Utilities;
     using OxyPlot;
     using OxyPlot.Series;
 
@@ -29,7 +29,7 @@ namespace ExampleLibrary
                 points.Add(new DataPoint(x, y(x)));
             }
 
-            var model = new PlotModel { Title = "Using IDataPoint" };
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes("Using IDataPoint");
             model.Series.Add(new LineSeries { ItemsSource = points });
             return model;
         }
@@ -44,7 +44,7 @@ namespace ExampleLibrary
                 points.Add(new PointType1(x, y(x)));
             }
 
-            var model = new PlotModel { Title = "Items implementing IDataPointProvider" };
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes("Items implementing IDataPointProvider");
             model.Series.Add(new LineSeries { ItemsSource = points });
             return model;
         }
@@ -59,7 +59,7 @@ namespace ExampleLibrary
                 points.Add(new PointType2(x, y(x)));
             }
 
-            var model = new PlotModel { Title = "Using Mapping property" };
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes("Using Mapping property");
             model.Series.Add(
                 new LineSeries
                 {
@@ -79,7 +79,7 @@ namespace ExampleLibrary
                 points.Add(new PointType2(x, y(x)));
             }
 
-            var model = new PlotModel { Title = "Using reflection (slow)" };
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes("Using reflection (slow)");
             model.Series.Add(new LineSeries { ItemsSource = points, DataFieldX = "Abscissa", DataFieldY = "Ordinate" });
             return model;
         }
@@ -94,7 +94,7 @@ namespace ExampleLibrary
                 points.Add(new ItemType3(x, y(x)));
             }
 
-            var model = new PlotModel { Title = "Using reflection with path (slow)" };
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes("Using reflection with path (slow)");
             model.Series.Add(new LineSeries { ItemsSource = points, DataFieldX = "Point.X", DataFieldY = "Point.Y" });
             return model;
         }

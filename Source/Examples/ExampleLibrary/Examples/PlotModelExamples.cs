@@ -185,7 +185,8 @@ namespace ExampleLibrary
         public static PlotModel InvalidAxisKey()
         {
             var model = new PlotModel();
-            model.Axes.Add(new LinearAxis());
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
             model.Series.Add(new LineSeries { XAxisKey = "invalidKey" });
             return model;
         }

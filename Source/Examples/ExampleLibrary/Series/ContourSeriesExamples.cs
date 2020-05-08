@@ -7,7 +7,7 @@
 namespace ExampleLibrary
 {
     using System;
-
+    using ExampleLibrary.Utilities;
     using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
@@ -23,7 +23,7 @@ namespace ExampleLibrary
         [Example("Peaks")]
         public static PlotModel Peaks()
         {
-            var model = new PlotModel { Title = "Peaks" };
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes("Peaks");
             var cs = new ContourSeries
             {
                 ColumnCoordinates = ArrayBuilder.CreateVector(-3, 3, 0.05),
@@ -39,7 +39,7 @@ namespace ExampleLibrary
         [DocumentationExample("Series/ContourSeries")]
         public static PlotModel PeaksWithColors()
         {
-            var model = new PlotModel { Title = "Peaks" };
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes("Peaks");
             var cs = new ContourSeries
             {
                 ColumnCoordinates = ArrayBuilder.CreateVector(-3, 3, 0.05),
@@ -57,6 +57,7 @@ namespace ExampleLibrary
         {
             var model = new PlotModel { Title = "Peaks" };
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -3.16262, Maximum = 3.162 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
 
             var cs = new ContourSeries
             {

@@ -43,6 +43,7 @@ namespace ExampleLibrary
             }
 
             model.Series.Add(s1);
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, MaximumPadding = 0.3, MinimumPadding = 0.3 });
 
             return model;
@@ -70,6 +71,8 @@ namespace ExampleLibrary
                 StringFormat = "yyyy-MM-dd"
             };
             m.Axes.Add(a);
+            m.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+
             var s = new HighLowSeries
             {
                 TrackerFormatString =
