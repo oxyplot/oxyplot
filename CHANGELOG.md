@@ -26,6 +26,7 @@ All notable changes to this project will be documented in this file.
 - WindowsForms ExampleBrowser can display transposed versions of examples (#1535)
 - Example for Issue #1545 showing the use of different line endings
 - Support for unix line endings in OxyPlot.ImageSharp, OxyPlot.Svg, and OxyPlot.Pdf (#1545)
+- Multi-Line Text support to SkiaRenderContext (#1538)
 
 ### Changed
 - Legends model (#644)

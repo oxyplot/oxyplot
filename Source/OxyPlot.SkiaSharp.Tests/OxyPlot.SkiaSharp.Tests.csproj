@@ -7,6 +7,7 @@
         <Copyright>OxyPlot contributors</Copyright>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <Platforms>AnyCPU;x86;x64</Platforms>
+        <LangVersion>8</LangVersion>
     </PropertyGroup>
     <PropertyGroup Condition="'$(TargetFramework)|$(Platform)'=='net461|AnyCPU'">
         <PlatformTarget>x86</PlatformTarget>
