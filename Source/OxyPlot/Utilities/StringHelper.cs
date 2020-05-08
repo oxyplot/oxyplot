@@ -117,5 +117,15 @@ namespace OxyPlot
                 }
             }
         }
+
+        /// <summary>
+        /// Splits the given text into separate lines.
+        /// </summary>
+        /// <param name="text">The text to split.</param>
+        /// <returns>An array of the individual lines.</returns>
+        public static string[] SplitLines(string text)
+        {
+            return Regex.Split(text, "\r?\n");
+        }
     }
 }

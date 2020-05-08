@@ -2265,6 +2265,20 @@ namespace ExampleLibrary
             return plot;
         }
 
+        [Example("#1545: Some render contexts do not support unix line endings.")]
+        public static PlotModel UnixLineEndings()
+        {
+            var plot = new PlotModel() { Title = "Some render contexts\r\ndo not support\nunix line endings." };
+            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 0, Maximum = 100 });
+            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = 0, Maximum = 100 });
+
+            plot.Annotations.Add(new TextAnnotation() { Text = "CRLF\r\nLine\r\nEndings", TextPosition = new DataPoint(16, 50), FontSize = 12 });
+            plot.Annotations.Add(new TextAnnotation() { Text = "LF\nLine\nEndings", TextPosition = new DataPoint(50, 50), FontSize = 12 });
+            plot.Annotations.Add(new TextAnnotation() { Text = "Mixed\r\nLine\nEndings", TextPosition = new DataPoint(84, 50), FontSize = 12 });
+
+            return plot;
+        }
+
         private class TimeSpanPoint
         {
             public TimeSpan X { get; set; }

@@ -9,8 +9,6 @@
 
 namespace OxyPlot
 {
-    using System.Text.RegularExpressions;
-
     /// <summary>
     /// Represents a font that can be used in a <see cref="PortableDocument" />.
     /// </summary>
@@ -106,7 +104,7 @@ namespace OxyPlot
         {
             int wmax = 0;
 
-            var lines = Regex.Split(text, "\r\n");
+            var lines = StringHelper.SplitLines(text);
 
             int lineCount = lines.Length;
 

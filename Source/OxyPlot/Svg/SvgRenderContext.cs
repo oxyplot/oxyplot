@@ -12,7 +12,6 @@ namespace OxyPlot
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Text.RegularExpressions;
 
     /// <summary>
     /// Provides a render context for scalable vector graphics output.
@@ -159,8 +158,8 @@ namespace OxyPlot
                 return;
             }
 
-            var lines = Regex.Split(text, "\r\n");
-            
+            var lines = StringHelper.SplitLines(text);
+
             var textSize = this.MeasureText(text, fontFamily, fontSize, fontWeight);
             var lineHeight = textSize.Height / lines.Length;
             var lineOffset = new ScreenVector(-Math.Sin(rotate / 180.0 * Math.PI) * lineHeight, +Math.Cos(rotate / 180.0 * Math.PI) * lineHeight);

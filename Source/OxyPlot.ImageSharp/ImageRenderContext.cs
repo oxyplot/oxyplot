@@ -13,7 +13,6 @@ namespace OxyPlot.ImageSharp
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-
     using SixLabors.Fonts;
     using SixLabors.Fonts.Exceptions;
     using SixLabors.ImageSharp;
@@ -217,7 +216,7 @@ namespace OxyPlot.ImageSharp
             // Add a little more onto the path so that it doesn't wrap early
             var pathWidthFudge = 1.1f;
 
-            var lines = text.Split(new[] { '\n' }, StringSplitOptions.None);
+            var lines = StringHelper.SplitLines(text);
             for (int li = 0; li < lines.Length; li++)
             {
                 var line = lines[li];
@@ -568,24 +567,13 @@ namespace OxyPlot.ImageSharp
         }
 
         /// <summary>
-        /// Counts the number of lines in the text, by adding one to the number of line-feeds.
+        /// Counts the number of lines in the text.
         /// </summary>
         /// <param name="text">The text.</param>
         /// <returns>The number of lines in the text.</returns>
         private static int CountLines(string text)
         {
-            var count = 1;
-
-            // TODO: should we omit leading/trailing empty lines? (Compare with WinForms)
-            for (int i = 0; i < text.Length; i++)
-            {
-                if (text[i] == '\n')
-                {
-                    count++;
-                }
-            }
-
-            return count;
+            return StringHelper.SplitLines(text).Length;
         }
 
         /// <summary>
