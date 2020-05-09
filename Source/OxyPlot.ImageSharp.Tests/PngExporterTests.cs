@@ -179,6 +179,16 @@ namespace OxyPlot.ImageSharp.Tests
             Assert.IsTrue(File.Exists(fileName));
         }
 
+        [Test]
+        public void TestMultilineAlignment()
+        {
+            var plotModel = ExampleLibrary.RenderingCapabilities.DrawMultilineTextAlignmentRotation();
+            var fileName = Path.Combine(this.outputDirectory, "Text.png");
+            PngExporter.Export(plotModel, fileName, 700, 700);
+
+            Assert.IsTrue(File.Exists(fileName));
+        }
+
         private static PlotModel CreateTestModel1()
         {
             var model = new PlotModel { Title = "Test 1" };
