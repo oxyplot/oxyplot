@@ -36,21 +36,34 @@ namespace ExampleLibrary.Utilities
         };
 
         /// <summary>
+        /// Lists all Annotations that need axes and are NOT transposable
+        /// </summary>
+        private static readonly HashSet<Type> NonTransposableDataSpaceAnnotationTypes = new HashSet<Type>
+        {
+            typeof(TileMapAnnotation),
+        };
+
+        /// <summary>
         /// Returns a value indicating whether a plot model is transposable.
         /// </summary>
         /// <param name="model">The plot model.</param>
         /// <returns>True if the plot model in transposable; false otherwise.</returns>
         public static bool IsTransposable(this PlotModel model)
-        {                   
-            return (model.Axes.Count > 0 || model.Series.Count > 0 || model.Annotations.Count > 0)
+        {
+            return (model.Axes.Count > 0 || model.Series.Count > 0)
                 && model.Axes.All(a => a.Position != AxisPosition.None)
                 && model.Series.All(s =>
-                   {
-                       var type = s.GetType();
-                       return s is XYAxisSeries
-                              && type.GetTypeInfo().Assembly == typeof(PlotModel).GetTypeInfo().Assembly
-                              && !NonTransposableSeriesTypes.Contains(type);
-                   });
+                {
+                    var type = s.GetType();
+                    return s is XYAxisSeries
+                           && type.GetTypeInfo().Assembly == typeof(PlotModel).GetTypeInfo().Assembly
+                           && !NonTransposableSeriesTypes.Contains(type);
+                })
+                && model.Annotations.All(a =>
+                {
+                    var type = a.GetType();
+                    return !NonTransposableDataSpaceAnnotationTypes.Contains(type);
+                });
         }
 
         /// <summary>

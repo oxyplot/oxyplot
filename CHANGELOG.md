@@ -63,6 +63,7 @@ All notable changes to this project will be documented in this file.
 - Possible out-of-bounds exception in HeatMapSeries HitTest (#1524)
 - WPF CanvasRenderContext draws ellipses too small by half stroke thickness (#1537)
 - Text measurement and rendering in OxyPlot.ImageSharp
+- ExampleLibrary reporting annotation-only PlotModels as transposable (#1544)
 
 ## [2.0.0] - 2019-10-19
 ### Added 
