@@ -9,11 +9,13 @@
 
 namespace OxyPlot
 {
+    using System;
     using System.IO;
 
     /// <summary>
     /// Provides functionality to export plots to pdf.
     /// </summary>
+    [Obsolete("OxyPlot.PdfExporter may be removed in a future version. Consider using OxyPlot.SkiaSharp.PdfExporter instead.")]
     public class PdfExporter : IExporter
     {
         /// <summary>
