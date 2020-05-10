@@ -44,6 +44,7 @@ All notable changes to this project will be documented in this file.
 - WPF ExampleBrowser can switch between Canvas and SkiaSharp renderers (#1515)
 - OxyPlot.ImageSharp now targets .NET Standard 1.3 (#1530)
 - SkiaRenderContext does not apply pixel snapping when rendering to vector graphic (#1539)
+- Mark OxyPlot.PdfExporter and OxyPlot.Pdf.PdfExporter as obsolete (#1527)
 
 ### Removed
 - Remove PlotModel.Legends (#644)
