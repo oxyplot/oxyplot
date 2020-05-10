@@ -169,18 +169,18 @@ namespace OxyPlot.ImageSharp
 
             var outputX = this.Convert(p.X);
             var outputY = this.Convert(p.Y);
+            var outputPosition = new PointF(outputX, outputY);
 
-            var bounds = this.MeasureTextLoose(text, fontFamily, fontSize, fontWeight);
-
-            var boundsWidth = this.Convert(bounds.Width);
-            var boundsHeight = this.Convert(bounds.Height);
             var cos = (float)Math.Cos(rotation * Math.PI / 180.0);
             var sin = (float)Math.Sin(rotation * Math.PI / 180.0);
-            var offsetWidth = new PointF(boundsWidth * cos, boundsWidth * sin);
+
+            // measure bounds of the whole text (we only need the height)
+            var bounds = this.MeasureTextLoose(text, fontFamily, fontSize, fontWeight);
+            var boundsHeight = this.Convert(bounds.Height);
             var offsetHeight = new PointF(boundsHeight * -sin, boundsHeight * cos);
 
-            // determine the font descent for this font size at 96 DPI
-            var actualDescent = this.Convert(actualFontSize * this.MilliPointsToNominalResolution(font.Descender)); // unit is thousands of points, 1 point is 1/72 of an inch
+            // determine the font metrids for this font size at 96 DPI
+            var actualDescent = this.Convert(actualFontSize * this.MilliPointsToNominalResolution(font.Descender));
             var offsetDescent = new PointF(actualDescent * -sin, actualDescent * cos);
 
             var actualLineHeight = this.Convert(actualFontSize * this.MilliPointsToNominalResolution(font.LineHeight));
@@ -189,18 +189,7 @@ namespace OxyPlot.ImageSharp
             var actualLineGap = this.Convert(actualFontSize * this.MilliPointsToNominalResolution(font.LineGap));
             var offsetLineGap = new PointF(actualLineGap * -sin, actualLineGap * cos);
 
-            var outputPosition = new PointF(outputX, outputY);
-
-            var deltaX = horizontalAlignment switch
-            {
-                OxyPlot.HorizontalAlignment.Left => -0.0f,
-                OxyPlot.HorizontalAlignment.Center => -0.5f,
-                OxyPlot.HorizontalAlignment.Right => -1.0f,
-                _ => throw new ArgumentOutOfRangeException(nameof(horizontalAlignment)),
-            };
-
-            outputPosition += offsetWidth * deltaX;
-
+            // find top of the whole text
             var deltaY = verticalAlignment switch
             {
                 OxyPlot.VerticalAlignment.Top => 1.0f,
@@ -209,12 +198,17 @@ namespace OxyPlot.ImageSharp
                 _ => throw new ArgumentOutOfRangeException(nameof(verticalAlignment)),
             };
 
-            var bottomLeft = outputPosition + (offsetHeight * deltaY);
-            var baseLine = bottomLeft + offsetDescent;
-            var topLeft = bottomLeft - offsetHeight;
+            // this is the top of the top line
+            var topPosition = outputPosition + (offsetHeight * deltaY) - offsetHeight;
 
-            // Add a little more onto the path so that it doesn't wrap early
-            var pathWidthFudge = 1.1f;
+            // need this later
+            var deltaX = horizontalAlignment switch
+            {
+                OxyPlot.HorizontalAlignment.Left => -0.0f,
+                OxyPlot.HorizontalAlignment.Center => -0.5f,
+                OxyPlot.HorizontalAlignment.Right => -1.0f,
+                _ => throw new ArgumentOutOfRangeException(nameof(horizontalAlignment)),
+            };
 
             var lines = StringHelper.SplitLines(text);
             for (int li = 0; li < lines.Length; li++)
@@ -225,68 +219,33 @@ namespace OxyPlot.ImageSharp
                 {
                     continue;
                 }
+                
+                // measure bounds of just the line (we only need the width)
+                var lineBounds = this.MeasureTextLoose(line, fontFamily, fontSize, fontWeight);
+                var lineBoundsWidth = this.Convert(lineBounds.Width);
+                var offsetLineWidth = new PointF(lineBoundsWidth * cos, lineBoundsWidth * sin);
 
-                var lineTopLeft = topLeft + (offsetLineGap * li) + (offsetLineHeight * li);
-                var lineBottomLeft = lineTopLeft + offsetLineHeight;
-                var lineBaseLine = lineBottomLeft + offsetDescent;
+                // find the left baseline position
+                var lineTop = topPosition + (offsetLineGap * li) + (offsetLineHeight * li);
+                var lineBaseLineLeft = lineTop + offsetLineWidth * deltaX + offsetLineHeight + offsetDescent;
 
-                // ImageSharp does weird things to vertical alignment when using paths:
-                // Draw it without and without to get and offset before we use the actual path
-                var flatPathBuilder = new PathBuilder();
-                flatPathBuilder.SetOrigin(new PointF(0f, 0f));
-                flatPathBuilder.AddLine(new PointF(0f, 0f), new PointF(boundsWidth * pathWidthFudge, 0.0f));
-                var flatPath = flatPathBuilder.Build();
-
-                var textGraphicsOptions = new TextGraphicsOptions(true)
+                // this seems to produce consistent and correct results, but we have to rotate it manually, so render it at the origin for simplicity
+                var glyphsAtOrigin = TextBuilder.GenerateGlyphs(line, new PointF(0f, 0f), new RendererOptions(font, this.Dpi, this.Dpi)
                 {
-                    WrapTextWidth = flatPath.Length,
                     HorizontalAlignment = HorizontalAlignment.Left,
-                    VerticalAlignment = VerticalAlignment.Top, // doesn't seem to work, but does matter because we align manually
-                    DpiX = this.Dpi,
-                    DpiY = this.Dpi,
-                };
-
-                // this could end up anywhere in the y dimensions
-                var flatPathGlyphs = TextBuilder.GenerateGlyphs(line, flatPath, new RendererOptions(font, textGraphicsOptions.DpiX, textGraphicsOptions.DpiY)
-                {
-                    HorizontalAlignment = textGraphicsOptions.HorizontalAlignment,
-                    TabWidth = textGraphicsOptions.TabWidth,
-                    VerticalAlignment = textGraphicsOptions.VerticalAlignment,
-                    ApplyKerning = textGraphicsOptions.ApplyKerning,
+                    VerticalAlignment = VerticalAlignment.Bottom, // sit on the line (baseline)
+                    ApplyKerning = true,
                 });
 
-                // this seems to produce consistent and correct results (but doesn't provide rotation)
-                var notPathGlyphs = TextBuilder.GenerateGlyphs(line, new PointF(0f, 0f), new RendererOptions(font, textGraphicsOptions.DpiX, textGraphicsOptions.DpiY)
-                {
-                    HorizontalAlignment = textGraphicsOptions.HorizontalAlignment,
-                    TabWidth = textGraphicsOptions.TabWidth,
-                    VerticalAlignment = VerticalAlignment.Bottom, // sit on the line
-                    ApplyKerning = textGraphicsOptions.ApplyKerning,
-                });
+                // translate and rotate into possition
+                var transform = Matrix3x2Extensions.CreateRotationDegrees((float)rotation);
+                transform.Translation = lineBaseLineLeft;
+                var glyphs = glyphsAtOrigin.Transform(transform);
 
-                var flatPathPoint = flatPathGlyphs.First().PointAlongPath(0f).Point;
-                var notPathPoint = notPathGlyphs.First().PointAlongPath(0f).Point;
-
-                var pathDiscrepency = notPathPoint.Y - flatPathPoint.Y; // move flatPath to notPath
-                var pathOffset = new PointF(pathDiscrepency * -sin, pathDiscrepency * cos);
-
-                var pathBuilder = new PathBuilder();
-                pathBuilder.SetOrigin(new PointF(0f, 0f));
-                pathBuilder.AddLine(lineBaseLine + pathOffset, lineBaseLine + pathOffset + (offsetWidth * pathWidthFudge));
-                var path = pathBuilder.Build();
-
-                var lineGlyphs = TextBuilder.GenerateGlyphs(line, path, new RendererOptions(font, textGraphicsOptions.DpiX, textGraphicsOptions.DpiY)
-                {
-                    HorizontalAlignment = textGraphicsOptions.HorizontalAlignment,
-                    TabWidth = textGraphicsOptions.TabWidth,
-                    VerticalAlignment = textGraphicsOptions.VerticalAlignment,
-                    WrappingWidth = textGraphicsOptions.WrapTextWidth,
-                    ApplyKerning = textGraphicsOptions.ApplyKerning,
-                });
-
+                // draw the glyphs
                 this.Target.Mutate(img =>
                 {
-                    img.Fill((GraphicsOptions)textGraphicsOptions, ToRgba32(fill), lineGlyphs);
+                    img.Fill(ToRgba32(fill), glyphs);
                 });
             }
         }
@@ -654,7 +613,7 @@ namespace OxyPlot.ImageSharp
         /// <param name="fontSize">The font size in points.</param>
         /// <param name="fontWeight">The font weight.</param>
         /// <returns>An <see cref="OxySize"/>.</returns>
-        private OxySize MeasureTextLoose(string text, string fontFamily = null, double fontSize = 10, double fontWeight = 500)
+        private OxySize MeasureTextLoose(string text, string fontFamily, double fontSize, double fontWeight)
         {
             text = text ?? string.Empty;
 
@@ -681,7 +640,7 @@ namespace OxyPlot.ImageSharp
         /// <param name="fontSize">The font size in points.</param>
         /// <param name="fontWeight">The font weight.</param>
         /// <returns>An <see cref="OxySize"/>.</returns>
-        private OxySize MeasureTextTight(string text, string fontFamily = null, double fontSize = 10, double fontWeight = 500)
+        private OxySize MeasureTextTight(string text, string fontFamily, double fontSize, double fontWeight)
         {
             text = text ?? string.Empty;
 
