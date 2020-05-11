@@ -67,6 +67,24 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("TitleClippingLength")]
+        public static PlotModel TitleClippingLength()
+        {
+            var model = new PlotModel { Title = "Title", TitleClippingLength = 0.6 };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+            return model;
+        }
+
+        [Example("TitleClippingOff")]
+        public static PlotModel TitleClippingOff()
+        {
+            var model = new PlotModel { Title = "Title", ClipTitle = false };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+            return model;
+        }
+
         [Example("PlotMargins = (100,20,100,50)")]
         public static PlotModel PlotMargins()
         {

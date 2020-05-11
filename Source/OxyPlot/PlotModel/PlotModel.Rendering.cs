@@ -433,6 +433,13 @@ namespace OxyPlot
         /// <param name="rc">The render context.</param>
         private void RenderTitle(IRenderContext rc)
         {
+            OxySize? maxSize = null;
+
+            if (ClipTitle)
+            {
+                maxSize = new OxySize((this.TitleArea.Left + this.TitleArea.Right) * TitleClippingLength, double.MaxValue);
+            }
+
             var titleSize = rc.MeasureText(this.Title, this.ActualTitleFont, this.TitleFontSize, this.TitleFontWeight);
 
             double x = (this.TitleArea.Left + this.TitleArea.Right) * 0.5;
@@ -451,7 +458,8 @@ namespace OxyPlot
                     this.TitleFontWeight,
                     0,
                     HorizontalAlignment.Center,
-                    VerticalAlignment.Top);
+                    VerticalAlignment.Top,
+                    maxSize);
                 y += titleSize.Height;
 
                 rc.SetToolTip(null);
@@ -468,7 +476,8 @@ namespace OxyPlot
                     this.SubtitleFontWeight,
                     0,
                     HorizontalAlignment.Center,
-                    VerticalAlignment.Top);
+                    VerticalAlignment.Top,
+                    maxSize);
             }
         }
 
