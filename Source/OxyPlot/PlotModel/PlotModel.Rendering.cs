@@ -435,9 +435,9 @@ namespace OxyPlot
         {
             OxySize? maxSize = null;
 
-            if (ClipTitle)
+            if (this.ClipTitle)
             {
-                maxSize = new OxySize(this.TitleArea.Width * TitleClippingLength, double.MaxValue);
+                maxSize = new OxySize(this.TitleArea.Width * this.TitleClippingLength, double.MaxValue);
             }
 
             var titleSize = rc.MeasureText(this.Title, this.ActualTitleFont, this.TitleFontSize, this.TitleFontWeight);
