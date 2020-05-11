@@ -27,6 +27,7 @@ All notable changes to this project will be documented in this file.
 - Example for Issue #1545 showing the use of different line endings
 - Support for unix line endings in OxyPlot.ImageSharp, OxyPlot.Svg, and OxyPlot.Pdf (#1545)
 - Multi-Line Text support to SkiaRenderContext (#1538)
+- Added Title clipping to PlotModel (#1510)
 
 ### Changed
 - Legends model (#644)
@@ -44,7 +45,6 @@ All notable changes to this project will be documented in this file.
 - WPF ExampleBrowser can switch between Canvas and SkiaSharp renderers (#1515)
 - OxyPlot.ImageSharp now targets .NET Standard 1.3 (#1530)
 - SkiaRenderContext does not apply pixel snapping when rendering to vector graphic (#1539)
-- Mark OxyPlot.PdfExporter and OxyPlot.Pdf.PdfExporter as obsolete (#1527)
 
 ### Removed
 - Remove PlotModel.Legends (#644)

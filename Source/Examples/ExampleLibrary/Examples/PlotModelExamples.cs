@@ -67,6 +67,24 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("TitleClippingLength")]
+        public static PlotModel TitleClippingLength()
+        {
+            var model = new PlotModel { Title = "This is a very long title, to illustrate that the clipping works and that the title is clipped currently to 60% of the title area", TitleClippingLength = 0.6 };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+            return model;
+        }
+
+        [Example("TitleClippingOff")]
+        public static PlotModel TitleClippingOff()
+        {
+            var model = new PlotModel { Title = "This is a very long title, to illustrate that the clipping is necessary if the title is too long and that the title will overlay other controls without clipping", ClipTitle = false };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+            return model;
+        }
+
         [Example("PlotMargins = (100,20,100,50)")]
         public static PlotModel PlotMargins()
         {
