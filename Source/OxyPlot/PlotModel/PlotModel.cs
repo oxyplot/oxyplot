@@ -116,6 +116,8 @@ namespace OxyPlot
             this.SubtitleFontSize = 14;
             this.SubtitleFontWeight = FontWeights.Normal;
             this.TitlePadding = 6;
+            this.ClipTitle = true;
+            this.TitleClippingLength = 0.9;
 
             this.PlotAreaBorderColor = OxyColors.Black;
             this.PlotAreaBorderThickness = new OxyThickness(1);
@@ -379,6 +381,16 @@ namespace OxyPlot
         /// <value>The color of the title.</value>
         /// <remarks>If the value is <c>null</c>, the TextColor will be used.</remarks>
         public OxyColor TitleColor { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to clip the title. The default value is <c>true</c>.
+        /// </summary>
+        public bool ClipTitle { get; set; }
+
+        /// <summary>
+        /// Gets or sets the length of the title clipping rectangle (fraction of the available length of the title area). The default value is <c>0.9</c>.
+        /// </summary>
+        public double TitleClippingLength { get; set; }
 
         /// <summary>
         /// Gets or sets the color of the subtitle.

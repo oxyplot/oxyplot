@@ -27,6 +27,7 @@ All notable changes to this project will be documented in this file.
 - Example for Issue #1545 showing the use of different line endings
 - Support for unix line endings in OxyPlot.ImageSharp, OxyPlot.Svg, and OxyPlot.Pdf (#1545)
 - Multi-Line Text support to SkiaRenderContext (#1538)
+- Added title clipping to PlotModel (#1510)
 
 ### Changed
 - Legends model (#644)
