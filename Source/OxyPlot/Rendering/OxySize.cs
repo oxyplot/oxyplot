@@ -106,5 +106,15 @@ namespace OxyPlot
         {
             return this.Width.Equals(other.Width) && this.Height.Equals(other.Height);
         }
+
+        /// <summary>
+        /// Creates a new <see cref="OxySize"/> with the maximum dimensions of this instance and the specified other instance.
+        /// </summary>
+        /// <param name="other">The other instance.</param>
+        /// <returns>A new <see cref="OxySize"/>.</returns>
+        public OxySize Include(OxySize other)
+        {
+            return new OxySize(Math.Max(this.Width, other.Width), Math.Max(this.Height, other.Height));
+        }
     }
 }

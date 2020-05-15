@@ -27,7 +27,6 @@ namespace ExampleLibrary
                 Subtitle = "Archimedean spiral with equation r(θ) = θ for 0 < θ < 6π",
                 PlotType = PlotType.Polar,
                 PlotAreaBorderThickness = new OxyThickness(0),
-                PlotMargins = new OxyThickness(60, 20, 4, 40)
             };
             model.Axes.Add(
                 new AngleAxis
@@ -81,7 +80,6 @@ namespace ExampleLibrary
                 Title = "Offset angle axis",
                 PlotType = PlotType.Polar,
                 PlotAreaBorderThickness = new OxyThickness(0),
-                PlotMargins = new OxyThickness(60, 20, 4, 40)
             };
 
             var angleAxis = new AngleAxis
@@ -134,7 +132,6 @@ namespace ExampleLibrary
                 Title = "Semi-circle polar plot",
                 PlotType = PlotType.Polar,
                 PlotAreaBorderThickness = new OxyThickness(0),
-                PlotMargins = new OxyThickness(60, 20, 4, 40)
             };
             model.Axes.Add(
                 new AngleAxis
@@ -168,7 +165,6 @@ namespace ExampleLibrary
                 Subtitle = "Angle axis range offset to -180 - 180",
                 PlotType = PlotType.Polar,
                 PlotAreaBorderThickness = new OxyThickness(0),
-                PlotMargins = new OxyThickness(60, 20, 4, 40)
             };
             model.Axes.Add(
                 new AngleAxis
@@ -205,7 +201,6 @@ namespace ExampleLibrary
                 Title = "East/west directions",
                 PlotType = PlotType.Polar,
                 PlotAreaBorderThickness = new OxyThickness(0),
-                PlotMargins = new OxyThickness(60, 20, 4, 40)
             };
             model.Axes.Add(
                 new AngleAxis
@@ -253,7 +248,6 @@ namespace ExampleLibrary
                 Subtitle = "The center can be move using the right mouse button",
                 PlotType = PlotType.Polar,
                 PlotAreaBorderThickness = new OxyThickness(1),
-                PlotMargins = new OxyThickness(60, 20, 4, 40)
             };
             model.Axes.Add(
                 new AngleAxisFullPlotArea
@@ -289,7 +283,6 @@ namespace ExampleLibrary
                 Subtitle = "The center can be move using the right mouse button",
                 PlotType = PlotType.Polar,
                 PlotAreaBorderThickness = new OxyThickness(1),
-                PlotMargins = new OxyThickness(60, 20, 4, 40)
             };
             model.Axes.Add(
                 new AngleAxisFullPlotArea

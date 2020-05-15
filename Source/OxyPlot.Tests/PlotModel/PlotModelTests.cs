@@ -155,8 +155,8 @@ namespace OxyPlot.Tests
             plot.Axes.Add(horizontalAxis);
             plot.UpdateAndRenderToNull(800, 600);
             Assert.That(plot.ActualPlotMargins.Left, Is.EqualTo(26).Within(1), "left");
-            Assert.That(plot.ActualPlotMargins.Top, Is.EqualTo(0).Within(1), "top");
-            Assert.That(plot.ActualPlotMargins.Right, Is.EqualTo(0).Within(1), "right");
+            Assert.That(plot.ActualPlotMargins.Top, Is.EqualTo(5).Within(1), "top");
+            Assert.That(plot.ActualPlotMargins.Right, Is.EqualTo(7.5).Within(1), "right");
             Assert.That(plot.ActualPlotMargins.Bottom, Is.EqualTo(21).Within(1), "bottom");
         }
 

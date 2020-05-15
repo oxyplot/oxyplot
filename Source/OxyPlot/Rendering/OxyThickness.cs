@@ -9,6 +9,7 @@
 
 namespace OxyPlot
 {
+    using System;
     using System.Globalization;
 
     /// <summary>
@@ -141,6 +142,16 @@ namespace OxyPlot
         public bool Equals(OxyThickness other)
         {
             return this.Left.Equals(other.Left) && this.Top.Equals(other.Top) && this.Right.Equals(other.Right) && this.Bottom.Equals(other.Bottom);
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="OxyThickness"/> with the maximum dimensions of this instance and the specified other instance.
+        /// </summary>
+        /// <param name="other">The other instance.</param>
+        /// <returns>A new <see cref="OxyThickness"/>.</returns>
+        public OxyThickness Include(OxyThickness other)
+        {
+            return new OxyThickness(Math.Max(other.Left, this.Left), Math.Max(other.Top, this.Top), Math.Max(other.Right, this.Right), Math.Max(other.Bottom, this.Bottom));
         }
     }
 }

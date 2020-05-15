@@ -1725,14 +1725,6 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
-        [Example("#453: Auto plot margin and width of labels")]
-        public static PlotModel AutoPlotMarginAndAxisLabelWidths()
-        {
-            var plotModel1 = new PlotModel { Title = "Auto plot margin not taking width of axis tick labels into account" };
-            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -1e8, Maximum = 1e8 });
-            return plotModel1;
-        }
-
         /// <summary>
         /// Creates a demo PlotModel with MinimumRange defined
         /// and with series with values which are within this range.

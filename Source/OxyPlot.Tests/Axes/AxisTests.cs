@@ -432,7 +432,7 @@ namespace OxyPlot.Tests
         /// Test DesiredSize property to see if working property
         /// </summary>
         [Test]
-        public void Axis_DesiredSize()
+        public void Axis_DesiredMargin()
         {
             var xaxis = new LinearAxis { Position = AxisPosition.Bottom, Title = "X-axis" };
             var yaxis = new LinearAxis { Position = AxisPosition.Left, Title = "Y-axis" };
@@ -451,18 +451,70 @@ namespace OxyPlot.Tests
 
             // initial setting
             plot.UpdateAndRenderToNull(800, 600);
-            Assert.That(yaxis.DesiredSize.Width, Is.EqualTo(35.0).Within(0.5), "y-axis width");
-            Assert.That(yaxis.DesiredSize.Height, Is.EqualTo(0.0).Within(1e-6), "y-axis height");
+            Assert.That(yaxis.DesiredMargin.Left, Is.EqualTo(35.0).Within(0.5), "y-axis left");
+            Assert.That(yaxis.DesiredMargin.Top, Is.EqualTo(5).Within(0.5), "y-axis top");
+            Assert.That(yaxis.DesiredMargin.Right, Is.EqualTo(0.0).Within(1e-6), "y-axis right");
+            Assert.That(yaxis.DesiredMargin.Bottom, Is.EqualTo(5).Within(0.5), "y-axis bottom");
 
-            Assert.That(xaxis.DesiredSize.Width, Is.EqualTo(0.0).Within(1e-6), "x-axis width");
-            Assert.That(xaxis.DesiredSize.Height, Is.EqualTo(35.0).Within(0.5), "x-axis height");
+            Assert.That(xaxis.DesiredMargin.Left, Is.EqualTo(5).Within(0.5), "x-axis left");
+            Assert.That(xaxis.DesiredMargin.Top, Is.EqualTo(0.0).Within(1e-6), "x-axis top");
+            Assert.That(xaxis.DesiredMargin.Right, Is.EqualTo(5).Within(0.5), "x-axis right");
+            Assert.That(xaxis.DesiredMargin.Bottom, Is.EqualTo(35.0).Within(0.5), "x-axis bottom");
 
             // larger numbers on axis -> larger desired size
             yaxis.Zoom(10000, 11000);
+            xaxis.Zoom(10000, 11000);
             plot.UpdateAndRenderToNull(800, 600);
 
-            Assert.That(yaxis.DesiredSize.Width, Is.EqualTo(50.0).Within(0.5), "y-axis width");
-            Assert.That(yaxis.DesiredSize.Height, Is.EqualTo(0.0).Within(1e-6), "y-axis height");
+            Assert.That(yaxis.DesiredMargin.Left, Is.EqualTo(50.0).Within(0.5), "y-axis left");
+            Assert.That(yaxis.DesiredMargin.Top, Is.EqualTo(5).Within(0.5), "y-axis top");
+            Assert.That(yaxis.DesiredMargin.Right, Is.EqualTo(0.0).Within(1e-6), "y-axis right");
+            Assert.That(yaxis.DesiredMargin.Bottom, Is.EqualTo(5).Within(0.5), "y-axis bottom");
+
+            Assert.That(xaxis.DesiredMargin.Left, Is.EqualTo(12.5).Within(0.5), "x-axis left");
+            Assert.That(xaxis.DesiredMargin.Top, Is.EqualTo(0.0).Within(1e-6), "x-axis top");
+            Assert.That(xaxis.DesiredMargin.Right, Is.EqualTo(12.5).Within(0.5), "x-axis right");
+            Assert.That(xaxis.DesiredMargin.Bottom, Is.EqualTo(35.0).Within(0.5), "x-axis bottom");
+        }
+
+        /// <summary>
+        /// Test DesiredSize property with axis start and end position
+        /// </summary>
+        [Test]
+        public void Axis_DesiredMargin_WithPosition()
+        {
+            var plot = new PlotModel();
+            var axis1 = new LinearAxis { Position = AxisPosition.Bottom, StartPosition = 0, EndPosition = 0.5, Title = "X-axis 1" };
+            var axis2 = new LinearAxis { Position = AxisPosition.Bottom, StartPosition = 1, EndPosition = 0.5, Title = "X-axis 2" };
+            plot.Axes.Add(axis1);
+            plot.Axes.Add(axis2);
+
+            axis1.Zoom(0, 80);
+            axis2.Zoom(0, 80);
+            plot.UpdateAndRenderToNull(800, 600);
+            Assert.That(axis1.DesiredMargin.Left, Is.EqualTo(5).Within(0.5), "axis1 left");
+            Assert.That(axis1.DesiredMargin.Top, Is.EqualTo(0).Within(1e-6), "axis1 top");
+            Assert.That(axis1.DesiredMargin.Right, Is.EqualTo(0).Within(1e-6), "axis1 right");
+            Assert.That(axis1.DesiredMargin.Bottom, Is.EqualTo(35).Within(0.5), "axis1 bottom");
+
+            Assert.That(axis2.DesiredMargin.Left, Is.EqualTo(0d).Within(1e-6), "axis2 left");
+            Assert.That(axis2.DesiredMargin.Top, Is.EqualTo(0d).Within(1e-6), "axis2 top");
+            Assert.That(axis2.DesiredMargin.Right, Is.EqualTo(5).Within(0.5), "axis2 right");
+            Assert.That(axis2.DesiredMargin.Bottom, Is.EqualTo(35).Within(0.5), "axis2 bottom");
+
+            // larger numbers on axis -> larger desired size
+            axis1.Zoom(10000, 11000);
+            axis2.Zoom(10000, 11000);
+            plot.UpdateAndRenderToNull(800, 600);
+            Assert.That(axis1.DesiredMargin.Left, Is.EqualTo(12.5).Within(0.5), "axis1 left");
+            Assert.That(axis1.DesiredMargin.Top, Is.EqualTo(0).Within(1e-6), "axis1 top");
+            Assert.That(axis1.DesiredMargin.Right, Is.EqualTo(0).Within(1e-6), "axis1 right");
+            Assert.That(axis1.DesiredMargin.Bottom, Is.EqualTo(35).Within(0.5), "axis1 bottom");
+
+            Assert.That(axis2.DesiredMargin.Left, Is.EqualTo(0d).Within(1e-6), "axis2 left");
+            Assert.That(axis2.DesiredMargin.Top, Is.EqualTo(0d).Within(1e-6), "axis2 top");
+            Assert.That(axis2.DesiredMargin.Right, Is.EqualTo(12.5).Within(0.5), "axis2 right");
+            Assert.That(axis2.DesiredMargin.Bottom, Is.EqualTo(35).Within(0.5), "axis2 bottom");
         }
 
         /// <summary>
