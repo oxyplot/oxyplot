@@ -14,6 +14,7 @@ namespace ExampleLibrary
     using OxyPlot.Axes;
     using OxyPlot.Series;
     using OxyPlot.Legends;
+    using ExampleLibrary.Utilities;
 
     [Examples("Mouse Events")]
     public class MouseEventExamples
@@ -73,7 +74,7 @@ namespace ExampleLibrary
         [Example("MouseDown event and HitTestResult")]
         public static PlotModel MouseDownEventHitTestResult()
         {
-            var model = new PlotModel { Title = "MouseDown HitTestResult", Subtitle = "Reports the index of the nearest point." };
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes("MouseDown HitTestResult", "Reports the index of the nearest point.");
 
             var s1 = new LineSeries();
             s1.Points.Add(new DataPoint(0, 10));
@@ -105,7 +106,7 @@ namespace ExampleLibrary
         [Example("LineSeries and PlotModel MouseDown event")]
         public static PlotModel MouseDownEvent()
         {
-            var model = new PlotModel { Title = "MouseDown", Subtitle = "Left click to edit or add points." };
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes("MouseDown", "Left click to edit or add points.");
             var l = new Legend
             {
                 LegendSymbolLength = 40
@@ -449,7 +450,7 @@ namespace ExampleLibrary
         [Example("Add Series")]
         public static PlotModel AddSeriesByMouseDownEvent()
         {
-            var model = new PlotModel { Title = "MouseDown", Subtitle = "Left click to add series." };
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes("MouseDown", "Left click to add series.");
             var l = new Legend
             {
                 LegendSymbolLength = 40
@@ -474,7 +475,7 @@ namespace ExampleLibrary
         [Example("Select range")]
         public static PlotModel SelectRange()
         {
-            var model = new PlotModel { Title = "Select range", Subtitle = "Left click and drag to select a range." };
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes("Select range", "Left click and drag to select a range.");
             model.Series.Add(new FunctionSeries(Math.Cos, 0, 40, 0.1));
 
             var range = new RectangleAnnotation { Fill = OxyColor.FromAColor(120, OxyColors.SkyBlue), MinimumX = 0, MaximumX = 0 };

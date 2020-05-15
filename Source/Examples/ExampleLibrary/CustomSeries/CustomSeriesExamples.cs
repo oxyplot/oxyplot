@@ -12,6 +12,7 @@ namespace ExampleLibrary
     using OxyPlot.Axes;
     using OxyPlot.Series;
     using OxyPlot.Legends;
+    using ExampleLibrary.Utilities;
 
     [Examples("Custom series"), Tags("Series")]
     public static class CustomSeriesExamples
@@ -21,7 +22,7 @@ namespace ExampleLibrary
         {
             int n = 20;
 
-            var model = new PlotModel { Title = "ErrorSeries" };
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes("ErrorSeries");
             var l = new Legend
             {
                 LegendPosition = LegendPosition.BottomRight
@@ -49,7 +50,7 @@ namespace ExampleLibrary
         [Example("LineSegmentSeries")]
         public static PlotModel LineSegmentSeries()
         {
-            var model = new PlotModel { Title = "LineSegmentSeries" };
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes("LineSegmentSeries");
 
             var lss1 = new LineSegmentSeries { Title = "The first series" };
 
@@ -85,7 +86,7 @@ namespace ExampleLibrary
         [Example("FlagSeries")]
         public static PlotModel FlagSeries()
         {
-            var model = new PlotModel { Title = "FlagSeries" };
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes("FlagSeries");
 
             var s1 = new FlagSeries { Title = "Incidents", Color = OxyColors.Red };
             s1.Values.Add(2);

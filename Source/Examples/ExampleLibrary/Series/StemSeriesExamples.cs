@@ -14,6 +14,7 @@ namespace ExampleLibrary
     using OxyPlot;
     using OxyPlot.Series;
     using OxyPlot.Legends;
+    using ExampleLibrary.Utilities;
 
     /// <summary>
     /// Provides examples for the <see cref="StemSeries" />.
@@ -43,7 +44,7 @@ namespace ExampleLibrary
         /// <returns>A plot model.</returns>
         private static PlotModel CreateExampleModel(DataPointSeries series)
         {
-            var model = new PlotModel { Title = "StemSeries" };
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes("StemSeries");
             var l = new Legend
             {
                 LegendSymbolLength = 24

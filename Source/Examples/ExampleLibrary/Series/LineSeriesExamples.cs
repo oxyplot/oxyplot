@@ -121,7 +121,7 @@ namespace ExampleLibrary
         [Example("Custom markers")]
         public static PlotModel CustomMarkers()
         {
-            var model = new PlotModel { Title = "LineSeries with custom markers" };
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes("LineSeries with custom markers");
             var l = new Legend
             {
                 LegendSymbolLength = 30
@@ -373,6 +373,8 @@ namespace ExampleLibrary
                     }
                 }
             };
+            plotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            plotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
 
             return plotModel;
         }
@@ -382,7 +384,7 @@ namespace ExampleLibrary
         {
             var result = CreateRandomPoints();
 
-            var model = new PlotModel { Title = "Marker color options" };
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes("Marker color options");
 
             // Dont specify line or marker color. Defaults will be used.
             var s1 = CreateExampleLineSeries(1);
@@ -457,7 +459,7 @@ namespace ExampleLibrary
 
         private static PlotModel CreateModel(string title, int n = 20)
         {
-            var model = new PlotModel { Title = title };
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes(title);
             for (int i = 1; i <= n; i++)
             {
                 var s = new LineSeries { Title = "Series " + i };

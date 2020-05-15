@@ -50,6 +50,9 @@ namespace ExampleLibrary
         public static Example MouseHandlingExample()
         {
             var model = new PlotModel { Title = "Mouse handling example" };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+
             var series = new ScatterSeries();
             model.Series.Add(series);
 
@@ -73,7 +76,6 @@ namespace ExampleLibrary
         public static Example ClickingOnAnAnnotation()
         {
             var plotModel = new PlotModel { Title = "Clicking on an annotation", Subtitle = "Click on the rectangles" };
-
             plotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
             plotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
 

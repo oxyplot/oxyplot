@@ -10,7 +10,7 @@
 namespace ExampleLibrary
 {
     using System;
-
+    using ExampleLibrary.Utilities;
     using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
@@ -36,8 +36,9 @@ namespace ExampleLibrary
             var yvalues = ArrayBuilder.CreateVector(y0, y1, n);
             var peaksData = ArrayBuilder.Evaluate(peaks, xvalues, yvalues);
 
-            var model = new PlotModel { Title = "Peaks" };
-            model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = palette ?? OxyPalettes.Jet(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes("Peaks");
+            // insert color axis at 0, because many examples depend on this (legacy from default axes)
+            model.Axes.Insert(0, new LinearColorAxis { Position = AxisPosition.Right, Palette = palette ?? OxyPalettes.Jet(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
 
             var hms = new HeatMapSeries { X0 = x0, X1 = x1, Y0 = y0, Y1 = y1, Data = peaksData };
             model.Series.Add(hms);
@@ -410,8 +411,9 @@ namespace ExampleLibrary
             data[1, 1] = 0.3;
             data[1, 2] = 0.2;
 
-            var model = new PlotModel { Title = "HeatMapSeries", Subtitle = title };
-            model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes("HeatMapSeries", title);
+            // insert color axis at 0, because many examples depend on this (legacy from default axes)
+            model.Axes.Insert(0, new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
 
             // adding half cellwidth/cellheight to bounding box coordinates
             var hms = new HeatMapSeries

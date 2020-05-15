@@ -15,6 +15,7 @@ namespace ExampleLibrary
     using OxyPlot.Axes;
     using OxyPlot.Series;
     using OxyPlot.Legends;
+    using ExampleLibrary.Utilities;
 
     /// <summary>
     /// Plot examples in XKCD style.
@@ -29,12 +30,7 @@ namespace ExampleLibrary
         [Example("Test #1")]
         public static PlotModel Test1()
         {
-            var model = new PlotModel
-            {
-                Title = "XKCD style plot",
-                Subtitle = "Install the 'Humor Sans' font for the best experience",
-                RenderingDecorator = rc => new XkcdRenderingDecorator(rc)
-            };
+            var model = CreateXkcdPlotModel("XKCD style plot", "Install the 'Humor Sans' font for the best experience");
             model.Series.Add(new FunctionSeries(Math.Sin, 0, 10, 50, "sin(x)"));
             return model;
         }
@@ -47,11 +43,7 @@ namespace ExampleLibrary
         [Example("Test #2")]
         public static PlotModel Test2()
         {
-            var model = new PlotModel
-            {
-                Title = "Test #2",
-                RenderingDecorator = rc => new XkcdRenderingDecorator(rc)
-            };
+            var model = CreateXkcdPlotModel("Test #2");
 
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 0, Maximum = 8, Title = "INTENSITY" });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "TIME" });
@@ -102,11 +94,7 @@ namespace ExampleLibrary
         [Example("Test #3")]
         public static PlotModel Test3()
         {
-            var model = new PlotModel
-            {
-                Title = "Test #3",
-                RenderingDecorator = rc => new XkcdRenderingDecorator(rc)
-            };
+            var model = CreateXkcdPlotModel("Text #3");
 
             var l = new Legend
             {
@@ -139,6 +127,13 @@ namespace ExampleLibrary
             model.Series.Add(s2);
             model.Axes.Add(categoryAxis);
             model.Axes.Add(valueAxis);
+            return model;
+        }
+
+        private static PlotModel CreateXkcdPlotModel(string title, string subtitle = null)
+        {
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes(title, subtitle);
+            model.RenderingDecorator = rc => new XkcdRenderingDecorator(rc);
             return model;
         }
     }

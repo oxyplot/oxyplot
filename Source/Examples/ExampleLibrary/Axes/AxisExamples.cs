@@ -602,6 +602,7 @@ namespace ExampleLibrary
                     Position = AxisPosition.Left,
                     MinimumRange = 400
                 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
 
             return model;
         }
@@ -616,6 +617,7 @@ namespace ExampleLibrary
                     Position = AxisPosition.Left,
                     MaximumRange = 40
                 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
 
             return model;
         }
@@ -1078,6 +1080,7 @@ namespace ExampleLibrary
         [Example("No axes defined")]
         public static PlotModel NoAxesDefined()
         {
+            // TODO: as part of #992, replace this with the new appropriate behaviour for missing axes (e.g. throw) or otherwise remove
             var plotModel = new PlotModel { Title = "No axes defined", Subtitle = "Bottom and left axes are auto-generated." };
             plotModel.Series.Add(new FunctionSeries(Math.Cos, 0, 10, 400));
             return plotModel;

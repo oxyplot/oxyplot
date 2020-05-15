@@ -18,6 +18,7 @@ namespace ExampleLibrary
     using OxyPlot.Axes;
     using OxyPlot.Series;
     using OxyPlot.Legends;
+    using ExampleLibrary.Utilities;
 
     [Examples("ScatterSeries"), Tags("Series")]
     public class ScatterSeriesExamples
@@ -503,7 +504,7 @@ namespace ExampleLibrary
         [Example("TrackerFormatString")]
         public static PlotModel TrackerFormatString()
         {
-            var model = new PlotModel { Title = "TrackerFormatString" };
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes("TrackerFormatString");
 
             var s1 = new ScatterSeries { TrackerFormatString = "{Sum:0.0}", DataFieldX = "X", DataFieldY = "Y" };
             var myPoints = new List<MyPoint>
@@ -535,7 +536,7 @@ namespace ExampleLibrary
 
         private static PlotModel RandomScatter(int n, int binSize)
         {
-            var model = new PlotModel { Title = string.Format("ScatterSeries (n={0})", n), Subtitle = binSize > 0 ? "BinSize = " + binSize : "No 'binning'" };
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes(string.Format("ScatterSeries (n={0})", n), binSize > 0 ? "BinSize = " + binSize : "No 'binning'");
 
             var s1 = new ScatterSeries()
             {
@@ -557,7 +558,7 @@ namespace ExampleLibrary
 
         private static PlotModel CreateCorrelatedScatter(int n)
         {
-            var model = new PlotModel { Title = string.Format("Correlated ScatterSeries (n={0})", n) };
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes(string.Format("Correlated ScatterSeries (n={0})", n));
 
             var s1 = new ScatterSeries
             {

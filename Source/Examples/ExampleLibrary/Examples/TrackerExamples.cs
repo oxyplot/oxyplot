@@ -11,6 +11,7 @@ namespace ExampleLibrary
     using OxyPlot;
     using OxyPlot.Series;
     using OxyPlot.Legends;
+    using ExampleLibrary.Utilities;
 
     [Examples("Tracker")]
     public static class TrackerExamples
@@ -18,7 +19,7 @@ namespace ExampleLibrary
         [Example("No interpolation")]
         public static PlotModel NoInterpolation()
         {
-            var model = new PlotModel { Title = "No tracker interpolation", Subtitle = "Used for discrete values or scatter plots." };
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes("No tracker interpolation", "Used for discrete values or scatter plots.");
             var l = new Legend
             {
                 LegendSymbolLength = 30
@@ -50,7 +51,7 @@ namespace ExampleLibrary
         [Example("TrackerChangedEvent")]
         public static PlotModel TrackerChangedEvent()
         {
-            var model = new PlotModel { Title = "Handling the TrackerChanged event", Subtitle = "Press the left mouse button to test the tracker." };
+            var model = PlotModelUtilities.CreateModelWithDefaultAxes("Handling the TrackerChanged event", "ress the left mouse button to test the tracker.");
             model.Series.Add(new FunctionSeries(Math.Sin, 0, 10, 100));
             model.TrackerChanged += (s, e) =>
             {

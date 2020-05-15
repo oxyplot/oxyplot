@@ -268,6 +268,7 @@ namespace ExampleLibrary
         [Example("No axes defined")]
         public static PlotModel NoAxes()
         {
+            // TODO: as part of #992, replace this with the new appropriate behaviour for missing axes (e.g. throw) or otherwise remove
             var model = CreateSimpleModel(false, "No axes defined");
             model.Axes.Clear(); // default axes will be generated
             return model;
@@ -276,6 +277,7 @@ namespace ExampleLibrary
         [Example("Stacked and no axes defined")]
         public static PlotModel StackedNoAxes()
         {
+            // TODO: as part of #992, replace this with the new appropriate behaviour for missing axes (e.g. throw) or otherwise remove
             var model = CreateSimpleModel(true, "Stacked and no axes defined");
             model.Axes.Clear(); // default axes will be generated
             return model;
@@ -594,6 +596,7 @@ namespace ExampleLibrary
             };
             categoryAxis.Labels.AddRange(new[] { "A", "B", "C" });
             model.Axes.Add(categoryAxis);
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
 
             model.Series.Add(series);
             return model;
@@ -625,6 +628,7 @@ namespace ExampleLibrary
             };
             categoryAxis.Labels.AddRange(new[] { "A", "B" });
             model.Axes.Add(categoryAxis);
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
             return model;
         }
 
@@ -649,6 +653,7 @@ namespace ExampleLibrary
             };
             categoryAxis.Labels.AddRange(new[] { "A", "B" });
             model.Axes.Add(categoryAxis);
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
 
             return model;
         }
@@ -674,6 +679,7 @@ namespace ExampleLibrary
             };
             categoryAxis.Labels.AddRange(new[] { "A", "B" });
             model.Axes.Add(categoryAxis);
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
 
             return model;
         }
@@ -699,6 +705,7 @@ namespace ExampleLibrary
             };
             categoryAxis.Labels.AddRange(new[] { "A", "B" });
             model.Axes.Add(categoryAxis);
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
 
             return model;
         }
@@ -723,6 +730,7 @@ namespace ExampleLibrary
             };
             categoryAxis.Labels.AddRange(new[] { "A", "B" });
             model.Axes.Add(categoryAxis);
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
 
             return model;
         }
@@ -743,6 +751,7 @@ namespace ExampleLibrary
             };
             categoryAxis.Labels.AddRange(new[] { "A", "B" });
             model.Axes.Add(categoryAxis);
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
 
             return model;
         }
@@ -763,6 +772,7 @@ namespace ExampleLibrary
             };
             categoryAxis.Labels.AddRange(new[] { "A", "B" });
             model.Axes.Add(categoryAxis);
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
 
             return model;
         }
@@ -787,6 +797,7 @@ namespace ExampleLibrary
             };
             categoryAxis.Labels.AddRange(new[] { "A", "B" });
             model.Axes.Add(categoryAxis);
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
 
             return model;
         }
@@ -811,6 +822,8 @@ namespace ExampleLibrary
             };
             categoryAxis.Labels.AddRange(new[] { "A", "B" });
             model.Axes.Add(categoryAxis);
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+
             return model;
         }
 

@@ -117,6 +117,7 @@ namespace ExampleLibrary
             //    Points = RungeKutta4(f, t0, y0, 4, 1)
             //});
 
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
             return model;
         }

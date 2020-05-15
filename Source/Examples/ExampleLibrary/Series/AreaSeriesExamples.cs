@@ -19,7 +19,7 @@ namespace ExampleLibrary
         [DocumentationExample("Series/AreaSeries")]
         public static PlotModel DefaultStyle()
         {
-            var plotModel1 = new PlotModel { Title = "AreaSeries with default style" };
+            var plotModel1 = PlotModelUtilities.CreateModelWithDefaultAxes("AreaSeries with default style");
             plotModel1.Series.Add(CreateExampleAreaSeries());
             return plotModel1;
         }
@@ -27,7 +27,7 @@ namespace ExampleLibrary
         [Example("Different stroke colors")]
         public static PlotModel DifferentColors()
         {
-            var plotModel1 = new PlotModel { Title = "AreaSeries with different stroke colors" };
+            var plotModel1 = PlotModelUtilities.CreateModelWithDefaultAxes("AreaSeries with different stroke colors");
             var areaSeries1 = CreateExampleAreaSeries();
             areaSeries1.Color = OxyColors.Red;
             areaSeries1.Color2 = OxyColors.Blue;
@@ -38,7 +38,7 @@ namespace ExampleLibrary
         [Example("Crossing lines")]
         public static PlotModel CrossingLines()
         {
-            var plotModel1 = new PlotModel { Title = "AreaSeries with crossing lines" };
+            var plotModel1 = PlotModelUtilities.CreateModelWithDefaultAxes("AreaSeries with crossing lines");
             var areaSeries1 = new AreaSeries();
             areaSeries1.Points.Add(new DataPoint(0, 50));
             areaSeries1.Points.Add(new DataPoint(10, 140));
@@ -69,7 +69,7 @@ namespace ExampleLibrary
         [Example("Constant baseline (empty Points2)")]
         public static PlotModel ConstantBaseline()
         {
-            var plotModel1 = new PlotModel { Title = "AreaSeries with constant baseline", Subtitle = "Empty Points2, ConstantY2 = 0 (default)" };
+            var plotModel1 = PlotModelUtilities.CreateModelWithDefaultAxes("AreaSeries with constant baseline", "Empty Points2, ConstantY2 = 0(default)");
             var areaSeries1 = new AreaSeries();
             areaSeries1.Points.Add(new DataPoint(0, 50));
             areaSeries1.Points.Add(new DataPoint(10, 140));
@@ -81,7 +81,7 @@ namespace ExampleLibrary
         [Example("Constant baseline (empty Points2, ConstantY2=NaN)")]
         public static PlotModel ConstantBaselineNaN()
         {
-            var plotModel1 = new PlotModel { Title = "AreaSeries with constant baseline", Subtitle = "Empty Points2, ConstantY2 = NaN" };
+            var plotModel1 = PlotModelUtilities.CreateModelWithDefaultAxes("AreaSeries with constant baseline", "Empty Points2, ConstantY2 = NaN");
             var areaSeries1 = new AreaSeries();
             areaSeries1.Points.Add(new DataPoint(0, 50));
             areaSeries1.Points.Add(new DataPoint(10, 140));
@@ -94,7 +94,7 @@ namespace ExampleLibrary
         [Example("Constant baseline (ItemsSource and DataField2 not set)")]
         public static PlotModel ConstantBaselineItemsSource()
         {
-            var plotModel1 = new PlotModel { Title = "AreaSeries with constant baseline", Subtitle = "ItemsSource and DataField2 not set, ConstantY2 = -20" };
+            var plotModel1 = PlotModelUtilities.CreateModelWithDefaultAxes("AreaSeries with constant baseline", "ItemsSource and DataField2 not set, ConstantY2 = -20");
             var areaSeries1 = new AreaSeries();
             var points = new[] { new DataPoint(0, 50), new DataPoint(10, 140), new DataPoint(20, 60) };
             areaSeries1.ItemsSource = points;

@@ -136,6 +136,7 @@ namespace ExampleLibrary
         {
             var model = new PlotModel { Title = "AbsoluteMaximum = 1000" };
             model.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Left, Minimum = 0.1, Maximum = 1000, AbsoluteMaximum = 1000 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
             model.Series.Add(new FunctionSeries(Math.Exp, 0, Math.Log(900), 100));
             return model;
         }
@@ -148,6 +149,7 @@ namespace ExampleLibrary
             int n = 0;
             logAxis.AxisChanged += (s, e) => { model.Subtitle = "Changed " + (n++) + " times. ActualMaximum=" + logAxis.ActualMaximum; };
             model.Axes.Add(logAxis);
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
             model.Series.Add(new FunctionSeries(Math.Exp, 0, Math.Log(900), 100));
             return model;
         }

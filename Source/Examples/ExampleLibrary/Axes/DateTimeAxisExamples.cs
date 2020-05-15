@@ -231,7 +231,8 @@ namespace ExampleLibrary
         public static PlotModel LabelFormatter()
         {
             var model = new PlotModel { Title = "Using LabelFormatter to format labels by day of week" };
-            model.Axes.Add(new DateTimeAxis { LabelFormatter = x => DateTimeAxis.ToDateTime(x).DayOfWeek.ToString().Substring(0, 3) });
+            model.Axes.Add(new DateTimeAxis { Position = AxisPosition.Bottom, LabelFormatter = x => DateTimeAxis.ToDateTime(x).DayOfWeek.ToString().Substring(0, 3) });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
             var series = new LineSeries();
             model.Series.Add(series);
             for (int i = 0; i < 7; i++)
