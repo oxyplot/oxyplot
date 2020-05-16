@@ -11,6 +11,7 @@ namespace OxyPlot.Series
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
 
     /// <summary>
@@ -45,9 +46,9 @@ namespace OxyPlot.Series
         public ContourSeries()
         {
             this.ContourLevelStep = double.NaN;
-
-            this.LabelSpacing = double.NaN;
             this.LabelStep = 1;
+            this.MultiLabel = false;
+            this.LabelSpacing = 150;
             this.LabelBackground = OxyColor.FromAColor(220, OxyColors.White);
 
             this.Color = OxyColors.Automatic;
@@ -80,7 +81,7 @@ namespace OxyPlot.Series
 
         /// <summary>
         /// Gets or sets the contour level step size.
-        /// This property is not used if the ContourLevels vector is set.
+        /// This property is not used if the <see cref="ContourLevels"/> vector is set.
         /// </summary>
         /// <value>The contour level step size.</value>
         public double ContourLevelStep { get; set; }
@@ -118,13 +119,18 @@ namespace OxyPlot.Series
         public string LabelFormatString { get; set; }
 
         /// <summary>
-        /// Gets or sets the label spacing.
+        /// Gets or sets the label spacing, which is the space between labels on the same contour. Not used if <see cref="MultiLabel"/>==<see langword="false"/>
         /// </summary>
         /// <value>The label spacing.</value>
         public double LabelSpacing { get; set; }
 
         /// <summary>
-        /// Gets or sets the label step (number of contours per label).
+        /// Gets or sets a value indicating whether multiple labels should be displayed per Contour. The default value is <c>false</c>
+        /// </summary>
+        public bool MultiLabel { get; set; }
+
+        /// <summary>
+        /// Gets or sets the interval between labeled contours. LabelStep = 1 is default and it means that all contours have a label
         /// </summary>
         /// <value>The label step.</value>
         public int LabelStep { get; set; }
@@ -183,6 +189,7 @@ namespace OxyPlot.Series
                     double step = range / 20;
                     double stepExp = Math.Round(Math.Log(Math.Abs(step), 10));
                     actualStep = Math.Pow(10, Math.Floor(stepExp));
+                    this.ContourLevelStep = actualStep;
                 }
 
                 max = Math.Round(actualStep * (int)Math.Ceiling(max / actualStep), 14);
@@ -234,7 +241,7 @@ namespace OxyPlot.Series
                     {
                         result = r;
                         result.Text = StringHelper.Format(
-                            this.ActualCulture, 
+                            this.ActualCulture,
                             this.TrackerFormatString,
                             null,
                             this.Title,
@@ -277,26 +284,86 @@ namespace OxyPlot.Series
 
             foreach (var contour in this.contours)
             {
-                if (this.StrokeThickness > 0 && this.LineStyle != LineStyle.None)
+                if (this.StrokeThickness <= 0 || this.LineStyle == LineStyle.None)
                 {
-                    var transformedPoints = contour.Points.Select(this.Transform).ToArray();
-                    var strokeColor = contour.Color.GetActualColor(this.ActualColor);
+                    continue;
+                }
 
-                    rc.DrawClippedLine(
-                        clippingRect,
-                        transformedPoints,
-                        4,
-                        this.GetSelectableColor(strokeColor),
-                        this.StrokeThickness,
-                        this.EdgeRenderingMode,
-                        dashArray,
-                        LineJoin.Miter);
+                var transformedPoints = contour.Points.Select(this.Transform).ToArray();
 
-                    // rc.DrawClippedPolygon(transformedPoints, clippingRect, 4, model.GetDefaultColor(), OxyColors.Black);
-                    if (transformedPoints.Length > 10)
+                var strokeColor = contour.Color.GetActualColor(this.ActualColor);
+
+                rc.DrawClippedLine(
+                    clippingRect,
+                    transformedPoints,
+                    4,
+                    this.GetSelectableColor(strokeColor),
+                    this.StrokeThickness,
+                    this.EdgeRenderingMode,
+                    dashArray,
+                    LineJoin.Miter);
+
+                // measure total contour length
+                var contourLength = 0.0;
+                for (int i = 1; i < transformedPoints.Length; i++)
+                {
+                    contourLength += (transformedPoints[i] - transformedPoints[i - 1]).Length;
+                }
+
+                // don't add label to contours, if ContourLevel is not close to LabelStep
+                if (transformedPoints.Length <= 10 || (Math.Round(contour.ContourLevel / this.ContourLevelStep) % this.LabelStep != 0))
+                {
+                    continue;
+                }
+
+                if (!this.MultiLabel)
+                {
+                    this.AddContourLabels(contour, transformedPoints, clippingRect, contourLabels, (transformedPoints.Length - 1) * 0.5);
+                    continue;
+                }
+
+                // calculate how many labels fit per contour
+                var labelsCount = (int)(contourLength / this.LabelSpacing);
+                if (labelsCount == 0)
+                {
+                    this.AddContourLabels(contour, transformedPoints, clippingRect, contourLabels, (transformedPoints.Length - 1) * 0.5);
+                    continue;
+                }
+
+                var contourPartLength = 0.0;
+                var contourPartLengthOld = 0.0;
+                var intervalIndex = 1;
+                var contourPartLengthTarget = 0.0;
+                var contourFirstPartLengthTarget = (contourLength - ((labelsCount - 1) * this.LabelSpacing)) / 2;
+                for (var j = 0; j < labelsCount; j++)
+                {
+                    var labelIndex = 0.0;
+
+                    if (intervalIndex == 1)
                     {
-                        this.AddContourLabels(contour, transformedPoints, clippingRect, contourLabels);
+                        contourPartLengthTarget = contourFirstPartLengthTarget;
                     }
+                    else
+                    {
+                        contourPartLengthTarget = contourFirstPartLengthTarget + (j * this.LabelSpacing);
+                    }
+
+                    // find index of contour points where next label should be positioned
+                    for (var k = intervalIndex; k < transformedPoints.Length; k++)
+                    {
+                        contourPartLength += (transformedPoints[k] - transformedPoints[k - 1]).Length;
+
+                        if (contourPartLength > contourPartLengthTarget)
+                        {
+                            labelIndex = (k - 1) + ((contourPartLengthTarget - contourPartLengthOld) / (contourPartLength - contourPartLengthOld));
+                            intervalIndex = k + 1;
+                            break;
+                        }
+
+                        contourPartLengthOld = contourPartLength;
+                    }
+
+                    this.AddContourLabels(contour, transformedPoints, clippingRect, contourLabels, labelIndex);
                 }
             }
 
@@ -393,29 +460,28 @@ namespace OxyPlot.Series
         /// <param name="pts">The points of the contour.</param>
         /// <param name="clippingRect">The clipping rectangle.</param>
         /// <param name="contourLabels">The contour labels.</param>
-        private void AddContourLabels(Contour contour, ScreenPoint[] pts, OxyRect clippingRect, ICollection<ContourLabel> contourLabels)
+        /// <param name="labelIndex">The index of the point in the list of points, where the label should get added.</param>
+        private void AddContourLabels(Contour contour, ScreenPoint[] pts, OxyRect clippingRect, ICollection<ContourLabel> contourLabels, double labelIndex)
         {
-            // todo: support label spacing and label step
             if (pts.Length < 2)
             {
                 return;
             }
 
             // Calculate position and angle of the label
-            double i = (pts.Length - 1) * 0.5;
-            var i0 = (int)i;
-            int i1 = i0 + 1;
-            double dx = pts[i1].X - pts[i0].X;
-            double dy = pts[i1].Y - pts[i0].Y;
-            double x = pts[i0].X + (dx * (i - i0));
-            double y = pts[i0].Y + (dy * (i - i0));
+            var i0 = (int)labelIndex;
+            var i1 = i0 + 1;
+            var dx = pts[i1].X - pts[i0].X;
+            var dy = pts[i1].Y - pts[i0].Y;
+            var x = pts[i0].X + (dx * (labelIndex - i0));
+            var y = pts[i0].Y + (dy * (labelIndex - i0));
             if (!clippingRect.Contains(x, y))
             {
                 return;
             }
 
             var pos = new ScreenPoint(x, y);
-            double angle = Math.Atan2(dy, dx) * 180 / Math.PI;
+            var angle = Math.Atan2(dy, dx) * 180 / Math.PI;
             if (angle > 90)
             {
                 angle -= 180;
@@ -427,7 +493,7 @@ namespace OxyPlot.Series
             }
 
             var formatString = string.Concat("{0:", this.LabelFormatString, "}");
-            string text = string.Format(this.ActualCulture, formatString, contour.ContourLevel);
+            var text = string.Format(this.ActualCulture, formatString, contour.ContourLevel);
             contourLabels.Add(new ContourLabel { Position = pos, Angle = angle, Text = text });
         }
 

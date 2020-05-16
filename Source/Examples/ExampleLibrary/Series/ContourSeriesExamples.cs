@@ -35,6 +35,106 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("Peaks LabelStep = 1, ContourLevelStep = PI/2")]
+        public static PlotModel PeaksLabelStep1LevelStepPI2()
+        {
+            var model = new PlotModel { Title = "Peaks LabelStep = 1, ContourLevelStep = PI/2" };
+            var cs = new ContourSeries
+            {
+                ColumnCoordinates = ArrayBuilder.CreateVector(-3, 3, 0.05),
+                RowCoordinates = ArrayBuilder.CreateVector(-3.1, 3.1, 0.05),
+                ContourLevelStep = Math.PI / 2,
+                LabelStep = 1
+            };
+            cs.Data = ArrayBuilder.Evaluate(peaks, cs.ColumnCoordinates, cs.RowCoordinates);
+            model.Subtitle = cs.Data.GetLength(0) + "×" + cs.Data.GetLength(1);
+            model.Series.Add(cs);
+            return model;
+        }
+
+        [Example("Peaks LabelStep = 2, ContourLevelStep = 0.5")]
+        public static PlotModel PeaksLabelStep2()
+        {
+            var model = new PlotModel { Title = "Peaks LabelStep = 2, ContourLevelStep = 0.5" };
+            var cs = new ContourSeries
+            {
+                ColumnCoordinates = ArrayBuilder.CreateVector(-3, 3, 0.05),
+                RowCoordinates = ArrayBuilder.CreateVector(-3.1, 3.1, 0.05),
+                ContourLevelStep = 0.5,
+                LabelStep = 2
+            };
+            cs.Data = ArrayBuilder.Evaluate(peaks, cs.ColumnCoordinates, cs.RowCoordinates);
+            model.Subtitle = cs.Data.GetLength(0) + "×" + cs.Data.GetLength(1);
+            model.Series.Add(cs);
+            return model;
+        }
+
+        [Example("Peaks LabelStep = 2, ContourLevelStep = 0.33")]
+        public static PlotModel PeaksLabelStep2LevelStep033()
+        {
+            var model = new PlotModel { Title = "Peaks LabelStep = 2, ContourLevelStep = 0.33" };
+            var cs = new ContourSeries
+            {
+                ColumnCoordinates = ArrayBuilder.CreateVector(-3, 3, 0.05),
+                RowCoordinates = ArrayBuilder.CreateVector(-3.1, 3.1, 0.05),
+                ContourLevelStep = 0.33,
+                LabelStep = 2
+            };
+            cs.Data = ArrayBuilder.Evaluate(peaks, cs.ColumnCoordinates, cs.RowCoordinates);
+            model.Subtitle = cs.Data.GetLength(0) + "×" + cs.Data.GetLength(1);
+            model.Series.Add(cs);
+            return model;
+        }
+
+        [Example("Peaks LabelStep = 3, ContourLevelStep = 1")]
+        public static PlotModel PeaksLabelStep3()
+        {
+            var model = new PlotModel { Title = "Peaks LabelStep = 3, ContourLevelStep = 1" };
+            var cs = new ContourSeries
+            {
+                ColumnCoordinates = ArrayBuilder.CreateVector(-3, 3, 0.05),
+                RowCoordinates = ArrayBuilder.CreateVector(-3.1, 3.1, 0.05),
+                LabelStep = 3
+            };
+            cs.Data = ArrayBuilder.Evaluate(peaks, cs.ColumnCoordinates, cs.RowCoordinates);
+            model.Subtitle = cs.Data.GetLength(0) + "×" + cs.Data.GetLength(1);
+            model.Series.Add(cs);
+            return model;
+        }
+
+        [Example("Peaks MultiLabel")]
+        public static PlotModel PeaksMultiLabel()
+        {
+            var model = new PlotModel { Title = "Peaks MultiLabel" };
+            var cs = new ContourSeries
+            {
+                ColumnCoordinates = ArrayBuilder.CreateVector(-3, 3, 0.05),
+                RowCoordinates = ArrayBuilder.CreateVector(-3.1, 3.1, 0.05),
+                MultiLabel = true
+            };
+            cs.Data = ArrayBuilder.Evaluate(peaks, cs.ColumnCoordinates, cs.RowCoordinates);
+            model.Subtitle = cs.Data.GetLength(0) + "×" + cs.Data.GetLength(1);
+            model.Series.Add(cs);
+            return model;
+        }
+
+        [Example("Peaks LabelSpacing = 400")]
+        public static PlotModel PeaksLabelSpacing400()
+        {
+            var model = new PlotModel { Title = "Peaks LabelSpacing = 400" };
+            var cs = new ContourSeries
+            {
+                ColumnCoordinates = ArrayBuilder.CreateVector(-3, 3, 0.05),
+                RowCoordinates = ArrayBuilder.CreateVector(-3.1, 3.1, 0.05),
+                MultiLabel = true,
+                LabelSpacing = 400
+            };
+            cs.Data = ArrayBuilder.Evaluate(peaks, cs.ColumnCoordinates, cs.RowCoordinates);
+            model.Subtitle = cs.Data.GetLength(0) + "×" + cs.Data.GetLength(1);
+            model.Series.Add(cs);
+            return model;
+        }
+
         [Example("Peaks (different contour colors)")]
         [DocumentationExample("Series/ContourSeries")]
         public static PlotModel PeaksWithColors()
