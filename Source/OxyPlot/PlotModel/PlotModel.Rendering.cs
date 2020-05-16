@@ -77,7 +77,7 @@ namespace OxyPlot
                         l.EnsureLegendProperties();
                     }
 
-                    while (true)
+                    for (var i = 0; i < 10; i++) // make we sure we don't loop infinitely
                     {
                         this.UpdatePlotArea(rc);
                         this.UpdateAxisTransforms();
@@ -134,69 +134,6 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Increases margin size if needed, do it on the specified border.
-        /// </summary>
-        /// <param name="currentMargin">The current margin.</param>
-        /// <param name="minBorderSize">Minimum size of the border.</param>
-        /// <param name="borderPosition">The border position.</param>
-        private static void EnsureMarginIsBigEnough(ref OxyThickness currentMargin, double minBorderSize, AxisPosition borderPosition)
-        {
-            switch (borderPosition)
-            {
-                case AxisPosition.Bottom:
-                    currentMargin = new OxyThickness(currentMargin.Left, currentMargin.Top, currentMargin.Right, Math.Max(currentMargin.Bottom, minBorderSize));
-                    break;
-
-                case AxisPosition.Left:
-                    currentMargin = new OxyThickness(Math.Max(currentMargin.Left, minBorderSize), currentMargin.Top, currentMargin.Right, currentMargin.Bottom);
-                    break;
-
-                case AxisPosition.Right:
-                    currentMargin = new OxyThickness(currentMargin.Left, currentMargin.Top, Math.Max(currentMargin.Right, minBorderSize), currentMargin.Bottom);
-                    break;
-
-                case AxisPosition.Top:
-                    currentMargin = new OxyThickness(currentMargin.Left, Math.Max(currentMargin.Top, minBorderSize), currentMargin.Right, currentMargin.Bottom);
-                    break;
-
-                default:
-                    throw new NotImplementedException();
-            }
-        }
-
-        /// <summary>
-        /// Calculates the maximum size of the specified axes.
-        /// </summary>
-        /// <param name="rc">The render context.</param>
-        /// <param name="axesOfPositionTier">The axes of position tier.</param>
-        /// <returns>The maximum size.</returns>
-        private static double MaxSizeOfPositionTier(IRenderContext rc, IEnumerable<Axis> axesOfPositionTier)
-        {
-            double maxSizeOfPositionTier = 0;
-            foreach (var axis in axesOfPositionTier)
-            {
-                var size = axis.Measure(rc);
-                if (axis.IsVertical())
-                {
-                    if (size.Width > maxSizeOfPositionTier)
-                    {
-                        maxSizeOfPositionTier = size.Width;
-                    }
-                }
-                else
-                {
-                    // caution: this includes AngleAxis because Position=None
-                    if (size.Height > maxSizeOfPositionTier)
-                    {
-                        maxSizeOfPositionTier = size.Height;
-                    }
-                }
-            }
-
-            return maxSizeOfPositionTier;
-        }
-
-        /// <summary>
         /// Renders the specified error message.
         /// </summary>
         /// <param name="rc">The rendering context.</param>
@@ -211,66 +148,52 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Determines whether the plot margin for the specified axis position is auto-sized.
-        /// </summary>
-        /// <param name="position">The axis position.</param>
-        /// <returns><c>true</c> if it is auto-sized.</returns>
-        private bool IsPlotMarginAutoSized(AxisPosition position)
-        {
-            switch (position)
-            {
-                case AxisPosition.Left:
-                    return double.IsNaN(this.PlotMargins.Left);
-                case AxisPosition.Right:
-                    return double.IsNaN(this.PlotMargins.Right);
-                case AxisPosition.Top:
-                    return double.IsNaN(this.PlotMargins.Top);
-                case AxisPosition.Bottom:
-                    return double.IsNaN(this.PlotMargins.Bottom);
-                default:
-                    return false;
-            }
-        }
-
-        /// <summary>
         /// Adjusts the plot margins.
         /// </summary>
         /// <param name="rc">The render context.</param>
         /// <returns><c>true</c> if the margins were adjusted.</returns>
         private bool AdjustPlotMargins(IRenderContext rc)
         {
-            var currentMargin = this.ActualPlotMargins;
+            var visibleAxes = this.Axes.Where(axis => axis.IsAxisVisible).ToList();
+            foreach (var axis in visibleAxes)
+            {
+                axis.Measure(rc);
+            }
 
+            var desiredMargin = new OxyThickness();
+
+            void IncludeInMargin(double size, AxisPosition borderPosition)
+            {
+                desiredMargin = borderPosition switch
+                {
+                    AxisPosition.Bottom => new OxyThickness(desiredMargin.Left, desiredMargin.Top, desiredMargin.Right, Math.Max(desiredMargin.Bottom, size)),
+                    AxisPosition.Left => new OxyThickness(Math.Max(desiredMargin.Left, size), desiredMargin.Top, desiredMargin.Right, desiredMargin.Bottom),
+                    AxisPosition.Right => new OxyThickness(desiredMargin.Left, desiredMargin.Top, Math.Max(desiredMargin.Right, size), desiredMargin.Bottom),
+                    AxisPosition.Top => new OxyThickness(desiredMargin.Left, Math.Max(desiredMargin.Top, size), desiredMargin.Right, desiredMargin.Bottom),
+                    _ => desiredMargin,
+                };
+            }
+
+            // include the value of the outermost position tier on each side ('normal' axes only)
             for (var position = AxisPosition.Left; position <= AxisPosition.Bottom; position++)
             {
-                var axesOfPosition = this.Axes.Where(a => a.IsAxisVisible && a.Position == position).ToList();
-                var requiredSize = this.AdjustAxesPositions(rc, axesOfPosition);
-
-                if (!this.IsPlotMarginAutoSized(position))
-                {
-                    continue;
-                }
-
-                EnsureMarginIsBigEnough(ref currentMargin, requiredSize, position);
+                var axesOfPosition = visibleAxes.Where(a => a.Position == position);
+                var requiredSize = this.AdjustAxesPositions(axesOfPosition);
+                IncludeInMargin(requiredSize, position);
             }
 
-            // Special case for AngleAxis which is all around the plot
-            var angularAxes = this.Axes.Where(a => a.IsAxisVisible).OfType<AngleAxis>().Cast<Axis>().ToList();
-
-            if (angularAxes.Any())
+            // include the desired margin of all visible axes (including polar axes)
+            foreach (var axis in visibleAxes)
             {
-                var requiredSize = this.AdjustAxesPositions(rc, angularAxes);
-
-                for (var position = AxisPosition.Left; position <= AxisPosition.Bottom; position++)
-                {
-                    if (!this.IsPlotMarginAutoSized(position))
-                    {
-                        continue;
-                    }
-
-                    EnsureMarginIsBigEnough(ref currentMargin, requiredSize, position);
-                }
+                desiredMargin = desiredMargin.Include(axis.DesiredMargin);
             }
+
+            var currentMargin = this.PlotMargins;
+            currentMargin = new OxyThickness(
+                double.IsNaN(currentMargin.Left) ? desiredMargin.Left : currentMargin.Left,
+                double.IsNaN(currentMargin.Top) ? desiredMargin.Top : currentMargin.Top,
+                double.IsNaN(currentMargin.Right) ? desiredMargin.Right : currentMargin.Right,
+                double.IsNaN(currentMargin.Bottom) ? desiredMargin.Bottom : currentMargin.Bottom);
 
             if (currentMargin.Equals(this.ActualPlotMargins))
             {
@@ -284,17 +207,29 @@ namespace OxyPlot
         /// <summary>
         /// Adjust the positions of parallel axes, returns total size
         /// </summary>
-        /// <param name="rc">The render context.</param>
         /// <param name="parallelAxes">The parallel axes.</param>
         /// <returns>The maximum value of the position tier??</returns>
-        private double AdjustAxesPositions(IRenderContext rc, IList<Axis> parallelAxes)
+        private double AdjustAxesPositions(IEnumerable<Axis> parallelAxes)
         {
             double maxValueOfPositionTier = 0;
 
-            foreach (var positionTier in parallelAxes.Select(a => a.PositionTier).Distinct().OrderBy(l => l))
+            static double GetSize(Axis axis)
             {
-                var axesOfPositionTier = parallelAxes.Where(a => a.PositionTier == positionTier).ToList();
-                var maxSizeOfPositionTier = MaxSizeOfPositionTier(rc, axesOfPositionTier);
+                return axis.Position switch
+                {
+                    AxisPosition.Left => axis.DesiredMargin.Left,
+                    AxisPosition.Right => axis.DesiredMargin.Right,
+                    AxisPosition.Top => axis.DesiredMargin.Top,
+                    AxisPosition.Bottom => axis.DesiredMargin.Bottom,
+                    _ => throw new InvalidOperationException(), // we don't do this for polar axes
+                };
+            }
+
+            foreach (var tierGroup in parallelAxes.GroupBy(a => a.PositionTier).OrderBy(group => group.Key))
+            {
+                var axesOfPositionTier = tierGroup.ToList();
+                var maxSizeOfPositionTier = axesOfPositionTier.Max(GetSize);
+
                 var minValueOfPositionTier = maxValueOfPositionTier;
 
                 if (Math.Abs(maxValueOfPositionTier) > 1e-5)

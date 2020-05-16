@@ -94,6 +94,16 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("Auto PlotMargins")]
+        public static PlotModel AutoPlotMarginAndAxisLabelWidths()
+        {
+            var plotModel1 = new PlotModel { Title = "PlotMargins = (NaN,NaN,NaN,NaN)" };
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = 0, Maximum = 1e8, EndPosition = 0.5, StringFormat = "f0" });
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = 0, Maximum = 80, StartPosition = 0.5, StringFormat = "f0" });
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 0, Maximum = 1e8, StringFormat = "f0", Angle = -90 });
+            return plotModel1;
+        }
+
         [Example("No model")]
         public static PlotModel NoModel()
         {

@@ -15,6 +15,7 @@
         <SignAssembly>True</SignAssembly>
         <AssemblyOriginatorKeyFile>OxyPlot.snk</AssemblyOriginatorKeyFile>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <LangVersion>8</LangVersion>
         <NoWarn>618</NoWarn>
     </PropertyGroup>
     <ItemGroup>

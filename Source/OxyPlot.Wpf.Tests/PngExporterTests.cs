@@ -81,6 +81,7 @@ namespace OxyPlot.Wpf.Tests
             var resolution = (int)(96 * factor);
             var plotModel = CreateTestModel1();
             Directory.CreateDirectory("Actual");
+            Directory.CreateDirectory("Baseline");
             var fileName = string.Format(CultureInfo.InvariantCulture, "PngExporterTests_ExportWithResolution_{0}dpi.png", resolution);
             var exporter = new PngExporter { Width = (int)(400 * factor), Height = (int)(300 * factor), Resolution = resolution };
             var actual = Path.Combine("Actual", fileName);
@@ -90,7 +91,15 @@ namespace OxyPlot.Wpf.Tests
             }
 
             Assert.IsTrue(File.Exists(actual));
-            PngAssert.AreEqual(Path.Combine("Baseline", fileName), actual, fileName, Path.Combine("Diff", fileName));
+            var baselinePath = Path.Combine("Baseline", fileName);
+            if (File.Exists(baselinePath))
+            {
+                PngAssert.AreEqual(baselinePath, actual, fileName, Path.Combine("Diff", fileName));
+            }
+            else
+            {
+                File.Copy(actual, baselinePath);
+            }
         }
 
         /// <summary>

@@ -47,6 +47,7 @@ All notable changes to this project will be documented in this file.
 - OxyPlot.ImageSharp now targets .NET Standard 1.3 (#1530)
 - SkiaRenderContext does not apply pixel snapping when rendering to vector graphic (#1539)
 - Mark OxyPlot.PdfExporter and OxyPlot.Pdf.PdfExporter as obsolete (#1527)
+- Replace Axis.DesiredSize by Axis.DesiredMargin, change signature of Axis.Measure(...) (#453)
 
 ### Removed
 - Remove PlotModel.Legends (#644)
@@ -67,6 +68,7 @@ All notable changes to this project will be documented in this file.
 - WPF CanvasRenderContext draws ellipses too small by half stroke thickness (#1537)
 - Text measurement and rendering in OxyPlot.ImageSharp
 - ExampleLibrary reporting annotation-only PlotModels as transposable (#1544)
+- Auto plot margin not taking width of labels into account (#453)
 
 ## [2.0.0] - 2019-10-19
 ### Added 

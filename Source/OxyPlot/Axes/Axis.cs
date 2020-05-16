@@ -584,11 +584,10 @@ namespace OxyPlot.Axes
         public bool UseSuperExponentialFormat { get; set; }
 
         /// <summary>
-        /// Gets or sets the "desired" size by the renderer such that the axis text &amp; ticks will not be clipped.  This
-        /// size is distinct from the margin settings or the size which is actually rendered, as in: ActualWidth / ActualSize.  
-        /// Actual rendered size may be smaller or larger than the desired size if the margins are set manually.
+        /// Gets or sets the desired margins such that the axis text ticks will not be clipped.
+        /// The actual margins may be smaller or larger than the desired margins if they are set manually.
         /// </summary>
-        public OxySize DesiredSize { get; protected set; }
+        public OxyThickness DesiredMargin { get; protected set; }
 
         /// <summary>
         /// Gets or sets the position tier max shift.
@@ -810,85 +809,101 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Measures the size of the axis (maximum axis label width/height).
+        /// Measures the size of the axis and updates <see cref="DesiredMargin"/> accordingly. This takes into account the axis title as well as tick labels
+        /// potentially exceeding the axis range.
         /// </summary>
         /// <param name="rc">The render context.</param>
-        /// <returns>The size of the axis.</returns>
-        public virtual OxySize Measure(IRenderContext rc)
+        public virtual void Measure(IRenderContext rc)
         {
-            IList<double> majorTickValues;
-            IList<double> minorTickValues;
-            IList<double> majorLabelValues;
-
-            this.GetTickValues(out majorLabelValues, out majorTickValues, out minorTickValues);
+            this.GetTickValues(out var majorLabelValues, out _, out _);
 
             var maximumTextSize = new OxySize();
-            foreach (double v in majorLabelValues)
+            foreach (var v in majorLabelValues)
             {
-                string s = this.FormatValue(v);
+                var s = this.FormatValue(v);
                 var size = rc.MeasureText(s, this.ActualFont, this.ActualFontSize, this.ActualFontWeight, this.Angle);
-                if (size.Width > maximumTextSize.Width)
-                {
-                    maximumTextSize = new OxySize(size.Width, maximumTextSize.Height);
-                }
-
-                if (size.Height > maximumTextSize.Height)
-                {
-                    maximumTextSize = new OxySize(maximumTextSize.Width, size.Height);
-                }
+                maximumTextSize = maximumTextSize.Include(size);
             }
 
-            var labelTextSize = rc.MeasureText(
-                this.ActualTitle, this.ActualFont, this.ActualFontSize, this.ActualFontWeight);
+            var labelTextSize = rc.MeasureText(this.ActualTitle, this.ActualFont, this.ActualFontSize, this.ActualFontWeight);
 
-            double width = 0;
-            double height = 0;
+            var marginLeft = 0d;
+            var marginTop = 0d;
+            var marginRight = 0d;
+            var marginBottom = 0d;
 
-            if (this.IsVertical())
+            var margin = this.TickStyle switch
             {
-                switch (this.TickStyle)
-                {
-                    case TickStyle.Outside:
-                        width += this.MajorTickSize;
-                        break;
-                    case TickStyle.Crossing:
-                        width += this.MajorTickSize * 0.75;
-                        break;
-                }
+                TickStyle.Outside => this.MajorTickSize,
+                TickStyle.Crossing => this.MajorTickSize * 0.75,
+                _ => 0
+            };
 
-                width += this.AxisDistance;
-                width += this.AxisTickToLabelDistance;
-                width += maximumTextSize.Width;
-                if (labelTextSize.Height > 0)
-                {
-                    width += this.AxisTitleDistance;
-                    width += labelTextSize.Height;
-                }
-            }
-            else
+            margin += this.AxisDistance + this.AxisTickToLabelDistance;
+
+            if (labelTextSize.Height > 0)
             {
-                // caution: this includes AngleAxis because Position=None
-                switch (this.TickStyle)
-                {
-                    case TickStyle.Outside:
-                        height += this.MajorTickSize;
-                        break;
-                    case TickStyle.Crossing:
-                        height += this.MajorTickSize * 0.75;
-                        break;
-                }
-
-                height += this.AxisDistance;
-                height += this.AxisTickToLabelDistance;
-                height += maximumTextSize.Height;
-                if (labelTextSize.Height > 0)
-                {
-                    height += this.AxisTitleDistance;
-                    height += labelTextSize.Height;
-                }
+                margin += this.AxisTitleDistance + labelTextSize.Height;
             }
 
-            return this.DesiredSize = new OxySize(width, height);
+            switch (this.Position)
+            {
+                case AxisPosition.Left:
+                    marginLeft = margin + maximumTextSize.Width;
+                    break;
+                case AxisPosition.Right:
+                    marginRight = margin + maximumTextSize.Width;
+                    break;
+                case AxisPosition.Top:
+                    marginTop = margin + maximumTextSize.Height;
+                    break;
+                case AxisPosition.Bottom:
+                    marginBottom = margin + maximumTextSize.Height;
+                    break;
+                case AxisPosition.None:
+                    marginLeft = marginRight = margin + maximumTextSize.Width;
+                    marginTop = marginBottom = margin + maximumTextSize.Height;
+                    break;
+                default:
+                    throw new InvalidOperationException();
+            }
+
+            var reachesMinPosition = Math.Min(this.StartPosition, this.EndPosition) < 0.01;
+            var reachesMaxPosition = Math.Max(this.StartPosition, this.EndPosition) > 0.99;
+
+            switch (this.Position)
+            {
+                case AxisPosition.Left:
+                case AxisPosition.Right:
+                    if (reachesMinPosition)
+                    {
+                        marginBottom = maximumTextSize.Height / 2;
+                    }
+
+                    if (reachesMaxPosition)
+                    {
+                        marginTop = maximumTextSize.Height / 2;
+                    }
+
+                    break;
+                case AxisPosition.Top:
+                case AxisPosition.Bottom:
+                    if (reachesMinPosition)
+                    {
+                        marginLeft = maximumTextSize.Width / 2;
+                    }
+
+                    if (reachesMaxPosition)
+                    {
+                        marginRight = maximumTextSize.Width / 2;
+                    }
+
+                    break;
+                default:
+                    break;
+            }
+
+            this.DesiredMargin = new OxyThickness(marginLeft, marginTop, marginRight, marginBottom);
         }
 
         /// <summary>
