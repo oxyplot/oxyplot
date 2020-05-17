@@ -26,11 +26,6 @@ namespace OxyPlot
         private bool endIsWritten;
 
         /// <summary>
-        /// The clip path
-        /// </summary>
-        private string clipPath;
-
-        /// <summary>
         /// The clip path number
         /// </summary>
         private int clipPathNumber = 1;
@@ -175,7 +170,6 @@ namespace OxyPlot
             this.WriteAttributeString("ry", height / 2);
             this.WriteAttributeString("style", style);
             this.WriteEdgeRenderingModeAttribute(edgeRenderingMode);
-            this.WriteClipPathAttribute();
             this.WriteEndElement();
         }
 
@@ -191,11 +185,11 @@ namespace OxyPlot
             // http://www.w3.org/TR/SVG/masking.html
             // https://developer.mozilla.org/en-US/docs/Web/SVG/Element/clipPath
             // http://www.svgbasics.com/clipping.html
-            this.clipPath = "clipPath" + (this.clipPathNumber++);
-            this.WriteStartElement("g");
-            this.WriteAttributeString("clip-rule", "nonzero");
+            var clipPath = "clipPath" + this.clipPathNumber++;
+
+            this.WriteStartElement("defs");
             this.WriteStartElement("clipPath");
-            this.WriteAttributeString("id", this.clipPath);
+            this.WriteAttributeString("id", clipPath);
             this.WriteStartElement("rect");
             this.WriteAttributeString("x", x);
             this.WriteAttributeString("y", y);
@@ -203,6 +197,10 @@ namespace OxyPlot
             this.WriteAttributeString("height", height);
             this.WriteEndElement(); // rect
             this.WriteEndElement(); // clipPath
+            this.WriteEndElement(); // defs
+
+            this.WriteStartElement("g");
+            this.WriteAttributeString("clip-path", $"url(#{clipPath})");
         }
 
         /// <summary>
@@ -211,7 +209,6 @@ namespace OxyPlot
         public void EndClip()
         {
             this.WriteEndElement(); // g
-            this.clipPath = null;
         }
 
         /// <summary>
@@ -270,7 +267,6 @@ namespace OxyPlot
             encodedImage.Append(";base64,");
             encodedImage.Append(Convert.ToBase64String(imageData));
             this.WriteAttributeString("xlink", "href", null, encodedImage.ToString());
-            this.WriteClipPathAttribute();
             this.WriteEndElement();
         }
 
@@ -292,7 +288,6 @@ namespace OxyPlot
             this.WriteAttributeString("y2", p2.Y);
             this.WriteAttributeString("style", style);
             this.WriteEdgeRenderingModeAttribute(edgeRenderingMode);
-            this.WriteClipPathAttribute();
             this.WriteEndElement();
         }
 
@@ -309,7 +304,6 @@ namespace OxyPlot
             this.WriteAttributeString("points", this.PointsToString(points));
             this.WriteAttributeString("style", style);
             this.WriteEdgeRenderingModeAttribute(edgeRenderingMode);
-            this.WriteClipPathAttribute();
             this.WriteEndElement();
         }
 
@@ -326,7 +320,6 @@ namespace OxyPlot
             this.WriteAttributeString("points", this.PointsToString(pts));
             this.WriteAttributeString("style", style);
             this.WriteEdgeRenderingModeAttribute(edgeRenderingMode);
-            this.WriteClipPathAttribute();
             this.WriteEndElement();
         }
 
@@ -349,7 +342,6 @@ namespace OxyPlot
             this.WriteAttributeString("height", height);
             this.WriteAttributeString("style", style);
             this.WriteEdgeRenderingModeAttribute(edgeRenderingMode);
-            this.WriteClipPathAttribute();
             this.WriteEndElement();
         }
 
@@ -444,8 +436,6 @@ namespace OxyPlot
                 }
             }
 
-            this.WriteClipPathAttribute();
-
             // WriteAttributeString("style", style);
             this.WriteString(text);
             this.WriteEndElement();
@@ -475,19 +465,6 @@ namespace OxyPlot
         protected void WriteAttributeString(string name, double value)
         {
             this.WriteAttributeString(name, value.ToString(this.NumberFormat, CultureInfo.InvariantCulture));
-        }
-
-        /// <summary>
-        /// Writes the clip path attribute.
-        /// </summary>
-        private void WriteClipPathAttribute()
-        {
-            if (this.clipPath == null)
-            {
-                return;
-            }
-
-            this.WriteAttributeString("clip-path", string.Format("url(#{0})", this.clipPath));
         }
 
         /// <summary>

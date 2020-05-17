@@ -16,7 +16,6 @@ namespace ExampleLibrary
     using OxyPlot;
     using OxyPlot.Annotations;
     using System.Linq;
-    using System.Collections.Generic;
 
     /// <summary>
     /// Provides rendering capability examples.
@@ -458,6 +457,59 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("Clipping")]
+        public static PlotModel Clipping()
+        {
+            var model = new PlotModel();
+            model.Annotations.Add(new DelegateAnnotation(rc =>
+            {
+                // reset a couple of times without any clipping being set to see that nothing explodes
+                rc.ResetClip();
+                rc.ResetClip();
+                rc.ResetClip();
+
+                var p1 = new ScreenPoint(150, 150);
+                var clip = 100d;
+                var radiusFactor = 1.1;
+                var clipShrink = .15 * clip;
+
+                var rect = new OxyRect(p1.X - clip, p1.Y - clip, clip * 2, clip * 2);
+                rc.DrawRectangle(rect, OxyColors.Undefined, OxyColors.Red, 1, EdgeRenderingMode.Automatic);
+                rc.SetClip(rect);
+                rc.DrawCircle(p1, clip * radiusFactor, OxyColors.Red, OxyColors.Undefined, 0, EdgeRenderingMode.Automatic);
+
+                clip -= clipShrink;
+                rect = new OxyRect(p1.X - clip, p1.Y - clip, clip * 2, clip * 2);
+                rc.DrawRectangle(rect, OxyColors.Undefined, OxyColors.Green, 1, EdgeRenderingMode.Automatic);
+                rc.SetClip(rect);
+                rc.DrawCircle(p1, clip * radiusFactor, OxyColors.Green, OxyColors.Undefined, 0, EdgeRenderingMode.Automatic);
+
+                clip -= clipShrink;
+                rect = new OxyRect(p1.X - clip, p1.Y - clip, clip * 2, clip * 2);
+                rc.DrawRectangle(rect, OxyColors.Undefined, OxyColors.Blue, 1, EdgeRenderingMode.Automatic);
+                rc.SetClip(rect);
+                rc.DrawCircle(p1, clip * radiusFactor, OxyColors.Blue, OxyColors.Undefined, 0, EdgeRenderingMode.Automatic);
+                rc.ResetClip();
+
+                rc.DrawText(p1, "Clipped Circles", OxyColors.White, fontSize: 12, horizontalAlignment: HorizontalAlignment.Center, verticalAlignment: VerticalAlignment.Middle);
+                
+                rc.DrawText(new ScreenPoint(p1.X * 2, 50), "Not clipped", OxyColors.Black, fontSize: 40);
+
+                rect = new OxyRect(p1.X * 2 + 10, 100, 80, 60);
+                rc.DrawRectangle(rect, OxyColors.Undefined, OxyColors.Black, 1, EdgeRenderingMode.Automatic);
+
+                // set the same clipping a couple of times to see that nothing explodes
+                rc.SetClip(rect);
+                rc.SetClip(rect);
+                using (rc.AutoResetClip(rect))
+                {
+                    rc.DrawText(new ScreenPoint(p1.X * 2, 100), "Clipped", OxyColors.Black, fontSize: 40);
+                }
+            }));
+
+            return model;
+        }
+
         private const double GRID_SIZE = 40;
         private const double TILE_SIZE = 30;
         private const int THICKNESS_STEPS = 10;
@@ -466,10 +518,6 @@ namespace ExampleLibrary
         private const double OFFSET_TOP = 20;
         private static readonly OxyColor FILL_COLOR = OxyColors.LightBlue;
 
-        /// <summary>
-        /// Shows capabilities for the MeasureText method.
-        /// </summary>
-        /// <returns>A plot model.</returns>
         [Example("Rectangles - EdgeRenderingMode")]
         public static PlotModel Rectangles()
         {
@@ -500,10 +548,6 @@ namespace ExampleLibrary
             return model;
         }
 
-        /// <summary>
-        /// Shows capabilities for the MeasureText method.
-        /// </summary>
-        /// <returns>A plot model.</returns>
         [Example("Lines - EdgeRenderingMode")]
         public static PlotModel Lines()
         {
@@ -540,10 +584,6 @@ namespace ExampleLibrary
             return model;
         }
 
-        /// <summary>
-        /// Shows capabilities for the MeasureText method.
-        /// </summary>
-        /// <returns>A plot model.</returns>
         [Example("Polygons - EdgeRenderingMode")]
         public static PlotModel Polygons()
         {
@@ -582,10 +622,6 @@ namespace ExampleLibrary
             return model;
         }
 
-        /// <summary>
-        /// Shows capabilities for the MeasureText method.
-        /// </summary>
-        /// <returns>A plot model.</returns>
         [Example("Ellipses - EdgeRenderingMode")]
         public static PlotModel Ellipses()
         {
@@ -619,7 +655,7 @@ namespace ExampleLibrary
         /// <summary>
         /// Represents an annotation that renders by a delegate.
         /// </summary>
-        private class DelegateAnnotation : Annotation
+        public class DelegateAnnotation : Annotation
         {
             /// <summary>
             /// Initializes a new instance of the <see cref="DelegateAnnotation"/> class.

@@ -897,6 +897,17 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Applies the specified clipping rectangle the the render context and returns a reset token. The clipping is reset once this token is disposed.
+        /// </summary>
+        /// <param name="rc">The render context.</param>
+        /// <param name="clippingRectangle">The clipping rectangle.</param>
+        /// <returns>The reset token. Clipping is reset once this is disposed.</returns>
+        public static IDisposable AutoResetClip(this IRenderContext rc, OxyRect clippingRectangle)
+        {
+            return new AutoResetClipToken(rc, clippingRectangle);
+        }
+
+        /// <summary>
         /// Adds a marker geometry to the specified collections.
         /// </summary>
         /// <param name="p">The position of the marker.</param>
@@ -1123,6 +1134,25 @@ namespace OxyPlot
                     outputBuffer.Add(new ScreenPoint(sc1.X, sc1.Y));
                     lastPointIndex = i;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Represents the token that is used to automatically reset the clipping in the <see cref="AutoResetClip(IRenderContext, OxyRect)"/> method.
+        /// </summary>
+        private class AutoResetClipToken : IDisposable
+        {
+            private readonly IRenderContext renderContext;
+
+            public AutoResetClipToken(IRenderContext renderContext, OxyRect clippingRectangle)
+            {
+                this.renderContext = renderContext;
+                renderContext.SetClip(clippingRectangle);
+            }
+
+            void IDisposable.Dispose()
+            {
+                this.renderContext.ResetClip();
             }
         }
     }
