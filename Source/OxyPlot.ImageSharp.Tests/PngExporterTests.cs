@@ -189,6 +189,16 @@ namespace OxyPlot.ImageSharp.Tests
             Assert.IsTrue(File.Exists(fileName));
         }
 
+        [Test]
+        public void TestEmoji()
+        {
+            var plotModel = ExampleLibrary.Issues.EmojiText();
+            var fileName = Path.Combine(this.outputDirectory, "Emoji.png");
+            PngExporter.Export(plotModel, fileName, 700, 700);
+
+            Assert.IsTrue(File.Exists(fileName));
+        }
+
         private static PlotModel CreateTestModel1()
         {
             var model = new PlotModel { Title = "Test 1" };
