@@ -69,6 +69,7 @@ All notable changes to this project will be documented in this file.
 - Text measurement and rendering in OxyPlot.ImageSharp
 - ExampleLibrary reporting annotation-only PlotModels as transposable (#1544)
 - Auto plot margin not taking width of labels into account (#453)
+- WPF PlotView still focusable when Focusable is false (#1440)
 
 ## [2.0.0] - 2019-10-19
 ### Added 
