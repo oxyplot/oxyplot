@@ -29,6 +29,7 @@ All notable changes to this project will be documented in this file.
 - Multi-Line Text support to SkiaRenderContext (#1538)
 - Added title clipping to PlotModel (#1510)
 - Added LabelStep and LabelSpacing to contour series (#1511)
+- Example for Issue #1481 showing text rendering with emoji
 
 ### Changed
 - Legends model (#644)

@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Issues.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
@@ -2267,6 +2267,19 @@ namespace ExampleLibrary
             plot.Annotations.Add(new TextAnnotation() { Text = "CRLF\r\nLine\r\nEndings", TextPosition = new DataPoint(16, 50), FontSize = 12 });
             plot.Annotations.Add(new TextAnnotation() { Text = "LF\nLine\nEndings", TextPosition = new DataPoint(50, 50), FontSize = 12 });
             plot.Annotations.Add(new TextAnnotation() { Text = "Mixed\r\nLine\nEndings", TextPosition = new DataPoint(84, 50), FontSize = 12 });
+
+            return plot;
+        }
+
+        [Example("#1481: Emoji text.")]
+        public static PlotModel EmojiText()
+        {
+            var plot = new PlotModel() { Title = "🖊 Emoji plot 📈" };
+            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 0, Maximum = 100 });
+            plot.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = 0, Maximum = 100 });
+
+            plot.Annotations.Add(new TextAnnotation() { Text = "0 ❗ 1 📊 2 ❗ 3 📊 4 ❗ 5 📊 6 ❗ 7 📊 8 ❗ 9 📊", TextPosition = new DataPoint(50, 80), FontSize = 12 });
+            plot.Annotations.Add(new TextAnnotation() { Text = "0 ❗ 1 📊 2 ❗ 3 📊 4 ❗ 5 📊 6 ❗ 7 📊 8 ❗ 9 📊", TextPosition = new DataPoint(50, 50), FontSize = 12, TextRotation = 45 });
 
             return plot;
         }
