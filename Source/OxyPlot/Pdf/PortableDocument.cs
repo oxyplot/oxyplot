@@ -950,7 +950,7 @@ namespace OxyPlot
         /// <param name="bold">Use bold if set to <c>true</c>.</param>
         /// <param name="italic">Use italic if set to <c>true</c>.</param>
         /// <returns>The font.</returns>
-        private static PortableDocumentFont GetFont(string fontName, bool bold, bool italic)
+        public static PortableDocumentFont GetFont(string fontName, bool bold, bool italic)
         {
             if (fontName != null)
             {

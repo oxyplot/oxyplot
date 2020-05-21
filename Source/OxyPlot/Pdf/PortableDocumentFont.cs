@@ -9,6 +9,10 @@
 
 namespace OxyPlot
 {
+    using System;
+
+    using OxyPlot.Rendering;
+
     /// <summary>
     /// Represents a font that can be used in a <see cref="PortableDocument" />.
     /// </summary>
@@ -131,6 +135,20 @@ namespace OxyPlot
 
             width = wmax * fontSize / 1000;
             height = lineCount * (this.Ascent - this.Descent) * fontSize / 1000;
+        }
+
+        /// <summary>
+        /// Gets minimal font metrics for the font.
+        /// </summary>
+        /// <param name="fontSize">The font size.</param>
+        /// <returns>The font metrics.</returns>
+        public FontMetrics GetFontMetrics(double fontSize)
+        {
+            var ascender = fontSize * Math.Abs(this.Ascent) / 1000;
+            var descender = fontSize * Math.Abs(this.Descent) / 1000;
+            var leading = 0.0;
+
+            return new FontMetrics(ascender, descender, leading);
         }
     }
 }

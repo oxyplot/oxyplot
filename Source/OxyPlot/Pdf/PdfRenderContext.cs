@@ -13,11 +13,12 @@ namespace OxyPlot
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using OxyPlot.Rendering;
 
     /// <summary>
     /// Implements an <see cref="IRenderContext" /> producing PDF documents by <see cref="PortableDocument" />.
     /// </summary>
-    public class PdfRenderContext : ClippingRenderContext
+    public class PdfRenderContext : ClippingRenderContext, ITextMeasurer
     {
         /// <summary>
         /// The current document.
@@ -46,7 +47,17 @@ namespace OxyPlot
                 this.doc.SetFillColor(background);
                 this.doc.FillRectangle(0, 0, width, height);
             }
+
+            var textTrimmer = new SimpleTextTrimmer();
+            textTrimmer.Ellipsis = SimpleTextTrimmer.AsciiEllipsis;
+
+            this.TextArranger = new TextArranger(this, textTrimmer);
         }
+
+        /// <summary>
+        /// Gets or sets the <see cref="TextArranger"/> for this instance.
+        /// </summary>
+        public TextArranger TextArranger { get; set; }
 
         /// <summary>
         /// Saves the output to the specified stream.
@@ -248,9 +259,9 @@ namespace OxyPlot
         /// <param name="fontFamily">The font family.</param>
         /// <param name="fontSize">Size of the font.</param>
         /// <param name="fontWeight">The font weight.</param>
-        /// <param name="rotate">The rotation angle.</param>
-        /// <param name="halign">The horizontal alignment.</param>
-        /// <param name="valign">The vertical alignment.</param>
+        /// <param name="rotation">The rotation angle.</param>
+        /// <param name="horizontalAlignment">The horizontal alignment.</param>
+        /// <param name="verticalAlignment">The vertical alignment.</param>
         /// <param name="maxSize">The maximum size of the text.</param>
         public override void DrawText(
             ScreenPoint p,
@@ -259,66 +270,33 @@ namespace OxyPlot
             string fontFamily,
             double fontSize,
             double fontWeight,
-            double rotate,
-            HorizontalAlignment halign,
-            VerticalAlignment valign,
+            double rotation,
+            HorizontalAlignment horizontalAlignment,
+            VerticalAlignment verticalAlignment,
             OxySize? maxSize)
         {
             this.doc.SaveState();
-            this.doc.SetFont(fontFamily, fontSize / 96 * 72, fontWeight > 500);
+            this.doc.SetFont(fontFamily, ConvertToPoints(fontSize), fontWeight > 500);
             this.doc.SetFillColor(fill);
 
-            double width, height;
-            this.doc.MeasureText(text, out width, out height);
-            if (maxSize != null)
-            {
-                if (width > maxSize.Value.Width)
-                {
-                    width = Math.Max(maxSize.Value.Width, 0);
-                }
+            this.doc.Translate(p.X, this.doc.PageHeight - p.Y);
 
-                if (height > maxSize.Value.Height)
-                {
-                    height = Math.Max(maxSize.Value.Height, 0);
-                }
+            if (Math.Abs(rotation) > 1e-6)
+            {
+                this.doc.Rotate(-rotation);
             }
 
-            double dx = 0;
-            if (halign == HorizontalAlignment.Center)
+            // arrange around the origin with no rotation, because PortableDocument does the rotation for us
+            this.TextArranger.ArrangeText(new ScreenPoint(0, 0), text, fontFamily, fontSize, fontWeight, 0.0, horizontalAlignment, verticalAlignment, maxSize, HorizontalAlignment.Left, TextVerticalAlignment.Bottom, out var lines, out var linePositions);
+
+            for (int i = 0; i < lines.Length; i++)
             {
-                dx = -width / 2;
+                var line = lines[i];
+                var linePosition = linePositions[i];
+
+                this.doc.DrawText(linePosition.X, -linePosition.Y, line);
             }
 
-            if (halign == HorizontalAlignment.Right)
-            {
-                dx = -width;
-            }
-
-            double dy = 0;
-
-            if (valign == VerticalAlignment.Middle)
-            {
-                dy = -height / 2;
-            }
-
-            if (valign == VerticalAlignment.Top)
-            {
-                dy = -height;
-            }
-
-            double y = this.doc.PageHeight - p.Y;
-
-            this.doc.Translate(p.X, y);
-            if (Math.Abs(rotate) > 1e-6)
-            {
-                this.doc.Rotate(-rotate);
-            }
-
-            this.doc.Translate(dx, dy);
-
-            // this.doc.DrawRectangle(0, 0, width, height);
-            this.doc.SetClippingRectangle(0, 0, width, height);
-            this.doc.DrawText(0, 0, text);
             this.doc.RestoreState();
         }
 
@@ -332,10 +310,7 @@ namespace OxyPlot
         /// <returns>The text size.</returns>
         public override OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
         {
-            this.doc.SetFont(fontFamily, fontSize / 96 * 72, fontWeight > 500);
-            double width, height;
-            this.doc.MeasureText(text, out width, out height);
-            return new OxySize(width, height);
+            return this.TextArranger.MeasureText(text, fontFamily, fontSize, fontWeight);
         }
 
         /// <summary>
@@ -390,6 +365,21 @@ namespace OxyPlot
             this.doc.RestoreState();
         }
 
+        public FontMetrics GetFontMetrics(string fontFamily, double fontSize, double fontWeight)
+        {
+            var font = PortableDocument.GetFont(fontFamily, fontWeight > 500, false);
+            return font.GetFontMetrics(ConvertToPoints(fontSize));
+        }
+
+        /// <inheritdoc/>
+        public double MeasureTextWidth(string text, string fontFamily, double fontSize, double fontWeight)
+        {
+            this.doc.SetFont(fontFamily, ConvertToPoints(fontSize), fontWeight > 500);
+            double width, height;
+            this.doc.MeasureText(text, out width, out height);
+            return width;
+        }
+
         /// <inheritdoc/>
         protected override void SetClip(OxyRect clippingRectangle)
         {
@@ -422,13 +412,23 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Converts nominal units (1/96 inch) to points (1/72 inch).
+        /// </summary>
+        /// <param name="nominalUnits">The measure in nominal units.</param>
+        /// <returns>The measure in points.</returns>
+        private static double ConvertToPoints(double nominalUnits)
+        {
+            return nominalUnits / 96 * 72;
+        }
+
+        /// <summary>
         /// Sets the width of the line.
         /// </summary>
         /// <param name="thickness">The thickness (in 1/96 inch units).</param>
         private void SetLineWidth(double thickness)
         {
             // Convert from 1/96 inch to points
-            this.doc.SetLineWidth(thickness / 96 * 72);
+            this.doc.SetLineWidth(ConvertToPoints(thickness));
         }
 
         /// <summary>
@@ -438,7 +438,7 @@ namespace OxyPlot
         /// <param name="dashPhase">The dash phase (in 1/96 inch units).</param>
         private void SetLineDashPattern(double[] dashArray, double dashPhase)
         {
-            this.doc.SetLineDashPattern(dashArray.Select(d => d / 96 * 72).ToArray(), dashPhase / 96 * 72);
+            this.doc.SetLineDashPattern(dashArray.Select(ConvertToPoints).ToArray(), ConvertToPoints(dashPhase));
         }
     }
 }

@@ -289,6 +289,60 @@ namespace ExampleLibrary
         }
 
         /// <summary>
+        /// Shows max size capabilities for the DrawText method.
+        /// </summary>
+        /// <returns>A plot model.</returns>
+        [Example("DrawText - Bounded Multi-line Alignment/Rotation")]
+        public static PlotModel DrawBoundedMultilineTextAlignmentRotationWith()
+        {
+            var model = new PlotModel();
+            model.Annotations.Add(new DelegateAnnotation(rc =>
+            {
+                for (var ha = HorizontalAlignment.Left; ha <= HorizontalAlignment.Right; ha++)
+                {
+                    for (var va = VerticalAlignment.Top; va <= VerticalAlignment.Bottom; va++)
+                    {
+                        var origin = new ScreenPoint(((int)ha + 2) * 170, ((int)va + 2) * 170);
+                        rc.FillCircle(origin, 3, OxyColors.Blue, EdgeRenderingMode.Adaptive);
+                        for (var rotation = 0; rotation < 360; rotation += 90)
+                        {
+                            rc.DrawText(origin, $"R{rotation:000}\n{ha}\n{va}", OxyColors.Black, fontSize: 20d, rotation: rotation, horizontalAlignment: ha, verticalAlignment: va, maxSize: new OxySize(50, 70));
+                        }
+                    }
+                }
+            }));
+            return model;
+        }
+
+        /// <summary>
+        /// Shows max size capabilities for the DrawText method.
+        /// </summary>
+        /// <returns>A plot model.</returns>
+        [Example("DrawText - Horizontal Text Trimming")]
+        public static PlotModel DrawHorizontalTextTrimmed()
+        {
+            var text = "This is a long piece of text with many words that barely qualifies as a sentence.";
+            var multiLineText = "This is a long piece of multiline text\nwith many words that\nbarely qualifies as a sentence.";
+
+            var model = new PlotModel();
+            model.Annotations.Add(new DelegateAnnotation(rc =>
+            {
+                for (int i = 0; i < 20; i++)
+                {
+                    var p = new ScreenPoint(10, 10 + i * 20);
+                    rc.DrawText(p, text, OxyColors.Black, maxSize: new OxySize(i * 20, double.MaxValue));
+                }
+
+                for (int i = 0; i < 5; i++)
+                {
+                    var p = new ScreenPoint(10, 400 + i * 50);
+                    rc.DrawText(p, multiLineText, OxyColors.Black, maxSize: new OxySize(i * 25, double.MaxValue));
+                }
+            }));
+            return model;
+        }
+
+        /// <summary>
         /// Shows color capabilities for the DrawText method.
         /// </summary>
         /// <returns>A plot model.</returns>

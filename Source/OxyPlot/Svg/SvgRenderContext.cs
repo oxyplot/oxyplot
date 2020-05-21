@@ -12,6 +12,7 @@ namespace OxyPlot
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using OxyPlot.Rendering;
 
     /// <summary>
     /// Provides a render context for scalable vector graphics output.
@@ -37,8 +38,7 @@ namespace OxyPlot
         /// <param name="isDocument">Create an SVG document if set to <c>true</c>.</param>
         /// <param name="textMeasurer">The text measurer.</param>
         /// <param name="background">The background.</param>
-        /// <param name="useVerticalTextAlignmentWorkaround">Whether to use the workaround for vertical text alignment.</param>
-        public SvgRenderContext(Stream s, double width, double height, bool isDocument, IRenderContext textMeasurer, OxyColor background, bool useVerticalTextAlignmentWorkaround = false)
+        public SvgRenderContext(Stream s, double width, double height, bool isDocument, ITextMeasurer textMeasurer, OxyColor background)
         {
             if (textMeasurer == null)
             {
@@ -46,8 +46,7 @@ namespace OxyPlot
             }
 
             this.w = new SvgWriter(s, width, height, isDocument);
-            this.TextMeasurer = textMeasurer;
-            this.UseVerticalTextAlignmentWorkaround = useVerticalTextAlignmentWorkaround;
+            this.TextArranger = new TextArranger(textMeasurer, new SimpleTextTrimmer());
 
             if (background.IsVisible())
             {
@@ -56,15 +55,10 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets or sets the text measurer.
+        /// Gets or sets the <see cref="TextArranger"/> used by this instance.
         /// </summary>
-        /// <value>The text measurer.</value>
-        public IRenderContext TextMeasurer { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether to use a workaround for vertical text alignment to support renderers with limited support for the dominate-baseline attribute.
-        /// </summary>
-        public bool UseVerticalTextAlignmentWorkaround { get; set; }
+        /// <value>The text arranger.</value>
+        public TextArranger TextArranger { get; set; }
 
         /// <summary>
         /// Closes the svg writer.
@@ -137,7 +131,7 @@ namespace OxyPlot
         /// <param name="fontFamily">The font family.</param>
         /// <param name="fontSize">Size of the font.</param>
         /// <param name="fontWeight">The font weight.</param>
-        /// <param name="rotate">The rotate.</param>
+        /// <param name="rotation">The rotation.</param>
         /// <param name="halign">The horizontal alignment.</param>
         /// <param name="valign">The vertical alignment.</param>
         /// <param name="maxSize">Size of the max.</param>
@@ -148,7 +142,7 @@ namespace OxyPlot
             string fontFamily,
             double fontSize,
             double fontWeight,
-            double rotate,
+            double rotation,
             HorizontalAlignment halign,
             VerticalAlignment valign,
             OxySize? maxSize)
@@ -158,51 +152,19 @@ namespace OxyPlot
                 return;
             }
 
-            var lines = StringHelper.SplitLines(text);
+            this.TextArranger.ArrangeText(p, text, fontFamily, fontSize, fontWeight, rotation, halign, valign, maxSize, halign, TextVerticalAlignment.Baseline, out var lines, out var linePositions);
 
-            var textSize = this.MeasureText(text, fontFamily, fontSize, fontWeight);
-            var lineHeight = textSize.Height / lines.Length;
-            var lineOffset = new ScreenVector(-Math.Sin(rotate / 180.0 * Math.PI) * lineHeight, +Math.Cos(rotate / 180.0 * Math.PI) * lineHeight);
-            
-            if (this.UseVerticalTextAlignmentWorkaround)
+            for (int i = 0; i < lines.Length; i++)
             {
-                // offset the position, and set the valign to neutral value of `Bottom`
-                double offsetRatio = valign == VerticalAlignment.Bottom ? (1.0 - lines.Length) : valign == VerticalAlignment.Top ? 1.0 : (1.0 - (lines.Length / 2.0));
-                valign = VerticalAlignment.Bottom;
+                var line = lines[i];
+                var linePosition = linePositions[i];
 
-                p += lineOffset * offsetRatio;
-
-                foreach (var line in lines)
+                if (string.IsNullOrWhiteSpace(line))
                 {
-                    var size = this.MeasureText(line, fontFamily, fontSize, fontWeight);
-                    this.w.WriteText(p, line, c, fontFamily, fontSize, fontWeight, rotate, halign, valign);
-
-                    p += lineOffset;
+                    continue;
                 }
-            }
-            else
-            {
-                if (valign == VerticalAlignment.Bottom)
-                {
-                    for (var i = lines.Length - 1; i >= 0; i--)
-                    {
-                        var line = lines[i];
-                        var size = this.MeasureText(line, fontFamily, fontSize, fontWeight);
-                        this.w.WriteText(p, line, c, fontFamily, fontSize, fontWeight, rotate, halign, valign);
 
-                        p -= lineOffset;
-                    }
-                }
-                else
-                {
-                    foreach (var line in lines)
-                    {
-                        var size = this.MeasureText(line, fontFamily, fontSize, fontWeight);
-                        this.w.WriteText(p, line, c, fontFamily, fontSize, fontWeight, rotate, halign, valign);
-
-                        p += lineOffset;
-                    }
-                }
+                this.w.WriteText(linePosition, line, c, fontFamily, fontSize, fontWeight, rotation, halign, VerticalAlignment.Bottom);
             }
         }
 
@@ -224,12 +186,7 @@ namespace OxyPlot
         /// <returns>The text size.</returns>
         public override OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
         {
-            if (string.IsNullOrEmpty(text))
-            {
-                return OxySize.Empty;
-            }
-
-            return this.TextMeasurer.MeasureText(text, fontFamily, fontSize, fontWeight);
+            return this.TextArranger.MeasureText(text, fontFamily, fontSize, fontWeight);
         }
 
         /// <summary>
@@ -263,7 +220,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Releases unmanaged and - optionally - managed resources
+        /// Releases unmanaged and - optionally - managed resources.
         /// </summary>
         /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
