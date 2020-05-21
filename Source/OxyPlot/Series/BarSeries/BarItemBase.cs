@@ -1,23 +1,23 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CategorizedItem.cs" company="OxyPlot">
+// <copyright file="BarItemBase.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Represents an item in a CategorizedSeries.
+//   Represents an item in a bar series.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Series
 {
     /// <summary>
-    /// Represents an item in a CategorizedSeries.
+    /// Represents an item in a bar series.
     /// </summary>
-    public abstract class CategorizedItem
+    public abstract class BarItemBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CategorizedItem" /> class. Initializes a new instance of the <see cref="CategorizedItem" /> class.
+        /// Initializes a new instance of the <see cref="BarItemBase" /> class.
         /// </summary>
-        protected CategorizedItem()
+        protected BarItemBase()
         {
             this.CategoryIndex = -1;
         }

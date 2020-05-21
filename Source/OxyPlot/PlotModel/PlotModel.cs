@@ -771,7 +771,7 @@ namespace OxyPlot
                     // Updates the default axes
                     this.EnsureDefaultAxes();
 
-                    var visibleSeries = this.Series.Where(s => s.IsVisible).ToArray();
+                    var visibleSeries = this.Series.Where(s => s.IsVisible).ToList();
 
                     // Update data of the series
                     if (updateData || !this.isDataUpdated)
@@ -782,24 +782,6 @@ namespace OxyPlot
                         }
 
                         this.isDataUpdated = true;
-                    }
-
-                    // Updates axes with information from the series
-                    // This is used by the category axis that need to know the number of series using the axis.
-                    foreach (var a in this.Axes)
-                    {
-                        a.UpdateFromSeries(visibleSeries);
-                        a.ResetCurrentValues();
-                    }
-
-                    // Update valid data of the series
-                    // This must be done after the axes are updated from series!
-                    if (updateData)
-                    {
-                        foreach (var s in visibleSeries)
-                        {
-                            s.UpdateValidData();
-                        }
                     }
 
                     // Update the max and min of the axes

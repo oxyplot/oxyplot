@@ -53,7 +53,7 @@ namespace OxyPlot.Series
             base.UpdateMaxMin();
 
             //// Todo: refactor (lots of duplicate code here)
-            if (this.ValidItems == null || this.ValidItems.Count == 0)
+            if (this.ValidItems.Count == 0)
             {
                 return;
             }
@@ -72,22 +72,22 @@ namespace OxyPlot.Series
                     var minTemp = values.Where(v => v <= 0).Sum();
                     var maxTemp = values.Where(v => v >= 0).Sum() + ((ErrorBarItem)items.Last()).Error;
 
-                    int stackIndex = categoryAxis.GetStackIndex(this.StackGroup);
-                    var stackedMinValue = categoryAxis.GetCurrentMinValue(stackIndex, i);
+                    int stackIndex = this.Manager.GetStackIndex(this.StackGroup);
+                    var stackedMinValue = this.Manager.GetCurrentMinValue(stackIndex, i);
                     if (!double.IsNaN(stackedMinValue))
                     {
                         minTemp += stackedMinValue;
                     }
 
-                    categoryAxis.SetCurrentMinValue(stackIndex, i, minTemp);
+                    this.Manager.SetCurrentMinValue(stackIndex, i, minTemp);
 
-                    var stackedMaxValue = categoryAxis.GetCurrentMaxValue(stackIndex, i);
+                    var stackedMaxValue = this.Manager.GetCurrentMaxValue(stackIndex, i);
                     if (!double.IsNaN(stackedMaxValue))
                     {
                         maxTemp += stackedMaxValue;
                     }
 
-                    categoryAxis.SetCurrentMaxValue(stackIndex, i, maxTemp);
+                    this.Manager.SetCurrentMaxValue(stackIndex, i, maxTemp);
 
                     minValue = Math.Min(minValue, minTemp + this.BaseValue);
                     maxValue = Math.Max(maxValue, maxTemp + this.BaseValue);
@@ -110,17 +110,8 @@ namespace OxyPlot.Series
                 }
             }
 
-            var valueAxis = this.GetValueAxis();
-            if (valueAxis.IsVertical())
-            {
-                this.MinY = minValue;
-                this.MaxY = maxValue;
-            }
-            else
-            {
-                this.MinX = minValue;
-                this.MaxX = maxValue;
-            }
+            this.MinX = minValue;
+            this.MaxX = maxValue;
         }
 
         /// <summary>

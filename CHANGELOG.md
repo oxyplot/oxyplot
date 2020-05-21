@@ -54,6 +54,8 @@ All notable changes to this project will be documented in this file.
 - Replace Axis.DesiredSize by Axis.DesiredMargin, change signature of Axis.Measure(...) (#453)
 - Axis renderers now render all ticks they are provided (#1580)
 - Auto margins don't reserve space for axis labels if axis range is fixed (#1577)
+- CategoryAxis should not contain rendering information about BarSeries (#741)
+- CategorizedSeries changed to BarSeriesBase<T> (#741)
 
 ### Removed
 - Remove PlotModel.Legends (#644)
@@ -63,6 +65,7 @@ All notable changes to this project will be documented in this file.
 - Remove OxyThickness Width and Height properties (#1429)
 - RenderingExtensions.DrawRectangleAsPolygon(...) extension methods. IRenderContext.DrawRectangle(...) with an appropriate EdgeRenderingMode can be used instead.
 - SkiaSharp.PdfExporter.Dpi property (#1591)
+- Axis.UpdateFromSeries(...) and Series.UpdateValidData() (#741)
 
 ### Fixed
 - Legend font size is not affected by DefaultFontSize (#1396)
@@ -82,6 +85,7 @@ All notable changes to this project will be documented in this file.
 - Full Plotarea Polar plot rendering with non-zero minimum values (#1586)
 - Auto margins are set incorrectly if Axis.TitleFontSize is set to non-default value (related to #1577)
 - Incomplete rendering of AreaSeries in some situations (#1512)
+- ColumnSeries / BarSeries not working with more than one value-axis (#729)
 
 ## [2.0.0] - 2019-10-19
 ### Added 

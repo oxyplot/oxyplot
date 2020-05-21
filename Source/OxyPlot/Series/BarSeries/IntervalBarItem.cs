@@ -12,7 +12,7 @@ namespace OxyPlot.Series
     /// <summary>
     /// Represents an item in an IntervalBarSeries.
     /// </summary>
-    public class IntervalBarItem : CategorizedItem, ICodeGenerating
+    public class IntervalBarItem : BarItemBase, ICodeGenerating
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="IntervalBarItem" /> class.

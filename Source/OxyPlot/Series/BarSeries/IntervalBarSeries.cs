@@ -11,14 +11,11 @@ namespace OxyPlot.Series
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-
-    using OxyPlot.Axes;
 
     /// <summary>
     /// Represents a series for bar charts defined by to/from values.
     /// </summary>
-    public class IntervalBarSeries : CategorizedSeries, IStackableSeries
+    public class IntervalBarSeries : BarSeriesBase<IntervalBarItem>, IStackableSeries
     {
         /// <summary>
         /// The default tracker format string
@@ -35,27 +32,31 @@ namespace OxyPlot.Series
         /// </summary>
         public IntervalBarSeries()
         {
-            this.Items = new List<IntervalBarItem>();
-
-            this.FillColor = OxyColors.Automatic;
             this.LabelColor = OxyColors.Automatic;
-            this.StrokeColor = OxyColors.Black;
+            this.FillColor = OxyColors.Automatic;
             this.StrokeThickness = 1;
-            this.BarWidth = 1;
 
             this.TrackerFormatString = DefaultTrackerFormatString;
             this.LabelMargin = 4;
 
             this.LabelFormatString = "{2}"; // title
-
-            // this.LabelFormatString = "{0}-{1}"; // Minimum-Maximum
         }
 
         /// <summary>
-        /// Gets or sets the width of the bars (as a fraction of the available width). The default value is 0.5 (50%)
+        /// Gets the actual fill color.
         /// </summary>
-        /// <value>The width of the bars.</value>
-        public double BarWidth { get; set; }
+        /// <value>The actual color.</value>
+        public OxyColor ActualFillColor => this.FillColor.GetActualColor(this.defaultFillColor);
+
+        /// <summary>
+        /// Gets or sets the color field.
+        /// </summary>
+        public string ColorField { get; set; }
+
+        /// <summary>
+        /// Gets or sets the color field.
+        /// </summary>
+        public string EndField { get; set; }
 
         /// <summary>
         /// Gets or sets the default color of the interior of the Maximum bars.
@@ -63,40 +64,13 @@ namespace OxyPlot.Series
         /// <value>The color.</value>
         public OxyColor FillColor { get; set; }
 
-        /// <summary>
-        /// Gets the actual fill color.
-        /// </summary>
-        /// <value>The actual color.</value>
-        public OxyColor ActualFillColor
-        {
-            get { return this.FillColor.GetActualColor(this.defaultFillColor); }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether IsStacked.
-        /// </summary>
-        public bool IsStacked
-        {
-            get
-            {
-                return true;
-            }
-        }
-
-        /// <summary>
-        /// Gets the range bar items.
-        /// </summary>
-        public IList<IntervalBarItem> Items { get; private set; }
+        /// <inheritdoc/>
+        public bool IsStacked => true;
 
         /// <summary>
         /// Gets or sets the label color.
         /// </summary>
         public OxyColor LabelColor { get; set; }
-
-        /// <summary>
-        /// Gets or sets the label field.
-        /// </summary>
-        public string LabelField { get; set; }
 
         /// <summary>
         /// Gets or sets the format string for the maximum labels.
@@ -108,73 +82,33 @@ namespace OxyPlot.Series
         /// </summary>
         public double LabelMargin { get; set; }
 
-        /// <summary>
-        /// Gets or sets the maximum value field.
-        /// </summary>
-        public string MaximumField { get; set; }
+        /// <inheritdoc/>
+        public string StackGroup => string.Empty;
 
         /// <summary>
-        /// Gets or sets the minimum value field.
+        /// Gets or sets the color field.
         /// </summary>
-        public string MinimumField { get; set; }
-
-        /// <summary>
-        /// Gets StackGroup.
-        /// </summary>
-        public string StackGroup
-        {
-            get
-            {
-                return string.Empty;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the color of the border around the bars.
-        /// </summary>
-        /// <value>The color of the stroke.</value>
-        public OxyColor StrokeColor { get; set; }
-
-        /// <summary>
-        /// Gets or sets the thickness of the bar border strokes.
-        /// </summary>
-        /// <value>The stroke thickness.</value>
-        public double StrokeThickness { get; set; }
+        public string StartField { get; set; }
 
         /// <summary>
         /// Gets or sets the actual rectangles for the maximum bars.
         /// </summary>
         protected internal IList<OxyRect> ActualBarRectangles { get; set; }
 
-        /// <summary>
-        /// Gets or sets the valid items
-        /// </summary>
-        protected internal IList<IntervalBarItem> ValidItems { get; set; }
-
-        /// <summary>
-        /// Gets or sets the dictionary which stores the index-inversion for the valid items
-        /// </summary>
-        protected internal Dictionary<int, int> ValidItemsIndexInversion { get; set; }
-
-        /// <summary>
-        /// Gets the point in the dataset that is nearest the specified point.
-        /// </summary>
-        /// <param name="point">The point.</param>
-        /// <param name="interpolate">The interpolate.</param>
-        /// <returns>A TrackerHitResult for the current hit.</returns>
+        /// <inheritdoc/>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
-            for (int i = 0; i < this.ActualBarRectangles.Count; i++)
+            for (var i = 0; i < this.ActualBarRectangles.Count; i++)
             {
                 var r = this.ActualBarRectangles[i];
                 if (r.Contains(point))
                 {
                     var item = (IntervalBarItem)this.GetItem(this.ValidItemsIndexInversion[i]);
                     var categoryIndex = item.GetCategoryIndex(i);
-                    double value = (this.ValidItems[i].Start + this.ValidItems[i].End) / 2;
+                    var value = (this.ValidItems[i].Start + this.ValidItems[i].End) / 2;
                     var dp = new DataPoint(categoryIndex, value);
                     var categoryAxis = this.GetCategoryAxis();
-                    var valueAxis = this.GetValueAxis();
+                    var valueAxis = this.XAxis;
                     return new TrackerHitResult
                     {
                         Series = this,
@@ -183,7 +117,7 @@ namespace OxyPlot.Series
                         Item = item,
                         Index = i,
                         Text = StringHelper.Format(
-                        this.ActualCulture, 
+                        this.ActualCulture,
                         this.TrackerFormatString,
                         item,
                         this.Title,
@@ -200,22 +134,63 @@ namespace OxyPlot.Series
             return null;
         }
 
-        /// <summary>
-        /// Checks if the specified value is valid.
-        /// </summary>
-        /// <param name="v">The value.</param>
-        /// <param name="yaxis">The y axis.</param>
-        /// <returns>True if the value is valid.</returns>
-        public virtual bool IsValidPoint(double v, Axis yaxis)
+        /// <inheritdoc/>
+        public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
         {
-            return !double.IsNaN(v) && !double.IsInfinity(v);
+            var xmid = (legendBox.Left + legendBox.Right) / 2;
+            var ymid = (legendBox.Top + legendBox.Bottom) / 2;
+            var height = (legendBox.Bottom - legendBox.Top) * 0.8;
+            var width = height;
+            rc.DrawRectangle(
+                new OxyRect(xmid - (0.5 * width), ymid - (0.5 * height), width, height),
+                this.GetSelectableFillColor(this.ActualFillColor),
+                this.StrokeColor,
+                this.StrokeThickness,
+                this.EdgeRenderingMode);
         }
 
-        /// <summary>
-        /// Renders the Series on the specified rendering context.
-        /// </summary>
-        /// <param name="rc">The rendering context.</param>
-        public override void Render(IRenderContext rc)
+        /// <inheritdoc/>
+        protected internal override void SetDefaultValues()
+        {
+            if (this.FillColor.IsAutomatic())
+            {
+                this.defaultFillColor = this.PlotModel.GetDefaultColor();
+            }
+        }
+
+        /// <inheritdoc/>
+        protected internal override void UpdateMaxMin()
+        {
+            base.UpdateMaxMin();
+
+            if (this.ValidItems.Count == 0)
+            {
+                return;
+            }
+
+            var minValue = double.MaxValue;
+            var maxValue = double.MinValue;
+
+            foreach (var item in this.ValidItems)
+            {
+                minValue = Math.Min(minValue, item.Start);
+                minValue = Math.Min(minValue, item.End);
+                maxValue = Math.Max(maxValue, item.Start);
+                maxValue = Math.Max(maxValue, item.End);
+            }
+
+            this.MinX = minValue;
+            this.MaxX = maxValue;
+        }
+
+        /// <inheritdoc/>
+        protected override bool IsValid(IntervalBarItem item)
+        {
+            return this.XAxis.IsValidValue(item.Start) && this.XAxis.IsValidValue(item.End);
+        }
+
+        /// <inheritdoc/>
+        protected override void RenderOverride(IRenderContext rc)
         {
             this.ActualBarRectangles = new List<OxyRect>();
 
@@ -225,17 +200,16 @@ namespace OxyPlot.Series
             }
 
             var clippingRect = this.GetClippingRect();
-            var categoryAxis = this.GetCategoryAxis();
 
             var actualBarWidth = this.GetActualBarWidth();
-            var stackIndex = categoryAxis.GetStackIndex(this.StackGroup);
+            var stackIndex = this.Manager.GetStackIndex(this.StackGroup);
 
             for (var i = 0; i < this.ValidItems.Count; i++)
             {
                 var item = this.ValidItems[i];
 
                 var categoryIndex = item.GetCategoryIndex(i);
-                var categoryValue = categoryAxis.GetCategoryValue(categoryIndex, stackIndex, actualBarWidth);
+                var categoryValue = this.Manager.GetCategoryValue(categoryIndex, stackIndex, actualBarWidth);
 
                 var p0 = this.Transform(item.Start, categoryValue);
                 var p1 = this.Transform(item.End, categoryValue + actualBarWidth);
@@ -274,186 +248,24 @@ namespace OxyPlot.Series
             }
         }
 
-        /// <summary>
-        /// Renders the legend symbol on the specified rendering context.
-        /// </summary>
-        /// <param name="rc">The rendering context.</param>
-        /// <param name="legendBox">The legend rectangle.</param>
-        public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
+        /// <inheritdoc/>
+        protected override bool UpdateFromDataFields()
         {
-            double xmid = (legendBox.Left + legendBox.Right) / 2;
-            double ymid = (legendBox.Top + legendBox.Bottom) / 2;
-            double height = (legendBox.Bottom - legendBox.Top) * 0.8;
-            double width = height;
-            rc.DrawRectangle(
-                new OxyRect(xmid - (0.5 * width), ymid - (0.5 * height), width, height),
-                this.GetSelectableFillColor(this.ActualFillColor),
-                this.StrokeColor,
-                this.StrokeThickness,
-                this.EdgeRenderingMode);
-        }
-
-        /// <summary>
-        /// Gets or sets the width/height of the columns/bars (as a fraction of the available space).
-        /// </summary>
-        /// <value>The width of the bars.</value>
-        /// <returns>The fractional width.</returns>
-        /// <remarks>The available space will be determined by the GapWidth of the CategoryAxis used by this series.</remarks>
-        internal override double GetBarWidth()
-        {
-            return this.BarWidth;
-        }
-
-        /// <summary>
-        /// Gets the items of this series.
-        /// </summary>
-        /// <returns>The items.</returns>
-        protected internal override IList<CategorizedItem> GetItems()
-        {
-            return this.Items.Cast<CategorizedItem>().ToList();
-        }
-
-        /// <summary>
-        /// Check if the data series is using the specified axis.
-        /// </summary>
-        /// <param name="axis">An axis which should be checked if used</param>
-        /// <returns>True if the axis is in use.</returns>
-        protected internal override bool IsUsing(Axis axis)
-        {
-            return this.XAxis == axis || this.YAxis == axis;
-        }
-
-        /// <summary>
-        /// Sets the default values.
-        /// </summary>
-        protected internal override void SetDefaultValues()
-        {
-            if (this.FillColor.IsAutomatic())
+            if (this.StartField == null || this.EndField == null)
             {
-                this.defaultFillColor = this.PlotModel.GetDefaultColor();
-            }
-        }
-
-        /// <summary>
-        /// Updates the axis maximum and minimum values.
-        /// </summary>
-        protected internal override void UpdateAxisMaxMin()
-        {
-            this.XAxis.Include(this.MinX);
-            this.XAxis.Include(this.MaxX);
-        }
-
-        /// <summary>
-        /// Updates the data.
-        /// </summary>
-        protected internal override void UpdateData()
-        {
-            if (this.ItemsSource != null)
-            {
-                this.Items.Clear();
-
-                var filler = new ListBuilder<IntervalBarItem>();
-                filler.Add(this.MinimumField, double.NaN);
-                filler.Add(this.MaximumField, double.NaN);
-                filler.FillT(this.Items, this.ItemsSource, args => new IntervalBarItem() { Start = Convert.ToDouble(args[0]), End = Convert.ToDouble(args[1]) });
-            }
-        }
-
-        /// <summary>
-        /// Updates the maximum and minimum values of the series.
-        /// </summary>
-        protected internal override void UpdateMaxMin()
-        {
-            base.UpdateMaxMin();
-
-            if (this.ValidItems == null || this.ValidItems.Count == 0)
-            {
-                return;
+                return false;
             }
 
-            double minValue = double.MaxValue;
-            double maxValue = double.MinValue;
+            var filler = new ListBuilder<BarItem>();
+            filler.Add(this.StartField, double.NaN);
+            filler.Add(this.EndField, double.NaN);
+            filler.Add(this.ColorField, OxyColors.Automatic);
+            filler.Fill(
+                this.ItemsSourceItems,
+                this.ItemsSource,
+                args => new IntervalBarItem(Convert.ToDouble(args[0]), Convert.ToDouble(args[1])) { Color = (OxyColor)args[2] });
 
-            foreach (var item in this.ValidItems)
-            {
-                minValue = Math.Min(minValue, item.Start);
-                minValue = Math.Min(minValue, item.End);
-                maxValue = Math.Max(maxValue, item.Start);
-                maxValue = Math.Max(maxValue, item.End);
-            }
-
-            this.MinX = minValue;
-            this.MaxX = maxValue;
-        }
-
-        /// <summary>
-        /// Updates the valid items
-        /// </summary>
-        protected internal override void UpdateValidData()
-        {
-            this.ValidItems = new List<IntervalBarItem>();
-            this.ValidItemsIndexInversion = new Dictionary<int, int>();
-            var valueAxis = this.GetValueAxis();
-
-            for (var i = 0; i < this.Items.Count; i++)
-            {
-                var item = this.Items[i];
-                if (valueAxis.IsValidValue(item.Start) && valueAxis.IsValidValue(item.End))
-                {
-                    this.ValidItemsIndexInversion.Add(this.ValidItems.Count, i);
-                    this.ValidItems.Add(item);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets the actual width/height of the items of this series.
-        /// </summary>
-        /// <returns>The width or height.</returns>
-        /// <remarks>The actual width is also influenced by the GapWidth of the CategoryAxis used by this series.</remarks>
-        protected override double GetActualBarWidth()
-        {
-            var categoryAxis = this.GetCategoryAxis();
-            return this.BarWidth / (1 + categoryAxis.GapWidth) / categoryAxis.GetMaxWidth();
-        }
-
-        /// <summary>
-        /// Gets the category axis.
-        /// </summary>
-        /// <returns>The category axis.</returns>
-        protected override CategoryAxis GetCategoryAxis()
-        {
-            var categoryAxis = this.YAxis as CategoryAxis;
-            if (categoryAxis == null)
-            {
-                throw new InvalidOperationException("No category axis defined.");
-            }
-
-            return categoryAxis;
-        }
-
-        /// <summary>
-        /// Gets the item at the specified index.
-        /// </summary>
-        /// <param name="i">The index of the item.</param>
-        /// <returns>The item of the index.</returns>
-        protected override object GetItem(int i)
-        {
-            if (this.ItemsSource != null || this.Items == null || this.Items.Count == 0)
-            {
-                return base.GetItem(i);
-            }
-
-            return this.Items[i];
-        }
-
-        /// <summary>
-        /// Gets the value axis.
-        /// </summary>
-        /// <returns>The value axis.</returns>
-        private Axis GetValueAxis()
-        {
-            return this.XAxis;
+            return true;
         }
     }
 }

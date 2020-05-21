@@ -76,6 +76,41 @@ namespace ExampleLibrary
             return CreateSimpleModel(true, "Simple stacked model");
         }
 
+        [Example("Stacked, Multiple Value Axes")]
+        public static PlotModel MultipleValueAxes()
+        {
+            var model = new PlotModel { Title = "Stacked, Multiple Value Axes" };
+
+            var categoryAxis = new CategoryAxis { Position = AxisPosition.Left };
+            var valueAxis1 = new LinearAxis { Title = "Value Axis 1", Position = AxisPosition.Bottom, MinimumPadding = 0.06, MaximumPadding = 0.06, ExtraGridlines = new[] { 0d }, EndPosition = .5, Key = "x1" };
+            var valueAxis2 = new LinearAxis { Title = "Value Axis 2", Position = AxisPosition.Bottom, MinimumPadding = 0.06, MaximumPadding = 0.06, ExtraGridlines = new[] { 0d }, StartPosition = .5, Key = "x2" };
+            model.Axes.Add(categoryAxis);
+            model.Axes.Add(valueAxis1);
+            model.Axes.Add(valueAxis2);
+
+            var series = new List<BarSeries>
+            {
+                new BarSeries { XAxisKey = "x1" },
+                new BarSeries { XAxisKey = "x1" },
+                new BarSeries { XAxisKey = "x2" },
+                new BarSeries { XAxisKey = "x2" },
+            };
+
+            var rnd = new Random(1);
+            foreach (var s in series)
+            {
+                for (var i = 0; i < 4; i++)
+                {
+                    s.Items.Add(new BarItem() { Value = rnd.Next(-100, 100) });
+                }
+
+                s.IsStacked = true;
+                model.Series.Add(s);
+            }
+
+            return model;
+        }
+
         [Example("Empty series")]
         public static PlotModel EmptySeries()
         {
@@ -839,7 +874,7 @@ namespace ExampleLibrary
             return model;
         }
 
-        // [Example("All in one")]
+        [Example("All in one")]
         public static PlotModel AllInOne()
         {
             var model = new PlotModel

@@ -139,11 +139,6 @@ namespace OxyPlot.Series
         protected internal abstract void UpdateData();
 
         /// <summary>
-        /// Updates the valid data of the series.
-        /// </summary>
-        protected internal abstract void UpdateValidData();
-
-        /// <summary>
         /// Updates the maximum and minimum values of the series.
         /// </summary>
         /// <remarks>This method is called when the <see cref="PlotModel" /> is updated with the <c>updateData</c> parameter set to <c>true</c>.</remarks>
