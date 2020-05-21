@@ -29,6 +29,11 @@ namespace OxyPlot
         private bool disposed;
 
         /// <summary>
+        /// The current clipping rectangle.
+        /// </summary>
+        private OxyRect? clipRect;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="SvgRenderContext" /> class.
         /// </summary>
         /// <param name="s">The stream.</param>
@@ -262,11 +267,43 @@ namespace OxyPlot
             this.w.WriteImage(srcX, srcY, srcWidth, srcHeight, destX, destY, destWidth, destHeight, source);
         }
 
+        /// <inheritdoc/>
+        public override bool SetClip(OxyRect rect)
+        {
+            if (this.clipRect != null)
+            {
+                if (rect.Equals(this.clipRect.Value))
+                {
+                    return true;
+                }
+                else
+                {
+                    this.ResetClip();
+                }
+            }
+
+            this.clipRect = rect;
+            this.w.BeginClip(rect.Left, rect.Top, rect.Width, rect.Height);
+            return true;
+        }
+
+        /// <inheritdoc/>
+        public override void ResetClip()
+        {
+            if (this.clipRect == null)
+            {
+                return;
+            }
+
+            this.clipRect = null;
+            this.w.EndClip();
+        }
+
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources
         /// </summary>
         /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
-        private void Dispose(bool disposing)
+        protected virtual void Dispose(bool disposing)
         {
             if (!this.disposed)
             {

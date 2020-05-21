@@ -30,6 +30,7 @@ All notable changes to this project will be documented in this file.
 - Added title clipping to PlotModel (#1510)
 - Added LabelStep and LabelSpacing to contour series (#1511)
 - Example for Issue #1481 showing text rendering with emoji
+- Native Clipping for OxyPlot.SvgRenderContext (#1564)
 
 ### Changed
 - Legends model (#644)
