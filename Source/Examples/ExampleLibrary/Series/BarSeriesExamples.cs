@@ -924,7 +924,7 @@ namespace ExampleLibrary
             s2.Items.Add(new BarItem { Value = -120 });
             s2.Items.Add(new BarItem { Value = -26 });
 
-            var s3 = new BarSeries { Title = "Series 3", IsStacked = true, StrokeColor = OxyColors.Black, StrokeThickness = 1, StackGroup = "5" };
+            var s3 = new BarSeries { Title = "Series 3", IsStacked = true, StrokeColor = OxyColors.Black, StrokeThickness = 1, StackGroup = "5", IsVisible = false };
             s3.Items.Add(new BarItem { Value = 21 });
             s3.Items.Add(new BarItem { Value = 8 });
             s3.Items.Add(new BarItem { Value = 48 });

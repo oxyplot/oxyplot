@@ -112,8 +112,14 @@ namespace OxyPlot.Series
         /// <inheritdoc/>
         public sealed override void Render(IRenderContext rc)
         {
+            if (this.Manager == null)
+            {
+                // This means this series has not been updated yet. Do nothing?!
+                return;
+            }
+
             // let our manager know we are about to render
-            this.Manager.CheckInBeforeRender();
+            this.Manager.CheckInBeforeRender(this);
             this.RenderOverride(rc);
         }
 

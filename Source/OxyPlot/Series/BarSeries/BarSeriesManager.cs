@@ -27,9 +27,9 @@ namespace OxyPlot.Series
         private readonly List<IBarSeries> managedSeries = new List<IBarSeries>();
 
         /// <summary>
-        /// The number of bar series that already checked in during the current render cycle.
+        /// All series that already were rendered during the current render cycle.
         /// </summary>
-        private int renderedSeriesCount;
+        private readonly HashSet<IBarSeries> renderedSeries = new HashSet<IBarSeries>();
 
         /// <summary>
         /// The number of bar series that already checked in during the current update cycle.
@@ -152,21 +152,15 @@ namespace OxyPlot.Series
         /// <summary>
         /// Bar series should call this before they start rendering.
         /// </summary>
-        public void CheckInBeforeRender()
+        public void CheckInBeforeRender(IBarSeries series)
         {
-            // first series of render cycle -> reset values that are changed during render
-            if (this.renderedSeriesCount == 0)
+            // first series of render cycle -> reset values that are changed during rendering
+            if (this.renderedSeries.Count == 0 || this.renderedSeries.Contains(series))
             {
                 this.ResetCurrentValues();
             }
 
-            this.renderedSeriesCount++;
-
-            // last series of render cycle
-            if (this.renderedSeriesCount == this.managedSeries.Count)
-            {
-                this.renderedSeriesCount = 0;
-            }
+            this.renderedSeries.Add(series);
         }
 
         /// <summary>
@@ -340,6 +334,8 @@ namespace OxyPlot.Series
                 this.currentMaxValue = null;
                 this.currentMinValue = null;
             }
+
+            this.renderedSeries.Clear();
         }
 
         /// <summary>
