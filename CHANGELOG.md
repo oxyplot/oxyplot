@@ -72,6 +72,7 @@ All notable changes to this project will be documented in this file.
 - ExampleLibrary reporting annotation-only PlotModels as transposable (#1544)
 - Auto plot margin not taking width of labels into account (#453)
 - WPF PlotView still focusable when Focusable is false (#1440)
+- Disposing a SkiaRenderContext can mess up fonts from another SkiaRenderContext instance (#1573)
 
 ## [2.0.0] - 2019-10-19
 ### Added 

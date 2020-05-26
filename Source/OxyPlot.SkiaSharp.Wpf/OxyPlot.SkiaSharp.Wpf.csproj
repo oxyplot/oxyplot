@@ -17,7 +17,7 @@
     <AssemblyOriginatorKeyFile>OxyPlot.SkiaSharp.Wpf.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="SkiaSharp.Views.Desktop.Common" Version="1.68.1" />
+    <PackageReference Include="SkiaSharp.Views.Desktop.Common" Version="1.68.3" />
     <None Include="OxyPlot.SkiaSharp.Wpf.snk" />
   </ItemGroup>
   <ItemGroup>
