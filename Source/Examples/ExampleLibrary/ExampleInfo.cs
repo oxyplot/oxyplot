@@ -6,6 +6,8 @@
 
 namespace ExampleLibrary
 {
+    using System;
+    using System.Collections.Generic;
     using System.Reflection;
 
     using ExampleLibrary.Utilities;
@@ -28,24 +30,19 @@ namespace ExampleLibrary
         private bool initialized;
 
         /// <summary>
-        /// The plot model.
+        /// The un-modified example.
         /// </summary>
-        private PlotModel model;
+        private Example Example;
 
         /// <summary>
-        /// The plot controller.
+        /// The examples for this example info.
         /// </summary>
-        private IPlotController plotController;
+        private Dictionary<ExampleFlags, Example> examples;
 
         /// <summary>
-        /// The transposed plot model.
+        /// The options supported by this example.
         /// </summary>
-        private PlotModel transposedModel;
-
-        /// <summary>
-        /// The plot controller for the transposed model.
-        /// </summary>
-        private IPlotController transposedPlotController;
+        private ExampleFlags exampleSupport;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ExampleInfo"/> class.
@@ -79,6 +76,18 @@ namespace ExampleLibrary
         public string Code => this.PlotModel?.ToCode();
 
         /// <summary>
+        /// Gets a value indicating whether the plot model is reversible.
+        /// </summary>
+        public bool IsReversible
+        {
+            get
+            {
+                this.EnsureInitialized();
+                return exampleSupport.HasFlag(ExampleFlags.Reverse);
+            }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the plot model is transposable.
         /// </summary>
         public bool IsTransposable
@@ -86,20 +95,78 @@ namespace ExampleLibrary
             get
             {
                 this.EnsureInitialized();
-                return this.transposedModel != null;
+                return exampleSupport.HasFlag(ExampleFlags.Transpose);
             }
         }
 
         /// <summary>
-        /// Gets the code.
+        /// Gets the code for the example with the given flags.
         /// </summary>
-        /// <value>
-        /// The code.
-        /// </value>
-        public string TransposedCode => this.TransposedPlotModel?.ToCode();
+        /// <param name="flags">The flags for the example.</param>
+        /// <returns>Code that produces the example.</returns>
+        /// <remarks>Ignores unsupported flags.</remarks>
+        public string GetCode(ExampleFlags flags)
+        {
+            return this.GetModel(flags)?.ToCode();
+        }
 
         /// <summary>
-        /// Gets the plot controller.
+        /// Gets the <see cref="PlotModel"/> for the example with the given flags.
+        /// </summary>
+        /// <param name="flags">The flags for the example.</param>
+        /// <returns>The <see cref="PlotModel"/>.</returns>
+        /// <remarks>Ignores unsupported flags.</remarks>
+        public PlotModel GetModel(ExampleFlags flags)
+        {
+            return this.GetExample(flags).Model;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IPlotController"/> for the example with the given flags.
+        /// </summary>
+        /// <param name="flags">The flags for the example.</param>
+        /// <returns>The <see cref="IPlotController"/>.</returns>
+        /// <remarks>Ignores unsupported flags.</remarks>
+        public IPlotController GetController(ExampleFlags flags)
+        {
+            return this.GetExample(flags).Controller;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="Example"/> with the given flags.
+        /// </summary>
+        /// <param name="flags">The flags for the example.</param>
+        /// <returns>The <see cref="Example"/>.</returns>
+        /// <remarks>Ignores unsupported flags.</remarks>
+        private Example GetExample(ExampleFlags flags)
+        {
+            this.EnsureInitialized();
+
+            // ignore flags we don't support
+            flags = FilterFlags(flags);
+
+            if (!examples.TryGetValue(flags, out var example))
+            {
+                example = GetDefaultExample();
+
+                if (flags.HasFlag(ExampleFlags.Transpose))
+                {
+                    example.Model.Transpose();
+                }
+
+                if (flags.HasFlag(ExampleFlags.Reverse))
+                {
+                    example.Model.ReverseAllAxes();
+                }
+
+                examples[flags] = example;
+            }
+
+            return example;
+        }
+
+        /// <summary>
+        /// Gets the plot controller for the default example.
         /// </summary>
         /// <value>
         /// The plot controller.
@@ -109,12 +176,12 @@ namespace ExampleLibrary
             get
             {
                 this.EnsureInitialized();
-                return this.plotController;
+                return this.Example.Controller;
             }
         }
 
         /// <summary>
-        /// Gets the plot model.
+        /// Gets the plot model for the default example.
         /// </summary>
         /// <value>
         /// The plot model.
@@ -124,7 +191,7 @@ namespace ExampleLibrary
             get
             {
                 this.EnsureInitialized();
-                return this.model;
+                return this.Example.Model;
             }
         }
 
@@ -145,36 +212,6 @@ namespace ExampleLibrary
         public string Title { get; }
 
         /// <summary>
-        /// Gets the plot controller for the transposed plot model.
-        /// </summary>
-        /// <value>
-        /// The plot controller for the transposed plot model, or null if the plot model is not transposable.
-        /// </value>
-        public IPlotController TransposedPlotController
-        {
-            get
-            {
-                this.EnsureInitialized();
-                return this.transposedPlotController;
-            }
-        }
-
-        /// <summary>
-        /// Gets the transposed plot model.
-        /// </summary>
-        /// <value>
-        /// The transposed plot model, or null if the plot model is not transposable.
-        /// </value>
-        public PlotModel TransposedPlotModel
-        {
-            get
-            {
-                this.EnsureInitialized();
-                return this.transposedModel;
-            }
-        }
-
-        /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
         /// <returns>
@@ -183,6 +220,29 @@ namespace ExampleLibrary
         public override string ToString()
         {
             return this.Title;
+        }
+
+        /// <summary>
+        /// Prepares <see cref="ExampleFlags"/> from the given parameters.
+        /// </summary>
+        /// <param name="transpose">Whether to set the <see cref="ExampleFlags.Transpose"/> flag.</param>
+        /// <param name="reverse">Whether to set the <see cref="ExampleFlags.Reverse"/> flag.</param>
+        /// <returns>The <see cref="ExampleFlags"/>.</returns>
+        public static ExampleFlags PrepareFlags(bool transpose, bool reverse)
+        {
+            var flags = (ExampleFlags)0;
+
+            if (transpose)
+            {
+                flags |= ExampleFlags.Transpose;
+            }
+
+            if (reverse)
+            {
+                flags |= ExampleFlags.Reverse;
+            }
+
+            return flags;
         }
 
         /// <summary>
@@ -196,42 +256,48 @@ namespace ExampleLibrary
             }
 
             this.initialized = true;
+            this.examples = new Dictionary<ExampleFlags, Example>();
 
-            var result = this.GetResult();
-            if (result is PlotModel plotModel)
-            {
-                this.model = plotModel;
-            }
-            else if (result is Example example)
-            {
-                this.model = example.Model;
-                this.plotController = example.Controller;
-            }
+            this.Example = GetDefaultExample();
 
-            if (this.model?.IsTransposable() != true)
-            {
-                return;
-            }
+            this.exampleSupport = PrepareFlags(this.Example.Model?.IsTransposable() == true, this.Example.Model?.IsReversible() == true);
 
-            var result2 = this.GetResult();
-            if (result2 is PlotModel plotModel2)
-            {
-                this.transposedModel = plotModel2.Transpose();
-            }
-            else if (result2 is Example example2)
-            {
-                this.transposedModel = example2.Model.Transpose();
-                this.transposedPlotController = example2.Controller;
-            }
+            // remember the 'default' model: loads the transposed/reversed ones as we need them
+            this.examples.Add(PrepareFlags(false, false), this.Example);
         }
 
         /// <summary>
-        /// Gets the result of the method call.
+        /// Gets a new instance of the default example.
         /// </summary>
-        /// <returns>Either a <see cref="Example"/> or a <see cref="OxyPlot.PlotModel"/>.</returns>
-        private object GetResult()
+        /// <returns>An <see cref="Example"/>.</returns>
+        private Example GetDefaultExample()
         {
-            return this.method.Invoke(null, null);
+            var result = this.method.Invoke(null, null);
+
+            if (result is null)
+            {
+                return new Example(null, null);
+            }
+            if (result is PlotModel plotModel)
+            {
+                return new Example(plotModel, null);
+            }
+            else if (result is Example example)
+            {
+                return example;
+            }
+
+            throw new Exception($"Unsupport type returned by example method for example {Category} > {Title}: {result.GetType().FullName}.");
+        }
+
+        /// <summary>
+        /// Filters unsupported flags from the given flags.
+        /// </summary>
+        /// <param name="flags">The original set of flags.</param>
+        /// <returns>The filtered flags.</returns>
+        private ExampleFlags FilterFlags(ExampleFlags flags)
+        {
+            return flags & exampleSupport;
         }
     }
 }

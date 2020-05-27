@@ -52,7 +52,6 @@ namespace OxyPlot.Pdf.Tests
                 }
 
                 ExportModelAndCheckFileExists(example.PlotModel, $"{example.Category} - {example.Title}");
-                ExportModelAndCheckFileExists(example.TransposedPlotModel, $"{example.Category} - {example.Title} - Transposed");
             }
         }
 

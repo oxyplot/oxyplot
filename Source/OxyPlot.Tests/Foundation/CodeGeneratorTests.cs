@@ -37,7 +37,6 @@ namespace OxyPlot.Tests
                 }
 
                 CheckCode(ei.PlotModel);
-                CheckCode(ei.TransposedPlotModel);
             }
         }
     }

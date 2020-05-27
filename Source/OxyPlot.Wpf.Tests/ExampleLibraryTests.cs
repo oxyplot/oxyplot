@@ -70,7 +70,6 @@ namespace OxyPlot.Wpf.Tests
                 }
 
                 ExportAndCompareToBaseline(example.PlotModel, CreateValidFileName($"{example.Category} - {example.Title}", ".png"));
-                ExportAndCompareToBaseline(example.TransposedPlotModel, CreateValidFileName($"{example.Category} - {example.Title} - Transposed", ".png"));
             }
         }
 
