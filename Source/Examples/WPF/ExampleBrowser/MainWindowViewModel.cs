@@ -17,11 +17,13 @@ namespace ExampleBrowser
     public class MainWindowViewModel : INotifyPropertyChanged
     {
         private bool _CanTranspose;
+        private bool _CanReverse;
         private PlotModel _CanvasModel;
         private string _Code;
         private Renderer _Renderer;
         private PlotModel _SkiaModel;
         private bool _Transposed;
+        private bool _Reversed;
         private IEnumerable<ExampleInfo> examples;
         private ExampleInfo selectedExample;
 
@@ -43,6 +45,16 @@ namespace ExampleBrowser
             {
                 this._CanTranspose = value;
                 this.RaisePropertyChanged(nameof(this.CanTranspose));
+            }
+        }
+
+        public bool CanReverse
+        {
+            get => this._CanReverse;
+            private set
+            {
+                this._CanReverse = value;
+                this.RaisePropertyChanged(nameof(this.CanReverse));
             }
         }
 
@@ -123,6 +135,17 @@ namespace ExampleBrowser
             }
         }
 
+        public bool Reversed
+        {
+            get => this._Reversed;
+            set
+            {
+                this._Reversed = value;
+                this.UpdatePlotModels();
+                this.RaisePropertyChanged(nameof(this.Reversed));
+            }
+        }
+
         protected void RaisePropertyChanged(string property)
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
@@ -130,28 +153,19 @@ namespace ExampleBrowser
 
         private void CoerceSelectedExample()
         {
-            this.CanTranspose = this.SelectedExample?.TransposedPlotModel != null;
-            if (!this.CanTranspose)
-            {
-                this._Transposed = false;
-            }
-
+            this.CanTranspose = this.SelectedExample?.IsTransposable == true;
+            this.CanReverse = this.SelectedExample?.IsReversible == true;
             this.UpdatePlotModels();
         }
 
         private void UpdatePlotModels()
         {
-            PlotModel model;
-            if (this.Transposed)
-            {
-                model = this.SelectedExample?.TransposedPlotModel;
-                this.Code = this.SelectedExample.TransposedCode;
-            }
-            else
-            {
-                model = this.SelectedExample?.PlotModel;
-                this.Code = this.SelectedExample?.Code;
-            }
+            var flags = ExampleInfo.PrepareFlags(
+                this.CanTranspose && this.Transposed,
+                this.CanReverse && this.Reversed);
+
+            var model = this.SelectedExample?.GetModel(flags);
+            this.Code = this.SelectedExample?.GetCode(flags);
 
             switch (this.Renderer)
             {

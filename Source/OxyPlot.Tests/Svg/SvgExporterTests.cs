@@ -81,7 +81,16 @@ namespace OxyPlot.Tests
                 }
 
                 ExportModelAndCheckFileExists(example.PlotModel, $"{example.Category} - {example.Title}");
-                ExportModelAndCheckFileExists(example.TransposedPlotModel, $"{example.Category} - {example.Title} - Transposed");
+
+                if (example.IsTransposable)
+                {
+                    ExportModelAndCheckFileExists(example.GetModel(ExampleFlags.Transpose), $"{example.Category} - {example.Title} - Transposed");
+                }
+
+                if (example.IsReversible)
+                {
+                    ExportModelAndCheckFileExists(example.GetModel(ExampleFlags.Reverse), $"{example.Category} - {example.Title} - Reversed");
+                }
             }
         }
 

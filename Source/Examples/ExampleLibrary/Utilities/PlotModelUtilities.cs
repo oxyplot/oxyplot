@@ -27,7 +27,22 @@ namespace ExampleLibrary.Utilities
         private const string YAXIS_KEY = "y";
 
         /// <summary>
-        /// Lists all XYAxisSeries from the core library that are NOT transposable
+        /// Lists all XYAxisSeries from the core library that are NOT reversible.
+        /// </summary>
+        private static readonly HashSet<Type> NonReversibleSeriesTypes = new HashSet<Type>
+        {
+        };
+
+        /// <summary>
+        /// Lists all Annotations that need axes and are NOT reversible.
+        /// </summary>
+        private static readonly HashSet<Type> NonReversibleDataSpaceAnnotationTypes = new HashSet<Type>
+        {
+            typeof(TileMapAnnotation),
+        };
+
+        /// <summary>
+        /// Lists all XYAxisSeries from the core library that are NOT transposable.
         /// </summary>
         private static readonly HashSet<Type> NonTransposableSeriesTypes = new HashSet<Type>
         {
@@ -36,12 +51,35 @@ namespace ExampleLibrary.Utilities
         };
 
         /// <summary>
-        /// Lists all Annotations that need axes and are NOT transposable
+        /// Lists all Annotations that need axes and are NOT transposable.
         /// </summary>
         private static readonly HashSet<Type> NonTransposableDataSpaceAnnotationTypes = new HashSet<Type>
         {
             typeof(TileMapAnnotation),
         };
+
+        /// <summary>
+        /// Returns a value indicating whether a plot model is reversible.
+        /// </summary>
+        /// <param name="model">The plot model.</param>
+        /// <returns>True if the plot model in reversible; false otherwise.</returns>
+        public static bool IsReversible(this PlotModel model)
+        {
+            return (model.Axes.Count > 0 || model.Series.Count > 0)
+                && model.Axes.All(a => a.Position != AxisPosition.None)
+                && model.Series.All(s =>
+                {
+                    var type = s.GetType();
+                    return s is XYAxisSeries
+                           && type.GetTypeInfo().Assembly == typeof(PlotModel).GetTypeInfo().Assembly
+                           && !NonReversibleSeriesTypes.Contains(type);
+                })
+                && model.Annotations.All(a =>
+                {
+                    var type = a.GetType();
+                    return !NonReversibleDataSpaceAnnotationTypes.Contains(type);
+                });
+        }
 
         /// <summary>
         /// Returns a value indicating whether a plot model is transposable.
@@ -151,7 +189,7 @@ namespace ExampleLibrary.Utilities
         /// </summary>
         /// <param name="model">The PlotModel.</param>
         /// <returns>The PlotModel with reversed X and Y Axis.</returns>
-        public static PlotModel ReverseAxes(this PlotModel model)
+        public static PlotModel ReverseXandYAxes(this PlotModel model)
         {
             var title = model.Title;
             if (!string.IsNullOrEmpty(title))
@@ -161,6 +199,42 @@ namespace ExampleLibrary.Utilities
 
             model = model.ReverseXAxis().ReverseYAxis();
             model.Title = title;
+            return model;
+        }
+
+        /// <summary>
+        /// Reverses all axes of a PlotModel. The given PlotModel is mutated and returned for convenience.
+        /// </summary>
+        /// <param name="model">The PlotModel.</param>
+        /// <returns>The PlotModel with reversed axes.</returns>
+        public static PlotModel ReverseAllAxes(this PlotModel model)
+        {
+            if (!string.IsNullOrEmpty(model.Title))
+            {
+                model.Title += " (reversed all Axes)";
+            }
+
+            // Update plot to generate default axes etc.
+            ((IPlotModel)model).Update(false);
+
+            foreach (var axis in model.Axes)
+            {
+                switch (axis.Position)
+                {
+                    case AxisPosition.Left:
+                    case AxisPosition.Bottom:
+                    case AxisPosition.Right:
+                    case AxisPosition.Top:
+                        axis.StartPosition = 1 - axis.StartPosition;
+                        axis.EndPosition = 1 - axis.EndPosition;
+                        break;
+                    case AxisPosition.None:
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+
             return model;
         }
 

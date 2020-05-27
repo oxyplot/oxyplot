@@ -122,6 +122,7 @@
                 <TextBlock Text="Renderer:" VerticalAlignment="Center" />
                 <ComboBox SelectedItem="{Binding Renderer}" ItemsSource="{Binding Renderers}" Margin="3,0,0,0" Width="80" />
                 <CheckBox IsChecked="{Binding Transposed}" Content="Transposed" VerticalAlignment="Center" Margin="10,0,5,0" IsEnabled="{Binding CanTranspose}" />
+                <CheckBox IsChecked="{Binding Reversed}" Content="Reversed" VerticalAlignment="Center" Margin="10,0,5,0" IsEnabled="{Binding CanReverse}" />
             </StackPanel>
         </Grid>
     </Grid>

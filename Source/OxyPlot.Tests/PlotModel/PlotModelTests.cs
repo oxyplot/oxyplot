@@ -32,7 +32,14 @@ namespace OxyPlot.Tests
             foreach (var example in Examples.GetList())
             {
                 ((IPlotModel)example.PlotModel)?.Update(true);
-                ((IPlotModel)example.TransposedPlotModel)?.Update(true);
+
+                var first = 1; // skip the 'none', since we do that above for clarity
+                var all = (int)(ExampleFlags.Transpose | ExampleFlags.Reverse);
+
+                for (int flags = first; flags < all; flags++)
+                {
+                    ((IPlotModel)example.GetModel((ExampleFlags)flags))?.Update(true);
+                }
             }
         }
 

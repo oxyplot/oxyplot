@@ -49,6 +49,7 @@ namespace ExampleBrowser
             this.InitPlot();
 
             this.transposedCheck.Enabled = this.vm.SelectedExample?.IsTransposable ?? false;
+            this.reversedCheck.Enabled = this.vm.SelectedExample?.IsReversible ?? false;
         }
 
         private void InitPlot()
@@ -58,19 +59,23 @@ namespace ExampleBrowser
                 this.plot1.Model = null;
                 this.plot1.Controller = null;
             }
-            else if (transposedCheck.Checked && this.vm.SelectedExample.IsTransposable)
-            {
-                this.plot1.Model = this.vm.SelectedExample.TransposedPlotModel;
-                this.plot1.Controller = this.vm.SelectedExample.TransposedPlotController;
-            }
             else
             {
-                this.plot1.Model = this.vm.SelectedExample.PlotModel;
-                this.plot1.Controller = this.vm.SelectedExample.PlotController;
+                var flags = ExampleInfo.PrepareFlags(
+                    this.transposedCheck.Enabled && this.transposedCheck.Checked,
+                    this.reversedCheck.Enabled && this.reversedCheck.Checked);
+
+                this.plot1.Model = this.vm.SelectedExample.GetModel(flags);
+                this.plot1.Controller = this.vm.SelectedExample.GetController(flags);
             }
         }
 
         private void transposedCheck_CheckedChanged(object sender, System.EventArgs e)
+        {
+            InitPlot();
+        }
+
+        private void reversedCheck_CheckedChanged(object sender, System.EventArgs e)
         {
             InitPlot();
         }
