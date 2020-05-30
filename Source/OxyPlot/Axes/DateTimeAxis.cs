@@ -163,6 +163,8 @@ namespace OxyPlot.Axes
             majorTickValues = this.CreateDateTimeTickValues(
                 this.ActualMinimum, this.ActualMaximum, this.ActualMajorStep, this.actualIntervalType);
             majorLabelValues = majorTickValues;
+
+            minorTickValues = AxisUtilities.FilterRedundantMinorTicks(majorTickValues, minorTickValues);
         }
 
         /// <summary>

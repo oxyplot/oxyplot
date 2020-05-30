@@ -10,6 +10,7 @@
 namespace OxyPlot.Axes
 {
     using System;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Represents a magnitude axis that covers the whole plot area.
@@ -59,31 +60,6 @@ namespace OxyPlot.Axes
             this.MinorGridlineStyle = LineStyle.Solid;
         }
 
-        ///// <summary>
-        ///// Inverse transform the specified screen point.
-        ///// </summary>
-        ///// <param name="x">The x coordinate.</param>
-        ///// <param name="y">The y coordinate.</param>
-        ///// <param name="yaxis">The y-axis.</param>
-        ///// <returns>The data point.</returns>
-        //public override DataPoint InverseTransform(double x, double y, Axis yaxis)
-        //{
-        //    var angleAxis = yaxis as AngleAxis;
-        //    if (angleAxis == null)
-        //    {
-        //        throw new InvalidOperationException("Polar angle axis not defined!");
-        //    }
-
-        //    x -= this.MidPoint.x;
-        //    y -= this.MidPoint.y;
-        //    y *= -1;
-        //    double th = Math.Atan2(y, x);
-        //    double r = Math.Sqrt((x * x) + (y * y));
-        //    x = (r / this.Scale) + this.Offset;
-        //    y = (th / angleAxis.Scale) + angleAxis.Offset;
-        //    return new DataPoint(x, y);
-        //}
-
         /// <summary>
         /// Renders the axis on the specified render context.
         /// </summary>
@@ -95,26 +71,28 @@ namespace OxyPlot.Axes
             r.Render(this, pass);
         }
 
-        ///// <summary>
-        ///// Transforms the specified point to screen coordinates.
-        ///// </summary>
-        ///// <param name="x">The x value (for the current axis).</param>
-        ///// <param name="y">The y value.</param>
-        ///// <param name="yaxis">The y axis.</param>
-        ///// <returns>The transformed point.</returns>
-        //public override ScreenPoint Transform(double x, double y, Axis yaxis)
-        //{
-        //    var angleAxis = yaxis as AngleAxis;
-        //    if (angleAxis == null)
-        //    {
-        //        throw new InvalidOperationException("Polar angle axis not defined!");
-        //    }
+        /// <inheritdoc/>
+        public override void GetTickValues(out IList<double> majorLabelValues, out IList<double> majorTickValues, out IList<double> minorTickValues)
+        {
+            var axisRect = new OxyRect(this.ScreenMin, this.ScreenMax);
 
-        //    var r = (x - this.Offset) * this.Scale;
-        //    var theta = (y - angleAxis.Offset) * angleAxis.Scale;
+            var distanceTopLeft = axisRect.TopLeft.DistanceTo(this.MidPoint);
+            var distanceTopRight = axisRect.TopRight.DistanceTo(this.MidPoint);
+            var distanceBottomRight = axisRect.BottomRight.DistanceTo(this.MidPoint);
+            var distanceBottomLeft = axisRect.BottomLeft.DistanceTo(this.MidPoint);
 
-        //    return new ScreenPoint(this.MidPoint.x + (r * Math.Cos(theta / 180 * Math.PI)), this.MidPoint.y - (r * Math.Sin(theta / 180 * Math.PI)));
-        //}
+            var maxDistance = Math.Max(distanceTopLeft, distanceTopRight);
+            maxDistance = Math.Max(maxDistance, distanceBottomRight);
+            maxDistance = Math.Max(maxDistance, distanceBottomLeft);
+
+            var actualMaximum = this.InverseTransform(maxDistance);
+
+            majorTickValues = AxisUtilities.CreateTickValues(this.ActualMinimum, actualMaximum, this.ActualMajorStep);
+            minorTickValues = AxisUtilities.CreateTickValues(this.ActualMinimum, actualMaximum, this.ActualMinorStep);
+            minorTickValues = AxisUtilities.FilterRedundantMinorTicks(majorTickValues, minorTickValues);
+
+            majorLabelValues = majorTickValues;
+        }
 
         /// <summary>
         /// Updates the scale and offset properties of the transform from the specified boundary rectangle.

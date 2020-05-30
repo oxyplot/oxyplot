@@ -47,8 +47,6 @@ namespace OxyPlot.Axes
 
             angleAxis.UpdateActualMaxMin();
 
-            var majorTicks = this.MajorTickValues.Where(x => x > axis.ActualMinimum && x <= axis.ActualMaximum).ToArray();
-
             if (pass == 0 && this.ExtraPen != null)
             {
                 var extraTicks = axis.ExtraGridlines;
@@ -63,9 +61,7 @@ namespace OxyPlot.Axes
 
             if (pass == 0 && this.MinorPen != null)
             {
-                var minorTicks = this.MinorTickValues.Where(x => x >= axis.ActualMinimum && x <= axis.ActualMaximum && !majorTicks.Contains(x)).ToArray();
-
-                foreach (var tickValue in minorTicks)
+                foreach (var tickValue in this.MinorTickValues)
                 {
                     this.RenderTick(axis, angleAxis, tickValue, this.MinorPen);
                 }
@@ -73,7 +69,7 @@ namespace OxyPlot.Axes
 
             if (pass == 0 && this.MajorPen != null)
             {
-                foreach (var tickValue in majorTicks)
+                foreach (var tickValue in this.MajorTickValues)
                 {
                     this.RenderTick(axis, angleAxis, tickValue, this.MajorPen);
                 }
@@ -81,7 +77,7 @@ namespace OxyPlot.Axes
 
             if (pass == 1)
             {
-                foreach (double tickValue in majorTicks)
+                foreach (var tickValue in this.MajorTickValues)
                 {
                     this.RenderTickText(axis, tickValue, angleAxis);
                 }

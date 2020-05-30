@@ -50,6 +50,7 @@ All notable changes to this project will be documented in this file.
 - SkiaRenderContext does not apply pixel snapping when rendering to vector graphic (#1539)
 - Mark OxyPlot.PdfExporter and OxyPlot.Pdf.PdfExporter as obsolete (#1527)
 - Replace Axis.DesiredSize by Axis.DesiredMargin, change signature of Axis.Measure(...) (#453)
+- Axis renderers now render all ticks they are provided (#1580)
 
 ### Removed
 - Remove PlotModel.Legends (#644)

@@ -719,6 +719,8 @@ namespace OxyPlot.Axes
             minorTickValues = this.CreateTickValues(this.ActualMinimum, this.ActualMaximum, this.ActualMinorStep);
             majorTickValues = this.CreateTickValues(this.ActualMinimum, this.ActualMaximum, this.ActualMajorStep);
             majorLabelValues = majorTickValues;
+
+            minorTickValues = AxisUtilities.FilterRedundantMinorTicks(majorTickValues, minorTickValues);
         }
 
         /// <summary>

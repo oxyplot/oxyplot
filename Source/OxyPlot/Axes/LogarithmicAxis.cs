@@ -113,6 +113,7 @@ namespace OxyPlot.Axes
             }
 
             majorLabelValues = majorTickValues;
+            minorTickValues = AxisUtilities.FilterRedundantMinorTicks(majorTickValues, minorTickValues);
         }
 
         /// <summary>

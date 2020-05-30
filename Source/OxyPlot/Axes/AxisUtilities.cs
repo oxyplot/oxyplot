@@ -62,35 +62,95 @@ namespace OxyPlot.Axes
         {
             if (step <= 0)
             {
-                throw new ArgumentException("Step cannot be zero or negative.", "step");
+                throw new ArgumentOutOfRangeException("Step cannot be zero or negative.", nameof(step));
             }
 
-            if (to <= from && step > 0)
+            if (to < from)
             {
-                step *= -1;
+                step = -step;
             }
 
-            var startValue = Math.Round(from / step) * step;
-            var numberOfValues = Math.Max((int)((to - from) / step), 1);
-            var epsilon = step * 1e-3 * Math.Sign(step);
-            var values = new List<double>(numberOfValues);
+            var epsilon = step * 1e-3;
+            from -= epsilon;
+            to += epsilon;
 
-            for (int k = 0; k < maxTicks; k++)
+            var startValue = Math.Ceiling(from / step) * step;
+            if (startValue == -0d)
             {
-                var lastValue = startValue + (step * k);
+                startValue = 0;
+            }
 
-                // If we hit the maximum value before reaching the max number of ticks, exit
-                if (lastValue > to + epsilon)
-                {
-                    break;
-                }
+            var values = new List<double>();
+            var sign = Math.Sign(step);
+            var i = 0;
 
-                // try to get rid of numerical noise
-                var v = Math.Round(lastValue / step, 14) * step;
-                values.Add(v);
+            var currentValue = startValue;
+            while ((to - currentValue) * sign >= 0 && i < maxTicks)
+            {
+                values.Add(currentValue);
+                currentValue = startValue + (++i * step);
             }
 
             return values;
+        }
+
+        /// <summary>
+        /// Analyses two lists of major and minor ticks and creates a new containing the subset of the minor ticks which are not too close to any of the major ticks.
+        /// </summary>
+        /// <param name="majorTicks">The major ticks. Must be monotonically ascending or descending.</param>
+        /// <param name="minorTicks">The minor ticks. Must be monotonically ascending or descending (same direction as major ticks).</param>
+        /// <returns>A new list containing a subset of the original minor ticks such that there are no minor ticks too close to a major tick.</returns>
+        public static IList<double> FilterRedundantMinorTicks(IList<double> majorTicks, IList<double> minorTicks)
+        {
+            if (majorTicks.Count == 0 || minorTicks.Count == 0)
+            {
+                return minorTicks;
+            }
+
+            var ret = new List<double>();
+            var previousMinorTick = 0d;
+            var j = 1;
+
+            var currentMajorTick = majorTicks.Count > 1 ? majorTicks[j] : majorTicks[0];
+
+            static double GetEpsilon(double tick1, double tick2)
+            {
+                return Math.Abs(tick1 - tick2) * 1e-3;
+            }
+
+            // If there is only one minor tick, we can't determine a meaningful epsilon. 
+            // But there also shouldn't be any precision loss, so we can require an exact match (epsilon = 0)
+            var epsilon = minorTicks.Count > 1 ? GetEpsilon(minorTicks[0], minorTicks[1]) : 0;
+
+            var sign = 1;
+            if (majorTicks.Count > 1 && majorTicks[0] > majorTicks[1])
+            {
+                sign = -1;
+            }
+
+            for (var i = 0; i < minorTicks.Count; i++)
+            {
+                var currentMinorTick = minorTicks[i];
+                if (i > 0)
+                {
+                    epsilon = GetEpsilon(currentMinorTick, previousMinorTick);
+                }
+
+                while ((currentMajorTick - currentMinorTick) * sign < 0 && j < majorTicks.Count - 1)
+                {
+                    currentMajorTick = majorTicks[++j];
+                }
+
+                var previousMajorTick = majorTicks[j - 1];
+                if (Math.Abs(currentMinorTick - currentMajorTick) > epsilon && Math.Abs(currentMinorTick - previousMajorTick) > epsilon)
+                {
+                    ret.Add(currentMinorTick);
+                }
+
+                previousMinorTick = currentMinorTick;
+            }
+
+            return ret;
         }
     }
 }
