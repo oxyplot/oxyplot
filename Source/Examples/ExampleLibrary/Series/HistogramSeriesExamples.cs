@@ -124,7 +124,7 @@ namespace ExampleLibrary
 
             var binningOptions = new BinningOptions(BinningOutlierMode.CountOutliers, BinningIntervalType.InclusiveLowerBound, BinningExtremeValueMode.ExcludeExtremeValues);
             var binBreaks = HistogramHelpers.CreateUniformBins(0, 5, 15);
-            chs.Items.AddRange(HistogramHelpers.Collect(SampleExps(rnd, 1.0, n), binBreaks, binningOptions));
+            chs.Items.AddRange(HistogramHelpers.Collect(SampleExps(rnd, mean, n), binBreaks, binningOptions));
             chs.StrokeThickness = 1;
             model.Series.Add(chs);
 
@@ -137,12 +137,12 @@ namespace ExampleLibrary
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Frequency" });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "x" });
 
-            Random rnd = new Random();
+            Random rnd = new Random(1);
 
             HistogramSeries chs = new HistogramSeries();
 
             var binningOptions = new BinningOptions(BinningOutlierMode.CountOutliers, BinningIntervalType.InclusiveLowerBound, BinningExtremeValueMode.ExcludeExtremeValues);
-            chs.Items.AddRange(HistogramHelpers.Collect(SampleExps(rnd, 1.0, n), new double[] { 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.75, 1.0, 2.0, 3.0, 4.0, 5.0 }, binningOptions));
+            chs.Items.AddRange(HistogramHelpers.Collect(SampleExps(rnd, mean, n), new double[] { 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.75, 1.0, 2.0, 3.0, 4.0, 5.0 }, binningOptions));
             chs.StrokeThickness = 1;
             chs.FillColor = OxyColors.Purple;
             model.Series.Add(chs);
@@ -156,7 +156,7 @@ namespace ExampleLibrary
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Frequency" });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "x" });
 
-            Random rnd = new Random();
+            Random rnd = new Random(1);
 
             HistogramSeries chs = new HistogramSeries();
             var binningOptions = new BinningOptions(BinningOutlierMode.CountOutliers, BinningIntervalType.InclusiveLowerBound, BinningExtremeValueMode.ExcludeExtremeValues);
@@ -248,9 +248,9 @@ namespace ExampleLibrary
         private static double SampleNormal(Random rnd, double mean, double std)
         {
             // http://en.wikipedia.org/wiki/Box%E2%80%93Muller_transform
-            var u1 = rnd.NextDouble();
+            var u1 = 1.0 - rnd.NextDouble();
             var u2 = rnd.NextDouble();
-            return Math.Sqrt(-2 * Math.Log(u1)) * Math.Cos(2 * Math.PI * u2);
+            return Math.Sqrt(-2 * Math.Log(u1)) * Math.Cos(2 * Math.PI * u2) * std + mean;
         }
 
         private static IEnumerable<double> SampleUniform(Random rnd, double min, double max, int count)
