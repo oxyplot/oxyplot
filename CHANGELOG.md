@@ -31,6 +31,7 @@ All notable changes to this project will be documented in this file.
 - Added LabelStep and LabelSpacing to contour series (#1511)
 - Example for Issue #1481 showing text rendering with emoji
 - Native Clipping for OxyPlot.SvgRenderContext (#1564)
+- Examples of full plot area polar plots with non-zero minimums (#1586)
 
 ### Changed
 - Legends model (#644)
