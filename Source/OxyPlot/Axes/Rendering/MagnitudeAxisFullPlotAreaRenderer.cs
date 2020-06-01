@@ -63,14 +63,13 @@ namespace OxyPlot.Axes
             double leftdistance = Math.Abs(axis.PlotModel.PlotArea.Left - magnitudeAxis.MidPoint.X);
             double rightdistance = Math.Abs(axis.PlotModel.PlotArea.Right - magnitudeAxis.MidPoint.X);
             OxyRect distancerect = axis.PlotModel.PlotArea.Offset(-magnitudeAxis.MidPoint.X, -magnitudeAxis.MidPoint.Y);
-            OxyRect maxtickrect = new OxyRect(new ScreenPoint(axis.InverseTransform(distancerect.Left), axis.InverseTransform(distancerect.Top)), new ScreenPoint(axis.InverseTransform(distancerect.Right), axis.InverseTransform(distancerect.Bottom)));
 
-            double cornerangle_topright = -degree * Math.Atan2(maxtickrect.Top, maxtickrect.Right);
-            double cornerangle_topleft = -degree * Math.Atan2(maxtickrect.Top, maxtickrect.Left);
-            double cornerangle_bottomleft = 360-degree * Math.Atan2(maxtickrect.Bottom, maxtickrect.Left);
-            double cornerangle_bottomright = 360-degree * Math.Atan2(maxtickrect.Bottom, maxtickrect.Right);
+            double cornerangle_topright = -degree * Math.Atan2(distancerect.Top, distancerect.Right);
+            double cornerangle_topleft = -degree * Math.Atan2(distancerect.Top, distancerect.Left);
+            double cornerangle_bottomleft = 360-degree * Math.Atan2(distancerect.Bottom, distancerect.Left);
+            double cornerangle_bottomright = 360-degree * Math.Atan2(distancerect.Bottom, distancerect.Right);
 
-            // detect and filter dodgy values (these checks appear to be sufficient)
+            // detect and filter dodgy values caused by zero values
             if (cornerangle_topleft < 0)
                 cornerangle_topleft += 360;
             if (cornerangle_bottomleft > 360)
