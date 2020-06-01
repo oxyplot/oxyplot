@@ -74,6 +74,7 @@ All notable changes to this project will be documented in this file.
 - Auto plot margin not taking width of labels into account (#453)
 - WPF PlotView still focusable when Focusable is false (#1440)
 - Disposing a SkiaRenderContext can mess up fonts from another SkiaRenderContext instance (#1573)
+- Display of ampersands in OxyPlot.WindowsForms Tracker (#1585)
 
 ## [2.0.0] - 2019-10-19
 ### Added 

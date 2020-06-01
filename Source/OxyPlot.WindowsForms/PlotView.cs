@@ -321,6 +321,7 @@ namespace OxyPlot.WindowsForms
             this.trackerLabel.Top = (int)data.Position.Y - this.trackerLabel.Height;
             this.trackerLabel.Left = (int)data.Position.X - (this.trackerLabel.Width / 2);
             this.trackerLabel.Visible = true;
+            this.trackerLabel.UseMnemonic = false;
         }
 
         /// <summary>
