@@ -795,69 +795,6 @@ namespace ExampleLibrary
             return model;
         }
 
-        [Example("Auto adjusting plot margins")]
-        public static PlotModel AutoAdjustingMargins()
-        {
-            var model = new PlotModel
-            {
-                Title = "Auto adjusting plot margins",
-            };
-
-            Legend l = new Legend
-            {
-                LegendPosition = LegendPosition.RightBottom
-            };
-            model.Legends.Add(l);
-
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "X", TickStyle = TickStyle.Outside });
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Y", TickStyle = TickStyle.Outside });
-            model.Series.Add(new LineSeries { Title = "Butterfly curve", ItemsSource = ButterflyCurve(0, Math.PI * 4, 1000) });
-            return model;
-        }
-
-        [Example("Auto adjusting left plot margin")]
-        public static PlotModel AutoAdjustingLeftMargin()
-        {
-            var model = new PlotModel
-            {
-                Title = "Auto adjusting left plot margin",
-                PlotMargins = new OxyThickness(double.NaN, 40, 40, 40)
-            };
-
-            Legend l = new Legend
-            {
-                LegendPosition = LegendPosition.RightBottom
-            };
-            model.Legends.Add(l);
-
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "X", TickStyle = TickStyle.Outside });
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Y", TickStyle = TickStyle.Outside });
-            model.Series.Add(new LineSeries { Title = "Butterfly curve", ItemsSource = ButterflyCurve(0, Math.PI * 4, 1000) });
-            return model;
-        }
-
-
-        [Example("Manual plot margins")]
-        public static PlotModel ManualAdjustingMargins()
-        {
-            var model = new PlotModel
-            {
-                Title = "Manual plot margins",
-                PlotMargins = new OxyThickness(60, 4, 4, 40)
-            };
-
-            Legend l = new Legend
-            {
-                LegendPosition = LegendPosition.RightBottom
-            };
-            model.Legends.Add(l);
-
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "X", TickStyle = TickStyle.Outside });
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Y", TickStyle = TickStyle.Outside });
-            model.Series.Add(new LineSeries { Title = "Butterfly curve", ItemsSource = ButterflyCurve(0, Math.PI * 4, 1000) });
-            return model;
-        }
-
         [Example("Current culture")]
         public static PlotModel CurrentCulture()
         {
@@ -1408,6 +1345,82 @@ namespace ExampleLibrary
             }
 
             return plotModel;
+        }
+
+        [Example("Auto Margins")]
+        public static PlotModel AutoMargin()
+        {
+            var plotModel = new PlotModel() { Title = "Auto-adjusting plot margins", Subtitle = "When zooming in and out the plot margins should adjust accordingly" };
+            plotModel.Axes.Add(new LinearAxis() { Position = AxisPosition.Bottom, Title = "X Axis", TitleFontSize = 16 });
+            return plotModel;
+        }
+
+        [Example("Manual Margins")]
+        public static PlotModel ManualMargins()
+        {
+            var plotModel = new PlotModel() { Title = "Manual Margins", Subtitle = "PlotMargins = 40", PlotMargins = new OxyThickness(40) };
+            plotModel.Axes.Add(new LinearAxis() { Position = AxisPosition.Bottom });
+            return plotModel;
+        }
+
+        [Example("Manual Left Margin")]
+        public static PlotModel ManualLeftMargin()
+        {
+            var plotModel = new PlotModel() { Title = "Manual Left Margin", Subtitle = "PlotMargins = 40,NaN,NaN,NaN", PlotMargins = new OxyThickness(40, double.NaN, double.NaN, double.NaN) };
+            plotModel.Axes.Add(new LinearAxis() { Position = AxisPosition.Bottom });
+            return plotModel;
+        }
+
+        [Example("Auto Margins - Wide Labels")]
+        public static PlotModel AutoMarginWideLabels()
+        {
+            var plotModel = new PlotModel() { Title = "Auto-adjusting plot margins - wide axis labels", Subtitle = "There should be enough space reserved such that the axis labels always fit in the viewport" };
+            plotModel.Axes.Add(GetLongLabelSeries());
+            return plotModel;
+        }
+
+        [Example("Auto Margins - Wide Labels, rotated")]
+        public static PlotModel AutoMarginWideLabelsRotated()
+        {
+            var plotModel = new PlotModel() { Title = "Auto-adjusting plot margins - wide rotated axis labels", Subtitle = "There should be enough space reserved such that the axis labels always fit in the viewport" };
+            var axis = GetLongLabelSeries();
+            axis.Angle = -90;
+            plotModel.Axes.Add(axis);
+            return plotModel;
+        }
+
+        [Example("Auto Margins - Wide Labels, fixed Range")]
+        public static PlotModel AutoMarginWideLabelsFixedRange()
+        {
+            var plotModel = new PlotModel() { Title = "Auto-adjusting plot margins - wide axis labels, fixed range", Subtitle = "When the axis range is fixed there should be no unnecessary space reserved for axis labels" };
+            var axis = GetLongLabelSeries();
+            axis.IsPanEnabled = false;
+            axis.IsZoomEnabled = false;
+            plotModel.Axes.Add(axis);
+            return plotModel;
+        }
+
+        [Example("Auto Margins - Wide Labels, fixed Range 2")]
+        public static PlotModel AutoMarginWideLabelsFixedRange2()
+        {
+            var plotModel = new PlotModel() { Title = "Auto-adjusting plot margins - wide axis labels, fixed range", Subtitle = "The axis labels should exactly fit in the viewport" };
+            var axis = GetLongLabelSeries();
+            axis.IsPanEnabled = false;
+            axis.IsZoomEnabled = false;
+            axis.Minimum = -0.01;
+            axis.Maximum = 3.01;
+            plotModel.Axes.Add(axis);
+            return plotModel;
+        }
+
+        private static CategoryAxis GetLongLabelSeries()
+        {
+            var axis = new CategoryAxis() { Position = AxisPosition.Bottom };
+            axis.Labels.Add("Label");
+            axis.Labels.Add("Long Label");
+            axis.Labels.Add("Longer Label");
+            axis.Labels.Add("Even Longer Label");
+            return axis;
         }
     }
 }

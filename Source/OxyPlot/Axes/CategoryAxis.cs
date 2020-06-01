@@ -201,13 +201,20 @@ namespace OxyPlot.Axes
 
             if (!this.IsTickCentered)
             {
+                const double epsilon = 1e-3;
+
                 // Subtract 0.5 from the label values to get the tick values.
                 // Add one extra tick at the end.
-                var mv = new List<double>(majorLabelValues.Count);
-                mv.AddRange(majorLabelValues.Select(v => v - 0.5));
+                var mv = new List<double>(majorLabelValues.Count + 1);
+                mv.AddRange(majorLabelValues.Select(v => v - 0.5).Where(v => v > this.ActualMinimum - epsilon));
+
                 if (mv.Count > 0)
                 {
-                    mv.Add(mv[mv.Count - 1] + 1);
+                    var lastTick = mv[mv.Count - 1] + 1;
+                    if (lastTick < this.ActualMaximum + epsilon)
+                    {
+                        mv.Add(lastTick);
+                    }
                 }
 
                 majorTickValues = mv;
