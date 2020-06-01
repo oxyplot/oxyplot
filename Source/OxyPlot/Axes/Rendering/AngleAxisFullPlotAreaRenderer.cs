@@ -56,11 +56,8 @@ namespace OxyPlot.Axes
                 var tickCount = Math.Abs((int)(axisLength / axis.ActualMinorStep));
 
                 var screenPoints = this.MinorTickValues
-                            .Where(x => x > Math.Min(scaledStartAngle, scaledEndAngle) - eps &&
-                                   x < Math.Max(scaledStartAngle, scaledEndAngle) + eps &&
-                                   !this.MajorTickValues.Contains(x))
                             .Take(tickCount + 1)
-                            .Select(x => TransformToClientRectangle(magnitudeAxis.ActualMaximum, x, axis, this.Plot.PlotArea, magnitudeAxis.MidPoint));
+                            .Select(x => this.TransformToClientRectangle(magnitudeAxis.ActualMaximum, x, axis, this.Plot.PlotArea, magnitudeAxis.MidPoint));
 
                 foreach (var screenPoint in screenPoints)
                 {
@@ -78,10 +75,8 @@ namespace OxyPlot.Axes
             if (this.MajorPen != null)
             {
                 var screenPoints = this.MajorTickValues
-                                .Where(x => x > Math.Min(scaledStartAngle, scaledEndAngle) - eps && x < Math.Max(scaledStartAngle, scaledEndAngle) + eps)
                                 .Take(majorTickCount)
-                                .Select(x => TransformToClientRectangle(magnitudeAxis.ActualMaximum, x, axis, this.Plot.PlotArea, magnitudeAxis.MidPoint))
-                                .ToArray();
+                                .Select(x => this.TransformToClientRectangle(magnitudeAxis.ActualMaximum, x, axis, this.Plot.PlotArea, magnitudeAxis.MidPoint));
 
                 foreach (var point in screenPoints)
                 {

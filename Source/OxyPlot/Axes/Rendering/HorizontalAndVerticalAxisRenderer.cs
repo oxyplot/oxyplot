@@ -322,11 +322,6 @@ namespace OxyPlot.Axes
 
             foreach (double value in this.MajorTickValues)
             {
-                if (value < actualMinimum - eps || value > actualMaximum + eps)
-                {
-                    continue;
-                }
-
                 if (dontRenderZero && Math.Abs(value) < eps)
                 {
                     continue;
@@ -542,16 +537,6 @@ namespace OxyPlot.Axes
 
             foreach (double value in this.MinorTickValues)
             {
-                if (value < actualMinimum - eps || value > actualMaximum + eps)
-                {
-                    continue;
-                }
-
-                if (this.MajorTickValues.Contains(value))
-                {
-                    continue;
-                }
-
                 if (axis.PositionAtZeroCrossing && Math.Abs(value) < eps)
                 {
                     continue;

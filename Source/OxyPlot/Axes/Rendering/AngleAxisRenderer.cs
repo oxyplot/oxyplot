@@ -55,9 +55,6 @@ namespace OxyPlot.Axes
             {
                 var tickCount = Math.Abs((int)(axisLength / axis.ActualMinorStep));
                 var screenPoints = this.MinorTickValues
-                    .Where(x => x > Math.Min(scaledStartAngle, scaledEndAngle) - eps &&
-                           x < Math.Max(scaledStartAngle, scaledEndAngle) + eps &&
-                           !this.MajorTickValues.Contains(x))
                     .Take(tickCount + 1)
                     .Select(x => magnitudeAxis.Transform(magnitudeAxis.ActualMaximum, x, axis));
 
@@ -77,10 +74,8 @@ namespace OxyPlot.Axes
             if (this.MajorPen != null)
             {
                 var screenPoints = this.MajorTickValues
-                    .Where(x => x > Math.Min(scaledStartAngle, scaledEndAngle) - eps && x < Math.Max(scaledStartAngle, scaledEndAngle) + eps)
                     .Take(majorTickCount)
-                    .Select(x => magnitudeAxis.Transform(magnitudeAxis.ActualMaximum, x, axis))
-                    .ToArray();
+                    .Select(x => magnitudeAxis.Transform(magnitudeAxis.ActualMaximum, x, axis));
 
                 foreach (var point in screenPoints)
                 {
