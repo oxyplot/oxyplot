@@ -52,6 +52,7 @@ All notable changes to this project will be documented in this file.
 - Mark OxyPlot.PdfExporter and OxyPlot.Pdf.PdfExporter as obsolete (#1527)
 - Replace Axis.DesiredSize by Axis.DesiredMargin, change signature of Axis.Measure(...) (#453)
 - Axis renderers now render all ticks they are provided (#1580)
+- Auto margins don't reserve space for axis labels if axis range is fixed (#1577)
 
 ### Removed
 - Remove PlotModel.Legends (#644)
@@ -77,6 +78,7 @@ All notable changes to this project will be documented in this file.
 - Disposing a SkiaRenderContext can mess up fonts from another SkiaRenderContext instance (#1573)
 - Display of ampersands in OxyPlot.WindowsForms Tracker (#1585)
 - Full Plotarea Polar plot rendering with non-zero minimum values (#1586)
+- Auto margins are set incorrectly if Axis.TitleFontSize is set to non-default value (related to #1577)
 
 ## [2.0.0] - 2019-10-19
 ### Added 

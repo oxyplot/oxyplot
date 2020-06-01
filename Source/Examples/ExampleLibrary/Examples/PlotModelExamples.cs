@@ -85,25 +85,6 @@ namespace ExampleLibrary
             return model;
         }
 
-        [Example("PlotMargins = (100,20,100,50)")]
-        public static PlotModel PlotMargins()
-        {
-            var model = new PlotModel { Title = "PlotMargins = (100,20,100,50)", PlotMargins = new OxyThickness(100, 20, 100, 50) };
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
-            return model;
-        }
-
-        [Example("Auto PlotMargins")]
-        public static PlotModel AutoPlotMarginAndAxisLabelWidths()
-        {
-            var plotModel1 = new PlotModel { Title = "PlotMargins = (NaN,NaN,NaN,NaN)" };
-            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = 0, Maximum = 1e8, EndPosition = 0.5, StringFormat = "f0" });
-            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = 0, Maximum = 80, StartPosition = 0.5, StringFormat = "f0" });
-            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 0, Maximum = 1e8, StringFormat = "f0", Angle = -90 });
-            return plotModel1;
-        }
-
         [Example("No model")]
         public static PlotModel NoModel()
         {

@@ -11,8 +11,9 @@ namespace OxyPlot.Axes
 {
     using System;
     using System.Collections.Generic;
-
+    using System.Linq;
     using OxyPlot.Series;
+    using OxyPlot.Utilities;
 
     /// <summary>
     /// Provides an abstract base class for axes.
@@ -827,7 +828,7 @@ namespace OxyPlot.Axes
                 maximumTextSize = maximumTextSize.Include(size);
             }
 
-            var labelTextSize = rc.MeasureText(this.ActualTitle, this.ActualFont, this.ActualFontSize, this.ActualFontWeight);
+            var titleTextSize = rc.MeasureText(this.ActualTitle, this.ActualTitleFont, this.ActualTitleFontSize, this.ActualTitleFontWeight);
 
             var marginLeft = 0d;
             var marginTop = 0d;
@@ -843,9 +844,9 @@ namespace OxyPlot.Axes
 
             margin += this.AxisDistance + this.AxisTickToLabelDistance;
 
-            if (labelTextSize.Height > 0)
+            if (titleTextSize.Height > 0)
             {
-                margin += this.AxisTitleDistance + labelTextSize.Height;
+                margin += this.AxisTitleDistance + titleTextSize.Height;
             }
 
             switch (this.Position)
@@ -870,39 +871,80 @@ namespace OxyPlot.Axes
                     throw new InvalidOperationException();
             }
 
-            var reachesMinPosition = Math.Min(this.StartPosition, this.EndPosition) < 0.01;
-            var reachesMaxPosition = Math.Max(this.StartPosition, this.EndPosition) > 0.99;
-
-            switch (this.Position)
+            if (this.IsPanEnabled || this.IsZoomEnabled)
             {
-                case AxisPosition.Left:
-                case AxisPosition.Right:
-                    if (reachesMinPosition)
-                    {
-                        marginBottom = maximumTextSize.Height / 2;
-                    }
+                var reachesMinPosition = Math.Min(this.StartPosition, this.EndPosition) < 0.01;
+                var reachesMaxPosition = Math.Max(this.StartPosition, this.EndPosition) > 0.99;
 
-                    if (reachesMaxPosition)
-                    {
-                        marginTop = maximumTextSize.Height / 2;
-                    }
+                switch (this.Position)
+                {
+                    case AxisPosition.Left:
+                    case AxisPosition.Right:
+                        if (reachesMinPosition)
+                        {
+                            marginBottom = maximumTextSize.Height / 2;
+                        }
 
-                    break;
-                case AxisPosition.Top:
-                case AxisPosition.Bottom:
-                    if (reachesMinPosition)
-                    {
-                        marginLeft = maximumTextSize.Width / 2;
-                    }
+                        if (reachesMaxPosition)
+                        {
+                            marginTop = maximumTextSize.Height / 2;
+                        }
 
-                    if (reachesMaxPosition)
-                    {
-                        marginRight = maximumTextSize.Width / 2;
-                    }
+                        break;
+                    case AxisPosition.Top:
+                    case AxisPosition.Bottom:
+                        if (reachesMinPosition)
+                        {
+                            marginLeft = maximumTextSize.Width / 2;
+                        }
 
-                    break;
-                default:
-                    break;
+                        if (reachesMaxPosition)
+                        {
+                            marginRight = maximumTextSize.Width / 2;
+                        }
+
+                        break;
+                }
+            }
+            else if (majorLabelValues.Count > 0)
+            {
+                var minLabel = majorLabelValues.Min();
+                var maxLabel = majorLabelValues.Max();
+
+                var minLabelText = this.FormatValue(minLabel);
+                var maxLabelText = this.FormatValue(maxLabel);
+
+                var minLabelSize = rc.MeasureText(minLabelText, this.ActualFont, this.ActualFontSize, this.ActualFontWeight, this.Angle);
+                var maxLabelSize = rc.MeasureText(maxLabelText, this.ActualFont, this.ActualFontSize, this.ActualFontWeight, this.Angle);
+
+                var minLabelPosition = this.Transform(minLabel);
+                var maxLabelPosition = this.Transform(maxLabel);
+
+                if (minLabelPosition > maxLabelPosition)
+                {
+                    Helpers.Swap(ref minLabelPosition, ref maxLabelPosition);
+                    Helpers.Swap(ref minLabelSize, ref maxLabelSize);
+                }
+
+                switch (this.Position)
+                {
+                    case AxisPosition.Left:
+                    case AxisPosition.Right:
+                        var screenMinY = Math.Min(this.ScreenMin.Y, this.ScreenMax.Y);
+                        var screenMaxY = Math.Max(this.ScreenMin.Y, this.ScreenMax.Y);
+
+                        marginTop = Math.Max(0, screenMinY - minLabelPosition + (minLabelSize.Height / 2));
+                        marginBottom = Math.Max(0, maxLabelPosition - screenMaxY + (maxLabelSize.Height / 2));
+                        break;
+                    case AxisPosition.Top:
+                    case AxisPosition.Bottom:
+                        var screenMinX = Math.Min(this.ScreenMin.X, this.ScreenMax.X);
+                        var screenMaxX = Math.Max(this.ScreenMin.X, this.ScreenMax.X);
+
+                        marginLeft = Math.Max(0, screenMinX - minLabelPosition + (minLabelSize.Width / 2));
+                        marginRight = Math.Max(0, maxLabelPosition - screenMaxX + (maxLabelSize.Width / 2));
+                        break;
+                }
             }
 
             this.DesiredMargin = new OxyThickness(marginLeft, marginTop, marginRight, marginBottom);
