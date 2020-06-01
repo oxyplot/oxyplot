@@ -44,7 +44,7 @@ namespace ExampleLibrary
             model.Axes.Add(new MagnitudeAxis
             {
                 MajorGridlineStyle = LineStyle.Solid,
-                MinorGridlineStyle = LineStyle.Solid
+                MinorGridlineStyle = LineStyle.Solid,
             });
             model.Series.Add(new FunctionSeries(t => t, t => t, 0, Math.PI * 6, 0.01));
             return model;
@@ -277,6 +277,31 @@ namespace ExampleLibrary
         [Example("Spiral full plot area")]
         public static PlotModel ArchimedeanSpiralFullPlotArea()
         {
+            var model = CreateFullPlotAreaPlotModel();
+            model.Series.Add(new FunctionSeries(t => t, t => t, 0, Math.PI * 6, 0.01));
+            return model;
+        }
+
+        [Example("Spiral full plot area with negative minimum")]
+        public static PlotModel SpiralWithNegativeMinium()
+        {
+            var model = CreateFullPlotAreaPlotModel();
+            model.Title += " with a negative minimum";
+            model.Series.Add(new FunctionSeries(t => t, t => t, -Math.PI * 6, Math.PI * 6, 0.01));
+            return model;
+        }
+
+        [Example("Spiral full plot area with positive minimum")]
+        public static PlotModel SpiralWithPositiveMinium()
+        {
+            var model = CreateFullPlotAreaPlotModel();
+            model.Title += " with a positive minimum";
+            model.Series.Add(new FunctionSeries(t => t, t => t, Math.PI * 6, Math.PI * 12, 0.01));
+            return model;
+        }
+
+        private static PlotModel CreateFullPlotAreaPlotModel()
+        {
             var model = new PlotModel
             {
                 Title = "Polar plot filling the plot area",
@@ -284,6 +309,7 @@ namespace ExampleLibrary
                 PlotType = PlotType.Polar,
                 PlotAreaBorderThickness = new OxyThickness(1),
             };
+
             model.Axes.Add(
                 new AngleAxisFullPlotArea
                 {
@@ -297,6 +323,7 @@ namespace ExampleLibrary
                     Minimum = 0,
                     Maximum = 2 * Math.PI
                 });
+
             model.Axes.Add(new MagnitudeAxisFullPlotArea
             {
                 MidshiftH = -0.1d,
@@ -304,7 +331,7 @@ namespace ExampleLibrary
                 MajorGridlineStyle = LineStyle.Solid,
                 MinorGridlineStyle = LineStyle.Solid
             });
-            model.Series.Add(new FunctionSeries(t => t, t => t, 0, Math.PI * 6, 0.01));
+
             return model;
         }
     }
