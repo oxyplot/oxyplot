@@ -15,17 +15,12 @@ namespace OxyPlot.SkiaSharp
     public class PdfExporter : IExporter
     {
         /// <summary>
-        /// Gets or sets the DPI.
-        /// </summary>
-        public float Dpi { get; set; } = 72;
-
-        /// <summary>
-        /// Gets or sets the export height (in points, as defined by <see cref="Dpi"/>).
+        /// Gets or sets the export height (in points, where 1 point equals 1/72 inch).
         /// </summary>
         public float Height { get; set; }
 
         /// <summary>
-        /// Gets or sets the export width (in points, as defined by <see cref="Dpi"/>).
+        /// Gets or sets the export width (in points, where 1 point equals 1/72 inch).
         /// </summary>
         public float Width { get; set; }
 
@@ -63,10 +58,10 @@ namespace OxyPlot.SkiaSharp
         /// <inheritdoc/>
         public void Export(IPlotModel model, Stream stream)
         {
-            using var document = SKDocument.CreatePdf(stream, this.Dpi);
+            using var document = SKDocument.CreatePdf(stream);
             using var pdfCanvas = document.BeginPage(this.Width, this.Height);
             using var context = new SkiaRenderContext { RenderTarget = RenderTarget.VectorGraphic, SkCanvas = pdfCanvas, UseTextShaping = this.UseTextShaping };
-            var dpiScale = this.Dpi / 96;
+            const float dpiScale = 72f / 96;
             context.DpiScale = dpiScale;
             model.Update(true);
             pdfCanvas.Clear(model.Background.ToSKColor());

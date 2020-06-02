@@ -61,6 +61,7 @@ All notable changes to this project will be documented in this file.
 - Remove exporter Background properties (#1409)
 - Remove OxyThickness Width and Height properties (#1429)
 - RenderingExtensions.DrawRectangleAsPolygon(...) extension methods. IRenderContext.DrawRectangle(...) with an appropriate EdgeRenderingMode can be used instead.
+- SkiaSharp.PdfExporter.Dpi property (#1591)
 
 ### Fixed
 - Legend font size is not affected by DefaultFontSize (#1396)
