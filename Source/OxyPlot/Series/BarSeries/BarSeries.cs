@@ -358,7 +358,7 @@ namespace OxyPlot.Series
         }
 
         /// <inheritdoc/>
-        protected override void RenderOverride(IRenderContext rc)
+        public override void Render(IRenderContext rc)
         {
             this.ActualBarRectangles = new List<OxyRect>();
 

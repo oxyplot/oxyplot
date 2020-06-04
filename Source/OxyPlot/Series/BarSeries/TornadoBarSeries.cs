@@ -176,7 +176,7 @@ namespace OxyPlot.Series
         }
 
         /// <inheritdoc/>
-        protected override void RenderOverride(IRenderContext rc)
+        public override void Render(IRenderContext rc)
         {
             this.ActualMinimumBarRectangles = new List<OxyRect>();
             this.ActualMaximumBarRectangles = new List<OxyRect>();

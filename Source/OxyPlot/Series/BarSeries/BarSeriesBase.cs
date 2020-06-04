@@ -109,20 +109,6 @@ namespace OxyPlot.Series
             return this.ActualItems[index];
         }
 
-        /// <inheritdoc/>
-        public sealed override void Render(IRenderContext rc)
-        {
-            if (this.Manager == null)
-            {
-                // This means this series has not been updated yet. Do nothing?!
-                return;
-            }
-
-            // let our manager know we are about to render
-            this.Manager.CheckInBeforeRender(this);
-            this.RenderOverride(rc);
-        }
-
         /// <summary>
         /// Gets the actual width of the items of this series.
         /// </summary>
@@ -165,12 +151,6 @@ namespace OxyPlot.Series
         /// <param name="item">The items.</param>
         /// <returns><c>true</c> if the item is valid; <c>false</c> otherwise.</returns>
         protected abstract bool IsValid(T item);
-
-        /// <summary>
-        /// Renders the series on the specified render context.
-        /// </summary>
-        /// <param name="rc">The rendering context.</param>
-        protected abstract void RenderOverride(IRenderContext rc);
 
         /// <summary>
         /// Updates the <see cref="ItemsSourceItems"/> from the <see cref="ItemsSeries.ItemsSource"/> and data fields.
@@ -229,10 +209,6 @@ namespace OxyPlot.Series
                     this.ItemsSourceItems.AddRange(this.ItemsSource.OfType<T>());
                 }
             }
-
-            // make sure we have a manager and let it know we have just updated our data
-            this.Manager ??= new BarSeriesManager(this);
-            this.Manager.CheckInAfterDataUpdate(this);
         }
 
         /// <summary>

@@ -348,6 +348,11 @@ namespace OxyPlot
         /// <param name="rc">The render context.</param>
         private void RenderSeries(IRenderContext rc)
         {
+            foreach (var barSeriesManager in this.barSeriesManagers)
+            {
+                barSeriesManager.InitializeRender();
+            }
+
             foreach (var s in this.Series.Where(s => s.IsVisible))
             {
                 rc.SetToolTip(s.ToolTip);

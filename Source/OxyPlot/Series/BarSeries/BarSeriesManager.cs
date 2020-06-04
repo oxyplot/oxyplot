@@ -22,21 +22,6 @@ namespace OxyPlot.Series
     public class BarSeriesManager
     {
         /// <summary>
-        /// All bar series that are managed by this instance.
-        /// </summary>
-        private readonly List<IBarSeries> managedSeries = new List<IBarSeries>();
-
-        /// <summary>
-        /// All series that already were rendered during the current render cycle.
-        /// </summary>
-        private readonly HashSet<IBarSeries> renderedSeries = new HashSet<IBarSeries>();
-
-        /// <summary>
-        /// The number of bar series that already checked in during the current update cycle.
-        /// </summary>
-        private int updatedSeriesCount;
-
-        /// <summary>
         /// The current offset of the bars (not used for stacked bar series).
         /// </summary>
         /// <remarks>These offsets are modified during rendering.</remarks>
@@ -74,18 +59,31 @@ namespace OxyPlot.Series
         /// <summary>
         /// Initializes a new instance of the <see cref="BarSeriesManager"/> class.
         /// </summary>
+        /// <param name="categoryAxis">The category axis the <paramref name="series"/> belong to.</param>
+        /// <param name="valueAxis">The value axis the <paramref name="series"/> belong to.</param>
         /// <param name="series">The bar series this instance should manage.</param>
-        public BarSeriesManager(IBarSeries series)
+        public BarSeriesManager(CategoryAxis categoryAxis, Axis valueAxis, IEnumerable<IBarSeries> series)
         {
-            this.PlotModel = series.PlotModel ?? throw new InvalidOperationException("The series must be part of a plot model.");
-            this.CategoryAxis = series.CategoryAxis;
-            this.ValueAxis = series.ValueAxis;
+            this.PlotModel = categoryAxis.PlotModel ?? throw new InvalidOperationException("The category axis must be part of a plot model.");
+            this.CategoryAxis = categoryAxis;
+            this.ValueAxis = valueAxis;
+            this.ManagedSeries = series.ToList();
+
+            foreach (var s in this.ManagedSeries)
+            {
+                s.Manager = this;
+            }
         }
 
         /// <summary>
         /// Gets the <see cref="CategoryAxis"/> whose bar series this instance manages.
         /// </summary>
         public CategoryAxis CategoryAxis { get; }
+
+        /// <summary>
+        /// Gets all bar series that are managed by this instance.
+        /// </summary>
+        public IList<IBarSeries> ManagedSeries { get; }
 
         /// <summary>
         /// Gets the <see cref="PlotModel"/> whose bar series this instance manages.
@@ -116,52 +114,6 @@ namespace OxyPlot.Series
         /// Gets or sets the stack index mapping. The mapping indicates to which rank a specific stack index belongs.
         /// </summary>
         private Dictionary<string, int> StackIndexMapping { get; } = new Dictionary<string, int>();
-
-        /// <summary>
-        /// Bar series should call this after they updated their data.
-        /// </summary>
-        public void CheckInAfterDataUpdate(IBarSeries series)
-        {
-            // this can happed if series are assigned to a different axis after updating the plot
-            if (series.CategoryAxis != this.CategoryAxis || series.ValueAxis != this.ValueAxis)
-            {
-                series.Manager = new BarSeriesManager(series);
-                series.Manager.CheckInAfterDataUpdate(series);
-                return;
-            }
-
-            // first series in update cycle -> update the series we are managing
-            if (this.updatedSeriesCount == 0)
-            {
-                this.UpdateManagedSeries();
-            }
-
-            this.updatedSeriesCount++;
-
-            // last series in update cycle -> do everything that needs updated data
-            if (this.updatedSeriesCount == this.managedSeries.Count)
-            {
-                this.updatedSeriesCount = 0;
-                this.CategoryAxis.UpdateLabels(this.managedSeries.Max(s => s.ActualItemsCount));
-                this.UpdateBarOffsets();
-                this.UpdateValidData();
-                this.ResetCurrentValues();
-            }
-        }
-
-        /// <summary>
-        /// Bar series should call this before they start rendering.
-        /// </summary>
-        public void CheckInBeforeRender(IBarSeries series)
-        {
-            // first series of render cycle -> reset values that are changed during rendering
-            if (this.renderedSeries.Count == 0 || this.renderedSeries.Contains(series))
-            {
-                this.ResetCurrentValues();
-            }
-
-            this.renderedSeries.Add(series);
-        }
 
         /// <summary>
         /// Gets the category value.
@@ -251,6 +203,14 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
+        /// Initializes the manager for rendering. This should be called before any of the managed series are rendered.
+        /// </summary>
+        public void InitializeRender()
+        {
+            this.ResetCurrentValues();
+        }
+
+        /// <summary>
         /// Sets the current base value for the specified stack and category index.
         /// </summary>
         /// <param name="stackIndex">Index of the stack.</param>
@@ -289,6 +249,17 @@ namespace OxyPlot.Series
         public void SetCurrentMinValue(int stackIndex, int categoryIndex, double newValue)
         {
             this.currentMinValue[stackIndex, categoryIndex] = newValue;
+        }
+
+        /// <summary>
+        /// Bar series should call this after they updated their data.
+        /// </summary>
+        public void Update()
+        {
+            this.CategoryAxis.UpdateLabels(this.ManagedSeries.Max(s => s.ActualItemsCount));
+            this.UpdateBarOffsets();
+            this.UpdateValidData();
+            this.ResetCurrentValues();
         }
 
         /// <summary>
@@ -334,31 +305,6 @@ namespace OxyPlot.Series
                 this.currentMaxValue = null;
                 this.currentMinValue = null;
             }
-
-            this.renderedSeries.Clear();
-        }
-
-        /// <summary>
-        /// Updates the series that are managed by this instance.
-        /// </summary>
-        private void UpdateManagedSeries()
-        {
-            foreach (var series in this.managedSeries)
-            {
-                series.Manager = null;
-            }
-
-            this.managedSeries.Clear();
-
-            var managedSeries = this.PlotModel.Series
-                .OfType<IBarSeries>()
-                .Where(s => s.IsVisible && s.CategoryAxis == this.CategoryAxis && s.ValueAxis == this.ValueAxis);
-
-            this.managedSeries.AddRange(managedSeries);
-            foreach (var s in this.managedSeries)
-            {
-                s.Manager = this;
-            }
         }
 
         /// <summary>
@@ -379,7 +325,7 @@ namespace OxyPlot.Series
             var stackGroupWidthDict = new Dictionary<string, double>();
             this.BarOffset = new double[this.Categories.Count];
 
-            var stackGroups = this.managedSeries
+            var stackGroups = this.ManagedSeries
                 .OfType<IStackableSeries>()
                 .Where(s => s.IsStacked)
                 .GroupBy(s => s.StackGroup)
@@ -404,7 +350,7 @@ namespace OxyPlot.Series
             }
 
             // Add width of unstacked series
-            foreach (var s in this.managedSeries.Where(s => !(s is IStackableSeries stackable) || !stackable.IsStacked))
+            foreach (var s in this.ManagedSeries.Where(s => !(s is IStackableSeries stackable) || !stackable.IsStacked))
             {
                 for (var i = 0; i < this.Categories.Count; i++)
                 {
@@ -461,7 +407,7 @@ namespace OxyPlot.Series
         /// </summary>
         private void UpdateValidData()
         {
-            foreach (var item in this.managedSeries)
+            foreach (var item in this.ManagedSeries)
             {
                 item.UpdateValidData();
             }
