@@ -76,10 +76,10 @@ namespace ExampleLibrary
             return CreateSimpleModel(true, "Simple stacked model");
         }
 
-        [Example("Stacked, Multiple Value Axes")]
+        [Example("Multiple Value Axes")]
         public static PlotModel MultipleValueAxes()
         {
-            var model = new PlotModel { Title = "Stacked, Multiple Value Axes" };
+            var model = new PlotModel { Title = "Multiple Value Axes" };
 
             var categoryAxis = new CategoryAxis { Position = AxisPosition.Left };
             var valueAxis1 = new LinearAxis { Title = "Value Axis 1", Position = AxisPosition.Bottom, MinimumPadding = 0.06, MaximumPadding = 0.06, ExtraGridlines = new[] { 0d }, EndPosition = .5, Key = "x1" };
@@ -104,8 +104,20 @@ namespace ExampleLibrary
                     s.Items.Add(new BarItem() { Value = rnd.Next(-100, 100) });
                 }
 
-                s.IsStacked = true;
                 model.Series.Add(s);
+            }
+
+            return model;
+        }
+
+        [Example("Stacked, Multiple Value Axes")]
+        public static PlotModel StackedMultipleValueAxes()
+        {
+            var model = MultipleValueAxes();
+            model.Title = $"Stacked, {model.Title}";
+            foreach (BarSeries barSeries in model.Series)
+            {
+                barSeries.IsStacked = true;
             }
 
             return model;

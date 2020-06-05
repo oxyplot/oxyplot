@@ -301,24 +301,38 @@ namespace ExampleLibrary.Utilities
 
             foreach (var series in model.Series.OfType<XYAxisSeries>())
             {
-                if (series.XAxis != null && series.XAxisKey == null)
+                if (series.XAxisKey == null)
                 {
-                    if (series.XAxis.Key == null)
+                    if (series.XAxis == null) // this can happen if the series in invisible initially
                     {
-                        series.XAxis.Key = XAXIS_KEY;
+                        series.XAxisKey = XAXIS_KEY;
                     }
+                    else
+                    {
+                        if (series.XAxis.Key == null)
+                        {
+                            series.XAxis.Key = XAXIS_KEY;
+                        }
 
-                    series.XAxisKey = series.XAxis.Key;
+                        series.XAxisKey = series.XAxis.Key;
+                    }
                 }
 
-                if (series.YAxis != null && series.YAxisKey == null)
+                if (series.YAxisKey == null)
                 {
-                    if (series.YAxis.Key == null)
+                    if (series.YAxis == null)
                     {
-                        series.YAxis.Key = YAXIS_KEY;
+                        series.YAxisKey = YAXIS_KEY;
                     }
+                    else
+                    {
+                        if (series.YAxis.Key == null)
+                        {
+                            series.YAxis.Key = YAXIS_KEY;
+                        }
 
-                    series.YAxisKey = series.YAxis.Key;
+                        series.YAxisKey = series.YAxis.Key;
+                    }
                 }
             }
 
