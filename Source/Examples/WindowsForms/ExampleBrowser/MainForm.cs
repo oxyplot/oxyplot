@@ -24,6 +24,9 @@ namespace ExampleBrowser
 
         private void InitTree()
         {
+#if NETFRAMEWORK
+            FixTreeViewDpi();
+#endif
             TreeNode node = null;
             foreach (var ex in this.vm.Examples)
             {
@@ -41,6 +44,19 @@ namespace ExampleBrowser
                 }
             }
             this.treeView1.AfterSelect += this.TreeView1AfterSelect;
+        }
+
+        private void FixTreeViewDpi()
+        {
+            using (var g = this.CreateGraphics())
+            {
+                var scaleFactor = g.DpiY / 96f;
+                treeView1.ItemHeight = (int) (treeView1.ItemHeight * scaleFactor);
+                treeView1.Font = new Font(
+                    treeView1.Font.FontFamily,
+                    (int) (treeView1.Font.Size * scaleFactor),
+                    treeView1.Font.Style);
+            }
         }
 
         void TreeView1AfterSelect(object sender, TreeViewEventArgs e)

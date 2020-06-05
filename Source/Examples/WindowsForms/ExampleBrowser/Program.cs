@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Program.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
@@ -20,6 +20,9 @@ namespace ExampleBrowser
         [STAThread]
         static void Main()
         {
+#if NETCOREAPP
+            Application.SetHighDpiMode(HighDpiMode.PerMonitorV2);
+#endif
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             using (var mainForm = new MainForm())

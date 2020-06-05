@@ -32,6 +32,7 @@ All notable changes to this project will be documented in this file.
 - Example for Issue #1481 showing text rendering with emoji
 - Native Clipping for OxyPlot.SvgRenderContext (#1564)
 - Examples of full plot area polar plots with non-zero minimums (#1586)
+- Support HiDPI for WinForms examples (#1597)
 
 ### Changed
 - Legends model (#644)
