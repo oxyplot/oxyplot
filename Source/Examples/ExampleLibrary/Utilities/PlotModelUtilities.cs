@@ -303,7 +303,7 @@ namespace ExampleLibrary.Utilities
             {
                 if (series.XAxisKey == null)
                 {
-                    if (series.XAxis == null) // this can happen if the series in invisible initially
+                    if (series.XAxis == null) // this can happen if the series is invisible initially
                     {
                         series.XAxisKey = XAXIS_KEY;
                     }

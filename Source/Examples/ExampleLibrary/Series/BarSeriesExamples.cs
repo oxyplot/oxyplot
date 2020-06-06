@@ -123,6 +123,54 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("Multiple Category Axes")]
+        public static PlotModel MultipleCategoryAxes()
+        {
+            var model = new PlotModel { Title = "Multiple Category Axes" };
+            model.Legends.Add(new Legend() { IsLegendVisible = true, LegendPosition = LegendPosition.TopLeft, LegendPlacement = LegendPlacement.Inside });
+
+            var valueAxis = new LinearAxis { Position = AxisPosition.Bottom, Key = "x", ExtraGridlines = new[] { 0d } };
+            var categoryAxis1 = new CategoryAxis { Title = "Category Axis 1", Position = AxisPosition.Left, MinimumPadding = 0.06, MaximumPadding = 0.06, EndPosition = .5, Key = "y1" };
+            var categoryAxis2 = new CategoryAxis { Title = "Category Axis 2", Position = AxisPosition.Left, MinimumPadding = 0.06, MaximumPadding = 0.06, StartPosition = .5, Key = "y2" };
+            model.Axes.Add(valueAxis);
+            model.Axes.Add(categoryAxis1);
+            model.Axes.Add(categoryAxis2);
+
+            var series = new List<BarSeries>
+            {
+                new BarSeries { YAxisKey = "y1", XAxisKey = "x", RenderInLegend = true, Title = "Y1A" },
+                new BarSeries { YAxisKey = "y1", XAxisKey = "x", RenderInLegend = true, Title = "Y1B" },
+                new BarSeries { YAxisKey = "y2", XAxisKey = "x", RenderInLegend = true, Title = "Y2A" },
+                new BarSeries { YAxisKey = "y2", XAxisKey = "x", RenderInLegend = true, Title = "Y2B" },
+            };
+
+            var rnd = new Random(1);
+            foreach (var s in series)
+            {
+                for (var i = 0; i < 4; i++)
+                {
+                    s.Items.Add(new BarItem() { Value = rnd.Next(-100, 100) });
+                }
+
+                model.Series.Add(s);
+            }
+
+            return model;
+        }
+
+        [Example("Stacked, Multiple Category Axes")]
+        public static PlotModel StackedMultipleCategoryAxes()
+        {
+            var model = MultipleCategoryAxes();
+            model.Title = $"Stacked, {model.Title}";
+            foreach (BarSeries barSeries in model.Series)
+            {
+                barSeries.IsStacked = true;
+            }
+
+            return model;
+        }
+
         [Example("Empty series")]
         public static PlotModel EmptySeries()
         {
