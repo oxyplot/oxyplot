@@ -64,13 +64,13 @@ namespace OxyPlot
                 return defaultValue;
             }
 
-            var max = e.Current;
+            var min = e.Current;
             while (e.MoveNext())
             {
-                max = Math.Min(max, e.Current);
+                min = Math.Min(min, e.Current);
             }
 
-            return max;
+            return min;
         }
 
         /// <summary>
