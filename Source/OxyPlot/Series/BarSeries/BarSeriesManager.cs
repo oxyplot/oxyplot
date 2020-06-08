@@ -256,7 +256,7 @@ namespace OxyPlot.Series
         /// </summary>
         public void Update()
         {
-            this.CategoryAxis.UpdateLabels(this.ManagedSeries.Max(s => s.ActualItemsCount));
+            this.CategoryAxis.UpdateLabels(this.ManagedSeries.Max(s => s.ActualItems.Count));
             this.UpdateBarOffsets();
             this.UpdateValidData();
             this.ResetCurrentValues();
@@ -270,7 +270,7 @@ namespace OxyPlot.Series
         /// <returns><c>true</c> of the bar series has an item at the specified category index; <c>false</c> otherwise.</returns>
         private static bool HasCategory(IBarSeries series, int categoryIndex)
         {
-            if (series.ActualItemsCount > categoryIndex && series.ActualItem(categoryIndex).CategoryIndex < 0)
+            if (series.ActualItems.Count > categoryIndex && series.ActualItems[categoryIndex].CategoryIndex < 0)
             {
                 return true;
             }
@@ -355,7 +355,7 @@ namespace OxyPlot.Series
                 for (var i = 0; i < this.Categories.Count; i++)
                 {
                     var numberOfItems = s.ActualItems.Count(item => item.CategoryIndex == i);
-                    if (s.ActualItemsCount > i && s.ActualItem(i).CategoryIndex < 0)
+                    if (s.ActualItems.Count > i && s.ActualItems[i].CategoryIndex < 0)
                     {
                         numberOfItems++;
                     }

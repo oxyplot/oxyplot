@@ -49,25 +49,9 @@ namespace OxyPlot.Series
         /// </summary>
         void UpdateValidData();
 
-        // TODO: replace the following members by IReadOnlyList<BarItemBase> once we get rid of .NET 4.0.
-        // We can't use IList<BarItemBase> here because we need covariance.
-        // -------------------------
         /// <summary>
         /// Gets the actual bar items.
         /// </summary>
-        IEnumerable<BarItemBase> ActualItems { get; }
-
-        /// <summary>
-        /// Gets the actual bar items count.
-        /// </summary>
-        int ActualItemsCount { get; }
-
-        /// <summary>
-        /// Gets the actual bar item at the specified index.
-        /// </summary>
-        /// <param name="index">The index.</param>
-        /// <returns>The bar item.</returns>
-        BarItemBase ActualItem(int index);
-        // -------------------------
+        IReadOnlyList<BarItemBase> ActualItems { get; }
     }
 }

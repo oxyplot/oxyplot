@@ -46,10 +46,7 @@ namespace OxyPlot.Series
         public List<T> ActualItems => this.ItemsSource != null ? this.ItemsSourceItems : this.Items;
 
         /// <inheritdoc/>
-        IEnumerable<BarItemBase> IBarSeries.ActualItems => this.ActualItems;
-
-        /// <inheritdoc/>
-        int IBarSeries.ActualItemsCount => this.ActualItems?.Count ?? 0;
+        IReadOnlyList<BarItemBase> IBarSeries.ActualItems => this.ActualItems.AsReadOnlyList();
 
         /// <summary>
         /// Gets or sets the width of the bars. The default value is 1.
@@ -102,12 +99,6 @@ namespace OxyPlot.Series
         /// Gets or sets the dictionary which stores the index-inversion for the valid items
         /// </summary>
         protected Dictionary<int, int> ValidItemsIndexInversion { get; } = new Dictionary<int, int>();
-
-        /// <inheritdoc/>
-        BarItemBase IBarSeries.ActualItem(int index)
-        {
-            return this.ActualItems[index];
-        }
 
         /// <summary>
         /// Gets the actual width of the items of this series.
