@@ -336,7 +336,7 @@ namespace OxyPlot.Series
                 var groupList = stackGroup.ToList();
                 var maxBarWidth = groupList
                     .Select(s => s.BarWidth)
-                    .MaxOrZero();
+                    .MaxOrDefault(0);
 
                 stackGroupWidthDict.Add(stackGroup.Key, maxBarWidth);
 
