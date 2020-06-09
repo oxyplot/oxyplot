@@ -2288,7 +2288,7 @@ namespace ExampleLibrary
         {
             var plotModel1 = new PlotModel { Title = "AreaSeries broken in time" };
             var axis = new LinearAxis {Position = AxisPosition.Left, MinimumPadding = 0, MaximumPadding = 0.06, AbsoluteMinimum = 0};
-            var xAxis = new LinearAxis() {Position = AxisPosition.Bottom};
+            var xAxis = new LinearAxis() {Position = AxisPosition.Bottom, Minimum = 4};
             
             plotModel1.Axes.Add(axis);
             plotModel1.Axes.Add(xAxis);
