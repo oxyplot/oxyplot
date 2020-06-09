@@ -2283,6 +2283,38 @@ namespace ExampleLibrary
 
             return plot;
         }
+        [Example("#1512: FindWindowStartIndex.")]
+        public static PlotModel FindWindowsStartIndex()
+        {
+            var plotModel1 = new PlotModel { Title = "AreaSeries broken in time" };
+            var axis = new LinearAxis {Position = AxisPosition.Left, MinimumPadding = 0, MaximumPadding = 0.06, AbsoluteMinimum = 0};
+            var xAxis = new LinearAxis() {Position = AxisPosition.Bottom};
+            
+            plotModel1.Axes.Add(axis);
+            plotModel1.Axes.Add(xAxis);
+
+            var N = 15;
+            var random = new Random(6);
+            var currentValue = random.NextDouble() - 0.5;
+            var areaSeries = new AreaSeries();
+            for (int i = 0; i < N; ++i)
+            {
+                if (random.Next(4) == 0)
+                {
+                    areaSeries.Points.Add(DataPoint.Undefined);
+                    areaSeries.Points2.Add(DataPoint.Undefined);
+                }
+                    
+                currentValue += random.NextDouble();
+                areaSeries.Points.Add(new DataPoint(currentValue, currentValue));
+                areaSeries.Points2.Add(new DataPoint(currentValue, currentValue));
+            }
+            
+            plotModel1.Series.Add(areaSeries);
+          
+
+            return plotModel1;
+        }
 
         private class TimeSpanPoint
         {
