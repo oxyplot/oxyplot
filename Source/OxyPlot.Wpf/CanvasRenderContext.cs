@@ -789,46 +789,25 @@ namespace OxyPlot.Wpf
             double[] dashArray,
             LineJoin lineJoin)
         {
-            StreamGeometry streamGeometry = null;
-            StreamGeometryContext streamGeometryContext = null;
+            if (points.Count < 2)
+                return;
 
-            int count = 0;
+            var path = this.CreateAndAdd<Path>();
+            this.SetStroke(path, stroke, thickness, edgeRenderingMode, lineJoin, dashArray, 0);
+
             var actualStrokeThickness = this.GetActualStrokeThickness(thickness, edgeRenderingMode);
+            var actualPoints = this.GetActualPoints(points, actualStrokeThickness, edgeRenderingMode).ToList();
 
-            for (int i = 0; i + 1 < points.Count; i += 2)
+            var streamGeometry = new StreamGeometry();
+            using (var streamGeometryContext = streamGeometry.Open())
             {
-                if (streamGeometry == null)
-                {
-                    streamGeometry = new StreamGeometry();
-                    streamGeometryContext = streamGeometry.Open();
-                }
-
-                var actualPoints = this.GetActualPoints(new[] { points[i], points[i + 1] }, actualStrokeThickness, edgeRenderingMode).ToList();
-
                 streamGeometryContext.BeginFigure(actualPoints[0], false, false);
-                streamGeometryContext.LineTo(actualPoints[1], true, false);
-
-                count++;
-
-                // Must limit the number of figures, otherwise drawing errors...
-                if (count > MaxFiguresPerGeometry || dashArray != null)
+                for (int i = 1; i < actualPoints.Count; i++)
                 {
-                    streamGeometryContext.Close();
-                    var path = this.CreateAndAdd<Path>();
-                    this.SetStroke(path, stroke, thickness, edgeRenderingMode, lineJoin, dashArray, 0);
-                    path.Data = streamGeometry;
-                    streamGeometry = null;
-                    count = 0;
+                    streamGeometryContext.LineTo(actualPoints[i], (i & 0x1) != 0, false);
                 }
             }
-
-            if (streamGeometry != null)
-            {
-                streamGeometryContext.Close();
-                var path = this.CreateAndAdd<Path>();
-                this.SetStroke(path, stroke, thickness, edgeRenderingMode, lineJoin, null, 0);
-                path.Data = streamGeometry;
-            }
+            path.Data = streamGeometry;
         }
 
         /// <summary>
