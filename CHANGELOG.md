@@ -54,6 +54,7 @@ All notable changes to this project will be documented in this file.
 - Replace Axis.DesiredSize by Axis.DesiredMargin, change signature of Axis.Measure(...) (#453)
 - Axis renderers now render all ticks they are provided (#1580)
 - Auto margins don't reserve space for axis labels if axis range is fixed (#1577)
+- System.Drawing.Common references updated to 4.7.0 (#1608)
 
 ### Removed
 - Remove PlotModel.Legends (#644)
