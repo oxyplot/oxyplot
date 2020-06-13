@@ -357,6 +357,12 @@ namespace OxyPlot.Wpf
         ///<inheritdoc/>
         public override void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
         {
+            if (this.UseStreamGeometry)
+            {
+                this.DrawRectangleByStreamGeometry(rect, fill, stroke, thickness, edgeRenderingMode);
+                return;
+            }
+
             var e = this.CreateAndAdd<Path>();
             this.SetStroke(e, stroke, thickness, edgeRenderingMode);
 
@@ -373,6 +379,12 @@ namespace OxyPlot.Wpf
         ///<inheritdoc/>
         public override void DrawRectangles(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
         {
+            if (this.UseStreamGeometry)
+            {
+                this.DrawRectanglesByStreamGeometry(rectangles, fill, stroke, thickness, edgeRenderingMode);
+                return;
+            }
+
             var path = this.CreateAndAdd<Path>();
             this.SetStroke(path, stroke, thickness, edgeRenderingMode);
             if (!fill.IsUndefined())
@@ -387,6 +399,70 @@ namespace OxyPlot.Wpf
             }
 
             path.Data = gg;
+        }
+
+        /// <summary>
+        /// Draws a collection of rectangles, where all have the same stroke and fill.
+        /// This performs better than calling DrawRectangle multiple times.
+        /// </summary>
+        /// <param name="rectangle">The rectangle.</param>
+        /// <param name="fill">The fill color. If set to <c>OxyColors.Undefined</c>, the rectangles will not be filled.</param>
+        /// <param name="stroke">The stroke color. If set to <c>OxyColors.Undefined</c>, the rectangles will not be stroked.</param>
+        /// <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
+        /// <param name="edgeRenderingMode">The edge rendering mode.</param>
+        private void DrawRectangleByStreamGeometry(OxyRect rectangle, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
+        {
+            var path = this.CreateAndAdd<Path>();
+            this.SetStroke(path, stroke, thickness, edgeRenderingMode);
+            if (!fill.IsUndefined())
+            {
+                path.Fill = this.GetCachedBrush(fill);
+            }
+
+            var sg = new StreamGeometry { FillRule = FillRule.Nonzero };
+            using (var context = sg.Open())
+            {
+                this.DrawRectangleInContext(context, rectangle, !fill.IsUndefined(), !stroke.IsUndefined(), path.StrokeThickness, edgeRenderingMode);
+            }
+
+            path.Data = sg;
+        }
+
+        /// <summary>
+        /// Draws a collection of rectangles, where all have the same stroke and fill.
+        /// This performs better than calling DrawRectangle multiple times.
+        /// </summary>
+        /// <param name="rectangles">The rectangles.</param>
+        /// <param name="fill">The fill color. If set to <c>OxyColors.Undefined</c>, the rectangles will not be filled.</param>
+        /// <param name="stroke">The stroke color. If set to <c>OxyColors.Undefined</c>, the rectangles will not be stroked.</param>
+        /// <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
+        /// <param name="edgeRenderingMode">The edge rendering mode.</param>
+        private void DrawRectanglesByStreamGeometry(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
+        {
+            var path = this.CreateAndAdd<Path>();
+            this.SetStroke(path, stroke, thickness, edgeRenderingMode);
+            if (!fill.IsUndefined())
+            {
+                path.Fill = this.GetCachedBrush(fill);
+            }
+
+            var sg = new StreamGeometry { FillRule = FillRule.Nonzero };
+            using (var context = sg.Open())
+            {
+                foreach (var rect in rectangles)
+                {
+                    this.DrawRectangleInContext(context, rect, !fill.IsUndefined(), !stroke.IsUndefined(), path.StrokeThickness, edgeRenderingMode);
+                }
+            }
+
+            path.Data = sg;
+        }
+
+        private void DrawRectangleInContext(StreamGeometryContext context, OxyRect rect, bool isFilled, bool isStroked, double strokeThickness, EdgeRenderingMode edgeRenderingMode)
+        {
+            var r = this.GetActualRect(rect, strokeThickness, edgeRenderingMode);
+            context.BeginFigure(r.TopLeft, isFilled, true);
+            context.PolyLineTo(new[] { r.TopRight, r.BottomRight, r.BottomLeft}, isStroked, true);
         }
 
         /// <summary>
