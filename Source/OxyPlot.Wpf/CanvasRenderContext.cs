@@ -219,9 +219,48 @@ namespace OxyPlot.Wpf
                 return;
             }
 
+            if (this.UseStreamGeometry)
+            {
+                this.DrawLineByStreamGeometry(points, stroke, thickness, edgeRenderingMode, dashArray, lineJoin);
+                return;
+            }
+
             var e = this.CreateAndAdd<Polyline>();
             this.SetStroke(e, stroke, thickness, edgeRenderingMode, lineJoin, dashArray, 0);
             e.Points = this.ToPointCollection(points, e.StrokeThickness, edgeRenderingMode);
+        }
+
+        /// <summary>
+        /// Draws a polyline using a StreamGeometry.
+        /// </summary>
+        /// <param name="points">The points defining the polyline. The polyline is drawn from point 0, to point 1, to point 2 and so on.</param>
+        /// <param name="stroke">The stroke color.</param>
+        /// <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
+        /// <param name="edgeRenderingMode">The edge rendering mode.</param>
+        /// <param name="dashArray">The dash array (in device independent units, 1/96 inch). Use <c>null</c> to get a solid line.</param>
+        /// <param name="lineJoin">The line join type.</param>
+        public void DrawLineByStreamGeometry(
+            IList<ScreenPoint> points,
+            OxyColor stroke,
+            double thickness,
+            EdgeRenderingMode edgeRenderingMode,
+            double[] dashArray,
+            LineJoin lineJoin)
+        {
+            var path = this.CreateAndAdd<Path>();
+            this.SetStroke(path, stroke, thickness, edgeRenderingMode, lineJoin, dashArray);
+
+            var actualStrokeThickness = this.GetActualStrokeThickness(thickness, edgeRenderingMode);
+            var actualPoints = this.GetActualPointsForStreamGeometry(points, actualStrokeThickness, edgeRenderingMode);
+
+            var streamGeometry = new StreamGeometry();
+            using (var streamGeometryContext = streamGeometry.Open())
+            {
+                streamGeometryContext.BeginFigure(actualPoints.Item1, false, false);
+                streamGeometryContext.PolyLineTo(actualPoints.Item2, !stroke.IsUndefined(), true);
+            }
+
+            path.Data = streamGeometry;
         }
 
         ///<inheritdoc/>
@@ -911,15 +950,15 @@ namespace OxyPlot.Wpf
             this.SetStroke(path, stroke, thickness, edgeRenderingMode, lineJoin, dashArray, 0);
 
             var actualStrokeThickness = this.GetActualStrokeThickness(thickness, edgeRenderingMode);
-            var actualPoints = this.GetActualPoints(points, actualStrokeThickness, edgeRenderingMode).ToList();
+            var actualPoints = this.GetActualPointsForStreamGeometry(points, actualStrokeThickness, edgeRenderingMode);
 
             var streamGeometry = new StreamGeometry();
             using (var streamGeometryContext = streamGeometry.Open())
             {
-                streamGeometryContext.BeginFigure(actualPoints[0], false, false);
-                for (int i = 1; i < actualPoints.Count; i++)
+                streamGeometryContext.BeginFigure(actualPoints.Item1, false, false);
+                for (int i = 0; i < actualPoints.Item2.Count; i++)
                 {
-                    streamGeometryContext.LineTo(actualPoints[i], (i & 0x1) != 0, false);
+                    streamGeometryContext.LineTo(actualPoints.Item2[i], (i & 0x1) == 0, false);
                 }
             }
             path.Data = streamGeometry;
@@ -1155,6 +1194,39 @@ namespace OxyPlot.Wpf
                     return points.Select(p => PixelLayout.Snap(p.X, p.Y, strokeThickness, this.VisualOffset, this.DpiScale));
                 default:
                     return points.Select(p => new Point(p.X, p.Y));
+            }
+        }
+
+        /// <summary>
+        /// Snaps points to pixels if required by the edge rendering mode.
+        /// </summary>
+        /// <param name="points">The points.</param>
+        /// <param name="strokeThickness">The stroke thickness.</param>
+        /// <param name="edgeRenderingMode">The edge rendering mode.</param>
+        /// <returns>The processed points.</returns>
+        private Tuple<Point, IList<Point>> GetActualPointsForStreamGeometry(IList<ScreenPoint> points, double strokeThickness, EdgeRenderingMode edgeRenderingMode)
+        {
+            if (points.Count < 1)
+            {
+                return Tuple.Create(new Point(), (IList<Point>)new Point[0]);
+            }
+            var pointsList = new Point[points.Count - 1];
+            switch (edgeRenderingMode)
+            {
+                case EdgeRenderingMode.Adaptive when RenderContextBase.IsStraightLine(points):
+                case EdgeRenderingMode.Automatic when RenderContextBase.IsStraightLine(points):
+                case EdgeRenderingMode.PreferSharpness:
+                    for (int i = 0; i < pointsList.Length; i++)
+                    {
+                        pointsList[i] = PixelLayout.Snap(points[i + 1].X, points[i + 1].Y, strokeThickness, this.VisualOffset, this.DpiScale);
+                    }
+                    return Tuple.Create(PixelLayout.Snap(points[0].X, points[0].Y, strokeThickness, this.VisualOffset, this.DpiScale), (IList<Point>)pointsList);
+                default:
+                    for (int i = 0; i < pointsList.Length; i++)
+                    {
+                        pointsList[i] = new Point(points[i + 1].X, points[i + 1].Y);
+                    }
+                    return Tuple.Create(new Point(points[0].X, points[0].Y), (IList<Point>)pointsList);
             }
         }
 
