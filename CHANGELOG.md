@@ -40,6 +40,7 @@ All notable changes to this project will be documented in this file.
 - Additional parameters for HistogramSeries LabelFormatString
 - Absolute screen-space axis margins (#1569)
 - netstandard2.0 TargetFramework (#1668)
+- Add a PlotView.TextMeasurementMethod property to allow using the much faster GlyphTypeface based measurement at runtime
 
 ### Changed
 - Legends model (#644)
@@ -72,6 +73,8 @@ All notable changes to this project will be documented in this file.
 - Remove TileMapAnnotation examples from automated testing (#1667)
 - Optimize clipping calls (#1661)
 - Mark CandleStickAndVolumeSeries as obsolete (#1661)
+- Refactor DrawLineSegmentsByStreamGeometry() to draw much faster
+- Implement StreamGeometry-based implementations of DrawEllipses, DrawLine, and DrawRectangle(s) which improves the rendering speed.
 
 ### Removed
 - Remove PlotModel.Legends (#644)
