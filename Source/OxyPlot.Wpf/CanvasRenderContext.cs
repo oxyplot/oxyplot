@@ -142,6 +142,12 @@ namespace OxyPlot.Wpf
         ///<inheritdoc/>
         public void DrawEllipses(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
         {
+            if (this.UseStreamGeometry)
+            {
+                this.DrawEllipsesByStreamGeometry(rectangles, fill, stroke, thickness, edgeRenderingMode);
+                return;
+            }
+
             var path = this.CreateAndAdd<Path>();
             this.SetStroke(path, stroke, thickness, edgeRenderingMode);
             if (!fill.IsUndefined())
@@ -156,6 +162,52 @@ namespace OxyPlot.Wpf
             }
 
             path.Data = gg;
+        }
+
+        /// <summary>
+        /// Draws a collection of ellipses, where all have the same stroke and fill, using a StreamGeometry.
+        /// </summary>
+        /// <param name="rectangles">The rectangles defining the extents of the ellipses.</param>
+        /// <param name="fill">The fill color. If set to <c>OxyColors.Undefined</c>, the ellipses will not be filled.</param>
+        /// <param name="stroke">The stroke color. If set to <c>OxyColors.Undefined</c>, the ellipses will not be stroked.</param>
+        /// <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
+        /// <param name="edgeRenderingMode">The edge rendering mode.</param>
+        /// <remarks>
+        /// This should have better performance than calling <see cref="DrawEllipse" /> multiple times.
+        /// </remarks>
+        private void DrawEllipsesByStreamGeometry(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
+        {
+            var path = this.CreateAndAdd<Path>();
+            this.SetStroke(path, stroke, thickness, edgeRenderingMode);
+            if (!fill.IsUndefined())
+            {
+                path.Fill = this.GetCachedBrush(fill);
+            }
+
+            var isFilled = !fill.IsUndefined();
+            var isStroke = !stroke.IsUndefined();
+            var streamGeometry = new StreamGeometry { FillRule = FillRule.Nonzero };
+            using (var sgc = streamGeometry.Open())
+            {
+                foreach (var rect in rectangles)
+                {
+                    const double arcAsBezier = 0.551784;
+
+                    var centerX = rect.Center.X;
+                    var centerY = rect.Center.Y;
+
+                    var midX = Math.Abs(rect.Width / 2.0) * arcAsBezier;
+                    var midY = Math.Abs(rect.Height / 2.0) * arcAsBezier;
+
+                    sgc.BeginFigure(new Point(rect.Right, centerY), isFilled, true);
+                    sgc.BezierTo(new Point(rect.Right, centerY + midY), new Point(centerX + midX, rect.Bottom), new Point(centerX, rect.Bottom), isStroke, true);
+                    sgc.BezierTo(new Point(centerX - midX, rect.Bottom), new Point(rect.Left, centerY + midY), new Point(rect.Left, centerY), isStroke, true);
+                    sgc.BezierTo(new Point(rect.Left, centerY - midY), new Point(centerX - midX, rect.Top), new Point(centerX, rect.Top), isStroke, true);
+                    sgc.BezierTo(new Point(centerX + midX, rect.Top), new Point(rect.Right, centerY - midY), new Point(rect.Right, centerY), isStroke, true);
+                }
+            }
+
+            path.Data = streamGeometry;
         }
 
         ///<inheritdoc/>
