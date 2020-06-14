@@ -33,6 +33,7 @@ All notable changes to this project will be documented in this file.
 - Native Clipping for OxyPlot.SvgRenderContext (#1564)
 - Examples of full plot area polar plots with non-zero minimums (#1586)
 - Read-Only collection interfaces for .NET 4.0 (#1600)
+- Add a PlotView.TextMeasurementMethod property to allow using the much faster GlyphTypeface based measurement at runtime
 
 ### Changed
 - Legends model (#644)
@@ -55,6 +56,8 @@ All notable changes to this project will be documented in this file.
 - Axis renderers now render all ticks they are provided (#1580)
 - Auto margins don't reserve space for axis labels if axis range is fixed (#1577)
 - System.Drawing.Common references updated to 4.7.0 (#1608)
+- Refactor DrawLineSegmentsByStreamGeometry() to draw much faster
+- Implement StreamGeometry-based implementations of DrawEllipses, DrawLine, and DrawRectangle(s) which improves the rendering speed.
 
 ### Removed
 - Remove PlotModel.Legends (#644)
