@@ -82,6 +82,7 @@ namespace OxyPlot.Wpf
         /// <inheritdoc/>
         protected override void RenderOverride()
         {
+            RenderContext.TextMeasurementMethod = TextMeasurementMethod;
             if (this.DisconnectCanvasWhileUpdating)
             {
                 // TODO: profile... not sure if this makes any difference
@@ -124,6 +125,23 @@ namespace OxyPlot.Wpf
             var exporter = new PngExporter() { Width = (int)this.ActualWidth, Height = (int)this.ActualHeight };
             var bitmap = exporter.ExportToBitmap(this.ActualModel);
             Clipboard.SetImage(bitmap);
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="TextMeasurementMethod"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty TextMeasurementMethodProperty =
+            DependencyProperty.Register(
+                nameof(TextMeasurementMethod), typeof(TextMeasurementMethod), typeof(PlotViewBase), new PropertyMetadata(TextMeasurementMethod.TextBlock));
+
+        /// <summary>
+        /// Gets or sets the vertical zoom cursor.
+        /// </summary>
+        /// <value>The zoom vertical cursor.</value>
+        public TextMeasurementMethod TextMeasurementMethod
+        {
+            get => (TextMeasurementMethod)this.GetValue(TextMeasurementMethodProperty);
+            set => this.SetValue(TextMeasurementMethodProperty, value);
         }
     }
 }
