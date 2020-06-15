@@ -21,7 +21,7 @@ namespace ExampleBrowser
         static void Main()
         {
 #if NETCOREAPP
-            Application.SetHighDpiMode(HighDpiMode.PerMonitorV2);
+            Application.SetHighDpiMode(HighDpiMode.SystemAware);
 #endif
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
