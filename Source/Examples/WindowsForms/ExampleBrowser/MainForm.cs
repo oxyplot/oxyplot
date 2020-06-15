@@ -6,6 +6,7 @@
 
 namespace ExampleBrowser
 {
+    using System;
     using System.Drawing;
     using System.Windows.Forms;
 
@@ -51,6 +52,9 @@ namespace ExampleBrowser
             using (var g = this.CreateGraphics())
             {
                 var scaleFactor = g.DpiY / 96f;
+                if (Math.Abs(scaleFactor - 1f) < 1e-5)
+                    return;
+
                 treeView1.ItemHeight = (int) (treeView1.ItemHeight * scaleFactor);
                 treeView1.Font = new Font(
                     treeView1.Font.FontFamily,
