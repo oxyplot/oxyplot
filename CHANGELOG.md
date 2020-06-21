@@ -56,6 +56,7 @@ All notable changes to this project will be documented in this file.
 - Auto margins don't reserve space for axis labels if axis range is fixed (#1577)
 - CategoryAxis should not contain rendering information about BarSeries (#741)
 - CategorizedSeries changed to BarSeriesBase<T> (#741)
+- System.Drawing.Common references updated to 4.7.0 (#1608)
 
 ### Removed
 - Remove PlotModel.Legends (#644)
