@@ -12,7 +12,7 @@ namespace OxyPlot.Series
     /// <summary>
     /// Represents an item for the TornadoBarSeries.
     /// </summary>
-    public class TornadoBarItem : CategorizedItem, ICodeGenerating
+    public class TornadoBarItem : BarItemBase, ICodeGenerating
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TornadoBarItem" /> class.

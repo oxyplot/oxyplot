@@ -64,6 +64,11 @@ namespace OxyPlot
     public partial class PlotModel : Model, IPlotModel
     {
         /// <summary>
+        /// The bar series managers.
+        /// </summary>
+        private readonly List<BarSeriesManager> barSeriesManagers = new List<BarSeriesManager>();
+
+        /// <summary>
         /// The plot view that renders this plot.
         /// </summary>
         private WeakReference plotViewReference;
@@ -771,7 +776,7 @@ namespace OxyPlot
                     // Updates the default axes
                     this.EnsureDefaultAxes();
 
-                    var visibleSeries = this.Series.Where(s => s.IsVisible).ToArray();
+                    var visibleSeries = this.Series.Where(s => s.IsVisible).ToList();
 
                     // Update data of the series
                     if (updateData || !this.isDataUpdated)
@@ -784,23 +789,7 @@ namespace OxyPlot
                         this.isDataUpdated = true;
                     }
 
-                    // Updates axes with information from the series
-                    // This is used by the category axis that need to know the number of series using the axis.
-                    foreach (var a in this.Axes)
-                    {
-                        a.UpdateFromSeries(visibleSeries);
-                        a.ResetCurrentValues();
-                    }
-
-                    // Update valid data of the series
-                    // This must be done after the axes are updated from series!
-                    if (updateData)
-                    {
-                        foreach (var s in visibleSeries)
-                        {
-                            s.UpdateValidData();
-                        }
-                    }
+                    this.UpdateBarSeriesManagers();
 
                     // Update the max and min of the axes
                     this.UpdateMaxMin(updateData);
@@ -1183,6 +1172,25 @@ namespace OxyPlot
             foreach (var a in this.Axes)
             {
                 a.UpdateActualMaxMin();
+            }
+        }
+
+        /// <summary>
+        /// Updates the bar series managers.
+        /// </summary>
+        private void UpdateBarSeriesManagers()
+        {
+            this.barSeriesManagers.Clear();
+            var barSeriesGroups = this.Series
+                .Where(s => s.IsVisible)
+                .OfType<IBarSeries>()
+                .GroupBy(s => new { s.CategoryAxis, s.ValueAxis });
+
+            foreach (var group in barSeriesGroups)
+            {
+                var manager = new BarSeriesManager(group.Key.CategoryAxis, group.Key.ValueAxis, group);
+                manager.Update();
+                this.barSeriesManagers.Add(manager);
             }
         }
     }

@@ -1305,15 +1305,6 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Updates the axis with information from the plot series.
-        /// </summary>
-        /// <param name="series">The series collection.</param>
-        /// <remarks>This is used by the category axis that need to know the number of series using the axis.</remarks>
-        internal virtual void UpdateFromSeries(Series[] series)
-        {
-        }
-
-        /// <summary>
         /// Updates the actual minor and major step intervals.
         /// </summary>
         /// <param name="plotArea">The plot area rectangle.</param>
@@ -1400,14 +1391,6 @@ namespace OxyPlot.Axes
             }
 
             this.SetTransform(newScale, newOffset);
-        }
-
-        /// <summary>
-        /// Resets the current values.
-        /// </summary>
-        /// <remarks>The current values may be modified during update of max/min and rendering.</remarks>
-        protected internal virtual void ResetCurrentValues()
-        {
         }
 
         /// <summary>

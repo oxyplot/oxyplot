@@ -95,11 +95,6 @@ namespace OxyPlot
                         this.UpdateIntervals();
                     }
 
-                    foreach (var a in this.Axes)
-                    {
-                        a.ResetCurrentValues();
-                    }
-
                     this.RenderBackgrounds(rc);
                     this.RenderAnnotations(rc, AnnotationLayer.BelowAxes);
                     this.RenderAxes(rc, AxisLayer.BelowSeries);
@@ -353,6 +348,11 @@ namespace OxyPlot
         /// <param name="rc">The render context.</param>
         private void RenderSeries(IRenderContext rc)
         {
+            foreach (var barSeriesManager in this.barSeriesManagers)
+            {
+                barSeriesManager.InitializeRender();
+            }
+
             foreach (var s in this.Series.Where(s => s.IsVisible))
             {
                 rc.SetToolTip(s.ToolTip);
