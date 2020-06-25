@@ -45,9 +45,9 @@ namespace OxyPlot.Series
         /// </summary>
         public VectorSeries()
         {
-            this.HeadLength = 10;
-            this.HeadWidth = 3;
-            this.Color = OxyColors.Blue;
+            this.HeadLength = 3;
+            this.HeadWidth = 2;
+            this.Color = OxyColors.Black;
             this.StrokeThickness = 2;
             this.LineStyle = LineStyle.Solid;
             this.LineJoin = LineJoin.Miter;
@@ -315,6 +315,18 @@ namespace OxyPlot.Series
         {
             if (XAxis.IsLogarithmic() || YAxis.IsLogarithmic())
             {
+                var endPoint = point + vector;
+
+                if (XAxis.IsLogarithmic() && (point.X <= 0 || endPoint.X <= 0))
+                {
+                    return;
+                }
+
+                if (YAxis.IsLogarithmic() && (point.Y <= 0 || endPoint.Y <= 0))
+                {
+                    return;
+                }
+
                 var start = this.Transform(point);
                 var end = this.Transform(point + vector);
 
@@ -337,6 +349,7 @@ namespace OxyPlot.Series
             var candidates = new Stack<double>();
             var candidatePoints = new Stack<ScreenPoint>();
             candidates.Push(1.0);
+            candidatePoints.Push(source(1.0));
 
             var points = new List<ScreenPoint>();
 
@@ -432,11 +445,6 @@ namespace OxyPlot.Series
         {
             var p = this.InverseTransform(point);
 
-            if (!this.IsPointInRange(p))
-            {
-                return null;
-            }
-
             var colorAxis = this.ColorAxis as Axis;
             var colorAxisTitle = colorAxis?.Title ?? DefaultColorAxisTitle;
 
@@ -449,7 +457,7 @@ namespace OxyPlot.Series
                 {
                     Series = this,
                     DataPoint = p,
-                    Position = point,
+                    Position = this.Transform(p),
                     Item = null,
                     Index = -1,
                     Text = StringHelper.Format(
@@ -530,18 +538,6 @@ namespace OxyPlot.Series
                 colorAxis.Include(this.MinValue);
                 colorAxis.Include(this.MaxValue);
             }
-        }
-
-        /// <summary>
-        /// Tests if a <see cref="DataPoint" /> is inside the heat map
-        /// </summary>
-        /// <param name="p">The <see cref="DataPoint" /> to test.</param>
-        /// <returns><c>True</c> if the point is inside the heat map.</returns>
-        private bool IsPointInRange(DataPoint p)
-        {
-            this.UpdateMaxMinXY();
-
-            return p.X >= this.MinX && p.X <= this.MaxX && p.Y >= this.MinY && p.Y <= this.MaxY;
         }
     }
 }
