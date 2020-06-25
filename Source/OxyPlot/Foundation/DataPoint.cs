@@ -84,7 +84,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Determines whether this instance and another specified <see cref="T:DataPoint" /> object have the same value.
+        /// Determines whether this and another specified <see cref="T:DataPoint" /> have the same value.
         /// </summary>
         /// <param name="other">The point to compare to this instance.</param>
         /// <returns><c>true</c> if the value of the <paramref name="other" /> parameter is the same as the value of this instance; otherwise, <c>false</c>.</returns>
