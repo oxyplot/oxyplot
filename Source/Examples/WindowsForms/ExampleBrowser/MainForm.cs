@@ -52,7 +52,7 @@ namespace ExampleBrowser
             using (var g = this.CreateGraphics())
             {
                 var scaleFactor = g.DpiY / 96f;
-                if (Math.Abs(scaleFactor - 1f) < 1e-5)
+                if (Math.Abs(scaleFactor - 1.25f) > 1e-5)
                     return;
 
                 treeView1.ItemHeight = (int) (treeView1.ItemHeight * scaleFactor);
