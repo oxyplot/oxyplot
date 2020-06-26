@@ -12,7 +12,7 @@ namespace OxyPlot.Series
     /// <summary>
     /// Defines properties for stacked series.
     /// </summary>
-    public interface IStackableSeries
+    public interface IStackableSeries : IBarSeries
     {
         /// <summary>
         /// Gets a value indicating whether this series is stacked.

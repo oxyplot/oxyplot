@@ -9,11 +9,70 @@
 
 namespace OxyPlot
 {
+    using System;
+    using System.Collections.Generic;
+
     /// <summary>
     /// Provides useful extension methods for arrays.
     /// </summary>
     public static class ArrayExtensions
     {
+        /// <summary>
+        /// Finds the maximum value in the sequence, or returns a default value if the sequence is empty.
+        /// </summary>
+        /// <param name="sequence">The sequence.</param>
+        /// <param name="defaultValue">The default value.</param>
+        /// <returns>The maximum value of the sequence, or the default value if the sequency is empty.</returns>
+        public static double MaxOrDefault(this IEnumerable<double> sequence, double defaultValue)
+        {
+            if (sequence == null)
+            {
+                throw new ArgumentNullException(nameof(sequence));
+            }
+
+            using var e = sequence.GetEnumerator();
+            if (!e.MoveNext())
+            {
+                return defaultValue;
+            }
+
+            var max = e.Current;
+            while (e.MoveNext())
+            {
+                max = Math.Max(max, e.Current);
+            }
+
+            return max;
+        }
+
+        /// <summary>
+        /// Finds the minimum value in the sequence, or returns a default value if the sequence is empty.
+        /// </summary>
+        /// <param name="sequence">The sequence.</param>
+        /// <param name="defaultValue">The default value.</param>
+        /// <returns>The minimum value of the sequence, or the default value if the sequency is empty.</returns>
+        public static double MinOrDefault(this IEnumerable<double> sequence, double defaultValue)
+        {
+            if (sequence == null)
+            {
+                throw new ArgumentNullException(nameof(sequence));
+            }
+
+            using var e = sequence.GetEnumerator();
+            if (!e.MoveNext())
+            {
+                return defaultValue;
+            }
+
+            var min = e.Current;
+            while (e.MoveNext())
+            {
+                min = Math.Min(min, e.Current);
+            }
+
+            return min;
+        }
+
         /// <summary>
         /// Finds the maximum value in the specified 2D array (NaN values not included).
         /// </summary>

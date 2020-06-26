@@ -12,7 +12,7 @@ namespace OxyPlot.Series
     /// <summary>
     /// Represents an item used in the BarSeries.
     /// </summary>
-    public class BarItem : CategorizedItem, ICodeGenerating
+    public class BarItem : BarItemBase, ICodeGenerating
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BarItem" /> class.

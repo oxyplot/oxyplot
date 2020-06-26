@@ -76,6 +76,101 @@ namespace ExampleLibrary
             return CreateSimpleModel(true, "Simple stacked model");
         }
 
+        [Example("Multiple Value Axes")]
+        public static PlotModel MultipleValueAxes()
+        {
+            var model = new PlotModel { Title = "Multiple Value Axes" };
+
+            var categoryAxis = new CategoryAxis { Position = AxisPosition.Left };
+            var valueAxis1 = new LinearAxis { Title = "Value Axis 1", Position = AxisPosition.Bottom, MinimumPadding = 0.06, MaximumPadding = 0.06, ExtraGridlines = new[] { 0d }, EndPosition = .5, Key = "x1" };
+            var valueAxis2 = new LinearAxis { Title = "Value Axis 2", Position = AxisPosition.Bottom, MinimumPadding = 0.06, MaximumPadding = 0.06, ExtraGridlines = new[] { 0d }, StartPosition = .5, Key = "x2" };
+            model.Axes.Add(categoryAxis);
+            model.Axes.Add(valueAxis1);
+            model.Axes.Add(valueAxis2);
+
+            var series = new List<BarSeries>
+            {
+                new BarSeries { XAxisKey = "x1" },
+                new BarSeries { XAxisKey = "x1" },
+                new BarSeries { XAxisKey = "x2" },
+                new BarSeries { XAxisKey = "x2" },
+            };
+
+            var rnd = new Random(1);
+            foreach (var s in series)
+            {
+                for (var i = 0; i < 4; i++)
+                {
+                    s.Items.Add(new BarItem() { Value = rnd.Next(-100, 100) });
+                }
+
+                model.Series.Add(s);
+            }
+
+            return model;
+        }
+
+        [Example("Stacked, Multiple Value Axes")]
+        public static PlotModel StackedMultipleValueAxes()
+        {
+            var model = MultipleValueAxes();
+            model.Title = $"Stacked, {model.Title}";
+            foreach (BarSeries barSeries in model.Series)
+            {
+                barSeries.IsStacked = true;
+            }
+
+            return model;
+        }
+
+        [Example("Multiple Category Axes")]
+        public static PlotModel MultipleCategoryAxes()
+        {
+            var model = new PlotModel { Title = "Multiple Category Axes" };
+            model.Legends.Add(new Legend() { IsLegendVisible = true, LegendPosition = LegendPosition.TopLeft, LegendPlacement = LegendPlacement.Inside });
+
+            var valueAxis = new LinearAxis { Position = AxisPosition.Bottom, Key = "x", ExtraGridlines = new[] { 0d } };
+            var categoryAxis1 = new CategoryAxis { Title = "Category Axis 1", Position = AxisPosition.Left, MinimumPadding = 0.06, MaximumPadding = 0.06, EndPosition = .5, Key = "y1" };
+            var categoryAxis2 = new CategoryAxis { Title = "Category Axis 2", Position = AxisPosition.Left, MinimumPadding = 0.06, MaximumPadding = 0.06, StartPosition = .5, Key = "y2" };
+            model.Axes.Add(valueAxis);
+            model.Axes.Add(categoryAxis1);
+            model.Axes.Add(categoryAxis2);
+
+            var series = new List<BarSeries>
+            {
+                new BarSeries { YAxisKey = "y1", XAxisKey = "x", RenderInLegend = true, Title = "Y1A" },
+                new BarSeries { YAxisKey = "y1", XAxisKey = "x", RenderInLegend = true, Title = "Y1B" },
+                new BarSeries { YAxisKey = "y2", XAxisKey = "x", RenderInLegend = true, Title = "Y2A" },
+                new BarSeries { YAxisKey = "y2", XAxisKey = "x", RenderInLegend = true, Title = "Y2B" },
+            };
+
+            var rnd = new Random(1);
+            foreach (var s in series)
+            {
+                for (var i = 0; i < 4; i++)
+                {
+                    s.Items.Add(new BarItem() { Value = rnd.Next(-100, 100) });
+                }
+
+                model.Series.Add(s);
+            }
+
+            return model;
+        }
+
+        [Example("Stacked, Multiple Category Axes")]
+        public static PlotModel StackedMultipleCategoryAxes()
+        {
+            var model = MultipleCategoryAxes();
+            model.Title = $"Stacked, {model.Title}";
+            foreach (BarSeries barSeries in model.Series)
+            {
+                barSeries.IsStacked = true;
+            }
+
+            return model;
+        }
+
         [Example("Empty series")]
         public static PlotModel EmptySeries()
         {
@@ -839,7 +934,7 @@ namespace ExampleLibrary
             return model;
         }
 
-        // [Example("All in one")]
+        [Example("All in one")]
         public static PlotModel AllInOne()
         {
             var model = new PlotModel
@@ -889,7 +984,7 @@ namespace ExampleLibrary
             s2.Items.Add(new BarItem { Value = -120 });
             s2.Items.Add(new BarItem { Value = -26 });
 
-            var s3 = new BarSeries { Title = "Series 3", IsStacked = true, StrokeColor = OxyColors.Black, StrokeThickness = 1, StackGroup = "5" };
+            var s3 = new BarSeries { Title = "Series 3", IsStacked = true, StrokeColor = OxyColors.Black, StrokeThickness = 1, StackGroup = "5", IsVisible = false };
             s3.Items.Add(new BarItem { Value = 21 });
             s3.Items.Add(new BarItem { Value = 8 });
             s3.Items.Add(new BarItem { Value = 48 });

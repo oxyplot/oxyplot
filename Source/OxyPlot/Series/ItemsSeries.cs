@@ -25,13 +25,6 @@ namespace OxyPlot.Series
         public IEnumerable ItemsSource { get; set; }
 
         /// <summary>
-        /// Updates the valid items
-        /// </summary>
-        protected internal override void UpdateValidData()
-        {
-        }
-
-        /// <summary>
         /// Gets the item for the specified index.
         /// </summary>
         /// <param name="itemsSource">The items source.</param>
