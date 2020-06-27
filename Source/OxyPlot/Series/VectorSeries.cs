@@ -313,32 +313,13 @@ namespace OxyPlot.Series
 
         private void DrawClippedVector(IRenderContext rc, OxyRect clippingRect, DataPoint point, DataVector vector, OxyColor color)
         {
-            if (XAxis.IsLogarithmic() || YAxis.IsLogarithmic())
+            var points = new List<DataPoint>() { point, point + vector };
+            var screenPoints = new List<ScreenPoint>();
+            RenderingExtensions.TransformAndInterpolateLines(this, points, screenPoints);
+
+            if (screenPoints.Count >= 2)
             {
-                var endPoint = point + vector;
-
-                if (XAxis.IsLogarithmic() && (point.X <= 0 || endPoint.X <= 0))
-                {
-                    return;
-                }
-
-                if (YAxis.IsLogarithmic() && (point.Y <= 0 || endPoint.Y <= 0))
-                {
-                    return;
-                }
-
-                var start = this.Transform(point);
-                var end = this.Transform(point + vector);
-
-                var points = InterpolatePoints(x => this.Transform(point + vector * x), 2.0);
-
-                DrawArrow(rc, clippingRect, points, end - start, color);
-            }
-            else
-            {
-                var start = this.Transform(point);
-                var end = this.Transform(point + vector);
-                DrawArrow(rc, clippingRect, new List<ScreenPoint>() { start, end }, end - start, color);
+                this.DrawClippedArrow(rc, clippingRect, screenPoints, screenPoints[screenPoints.Count - 1] - screenPoints[screenPoints.Count - 2], color);
             }
         }
 
@@ -392,21 +373,20 @@ namespace OxyPlot.Series
         /// <param name="points">The points along the arrow to draw, which will be modified.</param>
         /// <param name="direction">The direction in which the arrow head should face</param>
         /// <param name="color">The color of the arrow.</param>
-        private void DrawArrow(IRenderContext rc, OxyRect clippingRect, IList<ScreenPoint> points, ScreenVector direction, OxyColor color)
+        private void DrawClippedArrow(IRenderContext rc, OxyRect clippingRect, IList<ScreenPoint> points, ScreenVector direction, OxyColor color)
         {
+            // draws a line with an arrowhead glued on the tip (the arrowhead does not point to the end point)
+
             var d = direction;
             d.Normalize();
             var n = new ScreenVector(d.Y, -d.X);
 
             var endPoint = points.Last();
 
+            var veeness = d * this.Veeness * this.StrokeThickness;
             var p1 = endPoint + (d * this.HeadLength * this.StrokeThickness);
-            var p2 = endPoint + (n * this.HeadWidth * this.StrokeThickness);
-            var p3 = endPoint - (n * this.HeadWidth * this.StrokeThickness);
-            var p4 = endPoint + (d * this.Veeness * this.StrokeThickness);
-
-            // why do we do this? (see ArrowAnnotation)
-            points.Add(p4);
+            var p2 = endPoint + (n * this.HeadWidth * this.StrokeThickness) - veeness;
+            var p3 = endPoint - (n * this.HeadWidth * this.StrokeThickness) - veeness;
 
             const double MinimumSegmentLength = 4;
 
@@ -426,7 +406,7 @@ namespace OxyPlot.Series
 
                 rc.DrawClippedPolygon(
                     clippingRect,
-                    new[] { p3, p1, p2, p4 },
+                    new[] { p3, p1, p2, endPoint },
                     MinimumSegmentLength * MinimumSegmentLength,
                     color,
                     OxyColors.Undefined,

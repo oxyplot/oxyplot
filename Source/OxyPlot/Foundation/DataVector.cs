@@ -137,39 +137,6 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Adds a vector to a <see cref="DataPoint"/>.
-        /// </summary>
-        /// <param name="p">The point to add to.</param>
-        /// <param name="v">The vector to be added.</param>
-        /// <returns>The <see cref="DataPoint"/> result of the operation.</returns>
-        public static DataPoint operator +(DataPoint p, DataVector v)
-        {
-            return new DataPoint(p.x + v.x, p.y + v.y);
-        }
-
-        /// <summary>
-        /// Adds a vector to a <see cref="DataPoint"/>.
-        /// </summary>
-        /// <param name="v">The vector to be added.</param>
-        /// <param name="p">The point to add to.</param>
-        /// <returns>The <see cref="DataPoint"/> result of the operation.</returns>
-        public static DataPoint operator +(DataVector v, DataPoint p)
-        {
-            return new DataPoint(v.x + p.x, v.y + p.y);
-        }
-
-        /// <summary>
-        /// Subtracts one specified vector from a <see cref="DataPoint"/>.
-        /// </summary>
-        /// <param name="p">The point to subtract from.</param>
-        /// <param name="v">The vector to be subtracted.</param>
-        /// <returns>The <see cref="DataPoint"/> result of the operation.</returns>
-        public static DataPoint operator -(DataPoint p, DataVector v)
-        {
-            return new DataPoint(p.x - v.x, p.y - v.y);
-        }
-
-        /// <summary>
         /// Normalizes this vector.
         /// </summary>
         public void Normalize()
