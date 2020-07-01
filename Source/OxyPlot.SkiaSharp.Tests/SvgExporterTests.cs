@@ -40,5 +40,16 @@ namespace OxyPlot.SkiaSharp.Tests
             this.outputDirectory = Path.Combine(TestContext.CurrentContext.WorkDirectory, SVG_FOLDER);
             Directory.CreateDirectory(this.outputDirectory);
         }
+
+        [Test]
+        public void BackgroundColor()
+        {
+            var model = ShowCases.CreateNormalDistributionModel();
+            model.Background = OxyColors.AliceBlue;
+            var exporter = new SvgExporter { Width = 1000, Height = 750 };
+            using var stream = File.Create(Path.Combine(this.outputDirectory, "Background.svg"));
+            exporter.Export(model, stream);
+        }
+
     }
 }
