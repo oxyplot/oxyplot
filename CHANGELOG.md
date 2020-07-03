@@ -87,6 +87,7 @@ All notable changes to this project will be documented in this file.
 - Auto margins are set incorrectly if Axis.TitleFontSize is set to non-default value (related to #1577)
 - Incomplete rendering of AreaSeries in some situations (#1512)
 - ColumnSeries / BarSeries not working with more than one value-axis (#729)
+- OxyPlot.SkiaSharp.SvgExporter plot background color (#1619)
 
 ## [2.0.0] - 2019-10-19
 ### Added 
