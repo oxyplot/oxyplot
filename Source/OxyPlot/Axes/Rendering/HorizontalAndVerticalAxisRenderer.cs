@@ -75,8 +75,12 @@ namespace OxyPlot.Axes
                 // the axis should be positioned at the origin of the perpendicular axis
                 axisPosition = perpendicularAxis.Transform(0);
 
-                var p0 = perpendicularAxis.Transform(perpendicularAxis.ActualMinimum);
-                var p1 = perpendicularAxis.Transform(perpendicularAxis.ActualMaximum);
+                var p0 = axis.IsHorizontal()
+                    ? perpendicularAxis.ScreenMin.X
+                    : perpendicularAxis.ScreenMin.Y;
+                var p1 = axis.IsHorizontal()
+                    ? perpendicularAxis.ScreenMax.X
+                    : perpendicularAxis.ScreenMax.Y;
 
                 // find the min/max positions
                 var min = Math.Min(p0, p1);
@@ -98,8 +102,7 @@ namespace OxyPlot.Axes
                     var borderPosition = axis.IsHorizontal()
                         ? this.Plot.PlotArea.Top
                         : this.Plot.PlotArea.Left;
-                    // small 0.00001 term compensates for floating point inaccuracies in computing axis' bounds
-                    if (axisPosition <= borderPosition + 0.00001 && borderThickness > 0 && this.Plot.PlotAreaBorderColor.IsVisible())
+                    if (axisPosition <= borderPosition && borderThickness > 0 && this.Plot.PlotAreaBorderColor.IsVisible())
                     {
                         // there is already a line here...
                         drawAxisLine = false;
@@ -116,8 +119,7 @@ namespace OxyPlot.Axes
                     var borderPosition = axis.IsHorizontal()
                         ? this.Plot.PlotArea.Bottom
                         : this.Plot.PlotArea.Right;
-                    // small 0.00001 term compensates for floating point inaccuracies in computing axis' bounds
-                    if (axisPosition >= borderPosition - 0.00001 && borderThickness > 0 && this.Plot.PlotAreaBorderColor.IsVisible())
+                    if (axisPosition >= borderPosition && borderThickness > 0 && this.Plot.PlotAreaBorderColor.IsVisible())
                     {
                         // there is already a line here...
                         drawAxisLine = false;
