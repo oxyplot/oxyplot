@@ -173,9 +173,9 @@ namespace OxyPlot.Series
             {
                 double max = this.Data[0, 0];
                 double min = this.Data[0, 0];
-                for (int i = 0; i < this.Data.GetUpperBound(0); i++)
+                for (int i = 0; i =< this.Data.GetUpperBound(0); i++)
                 {
-                    for (int j = 0; j < this.Data.GetUpperBound(1); j++)
+                    for (int j = 0; j =< this.Data.GetUpperBound(1); j++)
                     {
                         max = Math.Max(max, this.Data[i, j]);
                         min = Math.Min(min, this.Data[i, j]);
