@@ -1441,8 +1441,8 @@ namespace ExampleLibrary
         /// Contains example code for https://github.com/oxyplot/oxyplot/issues/42
         /// </summary>
         /// <returns>The plot model.</returns>
-        [Example("#42: ContourSeries not working for not square data array")]
-        public static PlotModel IndexOutOfRangeContour()
+        [Example("#42: ContourSeries actually working for not square data array")]
+        public static PlotModel NotSquareContourGrid()
         {
             var model = new PlotModel { Title = "Issue #42" };
             model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(5) });
@@ -1453,8 +1453,8 @@ namespace ExampleLibrary
 
             var contour = new ContourSeries
             {
-                ColumnCoordinates = y,
-                RowCoordinates = x,
+                ColumnCoordinates = x,
+                RowCoordinates = y,
                 Data = data
             };
             model.Series.Add(contour);
