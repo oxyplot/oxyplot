@@ -128,6 +128,7 @@ namespace OxyPlot
             this.PlotAreaBorderThickness = new OxyThickness(1);
             this.EdgeRenderingMode = EdgeRenderingMode.Automatic;
 
+            this.AssignColorsToInvisibleSeries = true;
             this.IsLegendVisible = true;
 
             this.DefaultColors = new List<OxyColor>
@@ -251,6 +252,11 @@ namespace OxyPlot
         /// </summary>
         /// <value>The edge rendering mode. The default is <see cref="EdgeRenderingMode.Automatic"/>.</value>
         public EdgeRenderingMode EdgeRenderingMode { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether invisible series should be assigned automatic colors.
+        /// </summary>
+        public bool AssignColorsToInvisibleSeries { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the legend is visible. The titles of the series must be set to use the legend.
@@ -795,8 +801,12 @@ namespace OxyPlot
                     this.UpdateMaxMin(updateData);
 
                     // Update undefined colors
+                    var automaticColorSeries = this.AssignColorsToInvisibleSeries
+                        ? (IEnumerable<Series.Series>)this.Series
+                        : visibleSeries;
+
                     this.ResetDefaultColor();
-                    foreach (var s in visibleSeries)
+                    foreach (var s in automaticColorSeries)
                     {
                         s.SetDefaultValues();
                     }
