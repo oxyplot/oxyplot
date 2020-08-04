@@ -1462,6 +1462,30 @@ namespace ExampleLibrary
             return model;
         }
 
+        /// <summary>
+        /// Contains example code for https://github.com/oxyplot/oxyplot/issues/1634
+        /// </summary>
+        /// <returns>The plot model.</returns>
+        [Example("#1634: ContourSeries not working for smallest possible grid")]
+        public static PlotModel OneCellContour()
+        {
+            var model = new PlotModel { Title = "Issue #1634" };
+
+            var x = ArrayBuilder.CreateVector(0, 1, 2);
+            var y = ArrayBuilder.CreateVector(0, 1, 2);
+            var data = ArrayBuilder.Evaluate((a, b) => a + b, x, y);
+
+            var contour = new ContourSeries
+            {
+                ColumnCoordinates = x,
+                RowCoordinates = y,
+                Data = data
+            };
+            model.Series.Add(contour);
+
+            return model;
+        }
+        
         [Example("#624: Rendering math text with syntax error gets stuck in an endless loop")]
         public static PlotModel MathTextWithSyntaxError()
         {
