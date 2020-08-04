@@ -69,6 +69,7 @@ All notable changes to this project will be documented in this file.
 - Axis.UpdateFromSeries(...) and Series.UpdateValidData() (#741)
 
 ### Fixed
+- All grid points now considered to calculate contour depht: 1-cell grid now allowed (#1634)
 - Legend font size is not affected by DefaultFontSize (#1396)
 - ErrorBarSeries, IntervalBarSeries and TornadoBarSeries work correctly in transposed mode (#1402)
 - Exception when rendering polygon with no points (#1410)
