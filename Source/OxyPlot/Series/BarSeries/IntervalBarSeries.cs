@@ -67,6 +67,9 @@ namespace OxyPlot.Series
         /// <inheritdoc/>
         public bool IsStacked => true;
 
+        /// <inheritdoc/>
+        public bool OverlapsStack => true;
+
         /// <summary>
         /// Gets or sets the label color.
         /// </summary>

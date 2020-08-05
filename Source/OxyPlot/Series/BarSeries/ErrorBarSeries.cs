@@ -82,7 +82,7 @@ namespace OxyPlot.Series
                     this.Manager.SetCurrentMinValue(stackIndex, i, minTemp);
 
                     var stackedMaxValue = this.Manager.GetCurrentMaxValue(stackIndex, i);
-                    if (!double.IsNaN(stackedMaxValue))
+                    if (!this.OverlapsStack && !double.IsNaN(stackedMaxValue))
                     {
                         maxTemp += stackedMaxValue;
                     }

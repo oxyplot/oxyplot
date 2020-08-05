@@ -34,6 +34,7 @@ All notable changes to this project will be documented in this file.
 - Examples of full plot area polar plots with non-zero minimums (#1586)
 - Read-Only collection interfaces for .NET 4.0 (#1600)
 - Add PlotModel.AssignColorsToInvisibleSeries property to control whether invisible series are included or skipped when assigning automatic colors (#1599)
+- Overlapping bar series (#1265)
 
 ### Changed
 - Legends model (#644)

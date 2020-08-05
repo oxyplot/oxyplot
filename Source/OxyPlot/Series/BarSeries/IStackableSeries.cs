@@ -20,6 +20,11 @@ namespace OxyPlot.Series
         bool IsStacked { get; }
 
         /// <summary>
+        /// Gets a value indicating whether this series should overlap its stack when <see cref="IsStacked"/> is true.
+        /// </summary>
+        bool OverlapsStack { get; }
+
+        /// <summary>
         /// Gets the stack group.
         /// </summary>
         /// <value>The stack group.</value>

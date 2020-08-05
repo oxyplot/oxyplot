@@ -67,6 +67,9 @@ namespace OxyPlot.Series
         /// <inheritdoc/>
         public bool IsStacked { get; set; }
 
+        /// <inheritdoc/>
+        public bool OverlapsStack { get; set; }
+
         /// <summary>
         /// Gets or sets the label format string.
         /// </summary>
@@ -198,7 +201,7 @@ namespace OxyPlot.Series
                     this.Manager.SetCurrentMinValue(stackIndex, i, minTemp);
 
                     var stackedMaxValue = this.Manager.GetCurrentMaxValue(stackIndex, i);
-                    if (!double.IsNaN(stackedMaxValue))
+                    if (!this.OverlapsStack && !double.IsNaN(stackedMaxValue))
                     {
                         maxTemp += stackedMaxValue;
                     }
@@ -380,7 +383,7 @@ namespace OxyPlot.Series
 
                 // Get base- and topValue
                 var baseValue = double.NaN;
-                if (this.IsStacked)
+                if (this.IsStacked && !this.OverlapsStack)
                 {
                     baseValue = this.Manager.GetCurrentBaseValue(stackIndex, categoryIndex, value < 0);
                 }
