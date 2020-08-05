@@ -90,6 +90,7 @@ All notable changes to this project will be documented in this file.
 - Incomplete rendering of AreaSeries in some situations (#1512)
 - ColumnSeries / BarSeries not working with more than one value-axis (#729)
 - OxyPlot.SkiaSharp.SvgExporter plot background color (#1619)
+- MinimumPadding incorrect when MaximumPadding is non-zero (#1625)
 - Don't clip zerocrossing axis lines within plot bounds (#1441)
 
 ## [2.0.0] - 2019-10-19
