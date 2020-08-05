@@ -33,6 +33,7 @@ All notable changes to this project will be documented in this file.
 - Native Clipping for OxyPlot.SvgRenderContext (#1564)
 - Examples of full plot area polar plots with non-zero minimums (#1586)
 - Read-Only collection interfaces for .NET 4.0 (#1600)
+- Add PlotModel.AssignColorsToInvisibleSeries property to control whether invisible series are included or skipped when assigning automatic colors (#1599)
 - Overlapping bar series (#1265)
 
 ### Changed
@@ -58,6 +59,7 @@ All notable changes to this project will be documented in this file.
 - CategoryAxis should not contain rendering information about BarSeries (#741)
 - CategorizedSeries changed to BarSeriesBase<T> (#741)
 - System.Drawing.Common references updated to 4.7.0 (#1608)
+- Invisible series are assigned automatic colors by default, configurable with PlotModel.AssignColorsToInvisibleSeries property that defaults to true (#1599)
 
 ### Removed
 - Remove PlotModel.Legends (#644)
@@ -89,6 +91,8 @@ All notable changes to this project will be documented in this file.
 - Incomplete rendering of AreaSeries in some situations (#1512)
 - ColumnSeries / BarSeries not working with more than one value-axis (#729)
 - OxyPlot.SkiaSharp.SvgExporter plot background color (#1619)
+- MinimumPadding incorrect when MaximumPadding is non-zero (#1625)
+- Don't clip zerocrossing axis lines within plot bounds (#1441)
 
 ## [2.0.0] - 2019-10-19
 ### Added 
