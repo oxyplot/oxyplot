@@ -312,6 +312,18 @@ namespace ExampleLibrary
             return IntOverflow(100000);
         }
 
+        [Example("Rotated Text")]
+        public static PlotModel RotatedText()
+        {
+            return RotatedText("Rotated Text", null);
+        }
+
+        [Example("Rotated Text (trimmed)")]
+        public static PlotModel RotatedTextTrimmed()
+        {
+            return RotatedText("Rotated Text (trimmed)", new OxySize(100, 50));
+        }
+
         private static PlotModel IntOverflow(int n)
         {
             var model = new PlotModel { Title = "int overflow", Subtitle = "n = " + n };
@@ -349,6 +361,29 @@ namespace ExampleLibrary
                 double x = Math.PI * 10 * i / (n - 1);
                 points.Add(new ScatterPoint(x * Math.Cos(x), x * Math.Sin(x)));
             }
+        }
+
+        private static PlotModel RotatedText(string title, OxySize? maxSize)
+        {
+            var model = new PlotModel { Title = title };
+            var xaxis = new LinearAxis { Position = AxisPosition.Bottom, Minimum = 0, Maximum = 100 };
+            var yaxis = new LinearAxis { Position = AxisPosition.Left, Minimum = 0, Maximum = 100 };
+            model.Axes.Add(xaxis);
+            model.Axes.Add(yaxis);
+
+            model.Annotations.Add(new RenderingCapabilities.DelegateAnnotation(rc =>
+            {
+                for (int x = 0; x <= 100; x += 10)
+                {
+                    for (int y = 0; y <= 100; y += 10)
+                    {
+                        var p = xaxis.Transform(x, y, yaxis);
+                        rc.DrawText(p, $"({x}, {y}): A piece of multiline\ntext that can be trimmed.", OxyColors.Black, null, 16, 400, x + y, HorizontalAlignment.Center, VerticalAlignment.Middle, maxSize);
+                    }
+                }
+            }));
+
+            return model;
         }
     }
 }
