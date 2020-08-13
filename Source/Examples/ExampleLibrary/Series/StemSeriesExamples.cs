@@ -31,7 +31,6 @@ namespace ExampleLibrary
                              MarkerType = MarkerType.Circle,
                              MarkerSize = 6,
                              MarkerStroke = OxyColors.White,
-                             MarkerFill = OxyColors.SkyBlue,
                              MarkerStrokeThickness = 1.5
                          });
         }

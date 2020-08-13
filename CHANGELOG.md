@@ -60,6 +60,7 @@ All notable changes to this project will be documented in this file.
 - CategorizedSeries changed to BarSeriesBase<T> (#741)
 - System.Drawing.Common references updated to 4.7.0 (#1608)
 - Invisible series are assigned automatic colors by default, configurable with PlotModel.AssignColorsToInvisibleSeries property that defaults to true (#1599)
+- StemSeries, AreaSeries, TwoColorAreaSeries, and StairStepSeries use `ActualMarkerColor` (#1630)
 
 ### Removed
 - Remove PlotModel.Legends (#644)
