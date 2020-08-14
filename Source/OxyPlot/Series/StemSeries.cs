@@ -164,7 +164,7 @@ namespace OxyPlot.Series
                     this.MarkerType,
                     this.MarkerOutline,
                     new[] { this.MarkerSize },
-                    this.MarkerFill,
+                    this.ActualMarkerFill,
                     this.MarkerStroke,
                     this.MarkerStrokeThickness,
                     this.EdgeRenderingMode);

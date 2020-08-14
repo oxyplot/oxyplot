@@ -195,7 +195,7 @@ namespace OxyPlot.Series
                 Reverse = false,
                 Color = this.ActualColor,
                 Fill = this.ActualFill,
-                MarkerFill = this.MarkerFill,
+                MarkerFill = this.ActualMarkerFill,
                 MarkerStroke = this.MarkerStroke,
                 DashArray = this.ActualDashArray,
                 Baseline = this.Limit
@@ -245,7 +245,7 @@ namespace OxyPlot.Series
                     this.MarkerType,
                     null,
                     markerSizes, 
-                    this.MarkerFill, 
+                    this.ActualMarkerFill, 
                     this.MarkerStroke,
                     this.MarkerStrokeThickness,
                     this.EdgeRenderingMode,

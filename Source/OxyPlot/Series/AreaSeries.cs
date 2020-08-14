@@ -300,7 +300,7 @@ namespace OxyPlot.Series
                     this.MarkerType,
                     null,
                     markerSizes,
-                    this.MarkerFill,
+                    this.ActualMarkerFill,
                     this.MarkerStroke,
                     this.MarkerStrokeThickness,
                     this.EdgeRenderingMode,
