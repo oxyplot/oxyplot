@@ -9,6 +9,7 @@
 
 namespace OxyPlot.Tests
 {
+    using OxyPlot;
     using System.Collections.Generic;
 
     /// <summary>
@@ -65,6 +66,16 @@ namespace OxyPlot.Tests
         {
             // Use the Pdf text measurer
             return this.textMeasurer.MeasureText(text, fontFamily, fontSize, fontWeight);
+        }
+
+        /// <inheritdoc/>
+        protected override void ResetClip()
+        {
+        }
+
+        /// <inheritdoc/>
+        protected override void SetClip(OxyRect clippingRectangle)
+        {
         }
     }
 }

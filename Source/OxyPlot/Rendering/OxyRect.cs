@@ -293,6 +293,21 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Intersects this <see cref="OxyRect"/> with another <see cref="OxyRect"/>.
+        /// </summary>
+        /// <param name="rect">The other <see cref="OxyRect"/>.</param>
+        /// <returns>The intersection between this <see cref="OxyRect"/> and the other <see cref="OxyRect"/>.</returns>
+        public OxyRect Intersect(OxyRect rect)
+        {
+            var left = Math.Max(this.Left, rect.Left);
+            var top = Math.Max(this.Top, rect.Top);
+            var right = Math.Min(this.Right, rect.Right);
+            var bottom = Math.Min(this.Bottom, rect.Bottom);
+
+            return new OxyRect(left, top, right - left, bottom - top);
+        }
+
+        /// <summary>
         /// Returns a rectangle that is shrunk by the specified thickness, in all directions.
         /// </summary>
         /// <param name="t">The thickness to apply to the rectangle.</param>

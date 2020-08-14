@@ -339,26 +339,6 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Sets the clip rectangle.
-        /// </summary>
-        /// <param name="rect">The clip rectangle.</param>
-        /// <returns>True if the clip rectangle was set.</returns>
-        public override bool SetClip(OxyRect rect)
-        {
-            this.doc.SaveState();
-            this.doc.SetClippingRectangle(rect.Left, rect.Bottom, rect.Width, rect.Height);
-            return true;
-        }
-
-        /// <summary>
-        /// Resets the clip rectangle.
-        /// </summary>
-        public override void ResetClip()
-        {
-            this.doc.RestoreState();
-        }
-
-        /// <summary>
         /// Draws the specified portion of the specified <see cref="OxyImage" /> at the specified location and with the specified size.
         /// </summary>
         /// <param name="source">The source.</param>
@@ -407,6 +387,19 @@ namespace OxyPlot
             this.doc.Translate(x, this.doc.PageHeight - (y + height));
             this.doc.Scale(width, height);
             this.doc.DrawImage(image);
+            this.doc.RestoreState();
+        }
+
+        /// <inheritdoc/>
+        protected override void SetClip(OxyRect clippingRectangle)
+        {
+            this.doc.SaveState();
+            this.doc.SetClippingRectangle(clippingRectangle.Left, clippingRectangle.Bottom, clippingRectangle.Width, clippingRectangle.Height);
+        }
+
+        /// <inheritdoc/>
+        protected override void ResetClip()
+        {
             this.doc.RestoreState();
         }
 

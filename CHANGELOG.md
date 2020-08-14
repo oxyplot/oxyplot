@@ -64,6 +64,7 @@ All notable changes to this project will be documented in this file.
 - StemSeries, AreaSeries, TwoColorAreaSeries, and StairStepSeries use `ActualMarkerColor` (#1630)
 - Axes with `AxisPosition.None` make no contribution to margins (#1574)
 - `AngleAxis` has position `AxisPosition.All` by default (#1574)
+- Clipping API changed from SetClip(...) and ResetClip() to PushClip(...) and PopClip() (#1593)
 
 ### Removed
 - Remove PlotModel.Legends (#644)
@@ -74,6 +75,8 @@ All notable changes to this project will be documented in this file.
 - RenderingExtensions.DrawRectangleAsPolygon(...) extension methods. IRenderContext.DrawRectangle(...) with an appropriate EdgeRenderingMode can be used instead.
 - SkiaSharp.PdfExporter.Dpi property (#1591)
 - Axis.UpdateFromSeries(...) and Series.UpdateValidData() (#741)
+- Support for IRenderContext implementations without native clipping (#1593)
+- CohenSutherlandClipping and SutherlandHodgmanClipping (#1593)
 
 ### Fixed
 - Legend font size is not affected by DefaultFontSize (#1396)

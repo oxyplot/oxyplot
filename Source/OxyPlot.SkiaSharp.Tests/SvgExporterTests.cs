@@ -22,7 +22,8 @@ namespace OxyPlot.SkiaSharp.Tests
         {
             var exporter = new SvgExporter { Width = 1000, Height = 750 };
             var directory = Path.Combine(this.outputDirectory, "ExampleLibrary");
-            ExportTest.Export_FirstExampleOfEachExampleGroup_CheckThatAllFilesExist(exporter, directory, ".svg");
+            ExportTest.ExportExamples_CheckThatAllFilesExist(Examples.GetFirstExampleOfEachCategory(), exporter, directory, ".svg");
+            ExportTest.ExportExamples_CheckThatAllFilesExist(Examples.GetRenderingCapabilities(), exporter, directory, ".svg");
         }
 
         [Test]

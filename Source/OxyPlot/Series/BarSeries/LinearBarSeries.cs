@@ -158,11 +158,8 @@ namespace OxyPlot.Series
             this.VerifyAxes();
 
             var clippingRect = this.GetClippingRect();
-            rc.SetClip(clippingRect);
 
             this.RenderBars(rc, clippingRect, actualPoints);
-
-            rc.ResetClip();
         }
 
         /// <summary>

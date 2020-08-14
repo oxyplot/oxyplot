@@ -27,7 +27,7 @@ namespace OxyPlot.Wpf
     /// <summary>
     /// Implements <see cref="IRenderContext" /> for <see cref="System.Windows.Controls.Canvas" />.
     /// </summary>
-    public class CanvasRenderContext : IRenderContext
+    public class CanvasRenderContext : RenderContextBase
     {
         /// <summary>
         /// The maximum number of figures per geometry.
@@ -127,20 +127,14 @@ namespace OxyPlot.Wpf
         /// <remarks>The XamlWriter does not serialize StreamGeometry, so set this to <c>false</c> if you want to export to XAML. Using stream geometry seems to be slightly faster than using path geometry.</remarks>
         public bool UseStreamGeometry { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether the context renders to screen.
-        /// </summary>
-        /// <value><c>true</c> if the context renders to screen; otherwise, <c>false</c>.</value>
-        public bool RendersToScreen { get; set; }
-
         ///<inheritdoc/>
-        public void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
+        public override void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
         {
             this.DrawEllipses(new[] { rect }, fill, stroke, thickness, edgeRenderingMode);
         }
 
         ///<inheritdoc/>
-        public void DrawEllipses(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
+        public override void DrawEllipses(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
         {
             var path = this.CreateAndAdd<Path>();
             this.SetStroke(path, stroke, thickness, edgeRenderingMode);
@@ -159,7 +153,7 @@ namespace OxyPlot.Wpf
         }
 
         ///<inheritdoc/>
-        public void DrawLine(
+        public override void DrawLine(
             IList<ScreenPoint> points,
             OxyColor stroke,
             double thickness,
@@ -179,7 +173,7 @@ namespace OxyPlot.Wpf
         }
 
         ///<inheritdoc/>
-        public void DrawLineSegments(
+        public override void DrawLineSegments(
             IList<ScreenPoint> points,
             OxyColor stroke,
             double thickness,
@@ -231,7 +225,7 @@ namespace OxyPlot.Wpf
         }
 
         ///<inheritdoc/>
-        public void DrawPolygon(
+        public override void DrawPolygon(
             IList<ScreenPoint> points,
             OxyColor fill,
             OxyColor stroke,
@@ -252,7 +246,7 @@ namespace OxyPlot.Wpf
         }
 
         ///<inheritdoc/>
-        public void DrawPolygons(
+        public override void DrawPolygons(
             IList<IList<ScreenPoint>> polygons,
             OxyColor fill,
             OxyColor stroke,
@@ -361,7 +355,7 @@ namespace OxyPlot.Wpf
         }
 
         ///<inheritdoc/>
-        public void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
+        public override void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
         {
             var e = this.CreateAndAdd<Path>();
             this.SetStroke(e, stroke, thickness, edgeRenderingMode);
@@ -377,7 +371,7 @@ namespace OxyPlot.Wpf
         }
 
         ///<inheritdoc/>
-        public void DrawRectangles(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
+        public override void DrawRectangles(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
         {
             var path = this.CreateAndAdd<Path>();
             this.SetStroke(path, stroke, thickness, edgeRenderingMode);
@@ -408,7 +402,7 @@ namespace OxyPlot.Wpf
         /// <param name="halign">The horizontal alignment.</param>
         /// <param name="valign">The vertical alignment.</param>
         /// <param name="maxSize">The maximum size of the text (in device independent units, 1/96 inch).</param>
-        public void DrawText(
+        public override void DrawText(
             ScreenPoint p,
             string text,
             OxyColor fill,
@@ -511,7 +505,7 @@ namespace OxyPlot.Wpf
         /// <returns>
         /// The size of the text (in device independent units, 1/96 inch).
         /// </returns>
-        public OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
+        public override OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
         {
             if (string.IsNullOrEmpty(text))
             {
@@ -551,7 +545,7 @@ namespace OxyPlot.Wpf
         /// Sets the tool tip for the following items.
         /// </summary>
         /// <param name="text">The text in the tool tip.</param>
-        public void SetToolTip(string text)
+        public override void SetToolTip(string text)
         {
             this.currentToolTip = text;
         }
@@ -570,7 +564,7 @@ namespace OxyPlot.Wpf
         /// <param name="destHeight">The height of the drawn image.</param>
         /// <param name="opacity">The opacity.</param>
         /// <param name="interpolate">interpolate if set to <c>true</c>.</param>
-        public void DrawImage(
+        public override void DrawImage(
             OxyImage source,
             double srcX,
             double srcY,
@@ -616,21 +610,14 @@ namespace OxyPlot.Wpf
             image.Source = bitmapChain;
         }
 
-        /// <summary>
-        /// Sets the clipping rectangle.
-        /// </summary>
-        /// <param name="clippingRect">The clipping rectangle.</param>
-        /// <returns><c>true</c> if the clip rectangle was set.</returns>
-        public bool SetClip(OxyRect clippingRect)
+        /// <inheritdoc/>
+        protected override void SetClip(OxyRect clippingRect)
         {
             this.clip = ToRect(clippingRect);
-            return true;
         }
 
-        /// <summary>
-        /// Resets the clip rectangle.
-        /// </summary>
-        public void ResetClip()
+        /// <inheritdoc/>
+        protected override void ResetClip()
         {
             this.clip = null;
         }
@@ -639,7 +626,7 @@ namespace OxyPlot.Wpf
         /// Cleans up resources not in use.
         /// </summary>
         /// <remarks>This method is called at the end of each rendering.</remarks>
-        public void CleanUp()
+        public override void CleanUp()
         {
             // Find the images in the cache that has not been used since last call to this method
             var imagesToRelease = this.imageCache.Keys.Where(i => !this.imagesInUse.Contains(i)).ToList();

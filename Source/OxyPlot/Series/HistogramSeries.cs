@@ -137,11 +137,7 @@ namespace OxyPlot.Series
             this.VerifyAxes();
 
             var clippingRect = this.GetClippingRect();
-            rc.SetClip(clippingRect);
-
             this.RenderBins(rc, clippingRect, actualBins);
-
-            rc.ResetClip();
         }
 
         /// <summary>

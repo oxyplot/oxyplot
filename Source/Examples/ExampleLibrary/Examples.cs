@@ -17,62 +17,79 @@ namespace ExampleLibrary
     public static class Examples
     {
         /// <summary>
-        /// Gets the list of examples.
+        /// Gets all examples in the specified category.
         /// </summary>
-        /// <returns>The list of examples.</returns>
-        public static List<ExampleInfo> GetList()
+        /// <param name="categoryType">The type of the category.</param>
+        public static IEnumerable<ExampleInfo> GetCategory(Type categoryType)
         {
-            var list = new List<ExampleInfo>();
-            var assemblyTypes = typeof(Examples).GetTypeInfo().Assembly.DefinedTypes;
+            var typeInfo = categoryType.GetTypeInfo();
+            var examplesAttribute = typeInfo.GetCustomAttributes<ExamplesAttribute>().FirstOrDefault();
+            var examplesTags = typeInfo.GetCustomAttributes<TagsAttribute>().FirstOrDefault() ?? new TagsAttribute();
 
-            foreach (var type in assemblyTypes)
+            var types = new List<Type>();
+            var baseType = typeInfo;
+            while (baseType != null)
             {
-                var examplesAttribute = type.GetCustomAttributes<ExamplesAttribute>().FirstOrDefault();
-                if (examplesAttribute == null)
+                types.Add(baseType.AsType());
+                baseType = baseType.BaseType?.GetTypeInfo();
+            }
+
+            foreach (var t in types)
+            {
+                foreach (var method in t.GetRuntimeMethods())
+                {
+                    var exampleAttribute = method.GetCustomAttributes<ExampleAttribute>().FirstOrDefault();
+                    if (exampleAttribute != null)
+                    {
+                        var exampleTags = method.GetCustomAttributes<TagsAttribute>().FirstOrDefault() ?? new TagsAttribute();
+                        var tags = new List<string>(examplesTags.Tags);
+                        tags.AddRange(exampleTags.Tags);
+                        yield return
+                            new ExampleInfo(
+                                examplesAttribute.Category,
+                                exampleAttribute.Title,
+                                tags.ToArray(),
+                                method);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets all examples.
+        /// </summary>
+        public static IEnumerable<ExampleInfo> GetList()
+        {
+            foreach (var type in typeof(Examples).GetTypeInfo().Assembly.DefinedTypes)
+            {
+                if (!type.GetCustomAttributes<ExamplesAttribute>().Any())
                 {
                     continue;
                 }
 
-                var examplesTags = type.GetCustomAttributes<TagsAttribute>().FirstOrDefault() ?? new TagsAttribute();
-
-                var types = new List<Type>();
-                var baseType = type;
-                while (baseType != null)
+                foreach (var example in GetCategory(type.AsType()))
                 {
-                    types.Add(baseType.AsType());
-                    baseType = baseType.BaseType != null ? baseType.BaseType.GetTypeInfo() : null;
-                }
-
-                foreach (var t in types)
-                {
-                    var methods = t.GetRuntimeMethods();
-
-                    foreach (var method in methods)
-                    {
-                        try
-                        {
-                            var exampleAttribute = method.GetCustomAttributes<ExampleAttribute>().FirstOrDefault();
-                            if (exampleAttribute != null)
-                            {
-                                var exampleTags = method.GetCustomAttributes<TagsAttribute>().FirstOrDefault() ?? new TagsAttribute();
-                                var tags = new List<string>(examplesTags.Tags);
-                                tags.AddRange(exampleTags.Tags);
-                                list.Add(
-                                    new ExampleInfo(
-                                        examplesAttribute.Category,
-                                        exampleAttribute.Title,
-                                        tags.ToArray(),
-                                        method));
-                            }
-                        }
-                        catch (Exception)
-                        {
-                        }
-                    }
+                    yield return example;
                 }
             }
+        }
 
-            return list;
+        /// <summary>
+        /// Gets the first example of each category.
+        /// </summary>
+        public static IEnumerable<ExampleInfo> GetFirstExampleOfEachCategory()
+        {
+            return GetList()
+                .GroupBy(example => example.Category)
+                .Select(group => group.First());
+        }
+
+        /// <summary>
+        /// Gets the 'rendering capabilities' examples.
+        /// </summary>
+        public static IEnumerable<ExampleInfo> GetRenderingCapabilities()
+        {
+            return GetCategory(typeof(RenderingCapabilities));
         }
     }
 }

@@ -111,11 +111,7 @@
             this.VerifyAxes();
 
             var clippingRect = this.GetClippingRect();
-            rc.SetClip(clippingRect);
-
             this.RenderRectangles(rc, clippingRect, actualRects);
-
-            rc.ResetClip();
         }
 
         /// <summary>

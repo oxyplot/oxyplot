@@ -131,54 +131,5 @@ namespace OxyPlot.Tests
                 rc.Flush();
             }
         }
-
-        [Test]
-        public void Test_Clipping()
-        {
-            var plotModel = new PlotModel { Title = "Clipping" };
-
-            var clipRect = new OxyRect(100, 100, 100, 100);
-            var center = new ScreenPoint(150, 150);
-            var radius = 60;
-
-            plotModel.Annotations.Add(new RenderingCapabilities.DelegateAnnotation(rc =>
-            {
-                using (rc.AutoResetClip(clipRect))
-                {
-                    rc.DrawCircle(center, radius, OxyColors.Black, OxyColors.Undefined, 0, EdgeRenderingMode.Automatic);
-                }
-            }));
-
-            byte[] baseline;
-            using (var stream = new MemoryStream())
-            {
-                SvgExporter.Export(plotModel, stream, 400, 400, false);
-                baseline = stream.ToArray();
-            }
-
-            plotModel.Annotations.Clear();
-            plotModel.Annotations.Add(new RenderingCapabilities.DelegateAnnotation(rc =>
-            {
-                // reset without a clipping rect being set
-                rc.ResetClip();
-                rc.ResetClip();
-
-                // set clipping multiple times
-                rc.SetClip(clipRect);
-                rc.SetClip(clipRect);
-                rc.SetClip(clipRect);
-                rc.DrawCircle(center, radius, OxyColors.Black, OxyColors.Undefined, 0, EdgeRenderingMode.Automatic);
-                rc.ResetClip();
-            }));
-
-            byte[] setMultiple;
-            using (var stream = new MemoryStream())
-            {
-                SvgExporter.Export(plotModel, stream, 400, 400, false);
-                setMultiple = stream.ToArray();
-            }
-
-            Assert.IsTrue(baseline.SequenceEqual(setMultiple));
-        }
     }
 }

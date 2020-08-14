@@ -213,17 +213,18 @@ namespace OxyPlot
         void DrawImage(OxyImage source, double srcX, double srcY, double srcWidth, double srcHeight, double destX, double destY, double destWidth, double destHeight, double opacity, bool interpolate);
 
         /// <summary>
-        /// Sets the clipping rectangle.
+        /// Pushes the clipping rectangle on the clipping stack.
         /// </summary>
         /// <param name="clippingRectangle">The clipping rectangle.</param>
-        /// <returns>
-        ///   <c>true</c> if the clipping rectangle was set.
-        /// </returns>
-        bool SetClip(OxyRect clippingRectangle);
+        /// <remarks>
+        /// If there is already a clipping rectangle on the clipping stack, the new clipping rectangle will be intersected with the existing clipping rectangle.
+        /// Calls to this function must be balanced by a call to <see cref="PopClip"/>.
+        /// </remarks>
+        void PushClip(OxyRect clippingRectangle);
 
         /// <summary>
-        /// Resets the clipping rectangle.
+        /// Pops the most recently pushed clipping rectangle from the clipping stack.
         /// </summary>
-        void ResetClip();
+        void PopClip();
     }
 }

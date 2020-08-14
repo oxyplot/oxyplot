@@ -182,7 +182,7 @@ namespace OxyPlot.Series
             double minDistSquared = this.MinimumSegmentLength * this.MinimumSegmentLength;
 
             var clippingRect = this.GetClippingRect();
-            rc.SetClip(clippingRect);
+            using var _ = rc.AutoResetClip(clippingRect);
 
             var areaContext = new TwoColorAreaRenderContext
             {
@@ -262,8 +262,6 @@ namespace OxyPlot.Series
                     this.EdgeRenderingMode,
                     1);
             }
-
-            rc.ResetClip();
         }
 
         /// <summary>

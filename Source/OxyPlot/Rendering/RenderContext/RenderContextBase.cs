@@ -17,6 +17,8 @@ namespace OxyPlot
     /// </summary>
     public abstract class RenderContextBase : IRenderContext
     {
+        private readonly Stack<OxyRect> clipStack = new Stack<OxyRect>();
+
         /// <summary>
         /// Initializes a new instance of the <see cref="RenderContextBase" /> class.
         /// </summary>
@@ -95,7 +97,7 @@ namespace OxyPlot
         public virtual void DrawLineSegments(
             IList<ScreenPoint> points,
             OxyColor stroke,
-            double thickness, 
+            double thickness,
             EdgeRenderingMode edgeRenderingMode,
             double[] dashArray,
             LineJoin lineJoin)
@@ -121,7 +123,7 @@ namespace OxyPlot
             IList<IList<ScreenPoint>> polygons,
             OxyColor fill,
             OxyColor stroke,
-            double thickness, 
+            double thickness,
             EdgeRenderingMode edgeRenderingMode,
             double[] dashArray,
             LineJoin lineJoin)
@@ -228,21 +230,42 @@ namespace OxyPlot
         {
         }
 
-        /// <summary>
-        /// Sets the clip rectangle.
-        /// </summary>
-        /// <param name="rect">The clip rectangle.</param>
-        /// <returns>True if the clip rectangle was set.</returns>
-        public virtual bool SetClip(OxyRect rect)
+        /// <inheritdoc/>
+        public virtual void PopClip()
         {
-            return false;
+            if (this.clipStack.Count == 0)
+            {
+                throw new InvalidOperationException($"Unbalanced call to {nameof(PopClip)}.");
+            }
+
+            this.ResetClip();
+            this.clipStack.Pop();
+            if (this.clipStack.Count > 0)
+            {
+                this.SetClip(this.clipStack.Peek());
+            }
         }
 
-        /// <summary>
-        /// Resets the clip rectangle.
-        /// </summary>
-        public virtual void ResetClip()
+        /// <inheritdoc/>
+        public virtual void PushClip(OxyRect clippingRectangle)
         {
+            if (this.clipStack.Count > 0)
+            {
+                var currentClippingRectangle = this.clipStack.Peek();
+                var newClippingRectangle = clippingRectangle.Intersect(currentClippingRectangle);
+                if (!currentClippingRectangle.Equals(newClippingRectangle))
+                {
+                    this.ResetClip();
+                    this.SetClip(newClippingRectangle);
+                }
+
+                this.clipStack.Push(newClippingRectangle);
+            }
+            else
+            {
+                this.SetClip(clippingRectangle);
+                this.clipStack.Push(clippingRectangle);
+            }
         }
 
         /// <summary>
@@ -333,5 +356,19 @@ namespace OxyPlot
                     return true;
             }
         }
+
+        /// <summary>
+        /// Sets the clipping area to the specified rectangle.
+        /// </summary>
+        /// <param name="clippingRectangle">The rectangle.</param>
+        /// <remarks>
+        /// Calls to this functions must always be balanced by a call to <see cref="ResetClip"/> before calling <see cref="SetClip(OxyRect)"/> again.
+        /// </remarks>
+        protected abstract void SetClip(OxyRect clippingRectangle);
+
+        /// <summary>
+        /// Resets the clipping area.
+        /// </summary>
+        protected abstract void ResetClip();
     }
 }

@@ -463,48 +463,150 @@ namespace ExampleLibrary
             var model = new PlotModel();
             model.Annotations.Add(new DelegateAnnotation(rc =>
             {
-                // reset a couple of times without any clipping being set to see that nothing explodes
-                rc.ResetClip();
-                rc.ResetClip();
-                rc.ResetClip();
+                void DrawClipRect(OxyRect clipRect)
+                {
+                    var pen = new OxyPen(OxyColors.Black, 2, LineStyle.Dash);
+                    rc.DrawLine(clipRect.Left, clipRect.Top, clipRect.Right, clipRect.Top, pen, EdgeRenderingMode.Automatic);
+                    rc.DrawLine(clipRect.Right, clipRect.Top, clipRect.Right, clipRect.Bottom, pen, EdgeRenderingMode.Automatic);
+                    rc.DrawLine(clipRect.Right, clipRect.Bottom, clipRect.Left, clipRect.Bottom, pen, EdgeRenderingMode.Automatic);
+                    rc.DrawLine(clipRect.Left, clipRect.Bottom, clipRect.Left, clipRect.Top, pen, EdgeRenderingMode.Automatic);
+                }
 
-                var p1 = new ScreenPoint(150, 150);
-                var clip = 100d;
-                var radiusFactor = 1.1;
-                var clipShrink = .15 * clip;
+                var currentLine = 20d;
+                const double lineHeight = 60;
+                const double clipRectSize = 40;
+                const double clipRectMargin = 20;
+                const double testCaseMargin = 20;
+                const double descriptionMargin = 200;
+                var rect = new OxyRect();
 
-                var rect = new OxyRect(p1.X - clip, p1.Y - clip, clip * 2, clip * 2);
-                rc.DrawRectangle(rect, OxyColors.Undefined, OxyColors.Red, 1, EdgeRenderingMode.Automatic);
-                rc.SetClip(rect);
-                rc.DrawCircle(p1, clip * radiusFactor, OxyColors.Red, OxyColors.Undefined, 0, EdgeRenderingMode.Automatic);
+                void DrawCircle(ScreenPoint center)
+                {
+                    rc.DrawCircle(center, clipRectSize * 0.58, OxyColors.CornflowerBlue, OxyColors.Undefined, 0, EdgeRenderingMode.Automatic);
+                }
 
-                clip -= clipShrink;
-                rect = new OxyRect(p1.X - clip, p1.Y - clip, clip * 2, clip * 2);
-                rc.DrawRectangle(rect, OxyColors.Undefined, OxyColors.Green, 1, EdgeRenderingMode.Automatic);
-                rc.SetClip(rect);
-                rc.DrawCircle(p1, clip * radiusFactor, OxyColors.Green, OxyColors.Undefined, 0, EdgeRenderingMode.Automatic);
+                void DrawDescription(string text)
+                {
+                    var p = new ScreenPoint(clipRectMargin + clipRectSize + testCaseMargin + descriptionMargin, currentLine);
+                    rc.DrawText(p, text, OxyColors.Black, fontSize: 12, verticalAlignment: VerticalAlignment.Middle);
+                }
 
-                clip -= clipShrink;
-                rect = new OxyRect(p1.X - clip, p1.Y - clip, clip * 2, clip * 2);
-                rc.DrawRectangle(rect, OxyColors.Undefined, OxyColors.Blue, 1, EdgeRenderingMode.Automatic);
-                rc.SetClip(rect);
-                rc.DrawCircle(p1, clip * radiusFactor, OxyColors.Blue, OxyColors.Undefined, 0, EdgeRenderingMode.Automatic);
-                rc.ResetClip();
+                void DrawTestCase(string text)
+                {
+                    var p = new ScreenPoint(clipRectMargin + clipRectSize + testCaseMargin, currentLine);
+                    rc.DrawText(p, text, OxyColors.Black, fontSize: 12, verticalAlignment: VerticalAlignment.Middle);
+                }
 
-                rc.DrawText(p1, "Clipped Circles", OxyColors.White, fontSize: 12, horizontalAlignment: HorizontalAlignment.Center, verticalAlignment: VerticalAlignment.Middle);
-                
-                rc.DrawText(new ScreenPoint(p1.X * 2, 50), "Not clipped", OxyColors.Black, fontSize: 40);
+                void DrawHeader(string text, double offset)
+                {
+                    rc.DrawText(new ScreenPoint(offset, 15), text, OxyColors.Black, fontSize: 12, fontWeight: 700);
+                }
 
-                rect = new OxyRect(p1.X * 2 + 10, 100, 80, 60);
-                rc.DrawRectangle(rect, OxyColors.Undefined, OxyColors.Black, 1, EdgeRenderingMode.Automatic);
+                void NextLine()
+                {
+                    currentLine += lineHeight;
+                    rect = new OxyRect(clipRectMargin, currentLine - clipRectSize / 2, clipRectSize, clipRectSize);
+                }
 
-                // set the same clipping a couple of times to see that nothing explodes
-                rc.SetClip(rect);
-                rc.SetClip(rect);
+                DrawHeader("Actual", clipRectMargin);
+                DrawHeader("Test Case", clipRectMargin + clipRectSize + testCaseMargin);
+                DrawHeader("Expected", clipRectMargin + clipRectSize + testCaseMargin + descriptionMargin);
+
+                //-------------
+                NextLine();
+                rc.PushClip(rect);
+                rc.PopClip();
+                DrawCircle(rect.Center);
+
+                DrawTestCase("1. Push clipping rectangle\n2. Pop clipping rectangle\n3. Draw circle");
+                DrawDescription("The circle should be fully drawn.");
+
+                //-------------
+                NextLine();
+                rc.PushClip(rect);
+                DrawCircle(rect.Center);
+
+                rc.PopClip();
+
+                DrawClipRect(rect);
+                DrawTestCase("1. Push clipping rectangle\n2. Draw Circle");
+                DrawDescription("The circle should be clipped.");
+
+                //-------------
+                NextLine();
+                var rect2 = rect.Deflate(new OxyThickness(rect.Height * 0.25));
+                rc.PushClip(rect);
+                rc.PushClip(rect2);
+
+                DrawCircle(rect.Center);
+
+                rc.PopClip();
+                rc.PopClip();
+
+                DrawClipRect(rect);
+                DrawClipRect(rect2);
+                DrawTestCase("1. Push large clipping rectangle\n2. Push small clipping rectangle\n3. Draw Circle");
+                DrawDescription("The circle should be clipped to the small clipping rectangle.");
+
+                //-------------
+                NextLine();
+                rect2 = rect.Deflate(new OxyThickness(rect.Height * 0.25));
+                rc.PushClip(rect2);
+                rc.PushClip(rect);
+
+                DrawCircle(rect.Center);
+
+                rc.PopClip();
+                rc.PopClip();
+
+                DrawClipRect(rect);
+                DrawClipRect(rect2);
+                DrawTestCase("1. Push small clipping rectangle\n2. Push large clipping rectangle\n3. Draw Circle");
+                DrawDescription("The circle should be clipped to the small clipping rectangle.");
+
+                //-------------
+                NextLine();
+                rect2 = rect.Offset(rect.Width / 2, rect.Height / 2).Deflate(new OxyThickness(rect.Height * 0.25));
+                rc.PushClip(rect);
+                rc.PushClip(rect2);
+
+                DrawCircle(rect.Center);
+
+                rc.PopClip();
+                rc.PopClip();
+
+                DrawClipRect(rect);
+                DrawClipRect(rect2);
+                DrawTestCase("1. Push large clipping rectangle\n2. Push small clipping rectangle\n3. Draw Circle");
+                DrawDescription("The circle should be clipped to the intersection of the clipping rectangles.");
+
+                //-------------
+                NextLine();
+                rect2 = rect.Offset(rect.Width / 2, rect.Height / 2).Deflate(new OxyThickness(rect.Height * 0.25));
+                rc.PushClip(rect);
+                rc.PushClip(rect2);
+
+                rc.PopClip();
+
+                DrawCircle(rect.Center);
+
+                rc.PopClip();
+
+                DrawClipRect(rect);
+                DrawClipRect(rect2);
+                DrawTestCase("1. Push large clipping rectangle\n2. Push small clipping rectangle\n3. Pop small clipping rectangle\n4. Draw Circle");
+                DrawDescription("The circle should be clipped to the large clipping rectangle.");
+
+                //-------------
+                NextLine();
                 using (rc.AutoResetClip(rect))
                 {
-                    rc.DrawText(new ScreenPoint(p1.X * 2, 100), "Clipped", OxyColors.Black, fontSize: 40);
+                    rc.DrawText(rect.Center, "OxyPlot", OxyColors.CornflowerBlue, fontSize: 15, horizontalAlignment: HorizontalAlignment.Center, verticalAlignment: VerticalAlignment.Middle);
                 }
+
+                DrawClipRect(rect);
+                DrawTestCase("1. Push clipping rectangle\n2. Draw Text");
+                DrawDescription("The text should be clipped.");
             }));
 
             return model;

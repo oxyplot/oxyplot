@@ -77,7 +77,7 @@ namespace OxyPlot.Annotations
             var textSize = rc.MeasureText(this.Text, this.ActualFont, this.ActualFontSize, this.ActualFontWeight);
             this.GetActualTextAlignment(out var ha, out var va);
 
-            rc.SetClip(clippingRectangle);
+            using var _ = rc.AutoResetClip(clippingRectangle);
             this.actualBounds = GetTextBounds(position, textSize, this.Padding, this.TextRotation, ha, va);
 
             if ((this.TextRotation % 90).Equals(0))
@@ -101,8 +101,6 @@ namespace OxyPlot.Annotations
                 this.TextRotation,
                 ha,
                 va);
-
-            rc.ResetClip();
         }
 
         /// <summary>

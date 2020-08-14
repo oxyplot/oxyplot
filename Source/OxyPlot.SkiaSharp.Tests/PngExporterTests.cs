@@ -32,7 +32,10 @@ namespace OxyPlot.SkiaSharp.Tests
         {
             var exporter = new PngExporter { Width = 400, Height = 300 };
             var directory = Path.Combine(this.outputDirectory, "ExampleLibrary");
-            ExportTest.Export_FirstExampleOfEachExampleGroup_CheckThatAllFilesExist(exporter, directory, ".png");
+            ExportTest.ExportExamples_CheckThatAllFilesExist(Examples.GetFirstExampleOfEachCategory(), exporter, directory, ".png");
+            exporter.Width = 800;
+            exporter.Height = 600;
+            ExportTest.ExportExamples_CheckThatAllFilesExist(Examples.GetRenderingCapabilities(), exporter, directory, ".png");
         }
 
         [Test]

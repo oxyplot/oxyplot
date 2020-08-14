@@ -434,7 +434,7 @@ namespace OxyPlot.ImageSharp
         }
 
         /// <inheritdoc/>
-        public override void ResetClip()
+        protected override void ResetClip()
         {
             this.EnsureClippedRegion();
 
@@ -442,26 +442,14 @@ namespace OxyPlot.ImageSharp
         }
 
         /// <inheritdoc/>
-        public override bool SetClip(OxyRect clippingRectangle)
+        protected override void SetClip(OxyRect clippingRectangle)
         {
             var actualRectangle = this.ConvertSnap(clippingRectangle, 0);
-            var provisonal = Rectangle.FromLTRB((int)actualRectangle.Left, (int)actualRectangle.Top, (int)actualRectangle.Right, (int)actualRectangle.Bottom);
+            this.clippingRectangle = Rectangle.FromLTRB((int)actualRectangle.Left, (int)actualRectangle.Top, (int)actualRectangle.Right, (int)actualRectangle.Bottom);
 
-            if (this.clipping && this.clippingRectangle.Equals(provisonal))
-            {
-                // don't perform unnecessary work
-                return true;
-            }
-            else
-            {
-                this.EnsureClippedRegion();
-
-                this.clippingRectangle = provisonal;
-                this.clipping = true;
-                this.Blit(this.image, this.clipImage, this.clippingRectangle);
-
-                return true;
-            }
+            this.EnsureClippedRegion();
+            this.clipping = true;
+            this.Blit(this.image, this.clipImage, this.clippingRectangle);
         }
 
         /// <inheritdoc />

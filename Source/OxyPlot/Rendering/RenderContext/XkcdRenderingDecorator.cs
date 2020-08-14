@@ -194,24 +194,16 @@ namespace OxyPlot
             this.rc.DrawImage(source, srcX, srcY, srcWidth, srcHeight, destX, destY, destWidth, destHeight, opacity, interpolate);
         }
 
-        /// <summary>
-        /// Sets the clipping rectangle.
-        /// </summary>
-        /// <param name="clippingRect">The clipping rectangle.</param>
-        /// <returns>
-        ///   <c>true</c> if the clip rectangle was set.
-        /// </returns>
-        public override bool SetClip(OxyRect clippingRect)
+        /// <inheritdoc/>
+        protected override void SetClip(OxyRect clippingRect)
         {
-            return this.rc.SetClip(clippingRect);
+            this.rc.PushClip(clippingRect);
         }
 
-        /// <summary>
-        /// Resets the clip rectangle.
-        /// </summary>
-        public override void ResetClip()
+        /// <inheritdoc/>
+        protected override void ResetClip()
         {
-            this.rc.ResetClip();
+            this.rc.PopClip();
         }
 
         /// <summary>

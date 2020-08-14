@@ -430,23 +430,16 @@ namespace OxyPlot.SkiaSharp
         }
 
         /// <inheritdoc/>
-        public void ResetClip()
+        public void PopClip()
         {
             this.SkCanvas.Restore();
         }
 
         /// <inheritdoc/>
-        public bool SetClip(OxyRect clippingRectangle)
+        public void PushClip(OxyRect clippingRectangle)
         {
-            // if a clipping is already set, we have to restore it first
-            if (this.SkCanvas.SaveCount > 0)
-            {
-                this.SkCanvas.Restore();
-            }
-
             this.SkCanvas.Save();
             this.SkCanvas.ClipRect(this.Convert(clippingRectangle));
-            return true;
         }
 
         /// <inheritdoc/>
