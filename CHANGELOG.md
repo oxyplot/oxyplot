@@ -94,6 +94,7 @@ All notable changes to this project will be documented in this file.
 - OxyPlot.SkiaSharp.SvgExporter plot background color (#1619)
 - MinimumPadding incorrect when MaximumPadding is non-zero (#1625)
 - Don't clip zerocrossing axis lines within plot bounds (#1441)
+- Incorrect margins when using Color Axes with AxisPosition.None (#1574)
 
 ## [2.0.0] - 2019-10-19
 ### Added 
