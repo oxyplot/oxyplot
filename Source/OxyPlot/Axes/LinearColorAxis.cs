@@ -151,18 +151,6 @@ namespace OxyPlot.Axes
             return index;
         }
 
-        /// <inheritdoc/>
-        public override void Measure(IRenderContext rc)
-        {
-            if (this.Position == AxisPosition.None)
-            {
-                this.DesiredMargin = new OxyThickness(0);
-                return;
-            }
-
-            base.Measure(rc);
-        }
-
         /// <summary>
         /// Renders the axis on the specified render context.
         /// </summary>
