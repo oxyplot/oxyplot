@@ -297,12 +297,18 @@ namespace OxyPlot
         /// </summary>
         /// <param name="rect">The other <see cref="OxyRect"/>.</param>
         /// <returns>The intersection between this <see cref="OxyRect"/> and the other <see cref="OxyRect"/>.</returns>
+        /// <remarks>If the two rectangles don't intersect, this returns an empty <see cref="OxyRect"/>.</remarks>
         public OxyRect Intersect(OxyRect rect)
         {
             var left = Math.Max(this.Left, rect.Left);
             var top = Math.Max(this.Top, rect.Top);
             var right = Math.Min(this.Right, rect.Right);
             var bottom = Math.Min(this.Bottom, rect.Bottom);
+
+            if (right < left || bottom < top)
+            {
+                return new OxyRect();
+            }
 
             return new OxyRect(left, top, right - left, bottom - top);
         }

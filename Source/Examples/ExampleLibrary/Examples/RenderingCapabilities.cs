@@ -599,6 +599,23 @@ namespace ExampleLibrary
 
                 //-------------
                 NextLine();
+                var rect3 = rect.Offset(rect.Width / 3, rect.Height / 3).Deflate(new OxyThickness(rect.Height * 0.25));
+                var rect4 = rect.Offset(-rect.Width / 3, -rect.Height / 3).Deflate(new OxyThickness(rect.Height * 0.25));
+                rc.PushClip(rect3);
+                rc.PushClip(rect4);
+
+                DrawCircle(rect.Center);
+
+                rc.PopClip();
+                rc.PopClip();
+
+                DrawClipRect(rect3);
+                DrawClipRect(rect4);
+                DrawTestCase("1. Push clipping rectangle\n2. Push second clipping rectangle\n3. Draw Circle");
+                DrawDescription("The circle should not be drawn at all.");
+
+                //-------------
+                NextLine();
                 using (rc.AutoResetClip(rect))
                 {
                     rc.DrawText(rect.Center, "OxyPlot", OxyColors.CornflowerBlue, fontSize: 15, horizontalAlignment: HorizontalAlignment.Center, verticalAlignment: VerticalAlignment.Middle);
