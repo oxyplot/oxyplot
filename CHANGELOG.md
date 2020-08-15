@@ -35,6 +35,7 @@ All notable changes to this project will be documented in this file.
 - Read-Only collection interfaces for .NET 4.0 (#1600)
 - Add PlotModel.AssignColorsToInvisibleSeries property to control whether invisible series are included or skipped when assigning automatic colors (#1599)
 - Overlapping bar series (#1265)
+- `AxisPosition.All` for axes which need a margin on all sides of the plot area (#1574)
 
 ### Changed
 - Legends model (#644)
@@ -61,6 +62,8 @@ All notable changes to this project will be documented in this file.
 - System.Drawing.Common references updated to 4.7.0 (#1608)
 - Invisible series are assigned automatic colors by default, configurable with PlotModel.AssignColorsToInvisibleSeries property that defaults to true (#1599)
 - StemSeries, AreaSeries, TwoColorAreaSeries, and StairStepSeries use `ActualMarkerColor` (#1630)
+- Axes with `AxisPosition.None` make no contribution to margins (#1574)
+- `AngleAxis` has position `AxisPosition.All` by default (#1574)
 
 ### Removed
 - Remove PlotModel.Legends (#644)
@@ -94,6 +97,7 @@ All notable changes to this project will be documented in this file.
 - OxyPlot.SkiaSharp.SvgExporter plot background color (#1619)
 - MinimumPadding incorrect when MaximumPadding is non-zero (#1625)
 - Don't clip zerocrossing axis lines within plot bounds (#1441)
+- Incorrect margins when using Color Axes with AxisPosition.None (#1574)
 
 ## [2.0.0] - 2019-10-19
 ### Added 
