@@ -15,7 +15,7 @@ namespace OxyPlot.Tests
     /// <summary>
     /// Provides a render context that does nothing except measure text.
     /// </summary>
-    public class NullRenderContext : RenderContextBase
+    public class NullRenderContext : ClippingRenderContext
     {
         /// <summary>
         /// The text measurer
