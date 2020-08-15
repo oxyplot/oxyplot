@@ -213,7 +213,7 @@ namespace OxyPlot
         void DrawImage(OxyImage source, double srcX, double srcY, double srcWidth, double srcHeight, double destX, double destY, double destWidth, double destHeight, double opacity, bool interpolate);
 
         /// <summary>
-        /// Pushes the clipping rectangle on the clipping stack.
+        /// Pushes the clipping rectangle onto the clipping stack.
         /// </summary>
         /// <param name="clippingRectangle">The clipping rectangle.</param>
         /// <remarks>

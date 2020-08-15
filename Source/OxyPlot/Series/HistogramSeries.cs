@@ -137,7 +137,8 @@ namespace OxyPlot.Series
             this.VerifyAxes();
 
             var clippingRect = this.GetClippingRect();
-            this.RenderBins(rc, clippingRect, actualBins);
+            using var _ = rc.AutoResetClip(clippingRect);
+            this.RenderBins(rc, actualBins);
         }
 
         /// <summary>
@@ -294,9 +295,8 @@ namespace OxyPlot.Series
         /// Renders the points as line, broken line and markers.
         /// </summary>
         /// <param name="rc">The rendering context.</param>
-        /// <param name="clippingRect">The clipping rectangle.</param>
         /// <param name="items">The Items to render.</param>
-        protected void RenderBins(IRenderContext rc, OxyRect clippingRect, ICollection<HistogramItem> items)
+        protected void RenderBins(IRenderContext rc, ICollection<HistogramItem> items)
         {
             foreach (var item in items)
             {
@@ -308,8 +308,7 @@ namespace OxyPlot.Series
 
                 var rectrect = new OxyRect(p1, p2);
 
-                rc.DrawClippedRectangle(
-                    clippingRect, 
+                rc.DrawRectangle(
                     rectrect, 
                     actualFillColor, 
                     this.StrokeColor, 
@@ -318,7 +317,7 @@ namespace OxyPlot.Series
 
                 if (this.LabelFormatString != null)
                 {
-                    this.RenderLabel(rc, clippingRect, rectrect, item);
+                    this.RenderLabel(rc, rectrect, item);
                 }
             }
         }
@@ -337,10 +336,9 @@ namespace OxyPlot.Series
         /// Draws the label.
         /// </summary>
         /// <param name="rc">The render context.</param>
-        /// <param name="clippingRect">The clipping rectangle.</param>
         /// <param name="rect">The column rectangle.</param>
         /// <param name="item">The item.</param>
-        protected void RenderLabel(IRenderContext rc, OxyRect clippingRect, OxyRect rect, HistogramItem item)
+        protected void RenderLabel(IRenderContext rc, OxyRect rect, HistogramItem item)
         {
             var s = StringHelper.Format(this.ActualCulture, this.LabelFormatString, item, item.Value);
             DataPoint dp;
@@ -380,8 +378,7 @@ namespace OxyPlot.Series
             this.Orientate(ref ha, ref va);
             var sp = this.Transform(dp) + this.Orientate(new ScreenVector(0, dy));
 
-            rc.DrawClippedText(
-                clippingRect,
+            rc.DrawText(
                 sp,
                 s,
                 this.ActualTextColor,
