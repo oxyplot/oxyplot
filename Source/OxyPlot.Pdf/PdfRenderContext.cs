@@ -20,7 +20,7 @@ namespace OxyPlot.Pdf
     /// Provides a render context for portable document format using PdfSharp (and SilverPDF for Silverlight)
     /// </summary>
     /// <remarks>see http://pdfsharp.codeplex.com and http://silverpdf.codeplex.com</remarks>
-    internal class PdfRenderContext : RenderContextBase, IDisposable
+    internal class PdfRenderContext : ClippingRenderContext, IDisposable
     {
         /// <summary>
         /// The font size factor.

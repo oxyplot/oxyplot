@@ -27,7 +27,7 @@ namespace OxyPlot.Wpf
     /// <summary>
     /// Implements <see cref="IRenderContext" /> for <see cref="System.Windows.Controls.Canvas" />.
     /// </summary>
-    public class CanvasRenderContext : RenderContextBase
+    public class CanvasRenderContext : ClippingRenderContext
     {
         /// <summary>
         /// The maximum number of figures per geometry.

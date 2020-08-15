@@ -27,7 +27,7 @@ namespace OxyPlot.WindowsForms
     /// <summary>
     /// The graphics render context.
     /// </summary>
-    public class GraphicsRenderContext : RenderContextBase, IDisposable
+    public class GraphicsRenderContext : ClippingRenderContext, IDisposable
     {
         /// <summary>
         /// The font size factor.

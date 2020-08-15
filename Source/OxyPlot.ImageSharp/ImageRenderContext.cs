@@ -24,7 +24,7 @@ namespace OxyPlot.ImageSharp
     /// <summary>
     /// Provides an implementation of IRenderContext which draws to a <see cref="Image"/>.
     /// </summary>
-    public class ImageRenderContext : RenderContextBase, IDisposable
+    public class ImageRenderContext : ClippingRenderContext, IDisposable
     {
         /// <summary>
         /// The default font to use when a request font cannot be found.

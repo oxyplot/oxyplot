@@ -16,7 +16,7 @@ namespace OxyPlot
     /// <summary>
     /// Provides a render context for scalable vector graphics output.
     /// </summary>
-    public class SvgRenderContext : RenderContextBase, IDisposable
+    public class SvgRenderContext : ClippingRenderContext, IDisposable
     {
         /// <summary>
         /// The writer.

@@ -195,13 +195,13 @@ namespace OxyPlot
         }
 
         /// <inheritdoc/>
-        protected override void SetClip(OxyRect clippingRect)
+        public override void PushClip(OxyRect clippingRectangle)
         {
-            this.rc.PushClip(clippingRect);
+            this.rc.PushClip(clippingRectangle);
         }
 
         /// <inheritdoc/>
-        protected override void ResetClip()
+        public override void PopClip()
         {
             this.rc.PopClip();
         }
