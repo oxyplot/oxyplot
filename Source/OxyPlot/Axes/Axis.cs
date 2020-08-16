@@ -818,6 +818,12 @@ namespace OxyPlot.Axes
         /// <param name="rc">The render context.</param>
         public virtual void Measure(IRenderContext rc)
         {
+            if (this.Position == AxisPosition.None)
+            {
+                this.DesiredMargin = new OxyThickness(0);
+                return;
+            }
+
             this.GetTickValues(out var majorLabelValues, out _, out _);
 
             var maximumTextSize = new OxySize();
@@ -863,7 +869,7 @@ namespace OxyPlot.Axes
                 case AxisPosition.Bottom:
                     marginBottom = margin + maximumTextSize.Height;
                     break;
-                case AxisPosition.None:
+                case AxisPosition.All:
                     marginLeft = marginRight = margin + maximumTextSize.Width;
                     marginTop = marginBottom = margin + maximumTextSize.Height;
                     break;
@@ -1015,6 +1021,11 @@ namespace OxyPlot.Axes
         /// <param name="pass">The pass.</param>
         public virtual void Render(IRenderContext rc, int pass)
         {
+            if (this.Position == AxisPosition.None)
+            {
+                return;
+            }
+
             var r = new HorizontalAndVerticalAxisRenderer(rc, this.PlotModel);
             r.Render(this, pass);
         }

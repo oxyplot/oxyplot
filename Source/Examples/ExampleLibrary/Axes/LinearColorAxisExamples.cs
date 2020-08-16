@@ -235,5 +235,13 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("Position None")]
+        public static PlotModel Position_None()
+        {
+            var model = HeatMapSeriesExamples.CreatePeaks(OxyPalettes.Jet(600), false);
+            var colorAxis = (LinearColorAxis)model.Axes[0];
+            colorAxis.Position = AxisPosition.None;
+            return model;
+        }
     }
 }

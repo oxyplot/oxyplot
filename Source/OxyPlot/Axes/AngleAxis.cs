@@ -22,7 +22,7 @@ namespace OxyPlot.Axes
         /// </summary>
         public AngleAxis()
         {
-            this.Position = AxisPosition.None;
+            this.Position = AxisPosition.All;
             this.TickStyle = TickStyle.None;
             this.IsPanEnabled = false;
             this.IsZoomEnabled = false;
