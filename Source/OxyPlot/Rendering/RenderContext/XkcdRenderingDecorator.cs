@@ -72,6 +72,9 @@ namespace OxyPlot
         public double ThicknessScale { get; set; }
 
         /// <inheritdoc/>
+        public override int ClipCount => this.rc.ClipCount;
+
+        /// <inheritdoc/>
         public override void DrawLine(
             IList<ScreenPoint> points,
             OxyColor stroke,

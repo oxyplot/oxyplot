@@ -234,6 +234,9 @@ namespace OxyPlot
         /// <inheritdoc/>
         public abstract void PushClip(OxyRect clippingRectangle);
 
+        /// <inheritdoc/>
+        public abstract int ClipCount { get; }
+
         /// <summary>
         /// Creates an ellipse polygon.
         /// </summary>

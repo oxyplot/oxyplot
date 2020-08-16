@@ -42,8 +42,11 @@ namespace OxyPlot
         {
             lock (this.SyncRoot)
             {
+                var initialClipCount = 0;
+
                 try
                 {
+                    initialClipCount = rc.ClipCount;
                     if (this.lastPlotException != null)
                     {
                         // There was an exception during plot model update. 
@@ -109,9 +112,19 @@ namespace OxyPlot
                     {
                         this.RenderLegends(rc);
                     }
+
+                    if (rc.ClipCount != initialClipCount)
+                    {
+                        throw new InvalidOperationException("Unbalanced calls to IRenderContext.PushClip were made during rendering.");
+                    }
                 }
                 catch (Exception exception)
                 {
+                    while (rc.ClipCount > initialClipCount)
+                    {
+                        rc.PopClip();
+                    }
+
                     // An exception was raised during rendering. This should not happen...
                     var errorMessage = string.Format(
                             "An exception of type {0} was thrown when rendering the plot model.\r\n{1}",

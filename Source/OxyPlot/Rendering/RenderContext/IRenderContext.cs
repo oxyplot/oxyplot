@@ -218,7 +218,9 @@ namespace OxyPlot
         /// <param name="clippingRectangle">The clipping rectangle.</param>
         /// <remarks>
         /// If there is already a clipping rectangle on the clipping stack, the new clipping rectangle will be intersected with the existing clipping rectangle.
-        /// Calls to this function must be balanced by a call to <see cref="PopClip"/>.
+        /// Calls to this method must be balanced by a call to <see cref="PopClip"/>.
+        /// It is recommended to use <see cref="RenderingExtensions.AutoResetClip(IRenderContext, OxyRect)"/> in combination with a <c>using</c> statement instead of <see cref="PushClip(OxyRect)"/> and <see cref="PopClip"/> if possible.
+        /// However if <see cref="PushClip(OxyRect)"/> and <see cref="PopClip"/> are used directly, it is recommended to wrap them in a try...finally block.
         /// </remarks>
         void PushClip(OxyRect clippingRectangle);
 
@@ -226,5 +228,10 @@ namespace OxyPlot
         /// Pops the most recently pushed clipping rectangle from the clipping stack.
         /// </summary>
         void PopClip();
+
+        /// <summary>
+        /// Gets the number of clipping rectangles on the clipping stack.
+        /// </summary>
+        int ClipCount { get; }
     }
 }

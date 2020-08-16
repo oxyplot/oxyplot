@@ -62,6 +62,9 @@ namespace OxyPlot
             }
         }
 
+        /// <inheritdoc/>
+        public sealed override int ClipCount => this.clipStack.Count;
+
         /// <summary>
         /// Resets the clipping area.
         /// </summary>
