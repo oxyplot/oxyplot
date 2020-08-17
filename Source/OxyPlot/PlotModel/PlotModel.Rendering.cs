@@ -42,11 +42,10 @@ namespace OxyPlot
         {
             lock (this.SyncRoot)
             {
-                var initialClipCount = 0;
+                var initialClipCount = rc.ClipCount;
 
                 try
                 {
-                    initialClipCount = rc.ClipCount;
                     if (this.lastPlotException != null)
                     {
                         // There was an exception during plot model update. 
