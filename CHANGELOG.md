@@ -36,6 +36,7 @@ All notable changes to this project will be documented in this file.
 - Add PlotModel.AssignColorsToInvisibleSeries property to control whether invisible series are included or skipped when assigning automatic colors (#1599)
 - Overlapping bar series (#1265)
 - `AxisPosition.All` for axes which need a margin on all sides of the plot area (#1574)
+- IRenderContext.ClipCount property (#1593)
 
 ### Changed
 - Legends model (#644)
