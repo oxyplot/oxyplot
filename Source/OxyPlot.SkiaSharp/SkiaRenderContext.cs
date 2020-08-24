@@ -52,6 +52,9 @@ namespace OxyPlot.SkiaSharp
         private bool RendersToPixels => this.RenderTarget != RenderTarget.VectorGraphic;
 
         /// <inheritdoc/>
+        public int ClipCount => this.SkCanvas?.SaveCount - 1 ?? 0;
+
+        /// <inheritdoc/>
         public void CleanUp()
         {
         }
@@ -430,23 +433,21 @@ namespace OxyPlot.SkiaSharp
         }
 
         /// <inheritdoc/>
-        public void ResetClip()
+        public void PopClip()
         {
+            if (this.SkCanvas.SaveCount == 1)
+            {
+                throw new InvalidOperationException("Unbalanced call to PopClip.");
+            }
+
             this.SkCanvas.Restore();
         }
 
         /// <inheritdoc/>
-        public bool SetClip(OxyRect clippingRectangle)
+        public void PushClip(OxyRect clippingRectangle)
         {
-            // if a clipping is already set, we have to restore it first
-            if (this.SkCanvas.SaveCount > 0)
-            {
-                this.SkCanvas.Restore();
-            }
-
             this.SkCanvas.Save();
             this.SkCanvas.ClipRect(this.Convert(clippingRectangle));
-            return true;
         }
 
         /// <inheritdoc/>

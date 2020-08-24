@@ -404,7 +404,7 @@ namespace OxyPlot.Series
             // Offset of the bins
             var binOffset = this.Transform(this.MinX, this.MaxY);
 
-            rc.SetClip(clippingRect);
+            using var _ = rc.AutoResetClip(clippingRect);
 
             if (this.ColorAxis != null)
             {
@@ -461,8 +461,6 @@ namespace OxyPlot.Series
                 // render point labels (not optimized for performance)
                 this.RenderPointLabels(rc, clippingRect);
             }
-
-            rc.ResetClip();
         }
 
         /// <summary>

@@ -13,6 +13,7 @@ namespace OxyPlot.ImageSharp.Tests
     using OxyPlot.Series;
     using OxyPlot.ImageSharp;
     using OxyPlot.Annotations;
+    using ExampleLibrary;
 
     [TestFixture]
     public class PngExporterTests
@@ -32,7 +33,10 @@ namespace OxyPlot.ImageSharp.Tests
         {
             var exporter = new PngExporter(400, 300);
             var directory = Path.Combine(this.outputDirectory, "ExampleLibrary");
-            ExportTest.Export_FirstExampleOfEachExampleGroup_CheckThatAllFilesExist(exporter, directory, ".png");
+            ExportTest.ExportExamples_CheckThatAllFilesExist(Examples.GetFirstExampleOfEachCategory(), exporter, directory, ".png");
+            exporter.Width = 800;
+            exporter.Height = 600;
+            ExportTest.ExportExamples_CheckThatAllFilesExist(Examples.GetRenderingCapabilities(), exporter, directory, ".png");
         }
 
         [Test]

@@ -72,6 +72,9 @@ namespace OxyPlot
         public double ThicknessScale { get; set; }
 
         /// <inheritdoc/>
+        public override int ClipCount => this.rc.ClipCount;
+
+        /// <inheritdoc/>
         public override void DrawLine(
             IList<ScreenPoint> points,
             OxyColor stroke,
@@ -194,24 +197,16 @@ namespace OxyPlot
             this.rc.DrawImage(source, srcX, srcY, srcWidth, srcHeight, destX, destY, destWidth, destHeight, opacity, interpolate);
         }
 
-        /// <summary>
-        /// Sets the clipping rectangle.
-        /// </summary>
-        /// <param name="clippingRect">The clipping rectangle.</param>
-        /// <returns>
-        ///   <c>true</c> if the clip rectangle was set.
-        /// </returns>
-        public override bool SetClip(OxyRect clippingRect)
+        /// <inheritdoc/>
+        public override void PushClip(OxyRect clippingRectangle)
         {
-            return this.rc.SetClip(clippingRect);
+            this.rc.PushClip(clippingRectangle);
         }
 
-        /// <summary>
-        /// Resets the clip rectangle.
-        /// </summary>
-        public override void ResetClip()
+        /// <inheritdoc/>
+        public override void PopClip()
         {
-            this.rc.ResetClip();
+            this.rc.PopClip();
         }
 
         /// <summary>

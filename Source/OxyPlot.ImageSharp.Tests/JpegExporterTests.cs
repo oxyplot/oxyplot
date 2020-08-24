@@ -13,6 +13,7 @@ namespace OxyPlot.ImageSharp.Tests
     using OxyPlot.Series;
     using OxyPlot.ImageSharp;
     using OxyPlot.Annotations;
+    using ExampleLibrary;
 
     [TestFixture]
     public class JpegExporterTests
@@ -32,7 +33,7 @@ namespace OxyPlot.ImageSharp.Tests
         {
             var exporter = new JpegExporter(400, 300);
             var directory = Path.Combine(this.outputDirectory, "ExampleLibrary");
-            ExportTest.Export_FirstExampleOfEachExampleGroup_CheckThatAllFilesExist(exporter, directory, ".jpg");
+            ExportTest.ExportExamples_CheckThatAllFilesExist(Examples.GetFirstExampleOfEachCategory(), exporter, directory, ".jpg");
         }
 
         [Test]

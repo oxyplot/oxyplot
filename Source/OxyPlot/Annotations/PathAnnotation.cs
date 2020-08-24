@@ -241,21 +241,17 @@ namespace OxyPlot.Annotations
 
                     if (this.ClipText)
                     {
-                        var cs = new CohenSutherlandClipping(clippingRectangle);
-                        if (cs.IsInside(position))
-                        {
-                            rc.DrawClippedText(
-                                clippingRectangle,
-                                textPosition,
-                                this.Text,
-                                this.ActualTextColor,
-                                this.ActualFont,
-                                this.ActualFontSize,
-                                this.ActualFontWeight,
-                                angle,
-                                this.TextHorizontalAlignment,
-                                this.TextVerticalAlignment);
-                        }
+                        rc.DrawClippedText(
+                            clippingRectangle,
+                            textPosition,
+                            this.Text,
+                            this.ActualTextColor,
+                            this.ActualFont,
+                            this.ActualFontSize,
+                            this.ActualFontWeight,
+                            angle,
+                            ha,
+                            va);
                     }
                     else
                     {

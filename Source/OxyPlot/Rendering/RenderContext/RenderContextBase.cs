@@ -95,7 +95,7 @@ namespace OxyPlot
         public virtual void DrawLineSegments(
             IList<ScreenPoint> points,
             OxyColor stroke,
-            double thickness, 
+            double thickness,
             EdgeRenderingMode edgeRenderingMode,
             double[] dashArray,
             LineJoin lineJoin)
@@ -121,7 +121,7 @@ namespace OxyPlot
             IList<IList<ScreenPoint>> polygons,
             OxyColor fill,
             OxyColor stroke,
-            double thickness, 
+            double thickness,
             EdgeRenderingMode edgeRenderingMode,
             double[] dashArray,
             LineJoin lineJoin)
@@ -228,22 +228,14 @@ namespace OxyPlot
         {
         }
 
-        /// <summary>
-        /// Sets the clip rectangle.
-        /// </summary>
-        /// <param name="rect">The clip rectangle.</param>
-        /// <returns>True if the clip rectangle was set.</returns>
-        public virtual bool SetClip(OxyRect rect)
-        {
-            return false;
-        }
+        /// <inheritdoc/>
+        public abstract void PopClip();
 
-        /// <summary>
-        /// Resets the clip rectangle.
-        /// </summary>
-        public virtual void ResetClip()
-        {
-        }
+        /// <inheritdoc/>
+        public abstract void PushClip(OxyRect clippingRectangle);
+
+        /// <inheritdoc/>
+        public abstract int ClipCount { get; }
 
         /// <summary>
         /// Creates an ellipse polygon.

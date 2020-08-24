@@ -7,6 +7,7 @@
 namespace OxyPlot.SkiaSharp.Tests
 {
     using System.IO;
+    using ExampleLibrary;
     using global::SkiaSharp;
     using NUnit.Framework;
 
@@ -31,7 +32,8 @@ namespace OxyPlot.SkiaSharp.Tests
         {
             var exporter = new PdfExporter { Width = 297 / 25.4f * 72, Height = 210 / 25.4f * 72 };
             var directory = Path.Combine(this.outputDirectory, "ExampleLibrary");
-            ExportTest.Export_FirstExampleOfEachExampleGroup_CheckThatAllFilesExist(exporter, directory, ".pdf");
+            ExportTest.ExportExamples_CheckThatAllFilesExist(Examples.GetFirstExampleOfEachCategory(), exporter, directory, ".pdf");
+            ExportTest.ExportExamples_CheckThatAllFilesExist(Examples.GetRenderingCapabilities(), exporter, directory, ".pdf");
         }
 
         [Test]

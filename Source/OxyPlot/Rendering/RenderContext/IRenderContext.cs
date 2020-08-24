@@ -213,17 +213,25 @@ namespace OxyPlot
         void DrawImage(OxyImage source, double srcX, double srcY, double srcWidth, double srcHeight, double destX, double destY, double destWidth, double destHeight, double opacity, bool interpolate);
 
         /// <summary>
-        /// Sets the clipping rectangle.
+        /// Pushes the clipping rectangle onto the clipping stack.
         /// </summary>
         /// <param name="clippingRectangle">The clipping rectangle.</param>
-        /// <returns>
-        ///   <c>true</c> if the clipping rectangle was set.
-        /// </returns>
-        bool SetClip(OxyRect clippingRectangle);
+        /// <remarks>
+        /// If there is already a clipping rectangle on the clipping stack, the new clipping rectangle will be intersected with the existing clipping rectangle.
+        /// Calls to this method must be balanced by a call to <see cref="PopClip"/>.
+        /// It is recommended to use <see cref="RenderingExtensions.AutoResetClip(IRenderContext, OxyRect)"/> in combination with a <c>using</c> statement instead of <see cref="PushClip(OxyRect)"/> and <see cref="PopClip"/> if possible.
+        /// However if <see cref="PushClip(OxyRect)"/> and <see cref="PopClip"/> are used directly, it is recommended to wrap them in a try...finally block.
+        /// </remarks>
+        void PushClip(OxyRect clippingRectangle);
 
         /// <summary>
-        /// Resets the clipping rectangle.
+        /// Pops the most recently pushed clipping rectangle from the clipping stack.
         /// </summary>
-        void ResetClip();
+        void PopClip();
+
+        /// <summary>
+        /// Gets the number of clipping rectangles on the clipping stack.
+        /// </summary>
+        int ClipCount { get; }
     }
 }

@@ -8,7 +8,7 @@ namespace OxyPlot.SkiaSharp.Tests
 {
     using System;
     using System.IO;
-
+    using ExampleLibrary;
     using NUnit.Framework;
 
     using OxyPlot.Series;
@@ -32,7 +32,10 @@ namespace OxyPlot.SkiaSharp.Tests
         {
             var exporter = new JpegExporter { Width = 400, Height = 300 };
             var directory = Path.Combine(this.outputDirectory, "ExampleLibrary");
-            ExportTest.Export_FirstExampleOfEachExampleGroup_CheckThatAllFilesExist(exporter, directory, ".jpg");
+            ExportTest.ExportExamples_CheckThatAllFilesExist(Examples.GetFirstExampleOfEachCategory(), exporter, directory, ".jpg");
+            exporter.Width = 800;
+            exporter.Height = 600;
+            ExportTest.ExportExamples_CheckThatAllFilesExist(Examples.GetRenderingCapabilities(), exporter, directory, ".jpg");
         }
 
         [Test]

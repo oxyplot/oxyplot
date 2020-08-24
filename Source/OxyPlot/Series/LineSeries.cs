@@ -332,7 +332,7 @@ namespace OxyPlot.Series
             this.VerifyAxes();
 
             var clippingRect = this.GetClippingRect();
-            rc.SetClip(clippingRect);
+            using var _ = rc.AutoResetClip(clippingRect);
 
             this.RenderPoints(rc, clippingRect, actualPoints);
 
@@ -341,8 +341,6 @@ namespace OxyPlot.Series
                 // render point labels (not optimized for performance)
                 this.RenderPointLabels(rc, clippingRect);
             }
-
-            rc.ResetClip();
 
             if (this.LineLegendPosition != LineLegendPosition.None && !string.IsNullOrEmpty(this.Title))
             {

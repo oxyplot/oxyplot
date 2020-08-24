@@ -114,89 +114,17 @@ namespace OxyPlot
                 outputBuffer = new List<ScreenPoint>(n);
             }
 
-            if (rc.SetClip(clippingRectangle))
+            using var _ = rc.AutoResetClip(clippingRectangle);
+            ReducePoints(points, minDistSquared, outputBuffer);
+            rc.DrawLine(outputBuffer, stroke, strokeThickness, edgeRenderingMode, dashArray, lineJoin);
+
+            if (outputBuffer != null)
             {
-                ReducePoints(points, minDistSquared, outputBuffer);
-                rc.DrawLine(outputBuffer, stroke, strokeThickness, edgeRenderingMode, dashArray, lineJoin);
-                rc.ResetClip();
-
-                if (outputBuffer != null)
-                {
-                    outputBuffer.Clear();
-                    outputBuffer.AddRange(points);
-                }
-
-                pointsRendered?.Invoke(outputBuffer);
-
-                return;
-            }
-
-            // draws the points in the output buffer and calls the callback (if specified)
-            Action drawLine = () =>
-            {
-                EnsureNonEmptyLineIsVisible(outputBuffer);
-                rc.DrawLine(outputBuffer, stroke, strokeThickness, edgeRenderingMode, dashArray, lineJoin);
-
-                // Execute the 'callback'
-                if (pointsRendered != null)
-                {
-                    pointsRendered(outputBuffer);
-                }
-            };
-
-            var clipping = new CohenSutherlandClipping(clippingRectangle);
-            if (n == 1 && clipping.IsInside(points[0]))
-            {
-                outputBuffer.Add(points[0]);
-            }
-
-            int lastPointIndex = 0;
-            for (int i = 1; i < n; i++)
-            {
-                // Calculate the clipped version of previous and this point.
-                var sc0 = points[i - 1];
-                var sc1 = points[i];
-                bool isInside = clipping.ClipLine(ref sc0, ref sc1);
-
-                if (!isInside)
-                {
-                    // the line segment is outside the clipping rectangle
-                    // keep the previous coordinate for minimum distance comparison
-                    continue;
-                }
-
-                // length calculation (inlined for performance)
-                var dx = sc1.X - points[lastPointIndex].X;
-                var dy = sc1.Y - points[lastPointIndex].Y;
-
-                if ((dx * dx) + (dy * dy) > minDistSquared || outputBuffer.Count == 0 || i == n - 1)
-                {
-                    // point comparison inlined for performance
-                    // ReSharper disable CompareOfFloatsByEqualityOperator
-                    if (sc0.X != points[lastPointIndex].X || sc0.Y != points[lastPointIndex].Y || outputBuffer.Count == 0)
-                    // ReSharper restore disable CompareOfFloatsByEqualityOperator
-                    {
-                        outputBuffer.Add(new ScreenPoint(sc0.X, sc0.Y));
-                    }
-
-                    outputBuffer.Add(new ScreenPoint(sc1.X, sc1.Y));
-                    lastPointIndex = i;
-                }
-
-                if (clipping.IsInside(points[i]) || outputBuffer.Count == 0)
-                {
-                    continue;
-                }
-
-                // we are leaving the clipping region - render the line
-                drawLine();
                 outputBuffer.Clear();
+                outputBuffer.AddRange(points);
             }
 
-            if (outputBuffer.Count > 0)
-            {
-                drawLine();
-            }
+            pointsRendered?.Invoke(outputBuffer);
         }
 
         /// <summary>
@@ -220,28 +148,8 @@ namespace OxyPlot
             double[] dashArray,
             LineJoin lineJoin)
         {
-            if (rc.SetClip(clippingRectangle))
-            {
-                rc.DrawLineSegments(points, stroke, strokeThickness, edgeRenderingMode, dashArray, lineJoin);
-                rc.ResetClip();
-                return;
-            }
-
-            var clipping = new CohenSutherlandClipping(clippingRectangle);
-
-            var clippedPoints = new List<ScreenPoint>(points.Count);
-            for (int i = 0; i + 1 < points.Count; i += 2)
-            {
-                var s0 = points[i];
-                var s1 = points[i + 1];
-                if (clipping.ClipLine(ref s0, ref s1))
-                {
-                    clippedPoints.Add(s0);
-                    clippedPoints.Add(s1);
-                }
-            }
-
-            rc.DrawLineSegments(clippedPoints, stroke, strokeThickness, edgeRenderingMode, dashArray, lineJoin);
+            using var _ = rc.AutoResetClip(clippingRectangle);
+            rc.DrawLineSegments(points, stroke, strokeThickness, edgeRenderingMode, dashArray, lineJoin);
         }
 
         /// <summary>
@@ -296,44 +204,8 @@ namespace OxyPlot
                 return;
             }
 
-            if (rc.SetClip(clippingRectangle))
-            {
-                // The render context supports clipping, then we can draw the whole image
-                rc.DrawImage(source, x, y, w, h, opacity, interpolate);
-                rc.ResetClip();
-                return;
-            }
-
-            // Fint the positions of the clipping rectangle normalized to image coordinates (0,1)
-            var i0 = (clippingRectangle.Left - x) / w;
-            var i1 = (clippingRectangle.Right - x) / w;
-            var j0 = (clippingRectangle.Top - y) / h;
-            var j1 = (clippingRectangle.Bottom - y) / h;
-
-            // Find the origin of the clipped source rectangle
-            var srcx = i0 < 0 ? 0u : i0 * source.Width;
-            var srcy = j0 < 0 ? 0u : j0 * source.Height;
-            srcx = (int)Math.Ceiling(srcx);
-            srcy = (int)Math.Ceiling(srcy);
-
-            // Find the size of the clipped source rectangle
-            var srcw = i1 > 1 ? source.Width - srcx : (i1 * source.Width) - srcx;
-            var srch = j1 > 1 ? source.Height - srcy : (j1 * source.Height) - srcy;
-            srcw = (int)srcw;
-            srch = (int)srch;
-
-            if ((int)srcw <= 0 || (int)srch <= 0)
-            {
-                return;
-            }
-
-            // The clipped destination rectangle
-            var destx = i0 < 0 ? x : x + (srcx / source.Width * w);
-            var desty = j0 < 0 ? y : y + (srcy / source.Height * h);
-            var destw = w * srcw / source.Width;
-            var desth = h * srch / source.Height;
-
-            rc.DrawImage(source, srcx, srcy, srcw, srch, destx, desty, destw, desth, opacity, interpolate);
+            using var _ = rc.AutoResetClip(clippingRectangle);
+            rc.DrawImage(source, x, y, w, h, opacity, interpolate);
         }
 
         /// <summary>
@@ -375,15 +247,8 @@ namespace OxyPlot
             var outputBuffer = new List<ScreenPoint>();
             ReducePoints(points, minDistSquared, outputBuffer);
 
-            if (rc.SetClip(clippingRectangle))
-            {
-                rc.DrawPolygon(outputBuffer, fill, stroke, strokeThickness, edgeRenderingMode, lineStyle.GetDashArray(), lineJoin);
-                rc.ResetClip();
-                return;
-            }
-
-            var clippedPoints = SutherlandHodgmanClipping.ClipPolygon(clippingRectangle, outputBuffer);
-            rc.DrawPolygon(clippedPoints, fill, stroke, strokeThickness, edgeRenderingMode, lineStyle.GetDashArray(), lineJoin);
+            using var _ = rc.AutoResetClip(clippingRectangle);
+            rc.DrawPolygon(outputBuffer, fill, stroke, strokeThickness, edgeRenderingMode, lineStyle.GetDashArray(), lineJoin);
         }
 
         /// <summary>
@@ -405,20 +270,8 @@ namespace OxyPlot
             double thickness,
             EdgeRenderingMode edgeRenderingMode)
         {
-            if (rc.SetClip(clippingRectangle))
-            {
-                rc.DrawRectangle(rect, fill, stroke, thickness, edgeRenderingMode);
-                rc.ResetClip();
-                return;
-            }
-
-            var clippedRect = ClipRect(rect, clippingRectangle);
-            if (clippedRect == null)
-            {
-                return;
-            }
-
-            rc.DrawRectangle(clippedRect.Value, fill, stroke, thickness, edgeRenderingMode);
+            using var _ = rc.AutoResetClip(clippingRectangle);
+            rc.DrawRectangle(rect, fill, stroke, thickness, edgeRenderingMode);
         }
 
         /// <summary>
@@ -431,7 +284,6 @@ namespace OxyPlot
         /// <param name="stroke">The stroke color.</param>
         /// <param name="thickness">The stroke thickness.</param>
         /// <param name="edgeRenderingMode">The edge rendering mode.</param>
-        /// <param name="n">The number of points around the ellipse.</param>
         public static void DrawClippedEllipse(
             this IRenderContext rc,
             OxyRect clippingRectangle,
@@ -439,28 +291,10 @@ namespace OxyPlot
             OxyColor fill,
             OxyColor stroke,
             double thickness,
-            EdgeRenderingMode edgeRenderingMode,
-            int n = 100)
+            EdgeRenderingMode edgeRenderingMode)
         {
-            if (rc.SetClip(clippingRectangle))
-            {
-                rc.DrawEllipse(rect, fill, stroke, thickness, edgeRenderingMode);
-                rc.ResetClip();
-                return;
-            }
-
-            var points = new ScreenPoint[n];
-            double cx = (rect.Left + rect.Right) / 2;
-            double cy = (rect.Top + rect.Bottom) / 2;
-            double rx = (rect.Right - rect.Left) / 2;
-            double ry = (rect.Bottom - rect.Top) / 2;
-            for (int i = 0; i < n; i++)
-            {
-                double a = Math.PI * 2 * i / (n - 1);
-                points[i] = new ScreenPoint(cx + (rx * Math.Cos(a)), cy + (ry * Math.Sin(a)));
-            }
-
-            rc.DrawClippedPolygon(clippingRectangle, points, 4, fill, stroke, thickness, edgeRenderingMode);
+            using var _ = rc.AutoResetClip(clippingRectangle);
+            rc.DrawEllipse(rect, fill, stroke, thickness, edgeRenderingMode);
         }
 
         /// <summary>
@@ -492,18 +326,8 @@ namespace OxyPlot
             VerticalAlignment verticalAlignment = VerticalAlignment.Top,
             OxySize? maxSize = null)
         {
-            if (rc.SetClip(clippingRectangle))
-            {
-                rc.DrawText(p, text, fill, fontFamily, fontSize, fontWeight, rotate, horizontalAlignment, verticalAlignment, maxSize);
-                rc.ResetClip();
-                return;
-            }
-
-            // fall back simply check position
-            if (clippingRectangle.Contains(p.X, p.Y))
-            {
-                rc.DrawText(p, text, fill, fontFamily, fontSize, fontWeight, rotate, horizontalAlignment, verticalAlignment, maxSize);
-            }
+            using var _ = rc.AutoResetClip(clippingRectangle);
+            rc.DrawText(p, text, fill, fontFamily, fontSize, fontWeight, rotate, horizontalAlignment, verticalAlignment, maxSize);
         }
 
         /// <summary>
@@ -535,18 +359,8 @@ namespace OxyPlot
             VerticalAlignment verticalAlignment = VerticalAlignment.Top,
             OxySize? maxSize = null)
         {
-            if (rc.SetClip(clippingRectangle))
-            {
-                rc.DrawMathText(p, text, fill, fontFamily, fontSize, fontWeight, rotate, horizontalAlignment, verticalAlignment, maxSize);
-                rc.ResetClip();
-                return;
-            }
-
-            // fall back simply check position
-            if (clippingRectangle.Contains(p.X, p.Y))
-            {
-                rc.DrawMathText(p, text, fill, fontFamily, fontSize, fontWeight, rotate, horizontalAlignment, verticalAlignment, maxSize);
-            }
+            using var _ = rc.AutoResetClip(clippingRectangle);
+            rc.DrawMathText(p, text, fill, fontFamily, fontSize, fontWeight, rotate, horizontalAlignment, verticalAlignment, maxSize);
         }
 
         /// <summary>
@@ -1147,12 +961,12 @@ namespace OxyPlot
             public AutoResetClipToken(IRenderContext renderContext, OxyRect clippingRectangle)
             {
                 this.renderContext = renderContext;
-                renderContext.SetClip(clippingRectangle);
+                renderContext.PushClip(clippingRectangle);
             }
 
             void IDisposable.Dispose()
             {
-                this.renderContext.ResetClip();
+                this.renderContext.PopClip();
             }
         }
     }
