@@ -365,6 +365,7 @@ namespace OxyPlot
             this.doc.RestoreState();
         }
 
+        /// <inheritdoc/>
         public FontMetrics GetFontMetrics(string fontFamily, double fontSize, double fontWeight)
         {
             var font = PortableDocument.GetFont(fontFamily, fontWeight > 500, false);
