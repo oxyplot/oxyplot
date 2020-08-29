@@ -57,7 +57,7 @@ namespace OxyPlot.Axes
 
                 var screenPoints = this.MinorTickValues
                             .Take(tickCount + 1)
-                            .Select(x => this.TransformToClientRectangle(magnitudeAxis.ActualMaximum, x, axis, this.Plot.PlotArea, magnitudeAxis.MidPoint));
+                            .Select(x => this.TransformToClientRectangle(magnitudeAxis.ClipMaximum, x, axis, this.Plot.PlotArea, magnitudeAxis.MidPoint));
 
                 foreach (var screenPoint in screenPoints)
                 {
@@ -76,7 +76,7 @@ namespace OxyPlot.Axes
             {
                 var screenPoints = this.MajorTickValues
                                 .Take(majorTickCount)
-                                .Select(x => this.TransformToClientRectangle(magnitudeAxis.ActualMaximum, x, axis, this.Plot.PlotArea, magnitudeAxis.MidPoint));
+                                .Select(x => this.TransformToClientRectangle(magnitudeAxis.ClipMaximum, x, axis, this.Plot.PlotArea, magnitudeAxis.MidPoint));
 
                 foreach (var point in screenPoints)
                 {
@@ -87,7 +87,7 @@ namespace OxyPlot.Axes
             //Text rendering
             foreach (var value in this.MajorLabelValues.Take(majorTickCount))
             {
-                ScreenPoint pt = TransformToClientRectangle(magnitudeAxis.ActualMaximum, value, axis, this.Plot.PlotArea, magnitudeAxis.MidPoint);
+                ScreenPoint pt = TransformToClientRectangle(magnitudeAxis.ClipMaximum, value, axis, this.Plot.PlotArea, magnitudeAxis.MidPoint);
 
                 var angle = Math.Atan2(pt.y - magnitudeAxis.MidPoint.y, pt.x - magnitudeAxis.MidPoint.x);
 

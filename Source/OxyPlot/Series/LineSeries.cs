@@ -450,8 +450,8 @@ namespace OxyPlot.Series
 			if (this.IsXMonotonic)
 			{
 				// determine render range
-				var xmin = this.XAxis.ActualMinimum;
-				xmax = this.XAxis.ActualMaximum;
+				var xmin = this.XAxis.ClipMinimum;
+				xmax = this.XAxis.ClipMaximum;
 				this.WindowStartIndex = this.UpdateWindowStartIndex(points, point => point.X, xmin, this.WindowStartIndex);
 
 				startIdx = this.WindowStartIndex;

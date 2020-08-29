@@ -1413,6 +1413,383 @@ namespace ExampleLibrary
             return plotModel;
         }
 
+        [Example("Data Margins")]
+        public static PlotModel MinimumAndMaximumDataMargins()
+        {
+            var plot = new PlotModel
+            {
+                Title = "Normal distribution",
+                Subtitle = "Probability density function"
+            };
+
+            plot.Axes.Add(new LinearAxis
+            {
+                Position = AxisPosition.Left,
+                MinimumPadding = 0,
+                MaximumPadding = 0,
+                MinimumDataMargin = 20,
+                MaximumDataMargin = 20,
+                Minimum = 0,
+                TickStyle = TickStyle.Inside
+            });
+            plot.Axes.Add(new LinearAxis
+            {
+                Position = AxisPosition.Bottom,
+                MinimumPadding = 0,
+                MaximumPadding = 0,
+                MinimumDataMargin = 20,
+                MaximumDataMargin = 20,
+                TickStyle = TickStyle.Inside
+            });
+            plot.Series.Add(ShowCases.CreateNormalDistributionSeries(-5, 5, 0, 0.2));
+            plot.Series.Add(ShowCases.CreateNormalDistributionSeries(-5, 5, 0, 1));
+            plot.Series.Add(ShowCases.CreateNormalDistributionSeries(-5, 5, 0, 5));
+            plot.Series.Add(ShowCases.CreateNormalDistributionSeries(-5, 5, -2, 0.5));
+
+            return plot;
+        }
+
+        [Example("Data Margins with Zero-Crossing")]
+        public static PlotModel MinimumAndMaximumDataMarginsZeroCrossing()
+        {
+            var plot = new PlotModel
+            {
+                Title = "Normal distribution",
+                Subtitle = "Probability density function"
+            };
+
+            plot.Axes.Add(new LinearAxis
+            {
+                Position = AxisPosition.Left,
+                MinimumPadding = 0,
+                MaximumPadding = 0,
+                MinimumDataMargin = 20,
+                MaximumDataMargin = 20,
+                Minimum = 0,
+                TickStyle = TickStyle.Crossing,
+                AxislineStyle = LineStyle.Solid,
+                PositionAtZeroCrossing = true
+            });
+            plot.Axes.Add(new LinearAxis
+            {
+                Position = AxisPosition.Bottom,
+                MinimumPadding = 0,
+                MaximumPadding = 0,
+                MinimumDataMargin = 20,
+                MaximumDataMargin = 20,
+                TickStyle = TickStyle.Crossing,
+                AxislineStyle = LineStyle.Solid,
+                PositionAtZeroCrossing = true
+            });
+            plot.Series.Add(ShowCases.CreateNormalDistributionSeries(-5, 5, 0, 0.2));
+            plot.Series.Add(ShowCases.CreateNormalDistributionSeries(-5, 5, 0, 1));
+            plot.Series.Add(ShowCases.CreateNormalDistributionSeries(-5, 5, 0, 5));
+            plot.Series.Add(ShowCases.CreateNormalDistributionSeries(-5, 5, -2, 0.5));
+
+            return plot;
+        }
+
+        [Example("Data Margins on Log Axis")]
+        public static PlotModel MinimumAndMaximumDataMarginsLog()
+        {
+            var plot = new PlotModel
+            {
+                Title = "Exponentials",
+            };
+
+            plot.Axes.Add(new LogarithmicAxis
+            {
+                Position = AxisPosition.Bottom,
+                MinimumPadding = 0,
+                MaximumPadding = 0,
+                MinimumDataMargin = 20,
+                MaximumDataMargin = 20,
+                TickStyle = TickStyle.Inside
+            });
+
+            plot.Axes.Add(new LogarithmicAxis
+            {
+                Position = AxisPosition.Left,
+                MinimumPadding = 0,
+                MaximumPadding = 0,
+                MinimumDataMargin = 20,
+                MaximumDataMargin = 20,
+                TickStyle = TickStyle.Inside
+            });
+
+            for (int i = 1; i <= 5; i++)
+            {
+                plot.Series.Add(new FunctionSeries(x => Math.Pow(i, x), 0, 10, 0.01, $"{i}^x"));
+            }
+
+            return plot;
+        }
+
+        [Example("Data Margins on Polar Plot")]
+        public static PlotModel MinimumAndMaximumMarginsPolar()
+        {
+            var model = new PlotModel
+            {
+                Title = "Spiral",
+                PlotType = PlotType.Polar,
+                PlotAreaBorderThickness = new OxyThickness(0),
+            };
+
+            model.Axes.Add(new AngleAxis
+            {
+                MajorStep = Math.PI / 4,
+                MinorStep = Math.PI / 16,
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Solid,
+                FormatAsFractions = true,
+                FractionUnit = Math.PI,
+                FractionUnitSymbol = "π",
+                Minimum = 0,
+                Maximum = 2 * Math.PI
+            });
+
+            model.Axes.Add(new MagnitudeAxis
+            {
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Solid,
+                MinimumPadding = 0,
+                MaximumPadding = 0,
+                MinimumDataMargin = 0,
+                MaximumDataMargin = 20,
+            });
+
+            model.Series.Add(new FunctionSeries(t => t, t => t, 0, Math.PI * 6, 0.01));
+            return model;
+        }
+
+        [Example("Axis Margins")]
+        public static PlotModel AxisOutMargins()
+        {
+            var plot = new PlotModel
+            {
+                Title = "YAxes are evenly distributed with a constant gap",
+                PlotAreaBorderThickness = new OxyThickness(0)
+            };
+
+            plot.Axes.Add(new LinearAxis
+            {
+                Position = AxisPosition.Bottom,
+                AxislineStyle = LineStyle.Solid,
+                Key = "X"
+            });
+
+            int n = 4;
+            double gap = 10;
+
+            for (int i = 0; i < n; i++)
+            {
+                plot.Axes.Add(new LinearAxis
+                {
+                    Position = AxisPosition.Left,
+                    StartPosition = i / (double)n,
+                    EndPosition = (i + 1) / (double)n,
+                    MinimumMargin = i / (double)n * gap,
+                    MaximumMargin = (n - i - 1) / (double)n * gap,
+                    AxislineStyle = LineStyle.Solid,
+                    Key = $"Y{i}"
+                }); ;
+
+                plot.Series.Add(new FunctionSeries(x => Math.Sin(x * (i + 1)), 1, 10, 0.01, $"x^{{{i}}})") { XAxisKey = "X", YAxisKey = $"Y{i}" });
+            }
+
+            return plot;
+        }
+
+        [Example("Axis Margins Clipping")]
+        public static PlotModel AxisMarginsClipping()
+        {
+            var plot = new PlotModel
+            {
+                Title = "Axis Margins Clipping",
+                Subtitle = "Data Points and Visual Elements are clipped outside the Clip Bounds"
+            };
+
+            plot.Axes.Add(new LinearAxis
+            {
+                Position = AxisPosition.Left,
+                MinimumPadding = 0,
+                MaximumPadding = 0,
+                MinimumMargin = 20,
+                MaximumMargin = 20,
+            });
+            plot.Axes.Add(new LinearAxis
+            {
+                Position = AxisPosition.Bottom,
+                MinimumPadding = 0,
+                MaximumPadding = 0,
+                MinimumMargin = 20,
+                MaximumMargin = 20,
+            });
+
+            var rnd = new Random(1);
+
+            var scatter = new ScatterSeries()
+            {
+                MarkerType = MarkerType.Diamond,
+            };
+
+            for (int i = 0; i < 100; i++)
+            {
+                scatter.Points.Add(new ScatterPoint(rnd.NextDouble(), rnd.NextDouble()));
+            }
+
+            plot.Series.Add(scatter);
+
+            return plot;
+        }
+
+        [Example("Axis Margins on Polar Plot")]
+        public static PlotModel PolarOuterMargins()
+        {
+            var model = new PlotModel
+            {
+                Title = "Spiral",
+                PlotType = PlotType.Polar,
+                PlotAreaBorderThickness = new OxyThickness(0),
+            };
+
+            model.Axes.Add(new AngleAxis
+            {
+                MajorStep = Math.PI / 4,
+                MinorStep = Math.PI / 16,
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Solid,
+                FormatAsFractions = true,
+                FractionUnit = Math.PI,
+                FractionUnitSymbol = "π",
+                Minimum = 0,
+                Maximum = 2 * Math.PI
+            });
+
+            model.Axes.Add(new MagnitudeAxis
+            {
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Solid,
+                MinimumPadding = 0,
+                MaximumPadding = 0,
+                MinimumMargin = 0,
+                MaximumMargin = 100,
+            });
+
+            model.Series.Add(new FunctionSeries(t => t, t => t, 0, Math.PI * 6, 0.01));
+            return model;
+        }
+
+        [Example("Axis Margins, Data Margins, and Padding")]
+        public static PlotModel MarginsAndPadding()
+        {
+            var plot = new PlotModel
+            {
+                Title = "Try resizing the plot",
+                Subtitle = "Plot bounds are Black, Clip bounds are Blue,\nActual bounds are Red, Series bounds are Green"
+            };
+
+            var xaxis = new LinearAxis
+            {
+                Position = AxisPosition.Bottom,
+                MinimumPadding = 0.1,
+                MaximumPadding = 0.1,
+                MinimumDataMargin = 20,
+                MaximumDataMargin = 20,
+                MinimumMargin = 30,
+                MaximumMargin = 30,
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Dash,
+                CropGridlines = true,
+            };
+
+            plot.Axes.Add(xaxis);
+
+            var yaxis = new LinearAxis
+            {
+                Position = AxisPosition.Left,
+                MinimumPadding = 0.1,
+                MaximumPadding = 0.1,
+                MinimumDataMargin = 20,
+                MaximumDataMargin = 20,
+                MinimumMargin = 30,
+                MaximumMargin = 30,
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Dash,
+                CropGridlines = true,
+            };
+
+            plot.Axes.Add(yaxis);
+
+            var rectangle = new LineSeries();
+            rectangle.Color = OxyColors.Green;
+            rectangle.Points.Add(new DataPoint(-5.0, 0.0));
+            rectangle.Points.Add(new DataPoint(-5.0, 20.0));
+            rectangle.Points.Add(new DataPoint(25.0, 20.0));
+            rectangle.Points.Add(new DataPoint(25.0, 0.0));
+            rectangle.Points.Add(new DataPoint(-5.0, 0.0));
+            plot.Series.Add(rectangle);
+
+            AddAxisMarginAnnotations(plot);
+
+            return plot;
+        }
+
+        [Example("Axis Margins, Data Margins, and Padding, Asymmetrical")]
+        public static PlotModel MarginsAndPaddingAsymmetrical()
+        {
+            var plot = new PlotModel
+            {
+                Title = "Try resizing the plot",
+                Subtitle = "Plot bounds are Black, Clip bounds are Blue,\nActual bounds are Red, Series bounds are Green"
+            };
+
+            var xaxis = new LinearAxis
+            {
+                Position = AxisPosition.Bottom,
+                MinimumPadding = 0.1,
+                MaximumPadding = 0.05,
+                MinimumDataMargin = 20,
+                MaximumDataMargin = 10,
+                MinimumMargin = 30,
+                MaximumMargin = 15,
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Dash,
+                CropGridlines = true,
+            };
+
+            plot.Axes.Add(xaxis);
+
+            var yaxis = new LinearAxis
+            {
+                Position = AxisPosition.Left,
+                MinimumPadding = 0.2,
+                MaximumPadding = 0.1,
+                MinimumDataMargin = 40,
+                MaximumDataMargin = 20,
+                MinimumMargin = 60,
+                MaximumMargin = 30,
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Dash,
+                CropGridlines = true,
+            };
+
+            plot.Axes.Add(yaxis);
+
+            var rectangle = new LineSeries();
+            rectangle.Color = OxyColors.Green;
+            rectangle.Points.Add(new DataPoint(-5.0, 0.0));
+            rectangle.Points.Add(new DataPoint(-5.0, 20.0));
+            rectangle.Points.Add(new DataPoint(25.0, 20.0));
+            rectangle.Points.Add(new DataPoint(25.0, 0.0));
+            rectangle.Points.Add(new DataPoint(-5.0, 0.0));
+            plot.Series.Add(rectangle);
+
+            AddAxisMarginAnnotations(plot);
+
+            return plot;
+        }
+
         private static CategoryAxis GetLongLabelSeries()
         {
             var axis = new CategoryAxis() { Position = AxisPosition.Bottom };
@@ -1421,6 +1798,36 @@ namespace ExampleLibrary
             axis.Labels.Add("Longer Label");
             axis.Labels.Add("Even Longer Label");
             return axis;
+        }
+
+        private static void AddAxisMarginAnnotations(PlotModel plot)
+        {
+            plot.Annotations.Add(new RenderingCapabilities.DelegateAnnotation(rc =>
+            {
+                foreach (var axis in plot.Axes)
+                {
+                    if (axis.IsHorizontal())
+                    {
+                        var h = axis;
+
+                        rc.DrawLine(h.Transform(h.ClipMinimum), 0.0, h.Transform(h.ClipMinimum), plot.Height, new OxyPen(OxyColors.Blue, 1, LineStyle.Dot), EdgeRenderingMode.Automatic);
+                        rc.DrawLine(h.Transform(h.ClipMaximum), 0.0, h.Transform(h.ClipMaximum), plot.Height, new OxyPen(OxyColors.Blue, 1, LineStyle.Dot), EdgeRenderingMode.Automatic);
+
+                        rc.DrawLine(h.Transform(h.ActualMinimum), 0.0, h.Transform(h.ActualMinimum), plot.Height, new OxyPen(OxyColors.Red, 1, LineStyle.Dot), EdgeRenderingMode.Automatic);
+                        rc.DrawLine(h.Transform(h.ActualMaximum), 0.0, h.Transform(h.ActualMaximum), plot.Height, new OxyPen(OxyColors.Red, 1, LineStyle.Dot), EdgeRenderingMode.Automatic);
+                    }
+                    else
+                    {
+                        var v = axis;
+
+                        rc.DrawLine(0.0, v.Transform(v.ClipMinimum), plot.Width, v.Transform(v.ClipMinimum), new OxyPen(OxyColors.Blue, 1, LineStyle.Dot), EdgeRenderingMode.Automatic);
+                        rc.DrawLine(0.0, v.Transform(v.ClipMaximum), plot.Width, v.Transform(v.ClipMaximum), new OxyPen(OxyColors.Blue, 1, LineStyle.Dot), EdgeRenderingMode.Automatic);
+
+                        rc.DrawLine(0.0, v.Transform(v.ActualMinimum), plot.Width, v.Transform(v.ActualMinimum), new OxyPen(OxyColors.Red, 1, LineStyle.Dot), EdgeRenderingMode.Automatic);
+                        rc.DrawLine(0.0, v.Transform(v.ActualMaximum), plot.Width, v.Transform(v.ActualMaximum), new OxyPen(OxyColors.Red, 1, LineStyle.Dot), EdgeRenderingMode.Automatic);
+                    }
+                }
+            }));
         }
     }
 }

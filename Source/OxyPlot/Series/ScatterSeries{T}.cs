@@ -260,9 +260,13 @@ namespace OxyPlot.Series
             var yaxisTitle = this.YAxis.Title ?? DefaultYAxisTitle;
             var colorAxisTitle = (this.ColorAxis != null ? ((Axis)this.ColorAxis).Title : null) ?? DefaultColorAxisTitle;
 
+            var xmin = this.XAxis.ClipMinimum;
+            var xmax = this.XAxis.ClipMaximum;
+            var ymin = this.YAxis.ClipMinimum;
+            var ymax = this.YAxis.ClipMaximum;
             foreach (var p in actualPoints)
             {
-                if (p.X < this.XAxis.ActualMinimum || p.X > this.XAxis.ActualMaximum || p.Y < this.YAxis.ActualMinimum || p.Y > this.YAxis.ActualMaximum)
+                if (p.X < xmin || p.X > xmax || p.Y < ymin|| p.Y > ymax)
                 {
                     i++;
                     continue;

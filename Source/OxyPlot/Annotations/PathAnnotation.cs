@@ -275,10 +275,10 @@ namespace OxyPlot.Annotations
         /// </summary>
         protected virtual void CalculateActualMinimumsMaximums()
         {
-            this.ActualMinimumX = Math.Max(this.MinimumX, this.XAxis.ActualMinimum);
-            this.ActualMaximumX = Math.Min(this.MaximumX, this.XAxis.ActualMaximum);
-            this.ActualMinimumY = Math.Max(this.MinimumY, this.YAxis.ActualMinimum);
-            this.ActualMaximumY = Math.Min(this.MaximumY, this.YAxis.ActualMaximum);
+            this.ActualMinimumX = Math.Max(this.MinimumX, this.XAxis.ClipMinimum);
+            this.ActualMaximumX = Math.Min(this.MaximumX, this.XAxis.ClipMaximum);
+            this.ActualMinimumY = Math.Max(this.MinimumY, this.YAxis.ClipMinimum);
+            this.ActualMaximumY = Math.Min(this.MaximumY, this.YAxis.ClipMaximum);
 
             var topLeft = this.InverseTransform(this.PlotModel.PlotArea.TopLeft);
             var bottomRight = this.InverseTransform(this.PlotModel.PlotArea.BottomRight);

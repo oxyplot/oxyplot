@@ -97,7 +97,7 @@ namespace OxyPlot.Series
                         continue;
                     }
 
-                    if (v.X <= this.XAxis.ActualMinimum || v.X >= this.XAxis.ActualMaximum)
+                    if (v.X <= this.XAxis.ClipMinimum || v.X >= this.XAxis.ClipMaximum)
                     {
                         continue;
                     }

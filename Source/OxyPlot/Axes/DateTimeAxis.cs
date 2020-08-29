@@ -159,9 +159,9 @@ namespace OxyPlot.Axes
             out IList<double> majorLabelValues, out IList<double> majorTickValues, out IList<double> minorTickValues)
         {
             minorTickValues = this.CreateDateTimeTickValues(
-                this.ActualMinimum, this.ActualMaximum, this.ActualMinorStep, this.actualMinorIntervalType);
+                this.ClipMinimum, this.ClipMaximum, this.ActualMinorStep, this.actualMinorIntervalType);
             majorTickValues = this.CreateDateTimeTickValues(
-                this.ActualMinimum, this.ActualMaximum, this.ActualMajorStep, this.actualIntervalType);
+                this.ClipMinimum, this.ClipMaximum, this.ActualMajorStep, this.actualIntervalType);
             majorLabelValues = majorTickValues;
 
             minorTickValues = AxisUtilities.FilterRedundantMinorTicks(majorTickValues, minorTickValues);
@@ -329,7 +329,7 @@ namespace OxyPlot.Axes
             const double Second = Minute / 60;
             const double MilliSecond = Second / 1000;
 
-            double range = Math.Abs(this.ActualMinimum - this.ActualMaximum);
+            double range = Math.Abs(this.ClipMinimum - this.ClipMaximum);
 
             var goodIntervals = new[]
                                     {   MilliSecond, 2 * MilliSecond, 10 * MilliSecond, 100 * MilliSecond,

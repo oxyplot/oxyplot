@@ -270,19 +270,19 @@ namespace OxyPlot
         public OxyThickness Padding { get; set; }
 
         /// <summary>
-        /// The PlotBounds of the plot (in device units).
+        /// Gets the PlotBounds of the plot (in device units).
         /// </summary>
         public OxyRect PlotBounds { get; private set; }
 
         /// <summary>
         /// Gets the total width of the plot (in device units).
         /// </summary>
-        public double Width => PlotBounds.Width;
+        public double Width => this.PlotBounds.Width;
 
         /// <summary>
         /// Gets the total height of the plot (in device units).
         /// </summary>
-        public double Height => PlotBounds.Height;
+        public double Height => this.PlotBounds.Height;
 
         /// <summary>
         /// Gets the area including both the plot and the axes. Outside legends are rendered outside this rectangle.
@@ -606,7 +606,7 @@ namespace OxyPlot
                     x = axis.InverseTransform(pt.Y);
                 }
 
-                if (x >= axis.ActualMinimum && x <= axis.ActualMaximum)
+                if (x >= axis.ClipMinimum && x <= axis.ClipMaximum)
                 {
                     if (position == null)
                     {
