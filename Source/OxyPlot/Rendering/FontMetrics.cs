@@ -7,10 +7,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-
 namespace OxyPlot.Rendering
 {
+    using System;
+
     /// <summary>
     /// Contains metrics for a given font.
     /// </summary>
@@ -34,9 +34,9 @@ namespace OxyPlot.Rendering
                 throw new ArgumentException("Descender must be non-negative.", nameof(descender));
             }
 
-            Ascender = ascender;
-            Descender = descender;
-            Leading = leading;
+            this.Ascender = ascender;
+            this.Descender = descender;
+            this.Leading = leading;
         }
 
         /// <summary>

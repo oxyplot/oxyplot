@@ -7,12 +7,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using OxyPlot.Rendering;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace OxyPlot.Tests
 {
+    using OxyPlot.Rendering;
+    using System.Collections.Generic;
+    using System.Linq;
+
     public class MockTextMeasurer : ITextMeasurer
     {
         public MockTextMeasurer()

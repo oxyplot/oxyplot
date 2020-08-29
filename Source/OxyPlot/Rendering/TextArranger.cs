@@ -11,7 +11,6 @@ namespace OxyPlot.Rendering
 {
     using System;
     using System.Linq;
-    using System.Xml.Linq;
 
     /// <summary>
     /// Arranges text.
@@ -27,8 +26,6 @@ namespace OxyPlot.Rendering
         {
             this.TextMeasurer = textMeasurer ?? throw new ArgumentNullException(nameof(textMeasurer));
             this.TextTrimmer = textTrimmer ?? throw new ArgumentNullException(nameof(textTrimmer));
-
-            this.SquashTrimmedTextBounds = false;
         }
 
         /// <summary>
@@ -40,11 +37,6 @@ namespace OxyPlot.Rendering
         /// Gets or sets the <see cref="ITextTrimmer"/> used by this instance.
         /// </summary>
         public ITextTrimmer TextTrimmer { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether to squash the bounds of trimmed text to the size the text.
-        /// </summary>
-        public bool SquashTrimmedTextBounds { get; set; }
 
         /// <summary>
         /// Splits the text into multiple lines, and indicates where they should be rendered given the given target alignment.
@@ -62,9 +54,6 @@ namespace OxyPlot.Rendering
         /// <param name="targetVerticalAlignment">The vertical alignment used to render the text.</param>
         /// <param name="lines">The separate lines of text.</param>
         /// <param name="linePositions">The point at which to render each line.</param>
-        /// <remarks>
-        /// Non-null <paramref name="maxSize"/> is not supported.
-        /// </remarks>
         public void ArrangeText(
             ScreenPoint p,
             string text,
@@ -110,10 +99,8 @@ namespace OxyPlot.Rendering
                 var clippedLineCount = 1 + (int)((bounds.Height - lineHeight) / (lineHeight + leading));
                 lines = lines.Take(clippedLineCount).ToArray();
 
-                if (this.SquashTrimmedTextBounds)
-                {
-                    bounds = new OxySize(bounds.Width, ((lineHeight + leading) * lines.Length) - leading);
-                }
+                // recompute vertical height
+                bounds = new OxySize(bounds.Width, ((lineHeight + leading) * lines.Length) - leading);
             }
 
             // if the text is too wide, we need to trim the lines down a bit
@@ -123,11 +110,6 @@ namespace OxyPlot.Rendering
                 {
                     lines[i] = this.TextTrimmer.Trim(this.TextMeasurer, lines[i], bounds.Width, fontFamily, fontSize, fontWeight);
                 }
-
-                if (this.SquashTrimmedTextBounds)
-                {
-                    bounds = new OxySize(lines.Max(l => this.TextMeasurer.MeasureTextWidth(l, fontFamily, fontSize, fontWeight)), bounds.Height);
-                }
             }
 
             // do these once
@@ -135,7 +117,6 @@ namespace OxyPlot.Rendering
             var cos = Math.Cos(rotation / 180.0 * Math.PI);
 
             // turn metrics into vectors
-            var offsetBoundsWidth = new ScreenVector(cos * bounds.Width, sin * bounds.Width);
             var offsetBoundsHeight = new ScreenVector(-sin * bounds.Height, cos * bounds.Height);
 
             var offsetLineHeight = new ScreenVector(-sin * lineHeight, cos * lineHeight);
@@ -143,10 +124,7 @@ namespace OxyPlot.Rendering
             var offsetDescender = new ScreenVector(-sin * descender, cos * descender);
 
             // align to bounds
-            var offsetBoundsX = offsetBoundsWidth * 0.0; // keep centerline
             var offsetBoundsY = offsetBoundsHeight * (ResolveOffset(verticalAlignment) - 0.5); // find the top of the top line
-
-            p += offsetBoundsX + offsetBoundsY;
 
             // align lines within bounds
             bool useBaselineOffset = targetVerticalAlignment == TextVerticalAlignment.Baseline;
@@ -163,18 +141,23 @@ namespace OxyPlot.Rendering
                 offsetLineY -= offsetDescender;
             }
 
-            // position the lines
+            // positions the individual lines
             linePositions = new ScreenPoint[lines.Length];
+
+            p += offsetBoundsY;
             for (int i = 0; i < lines.Length; i++)
             {
                 var line = lines[i];
                 var lineWidth = this.TextMeasurer.MeasureTextWidth(line, fontFamily, fontSize, fontWeight);
 
                 var offsetLineWidth = new ScreenVector(cos * lineWidth, sin * lineWidth);
-
                 var offsetLineX = offsetLineWidth * offsetLineXRelative;
 
-                linePositions[i] = p + ((offsetLineHeight + offsetLeading) * i) + offsetLineX + offsetLineY;
+                // align this line
+                linePositions[i] = p + offsetLineX + offsetLineY;
+
+                // advance
+                p += offsetLineHeight + offsetLeading;
             }
         }
 
