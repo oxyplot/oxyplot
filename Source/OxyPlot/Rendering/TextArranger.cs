@@ -192,7 +192,7 @@ namespace OxyPlot.Rendering
             var leading = metrics.Leading;
             var lineCount = lines.Length;
 
-            var height = ((cellHeight  + leading) * lineCount) - leading;
+            var height = ((cellHeight + leading) * lineCount) - leading;
 
             return new OxySize(width, height);
         }
