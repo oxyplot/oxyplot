@@ -13,6 +13,7 @@ namespace OxyPlot.ImageSharp.Tests
     using OxyPlot.Series;
     using OxyPlot.ImageSharp;
     using OxyPlot.Annotations;
+    using ExampleLibrary;
 
     [TestFixture]
     public class SvgExporterTests
@@ -32,7 +33,7 @@ namespace OxyPlot.ImageSharp.Tests
         {
             var exporter = new SvgExporter(1000, 750);
             var directory = Path.Combine(this.outputDirectory, "ExampleLibrary");
-            ExportTest.Export_FirstExampleOfEachExampleGroup_CheckThatAllFilesExist(exporter, directory, ".svg");
+            ExportTest.ExportExamples_CheckThatAllFilesExist(Examples.GetFirstExampleOfEachCategory(), exporter, directory, ".svg");
         }
 
         [Test]
