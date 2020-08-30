@@ -62,6 +62,16 @@ namespace ExampleLibrary
             return HistogramLabelPlacement().ReverseYAxis();
         }
 
+        [Example("Label Format String")]
+        public static PlotModel LabelFormatString()
+        {
+            var model = CreateDisconnectedBins();
+            var hs = model.Series[0] as HistogramSeries;
+            hs.LabelFormatString = "Start: {1:0.00}\nEnd: {2:0.00}\nValue: {0:0.00}\nArea: {3:0.00}\nCount: {4}";
+            hs.LabelPlacement = LabelPlacement.Inside;
+            return model;
+        }
+
         [Example("Custom Bins")]
         public static PlotModel CustomBins()
         {

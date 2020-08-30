@@ -340,7 +340,7 @@ namespace OxyPlot.Series
         /// <param name="item">The item.</param>
         protected void RenderLabel(IRenderContext rc, OxyRect rect, HistogramItem item)
         {
-            var s = StringHelper.Format(this.ActualCulture, this.LabelFormatString, item, item.Value);
+            var s = StringHelper.Format(this.ActualCulture, this.LabelFormatString, item, item.Value, item.RangeStart, item.RangeEnd, item.Area, item.Count);
             DataPoint dp;
             VerticalAlignment va;
             var ha = HorizontalAlignment.Center;
