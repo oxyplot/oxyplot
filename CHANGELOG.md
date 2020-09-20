@@ -69,6 +69,7 @@ All notable changes to this project will be documented in this file.
 - Clipping API changed from SetClip(...) and ResetClip() to PushClip(...) and PopClip() (#1593)
 - Remove TileMapAnnotation examples from automated testing (#1667)
 - Optimize clipping calls (#1661)
+- Mark CandleStickAndVolumeSeries as obsolete (#1661)
 
 ### Removed
 - Remove PlotModel.Legends (#644)
