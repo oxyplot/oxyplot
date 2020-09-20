@@ -25,5 +25,11 @@ namespace OxyPlot
         /// Gets the Y axis.
         /// </summary>
         Axis YAxis { get; }
+
+        /// <summary>
+        /// Gets the clipping rectangle.
+        /// </summary>
+        /// <returns>The clipping rectangle.</returns>
+        OxyRect GetClippingRect();
     }
 }

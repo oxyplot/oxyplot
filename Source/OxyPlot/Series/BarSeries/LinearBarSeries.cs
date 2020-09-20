@@ -140,10 +140,7 @@ namespace OxyPlot.Series
             };
         }
 
-        /// <summary>
-        /// Renders the series on the specified rendering context.
-        /// </summary>
-        /// <param name="rc">The rendering context.</param>
+        /// <inheritdoc/>
         public override void Render(IRenderContext rc)
         {
             this.rectangles.Clear();
@@ -157,9 +154,6 @@ namespace OxyPlot.Series
 
             this.VerifyAxes();
 
-            var clippingRect = this.GetClippingRect();
-
-            using var _ = rc.AutoResetClip(clippingRect);
             this.RenderBars(rc, actualPoints);
         }
 

@@ -326,19 +326,15 @@ namespace OxyPlot.Series
 
                 if (this.StrokeThickness > 0 && this.LineStyle != LineStyle.None)
                 {
-                    rc.DrawClippedLine(
-                        clippingRect,
+                    rc.DrawLine(
                         new[] { topWhiskerTop, topWhiskerBottom },
-                        0,
                         strokeColor,
                         this.StrokeThickness,
                         this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness),
                         dashArray,
                         LineJoin.Miter);
-                    rc.DrawClippedLine(
-                        clippingRect,
+                    rc.DrawLine(
                         new[] { bottomWhiskerTop, bottomWhiskerBottom },
-                        0,
                         strokeColor,
                         this.StrokeThickness,
                         this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness),
@@ -354,19 +350,15 @@ namespace OxyPlot.Series
                     var bottomWhiskerLine1 = this.Transform(item.X - halfWhiskerWidth, item.LowerWhisker);
                     var bottomWhiskerLine2 = this.Transform(item.X + halfWhiskerWidth, item.LowerWhisker);
 
-                    rc.DrawClippedLine(
-                        clippingRect,
+                    rc.DrawLine(
                         new[] { topWhiskerLine1, topWhiskerLine2 },
-                        0,
                         strokeColor,
                         this.StrokeThickness,
                         this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness),
                         null,
                         LineJoin.Miter);
-                    rc.DrawClippedLine(
-                        clippingRect,
+                    rc.DrawLine(
                         new[] { bottomWhiskerLine1, bottomWhiskerLine2 },
-                        0,
                         strokeColor,
                         this.StrokeThickness,
                         this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness),
@@ -378,9 +370,9 @@ namespace OxyPlot.Series
                 {
                     // Draw the box
                     var rect = this.GetBoxRect(item);
-                    rc.DrawClippedRectangle(
-                        clippingRect, 
-                        rect, fillColor, 
+                    rc.DrawRectangle(
+                        rect, 
+                        fillColor, 
                         strokeColor, 
                         this.StrokeThickness, 
                         this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness));
@@ -391,10 +383,8 @@ namespace OxyPlot.Series
                     // Draw the median line
                     var medianLeft = this.Transform(item.X - halfBoxWidth, item.Median);
                     var medianRight = this.Transform(item.X + halfBoxWidth, item.Median);
-                    rc.DrawClippedLine(
-                        clippingRect,
+                    rc.DrawLine(
                         new[] { medianLeft, medianRight },
-                        0,
                         strokeColor,
                         this.StrokeThickness * this.MedianThickness,
                         this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness),
@@ -420,10 +410,8 @@ namespace OxyPlot.Series
                     // Draw the median line
                     var meanLeft = this.Transform(item.X - halfBoxWidth, item.Mean);
                     var meanRight = this.Transform(item.X + halfBoxWidth, item.Mean);
-                    rc.DrawClippedLine(
-                        clippingRect,
+                    rc.DrawLine(
                         new[] { meanLeft, meanRight },
-                        0,
                         strokeColor,
                         this.StrokeThickness * this.MeanThickness,
                         this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness),
@@ -450,7 +438,6 @@ namespace OxyPlot.Series
                 // Draw the outlier(s)
                 var markerSizes = outlierScreenPoints.Select(o => this.OutlierSize).ToList();
                 rc.DrawMarkers(
-                    clippingRect,
                     outlierScreenPoints,
                     this.OutlierType,
                     this.OutlierOutline,

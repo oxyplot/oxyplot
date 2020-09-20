@@ -72,8 +72,6 @@ namespace ExampleLibrary
 
             this.VerifyAxes();
 
-            var clippingRect = this.GetClippingRect();
-
             int n = points.Count;
 
             // Transform all points to screen coordinates
@@ -114,8 +112,7 @@ namespace ExampleLibrary
             // clip the line segments with the clipping rectangle
             for (int i = 0; i + 1 < segments.Count; i += 2)
             {
-                rc.DrawClippedLine(
-                    clippingRect,
+                rc.DrawReducedLine(
                     new[] { segments[i], segments[i + 1] },
                     2,
                     this.GetSelectableColor(this.Color),

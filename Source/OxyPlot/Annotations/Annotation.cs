@@ -90,10 +90,10 @@ namespace OxyPlot.Annotations
         /// <returns>
         /// The clipping rectangle.
         /// </returns>
-        protected OxyRect GetClippingRect()
+        public virtual OxyRect GetClippingRect()
         {
             var rect = this.PlotModel.PlotArea;
-            var axisRect = TransposablePlotElementExtensions.GetClippingRect(this);
+            var axisRect = this.GetAxisClippingRect();
 
             var minX = double.NegativeInfinity;
             var maxX = double.PositiveInfinity;

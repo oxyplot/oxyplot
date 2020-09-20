@@ -104,10 +104,7 @@ namespace OxyPlot.Annotations
         /// <value>The vertical alignment.</value>
         public VerticalAlignment VerticalAlignment { get; set; }
 
-        /// <summary>
-        /// Renders the image annotation.
-        /// </summary>
-        /// <param name="rc">The render context.</param>
+        /// <inheritdoc/>
         public override void Render(IRenderContext rc)
         {
             base.Render(rc);
@@ -115,8 +112,6 @@ namespace OxyPlot.Annotations
             var p = this.GetPoint(this.X, this.Y, this.PlotModel);
             var o = this.GetVector(this.OffsetX, this.OffsetY, this.PlotModel);
             var position = p + o;
-
-            var clippingRectangle = this.GetClippingRect();
 
             var s = this.GetVector(this.Width, this.Height, this.PlotModel);
 
@@ -168,14 +163,7 @@ namespace OxyPlot.Annotations
 
             this.actualBounds = new OxyRect(x, y, width, height);
 
-            if (this.X.Unit == PlotLengthUnit.Data || this.Y.Unit == PlotLengthUnit.Data)
-            {
-                rc.DrawClippedImage(clippingRectangle, this.ImageSource, x, y, width, height, this.Opacity, this.Interpolate);
-            }
-            else
-            {
-                rc.DrawImage(this.ImageSource, x, y, width, height, this.Opacity, this.Interpolate);
-            }
+            rc.DrawImage(this.ImageSource, x, y, width, height, this.Opacity, this.Interpolate);
         }
 
         /// <summary>
@@ -309,6 +297,17 @@ namespace OxyPlot.Annotations
             }
 
             return new ScreenVector(xd, yd);
+        }
+
+        /// <inheritdoc/>
+        public override OxyRect GetClippingRect()
+        {
+            if (this.X.Unit == PlotLengthUnit.Data || this.Y.Unit == PlotLengthUnit.Data)
+            {
+                return base.GetClippingRect();
+            }
+
+            return new OxyRect(0, 0, double.PositiveInfinity, double.PositiveInfinity);
         }
     }
 }

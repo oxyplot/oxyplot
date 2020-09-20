@@ -101,6 +101,12 @@ namespace OxyPlot.Series
         /// </summary>
         protected int WindowStartIndex { get; set; }
 
+        /// <inheritdoc/>
+        public OxyRect GetClippingRect()
+        {
+            return this.GetAxisClippingRect();
+        }
+
         /// <summary>
         /// Gets the rectangle the series uses on the screen (screen coordinates).
         /// </summary>

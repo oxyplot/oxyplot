@@ -51,10 +51,7 @@ namespace OxyPlot.Annotations
         /// <value>The points.</value>
         public List<DataPoint> Points { get; private set; }
 
-        /// <summary>
-        /// Renders the polygon annotation.
-        /// </summary>
-        /// <param name="rc">The render context.</param>
+        /// <inheritdoc/>
         public override void Render(IRenderContext rc)
         {
             base.Render(rc);
@@ -70,13 +67,9 @@ namespace OxyPlot.Annotations
                 return;
             }
 
-            // clip to the area defined by the axes
-            var clippingRectangle = this.GetClippingRect();
-
             const double MinimumSegmentLength = 4;
 
-            rc.DrawClippedPolygon(
-                clippingRectangle,
+            rc.DrawReducedPolygon(
                 this.screenPoints,
                 MinimumSegmentLength * MinimumSegmentLength,
                 this.GetSelectableFillColor(this.Fill),
@@ -91,8 +84,7 @@ namespace OxyPlot.Annotations
                 this.GetActualTextAlignment(out var ha, out var va);
                 var textPosition = this.GetActualTextPosition(() => ScreenPointHelper.GetCentroid(this.screenPoints));
 
-                rc.DrawClippedText(
-                    clippingRectangle,
+                rc.DrawText(
                     textPosition,
                     this.Text,
                     this.ActualTextColor,

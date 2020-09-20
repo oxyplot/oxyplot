@@ -220,10 +220,7 @@ namespace OxyPlot.Series
                    && !double.IsInfinity(pt.High) && !double.IsNaN(pt.Low) && !double.IsInfinity(pt.Low);
         }
 
-        /// <summary>
-        /// Renders the series on the specified rendering context.
-        /// </summary>
-        /// <param name="rc">The rendering context.</param>
+        /// <inheritdoc/>
         public override void Render(IRenderContext rc)
         {
             if (this.items.Count == 0)
@@ -233,7 +230,6 @@ namespace OxyPlot.Series
 
             this.VerifyAxes();
 
-            var clippingRect = this.GetClippingRect();
             var dashArray = this.LineStyle.GetDashArray();
             var actualColor = this.GetSelectableColor(this.ActualColor);
             foreach (var v in this.items)
@@ -248,10 +244,8 @@ namespace OxyPlot.Series
                     var high = this.Transform(v.X, v.High);
                     var low = this.Transform(v.X, v.Low);
 
-                    rc.DrawClippedLine(
-                        clippingRect,
+                    rc.DrawLine(
                         new[] { low, high },
-                        0,
                         actualColor,
                         this.StrokeThickness,
                         this.EdgeRenderingMode,
@@ -263,10 +257,8 @@ namespace OxyPlot.Series
                     {
                         var open = this.Transform(v.X, v.Open);
                         var openTick = open - tickVector;
-                        rc.DrawClippedLine(
-                            clippingRect,
+                        rc.DrawLine(
                             new[] { open, openTick },
-                            0,
                             actualColor,
                             this.StrokeThickness,
                             this.EdgeRenderingMode,
@@ -278,10 +270,8 @@ namespace OxyPlot.Series
                     {
                         var close = this.Transform(v.X, v.Close);
                         var closeTick = close + tickVector;
-                        rc.DrawClippedLine(
-                            clippingRect,
+                        rc.DrawLine(
                             new[] { close, closeTick },
-                            0,
                             actualColor,
                             this.StrokeThickness,
                             this.EdgeRenderingMode,

@@ -167,10 +167,7 @@ namespace OxyPlot.Series
             return result;
         }
 
-        /// <summary>
-        /// Renders the series on the specified rendering context.
-        /// </summary>
-        /// <param name="rc">The rendering context.</param>
+        /// <inheritdoc/>
         public override void Render(IRenderContext rc)
         {
             // determine render range
@@ -181,16 +178,12 @@ namespace OxyPlot.Series
 
             double minDistSquared = this.MinimumSegmentLength * this.MinimumSegmentLength;
 
-            var clippingRect = this.GetClippingRect();
-            using var _ = rc.AutoResetClip(clippingRect);
-
             var areaContext = new TwoColorAreaRenderContext
             {
                 Points = this.abovePoints,
                 WindowStartIndex = this.WindowStartIndex,
                 XMax = xmax,
                 RenderContext = rc,
-                ClippingRect = clippingRect,
                 MinDistSquared = minDistSquared,
                 Reverse = false,
                 Color = this.ActualColor,
@@ -240,7 +233,6 @@ namespace OxyPlot.Series
                 }
 
                 rc.DrawMarkers(
-                    clippingRect,
                     aboveMarkers,
                     this.MarkerType,
                     null,
@@ -251,7 +243,6 @@ namespace OxyPlot.Series
                     this.EdgeRenderingMode,
                     1);
                 rc.DrawMarkers(
-                    clippingRect,
                     belowMarkers,
                     this.MarkerType,
                     null,
@@ -315,8 +306,7 @@ namespace OxyPlot.Series
             var poligon = new List<ScreenPoint>(baseline);
             poligon.AddRange(result);
 
-            context.RenderContext.DrawClippedPolygon(
-                context.ClippingRect,
+            context.RenderContext.DrawReducedPolygon(
                 poligon,
                 context.MinDistSquared,
                 this.GetSelectableFillColor(twoColorContext.Fill),
@@ -330,7 +320,6 @@ namespace OxyPlot.Series
 
                 // draw the markers on top
                 context.RenderContext.DrawMarkers(
-                    context.ClippingRect,
                     result,
                     this.MarkerType,
                     null,

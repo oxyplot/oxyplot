@@ -62,20 +62,14 @@ namespace OxyPlot.Annotations
         /// <value>A polyline. The default is <c>null</c>.</value>
         public ScreenPoint[] CustomOutline { get; set; }
 
-        /// <summary>
-        /// Renders the polygon annotation.
-        /// </summary>
-        /// <param name="rc">The render context.</param>
+        /// <inheritdoc/>
         public override void Render(IRenderContext rc)
         {
             base.Render(rc);
 
             this.screenPosition = this.Transform(this.X, this.Y);
 
-            // clip to the area defined by the axes
-            var clippingRectangle = this.GetClippingRect();
-
-            rc.DrawMarker(clippingRectangle, this.screenPosition, this.Shape, this.CustomOutline, this.Size, this.Fill, this.Stroke, this.StrokeThickness, this.EdgeRenderingMode);
+            rc.DrawMarker(this.screenPosition, this.Shape, this.CustomOutline, this.Size, this.Fill, this.Stroke, this.StrokeThickness, this.EdgeRenderingMode);
 
             if (!string.IsNullOrEmpty(this.Text))
             {
@@ -83,8 +77,7 @@ namespace OxyPlot.Annotations
                 var dx = -(int)ha * (this.Size + this.TextMargin);
                 var dy = -(int)va * (this.Size + this.TextMargin);
                 var textPosition = this.screenPosition + new ScreenVector(dx, dy);
-                rc.DrawClippedText(
-                    clippingRectangle,
+                rc.DrawText(
                     textPosition,
                     this.Text,
                     this.ActualTextColor,

@@ -189,10 +189,7 @@ namespace OxyPlot.Series
             return OhlcvItem.FindIndex(this.data, x, startingIndex);
         }
 
-        /// <summary>
-        /// Renders the series on the specified rendering context.
-        /// </summary>
-        /// <param name="rc">The rendering context.</param>
+        /// <inheritdoc/>
         public override void Render(IRenderContext rc)
         {
             if (this.data == null || this.data.Count == 0)
@@ -251,7 +248,7 @@ namespace OxyPlot.Series
                             var fillcolor = (bar.BuyVolume > bar.SellVolume) ? barfillUp : barfillDown;
                             var linecolor = (bar.BuyVolume > bar.SellVolume) ? lineUp : lineDown;
                             var rect1 = new OxyRect(p1, p2);
-                            rc.DrawClippedRectangle(clippingRect, rect1, fillcolor, linecolor, this.StrokeThickness, this.EdgeRenderingMode);
+                            rc.DrawRectangle(rect1, fillcolor, linecolor, this.StrokeThickness, this.EdgeRenderingMode);
                         }
 
                         break;
@@ -264,8 +261,8 @@ namespace OxyPlot.Series
                             var rectBuy = new OxyRect(p1, p2Buy);
                             var rectSell = new OxyRect(p1, p2Bell);
 
-                            rc.DrawClippedRectangle(clippingRect, rectBuy, fillUp, lineUp, this.StrokeThickness, this.EdgeRenderingMode);
-                            rc.DrawClippedRectangle(clippingRect, rectSell, fillDown, lineDown, this.StrokeThickness, this.EdgeRenderingMode);
+                            rc.DrawRectangle(rectBuy, fillUp, lineUp, this.StrokeThickness, this.EdgeRenderingMode);
+                            rc.DrawRectangle(rectSell, fillDown, lineDown, this.StrokeThickness, this.EdgeRenderingMode);
                         }
 
                         break;
@@ -290,8 +287,8 @@ namespace OxyPlot.Series
                                 rectSell = new OxyRect(p2Buy, pBoth);
                             }
 
-                            rc.DrawClippedRectangle(clippingRect, rectBuy, fillUp, lineUp, this.StrokeThickness, this.EdgeRenderingMode);
-                            rc.DrawClippedRectangle(clippingRect, rectSell, fillDown, lineDown, this.StrokeThickness, this.EdgeRenderingMode);
+                            rc.DrawRectangle(rectBuy, fillUp, lineUp, this.StrokeThickness, this.EdgeRenderingMode);
+                            rc.DrawRectangle(rectSell, fillDown, lineDown, this.StrokeThickness, this.EdgeRenderingMode);
 
                             break;
                         }
@@ -310,10 +307,8 @@ namespace OxyPlot.Series
                 var lineA = this.Transform(p1.X, 0);
                 var lineB = this.Transform(p2.X, 0);
 
-                rc.DrawClippedLine(
-                    clippingRect,
+                rc.DrawLine(
                     new[] { lineA, lineB },
-                    0,
                     this.InterceptColor,
                     this.InterceptStrokeThickness,
                     this.EdgeRenderingMode,

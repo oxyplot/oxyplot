@@ -68,6 +68,7 @@ All notable changes to this project will be documented in this file.
 - `AngleAxis` has position `AxisPosition.All` by default (#1574)
 - Clipping API changed from SetClip(...) and ResetClip() to PushClip(...) and PopClip() (#1593)
 - Remove TileMapAnnotation examples from automated testing (#1667)
+- Optimize clipping calls (#1661)
 
 ### Removed
 - Remove PlotModel.Legends (#644)
@@ -80,6 +81,8 @@ All notable changes to this project will be documented in this file.
 - Axis.UpdateFromSeries(...) and Series.UpdateValidData() (#741)
 - Support for IRenderContext implementations without native clipping (#1593)
 - CohenSutherlandClipping and SutherlandHodgmanClipping (#1593)
+- DrawClippedXxx(...) extensions in RenderingExtensions (#1661)
+- PathAnnotation.ClipText property - text is now always clipped (#1661)
 
 ### Fixed
 - Legend font size is not affected by DefaultFontSize (#1396)

@@ -40,7 +40,6 @@ namespace OxyPlot.Annotations
             this.TextLinePosition = 1;
             this.TextOrientation = AnnotationTextOrientation.AlongLine;
             this.TextMargin = 12;
-            this.ClipText = true;
             this.TextHorizontalAlignment = HorizontalAlignment.Right;
             this.TextVerticalAlignment = VerticalAlignment.Top;
         }
@@ -116,12 +115,6 @@ namespace OxyPlot.Annotations
         public double TextLinePosition { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to clip the text within the plot area.
-        /// </summary>
-        /// <value><c>true</c> if text should be clipped within the plot area; otherwise, <c>false</c>.</value>
-        public bool ClipText { get; set; }
-
-        /// <summary>
         /// Gets or sets the actual minimum value on the x axis.
         /// </summary>
         /// <value>The actual minimum value on the x axis.</value>
@@ -145,10 +138,7 @@ namespace OxyPlot.Annotations
         /// <value>The actual maximum value on the y axis.</value>
         protected double ActualMaximumY { get; set; }
 
-        /// <summary>
-        /// Renders the annotation on the specified context.
-        /// </summary>
-        /// <param name="rc">The render context.</param>
+        /// <inheritdoc/>
         public override void Render(IRenderContext rc)
         {
             base.Render(rc);
@@ -157,8 +147,6 @@ namespace OxyPlot.Annotations
 
             this.screenPoints = this.GetScreenPoints();
 
-            var clippingRectangle = this.GetClippingRect();
-
             const double MinimumSegmentLength = 4;
 
             var clippedPoints = new List<ScreenPoint>();
@@ -166,8 +154,7 @@ namespace OxyPlot.Annotations
 
             if (this.StrokeThickness > 0 && this.LineStyle != LineStyle.None)
             {
-                rc.DrawClippedLine(
-                   clippingRectangle,
+                rc.DrawReducedLine(
                    this.screenPoints,
                    MinimumSegmentLength * MinimumSegmentLength,
                    this.GetSelectableColor(this.Color),
@@ -239,33 +226,16 @@ namespace OxyPlot.Annotations
                         angle = this.TextRotation;
                     }
 
-                    if (this.ClipText)
-                    {
-                        rc.DrawClippedText(
-                            clippingRectangle,
-                            textPosition,
-                            this.Text,
-                            this.ActualTextColor,
-                            this.ActualFont,
-                            this.ActualFontSize,
-                            this.ActualFontWeight,
-                            angle,
-                            ha,
-                            va);
-                    }
-                    else
-                    {
-                        rc.DrawText(
-                           textPosition,
-                           this.Text,
-                           this.ActualTextColor,
-                           this.ActualFont,
-                           this.ActualFontSize,
-                           this.ActualFontWeight,
-                           angle,
-                           ha,
-                           va);
-                    }
+                    rc.DrawText(
+                        textPosition,
+                        this.Text,
+                        this.ActualTextColor,
+                        this.ActualFont,
+                        this.ActualFontSize,
+                        this.ActualFontWeight,
+                        angle,
+                        ha,
+                        va);
                 }
             }
         }

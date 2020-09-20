@@ -148,7 +148,6 @@ namespace OxyPlot.Series
 
             this.VerifyAxes();
 
-            var clippingRect = this.GetClippingRect();
             var dashArray = this.ActualDashArray;
             var verticalLineDashArray = this.VerticalLineStyle.GetDashArray();
             var lineStyle = this.ActualLineStyle;
@@ -176,16 +175,14 @@ namespace OxyPlot.Series
                                 vlpts.Add(lpts[i + 2]);
                             }
 
-                            rc.DrawClippedLineSegments(
-                                clippingRect,
+                            rc.DrawLineSegments(
                                 hlpts,
                                 actualColor,
                                 this.StrokeThickness,
                                 this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness),
                                 dashArray,
                                 this.LineJoin);
-                            rc.DrawClippedLineSegments(
-                                clippingRect,
+                            rc.DrawLineSegments(
                                 vlpts,
                                 actualColor,
                                 verticalStrokeThickness,
@@ -195,10 +192,8 @@ namespace OxyPlot.Series
                         }
                         else
                         {
-                            rc.DrawClippedLine(
-                                clippingRect,
+                            rc.DrawLine(
                                 lpts,
-                                0,
                                 actualColor,
                                 this.StrokeThickness,
                                 this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness),
@@ -210,7 +205,6 @@ namespace OxyPlot.Series
                     if (this.MarkerType != MarkerType.None)
                     {
                         rc.DrawMarkers(
-                            clippingRect,
                             mpts,
                             this.MarkerType,
                             this.MarkerOutline,
@@ -255,7 +249,7 @@ namespace OxyPlot.Series
             if (this.LabelFormatString != null)
             {
                 // render point labels (not optimized for performance)
-                this.RenderPointLabels(rc, clippingRect);
+                this.RenderPointLabels(rc);
             }
         }
     }

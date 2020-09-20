@@ -266,12 +266,11 @@ namespace OxyPlot.Series
                 this.colorAxisHash = currentColorAxisHash;
             }
 
-            var clip = this.GetClippingRect();
             if (needImage)
             {
                 if (this.image != null)
                 {
-                    rc.DrawClippedImage(clip, this.image, rect.Left, rect.Top, rect.Width, rect.Height, 1, this.Interpolate);
+                    rc.DrawImage(this.image, rect.Left, rect.Top, rect.Width, rect.Height, 1, this.Interpolate);
                 }
             }
             else
@@ -293,7 +292,7 @@ namespace OxyPlot.Series
                         var pointb = this.Orientate(new ScreenPoint(s00.X + ((i + 1) * sdx), s00.Y + ((j + 1) * sdy))); // re-orientate
                         var rectrect = new OxyRect(pointa, pointb);
 
-                        rc.DrawClippedRectangle(clip, rectrect, rectcolor, OxyColors.Undefined, 0, this.EdgeRenderingMode);
+                        rc.DrawRectangle(rectrect, rectcolor, OxyColors.Undefined, 0, this.EdgeRenderingMode);
                     }
                 }
             }
@@ -505,7 +504,6 @@ namespace OxyPlot.Series
         /// <param name="rect">The bounding rectangle for the data.</param>
         protected virtual void RenderLabels(IRenderContext rc, OxyRect rect)
         {
-            var clip = this.GetClippingRect();
             int m = this.Data.GetLength(0);
             int n = this.Data.GetLength(1);
             double fontSize = (rect.Height / n) * this.LabelFontSize;
@@ -531,8 +529,7 @@ namespace OxyPlot.Series
                     var hsv = color.ToHsv();
                     var textColor = hsv[2] > 0.6 ? OxyColors.Black : OxyColors.White;
                     var label = this.GetLabel(v, i, j);
-                    rc.DrawClippedText(
-                        clip,
+                    rc.DrawText(
                         point,
                         label,
                         textColor,

@@ -105,8 +105,6 @@ namespace ExampleLibrary
         /// <param name="rc">The render context.</param>
         public override void Render(IRenderContext rc)
         {
-            base.Render(rc);
-
             var lon0 = this.XAxis.ActualMinimum;
             var lon1 = this.XAxis.ActualMaximum;
             var lat0 = this.YAxis.ActualMinimum;
@@ -166,7 +164,7 @@ namespace ExampleLibrary
                     var r = OxyRect.Create(s00.X, s00.Y, s11.X, s11.Y);
 
                     // draw the image
-                    rc.DrawClippedImage(clippingRectangle, img, r.Left, r.Top, r.Width, r.Height, this.Opacity, true);
+                    rc.DrawImage(img, r.Left, r.Top, r.Width, r.Height, this.Opacity, true);
                 }
             }
 

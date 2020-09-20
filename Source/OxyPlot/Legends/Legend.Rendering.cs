@@ -436,6 +436,11 @@ namespace OxyPlot.Legends
                 seriesToRender.Clear();
             };
 
+            if (!measureOnly)
+            {
+                rc.PushClip(rect);
+            }
+
             foreach (var g in itemGroupNames)
             {
                 var itemGroup = items.Where(i => i.SeriesGroupName == g);
@@ -524,6 +529,11 @@ namespace OxyPlot.Legends
                 }
 
                 renderItems();
+            }
+
+            if (!measureOnly)
+            {
+                rc.PopClip();
             }
 
             if (size.Width > 0)

@@ -15,17 +15,17 @@ namespace OxyPlot
     public static class TransposablePlotElementExtensions
     {
         /// <summary>
-        /// Gets the clipping rectangle.
+        /// Gets the clipping rectangle defined by the Axis the <see cref="ITransposablePlotElement"/> uses.
         /// </summary>
         /// <param name="element">The <see cref="ITransposablePlotElement" />.</param>
         /// <returns>The clipping rectangle.</returns>
-        public static OxyRect GetClippingRect(this ITransposablePlotElement element)
+        public static OxyRect GetAxisClippingRect(this ITransposablePlotElement element)
         {
             var p1 = new ScreenPoint(element.XAxis.ScreenMin.X, element.YAxis.ScreenMin.Y);
             var p2 = new ScreenPoint(element.XAxis.ScreenMax.X, element.YAxis.ScreenMax.Y);
             return new OxyRect(element.Orientate(p1), element.Orientate(p2));
         }
-
+        
         /// <summary>
         /// Transforms from a screen point to a data point by the axes of this series.
         /// </summary>
