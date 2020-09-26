@@ -9,27 +9,10 @@
 
 namespace OxyPlot
 {
-    using OxyPlot.Axes;
-
     /// <summary>
     /// The TransposablePlotElement interface.
     /// </summary>
-    public interface ITransposablePlotElement : IPlotElement
+    public interface ITransposablePlotElement : IXyAxisPlotElement
     {
-        /// <summary>
-        /// Gets the X axis.
-        /// </summary>
-        Axis XAxis { get; }
-
-        /// <summary>
-        /// Gets the Y axis.
-        /// </summary>
-        Axis YAxis { get; }
-
-        /// <summary>
-        /// Gets the clipping rectangle.
-        /// </summary>
-        /// <returns>The clipping rectangle.</returns>
-        OxyRect GetClippingRect();
     }
 }

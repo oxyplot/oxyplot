@@ -807,7 +807,7 @@ namespace ExampleLibrary
 
             public override OxyRect GetClippingRect()
             {
-                return new OxyRect(0, 0, double.PositiveInfinity, double.PositiveInfinity);
+                return OxyRect.Everything;
             }
         }
     }

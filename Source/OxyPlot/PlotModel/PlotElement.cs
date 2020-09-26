@@ -147,6 +147,12 @@ namespace OxyPlot
             }
         }
 
+        /// <inheritdoc/>
+        public virtual OxyRect GetClippingRect()
+        {
+            return OxyRect.Everything;
+        }
+
         /// <summary>
         /// Returns a hash code for this element.
         /// </summary>

@@ -1,10 +1,7 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TransposablePlotElementExtensions.cs" company="OxyPlot">
+// <copyright file="PlotElementExtensions.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
-// <summary>
-//   Defines the TransposablePlotElementExtensions type.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
@@ -12,30 +9,18 @@ namespace OxyPlot
     /// <summary>
     /// The transposable plot element extensions.
     /// </summary>
-    public static class TransposablePlotElementExtensions
+    public static class PlotElementExtensions
     {
-        /// <summary>
-        /// Gets the clipping rectangle defined by the Axis the <see cref="ITransposablePlotElement"/> uses.
-        /// </summary>
-        /// <param name="element">The <see cref="ITransposablePlotElement" />.</param>
-        /// <returns>The clipping rectangle.</returns>
-        public static OxyRect GetAxisClippingRect(this ITransposablePlotElement element)
-        {
-            var p1 = new ScreenPoint(element.XAxis.ScreenMin.X, element.YAxis.ScreenMin.Y);
-            var p2 = new ScreenPoint(element.XAxis.ScreenMax.X, element.YAxis.ScreenMax.Y);
-            return new OxyRect(element.Orientate(p1), element.Orientate(p2));
-        }
-        
         /// <summary>
         /// Transforms from a screen point to a data point by the axes of this series.
         /// </summary>
         /// <param name="element">The <see cref="ITransposablePlotElement" />.</param>
-        /// <param name="p">The screen point.</param>
+        /// <param name="x">The x coordinate of the screen point.</param>
+        /// <param name="y">The y coordinate of the screen point.</param>
         /// <returns>A data point.</returns>
-        public static DataPoint InverseTransform(this ITransposablePlotElement element, ScreenPoint p)
+        public static DataPoint InverseTransform(this IXyAxisPlotElement element, double x, double y)
         {
-            p = element.Orientate(p);
-            return element.XAxis.InverseTransform(p.X, p.Y, element.YAxis);
+            return element.InverseTransform(new ScreenPoint(x, y));
         }
 
         /// <summary>
@@ -79,10 +64,7 @@ namespace OxyPlot
         /// <param name="element">The <see cref="ITransposablePlotElement" />.</param>
         /// <param name="ha">The <see cref="HorizontalAlignment" /> to orientate.</param>
         /// <param name="va">The <see cref="VerticalAlignment" /> to orientate.</param>
-        public static void Orientate(
-            this ITransposablePlotElement element,
-            ref HorizontalAlignment ha,
-            ref VerticalAlignment va)
+        public static void Orientate(this ITransposablePlotElement element, ref HorizontalAlignment ha, ref VerticalAlignment va)
         {
             if (element.XAxis.IsReversed)
             {
@@ -103,26 +85,15 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Transforms the specified coordinates to a screen point by the axes of this series.
-        /// </summary>
-        /// <param name="element">The <see cref="ITransposablePlotElement" />.</param>
-        /// <param name="x">The x coordinate.</param>
-        /// <param name="y">The y coordinate.</param>
-        /// <returns>A screen point.</returns>
-        public static ScreenPoint Transform(this ITransposablePlotElement element, double x, double y)
-        {
-            return element.Orientate(element.XAxis.Transform(x, y, element.YAxis));
-        }
-
-        /// <summary>
         /// Transforms the specified data point to a screen point by the axes of this series.
         /// </summary>
         /// <param name="element">The <see cref="ITransposablePlotElement" />.</param>
-        /// <param name="p">The point.</param>
+        /// <param name="x">The x coordinate of the data point.</param>
+        /// <param name="y">The y coordinate of the data point.</param>
         /// <returns>A screen point.</returns>
-        public static ScreenPoint Transform(this ITransposablePlotElement element, DataPoint p)
+        public static ScreenPoint Transform(this IXyAxisPlotElement element, double x, double y)
         {
-            return element.Transform(p.X, p.Y);
+            return element.Transform(new DataPoint(x, y));
         }
     }
 }

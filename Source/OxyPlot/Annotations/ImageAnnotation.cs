@@ -14,7 +14,7 @@ namespace OxyPlot.Annotations
     /// <summary>
     /// Represents an annotation that shows an image.
     /// </summary>
-    public class ImageAnnotation : Annotation
+    public class ImageAnnotation : TransposableAnnotation
     {
         /// <summary>
         /// The actual bounds of the rendered image.
@@ -307,7 +307,7 @@ namespace OxyPlot.Annotations
                 return base.GetClippingRect();
             }
 
-            return new OxyRect(0, 0, double.PositiveInfinity, double.PositiveInfinity);
+            return OxyRect.Everything;
         }
     }
 }

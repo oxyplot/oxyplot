@@ -365,22 +365,22 @@ namespace OxyPlot
 
         private void RenderPlotElements<T>(IEnumerable<T> plotElements, IRenderContext rc, Action<T> renderAction) where T: PlotElement
         {
-            OxyRect? previousClippingRect = null;
+            var previousClippingRect = OxyRect.Everything;
 
             foreach (var plotElement in plotElements)
             {
-                var currentClippingRect = (plotElement as ITransposablePlotElement)?.GetClippingRect();
+                var currentClippingRect = plotElement.GetClippingRect();
                 if (!currentClippingRect.Equals(previousClippingRect))
                 {
-                    if (previousClippingRect != null)
+                    if (!previousClippingRect.Equals(OxyRect.Everything))
                     {
                         rc.PopClip();
-                        previousClippingRect = null;
+                        previousClippingRect = OxyRect.Everything;
                     }
 
-                    if (currentClippingRect != null)
+                    if (!currentClippingRect.Equals(OxyRect.Everything))
                     {
-                        rc.PushClip(currentClippingRect.Value);
+                        rc.PushClip(currentClippingRect);
                         previousClippingRect = currentClippingRect;
                     }
                 }
@@ -389,7 +389,7 @@ namespace OxyPlot
                 renderAction(plotElement);
             }
 
-            if (previousClippingRect != null)
+            if (!previousClippingRect.Equals(OxyRect.Everything))
             {
                 rc.PopClip();
             }

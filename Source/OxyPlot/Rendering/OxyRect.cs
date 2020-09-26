@@ -19,6 +19,11 @@ namespace OxyPlot
     public struct OxyRect : IFormattable, IEquatable<OxyRect>
     {
         /// <summary>
+        /// Gets an infinitely large <see cref="OxyRect"/> starting at (0,0).
+        /// </summary>
+        public static readonly OxyRect Everything = new OxyRect(0, 0, double.PositiveInfinity, double.PositiveInfinity);
+
+        /// <summary>
         /// The height of the rectangle.
         /// </summary>
         private readonly double height;

@@ -55,7 +55,6 @@ namespace ExampleLibrary.Utilities
         /// </summary>
         private static readonly HashSet<Type> NonTransposableDataSpaceAnnotationTypes = new HashSet<Type>
         {
-            typeof(TileMapAnnotation),
         };
 
         /// <summary>
