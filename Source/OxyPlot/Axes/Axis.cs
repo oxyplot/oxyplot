@@ -1493,7 +1493,7 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Invoked when <see cref="ClipMinimum"/> and <see cref="ClipMaximum"/> are changed.
+        /// Invoked when <see cref="ActualMinimum"/>, <see cref="ActualMaximum"/>, <see cref="ClipMinimum"/>, and <see cref="ClipMaximum"/> are changed.
         /// </summary>
         protected virtual void ActualMaximumAndMinimumChangedOverride()
         {

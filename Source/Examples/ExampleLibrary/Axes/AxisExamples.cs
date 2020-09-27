@@ -1686,7 +1686,7 @@ namespace ExampleLibrary
             var plot = new PlotModel
             {
                 Title = "Try resizing the plot",
-                Subtitle = "Plot bounds are Black, Clip bounds are Blue,\nActual bounds are Red, Series bounds are Green"
+                Subtitle = "ClipMinimum/Maximum are Blue\nActualMinimum/Maximum are Red\nDataMinimum/Maximum are Green"
             };
 
             var xaxis = new LinearAxis
@@ -1741,7 +1741,7 @@ namespace ExampleLibrary
             var plot = new PlotModel
             {
                 Title = "Try resizing the plot",
-                Subtitle = "Plot bounds are Black, Clip bounds are Blue,\nActual bounds are Red, Series bounds are Green"
+                Subtitle = "ClipMinimum/Maximum are Blue\nActualMinimum/Maximum are Red\nDataMinimum/Maximum are Green"
             };
 
             var xaxis = new LinearAxis
@@ -1815,6 +1815,9 @@ namespace ExampleLibrary
 
                         rc.DrawLine(h.Transform(h.ActualMinimum), 0.0, h.Transform(h.ActualMinimum), plot.Height, new OxyPen(OxyColors.Red, 1, LineStyle.Dot), EdgeRenderingMode.Automatic);
                         rc.DrawLine(h.Transform(h.ActualMaximum), 0.0, h.Transform(h.ActualMaximum), plot.Height, new OxyPen(OxyColors.Red, 1, LineStyle.Dot), EdgeRenderingMode.Automatic);
+
+                        rc.DrawLine(h.Transform(h.DataMinimum), 0.0, h.Transform(h.DataMinimum), plot.Height, new OxyPen(OxyColors.Green, 1, LineStyle.Dot), EdgeRenderingMode.Automatic);
+                        rc.DrawLine(h.Transform(h.DataMaximum), 0.0, h.Transform(h.DataMaximum), plot.Height, new OxyPen(OxyColors.Green, 1, LineStyle.Dot), EdgeRenderingMode.Automatic);
                     }
                     else
                     {
@@ -1825,6 +1828,9 @@ namespace ExampleLibrary
 
                         rc.DrawLine(0.0, v.Transform(v.ActualMinimum), plot.Width, v.Transform(v.ActualMinimum), new OxyPen(OxyColors.Red, 1, LineStyle.Dot), EdgeRenderingMode.Automatic);
                         rc.DrawLine(0.0, v.Transform(v.ActualMaximum), plot.Width, v.Transform(v.ActualMaximum), new OxyPen(OxyColors.Red, 1, LineStyle.Dot), EdgeRenderingMode.Automatic);
+
+                        rc.DrawLine(0.0, v.Transform(v.DataMinimum), plot.Width, v.Transform(v.DataMinimum), new OxyPen(OxyColors.Green, 1, LineStyle.Dot), EdgeRenderingMode.Automatic);
+                        rc.DrawLine(0.0, v.Transform(v.DataMaximum), plot.Width, v.Transform(v.DataMaximum), new OxyPen(OxyColors.Green, 1, LineStyle.Dot), EdgeRenderingMode.Automatic);
                     }
                 }
             }));
