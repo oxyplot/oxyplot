@@ -51,6 +51,7 @@ namespace ExampleLibrary
         /// <param name="title">The title.</param>
         /// <param name="tags">The tags.</param>
         /// <param name="method">The method.</param>
+        /// <param name="excludeFromAutomatedTests">A value indiciating whether the example should be excluded from automated tests.</param>
         public ExampleInfo(string category, string title, string[] tags, MethodInfo method, bool excludeFromAutomatedTests)
         {
             this.Category = category;

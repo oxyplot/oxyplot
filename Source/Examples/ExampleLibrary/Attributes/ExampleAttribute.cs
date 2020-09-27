@@ -22,7 +22,7 @@ namespace ExampleLibrary
         public ExampleAttribute(string title = null, bool excludeFromAutomatedTests = false)
         {
             this.Title = title;
-            ExcludeFromAutomatedTests = excludeFromAutomatedTests;
+            this.ExcludeFromAutomatedTests = excludeFromAutomatedTests;
         }
 
         /// <summary>
