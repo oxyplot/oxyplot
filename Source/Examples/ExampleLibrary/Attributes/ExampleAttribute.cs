@@ -18,9 +18,11 @@ namespace ExampleLibrary
         /// Initializes a new instance of the <see cref="ExampleAttribute"/> class.
         /// </summary>
         /// <param name="title">The title.</param>
-        public ExampleAttribute(string title = null)
+        /// <param name="excludeFromAutomatedTests">A value indiciating whether the example should be excluded from automated tests.</param>
+        public ExampleAttribute(string title = null, bool excludeFromAutomatedTests = false)
         {
             this.Title = title;
+            this.ExcludeFromAutomatedTests = excludeFromAutomatedTests;
         }
 
         /// <summary>
@@ -30,5 +32,13 @@ namespace ExampleLibrary
         /// The title.
         /// </value>
         public string Title { get; private set; }
+
+        /// <summary>
+        /// Gets a value indiciating whether this example should be excluded from automated tests.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if the example should be excluded from automated tests, otherwise <c>false</c>.
+        /// </value>
+        public bool ExcludeFromAutomatedTests { get; }
     }
 }

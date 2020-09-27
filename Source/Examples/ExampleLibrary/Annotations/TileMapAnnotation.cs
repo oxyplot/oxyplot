@@ -49,6 +49,7 @@ namespace ExampleLibrary
             this.MaxZoomLevel = 20;
             this.Opacity = 1.0;
             this.MaxNumberOfDownloads = 8;
+            this.UserAgent = "OxyPlotExampleLibrary";
         }
 
         /// <summary>
@@ -92,6 +93,11 @@ namespace ExampleLibrary
         /// </summary>
         /// <value>The opacity.</value>
         public double Opacity { get; set; }
+
+        /// <summary>
+        /// Gets or sets the user agent used for requests.
+        /// </summary>
+        public string UserAgent { get; set; }
 
         /// <summary>
         /// Renders the annotation on the specified context.
@@ -312,6 +318,15 @@ namespace ExampleLibrary
             string uri = this.queue.Dequeue();
             var request = (HttpWebRequest)WebRequest.Create(uri);
             request.Method = "GET";
+
+#if NET45
+            // unavailable in NET Standard 1.0
+            request.UserAgent = this.UserAgent;
+#else
+            // compiles but does not run under NET Framework
+            request.Headers["User-Agent"] = this.UserAgent;
+#endif
+
             Interlocked.Increment(ref this.numberOfDownloads);
             request.BeginGetResponse(
                 r =>

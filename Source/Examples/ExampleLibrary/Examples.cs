@@ -49,7 +49,8 @@ namespace ExampleLibrary
                                 examplesAttribute.Category,
                                 exampleAttribute.Title,
                                 tags.ToArray(),
-                                method);
+                                method,
+                                exampleAttribute.ExcludeFromAutomatedTests);
                     }
                 }
             }
@@ -75,21 +76,29 @@ namespace ExampleLibrary
         }
 
         /// <summary>
-        /// Gets the first example of each category.
+        /// Gets all examples suitable for automated test.
         /// </summary>
-        public static IEnumerable<ExampleInfo> GetFirstExampleOfEachCategory()
+        public static IEnumerable<ExampleInfo> GetListForAutomatedTest()
         {
-            return GetList()
+            return GetList().Where(ex => !ex.ExcludeFromAutomatedTests);
+        }
+
+        /// <summary>
+        /// Gets the first example of each category suitable for automated test.
+        /// </summary>
+        public static IEnumerable<ExampleInfo> GetFirstExampleOfEachCategoryForAutomatedTest()
+        {
+            return GetListForAutomatedTest()
                 .GroupBy(example => example.Category)
                 .Select(group => group.First());
         }
 
         /// <summary>
-        /// Gets the 'rendering capabilities' examples.
+        /// Gets the 'rendering capabilities' examples suitable for automated test.
         /// </summary>
-        public static IEnumerable<ExampleInfo> GetRenderingCapabilities()
+        public static IEnumerable<ExampleInfo> GetRenderingCapabilitiesForAutomatedTest()
         {
-            return GetCategory(typeof(RenderingCapabilities));
+            return GetCategory(typeof(RenderingCapabilities)).Where(ex => !ex.ExcludeFromAutomatedTests);
         }
     }
 }

@@ -31,7 +31,7 @@ namespace OxyPlot.Tests
             const double Width = 297 / 25.4 * 72;
             const double Height = 210 / 25.4 * 72;
 
-            foreach (var example in Examples.GetList())
+            foreach (var example in Examples.GetListForAutomatedTest())
             {
                 void ExportModelAndCheckFileExists(PlotModel model, string fileName)
                 {
