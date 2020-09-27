@@ -218,8 +218,8 @@ namespace OxyPlot.Series
             var lineDown = this.GetSelectableColor(this.NegativeColor.ChangeIntensity(this.StrokeIntensity));
 
             // determine render range
-            var xmin = this.XAxis.ActualMinimum;
-            var xmax = this.XAxis.ActualMaximum;
+            var xmin = this.XAxis.ClipMinimum;
+            var xmax = this.XAxis.ClipMaximum;
             this.winIndex = OhlcvItem.FindIndex(items, xmin, this.winIndex);
 
             for (int i = this.winIndex; i < nitems; i++)

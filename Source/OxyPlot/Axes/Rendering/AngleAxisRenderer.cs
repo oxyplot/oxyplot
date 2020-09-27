@@ -56,7 +56,7 @@ namespace OxyPlot.Axes
                 var tickCount = Math.Abs((int)(axisLength / axis.ActualMinorStep));
                 var screenPoints = this.MinorTickValues
                     .Take(tickCount + 1)
-                    .Select(x => magnitudeAxis.Transform(magnitudeAxis.ActualMaximum, x, axis));
+                    .Select(x => magnitudeAxis.Transform(magnitudeAxis.ClipMaximum, x, axis));
 
                 foreach (var screenPoint in screenPoints)
                 {
@@ -75,7 +75,7 @@ namespace OxyPlot.Axes
             {
                 var screenPoints = this.MajorTickValues
                     .Take(majorTickCount)
-                    .Select(x => magnitudeAxis.Transform(magnitudeAxis.ActualMaximum, x, axis));
+                    .Select(x => magnitudeAxis.Transform(magnitudeAxis.ClipMaximum, x, axis));
 
                 foreach (var point in screenPoints)
                 {
@@ -85,7 +85,7 @@ namespace OxyPlot.Axes
 
             foreach (var value in this.MajorLabelValues.Take(majorTickCount))
             {
-                var pt = magnitudeAxis.Transform(magnitudeAxis.ActualMaximum, value, axis);
+                var pt = magnitudeAxis.Transform(magnitudeAxis.ClipMaximum, value, axis);
                 var angle = Math.Atan2(pt.y - magnitudeAxis.MidPoint.y, pt.x - magnitudeAxis.MidPoint.x);
 
                 // add some margin

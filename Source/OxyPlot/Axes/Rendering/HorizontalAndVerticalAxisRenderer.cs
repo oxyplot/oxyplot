@@ -216,7 +216,7 @@ namespace OxyPlot.Axes
 
             if (axis.PositionAtZeroCrossing)
             {
-                middle = Lerp(axis.Transform(axis.ActualMaximum), axis.Transform(axis.ActualMinimum), axis.TitlePosition);
+                middle = Lerp(axis.Transform(axis.ClipMaximum), axis.Transform(axis.ClipMinimum), axis.TitlePosition);
             }
 
             switch (axis.Position)
@@ -298,8 +298,8 @@ namespace OxyPlot.Axes
         {
             double eps = axis.ActualMinorStep * 1e-3;
 
-            double actualMinimum = axis.ActualMinimum;
-            double actualMaximum = axis.ActualMaximum;
+            double clipMinimum = axis.ClipMinimum;
+            double clipMaximum = axis.ClipMaximum;
 
             double plotAreaLeft = this.Plot.PlotArea.Left;
             double plotAreaRight = this.Plot.PlotArea.Right;
@@ -381,7 +381,7 @@ namespace OxyPlot.Axes
             // Render the axis labels (numbers or category names)
             foreach (double value in this.MajorLabelValues)
             {
-                if (value < actualMinimum - eps || value > actualMaximum + eps)
+                if (value < clipMinimum - eps || value > clipMaximum + eps)
                 {
                     continue;
                 }
@@ -450,7 +450,7 @@ namespace OxyPlot.Axes
 
                 foreach (double value in axis.ExtraGridlines)
                 {
-                    if (!this.IsWithin(value, actualMinimum, actualMaximum))
+                    if (!this.IsWithin(value, clipMinimum, clipMaximum))
                     {
                         continue;
                     }
@@ -477,9 +477,9 @@ namespace OxyPlot.Axes
                 if (isHorizontal)
                 {
                     this.RenderContext.DrawLine(
-                        axis.Transform(actualMinimum),
+                        axis.Transform(clipMinimum),
                         axisPosition,
-                        axis.Transform(actualMaximum),
+                        axis.Transform(clipMaximum),
                         axisPosition,
                         this.AxislinePen,
                         axis.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness));
@@ -488,9 +488,9 @@ namespace OxyPlot.Axes
                 {
                     this.RenderContext.DrawLine(
                         axisPosition,
-                        axis.Transform(actualMinimum),
+                        axis.Transform(clipMinimum),
                         axisPosition,
-                        axis.Transform(actualMaximum),
+                        axis.Transform(clipMaximum),
                         this.AxislinePen,
                         axis.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness));
                 }
@@ -515,8 +515,8 @@ namespace OxyPlot.Axes
         protected virtual void RenderMinorItems(Axis axis, double axisPosition)
         {
             double eps = axis.ActualMinorStep * 1e-3;
-            double actualMinimum = axis.ActualMinimum;
-            double actualMaximum = axis.ActualMaximum;
+            double actualMinimum = axis.ClipMinimum;
+            double actualMaximum = axis.ClipMaximum;
 
             double plotAreaLeft = this.Plot.PlotArea.Left;
             double plotAreaRight = this.Plot.PlotArea.Right;
@@ -643,8 +643,8 @@ namespace OxyPlot.Axes
                 {
                     foreach (var perpAxis in perpAxes)
                     {
-                        segments.Add(new ScreenPoint(transformedValue, perpAxis.Transform(perpAxis.ActualMinimum)));
-                        segments.Add(new ScreenPoint(transformedValue, perpAxis.Transform(perpAxis.ActualMaximum)));
+                        segments.Add(new ScreenPoint(transformedValue, perpAxis.Transform(perpAxis.ClipMinimum)));
+                        segments.Add(new ScreenPoint(transformedValue, perpAxis.Transform(perpAxis.ClipMaximum)));
                     }
                 }
             }
@@ -659,8 +659,8 @@ namespace OxyPlot.Axes
                 {
                     foreach (var perpAxis in perpAxes)
                     {
-                        segments.Add(new ScreenPoint(perpAxis.Transform(perpAxis.ActualMinimum), transformedValue));
-                        segments.Add(new ScreenPoint(perpAxis.Transform(perpAxis.ActualMaximum), transformedValue));
+                        segments.Add(new ScreenPoint(perpAxis.Transform(perpAxis.ClipMinimum), transformedValue));
+                        segments.Add(new ScreenPoint(perpAxis.Transform(perpAxis.ClipMaximum), transformedValue));
                     }
                 }
             }

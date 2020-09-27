@@ -171,8 +171,8 @@ namespace OxyPlot.Series
         public override void Render(IRenderContext rc)
         {
             // determine render range
-            var xmin = this.XAxis.ActualMinimum;
-            var xmax = this.XAxis.ActualMaximum;
+            var xmin = this.XAxis.ClipMinimum;
+            var xmax = this.XAxis.ClipMaximum;
             this.WindowStartIndex = this.UpdateWindowStartIndex(this.abovePoints, this.GetPointX, xmin, this.WindowStartIndex);
             this.WindowStartIndex2 = this.UpdateWindowStartIndex(this.belowPoints, this.GetPointX, xmin, this.WindowStartIndex2);
 

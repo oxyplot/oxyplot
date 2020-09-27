@@ -162,8 +162,8 @@ namespace OxyPlot.Series
 
             if (this.IsXMonotonic)
             {
-                var xmin = this.XAxis.ActualMinimum;
-                xmax = this.XAxis.ActualMaximum;
+                var xmin = this.XAxis.ClipMinimum;
+                xmax = this.XAxis.ClipMaximum;
                 this.WindowStartIndex = this.UpdateWindowStartIndex(this.Items, rect => rect.X0, xmin, this.WindowStartIndex);
 
                 startIdx = this.WindowStartIndex;

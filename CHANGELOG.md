@@ -38,6 +38,7 @@ All notable changes to this project will be documented in this file.
 - `AxisPosition.All` for axes which need a margin on all sides of the plot area (#1574)
 - IRenderContext.ClipCount property (#1593)
 - Additional parameters for HistogramSeries LabelFormatString
+- Absolute screen-space axis margins (#1569)
 
 ### Changed
 - Legends model (#644)

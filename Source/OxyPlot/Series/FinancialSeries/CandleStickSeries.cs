@@ -98,8 +98,8 @@ namespace OxyPlot.Series
             var lineDown = this.GetSelectableColor(this.DecreasingColor.ChangeIntensity(0.70));
 
             // determine render range
-            var xmin = this.XAxis.ActualMinimum;
-            var xmax = this.XAxis.ActualMaximum;
+            var xmin = this.XAxis.ClipMinimum;
+            var xmax = this.XAxis.ClipMaximum;
             this.WindowStartIndex = this.UpdateWindowStartIndex(items, item => item.X, xmin, this.WindowStartIndex);
 
             for (int i = this.WindowStartIndex; i < nitems; i++)

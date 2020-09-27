@@ -123,6 +123,9 @@ namespace OxyPlot.Axes
             var newScale = (this.EndAngle - this.StartAngle) / (this.ActualMaximum - this.ActualMinimum);
             var newOffset = this.ActualMinimum - (this.StartAngle / newScale);
             this.SetTransform(newScale, newOffset);
+
+            this.ClipMinimum = this.ActualMinimum;
+            this.ClipMaximum = this.ActualMaximum;
         }
     }
 }

@@ -116,9 +116,87 @@ namespace OxyPlot.Axes
 
             this.MidPoint = new ScreenPoint((x0 + x1) / 2, (y0 + y1) / 2);
 
-            // this.ActualMinimum = 0;
             double r = Math.Min(Math.Abs(x1 - x0), Math.Abs(y1 - y0));
-            this.SetTransform(0.5 * r / (this.ActualMaximum - this.ActualMinimum), this.ActualMinimum);
+
+            var a0 = 0.0;
+            var a1 = r * 0.5;
+
+            double dx = a1 - a0;
+            a1 = a0 + (this.EndPosition * dx);
+            a0 = a0 + (this.StartPosition * dx);
+
+            double marginSign = this.IsReversed ? -1.0 : 1.0;
+
+            if (this.MinimumMargin > 0)
+            {
+                a0 += this.MinimumMargin * marginSign;
+            }
+
+            if (this.MaximumMargin > 0)
+            {
+                a1 -= this.MaximumMargin * marginSign;
+            }
+
+            if (this.MinimumDataMargin > 0)
+            {
+                a0 += this.MinimumDataMargin * marginSign;
+            }
+
+            if (this.MaximumDataMargin > 0)
+            {
+                a1 -= this.MaximumDataMargin * marginSign;
+            }
+
+            if (this.ActualMaximum - this.ActualMinimum < double.Epsilon)
+            {
+                this.ActualMaximum = this.ActualMinimum + 1;
+            }
+
+            double max = this.PreTransform(this.ActualMaximum);
+            double min = this.PreTransform(this.ActualMinimum);
+
+            double da = a0 - a1;
+            double newOffset, newScale;
+            if (Math.Abs(da) > double.Epsilon)
+            {
+                newOffset = (a0 / da * max) - (a1 / da * min);
+            }
+            else
+            {
+                newOffset = 0;
+            }
+
+            double range = max - min;
+            if (Math.Abs(range) > double.Epsilon)
+            {
+                newScale = (a1 - a0) / range;
+            }
+            else
+            {
+                newScale = 1;
+            }
+
+            this.SetTransform(newScale, newOffset);
+
+            if (this.MinimumDataMargin > 0)
+            {
+                this.ClipMinimum = this.InverseTransform(0.0);
+            }
+            else
+            {
+                this.ClipMinimum = this.ActualMinimum;
+            }
+
+            if (this.MaximumDataMargin > 0)
+            {
+                this.ClipMaximum = this.InverseTransform(r * 0.5);
+            }
+            else
+            {
+                this.ClipMaximum = this.ActualMaximum;
+            }
+
+            this.ActualMaximumAndMinimumChangedOverride();
         }
     }
 }

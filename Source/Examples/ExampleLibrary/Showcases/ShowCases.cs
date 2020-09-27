@@ -95,7 +95,7 @@ namespace ExampleLibrary
             return model;
         }
 
-        private static DataPointSeries CreateNormalDistributionSeries(double x0, double x1, double mean, double variance, int n = 1001)
+        public static DataPointSeries CreateNormalDistributionSeries(double x0, double x1, double mean, double variance, int n = 1001)
         {
             var ls = new LineSeries
             {

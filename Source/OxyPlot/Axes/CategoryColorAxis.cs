@@ -162,7 +162,7 @@ namespace OxyPlot.Axes
         private double GetHighValue(int paletteIndex, IList<double> majorLabelValues)
         {
             double highValue = paletteIndex >= this.Palette.Colors.Count - 1
-                                   ? this.ActualMaximum
+                                   ? this.ClipMaximum
                                    : (majorLabelValues[paletteIndex] + majorLabelValues[paletteIndex + 1]) / 2;
             return highValue;
         }
@@ -176,7 +176,7 @@ namespace OxyPlot.Axes
         private double GetLowValue(int paletteIndex, IList<double> majorLabelValues)
         {
             double lowValue = paletteIndex == 0
-                                  ? this.ActualMinimum
+                                  ? this.ClipMinimum
                                   : (majorLabelValues[paletteIndex - 1] + majorLabelValues[paletteIndex]) / 2;
             return lowValue;
         }
