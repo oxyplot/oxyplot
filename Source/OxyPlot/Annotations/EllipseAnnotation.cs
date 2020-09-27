@@ -48,21 +48,14 @@ namespace OxyPlot.Annotations
         /// </summary>
         public double Height { get; set; }
 
-        /// <summary>
-        /// Renders the polygon annotation.
-        /// </summary>
-        /// <param name="rc">The render context.</param>
+        /// <inheritdoc/>
         public override void Render(IRenderContext rc)
         {
             base.Render(rc);
 
             this.screenRectangle = new OxyRect(this.Transform(this.X - (this.Width / 2), this.Y - (this.Height / 2)), this.Transform(this.X + (this.Width / 2), this.Y + (this.Height / 2)));
 
-            // clip to the area defined by the axes
-            var clippingRectangle = this.GetClippingRect();
-
-            rc.DrawClippedEllipse(
-                clippingRectangle,
+            rc.DrawEllipse(
                 this.screenRectangle,
                 this.GetSelectableFillColor(this.Fill),
                 this.GetSelectableColor(this.Stroke),
@@ -73,8 +66,7 @@ namespace OxyPlot.Annotations
             {
                 var textPosition = this.GetActualTextPosition(() => this.screenRectangle.Center);
                 this.GetActualTextAlignment(out var ha, out var va);
-                rc.DrawClippedText(
-                    clippingRectangle,
+                rc.DrawText(
                     textPosition,
                     this.Text,
                     this.ActualTextColor,

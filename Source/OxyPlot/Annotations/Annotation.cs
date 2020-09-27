@@ -14,7 +14,7 @@ namespace OxyPlot.Annotations
     /// <summary>
     /// Provides an abstract base class for annotations.
     /// </summary>
-    public abstract class Annotation : PlotElement, ITransposablePlotElement
+    public abstract class Annotation : PlotElement, IXyAxisPlotElement
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Annotation" /> class.
@@ -84,39 +84,46 @@ namespace OxyPlot.Annotations
         {
         }
 
-        /// <summary>
-        /// Gets the clipping rectangle.
-        /// </summary>
-        /// <returns>
-        /// The clipping rectangle.
-        /// </returns>
-        protected OxyRect GetClippingRect()
+        /// <inheritdoc/>
+        public override OxyRect GetClippingRect()
         {
             var rect = this.PlotModel.PlotArea;
-            var axisRect = TransposablePlotElementExtensions.GetClippingRect(this);
+            var axisRect = PlotElementUtilities.GetClippingRect(this);
 
-            var minX = double.NegativeInfinity;
+            var minX = 0d;
             var maxX = double.PositiveInfinity;
-            var minY = double.NegativeInfinity;
+            var minY = 0d;
             var maxY = double.PositiveInfinity;
 
             if (this.ClipByXAxis)
             {
-                minX = this.Orientate(axisRect.TopLeft).X;
-                maxX = this.Orientate(axisRect.BottomRight).X;
+                minX = axisRect.TopLeft.X;
+                maxX = axisRect.BottomRight.X;
             }
 
             if (this.ClipByYAxis)
             {
-                minY = this.Orientate(axisRect.TopLeft).Y;
-                maxY = this.Orientate(axisRect.BottomRight).Y;
+                minY = axisRect.TopLeft.Y;
+                maxY = axisRect.BottomRight.Y;
             }
 
-            var minPoint = this.Orientate(new ScreenPoint(minX, minY));
-            var maxPoint = this.Orientate(new ScreenPoint(maxX, maxY));
+            var minPoint = new ScreenPoint(minX, minY);
+            var maxPoint = new ScreenPoint(maxX, maxY);
 
             var axisClipRect = new OxyRect(minPoint, maxPoint);
             return rect.Clip(axisClipRect);
+        }
+
+        /// <inheritdoc/>
+        public virtual ScreenPoint Transform(DataPoint p)
+        {
+            return PlotElementUtilities.Transform(this, p);
+        }
+
+        /// <inheritdoc/>
+        public virtual DataPoint InverseTransform(ScreenPoint p)
+        {
+            return PlotElementUtilities.InverseTransform(this, p);
         }
     }
 }

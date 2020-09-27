@@ -186,7 +186,6 @@ namespace OxyPlot.Series
                 return;
             }
 
-            var clippingRect = this.GetClippingRect();
             var actualBarWidth = this.GetActualBarWidth();
 
             for (var i = 0; i < this.ValidItems.Count; i++)
@@ -211,15 +210,13 @@ namespace OxyPlot.Series
                 this.ActualMinimumBarRectangles.Add(minimumRectangle);
                 this.ActualMaximumBarRectangles.Add(maximumRectangle);
 
-                rc.DrawClippedRectangle(
-                    clippingRect,
+                rc.DrawRectangle(
                     minimumRectangle,
                     item.MinimumColor.GetActualColor(this.ActualMinimumFillColor),
                     this.StrokeColor,
                     this.StrokeThickness,
                     this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness));
-                rc.DrawClippedRectangle(
-                    clippingRect,
+                rc.DrawRectangle(
                     maximumRectangle,
                     item.MaximumColor.GetActualColor(this.ActualMaximumFillColor),
                     this.StrokeColor,
@@ -241,8 +238,7 @@ namespace OxyPlot.Series
                     var va = VerticalAlignment.Middle;
                     this.Orientate(ref ha, ref va);
 
-                    rc.DrawClippedText(
-                        clippingRect,
+                    rc.DrawText(
                         pt,
                         s,
                         this.ActualTextColor,
@@ -267,8 +263,7 @@ namespace OxyPlot.Series
                     var va = VerticalAlignment.Middle;
                     this.Orientate(ref ha, ref va);
 
-                    rc.DrawClippedText(
-                        clippingRect,
+                    rc.DrawText(
                         pt,
                         s,
                         this.ActualTextColor,

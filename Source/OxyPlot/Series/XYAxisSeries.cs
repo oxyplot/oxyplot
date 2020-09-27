@@ -101,6 +101,12 @@ namespace OxyPlot.Series
         /// </summary>
         protected int WindowStartIndex { get; set; }
 
+        /// <inheritdoc/>
+        public override OxyRect GetClippingRect()
+        {
+            return PlotElementUtilities.GetOrientatedClippingRect(this);
+        }
+
         /// <summary>
         /// Gets the rectangle the series uses on the screen (screen coordinates).
         /// </summary>
@@ -110,6 +116,12 @@ namespace OxyPlot.Series
             return this.GetClippingRect();
         }
 
+        /// <inheritdoc/>
+        public DataPoint InverseTransform(ScreenPoint p)
+        {
+            return PlotElementUtilities.InverseTransformOrientated(this, p);
+        }
+
         /// <summary>
         /// Renders the legend symbol on the specified rendering context.
         /// </summary>
@@ -117,6 +129,12 @@ namespace OxyPlot.Series
         /// <param name="legendBox">The legend rectangle.</param>
         public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
         {
+        }
+
+        /// <inheritdoc/>
+        public ScreenPoint Transform(DataPoint p)
+        {
+            return PlotElementUtilities.TransformOrientated(this, p);
         }
 
         /// <summary>

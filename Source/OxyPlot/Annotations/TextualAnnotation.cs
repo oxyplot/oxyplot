@@ -14,7 +14,7 @@ namespace OxyPlot.Annotations
     /// <summary>
     /// Provides an abstract base class for annotations that contains text.
     /// </summary>
-    public abstract class TextualAnnotation : Annotation
+    public abstract class TextualAnnotation : TransposableAnnotation
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TextualAnnotation"/> class.

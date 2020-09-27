@@ -202,8 +202,6 @@ namespace OxyPlot.Series
                 return;
             }
 
-            var clippingRect = this.GetClippingRect();
-
             var actualBarWidth = this.GetActualBarWidth();
             var stackIndex = this.Manager.GetStackIndex(this.StackGroup);
 
@@ -221,8 +219,7 @@ namespace OxyPlot.Series
 
                 this.ActualBarRectangles.Add(rectangle);
 
-                rc.DrawClippedRectangle(
-                    clippingRect,
+                rc.DrawRectangle(
                     rectangle,
                     this.GetSelectableFillColor(item.Color.GetActualColor(this.ActualFillColor)),
                     this.StrokeColor,
@@ -236,8 +233,7 @@ namespace OxyPlot.Series
                     var pt = new ScreenPoint(
                         (rectangle.Left + rectangle.Right) / 2, (rectangle.Top + rectangle.Bottom) / 2);
 
-                    rc.DrawClippedText(
-                        clippingRect,
+                    rc.DrawText(
                         pt,
                         s,
                         this.ActualTextColor,

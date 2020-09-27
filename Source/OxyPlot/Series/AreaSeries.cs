@@ -239,16 +239,12 @@ namespace OxyPlot.Series
 
             double minDistSquared = this.MinimumSegmentLength * this.MinimumSegmentLength;
 
-            var clippingRect = this.GetClippingRect();
-            using var _ = rc.AutoResetClip(clippingRect);
-
             var areaContext = new AreaRenderContext
             {
                 Points = actualPoints,
                 WindowStartIndex = startIdx,
                 XMax = xmax,
                 RenderContext = rc,
-                ClippingRect = clippingRect,
                 MinDistSquared = minDistSquared,
                 Reverse = false,
                 Color = this.ActualColor,
@@ -275,14 +271,11 @@ namespace OxyPlot.Series
                 var pts = chunksOfPoints[chunkIndex];
                 var pts2 = chunksOfPoints2[chunkIndex];
 
-                // pts = SutherlandHodgmanClipping.ClipPolygon(clippingRect, pts);
-
                 // combine the two lines and draw the clipped area
                 var allPts = new List<ScreenPoint>();
                 allPts.AddRange(pts2);
                 allPts.AddRange(pts);
-                rc.DrawClippedPolygon(
-                    clippingRect,
+                rc.DrawReducedPolygon(
                     allPts,
                     minDistSquared,
                     this.GetSelectableFillColor(this.ActualFill),
@@ -294,7 +287,6 @@ namespace OxyPlot.Series
 
                 // draw the markers on top
                 rc.DrawMarkers(
-                    clippingRect,
                     pts,
                     this.MarkerType,
                     null,
@@ -305,7 +297,6 @@ namespace OxyPlot.Series
                     this.EdgeRenderingMode,
                     1);
                 rc.DrawMarkers(
-                    clippingRect,
                     pts2,
                     this.MarkerType,
                     null,
@@ -464,8 +455,7 @@ namespace OxyPlot.Series
                 final = this.InterpolationAlgorithm.CreateSpline(resampled, false, 0.25);
             }
 
-            context.RenderContext.DrawClippedLine(
-                context.ClippingRect,
+            context.RenderContext.DrawReducedLine(
                 final,
                 context.MinDistSquared,
                 this.GetSelectableColor(context.Color),
@@ -528,11 +518,6 @@ namespace OxyPlot.Series
             /// Gets or sets render context.
             /// </summary>
             public IRenderContext RenderContext { get; set; }
-
-            /// <summary>
-            /// Gets or sets clipping rectangle.
-            /// </summary>
-            public OxyRect ClippingRect { get; set; }
 
             /// <summary>
             /// Gets or sets minimum squared distance between points.

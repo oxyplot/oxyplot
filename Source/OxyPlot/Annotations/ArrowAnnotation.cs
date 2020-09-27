@@ -97,10 +97,7 @@ namespace OxyPlot.Annotations
         /// <value>The 'veeness'.</value>
         public double Veeness { get; set; }
 
-        /// <summary>
-        /// Renders the arrow annotation.
-        /// </summary>
-        /// <param name="rc">The render context.</param>
+        /// <inheritdoc/>
         public override void Render(IRenderContext rc)
         {
             base.Render(rc);
@@ -125,15 +122,13 @@ namespace OxyPlot.Annotations
             var p3 = p1 - (n * this.HeadWidth * this.StrokeThickness);
             var p4 = p1 + (d * this.Veeness * this.StrokeThickness);
 
-            var clippingRectangle = this.GetClippingRect();
             const double MinimumSegmentLength = 4;
 
             var dashArray = this.LineStyle.GetDashArray();
 
             if (this.StrokeThickness > 0 && this.LineStyle != LineStyle.None)
             {
-                rc.DrawClippedLine(
-                    clippingRectangle,
+                rc.DrawReducedLine(
                     new[] { this.screenStartPoint, p4 },
                     MinimumSegmentLength * MinimumSegmentLength,
                     this.GetSelectableColor(this.Color),
@@ -142,8 +137,7 @@ namespace OxyPlot.Annotations
                     dashArray,
                     this.LineJoin);
 
-                rc.DrawClippedPolygon(
-                    clippingRectangle,
+                rc.DrawReducedPolygon(
                     new[] { p3, this.screenEndPoint, p2, p4 },
                     MinimumSegmentLength * MinimumSegmentLength,
                     this.GetSelectableColor(this.Color),
@@ -196,8 +190,7 @@ namespace OxyPlot.Annotations
             }
 
             var textPoint = this.GetActualTextPosition(() => this.screenStartPoint);
-            rc.DrawClippedText(
-                clippingRectangle,
+            rc.DrawText(
                 textPoint,
                 this.Text,
                 this.ActualTextColor,

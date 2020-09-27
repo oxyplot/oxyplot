@@ -146,18 +146,13 @@ namespace OxyPlot.Series
             return null;
         }
 
-        /// <summary>
-        /// Renders the series on the specified rendering context.
-        /// </summary>
-        /// <param name="rc">The rendering context.</param>
+        /// <inheritdoc/>
         public override void Render(IRenderContext rc)
         {
             if (this.Items.Count == 0)
             {
                 return;
             }
-
-            var clippingRect = this.GetClippingRect();
 
             int startIdx = 0;
             double xmax = double.MaxValue;
@@ -191,8 +186,7 @@ namespace OxyPlot.Series
                 this.ActualBarRectangles.Add(rectangle);
                 this.ActualItems.Add(item);
 
-                rc.DrawClippedRectangle(
-                    clippingRect,
+                rc.DrawRectangle(
                     rectangle,
                     this.GetSelectableFillColor(item.Color.GetActualColor(this.ActualFillColor)),
                     this.StrokeColor,
@@ -214,8 +208,7 @@ namespace OxyPlot.Series
                     var pt = new ScreenPoint(
                         (rectangle.Left + rectangle.Right) / 2, (rectangle.Top + rectangle.Bottom) / 2);
 
-                    rc.DrawClippedText(
-                        clippingRect,
+                    rc.DrawText(
                         pt,
                         s,
                         this.ActualTextColor,

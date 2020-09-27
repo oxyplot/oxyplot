@@ -802,6 +802,12 @@ namespace ExampleLibrary
                 base.Render(rc);
                 this.Rendering(rc);
             }
+
+            /// <inheritdoc/>
+            public override OxyRect GetClippingRect()
+            {
+                return OxyRect.Everything;
+            }
         }
     }
 }

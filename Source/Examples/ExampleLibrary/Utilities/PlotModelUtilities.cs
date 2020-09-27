@@ -55,7 +55,6 @@ namespace ExampleLibrary.Utilities
         /// </summary>
         private static readonly HashSet<Type> NonTransposableDataSpaceAnnotationTypes = new HashSet<Type>
         {
-            typeof(TileMapAnnotation),
         };
 
         /// <summary>
@@ -90,18 +89,8 @@ namespace ExampleLibrary.Utilities
         {
             return (model.Axes.Count > 0 || model.Series.Count > 0)
                 && model.Axes.All(a => a.Position != AxisPosition.None)
-                && model.Series.All(s =>
-                {
-                    var type = s.GetType();
-                    return s is XYAxisSeries
-                           && type.GetTypeInfo().Assembly == typeof(PlotModel).GetTypeInfo().Assembly
-                           && !NonTransposableSeriesTypes.Contains(type);
-                })
-                && model.Annotations.All(a =>
-                {
-                    var type = a.GetType();
-                    return !NonTransposableDataSpaceAnnotationTypes.Contains(type);
-                });
+                && model.Series.All(s => s is ITransposablePlotElement && !NonTransposableSeriesTypes.Contains(s.GetType()))
+                && model.Annotations.All(a => a is ITransposablePlotElement && !NonTransposableDataSpaceAnnotationTypes.Contains(a.GetType()));
         }
 
         /// <summary>

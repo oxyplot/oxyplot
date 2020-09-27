@@ -23,6 +23,7 @@ namespace ExampleLibrary
     using OxyPlot.Axes;
     using OxyPlot.Series;
     using OxyPlot.Legends;
+    using System.Linq;
 
     [Examples("Misc")]
     public static class MiscExamples
@@ -239,19 +240,41 @@ namespace ExampleLibrary
                 Title = "Train schedule",
                 Subtitle = "Bergensbanen (Oslo-Bergen, Norway)",
                 IsLegendVisible = false,
-                PlotAreaBorderThickness = new OxyThickness(0),
-                PlotMargins = new OxyThickness(60, 4, 60, 40)
+                PlotAreaBorderColor = OxyColors.LightGray,
             };
-            model.Axes.Add(
-                new LinearAxis
-                {
-                    Position = AxisPosition.Left,
-                    Minimum = -20,
-                    Maximum = 540,
-                    Title = "Distance from Oslo S",
-                    IsAxisVisible = true,
-                    StringFormat = "0"
-                });
+
+            var distanceAxis = new LinearAxis
+            {
+                Position = AxisPosition.Left,
+                Minimum = -20,
+                Maximum = 540,
+                Title = "Distance from Oslo S",
+                IsAxisVisible = true,
+                StringFormat = "0",
+            };
+
+            model.Axes.Add(distanceAxis);
+
+            var stationAxis = new CustomAxis
+            {
+                MajorGridlineStyle = LineStyle.Solid,
+                MajorGridlineColor = OxyColors.LightGray,
+                Minimum = distanceAxis.Minimum,
+                Maximum = distanceAxis.Maximum,
+                Position = AxisPosition.Right,
+                IsPanEnabled = false,
+                IsZoomEnabled = false,
+                MajorTickSize = 0,
+            };
+
+            distanceAxis.AxisChanged += (sender, e) =>
+            {
+                stationAxis.Minimum = distanceAxis.ActualMinimum;
+                stationAxis.Maximum = distanceAxis.ActualMaximum;
+            };
+
+            model.Axes.Add(stationAxis);
+
             model.Axes.Add(
                 new TimeSpanAxis
                 {
@@ -315,23 +338,8 @@ namespace ExampleLibrary
                     double x = double.Parse(fields[1], CultureInfo.InvariantCulture);
                     if (!string.IsNullOrEmpty(fields[0]))
                     {
-                        // Add a horizontal annotation line for the station
-                        model.Annotations.Add(
-                            new LineAnnotation
-                            {
-                                Type = LineAnnotationType.Horizontal,
-                                Y = x,
-                                Layer = AnnotationLayer.BelowSeries,
-                                LineStyle = LineStyle.Solid,
-                                Color = OxyColors.LightGray,
-                                Text = fields[0] + "  ",
-                                TextVerticalAlignment = VerticalAlignment.Middle,
-                                TextLinePosition = 1,
-                                TextMargin = 0,
-                                TextPadding = 4,
-                                ClipText = false,
-                                TextHorizontalAlignment = HorizontalAlignment.Left
-                            });
+                        stationAxis.MajorTicks.Add(x);
+                        stationAxis.Labels.Add(fields[0]);
                     }
 
                     for (int i = 0; i < series.Length; i++)
@@ -388,23 +396,6 @@ namespace ExampleLibrary
 
             return model;
         }
-
-        /*        [Example("World population")]
-                public static PlotModel WorldPopulation()
-                {
-                    WorldPopulationDataSet dataSet;
-                    using (var stream = GetResourceStream("WorldPopulation.xml"))
-                    {
-                        var serializer = new XmlSerializer(typeof(WorldPopulationDataSet));
-                        dataSet = (WorldPopulationDataSet)serializer.Deserialize(stream);
-                    }
-
-                    var model = new PlotModel { Title = "World population" };
-                    model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "millions" });
-                    var series1 = new LineSeries { ItemsSource = dataSet.Items, DataFieldX = "Year", DataFieldY = "Population", StrokeThickness = 3, MarkerType = MarkerType.Circle };
-                    model.Series.Add(series1);
-                    return model;
-                }*/
 
         [Example("La Linea (AreaSeries)")]
         public static PlotModel LaLineaAreaSeries()
@@ -2382,21 +2373,23 @@ namespace ExampleLibrary
             }
         }
 
-        /*        [XmlRoot("DataSet")]
-                [XmlInclude(typeof(Data))]
-                public class WorldPopulationDataSet
-                {
-                    [XmlElement("Data")]
-                    public List<Data> Items { get; set; }
+        private class CustomAxis : LinearAxis
+        {
+            public IList<double> MajorTicks { get; } = new List<double>();
+            public IList<double> MinorTicks { get; } = new List<double>();
+            public IList<string> Labels { get; } = new List<string>();
 
-                    public class Data
-                    {
-                        [XmlAttribute("Year")]
-                        public int Year { get; set; }
+            public override void GetTickValues(out IList<double> majorLabelValues, out IList<double> majorTickValues, out IList<double> minorTickValues)
+            {
+                majorTickValues = majorLabelValues = this.MajorTicks.Where(d => d >= this.ActualMinimum && d <= this.ActualMaximum).ToList();
+                minorTickValues = this.MinorTicks.Where(d => d >= this.ActualMinimum && d <= this.ActualMaximum).ToList();
+            }
 
-                        [XmlAttribute("Population")]
-                        public double Population { get; set; }
-                    }
-                }*/
+            protected override string FormatValueOverride(double x)
+            {
+                return this.Labels[this.MajorTicks.IndexOf(x)];
+            }
+        }
+
     }
 }

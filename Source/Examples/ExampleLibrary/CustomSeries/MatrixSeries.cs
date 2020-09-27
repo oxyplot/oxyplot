@@ -161,12 +161,11 @@ namespace ExampleLibrary
                 this.image = OxyImage.Create(pixels, ImageFormat.Png);
             }
 
-            var clip = this.GetClippingRect();
             var x0 = Math.Min(p0.X, p1.X);
             var y0 = Math.Min(p0.Y, p1.Y);
             var w = Math.Abs(p0.X - p1.X);
             var h = Math.Abs(p0.Y - p1.Y);
-            rc.DrawClippedImage(clip, this.image, x0, y0, w, h, 1, false);
+            rc.DrawImage(this.image, x0, y0, w, h, 1, false);
 
             var points = new List<ScreenPoint>();
             if (this.GridInterval > 0)
@@ -197,7 +196,7 @@ namespace ExampleLibrary
                 points.Add(this.Transform(n, m));
             }
 
-            rc.DrawClippedLineSegments(clip, points, this.GridColor, 1, this.EdgeRenderingMode, null, LineJoin.Miter);
+            rc.DrawLineSegments(points, this.GridColor, 1, this.EdgeRenderingMode, null, LineJoin.Miter);
 
             if (this.BorderColor.IsVisible())
             {
@@ -213,7 +212,7 @@ namespace ExampleLibrary
                         this.Transform(m, n)
                     };
 
-                rc.DrawClippedLineSegments(clip, borderPoints, this.BorderColor, 1, this.EdgeRenderingMode, null, LineJoin.Miter);
+                rc.DrawLineSegments(borderPoints, this.BorderColor, 1, this.EdgeRenderingMode, null, LineJoin.Miter);
             }
         }
 

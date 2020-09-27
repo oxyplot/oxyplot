@@ -22,6 +22,7 @@ namespace OxyPlot.Series
     /// the bar axis StartPosition = fraction + delta, EndPosition = 1.0.
     /// </summary>
     /// <remarks>See <a href="http://www.mathworks.com/help/toolbox/finance/highlowfts.html">link</a></remarks>
+    [Obsolete("Use separate candlestick and volume series instead.")]
     public class CandleStickAndVolumeSeries : XYAxisSeries
     {
         /// <summary>
@@ -222,11 +223,7 @@ namespace OxyPlot.Series
             return OhlcvItem.FindIndex(this.data, x, startingIndex);
         }
 
-        /// <summary>
-        /// Renders the series on the specified rendering context.
-        /// </summary>
-        /// <param name="rc">The rendering context.</param>
-        // ReSharper disable once FunctionComplexityOverflow
+        /// <inheritdoc/>
         public override void Render(IRenderContext rc)
         {
             if (this.IsTransposed())
@@ -234,213 +231,220 @@ namespace OxyPlot.Series
                 throw new Exception("CandleStickAndVolumeSeries does not support transposed mode. It can only be used with horizontal X axis and vertical Y axis.");
             }
 
-            if (this.data == null || this.data.Count == 0)
+            // dirty workaround
+            rc.PopClip();
+            try
             {
-                return;
-            }
-
-            var items = this.data;
-            var nitems = this.data.Count;
-
-            this.VerifyAxes();
-
-            var clippingBar = this.GetClippingRect(this.BarAxis);
-            var clippingSep = this.GetSeparationClippingRect();
-            var clippingVol = this.GetClippingRect(this.VolumeAxis);
-
-            var datacandlewidth = (this.CandleWidth > 0) ? this.CandleWidth : this.minDx * 0.80;
-            var candlewidth =
-                this.XAxis.Transform(items[0].X + datacandlewidth) -
-                this.XAxis.Transform(items[0].X) - this.StrokeThickness;
-
-            // colors
-            var fillUp = this.GetSelectableFillColor(this.PositiveColor);
-            var fillDown = this.GetSelectableFillColor(this.NegativeColor);
-
-            var barfillUp = this.PositiveHollow ? OxyColors.Transparent : fillUp;
-            var barfillDown = this.NegativeHollow ? OxyColors.Transparent : fillDown;
-
-            var lineUp = this.GetSelectableColor(this.PositiveColor.ChangeIntensity(this.StrokeIntensity));
-            var lineDown = this.GetSelectableColor(this.NegativeColor.ChangeIntensity(this.StrokeIntensity));
-
-            // determine render range
-            var xmin = this.XAxis.ActualMinimum;
-            var xmax = this.XAxis.ActualMaximum;
-            this.winIndex = OhlcvItem.FindIndex(items, xmin, this.winIndex);
-
-            for (int i = this.winIndex; i < nitems; i++)
-            {
-                var bar = items[i];
-
-                // if item beyond visible range, done
-                if (bar.X > xmax)
+                if (this.data == null || this.data.Count == 0)
                 {
-                    break;
+                    return;
                 }
 
-                // check to see whether is valid
-                if (!bar.IsValid())
+                var items = this.data;
+                var nitems = this.data.Count;
+
+                this.VerifyAxes();
+
+                var clippingBar = this.GetClippingRect(this.BarAxis);
+                var clippingSep = this.GetSeparationClippingRect();
+                var clippingVol = this.GetClippingRect(this.VolumeAxis);
+
+                var datacandlewidth = (this.CandleWidth > 0) ? this.CandleWidth : this.minDx * 0.80;
+                var candlewidth =
+                    this.XAxis.Transform(items[0].X + datacandlewidth) -
+                    this.XAxis.Transform(items[0].X) - this.StrokeThickness;
+
+                // colors
+                var fillUp = this.GetSelectableFillColor(this.PositiveColor);
+                var fillDown = this.GetSelectableFillColor(this.NegativeColor);
+
+                var barfillUp = this.PositiveHollow ? OxyColors.Transparent : fillUp;
+                var barfillDown = this.NegativeHollow ? OxyColors.Transparent : fillDown;
+
+                var lineUp = this.GetSelectableColor(this.PositiveColor.ChangeIntensity(this.StrokeIntensity));
+                var lineDown = this.GetSelectableColor(this.NegativeColor.ChangeIntensity(this.StrokeIntensity));
+
+                // determine render range
+                var xmin = this.XAxis.ActualMinimum;
+                var xmax = this.XAxis.ActualMaximum;
+                this.winIndex = OhlcvItem.FindIndex(items, xmin, this.winIndex);
+
+                for (int i = this.winIndex; i < nitems; i++)
                 {
-                    continue;
-                }
+                    var bar = items[i];
 
-                var fillColor = bar.Close > bar.Open ? barfillUp : barfillDown;
-                var lineColor = bar.Close > bar.Open ? lineUp : lineDown;
-
-                var high = this.Transform(bar.X, bar.High);
-                var low = this.Transform(bar.X, bar.Low);
-
-                var open = this.Transform(bar.X, bar.Open);
-                var close = this.Transform(bar.X, bar.Close);
-
-                var max = new ScreenPoint(open.X, Math.Max(open.Y, close.Y));
-                var min = new ScreenPoint(open.X, Math.Min(open.Y, close.Y));
-
-                // Bar part
-                rc.DrawClippedLine(
-                    clippingBar,
-                    new[] { high, min },
-                    0,
-                    lineColor,
-                    this.StrokeThickness,
-                    this.EdgeRenderingMode,
-                    null,
-                    LineJoin.Miter);
-
-                // Lower extent
-                rc.DrawClippedLine(
-                    clippingBar,
-                    new[] { max, low },
-                    0,
-                    lineColor,
-                    this.StrokeThickness,
-                    this.EdgeRenderingMode,
-                    null,
-                    LineJoin.Miter);
-
-                // Body
-                var openLeft = open + new ScreenVector(-candlewidth * 0.5, 0);
-
-                if (max.Y - min.Y < 1.0)
-                {
-                    var leftPoint = new ScreenPoint(openLeft.X - this.StrokeThickness, min.Y);
-                    var rightPoint = new ScreenPoint(openLeft.X + this.StrokeThickness + candlewidth, min.Y);
-                    rc.DrawClippedLine(
-                        clippingBar, 
-                        new[] { leftPoint, rightPoint }, 
-                        leftPoint.DistanceToSquared(rightPoint), 
-                        lineColor, 
-                        this.StrokeThickness, 
-                        this.EdgeRenderingMode,
-                        null, LineJoin.Miter);
-
-                    leftPoint = new ScreenPoint(openLeft.X - this.StrokeThickness, max.Y);
-                    rightPoint = new ScreenPoint(openLeft.X + this.StrokeThickness + candlewidth, max.Y);
-                    rc.DrawClippedLine(
-                        clippingBar, 
-                        new[] { leftPoint, rightPoint }, 
-                        leftPoint.DistanceToSquared(rightPoint), 
-                        lineColor, 
-                        this.StrokeThickness, 
-                        this.EdgeRenderingMode,
-                        null, 
-                        LineJoin.Miter);
-                }
-                else
-                {
-                    var rect = new OxyRect(openLeft.X, min.Y, candlewidth, max.Y - min.Y);
-                    rc.DrawClippedRectangle(clippingBar, rect, fillColor, lineColor, this.StrokeThickness, this.EdgeRenderingMode);
-                }
-
-                // Volume Part
-                if (this.VolumeAxis == null || this.VolumeStyle == VolumeStyle.None)
-                {
-                    continue;
-                }
-
-                var iY0 = this.VolumeAxis.Transform(0);
-                switch (this.VolumeStyle)
-                {
-                    case VolumeStyle.Combined:
-                        {
-                            var adj = this.VolumeAxis.Transform(Math.Abs(bar.BuyVolume - bar.SellVolume));
-                            var fillcolor = (bar.BuyVolume > bar.SellVolume) ? barfillUp : barfillDown;
-                            var linecolor = (bar.BuyVolume > bar.SellVolume) ? lineUp : lineDown;
-                            var rect1 = new OxyRect(openLeft.X, adj, candlewidth, Math.Abs(adj - iY0));
-                            rc.DrawClippedRectangle(clippingVol, rect1, fillcolor, linecolor, this.StrokeThickness, this.EdgeRenderingMode);
-                        }
-
+                    // if item beyond visible range, done
+                    if (bar.X > xmax)
+                    {
                         break;
+                    }
 
-                    case VolumeStyle.PositiveNegative:
+                    // check to see whether is valid
+                    if (!bar.IsValid())
+                    {
+                        continue;
+                    }
+
+                    var fillColor = bar.Close > bar.Open ? barfillUp : barfillDown;
+                    var lineColor = bar.Close > bar.Open ? lineUp : lineDown;
+
+                    var high = this.Transform(bar.X, bar.High);
+                    var low = this.Transform(bar.X, bar.Low);
+
+                    var open = this.Transform(bar.X, bar.Open);
+                    var close = this.Transform(bar.X, bar.Close);
+
+                    var max = new ScreenPoint(open.X, Math.Max(open.Y, close.Y));
+                    var min = new ScreenPoint(open.X, Math.Min(open.Y, close.Y));
+                
+                    var openLeft = open + new ScreenVector(-candlewidth * 0.5, 0);
+
+                    using (rc.AutoResetClip(clippingBar))
+                    {
+                        // Bar part
+                        rc.DrawLine(
+                            new[] { high, min },
+                            lineColor,
+                            this.StrokeThickness,
+                            this.EdgeRenderingMode,
+                            null,
+                            LineJoin.Miter);
+
+                        // Lower extent
+                        rc.DrawLine(
+                            new[] { max, low },
+                            lineColor,
+                            this.StrokeThickness,
+                            this.EdgeRenderingMode,
+                            null,
+                            LineJoin.Miter);
+
+                        // Body
+
+                        if (max.Y - min.Y < 1.0)
                         {
-                            var buyY = this.VolumeAxis.Transform(bar.BuyVolume);
-                            var sellY = this.VolumeAxis.Transform(-bar.SellVolume);
-                            var rect1 = new OxyRect(openLeft.X, buyY, candlewidth, Math.Abs(buyY - iY0));
-                            rc.DrawClippedRectangle(clippingVol, rect1, fillUp, lineUp, this.StrokeThickness, this.EdgeRenderingMode);
-                            var rect2 = new OxyRect(openLeft.X, iY0, candlewidth, Math.Abs(sellY - iY0));
-                            rc.DrawClippedRectangle(clippingVol, rect2, fillDown, lineDown, this.StrokeThickness, this.EdgeRenderingMode);
-                        }
+                            var leftPoint = new ScreenPoint(openLeft.X - this.StrokeThickness, min.Y);
+                            var rightPoint = new ScreenPoint(openLeft.X + this.StrokeThickness + candlewidth, min.Y);
+                            rc.DrawLine(
+                                new[] { leftPoint, rightPoint }, 
+                                lineColor, 
+                                this.StrokeThickness, 
+                                this.EdgeRenderingMode,
+                                null, LineJoin.Miter);
 
-                        break;
-
-                    case VolumeStyle.Stacked:
-                        if (bar.BuyVolume > bar.SellVolume)
-                        {
-                            var buyY = this.VolumeAxis.Transform(bar.BuyVolume);
-                            var sellY = this.VolumeAxis.Transform(bar.SellVolume);
-                            var dyoffset = sellY - iY0;
-                            var rect2 = new OxyRect(openLeft.X, sellY, candlewidth, Math.Abs(sellY - iY0));
-                            rc.DrawClippedRectangle(clippingVol, rect2, fillDown, lineDown, this.StrokeThickness, this.EdgeRenderingMode);
-                            var rect1 = new OxyRect(openLeft.X, buyY + dyoffset, candlewidth, Math.Abs(buyY - iY0));
-                            rc.DrawClippedRectangle(clippingVol, rect1, fillUp, lineUp, this.StrokeThickness, this.EdgeRenderingMode);
+                            leftPoint = new ScreenPoint(openLeft.X - this.StrokeThickness, max.Y);
+                            rightPoint = new ScreenPoint(openLeft.X + this.StrokeThickness + candlewidth, max.Y);
+                            rc.DrawLine(
+                                new[] { leftPoint, rightPoint }, 
+                                lineColor, 
+                                this.StrokeThickness, 
+                                this.EdgeRenderingMode,
+                                null, 
+                                LineJoin.Miter);
                         }
                         else
                         {
-                            var buyY = this.VolumeAxis.Transform(bar.BuyVolume);
-                            var sellY = this.VolumeAxis.Transform(bar.SellVolume);
-                            var dyoffset = buyY - iY0;
-                            var rect1 = new OxyRect(openLeft.X, buyY, candlewidth, Math.Abs(buyY - iY0));
-                            rc.DrawClippedRectangle(clippingVol, rect1, fillUp, lineUp, this.StrokeThickness, this.EdgeRenderingMode);
-                            var rect2 = new OxyRect(openLeft.X, sellY + dyoffset, candlewidth, Math.Abs(sellY - iY0));
-                            rc.DrawClippedRectangle(clippingVol, rect2, fillDown, lineDown, this.StrokeThickness, this.EdgeRenderingMode);
+                            var rect = new OxyRect(openLeft.X, min.Y, candlewidth, max.Y - min.Y);
+                            rc.DrawRectangle(rect, fillColor, lineColor, this.StrokeThickness, this.EdgeRenderingMode);
                         }
+                    }
 
-                        break;
+                    // Volume Part
+                    if (this.VolumeAxis == null || this.VolumeStyle == VolumeStyle.None)
+                    {
+                        continue;
+                    }
+
+                    var iY0 = this.VolumeAxis.Transform(0);
+                    using (rc.AutoResetClip(clippingVol))
+                    {
+                        switch (this.VolumeStyle)
+                        {
+                            case VolumeStyle.Combined:
+                                {
+                                    var adj = this.VolumeAxis.Transform(Math.Abs(bar.BuyVolume - bar.SellVolume));
+                                    var fillcolor = (bar.BuyVolume > bar.SellVolume) ? barfillUp : barfillDown;
+                                    var linecolor = (bar.BuyVolume > bar.SellVolume) ? lineUp : lineDown;
+                                    var rect1 = new OxyRect(openLeft.X, adj, candlewidth, Math.Abs(adj - iY0));
+                                    rc.DrawRectangle(rect1, fillcolor, linecolor, this.StrokeThickness, this.EdgeRenderingMode);
+                                }
+
+                                break;
+
+                            case VolumeStyle.PositiveNegative:
+                                {
+                                    var buyY = this.VolumeAxis.Transform(bar.BuyVolume);
+                                    var sellY = this.VolumeAxis.Transform(-bar.SellVolume);
+                                    var rect1 = new OxyRect(openLeft.X, buyY, candlewidth, Math.Abs(buyY - iY0));
+                                    rc.DrawRectangle(rect1, fillUp, lineUp, this.StrokeThickness, this.EdgeRenderingMode);
+                                    var rect2 = new OxyRect(openLeft.X, iY0, candlewidth, Math.Abs(sellY - iY0));
+                                    rc.DrawRectangle(rect2, fillDown, lineDown, this.StrokeThickness, this.EdgeRenderingMode);
+                                }
+
+                                break;
+
+                            case VolumeStyle.Stacked:
+                                if (bar.BuyVolume > bar.SellVolume)
+                                {
+                                    var buyY = this.VolumeAxis.Transform(bar.BuyVolume);
+                                    var sellY = this.VolumeAxis.Transform(bar.SellVolume);
+                                    var dyoffset = sellY - iY0;
+                                    var rect2 = new OxyRect(openLeft.X, sellY, candlewidth, Math.Abs(sellY - iY0));
+                                    rc.DrawRectangle(rect2, fillDown, lineDown, this.StrokeThickness, this.EdgeRenderingMode);
+                                    var rect1 = new OxyRect(openLeft.X, buyY + dyoffset, candlewidth, Math.Abs(buyY - iY0));
+                                    rc.DrawRectangle(rect1, fillUp, lineUp, this.StrokeThickness, this.EdgeRenderingMode);
+                                }
+                                else
+                                {
+                                    var buyY = this.VolumeAxis.Transform(bar.BuyVolume);
+                                    var sellY = this.VolumeAxis.Transform(bar.SellVolume);
+                                    var dyoffset = buyY - iY0;
+                                    var rect1 = new OxyRect(openLeft.X, buyY, candlewidth, Math.Abs(buyY - iY0));
+                                    rc.DrawRectangle(rect1, fillUp, lineUp, this.StrokeThickness, this.EdgeRenderingMode);
+                                    var rect2 = new OxyRect(openLeft.X, sellY + dyoffset, candlewidth, Math.Abs(sellY - iY0));
+                                    rc.DrawRectangle(rect2, fillDown, lineDown, this.StrokeThickness, this.EdgeRenderingMode);
+                                }
+
+                                break;
+                        }
+                    }
+
+                }
+
+                if (this.SeparatorStrokeThickness > 0 && this.SeparatorLineStyle != LineStyle.None)
+                {
+                    // draw volume & bar separation line
+                    if (this.VolumeStyle != VolumeStyle.None)
+                    {
+                        using var _ = rc.AutoResetClip(clippingSep);
+                        var ysep = (clippingSep.Bottom + clippingSep.Top) / 2.0;
+                        rc.DrawLine(
+                            new[] { new ScreenPoint(clippingSep.Left, ysep), new ScreenPoint(clippingSep.Right, ysep) },
+                            this.SeparatorColor,
+                            this.SeparatorStrokeThickness,
+                            this.EdgeRenderingMode,
+                            this.SeparatorLineStyle.GetDashArray(),
+                            LineJoin.Miter);
+                    }
+
+                    // draw volume y=0 line
+                    if (this.VolumeAxis != null && this.VolumeStyle == VolumeStyle.PositiveNegative)
+                    {
+                        using var _ = rc.AutoResetClip(clippingVol);
+                        var y0 = this.VolumeAxis.Transform(0);
+                        rc.DrawLine(
+                            new[] { new ScreenPoint(clippingVol.Left, y0), new ScreenPoint(clippingVol.Right, y0) },
+                            OxyColors.Goldenrod,
+                            this.SeparatorStrokeThickness,
+                            this.EdgeRenderingMode,
+                            this.SeparatorLineStyle.GetDashArray(),
+                            LineJoin.Miter);
+                    }
                 }
             }
-
-            if (this.SeparatorStrokeThickness > 0 && this.SeparatorLineStyle != LineStyle.None)
+            finally
             {
-                // draw volume & bar separation line
-                if (this.VolumeStyle != VolumeStyle.None)
-                {
-                    var ysep = (clippingSep.Bottom + clippingSep.Top) / 2.0;
-                    rc.DrawClippedLine(
-                        clippingSep,
-                        new[] { new ScreenPoint(clippingSep.Left, ysep), new ScreenPoint(clippingSep.Right, ysep) },
-                        0,
-                        this.SeparatorColor,
-                        this.SeparatorStrokeThickness,
-                        this.EdgeRenderingMode,
-                        this.SeparatorLineStyle.GetDashArray(),
-                        LineJoin.Miter);
-                }
-
-                // draw volume y=0 line
-                if (this.VolumeAxis != null && this.VolumeStyle == VolumeStyle.PositiveNegative)
-                {
-                    var y0 = this.VolumeAxis.Transform(0);
-                    rc.DrawClippedLine(
-                        clippingVol,
-                        new[] { new ScreenPoint(clippingVol.Left, y0), new ScreenPoint(clippingVol.Right, y0) },
-                        0,
-                        OxyColors.Goldenrod,
-                        this.SeparatorStrokeThickness,
-                        this.EdgeRenderingMode,
-                        this.SeparatorLineStyle.GetDashArray(),
-                        LineJoin.Miter);
-                }
+                rc.PushClip(this.GetClippingRect());
             }
         }
 

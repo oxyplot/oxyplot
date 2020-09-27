@@ -132,13 +132,8 @@ namespace OxyPlot.Series
         /// <param name="rc">The rendering context.</param>
         public override void Render(IRenderContext rc)
         {
-            var actualBins = this.ActualItems;
-
             this.VerifyAxes();
-
-            var clippingRect = this.GetClippingRect();
-            using var _ = rc.AutoResetClip(clippingRect);
-            this.RenderBins(rc, actualBins);
+            this.RenderBins(rc, this.ActualItems);
         }
 
         /// <summary>

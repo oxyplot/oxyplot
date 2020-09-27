@@ -114,26 +114,16 @@ namespace OxyPlot.Series
             this.MaxX = maxValue;
         }
 
-        /// <summary>
-        /// Renders the bar/column item.
-        /// </summary>
-        /// <param name="rc">The render context.</param>
-        /// <param name="clippingRect">The clipping rectangle.</param>
-        /// <param name="barValue">The end value of the bar.</param>
-        /// <param name="categoryValue">The category value.</param>
-        /// <param name="actualBarWidth">The actual width of the bar.</param>
-        /// <param name="item">The item.</param>
-        /// <param name="rect">The rectangle of the bar.</param>
+        /// <inheritdoc/>
         protected override void RenderItem(
             IRenderContext rc,
-            OxyRect clippingRect,
             double barValue,
             double categoryValue,
             double actualBarWidth,
             BarItem item,
             OxyRect rect)
         {
-            base.RenderItem(rc, clippingRect, barValue, categoryValue, actualBarWidth, item, rect);
+            base.RenderItem(rc, barValue, categoryValue, actualBarWidth, item, rect);
 
             if (!(item is ErrorBarItem errorItem))
             {
@@ -152,10 +142,8 @@ namespace OxyPlot.Series
             var lowerErrorPoint = this.Transform(errorStart, categoryMiddle);
             var upperErrorPoint = this.Transform(errorEnd, categoryMiddle);
 
-            rc.DrawClippedLine(
-                clippingRect,
+            rc.DrawLine(
                 new List<ScreenPoint> { lowerErrorPoint, upperErrorPoint },
-                0,
                 this.StrokeColor,
                 this.ErrorStrokeThickness,
                 this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness),
@@ -166,10 +154,8 @@ namespace OxyPlot.Series
             {
                 var lowerLeftErrorPoint = this.Transform(errorStart, categoryStart);
                 var lowerRightErrorPoint = this.Transform(errorStart, categoryEnd);
-                rc.DrawClippedLine(
-                    clippingRect,
+                rc.DrawLine(
                     new List<ScreenPoint> { lowerLeftErrorPoint, lowerRightErrorPoint },
-                    0,
                     this.StrokeColor,
                     this.ErrorStrokeThickness,
                     this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness),
@@ -178,10 +164,8 @@ namespace OxyPlot.Series
 
                 var upperLeftErrorPoint = this.Transform(errorEnd, categoryStart);
                 var upperRightErrorPoint = this.Transform(errorEnd, categoryEnd);
-                rc.DrawClippedLine(
-                    clippingRect,
+                rc.DrawLine(
                     new List<ScreenPoint> { upperLeftErrorPoint, upperRightErrorPoint },
-                    0,
                     this.StrokeColor,
                     this.ErrorStrokeThickness,
                     this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness),
