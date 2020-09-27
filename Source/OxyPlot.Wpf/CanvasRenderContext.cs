@@ -9,6 +9,7 @@
 
 namespace OxyPlot.Wpf
 {
+    using OxyPlot.Rendering;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -27,7 +28,7 @@ namespace OxyPlot.Wpf
     /// <summary>
     /// Implements <see cref="IRenderContext" /> for <see cref="System.Windows.Controls.Canvas" />.
     /// </summary>
-    public class CanvasRenderContext : ClippingRenderContext
+    public class CanvasRenderContext : ClippingRenderContext, ITextMeasurer
     {
         /// <summary>
         /// The maximum number of figures per geometry.
@@ -101,7 +102,15 @@ namespace OxyPlot.Wpf
             this.UseStreamGeometry = true;
             this.RendersToScreen = true;
             this.BalancedLineDrawingThicknessLimit = 3.5;
+            this.DefaultFontFamily = "Segoe UI";
+
+            this.TextArranger = new TextArranger(this, new SimpleTextTrimmer());
         }
+
+        /// <summary>
+        /// Gets or sets the <see cref="TextArranger"/> used by this instance.
+        /// </summary>
+        public TextArranger TextArranger { get; set; }
 
         /// <summary>
         /// Gets or sets the text measurement method.
@@ -126,6 +135,11 @@ namespace OxyPlot.Wpf
         /// <value><c>true</c> if stream geometry should be used; otherwise, <c>false</c> .</value>
         /// <remarks>The XamlWriter does not serialize StreamGeometry, so set this to <c>false</c> if you want to export to XAML. Using stream geometry seems to be slightly faster than using path geometry.</remarks>
         public bool UseStreamGeometry { get; set; }
+
+        /// <summary>
+        /// Gets or sets the default font familiy.
+        /// </summary>
+        public string DefaultFontFamily { get; set; }
 
         ///<inheritdoc/>
         public override void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
@@ -398,9 +412,9 @@ namespace OxyPlot.Wpf
         /// <param name="fontFamily">The font family.</param>
         /// <param name="fontSize">Size of the font (in device independent units, 1/96 inch).</param>
         /// <param name="fontWeight">The font weight.</param>
-        /// <param name="rotate">The rotation angle.</param>
-        /// <param name="halign">The horizontal alignment.</param>
-        /// <param name="valign">The vertical alignment.</param>
+        /// <param name="rotation">The rotation angle.</param>
+        /// <param name="horizontalAlignment">The horizontal alignment.</param>
+        /// <param name="verticalAlignment">The vertical alignment.</param>
         /// <param name="maxSize">The maximum size of the text (in device independent units, 1/96 inch).</param>
         public override void DrawText(
             ScreenPoint p,
@@ -409,90 +423,51 @@ namespace OxyPlot.Wpf
             string fontFamily,
             double fontSize,
             double fontWeight,
-            double rotate,
-            HorizontalAlignment halign,
-            VerticalAlignment valign,
+            double rotation,
+            HorizontalAlignment horizontalAlignment,
+            VerticalAlignment verticalAlignment,
             OxySize? maxSize)
         {
-            var tb = this.CreateAndAdd<TextBlock>();
-            tb.Text = text;
-            tb.Foreground = this.GetCachedBrush(fill);
-            if (fontFamily != null)
+            fontFamily ??= this.DefaultFontFamily;
+            this.TextArranger.ArrangeText(p, text, fontFamily, fontSize, fontWeight, rotation, horizontalAlignment, verticalAlignment, maxSize, HorizontalAlignment.Left, TextVerticalAlignment.Top, out var lines, out var linePositions);
+
+            for (int i = 0; i < lines.Length; i++)
             {
+                var line = lines[i];
+                var linePosition = new Point(linePositions[i].X, linePositions[i].Y);
+
+                var tb = this.CreateAndAdd<TextBlock>();
+                tb.Text = line;
+                tb.Foreground = this.GetCachedBrush(fill);
                 tb.FontFamily = this.GetCachedFontFamily(fontFamily);
-            }
 
-            if (fontSize > 0)
-            {
-                tb.FontSize = fontSize;
-            }
-
-            if (fontWeight > 0)
-            {
-                tb.FontWeight = GetFontWeight(fontWeight);
-            }
-
-            TextOptions.SetTextFormattingMode(tb, this.TextFormattingMode);
-
-            double dx = 0;
-            double dy = 0;
-
-            if (maxSize != null || halign != HorizontalAlignment.Left || valign != VerticalAlignment.Top)
-            {
-                tb.Measure(new Size(1000, 1000));
-                var size = tb.DesiredSize;
-                if (maxSize != null)
+                if (fontSize > 0)
                 {
-                    if (size.Width > maxSize.Value.Width + 1e-3)
-                    {
-                        size.Width = Math.Max(maxSize.Value.Width, 0);
-                    }
-
-                    if (size.Height > maxSize.Value.Height + 1e-3)
-                    {
-                        size.Height = Math.Max(maxSize.Value.Height, 0);
-                    }
-
-                    tb.Width = size.Width;
-                    tb.Height = size.Height;
+                    tb.FontSize = fontSize;
                 }
 
-                if (halign == HorizontalAlignment.Center)
+                if (fontWeight > 0)
                 {
-                    dx = -size.Width / 2;
+                    tb.FontWeight = GetFontWeight(fontWeight);
                 }
 
-                if (halign == HorizontalAlignment.Right)
+                TextOptions.SetTextFormattingMode(tb, this.TextFormattingMode);
+
+                var transform = new TransformGroup();
+                if (Math.Abs(rotation) > double.Epsilon)
                 {
-                    dx = -size.Width;
+                    transform.Children.Add(new RotateTransform(rotation));
                 }
 
-                if (valign == VerticalAlignment.Middle)
+                transform.Children.Add(new TranslateTransform(linePosition.X, linePosition.Y));
+                tb.RenderTransform = transform;
+                if (tb.Clip != null)
                 {
-                    dy = -size.Height / 2;
+                    tb.Clip.Transform = tb.RenderTransform.Inverse as Transform;
                 }
 
-                if (valign == VerticalAlignment.Bottom)
-                {
-                    dy = -size.Height;
-                }
+                tb.SetValue(RenderOptions.ClearTypeHintProperty, ClearTypeHint.Enabled);
             }
-
-            var transform = new TransformGroup();
-            transform.Children.Add(new TranslateTransform(dx, dy));
-            if (Math.Abs(rotate) > double.Epsilon)
-            {
-                transform.Children.Add(new RotateTransform(rotate));
-            }
-
-            transform.Children.Add(new TranslateTransform(p.X, p.Y));
-            tb.RenderTransform = transform;
-            if (tb.Clip != null)
-            {
-                tb.Clip.Transform = tb.RenderTransform.Inverse as Transform;
-            }
-
-            tb.SetValue(RenderOptions.ClearTypeHintProperty, ClearTypeHint.Enabled);
         }
 
         /// <summary>
@@ -507,38 +482,8 @@ namespace OxyPlot.Wpf
         /// </returns>
         public override OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
         {
-            if (string.IsNullOrEmpty(text))
-            {
-                return OxySize.Empty;
-            }
-
-            if (this.TextMeasurementMethod == TextMeasurementMethod.GlyphTypeface)
-            {
-                return this.MeasureTextByGlyphTypeface(text, fontFamily, fontSize, fontWeight);
-            }
-
-            var tb = new TextBlock { Text = text };
-
-            TextOptions.SetTextFormattingMode(tb, this.TextFormattingMode);
-
-            if (fontFamily != null)
-            {
-                tb.FontFamily = new FontFamily(fontFamily);
-            }
-
-            if (fontSize > 0)
-            {
-                tb.FontSize = fontSize;
-            }
-
-            if (fontWeight > 0)
-            {
-                tb.FontWeight = GetFontWeight(fontWeight);
-            }
-
-            tb.Measure(new Size(1000, 1000));
-
-            return new OxySize(tb.DesiredSize.Width, tb.DesiredSize.Height);
+            fontFamily ??= this.DefaultFontFamily;
+            return this.TextArranger.MeasureText(text, fontFamily, fontSize, fontWeight);
         }
 
         /// <summary>
@@ -620,6 +565,63 @@ namespace OxyPlot.Wpf
         protected override void ResetClip()
         {
             this.clip = null;
+        }
+
+        /// <inheritdoc/>
+        public FontMetrics GetFontMetrics(string fontFamily, double fontSize, double fontWeight)
+        {
+            var typeface = new Typeface(
+                new FontFamily(fontFamily), FontStyles.Normal, GetFontWeight(fontWeight), FontStretches.Normal);
+
+            if (!typeface.TryGetGlyphTypeface(out var glyphTypeface))
+            {
+                return GetFontMetrics(this.DefaultFontFamily, fontSize, fontWeight);
+                throw new InvalidOperationException("No glyph typeface found");
+            }
+
+            var lineHeight = Math.Abs(glyphTypeface.Height) * fontSize;
+            var ascender = Math.Abs(typeface.FontFamily.Baseline) * fontSize;
+            var descender = lineHeight - ascender;
+            var leading = (Math.Abs(typeface.FontFamily.LineSpacing) * fontSize) - lineHeight;
+
+            return new FontMetrics(ascender, descender, leading);
+        }
+
+        /// <inheritdoc/>
+        public double MeasureTextWidth(string text, string fontFamily, double fontSize, double fontWeight)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                return 0.0;
+            }
+
+            if (this.TextMeasurementMethod == TextMeasurementMethod.GlyphTypeface)
+            {
+                return this.MeasureTextByGlyphTypeface(text, fontFamily, fontSize, fontWeight).Width;
+            }
+
+            var tb = new TextBlock { Text = text };
+
+            TextOptions.SetTextFormattingMode(tb, this.TextFormattingMode);
+
+            if (fontFamily != null)
+            {
+                tb.FontFamily = new FontFamily(fontFamily);
+            }
+
+            if (fontSize > 0)
+            {
+                tb.FontSize = fontSize;
+            }
+
+            if (fontWeight > 0)
+            {
+                tb.FontWeight = GetFontWeight(fontWeight);
+            }
+
+            tb.Measure(new Size(1000, 1000));
+
+            return tb.DesiredSize.Width;
         }
 
         /// <summary>
@@ -1022,10 +1024,10 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Converts an <see cref="OxyRect" /> to a <see cref="Rect" />.
+        /// Converts an <see cref="OxyRect" /> to a <see cref="System.Windows.Rect" />.
         /// </summary>
         /// <param name="r">The rectangle.</param>
-        /// <returns>A <see cref="Rect" />.</returns>
+        /// <returns>A <see cref="System.Windows.Rect" />.</returns>
         private static Rect ToRect(OxyRect r)
         {
             return new Rect(r.Left, r.Top, r.Width, r.Height);

@@ -35,6 +35,15 @@ namespace OxyPlot.SkiaSharp.Tests
             exporter.Export(model, stream);
         }
 
+        [Test]
+        public void TestBoundedMultilineAlignment()
+        {
+            var exporter = new SvgExporter { Width = 1000, Height = 750 };
+            var model = RenderingCapabilities.DrawBoundedMultilineTextAlignmentRotationWith();
+            using var stream = File.Create(Path.Combine(this.outputDirectory, "Bounded-Multiline-Alignment.svg"));
+            exporter.Export(model, stream);
+        }
+
         [OneTimeSetUp]
         public void Setup()
         {

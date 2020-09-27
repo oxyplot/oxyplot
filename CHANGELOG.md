@@ -38,6 +38,8 @@ All notable changes to this project will be documented in this file.
 - `AxisPosition.All` for axes which need a margin on all sides of the plot area (#1574)
 - IRenderContext.ClipCount property (#1593)
 - Additional parameters for HistogramSeries LabelFormatString
+- SvgExporter for OxyPlot.ImageSharp
+- Consistent support for DrawText's maxSize parameter (#1559)
 
 ### Changed
 - Legends model (#644)
@@ -67,6 +69,7 @@ All notable changes to this project will be documented in this file.
 - Axes with `AxisPosition.None` make no contribution to margins (#1574)
 - `AngleAxis` has position `AxisPosition.All` by default (#1574)
 - Clipping API changed from SetClip(...) and ResetClip() to PushClip(...) and PopClip() (#1593)
+- OxyPlot.Wpf to use common text arranging and trimming
 
 ### Removed
 - Remove PlotModel.Legends (#644)
@@ -79,6 +82,7 @@ All notable changes to this project will be documented in this file.
 - Axis.UpdateFromSeries(...) and Series.UpdateValidData() (#741)
 - Support for IRenderContext implementations without native clipping (#1593)
 - CohenSutherlandClipping and SutherlandHodgmanClipping (#1593)
+- UseVerticalAlignmentWorkaround property of OxyPlot.SvgRenderContext
 
 ### Fixed
 - Legend font size is not affected by DefaultFontSize (#1396)
@@ -103,6 +107,9 @@ All notable changes to this project will be documented in this file.
 - MinimumPadding incorrect when MaximumPadding is non-zero (#1625)
 - Don't clip zerocrossing axis lines within plot bounds (#1441)
 - Incorrect margins when using Color Axes with AxisPosition.None (#1574)
+- Vertical text alignment in OxyPlot.SvgRenderContext (#1531)
+- Consistent horizontal text alignment for mutliline text (#1554)
+- Consistent implementation of MeasureText (#1551)
 
 ## [2.0.0] - 2019-10-19
 ### Added 

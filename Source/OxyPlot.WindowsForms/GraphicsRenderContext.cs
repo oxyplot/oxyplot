@@ -23,11 +23,12 @@ namespace OxyPlot.WindowsForms
     using System.Linq;
 
     using OxyPlot;
+    using OxyPlot.Rendering;
 
     /// <summary>
     /// The graphics render context.
     /// </summary>
-    public class GraphicsRenderContext : ClippingRenderContext, IDisposable
+    public class GraphicsRenderContext : ClippingRenderContext, IDisposable, ITextMeasurer
     {
         /// <summary>
         /// The font size factor.
@@ -77,7 +78,14 @@ namespace OxyPlot.WindowsForms
             }
 
             this.stringFormat = StringFormat.GenericTypographic;
+
+            this.TextArranger = new TextArranger(this, new SimpleTextTrimmer());
         }
+
+        /// <summary>
+        /// Gets or sets the <see cref="TextArranger"/> for this instance.
+        /// </summary>
+        public TextArranger TextArranger { get; set; }
 
         /// <summary>
         /// Sets the graphics target.
@@ -105,7 +113,7 @@ namespace OxyPlot.WindowsForms
             {
                 return;
             }
-            
+
             var pen = this.GetCachedPen(stroke, thickness);
             this.g.DrawEllipse(pen, (float)rect.Left, (float)rect.Top, (float)rect.Width, (float)rect.Height);
         }
@@ -191,9 +199,9 @@ namespace OxyPlot.WindowsForms
         /// <param name="fontFamily">The font family.</param>
         /// <param name="fontSize">Size of the font.</param>
         /// <param name="fontWeight">The font weight.</param>
-        /// <param name="rotate">The rotation angle.</param>
-        /// <param name="halign">The horizontal alignment.</param>
-        /// <param name="valign">The vertical alignment.</param>
+        /// <param name="rotation">The rotation angle.</param>
+        /// <param name="horizontalAlignment">The horizontal alignment.</param>
+        /// <param name="verticalAlignment">The vertical alignment.</param>
         /// <param name="maxSize">The maximum size of the text.</param>
         public override void DrawText(
             ScreenPoint p,
@@ -202,9 +210,9 @@ namespace OxyPlot.WindowsForms
             string fontFamily,
             double fontSize,
             double fontWeight,
-            double rotate,
-            HorizontalAlignment halign,
-            VerticalAlignment valign,
+            double rotation,
+            HorizontalAlignment horizontalAlignment,
+            VerticalAlignment verticalAlignment,
             OxySize? maxSize)
         {
             if (text == null)
@@ -218,58 +226,26 @@ namespace OxyPlot.WindowsForms
             {
                 this.stringFormat.Alignment = StringAlignment.Near;
                 this.stringFormat.LineAlignment = StringAlignment.Near;
-                var size = Ceiling(this.g.MeasureString(text, font, int.MaxValue, this.stringFormat));
-                if (maxSize != null)
-                {
-                    if (size.Width > maxSize.Value.Width)
-                    {
-                        size.Width = (float)maxSize.Value.Width;
-                    }
-
-                    if (size.Height > maxSize.Value.Height)
-                    {
-                        size.Height = (float)maxSize.Value.Height;
-                    }
-                }
-
-                float dx = 0;
-                if (halign == HorizontalAlignment.Center)
-                {
-                    dx = -size.Width / 2;
-                }
-
-                if (halign == HorizontalAlignment.Right)
-                {
-                    dx = -size.Width;
-                }
-
-                float dy = 0;
-                this.stringFormat.LineAlignment = StringAlignment.Near;
-                if (valign == VerticalAlignment.Middle)
-                {
-                    dy = -size.Height / 2;
-                }
-
-                if (valign == VerticalAlignment.Bottom)
-                {
-                    dy = -size.Height;
-                }
 
                 var graphicsState = this.g.Save();
 
                 this.g.TranslateTransform((float)p.X, (float)p.Y);
 
-                var layoutRectangle = new RectangleF(0, 0, size.Width, size.Height);
-                if (Math.Abs(rotate) > double.Epsilon)
+                if (Math.Abs(rotation) > double.Epsilon)
                 {
-                    this.g.RotateTransform((float)rotate);
-
-                    layoutRectangle.Height += (float)(fontSize / 18.0);
+                    this.g.RotateTransform((float)rotation);
                 }
 
-                this.g.TranslateTransform(dx, dy);
+                // arrange around the origin with no rotation, because Graphics does the rotation for us
+                this.TextArranger.ArrangeText(new ScreenPoint(0, 0), text, fontFamily, fontSize, fontWeight, 0.0, horizontalAlignment, verticalAlignment, maxSize, HorizontalAlignment.Left, TextVerticalAlignment.Top, out var lines, out var linePositions);
 
-                this.g.DrawString(text, font, this.GetCachedBrush(fill), layoutRectangle, this.stringFormat);
+                for (int i = 0; i < lines.Length; i++)
+                {
+                    var line = lines[i];
+                    var linePosition = new PointF((float)linePositions[i].X, (float)linePositions[i].Y);
+
+                    this.g.DrawString(line, font, this.GetCachedBrush(fill), linePosition, this.stringFormat);
+                }
 
                 this.g.Restore(graphicsState);
             }
@@ -285,19 +261,7 @@ namespace OxyPlot.WindowsForms
         /// <returns>The text size.</returns>
         public override OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
         {
-            if (text == null)
-            {
-                return OxySize.Empty;
-            }
-
-            var fontStyle = fontWeight < 700 ? FontStyle.Regular : FontStyle.Bold;
-            using (var font = CreateFont(fontFamily, fontSize, fontStyle))
-            {
-                this.stringFormat.Alignment = StringAlignment.Near;
-                this.stringFormat.LineAlignment = StringAlignment.Near;
-                var size = this.g.MeasureString(text, font, int.MaxValue, this.stringFormat);
-                return new OxySize(size.Width, size.Height);
-            }
+            return this.TextArranger.MeasureText(text, fontFamily, fontSize, fontWeight);
         }
 
         /// <summary>
@@ -374,10 +338,54 @@ namespace OxyPlot.WindowsForms
             this.g.ResetClip();
         }
 
+        /// <inheritdoc/>
+        public FontMetrics GetFontMetrics(string fontFamily, double fontSize, double fontWeight)
+        {
+            // TODO: DPI support
+            var fontStyle = fontWeight < 700 ? FontStyle.Regular : FontStyle.Bold;
+            using (var font = CreateFont(fontFamily, fontSize, fontStyle))
+            {
+                var factor = font.Height / (double)Math.Abs(font.FontFamily.GetLineSpacing(fontStyle));
+
+                var ascender = factor * Math.Abs(font.FontFamily.GetCellAscent(fontStyle));
+                var descender = factor * Math.Abs(font.FontFamily.GetCellDescent(fontStyle));
+                var leading = font.Height - ascender - descender;
+
+                return new FontMetrics(ascender, descender, leading);
+            }
+        }
+
+        /// <inheritdoc/>
+        public double MeasureTextWidth(string text, string fontFamily, double fontSize, double fontWeight)
+        {
+            if (text == null)
+            {
+                return 0.0;
+            }
+
+            var fontStyle = fontWeight < 700 ? FontStyle.Regular : FontStyle.Bold;
+            using (var font = CreateFont(fontFamily, fontSize, fontStyle))
+            {
+                this.stringFormat.Alignment = StringAlignment.Near;
+                this.stringFormat.LineAlignment = StringAlignment.Near;
+                var size = this.g.MeasureString(text, font, int.MaxValue, this.stringFormat);
+                return size.Width;
+            }
+        }
+
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        protected virtual void Dispose(bool disposing)
         {
             // dispose images
             foreach (var i in this.imageCache)

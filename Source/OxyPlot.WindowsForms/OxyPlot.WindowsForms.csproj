@@ -20,7 +20,7 @@
         <ProjectReference Include="..\OxyPlot\OxyPlot.csproj" />
     </ItemGroup>
     <ItemGroup>
-        <None Include="..\..\Icons\OxyPlot_128.png" Pack="true" PackagePath="\"/>
+        <None Include="..\..\Icons\OxyPlot_128.png" Pack="true" PackagePath="\" />
     </ItemGroup>
     <ItemGroup>
         <None Include="OxyPlot.WindowsForms.snk" />

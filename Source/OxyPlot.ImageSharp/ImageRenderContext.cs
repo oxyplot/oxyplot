@@ -13,6 +13,7 @@ namespace OxyPlot.ImageSharp
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using OxyPlot.Rendering;
     using SixLabors.Fonts;
     using SixLabors.Fonts.Exceptions;
     using SixLabors.ImageSharp;
@@ -24,7 +25,7 @@ namespace OxyPlot.ImageSharp
     /// <summary>
     /// Provides an implementation of IRenderContext which draws to a <see cref="Image"/>.
     /// </summary>
-    public class ImageRenderContext : ClippingRenderContext, IDisposable
+    public class ImageRenderContext : ClippingRenderContext, IDisposable, ITextMeasurer
     {
         /// <summary>
         /// The default font to use when a request font cannot be found.
@@ -81,7 +82,14 @@ namespace OxyPlot.ImageSharp
             this.RendersToScreen = false;
 
             this.clipping = false;
+
+            this.TextArranger = new TextArranger(this, new SimpleTextTrimmer());
         }
+
+        /// <summary>
+        /// Gets or sets the <see cref="TextArranger"/> used by this instance.
+        /// </summary>
+        public TextArranger TextArranger { get; set; }
 
         /// <summary>
         /// Gets the DPI scaling factor. A value of 1 corresponds to 96 DPI (dots per inch).
@@ -167,79 +175,29 @@ namespace OxyPlot.ImageSharp
             var font = this.GetFontOrThrow(fontFamily, fontSize, this.ToFontStyle(fontWeight));
             var actualFontSize = this.NominalFontSizeToPoints(fontSize);
 
-            var outputX = this.Convert(p.X);
-            var outputY = this.Convert(p.Y);
-            var outputPosition = new PointF(outputX, outputY);
+            this.TextArranger.ArrangeText(p, text, fontFamily, fontSize, fontWeight, rotation, horizontalAlignment, verticalAlignment, maxSize, OxyPlot.HorizontalAlignment.Left, TextVerticalAlignment.Baseline, out var lines, out var linePositions);
 
-            var cos = (float)Math.Cos(rotation * Math.PI / 180.0);
-            var sin = (float)Math.Sin(rotation * Math.PI / 180.0);
-
-            // measure bounds of the whole text (we only need the height)
-            var bounds = this.MeasureTextLoose(text, fontFamily, fontSize, fontWeight);
-            var boundsHeight = this.Convert(bounds.Height);
-            var offsetHeight = new PointF(boundsHeight * -sin, boundsHeight * cos);
-
-            // determine the font metrids for this font size at 96 DPI
-            var actualDescent = this.Convert(actualFontSize * this.MilliPointsToNominalResolution(font.Descender));
-            var offsetDescent = new PointF(actualDescent * -sin, actualDescent * cos);
-
-            var actualLineHeight = this.Convert(actualFontSize * this.MilliPointsToNominalResolution(font.LineHeight));
-            var offsetLineHeight = new PointF(actualLineHeight * -sin, actualLineHeight * cos);
-
-            var actualLineGap = this.Convert(actualFontSize * this.MilliPointsToNominalResolution(font.LineGap));
-            var offsetLineGap = new PointF(actualLineGap * -sin, actualLineGap * cos);
-
-            // find top of the whole text
-            var deltaY = verticalAlignment switch
+            for (int i = 0; i < lines.Length; i++)
             {
-                OxyPlot.VerticalAlignment.Top => 1.0f,
-                OxyPlot.VerticalAlignment.Middle => 0.5f,
-                OxyPlot.VerticalAlignment.Bottom => 0.0f,
-                _ => throw new ArgumentOutOfRangeException(nameof(verticalAlignment)),
-            };
-
-            // this is the top of the top line
-            var topPosition = outputPosition + (offsetHeight * deltaY) - offsetHeight;
-
-            // need this later
-            var deltaX = horizontalAlignment switch
-            {
-                OxyPlot.HorizontalAlignment.Left => -0.0f,
-                OxyPlot.HorizontalAlignment.Center => -0.5f,
-                OxyPlot.HorizontalAlignment.Right => -1.0f,
-                _ => throw new ArgumentOutOfRangeException(nameof(horizontalAlignment)),
-            };
-
-            var lines = StringHelper.SplitLines(text);
-            for (int li = 0; li < lines.Length; li++)
-            {
-                var line = lines[li];
+                var line = lines[i];
+                var linePosition = this.Convert(linePositions[i]);
 
                 if (string.IsNullOrWhiteSpace(line))
                 {
                     continue;
                 }
-                
-                // measure bounds of just the line (we only need the width)
-                var lineBounds = this.MeasureTextLoose(line, fontFamily, fontSize, fontWeight);
-                var lineBoundsWidth = this.Convert(lineBounds.Width);
-                var offsetLineWidth = new PointF(lineBoundsWidth * cos, lineBoundsWidth * sin);
-
-                // find the left baseline position
-                var lineTop = topPosition + (offsetLineGap * li) + (offsetLineHeight * li);
-                var lineBaseLineLeft = lineTop + offsetLineWidth * deltaX + offsetLineHeight + offsetDescent;
 
                 // this seems to produce consistent and correct results, but we have to rotate it manually, so render it at the origin for simplicity
                 var glyphsAtOrigin = TextBuilder.GenerateGlyphs(line, new PointF(0f, 0f), new RendererOptions(font, this.Dpi, this.Dpi)
                 {
                     HorizontalAlignment = HorizontalAlignment.Left,
-                    VerticalAlignment = VerticalAlignment.Bottom, // sit on the line (baseline)
+                    VerticalAlignment = VerticalAlignment.Bottom, // baseline
                     ApplyKerning = true,
                 });
 
                 // translate and rotate into possition
                 var transform = Matrix3x2Extensions.CreateRotationDegrees((float)rotation);
-                transform.Translation = lineBaseLineLeft;
+                transform.Translation = linePosition;
                 var glyphs = glyphsAtOrigin.Transform(transform);
 
                 // draw the glyphs
@@ -253,7 +211,7 @@ namespace OxyPlot.ImageSharp
         /// <inheritdoc/>
         public override OxySize MeasureText(string text, string fontFamily = null, double fontSize = 10, double fontWeight = 500)
         {
-            return this.MeasureTextLoose(text, fontFamily, fontSize, fontWeight);
+            return this.TextArranger.MeasureText(text, fontFamily, fontSize, fontWeight);
         }
 
         /// <inheritdoc/>
@@ -442,6 +400,31 @@ namespace OxyPlot.ImageSharp
         }
 
         /// <inheritdoc/>
+        public FontMetrics GetFontMetrics(string fontFamily, double fontSize, double fontWeight)
+        {
+            var font = this.GetFontOrThrow(fontFamily, fontSize, this.ToFontStyle(fontWeight));
+            var actualFontSize = this.NominalFontSizeToPoints(fontSize);
+
+            var ascender = actualFontSize * this.MilliPointsToNominalResolution(Math.Abs(font.Ascender));
+            var descender = actualFontSize * this.MilliPointsToNominalResolution(Math.Abs(font.Descender));
+            var leading = actualFontSize * this.MilliPointsToNominalResolution(Math.Abs(font.LineGap));
+
+            return new FontMetrics(ascender, descender, leading);
+        }
+
+        /// <inheritdoc/>
+        public double MeasureTextWidth(string text, string fontFamily, double fontSize, double fontWeight)
+        {
+            text = text ?? string.Empty;
+
+            var font = this.GetFontOrThrow(fontFamily, fontSize, this.ToFontStyle(fontWeight));
+            var actualFontSize = this.NominalFontSizeToPoints(fontSize);
+
+            var result = TextMeasurer.Measure(text, new RendererOptions(font, this.Dpi));
+            return this.ConvertBack(result.Width);
+        }
+
+        /// <inheritdoc/>
         protected override void SetClip(OxyRect clippingRectangle)
         {
             var actualRectangle = this.ConvertSnap(clippingRectangle, 0);
@@ -591,52 +574,6 @@ namespace OxyPlot.ImageSharp
             }
 
             return family;
-        }
-
-        /// <summary>
-        /// Measures the text as it will be arranged out by OxyPlot.
-        /// </summary>
-        /// <param name="text">The text to render.</param>
-        /// <param name="fontFamily">The font family.</param>
-        /// <param name="fontSize">The font size in points.</param>
-        /// <param name="fontWeight">The font weight.</param>
-        /// <returns>An <see cref="OxySize"/>.</returns>
-        private OxySize MeasureTextLoose(string text, string fontFamily, double fontSize, double fontWeight)
-        {
-            text = text ?? string.Empty;
-
-            var font = this.GetFontOrThrow(fontFamily, fontSize, this.ToFontStyle(fontWeight));
-            var actualFontSize = this.NominalFontSizeToPoints(fontSize);
-
-            var tight = this.MeasureTextTight(text, fontFamily, fontSize, fontWeight);
-            var width = tight.Width;
-
-            var lineHeight = actualFontSize * this.MilliPointsToNominalResolution(font.LineHeight);
-            var lineGap = actualFontSize * this.MilliPointsToNominalResolution(font.LineGap);
-            var lineCount = CountLines(text);
-
-            var height = (lineHeight * lineCount) + (lineGap * (lineCount - 1));
-
-            return new OxySize(width, height);
-        }
-
-        /// <summary>
-        /// Measures the text as it will be rendered by ImageSharp.
-        /// </summary>
-        /// <param name="text">The text to render.</param>
-        /// <param name="fontFamily">The font family.</param>
-        /// <param name="fontSize">The font size in points.</param>
-        /// <param name="fontWeight">The font weight.</param>
-        /// <returns>An <see cref="OxySize"/>.</returns>
-        private OxySize MeasureTextTight(string text, string fontFamily, double fontSize, double fontWeight)
-        {
-            text = text ?? string.Empty;
-
-            var font = this.GetFontOrThrow(fontFamily, fontSize, this.ToFontStyle(fontWeight));
-            var actualFontSize = this.NominalFontSizeToPoints(fontSize);
-
-            var result = TextMeasurer.Measure(text, new RendererOptions(font, this.Dpi));
-            return new OxySize(this.ConvertBack(result.Width), this.ConvertBack(result.Height));
         }
 
         /// <summary>

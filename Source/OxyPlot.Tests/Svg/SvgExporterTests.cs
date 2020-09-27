@@ -120,7 +120,7 @@ namespace OxyPlot.Tests
             var textMeasurer = new PdfRenderContext(width, height, model.Background);
             
             using (var stream = new FileStream(path, FileMode.Create))
-            using (var rc = new SvgRenderContext(stream, width, height, false, textMeasurer, model.Background, true))
+            using (var rc = new SvgRenderContext(stream, width, height, false, textMeasurer, model.Background))
             {
                 ((IPlotModel)model).Update(true);
                 ((IPlotModel)model).Render(rc, rect);

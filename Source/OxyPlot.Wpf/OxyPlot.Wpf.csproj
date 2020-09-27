@@ -27,7 +27,7 @@
     <Reference Include="System.Printing" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OxyPlot.Wpf.Shared\OxyPlot.Wpf.Shared.csproj"/>
-    <ProjectReference Include="..\OxyPlot\OxyPlot.csproj"/>
+    <ProjectReference Include="..\OxyPlot.Wpf.Shared\OxyPlot.Wpf.Shared.csproj" />
+    <ProjectReference Include="..\OxyPlot\OxyPlot.csproj" />
   </ItemGroup>
 </Project>

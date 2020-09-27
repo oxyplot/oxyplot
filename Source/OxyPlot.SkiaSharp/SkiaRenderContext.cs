@@ -6,21 +6,35 @@
 
 namespace OxyPlot.SkiaSharp
 {
-    using global::SkiaSharp;
-    using global::SkiaSharp.HarfBuzz;
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using global::SkiaSharp;
+    using global::SkiaSharp.HarfBuzz;
+    using OxyPlot.Rendering;
 
     /// <summary>
     /// Implements <see cref="IRenderContext" /> based on SkiaSharp.
     /// </summary>
-    public class SkiaRenderContext : IRenderContext, IDisposable
+    public class SkiaRenderContext : IRenderContext, IDisposable, ITextMeasurer
     {
         private readonly Dictionary<FontDescriptor, SKShaper> shaperCache = new Dictionary<FontDescriptor, SKShaper>();
         private readonly Dictionary<FontDescriptor, SKTypeface> typefaceCache = new Dictionary<FontDescriptor, SKTypeface>();
         private SKPaint paint = new SKPaint();
         private SKPath path = new SKPath();
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SkiaRenderContext" /> class.
+        /// </summary>
+        public SkiaRenderContext()
+        {
+            this.TextArranger = new TextArranger(this, new SimpleTextTrimmer());
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="TextArranger"/> used by this instance.
+        /// </summary>
+        public TextArranger TextArranger { get; set; }
 
         /// <summary>
         /// Gets or sets the DPI scaling factor. A value of 1 corresponds to 96 DPI (dots per inch).
@@ -230,7 +244,7 @@ namespace OxyPlot.SkiaSharp
             double[] dashArray = null,
             LineJoin lineJoin = LineJoin.Miter)
         {
-            if (!fill.IsVisible() && !(stroke.IsVisible() || thickness <= 0) || points.Count < 2)
+            if ((!fill.IsVisible() && !(stroke.IsVisible() || thickness <= 0)) || points.Count < 2)
             {
                 return;
             }
@@ -263,7 +277,7 @@ namespace OxyPlot.SkiaSharp
             double[] dashArray = null,
             LineJoin lineJoin = LineJoin.Miter)
         {
-            if (!fill.IsVisible() && !(stroke.IsVisible() || thickness <= 0) || polygons.Count == 0)
+            if ((!fill.IsVisible() && !(stroke.IsVisible() || thickness <= 0)) || polygons.Count == 0)
             {
                 return;
             }
@@ -320,7 +334,7 @@ namespace OxyPlot.SkiaSharp
         /// <inheritdoc/>
         public void DrawRectangles(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
         {
-            if (!fill.IsVisible() && !(stroke.IsVisible() || thickness <= 0) || rectangles.Count == 0)
+            if ((!fill.IsVisible() && !(stroke.IsVisible() || thickness <= 0)) || rectangles.Count == 0)
             {
                 return;
             }
@@ -368,68 +382,50 @@ namespace OxyPlot.SkiaSharp
             var x = this.Convert(p.X);
             var y = this.Convert(p.Y);
 
-            var lines = StringHelper.SplitLines(text);
-            var lineHeight = paint.GetFontMetrics(out var metrics);
-
-            var deltaY = verticalAlignment switch
-            {
-                VerticalAlignment.Top => -metrics.Ascent,
-                VerticalAlignment.Middle => -(metrics.Ascent + metrics.Descent + lineHeight * (lines.Length - 1)) / 2,
-                VerticalAlignment.Bottom => -metrics.Descent - lineHeight * (lines.Length - 1),
-                _ => throw new ArgumentOutOfRangeException(nameof(verticalAlignment))
-            };
-
-            using var _ = new SKAutoCanvasRestore(this.SkCanvas);
+            using var canvasRestore = new SKAutoCanvasRestore(this.SkCanvas);
             this.SkCanvas.Translate(x, y);
             this.SkCanvas.RotateDegrees((float)rotation);
 
-            foreach (var line in lines)
+            var targetHorizontalAlignment = horizontalAlignment;
+            if (this.UseTextShaping)
             {
+                paint.TextAlign = SKTextAlign.Left;
+                targetHorizontalAlignment = HorizontalAlignment.Left;
+            }
+            else
+            {
+                paint.TextAlign = horizontalAlignment switch
+                {
+                    HorizontalAlignment.Left => SKTextAlign.Left,
+                    HorizontalAlignment.Center => SKTextAlign.Center,
+                    HorizontalAlignment.Right => SKTextAlign.Right,
+                    _ => throw new ArgumentOutOfRangeException(nameof(horizontalAlignment)),
+                };
+            }
+
+            // arrange around the origin with no rotation, because SkCanvas does the rotation for us
+            this.TextArranger.ArrangeText(new ScreenPoint(0, 0), text, fontFamily, fontSize, fontWeight, 0.0, horizontalAlignment, verticalAlignment, maxSize, targetHorizontalAlignment, TextVerticalAlignment.Baseline, out var lines, out var linePositions);
+
+            for (int i = 0; i < lines.Length; i++)
+            {
+                var line = lines[i];
+                var linePosition = this.Convert(linePositions[i]);
+
                 if (this.UseTextShaping)
                 {
-                    var width = this.MeasureText(line, shaper, paint);
-                    var deltaX = horizontalAlignment switch
-                    {
-                        HorizontalAlignment.Left => 0,
-                        HorizontalAlignment.Center => -width / 2,
-                        HorizontalAlignment.Right => -width,
-                        _ => throw new ArgumentOutOfRangeException(nameof(horizontalAlignment))
-                    };
-
-                    this.paint.TextAlign = SKTextAlign.Left;
-                    this.SkCanvas.DrawShapedText(shaper, line, deltaX, deltaY, paint);
+                    this.SkCanvas.DrawShapedText(shaper, line, linePosition.X, linePosition.Y, paint);
                 }
                 else
                 {
-                    paint.TextAlign = horizontalAlignment switch
-                    {
-                        HorizontalAlignment.Left => SKTextAlign.Left,
-                        HorizontalAlignment.Center => SKTextAlign.Center,
-                        HorizontalAlignment.Right => SKTextAlign.Right,
-                        _ => throw new ArgumentOutOfRangeException(nameof(horizontalAlignment))
-                    };
-
-                    this.SkCanvas.DrawText(line, 0, deltaY, paint);
+                    this.SkCanvas.DrawText(line, linePosition.X, linePosition.Y, paint);
                 }
-
-                deltaY += lineHeight;
             }
         }
 
         /// <inheritdoc/>
         public OxySize MeasureText(string text, string fontFamily = null, double fontSize = 10, double fontWeight = 500)
         {
-            if (text == null)
-            {
-                return new OxySize(0, 0);
-            }
-
-            var lines = StringHelper.SplitLines(text);
-            var paint = this.GetTextPaint(fontFamily, fontSize, fontWeight, out var shaper);
-            var height = paint.GetFontMetrics(out _) * lines.Length;
-            var width = lines.Max(line => this.MeasureText(line, shaper, paint)); 
-
-            return new OxySize(this.ConvertBack(width), this.ConvertBack(height));
+            return this.TextArranger.MeasureText(text, fontFamily, fontSize, fontWeight);
         }
 
         /// <inheritdoc/>
@@ -453,6 +449,26 @@ namespace OxyPlot.SkiaSharp
         /// <inheritdoc/>
         public void SetToolTip(string text)
         {
+        }
+
+        /// <inheritdoc/>
+        public FontMetrics GetFontMetrics(string fontFamily, double fontSize, double fontWeight)
+        {
+            var lineSpacing = this.paint.GetFontMetrics(out var metrics);
+            var ascender = this.ConvertBack(Math.Abs(metrics.Ascent));
+            var descender = this.ConvertBack(Math.Abs(metrics.Descent));
+            var leading = this.ConvertBack(Math.Abs(metrics.Leading));
+
+            return new FontMetrics(ascender, descender, leading);
+        }
+
+        /// <inheritdoc/>
+        public double MeasureTextWidth(string text, string fontFamily, double fontSize, double fontWeight)
+        {
+            var paint = this.GetTextPaint(fontFamily, fontSize, fontWeight, out var shaper);
+            var width = this.MeasureText(text, shaper, paint);
+
+            return this.ConvertBack(width);
         }
 
         /// <summary>
@@ -774,7 +790,7 @@ namespace OxyPlot.SkiaSharp
                 LineJoin.Miter => SKStrokeJoin.Miter,
                 LineJoin.Round => SKStrokeJoin.Round,
                 LineJoin.Bevel => SKStrokeJoin.Bevel,
-                _ => throw new ArgumentOutOfRangeException(nameof(lineJoin))
+                _ => throw new ArgumentOutOfRangeException(nameof(lineJoin)),
             };
 
             return paint;
@@ -935,12 +951,12 @@ namespace OxyPlot.SkiaSharp
             }
 
             /// <summary>
-            /// The font family.
+            /// Gets the font family.
             /// </summary>
             public string FontFamily { get; }
 
             /// <summary>
-            /// The font weight.
+            /// Gets the font weight.
             /// </summary>
             public double FontWeight { get; }
 
@@ -954,8 +970,8 @@ namespace OxyPlot.SkiaSharp
             public override int GetHashCode()
             {
                 var hashCode = -1030903623;
-                hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(this.FontFamily);
-                hashCode = hashCode * -1521134295 + this.FontWeight.GetHashCode();
+                hashCode = (hashCode * -1521134295) + EqualityComparer<string>.Default.GetHashCode(this.FontFamily);
+                hashCode = (hashCode * -1521134295) + this.FontWeight.GetHashCode();
                 return hashCode;
             }
         }
