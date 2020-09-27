@@ -804,7 +804,6 @@ namespace ExampleLibrary
             }
 
             /// <inheritdoc/>
-
             public override OxyRect GetClippingRect()
             {
                 return OxyRect.Everything;

@@ -243,7 +243,6 @@ namespace ExampleLibrary
                 PlotAreaBorderColor = OxyColors.LightGray,
             };
 
-
             var distanceAxis = new LinearAxis
             {
                 Position = AxisPosition.Left,
