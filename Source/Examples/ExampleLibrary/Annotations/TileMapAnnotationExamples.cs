@@ -13,7 +13,7 @@ namespace ExampleLibrary
     [Examples("TileMapAnnotation"), Tags("Annotations")]
     public static class TileMapAnnotationExamples
     {
-        [Example("TileMapAnnotation (openstreetmap.org)")]
+        [Example("TileMapAnnotation (openstreetmap.org)", true)]
         public static PlotModel TileMapAnnotation2()
         {
             // See policy document: https://operations.osmfoundation.org/policies/tiles/
@@ -34,7 +34,7 @@ namespace ExampleLibrary
             return model;
         }
 
-        [Example("TileMapAnnotation (statkart.no)")]
+        [Example("TileMapAnnotation (statkart.no)", true)]
         public static PlotModel TileMapAnnotation()
         {
             var model = new PlotModel { Title = "TileMapAnnotation" };

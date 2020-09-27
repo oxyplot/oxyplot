@@ -11,7 +11,7 @@ namespace OxyPlot.Wpf.Tests
 {
     using System;
     using System.IO;
-
+    using System.Linq;
     using NUnit.Framework;
 
     /// <summary>
@@ -45,7 +45,7 @@ namespace OxyPlot.Wpf.Tests
                 Directory.CreateDirectory(DiffDirectory);
             }
 
-            foreach (var example in ExampleLibrary.Examples.GetList())
+            foreach (var example in ExampleLibrary.Examples.GetListForAutomatedTest())
             {
                 void ExportAndCompareToBaseline(PlotModel model, string fileName)
                 {

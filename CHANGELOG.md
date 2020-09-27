@@ -67,6 +67,7 @@ All notable changes to this project will be documented in this file.
 - Axes with `AxisPosition.None` make no contribution to margins (#1574)
 - `AngleAxis` has position `AxisPosition.All` by default (#1574)
 - Clipping API changed from SetClip(...) and ResetClip() to PushClip(...) and PopClip() (#1593)
+- Remove TileMapAnnotation examples from automated testing (#1667)
 
 ### Removed
 - Remove PlotModel.Legends (#644)

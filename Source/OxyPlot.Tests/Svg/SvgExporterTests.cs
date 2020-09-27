@@ -62,7 +62,7 @@ namespace OxyPlot.Tests
                 Directory.CreateDirectory(DestinationDirectory);
             }
 
-            foreach (var example in Examples.GetList())
+            foreach (var example in Examples.GetListForAutomatedTest())
             {
                 void ExportModelAndCheckFileExists(PlotModel model, string fileName)
                 {
