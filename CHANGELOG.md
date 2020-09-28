@@ -39,6 +39,7 @@ All notable changes to this project will be documented in this file.
 - IRenderContext.ClipCount property (#1593)
 - Additional parameters for HistogramSeries LabelFormatString
 - Absolute screen-space axis margins (#1569)
+- netstandard2.0 TargetFramework (#1668)
 
 ### Changed
 - Legends model (#644)
