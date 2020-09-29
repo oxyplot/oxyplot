@@ -173,12 +173,7 @@ namespace OxyPlot.Series
 
             this.VerifyAxes();
 
-            var clippingRect = this.GetClippingRect();
-            rc.SetClip(clippingRect);
-
-            this.RenderVectors(rc, clippingRect, actualRects);
-
-            rc.ResetClip();
+            this.RenderVectors(rc, actualRects);
         }
 
         /// <summary>
@@ -265,9 +260,8 @@ namespace OxyPlot.Series
         /// Renders the points as line, broken line and markers.
         /// </summary>
         /// <param name="rc">The rendering context.</param>
-        /// <param name="clippingRect">The clipping Vector.</param>
         /// <param name="items">The Items to render.</param>
-        protected void RenderVectors(IRenderContext rc, OxyRect clippingRect, ICollection<VectorItem> items)
+        protected void RenderVectors(IRenderContext rc, ICollection<VectorItem> items)
         {
             int i = 0;
             foreach (var item in items)
@@ -286,7 +280,6 @@ namespace OxyPlot.Series
 
                 this.DrawClippedVector(
                     rc,
-                    clippingRect,
                     item.Origin,
                     item.Direction,
                     vectorColor
@@ -294,8 +287,7 @@ namespace OxyPlot.Series
 
                 if (this.LabelFontSize > 0)
                 {
-                    rc.DrawClippedText(
-                        clippingRect, 
+                    rc.DrawText(
                         this.Transform(item.Origin), 
                         item.Value.ToString(this.LabelFormatString), 
                         this.ActualTextColor, 
@@ -311,7 +303,7 @@ namespace OxyPlot.Series
             }
         }
 
-        private void DrawClippedVector(IRenderContext rc, OxyRect clippingRect, DataPoint point, DataVector vector, OxyColor color)
+        private void DrawClippedVector(IRenderContext rc, DataPoint point, DataVector vector, OxyColor color)
         {
             var points = new List<DataPoint>() { point, point + vector };
             var screenPoints = new List<ScreenPoint>();
@@ -319,7 +311,7 @@ namespace OxyPlot.Series
 
             if (screenPoints.Count >= 2)
             {
-                this.DrawClippedArrow(rc, clippingRect, screenPoints, screenPoints[screenPoints.Count - 1] - screenPoints[screenPoints.Count - 2], color);
+                this.DrawArrow(rc, screenPoints, screenPoints[screenPoints.Count - 1] - screenPoints[screenPoints.Count - 2], color);
             }
         }
 
@@ -369,11 +361,10 @@ namespace OxyPlot.Series
         /// Draws an arrow.
         /// </summary>
         /// <param name="rc">The render context.</param>
-        /// <param name="clippingRect">The clipping rectangle.</param>
         /// <param name="points">The points along the arrow to draw, which will be modified.</param>
         /// <param name="direction">The direction in which the arrow head should face</param>
         /// <param name="color">The color of the arrow.</param>
-        private void DrawClippedArrow(IRenderContext rc, OxyRect clippingRect, IList<ScreenPoint> points, ScreenVector direction, OxyColor color)
+        private void DrawArrow(IRenderContext rc, IList<ScreenPoint> points, ScreenVector direction, OxyColor color)
         {
             // draws a line with an arrowhead glued on the tip (the arrowhead does not point to the end point)
 
@@ -388,26 +379,20 @@ namespace OxyPlot.Series
             var p2 = endPoint + (n * this.HeadWidth * this.StrokeThickness) - veeness;
             var p3 = endPoint - (n * this.HeadWidth * this.StrokeThickness) - veeness;
 
-            const double MinimumSegmentLength = 4;
-
             var dashArray = this.LineStyle.GetDashArray();
 
             if (this.StrokeThickness > 0 && this.LineStyle != LineStyle.None)
             {
-                rc.DrawClippedLine(
-                    clippingRect,
+                rc.DrawLine(
                     points,
-                    MinimumSegmentLength * MinimumSegmentLength,
                     color,
                     this.StrokeThickness,
                     this.EdgeRenderingMode,
                     dashArray,
                     this.LineJoin);
 
-                rc.DrawClippedPolygon(
-                    clippingRect,
+                rc.DrawPolygon(
                     new[] { p3, p1, p2, endPoint },
-                    MinimumSegmentLength * MinimumSegmentLength,
                     color,
                     OxyColors.Undefined,
                     0,
