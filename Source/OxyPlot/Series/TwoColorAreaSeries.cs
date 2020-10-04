@@ -197,6 +197,7 @@ namespace OxyPlot.Series
             this.RenderChunkedPoints(areaContext);
 
             areaContext.Points = this.belowPoints;
+            areaContext.WindowStartIndex = this.WindowStartIndex2;
             areaContext.Reverse = this.Reverse2;
             areaContext.Color = this.ActualColor2;
             areaContext.Fill = this.ActualFill2;
