@@ -112,6 +112,7 @@ All notable changes to this project will be documented in this file.
 - Incorrect margins when using Color Axes with AxisPosition.None (#1574)
 - OpenStreetMap example (#1642)
 - Incorrect clipping in TwoColorAreaSeries (#1678)
+- ScreenMin and ScreenMax on Horizontal and Vertical Axes depends on plot bounds (#1652)
 
 ## [2.0.0] - 2019-10-19
 ### Added 

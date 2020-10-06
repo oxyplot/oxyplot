@@ -1427,8 +1427,16 @@ namespace OxyPlot.Axes
                 a1 -= this.MaximumMargin * marginSign;
             }
 
-            this.ScreenMin = new ScreenPoint(a0, a1);
-            this.ScreenMax = new ScreenPoint(a1, a0);
+            if (this.IsHorizontal())
+            {
+                this.ScreenMin = new ScreenPoint(a0, y1);
+                this.ScreenMax = new ScreenPoint(a1, y0);
+            }
+            else if (this.IsVertical())
+            {
+                this.ScreenMin = new ScreenPoint(x0, a1);
+                this.ScreenMax = new ScreenPoint(x1, a0);
+            }
 
             if (this.MinimumDataMargin > 0)
             {
