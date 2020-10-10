@@ -15,7 +15,7 @@ namespace OxyPlot.Annotations
         public override OxyRect GetClippingRect()
         {
             var rect = this.PlotModel.PlotArea;
-            var axisRect = PlotElementUtilities.GetOrientatedClippingRect(this);
+            var axisRect = PlotElementUtilities.GetClippingRect(this);
 
             var minX = 0d;
             var maxX = double.PositiveInfinity;

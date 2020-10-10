@@ -18,21 +18,9 @@ namespace OxyPlot
         /// <returns>The clipping rectangle.</returns>
         public static OxyRect GetClippingRect(IXyAxisPlotElement element)
         {
-            var p1 = new ScreenPoint(element.XAxis.ScreenMin.X, element.YAxis.ScreenMin.Y);
-            var p2 = new ScreenPoint(element.XAxis.ScreenMax.X, element.YAxis.ScreenMax.Y);
-            return new OxyRect(p1, p2);
-        }
-
-        /// <summary>
-        /// Gets the clipping rectangle defined by the Axis the <see cref="ITransposablePlotElement"/> uses while being aware of the orientation.
-        /// </summary>
-        /// <param name="element">The <see cref="ITransposablePlotElement" />.</param>
-        /// <returns>The clipping rectangle.</returns>
-        public static OxyRect GetOrientatedClippingRect(ITransposablePlotElement element)
-        {
-            var p1 = new ScreenPoint(element.XAxis.ScreenMin.X, element.YAxis.ScreenMin.Y);
-            var p2 = new ScreenPoint(element.XAxis.ScreenMax.X, element.YAxis.ScreenMax.Y);
-            return new OxyRect(element.Orientate(p1), element.Orientate(p2));
+            var xrect = new OxyRect(element.XAxis.ScreenMin, element.XAxis.ScreenMax);
+            var yrect = new OxyRect(element.YAxis.ScreenMin, element.YAxis.ScreenMax);
+            return xrect.Intersect(yrect);
         }
 
         /// <summary>
