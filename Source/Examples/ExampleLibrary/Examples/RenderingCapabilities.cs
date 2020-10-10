@@ -771,6 +771,61 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("LineJoin")]
+        public static PlotModel LineJoins()
+        {
+            const double STROKE_THICKNESS = 15;
+            const double LINE_LENGTH = 60;
+            var ANGLES = new[] { 135, 90, 45, 22.5 };
+            const double COL_WIDTH = 140;
+            const double ROW_HEIGHT = 90;
+            const double ROW_HEADER_WIDTH = 50;
+            const double COL_HEADER_HEIGHT = 50;
+
+
+            var model = new PlotModel();
+            model.Annotations.Add(new DelegateAnnotation(rc =>
+            {
+                var colCounter = 0;
+                var rowCounter = 0;
+                foreach (LineJoin lineJoin in Enum.GetValues(typeof(LineJoin)))
+                {
+                    var p = new ScreenPoint(COL_WIDTH * (colCounter + 0.5) + ROW_HEADER_WIDTH, COL_HEADER_HEIGHT / 2);
+                    rc.DrawText(p, lineJoin.ToString(), OxyColors.Black, fontSize: 12, horizontalAlignment: HorizontalAlignment.Center, verticalAlignment: VerticalAlignment.Middle);
+                    colCounter++;
+                }
+
+                foreach (var angle in ANGLES)
+                {
+                    colCounter = 0;
+                    var y = ROW_HEIGHT * rowCounter + COL_HEADER_HEIGHT;
+                    var halfAngle = angle / 2 / 360 * 2 * Math.PI;
+                    var dx = Math.Sin(halfAngle) * LINE_LENGTH;
+                    var dy = Math.Cos(halfAngle) * LINE_LENGTH;
+
+                    var textP = new ScreenPoint(15, y);
+                    rc.DrawText(textP, angle.ToString() + "°", OxyColors.Black, fontSize: 12);
+
+                    foreach (LineJoin lineJoin in Enum.GetValues(typeof(LineJoin)))
+                    {
+                        var x = COL_WIDTH * (colCounter + 0.5) + ROW_HEADER_WIDTH;
+
+                        var pMid = new ScreenPoint(x, y);
+                        var p1 = new ScreenPoint(x - dx, y + dy);
+                        var p2 = new ScreenPoint(x + dx, y + dy);
+
+                        rc.DrawLine(new[] { p1, pMid, p2 }, OxyColors.CornflowerBlue, STROKE_THICKNESS, EdgeRenderingMode.PreferGeometricAccuracy, lineJoin: lineJoin);
+
+                        colCounter++;
+                    }
+
+                    rowCounter++;
+                }
+
+            }));
+            return model;
+        }
+
         /// <summary>
         /// Represents an annotation that renders by a delegate.
         /// </summary>

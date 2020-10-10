@@ -9,6 +9,7 @@ namespace ExampleBrowser
     public enum Renderer
     {
         Canvas,
+        Canvas_XAML,
         SkiaSharp
     }
 }

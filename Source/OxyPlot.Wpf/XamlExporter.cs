@@ -75,9 +75,10 @@ namespace OxyPlot.Wpf
             c.Measure(new Size(width, height));
             c.Arrange(new Rect(0, 0, width, height));
 
-            var rc = new CanvasRenderContext(c) { UseStreamGeometry = false };
-
-            rc.TextFormattingMode = TextFormattingMode.Ideal;
+            var rc = new XamlRenderContext(c)
+            {
+                TextFormattingMode = TextFormattingMode.Ideal
+            };
 
             model.Update(true);
             model.Render(rc, new OxyRect(0, 0, width, height));

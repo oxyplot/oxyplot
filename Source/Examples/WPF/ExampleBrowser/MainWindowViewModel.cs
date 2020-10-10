@@ -18,10 +18,9 @@ namespace ExampleBrowser
     {
         private bool _CanTranspose;
         private bool _CanReverse;
-        private PlotModel _CanvasModel;
         private string _Code;
         private Renderer _Renderer;
-        private PlotModel _SkiaModel;
+        private PlotModel _PlotModel;
         private bool _Transposed;
         private bool _Reversed;
         private IEnumerable<ExampleInfo> examples;
@@ -58,15 +57,7 @@ namespace ExampleBrowser
             }
         }
 
-        public PlotModel CanvasModel
-        {
-            get => this._CanvasModel;
-            set
-            {
-                this._CanvasModel = value;
-                this.RaisePropertyChanged(nameof(this.CanvasModel));
-            }
-        }
+        public PlotModel CanvasModel => this.Renderer == Renderer.Canvas ? this._PlotModel : null;
 
         public string Code
         {
@@ -96,9 +87,17 @@ namespace ExampleBrowser
             set
             {
                 this._Renderer = value;
-                this.UpdatePlotModels();
+                this.CoerceRenderer();
                 this.RaisePropertyChanged(nameof(this.Renderer));
             }
+        }
+
+        private void CoerceRenderer()
+        {
+            ((IPlotModel)this._PlotModel).AttachPlotView(null);
+            this.RaisePropertyChanged(nameof(this.SkiaModel));
+            this.RaisePropertyChanged(nameof(this.CanvasXamlModel));
+            this.RaisePropertyChanged(nameof(this.CanvasModel));
         }
 
         public IEnumerable<Renderer> Renderers => Enum.GetValues(typeof(Renderer)).Cast<Renderer>();
@@ -114,15 +113,9 @@ namespace ExampleBrowser
             }
         }
 
-        public PlotModel SkiaModel
-        {
-            get => this._SkiaModel;
-            set
-            {
-                this._SkiaModel = value;
-                this.RaisePropertyChanged(nameof(this.SkiaModel));
-            }
-        }
+        public PlotModel SkiaModel => this.Renderer == Renderer.SkiaSharp ? this._PlotModel : null;
+
+        public PlotModel CanvasXamlModel => this.Renderer == Renderer.Canvas_XAML ? this._PlotModel : null;
 
         public bool Transposed
         {
@@ -130,7 +123,7 @@ namespace ExampleBrowser
             set
             {
                 this._Transposed = value;
-                this.UpdatePlotModels();
+                this.UpdatePlotModel();
                 this.RaisePropertyChanged(nameof(this.Transposed));
             }
         }
@@ -141,7 +134,7 @@ namespace ExampleBrowser
             set
             {
                 this._Reversed = value;
-                this.UpdatePlotModels();
+                this.UpdatePlotModel();
                 this.RaisePropertyChanged(nameof(this.Reversed));
             }
         }
@@ -155,31 +148,18 @@ namespace ExampleBrowser
         {
             this.CanTranspose = this.SelectedExample?.IsTransposable == true;
             this.CanReverse = this.SelectedExample?.IsReversible == true;
-            this.UpdatePlotModels();
+            this.UpdatePlotModel();
         }
 
-        private void UpdatePlotModels()
+        private void UpdatePlotModel()
         {
             var flags = ExampleInfo.PrepareFlags(
                 this.CanTranspose && this.Transposed,
                 this.CanReverse && this.Reversed);
 
-            var model = this.SelectedExample?.GetModel(flags);
+            this._PlotModel = this.SelectedExample?.GetModel(flags);
             this.Code = this.SelectedExample?.GetCode(flags);
-
-            switch (this.Renderer)
-            {
-                case Renderer.Canvas:
-                    this.SkiaModel = null;
-                    this.CanvasModel = model;
-                    break;
-                case Renderer.SkiaSharp:
-                    this.CanvasModel = null;
-                    this.SkiaModel = model;
-                    break;
-                default:
-                    break;
-            }
+            this.CoerceRenderer();
         }
     }
 }

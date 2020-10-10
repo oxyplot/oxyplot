@@ -40,7 +40,8 @@ All notable changes to this project will be documented in this file.
 - Additional parameters for HistogramSeries LabelFormatString
 - Absolute screen-space axis margins (#1569)
 - netstandard2.0 TargetFramework (#1668)
-- Add a PlotView.TextMeasurementMethod property to allow using the much faster GlyphTypeface based measurement at runtime
+- Add a PlotView.TextMeasurementMethod property to allow using the much faster GlyphTypeface based measurement at runtime (#1673)
+- OxyPlot.Wpf.XamlRenderContext - this doesn't use StreamGeometry and can be used for rendering to XAML (#1673)
 
 ### Changed
 - Legends model (#644)
@@ -73,8 +74,7 @@ All notable changes to this project will be documented in this file.
 - Remove TileMapAnnotation examples from automated testing (#1667)
 - Optimize clipping calls (#1661)
 - Mark CandleStickAndVolumeSeries as obsolete (#1661)
-- Refactor DrawLineSegmentsByStreamGeometry() to draw much faster
-- Implement StreamGeometry-based implementations of DrawEllipses, DrawLine, and DrawRectangle(s) which improves the rendering speed.
+- Implement StreamGeometry-based implementations of DrawEllipses, DrawLine, DrawLineSegments and DrawRectangle(s) which improves the rendering speed on WPF (#1673)
 
 ### Removed
 - Remove PlotModel.Legends (#644)
@@ -89,6 +89,7 @@ All notable changes to this project will be documented in this file.
 - CohenSutherlandClipping and SutherlandHodgmanClipping (#1593)
 - DrawClippedXxx(...) extensions in RenderingExtensions (#1661)
 - PathAnnotation.ClipText property - text is now always clipped (#1661)
+- CanvasRenderContext.UseStreamGeometry property - this functionality is replaced by the new XamlRenderContext (#1673)
 
 ### Fixed
 - Legend font size is not affected by DefaultFontSize (#1396)
