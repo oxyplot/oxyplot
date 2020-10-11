@@ -16,6 +16,7 @@ namespace ExampleLibrary
     using OxyPlot;
     using OxyPlot.Annotations;
     using System.Linq;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Provides rendering capability examples.
@@ -822,6 +823,41 @@ namespace ExampleLibrary
                     rowCounter++;
                 }
 
+            }));
+            return model;
+        }
+
+        [Example("Ellipse Drawing")]
+        public static PlotModel EllipseDrawing()
+        {
+            const double RADIUS_X = 300;
+            const double RADIUS_Y = 100;
+            const double CENTER_X = RADIUS_X * 1.2;
+            const double CENTER_Y = RADIUS_Y * 1.2;
+
+            var radiusXSquare = RADIUS_X * RADIUS_X;
+            var radiusYSquare = RADIUS_Y * RADIUS_Y;
+            var n = 200;
+
+            var model = new PlotModel();
+            model.Annotations.Add(new DelegateAnnotation(rc =>
+            {
+                var rect = new OxyRect(CENTER_X - RADIUS_X, CENTER_Y - RADIUS_Y, RADIUS_X * 2, RADIUS_Y * 2);
+
+                var points = new ScreenPoint[n];
+                var cx = (rect.Left + rect.Right) / 2;
+                var cy = (rect.Top + rect.Bottom) / 2;
+                var rx = (rect.Right - rect.Left) / 2;
+                var ry = (rect.Bottom - rect.Top) / 2;
+                for (var i = 0; i < n; i++)
+                {
+                    var a = Math.PI * 2 * i / (n - 1);
+                    points[i] = new ScreenPoint(cx + (rx * Math.Cos(a)), cy + (ry * Math.Sin(a)));
+                }
+
+                rc.DrawPolygon(points, OxyColors.Undefined, OxyColors.Black, 4, EdgeRenderingMode.PreferGeometricAccuracy);
+                rc.DrawEllipse(rect, OxyColors.Undefined, OxyColors.White, 2, EdgeRenderingMode.PreferGeometricAccuracy);
+                rc.DrawText(new ScreenPoint(CENTER_X, CENTER_Y), "The white ellipse (drawn by Renderer) should match the black ellipse (drawn as Path).", OxyColors.Black, fontSize: 12, horizontalAlignment: HorizontalAlignment.Center, verticalAlignment: VerticalAlignment.Middle);
             }));
             return model;
         }
