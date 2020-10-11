@@ -42,6 +42,7 @@ All notable changes to this project will be documented in this file.
 - netstandard2.0 TargetFramework (#1668)
 - Add a PlotView.TextMeasurementMethod property to allow using the much faster GlyphTypeface based measurement at runtime (#1673)
 - OxyPlot.Wpf.XamlRenderContext - this doesn't use StreamGeometry and can be used for rendering to XAML (#1673)
+- SkiaRenderContext.MiterLimit property (#1690)
 
 ### Changed
 - Legends model (#644)
