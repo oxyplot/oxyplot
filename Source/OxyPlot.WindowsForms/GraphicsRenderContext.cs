@@ -295,7 +295,7 @@ namespace OxyPlot.WindowsForms
             {
                 this.stringFormat.Alignment = StringAlignment.Near;
                 this.stringFormat.LineAlignment = StringAlignment.Near;
-                var size = this.g.MeasureString(text, font, int.MaxValue, this.stringFormat);
+                var size = Ceiling(this.g.MeasureString(text, font, int.MaxValue, this.stringFormat));
                 return new OxySize(size.Width, size.Height);
             }
         }
