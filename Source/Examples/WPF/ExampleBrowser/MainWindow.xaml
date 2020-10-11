@@ -111,7 +111,8 @@
                             <local:NotNullVisibilityConverter x:Key="NotNullVisibilityConverter" />
                         </Grid.Resources>
                         <oxySkia:PlotView Model="{Binding SkiaModel}" Controller="{Binding SelectedExample.Controller}" Visibility="{Binding SkiaModel, Converter={StaticResource NotNullVisibilityConverter}}" />
-                        <oxyWpf:PlotView x:Name="Plot1" Model="{Binding CanvasModel}" Controller="{Binding SelectedExample.Controller}" Visibility="{Binding CanvasModel, Converter={StaticResource NotNullVisibilityConverter}}" />
+                        <oxyWpf:PlotView Model="{Binding CanvasModel}" Controller="{Binding SelectedExample.Controller}" Visibility="{Binding CanvasModel, Converter={StaticResource NotNullVisibilityConverter}}" />
+                        <local:XamlPlotView Model="{Binding CanvasXamlModel}" Controller="{Binding SelectedExample.Controller}" Visibility="{Binding CanvasXamlModel, Converter={StaticResource NotNullVisibilityConverter}}" />
                     </Grid>
                 </TabItem>
                 <TabItem Header="Code">
