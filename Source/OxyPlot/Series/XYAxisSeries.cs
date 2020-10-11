@@ -104,7 +104,7 @@ namespace OxyPlot.Series
         /// <inheritdoc/>
         public override OxyRect GetClippingRect()
         {
-            return PlotElementUtilities.GetOrientatedClippingRect(this);
+            return PlotElementUtilities.GetClippingRect(this);
         }
 
         /// <summary>
