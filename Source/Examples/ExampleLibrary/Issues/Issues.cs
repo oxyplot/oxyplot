@@ -2359,6 +2359,19 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
+        [Example("#1659: Last line of series titles in legend not displayed in Chinese on WinForms (Closed)")]
+        public static PlotModel LastLineOfSeriesTitlesNotDisplayedInChineseOnWindows()
+        {
+            var plot = new PlotModel() { Title = "#1659: Last line of series titles in legend not displayed in Chinese on WinForms" };
+
+            plot.Legends.Add(new Legend() { LegendTitle = "漂亮的天鹅" });
+            plot.Series.Add(new FunctionSeries(x => x, 0, 1, 0.1, "漂亮的天鹅"));
+            plot.Series.Add(new FunctionSeries(x => x, 0, 1, 0.1, "漂亮的天鹅\n友好的天鹅"));
+            plot.Series.Add(new FunctionSeries(x => x, 0, 1, 0.1, "漂亮的天鹅\n友好的天鹅\n尼斯天鹅"));
+
+            return plot;
+        }
+
         private class TimeSpanPoint
         {
             public TimeSpan X { get; set; }
