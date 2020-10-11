@@ -126,19 +126,12 @@ namespace OxyPlot.Wpf
             {
                 foreach (var rect in rectangles)
                 {
-                    const double arcAsBezier = 0.551784;
-
-                    var centerX = rect.Center.X;
                     var centerY = rect.Center.Y;
-
-                    var midX = Math.Abs(rect.Width / 2.0) * arcAsBezier;
-                    var midY = Math.Abs(rect.Height / 2.0) * arcAsBezier;
-
                     sgc.BeginFigure(new Point(rect.Right, centerY), isFilled, true);
-                    sgc.BezierTo(new Point(rect.Right, centerY + midY), new Point(centerX + midX, rect.Bottom), new Point(centerX, rect.Bottom), isStroke, true);
-                    sgc.BezierTo(new Point(centerX - midX, rect.Bottom), new Point(rect.Left, centerY + midY), new Point(rect.Left, centerY), isStroke, true);
-                    sgc.BezierTo(new Point(rect.Left, centerY - midY), new Point(centerX - midX, rect.Top), new Point(centerX, rect.Top), isStroke, true);
-                    sgc.BezierTo(new Point(centerX + midX, rect.Top), new Point(rect.Right, centerY - midY), new Point(rect.Right, centerY), isStroke, true);
+
+                    var size = new Size(rect.Width / 2, rect.Height / 2);
+                    sgc.ArcTo(new Point(rect.Left, centerY), size, 180, false, SweepDirection.Clockwise, isStroke, false);
+                    sgc.ArcTo(new Point(rect.Right, centerY), size, 180, false, SweepDirection.Clockwise, isStroke, false);
                 }
             }
 
