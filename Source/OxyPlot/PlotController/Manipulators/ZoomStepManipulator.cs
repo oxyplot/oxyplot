@@ -57,12 +57,13 @@ namespace OxyPlot
                 scale *= 3;
             }
 
-            scale = 1 + scale;
-
-            // make sure the zoom factor is not negative
-            if (scale < 0.1)
+            if (scale > 0)
             {
-                scale = 0.1;
+                scale = 1 + scale;
+            }
+            else
+            {
+                scale = 1.0 / (1 - scale);
             }
 
             if (this.XAxis != null)

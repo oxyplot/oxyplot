@@ -119,6 +119,7 @@ All notable changes to this project will be documented in this file.
 - Incorrect clipping in TwoColorAreaSeries (#1678)
 - ScreenMin and ScreenMax on Horizontal and Vertical Axes depends on plot bounds (#1652)
 - Windows Forms clipping last line of measured text (#1659)
+- Inconsistent Zooming behaviour (#1648)
 
 ## [2.0.0] - 2019-10-19
 ### Added 
