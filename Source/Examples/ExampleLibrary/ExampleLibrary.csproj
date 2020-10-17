@@ -13,14 +13,23 @@
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/oxyplot/oxyplot.git</RepositoryUrl>
   </PropertyGroup>
+
   <ItemGroup>
-    <None Include="..\..\..\Icons\OxyPlot_128.png" Pack="true" PackagePath="\"/>
+    <None Remove="Resources\DodgyContourData.tsv" />
+    <None Remove="Resources\X.txt" />
+    <None Remove="Resources\Y.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\Icons\OxyPlot_128.png" Pack="true" PackagePath="\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Bergensbanen.csv" />
+    <EmbeddedResource Include="Resources\DodgyContourData.tsv" />
     <EmbeddedResource Include="Resources\OxyPlot.png" />
     <EmbeddedResource Include="Resources\west0479.mtx" />
     <EmbeddedResource Include="Resources\WorldPopulation.xml" />
+    <EmbeddedResource Include="Resources\X.txt" />
+    <EmbeddedResource Include="Resources\Y.txt" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Net.Requests" Version="4.3.0" />
