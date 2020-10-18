@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [2.1.0-Preview1] - 2020-10-18
 
 ### Added
 - Made Legend Items clickable to toggle series visibility (#644)
@@ -418,7 +418,8 @@ All notable changes to this project will be documented in this file.
 - Add overridable Axis.FormatValueOverride (#181)
 - PngExporter text formatting (#170)
 
-[Unreleased]: https://github.com/oxyplot/oxyplot/compare/v2.0.0...HEAD
+[Unreleased]: https://github.com/oxyplot/oxyplot/compare/v2.1.0-Preview1...HEAD
+[2.1.0-Preview1]: https://github.com/oxyplot/oxyplot/compare/v2.0.0...v2.1.0-Preview1
 [2.0.0]: https://github.com/oxyplot/oxyplot/compare/v1.0.0...v2.0.0
 [1.0.0]: https://github.com/oxyplot/oxyplot/compare/v0.2014.1.546...v1.0.0
 [0.2014.1.546]: https://github.com/oxyplot/oxyplot/compare/v0.0.1...v0.2014.1.546
