@@ -77,6 +77,7 @@ All notable changes to this project will be documented in this file.
 - Optimize clipping calls (#1661)
 - Mark CandleStickAndVolumeSeries as obsolete (#1661)
 - Implement StreamGeometry-based implementations of DrawEllipses, DrawLine, DrawLineSegments and DrawRectangle(s) which improves the rendering speed on WPF (#1673)
+- Change algorithm of ContourSeries.JoinContourSegments(). This should improve performance in most cases, but will cause labels to appear in different spots than before (#1685)
 
 ### Removed
 - Remove PlotModel.Legends (#644)
@@ -121,6 +122,7 @@ All notable changes to this project will be documented in this file.
 - ScreenMin and ScreenMax on Horizontal and Vertical Axes depends on plot bounds (#1652)
 - Windows Forms clipping last line of measured text (#1659)
 - Inconsistent Zooming behaviour (#1648)
+- ContourSeries produce fake connections (#1685)
 
 ## [2.0.0] - 2019-10-19
 ### Added 
