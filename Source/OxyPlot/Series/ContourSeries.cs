@@ -492,20 +492,20 @@ namespace OxyPlot.Series
                     }
 
                     var maxX = currentPoint.Point.X + eps;
-                    var i2 = 1;
+                    var i2 = i + 1;
                     SegmentPoint joinPoint;
 
                     // search for a point with the same coordinates (within eps) as the current point
                     // as points are sorted by X, we typically only need to check the point immediately following the current point
                     do
                     {
-                        if (i + i2 >= points.Count)
+                        if (i2 >= points.Count)
                         {
                             joinPoint = null;
                             break;
                         }
 
-                        joinPoint = points[i + i2];
+                        joinPoint = points[i2];
                         i2++;
                         if (joinPoint.Join != null)
                         {
@@ -537,22 +537,21 @@ namespace OxyPlot.Series
                     }
 
                     var currentPoint = segmentPoint;
-                    var dataPoints = new List<DataPoint>();
 
-                    if (currentPoint.Join == null) // we are the first point of the contour
+                    // search for the beginning of the contour (or use the entry point if the contour is closed)
+                    while (currentPoint.Join != null)
                     {
-                        dataPoints.Add(currentPoint.Point);
-                        currentPoint = currentPoint.Partner;
-                        dataPoints.Add(currentPoint.Point);
-                    }
-                    else // we are somewhere in the middle of the contour, our partner might be the first, so add it first
-                    {
-                        dataPoints.Add(currentPoint.Partner.Point);
-                        dataPoints.Add(currentPoint.Point);
+                        currentPoint = currentPoint.Join.Partner;
+                        if (currentPoint == segmentPoint)
+                        {
+                            break;
+                        }
                     }
 
+                    var dataPoints = new List<DataPoint> { currentPoint.Point, currentPoint.Partner.Point };
                     currentPoint.Processed = true;
-                    currentPoint.Partner.Processed = true;
+                    currentPoint = currentPoint.Partner;
+                    currentPoint.Processed = true;
 
                     // follow the chain of joined points and add their coordinates until we find the last point of the contour (or complete a rotation)
                     while (currentPoint.Join != null)
