@@ -462,8 +462,8 @@ namespace OxyPlot.Series
         /// <summary>
         /// Joins the contour segments.
         /// </summary>
-        /// <param name="eps">The tolerance for segment ends to connect (squared distance).</param>
-        private void JoinContourSegments(double eps = 1e-10)
+        /// <param name="epsFactor">The tolerance for segment ends to connect (maximum allowed [length of distance vector] / [length of position vector]).</param>
+        private void JoinContourSegments(double epsFactor = 1e-10)
         {
             this.contours = new List<Contour>();
 
@@ -491,13 +491,16 @@ namespace OxyPlot.Series
                         continue;
                     }
 
+                    var positionVectorLength = Math.Sqrt(Math.Pow(currentPoint.Point.X, 2) + Math.Pow(currentPoint.Point.Y, 2));
+                    var eps = positionVectorLength * epsFactor;
+
                     var maxX = currentPoint.Point.X + eps;
                     var i2 = i + 1;
                     SegmentPoint joinPoint;
 
                     // search for a point with the same coordinates (within eps) as the current point
                     // as points are sorted by X, we typically only need to check the point immediately following the current point
-                    do
+                    while (true)
                     {
                         if (i2 >= points.Count)
                         {
@@ -517,8 +520,13 @@ namespace OxyPlot.Series
                             joinPoint = null;
                             break;
                         }
+
+                        var distance = Math.Sqrt(Math.Pow(joinPoint.Point.X - currentPoint.Point.X, 2) + Math.Pow(joinPoint.Point.Y - currentPoint.Point.Y, 2));
+                        if (distance < eps)
+                        {
+                            break;
+                        }
                     }
-                    while (Math.Abs(joinPoint.Point.Y - currentPoint.Point.Y) > eps);
 
                     // join the two points together
                     if (joinPoint != null)
