@@ -1,6 +1,17 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## Unreleased
+
+### Added
+
+### Changed
+
+### Removed
+
+### Fixed
+- Zero-crossing axis bounds (#1708)
+
 ## [2.1.0-Preview1] - 2020-10-18
 
 ### Added

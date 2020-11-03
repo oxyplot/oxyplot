@@ -76,11 +76,11 @@ namespace OxyPlot.Axes
                 axisPosition = perpendicularAxis.Transform(0);
 
                 var p0 = axis.IsHorizontal()
-                    ? perpendicularAxis.ScreenMin.X
-                    : perpendicularAxis.ScreenMin.Y;
+                    ? perpendicularAxis.ScreenMin.Y
+                    : perpendicularAxis.ScreenMin.X;
                 var p1 = axis.IsHorizontal()
-                    ? perpendicularAxis.ScreenMax.X
-                    : perpendicularAxis.ScreenMax.Y;
+                    ? perpendicularAxis.ScreenMax.Y
+                    : perpendicularAxis.ScreenMax.X;
 
                 // find the min/max positions
                 var min = Math.Min(p0, p1);
