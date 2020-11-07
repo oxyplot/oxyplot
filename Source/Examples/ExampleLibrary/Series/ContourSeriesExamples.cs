@@ -191,13 +191,13 @@ namespace ExampleLibrary
         [Example("Logarithmic Peaks")]
         public static PlotModel LogPeaks()
         {
-            Func<double, double, double> logPeaks = (x, y) => peaks(Math.Log(x) / 3 - 3.1, Math.Log(y) / 3 - 3.1);
+            Func<double, double, double> logPeaks = (x, y) => peaks(Math.Log(x) / 10, Math.Log(y) / 10);
 
             var model = new PlotModel();
             var coordinates = ArrayBuilder.CreateVector(-3, 3, 0.05);
             for (var i = 0; i < coordinates.Length; i++)
             {
-                coordinates[i] = Math.Exp((coordinates[i] + 3.1) * 3);
+                coordinates[i] = Math.Exp(coordinates[i] * 10);
             }
 
             var cs = new ContourSeries
