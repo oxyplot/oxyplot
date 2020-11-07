@@ -7,7 +7,7 @@
 namespace ExampleLibrary
 {
     using System;
-
+    using System.Linq;
     using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
@@ -185,6 +185,31 @@ namespace ExampleLibrary
 
             cs.Data = ArrayBuilder.Evaluate(openContours, cs.ColumnCoordinates, cs.RowCoordinates);
             model.Series.Add(cs);
+            return model;
+        }
+
+        [Example("Logarithmic Peaks")]
+        public static PlotModel LogPeaks()
+        {
+            Func<double, double, double> logPeaks = (x, y) => peaks(Math.Log(x) / 3 - 3.1, Math.Log(y) / 3 - 3.1);
+
+            var model = new PlotModel();
+            var coordinates = ArrayBuilder.CreateVector(-3, 3, 0.05);
+            for (var i = 0; i < coordinates.Length; i++)
+            {
+                coordinates[i] = Math.Exp((coordinates[i] + 3.1) * 3);
+            }
+
+            var cs = new ContourSeries
+            {
+                ColumnCoordinates = coordinates,
+                RowCoordinates = coordinates
+            };
+
+            cs.Data = ArrayBuilder.Evaluate(logPeaks, cs.ColumnCoordinates, cs.RowCoordinates);
+            model.Series.Add(cs);
+            model.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Bottom });
+            model.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Left });
             return model;
         }
     }
