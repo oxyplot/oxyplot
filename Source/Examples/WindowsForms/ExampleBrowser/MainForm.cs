@@ -51,10 +51,10 @@ namespace ExampleBrowser
         {
             using (var g = this.CreateGraphics())
             {
-                var scaleFactor = g.DpiY / 96f;
-                if (Math.Abs(scaleFactor - 1.25f) > 1e-5)
+                if (g.DpiY <= 96.0 && 144.0 <= g.DpiY)
                     return;
 
+                var scaleFactor = g.DpiY / 96f;
                 treeView1.ItemHeight = (int) (treeView1.ItemHeight * scaleFactor);
                 treeView1.Font = new Font(
                     treeView1.Font.FontFamily,
