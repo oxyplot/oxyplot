@@ -46,10 +46,18 @@ namespace OxyPlot.SkiaSharp
         public bool UseTextShaping { get; set; } = true;
 
         /// <summary>
+        /// Gets or sets the Miter limit. This is the maximum ratio between Miter length and stroke thickness. When this ration is exceeded, the join falls back to a Bevel. The default value is 10.
+        /// </summary>
+        public float MiterLimit { get; set; } = 10;
+
+        /// <summary>
         /// Gets a value indicating whether the context renders to pixels.
         /// </summary>
         /// <value><c>true</c> if the context renders to pixels; otherwise, <c>false</c>.</value>
         private bool RendersToPixels => this.RenderTarget != RenderTarget.VectorGraphic;
+
+        /// <inheritdoc/>
+        public int ClipCount => this.SkCanvas?.SaveCount - 1 ?? 0;
 
         /// <inheritdoc/>
         public void CleanUp()
@@ -430,23 +438,21 @@ namespace OxyPlot.SkiaSharp
         }
 
         /// <inheritdoc/>
-        public void ResetClip()
+        public void PopClip()
         {
+            if (this.SkCanvas.SaveCount == 1)
+            {
+                throw new InvalidOperationException("Unbalanced call to PopClip.");
+            }
+
             this.SkCanvas.Restore();
         }
 
         /// <inheritdoc/>
-        public bool SetClip(OxyRect clippingRectangle)
+        public void PushClip(OxyRect clippingRectangle)
         {
-            // if a clipping is already set, we have to restore it first
-            if (this.SkCanvas.SaveCount > 0)
-            {
-                this.SkCanvas.Restore();
-            }
-
             this.SkCanvas.Save();
             this.SkCanvas.ClipRect(this.Convert(clippingRectangle));
-            return true;
         }
 
         /// <inheritdoc/>
@@ -825,6 +831,7 @@ namespace OxyPlot.SkiaSharp
             this.paint.StrokeWidth = this.GetActualThickness(strokeThickness, edgeRenderingMode);
             this.paint.PathEffect = null;
             this.paint.StrokeJoin = SKStrokeJoin.Miter;
+            this.paint.StrokeMiter = this.MiterLimit;
             return this.paint;
         }
 

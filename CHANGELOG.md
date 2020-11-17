@@ -1,7 +1,18 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## Unreleased
+
+### Added
+
+### Changed
+
+### Removed
+
+### Fixed
+- Zero-crossing axis bounds (#1708)
+
+## [2.1.0-Preview1] - 2020-10-18
 
 ### Added
 - Made Legend Items clickable to toggle series visibility (#644)
@@ -34,6 +45,17 @@ All notable changes to this project will be documented in this file.
 - Examples of full plot area polar plots with non-zero minimums (#1586)
 - Read-Only collection interfaces for .NET 4.0 (#1600)
 - Support HiDPI for WinForms examples (#1597)
+- Add PlotModel.AssignColorsToInvisibleSeries property to control whether invisible series are included or skipped when assigning automatic colors (#1599)
+- Overlapping bar series (#1265)
+- `AxisPosition.All` for axes which need a margin on all sides of the plot area (#1574)
+- IRenderContext.ClipCount property (#1593)
+- Additional parameters for HistogramSeries LabelFormatString
+- Absolute screen-space axis margins (#1569)
+- netstandard2.0 TargetFramework (#1668)
+- Add a PlotView.TextMeasurementMethod property to allow using the much faster GlyphTypeface based measurement at runtime (#1673)
+- OxyPlot.Wpf.XamlRenderContext - this doesn't use StreamGeometry and can be used for rendering to XAML (#1673)
+- SkiaRenderContext.MiterLimit property (#1690)
+- Example for Issue #1685 showing spurious lines in the ContourSeries
 
 ### Changed
 - Legends model (#644)
@@ -58,6 +80,15 @@ All notable changes to this project will be documented in this file.
 - CategoryAxis should not contain rendering information about BarSeries (#741)
 - CategorizedSeries changed to BarSeriesBase<T> (#741)
 - System.Drawing.Common references updated to 4.7.0 (#1608)
+- Invisible series are assigned automatic colors by default, configurable with PlotModel.AssignColorsToInvisibleSeries property that defaults to true (#1599)
+- StemSeries, AreaSeries, TwoColorAreaSeries, and StairStepSeries use `ActualMarkerColor` (#1630)
+- Axes with `AxisPosition.None` make no contribution to margins (#1574)
+- `AngleAxis` has position `AxisPosition.All` by default (#1574)
+- Clipping API changed from SetClip(...) and ResetClip() to PushClip(...) and PopClip() (#1593)
+- Remove TileMapAnnotation examples from automated testing (#1667)
+- Optimize clipping calls (#1661)
+- Mark CandleStickAndVolumeSeries as obsolete (#1661)
+- Implement StreamGeometry-based implementations of DrawEllipses, DrawLine, DrawLineSegments and DrawRectangle(s) which improves the rendering speed on WPF (#1673)
 
 ### Removed
 - Remove PlotModel.Legends (#644)
@@ -68,6 +99,11 @@ All notable changes to this project will be documented in this file.
 - RenderingExtensions.DrawRectangleAsPolygon(...) extension methods. IRenderContext.DrawRectangle(...) with an appropriate EdgeRenderingMode can be used instead.
 - SkiaSharp.PdfExporter.Dpi property (#1591)
 - Axis.UpdateFromSeries(...) and Series.UpdateValidData() (#741)
+- Support for IRenderContext implementations without native clipping (#1593)
+- CohenSutherlandClipping and SutherlandHodgmanClipping (#1593)
+- DrawClippedXxx(...) extensions in RenderingExtensions (#1661)
+- PathAnnotation.ClipText property - text is now always clipped (#1661)
+- CanvasRenderContext.UseStreamGeometry property - this functionality is replaced by the new XamlRenderContext (#1673)
 
 ### Fixed
 - Legend font size is not affected by DefaultFontSize (#1396)
@@ -88,6 +124,15 @@ All notable changes to this project will be documented in this file.
 - Auto margins are set incorrectly if Axis.TitleFontSize is set to non-default value (related to #1577)
 - Incomplete rendering of AreaSeries in some situations (#1512)
 - ColumnSeries / BarSeries not working with more than one value-axis (#729)
+- OxyPlot.SkiaSharp.SvgExporter plot background color (#1619)
+- MinimumPadding incorrect when MaximumPadding is non-zero (#1625)
+- Don't clip zerocrossing axis lines within plot bounds (#1441)
+- Incorrect margins when using Color Axes with AxisPosition.None (#1574)
+- OpenStreetMap example (#1642)
+- Incorrect clipping in TwoColorAreaSeries (#1678)
+- ScreenMin and ScreenMax on Horizontal and Vertical Axes depends on plot bounds (#1652)
+- Windows Forms clipping last line of measured text (#1659)
+- Inconsistent Zooming behaviour (#1648)
 
 ## [2.0.0] - 2019-10-19
 ### Added 
@@ -385,7 +430,8 @@ All notable changes to this project will be documented in this file.
 - Add overridable Axis.FormatValueOverride (#181)
 - PngExporter text formatting (#170)
 
-[Unreleased]: https://github.com/oxyplot/oxyplot/compare/v2.0.0...HEAD
+[Unreleased]: https://github.com/oxyplot/oxyplot/compare/v2.1.0-Preview1...HEAD
+[2.1.0-Preview1]: https://github.com/oxyplot/oxyplot/compare/v2.0.0...v2.1.0-Preview1
 [2.0.0]: https://github.com/oxyplot/oxyplot/compare/v1.0.0...v2.0.0
 [1.0.0]: https://github.com/oxyplot/oxyplot/compare/v0.2014.1.546...v1.0.0
 [0.2014.1.546]: https://github.com/oxyplot/oxyplot/compare/v0.0.1...v0.2014.1.546

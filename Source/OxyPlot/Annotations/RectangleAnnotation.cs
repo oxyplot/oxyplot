@@ -59,10 +59,7 @@ namespace OxyPlot.Annotations
         /// <value>The maximum Y.</value>
         public double MaximumY { get; set; }
 
-        /// <summary>
-        /// Renders the rectangle annotation.
-        /// </summary>
-        /// <param name="rc">The render context.</param>
+        /// <inheritdoc/>
         public override void Render(IRenderContext rc)
         {
             base.Render(rc);
@@ -79,8 +76,7 @@ namespace OxyPlot.Annotations
 
             this.screenRectangle = new OxyRect(this.Transform(x1, y1), this.Transform(x2, y2));
             
-            rc.DrawClippedRectangle(
-                clippingRectangle,
+            rc.DrawRectangle(
                 this.screenRectangle,
                 this.GetSelectableFillColor(this.Fill),
                 this.GetSelectableColor(this.Stroke),
@@ -94,8 +90,7 @@ namespace OxyPlot.Annotations
 
             this.GetActualTextAlignment(out var ha, out var va);
             var textPosition = this.GetActualTextPosition(() => this.screenRectangle.Center);
-            rc.DrawClippedText(
-                clippingRectangle,
+            rc.DrawText(
                 textPosition,
                 this.Text,
                 this.ActualTextColor,

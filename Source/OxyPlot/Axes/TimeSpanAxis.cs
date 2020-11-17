@@ -86,7 +86,7 @@ namespace OxyPlot.Axes
         /// <returns>The calculate actual interval.</returns>
         protected override double CalculateActualInterval(double availableSize, double maxIntervalSize)
         {
-            double range = Math.Abs(this.ActualMinimum - this.ActualMaximum);
+            double range = Math.Abs(this.ClipMinimum - this.ClipMaximum);
             double interval = 1;
             var goodIntervals = new[] { 1.0, 5, 10, 30, 60, 120, 300, 600, 900, 1200, 1800, 3600 };
 

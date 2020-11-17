@@ -67,6 +67,9 @@ namespace OxyPlot.Series
         /// <inheritdoc/>
         public bool IsStacked { get; set; }
 
+        /// <inheritdoc/>
+        public bool OverlapsStack { get; set; }
+
         /// <summary>
         /// Gets or sets the label format string.
         /// </summary>
@@ -198,7 +201,7 @@ namespace OxyPlot.Series
                     this.Manager.SetCurrentMinValue(stackIndex, i, minTemp);
 
                     var stackedMaxValue = this.Manager.GetCurrentMaxValue(stackIndex, i);
-                    if (!double.IsNaN(stackedMaxValue))
+                    if (!this.OverlapsStack && !double.IsNaN(stackedMaxValue))
                     {
                         maxTemp += stackedMaxValue;
                     }
@@ -254,7 +257,6 @@ namespace OxyPlot.Series
         /// Renders the bar/column item.
         /// </summary>
         /// <param name="rc">The render context.</param>
-        /// <param name="clippingRect">The clipping rectangle.</param>
         /// <param name="barValue">The end value of the bar.</param>
         /// <param name="categoryValue">The category value.</param>
         /// <param name="actualBarWidth">The actual width of the bar.</param>
@@ -262,7 +264,6 @@ namespace OxyPlot.Series
         /// <param name="rect">The rectangle of the bar.</param>
         protected virtual void RenderItem(
             IRenderContext rc,
-            OxyRect clippingRect,
             double barValue,
             double categoryValue,
             double actualBarWidth,
@@ -280,8 +281,7 @@ namespace OxyPlot.Series
                 }
             }
 
-            rc.DrawClippedRectangle(
-                clippingRect,
+            rc.DrawRectangle(
                 rect,
                 this.GetSelectableFillColor(actualFillColor),
                 this.StrokeColor,
@@ -293,7 +293,6 @@ namespace OxyPlot.Series
         /// Renders the item label.
         /// </summary>
         /// <param name="rc">The render context</param>
-        /// <param name="clippingRect">The clipping rectangle</param>
         /// <param name="item">The item.</param>
         /// <param name="baseValue">The bar item base value.</param>
         /// <param name="topValue">The bar item top value.</param>
@@ -301,7 +300,6 @@ namespace OxyPlot.Series
         /// <param name="categoryEndValue">The bar item category end value.</param>
         protected void RenderLabel(
             IRenderContext rc,
-            OxyRect clippingRect,
             BarItem item,
             double baseValue,
             double topValue,
@@ -344,8 +342,7 @@ namespace OxyPlot.Series
 
             pt += this.Orientate(marginVector);
 
-            rc.DrawClippedText(
-                clippingRect,
+            rc.DrawText(
                 pt,
                 s,
                 this.ActualTextColor,
@@ -367,8 +364,6 @@ namespace OxyPlot.Series
                 return;
             }
 
-            var clippingRect = this.GetClippingRect();
-
             var actualBarWidth = this.GetActualBarWidth();
             var stackIndex = this.IsStacked ? this.Manager.GetStackIndex(this.StackGroup) : 0;
             for (var i = 0; i < this.ValidItems.Count; i++)
@@ -380,7 +375,7 @@ namespace OxyPlot.Series
 
                 // Get base- and topValue
                 var baseValue = double.NaN;
-                if (this.IsStacked)
+                if (this.IsStacked && !this.OverlapsStack)
                 {
                     baseValue = this.Manager.GetCurrentBaseValue(stackIndex, categoryIndex, value < 0);
                 }
@@ -412,13 +407,12 @@ namespace OxyPlot.Series
 
                 this.ActualBarRectangles.Add(rect);
 
-                this.RenderItem(rc, clippingRect, topValue, categoryValue, actualBarWidth, item, rect);
+                this.RenderItem(rc, topValue, categoryValue, actualBarWidth, item, rect);
 
                 if (this.LabelFormatString != null)
                 {
                     this.RenderLabel(
                         rc,
-                        clippingRect,
                         item,
                         baseValue,
                         topValue,

@@ -260,9 +260,13 @@ namespace OxyPlot.Series
             var yaxisTitle = this.YAxis.Title ?? DefaultYAxisTitle;
             var colorAxisTitle = (this.ColorAxis != null ? ((Axis)this.ColorAxis).Title : null) ?? DefaultColorAxisTitle;
 
+            var xmin = this.XAxis.ClipMinimum;
+            var xmax = this.XAxis.ClipMaximum;
+            var ymin = this.YAxis.ClipMinimum;
+            var ymax = this.YAxis.ClipMaximum;
             foreach (var p in actualPoints)
             {
-                if (p.X < this.XAxis.ActualMinimum || p.X > this.XAxis.ActualMaximum || p.Y < this.YAxis.ActualMinimum || p.Y > this.YAxis.ActualMaximum)
+                if (p.X < xmin || p.X > xmax || p.Y < ymin|| p.Y > ymax)
                 {
                     i++;
                     continue;
@@ -314,10 +318,7 @@ namespace OxyPlot.Series
             return result;
         }
 
-        /// <summary>
-        /// Renders the series on the specified rendering context.
-        /// </summary>
-        /// <param name="rc">The rendering context.</param>
+        /// <inheritdoc/>
         public override void Render(IRenderContext rc)
         {
             var actualPoints = this.ActualPointsList;
@@ -404,8 +405,6 @@ namespace OxyPlot.Series
             // Offset of the bins
             var binOffset = this.Transform(this.MinX, this.MaxY);
 
-            rc.SetClip(clippingRect);
-
             if (this.ColorAxis != null)
             {
                 // Draw the grouped (by color defined in ColorAxis) markers
@@ -414,7 +413,6 @@ namespace OxyPlot.Series
                 {
                     var color = this.ColorAxis.GetColor(group.Key);
                     rc.DrawMarkers(
-                        clippingRect,
                         group.Value,
                         this.MarkerType,
                         this.MarkerOutline,
@@ -430,7 +428,6 @@ namespace OxyPlot.Series
 
             // Draw unselected markers
             rc.DrawMarkers(
-                clippingRect,
                 allPoints,
                 this.MarkerType,
                 this.MarkerOutline,
@@ -444,7 +441,6 @@ namespace OxyPlot.Series
 
             // Draw the selected markers
             rc.DrawMarkers(
-                clippingRect,
                 selectedPoints,
                 this.MarkerType,
                 this.MarkerOutline,
@@ -461,8 +457,6 @@ namespace OxyPlot.Series
                 // render point labels (not optimized for performance)
                 this.RenderPointLabels(rc, clippingRect);
             }
-
-            rc.ResetClip();
         }
 
         /// <summary>
@@ -478,7 +472,6 @@ namespace OxyPlot.Series
             var midpt = new ScreenPoint(xmid, ymid);
 
             rc.DrawMarker(
-                legendBox,
                 midpt,
                 this.MarkerType,
                 this.MarkerOutline,
@@ -590,8 +583,7 @@ namespace OxyPlot.Series
                     }
 #endif
 
-                rc.DrawClippedText(
-                    clippingRect,
+                rc.DrawText(
                     pt,
                     s,
                     this.ActualTextColor,

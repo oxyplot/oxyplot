@@ -167,22 +167,16 @@ namespace OxyPlot.Series
             return result;
         }
 
-        /// <summary>
-        /// Renders the series on the specified rendering context.
-        /// </summary>
-        /// <param name="rc">The rendering context.</param>
+        /// <inheritdoc/>
         public override void Render(IRenderContext rc)
         {
             // determine render range
-            var xmin = this.XAxis.ActualMinimum;
-            var xmax = this.XAxis.ActualMaximum;
+            var xmin = this.XAxis.ClipMinimum;
+            var xmax = this.XAxis.ClipMaximum;
             this.WindowStartIndex = this.UpdateWindowStartIndex(this.abovePoints, this.GetPointX, xmin, this.WindowStartIndex);
             this.WindowStartIndex2 = this.UpdateWindowStartIndex(this.belowPoints, this.GetPointX, xmin, this.WindowStartIndex2);
 
             double minDistSquared = this.MinimumSegmentLength * this.MinimumSegmentLength;
-
-            var clippingRect = this.GetClippingRect();
-            rc.SetClip(clippingRect);
 
             var areaContext = new TwoColorAreaRenderContext
             {
@@ -190,12 +184,11 @@ namespace OxyPlot.Series
                 WindowStartIndex = this.WindowStartIndex,
                 XMax = xmax,
                 RenderContext = rc,
-                ClippingRect = clippingRect,
                 MinDistSquared = minDistSquared,
                 Reverse = false,
                 Color = this.ActualColor,
                 Fill = this.ActualFill,
-                MarkerFill = this.MarkerFill,
+                MarkerFill = this.ActualMarkerFill,
                 MarkerStroke = this.MarkerStroke,
                 DashArray = this.ActualDashArray,
                 Baseline = this.Limit
@@ -204,6 +197,7 @@ namespace OxyPlot.Series
             this.RenderChunkedPoints(areaContext);
 
             areaContext.Points = this.belowPoints;
+            areaContext.WindowStartIndex = this.WindowStartIndex2;
             areaContext.Reverse = this.Reverse2;
             areaContext.Color = this.ActualColor2;
             areaContext.Fill = this.ActualFill2;
@@ -240,18 +234,16 @@ namespace OxyPlot.Series
                 }
 
                 rc.DrawMarkers(
-                    clippingRect,
                     aboveMarkers,
                     this.MarkerType,
                     null,
                     markerSizes, 
-                    this.MarkerFill, 
+                    this.ActualMarkerFill, 
                     this.MarkerStroke,
                     this.MarkerStrokeThickness,
                     this.EdgeRenderingMode,
                     1);
                 rc.DrawMarkers(
-                    clippingRect,
                     belowMarkers,
                     this.MarkerType,
                     null,
@@ -262,8 +254,6 @@ namespace OxyPlot.Series
                     this.EdgeRenderingMode,
                     1);
             }
-
-            rc.ResetClip();
         }
 
         /// <summary>
@@ -317,8 +307,7 @@ namespace OxyPlot.Series
             var poligon = new List<ScreenPoint>(baseline);
             poligon.AddRange(result);
 
-            context.RenderContext.DrawClippedPolygon(
-                context.ClippingRect,
+            context.RenderContext.DrawReducedPolygon(
                 poligon,
                 context.MinDistSquared,
                 this.GetSelectableFillColor(twoColorContext.Fill),
@@ -332,7 +321,6 @@ namespace OxyPlot.Series
 
                 // draw the markers on top
                 context.RenderContext.DrawMarkers(
-                    context.ClippingRect,
                     result,
                     this.MarkerType,
                     null,

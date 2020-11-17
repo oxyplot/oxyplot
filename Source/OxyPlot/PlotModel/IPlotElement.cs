@@ -20,5 +20,11 @@ namespace OxyPlot
         /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
         /// <remarks>This method creates the hash code by reflecting the value of all public properties.</remarks>
         int GetElementHashCode();
+
+        /// <summary>
+        /// Gets the clipping rectangle.
+        /// </summary>
+        /// <returns>The clipping rectangle.</returns>
+        OxyRect GetClippingRect();
     }
 }

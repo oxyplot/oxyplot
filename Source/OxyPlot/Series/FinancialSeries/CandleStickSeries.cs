@@ -73,10 +73,7 @@ namespace OxyPlot.Series
             return this.FindWindowStartIndex(this.Items, item => item.X, x, startIndex);
         }
 
-        /// <summary>
-        /// Renders the series on the specified rendering context.
-        /// </summary>
-        /// <param name="rc">The rendering context.</param>
+        /// <inheritdoc/>
         public override void Render(IRenderContext rc)
         {
             var nitems = this.Items.Count;
@@ -89,7 +86,6 @@ namespace OxyPlot.Series
 
             this.VerifyAxes();
 
-            var clippingRect = this.GetClippingRect();
             var dashArray = this.LineStyle.GetDashArray();
 
             var dataCandlewidth = (this.CandleWidth > 0) ? this.CandleWidth : this.minDx * 0.80;
@@ -102,8 +98,8 @@ namespace OxyPlot.Series
             var lineDown = this.GetSelectableColor(this.DecreasingColor.ChangeIntensity(0.70));
 
             // determine render range
-            var xmin = this.XAxis.ActualMinimum;
-            var xmax = this.XAxis.ActualMaximum;
+            var xmin = this.XAxis.ClipMinimum;
+            var xmax = this.XAxis.ClipMaximum;
             this.WindowStartIndex = this.UpdateWindowStartIndex(items, item => item.X, xmin, this.WindowStartIndex);
 
             for (int i = this.WindowStartIndex; i < nitems; i++)
@@ -133,10 +129,8 @@ namespace OxyPlot.Series
                 if (this.StrokeThickness > 0 && this.LineStyle != LineStyle.None)
                 {
                     // Upper extent
-                    rc.DrawClippedLine(
-                        clippingRect,
+                    rc.DrawLine(
                         new[] { high, max },
-                        0,
                         lineColor,
                         this.StrokeThickness,
                         this.EdgeRenderingMode,
@@ -144,10 +138,8 @@ namespace OxyPlot.Series
                         this.LineJoin);
 
                     // Lower extent
-                    rc.DrawClippedLine(
-                        clippingRect,
+                    rc.DrawLine(
                         new[] { min, low },
-                        0,
                         lineColor,
                         this.StrokeThickness,
                         this.EdgeRenderingMode,
@@ -158,7 +150,7 @@ namespace OxyPlot.Series
                 var p1 = this.Transform(bar.X - halfDataCandlewidth, bar.Open);
                 var p2 = this.Transform(bar.X + halfDataCandlewidth, bar.Close);
                 var rect = new OxyRect(p1, p2);
-                rc.DrawClippedRectangle(clippingRect, rect, fillColor, lineColor, this.StrokeThickness, this.EdgeRenderingMode);
+                rc.DrawRectangle(rect, fillColor, lineColor, this.StrokeThickness, this.EdgeRenderingMode);
             }
         }
 

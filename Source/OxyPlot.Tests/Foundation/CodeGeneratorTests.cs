@@ -23,7 +23,7 @@ namespace OxyPlot.Tests
         [Test]
         public void GenerateCodeForAllExamplesInExampleLibrary()
         {
-            foreach (var ei in ExampleLibrary.Examples.GetList())
+            foreach (var ei in ExampleLibrary.Examples.GetListForAutomatedTest())
             {
                 void CheckCode(PlotModel model)
                 {

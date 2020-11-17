@@ -49,6 +49,7 @@ namespace ExampleLibrary
             this.MaxZoomLevel = 20;
             this.Opacity = 1.0;
             this.MaxNumberOfDownloads = 8;
+            this.UserAgent = "OxyPlotExampleLibrary";
         }
 
         /// <summary>
@@ -94,13 +95,16 @@ namespace ExampleLibrary
         public double Opacity { get; set; }
 
         /// <summary>
+        /// Gets or sets the user agent used for requests.
+        /// </summary>
+        public string UserAgent { get; set; }
+
+        /// <summary>
         /// Renders the annotation on the specified context.
         /// </summary>
         /// <param name="rc">The render context.</param>
         public override void Render(IRenderContext rc)
         {
-            base.Render(rc);
-
             var lon0 = this.XAxis.ActualMinimum;
             var lon1 = this.XAxis.ActualMaximum;
             var lat0 = this.YAxis.ActualMinimum;
@@ -160,7 +164,7 @@ namespace ExampleLibrary
                     var r = OxyRect.Create(s00.X, s00.Y, s11.X, s11.Y);
 
                     // draw the image
-                    rc.DrawClippedImage(clippingRectangle, img, r.Left, r.Top, r.Width, r.Height, this.Opacity, true);
+                    rc.DrawImage(img, r.Left, r.Top, r.Width, r.Height, this.Opacity, true);
                 }
             }
 
@@ -312,6 +316,15 @@ namespace ExampleLibrary
             string uri = this.queue.Dequeue();
             var request = (HttpWebRequest)WebRequest.Create(uri);
             request.Method = "GET";
+
+#if NET45
+            // unavailable in NET Standard 1.0
+            request.UserAgent = this.UserAgent;
+#else
+            // compiles but does not run under NET Framework
+            request.Headers["User-Agent"] = this.UserAgent;
+#endif
+
             Interlocked.Increment(ref this.numberOfDownloads);
             request.BeginGetResponse(
                 r =>

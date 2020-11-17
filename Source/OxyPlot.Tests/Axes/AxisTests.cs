@@ -745,5 +745,168 @@ namespace OxyPlot.Tests
             // Changing the axis type should not cause the data minimum to be invalid.
             Assert.AreEqual(0.004, plot.Axes[0].DataMinimum);
         }
+
+        /// <summary>
+        /// Tests Axis minimum and maximum padding.
+        /// </summary>
+        [Test]
+        public void Axis_Padding()
+        {
+            var plot = new PlotModel();
+            var yaxis = new LinearAxis()
+            {
+                Position = AxisPosition.Left,
+                MinimumPadding = 0.2,
+                MaximumPadding = 0.1,
+            };
+
+            plot.Axes.Add(yaxis);
+
+            var series = new LineSeries();
+            series.Points.Add(new DataPoint(0, 4));
+            series.Points.Add(new DataPoint(1, 10));
+
+            plot.Series.Add(series);
+
+            ((IPlotModel)plot).Update(true);
+
+            Assert.AreEqual(4 - 6 * 0.2, yaxis.ActualMinimum, 0, "actual minimum");
+            Assert.AreEqual(10 + 6 * 0.1, yaxis.ActualMaximum, 1e-6, "actual maximum");
+        }
+
+        /// <summary>
+        /// Tests Axis margins when zero.
+        /// </summary>
+        [Test]
+        public void Axis_ZeroMargin()
+        {
+            var plot = new PlotModel();
+            var yaxis = new LinearAxis()
+            {
+                Position = AxisPosition.Left,
+                Minimum = 0,
+                Maximum = 10,
+                MinimumMargin = 0,
+                MaximumMargin = 0,
+            };
+
+            plot.Axes.Add(yaxis);
+
+            plot.UpdateAndRenderToNull(800, 600);
+
+            Assert.AreEqual(yaxis.ActualMinimum, yaxis.ClipMinimum, 0, "clip minimum");
+            Assert.AreEqual(yaxis.ActualMaximum, yaxis.ClipMaximum, 0, "clip maximum");
+
+            Assert.AreEqual(plot.PlotArea.Bottom, yaxis.Transform(yaxis.ClipMinimum), 1e-6, "transformed clip minimum");
+            Assert.AreEqual(plot.PlotArea.Top, yaxis.Transform(yaxis.ClipMaximum), 1e-6, "transformed clip maximum");
+        }
+
+        /// <summary>
+        /// Tests Axis data margins when zero.
+        /// </summary>
+        [Test]
+        public void Axis_ZeroDataMargin()
+        {
+            var plot = new PlotModel();
+            var yaxis = new LinearAxis()
+            {
+                Position = AxisPosition.Left,
+                Minimum = 0,
+                Maximum = 10,
+                MinimumDataMargin = 0,
+                MaximumDataMargin = 0,
+            };
+
+            plot.Axes.Add(yaxis);
+
+            plot.UpdateAndRenderToNull(800, 600);
+
+            Assert.AreEqual(0, yaxis.ActualMinimum, 0, "actual minimum");
+            Assert.AreEqual(10, yaxis.ActualMaximum, 0, "actual maximum");
+        }
+
+        /// <summary>
+        /// Tests Axis margins when non-zero.
+        /// </summary>
+        [Test]
+        public void Axis_NonZeroMargin()
+        {
+            var plot = new PlotModel();
+            var yaxis = new LinearAxis()
+            {
+                Position = AxisPosition.Left,
+                Minimum = 0,
+                Maximum = 10,
+                MinimumMargin = 20,
+                MaximumMargin = 30,
+            };
+
+            plot.Axes.Add(yaxis);
+
+            plot.UpdateAndRenderToNull(800, 600);
+
+            Assert.AreEqual(plot.PlotArea.Bottom - 20, yaxis.Transform(yaxis.ClipMinimum), 1e-6, "transformed clip minimum");
+            Assert.AreEqual(plot.PlotArea.Top + 30, yaxis.Transform(yaxis.ClipMaximum), 1e-6, "transformed clip maximum");
+        }
+
+        /// <summary>
+        /// Tests Axis data margins when non-zero.
+        /// </summary>
+        [Test]
+        public void Axis_NonZeroDataMargin()
+        {
+            var plot = new PlotModel();
+            var yaxis = new LinearAxis()
+            {
+                Position = AxisPosition.Left,
+                Minimum = 0,
+                Maximum = 10,
+                MinimumDataMargin = 15,
+                MaximumDataMargin = 10,
+            };
+
+            plot.Axes.Add(yaxis);
+
+            plot.UpdateAndRenderToNull(800, 600);
+
+            Assert.AreEqual(0, yaxis.ActualMinimum, 0, "actual minimum");
+            Assert.AreEqual(10, yaxis.ActualMaximum, 0, "actual maximum");
+
+            Assert.AreEqual(yaxis.Transform(yaxis.ClipMinimum) - 15, yaxis.Transform(yaxis.ActualMinimum), 1e-6, "transformed minimums");
+            Assert.AreEqual(yaxis.Transform(yaxis.ClipMaximum) + 10, yaxis.Transform(yaxis.ActualMaximum), 1e-6, "transformed maximums");
+        }
+
+        /// <summary>
+        /// Tests Axis margins and data margins in combination.
+        /// </summary>
+        [Test]
+        public void Axis_MarginsAndDataMargins()
+        {
+            var plot = new PlotModel();
+            var yaxis = new LinearAxis()
+            {
+                Position = AxisPosition.Left,
+                Minimum = 0,
+                Maximum = 10,
+                MinimumMargin = 5,
+                MaximumMargin = 5,
+                MinimumDataMargin = 10,
+                MaximumDataMargin = 10,
+            };
+
+            plot.Axes.Add(yaxis);
+
+            plot.UpdateAndRenderToNull(800, 600);
+
+            Assert.AreNotEqual(0, yaxis.ClipMinimum, "clip minimum");
+            Assert.AreNotEqual(10, yaxis.ClipMaximum, "clip maximum");
+            Assert.AreEqual(0, yaxis.ActualMinimum, 0, "actual minimum");
+            Assert.AreEqual(10, yaxis.ActualMaximum, 0, "actual maximum");
+
+            Assert.AreEqual(plot.PlotArea.Bottom - 5, yaxis.Transform(yaxis.ClipMinimum), 1e-6, "transformed clip minimum");
+            Assert.AreEqual(plot.PlotArea.Top + 5, yaxis.Transform(yaxis.ClipMaximum), 1e-6, "transformed clip maximum");
+            Assert.AreEqual(plot.PlotArea.Bottom - 5 - 10, yaxis.Transform(yaxis.ActualMinimum), 1e-6, "transformed actual minimum");
+            Assert.AreEqual(plot.PlotArea.Top + 5 + 10, yaxis.Transform(yaxis.ActualMaximum), 1e-6, "transformed actual maximum");
+        }
     }
 }

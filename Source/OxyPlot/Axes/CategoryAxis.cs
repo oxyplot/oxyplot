@@ -107,12 +107,12 @@ namespace OxyPlot.Axes
                 // Subtract 0.5 from the label values to get the tick values.
                 // Add one extra tick at the end.
                 var mv = new List<double>(majorLabelValues.Count + 1);
-                mv.AddRange(majorLabelValues.Select(v => v - 0.5).Where(v => v > this.ActualMinimum - epsilon));
+                mv.AddRange(majorLabelValues.Select(v => v - 0.5).Where(v => v > this.ClipMinimum - epsilon));
 
                 if (mv.Count > 0)
                 {
                     var lastTick = mv[mv.Count - 1] + 1;
-                    if (lastTick < this.ActualMaximum + epsilon)
+                    if (lastTick < this.ClipMaximum + epsilon)
                     {
                         mv.Add(lastTick);
                     }
@@ -153,7 +153,7 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Updates the category labels.
         /// </summary>
-        /// <param name="numberOfCategories"></param>
+        /// <param name="numberOfCategories">The number of categories.</param>
         protected internal void UpdateLabels(int numberOfCategories)
         {
             if (this.ItemsSource != null)

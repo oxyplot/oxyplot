@@ -69,10 +69,7 @@ namespace OxyPlot.Series
             }
         }
 
-        /// <summary>
-        /// Renders the series on the specified rendering context.
-        /// </summary>
-        /// <param name="rc">The rendering context.</param>
+        /// <inheritdoc/>
         public override void Render(IRenderContext rc)
         {
             if (this.IsTransposed())
@@ -87,7 +84,6 @@ namespace OxyPlot.Series
 
             this.VerifyAxes();
 
-            var clippingRect = this.GetClippingRect();
             var dashArray = this.LineStyle.GetDashArray();
             var actualColor = this.GetSelectableColor(this.ActualColor);
             var shadowEndColor = this.GetSelectableColor(this.ShadowEndColor);
@@ -101,7 +97,7 @@ namespace OxyPlot.Series
                         continue;
                     }
 
-                    if (v.X <= this.XAxis.ActualMinimum || v.X >= this.XAxis.ActualMaximum)
+                    if (v.X <= this.XAxis.ClipMinimum || v.X >= this.XAxis.ClipMaximum)
                     {
                         continue;
                     }
@@ -111,10 +107,8 @@ namespace OxyPlot.Series
 
                     if (double.IsNaN(v.Open) || double.IsNaN(v.Close))
                     {
-                        rc.DrawClippedLine(
-                            clippingRect,
+                        rc.DrawLine(
                             new[] { low, high },
-                            0,
                             actualColor,
                             this.StrokeThickness,
                             this.EdgeRenderingMode,
@@ -129,10 +123,8 @@ namespace OxyPlot.Series
                         var min = new ScreenPoint(open.X, Math.Min(open.Y, close.Y));
 
                         // Upper shadow
-                        rc.DrawClippedLine(
-                            clippingRect,
+                        rc.DrawLine(
                             new[] { high, min },
-                            0,
                             actualColor,
                             this.StrokeThickness,
                             this.EdgeRenderingMode,
@@ -140,10 +132,8 @@ namespace OxyPlot.Series
                             this.LineJoin);
 
                         // Lower shadow
-                        rc.DrawClippedLine(
-                            clippingRect,
+                        rc.DrawLine(
                             new[] { max, low },
-                            0,
                             actualColor,
                             this.StrokeThickness,
                             this.EdgeRenderingMode,
@@ -155,10 +145,8 @@ namespace OxyPlot.Series
                         {
                             var highLeft = new ScreenPoint(high.X - (this.CandleWidth * 0.5 * this.ShadowEndLength) - 1, high.Y);
                             var highRight = new ScreenPoint(high.X + (this.CandleWidth * 0.5 * this.ShadowEndLength), high.Y);
-                            rc.DrawClippedLine(
-                                 clippingRect,
+                            rc.DrawLine(
                                  new[] { highLeft, highRight },
-                                 0,
                                  shadowEndColor,
                                  this.StrokeThickness,
                                  this.EdgeRenderingMode,
@@ -167,10 +155,8 @@ namespace OxyPlot.Series
 
                             var lowLeft = new ScreenPoint(low.X - (this.CandleWidth * 0.5 * this.ShadowEndLength) - 1, low.Y);
                             var lowRight = new ScreenPoint(low.X + (this.CandleWidth * 0.5 * this.ShadowEndLength), low.Y);
-                            rc.DrawClippedLine(
-                                clippingRect,
+                            rc.DrawLine(
                                 new[] { lowLeft, lowRight },
-                                0,
                                 shadowEndColor,
                                 this.StrokeThickness,
                                 this.EdgeRenderingMode,
@@ -184,7 +170,7 @@ namespace OxyPlot.Series
                         var fillColor = v.Close > v.Open
                                             ? this.GetSelectableFillColor(this.ActualIncreasingFill)
                                             : this.GetSelectableFillColor(this.DecreasingFill);
-                        rc.DrawClippedRectangle(clippingRect, rect, fillColor, actualColor, this.StrokeThickness, this.EdgeRenderingMode);
+                        rc.DrawRectangle(rect, fillColor, actualColor, this.StrokeThickness, this.EdgeRenderingMode);
                     }
                 }
             }

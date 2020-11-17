@@ -13,9 +13,11 @@ namespace ExampleLibrary
     [Examples("TileMapAnnotation"), Tags("Annotations")]
     public static class TileMapAnnotationExamples
     {
-        [Example("TileMapAnnotation (openstreetmap.org)")]
+        [Example("TileMapAnnotation (openstreetmap.org)", true)]
         public static PlotModel TileMapAnnotation2()
         {
+            // See policy document: https://operations.osmfoundation.org/policies/tiles/
+
             var model = new PlotModel { Title = "TileMapAnnotation" };
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = 10.4, Maximum = 10.6, Title = "Longitude" });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 59.88, Maximum = 59.96, Title = "Latitude" });
@@ -25,13 +27,14 @@ namespace ExampleLibrary
                 new TileMapAnnotation
                     {
                         Url = "http://tile.openstreetmap.org/{Z}/{X}/{Y}.png",
-                        CopyrightNotice = "OpenStreetMap"
+                        CopyrightNotice = "OpenStreetMap",
+                        MaxNumberOfDownloads = 2,
                     });
 
             return model;
         }
 
-        [Example("TileMapAnnotation (statkart.no)")]
+        [Example("TileMapAnnotation (statkart.no)", true)]
         public static PlotModel TileMapAnnotation()
         {
             var model = new PlotModel { Title = "TileMapAnnotation" };

@@ -62,8 +62,6 @@ namespace ExampleLibrary
                 throw new InvalidOperationException("Axis has not been defined.");
             }
 
-            var clippingRect = this.GetClippingRect();
-
             var screenPoints = Points.Select(this.Transform).ToList();
             var verticalLines = new List<ScreenPoint>();
 
@@ -86,13 +84,13 @@ namespace ExampleLibrary
             {
                 if (this.LineStyle != LineStyle.None)
                 {
-                    rc.DrawClippedLineSegments(clippingRect, screenPoints, this.ActualColor, this.StrokeThickness, this.EdgeRenderingMode, this.LineStyle.GetDashArray(), this.LineJoin);
+                    rc.DrawLineSegments(screenPoints, this.ActualColor, this.StrokeThickness, this.EdgeRenderingMode, this.LineStyle.GetDashArray(), this.LineJoin);
                 }
 
-                rc.DrawClippedLineSegments(clippingRect, verticalLines, this.ActualColor, this.StrokeThickness / 3, this.EdgeRenderingMode, LineStyle.Dash.GetDashArray(), this.LineJoin);
+                rc.DrawLineSegments(verticalLines, this.ActualColor, this.StrokeThickness / 3, this.EdgeRenderingMode, LineStyle.Dash.GetDashArray(), this.LineJoin);
             }
 
-            rc.DrawMarkers(screenPoints, clippingRect, this.MarkerType, null, this.MarkerSize, this.MarkerFill, this.MarkerStroke, this.MarkerStrokeThickness, this.EdgeRenderingMode);
+            rc.DrawMarkers(screenPoints, this.MarkerType, null, this.MarkerSize, this.MarkerFill, this.MarkerStroke, this.MarkerStrokeThickness, this.EdgeRenderingMode);
         }
 
         /// <summary>

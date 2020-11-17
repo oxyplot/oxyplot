@@ -106,16 +106,8 @@
         /// <param name="rc">The rendering context.</param>
         public override void Render(IRenderContext rc)
         {
-            var actualRects = this.ActualItems;
-
             this.VerifyAxes();
-
-            var clippingRect = this.GetClippingRect();
-            rc.SetClip(clippingRect);
-
-            this.RenderRectangles(rc, clippingRect, actualRects);
-
-            rc.ResetClip();
+            this.RenderRectangles(rc, this.ActualItems);
         }
 
         /// <summary>
@@ -202,9 +194,8 @@
         /// Renders the points as line, broken line and markers.
         /// </summary>
         /// <param name="rc">The rendering context.</param>
-        /// <param name="clippingRect">The clipping rectangle.</param>
         /// <param name="items">The Items to render.</param>
-        protected void RenderRectangles(IRenderContext rc, OxyRect clippingRect, ICollection<RectangleItem> items)
+        protected void RenderRectangles(IRenderContext rc, ICollection<RectangleItem> items)
         {
             foreach (var item in items)
             {
@@ -216,8 +207,7 @@
 
                 var rectrect = new OxyRect(p1, p2);
 
-                rc.DrawClippedRectangle(
-                    clippingRect, 
+                rc.DrawRectangle(
                     rectrect, 
                     rectcolor, 
                     OxyColors.Undefined,
@@ -226,8 +216,7 @@
 
                 if (this.LabelFontSize > 0)
                 {
-                    rc.DrawClippedText(
-                        clippingRect, 
+                    rc.DrawText(
                         rectrect.Center, 
                         item.Value.ToString(this.LabelFormatString), 
                         this.ActualTextColor, 

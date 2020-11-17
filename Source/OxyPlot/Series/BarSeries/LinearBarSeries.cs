@@ -140,10 +140,7 @@ namespace OxyPlot.Series
             };
         }
 
-        /// <summary>
-        /// Renders the series on the specified rendering context.
-        /// </summary>
-        /// <param name="rc">The rendering context.</param>
+        /// <inheritdoc/>
         public override void Render(IRenderContext rc)
         {
             this.rectangles.Clear();
@@ -157,12 +154,7 @@ namespace OxyPlot.Series
 
             this.VerifyAxes();
 
-            var clippingRect = this.GetClippingRect();
-            rc.SetClip(clippingRect);
-
-            this.RenderBars(rc, clippingRect, actualPoints);
-
-            rc.ResetClip();
+            this.RenderBars(rc, actualPoints);
         }
 
         /// <summary>
@@ -258,9 +250,8 @@ namespace OxyPlot.Series
         /// Renders the series bars.
         /// </summary>
         /// <param name="rc">The rendering context.</param>
-        /// <param name="clippingRect">The clipping rectangle.</param>
         /// <param name="actualPoints">The list of points that should be rendered.</param>
-        private void RenderBars(IRenderContext rc, OxyRect clippingRect, List<DataPoint> actualPoints)
+        private void RenderBars(IRenderContext rc, List<DataPoint> actualPoints)
         {
             var widthOffset = this.GetBarWidth(actualPoints) / 2;
             var widthVector = this.Orientate(new ScreenVector(widthOffset, 0));
@@ -281,8 +272,7 @@ namespace OxyPlot.Series
 
                 var barColors = this.GetBarColors(actualPoint.Y);
 
-                rc.DrawClippedRectangle(
-                    clippingRect, 
+                rc.DrawRectangle(
                     rectangle, 
                     barColors.FillColor, 
                     barColors.StrokeColor, 

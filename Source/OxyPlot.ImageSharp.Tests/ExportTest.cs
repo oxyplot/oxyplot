@@ -8,19 +8,20 @@ namespace OxyPlot.ImageSharp.Tests
 {
     using ExampleLibrary;
     using NUnit.Framework;
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
 
     public static class ExportTest
     {
-        public static void Export_FirstExampleOfEachExampleGroup_CheckThatAllFilesExist(IExporter exporter, string directory, string extension)
+        public static void ExportExamples_CheckThatAllFilesExist(IEnumerable<ExampleInfo> examples, IExporter exporter, string directory, string extension)
         {
             if (!Directory.Exists(directory))
             {
                 Directory.CreateDirectory(directory);
             }
 
-            foreach (var example in Examples.GetList().GroupBy(example => example.Category).Select(g => g.First()))
+            foreach (var example in examples)
             {
                 void ExportModelAndCheckFileExists(PlotModel model, string fileName)
                 {

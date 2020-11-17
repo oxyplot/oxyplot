@@ -128,6 +128,7 @@ namespace OxyPlot
             this.PlotAreaBorderThickness = new OxyThickness(1);
             this.EdgeRenderingMode = EdgeRenderingMode.Automatic;
 
+            this.AssignColorsToInvisibleSeries = true;
             this.IsLegendVisible = true;
 
             this.DefaultColors = new List<OxyColor>
@@ -253,6 +254,11 @@ namespace OxyPlot
         public EdgeRenderingMode EdgeRenderingMode { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether invisible series should be assigned automatic colors.
+        /// </summary>
+        public bool AssignColorsToInvisibleSeries { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the legend is visible. The titles of the series must be set to use the legend.
         /// </summary>
         public bool IsLegendVisible { get; set; }
@@ -264,19 +270,19 @@ namespace OxyPlot
         public OxyThickness Padding { get; set; }
 
         /// <summary>
-        /// The PlotBounds of the plot (in device units).
+        /// Gets the PlotBounds of the plot (in device units).
         /// </summary>
         public OxyRect PlotBounds { get; private set; }
 
         /// <summary>
         /// Gets the total width of the plot (in device units).
         /// </summary>
-        public double Width => PlotBounds.Width;
+        public double Width => this.PlotBounds.Width;
 
         /// <summary>
         /// Gets the total height of the plot (in device units).
         /// </summary>
-        public double Height => PlotBounds.Height;
+        public double Height => this.PlotBounds.Height;
 
         /// <summary>
         /// Gets the area including both the plot and the axes. Outside legends are rendered outside this rectangle.
@@ -600,7 +606,7 @@ namespace OxyPlot
                     x = axis.InverseTransform(pt.Y);
                 }
 
-                if (x >= axis.ActualMinimum && x <= axis.ActualMaximum)
+                if (x >= axis.ClipMinimum && x <= axis.ClipMaximum)
                 {
                     if (position == null)
                     {
@@ -795,8 +801,12 @@ namespace OxyPlot
                     this.UpdateMaxMin(updateData);
 
                     // Update undefined colors
+                    var automaticColorSeries = this.AssignColorsToInvisibleSeries
+                        ? (IEnumerable<Series.Series>)this.Series
+                        : visibleSeries;
+
                     this.ResetDefaultColor();
-                    foreach (var s in visibleSeries)
+                    foreach (var s in automaticColorSeries)
                     {
                         s.SetDefaultValues();
                     }

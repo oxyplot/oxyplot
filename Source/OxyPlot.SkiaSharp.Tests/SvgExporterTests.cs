@@ -22,7 +22,8 @@ namespace OxyPlot.SkiaSharp.Tests
         {
             var exporter = new SvgExporter { Width = 1000, Height = 750 };
             var directory = Path.Combine(this.outputDirectory, "ExampleLibrary");
-            ExportTest.Export_FirstExampleOfEachExampleGroup_CheckThatAllFilesExist(exporter, directory, ".svg");
+            ExportTest.ExportExamples_CheckThatAllFilesExist(Examples.GetFirstExampleOfEachCategoryForAutomatedTest(), exporter, directory, ".svg");
+            ExportTest.ExportExamples_CheckThatAllFilesExist(Examples.GetRenderingCapabilitiesForAutomatedTest(), exporter, directory, ".svg");
         }
 
         [Test]
@@ -40,5 +41,16 @@ namespace OxyPlot.SkiaSharp.Tests
             this.outputDirectory = Path.Combine(TestContext.CurrentContext.WorkDirectory, SVG_FOLDER);
             Directory.CreateDirectory(this.outputDirectory);
         }
+
+        [Test]
+        public void BackgroundColor()
+        {
+            var model = ShowCases.CreateNormalDistributionModel();
+            model.Background = OxyColors.AliceBlue;
+            var exporter = new SvgExporter { Width = 1000, Height = 750 };
+            using var stream = File.Create(Path.Combine(this.outputDirectory, "Background.svg"));
+            exporter.Export(model, stream);
+        }
+
     }
 }

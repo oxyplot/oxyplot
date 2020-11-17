@@ -9,6 +9,7 @@ namespace ExampleLibrary
     using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
+    using System;
 
     [Examples("PlotModel examples")]
     public static class PlotModelExamples
@@ -196,6 +197,46 @@ namespace ExampleLibrary
             var model = new PlotModel();
             model.Axes.Add(new LinearAxis());
             model.Series.Add(new LineSeries { XAxisKey = "invalidKey" });
+            return model;
+        }
+
+        [Example("Exception handling (with clipping)")]
+        public static PlotModel ExceptionClipping()
+        {
+            var model = new PlotModel();
+            var annotation = new RenderingCapabilities.DelegateAnnotation(rc =>
+            {
+                rc.PushClip(new OxyRect(50, 50, 50, 50));
+                throw new Exception("This Exception should be completely visible and not clipped by the previously pushed clipping rectangle.");
+            });
+
+            model.Annotations.Add(annotation);
+            return model;
+        }
+
+        [Example("Unbalanced clipping (push)")]
+        public static PlotModel UnbalancedClippingPush()
+        {
+            var model = new PlotModel();
+            var annotation = new RenderingCapabilities.DelegateAnnotation(rc =>
+            {
+                rc.PushClip(new OxyRect(50, 50, 50, 50));
+            });
+
+            model.Annotations.Add(annotation);
+            return model;
+        }
+
+        [Example("Unbalanced clipping (pop)")]
+        public static PlotModel UnbalancedClippingPop()
+        {
+            var model = new PlotModel();
+            var annotation = new RenderingCapabilities.DelegateAnnotation(rc =>
+            {
+                rc.PopClip();
+            });
+
+            model.Annotations.Add(annotation);
             return model;
         }
     }

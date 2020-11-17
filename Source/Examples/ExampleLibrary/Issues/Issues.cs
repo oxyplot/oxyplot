@@ -17,6 +17,8 @@ namespace ExampleLibrary
     using OxyPlot.Axes;
     using OxyPlot.Series;
     using OxyPlot.Legends;
+    using System.Reflection;
+    using System.Linq;
 
     [Examples("Z1 Issues")]
     public class Issues
@@ -2097,7 +2099,7 @@ namespace ExampleLibrary
             return plot;
         }
 
-        [Example("#1441: Zero crossing quadrant axes disappear on zoom and pan")]
+        [Example("#1441: Zero crossing quadrant axes disappear on zoom and pan (Closed)")]
         public static PlotModel ZeroCrossingQuadrantAxes()
         {
             var plot = new PlotModel() { Title = "Zoom or Pan axes to make them disappear" };
@@ -2283,6 +2285,7 @@ namespace ExampleLibrary
 
             return plot;
         }
+
         [Example("#1512: FindWindowStartIndex.")]
         public static PlotModel FindWindowsStartIndex()
         {
@@ -2314,6 +2317,153 @@ namespace ExampleLibrary
           
 
             return plotModel1;
+        }
+
+        [Example("#1441: Near-border axis line clipping (Closed)")]
+        public static PlotModel ZeroCrossingWithInsertHorizontalAxisAndTransparentBorder()
+        {
+            var plotModel1 = new PlotModel
+            {
+                Title = "PositionAtZeroCrossing = true",
+                Subtitle = "Horizontal axis StartPosition = 0.1 End Position = 0.9",
+                PlotAreaBorderThickness = new OxyThickness(5),
+                PlotAreaBorderColor = OxyColor.FromArgb(127, 127, 127, 127),
+                PlotMargins = new OxyThickness(10, 10, 10, 10)
+            };
+            plotModel1.Axes.Add(new LinearAxis
+            {
+                Minimum = -100,
+                Maximum = 100,
+                PositionAtZeroCrossing = true,
+                AxislineStyle = LineStyle.Solid,
+                TickStyle = TickStyle.Crossing
+            });
+            plotModel1.Axes.Add(new LinearAxis
+            {
+                Minimum = -100,
+                Maximum = 100,
+                Position = AxisPosition.Bottom,
+                PositionAtZeroCrossing = true,
+                AxislineStyle = LineStyle.Solid,
+                TickStyle = TickStyle.Crossing,
+                StartPosition = 0.9,
+                EndPosition = 0.1
+            });
+
+            var scatter = new ScatterSeries();
+            var rnd = new Random(0);
+            for (int i = 0; i < 100; i++)
+            {
+                scatter.Points.Add(new ScatterPoint(rnd.NextDouble() * 100 - 50, rnd.NextDouble() * 100 - 50));
+            }
+            plotModel1.Series.Add(scatter);
+
+            return plotModel1;
+        }
+
+        [Example("#1659: Last line of series titles in legend not displayed in Chinese on WinForms (Closed)")]
+        public static PlotModel LastLineOfSeriesTitlesNotDisplayedInChineseOnWindows()
+        {
+            var plot = new PlotModel() { Title = "#1659: Last line of series titles in legend not displayed in Chinese on WinForms" };
+
+            plot.Legends.Add(new Legend() { LegendTitle = "漂亮的天鹅" });
+            plot.Series.Add(new FunctionSeries(x => x, 0, 1, 0.1, "漂亮的天鹅"));
+            plot.Series.Add(new FunctionSeries(x => x, 0, 1, 0.1, "漂亮的天鹅\n友好的天鹅"));
+            plot.Series.Add(new FunctionSeries(x => x, 0, 1, 0.1, "漂亮的天鹅\n友好的天鹅\n尼斯天鹅"));
+
+            return plot;
+        }
+
+        [Example("#1685: ContourSeries produce fake connections")]
+        public static PlotModel ContourSeriesProduceFakeConnections()
+        {
+            var plot = new PlotModel();
+
+            var data = new double[64, 64];
+            using (var stream = typeof(Issues).GetTypeInfo().Assembly.GetManifestResourceStream("ExampleLibrary.Resources.DodgyContourData.tsv"))
+            {
+                using (var reader = new System.IO.StreamReader(stream))
+                {
+                    for (int r = 0; r < data.GetLength(0); r++)
+                    {
+                        var line = reader.ReadLine();
+                        var row = line.Split('\t');
+
+                        for (int c = 0; c < data.GetLength(0); c++)
+                        {
+                            data[r, c] = double.Parse(row[c]);
+                        }
+                    }
+                }
+            }
+
+            var xs = new double[64];
+            using (var stream = typeof(Issues).GetTypeInfo().Assembly.GetManifestResourceStream("ExampleLibrary.Resources.X.txt"))
+            {
+                using (var reader = new System.IO.StreamReader(stream))
+                {
+                    for (int i = 0; i < xs.Length; i++)
+                    {
+                        var line = reader.ReadLine();
+                        xs[i] = double.Parse(line);
+                    }
+                }
+            }
+
+            var ys = new double[64];
+            using (var stream = typeof(Issues).GetTypeInfo().Assembly.GetManifestResourceStream("ExampleLibrary.Resources.Y.txt"))
+            {
+                using (var reader = new System.IO.StreamReader(stream))
+                {
+                    for (int i = 0; i < ys.Length; i++)
+                    {
+                        var line = reader.ReadLine();
+                        ys[i] = double.Parse(line);
+                    }
+                }
+            }
+
+            double[] contourLevels = { 0.2, 0.4, 0.6, 0.8, 0.9, 1.0 };
+            double maxi = data.Max2D();
+
+            double[] tmp = new double[contourLevels.Length];
+            for (int i = 0; i < contourLevels.Length; i++)
+            {
+                tmp[i] = maxi * contourLevels[i];
+            }
+
+            var xaxis = new LogarithmicAxis() { Position = AxisPosition.Bottom };
+            var yaxis = new LogarithmicAxis() { Position = AxisPosition.Left };
+            var caxis = new LinearColorAxis() { Position = AxisPosition.Right, Palette = OxyPalettes.Gray(100) };
+
+            plot.Axes.Add(xaxis);
+            plot.Axes.Add(yaxis);
+            plot.Axes.Add(caxis);
+
+            var hs = new HeatMapSeries
+            {
+                Data = data,
+                X0 = xs.First(),
+                X1 = xs.Last(),
+                Y0 = ys.First(),
+                Y1 = ys.Last(),
+                CoordinateDefinition = HeatMapCoordinateDefinition.Center,
+            };
+
+            var cs = new ContourSeries
+            {
+                TextColor = OxyColors.Transparent,
+                LabelBackground = OxyColors.Transparent,
+                ContourLevels = tmp,
+                Data = data,
+                ColumnCoordinates = xs,
+                RowCoordinates = ys,
+            };
+
+            plot.Series.Add(hs);
+            plot.Series.Add(cs);
+
+            return plot;
         }
 
         private class TimeSpanPoint

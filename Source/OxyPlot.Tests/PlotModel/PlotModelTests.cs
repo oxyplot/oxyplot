@@ -29,7 +29,7 @@ namespace OxyPlot.Tests
         [Test]
         public void Update_AllExamples_ThrowsNoExceptions()
         {
-            foreach (var example in Examples.GetList())
+            foreach (var example in Examples.GetListForAutomatedTest())
             {
                 ((IPlotModel)example.PlotModel)?.Update(true);
 

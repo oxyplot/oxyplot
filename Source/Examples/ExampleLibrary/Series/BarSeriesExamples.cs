@@ -909,6 +909,29 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("BaseValue (overlaping)")]
+        public static PlotModel BaseValueOverlaping()
+        {
+            var model = new PlotModel { Title = "BaseValue (overlaping)", Subtitle = "BaseValue = -1" };
+            var series1 = new BarSeries { Title = "Series 1", IsStacked = true, OverlapsStack = true, BaseValue = -1 };
+            series1.Items.Add(new BarItem { Value = 1 });
+            series1.Items.Add(new BarItem { Value = 2 });
+            model.Series.Add(series1);
+            var series2 = new BarSeries { Title = "Series 2", IsStacked = true, OverlapsStack = true, BaseValue = -1, BarWidth = 0.5 };
+            series2.Items.Add(new BarItem { Value = 4 });
+            series2.Items.Add(new BarItem { Value = 7 });
+            model.Series.Add(series2);
+
+            var categoryAxis = new CategoryAxis
+            {
+                Title = "Category",
+                Position = AxisPosition.Left
+            };
+            categoryAxis.Labels.AddRange(new[] { "A", "B" });
+            model.Axes.Add(categoryAxis);
+            return model;
+        }
+
         [Example("GapWidth 0%")]
         public static PlotModel GapWidth0()
         {
@@ -1015,12 +1038,18 @@ namespace ExampleLibrary
             s6.Items.Add(new BarItem { Value = 68 });
             s6.Items.Add(new BarItem { Value = 12 });
 
+            var s7 = new BarSeries { Title = "Series 7", IsStacked = true, OverlapsStack = true, StrokeColor = OxyColors.Black, StrokeThickness = 1, LabelFormatString = "{0:0}", LabelPlacement = LabelPlacement.Base, StackGroup = "3", BarWidth = 0.5 };
+            s7.Items.Add(new BarItem { Value = 10 });
+            s7.Items.Add(new BarItem { Value = 80 });
+            s7.Items.Add(new BarItem { Value = 100, CategoryIndex = categoryD });
+
             model.Series.Add(s1);
             model.Series.Add(s2);
             model.Series.Add(s3);
             model.Series.Add(s4);
             model.Series.Add(s5);
             model.Series.Add(s6);
+            model.Series.Add(s7);
             model.Axes.Add(categoryAxis);
             model.Axes.Add(valueAxis);
             return model;

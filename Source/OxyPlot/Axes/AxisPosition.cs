@@ -37,6 +37,11 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Bottom of the plot area.
         /// </summary>
-        Bottom
+        Bottom,
+
+        /// <summary>
+        /// All positions.
+        /// </summary>
+        All,
     }
 }

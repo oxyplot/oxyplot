@@ -196,8 +196,7 @@ namespace OxyPlot.Series
             this.image = OxyImage.Create(p, ImageFormat.Png);
 
             // Render the image
-            var clip = this.GetClippingRect();
-            rc.DrawClippedImage(clip, this.image, dest.Left, dest.Top, dest.Width, dest.Height, 1, false);
+            rc.DrawImage(this.image, dest.Left, dest.Top, dest.Width, dest.Height, 1, false);
         }
 
         /// <summary>
@@ -287,8 +286,7 @@ namespace OxyPlot.Series
             }
 
             // Render the image
-            var clip = this.GetClippingRect();
-            rc.DrawClippedImage(clip, this.image, dest.Left, dest.Top, dest.Width, dest.Height, 1, false);
+            rc.DrawImage(this.image, dest.Left, dest.Top, dest.Width, dest.Height, 1, false);
         }
 
         /// <summary>

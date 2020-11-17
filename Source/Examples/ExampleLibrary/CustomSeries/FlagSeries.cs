@@ -133,7 +133,7 @@ namespace ExampleLibrary
             this.symbolSize = rc.MeasureText(this.Symbol, this.ActualFont, this.ActualFontSize);
             foreach (var v in this.Values)
             {
-                if (double.IsNaN(v) || v < this.XAxis.ActualMinimum || v > this.XAxis.ActualMaximum)
+                if (double.IsNaN(v) || v < this.XAxis.ClipMinimum || v > this.XAxis.ClipMaximum)
                 {
                     continue;
                 }

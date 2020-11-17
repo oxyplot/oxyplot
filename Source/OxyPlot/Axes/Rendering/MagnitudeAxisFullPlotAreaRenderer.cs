@@ -261,6 +261,7 @@ namespace OxyPlot.Axes
 
             if (pass == 1)
             {
+                using var _ = this.RenderContext.AutoResetClip(new OxyRect(axis.ScreenMin, axis.ScreenMax));
                 foreach (var tickValue in this.MajorLabelValues)
                 {
                     this.RenderTickText(axis, tickValue, angleAxis);
@@ -383,8 +384,7 @@ namespace OxyPlot.Axes
 
 
             string text = axis.FormatValue(x);
-            this.RenderContext.DrawClippedMathText(
-                new OxyRect(axis.ScreenMin, axis.ScreenMax),
+            this.RenderContext.DrawMathText(
                 pt,
                 text,
                 axis.ActualTextColor,

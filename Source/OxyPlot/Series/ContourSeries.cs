@@ -276,9 +276,6 @@ namespace OxyPlot.Series
 
             this.VerifyAxes();
 
-            var clippingRect = this.GetClippingRect();
-            rc.SetClip(clippingRect);
-
             var contourLabels = new List<ContourLabel>();
             var dashArray = this.LineStyle.GetDashArray();
 
@@ -293,8 +290,7 @@ namespace OxyPlot.Series
 
                 var strokeColor = contour.Color.GetActualColor(this.ActualColor);
 
-                rc.DrawClippedLine(
-                    clippingRect,
+                rc.DrawReducedLine(
                     transformedPoints,
                     4,
                     this.GetSelectableColor(strokeColor),
@@ -318,7 +314,7 @@ namespace OxyPlot.Series
 
                 if (!this.MultiLabel)
                 {
-                    this.AddContourLabels(contour, transformedPoints, clippingRect, contourLabels, (transformedPoints.Length - 1) * 0.5);
+                    this.AddContourLabels(contour, transformedPoints, contourLabels, (transformedPoints.Length - 1) * 0.5);
                     continue;
                 }
 
@@ -326,7 +322,7 @@ namespace OxyPlot.Series
                 var labelsCount = (int)(contourLength / this.LabelSpacing);
                 if (labelsCount == 0)
                 {
-                    this.AddContourLabels(contour, transformedPoints, clippingRect, contourLabels, (transformedPoints.Length - 1) * 0.5);
+                    this.AddContourLabels(contour, transformedPoints, contourLabels, (transformedPoints.Length - 1) * 0.5);
                     continue;
                 }
 
@@ -363,7 +359,7 @@ namespace OxyPlot.Series
                         contourPartLengthOld = contourPartLength;
                     }
 
-                    this.AddContourLabels(contour, transformedPoints, clippingRect, contourLabels, labelIndex);
+                    this.AddContourLabels(contour, transformedPoints, contourLabels, labelIndex);
                 }
             }
 
@@ -376,8 +372,6 @@ namespace OxyPlot.Series
             {
                 this.RenderLabel(rc, cl);
             }
-
-            rc.ResetClip();
         }
 
         /// <summary>
@@ -458,10 +452,9 @@ namespace OxyPlot.Series
         /// </summary>
         /// <param name="contour">The contour.</param>
         /// <param name="pts">The points of the contour.</param>
-        /// <param name="clippingRect">The clipping rectangle.</param>
         /// <param name="contourLabels">The contour labels.</param>
         /// <param name="labelIndex">The index of the point in the list of points, where the label should get added.</param>
-        private void AddContourLabels(Contour contour, ScreenPoint[] pts, OxyRect clippingRect, ICollection<ContourLabel> contourLabels, double labelIndex)
+        private void AddContourLabels(Contour contour, ScreenPoint[] pts, ICollection<ContourLabel> contourLabels, double labelIndex)
         {
             if (pts.Length < 2)
             {
@@ -475,10 +468,6 @@ namespace OxyPlot.Series
             var dy = pts[i1].Y - pts[i0].Y;
             var x = pts[i0].X + (dx * (labelIndex - i0));
             var y = pts[i0].Y + (dy * (labelIndex - i0));
-            if (!clippingRect.Contains(x, y))
-            {
-                return;
-            }
 
             var pos = new ScreenPoint(x, y);
             var angle = Math.Atan2(dy, dx) * 180 / Math.PI;

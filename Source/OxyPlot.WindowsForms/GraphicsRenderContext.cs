@@ -27,7 +27,7 @@ namespace OxyPlot.WindowsForms
     /// <summary>
     /// The graphics render context.
     /// </summary>
-    public class GraphicsRenderContext : RenderContextBase, IDisposable
+    public class GraphicsRenderContext : ClippingRenderContext, IDisposable
     {
         /// <summary>
         /// The font size factor.
@@ -295,7 +295,7 @@ namespace OxyPlot.WindowsForms
             {
                 this.stringFormat.Alignment = StringAlignment.Near;
                 this.stringFormat.LineAlignment = StringAlignment.Near;
-                var size = this.g.MeasureString(text, font, int.MaxValue, this.stringFormat);
+                var size = Ceiling(this.g.MeasureString(text, font, int.MaxValue, this.stringFormat));
                 return new OxySize(size.Width, size.Height);
             }
         }
@@ -362,21 +362,14 @@ namespace OxyPlot.WindowsForms
             }
         }
 
-        /// <summary>
-        /// Sets the clip rectangle.
-        /// </summary>
-        /// <param name="rect">The clip rectangle.</param>
-        /// <returns>True if the clip rectangle was set.</returns>
-        public override bool SetClip(OxyRect rect)
+        /// <inheritdoc/>
+        protected override void SetClip(OxyRect rect)
         {
             this.g.SetClip(rect.ToRect(false));
-            return true;
         }
 
-        /// <summary>
-        /// Resets the clip rectangle.
-        /// </summary>
-        public override void ResetClip()
+        /// <inheritdoc/>
+        protected override void ResetClip()
         {
             this.g.ResetClip();
         }

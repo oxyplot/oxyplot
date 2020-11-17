@@ -158,7 +158,7 @@ namespace OxyPlot.Axes
         private void RenderTickCircle(Axis axis, Axis angleAxis, double x, OxyPen pen)
         {
             var zero = angleAxis.Offset;
-            var center = axis.Transform(axis.ActualMinimum, zero, angleAxis);
+            var center = axis.Transform(axis.ClipMinimum, zero, angleAxis);
             var right = axis.Transform(x, zero, angleAxis).X;
             var radius = right - center.X;
             var width = radius * 2;
@@ -179,8 +179,8 @@ namespace OxyPlot.Axes
         private void RenderTickArc(Axis axis, AngleAxis angleAxis, double x, OxyPen pen)
         {
             // caution: make sure angleAxis.UpdateActualMaxMin(); has been called
-            var minAngle = angleAxis.ActualMinimum;
-            var maxAngle = angleAxis.ActualMaximum;
+            var minAngle = angleAxis.ClipMinimum;
+            var maxAngle = angleAxis.ClipMaximum;
 
             // number of segment to draw a full circle
             // - decrease if you want get more speed

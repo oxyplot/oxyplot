@@ -20,7 +20,7 @@ namespace OxyPlot.Pdf
     /// Provides a render context for portable document format using PdfSharp (and SilverPDF for Silverlight)
     /// </summary>
     /// <remarks>see http://pdfsharp.codeplex.com and http://silverpdf.codeplex.com</remarks>
-    internal class PdfRenderContext : RenderContextBase, IDisposable
+    internal class PdfRenderContext : ClippingRenderContext, IDisposable
     {
         /// <summary>
         /// The font size factor.
@@ -362,22 +362,15 @@ namespace OxyPlot.Pdf
             }
         }
 
-        /// <summary>
-        /// Sets the clip rectangle.
-        /// </summary>
-        /// <param name="rect">The clip rectangle.</param>
-        /// <returns>True if the clip rectangle was set.</returns>
-        public override bool SetClip(OxyRect rect)
+        /// <inheritdoc/>
+        protected override void SetClip(OxyRect rect)
         {
             this.g.Save();
             this.g.IntersectClip(rect.ToXRect());
-            return true;
         }
 
-        /// <summary>
-        /// Resets the clip rectangle.
-        /// </summary>
-        public override void ResetClip()
+        /// <inheritdoc/>
+        protected override void ResetClip()
         {
             this.g.Restore();
         }

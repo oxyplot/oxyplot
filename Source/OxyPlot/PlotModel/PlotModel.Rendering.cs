@@ -42,8 +42,11 @@ namespace OxyPlot
         {
             lock (this.SyncRoot)
             {
+                var initialClipCount = rc.ClipCount;
+
                 try
                 {
+                    using var _ = rc.AutoResetClip(rect);
                     if (this.lastPlotException != null)
                     {
                         // There was an exception during plot model update. 
@@ -109,9 +112,19 @@ namespace OxyPlot
                     {
                         this.RenderLegends(rc);
                     }
+
+                    if (rc.ClipCount != initialClipCount + 1)
+                    {
+                        throw new InvalidOperationException("Unbalanced calls to IRenderContext.PushClip were made during rendering.");
+                    }
                 }
                 catch (Exception exception)
                 {
+                    while (rc.ClipCount > initialClipCount)
+                    {
+                        rc.PopClip();
+                    }
+
                     // An exception was raised during rendering. This should not happen...
                     var errorMessage = string.Format(
                             "An exception of type {0} was thrown when rendering the plot model.\r\n{1}",
@@ -266,13 +279,7 @@ namespace OxyPlot
         /// <param name="layer">The layer.</param>
         private void RenderAnnotations(IRenderContext rc, AnnotationLayer layer)
         {
-            foreach (var a in this.Annotations.Where(a => a.Layer == layer))
-            {
-                rc.SetToolTip(a.ToolTip);
-                a.Render(rc);
-            }
-
-            rc.SetToolTip(null);
+            this.RenderPlotElements(this.Annotations.Where(a => a.Layer == layer), rc, annotation => annotation.Render(rc));
         }
 
         /// <summary>
@@ -353,10 +360,38 @@ namespace OxyPlot
                 barSeriesManager.InitializeRender();
             }
 
-            foreach (var s in this.Series.Where(s => s.IsVisible))
+            this.RenderPlotElements(this.Series.Where(s => s.IsVisible), rc, series => series.Render(rc));
+        }
+
+        private void RenderPlotElements<T>(IEnumerable<T> plotElements, IRenderContext rc, Action<T> renderAction) where T: PlotElement
+        {
+            var previousClippingRect = OxyRect.Everything;
+
+            foreach (var plotElement in plotElements)
             {
-                rc.SetToolTip(s.ToolTip);
-                s.Render(rc);
+                var currentClippingRect = plotElement.GetClippingRect();
+                if (!currentClippingRect.Equals(previousClippingRect))
+                {
+                    if (!previousClippingRect.Equals(OxyRect.Everything))
+                    {
+                        rc.PopClip();
+                        previousClippingRect = OxyRect.Everything;
+                    }
+
+                    if (!currentClippingRect.Equals(OxyRect.Everything))
+                    {
+                        rc.PushClip(currentClippingRect);
+                        previousClippingRect = currentClippingRect;
+                    }
+                }
+
+                rc.SetToolTip(plotElement.ToolTip);
+                renderAction(plotElement);
+            }
+
+            if (!previousClippingRect.Equals(OxyRect.Everything))
+            {
+                rc.PopClip();
             }
 
             rc.SetToolTip(null);
