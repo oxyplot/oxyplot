@@ -51,6 +51,7 @@ namespace ExampleBrowser
         {
             using (var g = this.CreateGraphics())
             {
+                // For some reason, legacy treeview does not respond to non-standard dpi up to 144, i.e. 150%
                 if (g.DpiY <= 96.0 && 144.0 <= g.DpiY)
                     return;
 
