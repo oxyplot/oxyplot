@@ -72,6 +72,8 @@ namespace OxyPlot.Axes
             this.MajorStep = double.NaN;
             this.MinimumMinorStep = 0;
             this.MinimumMajorStep = 0;
+            this.MinimumMajorIntervalCount = 2;
+            this.MaximumMajorIntervalCount = double.MaxValue;
 
             this.MinimumPadding = 0.01;
             this.MaximumPadding = 0.01;
@@ -161,6 +163,20 @@ namespace OxyPlot.Axes
         /// Gets or sets the actual major step.
         /// </summary>
         public double ActualMajorStep { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets the minimum number of major intervals on the axis.
+        /// </summary>
+        /// <remarks>Non-integer values are accepted.</remarks>
+        public double MinimumMajorIntervalCount { get; set; }
+
+        /// <summary>
+        /// Gets or sets the minimum number of major intervals on the axis.
+        /// </summary>
+        /// <remarks>Non-integer values are accepted.
+        /// The maximum will be bounded acording to the <see cref="IntervalLength" />.
+        /// The <see cref="MinimumMajorIntervalCount" /> takes precedence over the <see cref="MaximumMajorIntervalCount" /> when determining the major step.</remarks>
+        public double MaximumMajorIntervalCount { get; set; }
 
         /// <summary>
         /// Gets or sets the actual maximum value of the axis.
@@ -1375,7 +1391,7 @@ namespace OxyPlot.Axes
 
             this.ActualMajorStep = !double.IsNaN(this.MajorStep)
                                        ? this.MajorStep
-                                       : this.CalculateActualInterval(length, labelSize);
+                                       : this.CalculateActualInterval(length, labelSize, this.MinimumMajorIntervalCount, this.MaximumMajorIntervalCount);
 
             this.ActualMinorStep = !double.IsNaN(this.MinorStep)
                                        ? this.MinorStep
@@ -1802,10 +1818,12 @@ namespace OxyPlot.Axes
         /// </summary>
         /// <param name="availableSize">Size of the available area.</param>
         /// <param name="maxIntervalSize">Maximum length of the intervals.</param>
+        /// <param name="minIntervalCount">The minimum number of intervals.</param>
+        /// <param name="maxIntervalCount">The maximum number of intervals, once the minimum number of intervals is satisfied.</param>
         /// <returns>The calculate actual interval.</returns>
-        protected virtual double CalculateActualInterval(double availableSize, double maxIntervalSize)
+        protected virtual double CalculateActualInterval(double availableSize, double maxIntervalSize, double minIntervalCount, double maxIntervalCount)
         {
-            return this.CalculateActualInterval(availableSize, maxIntervalSize, this.ActualMaximum - this.ActualMinimum);
+            return this.CalculateActualInterval(availableSize, maxIntervalSize, this.ActualMaximum - this.ActualMinimum, minIntervalCount, maxIntervalCount);
         }
 
         /// <summary>
@@ -1814,8 +1832,10 @@ namespace OxyPlot.Axes
         /// <param name="availableSize">The available size.</param>
         /// <param name="maxIntervalSize">The maximum interval size.</param>
         /// <param name="range">The range.</param>
+        /// <param name="minIntervalCount">The minimum number of intervals.</param>
+        /// <param name="maxIntervalCount">The maximum number of intervals, once the minimum number of intervals is satisfied.</param>
         /// <returns>Actual interval to use to determine which values are displayed in the axis.</returns>
-        protected double CalculateActualInterval(double availableSize, double maxIntervalSize, double range)
+        protected double CalculateActualInterval(double availableSize, double maxIntervalSize, double range, double minIntervalCount, double maxIntervalCount)
         {
             if (availableSize <= 0)
             {
@@ -1835,10 +1855,9 @@ namespace OxyPlot.Axes
             Func<double, double> exponent = x => Math.Ceiling(Math.Log(x, 10));
             Func<double, double> mantissa = x => x / Math.Pow(10, exponent(x) - 1);
 
-            // reduce intervals for horizontal axis.
-            // double maxIntervals = Orientation == AxisOrientation.x ? MaximumAxisIntervalsPer200Pixels * 0.8 : MaximumAxisIntervalsPer200Pixels;
-            // real maximum interval count
-            double maxIntervalCount = availableSize / maxIntervalSize;
+            // bound min/max interval counts
+            minIntervalCount = Math.Max(minIntervalCount, 0);
+            maxIntervalCount = Math.Min(maxIntervalCount, availableSize / maxIntervalSize);
 
             range = Math.Abs(range);
             double interval = Math.Pow(10, exponent(range));
@@ -1867,7 +1886,7 @@ namespace OxyPlot.Axes
                     intervalCandidate = removeNoise(intervalCandidate / 2.0);
                 }
 
-                if (range / intervalCandidate > maxIntervalCount)
+                if (range / interval >= minIntervalCount && range / intervalCandidate > maxIntervalCount)
                 {
                     break;
                 }

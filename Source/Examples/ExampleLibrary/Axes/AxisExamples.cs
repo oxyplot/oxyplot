@@ -1790,6 +1790,89 @@ namespace ExampleLibrary
             return plot;
         }
 
+        [Example("Minimum Major Interval Count")]
+        public static PlotModel MinimumMajorIntervalCount()
+        {
+            var plot = new PlotModel
+            {
+                Title = "MinimumMajorIntervalCount = 10",
+            };
+
+            var xaxis = new LinearAxis
+            {
+                Position = AxisPosition.Bottom,
+                MinimumMajorIntervalCount = 10,
+            };
+
+            plot.Axes.Add(xaxis);
+
+            var yaxis = new LinearAxis
+            {
+                Position = AxisPosition.Left,
+                MinimumMajorIntervalCount = 10,
+            };
+
+            plot.Axes.Add(yaxis);
+
+            return plot;
+        }
+
+        [Example("Maximum Major Interval Count")]
+        public static PlotModel MaximumMajorIntervalCount()
+        {
+            var plot = new PlotModel
+            {
+                Title = "MaximumMajorIntervalCount = 5",
+            };
+
+            var xaxis = new LinearAxis
+            {
+                Position = AxisPosition.Bottom,
+                MaximumMajorIntervalCount = 5,
+            };
+
+            plot.Axes.Add(xaxis);
+
+            var yaxis = new LinearAxis
+            {
+                Position = AxisPosition.Left,
+                MaximumMajorIntervalCount = 5,
+            };
+
+            plot.Axes.Add(yaxis);
+
+            return plot;
+        }
+
+        [Example("Minimum and Maximum Major Interval Count")]
+        public static PlotModel MinimumAndMaximumMajorIntervalCount()
+        {
+            var plot = new PlotModel
+            {
+                Title = "MinimumMajorIntervalCount = MaximumMajorIntervalCount = 4",
+            };
+
+            var xaxis = new LinearAxis
+            {
+                Position = AxisPosition.Bottom,
+                MinimumMajorIntervalCount = 4,
+                MaximumMajorIntervalCount = 4,
+            };
+
+            plot.Axes.Add(xaxis);
+
+            var yaxis = new LinearAxis
+            {
+                Position = AxisPosition.Left,
+                MinimumMajorIntervalCount = 4,
+                MaximumMajorIntervalCount = 4,
+            };
+
+            plot.Axes.Add(yaxis);
+
+            return plot;
+        }
+
         private static CategoryAxis GetLongLabelSeries()
         {
             var axis = new CategoryAxis() { Position = AxisPosition.Bottom };
