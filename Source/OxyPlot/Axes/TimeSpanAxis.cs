@@ -78,25 +78,22 @@ namespace OxyPlot.Axes
             return string.Format(this.ActualCulture, fmt, span);
         }
 
-        /// <summary>
-        /// Calculates the actual interval.
-        /// </summary>
-        /// <param name="availableSize">Size of the available area.</param>
-        /// <param name="maxIntervalSize">Maximum length of the intervals.</param>
-        /// <returns>The calculate actual interval.</returns>
-        protected override double CalculateActualInterval(double availableSize, double maxIntervalSize)
+        /// <inheritdoc/>
+        protected override double CalculateActualInterval(double availableSize, double maxIntervalSize, double minIntervalCount, double maxIntervalCount)
         {
             double range = Math.Abs(this.ClipMinimum - this.ClipMaximum);
             double interval = 1;
             var goodIntervals = new[] { 1.0, 5, 10, 30, 60, 120, 300, 600, 900, 1200, 1800, 3600 };
 
-            int maxNumberOfIntervals = Math.Max((int)(availableSize / maxIntervalSize), 2);
+            // bound min/max interval counts
+            minIntervalCount = Math.Max(minIntervalCount, 0);
+            maxIntervalCount = Math.Min(maxIntervalCount, Math.Max((int)(availableSize / maxIntervalSize), 2));
 
             while (true)
             {
-                if (range / interval < maxNumberOfIntervals)
+                if (range / interval < maxIntervalCount)
                 {
-                    return interval;
+                    break;
                 }
 
                 double nextInterval = goodIntervals.FirstOrDefault(i => i > interval);
@@ -105,8 +102,15 @@ namespace OxyPlot.Axes
                     nextInterval = interval * 2;
                 }
 
+                if (range / nextInterval < minIntervalCount)
+                {
+                    break;
+                }
+
                 interval = nextInterval;
             }
+
+            return interval;
         }
     }
 }

@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 - Add properties for `MinimumSegmentLength` to series and annotations (#1853)
 - Add fractal examples for PolygonAnnotation and PolylineAnnotations (#1853)
 - Add `AxisPreference` to `PlotManipulator`
+- Add MinimumMajorIntervalCount and MaximumMajorIntervalCount Axis Properties (#24)
 
 ### Changed
 - Update net40 and net45 to net452 (#1835)
