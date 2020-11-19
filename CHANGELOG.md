@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 ## Unreleased
 
 ### Added
+- Example for Issue #1716 showing poor tick spacing on DateTimeAxis with interval types of Weeks or Years
 
 ### Changed
 
