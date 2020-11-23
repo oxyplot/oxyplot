@@ -318,7 +318,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         /// <param name="dependencyPropertyChangedEventArgs">The dependency property changed event args.</param>
         // ReSharper disable once UnusedParameter.Local
-        private void OnPositionChanged(DependencyPropertyChangedEventArgs _)
+        private void OnPositionChanged(DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
             this.UpdatePositionAndBorder();
         }
