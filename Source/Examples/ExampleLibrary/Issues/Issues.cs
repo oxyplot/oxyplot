@@ -2466,6 +2466,50 @@ namespace ExampleLibrary
             return plot;
         }
 
+        [Example("#1716: DateTimeAxis sometimes ignores IntervalLength")]
+        public static PlotModel DateTimeAxisSometimesIgnoresIntervalLength()
+        {
+            var plot = new PlotModel();
+
+            plot.Title = "IntervalLength is ignored for large ranges with IntervalType of Years or Weeks";
+
+            var days = new DateTimeAxis
+            {
+                IntervalType = DateTimeIntervalType.Days,
+                Position = AxisPosition.Bottom,
+                PositionTier = 1,
+                Minimum = DateTimeAxis.ToDouble(new DateTime(2000, 1, 1)),
+                Maximum = DateTimeAxis.ToDouble(new DateTime(2001, 1, 1)),
+                Title = "Days (mostly fine)",
+            };
+
+            var weeks = new DateTimeAxis
+            {
+                IntervalType = DateTimeIntervalType.Weeks,
+                Position = AxisPosition.Bottom,
+                PositionTier = 2,
+                Minimum = DateTimeAxis.ToDouble(new DateTime(2000, 1, 1)),
+                Maximum = DateTimeAxis.ToDouble(new DateTime(2001, 1, 1)),
+                Title = "Weeks (nothing is fine)",
+            };
+
+            var years = new DateTimeAxis
+            {
+                IntervalType = DateTimeIntervalType.Years,
+                Position = AxisPosition.Bottom,
+                PositionTier = 3,
+                Minimum = DateTimeAxis.ToDouble(new DateTime(2000, 1, 1)),
+                Maximum = DateTimeAxis.ToDouble(new DateTime(2100, 1, 1)),
+                Title = "Years (minor ticks not fine)",
+            };
+
+            plot.Axes.Add(days);
+            plot.Axes.Add(weeks);
+            plot.Axes.Add(years);
+
+            return plot;
+        }
+
         private class TimeSpanPoint
         {
             public TimeSpan X { get; set; }
