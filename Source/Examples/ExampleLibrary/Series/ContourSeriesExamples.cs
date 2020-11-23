@@ -7,7 +7,7 @@
 namespace ExampleLibrary
 {
     using System;
-
+    using System.Linq;
     using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
@@ -19,6 +19,10 @@ namespace ExampleLibrary
                3 * (1 - x) * (1 - x) * Math.Exp(-(x * x) - (y + 1) * (y + 1))
                - 10 * (x / 5 - x * x * x - y * y * y * y * y) * Math.Exp(-x * x - y * y)
                - 1.0 / 3 * Math.Exp(-(x + 1) * (x + 1) - y * y);
+
+        private static Func<double, double, double> openContours = (x, y) =>
+            (x * x) / (y * y + 1)
+          + (y * y) / (x * x + 1);
 
         [Example("Peaks")]
         public static PlotModel Peaks()
@@ -166,6 +170,46 @@ namespace ExampleLibrary
             cs.Data = ArrayBuilder.Evaluate(peaks, cs.ColumnCoordinates, cs.RowCoordinates);
             model.Subtitle = cs.Data.GetLength(0) + "×" + cs.Data.GetLength(1);
             model.Series.Add(cs);
+            return model;
+        }
+
+        [Example("Open Contours")]
+        public static PlotModel OpenContours()
+        {
+            var model = new PlotModel();
+            var cs = new ContourSeries
+            {
+                ColumnCoordinates = ArrayBuilder.CreateVector(-3, 3, 0.05),
+                RowCoordinates = ArrayBuilder.CreateVector(-3, 3, 0.05)
+            };
+
+            cs.Data = ArrayBuilder.Evaluate(openContours, cs.ColumnCoordinates, cs.RowCoordinates);
+            model.Series.Add(cs);
+            return model;
+        }
+
+        [Example("Logarithmic Peaks")]
+        public static PlotModel LogPeaks()
+        {
+            Func<double, double, double> logPeaks = (x, y) => peaks(Math.Log(x) / 10, Math.Log(y) / 10);
+
+            var model = new PlotModel();
+            var coordinates = ArrayBuilder.CreateVector(-3, 3, 0.05);
+            for (var i = 0; i < coordinates.Length; i++)
+            {
+                coordinates[i] = Math.Exp(coordinates[i] * 10);
+            }
+
+            var cs = new ContourSeries
+            {
+                ColumnCoordinates = coordinates,
+                RowCoordinates = coordinates
+            };
+
+            cs.Data = ArrayBuilder.Evaluate(logPeaks, cs.ColumnCoordinates, cs.RowCoordinates);
+            model.Series.Add(cs);
+            model.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Bottom });
+            model.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Left });
             return model;
         }
     }
