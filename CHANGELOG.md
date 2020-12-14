@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - Example for Issue #1716 showing poor tick spacing on DateTimeAxis with interval types of Weeks or Years
+- Example for label placement on BarSeries with non-zero BaseValue (#1726)
 
 ### Changed
 
@@ -12,6 +13,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 - Zero-crossing axis bounds (#1708)
+- Incorrect label placement on BarSeries with non-zero BaseValue (#1726)
 
 ## [2.1.0-Preview1] - 2020-10-18
 
