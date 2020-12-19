@@ -932,6 +932,37 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("BaseValue (labels)")]
+        public static PlotModel BaseValueLabels()
+        {
+            var model = new PlotModel { Title = "BaseValue with Labels" };
+
+            foreach (var placement in new[] { LabelPlacement.Base, LabelPlacement.Inside, LabelPlacement.Middle, LabelPlacement.Outside })
+            {
+                var bs = new BarSeries { Title = placement.ToString(), BaseValue = -25, LabelPlacement = placement, LabelFormatString = "{0:0}" };
+                bs.Items.Add(new BarItem { Value = -40 });
+                bs.Items.Add(new BarItem { Value = -25 });
+                bs.Items.Add(new BarItem { Value = -10 });
+                bs.Items.Add(new BarItem { Value = 0 });
+                bs.Items.Add(new BarItem { Value = 10 });
+                model.Series.Add(bs);
+            }
+
+            var categoryAxis = new CategoryAxis
+            {
+                Title = "Category",
+                Position = AxisPosition.Left,
+                StartPosition = 1,
+                EndPosition = 0,
+            };
+            categoryAxis.Labels.AddRange(new[] { "A", "B", "C", "D", "E" });
+            model.Axes.Add(categoryAxis);
+
+            model.Legends.Add(new Legend());
+
+            return model;
+        }
+
         [Example("GapWidth 0%")]
         public static PlotModel GapWidth0()
         {
