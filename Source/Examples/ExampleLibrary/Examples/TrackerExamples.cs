@@ -18,7 +18,12 @@ namespace ExampleLibrary
         [Example("No interpolation")]
         public static PlotModel NoInterpolation()
         {
-            var model = new PlotModel { Title = "No tracker interpolation", Subtitle = "Used for discrete values or scatter plots." };
+            var model = new PlotModel
+            {
+                Title = "No tracker interpolation",
+                Subtitle = "Used for discrete values or scatter plots.",
+                TrackerFiresDistance = 4.0,
+            };
             var l = new Legend
             {
                 LegendSymbolLength = 30
@@ -50,7 +55,12 @@ namespace ExampleLibrary
         [Example("TrackerChangedEvent")]
         public static PlotModel TrackerChangedEvent()
         {
-            var model = new PlotModel { Title = "Handling the TrackerChanged event", Subtitle = "Press the left mouse button to test the tracker." };
+            var model = new PlotModel
+            {
+                Title = "Handling the TrackerChanged event",
+                Subtitle = "Press the left mouse button to test the tracker.",
+                TrackerFiresDistance = 4.0,
+            };
             model.Series.Add(new FunctionSeries(Math.Sin, 0, 10, 100));
             model.TrackerChanged += (s, e) =>
             {

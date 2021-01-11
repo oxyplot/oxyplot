@@ -85,7 +85,8 @@ namespace OxyPlot
         public override void Started(OxyTouchEventArgs e)
         {
             base.Started(e);
-            this.currentSeries = this.PlotView.ActualModel != null ? this.PlotView.ActualModel.GetSeriesFromPoint(e.Position) : null;
+            this.currentSeries = this.PlotView.ActualModel?
+                .GetSeriesFromPoint(e.Position, this.PlotView.ActualModel.TrackerFiresDistance);
 
             UpdateTracker(e.Position);
         }
@@ -99,7 +100,8 @@ namespace OxyPlot
             if (this.currentSeries == null || !this.LockToInitialSeries)
             {
                 // get the nearest
-                this.currentSeries = this.PlotView.ActualModel != null ? this.PlotView.ActualModel.GetSeriesFromPoint(position, 20) : null;
+                this.currentSeries = this.PlotView.ActualModel?
+                    .GetSeriesFromPoint(position, this.PlotView.ActualModel.TrackerFiresDistance);
             }
 
             if (this.currentSeries == null)
@@ -123,7 +125,8 @@ namespace OxyPlot
                 return;
             }
 
-            var result = GetNearestHit(this.currentSeries, position, this.Snap, this.PointsOnly);
+            var result = GetNearestHit(
+                this.currentSeries, position, this.Snap, this.PointsOnly, this.PlotView.ActualModel.TrackerFiresDistance);
             if (result != null)
             {
                 result.PlotModel = this.PlotView.ActualModel;
@@ -139,8 +142,10 @@ namespace OxyPlot
         /// <param name="point">The point.</param>
         /// <param name="snap">Snap to points.</param>
         /// <param name="pointsOnly">Check points only (no interpolation).</param>
+        /// <param name="firesDistance">The distance from the series at which the tracker fires</param>
         /// <returns>A tracker hit result.</returns>
-        private static TrackerHitResult GetNearestHit(Series.Series series, ScreenPoint point, bool snap, bool pointsOnly)
+        private static TrackerHitResult GetNearestHit(
+            Series.Series series, ScreenPoint point, bool snap, bool pointsOnly, double firesDistance)
         {
             if (series == null)
             {
@@ -153,7 +158,7 @@ namespace OxyPlot
                 var result = series.GetNearestPoint(point, false);
                 if (result != null)
                 {
-                    if (result.Position.DistanceTo(point) < 20)
+                    if (result.Position.DistanceTo(point) < firesDistance)
                     {
                         return result;
                     }
