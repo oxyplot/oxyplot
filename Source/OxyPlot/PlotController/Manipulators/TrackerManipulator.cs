@@ -144,12 +144,9 @@ namespace OxyPlot
             if (snap || pointsOnly)
             {
                 var result = series.GetNearestPoint(point, false);
-                if (result != null)
+                if (IsAcceptableResult(result, point, firesDistance))
                 {
-                    if (result.Position.DistanceTo(point) < firesDistance)
-                    {
-                        return result;
-                    }
+                    return result;
                 }
             }
 
@@ -157,10 +154,16 @@ namespace OxyPlot
             if (!pointsOnly)
             {
                 var result = series.GetNearestPoint(point, true);
-                return result;
+                if (IsAcceptableResult(result, point, firesDistance))
+                {
+                    return result;
+                }
             }
 
             return null;
         }
+
+        private static bool IsAcceptableResult(TrackerHitResult result, ScreenPoint point, double firesDistance) =>
+            result?.Position.DistanceTo(point) < firesDistance;
     }
 }
