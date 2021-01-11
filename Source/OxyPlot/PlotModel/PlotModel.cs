@@ -147,6 +147,7 @@ namespace OxyPlot
                 };
 
             this.AxisTierDistance = 4.0;
+            this.TrackerFiresDistance = 20.0;
         }
 
         /// <summary>
@@ -250,7 +251,7 @@ namespace OxyPlot
         /// <summary>
         /// Gets or sets the edge rendering mode that is used for rendering the plot bounds and backgrounds.
         /// </summary>
-        /// <value>The edge rendering mode. The default is <see cref="EdgeRenderingMode.Automatic"/>.</value>
+        /// <value>The edge rendering mode. The default is <see cref="OxyPlot.EdgeRenderingMode.Automatic"/>.</value>
         public EdgeRenderingMode EdgeRenderingMode { get; set; }
 
         /// <summary>
@@ -300,6 +301,11 @@ namespace OxyPlot
         /// Gets or sets the distance between two neighborhood tiers of the same AxisPosition.
         /// </summary>
         public double AxisTierDistance { get; set; }
+
+        /// <summary>
+        /// Gets or sets the distance from the series at which the tracker fires.
+        /// </summary>
+        public double TrackerFiresDistance { get; set; }
 
         /// <summary>
         /// Gets or sets the color of the background of the plot area.
