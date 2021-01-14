@@ -29,6 +29,7 @@ namespace OxyPlot
             this.Snap = true;
             this.PointsOnly = false;
             this.LockToInitialSeries = true;
+            this.FiresDistance = 20.0;
         }
 
         /// <summary>
@@ -46,6 +47,11 @@ namespace OxyPlot
         /// </summary>
         /// <value><c>true</c> if the tracker should be locked; otherwise, <c>false</c>.</value>
         public bool LockToInitialSeries { get; set; }
+
+        /// <summary>
+        /// Gets or sets the distance from the series at which the tracker fires.
+        /// </summary>
+        public double FiresDistance { get; set; }
 
         /// <summary>
         /// Occurs when a manipulation is complete.
@@ -76,8 +82,7 @@ namespace OxyPlot
             if (this.currentSeries == null || !this.LockToInitialSeries)
             {
                 // get the nearest
-                this.currentSeries = this.PlotView.ActualModel?
-                    .GetSeriesFromPoint(e.Position, this.PlotView.ActualModel.TrackerFiresDistance);
+                this.currentSeries = this.PlotView.ActualModel?.GetSeriesFromPoint(e.Position, this.FiresDistance);
             }
 
             if (this.currentSeries == null)
@@ -101,8 +106,7 @@ namespace OxyPlot
                 return;
             }
 
-            var result = GetNearestHit(
-                this.currentSeries, e.Position, this.Snap, this.PointsOnly, this.PlotView.ActualModel.TrackerFiresDistance);
+            var result = GetNearestHit(this.currentSeries, e.Position, this.Snap, this.PointsOnly, this.FiresDistance);
             if (result != null)
             {
                 result.PlotModel = this.PlotView.ActualModel;
@@ -118,8 +122,7 @@ namespace OxyPlot
         public override void Started(OxyMouseEventArgs e)
         {
             base.Started(e);
-            this.currentSeries = this.PlotView.ActualModel?
-                .GetSeriesFromPoint(e.Position, this.PlotView.ActualModel.TrackerFiresDistance);
+            this.currentSeries = this.PlotView.ActualModel?.GetSeriesFromPoint(e.Position, FiresDistance);
             this.Delta(e);
         }
 
@@ -144,7 +147,7 @@ namespace OxyPlot
             if (snap || pointsOnly)
             {
                 var result = series.GetNearestPoint(point, false);
-                if (IsAcceptableResult(result, point, firesDistance))
+                if (IsTrackerOpen(result, point, firesDistance))
                 {
                     return result;
                 }
@@ -154,7 +157,7 @@ namespace OxyPlot
             if (!pointsOnly)
             {
                 var result = series.GetNearestPoint(point, true);
-                if (IsAcceptableResult(result, point, firesDistance))
+                if (IsTrackerOpen(result, point, firesDistance))
                 {
                     return result;
                 }
@@ -163,7 +166,7 @@ namespace OxyPlot
             return null;
         }
 
-        private static bool IsAcceptableResult(TrackerHitResult result, ScreenPoint point, double firesDistance) =>
+        private static bool IsTrackerOpen(TrackerHitResult result, ScreenPoint point, double firesDistance) =>
             result?.Position.DistanceTo(point) < firesDistance;
     }
 }

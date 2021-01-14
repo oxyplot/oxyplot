@@ -29,6 +29,7 @@ namespace OxyPlot
             this.Snap = true;
             this.PointsOnly = false;
             this.LockToInitialSeries = true;
+            this.FiresDistance = 20.0;
 
             // Note: the tracker manipulator should not handle pan or zoom
             this.SetHandledForPanOrZoom = false;
@@ -49,6 +50,11 @@ namespace OxyPlot
         /// </summary>
         /// <value><c>true</c> if the tracker should be locked; otherwise, <c>false</c>.</value>
         public bool LockToInitialSeries { get; set; }
+
+        /// <summary>
+        /// Gets or sets the distance from the series at which the tracker fires.
+        /// </summary>
+        public double FiresDistance { get; set; }
 
         /// <summary>
         /// Occurs when a manipulation is complete.
@@ -85,8 +91,7 @@ namespace OxyPlot
         public override void Started(OxyTouchEventArgs e)
         {
             base.Started(e);
-            this.currentSeries = this.PlotView.ActualModel?
-                .GetSeriesFromPoint(e.Position, this.PlotView.ActualModel.TrackerFiresDistance);
+            this.currentSeries = this.PlotView.ActualModel?.GetSeriesFromPoint(e.Position, this.FiresDistance);
 
             UpdateTracker(e.Position);
         }
@@ -100,8 +105,7 @@ namespace OxyPlot
             if (this.currentSeries == null || !this.LockToInitialSeries)
             {
                 // get the nearest
-                this.currentSeries = this.PlotView.ActualModel?
-                    .GetSeriesFromPoint(position, this.PlotView.ActualModel.TrackerFiresDistance);
+                this.currentSeries = this.PlotView.ActualModel?.GetSeriesFromPoint(position, this.FiresDistance);
             }
 
             if (this.currentSeries == null)
@@ -125,8 +129,7 @@ namespace OxyPlot
                 return;
             }
 
-            var result = GetNearestHit(
-                this.currentSeries, position, this.Snap, this.PointsOnly, this.PlotView.ActualModel.TrackerFiresDistance);
+            var result = GetNearestHit(this.currentSeries, position, this.Snap, this.PointsOnly, this.FiresDistance);
             if (result != null)
             {
                 result.PlotModel = this.PlotView.ActualModel;
@@ -156,7 +159,7 @@ namespace OxyPlot
             if (snap || pointsOnly)
             {
                 var result = series.GetNearestPoint(point, false);
-                if (IsAcceptableResult(result, point, firesDistance))
+                if (IsTrackerOpen(result, point, firesDistance))
                 {
                     return result;
                 }
@@ -166,7 +169,7 @@ namespace OxyPlot
             if (!pointsOnly)
             {
                 var result = series.GetNearestPoint(point, true);
-                if (IsAcceptableResult(result, point, firesDistance))
+                if (IsTrackerOpen(result, point, firesDistance))
                 {
                     return result;
                 }
@@ -175,7 +178,7 @@ namespace OxyPlot
             return null;
         }
 
-        private static bool IsAcceptableResult(TrackerHitResult result, ScreenPoint point, double firesDistance) =>
+        private static bool IsTrackerOpen(TrackerHitResult result, ScreenPoint point, double firesDistance) =>
             result?.Position.DistanceTo(point) < firesDistance;
     }
 }

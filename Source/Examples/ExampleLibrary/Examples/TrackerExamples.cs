@@ -22,7 +22,6 @@ namespace ExampleLibrary
             {
                 Title = "No tracker interpolation",
                 Subtitle = "Used for discrete values or scatter plots.",
-                TrackerFiresDistance = 4.0,
             };
             var l = new Legend
             {
@@ -32,16 +31,16 @@ namespace ExampleLibrary
             model.Legends.Add(l);
 
             var s1 = new LineSeries
-                         {
-                             Title = "Series 1",
-                             CanTrackerInterpolatePoints = false,
-                             Color = OxyColors.SkyBlue,
-                             MarkerType = MarkerType.Circle,
-                             MarkerSize = 6,
-                             MarkerStroke = OxyColors.White,
-                             MarkerFill = OxyColors.SkyBlue,
-                             MarkerStrokeThickness = 1.5
-                         };
+            {
+                Title = "Series 1",
+                CanTrackerInterpolatePoints = false,
+                Color = OxyColors.SkyBlue,
+                MarkerType = MarkerType.Circle,
+                MarkerSize = 6,
+                MarkerStroke = OxyColors.White,
+                MarkerFill = OxyColors.SkyBlue,
+                MarkerStrokeThickness = 1.5
+            };
             for (int i = 0; i < 63; i++)
             {
                 s1.Points.Add(new DataPoint((int)(Math.Sqrt(i) * Math.Cos(i * 0.1)), (int)(Math.Sqrt(i) * Math.Sin(i * 0.1))));
@@ -59,7 +58,6 @@ namespace ExampleLibrary
             {
                 Title = "Handling the TrackerChanged event",
                 Subtitle = "Press the left mouse button to test the tracker.",
-                TrackerFiresDistance = 4.0,
             };
             model.Series.Add(new FunctionSeries(Math.Sin, 0, 10, 100));
             model.TrackerChanged += (s, e) =>
