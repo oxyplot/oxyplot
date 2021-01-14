@@ -67,5 +67,38 @@ namespace ExampleLibrary
             };
             return model;
         }
+
+        [Example("Specified distance of the tracker fires")]
+        public static Example TrackerFiresDistance()
+        {
+            var model = new PlotModel
+            {
+                Title = "Specified distance of the tracker fires",
+                Subtitle = "Press the left mouse button to test the tracker.",
+            };
+            model.Series.Add(new FunctionSeries(Math.Sin, 0, 10, 100));
+            
+            // create a new plot controller with default bindings
+            var plotController = new PlotController();
+
+            // remove a tracker command to the left mouse down event by default
+            plotController.Unbind(PlotCommands.SnapTrack);
+            
+            // add a tracker command to the left mouse down event with specified distance
+            plotController.BindMouseDown(
+                OxyMouseButton.Left,
+                new DelegatePlotCommand<OxyMouseDownEventArgs>((view, controller, args) =>
+                    controller.AddMouseManipulator(
+                        view,
+                        new TrackerManipulator(view)
+                        {
+                            Snap = true,
+                            PointsOnly = false,
+                            FiresDistance = 2.0,
+                        },
+                        args)));
+
+            return new Example(model, plotController);
+        }
     }
 }
