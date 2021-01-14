@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Example for Issue #1716 showing poor tick spacing on DateTimeAxis with interval types of Weeks or Years
 - Example for label placement on BarSeries with non-zero BaseValue (#1726)
+- Add control over how far from the series the tracker fires (#1736)
 
 ### Changed
 
@@ -14,6 +15,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - Zero-crossing axis bounds (#1708)
 - Incorrect label placement on BarSeries with non-zero BaseValue (#1726)
+- Add checking distance for result between data points (#1736)
 
 ## [2.1.0-Preview1] - 2020-10-18
 
