@@ -30,6 +30,7 @@ namespace OxyPlot
             this.PointsOnly = false;
             this.LockToInitialSeries = true;
             this.FiresDistance = 20.0;
+            this.IsCheckDistanceBetweenPoints = false;
 
             // Note: the tracker manipulator should not handle pan or zoom
             this.SetHandledForPanOrZoom = false;
@@ -55,6 +56,12 @@ namespace OxyPlot
         /// Gets or sets the distance from the series at which the tracker fires.
         /// </summary>
         public double FiresDistance { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to check distance when showing tracker between data points.
+        /// </summary>
+        [System.Obsolete("")]
+        public bool IsCheckDistanceBetweenPoints { get; set; }
 
         /// <summary>
         /// Occurs when a manipulation is complete.
@@ -130,7 +137,7 @@ namespace OxyPlot
             }
 
             var result = Utilities.TrackerHelper.GetNearestHit(
-                this.currentSeries, position, this.Snap, this.PointsOnly, this.FiresDistance);
+                this.currentSeries, position, this.Snap, this.PointsOnly, this.FiresDistance, this.IsCheckDistanceBetweenPoints);
             if (result != null)
             {
                 result.PlotModel = this.PlotView.ActualModel;

@@ -10,9 +10,14 @@ namespace OxyPlot.Utilities
         /// <param name="snap">Snap to points.</param>
         /// <param name="pointsOnly">Check points only (no interpolation).</param>
         /// <param name="firesDistance">The distance from the series at which the tracker fires</param>
+        /// <param name="isCheck"></param>
         /// <returns>A tracker hit result.</returns>
+        /// <remarks>
+        /// TODO: With removing <see cref="TrackerManipulator.IsCheckDistanceBetweenPoints" />
+        /// and <see cref="TouchTrackerManipulator.IsCheckDistanceBetweenPoints"/> remove also the isCheck parameter
+        /// </remarks>
         public static TrackerHitResult GetNearestHit(
-            Series.Series series, ScreenPoint point, bool snap, bool pointsOnly, double firesDistance)
+            Series.Series series, ScreenPoint point, bool snap, bool pointsOnly, double firesDistance, bool isCheck)
         {
             if (series == null)
             {
@@ -33,7 +38,7 @@ namespace OxyPlot.Utilities
             if (!pointsOnly)
             {
                 var result = series.GetNearestPoint(point, true);
-                if (IsTrackerOpen(result, point, firesDistance))
+                if (!isCheck || IsTrackerOpen(result, point, firesDistance))
                 {
                     return result;
                 }
