@@ -81,16 +81,28 @@ namespace ExampleLibrary
             // create a new plot controller with default bindings
             var plotController = new PlotController();
 
-            // remove a tracker command to the left mouse down event by default
+            // remove a tracker command to the mouse-left/touch down event by default
             plotController.Unbind(PlotCommands.SnapTrack);
+            plotController.Unbind(PlotCommands.SnapTrackTouch);
             
-            // add a tracker command to the left mouse down event with specified distance
+            // add a tracker command to the mouse-left/touch down event with specified distance
             plotController.BindMouseDown(
                 OxyMouseButton.Left,
                 new DelegatePlotCommand<OxyMouseDownEventArgs>((view, controller, args) =>
                     controller.AddMouseManipulator(
                         view,
                         new TrackerManipulator(view)
+                        {
+                            Snap = true,
+                            PointsOnly = false,
+                            FiresDistance = 2.0,
+                        },
+                        args)));
+            plotController.BindTouchDown(
+                new DelegatePlotCommand<OxyTouchEventArgs>((view, controller, args) =>
+                    controller.AddTouchManipulator(
+                        view,
+                        new TouchTrackerManipulator(view)
                         {
                             Snap = true,
                             PointsOnly = false,
