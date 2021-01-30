@@ -57,7 +57,6 @@ namespace OxyPlot
         /// <summary>
         /// Gets or sets a value indicating whether to check distance when showing tracker between data points.
         /// </summary>
-        [System.Obsolete("")]
         public bool IsCheckDistanceBetweenPoints { get; set; }
 
         /// <summary>
