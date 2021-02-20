@@ -10,14 +10,19 @@ namespace OxyPlot.Utilities
         /// <param name="snap">Snap to points.</param>
         /// <param name="pointsOnly">Check points only (no interpolation).</param>
         /// <param name="firesDistance">The distance from the series at which the tracker fires</param>
-        /// <param name="isCheck"></param>
-        /// <returns>A tracker hit result.</returns>
+        /// <param name="checkDistanceBetweenPoints">The value indicating whether to check distance
+        /// when showing tracker between data points.</param>
         /// <remarks>
-        /// TODO: With removing <see cref="TrackerManipulator.IsCheckDistanceBetweenPoints" />
-        /// and <see cref="TouchTrackerManipulator.IsCheckDistanceBetweenPoints"/> remove also the isCheck parameter
+        /// <see cref="checkDistanceBetweenPoints"/> is ignored if <see cref="pointsOnly"/> is equal to <c>False</c>.
         /// </remarks>
+        /// <returns>A tracker hit result.</returns>
         public static TrackerHitResult GetNearestHit(
-            Series.Series series, ScreenPoint point, bool snap, bool pointsOnly, double firesDistance, bool isCheck)
+            Series.Series series,
+            ScreenPoint point,
+            bool snap,
+            bool pointsOnly,
+            double firesDistance,
+            bool checkDistanceBetweenPoints)
         {
             if (series == null)
             {
@@ -28,7 +33,7 @@ namespace OxyPlot.Utilities
             if (snap || pointsOnly)
             {
                 var result = series.GetNearestPoint(point, false);
-                if (IsTrackerOpen(result, point, firesDistance))
+                if (ShouldTrackerOpen(result, point, firesDistance))
                 {
                     return result;
                 }
@@ -38,7 +43,7 @@ namespace OxyPlot.Utilities
             if (!pointsOnly)
             {
                 var result = series.GetNearestPoint(point, true);
-                if (!isCheck || IsTrackerOpen(result, point, firesDistance))
+                if (!checkDistanceBetweenPoints || ShouldTrackerOpen(result, point, firesDistance))
                 {
                     return result;
                 }
@@ -47,7 +52,7 @@ namespace OxyPlot.Utilities
             return null;
         }
 
-        private static bool IsTrackerOpen(TrackerHitResult result, ScreenPoint point, double firesDistance) =>
+        private static bool ShouldTrackerOpen(TrackerHitResult result, ScreenPoint point, double firesDistance) =>
             result?.Position.DistanceTo(point) < firesDistance;
     }
 }

@@ -96,7 +96,7 @@ namespace ExampleLibrary
                             Snap = true,
                             PointsOnly = false,
                             FiresDistance = 2.0,
-                            IsCheckDistanceBetweenPoints = true,
+                            CheckDistanceBetweenPoints = true,
                         },
                         args)));
             plotController.BindTouchDown(
