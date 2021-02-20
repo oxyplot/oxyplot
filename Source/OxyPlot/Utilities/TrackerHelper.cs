@@ -13,7 +13,7 @@ namespace OxyPlot.Utilities
         /// <param name="checkDistanceBetweenPoints">The value indicating whether to check distance
         /// when showing tracker between data points.</param>
         /// <remarks>
-        /// <see cref="checkDistanceBetweenPoints"/> is ignored if <see cref="pointsOnly"/> is equal to <c>False</c>.
+        /// <paramref name="checkDistanceBetweenPoints" /> is ignored if <paramref name="pointsOnly"/> is equal to <c>False</c>.
         /// </remarks>
         /// <returns>A tracker hit result.</returns>
         public static TrackerHitResult GetNearestHit(
