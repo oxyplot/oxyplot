@@ -387,6 +387,60 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("Full width legend")]
+        public static PlotModel LegendFullWidth()
+        {
+            var model = CreateModel(21);
+
+            var l1 = new Legend
+            {
+                LegendPlacement = LegendPlacement.Outside,
+                LegendPosition = LegendPosition.TopCenter,
+                LegendOrientation = LegendOrientation.Horizontal,
+                AllowUseFullExtent = true,
+            };
+
+            var l2 = new Legend
+            {
+                LegendPlacement = LegendPlacement.Outside,
+                LegendPosition = LegendPosition.BottomCenter,
+                LegendOrientation = LegendOrientation.Horizontal,
+                AllowUseFullExtent = true,
+            };
+
+            model.Legends.Add(l1);
+            model.Legends.Add(l2);
+
+            return model;
+        }
+
+        [Example("Full height legend")]
+        public static PlotModel LegendFullHeight()
+        {
+            var model = CreateModel(21);
+
+            var l1 = new Legend
+            {
+                LegendPlacement = LegendPlacement.Outside,
+                LegendPosition = LegendPosition.LeftTop,
+                LegendOrientation = LegendOrientation.Vertical,
+                AllowUseFullExtent = true,
+            };
+
+            var l2 = new Legend
+            {
+                LegendPlacement = LegendPlacement.Outside,
+                LegendPosition = LegendPosition.RightTop,
+                LegendOrientation = LegendOrientation.Vertical,
+                AllowUseFullExtent = true,
+            };
+
+            model.Legends.Add(l1);
+            model.Legends.Add(l2);
+
+            return model;
+        }
+
         private static PlotModel CreateModel(int n = 20)
         {
             var model = new PlotModel { Title = "LineSeries" };

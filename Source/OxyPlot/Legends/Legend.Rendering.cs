@@ -101,31 +101,35 @@ namespace OxyPlot.Legends
                         break;
                 }
 
+                var bounds = this.AllowUseFullExtent
+                    ? this.PlotModel.PlotAndAxisArea
+                    : this.PlotModel.PlotArea;
+
                 switch (this.LegendPosition)
                 {
                     case LegendPosition.TopLeft:
                     case LegendPosition.BottomLeft:
-                        left = this.PlotModel.PlotArea.Left;
+                        left = bounds.Left;
                         break;
                     case LegendPosition.TopRight:
                     case LegendPosition.BottomRight:
-                        left = this.PlotModel.PlotArea.Right - legendSize.Width;
+                        left = bounds.Right - legendSize.Width;
                         break;
                     case LegendPosition.LeftTop:
                     case LegendPosition.RightTop:
-                        top = this.PlotModel.PlotArea.Top;
+                        top = bounds.Top;
                         break;
                     case LegendPosition.LeftBottom:
                     case LegendPosition.RightBottom:
-                        top = this.PlotModel.PlotArea.Bottom - legendSize.Height;
+                        top = bounds.Bottom - legendSize.Height;
                         break;
                     case LegendPosition.LeftMiddle:
                     case LegendPosition.RightMiddle:
-                        top = (this.PlotModel.PlotArea.Top + this.PlotModel.PlotArea.Bottom - legendSize.Height) * 0.5;
+                        top = (bounds.Top + bounds.Bottom - legendSize.Height) * 0.5;
                         break;
                     case LegendPosition.TopCenter:
                     case LegendPosition.BottomCenter:
-                        left = (this.PlotModel.PlotArea.Left + this.PlotModel.PlotArea.Right - legendSize.Width) * 0.5;
+                        left = (bounds.Left + bounds.Right - legendSize.Width) * 0.5;
                         break;
                 }
             }
