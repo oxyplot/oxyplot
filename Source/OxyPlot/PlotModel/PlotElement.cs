@@ -78,7 +78,7 @@ namespace OxyPlot
         /// <summary>
         /// Gets or sets the edge rendering mode that is used for rendering the plot element.
         /// </summary>
-        /// <value>The edge rendering mode. The default is <see cref="EdgeRenderingMode.Automatic"/>.</value>
+        /// <value>The edge rendering mode. The default is <see cref="OxyPlot.EdgeRenderingMode.Automatic"/>.</value>
         public EdgeRenderingMode EdgeRenderingMode { get; set; }
 
         /// <summary>

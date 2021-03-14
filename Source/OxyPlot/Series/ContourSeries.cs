@@ -398,33 +398,6 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Determines if two values are close.
-        /// </summary>
-        /// <param name="x1">The first value.</param>
-        /// <param name="x2">The second value.</param>
-        /// <param name="eps">The squared tolerance.</param>
-        /// <returns>True if the values are close.</returns>
-        private static bool AreClose(double x1, double x2, double eps = 1e-6)
-        {
-            double dx = x1 - x2;
-            return dx * dx < eps;
-        }
-
-        /// <summary>
-        /// Determines if two points are close.
-        /// </summary>
-        /// <param name="p0">The first point.</param>
-        /// <param name="p1">The second point.</param>
-        /// <param name="eps">The squared tolerance.</param>
-        /// <returns>True if the points are close.</returns>
-        private static bool AreClose(DataPoint p0, DataPoint p1, double eps = 1e-6)
-        {
-            double dx = p0.X - p1.X;
-            double dy = p0.Y - p1.Y;
-            return (dx * dx) + (dy * dy) < eps;
-        }
-
-        /// <summary>
         /// Gets the index of item that is closest to the specified value.
         /// </summary>
         /// <param name="values">A list of values.</param>
@@ -487,99 +460,124 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Finds the connected segment.
-        /// </summary>
-        /// <param name="point">The point.</param>
-        /// <param name="contourLevel">The contour level.</param>
-        /// <param name="eps">The distance tolerance.</param>
-        /// <param name="reverse">reverse the segment if set to <c>true</c>.</param>
-        /// <returns>The connected segment, or <c>null</c> if no segment was found.</returns>
-        private ContourSegment FindConnectedSegment(DataPoint point, double contourLevel, double eps, out bool reverse)
-        {
-            reverse = false;
-            foreach (var s in this.segments)
-            {
-                if (!AreClose(s.ContourLevel, contourLevel, eps))
-                {
-                    continue;
-                }
-
-                if (AreClose(point, s.StartPoint, eps))
-                {
-                    return s;
-                }
-
-                if (AreClose(point, s.EndPoint, eps))
-                {
-                    reverse = true;
-                    return s;
-                }
-            }
-
-            return null;
-        }
-
-        /// <summary>
         /// Joins the contour segments.
         /// </summary>
-        /// <param name="eps">The tolerance for segment ends to connect (squared distance).</param>
-        private void JoinContourSegments(double eps = 1e-10)
+        /// <param name="epsFactor">The tolerance for segment ends to connect (maximum allowed [length of distance vector] / [length of position vector]).</param>
+        private void JoinContourSegments(double epsFactor = 1e-10)
         {
-            // This is a simple, slow, naïve method - should be improved:
-            // http://stackoverflow.com/questions/1436091/joining-unordered-line-segments
             this.contours = new List<Contour>();
-            var contourPoints = new List<DataPoint>();
-            int contourPointsCount = 0;
 
-            ContourSegment firstSegment = null;
-            int segmentCount = this.segments.Count;
-            while (segmentCount > 0)
+            static IEnumerable<SegmentPoint> GetPoints(ContourSegment segment)
             {
-                ContourSegment segment1 = null, segment2 = null;
+                var p1 = new SegmentPoint(segment.StartPoint);
+                var p2 = new SegmentPoint(segment.EndPoint);
+                p1.Partner = p2;
+                p2.Partner = p1;
+                yield return p1;
+                yield return p2;
+            }
 
-                if (firstSegment != null)
+            foreach (var group in this.segments.GroupBy(p => p.ContourLevel))
+            {
+                var level = group.Key;
+                var points = group.SelectMany(GetPoints).OrderBy(p => p.Point.X).ToList();
+
+                // first, go through the sorted points, find identical points and join them together 
+                for (var i = 0; i < points.Count - 1; i++)
                 {
-                    bool reverse;
-
-                    // Find a segment that is connected to the head of the contour
-                    segment1 = this.FindConnectedSegment(contourPoints[0], firstSegment.ContourLevel, eps, out reverse);
-                    if (segment1 != null)
+                    var currentPoint = points[i];
+                    if (currentPoint.Join != null)
                     {
-                        contourPoints.Insert(0, reverse ? segment1.StartPoint : segment1.EndPoint);
-                        contourPointsCount++;
-                        this.segments.Remove(segment1);
-                        segmentCount--;
+                        continue;
                     }
 
-                    // Find a segment that is connected to the tail of the contour
-                    segment2 = this.FindConnectedSegment(contourPoints[contourPointsCount - 1], firstSegment.ContourLevel, eps, out reverse);
-                    if (segment2 != null)
+                    var positionVectorLength = Math.Sqrt(Math.Pow(currentPoint.Point.X, 2) + Math.Pow(currentPoint.Point.Y, 2));
+                    var eps = positionVectorLength * epsFactor;
+
+                    var maxX = currentPoint.Point.X + eps;
+                    var i2 = i + 1;
+                    SegmentPoint joinPoint;
+
+                    // search for a point with the same coordinates (within eps) as the current point
+                    // as points are sorted by X, we typically only need to check the point immediately following the current point
+                    while (true)
                     {
-                        contourPoints.Add(reverse ? segment2.StartPoint : segment2.EndPoint);
-                        contourPointsCount++;
-                        this.segments.Remove(segment2);
-                        segmentCount--;
+                        if (i2 >= points.Count)
+                        {
+                            joinPoint = null;
+                            break;
+                        }
+
+                        joinPoint = points[i2];
+                        i2++;
+                        if (joinPoint.Join != null)
+                        {
+                            continue;
+                        }
+
+                        if (joinPoint.Point.X > maxX)
+                        {
+                            joinPoint = null;
+                            break;
+                        }
+
+                        var distance = Math.Sqrt(Math.Pow(joinPoint.Point.X - currentPoint.Point.X, 2) + Math.Pow(joinPoint.Point.Y - currentPoint.Point.Y, 2));
+                        if (distance < eps)
+                        {
+                            break;
+                        }
+                    }
+
+                    // join the two points together
+                    if (joinPoint != null)
+                    {
+                        currentPoint.Join = joinPoint;
+                        joinPoint.Join = currentPoint;
                     }
                 }
 
-                if ((segment1 == null && segment2 == null) || segmentCount == 0)
+                // go through the points again, this time we follow the joined point chains to obtain the contours
+                foreach (var segmentPoint in points)
                 {
-                    if (contourPointsCount > 0 && firstSegment != null)
+                    if (segmentPoint.Processed)
                     {
-                        this.contours.Add(new Contour(contourPoints, firstSegment.ContourLevel));
-                        contourPoints = new List<DataPoint>();
-                        contourPointsCount = 0;
+                        continue;
                     }
 
-                    if (segmentCount > 0)
+                    var currentPoint = segmentPoint;
+
+                    // search for the beginning of the contour (or use the entry point if the contour is closed)
+                    while (currentPoint.Join != null)
                     {
-                        firstSegment = this.segments.First();
-                        contourPoints.Add(firstSegment.StartPoint);
-                        contourPoints.Add(firstSegment.EndPoint);
-                        contourPointsCount += 2;
-                        this.segments.Remove(firstSegment);
-                        segmentCount--;
+                        currentPoint = currentPoint.Join.Partner;
+                        if (currentPoint == segmentPoint)
+                        {
+                            break;
+                        }
                     }
+
+                    var dataPoints = new List<DataPoint> { currentPoint.Point, currentPoint.Partner.Point };
+                    currentPoint.Processed = true;
+                    currentPoint = currentPoint.Partner;
+                    currentPoint.Processed = true;
+
+                    // follow the chain of joined points and add their coordinates until we find the last point of the contour (or complete a rotation)
+                    while (currentPoint.Join != null)
+                    {
+                        currentPoint = currentPoint.Join;
+                        if (currentPoint.Processed)
+                        {
+                            break;
+                        }
+
+                        currentPoint.Processed = true;
+                        currentPoint = currentPoint.Partner;
+                        currentPoint.Processed = true;
+                        dataPoints.Add(currentPoint.Point);
+                    }
+
+                    var contour = new Contour(dataPoints, level);
+                    this.contours.Add(contour);
                 }
             }
         }
@@ -639,6 +637,42 @@ namespace OxyPlot.Series
                                new ScreenPoint(x - (size.Width * ux) + (size.Height * vx), y - (size.Width * uy) + (size.Height * vy))
                            };
             rc.DrawPolygon(bpts, this.LabelBackground, OxyColors.Undefined, 0, this.EdgeRenderingMode);
+        }
+
+
+        /// <summary>
+        /// Represents one of the two points of a segment.
+        /// </summary>
+        private class SegmentPoint
+        {
+            /// <summary>
+            /// Initializes a new instance of the <see cref="SegmentPoint" /> class.
+            /// </summary>
+            /// <param name="point">The segment point.</param>
+            public SegmentPoint(DataPoint point)
+            {
+                this.Point = point;
+            }
+
+            /// <summary>
+            /// Gets or sets a value indicating whether this <see cref="SegmentPoint"/> already was added to a <see cref="Contour"/>.
+            /// </summary>
+            public bool Processed { get; set; }
+
+            /// <summary>
+            /// Gets or sets the partner point. This point and its partner together define a segment.
+            /// </summary>
+            public SegmentPoint Partner { get; set; }
+
+            /// <summary>
+            /// Gets or sets the join point. This is a point from another segment with the same coordinates as this point (within eps).
+            /// </summary>
+            public SegmentPoint Join { get; set; }
+
+            /// <summary>
+            /// Gets the data point.
+            /// </summary>
+            public DataPoint Point { get; }
         }
 
         /// <summary>
