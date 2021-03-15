@@ -457,7 +457,7 @@ namespace OxyPlot
         /// <param name="rc">The rendering context.</param>
         private void UpdatePlotArea(IRenderContext rc)
         {
-            var plotArea = new OxyRect(
+            var plotAndAxisArea = new OxyRect(
                 this.PlotBounds.Left + this.Padding.Left,
                 this.PlotBounds.Top + this.Padding.Top,
                 Math.Max(0, this.Width - this.Padding.Left - this.Padding.Right),
@@ -468,10 +468,10 @@ namespace OxyPlot
             if (titleSize.Height > 0)
             {
                 var titleHeight = titleSize.Height + this.TitlePadding;
-                plotArea = new OxyRect(plotArea.Left, plotArea.Top + titleHeight, plotArea.Width, Math.Max(0, plotArea.Height - titleHeight));
+                plotAndAxisArea = new OxyRect(plotAndAxisArea.Left, plotAndAxisArea.Top + titleHeight, plotAndAxisArea.Width, Math.Max(0, plotAndAxisArea.Height - titleHeight));
             }
 
-            plotArea = plotArea.Deflate(this.ActualPlotMargins);
+            var plotArea = plotAndAxisArea.Deflate(this.ActualPlotMargins);
 
             if (this.IsLegendVisible)
             {
@@ -486,10 +486,10 @@ namespace OxyPlot
                 {
                     // Find the available size for the legend box
                     var availableLegendWidth = legend.AllowUseFullExtent
-                        ? PlotAndAxisArea.Width
+                        ? plotAndAxisArea.Width
                         : plotArea.Width;
                     var availableLegendHeight = legend.AllowUseFullExtent
-                        ? PlotAndAxisArea.Height
+                        ? plotAndAxisArea.Height
                         : plotArea.Height;
                     availableLegendHeight = double.IsNaN(legend.LegendMaxHeight) ?
                         availableLegendHeight : Math.Min(availableLegendHeight, legend.LegendMaxHeight);
@@ -517,10 +517,10 @@ namespace OxyPlot
                 {
                     // Find the available size for the legend box
                     var availableLegendWidth = legend.AllowUseFullExtent
-                        ? PlotAndAxisArea.Width
+                        ? plotAndAxisArea.Width
                         : plotArea.Width;
                     var availableLegendHeight = legend.AllowUseFullExtent
-                        ? PlotAndAxisArea.Height
+                        ? plotAndAxisArea.Height
                         : plotArea.Height;
                     availableLegendHeight = double.IsNaN(legend.LegendMaxHeight) ?
                         availableLegendHeight : Math.Min(availableLegendHeight, legend.LegendMaxHeight);
@@ -548,10 +548,10 @@ namespace OxyPlot
                 {
                     // Find the available size for the legend box
                     var availableLegendWidth = legend.AllowUseFullExtent
-                        ? PlotAndAxisArea.Width
+                        ? plotAndAxisArea.Width
                         : plotArea.Width;
                     var availableLegendHeight = legend.AllowUseFullExtent
-                        ? PlotAndAxisArea.Height
+                        ? plotAndAxisArea.Height
                         : plotArea.Height;
                     availableLegendHeight = double.IsNaN(legend.LegendMaxHeight) ?
                         availableLegendHeight : Math.Min(availableLegendHeight, legend.LegendMaxHeight);
@@ -579,10 +579,10 @@ namespace OxyPlot
                 {
                     // Find the available size for the legend box
                     var availableLegendWidth = legend.AllowUseFullExtent
-                        ? PlotAndAxisArea.Width
+                        ? plotAndAxisArea.Width
                         : plotArea.Width;
                     var availableLegendHeight = legend.AllowUseFullExtent
-                        ? PlotAndAxisArea.Height
+                        ? plotAndAxisArea.Height
                         : plotArea.Height;
                     availableLegendHeight = double.IsNaN(legend.LegendMaxHeight) ?
                         availableLegendHeight : Math.Min(availableLegendHeight, legend.LegendMaxHeight);

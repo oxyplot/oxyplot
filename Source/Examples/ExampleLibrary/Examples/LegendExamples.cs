@@ -408,8 +408,12 @@ namespace ExampleLibrary
                 AllowUseFullExtent = true,
             };
 
+            model.PlotMargins = new OxyThickness(50);
+
             model.Legends.Add(l1);
             model.Legends.Add(l2);
+
+            model.InvalidatePlot(true);
 
             return model;
         }
