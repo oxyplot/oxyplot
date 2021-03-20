@@ -23,7 +23,7 @@ namespace OxyPlot.Series
         public static readonly RectangleItem Undefined = new RectangleItem(DataPoint.Undefined, DataPoint.Undefined, double.NaN);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RectangleItem" /> struct.
+        /// Initializes a new instance of the <see cref="RectangleItem" /> class.
         /// </summary>
         /// <param name="x1">The x coordinate of the first corner.</param>
         /// <param name="x2">The x coordinate of the diagonally-opposite corner.</param>
@@ -38,7 +38,7 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RectangleItem" /> struct.
+        /// Initializes a new instance of the <see cref="RectangleItem" /> class.
         /// </summary>
         /// <param name="a">The first corner.</param>
         /// <param name="b">The diagonally-opposite corner.</param>
