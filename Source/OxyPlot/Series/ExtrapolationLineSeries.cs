@@ -91,7 +91,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets the list of X intervals within which the line is rendered using the second color and style.
         /// </summary>
-        public List<DataRange> Intervals { get; } = new List<DataRange>();
+        public IList<DataRange> Intervals { get; } = new List<DataRange>();
 
         /// <summary>
         /// Gets the actual dash array for the extrapolated parts of the line.
@@ -113,8 +113,8 @@ namespace OxyPlot.Series
         /// <param name="legendBox">The bounding rectangle of the legend box.</param>
         public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
         {
-            double xmid = (legendBox.Left + legendBox.Right) / 2;
-            double ymid = (legendBox.Top + legendBox.Bottom) / 2;
+            var xmid = (legendBox.Left + legendBox.Right) / 2;
+            var ymid = (legendBox.Top + legendBox.Bottom) / 2;
 
             var pts = new[] { new ScreenPoint(legendBox.Left, ymid), new ScreenPoint(xmid, ymid) };
 
@@ -219,9 +219,9 @@ namespace OxyPlot.Series
 
             var clippingRectangles = this.CreateClippingRectangles(clippingRect, minX, maxX, minY, maxY);
 
-            foreach (OxyRect rect in clippingRectangles)
+            foreach (var rect in clippingRectangles)
             {
-                double centerX = this.InverseTransform(rect.Center).X;
+                var centerX = this.InverseTransform(rect.Center).X;
 
                 bool isInterval = this.orderedIntervals != null
                     && this.orderedIntervals.Any(i => i.Contains(centerX));
@@ -240,14 +240,14 @@ namespace OxyPlot.Series
         private IEnumerable<OxyRect> CreateClippingRectangles(
             OxyRect clippingRect, double minX, double maxX, double minY, double maxY)
         {
-            double previous = minX;
+            var previous = minX;
 
             if (this.orderedIntervals != null && this.orderedIntervals.Any())
             {
                 IEnumerable<double> flatLimits
                     = this.Flatten(this.orderedIntervals).Where(l => l >= minX && l <= maxX);
 
-                foreach (double limiter in flatLimits)
+                foreach (var limiter in flatLimits)
                 {
                     yield return new OxyRect(
                         this.Transform(previous, minY),
@@ -284,7 +284,7 @@ namespace OxyPlot.Series
         {
             OxyColor color = isInterval ? this.ExtrapolationColor : this.Color;
 
-            double[] dashes = isInterval ?
+            var dashes = isInterval ?
                 this.ActualExtrapolationDashArray :
                 this.ActualDashArray;
 
@@ -304,13 +304,13 @@ namespace OxyPlot.Series
         /// </summary>
         private List<DataRange> MergeOverlaps(IEnumerable<DataRange> intervals)
         {
-            List<DataRange> orderedList = new List<DataRange>();
+            var orderedList = new List<DataRange>();
 
             if (intervals != null)
             {
                 IOrderedEnumerable<DataRange> ordered = intervals.OrderBy(i => i.Minimum);
 
-                foreach (DataRange current in ordered)
+                foreach (var current in ordered)
                 {
                     DataRange previous = orderedList.LastOrDefault();
 
@@ -337,13 +337,13 @@ namespace OxyPlot.Series
         /// <returns><c>true</c> if x is inside any interval.</returns>
         private bool InAnyInterval(double x)
         {
-            int min = 0;
-            int max = this.orderedIntervals.Count - 1;
+            var min = 0;
+            var max = this.orderedIntervals.Count - 1;
 
             while (min <= max)
             {
-                int mid = (min + max) / 2;
-                int comparison = this.Compare(this.orderedIntervals[mid], x);
+                var mid = (min + max) / 2;
+                var comparison = this.Compare(this.orderedIntervals[mid], x);
 
                 if (comparison == 0)
                 {

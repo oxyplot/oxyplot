@@ -25,7 +25,7 @@ namespace OxyPlot.Tests
         [Test]
         public void Initialize()
         {
-            DataRange range = new DataRange(3, 5);
+            var range = new DataRange(3, 5);
 
             Assert.AreEqual(3, range.Minimum);
             Assert.AreEqual(5, range.Maximum);
@@ -57,7 +57,7 @@ namespace OxyPlot.Tests
         [Test]
         public void RangeProperty()
         {
-            DataRange range = new DataRange(3, 5);
+            var range = new DataRange(3, 5);
 
             Assert.AreEqual(2, range.Range);
         }
@@ -95,7 +95,7 @@ namespace OxyPlot.Tests
         [Test]
         public void Contains()
         {
-            DataRange range = new DataRange(3, 5);
+            var range = new DataRange(3, 5);
 
             Assert.IsTrue(range.Contains(3));
             Assert.IsTrue(range.Contains(4));
@@ -112,7 +112,7 @@ namespace OxyPlot.Tests
         [Test]
         public void IntersectsWith()
         {
-            DataRange range = new DataRange(3, 5);
+            var range = new DataRange(3, 5);
 
             Assert.IsTrue(range.IntersectsWith(new DataRange(1, 4)));
             Assert.IsTrue(range.IntersectsWith(new DataRange(4, 6)));

@@ -78,7 +78,7 @@ namespace ExampleLibrary.Series
             lineSeries.Points.AddRange(fitPoints);
             model.Series.Add(lineSeries);
 
-            Legend legend = new Legend
+            var legend = new Legend
             {
                 LegendPosition = LegendPosition.BottomRight,
             };
@@ -127,7 +127,7 @@ namespace ExampleLibrary.Series
 
             model.Series.Add(lineSeries);
 
-            Legend legend = new Legend
+            var legend = new Legend
             {
                 LegendPosition = LegendPosition.TopCenter,
             };
@@ -192,7 +192,7 @@ namespace ExampleLibrary.Series
 
             model.Series.Add(lineSeries);
 
-            Legend legend = new Legend
+            var legend = new Legend
             {
                 LegendPosition = LegendPosition.TopCenter,
             };
@@ -234,7 +234,7 @@ namespace ExampleLibrary.Series
 
             model.Series.Add(lineSeries);
 
-            Legend legend = new Legend
+            var legend = new Legend
             {
                 LegendPosition = LegendPosition.TopCenter,
             };
@@ -269,7 +269,8 @@ namespace ExampleLibrary.Series
                 .Range(0, 98)
                 .Select(x => new DataRange(1000 * x, (1000 * x) + 500));
 
-            lineSeries.Intervals.AddRange(intervals);
+            foreach(var interval in intervals)
+                lineSeries.Intervals.Add(interval);
 
             lineSeries.Intervals.Add(new DataRange(200_000, double.PositiveInfinity));
 
@@ -281,7 +282,7 @@ namespace ExampleLibrary.Series
 
             model.Series.Add(lineSeries);
 
-            Legend legend = new Legend
+            var legend = new Legend
             {
                 LegendPosition = LegendPosition.TopCenter,
             };
@@ -335,7 +336,7 @@ namespace ExampleLibrary.Series
 
             model.Series.Add(lineSeries);
 
-            Legend legend = new Legend
+            var legend = new Legend
             {
                 LegendPosition = LegendPosition.TopCenter,
             };
@@ -360,11 +361,11 @@ namespace ExampleLibrary.Series
                 throw new ArgumentException("at least two points required", nameof(points));
             }
 
-            double meanX = points.Select(p => p.X).Average();
-            double meanY = points.Select(p => p.Y).Average();
+            var meanX = points.Select(p => p.X).Average();
+            var meanY = points.Select(p => p.Y).Average();
 
-            double cov = Covariance(points, meanX, meanY);
-            double var2_x = Variance2(points.Select(p => p.X));
+            var cov = Covariance(points, meanX, meanY);
+            var var2_x = Variance2(points.Select(p => p.X));
 
             slope = cov / var2_x;
             intercept = meanY - (slope * meanX);
@@ -375,7 +376,7 @@ namespace ExampleLibrary.Series
         /// </summary>
         private static double Covariance(IEnumerable<ScatterPoint> points, double meanX, double meanY)
         {
-            double res = points.Sum(p => p.X * p.Y);
+            var res = points.Sum(p => p.X * p.Y);
 
             res -= points.Count() * meanX * meanY;
             res /= points.Count() - 1;
@@ -388,9 +389,9 @@ namespace ExampleLibrary.Series
         /// </summary>
         private static double Variance2(IEnumerable<double> values)
         {
-            double mean = values.Average();
+            var mean = values.Average();
 
-            double res = values.Sum(x => x * x);
+            var res = values.Sum(x => x * x);
 
             res -= values.Count() * mean * mean;
             res /= values.Count() - 1;
