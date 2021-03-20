@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 - Example for label placement on BarSeries with non-zero BaseValue (#1726)
 - Add control over how far from the series the tracker fires (#1736)
 - Add option to check distance for result between data points (#1736)
+- Legend.AllowUseFullExtent property to control whether legends should be able to use the full extent of the plot (#1743)
 
 ### Changed
 
