@@ -445,6 +445,37 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("Legend showing invisible series")]
+        public static PlotModel LegendShowingInivisbleSeries()
+        {
+            return CreateModelWithInivisbleSeries(true);
+        }
+
+        [Example("Legend not showing invisible series")]
+        public static PlotModel LegendNotShowingInivisbleSeries()
+        {
+            return CreateModelWithInivisbleSeries(false);
+        }
+
+        private static PlotModel CreateModelWithInivisbleSeries(bool showInvisibleSeries)
+        {
+            var model = CreateModel();
+            var l = new Legend()
+            {
+                ShowInvisibleSeries = showInvisibleSeries,
+            };
+
+            model.Legends.Add(l);
+
+            for (int i = 0; i < model.Series.Count; i += 2)
+            {
+                model.Series[i].IsVisible = false;
+            }
+
+            model.InvalidatePlot(false);
+            return model;
+        }
+
         private static PlotModel CreateModel(int n = 20)
         {
             var model = new PlotModel { Title = "LineSeries" };
