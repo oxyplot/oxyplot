@@ -145,6 +145,11 @@ namespace OxyPlot.Annotations
 
             this.CalculateActualMinimumsMaximums();
 
+            if (ActualMinimumX > ActualMaximumX || ActualMinimumY > ActualMaximumY)
+            {
+                return;
+            }
+
             this.screenPoints = this.GetScreenPoints();
 
             const double MinimumSegmentLength = 4;
@@ -170,23 +175,27 @@ namespace OxyPlot.Annotations
 
             this.GetActualTextAlignment(out var ha, out var va);
 
+            var effectiveTextLinePosition = this.IsTransposed()
+                ? (this.YAxis.IsReversed ? 1 - this.TextLinePosition : this.TextLinePosition)
+                : (this.XAxis.IsReversed ? 1 - this.TextLinePosition : this.TextLinePosition);
+
             if (ha == HorizontalAlignment.Center)
             {
                 margin = 0;
             }
             else
             {
-                margin *= this.TextLinePosition < 0.5 ? 1 : -1;
+                margin *= effectiveTextLinePosition < 0.5 ? 1 : -1;
             }
 
-            if (GetPointAtRelativeDistance(clippedPoints, this.TextLinePosition, margin, out var position, out var angle))
+            if (GetPointAtRelativeDistance(clippedPoints, effectiveTextLinePosition, margin, out var position, out var angle))
             {
                 if (angle < -90)
                 {
                     angle += 180;
                 }
 
-                if (angle > 90)
+                if (angle >= 90)
                 {
                     angle -= 180;
                 }

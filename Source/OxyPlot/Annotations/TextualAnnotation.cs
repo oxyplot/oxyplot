@@ -74,7 +74,6 @@ namespace OxyPlot.Annotations
         {
             ha = this.TextHorizontalAlignment;
             va = this.TextVerticalAlignment;
-            //this.Orientate(ref ha, ref va);
         }
     }
 }
