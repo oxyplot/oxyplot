@@ -467,6 +467,12 @@ namespace OxyPlot.Legends
                         continue;
                     }
 
+                    // Skip invisible series if we are not configured to show them
+                    if (!s.IsVisible && !this.ShowInvisibleSeries)
+                    {
+                        continue;
+                    }
+
                     var textSize = rc.MeasureMathText(s.Title, this.LegendFont ?? this.PlotModel.DefaultFont, actualLegendFontSize, this.LegendFontWeight);
                     double itemWidth = this.LegendSymbolLength + this.LegendSymbolMargin + textSize.Width;
                     double itemHeight = textSize.Height;

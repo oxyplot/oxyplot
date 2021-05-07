@@ -60,6 +60,8 @@ namespace OxyPlot.Legends
             this.LegendItemAlignment = HorizontalAlignment.Left;
             this.LegendSymbolPlacement = LegendSymbolPlacement.Left;
 
+            this.ShowInvisibleSeries = true;
+
             this.SeriesInvisibleTextColor = OxyColor.FromAColor(64, this.LegendTextColor);
 
             this.SeriesPosMap = new Dictionary<Series.Series, OxyRect>();
@@ -84,9 +86,12 @@ namespace OxyPlot.Legends
                     {
                         if (kvp.Value.Contains(point))
                         {
-                            kvp.Key.IsVisible = !kvp.Key.IsVisible;
-                            this.PlotModel.InvalidatePlot(false);
-                            break;
+                            if (this.ShowInvisibleSeries)
+                            {
+                                kvp.Key.IsVisible = !kvp.Key.IsVisible;
+                                this.PlotModel.InvalidatePlot(false);
+                                break;
+                            }
                         }
                     }
                 }
