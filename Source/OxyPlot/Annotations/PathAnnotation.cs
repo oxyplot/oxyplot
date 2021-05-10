@@ -145,7 +145,7 @@ namespace OxyPlot.Annotations
 
             this.CalculateActualMinimumsMaximums();
 
-            if (ActualMinimumX > ActualMaximumX || ActualMinimumY > ActualMaximumY)
+            if (this.ActualMinimumX > this.ActualMaximumX || this.ActualMinimumY > this.ActualMaximumY)
             {
                 return;
             }
