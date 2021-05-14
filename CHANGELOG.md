@@ -22,6 +22,7 @@ All notable changes to this project will be documented in this file.
 - Zero-crossing axis bounds (#1708)
 - Incorrect label placement on BarSeries with non-zero BaseValue (#1726)
 - LineAnnotation Text Placement on Reversed Axes (#1741)
+- Image opacity in WinForms and Core Drawing (#1766)
 
 ## [2.1.0-Preview1] - 2020-10-18
 
