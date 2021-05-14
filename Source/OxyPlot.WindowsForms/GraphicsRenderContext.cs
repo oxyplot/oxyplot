@@ -340,13 +340,13 @@ namespace OxyPlot.WindowsForms
                 if (opacity < 1)
                 {
                     var cm = new ColorMatrix
-                                 {
-                                     Matrix00 = 1f,
-                                     Matrix11 = 1f,
-                                     Matrix22 = 1f,
-                                     Matrix33 = 1f,
-                                     Matrix44 = (float)opacity
-                                 };
+                    {
+                        Matrix00 = 1f,
+                        Matrix11 = 1f,
+                        Matrix22 = 1f,
+                        Matrix33 = (float)opacity,
+                        Matrix44 = 1f
+                    };
 
                     ia = new ImageAttributes();
                     ia.SetColorMatrix(cm, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
