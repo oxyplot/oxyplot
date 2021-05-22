@@ -3,6 +3,7 @@
     <TargetFrameworks>net461;netcoreapp3.1</TargetFrameworks>
       <UseWindowsForms>true</UseWindowsForms>
     <OutputType>WinExe</OutputType>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\OxyPlot.WindowsForms\OxyPlot.WindowsForms.csproj" />
