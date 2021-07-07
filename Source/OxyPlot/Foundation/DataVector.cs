@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ScreenVector.cs" company="OxyPlot">
-//   Copyright (c) 2014 OxyPlot contributors
+// <copyright file="DataVector.cs" company="OxyPlot">
+//   Copyright (c) 2020 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Represents a vector defined in screen space.
+//   Represents a point in the data space.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -13,10 +13,15 @@ namespace OxyPlot
     using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
-    /// Represents a vector defined in screen space.
+    /// Represents a vector in the data space.
     /// </summary>
-    public struct ScreenVector : IEquatable<ScreenVector>
+    public struct DataVector : ICodeGenerating, IEquatable<DataVector>
     {
+        /// <summary>
+        /// The undefined.
+        /// </summary>
+        public static readonly DataVector Undefined = new DataVector(double.NaN, double.NaN);
+
         /// <summary>
         /// The x-coordinate.
         /// </summary>
@@ -32,11 +37,11 @@ namespace OxyPlot
         internal double y;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ScreenVector" /> structure.
+        /// Initializes a new instance of the <see cref="DataVector" /> structure.
         /// </summary>
         /// <param name="x">The x-coordinate.</param>
         /// <param name="y">The y-coordinate.</param>
-        public ScreenVector(double x, double y)
+        public DataVector(double x, double y)
         {
             this.x = x;
             this.y = y;
@@ -94,9 +99,9 @@ namespace OxyPlot
         /// <param name="v">The vector.</param>
         /// <param name="d">The multiplication factor.</param>
         /// <returns>The result of the operator.</returns>
-        public static ScreenVector operator *(ScreenVector v, double d)
+        public static DataVector operator *(DataVector v, double d)
         {
-            return new ScreenVector(v.x * d, v.y * d);
+            return new DataVector(v.x * d, v.y * d);
         }
 
         /// <summary>
@@ -105,9 +110,9 @@ namespace OxyPlot
         /// <param name="v">The vector to add to.</param>
         /// <param name="d">The vector to be added.</param>
         /// <returns>The result of the operation.</returns>
-        public static ScreenVector operator +(ScreenVector v, ScreenVector d)
+        public static DataVector operator +(DataVector v, DataVector d)
         {
-            return new ScreenVector(v.x + d.x, v.y + d.y);
+            return new DataVector(v.x + d.x, v.y + d.y);
         }
 
         /// <summary>
@@ -116,9 +121,9 @@ namespace OxyPlot
         /// <param name="v">The vector to subtract from.</param>
         /// <param name="d">The vector to be subtracted.</param>
         /// <returns>The result of operation.</returns>
-        public static ScreenVector operator -(ScreenVector v, ScreenVector d)
+        public static DataVector operator -(DataVector v, DataVector d)
         {
-            return new ScreenVector(v.x - d.x, v.y - d.y);
+            return new DataVector(v.x - d.x, v.y - d.y);
         }
 
         /// <summary>
@@ -126,9 +131,9 @@ namespace OxyPlot
         /// </summary>
         /// <param name="v">The vector to negate.</param>
         /// <returns>The result of operation.</returns>
-        public static ScreenVector operator -(ScreenVector v)
+        public static DataVector operator -(DataVector v)
         {
-            return new ScreenVector(-v.x, -v.y);
+            return new DataVector(-v.x, -v.y);
         }
 
         /// <summary>
@@ -145,6 +150,25 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Returns C# code that generates this instance.
+        /// </summary>
+        /// <returns>The to code.</returns>
+        public string ToCode()
+        {
+            return CodeGenerator.FormatConstructor(this.GetType(), "{0},{1}", this.x, this.y);
+        }
+
+        /// <summary>
+        /// Determines whether this and another specified <see cref="T:DataVector" /> have the same value.
+        /// </summary>
+        /// <param name="other">The vector to compare to this instance.</param>
+        /// <returns><c>true</c> if the value of the <paramref name="other" /> parameter is the same as the value of this instance; otherwise, <c>false</c>.</returns>
+        public bool Equals(DataVector other)
+        {
+            return this.x.Equals(other.x) && this.y.Equals(other.y);
+        }
+
+        /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
         /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
@@ -154,13 +178,19 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Determines whether this instance and another specified <see cref="T:ScreenVector" /> object have the same value.
+        /// Determines whether this point is defined.
         /// </summary>
-        /// <param name="other">The point to compare to this instance.</param>
-        /// <returns><c>true</c> if the value of the <paramref name="other" /> parameter is the same as the value of this instance; otherwise, <c>false</c>.</returns>
-        public bool Equals(ScreenVector other)
+        /// <returns><c>true</c> if this point is defined; otherwise, <c>false</c>.</returns>
+        public bool IsDefined()
         {
-            return this.x.Equals(other.x) && this.y.Equals(other.y);
+            // check that x and y is not NaN (the code below is faster than double.IsNaN)
+#pragma warning disable 1718
+            // ReSharper disable EqualExpressionComparison
+            // ReSharper disable CompareOfFloatsByEqualityOperator
+            return this.x == this.x && this.y == this.y;
+            // ReSharper restore CompareOfFloatsByEqualityOperator
+            // ReSharper restore EqualExpressionComparison
+#pragma warning restore 1718
         }
     }
 }

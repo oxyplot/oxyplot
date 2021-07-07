@@ -670,6 +670,124 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Transforms the given nodes and interpolates the lines if the element exists on a logarithmic plot.
+        /// </summary>
+        /// <param name="transposablePlotElement">The plot element that defines the transformation.</param>
+        /// <param name="nodes">The data points defining the points in the line.</param>
+        /// <param name="screenPoints">The destinations for the screen points.</param>
+        public static void TransformAndInterpolateLines(ITransposablePlotElement transposablePlotElement, IList<DataPoint> nodes, IList<ScreenPoint> screenPoints)
+        {
+            var xaxis = transposablePlotElement.XAxis;
+            var yaxis = transposablePlotElement.YAxis;
+
+            if (transposablePlotElement.XAxis.IsLogarithmic() || transposablePlotElement.YAxis.IsLogarithmic())
+            {
+                bool first = false;
+                bool lastWasUndefined = true;
+                DataPoint last = DataPoint.Undefined;
+
+                foreach (var next in nodes)
+                {
+                    // detect and remove invalid points (TODO: replace write a ClipLines method)
+                    if (!next.IsDefined() || (xaxis.IsLogarithmic() && next.X <= 0) || (yaxis.IsLogarithmic() && next.Y <= 0))
+                    {
+                        lastWasUndefined = true;
+                    }
+                    else
+                    {
+                        if (lastWasUndefined)
+                        {
+                            if (screenPoints.Count > 0)
+                            {
+                                screenPoints.Add(ScreenPoint.Undefined);
+                            }
+                            lastWasUndefined = false;
+                            first = true;
+                        }
+                        else if (first)
+                        {
+                            var difference = next - last;
+                            InterpolatePoints(x => transposablePlotElement.Transform(last + difference * x), screenPoints, 2.0, first);
+                        }
+
+                        last = next;
+                    }
+                }
+            }
+            else
+            {
+                bool lastWasUndefined = true;
+
+                foreach (var dataPoint in nodes)
+                {
+                    if (!dataPoint.IsDefined())
+                    {
+                        lastWasUndefined = true;
+                    }
+                    else
+                    {
+                        if (lastWasUndefined && screenPoints.Count > 0)
+                        {
+                            screenPoints.Add(ScreenPoint.Undefined);
+                        }
+
+                        screenPoints.Add(transposablePlotElement.Transform(dataPoint));
+                        lastWasUndefined = false;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Generates points along a smooth function with a maximum seperation.
+        /// </summary>
+        /// <param name="function">The smooth function evaluated.</param>
+        /// <param name="screenPoints">The destination for any generated screen points.</param>
+        /// <param name="maxSegmentLength">the maximum distance between any two points.</param>
+        /// <param name="includeFirst">Whether or not to include the first point.</param>
+        public static void InterpolatePoints(Func<double, ScreenPoint> function, IList<ScreenPoint> screenPoints, double maxSegmentLength, bool includeFirst)
+        {
+            var minLengthSquared = maxSegmentLength * maxSegmentLength;
+
+            var candidates = new Stack<double>();
+            var candidatePoints = new Stack<ScreenPoint>();
+            candidates.Push(1.0);
+            candidatePoints.Push(function(1.0));
+
+            var last = 0.0;
+            var lastPoint = function(0.0);
+
+            if (includeFirst)
+            {
+                screenPoints.Add(lastPoint);
+            }
+
+            while (candidates.Count > 0)
+            {
+                var next = candidates.Peek();
+                var nextPoint = candidatePoints.Peek();
+
+                if (nextPoint.DistanceToSquared(lastPoint) < minLengthSquared)
+                {
+                    last = next;
+                    lastPoint = nextPoint;
+                    screenPoints.Add(nextPoint);
+
+                    candidates.Pop();
+                    candidatePoints.Pop();
+                }
+                else
+                {
+                    next = last + (next - last) / 2.0;
+                    nextPoint = function(next);
+
+                    candidates.Push(next);
+                    candidatePoints.Push(nextPoint);
+                }
+            }
+        }
+
+        /// <summary>
         /// Represents the token that is used to automatically reset the clipping in the <see cref="AutoResetClip(IRenderContext, OxyRect)"/> method.
         /// </summary>
         private class AutoResetClipToken : IDisposable
