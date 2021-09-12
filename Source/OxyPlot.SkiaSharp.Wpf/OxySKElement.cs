@@ -114,7 +114,7 @@ namespace OxyPlot.SkiaSharp.Wpf
             this.bitmap.Unlock();
 
             // get window to screen offset
-            var visualOffset = this.TransformToAncestor(Window.GetWindow(this)).Transform(default);
+            var visualOffset = this.TransformToAncestor(GetAncestorWindowFromVisualTree(this)).Transform(default);
 
             // calculate offset to physical pixels
             var offsetX = ((visualOffset.X * scaleX) % 1) / scaleX;
@@ -157,6 +157,17 @@ namespace OxyPlot.SkiaSharp.Wpf
             {
                 return !double.IsNaN(value) && !double.IsInfinity(value) && value > 0;
             }
+        }
+
+        private Window GetAncestorWindowFromVisualTree(DependencyObject startElement)
+        {
+            DependencyObject parent = startElement;
+            while (!(parent is Window))
+            {
+                if (parent == null) { break; }
+                parent = VisualTreeHelper.GetParent(parent);
+            }
+            return parent as Window ?? Window.GetWindow(this);
         }
     }
 }
