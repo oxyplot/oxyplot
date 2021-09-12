@@ -23,6 +23,11 @@ namespace OxyPlot.SkiaSharp.Wpf
         /// </summary>
         private SkiaRenderContext SkiaRenderContext => (SkiaRenderContext)this.renderContext;
 
+        /// <summary>
+        /// Gets the OxySKElement.
+        /// </summary>
+        private OxySKElement OxySKElement => (OxySKElement)this.plotPresenter;
+
         /// <inheritdoc/>
         protected override void ClearBackground()
         {
@@ -59,7 +64,7 @@ namespace OxyPlot.SkiaSharp.Wpf
         protected override double UpdateDpi()
         {
             var scale = base.UpdateDpi();
-            this.SkiaRenderContext.DpiScale = (float)scale;
+            this.SkiaRenderContext.DpiScale = (float)(scale * OxySKElement.GetRenderScale());
             return scale;
         }
 

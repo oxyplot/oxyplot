@@ -94,7 +94,7 @@ namespace ExampleBrowser
 
         private void CoerceRenderer()
         {
-            ((IPlotModel)this._PlotModel).AttachPlotView(null);
+            ((IPlotModel)this._PlotModel)?.AttachPlotView(null);
             this.RaisePropertyChanged(nameof(this.SkiaModel));
             this.RaisePropertyChanged(nameof(this.CanvasXamlModel));
             this.RaisePropertyChanged(nameof(this.CanvasModel));
