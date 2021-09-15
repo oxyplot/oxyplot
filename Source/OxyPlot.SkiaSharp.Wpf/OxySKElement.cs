@@ -157,7 +157,7 @@ namespace OxyPlot.SkiaSharp.Wpf
             var offsetY = ((visualOffset.Y * scaleY) % 1) / scaleY;
 
             // draw, scaling back down from the (rounded) bitmap dimensions
-            drawingContext.DrawImage(this.bitmap, new Rect(-offsetX, -offsetY, bitmapWidth / renderScale, bitmapHeight / renderScale));
+            drawingContext.DrawImage(this.bitmap, new Rect(-offsetX, -offsetY, this.bitmap.Width / renderScale, this.bitmap.Height / renderScale));
         }
 
         /// <inheritdoc/>
