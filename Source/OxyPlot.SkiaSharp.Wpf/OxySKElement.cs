@@ -122,20 +122,20 @@ namespace OxyPlot.SkiaSharp.Wpf
             var renderScale = this.GetRenderScale();
 
             // scale bitmap according to the renderScale
-            var bitmapWidth = (int)(size.Width * renderScale);
-            var bitmapHeight = (int)(size.Height * renderScale);
+            var bitmapPixelWidth = (int)(size.Width * renderScale);
+            var bitmapPixelHeight = (int)(size.Height * renderScale);
 
             if (size.Width <= 0 || size.Height <= 0)
             {
                 return;
             }
 
-            var info = new SKImageInfo(bitmapWidth, bitmapHeight, SKImageInfo.PlatformColorType, SKAlphaType.Premul);
+            var info = new SKImageInfo(bitmapPixelWidth, bitmapPixelHeight, SKImageInfo.PlatformColorType, SKAlphaType.Premul);
 
             // reset the bitmap if the size has changed
             if (this.bitmap == null || info.Width != this.bitmap.PixelWidth || info.Height != this.bitmap.PixelHeight)
             {
-                this.bitmap = new WriteableBitmap(bitmapWidth, bitmapHeight, 96 * scaleX, 96 * scaleY, PixelFormats.Pbgra32, null);
+                this.bitmap = new WriteableBitmap(bitmapPixelWidth, bitmapPixelHeight, 96 * scaleX, 96 * scaleY, PixelFormats.Pbgra32, null);
             }
 
             // draw on the bitmap
@@ -146,7 +146,7 @@ namespace OxyPlot.SkiaSharp.Wpf
             }
 
             // draw the bitmap to the screen
-            this.bitmap.AddDirtyRect(new Int32Rect(0, 0, bitmapWidth, bitmapHeight));
+            this.bitmap.AddDirtyRect(new Int32Rect(0, 0, bitmapPixelWidth, bitmapPixelHeight));
             this.bitmap.Unlock();
 
             // get window to screen offset

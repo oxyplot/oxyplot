@@ -63,9 +63,13 @@ namespace OxyPlot.SkiaSharp.Wpf
         /// <inheritdoc/>
         protected override double UpdateDpi()
         {
-            var scale = base.UpdateDpi();
-            this.SkiaRenderContext.DpiScale = (float)(scale * OxySKElement.GetRenderScale());
-            return scale;
+            var dpiScale = base.UpdateDpi();
+            var renderScale = this.OxySKElement.GetRenderScale();
+            var skiaScale = (float)(dpiScale * renderScale);
+
+            this.SkiaRenderContext.DpiScale = skiaScale;
+
+            return dpiScale;
         }
 
         /// <summary>
