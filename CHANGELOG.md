@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 - Add option to check distance for result between data points (#1736)
 - Legend.AllowUseFullExtent property to control whether legends should be able to use the full extent of the plot (#1743)
 - Legend.ShowInvisibleSeries property to control whether invisible series should be shown on the legend (#1730)
+- OxyPlot.SkiaSharp.Wpf PlotView support for simple render transforms (#1785)
 
 ### Changed
 - Updated Series.cd with ExtrapolationLineSeries and removed classes that do not exist anymore
