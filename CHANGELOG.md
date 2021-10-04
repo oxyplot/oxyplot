@@ -1,32 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## Unreleased
-
-### Added
-- Example for Issue #1716 showing poor tick spacing on DateTimeAxis with interval types of Weeks or Years
-- Example for label placement on BarSeries with non-zero BaseValue (#1726)
-- ExtrapolationLineSeries as described in #1740 to allow to display pre-defined intervals of a line series with a different style than the rest.
-- Added DataRange, unit tests and examples as support for ExtrapolationLineSeries.
-- Add control over how far from the series the tracker fires (#1736)
-- Add option to check distance for result between data points (#1736)
-- Legend.AllowUseFullExtent property to control whether legends should be able to use the full extent of the plot (#1743)
-- Legend.ShowInvisibleSeries property to control whether invisible series should be shown on the legend (#1730)
-- OxyPlot.SkiaSharp.Wpf PlotView support for simple render transforms (#1785)
-
-### Changed
-- Updated Series.cd with ExtrapolationLineSeries and removed classes that do not exist anymore
-
-### Removed
-
-### Fixed
-- Zero-crossing axis bounds (#1708)
-- Incorrect label placement on BarSeries with non-zero BaseValue (#1726)
-- LineAnnotation Text Placement on Reversed Axes (#1741)
-- Image opacity in WinForms and Core Drawing (#1766)
-- Fix specified Visual is not an ancestor of this Visual issue in WPF rendering (#1787) 
-
-## [2.1.0-Preview1] - 2020-10-18
+## [2.1.0] - 2021-10-02
 
 ### Added
 - Made Legend Items clickable to toggle series visibility (#644)
@@ -69,6 +44,15 @@ All notable changes to this project will be documented in this file.
 - OxyPlot.Wpf.XamlRenderContext - this doesn't use StreamGeometry and can be used for rendering to XAML (#1673)
 - SkiaRenderContext.MiterLimit property (#1690)
 - Example for Issue #1685 showing spurious lines in the ContourSeries
+- Example for Issue #1716 showing poor tick spacing on DateTimeAxis with interval types of Weeks or Years
+- Example for label placement on BarSeries with non-zero BaseValue (#1726)
+- ExtrapolationLineSeries as described in #1740 to allow to display pre-defined intervals of a line series with a different style than the rest.
+- Added DataRange, unit tests and examples as support for ExtrapolationLineSeries.
+- Add control over how far from the series the tracker fires (#1736)
+- Add option to check distance for result between data points (#1736)
+- Legend.AllowUseFullExtent property to control whether legends should be able to use the full extent of the plot (#1743)
+- Legend.ShowInvisibleSeries property to control whether invisible series should be shown on the legend (#1730)
+- OxyPlot.SkiaSharp.Wpf PlotView support for simple render transforms (#1785)
 
 ### Changed
 - Legends model (#644)
@@ -103,6 +87,7 @@ All notable changes to this project will be documented in this file.
 - Mark CandleStickAndVolumeSeries as obsolete (#1661)
 - Implement StreamGeometry-based implementations of DrawEllipses, DrawLine, DrawLineSegments and DrawRectangle(s) which improves the rendering speed on WPF (#1673)
 - Change algorithm of ContourSeries.JoinContourSegments(). This should improve performance in most cases, but will cause labels to appear in different spots than before (#1685)
+- Updated Series.cd with ExtrapolationLineSeries and removed classes that do not exist anymore
 
 ### Removed
 - Remove PlotModel.Legends (#644)
@@ -148,6 +133,11 @@ All notable changes to this project will be documented in this file.
 - Windows Forms clipping last line of measured text (#1659)
 - Inconsistent Zooming behaviour (#1648)
 - ContourSeries produce fake connections (#1685)
+- Zero-crossing axis bounds (#1708)
+- Incorrect label placement on BarSeries with non-zero BaseValue (#1726)
+- LineAnnotation Text Placement on Reversed Axes (#1741)
+- Image opacity in WinForms and Core Drawing (#1766)
+- Fix specified Visual is not an ancestor of this Visual issue in WPF rendering (#1787)
 
 ## [2.0.0] - 2019-10-19
 ### Added 
@@ -445,8 +435,8 @@ All notable changes to this project will be documented in this file.
 - Add overridable Axis.FormatValueOverride (#181)
 - PngExporter text formatting (#170)
 
-[Unreleased]: https://github.com/oxyplot/oxyplot/compare/v2.1.0-Preview1...HEAD
-[2.1.0-Preview1]: https://github.com/oxyplot/oxyplot/compare/v2.0.0...v2.1.0-Preview1
+[Unreleased]: https://github.com/oxyplot/oxyplot/compare/v2.1.0...HEAD
+[2.1.0]: https://github.com/oxyplot/oxyplot/compare/v2.0.0...v2.1.0
 [2.0.0]: https://github.com/oxyplot/oxyplot/compare/v1.0.0...v2.0.0
 [1.0.0]: https://github.com/oxyplot/oxyplot/compare/v0.2014.1.546...v1.0.0
 [0.2014.1.546]: https://github.com/oxyplot/oxyplot/compare/v0.0.1...v0.2014.1.546
