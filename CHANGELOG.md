@@ -1,6 +1,9 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+### Fixed
+- WPF - OxyPlot doesn't render inside a Popup (#1796)
+
 ## [2.1.0] - 2021-10-02
 
 ### Added

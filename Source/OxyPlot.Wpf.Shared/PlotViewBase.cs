@@ -12,6 +12,7 @@ namespace OxyPlot.Wpf
     using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
+    using System.Windows.Controls.Primitives;
     using System.Windows.Input;
     using System.Windows.Media;
     using System.Windows.Threading;
@@ -448,6 +449,13 @@ namespace OxyPlot.Wpf
             while ((dpObject = VisualTreeHelper.GetParent(dpObject)) != null)
             {
                 if (dpObject is Window)
+                {
+                    return true;
+                }
+
+                //Check if the logical parent is a popup. If so, we found the popuproot
+                var logicalRoot = LogicalTreeHelper.GetParent(dpObject);
+                if (logicalRoot is Popup)
                 {
                     return true;
                 }
