@@ -1,12 +1,17 @@
 # Change Log
+
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
 ### Fixed
+
 - WPF - OxyPlot doesn't render inside a Popup (#1796)
 
 ## [2.1.0] - 2021-10-02
 
 ### Added
+
 - Made Legend Items clickable to toggle series visibility (#644)
 - Added properties LegendKey and SeriesGroupName to Series, allowing grouping series between multiple legends and/or within same legend (#644)
 - OxyPlot.ImageSharp (#1188)
@@ -58,6 +63,7 @@ All notable changes to this project will be documented in this file.
 - OxyPlot.SkiaSharp.Wpf PlotView support for simple render transforms (#1785)
 
 ### Changed
+
 - Legends model (#644)
 - Default behaviour is now plot without Legend (#644)
 - Moved WPF Plot component to Oxyplot.Contrib.Wpf (#1399)
@@ -78,7 +84,7 @@ All notable changes to this project will be documented in this file.
 - Axis renderers now render all ticks they are provided (#1580)
 - Auto margins don't reserve space for axis labels if axis range is fixed (#1577)
 - CategoryAxis should not contain rendering information about BarSeries (#741)
-- CategorizedSeries changed to BarSeriesBase<T> (#741)
+- CategorizedSeries changed to `BarSeriesBase<T>` (#741)
 - System.Drawing.Common references updated to 4.7.0 (#1608)
 - Invisible series are assigned automatic colors by default, configurable with PlotModel.AssignColorsToInvisibleSeries property that defaults to true (#1599)
 - StemSeries, AreaSeries, TwoColorAreaSeries, and StairStepSeries use `ActualMarkerColor` (#1630)
@@ -93,6 +99,7 @@ All notable changes to this project will be documented in this file.
 - Updated Series.cd with ExtrapolationLineSeries and removed classes that do not exist anymore
 
 ### Removed
+
 - Remove PlotModel.Legends (#644)
 - ColumnSeries - functionality is replaced by transposed BarSeries (#1402)
 - Copy to text report Ctrl+Alt+R (#1403)
@@ -108,6 +115,7 @@ All notable changes to this project will be documented in this file.
 - CanvasRenderContext.UseStreamGeometry property - this functionality is replaced by the new XamlRenderContext (#1673)
 
 ### Fixed
+
 - Legend font size is not affected by DefaultFontSize (#1396)
 - ErrorBarSeries, IntervalBarSeries and TornadoBarSeries work correctly in transposed mode (#1402)
 - Exception when rendering polygon with no points (#1410)
@@ -143,7 +151,9 @@ All notable changes to this project will be documented in this file.
 - Fix specified Visual is not an ancestor of this Visual issue in WPF rendering (#1787)
 
 ## [2.0.0] - 2019-10-19
-### Added 
+
+### Added
+
 - WindowsForms and Wpf support .NET Core 3.0 (#1331)
 - PngExporter based on System.Common.Drawing (.NET Core) (#1263)
 - New polar plot axes filling the full plot area (#1056)
@@ -163,6 +173,7 @@ All notable changes to this project will be documented in this file.
 - Bug in HistogramHelpers.Collect when using out-of-order bin breaks (#1476)
 
 ### Changed
+
 - OxyPlot.Core changed to target netstandard 1.0 and net45 (#946, #1147)
 - OxyPlot.ExampleLibrary changed to target netstandard 1.0 and net45 (#946, #1147)
 - OxyPlot.Wpf, OxyPlot.WindowsForms, OxyPlot.Pdf changed to target net45 (#946)
@@ -183,14 +194,17 @@ All notable changes to this project will be documented in this file.
 - SharpDX project moved to separate repository
 
 ### Deprecated
+
 - OxyPlot.WP8 package. Use OxyPlot.Windows (UWP) instead (#996)
 
 ### Removed
+
 - LabelFontSize property from HistogramSeries (#1309)
 - Smooth property from LineSeries and PolylineAnnotation (#494)
 - Support for net40 (#960)
 
 ### Fixed
+
 - Manipulation when using touch is not working in Windows (#1011)
 - Ensure a suitable folder is used when creating a temporary file for PNG export in Oxyplot.GtkSharp (#1034)
 - RangeColorAxis is not rendered correctly if the axis is reversed (#1035)
@@ -224,7 +238,9 @@ All notable changes to this project will be documented in this file.
 - Dispose background brush in OxyPlot.Core.Drawing PngExporter (#1392)
 
 ## [1.0.0] - 2016-09-11
+
 ### Added
+
 - Added OxyPlot.SharpDX.Wpf NuGet package
 - Added DirectX 9.1-10.1 feature level support for SharpDX renderer
 - Added SharpDX based renderer and WPF control with SharpDX render (#124)
@@ -272,6 +288,7 @@ All notable changes to this project will be documented in this file.
 - Fixed bug causing axes titles to not display in OxyPlot.GtkSharp (#989)
 
 ### Changed
+
 - Fixed closing file stream for PdfReportWriter when PdfReportWriter is closed or disposed of. (#892)
 - Renamed OxyPlot.WindowsUniversal to OxyPlot.Windows (#242)
 - Changed OxyPlot.Xamarin.Forms to require OxyPlot.Mobile dependency instead of each separate NuGet. (#362)
@@ -305,7 +322,7 @@ All notable changes to this project will be documented in this file.
 - Throw exception if Xamarin.Forms renderer is not 'initialized' (#492)
 - Make numeric values of DateTimeAxis compatible with ToOADate (#660)
 - Make struct types immutable (#692)
-- Implement IEquatable<T> for struct types (#692)
+- Implement `IEquatable<T>` for struct types (#692)
 - BoxPlotItem changed to reference type (#692)
 - Move Xamarin projects to new repository (#777)
 - Remove CandleStickSeries.Append (#826)
@@ -318,6 +335,7 @@ All notable changes to this project will be documented in this file.
 - Change the default format string to `null` for TimeSpanAxis and DateTimeAxis (#951)
 
 ### Removed
+
 - StyleCop tasks (#556)
 - OxyPlot.Metro project (superseded by OxyPlot.WindowsUniversal) (#241)
 - PlotModel.ToSvg method. Use the SvgExporter instead. (#347)
@@ -332,6 +350,7 @@ All notable changes to this project will be documented in this file.
 - ListFiller (#705)
 
 ### Fixed
+
 - Added check to LineAnnotation.GetScreenPoints to check if ActualMaximumX==ActualMinimumX for non-curved lines. (#1029)
 - Incorrect placment of axis title of axes with AxisDistance (#1065)
 - SharpDX control not being rendered when loaded
@@ -415,7 +434,9 @@ All notable changes to this project will be documented in this file.
 - Fixed drawing of plot backgrounds in OxyPlot.GtkSharp (#990)
 
 ## [0.2014.1.546] - 2014-10-22
+
 ### Added
+
 - Support data binding paths ("Point.X") (#210)
 - Support for Xamarin.Forms (#204)
 - Support for Windows Universal apps (#190)
@@ -424,11 +445,13 @@ All notable changes to this project will be documented in this file.
 - LabelFormatString for ScatterSeries (#12)
 
 ### Changed
+
 - Changed tracker format strings arguments (#214)
 - Rename OxyPenLineJoin to LineJoin
 - Rename LineStyle.Undefined to LineStyle.Automatic
 
 ### Fixed
+
 - Improved text rendering for Android and iOS (#209)
 - Custom shape outline for PointAnnotation (#174)
 - Synchronize Wpf.Axis.MinimumRange (#205)
