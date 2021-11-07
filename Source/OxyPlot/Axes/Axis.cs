@@ -1585,7 +1585,11 @@ namespace OxyPlot.Axes
 
             if (this.AbsoluteMaximum - this.AbsoluteMinimum < this.MinimumRange)
             {
-                throw new InvalidOperationException("MinimumRange should be larger than AbsoluteMaximum-AbsoluteMinimum.");
+                throw new InvalidOperationException("MinimumRange must not be larger than AbsoluteMaximum-AbsoluteMinimum.");
+            }
+            if (this.MaximumRange < this.MinimumRange)
+            {
+                throw new InvalidOperationException("MinimumRange must not be larger than MaximumRange.");
             }
 
             // Coerce the minimum range
