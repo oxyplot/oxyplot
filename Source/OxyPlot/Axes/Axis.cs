@@ -1571,6 +1571,20 @@ namespace OxyPlot.Axes
         /// </summary>
         protected virtual void CoerceActualMaxMin()
         {
+            // Check consistency of properties
+            if (this.AbsoluteMaximum <= this.AbsoluteMinimum)
+            {
+                throw new InvalidOperationException("AbsoluteMaximum must be larger than AbsoluteMinimum.");
+            }
+            if (this.AbsoluteMaximum - this.AbsoluteMinimum < this.MinimumRange)
+            {
+                throw new InvalidOperationException("MinimumRange must not be larger than AbsoluteMaximum-AbsoluteMinimum.");
+            }
+            if (this.MaximumRange < this.MinimumRange)
+            {
+                throw new InvalidOperationException("MinimumRange must not be larger than MaximumRange.");
+            }
+
             // Coerce actual minimum
             if (double.IsNaN(this.ActualMinimum) || double.IsInfinity(this.ActualMinimum))
             {
@@ -1583,13 +1597,21 @@ namespace OxyPlot.Axes
                 this.ActualMaximum = 100;
             }
 
-            if (this.AbsoluteMaximum - this.AbsoluteMinimum < this.MinimumRange)
+            if (this.AbsoluteMinimum > double.MinValue && this.AbsoluteMinimum < double.MaxValue)
             {
-                throw new InvalidOperationException("MinimumRange must not be larger than AbsoluteMaximum-AbsoluteMinimum.");
+                this.ActualMinimum = Math.Max(this.ActualMinimum, this.AbsoluteMinimum);
+                if (this.MaximumRange < double.MaxValue)
+                {
+                    this.ActualMaximum = Math.Min(this.ActualMaximum, this.AbsoluteMinimum + this.MaximumRange);
+                }
             }
-            if (this.MaximumRange < this.MinimumRange)
+            if (this.AbsoluteMaximum > double.MinValue && this.AbsoluteMaximum < double.MaxValue)
             {
-                throw new InvalidOperationException("MinimumRange must not be larger than MaximumRange.");
+                this.ActualMaximum = Math.Min(this.ActualMaximum, this.AbsoluteMaximum);
+                if (this.MaximumRange < double.MaxValue)
+                {
+                    this.ActualMinimum = Math.Max(this.ActualMinimum, this.AbsoluteMaximum - this.MaximumRange);
+                }
             }
 
             // Coerce the minimum range
@@ -1671,34 +1693,9 @@ namespace OxyPlot.Axes
             }
 
             // Coerce the absolute maximum/minimum
-            if (this.AbsoluteMaximum <= this.AbsoluteMinimum)
-            {
-                throw new InvalidOperationException("AbsoluteMaximum should be larger than AbsoluteMinimum.");
-            }
-
             if (this.ActualMaximum <= this.ActualMinimum)
             {
                 this.ActualMaximum = this.ActualMinimum + 100;
-            }
-
-            if (this.ActualMinimum < this.AbsoluteMinimum)
-            {
-                this.ActualMinimum = this.AbsoluteMinimum;
-            }
-
-            if (this.ActualMinimum > this.AbsoluteMaximum)
-            {
-                this.ActualMinimum = this.AbsoluteMaximum;
-            }
-
-            if (this.ActualMaximum < this.AbsoluteMinimum)
-            {
-                this.ActualMaximum = this.AbsoluteMinimum;
-            }
-
-            if (this.ActualMaximum > this.AbsoluteMaximum)
-            {
-                this.ActualMaximum = this.AbsoluteMaximum;
             }
         }
 
