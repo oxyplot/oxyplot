@@ -518,6 +518,58 @@ namespace OxyPlot.Tests
         }
 
         /// <summary>
+        /// Tests the initial axis range, if absolute and minimum range are set and data is partially out-of-range
+        /// </summary>
+        [Test]
+        public void Axis_MinimumRange_AbsoluteRange_DataOutOfRange()
+        {
+            var plot = new PlotModel();
+            var yaxis = new LinearAxis()
+            {
+                Position = AxisPosition.Bottom,
+                AbsoluteMinimum = -100,
+                AbsoluteMaximum = 0,
+                MinimumRange = 100,
+            };
+
+            plot.Axes.Add(yaxis);
+
+            var series = new LineSeries();
+            series.Points.Add(new DataPoint(-50.0, 0));
+            series.Points.Add(new DataPoint(100.0, 0));
+
+            plot.Series.Add(series);
+
+            ((IPlotModel)plot).Update(true);
+
+            Assert.AreEqual(-100, plot.Axes[0].ActualMinimum, 1e-5, "minimum");
+            Assert.AreEqual(0.0, plot.Axes[0].ActualMaximum, 1e-5, "maximum");
+        }
+
+        /// <summary>
+        /// Tests the initial axis range, if absolute and minimum range are set but no data is available
+        /// </summary>
+        [Test]
+        public void Axis_MinimumRange_AbsoluteRange_NoData()
+        {
+            var plot = new PlotModel();
+            var yaxis = new LinearAxis()
+            {
+                Position = AxisPosition.Bottom,
+                AbsoluteMinimum = -100,
+                AbsoluteMaximum = 0,
+                MinimumRange = 100,
+            };
+
+            plot.Axes.Add(yaxis);
+
+            ((IPlotModel)plot).Update(true);
+
+            Assert.AreEqual(-100, plot.Axes[0].ActualMinimum, 1e-5, "minimum");
+            Assert.AreEqual(0.0, plot.Axes[0].ActualMaximum, 1e-5, "maximum");
+        }
+
+        /// <summary>
         /// Tests the alignment of the series, if minimum range is set
         /// </summary>
         [Test]
