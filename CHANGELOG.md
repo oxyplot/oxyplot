@@ -3,6 +3,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 - WPF - OxyPlot doesn't render inside a Popup (#1796)
+- SkiaSharp.WPF - OxyPlot doesn't render inside an ElementHost (#1800)
 
 ## [2.1.0] - 2021-10-02
 
