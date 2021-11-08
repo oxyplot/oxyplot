@@ -204,18 +204,19 @@ namespace OxyPlot.SkiaSharp.Wpf
         }
 
         /// <summary>
-        /// Returns a reference to the window object that hosts the dependency object in the visual tree.
+        /// Returns a reference to the visual object that hosts the dependency object in the visual tree.
         /// </summary>
-        /// <returns> The host window from the visual tree.</returns>
-        private Window GetAncestorWindowFromVisualTree(DependencyObject startElement)
+        /// <returns> The host visual from the visual tree.</returns>
+        private Visual GetAncestorWindowFromVisualTree(DependencyObject startElement)
         {
-            DependencyObject parent = startElement;
-            while (!(parent is Window))
+            DependencyObject child = startElement;
+            DependencyObject parent = VisualTreeHelper.GetParent(child);
+            while (parent != null)
             {
-                if (parent == null) { break; }
-                parent = VisualTreeHelper.GetParent(parent);
+                child = parent;
+                parent = VisualTreeHelper.GetParent(child);
             }
-            return parent as Window ?? Window.GetWindow(this);
+            return child is Visual visualChild ? visualChild : Window.GetWindow(this);
         }
 
         /// <summary>
