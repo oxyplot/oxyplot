@@ -246,7 +246,7 @@ namespace OxyPlot.Series
                 return null;
             }
 
-            var actualPoints = this.ActualPointsList;
+            var actualPoints = new List<T>(this.ActualPointsList);
             if (actualPoints == null || actualPoints.Count == 0)
             {
                 return null;
@@ -321,7 +321,7 @@ namespace OxyPlot.Series
         /// <inheritdoc/>
         public override void Render(IRenderContext rc)
         {
-            var actualPoints = this.ActualPointsList;
+            var actualPoints = new List<T>(this.ActualPointsList);
 
             if (actualPoints == null || actualPoints.Count == 0)
             {
@@ -534,7 +534,7 @@ namespace OxyPlot.Series
         /// <param name="clippingRect">The clipping rectangle.</param>
         protected void RenderPointLabels(IRenderContext rc, OxyRect clippingRect)
         {
-            var actualPoints = this.ActualPointsList;
+            var actualPoints = new List<T>(this.ActualPointsList);
             if (actualPoints == null || actualPoints.Count == 0)
             {
                 return;
