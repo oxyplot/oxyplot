@@ -3,6 +3,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 - WPF - OxyPlot doesn't render inside a Popup (#1796)
+- Odd behavior of zooming of Logarithmic axis in Cartesian plot (#1825)
 
 ## [2.1.0] - 2021-10-02
 
