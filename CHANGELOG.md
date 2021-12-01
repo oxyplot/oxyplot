@@ -1,6 +1,9 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+### Added
+- Add LineThickness property to TrackerControl (#1831)
+
 ### Fixed
 - WPF - OxyPlot doesn't render inside a Popup (#1796)
 
