@@ -79,6 +79,10 @@ namespace OxyPlot.SkiaSharp.Wpf
         /// <param name="e">The surface paint event args.</param>
         private void SkElement_PaintSurface(object sender, SKPaintSurfaceEventArgs e)
         {
+            if (this.plotPresenter == null || this.renderContext == null)
+            {
+                return;
+            }
             this.SkiaRenderContext.SkCanvas = e.Surface.Canvas;
             base.RenderOverride();
             this.SkiaRenderContext.SkCanvas = null;
