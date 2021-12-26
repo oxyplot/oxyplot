@@ -61,7 +61,7 @@ namespace OxyPlot.Series
             if (!interpolate && result != null && result.Position.DistanceToSquared(point) < minimumDistanceSquared)
             {
                 result.Text = StringHelper.Format(
-                    this.ActualCulture, 
+                    this.ActualCulture,
                     this.TrackerFormatString,
                     result.Item,
                     this.Title,
@@ -157,64 +157,64 @@ namespace OxyPlot.Series
 
             var actualColor = this.GetSelectableColor(this.ActualColor);
 
-            Action<IList<ScreenPoint>, IList<ScreenPoint>> renderPoints = (lpts, mpts) =>
+            void renderPoints(IList<ScreenPoint> lpts, IList<ScreenPoint> mpts)
+            {
+                // clip the line segments with the clipping rectangle
+                if (this.StrokeThickness > 0 && lineStyle != LineStyle.None)
                 {
-                    // clip the line segments with the clipping rectangle
-                    if (this.StrokeThickness > 0 && lineStyle != LineStyle.None)
+                    if (!verticalStrokeThickness.Equals(this.StrokeThickness) || this.VerticalLineStyle != lineStyle)
                     {
-                        if (!verticalStrokeThickness.Equals(this.StrokeThickness) || this.VerticalLineStyle != lineStyle)
+                        // TODO: change to array
+                        var hlpts = new List<ScreenPoint>();
+                        var vlpts = new List<ScreenPoint>();
+                        for (int i = 0; i + 2 < lpts.Count; i += 2)
                         {
-                            // TODO: change to array
-                            var hlpts = new List<ScreenPoint>();
-                            var vlpts = new List<ScreenPoint>();
-                            for (int i = 0; i + 2 < lpts.Count; i += 2)
-                            {
-                                hlpts.Add(lpts[i]);
-                                hlpts.Add(lpts[i + 1]);
-                                vlpts.Add(lpts[i + 1]);
-                                vlpts.Add(lpts[i + 2]);
-                            }
+                            hlpts.Add(lpts[i]);
+                            hlpts.Add(lpts[i + 1]);
+                            vlpts.Add(lpts[i + 1]);
+                            vlpts.Add(lpts[i + 2]);
+                        }
 
-                            rc.DrawLineSegments(
-                                hlpts,
-                                actualColor,
-                                this.StrokeThickness,
-                                this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness),
-                                dashArray,
-                                this.LineJoin);
-                            rc.DrawLineSegments(
-                                vlpts,
-                                actualColor,
-                                verticalStrokeThickness,
-                                this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness),
-                                verticalLineDashArray,
-                                this.LineJoin);
-                        }
-                        else
-                        {
-                            rc.DrawLine(
-                                lpts,
-                                actualColor,
-                                this.StrokeThickness,
-                                this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness),
-                                dashArray,
-                                this.LineJoin);
-                        }
+                        rc.DrawLineSegments(
+                            hlpts,
+                            actualColor,
+                            this.StrokeThickness,
+                            this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness),
+                            dashArray,
+                            this.LineJoin);
+                        rc.DrawLineSegments(
+                            vlpts,
+                            actualColor,
+                            verticalStrokeThickness,
+                            this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness),
+                            verticalLineDashArray,
+                            this.LineJoin);
                     }
-
-                    if (this.MarkerType != MarkerType.None)
+                    else
                     {
-                        rc.DrawMarkers(
-                            mpts,
-                            this.MarkerType,
-                            this.MarkerOutline,
-                            new[] { this.MarkerSize },
-                            this.ActualMarkerFill,
-                            this.MarkerStroke,
-                            this.MarkerStrokeThickness,
-                            this.EdgeRenderingMode);
+                        rc.DrawLine(
+                            lpts,
+                            actualColor,
+                            this.StrokeThickness,
+                            this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness),
+                            dashArray,
+                            this.LineJoin);
                     }
-                };
+                }
+
+                if (this.MarkerType != MarkerType.None)
+                {
+                    rc.DrawMarkers(
+                        mpts,
+                        this.MarkerType,
+                        this.MarkerOutline,
+                        new[] { this.MarkerSize },
+                        this.ActualMarkerFill,
+                        this.MarkerStroke,
+                        this.MarkerStrokeThickness,
+                        this.EdgeRenderingMode);
+                }
+            }
 
             // Transform all points to screen coordinates
             // Render the line when invalid points occur

@@ -9,11 +9,10 @@
 
 namespace OxyPlot.Series
 {
+    using OxyPlot;
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using OxyPlot;
-    using OxyPlot.Series;
 
     /// <summary>
     /// Represents a series where the line can be rendered using a different style
@@ -162,7 +161,7 @@ namespace OxyPlot.Series
         /// </summary>
         protected internal override void UpdateMaxMin()
         {
-            if (this.IgnoreExtraplotationForScaling && this.orderedIntervals.Any())
+            if (this.IgnoreExtraplotationForScaling && this.orderedIntervals.Count > 0)
             {
                 this.MinX = this.Points
                     .Where(p => !this.InAnyInterval(p.X))
@@ -223,8 +222,7 @@ namespace OxyPlot.Series
             {
                 var centerX = this.InverseTransform(rect.Center).X;
 
-                bool isInterval = this.orderedIntervals != null
-                    && this.orderedIntervals.Any(i => i.Contains(centerX));
+                bool isInterval = this.orderedIntervals?.Any(i => i.Contains(centerX)) == true;
 
                 using (rc.AutoResetClip(rect))
                 {
@@ -242,7 +240,7 @@ namespace OxyPlot.Series
         {
             var previous = minX;
 
-            if (this.orderedIntervals != null && this.orderedIntervals.Any())
+            if (this.orderedIntervals?.Count > 0)
             {
                 IEnumerable<double> flatLimits
                     = this.Flatten(this.orderedIntervals).Where(l => l >= minX && l <= maxX);

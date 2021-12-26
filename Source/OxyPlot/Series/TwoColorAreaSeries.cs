@@ -10,7 +10,6 @@
 namespace OxyPlot.Series
 {
     using System.Collections.Generic;
-    using System.Linq;
 
     /// <summary>
     /// Represents a two-color area series.
@@ -36,7 +35,7 @@ namespace OxyPlot.Series
         /// Start index of a visible rendering window for markers.
         /// </summary>
         private int markerStartIndex;
-        
+
         /// <summary>
         /// Initializes a new instance of the <see cref = "TwoColorAreaSeries" /> class.
         /// </summary>
@@ -237,8 +236,8 @@ namespace OxyPlot.Series
                     aboveMarkers,
                     this.MarkerType,
                     null,
-                    markerSizes, 
-                    this.ActualMarkerFill, 
+                    markerSizes,
+                    this.ActualMarkerFill,
                     this.MarkerStroke,
                     this.MarkerStrokeThickness,
                     this.EdgeRenderingMode,
@@ -379,7 +378,7 @@ namespace OxyPlot.Series
         {
             var result = new List<ScreenPoint>();
 
-            if (double.IsNaN(baseline) || source.Count <= 0)
+            if (double.IsNaN(baseline) || source.Count == 0)
             {
                 return result;
             }

@@ -1,10 +1,9 @@
 ﻿namespace OxyPlot.Series
 {
+    using Axes;
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
-    using Axes;
 
     /// <summary>
     /// Represents a series that can be bound to a collection of <see cref="RectangleItem"/>.
@@ -173,8 +172,7 @@
                 return;
             }
 
-            var sourceAsListOfDataRects = this.ItemsSource as List<RectangleItem>;
-            if (sourceAsListOfDataRects != null)
+            if (this.ItemsSource is List<RectangleItem> sourceAsListOfDataRects)
             {
                 this.actualItems = sourceAsListOfDataRects;
                 this.ownsActualItems = false;
@@ -183,8 +181,7 @@
 
             this.ClearActualItems();
 
-            var sourceAsEnumerableDataRects = this.ItemsSource as IEnumerable<RectangleItem>;
-            if (sourceAsEnumerableDataRects != null)
+            if (this.ItemsSource is IEnumerable<RectangleItem> sourceAsEnumerableDataRects)
             {
                 this.actualItems.AddRange(sourceAsEnumerableDataRects);
             }
@@ -208,23 +205,23 @@
                 var rectrect = new OxyRect(p1, p2);
 
                 rc.DrawRectangle(
-                    rectrect, 
-                    rectcolor, 
+                    rectrect,
+                    rectcolor,
                     OxyColors.Undefined,
-                    0, 
+                    0,
                     this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness));
 
                 if (this.LabelFontSize > 0)
                 {
                     rc.DrawText(
-                        rectrect.Center, 
-                        item.Value.ToString(this.LabelFormatString), 
-                        this.ActualTextColor, 
-                        this.ActualFont, 
-                        this.LabelFontSize, 
-                        this.ActualFontWeight, 
-                        0, 
-                        HorizontalAlignment.Center, 
+                        rectrect.Center,
+                        item.Value.ToString(this.LabelFormatString),
+                        this.ActualTextColor,
+                        this.ActualFont,
+                        this.LabelFontSize,
+                        this.ActualFontWeight,
+                        0,
+                        HorizontalAlignment.Center,
                         VerticalAlignment.Middle);
                 }
             }
@@ -298,7 +295,7 @@
         /// </summary>
         protected internal void UpdateMaxMinXY()
         {
-            if (this.ActualItems != null && this.ActualItems.Count > 0)
+            if (this.ActualItems?.Count > 0)
             {
                 this.MinX = Math.Min(this.ActualItems.Min(r => r.A.X), this.ActualItems.Min(r => r.B.X));
                 this.MaxX = Math.Max(this.ActualItems.Max(r => r.A.X), this.ActualItems.Max(r => r.B.X));
@@ -322,7 +319,7 @@
 
             this.UpdateMaxMinXY();
 
-            if (this.ActualItems != null && this.ActualItems.Count > 0)
+            if (this.ActualItems?.Count > 0)
             {
                 this.MinValue = this.ActualItems.Min(r => r.Value);
                 this.MaxValue = this.ActualItems.Max(r => r.Value);
@@ -335,8 +332,7 @@
         protected internal override void UpdateAxisMaxMin()
         {
             base.UpdateAxisMaxMin();
-            var colorAxis = this.ColorAxis as Axis;
-            if (colorAxis != null)
+            if (this.ColorAxis is Axis colorAxis)
             {
                 colorAxis.Include(this.MinValue);
                 colorAxis.Include(this.MaxValue);

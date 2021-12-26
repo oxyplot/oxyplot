@@ -9,9 +9,8 @@
 
 namespace OxyPlot.Series
 {
-    using System;
-
     using OxyPlot.Axes;
+    using System;
 
     /// <summary>
     /// Specifies how the heat map coordinates are defined.
@@ -390,8 +389,7 @@ namespace OxyPlot.Series
             }
 
             var value = GetValue(this.Data, i, j);
-            var colorAxis = this.ColorAxis as Axis;
-            var colorAxisTitle = (colorAxis != null ? colorAxis.Title : null) ?? DefaultColorAxisTitle;
+            var colorAxisTitle = (this.ColorAxis is Axis colorAxis ? colorAxis.Title : null) ?? DefaultColorAxisTitle;
 
             return new TrackerHitResult
             {
@@ -489,8 +487,7 @@ namespace OxyPlot.Series
         protected internal override void UpdateAxisMaxMin()
         {
             base.UpdateAxisMaxMin();
-            var colorAxis = this.ColorAxis as Axis;
-            if (colorAxis != null)
+            if (this.ColorAxis is Axis colorAxis)
             {
                 colorAxis.Include(this.MinValue);
                 colorAxis.Include(this.MaxValue);

@@ -9,11 +9,9 @@
 
 namespace OxyPlot.Series
 {
-    using System;
+    using OxyPlot.Axes;
     using System.Collections.Generic;
     using System.Linq;
-
-    using OxyPlot.Axes;
 
     /// <summary>
     /// Represents a series for box plots.
@@ -289,7 +287,7 @@ namespace OxyPlot.Series
         public virtual bool IsValidPoint(BoxPlotItem item, Axis xaxis, Axis yaxis)
         {
             return !double.IsNaN(item.X) && !double.IsInfinity(item.X) && !item.Values.Any(double.IsNaN)
-                   && !item.Values.Any(double.IsInfinity) && (xaxis != null && xaxis.IsValidValue(item.X))
+                   && !item.Values.Any(double.IsInfinity) && (xaxis?.IsValidValue(item.X) == true)
                    && (yaxis != null && item.Values.All(yaxis.IsValidValue));
         }
 
@@ -371,10 +369,10 @@ namespace OxyPlot.Series
                     // Draw the box
                     var rect = this.GetBoxRect(item);
                     rc.DrawRectangle(
-                        rect, 
-                        fillColor, 
-                        strokeColor, 
-                        this.StrokeThickness, 
+                        rect,
+                        fillColor,
+                        strokeColor,
+                        this.StrokeThickness,
                         this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness));
                 }
 
@@ -468,49 +466,31 @@ namespace OxyPlot.Series
             var fillColor = this.GetSelectableFillColor(this.Fill);
 
             // render the legend with EdgeRenderingMode.PreferGeometricAccuracy, because otherwise the fine geometry can look 'weird'
-            rc.DrawLine(
-                new[] { new ScreenPoint(xmid, legendBox.Top), new ScreenPoint(xmid, ytop) },
-                strokeColor,
-                LegendStrokeThickness,
-                this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferGeometricAccuracy),
-                LineStyle.Solid.GetDashArray(),
-                LineJoin.Miter);
-
-            rc.DrawLine(
-                new[] { new ScreenPoint(xmid, ybottom), new ScreenPoint(xmid, legendBox.Bottom) },
-                strokeColor,
-                LegendStrokeThickness,
-                this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferGeometricAccuracy),
-                LineStyle.Solid.GetDashArray(),
-                LineJoin.Miter);
+            rc.DrawLineSegments(new[]
+            {
+                new ScreenPoint(xmid, legendBox.Top), new ScreenPoint(xmid, ytop),
+                new ScreenPoint(xmid, ybottom), new ScreenPoint(xmid, legendBox.Bottom)
+            },
+            strokeColor,
+            LegendStrokeThickness,
+            this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferGeometricAccuracy),
+            LineStyle.Solid.GetDashArray());
 
             if (this.WhiskerWidth > 0)
             {
-                // top whisker
-                rc.DrawLine(
-                    new[]
-                        {
-                            new ScreenPoint(xmid - halfWhiskerWidth, legendBox.Bottom),
-                            new ScreenPoint(xmid + halfWhiskerWidth, legendBox.Bottom)
-                        },
-                    strokeColor,
-                    LegendStrokeThickness,
-                    this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferGeometricAccuracy),
-                    LineStyle.Solid.GetDashArray(),
-                    LineJoin.Miter);
-
-                // bottom whisker
-                rc.DrawLine(
-                    new[]
-                        {
-                            new ScreenPoint(xmid - halfWhiskerWidth, legendBox.Top),
-                            new ScreenPoint(xmid + halfWhiskerWidth, legendBox.Top)
-                        },
-                    strokeColor,
-                    LegendStrokeThickness,
-                    this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferGeometricAccuracy),
-                    LineStyle.Solid.GetDashArray(),
-                    LineJoin.Miter);
+                rc.DrawLineSegments(new[]
+                {
+                    // top whisker
+                    new ScreenPoint(xmid - halfWhiskerWidth, legendBox.Bottom),
+                    new ScreenPoint(xmid + halfWhiskerWidth, legendBox.Bottom),
+                    // bottom whisker
+                    new ScreenPoint(xmid - halfWhiskerWidth, legendBox.Top),
+                    new ScreenPoint(xmid + halfWhiskerWidth, legendBox.Top)
+                },
+                strokeColor,
+                LegendStrokeThickness,
+                this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferGeometricAccuracy),
+                LineStyle.Solid.GetDashArray());
             }
 
             if (this.ShowBox)
@@ -556,8 +536,7 @@ namespace OxyPlot.Series
                 return;
             }
 
-            var sourceAsListOfT = this.ItemsSource as IEnumerable<BoxPlotItem>;
-            if (sourceAsListOfT != null)
+            if (this.ItemsSource is IEnumerable<BoxPlotItem> sourceAsListOfT)
             {
                 this.itemsSourceItems = sourceAsListOfT.ToList();
                 this.ownsItemsSourceItems = false;

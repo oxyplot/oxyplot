@@ -113,13 +113,11 @@ namespace OxyPlot.Series
         public bool IsDefined()
         {
             // check that x and y is not NaN (the code below is faster than double.IsNaN)
-#pragma warning disable 1718
             // ReSharper disable EqualExpressionComparison
             // ReSharper disable CompareOfFloatsByEqualityOperator
             return this.A.IsDefined() && this.B.IsDefined() && !double.IsNaN(this.Value);
             // ReSharper restore CompareOfFloatsByEqualityOperator
             // ReSharper restore EqualExpressionComparison
-#pragma warning restore 1718
         }
     }
 }

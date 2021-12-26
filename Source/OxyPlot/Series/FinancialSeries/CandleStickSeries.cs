@@ -10,6 +10,7 @@
 namespace OxyPlot.Series
 {
     using System;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Represents a "higher performance" ordered OHLC series for candlestick charts
@@ -58,11 +59,11 @@ namespace OxyPlot.Series
         public double CandleWidth { get; set; }
 
         /// <summary>
-        /// Fast index of bar where max(bar[i].X) &lt;= x 
+        /// Fast index of bar where max(bar[i].X) &lt;= x
         /// </summary>
         /// <returns>The index of the bar closest to X, where max(bar[i].X) &lt;= x.</returns>
         /// <param name="x">The x coordinate.</param>
-        /// <param name="startIndex">starting index</param> 
+        /// <param name="startIndex">starting index</param>
         public int FindByX(double x, int startIndex = -1)
         {
             if (startIndex < 0)
@@ -73,11 +74,16 @@ namespace OxyPlot.Series
             return this.FindWindowStartIndex(this.Items, item => item.X, x, startIndex);
         }
 
+        private readonly List<ScreenPoint> barLinesUp = new List<ScreenPoint>();
+        private readonly List<ScreenPoint> barLinesDown = new List<ScreenPoint>();
+        private readonly List<OxyRect> barRectUp = new List<OxyRect>();
+        private readonly List<OxyRect> barRectDown = new List<OxyRect>();
+
         /// <inheritdoc/>
         public override void Render(IRenderContext rc)
         {
-            var nitems = this.Items.Count;
             var items = this.Items;
+            var nitems = items.Count;
 
             if (nitems == 0 || this.StrokeThickness <= 0 || this.LineStyle == LineStyle.None)
             {
@@ -90,7 +96,7 @@ namespace OxyPlot.Series
 
             var dataCandlewidth = (this.CandleWidth > 0) ? this.CandleWidth : this.minDx * 0.80;
             var halfDataCandlewidth = .5 * dataCandlewidth;
-            
+
             // colors
             var fillUp = this.GetSelectableFillColor(this.IncreasingColor);
             var fillDown = this.GetSelectableFillColor(this.DecreasingColor);
@@ -102,56 +108,72 @@ namespace OxyPlot.Series
             var xmax = this.XAxis.ClipMaximum;
             this.WindowStartIndex = this.UpdateWindowStartIndex(items, item => item.X, xmin, this.WindowStartIndex);
 
+            bool renderExtents = this.StrokeThickness > 0 && this.LineStyle != LineStyle.None;
+
             for (int i = this.WindowStartIndex; i < nitems; i++)
             {
                 var bar = items[i];
 
-                // if item beyond visible range, done
-                if (bar.X > xmax)
-                {
-                    return;
-                }
-
                 // check to see whether is valid
-                if (!this.IsValidItem(bar, this.XAxis, this.YAxis))
+                if (!bar.IsValid())
                 {
                     continue;
                 }
 
-                var fillColor = bar.Close > bar.Open ? fillUp : fillDown;
-                var lineColor = bar.Close > bar.Open ? lineUp : lineDown;
+                // if item beyond visible range, done
+                if (bar.X > xmax)
+                {
+                    break;
+                }
+
+                bool isUp = bar.Close > bar.Open;
 
                 var high = this.Transform(bar.X, bar.High);
                 var low = this.Transform(bar.X, bar.Low);
                 var max = this.Transform(bar.X, Math.Max(bar.Open, bar.Close));
                 var min = this.Transform(bar.X, Math.Min(bar.Open, bar.Close));
 
-                if (this.StrokeThickness > 0 && this.LineStyle != LineStyle.None)
+                if (renderExtents)
                 {
-                    // Upper extent
-                    rc.DrawLine(
-                        new[] { high, max },
-                        lineColor,
-                        this.StrokeThickness,
-                        this.EdgeRenderingMode,
-                        dashArray,
-                        this.LineJoin);
-
-                    // Lower extent
-                    rc.DrawLine(
-                        new[] { min, low },
-                        lineColor,
-                        this.StrokeThickness,
-                        this.EdgeRenderingMode,
-                        dashArray,
-                        this.LineJoin);
+                    if (isUp)
+                    {
+                        barLinesUp.AddRange(new[]
+                        {
+                            high, max,  // Upper extent
+                            min, low    // Lower extent
+                        });
+                    }
+                    else
+                    {
+                        barLinesDown.AddRange(new[]
+                        {
+                            high, max,  // Upper extent
+                            min, low    // Lower extent
+                        });
+                    }
                 }
 
-                var p1 = this.Transform(bar.X - halfDataCandlewidth, bar.Open);
-                var p2 = this.Transform(bar.X + halfDataCandlewidth, bar.Close);
-                var rect = new OxyRect(p1, p2);
-                rc.DrawRectangle(rect, fillColor, lineColor, this.StrokeThickness, this.EdgeRenderingMode);
+                var rect = new OxyRect(this.Transform(bar.X - halfDataCandlewidth, bar.Open),
+                                       this.Transform(bar.X + halfDataCandlewidth, bar.Close));
+                if (isUp)
+                {
+                    barRectUp.Add(rect);
+                }
+                else
+                {
+                    barRectDown.Add(rect);
+                }
             }
+
+            rc.DrawLineSegments(barLinesUp, lineUp, this.StrokeThickness, this.EdgeRenderingMode);
+            rc.DrawLineSegments(barLinesDown, lineDown, this.StrokeThickness, this.EdgeRenderingMode);
+            rc.DrawRectangles(barRectUp, fillUp, lineUp, this.StrokeThickness, this.EdgeRenderingMode);
+            rc.DrawRectangles(barRectDown, fillDown, lineDown, this.StrokeThickness, this.EdgeRenderingMode);
+
+            barLinesUp.Clear();
+            barLinesDown.Clear();
+            barRectUp.Clear();
+            barRectDown.Clear();
         }
 
         /// <summary>
@@ -164,8 +186,6 @@ namespace OxyPlot.Series
             double xmid = (legendBox.Left + legendBox.Right) / 2;
             double yopen = legendBox.Top + ((legendBox.Bottom - legendBox.Top) * 0.7);
             double yclose = legendBox.Top + ((legendBox.Bottom - legendBox.Top) * 0.3);
-            double[] dashArray = this.LineStyle.GetDashArray();
-
             var candlewidth = legendBox.Width * 0.75;
 
             if (this.StrokeThickness > 0 && this.LineStyle != LineStyle.None)
@@ -175,7 +195,7 @@ namespace OxyPlot.Series
                     this.GetSelectableColor(this.ActualColor),
                     this.StrokeThickness,
                     this.EdgeRenderingMode,
-                    dashArray,
+                    this.LineStyle.GetDashArray(),
                     LineJoin.Miter);
             }
 
@@ -213,7 +233,7 @@ namespace OxyPlot.Series
             var pidx = this.FindWindowStartIndex(this.Items, item => item.X, targetX, this.WindowStartIndex);
             var nidx = ((pidx + 1) < this.Items.Count) ? pidx + 1 : pidx;
 
-            Func<HighLowItem, double> distance = bar =>
+            double distance(HighLowItem bar)
             {
                 var dx = bar.X - xy.X;
                 var dyo = bar.Open - xy.Y;
@@ -227,14 +247,14 @@ namespace OxyPlot.Series
                 var d2C = (dx * dx) + (dyc * dyc);
 
                 return Math.Min(d2O, Math.Min(d2H, Math.Min(d2L, d2C)));
-            };
+            }
 
             // determine closest point
-            var midx = distance(this.Items[pidx]) <= distance(this.Items[nidx]) ? pidx : nidx; 
+            var midx = distance(this.Items[pidx]) <= distance(this.Items[nidx]) ? pidx : nidx;
             var mbar = this.Items[midx];
 
             var hit = new DataPoint(mbar.X, mbar.Close);
-            return new TrackerHitResult 
+            return new TrackerHitResult
             {
                 Series = this,
                 DataPoint = hit,
@@ -261,7 +281,7 @@ namespace OxyPlot.Series
         protected internal override void UpdateData()
         {
             base.UpdateData();
-            
+
             // determine minimum X gap between successive points
             var items = this.Items;
             var nitems = items.Count;

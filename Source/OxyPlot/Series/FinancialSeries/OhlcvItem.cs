@@ -14,22 +14,22 @@ namespace OxyPlot.Series
     /// <summary>
     /// Represents an item in a <see cref="CandleStickAndVolumeSeries" />.
     /// </summary>
-    public class OhlcvItem
+    public class OhlcvItem : HighLowItem
     {
         /// <summary>
         /// The undefined.
         /// </summary>
-        public static readonly OhlcvItem Undefined = new OhlcvItem(double.NaN, double.NaN, double.NaN, double.NaN, double.NaN);
+        public static new readonly OhlcvItem Undefined = new OhlcvItem(double.NaN, double.NaN, double.NaN, double.NaN, double.NaN);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OhlcvItem" /> class.
         /// </summary>
         public OhlcvItem()
-        { 
+        {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OxyPlot.Series.OhlcvItem"/> class.
+        /// Initializes a new instance of the <see cref="OhlcvItem"/> class.
         /// </summary>
         /// <param name="x">The x coordinate / time.</param>
         /// <param name="open">Open value.</param>
@@ -39,54 +39,19 @@ namespace OxyPlot.Series
         /// <param name="buyvolume">Buy volume.</param>
         /// <param name="sellvolume">Sell volume.</param>
         public OhlcvItem(
-            double x, 
-            double open, 
-            double high, 
-            double low, 
+            double x,
+            double open,
+            double high,
+            double low,
             double close,
-            double buyvolume = 0, 
-            double sellvolume = 0)
+            double buyvolume = 0,
+            double sellvolume = 0) : base(x, high, low, open, close)
         {
-            this.X = x;
-            this.Open = open;
-            this.High = high;
-            this.Low = low;
-            this.Close = close;
             this.BuyVolume = buyvolume;
             this.SellVolume = sellvolume;
         }
 
         // Properties
-
-        /// <summary>
-        /// Gets or sets the X value (time).
-        /// </summary>
-        /// <value>The X value.</value>
-        public double X { get; set; }
-
-        /// <summary>
-        /// Gets or sets the open value.
-        /// </summary>
-        /// <value>The open value.</value>
-        public double Open { get; set; }
-
-        /// <summary>
-        /// Gets or sets the high value.
-        /// </summary>
-        /// <value>The high value.</value>
-        public double High { get; set; }
-
-        /// <summary>
-        /// Gets or sets the low value.
-        /// </summary>
-        /// <value>The low value.</value>
-        public double Low { get; set; }
-
-        /// <summary>
-        /// Gets or sets the close value.
-        /// </summary>
-        /// <value>The close value.</value>
-        public double Close { get; set; }
 
         /// <summary>
         /// Gets or sets the buy volume.
@@ -150,9 +115,9 @@ namespace OxyPlot.Series
                     }
                 }
                 else
-                { 
-                    start = guessIdx + 1; 
-                    lastguess = guessIdx; 
+                {
+                    start = guessIdx + 1;
+                    lastguess = guessIdx;
                 }
 
                 if (start >= end)
@@ -171,12 +136,14 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Indicate whether is valid for rendering or not
+        /// Returns C# code that generates this instance.
         /// </summary>
-        /// <returns><c>true</c> if this instance is valid; otherwise, <c>false</c>.</returns>
-        public bool IsValid()
+        /// <returns>The C# code.</returns>
+        public override string ToCode()
         {
-            return !double.IsNaN(this.X) && !double.IsNaN(this.Open) && !double.IsNaN(this.High) && !double.IsNaN(this.Low) && !double.IsNaN(this.Close);
+            return CodeGenerator.FormatConstructor(
+                this.GetType(), "{0},{1},{2},{3},{4},{5},{6}",
+                this.X, this.High, this.Low, this.Open, this.Close, this.BuyVolume, this.SellVolume);
         }
     }
 }

@@ -84,6 +84,8 @@ namespace OxyPlot.Axes
                 }
             }
 
+            const double degree = Math.PI / 180d;
+
             //Text rendering
             foreach (var value in this.MajorLabelValues.Take(majorTickCount))
             {
@@ -91,7 +93,6 @@ namespace OxyPlot.Axes
 
                 var angle = Math.Atan2(pt.y - magnitudeAxis.MidPoint.y, pt.x - magnitudeAxis.MidPoint.x);
 
-                double degree = Math.PI / 180d;
                 // Convert to degrees
                 angle /= degree;
 
@@ -131,10 +132,6 @@ namespace OxyPlot.Axes
                     va = VerticalAlignment.Middle;
                     pt.x -= axis.AxisTickToLabelDistance;
                 }
-                else
-                {
-
-                }
 
                 if (Math.Abs(Math.Abs(angle) - 90) < 10)
                 {
@@ -169,8 +166,7 @@ namespace OxyPlot.Axes
             ScreenPoint result = new ScreenPoint();
             //I think the key is to NOT compute the axis scaled value of the angle, BUT to just draw it from the Midpoint to the end of the PlotView
             //For each MinorTickValue, compute an intersection point within the client area
-            double width_to_height = plotArea.Width / plotArea.Height;
-
+            //double width_to_height = plotArea.Width / plotArea.Height;
 
             double theta = (x - axis.Offset) * axis.Scale;
             theta %= 360.0d;
@@ -194,19 +190,19 @@ namespace OxyPlot.Axes
                 double lineend_y = x_portion * _y;
                 if (lineend_y + midPoint.Y > plotArea.Bottom || lineend_y + midPoint.Y < plotArea.Top)
                 {
-                    double delta_y = 0;
+                    double delta_y;
                     if (_y > 0)
                         delta_y = plotArea.Bottom - midPoint.Y;
                     else
                         delta_y = plotArea.Top - midPoint.Y;
 
                     double y_portion = delta_y / _y;
-                    lineend_x = y_portion * _x;
-                    lineend_y = y_portion * _y;
                     result = new ScreenPoint((y_portion * _x) + midPoint.X, (y_portion * _y) + midPoint.Y);
                 }
                 else
+                {
                     result = new ScreenPoint(lineend_x + midPoint.X, lineend_y + midPoint.Y);
+                }
             }
             return result;
         }

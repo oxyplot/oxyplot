@@ -9,7 +9,7 @@
 
 namespace OxyPlot.Wpf
 {
-#if !NET40
+#if !NETFRAMEWORK
     using System.IO;
     using System.IO.Packaging;
     using System.Printing;

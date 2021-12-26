@@ -87,10 +87,22 @@ namespace OxyPlot.Series
         /// Returns C# code that generates this instance.
         /// </summary>
         /// <returns>The C# code.</returns>
-        public string ToCode()
+        public virtual string ToCode()
         {
             return CodeGenerator.FormatConstructor(
-                this.GetType(), "{0},{1},{2},{3},{4}", this.X, this.High, this.Low, this.Open, this.Close);
+                this.GetType(), "{0},{1},{2},{3},{4}",
+                this.X, this.High, this.Low, this.Open, this.Close);
+        }
+
+        /// <summary>
+        /// Indicate whether is valid for rendering or not
+        /// </summary>
+        /// <returns><c>true</c> if this instance is valid; otherwise, <c>false</c>.</returns>
+        public virtual bool IsValid()
+        {
+            return !double.IsNaN(this.X) && !double.IsNaN(this.Open) &&
+                   !double.IsNaN(this.High) && !double.IsNaN(this.Low) &&
+                   !double.IsNaN(this.Close);
         }
     }
 }

@@ -138,11 +138,11 @@ namespace OxyPlot.Series
             }
 
             rc.DrawLineSegments(
-                segments, 
-                this.GetSelectableColor(this.ErrorBarColor), 
-                this.ErrorBarStrokeThickness, 
+                segments,
+                this.GetSelectableColor(this.ErrorBarColor),
+                this.ErrorBarStrokeThickness,
                 this.EdgeRenderingMode,
-                null, 
+                null,
                 LineJoin.Bevel);
         }
 

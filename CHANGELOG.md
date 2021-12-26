@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 ### Changed
-
+- Core - Update to net452, modernise code and improve rendering performance of financial series (#1836)
 ### Removed
 
 ### Fixed

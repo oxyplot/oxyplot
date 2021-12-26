@@ -113,7 +113,7 @@ namespace OxyPlot.Series
             var clippingRect = this.GetClippingRect();
             var p1 = this.InverseTransform(clippingRect.BottomLeft);
             var p2 = this.InverseTransform(clippingRect.TopRight);
-            
+
             var clippingRectLo = new OxyRect(
                 this.Transform(p1.X, Math.Min(p1.Y, p2.Y)),
                 this.Transform(p2.X, this.Limit)).Clip(clippingRect);

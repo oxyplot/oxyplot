@@ -38,8 +38,7 @@ namespace OxyPlot.Series
                 return null;
             }
 
-            var list = itemsSource as IList;
-            if (list != null)
+            if (itemsSource is IList list)
             {
                 if (index < list.Count && index >= 0)
                 {
@@ -50,7 +49,7 @@ namespace OxyPlot.Series
             }
 
             var i = 0;
-            return itemsSource.Cast<object>().FirstOrDefault(item => i++ == index);
+            return itemsSource.Cast<object>().FirstOrDefault(_ => i++ == index);
         }
 
         /// <summary>

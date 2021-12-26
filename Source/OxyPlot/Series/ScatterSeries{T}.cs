@@ -9,10 +9,9 @@
 
 namespace OxyPlot.Series
 {
+    using OxyPlot.Axes;
     using System;
     using System.Collections.Generic;
-
-    using OxyPlot.Axes;
 
     /// <summary>
     /// Provides a base class for scatter series.
@@ -81,7 +80,7 @@ namespace OxyPlot.Series
         public Func<object, T> Mapping { get; set; }
 
         /// <summary>
-        /// Gets or sets the size of the 'binning' feature. 
+        /// Gets or sets the size of the 'binning' feature.
         /// If this number is greater than 1, bins of the specified is created for both x and y directions. Only one point will be drawn in each bin.
         /// </summary>
         /// <value>
@@ -93,7 +92,7 @@ namespace OxyPlot.Series
         /// Gets the actual color axis.
         /// </summary>
         /// <value>A <see cref="IColorAxis" />.</value>
-        /// <remarks>This is used to map scatter point values to colors. Use the <see cref="ColorAxisKey" /> to specify a color axis. 
+        /// <remarks>This is used to map scatter point values to colors. Use the <see cref="ColorAxisKey" /> to specify a color axis.
         /// If the <see cref="ColorAxisKey" /> is not specified, the first <see cref="IColorAxis" /> of the <see cref="PlotModel" /> will be used.</remarks>
         public IColorAxis ColorAxis { get; private set; }
 
@@ -101,7 +100,7 @@ namespace OxyPlot.Series
         /// Gets or sets the color axis key.
         /// </summary>
         /// <value>The color axis key. The default is <c>null</c>.</value>
-        /// <remarks>If set to <c>null</c>, the first <see cref="IColorAxis" /> of the <see cref="PlotModel" /> will be used. 
+        /// <remarks>If set to <c>null</c>, the first <see cref="IColorAxis" /> of the <see cref="PlotModel" /> will be used.
         /// Make sure that the points contains values.
         /// If your <see cref="PlotModel" /> contains a <see cref="IColorAxis" />, but you don't want to use a color axis, set the value to <c>string.Empty</c> or some other key that is not in use.</remarks>
         public string ColorAxisKey { get; set; }
@@ -170,7 +169,7 @@ namespace OxyPlot.Series
         public OxyColor MarkerStroke { get; set; }
 
         /// <summary>
-        /// Gets or sets thickness of the the marker strokes.
+        /// Gets or sets thickness of the marker strokes.
         /// </summary>
         /// <value>The thickness. The default is <c>1</c>.</value>
         public double MarkerStrokeThickness { get; set; }
@@ -724,8 +723,7 @@ namespace OxyPlot.Series
                 this.MaxValue = maxvalue;
             }
 
-            var colorAxis = this.ColorAxis as Axis;
-            if (colorAxis != null)
+            if (this.ColorAxis is Axis colorAxis)
             {
                 colorAxis.Include(this.MinValue);
                 colorAxis.Include(this.MaxValue);
@@ -764,8 +762,7 @@ namespace OxyPlot.Series
             this.MinValue = minvalue;
             this.MaxValue = maxvalue;
 
-            var colorAxis = this.ColorAxis as Axis;
-            if (colorAxis != null)
+            if (this.ColorAxis is Axis colorAxis)
             {
                 colorAxis.Include(this.MinValue);
                 colorAxis.Include(this.MaxValue);
@@ -811,8 +808,7 @@ namespace OxyPlot.Series
                 return;
             }
 
-            var sourceAsListOfScatterPoints = this.ItemsSource as List<T>;
-            if (sourceAsListOfScatterPoints != null)
+            if (this.ItemsSource is List<T> sourceAsListOfScatterPoints)
             {
                 this.ItemsSourcePoints = sourceAsListOfScatterPoints;
                 this.OwnsItemsSourcePoints = false;
@@ -821,8 +817,7 @@ namespace OxyPlot.Series
 
             this.ClearItemsSourcePoints();
 
-            var sourceAsEnumerableScatterPoints = this.ItemsSource as IEnumerable<T>;
-            if (sourceAsEnumerableScatterPoints != null)
+            if (this.ItemsSource is IEnumerable<T> sourceAsEnumerableScatterPoints)
             {
                 this.ItemsSourcePoints.AddRange(sourceAsEnumerableScatterPoints);
                 return;
@@ -833,14 +828,13 @@ namespace OxyPlot.Series
             {
                 foreach (var item in this.ItemsSource)
                 {
-                    if (item is T)
+                    if (item is T t)
                     {
-                        this.ItemsSourcePoints.Add((T)item);
+                        this.ItemsSourcePoints.Add(t);
                         continue;
                     }
 
-                    var idpp = item as IScatterPointProvider;
-                    if (idpp != null)
+                    if (item is IScatterPointProvider idpp)
                     {
                         this.ItemsSourcePoints.Add((T)idpp.GetScatterPoint());
                     }

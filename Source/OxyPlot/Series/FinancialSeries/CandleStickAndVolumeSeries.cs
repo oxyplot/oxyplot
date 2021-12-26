@@ -9,10 +9,10 @@
 
 namespace OxyPlot.Series
 {
+    using OxyPlot.Axes;
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using OxyPlot.Axes;
 
     /// <summary>
     /// Represents a dual view (candlestick + volume) series for OHLCV bars
@@ -208,11 +208,11 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Fast index of bar where max(bar[i].X) &lt;= x 
+        /// Fast index of bar where max(bar[i].X) &lt;= x
         /// </summary>
         /// <returns>The index of the bar closest to X, where max(bar[i].X) &lt;= x.</returns>
         /// <param name="x">The x coordinate.</param>
-        /// <param name="startingIndex">starting index</param> 
+        /// <param name="startingIndex">starting index</param>
         public int FindByX(double x, int startingIndex = -1)
         {
             if (startingIndex < 0)
@@ -222,6 +222,13 @@ namespace OxyPlot.Series
 
             return OhlcvItem.FindIndex(this.data, x, startingIndex);
         }
+
+        private readonly List<ScreenPoint> barLinesUpRender = new List<ScreenPoint>();
+        private readonly List<ScreenPoint> barLinesDownRender = new List<ScreenPoint>();
+        private readonly List<OxyRect> barRectUpRender = new List<OxyRect>();
+        private readonly List<OxyRect> barRectDownRender = new List<OxyRect>();
+        private readonly List<OxyRect> volumeRectUpRender = new List<OxyRect>();
+        private readonly List<OxyRect> volumeRectDownRender = new List<OxyRect>();
 
         /// <inheritdoc/>
         public override void Render(IRenderContext rc)
@@ -241,7 +248,7 @@ namespace OxyPlot.Series
                 }
 
                 var items = this.data;
-                var nitems = this.data.Count;
+                var nitems = items.Count;
 
                 this.VerifyAxes();
 
@@ -253,6 +260,10 @@ namespace OxyPlot.Series
                 var candlewidth =
                     this.XAxis.Transform(items[0].X + datacandlewidth) -
                     this.XAxis.Transform(items[0].X) - this.StrokeThickness;
+
+                candlewidth = Math.Max(candlewidth, 0); // hack to handle < 0, to improve, no need to render rectangles with 0 width
+
+                bool renderVolume = VolumeAxis != null && VolumeStyle != VolumeStyle.None;
 
                 // colors
                 var fillUp = this.GetSelectableFillColor(this.PositiveColor);
@@ -267,17 +278,11 @@ namespace OxyPlot.Series
                 // determine render range
                 var xmin = this.XAxis.ClipMinimum;
                 var xmax = this.XAxis.ClipMaximum;
-                this.winIndex = OhlcvItem.FindIndex(items, xmin, this.winIndex);
+                this.WindowStartIndex = this.UpdateWindowStartIndex(items, item => item.X, xmin, this.WindowStartIndex);
 
-                for (int i = this.winIndex; i < nitems; i++)
+                for (int i = this.WindowStartIndex; i < nitems; i++)
                 {
                     var bar = items[i];
-
-                    // if item beyond visible range, done
-                    if (bar.X > xmax)
-                    {
-                        break;
-                    }
 
                     // check to see whether is valid
                     if (!bar.IsValid())
@@ -285,8 +290,13 @@ namespace OxyPlot.Series
                         continue;
                     }
 
-                    var fillColor = bar.Close > bar.Open ? barfillUp : barfillDown;
-                    var lineColor = bar.Close > bar.Open ? lineUp : lineDown;
+                    // if item beyond visible range, done
+                    if (bar.X > xmax)
+                    {
+                        break;
+                    }
+
+                    bool isUp = bar.Close > bar.Open;
 
                     var high = this.Transform(bar.X, bar.High);
                     var low = this.Transform(bar.X, bar.Low);
@@ -296,119 +306,131 @@ namespace OxyPlot.Series
 
                     var max = new ScreenPoint(open.X, Math.Max(open.Y, close.Y));
                     var min = new ScreenPoint(open.X, Math.Min(open.Y, close.Y));
-                
+
                     var openLeft = open + new ScreenVector(-candlewidth * 0.5, 0);
 
-                    using (rc.AutoResetClip(clippingBar))
+                    // Bar part
+                    if (isUp)
                     {
-                        // Bar part
-                        rc.DrawLine(
-                            new[] { high, min },
-                            lineColor,
-                            this.StrokeThickness,
-                            this.EdgeRenderingMode,
-                            null,
-                            LineJoin.Miter);
-
-                        // Lower extent
-                        rc.DrawLine(
-                            new[] { max, low },
-                            lineColor,
-                            this.StrokeThickness,
-                            this.EdgeRenderingMode,
-                            null,
-                            LineJoin.Miter);
-
-                        // Body
-
-                        if (max.Y - min.Y < 1.0)
+                        barLinesUpRender.AddRange(new[]
                         {
-                            var leftPoint = new ScreenPoint(openLeft.X - this.StrokeThickness, min.Y);
-                            var rightPoint = new ScreenPoint(openLeft.X + this.StrokeThickness + candlewidth, min.Y);
-                            rc.DrawLine(
-                                new[] { leftPoint, rightPoint }, 
-                                lineColor, 
-                                this.StrokeThickness, 
-                                this.EdgeRenderingMode,
-                                null, LineJoin.Miter);
+                            high, min,  // Upper extent
+                            max, low    // Lower extent
+                        });
+                    }
+                    else
+                    {
+                        barLinesDownRender.AddRange(new[]
+                        {
+                            high, min,  // Upper extent
+                            max, low    // Lower extent
+                        });
+                    }
 
-                            leftPoint = new ScreenPoint(openLeft.X - this.StrokeThickness, max.Y);
-                            rightPoint = new ScreenPoint(openLeft.X + this.StrokeThickness + candlewidth, max.Y);
-                            rc.DrawLine(
-                                new[] { leftPoint, rightPoint }, 
-                                lineColor, 
-                                this.StrokeThickness, 
-                                this.EdgeRenderingMode,
-                                null, 
-                                LineJoin.Miter);
+                    // Body
+                    if (max.Y - min.Y < 1.0)
+                    {
+                        if (isUp)
+                        {
+                            barLinesUpRender.AddRange(new[]
+                            {
+                                new ScreenPoint(openLeft.X - this.StrokeThickness, min.Y), new ScreenPoint(openLeft.X + this.StrokeThickness + candlewidth, min.Y),
+                                new ScreenPoint(openLeft.X - this.StrokeThickness, max.Y), new ScreenPoint(openLeft.X + this.StrokeThickness + candlewidth, max.Y)
+                            });
                         }
                         else
                         {
-                            var rect = new OxyRect(openLeft.X, min.Y, candlewidth, max.Y - min.Y);
-                            rc.DrawRectangle(rect, fillColor, lineColor, this.StrokeThickness, this.EdgeRenderingMode);
+                            barLinesDownRender.AddRange(new[]
+                            {
+                                new ScreenPoint(openLeft.X - this.StrokeThickness, min.Y), new ScreenPoint(openLeft.X + this.StrokeThickness + candlewidth, min.Y),
+                                new ScreenPoint(openLeft.X - this.StrokeThickness, max.Y), new ScreenPoint(openLeft.X + this.StrokeThickness + candlewidth, max.Y)
+                            });
+                        }
+                    }
+                    else
+                    {
+                        var rect = new OxyRect(openLeft.X, min.Y, candlewidth, max.Y - min.Y);
+                        if (isUp)
+                        {
+                            barRectUpRender.Add(rect);
+                        }
+                        else
+                        {
+                            barRectDownRender.Add(rect);
                         }
                     }
 
                     // Volume Part
-                    if (this.VolumeAxis == null || this.VolumeStyle == VolumeStyle.None)
+                    if (!renderVolume)
                     {
                         continue;
                     }
 
                     var iY0 = this.VolumeAxis.Transform(0);
-                    using (rc.AutoResetClip(clippingVol))
+                    switch (this.VolumeStyle)
                     {
-                        switch (this.VolumeStyle)
-                        {
-                            case VolumeStyle.Combined:
-                                {
-                                    var adj = this.VolumeAxis.Transform(Math.Abs(bar.BuyVolume - bar.SellVolume));
-                                    var fillcolor = (bar.BuyVolume > bar.SellVolume) ? barfillUp : barfillDown;
-                                    var linecolor = (bar.BuyVolume > bar.SellVolume) ? lineUp : lineDown;
-                                    var rect1 = new OxyRect(openLeft.X, adj, candlewidth, Math.Abs(adj - iY0));
-                                    rc.DrawRectangle(rect1, fillcolor, linecolor, this.StrokeThickness, this.EdgeRenderingMode);
-                                }
-
-                                break;
-
-                            case VolumeStyle.PositiveNegative:
-                                {
-                                    var buyY = this.VolumeAxis.Transform(bar.BuyVolume);
-                                    var sellY = this.VolumeAxis.Transform(-bar.SellVolume);
-                                    var rect1 = new OxyRect(openLeft.X, buyY, candlewidth, Math.Abs(buyY - iY0));
-                                    rc.DrawRectangle(rect1, fillUp, lineUp, this.StrokeThickness, this.EdgeRenderingMode);
-                                    var rect2 = new OxyRect(openLeft.X, iY0, candlewidth, Math.Abs(sellY - iY0));
-                                    rc.DrawRectangle(rect2, fillDown, lineDown, this.StrokeThickness, this.EdgeRenderingMode);
-                                }
-
-                                break;
-
-                            case VolumeStyle.Stacked:
+                        case VolumeStyle.Combined:
+                            {
+                                var adj = this.VolumeAxis.Transform(Math.Abs(bar.BuyVolume - bar.SellVolume));
+                                var rect1 = new OxyRect(openLeft.X, adj, candlewidth, Math.Abs(adj - iY0));
                                 if (bar.BuyVolume > bar.SellVolume)
                                 {
-                                    var buyY = this.VolumeAxis.Transform(bar.BuyVolume);
-                                    var sellY = this.VolumeAxis.Transform(bar.SellVolume);
-                                    var dyoffset = sellY - iY0;
-                                    var rect2 = new OxyRect(openLeft.X, sellY, candlewidth, Math.Abs(sellY - iY0));
-                                    rc.DrawRectangle(rect2, fillDown, lineDown, this.StrokeThickness, this.EdgeRenderingMode);
-                                    var rect1 = new OxyRect(openLeft.X, buyY + dyoffset, candlewidth, Math.Abs(buyY - iY0));
-                                    rc.DrawRectangle(rect1, fillUp, lineUp, this.StrokeThickness, this.EdgeRenderingMode);
+                                    volumeRectUpRender.Add(rect1);
                                 }
                                 else
                                 {
-                                    var buyY = this.VolumeAxis.Transform(bar.BuyVolume);
-                                    var sellY = this.VolumeAxis.Transform(bar.SellVolume);
-                                    var dyoffset = buyY - iY0;
-                                    var rect1 = new OxyRect(openLeft.X, buyY, candlewidth, Math.Abs(buyY - iY0));
-                                    rc.DrawRectangle(rect1, fillUp, lineUp, this.StrokeThickness, this.EdgeRenderingMode);
-                                    var rect2 = new OxyRect(openLeft.X, sellY + dyoffset, candlewidth, Math.Abs(sellY - iY0));
-                                    rc.DrawRectangle(rect2, fillDown, lineDown, this.StrokeThickness, this.EdgeRenderingMode);
+                                    volumeRectDownRender.Add(rect1);
                                 }
+                            }
+                            break;
 
-                                break;
-                        }
+                        case VolumeStyle.PositiveNegative:
+                            {
+                                var buyY = this.VolumeAxis.Transform(bar.BuyVolume);
+                                var sellY = this.VolumeAxis.Transform(-bar.SellVolume);
+                                volumeRectUpRender.Add(new OxyRect(openLeft.X, buyY, candlewidth, Math.Abs(buyY - iY0)));
+                                volumeRectDownRender.Add(new OxyRect(openLeft.X, iY0, candlewidth, Math.Abs(sellY - iY0)));
+                            }
+                            break;
+
+                        case VolumeStyle.Stacked:
+                            if (bar.BuyVolume > bar.SellVolume)
+                            {
+                                var buyY = this.VolumeAxis.Transform(bar.BuyVolume);
+                                var sellY = this.VolumeAxis.Transform(bar.SellVolume);
+                                var dyoffset = sellY - iY0;
+                                volumeRectUpRender.Add(new OxyRect(openLeft.X, buyY + dyoffset, candlewidth, Math.Abs(buyY - iY0)));
+                                volumeRectDownRender.Add(new OxyRect(openLeft.X, sellY, candlewidth, Math.Abs(sellY - iY0)));
+                            }
+                            else
+                            {
+                                var buyY = this.VolumeAxis.Transform(bar.BuyVolume);
+                                var sellY = this.VolumeAxis.Transform(bar.SellVolume);
+                                var dyoffset = buyY - iY0;
+                                volumeRectUpRender.Add(new OxyRect(openLeft.X, buyY, candlewidth, Math.Abs(buyY - iY0)));
+                                volumeRectDownRender.Add(new OxyRect(openLeft.X, sellY + dyoffset, candlewidth, Math.Abs(sellY - iY0)));
+                            }
+                            break;
                     }
+                }
 
+                // Render bars
+                using (rc.AutoResetClip(clippingBar))
+                {
+                    rc.DrawLineSegments(barLinesUpRender, lineUp, this.StrokeThickness, this.EdgeRenderingMode);
+                    rc.DrawLineSegments(barLinesDownRender, lineDown, this.StrokeThickness, this.EdgeRenderingMode);
+                    rc.DrawRectangles(barRectUpRender, fillUp, lineUp, this.StrokeThickness, this.EdgeRenderingMode);
+                    rc.DrawRectangles(barRectDownRender, fillDown, lineDown, this.StrokeThickness, this.EdgeRenderingMode);
+                }
+
+                // Render volumes
+                if (renderVolume)
+                {
+                    using (rc.AutoResetClip(clippingVol))
+                    {
+                        rc.DrawRectangles(volumeRectUpRender, fillUp, lineUp, this.StrokeThickness, this.EdgeRenderingMode);
+                        rc.DrawRectangles(volumeRectDownRender, fillDown, lineDown, this.StrokeThickness, this.EdgeRenderingMode);
+                    }
                 }
 
                 if (this.SeparatorStrokeThickness > 0 && this.SeparatorLineStyle != LineStyle.None)
@@ -445,6 +467,12 @@ namespace OxyPlot.Series
             finally
             {
                 rc.PushClip(this.GetClippingRect());
+                barLinesUpRender.Clear();
+                barLinesDownRender.Clear();
+                barRectUpRender.Clear();
+                barRectDownRender.Clear();
+                volumeRectUpRender.Clear();
+                volumeRectDownRender.Clear();
             }
         }
 
@@ -455,22 +483,22 @@ namespace OxyPlot.Series
         /// <param name="legendBox">The bounding rectangle of the legend box.</param>
         public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
         {
-            double xmid = (legendBox.Left + legendBox.Right) / 2;
-            double yopen = legendBox.Top + ((legendBox.Bottom - legendBox.Top) * 0.7);
-            double yclose = legendBox.Top + ((legendBox.Bottom - legendBox.Top) * 0.3);
-            double[] dashArray = LineStyle.Solid.GetDashArray();
-
-            var datacandlewidth = (this.CandleWidth > 0) ? this.CandleWidth : this.minDx * 0.80;
-
-            var fillUp = this.GetSelectableFillColor(this.PositiveColor);
-            var lineUp = this.GetSelectableColor(this.PositiveColor.ChangeIntensity(0.70));
-
-            var candlewidth = Math.Min(
-                legendBox.Width,
-                this.XAxis.Transform(this.data[0].X + datacandlewidth) - this.XAxis.Transform(this.data[0].X));
-
             if (this.StrokeThickness > 0)
             {
+                double xmid = (legendBox.Left + legendBox.Right) / 2;
+                double yopen = legendBox.Top + ((legendBox.Bottom - legendBox.Top) * 0.7);
+                double yclose = legendBox.Top + ((legendBox.Bottom - legendBox.Top) * 0.3);
+                double[] dashArray = LineStyle.Solid.GetDashArray();
+
+                var datacandlewidth = (this.CandleWidth > 0) ? this.CandleWidth : this.minDx * 0.80;
+
+                var fillUp = this.GetSelectableFillColor(this.PositiveColor);
+                var lineUp = this.GetSelectableColor(this.PositiveColor.ChangeIntensity(0.70));
+
+                var candlewidth = Math.Min(
+                    legendBox.Width,
+                    this.XAxis.Transform(this.data[0].X + datacandlewidth) - this.XAxis.Transform(this.data[0].X));
+
                 rc.DrawLine(
                     new[] { new ScreenPoint(xmid, legendBox.Top), new ScreenPoint(xmid, legendBox.Bottom) },
                     lineUp,
@@ -518,11 +546,11 @@ namespace OxyPlot.Series
             var pidx = OhlcvItem.FindIndex(this.data, targetX, this.winIndex);
             var nidx = ((pidx + 1) < this.data.Count) ? pidx + 1 : pidx;
 
-            Func<OhlcvItem, double> distance = bar =>
+            double distance(OhlcvItem bar)
             {
                 var dx = bar.X - xy.X;
                 return dx * dx;
-            };
+            }
 
             // determine closest point
             var midx = distance(this.data[pidx]) <= distance(this.data[nidx]) ? pidx : nidx;
@@ -699,7 +727,7 @@ namespace OxyPlot.Series
         {
             if (yaxis == null)
             {
-                return default(OxyRect);
+                return default;
             }
 
             double minX = Math.Min(this.XAxis.ScreenMin.X, this.XAxis.ScreenMax.X);
@@ -718,7 +746,7 @@ namespace OxyPlot.Series
         {
             if (this.VolumeAxis == null)
             {
-                return default(OxyRect);
+                return default;
             }
 
             double minX = Math.Min(this.XAxis.ScreenMin.X, this.XAxis.ScreenMax.X);

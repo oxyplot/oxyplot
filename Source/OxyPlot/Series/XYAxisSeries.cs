@@ -9,11 +9,10 @@
 
 namespace OxyPlot.Series
 {
+    using OxyPlot.Axes;
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
-    using OxyPlot.Axes;
 
     /// <summary>
     /// Provides an abstract base class for series that are related to an X-axis and a Y-axis.
@@ -360,9 +359,8 @@ namespace OxyPlot.Series
         /// <returns><c>true</c> if the point is valid; otherwise, <c>false</c> .</returns>
         protected virtual bool IsValidPoint(DataPoint pt)
         {
-            return
-                this.XAxis != null && this.XAxis.IsValidValue(pt.X) &&
-                this.YAxis != null && this.YAxis.IsValidValue(pt.Y);
+            return this.XAxis?.IsValidValue(pt.X) == true &&
+                   this.YAxis?.IsValidValue(pt.Y) == true;
         }
 
         /// <summary>
@@ -373,9 +371,8 @@ namespace OxyPlot.Series
         /// <returns><c>true</c> if the point is valid; otherwise, <c>false</c> . </returns>
         protected bool IsValidPoint(double x, double y)
         {
-            return
-                this.XAxis != null && this.XAxis.IsValidValue(x) &&
-                this.YAxis != null && this.YAxis.IsValidValue(y);
+            return this.XAxis?.IsValidValue(x) == true &&
+                   this.YAxis?.IsValidValue(y) == true;
         }
 
         /// <summary>
@@ -386,7 +383,7 @@ namespace OxyPlot.Series
         {
             if (points == null)
             {
-                throw new ArgumentNullException("points");
+                throw new ArgumentNullException(nameof(points));
             }
 
             this.IsXMonotonic = true;
@@ -514,7 +511,7 @@ namespace OxyPlot.Series
         {
             if (items == null)
             {
-                throw new ArgumentNullException("items");
+                throw new ArgumentNullException(nameof(items));
             }
 
             this.IsXMonotonic = true;
@@ -624,7 +621,7 @@ namespace OxyPlot.Series
         {
             if (items == null)
             {
-                throw new ArgumentNullException("items");
+                throw new ArgumentNullException(nameof(items));
             }
 
             this.IsXMonotonic = true;
@@ -775,7 +772,10 @@ namespace OxyPlot.Series
             int start = 0;
             int nominalEnd = items.Count - 1;
             while (nominalEnd > 0 && double.IsNaN(xgetter(items[nominalEnd])))
-                nominalEnd -= 1;
+            {
+                nominalEnd--;
+            }
+
             int end = nominalEnd;
             int curGuess = Math.Max(0, Math.Min(end, initialGuess));
 
@@ -785,9 +785,13 @@ namespace OxyPlot.Series
                 {
                     double guessX = xgetter(items[index]);
                     if (double.IsNaN(guessX))
-                        index += 1;
+                    {
+                        index++;
+                    }
                     else
+                    {
                         return guessX;
+                    }
                 }
                 return xgetter(items[nominalEnd]);
             }
@@ -805,7 +809,7 @@ namespace OxyPlot.Series
                     end = curGuess - 1;
                 }
                 else
-                { 
+                {
                     start = curGuess;
                 }
 
@@ -818,13 +822,15 @@ namespace OxyPlot.Series
                 double startX = GetX(start);
 
                 var m = (end - start + 1) / (endX - startX);
-                
+
                 curGuess = start + (int)((targetX - startX) * m);
                 curGuess = Math.Max(start + 1, Math.Min(curGuess, end));
             }
 
             while (start > 0 && (xgetter(items[start]) > targetX))
-                start -= 1;
+            {
+                start--;
+            }
 
             return start;
         }

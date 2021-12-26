@@ -11,7 +11,6 @@ namespace OxyPlot.Series
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
 
     /// <summary>
     /// Represents a dual view (candlestick + volume) series for OHLCV bars
@@ -69,7 +68,7 @@ namespace OxyPlot.Series
         {
             get
             {
-                return (this.data != null) ? this.data : (this.data = new List<OhlcvItem>());
+                return this.data ?? (this.data = new List<OhlcvItem>());
             }
 
             set
@@ -174,11 +173,11 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Fast index of bar where max(bar[i].X) &lt;= x 
+        /// Fast index of bar where max(bar[i].X) &lt;= x
         /// </summary>
         /// <returns>The index of the bar closest to X, where max(bar[i].X) &lt;= x.</returns>
         /// <param name="x">The x coordinate.</param>
-        /// <param name="startingIndex">starting index</param> 
+        /// <param name="startingIndex">starting index</param>
         public int FindByX(double x, int startingIndex = -1)
         {
             if (startingIndex < 0)
@@ -188,6 +187,9 @@ namespace OxyPlot.Series
 
             return OhlcvItem.FindIndex(this.data, x, startingIndex);
         }
+
+        private readonly List<OxyRect> volumeRectUpRender = new List<OxyRect>();
+        private readonly List<OxyRect> volumeRectDownRender = new List<OxyRect>();
 
         /// <inheritdoc/>
         public override void Render(IRenderContext rc)
@@ -226,43 +228,42 @@ namespace OxyPlot.Series
             {
                 var bar = items[i];
 
-                // if item beyond visible range, done
-                if (bar.X > xmax)
-                {
-                    break;
-                }
-
                 // check to see whether is valid
                 if (!bar.IsValid())
                 {
                     continue;
                 }
 
-                var p1 = this.Transform(bar.X - halfDataCandleWidth, 0);
+                // if item beyond visible range, done
+                if (bar.X > xmax)
+                {
+                    break;
+                }
 
+                var p1 = this.Transform(bar.X - halfDataCandleWidth, 0);
                 switch (this.VolumeStyle)
                 {
                     case VolumeStyle.Combined:
                         {
                             var p2 = this.Transform(bar.X + halfDataCandleWidth, Math.Abs(bar.BuyVolume - bar.SellVolume));
-                            var fillcolor = (bar.BuyVolume > bar.SellVolume) ? barfillUp : barfillDown;
-                            var linecolor = (bar.BuyVolume > bar.SellVolume) ? lineUp : lineDown;
                             var rect1 = new OxyRect(p1, p2);
-                            rc.DrawRectangle(rect1, fillcolor, linecolor, this.StrokeThickness, this.EdgeRenderingMode);
+                            if (bar.BuyVolume > bar.SellVolume)
+                            {
+                                volumeRectUpRender.Add(rect1);
+                            }
+                            else
+                            {
+                                volumeRectDownRender.Add(rect1);
+                            }
                         }
-
                         break;
 
                     case VolumeStyle.PositiveNegative:
                         {
                             var p2Buy = this.Transform(bar.X + halfDataCandleWidth, bar.BuyVolume);
                             var p2Bell = this.Transform(bar.X + halfDataCandleWidth, -bar.SellVolume);
-
-                            var rectBuy = new OxyRect(p1, p2Buy);
-                            var rectSell = new OxyRect(p1, p2Bell);
-
-                            rc.DrawRectangle(rectBuy, fillUp, lineUp, this.StrokeThickness, this.EdgeRenderingMode);
-                            rc.DrawRectangle(rectSell, fillDown, lineDown, this.StrokeThickness, this.EdgeRenderingMode);
+                            volumeRectUpRender.Add(new OxyRect(p1, p2Buy));
+                            volumeRectDownRender.Add(new OxyRect(p1, p2Bell));
                         }
 
                         break;
@@ -287,9 +288,8 @@ namespace OxyPlot.Series
                                 rectSell = new OxyRect(p2Buy, pBoth);
                             }
 
-                            rc.DrawRectangle(rectBuy, fillUp, lineUp, this.StrokeThickness, this.EdgeRenderingMode);
-                            rc.DrawRectangle(rectSell, fillDown, lineDown, this.StrokeThickness, this.EdgeRenderingMode);
-
+                            volumeRectUpRender.Add(rectBuy);
+                            volumeRectDownRender.Add(rectSell);
                             break;
                         }
                     case VolumeStyle.None:
@@ -298,6 +298,11 @@ namespace OxyPlot.Series
                         throw new ArgumentOutOfRangeException();
                 }
             }
+
+            rc.DrawRectangles(volumeRectUpRender, fillUp, lineUp, this.StrokeThickness, this.EdgeRenderingMode);
+            rc.DrawRectangles(volumeRectDownRender, fillDown, lineDown, this.StrokeThickness, this.EdgeRenderingMode);
+            volumeRectUpRender.Clear();
+            volumeRectDownRender.Clear();
 
             if (this.InterceptStrokeThickness > 0 && this.InterceptLineStyle != LineStyle.None)
             {
@@ -383,11 +388,11 @@ namespace OxyPlot.Series
             var pidx = OhlcvItem.FindIndex(this.data, targetX, this.winIndex);
             var nidx = ((pidx + 1) < this.data.Count) ? pidx + 1 : pidx;
 
-            Func<OhlcvItem, double> distance = bar =>
+            double distance(OhlcvItem bar)
             {
                 var dx = bar.X - xy.X;
                 return dx * dx;
-            };
+            }
 
             // determine closest point
             var midx = distance(this.data[pidx]) <= distance(this.data[nidx]) ? pidx : nidx;

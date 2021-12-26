@@ -9,8 +9,6 @@
 
 namespace OxyPlot.Series
 {
-    using System;
-
     /// <summary>
     /// Represents a series for scatter plots.
     /// </summary>

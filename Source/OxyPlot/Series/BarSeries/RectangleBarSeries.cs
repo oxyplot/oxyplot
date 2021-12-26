@@ -46,7 +46,6 @@ namespace OxyPlot.Series
             // this.LabelFormatString = "{0}-{1},{2}-{3}"; // X0-X1,Y0-Y1
         }
 
-
         /// <summary>
         /// Gets or sets the default color of the interior of the rectangles.
         /// </summary>

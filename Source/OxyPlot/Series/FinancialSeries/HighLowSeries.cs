@@ -9,10 +9,9 @@
 
 namespace OxyPlot.Series
 {
+    using OxyPlot.Axes;
     using System;
     using System.Collections.Generic;
-
-    using OxyPlot.Axes;
 
     /// <summary>
     /// Represents a series for high-low plots.
@@ -26,17 +25,12 @@ namespace OxyPlot.Series
         public new const string DefaultTrackerFormatString = "{0}\n{1}: {2}\nHigh: {3:0.###}\nLow: {4:0.###}\nOpen: {5:0.###}\nClose: {6:0.###}";
 
         /// <summary>
-        /// High/low items
-        /// </summary>
-        private readonly List<HighLowItem> items = new List<HighLowItem>();
-
-        /// <summary>
         /// The default color.
         /// </summary>
         private OxyColor defaultColor;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref = "HighLowSeries" /> class.
+        /// Initializes a new instance of the <see cref="HighLowSeries"/> class.
         /// </summary>
         public HighLowSeries()
         {
@@ -97,13 +91,7 @@ namespace OxyPlot.Series
         /// Gets the items of the series.
         /// </summary>
         /// <value>The items.</value>
-        public List<HighLowItem> Items
-        {
-            get
-            {
-                return this.items;
-            }
-        }
+        public List<HighLowItem> Items { get; } = new List<HighLowItem>();
 
         /// <summary>
         /// Gets or sets the line join.
@@ -157,41 +145,41 @@ namespace OxyPlot.Series
             double minimumDistance = double.MaxValue;
 
             TrackerHitResult result = null;
-            Action<DataPoint, HighLowItem, int> check = (p, item, index) =>
+            void check(DataPoint p, HighLowItem item, int index)
+            {
+                var sp = this.Transform(p);
+                double dx = sp.x - point.x;
+                double dy = sp.y - point.y;
+                double d2 = (dx * dx) + (dy * dy);
+
+                if (d2 < minimumDistance)
                 {
-                    var sp = this.Transform(p);
-                    double dx = sp.x - point.x;
-                    double dy = sp.y - point.y;
-                    double d2 = (dx * dx) + (dy * dy);
-
-                    if (d2 < minimumDistance)
+                    result = new TrackerHitResult
                     {
-                        result = new TrackerHitResult
-                        {
-                            Series = this,
-                            DataPoint = p,
-                            Position = sp,
-                            Item = item,
-                            Index = index,
-                            Text =
-                                StringHelper.Format(
-                                    this.ActualCulture,
-                                    this.TrackerFormatString,
-                                    item,
-                                    this.Title,
-                                    this.XAxis.Title ?? DefaultXAxisTitle,
-                                    this.XAxis.GetValue(p.X),
-                                    this.YAxis.GetValue(item.High),
-                                    this.YAxis.GetValue(item.Low),
-                                    this.YAxis.GetValue(item.Open),
-                                    this.YAxis.GetValue(item.Close))
-                        };
+                        Series = this,
+                        DataPoint = p,
+                        Position = sp,
+                        Item = item,
+                        Index = index,
+                        Text = StringHelper.Format(
+                            this.ActualCulture,
+                            this.TrackerFormatString,
+                            item,
+                            this.Title,
+                            this.XAxis.Title ?? DefaultXAxisTitle,
+                            this.XAxis.GetValue(p.X),
+                            this.YAxis.GetValue(item.High),
+                            this.YAxis.GetValue(item.Low),
+                            this.YAxis.GetValue(item.Open),
+                            this.YAxis.GetValue(item.Close))
+                    };
 
-                        minimumDistance = d2;
-                    }
-                };
+                    minimumDistance = d2;
+                }
+            }
+
             int i = 0;
-            foreach (var item in this.items)
+            foreach (var item in this.Items)
             {
                 check(new DataPoint(item.X, item.High), item, i);
                 check(new DataPoint(item.X, item.Low), item, i);
@@ -214,72 +202,72 @@ namespace OxyPlot.Series
         /// <param name="xaxis">The x axis.</param>
         /// <param name="yaxis">The y axis.</param>
         /// <returns><c>true</c> if the specified point is valid; otherwise, <c>false</c>.</returns>
+        [Obsolete("Use item.IsValid() instead.")]
         public virtual bool IsValidItem(HighLowItem pt, Axis xaxis, Axis yaxis)
         {
             return !double.IsNaN(pt.X) && !double.IsInfinity(pt.X) && !double.IsNaN(pt.High)
                    && !double.IsInfinity(pt.High) && !double.IsNaN(pt.Low) && !double.IsInfinity(pt.Low);
         }
 
+        private readonly List<ScreenPoint> linesRender = new List<ScreenPoint>();
+
         /// <inheritdoc/>
         public override void Render(IRenderContext rc)
         {
-            if (this.items.Count == 0)
+            var items = this.Items;
+            var nitems = items.Count;
+
+            if (items.Count == 0)
             {
                 return;
             }
 
             this.VerifyAxes();
 
-            var dashArray = this.LineStyle.GetDashArray();
-            var actualColor = this.GetSelectableColor(this.ActualColor);
-            foreach (var v in this.items)
+            // determine render range
+            var xmin = this.XAxis.ClipMinimum;
+            var xmax = this.XAxis.ClipMaximum;
+            this.WindowStartIndex = this.UpdateWindowStartIndex(items, item => item.X, xmin, this.WindowStartIndex);
+
+            for (int i = this.WindowStartIndex; i < nitems; i++)
             {
-                if (!this.IsValidItem(v, this.XAxis, this.YAxis))
+                var bar = items[i];
+
+                // check to see whether is valid
+                if (!bar.IsValid())
                 {
                     continue;
                 }
 
+                // if item beyond visible range, done
+                if (bar.X > xmax)
+                {
+                    break;
+                }
+
                 if (this.StrokeThickness > 0 && this.LineStyle != LineStyle.None)
                 {
-                    var high = this.Transform(v.X, v.High);
-                    var low = this.Transform(v.X, v.Low);
-
-                    rc.DrawLine(
-                        new[] { low, high },
-                        actualColor,
-                        this.StrokeThickness,
-                        this.EdgeRenderingMode,
-                        dashArray,
-                        this.LineJoin);
+                    var high = this.Transform(bar.X, bar.High);
+                    var low = this.Transform(bar.X, bar.Low);
+                    linesRender.AddRange(new[] { low, high });
 
                     var tickVector = this.Orientate(new ScreenVector(this.TickLength, 0));
-                    if (!double.IsNaN(v.Open))
+                    if (!double.IsNaN(bar.Open))
                     {
-                        var open = this.Transform(v.X, v.Open);
-                        var openTick = open - tickVector;
-                        rc.DrawLine(
-                            new[] { open, openTick },
-                            actualColor,
-                            this.StrokeThickness,
-                            this.EdgeRenderingMode,
-                            dashArray,
-                            this.LineJoin);
+                        var open = this.Transform(bar.X, bar.Open);
+                        linesRender.AddRange(new[] { open, open - tickVector });
                     }
 
-                    if (!double.IsNaN(v.Close))
+                    if (!double.IsNaN(bar.Close))
                     {
-                        var close = this.Transform(v.X, v.Close);
-                        var closeTick = close + tickVector;
-                        rc.DrawLine(
-                            new[] { close, closeTick },
-                            actualColor,
-                            this.StrokeThickness,
-                            this.EdgeRenderingMode,
-                            dashArray,
-                            this.LineJoin);
+                        var close = this.Transform(bar.X, bar.Close);
+                        linesRender.AddRange(new[] { close, close + tickVector });
                     }
                 }
             }
+
+            rc.DrawLineSegments(linesRender, this.GetSelectableColor(this.ActualColor), this.StrokeThickness, this.EdgeRenderingMode, this.LineStyle.GetDashArray());
+            linesRender.Clear();
         }
 
         /// <summary>
@@ -289,35 +277,21 @@ namespace OxyPlot.Series
         /// <param name="legendBox">The bounding rectangle of the legend box.</param>
         public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
         {
-            double xmid = (legendBox.Left + legendBox.Right) / 2;
-            double yopen = legendBox.Top + ((legendBox.Bottom - legendBox.Top) * 0.7);
-            double yclose = legendBox.Top + ((legendBox.Bottom - legendBox.Top) * 0.3);
-            double[] dashArray = this.LineStyle.GetDashArray();
-            var color = this.GetSelectableColor(this.ActualColor);
-
             if (this.StrokeThickness > 0 && this.LineStyle != LineStyle.None)
             {
-                rc.DrawLine(
-                    new[] { new ScreenPoint(xmid, legendBox.Top), new ScreenPoint(xmid, legendBox.Bottom) },
-                    color,
-                    this.StrokeThickness,
-                    this.EdgeRenderingMode,
-                    dashArray,
-                    LineJoin.Miter);
-                rc.DrawLine(
-                    new[] { new ScreenPoint(xmid - this.TickLength, yopen), new ScreenPoint(xmid, yopen) },
-                    color,
-                    this.StrokeThickness,
-                    this.EdgeRenderingMode,
-                    dashArray,
-                    LineJoin.Miter);
-                rc.DrawLine(
-                    new[] { new ScreenPoint(xmid + this.TickLength, yclose), new ScreenPoint(xmid, yclose) },
-                    color,
-                    this.StrokeThickness,
-                    this.EdgeRenderingMode,
-                    dashArray,
-                    LineJoin.Miter);
+                double xmid = (legendBox.Left + legendBox.Right) / 2;
+                double yopen = legendBox.Top + ((legendBox.Bottom - legendBox.Top) * 0.7);
+                double yclose = legendBox.Top + ((legendBox.Bottom - legendBox.Top) * 0.3);
+
+                rc.DrawLineSegments(new[]
+                {
+                    new ScreenPoint(xmid, legendBox.Top), new ScreenPoint(xmid, legendBox.Bottom),
+                    new ScreenPoint(xmid - this.TickLength, yopen), new ScreenPoint(xmid, yopen),
+                    new ScreenPoint(xmid + this.TickLength, yclose), new ScreenPoint(xmid, yclose)
+                },
+                this.GetSelectableColor(this.ActualColor),
+                this.StrokeThickness, this.EdgeRenderingMode,
+                this.LineStyle.GetDashArray());
             }
         }
 
@@ -343,23 +317,22 @@ namespace OxyPlot.Series
                 return;
             }
 
-            this.items.Clear();
+            this.Items.Clear();
 
             // Use the mapping to generate the points
             if (this.Mapping != null)
             {
                 foreach (var item in this.ItemsSource)
                 {
-                    this.items.Add(this.Mapping(item));
+                    this.Items.Add(this.Mapping(item));
                 }
 
                 return;
             }
 
-            var sequenceOfHighLowItems = this.ItemsSource as IEnumerable<HighLowItem>;
-            if (sequenceOfHighLowItems != null)
+            if (this.ItemsSource is IEnumerable<HighLowItem> sequenceOfHighLowItems)
             {
-                this.items.AddRange(sequenceOfHighLowItems);
+                this.Items.AddRange(sequenceOfHighLowItems);
                 return;
             }
 
@@ -369,7 +342,7 @@ namespace OxyPlot.Series
             filler.Add(this.DataFieldLow, double.NaN);
             filler.Add(this.DataFieldOpen, double.NaN);
             filler.Add(this.DataFieldClose, double.NaN);
-            filler.FillT(this.items, this.ItemsSource, args => new HighLowItem(Axis.ToDouble(args[0]), Convert.ToDouble(args[1]), Convert.ToDouble(args[2]), Convert.ToDouble(args[3]), Convert.ToDouble(args[4])));
+            filler.FillT(this.Items, this.ItemsSource, args => new HighLowItem(Axis.ToDouble(args[0]), Convert.ToDouble(args[1]), Convert.ToDouble(args[2]), Convert.ToDouble(args[3]), Convert.ToDouble(args[4])));
         }
 
         /// <summary>
@@ -378,7 +351,7 @@ namespace OxyPlot.Series
         protected internal override void UpdateMaxMin()
         {
             base.UpdateMaxMin();
-            this.InternalUpdateMaxMin(this.items, i => i.X, i => i.X, i => i.Low, i => i.High);
+            this.InternalUpdateMaxMin(this.Items, i => i.X, i => i.X, i => i.Low, i => i.High);
         }
     }
 }

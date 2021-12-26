@@ -240,12 +240,12 @@ namespace OxyPlot.Series
         /// </summary>
         protected internal void UpdateMaxMinXY()
         {
-            if (this.ActualItems != null && this.ActualItems.Count > 0)
+            if (this.ActualItems?.Count > 0)
             {
                 this.MinX = Math.Min(this.ActualItems.Min(r => r.RangeStart), this.ActualItems.Min(r => r.RangeEnd));
                 this.MaxX = Math.Max(this.ActualItems.Max(r => r.RangeStart), this.ActualItems.Max(r => r.RangeEnd));
-                this.MinY = Math.Min(this.ActualItems.Min(r => 0), this.ActualItems.Min(r => r.Height));
-                this.MaxY = Math.Max(this.ActualItems.Max(r => 0), this.ActualItems.Max(r => r.Height));
+                this.MinY = Math.Min(0, this.ActualItems.Min(r => r.Height));
+                this.MaxY = Math.Max(0, this.ActualItems.Max(r => r.Height));
             }
         }
 
@@ -263,7 +263,7 @@ namespace OxyPlot.Series
 
             this.UpdateMaxMinXY();
 
-            if (this.ActualItems != null && this.ActualItems.Count > 0)
+            if (this.ActualItems?.Count > 0)
             {
                 this.MinValue = this.ActualItems.Min(r => r.Value);
                 this.MaxValue = this.ActualItems.Max(r => r.Value);
@@ -304,10 +304,10 @@ namespace OxyPlot.Series
                 var rectrect = new OxyRect(p1, p2);
 
                 rc.DrawRectangle(
-                    rectrect, 
-                    actualFillColor, 
-                    this.StrokeColor, 
-                    this.StrokeThickness, 
+                    rectrect,
+                    actualFillColor,
+                    this.StrokeColor,
+                    this.StrokeThickness,
                     this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness));
 
                 if (this.LabelFormatString != null)

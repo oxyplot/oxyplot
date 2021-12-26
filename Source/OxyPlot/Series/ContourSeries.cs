@@ -11,7 +11,6 @@ namespace OxyPlot.Series
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Linq;
 
     /// <summary>
@@ -166,7 +165,7 @@ namespace OxyPlot.Series
             double[] actualContourLevels = this.ContourLevels;
 
             this.segments = new List<ContourSegment>();
-            Conrec.RendererDelegate renderer = (startX, startY, endX, endY, contourLevel) =>
+            void renderer(double startX, double startY, double endX, double endY, double contourLevel) =>
                 this.segments.Add(new ContourSegment(new DataPoint(startX, startY), new DataPoint(endX, endY), contourLevel));
 
             if (actualContourLevels == null)
@@ -202,7 +201,7 @@ namespace OxyPlot.Series
 
             this.JoinContourSegments();
 
-            if (this.ContourColors != null && this.ContourColors.Length > 0)
+            if (this.ContourColors?.Length > 0)
             {
                 foreach (var c in this.contours)
                 {
@@ -211,7 +210,7 @@ namespace OxyPlot.Series
                     if (index >= 0)
                     {
                         // clamp the index to the range of the ContourColors array
-                        index = index % this.ContourColors.Length;
+                        index %= this.ContourColors.Length;
                         c.Color = this.ContourColors[index];
                     }
                 }
@@ -228,9 +227,9 @@ namespace OxyPlot.Series
         {
             TrackerHitResult result = null;
 
-            var xaxisTitle = this.XAxis.Title ?? "X";
-            var yaxisTitle = this.YAxis.Title ?? "Y";
-            var zaxisTitle = "Z";
+            string xaxisTitle = this.XAxis.Title ?? "X";
+            string yaxisTitle = this.YAxis.Title ?? "Y";
+            const string zaxisTitle = "Z";
 
             foreach (var c in this.contours)
             {
@@ -630,15 +629,14 @@ namespace OxyPlot.Series
             double y = cl.Position.Y;
 
             var bpts = new[]
-                           {
-                               new ScreenPoint(x - (size.Width * ux) - (size.Height * vx), y - (size.Width * uy) - (size.Height * vy)),
-                               new ScreenPoint(x + (size.Width * ux) - (size.Height * vx), y + (size.Width * uy) - (size.Height * vy)),
-                               new ScreenPoint(x + (size.Width * ux) + (size.Height * vx), y + (size.Width * uy) + (size.Height * vy)),
-                               new ScreenPoint(x - (size.Width * ux) + (size.Height * vx), y - (size.Width * uy) + (size.Height * vy))
-                           };
+            {
+                new ScreenPoint(x - (size.Width * ux) - (size.Height * vx), y - (size.Width * uy) - (size.Height * vy)),
+                new ScreenPoint(x + (size.Width * ux) - (size.Height * vx), y + (size.Width * uy) - (size.Height * vy)),
+                new ScreenPoint(x + (size.Width * ux) + (size.Height * vx), y + (size.Width * uy) + (size.Height * vy)),
+                new ScreenPoint(x - (size.Width * ux) + (size.Height * vx), y - (size.Width * uy) + (size.Height * vy))
+            };
             rc.DrawPolygon(bpts, this.LabelBackground, OxyColors.Undefined, 0, this.EdgeRenderingMode);
         }
-
 
         /// <summary>
         /// Represents one of the two points of a segment.

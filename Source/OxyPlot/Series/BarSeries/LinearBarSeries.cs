@@ -122,8 +122,8 @@ namespace OxyPlot.Series
             {
                 this.Title,
                 this.XAxis.Title ?? "X",
-                this.XAxis.GetValue(dataPoint.X), 
-                this.YAxis.Title ?? "Y", 
+                this.XAxis.GetValue(dataPoint.X),
+                this.YAxis.Title ?? "Y",
                 this.YAxis.GetValue(dataPoint.Y),
             };
 
@@ -208,39 +208,37 @@ namespace OxyPlot.Series
             IComparer<OxyRect> comparer;
             if (this.IsTransposed())
             {
-                comparer = ComparerHelper.CreateComparer<OxyRect>(
-                    (x, y) =>
-                        {
-                            if (x.Bottom < point.Y)
-                            {
-                                return 1;
-                            }
+                comparer = ComparerHelper.CreateComparer<OxyRect>((x, y) =>
+                {
+                    if (x.Bottom < point.Y)
+                    {
+                        return 1;
+                    }
 
-                            if (x.Top > point.Y)
-                            {
-                                return -1;
-                            }
+                    if (x.Top > point.Y)
+                    {
+                        return -1;
+                    }
 
-                            return 0;
-                        });
+                    return 0;
+                });
             }
             else
             {
-                comparer = ComparerHelper.CreateComparer<OxyRect>(
-                    (x, y) =>
-                        {
-                            if (x.Right < point.X)
-                            {
-                                return -1;
-                            }
+                comparer = ComparerHelper.CreateComparer<OxyRect>((x, y) =>
+                {
+                    if (x.Right < point.X)
+                    {
+                        return -1;
+                    }
 
-                            if (x.Left > point.X)
-                            {
-                                return 1;
-                            }
+                    if (x.Left > point.X)
+                    {
+                        return 1;
+                    }
 
-                            return 0;
-                        });
+                    return 0;
+                });
             }
 
             return this.rectangles.BinarySearch(0, this.rectangles.Count, new OxyRect(), comparer);
@@ -273,10 +271,10 @@ namespace OxyPlot.Series
                 var barColors = this.GetBarColors(actualPoint.Y);
 
                 rc.DrawRectangle(
-                    rectangle, 
-                    barColors.FillColor, 
-                    barColors.StrokeColor, 
-                    this.StrokeThickness, 
+                    rectangle,
+                    barColors.FillColor,
+                    barColors.StrokeColor,
+                    this.StrokeThickness,
                     this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness));
             }
         }

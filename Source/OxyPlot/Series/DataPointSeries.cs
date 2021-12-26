@@ -107,7 +107,7 @@ namespace OxyPlot.Series
             if (result != null)
             {
                 result.Text = StringHelper.Format(
-                    this.ActualCulture, 
+                    this.ActualCulture,
                     this.TrackerFormatString,
                     result.Item,
                     this.Title,
@@ -192,8 +192,7 @@ namespace OxyPlot.Series
                 return;
             }
 
-            var sourceAsListOfDataPoints = this.ItemsSource as List<DataPoint>;
-            if (sourceAsListOfDataPoints != null)
+            if (this.ItemsSource is List<DataPoint> sourceAsListOfDataPoints)
             {
                 this.itemsSourcePoints = sourceAsListOfDataPoints;
                 this.ownsItemsSourcePoints = false;
@@ -202,8 +201,7 @@ namespace OxyPlot.Series
 
             this.ClearItemsSourcePoints();
 
-            var sourceAsEnumerableDataPoints = this.ItemsSource as IEnumerable<DataPoint>;
-            if (sourceAsEnumerableDataPoints != null)
+            if (this.ItemsSource is IEnumerable<DataPoint> sourceAsEnumerableDataPoints)
             {
                 this.itemsSourcePoints.AddRange(sourceAsEnumerableDataPoints);
                 return;
@@ -216,14 +214,13 @@ namespace OxyPlot.Series
             {
                 foreach (var item in this.ItemsSource)
                 {
-                    if (item is DataPoint)
+                    if (item is DataPoint dataPoint)
                     {
-                        this.itemsSourcePoints.Add((DataPoint)item);
+                        this.itemsSourcePoints.Add(dataPoint);
                         continue;
                     }
 
-                    var idpp = item as IDataPointProvider;
-                    if (idpp == null)
+                    if (!(item is IDataPointProvider idpp))
                     {
                         continue;
                     }
