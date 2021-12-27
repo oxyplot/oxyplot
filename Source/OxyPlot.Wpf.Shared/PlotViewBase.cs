@@ -373,10 +373,11 @@ namespace OxyPlot.Wpf
         /// </summary>
         protected void Render()
         {
-            if (this.plotPresenter == null || this.renderContext == null || !(this.isInVisualTree = this.IsInVisualTree()))
+            if (this.plotPresenter == null || this.renderContext == null)
             {
                 return;
             }
+            this.isInVisualTree = this.IsInVisualTree();
 
             this.RenderOverride();
         }
