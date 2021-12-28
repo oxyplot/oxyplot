@@ -150,7 +150,8 @@ namespace OxyPlot.SkiaSharp.Wpf
             this.bitmap.Unlock();
 
             // get window to screen offset
-            var visualOffset = this.TransformToAncestor(GetAncestorWindowFromVisualTree(this)).Transform(default);
+            var ancestor = GetAncestorVisualFromVisualTree(this);
+            var visualOffset = ancestor != null ? this.TransformToAncestor(ancestor).Transform(default) : default;
 
             // calculate offset to physical pixels
             var offsetX = ((visualOffset.X * scaleX) % 1) / scaleX;
@@ -192,9 +193,13 @@ namespace OxyPlot.SkiaSharp.Wpf
                 return new SKSizeI((int)w, (int)h);
             }
 
-            var m = PresentationSource.FromVisual(this).CompositionTarget.TransformToDevice;
-            scaleX = m.M11;
-            scaleY = m.M22;
+            var compositionTarget = PresentationSource.FromVisual(this)?.CompositionTarget;
+            if (compositionTarget != null)
+            {
+                var m = compositionTarget.TransformToDevice;
+                scaleX = m.M11;
+                scaleY = m.M22;
+            }
             return new SKSizeI((int)(w * scaleX), (int)(h * scaleY));
 
             static bool IsPositive(double value)
@@ -207,7 +212,7 @@ namespace OxyPlot.SkiaSharp.Wpf
         /// Returns a reference to the visual object that hosts the dependency object in the visual tree.
         /// </summary>
         /// <returns> The host visual from the visual tree.</returns>
-        private Visual GetAncestorWindowFromVisualTree(DependencyObject startElement)
+        private Visual GetAncestorVisualFromVisualTree(DependencyObject startElement)
         {
             DependencyObject child = startElement;
             DependencyObject parent = VisualTreeHelper.GetParent(child);

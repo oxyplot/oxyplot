@@ -42,6 +42,19 @@ namespace PerformanceTest
         }
 
         /// <inheritdoc/>
+        public void PushClip(OxyRect clippingRectangle)
+        {
+        }
+
+        /// <inheritdoc/>
+        public void PopClip()
+        {
+        }
+
+        /// <inheritdoc/>
+        public int ClipCount => 0;
+
+        /// <inheritdoc/>
         public void DrawLine(IList<ScreenPoint> points, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode, double[] dashArray = null, LineJoin lineJoin = LineJoin.Miter)
         {
         }
@@ -80,17 +93,6 @@ namespace PerformanceTest
         public OxySize MeasureText(string text, string fontFamily = null, double fontSize = 10, double fontWeight = 500)
         {
             return OxySize.Empty;
-        }
-
-        /// <inheritdoc/>
-        public void ResetClip()
-        {
-        }
-
-        /// <inheritdoc/>
-        public bool SetClip(OxyRect clippingRectangle)
-        {
-            return true;
         }
 
         /// <inheritdoc/>
