@@ -40,7 +40,7 @@ namespace OxyPlot.Series
             this.BarWidth = 5;
             this.StrokeColor = OxyColors.Black;
             this.StrokeThickness = 0;
-            this.TrackerFormatString = XYAxisSeries.DefaultTrackerFormatString;
+            this.TrackerFormatString = DefaultTrackerFormatString;
             this.NegativeFillColor = OxyColors.Undefined;
             this.NegativeStrokeColor = OxyColors.Undefined;
         }
@@ -244,6 +244,9 @@ namespace OxyPlot.Series
             return this.rectangles.BinarySearch(0, this.rectangles.Count, new OxyRect(), comparer);
         }
 
+        private readonly List<OxyRect> positiveRectRender = new List<OxyRect>();
+        private readonly List<OxyRect> negativeRectRender = new List<OxyRect>();
+
         /// <summary>
         /// Renders the series bars.
         /// </summary>
@@ -268,14 +271,34 @@ namespace OxyPlot.Series
                 this.rectangles.Add(rectangle);
                 this.rectanglesPointIndexes.Add(pointIndex);
 
-                var barColors = this.GetBarColors(actualPoint.Y);
+                if (actualPoint.Y >= 0.0)
+                {
+                    positiveRectRender.Add(rectangle);
+                }
+                else
+                {
+                    negativeRectRender.Add(rectangle);
+                }
+            }
 
-                rc.DrawRectangle(
-                    rectangle,
-                    barColors.FillColor,
-                    barColors.StrokeColor,
+            if (positiveRectRender.Count > 0)
+            {
+                rc.DrawRectangles(positiveRectRender,
+                    this.GetSelectableFillColor(this.ActualColor),
+                    this.StrokeColor,
                     this.StrokeThickness,
                     this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness));
+                positiveRectRender.Clear();
+            }
+
+            if (negativeRectRender.Count > 0)
+            {
+                rc.DrawRectangles(negativeRectRender,
+                    this.NegativeFillColor.IsUndefined() ? this.GetSelectableFillColor(this.ActualColor) : this.NegativeFillColor,
+                    this.NegativeStrokeColor.IsUndefined() ? this.StrokeColor : this.NegativeStrokeColor,
+                    this.StrokeThickness,
+                    this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness));
+                negativeRectRender.Clear();
             }
         }
 
@@ -297,20 +320,6 @@ namespace OxyPlot.Series
             }
 
             return minDistance * this.XAxis.Scale;
-        }
-
-        /// <summary>
-        /// Gets the colors used to draw a bar.
-        /// </summary>
-        /// <param name="y">The point y value</param>
-        /// <returns>The bar colors</returns>
-        private BarColors GetBarColors(double y)
-        {
-            var positive = y >= 0.0;
-            var fillColor = (positive || this.NegativeFillColor.IsUndefined()) ? this.GetSelectableFillColor(this.ActualColor) : this.NegativeFillColor;
-            var strokeColor = (positive || this.NegativeStrokeColor.IsUndefined()) ? this.StrokeColor : this.NegativeStrokeColor;
-
-            return new BarColors(fillColor, strokeColor);
         }
 
         /// <summary>

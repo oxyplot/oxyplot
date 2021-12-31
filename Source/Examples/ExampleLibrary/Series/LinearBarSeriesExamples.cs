@@ -68,7 +68,7 @@
             var linearBarSeries = new LinearBarSeries();
             var r = new Random(31);
             var y = r.Next(10, 30);
-            for (int x = 0; x <= 50; x++)
+            for (int x = 0; x <= 500; x++)
             {
                 linearBarSeries.Points.Add(new DataPoint(x, y));
                 y += r.Next(-5, 5);
@@ -84,7 +84,7 @@
         {
             var linearBarSeries = new LinearBarSeries();
             var r = new Random(31);
-            for (int x = 0; x <= 50; x++)
+            for (int x = 0; x <= 500; x++)
             {
                 var y = -200 + r.Next(1000);
                 linearBarSeries.Points.Add(new DataPoint(x, y));
