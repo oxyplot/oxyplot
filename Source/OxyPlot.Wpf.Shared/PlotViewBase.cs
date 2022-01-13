@@ -16,6 +16,7 @@ namespace OxyPlot.Wpf
     using System.Windows.Input;
     using System.Windows.Media;
     using System.Windows.Threading;
+    using System.Windows.Documents;
     using CursorType = OxyPlot.CursorType;
 
     /// <summary>
@@ -450,6 +451,12 @@ namespace OxyPlot.Wpf
             while ((dpObject = VisualTreeHelper.GetParent(dpObject)) != null)
             {
                 if (dpObject is Window)
+                {
+                    return true;
+                }
+
+                //Check if the parent is an AdornerDecorator like in an ElementHost
+                if (dpObject is AdornerDecorator)
                 {
                     return true;
                 }
