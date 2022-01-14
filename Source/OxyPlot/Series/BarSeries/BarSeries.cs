@@ -71,12 +71,6 @@ namespace OxyPlot.Series
         public bool OverlapsStack { get; set; }
 
         /// <summary>
-        /// Gets or sets the label format string.
-        /// </summary>
-        /// <value>The label format string.</value>
-        public string LabelFormatString { get; set; }
-
-        /// <summary>
         /// Gets or sets the label margins.
         /// </summary>
         public double LabelMargin { get; set; }

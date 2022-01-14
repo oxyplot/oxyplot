@@ -73,11 +73,6 @@ namespace OxyPlot.Series
         public OxyColor LabelColor { get; set; }
 
         /// <summary>
-        /// Gets or sets the format string for the labels.
-        /// </summary>
-        public string LabelFormatString { get; set; }
-
-        /// <summary>
         /// Gets or sets the color of the border around the rectangles.
         /// </summary>
         /// <value>The color of the stroke.</value>

@@ -62,12 +62,6 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Gets or sets the label format string. The default is <c>null</c> (no labels).
-        /// </summary>
-        /// <value>The label format string.</value>
-        public string LabelFormatString { get; set; }
-
-        /// <summary>
         /// Gets or sets the label margins. The default is <c>6</c>.
         /// </summary>
         public double LabelMargin { get; set; }

@@ -76,11 +76,6 @@ namespace OxyPlot.Series
         public OxyColor LabelColor { get; set; }
 
         /// <summary>
-        /// Gets or sets the format string for the maximum labels.
-        /// </summary>
-        public string LabelFormatString { get; set; }
-
-        /// <summary>
         /// Gets or sets the label margins.
         /// </summary>
         public double LabelMargin { get; set; }

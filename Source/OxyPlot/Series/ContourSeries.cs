@@ -113,12 +113,6 @@ namespace OxyPlot.Series
         public OxyColor LabelBackground { get; set; }
 
         /// <summary>
-        /// Gets or sets the format string for contour values.
-        /// </summary>
-        /// <value>The format string.</value>
-        public string LabelFormatString { get; set; }
-
-        /// <summary>
         /// Gets or sets the label spacing, which is the space between labels on the same contour. Not used if <see cref="MultiLabel"/>==<see langword="false"/>
         /// </summary>
         /// <value>The label spacing.</value>
