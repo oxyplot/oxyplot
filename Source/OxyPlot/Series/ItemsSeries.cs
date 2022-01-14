@@ -62,5 +62,15 @@ namespace OxyPlot.Series
         {
             return GetItem(this.ItemsSource, i);
         }
+
+        /// <summary>
+        /// Gets or sets the format string for the item's label.
+        /// </summary>
+        public string LabelFormatString 
+        { 
+            get; 
+            set; 
+        }
+
     }
 }

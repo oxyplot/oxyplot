@@ -172,13 +172,6 @@ namespace OxyPlot.Series
         public HeatMapRenderMethod RenderMethod { get; set; }
 
         /// <summary>
-        /// Gets or sets the format string for the cell labels. The default value is <c>0.00</c>.
-        /// </summary>
-        /// <value>The format string.</value>
-        /// <remarks>The label format string is only used when <see cref="LabelFontSize" /> is greater than 0.</remarks>
-        public string LabelFormatString { get; set; }
-
-        /// <summary>
         /// Gets or sets the font size of the labels. The default value is <c>0</c> (labels not visible).
         /// </summary>
         /// <value>The font size relative to the cell height.</value>

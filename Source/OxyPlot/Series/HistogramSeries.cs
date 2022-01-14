@@ -87,12 +87,6 @@ namespace OxyPlot.Series
         public double MaxValue { get; private set; }
 
         /// <summary>
-        /// Gets or sets the format string for the cell labels. The default value is <c>0.00</c>.
-        /// </summary>
-        /// <value>The format string.</value>
-        public string LabelFormatString { get; set; }
-
-        /// <summary>
         /// Gets or sets the label margins.
         /// </summary>
         public double LabelMargin { get; set; }
