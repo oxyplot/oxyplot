@@ -227,11 +227,7 @@ namespace OxyPlot.Series
 
                 if (this.MinimumLabelFormatString != null)
                 {
-                    var s = StringHelper.Format(
-                        this.ActualCulture,
-                        this.MinimumLabelFormatString,
-                        this.GetItem(this.ValidItemsIndexInversion[i]),
-                        item.Minimum);
+                    var s = GetFormattedLabel(this.GetItem(this.ValidItemsIndexInversion[i]), true);
 
                     var pt = this.Transform(item.Minimum, barMid) - marginVector;
                     var ha = HorizontalAlignment.Right;
@@ -252,12 +248,8 @@ namespace OxyPlot.Series
 
                 if (this.MaximumLabelFormatString != null)
                 {
-                    var s = StringHelper.Format(
-                        this.ActualCulture,
-                        this.MaximumLabelFormatString,
-                        this.GetItem(this.ValidItemsIndexInversion[i]),
-                        item.Maximum);
-
+                    var s = GetFormattedLabel(this.GetItem(this.ValidItemsIndexInversion[i]), false);
+                    
                     var pt = this.Transform(item.Maximum, barMid) + marginVector;
                     var ha = HorizontalAlignment.Left;
                     var va = VerticalAlignment.Middle;
@@ -368,6 +360,29 @@ namespace OxyPlot.Series
                 });
 
             return true;
+        }
+
+        /// <inheritdoc/>
+        protected override string GetFormattedLabel(object item)
+        {
+            throw GetInvalidOverloadUsed();
+        }
+
+        /// <summary>
+        /// Returns formatted label
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="minimum"></param>
+        /// <returns></returns>
+        string GetFormattedLabel(object item, bool minimum)
+        {
+            return GetFormattedLabel<TornadoBarItem>(item, (TornadoBarItem tornadoBarItem) => {
+                return StringHelper.Format(
+                      this.ActualCulture,
+                      minimum ? this.MinimumLabelFormatString : this.MaximumLabelFormatString,
+                      item,
+                      minimum ? tornadoBarItem.Minimum : tornadoBarItem.Maximum);
+            });
         }
     }
 }

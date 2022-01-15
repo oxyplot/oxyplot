@@ -210,15 +210,15 @@
                 if (this.LabelFontSize > 0)
                 {
                     rc.DrawText(
-                        rectrect.Center, 
-                        item.Value.ToString(this.LabelFormatString), 
-                        this.ActualTextColor, 
-                        this.ActualFont, 
-                        this.LabelFontSize, 
-                        this.ActualFontWeight, 
-                        0, 
-                        HorizontalAlignment.Center, 
-                        VerticalAlignment.Middle);
+                        rectrect.Center,
+                        GetFormattedLabel(item),
+                        this.ActualTextColor,
+                        this.ActualFont,
+                        this.LabelFontSize,
+                        this.ActualFontWeight,
+                        0,
+                        HorizontalAlignment.Center,
+                        VerticalAlignment.Middle); ;
                 }
             }
         }
@@ -346,6 +346,14 @@
             this.UpdateMaxMinXY();
 
             return p.X >= this.MinX && p.X <= this.MaxX && p.Y >= this.MinY && p.Y <= this.MaxY;
+        }
+
+        /// <inheritdoc/>
+        protected override string GetFormattedLabel(object item)
+        {
+            return GetFormattedLabel<RectangleItem>(item, (RectangleItem rectangleItem) => {
+                return rectangleItem.Value.ToString(this.LabelFormatString);
+            });
         }
     }
 }

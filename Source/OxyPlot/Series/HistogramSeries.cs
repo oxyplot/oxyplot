@@ -47,7 +47,6 @@ namespace OxyPlot.Series
             this.StrokeColor = OxyColors.Black;
             this.StrokeThickness = 0;
             this.TrackerFormatString = DefaultTrackerFormatString;
-            this.LabelFormatString = null;
             this.LabelPlacement = LabelPlacement.Outside;
             this.ColorMapping = this.GetDefaultColor;
         }
@@ -329,7 +328,7 @@ namespace OxyPlot.Series
         /// <param name="item">The item.</param>
         protected void RenderLabel(IRenderContext rc, OxyRect rect, HistogramItem item)
         {
-            var s = StringHelper.Format(this.ActualCulture, this.LabelFormatString, item, item.Value, item.RangeStart, item.RangeEnd, item.Area, item.Count);
+            var s = GetFormattedLabel(item);
             DataPoint dp;
             VerticalAlignment va;
             var ha = HorizontalAlignment.Center;
@@ -447,6 +446,22 @@ namespace OxyPlot.Series
             {
                 this.actualItems.AddRange(sourceAsEnumerableHistogramItems);
             }
+        }
+
+        /// <inheritdoc/>
+        protected override string GetFormattedLabel(object item)
+        {
+            return GetFormattedLabel<HistogramItem>(item, (HistogramItem histogramItem) => {
+                return StringHelper.Format(
+                        this.ActualCulture,
+                        this.LabelFormatString,
+                        histogramItem,
+                        histogramItem.Value,
+                        histogramItem.RangeStart,
+                        histogramItem.RangeEnd,
+                        histogramItem.Area,
+                        histogramItem.Count);
+            });
         }
     }
 }

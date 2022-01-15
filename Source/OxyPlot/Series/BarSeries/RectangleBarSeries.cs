@@ -190,15 +190,7 @@ namespace OxyPlot.Series
 
                 if (this.LabelFormatString != null)
                 {
-                    var s = StringHelper.Format(
-                        this.ActualCulture,
-                        this.LabelFormatString,
-                        this.GetItem(i),
-                        item.X0,
-                        item.X1,
-                        item.Y0,
-                        item.Y1,
-                        item.Title);
+                    var s = GetFormattedLabel(this.GetItem(i));
 
                     var pt = new ScreenPoint(
                         (rectangle.Left + rectangle.Right) / 2, (rectangle.Top + rectangle.Bottom) / 2);
@@ -325,6 +317,22 @@ namespace OxyPlot.Series
         protected virtual bool IsValid(double v)
         {
             return !double.IsNaN(v) && !double.IsInfinity(v);
+        }
+
+        /// <inheritdoc/>
+        protected override string GetFormattedLabel(object item)
+        {
+            return GetFormattedLabel<RectangleBarItem>(item, (RectangleBarItem rectangleBarItem) => {
+                return StringHelper.Format(
+                    this.ActualCulture,
+                    this.LabelFormatString,
+                    rectangleBarItem,
+                    rectangleBarItem.X0,
+                    rectangleBarItem.X1,
+                    rectangleBarItem.Y0,
+                    rectangleBarItem.Y1,
+                    rectangleBarItem.Title);
+            });
         }
     }
 }

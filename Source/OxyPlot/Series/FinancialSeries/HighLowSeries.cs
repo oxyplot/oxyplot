@@ -320,7 +320,7 @@ namespace OxyPlot.Series
                     LineJoin.Miter);
             }
         }
-
+                
         /// <summary>
         /// Sets the default values.
         /// </summary>

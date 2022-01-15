@@ -17,6 +17,7 @@ All notable changes to this project will be documented in this file.
 ## [2.1.0] - 2021-10-02
 
 ### Added
+- It should be possible to create a method string GetFormattedLabel(object item) in ItemsSeries (#236)
 - Made Legend Items clickable to toggle series visibility (#644)
 - Added properties LegendKey and SeriesGroupName to Series, allowing grouping series between multiple legends and/or within same legend (#644)
 - OxyPlot.ImageSharp (#1188)

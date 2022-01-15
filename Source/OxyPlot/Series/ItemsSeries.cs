@@ -9,6 +9,7 @@
 
 namespace OxyPlot.Series
 {
+    using System;
     using System.Collections;
     using System.Linq;
 
@@ -72,5 +73,46 @@ namespace OxyPlot.Series
             set; 
         }
 
+        /// <summary>
+        /// Returns formatted label
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        protected abstract string GetFormattedLabel(object item);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <param name="formatter">The code actually doing formatting</param>
+        /// <returns></returns>
+        protected string GetFormattedLabel<T>(object item, Func<T, string> formatter)
+        {
+            if (item == null)
+                return "";
+
+            if (item is T typedItem)
+                return formatter(typedItem);
+
+            throw GetInvalidItemType();
+        }
+
+        /// <summary>
+        /// Returns exception to be thrown when derived class is not supporting GetFormattedLabel method.
+        /// </summary>
+        /// <returns></returns>
+        protected Exception GetFormattedLabelNotSupported() { return new InvalidOperationException("GetFormattedLabel is not valid for this class"); }
+
+        /// <summary>
+        /// Returns exception to be thrown when item send to GetFormattedLabel method is not of the expected type.
+        /// </summary>
+        /// <returns></returns>
+        protected Exception GetInvalidItemType() { return new InvalidOperationException("Invalid item type"); }
+
+        /// <summary>
+        /// Returns exception to be thrown when not valid GetFormattedLabel method's overload is used.
+        /// </summary>
+        /// <returns></returns>
+        protected Exception GetInvalidOverloadUsed() { return new InvalidOperationException("Invalid overload of GetFormattedLabel used"); }
     }
 }

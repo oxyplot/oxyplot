@@ -828,5 +828,11 @@ namespace OxyPlot.Series
 
             return start;
         }
+
+        /// <inheritdoc/>
+        protected override string GetFormattedLabel(object item)
+        {
+            throw GetFormattedLabelNotSupported();
+        }
     }
 }

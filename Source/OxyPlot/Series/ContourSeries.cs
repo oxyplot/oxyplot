@@ -448,8 +448,7 @@ namespace OxyPlot.Series
                 angle += 180;
             }
 
-            var formatString = string.Concat("{0:", this.LabelFormatString, "}");
-            var text = string.Format(this.ActualCulture, formatString, contour.ContourLevel);
+            var text = GetFormattedLabel(contour);
             contourLabels.Add(new ContourLabel { Position = pos, Angle = angle, Text = text });
         }
 
@@ -632,7 +631,17 @@ namespace OxyPlot.Series
                            };
             rc.DrawPolygon(bpts, this.LabelBackground, OxyColors.Undefined, 0, this.EdgeRenderingMode);
         }
-
+                
+        /// <summary>
+        /// Returns formatted label
+        /// </summary>
+        /// <param name="contour">The contour</param>
+        /// <returns></returns>
+        string GetFormattedLabel(Contour contour)
+        {
+            var formatString = string.Concat("{0:", this.LabelFormatString, "}");
+            return string.Format(this.ActualCulture, formatString, contour.ContourLevel);
+        }
 
         /// <summary>
         /// Represents one of the two points of a segment.

@@ -9,6 +9,7 @@
 
 namespace ExampleLibrary
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -231,6 +232,12 @@ namespace ExampleLibrary
         {
             this.MinimumX = this.Values.Min();
             this.MaximumX = this.Values.Max();
+        }
+
+        /// <inheritdoc/>
+        protected override string GetFormattedLabel(object item)
+        {
+            throw GetFormattedLabelNotSupported();
         }
     }
 }

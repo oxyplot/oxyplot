@@ -11,6 +11,7 @@ namespace OxyPlot.Series
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
 
     /// <summary>
@@ -300,7 +301,7 @@ namespace OxyPlot.Series
             double categoryValue,
             double categoryEndValue)
         {
-            var s = StringHelper.Format(this.ActualCulture, this.LabelFormatString, item, item.Value);
+            var s = GetFormattedLabel(item);
             HorizontalAlignment ha;
             ScreenPoint pt;
             var y = (categoryEndValue + categoryValue) / 2;
@@ -439,6 +440,17 @@ namespace OxyPlot.Series
                 args => new BarItem(Convert.ToDouble(args[0])) { Color = (OxyColor)args[1] });
 
             return true;
+        }
+
+        /// <inheritdoc/>
+        protected override string GetFormattedLabel(object item)
+        {
+            if (this.LabelFormatString == null)
+                return "";
+
+                return GetFormattedLabel<BarItem>(item, (BarItem barItem) => {
+                return StringHelper.Format(this.ActualCulture, this.LabelFormatString, item, barItem.Value);
+            });
         }
     }
 }

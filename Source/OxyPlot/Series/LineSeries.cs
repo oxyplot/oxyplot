@@ -607,7 +607,7 @@ namespace OxyPlot.Series
                 var pt = this.Transform(point) + new ScreenVector(0, -this.LabelMargin);
 
                 var item = this.GetItem(index);
-                var s = StringHelper.Format(this.ActualCulture, this.LabelFormatString, item, point.X, point.Y);
+                var s = GetFormattedLabel(item, point);
 
 #if SUPPORTLABELPLACEMENT
                     switch (this.LabelPlacement)
@@ -760,6 +760,22 @@ namespace OxyPlot.Series
         {
             double tolerance = Math.Abs(Math.Max(this.MaxX - this.MinX, this.MaxY - this.MinY) / ToleranceDivisor);
             this.smoothedPoints = this.InterpolationAlgorithm.CreateSpline(this.ActualPoints, false, tolerance);
+        }
+
+        /// <inheritdoc/>
+        protected override string GetFormattedLabel(object item)
+        {
+            throw GetInvalidOverloadUsed();
+        }
+
+        /// <summary>
+        /// Gets or sets the format string for the item's label.
+        /// </summary>
+        protected string GetFormattedLabel(object item, DataPoint point)
+        {
+            return GetFormattedLabel<object>(item, (object barItem) => {
+                return StringHelper.Format(this.ActualCulture, this.LabelFormatString, item, point.X, point.Y);
+            });
         }
 
         /// <summary>

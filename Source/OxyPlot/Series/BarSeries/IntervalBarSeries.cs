@@ -223,7 +223,7 @@ namespace OxyPlot.Series
 
                 if (this.LabelFormatString != null)
                 {
-                    var s = StringHelper.Format(this.ActualCulture, this.LabelFormatString, this.GetItem(i), item.Start, item.End, item.Title);
+                    var s = GetFormattedLabel(this.GetItem(i)); 
 
                     var pt = new ScreenPoint(
                         (rectangle.Left + rectangle.Right) / 2, (rectangle.Top + rectangle.Bottom) / 2);
@@ -260,6 +260,14 @@ namespace OxyPlot.Series
                 args => new IntervalBarItem(Convert.ToDouble(args[0]), Convert.ToDouble(args[1])) { Color = (OxyColor)args[2] });
 
             return true;
+        }
+
+        /// <inheritdoc/>
+        protected override string GetFormattedLabel(object item)
+        {
+            return GetFormattedLabel<IntervalBarItem>(item, (IntervalBarItem intervalBarItem) => {
+                return StringHelper.Format(this.ActualCulture, this.LabelFormatString, intervalBarItem, intervalBarItem.Start, intervalBarItem.End, intervalBarItem.Title);
+            });
         }
     }
 }

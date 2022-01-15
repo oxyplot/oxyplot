@@ -553,7 +553,8 @@ namespace OxyPlot.Series
                 }
 
                 var item = this.GetItem(index);
-                var s = StringHelper.Format(this.ActualCulture, this.LabelFormatString, item, point.X, point.Y);
+
+                var s = GetFormattedLabel(item, dataPoint);
 
 #if SUPPORTLABELPLACEMENT
                     switch (this.LabelPlacement)
@@ -845,6 +846,19 @@ namespace OxyPlot.Series
 
             // Use reflection to add scatter points
             this.UpdateFromDataFields();
+        }
+
+        /// <summary>
+        /// Returns formatted label
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <param name="point">The point.</param>
+        /// <returns></returns>
+        protected string GetFormattedLabel(object item, DataPoint point)
+        {
+            return GetFormattedLabel<object>(item, (object barItem) => {
+                return StringHelper.Format(this.ActualCulture, this.LabelFormatString, item, point.X, point.Y);
+            });
         }
     }
 }

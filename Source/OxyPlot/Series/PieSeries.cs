@@ -489,5 +489,11 @@ namespace OxyPlot.Series
         protected internal override void UpdateMaxMin()
         {
         }
+
+        /// <inheritdoc/>
+        protected override string GetFormattedLabel(object item)
+        {
+            throw GetFormattedLabelNotSupported(); 
+        }
     }
 }
