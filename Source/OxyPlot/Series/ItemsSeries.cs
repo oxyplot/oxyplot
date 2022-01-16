@@ -108,11 +108,5 @@ namespace OxyPlot.Series
         /// </summary>
         /// <returns></returns>
         protected Exception GetInvalidItemType() { return new InvalidOperationException("Invalid item type"); }
-
-        /// <summary>
-        /// Returns exception to be thrown when not valid GetFormattedLabel method's overload is used.
-        /// </summary>
-        /// <returns></returns>
-        protected Exception GetInvalidOverloadUsed() { return new InvalidOperationException("Invalid overload of GetFormattedLabel used"); }
     }
 }

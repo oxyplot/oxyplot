@@ -762,11 +762,6 @@ namespace OxyPlot.Series
             this.smoothedPoints = this.InterpolationAlgorithm.CreateSpline(this.ActualPoints, false, tolerance);
         }
 
-        /// <inheritdoc/>
-        protected override string GetFormattedLabel(object item)
-        {
-            throw GetInvalidOverloadUsed();
-        }
 
         /// <summary>
         /// Gets or sets the format string for the item's label.

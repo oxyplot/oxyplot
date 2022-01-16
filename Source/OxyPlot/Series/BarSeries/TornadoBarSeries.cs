@@ -362,12 +362,6 @@ namespace OxyPlot.Series
             return true;
         }
 
-        /// <inheritdoc/>
-        protected override string GetFormattedLabel(object item)
-        {
-            throw GetInvalidOverloadUsed();
-        }
-
         /// <summary>
         /// Returns formatted label
         /// </summary>
