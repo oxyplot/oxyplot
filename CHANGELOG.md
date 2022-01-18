@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 ### Changed
+- Update net40 and net45 to net452 (#1835)
 
 ### Removed
 
