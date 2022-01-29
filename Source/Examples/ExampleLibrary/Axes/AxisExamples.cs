@@ -414,6 +414,35 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
+        [Example("Logarithmic axes Cartesian Plot")]
+        public static PlotModel CartesianPlotLogarithmicAxes()
+        {
+            var plotModel1 = new PlotModel
+            {
+                PlotType = PlotType.Cartesian,
+            };
+            plotModel1.Axes.Add(new LogarithmicAxis
+            {
+                Maximum = 1000000,
+                Minimum = 1,
+                Title = "Log axis",
+                UseSuperExponentialFormat = true,
+                MajorGridlineStyle = LineStyle.Solid,
+                IsPanEnabled = true,
+            });
+            plotModel1.Axes.Add(new LogarithmicAxis
+            {
+                Maximum = 10000,
+                Minimum = 0.001,
+                Position = AxisPosition.Bottom,
+                Title = "Log axis",
+                UseSuperExponentialFormat = true,
+                MajorGridlineStyle = LineStyle.Solid,
+                IsPanEnabled = true,
+            });
+            return plotModel1;
+        }
+
         [Example("Big numbers")]
         public static PlotModel BigNumbers()
         {

@@ -1163,7 +1163,8 @@ namespace OxyPlot.Axes
             double sx0 = this.Transform(this.ActualMinimum);
 
             double sgn = Math.Sign(this.scale);
-            double mid = (this.ActualMaximum + this.ActualMinimum) / 2;
+            double mid = (this.PreTransform(this.ActualMaximum) + this.PreTransform(this.ActualMinimum)) / 2;
+
 
             double dx = (this.offset - mid) * this.scale;
             var newOffset = (dx / (sgn * newScale)) + mid;

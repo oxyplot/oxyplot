@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 - WPF - OxyPlot doesn't render inside a Popup (#1796)
+- Odd behavior of zooming of Logarithmic axis in Cartesian plot (#1825)
 - SkiaSharp.WPF - OxyPlot doesn't render inside an ElementHost (#1800)
 - NullReference in SkiaSharp WPF renderer if UIElement has no PresentationSource  (#1798)
 
