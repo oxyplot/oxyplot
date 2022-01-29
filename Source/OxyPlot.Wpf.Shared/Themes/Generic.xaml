@@ -12,6 +12,7 @@
         <Setter Property="LineStroke" Value="#80000000" />
         <Setter Property="HorizontalLineVisibility" Value="Visible" />
         <Setter Property="VerticalLineVisibility" Value="Visible" />
+        <Setter Property="LineThickness" Value="1" />
         <Setter Property="Distance" Value="7" />
         <Setter Property="CornerRadius" Value="0" />
         <Setter Property="ShowPointer" Value="true" />
@@ -24,10 +25,10 @@
                     <Canvas HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                         <Line x:Name="PART_HorizontalLine" Visibility="{TemplateBinding HorizontalLineVisibility}"
                               Stroke="{TemplateBinding LineStroke}" RenderOptions.EdgeMode="Aliased"
-                              StrokeDashArray="{TemplateBinding LineDashArray}" />
+                              StrokeDashArray="{TemplateBinding LineDashArray}" StrokeThickness="{TemplateBinding LineThickness}" />
                         <Line x:Name="PART_VerticalLine" Visibility="{TemplateBinding VerticalLineVisibility}"
                               Stroke="{TemplateBinding LineStroke}" RenderOptions.EdgeMode="Aliased"
-                              StrokeDashArray="{TemplateBinding LineDashArray}" />
+                              StrokeDashArray="{TemplateBinding LineDashArray}" StrokeThickness="{TemplateBinding LineThickness}" />
                         <Grid x:Name="PART_ContentContainer">
                             <Path x:Name="PART_Path" Fill="{TemplateBinding Background}" Stroke="{TemplateBinding BorderBrush}"
                                   StrokeThickness="{TemplateBinding BorderThickness, Converter={StaticResource ThicknessConverter}}"

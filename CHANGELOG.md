@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 ## Unreleased
 
 ### Added
+- Add LineThickness property to TrackerControl (#1831)
 
 ### Changed
 
