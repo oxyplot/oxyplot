@@ -16,6 +16,7 @@ namespace OxyPlot.Wpf
     using System.Windows.Input;
     using System.Windows.Media;
     using System.Windows.Threading;
+    using System.Windows.Documents;
     using CursorType = OxyPlot.CursorType;
 
     /// <summary>
@@ -373,10 +374,11 @@ namespace OxyPlot.Wpf
         /// </summary>
         protected void Render()
         {
-            if (this.plotPresenter == null || this.renderContext == null || !(this.isInVisualTree = this.IsInVisualTree()))
+            if (this.plotPresenter == null || this.renderContext == null)
             {
                 return;
             }
+            this.isInVisualTree = this.IsInVisualTree();
 
             this.RenderOverride();
         }
@@ -449,6 +451,12 @@ namespace OxyPlot.Wpf
             while ((dpObject = VisualTreeHelper.GetParent(dpObject)) != null)
             {
                 if (dpObject is Window)
+                {
+                    return true;
+                }
+
+                //Check if the parent is an AdornerDecorator like in an ElementHost
+                if (dpObject is AdornerDecorator)
                 {
                     return true;
                 }
