@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 - Add LineThickness property to TrackerControl (#1831)
 
 ### Changed
+- Update net40 and net45 to net452 (#1835)
 
 ### Removed
 
