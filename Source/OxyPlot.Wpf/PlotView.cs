@@ -127,6 +127,7 @@ namespace OxyPlot.Wpf
         protected override double UpdateDpi()
         {
             var scale = base.UpdateDpi();
+            this.RenderContext.DpiScale = scale;
             var ancestor = this.GetAncestorVisualFromVisualTree(this);
             this.RenderContext.VisualOffset = ancestor != null ? this.TransformToAncestor(ancestor).Transform(default) : default;
             return scale;
