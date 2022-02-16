@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file.
 - Odd behavior of zooming of Logarithmic axis in Cartesian plot (#1825)
 - SkiaSharp.WPF - OxyPlot doesn't render inside an ElementHost (#1800)
 - NullReference in SkiaSharp WPF renderer if UIElement has no PresentationSource  (#1798)
+- WPF DPI Regression (#1799)
 
 ## [2.1.0] - 2021-10-02
 
