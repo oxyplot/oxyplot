@@ -42,6 +42,7 @@ namespace OxyPlot.Annotations
             this.TextMargin = 12;
             this.TextHorizontalAlignment = HorizontalAlignment.Right;
             this.TextVerticalAlignment = VerticalAlignment.Top;
+            this.MinimumSegmentLength = 2;
         }
 
         /// <summary>
@@ -115,6 +116,14 @@ namespace OxyPlot.Annotations
         public double TextLinePosition { get; set; }
 
         /// <summary>
+        /// Gets or sets the minimum length of the segment.
+        /// Increasing this number will increase performance,
+        /// but make curves less accurate. The default is <c>2</c>.
+        /// </summary>
+        /// <value>The minimum length of the segment.</value>
+        public double MinimumSegmentLength { get; set; }
+
+        /// <summary>
         /// Gets or sets the actual minimum value on the x axis.
         /// </summary>
         /// <value>The actual minimum value on the x axis.</value>
@@ -152,8 +161,6 @@ namespace OxyPlot.Annotations
 
             this.screenPoints = this.GetScreenPoints();
 
-            const double MinimumSegmentLength = 4;
-
             var clippedPoints = new List<ScreenPoint>();
             var dashArray = this.LineStyle.GetDashArray();
 
@@ -161,7 +168,7 @@ namespace OxyPlot.Annotations
             {
                 rc.DrawReducedLine(
                    this.screenPoints,
-                   MinimumSegmentLength * MinimumSegmentLength,
+                   this.MinimumSegmentLength * this.MinimumSegmentLength,
                    this.GetSelectableColor(this.Color),
                    this.StrokeThickness,
                    this.EdgeRenderingMode,

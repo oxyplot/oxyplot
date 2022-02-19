@@ -30,6 +30,8 @@ namespace OxyPlot.Annotations
         {
             this.LineStyle = LineStyle.Solid;
             this.LineJoin = LineJoin.Miter;
+            this.MinimumSegmentLength = 2;
+
             this.Points = new List<DataPoint>();
         }
 
@@ -44,6 +46,14 @@ namespace OxyPlot.Annotations
         /// </summary>
         /// <value>The line style.</value>
         public LineStyle LineStyle { get; set; }
+
+        /// <summary>
+        /// Gets or sets the minimum length of the segment.
+        /// Increasing this number will increase performance,
+        /// but make the polygon less accurate. The default is <c>2</c>.
+        /// </summary>
+        /// <value>The minimum length of the segment.</value>
+        public double MinimumSegmentLength { get; set; }
 
         /// <summary>
         /// Gets the points.
@@ -67,11 +77,9 @@ namespace OxyPlot.Annotations
                 return;
             }
 
-            const double MinimumSegmentLength = 4;
-
             rc.DrawReducedPolygon(
                 this.screenPoints,
-                MinimumSegmentLength * MinimumSegmentLength,
+                this.MinimumSegmentLength * this.MinimumSegmentLength,
                 this.GetSelectableFillColor(this.Fill),
                 this.GetSelectableColor(this.Stroke),
                 this.StrokeThickness,

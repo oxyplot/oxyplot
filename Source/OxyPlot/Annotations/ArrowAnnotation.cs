@@ -122,7 +122,7 @@ namespace OxyPlot.Annotations
             var p3 = p1 - (n * this.HeadWidth * this.StrokeThickness);
             var p4 = p1 + (d * this.Veeness * this.StrokeThickness);
 
-            const double MinimumSegmentLength = 4;
+            const double MinimumSegmentLength = 0;
 
             var dashArray = this.LineStyle.GetDashArray();
 

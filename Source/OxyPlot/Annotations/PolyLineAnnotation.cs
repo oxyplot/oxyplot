@@ -35,14 +35,6 @@ namespace OxyPlot.Annotations
         }
 
         /// <summary>
-        /// Gets or sets the minimum length of the segment.
-        /// Increasing this number will increase performance,
-        /// but make the curve less accurate.
-        /// </summary>
-        /// <value>The minimum length of the segment.</value>
-        public double MinimumSegmentLength { get; set; }
-
-        /// <summary>
         /// Gets or sets the interpolation algorithm.
         /// </summary>
         /// <value>An interpolation algorithm.</value>
