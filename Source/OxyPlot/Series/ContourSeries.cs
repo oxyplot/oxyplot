@@ -54,6 +54,7 @@ namespace OxyPlot.Series
             this.Color = OxyColors.Automatic;
             this.StrokeThickness = 1.0;
             this.LineStyle = LineStyle.Solid;
+            this.MinimumSegmentLength = 2;
 
             this.TrackerFormatString = DefaultTrackerFormatString;
         }
@@ -152,6 +153,14 @@ namespace OxyPlot.Series
         /// </summary>
         /// <value>The stroke thickness.</value>
         public double StrokeThickness { get; set; }
+
+        /// <summary>
+        /// Gets or sets the minimum length of the segment.
+        /// Increasing this number will increase performance,
+        /// but make the curve less accurate. The default is <c>2</c>.
+        /// </summary>
+        /// <value>The minimum length of the segment.</value>
+        public double MinimumSegmentLength { get; set; }
 
         /// <summary>
         /// Calculates the contours.
@@ -292,7 +301,7 @@ namespace OxyPlot.Series
 
                 rc.DrawReducedLine(
                     transformedPoints,
-                    4,
+                    this.MinimumSegmentLength * this.MinimumSegmentLength,
                     this.GetSelectableColor(strokeColor),
                     this.StrokeThickness,
                     this.EdgeRenderingMode,
