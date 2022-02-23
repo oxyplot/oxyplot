@@ -11,11 +11,11 @@ namespace OxyPlot.SkiaSharp
     using System;
     using System.Collections.Generic;
     using System.Linq;
-using System.Reflection;
+    using System.Reflection;
 
-/// <summary>
-/// Implements <see cref="IRenderContext" /> based on SkiaSharp.
-/// </summary>
+    /// <summary>
+    /// Implements <see cref="IRenderContext" /> based on SkiaSharp.
+    /// </summary>
     public class SkiaRenderContext : IRenderContext, IDisposable
     {
         private readonly Dictionary<FontDescriptor, SKShaper> shaperCache = new Dictionary<FontDescriptor, SKShaper>();
