@@ -11,16 +11,30 @@ namespace OxyPlot.SkiaSharp
     using System;
     using System.Collections.Generic;
     using System.Linq;
+using System.Reflection;
 
-    /// <summary>
-    /// Implements <see cref="IRenderContext" /> based on SkiaSharp.
-    /// </summary>
+/// <summary>
+/// Implements <see cref="IRenderContext" /> based on SkiaSharp.
+/// </summary>
     public class SkiaRenderContext : IRenderContext, IDisposable
     {
         private readonly Dictionary<FontDescriptor, SKShaper> shaperCache = new Dictionary<FontDescriptor, SKShaper>();
         private readonly Dictionary<FontDescriptor, SKTypeface> typefaceCache = new Dictionary<FontDescriptor, SKTypeface>();
         private SKPaint paint = new SKPaint();
         private SKPath path = new SKPath();
+
+        private readonly Dictionary<int, string> _fontWeights = new Dictionary<int, string>()
+        {
+            [100] = "Thin",
+            [200] = "ExtraLight",
+            [300] = "Light",
+            [400] = "Regular",
+            [500] = "Medium",
+            [600] = "SemiBold",
+            [700] = "Bold",
+            [800] = "ExtraBold",
+            [900] = "Black"
+        };
 
         /// <summary>
         /// Gets or sets the DPI scaling factor. A value of 1 corresponds to 96 DPI (dots per inch).
@@ -852,6 +866,28 @@ namespace OxyPlot.SkiaSharp
             if (!this.typefaceCache.TryGetValue(fontDescriptor, out var typeface))
             {
                 typeface = SKTypeface.FromFamilyName(fontFamily, new SKFontStyle((int)fontWeight, (int)SKFontStyleWidth.Normal, SKFontStyleSlant.Upright));
+                if (typeface.FamilyName != fontFamily) // requested font not found or is WASM
+                {
+                    try
+                    {
+                        var assembly = Assembly.GetEntryAssembly(); // the executing program (the GUI Project (WPF, WASM, ...))
+                        var weight = (_fontWeights.ContainsKey((int)fontWeight) ? _fontWeights[(int)fontWeight] : "Regular");
+                        var filename = $"{fontFamily}-{weight}.ttf".ToLower();
+                        Console.WriteLine($"Load Font {filename}");
+
+                        var matches = assembly!.GetManifestResourceNames().Where(item => item.ToLower().EndsWith(filename));
+                        if (!matches.Any()) matches = assembly!.GetManifestResourceNames().Where(item => item.ToLower().EndsWith(fontFamily + ".ttf"));
+                        foreach (var item in matches)
+                        {
+                            var s = assembly.GetManifestResourceStream(item);
+                            typeface = SKTypeface.FromStream(s);
+                        }
+                    }
+                    catch
+                    {
+                        Console.WriteLine($"Requested Font {fontFamily} could not be found, falling back to {typeface.FamilyName}");
+                    }
+                }
                 this.typefaceCache.Add(fontDescriptor, typeface);
             }
 
