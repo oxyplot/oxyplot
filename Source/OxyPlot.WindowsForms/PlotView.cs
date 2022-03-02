@@ -318,8 +318,8 @@ namespace OxyPlot.WindowsForms
             }
 
             this.trackerLabel.Text = data.ToString();
-            this.trackerLabel.Top = (int)data.Position.Y - this.trackerLabel.Height;
-            this.trackerLabel.Left = (int)data.Position.X - (this.trackerLabel.Width / 2);
+            this.trackerLabel.Top = Math.Min(Math.Max(0, (int)data.Position.Y - this.trackerLabel.Height), this.Height - this.trackerLabel.Height);
+            this.trackerLabel.Left = Math.Min(Math.Max(0, (int)data.Position.X - (this.trackerLabel.Width / 2)), this.Width - this.trackerLabel.Width);
             this.trackerLabel.Visible = true;
             this.trackerLabel.UseMnemonic = false;
         }
