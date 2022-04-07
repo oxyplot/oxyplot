@@ -150,7 +150,7 @@ namespace OxyPlot
         /// <returns>L2-norm in ARGB space</returns>
         public static double ColorDifference(OxyColor c1, OxyColor c2)
         {
-            // http://en.wikipedia.org/wiki/OxyColor_difference
+            // http://en.wikipedia.org/wiki/Color_difference
             // http://mathworld.wolfram.com/L2-Norm.html
             double dr = (c1.R - c2.R) / 255.0;
             double dg = (c1.G - c2.G) / 255.0;
@@ -196,7 +196,7 @@ namespace OxyPlot
         /// <param name="sat">The saturation value [0,1]</param>
         /// <param name="val">The intensity value [0,1]</param>
         /// <returns>The <see cref="OxyColor" />.</returns>
-        /// <remarks>See <a href="http://en.wikipedia.org/wiki/HSL_Color_space">Wikipedia</a>.</remarks>
+        /// <remarks>See <a href="http://en.wikipedia.org/wiki/HSL_and_HSV">Wikipedia</a>.</remarks>
         public static OxyColor FromHsv(double hue, double sat, double val)
         {
             double g, b;
