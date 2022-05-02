@@ -10,6 +10,7 @@ namespace OxyPlot.SkiaSharp
     using global::SkiaSharp.HarfBuzz;
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
     using System.Reflection;
 
@@ -866,6 +867,7 @@ namespace OxyPlot.SkiaSharp
             if (!this.typefaceCache.TryGetValue(fontDescriptor, out var typeface))
             {
                 typeface = SKTypeface.FromFamilyName(fontFamily, new SKFontStyle((int)fontWeight, (int)SKFontStyleWidth.Normal, SKFontStyleSlant.Upright));
+#if NETSTANDARD2_0_OR_GREATER
                 if (typeface.FamilyName != fontFamily) // requested font not found or is WASM
                 {
                     try
@@ -873,7 +875,7 @@ namespace OxyPlot.SkiaSharp
                         var assembly = Assembly.GetEntryAssembly(); // the executing program (the GUI Project (WPF, WASM, ...))
                         var weight = (_fontWeights.ContainsKey((int)fontWeight) ? _fontWeights[(int)fontWeight] : "Regular");
                         var filename = $"{fontFamily}-{weight}.ttf".ToLower();
-                        Console.WriteLine($"Load Font {filename}");
+                        Debug.WriteLine($"Load Font {filename}");
 
                         var matches = assembly!.GetManifestResourceNames().Where(item => item.ToLower().EndsWith(filename));
                         if (!matches.Any()) matches = assembly!.GetManifestResourceNames().Where(item => item.ToLower().EndsWith(fontFamily + ".ttf"));
@@ -885,9 +887,10 @@ namespace OxyPlot.SkiaSharp
                     }
                     catch
                     {
-                        Console.WriteLine($"Requested Font {fontFamily} could not be found, falling back to {typeface.FamilyName}");
+                        Debug.WriteLine($"Requested Font {fontFamily} could not be found, falling back to {typeface.FamilyName}");
                     }
                 }
+#endif
                 this.typefaceCache.Add(fontDescriptor, typeface);
             }
 
