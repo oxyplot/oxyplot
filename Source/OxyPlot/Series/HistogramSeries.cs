@@ -298,7 +298,7 @@ namespace OxyPlot.Series
                 var actualFillColor = this.GetItemFillColor(item);
 
                 // transform the data points to screen points
-                var p1 = this.Transform(item.RangeStart, 0);
+                var p1 = this.Transform(item.RangeStart, this.YAxis.IsLogarithmic() ? double.Epsilon : 0);
                 var p2 = this.Transform(item.RangeEnd, item.Height);
 
                 var rectrect = new OxyRect(p1, p2);
