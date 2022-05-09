@@ -244,8 +244,16 @@ namespace OxyPlot.Series
             {
                 this.MinX = Math.Min(this.ActualItems.Min(r => r.RangeStart), this.ActualItems.Min(r => r.RangeEnd));
                 this.MaxX = Math.Max(this.ActualItems.Max(r => r.RangeStart), this.ActualItems.Max(r => r.RangeEnd));
-                this.MinY = Math.Min(this.ActualItems.Min(r => 0), this.ActualItems.Min(r => r.Height));
-                this.MaxY = Math.Max(this.ActualItems.Max(r => 0), this.ActualItems.Max(r => r.Height));
+                if (this.YAxis.IsLogarithmic())
+                {
+                    this.MinX = Math.Max(this.ActualItems.Min(r => r.Height), double.Epsilon);
+                    this.MaxY = Math.Max(this.ActualItems.Max(r => r.Height), double.Epsilon);
+                }
+                else
+                {
+                    this.MinY = Math.Min(this.ActualItems.Min(r => 0), this.ActualItems.Min(r => r.Height));
+                    this.MaxY = Math.Max(this.ActualItems.Max(r => 0), this.ActualItems.Max(r => r.Height));
+                }
             }
         }
 
