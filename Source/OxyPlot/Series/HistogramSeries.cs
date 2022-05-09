@@ -303,6 +303,11 @@ namespace OxyPlot.Series
         {
             foreach (var item in items)
             {
+                if (this.YAxis.IsLogarithmic() && !this.YAxis.IsValidValue(item.Height))
+                {
+                    continue;
+                }
+
                 var actualFillColor = this.GetItemFillColor(item);
 
                 // transform the data points to screen points
