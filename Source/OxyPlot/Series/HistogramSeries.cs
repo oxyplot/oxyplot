@@ -246,7 +246,7 @@ namespace OxyPlot.Series
                 this.MaxX = Math.Max(this.ActualItems.Max(r => r.RangeStart), this.ActualItems.Max(r => r.RangeEnd));
                 if (this.YAxis.IsLogarithmic())
                 {
-                    this.MinX = Math.Max(this.ActualItems.Min(r => r.Height), double.Epsilon);
+                    this.MinY = Math.Max(this.ActualItems.Min(r => r.Height), double.Epsilon);
                     this.MaxY = Math.Max(this.ActualItems.Max(r => r.Height), double.Epsilon);
                 }
                 else
