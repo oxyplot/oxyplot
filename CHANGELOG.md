@@ -27,6 +27,7 @@ All notable changes to this project will be documented in this file.
 - Axes not always honoring AbsoluteMinimum/AbsoluteMaximum and/or MinimumRange/MaximumRange properties (#1812)
 - WindowsForms tracker no longer clipping outside PlotView boundaries (#1863)
 - Histogram now rendering properly when using logarithmic Y axis (#740) 
+- Fix ExampleLibrary build errors in certain code pages (#1890)
 
 ## [2.1.0] - 2021-10-02
 
