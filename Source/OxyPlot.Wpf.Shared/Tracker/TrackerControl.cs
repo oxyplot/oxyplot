@@ -9,6 +9,7 @@
 
 namespace OxyPlot.Wpf
 {
+    using DependencyPropertyGenerator;
     using System;
     using System.Windows;
     using System.Windows.Controls;
@@ -18,99 +19,21 @@ namespace OxyPlot.Wpf
     /// <summary>
     /// The tracker control.
     /// </summary>
-    public class TrackerControl : ContentControl
+    [DependencyProperty<Visibility>("HorizontalLineVisibility", DefaultValue = Visibility.Visible)]
+    [DependencyProperty<Visibility>("VerticalLineVisibility", DefaultValue = Visibility.Visible)]
+    [DependencyProperty<double>("LineThickness", DefaultValue = 1.0)]
+    [DependencyProperty<Brush>("LineStroke")]
+    [DependencyProperty<OxyRect>("LineExtents")]
+    [DependencyProperty<DoubleCollection>("LineDashArray")]
+    [DependencyProperty<bool>("ShowPointer", DefaultValue = true)]
+    [DependencyProperty<double>("Distance", DefaultValue = 7.0)]
+    [DependencyProperty<bool>("CanCenterHorizontally", DefaultValue = true)]
+    [DependencyProperty<bool>("CanCenterVertically", DefaultValue = true)]
+    [DependencyProperty<ScreenPoint>("Position")]
+    [DependencyProperty<EdgeMode>("BorderEdgeMode")]
+    [DependencyProperty<double>("CornerRadius")]
+    public partial class TrackerControl : ContentControl
     {
-        /// <summary>
-        /// Identifies the <see cref="HorizontalLineVisibility"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty HorizontalLineVisibilityProperty =
-            DependencyProperty.Register(
-                nameof(HorizontalLineVisibility),
-                typeof(Visibility),
-                typeof(TrackerControl),
-                new PropertyMetadata(Visibility.Visible));
-
-        /// <summary>
-        /// Identifies the <see cref="VerticalLineVisibility"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty VerticalLineVisibilityProperty =
-            DependencyProperty.Register(
-                nameof(VerticalLineVisibility),
-                typeof(Visibility),
-                typeof(TrackerControl),
-                new PropertyMetadata(Visibility.Visible));
-
-        /// <summary>
-        /// Identifies the <see cref="LineThickness"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty LineThicknessProperty = DependencyProperty.Register(
-            nameof(LineThickness), typeof(double), typeof(TrackerControl), new PropertyMetadata(1.0));
-
-        /// <summary>
-        /// Identifies the <see cref="LineStroke"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty LineStrokeProperty = DependencyProperty.Register(
-            nameof(LineStroke), typeof(Brush), typeof(TrackerControl), new PropertyMetadata(null));
-
-        /// <summary>
-        /// Identifies the <see cref="LineExtents"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty LineExtentsProperty = DependencyProperty.Register(
-            nameof(LineExtents), typeof(OxyRect), typeof(TrackerControl), new PropertyMetadata(new OxyRect()));
-
-        /// <summary>
-        /// Identifies the <see cref="LineDashArray"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty LineDashArrayProperty = DependencyProperty.Register(
-            nameof(LineDashArray), typeof(DoubleCollection), typeof(TrackerControl), new PropertyMetadata(null));
-
-        /// <summary>
-        /// Identifies the <see cref="BorderEdgeMode"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty BorderEdgeModeProperty = DependencyProperty.Register(
-            nameof(BorderEdgeMode), typeof(EdgeMode), typeof(TrackerControl));
-
-        /// <summary>
-        /// Identifies the <see cref="ShowPointer"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty ShowPointerProperty = DependencyProperty.Register(
-            nameof(ShowPointer), typeof(bool), typeof(TrackerControl), new PropertyMetadata(true));
-
-        /// <summary>
-        /// Identifies the <see cref="CornerRadius"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
-            nameof(CornerRadius), typeof(double), typeof(TrackerControl), new PropertyMetadata(0.0));
-
-        /// <summary>
-        /// Identifies the <see cref="Distance"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty DistanceProperty = DependencyProperty.Register(
-            nameof(Distance), typeof(double), typeof(TrackerControl), new PropertyMetadata(7.0));
-
-        /// <summary>
-        /// Identifies the <see cref="CanCenterHorizontally"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty CanCenterHorizontallyProperty =
-            DependencyProperty.Register(
-                nameof(CanCenterHorizontally), typeof(bool), typeof(TrackerControl), new PropertyMetadata(true));
-
-        /// <summary>
-        /// Identifies the <see cref="CanCenterVertically"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty CanCenterVerticallyProperty =
-            DependencyProperty.Register(
-                nameof(CanCenterVertically), typeof(bool), typeof(TrackerControl), new PropertyMetadata(true));
-
-        /// <summary>
-        /// Identifies the <see cref="Position"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty PositionProperty = DependencyProperty.Register(
-            nameof(Position),
-            typeof(ScreenPoint),
-            typeof(TrackerControl),
-            new PropertyMetadata(new ScreenPoint(), PositionChanged));
-
         /// <summary>
         /// The path part string.
         /// </summary>
@@ -171,124 +94,6 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets BorderEdgeMode.
-        /// </summary>
-        public EdgeMode BorderEdgeMode
-        {
-            get => (EdgeMode)this.GetValue(BorderEdgeModeProperty);
-            set => this.SetValue(BorderEdgeModeProperty, value);
-        }
-
-        /// <summary>
-        /// Gets or sets HorizontalLineVisibility.
-        /// </summary>
-        public Visibility HorizontalLineVisibility
-        {
-            get => (Visibility)this.GetValue(HorizontalLineVisibilityProperty);
-            set => this.SetValue(HorizontalLineVisibilityProperty, value);
-        }
-
-        /// <summary>
-        /// Gets or sets VerticalLineVisibility.
-        /// </summary>
-        public Visibility VerticalLineVisibility
-        {
-            get => (Visibility)this.GetValue(VerticalLineVisibilityProperty);
-            set => this.SetValue(VerticalLineVisibilityProperty, value);
-        }
-
-        /// <summary>
-        /// Gets or sets LineThickness.
-        /// </summary>
-        public double LineThickness
-        {
-            get => (double)this.GetValue(LineThicknessProperty);
-            set => this.SetValue(LineThicknessProperty, value);
-        }
-
-        /// <summary>
-        /// Gets or sets LineStroke.
-        /// </summary>
-        public Brush LineStroke
-        {
-            get => (Brush)this.GetValue(LineStrokeProperty);
-            set => this.SetValue(LineStrokeProperty, value);
-        }
-
-        /// <summary>
-        /// Gets or sets LineExtents.
-        /// </summary>
-        public OxyRect LineExtents
-        {
-            get => (OxyRect)this.GetValue(LineExtentsProperty);
-            set => this.SetValue(LineExtentsProperty, value);
-        }
-
-        /// <summary>
-        /// Gets or sets LineDashArray.
-        /// </summary>
-        public DoubleCollection LineDashArray
-        {
-            get => (DoubleCollection)this.GetValue(LineDashArrayProperty);
-            set => this.SetValue(LineDashArrayProperty, value);
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether to show a 'pointer' on the border.
-        /// </summary>
-        public bool ShowPointer
-        {
-            get => (bool)this.GetValue(ShowPointerProperty);
-            set => this.SetValue(ShowPointerProperty, value);
-        }
-
-        /// <summary>
-        /// Gets or sets the corner radius (only used when ShowPoint=<c>false</c>).
-        /// </summary>
-        public double CornerRadius
-        {
-            get => (double)this.GetValue(CornerRadiusProperty);
-
-            set => this.SetValue(CornerRadiusProperty, value);
-        }
-
-        /// <summary>
-        /// Gets or sets the distance of the content container from the trackers Position.
-        /// </summary>
-        public double Distance
-        {
-            get => (double)this.GetValue(DistanceProperty);
-            set => this.SetValue(DistanceProperty, value);
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the tracker can center its content box horizontally.
-        /// </summary>
-        public bool CanCenterHorizontally
-        {
-            get => (bool)this.GetValue(CanCenterHorizontallyProperty);
-            set => this.SetValue(CanCenterHorizontallyProperty, value);
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the tracker can center its content box vertically.
-        /// </summary>
-        public bool CanCenterVertically
-        {
-            get => (bool)this.GetValue(CanCenterVerticallyProperty);
-            set => this.SetValue(CanCenterVerticallyProperty, value);
-        }
-
-        /// <summary>
-        /// Gets or sets Position of the tracker.
-        /// </summary>
-        public ScreenPoint Position
-        {
-            get => (ScreenPoint)this.GetValue(PositionProperty);
-            set => this.SetValue(PositionProperty, value);
-        }
-
-        /// <summary>
         /// When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate" />.
         /// </summary>
         public override void OnApplyTemplate()
@@ -321,19 +126,8 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Called when the position is changed.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="System.Windows.DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
-        private static void PositionChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-        {
-            ((TrackerControl)sender).OnPositionChanged(e);
-        }
-
-        /// <summary>
-        /// Called when the position is changed.
-        /// </summary>
-        /// <param name="dependencyPropertyChangedEventArgs">The dependency property changed event args.</param>
         // ReSharper disable once UnusedParameter.Local
-        private void OnPositionChanged(DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+        partial void OnPositionChanged(ScreenPoint oldValue, ScreenPoint newValue)
         {
             this.UpdatePositionAndBorder();
         }

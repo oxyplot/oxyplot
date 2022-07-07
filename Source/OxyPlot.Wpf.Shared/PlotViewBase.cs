@@ -349,7 +349,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Called when the model is changed.
         /// </summary>
-        protected void OnModelChanged()
+        partial void OnModelChanged(PlotModel oldValue, PlotModel newValue)
         {
             lock (this.modelLock)
             {
@@ -413,16 +413,6 @@ namespace OxyPlot.Wpf
             var transformMatrix = PresentationSource.FromVisual(this)?.CompositionTarget?.TransformToDevice;
             var scale = transformMatrix == null ? 1 : (transformMatrix.Value.M11 + transformMatrix.Value.M22) / 2;
             return scale;
-        }
-
-        /// <summary>
-        /// Called when the model is changed.
-        /// </summary>
-        /// <param name="d">The sender.</param>
-        /// <param name="e">The <see cref="System.Windows.DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
-        private static void ModelChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ((PlotViewBase)d).OnModelChanged();
         }
 
         /// <summary>

@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFrameworks>net452;netcoreapp3.1</TargetFrameworks>
     <UseWPF>true</UseWPF>
-    <LangVersion>8</LangVersion>
+    <LangVersion>preview</LangVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>OxyPlot is a plotting library for .NET. This package is the base for WPF PlotView implementations.</Description>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
@@ -20,6 +20,13 @@
     <None Include="..\..\Icons\OxyPlot_128.png" Pack="true" PackagePath="\" />
     <None Include="OxyPlot.Wpf.Shared.snk" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="DependencyPropertyGenerator" Version="0.34.3">
+      <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="DependencyPropertyGenerator.Core" Version="0.34.3" />
+    </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OxyPlot\OxyPlot.csproj" />
   </ItemGroup>

@@ -9,6 +9,7 @@
 
 namespace OxyPlot.Wpf
 {
+    using DependencyPropertyGenerator;
     using OxyPlot;
     using System.Windows;
     using System.Windows.Controls;
@@ -18,15 +19,9 @@ namespace OxyPlot.Wpf
     /// <summary>
     /// Represents a control that displays a <see cref="PlotModel" />. This <see cref="IPlotView"/> is based on <see cref="CanvasRenderContext"/>.
     /// </summary>
+    [DependencyProperty<TextMeasurementMethod>("TextMeasurementMethod", DefaultValue = TextMeasurementMethod.TextBlock)]
     public partial class PlotView : PlotViewBase
     {
-        /// <summary>
-        /// Identifies the <see cref="TextMeasurementMethod"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty TextMeasurementMethodProperty =
-            DependencyProperty.Register(
-                nameof(TextMeasurementMethod), typeof(TextMeasurementMethod), typeof(PlotViewBase), new PropertyMetadata(TextMeasurementMethod.TextBlock));
-
         /// <summary>
         /// Initializes a new instance of the <see cref="PlotView" /> class.
         /// </summary>
@@ -41,16 +36,6 @@ namespace OxyPlot.Wpf
         /// </summary>
         /// <value><c>true</c> if canvas should be disconnected while updating; otherwise, <c>false</c>.</value>
         public bool DisconnectCanvasWhileUpdating { get; set; }
-
-        /// <summary>
-        /// Gets or sets the vertical zoom cursor.
-        /// </summary>
-        /// <value>The zoom vertical cursor.</value>
-        public TextMeasurementMethod TextMeasurementMethod
-        {
-            get => (TextMeasurementMethod)this.GetValue(TextMeasurementMethodProperty);
-            set => this.SetValue(TextMeasurementMethodProperty, value);
-        }
 
         /// <summary>
         /// Gets the Canvas.

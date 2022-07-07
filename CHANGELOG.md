@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - Update net40 and net45 to net452 (#1835)
 - Change default `MinimumSegmentLength` to `2` and remove limits for series and annotations with simple geometry (#1853)
+- Switching to DependencyPropertyGenerator (#1902)
 
 ### Removed
 
