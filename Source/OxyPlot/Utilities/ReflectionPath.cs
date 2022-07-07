@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace OxyPlot
 {
     using System;
@@ -25,7 +27,7 @@ namespace OxyPlot
         /// <summary>
         /// The property metadata.
         /// </summary>
-        private readonly PropertyInfo[] infos;
+        private readonly PropertyInfo?[] infos;
 
         /// <summary>
         /// The reflected types.
@@ -51,9 +53,9 @@ namespace OxyPlot
         /// The value.
         /// </returns>
         /// <exception cref="System.InvalidOperationException">Could not find property.</exception>
-        public object GetValue(object instance)
+        public object? GetValue(object instance)
         {
-            object result;
+            object? result;
             if (this.TryGetValue(instance, out result))
             {
                 return result;
@@ -70,7 +72,7 @@ namespace OxyPlot
         /// <returns>
         /// <c>true</c> if the value was found.
         /// </returns>
-        public bool TryGetValue(object instance, out object result)
+        public bool TryGetValue(object instance, out object? result)
         {
             var current = instance;
             for (int i = 0; i < this.items.Length; i++)

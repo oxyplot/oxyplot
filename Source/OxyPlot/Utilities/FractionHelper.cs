@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace OxyPlot
 {
     using System;
@@ -31,10 +33,10 @@ namespace OxyPlot
         public static string ConvertToFractionString(
             double value,
             double unit = 1,
-            string unitSymbol = null,
+            string? unitSymbol = null,
             double eps = 1e-6,
-            IFormatProvider formatProvider = null,
-            string formatString = null)
+            IFormatProvider? formatProvider = null,
+            string? formatString = null)
         {
             if (Math.Abs(value) < eps)
             {

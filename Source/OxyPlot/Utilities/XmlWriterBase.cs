@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace OxyPlot
 {
     using System;
@@ -34,6 +36,7 @@ namespace OxyPlot
         /// </summary>
         protected XmlWriterBase()
         {
+            this.w = XmlWriter.Create(new StringBuilder());
         }
 
         /// <summary>
