@@ -21,13 +21,20 @@
     <None Include="OxyPlot.Wpf.Shared.snk" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="DependencyPropertyGenerator" Version="0.34.3">
+    <PackageReference Include="DependencyPropertyGenerator" Version="0.52.2">
       <PrivateAssets>all</PrivateAssets>
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      </PackageReference>
-      <PackageReference Include="DependencyPropertyGenerator.Core" Version="0.34.3" />
-    </ItemGroup>
+      <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OxyPlot\OxyPlot.csproj" />
   </ItemGroup>
+  <Target Name="RemoveDuplicateAnalyzers" BeforeTargets="CoreCompile">
+    <!-- Work around https://github.com/dotnet/wpf/issues/6792 -->
+    <ItemGroup>
+      <FilteredAnalyzer Include="@(Analyzer-&gt;Distinct())" />
+      <Analyzer Remove="@(Analyzer)" />
+      <Analyzer Include="@(FilteredAnalyzer)" />
+    </ItemGroup>
+  </Target>
 </Project>
