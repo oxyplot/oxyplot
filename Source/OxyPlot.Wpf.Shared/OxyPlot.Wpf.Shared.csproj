@@ -21,7 +21,7 @@
     <None Include="OxyPlot.Wpf.Shared.snk" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="DependencyPropertyGenerator" Version="0.52.2">
+    <PackageReference Include="DependencyPropertyGenerator" Version="0.53.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

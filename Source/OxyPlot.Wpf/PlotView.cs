@@ -19,7 +19,8 @@ namespace OxyPlot.Wpf
     /// <summary>
     /// Represents a control that displays a <see cref="PlotModel" />. This <see cref="IPlotView"/> is based on <see cref="CanvasRenderContext"/>.
     /// </summary>
-    [DependencyProperty<TextMeasurementMethod>("TextMeasurementMethod", DefaultValue = TextMeasurementMethod.TextBlock)]
+    [DependencyProperty<TextMeasurementMethod>("TextMeasurementMethod", DefaultValue = TextMeasurementMethod.TextBlock,
+        Description = "Gets or sets the vertical zoom cursor.")]
     public partial class PlotView : PlotViewBase
     {
         /// <summary>

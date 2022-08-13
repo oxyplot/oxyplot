@@ -19,19 +19,32 @@ namespace OxyPlot.Wpf
     /// <summary>
     /// The tracker control.
     /// </summary>
-    [DependencyProperty<Visibility>("HorizontalLineVisibility", DefaultValue = Visibility.Visible)]
-    [DependencyProperty<Visibility>("VerticalLineVisibility", DefaultValue = Visibility.Visible)]
-    [DependencyProperty<double>("LineThickness", DefaultValue = 1.0)]
-    [DependencyProperty<Brush>("LineStroke")]
-    [DependencyProperty<OxyRect>("LineExtents")]
-    [DependencyProperty<DoubleCollection>("LineDashArray")]
-    [DependencyProperty<bool>("ShowPointer", DefaultValue = true)]
-    [DependencyProperty<double>("Distance", DefaultValue = 7.0)]
-    [DependencyProperty<bool>("CanCenterHorizontally", DefaultValue = true)]
-    [DependencyProperty<bool>("CanCenterVertically", DefaultValue = true)]
-    [DependencyProperty<ScreenPoint>("Position")]
-    [DependencyProperty<EdgeMode>("BorderEdgeMode")]
-    [DependencyProperty<double>("CornerRadius")]
+    [DependencyProperty<Visibility>("HorizontalLineVisibility", DefaultValue = Visibility.Visible,
+        Description = "Gets or sets HorizontalLineVisibility.")]
+    [DependencyProperty<Visibility>("VerticalLineVisibility", DefaultValue = Visibility.Visible,
+        Description = "Gets or sets VerticalLineVisibility.")]
+    [DependencyProperty<double>("LineThickness", DefaultValue = 1.0,
+        Description = "Gets or sets LineThickness.")]
+    [DependencyProperty<Brush>("LineStroke",
+        Description = "Gets or sets LineStroke.")]
+    [DependencyProperty<OxyRect>("LineExtents",
+        Description = "Gets or sets LineExtents.")]
+    [DependencyProperty<DoubleCollection>("LineDashArray",
+        Description = "Gets or sets LineDashArray.")]
+    [DependencyProperty<bool>("ShowPointer", DefaultValue = true,
+        Description = "Gets or sets a value indicating whether to show a 'pointer' on the border.")]
+    [DependencyProperty<double>("Distance", DefaultValue = 7.0,
+        Description = "Gets or sets the distance of the content container from the trackers Position.")]
+    [DependencyProperty<bool>("CanCenterHorizontally", DefaultValue = true,
+        Description = "Gets or sets a value indicating whether the tracker can center its content box horizontally.")]
+    [DependencyProperty<bool>("CanCenterVertically", DefaultValue = true,
+        Description = "Gets or sets a value indicating whether the tracker can center its content box vertically.")]
+    [DependencyProperty<ScreenPoint>("Position",
+        Description = "Gets or sets Position of the tracker.")]
+    [DependencyProperty<EdgeMode>("BorderEdgeMode",
+        Description = "Gets or sets BorderEdgeMode.")]
+    [DependencyProperty<double>("CornerRadius",
+        Description = "Gets or sets the corner radius (only used when ShowPoint=false).")]
     public partial class TrackerControl : ContentControl
     {
         /// <summary>
