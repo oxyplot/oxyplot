@@ -103,6 +103,30 @@ namespace OxyPlot.Annotations
         public double TextPadding { get; set; }
 
         /// <summary>
+        /// Gets or sets the padding of the text background rectangle.
+        /// </summary>
+        /// <value>The text background padding.</value>
+        public OxyThickness TextBackgroundPadding { get; set; }
+
+        /// <summary>
+        /// Gets or sets the fill color of the text background rectangle.
+        /// </summary>
+        /// <value>The text background color.</value>
+        public OxyColor TextBackground { get; set; }
+
+        /// <summary>
+        /// Gets or sets the stroke color of the text background rectangle.
+        /// </summary>
+        /// <value>The text background stroke color.</value>
+        public OxyColor TextBackgroundStroke { get; set; }
+
+        /// <summary>
+        /// Gets or sets the stroke thickness of the text background rectangle.
+        /// </summary>
+        /// <value>The text background stroke thickness.</value>
+        public double TextBackgroundStrokeThickness { get; set; }
+
+        /// <summary>
         /// Gets or sets the text orientation.
         /// </summary>
         /// <value>The text orientation.</value>
@@ -252,6 +276,20 @@ namespace OxyPlot.Annotations
                     if (this.TextPosition.IsDefined())
                     {
                         angle = this.TextRotation;
+                    }
+
+                    var textSize = rc.MeasureText(this.Text, this.ActualFont, this.ActualFontSize, this.ActualFontWeight);
+
+                    var textBounds = TextAnnotation.GetTextBounds(position, textSize, this.TextBackgroundPadding, angle, ha, va);
+
+                    if ((angle % 90).Equals(0))
+                    {
+                        var actualRect = new OxyRect(textBounds[0], textBounds[2]);
+                        rc.DrawRectangle(actualRect, this.TextBackground, this.TextBackgroundStroke, this.TextBackgroundStrokeThickness, this.EdgeRenderingMode);
+                    }
+                    else
+                    {
+                        rc.DrawPolygon(textBounds, this.TextBackground, this.TextBackgroundStroke, this.TextBackgroundStrokeThickness, this.EdgeRenderingMode);
                     }
 
                     rc.DrawText(

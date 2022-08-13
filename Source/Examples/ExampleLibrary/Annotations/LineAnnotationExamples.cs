@@ -19,9 +19,26 @@ namespace ExampleLibrary
             var model = new PlotModel { Title = "LineAnnotation on linear axes" };
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -20, Maximum = 80 });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -10, Maximum = 10 });
-            model.Annotations.Add(new LineAnnotation { Slope = 0.1, Intercept = 1, Text = "First" });
             model.Annotations.Add(
-                new LineAnnotation { Slope = 0.3, Intercept = 2, MaximumX = 40, Color = OxyColors.Red, Text = "Second" });
+                new LineAnnotation
+                    {
+                        Slope = 0.1,
+                        Intercept = 1,
+                        Text = "First",
+                        TextBackground = OxyColors.White.ChangeOpacity(0.75),
+                        TextBackgroundPadding = new OxyThickness(5)
+                });
+            model.Annotations.Add(
+                new LineAnnotation
+                    {
+                        Slope = 0.3,
+                        Intercept = 2,
+                        MaximumX = 40,
+                        Color = OxyColors.Red,
+                        Text = "Second",
+                        TextBackground = OxyColors.White.ChangeOpacity(0.75),
+                        TextBackgroundPadding = new OxyThickness(5)
+                });
             model.Annotations.Add(
                 new LineAnnotation
                     {
@@ -29,8 +46,10 @@ namespace ExampleLibrary
                         X = 4,
                         MaximumY = 10,
                         Color = OxyColors.Green,
-                        Text = "Vertical"
-                    });
+                        Text = "Vertical",
+                        TextBackground = OxyColors.White.ChangeOpacity(0.75),
+                        TextBackgroundPadding = new OxyThickness(5)
+                });
             model.Annotations.Add(
                 new LineAnnotation
                     {
@@ -38,8 +57,10 @@ namespace ExampleLibrary
                         Y = 2,
                         MaximumX = 4,
                         Color = OxyColors.Gold,
-                        Text = "Horizontal"
-                    });
+                        Text = "Horizontal",
+                        TextBackground = OxyColors.White.ChangeOpacity(0.75),
+                        TextBackgroundPadding = new OxyThickness(5)
+                });
             return model;
         }
 
