@@ -156,47 +156,53 @@ namespace OxyPlot.Series
                                               : this.VerticalStrokeThickness;
 
             var actualColor = this.GetSelectableColor(this.ActualColor);
+            var edgeRenderingMode = this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness);
 
-            Action<IList<ScreenPoint>, IList<ScreenPoint>> renderPoints = (lpts, mpts) =>
+            Action<IList<ScreenPoint>, IList<ScreenPoint>> renderPoints = (linePoints, markerPoints) =>
                 {
-                    // clip the line segments with the clipping rectangle
                     if (this.StrokeThickness > 0 && lineStyle != LineStyle.None)
                     {
+                        // TODO: Need ActualVerticalLineStyle; without it, when VerticalLineStyle is
+                        // Automatic, this code will not take the fast path even when it could.
                         if (!verticalStrokeThickness.Equals(this.StrokeThickness) || this.VerticalLineStyle != lineStyle)
                         {
-                            // TODO: change to array
-                            var hlpts = new List<ScreenPoint>();
-                            var vlpts = new List<ScreenPoint>();
-                            for (int i = 0; i + 2 < lpts.Count; i += 2)
+                            var hLinePoints = new List<ScreenPoint>(linePoints.Count);
+                            var vLinePoints = new List<ScreenPoint>(linePoints.Count);
+                            if (linePoints.Count >= 2)
                             {
-                                hlpts.Add(lpts[i]);
-                                hlpts.Add(lpts[i + 1]);
-                                vlpts.Add(lpts[i + 1]);
-                                vlpts.Add(lpts[i + 2]);
+                                hLinePoints.Add(linePoints[0]);
+                                hLinePoints.Add(linePoints[1]);
+                                for (int i = 1; i + 2 < linePoints.Count; i += 2)
+                                {
+                                    vLinePoints.Add(linePoints[i]);
+                                    vLinePoints.Add(linePoints[i + 1]);
+                                    hLinePoints.Add(linePoints[i + 1]);
+                                    hLinePoints.Add(linePoints[i + 2]);
+                                }
                             }
 
                             rc.DrawLineSegments(
-                                hlpts,
+                                hLinePoints,
                                 actualColor,
                                 this.StrokeThickness,
-                                this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness),
+                                edgeRenderingMode,
                                 dashArray,
                                 this.LineJoin);
                             rc.DrawLineSegments(
-                                vlpts,
+                                vLinePoints,
                                 actualColor,
                                 verticalStrokeThickness,
-                                this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness),
+                                edgeRenderingMode,
                                 verticalLineDashArray,
                                 this.LineJoin);
                         }
                         else
                         {
                             rc.DrawLine(
-                                lpts,
+                                linePoints,
                                 actualColor,
                                 this.StrokeThickness,
-                                this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness),
+                                edgeRenderingMode,
                                 dashArray,
                                 this.LineJoin);
                         }
@@ -205,7 +211,7 @@ namespace OxyPlot.Series
                     if (this.MarkerType != MarkerType.None)
                     {
                         rc.DrawMarkers(
-                            mpts,
+                            markerPoints,
                             this.MarkerType,
                             this.MarkerOutline,
                             new[] { this.MarkerSize },
@@ -216,41 +222,146 @@ namespace OxyPlot.Series
                     }
                 };
 
-            // Transform all points to screen coordinates
-            // Render the line when invalid points occur
-            var linePoints = new List<ScreenPoint>();
-            var markerPoints = new List<ScreenPoint>();
-            double previousY = double.NaN;
-            foreach (var point in this.ActualPoints)
+            var points = this.ActualPoints;
+
+            int offset = 0;
+            double xClipMax = double.MaxValue;
+
+            if (this.IsXMonotonic)
             {
-                if (!this.IsValidPoint(point))
-                {
-                    renderPoints(linePoints, markerPoints);
-                    linePoints.Clear();
-                    markerPoints.Clear();
-                    previousY = double.NaN;
-                    continue;
-                }
+                double xClipMin = this.XAxis.ClipMinimum;
+                xClipMax = this.XAxis.ClipMaximum;
 
-                var transformedPoint = this.Transform(point);
-                if (!double.IsNaN(previousY))
-                {
-                    // Horizontal line from the previous point to the current x-coordinate
-                    linePoints.Add(this.Transform(new DataPoint(point.X, previousY)));
-                }
-
-                linePoints.Add(transformedPoint);
-                markerPoints.Add(transformedPoint);
-                previousY = point.Y;
+                this.WindowStartIndex = this.UpdateWindowStartIndex(points, point => point.X, xClipMin, this.WindowStartIndex);
+                offset = this.WindowStartIndex;
             }
 
-            renderPoints(linePoints, markerPoints);
+            var linePoints = new List<ScreenPoint>();
+            var markerPoints = new List<ScreenPoint>();
+
+            for (int i = offset; i < points.Count;)
+            {
+                bool hasValid = this.FindNextValidSegment(points, i, xClipMax, out int validOffset, out int endOffset);
+                if (!hasValid)
+                    break;
+
+                ScreenPoint transformedPoint = default;
+                DataPoint previousPoint = DataPoint.Undefined;
+                bool xIncreased = false;
+                bool xDecreased = false;
+
+                for (i = validOffset; i < endOffset; ++i)
+                {
+                    var point = points[i];
+
+                    // For performance we want to draw as few lines as possible.  Assuming sane
+                    // (orthogonal and monotonic) axis transformations, as long as point Xs are all
+                    // either increasing or decreasing and point Ys are equal, we can coalesce the
+                    // horizontal lines and omit the vertical lines.
+
+                    xIncreased |= point.X > previousPoint.X;
+                    xDecreased |= point.X < previousPoint.X;
+
+                    if (xIncreased && xDecreased)
+                    {
+                        // Vertical line end point/horizontal line start point.
+                        linePoints.Add(this.Transform(previousPoint));
+
+                        // Horizontal line end point/vertical line start point.
+                        linePoints.Add(this.Transform(previousPoint));
+
+                        xIncreased = point.X > previousPoint.X;
+                        xDecreased = point.X < previousPoint.X;
+                    }
+
+                    transformedPoint = this.Transform(point);
+
+                    if (point.Y != previousPoint.Y)
+                    {
+                        // Vertical line start point.
+                        if (!double.IsNaN(previousPoint.Y))
+                            linePoints.Add(this.Transform(new DataPoint(point.X, previousPoint.Y)));
+
+                        // Vertical line end point/horizontal line start point.
+                        linePoints.Add(transformedPoint);
+
+                        xIncreased = false;
+                        xDecreased = false;
+                    }
+
+                    previousPoint = point;
+
+                    markerPoints.Add(transformedPoint);
+                }
+
+                if (i < points.Count &&
+                    this.XAxis.IsValidValue(points[i].X))
+                {
+                    // Horizontal line continues until next point (either invalid Y or clipped X).
+                    linePoints.Add(this.Transform(new DataPoint(points[i].X, previousPoint.Y)));
+                }
+                else
+                {
+                    // Horizontal line ends at last point.
+                    linePoints.Add(transformedPoint);
+                }
+
+                renderPoints(linePoints, markerPoints);
+
+                linePoints.Clear();
+                markerPoints.Clear();
+            }
 
             if (this.LabelFormatString != null)
             {
                 // render point labels (not optimized for performance)
                 this.RenderPointLabels(rc);
             }
+        }
+
+        private bool FindNextValidSegment(List<DataPoint> points, int offset, double xClipMax, out int validOffset, out int endOffset)
+        {
+            // Skip invalid points.
+            for (; ; ++offset)
+            {
+                if (offset >= points.Count)
+                {
+                    validOffset = default;
+                    endOffset = default;
+                    return false;
+                }
+
+                var point = points[offset];
+                if (point.X > xClipMax)
+                {
+                    validOffset = default;
+                    endOffset = default;
+                    return false;
+                }
+
+                if (this.IsValidPoint(point))
+                    break;
+            }
+
+            validOffset = offset;
+
+            // Skip valid points.
+            for (; ; ++offset)
+            {
+                if (offset >= points.Count)
+                    break;
+
+                var point = points[offset];
+
+                if (!this.IsValidPoint(point))
+                    break;
+
+                if (point.X > xClipMax)
+                    break;
+            }
+
+            endOffset = offset;
+            return true;
         }
     }
 }
