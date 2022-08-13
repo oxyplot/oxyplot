@@ -109,5 +109,37 @@ namespace ExampleLibrary
 
             return new Example(plotModel, controller);
         }
+
+        [Example("Preferring an axis for manipulation")]
+        public static Example PreferringAnAxisForManipulation()
+        {
+            var model = new PlotModel
+            {
+                Title = "Preferring an axis for manipulation",
+                Subtitle = "Mouse wheel over plot area prefers X axis",
+            };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+
+            model.Series.Add(new FunctionSeries(Math.Cos, -7, 7, 0.01));
+
+            var controller = new PlotController();
+            controller.UnbindAll();
+            controller.BindMouseWheel(new DelegatePlotCommand<OxyMouseWheelEventArgs>((view, _, args) => HandleZoomByWheel(view, args)));
+            controller.BindMouseWheel(OxyModifierKeys.Control, new DelegatePlotCommand<OxyMouseWheelEventArgs>((view, _, args) => HandleZoomByWheel(view, args, 0.1)));
+
+            return new Example(model, controller);
+
+            void HandleZoomByWheel(IPlotView view, OxyMouseWheelEventArgs args, double factor = 1)
+            {
+                var m = new ZoomStepManipulator(view)
+                {
+                    AxisPreference = AxisPreference.X,
+                    Step = args.Delta * 0.001 * factor,
+                    FineControl = args.IsControlDown,
+                };
+                m.Started(args);
+            }
+        }
     }
 }

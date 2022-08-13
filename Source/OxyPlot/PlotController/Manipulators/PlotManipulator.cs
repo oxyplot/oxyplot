@@ -34,6 +34,13 @@ namespace OxyPlot
         public IPlotView PlotView { get; private set; }
 
         /// <summary>
+        /// Gets or sets the axis that the manipulator will prefer to operate on.  The default is
+        /// <see cref="AxisPreference.None"/>.
+        /// </summary>
+        /// <value>The axis preference.</value>
+        public AxisPreference AxisPreference { get; set; }
+
+        /// <summary>
         /// Gets or sets the X axis.
         /// </summary>
         /// <value>The X axis.</value>
@@ -77,6 +84,21 @@ namespace OxyPlot
             if (this.PlotView.ActualModel != null)
             {
                 this.PlotView.ActualModel.GetAxesFromPoint(position, out xaxis, out yaxis);
+
+                if (this.AxisPreference != AxisPreference.None &&
+                    this.PlotView.ActualModel.PlotArea.Contains(position))
+                {
+                    if (this.AxisPreference == AxisPreference.X)
+                    {
+                        if (xaxis != null)
+                            yaxis = null;
+                    }
+                    else if (this.AxisPreference == AxisPreference.Y)
+                    {
+                        if (yaxis != null)
+                            xaxis = null;
+                    }
+                }
             }
             else
             {
