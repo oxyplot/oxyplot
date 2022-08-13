@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace OxyPlot
 {
     using System;
@@ -28,13 +30,6 @@ namespace OxyPlot
         /// The disposed flag.
         /// </summary>
         private bool disposed;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref = "XmlWriterBase" /> class.
-        /// </summary>
-        protected XmlWriterBase()
-        {
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="XmlWriterBase" /> class.

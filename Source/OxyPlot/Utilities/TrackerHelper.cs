@@ -1,3 +1,6 @@
+
+#nullable enable
+
 namespace OxyPlot.Utilities
 {
     internal static class TrackerHelper
@@ -16,7 +19,7 @@ namespace OxyPlot.Utilities
         /// <paramref name="checkDistanceBetweenPoints" /> is ignored if <paramref name="pointsOnly"/> is equal to <c>False</c>.
         /// </remarks>
         /// <returns>A tracker hit result.</returns>
-        public static TrackerHitResult GetNearestHit(
+        public static TrackerHitResult? GetNearestHit(
             Series.Series series,
             ScreenPoint point,
             bool snap,
