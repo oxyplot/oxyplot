@@ -244,8 +244,16 @@ namespace OxyPlot.Series
             {
                 this.MinX = Math.Min(this.ActualItems.Min(r => r.RangeStart), this.ActualItems.Min(r => r.RangeEnd));
                 this.MaxX = Math.Max(this.ActualItems.Max(r => r.RangeStart), this.ActualItems.Max(r => r.RangeEnd));
-                this.MinY = Math.Min(this.ActualItems.Min(r => 0), this.ActualItems.Min(r => r.Height));
-                this.MaxY = Math.Max(this.ActualItems.Max(r => 0), this.ActualItems.Max(r => r.Height));
+                if (this.YAxis.IsLogarithmic())
+                {
+                    this.MinY = Math.Max(this.ActualItems.Min(r => r.Height), double.Epsilon);
+                    this.MaxY = Math.Max(this.ActualItems.Max(r => r.Height), double.Epsilon);
+                }
+                else
+                {
+                    this.MinY = Math.Min(this.ActualItems.Min(r => 0), this.ActualItems.Min(r => r.Height));
+                    this.MaxY = Math.Max(this.ActualItems.Max(r => 0), this.ActualItems.Max(r => r.Height));
+                }
             }
         }
 
@@ -295,10 +303,15 @@ namespace OxyPlot.Series
         {
             foreach (var item in items)
             {
+                if (this.YAxis.IsLogarithmic() && !this.YAxis.IsValidValue(item.Height))
+                {
+                    continue;
+                }
+
                 var actualFillColor = this.GetItemFillColor(item);
 
                 // transform the data points to screen points
-                var p1 = this.Transform(item.RangeStart, 0);
+                var p1 = this.Transform(item.RangeStart, this.YAxis.IsLogarithmic() ? double.Epsilon : 0);
                 var p2 = this.Transform(item.RangeEnd, item.Height);
 
                 var rectrect = new OxyRect(p1, p2);

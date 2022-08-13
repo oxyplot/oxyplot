@@ -25,6 +25,7 @@ All notable changes to this project will be documented in this file.
 - Code generation for escape sequences in strings (#1824)
 - Axes not always honoring AbsoluteMinimum/AbsoluteMaximum and/or MinimumRange/MaximumRange properties (#1812)
 - WindowsForms tracker no longer clipping outside PlotView boundaries (#1863)
+- Histogram now rendering properly when using logarithmic Y axis (#740) 
 
 ## [2.1.0] - 2021-10-02
 
