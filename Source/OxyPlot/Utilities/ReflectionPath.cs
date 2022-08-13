@@ -32,7 +32,7 @@ namespace OxyPlot
         /// <summary>
         /// The reflected types.
         /// </summary>
-        private readonly Type[] reflectedTypes;
+        private readonly Type?[] reflectedTypes;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ReflectionPath"/> class.
