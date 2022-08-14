@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="TextAnnotationExamples.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
@@ -74,7 +74,7 @@ namespace ExampleLibrary
                                           {
                                               TextRotation = i, 
                                               TextPosition = new DataPoint(i % 45, i / 45), 
-                                              Text = $"{i}�", 
+                                              Text = $"{i}°", 
                                               TextVerticalAlignment = VerticalAlignment.Middle, 
                                               TextHorizontalAlignment = HorizontalAlignment.Center
                                           });
