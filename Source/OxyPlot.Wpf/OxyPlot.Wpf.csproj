@@ -21,7 +21,8 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="..\..\Icons\OxyPlot_128.png" Pack="true" PackagePath="\" />
-    <None Include="OxyPlot.Wpf.snk" /> 
+    <None Include="OxyPlot.Wpf.snk" />
+    <None Include="VisualStudioToolsManifest.xml" Pack="true" PackagePath="tools" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
     <Reference Include="ReachFramework" />
