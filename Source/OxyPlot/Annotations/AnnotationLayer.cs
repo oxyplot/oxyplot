@@ -3,14 +3,14 @@
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Specifies the layer for an <see cref="Annotation" />.
+//   Specifies the layer for an <see cref="Annotation"/>.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Annotations
 {
     /// <summary>
-    /// Specifies the layer for an <see cref="Annotation" />.
+    /// Specifies the layer for an <see cref="Annotation"/>.
     /// </summary>
     public enum AnnotationLayer
     {

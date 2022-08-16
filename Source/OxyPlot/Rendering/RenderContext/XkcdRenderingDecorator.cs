@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Provides a <see cref="IRenderContext" /> decorator that distorts the rendered output.
+//   Provides a <see cref="IRenderContext"/> decorator that distorts the rendered output.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -14,12 +14,12 @@ namespace OxyPlot
     using System.Linq;
 
     /// <summary>
-    /// Provides a <see cref="IRenderContext" /> decorator that distorts the rendered output.
+    /// Provides a <see cref="IRenderContext"/> decorator that distorts the rendered output.
     /// </summary>
     public class XkcdRenderingDecorator : RenderContextBase
     {
         /// <summary>
-        /// The decorated <see cref="IRenderContext" />. This is the one that does the actual rendering.
+        /// The decorated <see cref="IRenderContext"/>. This is the one that does the actual rendering.
         /// </summary>
         private readonly IRenderContext rc;
 
@@ -168,7 +168,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Draws the specified portion of the specified <see cref="OxyImage" /> at the specified location and with the specified size.
+        /// Draws the specified portion of the specified <see cref="OxyImage"/> at the specified location and with the specified size.
         /// </summary>
         /// <param name="source">The source.</param>
         /// <param name="srcX">The x-coordinate of the upper-left corner of the portion of the source image to draw.</param>

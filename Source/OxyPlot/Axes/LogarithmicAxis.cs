@@ -21,7 +21,7 @@ namespace OxyPlot.Axes
     public class LogarithmicAxis : Axis
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref = "LogarithmicAxis" /> class.
+        /// Initializes a new instance of the <see cref="LogarithmicAxis"/> class.
         /// </summary>
         public LogarithmicAxis()
         {
@@ -129,7 +129,7 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Determines whether the axis is used for X/Y values.
         /// </summary>
-        /// <returns><c>true</c> if it is an XY axis; otherwise, <c>false</c> .</returns>
+        /// <returns><c>true</c> if it is an XY axis; otherwise, <c>false</c>.</returns>
         public override bool IsXyAxis()
         {
             return true;
@@ -138,7 +138,7 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Determines whether the axis is logarithmic.
         /// </summary>
-        /// <returns><c>true</c> if it is a logarithmic axis; otherwise, <c>false</c> .</returns>
+        /// <returns><c>true</c> if it is a logarithmic axis; otherwise, <c>false</c>.</returns>
         public override bool IsLogarithmic()
         {
             return true;
@@ -201,7 +201,7 @@ namespace OxyPlot.Axes
         /// <returns>The value.</returns>
         public override double InverseTransform(double sx)
         {
-            // Inline the <see cref="PostInverseTransform" /> method here.
+            // Inline the <see cref="PostInverseTransform"/> method here.
             return Math.Exp((sx / this.Scale) + this.Offset);
         }
 
@@ -217,7 +217,7 @@ namespace OxyPlot.Axes
                 return -1;
             }
 
-            // Inline the <see cref="PreTransform" /> method here.
+            // Inline the <see cref="PreTransform"/> method here.
             return (Math.Log(x) - this.Offset) * this.Scale;
         }
 
@@ -468,7 +468,7 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Subdivides a logarithmic range into multiple, evenly-spaced (in linear scale!) ticks. The number of ticks and the tick intervals are adapted so 
+        /// Subdivides a logarithmic range into multiple, evenly-spaced (in linear scale!) ticks. The number of ticks and the tick intervals are adapted so
         /// that the resulting steps are "nice" numbers.
         /// </summary>
         /// <param name="logTicks">The IList the computed steps will be added to.</param>
@@ -499,7 +499,8 @@ namespace OxyPlot.Axes
                 }
             }
             else
-            {   // integer base, no power of two
+            {
+                // integer base, no power of two
 
                 // for bases != 10, first subdivide by the base
                 if (intBase != 10)
@@ -508,13 +509,8 @@ namespace OxyPlot.Axes
                 }
 
                 // follow 1-2-5-10 pattern
-                while (true)
+                while (actualNumberOfSteps < steps)
                 {
-                    if (actualNumberOfSteps >= steps)
-                    {
-                        break;
-                    }
-
                     actualNumberOfSteps *= 2;
 
                     if (actualNumberOfSteps >= steps)
@@ -547,7 +543,7 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Updates the <see cref="Axis.ActualMaximum" /> and <see cref="Axis.ActualMinimum" /> values.
+        /// Updates the <see cref="Axis.ActualMaximum"/> and <see cref="Axis.ActualMinimum"/> values.
         /// </summary>
         /// <remarks>
         /// If the user has zoomed/panned the axis, the internal ViewMaximum/ViewMinimum

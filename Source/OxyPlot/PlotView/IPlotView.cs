@@ -15,7 +15,7 @@ namespace OxyPlot
     public interface IPlotView : IView
     {
         /// <summary>
-        /// Gets the actual <see cref="PlotModel" /> of the control.
+        /// Gets the actual <see cref="PlotModel"/> of the control.
         /// </summary>
         new PlotModel ActualModel { get; }
 

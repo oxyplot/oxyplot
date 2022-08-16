@@ -18,7 +18,7 @@ namespace OxyPlot
     public abstract class PlotManipulator<T> : ManipulatorBase<T> where T : OxyInputEventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PlotManipulator{T}" /> class.
+        /// Initializes a new instance of the <see cref="PlotManipulator{T}"/> class.
         /// </summary>
         /// <param name="view">The plot view.</param>
         protected PlotManipulator(IPlotView view)
@@ -31,7 +31,7 @@ namespace OxyPlot
         /// Gets the plot view where the event was raised.
         /// </summary>
         /// <value>The plot view.</value>
-        public IPlotView PlotView { get; private set; }
+        public IPlotView PlotView { get; }
 
         /// <summary>
         /// Gets or sets the axis that the manipulator will prefer to operate on.  The default is

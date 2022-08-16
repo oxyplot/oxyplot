@@ -14,7 +14,7 @@ namespace OxyPlot
         /// <summary>
         /// Gets the clipping rectangle defined by the Axis the <see cref="IXyAxisPlotElement"/> uses.
         /// </summary>
-        /// <param name="element">The <see cref="IXyAxisPlotElement" />.</param>
+        /// <param name="element">The <see cref="IXyAxisPlotElement"/>.</param>
         /// <returns>The clipping rectangle.</returns>
         public static OxyRect GetClippingRect(IXyAxisPlotElement element)
         {
@@ -26,7 +26,7 @@ namespace OxyPlot
         /// <summary>
         /// Transforms from a screen point to a data point by the axes of this series.
         /// </summary>
-        /// <param name="element">The <see cref="ITransposablePlotElement" />.</param>
+        /// <param name="element">The <see cref="ITransposablePlotElement"/>.</param>
         /// <param name="p">The screen point.</param>
         /// <returns>A data point.</returns>
         public static DataPoint InverseTransform(IXyAxisPlotElement element, ScreenPoint p)
@@ -37,7 +37,7 @@ namespace OxyPlot
         /// <summary>
         /// Transforms from a screen point to a data point by the axes of this series while being aware of the orientation.
         /// </summary>
-        /// <param name="element">The <see cref="ITransposablePlotElement" />.</param>
+        /// <param name="element">The <see cref="ITransposablePlotElement"/>.</param>
         /// <param name="p">The screen point.</param>
         /// <returns>A data point.</returns>
         public static DataPoint InverseTransformOrientated(ITransposablePlotElement element, ScreenPoint p)

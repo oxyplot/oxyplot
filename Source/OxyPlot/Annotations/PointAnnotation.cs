@@ -20,7 +20,7 @@ namespace OxyPlot.Annotations
         private ScreenPoint screenPosition;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PointAnnotation" /> class.
+        /// Initializes a new instance of the <see cref="PointAnnotation"/> class.
         /// </summary>
         public PointAnnotation()
         {
@@ -57,7 +57,7 @@ namespace OxyPlot.Annotations
         public MarkerType Shape { get; set; }
 
         /// <summary>
-        /// Gets or sets a custom polygon outline for the point marker. Set <see cref="Shape" /> to <see cref="MarkerType.Custom" /> to use this property.
+        /// Gets or sets a custom polygon outline for the point marker. Set <see cref="Shape"/> to <see cref="MarkerType.Custom"/> to use this property.
         /// </summary>
         /// <value>A polyline. The default is <c>null</c>.</value>
         public ScreenPoint[] CustomOutline { get; set; }

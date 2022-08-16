@@ -15,7 +15,7 @@ namespace OxyPlot
     /// <summary>
     /// Represents a point defined in screen space.
     /// </summary>
-    /// <remarks>The rendering methods transforms <see cref="DataPoint" />s to <see cref="ScreenPoint" />s.</remarks>
+    /// <remarks>The rendering methods transforms <see cref="DataPoint"/>s to <see cref="ScreenPoint"/>s.</remarks>
     public struct ScreenPoint : IEquatable<ScreenPoint>
     {
         /// <summary>
@@ -38,7 +38,7 @@ namespace OxyPlot
         internal double y;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ScreenPoint" /> struct.
+        /// Initializes a new instance of the <see cref="ScreenPoint"/> struct.
         /// </summary>
         /// <param name="x">The x-coordinate.</param>
         /// <param name="y">The y-coordinate.</param>
@@ -76,14 +76,14 @@ namespace OxyPlot
         /// Determines whether the specified point is undefined.
         /// </summary>
         /// <param name="point">The point.</param>
-        /// <returns><c>true</c> if the specified point is undefined; otherwise, <c>false</c> .</returns>
+        /// <returns><c>true</c> if the specified point is undefined; otherwise, <c>false</c>.</returns>
         public static bool IsUndefined(ScreenPoint point)
         {
             return double.IsNaN(point.x) && double.IsNaN(point.y);
         }
 
         /// <summary>
-        /// Translates a <see cref="ScreenPoint" /> by a <see cref="ScreenVector" />.
+        /// Translates a <see cref="ScreenPoint"/> by a <see cref="ScreenVector"/>.
         /// </summary>
         /// <param name="p1">The point.</param>
         /// <param name="p2">The vector.</param>
@@ -94,24 +94,24 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Subtracts a <see cref="ScreenPoint" /> from a <see cref="ScreenPoint" />
-        /// and returns the result as a <see cref="ScreenVector" />.
+        /// Subtracts a <see cref="ScreenPoint"/> from a <see cref="ScreenPoint"/>
+        /// and returns the result as a <see cref="ScreenVector"/>.
         /// </summary>
         /// <param name="p1">The point on which to perform the subtraction.</param>
         /// <param name="p2">The point to subtract from p1.</param>
-        /// <returns>A <see cref="ScreenVector" /> structure that represents the difference between p1 and p2.</returns>
+        /// <returns>A <see cref="ScreenVector"/> structure that represents the difference between p1 and p2.</returns>
         public static ScreenVector operator -(ScreenPoint p1, ScreenPoint p2)
         {
             return new ScreenVector(p1.x - p2.x, p1.y - p2.y);
         }
 
         /// <summary>
-        /// Subtracts a <see cref="ScreenVector" /> from a <see cref="ScreenPoint" />
-        /// and returns the result as a <see cref="ScreenPoint" />.
+        /// Subtracts a <see cref="ScreenVector"/> from a <see cref="ScreenPoint"/>
+        /// and returns the result as a <see cref="ScreenPoint"/>.
         /// </summary>
         /// <param name="point">The point on which to perform the subtraction.</param>
         /// <param name="vector">The vector to subtract from p1.</param>
-        /// <returns>A <see cref="ScreenPoint" /> that represents point translated by the negative vector.</returns>
+        /// <returns>A <see cref="ScreenPoint"/> that represents point translated by the negative vector.</returns>
         public static ScreenPoint operator -(ScreenPoint point, ScreenVector vector)
         {
             return new ScreenPoint(point.x - vector.x, point.y - vector.y);
@@ -142,19 +142,19 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public override string ToString()
         {
             return this.x + " " + this.y;
         }
 
         /// <summary>
-        /// Determines whether this instance and another specified <see cref="T:ScreenPoint" /> object have the same value.
+        /// Determines whether this instance and another specified <see cref="T:ScreenPoint"/> object have the same value.
         /// </summary>
         /// <param name="other">The point to compare to this instance.</param>
-        /// <returns><c>true</c> if the value of the <paramref name="other" /> parameter is the same as the value of this instance; otherwise, <c>false</c>.</returns>
+        /// <returns><c>true</c> if the value of the <paramref name="other"/> parameter is the same as the value of this instance; otherwise, <c>false</c>.</returns>
         public bool Equals(ScreenPoint other)
         {
             return this.x.Equals(other.x) && this.y.Equals(other.y);

@@ -34,7 +34,7 @@ namespace OxyPlot.Series
         private OxyColor defaultMinimumFillColor;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TornadoBarSeries" /> class.
+        /// Initializes a new instance of the <see cref="TornadoBarSeries"/> class.
         /// </summary>
         public TornadoBarSeries()
         {

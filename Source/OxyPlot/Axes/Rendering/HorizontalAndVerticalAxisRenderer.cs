@@ -20,7 +20,7 @@ namespace OxyPlot.Axes
     public class HorizontalAndVerticalAxisRenderer : AxisRendererBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="HorizontalAndVerticalAxisRenderer" /> class.
+        /// Initializes a new instance of the <see cref="HorizontalAndVerticalAxisRenderer"/> class.
         /// </summary>
         /// <param name="rc">The render context.</param>
         /// <param name="plot">The plot.</param>
@@ -202,7 +202,7 @@ namespace OxyPlot.Axes
         /// <param name="angle">The angle.</param>
         /// <param name="halign">The horizontal alignment.</param>
         /// <param name="valign">The vertical alignment.</param>
-        /// <returns>The <see cref="ScreenPoint" />.</returns>
+        /// <returns>The <see cref="ScreenPoint"/>.</returns>
         protected virtual ScreenPoint GetAxisTitlePositionAndAlignment(
             Axis axis,
             double titlePosition,
@@ -237,7 +237,7 @@ namespace OxyPlot.Axes
                     angle = 0;
                     return new ScreenPoint(middle, titlePosition);
                 default:
-                    throw new ArgumentOutOfRangeException("axis");
+                    throw new ArgumentOutOfRangeException(nameof(axis));
             }
         }
 
@@ -308,11 +308,9 @@ namespace OxyPlot.Axes
             bool isHorizontal = axis.IsHorizontal();
             bool cropGridlines = axis.CropGridlines;
 
-            double a0;
-            double a1;
             var majorSegments = new List<ScreenPoint>();
             var majorTickSegments = new List<ScreenPoint>();
-            this.GetTickPositions(axis, axis.TickStyle, axis.MajorTickSize, axis.Position, out a0, out a1);
+            this.GetTickPositions(axis, axis.TickStyle, axis.MajorTickSize, axis.Position, out double a0, out double a1);
 
             var perpendicularAxis = axis.IsHorizontal() ? this.Plot.DefaultYAxis : this.Plot.DefaultXAxis;
             var dontRenderZero = axis.PositionAtZeroCrossing && perpendicularAxis.PositionAtZeroCrossing;
@@ -352,14 +350,14 @@ namespace OxyPlot.Axes
                 if (this.MajorPen != null)
                 {
                     this.AddSegments(
-                        majorSegments, 
-                        perpAxes, 
-                        isHorizontal, 
-                        cropGridlines, 
-                        transformedValue, 
-                        plotAreaLeft, 
-                        plotAreaRight, 
-                        plotAreaTop, 
+                        majorSegments,
+                        perpAxes,
+                        isHorizontal,
+                        cropGridlines,
+                        transformedValue,
+                        plotAreaLeft,
+                        plotAreaRight,
+                        plotAreaTop,
                         plotAreaBottom);
                 }
 
@@ -525,8 +523,6 @@ namespace OxyPlot.Axes
             bool cropGridlines = axis.CropGridlines;
             bool isHorizontal = axis.IsHorizontal();
 
-            double a0;
-            double a1;
             var minorSegments = new List<ScreenPoint>();
             var minorTickSegments = new List<ScreenPoint>();
 
@@ -543,7 +539,7 @@ namespace OxyPlot.Axes
                 }
             }
 
-            this.GetTickPositions(axis, axis.TickStyle, axis.MinorTickSize, axis.Position, out a0, out a1);
+            this.GetTickPositions(axis, axis.TickStyle, axis.MinorTickSize, axis.Position, out double a0, out double a1);
 
             foreach (double value in this.MinorTickValues)
             {
@@ -609,7 +605,7 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Adds segments to <paramref name="segments"/> array. 
+        /// Adds segments to <paramref name="segments"/> array.
         /// If <paramref name="cropGridlines"/> is true, then lines will be cropped with <paramref name="perpAxes"/> lists axes.
         /// </summary>
         /// <param name="segments">The target segments.</param>
@@ -622,7 +618,7 @@ namespace OxyPlot.Axes
         /// <param name="plotAreaTop">Plot area top position.</param>
         /// <param name="plotAreaBottom">Plot area bottom position.</param>
         private void AddSegments(
-            List<ScreenPoint> segments, 
+            List<ScreenPoint> segments,
             List<Axis> perpAxes,
             bool isHorizontal,
             bool cropGridlines,
@@ -671,13 +667,13 @@ namespace OxyPlot.Axes
         /// </summary>
         /// <param name="boxAngle">The angle of a box to rotate (usually it is label angle).</param>
         /// <param name="axisAngle">
-        /// The axis angle, the original angle belongs to. The Top axis should have 0, next angles are computed clockwise. 
-        /// The angle should be in [-180, 180). (T, R, B, L) is (0, 90, -180, -90). 
+        /// The axis angle, the original angle belongs to. The Top axis should have 0, next angles are computed clockwise.
+        /// The angle should be in [-180, 180). (T, R, B, L) is (0, 90, -180, -90).
         /// </param>
         /// <param name="ha">Horizontal alignment.</param>
         /// <param name="va">Vertical alignment.</param>
         /// <remarks>
-        /// This method is supposed to compute the alignment of the labels that are put near axis. 
+        /// This method is supposed to compute the alignment of the labels that are put near axis.
         /// Because such labels can have different angles, and the axis can have different angles as well,
         /// computing the alignment is not straightforward.
         /// </remarks>

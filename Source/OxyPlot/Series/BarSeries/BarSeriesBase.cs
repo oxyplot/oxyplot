@@ -6,10 +6,10 @@
 
 namespace OxyPlot.Series
 {
-    using OxyPlot.Axes;
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using OxyPlot.Axes;
 
     /// <summary>
     /// Base class for bar series.
@@ -59,7 +59,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets the items list.
         /// </summary>
-        /// <value>A list of <see cref="BarItem" />.</value>
+        /// <value>A list of <see cref="BarItem"/>.</value>
         public List<T> Items { get; } = new List<T>();
 
         /// <inheritdoc/>

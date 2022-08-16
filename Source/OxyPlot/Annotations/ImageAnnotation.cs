@@ -22,7 +22,7 @@ namespace OxyPlot.Annotations
         private OxyRect actualBounds;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ImageAnnotation" /> class.
+        /// Initializes a new instance of the <see cref="ImageAnnotation"/> class.
         /// </summary>
         public ImageAnnotation()
         {

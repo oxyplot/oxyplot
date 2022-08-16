@@ -18,7 +18,7 @@ namespace OxyPlot.Series
     public class StairStepSeries : LineSeries
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref = "StairStepSeries" /> class.
+        /// Initializes a new instance of the <see cref="StairStepSeries"/> class.
         /// </summary>
         public StairStepSeries()
         {
@@ -44,7 +44,7 @@ namespace OxyPlot.Series
         /// Gets the nearest point.
         /// </summary>
         /// <param name="point">The point.</param>
-        /// <param name="interpolate">interpolate if set to <c>true</c> .</param>
+        /// <param name="interpolate">interpolate if set to <c>true</c>.</param>
         /// <returns>A TrackerHitResult for the current hit.</returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
@@ -61,13 +61,13 @@ namespace OxyPlot.Series
             if (!interpolate && result != null && result.Position.DistanceToSquared(point) < minimumDistanceSquared)
             {
                 result.Text = StringHelper.Format(
-                    this.ActualCulture, 
+                    this.ActualCulture,
                     this.TrackerFormatString,
                     result.Item,
                     this.Title,
-                    this.XAxis.Title ?? XYAxisSeries.DefaultXAxisTitle,
+                    this.XAxis.Title ?? DefaultXAxisTitle,
                     this.XAxis.GetValue(result.DataPoint.X),
-                    this.YAxis.Title ?? XYAxisSeries.DefaultYAxisTitle,
+                    this.YAxis.Title ?? DefaultYAxisTitle,
                     this.YAxis.GetValue(result.DataPoint.Y));
                 return result;
             }

@@ -32,7 +32,7 @@ namespace OxyPlot.Series
         private OxyColor defaultColor;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LinearBarSeries" /> class.
+        /// Initializes a new instance of the <see cref="LinearBarSeries"/> class.
         /// </summary>
         public LinearBarSeries()
         {
@@ -40,7 +40,7 @@ namespace OxyPlot.Series
             this.BarWidth = 5;
             this.StrokeColor = OxyColors.Black;
             this.StrokeThickness = 0;
-            this.TrackerFormatString = XYAxisSeries.DefaultTrackerFormatString;
+            this.TrackerFormatString = DefaultTrackerFormatString;
             this.NegativeFillColor = OxyColors.Undefined;
             this.NegativeStrokeColor = OxyColors.Undefined;
         }
@@ -97,7 +97,7 @@ namespace OxyPlot.Series
         /// Gets the nearest point.
         /// </summary>
         /// <param name="point">The point.</param>
-        /// <param name="interpolate">interpolate if set to <c>true</c> .</param>
+        /// <param name="interpolate">interpolate if set to <c>true</c>.</param>
         /// <returns>A TrackerHitResult for the current hit.</returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
@@ -122,8 +122,8 @@ namespace OxyPlot.Series
             {
                 this.Title,
                 this.XAxis.Title ?? "X",
-                this.XAxis.GetValue(dataPoint.X), 
-                this.YAxis.Title ?? "Y", 
+                this.XAxis.GetValue(dataPoint.X),
+                this.YAxis.Title ?? "Y",
                 this.YAxis.GetValue(dataPoint.Y),
             };
 
@@ -273,10 +273,10 @@ namespace OxyPlot.Series
                 var barColors = this.GetBarColors(actualPoint.Y);
 
                 rc.DrawRectangle(
-                    rectangle, 
-                    barColors.FillColor, 
-                    barColors.StrokeColor, 
-                    this.StrokeThickness, 
+                    rectangle,
+                    barColors.FillColor,
+                    barColors.StrokeColor,
+                    this.StrokeThickness,
                     this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness));
             }
         }
@@ -321,7 +321,7 @@ namespace OxyPlot.Series
         private struct BarColors
         {
             /// <summary>
-            /// Initializes a new instance of the <see cref="BarColors" /> struct.
+            /// Initializes a new instance of the <see cref="BarColors"/> struct.
             /// </summary>
             /// <param name="fillColor">The fill color</param>
             /// <param name="strokeColor">The stroke color</param>

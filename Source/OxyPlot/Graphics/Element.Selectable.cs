@@ -15,7 +15,7 @@ namespace OxyPlot
     /// <summary>
     /// Provides an abstract base class for graphics elements.
     /// </summary>
-    public abstract partial class Element 
+    public abstract partial class Element
     {
         /// <summary>
         /// The selection
@@ -219,16 +219,12 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Raises the <see cref="SelectionChanged" /> event.
+        /// Raises the <see cref="SelectionChanged"/> event.
         /// </summary>
-        /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
+        /// <param name="args">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void OnSelectionChanged(EventArgs args = null)
         {
-            var e = this.SelectionChanged;
-            if (e != null)
-            {
-                e(this, args);
-            }
+            this.SelectionChanged?.Invoke(this, args);
         }
     }
 }

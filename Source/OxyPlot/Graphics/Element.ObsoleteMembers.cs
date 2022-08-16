@@ -59,101 +59,73 @@ namespace OxyPlot
         public event EventHandler<OxyTouchEventArgs> TouchCompleted;
 
         /// <summary>
-        /// Raises the <see cref="MouseDown" /> event.
+        /// Raises the <see cref="MouseDown"/> event.
         /// </summary>
-        /// <param name="e">The <see cref="OxyMouseEventArgs" /> instance containing the event data.</param>
+        /// <param name="e">The <see cref="OxyMouseEventArgs"/> instance containing the event data.</param>
         [Obsolete("Will be removed in v4.0 (#111)")]
         protected internal virtual void OnMouseDown(OxyMouseDownEventArgs e)
         {
-            var handler = this.MouseDown;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
+            this.MouseDown?.Invoke(this, e);
         }
 
         /// <summary>
-        /// Raises the <see cref="MouseMove" /> event.
+        /// Raises the <see cref="MouseMove"/> event.
         /// </summary>
-        /// <param name="e">The <see cref="OxyMouseEventArgs" /> instance containing the event data.</param>
+        /// <param name="e">The <see cref="OxyMouseEventArgs"/> instance containing the event data.</param>
         [Obsolete("Will be removed in v4.0 (#111)")]
         protected internal virtual void OnMouseMove(OxyMouseEventArgs e)
         {
-            var handler = this.MouseMove;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
+            this.MouseMove?.Invoke(this, e);
         }
 
         /// <summary>
-        /// Raises the <see cref="KeyDown" /> event.
+        /// Raises the <see cref="KeyDown"/> event.
         /// </summary>
-        /// <param name="e">The <see cref="OxyKeyEventArgs" /> instance containing the event data.</param>
+        /// <param name="e">The <see cref="OxyKeyEventArgs"/> instance containing the event data.</param>
         [Obsolete("Will be removed in v4.0 (#111)")]
         protected internal virtual void OnKeyDown(OxyKeyEventArgs e)
         {
-            var handler = this.KeyDown;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
+            this.KeyDown?.Invoke(this, e);
         }
 
         /// <summary>
-        /// Raises the <see cref="MouseUp" /> event.
+        /// Raises the <see cref="MouseUp"/> event.
         /// </summary>
-        /// <param name="e">The <see cref="OxyMouseEventArgs" /> instance containing the event data.</param>
+        /// <param name="e">The <see cref="OxyMouseEventArgs"/> instance containing the event data.</param>
         [Obsolete("Will be removed in v4.0 (#111)")]
         protected internal virtual void OnMouseUp(OxyMouseEventArgs e)
         {
-            var handler = this.MouseUp;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
+            this.MouseUp?.Invoke(this, e);
         }
 
         /// <summary>
-        /// Raises the <see cref="TouchStarted" /> event.
+        /// Raises the <see cref="TouchStarted"/> event.
         /// </summary>
-        /// <param name="e">The <see cref="OxyTouchEventArgs" /> instance containing the event data.</param>
+        /// <param name="e">The <see cref="OxyTouchEventArgs"/> instance containing the event data.</param>
         [Obsolete("Will be removed in v4.0 (#111)")]
         protected internal virtual void OnTouchStarted(OxyTouchEventArgs e)
         {
-            var handler = this.TouchStarted;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
+            this.TouchStarted?.Invoke(this, e);
         }
 
         /// <summary>
-        /// Raises the <see cref="TouchDelta" /> event.
+        /// Raises the <see cref="TouchDelta"/> event.
         /// </summary>
-        /// <param name="e">The <see cref="OxyTouchEventArgs" /> instance containing the event data.</param>
+        /// <param name="e">The <see cref="OxyTouchEventArgs"/> instance containing the event data.</param>
         [Obsolete("Will be removed in v4.0 (#111)")]
         protected internal virtual void OnTouchDelta(OxyTouchEventArgs e)
         {
-            var handler = this.TouchDelta;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
+            this.TouchDelta?.Invoke(this, e);
         }
 
         /// <summary>
-        /// Raises the <see cref="MouseUp" /> event.
+        /// Raises the <see cref="MouseUp"/> event.
         /// </summary>
-        /// <param name="e">The <see cref="OxyTouchEventArgs" /> instance containing the event data.</param>
+        /// <param name="e">The <see cref="OxyTouchEventArgs"/> instance containing the event data.</param>
         [Obsolete("Will be removed in v4.0 (#111)")]
         protected internal virtual void OnTouchCompleted(OxyTouchEventArgs e)
         {
-            var handler = this.TouchCompleted;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
+            this.TouchCompleted?.Invoke(this, e);
         }
     }
 }

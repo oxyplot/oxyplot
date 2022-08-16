@@ -20,7 +20,7 @@ namespace OxyPlot
         private Series.Series currentSeries;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TrackerManipulator" /> class.
+        /// Initializes a new instance of the <see cref="TrackerManipulator"/> class.
         /// </summary>
         /// <param name="plotView">The plot view.</param>
         public TrackerManipulator(IPlotView plotView)
@@ -63,7 +63,7 @@ namespace OxyPlot
         /// <summary>
         /// Occurs when a manipulation is complete.
         /// </summary>
-        /// <param name="e">The <see cref="OxyPlot.OxyMouseEventArgs" /> instance containing the event data.</param>
+        /// <param name="e">The <see cref="OxyMouseEventArgs"/> instance containing the event data.</param>
         public override void Completed(OxyMouseEventArgs e)
         {
             base.Completed(e);
@@ -71,16 +71,13 @@ namespace OxyPlot
 
             this.currentSeries = null;
             this.PlotView.HideTracker();
-            if (this.PlotView.ActualModel != null)
-            {
-                this.PlotView.ActualModel.RaiseTrackerChanged(null);
-            }
+            this.PlotView.ActualModel?.RaiseTrackerChanged(null);
         }
 
         /// <summary>
         /// Occurs when the input device changes position during a manipulation.
         /// </summary>
-        /// <param name="e">The <see cref="OxyPlot.OxyMouseEventArgs" /> instance containing the event data.</param>
+        /// <param name="e">The <see cref="OxyMouseEventArgs"/> instance containing the event data.</param>
         public override void Delta(OxyMouseEventArgs e)
         {
             base.Delta(e);
@@ -126,11 +123,11 @@ namespace OxyPlot
         /// <summary>
         /// Occurs when an input device begins a manipulation on the plot.
         /// </summary>
-        /// <param name="e">The <see cref="OxyPlot.OxyMouseEventArgs" /> instance containing the event data.</param>
+        /// <param name="e">The <see cref="OxyMouseEventArgs"/> instance containing the event data.</param>
         public override void Started(OxyMouseEventArgs e)
         {
             base.Started(e);
-            this.currentSeries = this.PlotView.ActualModel?.GetSeriesFromPoint(e.Position, FiresDistance);
+            this.currentSeries = this.PlotView.ActualModel?.GetSeriesFromPoint(e.Position, this.FiresDistance);
             this.Delta(e);
         }
     }

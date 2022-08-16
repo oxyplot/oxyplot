@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 - Change default `MinimumSegmentLength` to `2` and remove limits for series and annotations with simple geometry (#1853)
 - Improve performance of `StairStepSeries`, particularly when zoomed in and X is monotonic or when consecutive points have equal Y components
 - `StairStepSeries` renders a horizontal line when a point with a valid X component and invalid Y component follows a valid point
+- Tidy up and modernise code #1920
 
 ### Removed
 

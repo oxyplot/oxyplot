@@ -15,7 +15,7 @@ namespace OxyPlot
     public abstract class MouseManipulator : PlotManipulator<OxyMouseEventArgs>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="MouseManipulator" /> class.
+        /// Initializes a new instance of the <see cref="MouseManipulator"/> class.
         /// </summary>
         /// <param name="plotView">The plot view.</param>
         protected MouseManipulator(IPlotView plotView)
@@ -31,7 +31,7 @@ namespace OxyPlot
         /// <summary>
         /// Occurs when an input device begins a manipulation on the plot.
         /// </summary>
-        /// <param name="e">The <see cref="OxyInputEventArgs" /> instance containing the event data.</param>
+        /// <param name="e">The <see cref="OxyInputEventArgs"/> instance containing the event data.</param>
         public override void Started(OxyMouseEventArgs e)
         {
             this.AssignAxes(e.Position);

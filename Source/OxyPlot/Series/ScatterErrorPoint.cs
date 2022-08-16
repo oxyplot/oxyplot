@@ -3,14 +3,14 @@
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Represents a point in a <see cref="ScatterErrorSeries" />.
+//   Represents a point in a <see cref="ScatterErrorSeries"/>.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Series
 {
     /// <summary>
-    /// Represents a point in a <see cref="ScatterErrorSeries" />.
+    /// Represents a point in a <see cref="ScatterErrorSeries"/>.
     /// </summary>
     public class ScatterErrorPoint : ScatterPoint
     {
@@ -37,7 +37,7 @@ namespace OxyPlot.Series
         /// <value>
         /// The error.
         /// </value>
-        public double ErrorX { get; private set; }
+        public double ErrorX { get; }
 
         /// <summary>
         /// Gets the error in Y.
@@ -45,7 +45,7 @@ namespace OxyPlot.Series
         /// <value>
         /// The error.
         /// </value>
-        public double ErrorY { get; private set; }
+        public double ErrorY { get; }
 
         /// <summary>
         /// Returns C# code that generates this instance.

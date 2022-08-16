@@ -3,7 +3,7 @@
 //   Copyright (c) 2019 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Provides methods to collect data samples into bins for use with a <see cref="HistogramSeries" />.
+//   Provides methods to collect data samples into bins for use with a <see cref="HistogramSeries"/>.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -18,7 +18,7 @@ namespace OxyPlot
     using OxyPlot.Series;
 
     /// <summary>
-    /// Provides methods to collect data samples into bins for use with a <see cref="HistogramSeries" />.
+    /// Provides methods to collect data samples into bins for use with a <see cref="HistogramSeries"/>.
     /// </summary>
     public static class HistogramHelpers
     {
@@ -26,7 +26,7 @@ namespace OxyPlot
         /// Generates a list of <paramref name="binCount"/> bin breaks, uniformly distributed between <paramref name="start"/> and <paramref name="end"/>.
         /// </summary>
         /// <param name="start">The inclusive lower-bound of the first bin.</param>
-        /// <param name="end">The exclusive upper-bound of the last bin, which must be strictly greater than <paramred name="start" />.</param>
+        /// <param name="end">The exclusive upper-bound of the last bin, which must be strictly greater than <paramred name="start"/>.</param>
         /// <param name="binCount">The number of bins to create.</param>
         /// <returns>An <see cref="List{T}"/> containing the breaks between bins of uniform size.</returns>
         public static List<double> CreateUniformBins(double start, double end, int binCount)
@@ -51,9 +51,10 @@ namespace OxyPlot
                 throw new ArgumentException("The end must be strictly greater than the start.", nameof(end));
             }
 
-            List<double> binBreaks = new List<double>(binCount + 1);
-
-            binBreaks.Add(start);
+            List<double> binBreaks = new List<double>(binCount + 1)
+            {
+                start
+            };
 
             for (int i = 1; i < binCount; i++)
             {
@@ -68,12 +69,12 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Collects samples into tightly packed bins (<see cref="HistogramItem" />) defined by <paramref name="binBreaks"/>.
+        /// Collects samples into tightly packed bins (<see cref="HistogramItem"/>) defined by <paramref name="binBreaks"/>.
         /// </summary>
         /// <param name="samples">The samples to collect into bins.</param>
         /// <param name="binBreaks">The start and end values for the bins.</param>
         /// <param name="binningOptions">The binning options to use.</param>
-        /// <returns>A list of <see cref="HistogramItem" /> corresponding to the generated bins with areas computed from the proportion of samples placed within.</returns>
+        /// <returns>A list of <see cref="HistogramItem"/> corresponding to the generated bins with areas computed from the proportion of samples placed within.</returns>
         public static IList<HistogramItem> Collect(IEnumerable<double> samples, IEnumerable<double> binBreaks, BinningOptions binningOptions)
         {
             if (samples is null)
@@ -101,7 +102,7 @@ namespace OxyPlot
 
             if (orderedBreaks.Any(d => double.IsNaN(d) || double.IsInfinity(d)))
             {
-                throw new ArgumentException($"Bin Breaks may not be NaN or infinite.", nameof(binBreaks));
+                throw new ArgumentException("Bin Breaks may not be NaN or infinite.", nameof(binBreaks));
             }
 
             // count and assign samples to bins
@@ -112,7 +113,7 @@ namespace OxyPlot
             {
                 if (double.IsNaN(sample) || double.IsInfinity(sample))
                 {
-                    throw new ArgumentException($"Samples may not be NaN or infinite.", nameof(samples));
+                    throw new ArgumentException("Samples may not be NaN or infinite.", nameof(samples));
                 }
 
                 int idx = orderedBreaks.BinarySearch(sample);
@@ -128,12 +129,12 @@ namespace OxyPlot
                     {
                         if (idx > 0)
                         {
-                            counts[idx - 1] += 1;
+                            counts[idx - 1]++;
                             placed = true;
                         }
                         else if (binningOptions.ExtremeValuesMode == BinningExtremeValueMode.IncludeExtremeValues)
                         {
-                            counts[idx] += 1;
+                            counts[idx]++;
                             placed = true;
                         }
                     }
@@ -141,12 +142,12 @@ namespace OxyPlot
                     {
                         if (idx < counts.Length)
                         {
-                            counts[idx] += 1;
+                            counts[idx]++;
                             placed = true;
                         }
                         else if (binningOptions.ExtremeValuesMode == BinningExtremeValueMode.IncludeExtremeValues)
                         {
-                            counts[idx - 1] += 1;
+                            counts[idx - 1]++;
                             placed = true;
                         }
                     }
@@ -158,7 +159,7 @@ namespace OxyPlot
 
                     if (idx >= 0 && idx < counts.Length)
                     {
-                        counts[idx] += 1;
+                        counts[idx]++;
                         placed = true;
                     }
                 }

@@ -15,7 +15,7 @@ namespace OxyPlot.Series
     public class IntervalBarItem : BarItemBase, ICodeGenerating
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="IntervalBarItem" /> class.
+        /// Initializes a new instance of the <see cref="IntervalBarItem"/> class.
         /// </summary>
         public IntervalBarItem()
         {
@@ -23,7 +23,7 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="IntervalBarItem" /> class.
+        /// Initializes a new instance of the <see cref="IntervalBarItem"/> class.
         /// </summary>
         /// <param name="start">The start.</param>
         /// <param name="end">The end.</param>

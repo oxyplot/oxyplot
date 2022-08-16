@@ -18,26 +18,6 @@ namespace OxyPlot
     public struct OxyColor : ICodeGenerating, IEquatable<OxyColor>
     {
         /// <summary>
-        /// The red component.
-        /// </summary>
-        private readonly byte r;
-
-        /// <summary>
-        /// The green component.
-        /// </summary>
-        private readonly byte g;
-
-        /// <summary>
-        /// The blue component.
-        /// </summary>
-        private readonly byte b;
-
-        /// <summary>
-        /// The alpha component.
-        /// </summary>
-        private readonly byte a;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="OxyColor"/> struct.
         /// </summary>
         /// <param name="a">The alpha value.</param>
@@ -46,66 +26,42 @@ namespace OxyPlot
         /// <param name="b">The blue value.</param>
         private OxyColor(byte a, byte r, byte g, byte b)
         {
-            this.a = a;
-            this.r = r;
-            this.g = g;
-            this.b = b;
+            this.A = a;
+            this.R = r;
+            this.G = g;
+            this.B = b;
         }
 
         /// <summary>
         /// Gets the alpha value.
         /// </summary>
         /// <value>The alpha value.</value>
-        public byte A
-        {
-            get
-            {
-                return this.a;
-            }
-        }
+        public byte A { get; }
 
         /// <summary>
         /// Gets the blue value.
         /// </summary>
         /// <value>The blue value.</value>
-        public byte B
-        {
-            get
-            {
-                return this.b;
-            }
-        }
+        public byte B { get; }
 
         /// <summary>
         /// Gets the green value.
         /// </summary>
         /// <value>The green value.</value>
-        public byte G
-        {
-            get
-            {
-                return this.g;
-            }
-        }
+        public byte G { get; }
 
         /// <summary>
         /// Gets the red value.
         /// </summary>
         /// <value>The red value.</value>
-        public byte R
-        {
-            get
-            {
-                return this.r;
-            }
-        }
+        public byte R { get; }
 
         /// <summary>
         /// Parse a string.
         /// </summary>
         /// <param name="value">The string in the format <c>"#FFFFFF00"</c> or <c>"255,200,180,50"</c>.</param>
         /// <returns>The parsed color.</returns>
-        /// <exception cref="System.FormatException">Invalid format.</exception>
+        /// <exception cref="FormatException">Invalid format.</exception>
         public static OxyColor Parse(string value)
         {
             if (value == null || string.Equals(value, "none", StringComparison.OrdinalIgnoreCase))
@@ -159,7 +115,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Calculates the difference between two <see cref="OxyColor" />s
+        /// Calculates the difference between two <see cref="OxyColor"/>s
         /// </summary>
         /// <param name="c1">The first color.</param>
         /// <param name="c2">The second color.</param>
@@ -177,10 +133,10 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Convert an <see cref="uint" /> to a <see cref="OxyColor" />.
+        /// Convert an <see cref="uint"/> to a <see cref="OxyColor"/>.
         /// </summary>
         /// <param name="color">The unsigned integer color value.</param>
-        /// <returns>The <see cref="OxyColor" />.</returns>
+        /// <returns>The <see cref="OxyColor"/>.</returns>
         public static OxyColor FromUInt32(uint color)
         {
             var a = (byte)(color >> 24);
@@ -206,12 +162,12 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Converts from HSV to <see cref="OxyColor" />
+        /// Converts from HSV to <see cref="OxyColor"/>
         /// </summary>
         /// <param name="hue">The hue value [0,1]</param>
         /// <param name="sat">The saturation value [0,1]</param>
         /// <param name="val">The intensity value [0,1]</param>
-        /// <returns>The <see cref="OxyColor" />.</returns>
+        /// <returns>The <see cref="OxyColor"/>.</returns>
         /// <remarks>See <a href="http://en.wikipedia.org/wiki/HSL_Color_space">Wikipedia</a>.</remarks>
         public static OxyColor FromHsv(double hue, double sat, double val)
         {
@@ -275,7 +231,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Calculate the difference in hue between two <see cref="OxyColor" />s.
+        /// Calculate the difference in hue between two <see cref="OxyColor"/>s.
         /// </summary>
         /// <param name="c1">The first color.</param>
         /// <param name="c2">The second color.</param>
@@ -289,12 +245,12 @@ namespace OxyPlot
             // clamp to [-0.5,0.5]
             if (dh > 0.5)
             {
-                dh -= 1.0;
+                dh--;
             }
 
             if (dh < -0.5)
             {
-                dh += 1.0;
+                dh++;
             }
 
             double e = dh * dh;
@@ -326,12 +282,12 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Creates a new <see cref="OxyColor" /> structure from the specified RGB values.
+        /// Creates a new <see cref="OxyColor"/> structure from the specified RGB values.
         /// </summary>
         /// <param name="r">The red value.</param>
         /// <param name="g">The green value.</param>
         /// <param name="b">The blue value.</param>
-        /// <returns>A <see cref="OxyColor" /> structure with the specified values and an alpha channel value of 1.</returns>
+        /// <returns>A <see cref="OxyColor"/> structure with the specified values and an alpha channel value of 1.</returns>
         public static OxyColor FromRgb(byte r, byte g, byte b)
         {
             // ReSharper restore InconsistentNaming
@@ -359,7 +315,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="first">The first color.</param>
         /// <param name="second">The second color.</param>
-        /// <returns><c>true</c> if the two colors are equal; otherwise, <c>false</c> .</returns>
+        /// <returns><c>true</c> if the two colors are equal; otherwise, <c>false</c>.</returns>
         public static bool operator ==(OxyColor first, OxyColor second)
         {
             return first.Equals(second);
@@ -370,37 +326,32 @@ namespace OxyPlot
         /// </summary>
         /// <param name="first">The first color.</param>
         /// <param name="second">The second color.</param>
-        /// <returns><c>true</c> if the two colors are not equal; otherwise, <c>false</c> .</returns>
+        /// <returns><c>true</c> if the two colors are not equal; otherwise, <c>false</c>.</returns>
         public static bool operator !=(OxyColor first, OxyColor second)
         {
             return !first.Equals(second);
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="System.Object" /> is equal to this instance.
+        /// Determines whether the specified <see cref="object"/> is equal to this instance.
         /// </summary>
-        /// <param name="obj">The <see cref="System.Object" /> to compare with this instance.</param>
-        /// <returns><c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c> .</returns>
+        /// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
+        /// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
         public override bool Equals(object obj)
         {
-            if (obj == null)
+            if (obj is OxyColor color)
             {
-                return false;
+                return this.Equals(color);
             }
 
-            if (obj.GetType() != typeof(OxyColor))
-            {
-                return false;
-            }
-
-            return this.Equals((OxyColor)obj);
+            return false;
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="OxyColor" /> is equal to this instance.
+        /// Determines whether the specified <see cref="OxyColor"/> is equal to this instance.
         /// </summary>
-        /// <param name="other">The <see cref="OxyColor" /> to compare with this instance.</param>
-        /// <returns><c>true</c> if the specified <see cref="OxyColor" /> is equal to this instance; otherwise, <c>false</c> .</returns>
+        /// <param name="other">The <see cref="OxyColor"/> to compare with this instance.</param>
+        /// <returns><c>true</c> if the specified <see cref="OxyColor"/> is equal to this instance; otherwise, <c>false</c>.</returns>
         public bool Equals(OxyColor other)
         {
             return other.A == this.A && other.R == this.R && other.G == this.G && other.B == this.B;
@@ -423,9 +374,9 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public override string ToString()
         {
             return string.Format(
@@ -453,7 +404,7 @@ namespace OxyPlot
         /// <summary>
         /// Determines whether this color is undefined.
         /// </summary>
-        /// <returns><c>True</c> if the color equals <see cref="OxyColors.Undefined" />.</returns>
+        /// <returns><c>True</c> if the color equals <see cref="OxyColors.Undefined"/>.</returns>
         public bool IsUndefined()
         {
             return this.Equals(OxyColors.Undefined);
@@ -462,7 +413,7 @@ namespace OxyPlot
         /// <summary>
         /// Determines whether this color is automatic.
         /// </summary>
-        /// <returns><c>True</c> if the color equals <see cref="OxyColors.Automatic" />.</returns>
+        /// <returns><c>True</c> if the color equals <see cref="OxyColors.Automatic"/>.</returns>
         public bool IsAutomatic()
         {
             return this.Equals(OxyColors.Automatic);

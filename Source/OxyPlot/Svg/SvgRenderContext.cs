@@ -29,7 +29,7 @@ namespace OxyPlot
         private bool disposed;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SvgRenderContext" /> class.
+        /// Initializes a new instance of the <see cref="SvgRenderContext"/> class.
         /// </summary>
         /// <param name="s">The stream.</param>
         /// <param name="width">The width.</param>
@@ -42,7 +42,7 @@ namespace OxyPlot
         {
             if (textMeasurer == null)
             {
-                throw new ArgumentNullException("textMeasurer", "A text measuring render context must be provided.");
+                throw new ArgumentNullException(nameof(textMeasurer), "A text measuring render context must be provided.");
             }
 
             this.w = new SvgWriter(s, width, height, isDocument);
@@ -163,7 +163,7 @@ namespace OxyPlot
             var textSize = this.MeasureText(text, fontFamily, fontSize, fontWeight);
             var lineHeight = textSize.Height / lines.Length;
             var lineOffset = new ScreenVector(-Math.Sin(rotate / 180.0 * Math.PI) * lineHeight, +Math.Cos(rotate / 180.0 * Math.PI) * lineHeight);
-            
+
             if (this.UseVerticalTextAlignmentWorkaround)
             {
                 // offset the position, and set the valign to neutral value of `Bottom`
@@ -187,7 +187,7 @@ namespace OxyPlot
                     for (var i = lines.Length - 1; i >= 0; i--)
                     {
                         var line = lines[i];
-                        var size = this.MeasureText(line, fontFamily, fontSize, fontWeight);
+                        _ = this.MeasureText(line, fontFamily, fontSize, fontWeight); // TODO: Is this necessary?
                         this.w.WriteText(p, line, c, fontFamily, fontSize, fontWeight, rotate, halign, valign);
 
                         p -= lineOffset;
@@ -233,7 +233,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Draws the specified portion of the specified <see cref="OxyImage" /> at the specified location and with the specified size.
+        /// Draws the specified portion of the specified <see cref="OxyImage"/> at the specified location and with the specified size.
         /// </summary>
         /// <param name="source">The source.</param>
         /// <param name="srcX">The x-coordinate of the upper-left corner of the portion of the source image to draw.</param>

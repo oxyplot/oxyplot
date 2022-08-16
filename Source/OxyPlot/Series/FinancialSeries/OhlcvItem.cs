@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Represents an item in a <see cref="CandleStickAndVolumeSeries" />.
+//   Represents an item in a <see cref="CandleStickAndVolumeSeries"/>.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -12,7 +12,7 @@ namespace OxyPlot.Series
     using System.Collections.Generic;
 
     /// <summary>
-    /// Represents an item in a <see cref="CandleStickAndVolumeSeries" />.
+    /// Represents an item in a <see cref="CandleStickAndVolumeSeries"/>.
     /// </summary>
     public class OhlcvItem
     {
@@ -22,14 +22,14 @@ namespace OxyPlot.Series
         public static readonly OhlcvItem Undefined = new OhlcvItem(double.NaN, double.NaN, double.NaN, double.NaN, double.NaN);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OhlcvItem" /> class.
+        /// Initializes a new instance of the <see cref="OhlcvItem"/> class.
         /// </summary>
         public OhlcvItem()
-        { 
+        {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OxyPlot.Series.OhlcvItem"/> class.
+        /// Initializes a new instance of the <see cref="OhlcvItem"/> class.
         /// </summary>
         /// <param name="x">The x coordinate / time.</param>
         /// <param name="open">Open value.</param>
@@ -39,12 +39,12 @@ namespace OxyPlot.Series
         /// <param name="buyvolume">Buy volume.</param>
         /// <param name="sellvolume">Sell volume.</param>
         public OhlcvItem(
-            double x, 
-            double open, 
-            double high, 
-            double low, 
+            double x,
+            double open,
+            double high,
+            double low,
             double close,
-            double buyvolume = 0, 
+            double buyvolume = 0,
             double sellvolume = 0)
         {
             this.X = x;
@@ -150,9 +150,9 @@ namespace OxyPlot.Series
                     }
                 }
                 else
-                { 
-                    start = guessIdx + 1; 
-                    lastguess = guessIdx; 
+                {
+                    start = guessIdx + 1;
+                    lastguess = guessIdx;
                 }
 
                 if (start >= end)

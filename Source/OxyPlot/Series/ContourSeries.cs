@@ -41,7 +41,7 @@ namespace OxyPlot.Series
         private OxyColor defaultColor;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref = "ContourSeries" /> class.
+        /// Initializes a new instance of the <see cref="ContourSeries"/> class.
         /// </summary>
         public ContourSeries()
         {
@@ -211,7 +211,7 @@ namespace OxyPlot.Series
 
             this.JoinContourSegments();
 
-            if (this.ContourColors != null && this.ContourColors.Length > 0)
+            if (this.ContourColors?.Length > 0)
             {
                 foreach (var c in this.contours)
                 {
@@ -220,7 +220,7 @@ namespace OxyPlot.Series
                     if (index >= 0)
                     {
                         // clamp the index to the range of the ContourColors array
-                        index = index % this.ContourColors.Length;
+                        index %= this.ContourColors.Length;
                         c.Color = this.ContourColors[index];
                     }
                 }
@@ -239,7 +239,7 @@ namespace OxyPlot.Series
 
             var xaxisTitle = this.XAxis.Title ?? "X";
             var yaxisTitle = this.YAxis.Title ?? "Y";
-            var zaxisTitle = "Z";
+            const string zaxisTitle = "Z";
 
             foreach (var c in this.contours)
             {
@@ -648,14 +648,13 @@ namespace OxyPlot.Series
             rc.DrawPolygon(bpts, this.LabelBackground, OxyColors.Undefined, 0, this.EdgeRenderingMode);
         }
 
-
         /// <summary>
         /// Represents one of the two points of a segment.
         /// </summary>
         private class SegmentPoint
         {
             /// <summary>
-            /// Initializes a new instance of the <see cref="SegmentPoint" /> class.
+            /// Initializes a new instance of the <see cref="SegmentPoint"/> class.
             /// </summary>
             /// <param name="point">The segment point.</param>
             public SegmentPoint(DataPoint point)
@@ -702,7 +701,7 @@ namespace OxyPlot.Series
             internal readonly List<DataPoint> Points;
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="Contour" /> class.
+            /// Initializes a new instance of the <see cref="Contour"/> class.
             /// </summary>
             /// <param name="points">The points.</param>
             /// <param name="contourLevel">The contour level.</param>
@@ -764,7 +763,7 @@ namespace OxyPlot.Series
             internal readonly DataPoint StartPoint;
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="ContourSegment" /> class.
+            /// Initializes a new instance of the <see cref="ContourSegment"/> class.
             /// </summary>
             /// <param name="startPoint">The start point.</param>
             /// <param name="endPoint">The end point.</param>

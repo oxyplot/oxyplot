@@ -9,7 +9,6 @@
 
 namespace OxyPlot.Annotations
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -24,7 +23,7 @@ namespace OxyPlot.Annotations
         private IList<ScreenPoint> screenPoints;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PolygonAnnotation" /> class.
+        /// Initializes a new instance of the <see cref="PolygonAnnotation"/> class.
         /// </summary>
         public PolygonAnnotation()
         {
@@ -59,7 +58,7 @@ namespace OxyPlot.Annotations
         /// Gets the points.
         /// </summary>
         /// <value>The points.</value>
-        public List<DataPoint> Points { get; private set; }
+        public List<DataPoint> Points { get; }
 
         /// <inheritdoc/>
         public override void Render(IRenderContext rc)

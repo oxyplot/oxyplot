@@ -20,7 +20,7 @@ namespace OxyPlot
         private Series.Series currentSeries;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TouchTrackerManipulator" /> class.
+        /// Initializes a new instance of the <see cref="TouchTrackerManipulator"/> class.
         /// </summary>
         /// <param name="plotView">The plot view.</param>
         public TouchTrackerManipulator(IPlotView plotView)
@@ -66,23 +66,20 @@ namespace OxyPlot
         /// <summary>
         /// Occurs when a manipulation is complete.
         /// </summary>
-        /// <param name="e">The <see cref="OxyPlot.OxyTouchEventArgs" /> instance containing the event data.</param>
+        /// <param name="e">The <see cref="OxyTouchEventArgs"/> instance containing the event data.</param>
         public override void Completed(OxyTouchEventArgs e)
         {
             base.Completed(e);
 
             this.currentSeries = null;
             this.PlotView.HideTracker();
-            if (this.PlotView.ActualModel != null)
-            {
-                this.PlotView.ActualModel.RaiseTrackerChanged(null);
-            }
+            this.PlotView.ActualModel?.RaiseTrackerChanged(null);
         }
 
         /// <summary>
         /// Occurs when a touch delta event is handled.
         /// </summary>
-        /// <param name="e">The <see cref="OxyPlot.OxyTouchEventArgs" /> instance containing the event data.</param>
+        /// <param name="e">The <see cref="OxyTouchEventArgs"/> instance containing the event data.</param>
         public override void Delta(OxyTouchEventArgs e)
         {
             base.Delta(e);
@@ -94,13 +91,13 @@ namespace OxyPlot
         /// <summary>
         /// Occurs when an input device begins a manipulation on the plot.
         /// </summary>
-        /// <param name="e">The <see cref="OxyPlot.OxyTouchEventArgs" /> instance containing the event data.</param>
+        /// <param name="e">The <see cref="OxyTouchEventArgs"/> instance containing the event data.</param>
         public override void Started(OxyTouchEventArgs e)
         {
             base.Started(e);
             this.currentSeries = this.PlotView.ActualModel?.GetSeriesFromPoint(e.Position, this.FiresDistance);
 
-            UpdateTracker(e.Position);
+            this.UpdateTracker(e.Position);
         }
 
         /// <summary>

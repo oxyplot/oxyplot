@@ -17,16 +17,6 @@ namespace OxyPlot.Axes
     public abstract class AxisRendererBase
     {
         /// <summary>
-        /// The plot.
-        /// </summary>
-        private readonly PlotModel plot;
-
-        /// <summary>
-        /// The render context.
-        /// </summary>
-        private readonly IRenderContext rc;
-
-        /// <summary>
         /// The major label values
         /// </summary>
         private IList<double> majorLabelValues;
@@ -42,39 +32,27 @@ namespace OxyPlot.Axes
         private IList<double> minorTickValues;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AxisRendererBase" /> class.
+        /// Initializes a new instance of the <see cref="AxisRendererBase"/> class.
         /// </summary>
         /// <param name="rc">The render context.</param>
         /// <param name="plot">The plot.</param>
         protected AxisRendererBase(IRenderContext rc, PlotModel plot)
         {
-            this.plot = plot;
-            this.rc = rc;
+            this.Plot = plot;
+            this.RenderContext = rc;
         }
 
         /// <summary>
         /// Gets the plot.
         /// </summary>
         /// <value>The plot.</value>
-        protected PlotModel Plot
-        {
-            get
-            {
-                return this.plot;
-            }
-        }
+        protected PlotModel Plot { get; }
 
         /// <summary>
         /// Gets the render context.
         /// </summary>
         /// <value>The render context.</value>
-        protected IRenderContext RenderContext
-        {
-            get
-            {
-                return this.rc;
-            }
-        }
+        protected IRenderContext RenderContext { get; }
 
         /// <summary>
         /// Gets or sets the axis lines pen.

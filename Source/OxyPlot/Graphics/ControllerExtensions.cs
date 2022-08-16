@@ -3,14 +3,14 @@
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Provides extension methods for the <see cref="IController" />.
+//   Provides extension methods for the <see cref="IController"/>.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     /// <summary>
-    /// Provides extension methods for the <see cref="IController" />.
+    /// Provides extension methods for the <see cref="IController"/>.
     /// </summary>
     public static class ControllerExtensions
     {

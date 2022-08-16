@@ -29,7 +29,7 @@ namespace OxyPlot.Series
         private OxyColor defaultFillColor;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BarSeries" /> class.
+        /// Initializes a new instance of the <see cref="BarSeries"/> class.
         /// </summary>
         public BarSeries()
         {

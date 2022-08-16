@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Provides functionality to render <see cref="MagnitudeAxis" /> using the full plot area.
+//   Provides functionality to render <see cref="MagnitudeAxis"/> using the full plot area.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -13,7 +13,7 @@ namespace OxyPlot.Axes
     using System.Collections.Generic;
 
     /// <summary>
-    /// Provides functionality to render <see cref="MagnitudeAxis" /> using the full plot area.
+    /// Provides functionality to render <see cref="MagnitudeAxis"/> using the full plot area.
     /// </summary>
     public class MagnitudeAxisFullPlotAreaRenderer : AxisRendererBase
     {
@@ -29,7 +29,7 @@ namespace OxyPlot.Axes
         const double MaxSegments = 180.0;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MagnitudeAxisFullPlotAreaRenderer" /> class.
+        /// Initializes a new instance of the <see cref="MagnitudeAxisFullPlotAreaRenderer"/> class.
         /// </summary>
         /// <param name="rc">The render context.</param>
         /// <param name="plot">The plot.</param>
@@ -43,7 +43,7 @@ namespace OxyPlot.Axes
         /// </summary>
         /// <param name="axis">The axis.</param>
         /// <param name="pass">The pass.</param>
-        /// <exception cref="System.NullReferenceException">Angle axis should not be <c>null</c>.</exception>
+        /// <exception cref="NullReferenceException">Angle axis should not be <c>null</c>.</exception>
         public override void Render(Axis axis, int pass)
         {
             base.Render(axis, pass);
@@ -66,8 +66,8 @@ namespace OxyPlot.Axes
 
             double cornerangle_topright = -degree * Math.Atan2(distancerect.Top, distancerect.Right);
             double cornerangle_topleft = -degree * Math.Atan2(distancerect.Top, distancerect.Left);
-            double cornerangle_bottomleft = 360-degree * Math.Atan2(distancerect.Bottom, distancerect.Left);
-            double cornerangle_bottomright = 360-degree * Math.Atan2(distancerect.Bottom, distancerect.Right);
+            double cornerangle_bottomleft = 360 - degree * Math.Atan2(distancerect.Bottom, distancerect.Left);
+            double cornerangle_bottomright = 360 - degree * Math.Atan2(distancerect.Bottom, distancerect.Right);
 
             // detect and filter dodgy values caused by zero values
             if (cornerangle_topleft < 0)
@@ -327,10 +327,9 @@ namespace OxyPlot.Axes
         /// <param name="endAngle">The end angle.</param>
         private void RenderTickArc(Axis axis, AngleAxis angleAxis, double x, OxyPen pen, double startAngle, double endAngle)
         {
-            if(startAngle>endAngle)
-            {
-
-            }
+            //if (startAngle > endAngle)
+            //{
+            //}
             // caution: make sure angleAxis.UpdateActualMaxMin(); has been called
 
             // number of segment to draw a full circle
@@ -375,13 +374,10 @@ namespace OxyPlot.Axes
             var dx = axis.AxisTickToLabelDistance * Math.Sin(actualAngle);
             var dy = -axis.AxisTickToLabelDistance * Math.Cos(actualAngle);
 
-            HorizontalAlignment ha;
-            VerticalAlignment va;
-            GetTickTextAligment(actualAngle, out ha, out va);
+            GetTickTextAligment(actualAngle, out HorizontalAlignment ha, out VerticalAlignment va);
 
             var pt = axis.Transform(x, angleAxis.Angle, angleAxis);
             pt = new ScreenPoint(pt.X + dx, pt.Y + dy);
-
 
             string text = axis.FormatValue(x);
             this.RenderContext.DrawMathText(

@@ -42,7 +42,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Exports the specified <see cref="PlotModel" /> to the specified <see cref="Stream" />.
+        /// Exports the specified <see cref="PlotModel"/> to the specified <see cref="Stream"/>.
         /// </summary>
         /// <param name="model">The model.</param>
         /// <param name="stream">The stream.</param>

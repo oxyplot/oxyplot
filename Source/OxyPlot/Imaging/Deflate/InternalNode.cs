@@ -17,7 +17,7 @@ namespace OxyPlot
     internal sealed class InternalNode : Node
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="InternalNode" /> class.
+        /// Initializes a new instance of the <see cref="InternalNode"/> class.
         /// </summary>
         /// <param name="leftChild">The left child.</param>
         /// <param name="rightChild">The right child.</param>
@@ -25,12 +25,12 @@ namespace OxyPlot
         {
             if (leftChild == null)
             {
-                throw new ArgumentException("Argument is null", "leftChild");
+                throw new ArgumentNullException(nameof(leftChild));
             }
 
             if (rightChild == null)
             {
-                throw new ArgumentException("Argument is null", "rightChild");
+                throw new ArgumentNullException(nameof(rightChild));
             }
 
             this.LeftChild = leftChild;
@@ -40,11 +40,11 @@ namespace OxyPlot
         /// <summary>
         /// Gets the left child.
         /// </summary>
-        public Node LeftChild { get; private set; }
+        public Node LeftChild { get; }
 
         /// <summary>
         /// Gets the right child.
         /// </summary>
-        public Node RightChild { get; private set; }
+        public Node RightChild { get; }
     }
 }

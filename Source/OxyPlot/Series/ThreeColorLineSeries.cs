@@ -28,7 +28,7 @@ namespace OxyPlot.Series
         private OxyColor defaultColorHi;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref = "ThreeColorLineSeries" /> class.
+        /// Initializes a new instance of the <see cref="ThreeColorLineSeries"/> class.
         /// </summary>
         public ThreeColorLineSeries()
         {
@@ -83,17 +83,17 @@ namespace OxyPlot.Series
         public double LimitLo { get; set; }
 
         /// <summary>
-        /// Gets or sets the dash array for the rendered line that is above the limit (overrides <see cref="LineStyle" />).
+        /// Gets or sets the dash array for the rendered line that is above the limit (overrides <see cref="LineStyle"/>).
         /// </summary>
         /// <value>The dash array.</value>
-        /// <remarks>If this is not <c>null</c> it overrides the <see cref="LineStyle" /> property.</remarks>
+        /// <remarks>If this is not <c>null</c> it overrides the <see cref="LineStyle"/> property.</remarks>
         public double[] DashesHi { get; set; }
 
         /// <summary>
-        /// Gets or sets the dash array for the rendered line that is below the limit (overrides <see cref="LineStyle" />).
+        /// Gets or sets the dash array for the rendered line that is below the limit (overrides <see cref="LineStyle"/>).
         /// </summary>
         /// <value>The dash array.</value>
-        /// <remarks>If this is not <c>null</c> it overrides the <see cref="LineStyle" /> property.</remarks>
+        /// <remarks>If this is not <c>null</c> it overrides the <see cref="LineStyle"/> property.</remarks>
         public double[] DashesLo { get; set; }
 
         /// <summary>

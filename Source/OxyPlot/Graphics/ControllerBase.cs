@@ -23,7 +23,7 @@ namespace OxyPlot
         private readonly object syncRoot = new object();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ControllerBase" /> class.
+        /// Initializes a new instance of the <see cref="ControllerBase"/> class.
         /// </summary>
         protected ControllerBase()
         {
@@ -37,29 +37,29 @@ namespace OxyPlot
         /// Gets the input bindings.
         /// </summary>
         /// <remarks>This collection is used to specify the customized input gestures (both key, mouse and touch).</remarks>
-        public List<InputCommandBinding> InputCommandBindings { get; private set; }
+        public List<InputCommandBinding> InputCommandBindings { get; }
 
         /// <summary>
         /// Gets the manipulators that are created by mouse down events. These manipulators are removed when the mouse button is released.
         /// </summary>
-        protected IList<ManipulatorBase<OxyMouseEventArgs>> MouseDownManipulators { get; private set; }
+        protected IList<ManipulatorBase<OxyMouseEventArgs>> MouseDownManipulators { get; }
 
         /// <summary>
         /// Gets the manipulators that are created by mouse enter events. These manipulators are removed when the mouse leaves the control.
         /// </summary>
-        protected IList<ManipulatorBase<OxyMouseEventArgs>> MouseHoverManipulators { get; private set; }
+        protected IList<ManipulatorBase<OxyMouseEventArgs>> MouseHoverManipulators { get; }
 
         /// <summary>
         /// Gets the manipulators that are created by touch events. These manipulators are removed when the touch gesture is completed.
         /// </summary>
-        protected IList<ManipulatorBase<OxyTouchEventArgs>> TouchManipulators { get; private set; }
+        protected IList<ManipulatorBase<OxyTouchEventArgs>> TouchManipulators { get; }
 
         /// <summary>
         /// Handles the specified gesture.
         /// </summary>
         /// <param name="view">The plot view.</param>
         /// <param name="gesture">The gesture.</param>
-        /// <param name="args">The <see cref="OxyInputEventArgs" /> instance containing the event data.</param>
+        /// <param name="args">The <see cref="OxyInputEventArgs"/> instance containing the event data.</param>
         /// <returns><c>true</c> if the event was handled.</returns>
         public virtual bool HandleGesture(IView view, OxyInputGesture gesture, OxyInputEventArgs args)
         {
@@ -71,7 +71,7 @@ namespace OxyPlot
         /// Handles mouse down events.
         /// </summary>
         /// <param name="view">The plot view.</param>
-        /// <param name="args">The <see cref="OxyMouseEventArgs" /> instance containing the event data.</param>
+        /// <param name="args">The <see cref="OxyMouseEventArgs"/> instance containing the event data.</param>
         /// <returns><c>true</c> if the event was handled.</returns>
         public virtual bool HandleMouseDown(IView view, OxyMouseDownEventArgs args)
         {
@@ -95,7 +95,7 @@ namespace OxyPlot
         /// Handles mouse enter events.
         /// </summary>
         /// <param name="view">The plot view.</param>
-        /// <param name="args">The <see cref="OxyMouseEventArgs" /> instance containing the event data.</param>
+        /// <param name="args">The <see cref="OxyMouseEventArgs"/> instance containing the event data.</param>
         /// <returns><c>true</c> if the event was handled.</returns>
         public virtual bool HandleMouseEnter(IView view, OxyMouseEventArgs args)
         {
@@ -119,7 +119,7 @@ namespace OxyPlot
         /// Handles mouse leave events.
         /// </summary>
         /// <param name="view">The plot view.</param>
-        /// <param name="args">The <see cref="OxyMouseEventArgs" /> instance containing the event data.</param>
+        /// <param name="args">The <see cref="OxyMouseEventArgs"/> instance containing the event data.</param>
         /// <returns><c>true</c> if the event was handled.</returns>
         public virtual bool HandleMouseLeave(IView view, OxyMouseEventArgs args)
         {
@@ -148,7 +148,7 @@ namespace OxyPlot
         /// Handles mouse move events.
         /// </summary>
         /// <param name="view">The plot view.</param>
-        /// <param name="args">The <see cref="OxyMouseEventArgs" /> instance containing the event data.</param>
+        /// <param name="args">The <see cref="OxyMouseEventArgs"/> instance containing the event data.</param>
         /// <returns><c>true</c> if the event was handled.</returns>
         public virtual bool HandleMouseMove(IView view, OxyMouseEventArgs args)
         {
@@ -181,7 +181,7 @@ namespace OxyPlot
         /// Handles mouse up events.
         /// </summary>
         /// <param name="view">The plot view.</param>
-        /// <param name="args">The <see cref="OxyMouseEventArgs" /> instance containing the event data.</param>
+        /// <param name="args">The <see cref="OxyMouseEventArgs"/> instance containing the event data.</param>
         /// <returns><c>true</c> if the event was handled.</returns>
         public virtual bool HandleMouseUp(IView view, OxyMouseEventArgs args)
         {
@@ -210,7 +210,7 @@ namespace OxyPlot
         /// Handles mouse wheel events.
         /// </summary>
         /// <param name="view">The plot view.</param>
-        /// <param name="args">The <see cref="OxyMouseWheelEventArgs" /> instance containing the event data.</param>
+        /// <param name="args">The <see cref="OxyMouseWheelEventArgs"/> instance containing the event data.</param>
         /// <returns><c>true</c> if the event was handled.</returns>
         public virtual bool HandleMouseWheel(IView view, OxyMouseWheelEventArgs args)
         {
@@ -225,7 +225,7 @@ namespace OxyPlot
         /// Handles touch started events.
         /// </summary>
         /// <param name="view">The plot view.</param>
-        /// <param name="args">The <see cref="OxyTouchEventArgs" /> instance containing the event data.</param>
+        /// <param name="args">The <see cref="OxyTouchEventArgs"/> instance containing the event data.</param>
         /// <returns><c>true</c> if the event was handled.</returns>
         public virtual bool HandleTouchStarted(IView view, OxyTouchEventArgs args)
         {
@@ -249,7 +249,7 @@ namespace OxyPlot
         /// Handles touch delta events.
         /// </summary>
         /// <param name="view">The plot view.</param>
-        /// <param name="args">The <see cref="OxyTouchEventArgs" /> instance containing the event data.</param>
+        /// <param name="args">The <see cref="OxyTouchEventArgs"/> instance containing the event data.</param>
         /// <returns><c>true</c> if the event was handled.</returns>
         public virtual bool HandleTouchDelta(IView view, OxyTouchEventArgs args)
         {
@@ -277,7 +277,7 @@ namespace OxyPlot
         /// Handles touch completed events.
         /// </summary>
         /// <param name="view">The plot view.</param>
-        /// <param name="args">The <see cref="OxyTouchEventArgs" /> instance containing the event data.</param>
+        /// <param name="args">The <see cref="OxyTouchEventArgs"/> instance containing the event data.</param>
         /// <returns><c>true</c> if the event was handled.</returns>
         public virtual bool HandleTouchCompleted(IView view, OxyTouchEventArgs args)
         {
@@ -306,7 +306,7 @@ namespace OxyPlot
         /// Handles key down events.
         /// </summary>
         /// <param name="view">The plot view.</param>
-        /// <param name="args">The <see cref="OxyKeyEventArgs" /> instance containing the event data.</param>
+        /// <param name="args">The <see cref="OxyKeyEventArgs"/> instance containing the event data.</param>
         /// <returns><c>true</c> if the event was handled.</returns>
         public virtual bool HandleKeyDown(IView view, OxyKeyEventArgs args)
         {
@@ -329,11 +329,11 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Adds the specified mouse manipulator and invokes the <see cref="MouseManipulator.Started" /> method with the specified mouse down event arguments.
+        /// Adds the specified mouse manipulator and invokes the <see cref="MouseManipulator.Started"/> method with the specified mouse down event arguments.
         /// </summary>
         /// <param name="view">The plot view.</param>
         /// <param name="manipulator">The manipulator to add.</param>
-        /// <param name="args">The <see cref="OxyMouseDownEventArgs" /> instance containing the event data.</param>
+        /// <param name="args">The <see cref="OxyMouseDownEventArgs"/> instance containing the event data.</param>
         public virtual void AddMouseManipulator(
             IView view,
             ManipulatorBase<OxyMouseEventArgs> manipulator,
@@ -344,11 +344,11 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Adds the specified mouse hover manipulator and invokes the <see cref="MouseManipulator.Started" /> method with the specified mouse event arguments.
+        /// Adds the specified mouse hover manipulator and invokes the <see cref="MouseManipulator.Started"/> method with the specified mouse event arguments.
         /// </summary>
         /// <param name="view">The plot view.</param>
         /// <param name="manipulator">The manipulator.</param>
-        /// <param name="args">The <see cref="OxyMouseEventArgs" /> instance containing the event data.</param>
+        /// <param name="args">The <see cref="OxyMouseEventArgs"/> instance containing the event data.</param>
         public virtual void AddHoverManipulator(
             IView view,
             ManipulatorBase<OxyMouseEventArgs> manipulator,
@@ -359,11 +359,11 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Adds the specified mouse hover manipulator and invokes the <see cref="TouchManipulator.Started" /> method with the specified mouse event arguments.
+        /// Adds the specified mouse hover manipulator and invokes the <see cref="TouchManipulator.Started"/> method with the specified mouse event arguments.
         /// </summary>
         /// <param name="view">The plot view.</param>
         /// <param name="manipulator">The manipulator.</param>
-        /// <param name="args">The <see cref="OxyTouchEventArgs" /> instance containing the event data.</param>
+        /// <param name="args">The <see cref="OxyTouchEventArgs"/> instance containing the event data.</param>
         public virtual void AddTouchManipulator(
             IView view,
             ManipulatorBase<OxyTouchEventArgs> manipulator,
@@ -465,7 +465,7 @@ namespace OxyPlot
         /// <remarks>This method was created to avoid calling a virtual method in the constructor.</remarks>
         protected void BindCore(OxyInputGesture gesture, IViewCommand command)
         {
-            var current = this.InputCommandBindings.FirstOrDefault(icb => icb.Gesture.Equals(gesture));
+            var current = this.InputCommandBindings.Find(icb => icb.Gesture.Equals(gesture));
             if (current != null)
             {
                 this.InputCommandBindings.Remove(current);
@@ -478,13 +478,13 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets the command for the specified <see cref="OxyInputGesture" />.
+        /// Gets the command for the specified <see cref="OxyInputGesture"/>.
         /// </summary>
         /// <param name="gesture">The input gesture.</param>
         /// <returns>A command.</returns>
         protected virtual IViewCommand GetCommand(OxyInputGesture gesture)
         {
-            var binding = this.InputCommandBindings.FirstOrDefault(b => b.Gesture.Equals(gesture));
+            var binding = this.InputCommandBindings.Find(b => b.Gesture.Equals(gesture));
             if (binding == null)
             {
                 return null;
@@ -492,13 +492,13 @@ namespace OxyPlot
 
             return binding.Command;
         }
-        
+
         /// <summary>
         /// Handles a command triggered by an input gesture.
         /// </summary>
         /// <param name="command">The command.</param>
         /// <param name="view">The plot view.</param>
-        /// <param name="args">The <see cref="OxyInputEventArgs" /> instance containing the event data.</param>
+        /// <param name="args">The <see cref="OxyInputEventArgs"/> instance containing the event data.</param>
         /// <returns><c>true</c> if the command was handled.</returns>
         protected virtual bool HandleCommand(IViewCommand command, IView view, OxyInputEventArgs args)
         {

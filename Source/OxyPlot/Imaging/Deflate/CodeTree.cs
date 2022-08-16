@@ -29,7 +29,7 @@ namespace OxyPlot
         private readonly List<List<int>> codes;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CodeTree" /> class. Every symbol in the tree 'root' must be strictly less than 'symbolLimit'.
+        /// Initializes a new instance of the <see cref="CodeTree"/> class. Every symbol in the tree 'root' must be strictly less than 'symbolLimit'.
         /// </summary>
         /// <param name="root">The root.</param>
         /// <param name="symbolLimit">The symbol limit.</param>
@@ -37,7 +37,7 @@ namespace OxyPlot
         {
             if (root == null)
             {
-                throw new Exception("Argument is null");
+                throw new ArgumentNullException(nameof(root));
             }
 
             this.Root = root;
@@ -54,13 +54,13 @@ namespace OxyPlot
         /// <summary>
         /// Gets the root.
         /// </summary>
-        public InternalNode Root { get; private set; } // Not null
+        public InternalNode Root { get; } // Not null
 
         /// <summary>
         /// Gets the code for the specified symbol.
         /// </summary>
         /// <param name="symbol">The symbol.</param>
-        /// <returns>A <see cref="List{T}" /> of codes.</returns>
+        /// <returns>A <see cref="List{T}"/> of codes.</returns>
         public List<int> GetCode(int symbol)
         {
             if (symbol < 0)
@@ -79,7 +79,7 @@ namespace OxyPlot
         /// <summary>
         /// Returns a string showing all the codes in this tree. The format is subject to change. Useful for debugging.
         /// </summary>
-        /// <returns>The <see cref="string" />.</returns>
+        /// <returns>The <see cref="string"/>.</returns>
         public override string ToString()
         {
             var sb = new StringBuilder();
@@ -88,16 +88,15 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Appends the code of the specified node to the specified <see cref="StringBuilder" />.
+        /// Appends the code of the specified node to the specified <see cref="StringBuilder"/>.
         /// </summary>
         /// <param name="prefix">The prefix.</param>
         /// <param name="node">The node.</param>
         /// <param name="sb">The string builder.</param>
-        /// <exception cref="System.Exception">Illegal node type</exception>
+        /// <exception cref="Exception">Illegal node type</exception>
         private static void NodeString(string prefix, Node node, StringBuilder sb)
         {
-            var n = node as InternalNode;
-            if (n != null)
+            if (node is InternalNode n)
             {
                 var internalNode = n;
                 NodeString(prefix + "0", internalNode.LeftChild, sb);
@@ -105,8 +104,7 @@ namespace OxyPlot
             }
             else
             {
-                var leaf = node as Leaf;
-                if (leaf != null)
+                if (node is Leaf leaf)
                 {
                     sb.Append(string.Format("Code {0}: Symbol {1}", prefix, leaf.Symbol));
                 }
@@ -124,10 +122,8 @@ namespace OxyPlot
         /// <param name="prefix">The prefix.</param>
         private void BuildCodeList(Node node, List<int> prefix)
         {
-            if (node is InternalNode)
+            if (node is InternalNode internalNode)
             {
-                var internalNode = (InternalNode)node;
-
                 prefix.Add(0);
                 this.BuildCodeList(internalNode.LeftChild, prefix);
                 prefix.RemoveAt(prefix.Count - 1);
@@ -136,9 +132,8 @@ namespace OxyPlot
                 this.BuildCodeList(internalNode.RightChild, prefix);
                 prefix.RemoveAt(prefix.Count - 1);
             }
-            else if (node is Leaf)
+            else if (node is Leaf leaf)
             {
-                var leaf = (Leaf)node;
                 if (leaf.Symbol >= this.codes.Count)
                 {
                     throw new Exception("Symbol exceeds symbol limit");

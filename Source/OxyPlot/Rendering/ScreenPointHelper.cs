@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Provides algorithms for polygons and lines of <see cref="ScreenPoint" />.
+//   Provides algorithms for polygons and lines of <see cref="ScreenPoint"/>.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -13,7 +13,7 @@ namespace OxyPlot
     using System.Collections.Generic;
 
     /// <summary>
-    /// Provides algorithms for polygons and lines of <see cref="ScreenPoint" />.
+    /// Provides algorithms for polygons and lines of <see cref="ScreenPoint"/>.
     /// </summary>
     public static class ScreenPointHelper
     {
@@ -28,7 +28,7 @@ namespace OxyPlot
         {
             if (points == null)
             {
-                throw new ArgumentNullException("points");
+                throw new ArgumentNullException(nameof(points));
             }
 
             double minimumDistance = double.MaxValue;

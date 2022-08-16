@@ -3,14 +3,14 @@
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Specifies the interval for a <see cref="DateTimeAxis" />.
+//   Specifies the interval for a <see cref="DateTimeAxis"/>.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Axes
 {
     /// <summary>
-    /// Specifies the interval for a <see cref="DateTimeAxis" />.
+    /// Specifies the interval for a <see cref="DateTimeAxis"/>.
     /// </summary>
     public enum DateTimeIntervalType
     {

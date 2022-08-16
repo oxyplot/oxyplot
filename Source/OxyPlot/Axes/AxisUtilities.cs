@@ -13,7 +13,7 @@ namespace OxyPlot.Axes
     using System.Collections.Generic;
 
     /// <summary>
-    /// Static utility methods for the <see cref="Axis" /> classes.
+    /// Static utility methods for the <see cref="Axis"/> classes.
     /// </summary>
     public static class AxisUtilities
     {
@@ -57,7 +57,7 @@ namespace OxyPlot.Axes
         /// <param name="step">The interval.</param>
         /// <param name="maxTicks">The maximum number of ticks (optional). The default value is 1000.</param>
         /// <returns>A sequence of values.</returns>
-        /// <exception cref="System.ArgumentException">Step cannot be zero or negative.;step</exception>
+        /// <exception cref="ArgumentException">Step cannot be zero or negative.;step</exception>
         public static IList<double> CreateTickValues(double from, double to, double step, int maxTicks = 1000)
         {
             if (step <= 0)

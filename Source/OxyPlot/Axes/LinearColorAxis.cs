@@ -18,7 +18,7 @@ namespace OxyPlot.Axes
     public class LinearColorAxis : LinearAxis, IColorAxis
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="LinearColorAxis" /> class.
+        /// Initializes a new instance of the <see cref="LinearColorAxis"/> class.
         /// </summary>
         public LinearColorAxis()
         {
@@ -37,7 +37,7 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Gets or sets the color used to represent NaN values.
         /// </summary>
-        /// <value>A <see cref="OxyColor" /> that defines the color. The default value is <c>OxyColors.Gray</c>.</value>
+        /// <value>A <see cref="OxyColor"/> that defines the color. The default value is <c>OxyColors.Gray</c>.</value>
         public OxyColor InvalidNumberColor { get; set; }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Determines whether the axis is used for X/Y values.
         /// </summary>
-        /// <returns><c>true</c> if it is an XY axis; otherwise, <c>false</c> .</returns>
+        /// <returns><c>true</c> if it is an XY axis; otherwise, <c>false</c>.</returns>
         public override bool IsXyAxis()
         {
             return false;
@@ -285,7 +285,7 @@ namespace OxyPlot.Axes
         /// Generates the image used to render the color axis.
         /// </summary>
         /// <param name="reverse">Reverse the colors if set to <c>true</c>.</param>
-        /// <returns>An <see cref="OxyImage" /> used to render the color axis.</returns>
+        /// <returns>An <see cref="OxyImage"/> used to render the color axis.</returns>
         private OxyImage GenerateColorAxisImage(bool reverse)
         {
             int n = this.Palette.Colors.Count;

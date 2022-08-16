@@ -3,14 +3,14 @@
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Defines the mode of selection used by <see cref="SelectableElement" />.
+//   Defines the mode of selection used by <see cref="SelectableElement"/>.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     /// <summary>
-    /// Defines the mode of selection used by <see cref="Element.SelectionMode" />.
+    /// Defines the mode of selection used by <see cref="Element.SelectionMode"/>.
     /// </summary>
     public enum SelectionMode
     {

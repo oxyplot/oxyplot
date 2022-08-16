@@ -41,7 +41,7 @@ namespace OxyPlot
         /// <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
         /// <param name="edgeRenderingMode">The edge rendering mode.</param>
         /// <remarks>
-        /// This should have better performance than calling <see cref="DrawEllipse" /> multiple times.
+        /// This should have better performance than calling <see cref="DrawEllipse"/> multiple times.
         /// </remarks>
         void DrawEllipses(IList<OxyRect> extents, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode);
 
@@ -72,7 +72,7 @@ namespace OxyPlot
         /// <param name="dashArray">The dash array (in device independent units, 1/96 inch).</param>
         /// <param name="lineJoin">The line join type.</param>
         /// <remarks>
-        /// This should have better performance than calling <see cref="DrawLine" /> for each segment.
+        /// This should have better performance than calling <see cref="DrawLine"/> for each segment.
         /// </remarks>
         void DrawLineSegments(
             IList<ScreenPoint> points,
@@ -112,7 +112,7 @@ namespace OxyPlot
         /// <param name="dashArray">The dash array (in device independent units, 1/96 inch).</param>
         /// <param name="lineJoin">The line join type.</param>
         /// <remarks>
-        /// This performs better than calling <see cref="DrawPolygon" /> multiple times.
+        /// This performs better than calling <see cref="DrawPolygon"/> multiple times.
         /// </remarks>
         void DrawPolygons(
             IList<IList<ScreenPoint>> polygons,
@@ -142,7 +142,7 @@ namespace OxyPlot
         /// <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
         /// <param name="edgeRenderingMode">The edge rendering mode.</param>
         /// <remarks>
-        /// This should have better performance than calling <see cref="DrawRectangle" /> multiple times.
+        /// This should have better performance than calling <see cref="DrawRectangle"/> multiple times.
         /// </remarks>
         void DrawRectangles(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode);
 
@@ -197,7 +197,7 @@ namespace OxyPlot
         void CleanUp();
 
         /// <summary>
-        /// Draws a portion of the specified <see cref="OxyImage" />.
+        /// Draws a portion of the specified <see cref="OxyImage"/>.
         /// </summary>
         /// <param name="source">The source.</param>
         /// <param name="srcX">The x-coordinate of the upper-left corner of the portion of the source image to draw.</param>

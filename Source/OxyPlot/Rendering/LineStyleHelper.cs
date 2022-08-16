@@ -3,19 +3,19 @@
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Provides functionality to convert from <see cref="LineStyle" /> to a stroke dash array.
+//   Provides functionality to convert from <see cref="LineStyle"/> to a stroke dash array.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     /// <summary>
-    /// Provides functionality to convert from <see cref="LineStyle" /> to a stroke dash array.
+    /// Provides functionality to convert from <see cref="LineStyle"/> to a stroke dash array.
     /// </summary>
     public static class LineStyleHelper
     {
         /// <summary>
-        /// Gets the stroke dash array for a given <see cref="LineStyle" />.
+        /// Gets the stroke dash array for a given <see cref="LineStyle"/>.
         /// </summary>
         /// <param name="style">The line style.</param>
         /// <returns>A dash array.</returns>

@@ -3,14 +3,14 @@
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Provides information about an <see cref="OxyImage" />.
+//   Provides information about an <see cref="OxyImage />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     /// <summary>
-    /// Provides information about an <see cref="OxyImage" />.
+    /// Provides information about an <see cref="OxyImage"/>.
     /// </summary>
     public class OxyImageInfo
     {

@@ -9,8 +9,6 @@
 
 namespace OxyPlot.Series
 {
-    using System;
-
     /// <summary>
     /// Represents a series for scatter plots.
     /// </summary>
@@ -18,7 +16,7 @@ namespace OxyPlot.Series
     public class ScatterSeries : ScatterSeries<ScatterPoint>
     {
         /// <summary>
-        /// Updates the <see cref="F:ItemsSourcePoints" /> from the <see cref="P:ItemsSource" /> and data fields.
+        /// Updates the <see cref="F:ItemsSourcePoints"/> from the <see cref="P:ItemsSource"/> and data fields.
         /// </summary>
         protected override void UpdateFromDataFields()
         {

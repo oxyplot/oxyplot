@@ -31,7 +31,7 @@ namespace OxyPlot
         private int clipPathNumber = 1;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SvgWriter" /> class.
+        /// Initializes a new instance of the <see cref="SvgWriter"/> class.
         /// </summary>
         /// <param name="stream">The stream.</param>
         /// <param name="width">The width (in user units).</param>
@@ -137,7 +137,7 @@ namespace OxyPlot
                     style.AppendFormat(CultureInfo.InvariantCulture, ";stroke-opacity:{0}", stroke.A / 255.0);
                 }
 
-                if (dashArray != null && dashArray.Length > 0)
+                if (dashArray?.Length > 0)
                 {
                     style.Append(";stroke-dasharray:");
                     for (int i = 0; i < dashArray.Length; i++)

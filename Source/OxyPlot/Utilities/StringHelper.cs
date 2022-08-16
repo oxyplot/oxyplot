@@ -14,7 +14,6 @@ namespace OxyPlot
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Reflection;
     using System.Text.RegularExpressions;
 
     /// <summary>
@@ -67,8 +66,7 @@ namespace OxyPlot
                 });
 
             // Also apply the standard formatting
-            s = string.Format(provider, s, values);
-            return s;
+            return string.Format(provider, s, values);
         }
 
         /// <summary>
@@ -98,7 +96,7 @@ namespace OxyPlot
         /// <param name="propertyName">The property name.</param>
         /// <param name="formatString">The format string. The format argument {0} can be used for the value of the property in each element of the sequence.</param>
         /// <param name="provider">The format provider.</param>
-        /// <exception cref="System.InvalidOperationException">Could not find property.</exception>
+        /// <exception cref="InvalidOperationException">Could not find property.</exception>
         public static IEnumerable<string> Format(this IEnumerable source, string propertyName, string formatString, IFormatProvider provider)
         {
             var fs = CreateValidFormatString(formatString);

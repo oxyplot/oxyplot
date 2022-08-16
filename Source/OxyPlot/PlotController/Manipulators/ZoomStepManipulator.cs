@@ -15,7 +15,7 @@ namespace OxyPlot
     public class ZoomStepManipulator : MouseManipulator
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ZoomStepManipulator" /> class.
+        /// Initializes a new instance of the <see cref="ZoomStepManipulator"/> class.
         /// </summary>
         /// <param name="plotView">The plot view.</param>
         public ZoomStepManipulator(IPlotView plotView)
@@ -36,13 +36,13 @@ namespace OxyPlot
         /// <summary>
         /// Occurs when an input device begins a manipulation on the plot.
         /// </summary>
-        /// <param name="e">The <see cref="OxyInputEventArgs" /> instance containing the event data.</param>
+        /// <param name="e">The <see cref="OxyInputEventArgs"/> instance containing the event data.</param>
         public override void Started(OxyMouseEventArgs e)
         {
             base.Started(e);
 
-            var isZoomEnabled = (this.XAxis != null && this.XAxis.IsZoomEnabled)
-                                || (this.YAxis != null && this.YAxis.IsZoomEnabled);
+            var isZoomEnabled = (this.XAxis?.IsZoomEnabled == true)
+                                || (this.YAxis?.IsZoomEnabled == true);
 
             if (!isZoomEnabled)
             {
@@ -66,15 +66,9 @@ namespace OxyPlot
                 scale = 1.0 / (1 - scale);
             }
 
-            if (this.XAxis != null)
-            {
-                this.XAxis.ZoomAt(scale, current.X);
-            }
+            this.XAxis?.ZoomAt(scale, current.X);
 
-            if (this.YAxis != null)
-            {
-                this.YAxis.ZoomAt(scale, current.Y);
-            }
+            this.YAxis?.ZoomAt(scale, current.Y);
 
             this.PlotView.InvalidatePlot(false);
             e.Handled = true;

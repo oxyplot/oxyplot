@@ -24,14 +24,14 @@ namespace OxyPlot
         /// Gets the alpha value.
         /// </summary>
         public double Alpha { get; }
-        
+
         /// <summary>
         /// Gets or sets the maximum number of segments.
         /// </summary>
         public int MaxSegments { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref = "CatmullRomSpline" /> class.
+        /// Initializes a new instance of the <see cref="CatmullRomSpline"/> class.
         /// </summary>
         /// <param name="alpha">The alpha.</param>
         public CatmullRomSpline(double alpha)
@@ -49,7 +49,7 @@ namespace OxyPlot
         /// <returns>A list of data points.</returns>
         public List<DataPoint> CreateSpline(List<DataPoint> points, bool isClosed, double tolerance)
         {
-            return CreateSpline(points, this.Alpha, isClosed, tolerance, MaxSegments);
+            return CreateSpline(points, this.Alpha, isClosed, tolerance, this.MaxSegments);
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace OxyPlot
         /// <returns>A list of screen points.</returns>
         public List<ScreenPoint> CreateSpline(IList<ScreenPoint> points, bool isClosed, double tolerance)
         {
-            return CreateSpline(points, this.Alpha, isClosed, tolerance, MaxSegments);
+            return CreateSpline(points, this.Alpha, isClosed, tolerance, this.MaxSegments);
         }
 
         /// <summary>
@@ -215,7 +215,6 @@ namespace OxyPlot
             double t1 = GetT(t0, pt0, pt1, alpha);
             double t2 = GetT(t1, pt1, pt2, alpha);
             double t3 = GetT(t2, pt2, pt3, alpha);
-
 
             int iterations = (int)((Math.Abs(pt1.X - pt2.X) + Math.Abs(pt1.Y - pt2.Y)) / tolerance);
             //Make sure it is positive (negative means an integer overflow)

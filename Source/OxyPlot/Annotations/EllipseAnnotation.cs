@@ -20,7 +20,7 @@ namespace OxyPlot.Annotations
         private OxyRect screenRectangle;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EllipseAnnotation" /> class.
+        /// Initializes a new instance of the <see cref="EllipseAnnotation"/> class.
         /// </summary>
         public EllipseAnnotation()
         {

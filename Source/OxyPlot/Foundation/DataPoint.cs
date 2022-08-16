@@ -17,7 +17,7 @@ namespace OxyPlot
     /// <summary>
     /// Represents a point in the data space.
     /// </summary>
-    /// <remarks><see cref="DataPoint" />s are transformed to <see cref="ScreenPoint" />s.</remarks>
+    /// <remarks><see cref="DataPoint"/>s are transformed to <see cref="ScreenPoint"/>s.</remarks>
     public struct DataPoint : ICodeGenerating, IEquatable<DataPoint>
     {
         /// <summary>
@@ -40,7 +40,7 @@ namespace OxyPlot
         internal readonly double y;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataPoint" /> struct.
+        /// Initializes a new instance of the <see cref="DataPoint"/> struct.
         /// </summary>
         /// <param name="x">The x.</param>
         /// <param name="y">The y.</param>
@@ -84,19 +84,19 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Determines whether this instance and another specified <see cref="T:DataPoint" /> object have the same value.
+        /// Determines whether this instance and another specified <see cref="T:DataPoint"/> object have the same value.
         /// </summary>
         /// <param name="other">The point to compare to this instance.</param>
-        /// <returns><c>true</c> if the value of the <paramref name="other" /> parameter is the same as the value of this instance; otherwise, <c>false</c>.</returns>
+        /// <returns><c>true</c> if the value of the <paramref name="other"/> parameter is the same as the value of this instance; otherwise, <c>false</c>.</returns>
         public bool Equals(DataPoint other)
         {
             return this.x.Equals(other.x) && this.y.Equals(other.y);
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public override string ToString()
         {
             return this.x + " " + this.y;

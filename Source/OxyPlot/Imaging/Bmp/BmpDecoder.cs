@@ -22,7 +22,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="bytes">The image data.</param>
         /// <returns>
-        /// An <see cref="OxyImageInfo" /> structure.
+        /// An <see cref="OxyImageInfo"/> structure.
         /// </returns>
         public OxyImageInfo GetImageInfo(byte[] bytes)
         {

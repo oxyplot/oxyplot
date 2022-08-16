@@ -101,7 +101,7 @@ namespace OxyPlot
         private double currentFontSize;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PortableDocument" /> class.
+        /// Initializes a new instance of the <see cref="PortableDocument"/> class.
         /// </summary>
         public PortableDocument()
         {
@@ -671,7 +671,7 @@ namespace OxyPlot
             text = EncodeString(text, this.currentFont.Encoding);
             text = EscapeString(text);
 
-            y = y - (this.currentFont.Descent * this.currentFontSize / 1000);
+            y -= (this.currentFont.Descent * this.currentFontSize / 1000);
             this.AppendLine("{0:0.####} {1:0.####} Td", x, y); // Move to the start of the next line, offset from the start of the current line by (tx , ty ). tx and ty are numbers expressed in unscaled text space units.
             this.AppendLine("{0} Tj", text); // Show text string
             this.AppendLine("ET"); // End text object
@@ -702,7 +702,7 @@ namespace OxyPlot
         {
             if (image == null)
             {
-                throw new ArgumentNullException("image");
+                throw new ArgumentNullException(nameof(image));
             }
 
             var imageId = GetCached(image, this.imageCache, () => this.AddImage(image));
@@ -985,8 +985,7 @@ namespace OxyPlot
         /// <returns>The cached or created value.</returns>
         private static T2 GetCached<T1, T2>(T1 key, Dictionary<T1, T2> cache, Func<T2> create)
         {
-            T2 value;
-            if (cache.TryGetValue(key, out value))
+            if (cache.TryGetValue(key, out T2 value))
             {
                 return value;
             }
@@ -1135,7 +1134,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="format">The format string.</param>
         /// <param name="args">The arguments.</param>
-        /// <exception cref="System.InvalidOperationException">Cannot add content before a page has been added.</exception>
+        /// <exception cref="InvalidOperationException">Cannot add content before a page has been added.</exception>
         private void AppendLine(string format, params object[] args)
         {
             if (this.currentPageContents == null)
@@ -1151,7 +1150,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="format">The format string.</param>
         /// <param name="args">The arguments.</param>
-        /// <exception cref="System.InvalidOperationException">Cannot add content before a page has been added.</exception>
+        /// <exception cref="InvalidOperationException">Cannot add content before a page has been added.</exception>
         private void Append(string format, params object[] args)
         {
             if (this.currentPageContents == null)
@@ -1163,7 +1162,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Represents an object in the <see cref="PortableDocument" />.
+        /// Represents an object in the <see cref="PortableDocument"/>.
         /// </summary>
         /// <remarks>The object contains a dictionary and text content.</remarks>
         internal class PortableDocumentObject : PdfWriter.IPortableDocumentObject
@@ -1174,22 +1173,17 @@ namespace OxyPlot
             private readonly Dictionary<string, object> dictionary;
 
             /// <summary>
-            /// The object number
-            /// </summary>
-            private readonly int objectNumber;
-
-            /// <summary>
             /// The contents
             /// </summary>
             private readonly StringBuilder contents;
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="PortableDocumentObject" /> class.
+            /// Initializes a new instance of the <see cref="PortableDocumentObject"/> class.
             /// </summary>
             /// <param name="objectNumber">The object number.</param>
             public PortableDocumentObject(int objectNumber)
             {
-                this.objectNumber = objectNumber;
+                this.ObjectNumber = objectNumber;
                 this.contents = new StringBuilder();
                 this.dictionary = new Dictionary<string, object>();
             }
@@ -1198,18 +1192,12 @@ namespace OxyPlot
             /// Gets the object number.
             /// </summary>
             /// <value>The object number.</value>
-            public int ObjectNumber
-            {
-                get
-                {
-                    return this.objectNumber;
-                }
-            }
+            public int ObjectNumber { get; }
 
             /// <summary>
             /// Sets the dictionary value for the specified key.
             /// </summary>
-            /// <value>The <see cref="System.Object" />.</value>
+            /// <value>The <see cref="object"/>.</value>
             /// <param name="key">The key.</param>
             /// <returns>The object.</returns>
             public object this[string key]
@@ -1241,7 +1229,7 @@ namespace OxyPlot
             }
 
             /// <summary>
-            /// Writes the object to the specified <see cref="PdfWriter" />.
+            /// Writes the object to the specified <see cref="PdfWriter"/>.
             /// </summary>
             /// <param name="w">The writer.</param>
             public void Write(PdfWriter w)
@@ -1250,7 +1238,7 @@ namespace OxyPlot
 
                 byte[] streamBytes = null;
 
-                if (this.contents != null && this.contents.Length > 0)
+                if (this.contents?.Length > 0)
                 {
                     var c = this.contents.ToString().Trim();
 

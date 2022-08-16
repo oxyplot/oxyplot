@@ -76,7 +76,7 @@ namespace OxyPlot.Series
         private OxyImage image;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="HeatMapSeries" /> class.
+        /// Initializes a new instance of the <see cref="HeatMapSeries"/> class.
         /// </summary>
         public HeatMapSeries()
         {
@@ -90,8 +90,8 @@ namespace OxyPlot.Series
         /// Gets or sets the x-coordinate of the elements at index [0,*] in the data set.
         /// </summary>
         /// <value>
-        /// If <see cref="CoordinateDefinition" /> equals <see cref="HeatMapCoordinateDefinition.Center"/>, the value defines the mid point of the element at index [0,*] in the data set.
-        /// If <see cref="CoordinateDefinition" /> equals <see cref="HeatMapCoordinateDefinition.Edge"/>, the value defines the coordinate of the left edge of the element at index [0,*] in the data set.
+        /// If <see cref="CoordinateDefinition"/> equals <see cref="HeatMapCoordinateDefinition.Center"/>, the value defines the mid point of the element at index [0,*] in the data set.
+        /// If <see cref="CoordinateDefinition"/> equals <see cref="HeatMapCoordinateDefinition.Edge"/>, the value defines the coordinate of the left edge of the element at index [0,*] in the data set.
         /// </value>
         public double X0 { get; set; }
 
@@ -99,8 +99,8 @@ namespace OxyPlot.Series
         /// Gets or sets the x-coordinate of the mid point for the elements at index [m-1,*] in the data set.
         /// </summary>
         /// <value>
-        /// If <see cref="CoordinateDefinition" /> equals <see cref="HeatMapCoordinateDefinition.Center"/>, the value defines the mid point of the element at index [m-1,*] in the data set.
-        /// If <see cref="CoordinateDefinition" /> equals <see cref="HeatMapCoordinateDefinition.Edge"/>, the value defines the coordinate of the right edge of the element at index [m-1,*] in the data set.
+        /// If <see cref="CoordinateDefinition"/> equals <see cref="HeatMapCoordinateDefinition.Center"/>, the value defines the mid point of the element at index [m-1,*] in the data set.
+        /// If <see cref="CoordinateDefinition"/> equals <see cref="HeatMapCoordinateDefinition.Edge"/>, the value defines the coordinate of the right edge of the element at index [m-1,*] in the data set.
         /// </value>
         public double X1 { get; set; }
 
@@ -108,8 +108,8 @@ namespace OxyPlot.Series
         /// Gets or sets the y-coordinate of the mid point for the elements at index [*,0] in the data set.
         /// </summary>
         /// <value>
-        /// If <see cref="CoordinateDefinition" /> equals <see cref="HeatMapCoordinateDefinition.Center"/>, the value defines the mid point of the element at index [*,0] in the data set.
-        /// If <see cref="CoordinateDefinition" /> equals <see cref="HeatMapCoordinateDefinition.Edge"/>, the value defines the coordinate of the bottom edge of the element at index [*,0] in the data set.
+        /// If <see cref="CoordinateDefinition"/> equals <see cref="HeatMapCoordinateDefinition.Center"/>, the value defines the mid point of the element at index [*,0] in the data set.
+        /// If <see cref="CoordinateDefinition"/> equals <see cref="HeatMapCoordinateDefinition.Edge"/>, the value defines the coordinate of the bottom edge of the element at index [*,0] in the data set.
         /// </value>
         public double Y0 { get; set; }
 
@@ -117,8 +117,8 @@ namespace OxyPlot.Series
         /// Gets or sets the y-coordinate of the mid point for the elements at index [*,n-1] in the data set.
         /// </summary>
         /// <value>
-        /// If <see cref="CoordinateDefinition" /> equals <see cref="HeatMapCoordinateDefinition.Center"/>, the value defines the mid point of the element at index [*,n-1] in the data set.
-        /// If <see cref="CoordinateDefinition" /> equals <see cref="HeatMapCoordinateDefinition.Edge"/>, the value defines the coordinate of the top edge of the element at index [*,n-1] in the data set.
+        /// If <see cref="CoordinateDefinition"/> equals <see cref="HeatMapCoordinateDefinition.Center"/>, the value defines the mid point of the element at index [*,n-1] in the data set.
+        /// If <see cref="CoordinateDefinition"/> equals <see cref="HeatMapCoordinateDefinition.Edge"/>, the value defines the coordinate of the top edge of the element at index [*,n-1] in the data set.
         /// </value>
         public double Y1 { get; set; }
 
@@ -128,13 +128,13 @@ namespace OxyPlot.Series
         /// <remarks>Note that the indices of the data array refer to [x,y].
         /// The first dimension is along the x-axis.
         /// The second dimension is along the y-axis.
-        /// Remember to call the <see cref="Invalidate" /> method if the contents of the <see cref="Data" /> array is changed.</remarks>
+        /// Remember to call the <see cref="Invalidate"/> method if the contents of the <see cref="Data"/> array is changed.</remarks>
         public double[,] Data { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to interpolate when rendering. The default value is <c>true</c>.
         /// </summary>
-        /// <remarks>This property is not supported on all platforms. Ignored (off) if <see cref="RenderMethod" /> is <see cref="HeatMapRenderMethod.Rectangles" />.</remarks>
+        /// <remarks>This property is not supported on all platforms. Ignored (off) if <see cref="RenderMethod"/> is <see cref="HeatMapRenderMethod.Rectangles"/>.</remarks>
         public bool Interpolate { get; set; }
 
         /// <summary>
@@ -160,13 +160,13 @@ namespace OxyPlot.Series
         public string ColorAxisKey { get; set; }
 
         /// <summary>
-        /// Gets or sets the coordinate definition. The default value is <see cref="HeatMapCoordinateDefinition.Center" />.
+        /// Gets or sets the coordinate definition. The default value is <see cref="HeatMapCoordinateDefinition.Center"/>.
         /// </summary>
         /// <value>The coordinate definition.</value>
         public HeatMapCoordinateDefinition CoordinateDefinition { get; set; }
 
         /// <summary>
-        /// Gets or sets the render method. The default value is <see cref="HeatMapRenderMethod.Bitmap" />.
+        /// Gets or sets the render method. The default value is <see cref="HeatMapRenderMethod.Bitmap"/>.
         /// </summary>
         /// <value>The render method.</value>
         public HeatMapRenderMethod RenderMethod { get; set; }
@@ -175,7 +175,7 @@ namespace OxyPlot.Series
         /// Gets or sets the format string for the cell labels. The default value is <c>0.00</c>.
         /// </summary>
         /// <value>The format string.</value>
-        /// <remarks>The label format string is only used when <see cref="LabelFontSize" /> is greater than 0.</remarks>
+        /// <remarks>The label format string is only used when <see cref="LabelFontSize"/> is greater than 0.</remarks>
         public string LabelFormatString { get; set; }
 
         /// <summary>
@@ -185,9 +185,9 @@ namespace OxyPlot.Series
         public double LabelFontSize { get; set; }
 
         /// <summary>
-        /// Invalidates the image that renders the heat map. The image will be regenerated the next time the <see cref="HeatMapSeries" /> is rendered.
+        /// Invalidates the image that renders the heat map. The image will be regenerated the next time the <see cref="HeatMapSeries"/> is rendered.
         /// </summary>
-        /// <remarks>Call <see cref="PlotModel.InvalidatePlot" /> to refresh the view.</remarks>
+        /// <remarks>Call <see cref="PlotModel.InvalidatePlot"/> to refresh the view.</remarks>
         public void Invalidate()
         {
             this.image = null;
@@ -390,8 +390,7 @@ namespace OxyPlot.Series
             }
 
             var value = GetValue(this.Data, i, j);
-            var colorAxis = this.ColorAxis as Axis;
-            var colorAxisTitle = (colorAxis != null ? colorAxis.Title : null) ?? DefaultColorAxisTitle;
+            var colorAxisTitle = (this.ColorAxis is Axis colorAxis ? colorAxis.Title : null) ?? DefaultColorAxisTitle;
 
             return new TrackerHitResult
             {
@@ -489,8 +488,7 @@ namespace OxyPlot.Series
         protected internal override void UpdateAxisMaxMin()
         {
             base.UpdateAxisMaxMin();
-            var colorAxis = this.ColorAxis as Axis;
-            if (colorAxis != null)
+            if (this.ColorAxis is Axis colorAxis)
             {
                 colorAxis.Include(this.MinValue);
                 colorAxis.Include(this.MaxValue);
@@ -500,7 +498,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Renders the labels.
         /// </summary>
-        /// <param name="rc">The <see cref="IRenderContext" /></param>
+        /// <param name="rc">The <see cref="IRenderContext"/></param>
         /// <param name="rect">The bounding rectangle for the data.</param>
         protected virtual void RenderLabels(IRenderContext rc, OxyRect rect)
         {
@@ -650,9 +648,9 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Tests if a <see cref="DataPoint" /> is inside the heat map
+        /// Tests if a <see cref="DataPoint"/> is inside the heat map
         /// </summary>
-        /// <param name="p">The <see cref="DataPoint" /> to test.</param>
+        /// <param name="p">The <see cref="DataPoint"/> to test.</param>
         /// <returns><c>True</c> if the point is inside the heat map.</returns>
         private bool IsPointInRange(DataPoint p)
         {

@@ -26,7 +26,7 @@ namespace OxyPlot
         Adaptive,
 
         /// <summary>
-        /// The renderer will try to maximise the sharpness of edges. To that end, it may disable Anti-Aliasing for some lines or snap the position and stroke thickness 
+        /// The renderer will try to maximise the sharpness of edges. To that end, it may disable Anti-Aliasing for some lines or snap the position and stroke thickness
         /// of rendered elements to device pixels.
         /// </summary>
         PreferSharpness,

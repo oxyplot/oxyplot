@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Represents an axis presenting <see cref="System.TimeSpan" /> values.
+//   Represents an axis presenting <see cref="TimeSpan"/> values.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -13,7 +13,7 @@ namespace OxyPlot.Axes
     using System.Linq;
 
     /// <summary>
-    /// Represents an axis presenting <see cref="System.TimeSpan" /> values.
+    /// Represents an axis presenting <see cref="TimeSpan"/> values.
     /// </summary>
     /// <remarks>The values should be in seconds.
     /// The StringFormat value can be used to force formatting of the axis values
@@ -100,7 +100,7 @@ namespace OxyPlot.Axes
                 }
 
                 double nextInterval = goodIntervals.FirstOrDefault(i => i > interval);
-                if (nextInterval == default(double))
+                if (nextInterval == default)
                 {
                     nextInterval = interval * 2;
                 }

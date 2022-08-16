@@ -15,7 +15,7 @@ namespace OxyPlot.Series
     public class TornadoBarItem : BarItemBase, ICodeGenerating
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="TornadoBarItem" /> class.
+        /// Initializes a new instance of the <see cref="TornadoBarItem"/> class.
         /// </summary>
         public TornadoBarItem()
         {

@@ -19,7 +19,7 @@ namespace OxyPlot.Annotations
     public class FunctionAnnotation : PathAnnotation
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="FunctionAnnotation" /> class.
+        /// Initializes a new instance of the <see cref="FunctionAnnotation"/> class.
         /// </summary>
         public FunctionAnnotation()
         {

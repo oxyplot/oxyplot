@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Represents an item in a <see cref="BoxPlotSeries" />.
+//   Represents an item in a <see cref="BoxPlotSeries"/>.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -12,12 +12,12 @@ namespace OxyPlot.Series
     using System.Collections.Generic;
 
     /// <summary>
-    /// Represents an item in a <see cref="BoxPlotSeries" />.
+    /// Represents an item in a <see cref="BoxPlotSeries"/>.
     /// </summary>
     public class BoxPlotItem
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="BoxPlotItem" /> class.
+        /// Initializes a new instance of the <see cref="BoxPlotItem"/> class.
         /// </summary>
         /// <param name="x">The x.</param>
         /// <param name="lowerWhisker">The lower whisker.</param>
@@ -119,9 +119,9 @@ namespace OxyPlot.Series
         public double X { get; set; }
 
         /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public override string ToString()
         {
             return string.Format(

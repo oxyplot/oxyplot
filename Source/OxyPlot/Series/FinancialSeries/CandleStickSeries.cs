@@ -31,7 +31,7 @@ namespace OxyPlot.Series
         private double minDx;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref = "CandleStickSeries" /> class.
+        /// Initializes a new instance of the <see cref="CandleStickSeries"/> class.
         /// </summary>
         public CandleStickSeries()
         {
@@ -52,17 +52,17 @@ namespace OxyPlot.Series
 
         /// <summary>
         /// Gets or sets the bar width in data units (for example if the X axis is date/time based, then should
-        /// use the difference of DateTimeAxis.ToDouble(date) to indicate the width).  By default candlestick
+        /// use the difference of DateTimeAxis.ToDouble(date) to indicate the width). By default candlestick
         /// series will use 0.80 x the minimum difference in data points.
         /// </summary>
         public double CandleWidth { get; set; }
 
         /// <summary>
-        /// Fast index of bar where max(bar[i].X) &lt;= x 
+        /// Fast index of bar where max(bar[i].X) &lt;= x
         /// </summary>
         /// <returns>The index of the bar closest to X, where max(bar[i].X) &lt;= x.</returns>
         /// <param name="x">The x coordinate.</param>
-        /// <param name="startIndex">starting index</param> 
+        /// <param name="startIndex">starting index</param>
         public int FindByX(double x, int startIndex = -1)
         {
             if (startIndex < 0)
@@ -90,7 +90,7 @@ namespace OxyPlot.Series
 
             var dataCandlewidth = (this.CandleWidth > 0) ? this.CandleWidth : this.minDx * 0.80;
             var halfDataCandlewidth = .5 * dataCandlewidth;
-            
+
             // colors
             var fillUp = this.GetSelectableFillColor(this.IncreasingColor);
             var fillDown = this.GetSelectableFillColor(this.DecreasingColor);
@@ -230,11 +230,11 @@ namespace OxyPlot.Series
             };
 
             // determine closest point
-            var midx = distance(this.Items[pidx]) <= distance(this.Items[nidx]) ? pidx : nidx; 
+            var midx = distance(this.Items[pidx]) <= distance(this.Items[nidx]) ? pidx : nidx;
             var mbar = this.Items[midx];
 
             var hit = new DataPoint(mbar.X, mbar.Close);
-            return new TrackerHitResult 
+            return new TrackerHitResult
             {
                 Series = this,
                 DataPoint = hit,
@@ -261,7 +261,7 @@ namespace OxyPlot.Series
         protected internal override void UpdateData()
         {
             base.UpdateData();
-            
+
             // determine minimum X gap between successive points
             var items = this.Items;
             var nitems = items.Count;

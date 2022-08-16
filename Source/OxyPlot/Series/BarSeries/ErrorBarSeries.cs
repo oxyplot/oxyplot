@@ -24,7 +24,7 @@ namespace OxyPlot.Series
         public new const string DefaultTrackerFormatString = "{0}\n{1}: {2}, Error: {Error:0.###}";
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ErrorBarSeries" /> class.
+        /// Initializes a new instance of the <see cref="ErrorBarSeries"/> class.
         /// </summary>
         public ErrorBarSeries()
         {

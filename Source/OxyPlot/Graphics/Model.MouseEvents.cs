@@ -89,7 +89,7 @@ namespace OxyPlot
         /// Handles the mouse down event.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="OxyPlot.OxyMouseEventArgs" /> instance containing the event data.</param>
+        /// <param name="e">The <see cref="OxyMouseEventArgs"/> instance containing the event data.</param>
         [Obsolete("Will be removed in v4.0 (#111)")]
         public virtual void HandleMouseDown(object sender, OxyMouseDownEventArgs e)
         {
@@ -115,14 +115,11 @@ namespace OxyPlot
         /// Handles the mouse move event.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="OxyPlot.OxyMouseEventArgs" /> instance containing the event data.</param>
+        /// <param name="e">The <see cref="OxyMouseEventArgs"/> instance containing the event data.</param>
         [Obsolete("Will be removed in v4.0 (#111)")]
         public virtual void HandleMouseMove(object sender, OxyMouseEventArgs e)
         {
-            if (this.currentMouseEventElement != null)
-            {
-                this.currentMouseEventElement.OnMouseMove(e);
-            }
+            this.currentMouseEventElement?.OnMouseMove(e);
 
             if (!e.Handled)
             {
@@ -134,7 +131,7 @@ namespace OxyPlot
         /// Handles the mouse up event.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="OxyPlot.OxyMouseEventArgs" /> instance containing the event data.</param>
+        /// <param name="e">The <see cref="OxyMouseEventArgs"/> instance containing the event data.</param>
         [Obsolete("Will be removed in v4.0 (#111)")]
         public virtual void HandleMouseUp(object sender, OxyMouseEventArgs e)
         {
@@ -154,7 +151,7 @@ namespace OxyPlot
         /// Handles the mouse enter event.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="OxyPlot.OxyMouseEventArgs" /> instance containing the event data.</param>
+        /// <param name="e">The <see cref="OxyMouseEventArgs"/> instance containing the event data.</param>
         [Obsolete("Will be removed in v4.0 (#111)")]
         public virtual void HandleMouseEnter(object sender, OxyMouseEventArgs e)
         {
@@ -168,7 +165,7 @@ namespace OxyPlot
         /// Handles the mouse leave event.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="OxyPlot.OxyMouseEventArgs" /> instance containing the event data.</param>
+        /// <param name="e">The <see cref="OxyMouseEventArgs"/> instance containing the event data.</param>
         [Obsolete("Will be removed in v4.0 (#111)")]
         public virtual void HandleMouseLeave(object sender, OxyMouseEventArgs e)
         {
@@ -182,7 +179,7 @@ namespace OxyPlot
         /// Handles the touch started event.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="e">A <see cref="OxyPlot.OxyTouchEventArgs" /> instance containing the event data.</param>
+        /// <param name="e">A <see cref="OxyTouchEventArgs"/> instance containing the event data.</param>
         [Obsolete("Will be removed in v4.0 (#111)")]
         public virtual void HandleTouchStarted(object sender, OxyTouchEventArgs e)
         {
@@ -207,14 +204,11 @@ namespace OxyPlot
         /// Handles the touch delta event.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="e">A <see cref="OxyPlot.OxyTouchEventArgs" /> instance containing the event data.</param>
+        /// <param name="e">A <see cref="OxyTouchEventArgs"/> instance containing the event data.</param>
         [Obsolete("Will be removed in v4.0 (#111)")]
         public virtual void HandleTouchDelta(object sender, OxyTouchEventArgs e)
         {
-            if (this.currentTouchEventElement != null)
-            {
-                this.currentTouchEventElement.OnTouchDelta(e);
-            }
+            this.currentTouchEventElement?.OnTouchDelta(e);
 
             if (!e.Handled)
             {
@@ -226,7 +220,7 @@ namespace OxyPlot
         /// Handles the touch completed event.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="e">A <see cref="OxyPlot.OxyTouchEventArgs" /> instance containing the event data.</param>
+        /// <param name="e">A <see cref="OxyTouchEventArgs"/> instance containing the event data.</param>
         [Obsolete("Will be removed in v4.0 (#111)")]
         public virtual void HandleTouchCompleted(object sender, OxyTouchEventArgs e)
         {
@@ -246,7 +240,7 @@ namespace OxyPlot
         /// Handles key down events.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="OxyKeyEventArgs" /> instance containing the event data.</param>
+        /// <param name="e">The <see cref="OxyKeyEventArgs"/> instance containing the event data.</param>
         [Obsolete("Will be removed in v4.0 (#111)")]
         public virtual void HandleKeyDown(object sender, OxyKeyEventArgs e)
         {
@@ -267,138 +261,102 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Raises the <see cref="KeyDown" /> event.
+        /// Raises the <see cref="KeyDown"/> event.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="OxyMouseEventArgs" /> instance containing the event data.</param>
+        /// <param name="e">The <see cref="OxyMouseEventArgs"/> instance containing the event data.</param>
         [Obsolete("Will be removed in v4.0 (#111)")]
         protected virtual void OnKeyDown(object sender, OxyKeyEventArgs e)
         {
-            var handler = this.KeyDown;
-            if (handler != null)
-            {
-                handler(sender, e);
-            }
+            this.KeyDown?.Invoke(sender, e);
         }
 
         /// <summary>
-        /// Raises the <see cref="MouseDown" /> event.
+        /// Raises the <see cref="MouseDown"/> event.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="OxyMouseEventArgs" /> instance containing the event data.</param>
+        /// <param name="e">The <see cref="OxyMouseEventArgs"/> instance containing the event data.</param>
         [Obsolete("Will be removed in v4.0 (#111)")]
         protected virtual void OnMouseDown(object sender, OxyMouseDownEventArgs e)
         {
-            var handler = this.MouseDown;
-            if (handler != null)
-            {
-                handler(sender, e);
-            }
+            this.MouseDown?.Invoke(sender, e);
         }
 
         /// <summary>
-        /// Raises the <see cref="MouseMove" /> event.
+        /// Raises the <see cref="MouseMove"/> event.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="OxyMouseEventArgs" /> instance containing the event data.</param>
+        /// <param name="e">The <see cref="OxyMouseEventArgs"/> instance containing the event data.</param>
         [Obsolete("Will be removed in v4.0 (#111)")]
         protected virtual void OnMouseMove(object sender, OxyMouseEventArgs e)
         {
-            var handler = this.MouseMove;
-            if (handler != null)
-            {
-                handler(sender, e);
-            }
+            this.MouseMove?.Invoke(sender, e);
         }
 
         /// <summary>
-        /// Raises the <see cref="MouseUp" /> event.
+        /// Raises the <see cref="MouseUp"/> event.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="OxyMouseEventArgs" /> instance containing the event data.</param>
+        /// <param name="e">The <see cref="OxyMouseEventArgs"/> instance containing the event data.</param>
         [Obsolete("Will be removed in v4.0 (#111)")]
         protected virtual void OnMouseUp(object sender, OxyMouseEventArgs e)
         {
-            var handler = this.MouseUp;
-            if (handler != null)
-            {
-                handler(sender, e);
-            }
+            this.MouseUp?.Invoke(sender, e);
         }
 
         /// <summary>
-        /// Raises the <see cref="MouseEnter" /> event.
+        /// Raises the <see cref="MouseEnter"/> event.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="OxyMouseEventArgs" /> instance containing the event data.</param>
+        /// <param name="e">The <see cref="OxyMouseEventArgs"/> instance containing the event data.</param>
         [Obsolete("Will be removed in v4.0 (#111)")]
         protected virtual void OnMouseEnter(object sender, OxyMouseEventArgs e)
         {
-            var handler = this.MouseEnter;
-            if (handler != null)
-            {
-                handler(sender, e);
-            }
+            this.MouseEnter?.Invoke(sender, e);
         }
 
         /// <summary>
-        /// Raises the <see cref="MouseLeave" /> event.
+        /// Raises the <see cref="MouseLeave"/> event.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="OxyMouseEventArgs" /> instance containing the event data.</param>
+        /// <param name="e">The <see cref="OxyMouseEventArgs"/> instance containing the event data.</param>
         [Obsolete("Will be removed in v4.0 (#111)")]
         protected virtual void OnMouseLeave(object sender, OxyMouseEventArgs e)
         {
-            var handler = this.MouseLeave;
-            if (handler != null)
-            {
-                handler(sender, e);
-            }
+            this.MouseLeave?.Invoke(sender, e);
         }
 
         /// <summary>
-        /// Raises the <see cref="MouseDown" /> event.
+        /// Raises the <see cref="MouseDown"/> event.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="OxyMouseEventArgs" /> instance containing the event data.</param>
+        /// <param name="e">The <see cref="OxyMouseEventArgs"/> instance containing the event data.</param>
         [Obsolete("Will be removed in v4.0 (#111)")]
         protected virtual void OnTouchStarted(object sender, OxyTouchEventArgs e)
         {
-            var handler = this.TouchStarted;
-            if (handler != null)
-            {
-                handler(sender, e);
-            }
+            this.TouchStarted?.Invoke(sender, e);
         }
 
         /// <summary>
-        /// Raises the <see cref="MouseMove" /> event.
+        /// Raises the <see cref="MouseMove"/> event.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="OxyMouseEventArgs" /> instance containing the event data.</param>
+        /// <param name="e">The <see cref="OxyMouseEventArgs"/> instance containing the event data.</param>
         [Obsolete("Will be removed in v4.0 (#111)")]
         protected virtual void OnTouchDelta(object sender, OxyTouchEventArgs e)
         {
-            var handler = this.TouchDelta;
-            if (handler != null)
-            {
-                handler(sender, e);
-            }
+            this.TouchDelta?.Invoke(sender, e);
         }
 
         /// <summary>
-        /// Raises the <see cref="MouseUp" /> event.
+        /// Raises the <see cref="MouseUp"/> event.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="OxyMouseEventArgs" /> instance containing the event data.</param>
+        /// <param name="e">The <see cref="OxyMouseEventArgs"/> instance containing the event data.</param>
         [Obsolete("Will be removed in v4.0 (#111)")]
         protected virtual void OnTouchCompleted(object sender, OxyTouchEventArgs e)
         {
-            var handler = this.TouchCompleted;
-            if (handler != null)
-            {
-                handler(sender, e);
-            }
+            this.TouchCompleted?.Invoke(sender, e);
         }
     }
 }

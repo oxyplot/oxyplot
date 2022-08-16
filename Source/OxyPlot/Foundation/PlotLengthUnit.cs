@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Defines the kind of value that a <see cref="PlotLength" /> object is holding.
+//   Defines the kind of value that a <see cref="PlotLength"/> object is holding.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -12,7 +12,7 @@
 namespace OxyPlot
 {
     /// <summary>
-    /// Defines the kind of value that a <see cref="PlotLength" /> object is holding.
+    /// Defines the kind of value that a <see cref="PlotLength"/> object is holding.
     /// </summary>
     public enum PlotLengthUnit
     {

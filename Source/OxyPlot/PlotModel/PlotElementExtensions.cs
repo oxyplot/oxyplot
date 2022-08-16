@@ -14,7 +14,7 @@ namespace OxyPlot
         /// <summary>
         /// Transforms from a screen point to a data point by the axes of this series.
         /// </summary>
-        /// <param name="element">The <see cref="ITransposablePlotElement" />.</param>
+        /// <param name="element">The <see cref="ITransposablePlotElement"/>.</param>
         /// <param name="x">The x coordinate of the screen point.</param>
         /// <param name="y">The y coordinate of the screen point.</param>
         /// <returns>A data point.</returns>
@@ -27,7 +27,7 @@ namespace OxyPlot
         /// Checks if the series is transposed.
         /// </summary>
         /// <returns>True if the series is transposed, False otherwise.</returns>
-        /// <param name="element">The <see cref="ITransposablePlotElement" />.</param>
+        /// <param name="element">The <see cref="ITransposablePlotElement"/>.</param>
         public static bool IsTransposed(this ITransposablePlotElement element)
         {
             return element.XAxis.IsVertical();
@@ -36,8 +36,8 @@ namespace OxyPlot
         /// <summary>
         /// Transposes the ScreenPoint if the series is transposed.
         /// </summary>
-        /// <param name="element">The <see cref="ITransposablePlotElement" />.</param>
-        /// <param name="point">The <see cref="ScreenPoint" /> to orientate.</param>
+        /// <param name="element">The <see cref="ITransposablePlotElement"/>.</param>
+        /// <param name="point">The <see cref="ScreenPoint"/> to orientate.</param>
         /// <returns>The oriented point.</returns>
         public static ScreenPoint Orientate(this ITransposablePlotElement element, ScreenPoint point)
         {
@@ -47,8 +47,8 @@ namespace OxyPlot
         /// <summary>
         /// Transposes the ScreenVector if the series is transposed. Reverses the respective direction if X or Y axis are reversed.
         /// </summary>
-        /// <param name="element">The <see cref="ITransposablePlotElement" />.</param>
-        /// <param name="vector">The <see cref="ScreenVector" /> to orientate.</param>
+        /// <param name="element">The <see cref="ITransposablePlotElement"/>.</param>
+        /// <param name="vector">The <see cref="ScreenVector"/> to orientate.</param>
         /// <returns>The oriented vector.</returns>
         public static ScreenVector Orientate(this ITransposablePlotElement element, ScreenVector vector)
         {
@@ -61,9 +61,9 @@ namespace OxyPlot
         /// <summary>
         /// Orientates a HorizontalAlignment and a VerticalAlignment according to whether the Series is transposed or the Axes are reversed.
         /// </summary>
-        /// <param name="element">The <see cref="ITransposablePlotElement" />.</param>
-        /// <param name="ha">The <see cref="HorizontalAlignment" /> to orientate.</param>
-        /// <param name="va">The <see cref="VerticalAlignment" /> to orientate.</param>
+        /// <param name="element">The <see cref="ITransposablePlotElement"/>.</param>
+        /// <param name="ha">The <see cref="HorizontalAlignment"/> to orientate.</param>
+        /// <param name="va">The <see cref="VerticalAlignment"/> to orientate.</param>
         public static void Orientate(this ITransposablePlotElement element, ref HorizontalAlignment ha, ref VerticalAlignment va)
         {
             if (element.XAxis.IsReversed)
@@ -87,7 +87,7 @@ namespace OxyPlot
         /// <summary>
         /// Transforms the specified data point to a screen point by the axes of this series.
         /// </summary>
-        /// <param name="element">The <see cref="ITransposablePlotElement" />.</param>
+        /// <param name="element">The <see cref="ITransposablePlotElement"/>.</param>
         /// <param name="x">The x coordinate of the data point.</param>
         /// <param name="y">The y coordinate of the data point.</param>
         /// <returns>A screen point.</returns>

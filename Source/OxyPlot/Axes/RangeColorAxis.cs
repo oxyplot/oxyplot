@@ -23,7 +23,7 @@ namespace OxyPlot.Axes
         private readonly List<ColorRange> ranges = new List<ColorRange>();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RangeColorAxis" /> class.
+        /// Initializes a new instance of the <see cref="RangeColorAxis"/> class.
         /// </summary>
         public RangeColorAxis()
         {
@@ -41,7 +41,7 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Gets or sets the color used to represent NaN values.
         /// </summary>
-        /// <value>A <see cref="OxyColor" /> that defines the color. The default value is <c>OxyColors.Gray</c>.</value>
+        /// <value>A <see cref="OxyColor"/> that defines the color. The default value is <c>OxyColors.Gray</c>.</value>
         public OxyColor InvalidNumberColor { get; set; }
 
         /// <summary>

@@ -15,8 +15,8 @@ namespace OxyPlot
 
     using OxyPlot.Annotations;
     using OxyPlot.Axes;
-    using OxyPlot.Series;
     using OxyPlot.Legends;
+    using OxyPlot.Series;
 
     /// <summary>
     /// Represents a plot.

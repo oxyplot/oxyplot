@@ -126,34 +126,34 @@ namespace OxyPlot
                 return "null";
             }
 
-            if (value is int)
+            if (value is int i)
             {
-                return ((int)value).ToCode();
+                return i.ToCode();
             }
 
-            if (value is double)
+            if (value is double d)
             {
-                return ((double)value).ToCode();
+                return d.ToCode();
             }
 
-            if (value is string)
+            if (value is string s)
             {
-                return ((string)value).ToCode();
+                return s.ToCode();
             }
 
-            if (value is bool)
+            if (value is bool b)
             {
-                return ((bool)value).ToCode();
+                return b.ToCode();
             }
 
-            if (value is Enum)
+            if (value is Enum en)
             {
-                return ((Enum)value).ToCode();
+                return en.ToCode();
             }
 
-            if (value is ICodeGenerating)
+            if (value is ICodeGenerating codeGenerating)
             {
-                return ((ICodeGenerating)value).ToCode();
+                return codeGenerating.ToCode();
             }
 
             return null;

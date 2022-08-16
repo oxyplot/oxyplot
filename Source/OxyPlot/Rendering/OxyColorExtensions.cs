@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Provides extension methods for <see cref="OxyColor" />.
+//   Provides extension methods for <see cref="OxyColor"/>.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -15,9 +15,9 @@ namespace OxyPlot
     using System.Reflection;
 
     /// <summary>
-    /// Provides extension methods for <see cref="OxyColor" />.
+    /// Provides extension methods for <see cref="OxyColor"/>.
     /// </summary>
-    /// <remarks>These are pure methods. They could also be placed in the <see cref="OxyColor" /> type with a PureAttribute.</remarks>
+    /// <remarks>These are pure methods. They could also be placed in the <see cref="OxyColor"/> type with a PureAttribute.</remarks>
     public static class OxyColorExtensions
     {
         /// <summary>
@@ -70,14 +70,14 @@ namespace OxyPlot
             // clamp to [0,1]
             if (newHue < 0)
             {
-                newHue += 1.0;
+                newHue++;
             }
 
             return OxyColor.FromHsv(newHue, hsv[1], hsv[2]);
         }
 
         /// <summary>
-        /// Converts from a <see cref="OxyColor" /> to HSV values (double)
+        /// Converts from a <see cref="OxyColor"/> to HSV values (double)
         /// </summary>
         /// <param name="color">The color.</param>
         /// <returns>Array of [Hue,Saturation,Value] in the range [0,1]</returns>
@@ -142,7 +142,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Converts an <see cref="OxyColor" /> to a string containing the ARGB byte values.
+        /// Converts an <see cref="OxyColor"/> to a string containing the ARGB byte values.
         /// </summary>
         /// <param name="color">The color.</param>
         /// <returns>A string that contains byte values of the alpha, red, green and blue components separated by comma.</returns>
@@ -168,7 +168,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets the name of the color if it is defined in the <see cref="OxyColors" /> class.
+        /// Gets the name of the color if it is defined in the <see cref="OxyColors"/> class.
         /// </summary>
         /// <param name="color">The color.</param>
         /// <returns>The color name or <c>null</c> if the color is not found.</returns>
@@ -179,7 +179,7 @@ namespace OxyPlot
             var colors = t.GetRuntimeFields().Where(fi => fi.IsPublic && fi.IsStatic);
             var colorField = colors.FirstOrDefault(field => color.Equals(field.GetValue(null)));
 
-            return colorField != null ? colorField.Name : null;
+            return colorField?.Name;
         }
     }
 }

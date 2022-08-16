@@ -15,7 +15,7 @@ namespace OxyPlot
     /// <summary>
     /// Provides functionality to decimate lines.
     /// </summary>
-    public class Decimator
+    public static class Decimator
     {
         /// <summary>
         /// Decimates lines by reducing all points that have the same integer x value to a maximum of 4 points (first, min, max, last).
@@ -69,7 +69,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Adds vertical points to the <paramref name="result" /> list.
+        /// Adds vertical points to the <paramref name="result"/> list.
         /// </summary>
         /// <param name="result">The result.</param>
         /// <param name="x">The x coordinate.</param>

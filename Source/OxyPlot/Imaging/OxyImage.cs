@@ -29,7 +29,7 @@ namespace OxyPlot
         private OxyColor[,] pixels;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OxyImage" /> class from the specified stream.
+        /// Initializes a new instance of the <see cref="OxyImage"/> class from the specified stream.
         /// </summary>
         /// <param name="s">A stream that provides the image data.</param>
         public OxyImage(Stream s)
@@ -38,7 +38,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OxyImage" /> class from a byte array.
+        /// Initializes a new instance of the <see cref="OxyImage"/> class from a byte array.
         /// </summary>
         /// <param name="bytes">The image bytes.</param>
         public OxyImage(byte[] bytes)
@@ -52,7 +52,7 @@ namespace OxyPlot
         /// Gets the image format.
         /// </summary>
         /// <value>The format.</value>
-        public ImageFormat Format { get; private set; }
+        public ImageFormat Format { get; }
 
         /// <summary>
         /// Gets the width of the image.
@@ -91,7 +91,7 @@ namespace OxyPlot
         /// <param name="palette">The palette.</param>
         /// <param name="format">The image format.</param>
         /// <param name="encoderOptions">The encoder options.</param>
-        /// <returns>An <see cref="OxyImage" /></returns>
+        /// <returns>An <see cref="OxyImage"/></returns>
         public static OxyImage Create(
             byte[,] pixels,
             OxyColor[] palette,
@@ -108,14 +108,15 @@ namespace OxyPlot
         /// <param name="pixels">The pixels indexed as [x,y]. [0,0] is top-left.</param>
         /// <param name="format">The image format.</param>
         /// <param name="encoderOptions">The encoder options.</param>
-        /// <returns>An <see cref="OxyImage" /></returns>
+        /// <returns>An <see cref="OxyImage"/></returns>
         public static OxyImage Create(OxyColor[,] pixels, ImageFormat format, ImageEncoderOptions encoderOptions = null)
         {
             var encoder = GetEncoder(format, encoderOptions);
-            var image = new OxyImage(encoder.Encode(pixels));
-
-            // TODO: remove when PNG decoder is implemented
-            image.pixels = pixels;
+            var image = new OxyImage(encoder.Encode(pixels))
+            {
+                // TODO: remove when PNG decoder is implemented
+                pixels = pixels
+            };
 
             return image;
         }
@@ -146,10 +147,10 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets the <see cref="IImageDecoder" /> for the specified format.
+        /// Gets the <see cref="IImageDecoder"/> for the specified format.
         /// </summary>
         /// <param name="format">The image format.</param>
-        /// <returns>The <see cref="IImageDecoder" />.</returns>
+        /// <returns>The <see cref="IImageDecoder"/>.</returns>
         private static IImageDecoder GetDecoder(ImageFormat format)
         {
             switch (format)
@@ -169,11 +170,11 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets the <see cref="IImageEncoder" /> for the specified format.
+        /// Gets the <see cref="IImageEncoder"/> for the specified format.
         /// </summary>
         /// <param name="format">The image format.</param>
         /// <param name="encoderOptions">The image encoder options.</param>
-        /// <returns>The <see cref="IImageEncoder" />.</returns>
+        /// <returns>The <see cref="IImageEncoder"/>.</returns>
         private static IImageEncoder GetEncoder(ImageFormat format, ImageEncoderOptions encoderOptions)
         {
             switch (format)
@@ -217,7 +218,7 @@ namespace OxyPlot
         /// Gets the image format.
         /// </summary>
         /// <param name="bytes">The image bytes.</param>
-        /// <returns>The <see cref="ImageFormat" /></returns>
+        /// <returns>The <see cref="ImageFormat"/></returns>
         private static ImageFormat GetImageFormat(byte[] bytes)
         {
             if (bytes.Length >= 2 && bytes[0] == 0xFF && bytes[1] == 0xD8)

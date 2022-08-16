@@ -34,7 +34,7 @@ namespace OxyPlot
         private readonly List<object?> defaultValues;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ListBuilder{T}" /> class.
+        /// Initializes a new instance of the <see cref="ListBuilder{T}"/> class.
         /// </summary>
         public ListBuilder()
         {
@@ -86,9 +86,8 @@ namespace OxyPlot
                 var args = new List<object?>(pi.Length);
                 for (int j = 0; j < pi.Length; j++)
                 {
-                    object? value;
                     var path = pi[j];
-                    args.Add(path != null && path.TryGetValue(sourceItem, out value) ? value : this.defaultValues[j]);
+                    args.Add(path != null && path.TryGetValue(sourceItem, out object? value) ? value : this.defaultValues[j]);
                 }
 
                 var item = instanceCreator(args);

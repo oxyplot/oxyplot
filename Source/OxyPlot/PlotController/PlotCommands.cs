@@ -15,7 +15,7 @@ namespace OxyPlot
     public static class PlotCommands
     {
         /// <summary>
-        /// Initializes static members of the <see cref="PlotCommands" /> class.
+        /// Initializes static members of the <see cref="PlotCommands"/> class.
         /// </summary>
         static PlotCommands()
         {
@@ -64,158 +64,158 @@ namespace OxyPlot
         /// <summary>
         /// Gets the reset axes command.
         /// </summary>
-        public static IViewCommand<OxyKeyEventArgs> Reset { get; private set; }
+        public static IViewCommand<OxyKeyEventArgs> Reset { get; }
 
         /// <summary>
         /// Gets the reset axes command (for mouse events).
         /// </summary>
-        public static IViewCommand<OxyMouseEventArgs> ResetAt { get; private set; }
+        public static IViewCommand<OxyMouseEventArgs> ResetAt { get; }
 
         /// <summary>
         /// Gets the copy code command.
         /// </summary>
-        public static IViewCommand<OxyKeyEventArgs> CopyCode { get; private set; }
+        public static IViewCommand<OxyKeyEventArgs> CopyCode { get; }
 
         /// <summary>
         /// Gets the pan/zoom touch command.
         /// </summary>
-        public static IViewCommand<OxyTouchEventArgs> PanZoomByTouch { get; private set; }
+        public static IViewCommand<OxyTouchEventArgs> PanZoomByTouch { get; }
 
         /// <summary>
         /// Gets the pan command.
         /// </summary>
-        public static IViewCommand<OxyMouseDownEventArgs> PanAt { get; private set; }
+        public static IViewCommand<OxyMouseDownEventArgs> PanAt { get; }
 
         /// <summary>
         /// Gets the zoom rectangle command.
         /// </summary>
-        public static IViewCommand<OxyMouseDownEventArgs> ZoomRectangle { get; private set; }
+        public static IViewCommand<OxyMouseDownEventArgs> ZoomRectangle { get; }
 
         /// <summary>
         /// Gets the zoom by mouse wheel command.
         /// </summary>
-        public static IViewCommand<OxyMouseWheelEventArgs> ZoomWheel { get; private set; }
+        public static IViewCommand<OxyMouseWheelEventArgs> ZoomWheel { get; }
 
         /// <summary>
         /// Gets the fine-control zoom by mouse wheel command.
         /// </summary>
-        public static IViewCommand<OxyMouseWheelEventArgs> ZoomWheelFine { get; private set; }
+        public static IViewCommand<OxyMouseWheelEventArgs> ZoomWheelFine { get; }
 
         /// <summary>
         /// Gets the tracker command.
         /// </summary>
-        public static IViewCommand<OxyMouseDownEventArgs> Track { get; private set; }
+        public static IViewCommand<OxyMouseDownEventArgs> Track { get; }
 
         /// <summary>
         /// Gets the snap tracker command.
         /// </summary>
-        public static IViewCommand<OxyMouseDownEventArgs> SnapTrack { get; private set; }
+        public static IViewCommand<OxyMouseDownEventArgs> SnapTrack { get; }
 
         /// <summary>
         /// Gets the snap tracker command.
         /// </summary>
-        public static IViewCommand<OxyTouchEventArgs> SnapTrackTouch { get; private set; }
+        public static IViewCommand<OxyTouchEventArgs> SnapTrackTouch { get; }
 
         /// <summary>
         /// Gets the points only tracker command.
         /// </summary>
-        public static IViewCommand<OxyMouseDownEventArgs> PointsOnlyTrack { get; private set; }
+        public static IViewCommand<OxyMouseDownEventArgs> PointsOnlyTrack { get; }
 
         /// <summary>
         /// Gets the points only tracker command.
         /// </summary>
-        public static IViewCommand<OxyTouchEventArgs> PointsOnlyTrackTouch { get; private set; }
+        public static IViewCommand<OxyTouchEventArgs> PointsOnlyTrackTouch { get; }
 
         /// <summary>
         /// Gets the mouse hover tracker.
         /// </summary>
-        public static IViewCommand<OxyMouseEventArgs> HoverTrack { get; private set; }
+        public static IViewCommand<OxyMouseEventArgs> HoverTrack { get; }
 
         /// <summary>
         /// Gets the mouse hover snap tracker.
         /// </summary>
-        public static IViewCommand<OxyMouseEventArgs> HoverSnapTrack { get; private set; }
+        public static IViewCommand<OxyMouseEventArgs> HoverSnapTrack { get; }
 
         /// <summary>
         /// Gets the mouse hover points only tracker.
         /// </summary>
-        public static IViewCommand<OxyMouseEventArgs> HoverPointsOnlyTrack { get; private set; }
+        public static IViewCommand<OxyMouseEventArgs> HoverPointsOnlyTrack { get; }
 
         /// <summary>
         /// Gets the pan left command.
         /// </summary>
-        public static IViewCommand<OxyKeyEventArgs> PanLeft { get; private set; }
+        public static IViewCommand<OxyKeyEventArgs> PanLeft { get; }
 
         /// <summary>
         /// Gets the pan right command.
         /// </summary>
-        public static IViewCommand<OxyKeyEventArgs> PanRight { get; private set; }
+        public static IViewCommand<OxyKeyEventArgs> PanRight { get; }
 
         /// <summary>
         /// Gets the pan up command.
         /// </summary>
-        public static IViewCommand<OxyKeyEventArgs> PanUp { get; private set; }
+        public static IViewCommand<OxyKeyEventArgs> PanUp { get; }
 
         /// <summary>
         /// Gets the pan down command.
         /// </summary>
-        public static IViewCommand<OxyKeyEventArgs> PanDown { get; private set; }
+        public static IViewCommand<OxyKeyEventArgs> PanDown { get; }
 
         /// <summary>
         /// Gets the fine control pan left command.
         /// </summary>
-        public static IViewCommand<OxyKeyEventArgs> PanLeftFine { get; private set; }
+        public static IViewCommand<OxyKeyEventArgs> PanLeftFine { get; }
 
         /// <summary>
         /// Gets the fine control pan right command.
         /// </summary>
-        public static IViewCommand<OxyKeyEventArgs> PanRightFine { get; private set; }
+        public static IViewCommand<OxyKeyEventArgs> PanRightFine { get; }
 
         /// <summary>
         /// Gets the fine control pan up command.
         /// </summary>
-        public static IViewCommand<OxyKeyEventArgs> PanUpFine { get; private set; }
+        public static IViewCommand<OxyKeyEventArgs> PanUpFine { get; }
 
         /// <summary>
         /// Gets the fine control pan down command.
         /// </summary>
-        public static IViewCommand<OxyKeyEventArgs> PanDownFine { get; private set; }
+        public static IViewCommand<OxyKeyEventArgs> PanDownFine { get; }
 
         /// <summary>
         /// Gets the zoom in command.
         /// </summary>
-        public static IViewCommand<OxyMouseEventArgs> ZoomInAt { get; private set; }
+        public static IViewCommand<OxyMouseEventArgs> ZoomInAt { get; }
 
         /// <summary>
         /// Gets the zoom out command.
         /// </summary>
-        public static IViewCommand<OxyMouseEventArgs> ZoomOutAt { get; private set; }
+        public static IViewCommand<OxyMouseEventArgs> ZoomOutAt { get; }
 
         /// <summary>
         /// Gets the zoom in command.
         /// </summary>
-        public static IViewCommand<OxyKeyEventArgs> ZoomIn { get; private set; }
+        public static IViewCommand<OxyKeyEventArgs> ZoomIn { get; }
 
         /// <summary>
         /// Gets the zoom out command.
         /// </summary>
-        public static IViewCommand<OxyKeyEventArgs> ZoomOut { get; private set; }
+        public static IViewCommand<OxyKeyEventArgs> ZoomOut { get; }
 
         /// <summary>
         /// Gets the fine control zoom in command.
         /// </summary>
-        public static IViewCommand<OxyKeyEventArgs> ZoomInFine { get; private set; }
+        public static IViewCommand<OxyKeyEventArgs> ZoomInFine { get; }
 
         /// <summary>
         /// Gets the fine control zoom out command.
         /// </summary>
-        public static IViewCommand<OxyKeyEventArgs> ZoomOutFine { get; private set; }
+        public static IViewCommand<OxyKeyEventArgs> ZoomOutFine { get; }
 
         /// <summary>
         /// Handles the reset event.
         /// </summary>
         /// <param name="view">The view to reset.</param>
-        /// <param name="args">The <see cref="OxyInputEventArgs" /> instance containing the event data.</param>
+        /// <param name="args">The <see cref="OxyInputEventArgs"/> instance containing the event data.</param>
         private static void HandleReset(IPlotView view, OxyInputEventArgs args)
         {
             args.Handled = true;
@@ -236,10 +236,10 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Zooms the view by the specified factor at the position specified in the <see cref="OxyMouseEventArgs" />.
+        /// Zooms the view by the specified factor at the position specified in the <see cref="OxyMouseEventArgs"/>.
         /// </summary>
         /// <param name="view">The view.</param>
-        /// <param name="args">The <see cref="OxyMouseWheelEventArgs" /> instance containing the event data.</param>
+        /// <param name="args">The <see cref="OxyMouseWheelEventArgs"/> instance containing the event data.</param>
         /// <param name="delta">The zoom factor.</param>
         private static void HandleZoomAt(IPlotView view, OxyMouseEventArgs args, double delta)
         {
@@ -248,10 +248,10 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Zooms the view by the mouse wheel delta in the specified <see cref="OxyKeyEventArgs" />.
+        /// Zooms the view by the mouse wheel delta in the specified <see cref="OxyKeyEventArgs"/>.
         /// </summary>
         /// <param name="view">The view.</param>
-        /// <param name="args">The <see cref="OxyMouseWheelEventArgs" /> instance containing the event data.</param>
+        /// <param name="args">The <see cref="OxyMouseWheelEventArgs"/> instance containing the event data.</param>
         /// <param name="factor">The zoom speed factor. Default value is 1.</param>
         private static void HandleZoomByWheel(IPlotView view, OxyMouseWheelEventArgs args, double factor = 1)
         {
@@ -263,7 +263,7 @@ namespace OxyPlot
         /// Zooms the view by the key in the specified factor.
         /// </summary>
         /// <param name="view">The view.</param>
-        /// <param name="args">The <see cref="OxyInputEventArgs" /> instance containing the event data.</param>
+        /// <param name="args">The <see cref="OxyInputEventArgs"/> instance containing the event data.</param>
         /// <param name="delta">The zoom factor (positive zoom in, negative zoom out).</param>
         private static void HandleZoomCenter(IPlotView view, OxyInputEventArgs args, double delta)
         {
@@ -276,7 +276,7 @@ namespace OxyPlot
         /// Pans the view by the key in the specified vector.
         /// </summary>
         /// <param name="view">The view.</param>
-        /// <param name="args">The <see cref="OxyInputEventArgs" /> instance containing the event data.</param>
+        /// <param name="args">The <see cref="OxyInputEventArgs"/> instance containing the event data.</param>
         /// <param name="dx">The horizontal delta (percentage of plot area width).</param>
         /// <param name="dy">The vertical delta (percentage of plot area height).</param>
         private static void HandlePan(IPlotView view, OxyInputEventArgs args, double dx, double dy)

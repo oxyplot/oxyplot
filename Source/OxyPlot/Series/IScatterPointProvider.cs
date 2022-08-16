@@ -3,21 +3,21 @@
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Defines functionality to provide a <see cref="ScatterPoint" />.
+//   Defines functionality to provide a <see cref="ScatterPoint"/>.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Series
 {
     /// <summary>
-    /// Defines functionality to provide a <see cref="ScatterPoint" />.
+    /// Defines functionality to provide a <see cref="ScatterPoint"/>.
     /// </summary>
     public interface IScatterPointProvider
     {
         /// <summary>
-        /// Gets the <see cref="ScatterPoint" /> that represents the element.
+        /// Gets the <see cref="ScatterPoint"/> that represents the element.
         /// </summary>
-        /// <returns>A <see cref="ScatterPoint" />.</returns>
+        /// <returns>A <see cref="ScatterPoint"/>.</returns>
         ScatterPoint GetScatterPoint();
     }
 }

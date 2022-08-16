@@ -18,22 +18,17 @@ namespace OxyPlot.Series
     public class AreaSeries : LineSeries
     {
         /// <summary>
-        /// The second list of points.
-        /// </summary>
-        private readonly List<DataPoint> points2 = new List<DataPoint>();
-
-        /// <summary>
-        /// The secondary data points from the <see cref="P:ItemsSource" /> collection.
+        /// The secondary data points from the <see cref="P:ItemsSource"/> collection.
         /// </summary>
         private readonly List<DataPoint> itemsSourcePoints2 = new List<DataPoint>();
 
         /// <summary>
-        /// The secondary data points from the <see cref="P:Points2" /> list.
+        /// The secondary data points from the <see cref="P:Points2"/> list.
         /// </summary>
         private List<DataPoint> actualPoints2;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref = "AreaSeries" /> class.
+        /// Initializes a new instance of the <see cref="AreaSeries"/> class.
         /// </summary>
         public AreaSeries()
         {
@@ -47,21 +42,21 @@ namespace OxyPlot.Series
         /// This is used if DataFieldBase and BaselineValues are <c>null</c>.
         /// </summary>
         /// <value>The baseline.</value>
-        /// <remarks><see cref="P:ConstantY2" /> is used if <see cref="P:ItemsSource" /> is set 
-        /// and <see cref="P:DataFieldX2" /> or <see cref="P:DataFieldY2" /> are <c>null</c>, 
-        /// or if <see cref="P:ItemsSource" /> is <c>null</c> and <see cref="P:Points2" /> is empty.</remarks>
+        /// <remarks><see cref="P:ConstantY2"/> is used if <see cref="P:ItemsSource"/> is set
+        /// and <see cref="P:DataFieldX2"/> or <see cref="P:DataFieldY2"/> are <c>null</c>,
+        /// or if <see cref="P:ItemsSource"/> is <c>null</c> and <see cref="P:Points2"/> is empty.</remarks>
         public double ConstantY2 { get; set; }
 
         /// <summary>
         /// Gets or sets the data field to use for the X-coordinates of the second data set.
         /// </summary>
-        /// <remarks>This property is used if <see cref="P:ItemsSource" /> is set.</remarks>
+        /// <remarks>This property is used if <see cref="P:ItemsSource"/> is set.</remarks>
         public string DataFieldX2 { get; set; }
 
         /// <summary>
         /// Gets or sets the data field to use for the Y-coordinates of the second data set.
         /// </summary>
-        /// <remarks>This property is used if <see cref="P:ItemsSource" /> is set.</remarks>
+        /// <remarks>This property is used if <see cref="P:ItemsSource"/> is set.</remarks>
         public string DataFieldY2 { get; set; }
 
         /// <summary>
@@ -104,14 +99,8 @@ namespace OxyPlot.Series
         /// Gets the second list of points.
         /// </summary>
         /// <value>The second list of points.</value>
-        /// <remarks>This property is not used if <see cref="P:ItemsSource" /> is set.</remarks>
-        public List<DataPoint> Points2
-        {
-            get
-            {
-                return this.points2;
-            }
-        }
+        /// <remarks>This property is not used if <see cref="P:ItemsSource"/> is set.</remarks>
+        public List<DataPoint> Points2 { get; } = new List<DataPoint>();
 
         /// <summary>
         /// Gets or sets a value indicating whether the second data collection should be reversed.
@@ -148,13 +137,13 @@ namespace OxyPlot.Series
         /// Gets the nearest point.
         /// </summary>
         /// <param name="point">The point.</param>
-        /// <param name="interpolate">interpolate if set to <c>true</c> .</param>
+        /// <param name="interpolate">interpolate if set to <c>true</c>.</param>
         /// <returns>A TrackerHitResult for the current hit.</returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
             var xy = this.InverseTransform(point);
             var targetX = xy.X;
-            int startIdx = this.IsXMonotonic 
+            int startIdx = this.IsXMonotonic
                 ? this.FindWindowStartIndex(this.ActualPoints, p => p.x, targetX, this.WindowStartIndex)
                 : 0;
             int startIdx2 = this.IsXMonotonic
@@ -192,9 +181,9 @@ namespace OxyPlot.Series
                     this.TrackerFormatString,
                     result.Item,
                     this.Title,
-                    this.XAxis.Title ?? XYAxisSeries.DefaultXAxisTitle,
+                    this.XAxis.Title ?? DefaultXAxisTitle,
                     this.XAxis.GetValue(result.DataPoint.X),
-                    this.YAxis.Title ?? XYAxisSeries.DefaultYAxisTitle,
+                    this.YAxis.Title ?? DefaultYAxisTitle,
                     this.YAxis.GetValue(result.DataPoint.Y));
             }
 
@@ -257,7 +246,7 @@ namespace OxyPlot.Series
             areaContext.WindowStartIndex = startIdx2;
             areaContext.Reverse = this.Reverse2;
             areaContext.Color = this.ActualColor2;
-            
+
             var chunksOfPoints2 = this.RenderChunkedPoints(areaContext);
 
             if (chunksOfPoints.Count != chunksOfPoints2.Count)
@@ -344,11 +333,11 @@ namespace OxyPlot.Series
 
             if (this.ItemsSource == null)
             {
-                this.IsPoints2Defined = this.points2.Count > 0;
+                this.IsPoints2Defined = this.Points2.Count > 0;
 
                 if (this.IsPoints2Defined)
                 {
-                    this.actualPoints2 = this.points2;
+                    this.actualPoints2 = this.Points2;
                 }
                 else
                 {
@@ -478,7 +467,7 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Gets the points when <see cref="P:ConstantY2" /> is used.
+        /// Gets the points when <see cref="P:ConstantY2"/> is used.
         /// </summary>
         /// <returns>A sequence of <see cref="T:DataPoint"/>.</returns>
         private IEnumerable<DataPoint> GetConstantPoints2()

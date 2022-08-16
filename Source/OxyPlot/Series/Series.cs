@@ -18,7 +18,7 @@ namespace OxyPlot.Series
     public abstract class Series : PlotElement
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Series" /> class.
+        /// Initializes a new instance of the <see cref="Series"/> class.
         /// </summary>
         protected Series()
         {
@@ -141,7 +141,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Updates the maximum and minimum values of the series.
         /// </summary>
-        /// <remarks>This method is called when the <see cref="PlotModel" /> is updated with the <c>updateData</c> parameter set to <c>true</c>.</remarks>
+        /// <remarks>This method is called when the <see cref="PlotModel"/> is updated with the <c>updateData</c> parameter set to <c>true</c>.</remarks>
         protected internal abstract void UpdateMaxMin();
 
         /// <summary>

@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Represents a collection of <see cref="Element" /> objects.
+//   Represents a collection of <see cref="Element"/> objects.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -14,13 +14,13 @@ namespace OxyPlot
     using System.Collections.Generic;
 
     /// <summary>
-    /// Represents a collection of <see cref="Element" /> objects.
+    /// Represents a collection of <see cref="Element"/> objects.
     /// </summary>
     /// <typeparam name="T">The type of the elements.</typeparam>
     public class ElementCollection<T> : IList<T>, IReadOnlyList<T> where T : Element
     {
         /// <summary>
-        /// The parent <see cref="Model" />.
+        /// The parent <see cref="Model"/>.
         /// </summary>
         private readonly Model parent;
 
@@ -30,9 +30,9 @@ namespace OxyPlot
         private readonly List<T> internalList = new List<T>();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ElementCollection{T}" /> class.
+        /// Initializes a new instance of the <see cref="ElementCollection{T}"/> class.
         /// </summary>
-        /// <param name="parent">The parent <see cref="PlotModel" />.</param>
+        /// <param name="parent">The parent <see cref="PlotModel"/>.</param>
         public ElementCollection(Model parent)
         {
             this.parent = parent;
@@ -90,7 +90,7 @@ namespace OxyPlot
         /// <summary>
         /// Returns an enumerator that iterates through the collection.
         /// </summary>
-        /// <returns>A <see cref="T:System.Collections.Generic.IEnumerator{T}" /> that can be used to iterate through the collection.</returns>
+        /// <returns>A <see cref="T:System.Collections.Generic.IEnumerator{T}"/> that can be used to iterate through the collection.</returns>
         public IEnumerator<T> GetEnumerator()
         {
             return this.internalList.GetEnumerator();
@@ -99,7 +99,7 @@ namespace OxyPlot
         /// <summary>
         /// Returns an enumerator that iterates through a collection.
         /// </summary>
-        /// <returns>An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.</returns>
+        /// <returns>An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
@@ -109,7 +109,7 @@ namespace OxyPlot
         /// Adds an item to the collection.
         /// </summary>
         /// <param name="item">The object to add to the collection.</param>
-        /// <exception cref="System.InvalidOperationException">The element cannot be added, it already belongs to a PlotModel.</exception>
+        /// <exception cref="InvalidOperationException">The element cannot be added, it already belongs to a PlotModel.</exception>
         public void Add(T item)
         {
             if (item.Parent != null)
@@ -142,10 +142,10 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Determines whether the <see cref="T:System.Collections.Generic.ICollection`1" /> contains a specific value.
+        /// Determines whether the <see cref="T:System.Collections.Generic.ICollection`1"/> contains a specific value.
         /// </summary>
-        /// <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.ICollection`1" />.</param>
-        /// <returns><c>true</c> if <paramref name="item" /> is found in the <see cref="T:System.Collections.Generic.ICollection`1" />; otherwise, <c>false</c>.</returns>
+        /// <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
+        /// <returns><c>true</c> if <paramref name="item"/> is found in the <see cref="T:System.Collections.Generic.ICollection`1"/>; otherwise, <c>false</c>.</returns>
         public bool Contains(T item)
         {
             return this.internalList.Contains(item);
@@ -162,10 +162,13 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Removes the first occurrence of a specific object from the <see cref="T:System.Collections.Generic.ICollection`1" />.
+        /// Removes the first occurrence of a specific object from the <see cref="T:System.Collections.Generic.ICollection`1"/>.
         /// </summary>
-        /// <param name="item">The object to remove from the <see cref="T:System.Collections.Generic.ICollection`1" />.</param>
-        /// <returns><c>true</c> if <paramref name="item" /> was successfully removed from the <see cref="T:System.Collections.Generic.ICollection`1" />; otherwise, <c>false</c>. This method also returns <c>false</c> if <paramref name="item" /> is not found in the original <see cref="T:System.Collections.Generic.ICollection`1" />.</returns>
+        /// <param name="item">The object to remove from the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
+        /// <returns>
+        /// <c>true</c> if <paramref name="item"/> was successfully removed from the <see cref="T:System.Collections.Generic.ICollection`1"/>;
+        /// otherwise, <c>false</c>. This method also returns <c>false</c> if <paramref name="item"/> is not found in the original <see cref="T:System.Collections.Generic.ICollection`1"/>.
+        /// </returns>
         public bool Remove(T item)
         {
             item.Parent = null;
@@ -182,7 +185,7 @@ namespace OxyPlot
         /// Determines the index of a specific item in the collection.
         /// </summary>
         /// <param name="item">The object to locate in the collection.</param>
-        /// <returns>The index of <paramref name="item" /> if found in the list; otherwise, -1.</returns>
+        /// <returns>The index of <paramref name="item"/> if found in the list; otherwise, -1.</returns>
         public int IndexOf(T item)
         {
             return this.internalList.IndexOf(item);
@@ -191,9 +194,9 @@ namespace OxyPlot
         /// <summary>
         /// Inserts an item to the collection at the specified index.
         /// </summary>
-        /// <param name="index">The zero-based index at which <paramref name="item" /> should be inserted.</param>
+        /// <param name="index">The zero-based index at which <paramref name="item"/> should be inserted.</param>
         /// <param name="item">The object to insert into the collection.</param>
-        /// <exception cref="System.InvalidOperationException">The element cannot be inserted, it already belongs to a PlotModel.</exception>
+        /// <exception cref="InvalidOperationException">The element cannot be inserted, it already belongs to a PlotModel.</exception>
         public void Insert(int index, T item)
         {
             if (item.Parent != null)
@@ -228,11 +231,7 @@ namespace OxyPlot
         /// <param name="removedItems">The removed items.</param>
         private void RaiseCollectionChanged(IEnumerable<T> addedItems = null, IEnumerable<T> removedItems = null)
         {
-            var collectionChanged = this.CollectionChanged;
-            if (collectionChanged != null)
-            {
-                collectionChanged(this, new ElementCollectionChangedEventArgs<T>(addedItems, removedItems));
-            }
+            this.CollectionChanged?.Invoke(this, new ElementCollectionChangedEventArgs<T>(addedItems, removedItems));
         }
     }
 }

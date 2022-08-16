@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Provides extension methods for <see cref="OxySize" />.
+//   Provides extension methods for <see cref="OxySize"/>.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -15,7 +15,7 @@ namespace OxyPlot
     /// <summary>
     /// Provides extension methods for <see cref="OxySize"/>
     /// </summary>
-    /// <remarks>These are pure methods. They could also be placed in the <see cref="OxySize" /> type with a PureAttribute.</remarks>
+    /// <remarks>These are pure methods. They could also be placed in the <see cref="OxySize"/> type with a PureAttribute.</remarks>
     public static class OxySizeExtensions
     {
         /// <summary>

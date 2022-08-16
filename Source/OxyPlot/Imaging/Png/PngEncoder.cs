@@ -121,7 +121,7 @@ namespace OxyPlot
         private readonly PngEncoderOptions options;
 
         /// <summary>
-        /// Initializes static members of the <see cref="PngEncoder" /> class.
+        /// Initializes static members of the <see cref="PngEncoder"/> class.
         /// </summary>
         static PngEncoder()
         {
@@ -137,7 +137,7 @@ namespace OxyPlot
                     }
                     else
                     {
-                        c = c >> 1;
+                        c >>= 1;
                     }
                 }
 
@@ -146,7 +146,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PngEncoder" /> class.
+        /// Initializes a new instance of the <see cref="PngEncoder"/> class.
         /// </summary>
         /// <param name="options">The options.</param>
         public PngEncoder(PngEncoderOptions options)
@@ -353,7 +353,7 @@ namespace OxyPlot
         private class MemoryWriter : BinaryWriter
         {
             /// <summary>
-            /// Initializes a new instance of the <see cref="MemoryWriter" /> class.
+            /// Initializes a new instance of the <see cref="MemoryWriter"/> class.
             /// </summary>
             public MemoryWriter()
                 : base(new MemoryStream())

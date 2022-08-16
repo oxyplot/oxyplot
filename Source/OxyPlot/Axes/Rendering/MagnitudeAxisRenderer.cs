@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Provides functionality to render <see cref="MagnitudeAxis" />.
+//   Provides functionality to render <see cref="MagnitudeAxis"/>.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -11,15 +11,14 @@ namespace OxyPlot.Axes
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     /// <summary>
-    /// Provides functionality to render <see cref="MagnitudeAxis" />.
+    /// Provides functionality to render <see cref="MagnitudeAxis"/>.
     /// </summary>
     public class MagnitudeAxisRenderer : AxisRendererBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="MagnitudeAxisRenderer" /> class.
+        /// Initializes a new instance of the <see cref="MagnitudeAxisRenderer"/> class.
         /// </summary>
         /// <param name="rc">The render context.</param>
         /// <param name="plot">The plot.</param>
@@ -33,7 +32,7 @@ namespace OxyPlot.Axes
         /// </summary>
         /// <param name="axis">The axis.</param>
         /// <param name="pass">The pass.</param>
-        /// <exception cref="System.NullReferenceException">Angle axis should not be <c>null</c>.</exception>
+        /// <exception cref="NullReferenceException">Angle axis should not be <c>null</c>.</exception>
         public override void Render(Axis axis, int pass)
         {
             base.Render(axis, pass);
@@ -216,9 +215,7 @@ namespace OxyPlot.Axes
             var dx = axis.AxisTickToLabelDistance * Math.Sin(actualAngle);
             var dy = -axis.AxisTickToLabelDistance * Math.Cos(actualAngle);
 
-            HorizontalAlignment ha;
-            VerticalAlignment va;
-            GetTickTextAligment(actualAngle, out ha, out va);
+            GetTickTextAligment(actualAngle, out HorizontalAlignment ha, out VerticalAlignment va);
 
             var pt = axis.Transform(x, angleAxis.Angle, angleAxis);
             pt = new ScreenPoint(pt.X + dx, pt.Y + dy);

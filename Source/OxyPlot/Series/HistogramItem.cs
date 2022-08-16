@@ -10,12 +10,12 @@
 namespace OxyPlot.Series
 {
     /// <summary>
-    /// Represents an item in a <see cref="HistogramSeries" />, a bin (range) and its area.
+    /// Represents an item in a <see cref="HistogramSeries"/>, a bin (range) and its area.
     /// </summary>
     public class HistogramItem : ICodeGenerating
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="HistogramItem" /> class.
+        /// Initializes a new instance of the <see cref="HistogramItem"/> class.
         /// </summary>
         /// <param name="rangeStart">The range start.</param>
         /// <param name="rangeEnd">The range end.</param>
@@ -27,7 +27,7 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="HistogramItem" /> class.
+        /// Initializes a new instance of the <see cref="HistogramItem"/> class.
         /// </summary>
         /// <param name="rangeStart">The range start.</param>
         /// <param name="rangeEnd">The range end.</param>
@@ -97,9 +97,9 @@ namespace OxyPlot.Series
         public double Value => this.Height;
 
         /// <summary>
-        /// Determines whether the specified point lies within the boundary of the <see cref="HistogramItem" />.
+        /// Determines whether the specified point lies within the boundary of the <see cref="HistogramItem"/>.
         /// </summary>
-        /// <param name="p">The DataPoint to determine whether or not lies within the boundary of the <see cref="HistogramItem" />.</param>
+        /// <param name="p">The DataPoint to determine whether or not lies within the boundary of the <see cref="HistogramItem"/>.</param>
         /// <returns><c>true</c> if the value of the p parameter is inside the bounds of this instance.</returns>
         public bool Contains(DataPoint p)
         {
@@ -133,9 +133,9 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public override string ToString()
         {
             return string.Format(

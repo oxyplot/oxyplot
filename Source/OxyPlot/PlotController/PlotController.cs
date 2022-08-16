@@ -3,19 +3,19 @@
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Provides an <see cref="IPlotController" /> with a default set of plot bindings.
+//   Provides an <see cref="IPlotController"/> with a default set of plot bindings.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     /// <summary>
-    /// Provides an <see cref="IPlotController" /> with a default set of plot bindings.
+    /// Provides an <see cref="IPlotController"/> with a default set of plot bindings.
     /// </summary>
     public class PlotController : ControllerBase, IPlotController
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PlotController" /> class.
+        /// Initializes a new instance of the <see cref="PlotController"/> class.
         /// </summary>
         public PlotController()
         {

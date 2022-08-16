@@ -3,14 +3,14 @@
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Specifies the layer of an <see cref="Axis" />.
+//   Specifies the layer of an <see cref="Axis"/>.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Axes
 {
     /// <summary>
-    /// Specifies the layer of an <see cref="Axis" />.
+    /// Specifies the layer of an <see cref="Axis"/>.
     /// </summary>
     public enum AxisLayer
     {

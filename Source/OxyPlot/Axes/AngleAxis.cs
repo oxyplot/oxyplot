@@ -18,7 +18,7 @@ namespace OxyPlot.Axes
     public class AngleAxis : LinearAxis
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="AngleAxis" /> class.
+        /// Initializes a new instance of the <see cref="AngleAxis"/> class.
         /// </summary>
         public AngleAxis()
         {
@@ -68,7 +68,7 @@ namespace OxyPlot.Axes
         /// <param name="y">The y coordinate.</param>
         /// <param name="yaxis">The y-axis.</param>
         /// <returns>The data point.</returns>
-        /// <exception cref="System.InvalidOperationException">Angle axis should always be the y-axis.</exception>
+        /// <exception cref="InvalidOperationException">Angle axis should always be the y-axis.</exception>
         public override DataPoint InverseTransform(double x, double y, Axis yaxis)
         {
             throw new InvalidOperationException("Angle axis should always be the y-axis.");
@@ -77,7 +77,7 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Determines whether the axis is used for X/Y values.
         /// </summary>
-        /// <returns><c>true</c> if it is an XY axis; otherwise, <c>false</c> .</returns>
+        /// <returns><c>true</c> if it is an XY axis; otherwise, <c>false</c>.</returns>
         public override bool IsXyAxis()
         {
             return false;

@@ -15,7 +15,7 @@ namespace OxyPlot.Series
     public abstract class BarItemBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="BarItemBase" /> class.
+        /// Initializes a new instance of the <see cref="BarItemBase"/> class.
         /// </summary>
         protected BarItemBase()
         {

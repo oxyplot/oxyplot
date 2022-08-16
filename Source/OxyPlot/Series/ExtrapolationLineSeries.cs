@@ -36,7 +36,7 @@ namespace OxyPlot.Series
         private List<DataRange> orderedIntervals;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref = "ExtrapolationLineSeries" /> class.
+        /// Initializes a new instance of the <see cref="ExtrapolationLineSeries"/> class.
         /// </summary>
         public ExtrapolationLineSeries()
         {
@@ -57,10 +57,10 @@ namespace OxyPlot.Series
 
         /// <summary>
         /// Gets or sets the dash array for the extrapolated intervals of the rendered line
-        /// (overrides <see cref="ExtrapolationLineStyle" />). The default is <c>null</c>.
+        /// (overrides <see cref="ExtrapolationLineStyle"/>). The default is <c>null</c>.
         /// </summary>
         /// <value>The dash array for extrapolated intervals.</value>
-        /// <remarks>If this is not <c>null</c> it overrides the <see cref="ExtrapolationLineStyle" /> property.</remarks>
+        /// <remarks>If this is not <c>null</c> it overrides the <see cref="ExtrapolationLineStyle"/> property.</remarks>
         public double[] ExtrapolationDashes { get; set; }
 
         /// <summary>
@@ -162,7 +162,7 @@ namespace OxyPlot.Series
         /// </summary>
         protected internal override void UpdateMaxMin()
         {
-            if (this.IgnoreExtraplotationForScaling && this.orderedIntervals.Any())
+            if (this.IgnoreExtraplotationForScaling && this.orderedIntervals.Count > 0)
             {
                 this.MinX = this.Points
                     .Where(p => !this.InAnyInterval(p.X))
@@ -223,8 +223,7 @@ namespace OxyPlot.Series
             {
                 var centerX = this.InverseTransform(rect.Center).X;
 
-                bool isInterval = this.orderedIntervals != null
-                    && this.orderedIntervals.Any(i => i.Contains(centerX));
+                bool isInterval = this.orderedIntervals?.Any(i => i.Contains(centerX)) == true;
 
                 using (rc.AutoResetClip(rect))
                 {
@@ -242,7 +241,7 @@ namespace OxyPlot.Series
         {
             var previous = minX;
 
-            if (this.orderedIntervals != null && this.orderedIntervals.Any())
+            if (this.orderedIntervals?.Count > 0)
             {
                 IEnumerable<double> flatLimits
                     = this.Flatten(this.orderedIntervals).Where(l => l >= minX && l <= maxX);
@@ -308,9 +307,7 @@ namespace OxyPlot.Series
 
             if (intervals != null)
             {
-                IOrderedEnumerable<DataRange> ordered = intervals.OrderBy(i => i.Minimum);
-
-                foreach (var current in ordered)
+                foreach (var current in intervals.OrderBy(i => i.Minimum))
                 {
                     DataRange previous = orderedList.LastOrDefault();
 

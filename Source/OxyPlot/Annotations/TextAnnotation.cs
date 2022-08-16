@@ -23,7 +23,7 @@ namespace OxyPlot.Annotations
         private IList<ScreenPoint> actualBounds;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TextAnnotation" /> class.
+        /// Initializes a new instance of the <see cref="TextAnnotation"/> class.
         /// </summary>
         public TextAnnotation()
         {

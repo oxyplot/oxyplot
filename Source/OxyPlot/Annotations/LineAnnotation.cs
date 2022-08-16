@@ -12,7 +12,6 @@ namespace OxyPlot.Annotations
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
     using OxyPlot.Axes;
 
     /// <summary>
@@ -21,7 +20,7 @@ namespace OxyPlot.Annotations
     public class LineAnnotation : PathAnnotation
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref = "LineAnnotation" /> class.
+        /// Initializes a new instance of the <see cref="LineAnnotation"/> class.
         /// </summary>
         public LineAnnotation()
         {
@@ -107,7 +106,7 @@ namespace OxyPlot.Annotations
                 if (fx != null)
                 {
                     // todo: the step size should be adaptive
-                    var n = 100;
+                    const int n = 100;
                     var dx = (this.ActualMaximumX - this.ActualMinimumX) / 100;
                     for (int i = 0; i <= n; i++)
                     {
@@ -118,7 +117,7 @@ namespace OxyPlot.Annotations
                 else
                 {
                     // todo: the step size should be adaptive
-                    var n = 100;
+                    const int n = 100;
                     var dy = (this.ActualMaximumY - this.ActualMinimumY) / n;
                     for (int i = 0; i <= n; i++)
                     {

@@ -29,7 +29,7 @@ namespace OxyPlot
         private readonly double value;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PlotLength" /> struct.
+        /// Initializes a new instance of the <see cref="PlotLength"/> struct.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <param name="unit">The unit.</param>
@@ -64,10 +64,10 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Determines whether this instance and another specified <see cref="T:PlotLength" /> object have the same value.
+        /// Determines whether this instance and another specified <see cref="T:PlotLength"/> object have the same value.
         /// </summary>
         /// <param name="other">The length to compare to this instance.</param>
-        /// <returns><c>true</c> if the value of the <paramref name="other" /> parameter is the same as the value of this instance; otherwise, <c>false</c>.</returns>
+        /// <returns><c>true</c> if the value of the <paramref name="other"/> parameter is the same as the value of this instance; otherwise, <c>false</c>.</returns>
         public bool Equals(PlotLength other)
         {
             return this.value.Equals(other.value) && this.unit.Equals(other.unit);

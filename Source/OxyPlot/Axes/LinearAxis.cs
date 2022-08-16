@@ -15,7 +15,7 @@ namespace OxyPlot.Axes
     public class LinearAxis : Axis
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="LinearAxis" /> class.
+        /// Initializes a new instance of the <see cref="LinearAxis"/> class.
         /// </summary>
         public LinearAxis()
         {
@@ -44,7 +44,7 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Determines whether the axis is used for X/Y values.
         /// </summary>
-        /// <returns><c>true</c> if it is an XY axis; otherwise, <c>false</c> .</returns>
+        /// <returns><c>true</c> if it is an XY axis; otherwise, <c>false</c>.</returns>
         public override bool IsXyAxis()
         {
             return true;
@@ -53,7 +53,7 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Determines whether the axis is logarithmic.
         /// </summary>
-        /// <returns><c>true</c> if it is a logarithmic axis; otherwise, <c>false</c> .</returns>
+        /// <returns><c>true</c> if it is a logarithmic axis; otherwise, <c>false</c>.</returns>
         public override bool IsLogarithmic()
         {
             return false;

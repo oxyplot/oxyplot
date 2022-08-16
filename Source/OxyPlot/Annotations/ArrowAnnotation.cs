@@ -27,7 +27,7 @@ namespace OxyPlot.Annotations
         private ScreenPoint screenStartPoint;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ArrowAnnotation" /> class.
+        /// Initializes a new instance of the <see cref="ArrowAnnotation"/> class.
         /// </summary>
         public ArrowAnnotation()
         {
@@ -42,7 +42,7 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// Gets or sets the arrow direction.
         /// </summary>
-        /// <remarks>Setting this property overrides the <see cref="StartPoint" /> property.</remarks>
+        /// <remarks>Setting this property overrides the <see cref="StartPoint"/> property.</remarks>
         public ScreenVector ArrowDirection { get; set; }
 
         /// <summary>
@@ -161,7 +161,7 @@ namespace OxyPlot.Annotations
             else
             {
                 var angle = Math.Atan2(d.Y, d.X);
-                var piOver8 = Math.PI / 8;
+                const double piOver8 = Math.PI / 8;
                 if (angle < 3 * piOver8 && angle > -3 * piOver8)
                 {
                     ha = HorizontalAlignment.Right;

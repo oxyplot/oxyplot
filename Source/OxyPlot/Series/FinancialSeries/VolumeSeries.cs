@@ -41,7 +41,7 @@ namespace OxyPlot.Series
         private int winIndex;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref = "VolumeSeries" /> class.
+        /// Initializes a new instance of the <see cref="VolumeSeries"/> class.
         /// </summary>
         public VolumeSeries()
         {
@@ -69,7 +69,7 @@ namespace OxyPlot.Series
         {
             get
             {
-                return (this.data != null) ? this.data : (this.data = new List<OhlcvItem>());
+                return this.data ??= new List<OhlcvItem>();
             }
 
             set
@@ -174,11 +174,11 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Fast index of bar where max(bar[i].X) &lt;= x 
+        /// Fast index of bar where max(bar[i].X) &lt;= x
         /// </summary>
         /// <returns>The index of the bar closest to X, where max(bar[i].X) &lt;= x.</returns>
         /// <param name="x">The x coordinate.</param>
-        /// <param name="startingIndex">starting index</param> 
+        /// <param name="startingIndex">starting index</param>
         public int FindByX(double x, int startingIndex = -1)
         {
             if (startingIndex < 0)

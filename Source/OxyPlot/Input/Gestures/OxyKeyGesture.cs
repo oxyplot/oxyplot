@@ -12,11 +12,11 @@ namespace OxyPlot
     /// <summary>
     /// Represents a keyboard input gesture.
     /// </summary>
-    /// <remarks>The input gesture can be bound to a command in a <see cref="PlotController" />.</remarks>
+    /// <remarks>The input gesture can be bound to a command in a <see cref="PlotController"/>.</remarks>
     public class OxyKeyGesture : OxyInputGesture
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="OxyKeyGesture" /> class.
+        /// Initializes a new instance of the <see cref="OxyKeyGesture"/> class.
         /// </summary>
         /// <param name="key">The key.</param>
         /// <param name="modifiers">The modifier keys.</param>
@@ -40,11 +40,10 @@ namespace OxyPlot
         /// Indicates whether the current object is equal to another object of the same type.
         /// </summary>
         /// <param name="other">An object to compare with this object.</param>
-        /// <returns><c>true</c> if the current object is equal to the <paramref name="other" /> parameter; otherwise, <c>false</c>.</returns>
+        /// <returns><c>true</c> if the current object is equal to the <paramref name="other"/> parameter; otherwise, <c>false</c>.</returns>
         public override bool Equals(OxyInputGesture other)
         {
-            var kg = other as OxyKeyGesture;
-            return kg != null && kg.Modifiers == this.Modifiers && kg.Key == this.Key;
+            return other is OxyKeyGesture kg && kg.Modifiers == this.Modifiers && kg.Key == this.Key;
         }
     }
 }

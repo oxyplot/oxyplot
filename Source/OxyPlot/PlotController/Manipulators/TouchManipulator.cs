@@ -15,13 +15,13 @@ namespace OxyPlot
     public class TouchManipulator : PlotManipulator<OxyTouchEventArgs>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="TouchManipulator" /> class.
+        /// Initializes a new instance of the <see cref="TouchManipulator"/> class.
         /// </summary>
         /// <param name="plotView">The plot view.</param>
         public TouchManipulator(IPlotView plotView)
             : base(plotView)
         {
-            SetHandledForPanOrZoom = true;
+            this.SetHandledForPanOrZoom = true;
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace OxyPlot
         /// <summary>
         /// Occurs when a manipulation is complete.
         /// </summary>
-        /// <param name="e">The <see cref="OxyInputEventArgs" /> instance containing the event data.</param>
+        /// <param name="e">The <see cref="OxyInputEventArgs"/> instance containing the event data.</param>
         public override void Completed(OxyTouchEventArgs e)
         {
             base.Completed(e);
@@ -57,7 +57,7 @@ namespace OxyPlot
         /// <summary>
         /// Occurs when a touch delta event is handled.
         /// </summary>
-        /// <param name="e">The <see cref="OxyPlot.OxyTouchEventArgs" /> instance containing the event data.</param>
+        /// <param name="e">The <see cref="OxyTouchEventArgs"/> instance containing the event data.</param>
         public override void Delta(OxyTouchEventArgs e)
         {
             base.Delta(e);
@@ -69,27 +69,15 @@ namespace OxyPlot
             var newPosition = e.Position;
             var previousPosition = newPosition - e.DeltaTranslation;
 
-            if (this.XAxis != null)
-            {
-                this.XAxis.Pan(previousPosition, newPosition);
-            }
+            this.XAxis?.Pan(previousPosition, newPosition);
 
-            if (this.YAxis != null)
-            {
-                this.YAxis.Pan(previousPosition, newPosition);
-            }
+            this.YAxis?.Pan(previousPosition, newPosition);
 
             var current = this.InverseTransform(newPosition.X, newPosition.Y);
 
-            if (this.XAxis != null)
-            {
-                this.XAxis.ZoomAt(e.DeltaScale.X, current.X);
-            }
+            this.XAxis?.ZoomAt(e.DeltaScale.X, current.X);
 
-            if (this.YAxis != null)
-            {
-                this.YAxis.ZoomAt(e.DeltaScale.Y, current.Y);
-            }
+            this.YAxis?.ZoomAt(e.DeltaScale.Y, current.Y);
 
             this.PlotView.InvalidatePlot(false);
             e.Handled = true;
@@ -98,7 +86,7 @@ namespace OxyPlot
         /// <summary>
         /// Occurs when an input device begins a manipulation on the plot.
         /// </summary>
-        /// <param name="e">The <see cref="OxyPlot.OxyTouchEventArgs" /> instance containing the event data.</param>
+        /// <param name="e">The <see cref="OxyTouchEventArgs"/> instance containing the event data.</param>
         public override void Started(OxyTouchEventArgs e)
         {
             this.AssignAxes(e.Position);
@@ -106,11 +94,11 @@ namespace OxyPlot
 
             if (this.SetHandledForPanOrZoom)
             {
-                this.IsPanEnabled = (this.XAxis != null && this.XAxis.IsPanEnabled)
-                                    || (this.YAxis != null && this.YAxis.IsPanEnabled);
+                this.IsPanEnabled = (this.XAxis?.IsPanEnabled == true)
+                                    || (this.YAxis?.IsPanEnabled == true);
 
-                this.IsZoomEnabled = (this.XAxis != null && this.XAxis.IsZoomEnabled)
-                                     || (this.YAxis != null && this.YAxis.IsZoomEnabled);
+                this.IsZoomEnabled = (this.XAxis?.IsZoomEnabled == true)
+                                     || (this.YAxis?.IsZoomEnabled == true);
 
                 e.Handled |= this.IsPanEnabled || this.IsZoomEnabled;
             }

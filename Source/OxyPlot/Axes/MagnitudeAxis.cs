@@ -17,7 +17,7 @@ namespace OxyPlot.Axes
     public class MagnitudeAxis : LinearAxis
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="MagnitudeAxis" /> class.
+        /// Initializes a new instance of the <see cref="MagnitudeAxis"/> class.
         /// </summary>
         public MagnitudeAxis()
         {
@@ -43,8 +43,7 @@ namespace OxyPlot.Axes
         /// <returns>The data point.</returns>
         public override DataPoint InverseTransform(double x, double y, Axis yaxis)
         {
-            var angleAxis = yaxis as AngleAxis;
-            if (angleAxis == null)
+            if (!(yaxis is AngleAxis angleAxis))
             {
                 throw new InvalidOperationException("Polar angle axis not defined!");
             }
@@ -62,7 +61,7 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Determines whether the axis is used for X/Y values.
         /// </summary>
-        /// <returns><c>true</c> if it is an XY axis; otherwise, <c>false</c> .</returns>
+        /// <returns><c>true</c> if it is an XY axis; otherwise, <c>false</c>.</returns>
         public override bool IsXyAxis()
         {
             return false;
@@ -88,8 +87,7 @@ namespace OxyPlot.Axes
         /// <returns>The transformed point.</returns>
         public override ScreenPoint Transform(double x, double y, Axis yaxis)
         {
-            var angleAxis = yaxis as AngleAxis;
-            if (angleAxis == null)
+            if (!(yaxis is AngleAxis angleAxis))
             {
                 throw new InvalidOperationException("Polar angle axis not defined!");
             }

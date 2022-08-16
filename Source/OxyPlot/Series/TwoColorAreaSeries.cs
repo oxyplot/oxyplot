@@ -36,9 +36,9 @@ namespace OxyPlot.Series
         /// Start index of a visible rendering window for markers.
         /// </summary>
         private int markerStartIndex;
-        
+
         /// <summary>
-        /// Initializes a new instance of the <see cref = "TwoColorAreaSeries" /> class.
+        /// Initializes a new instance of the <see cref="TwoColorAreaSeries"/> class.
         /// </summary>
         public TwoColorAreaSeries()
         {
@@ -80,10 +80,10 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Gets or sets the dash array for the rendered line that is below the limit (overrides <see cref="LineStyle" />).
+        /// Gets or sets the dash array for the rendered line that is below the limit (overrides <see cref="LineStyle"/>).
         /// </summary>
         /// <value>The dash array.</value>
-        /// <remarks>If this is not <c>null</c> it overrides the <see cref="LineStyle" /> property.</remarks>
+        /// <remarks>If this is not <c>null</c> it overrides the <see cref="LineStyle"/> property.</remarks>
         public double[] Dashes2 { get; set; }
 
         /// <summary>
@@ -116,7 +116,7 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Gets or sets the marker fill color which is below the limit line. The default is <see cref="OxyColors.Automatic" />.
+        /// Gets or sets the marker fill color which is below the limit line. The default is <see cref="OxyColors.Automatic"/>.
         /// </summary>
         /// <value>The marker fill.</value>
         public OxyColor MarkerFill2 { get; set; }
@@ -136,7 +136,7 @@ namespace OxyPlot.Series
         /// Gets the nearest point.
         /// </summary>
         /// <param name="point">The point.</param>
-        /// <param name="interpolate">Interpolate if set to <c>true</c> .</param>
+        /// <param name="interpolate">Interpolate if set to <c>true</c>.</param>
         /// <returns>A TrackerHitResult for the current hit.</returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
@@ -237,8 +237,8 @@ namespace OxyPlot.Series
                     aboveMarkers,
                     this.MarkerType,
                     null,
-                    markerSizes, 
-                    this.ActualMarkerFill, 
+                    markerSizes,
+                    this.ActualMarkerFill,
                     this.MarkerStroke,
                     this.MarkerStrokeThickness,
                     this.EdgeRenderingMode,
@@ -379,7 +379,7 @@ namespace OxyPlot.Series
         {
             var result = new List<ScreenPoint>();
 
-            if (double.IsNaN(baseline) || source.Count <= 0)
+            if (double.IsNaN(baseline) || source.Count == 0)
             {
                 return result;
             }

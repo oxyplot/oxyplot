@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Represents an axis presenting <see cref="System.DateTime" /> values.
+//   Represents an axis presenting <see cref="DateTime"/> values.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,7 +16,7 @@ namespace OxyPlot.Axes
     using System.Linq;
 
     /// <summary>
-    /// Represents an axis presenting <see cref="System.DateTime" /> values.
+    /// Represents an axis presenting <see cref="DateTime"/> values.
     /// </summary>
     /// <remarks>The actual numeric values on the axis are days since 1900/01/01.
     /// Use the static ToDouble and ToDateTime to convert numeric values to and from DateTimes.
@@ -53,7 +53,7 @@ namespace OxyPlot.Axes
         private DateTimeIntervalType actualMinorIntervalType;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref = "DateTimeAxis" /> class.
+        /// Initializes a new instance of the <see cref="DateTimeAxis"/> class.
         /// </summary>
         public DateTimeAxis()
         {
@@ -127,7 +127,7 @@ namespace OxyPlot.Axes
         /// Converts a numeric representation of the date (number of days after the time origin) to a DateTime structure.
         /// </summary>
         /// <param name="value">The number of days after the time origin.</param>
-        /// <returns>A <see cref="DateTime" /> structure. Ticks = 0 if the value is invalid.</returns>
+        /// <returns>A <see cref="DateTime"/> structure. Ticks = 0 if the value is invalid.</returns>
         public static DateTime ToDateTime(double value)
         {
             if (double.IsNaN(value) || value < MinDayValue || value > MaxDayValue)
@@ -253,9 +253,7 @@ namespace OxyPlot.Axes
                     }
 
                     break;
-                    
-                    
-                    
+
                 case DateTimeIntervalType.Milliseconds:
                     this.ActualMinorStep = this.ActualMajorStep;
                     if (this.ActualStringFormat == null)
@@ -264,7 +262,7 @@ namespace OxyPlot.Axes
                     }
 
                     break;
-                    
+
                 case DateTimeIntervalType.Manual:
                     break;
                 case DateTimeIntervalType.Auto:
@@ -343,13 +341,8 @@ namespace OxyPlot.Axes
 
             int maxNumberOfIntervals = Math.Max((int)(availableSize / maxIntervalSize), 2);
 
-            while (true)
+            while (range / interval >= maxNumberOfIntervals)
             {
-                if (range / interval < maxNumberOfIntervals)
-                {
-                    break;
-                }
-
                 double nextInterval = goodIntervals.FirstOrDefault(i => i > interval);
                 if (Math.Abs(nextInterval) <= double.Epsilon)
                 {
@@ -370,7 +363,7 @@ namespace OxyPlot.Axes
                 {
                     this.actualIntervalType = DateTimeIntervalType.Seconds;
                 }
-                    
+
                 if (interval >= 1.0 / 24 / 60)
                 {
                     this.actualIntervalType = DateTimeIntervalType.Minutes;
@@ -528,13 +521,13 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Creates <see cref="DateTime" /> tick values.
+        /// Creates <see cref="DateTime"/> tick values.
         /// </summary>
         /// <param name="min">The min.</param>
         /// <param name="max">The max.</param>
         /// <param name="interval">The interval.</param>
         /// <param name="intervalType">The interval type.</param>
-        /// <returns>A list of <see cref="DateTime" /> tick values.</returns>
+        /// <returns>A list of <see cref="DateTime"/> tick values.</returns>
         private IList<double> CreateDateTimeTickValues(
             double min, double max, double interval, DateTimeIntervalType intervalType)
         {

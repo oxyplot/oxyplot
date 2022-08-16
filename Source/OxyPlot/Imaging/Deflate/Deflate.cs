@@ -17,7 +17,7 @@ namespace OxyPlot
     /// </summary>
     /// <remarks>The code is a c# port of the DEFLATE project by Nayuki Minase at <a href="https://github.com/nayuki/DEFLATE">github</a>.
     /// Original source code: <a href="https://github.com/nayuki/DEFLATE/blob/master/src/nayuki/deflate/Decompressor.java"><c>Decompressor.java</c></a>.</remarks>
-    public class Deflate : IDisposable
+    public sealed class Deflate : IDisposable
     {
         /// <summary>
         /// The fixed literal length code.
@@ -55,7 +55,7 @@ namespace OxyPlot
         private bool disposed;
 
         /// <summary>
-        /// Initializes static members of the <see cref="Deflate" /> class.
+        /// Initializes static members of the <see cref="Deflate"/> class.
         /// </summary>
         static Deflate()
         {
@@ -72,7 +72,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Deflate" /> class.
+        /// Initializes a new instance of the <see cref="Deflate"/> class.
         /// </summary>
         /// <param name="reader">The reader.</param>
         private Deflate(BitReader reader)
@@ -128,10 +128,10 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Decompresses the data from the specified <see cref="Stream" />.
+        /// Decompresses the data from the specified <see cref="Stream"/>.
         /// </summary>
         /// <param name="input">The input.</param>
-        /// <returns>An array of <see cref="byte" />.</returns>
+        /// <returns>An array of <see cref="byte"/>.</returns>
         public static byte[] Decompress(Stream input)
         {
             var decomp = new Deflate(new ByteBitReader(input));
@@ -139,10 +139,10 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Decompresses the data from the specified <see cref="BitReader" />.
+        /// Decompresses the data from the specified <see cref="BitReader"/>.
         /// </summary>
         /// <param name="input">The input.</param>
-        /// <returns>An array of <see cref="byte" />.</returns>
+        /// <returns>An array of <see cref="byte"/>.</returns>
         public static byte[] Decompress(BitReader input)
         {
             var decomp = new Deflate(input);
@@ -153,7 +153,7 @@ namespace OxyPlot
         /// Decompresses the specified data.
         /// </summary>
         /// <param name="input">The input.</param>
-        /// <returns>An array of <see cref="byte" />.</returns>
+        /// <returns>An array of <see cref="byte"/>.</returns>
         public static byte[] Decompress(byte[] input)
         {
             return Decompress(new MemoryStream(input));
@@ -171,7 +171,7 @@ namespace OxyPlot
         /// <summary>
         /// For handling dynamic Huffman codes.
         /// </summary>
-        /// <returns>A sequence of <see cref="CodeTree" /> items.</returns>
+        /// <returns>A sequence of <see cref="CodeTree"/> items.</returns>
         private CodeTree[] DecodeHuffmanCodes()
         {
             var numLitLenCodes = this.ReadInt(5) + 257; // hlit  + 257
@@ -349,7 +349,7 @@ namespace OxyPlot
         /// Decodes the specified symbol.
         /// </summary>
         /// <param name="code">The code.</param>
-        /// <returns>The <see cref="int" />.</returns>
+        /// <returns>The <see cref="int"/>.</returns>
         private int DecodeSymbol(CodeTree code)
         {
             var currentNode = code.Root;
@@ -370,14 +370,14 @@ namespace OxyPlot
                     throw new Exception();
                 }
 
-                if (nextNode is Leaf)
+                if (nextNode is Leaf leaf)
                 {
-                    return ((Leaf)nextNode).Symbol;
+                    return leaf.Symbol;
                 }
 
-                if (nextNode is InternalNode)
+                if (nextNode is InternalNode internalNode)
                 {
-                    currentNode = (InternalNode)nextNode;
+                    currentNode = internalNode;
                 }
                 else
                 {
@@ -390,7 +390,7 @@ namespace OxyPlot
         /// Decodes the run length.
         /// </summary>
         /// <param name="sym">The symbol.</param>
-        /// <returns>The <see cref="int" />.</returns>
+        /// <returns>The <see cref="int"/>.</returns>
         private int DecodeRunLength(int sym)
         {
             if (sym < 257 || sym > 285)
@@ -416,7 +416,7 @@ namespace OxyPlot
         /// Decodes distance.
         /// </summary>
         /// <param name="sym">The symbol.</param>
-        /// <returns>The <see cref="int" />.</returns>
+        /// <returns>The <see cref="int"/>.</returns>
         private int DecodeDistance(int sym)
         {
             if (sym <= 3)
@@ -457,7 +457,7 @@ namespace OxyPlot
         /// Reads the specified number of bits.
         /// </summary>
         /// <param name="numBits">The number of bits to read.</param>
-        /// <returns>The <see cref="int" />.</returns>
+        /// <returns>The <see cref="int"/>.</returns>
         private int ReadInt(int numBits)
         {
             if (numBits < 0 || numBits >= 32)

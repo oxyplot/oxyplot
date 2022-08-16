@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Provides extension methods to the <see cref="BinaryReader" />.
+//   Provides extension methods to the <see cref="BinaryReader"/>.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,7 +16,7 @@ namespace OxyPlot
     using System.Text;
 
     /// <summary>
-    /// Provides extension methods to the <see cref="BinaryReader" />.
+    /// Provides extension methods to the <see cref="BinaryReader"/>.
     /// </summary>
     public static class BinaryReaderExtensions
     {
@@ -157,7 +157,7 @@ namespace OxyPlot
         /// Reads a big endian (Motorola convention) 64-bit floating point number.
         /// </summary>
         /// <param name="r">The reader.</param>
-        /// <returns>A <see cref="double" />.</returns>
+        /// <returns>A <see cref="double"/>.</returns>
         public static double ReadBigEndianDouble(this BinaryReader r)
         {
             byte[] a = r.ReadBytes(8);

@@ -47,7 +47,7 @@ namespace OxyPlot.Series
         private int winIndex;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref = "CandleStickAndVolumeSeries" /> class.
+        /// Initializes a new instance of the <see cref="CandleStickAndVolumeSeries"/> class.
         /// </summary>
         public CandleStickAndVolumeSeries()
         {
@@ -76,7 +76,7 @@ namespace OxyPlot.Series
         {
             get
             {
-                return this.data ?? (this.data = new List<OhlcvItem>());
+                return this.data ??= new List<OhlcvItem>();
             }
 
             set
@@ -208,11 +208,11 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Fast index of bar where max(bar[i].X) &lt;= x 
+        /// Fast index of bar where max(bar[i].X) &lt;= x
         /// </summary>
         /// <returns>The index of the bar closest to X, where max(bar[i].X) &lt;= x.</returns>
         /// <param name="x">The x coordinate.</param>
-        /// <param name="startingIndex">starting index</param> 
+        /// <param name="startingIndex">starting index</param>
         public int FindByX(double x, int startingIndex = -1)
         {
             if (startingIndex < 0)
@@ -296,7 +296,7 @@ namespace OxyPlot.Series
 
                     var max = new ScreenPoint(open.X, Math.Max(open.Y, close.Y));
                     var min = new ScreenPoint(open.X, Math.Min(open.Y, close.Y));
-                
+
                     var openLeft = open + new ScreenVector(-candlewidth * 0.5, 0);
 
                     using (rc.AutoResetClip(clippingBar))
@@ -326,20 +326,20 @@ namespace OxyPlot.Series
                             var leftPoint = new ScreenPoint(openLeft.X - this.StrokeThickness, min.Y);
                             var rightPoint = new ScreenPoint(openLeft.X + this.StrokeThickness + candlewidth, min.Y);
                             rc.DrawLine(
-                                new[] { leftPoint, rightPoint }, 
-                                lineColor, 
-                                this.StrokeThickness, 
+                                new[] { leftPoint, rightPoint },
+                                lineColor,
+                                this.StrokeThickness,
                                 this.EdgeRenderingMode,
                                 null, LineJoin.Miter);
 
                             leftPoint = new ScreenPoint(openLeft.X - this.StrokeThickness, max.Y);
                             rightPoint = new ScreenPoint(openLeft.X + this.StrokeThickness + candlewidth, max.Y);
                             rc.DrawLine(
-                                new[] { leftPoint, rightPoint }, 
-                                lineColor, 
-                                this.StrokeThickness, 
+                                new[] { leftPoint, rightPoint },
+                                lineColor,
+                                this.StrokeThickness,
                                 this.EdgeRenderingMode,
-                                null, 
+                                null,
                                 LineJoin.Miter);
                         }
                         else
@@ -408,7 +408,6 @@ namespace OxyPlot.Series
                                 break;
                         }
                     }
-
                 }
 
                 if (this.SeparatorStrokeThickness > 0 && this.SeparatorLineStyle != LineStyle.None)
@@ -699,7 +698,7 @@ namespace OxyPlot.Series
         {
             if (yaxis == null)
             {
-                return default(OxyRect);
+                return default;
             }
 
             double minX = Math.Min(this.XAxis.ScreenMin.X, this.XAxis.ScreenMax.X);
@@ -718,7 +717,7 @@ namespace OxyPlot.Series
         {
             if (this.VolumeAxis == null)
             {
-                return default(OxyRect);
+                return default;
             }
 
             double minX = Math.Min(this.XAxis.ScreenMin.X, this.XAxis.ScreenMax.X);

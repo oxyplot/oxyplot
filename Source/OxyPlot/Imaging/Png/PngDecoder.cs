@@ -21,8 +21,8 @@ namespace OxyPlot
         /// Gets information about the image in the specified byte array.
         /// </summary>
         /// <param name="bytes">The image data.</param>
-        /// <returns>An <see cref="OxyImageInfo" /> structure.</returns>
-        /// <exception cref="System.FormatException">Wrong length of pHYs chunk.</exception>
+        /// <returns>An <see cref="OxyImageInfo"/> structure.</returns>
+        /// <exception cref="FormatException">Wrong length of pHYs chunk.</exception>
         public OxyImageInfo GetImageInfo(byte[] bytes)
         {
             var ms = new MemoryStream(bytes);

@@ -36,7 +36,7 @@ namespace OxyPlot.Series
         private bool ownsItemsSourceItems;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BoxPlotSeries" /> class.
+        /// Initializes a new instance of the <see cref="BoxPlotSeries"/> class.
         /// </summary>
         public BoxPlotSeries()
         {
@@ -130,7 +130,7 @@ namespace OxyPlot.Series
         public MarkerType OutlierType { get; set; }
 
         /// <summary>
-        /// Gets or sets the a custom polygon outline for the outlier markers. Set <see cref="OutlierType" /> to <see cref="OxyPlot.MarkerType.Custom" /> to use this property.
+        /// Gets or sets the a custom polygon outline for the outlier markers. Set <see cref="OutlierType"/> to <see cref="MarkerType.Custom"/> to use this property.
         /// </summary>
         /// <value>A polyline. The default is <c>null</c>.</value>
         public ScreenPoint[] OutlierOutline { get; set; }
@@ -183,7 +183,7 @@ namespace OxyPlot.Series
         /// Gets the nearest point.
         /// </summary>
         /// <param name="point">The point.</param>
-        /// <param name="interpolate">interpolate if set to <c>true</c> .</param>
+        /// <param name="interpolate">interpolate if set to <c>true</c>.</param>
         /// <returns>A TrackerHitResult for the current hit.</returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
@@ -285,11 +285,11 @@ namespace OxyPlot.Series
         /// <param name="item">The item.</param>
         /// <param name="xaxis">The x axis.</param>
         /// <param name="yaxis">The y axis.</param>
-        /// <returns><c>true</c> if the point is valid; otherwise, <c>false</c> .</returns>
+        /// <returns><c>true</c> if the point is valid; otherwise, <c>false</c>.</returns>
         public virtual bool IsValidPoint(BoxPlotItem item, Axis xaxis, Axis yaxis)
         {
             return !double.IsNaN(item.X) && !double.IsInfinity(item.X) && !item.Values.Any(double.IsNaN)
-                   && !item.Values.Any(double.IsInfinity) && (xaxis != null && xaxis.IsValidValue(item.X))
+                   && !item.Values.Any(double.IsInfinity) && (xaxis?.IsValidValue(item.X) == true)
                    && (yaxis != null && item.Values.All(yaxis.IsValidValue));
         }
 
@@ -371,10 +371,10 @@ namespace OxyPlot.Series
                     // Draw the box
                     var rect = this.GetBoxRect(item);
                     rc.DrawRectangle(
-                        rect, 
-                        fillColor, 
-                        strokeColor, 
-                        this.StrokeThickness, 
+                        rect,
+                        fillColor,
+                        strokeColor,
+                        this.StrokeThickness,
                         this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness));
                 }
 
@@ -436,7 +436,7 @@ namespace OxyPlot.Series
             if (this.OutlierType != MarkerType.None)
             {
                 // Draw the outlier(s)
-                var markerSizes = outlierScreenPoints.Select(o => this.OutlierSize).ToList();
+                var markerSizes = outlierScreenPoints.Select(_ => this.OutlierSize).ToList();
                 rc.DrawMarkers(
                     outlierScreenPoints,
                     this.OutlierType,
@@ -556,8 +556,7 @@ namespace OxyPlot.Series
                 return;
             }
 
-            var sourceAsListOfT = this.ItemsSource as IEnumerable<BoxPlotItem>;
-            if (sourceAsListOfT != null)
+            if (this.ItemsSource is IEnumerable<BoxPlotItem> sourceAsListOfT)
             {
                 this.itemsSourceItems = sourceAsListOfT.ToList();
                 this.ownsItemsSourceItems = false;

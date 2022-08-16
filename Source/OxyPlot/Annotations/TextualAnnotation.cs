@@ -58,7 +58,7 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// Gets the actual position of the text.
         /// </summary>
-        /// <param name="defaultPosition">A function that returns the default position. This is used if <see cref="TextPosition" /> is undefined.</param>
+        /// <param name="defaultPosition">A function that returns the default position. This is used if <see cref="TextPosition"/> is undefined.</param>
         /// <returns>The actual position of the text, in screen space.</returns>
         protected ScreenPoint GetActualTextPosition(Func<ScreenPoint> defaultPosition)
         {

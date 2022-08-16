@@ -18,7 +18,7 @@ namespace OxyPlot
     public class OxyPalette
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="OxyPalette" /> class.
+        /// Initializes a new instance of the <see cref="OxyPalette"/> class.
         /// </summary>
         public OxyPalette()
         {
@@ -26,7 +26,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OxyPalette" /> class.
+        /// Initializes a new instance of the <see cref="OxyPalette"/> class.
         /// </summary>
         /// <param name="colors">The colors.</param>
         public OxyPalette(params OxyColor[] colors)
@@ -35,7 +35,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OxyPalette" /> class.
+        /// Initializes a new instance of the <see cref="OxyPalette"/> class.
         /// </summary>
         /// <param name="colors">The colors.</param>
         public OxyPalette(IEnumerable<OxyColor> colors)
@@ -82,7 +82,7 @@ namespace OxyPlot
         /// <summary>
         /// Creates a palette with reversed color order.
         /// </summary>
-        /// <returns>The reversed <see cref="OxyPalette" />.</returns>
+        /// <returns>The reversed <see cref="OxyPalette"/>.</returns>
         public OxyPalette Reverse()
         {
             return new OxyPalette(this.Colors.Reverse());

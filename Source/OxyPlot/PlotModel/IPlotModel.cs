@@ -18,13 +18,13 @@ namespace OxyPlot
         /// Gets the color of the background of the plot.
         /// </summary>
         /// <value>The color.</value>
-        /// <remarks>If the background color is set to <see cref="OxyColors.Undefined" /> or is otherwise invisible then the background will be determined by the plot view or exporter.</remarks>
+        /// <remarks>If the background color is set to <see cref="OxyColors.Undefined"/> or is otherwise invisible then the background will be determined by the plot view or exporter.</remarks>
         OxyColor Background { get; }
 
         /// <summary>
         /// Updates the model.
         /// </summary>
-        /// <param name="updateData">if set to <c>true</c> , all data collections will be updated.</param>
+        /// <param name="updateData">if set to <c>true</c>, all data collections will be updated.</param>
         void Update(bool updateData);
 
         /// <summary>

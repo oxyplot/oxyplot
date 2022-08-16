@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Provides an abstract base class for elements of a <see cref="PlotModel" />.
+//   Provides an abstract base class for elements of a <see cref="PlotModel"/>.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -14,12 +14,12 @@ namespace OxyPlot
     using System.Reflection;
 
     /// <summary>
-    /// Provides an abstract base class for elements of a <see cref="PlotModel" />.
+    /// Provides an abstract base class for elements of a <see cref="PlotModel"/>.
     /// </summary>
     public abstract class PlotElement : Element, IPlotElement
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PlotElement" /> class.
+        /// Initializes a new instance of the <see cref="PlotElement"/> class.
         /// </summary>
         protected PlotElement()
         {
@@ -31,14 +31,14 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets or sets the font. The default is <c>null</c> (use <see cref="OxyPlot.PlotModel.DefaultFont" />.
+        /// Gets or sets the font. The default is <c>null</c> (use <see cref="PlotModel.DefaultFont"/>.
         /// </summary>
         /// <value>The font.</value>
         /// <remarks>If the value is <c>null</c>, the DefaultFont of the parent PlotModel will be used.</remarks>
         public string Font { get; set; }
 
         /// <summary>
-        /// Gets or sets the size of the font. The default is <c>double.NaN</c> (use <see cref="OxyPlot.PlotModel.DefaultFontSize" />).
+        /// Gets or sets the size of the font. The default is <c>double.NaN</c> (use <see cref="PlotModel.DefaultFontSize"/>).
         /// </summary>
         /// <value>The size of the font.</value>
         /// <remarks>If the value is <c>NaN</c>, the DefaultFontSize of the parent PlotModel will be used.</remarks>
@@ -51,7 +51,7 @@ namespace OxyPlot
         public double FontWeight { get; set; }
 
         /// <summary>
-        /// Gets the parent <see cref="PlotModel" />.
+        /// Gets the parent <see cref="PlotModel"/>.
         /// </summary>
         public PlotModel PlotModel
         {
@@ -69,7 +69,7 @@ namespace OxyPlot
         public object Tag { get; set; }
 
         /// <summary>
-        /// Gets or sets the color of the text. The default is <c>OxyColors.Automatic</c> (use <see cref="OxyPlot.PlotModel.TextColor" />).
+        /// Gets or sets the color of the text. The default is <c>OxyColors.Automatic</c> (use <see cref="PlotModel.TextColor"/>).
         /// </summary>
         /// <value>The color of the text.</value>
         /// <remarks>If the value is <c>OxyColors.Automatic</c>, the TextColor of the parent PlotModel will be used.</remarks>
@@ -78,7 +78,7 @@ namespace OxyPlot
         /// <summary>
         /// Gets or sets the edge rendering mode that is used for rendering the plot element.
         /// </summary>
-        /// <value>The edge rendering mode. The default is <see cref="OxyPlot.EdgeRenderingMode.Automatic"/>.</value>
+        /// <value>The edge rendering mode. The default is <see cref="EdgeRenderingMode.Automatic"/>.</value>
         public EdgeRenderingMode EdgeRenderingMode { get; set; }
 
         /// <summary>

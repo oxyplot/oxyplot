@@ -17,7 +17,7 @@
         private List<RectangleItem> actualItems;
 
         /// <summary>
-        /// Specifies if the <see cref="actualItems" /> list can be modified.
+        /// Specifies if the <see cref="actualItems"/> list can be modified.
         /// </summary>
         private bool ownsActualItems;
 
@@ -32,7 +32,7 @@
         private const string DefaultColorAxisTitle = "Value";
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="HeatMapSeries" /> class.
+        /// Initializes a new instance of the <see cref="HeatMapSeries"/> class.
         /// </summary>
         public RectangleSeries()
         {
@@ -67,7 +67,7 @@
         /// Gets or sets the format string for the cell labels. The default value is <c>0.00</c>.
         /// </summary>
         /// <value>The format string.</value>
-        /// <remarks>The label format string is only used when <see cref="LabelFontSize" /> is greater than 0.</remarks>
+        /// <remarks>The label format string is only used when <see cref="LabelFontSize"/> is greater than 0.</remarks>
         public string LabelFormatString { get; set; }
 
         /// <summary>
@@ -82,7 +82,7 @@
         public bool CanTrackerInterpolatePoints { get; set; }
 
         /// <summary>
-        /// Gets or sets the delegate used to map from <see cref="ItemsSeries.ItemsSource" /> to <see cref="RectangleItem" />. The default is <c>null</c>.
+        /// Gets or sets the delegate used to map from <see cref="ItemsSeries.ItemsSource"/> to <see cref="RectangleItem"/>. The default is <c>null</c>.
         /// </summary>
         /// <value>The mapping.</value>
         /// <remarks>Example: series1.Mapping = item => new RectangleItem(new DataPoint((MyType)item).Time1, ((MyType)item).Value1), new DataPoint((MyType)item).Time2, ((MyType)item).Value2));</remarks>
@@ -91,13 +91,13 @@
         /// <summary>
         /// Gets the list of rectangles.
         /// </summary>
-        /// <value>A list of <see cref="RectangleItem" />. This list is used if <see cref="ItemsSeries.ItemsSource" /> is not set.</value>
+        /// <value>A list of <see cref="RectangleItem"/>. This list is used if <see cref="ItemsSeries.ItemsSource"/> is not set.</value>
         public List<RectangleItem> Items { get; } = new List<RectangleItem>();
 
         /// <summary>
         /// Gets the list of rectangles that should be rendered.
         /// </summary>
-        /// <value>A list of <see cref="RectangleItem" />.</value>
+        /// <value>A list of <see cref="RectangleItem"/>.</value>
         protected List<RectangleItem> ActualItems => this.ItemsSource != null ? this.actualItems : this.Items;
 
         /// <summary>
@@ -157,7 +157,7 @@
         }
 
         /// <summary>
-        /// Updates the points from the <see cref="ItemsSeries.ItemsSource" />.
+        /// Updates the points from the <see cref="ItemsSeries.ItemsSource"/>.
         /// </summary>
         private void UpdateActualItems()
         {
@@ -173,8 +173,7 @@
                 return;
             }
 
-            var sourceAsListOfDataRects = this.ItemsSource as List<RectangleItem>;
-            if (sourceAsListOfDataRects != null)
+            if (this.ItemsSource is List<RectangleItem> sourceAsListOfDataRects)
             {
                 this.actualItems = sourceAsListOfDataRects;
                 this.ownsActualItems = false;
@@ -183,8 +182,7 @@
 
             this.ClearActualItems();
 
-            var sourceAsEnumerableDataRects = this.ItemsSource as IEnumerable<RectangleItem>;
-            if (sourceAsEnumerableDataRects != null)
+            if (this.ItemsSource is IEnumerable<RectangleItem> sourceAsEnumerableDataRects)
             {
                 this.actualItems.AddRange(sourceAsEnumerableDataRects);
             }
@@ -208,23 +206,23 @@
                 var rectrect = new OxyRect(p1, p2);
 
                 rc.DrawRectangle(
-                    rectrect, 
-                    rectcolor, 
+                    rectrect,
+                    rectcolor,
                     OxyColors.Undefined,
-                    0, 
+                    0,
                     this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness));
 
                 if (this.LabelFontSize > 0)
                 {
                     rc.DrawText(
-                        rectrect.Center, 
-                        item.Value.ToString(this.LabelFormatString), 
-                        this.ActualTextColor, 
-                        this.ActualFont, 
-                        this.LabelFontSize, 
-                        this.ActualFontWeight, 
-                        0, 
-                        HorizontalAlignment.Center, 
+                        rectrect.Center,
+                        item.Value.ToString(this.LabelFormatString),
+                        this.ActualTextColor,
+                        this.ActualFont,
+                        this.LabelFontSize,
+                        this.ActualFontWeight,
+                        0,
+                        HorizontalAlignment.Center,
                         VerticalAlignment.Middle);
                 }
             }
@@ -298,7 +296,7 @@
         /// </summary>
         protected internal void UpdateMaxMinXY()
         {
-            if (this.ActualItems != null && this.ActualItems.Count > 0)
+            if (this.ActualItems?.Count > 0)
             {
                 this.MinX = Math.Min(this.ActualItems.Min(r => r.A.X), this.ActualItems.Min(r => r.B.X));
                 this.MaxX = Math.Max(this.ActualItems.Max(r => r.A.X), this.ActualItems.Max(r => r.B.X));
@@ -322,7 +320,7 @@
 
             this.UpdateMaxMinXY();
 
-            if (this.ActualItems != null && this.ActualItems.Count > 0)
+            if (this.ActualItems?.Count > 0)
             {
                 this.MinValue = this.ActualItems.Min(r => r.Value);
                 this.MaxValue = this.ActualItems.Max(r => r.Value);
@@ -335,8 +333,7 @@
         protected internal override void UpdateAxisMaxMin()
         {
             base.UpdateAxisMaxMin();
-            var colorAxis = this.ColorAxis as Axis;
-            if (colorAxis != null)
+            if (this.ColorAxis is Axis colorAxis)
             {
                 colorAxis.Include(this.MinValue);
                 colorAxis.Include(this.MaxValue);
@@ -344,9 +341,9 @@
         }
 
         /// <summary>
-        /// Tests if a <see cref="DataPoint" /> is inside the heat map
+        /// Tests if a <see cref="DataPoint"/> is inside the heat map
         /// </summary>
-        /// <param name="p">The <see cref="DataPoint" /> to test.</param>
+        /// <param name="p">The <see cref="DataPoint"/> to test.</param>
         /// <returns><c>True</c> if the point is inside the heat map.</returns>
         private bool IsPointInRange(DataPoint p)
         {

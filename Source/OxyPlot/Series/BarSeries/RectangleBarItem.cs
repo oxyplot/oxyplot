@@ -15,7 +15,7 @@ namespace OxyPlot.Series
     public class RectangleBarItem : ICodeGenerating
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="RectangleBarItem" /> class.
+        /// Initializes a new instance of the <see cref="RectangleBarItem"/> class.
         /// </summary>
         public RectangleBarItem()
         {
@@ -23,7 +23,7 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RectangleBarItem" /> class.
+        /// Initializes a new instance of the <see cref="RectangleBarItem"/> class.
         /// </summary>
         /// <param name="x0">The x0.</param>
         /// <param name="y0">The y0.</param>

@@ -3,14 +3,14 @@
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Specifies the definition of the line in a <see cref="LineAnnotation" />.
+//   Specifies the definition of the line in a <see cref="LineAnnotation"/>.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Annotations
 {
     /// <summary>
-    /// Specifies the definition of the line in a <see cref="LineAnnotation" />.
+    /// Specifies the definition of the line in a <see cref="LineAnnotation"/>.
     /// </summary>
     public enum LineAnnotationType
     {

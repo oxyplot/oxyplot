@@ -32,7 +32,7 @@ namespace OxyPlot
         private bool disposed;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="XmlWriterBase" /> class.
+        /// Initializes a new instance of the <see cref="XmlWriterBase"/> class.
         /// </summary>
         /// <param name="stream">The stream.</param>
         protected XmlWriterBase(Stream stream)

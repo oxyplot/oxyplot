@@ -20,9 +20,6 @@ namespace OxyPlot.Series
         /// The undefined data range.
         /// </summary>
         public static readonly DataRange Undefined = default;
-
-        private readonly double minimum;
-        private readonly double maximum;
         private readonly bool isDefined;
 
         /// <summary>
@@ -42,8 +39,8 @@ namespace OxyPlot.Series
                 throw new ArgumentException("max must be larger or equal min");
             }
 
-            this.minimum = min;
-            this.maximum = max;
+            this.Minimum = min;
+            this.Maximum = max;
 
             this.isDefined = true;
         }
@@ -51,12 +48,12 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets the lower bound of the data range.
         /// </summary>
-        public double Minimum => this.minimum;
+        public double Minimum { get; }
 
         /// <summary>
         /// Gets the upper bound of the data range.
         /// </summary>
-        public double Maximum => this.maximum;
+        public double Maximum { get; }
 
         /// <summary>
         /// Gets the difference between maximum and minimum.
@@ -108,9 +105,9 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Returns a <see cref="string" /> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="string" /> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public override string ToString()
         {
             return $"[{this.Minimum}, {this.Maximum}]";

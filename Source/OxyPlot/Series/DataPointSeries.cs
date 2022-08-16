@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Provides an abstract base class for series that contain a collection of <see cref="DataPoint" />s.
+//   Provides an abstract base class for series that contain a collection of <see cref="DataPoint"/>s.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -13,15 +13,10 @@ namespace OxyPlot.Series
     using System.Collections.Generic;
 
     /// <summary>
-    /// Provides an abstract base class for series that contain a collection of <see cref="DataPoint" />s.
+    /// Provides an abstract base class for series that contain a collection of <see cref="DataPoint"/>s.
     /// </summary>
     public abstract class DataPointSeries : XYAxisSeries
     {
-        /// <summary>
-        /// The list of data points.
-        /// </summary>
-        private readonly List<DataPoint> points = new List<DataPoint>();
-
         /// <summary>
         /// The data points from the items source.
         /// </summary>
@@ -50,7 +45,7 @@ namespace OxyPlot.Series
         public string DataFieldY { get; set; }
 
         /// <summary>
-        /// Gets or sets the delegate used to map from <see cref="ItemsSeries.ItemsSource" /> to the <see cref="ActualPoints" />. The default is <c>null</c>.
+        /// Gets or sets the delegate used to map from <see cref="ItemsSeries.ItemsSource"/> to the <see cref="ActualPoints"/>. The default is <c>null</c>.
         /// </summary>
         /// <value>The mapping.</value>
         /// <remarks>Example: series1.Mapping = item => new DataPoint(((MyType)item).Time,((MyType)item).Value);</remarks>
@@ -59,24 +54,18 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets the list of points.
         /// </summary>
-        /// <value>A list of <see cref="DataPoint" />.</value>
-        public List<DataPoint> Points
-        {
-            get
-            {
-                return this.points;
-            }
-        }
+        /// <value>A list of <see cref="DataPoint"/>.</value>
+        public List<DataPoint> Points { get; } = new List<DataPoint>();
 
         /// <summary>
         /// Gets the list of points that should be rendered.
         /// </summary>
-        /// <value>A list of <see cref="DataPoint" />.</value>
+        /// <value>A list of <see cref="DataPoint"/>.</value>
         protected List<DataPoint> ActualPoints
         {
             get
             {
-                return this.ItemsSource != null ? this.itemsSourcePoints : this.points;
+                return this.ItemsSource != null ? this.itemsSourcePoints : this.Points;
             }
         }
 
@@ -107,7 +96,7 @@ namespace OxyPlot.Series
             if (result != null)
             {
                 result.Text = StringHelper.Format(
-                    this.ActualCulture, 
+                    this.ActualCulture,
                     this.TrackerFormatString,
                     result.Item,
                     this.Title,
@@ -176,7 +165,7 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Updates the points from the <see cref="ItemsSeries.ItemsSource" />.
+        /// Updates the points from the <see cref="ItemsSeries.ItemsSource"/>.
         /// </summary>
         private void UpdateItemsSourcePoints()
         {
@@ -192,8 +181,7 @@ namespace OxyPlot.Series
                 return;
             }
 
-            var sourceAsListOfDataPoints = this.ItemsSource as List<DataPoint>;
-            if (sourceAsListOfDataPoints != null)
+            if (this.ItemsSource is List<DataPoint> sourceAsListOfDataPoints)
             {
                 this.itemsSourcePoints = sourceAsListOfDataPoints;
                 this.ownsItemsSourcePoints = false;
@@ -202,8 +190,7 @@ namespace OxyPlot.Series
 
             this.ClearItemsSourcePoints();
 
-            var sourceAsEnumerableDataPoints = this.ItemsSource as IEnumerable<DataPoint>;
-            if (sourceAsEnumerableDataPoints != null)
+            if (this.ItemsSource is IEnumerable<DataPoint> sourceAsEnumerableDataPoints)
             {
                 this.itemsSourcePoints.AddRange(sourceAsEnumerableDataPoints);
                 return;
@@ -216,14 +203,13 @@ namespace OxyPlot.Series
             {
                 foreach (var item in this.ItemsSource)
                 {
-                    if (item is DataPoint)
+                    if (item is DataPoint dataPoint)
                     {
-                        this.itemsSourcePoints.Add((DataPoint)item);
+                        this.itemsSourcePoints.Add(dataPoint);
                         continue;
                     }
 
-                    var idpp = item as IDataPointProvider;
-                    if (idpp == null)
+                    if (!(item is IDataPointProvider idpp))
                     {
                         continue;
                     }

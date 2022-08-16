@@ -3,19 +3,19 @@
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Provides utility methods related to <see cref="PortableDocumentImage" />.
+//   Provides utility methods related to <see cref="PortableDocumentImage"/>.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     /// <summary>
-    /// Provides utility methods related to <see cref="PortableDocumentImage" />.
+    /// Provides utility methods related to <see cref="PortableDocumentImage"/>.
     /// </summary>
     public static class PortableDocumentImageUtilities
     {
         /// <summary>
-        /// Converts the specified <see cref="OxyImage" /> to a <see cref="PortableDocumentImage" />.
+        /// Converts the specified <see cref="OxyImage"/> to a <see cref="PortableDocumentImage"/>.
         /// </summary>
         /// <param name="image">The source image.</param>
         /// <param name="interpolate">interpolate if set to <c>true</c>.</param>

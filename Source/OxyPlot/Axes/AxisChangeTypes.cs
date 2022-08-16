@@ -3,14 +3,14 @@
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Defines change types for the <see cref="Axis.AxisChanged" /> event.
+//   Defines change types for the <see cref="Axis.AxisChanged"/> event.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Axes
 {
     /// <summary>
-    /// Defines change types for the <see cref="Axis.AxisChanged" /> event.
+    /// Defines change types for the <see cref="Axis.AxisChanged"/> event.
     /// </summary>
     public enum AxisChangeTypes
     {

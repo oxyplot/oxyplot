@@ -17,7 +17,7 @@ namespace OxyPlot
     public class OxyPen
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="OxyPen" /> class.
+        /// Initializes a new instance of the <see cref="OxyPen"/> class.
         /// </summary>
         /// <param name="color">The color.</param>
         /// <param name="thickness">The thickness.</param>
@@ -43,7 +43,7 @@ namespace OxyPlot
         public OxyColor Color { get; set; }
 
         /// <summary>
-        /// Gets or sets the dash array (overrides <see cref="LineStyle" />).
+        /// Gets or sets the dash array (overrides <see cref="LineStyle"/>).
         /// </summary>
         /// <value>The dash array.</value>
         public double[] DashArray { get; set; }
@@ -55,7 +55,7 @@ namespace OxyPlot
         public LineJoin LineJoin { get; set; }
 
         /// <summary>
-        /// Gets or sets the line style (overridden by <see cref="DashArray" />).
+        /// Gets or sets the line style (overridden by <see cref="DashArray"/>).
         /// </summary>
         /// <value>The line style.</value>
         public LineStyle LineStyle { get; set; }

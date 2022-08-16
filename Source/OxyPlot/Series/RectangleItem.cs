@@ -12,9 +12,9 @@ namespace OxyPlot.Series
     using System;
 
     /// <summary>
-    /// Represents an item in a <see cref="RectangleSeries" />.
+    /// Represents an item in a <see cref="RectangleSeries"/>.
     /// </summary>
-    /// <remarks><see cref="RectangleItem" />s are transformed to <see cref="OxyRect" />s.</remarks>
+    /// <remarks><see cref="RectangleItem"/>s are transformed to <see cref="OxyRect"/>s.</remarks>
     public class RectangleItem : ICodeGenerating, IEquatable<RectangleItem>
     {
         /// <summary>
@@ -23,7 +23,7 @@ namespace OxyPlot.Series
         public static readonly RectangleItem Undefined = new RectangleItem(DataPoint.Undefined, DataPoint.Undefined, double.NaN);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RectangleItem" /> class.
+        /// Initializes a new instance of the <see cref="RectangleItem"/> class.
         /// </summary>
         /// <param name="x1">The x coordinate of the first corner.</param>
         /// <param name="x2">The x coordinate of the diagonally-opposite corner.</param>
@@ -38,7 +38,7 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RectangleItem" /> class.
+        /// Initializes a new instance of the <see cref="RectangleItem"/> class.
         /// </summary>
         /// <param name="a">The first corner.</param>
         /// <param name="b">The diagonally-opposite corner.</param>
@@ -88,19 +88,19 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Determines whether this instance and another specified <see cref="T:RectangleItem" /> object have the same value.
+        /// Determines whether this instance and another specified <see cref="T:RectangleItem"/> object have the same value.
         /// </summary>
         /// <param name="other">The point to compare to this instance.</param>
-        /// <returns><c>true</c> if the value of the <paramref name="other" /> parameter is the same as the value of this instance; otherwise, <c>false</c>.</returns>
+        /// <returns><c>true</c> if the value of the <paramref name="other"/> parameter is the same as the value of this instance; otherwise, <c>false</c>.</returns>
         public bool Equals(RectangleItem other)
         {
             return this.A.Equals(other.A) && this.B.Equals(other.B);
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public override string ToString()
         {
             return $"{this.A} {this.B} {this.Value}";

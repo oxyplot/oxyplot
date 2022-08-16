@@ -18,7 +18,7 @@ namespace OxyPlot.Axes
     public class CategoryColorAxis : CategoryAxis, IColorAxis
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CategoryColorAxis" /> class.
+        /// Initializes a new instance of the <see cref="CategoryColorAxis"/> class.
         /// </summary>
         public CategoryColorAxis()
         {
@@ -121,10 +121,7 @@ namespace OxyPlot.Axes
                         this.EdgeRenderingMode);
                 };
 
-                IList<double> majorLabelValues;
-                IList<double> majorTickValues;
-                IList<double> minorTickValues;
-                this.GetTickValues(out majorLabelValues, out majorTickValues, out minorTickValues);
+                this.GetTickValues(out IList<double> majorLabelValues, out IList<double> majorTickValues, out IList<double> minorTickValues);
 
                 int n = this.Palette.Colors.Count;
                 for (int i = 0; i < n; i++)
@@ -145,10 +142,7 @@ namespace OxyPlot.Axes
         /// <returns>The value.</returns>
         protected double GetHighValue(int paletteIndex)
         {
-            IList<double> majorLabelValues;
-            IList<double> majorTickValues;
-            IList<double> minorTickValues;
-            this.GetTickValues(out majorLabelValues, out majorTickValues, out minorTickValues);
+            this.GetTickValues(out IList<double> majorLabelValues, out IList<double> majorTickValues, out IList<double> minorTickValues);
             var highValue = this.GetHighValue(paletteIndex, majorLabelValues);
             return highValue;
         }

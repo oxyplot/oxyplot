@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Provides extension methods for <see cref="IRenderContext" />.
+//   Provides extension methods for <see cref="IRenderContext"/>.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -14,7 +14,7 @@ namespace OxyPlot
     using System.Linq;
 
     /// <summary>
-    /// Provides extension methods for <see cref="IRenderContext" />.
+    /// Provides extension methods for <see cref="IRenderContext"/>.
     /// </summary>
     public static class RenderingExtensions
     {
@@ -520,7 +520,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Applies the specified clipping rectangle the the render context and returns a reset token. The clipping is reset once this token is disposed.
+        /// Applies the specified clipping rectangle the render context and returns a reset token. The clipping is reset once this token is disposed.
         /// </summary>
         /// <param name="rc">The render context.</param>
         /// <param name="clippingRectangle">The clipping rectangle.</param>
@@ -535,7 +535,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="p">The position of the marker.</param>
         /// <param name="type">The marker type.</param>
-        /// <param name="outline">The custom outline, if <paramref name="type" /> is <see cref="MarkerType.Custom" />.</param>
+        /// <param name="outline">The custom outline, if <paramref name="type"/> is <see cref="MarkerType.Custom"/>.</param>
         /// <param name="size">The size of the marker.</param>
         /// <param name="ellipses">The output ellipse collection.</param>
         /// <param name="rects">The output rectangle collection.</param>
@@ -555,7 +555,7 @@ namespace OxyPlot
             {
                 if (outline == null)
                 {
-                    throw new ArgumentNullException("outline", "The outline should be set when MarkerType is 'Custom'.");
+                    throw new ArgumentNullException(nameof(outline), "The outline should be set when MarkerType is 'Custom'.");
                 }
 
                 var poly = outline.Select(o => new ScreenPoint(p.X + (o.x * size), p.Y + (o.y * size))).ToList();
@@ -637,7 +637,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Reduces the specified list of points by the specified minimum squared distance. 
+        /// Reduces the specified list of points by the specified minimum squared distance.
         /// </summary>
         /// <param name="points">The points that should be evaluated.</param>
         /// <param name="minDistSquared">The minimum line segment length (squared).</param>

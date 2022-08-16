@@ -15,7 +15,7 @@ namespace OxyPlot.Series
     public class ErrorBarItem : BarItem
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ErrorBarItem" /> class.
+        /// Initializes a new instance of the <see cref="ErrorBarItem"/> class.
         /// </summary>
         public ErrorBarItem()
         {
@@ -23,7 +23,7 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ErrorBarItem" /> class.
+        /// Initializes a new instance of the <see cref="ErrorBarItem"/> class.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <param name="error">The error.</param>

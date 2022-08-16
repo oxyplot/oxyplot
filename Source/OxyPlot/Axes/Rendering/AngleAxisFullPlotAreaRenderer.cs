@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Provides functionality to render with the plot area filled completely <see cref="AngleAxis" />.
+//   Provides functionality to render with the plot area filled completely <see cref="AngleAxis"/>.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -13,12 +13,12 @@ namespace OxyPlot.Axes
     using System.Linq;
 
     /// <summary>
-    /// Provides functionality to render <see cref="AngleAxis" /> using the full plot area.
+    /// Provides functionality to render <see cref="AngleAxis"/> using the full plot area.
     /// </summary>
     public class AngleAxisFullPlotAreaRenderer : AxisRendererBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="AngleAxisFullPlotAreaRenderer" /> class.
+        /// Initializes a new instance of the <see cref="AngleAxisFullPlotAreaRenderer"/> class.
         /// </summary>
         /// <param name="rc">The render context.</param>
         /// <param name="plot">The plot.</param>
@@ -32,7 +32,7 @@ namespace OxyPlot.Axes
         /// </summary>
         /// <param name="axis">The axis.</param>
         /// <param name="pass">The render pass.</param>
-        /// <exception cref="System.InvalidOperationException">Magnitude axis not defined.</exception>
+        /// <exception cref="InvalidOperationException">Magnitude axis not defined.</exception>
         public override void Render(Axis axis, int pass)
         {
             var angleAxis = (AngleAxis)axis;
@@ -84,14 +84,15 @@ namespace OxyPlot.Axes
                 }
             }
 
+            const double degree = Math.PI / 180d;
+
             //Text rendering
             foreach (var value in this.MajorLabelValues.Take(majorTickCount))
             {
-                ScreenPoint pt = TransformToClientRectangle(magnitudeAxis.ClipMaximum, value, axis, this.Plot.PlotArea, magnitudeAxis.MidPoint);
+                ScreenPoint pt = this.TransformToClientRectangle(magnitudeAxis.ClipMaximum, value, axis, this.Plot.PlotArea, magnitudeAxis.MidPoint);
 
                 var angle = Math.Atan2(pt.y - magnitudeAxis.MidPoint.y, pt.x - magnitudeAxis.MidPoint.x);
 
-                double degree = Math.PI / 180d;
                 // Convert to degrees
                 angle /= degree;
 
@@ -131,10 +132,6 @@ namespace OxyPlot.Axes
                     va = VerticalAlignment.Middle;
                     pt.x -= axis.AxisTickToLabelDistance;
                 }
-                else
-                {
-
-                }
 
                 if (Math.Abs(Math.Abs(angle) - 90) < 10)
                 {
@@ -169,8 +166,7 @@ namespace OxyPlot.Axes
             ScreenPoint result = new ScreenPoint();
             //I think the key is to NOT compute the axis scaled value of the angle, BUT to just draw it from the Midpoint to the end of the PlotView
             //For each MinorTickValue, compute an intersection point within the client area
-            double width_to_height = plotArea.Width / plotArea.Height;
-
+            //double width_to_height = plotArea.Width / plotArea.Height;
 
             double theta = (x - axis.Offset) * axis.Scale;
             theta %= 360.0d;
@@ -194,19 +190,19 @@ namespace OxyPlot.Axes
                 double lineend_y = x_portion * _y;
                 if (lineend_y + midPoint.Y > plotArea.Bottom || lineend_y + midPoint.Y < plotArea.Top)
                 {
-                    double delta_y = 0;
+                    double delta_y;
                     if (_y > 0)
                         delta_y = plotArea.Bottom - midPoint.Y;
                     else
                         delta_y = plotArea.Top - midPoint.Y;
 
                     double y_portion = delta_y / _y;
-                    lineend_x = y_portion * _x;
-                    lineend_y = y_portion * _y;
                     result = new ScreenPoint((y_portion * _x) + midPoint.X, (y_portion * _y) + midPoint.Y);
                 }
                 else
+                {
                     result = new ScreenPoint(lineend_x + midPoint.X, lineend_y + midPoint.Y);
+                }
             }
             return result;
         }

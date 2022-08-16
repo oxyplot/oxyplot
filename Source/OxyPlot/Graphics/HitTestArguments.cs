@@ -33,6 +33,6 @@ namespace OxyPlot
         /// <summary>
         /// Gets the hit test tolerance.
         /// </summary>
-        public double Tolerance { get; private set; }
+        public double Tolerance { get; }
     }
 }

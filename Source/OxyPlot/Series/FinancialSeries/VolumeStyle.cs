@@ -10,7 +10,7 @@
 namespace OxyPlot.Series
 {
     /// <summary>
-    /// Represents rendering style for volume in either <see cref="CandleStickAndVolumeSeries" /> or <see cref="VolumeSeries" />.
+    /// Represents rendering style for volume in either <see cref="CandleStickAndVolumeSeries"/> or <see cref="VolumeSeries"/>.
     /// </summary>
     public enum VolumeStyle
     {

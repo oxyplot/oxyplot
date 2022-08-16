@@ -28,7 +28,7 @@ namespace OxyPlot.Series
         private OxyColor defaultFillColor;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RectangleBarSeries" /> class.
+        /// Initializes a new instance of the <see cref="RectangleBarSeries"/> class.
         /// </summary>
         public RectangleBarSeries()
         {
@@ -45,7 +45,6 @@ namespace OxyPlot.Series
 
             // this.LabelFormatString = "{0}-{1},{2}-{3}"; // X0-X1,Y0-Y1
         }
-
 
         /// <summary>
         /// Gets or sets the default color of the interior of the rectangles.
@@ -65,7 +64,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets the rectangle bar items.
         /// </summary>
-        public IList<RectangleBarItem> Items { get; private set; }
+        public IList<RectangleBarItem> Items { get; }
 
         /// <summary>
         /// Gets or sets the label color.
@@ -103,7 +102,7 @@ namespace OxyPlot.Series
         /// </summary>
         /// <param name="point">The point.</param>
         /// <param name="interpolate">Specifies whether to interpolate or not.</param>
-        /// <returns>A <see cref="TrackerHitResult" /> for the current hit.</returns>
+        /// <returns>A <see cref="TrackerHitResult"/> for the current hit.</returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
             if (this.ActualBarRectangles == null)
@@ -128,17 +127,17 @@ namespace OxyPlot.Series
                         Item = item,
                         Index = i,
                         Text = StringHelper.Format(
-                        this.ActualCulture,
-                        this.TrackerFormatString,
-                        item,
-                        this.Title,
-                        this.XAxis.Title ?? DefaultXAxisTitle,
-                        this.XAxis.GetValue(this.ActualItems[i].X0),
-                        this.XAxis.GetValue(this.ActualItems[i].X1),
-                        this.YAxis.Title ?? DefaultYAxisTitle,
-                        this.YAxis.GetValue(this.ActualItems[i].Y0),
-                        this.YAxis.GetValue(this.ActualItems[i].Y1),
-                        this.ActualItems[i].Title)
+                            this.ActualCulture,
+                            this.TrackerFormatString,
+                            item,
+                            this.Title,
+                            this.XAxis.Title ?? DefaultXAxisTitle,
+                            this.XAxis.GetValue(this.ActualItems[i].X0),
+                            this.XAxis.GetValue(this.ActualItems[i].X1),
+                            this.YAxis.Title ?? DefaultYAxisTitle,
+                            this.YAxis.GetValue(this.ActualItems[i].Y0),
+                            this.YAxis.GetValue(this.ActualItems[i].Y1),
+                            this.ActualItems[i].Title)
                     };
                 }
             }
@@ -170,7 +169,8 @@ namespace OxyPlot.Series
             }
 
             int clipCount = 0;
-            for (int i = startIdx; i < this.Items.Count; i++){
+            for (int i = startIdx; i < this.Items.Count; i++)
+            {
                 var item = this.Items[i];
                 if (!this.IsValid(item.X0) || !this.IsValid(item.X1)
                     || !this.IsValid(item.Y0) || !this.IsValid(item.Y1))

@@ -3,14 +3,14 @@
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Represents an item in a <see cref="HighLowSeries" />.
+//   Represents an item in a <see cref="HighLowSeries"/>.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Series
 {
     /// <summary>
-    /// Represents an item in a <see cref="HighLowSeries" />.
+    /// Represents an item in a <see cref="HighLowSeries"/>.
     /// </summary>
     public class HighLowItem : ICodeGenerating
     {
@@ -20,7 +20,7 @@ namespace OxyPlot.Series
         public static readonly HighLowItem Undefined = new HighLowItem(double.NaN, double.NaN, double.NaN);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="HighLowItem" /> class.
+        /// Initializes a new instance of the <see cref="HighLowItem"/> class.
         /// </summary>
         public HighLowItem()
         {

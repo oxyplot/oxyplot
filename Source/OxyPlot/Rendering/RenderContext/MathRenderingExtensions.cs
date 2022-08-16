@@ -17,7 +17,7 @@ namespace OxyPlot
     public static class MathRenderingExtensions
     {
         /// <summary>
-        /// Initializes static members of the <see cref = "MathRenderingExtensions" /> class.
+        /// Initializes static members of the <see cref="MathRenderingExtensions"/> class.
         /// </summary>
         static MathRenderingExtensions()
         {
@@ -30,22 +30,22 @@ namespace OxyPlot
         /// <summary>
         /// Gets or sets the subscript alignment.
         /// </summary>
-        private static double SubAlignment { get; set; }
+        private static double SubAlignment { get; }
 
         /// <summary>
         /// Gets or sets the subscript size.
         /// </summary>
-        private static double SubSize { get; set; }
+        private static double SubSize { get; }
 
         /// <summary>
         /// Gets or sets the superscript alignment.
         /// </summary>
-        private static double SuperAlignment { get; set; }
+        private static double SuperAlignment { get; }
 
         /// <summary>
         /// Gets or sets the superscript size.
         /// </summary>
-        private static double SuperSize { get; set; }
+        private static double SuperSize { get; }
 
         /// <summary>
         /// Draws or measures text containing sub- and superscript.

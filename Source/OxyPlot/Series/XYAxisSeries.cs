@@ -292,7 +292,7 @@ namespace OxyPlot.Series
         /// </summary>
         /// <param name="points">The points (data coordinates).</param>
         /// <param name="point">The point (screen coordinates).</param>
-        /// <returns>A <see cref="TrackerHitResult" /> if a point was found, <c>null</c> otherwise.</returns>
+        /// <returns>A <see cref="TrackerHitResult"/> if a point was found, <c>null</c> otherwise.</returns>
         /// <remarks>The Text property of the result will not be set, since the formatting depends on the various series.</remarks>
         protected TrackerHitResult GetNearestPointInternal(IEnumerable<DataPoint> points, ScreenPoint point)
         {
@@ -305,7 +305,7 @@ namespace OxyPlot.Series
         /// <param name="points">The points (data coordinates).</param>
         /// <param name="startIdx">The index to start from.</param>
         /// <param name="point">The point (screen coordinates).</param>
-        /// <returns>A <see cref="TrackerHitResult" /> if a point was found, <c>null</c> otherwise.</returns>
+        /// <returns>A <see cref="TrackerHitResult"/> if a point was found, <c>null</c> otherwise.</returns>
         /// <remarks>The Text property of the result will not be set, since the formatting depends on the various series.</remarks>
         protected TrackerHitResult GetNearestPointInternal(IEnumerable<DataPoint> points, int startIdx, ScreenPoint point)
         {
@@ -357,12 +357,12 @@ namespace OxyPlot.Series
         /// Determines whether the specified point is valid.
         /// </summary>
         /// <param name="pt">The point.</param>
-        /// <returns><c>true</c> if the point is valid; otherwise, <c>false</c> .</returns>
+        /// <returns><c>true</c> if the point is valid; otherwise, <c>false</c>.</returns>
         protected virtual bool IsValidPoint(DataPoint pt)
         {
             return
-                this.XAxis != null && this.XAxis.IsValidValue(pt.X) &&
-                this.YAxis != null && this.YAxis.IsValidValue(pt.Y);
+                this.XAxis?.IsValidValue(pt.X) == true &&
+                this.YAxis?.IsValidValue(pt.Y) == true;
         }
 
         /// <summary>
@@ -370,23 +370,23 @@ namespace OxyPlot.Series
         /// </summary>
         /// <param name="x">The x coordinate.</param>
         /// <param name="y">The y coordinate.</param>
-        /// <returns><c>true</c> if the point is valid; otherwise, <c>false</c> . </returns>
+        /// <returns><c>true</c> if the point is valid; otherwise, <c>false</c>.</returns>
         protected bool IsValidPoint(double x, double y)
         {
             return
-                this.XAxis != null && this.XAxis.IsValidValue(x) &&
-                this.YAxis != null && this.YAxis.IsValidValue(y);
+                this.XAxis?.IsValidValue(x) == true &&
+                this.YAxis?.IsValidValue(y) == true;
         }
 
         /// <summary>
-        /// Updates the Max/Min limits from the specified <see cref="DataPoint" /> list.
+        /// Updates the Max/Min limits from the specified <see cref="DataPoint"/> list.
         /// </summary>
         /// <param name="points">The list of points.</param>
         protected void InternalUpdateMaxMin(List<DataPoint> points)
         {
             if (points == null)
             {
-                throw new ArgumentNullException("points");
+                throw new ArgumentNullException(nameof(points));
             }
 
             this.IsXMonotonic = true;
@@ -509,12 +509,12 @@ namespace OxyPlot.Series
         /// <param name="items">The items.</param>
         /// <param name="xf">A function that provides the x value for each item.</param>
         /// <param name="yf">A function that provides the y value for each item.</param>
-        /// <exception cref="System.ArgumentNullException">The items argument cannot be null.</exception>
+        /// <exception cref="ArgumentNullException">The items argument cannot be null.</exception>
         protected void InternalUpdateMaxMin<T>(List<T> items, Func<T, double> xf, Func<T, double> yf)
         {
             if (items == null)
             {
-                throw new ArgumentNullException("items");
+                throw new ArgumentNullException(nameof(items));
             }
 
             this.IsXMonotonic = true;
@@ -619,12 +619,12 @@ namespace OxyPlot.Series
         /// <param name="xmax">A function that provides the x maximum for each item.</param>
         /// <param name="ymin">A function that provides the y minimum for each item.</param>
         /// <param name="ymax">A function that provides the y maximum for each item.</param>
-        /// <exception cref="System.ArgumentNullException">The items argument cannot be null.</exception>
+        /// <exception cref="ArgumentNullException">The items argument cannot be null.</exception>
         protected void InternalUpdateMaxMin<T>(List<T> items, Func<T, double> xmin, Func<T, double> xmax, Func<T, double> ymin, Func<T, double> ymax)
         {
             if (items == null)
             {
-                throw new ArgumentNullException("items");
+                throw new ArgumentNullException(nameof(items));
             }
 
             this.IsXMonotonic = true;
@@ -775,7 +775,9 @@ namespace OxyPlot.Series
             int start = 0;
             int nominalEnd = items.Count - 1;
             while (nominalEnd > 0 && double.IsNaN(xgetter(items[nominalEnd])))
-                nominalEnd -= 1;
+            {
+                nominalEnd--;
+            }
             int end = nominalEnd;
             int curGuess = Math.Max(0, Math.Min(end, initialGuess));
 
@@ -785,9 +787,13 @@ namespace OxyPlot.Series
                 {
                     double guessX = xgetter(items[index]);
                     if (double.IsNaN(guessX))
-                        index += 1;
+                    {
+                        index++;
+                    }
                     else
+                    {
                         return guessX;
+                    }
                 }
                 return xgetter(items[nominalEnd]);
             }
@@ -805,7 +811,7 @@ namespace OxyPlot.Series
                     end = curGuess - 1;
                 }
                 else
-                { 
+                {
                     start = curGuess;
                 }
 
@@ -818,14 +824,15 @@ namespace OxyPlot.Series
                 double startX = GetX(start);
 
                 var m = (end - start + 1) / (endX - startX);
-                
+
                 curGuess = start + (int)((targetX - startX) * m);
                 curGuess = Math.Max(start + 1, Math.Min(curGuess, end));
             }
 
             while (start > 0 && (xgetter(items[start]) > targetX))
-                start -= 1;
-
+            {
+                start--;
+            }
             return start;
         }
     }

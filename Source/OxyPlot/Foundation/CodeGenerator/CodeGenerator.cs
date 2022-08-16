@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Provides functionality to generate C# code for the specified <see cref="PlotModel" />.
+//   Provides functionality to generate C# code for the specified <see cref="PlotModel"/>.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -21,7 +21,7 @@ namespace OxyPlot
     using System.Text.RegularExpressions;
 
     /// <summary>
-    /// Provides functionality to generate C# code for the specified <see cref="PlotModel" />.
+    /// Provides functionality to generate C# code for the specified <see cref="PlotModel"/>.
     /// </summary>
     /// <remarks>This is useful for creating examples or unit tests. Press Ctrl+Alt+C in a plot to copy code to the clipboard.
     /// Usage:
@@ -52,7 +52,7 @@ namespace OxyPlot
         private int indents;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CodeGenerator" /> class.
+        /// Initializes a new instance of the <see cref="CodeGenerator"/> class.
         /// </summary>
         /// <param name="model">The model.</param>
         public CodeGenerator(PlotModel model)
@@ -352,7 +352,7 @@ namespace OxyPlot
             {
                 // check the [CodeGeneration] attribute
                 var cga = this.GetFirstAttribute<CodeGenerationAttribute>(pi);
-                if (cga != null && !cga.GenerateCode)
+                if (cga?.GenerateCode == false)
                 {
                     continue;
                 }
@@ -367,16 +367,14 @@ namespace OxyPlot
                     continue;
                 }
 
-                var array = value as Array;
-                if (array != null)
+                if (value is Array array)
                 {
                     arraysToAdd.Add(name, array);
                     continue;
                 }
 
                 // add items of lists
-                var list = value as IList;
-                if (list != null)
+                if (value is IList list)
                 {
                     listsToAdd.Add(name, list);
                     continue;
@@ -384,13 +382,13 @@ namespace OxyPlot
 
                 // only properties with public setters are used
                 var setter = pi.SetMethod;
-                if (setter == null || !setter.IsPublic)
+                if (setter?.IsPublic != true)
                 {
                     continue;
                 }
 
                 // skip default values
-                if ((value != null && value.Equals(defaultValue)) || value == defaultValue)
+                if ((value?.Equals(defaultValue) == true) || value == defaultValue)
                 {
                     continue;
                 }

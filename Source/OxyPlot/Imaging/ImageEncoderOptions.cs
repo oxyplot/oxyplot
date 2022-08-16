@@ -15,7 +15,7 @@ namespace OxyPlot
     public abstract class ImageEncoderOptions
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ImageEncoderOptions" /> class.
+        /// Initializes a new instance of the <see cref="ImageEncoderOptions"/> class.
         /// </summary>
         protected ImageEncoderOptions()
         {

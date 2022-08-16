@@ -52,11 +52,10 @@ namespace OxyPlot
         /// <returns>
         /// The value.
         /// </returns>
-        /// <exception cref="System.InvalidOperationException">Could not find property.</exception>
+        /// <exception cref="InvalidOperationException">Could not find property.</exception>
         public object? GetValue(object instance)
         {
-            object? result;
-            if (this.TryGetValue(instance, out result))
+            if (this.TryGetValue(instance, out object? result))
             {
                 return result;
             }

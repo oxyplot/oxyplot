@@ -35,7 +35,7 @@ namespace OxyPlot
         private int index;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CircularDictionary" /> class.
+        /// Initializes a new instance of the <see cref="CircularDictionary"/> class.
         /// </summary>
         /// <param name="size">The size of the dictionary.</param>
         public CircularDictionary(int size)

@@ -3,19 +3,19 @@
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Represent a slice of a <see cref="PieSeries" />.
+//   Represent a slice of a <see cref="PieSeries"/>.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Series
 {
     /// <summary>
-    /// Represent a slice of a <see cref="PieSeries" />.
+    /// Represent a slice of a <see cref="PieSeries"/>.
     /// </summary>
     public class PieSlice : ICodeGenerating
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PieSlice" /> class.
+        /// Initializes a new instance of the <see cref="PieSlice"/> class.
         /// </summary>
         /// <param name="label">The label.</param>
         /// <param name="value">The value.</param>
@@ -48,12 +48,12 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets the label.
         /// </summary>
-        public string Label { get; private set; }
+        public string Label { get; }
 
         /// <summary>
         /// Gets the value.
         /// </summary>
-        public double Value { get; private set; }
+        public double Value { get; }
 
         /// <summary>
         /// Gets or sets the default fill color.

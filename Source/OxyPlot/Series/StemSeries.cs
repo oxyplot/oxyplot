@@ -19,7 +19,7 @@ namespace OxyPlot.Series
     public class StemSeries : LineSeries
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref = "StemSeries" /> class.
+        /// Initializes a new instance of the <see cref="StemSeries"/> class.
         /// </summary>
         public StemSeries()
         {
@@ -88,7 +88,7 @@ namespace OxyPlot.Series
                         Index = i,
                         Text =
                             StringHelper.Format(
-                                this.ActualCulture, 
+                                this.ActualCulture,
                                 this.TrackerFormatString,
                                 item,
                                 this.Title,
@@ -147,10 +147,7 @@ namespace OxyPlot.Series
                         this.LineJoin);
                 }
 
-                if (markerPoints != null)
-                {
-                    markerPoints.Add(points[1]);
-                }
+                markerPoints?.Add(points[1]);
             }
 
             if (this.MarkerType != MarkerType.None)

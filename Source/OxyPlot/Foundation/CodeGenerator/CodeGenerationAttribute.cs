@@ -20,7 +20,7 @@ namespace OxyPlot
     public class CodeGenerationAttribute : Attribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CodeGenerationAttribute" /> class.
+        /// Initializes a new instance of the <see cref="CodeGenerationAttribute"/> class.
         /// </summary>
         /// <param name="generateCode">The generate code.</param>
         public CodeGenerationAttribute(bool generateCode)

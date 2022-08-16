@@ -46,10 +46,10 @@ namespace OxyPlot
         private int nextBits;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ByteBitReader" /> class.
+        /// Initializes a new instance of the <see cref="ByteBitReader"/> class.
         /// </summary>
         /// <param name="s">The arguments.</param>
-        /// <exception cref="System.ArgumentException">Argument is <c>null</c></exception>
+        /// <exception cref="ArgumentException">Argument is <c>null</c></exception>
         public ByteBitReader(Stream s)
         {
             if (s == null)
@@ -74,7 +74,7 @@ namespace OxyPlot
         /// <summary>
         /// Reads a bit from the stream. Returns 0 or 1 if a bit is available, or -1 if the end of stream is reached. The end of stream always occurs on a byte boundary.
         /// </summary>
-        /// <returns>The <see cref="int" />.</returns>
+        /// <returns>The <see cref="int"/>.</returns>
         public override int Read()
         {
             if (this.isEndOfStream)
@@ -103,7 +103,7 @@ namespace OxyPlot
         /// <summary>
         /// Reads a bit from the stream. Returns 0 or 1 if a bit is available, or throws an EOFException if the end of stream is reached.
         /// </summary>
-        /// <returns>The <see cref="int" />.</returns>
+        /// <returns>The <see cref="int"/>.</returns>
         public override int ReadNoEof()
         {
             var result = this.Read();
@@ -118,7 +118,7 @@ namespace OxyPlot
         /// <summary>
         /// Gets the bit position.
         /// </summary>
-        /// <returns>The <see cref="int" />.</returns>
+        /// <returns>The <see cref="int"/>.</returns>
         public override int GetBitPosition()
         {
             return this.bitPosition % 8;
@@ -127,7 +127,7 @@ namespace OxyPlot
         /// <summary>
         /// Discards the remainder of the current byte and reads the next byte from the stream.
         /// </summary>
-        /// <returns>The <see cref="int" />.</returns>
+        /// <returns>The <see cref="int"/>.</returns>
         public override int ReadByte()
         {
             this.bitPosition = 8;
@@ -148,12 +148,9 @@ namespace OxyPlot
         /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         private void Dispose(bool disposing)
         {
-            if (!this.disposed)
+            if (!this.disposed && disposing)
             {
-                if (disposing)
-                {
-                    this.input.Dispose();
-                }
+                this.input.Dispose();
             }
 
             this.disposed = true;

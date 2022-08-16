@@ -15,14 +15,14 @@ namespace OxyPlot
     public class OxyTouchEventArgs : OxyInputEventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="OxyTouchEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="OxyTouchEventArgs"/> class.
         /// </summary>
         public OxyTouchEventArgs()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OxyTouchEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="OxyTouchEventArgs"/> class.
         /// </summary>
         /// <param name="currentTouches">The current touches.</param>
         /// <param name="previousTouches">The previous touches.</param>

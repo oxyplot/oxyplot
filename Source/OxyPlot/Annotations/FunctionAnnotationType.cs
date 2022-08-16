@@ -3,14 +3,14 @@
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Defines the definition of function in a <see cref="FunctionAnnotation" />.
+//   Defines the definition of function in a <see cref="FunctionAnnotation"/>.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Annotations
 {
     /// <summary>
-    /// Defines the definition of function in a <see cref="FunctionAnnotation" />.
+    /// Defines the definition of function in a <see cref="FunctionAnnotation"/>.
     /// </summary>
     public enum FunctionAnnotationType
     {

@@ -24,7 +24,7 @@ namespace OxyPlot.Annotations
         private IList<ScreenPoint> screenPoints;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PathAnnotation" /> class.
+        /// Initializes a new instance of the <see cref="PathAnnotation"/> class.
         /// </summary>
         protected PathAnnotation()
         {
@@ -338,7 +338,7 @@ namespace OxyPlot.Annotations
             }
 
             double l = (length * p) + margin;
-            double eps = 1e-8;
+            const double eps = 1e-8;
             length = 0;
             for (int i = 1; i < pts.Count; i++)
             {

@@ -18,7 +18,7 @@ namespace OxyPlot
     public abstract class RenderContextBase : IRenderContext
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="RenderContextBase" /> class.
+        /// Initializes a new instance of the <see cref="RenderContextBase"/> class.
         /// </summary>
         protected RenderContextBase()
         {
@@ -200,7 +200,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Draws the specified portion of the specified <see cref="OxyImage" /> at the specified location and with the specified size.
+        /// Draws the specified portion of the specified <see cref="OxyImage"/> at the specified location and with the specified size.
         /// </summary>
         /// <param name="source">The source.</param>
         /// <param name="srcX">The x-coordinate of the upper-left corner of the portion of the source image to draw.</param>

@@ -24,10 +24,10 @@ namespace OxyPlot
         /// <summary>
         /// The output writer.
         /// </summary>
-        private BinaryWriter w;
+        private readonly BinaryWriter w;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PdfWriter" /> class.
+        /// Initializes a new instance of the <see cref="PdfWriter"/> class.
         /// </summary>
         /// <param name="s">The s.</param>
         public PdfWriter(Stream s)
@@ -168,8 +168,7 @@ namespace OxyPlot
         /// <param name="o">The object to write.</param>
         private void WriteCore(object o)
         {
-            var pdfObject = o as IPortableDocumentObject;
-            if (pdfObject != null)
+            if (o is IPortableDocumentObject pdfObject)
             {
                 this.Write("{0} 0 R", pdfObject.ObjectNumber);
                 return;
@@ -187,36 +186,32 @@ namespace OxyPlot
                 return;
             }
 
-            if (o is bool)
+            if (o is bool b)
             {
-                this.Write((bool)o ? "true" : "false");
+                this.Write(b ? "true" : "false");
                 return;
             }
 
-            if (o is DateTime)
+            if (o is DateTime dt)
             {
-                var dt = (DateTime)o;
                 var dts = "(D:" + dt.ToString("yyyyMMddHHmmsszz") + "'00)";
                 this.Write(dts);
                 return;
             }
 
-            var s = o as string;
-            if (s != null)
+            if (o is string s)
             {
                 this.Write(s);
                 return;
             }
 
-            var list = o as IList;
-            if (list != null)
+            if (o is IList list)
             {
                 this.WriteList(list);
                 return;
             }
 
-            var dictionary = o as Dictionary<string, object>;
-            if (dictionary != null)
+            if (o is Dictionary<string, object> dictionary)
             {
                 this.Write(dictionary);
             }

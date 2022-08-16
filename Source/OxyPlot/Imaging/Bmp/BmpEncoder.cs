@@ -23,7 +23,7 @@ namespace OxyPlot
         private readonly BmpEncoderOptions options;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BmpEncoder" /> class.
+        /// Initializes a new instance of the <see cref="BmpEncoder"/> class.
         /// </summary>
         /// <param name="options">The options.</param>
         public BmpEncoder(BmpEncoderOptions options)
@@ -90,12 +90,12 @@ namespace OxyPlot
         {
             if (palette.Length == 0)
             {
-                throw new ArgumentException("Palette not defined.", "palette");
+                throw new ArgumentException("Palette not defined.", nameof(palette));
             }
 
             if (palette.Length > 256)
             {
-                throw new ArgumentException("Too many colors in the palette.", "palette");
+                throw new ArgumentException("Too many colors in the palette.", nameof(palette));
             }
 
             int width = pixels.GetLength(0);

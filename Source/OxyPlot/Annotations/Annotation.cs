@@ -17,7 +17,7 @@ namespace OxyPlot.Annotations
     public abstract class Annotation : PlotElement, IXyAxisPlotElement
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Annotation" /> class.
+        /// Initializes a new instance of the <see cref="Annotation"/> class.
         /// </summary>
         protected Annotation()
         {
@@ -27,7 +27,7 @@ namespace OxyPlot.Annotations
         }
 
         /// <summary>
-        /// Gets or sets the rendering layer of the annotation. The default value is <see cref="AnnotationLayer.AboveSeries" />.
+        /// Gets or sets the rendering layer of the annotation. The default value is <see cref="AnnotationLayer.AboveSeries"/>.
         /// </summary>
         public AnnotationLayer Layer { get; set; }
 
@@ -48,7 +48,7 @@ namespace OxyPlot.Annotations
         /// </summary>
         /// <value>The Y axis.</value>
         public Axis YAxis { get; private set; }
-        
+
         /// <summary>
         /// Gets or sets a value indicating whether to clip the annotation by the X axis range.
         /// </summary>

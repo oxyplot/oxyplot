@@ -34,12 +34,12 @@ namespace OxyPlot.Series
         private List<HistogramItem> actualItems;
 
         /// <summary>
-        /// Specifies if the <see cref="actualItems" /> list can be modified.
+        /// Specifies if the <see cref="actualItems"/> list can be modified.
         /// </summary>
         private bool ownsActualItems;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="HistogramSeries" /> class.
+        /// Initializes a new instance of the <see cref="HistogramSeries"/> class.
         /// </summary>
         public HistogramSeries()
         {
@@ -108,22 +108,22 @@ namespace OxyPlot.Series
         public Func<HistogramItem, OxyColor> ColorMapping { get; set; }
 
         /// <summary>
-        /// Gets or sets the delegate used to map from <see cref="ItemsSeries.ItemsSource" /> to <see cref="HistogramSeries" />. The default is <c>null</c>.
+        /// Gets or sets the delegate used to map from <see cref="ItemsSeries.ItemsSource"/> to <see cref="HistogramSeries"/>. The default is <c>null</c>.
         /// </summary>
         /// <value>The mapping.</value>
         /// <remarks>Example: series1.Mapping = item => new HistogramItem((double)item.BinStart, (double)item.BinStart + item.BinWidth, (double)item.Count / totalCount, item.Count).</remarks>
         public Func<object, HistogramItem> Mapping { get; set; }
 
         /// <summary>
-        /// Gets the list of <see cref="HistogramItem" />.
+        /// Gets the list of <see cref="HistogramItem"/>.
         /// </summary>
-        /// <value>A list of <see cref="HistogramItem" />. This list is used if <see cref="ItemsSeries.ItemsSource" /> is not set.</value>
+        /// <value>A list of <see cref="HistogramItem"/>. This list is used if <see cref="ItemsSeries.ItemsSource"/> is not set.</value>
         public List<HistogramItem> Items { get; } = new List<HistogramItem>();
 
         /// <summary>
-        /// Gets the list of <see cref="HistogramItem" /> that should be rendered.
+        /// Gets the list of <see cref="HistogramItem"/> that should be rendered.
         /// </summary>
-        /// <value>A list of <see cref="HistogramItem" />.</value>
+        /// <value>A list of <see cref="HistogramItem"/>.</value>
         protected List<HistogramItem> ActualItems => this.ItemsSource != null ? this.actualItems : this.Items;
 
         /// <summary>
@@ -240,7 +240,7 @@ namespace OxyPlot.Series
         /// </summary>
         protected internal void UpdateMaxMinXY()
         {
-            if (this.ActualItems != null && this.ActualItems.Count > 0)
+            if (this.ActualItems?.Count > 0)
             {
                 this.MinX = Math.Min(this.ActualItems.Min(r => r.RangeStart), this.ActualItems.Min(r => r.RangeEnd));
                 this.MaxX = Math.Max(this.ActualItems.Max(r => r.RangeStart), this.ActualItems.Max(r => r.RangeEnd));
@@ -251,8 +251,8 @@ namespace OxyPlot.Series
                 }
                 else
                 {
-                    this.MinY = Math.Min(this.ActualItems.Min(r => 0), this.ActualItems.Min(r => r.Height));
-                    this.MaxY = Math.Max(this.ActualItems.Max(r => 0), this.ActualItems.Max(r => r.Height));
+                    this.MinY = Math.Min(0, this.ActualItems.Min(r => r.Height));
+                    this.MaxY = Math.Max(0, this.ActualItems.Max(r => r.Height));
                 }
             }
         }
@@ -271,7 +271,7 @@ namespace OxyPlot.Series
 
             this.UpdateMaxMinXY();
 
-            if (this.ActualItems != null && this.ActualItems.Count > 0)
+            if (this.ActualItems?.Count > 0)
             {
                 this.MinValue = this.ActualItems.Min(r => r.Value);
                 this.MaxValue = this.ActualItems.Max(r => r.Value);
@@ -317,10 +317,10 @@ namespace OxyPlot.Series
                 var rectrect = new OxyRect(p1, p2);
 
                 rc.DrawRectangle(
-                    rectrect, 
-                    actualFillColor, 
-                    this.StrokeColor, 
-                    this.StrokeThickness, 
+                    rectrect,
+                    actualFillColor,
+                    this.StrokeColor,
+                    this.StrokeThickness,
                     this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness));
 
                 if (this.LabelFormatString != null)
@@ -399,9 +399,9 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Tests if a <see cref="DataPoint" /> is inside the histogram.
+        /// Tests if a <see cref="DataPoint"/> is inside the histogram.
         /// </summary>
-        /// <param name="p">The <see cref="DataPoint" /> to test.</param>
+        /// <param name="p">The <see cref="DataPoint"/> to test.</param>
         /// <returns><c>True</c> if the point is inside the heat map.</returns>
         private bool IsPointInRange(DataPoint p)
         {
@@ -437,7 +437,7 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Updates the points from the <see cref="ItemsSeries.ItemsSource" />.
+        /// Updates the points from the <see cref="ItemsSeries.ItemsSource"/>.
         /// </summary>
         private void UpdateActualItems()
         {

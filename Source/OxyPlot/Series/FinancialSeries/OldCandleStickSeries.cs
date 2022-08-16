@@ -20,7 +20,7 @@ namespace OxyPlot.Series
     public class OldCandleStickSeries : HighLowSeries
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref = "OldCandleStickSeries" /> class.
+        /// Initializes a new instance of the <see cref="OldCandleStickSeries"/> class.
         /// </summary>
         public OldCandleStickSeries()
         {

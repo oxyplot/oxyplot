@@ -18,7 +18,7 @@ namespace OxyPlot
         /// Gets the actual model in the view.
         /// </summary>
         /// <value>
-        /// The actual <see cref="Model" />.
+        /// The actual <see cref="Model"/>.
         /// </value>
         Model ActualModel { get; }
 
@@ -26,7 +26,7 @@ namespace OxyPlot
         /// Gets the actual controller.
         /// </summary>
         /// <value>
-        /// The actual <see cref="IController" />.
+        /// The actual <see cref="IController"/>.
         /// </value>
         IController ActualController { get; }
 

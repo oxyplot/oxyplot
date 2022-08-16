@@ -15,7 +15,7 @@ namespace OxyPlot
     public static partial class OxyPalettes
     {
         /// <summary>
-        /// Initializes static members of the <see cref="OxyPalettes" /> class.
+        /// Initializes static members of the <see cref="OxyPalettes"/> class.
         /// </summary>
         static OxyPalettes()
         {

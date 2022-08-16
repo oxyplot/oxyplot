@@ -42,7 +42,7 @@ namespace OxyPlot
             private readonly Comparison<T> comparison;
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="ComparisonComparer{T}" /> class.
+            /// Initializes a new instance of the <see cref="ComparisonComparer{T}"/> class.
             /// </summary>
             /// <param name="comparison">The delegate used to compare elements.</param>
             public ComparisonComparer(Comparison<T> comparison)

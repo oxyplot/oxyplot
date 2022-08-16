@@ -3,19 +3,19 @@
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Defines the standard fonts that can be used in a <see cref="PortableDocument" />.
+//   Defines the standard fonts that can be used in a <see cref="PortableDocument"/>.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     /// <summary>
-    /// Defines the standard fonts that can be used in a <see cref="PortableDocument" />.
+    /// Defines the standard fonts that can be used in a <see cref="PortableDocument"/>.
     /// </summary>
     public static class StandardFonts
     {
         /// <summary>
-        /// Initializes static members of the <see cref="StandardFonts" /> class.
+        /// Initializes static members of the <see cref="StandardFonts"/> class.
         /// </summary>
         static StandardFonts()
         {
@@ -476,16 +476,16 @@ namespace OxyPlot
         /// <summary>
         /// Gets the Arial font family.
         /// </summary>
-        public static PortableDocumentFontFamily Helvetica { get; private set; }
+        public static PortableDocumentFontFamily Helvetica { get; }
 
         /// <summary>
         /// Gets the Times font family.
         /// </summary>
-        public static PortableDocumentFontFamily Times { get; private set; }
+        public static PortableDocumentFontFamily Times { get; }
 
         /// <summary>
         /// Gets the Courier font family.
         /// </summary>
-        public static PortableDocumentFontFamily Courier { get; private set; }
+        public static PortableDocumentFontFamily Courier { get; }
     }
 }

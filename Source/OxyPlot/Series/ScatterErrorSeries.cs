@@ -19,7 +19,7 @@ namespace OxyPlot.Series
     public class ScatterErrorSeries : ScatterSeries<ScatterErrorPoint>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ScatterErrorSeries" /> class.
+        /// Initializes a new instance of the <see cref="ScatterErrorSeries"/> class.
         /// </summary>
         public ScatterErrorSeries()
         {
@@ -70,7 +70,7 @@ namespace OxyPlot.Series
         public double ErrorBarStrokeThickness { get; set; }
 
         /// <summary>
-        /// Gets or sets the minimum size (relative to <see cref="ScatterSeries{T}.MarkerSize" />) of the error bars to be shown.
+        /// Gets or sets the minimum size (relative to <see cref="ScatterSeries{T}.MarkerSize"/>) of the error bars to be shown.
         /// </summary>
         /// <value>
         /// The minimum size of the error.
@@ -138,11 +138,11 @@ namespace OxyPlot.Series
             }
 
             rc.DrawLineSegments(
-                segments, 
-                this.GetSelectableColor(this.ErrorBarColor), 
-                this.ErrorBarStrokeThickness, 
+                segments,
+                this.GetSelectableColor(this.ErrorBarColor),
+                this.ErrorBarStrokeThickness,
                 this.EdgeRenderingMode,
-                null, 
+                null,
                 LineJoin.Bevel);
         }
 

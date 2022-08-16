@@ -17,15 +17,15 @@ namespace OxyPlot
     internal class Leaf : Node
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Leaf" /> class.
+        /// Initializes a new instance of the <see cref="Leaf"/> class.
         /// </summary>
         /// <param name="symbol">The symbol.</param>
-        /// <exception cref="System.ArgumentException">Illegal symbol value;symbol</exception>
+        /// <exception cref="ArgumentException">Illegal symbol value;symbol</exception>
         public Leaf(int symbol)
         {
             if (symbol < 0)
             {
-                throw new ArgumentException("Illegal symbol value", "symbol");
+                throw new ArgumentException("Illegal symbol value", nameof(symbol));
             }
 
             this.Symbol = symbol;
@@ -35,6 +35,6 @@ namespace OxyPlot
         /// Gets the symbol.
         /// </summary>
         /// <value>The symbol.</value>
-        public int Symbol { get; private set; }
+        public int Symbol { get; }
     }
 }

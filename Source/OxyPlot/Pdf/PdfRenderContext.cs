@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Implements an <see cref="IRenderContext" /> producing PDF documents by <see cref="PortableDocument" />.
+//   Implements an <see cref="IRenderContext"/> producing PDF documents by <see cref="PortableDocument"/>.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -15,7 +15,7 @@ namespace OxyPlot
     using System.Linq;
 
     /// <summary>
-    /// Implements an <see cref="IRenderContext" /> producing PDF documents by <see cref="PortableDocument" />.
+    /// Implements an <see cref="IRenderContext"/> producing PDF documents by <see cref="PortableDocument"/>.
     /// </summary>
     public class PdfRenderContext : ClippingRenderContext
     {
@@ -30,7 +30,7 @@ namespace OxyPlot
         private readonly Dictionary<OxyImage, PortableDocumentImage> images = new Dictionary<OxyImage, PortableDocumentImage>();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PdfRenderContext" /> class.
+        /// Initializes a new instance of the <see cref="PdfRenderContext"/> class.
         /// </summary>
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
@@ -268,8 +268,7 @@ namespace OxyPlot
             this.doc.SetFont(fontFamily, fontSize / 96 * 72, fontWeight > 500);
             this.doc.SetFillColor(fill);
 
-            double width, height;
-            this.doc.MeasureText(text, out width, out height);
+            this.doc.MeasureText(text, out double width, out double height);
             if (maxSize != null)
             {
                 if (width > maxSize.Value.Width)
@@ -333,13 +332,12 @@ namespace OxyPlot
         public override OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
         {
             this.doc.SetFont(fontFamily, fontSize / 96 * 72, fontWeight > 500);
-            double width, height;
-            this.doc.MeasureText(text, out width, out height);
+            this.doc.MeasureText(text, out double width, out double height);
             return new OxySize(width, height);
         }
 
         /// <summary>
-        /// Draws the specified portion of the specified <see cref="OxyImage" /> at the specified location and with the specified size.
+        /// Draws the specified portion of the specified <see cref="OxyImage"/> at the specified location and with the specified size.
         /// </summary>
         /// <param name="source">The source.</param>
         /// <param name="srcX">The x-coordinate of the upper-left corner of the portion of the source image to draw.</param>
@@ -365,8 +363,7 @@ namespace OxyPlot
             double opacity,
             bool interpolate)
         {
-            PortableDocumentImage image;
-            if (!this.images.TryGetValue(source, out image))
+            if (!this.images.TryGetValue(source, out PortableDocumentImage image))
             {
                 image = PortableDocumentImageUtilities.Convert(source, interpolate);
                 if (image == null)
@@ -404,7 +401,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Converts the specified <see cref="OxyPlot.LineJoin" /> to a <see cref="OxyPlot.LineJoin" />.
+        /// Converts the specified <see cref="LineJoin"/> to a <see cref="LineJoin"/>.
         /// </summary>
         /// <param name="lineJoin">The value to convert.</param>
         /// <returns>The converted value.</returns>

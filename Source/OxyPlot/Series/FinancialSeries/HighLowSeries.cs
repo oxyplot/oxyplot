@@ -26,17 +26,12 @@ namespace OxyPlot.Series
         public new const string DefaultTrackerFormatString = "{0}\n{1}: {2}\nHigh: {3:0.###}\nLow: {4:0.###}\nOpen: {5:0.###}\nClose: {6:0.###}";
 
         /// <summary>
-        /// High/low items
-        /// </summary>
-        private readonly List<HighLowItem> items = new List<HighLowItem>();
-
-        /// <summary>
         /// The default color.
         /// </summary>
         private OxyColor defaultColor;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref = "HighLowSeries" /> class.
+        /// Initializes a new instance of the <see cref="HighLowSeries"/> class.
         /// </summary>
         public HighLowSeries()
         {
@@ -97,13 +92,7 @@ namespace OxyPlot.Series
         /// Gets the items of the series.
         /// </summary>
         /// <value>The items.</value>
-        public List<HighLowItem> Items
-        {
-            get
-            {
-                return this.items;
-            }
-        }
+        public List<HighLowItem> Items { get; } = new List<HighLowItem>();
 
         /// <summary>
         /// Gets or sets the line join.
@@ -191,7 +180,7 @@ namespace OxyPlot.Series
                     }
                 };
             int i = 0;
-            foreach (var item in this.items)
+            foreach (var item in this.Items)
             {
                 check(new DataPoint(item.X, item.High), item, i);
                 check(new DataPoint(item.X, item.Low), item, i);
@@ -223,7 +212,7 @@ namespace OxyPlot.Series
         /// <inheritdoc/>
         public override void Render(IRenderContext rc)
         {
-            if (this.items.Count == 0)
+            if (this.Items.Count == 0)
             {
                 return;
             }
@@ -232,7 +221,7 @@ namespace OxyPlot.Series
 
             var dashArray = this.LineStyle.GetDashArray();
             var actualColor = this.GetSelectableColor(this.ActualColor);
-            foreach (var v in this.items)
+            foreach (var v in this.Items)
             {
                 if (!this.IsValidItem(v, this.XAxis, this.YAxis))
                 {
@@ -343,23 +332,22 @@ namespace OxyPlot.Series
                 return;
             }
 
-            this.items.Clear();
+            this.Items.Clear();
 
             // Use the mapping to generate the points
             if (this.Mapping != null)
             {
                 foreach (var item in this.ItemsSource)
                 {
-                    this.items.Add(this.Mapping(item));
+                    this.Items.Add(this.Mapping(item));
                 }
 
                 return;
             }
 
-            var sequenceOfHighLowItems = this.ItemsSource as IEnumerable<HighLowItem>;
-            if (sequenceOfHighLowItems != null)
+            if (this.ItemsSource is IEnumerable<HighLowItem> sequenceOfHighLowItems)
             {
-                this.items.AddRange(sequenceOfHighLowItems);
+                this.Items.AddRange(sequenceOfHighLowItems);
                 return;
             }
 
@@ -369,7 +357,7 @@ namespace OxyPlot.Series
             filler.Add(this.DataFieldLow, double.NaN);
             filler.Add(this.DataFieldOpen, double.NaN);
             filler.Add(this.DataFieldClose, double.NaN);
-            filler.FillT(this.items, this.ItemsSource, args => new HighLowItem(Axis.ToDouble(args[0]), Convert.ToDouble(args[1]), Convert.ToDouble(args[2]), Convert.ToDouble(args[3]), Convert.ToDouble(args[4])));
+            filler.FillT(this.Items, this.ItemsSource, args => new HighLowItem(Axis.ToDouble(args[0]), Convert.ToDouble(args[1]), Convert.ToDouble(args[2]), Convert.ToDouble(args[3]), Convert.ToDouble(args[4])));
         }
 
         /// <summary>
@@ -378,7 +366,7 @@ namespace OxyPlot.Series
         protected internal override void UpdateMaxMin()
         {
             base.UpdateMaxMin();
-            this.InternalUpdateMaxMin(this.items, i => i.X, i => i.X, i => i.Low, i => i.High);
+            this.InternalUpdateMaxMin(this.Items, i => i.X, i => i.X, i => i.Low, i => i.High);
         }
     }
 }

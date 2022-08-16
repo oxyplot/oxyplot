@@ -22,7 +22,7 @@ namespace OxyPlot
         private OxyRect zoomRectangle;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ZoomRectangleManipulator" /> class.
+        /// Initializes a new instance of the <see cref="ZoomRectangleManipulator"/> class.
         /// </summary>
         /// <param name="plotView">The plot view.</param>
         public ZoomRectangleManipulator(IPlotView plotView)
@@ -38,7 +38,7 @@ namespace OxyPlot
         /// <summary>
         /// Occurs when a manipulation is complete.
         /// </summary>
-        /// <param name="e">The <see cref="OxyPlot.OxyMouseEventArgs" /> instance containing the event data.</param>
+        /// <param name="e">The <see cref="OxyMouseEventArgs"/> instance containing the event data.</param>
         public override void Completed(OxyMouseEventArgs e)
         {
             base.Completed(e);
@@ -49,21 +49,15 @@ namespace OxyPlot
 
             this.PlotView.SetCursorType(CursorType.Default);
             this.PlotView.HideZoomRectangle();
-            
+
             if (this.zoomRectangle.Width > 10 && this.zoomRectangle.Height > 10)
             {
                 var p0 = this.InverseTransform(this.zoomRectangle.Left, this.zoomRectangle.Top);
                 var p1 = this.InverseTransform(this.zoomRectangle.Right, this.zoomRectangle.Bottom);
 
-                if (this.XAxis != null)
-                {
-                    this.XAxis.Zoom(p0.X, p1.X);
-                }
+                this.XAxis?.Zoom(p0.X, p1.X);
 
-                if (this.YAxis != null)
-                {
-                    this.YAxis.Zoom(p0.Y, p1.Y);
-                }
+                this.YAxis?.Zoom(p0.Y, p1.Y);
 
                 this.PlotView.InvalidatePlot();
             }
@@ -74,7 +68,7 @@ namespace OxyPlot
         /// <summary>
         /// Occurs when the input device changes position during a manipulation.
         /// </summary>
-        /// <param name="e">The <see cref="OxyPlot.OxyMouseEventArgs" /> instance containing the event data.</param>
+        /// <param name="e">The <see cref="OxyMouseEventArgs"/> instance containing the event data.</param>
         public override void Delta(OxyMouseEventArgs e)
         {
             base.Delta(e);
@@ -90,13 +84,13 @@ namespace OxyPlot
             var y = Math.Min(this.StartPosition.Y, e.Position.Y);
             var h = Math.Abs(this.StartPosition.Y - e.Position.Y);
 
-            if (this.XAxis == null || !this.XAxis.IsZoomEnabled)
+            if (this.XAxis?.IsZoomEnabled != true)
             {
                 x = plotArea.Left;
                 w = plotArea.Width;
             }
 
-            if (this.YAxis == null || !this.YAxis.IsZoomEnabled)
+            if (this.YAxis?.IsZoomEnabled != true)
             {
                 y = plotArea.Top;
                 h = plotArea.Height;
@@ -110,13 +104,13 @@ namespace OxyPlot
         /// <summary>
         /// Occurs when an input device begins a manipulation on the plot.
         /// </summary>
-        /// <param name="e">The <see cref="OxyPlot.OxyMouseEventArgs" /> instance containing the event data.</param>
+        /// <param name="e">The <see cref="OxyMouseEventArgs"/> instance containing the event data.</param>
         public override void Started(OxyMouseEventArgs e)
         {
             base.Started(e);
 
-            this.IsZoomEnabled = (this.XAxis != null && this.XAxis.IsZoomEnabled)
-                     || (this.YAxis != null && this.YAxis.IsZoomEnabled);
+            this.IsZoomEnabled = (this.XAxis?.IsZoomEnabled == true)
+                     || (this.YAxis?.IsZoomEnabled == true);
 
             if (this.IsZoomEnabled)
             {

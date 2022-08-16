@@ -8,9 +8,7 @@
 // --
 namespace OxyPlot.Legends
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     /// <summary>
     /// Represents a Legend.
@@ -78,20 +76,17 @@ namespace OxyPlot.Legends
         protected override HitTestResult LegendHitTest(HitTestArguments args)
         {
             ScreenPoint point = args.Point;
-            if (this.IsPointInLegend(point))
+            if (this.IsPointInLegend(point) && this.SeriesPosMap?.Count > 0)
             {
-                if (this.SeriesPosMap != null && this.SeriesPosMap.Count > 0)
+                foreach (KeyValuePair<Series.Series, OxyRect> kvp in this.SeriesPosMap)
                 {
-                    foreach (KeyValuePair<Series.Series, OxyRect> kvp in this.SeriesPosMap)
+                    if (kvp.Value.Contains(point))
                     {
-                        if (kvp.Value.Contains(point))
+                        if (this.ShowInvisibleSeries)
                         {
-                            if (this.ShowInvisibleSeries)
-                            {
-                                kvp.Key.IsVisible = !kvp.Key.IsVisible;
-                                this.PlotModel.InvalidatePlot(false);
-                                break;
-                            }
+                            kvp.Key.IsVisible = !kvp.Key.IsVisible;
+                            this.PlotModel.InvalidatePlot(false);
+                            break;
                         }
                     }
                 }

@@ -3,19 +3,19 @@
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Represents a point in a <see cref="ScatterSeries" />.
+//   Represents a point in a <see cref="ScatterSeries"/>.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Series
 {
     /// <summary>
-    /// Represents a point in a <see cref="ScatterSeries" />.
+    /// Represents a point in a <see cref="ScatterSeries"/>.
     /// </summary>
     public class ScatterPoint : ICodeGenerating
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ScatterPoint" /> class.
+        /// Initializes a new instance of the <see cref="ScatterPoint"/> class.
         /// </summary>
         /// <param name="x">The x.</param>
         /// <param name="y">The y.</param>
@@ -35,13 +35,13 @@ namespace OxyPlot.Series
         /// Gets the X.
         /// </summary>
         /// <value>The X.</value>
-        public double X { get; private set; }
+        public double X { get; }
 
         /// <summary>
         /// Gets the Y.
         /// </summary>
         /// <value>The Y.</value>
-        public double Y { get; private set; }
+        public double Y { get; }
 
         /// <summary>
         /// Gets or sets the size.
@@ -82,9 +82,9 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public override string ToString()
         {
             return this.X + " " + this.Y;

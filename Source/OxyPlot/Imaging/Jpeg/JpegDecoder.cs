@@ -161,8 +161,8 @@ namespace OxyPlot
         /// Gets information about the image in the specified byte array.
         /// </summary>
         /// <param name="bytes">The image data.</param>
-        /// <returns>An <see cref="OxyImageInfo" /> structure.</returns>
-        /// <exception cref="System.FormatException">Invalid SOI
+        /// <returns>An <see cref="OxyImageInfo"/> structure.</returns>
+        /// <exception cref="FormatException">Invalid SOI
         /// or
         /// Invalid APP0 marker
         /// or
@@ -173,7 +173,7 @@ namespace OxyPlot
         /// Invalid TIFF identifier</exception>
         public OxyImageInfo GetImageInfo(byte[] bytes)
         {
-            throw new NotImplementedException(); 
+            throw new NotImplementedException();
             /*
             int width = -1;
             int height = -1;

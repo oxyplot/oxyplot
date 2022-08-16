@@ -28,7 +28,7 @@ namespace OxyPlot.Series
         private OxyColor defaultFillColor;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="IntervalBarSeries" /> class.
+        /// Initializes a new instance of the <see cref="IntervalBarSeries"/> class.
         /// </summary>
         public IntervalBarSeries()
         {

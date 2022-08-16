@@ -50,7 +50,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="bits">The number of bits.</param>
         /// <returns>The bits.</returns>
-        /// <exception cref="System.IO.IOException">Reading past EOF.</exception>
+        /// <exception cref="IOException">Reading past EOF.</exception>
         public int ReadBits(int bits)
         {
             int r = 0;

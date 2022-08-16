@@ -11,7 +11,6 @@ namespace OxyPlot.Legends
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
 
     public partial class Legend
     {
@@ -61,9 +60,7 @@ namespace OxyPlot.Legends
             var legendSize = this.MeasureLegends(rc, new OxySize(Math.Max(0, availableLegendWidth), Math.Max(0, availableLegendHeight)));
 
             // Ensure legend size is valid
-            legendSize = new OxySize(Math.Max(0, legendSize.Width), Math.Max(0, legendSize.Height));
-
-            return legendSize;
+            return new OxySize(Math.Max(0, legendSize.Width), Math.Max(0, legendSize.Height));
         }
 
         /// <summary>
@@ -307,10 +304,10 @@ namespace OxyPlot.Legends
             {
                 this.legendBox = rect;
                 rc.DrawRectangle(
-                    rect, 
-                    this.LegendBackground, 
-                    this.LegendBorder, 
-                    this.LegendBorderThickness, 
+                    rect,
+                    this.LegendBackground,
+                    this.LegendBorder,
+                    this.LegendBorderThickness,
                     this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness));
             }
 
@@ -449,7 +446,7 @@ namespace OxyPlot.Legends
             {
                 var itemGroup = items.Where(i => i.SeriesGroupName == g);
                 OxySize groupNameTextSize = new OxySize(0, 0);
-                if (itemGroup.Count() > 0 && !string.IsNullOrEmpty(g))
+                if (itemGroup.Any() && !string.IsNullOrEmpty(g))
                 {
                     groupNameTextSize = rc.MeasureMathText(g, this.GroupNameFont ?? this.PlotModel.DefaultFont, actualGroupNameFontSize, this.GroupNameFontWeight);
                     if (this.LegendOrientation == LegendOrientation.Vertical)

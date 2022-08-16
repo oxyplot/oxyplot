@@ -18,7 +18,7 @@ namespace OxyPlot
     /// </summary>
     /// <remarks>CanonicalSplineHelper.cs (c) 2009 by Charles Petzold (WPF and Silverlight)
     /// See also <a href="http://www.charlespetzold.com/blog/2009/01/Canonical-Splines-in-WPF-and-Silverlight.html">blog post</a>.</remarks>
-    public class CanonicalSpline : IInterpolationAlgorithm 
+    public class CanonicalSpline : IInterpolationAlgorithm
     {
         /// <summary>
         /// The tension.
@@ -26,7 +26,7 @@ namespace OxyPlot
         public double Tension { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref = "CanonicalSpline" /> class.
+        /// Initializes a new instance of the <see cref="CanonicalSpline"/> class.
         /// </summary>
         /// <param name="tension">The tension.</param>
         public CanonicalSpline(double tension)
@@ -125,7 +125,7 @@ namespace OxyPlot
             }
             else
             {
-                bool useTensionCollection = tensions != null && tensions.Count > 0;
+                bool useTensionCollection = tensions?.Count > 0;
 
                 for (int i = 0; i < n; i++)
                 {

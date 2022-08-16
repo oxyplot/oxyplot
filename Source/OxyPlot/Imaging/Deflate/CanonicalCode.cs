@@ -44,7 +44,7 @@ namespace OxyPlot
         private readonly int[] codeLengths;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CanonicalCode" /> class.
+        /// Initializes a new instance of the <see cref="CanonicalCode"/> class.
         /// </summary>
         /// <param name="codeLengths">The code lengths.</param>
         /// <remarks>The constructor does not check that the array of code lengths results in a complete Huffman tree, being neither underfilled nor overfilled.</remarks>
@@ -68,7 +68,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CanonicalCode" /> class based on the given code tree.
+        /// Initializes a new instance of the <see cref="CanonicalCode"/> class based on the given code tree.
         /// </summary>
         /// <param name="tree">The tree.</param>
         /// <param name="symbolLimit">The symbol limit.</param>
@@ -92,7 +92,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="symbol">The symbol.</param>
         /// <returns>The length.</returns>
-        /// <exception cref="System.Exception">Symbol out of range</exception>
+        /// <exception cref="Exception">Symbol out of range</exception>
         public int GetCodeLength(int symbol)
         {
             if (symbol < 0 || symbol >= this.codeLengths.Length)
@@ -107,7 +107,7 @@ namespace OxyPlot
         /// Converts the canonical code to a code tree.
         /// </summary>
         /// <returns>The code tree.</returns>
-        /// <exception cref="System.Exception">This canonical code does not represent a Huffman code tree
+        /// <exception cref="Exception">This canonical code does not represent a Huffman code tree
         /// or
         /// This canonical code does not represent a Huffman code tree</exception>
         public CodeTree ToCodeTree()
@@ -152,22 +152,21 @@ namespace OxyPlot
         /// </summary>
         /// <param name="node">The node.</param>
         /// <param name="depth">The depth.</param>
-        /// <exception cref="System.Exception">Symbol has more than one code
+        /// <exception cref="Exception">Symbol has more than one code
         /// or
         /// Symbol exceeds symbol limit
         /// or
         /// Illegal node type</exception>
         private void BuildCodeLengths(Node node, int depth)
         {
-            if (node is InternalNode)
+            if (node is InternalNode internalNode)
             {
-                var internalNode = (InternalNode)node;
                 this.BuildCodeLengths(internalNode.LeftChild, depth + 1);
                 this.BuildCodeLengths(internalNode.RightChild, depth + 1);
             }
-            else if (node is Leaf)
+            else if (node is Leaf leaf)
             {
-                int symbol = ((Leaf)node).Symbol;
+                int symbol = leaf.Symbol;
                 if (this.codeLengths[symbol] != 0)
                 {
                     throw new Exception("Symbol has more than one code");  // Because CodeTree has a checked constraint that disallows a symbol in multiple leaves

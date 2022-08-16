@@ -3,14 +3,14 @@
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Provides OxyPlot extension methods for <see cref="PortableDocument" />.
+//   Provides OxyPlot extension methods for <see cref="PortableDocument"/>.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     /// <summary>
-    /// Provides OxyPlot extension methods for <see cref="PortableDocument" />.
+    /// Provides OxyPlot extension methods for <see cref="PortableDocument"/>.
     /// </summary>
     public static class PortableDocumentExtensions
     {

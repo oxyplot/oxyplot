@@ -3,19 +3,19 @@
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Represents a font that can be used in a <see cref="PortableDocument" />.
+//   Represents a font that can be used in a <see cref="PortableDocument"/>.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     /// <summary>
-    /// Represents a font that can be used in a <see cref="PortableDocument" />.
+    /// Represents a font that can be used in a <see cref="PortableDocument"/>.
     /// </summary>
     public class PortableDocumentFont
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PortableDocumentFont" /> class.
+        /// Initializes a new instance of the <see cref="PortableDocumentFont"/> class.
         /// </summary>
         public PortableDocumentFont()
         {

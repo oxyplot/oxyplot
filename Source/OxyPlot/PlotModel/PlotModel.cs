@@ -53,7 +53,7 @@ namespace OxyPlot
         CenteredWithinPlotArea,
 
         /// <summary>
-        /// Centered within the client view (excluding padding defined in <see cref="PlotModel.Padding" />).
+        /// Centered within the client view (excluding padding defined in <see cref="PlotModel.Padding"/>).
         /// </summary>
         CenteredWithinView
     }
@@ -90,7 +90,7 @@ namespace OxyPlot
         private Exception lastPlotException;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PlotModel" /> class.
+        /// Initializes a new instance of the <see cref="PlotModel"/> class.
         /// </summary>
         public PlotModel()
         {
@@ -231,8 +231,8 @@ namespace OxyPlot
         /// <summary>
         /// Gets or sets the color of the background of the plot.
         /// </summary>
-        /// <value>The color. The default is <see cref="OxyColors.Undefined" />.</value>
-        /// <remarks>If the background color is set to <see cref="OxyColors.Undefined" /> or is otherwise invisible then the background will be determined by the plot view or exporter.</remarks>
+        /// <value>The color. The default is <see cref="OxyColors.Undefined"/>.</value>
+        /// <remarks>If the background color is set to <see cref="OxyColors.Undefined"/> or is otherwise invisible then the background will be determined by the plot view or exporter.</remarks>
         public OxyColor Background { get; set; }
 
         /// <summary>
@@ -250,7 +250,7 @@ namespace OxyPlot
         /// <summary>
         /// Gets or sets the edge rendering mode that is used for rendering the plot bounds and backgrounds.
         /// </summary>
-        /// <value>The edge rendering mode. The default is <see cref="OxyPlot.EdgeRenderingMode.Automatic"/>.</value>
+        /// <value>The edge rendering mode. The default is <see cref="EdgeRenderingMode.Automatic"/>.</value>
         public EdgeRenderingMode EdgeRenderingMode { get; set; }
 
         /// <summary>
@@ -508,8 +508,8 @@ namespace OxyPlot
         void IPlotModel.AttachPlotView(IPlotView plotView)
         {
             var currentPlotView = this.PlotView;
-            if (!object.ReferenceEquals(currentPlotView, null) &&
-                !object.ReferenceEquals(plotView, null) &&
+            if (currentPlotView is object &&
+                plotView is object &&
                 !object.ReferenceEquals(currentPlotView, plotView))
             {
                 throw new InvalidOperationException(
@@ -724,9 +724,9 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public override string ToString()
         {
             return this.Title;
@@ -737,7 +737,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="key">The legend key.</param>
         /// <returns>The legend that corresponds with the key.</returns>
-        /// <exception cref="System.InvalidOperationException">Cannot find legend with the specified key.</exception>
+        /// <exception cref="InvalidOperationException">Cannot find legend with the specified key.</exception>
         public LegendBase GetLegend(string key)
         {
             if (key == null)
@@ -754,7 +754,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets any exception thrown during the last <see cref="IPlotModel.Update" /> call.
+        /// Gets any exception thrown during the last <see cref="IPlotModel.Update"/> call.
         /// </summary>
         /// <returns>The exception or <c>null</c> if there was no exception.</returns>
         public Exception GetLastPlotException()
@@ -769,7 +769,7 @@ namespace OxyPlot
         /// 2. Ensure that all series have axes assigned.
         /// 3. Updates the max and min of the axes.
         /// </summary>
-        /// <param name="updateData">if set to <c>true</c> , all data collections will be updated.</param>
+        /// <param name="updateData">if set to <c>true</c>, all data collections will be updated.</param>
         void IPlotModel.Update(bool updateData)
         {
             lock (this.SyncRoot)
@@ -825,7 +825,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="key">The axis key.</param>
         /// <returns>The axis that corresponds with the key.</returns>
-        /// <exception cref="System.InvalidOperationException">Cannot find axis with the specified key.</exception>
+        /// <exception cref="InvalidOperationException">Cannot find axis with the specified key.</exception>
         public Axis GetAxis(string key)
         {
             if (key == null)
@@ -852,7 +852,7 @@ namespace OxyPlot
             if (key != null)
             {
                 var axis = this.Axes.FirstOrDefault(a => a.Key == key);
-                return axis != null ? axis : defaultAxis;
+                return axis ?? defaultAxis;
             }
 
             return defaultAxis;
@@ -969,12 +969,7 @@ namespace OxyPlot
         /// </summary>
         protected virtual void OnUpdated()
         {
-            var handler = this.Updated;
-            if (handler != null)
-            {
-                var args = new EventArgs();
-                handler(this, args);
-            }
+            this.Updated?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -982,12 +977,7 @@ namespace OxyPlot
         /// </summary>
         protected virtual void OnUpdating()
         {
-            var handler = this.Updating;
-            if (handler != null)
-            {
-                var args = new EventArgs();
-                handler(this, args);
-            }
+            this.Updating?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -1157,7 +1147,7 @@ namespace OxyPlot
         /// <summary>
         /// Updates maximum and minimum values of the axes from values of all data series.
         /// </summary>
-        /// <param name="isDataUpdated">if set to <c>true</c> , the data has been updated.</param>
+        /// <param name="isDataUpdated">if set to <c>true</c>, the data has been updated.</param>
         private void UpdateMaxMin(bool isDataUpdated)
         {
             if (isDataUpdated)

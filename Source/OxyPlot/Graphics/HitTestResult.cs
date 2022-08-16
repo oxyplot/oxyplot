@@ -15,7 +15,7 @@ namespace OxyPlot
     public class HitTestResult
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="HitTestResult" /> class.
+        /// Initializes a new instance of the <see cref="HitTestResult"/> class.
         /// </summary>
         /// <param name="element">The element that was hit.</param>
         /// <param name="nearestHitPoint">The nearest hit point.</param>
@@ -34,13 +34,13 @@ namespace OxyPlot
         /// </summary>
         /// <value>The index.</value>
         /// <remarks>If the hit was in the middle between point 1 and 2, index = 1.5.</remarks>
-        public double Index { get; private set; }
+        public double Index { get; }
 
         /// <summary>
         /// Gets the item of the hit (if available).
         /// </summary>
         /// <value>The item.</value>
-        public object Item { get; private set; }
+        public object Item { get; }
 
         /// <summary>
         /// Gets the element that was hit.
@@ -48,7 +48,7 @@ namespace OxyPlot
         /// <value>
         /// The element.
         /// </value>
-        public Element Element { get; private set; }
+        public Element Element { get; }
 
         /// <summary>
         /// Gets the position of the nearest hit point.

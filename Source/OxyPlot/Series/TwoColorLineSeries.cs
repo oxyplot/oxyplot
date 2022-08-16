@@ -23,7 +23,7 @@ namespace OxyPlot.Series
         private OxyColor defaultColor2;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref = "TwoColorLineSeries" /> class.
+        /// Initializes a new instance of the <see cref="TwoColorLineSeries"/> class.
         /// </summary>
         public TwoColorLineSeries()
         {
@@ -54,10 +54,10 @@ namespace OxyPlot.Series
         public double Limit { get; set; }
 
         /// <summary>
-        /// Gets or sets the dash array for the rendered line that is below the limit (overrides <see cref="LineStyle" />).
+        /// Gets or sets the dash array for the rendered line that is below the limit (overrides <see cref="LineStyle"/>).
         /// </summary>
         /// <value>The dash array.</value>
-        /// <remarks>If this is not <c>null</c> it overrides the <see cref="LineStyle" /> property.</remarks>
+        /// <remarks>If this is not <c>null</c> it overrides the <see cref="LineStyle"/> property.</remarks>
         public double[] Dashes2 { get; set; }
 
         /// <summary>
@@ -113,7 +113,7 @@ namespace OxyPlot.Series
             var clippingRect = this.GetClippingRect();
             var p1 = this.InverseTransform(clippingRect.BottomLeft);
             var p2 = this.InverseTransform(clippingRect.TopRight);
-            
+
             var clippingRectLo = new OxyRect(
                 this.Transform(p1.X, Math.Min(p1.Y, p2.Y)),
                 this.Transform(p2.X, this.Limit)).Clip(clippingRect);

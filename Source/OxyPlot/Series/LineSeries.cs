@@ -59,7 +59,7 @@ namespace OxyPlot.Series
         private List<DataPoint> smoothedPoints;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref = "LineSeries" /> class.
+        /// Initializes a new instance of the <see cref="LineSeries"/> class.
         /// </summary>
         public LineSeries()
         {
@@ -91,13 +91,14 @@ namespace OxyPlot.Series
         public OxyColor Color { get; set; }
 
         /// <summary>
-        /// Gets or sets the color of the broken line segments. The default is <see cref="OxyColors.Undefined"/>. Set it to <see cref="OxyColors.Automatic"/> if it should follow the <see cref="Color" />.
+        /// Gets or sets the color of the broken line segments. The default is <see cref="OxyColors.Undefined"/>.
+        /// Set it to <see cref="OxyColors.Automatic"/> if it should follow the <see cref="Color"/>.
         /// </summary>
         /// <remarks>Add <c>DataPoint.Undefined</c> in the Points collection to create breaks in the line.</remarks>
         public OxyColor BrokenLineColor { get; set; }
 
         /// <summary>
-        /// Gets or sets the broken line style. The default is <see cref="OxyPlot.LineStyle.Solid" />.
+        /// Gets or sets the broken line style. The default is <see cref="LineStyle.Solid"/>.
         /// </summary>
         public LineStyle BrokenLineStyle { get; set; }
 
@@ -107,10 +108,10 @@ namespace OxyPlot.Series
         public double BrokenLineThickness { get; set; }
 
         /// <summary>
-        /// Gets or sets the dash array for the rendered line (overrides <see cref="LineStyle" />). The default is <c>null</c>.
+        /// Gets or sets the dash array for the rendered line (overrides <see cref="LineStyle"/>). The default is <c>null</c>.
         /// </summary>
         /// <value>The dash array.</value>
-        /// <remarks>If this is not <c>null</c> it overrides the <see cref="LineStyle" /> property.</remarks>
+        /// <remarks>If this is not <c>null</c> it overrides the <see cref="LineStyle"/> property.</remarks>
         public double[] Dashes { get; set; }
 
         /// <summary>
@@ -134,13 +135,13 @@ namespace OxyPlot.Series
         public double LabelMargin { get; set; }
 
         /// <summary>
-        /// Gets or sets the line join. The default is <see cref="OxyPlot.LineJoin.Bevel" />.
+        /// Gets or sets the line join. The default is <see cref="LineJoin.Bevel"/>.
         /// </summary>
         /// <value>The line join.</value>
         public LineJoin LineJoin { get; set; }
 
         /// <summary>
-        /// Gets or sets the line style. The default is <see cref="OxyPlot.LineStyle.Automatic" />.
+        /// Gets or sets the line style. The default is <see cref="LineStyle.Automatic"/>.
         /// </summary>
         /// <value>The line style.</value>
         public LineStyle LineStyle { get; set; }
@@ -152,13 +153,13 @@ namespace OxyPlot.Series
         public LineLegendPosition LineLegendPosition { get; set; }
 
         /// <summary>
-        /// Gets or sets the marker fill color. The default is <see cref="OxyColors.Automatic" />.
+        /// Gets or sets the marker fill color. The default is <see cref="OxyColors.Automatic"/>.
         /// </summary>
         /// <value>The marker fill.</value>
         public OxyColor MarkerFill { get; set; }
 
         /// <summary>
-        /// Gets or sets the a custom polygon outline for the markers. Set <see cref="MarkerType" /> to <see cref="OxyPlot.MarkerType.Custom" /> to use this property. The default is <c>null</c>.
+        /// Gets or sets the a custom polygon outline for the markers. Set <see cref="MarkerType"/> to <see cref="MarkerType.Custom"/> to use this property. The default is <c>null</c>.
         /// </summary>
         /// <value>A polyline.</value>
         public ScreenPoint[] MarkerOutline { get; set; }
@@ -203,7 +204,7 @@ namespace OxyPlot.Series
         public double MinimumSegmentLength { get; set; }
 
         /// <summary>
-        /// Gets or sets a type of interpolation algorithm used for smoothing this <see cref = "DataPointSeries" />.
+        /// Gets or sets a type of interpolation algorithm used for smoothing this <see cref="DataPointSeries"/>.
         /// </summary>
         /// <value>Type of interpolation algorithm.</value>
         public IInterpolationAlgorithm InterpolationAlgorithm { get; set; }
@@ -514,12 +515,12 @@ namespace OxyPlot.Series
 	    /// Extracts a single contiguous line segment beginning with the element at the position of the enumerator when the method
 	    /// is called. Initial invalid data points are ignored.
 	    /// </summary>
+	    /// <param name="points">Points collection</param>
 	    /// <param name="pointIdx">Current point index</param>
 	    /// <param name="previousContiguousLineSegmentEndPoint">Initially set to null, but I will update I won't give a broken line if this is null</param>
 	    /// <param name="xmax">Maximum visible X value</param>
 	    /// <param name="broken">place to put broken segment</param>
 	    /// <param name="contiguous">place to put contiguous segment</param>
-	    /// <param name="points">Points collection</param>
 	    /// <returns>
 	    ///   <c>true</c> if line segments are extracted, <c>false</c> if reached end.
 	    /// </returns>
@@ -533,9 +534,9 @@ namespace OxyPlot.Series
             List<ScreenPoint> contiguous)
         // ReSharper restore SuggestBaseTypeForParameter
         {
-            DataPoint currentPoint = default(DataPoint);
+            DataPoint currentPoint = default;
 		    bool hasValidPoint = false;
-		    
+
             // Skip all undefined points
 		    for (; pointIdx < points.Count; pointIdx++)
 		    {
@@ -544,7 +545,7 @@ namespace OxyPlot.Series
 			    {
 				    return false;
 			    }
-			    
+
 				// ReSharper disable once AssignmentInConditionalExpression
 			    if (hasValidPoint = this.IsValidPoint(currentPoint))
 			    {
@@ -718,18 +719,18 @@ namespace OxyPlot.Series
 
             if (this.MarkerType != MarkerType.None)
             {
-                var markerBinOffset = this.MarkerResolution > 0 ? this.Transform(this.MinX, this.MinY) : default(ScreenPoint);
+                var markerBinOffset = this.MarkerResolution > 0 ? this.Transform(this.MinX, this.MinY) : default;
 
                 rc.DrawMarkers(
-                    pointsToRender, 
-                    this.MarkerType, 
-                    this.MarkerOutline, 
-                    new[] { this.MarkerSize }, 
-                    this.ActualMarkerFill, 
-                    this.MarkerStroke, 
-                    this.MarkerStrokeThickness, 
+                    pointsToRender,
+                    this.MarkerType,
+                    this.MarkerOutline,
+                    new[] { this.MarkerSize },
+                    this.ActualMarkerFill,
+                    this.MarkerStroke,
+                    this.MarkerStrokeThickness,
                     this.EdgeRenderingMode,
-                    this.MarkerResolution, 
+                    this.MarkerResolution,
                     markerBinOffset);
             }
         }
@@ -749,13 +750,13 @@ namespace OxyPlot.Series
             }
 
             rc.DrawReducedLine(
-                pointsToRender, 
-                this.MinimumSegmentLength * this.MinimumSegmentLength, 
-                this.GetSelectableColor(this.ActualColor), 
-                this.StrokeThickness, 
+                pointsToRender,
+                this.MinimumSegmentLength * this.MinimumSegmentLength,
+                this.GetSelectableColor(this.ActualColor),
+                this.StrokeThickness,
                 this.EdgeRenderingMode,
-                dashArray, 
-                this.LineJoin, 
+                dashArray,
+                this.LineJoin,
                 this.outputBuffer);
         }
 
@@ -774,7 +775,7 @@ namespace OxyPlot.Series
         protected class Segment
         {
             /// <summary>
-            /// Initializes a new instance of the <see cref="Segment" /> class.
+            /// Initializes a new instance of the <see cref="Segment"/> class.
             /// </summary>
             /// <param name="point1">The first point of the segment.</param>
             /// <param name="point2">The second point of the segment.</param>
