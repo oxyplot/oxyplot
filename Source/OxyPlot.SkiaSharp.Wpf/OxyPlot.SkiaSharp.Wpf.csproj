@@ -19,6 +19,7 @@
   <ItemGroup>
     <PackageReference Include="SkiaSharp.Views.Desktop.Common" Version="1.68.3" />
     <None Include="OxyPlot.SkiaSharp.Wpf.snk" />
+    <None Include="VisualStudioToolsManifest.xml" Pack="true" PackagePath="tools" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Icons\OxyPlot_128.png" Pack="true" PackagePath="\" />
