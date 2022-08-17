@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ArrowAnnotationExamples.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
@@ -85,7 +85,7 @@ namespace ExampleLibrary
                     new ArrowAnnotation
                         {
                             EndPoint = new DataPoint(i % 45, i / 45),
-                            Text = $"{i}�",
+                            Text = $"{i}°",
                             ArrowDirection = new ScreenVector(Math.Cos(rad), Math.Sin(rad)) * 25,
                             HeadLength = 5
                         });

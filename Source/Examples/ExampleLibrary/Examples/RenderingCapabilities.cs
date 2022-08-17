@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="RenderingCapabilities.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
@@ -805,7 +805,7 @@ namespace ExampleLibrary
                     var dy = Math.Cos(halfAngle) * LINE_LENGTH;
 
                     var textP = new ScreenPoint(15, y);
-                    rc.DrawText(textP, angle.ToString() + "�", OxyColors.Black, fontSize: 12);
+                    rc.DrawText(textP, angle.ToString() + "°", OxyColors.Black, fontSize: 12);
 
                     foreach (LineJoin lineJoin in Enum.GetValues(typeof(LineJoin)))
                     {
