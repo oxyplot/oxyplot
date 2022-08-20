@@ -48,8 +48,7 @@ namespace OxyPlot.Series
                 return null;
             }
 
-            var i = 0;
-            return itemsSource.Cast<object>().FirstOrDefault(_ => i++ == index);
+            return itemsSource.Cast<object>().ElementAtOrDefault(index);
         }
 
         /// <summary>
