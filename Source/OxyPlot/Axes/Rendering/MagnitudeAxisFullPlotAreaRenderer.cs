@@ -327,9 +327,6 @@ namespace OxyPlot.Axes
         /// <param name="endAngle">The end angle.</param>
         private void RenderTickArc(Axis axis, AngleAxis angleAxis, double x, OxyPen pen, double startAngle, double endAngle)
         {
-            //if (startAngle > endAngle)
-            //{
-            //}
             // caution: make sure angleAxis.UpdateActualMaxMin(); has been called
 
             // number of segment to draw a full circle

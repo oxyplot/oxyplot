@@ -174,9 +174,7 @@ namespace OxyPlot
 
                 foreach (var line in lines)
                 {
-                    var size = this.MeasureText(line, fontFamily, fontSize, fontWeight);
                     this.w.WriteText(p, line, c, fontFamily, fontSize, fontWeight, rotate, halign, valign);
-
                     p += lineOffset;
                 }
             }
@@ -187,9 +185,7 @@ namespace OxyPlot
                     for (var i = lines.Length - 1; i >= 0; i--)
                     {
                         var line = lines[i];
-                        _ = this.MeasureText(line, fontFamily, fontSize, fontWeight); // TODO: Is this necessary?
                         this.w.WriteText(p, line, c, fontFamily, fontSize, fontWeight, rotate, halign, valign);
-
                         p -= lineOffset;
                     }
                 }
@@ -197,9 +193,7 @@ namespace OxyPlot
                 {
                     foreach (var line in lines)
                     {
-                        var size = this.MeasureText(line, fontFamily, fontSize, fontWeight);
                         this.w.WriteText(p, line, c, fontFamily, fontSize, fontWeight, rotate, halign, valign);
-
                         p += lineOffset;
                     }
                 }

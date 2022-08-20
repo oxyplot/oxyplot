@@ -166,7 +166,6 @@ namespace OxyPlot.Axes
             ScreenPoint result = new ScreenPoint();
             //I think the key is to NOT compute the axis scaled value of the angle, BUT to just draw it from the Midpoint to the end of the PlotView
             //For each MinorTickValue, compute an intersection point within the client area
-            //double width_to_height = plotArea.Width / plotArea.Height;
 
             double theta = (x - axis.Offset) * axis.Scale;
             theta %= 360.0d;
