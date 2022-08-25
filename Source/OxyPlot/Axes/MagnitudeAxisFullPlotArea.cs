@@ -131,7 +131,7 @@ namespace OxyPlot.Axes
                 a1 -= this.MaximumDataMargin * marginSign;
             }
 
-            if (this.ActualMaximum - this.ActualMinimum < double.Epsilon)
+            if (this.ActualMaximum - this.ActualMinimum <= double.Epsilon)
             {
                 this.ActualMaximum = this.ActualMinimum + 1;
             }

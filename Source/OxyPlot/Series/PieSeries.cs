@@ -259,7 +259,7 @@ namespace OxyPlot.Series
             }
 
             this.total = this.slices.Sum(slice => slice.Value);
-            if (Math.Abs(this.total) < double.Epsilon)
+            if (Math.Abs(this.total) <= double.Epsilon)
             {
                 return;
             }

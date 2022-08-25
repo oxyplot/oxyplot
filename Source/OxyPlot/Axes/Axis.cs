@@ -1449,7 +1449,7 @@ namespace OxyPlot.Axes
                 a1 -= this.MaximumDataMargin * marginSign;
             }
 
-            if (this.ActualMaximum - this.ActualMinimum < double.Epsilon)
+            if (this.ActualMaximum - this.ActualMinimum <= double.Epsilon)
             {
                 this.ActualMaximum = this.ActualMinimum + 1;
             }
@@ -1740,7 +1740,7 @@ namespace OxyPlot.Axes
             var actualMaximum = this.DataMaximum;
             double range = this.DataMaximum - this.DataMinimum;
 
-            if (range < double.Epsilon)
+            if (range <= double.Epsilon)
             {
                 double zeroRange = this.DataMaximum > 0 ? this.DataMaximum : 1;
                 actualMaximum += zeroRange * 0.5;
@@ -1769,7 +1769,7 @@ namespace OxyPlot.Axes
             var actualMinimum = this.DataMinimum;
             double range = this.DataMaximum - this.DataMinimum;
 
-            if (range < double.Epsilon)
+            if (range <= double.Epsilon)
             {
                 double zeroRange = this.DataMaximum > 0 ? this.DataMaximum : 1;
                 actualMinimum -= zeroRange * 0.5;
@@ -1824,12 +1824,12 @@ namespace OxyPlot.Axes
                 return maxIntervalSize;
             }
 
-            if (Math.Abs(maxIntervalSize) < double.Epsilon)
+            if (Math.Abs(maxIntervalSize) <= double.Epsilon)
             {
                 throw new ArgumentException("Maximum interval size cannot be zero.", "maxIntervalSize");
             }
 
-            if (Math.Abs(range) < double.Epsilon)
+            if (Math.Abs(range) <= double.Epsilon)
             {
                 throw new ArgumentException("Range cannot be zero.", "range");
             }
