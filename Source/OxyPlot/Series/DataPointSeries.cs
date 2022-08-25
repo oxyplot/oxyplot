@@ -150,7 +150,7 @@ namespace OxyPlot.Series
         protected override object GetItem(int i)
         {
             var actualPoints = this.ActualPoints;
-            if (this.ItemsSource == null && actualPoints != null && i < actualPoints.Count)
+            if (actualPoints != null && i < actualPoints.Count)
             {
                 return actualPoints[i];
             }
