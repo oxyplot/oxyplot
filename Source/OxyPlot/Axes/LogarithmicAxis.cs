@@ -161,7 +161,7 @@ namespace OxyPlot.Axes
             var x0 = this.InverseTransform(isHorizontal ? ppt.X : ppt.Y);
             var x1 = this.InverseTransform(isHorizontal ? cpt.X : cpt.Y);
 
-            if (Math.Abs(x1) < double.Epsilon)
+            if (Math.Abs(x1) <= double.Epsilon)
             {
                 return;
             }

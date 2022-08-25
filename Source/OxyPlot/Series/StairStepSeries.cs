@@ -96,7 +96,7 @@ namespace OxyPlot.Series
                     u2 = 1;
                 }
 
-                if (Math.Abs(u2) < double.Epsilon)
+                if (Math.Abs(u2) <= double.Epsilon)
                 {
                     continue; // P1 && P2 coincident
                 }

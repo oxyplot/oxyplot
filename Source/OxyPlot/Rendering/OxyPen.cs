@@ -92,7 +92,7 @@ namespace OxyPlot
             LineStyle lineStyle = LineStyle.Solid,
             LineJoin lineJoin = LineJoin.Miter)
         {
-            if (color.IsInvisible() || lineStyle == LineStyle.None || Math.Abs(thickness) < double.Epsilon)
+            if (color.IsInvisible() || lineStyle == LineStyle.None || Math.Abs(thickness) <= double.Epsilon)
             {
                 return null;
             }
