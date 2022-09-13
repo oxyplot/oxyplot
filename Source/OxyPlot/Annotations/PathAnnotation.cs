@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace OxyPlot.Annotations
 {
     using System;
@@ -21,7 +23,7 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// The points of the line, transformed to screen coordinates.
         /// </summary>
-        private IList<ScreenPoint> screenPoints;
+        private IList<ScreenPoint>? screenPoints;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PathAnnotation" /> class.
@@ -182,6 +184,14 @@ namespace OxyPlot.Annotations
 
             this.GetActualTextAlignment(out var ha, out var va);
 
+            if (this.XAxis == null)
+            {
+                throw new InvalidOperationException($"{nameof(this.XAxis)} is null.");
+            }
+            if (this.YAxis == null)
+            {
+                throw new InvalidOperationException($"{nameof(this.XAxis)} is null.");
+            }
             var effectiveTextLinePosition = this.IsTransposed()
                 ? (this.YAxis.IsReversed ? 1 - this.TextLinePosition : this.TextLinePosition)
                 : (this.XAxis.IsReversed ? 1 - this.TextLinePosition : this.TextLinePosition);
@@ -263,7 +273,7 @@ namespace OxyPlot.Annotations
         /// <returns>
         /// The result of the hit test.
         /// </returns>
-        protected override HitTestResult HitTestOverride(HitTestArguments args)
+        protected override HitTestResult? HitTestOverride(HitTestArguments args)
         {
             if (this.screenPoints == null)
             {
@@ -291,6 +301,15 @@ namespace OxyPlot.Annotations
         /// </summary>
         protected virtual void CalculateActualMinimumsMaximums()
         {
+            if (this.XAxis == null)
+            {
+                throw new InvalidOperationException($"{nameof(this.XAxis)} is null.");
+            }
+            if (this.YAxis == null)
+            {
+                throw new InvalidOperationException($"{nameof(this.XAxis)} is null.");
+            }
+
             this.ActualMinimumX = Math.Max(this.MinimumX, this.XAxis.ClipMinimum);
             this.ActualMaximumX = Math.Min(this.MaximumX, this.XAxis.ClipMaximum);
             this.ActualMinimumY = Math.Max(this.MinimumY, this.YAxis.ClipMinimum);

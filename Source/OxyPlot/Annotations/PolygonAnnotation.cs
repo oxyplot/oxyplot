@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace OxyPlot.Annotations
 {
     using System;
@@ -21,7 +23,7 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// The polygon points transformed to screen coordinates.
         /// </summary>
-        private IList<ScreenPoint> screenPoints;
+        private IList<ScreenPoint>? screenPoints;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PolygonAnnotation" /> class.
@@ -112,7 +114,7 @@ namespace OxyPlot.Annotations
         /// <returns>
         /// The result of the hit test.
         /// </returns>
-        protected override HitTestResult HitTestOverride(HitTestArguments args)
+        protected override HitTestResult? HitTestOverride(HitTestArguments args)
         {
             if (this.screenPoints == null)
             {

@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace OxyPlot.Annotations
 {
     using System;
@@ -20,7 +22,7 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// The actual bounds of the text.
         /// </summary>
-        private IList<ScreenPoint> actualBounds;
+        private IList<ScreenPoint>? actualBounds;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TextAnnotation" /> class.
@@ -105,7 +107,7 @@ namespace OxyPlot.Annotations
         /// <returns>
         /// The result of the hit test.
         /// </returns>
-        protected override HitTestResult HitTestOverride(HitTestArguments args)
+        protected override HitTestResult? HitTestOverride(HitTestArguments args)
         {
             if (this.actualBounds == null)
             {

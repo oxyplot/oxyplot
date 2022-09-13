@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace OxyPlot.Annotations
 {
     using System;
@@ -42,7 +44,7 @@ namespace OxyPlot.Annotations
         /// Gets or sets the image source.
         /// </summary>
         /// <value>The image source.</value>
-        public OxyImage ImageSource { get; set; }
+        public OxyImage? ImageSource { get; set; }
 
         /// <summary>
         /// Gets or sets the horizontal alignment.
@@ -120,17 +122,29 @@ namespace OxyPlot.Annotations
 
             if (double.IsNaN(width) && double.IsNaN(height))
             {
+                if (this.ImageSource == null)
+                {
+                    throw new InvalidOperationException($"{nameof(this.ImageSource)} is null.");
+                }
                 width = this.ImageSource.Width;
                 height = this.ImageSource.Height;
             }
 
             if (double.IsNaN(width))
             {
+                if (this.ImageSource == null)
+                {
+                    throw new InvalidOperationException($"{nameof(this.ImageSource)} is null.");
+                }
                 width = height / this.ImageSource.Height * this.ImageSource.Width;
             }
 
             if (double.IsNaN(height))
             {
+                if (this.ImageSource == null)
+                {
+                    throw new InvalidOperationException($"{nameof(this.ImageSource)} is null.");
+                }
                 height = width / this.ImageSource.Width * this.ImageSource.Height;
             }
 
@@ -173,7 +187,7 @@ namespace OxyPlot.Annotations
         /// <returns>
         /// The result of the hit test.
         /// </returns>
-        protected override HitTestResult HitTestOverride(HitTestArguments args)
+        protected override HitTestResult? HitTestOverride(HitTestArguments args)
         {
             if (this.actualBounds.Contains(args.Point))
             {
