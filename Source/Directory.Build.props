@@ -1,5 +1,7 @@
 <Project>
+  <Sdk Name="DotNet.ReproducibleBuilds.Isolated" Version="1.1.1" />
   <ItemGroup>
     <PackageReference Include="DotNet.ReproducibleBuilds" Version="1.1.1" PrivateAssets="All"/>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="All" />
   </ItemGroup>
 </Project>
