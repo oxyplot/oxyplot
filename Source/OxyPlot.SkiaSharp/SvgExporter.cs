@@ -28,8 +28,7 @@ namespace OxyPlot.SkiaSharp
         public void Export(IPlotModel model, Stream stream)
         {
             using var skStream = new SKManagedWStream(stream);
-            using var writer = new SKXmlStreamWriter(skStream);
-            using var canvas = SKSvgCanvas.Create(new SKRect(0, 0, this.Width, this.Height), writer);
+            using var canvas = SKSvgCanvas.Create(new SKRect(0, 0, this.Width, this.Height), skStream);
 
             if (!model.Background.IsInvisible())
             {

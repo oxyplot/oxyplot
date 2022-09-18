@@ -89,7 +89,7 @@ namespace OxyPlot.SkiaSharp
             }
 
             using var skStream = new SKManagedWStream(stream);
-            SKPixmap.Encode(skStream, bitmap, SKEncodedImageFormat.Jpeg, this.Quality);
+            bitmap.Encode(skStream, SKEncodedImageFormat.Jpeg, this.Quality);
         }
     }
 }
