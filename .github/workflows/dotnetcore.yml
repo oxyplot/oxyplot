@@ -3,9 +3,11 @@ on:
   push:
     branches:
     - master
+    - develop
   pull_request:
     branches:
     - master
+    - develop
 jobs:
   build:
     runs-on: windows-latest
