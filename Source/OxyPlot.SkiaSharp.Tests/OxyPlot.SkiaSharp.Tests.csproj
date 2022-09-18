@@ -3,8 +3,6 @@
         <TargetFrameworks>net462;netcoreapp3.1</TargetFrameworks>
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
         <Description>OxyPlot SkiaSharp unit tests</Description>
-        <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <Copyright>OxyPlot contributors</Copyright>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <Platforms>AnyCPU;x86;x64</Platforms>
         <LangVersion>8</LangVersion>

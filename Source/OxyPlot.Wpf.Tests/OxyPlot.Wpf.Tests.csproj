@@ -3,8 +3,6 @@
         <TargetFramework>net462</TargetFramework>
         <UseWPF>true</UseWPF>
         <Description>OxyPlot WPF unit tests</Description>
-        <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <Copyright>OxyPlot contributors</Copyright>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
     <ItemGroup>

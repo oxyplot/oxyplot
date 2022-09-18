@@ -3,8 +3,6 @@
         <TargetFramework>net462</TargetFramework>
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
         <Description>OxyPlot unit tests</Description>
-        <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <Copyright>OxyPlot contributors</Copyright>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <NoWarn>CS0618</NoWarn>
     </PropertyGroup>

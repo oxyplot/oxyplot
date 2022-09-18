@@ -1,26 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFrameworks>netstandard1.0;netstandard2.0;net462</TargetFrameworks>
     <PackageId>OxyPlot.ExampleLibrary</PackageId>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Example models for OxyPlot.</Description>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Copyright>OxyPlot contributors</Copyright>
-    <PackageProjectUrl>https://oxyplot.github.io/</PackageProjectUrl>
-    <PackageIcon>OxyPlot_128.png</PackageIcon>
     <PackageTags>plotting plot charting chart</PackageTags>
-    <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/oxyplot/oxyplot.git</RepositoryUrl>
   </PropertyGroup>
-
   <ItemGroup>
     <None Remove="Resources\DodgyContourData.tsv" />
     <None Remove="Resources\X.txt" />
     <None Remove="Resources\Y.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\..\Icons\OxyPlot_128.png" Pack="true" PackagePath="\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Bergensbanen.csv" />

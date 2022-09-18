@@ -2,16 +2,10 @@
   <PropertyGroup>
     <TargetFrameworks>net462;netcoreapp3.1</TargetFrameworks>
     <UseWPF>true</UseWPF>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>OxyPlot is a plotting library for .NET. This package targets WPF applications and uses the SkiaSharp renderer.</Description>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Copyright>OxyPlot contributors</Copyright>
-    <PackageProjectUrl>https://oxyplot.github.io/</PackageProjectUrl>
-    <PackageIcon>OxyPlot_128.png</PackageIcon>
     <PackageTags>plotting plot charting chart wpf</PackageTags>
-    <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/oxyplot/oxyplot.git</RepositoryUrl>
     <LangVersion>8</LangVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>OxyPlot.SkiaSharp.Wpf.snk</AssemblyOriginatorKeyFile>
@@ -20,9 +14,6 @@
     <PackageReference Include="SkiaSharp.Views.Desktop.Common" Version="1.68.3" />
     <None Include="OxyPlot.SkiaSharp.Wpf.snk" />
     <None Include="VisualStudioToolsManifest.xml" Pack="true" PackagePath="tools" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\Icons\OxyPlot_128.png" Pack="true" PackagePath="\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OxyPlot.SkiaSharp\OxyPlot.SkiaSharp.csproj" />
