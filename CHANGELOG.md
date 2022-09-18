@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 - Make consistent BaseValue and BaseLine across BarSeries, LinearBarSeries, and HistogramSeries
+- Factor out common project properties to `Directory.Build.props` (#1937)
 
 ### Removed
 - Support for .NET Framework 4.0 and 4.5 (#1839)
@@ -23,6 +24,7 @@ All notable changes to this project will be documented in this file.
 - Incorrect coloring of TwoColorLineSeries
 - HitTest when IsLegendVisible is false (#1975)
 - Font weight not being applied in ImageSharp (#2006)
+- SkiaSharp - Fix use of obsolete functions (#1937)
 
 ## [2.1.2] - 2022-12-03
 
