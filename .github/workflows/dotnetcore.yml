@@ -18,7 +18,7 @@ jobs:
       run: dotnet test Source/OxyPlot.CI.sln --configuration Release
     
     - name: Setup MSBuild.exe
-      uses: microsoft/setup-msbuild@v1.0.2
+      uses: microsoft/setup-msbuild@v1.1
     
     - name: MSBuild
       run: msbuild Source\OxyPlot.CI.sln -p:Configuration=Release
