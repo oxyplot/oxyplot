@@ -93,7 +93,7 @@ namespace OxyPlot
             OxyColor stroke,
             double strokeThickness,
             EdgeRenderingMode edgeRenderingMode,
-            double[] dashArray,
+            double[]? dashArray,
             LineJoin lineJoin,
             List<ScreenPoint>? outputBuffer = null,
             Action<IList<ScreenPoint>>? pointsRendered = null)
