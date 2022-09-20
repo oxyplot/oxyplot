@@ -148,7 +148,8 @@ namespace OxyPlot.Annotations
                     this.EdgeRenderingMode);
             }
 
-            if (string.IsNullOrEmpty(this.Text))
+            if (this.Text == null ||
+                string.IsNullOrEmpty(this.Text))
             {
                 return;
             }

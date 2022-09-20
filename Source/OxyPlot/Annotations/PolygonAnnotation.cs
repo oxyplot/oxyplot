@@ -89,7 +89,8 @@ namespace OxyPlot.Annotations
                 this.LineStyle,
                 this.LineJoin);
 
-            if (!string.IsNullOrEmpty(this.Text))
+            if (this.Text != null &&
+                !string.IsNullOrEmpty(this.Text))
             {
                 this.GetActualTextAlignment(out var ha, out var va);
                 var textPosition = this.GetActualTextPosition(() => ScreenPointHelper.GetCentroid(this.screenPoints));

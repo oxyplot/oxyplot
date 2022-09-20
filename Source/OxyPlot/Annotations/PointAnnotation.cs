@@ -73,7 +73,8 @@ namespace OxyPlot.Annotations
 
             rc.DrawMarker(this.screenPosition, this.Shape, this.CustomOutline, this.Size, this.Fill, this.Stroke, this.StrokeThickness, this.EdgeRenderingMode);
 
-            if (!string.IsNullOrEmpty(this.Text))
+            if (this.Text != null &&
+                !string.IsNullOrEmpty(this.Text))
             {
                 this.GetActualTextAlignment(out var ha, out var va);
                 var dx = -(int)ha * (this.Size + this.TextMargin);

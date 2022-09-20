@@ -244,7 +244,8 @@ namespace OxyPlot.Annotations
 
                 position += new ScreenVector(f * this.TextPadding * Math.Cos(angleInRadians), f * this.TextPadding * Math.Sin(angleInRadians));
 
-                if (!string.IsNullOrEmpty(this.Text))
+                if (this.Text != null &&
+                    !string.IsNullOrEmpty(this.Text))
                 {
                     var textPosition = this.GetActualTextPosition(() => position);
 

@@ -64,7 +64,8 @@ namespace OxyPlot.Annotations
                 this.StrokeThickness,
                 this.EdgeRenderingMode);
 
-            if (!string.IsNullOrEmpty(this.Text))
+            if (this.Text != null &&
+                !string.IsNullOrEmpty(this.Text))
             {
                 var textPosition = this.GetActualTextPosition(() => this.screenRectangle.Center);
                 this.GetActualTextAlignment(out var ha, out var va);

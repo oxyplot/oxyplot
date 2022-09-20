@@ -69,6 +69,11 @@ namespace OxyPlot.Annotations
         /// <inheritdoc/>
         public override void Render(IRenderContext rc)
         {
+            if (this.Text == null)
+            {
+                throw new InvalidOperationException($"{nameof(this.Text)} must be non-null before rendering.");
+            }
+
             base.Render(rc);
 
             var position = this.Transform(this.TextPosition) + this.Orientate(this.Offset);

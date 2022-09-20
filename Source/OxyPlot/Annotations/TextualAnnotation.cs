@@ -33,7 +33,7 @@ namespace OxyPlot.Annotations
         /// Gets or sets the annotation text.
         /// </summary>
         /// <value>The text.</value>
-        public string Text { get; set; } = string.Empty;
+        public string? Text { get; set; }
 
         /// <summary>
         /// Gets or sets the position of the text.

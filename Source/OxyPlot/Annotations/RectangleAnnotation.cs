@@ -85,7 +85,8 @@ namespace OxyPlot.Annotations
                 this.StrokeThickness,
                 this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness));
 
-            if (string.IsNullOrEmpty(this.Text))
+            if (this.Text == null ||
+                string.IsNullOrEmpty(this.Text))
             {
                 return;
             }
