@@ -152,6 +152,15 @@ namespace OxyPlot.Annotations
         /// <inheritdoc/>
         public override void Render(IRenderContext rc)
         {
+            if (this.XAxis == null)
+            {
+                throw new InvalidOperationException($"{nameof(this.XAxis)} must be non-null before rendering.");
+            }
+            if (this.YAxis == null)
+            {
+                throw new InvalidOperationException($"{nameof(this.YAxis)} must be non-null before rendering.");
+            }
+
             base.Render(rc);
 
             this.CalculateActualMinimumsMaximums();
@@ -184,14 +193,6 @@ namespace OxyPlot.Annotations
 
             this.GetActualTextAlignment(out var ha, out var va);
 
-            if (this.XAxis == null)
-            {
-                throw new InvalidOperationException($"{nameof(this.XAxis)} is null.");
-            }
-            if (this.YAxis == null)
-            {
-                throw new InvalidOperationException($"{nameof(this.XAxis)} is null.");
-            }
             var effectiveTextLinePosition = this.IsTransposed()
                 ? (this.YAxis.IsReversed ? 1 - this.TextLinePosition : this.TextLinePosition)
                 : (this.XAxis.IsReversed ? 1 - this.TextLinePosition : this.TextLinePosition);
@@ -307,7 +308,7 @@ namespace OxyPlot.Annotations
             }
             if (this.YAxis == null)
             {
-                throw new InvalidOperationException($"{nameof(this.XAxis)} is null.");
+                throw new InvalidOperationException($"{nameof(this.YAxis)} is null.");
             }
 
             this.ActualMinimumX = Math.Max(this.MinimumX, this.XAxis.ClipMinimum);

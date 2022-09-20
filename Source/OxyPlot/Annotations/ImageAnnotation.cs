@@ -109,6 +109,11 @@ namespace OxyPlot.Annotations
         /// <inheritdoc/>
         public override void Render(IRenderContext rc)
         {
+            if (this.ImageSource == null)
+            {
+                throw new InvalidOperationException($"{nameof(this.ImageSource)} must be non-null before rendering.");
+            }
+
             base.Render(rc);
 
             var p = this.GetPoint(this.X, this.Y, this.PlotModel);
@@ -122,29 +127,17 @@ namespace OxyPlot.Annotations
 
             if (double.IsNaN(width) && double.IsNaN(height))
             {
-                if (this.ImageSource == null)
-                {
-                    throw new InvalidOperationException($"{nameof(this.ImageSource)} is null.");
-                }
                 width = this.ImageSource.Width;
                 height = this.ImageSource.Height;
             }
 
             if (double.IsNaN(width))
             {
-                if (this.ImageSource == null)
-                {
-                    throw new InvalidOperationException($"{nameof(this.ImageSource)} is null.");
-                }
                 width = height / this.ImageSource.Height * this.ImageSource.Width;
             }
 
             if (double.IsNaN(height))
             {
-                if (this.ImageSource == null)
-                {
-                    throw new InvalidOperationException($"{nameof(this.ImageSource)} is null.");
-                }
                 height = width / this.ImageSource.Width * this.ImageSource.Height;
             }
 

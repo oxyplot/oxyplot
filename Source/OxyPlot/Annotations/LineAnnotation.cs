@@ -103,6 +103,10 @@ namespace OxyPlot.Annotations
                     points.Add(new DataPoint(fy(this.ActualMinimumY), this.ActualMinimumY));
                     points.Add(new DataPoint(fy(this.ActualMaximumY), this.ActualMaximumY));
                 }
+                else
+                {
+                    throw new InvalidOperationException("fx or fy must be non-null.");
+                }
             }
             else
             {
