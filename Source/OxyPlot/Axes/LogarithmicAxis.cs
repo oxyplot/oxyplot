@@ -633,5 +633,86 @@ namespace OxyPlot.Axes
 
             base.CoerceActualMaxMin();
         }
+
+        /// <summary>
+        /// Calculates the actual maximum value of the axis, including the <see cref="Axis.MaximumPadding" />.
+        /// </summary>
+        /// <returns>The new actual maximum value of the axis.</returns>
+        /// <remarks>
+        /// Must be called before <see cref="CalculateActualMinimum" />
+        /// </remarks>
+        protected override double CalculateActualMaximum()
+        {
+            var actualMaximum = this.DataMaximum;
+            double range = this.DataMaximum - this.DataMinimum;
+
+            if (range < double.Epsilon)
+            {
+                double zeroRange = this.DataMaximum > 0 ? this.DataMaximum : 1;
+                actualMaximum += zeroRange * 0.5;
+            }
+
+            if (!double.IsNaN(this.DataMinimum) && !double.IsNaN(actualMaximum))
+            {
+                // On log axis we actually see log(x). Now if we want to have a padding we need to change actualMaximum
+                // to an x value that corresponds to the padding expected in log scale
+                //  x_0                   x_1      x_2
+                //   |---------------------|--------|
+                // log(x_0)             log(x_1) log(x_2)
+                // where actualMaximum = x_2
+                //
+                // log(x_2) - log(x_1) = padding * [log(x_1) - log(x_0)]
+                // log(x_2) = padding * log(x_1/x_0) + log(x_1)
+                // x_2 = (x_1/x_0)^padding * x_1
+
+                double x1 = actualMaximum;
+                double x0 = this.DataMinimum;
+                return Math.Pow(x1, this.MaximumPadding + 1) * (x0 > double.Epsilon ? Math.Pow(x0, -MaximumPadding) : 1);
+            }
+
+            return actualMaximum;
+        }
+
+        /// <summary>
+        /// Calculates the actual minimum value of the axis, including the <see cref="Axis.MinimumPadding" />.
+        /// </summary>
+        /// <returns>The new actual minimum value of the axis.</returns>
+        /// <remarks>
+        /// Must be called after <see cref="CalculateActualMaximum" />
+        /// </remarks>
+        protected override double CalculateActualMinimum()
+        {
+            var actualMinimum = this.DataMinimum;
+            double range = this.DataMaximum - this.DataMinimum;
+
+            if (range < double.Epsilon)
+            {
+                double zeroRange = this.DataMaximum > 0 ? this.DataMaximum : 1;
+                actualMinimum -= zeroRange * 0.5;
+            }
+
+            if (!double.IsNaN(this.ActualMaximum))
+            {
+                // For the padding on the min value it is very similar to the calculation mentioned in
+                // CalculateActualMaximum. However, since this is called after CalculateActualMaximum,
+                // we no longer know x_1.
+                //  x_3       x_0          x_1      x_2
+                //   |---------|------------|--------|
+                // log(x_3) log(x_0)       log(x_1) log(x_2)
+                // where actualMiminum = x_3
+                // log(x_0) - log(x_3) = padding * [log(x_1) - log(x_0)]
+                // from CalculateActualMaximum we can use
+                // log(x_1) = [log(x_2) + max_padding * log(x_0)] / (1 + max_padding)
+                // x_3 = x_0^[1 + padding - padding * max_padding / (1 + max_padding)] * x_2^[-padding / (1 + max_padding)]
+
+                double x1 = this.ActualMaximum;
+                double x0 = actualMinimum;
+                double existingPadding = this.MaximumPadding;
+                return Math.Pow(x0, 1 + MinimumPadding - MinimumPadding * existingPadding / (1 + existingPadding)) * Math.Pow(x1, -MinimumPadding / (1 + existingPadding));
+            }
+
+            return actualMinimum;
+        }
+
     }
 }
