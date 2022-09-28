@@ -44,9 +44,20 @@
         [Example("With negative colors")]
         public static PlotModel WithNegativeColors()
         {
-            var model = new PlotModel { Title = "LinearBarSeries with stroke" };
+            return CreateWithNegativeColors();
+        }
+
+        [Example("With negative colors (logaritmic)")]
+        public static PlotModel WithNegativeColorsLogarithmic()
+        {
+            return CreateWithNegativeColors(true);
+        }
+
+        public static PlotModel CreateWithNegativeColors(bool logarithmic = false)
+        {
+            var model = new PlotModel { Title = logarithmic ? "LinearBarSeries with stroke (logarithmic)" : "LinearBarSeries with stroke" };
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+            model.Axes.Add(logarithmic ? (Axis)new LogarithmicAxis { Position = AxisPosition.Left } : new LinearAxis { Position = AxisPosition.Left });
             var linearBarSeries = CreateExampleLinearBarSeriesWithNegativeValues();
             linearBarSeries.Title = "LinearBarSeries";
             linearBarSeries.FillColor = OxyColor.Parse("#454CAF50");
