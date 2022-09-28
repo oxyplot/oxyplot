@@ -387,6 +387,11 @@ namespace OxyPlot.Series
 
                 var topValue = this.IsStacked ? baseValue + value : value;
 
+                if (this.YAxis.IsLogarithmic() && !this.YAxis.IsValidValue(topValue))
+                {
+                    continue;
+                }
+
                 // Calculate offset
                 double categoryValue;
                 if (this.IsStacked)
@@ -401,6 +406,11 @@ namespace OxyPlot.Series
                 if (this.IsStacked)
                 {
                     this.Manager.SetCurrentBaseValue(stackIndex, categoryIndex, value < 0, topValue);
+                }
+
+                if (this.YAxis.IsLogarithmic() && !this.YAxis.IsValidValue(baseValue))
+                {
+                    baseValue = double.Epsilon;
                 }
 
                 var rect = new OxyRect(this.Transform(baseValue, categoryValue), this.Transform(topValue, categoryValue + actualBarWidth));

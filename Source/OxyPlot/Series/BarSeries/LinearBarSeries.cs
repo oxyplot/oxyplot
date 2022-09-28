@@ -195,7 +195,14 @@ namespace OxyPlot.Series
         {
             base.UpdateAxisMaxMin();
 
-            this.YAxis.Include(0.0);
+            if (this.YAxis.IsLogarithmic())
+            {
+                this.YAxis.Include(double.Epsilon);
+            }
+            else
+            {
+                this.YAxis.Include(0.0);
+            }
         }
 
         /// <summary>
@@ -265,7 +272,7 @@ namespace OxyPlot.Series
                 }
 
                 var screenPoint = this.Transform(actualPoint) - widthVector;
-                var basePoint = this.Transform(new DataPoint(actualPoint.X, 0)) + widthVector;
+                var basePoint = this.Transform(new DataPoint(actualPoint.X, this.YAxis.IsLogarithmic() ? double.Epsilon : 0)) + widthVector;
                 var rectangle = new OxyRect(basePoint, screenPoint);
                 this.rectangles.Add(rectangle);
                 this.rectanglesPointIndexes.Add(pointIndex);
