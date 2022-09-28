@@ -29,6 +29,7 @@ All notable changes to this project will be documented in this file.
 - WindowsForms tracker no longer clipping outside PlotView boundaries (#1863)
 - Histogram now rendering properly when using logarithmic Y axis (#740) 
 - Fix ExampleLibrary build errors in certain code pages (#1890)
+- LineBarSeries now rendering properly when using logarithmic scale (#740)
 
 ## [2.1.0] - 2021-10-02
 
