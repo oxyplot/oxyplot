@@ -9,6 +9,7 @@
 
 namespace OxyPlot.Series
 {
+    using OxyPlot.Axes;
     using System.Collections.Generic;
 
     /// <summary>
@@ -92,6 +93,13 @@ namespace OxyPlot.Series
                 return this.FillColor.GetActualColor(this.defaultColor);
             }
         }
+
+        /// <summary>
+        /// Gets or sets the base line. This value is used for plotting to determine
+        /// the start of the plot. A suitable value is selected automatically. E.g. for
+        /// logarithmic axis, the smallest valid roundtrip value is used.
+        /// </summary>
+        public double BaseLine { get; set; } = double.NaN;
 
         /// <summary>
         /// Gets the nearest point.
@@ -195,14 +203,24 @@ namespace OxyPlot.Series
         {
             base.UpdateAxisMaxMin();
 
-            if (this.YAxis.IsLogarithmic())
+            this.YAxis.Include(this.GetBaseLineOrAutomaticValue(this.YAxis));
+        }
+
+        /// <summary>
+        /// Gets the base line value. If the value of the property is NaN. A sensible value is returned.
+        /// </summary>
+        /// <param name="axis">The axis for which to return a sensible value for.</param>
+        /// <returns>The base line property or a sensible default.</returns>
+        protected double GetBaseLineOrAutomaticValue(Axis axis)
+        {
+            if (double.IsNaN(this.BaseLine))
             {
-                this.YAxis.Include(double.Epsilon);
+                if (axis.IsLogarithmic())
+                    return LogarithmicAxis.LowestValidRoundtripValue;
+                return 0;
             }
-            else
-            {
-                this.YAxis.Include(0.0);
-            }
+
+            return this.BaseLine;
         }
 
         /// <summary>
@@ -272,7 +290,7 @@ namespace OxyPlot.Series
                 }
 
                 var screenPoint = this.Transform(actualPoint) - widthVector;
-                var basePoint = this.Transform(new DataPoint(actualPoint.X, this.YAxis.IsLogarithmic() ? double.Epsilon : 0)) + widthVector;
+                var basePoint = this.Transform(new DataPoint(actualPoint.X, this.GetBaseLineOrAutomaticValue(this.YAxis))) + widthVector;
                 var rectangle = new OxyRect(basePoint, screenPoint);
                 this.rectangles.Add(rectangle);
                 this.rectanglesPointIndexes.Add(pointIndex);

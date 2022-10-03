@@ -21,6 +21,12 @@ namespace OxyPlot.Axes
     public class LogarithmicAxis : Axis
     {
         /// <summary>
+        /// The lowest value that can be transformed to logarithmic and 
+        /// back yielding the same non-infinite number.
+        /// </summary>
+        public static readonly double LowestValidRoundtripValue = 2.22507385850726E-308;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref = "LogarithmicAxis" /> class.
         /// </summary>
         public LogarithmicAxis()
@@ -667,7 +673,7 @@ namespace OxyPlot.Axes
 
                 double x1 = actualMaximum;
                 double x0 = this.DataMinimum;
-                return Math.Pow(x1, this.MaximumPadding + 1) * (x0 > double.Epsilon ? Math.Pow(x0, -MaximumPadding) : 1);
+                return Math.Pow(x1, this.MaximumPadding + 1) * (x0 > double.Epsilon ? Math.Pow(x0, -this.MaximumPadding) : 1);
             }
 
             return actualMaximum;
@@ -708,7 +714,7 @@ namespace OxyPlot.Axes
                 double x1 = this.ActualMaximum;
                 double x0 = actualMinimum;
                 double existingPadding = this.MaximumPadding;
-                return Math.Pow(x0, 1 + MinimumPadding - MinimumPadding * existingPadding / (1 + existingPadding)) * Math.Pow(x1, -MinimumPadding / (1 + existingPadding));
+                return Math.Pow(x0, 1 + this.MinimumPadding - this.MinimumPadding * existingPadding / (1 + existingPadding)) * Math.Pow(x1, -this.MinimumPadding / (1 + existingPadding));
             }
 
             return actualMinimum;
