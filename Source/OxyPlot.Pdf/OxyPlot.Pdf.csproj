@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net462</TargetFramework>
+    <TargetFrameworks>net462;net6.0-windows</TargetFrameworks>
     <Product>OxyPlot PDF extensions</Product>
     <Description>OxyPlot is a plotting library for .NET. This package contains .pdf export extensions for .NET 4 (based on PDFsharp).</Description>
     <PackageTags>pdf plotting plot charting chart</PackageTags>
@@ -9,6 +10,7 @@
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>OxyPlot.Pdf.snk</AssemblyOriginatorKeyFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>NU1701</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -26,5 +28,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="PDFsharp-MigraDoc-GDI" Version="1.50.5147" />
+    <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
   </ItemGroup>
 </Project>

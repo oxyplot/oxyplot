@@ -1,10 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net462</TargetFramework>
+        <TargetFrameworks>net462;net6.0-windows</TargetFrameworks>
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
         <Description>OxyPlot Pdf unit tests</Description>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        <NoWarn>CS0618</NoWarn>
+        <NoWarn>CS0618,NU1701</NoWarn>
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\Examples\ExampleLibrary\ExampleLibrary.csproj" />

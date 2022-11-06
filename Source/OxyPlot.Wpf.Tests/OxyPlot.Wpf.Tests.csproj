@@ -1,6 +1,6 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net462</TargetFramework>
+        <TargetFrameworks>net462;net6.0-windows</TargetFrameworks>
         <UseWPF>true</UseWPF>
         <Description>OxyPlot WPF unit tests</Description>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
