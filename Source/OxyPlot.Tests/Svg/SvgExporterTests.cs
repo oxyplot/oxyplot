@@ -20,6 +20,14 @@ namespace OxyPlot.Tests
     [TestFixture]
     public class SvgExporterTests
     {
+        const string DestinationDirectory = "SvgExporterTests_ExampleLibrary";
+
+        [OneTimeSetUp]
+        public void Init()
+        {
+            Directory.CreateDirectory(DestinationDirectory);
+        }
+
         [Test]
         public void ExportToString_TestPlot_ValidSvgDocument()
         {
@@ -54,43 +62,35 @@ namespace OxyPlot.Tests
 
 
         [Test]
-        public void Export_AllExamplesInExampleLibrary_CheckThatAllFilesExist()
+        [TestCaseSource(typeof(ExampleLibrary.Examples), nameof(ExampleLibrary.Examples.GetListForAutomatedTest))]
+        public void Export_AllExamplesInExampleLibrary_CheckThatAllFilesExist(ExampleLibrary.ExampleInfo example)
         {
-            const string DestinationDirectory = "SvgExporterTests_ExampleLibrary";
-            if (!Directory.Exists(DestinationDirectory))
+            void ExportModelAndCheckFileExists(PlotModel model, string fileName)
             {
-                Directory.CreateDirectory(DestinationDirectory);
+                if (model == null)
+                {
+                    return;
+                }
+
+                var path = Path.Combine(DestinationDirectory, FileNameUtilities.CreateValidFileName(fileName, ".svg"));
+                using (var s = File.Create(path))
+                {
+                    SvgExporter.Export(model, s, 800, 500, true);
+                }
+
+                Assert.IsTrue(File.Exists(path));
             }
 
-            foreach (var example in Examples.GetListForAutomatedTest())
+            ExportModelAndCheckFileExists(example.PlotModel, $"{example.Category} - {example.Title}");
+
+            if (example.IsTransposable)
             {
-                void ExportModelAndCheckFileExists(PlotModel model, string fileName)
-                {
-                    if (model == null)
-                    {
-                        return;
-                    }
+                ExportModelAndCheckFileExists(example.GetModel(ExampleFlags.Transpose), $"{example.Category} - {example.Title} - Transposed");
+            }
 
-                    var path = Path.Combine(DestinationDirectory, FileNameUtilities.CreateValidFileName(fileName, ".svg"));
-                    using (var s = File.Create(path))
-                    {
-                        SvgExporter.Export(model, s, 800, 500, true);
-                    }
-
-                    Assert.IsTrue(File.Exists(path));
-                }
-
-                ExportModelAndCheckFileExists(example.PlotModel, $"{example.Category} - {example.Title}");
-
-                if (example.IsTransposable)
-                {
-                    ExportModelAndCheckFileExists(example.GetModel(ExampleFlags.Transpose), $"{example.Category} - {example.Title} - Transposed");
-                }
-
-                if (example.IsReversible)
-                {
-                    ExportModelAndCheckFileExists(example.GetModel(ExampleFlags.Reverse), $"{example.Category} - {example.Title} - Reversed");
-                }
+            if (example.IsReversible)
+            {
+                ExportModelAndCheckFileExists(example.GetModel(ExampleFlags.Reverse), $"{example.Category} - {example.Title} - Reversed");
             }
         }
     }

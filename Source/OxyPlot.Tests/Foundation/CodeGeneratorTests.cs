@@ -21,23 +21,21 @@ namespace OxyPlot.Tests
         /// Test that code can be generated for all examples in the example library.
         /// </summary>
         [Test]
-        public void GenerateCodeForAllExamplesInExampleLibrary()
+        [TestCaseSource(typeof(ExampleLibrary.Examples), nameof(ExampleLibrary.Examples.GetListForAutomatedTest))]
+        public void GenerateCodeForAllExamplesInExampleLibrary(ExampleLibrary.ExampleInfo ei)
         {
-            foreach (var ei in ExampleLibrary.Examples.GetListForAutomatedTest())
+            void CheckCode(PlotModel model)
             {
-                void CheckCode(PlotModel model)
+                if (model == null)
                 {
-                    if (model == null)
-                    {
-                        return;
-                    }
-
-                    var code = model.ToCode();
-                    Assert.That(code, Is.Not.Null, ei.Title);
+                    return;
                 }
 
-                CheckCode(ei.PlotModel);
+                var code = model.ToCode();
+                Assert.That(code, Is.Not.Null, ei.Title);
             }
+
+            CheckCode(ei.PlotModel);
         }
 
         /// <summary>

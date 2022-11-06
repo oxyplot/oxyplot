@@ -9,68 +9,58 @@
 
 namespace OxyPlot.Wpf.Tests
 {
-    using System;
     using System.IO;
-    using System.Linq;
     using NUnit.Framework;
 
     /// <summary>
     /// Provides unit tests for the example library.
     /// </summary>
+    [TestFixture]
     public class ExampleLibraryTests
     {
+        const string DestinationDirectory = "ExampleLibrary.Actual";
+        const string BaselineDirectory = "ExampleLibrary.Baseline";
+        const string DiffDirectory = "ExampleLibrary.Diff";
+
+        [OneTimeSetUp]
+        public void Init()
+        {
+            Directory.CreateDirectory(BaselineDirectory);
+            Directory.CreateDirectory(DestinationDirectory);
+            Directory.CreateDirectory(DiffDirectory);
+        }
+
         /// <summary>
         /// Compares all examples with a baseline in "ExampleLibrary.Baseline". Creates the baseline
         /// if it does not exist.
         /// </summary>
         [Test]
-        public void ExportPngAndCompareWithBaseline()
+        [TestCaseSource(typeof(ExampleLibrary.Examples), nameof(ExampleLibrary.Examples.GetListForAutomatedTest))]
+        public void ExportPngAndCompareWithBaseline(ExampleLibrary.ExampleInfo example)
         {
-            const string DestinationDirectory = "ExampleLibrary.Actual";
-            const string BaselineDirectory = "ExampleLibrary.Baseline";
-            const string DiffDirectory = "ExampleLibrary.Diff";
-
-            if (!Directory.Exists(BaselineDirectory))
+            void ExportAndCompareToBaseline(PlotModel model, string fileName)
             {
-                Directory.CreateDirectory(BaselineDirectory);
-            }
-
-            if (!Directory.Exists(DestinationDirectory))
-            {
-                Directory.CreateDirectory(DestinationDirectory);
-            }
-
-            if (!Directory.Exists(DiffDirectory))
-            {
-                Directory.CreateDirectory(DiffDirectory);
-            }
-
-            foreach (var example in ExampleLibrary.Examples.GetListForAutomatedTest())
-            {
-                void ExportAndCompareToBaseline(PlotModel model, string fileName)
+                if (model == null)
                 {
-                    if (model == null)
-                    {
-                        return;
-                    }
-
-                    var baselinePath = Path.Combine(BaselineDirectory, fileName);
-                    var path = Path.Combine(DestinationDirectory, fileName);
-                    var diffpath = Path.Combine(DiffDirectory, fileName);
-
-                    PngExporter.Export(model, path, 800, 500);
-                    if (File.Exists(baselinePath))
-                    {
-                        PngAssert.AreEqual(baselinePath, path, example.Title, diffpath);
-                    }
-                    else
-                    {
-                        File.Copy(path, baselinePath);
-                    }
+                    return;
                 }
 
-                ExportAndCompareToBaseline(example.PlotModel, CreateValidFileName($"{example.Category} - {example.Title}", ".png"));
+                var baselinePath = Path.Combine(BaselineDirectory, fileName);
+                var path = Path.Combine(DestinationDirectory, fileName);
+                var diffpath = Path.Combine(DiffDirectory, fileName);
+
+                PngExporter.Export(model, path, 800, 500);
+                if (File.Exists(baselinePath))
+                {
+                    PngAssert.AreEqual(baselinePath, path, example.Title, diffpath);
+                }
+                else
+                {
+                    File.Copy(path, baselinePath);
+                }
             }
+
+            ExportAndCompareToBaseline(example.PlotModel, CreateValidFileName($"{example.Category} - {example.Title}", ".png"));
         }
 
         /// <summary>
