@@ -13,6 +13,12 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - Make consistent BaseValue and BaseLine across BarSeries, LinearBarSeries, and HistogramSeries
 - Factor out common project properties to `Directory.Build.props` (#1937)
+- Remove support for .NET Standard 1.X, as .NET Framework 4.6.2 supports .NET Standard 2.0 (#1937)
+- Remove support for .NET Core 3.1, as it is end-of-life soon (#1937)
+- Move example projects to .NET 6.0 (#1937)
+- Run tests on both net452 and net6.0 (#1937)
+- Update net40 and net45 to net452 (#1835)
+- Update net452 to net462 (#1937)
 
 ### Removed
 - Support for .NET Framework 4.0 and 4.5 (#1839)
