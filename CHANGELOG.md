@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 ## Unreleased
 
 ### Added
+
+### Changed
+
+### Removed
+
+### Fixed
+
+## [2.1.1] - 2022-11-26
+
+### Added
 - Add LineThickness property to TrackerControl (#1831)
 - Add properties for `MinimumSegmentLength` to series and annotations (#1853)
 - Add fractal examples for PolygonAnnotation and PolylineAnnotations (#1853)
