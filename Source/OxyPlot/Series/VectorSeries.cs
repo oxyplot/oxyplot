@@ -48,6 +48,7 @@ namespace OxyPlot.Series
             this.HeadLength = 3;
             this.HeadWidth = 2;
             this.Color = OxyColors.Black;
+            this.MinimumSegmentLength = 2;
             this.StrokeThickness = 2;
             this.LineStyle = LineStyle.Solid;
             this.LineJoin = LineJoin.Miter;
@@ -107,6 +108,14 @@ namespace OxyPlot.Series
         /// </summary>
         /// <value>The stroke thickness.</value>
         public double StrokeThickness { get; set; }
+
+        /// <summary>
+        /// Gets or sets the minimum length of an interpolated line segment.
+        /// Increasing this number will increase performance,
+        /// but make the curve less accurate. The default is <c>2</c>.
+        /// </summary>
+        /// <value>The minimum length of the segment.</value>
+        public double MinimumSegmentLength { get; set; }
 
         /// <summary>
         /// Gets or sets the 'veeness' of the arrow head (relative to thickness) (the default value is 0).
@@ -307,7 +316,7 @@ namespace OxyPlot.Series
         {
             var points = new List<DataPoint>() { point, point + vector };
             var screenPoints = new List<ScreenPoint>();
-            RenderingExtensions.TransformAndInterpolateLines(this, points, screenPoints);
+            RenderingExtensions.TransformAndInterpolateLines(this, points, screenPoints, this.MinimumSegmentLength);
 
             if (screenPoints.Count >= 2)
             {

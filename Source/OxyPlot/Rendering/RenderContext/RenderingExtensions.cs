@@ -672,9 +672,10 @@ namespace OxyPlot
         /// Transforms the given nodes and interpolates the lines if the element exists on a logarithmic plot.
         /// </summary>
         /// <param name="transposablePlotElement">The plot element that defines the transformation.</param>
-        /// <param name="nodes">The data points defining the points in the line.</param>
-        /// <param name="screenPoints">The destinations for the screen points.</param>
-        public static void TransformAndInterpolateLines(ITransposablePlotElement transposablePlotElement, IList<DataPoint> nodes, IList<ScreenPoint> screenPoints)
+        /// <param name="points">The data points defining the lines.</param>
+        /// <param name="screenPoints">The destination for the transformed and interpolated screen points.</param>
+        /// <param name="maxSegmentLength">The maximum length of an interpolated segment in screen space.</param>
+        public static void TransformAndInterpolateLines(ITransposablePlotElement transposablePlotElement, IList<DataPoint> points, IList<ScreenPoint> screenPoints, double maxSegmentLength)
         {
             var xaxis = transposablePlotElement.XAxis;
             var yaxis = transposablePlotElement.YAxis;
@@ -685,7 +686,7 @@ namespace OxyPlot
                 bool lastWasUndefined = true;
                 DataPoint last = DataPoint.Undefined;
 
-                foreach (var next in nodes)
+                foreach (var next in points)
                 {
                     // detect and remove invalid points (TODO: replace write a ClipLines method)
                     if (!next.IsDefined() || (xaxis.IsLogarithmic() && next.X <= 0) || (yaxis.IsLogarithmic() && next.Y <= 0))
@@ -706,7 +707,7 @@ namespace OxyPlot
                         else if (first)
                         {
                             var difference = next - last;
-                            InterpolatePoints(x => transposablePlotElement.Transform(last + difference * x), screenPoints, 2.0, first);
+                            InterpolatePoints(x => transposablePlotElement.Transform(last + difference * x), screenPoints, maxSegmentLength, first);
                         }
 
                         last = next;
@@ -717,7 +718,7 @@ namespace OxyPlot
             {
                 bool lastWasUndefined = true;
 
-                foreach (var dataPoint in nodes)
+                foreach (var dataPoint in points)
                 {
                     if (!dataPoint.IsDefined())
                     {
