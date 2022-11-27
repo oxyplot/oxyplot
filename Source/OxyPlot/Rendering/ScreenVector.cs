@@ -134,6 +134,9 @@ namespace OxyPlot
         /// <summary>
         /// Normalizes this vector.
         /// </summary>
+        /// <remarks>
+        /// If the vector has zero length, then it is left unchanged.
+        /// </remarks>
         public void Normalize()
         {
             double l = Math.Sqrt((this.x * this.x) + (this.y * this.y));

@@ -3,7 +3,7 @@
 //   Copyright (c) 2020 OxyPlot contributors
 // </copyright>
 // <summary>
-//   Represents a point in the data space.
+//   Represents a vector in the data space.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -137,8 +137,11 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Normalizes this vector.
+        /// Normalizes this vector inplace.
         /// </summary>
+        /// <remarks>
+        /// If the vector has zero length, then it is left unchanged.
+        /// </remarks>
         public void Normalize()
         {
             double l = Math.Sqrt((this.x * this.x) + (this.y * this.y));

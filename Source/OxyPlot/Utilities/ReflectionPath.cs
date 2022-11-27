@@ -12,7 +12,6 @@
 namespace OxyPlot
 {
     using System;
-    using System.Collections.Generic;
     using System.Reflection;
 
     /// <summary>
