@@ -33,7 +33,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// The default tracker format string
         /// </summary>
-        public new const string DefaultTrackerFormatString = "{0}\n{1}: {2}\n{3}: {4}\n{5}: {7}";
+        public new const string DefaultTrackerFormatString = "{0}\n{1}: {2}\n{3}: {4}\n{5}: {6}\nΔ{1}: {7}\nΔ{3}: {8}";
 
         /// <summary>
         /// The default color-axis title
@@ -435,8 +435,9 @@ namespace OxyPlot.Series
                     this.YAxis.Title ?? DefaultYAxisTitle,
                     this.YAxis.GetValue(p.Y),
                     colorAxisTitle,
-                    item.Direction,
-                    item.Value)
+                    item.Value,
+                    item.Direction.X,
+                    item.Direction.Y)
                 };
             }
 
