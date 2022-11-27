@@ -26,7 +26,7 @@ namespace OxyPlot.Series
         private List<VectorItem> actualItems;
 
         /// <summary>
-        /// Specifies if the <see cref="actualItems" /> list can be modified.\
+        /// Specifies if the <see cref="actualItems" /> list can be modified.
         /// </summary>
         private bool ownsActualItems;
 
@@ -52,6 +52,10 @@ namespace OxyPlot.Series
             this.StrokeThickness = 2;
             this.LineStyle = LineStyle.Solid;
             this.LineJoin = LineJoin.Miter;
+
+            this.Veeness = 0;
+            this.VectorOriginPosition = 0;
+            this.VectorLabelPosition = 0;
 
             this.TrackerFormatString = DefaultTrackerFormatString;
             this.LabelFormatString = "0.00";
@@ -122,6 +126,25 @@ namespace OxyPlot.Series
         /// </summary>
         /// <value>The 'veeness'.</value>
         public double Veeness { get; set; }
+
+        /// <summary>
+        /// Gets the position of the origin of the arrow for each vector relative to the length of the vector (the default value is 0).
+        /// </summary>
+        /// <remarks>
+        /// A value of 0 indicates the arrow will start at the <see cref="VectorItem.Origin"/>.
+        /// A value of 1 indicates the arrow will terminate at the <see cref="VectorItem.Origin"/>.
+        /// Value between 0 and 1 may produce arrows that do not pass through the <see cref="VectorItem.Origin"/> on non-linear axes.
+        /// </remarks>
+        public double VectorOriginPosition { get; set; }
+
+        /// <summary>
+        /// Gets the psoitions of the label for each vector along the vector (the default value is 0).
+        /// </summary>
+        /// <remarks>
+        /// A value of 0 indicates the label will be positioned at the start of the vector arrow.
+        /// A value of 1 indicates the label will be positioned at the end of the vector arrow.
+        /// </remarks>
+        public double VectorLabelPosition { get; set; }
 
         /// <summary>
         /// Gets or sets the color axis.
@@ -287,17 +310,21 @@ namespace OxyPlot.Series
 
                 vectorColor = this.GetSelectableColor(vectorColor, i);
 
-                this.DrawClippedVector(
+                var vector = item.Direction;
+                var origin = item.Origin - vector * this.VectorOriginPosition;
+                var textOrigin = origin + vector * this.VectorLabelPosition;
+
+                this.DrawVector(
                     rc,
-                    item.Origin,
-                    item.Direction,
+                    origin,
+                    vector,
                     vectorColor
                     );
 
                 if (this.LabelFontSize > 0)
                 {
                     rc.DrawText(
-                        this.Transform(item.Origin), 
+                        this.Transform(textOrigin), 
                         item.Value.ToString(this.LabelFormatString), 
                         this.ActualTextColor, 
                         this.ActualFont, 
@@ -312,7 +339,7 @@ namespace OxyPlot.Series
             }
         }
 
-        private void DrawClippedVector(IRenderContext rc, DataPoint point, DataVector vector, OxyColor color)
+        private void DrawVector(IRenderContext rc, DataPoint point, DataVector vector, OxyColor color)
         {
             var points = new List<DataPoint>() { point, point + vector };
             var screenPoints = new List<ScreenPoint>();
