@@ -14,7 +14,7 @@
         [DocumentationExample("Series/VectorSeries")]
         public static PlotModel FromItems()
         {
-            var model = GetModel(out _);
+            var model = GetModel(true, out _);
             return model;
         }
 
@@ -22,8 +22,8 @@
         [DocumentationExample("Series/VectorSeries")]
         public static PlotModel FromItemsVeeness()
         {
-            var model = GetModel(out var series);
-            series.Veeness = 2;
+            var model = GetModel(true, out var series);
+            series.ArrowVeeness = 2;
             return model;
         }
 
@@ -31,13 +31,21 @@
         [DocumentationExample("Series/VectorSeries")]
         public static PlotModel FromItemsVectorOriginAndLabelPosition()
         {
-            var model = GetModel(out var series);
-            series.VectorLabelPosition = 0.25;
-            series.VectorOriginPosition = 0.5;
+            var model = GetModel(true, out var series);
+            series.ArrowLabelPosition = 0.25;
+            series.ArrowStartPosition = 0.5;
             return model;
         }
 
-        private static PlotModel GetModel(out VectorSeries series)
+        [Example("VectorSeries (without ColorAxis)")]
+        [DocumentationExample("Series/VectorSeries")]
+        public static PlotModel FromItemsOhneColorAxis()
+        {
+            var model = GetModel(false, out _);
+            return model;
+        }
+
+        private static PlotModel GetModel(bool includeColorAxis, out VectorSeries series)
         {
             const int NumberOfItems = 100;
             var model = new PlotModel { Title = "VectorSeries (Veeness = 2)" };
@@ -47,13 +55,16 @@
             var h = 100.0;
             var max = 10.0;
 
-            model.Axes.Add(new LinearColorAxis
+            if (includeColorAxis)
             {
-                Position = AxisPosition.Right,
-                Palette = new OxyPalette(OxyPalettes.Cool(10).Colors.Select(c => OxyColor.FromAColor(100, c))),
-                Minimum = 0.0,
-                Maximum = max,
-            });
+                model.Axes.Add(new LinearColorAxis
+                {
+                    Position = AxisPosition.Right,
+                    Palette = new OxyPalette(OxyPalettes.Cool(10).Colors.Select(c => OxyColor.FromAColor(100, c))),
+                    Minimum = 0.0,
+                    Maximum = max,
+                });
+            }
 
             model.Axes.Add(new LinearAxis()
             {
@@ -61,6 +72,7 @@
                 Minimum = -max,
                 Maximum = w + max,
             });
+
             model.Axes.Add(new LinearAxis()
             {
                 Position = AxisPosition.Left,
@@ -68,7 +80,7 @@
                 Maximum = h + max,
             });
 
-            series = new VectorSeries() { LabelFontSize = 12, Veeness = 2 };
+            series = new VectorSeries() { LabelFontSize = 12 };
             for (int i = NumberOfItems - 1; i >= 0; i--)
             {
                 var ang = rand.NextDouble() * Math.PI * 2.0;

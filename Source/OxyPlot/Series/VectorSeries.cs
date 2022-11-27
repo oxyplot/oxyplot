@@ -31,6 +31,16 @@ namespace OxyPlot.Series
         private bool ownsActualItems;
 
         /// <summary>
+        /// The default color.
+        /// </summary>
+        private OxyColor defaultColor;
+
+        /// <summary>
+        /// The default line style.
+        /// </summary>
+        private LineStyle defaultLineStyle;
+
+        /// <summary>
         /// The default tracker format string
         /// </summary>
         public new const string DefaultTrackerFormatString = "{0}\n{1}: {2}\n{3}: {4}\n{5}: {6}\nΔ{1}: {7}\nΔ{3}: {8}";
@@ -45,17 +55,18 @@ namespace OxyPlot.Series
         /// </summary>
         public VectorSeries()
         {
-            this.HeadLength = 3;
-            this.HeadWidth = 2;
-            this.Color = OxyColors.Black;
+            this.Color = OxyColors.Automatic;
             this.MinimumSegmentLength = 2;
             this.StrokeThickness = 2;
             this.LineStyle = LineStyle.Solid;
             this.LineJoin = LineJoin.Miter;
 
-            this.Veeness = 0;
-            this.VectorOriginPosition = 0;
-            this.VectorLabelPosition = 0;
+            this.ArrowHeadLength = 3;
+            this.ArrowHeadWidth = 2;
+            this.ArrowHeadPosition = 1;
+            this.ArrowVeeness = 0;
+            this.ArrowStartPosition = 0;
+            this.ArrowLabelPosition = 0;
 
             this.TrackerFormatString = DefaultTrackerFormatString;
             this.LabelFormatString = "0.00";
@@ -78,16 +89,26 @@ namespace OxyPlot.Series
         public double MaxValue { get; private set; }
 
         /// <summary>
-        /// Gets or sets the length of the head (relative to the stroke thickness) (the default value is 10).
+        /// Gets or sets the length of the arrows heads (relative to the stroke thickness) (the default value is 10).
         /// </summary>
-        /// <value>The length of the head.</value>
-        public double HeadLength { get; set; }
+        /// <value>The length of the arrows heads.</value>
+        public double ArrowHeadLength { get; set; }
 
         /// <summary>
-        /// Gets or sets the width of the head (relative to the stroke thickness) (the default value is 3).
+        /// Gets or sets the width of the arrows heads (relative to the stroke thickness) (the default value is 3).
         /// </summary>
-        /// <value>The width of the head.</value>
-        public double HeadWidth { get; set; }
+        /// <value>The width of the arrows heads.</value>
+        public double ArrowHeadWidth { get; set; }
+
+        /// <summary>
+        /// Gets or sets the position of the arrow heads (relative to the end of the vector) (the default value is 1).
+        /// </summary>
+        /// <value>The position of the arrow heads.</value>
+        /// <remarks>
+        /// A value of 0 means that heads will be start at the end of the vector, effectively extending it in screen space.
+        /// A value of 1 means that heads will terminate at the end of the vector.
+        /// </remarks>
+        public double ArrowHeadPosition { get; set; }
 
         /// <summary>
         /// Gets or sets the line join type.
@@ -114,6 +135,18 @@ namespace OxyPlot.Series
         public double StrokeThickness { get; set; }
 
         /// <summary>
+        /// Gets the actual line style.
+        /// </summary>
+        /// <value>The actual line style.</value>
+        protected LineStyle ActualLineStyle
+        {
+            get
+            {
+                return this.LineStyle != LineStyle.Automatic ? this.LineStyle : this.defaultLineStyle;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the minimum length of an interpolated line segment.
         /// Increasing this number will increase performance,
         /// but make the curve less accurate. The default is <c>2</c>.
@@ -125,26 +158,26 @@ namespace OxyPlot.Series
         /// Gets or sets the 'veeness' of the arrow head (relative to thickness) (the default value is 0).
         /// </summary>
         /// <value>The 'veeness'.</value>
-        public double Veeness { get; set; }
+        public double ArrowVeeness { get; set; }
 
         /// <summary>
-        /// Gets the position of the origin of the arrow for each vector relative to the length of the vector (the default value is 0).
+        /// Gets the start position of the arrows for each vector relative to the length of the vector (the default value is 0).
         /// </summary>
         /// <remarks>
         /// A value of 0 indicates the arrow will start at the <see cref="VectorItem.Origin"/>.
         /// A value of 1 indicates the arrow will terminate at the <see cref="VectorItem.Origin"/>.
-        /// Value between 0 and 1 may produce arrows that do not pass through the <see cref="VectorItem.Origin"/> on non-linear axes.
+        /// Values other than 0 and 1 may produce arrows that do not pass through the <see cref="VectorItem.Origin"/> on non-linear axes.
         /// </remarks>
-        public double VectorOriginPosition { get; set; }
+        public double ArrowStartPosition { get; set; }
 
         /// <summary>
-        /// Gets the psoitions of the label for each vector along the vector (the default value is 0).
+        /// Gets the psoitions of the label for each vector along the drawn arrow (the default value is 0).
         /// </summary>
         /// <remarks>
         /// A value of 0 indicates the label will be positioned at the start of the vector arrow.
         /// A value of 1 indicates the label will be positioned at the end of the vector arrow.
         /// </remarks>
-        public double VectorLabelPosition { get; set; }
+        public double ArrowLabelPosition { get; set; }
 
         /// <summary>
         /// Gets or sets the color axis.
@@ -299,20 +332,20 @@ namespace OxyPlot.Series
             foreach (var item in items)
             {
                 OxyColor vectorColor;
-                if (this.ColorAxis != null)
+                if (this.ColorAxis != null && (this.Color.IsUndefined() || this.Color.IsAutomatic()))
                 {
                     vectorColor = this.ColorAxis.GetColor(item.Value);
                 }
                 else
                 {
-                    vectorColor = this.Color;
+                    vectorColor = this.Color.GetActualColor(this.defaultColor);
                 }
 
                 vectorColor = this.GetSelectableColor(vectorColor, i);
 
                 var vector = item.Direction;
-                var origin = item.Origin - vector * this.VectorOriginPosition;
-                var textOrigin = origin + vector * this.VectorLabelPosition;
+                var origin = item.Origin - vector * this.ArrowStartPosition;
+                var textOrigin = origin + vector * this.ArrowLabelPosition;
 
                 this.DrawVector(
                     rc,
@@ -351,50 +384,8 @@ namespace OxyPlot.Series
             }
         }
 
-        private static List<ScreenPoint> InterpolatePoints(Func<double, ScreenPoint> source, double minSegmentLength)
-        {
-            var minLengthSquared = minSegmentLength * minSegmentLength;
-
-            var candidates = new Stack<double>();
-            var candidatePoints = new Stack<ScreenPoint>();
-            candidates.Push(1.0);
-            candidatePoints.Push(source(1.0));
-
-            var points = new List<ScreenPoint>();
-
-            var last = 0.0;
-            var lastPoint = source(0.0);
-            points.Add(lastPoint);
-
-            while (candidates.Count > 0)
-            {
-                var next = candidates.Peek();
-                var nextPoint = candidatePoints.Peek();
-
-                if (nextPoint.DistanceToSquared(lastPoint) < minLengthSquared)
-                {
-                    last = next;
-                    lastPoint = nextPoint;
-                    points.Add(nextPoint);
-
-                    candidates.Pop();
-                    candidatePoints.Pop();
-                }
-                else
-                {
-                    next = last + (next - last) / 2.0;
-                    nextPoint = source(next);
-
-                    candidates.Push(next);
-                    candidatePoints.Push(nextPoint);
-                }
-            }
-
-            return points;
-        }
-
         /// <summary>
-        /// Draws an arrow.
+        /// Draws an arrow. May modify the <paramref name="points"/>.
         /// </summary>
         /// <param name="rc">The render context.</param>
         /// <param name="points">The points along the arrow to draw, which will be modified.</param>
@@ -408,16 +399,37 @@ namespace OxyPlot.Series
             d.Normalize();
             var n = new ScreenVector(d.Y, -d.X);
 
-            var endPoint = points.Last();
+            var actualHeadLength = this.ArrowHeadLength * this.StrokeThickness;
+            var actualHeadWidth = this.ArrowHeadWidth * this.StrokeThickness;
 
-            var veeness = d * this.Veeness * this.StrokeThickness;
-            var p1 = endPoint + (d * this.HeadLength * this.StrokeThickness);
-            var p2 = endPoint + (n * this.HeadWidth * this.StrokeThickness) - veeness;
-            var p3 = endPoint - (n * this.HeadWidth * this.StrokeThickness) - veeness;
+            var endPoint = points.Last() - d * (actualHeadLength * this.ArrowHeadPosition);
 
-            var dashArray = this.LineStyle.GetDashArray();
+            var veeness = d * this.ArrowVeeness * this.StrokeThickness;
+            var p1 = endPoint + (d * actualHeadLength);
+            var p2 = endPoint + (n * actualHeadWidth) - veeness;
+            var p3 = endPoint - (n * actualHeadWidth) - veeness;
 
-            if (this.StrokeThickness > 0 && this.LineStyle != LineStyle.None)
+            var lineStyle = this.ActualLineStyle;
+            var dashArray = lineStyle.GetDashArray();
+
+            if (this.ArrowHeadPosition > 0 && this.ArrowHeadPosition <= 1)
+            {
+                // TODO: may see rendering artefacts from this on non-linear lines
+                // crop elements from points which would introduce on the head, and re-include end-point if necessary
+                var cropDistanceSquared = actualHeadLength * this.ArrowHeadPosition * actualHeadLength * this.ArrowHeadPosition;
+                for (int i = points.Count - 1; i >= 0; i--)
+                {
+                    if (points[i].DistanceToSquared(p1) <= cropDistanceSquared)
+                        points.RemoveAt(i);
+                }
+
+                if (points.Count > 0)
+                {
+                    points.Add(endPoint);
+                }
+            }
+
+            if (this.StrokeThickness > 0 && lineStyle != LineStyle.None)
             {
                 rc.DrawLine(
                     points,
@@ -494,16 +506,28 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
+        /// Sets default values from the plot model.
+        /// </summary>
+        protected internal override void SetDefaultValues()
+        {
+            if (this.Color.IsAutomatic() && this.ColorAxis == null)
+            {
+                this.defaultLineStyle = this.PlotModel.GetDefaultLineStyle();
+                this.defaultColor = this.PlotModel.GetDefaultColor();
+            }
+        }
+
+        /// <summary>
         /// Updates the maximum and minimum values of the series for the x and y dimensions only.
         /// </summary>
         protected internal void UpdateMaxMinXY()
         {
             if (this.ActualItems != null && this.ActualItems.Count > 0)
             {
-                this.MinX = Math.Min(this.ActualItems.Min(r => r.Origin.X), this.ActualItems.Min(r => r.Direction.X));
-                this.MaxX = Math.Max(this.ActualItems.Max(r => r.Origin.X), this.ActualItems.Max(r => r.Direction.X));
-                this.MinY = Math.Min(this.ActualItems.Min(r => r.Origin.Y), this.ActualItems.Min(r => r.Direction.Y));
-                this.MaxY = Math.Max(this.ActualItems.Max(r => r.Origin.Y), this.ActualItems.Max(r => r.Direction.Y));
+                this.MinX = Math.Min(this.ActualItems.Min(r => r.Origin.X - r.Direction.X * this.ArrowStartPosition), this.ActualItems.Min(r => r.Origin.X - r.Direction.X * (this.ArrowStartPosition - 1)));
+                this.MaxX = Math.Max(this.ActualItems.Max(r => r.Origin.X - r.Direction.X * this.ArrowStartPosition), this.ActualItems.Max(r => r.Origin.X - r.Direction.X * (this.ArrowStartPosition - 1)));
+                this.MinY = Math.Min(this.ActualItems.Min(r => r.Origin.Y - r.Direction.Y * this.ArrowStartPosition), this.ActualItems.Min(r => r.Origin.Y - r.Direction.Y * (this.ArrowStartPosition - 1)));
+                this.MaxY = Math.Max(this.ActualItems.Max(r => r.Origin.Y - r.Direction.Y * this.ArrowStartPosition), this.ActualItems.Max(r => r.Origin.Y - r.Direction.Y * (this.ArrowStartPosition - 1)));
             }
         }
 
@@ -515,8 +539,8 @@ namespace OxyPlot.Series
             base.UpdateMaxMin();
 
             var allDataPoints = new List<DataPoint>();
-            allDataPoints.AddRange(this.ActualItems.Select(item => item.Origin));
-            allDataPoints.AddRange(this.ActualItems.Select(item => item.Origin + item.Direction));
+            allDataPoints.AddRange(this.ActualItems.Select(item => item.Origin - item.Direction * this.ArrowStartPosition));
+            allDataPoints.AddRange(this.ActualItems.Select(item => item.Origin + item.Direction * (1 - this.ArrowStartPosition)));
             this.InternalUpdateMaxMin(allDataPoints);
 
             this.UpdateMaxMinXY();
