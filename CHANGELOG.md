@@ -11,7 +11,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 
-## [2.1.1] - 2022-11-26
+## [2.1.2] - 2022-12-03
 
 ### Added
 - Add LineThickness property to TrackerControl (#1831)
