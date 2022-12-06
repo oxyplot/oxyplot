@@ -635,6 +635,21 @@ namespace OxyPlot.Axes
         public OxyThickness DesiredMargin { get; protected set; }
 
         /// <summary>
+        /// The area of the axis in screen coordinates.
+        /// </summary>
+        public IShape AxisArea { get; internal set; }
+
+        /// <summary>
+        /// The area of the axis line in screen coordinates.
+        /// </summary>
+        public IShape AxisLineArea { get; internal set; }
+
+        /// <summary>
+        /// The area of the axis title in screen coordinates.
+        /// </summary>
+        public IShape TitleArea { get; internal set; }
+
+        /// <summary>
         /// Gets or sets the position tier max shift.
         /// </summary>
         internal double PositionTierMaxShift { get; set; }

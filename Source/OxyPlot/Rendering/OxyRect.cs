@@ -16,7 +16,7 @@ namespace OxyPlot
     /// <summary>
     /// Describes the width, height, and point origin of a rectangle.
     /// </summary>
-    public struct OxyRect : IFormattable, IEquatable<OxyRect>
+    public struct OxyRect : IShape, IFormattable, IEquatable<OxyRect>
     {
         /// <summary>
         /// Gets an infinitely large <see cref="OxyRect"/> starting at (0,0).
@@ -359,6 +359,21 @@ namespace OxyPlot
                 Math.Max(Math.Min(this.Top, clipBottom), clipRect.Top),
                 Math.Max(Math.Min(this.Right, clipRight), clipRect.Left),
                 Math.Max(Math.Min(this.Bottom, clipBottom), clipRect.Top));
+        }
+
+        /// <summary>
+        /// Returns a OxyRect structure that contains the union of two <see cref="OxyRect"/> structures.
+        /// </summary>
+        /// <param name="other">The other <see cref="OxyRect"/>.</param>
+        /// <returns><see cref="OxyRect"/> structure that contains the union of two <see cref="OxyRect"/> structures</returns>
+        public OxyRect Union(OxyRect other)
+        {
+            var left = Math.Min(this.Left, other.Left);
+            var top = Math.Min(this.Top, other.Top);
+            var right = Math.Max(this.Right, other.Right);
+            var bottom = Math.Max(this.Bottom, other.Bottom);
+
+            return new OxyRect(left, top, right - left, bottom - top);
         }
     }
 }

@@ -51,6 +51,10 @@ namespace OxyPlot.Axes
 
             var axisLength = Math.Abs(scaledEndAngle - scaledStartAngle);
             var eps = axis.MinorStep * 1e-3;
+
+            ScreenPoint someScreenPoint = ScreenPoint.Undefined;
+            double maxTextLength = double.MinValue;
+
             if (this.MinorPen != null)
             {
                 var tickCount = Math.Abs((int)(axisLength / axis.ActualMinorStep));
@@ -58,6 +62,7 @@ namespace OxyPlot.Axes
                     .Take(tickCount + 1)
                     .Select(x => magnitudeAxis.Transform(magnitudeAxis.ClipMaximum, x, axis));
 
+                someScreenPoint = screenPoints.FirstOrDefault();
                 foreach (var screenPoint in screenPoints)
                 {
                     this.RenderContext.DrawLine(magnitudeAxis.MidPoint.x, magnitudeAxis.MidPoint.y, screenPoint.x, screenPoint.y, this.MinorPen, axis.EdgeRenderingMode);
@@ -77,6 +82,8 @@ namespace OxyPlot.Axes
                     .Take(majorTickCount)
                     .Select(x => magnitudeAxis.Transform(magnitudeAxis.ClipMaximum, x, axis));
 
+                if (someScreenPoint.Equals(ScreenPoint.Undefined) && screenPoints.Count() > 0)
+                    someScreenPoint = screenPoints.FirstOrDefault();
                 foreach (var point in screenPoints)
                 {
                     this.RenderContext.DrawLine(magnitudeAxis.MidPoint.x, magnitudeAxis.MidPoint.y, point.x, point.y, this.MajorPen, axis.EdgeRenderingMode);
@@ -112,8 +119,25 @@ namespace OxyPlot.Axes
                     ha = HorizontalAlignment.Right;
                 }
 
+                maxTextLength = Math.Max(maxTextLength, this.RenderContext.MeasureText(text).Width);
+
                 this.RenderContext.DrawMathText(
                     pt, text, axis.ActualTextColor, axis.ActualFont, axis.ActualFontSize, axis.ActualFontWeight, angle, ha, va);
+            }
+
+            if (!someScreenPoint.Equals(ScreenPoint.Undefined))
+            {
+                double r1 = magnitudeAxis.MidPoint.DistanceTo(someScreenPoint);
+                double r2 = r1 + maxTextLength + axis.AxisTickToLabelDistance;
+                if (r2 < 5)
+                    r2 = r1 + 5;
+                axis.AxisLineArea = new OxyAnnulus(magnitudeAxis.MidPoint, r1, r2);
+                axis.AxisArea = new OxyAnnulus(magnitudeAxis.MidPoint, r1, r2);
+            }
+            else
+            {
+                axis.AxisLineArea = new OxyCircle(0, 0, 0);
+                axis.AxisArea = new OxyCircle(0, 0, 0);
             }
         }
     }
