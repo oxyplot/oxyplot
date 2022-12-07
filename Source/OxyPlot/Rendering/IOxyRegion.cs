@@ -5,7 +5,7 @@ namespace OxyPlot
     /// <summary>
     /// Describes the Interface for a shape.
     /// </summary>
-    public interface IShape
+    public interface IOxyRegion
     {
         /// <summary>
         /// Determines whether the specified point is inside the shape.

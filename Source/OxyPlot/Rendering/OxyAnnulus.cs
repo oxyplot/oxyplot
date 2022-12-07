@@ -16,7 +16,7 @@ namespace OxyPlot
     /// <summary>
     /// Describes the center, the inner and the outer radius of a annulus.
     /// </summary>
-    public struct OxyAnnulus : IShape, IEquatable<OxyAnnulus>, IFormattable
+    public struct OxyAnnulus : IOxyRegion, IEquatable<OxyAnnulus>, IFormattable
     {
 
         /// <summary>

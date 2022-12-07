@@ -52,7 +52,7 @@ namespace OxyPlot.Axes
             var axisLength = Math.Abs(scaledEndAngle - scaledStartAngle);
             var eps = axis.MinorStep * 1e-3;
 
-            ScreenPoint? innerRadiusTangentScreenPoint = null;
+            ScreenPoint? innerTangentPoint = null;
             double maxTextLength = double.MinValue;
 
             if (this.MinorPen != null)
@@ -62,7 +62,7 @@ namespace OxyPlot.Axes
                     .Take(tickCount + 1)
                     .Select(x => magnitudeAxis.Transform(magnitudeAxis.ClipMaximum, x, axis));
 
-                innerRadiusTangentScreenPoint = screenPoints.FirstOrDefault();
+                innerTangentPoint = screenPoints.FirstOrDefault();
                 foreach (var screenPoint in screenPoints)
                 {
                     this.RenderContext.DrawLine(magnitudeAxis.MidPoint.x, magnitudeAxis.MidPoint.y, screenPoint.x, screenPoint.y, this.MinorPen, axis.EdgeRenderingMode);
@@ -82,8 +82,8 @@ namespace OxyPlot.Axes
                     .Take(majorTickCount)
                     .Select(x => magnitudeAxis.Transform(magnitudeAxis.ClipMaximum, x, axis));
 
-                if (innerRadiusTangentScreenPoint == null && screenPoints.Count() > 0)
-                    innerRadiusTangentScreenPoint = screenPoints.FirstOrDefault();
+                if (innerTangentPoint == null && screenPoints.Count() > 0)
+                    innerTangentPoint = screenPoints.FirstOrDefault();
                 foreach (var point in screenPoints)
                 {
                     this.RenderContext.DrawLine(magnitudeAxis.MidPoint.x, magnitudeAxis.MidPoint.y, point.x, point.y, this.MajorPen, axis.EdgeRenderingMode);
@@ -125,9 +125,9 @@ namespace OxyPlot.Axes
                     pt, text, axis.ActualTextColor, axis.ActualFont, axis.ActualFontSize, axis.ActualFontWeight, angle, ha, va);
             }
 
-            if (innerRadiusTangentScreenPoint != null)
+            if (innerTangentPoint != null)
             {
-                double r1 = magnitudeAxis.MidPoint.DistanceTo(innerRadiusTangentScreenPoint.Value);
+                double r1 = magnitudeAxis.MidPoint.DistanceTo(innerTangentPoint.Value);
                 double r2 = r1 + maxTextLength + axis.AxisTickToLabelDistance;
                 if (r2 < 5)
                     r2 = r1 + 5;

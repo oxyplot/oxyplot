@@ -16,7 +16,7 @@ namespace OxyPlot
     /// <summary>
     /// Describes the center and the radius of a circle.
     /// </summary>
-    public struct OxyCircle : IShape, IEquatable<OxyCircle>, IFormattable
+    public struct OxyCircle : IOxyRegion, IEquatable<OxyCircle>, IFormattable
     {
 
         /// <summary>

@@ -7,7 +7,7 @@ namespace OxyPlot
     /// <summary>
     /// Describes an empty shape
     /// </summary>
-    public struct EmptyShape : IShape
+    public struct EmptyShape : IOxyRegion
     {
         /// <summary>
         /// A specified point will never be within an empty shape.
