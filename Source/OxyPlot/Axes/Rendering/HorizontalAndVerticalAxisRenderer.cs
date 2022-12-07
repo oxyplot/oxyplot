@@ -19,11 +19,7 @@ namespace OxyPlot.Axes
     /// </summary>
     public class HorizontalAndVerticalAxisRenderer : AxisRendererBase
     {
-        private ScreenPoint pt0;
-        private ScreenPoint pt1;
-        private ScreenPoint pt2;
-        private ScreenPoint pt3;
-
+  
         /// <summary>
         /// Initializes a new instance of the <see cref="HorizontalAndVerticalAxisRenderer" /> class.
         /// </summary>
@@ -253,6 +249,9 @@ namespace OxyPlot.Axes
         /// <param name="titlePosition">The title position.</param>
         protected virtual void RenderAxisTitle(Axis axis, double titlePosition)
         {
+            ScreenPoint pt0 = new ScreenPoint(0, 0);
+            ScreenPoint pt1 = new ScreenPoint(0, 0);
+
             if (string.IsNullOrEmpty(axis.ActualTitle))
             {
                 return;
@@ -284,20 +283,20 @@ namespace OxyPlot.Axes
             switch (axis.Position)
             {
                 case AxisPosition.Left:
-                    this.pt3 = new ScreenPoint(lpt.X, lpt.Y + titleSize.Width * 0.5);
-                    this.pt2 = new ScreenPoint(lpt.X + titleSize.Height, lpt.Y - titleSize.Width * 0.5);
+                    pt1 = new ScreenPoint(lpt.X, lpt.Y + titleSize.Width * 0.5);
+                    pt0 = new ScreenPoint(lpt.X + titleSize.Height, lpt.Y - titleSize.Width * 0.5);
                     break;
                 case AxisPosition.Right:
-                    this.pt3 = new ScreenPoint(lpt.X - titleSize.Height, lpt.Y + titleSize.Width * 0.5);
-                    this.pt2 = new ScreenPoint(lpt.X, lpt.Y - titleSize.Width * 0.5);
+                    pt1 = new ScreenPoint(lpt.X - titleSize.Height, lpt.Y + titleSize.Width * 0.5);
+                    pt0 = new ScreenPoint(lpt.X, lpt.Y - titleSize.Width * 0.5);
                     break;
                 case AxisPosition.Top:
-                    this.pt3 = new ScreenPoint(lpt.X - titleSize.Width * 0.5, lpt.Y + titleSize.Height);
-                    this.pt2 = new ScreenPoint(lpt.X + titleSize.Width * 0.5, lpt.Y);
+                    pt1 = new ScreenPoint(lpt.X - titleSize.Width * 0.5, lpt.Y + titleSize.Height);
+                    pt0 = new ScreenPoint(lpt.X + titleSize.Width * 0.5, lpt.Y);
                     break;
                 case AxisPosition.Bottom:
-                    this.pt3 = new ScreenPoint(lpt.x - titleSize.Width * 0.5, lpt.Y);
-                    this.pt2 = new ScreenPoint(lpt.X + titleSize.Width * 0.5, lpt.Y - titleSize.Height);
+                    pt1 = new ScreenPoint(lpt.x - titleSize.Width * 0.5, lpt.Y);
+                    pt0 = new ScreenPoint(lpt.X + titleSize.Width * 0.5, lpt.Y - titleSize.Height);
                     break;
 
             }
@@ -305,10 +304,10 @@ namespace OxyPlot.Axes
             //if (Math.Abs(this.pt2.X - this.pt3.X) < 5)
             //    this.pt3.X = this.pt2.X + 5;
 
-            axis.TitleArea = new OxyRect(this.pt2, this.pt3);
+            axis.TitleArea = new OxyRect(pt0, pt1);
 
             if (axis.AxisLineArea is OxyRect axisLineArea)
-                axis.AxisArea = axisLineArea.Union(new OxyRect(this.pt2, this.pt3));
+                axis.AxisArea = axisLineArea.Union(new OxyRect(pt0, pt1));
 
             this.RenderContext.DrawMathText(
                 lpt,
@@ -332,6 +331,9 @@ namespace OxyPlot.Axes
         /// <param name="drawAxisLine">Draw the axis line if set to <c>true</c>.</param>
         protected virtual void RenderMajorItems(Axis axis, double axisPosition, double titlePosition, bool drawAxisLine)
         {
+            ScreenPoint pt0;
+            ScreenPoint pt1;
+
             double eps = axis.ActualMinorStep * 1e-3;
 
             double clipMinimum = axis.ClipMinimum;
@@ -532,17 +534,17 @@ namespace OxyPlot.Axes
             // Capture the points for the axis area
             if (isHorizontal)
             {
-                this.pt0 = new ScreenPoint(axis.Transform(clipMinimum), axisPosition);
-                this.pt1 = new ScreenPoint(axis.Transform(clipMaximum), labelEndPosition);
+                pt0 = new ScreenPoint(axis.Transform(clipMinimum), axisPosition);
+                pt1 = new ScreenPoint(axis.Transform(clipMaximum), labelEndPosition);
             }
             else
             {
-                this.pt0 = new ScreenPoint(axisPosition, axis.Transform(clipMinimum));
-                this.pt1 = new ScreenPoint(labelEndPosition, axis.Transform(clipMaximum));
+                pt0 = new ScreenPoint(axisPosition, axis.Transform(clipMinimum));
+                pt1 = new ScreenPoint(labelEndPosition, axis.Transform(clipMaximum));
             }
 
-            axis.AxisLineArea = new OxyRect(this.pt0, this.pt1);
-            axis.AxisArea = new OxyRect(this.pt0, this.pt1);
+            axis.AxisLineArea = new OxyRect(pt0, pt1);
+            axis.AxisArea = new OxyRect(pt0, pt1);
 
             if (drawAxisLine)
             {

@@ -23,12 +23,12 @@ namespace OxyPlot
         /// Gets the center point of the circle.
         /// </summary>
         /// <value>The center.</value>
-        public ScreenPoint Center { get; set; }
+        public ScreenPoint Center { get; private set; }
 
         /// <summary>
         /// Gets the radius of the circle
         /// </summary>
-        public double Radius { get; set; }
+        public double Radius { get; private set; }
 
         /// <summary>
         /// Gets the diameter of the circle.
@@ -70,16 +70,14 @@ namespace OxyPlot
         /// Initializes a new instance of the <see cref="OxyCircle"/> structure that has a specified center and a radius
         /// </summary>
         /// <param name="center">The center location of the circle</param>
-        /// <param name="r">The radius of the circle</param>
+        /// <param name="radius">The radius of the circle</param>
         /// <exception cref="System.ArgumentOutOfRangeException">r;The radius should not be negative.</exception>
-        public OxyCircle(ScreenPoint center, double r)
+        public OxyCircle(ScreenPoint center, double radius)
         {
-            if (r < 0)
-                throw new ArgumentOutOfRangeException("r", "The radius should not be negative.");
-
+            if (radius < 0)
+                throw new ArgumentOutOfRangeException(nameof(radius), "The radius should not be negative.");
             this.Center = new ScreenPoint(center.X, center.Y);
-            this.Radius = r;
-
+            this.Radius = radius;
         }
 
         /// <summary>
@@ -87,9 +85,9 @@ namespace OxyPlot
         /// </summary>
         /// <param name="x">The x-coordinate location of the center of the circle</param>
         /// <param name="y">The x-coordinate location of the center of the circle</param>
-        /// <param name="r">The radius of the circle</param>
+        /// <param name="radius">The radius of the circle</param>
         /// <exception cref="System.ArgumentOutOfRangeException">r;The radius should not be negative.</exception>
-        public OxyCircle(double x, double y, double r) : this(new ScreenPoint(x, y), r)
+        public OxyCircle(double x, double y, double radius) : this(new ScreenPoint(x, y), radius)
         {
         }
 
@@ -154,44 +152,5 @@ namespace OxyPlot
             builder.Append(")");
             return builder.ToString();
         }
-
-        /// <summary>
-        /// Returns a circle that is expanded or shrunk by the specified radius amounts.
-        /// </summary>
-        /// <param name="dr">The amount by which to expand or shrink the radius of the circle.</param>
-        /// <returns>The expanded/shrunk <see cref="OxyCircle" />.</returns>
-        public OxyCircle Inflate(double dr)
-        {
-            return new OxyCircle(this.Center, this.Radius + dr);
-        }
-
-        /// <summary>
-        /// Returns a circle that is moved by the specified horizontal and vertical amounts.
-        /// </summary>
-        /// <param name="offsetX">The amount to move the circle horizontally.</param>
-        /// <param name="offsetY">The amount to move the circle vertically.</param>
-        /// <returns>The moved <see cref="OxyCircle" />.</returns>
-        public OxyCircle Offset(double offsetX, double offsetY)
-        {
-            return new OxyCircle(this.Center.X + offsetX, this.Center.Y + offsetY, this.Radius);
-        }
-
-        /// <summary>
-        /// Intersects this <see cref="OxyCircle"/> with another <see cref="OxyCircle"/> with an equal center point.
-        /// </summary>
-        /// <param name="circle">The other <see cref="OxyCircle"/>.</param>
-        /// <returns>The intersection between this <see cref="OxyCircle"/> and the other <see cref="OxyCircle"/>.</returns>
-        /// <exception cref="System.ArgumentException">circle;The center should be equal to this center.</exception>
-        public OxyAnnulus Intersect(OxyCircle circle)
-        {
-            if (this.Center.DistanceTo(circle.Center) > 0)
-                throw new ArgumentOutOfRangeException("circle", "The center should be equal to this center.");
-
-            var innerRadius = Math.Min(this.Radius, circle.Radius);
-            var outerRadius = Math.Max(this.Radius, circle.Radius);
-
-            return new OxyAnnulus(this.Center, innerRadius, outerRadius);
-        }
-
     }
 }

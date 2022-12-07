@@ -40,8 +40,8 @@ namespace OxyPlot.Axes
 
             var angleAxis = this.Plot.DefaultAngleAxis;
 
-            angleAxis.AxisLineArea = new OxyRect(0, 0, 0, 0);
-            angleAxis.AxisArea = new OxyRect(0, 0, 0, 0);
+            angleAxis.AxisLineArea = new EmptyShape();
+            angleAxis.AxisArea = new EmptyShape();
 
             if (angleAxis == null)
             {

@@ -133,6 +133,10 @@ namespace OxyPlot.Axes
 
             this.DataMaximum = double.NaN;
             this.DataMinimum = double.NaN;
+
+            this.TitleArea = new EmptyShape();
+            this.AxisArea = new EmptyShape();
+            this.AxisLineArea = new EmptyShape();
         }
 
         /// <summary>
