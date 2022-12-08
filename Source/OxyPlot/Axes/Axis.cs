@@ -641,17 +641,17 @@ namespace OxyPlot.Axes
         /// <summary>
         /// The area of the axis in screen coordinates.
         /// </summary>
-        public IOxyRegion AxisArea { get; internal set; }
+        public IOxyRegion AxisArea { get; internal protected set; }
 
         /// <summary>
         /// The area of the axis line in screen coordinates.
         /// </summary>
-        public IOxyRegion AxisLineArea { get; internal set; }
+        public IOxyRegion AxisLineArea { get; internal protected set; }
 
         /// <summary>
         /// The area of the axis title in screen coordinates.
         /// </summary>
-        public IOxyRegion TitleArea { get; internal set; }
+        public IOxyRegion TitleArea { get; internal protected set; }
 
         /// <summary>
         /// Gets or sets the position tier max shift.

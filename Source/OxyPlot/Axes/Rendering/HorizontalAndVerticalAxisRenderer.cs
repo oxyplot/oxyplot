@@ -19,7 +19,6 @@ namespace OxyPlot.Axes
     /// </summary>
     public class HorizontalAndVerticalAxisRenderer : AxisRendererBase
     {
-  
         /// <summary>
         /// Initializes a new instance of the <see cref="HorizontalAndVerticalAxisRenderer" /> class.
         /// </summary>
@@ -249,9 +248,6 @@ namespace OxyPlot.Axes
         /// <param name="titlePosition">The title position.</param>
         protected virtual void RenderAxisTitle(Axis axis, double titlePosition)
         {
-            ScreenPoint pt0 = new ScreenPoint(0, 0);
-            ScreenPoint pt1 = new ScreenPoint(0, 0);
-
             if (string.IsNullOrEmpty(axis.ActualTitle))
             {
                 return;
@@ -280,23 +276,26 @@ namespace OxyPlot.Axes
 
             var titleSize = this.RenderContext.MeasureText(axis.ActualTitle, axis.ActualTitleFont, axis.TitleFontSize, axis.TitleFontWeight);
 
+            ScreenPoint areaBottomLeft = new ScreenPoint(0, 0);
+            ScreenPoint areaTopRight = new ScreenPoint(0, 0);
+
             switch (axis.Position)
             {
                 case AxisPosition.Left:
-                    pt1 = new ScreenPoint(lpt.X, lpt.Y + titleSize.Width * 0.5);
-                    pt0 = new ScreenPoint(lpt.X + titleSize.Height, lpt.Y - titleSize.Width * 0.5);
+                    areaTopRight = new ScreenPoint(lpt.X, lpt.Y + titleSize.Width * 0.5);
+                    areaBottomLeft = new ScreenPoint(lpt.X + titleSize.Height, lpt.Y - titleSize.Width * 0.5);
                     break;
                 case AxisPosition.Right:
-                    pt1 = new ScreenPoint(lpt.X - titleSize.Height, lpt.Y + titleSize.Width * 0.5);
-                    pt0 = new ScreenPoint(lpt.X, lpt.Y - titleSize.Width * 0.5);
+                    areaTopRight = new ScreenPoint(lpt.X - titleSize.Height, lpt.Y + titleSize.Width * 0.5);
+                    areaBottomLeft = new ScreenPoint(lpt.X, lpt.Y - titleSize.Width * 0.5);
                     break;
                 case AxisPosition.Top:
-                    pt1 = new ScreenPoint(lpt.X - titleSize.Width * 0.5, lpt.Y + titleSize.Height);
-                    pt0 = new ScreenPoint(lpt.X + titleSize.Width * 0.5, lpt.Y);
+                    areaTopRight = new ScreenPoint(lpt.X - titleSize.Width * 0.5, lpt.Y + titleSize.Height);
+                    areaBottomLeft = new ScreenPoint(lpt.X + titleSize.Width * 0.5, lpt.Y);
                     break;
                 case AxisPosition.Bottom:
-                    pt1 = new ScreenPoint(lpt.x - titleSize.Width * 0.5, lpt.Y);
-                    pt0 = new ScreenPoint(lpt.X + titleSize.Width * 0.5, lpt.Y - titleSize.Height);
+                    areaTopRight = new ScreenPoint(lpt.x - titleSize.Width * 0.5, lpt.Y);
+                    areaBottomLeft = new ScreenPoint(lpt.X + titleSize.Width * 0.5, lpt.Y - titleSize.Height);
                     break;
 
             }
@@ -304,10 +303,10 @@ namespace OxyPlot.Axes
             //if (Math.Abs(this.pt2.X - this.pt3.X) < 5)
             //    this.pt3.X = this.pt2.X + 5;
 
-            axis.TitleArea = new OxyRect(pt0, pt1);
+            axis.TitleArea = new OxyRect(areaBottomLeft, areaTopRight);
 
             if (axis.AxisLineArea is OxyRect axisLineArea)
-                axis.AxisArea = axisLineArea.Union(new OxyRect(pt0, pt1));
+                axis.AxisArea = axisLineArea.Union(new OxyRect(areaBottomLeft, areaTopRight));
 
             this.RenderContext.DrawMathText(
                 lpt,

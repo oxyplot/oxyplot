@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="OxyCircle.cs" company="OxyPlot">
+// <copyright file="OxyAnnulus.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
@@ -23,17 +23,17 @@ namespace OxyPlot
         /// Gets the center point of the annulus.
         /// </summary>
         /// <value>The center.</value>
-        public ScreenPoint Center { get; set; }
+        public ScreenPoint Center { get; private set; }
 
         /// <summary>
         /// Gets the inner radius of the annulus
         /// </summary>
-        public double InnerRadius { get; set; }
+        public double InnerRadius { get; private set; }
 
         /// <summary>
         /// Gets the outer radius of the annulus
         /// </summary>
-        public double OuterRadius { get; set; }
+        public double OuterRadius { get; private set; }
 
         /// <summary>
         /// Gets the inner diameter of the annulus.
@@ -128,10 +128,10 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OxyAnnulus"/> structure that has a specified center a inner and outer radius
+        /// Initializes a new instance of the <see cref="OxyAnnulus"/> structure that has the specified center, inner radius, and outer radius
         /// </summary>
-        /// <param name="x">The x-coordinate location of the center of the circle</param>
-        /// <param name="y">The x-coordinate location of the center of the circle</param>
+        /// <param name="x">The x-coordinate location of the center of the annulus</param>
+        /// <param name="y">The x-coordinate location of the center of the annulus</param>
         /// <param name="innerRadius">The inner radius of the annulus</param>
         /// <param name="outerRadius">The outer radius of the annulus</param>
         /// <exception cref="System.ArgumentOutOfRangeException">r1;The inner radius should not be negative.</exception>
