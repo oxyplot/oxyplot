@@ -18,29 +18,33 @@ namespace OxyPlot
     /// </summary>
     public struct OxyCircle : IOxyRegion, IEquatable<OxyCircle>, IFormattable
     {
+        /// <summary>
+        /// The center point of the circle.
+        /// </summary>
+        private readonly ScreenPoint center;
+
+        /// <summary>
+        /// The radius of the circle
+        /// </summary>
+        private readonly double radius;
+
 
         /// <summary>
         /// Gets the center point of the circle.
         /// </summary>
         /// <value>The center.</value>
-        public ScreenPoint Center { get; private set; }
+        public ScreenPoint Center => this.center;
 
         /// <summary>
         /// Gets the radius of the circle
         /// </summary>
-        public double Radius { get; private set; }
+        public double Radius => this.radius;
 
         /// <summary>
         /// Gets the diameter of the circle.
         /// </summary>
         /// <value>The width.</value>
-        public double Diameter
-        {
-            get
-            {
-                return this.Radius * 2;
-            }
-        }
+        public double Diameter => this.radius * 2;
 
         /// <summary>
         /// Gets the top of the circle.
@@ -76,8 +80,8 @@ namespace OxyPlot
         {
             if (radius < 0)
                 throw new ArgumentOutOfRangeException(nameof(radius), "The radius should not be negative.");
-            this.Center = new ScreenPoint(center.X, center.Y);
-            this.Radius = radius;
+            this.center = new ScreenPoint(center.X, center.Y);
+            this.radius = radius;
         }
 
         /// <summary>

@@ -18,46 +18,48 @@ namespace OxyPlot
     /// </summary>
     public struct OxyAnnulus : IOxyRegion, IEquatable<OxyAnnulus>, IFormattable
     {
+        /// <summary>
+        /// The center point of the annulus.
+        /// </summary>
+        private readonly ScreenPoint center;
+
+        /// <summary>
+        /// The inner radius of the annulus
+        /// </summary>
+        private readonly double innerRadius;
+
+        /// <summary>
+        /// The outer radius of the annulus
+        /// </summary>
+        private readonly double outerRadius;
 
         /// <summary>
         /// Gets the center point of the annulus.
         /// </summary>
         /// <value>The center.</value>
-        public ScreenPoint Center { get; private set; }
+        public ScreenPoint Center => this.center;
 
         /// <summary>
         /// Gets the inner radius of the annulus
         /// </summary>
-        public double InnerRadius { get; private set; }
+        public double InnerRadius => this.innerRadius;
 
         /// <summary>
         /// Gets the outer radius of the annulus
         /// </summary>
-        public double OuterRadius { get; private set; }
+        public double OuterRadius => this.outerRadius;
 
         /// <summary>
         /// Gets the inner diameter of the annulus.
         /// </summary>
         /// <value>The inner diameter.</value>
-        public double InnerDiameter
-        {
-            get
-            {
-                return this.InnerRadius * 2;
-            }
-        }
+        public double InnerDiameter =>this.innerRadius * 2;
 
         /// <summary>
         /// Gets the outer diameter of the annulus.
         /// </summary>
         /// <value>The outer diameter.</value>
-        public double OuterDiameter
-        {
-            get
-            {
-                return this.OuterRadius * 2;
-            }
-        }
+        public double OuterDiameter => this.outerRadius * 2;
 
         /// <summary>
         /// Gets the inner top of the annulus.
