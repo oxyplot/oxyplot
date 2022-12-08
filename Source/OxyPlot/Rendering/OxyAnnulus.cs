@@ -124,9 +124,9 @@ namespace OxyPlot
             if (outerRadius <= innerRadius)
                 throw new ArgumentOutOfRangeException(nameof(outerRadius), "The outer radius should not be equal or smaller as the inner radius.");
 
-            this.Center = new ScreenPoint(center.X, center.Y);
-            this.InnerRadius = innerRadius;
-            this.OuterRadius = outerRadius;
+            this.center = new ScreenPoint(center.X, center.Y);
+            this.innerRadius = innerRadius;
+            this.outerRadius = outerRadius;
         }
 
         /// <summary>
