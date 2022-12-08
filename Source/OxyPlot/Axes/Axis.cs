@@ -133,6 +133,10 @@ namespace OxyPlot.Axes
 
             this.DataMaximum = double.NaN;
             this.DataMinimum = double.NaN;
+
+            this.TitleArea = new EmptyShape();
+            this.AxisArea = new EmptyShape();
+            this.AxisLineArea = new EmptyShape();
         }
 
         /// <summary>
@@ -633,6 +637,21 @@ namespace OxyPlot.Axes
         /// The actual margins may be smaller or larger than the desired margins if they are set manually.
         /// </summary>
         public OxyThickness DesiredMargin { get; protected set; }
+
+        /// <summary>
+        /// The area of the axis in screen coordinates.
+        /// </summary>
+        public IOxyRegion AxisArea { get; internal protected set; }
+
+        /// <summary>
+        /// The area of the axis line in screen coordinates.
+        /// </summary>
+        public IOxyRegion AxisLineArea { get; internal protected set; }
+
+        /// <summary>
+        /// The area of the axis title in screen coordinates.
+        /// </summary>
+        public IOxyRegion TitleArea { get; internal protected set; }
 
         /// <summary>
         /// Gets or sets the position tier max shift.

@@ -40,6 +40,9 @@ namespace OxyPlot.Axes
 
             var angleAxis = this.Plot.DefaultAngleAxis;
 
+            angleAxis.AxisLineArea = new EmptyShape();
+            angleAxis.AxisArea = new EmptyShape();
+
             if (angleAxis == null)
             {
                 throw new NullReferenceException("Angle axis should not be null.");

@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 ## Unreleased
 
 ### Added
-
+- Add AxisArea, AxisLineArea and AxisTitleArea property in Axis class (#1949)
 ### Changed
 
 ### Removed
