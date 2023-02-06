@@ -13,6 +13,7 @@ namespace ExampleLibrary
     using OxyPlot.Annotations;
     using OxyPlot.Axes;
     using OxyPlot.Series;
+    using OxyPlot.Legends;
 
     [Examples("PlotController examples")]
     public static class PlotControllerExamples
@@ -140,6 +141,68 @@ namespace ExampleLibrary
                 };
                 m.Started(args);
             }
+        }
+
+        [Example("Show/Hide Legend")]
+        public static Example ShowHideLegend()
+        {
+            var plotModel = new PlotModel { Title = "Show/Hide Legend", Subtitle = "Click on the rectangles" };
+
+            int n = 3;
+            for (int i = 1; i <= n; i++)
+            {
+                var s = new LineSeries { Title = "Series " + i };
+                plotModel.Series.Add(s);
+                for (double x = 0; x < 2 * Math.PI; x += 0.1)
+                {
+                    s.Points.Add(new DataPoint(x, (Math.Sin(x * i) / i) + i));
+                }
+            }
+            var l = new Legend();
+
+            plotModel.Legends.Add(l);
+
+            var annotation1 = new RectangleAnnotation { Fill = OxyColors.Green, Text = "Show Legend", MinimumX = 0.5, MaximumX = 1.5, MinimumY = .2, MaximumY = 0.4 };
+            plotModel.Annotations.Add(annotation1);
+
+            var annotation2 = new RectangleAnnotation { Fill = OxyColors.SkyBlue, Text = "Hide Legend", MinimumX = 0.5, MaximumX = 1.5, MinimumY = 0.6, MaximumY = 0.8 };
+            plotModel.Annotations.Add(annotation2);
+
+            EventHandler<OxyMouseDownEventArgs> handleMouseClick = (s, e) =>
+            {
+                string annotationText = ((RectangleAnnotation)s).Text;
+                if (annotationText == "Show Legend")
+                {
+                    plotModel.IsLegendVisible = true;
+                }
+                else if (annotationText == "Hide Legend")
+                {
+                    plotModel.IsLegendVisible = false;
+                }
+
+                plotModel.Subtitle = "You clicked " + ((RectangleAnnotation)s).Text;
+                plotModel.InvalidatePlot(false);
+            };
+
+            annotation1.MouseDown += handleMouseClick;
+            annotation2.MouseDown += handleMouseClick;
+
+            var controller = new PlotController();
+            var handleClick = new DelegatePlotCommand<OxyMouseDownEventArgs>(
+                (v, c, e) =>
+                {
+                    var args = new HitTestArguments(e.Position, 10);
+                    var firstHit = v.ActualModel.HitTest(args).FirstOrDefault(x => x.Element is RectangleAnnotation);
+                    if (firstHit != null)
+                    {
+                        e.Handled = true;
+                        plotModel.Subtitle = "You clicked " + ((RectangleAnnotation)firstHit.Element).Text;
+                        plotModel.InvalidatePlot(false);
+                    }
+                });
+            controller.Bind(new OxyMouseDownGesture(OxyMouseButton.Left), handleClick);
+
+            return new Example(plotModel, controller);
         }
     }
 }

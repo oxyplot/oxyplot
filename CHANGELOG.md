@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 ## Unreleased
 
 ### Added
+- Example to Show/Hide Legend (#1470)
 
 ### Changed
 
