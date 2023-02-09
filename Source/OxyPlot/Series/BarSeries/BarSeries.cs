@@ -310,7 +310,7 @@ namespace OxyPlot.Series
             HorizontalAlignment ha;
             ScreenPoint pt;
             var y = (categoryEndValue + categoryValue) / 2;
-            var sign = Math.Sign(item.Value - baseValue);
+            var sign = Math.Sign(topValue - baseValue);
             var marginVector = new ScreenVector(this.LabelMargin, 0) * sign;
 
             switch (this.LabelPlacement)
