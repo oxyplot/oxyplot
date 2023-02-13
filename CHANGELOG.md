@@ -4,12 +4,14 @@ All notable changes to this project will be documented in this file.
 ## Unreleased
 
 ### Added
+- Example of BarSeries stacked and with labels (#1979)
 
 ### Changed
 
 ### Removed
 
 ### Fixed
+- Placement of BarSeries labels when stacked (#1979)
 
 ## [2.1.2] - 2022-12-03
 
