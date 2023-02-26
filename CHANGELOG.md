@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - Example of BarSeries stacked and with labels (#1979)
+- Example of issue with AreaSeries tracker (#1982)
 
 ### Changed
 
