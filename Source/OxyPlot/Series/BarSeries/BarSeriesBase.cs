@@ -46,7 +46,7 @@ namespace OxyPlot.Series
         public List<T> ActualItems => this.ItemsSource != null ? this.ItemsSourceItems : this.Items;
 
         /// <inheritdoc/>
-        IReadOnlyList<BarItemBase> IBarSeries.ActualItems => this.ActualItems.AsReadOnlyList();
+        IReadOnlyList<BarItemBase> IBarSeries.ActualItems => this.ActualItems;
 
         /// <summary>
         /// Gets or sets the width of the bars. The default value is 1.

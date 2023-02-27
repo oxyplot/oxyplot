@@ -28,12 +28,8 @@ namespace OxyPlot
         /// <returns>An object that represents the specified property, or null if the property is not found.</returns>
         public static PropertyInfo? GetRuntimeProperty(this Type type, string name)
         {
-#if NET40
-            var source = type.GetProperties(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance);
-#else
             var typeInfo = type.GetTypeInfo();
             var source = typeInfo.AsType().GetRuntimeProperties();
-#endif
 
             foreach (var x in source)
             {
