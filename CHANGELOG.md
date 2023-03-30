@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 - Placement of BarSeries labels when stacked (#1979)
+- SystemInvalidException in LineSeries when only Double.Nan values are added (#1991)
 
 ## [2.1.2] - 2022-12-03
 
