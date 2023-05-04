@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace OxyPlot.Annotations
 {
     using System;
@@ -20,7 +22,7 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// The actual bounds of the text.
         /// </summary>
-        private IList<ScreenPoint> actualBounds;
+        private IList<ScreenPoint>? actualBounds;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TextAnnotation" /> class.
@@ -67,6 +69,11 @@ namespace OxyPlot.Annotations
         /// <inheritdoc/>
         public override void Render(IRenderContext rc)
         {
+            if (this.Text == null)
+            {
+                throw new InvalidOperationException($"{nameof(this.Text)} must be non-null before rendering.");
+            }
+
             base.Render(rc);
 
             var position = this.Transform(this.TextPosition) + this.Orientate(this.Offset);
@@ -105,7 +112,7 @@ namespace OxyPlot.Annotations
         /// <returns>
         /// The result of the hit test.
         /// </returns>
-        protected override HitTestResult HitTestOverride(HitTestArguments args)
+        protected override HitTestResult? HitTestOverride(HitTestArguments args)
         {
             if (this.actualBounds == null)
             {

@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace OxyPlot
 {
     /// <summary>
@@ -19,7 +21,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="style">The line style.</param>
         /// <returns>A dash array.</returns>
-        public static double[] GetDashArray(this LineStyle style)
+        public static double[]? GetDashArray(this LineStyle style)
         {
             switch (style)
             {

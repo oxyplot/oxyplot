@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace OxyPlot
 {
     using System;
@@ -91,10 +93,10 @@ namespace OxyPlot
             OxyColor stroke,
             double strokeThickness,
             EdgeRenderingMode edgeRenderingMode,
-            double[] dashArray,
+            double[]? dashArray,
             LineJoin lineJoin,
-            List<ScreenPoint> outputBuffer = null,
-            Action<IList<ScreenPoint>> pointsRendered = null)
+            List<ScreenPoint>? outputBuffer = null,
+            Action<IList<ScreenPoint>>? pointsRendered = null)
         {
             var n = points.Count;
             if (n == 0)
@@ -115,11 +117,8 @@ namespace OxyPlot
             ReducePoints(points, minDistSquared, outputBuffer);
             rc.DrawLine(outputBuffer, stroke, strokeThickness, edgeRenderingMode, dashArray, lineJoin);
 
-            if (outputBuffer != null)
-            {
-                outputBuffer.Clear();
-                outputBuffer.AddRange(points);
-            }
+            outputBuffer.Clear();
+            outputBuffer.AddRange(points);
 
             pointsRendered?.Invoke(outputBuffer);
         }
@@ -199,7 +198,7 @@ namespace OxyPlot
         /// <param name="fontSize">The font size.</param>
         /// <param name="fontWeight">The font weight.</param>
         /// <param name="dy">The line spacing.</param>
-        public static void DrawMultilineText(this IRenderContext rc, ScreenPoint point, string text, OxyColor color, string fontFamily = null, double fontSize = 10, double fontWeight = FontWeights.Normal, double dy = 12)
+        public static void DrawMultilineText(this IRenderContext rc, ScreenPoint point, string text, OxyColor color, string? fontFamily = null, double fontSize = 10, double fontWeight = FontWeights.Normal, double dy = 12)
         {
             var lines = StringHelper.SplitLines(text);
             for (int i = 0; i < lines.Length; i++)
@@ -274,7 +273,7 @@ namespace OxyPlot
             this IRenderContext rc,
             ScreenPoint p,
             MarkerType type,
-            IList<ScreenPoint> outline,
+            IList<ScreenPoint>? outline,
             double size,
             OxyColor fill,
             OxyColor stroke,
@@ -343,7 +342,7 @@ namespace OxyPlot
             this IRenderContext rc,
             IList<ScreenPoint> markerPoints,
             MarkerType markerType,
-            IList<ScreenPoint> markerOutline,
+            IList<ScreenPoint>? markerOutline,
             IList<double> markerSize,
             OxyColor markerFill,
             OxyColor markerStroke,
@@ -544,7 +543,7 @@ namespace OxyPlot
         private static void AddMarkerGeometry(
             ScreenPoint p,
             MarkerType type,
-            IEnumerable<ScreenPoint> outline,
+            IEnumerable<ScreenPoint>? outline,
             double size,
             IList<OxyRect> ellipses,
             IList<OxyRect> rects,
