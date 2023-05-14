@@ -18,23 +18,17 @@ namespace ExampleBrowser
     public partial class MainWindow : Window
     {
         /// <summary>
-        /// The vm.
-        /// </summary>
-        private readonly MainWindowViewModel vm = new MainWindowViewModel();
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="MainWindow" /> class.
         /// </summary>
         public MainWindow()
         {
             this.InitializeComponent();
-            this.DataContext = this.vm;
             SystemEvents.DisplaySettingsChanged += this.SystemEvents_DisplaySettingsChanged;
         }
 
         private void SystemEvents_DisplaySettingsChanged(object sender, System.EventArgs e)
         {
-            this.vm.ActiveModel?.PlotView?.InvalidatePlot(false);
+            (this.DataContext as MainWindowViewModel)?.ActiveModel?.PlotView?.InvalidatePlot(false);
         }
     }
 }

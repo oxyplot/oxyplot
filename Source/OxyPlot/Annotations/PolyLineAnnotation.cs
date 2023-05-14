@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace OxyPlot.Annotations
 {
     using System.Collections.Generic;
@@ -38,7 +40,7 @@ namespace OxyPlot.Annotations
         /// Gets or sets the interpolation algorithm.
         /// </summary>
         /// <value>An interpolation algorithm.</value>
-        public IInterpolationAlgorithm InterpolationAlgorithm { get; set; }
+        public IInterpolationAlgorithm? InterpolationAlgorithm { get; set; }
 
         /// <summary>
         /// Gets the screen points.

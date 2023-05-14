@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace OxyPlot.Annotations
 {
     using OxyPlot.Axes;
@@ -35,19 +37,19 @@ namespace OxyPlot.Annotations
         /// Gets the X axis.
         /// </summary>
         /// <value>The X axis.</value>
-        public Axis XAxis { get; private set; }
+        public Axis? XAxis { get; private set; }
 
         /// <summary>
         /// Gets or sets the X axis key.
         /// </summary>
         /// <value>The X axis key.</value>
-        public string XAxisKey { get; set; }
+        public string? XAxisKey { get; set; }
 
         /// <summary>
         /// Gets the Y axis.
         /// </summary>
         /// <value>The Y axis.</value>
-        public Axis YAxis { get; private set; }
+        public Axis? YAxis { get; private set; }
         
         /// <summary>
         /// Gets or sets a value indicating whether to clip the annotation by the X axis range.
@@ -65,7 +67,7 @@ namespace OxyPlot.Annotations
         /// Gets or sets the Y axis key.
         /// </summary>
         /// <value>The Y axis key.</value>
-        public string YAxisKey { get; set; }
+        public string? YAxisKey { get; set; }
 
         /// <summary>
         /// Ensures that the annotation axes are set.

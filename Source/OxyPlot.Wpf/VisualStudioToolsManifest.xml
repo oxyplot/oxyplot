@@ -1,0 +1,7 @@
+﻿<FileList>
+  <File Reference="OxyPlot.Wpf.dll">
+    <ToolboxItems UIFramework="WPF" VSCategory="OxyPlot.Wpf" BlendCategory="OxyPlot.Wpf">
+      <Item Type="OxyPlot.Wpf.PlotView" />
+    </ToolboxItems>
+  </File>
+</FileList>

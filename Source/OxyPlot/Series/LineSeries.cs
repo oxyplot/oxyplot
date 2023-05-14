@@ -410,7 +410,7 @@ namespace OxyPlot.Series
                 // Make sure the smooth points are re-evaluated.
                 this.ResetSmoothedPoints();
 
-                if (this.SmoothedPoints.Count == 0)
+                if (this.SmoothedPoints.All(x => double.IsNaN(x.X)))
                 {
                     return;
                 }

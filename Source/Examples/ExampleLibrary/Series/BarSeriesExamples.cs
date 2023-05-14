@@ -963,6 +963,46 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("Stacked (labels)")]
+        public static PlotModel StackedLabels()
+        {
+            var model = new PlotModel { Title = "Stacked with Labels" };
+
+            int i = 0;
+            foreach (var placement in new[] { LabelPlacement.Base, LabelPlacement.Inside, LabelPlacement.Middle, LabelPlacement.Outside })
+            {
+                var categoryAxis = new CategoryAxis
+                {
+                    Title = "Category",
+                    Position = AxisPosition.Left,
+                    StartPosition = 1 - i * 0.25,
+                    EndPosition = 0.75 - i * 0.25,
+                    Key = $"C{i}",
+                };
+
+                var bs1 = new BarSeries { Title = placement.ToString(), LabelPlacement = placement, LabelFormatString = "{0:0}", IsStacked = true, YAxisKey = categoryAxis.Key };
+                bs1.Items.Add(new BarItem { Value = 5 });
+                bs1.Items.Add(new BarItem { Value = 10 });
+                bs1.Items.Add(new BarItem { Value = 15 });
+                model.Series.Add(bs1);
+
+                var bs2 = new BarSeries { Title = placement.ToString(), LabelPlacement = placement, LabelFormatString = "{0:0}", IsStacked = true, YAxisKey = categoryAxis.Key };
+                bs2.Items.Add(new BarItem { Value = 15 });
+                bs2.Items.Add(new BarItem { Value = 10 });
+                bs2.Items.Add(new BarItem { Value = 5 });
+                model.Series.Add(bs2);
+
+                categoryAxis.Labels.AddRange(new[] { "A", "B", "C" });
+                model.Axes.Add(categoryAxis);
+
+                i++;
+            }
+
+            model.Legends.Add(new Legend());
+
+            return model;
+        }
+
         [Example("GapWidth 0%")]
         public static PlotModel GapWidth0()
         {

@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace OxyPlot
 {
     using System;
@@ -117,7 +119,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="value">The instance.</param>
         /// <returns>C# code.</returns>
-        public static string ToCode(this object value)
+        public static string? ToCode(this object? value)
         {
             if (value == null)
             {

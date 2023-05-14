@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace OxyPlot
 {
     /// <summary>
@@ -20,7 +22,7 @@ namespace OxyPlot
         /// <value>
         /// The <see cref="Model" /> that is the parent of the element.
         /// </value>
-        public Model Parent { get; internal set; }
+        public Model? Parent { get; internal set; }
 
         /// <summary>
         /// Tests if the plot element is hit by the specified point.
@@ -29,7 +31,7 @@ namespace OxyPlot
         /// <returns>
         /// A hit test result.
         /// </returns>
-        public HitTestResult HitTest(HitTestArguments args)
+        public HitTestResult? HitTest(HitTestArguments args)
         {
             return this.HitTestOverride(args);
         }
@@ -41,7 +43,7 @@ namespace OxyPlot
         /// <returns>
         /// The result of the hit test.
         /// </returns>
-        protected virtual HitTestResult HitTestOverride(HitTestArguments args)
+        protected virtual HitTestResult? HitTestOverride(HitTestArguments args)
         {
             return null;
         }

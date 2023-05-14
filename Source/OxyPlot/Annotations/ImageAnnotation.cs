@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace OxyPlot.Annotations
 {
     using System;
@@ -42,7 +44,7 @@ namespace OxyPlot.Annotations
         /// Gets or sets the image source.
         /// </summary>
         /// <value>The image source.</value>
-        public OxyImage ImageSource { get; set; }
+        public OxyImage? ImageSource { get; set; }
 
         /// <summary>
         /// Gets or sets the horizontal alignment.
@@ -107,6 +109,11 @@ namespace OxyPlot.Annotations
         /// <inheritdoc/>
         public override void Render(IRenderContext rc)
         {
+            if (this.ImageSource == null)
+            {
+                throw new InvalidOperationException($"{nameof(this.ImageSource)} must be non-null before rendering.");
+            }
+
             base.Render(rc);
 
             var p = this.GetPoint(this.X, this.Y, this.PlotModel);
@@ -173,7 +180,7 @@ namespace OxyPlot.Annotations
         /// <returns>
         /// The result of the hit test.
         /// </returns>
-        protected override HitTestResult HitTestOverride(HitTestArguments args)
+        protected override HitTestResult? HitTestOverride(HitTestArguments args)
         {
             if (this.actualBounds.Contains(args.Point))
             {
