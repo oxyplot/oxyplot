@@ -37,6 +37,7 @@ namespace OxyPlot.Series
             this.NegativeFillColor = OxyColors.Undefined;
             this.TrackerFormatString = DefaultTrackerFormatString;
             this.LabelMargin = 2;
+            this.LabelAngle = 0;
             this.StackGroup = string.Empty;
             this.StrokeThickness = 0;
         }
@@ -77,9 +78,14 @@ namespace OxyPlot.Series
         public string LabelFormatString { get; set; }
 
         /// <summary>
-        /// Gets or sets the label margins.
+        /// Gets or sets the label margins. Default value is 2.
         /// </summary>
         public double LabelMargin { get; set; }
+
+        /// <summary>
+        /// Gets or sets the label angle in degrees. Default value is 0.
+        /// </summary>
+        public double LabelAngle { get; set; }
 
         /// <summary>
         /// Gets or sets label placements.
@@ -307,40 +313,43 @@ namespace OxyPlot.Series
             double categoryEndValue)
         {
             var s = StringHelper.Format(this.ActualCulture, this.LabelFormatString, item, item.Value);
-            HorizontalAlignment ha;
             ScreenPoint pt;
             var y = (categoryEndValue + categoryValue) / 2;
             var sign = Math.Sign(topValue - baseValue);
             var marginVector = new ScreenVector(this.LabelMargin, 0) * sign;
+            var centreVector = new ScreenVector(0, 0);
+
+            var size = rc.MeasureText(
+                s,
+                this.ActualFont,
+                this.ActualFontSize,
+                this.ActualFontWeight,
+                this.LabelAngle);
 
             switch (this.LabelPlacement)
             {
                 case LabelPlacement.Inside:
                     pt = this.Transform(topValue, y);
                     marginVector = -marginVector;
-                    ha = (HorizontalAlignment)sign;
+                    centreVector = new ScreenVector(-sign * size.Width / 2, 0);
                     break;
                 case LabelPlacement.Outside:
                     pt = this.Transform(topValue, y);
-                    ha = (HorizontalAlignment)(-sign);
+                    centreVector = new ScreenVector(sign * size.Width / 2, 0);
                     break;
                 case LabelPlacement.Middle:
                     pt = this.Transform((topValue + baseValue) / 2, y);
                     marginVector = new ScreenVector(0, 0);
-                    ha = HorizontalAlignment.Center;
                     break;
                 case LabelPlacement.Base:
                     pt = this.Transform(baseValue, y);
-                    ha = (HorizontalAlignment)(-sign);
+                    centreVector = new ScreenVector(sign * size.Width / 2, 0);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
 
-            var va = VerticalAlignment.Middle;
-            this.Orientate(ref ha, ref va);
-
-            pt += this.Orientate(marginVector);
+            pt += this.Orientate(marginVector) + this.Orientate(centreVector);
 
             rc.DrawText(
                 pt,
@@ -349,9 +358,9 @@ namespace OxyPlot.Series
                 this.ActualFont,
                 this.ActualFontSize,
                 this.ActualFontWeight,
-                0,
-                ha,
-                va);
+                this.LabelAngle,
+                HorizontalAlignment.Center,
+                VerticalAlignment.Middle);
         }
 
         /// <inheritdoc/>
