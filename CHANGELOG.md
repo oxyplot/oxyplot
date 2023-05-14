@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - Example of BarSeries stacked and with labels (#1979)
+- Example of issue with AreaSeries tracker (#1982)
 
 ### Changed
 
@@ -13,6 +14,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - Placement of BarSeries labels when stacked (#1979)
 - SystemInvalidException in LineSeries when only Double.Nan values are added (#1991)
+- Issue with tracking AreaSeries with monotonic data points (#1982)
 
 ## [2.1.2] - 2022-12-03
 

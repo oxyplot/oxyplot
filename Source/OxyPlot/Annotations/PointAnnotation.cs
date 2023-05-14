@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace OxyPlot.Annotations
 {
     /// <summary>
@@ -60,7 +62,7 @@ namespace OxyPlot.Annotations
         /// Gets or sets a custom polygon outline for the point marker. Set <see cref="Shape" /> to <see cref="MarkerType.Custom" /> to use this property.
         /// </summary>
         /// <value>A polyline. The default is <c>null</c>.</value>
-        public ScreenPoint[] CustomOutline { get; set; }
+        public ScreenPoint[]? CustomOutline { get; set; }
 
         /// <inheritdoc/>
         public override void Render(IRenderContext rc)
@@ -71,7 +73,8 @@ namespace OxyPlot.Annotations
 
             rc.DrawMarker(this.screenPosition, this.Shape, this.CustomOutline, this.Size, this.Fill, this.Stroke, this.StrokeThickness, this.EdgeRenderingMode);
 
-            if (!string.IsNullOrEmpty(this.Text))
+            if (this.Text != null &&
+                !string.IsNullOrEmpty(this.Text))
             {
                 this.GetActualTextAlignment(out var ha, out var va);
                 var dx = -(int)ha * (this.Size + this.TextMargin);
@@ -97,7 +100,7 @@ namespace OxyPlot.Annotations
         /// <returns>
         /// The result of the hit test.
         /// </returns>
-        protected override HitTestResult HitTestOverride(HitTestArguments args)
+        protected override HitTestResult? HitTestOverride(HitTestArguments args)
         {
             if (this.screenPosition.DistanceTo(args.Point) < this.Size)
             {
