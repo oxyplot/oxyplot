@@ -17,6 +17,7 @@ All notable changes to this project will be documented in this file.
 - Placement of BarSeries labels when stacked (#1979)
 - SystemInvalidException in LineSeries when only Double.Nan values are added (#1991)
 - Issue with tracking AreaSeries with monotonic data points (#1982)
+- HitTest when IsLegendVisible is false (#1975)
 
 ## [2.1.2] - 2022-12-03
 
