@@ -46,6 +46,9 @@ namespace OxyPlot.Series
             this.TrackerFormatString = XYAxisSeries.DefaultTrackerFormatString;
             this.NegativeFillColor = OxyColors.Undefined;
             this.NegativeStrokeColor = OxyColors.Undefined;
+            this.BaseValue = 0;
+            this.BaseLine = double.NaN;
+            this.ActualBaseLine = double.NaN;
         }
 
         /// <summary>
@@ -97,10 +100,22 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Gets or sets the base line. This value is used for plotting to determine
-        /// the start of the plot. A suitable value is selected automatically if it is NaN.
+        /// Gets or sets the base value. Default value is 0.
         /// </summary>
-        public double BaseLine { get; set; } = double.NaN;
+        /// <value>The base value.</value>
+        public double BaseValue { get; set; }
+
+        /// <summary>
+        /// Gets or sets the base value.
+        /// </summary>
+        /// <value>The base value.</value>
+        public double BaseLine { get; set; }
+
+        /// <summary>
+        /// Gets or sets the actual base line.
+        /// </summary>
+        /// <returns>The actual base line.</returns>
+        public double ActualBaseLine { get; protected set; }
 
         /// <summary>
         /// Gets the nearest point.
@@ -162,7 +177,6 @@ namespace OxyPlot.Series
             }
 
             this.VerifyAxes();
-
             this.RenderBars(rc, actualPoints);
         }
 
@@ -204,27 +218,31 @@ namespace OxyPlot.Series
         {
             base.UpdateAxisMaxMin();
 
-            this.YAxis.Include(this.GetBaseLineOrAutomaticValue(this.YAxis));
+            this.ComputeActualBaseLine();
+            this.YAxis.Include(this.ActualBaseLine);
         }
 
         /// <summary>
-        /// Gets the base line value. If the value of the property is NaN, a sensible value is returned.
+        /// Computes the actual base value..
         /// </summary>
-        /// <param name="axis">The axis for which to return a sensible value for.</param>
-        /// <returns>The base line property or a sensible default.</returns>
-        protected double GetBaseLineOrAutomaticValue(Axis axis)
+        protected void ComputeActualBaseLine()
         {
             if (double.IsNaN(this.BaseLine))
             {
-                if (axis.IsLogarithmic())
+                if (this.YAxis.IsLogarithmic())
                 {
-                    var lowestPostiveY = this.ActualPoints == null ? 1 : this.ActualPoints.Select(p => p.Y).Where(y => y > 0).Min();
-                    return Math.Sqrt(lowestPostiveY);
+                    var lowestPositiveY = this.ActualPoints == null ? 1 : this.ActualPoints.Select(p => p.Y).Where(y => y > 0).MinOrDefault(1);
+                    this.ActualBaseLine = Math.Max(lowestPositiveY / 10.0, this.BaseValue);
                 }
-                return 0;
+                else
+                {
+                    this.ActualBaseLine = 0;
+                }
             }
-
-            return this.BaseLine;
+            else
+            {
+                this.ActualBaseLine = this.BaseLine;
+            }
         }
 
         /// <summary>
@@ -282,6 +300,8 @@ namespace OxyPlot.Series
         /// <param name="actualPoints">The list of points that should be rendered.</param>
         private void RenderBars(IRenderContext rc, List<DataPoint> actualPoints)
         {
+            bool clampBase = this.YAxis.IsLogarithmic() && !this.YAxis.IsValidValue(this.BaseValue);
+
             var widthOffset = this.GetBarWidth(actualPoints) / 2;
             var widthVector = this.Orientate(new ScreenVector(widthOffset, 0));
 
@@ -294,7 +314,7 @@ namespace OxyPlot.Series
                 }
 
                 var screenPoint = this.Transform(actualPoint) - widthVector;
-                var basePoint = this.Transform(new DataPoint(actualPoint.X, this.GetBasePointY())) + widthVector;
+                var basePoint = this.Transform(new DataPoint(actualPoint.X, clampBase ? this.YAxis.ClipMinimum : this.BaseValue)) + widthVector;
                 var rectangle = new OxyRect(basePoint, screenPoint);
                 this.rectangles.Add(rectangle);
                 this.rectanglesPointIndexes.Add(pointIndex);
@@ -308,13 +328,6 @@ namespace OxyPlot.Series
                     this.StrokeThickness, 
                     this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness));
             }
-        }
-
-        private double GetBasePointY()
-        {
-            if (this.YAxis.IsLogarithmic())
-                return LogarithmicAxis.LowestValidRoundtripValue;
-            return 0;
         }
 
         /// <summary>
@@ -344,7 +357,7 @@ namespace OxyPlot.Series
         /// <returns>The bar colors</returns>
         private BarColors GetBarColors(double y)
         {
-            var positive = y >= 0.0;
+            var positive = y >= this.BaseValue;
             var fillColor = (positive || this.NegativeFillColor.IsUndefined()) ? this.GetSelectableFillColor(this.ActualColor) : this.NegativeFillColor;
             var strokeColor = (positive || this.NegativeStrokeColor.IsUndefined()) ? this.StrokeColor : this.NegativeStrokeColor;
 

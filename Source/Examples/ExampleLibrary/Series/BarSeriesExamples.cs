@@ -389,8 +389,8 @@ namespace ExampleLibrary
             return model;
         }
 
-        [Example("Logarithmic axis")]
-        public static PlotModel LogAxis()
+        [Example("Logarithmic axis (Base Value)")]
+        public static PlotModel LogAxisBaseValue()
         {
             var model = new PlotModel
             {
@@ -423,8 +423,42 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("Logarithmic axis (Base Line)")]
+        public static PlotModel LogAxisBaseLine()
+        {
+            var model = new PlotModel
+            {
+                Title = "Logarithmic axis"
+            };
+
+            var l = new Legend
+            {
+                LegendPlacement = LegendPlacement.Outside,
+                LegendPosition = LegendPosition.BottomCenter,
+                LegendOrientation = LegendOrientation.Horizontal,
+                LegendBorderThickness = 0
+            };
+
+            model.Legends.Add(l);
+            var s1 = new BarSeries { Title = "Series 1", BaseLine = 0.1, StrokeColor = OxyColors.Black, StrokeThickness = 1 };
+            s1.Items.Add(new BarItem { Value = 25 });
+            s1.Items.Add(new BarItem { Value = 37 });
+            s1.Items.Add(new BarItem { Value = 18 });
+            s1.Items.Add(new BarItem { Value = 40 });
+
+            var categoryAxis = new CategoryAxis { Position = AxisPosition.Left };
+            categoryAxis.Labels.Add("Category A");
+            categoryAxis.Labels.Add("Category B");
+            categoryAxis.Labels.Add("Category C");
+            categoryAxis.Labels.Add("Category D");
+            model.Series.Add(s1);
+            model.Axes.Add(categoryAxis);
+            model.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Bottom, MinimumPadding = 0, AbsoluteMinimum = 0 });
+            return model;
+        }
+
         [Example("Logarithmic axis (not stacked)")]
-        public static PlotModel LogAxis2()
+        public static PlotModel LogAxisNotStacked()
         {
             var model = new PlotModel { Title = "Logarithmic axis" };
             var l = new Legend
@@ -440,9 +474,9 @@ namespace ExampleLibrary
                                 new Item {Label = "Bananas", Value1 = 23, Value2 = 2, Value3 = 29}
                             };
 
-            model.Series.Add(new BarSeries { Title = "2009", BaseValue = 0.1, ItemsSource = items, ValueField = "Value1" });
-            model.Series.Add(new BarSeries { Title = "2010", BaseValue = 0.1, ItemsSource = items, ValueField = "Value2" });
-            model.Series.Add(new BarSeries { Title = "2011", BaseValue = 0.1, ItemsSource = items, ValueField = "Value3" });
+            model.Series.Add(new BarSeries { Title = "2009", ItemsSource = items, ValueField = "Value1" });
+            model.Series.Add(new BarSeries { Title = "2010", ItemsSource = items, ValueField = "Value2" });
+            model.Series.Add(new BarSeries { Title = "2011", ItemsSource = items, ValueField = "Value3" });
 
             model.Axes.Add(new CategoryAxis { Position = AxisPosition.Left, ItemsSource = items, LabelField = "Label" });
             model.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Bottom, Minimum = 1 });
@@ -450,9 +484,9 @@ namespace ExampleLibrary
         }
 
         [Example("Logarithmic axis (stacked series)")]
-        public static PlotModel LogAxis3()
+        public static PlotModel LogAxisStacked()
         {
-            var model = LogAxis2();
+            var model = LogAxisNotStacked();
             foreach (var s in model.Series.OfType<BarSeries>())
             {
                 s.IsStacked = true;

@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 - BarSeries.LabelAngle property (#1870)
 
 ### Changed
+- Make consistent BaseValue and BaseLine across BarSeries, LinearBarSeries, and HistogramSeries
 
 ### Removed
 - Support for .NET Framework 4.0 and 4.5 (#1839)
