@@ -312,13 +312,8 @@ namespace OxyPlot.Axes
             return string.Format(this.ActualCulture, fmt, time);
         }
 
-        /// <summary>
-        /// Calculates the actual interval.
-        /// </summary>
-        /// <param name="availableSize">Size of the available area.</param>
-        /// <param name="maxIntervalSize">Maximum length of the intervals.</param>
-        /// <returns>The calculate actual interval.</returns>
-        protected override double CalculateActualInterval(double availableSize, double maxIntervalSize)
+        /// <inheritdoc/>
+        protected override double CalculateActualInterval(double availableSize, double maxIntervalSize, double minIntervalCount, double maxIntervalCount)
         {
             const double Year = 365.25;
             const double Month = 30.5;
@@ -341,11 +336,13 @@ namespace OxyPlot.Axes
 
             double interval = goodIntervals[0];
 
-            int maxNumberOfIntervals = Math.Max((int)(availableSize / maxIntervalSize), 2);
+            // bound min/max interval counts
+            minIntervalCount = Math.Max(minIntervalCount, 0);
+            maxIntervalCount = Math.Min(maxIntervalCount, Math.Max((int)(availableSize / maxIntervalSize), 2));
 
             while (true)
             {
-                if (range / interval < maxNumberOfIntervals)
+                if (range / interval < maxIntervalCount)
                 {
                     break;
                 }
@@ -354,6 +351,11 @@ namespace OxyPlot.Axes
                 if (Math.Abs(nextInterval) <= double.Epsilon)
                 {
                     nextInterval = interval * 2;
+                }
+
+                if (range / nextInterval < minIntervalCount)
+                {
+                    break;
                 }
 
                 interval = nextInterval;
@@ -400,13 +402,13 @@ namespace OxyPlot.Axes
             if (this.actualIntervalType == DateTimeIntervalType.Months)
             {
                 double monthsRange = range / 30.5;
-                interval = this.CalculateActualInterval(availableSize, maxIntervalSize, monthsRange);
+                interval = this.CalculateActualInterval(availableSize, maxIntervalSize, monthsRange, this.MinimumMajorIntervalCount, this.MaximumMajorIntervalCount);
             }
 
             if (this.actualIntervalType == DateTimeIntervalType.Years)
             {
                 double yearsRange = range / 365.25;
-                interval = this.CalculateActualInterval(availableSize, maxIntervalSize, yearsRange);
+                interval = this.CalculateActualInterval(availableSize, maxIntervalSize, yearsRange, this.MinimumMajorIntervalCount, this.MaximumMajorIntervalCount);
             }
 
             if (this.actualMinorIntervalType == DateTimeIntervalType.Auto)

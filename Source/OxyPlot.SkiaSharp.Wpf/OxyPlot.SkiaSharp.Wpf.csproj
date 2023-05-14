@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
-    <TargetFrameworks>net452;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>net462;netcoreapp3.1</TargetFrameworks>
     <UseWPF>true</UseWPF>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>OxyPlot is a plotting library for .NET. This package targets WPF applications and uses the SkiaSharp renderer.</Description>
@@ -19,6 +19,7 @@
   <ItemGroup>
     <PackageReference Include="SkiaSharp.Views.Desktop.Common" Version="1.68.3" />
     <None Include="OxyPlot.SkiaSharp.Wpf.snk" />
+    <None Include="VisualStudioToolsManifest.xml" Pack="true" PackagePath="tools" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Icons\OxyPlot_128.png" Pack="true" PackagePath="\" />

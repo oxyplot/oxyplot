@@ -6,6 +6,9 @@
         xmlns:local="clr-namespace:ExampleBrowser" 
         Title="OxyPlot.WPF Example Browser"
         Height="720" Width="1280" Icon="OxyPlot_64.png">
+    <Window.DataContext>
+        <local:MainWindowViewModel />
+    </Window.DataContext>
     <Window.Resources>
         <SolidColorBrush x:Key="HotItemBackground" Color="#e6f3f7"/>
         <SolidColorBrush x:Key="SelectedItemBorder" Color="#6dbdd1"/>
@@ -110,9 +113,9 @@
                         <Grid.Resources>
                             <local:NotNullVisibilityConverter x:Key="NotNullVisibilityConverter" />
                         </Grid.Resources>
-                        <oxySkia:PlotView Model="{Binding SkiaModel}" Controller="{Binding SelectedExample.Controller}" Visibility="{Binding SkiaModel, Converter={StaticResource NotNullVisibilityConverter}}" />
-                        <oxyWpf:PlotView Model="{Binding CanvasModel}" Controller="{Binding SelectedExample.Controller}" Visibility="{Binding CanvasModel, Converter={StaticResource NotNullVisibilityConverter}}" />
-                        <local:XamlPlotView Model="{Binding CanvasXamlModel}" Controller="{Binding SelectedExample.Controller}" Visibility="{Binding CanvasXamlModel, Converter={StaticResource NotNullVisibilityConverter}}" />
+                        <oxySkia:PlotView Model="{Binding SkiaModel}" Controller="{Binding SelectedExample.PlotController}" Visibility="{Binding SkiaModel, Converter={StaticResource NotNullVisibilityConverter}}" />
+                        <oxyWpf:PlotView Model="{Binding CanvasModel}" Controller="{Binding SelectedExample.PlotController}" Visibility="{Binding CanvasModel, Converter={StaticResource NotNullVisibilityConverter}}" />
+                        <local:XamlPlotView Model="{Binding CanvasXamlModel}" Controller="{Binding SelectedExample.PlotController}" Visibility="{Binding CanvasXamlModel, Converter={StaticResource NotNullVisibilityConverter}}" />
                     </Grid>
                 </TabItem>
                 <TabItem Header="Code">
