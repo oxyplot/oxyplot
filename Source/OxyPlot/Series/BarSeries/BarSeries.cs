@@ -9,6 +9,7 @@
 
 namespace OxyPlot.Series
 {
+    using OxyPlot.Axes;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -46,7 +47,7 @@ namespace OxyPlot.Series
         /// </summary>
         /// <value>The actual color.</value>
         public OxyColor ActualFillColor => this.FillColor.GetActualColor(this.defaultFillColor);
-
+        
         /// <summary>
         /// Gets or sets the base value.
         /// </summary>
@@ -387,6 +388,11 @@ namespace OxyPlot.Series
 
                 var topValue = this.IsStacked ? baseValue + value : value;
 
+                if (this.YAxis.IsLogarithmic() && !this.YAxis.IsValidValue(topValue))
+                {
+                    continue;
+                }
+
                 // Calculate offset
                 double categoryValue;
                 if (this.IsStacked)
@@ -401,6 +407,11 @@ namespace OxyPlot.Series
                 if (this.IsStacked)
                 {
                     this.Manager.SetCurrentBaseValue(stackIndex, categoryIndex, value < 0, topValue);
+                }
+
+                if (this.YAxis.IsLogarithmic() && !this.YAxis.IsValidValue(baseValue))
+                {
+                    baseValue = LogarithmicAxis.LowestValidRoundtripValue;
                 }
 
                 var rect = new OxyRect(this.Transform(baseValue, categoryValue), this.Transform(topValue, categoryValue + actualBarWidth));
