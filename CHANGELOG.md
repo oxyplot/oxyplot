@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 ### Removed
+- Support for .NET Framework 4.0 and 4.5 (#1839)
 
 ### Fixed
 - Placement of BarSeries labels when stacked (#1979)
