@@ -314,7 +314,7 @@ namespace OxyPlot.Series
             double index = -1;
 
             double minimumDistance = double.MaxValue;
-            int i = 0;
+            int i = startIdx;
             foreach (var p in points.Skip(startIdx))
             {
                 if (!this.IsValidPoint(p))

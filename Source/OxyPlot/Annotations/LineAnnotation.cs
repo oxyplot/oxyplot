@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace OxyPlot.Annotations
 {
     using System;
@@ -66,10 +68,10 @@ namespace OxyPlot.Annotations
         protected override IList<ScreenPoint> GetScreenPoints()
         {
             // y=f(x)
-            Func<double, double> fx = null;
+            Func<double, double>? fx = null;
 
             // x=f(y)
-            Func<double, double> fy = null;
+            Func<double, double>? fy = null;
 
             switch (this.Type)
             {
@@ -96,10 +98,14 @@ namespace OxyPlot.Annotations
                     points.Add(new DataPoint(this.ActualMinimumX, fx(this.ActualMinimumX)));
                     points.Add(new DataPoint(this.ActualMaximumX, fx(this.ActualMaximumX)));
                 }
-                else
+                else if (fy != null)
                 {
                     points.Add(new DataPoint(fy(this.ActualMinimumY), this.ActualMinimumY));
                     points.Add(new DataPoint(fy(this.ActualMaximumY), this.ActualMaximumY));
+                }
+                else
+                {
+                    throw new InvalidOperationException("fx or fy must be non-null.");
                 }
             }
             else
@@ -115,7 +121,7 @@ namespace OxyPlot.Annotations
                         points.Add(new DataPoint(x, fx(x)));
                     }
                 }
-                else
+                else if (fy != null)
                 {
                     // todo: the step size should be adaptive
                     var n = 100;
