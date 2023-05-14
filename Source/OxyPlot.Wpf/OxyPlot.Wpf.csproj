@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
-    <TargetFrameworks>net45;net40;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>net462;netcoreapp3.1</TargetFrameworks>
     <UseWPF>true</UseWPF>
     <AssemblyOriginatorKeyFile>OxyPlot.Wpf.snk</AssemblyOriginatorKeyFile>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
@@ -29,7 +29,7 @@
     <Reference Include="System.Printing" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OxyPlot.Wpf.Shared\OxyPlot.Wpf.Shared.csproj"/>
-    <ProjectReference Include="..\OxyPlot\OxyPlot.csproj"/>
+    <ProjectReference Include="..\OxyPlot.Wpf.Shared\OxyPlot.Wpf.Shared.csproj" />
+    <ProjectReference Include="..\OxyPlot\OxyPlot.csproj" />
   </ItemGroup>
 </Project>

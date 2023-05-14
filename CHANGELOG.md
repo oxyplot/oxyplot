@@ -5,12 +5,18 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - Example to Show/Hide Legend (#1470)
+- Example of BarSeries stacked and with labels (#1979)
+- Example of issue with AreaSeries tracker (#1982)
 
 ### Changed
 
 ### Removed
+- Support for .NET Framework 4.0 and 4.5 (#1839)
 
 ### Fixed
+- Placement of BarSeries labels when stacked (#1979)
+- SystemInvalidException in LineSeries when only Double.Nan values are added (#1991)
+- Issue with tracking AreaSeries with monotonic data points (#1982)
 
 ## [2.1.2] - 2022-12-03
 
@@ -19,6 +25,7 @@ All notable changes to this project will be documented in this file.
 - Add properties for `MinimumSegmentLength` to series and annotations (#1853)
 - Add fractal examples for PolygonAnnotation and PolylineAnnotations (#1853)
 - Add `AxisPreference` to `PlotManipulator`
+- Add MinimumMajorIntervalCount and MaximumMajorIntervalCount Axis Properties (#24)
 - Add VisualStudioToolsManifest.xml to add components to the Visual Studio Designer toolbox (#1446)
 
 ### Changed
@@ -37,8 +44,10 @@ All notable changes to this project will be documented in this file.
 - Code generation for escape sequences in strings (#1824)
 - Axes not always honoring AbsoluteMinimum/AbsoluteMaximum and/or MinimumRange/MaximumRange properties (#1812)
 - WindowsForms tracker no longer clipping outside PlotView boundaries (#1863)
+- CategoryAxis.ItemsSource without BarSeries (#1847)
 - Histogram now rendering properly when using logarithmic Y axis (#740) 
 - Fix ExampleLibrary build errors in certain code pages (#1890)
+- Fix for double.Epsilon zero check that fails on some architectures (#1924)
 
 ## [2.1.0] - 2021-10-02
 

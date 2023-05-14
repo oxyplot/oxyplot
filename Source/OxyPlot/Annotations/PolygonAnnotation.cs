@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace OxyPlot.Annotations
 {
     using System;
@@ -21,7 +23,7 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// The polygon points transformed to screen coordinates.
         /// </summary>
-        private IList<ScreenPoint> screenPoints;
+        private IList<ScreenPoint>? screenPoints;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PolygonAnnotation" /> class.
@@ -87,7 +89,8 @@ namespace OxyPlot.Annotations
                 this.LineStyle,
                 this.LineJoin);
 
-            if (!string.IsNullOrEmpty(this.Text))
+            if (this.Text != null &&
+                !string.IsNullOrEmpty(this.Text))
             {
                 this.GetActualTextAlignment(out var ha, out var va);
                 var textPosition = this.GetActualTextPosition(() => ScreenPointHelper.GetCentroid(this.screenPoints));
@@ -112,7 +115,7 @@ namespace OxyPlot.Annotations
         /// <returns>
         /// The result of the hit test.
         /// </returns>
-        protected override HitTestResult HitTestOverride(HitTestArguments args)
+        protected override HitTestResult? HitTestOverride(HitTestArguments args)
         {
             if (this.screenPoints == null)
             {

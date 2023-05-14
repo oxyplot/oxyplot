@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net452</TargetFramework>
+    <TargetFramework>net462</TargetFramework>
     <Product>OxyPlot PDF extensions</Product>
     <Description>OxyPlot is a plotting library for .NET. This package contains .pdf export extensions for .NET 4 (based on PDFsharp).</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>

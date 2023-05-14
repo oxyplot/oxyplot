@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace OxyPlot.Annotations
 {
     using System;
@@ -36,7 +38,7 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// Gets or sets the y=f(x) equation when Type is Equation.
         /// </summary>
-        public Func<double, double> Equation { get; set; }
+        public Func<double, double>? Equation { get; set; }
 
         /// <summary>
         /// Gets or sets the resolution.
@@ -50,9 +52,9 @@ namespace OxyPlot.Annotations
         /// <returns>The list of screen points defined by this function annotation.</returns>
         protected override IList<ScreenPoint> GetScreenPoints()
         {
-            Func<double, double> fx = null;
+            Func<double, double>? fx = null;
 
-            Func<double, double> fy = null;
+            Func<double, double>? fy = null;
 
             switch (this.Type)
             {
