@@ -23,6 +23,7 @@ All notable changes to this project will be documented in this file.
 - Add properties for `MinimumSegmentLength` to series and annotations (#1853)
 - Add fractal examples for PolygonAnnotation and PolylineAnnotations (#1853)
 - Add `AxisPreference` to `PlotManipulator`
+- Add MinimumMajorIntervalCount and MaximumMajorIntervalCount Axis Properties (#24)
 - Add VisualStudioToolsManifest.xml to add components to the Visual Studio Designer toolbox (#1446)
 
 ### Changed
