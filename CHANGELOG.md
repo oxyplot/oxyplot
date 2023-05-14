@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 - Example to Show/Hide Legend (#1470)
 - Example of BarSeries stacked and with labels (#1979)
 - Example of issue with AreaSeries tracker (#1982)
+- Add example for CategoryAxis with custom MajorStep and uncentered ticks (#1971)
 
 ### Changed
 
