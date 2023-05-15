@@ -467,8 +467,8 @@ namespace OxyPlot.Series
                     this.Manager.SetCurrentBaseValue(stackIndex, categoryIndex, value < 0, topValue);
                 }
 
-                var clampBase = this.YAxis.IsLogarithmic() && !this.YAxis.IsValidValue(baseValue);
-                var p1 = this.Transform(clampBase ? this.YAxis.ClipMinimum : baseValue, categoryValue);
+                var clampBase = this.XAxis.IsLogarithmic() && !this.XAxis.IsValidValue(baseValue);
+                var p1 = this.Transform(clampBase ? this.XAxis.ClipMinimum : baseValue, categoryValue);
                 var p2 = this.Transform(topValue, categoryValue + actualBarWidth);
 
                 var rectangle = new OxyRect(p1, p2);
