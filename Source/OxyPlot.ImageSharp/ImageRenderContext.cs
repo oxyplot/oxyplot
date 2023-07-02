@@ -548,11 +548,11 @@ namespace OxyPlot.ImageSharp
             }
         }
 
-        private Font GetFontOrThrow(string fontFamily, double fontSize, FontStyle regular, bool allowFallback = true)
+        private Font GetFontOrThrow(string fontFamily, double fontSize, FontStyle fontWeight, bool allowFallback = true)
         {
             var family = this.GetFamilyOrFallbackOrThrow(fontFamily, allowFallback);
             var actualFontSize = this.NominalFontSizeToPoints(fontSize);
-            return new Font(family, (float)actualFontSize, FontStyle.Regular);
+            return new Font(family, (float)actualFontSize, fontWeight);
         }
 
         private FontFamily GetFamilyOrFallbackOrThrow(string fontFamily = null, bool allowFallback = true)
