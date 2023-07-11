@@ -27,14 +27,14 @@ namespace OxyPlot
         /// </summary>
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1307:AccessibleFieldsMustBeginWithUpperCaseLetter", Justification = "Reviewed. Suppression is OK here.")]
         // ReSharper disable once InconsistentNaming
-        private readonly double x;
+        internal readonly double x;
 
         /// <summary>
         /// The y-coordinate.
         /// </summary>
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1307:AccessibleFieldsMustBeginWithUpperCaseLetter", Justification = "Reviewed. Suppression is OK here.")]
         // ReSharper disable once InconsistentNaming
-        private readonly double y;
+        internal readonly double y;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DataVector" /> structure.
