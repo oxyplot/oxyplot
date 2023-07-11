@@ -15,7 +15,7 @@
     <None Include="OxyPlot.Wpf.snk" />
     <None Include="VisualStudioToolsManifest.xml" Pack="true" PackagePath="tools" />
   </ItemGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net462' ">
     <Reference Include="ReachFramework" />
     <Reference Include="System.Printing" />
   </ItemGroup>
