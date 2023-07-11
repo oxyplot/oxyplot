@@ -10,8 +10,13 @@
     [Examples("VectorSeries"), Tags("Series")]
     public static class VectorSeriesExamples
     {
+        private static readonly Func<double, double, double> dpeaksdx = (x, y) =>
+            -10 * ((1 / 5 - 3 * Math.Pow(x, 2)) * Math.Exp(-Math.Pow(x, 2) - Math.Pow(y, 2)) - 2 * x * (x / 5 - Math.Pow(x, 3) - Math.Pow(y, 5)) * Math.Exp(-Math.Pow(x, 2) - Math.Pow(y, 2))) + 0.6666666666666666 * (1 + x) * Math.Exp(-Math.Pow(1 + x, 2) - Math.Pow(y, 2)) + 3 * (-2 * (1 - x) * Math.Exp(-Math.Pow(x, 2) - Math.Pow(1 + y, 2)) - 2 * x * Math.Pow(1 - x, 2) * Math.Exp(-Math.Pow(x, 2) - Math.Pow(1 + y, 2)));
+
+        private static readonly Func<double, double, double> dpeaksdy = (x, y) =>
+            -10 * (-5 * Math.Pow(y, 4) * Math.Exp(-Math.Pow(x, 2) - Math.Pow(y, 2)) - 2 * y * (x / 5 - Math.Pow(x, 3) - Math.Pow(y, 5)) * Math.Exp(-Math.Pow(x, 2) - Math.Pow(y, 2))) + 0.6666666666666666 * y * Math.Exp(-Math.Pow(1 + x, 2) - Math.Pow(y, 2)) - 6 * Math.Pow(1 - x, 2) * (1 + y) * Math.Exp(-Math.Pow(x, 2) - Math.Pow(1 + y, 2));
+
         [Example("VectorSeries")]
-        [DocumentationExample("Series/VectorSeries")]
         public static PlotModel FromItems()
         {
             var model = GetModel(true, out _);
@@ -19,7 +24,6 @@
         }
 
         [Example("VectorSeries (Veeness = 2)")]
-        [DocumentationExample("Series/VectorSeries")]
         public static PlotModel FromItemsVeeness()
         {
             var model = GetModel(true, out var series);
@@ -28,7 +32,6 @@
         }
 
         [Example("VectorSeries (Vector Origin and Label position)")]
-        [DocumentationExample("Series/VectorSeries")]
         public static PlotModel FromItemsVectorOriginAndLabelPosition()
         {
             var model = GetModel(true, out var series);
@@ -38,10 +41,24 @@
         }
 
         [Example("VectorSeries (without ColorAxis)")]
-        [DocumentationExample("Series/VectorSeries")]
-        public static PlotModel FromItemsOhneColorAxis()
+        public static PlotModel FromItemsWithoutColorAxis()
         {
             var model = GetModel(false, out _);
+            return model;
+        }
+
+        [Example("Vector Field")]
+        [DocumentationExample("Series/VectorSeries")]
+        public static PlotModel VectorField()
+        {
+            var model = new PlotModel { Title = "Peaks (Gradient)" };
+            var vs = new VectorSeries();
+            var columnCoordinates = ArrayBuilder.CreateVector(-3, 3, 0.25);
+            var rowCoordinates = ArrayBuilder.CreateVector(-3.1, 3.1, 0.25);
+            vs.ArrowVeeness = 1;
+            vs.ArrowStartPosition = 0.5;
+            vs.ItemsSource = columnCoordinates.SelectMany(x => rowCoordinates.Select(y => new VectorItem(new DataPoint(x, y), new DataVector(dpeaksdx(x, y) / 40, dpeaksdy(x, y) / 40), double.NaN))).ToList();
+            model.Series.Add(vs);
             return model;
         }
 
