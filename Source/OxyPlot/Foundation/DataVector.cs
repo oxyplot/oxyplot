@@ -27,14 +27,14 @@ namespace OxyPlot
         /// </summary>
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1307:AccessibleFieldsMustBeginWithUpperCaseLetter", Justification = "Reviewed. Suppression is OK here.")]
         // ReSharper disable once InconsistentNaming
-        internal double x;
+        private readonly double x;
 
         /// <summary>
         /// The y-coordinate.
         /// </summary>
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1307:AccessibleFieldsMustBeginWithUpperCaseLetter", Justification = "Reviewed. Suppression is OK here.")]
         // ReSharper disable once InconsistentNaming
-        internal double y;
+        private readonly double y;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DataVector" /> structure.
@@ -134,22 +134,6 @@ namespace OxyPlot
         public static DataVector operator -(DataVector v)
         {
             return new DataVector(-v.x, -v.y);
-        }
-
-        /// <summary>
-        /// Normalizes this vector inplace.
-        /// </summary>
-        /// <remarks>
-        /// If the vector has zero length, then it is left unchanged.
-        /// </remarks>
-        public void Normalize()
-        {
-            double l = Math.Sqrt((this.x * this.x) + (this.y * this.y));
-            if (l > 0)
-            {
-                this.x /= l;
-                this.y /= l;
-            }
         }
 
         /// <summary>
