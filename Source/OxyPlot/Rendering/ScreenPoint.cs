@@ -118,16 +118,6 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Determines whether the given values is a real fine value.
-        /// </summary>
-        /// <param name="f">The number to evaluate.</param>
-        /// <returns><c>true</c> if <paramref name="f"/> is non-NaN and non-Infinite, otherwise <c>false</c>.</returns>
-        private static bool IsFinite(double f)
-        {
-            return !(double.IsNaN(f) || double.IsInfinity(f));
-        }
-
-        /// <summary>
         /// Gets the distance to the specified point.
         /// </summary>
         /// <param name="point">The point.</param>
