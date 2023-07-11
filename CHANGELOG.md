@@ -19,6 +19,7 @@ All notable changes to this project will be documented in this file.
 - Placement of BarSeries labels when stacked (#1979)
 - SystemInvalidException in LineSeries when only Double.Nan values are added (#1991)
 - Issue with tracking AreaSeries with monotonic data points (#1982)
+- Incorrect coloring of TwoColorLineSeries
 - HitTest when IsLegendVisible is false (#1975)
 - Font weight not being applied in ImageSharp (#2006)
 
