@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 - Example of issue with AreaSeries tracker (#1982)
 - Example for CategoryAxis with custom MajorStep and uncentered ticks (#1971)
 - BarSeries.LabelAngle property (#1870)
+- Support HiDPI for WinForms examples (#1597)
 
 ### Changed
 - Make consistent BaseValue and BaseLine across BarSeries, LinearBarSeries, and HistogramSeries
@@ -88,7 +89,6 @@ All notable changes to this project will be documented in this file.
 - Native Clipping for OxyPlot.SvgRenderContext (#1564)
 - Examples of full plot area polar plots with non-zero minimums (#1586)
 - Read-Only collection interfaces for .NET 4.0 (#1600)
-- Support HiDPI for WinForms examples (#1597)
 - Add PlotModel.AssignColorsToInvisibleSeries property to control whether invisible series are included or skipped when assigning automatic colors (#1599)
 - Overlapping bar series (#1265)
 - `AxisPosition.All` for axes which need a margin on all sides of the plot area (#1574)
