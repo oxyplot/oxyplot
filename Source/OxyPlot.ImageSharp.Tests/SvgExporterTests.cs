@@ -33,7 +33,7 @@ namespace OxyPlot.ImageSharp.Tests
         {
             var exporter = new SvgExporter(1000, 750);
             var directory = Path.Combine(this.outputDirectory, "ExampleLibrary");
-            ExportTest.ExportExamples_CheckThatAllFilesExist(Examples.GetFirstExampleOfEachCategory(), exporter, directory, ".svg");
+            ExportTest.ExportExamples_CheckThatAllFilesExist(Examples.GetFirstExampleOfEachCategoryForAutomatedTest(), exporter, directory, ".svg");
         }
 
         [Test]

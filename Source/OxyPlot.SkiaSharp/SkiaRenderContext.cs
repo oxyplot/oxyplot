@@ -882,7 +882,7 @@ namespace OxyPlot.SkiaSharp
             if (!this.typefaceCache.TryGetValue(fontDescriptor, out var typeface))
             {
                 typeface = SKTypeface.FromFamilyName(fontFamily, new SKFontStyle((int)fontWeight, (int)SKFontStyleWidth.Normal, SKFontStyleSlant.Upright));
-#if NETSTANDARD2_0_OR_GREATER
+#if NETSTANDARD2_1_OR_GREATER
                 if (typeface.FamilyName != fontFamily) // requested font not found or is WASM
                 {
                     try

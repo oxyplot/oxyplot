@@ -46,11 +46,6 @@ namespace OxyPlot.Wpf
             this.BalancedLineDrawingThicknessLimit = 3.5;
         }
 
-        /// <summary>
-        /// Gets or sets the thickness limit for "balanced" line drawing.
-        /// </summary>
-        public double BalancedLineDrawingThicknessLimit { get; set; }
-
         ///<inheritdoc/>
         public override void DrawEllipses(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
         {

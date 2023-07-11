@@ -338,6 +338,7 @@ namespace OxyPlot.Wpf
             VerticalAlignment verticalAlignment,
             OxySize? maxSize)
         {
+            fontFamily ??= this.DefaultFontFamily;
             this.TextArranger.ArrangeText(p, text, fontFamily, fontSize, fontWeight, rotation, horizontalAlignment, verticalAlignment, maxSize, HorizontalAlignment.Left, TextVerticalAlignment.Top, out var lines, out var linePositions);
 
             for (int i = 0; i < lines.Length; i++)
@@ -779,7 +780,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         /// <param name="r">The rectangle.</param>
         /// <returns>A <see cref="System.Windows.Rect" />.</returns>
-        private static Rect ToRect(OxyRect r)
+        protected static Rect ToRect(OxyRect r)
         {
             return new Rect(r.Left, r.Top, r.Width, r.Height);
         }
