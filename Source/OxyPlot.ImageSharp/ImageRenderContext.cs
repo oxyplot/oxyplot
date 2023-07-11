@@ -189,7 +189,8 @@ namespace OxyPlot.ImageSharp
             var boundsHeight = this.Convert(bounds.Height);
             var offsetHeight = new PointF(boundsHeight * -sin, boundsHeight * cos);
 
-            // determine the font metrids for this font size at 96 DPI
+            // TODO: replace with using GetFontMetrics()
+            // determine the font metrics for this font size at 96 DPI
             var actualDescent = this.Convert(actualFontSize * this.MilliPointsToNominalResolution(font.FontMetrics.Descender));
             var offsetDescent = new PointF(actualDescent * -sin, actualDescent * cos);
 
@@ -449,11 +450,10 @@ namespace OxyPlot.ImageSharp
         public Rendering.FontMetrics GetFontMetrics(string fontFamily, double fontSize, double fontWeight)
         {
             var font = this.GetFontOrThrow(fontFamily, fontSize, this.ToFontStyle(fontWeight));
-            var actualFontSize = this.NominalFontSizeToPoints(fontSize);
 
-            var ascender = actualFontSize * this.MilliPointsToNominalResolution(Math.Abs(font.FontMetrics.Ascender));
-            var descender = actualFontSize * this.MilliPointsToNominalResolution(Math.Abs(font.FontMetrics.Descender));
-            var leading = actualFontSize * this.MilliPointsToNominalResolution(Math.Abs(font.FontMetrics.LineGap));
+            var ascender = fontSize * this.MilliPointsToNominalResolution(Math.Abs(font.FontMetrics.Ascender));
+            var descender = fontSize * this.MilliPointsToNominalResolution(Math.Abs(font.FontMetrics.Descender));
+            var leading = fontSize * this.MilliPointsToNominalResolution(Math.Abs(font.FontMetrics.LineGap));
 
             return new Rendering.FontMetrics(ascender, descender, leading);
         }
@@ -461,13 +461,16 @@ namespace OxyPlot.ImageSharp
         /// <inheritdoc/>
         public double MeasureTextWidth(string text, string fontFamily, double fontSize, double fontWeight)
         {
-            text = text ?? string.Empty;
+            text ??= string.Empty;
 
             var font = this.GetFontOrThrow(fontFamily, fontSize, this.ToFontStyle(fontWeight));
-            var actualFontSize = this.NominalFontSizeToPoints(fontSize);
 
-            var result = TextMeasurer.Measure(text, new TextOptions(font)); // TODO: dpi
-            return this.ConvertBack(result.Width);
+            var result = TextMeasurer.Measure(text, new TextOptions(font)
+            {
+                Dpi = 96,
+                KerningMode = KerningMode.Auto,
+            });
+            return result.Width;
         }
 
         /// <inheritdoc/>
