@@ -73,10 +73,15 @@ namespace OxyPlot.Legends
         /// <summary>
         /// Override for legend hit test.
         /// </summary>
-        /// <param name="args">Arguments passe to the hit test</param>
+        /// <param name="args">Arguments passed to the hit test</param>
         /// <returns>The hit test results.</returns>
         protected override HitTestResult LegendHitTest(HitTestArguments args)
         {
+            if (!this.IsLegendVisible || !this.PlotModel.IsLegendVisible)
+            {
+                return null;
+            }
+
             ScreenPoint point = args.Point;
             if (this.IsPointInLegend(point))
             {
