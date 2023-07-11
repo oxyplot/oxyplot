@@ -193,7 +193,7 @@ namespace OxyPlot.ImageSharp.Tests
         [Test]
         public void TestBoundedMultilineAlignment()
         {
-            var plotModel = ExampleLibrary.RenderingCapabilities.DrawBoundedMultilineTextAlignmentRotationWith();
+            var plotModel = ExampleLibrary.RenderingCapabilities.DrawBoundedMultilineTextAlignmentRotation();
             var fileName = Path.Combine(this.outputDirectory, "Bounded-Multiline-Alignment.svg");
             SvgExporter.Export(plotModel, fileName, 700, 700);
 

@@ -293,7 +293,7 @@ namespace ExampleLibrary
         /// </summary>
         /// <returns>A plot model.</returns>
         [Example("DrawText - Bounded Multi-line Alignment/Rotation")]
-        public static PlotModel DrawBoundedMultilineTextAlignmentRotationWith()
+        public static PlotModel DrawBoundedMultilineTextAlignmentRotation()
         {
             var model = new PlotModel();
             model.Annotations.Add(new DelegateAnnotation(rc =>
