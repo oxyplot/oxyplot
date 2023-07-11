@@ -87,9 +87,9 @@ namespace OxyPlot.ImageSharp
         }
 
         /// <summary>
-        /// Gets or sets the <see cref="TextArranger"/> used by this instance.
+        /// Gets or sets the <see cref="ITextArranger"/> used by this instance.
         /// </summary>
-        public TextArranger TextArranger { get; set; }
+        public ITextArranger TextArranger { get; set; }
 
         /// <summary>
         /// Gets the DPI scaling factor. A value of 1 corresponds to 96 DPI (dots per inch).

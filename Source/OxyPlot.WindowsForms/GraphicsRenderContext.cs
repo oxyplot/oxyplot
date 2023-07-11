@@ -83,9 +83,9 @@ namespace OxyPlot.WindowsForms
         }
 
         /// <summary>
-        /// Gets or sets the <see cref="TextArranger"/> for this instance.
+        /// Gets or sets the <see cref="ITextArranger"/> for this instance.
         /// </summary>
-        public TextArranger TextArranger { get; set; }
+        public ITextArranger TextArranger { get; set; }
 
         /// <summary>
         /// Sets the graphics target.

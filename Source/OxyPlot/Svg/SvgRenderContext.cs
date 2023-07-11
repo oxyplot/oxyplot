@@ -55,10 +55,10 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets or sets the <see cref="TextArranger"/> used by this instance.
+        /// Gets or sets the <see cref="ITextArranger"/> used by this instance.
         /// </summary>
         /// <value>The text arranger.</value>
-        public TextArranger TextArranger { get; set; }
+        public ITextArranger TextArranger { get; set; }
 
         /// <summary>
         /// Closes the svg writer.

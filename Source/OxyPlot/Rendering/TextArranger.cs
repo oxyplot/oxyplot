@@ -15,7 +15,7 @@ namespace OxyPlot.Rendering
     /// <summary>
     /// Arranges text.
     /// </summary>
-    public class TextArranger
+    public class TextArranger : ITextArranger
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TextArranger" /> class.
