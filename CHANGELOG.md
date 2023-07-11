@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 - BarSeries.LabelAngle property (#1870)
 - Border properties on PathAnnotation to match functionality in TextAnnotation (#1900)
 - Expanded `IntervalBarSeries` and `TornadoBarSeries` to allow for varied label positions and angles (#2027)
+- VectorSeries (#107)
 
 ### Changed
 - Make consistent BaseValue and BaseLine across BarSeries, LinearBarSeries, and HistogramSeries
