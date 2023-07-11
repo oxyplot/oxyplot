@@ -63,6 +63,19 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("With labels (at an angle)")]
+        public static PlotModel WithLabelsAtAnAngle()
+        {
+            var model = WithLabels();
+
+            foreach (BarSeries b in model.Series)
+            {
+                b.LabelAngle = -45;
+            }
+
+            return model;
+        }
+
         [Example("With labels (Value Axis reversed)")]
         public static PlotModel WithLabelsXAxisReversed()
         {
