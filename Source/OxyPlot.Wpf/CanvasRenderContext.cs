@@ -121,7 +121,7 @@ namespace OxyPlot.Wpf
         public bool UseStreamGeometry { get; set; }
 
         /// <summary>
-        /// Gets or sets the default font familiy.
+        /// Gets or sets the default font family.
         /// </summary>
         public string DefaultFontFamily { get; set; }
 
@@ -383,6 +383,7 @@ namespace OxyPlot.Wpf
         ///<inheritdoc/>
         public override OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
         {
+            fontFamily ??= this.DefaultFontFamily;
             return this.TextArranger.MeasureText(text, fontFamily, fontSize, fontWeight);
         }
 
