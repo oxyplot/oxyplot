@@ -55,6 +55,18 @@ namespace ExampleLibrary
         [Example("MajorStep")]
         public static PlotModel MajorStepCategoryAxis()
         {
+            var plotModel1 = new PlotModel { Title = "Major Step = 4, IsTickCentered = false" };
+            var catAxis = new CategoryAxis { IsTickCentered = false, MajorStep = 4 };
+            catAxis.Labels.AddRange(new[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" });
+            plotModel1.Axes.Add(catAxis);
+            var linearAxis = new LinearAxis { Position = AxisPosition.Left };
+            plotModel1.Axes.Add(linearAxis);
+            return plotModel1;
+        }
+
+        [Example("MajorStep, TickCentered")]
+        public static PlotModel MajorStepCategoryTickCenteredAxis()
+        {
             var plotModel1 = new PlotModel { Title = "Major Step = 4, IsTickCentered = true" };
             var catAxis = new CategoryAxis { IsTickCentered = true, MajorStep = 4 };
             catAxis.Labels.AddRange(new[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" });
