@@ -41,19 +41,34 @@ namespace OxyPlot.Series
             this.LabelAngle = 0;
             this.StackGroup = string.Empty;
             this.StrokeThickness = 0;
+            this.BaseValue = 0;
+            this.BaseLine = double.NaN;
+            this.ActualBaseLine = double.NaN;
         }
+
+        /// <summary>
+        /// Gets or sets the base value. Default value is 0.
+        /// </summary>
+        /// <value>The base value.</value>
+        public double BaseValue { get; set; }
+
+        /// <summary>
+        /// Gets or sets the base value.
+        /// </summary>
+        /// <value>The base value.</value>
+        public double BaseLine { get; set; }
+
+        /// <summary>
+        /// Gets or sets the actual base line.
+        /// </summary>
+        /// <returns>The actual base line.</returns>
+        public double ActualBaseLine { get; protected set; }
 
         /// <summary>
         /// Gets the actual fill color.
         /// </summary>
         /// <value>The actual color.</value>
         public OxyColor ActualFillColor => this.FillColor.GetActualColor(this.defaultFillColor);
-        
-        /// <summary>
-        /// Gets or sets the base value.
-        /// </summary>
-        /// <value>The base value.</value>
-        public double BaseValue { get; set; }
 
         /// <summary>
         /// Gets or sets the color field.
@@ -171,6 +186,40 @@ namespace OxyPlot.Series
             if (this.FillColor.IsAutomatic())
             {
                 this.defaultFillColor = this.PlotModel.GetDefaultColor();
+            }
+        }
+
+        /// <summary>
+        /// Updates the axes to include the max and min of this series.
+        /// </summary>
+        protected internal override void UpdateAxisMaxMin()
+        {
+            base.UpdateAxisMaxMin();
+
+            this.ComputeActualBaseLine();
+            this.XAxis.Include(this.ActualBaseLine);
+        }
+
+        /// <summary>
+        /// Computes the actual base value..
+        /// </summary>
+        protected void ComputeActualBaseLine()
+        {
+            if (double.IsNaN(this.BaseLine))
+            {
+                if (this.XAxis.IsLogarithmic())
+                {
+                    var lowestPositiveValue = this.ActualItems == null ? 1 : this.ActualItems.Select(p => p.Value).Where(v => v > 0).MinOrDefault(1);
+                    this.ActualBaseLine = Math.Max(lowestPositiveValue / 10.0, this.BaseValue);
+                }
+                else
+                {
+                    this.ActualBaseLine = 0;
+                }
+            }
+            else
+            {
+                this.ActualBaseLine = this.BaseLine;
             }
         }
 
@@ -418,16 +467,15 @@ namespace OxyPlot.Series
                     this.Manager.SetCurrentBaseValue(stackIndex, categoryIndex, value < 0, topValue);
                 }
 
-                if (this.YAxis.IsLogarithmic() && !this.YAxis.IsValidValue(baseValue))
-                {
-                    baseValue = LogarithmicAxis.LowestValidRoundtripValue;
-                }
+                var clampBase = this.XAxis.IsLogarithmic() && !this.XAxis.IsValidValue(baseValue);
+                var p1 = this.Transform(clampBase ? this.XAxis.ClipMinimum : baseValue, categoryValue);
+                var p2 = this.Transform(topValue, categoryValue + actualBarWidth);
 
-                var rect = new OxyRect(this.Transform(baseValue, categoryValue), this.Transform(topValue, categoryValue + actualBarWidth));
+                var rectangle = new OxyRect(p1, p2);
 
-                this.ActualBarRectangles.Add(rect);
+                this.ActualBarRectangles.Add(rectangle);
 
-                this.RenderItem(rc, topValue, categoryValue, actualBarWidth, item, rect);
+                this.RenderItem(rc, topValue, categoryValue, actualBarWidth, item, rectangle);
 
                 if (this.LabelFormatString != null)
                 {
