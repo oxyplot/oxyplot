@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+﻿// ---------------------------------------------------------------------------------------------------------------------
 // <copyright file="VectorSeries.cs" company="OxyPlot">
 //   Copyright (c) 2020 OxyPlot contributors
 // </copyright>
@@ -220,13 +220,13 @@ namespace OxyPlot.Series
         /// Gets the list of Vectors.
         /// </summary>
         /// <value>A list of <see cref="VectorItem" />. This list is used if <see cref="ItemsSeries.ItemsSource" /> is not set.</value>
-        public List<VectorItem> Items { get; } = new List<VectorItem>();
+        public IList<VectorItem> Items { get; } = new List<VectorItem>();
 
         /// <summary>
         /// Gets the list of Vectors that should be rendered.
         /// </summary>
         /// <value>A list of <see cref="VectorItem" />.</value>
-        protected List<VectorItem> ActualItems => this.ItemsSource != null ? this.actualItems : this.Items;
+        protected IList<VectorItem> ActualItems => this.ItemsSource != null ? this.actualItems : this.Items;
 
         /// <summary>
         /// Renders the series on the specified rendering context.
@@ -326,7 +326,7 @@ namespace OxyPlot.Series
         /// </summary>
         /// <param name="rc">The rendering context.</param>
         /// <param name="items">The Items to render.</param>
-        protected void RenderVectors(IRenderContext rc, ICollection<VectorItem> items)
+        protected void RenderVectors(IRenderContext rc, IEnumerable<VectorItem> items)
         {
             int i = 0;
             foreach (var item in items)
