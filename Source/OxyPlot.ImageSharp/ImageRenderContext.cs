@@ -189,7 +189,6 @@ namespace OxyPlot.ImageSharp
             var boundsHeight = this.Convert(bounds.Height);
             var offsetHeight = new PointF(boundsHeight * -sin, boundsHeight * cos);
 
-            // TODO: replace with using GetFontMetrics()
             // determine the font metrics for this font size at 96 DPI
             var actualDescent = this.Convert(actualFontSize * this.MilliPointsToNominalResolution(font.FontMetrics.Descender));
             var offsetDescent = new PointF(actualDescent * -sin, actualDescent * cos);
@@ -220,7 +219,6 @@ namespace OxyPlot.ImageSharp
                 OxyPlot.HorizontalAlignment.Right => -1.0f,
                 _ => throw new ArgumentOutOfRangeException(nameof(horizontalAlignment)),
             };
-
 
             for (int li = 0; li < lines.Length; li++)
             {
@@ -450,10 +448,11 @@ namespace OxyPlot.ImageSharp
         public Rendering.FontMetrics GetFontMetrics(string fontFamily, double fontSize, double fontWeight)
         {
             var font = this.GetFontOrThrow(fontFamily, fontSize, this.ToFontStyle(fontWeight));
+            var actualFontSize = this.NominalFontSizeToPoints(fontSize);
 
-            var ascender = fontSize * this.MilliPointsToNominalResolution(Math.Abs(font.FontMetrics.Ascender));
-            var descender = fontSize * this.MilliPointsToNominalResolution(Math.Abs(font.FontMetrics.Descender));
-            var leading = fontSize * this.MilliPointsToNominalResolution(Math.Abs(font.FontMetrics.LineGap));
+            var ascender = actualFontSize * this.MilliPointsToNominalResolution(Math.Abs(font.FontMetrics.Ascender));
+            var descender = actualFontSize * this.MilliPointsToNominalResolution(Math.Abs(font.FontMetrics.Descender));
+            var leading = actualFontSize * this.MilliPointsToNominalResolution(Math.Abs(font.FontMetrics.LineGap));
 
             return new Rendering.FontMetrics(ascender, descender, leading);
         }
