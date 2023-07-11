@@ -1,10 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <LangVersion>8</LangVersion>
-    <TargetFrameworks>net462;netstandard1.3;netstandard2.0</TargetFrameworks>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Copyright>Copyright (c) 2020 OxyPlot contributors</Copyright>
-    <TargetFrameworks>net452;netstandard1.3;netstandard2.0</TargetFrameworks>
     <TargetFrameworks>net462;netstandard2.0</TargetFrameworks>
     <Authors>OxyPlot contributors</Authors>
     <Description>OxyPlot is a plotting library for .NET. This package provides rendering based on SkiaSharp.</Description>

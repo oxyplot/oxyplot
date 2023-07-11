@@ -1,6 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net462;netcoreapp3.1</TargetFrameworks>
     <TargetFrameworks>net462;net6.0-windows</TargetFrameworks>
     <UseWPF>true</UseWPF>
     <Description>OxyPlot is a plotting library for .NET. This package targets WPF applications and uses the SkiaSharp renderer.</Description>
