@@ -68,8 +68,7 @@ namespace OxyPlot.Series
         /// <returns><c>true</c> if the value of the <paramref name="other" /> parameter is the same as the value of this instance; otherwise, <c>false</c>.</returns>
         public bool Equals(VectorItem other)
         {
-            // TODO: this is copied from RectangleItem and looks wrong
-            return this.Origin.Equals(other.Origin) && this.Direction.Equals(other.Direction);
+            return this.Origin.Equals(other.Origin) && this.Direction.Equals(other.Direction) && this.Value.Equals(other.Value);
         }
 
         /// <summary>
@@ -87,14 +86,7 @@ namespace OxyPlot.Series
         /// <returns><c>true</c> if this point is defined; otherwise, <c>false</c>.</returns>
         public bool IsDefined()
         {
-            // check that x and y is not NaN (the code below is faster than double.IsNaN)
-#pragma warning disable 1718
-            // ReSharper disable EqualExpressionComparison
-            // ReSharper disable CompareOfFloatsByEqualityOperator
             return this.Origin.IsDefined() && this.Direction.IsDefined() && !double.IsNaN(this.Value);
-            // ReSharper restore CompareOfFloatsByEqualityOperator
-            // ReSharper restore EqualExpressionComparison
-#pragma warning restore 1718
         }
     }
 }
