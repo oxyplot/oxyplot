@@ -12,9 +12,11 @@ namespace OxyPlot.Wpf
     using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
+    using System.Windows.Controls.Primitives;
     using System.Windows.Input;
     using System.Windows.Media;
     using System.Windows.Threading;
+    using System.Windows.Documents;
     using CursorType = OxyPlot.CursorType;
 
     /// <summary>
@@ -372,10 +374,11 @@ namespace OxyPlot.Wpf
         /// </summary>
         protected void Render()
         {
-            if (this.plotPresenter == null || this.renderContext == null || !(this.isInVisualTree = this.IsInVisualTree()))
+            if (this.plotPresenter == null || this.renderContext == null)
             {
                 return;
             }
+            this.isInVisualTree = this.IsInVisualTree();
 
             this.RenderOverride();
         }
@@ -448,6 +451,19 @@ namespace OxyPlot.Wpf
             while ((dpObject = VisualTreeHelper.GetParent(dpObject)) != null)
             {
                 if (dpObject is Window)
+                {
+                    return true;
+                }
+
+                //Check if the parent is an AdornerDecorator like in an ElementHost
+                if (dpObject is AdornerDecorator)
+                {
+                    return true;
+                }
+
+                //Check if the logical parent is a popup. If so, we found the popuproot
+                var logicalRoot = LogicalTreeHelper.GetParent(dpObject);
+                if (logicalRoot is Popup)
                 {
                     return true;
                 }

@@ -1,0 +1,7 @@
+﻿<FileList>
+  <File Reference="OxyPlot.SkiaSharp.Wpf">
+    <ToolboxItems UIFramework="WPF" VSCategory="OxyPlot.SkiaSharp.Wpf" BlendCategory="OxyPlot.SkiaSharp.Wpf">
+      <Item Type="OxyPlot.SkiaSharp.Wpf.PlotView" />
+    </ToolboxItems>
+  </File>
+</FileList>

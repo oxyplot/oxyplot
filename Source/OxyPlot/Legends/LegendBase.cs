@@ -347,6 +347,19 @@ namespace OxyPlot.Legends
         public LegendPosition LegendPosition { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the legend should use the full extend of the plot when <see cref="LegendPlacement"/> equals <c>LegendPlacement.Outside</c>.
+        /// </summary>
+        /// <value>Whether the legends is allowed to use the full extent of the plot.</value>
+        public bool AllowUseFullExtent { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the legend should show invisible series. The default is <c>true</c>.
+        /// </summary>
+        /// <value>Whether the legends should show invisible series.</value>
+        /// <remarks>Invisible series will appear in the listening, but will be grayed out.</remarks>
+        public bool ShowInvisibleSeries { get; set; }
+
+        /// <summary>
         /// Makes the LegendOrientation property safe.
         /// </summary>
         /// <remarks>If Legend is positioned left or right, force it to vertical orientation</remarks>

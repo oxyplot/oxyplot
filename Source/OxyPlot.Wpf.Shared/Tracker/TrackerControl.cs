@@ -41,6 +41,12 @@ namespace OxyPlot.Wpf
                 new PropertyMetadata(Visibility.Visible));
 
         /// <summary>
+        /// Identifies the <see cref="LineThickness"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty LineThicknessProperty = DependencyProperty.Register(
+            nameof(LineThickness), typeof(double), typeof(TrackerControl), new PropertyMetadata(1.0));
+
+        /// <summary>
         /// Identifies the <see cref="LineStroke"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LineStrokeProperty = DependencyProperty.Register(
@@ -192,6 +198,15 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
+        /// Gets or sets LineThickness.
+        /// </summary>
+        public double LineThickness
+        {
+            get => (double)this.GetValue(LineThicknessProperty);
+            set => this.SetValue(LineThicknessProperty, value);
+        }
+
+        /// <summary>
         /// Gets or sets LineStroke.
         /// </summary>
         public Brush LineStroke
@@ -318,7 +333,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         /// <param name="dependencyPropertyChangedEventArgs">The dependency property changed event args.</param>
         // ReSharper disable once UnusedParameter.Local
-        private void OnPositionChanged(DependencyPropertyChangedEventArgs _)
+        private void OnPositionChanged(DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
             this.UpdatePositionAndBorder();
         }

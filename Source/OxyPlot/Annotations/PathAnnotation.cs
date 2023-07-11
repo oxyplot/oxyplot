@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace OxyPlot.Annotations
 {
     using System;
@@ -21,7 +23,7 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// The points of the line, transformed to screen coordinates.
         /// </summary>
-        private IList<ScreenPoint> screenPoints;
+        private IList<ScreenPoint>? screenPoints;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PathAnnotation" /> class.
@@ -42,6 +44,7 @@ namespace OxyPlot.Annotations
             this.TextMargin = 12;
             this.TextHorizontalAlignment = HorizontalAlignment.Right;
             this.TextVerticalAlignment = VerticalAlignment.Top;
+            this.MinimumSegmentLength = 2;
         }
 
         /// <summary>
@@ -115,6 +118,14 @@ namespace OxyPlot.Annotations
         public double TextLinePosition { get; set; }
 
         /// <summary>
+        /// Gets or sets the minimum length of the segment.
+        /// Increasing this number will increase performance,
+        /// but make curves less accurate. The default is <c>2</c>.
+        /// </summary>
+        /// <value>The minimum length of the segment.</value>
+        public double MinimumSegmentLength { get; set; }
+
+        /// <summary>
         /// Gets or sets the actual minimum value on the x axis.
         /// </summary>
         /// <value>The actual minimum value on the x axis.</value>
@@ -141,13 +152,25 @@ namespace OxyPlot.Annotations
         /// <inheritdoc/>
         public override void Render(IRenderContext rc)
         {
+            if (this.XAxis == null)
+            {
+                throw new InvalidOperationException($"{nameof(this.XAxis)} must be non-null before rendering.");
+            }
+            if (this.YAxis == null)
+            {
+                throw new InvalidOperationException($"{nameof(this.YAxis)} must be non-null before rendering.");
+            }
+
             base.Render(rc);
 
             this.CalculateActualMinimumsMaximums();
 
-            this.screenPoints = this.GetScreenPoints();
+            if (this.ActualMinimumX > this.ActualMaximumX || this.ActualMinimumY > this.ActualMaximumY)
+            {
+                return;
+            }
 
-            const double MinimumSegmentLength = 4;
+            this.screenPoints = this.GetScreenPoints();
 
             var clippedPoints = new List<ScreenPoint>();
             var dashArray = this.LineStyle.GetDashArray();
@@ -156,7 +179,7 @@ namespace OxyPlot.Annotations
             {
                 rc.DrawReducedLine(
                    this.screenPoints,
-                   MinimumSegmentLength * MinimumSegmentLength,
+                   this.MinimumSegmentLength * this.MinimumSegmentLength,
                    this.GetSelectableColor(this.Color),
                    this.StrokeThickness,
                    this.EdgeRenderingMode,
@@ -170,23 +193,27 @@ namespace OxyPlot.Annotations
 
             this.GetActualTextAlignment(out var ha, out var va);
 
+            var effectiveTextLinePosition = this.IsTransposed()
+                ? (this.YAxis.IsReversed ? 1 - this.TextLinePosition : this.TextLinePosition)
+                : (this.XAxis.IsReversed ? 1 - this.TextLinePosition : this.TextLinePosition);
+
             if (ha == HorizontalAlignment.Center)
             {
                 margin = 0;
             }
             else
             {
-                margin *= this.TextLinePosition < 0.5 ? 1 : -1;
+                margin *= effectiveTextLinePosition < 0.5 ? 1 : -1;
             }
 
-            if (GetPointAtRelativeDistance(clippedPoints, this.TextLinePosition, margin, out var position, out var angle))
+            if (GetPointAtRelativeDistance(clippedPoints, effectiveTextLinePosition, margin, out var position, out var angle))
             {
                 if (angle < -90)
                 {
                     angle += 180;
                 }
 
-                if (angle > 90)
+                if (angle >= 90)
                 {
                     angle -= 180;
                 }
@@ -217,7 +244,8 @@ namespace OxyPlot.Annotations
 
                 position += new ScreenVector(f * this.TextPadding * Math.Cos(angleInRadians), f * this.TextPadding * Math.Sin(angleInRadians));
 
-                if (!string.IsNullOrEmpty(this.Text))
+                if (this.Text != null &&
+                    !string.IsNullOrEmpty(this.Text))
                 {
                     var textPosition = this.GetActualTextPosition(() => position);
 
@@ -247,7 +275,7 @@ namespace OxyPlot.Annotations
         /// <returns>
         /// The result of the hit test.
         /// </returns>
-        protected override HitTestResult HitTestOverride(HitTestArguments args)
+        protected override HitTestResult? HitTestOverride(HitTestArguments args)
         {
             if (this.screenPoints == null)
             {
@@ -275,6 +303,15 @@ namespace OxyPlot.Annotations
         /// </summary>
         protected virtual void CalculateActualMinimumsMaximums()
         {
+            if (this.XAxis == null)
+            {
+                throw new InvalidOperationException($"{nameof(this.XAxis)} is null.");
+            }
+            if (this.YAxis == null)
+            {
+                throw new InvalidOperationException($"{nameof(this.YAxis)} is null.");
+            }
+
             this.ActualMinimumX = Math.Max(this.MinimumX, this.XAxis.ClipMinimum);
             this.ActualMaximumX = Math.Min(this.MaximumX, this.XAxis.ClipMaximum);
             this.ActualMinimumY = Math.Max(this.MinimumY, this.YAxis.ClipMinimum);

@@ -22,12 +22,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 ------------------------------------------
 
-The modifications are a workaround for https://github.com/mono/SkiaSharp/issues/1236.
-Once the issue is fixed on their side, we should remove this file and replace usages by SKElement from the SkiaSharp.Views.WPF nuget package.
+Mmodifications include
+ - A workaround for https://github.com/mono/SkiaSharp/issues/1236. Once the issue is fixed on their side, we should remove this file and replace usages by SKElement from the SkiaSharp.Views.WPF nuget package.
+ - Simple RenderTransform detection to allow for non-unity scaling per https://github.com/oxyplot/oxyplot/issues/1785.
 
 */
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 namespace OxyPlot.SkiaSharp.Wpf
 {
@@ -39,27 +38,53 @@ namespace OxyPlot.SkiaSharp.Wpf
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
 
+    /// <summary>
+    /// Provides a surface on which to render with the SkiaSharp graphics APIs.
+    /// </summary>
     public class OxySKElement : FrameworkElement
     {
+        /// <summary>
+        /// A value indicating whether the element is being presented in design mode. 
+        /// </summary>
         private readonly bool designMode;
+
+        /// <summary>
+        /// The bitmap to which to render.
+        /// </summary>
         private WriteableBitmap bitmap;
+
+        /// <summary>
+        /// A value indicating whether to ignore pixel scaling when determining the render buffer bitmap dimensions.
+        /// </summary>
         private bool ignorePixelScaling;
 
+        /// <summary>
+        /// Initialises an instance of the <see cref="OxySKElement"/> class.
+        /// </summary>
         public OxySKElement()
         {
             this.designMode = DesignerProperties.GetIsInDesignMode(this);
             RenderOptions.SetBitmapScalingMode(this, BitmapScalingMode.NearestNeighbor);
         }
 
+        /// <summary>
+        /// Invoked when the surface is painting.
+        /// </summary>
         [Category("Appearance")]
         public event EventHandler<SKPaintSurfaceEventArgs> PaintSurface;
 
+        /// <summary>
+        /// Gets the size of the render buffer bitmap, or <c>SKSize.Empty</c> if there is no current render buffer bitmap.
+        /// </summary>
         [Bindable(false)]
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public SKSize CanvasSize => this.bitmap == null ? SKSize.Empty : new SKSize(this.bitmap.PixelWidth, this.bitmap.PixelHeight);
 
+        /// <summary>
+        /// Gets or sets a value indicating whether to ignore pixel scaling when determining the render buffer bitmap dimensions.
+        /// </summary>
         public bool IgnorePixelScaling
         {
             get { return this.ignorePixelScaling; }
@@ -70,12 +95,17 @@ namespace OxyPlot.SkiaSharp.Wpf
             }
         }
 
+        /// <summary>
+        /// Raises the <see cref="PaintSurface"/> event with the given <see cref="SKPaintSurfaceEventArgs"/>.
+        /// </summary>
+        /// <param name="e">The skia surface and associated information ready for drawing.</param>
         protected virtual void OnPaintSurface(SKPaintSurfaceEventArgs e)
         {
             // invoke the event
             PaintSurface?.Invoke(this, e);
         }
 
+        /// <inheritdoc/>
         protected override void OnRender(DrawingContext drawingContext)
         {
             if (this.designMode)
@@ -89,17 +119,23 @@ namespace OxyPlot.SkiaSharp.Wpf
             }
 
             var size = this.CreateSize(out var scaleX, out var scaleY);
+            var renderScale = this.GetRenderScale();
+
+            // scale bitmap according to the renderScale
+            var bitmapPixelWidth = (int)(size.Width * renderScale);
+            var bitmapPixelHeight = (int)(size.Height * renderScale);
+
             if (size.Width <= 0 || size.Height <= 0)
             {
                 return;
             }
 
-            var info = new SKImageInfo(size.Width, size.Height, SKImageInfo.PlatformColorType, SKAlphaType.Premul);
+            var info = new SKImageInfo(bitmapPixelWidth, bitmapPixelHeight, SKImageInfo.PlatformColorType, SKAlphaType.Premul);
 
             // reset the bitmap if the size has changed
             if (this.bitmap == null || info.Width != this.bitmap.PixelWidth || info.Height != this.bitmap.PixelHeight)
             {
-                this.bitmap = new WriteableBitmap(size.Width, size.Height, 96 * scaleX, 96 * scaleY, PixelFormats.Pbgra32, null);
+                this.bitmap = new WriteableBitmap(bitmapPixelWidth, bitmapPixelHeight, 96 * scaleX, 96 * scaleY, PixelFormats.Pbgra32, null);
             }
 
             // draw on the bitmap
@@ -110,19 +146,22 @@ namespace OxyPlot.SkiaSharp.Wpf
             }
 
             // draw the bitmap to the screen
-            this.bitmap.AddDirtyRect(new Int32Rect(0, 0, size.Width, size.Height));
+            this.bitmap.AddDirtyRect(new Int32Rect(0, 0, bitmapPixelWidth, bitmapPixelHeight));
             this.bitmap.Unlock();
 
             // get window to screen offset
-            var visualOffset = this.TransformToAncestor(Window.GetWindow(this)).Transform(default);
+            var ancestor = GetAncestorVisualFromVisualTree(this);
+            var visualOffset = ancestor != null ? this.TransformToAncestor(ancestor).Transform(default) : default;
 
             // calculate offset to physical pixels
             var offsetX = ((visualOffset.X * scaleX) % 1) / scaleX;
             var offsetY = ((visualOffset.Y * scaleY) % 1) / scaleY;
 
-            drawingContext.DrawImage(this.bitmap, new Rect(-offsetX, -offsetY, this.bitmap.Width, this.bitmap.Height));
+            // draw, scaling back down from the (rounded) bitmap dimensions
+            drawingContext.DrawImage(this.bitmap, new Rect(-offsetX, -offsetY, this.bitmap.Width / renderScale, this.bitmap.Height / renderScale));
         }
 
+        /// <inheritdoc/>
         protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
         {
             base.OnRenderSizeChanged(sizeInfo);
@@ -130,6 +169,12 @@ namespace OxyPlot.SkiaSharp.Wpf
             this.InvalidateVisual();
         }
 
+        /// <summary>
+        /// Determines the size of the render buffer bitmap, and the scale at which to draw.
+        /// </summary>
+        /// <param name="scaleX">The horizontal scale.</param>
+        /// <param name="scaleY">The vertical scale.</param>
+        /// <returns>The size in pixels of the bitmap.</returns>
         private SKSizeI CreateSize(out double scaleX, out double scaleY)
         {
             scaleX = 1.0;
@@ -148,15 +193,55 @@ namespace OxyPlot.SkiaSharp.Wpf
                 return new SKSizeI((int)w, (int)h);
             }
 
-            var m = PresentationSource.FromVisual(this).CompositionTarget.TransformToDevice;
-            scaleX = m.M11;
-            scaleY = m.M22;
+            var compositionTarget = PresentationSource.FromVisual(this)?.CompositionTarget;
+            if (compositionTarget != null)
+            {
+                var m = compositionTarget.TransformToDevice;
+                scaleX = m.M11;
+                scaleY = m.M22;
+            }
             return new SKSizeI((int)(w * scaleX), (int)(h * scaleY));
 
             static bool IsPositive(double value)
             {
                 return !double.IsNaN(value) && !double.IsInfinity(value) && value > 0;
             }
+        }
+
+        /// <summary>
+        /// Returns a reference to the visual object that hosts the dependency object in the visual tree.
+        /// </summary>
+        /// <returns> The host visual from the visual tree.</returns>
+        private Visual GetAncestorVisualFromVisualTree(DependencyObject startElement)
+        {
+            DependencyObject child = startElement;
+            DependencyObject parent = VisualTreeHelper.GetParent(child);
+            while (parent != null)
+            {
+                child = parent;
+                parent = VisualTreeHelper.GetParent(child);
+            }
+            return child is Visual visualChild ? visualChild : Window.GetWindow(this);
+        }
+
+        /// <summary>
+        /// Determines the scaling transform applied to the control.
+        /// </summary>
+        /// <returns>The scale factor.</returns>
+        public virtual double GetRenderScale()
+        {
+            var transform = VisualTreeHelper.GetTransform(this)?.Value ?? Matrix.Identity;
+            DependencyObject control = VisualTreeHelper.GetParent(this);
+            while (control != null)
+            {
+                if (control is Visual v && VisualTreeHelper.GetTransform(v) is Transform vt)
+                {
+                    transform *= vt.Value;
+                }
+                control = VisualTreeHelper.GetParent(control);
+            }
+
+            return Math.Max(transform.M11, transform.M22);
         }
     }
 }

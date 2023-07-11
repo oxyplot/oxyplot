@@ -12,7 +12,7 @@ namespace OxyPlot.Wpf
     using System.Windows.Input;
 
     /// <summary>
-    /// Provides a standard set of commands for the <see cref="PlotBase" /> control.
+    /// Provides a standard set of commands for the <see cref="PlotViewBase" /> control.
     /// </summary>
     public static class PlotCommands
     {

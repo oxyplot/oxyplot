@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace OxyPlot.Annotations
 {
     using System;
@@ -21,7 +23,7 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// The polygon points transformed to screen coordinates.
         /// </summary>
-        private IList<ScreenPoint> screenPoints;
+        private IList<ScreenPoint>? screenPoints;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PolygonAnnotation" /> class.
@@ -30,6 +32,8 @@ namespace OxyPlot.Annotations
         {
             this.LineStyle = LineStyle.Solid;
             this.LineJoin = LineJoin.Miter;
+            this.MinimumSegmentLength = 2;
+
             this.Points = new List<DataPoint>();
         }
 
@@ -44,6 +48,14 @@ namespace OxyPlot.Annotations
         /// </summary>
         /// <value>The line style.</value>
         public LineStyle LineStyle { get; set; }
+
+        /// <summary>
+        /// Gets or sets the minimum length of the segment.
+        /// Increasing this number will increase performance,
+        /// but make the polygon less accurate. The default is <c>2</c>.
+        /// </summary>
+        /// <value>The minimum length of the segment.</value>
+        public double MinimumSegmentLength { get; set; }
 
         /// <summary>
         /// Gets the points.
@@ -67,11 +79,9 @@ namespace OxyPlot.Annotations
                 return;
             }
 
-            const double MinimumSegmentLength = 4;
-
             rc.DrawReducedPolygon(
                 this.screenPoints,
-                MinimumSegmentLength * MinimumSegmentLength,
+                this.MinimumSegmentLength * this.MinimumSegmentLength,
                 this.GetSelectableFillColor(this.Fill),
                 this.GetSelectableColor(this.Stroke),
                 this.StrokeThickness,
@@ -79,7 +89,8 @@ namespace OxyPlot.Annotations
                 this.LineStyle,
                 this.LineJoin);
 
-            if (!string.IsNullOrEmpty(this.Text))
+            if (this.Text != null &&
+                !string.IsNullOrEmpty(this.Text))
             {
                 this.GetActualTextAlignment(out var ha, out var va);
                 var textPosition = this.GetActualTextPosition(() => ScreenPointHelper.GetCentroid(this.screenPoints));
@@ -104,7 +115,7 @@ namespace OxyPlot.Annotations
         /// <returns>
         /// The result of the hit test.
         /// </returns>
-        protected override HitTestResult HitTestOverride(HitTestArguments args)
+        protected override HitTestResult? HitTestOverride(HitTestArguments args)
         {
             if (this.screenPoints == null)
             {

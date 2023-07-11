@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net461</TargetFramework>
+        <TargetFramework>net462</TargetFramework>
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
         <Description>OxyPlot unit tests</Description>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -14,8 +14,8 @@
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="NSubstitute" Version="4.2.1" />
-        <PackageReference Include="NUnit" Version="3.12.0" />
-        <PackageReference Include="NUnit3TestAdapter" Version="3.15.1" />
+        <PackageReference Include="NUnit" Version="3.13.3" />
+        <PackageReference Include="NUnit3TestAdapter" Version="4.3.1" />
     </ItemGroup>
     <ItemGroup>
         <Content Include="Schemas\svg.xsd">

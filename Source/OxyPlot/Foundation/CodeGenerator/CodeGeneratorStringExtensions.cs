@@ -7,10 +7,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace OxyPlot
 {
     using System;
     using System.Globalization;
+    using System.Text;
 
     /// <summary>
     /// Provides extension methods for code generation.
@@ -24,11 +27,26 @@ namespace OxyPlot
         /// <returns>C# code.</returns>
         public static string ToCode(this string value)
         {
-            value = value.Replace("\"", "\\\"");
-            value = value.Replace("\r\n", "\\n");
-            value = value.Replace("\n", "\\n");
-            value = value.Replace("\t", "\\t");
-            return "\"" + value + "\"";
+            StringBuilder sb = new StringBuilder(value.Length + 2);
+            sb.Append("\"");
+            foreach (var c in value.Replace("\r\n", "\n"))
+            {
+                switch (c)
+                {
+                    case '\"':
+                        sb.Append("\\\""); break;
+                    case '\\':
+                        sb.Append(@"\\"); break;
+                    case '\n':
+                        sb.Append(@"\n"); break;
+                    case '\t':
+                        sb.Append(@"\t"); break;
+                    default:
+                        sb.Append(c); break;
+                }
+            }
+            sb.Append("\"");
+            return sb.ToString();
         }
 
         /// <summary>
@@ -101,7 +119,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="value">The instance.</param>
         /// <returns>C# code.</returns>
-        public static string ToCode(this object value)
+        public static string? ToCode(this object? value)
         {
             if (value == null)
             {

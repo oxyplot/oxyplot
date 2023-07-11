@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace OxyPlot
 {
     using System;
@@ -29,7 +31,7 @@ namespace OxyPlot
         /// <summary>
         /// The default values
         /// </summary>
-        private readonly List<object> defaultValues;
+        private readonly List<object?> defaultValues;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ListBuilder{T}" /> class.
@@ -37,7 +39,7 @@ namespace OxyPlot
         public ListBuilder()
         {
             this.properties = new List<string>();
-            this.defaultValues = new List<object>();
+            this.defaultValues = new List<object?>();
         }
 
         /// <summary>
@@ -58,7 +60,7 @@ namespace OxyPlot
         /// <param name="target">The target.</param>
         /// <param name="source">The source.</param>
         /// <param name="instanceCreator">The instance creator.</param>
-        public void FillT(IList<T> target, IEnumerable source, Func<IList<object>, T> instanceCreator)
+        public void FillT(IList<T> target, IEnumerable source, Func<IList<object?>, T> instanceCreator)
         {
             this.Fill((IList)target, source, args => instanceCreator(args));
         }
@@ -69,10 +71,10 @@ namespace OxyPlot
         /// <param name="target">The target.</param>
         /// <param name="source">The source list.</param>
         /// <param name="instanceCreator">The instance creator.</param>
-        public void Fill(IList target, IEnumerable source, Func<IList<object>, object> instanceCreator)
+        public void Fill(IList target, IEnumerable source, Func<IList<object?>, object?> instanceCreator)
         {
-            ReflectionPath[] pi = null;
-            Type t = null;
+            ReflectionPath?[]? pi = null;
+            Type? t = null;
             foreach (var sourceItem in source)
             {
                 if (pi == null || sourceItem.GetType() != t)
@@ -81,11 +83,12 @@ namespace OxyPlot
                     pi = this.properties.Select(p => p != null ? new ReflectionPath(p) : null).ToArray();
                 }
 
-                var args = new List<object>(pi.Length);
+                var args = new List<object?>(pi.Length);
                 for (int j = 0; j < pi.Length; j++)
                 {
-                    object value;
-                    args.Add(pi[j] != null && pi[j].TryGetValue(sourceItem, out value) ? value : this.defaultValues[j]);
+                    object? value;
+                    var path = pi[j];
+                    args.Add(path != null && path.TryGetValue(sourceItem, out value) ? value : this.defaultValues[j]);
                 }
 
                 var item = instanceCreator(args);

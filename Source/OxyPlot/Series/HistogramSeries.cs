@@ -50,7 +50,30 @@ namespace OxyPlot.Series
             this.LabelFormatString = null;
             this.LabelPlacement = LabelPlacement.Outside;
             this.ColorMapping = this.GetDefaultColor;
+            this.NegativeFillColor = OxyColors.Undefined;
+            this.NegativeStrokeColor = OxyColors.Undefined;
+            this.BaseValue = 0;
+            this.BaseLine = double.NaN;
+            this.ActualBaseLine = double.NaN;
         }
+
+        /// <summary>
+        /// Gets or sets the base value. Default value is 0.
+        /// </summary>
+        /// <value>The base value.</value>
+        public double BaseValue { get; set; }
+
+        /// <summary>
+        /// Gets or sets the base value.
+        /// </summary>
+        /// <value>The base value.</value>
+        public double BaseLine { get; set; }
+
+        /// <summary>
+        /// Gets or sets the actual base line.
+        /// </summary>
+        /// <returns>The actual base line.</returns>
+        public double ActualBaseLine{ get; protected set; }
 
         /// <summary>
         /// Gets or sets the color of the interior of the bars.
@@ -69,6 +92,18 @@ namespace OxyPlot.Series
         /// </summary>
         /// <value>The color of the stroke.</value>
         public OxyColor StrokeColor { get; set; }
+
+        /// <summary>
+        /// Gets or sets the color of the interior of the bars when the value is negative.
+        /// </summary>
+        /// <value>The color.</value>
+        public OxyColor NegativeFillColor { get; set; }
+
+        /// <summary>
+        /// Gets or sets the color of the border around the bars when the value is negative.
+        /// </summary>
+        /// <value>The color of the stroke.</value>
+        public OxyColor NegativeStrokeColor { get; set; }
 
         /// <summary>
         /// Gets or sets the thickness of the bar border strokes.
@@ -236,6 +271,41 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
+        /// Updates the axes to include the max and min of this series.
+        /// </summary>
+        protected internal override void UpdateAxisMaxMin()
+        {
+            base.UpdateAxisMaxMin();
+
+            this.ComputeActualBaseLine();
+            this.YAxis.Include(this.ActualBaseLine);
+        }
+
+        /// <summary>
+        /// Computes the base line.
+        /// </summary>
+        /// <returns>The baseline for the plot.</returns>
+        protected void ComputeActualBaseLine()
+        {
+            if (double.IsNaN(this.BaseLine))
+            {
+                if (this.YAxis.IsLogarithmic())
+                {
+                    var lowestPositiveValue = this.ActualItems == null ? 1 : this.ActualItems.Select(p => p.Value).Where(v => v > 0).MinOrDefault(1);
+                    this.ActualBaseLine = Math.Max(lowestPositiveValue / 10.0, this.BaseValue);
+                }
+                else
+                {
+                    this.ActualBaseLine = 0;
+                }
+            }
+            else
+            {
+                this.ActualBaseLine = this.BaseLine;
+            }
+        }
+
+        /// <summary>
         /// Updates the maximum and minimum values of the series for the x and y dimensions only.
         /// </summary>
         protected internal void UpdateMaxMinXY()
@@ -244,8 +314,16 @@ namespace OxyPlot.Series
             {
                 this.MinX = Math.Min(this.ActualItems.Min(r => r.RangeStart), this.ActualItems.Min(r => r.RangeEnd));
                 this.MaxX = Math.Max(this.ActualItems.Max(r => r.RangeStart), this.ActualItems.Max(r => r.RangeEnd));
-                this.MinY = Math.Min(this.ActualItems.Min(r => 0), this.ActualItems.Min(r => r.Height));
-                this.MaxY = Math.Max(this.ActualItems.Max(r => 0), this.ActualItems.Max(r => r.Height));
+                if (this.YAxis.IsLogarithmic())
+                {
+                    this.MinY = Math.Max(this.ActualItems.Min(r => r.Height), double.Epsilon);
+                    this.MaxY = Math.Max(this.ActualItems.Max(r => r.Height), double.Epsilon);
+                }
+                else
+                {
+                    this.MinY = Math.Min(this.ActualItems.Min(r => 0), this.ActualItems.Min(r => r.Height));
+                    this.MaxY = Math.Max(this.ActualItems.Max(r => 0), this.ActualItems.Max(r => r.Height));
+                }
             }
         }
 
@@ -293,26 +371,34 @@ namespace OxyPlot.Series
         /// <param name="items">The Items to render.</param>
         protected void RenderBins(IRenderContext rc, ICollection<HistogramItem> items)
         {
+            bool clampBase = this.YAxis.IsLogarithmic() && !this.YAxis.IsValidValue(this.BaseValue);
+
             foreach (var item in items)
             {
+                if (this.YAxis.IsLogarithmic() && !this.YAxis.IsValidValue(item.Height))
+                {
+                    continue;
+                }
+
                 var actualFillColor = this.GetItemFillColor(item);
+                var actualStrokeColor = this.GetItemStrokeColor(item);
 
                 // transform the data points to screen points
-                var p1 = this.Transform(item.RangeStart, 0);
+                var p1 = this.Transform(item.RangeStart, clampBase ? this.YAxis.ClipMinimum : this.BaseValue);
                 var p2 = this.Transform(item.RangeEnd, item.Height);
 
-                var rectrect = new OxyRect(p1, p2);
+                var rectangle = new OxyRect(p1, p2);
 
                 rc.DrawRectangle(
-                    rectrect, 
-                    actualFillColor, 
-                    this.StrokeColor, 
+                    rectangle, 
+                    actualFillColor,
+                    actualStrokeColor, 
                     this.StrokeThickness, 
                     this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness));
 
                 if (this.LabelFormatString != null)
                 {
-                    this.RenderLabel(rc, rectrect, item);
+                    this.RenderLabel(rc, rectangle, item);
                 }
             }
         }
@@ -325,6 +411,23 @@ namespace OxyPlot.Series
         protected OxyColor GetItemFillColor(HistogramItem item)
         {
             return item.Color.IsAutomatic() ? this.ColorMapping(item) : item.Color;
+        }
+
+        /// <summary>
+        /// Gets the stroke color of the given <see cref="HistogramItem"/>.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <returns>The stroke color of the item.</returns>
+        protected OxyColor GetItemStrokeColor(HistogramItem item)
+        {
+            if (this.NegativeStrokeColor.IsUndefined() || item.Height >= this.BaseValue)
+            {
+                return this.StrokeColor;
+            }
+            else
+            {
+                return this.NegativeStrokeColor;
+            }
         }
 
         /// <summary>
@@ -420,7 +523,14 @@ namespace OxyPlot.Series
         /// <returns>The default color.</returns>
         private OxyColor GetDefaultColor(HistogramItem item)
         {
-            return this.ActualFillColor;
+            if (this.NegativeFillColor.IsUndefined() || item.Value >= this.BaseValue)
+            {
+                return this.ActualFillColor;
+            }
+            else
+            {
+                return this.NegativeFillColor;
+            }
         }
 
         /// <summary>

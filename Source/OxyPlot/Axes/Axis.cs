@@ -72,6 +72,8 @@ namespace OxyPlot.Axes
             this.MajorStep = double.NaN;
             this.MinimumMinorStep = 0;
             this.MinimumMajorStep = 0;
+            this.MinimumMajorIntervalCount = 2;
+            this.MaximumMajorIntervalCount = double.MaxValue;
 
             this.MinimumPadding = 0.01;
             this.MaximumPadding = 0.01;
@@ -161,6 +163,20 @@ namespace OxyPlot.Axes
         /// Gets or sets the actual major step.
         /// </summary>
         public double ActualMajorStep { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets the minimum number of major intervals on the axis.
+        /// </summary>
+        /// <remarks>Non-integer values are accepted.</remarks>
+        public double MinimumMajorIntervalCount { get; set; }
+
+        /// <summary>
+        /// Gets or sets the minimum number of major intervals on the axis.
+        /// </summary>
+        /// <remarks>Non-integer values are accepted.
+        /// The maximum will be bounded acording to the <see cref="IntervalLength" />.
+        /// The <see cref="MinimumMajorIntervalCount" /> takes precedence over the <see cref="MaximumMajorIntervalCount" /> when determining the major step.</remarks>
+        public double MaximumMajorIntervalCount { get; set; }
 
         /// <summary>
         /// Gets or sets the actual maximum value of the axis.
@@ -1163,7 +1179,8 @@ namespace OxyPlot.Axes
             double sx0 = this.Transform(this.ActualMinimum);
 
             double sgn = Math.Sign(this.scale);
-            double mid = (this.ActualMaximum + this.ActualMinimum) / 2;
+            double mid = (this.PreTransform(this.ActualMaximum) + this.PreTransform(this.ActualMinimum)) / 2;
+
 
             double dx = (this.offset - mid) * this.scale;
             var newOffset = (dx / (sgn * newScale)) + mid;
@@ -1375,7 +1392,7 @@ namespace OxyPlot.Axes
 
             this.ActualMajorStep = !double.IsNaN(this.MajorStep)
                                        ? this.MajorStep
-                                       : this.CalculateActualInterval(length, labelSize);
+                                       : this.CalculateActualInterval(length, labelSize, this.MinimumMajorIntervalCount, this.MaximumMajorIntervalCount);
 
             this.ActualMinorStep = !double.IsNaN(this.MinorStep)
                                        ? this.MinorStep
@@ -1448,7 +1465,7 @@ namespace OxyPlot.Axes
                 a1 -= this.MaximumDataMargin * marginSign;
             }
 
-            if (this.ActualMaximum - this.ActualMinimum < double.Epsilon)
+            if (this.ActualMaximum - this.ActualMinimum <= 0)
             {
                 this.ActualMaximum = this.ActualMinimum + 1;
             }
@@ -1570,6 +1587,20 @@ namespace OxyPlot.Axes
         /// </summary>
         protected virtual void CoerceActualMaxMin()
         {
+            // Check consistency of properties
+            if (this.AbsoluteMaximum <= this.AbsoluteMinimum)
+            {
+                throw new InvalidOperationException("AbsoluteMaximum must be larger than AbsoluteMinimum.");
+            }
+            if (this.AbsoluteMaximum - this.AbsoluteMinimum < this.MinimumRange)
+            {
+                throw new InvalidOperationException("MinimumRange must not be larger than AbsoluteMaximum-AbsoluteMinimum.");
+            }
+            if (this.MaximumRange < this.MinimumRange)
+            {
+                throw new InvalidOperationException("MinimumRange must not be larger than MaximumRange.");
+            }
+
             // Coerce actual minimum
             if (double.IsNaN(this.ActualMinimum) || double.IsInfinity(this.ActualMinimum))
             {
@@ -1582,9 +1613,21 @@ namespace OxyPlot.Axes
                 this.ActualMaximum = 100;
             }
 
-            if (this.AbsoluteMaximum - this.AbsoluteMinimum < this.MinimumRange)
+            if (this.AbsoluteMinimum > double.MinValue && this.AbsoluteMinimum < double.MaxValue)
             {
-                throw new InvalidOperationException("MinimumRange should be larger than AbsoluteMaximum-AbsoluteMinimum.");
+                this.ActualMinimum = Math.Max(this.ActualMinimum, this.AbsoluteMinimum);
+                if (this.MaximumRange < double.MaxValue)
+                {
+                    this.ActualMaximum = Math.Min(this.ActualMaximum, this.AbsoluteMinimum + this.MaximumRange);
+                }
+            }
+            if (this.AbsoluteMaximum > double.MinValue && this.AbsoluteMaximum < double.MaxValue)
+            {
+                this.ActualMaximum = Math.Min(this.ActualMaximum, this.AbsoluteMaximum);
+                if (this.MaximumRange < double.MaxValue)
+                {
+                    this.ActualMinimum = Math.Max(this.ActualMinimum, this.AbsoluteMaximum - this.MaximumRange);
+                }
             }
 
             // Coerce the minimum range
@@ -1666,34 +1709,9 @@ namespace OxyPlot.Axes
             }
 
             // Coerce the absolute maximum/minimum
-            if (this.AbsoluteMaximum <= this.AbsoluteMinimum)
-            {
-                throw new InvalidOperationException("AbsoluteMaximum should be larger than AbsoluteMinimum.");
-            }
-
             if (this.ActualMaximum <= this.ActualMinimum)
             {
                 this.ActualMaximum = this.ActualMinimum + 100;
-            }
-
-            if (this.ActualMinimum < this.AbsoluteMinimum)
-            {
-                this.ActualMinimum = this.AbsoluteMinimum;
-            }
-
-            if (this.ActualMinimum > this.AbsoluteMaximum)
-            {
-                this.ActualMinimum = this.AbsoluteMaximum;
-            }
-
-            if (this.ActualMaximum < this.AbsoluteMinimum)
-            {
-                this.ActualMaximum = this.AbsoluteMinimum;
-            }
-
-            if (this.ActualMaximum > this.AbsoluteMaximum)
-            {
-                this.ActualMaximum = this.AbsoluteMaximum;
             }
         }
 
@@ -1738,7 +1756,7 @@ namespace OxyPlot.Axes
             var actualMaximum = this.DataMaximum;
             double range = this.DataMaximum - this.DataMinimum;
 
-            if (range < double.Epsilon)
+            if (range <= 0)
             {
                 double zeroRange = this.DataMaximum > 0 ? this.DataMaximum : 1;
                 actualMaximum += zeroRange * 0.5;
@@ -1767,7 +1785,7 @@ namespace OxyPlot.Axes
             var actualMinimum = this.DataMinimum;
             double range = this.DataMaximum - this.DataMinimum;
 
-            if (range < double.Epsilon)
+            if (range <= 0)
             {
                 double zeroRange = this.DataMaximum > 0 ? this.DataMaximum : 1;
                 actualMinimum -= zeroRange * 0.5;
@@ -1802,10 +1820,12 @@ namespace OxyPlot.Axes
         /// </summary>
         /// <param name="availableSize">Size of the available area.</param>
         /// <param name="maxIntervalSize">Maximum length of the intervals.</param>
+        /// <param name="minIntervalCount">The minimum number of intervals.</param>
+        /// <param name="maxIntervalCount">The maximum number of intervals, once the minimum number of intervals is satisfied.</param>
         /// <returns>The calculate actual interval.</returns>
-        protected virtual double CalculateActualInterval(double availableSize, double maxIntervalSize)
+        protected virtual double CalculateActualInterval(double availableSize, double maxIntervalSize, double minIntervalCount, double maxIntervalCount)
         {
-            return this.CalculateActualInterval(availableSize, maxIntervalSize, this.ActualMaximum - this.ActualMinimum);
+            return this.CalculateActualInterval(availableSize, maxIntervalSize, this.ActualMaximum - this.ActualMinimum, minIntervalCount, maxIntervalCount);
         }
 
         /// <summary>
@@ -1814,20 +1834,22 @@ namespace OxyPlot.Axes
         /// <param name="availableSize">The available size.</param>
         /// <param name="maxIntervalSize">The maximum interval size.</param>
         /// <param name="range">The range.</param>
+        /// <param name="minIntervalCount">The minimum number of intervals.</param>
+        /// <param name="maxIntervalCount">The maximum number of intervals, once the minimum number of intervals is satisfied.</param>
         /// <returns>Actual interval to use to determine which values are displayed in the axis.</returns>
-        protected double CalculateActualInterval(double availableSize, double maxIntervalSize, double range)
+        protected double CalculateActualInterval(double availableSize, double maxIntervalSize, double range, double minIntervalCount, double maxIntervalCount)
         {
             if (availableSize <= 0)
             {
                 return maxIntervalSize;
             }
 
-            if (Math.Abs(maxIntervalSize) < double.Epsilon)
+            if (Math.Abs(maxIntervalSize) <= 0)
             {
                 throw new ArgumentException("Maximum interval size cannot be zero.", "maxIntervalSize");
             }
 
-            if (Math.Abs(range) < double.Epsilon)
+            if (Math.Abs(range) <= 0)
             {
                 throw new ArgumentException("Range cannot be zero.", "range");
             }
@@ -1835,10 +1857,9 @@ namespace OxyPlot.Axes
             Func<double, double> exponent = x => Math.Ceiling(Math.Log(x, 10));
             Func<double, double> mantissa = x => x / Math.Pow(10, exponent(x) - 1);
 
-            // reduce intervals for horizontal axis.
-            // double maxIntervals = Orientation == AxisOrientation.x ? MaximumAxisIntervalsPer200Pixels * 0.8 : MaximumAxisIntervalsPer200Pixels;
-            // real maximum interval count
-            double maxIntervalCount = availableSize / maxIntervalSize;
+            // bound min/max interval counts
+            minIntervalCount = Math.Max(minIntervalCount, 0);
+            maxIntervalCount = Math.Min(maxIntervalCount, availableSize / maxIntervalSize);
 
             range = Math.Abs(range);
             double interval = Math.Pow(10, exponent(range));
@@ -1867,7 +1888,7 @@ namespace OxyPlot.Axes
                     intervalCandidate = removeNoise(intervalCandidate / 2.0);
                 }
 
-                if (range / intervalCandidate > maxIntervalCount)
+                if (range / interval >= minIntervalCount && range / intervalCandidate > maxIntervalCount)
                 {
                     break;
                 }

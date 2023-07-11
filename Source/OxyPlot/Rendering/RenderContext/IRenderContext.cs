@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace OxyPlot
 {
     using System.Collections.Generic;
@@ -59,7 +61,7 @@ namespace OxyPlot
             OxyColor stroke,
             double thickness,
             EdgeRenderingMode edgeRenderingMode,
-            double[] dashArray = null,
+            double[]? dashArray = null,
             LineJoin lineJoin = LineJoin.Miter);
 
         /// <summary>
@@ -79,7 +81,7 @@ namespace OxyPlot
             OxyColor stroke,
             double thickness,
             EdgeRenderingMode edgeRenderingMode,
-            double[] dashArray = null,
+            double[]? dashArray = null,
             LineJoin lineJoin = LineJoin.Miter);
 
         /// <summary>
@@ -98,7 +100,7 @@ namespace OxyPlot
             OxyColor stroke,
             double thickness,
             EdgeRenderingMode edgeRenderingMode,
-            double[] dashArray = null,
+            double[]? dashArray = null,
             LineJoin lineJoin = LineJoin.Miter);
 
         /// <summary>
@@ -120,7 +122,7 @@ namespace OxyPlot
             OxyColor stroke,
             double thickness,
             EdgeRenderingMode edgeRenderingMode,
-            double[] dashArray = null,
+            double[]? dashArray = null,
             LineJoin lineJoin = LineJoin.Miter);
 
         /// <summary>
@@ -166,7 +168,7 @@ namespace OxyPlot
             ScreenPoint p,
             string text,
             OxyColor fill,
-            string fontFamily = null,
+            string? fontFamily = null,
             double fontSize = 10,
             double fontWeight = FontWeights.Normal,
             double rotation = 0,
@@ -182,7 +184,7 @@ namespace OxyPlot
         /// <param name="fontSize">Size of the font (in device independent units, 1/96 inch).</param>
         /// <param name="fontWeight">The font weight.</param>
         /// <returns>The size of the text (in device independent units, 1/96 inch).</returns>
-        OxySize MeasureText(string text, string fontFamily = null, double fontSize = 10, double fontWeight = 500);
+        OxySize MeasureText(string text, string? fontFamily = null, double fontSize = 10, double fontWeight = 500);
 
         /// <summary>
         /// Sets the tool tip for the following items.

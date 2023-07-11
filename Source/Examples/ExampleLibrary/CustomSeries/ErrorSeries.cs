@@ -114,7 +114,7 @@ namespace ExampleLibrary
             {
                 rc.DrawReducedLine(
                     new[] { segments[i], segments[i + 1] },
-                    2,
+                    0,
                     this.GetSelectableColor(this.Color),
                     this.StrokeThickness,
                     this.EdgeRenderingMode,

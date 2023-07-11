@@ -29,6 +29,8 @@ namespace OxyPlot
             this.Snap = true;
             this.PointsOnly = false;
             this.LockToInitialSeries = true;
+            this.FiresDistance = 20.0;
+            this.CheckDistanceBetweenPoints = false;
         }
 
         /// <summary>
@@ -46,6 +48,17 @@ namespace OxyPlot
         /// </summary>
         /// <value><c>true</c> if the tracker should be locked; otherwise, <c>false</c>.</value>
         public bool LockToInitialSeries { get; set; }
+
+        /// <summary>
+        /// Gets or sets the distance from the series at which the tracker fires.
+        /// </summary>
+        public double FiresDistance { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to check distance when showing tracker between data points.
+        /// </summary>
+        /// <remarks>This parameter is ignored if <see cref="PointsOnly"/> is equal to <c>False</c>.</remarks>
+        public bool CheckDistanceBetweenPoints { get; set; }
 
         /// <summary>
         /// Occurs when a manipulation is complete.
@@ -76,7 +89,7 @@ namespace OxyPlot
             if (this.currentSeries == null || !this.LockToInitialSeries)
             {
                 // get the nearest
-                this.currentSeries = this.PlotView.ActualModel != null ? this.PlotView.ActualModel.GetSeriesFromPoint(e.Position, 20) : null;
+                this.currentSeries = this.PlotView.ActualModel?.GetSeriesFromPoint(e.Position, this.FiresDistance);
             }
 
             if (this.currentSeries == null)
@@ -100,7 +113,8 @@ namespace OxyPlot
                 return;
             }
 
-            var result = GetNearestHit(this.currentSeries, e.Position, this.Snap, this.PointsOnly);
+            var result = Utilities.TrackerHelper.GetNearestHit(
+                this.currentSeries, e.Position, this.Snap, this.PointsOnly, this.FiresDistance, this.CheckDistanceBetweenPoints);
             if (result != null)
             {
                 result.PlotModel = this.PlotView.ActualModel;
@@ -116,46 +130,8 @@ namespace OxyPlot
         public override void Started(OxyMouseEventArgs e)
         {
             base.Started(e);
-            this.currentSeries = this.PlotView.ActualModel != null ? this.PlotView.ActualModel.GetSeriesFromPoint(e.Position) : null;
+            this.currentSeries = this.PlotView.ActualModel?.GetSeriesFromPoint(e.Position, FiresDistance);
             this.Delta(e);
-        }
-
-        /// <summary>
-        /// Gets the nearest tracker hit.
-        /// </summary>
-        /// <param name="series">The series.</param>
-        /// <param name="point">The point.</param>
-        /// <param name="snap">Snap to points.</param>
-        /// <param name="pointsOnly">Check points only (no interpolation).</param>
-        /// <returns>A tracker hit result.</returns>
-        private static TrackerHitResult GetNearestHit(Series.Series series, ScreenPoint point, bool snap, bool pointsOnly)
-        {
-            if (series == null)
-            {
-                return null;
-            }
-
-            // Check data points only
-            if (snap || pointsOnly)
-            {
-                var result = series.GetNearestPoint(point, false);
-                if (result != null)
-                {
-                    if (result.Position.DistanceTo(point) < 20)
-                    {
-                        return result;
-                    }
-                }
-            }
-
-            // Check between data points (if possible)
-            if (!pointsOnly)
-            {
-                var result = series.GetNearestPoint(point, true);
-                return result;
-            }
-
-            return null;
         }
     }
 }

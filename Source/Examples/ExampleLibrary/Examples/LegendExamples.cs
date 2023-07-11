@@ -387,6 +387,95 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("Full width legend")]
+        public static PlotModel LegendFullWidth()
+        {
+            var model = CreateModel(21);
+
+            var l1 = new Legend
+            {
+                LegendPlacement = LegendPlacement.Outside,
+                LegendPosition = LegendPosition.TopCenter,
+                LegendOrientation = LegendOrientation.Horizontal,
+                AllowUseFullExtent = true,
+            };
+
+            var l2 = new Legend
+            {
+                LegendPlacement = LegendPlacement.Outside,
+                LegendPosition = LegendPosition.BottomCenter,
+                LegendOrientation = LegendOrientation.Horizontal,
+                AllowUseFullExtent = true,
+            };
+
+            model.PlotMargins = new OxyThickness(50);
+
+            model.Legends.Add(l1);
+            model.Legends.Add(l2);
+
+            model.InvalidatePlot(true);
+
+            return model;
+        }
+
+        [Example("Full height legend")]
+        public static PlotModel LegendFullHeight()
+        {
+            var model = CreateModel(21);
+
+            var l1 = new Legend
+            {
+                LegendPlacement = LegendPlacement.Outside,
+                LegendPosition = LegendPosition.LeftTop,
+                LegendOrientation = LegendOrientation.Vertical,
+                AllowUseFullExtent = true,
+            };
+
+            var l2 = new Legend
+            {
+                LegendPlacement = LegendPlacement.Outside,
+                LegendPosition = LegendPosition.RightTop,
+                LegendOrientation = LegendOrientation.Vertical,
+                AllowUseFullExtent = true,
+            };
+
+            model.Legends.Add(l1);
+            model.Legends.Add(l2);
+
+            return model;
+        }
+
+        [Example("Legend showing invisible series")]
+        public static PlotModel LegendShowingInivisbleSeries()
+        {
+            return CreateModelWithInivisbleSeries(true);
+        }
+
+        [Example("Legend not showing invisible series")]
+        public static PlotModel LegendNotShowingInivisbleSeries()
+        {
+            return CreateModelWithInivisbleSeries(false);
+        }
+
+        private static PlotModel CreateModelWithInivisbleSeries(bool showInvisibleSeries)
+        {
+            var model = CreateModel();
+            var l = new Legend()
+            {
+                ShowInvisibleSeries = showInvisibleSeries,
+            };
+
+            model.Legends.Add(l);
+
+            for (int i = 0; i < model.Series.Count; i += 2)
+            {
+                model.Series[i].IsVisible = false;
+            }
+
+            model.InvalidatePlot(false);
+            return model;
+        }
+
         private static PlotModel CreateModel(int n = 20)
         {
             var model = new PlotModel { Title = "LineSeries" };

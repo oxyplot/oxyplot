@@ -29,6 +29,20 @@ namespace ExampleLibrary
             return CreateExponentialDistribution();
         }
 
+        [Example("Exponential Distribution (logarithmic)")]
+        [DocumentationExample("Series/HistogramSeries")]
+        public static PlotModel ExponentialDistributionLogarithmicAxis()
+        {
+            return CreateExponentialDistribution(true);
+        }
+
+        [Example("Exponential Distribution (logarithmic,with BaseValue)")]
+        [DocumentationExample("Series/HistogramSeries")]
+        public static PlotModel ExponentialDistributionLogarithmicAxisWithBaseValue()
+        {
+            return CreateExponentialDistribution(true, baseValue: 0.1);
+        }
+
         [Example("Label Placement")]
         public static PlotModel HistogramLabelPlacement()
         {
@@ -122,10 +136,13 @@ namespace ExampleLibrary
             public string Description { get; }
         }
 
-        public static PlotModel CreateExponentialDistribution(double mean = 1, int n = 10000)
+        public static PlotModel CreateExponentialDistribution(bool logarithmicYAxis = false, double mean = 1, int n = 10000, double baseValue = 0)
         {
-            var model = new PlotModel { Title = "Exponential Distribution", Subtitle = "Uniformly distributed bins (" + n + " samples)" };
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Frequency" });
+            var model = new PlotModel { Title = logarithmicYAxis ? "Exponential Distribution (logarithmic)" : "Exponential Distribution", Subtitle = "Uniformly distributed bins (" + n + " samples)" };
+            model.Axes.Add(
+                logarithmicYAxis ? 
+                    (Axis)new LogarithmicAxis { Position = AxisPosition.Left, Title = "Frequency"} : 
+                    new LinearAxis { Position = AxisPosition.Left, Title = "Frequency" });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "x" });
 
             Random rnd = new Random(1);
@@ -136,6 +153,8 @@ namespace ExampleLibrary
             var binBreaks = HistogramHelpers.CreateUniformBins(0, 5, 15);
             chs.Items.AddRange(HistogramHelpers.Collect(SampleExps(rnd, mean, n), binBreaks, binningOptions));
             chs.StrokeThickness = 1;
+            chs.BaseValue = baseValue;
+            chs.NegativeFillColor = OxyColors.Red;
             model.Series.Add(chs);
 
             return model;

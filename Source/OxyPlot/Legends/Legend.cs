@@ -60,6 +60,8 @@ namespace OxyPlot.Legends
             this.LegendItemAlignment = HorizontalAlignment.Left;
             this.LegendSymbolPlacement = LegendSymbolPlacement.Left;
 
+            this.ShowInvisibleSeries = true;
+
             this.SeriesInvisibleTextColor = OxyColor.FromAColor(64, this.LegendTextColor);
 
             this.SeriesPosMap = new Dictionary<Series.Series, OxyRect>();
@@ -71,10 +73,15 @@ namespace OxyPlot.Legends
         /// <summary>
         /// Override for legend hit test.
         /// </summary>
-        /// <param name="args">Arguments passe to the hit test</param>
+        /// <param name="args">Arguments passed to the hit test</param>
         /// <returns>The hit test results.</returns>
         protected override HitTestResult LegendHitTest(HitTestArguments args)
         {
+            if (!this.IsLegendVisible || !this.PlotModel.IsLegendVisible)
+            {
+                return null;
+            }
+
             ScreenPoint point = args.Point;
             if (this.IsPointInLegend(point))
             {
@@ -84,9 +91,12 @@ namespace OxyPlot.Legends
                     {
                         if (kvp.Value.Contains(point))
                         {
-                            kvp.Key.IsVisible = !kvp.Key.IsVisible;
-                            this.PlotModel.InvalidatePlot(false);
-                            break;
+                            if (this.ShowInvisibleSeries)
+                            {
+                                kvp.Key.IsVisible = !kvp.Key.IsVisible;
+                                this.PlotModel.InvalidatePlot(false);
+                                break;
+                            }
                         }
                     }
                 }

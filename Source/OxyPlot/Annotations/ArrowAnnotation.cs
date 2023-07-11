@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace OxyPlot.Annotations
 {
     using System;
@@ -122,7 +124,7 @@ namespace OxyPlot.Annotations
             var p3 = p1 - (n * this.HeadWidth * this.StrokeThickness);
             var p4 = p1 + (d * this.Veeness * this.StrokeThickness);
 
-            const double MinimumSegmentLength = 4;
+            const double MinimumSegmentLength = 0;
 
             var dashArray = this.LineStyle.GetDashArray();
 
@@ -146,7 +148,8 @@ namespace OxyPlot.Annotations
                     this.EdgeRenderingMode);
             }
 
-            if (string.IsNullOrEmpty(this.Text))
+            if (this.Text == null ||
+                string.IsNullOrEmpty(this.Text))
             {
                 return;
             }
@@ -209,7 +212,7 @@ namespace OxyPlot.Annotations
         /// <returns>
         /// The result of the hit test.
         /// </returns>
-        protected override HitTestResult HitTestOverride(HitTestArguments args)
+        protected override HitTestResult? HitTestOverride(HitTestArguments args)
         {
             if ((args.Point - this.screenStartPoint).Length < args.Tolerance)
             {

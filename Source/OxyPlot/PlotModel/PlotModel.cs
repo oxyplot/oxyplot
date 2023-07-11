@@ -250,7 +250,7 @@ namespace OxyPlot
         /// <summary>
         /// Gets or sets the edge rendering mode that is used for rendering the plot bounds and backgrounds.
         /// </summary>
-        /// <value>The edge rendering mode. The default is <see cref="EdgeRenderingMode.Automatic"/>.</value>
+        /// <value>The edge rendering mode. The default is <see cref="OxyPlot.EdgeRenderingMode.Automatic"/>.</value>
         public EdgeRenderingMode EdgeRenderingMode { get; set; }
 
         /// <summary>
@@ -795,10 +795,14 @@ namespace OxyPlot
                         this.isDataUpdated = true;
                     }
 
+                    // Updates bar series managers and associated category axes
                     this.UpdateBarSeriesManagers();
 
                     // Update the max and min of the axes
                     this.UpdateMaxMin(updateData);
+
+                    // Update category axes that are not managed by bar series managers
+                    this.UpdateUnmanagedCategoryAxes();
 
                     // Update undefined colors
                     var automaticColorSeries = this.AssignColorsToInvisibleSeries
@@ -1201,6 +1205,31 @@ namespace OxyPlot
                 var manager = new BarSeriesManager(group.Key.CategoryAxis, group.Key.ValueAxis, group);
                 manager.Update();
                 this.barSeriesManagers.Add(manager);
+            }
+        }
+
+        /// <summary>
+        /// Updates category axes that are not managed by a <see cref="BarSeriesManager"/>.
+        /// </summary>
+        private void UpdateUnmanagedCategoryAxes()
+        {
+            var unmanagedCategoryAxes = this.Axes
+                .OfType<CategoryAxis>()
+                .Except(this.barSeriesManagers.Select(manager => manager.CategoryAxis));
+
+            foreach (var unmanagedAxis in unmanagedCategoryAxes)
+            {
+                var defaultCategoryCount = 0;
+
+                if (!double.IsInfinity(unmanagedAxis.DataMaximum) &&
+                    !double.IsNaN(unmanagedAxis.DataMaximum) &&
+                    unmanagedAxis.DataMaximum > 0)
+                {
+                    // support default categories for e.g. heat maps
+                    defaultCategoryCount = (int)unmanagedAxis.DataMaximum + 1;
+                }
+
+                unmanagedAxis.UpdateLabels(defaultCategoryCount);
             }
         }
     }

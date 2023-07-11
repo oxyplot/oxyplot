@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace OxyPlot
 {
     using System;
@@ -25,7 +27,7 @@ namespace OxyPlot
         /// <param name="length">The length.</param>
         /// <param name="encoding">The encoding.</param>
         /// <returns>The string.</returns>
-        public static string ReadString(this BinaryReader r, int length, Encoding encoding = null)
+        public static string ReadString(this BinaryReader r, int length, Encoding? encoding = null)
         {
             if (encoding == null)
             {

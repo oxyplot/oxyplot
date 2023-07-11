@@ -23,6 +23,11 @@ namespace OxyPlot.SkiaSharp.Wpf
         /// </summary>
         private SkiaRenderContext SkiaRenderContext => (SkiaRenderContext)this.renderContext;
 
+        /// <summary>
+        /// Gets the OxySKElement.
+        /// </summary>
+        private OxySKElement OxySKElement => (OxySKElement)this.plotPresenter;
+
         /// <inheritdoc/>
         protected override void ClearBackground()
         {
@@ -58,9 +63,13 @@ namespace OxyPlot.SkiaSharp.Wpf
         /// <inheritdoc/>
         protected override double UpdateDpi()
         {
-            var scale = base.UpdateDpi();
-            this.SkiaRenderContext.DpiScale = (float)scale;
-            return scale;
+            var dpiScale = base.UpdateDpi();
+            var renderScale = this.OxySKElement.GetRenderScale();
+            var skiaScale = (float)(dpiScale * renderScale);
+
+            this.SkiaRenderContext.DpiScale = skiaScale;
+
+            return dpiScale;
         }
 
         /// <summary>
@@ -70,6 +79,10 @@ namespace OxyPlot.SkiaSharp.Wpf
         /// <param name="e">The surface paint event args.</param>
         private void SkElement_PaintSurface(object sender, SKPaintSurfaceEventArgs e)
         {
+            if (this.plotPresenter == null || this.renderContext == null)
+            {
+                return;
+            }
             this.SkiaRenderContext.SkCanvas = e.Surface.Canvas;
             base.RenderOverride();
             this.SkiaRenderContext.SkCanvas = null;

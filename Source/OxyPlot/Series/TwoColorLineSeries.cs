@@ -141,12 +141,12 @@ namespace OxyPlot.Series
 
             using (rc.AutoResetClip(clippingRectLo))
             {
-                RenderLine(this.ActualColor);
+                RenderLine(this.ActualColor2);
             }
 
             using (rc.AutoResetClip(clippingRectHi))
             {
-                RenderLine(this.ActualColor2);
+                RenderLine(this.ActualColor);
             }
         }
     }

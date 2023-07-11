@@ -4,15 +4,59 @@ All notable changes to this project will be documented in this file.
 ## Unreleased
 
 ### Added
+- Example to Show/Hide Legend (#1470)
+- Example of BarSeries stacked and with labels (#1979)
+- Example of issue with AreaSeries tracker (#1982)
+- Example for CategoryAxis with custom MajorStep and uncentered ticks (#1971)
+- BarSeries.LabelAngle property (#1870)
 
 ### Changed
+- Make consistent BaseValue and BaseLine across BarSeries, LinearBarSeries, and HistogramSeries
+
+### Removed
+- Support for .NET Framework 4.0 and 4.5 (#1839)
+
+### Fixed
+- Placement of BarSeries labels when stacked (#1979)
+- SystemInvalidException in LineSeries when only Double.Nan values are added (#1991)
+- Issue with tracking AreaSeries with monotonic data points (#1982)
+- Incorrect coloring of TwoColorLineSeries
+- HitTest when IsLegendVisible is false (#1975)
+- Font weight not being applied in ImageSharp (#2006)
+
+## [2.1.2] - 2022-12-03
+
+### Added
+- Add LineThickness property to TrackerControl (#1831)
+- Add properties for `MinimumSegmentLength` to series and annotations (#1853)
+- Add fractal examples for PolygonAnnotation and PolylineAnnotations (#1853)
+- Add `AxisPreference` to `PlotManipulator`
+- Add MinimumMajorIntervalCount and MaximumMajorIntervalCount Axis Properties (#24)
+- Add VisualStudioToolsManifest.xml to add components to the Visual Studio Designer toolbox (#1446)
+
+### Changed
+- Change default `MinimumSegmentLength` to `2` and remove limits for series and annotations with simple geometry (#1853)
+- Improve performance of `StairStepSeries`, particularly when zoomed in and X is monotonic or when consecutive points have equal Y components
+- `StairStepSeries` renders a horizontal line when a point with a valid X component and invalid Y component follows a valid point
 
 ### Removed
 
 ### Fixed
-- Zero-crossing axis bounds (#1708)
+- WPF - OxyPlot doesn't render inside a Popup (#1796)
+- Odd behavior of zooming of Logarithmic axis in Cartesian plot (#1825)
+- SkiaSharp.WPF - OxyPlot doesn't render inside an ElementHost (#1800)
+- NullReference in SkiaSharp WPF renderer if UIElement has no PresentationSource  (#1798)
+- WPF DPI Regression (#1799)
+- Code generation for escape sequences in strings (#1824)
+- Axes not always honoring AbsoluteMinimum/AbsoluteMaximum and/or MinimumRange/MaximumRange properties (#1812)
+- WindowsForms tracker no longer clipping outside PlotView boundaries (#1863)
+- CategoryAxis.ItemsSource without BarSeries (#1847)
+- Histogram now rendering properly when using logarithmic Y axis (#740) 
+- Fix ExampleLibrary build errors in certain code pages (#1890)
+- LineBarSeries now rendering properly when using logarithmic scale (#740)
+- Fix for double.Epsilon zero check that fails on some architectures (#1924)
 
-## [2.1.0-Preview1] - 2020-10-18
+## [2.1.0] - 2021-10-02
 
 ### Added
 - Made Legend Items clickable to toggle series visibility (#644)
@@ -56,6 +100,15 @@ All notable changes to this project will be documented in this file.
 - OxyPlot.Wpf.XamlRenderContext - this doesn't use StreamGeometry and can be used for rendering to XAML (#1673)
 - SkiaRenderContext.MiterLimit property (#1690)
 - Example for Issue #1685 showing spurious lines in the ContourSeries
+- Example for Issue #1716 showing poor tick spacing on DateTimeAxis with interval types of Weeks or Years
+- Example for label placement on BarSeries with non-zero BaseValue (#1726)
+- ExtrapolationLineSeries as described in #1740 to allow to display pre-defined intervals of a line series with a different style than the rest.
+- Added DataRange, unit tests and examples as support for ExtrapolationLineSeries.
+- Add control over how far from the series the tracker fires (#1736)
+- Add option to check distance for result between data points (#1736)
+- Legend.AllowUseFullExtent property to control whether legends should be able to use the full extent of the plot (#1743)
+- Legend.ShowInvisibleSeries property to control whether invisible series should be shown on the legend (#1730)
+- OxyPlot.SkiaSharp.Wpf PlotView support for simple render transforms (#1785)
 
 ### Changed
 - Legends model (#644)
@@ -89,6 +142,8 @@ All notable changes to this project will be documented in this file.
 - Optimize clipping calls (#1661)
 - Mark CandleStickAndVolumeSeries as obsolete (#1661)
 - Implement StreamGeometry-based implementations of DrawEllipses, DrawLine, DrawLineSegments and DrawRectangle(s) which improves the rendering speed on WPF (#1673)
+- Change algorithm of ContourSeries.JoinContourSegments(). This should improve performance in most cases, but will cause labels to appear in different spots than before (#1685)
+- Updated Series.cd with ExtrapolationLineSeries and removed classes that do not exist anymore
 
 ### Removed
 - Remove PlotModel.Legends (#644)
@@ -133,6 +188,12 @@ All notable changes to this project will be documented in this file.
 - ScreenMin and ScreenMax on Horizontal and Vertical Axes depends on plot bounds (#1652)
 - Windows Forms clipping last line of measured text (#1659)
 - Inconsistent Zooming behaviour (#1648)
+- ContourSeries produce fake connections (#1685)
+- Zero-crossing axis bounds (#1708)
+- Incorrect label placement on BarSeries with non-zero BaseValue (#1726)
+- LineAnnotation Text Placement on Reversed Axes (#1741)
+- Image opacity in WinForms and Core Drawing (#1766)
+- Fix specified Visual is not an ancestor of this Visual issue in WPF rendering (#1787)
 
 ## [2.0.0] - 2019-10-19
 ### Added 
@@ -430,8 +491,8 @@ All notable changes to this project will be documented in this file.
 - Add overridable Axis.FormatValueOverride (#181)
 - PngExporter text formatting (#170)
 
-[Unreleased]: https://github.com/oxyplot/oxyplot/compare/v2.1.0-Preview1...HEAD
-[2.1.0-Preview1]: https://github.com/oxyplot/oxyplot/compare/v2.0.0...v2.1.0-Preview1
+[Unreleased]: https://github.com/oxyplot/oxyplot/compare/v2.1.0...HEAD
+[2.1.0]: https://github.com/oxyplot/oxyplot/compare/v2.0.0...v2.1.0
 [2.0.0]: https://github.com/oxyplot/oxyplot/compare/v1.0.0...v2.0.0
 [1.0.0]: https://github.com/oxyplot/oxyplot/compare/v0.2014.1.546...v1.0.0
 [0.2014.1.546]: https://github.com/oxyplot/oxyplot/compare/v0.0.1...v0.2014.1.546

@@ -2466,6 +2466,76 @@ namespace ExampleLibrary
             return plot;
         }
 
+        [Example("#1716: DateTimeAxis sometimes ignores IntervalLength")]
+        public static PlotModel DateTimeAxisSometimesIgnoresIntervalLength()
+        {
+            var plot = new PlotModel();
+
+            plot.Title = "IntervalLength is ignored for large ranges with IntervalType of Years or Weeks";
+
+            var days = new DateTimeAxis
+            {
+                IntervalType = DateTimeIntervalType.Days,
+                Position = AxisPosition.Bottom,
+                PositionTier = 1,
+                Minimum = DateTimeAxis.ToDouble(new DateTime(2000, 1, 1)),
+                Maximum = DateTimeAxis.ToDouble(new DateTime(2001, 1, 1)),
+                Title = "Days (mostly fine)",
+            };
+
+            var weeks = new DateTimeAxis
+            {
+                IntervalType = DateTimeIntervalType.Weeks,
+                Position = AxisPosition.Bottom,
+                PositionTier = 2,
+                Minimum = DateTimeAxis.ToDouble(new DateTime(2000, 1, 1)),
+                Maximum = DateTimeAxis.ToDouble(new DateTime(2001, 1, 1)),
+                Title = "Weeks (nothing is fine)",
+            };
+
+            var years = new DateTimeAxis
+            {
+                IntervalType = DateTimeIntervalType.Years,
+                Position = AxisPosition.Bottom,
+                PositionTier = 3,
+                Minimum = DateTimeAxis.ToDouble(new DateTime(2000, 1, 1)),
+                Maximum = DateTimeAxis.ToDouble(new DateTime(2100, 1, 1)),
+                Title = "Years (minor ticks not fine)",
+            };
+
+            plot.Axes.Add(days);
+            plot.Axes.Add(weeks);
+            plot.Axes.Add(years);
+
+            return plot;
+        }
+
+        [Example("#1982: Area series GetNearestPoint Issue")]
+        public static PlotModel Issue1982AreaSeriesGetNearestPoint()
+        {
+            var plotModel1 = new PlotModel()
+            {
+                Subtitle = "AreaSeries.GetNearestPoint returns nonsense indexes, and doesn't snap to the nearest point."
+            };
+
+            AreaSeries areaSeries = new AreaSeries();
+            areaSeries.TrackerFormatString = "Y: {4:0.#####}\nX: {2:0.#####}\nZ: {Z}";
+
+            CustomDataPoint[] CdpTest = new CustomDataPoint[1000];
+            for (int i = 0; i < 1000; i++)
+            {
+                // Z corresponds to the item index
+                CdpTest[i] = new CustomDataPoint(x: i, (i - 500) * (i - 500), i);
+            }
+
+            areaSeries.ItemsSource = CdpTest;
+            plotModel1.Series.Add(areaSeries);
+
+            areaSeries.CanTrackerInterpolatePoints = false;
+
+            return plotModel1;
+        }
+
         private class TimeSpanPoint
         {
             public TimeSpan X { get; set; }
@@ -2477,6 +2547,26 @@ namespace ExampleLibrary
             public DateTime X { get; set; }
             public DateTime Y { get; set; }
         }
+
+        public class CustomDataPoint : IDataPointProvider
+        {
+            public double X { get; }
+            public double Y { get; }
+            public int Z { get; }
+
+            public CustomDataPoint(double x, double y, int z)
+            {
+                X = x;
+                Y = y;
+                Z = z;
+            }
+
+            public DataPoint GetDataPoint()
+            {
+                return new DataPoint(X, Y);
+            }
+        }
+
         /* NEW ISSUE TEMPLATE
            [Example("#123: Issue Description")]
            public static PlotModel IssueDescription()

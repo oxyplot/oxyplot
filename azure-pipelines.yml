@@ -31,5 +31,7 @@ steps:
 
 - task: VSTest@2
   inputs:
+    testSelector: 'testAssemblies'
+    testAssemblyVer2: '**\net4*\*.Tests.dll'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'

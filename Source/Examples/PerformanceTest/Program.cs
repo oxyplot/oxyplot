@@ -44,9 +44,9 @@ namespace PerformanceTest
                 Console.WriteLine();
             }
 
-            Console.WriteLine("DrawClippedLine test:");
-            var t0 = TestDrawClippedLine(10000, 1000, false);
-            var t1 = TestDrawClippedLine(10000, 1000, true);
+            Console.WriteLine("DrawReducedLine test:");
+            var t0 = TestDrawReducedLine(10000, 1000, false);
+            var t1 = TestDrawReducedLine(10000, 1000, true);
             Console.WriteLine("{0:P1}", (t0 - t1) / t0);
             Console.ReadKey();
         }
@@ -110,13 +110,13 @@ namespace PerformanceTest
         }
 
         /// <summary>
-        /// Tests the <see cref="RenderingExtensions.DrawClippedLine" /> method.
+        /// Tests the <see cref="RenderingExtensions.DrawReducedLine" /> method.
         /// </summary>
         /// <param name="n">The number of points.</param>
         /// <param name="m">The number of repetitions.</param>
         /// <param name="useOutputBuffer"><c>true</c> to use an output buffer.</param>
         /// <returns>The elapsed time in milliseconds.</returns>
-        public static double TestDrawClippedLine(int n, int m, bool useOutputBuffer)
+        public static double TestDrawReducedLine(int n, int m, bool useOutputBuffer)
         {
             var points = new ScreenPoint[n];
             for (int i = 0; i < n; i++)
@@ -124,14 +124,12 @@ namespace PerformanceTest
                 points[i] = new ScreenPoint((double)i / n, Math.Sin(40d * i / n));
             }
 
-            var clippingRectangle = new OxyRect(0.3, -0.5, 0.5, 1);
             var rc = new EmptyRenderContext();
             var outputBuffer = useOutputBuffer ? new List<ScreenPoint>(n) : null;
             var stopwatch = Stopwatch.StartNew();
             for (int i = 0; i < m; i++)
             {
-                rc.DrawClippedLine(
-                    clippingRectangle,
+                rc.DrawReducedLine(
                     points,
                     1,
                     OxyColors.Black,

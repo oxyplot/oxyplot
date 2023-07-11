@@ -414,6 +414,35 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
+        [Example("Logarithmic axes Cartesian Plot")]
+        public static PlotModel CartesianPlotLogarithmicAxes()
+        {
+            var plotModel1 = new PlotModel
+            {
+                PlotType = PlotType.Cartesian,
+            };
+            plotModel1.Axes.Add(new LogarithmicAxis
+            {
+                Maximum = 1000000,
+                Minimum = 1,
+                Title = "Log axis",
+                UseSuperExponentialFormat = true,
+                MajorGridlineStyle = LineStyle.Solid,
+                IsPanEnabled = true,
+            });
+            plotModel1.Axes.Add(new LogarithmicAxis
+            {
+                Maximum = 10000,
+                Minimum = 0.001,
+                Position = AxisPosition.Bottom,
+                Title = "Log axis",
+                UseSuperExponentialFormat = true,
+                MajorGridlineStyle = LineStyle.Solid,
+                IsPanEnabled = true,
+            });
+            return plotModel1;
+        }
+
         [Example("Big numbers")]
         public static PlotModel BigNumbers()
         {
@@ -1786,6 +1815,89 @@ namespace ExampleLibrary
             plot.Series.Add(rectangle);
 
             AddAxisMarginAnnotations(plot);
+
+            return plot;
+        }
+
+        [Example("Minimum Major Interval Count")]
+        public static PlotModel MinimumMajorIntervalCount()
+        {
+            var plot = new PlotModel
+            {
+                Title = "MinimumMajorIntervalCount = 10",
+            };
+
+            var xaxis = new LinearAxis
+            {
+                Position = AxisPosition.Bottom,
+                MinimumMajorIntervalCount = 10,
+            };
+
+            plot.Axes.Add(xaxis);
+
+            var yaxis = new LinearAxis
+            {
+                Position = AxisPosition.Left,
+                MinimumMajorIntervalCount = 10,
+            };
+
+            plot.Axes.Add(yaxis);
+
+            return plot;
+        }
+
+        [Example("Maximum Major Interval Count")]
+        public static PlotModel MaximumMajorIntervalCount()
+        {
+            var plot = new PlotModel
+            {
+                Title = "MaximumMajorIntervalCount = 5",
+            };
+
+            var xaxis = new LinearAxis
+            {
+                Position = AxisPosition.Bottom,
+                MaximumMajorIntervalCount = 5,
+            };
+
+            plot.Axes.Add(xaxis);
+
+            var yaxis = new LinearAxis
+            {
+                Position = AxisPosition.Left,
+                MaximumMajorIntervalCount = 5,
+            };
+
+            plot.Axes.Add(yaxis);
+
+            return plot;
+        }
+
+        [Example("Minimum and Maximum Major Interval Count")]
+        public static PlotModel MinimumAndMaximumMajorIntervalCount()
+        {
+            var plot = new PlotModel
+            {
+                Title = "MinimumMajorIntervalCount = MaximumMajorIntervalCount = 4",
+            };
+
+            var xaxis = new LinearAxis
+            {
+                Position = AxisPosition.Bottom,
+                MinimumMajorIntervalCount = 4,
+                MaximumMajorIntervalCount = 4,
+            };
+
+            plot.Axes.Add(xaxis);
+
+            var yaxis = new LinearAxis
+            {
+                Position = AxisPosition.Left,
+                MinimumMajorIntervalCount = 4,
+                MaximumMajorIntervalCount = 4,
+            };
+
+            plot.Axes.Add(yaxis);
 
             return plot;
         }
