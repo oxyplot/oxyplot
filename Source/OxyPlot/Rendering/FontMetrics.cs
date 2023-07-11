@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TextVerticalAlignment.cs" company="OxyPlot">
+// <copyright file="FontMetrics.cs" company="OxyPlot">
 //   Copyright (c) 2020 OxyPlot contributors
 // </copyright>
 // <summary>

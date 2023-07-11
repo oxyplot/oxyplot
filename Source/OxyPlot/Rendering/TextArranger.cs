@@ -50,7 +50,7 @@ namespace OxyPlot.Rendering
         /// <param name="horizontalAlignment">The horizontal alignment.</param>
         /// <param name="verticalAlignment">The vertical alignment.</param>
         /// <param name="maxSize">The maximum size of the text (in device independent units, 1/96 inch). If set to <c>null</c>, the text will not be clipped.</param>
-        /// <param name="targetHorizontalAlignment">The horixontal alignment used to render the text.</param>
+        /// <param name="targetHorizontalAlignment">The horizontal alignment used to render the text.</param>
         /// <param name="targetVerticalAlignment">The vertical alignment used to render the text.</param>
         /// <param name="lines">The separate lines of text.</param>
         /// <param name="linePositions">The point at which to render each line.</param>
@@ -200,7 +200,7 @@ namespace OxyPlot.Rendering
         /// <summary>
         /// Translates a <see cref="HorizontalAlignment"/> into a relative offset.
         /// </summary>
-        /// <param name="horizontalAlignment">The horizontal alignent.</param>
+        /// <param name="horizontalAlignment">The horizontal alignment.</param>
         /// <returns>The offset.</returns>
         /// <remarks>
         /// Left   -> -0.5
