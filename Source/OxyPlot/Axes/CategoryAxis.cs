@@ -111,7 +111,7 @@ namespace OxyPlot.Axes
 
                 if (mv.Count > 0)
                 {
-                    var lastTick = mv[mv.Count - 1] + 1;
+                    var lastTick = mv[mv.Count - 1] + this.MajorStep;
                     if (lastTick < this.ClipMaximum + epsilon)
                     {
                         mv.Add(lastTick);

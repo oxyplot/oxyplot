@@ -7,6 +7,8 @@ All notable changes to this project will be documented in this file.
 - Example to Show/Hide Legend (#1470)
 - Example of BarSeries stacked and with labels (#1979)
 - Example of issue with AreaSeries tracker (#1982)
+- Example for CategoryAxis with custom MajorStep and uncentered ticks (#1971)
+- BarSeries.LabelAngle property (#1870)
 
 ### Changed
 
@@ -18,6 +20,8 @@ All notable changes to this project will be documented in this file.
 - SystemInvalidException in LineSeries when only Double.Nan values are added (#1991)
 - Issue with tracking AreaSeries with monotonic data points (#1982)
 - Incorrect coloring of TwoColorLineSeries
+- HitTest when IsLegendVisible is false (#1975)
+- Font weight not being applied in ImageSharp (#2006)
 
 ## [2.1.2] - 2022-12-03
 

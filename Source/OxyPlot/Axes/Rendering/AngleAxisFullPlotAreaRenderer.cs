@@ -87,7 +87,7 @@ namespace OxyPlot.Axes
             //Text rendering
             foreach (var value in this.MajorLabelValues.Take(majorTickCount))
             {
-                ScreenPoint pt = TransformToClientRectangle(magnitudeAxis.ClipMaximum, value, axis, this.Plot.PlotArea, magnitudeAxis.MidPoint);
+                ScreenPoint pt = this.TransformToClientRectangle(magnitudeAxis.ClipMaximum, value, axis, this.Plot.PlotArea, magnitudeAxis.MidPoint);
 
                 var angle = Math.Atan2(pt.y - magnitudeAxis.MidPoint.y, pt.x - magnitudeAxis.MidPoint.x);
 
