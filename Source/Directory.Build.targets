@@ -1,10 +1,12 @@
 <Project>
   <ItemGroup Condition="$(GeneratePackageOnBuild)">
-    <None Include="$(SolutionDir)..\Icons\OxyPlot_128.png" Pack="true" PackagePath="\" />
+    <None Include="$(MSBuildThisFileDirectory)../Icons/OxyPlot_128.png" Pack="true" PackagePath="\" Visible="false" />
+    <None Include="$(MSBuildThisFileDirectory)../README.md" Pack="true" PackagePath="\" Visible="false" />
   </ItemGroup>
   <PropertyGroup Condition="$(GeneratePackageOnBuild)">
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://oxyplot.github.io/</PackageProjectUrl>
     <PackageIcon>OxyPlot_128.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 </Project>
