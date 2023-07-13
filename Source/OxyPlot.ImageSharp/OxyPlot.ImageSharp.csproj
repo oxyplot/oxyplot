@@ -7,7 +7,7 @@
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <GenerateDocumentationFile>True</GenerateDocumentationFile>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        <NoWarn>NU5104</NoWarn>
+        <NoWarn>$(NoWarn);NU5104</NoWarn>
         <WarningsAsErrors />
     </PropertyGroup>
     <ItemGroup>

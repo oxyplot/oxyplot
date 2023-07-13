@@ -4,7 +4,7 @@
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
         <Description>OxyPlot Pdf unit tests</Description>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        <NoWarn>CS0618,NU1701</NoWarn>
+        <NoWarn>$(NoWarn);CS0618;NU1701</NoWarn>
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\Examples\ExampleLibrary\ExampleLibrary.csproj" />
