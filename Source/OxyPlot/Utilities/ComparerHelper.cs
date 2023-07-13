@@ -56,10 +56,12 @@ namespace OxyPlot
             /// <param name="x">The first element to compare.</param>
             /// <param name="y">The second element to compare.</param>
             /// <returns>A value indicating whether <paramref name="x"/> is less than, equal to, or greater than <paramref name="y"/>.</returns>
+#pragma warning disable CS8767 // Nullability of reference types in parameters doesn't match (Only on .NET 5+)
             public int Compare(T x, T y)
             {
                 return this.comparison.Invoke(x, y);
             }
+#pragma warning restore
         }
     }
 }

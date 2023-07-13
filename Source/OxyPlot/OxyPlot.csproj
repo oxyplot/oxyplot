@@ -10,7 +10,7 @@
         <AssemblyOriginatorKeyFile>OxyPlot.snk</AssemblyOriginatorKeyFile>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <LangVersion>8</LangVersion>
-        <NoWarn>$(NoWarn);CS0618;CS8767</NoWarn>
+        <NoWarn>$(NoWarn);CS0618</NoWarn>
     </PropertyGroup>
     <ItemGroup>
         <None Include="OxyPlot.snk" />
