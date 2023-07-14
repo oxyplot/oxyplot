@@ -18,6 +18,7 @@ All notable changes to this project will be documented in this file.
 - Move example projects to .NET Framework 4.6.2 and .NET 6.0 (#1937)
 - Run tests on both .NET Framework 4.6.2 and .NET 6.0 (#1937)
 - Add support for .NET 7.0 (#1937)
+- Update SkiaSharp to Version 2.88.3
 
 ### Removed
 - Support for .NET Framework 4.0 and 4.5 (#1839)
@@ -30,6 +31,7 @@ All notable changes to this project will be documented in this file.
 - HitTest when IsLegendVisible is false (#1975)
 - Font weight not being applied in ImageSharp (#2006)
 - SkiaSharp - Fix use of obsolete functions (#1937)
+- Dashed lines are solid when exporting via SkiaSharp.SvgExporter (#1674)
 
 ## [2.1.2] - 2022-12-03
 
