@@ -147,7 +147,7 @@ namespace OxyPlot
                 return string.Format("/* Cannot generate code for {0} constructor */", type.Name);
             }
 
-            var defaultInstance = Activator.CreateInstance(type);
+            var defaultInstance = Activator.CreateInstance(type)!;
             var varName = this.GetNewVariableName(type);
             this.variables.Add(varName, true);
             this.AppendLine("var {0} = new {1}();", varName, type.Name);
@@ -196,7 +196,7 @@ namespace OxyPlot
         /// <param name="array">The array.</param>
         private void AddArray(string name, Array array)
         {
-            var elementType = array.GetType().GetElementType();
+            var elementType = array.GetType().GetElementType()!;
             if (array.Rank == 1)
             {
                 this.AppendLine("{0} = new {1}[{2}];", name, elementType.Name, array.Length);
@@ -273,7 +273,7 @@ namespace OxyPlot
 
             for (int i = 0; i < list1.Count; i++)
             {
-                if (!list1[i].Equals(list2[i]))
+                if (!list1[i]!.Equals(list2[i]))
                 {
                     return false;
                 }
@@ -288,7 +288,7 @@ namespace OxyPlot
         /// <typeparam name="T">The type.</typeparam>
         /// <param name="pi">The property info.</param>
         /// <returns>The attribute, or <c>null</c> if no attribute was found.</returns>
-        private T GetFirstAttribute<T>(PropertyInfo pi) where T : Attribute
+        private T? GetFirstAttribute<T>(PropertyInfo pi) where T : Attribute
         {
             return pi.GetCustomAttributes(typeof(CodeGenerationAttribute), true).OfType<T>().FirstOrDefault();
         }
@@ -346,7 +346,7 @@ namespace OxyPlot
             var listsToAdd = new Dictionary<string, IList>();
             var arraysToAdd = new Dictionary<string, Array>();
 
-            var properties = instanceType.GetRuntimeProperties().Where(pi => pi.GetMethod.IsPublic && !pi.GetMethod.IsStatic);
+            var properties = instanceType.GetRuntimeProperties().Where(pi => pi.GetMethod!.IsPublic && !pi.GetMethod.IsStatic);
 
             foreach (var pi in properties)
             {
@@ -358,8 +358,8 @@ namespace OxyPlot
                 }
 
                 string name = varName + "." + pi.Name;
-                object value = pi.GetValue(instance, null);
-                object defaultValue = pi.GetValue(defaultValues, null);
+                object? value = pi.GetValue(instance, null);
+                object? defaultValue = pi.GetValue(defaultValues, null);
 
                 // check if lists are equal
                 if (this.AreListsEqual(value as IList, defaultValue as IList))

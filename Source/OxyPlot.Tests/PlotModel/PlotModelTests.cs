@@ -27,19 +27,17 @@ namespace OxyPlot.Tests
     public class PlotModelTests
     {
         [Test]
-        public void Update_AllExamples_ThrowsNoExceptions()
+        [TestCaseSource(typeof(Examples), nameof(Examples.GetListForAutomatedTest))]
+        public void Update_AllExamples_ThrowsNoExceptions(ExampleInfo example)
         {
-            foreach (var example in Examples.GetListForAutomatedTest())
+            ((IPlotModel)example.PlotModel)?.Update(true);
+
+            var first = 1; // skip the 'none', since we do that above for clarity
+            var all = (int)(ExampleFlags.Transpose | ExampleFlags.Reverse);
+
+            for (int flags = first; flags < all; flags++)
             {
-                ((IPlotModel)example.PlotModel)?.Update(true);
-
-                var first = 1; // skip the 'none', since we do that above for clarity
-                var all = (int)(ExampleFlags.Transpose | ExampleFlags.Reverse);
-
-                for (int flags = first; flags < all; flags++)
-                {
-                    ((IPlotModel)example.GetModel((ExampleFlags)flags))?.Update(true);
-                }
+                ((IPlotModel)example.GetModel((ExampleFlags)flags))?.Update(true);
             }
         }
 
@@ -76,8 +74,8 @@ namespace OxyPlot.Tests
         [Test]
         public void PlotControl_CollectedPlotControl_ReferenceShouldNotBeAlive()
         {
-            var plot = Substitute.For<IPlotView>();
             var pm = new PlotModel();
+            var plot = Substitute.For<IPlotView>();
             ((IPlotModel)pm).AttachPlotView(plot);
             Assert.IsNotNull(pm.PlotView);
 
@@ -86,7 +84,10 @@ namespace OxyPlot.Tests
             GC.Collect();
 
             // Verify that the reference is lost
+            // In debug builds a reference may be kept around for the debugger.
+#if !DEBUG
             Assert.IsNull(pm.PlotView);
+#endif
         }
 
         /// <summary>
