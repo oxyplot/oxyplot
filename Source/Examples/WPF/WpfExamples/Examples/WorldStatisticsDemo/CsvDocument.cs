@@ -36,28 +36,27 @@ namespace WorldStatisticsDemo
         /// <param name="separator">The separator (auto-detect if not specified).</param>
         public void Load(string fileName, char separator = '\0')
         {
-            using (var r = new StreamReader(fileName,Encoding.UTF8))
+            using var r = new StreamReader(fileName, Encoding.UTF8);
+
+            var header = r.ReadLine();
+
+            if (separator == '\0')
             {
-                var header = r.ReadLine();
+                // Auto detect
+                int commaCount = Count(header, ',');
+                int semicolonCount = Count(header, ';');
+                separator = commaCount > semicolonCount ? ',' : ';';
+            }
 
-                if (separator == '\0')
-                {
-                    // Auto detect
-                    int commaCount = Count(header, ',');
-                    int semicolonCount = Count(header, ';');
-                    separator = commaCount > semicolonCount ? ',' : ';';
-                }
+            Headers = header.Split(separator);
+            Items = new Collection<string[]>();
 
-                Headers = header.Split(separator);
-                Items = new Collection<string[]>();
-
-                while (!r.EndOfStream)
-                {
-                    var line = r.ReadLine();
-                    if (line == null || line.StartsWith("%") || line.StartsWith("//"))
-                        continue;
-                    Items.Add(line.Split(separator));
-                }
+            while (!r.EndOfStream)
+            {
+                var line = r.ReadLine();
+                if (line == null || line.StartsWith("%") || line.StartsWith("//"))
+                    continue;
+                Items.Add(line.Split(separator));
             }
         }
 

@@ -245,11 +245,9 @@ namespace OxyPlot
         /// <returns>A byte array.</returns>
         private static byte[] GetBytes(Stream s)
         {
-            using (var ms = new MemoryStream())
-            {
-                s.CopyTo(ms);
-                return ms.ToArray();
-            }
+            using var ms = new MemoryStream();
+            s.CopyTo(ms);
+            return ms.ToArray();
         }
 
         /// <summary>

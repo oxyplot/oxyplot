@@ -55,10 +55,8 @@ namespace OxyPlot.ImageSharp
         public static void Export(IPlotModel model, string fileName, int width, int height, double resolution = 96)
         {
             var exporter = new PngExporter(width, height, resolution);
-            using (var stream = File.Create(fileName))
-            {
-                exporter.Export(model, stream);
-            }
+            using var stream = File.Create(fileName);
+            exporter.Export(model, stream);
         }
 
         /// <summary>
@@ -68,13 +66,11 @@ namespace OxyPlot.ImageSharp
         /// <param name="stream">The output stream.</param>
         public void Export(IPlotModel model, Stream stream)
         {
-            using (var rc = new ImageRenderContext(this.Width, this.Height, model.Background, this.Resolution))
-            {
-                var dpiScale = this.Resolution / 96;
-                model.Update(true);
-                model.Render(rc, new OxyRect(0, 0, this.Width / dpiScale, this.Height / dpiScale));
-                rc.SaveAsPng(stream);
-            }
+            using var rc = new ImageRenderContext(this.Width, this.Height, model.Background, this.Resolution);
+            var dpiScale = this.Resolution / 96;
+            model.Update(true);
+            model.Render(rc, new OxyRect(0, 0, this.Width / dpiScale, this.Height / dpiScale));
+            rc.SaveAsPng(stream);
         }
     }
 }
