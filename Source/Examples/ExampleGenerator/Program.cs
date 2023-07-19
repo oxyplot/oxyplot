@@ -90,11 +90,9 @@ namespace ExampleGenerator
             {
                 fileName = Path.ChangeExtension(fileName, ".pdf");
                 Console.WriteLine(fileName);
-                using (var stream = File.Create(fileName))
-                {
-                    var exporter = new PdfExporter { Width = 600d * 72 / 96, Height = 400d * 72 / 96 };
-                    exporter.Export(model, stream);
-                }
+                using var stream = File.Create(fileName);
+                var exporter = new PdfExporter { Width = 600d * 72 / 96, Height = 400d * 72 / 96 };
+                exporter.Export(model, stream);
             }
 
             if (ExportSvg)
@@ -102,13 +100,9 @@ namespace ExampleGenerator
                 fileName = Path.ChangeExtension(fileName, ".svg");
                 Console.WriteLine(fileName);
 
-                using (var stream = File.Create(fileName))
-                {
-                    using (var exporter = new OxyPlot.WindowsForms.SvgExporter { Width = 600, Height = 400, IsDocument = true })
-                    {
-                        exporter.Export(model, stream);
-                    }
-                }
+                using var stream = File.Create(fileName);
+                using var exporter = new OxyPlot.WindowsForms.SvgExporter { Width = 600, Height = 400, IsDocument = true };
+                exporter.Export(model, stream);
             }
         }
 

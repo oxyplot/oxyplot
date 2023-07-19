@@ -68,13 +68,12 @@ namespace OxyPlot
                 textMeasurer = new PdfRenderContext(width, height, model.Background);
             }
 
-            using (var rc = new SvgRenderContext(stream, width, height, isDocument, textMeasurer, model.Background, useVerticalTextAlignmentWorkaround))
-            {
-                model.Update(true);
-                model.Render(rc, new OxyRect(0, 0, width, height));
-                rc.Complete();
-                rc.Flush();
-            }
+            using var rc = new SvgRenderContext(stream, width, height, isDocument, textMeasurer, model.Background, useVerticalTextAlignmentWorkaround);
+
+            model.Update(true);
+            model.Render(rc, new OxyRect(0, 0, width, height));
+            rc.Complete();
+            rc.Flush();
         }
 
         /// <summary>

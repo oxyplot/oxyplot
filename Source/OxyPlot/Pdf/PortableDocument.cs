@@ -802,51 +802,50 @@ namespace OxyPlot
         /// <param name="s">The output stream.</param>
         public void Save(Stream s)
         {
-            using (var w = new PdfWriter(s))
+            using var w = new PdfWriter(s);
+
+            // update the Pages dictionary
+            this.pages["/Count"] = this.pageReferences.Count;
+            this.pages["/Kids"] = this.pageReferences;
+
+            // HEADER
+            w.WriteLine("%PDF-1.3");
+
+            // BODY
+            var objectPosition = new Dictionary<PortableDocumentObject, long>();
+            foreach (var o in this.objects)
             {
-                // update the Pages dictionary
-                this.pages["/Count"] = this.pageReferences.Count;
-                this.pages["/Kids"] = this.pageReferences;
+                objectPosition.Add(o, w.Position);
+                o.Write(w);
+            }
 
-                // HEADER
-                w.WriteLine("%PDF-1.3");
+            // CROSS-REFERENCE TABLE
+            var xrefPosition = w.Position;
+            w.WriteLine("xref");
+            w.WriteLine("0 {0}", this.objects.Count + 1);
+            w.WriteLine("0000000000 65535 f ");
+            foreach (var o in this.objects)
+            {
+                w.WriteLine("{0:0000000000} 00000 n ", objectPosition[o]);
+            }
 
-                // BODY
-                var objectPosition = new Dictionary<PortableDocumentObject, long>();
-                foreach (var o in this.objects)
-                {
-                    objectPosition.Add(o, w.Position);
-                    o.Write(w);
-                }
-
-                // CROSS-REFERENCE TABLE
-                var xrefPosition = w.Position;
-                w.WriteLine("xref");
-                w.WriteLine("0 {0}", this.objects.Count + 1);
-                w.WriteLine("0000000000 65535 f ");
-                foreach (var o in this.objects)
-                {
-                    w.WriteLine("{0:0000000000} 00000 n ", objectPosition[o]);
-                }
-
-                // TRAILER
-                w.WriteLine("trailer");
-                var trailer = new Dictionary<string, object>
+            // TRAILER
+            w.WriteLine("trailer");
+            var trailer = new Dictionary<string, object>
                                   {
                                       { "/Size", this.objects.Count + 1 },
                                       { "/Root", this.catalog },
                                       { "/Info", this.metadata }
                                   };
-                w.Write(trailer);
-                w.WriteLine();
+            w.Write(trailer);
+            w.WriteLine();
 
-                // Start of cross-reference table
-                w.WriteLine("startxref");
-                w.WriteLine("{0}", xrefPosition);
+            // Start of cross-reference table
+            w.WriteLine("startxref");
+            w.WriteLine("{0}", xrefPosition);
 
-                // write PDF end of file marker
-                w.Write("%%EOF");
-            }
+            // write PDF end of file marker
+            w.Write("%%EOF");
         }
 
         /// <summary>
