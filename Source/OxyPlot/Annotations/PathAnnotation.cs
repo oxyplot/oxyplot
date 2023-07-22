@@ -103,16 +103,16 @@ namespace OxyPlot.Annotations
         public double TextPadding { get; set; }
 
         /// <summary>
-        /// Gets or sets the padding of the text background and border rectangle.
+        /// Gets or sets the padding of the text border rectangle.
         /// </summary>
-        /// <value>The text background and border padding.</value>
-        public OxyThickness TextBackgroundPadding { get; set; }
+        /// <value>The text border padding.</value>
+        public OxyThickness TextBorderPadding { get; set; }
 
         /// <summary>
-        /// Gets or sets the fill color of the text background rectangle.
+        /// Gets or sets the fill color of the text border rectangle.
         /// </summary>
-        /// <value>The text background color.</value>
-        public OxyColor TextBackground { get; set; }
+        /// <value>The text border background color.</value>
+        public OxyColor TextBorderBackground { get; set; }
 
         /// <summary>
         /// Gets or sets the stroke color of the text border rectangle.
