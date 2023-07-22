@@ -25,8 +25,8 @@ namespace ExampleLibrary
                         Slope = 0.1,
                         Intercept = 1,
                         Text = "First",
-                        TextBackground = OxyColors.White.ChangeOpacity(0.75),
-                        TextBackgroundPadding = new OxyThickness(5)
+                        BorderBackground = OxyColors.White.ChangeOpacity(0.75),
+                        BorderPadding = new OxyThickness(5)
                 });
             model.Annotations.Add(
                 new LineAnnotation
@@ -36,8 +36,8 @@ namespace ExampleLibrary
                         MaximumX = 40,
                         Color = OxyColors.Red,
                         Text = "Second",
-                        TextBackground = OxyColors.White.ChangeOpacity(0.75),
-                        TextBackgroundPadding = new OxyThickness(5)
+                        BorderBackground = OxyColors.White.ChangeOpacity(0.75),
+                        BorderPadding = new OxyThickness(5)
                 });
             model.Annotations.Add(
                 new LineAnnotation
@@ -47,8 +47,8 @@ namespace ExampleLibrary
                         MaximumY = 10,
                         Color = OxyColors.Green,
                         Text = "Vertical",
-                        TextBackground = OxyColors.White.ChangeOpacity(0.75),
-                        TextBackgroundPadding = new OxyThickness(5)
+                        BorderBackground = OxyColors.White.ChangeOpacity(0.75),
+                        BorderPadding = new OxyThickness(5)
                 });
             model.Annotations.Add(
                 new LineAnnotation
@@ -58,8 +58,8 @@ namespace ExampleLibrary
                         MaximumX = 4,
                         Color = OxyColors.Gold,
                         Text = "Horizontal",
-                        TextBackground = OxyColors.White.ChangeOpacity(0.75),
-                        TextBackgroundPadding = new OxyThickness(5)
+                        BorderBackground = OxyColors.White.ChangeOpacity(0.75),
+                        BorderPadding = new OxyThickness(5)
                 });
             return model;
         }
