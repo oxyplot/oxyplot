@@ -43,19 +43,15 @@ namespace OxyPlot.Axes
         /// <returns>The data point.</returns>
         public override DataPoint InverseTransform(double x, double y, Axis yaxis)
         {
-            var angleAxis = yaxis as AngleAxis;
-            if (angleAxis == null)
-            {
-                throw new InvalidOperationException("Polar angle axis not defined!");
-            }
+            var angleAxis = yaxis as AngleAxis ?? throw new InvalidOperationException("Polar angle axis not defined!");
 
             x -= this.MidPoint.x;
             y -= this.MidPoint.y;
             y *= -1;
-            double th = Math.Atan2(y, x);
-            double r = Math.Sqrt((x * x) + (y * y));
-            x = (r / this.Scale) + this.Offset;
-            y = (th / angleAxis.Scale) + angleAxis.Offset*Math.PI/180;
+            var th = Math.Atan2(y, x);
+            var r = Math.Sqrt(x * x + y * y);
+            x = r / this.Scale + this.Offset;
+            y = th / angleAxis.Scale + angleAxis.Offset * Math.PI / 180;
             return new DataPoint(x, y);
         }
 
@@ -88,16 +84,12 @@ namespace OxyPlot.Axes
         /// <returns>The transformed point.</returns>
         public override ScreenPoint Transform(double x, double y, Axis yaxis)
         {
-            var angleAxis = yaxis as AngleAxis;
-            if (angleAxis == null)
-            {
-                throw new InvalidOperationException("Polar angle axis not defined!");
-            }
+            var angleAxis = yaxis as AngleAxis ?? throw new InvalidOperationException("Polar angle axis not defined!");
 
             var r = (x - this.Offset) * this.Scale;
             var theta = (y - angleAxis.Offset) * angleAxis.Scale;
 
-            return new ScreenPoint(this.MidPoint.x + (r * Math.Cos(theta / 180 * Math.PI)), this.MidPoint.y - (r * Math.Sin(theta / 180 * Math.PI)));
+            return new ScreenPoint(this.MidPoint.x + r * Math.Cos(theta / 180 * Math.PI), this.MidPoint.y - r * Math.Sin(theta / 180 * Math.PI));
         }
 
         /// <summary>
@@ -106,26 +98,26 @@ namespace OxyPlot.Axes
         /// <param name="bounds">The bounds.</param>
         internal override void UpdateTransform(OxyRect bounds)
         {
-            double x0 = bounds.Left;
-            double x1 = bounds.Right;
-            double y0 = bounds.Bottom;
-            double y1 = bounds.Top;
+            var x0 = bounds.Left;
+            var x1 = bounds.Right;
+            var y0 = bounds.Bottom;
+            var y1 = bounds.Top;
 
             this.ScreenMin = new ScreenPoint(x0, y1);
             this.ScreenMax = new ScreenPoint(x1, y0);
 
             this.MidPoint = new ScreenPoint((x0 + x1) / 2, (y0 + y1) / 2);
 
-            double r = Math.Min(Math.Abs(x1 - x0), Math.Abs(y1 - y0));
+            var r = Math.Min(Math.Abs(x1 - x0), Math.Abs(y1 - y0));
 
             var a0 = 0.0;
             var a1 = r * 0.5;
 
-            double dx = a1 - a0;
-            a1 = a0 + (this.EndPosition * dx);
-            a0 = a0 + (this.StartPosition * dx);
+            var dx = a1 - a0;
+            a1 = a0 + this.EndPosition * dx;
+            a0 += this.StartPosition * dx;
 
-            double marginSign = this.IsReversed ? -1.0 : 1.0;
+            var marginSign = this.IsReversed ? -1.0 : 1.0;
 
             if (this.MinimumMargin > 0)
             {
@@ -152,21 +144,21 @@ namespace OxyPlot.Axes
                 this.ActualMaximum = this.ActualMinimum + 1;
             }
 
-            double max = this.PreTransform(this.ActualMaximum);
-            double min = this.PreTransform(this.ActualMinimum);
+            var max = this.PreTransform(this.ActualMaximum);
+            var min = this.PreTransform(this.ActualMinimum);
 
-            double da = a0 - a1;
+            var da = a0 - a1;
             double newOffset, newScale;
             if (Math.Abs(da) > double.Epsilon)
             {
-                newOffset = (a0 / da * max) - (a1 / da * min);
+                newOffset = a0 / da * max - a1 / da * min;
             }
             else
             {
                 newOffset = 0;
             }
 
-            double range = max - min;
+            var range = max - min;
             if (Math.Abs(range) > double.Epsilon)
             {
                 newScale = (a1 - a0) / range;

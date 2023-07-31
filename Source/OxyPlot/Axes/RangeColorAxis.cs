@@ -20,7 +20,7 @@ namespace OxyPlot.Axes
         /// <summary>
         /// The ranges
         /// </summary>
-        private readonly List<ColorRange> ranges = new List<ColorRange>();
+        private readonly List<ColorRange> ranges = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RangeColorAxis" /> class.
@@ -88,13 +88,13 @@ namespace OxyPlot.Axes
                 return -1;
             }
 
-            if (!this.HighColor.IsUndefined() && value > this.ranges[this.ranges.Count - 1].UpperBound)
+            if (!this.HighColor.IsUndefined() && value > this.ranges[^1].UpperBound)
             {
                 return this.ranges.Count;
             }
 
             // TODO: change to binary search?
-            for (int i = 0; i < this.ranges.Count; i++)
+            for (var i = 0; i < this.ranges.Count; i++)
             {
                 var range = this.ranges[i];
                 if (range.LowerBound <= value && range.UpperBound > value)
@@ -145,11 +145,11 @@ namespace OxyPlot.Axes
 
             if (pass == 0)
             {
-                double distance = this.AxisDistance;
-                double left = this.PlotModel.PlotArea.Left;
-                double top = this.PlotModel.PlotArea.Top;
-                double width = this.MajorTickSize - 2;
-                double height = this.MajorTickSize - 2;
+                var distance = this.AxisDistance;
+                var left = this.PlotModel.PlotArea.Left;
+                var top = this.PlotModel.PlotArea.Top;
+                var width = this.MajorTickSize - 2;
+                var height = this.MajorTickSize - 2;
 
                 const int TierShift = 0;
 
@@ -173,10 +173,10 @@ namespace OxyPlot.Axes
                         break;
                 }
 
-                Action<double, double, OxyColor> drawColorRect = (ylow, yhigh, color) =>
+                void drawColorRect(double ylow, double yhigh, OxyColor color)
                 {
-                    double ymin = Math.Min(ylow, yhigh);
-                    double ymax = Math.Max(ylow, yhigh);
+                    var ymin = Math.Min(ylow, yhigh);
+                    var ymax = Math.Max(ylow, yhigh);
                     rc.DrawRectangle(
                         this.IsHorizontal()
                             ? new OxyRect(ymin, top, ymax - ymin, height)
@@ -185,16 +185,16 @@ namespace OxyPlot.Axes
                         OxyColors.Undefined,
                         0,
                         this.EdgeRenderingMode);
-                };
+                }
 
                 // if the axis is reversed then the min and max values need to be swapped.
-                double effectiveMaxY = this.Transform(this.IsReversed ? this.ActualMinimum : this.ActualMaximum);
-                double effectiveMinY = this.Transform(this.IsReversed ? this.ActualMaximum : this.ActualMinimum);
+                var effectiveMaxY = this.Transform(this.IsReversed ? this.ActualMinimum : this.ActualMaximum);
+                var effectiveMinY = this.Transform(this.IsReversed ? this.ActualMaximum : this.ActualMinimum);
 
-                foreach (ColorRange range in this.ranges)
+                foreach (var range in this.ranges)
                 {
-                    double ylow = this.Transform(range.LowerBound);
-                    double yhigh = this.Transform(range.UpperBound);
+                    var ylow = this.Transform(range.LowerBound);
+                    var yhigh = this.Transform(range.UpperBound);
 
                     if (this.IsHorizontal())
                     {
@@ -232,13 +232,13 @@ namespace OxyPlot.Axes
 
                 if (!this.LowColor.IsUndefined())
                 {
-                    double ylow = this.Transform(this.ActualMinimum);
+                    var ylow = this.Transform(this.ActualMinimum);
                     drawColorRect(ylow, ylow + highLowLength, this.LowColor);
                 }
 
                 if (!this.HighColor.IsUndefined())
                 {
-                    double yhigh = this.Transform(this.ActualMaximum);
+                    var yhigh = this.Transform(this.ActualMaximum);
                     drawColorRect(yhigh, yhigh - highLowLength, this.HighColor);
                 }
             }

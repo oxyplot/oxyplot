@@ -157,7 +157,7 @@ namespace OxyPlot.Series
 
             if (thr != null)
             {
-                double distance = thr.Position.DistanceTo(args.Point);
+                var distance = thr.Position.DistanceTo(args.Point);
                 if (distance > args.Tolerance)
                 {
                     return null;

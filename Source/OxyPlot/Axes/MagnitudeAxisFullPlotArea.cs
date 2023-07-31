@@ -17,33 +17,34 @@ namespace OxyPlot.Axes
     /// </summary>
     public class MagnitudeAxisFullPlotArea : MagnitudeAxis
     {
-        private double _midshiftH = 0;
+        private double midshiftH = 0;
+        private double midshiftV = 0d;
+
         /// <summary>
         /// Portion to shift the center in horizontal direction relative to the plot area size (from -0.5 to +0.5 meaning +-50% of the width)
         /// </summary>
         public double MidshiftH
         {
-            get { return _midshiftH; }
+            get => this.midshiftH;
             set
             {
-                _midshiftH = value;
-                _midshiftH = Math.Max(_midshiftH, -0.5d);
-                _midshiftH = Math.Min(_midshiftH, 0.5d);
+                this.midshiftH = value;
+                this.midshiftH = Math.Max(this.midshiftH, -0.5d);
+                this.midshiftH = Math.Min(this.midshiftH, 0.5d);
             }
         }
 
-        private double _midshiftV = 0d;
         /// <summary>
         /// Portion to shift the center in vertical direction relative to the plot area size (from -0.5 to +0.5 meaning +-50% of the height)
         /// </summary>
         public double MidshiftV
         {
-            get { return _midshiftV; }
+            get => this.midshiftV;
             set
             {
-                _midshiftV = value;
-                _midshiftV = Math.Max(_midshiftV, -0.5d);
-                _midshiftV = Math.Min(_midshiftV, 0.5d);
+                this.midshiftV = value;
+                this.midshiftV = Math.Max(this.midshiftV, -0.5d);
+                this.midshiftV = Math.Min(this.midshiftV, 0.5d);
             }
         }
 
@@ -100,26 +101,26 @@ namespace OxyPlot.Axes
         /// <param name="bounds">The bounds.</param>
         internal override void UpdateTransform(OxyRect bounds)
         {
-            double x0 = bounds.Left;
-            double x1 = bounds.Right;
-            double y0 = bounds.Bottom;
-            double y1 = bounds.Top;
+            var x0 = bounds.Left;
+            var x1 = bounds.Right;
+            var y0 = bounds.Bottom;
+            var y1 = bounds.Top;
 
             this.ScreenMin = new ScreenPoint(x0, y1);
             this.ScreenMax = new ScreenPoint(x1, y0);
 
-            this.MidPoint = new ScreenPoint(((x0 + x1) / 2) + (this.MidshiftH * bounds.Width), ((y0 + y1) / 2) + (this.MidshiftV * bounds.Height));
+            this.MidPoint = new ScreenPoint((x0 + x1) / 2 + this.MidshiftH * bounds.Width, (y0 + y1) / 2 + this.MidshiftV * bounds.Height);
 
-            double r = Math.Min(Math.Abs(x1 - x0), Math.Abs(y1 - y0));
+            var r = Math.Min(Math.Abs(x1 - x0), Math.Abs(y1 - y0));
 
             var a0 = 0.0;
             var a1 = r * 0.5;
 
-            double dx = a1 - a0;
-            a1 = a0 + (this.EndPosition * dx);
-            a0 = a0 + (this.StartPosition * dx);
+            var dx = a1 - a0;
+            a1 = a0 + this.EndPosition * dx;
+            a0 += this.StartPosition * dx;
 
-            double marginSign = this.IsReversed ? -1.0 : 1.0;
+            var marginSign = this.IsReversed ? -1.0 : 1.0;
 
             if (this.MinimumDataMargin > 0)
             {
@@ -136,21 +137,21 @@ namespace OxyPlot.Axes
                 this.ActualMaximum = this.ActualMinimum + 1;
             }
 
-            double max = this.PreTransform(this.ActualMaximum);
-            double min = this.PreTransform(this.ActualMinimum);
+            var max = this.PreTransform(this.ActualMaximum);
+            var min = this.PreTransform(this.ActualMinimum);
 
-            double da = a0 - a1;
+            var da = a0 - a1;
             double newOffset, newScale;
             if (Math.Abs(da) > double.Epsilon)
             {
-                newOffset = (a0 / da * max) - (a1 / da * min);
+                newOffset = a0 / da * max - a1 / da * min;
             }
             else
             {
                 newOffset = 0;
             }
 
-            double range = max - min;
+            var range = max - min;
             if (Math.Abs(range) > double.Epsilon)
             {
                 newScale = (a1 - a0) / range;
@@ -195,13 +196,13 @@ namespace OxyPlot.Axes
                 return;
             }
 
-            bool isHorizontal = this.IsHorizontal();
+            _ = this.IsHorizontal();
 
-            double dsx = cpt.X - ppt.X;
-            double dsy = cpt.Y - ppt.Y;
+            var dsx = cpt.X - ppt.X;
+            var dsy = cpt.Y - ppt.Y;
 
-            double dsxp = dsx / this.PlotModel.PlotArea.Width;
-            double dsyp = dsy / this.PlotModel.PlotArea.Height;
+            var dsxp = dsx / this.PlotModel.PlotArea.Width;
+            var dsyp = dsy / this.PlotModel.PlotArea.Height;
 
             this.MidshiftH += dsxp;
             this.MidshiftV += dsyp;

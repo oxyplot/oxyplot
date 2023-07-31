@@ -94,7 +94,7 @@ namespace OxyPlot
                 {
                     this.DecompressUncompressedBlock();
                 }
-                else if (type == 1 || type == 2)
+                else if (type is 1 or 2)
                 {
                     CodeTree litLenCode, distCode;
                     if (type == 1)
@@ -187,11 +187,11 @@ namespace OxyPlot
             {
                 if (i % 2 == 0)
                 {
-                    codeLenCodeLen[8 + (i / 2)] = this.ReadInt(3);
+                    codeLenCodeLen[8 + i / 2] = this.ReadInt(3);
                 }
                 else
                 {
-                    codeLenCodeLen[7 - (i / 2)] = this.ReadInt(3);
+                    codeLenCodeLen[7 - i / 2] = this.ReadInt(3);
                 }
             }
 
@@ -393,7 +393,7 @@ namespace OxyPlot
         /// <returns>The <see cref="int" />.</returns>
         private int DecodeRunLength(int sym)
         {
-            if (sym < 257 || sym > 285)
+            if (sym is < 257 or > 285)
             {
                 throw new FormatException("Invalid run length symbol: " + sym);
             }
@@ -406,7 +406,7 @@ namespace OxyPlot
             if (sym <= 284)
             {
                 var i = (sym - 261) / 4; // Number of extra bits to read
-                return ((((sym - 265) % 4) + 4) << i) + 3 + this.ReadInt(i);
+                return (((sym - 265) % 4 + 4) << i) + 3 + this.ReadInt(i);
             }
 
             return 258;
@@ -426,8 +426,8 @@ namespace OxyPlot
 
             if (sym <= 29)
             {
-                var i = (sym / 2) - 1; // Number of extra bits to read
-                return (((sym % 2) + 2) << i) + 1 + this.ReadInt(i);
+                var i = sym / 2 - 1; // Number of extra bits to read
+                return ((sym % 2 + 2) << i) + 1 + this.ReadInt(i);
             }
 
             throw new FormatException("Invalid distance symbol: " + sym);
@@ -460,7 +460,7 @@ namespace OxyPlot
         /// <returns>The <see cref="int" />.</returns>
         private int ReadInt(int numBits)
         {
-            if (numBits < 0 || numBits >= 32)
+            if (numBits is < 0 or >= 32)
             {
                 throw new ArgumentException();
             }

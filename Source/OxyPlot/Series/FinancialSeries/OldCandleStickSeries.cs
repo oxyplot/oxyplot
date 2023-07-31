@@ -61,13 +61,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets the actual increasing fill color.
         /// </summary>
-        public OxyColor ActualIncreasingFill
-        {
-            get
-            {
-                return this.IncreasingFill.GetActualColor(this.ActualColor);
-            }
-        }
+        public OxyColor ActualIncreasingFill => this.IncreasingFill.GetActualColor(this.ActualColor);
 
         /// <inheritdoc/>
         public override void Render(IRenderContext rc)
@@ -143,8 +137,8 @@ namespace OxyPlot.Series
                         // Shadow ends
                         if (this.ShadowEndColor.IsVisible() && this.ShadowEndLength > 0)
                         {
-                            var highLeft = new ScreenPoint(high.X - (this.CandleWidth * 0.5 * this.ShadowEndLength) - 1, high.Y);
-                            var highRight = new ScreenPoint(high.X + (this.CandleWidth * 0.5 * this.ShadowEndLength), high.Y);
+                            var highLeft = new ScreenPoint(high.X - this.CandleWidth * 0.5 * this.ShadowEndLength - 1, high.Y);
+                            var highRight = new ScreenPoint(high.X + this.CandleWidth * 0.5 * this.ShadowEndLength, high.Y);
                             rc.DrawLine(
                                  new[] { highLeft, highRight },
                                  shadowEndColor,
@@ -153,8 +147,8 @@ namespace OxyPlot.Series
                                  dashArray,
                                  this.LineJoin);
 
-                            var lowLeft = new ScreenPoint(low.X - (this.CandleWidth * 0.5 * this.ShadowEndLength) - 1, low.Y);
-                            var lowRight = new ScreenPoint(low.X + (this.CandleWidth * 0.5 * this.ShadowEndLength), low.Y);
+                            var lowLeft = new ScreenPoint(low.X - this.CandleWidth * 0.5 * this.ShadowEndLength - 1, low.Y);
+                            var lowRight = new ScreenPoint(low.X + this.CandleWidth * 0.5 * this.ShadowEndLength, low.Y);
                             rc.DrawLine(
                                 new[] { lowLeft, lowRight },
                                 shadowEndColor,
@@ -183,10 +177,10 @@ namespace OxyPlot.Series
         /// <param name="legendBox">The bounding rectangle of the legend box.</param>
         public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
         {
-            double xmid = (legendBox.Left + legendBox.Right) / 2;
-            double yopen = legendBox.Top + ((legendBox.Bottom - legendBox.Top) * 0.7);
-            double yclose = legendBox.Top + ((legendBox.Bottom - legendBox.Top) * 0.3);
-            double[] dashArray = this.LineStyle.GetDashArray();
+            var xmid = (legendBox.Left + legendBox.Right) / 2;
+            var yopen = legendBox.Top + (legendBox.Bottom - legendBox.Top) * 0.7;
+            var yclose = legendBox.Top + (legendBox.Bottom - legendBox.Top) * 0.3;
+            var dashArray = this.LineStyle.GetDashArray();
 
             if (this.StrokeThickness > 0 && this.LineStyle != LineStyle.None)
             {
@@ -201,8 +195,8 @@ namespace OxyPlot.Series
                 // Shadow ends
                 if (this.ShadowEndColor.IsVisible() && this.ShadowEndLength > 0)
                 {
-                    var highLeft = new ScreenPoint(xmid - (this.CandleWidth * 0.5 * this.ShadowEndLength) - 1, legendBox.Top);
-                    var highRight = new ScreenPoint(xmid + (this.CandleWidth * 0.5 * this.ShadowEndLength), legendBox.Top);
+                    var highLeft = new ScreenPoint(xmid - this.CandleWidth * 0.5 * this.ShadowEndLength - 1, legendBox.Top);
+                    var highRight = new ScreenPoint(xmid + this.CandleWidth * 0.5 * this.ShadowEndLength, legendBox.Top);
                     rc.DrawLine(
                          new[] { highLeft, highRight },
                          this.GetSelectableColor(this.ShadowEndColor),
@@ -211,8 +205,8 @@ namespace OxyPlot.Series
                          dashArray,
                          this.LineJoin);
 
-                    var lowLeft = new ScreenPoint(xmid - (this.CandleWidth * 0.5 * this.ShadowEndLength) - 1, legendBox.Bottom);
-                    var lowRight = new ScreenPoint(xmid + (this.CandleWidth * 0.5 * this.ShadowEndLength), legendBox.Bottom);
+                    var lowLeft = new ScreenPoint(xmid - this.CandleWidth * 0.5 * this.ShadowEndLength - 1, legendBox.Bottom);
+                    var lowRight = new ScreenPoint(xmid + this.CandleWidth * 0.5 * this.ShadowEndLength, legendBox.Bottom);
                     rc.DrawLine(
                         new[] { lowLeft, lowRight },
                         this.GetSelectableColor(this.ShadowEndColor),
@@ -224,7 +218,7 @@ namespace OxyPlot.Series
             }
 
             rc.DrawRectangle(
-                new OxyRect(xmid - (this.CandleWidth * 0.5), yclose, this.CandleWidth, yopen - yclose),
+                new OxyRect(xmid - this.CandleWidth * 0.5, yclose, this.CandleWidth, yopen - yclose),
                 this.GetSelectableFillColor(this.ActualIncreasingFill),
                 this.GetSelectableColor(this.ActualColor),
                 this.StrokeThickness,

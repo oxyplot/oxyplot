@@ -8,9 +8,7 @@
 // --
 namespace OxyPlot.Legends
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     /// <summary>
     /// Represents a Legend.
@@ -82,12 +80,12 @@ namespace OxyPlot.Legends
                 return null;
             }
 
-            ScreenPoint point = args.Point;
+            var point = args.Point;
             if (this.IsPointInLegend(point))
             {
                 if (this.SeriesPosMap != null && this.SeriesPosMap.Count > 0)
                 {
-                    foreach (KeyValuePair<Series.Series, OxyRect> kvp in this.SeriesPosMap)
+                    foreach (var kvp in this.SeriesPosMap)
                     {
                         if (kvp.Value.Contains(point))
                         {

@@ -16,12 +16,12 @@ namespace OxyPlot
     /// <summary>
     /// Describes the size of an object.
     /// </summary>
-    public struct OxySize : IFormattable, IEquatable<OxySize>
+    public readonly struct OxySize : IFormattable, IEquatable<OxySize>
     {
         /// <summary>
         /// Empty Size.
         /// </summary>
-        public static readonly OxySize Empty = new OxySize(0, 0);
+        public static readonly OxySize Empty = new(0, 0);
 
         /// <summary>
         /// The height
@@ -48,42 +48,30 @@ namespace OxyPlot
         /// Gets the height.
         /// </summary>
         /// <value>The height.</value>
-        public double Height
-        {
-            get
-            {
-                return this.height;
-            }
-        }
+        public double Height => this.height;
 
         /// <summary>
         /// Gets the width.
         /// </summary>
         /// <value>The width.</value>
-        public double Width
-        {
-            get
-            {
-                return this.width;
-            }
-        }
+        public double Width => this.width;
 
         /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// Returns a <see cref="string" /> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+        /// <returns>A <see cref="string" /> that represents this instance.</returns>
         public override string ToString()
         {
             return string.Format(CultureInfo.InvariantCulture, "({0}, {1})", this.Width, this.Height);
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// Returns a <see cref="string" /> that represents this instance.
         /// </summary>
         /// <param name="format">The format.</param>
         /// <param name="formatProvider">The format provider.</param>
         /// <returns>
-        /// A <see cref="System.String" /> that represents this instance.
+        /// A <see cref="string" /> that represents this instance.
         /// </returns>
         public string ToString(string format, IFormatProvider formatProvider)
         {

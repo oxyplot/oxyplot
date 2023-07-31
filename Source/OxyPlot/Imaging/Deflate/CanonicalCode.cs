@@ -58,7 +58,7 @@ namespace OxyPlot
             this.codeLengths = new int[codeLengths.Length];
             Array.Copy(codeLengths, this.codeLengths, codeLengths.Length);
 
-            foreach (int x in codeLengths)
+            foreach (var x in codeLengths)
             {
                 if (x < 0)
                 {
@@ -113,12 +113,12 @@ namespace OxyPlot
         public CodeTree ToCodeTree()
         {
             var nodes = new List<Node>();
-            for (int i = this.codeLengths.Max(); i >= 1; i--)
+            for (var i = this.codeLengths.Max(); i >= 1; i--)
             {  // Descend through positive code lengths
                 var newNodes = new List<Node>();
 
                 // Add leaves for symbols with code length i
-                for (int j = 0; j < this.codeLengths.Length; j++)
+                for (var j = 0; j < this.codeLengths.Length; j++)
                 {
                     if (this.codeLengths[j] == i)
                     {
@@ -127,7 +127,7 @@ namespace OxyPlot
                 }
 
                 // Merge nodes from the previous deeper layer
-                for (int j = 0; j < nodes.Count; j += 2)
+                for (var j = 0; j < nodes.Count; j += 2)
                 {
                     newNodes.Add(new InternalNode(nodes[j], nodes[j + 1]));
                 }
@@ -159,15 +159,14 @@ namespace OxyPlot
         /// Illegal node type</exception>
         private void BuildCodeLengths(Node node, int depth)
         {
-            if (node is InternalNode)
+            if (node is InternalNode internalNode)
             {
-                var internalNode = (InternalNode)node;
                 this.BuildCodeLengths(internalNode.LeftChild, depth + 1);
                 this.BuildCodeLengths(internalNode.RightChild, depth + 1);
             }
             else if (node is Leaf)
             {
-                int symbol = ((Leaf)node).Symbol;
+                var symbol = ((Leaf)node).Symbol;
                 if (this.codeLengths[symbol] != 0)
                 {
                     throw new Exception("Symbol has more than one code");  // Because CodeTree has a checked constraint that disallows a symbol in multiple leaves

@@ -23,27 +23,27 @@ namespace OxyPlot
         /// <summary>
         /// The objects.
         /// </summary>
-        private readonly List<PortableDocumentObject> objects = new List<PortableDocumentObject>();
+        private readonly List<PortableDocumentObject> objects = new();
 
         /// <summary>
         /// The stroke alpha cache.
         /// </summary>
-        private readonly Dictionary<double, string> strokeAlphaCache = new Dictionary<double, string>();
+        private readonly Dictionary<double, string> strokeAlphaCache = new();
 
         /// <summary>
         /// The fill alpha cache.
         /// </summary>
-        private readonly Dictionary<double, string> fillAlphaCache = new Dictionary<double, string>();
+        private readonly Dictionary<double, string> fillAlphaCache = new();
 
         /// <summary>
         /// The font cache.
         /// </summary>
-        private readonly Dictionary<PortableDocumentFont, string> fontCache = new Dictionary<PortableDocumentFont, string>();
+        private readonly Dictionary<PortableDocumentFont, string> fontCache = new();
 
         /// <summary>
         /// The image cache.
         /// </summary>
-        private readonly Dictionary<PortableDocumentImage, string> imageCache = new Dictionary<PortableDocumentImage, string>();
+        private readonly Dictionary<PortableDocumentImage, string> imageCache = new();
 
         /// <summary>
         /// The catalog object.
@@ -145,10 +145,7 @@ namespace OxyPlot
         /// </summary>
         public string Title
         {
-            set
-            {
-                this.metadata["/Title"] = EscapeString(value);
-            }
+            set => this.metadata["/Title"] = EscapeString(value);
         }
 
         /// <summary>
@@ -156,10 +153,7 @@ namespace OxyPlot
         /// </summary>
         public string Author
         {
-            set
-            {
-                this.metadata["/Author"] = EscapeString(value);
-            }
+            set => this.metadata["/Author"] = EscapeString(value);
         }
 
         /// <summary>
@@ -167,10 +161,7 @@ namespace OxyPlot
         /// </summary>
         public string Subject
         {
-            set
-            {
-                this.metadata["/Subject"] = EscapeString(value);
-            }
+            set => this.metadata["/Subject"] = EscapeString(value);
         }
 
         /// <summary>
@@ -178,10 +169,7 @@ namespace OxyPlot
         /// </summary>
         public string Keywords
         {
-            set
-            {
-                this.metadata["/Keywords"] = EscapeString(value);
-            }
+            set => this.metadata["/Keywords"] = EscapeString(value);
         }
 
         /// <summary>
@@ -189,10 +177,7 @@ namespace OxyPlot
         /// </summary>
         public string Creator
         {
-            set
-            {
-                this.metadata["/Creator"] = EscapeString(value);
-            }
+            set => this.metadata["/Creator"] = EscapeString(value);
         }
 
         /// <summary>
@@ -200,10 +185,7 @@ namespace OxyPlot
         /// </summary>
         public string Producer
         {
-            set
-            {
-                this.metadata["/Producer"] = EscapeString(value);
-            }
+            set => this.metadata["/Producer"] = EscapeString(value);
         }
 
         /// <summary>
@@ -255,7 +237,7 @@ namespace OxyPlot
         public void SetLineDashPattern(double[] dashArray, double dashPhase)
         {
             this.Append("[");
-            for (int i = 0; i < dashArray.Length; i++)
+            for (var i = 0; i < dashArray.Length; i++)
             {
                 if (i > 0)
                 {
@@ -398,7 +380,7 @@ namespace OxyPlot
         /// <param name="angle">The rotation angle in degrees.</param>
         public void Rotate(double angle)
         {
-            double theta = angle / 180 * Math.PI;
+            var theta = angle / 180 * Math.PI;
             this.Transform(Math.Cos(theta), Math.Sin(theta), -Math.Sin(theta), Math.Cos(theta), 0, 0);
         }
 
@@ -629,8 +611,8 @@ namespace OxyPlot
             var oy = h * 0.5 * Kappa; // control point offset vertical
             var xe = x + w; // x-end
             var ye = y + h; // y-end
-            var xm = x + (w * 0.5); // x-middle
-            var ym = y + (h * 0.5); // y-middle
+            var xm = x + w * 0.5; // x-middle
+            var ym = y + h * 0.5; // y-middle
 
             this.MoveTo(x, ym);
             this.AppendCubicBezier(x, ym - oy, xm - ox, y, xm, y);
@@ -671,7 +653,7 @@ namespace OxyPlot
             text = EncodeString(text, this.currentFont.Encoding);
             text = EscapeString(text);
 
-            y = y - (this.currentFont.Descent * this.currentFontSize / 1000);
+            y -= this.currentFont.Descent * this.currentFontSize / 1000;
             this.AppendLine("{0:0.####} {1:0.####} Td", x, y); // Move to the start of the next line, offset from the start of the current line by (tx , ty ). tx and ty are numbers expressed in unscaled text space units.
             this.AppendLine("{0} Tj", text); // Show text string
             this.AppendLine("ET"); // End text object
@@ -802,51 +784,49 @@ namespace OxyPlot
         /// <param name="s">The output stream.</param>
         public void Save(Stream s)
         {
-            using (var w = new PdfWriter(s))
+            using var w = new PdfWriter(s);
+            // update the Pages dictionary
+            this.pages["/Count"] = this.pageReferences.Count;
+            this.pages["/Kids"] = this.pageReferences;
+
+            // HEADER
+            w.WriteLine("%PDF-1.3");
+
+            // BODY
+            var objectPosition = new Dictionary<PortableDocumentObject, long>();
+            foreach (var o in this.objects)
             {
-                // update the Pages dictionary
-                this.pages["/Count"] = this.pageReferences.Count;
-                this.pages["/Kids"] = this.pageReferences;
+                objectPosition.Add(o, w.Position);
+                o.Write(w);
+            }
 
-                // HEADER
-                w.WriteLine("%PDF-1.3");
+            // CROSS-REFERENCE TABLE
+            var xrefPosition = w.Position;
+            w.WriteLine("xref");
+            w.WriteLine("0 {0}", this.objects.Count + 1);
+            w.WriteLine("0000000000 65535 f ");
+            foreach (var o in this.objects)
+            {
+                w.WriteLine("{0:0000000000} 00000 n ", objectPosition[o]);
+            }
 
-                // BODY
-                var objectPosition = new Dictionary<PortableDocumentObject, long>();
-                foreach (var o in this.objects)
-                {
-                    objectPosition.Add(o, w.Position);
-                    o.Write(w);
-                }
-
-                // CROSS-REFERENCE TABLE
-                var xrefPosition = w.Position;
-                w.WriteLine("xref");
-                w.WriteLine("0 {0}", this.objects.Count + 1);
-                w.WriteLine("0000000000 65535 f ");
-                foreach (var o in this.objects)
-                {
-                    w.WriteLine("{0:0000000000} 00000 n ", objectPosition[o]);
-                }
-
-                // TRAILER
-                w.WriteLine("trailer");
-                var trailer = new Dictionary<string, object>
+            // TRAILER
+            w.WriteLine("trailer");
+            var trailer = new Dictionary<string, object>
                                   {
                                       { "/Size", this.objects.Count + 1 },
                                       { "/Root", this.catalog },
                                       { "/Info", this.metadata }
                                   };
-                w.Write(trailer);
-                w.WriteLine();
+            w.Write(trailer);
+            w.WriteLine();
 
-                // Start of cross-reference table
-                w.WriteLine("startxref");
-                w.WriteLine("{0}", xrefPosition);
+            // Start of cross-reference table
+            w.WriteLine("startxref");
+            w.WriteLine("{0}", xrefPosition);
 
-                // write PDF end of file marker
-                w.Write("%%EOF");
-            }
+            // write PDF end of file marker
+            w.Write("%%EOF");
         }
 
         /// <summary>
@@ -891,23 +871,23 @@ namespace OxyPlot
             var sb = new StringBuilder(ba.Length * 5 / 4);
             const int AsciiOffset = 33;
 
-            Action<int, uint> encodeBlock = (length, t) =>
+            void encodeBlock(int length, uint t)
+            {
+                for (var i = encodedBlock.Length - 1; i >= 0; i--)
                 {
-                    for (var i = encodedBlock.Length - 1; i >= 0; i--)
-                    {
-                        encodedBlock[i] = (byte)((t % 85) + AsciiOffset);
-                        t /= 85;
-                    }
+                    encodedBlock[i] = (byte)(t % 85 + AsciiOffset);
+                    t /= 85;
+                }
 
-                    for (var i = 0; i < length; i++)
-                    {
-                        sb.Append((char)encodedBlock[i]);
-                    }
-                };
+                for (var i = 0; i < length; i++)
+                {
+                    sb.Append((char)encodedBlock[i]);
+                }
+            }
 
             uint tuple = 0;
-            int count = 0;
-            foreach (byte b in ba)
+            var count = 0;
+            foreach (var b in ba)
             {
                 if (count >= 4 - 1)
                 {
@@ -926,7 +906,7 @@ namespace OxyPlot
                 }
                 else
                 {
-                    tuple |= (uint)(b << (24 - (count * 8)));
+                    tuple |= (uint)(b << (24 - count * 8));
                     count++;
                 }
             }
@@ -957,21 +937,13 @@ namespace OxyPlot
                 fontName = fontName.ToLower();
             }
 
-            switch (fontName)
+            return fontName switch
             {
-                case "arial":
-                case "helvetica":
-                    return StandardFonts.Helvetica.GetFont(bold, italic);
-                case "times":
-                case "times new roman":
-                    return StandardFonts.Times.GetFont(bold, italic);
-                case "courier":
-                case "courier new":
-                    return StandardFonts.Courier.GetFont(bold, italic);
-                default:
-                    // Use Arial/Helvetica as default
-                    return StandardFonts.Helvetica.GetFont(bold, italic);
-            }
+                "arial" or "helvetica" => StandardFonts.Helvetica.GetFont(bold, italic),
+                "times" or "times new roman" => StandardFonts.Times.GetFont(bold, italic),
+                "courier" or "courier new" => StandardFonts.Courier.GetFont(bold, italic),
+                _ => StandardFonts.Helvetica.GetFont(bold, italic),// Use Arial/Helvetica as default
+            };
         }
 
         /// <summary>
@@ -985,8 +957,7 @@ namespace OxyPlot
         /// <returns>The cached or created value.</returns>
         private static T2 GetCached<T1, T2>(T1 key, Dictionary<T1, T2> cache, Func<T2> create)
         {
-            T2 value;
-            if (cache.TryGetValue(key, out value))
+            if (cache.TryGetValue(key, out var value))
             {
                 return value;
             }
@@ -1029,7 +1000,7 @@ namespace OxyPlot
         {
             var gs = this.AddObject(PdfWriter.ObjectType.ExtGState);
             gs[key] = value;
-            string statekey = "/GS" + this.extgstate.Count;
+            var statekey = "/GS" + this.extgstate.Count;
             this.extgstate.Add(statekey, gs);
             return statekey;
         }
@@ -1041,7 +1012,7 @@ namespace OxyPlot
         /// <returns>The added object.</returns>
         private string AddImage(PortableDocumentImage image)
         {
-            int i = this.xobjects.Count + 1;
+            var i = this.xobjects.Count + 1;
             var imageObject = this.AddObject(PdfWriter.ObjectType.XObject);
             imageObject["/Subtype"] = "/Image";
             imageObject["/Width"] = image.Width;
@@ -1060,7 +1031,7 @@ namespace OxyPlot
             imageObject["/Filter"] = "/ASCII85Decode";
 
             imageObject.Append(encodedData);
-            string imageId = "/Image" + i;
+            var imageId = "/Image" + i;
             this.xobjects.Add(imageId, imageObject);
 
             if (image.MaskBits != null)
@@ -1124,8 +1095,8 @@ namespace OxyPlot
                 f["/Widths"] = font.Widths;
             }
 
-            int i = this.fonts.Count + 1;
-            string fontId = "/F" + i;
+            var i = this.fonts.Count + 1;
+            var fontId = "/F" + i;
             this.fonts.Add(fontId, f);
             return fontId;
         }
@@ -1174,11 +1145,6 @@ namespace OxyPlot
             private readonly Dictionary<string, object> dictionary;
 
             /// <summary>
-            /// The object number
-            /// </summary>
-            private readonly int objectNumber;
-
-            /// <summary>
             /// The contents
             /// </summary>
             private readonly StringBuilder contents;
@@ -1189,7 +1155,7 @@ namespace OxyPlot
             /// <param name="objectNumber">The object number.</param>
             public PortableDocumentObject(int objectNumber)
             {
-                this.objectNumber = objectNumber;
+                this.ObjectNumber = objectNumber;
                 this.contents = new StringBuilder();
                 this.dictionary = new Dictionary<string, object>();
             }
@@ -1198,26 +1164,17 @@ namespace OxyPlot
             /// Gets the object number.
             /// </summary>
             /// <value>The object number.</value>
-            public int ObjectNumber
-            {
-                get
-                {
-                    return this.objectNumber;
-                }
-            }
+            public int ObjectNumber { get; }
 
             /// <summary>
             /// Sets the dictionary value for the specified key.
             /// </summary>
-            /// <value>The <see cref="System.Object" />.</value>
+            /// <value>The <see cref="object" />.</value>
             /// <param name="key">The key.</param>
             /// <returns>The object.</returns>
             public object this[string key]
             {
-                set
-                {
-                    this.dictionary[key] = value;
-                }
+                set => this.dictionary[key] = value;
             }
 
             /// <summary>
@@ -1256,7 +1213,7 @@ namespace OxyPlot
 
                     // convert to a byte[] buffer
                     streamBytes = new byte[c.Length];
-                    for (int i = 0; i < c.Length; i++)
+                    for (var i = 0; i < c.Length; i++)
                     {
                         streamBytes[i] = (byte)c[i];
                     }

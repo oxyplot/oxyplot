@@ -11,7 +11,6 @@ namespace OxyPlot.Series
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
 
     /// <summary>
     /// Represents a dual view (candlestick + volume) series for OHLCV bars
@@ -67,15 +66,9 @@ namespace OxyPlot.Series
         /// <value>The items.</value>
         public List<OhlcvItem> Items
         {
-            get
-            {
-                return (this.data != null) ? this.data : (this.data = new List<OhlcvItem>());
-            }
+            get => this.data ??= new List<OhlcvItem>();
 
-            set
-            {
-                this.data = value;
-            }
+            set => this.data = value;
         }
 
         /// <summary>
@@ -160,12 +153,9 @@ namespace OxyPlot.Series
         /// <param name="bar">The Bar.</param>
         public void Append(OhlcvItem bar)
         {
-            if (this.data == null)
-            {
-                this.data = new List<OhlcvItem>();
-            }
+            this.data ??= new List<OhlcvItem>();
 
-            if (this.data.Count > 0 && this.data[this.data.Count - 1].X > bar.X)
+            if (this.data.Count > 0 && this.data[^1].X > bar.X)
             {
                 throw new ArgumentException("cannot append bar out of order, must be sequential in X");
             }
@@ -222,7 +212,7 @@ namespace OxyPlot.Series
             var xmax = this.XAxis.ClipMaximum;
             this.winIndex = OhlcvItem.FindIndex(items, xmin, this.winIndex);
 
-            for (int i = this.winIndex; i < nitems; i++)
+            for (var i = this.winIndex; i < nitems; i++)
             {
                 var bar = items[i];
 
@@ -243,55 +233,55 @@ namespace OxyPlot.Series
                 switch (this.VolumeStyle)
                 {
                     case VolumeStyle.Combined:
-                        {
-                            var p2 = this.Transform(bar.X + halfDataCandleWidth, Math.Abs(bar.BuyVolume - bar.SellVolume));
-                            var fillcolor = (bar.BuyVolume > bar.SellVolume) ? barfillUp : barfillDown;
-                            var linecolor = (bar.BuyVolume > bar.SellVolume) ? lineUp : lineDown;
-                            var rect1 = new OxyRect(p1, p2);
-                            rc.DrawRectangle(rect1, fillcolor, linecolor, this.StrokeThickness, this.EdgeRenderingMode);
-                        }
+                    {
+                        var p2 = this.Transform(bar.X + halfDataCandleWidth, Math.Abs(bar.BuyVolume - bar.SellVolume));
+                        var fillcolor = (bar.BuyVolume > bar.SellVolume) ? barfillUp : barfillDown;
+                        var linecolor = (bar.BuyVolume > bar.SellVolume) ? lineUp : lineDown;
+                        var rect1 = new OxyRect(p1, p2);
+                        rc.DrawRectangle(rect1, fillcolor, linecolor, this.StrokeThickness, this.EdgeRenderingMode);
+                    }
 
-                        break;
+                    break;
 
                     case VolumeStyle.PositiveNegative:
-                        {
-                            var p2Buy = this.Transform(bar.X + halfDataCandleWidth, bar.BuyVolume);
-                            var p2Bell = this.Transform(bar.X + halfDataCandleWidth, -bar.SellVolume);
+                    {
+                        var p2Buy = this.Transform(bar.X + halfDataCandleWidth, bar.BuyVolume);
+                        var p2Bell = this.Transform(bar.X + halfDataCandleWidth, -bar.SellVolume);
 
-                            var rectBuy = new OxyRect(p1, p2Buy);
-                            var rectSell = new OxyRect(p1, p2Bell);
+                        var rectBuy = new OxyRect(p1, p2Buy);
+                        var rectSell = new OxyRect(p1, p2Bell);
 
-                            rc.DrawRectangle(rectBuy, fillUp, lineUp, this.StrokeThickness, this.EdgeRenderingMode);
-                            rc.DrawRectangle(rectSell, fillDown, lineDown, this.StrokeThickness, this.EdgeRenderingMode);
-                        }
+                        rc.DrawRectangle(rectBuy, fillUp, lineUp, this.StrokeThickness, this.EdgeRenderingMode);
+                        rc.DrawRectangle(rectSell, fillDown, lineDown, this.StrokeThickness, this.EdgeRenderingMode);
+                    }
 
-                        break;
+                    break;
 
                     case VolumeStyle.Stacked:
+                    {
+                        var p2Buy = this.Transform(bar.X + halfDataCandleWidth, bar.BuyVolume);
+                        var p2Sell = this.Transform(bar.X + halfDataCandleWidth, bar.SellVolume);
+                        var pBoth = this.Transform(bar.X - halfDataCandleWidth, bar.BuyVolume + bar.SellVolume);
+
+                        OxyRect rectBuy;
+                        OxyRect rectSell;
+
+                        if (bar.BuyVolume > bar.SellVolume)
                         {
-                            var p2Buy = this.Transform(bar.X + halfDataCandleWidth, bar.BuyVolume);
-                            var p2Sell = this.Transform(bar.X + halfDataCandleWidth, bar.SellVolume);
-                            var pBoth = this.Transform(bar.X - halfDataCandleWidth, bar.BuyVolume + bar.SellVolume);
-
-                            OxyRect rectBuy;
-                            OxyRect rectSell;
-
-                            if (bar.BuyVolume > bar.SellVolume)
-                            {
-                                rectSell = new OxyRect(p1, p2Sell);
-                                rectBuy = new OxyRect(p2Sell, pBoth);
-                            }
-                            else
-                            {
-                                rectBuy = new OxyRect(p1, p2Buy);
-                                rectSell = new OxyRect(p2Buy, pBoth);
-                            }
-
-                            rc.DrawRectangle(rectBuy, fillUp, lineUp, this.StrokeThickness, this.EdgeRenderingMode);
-                            rc.DrawRectangle(rectSell, fillDown, lineDown, this.StrokeThickness, this.EdgeRenderingMode);
-
-                            break;
+                            rectSell = new OxyRect(p1, p2Sell);
+                            rectBuy = new OxyRect(p2Sell, pBoth);
                         }
+                        else
+                        {
+                            rectBuy = new OxyRect(p1, p2Buy);
+                            rectSell = new OxyRect(p2Buy, pBoth);
+                        }
+
+                        rc.DrawRectangle(rectBuy, fillUp, lineUp, this.StrokeThickness, this.EdgeRenderingMode);
+                        rc.DrawRectangle(rectSell, fillDown, lineDown, this.StrokeThickness, this.EdgeRenderingMode);
+
+                        break;
+                    }
                     case VolumeStyle.None:
                         break;
                     default:
@@ -324,10 +314,10 @@ namespace OxyPlot.Series
         /// <param name="legendBox">The bounding rectangle of the legend box.</param>
         public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
         {
-            double xmid = (legendBox.Left + legendBox.Right) / 2;
-            double yopen = legendBox.Top + ((legendBox.Bottom - legendBox.Top) * 0.7);
-            double yclose = legendBox.Top + ((legendBox.Bottom - legendBox.Top) * 0.3);
-            double[] dashArray = LineStyle.Solid.GetDashArray();
+            var xmid = (legendBox.Left + legendBox.Right) / 2;
+            var yopen = legendBox.Top + (legendBox.Bottom - legendBox.Top) * 0.7;
+            var yclose = legendBox.Top + (legendBox.Bottom - legendBox.Top) * 0.3;
+            var dashArray = LineStyle.Solid.GetDashArray();
 
             var fillUp = this.GetSelectableFillColor(this.PositiveColor);
             var lineUp = this.GetSelectableColor(this.PositiveColor.ChangeIntensity(this.StrokeIntensity));
@@ -345,7 +335,7 @@ namespace OxyPlot.Series
                     LineJoin.Miter);
 
                 rc.DrawRectangle(
-                    new OxyRect(xmid - (candlewidth * 0.5), yclose, candlewidth, yopen - yclose),
+                    new OxyRect(xmid - candlewidth * 0.5, yclose, candlewidth, yopen - yclose),
                     fillUp,
                     lineUp,
                     this.StrokeThickness,
@@ -383,11 +373,11 @@ namespace OxyPlot.Series
             var pidx = OhlcvItem.FindIndex(this.data, targetX, this.winIndex);
             var nidx = ((pidx + 1) < this.data.Count) ? pidx + 1 : pidx;
 
-            Func<OhlcvItem, double> distance = bar =>
+            double distance(OhlcvItem bar)
             {
                 var dx = bar.X - xy.X;
                 return dx * dx;
-            };
+            }
 
             // determine closest point
             var midx = distance(this.data[pidx]) <= distance(this.data[nidx]) ? pidx : nidx;
@@ -429,7 +419,7 @@ namespace OxyPlot.Series
             var nitems = items.Count;
             this.minDx = double.MaxValue;
 
-            for (int i = 1; i < nitems; i++)
+            for (var i = 1; i < nitems; i++)
             {
                 this.minDx = Math.Min(this.minDx, items[i].X - items[i - 1].X);
                 if (this.minDx < 0)
@@ -461,15 +451,15 @@ namespace OxyPlot.Series
             switch (this.VolumeStyle)
             {
                 case VolumeStyle.PositiveNegative:
-                    ymin = -(yavg + (yquartile / 2.0));
-                    ymax = +(yavg + (yquartile / 2.0));
+                    ymin = -(yavg + yquartile / 2.0);
+                    ymax = +(yavg + yquartile / 2.0);
                     break;
                 case VolumeStyle.Stacked:
                     ymax = yavg + yquartile;
                     ymin = 0;
                     break;
                 default:
-                    ymax = yavg + (yquartile / 2.0);
+                    ymax = yavg + yquartile / 2.0;
                     ymin = 0;
                     break;
             }

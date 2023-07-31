@@ -22,21 +22,21 @@ namespace OxyPlot
             //// TODO: Change to Type 1 fonts?
 
             var arialRegular = new PortableDocumentFont
-                        {
-                            Ascent = 905,
-                            CapHeight = 716,
-                            Descent = -212,
-                            Flags = 32,
-                            FontBoundingBox = new[] { -665, -325, 2046, 1040 },
-                            ItalicAngle = 0,
-                            StemV = 0,
-                            XHeight = 519,
-                            SubType = FontSubType.TrueType,
-                            FontName = "Arial",
-                            BaseFont = "Arial",
-                            Encoding = FontEncoding.WinAnsiEncoding,
-                            FirstChar = 0,
-                            Widths = new[]
+            {
+                Ascent = 905,
+                CapHeight = 716,
+                Descent = -212,
+                Flags = 32,
+                FontBoundingBox = new[] { -665, -325, 2046, 1040 },
+                ItalicAngle = 0,
+                StemV = 0,
+                XHeight = 519,
+                SubType = FontSubType.TrueType,
+                FontName = "Arial",
+                BaseFont = "Arial",
+                Encoding = FontEncoding.WinAnsiEncoding,
+                FirstChar = 0,
+                Widths = new[]
                                          {
                                              750, 750, 750, 750, 750, 750, 750, 750, 750, 750, 750, 750, 750, 750,
                                              750, 750, 750, 750, 750, 750, 750, 750, 750, 750, 750, 750, 750, 750,
@@ -58,23 +58,23 @@ namespace OxyPlot
                                              556, 556, 556, 277, 277, 277, 277, 556, 556, 556, 556, 556, 556, 556,
                                              548, 610, 556, 556, 556, 556, 500, 556, 500
                                          }
-                        };
+            };
             var arialItalic = new PortableDocumentFont
-                              {
-                                  Ascent = 905,
-                                  CapHeight = 716,
-                                  Descent = -212,
-                                  Flags = 32,
-                                  FontBoundingBox = new[] { -517, -325, 1359, 998 },
-                                  ItalicAngle = -12,
-                                  StemV = 0,
-                                  XHeight = 519,
-                                  SubType = FontSubType.TrueType,
-                                  FontName = "Arial,Italic",
-                                  BaseFont = "Arial,Italic",
-                                  Encoding = FontEncoding.WinAnsiEncoding,
-                                  FirstChar = 0,
-                                  Widths =
+            {
+                Ascent = 905,
+                CapHeight = 716,
+                Descent = -212,
+                Flags = 32,
+                FontBoundingBox = new[] { -517, -325, 1359, 998 },
+                ItalicAngle = -12,
+                StemV = 0,
+                XHeight = 519,
+                SubType = FontSubType.TrueType,
+                FontName = "Arial,Italic",
+                BaseFont = "Arial,Italic",
+                Encoding = FontEncoding.WinAnsiEncoding,
+                FirstChar = 0,
+                Widths =
                                       new[]
                                           {
                                               750, 750, 750, 750, 750, 750, 750, 750, 750, 750, 750, 750, 750, 750,
@@ -97,23 +97,23 @@ namespace OxyPlot
                                               277, 277, 556, 556, 556, 556, 556, 556, 556, 548, 610, 556, 556, 556,
                                               556, 500, 556, 500
                                           }
-                              };
+            };
             var arialBold = new PortableDocumentFont
-                            {
-                                Ascent = 905,
-                                CapHeight = 716,
-                                Descent = -212,
-                                Flags = 32,
-                                FontBoundingBox = new[] { -628, -376, 2000, 1056 },
-                                ItalicAngle = 0,
-                                StemV = 0,
-                                XHeight = 519,
-                                SubType = FontSubType.TrueType,
-                                FontName = "Arial,Bold",
-                                BaseFont = "Arial,Bold",
-                                Encoding = FontEncoding.WinAnsiEncoding,
-                                FirstChar = 0,
-                                Widths =
+            {
+                Ascent = 905,
+                CapHeight = 716,
+                Descent = -212,
+                Flags = 32,
+                FontBoundingBox = new[] { -628, -376, 2000, 1056 },
+                ItalicAngle = 0,
+                StemV = 0,
+                XHeight = 519,
+                SubType = FontSubType.TrueType,
+                FontName = "Arial,Bold",
+                BaseFont = "Arial,Bold",
+                Encoding = FontEncoding.WinAnsiEncoding,
+                FirstChar = 0,
+                Widths =
                                     new[]
                                         {
                                             750, 750, 750, 750, 750, 750, 750, 750, 750, 750, 750, 750, 750, 750, 750,
@@ -135,23 +135,23 @@ namespace OxyPlot
                                             277, 277, 610, 610, 610, 610, 610, 610, 610, 548, 610, 610, 610, 610, 610,
                                             556, 610, 556
                                         }
-                            };
+            };
             var arialBoldItalic = new PortableDocumentFont
-                                  {
-                                      Ascent = 905,
-                                      CapHeight = 716,
-                                      Descent = -212,
-                                      Flags = 32,
-                                      FontBoundingBox = new[] { -560, -376, 1390, 1018 },
-                                      ItalicAngle = 0,
-                                      StemV = 0,
-                                      XHeight = 519,
-                                      SubType = FontSubType.TrueType,
-                                      FontName = "Arial,BoldItalic",
-                                      BaseFont = "Arial,BoldItalic",
-                                      Encoding = FontEncoding.WinAnsiEncoding,
-                                      FirstChar = 0,
-                                      Widths =
+            {
+                Ascent = 905,
+                CapHeight = 716,
+                Descent = -212,
+                Flags = 32,
+                FontBoundingBox = new[] { -560, -376, 1390, 1018 },
+                ItalicAngle = 0,
+                StemV = 0,
+                XHeight = 519,
+                SubType = FontSubType.TrueType,
+                FontName = "Arial,BoldItalic",
+                BaseFont = "Arial,BoldItalic",
+                Encoding = FontEncoding.WinAnsiEncoding,
+                FirstChar = 0,
+                Widths =
                                           new[]
                                               {
                                                   750, 750, 750, 750, 750, 750, 750, 750, 750, 750, 750, 750, 750, 750,
@@ -174,7 +174,7 @@ namespace OxyPlot
                                                   556, 556, 277, 277, 277, 277, 610, 610, 610, 610, 610, 610, 610, 548,
                                                   610, 610, 610, 610, 610, 556, 610, 556
                                               }
-                                  };
+            };
 
             Helvetica = new PortableDocumentFontFamily
             {
@@ -184,7 +184,7 @@ namespace OxyPlot
                 BoldItalicFont = arialBoldItalic
             };
 
-            var timesRegular  = new PortableDocumentFont
+            var timesRegular = new PortableDocumentFont
             {
                 Ascent = 891,
                 CapHeight = 662,

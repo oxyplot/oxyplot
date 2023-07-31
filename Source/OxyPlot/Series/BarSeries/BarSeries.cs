@@ -9,7 +9,6 @@
 
 namespace OxyPlot.Series
 {
-    using OxyPlot.Axes;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -173,7 +172,7 @@ namespace OxyPlot.Series
             var height = (legendBox.Bottom - legendBox.Top) * 0.8;
             var width = height;
             rc.DrawRectangle(
-                new OxyRect(xmid - (0.5 * width), ymid - (0.5 * height), width, height),
+                new OxyRect(xmid - 0.5 * width, ymid - 0.5 * height, width, height),
                 this.GetSelectableColor(this.ActualFillColor),
                 this.StrokeColor,
                 this.StrokeThickness,

@@ -9,11 +9,10 @@
 
 namespace OxyPlot.Series
 {
+    using OxyPlot;
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using OxyPlot;
-    using OxyPlot.Series;
 
     /// <summary>
     /// Represents a series where the line can be rendered using a different style
@@ -71,15 +70,9 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets the actual extrapolation line style.
         /// </summary>
-        public LineStyle ActualExtrapolationLineStyle
-        {
-            get
-            {
-                return this.ExtrapolationLineStyle != LineStyle.Automatic ?
+        public LineStyle ActualExtrapolationLineStyle => this.ExtrapolationLineStyle != LineStyle.Automatic ?
                     this.ExtrapolationLineStyle :
                     this.defaultExtrapolationLineStyle;
-            }
-        }
 
         /// <summary>
         /// Gets or sets a value indicating whether the extrapolated regions of the series will
@@ -96,13 +89,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets the actual dash array for the extrapolated parts of the line.
         /// </summary>
-        protected double[] ActualExtrapolationDashArray
-        {
-            get
-            {
-                return this.ExtrapolationDashes ?? this.ActualExtrapolationLineStyle.GetDashArray();
-            }
-        }
+        protected double[] ActualExtrapolationDashArray => this.ExtrapolationDashes ?? this.ActualExtrapolationLineStyle.GetDashArray();
 
         /// <summary>
         /// Renders the legend symbol for the extrapolation line series on the
@@ -223,7 +210,7 @@ namespace OxyPlot.Series
             {
                 var centerX = this.InverseTransform(rect.Center).X;
 
-                bool isInterval = this.orderedIntervals != null
+                var isInterval = this.orderedIntervals != null
                     && this.orderedIntervals.Any(i => i.Contains(centerX));
 
                 using (rc.AutoResetClip(rect))
@@ -244,7 +231,7 @@ namespace OxyPlot.Series
 
             if (this.orderedIntervals != null && this.orderedIntervals.Any())
             {
-                IEnumerable<double> flatLimits
+                var flatLimits
                     = this.Flatten(this.orderedIntervals).Where(l => l >= minX && l <= maxX);
 
                 foreach (var limiter in flatLimits)
@@ -282,7 +269,7 @@ namespace OxyPlot.Series
         /// </summary>
         private void RenderLinePart(IRenderContext rc, IList<ScreenPoint> pointsToRender, bool isInterval)
         {
-            OxyColor color = isInterval ? this.ExtrapolationColor : this.Color;
+            var color = isInterval ? this.ExtrapolationColor : this.Color;
 
             var dashes = isInterval ?
                 this.ActualExtrapolationDashArray :
@@ -308,15 +295,15 @@ namespace OxyPlot.Series
 
             if (intervals != null)
             {
-                IOrderedEnumerable<DataRange> ordered = intervals.OrderBy(i => i.Minimum);
+                var ordered = intervals.OrderBy(i => i.Minimum);
 
                 foreach (var current in ordered)
                 {
-                    DataRange previous = orderedList.LastOrDefault();
+                    var previous = orderedList.LastOrDefault();
 
                     if (current.IntersectsWith(previous))
                     {
-                        orderedList[orderedList.Count - 1]
+                        orderedList[^1]
                             = new DataRange(previous.Minimum, Math.Max(previous.Maximum, current.Maximum));
                     }
                     else

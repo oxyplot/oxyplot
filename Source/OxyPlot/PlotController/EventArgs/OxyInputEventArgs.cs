@@ -29,34 +29,16 @@ namespace OxyPlot
         /// <summary>
         /// Gets a value indicating whether the alt key was pressed when the event was raised.
         /// </summary>
-        public bool IsAltDown
-        {
-            get
-            {
-                return (this.ModifierKeys & OxyModifierKeys.Alt) == OxyModifierKeys.Alt;
-            }
-        }
+        public bool IsAltDown => (this.ModifierKeys & OxyModifierKeys.Alt) == OxyModifierKeys.Alt;
 
         /// <summary>
         /// Gets a value indicating whether the control key was pressed when the event was raised.
         /// </summary>
-        public bool IsControlDown
-        {
-            get
-            {
-                return (this.ModifierKeys & OxyModifierKeys.Control) == OxyModifierKeys.Control;
-            }
-        }
+        public bool IsControlDown => (this.ModifierKeys & OxyModifierKeys.Control) == OxyModifierKeys.Control;
 
         /// <summary>
         /// Gets a value indicating whether the shift key was pressed when the event was raised.
         /// </summary>
-        public bool IsShiftDown
-        {
-            get
-            {
-                return (this.ModifierKeys & OxyModifierKeys.Shift) == OxyModifierKeys.Shift;
-            }
-        }
+        public bool IsShiftDown => (this.ModifierKeys & OxyModifierKeys.Shift) == OxyModifierKeys.Shift;
     }
 }

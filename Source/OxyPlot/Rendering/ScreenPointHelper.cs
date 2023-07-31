@@ -31,10 +31,10 @@ namespace OxyPlot
                 throw new ArgumentNullException("points");
             }
 
-            double minimumDistance = double.MaxValue;
+            var minimumDistance = double.MaxValue;
             var nearestPoint = default(ScreenPoint);
 
-            for (int i = 0; i + 1 < points.Count; i++)
+            for (var i = 0; i + 1 < points.Count; i++)
             {
                 var p1 = points[i];
                 var p2 = points[i + 1];
@@ -51,7 +51,7 @@ namespace OxyPlot
                     continue;
                 }
 
-                double l2 = (point - nearestPointOnSegment).LengthSquared;
+                var l2 = (point - nearestPointOnSegment).LengthSquared;
 
                 if (l2 < minimumDistance)
                 {
@@ -73,9 +73,9 @@ namespace OxyPlot
         /// <remarks>See <a href="http://paulbourke.net/geometry/pointlineplane/">Bourke</a>.</remarks>
         public static ScreenPoint FindPointOnLine(ScreenPoint p, ScreenPoint p1, ScreenPoint p2)
         {
-            double dx = p2.x - p1.x;
-            double dy = p2.y - p1.y;
-            double u = FindPositionOnLine(p, p1, p2);
+            var dx = p2.x - p1.x;
+            var dy = p2.y - p1.y;
+            var u = FindPositionOnLine(p, p1, p2);
 
             if (double.IsNaN(u))
             {
@@ -92,7 +92,7 @@ namespace OxyPlot
                 u = 1;
             }
 
-            return new ScreenPoint(p1.x + (u * dx), p1.y + (u * dy));
+            return new ScreenPoint(p1.x + u * dx, p1.y + u * dy);
         }
 
         /// <summary>
@@ -105,10 +105,10 @@ namespace OxyPlot
         /// <remarks>See <a href="http://paulbourke.net/geometry/pointlineplane/">Bourke</a>.</remarks>
         public static double FindPositionOnLine(ScreenPoint p, ScreenPoint p1, ScreenPoint p2)
         {
-            double dx = p2.x - p1.x;
-            double dy = p2.y - p1.y;
-            double u1 = ((p.x - p1.x) * dx) + ((p.y - p1.y) * dy);
-            double u2 = (dx * dx) + (dy * dy);
+            var dx = p2.x - p1.x;
+            var dy = p2.y - p1.y;
+            var u1 = (p.x - p1.x) * dx + (p.y - p1.y) * dy;
+            var u2 = dx * dx + dy * dy;
 
             if (u2 < 1e-6)
             {
@@ -131,12 +131,12 @@ namespace OxyPlot
                 return false;
             }
 
-            int nvert = pts.Count;
-            bool c = false;
+            var nvert = pts.Count;
+            var c = false;
             for (int i = 0, j = nvert - 1; i < nvert; j = i++)
             {
                 if (((pts[i].Y > p.Y) != (pts[j].Y > p.Y))
-                    && (p.X < ((pts[j].X - pts[i].X) * ((p.Y - pts[i].Y) / (pts[j].Y - pts[i].Y))) + pts[i].X))
+                    && (p.X < (pts[j].X - pts[i].X) * ((p.Y - pts[i].Y) / (pts[j].Y - pts[i].Y)) + pts[i].X))
                 {
                     c = !c;
                 }
@@ -153,16 +153,16 @@ namespace OxyPlot
         /// <returns>List of resampled points.</returns>
         public static IList<ScreenPoint> ResamplePoints(IList<ScreenPoint> allPoints, double minimumDistance)
         {
-            double minimumSquaredDistance = minimumDistance * minimumDistance;
-            int n = allPoints.Count;
+            var minimumSquaredDistance = minimumDistance * minimumDistance;
+            var n = allPoints.Count;
             var result = new List<ScreenPoint>(n);
             if (n > 0)
             {
                 result.Add(allPoints[0]);
-                int i0 = 0;
-                for (int i = 1; i < n; i++)
+                var i0 = 0;
+                for (var i = 1; i < n; i++)
                 {
-                    double distSquared = allPoints[i0].DistanceToSquared(allPoints[i]);
+                    var distSquared = allPoints[i0].DistanceToSquared(allPoints[i]);
                     if (distSquared < minimumSquaredDistance && i != n - 1)
                     {
                         continue;
@@ -187,10 +187,10 @@ namespace OxyPlot
             double cy = 0;
             double a = 0;
 
-            for (int i = 0; i < points.Count; i++)
+            for (var i = 0; i < points.Count; i++)
             {
-                int i1 = (i + 1) % points.Count;
-                double da = (points[i].x * points[i1].y) - (points[i1].x * points[i].y);
+                var i1 = (i + 1) % points.Count;
+                var da = points[i].x * points[i1].y - points[i1].x * points[i].y;
                 cx += (points[i].x + points[i1].x) * da;
                 cy += (points[i].y + points[i1].y) * da;
                 a += da;

@@ -21,7 +21,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// The divisor value used to calculate tolerance for line smoothing.
         /// </summary>
-        private const double ToleranceDivisor = 200;
+        private const double toleranceDivisor = 200;
 
         /// <summary>
         /// The output buffer.
@@ -54,11 +54,6 @@ namespace OxyPlot.Series
         private LineStyle defaultLineStyle;
 
         /// <summary>
-        /// The smoothed points.
-        /// </summary>
-        private List<DataPoint> smoothedPoints;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref = "LineSeries" /> class.
         /// </summary>
         public LineSeries()
@@ -81,7 +76,7 @@ namespace OxyPlot.Series
 
             this.CanTrackerInterpolatePoints = true;
             this.LabelMargin = 6;
-            this.smoothedPoints = new List<DataPoint>();
+            this.SmoothedPoints = new List<DataPoint>();
         }
 
         /// <summary>
@@ -218,60 +213,30 @@ namespace OxyPlot.Series
         /// Gets the actual color.
         /// </summary>
         /// <value>The actual color.</value>
-        public OxyColor ActualColor
-        {
-            get
-            {
-                return this.Color.GetActualColor(this.defaultColor);
-            }
-        }
+        public OxyColor ActualColor => this.Color.GetActualColor(this.defaultColor);
 
         /// <summary>
         /// Gets the actual marker fill color.
         /// </summary>
         /// <value>The actual color.</value>
-        public OxyColor ActualMarkerFill
-        {
-            get
-            {
-                return this.MarkerFill.GetActualColor(this.defaultMarkerFill);
-            }
-        }
+        public OxyColor ActualMarkerFill => this.MarkerFill.GetActualColor(this.defaultMarkerFill);
 
         /// <summary>
         /// Gets the actual line style.
         /// </summary>
         /// <value>The actual line style.</value>
-        protected LineStyle ActualLineStyle
-        {
-            get
-            {
-                return this.LineStyle != LineStyle.Automatic ? this.LineStyle : this.defaultLineStyle;
-            }
-        }
+        protected LineStyle ActualLineStyle => this.LineStyle != LineStyle.Automatic ? this.LineStyle : this.defaultLineStyle;
 
         /// <summary>
         /// Gets the actual dash array for the line.
         /// </summary>
-        protected double[] ActualDashArray
-        {
-            get
-            {
-                return this.Dashes ?? this.ActualLineStyle.GetDashArray();
-            }
-        }
+        protected double[] ActualDashArray => this.Dashes ?? this.ActualLineStyle.GetDashArray();
 
         /// <summary>
         /// Gets the smoothed points.
         /// </summary>
         /// <value>The smoothed points.</value>
-        protected List<DataPoint> SmoothedPoints
-        {
-            get
-            {
-                return this.smoothedPoints;
-            }
-        }
+        protected List<DataPoint> SmoothedPoints { get; private set; }
 
         /// <summary>
         /// Gets the point on the series that is nearest the specified point.
@@ -305,9 +270,9 @@ namespace OxyPlot.Series
                         this.TrackerFormatString,
                         result.Item,
                         this.Title,
-                        this.XAxis.Title ?? XYAxisSeries.DefaultXAxisTitle,
+                        this.XAxis.Title ?? DefaultXAxisTitle,
                         this.XAxis.GetValue(result.DataPoint.X),
-                        this.YAxis.Title ?? XYAxisSeries.DefaultYAxisTitle,
+                        this.YAxis.Title ?? DefaultYAxisTitle,
                         this.YAxis.GetValue(result.DataPoint.Y));
                 }
 
@@ -354,8 +319,8 @@ namespace OxyPlot.Series
         /// <param name="legendBox">The bounding rectangle of the legend box.</param>
         public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
         {
-            double xmid = (legendBox.Left + legendBox.Right) / 2;
-            double ymid = (legendBox.Top + legendBox.Bottom) / 2;
+            var xmid = (legendBox.Left + legendBox.Right) / 2;
+            var ymid = (legendBox.Top + legendBox.Bottom) / 2;
             var pts = new[] { new ScreenPoint(legendBox.Left, ymid), new ScreenPoint(legendBox.Right, ymid) };
             rc.DrawLine(
                 pts,
@@ -439,123 +404,120 @@ namespace OxyPlot.Series
             var dashArray = areBrokenLinesRendered ? this.BrokenLineStyle.GetDashArray() : null;
             var broken = areBrokenLinesRendered ? new List<ScreenPoint>(2) : null;
 
-            if (this.contiguousScreenPointsBuffer == null)
+            this.contiguousScreenPointsBuffer ??= new List<ScreenPoint>(points.Count);
+
+            var startIdx = 0;
+            var xmax = double.MaxValue;
+
+            if (this.IsXMonotonic)
             {
-                this.contiguousScreenPointsBuffer = new List<ScreenPoint>(points.Count);
+                // determine render range
+                var xmin = this.XAxis.ClipMinimum;
+                xmax = this.XAxis.ClipMaximum;
+                this.WindowStartIndex = this.UpdateWindowStartIndex(points, point => point.X, xmin, this.WindowStartIndex);
+
+                startIdx = this.WindowStartIndex;
             }
 
-			int startIdx = 0;
-			double xmax = double.MaxValue;
+            for (var i = startIdx; i < points.Count; i++)
+            {
+                if (!this.ExtractNextContiguousLineSegment(points, ref i, ref lastValidPoint, xmax, broken, this.contiguousScreenPointsBuffer))
+                {
+                    break;
+                }
 
-			if (this.IsXMonotonic)
-			{
-				// determine render range
-				var xmin = this.XAxis.ClipMinimum;
-				xmax = this.XAxis.ClipMaximum;
-				this.WindowStartIndex = this.UpdateWindowStartIndex(points, point => point.X, xmin, this.WindowStartIndex);
+                if (areBrokenLinesRendered)
+                {
+                    if (broken.Count > 0)
+                    {
+                        var actualBrokenLineColor = this.BrokenLineColor.IsAutomatic()
+                                                        ? this.ActualColor
+                                                        : this.BrokenLineColor;
 
-				startIdx = this.WindowStartIndex;
-			}
-
-			for (int i = startIdx; i < points.Count; i++)
-	        {
-				if (!this.ExtractNextContiguousLineSegment(points, ref i, ref lastValidPoint, xmax, broken, this.contiguousScreenPointsBuffer))
-		        {
-			        break;
-		        }
-
-				if (areBrokenLinesRendered)
-				{
-					if (broken.Count > 0)
-					{
-						var actualBrokenLineColor = this.BrokenLineColor.IsAutomatic()
-														? this.ActualColor
-														: this.BrokenLineColor;
-
-						rc.DrawLineSegments(
-							broken,
-							actualBrokenLineColor,
-							this.BrokenLineThickness,
+                        rc.DrawLineSegments(
+                            broken,
+                            actualBrokenLineColor,
+                            this.BrokenLineThickness,
                             this.EdgeRenderingMode,
-							dashArray,
-							this.LineJoin);
-						broken.Clear();
-					}
-				}
-				else
-				{
-					lastValidPoint = null;
-				}
+                            dashArray,
+                            this.LineJoin);
+                        broken.Clear();
+                    }
+                }
+                else
+                {
+                    lastValidPoint = null;
+                }
 
-				if (this.Decimator != null)
-				{
-					if (this.decimatorBuffer == null)
-					{
-						this.decimatorBuffer = new List<ScreenPoint>(this.contiguousScreenPointsBuffer.Count);
-					}
-					else
-					{
-						this.decimatorBuffer.Clear();
-					}
+                if (this.Decimator != null)
+                {
+                    if (this.decimatorBuffer == null)
+                    {
+                        this.decimatorBuffer = new List<ScreenPoint>(this.contiguousScreenPointsBuffer.Count);
+                    }
+                    else
+                    {
+                        this.decimatorBuffer.Clear();
+                    }
 
-					this.Decimator(this.contiguousScreenPointsBuffer, this.decimatorBuffer);
-					this.RenderLineAndMarkers(rc, this.decimatorBuffer);
-				}
-				else
-				{
-					this.RenderLineAndMarkers(rc, this.contiguousScreenPointsBuffer);
-				}
+                    this.Decimator(this.contiguousScreenPointsBuffer, this.decimatorBuffer);
+                    this.RenderLineAndMarkers(rc, this.decimatorBuffer);
+                }
+                else
+                {
+                    this.RenderLineAndMarkers(rc, this.contiguousScreenPointsBuffer);
+                }
 
-				this.contiguousScreenPointsBuffer.Clear();
-			}
+                this.contiguousScreenPointsBuffer.Clear();
+            }
         }
 
-	    /// <summary>
-	    /// Extracts a single contiguous line segment beginning with the element at the position of the enumerator when the method
-	    /// is called. Initial invalid data points are ignored.
-	    /// </summary>
-	    /// <param name="pointIdx">Current point index</param>
-	    /// <param name="previousContiguousLineSegmentEndPoint">Initially set to null, but I will update I won't give a broken line if this is null</param>
-	    /// <param name="xmax">Maximum visible X value</param>
-	    /// <param name="broken">place to put broken segment</param>
-	    /// <param name="contiguous">place to put contiguous segment</param>
-	    /// <param name="points">Points collection</param>
-	    /// <returns>
-	    ///   <c>true</c> if line segments are extracted, <c>false</c> if reached end.
-	    /// </returns>
-	    protected bool ExtractNextContiguousLineSegment(
-			IList<DataPoint> points,
-			ref int pointIdx,
-			ref ScreenPoint? previousContiguousLineSegmentEndPoint,
-			double xmax,
+        /// <summary>
+        /// Extracts a single contiguous line segment beginning with the element at the position of the enumerator when the method
+        /// is called. Initial invalid data points are ignored.
+        /// </summary>
+        /// <param name="pointIdx">Current point index</param>
+        /// <param name="previousContiguousLineSegmentEndPoint">Initially set to null, but I will update I won't give a broken line if this is null</param>
+        /// <param name="xmax">Maximum visible X value</param>
+        /// <param name="broken">place to put broken segment</param>
+        /// <param name="contiguous">place to put contiguous segment</param>
+        /// <param name="points">Points collection</param>
+        /// <returns>
+        ///   <c>true</c> if line segments are extracted, <c>false</c> if reached end.
+        /// </returns>
+        protected bool ExtractNextContiguousLineSegment(
+            IList<DataPoint> points,
+            ref int pointIdx,
+            ref ScreenPoint? previousContiguousLineSegmentEndPoint,
+            double xmax,
             // ReSharper disable SuggestBaseTypeForParameter
             List<ScreenPoint> broken,
             List<ScreenPoint> contiguous)
         // ReSharper restore SuggestBaseTypeForParameter
         {
-            DataPoint currentPoint = default(DataPoint);
-		    bool hasValidPoint = false;
-		    
-            // Skip all undefined points
-		    for (; pointIdx < points.Count; pointIdx++)
-		    {
-				currentPoint = points[pointIdx];
-			    if (currentPoint.X > xmax)
-			    {
-				    return false;
-			    }
-			    
-				// ReSharper disable once AssignmentInConditionalExpression
-			    if (hasValidPoint = this.IsValidPoint(currentPoint))
-			    {
-				    break;
-			    }
-		    }
+            DataPoint currentPoint = default;
+            var hasValidPoint = false;
 
-		    if (!hasValidPoint)
-		    {
-			    return false;
-		    }
+            // Skip all undefined points
+            for (; pointIdx < points.Count; pointIdx++)
+            {
+                currentPoint = points[pointIdx];
+                if (currentPoint.X > xmax)
+                {
+                    return false;
+                }
+
+                // ReSharper disable once AssignmentInConditionalExpression
+                if (hasValidPoint = this.IsValidPoint(currentPoint))
+                {
+                    break;
+                }
+            }
+
+            if (!hasValidPoint)
+            {
+                return false;
+            }
 
             // First valid point
             var screenPoint = this.Transform(currentPoint);
@@ -570,26 +532,27 @@ namespace OxyPlot.Series
             // Add first point
             contiguous.Add(screenPoint);
 
-			// Add all points up until the next invalid one
-			int clipCount = 0;
-			for (pointIdx++; pointIdx < points.Count; pointIdx++)
-		    {
-				currentPoint = points[pointIdx];
-				clipCount += currentPoint.X > xmax ? 1 : 0;
-				if (clipCount > 1)
-				{
-					break;
-				}
-				if (!this.IsValidPoint(currentPoint))
-			    {
-				    break;
-			    }
+            // Add all points up until the next invalid one
+            var clipCount = 0;
+            for (pointIdx++; pointIdx < points.Count; pointIdx++)
+            {
+                currentPoint = points[pointIdx];
+                clipCount += currentPoint.X > xmax ? 1 : 0;
+                if (clipCount > 1)
+                {
+                    break;
+                }
 
-				screenPoint = this.Transform(currentPoint);
-				contiguous.Add(screenPoint);
-			}
+                if (!this.IsValidPoint(currentPoint))
+                {
+                    break;
+                }
 
-			previousContiguousLineSegmentEndPoint = screenPoint;
+                screenPoint = this.Transform(currentPoint);
+                contiguous.Add(screenPoint);
+            }
+
+            previousContiguousLineSegmentEndPoint = screenPoint;
 
             return true;
         }
@@ -600,7 +563,7 @@ namespace OxyPlot.Series
         /// <param name="rc">The render context.</param>
         protected void RenderPointLabels(IRenderContext rc)
         {
-            int index = -1;
+            var index = -1;
             foreach (var point in this.ActualPoints)
             {
                 index++;
@@ -670,7 +633,7 @@ namespace OxyPlot.Series
                     dx = -dx;
                     break;
                 case LineLegendPosition.End:
-                    point = this.ActualPoints[this.ActualPoints.Count - 1];
+                    point = this.ActualPoints[^1];
                     ha = HorizontalAlignment.Left;
                     break;
                 case LineLegendPosition.None:
@@ -718,18 +681,18 @@ namespace OxyPlot.Series
 
             if (this.MarkerType != MarkerType.None)
             {
-                var markerBinOffset = this.MarkerResolution > 0 ? this.Transform(this.MinX, this.MinY) : default(ScreenPoint);
+                var markerBinOffset = this.MarkerResolution > 0 ? this.Transform(this.MinX, this.MinY) : default;
 
                 rc.DrawMarkers(
-                    pointsToRender, 
-                    this.MarkerType, 
-                    this.MarkerOutline, 
-                    new[] { this.MarkerSize }, 
-                    this.ActualMarkerFill, 
-                    this.MarkerStroke, 
-                    this.MarkerStrokeThickness, 
+                    pointsToRender,
+                    this.MarkerType,
+                    this.MarkerOutline,
+                    new[] { this.MarkerSize },
+                    this.ActualMarkerFill,
+                    this.MarkerStroke,
+                    this.MarkerStrokeThickness,
                     this.EdgeRenderingMode,
-                    this.MarkerResolution, 
+                    this.MarkerResolution,
                     markerBinOffset);
             }
         }
@@ -743,19 +706,16 @@ namespace OxyPlot.Series
         {
             var dashArray = this.ActualDashArray;
 
-            if (this.outputBuffer == null)
-            {
-                this.outputBuffer = new List<ScreenPoint>(pointsToRender.Count);
-            }
+            this.outputBuffer ??= new List<ScreenPoint>(pointsToRender.Count);
 
             rc.DrawReducedLine(
-                pointsToRender, 
-                this.MinimumSegmentLength * this.MinimumSegmentLength, 
-                this.GetSelectableColor(this.ActualColor), 
-                this.StrokeThickness, 
+                pointsToRender,
+                this.MinimumSegmentLength * this.MinimumSegmentLength,
+                this.GetSelectableColor(this.ActualColor),
+                this.StrokeThickness,
                 this.EdgeRenderingMode,
-                dashArray, 
-                this.LineJoin, 
+                dashArray,
+                this.LineJoin,
                 this.outputBuffer);
         }
 
@@ -764,8 +724,8 @@ namespace OxyPlot.Series
         /// </summary>
         protected virtual void ResetSmoothedPoints()
         {
-            double tolerance = Math.Abs(Math.Max(this.MaxX - this.MinX, this.MaxY - this.MinY) / ToleranceDivisor);
-            this.smoothedPoints = this.InterpolationAlgorithm.CreateSpline(this.ActualPoints, false, tolerance);
+            var tolerance = Math.Abs(Math.Max(this.MaxX - this.MinX, this.MaxY - this.MinY) / toleranceDivisor);
+            this.SmoothedPoints = this.InterpolationAlgorithm.CreateSpline(this.ActualPoints, false, tolerance);
         }
 
         /// <summary>

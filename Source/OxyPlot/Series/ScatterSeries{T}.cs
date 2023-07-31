@@ -9,10 +9,9 @@
 
 namespace OxyPlot.Series
 {
+    using OxyPlot.Axes;
     using System;
     using System.Collections.Generic;
-
-    using OxyPlot.Axes;
 
     /// <summary>
     /// Provides a base class for scatter series.
@@ -23,12 +22,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// The default color-axis title
         /// </summary>
-        private const string DefaultColorAxisTitle = "Value";
-
-        /// <summary>
-        /// The list of data points.
-        /// </summary>
-        private readonly List<T> points = new List<T>();
+        private const string defaultColorAxisTitle = "Value";
 
         /// <summary>
         /// The default fill color.
@@ -53,13 +47,7 @@ namespace OxyPlot.Series
         /// </summary>
         /// <value>A list of <see cref="ScatterPoint" />.</value>
         /// <remarks>If the <see cref="ItemsSeries.ItemsSource" /> is specified, this list will not be used.</remarks>
-        public List<T> Points
-        {
-            get
-            {
-                return this.points;
-            }
-        }
+        public List<T> Points { get; } = new List<T>();
 
         /// <summary>
         /// Gets or sets the label format string. The default is <c>null</c> (no labels).
@@ -146,10 +134,7 @@ namespace OxyPlot.Series
         /// Gets the actual fill color.
         /// </summary>
         /// <value>The actual color.</value>
-        public OxyColor ActualMarkerFillColor
-        {
-            get { return this.MarkerFill.GetActualColor(this.defaultMarkerFillColor); }
-        }
+        public OxyColor ActualMarkerFillColor => this.MarkerFill.GetActualColor(this.defaultMarkerFillColor);
 
         /// <summary>
         /// Gets or sets the custom marker outline polygon. Set <see cref="MarkerType" /> to <see cref="T:MarkerType.Custom" /> to use this.
@@ -198,25 +183,13 @@ namespace OxyPlot.Series
         /// <value>
         /// A read-only list of points.
         /// </value>
-        public System.Collections.ObjectModel.ReadOnlyCollection<T> ActualPoints
-        {
-            get
-            {
-                return this.ActualPointsList != null ? new System.Collections.ObjectModel.ReadOnlyCollection<T>(this.ActualPointsList) : null;
-            }
-        }
+        public System.Collections.ObjectModel.ReadOnlyCollection<T> ActualPoints => this.ActualPointsList != null ? new System.Collections.ObjectModel.ReadOnlyCollection<T>(this.ActualPointsList) : null;
 
         /// <summary>
         /// Gets the list of points that should be rendered.
         /// </summary>
         /// <value>A list of <see cref="DataPoint" />.</value>
-        protected List<T> ActualPointsList
-        {
-            get
-            {
-                return this.ItemsSource != null ? this.ItemsSourcePoints : this.points;
-            }
-        }
+        protected List<T> ActualPointsList => this.ItemsSource != null ? this.ItemsSourcePoints : this.Points;
 
         /// <summary>
         /// Gets or sets the data points from the items source.
@@ -253,12 +226,12 @@ namespace OxyPlot.Series
             }
 
             TrackerHitResult result = null;
-            double minimumDistance = double.MaxValue;
-            int i = 0;
+            var minimumDistance = double.MaxValue;
+            var i = 0;
 
             var xaxisTitle = this.XAxis.Title ?? DefaultXAxisTitle;
             var yaxisTitle = this.YAxis.Title ?? DefaultYAxisTitle;
-            var colorAxisTitle = (this.ColorAxis != null ? ((Axis)this.ColorAxis).Title : null) ?? DefaultColorAxisTitle;
+            var colorAxisTitle = (this.ColorAxis != null ? ((Axis)this.ColorAxis).Title : null) ?? defaultColorAxisTitle;
 
             var xmin = this.XAxis.ClipMinimum;
             var xmax = this.XAxis.ClipMaximum;
@@ -266,16 +239,16 @@ namespace OxyPlot.Series
             var ymax = this.YAxis.ClipMaximum;
             foreach (var p in actualPoints)
             {
-                if (p.X < xmin || p.X > xmax || p.Y < ymin|| p.Y > ymax)
+                if (p.X < xmin || p.X > xmax || p.Y < ymin || p.Y > ymax)
                 {
                     i++;
                     continue;
                 }
 
                 var sp = this.Transform(p.X, p.Y);
-                double dx = sp.x - point.x;
-                double dy = sp.y - point.y;
-                double d2 = (dx * dx) + (dy * dy);
+                var dx = sp.x - point.x;
+                var dy = sp.y - point.y;
+                var d2 = dx * dx + dy * dy;
 
                 if (d2 < minimumDistance)
                 {
@@ -330,7 +303,7 @@ namespace OxyPlot.Series
 
             var clippingRect = this.GetClippingRect();
 
-            int n = actualPoints.Count;
+            var n = actualPoints.Count;
             var allPoints = new List<ScreenPoint>(n);
             var allMarkerSizes = new List<double>(n);
             var selectedPoints = new List<ScreenPoint>();
@@ -339,10 +312,10 @@ namespace OxyPlot.Series
             var groupSizes = new Dictionary<int, IList<double>>();
 
             // check if any item of the series is selected
-            bool isSelected = this.IsSelected();
+            var isSelected = this.IsSelected();
 
             // Transform all points to screen coordinates
-            for (int i = 0; i < n; i++)
+            for (var i = 0; i < n; i++)
             {
                 var dp = new DataPoint(actualPoints[i].X, actualPoints[i].Y);
 
@@ -352,8 +325,8 @@ namespace OxyPlot.Series
                     continue;
                 }
 
-                double size = double.NaN;
-                double value = double.NaN;
+                var size = double.NaN;
+                var value = double.NaN;
 
                 var scatterPoint = actualPoints[i];
                 if (scatterPoint != null)
@@ -385,7 +358,7 @@ namespace OxyPlot.Series
                         continue;
                     }
 
-                    int group = this.ColorAxis.GetPaletteIndex(value);
+                    var group = this.ColorAxis.GetPaletteIndex(value);
                     if (!groupPoints.ContainsKey(group))
                     {
                         groupPoints.Add(group, new List<ScreenPoint>());
@@ -408,7 +381,7 @@ namespace OxyPlot.Series
             if (this.ColorAxis != null)
             {
                 // Draw the grouped (by color defined in ColorAxis) markers
-                var markerIsStrokedOnly = this.MarkerType == MarkerType.Plus || this.MarkerType == MarkerType.Star || this.MarkerType == MarkerType.Cross;
+                var markerIsStrokedOnly = this.MarkerType is MarkerType.Plus or MarkerType.Star or MarkerType.Cross;
                 foreach (var group in groupPoints)
                 {
                     var color = this.ColorAxis.GetColor(group.Key);
@@ -466,8 +439,8 @@ namespace OxyPlot.Series
         /// <param name="legendBox">The bounding rectangle of the legend box.</param>
         public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
         {
-            double xmid = (legendBox.Left + legendBox.Right) / 2;
-            double ymid = (legendBox.Top + legendBox.Bottom) / 2;
+            var xmid = (legendBox.Left + legendBox.Right) / 2;
+            var ymid = (legendBox.Top + legendBox.Bottom) / 2;
 
             var midpt = new ScreenPoint(xmid, ymid);
 
@@ -541,7 +514,7 @@ namespace OxyPlot.Series
             }
 
             // TODO: share code with LineSeries
-            int index = -1;
+            var index = -1;
             foreach (var point in actualPoints)
             {
                 index++;
@@ -607,12 +580,12 @@ namespace OxyPlot.Series
                 return;
             }
 
-            double minx = double.MaxValue;
-            double miny = double.MaxValue;
-            double minvalue = double.MaxValue;
-            double maxx = double.MinValue;
-            double maxy = double.MinValue;
-            double maxvalue = double.MinValue;
+            var minx = double.MaxValue;
+            var miny = double.MaxValue;
+            var minvalue = double.MaxValue;
+            var maxx = double.MinValue;
+            var maxy = double.MinValue;
+            var maxvalue = double.MinValue;
 
             if (double.IsNaN(minx))
             {
@@ -646,8 +619,8 @@ namespace OxyPlot.Series
 
             foreach (var pt in pts)
             {
-                double x = pt.X;
-                double y = pt.Y;
+                var x = pt.X;
+                var y = pt.Y;
 
                 // Check if the point is defined (the code below is faster than double.IsNaN)
 #pragma warning disable 1718
@@ -661,7 +634,7 @@ namespace OxyPlot.Series
                     continue;
                 }
 
-                double value = pt.Value;
+                var value = pt.Value;
 
                 if (x < minx)
                 {
@@ -724,8 +697,7 @@ namespace OxyPlot.Series
                 this.MaxValue = maxvalue;
             }
 
-            var colorAxis = this.ColorAxis as Axis;
-            if (colorAxis != null)
+            if (this.ColorAxis is Axis colorAxis)
             {
                 colorAxis.Include(this.MinValue);
                 colorAxis.Include(this.MaxValue);
@@ -743,12 +715,12 @@ namespace OxyPlot.Series
                 return;
             }
 
-            double minvalue = double.NaN;
-            double maxvalue = double.NaN;
+            var minvalue = double.NaN;
+            var maxvalue = double.NaN;
 
             foreach (var pt in pts)
             {
-                double value = pt.Value;
+                var value = pt.Value;
 
                 if (value < minvalue || double.IsNaN(minvalue))
                 {
@@ -764,8 +736,7 @@ namespace OxyPlot.Series
             this.MinValue = minvalue;
             this.MaxValue = maxvalue;
 
-            var colorAxis = this.ColorAxis as Axis;
-            if (colorAxis != null)
+            if (this.ColorAxis is Axis colorAxis)
             {
                 colorAxis.Include(this.MinValue);
                 colorAxis.Include(this.MaxValue);
@@ -811,8 +782,7 @@ namespace OxyPlot.Series
                 return;
             }
 
-            var sourceAsListOfScatterPoints = this.ItemsSource as List<T>;
-            if (sourceAsListOfScatterPoints != null)
+            if (this.ItemsSource is List<T> sourceAsListOfScatterPoints)
             {
                 this.ItemsSourcePoints = sourceAsListOfScatterPoints;
                 this.OwnsItemsSourcePoints = false;
@@ -821,8 +791,7 @@ namespace OxyPlot.Series
 
             this.ClearItemsSourcePoints();
 
-            var sourceAsEnumerableScatterPoints = this.ItemsSource as IEnumerable<T>;
-            if (sourceAsEnumerableScatterPoints != null)
+            if (this.ItemsSource is IEnumerable<T> sourceAsEnumerableScatterPoints)
             {
                 this.ItemsSourcePoints.AddRange(sourceAsEnumerableScatterPoints);
                 return;
@@ -833,14 +802,13 @@ namespace OxyPlot.Series
             {
                 foreach (var item in this.ItemsSource)
                 {
-                    if (item is T)
+                    if (item is T t)
                     {
-                        this.ItemsSourcePoints.Add((T)item);
+                        this.ItemsSourcePoints.Add(t);
                         continue;
                     }
 
-                    var idpp = item as IScatterPointProvider;
-                    if (idpp != null)
+                    if (item is IScatterPointProvider idpp)
                     {
                         this.ItemsSourcePoints.Add((T)idpp.GetScatterPoint());
                     }

@@ -62,11 +62,11 @@ namespace OxyPlot
             this.Indents = 8;
             var title = model.Title ?? "Untitled";
             this.AppendLine("[Example({0})]", title.ToCode());
-            string methodName = this.MakeValidVariableName(title);
+            var methodName = this.MakeValidVariableName(title);
             this.AppendLine("public static PlotModel {0}()", methodName);
             this.AppendLine("{");
             this.Indents += 4;
-            string modelName = this.Add(model);
+            var modelName = this.Add(model);
             this.AddChildren(modelName, "Axes", model.Axes);
             this.AddChildren(modelName, "Series", model.Series);
             this.AddChildren(modelName, "Annotations", model.Annotations);
@@ -81,10 +81,7 @@ namespace OxyPlot
         /// </summary>
         private int Indents
         {
-            get
-            {
-                return this.indents;
-            }
+            get => this.indents;
 
             set
             {
@@ -102,7 +99,7 @@ namespace OxyPlot
         public static string FormatCode(string format, params object[] values)
         {
             var encodedValues = new object?[values.Length];
-            for (int i = 0; i < values.Length; i++)
+            for (var i = 0; i < values.Length; i++)
             {
                 encodedValues[i] = values[i].ToCode();
             }
@@ -165,7 +162,7 @@ namespace OxyPlot
         {
             foreach (var child in children)
             {
-                string childName = this.Add(child);
+                var childName = this.Add(child);
                 this.AppendLine("{0}.{1}.Add({2});", name, collectionName, childName);
             }
         }
@@ -200,7 +197,7 @@ namespace OxyPlot
             if (array.Rank == 1)
             {
                 this.AppendLine("{0} = new {1}[{2}];", name, elementType.Name, array.Length);
-                for (int i = 0; i < array.Length; i++)
+                for (var i = 0; i < array.Length; i++)
                 {
                     var code = array.GetValue(i).ToCode();
                     if (code == null)
@@ -215,9 +212,9 @@ namespace OxyPlot
             if (array.Rank == 2)
             {
                 this.AppendLine("{0} = new {1}[{2}, {3}];", name, elementType.Name, array.GetLength(0), array.GetLength(1));
-                for (int i = 0; i < array.GetLength(0); i++)
+                for (var i = 0; i < array.GetLength(0); i++)
                 {
-                    for (int j = 0; j < array.GetLength(1); j++)
+                    for (var j = 0; j < array.GetLength(1); j++)
                     {
                         var code = array.GetValue(i, j).ToCode();
                         if (code == null)
@@ -271,7 +268,7 @@ namespace OxyPlot
                 return false;
             }
 
-            for (int i = 0; i < list1.Count; i++)
+            for (var i = 0; i < list1.Count; i++)
             {
                 if (!list1[i]!.Equals(list2[i]))
                 {
@@ -300,9 +297,9 @@ namespace OxyPlot
         /// <returns>The variable name.</returns>
         private string GetNewVariableName(Type type)
         {
-            string prefix = type.Name;
+            var prefix = type.Name;
             prefix = char.ToLower(prefix[0]) + prefix.Substring(1);
-            int i = 1;
+            var i = 1;
             while (this.variables.ContainsKey(prefix + i))
             {
                 i++;
@@ -324,7 +321,7 @@ namespace OxyPlot
             var result = new StringBuilder();
             foreach (var c in title)
             {
-                string s = c.ToString();
+                var s = c.ToString();
                 if (regex.Match(s).Success)
                 {
                     result.Append(s);
@@ -357,9 +354,9 @@ namespace OxyPlot
                     continue;
                 }
 
-                string name = varName + "." + pi.Name;
-                object? value = pi.GetValue(instance, null);
-                object? defaultValue = pi.GetValue(defaultValues, null);
+                var name = varName + "." + pi.Name;
+                var value = pi.GetValue(instance, null);
+                var defaultValue = pi.GetValue(defaultValues, null);
 
                 // check if lists are equal
                 if (this.AreListsEqual(value as IList, defaultValue as IList))
@@ -367,16 +364,14 @@ namespace OxyPlot
                     continue;
                 }
 
-                var array = value as Array;
-                if (array != null)
+                if (value is Array array)
                 {
                     arraysToAdd.Add(name, array);
                     continue;
                 }
 
                 // add items of lists
-                var list = value as IList;
-                if (list != null)
+                if (value is IList list)
                 {
                     listsToAdd.Add(name, list);
                     continue;
@@ -421,7 +416,7 @@ namespace OxyPlot
         /// <param name="value">The value.</param>
         private void SetProperty(string name, object? value)
         {
-            string? code = value.ToCode();
+            var code = value.ToCode();
             if (code != null)
             {
                 this.AppendLine("{0} = {1};", name, code);

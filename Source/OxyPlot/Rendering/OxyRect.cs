@@ -16,12 +16,12 @@ namespace OxyPlot
     /// <summary>
     /// Describes the width, height, and point origin of a rectangle.
     /// </summary>
-    public struct OxyRect : IFormattable, IEquatable<OxyRect>
+    public readonly struct OxyRect : IFormattable, IEquatable<OxyRect>
     {
         /// <summary>
         /// Gets an infinitely large <see cref="OxyRect"/> starting at (0,0).
         /// </summary>
-        public static readonly OxyRect Everything = new OxyRect(0, 0, double.PositiveInfinity, double.PositiveInfinity);
+        public static readonly OxyRect Everything = new(0, 0, double.PositiveInfinity, double.PositiveInfinity);
 
         /// <summary>
         /// The height of the rectangle.
@@ -95,109 +95,67 @@ namespace OxyPlot
         /// Gets the y-axis value of the bottom of the rectangle.
         /// </summary>
         /// <value>The bottom.</value>
-        public double Bottom
-        {
-            get
-            {
-                return this.top + this.height;
-            }
-        }
+        public double Bottom => this.top + this.height;
 
         /// <summary>
         /// Gets the height of the rectangle.
         /// </summary>
         /// <value>The height.</value>
-        public double Height
-        {
-            get
-            {
-                return this.height;
-            }
-        }
+        public double Height => this.height;
 
         /// <summary>
         /// Gets the x-axis value of the left side of the rectangle.
         /// </summary>
         /// <value>The left.</value>
-        public double Left
-        {
-            get
-            {
-                return this.left;
-            }
-        }
+        public double Left => this.left;
 
         /// <summary>
         /// Gets the x-axis value of the right side of the rectangle.
         /// </summary>
         /// <value>The right.</value>
-        public double Right
-        {
-            get
-            {
-                return this.left + this.width;
-            }
-        }
+        public double Right => this.left + this.width;
 
         /// <summary>
         /// Gets the y-axis position of the top of the rectangle.
         /// </summary>
         /// <value>The top.</value>
-        public double Top
-        {
-            get
-            {
-                return this.top;
-            }
-        }
+        public double Top => this.top;
 
         /// <summary>
         /// Gets the width of the rectangle.
         /// </summary>
         /// <value>The width.</value>
-        public double Width
-        {
-            get
-            {
-                return this.width;
-            }
-        }
+        public double Width => this.width;
 
         /// <summary>
         /// Gets the center point of the rectangle.
         /// </summary>
         /// <value>The center.</value>
-        public ScreenPoint Center
-        {
-            get
-            {
-                return new ScreenPoint(this.left + (this.width * 0.5), this.top + (this.height * 0.5));
-            }
-        }
+        public ScreenPoint Center => new(this.left + this.width * 0.5, this.top + this.height * 0.5);
 
         /// <summary>
         /// Gets the top left corner of the rectangle.
         /// </summary>
         /// <value>The top left corner.</value>
-        public ScreenPoint TopLeft => new ScreenPoint(this.Left, this.Top);
+        public ScreenPoint TopLeft => new(this.Left, this.Top);
 
         /// <summary>
         /// Gets the top right corner of the rectangle.
         /// </summary>
         /// <value>The top right corner.</value>
-        public ScreenPoint TopRight => new ScreenPoint(this.Right, this.Top);
+        public ScreenPoint TopRight => new(this.Right, this.Top);
 
         /// <summary>
         /// Gets the bottom left corner of the rectangle.
         /// </summary>
         /// <value>The bottom left corner.</value>
-        public ScreenPoint BottomLeft => new ScreenPoint(this.Left, this.Bottom);
+        public ScreenPoint BottomLeft => new(this.Left, this.Bottom);
 
         /// <summary>
         /// Gets the bottom right corner of the rectangle.
         /// </summary>
         /// <value>The bottom right corner.</value>
-        public ScreenPoint BottomRight => new ScreenPoint(this.Right, this.Bottom);
+        public ScreenPoint BottomRight => new(this.Right, this.Bottom);
 
         /// <summary>
         /// Creates a rectangle from the specified corner coordinates.
@@ -234,21 +192,21 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// Returns a <see cref="string" /> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+        /// <returns>A <see cref="string" /> that represents this instance.</returns>
         public override string ToString()
         {
             return string.Format(CultureInfo.InvariantCulture, "({0}, {1}, {2}, {3})", this.left, this.top, this.width, this.height);
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// Returns a <see cref="string" /> that represents this instance.
         /// </summary>
         /// <param name="format">The format.</param>
         /// <param name="formatProvider">The format provider.</param>
         /// <returns>
-        /// A <see cref="System.String" /> that represents this instance.
+        /// A <see cref="string" /> that represents this instance.
         /// </returns>
         public string ToString(string format, IFormatProvider formatProvider)
         {
@@ -284,7 +242,7 @@ namespace OxyPlot
         /// <returns>The expanded/shrunk <see cref="OxyRect" />.</returns>
         public OxyRect Inflate(double dx, double dy)
         {
-            return new OxyRect(this.left - dx, this.top - dy, this.width + (dx * 2), this.height + (dy * 2));
+            return new OxyRect(this.left - dx, this.top - dy, this.width + dx * 2, this.height + dy * 2);
         }
 
         /// <summary>
@@ -348,8 +306,8 @@ namespace OxyPlot
         {
             var clipRight = double.IsNegativeInfinity(clipRect.Left) && double.IsPositiveInfinity(clipRect.Width)
                             ? double.PositiveInfinity
-                            : clipRect.Right;            
-            
+                            : clipRect.Right;
+
             var clipBottom = double.IsNegativeInfinity(clipRect.Top) && double.IsPositiveInfinity(clipRect.Height)
                             ? double.PositiveInfinity
                             : clipRect.Bottom;

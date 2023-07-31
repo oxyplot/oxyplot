@@ -40,7 +40,7 @@ namespace OxyPlot
         /// Gets or sets a value indicating whether the xml headers should be included.
         /// </summary>
         public bool IsDocument { get; set; }
-        
+
         /// <summary>
         /// Gets or sets a value indicating whether to use a workaround for vertical text alignment to support renderers with limited support for the dominate-baseline attribute.
         /// </summary>
@@ -63,18 +63,13 @@ namespace OxyPlot
         /// <param name="useVerticalTextAlignmentWorkaround">Whether to use the workaround for vertical text alignment</param>
         public static void Export(IPlotModel model, Stream stream, double width, double height, bool isDocument, IRenderContext textMeasurer = null, bool useVerticalTextAlignmentWorkaround = false)
         {
-            if (textMeasurer == null)
-            {
-                textMeasurer = new PdfRenderContext(width, height, model.Background);
-            }
+            textMeasurer ??= new PdfRenderContext(width, height, model.Background);
 
-            using (var rc = new SvgRenderContext(stream, width, height, isDocument, textMeasurer, model.Background, useVerticalTextAlignmentWorkaround))
-            {
-                model.Update(true);
-                model.Render(rc, new OxyRect(0, 0, width, height));
-                rc.Complete();
-                rc.Flush();
-            }
+            using var rc = new SvgRenderContext(stream, width, height, isDocument, textMeasurer, model.Background, useVerticalTextAlignmentWorkaround);
+            model.Update(true);
+            model.Render(rc, new OxyRect(0, 0, width, height));
+            rc.Complete();
+            rc.Flush();
         }
 
         /// <summary>

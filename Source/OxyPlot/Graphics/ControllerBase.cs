@@ -20,7 +20,7 @@ namespace OxyPlot
         /// <summary>
         /// A synchronization object that is used when the actual model in the current view is <c>null</c>.
         /// </summary>
-        private readonly object syncRoot = new object();
+        private readonly object syncRoot = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ControllerBase" /> class.
@@ -443,7 +443,7 @@ namespace OxyPlot
         public virtual void Unbind(IViewCommand command)
         {
             // ReSharper disable once RedundantNameQualifier
-            foreach (var icb in this.InputCommandBindings.Where(icb => object.ReferenceEquals(icb.Command, command)).ToArray())
+            foreach (var icb in this.InputCommandBindings.Where(icb => ReferenceEquals(icb.Command, command)).ToArray())
             {
                 this.InputCommandBindings.Remove(icb);
             }
@@ -492,7 +492,7 @@ namespace OxyPlot
 
             return binding.Command;
         }
-        
+
         /// <summary>
         /// Handles a command triggered by an input gesture.
         /// </summary>

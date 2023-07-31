@@ -65,7 +65,7 @@ namespace OxyPlot
         {
             // http://en.wikipedia.org/wiki/Complementary_Color
             var hsv = color.ToHsv();
-            double newHue = hsv[0] - 0.5;
+            var newHue = hsv[0] - 0.5;
 
             // clamp to [0,1]
             if (newHue < 0)
@@ -83,15 +83,15 @@ namespace OxyPlot
         /// <returns>Array of [Hue,Saturation,Value] in the range [0,1]</returns>
         public static double[] ToHsv(this OxyColor color)
         {
-            byte r = color.R;
-            byte g = color.G;
-            byte b = color.B;
+            var r = color.R;
+            var g = color.G;
+            var b = color.B;
 
-            byte min = Math.Min(Math.Min(r, g), b);
-            byte v = Math.Max(Math.Max(r, g), b);
+            var min = Math.Min(Math.Min(r, g), b);
+            var v = Math.Max(Math.Max(r, g), b);
             double delta = v - min;
 
-            double s = v.Equals(0) ? 0 : delta / v;
+            var s = v.Equals(0) ? 0 : delta / v;
             double h = 0;
 
             if (s.Equals(0))
@@ -106,11 +106,11 @@ namespace OxyPlot
                 }
                 else if (g == v)
                 {
-                    h = 2 + ((b - r) / delta);
+                    h = 2 + (b - r) / delta;
                 }
                 else if (b == v)
                 {
-                    h = 4 + ((r - g) / delta);
+                    h = 4 + (r - g) / delta;
                 }
 
                 h *= 60;
@@ -179,7 +179,7 @@ namespace OxyPlot
             var colors = t.GetRuntimeFields().Where(fi => fi.IsPublic && fi.IsStatic);
             var colorField = colors.FirstOrDefault(field => color.Equals(field.GetValue(null)));
 
-            return colorField != null ? colorField.Name : null;
+            return colorField?.Name;
         }
     }
 }

@@ -22,11 +22,6 @@ namespace OxyPlot
         internal static readonly OxyColor DefaultSelectionColor = OxyColors.Yellow;
 
         /// <summary>
-        /// The synchronization root object.
-        /// </summary>
-        private readonly object syncRoot = new object();
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="Model"/> class.
         /// </summary>
         protected Model()
@@ -39,10 +34,7 @@ namespace OxyPlot
         /// </summary>
         /// <value>A synchronization object.</value>
         /// <remarks>This property can be used when modifying the <see cref="Model" /> on a separate thread (not the thread updating or rendering the model).</remarks>
-        public object SyncRoot
-        {
-            get { return this.syncRoot; }
-        }
+        public object SyncRoot { get; } = new object();
 
         /// <summary>
         /// Gets or sets the color of the selection.

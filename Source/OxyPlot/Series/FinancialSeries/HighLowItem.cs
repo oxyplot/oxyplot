@@ -17,7 +17,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// The undefined.
         /// </summary>
-        public static readonly HighLowItem Undefined = new HighLowItem(double.NaN, double.NaN, double.NaN);
+        public static readonly HighLowItem Undefined = new(double.NaN, double.NaN, double.NaN);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HighLowItem" /> class.

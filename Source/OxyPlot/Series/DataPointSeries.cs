@@ -17,10 +17,6 @@ namespace OxyPlot.Series
     /// </summary>
     public abstract class DataPointSeries : XYAxisSeries
     {
-        /// <summary>
-        /// The list of data points.
-        /// </summary>
-        private readonly List<DataPoint> points = new List<DataPoint>();
 
         /// <summary>
         /// The data points from the items source.
@@ -60,25 +56,13 @@ namespace OxyPlot.Series
         /// Gets the list of points.
         /// </summary>
         /// <value>A list of <see cref="DataPoint" />.</value>
-        public List<DataPoint> Points
-        {
-            get
-            {
-                return this.points;
-            }
-        }
+        public List<DataPoint> Points { get; } = new List<DataPoint>();
 
         /// <summary>
         /// Gets the list of points that should be rendered.
         /// </summary>
         /// <value>A list of <see cref="DataPoint" />.</value>
-        protected List<DataPoint> ActualPoints
-        {
-            get
-            {
-                return this.ItemsSource != null ? this.itemsSourcePoints : this.points;
-            }
-        }
+        protected List<DataPoint> ActualPoints => this.ItemsSource != null ? this.itemsSourcePoints : this.Points;
 
         /// <summary>
         /// Gets the point on the series that is nearest the specified point.
@@ -99,21 +83,18 @@ namespace OxyPlot.Series
                 result = this.GetNearestInterpolatedPointInternal(this.ActualPoints, point);
             }
 
-            if (result == null)
-            {
-                result = this.GetNearestPointInternal(this.ActualPoints, point);
-            }
+            result ??= this.GetNearestPointInternal(this.ActualPoints, point);
 
             if (result != null)
             {
                 result.Text = StringHelper.Format(
-                    this.ActualCulture, 
+                    this.ActualCulture,
                     this.TrackerFormatString,
                     result.Item,
                     this.Title,
-                    this.XAxis.Title ?? XYAxisSeries.DefaultXAxisTitle,
+                    this.XAxis.Title ?? DefaultXAxisTitle,
                     this.XAxis.GetValue(result.DataPoint.X),
-                    this.YAxis.Title ?? XYAxisSeries.DefaultYAxisTitle,
+                    this.YAxis.Title ?? DefaultYAxisTitle,
                     this.YAxis.GetValue(result.DataPoint.Y));
             }
 
@@ -192,8 +173,7 @@ namespace OxyPlot.Series
                 return;
             }
 
-            var sourceAsListOfDataPoints = this.ItemsSource as List<DataPoint>;
-            if (sourceAsListOfDataPoints != null)
+            if (this.ItemsSource is List<DataPoint> sourceAsListOfDataPoints)
             {
                 this.itemsSourcePoints = sourceAsListOfDataPoints;
                 this.ownsItemsSourcePoints = false;
@@ -202,8 +182,7 @@ namespace OxyPlot.Series
 
             this.ClearItemsSourcePoints();
 
-            var sourceAsEnumerableDataPoints = this.ItemsSource as IEnumerable<DataPoint>;
-            if (sourceAsEnumerableDataPoints != null)
+            if (this.ItemsSource is IEnumerable<DataPoint> sourceAsEnumerableDataPoints)
             {
                 this.itemsSourcePoints.AddRange(sourceAsEnumerableDataPoints);
                 return;
@@ -216,14 +195,13 @@ namespace OxyPlot.Series
             {
                 foreach (var item in this.ItemsSource)
                 {
-                    if (item is DataPoint)
+                    if (item is DataPoint point)
                     {
-                        this.itemsSourcePoints.Add((DataPoint)item);
+                        this.itemsSourcePoints.Add(point);
                         continue;
                     }
 
-                    var idpp = item as IDataPointProvider;
-                    if (idpp == null)
+                    if (item is not IDataPointProvider idpp)
                     {
                         continue;
                     }

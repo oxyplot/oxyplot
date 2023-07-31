@@ -24,7 +24,7 @@ namespace OxyPlot
         /// Gets the alpha value.
         /// </summary>
         public double Alpha { get; }
-        
+
         /// <summary>
         /// Gets or sets the maximum number of segments.
         /// </summary>
@@ -49,7 +49,7 @@ namespace OxyPlot
         /// <returns>A list of data points.</returns>
         public List<DataPoint> CreateSpline(List<DataPoint> points, bool isClosed, double tolerance)
         {
-            return CreateSpline(points, this.Alpha, isClosed, tolerance, MaxSegments);
+            return CreateSpline(points, this.Alpha, isClosed, tolerance, this.MaxSegments);
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace OxyPlot
         /// <returns>A list of screen points.</returns>
         public List<ScreenPoint> CreateSpline(IList<ScreenPoint> points, bool isClosed, double tolerance)
         {
-            return CreateSpline(points, this.Alpha, isClosed, tolerance, MaxSegments);
+            return CreateSpline(points, this.Alpha, isClosed, tolerance, this.MaxSegments);
         }
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace OxyPlot
                 return result;
             }
 
-            int n = points.Count;
+            var n = points.Count;
             if (n < 1)
             {
                 return result;
@@ -131,7 +131,7 @@ namespace OxyPlot
             }
             else
             {
-                for (int i = 0; i < n; i++)
+                for (var i = 0; i < n; i++)
                 {
                     if (i == 0)
                     {
@@ -211,36 +211,35 @@ namespace OxyPlot
                 pt3 = Prev(pt2, pt1);
             }
 
-            double t0 = 0d;
-            double t1 = GetT(t0, pt0, pt1, alpha);
-            double t2 = GetT(t1, pt1, pt2, alpha);
-            double t3 = GetT(t2, pt2, pt3, alpha);
+            var t0 = 0d;
+            var t1 = GetT(t0, pt0, pt1, alpha);
+            var t2 = GetT(t1, pt1, pt2, alpha);
+            var t3 = GetT(t2, pt2, pt3, alpha);
 
-
-            int iterations = (int)((Math.Abs(pt1.X - pt2.X) + Math.Abs(pt1.Y - pt2.Y)) / tolerance);
+            var iterations = (int)((Math.Abs(pt1.X - pt2.X) + Math.Abs(pt1.Y - pt2.Y)) / tolerance);
             //Make sure it is positive (negative means an integer overflow)
             iterations = Math.Max(0, iterations);
             //Never more iterations than maxSegments
             iterations = Math.Min(maxSegments, iterations);
-            for (double t = t1; t < t2; t += (t2 - t1) / iterations)
+            for (var t = t1; t < t2; t += (t2 - t1) / iterations)
             {
-                ScreenPoint a1 = Sum(Mult((t1 - t) / (t1 - t0), pt0), Mult((t - t0) / (t1 - t0), pt1));
-                ScreenPoint a2 = Sum(Mult((t2 - t) / (t2 - t1), pt1), Mult((t - t1) / (t2 - t1), pt2));
-                ScreenPoint a3 = Sum(Mult((t3 - t) / (t3 - t2), pt2), Mult((t - t2) / (t3 - t2), pt3));
+                var a1 = Sum(Mult((t1 - t) / (t1 - t0), pt0), Mult((t - t0) / (t1 - t0), pt1));
+                var a2 = Sum(Mult((t2 - t) / (t2 - t1), pt1), Mult((t - t1) / (t2 - t1), pt2));
+                var a3 = Sum(Mult((t3 - t) / (t3 - t2), pt2), Mult((t - t2) / (t3 - t2), pt3));
 
-                ScreenPoint b1 = Sum(Mult((t2 - t) / (t2 - t0), a1), Mult((t - t0) / (t2 - t0), a2));
-                ScreenPoint b2 = Sum(Mult((t3 - t) / (t3 - t1), a2), Mult((t - t1) / (t3 - t1), a3));
+                var b1 = Sum(Mult((t2 - t) / (t2 - t0), a1), Mult((t - t0) / (t2 - t0), a2));
+                var b2 = Sum(Mult((t3 - t) / (t3 - t1), a2), Mult((t - t1) / (t3 - t1), a3));
 
-                ScreenPoint c1 = Sum(Mult((t2 - t) / (t2 - t1), b1), Mult((t - t1) / (t2 - t1), b2));
+                var c1 = Sum(Mult((t2 - t) / (t2 - t1), b1), Mult((t - t1) / (t2 - t1), b2));
                 points.Add(c1);
             }
         }
 
         private static double GetT(double t, ScreenPoint p0, ScreenPoint p1, double alpha)
         {
-            double a = Math.Pow(p1.X - p0.X, 2d) + Math.Pow(p1.Y - p0.Y, 2d);
-            double b = Math.Pow(a, 0.5);
-            double c = Math.Pow(b, alpha);
+            var a = Math.Pow(p1.X - p0.X, 2d) + Math.Pow(p1.Y - p0.Y, 2d);
+            var b = Math.Pow(a, 0.5);
+            var c = Math.Pow(b, alpha);
             return c + t;
         }
 

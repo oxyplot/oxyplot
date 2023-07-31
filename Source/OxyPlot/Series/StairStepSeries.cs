@@ -61,13 +61,13 @@ namespace OxyPlot.Series
             if (!interpolate && result != null && result.Position.DistanceToSquared(point) < minimumDistanceSquared)
             {
                 result.Text = StringHelper.Format(
-                    this.ActualCulture, 
+                    this.ActualCulture,
                     this.TrackerFormatString,
                     result.Item,
                     this.Title,
-                    this.XAxis.Title ?? XYAxisSeries.DefaultXAxisTitle,
+                    this.XAxis.Title ?? DefaultXAxisTitle,
                     this.XAxis.GetValue(result.DataPoint.X),
-                    this.YAxis.Title ?? XYAxisSeries.DefaultYAxisTitle,
+                    this.YAxis.Title ?? DefaultYAxisTitle,
                     this.YAxis.GetValue(result.DataPoint.Y));
                 return result;
             }
@@ -75,19 +75,19 @@ namespace OxyPlot.Series
             result = null;
 
             // find the nearest point on the horizontal line segments
-            int n = this.ActualPoints.Count;
-            for (int i = 0; i < n; i++)
+            var n = this.ActualPoints.Count;
+            for (var i = 0; i < n; i++)
             {
                 var p1 = this.ActualPoints[i];
                 var p2 = this.ActualPoints[i + 1 < n ? i + 1 : i];
                 var sp1 = this.Transform(p1.X, p1.Y);
                 var sp2 = this.Transform(p2.X, p1.Y);
 
-                double spdx = sp2.x - sp1.x;
-                double spdy = sp2.y - sp1.y;
-                double u1 = ((point.x - sp1.x) * spdx) + ((point.y - sp1.y) * spdy);
-                double u2 = (spdx * spdx) + (spdy * spdy);
-                double ds = (spdx * spdx) + (spdy * spdy);
+                var spdx = sp2.x - sp1.x;
+                var spdy = sp2.y - sp1.y;
+                var u1 = (point.x - sp1.x) * spdx + (point.y - sp1.y) * spdy;
+                var u2 = spdx * spdx + spdy * spdy;
+                var ds = spdx * spdx + spdy * spdy;
 
                 if (ds < 4)
                 {
@@ -101,23 +101,23 @@ namespace OxyPlot.Series
                     continue; // P1 && P2 coincident
                 }
 
-                double u = u1 / u2;
-                if (u < 0 || u > 1)
+                var u = u1 / u2;
+                if (u is < 0 or > 1)
                 {
                     continue; // outside line
                 }
 
-                double sx = sp1.x + (u * spdx);
-                double sy = sp1.y + (u * spdy);
+                var sx = sp1.x + u * spdx;
+                var sy = sp1.y + u * spdy;
 
-                double dx = point.x - sx;
-                double dy = point.y - sy;
-                double distanceSquared = (dx * dx) + (dy * dy);
+                var dx = point.x - sx;
+                var dy = point.y - sy;
+                var distanceSquared = dx * dx + dy * dy;
 
                 if (distanceSquared < minimumDistanceSquared)
                 {
-                    double px = p1.X + (u * (p2.X - p1.X));
-                    double py = p1.Y;
+                    var px = p1.X + u * (p2.X - p1.X);
+                    var py = p1.Y;
                     var item = this.GetItem(i);
                     result = new TrackerHitResult
                     {
@@ -158,78 +158,78 @@ namespace OxyPlot.Series
             var actualColor = this.GetSelectableColor(this.ActualColor);
             var edgeRenderingMode = this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness);
 
-            Action<IList<ScreenPoint>, IList<ScreenPoint>> renderPoints = (linePoints, markerPoints) =>
+            void renderPoints(IList<ScreenPoint> linePoints, IList<ScreenPoint> markerPoints)
+            {
+                if (this.StrokeThickness > 0 && lineStyle != LineStyle.None)
                 {
-                    if (this.StrokeThickness > 0 && lineStyle != LineStyle.None)
+                    // TODO: Need ActualVerticalLineStyle; without it, when VerticalLineStyle is
+                    // Automatic, this code will not take the fast path even when it could.
+                    if (!verticalStrokeThickness.Equals(this.StrokeThickness) || this.VerticalLineStyle != lineStyle)
                     {
-                        // TODO: Need ActualVerticalLineStyle; without it, when VerticalLineStyle is
-                        // Automatic, this code will not take the fast path even when it could.
-                        if (!verticalStrokeThickness.Equals(this.StrokeThickness) || this.VerticalLineStyle != lineStyle)
+                        var hLinePoints = new List<ScreenPoint>(linePoints.Count);
+                        var vLinePoints = new List<ScreenPoint>(linePoints.Count);
+                        if (linePoints.Count >= 2)
                         {
-                            var hLinePoints = new List<ScreenPoint>(linePoints.Count);
-                            var vLinePoints = new List<ScreenPoint>(linePoints.Count);
-                            if (linePoints.Count >= 2)
+                            hLinePoints.Add(linePoints[0]);
+                            hLinePoints.Add(linePoints[1]);
+                            for (var i = 1; i + 2 < linePoints.Count; i += 2)
                             {
-                                hLinePoints.Add(linePoints[0]);
-                                hLinePoints.Add(linePoints[1]);
-                                for (int i = 1; i + 2 < linePoints.Count; i += 2)
-                                {
-                                    vLinePoints.Add(linePoints[i]);
-                                    vLinePoints.Add(linePoints[i + 1]);
-                                    hLinePoints.Add(linePoints[i + 1]);
-                                    hLinePoints.Add(linePoints[i + 2]);
-                                }
+                                vLinePoints.Add(linePoints[i]);
+                                vLinePoints.Add(linePoints[i + 1]);
+                                hLinePoints.Add(linePoints[i + 1]);
+                                hLinePoints.Add(linePoints[i + 2]);
                             }
+                        }
 
-                            rc.DrawLineSegments(
-                                hLinePoints,
-                                actualColor,
-                                this.StrokeThickness,
-                                edgeRenderingMode,
-                                dashArray,
-                                this.LineJoin);
-                            rc.DrawLineSegments(
-                                vLinePoints,
-                                actualColor,
-                                verticalStrokeThickness,
-                                edgeRenderingMode,
-                                verticalLineDashArray,
-                                this.LineJoin);
-                        }
-                        else
-                        {
-                            rc.DrawLine(
-                                linePoints,
-                                actualColor,
-                                this.StrokeThickness,
-                                edgeRenderingMode,
-                                dashArray,
-                                this.LineJoin);
-                        }
+                        rc.DrawLineSegments(
+                            hLinePoints,
+                            actualColor,
+                            this.StrokeThickness,
+                            edgeRenderingMode,
+                            dashArray,
+                            this.LineJoin);
+                        rc.DrawLineSegments(
+                            vLinePoints,
+                            actualColor,
+                            verticalStrokeThickness,
+                            edgeRenderingMode,
+                            verticalLineDashArray,
+                            this.LineJoin);
                     }
-
-                    if (this.MarkerType != MarkerType.None)
+                    else
                     {
-                        rc.DrawMarkers(
-                            markerPoints,
-                            this.MarkerType,
-                            this.MarkerOutline,
-                            new[] { this.MarkerSize },
-                            this.ActualMarkerFill,
-                            this.MarkerStroke,
-                            this.MarkerStrokeThickness,
-                            this.EdgeRenderingMode);
+                        rc.DrawLine(
+                            linePoints,
+                            actualColor,
+                            this.StrokeThickness,
+                            edgeRenderingMode,
+                            dashArray,
+                            this.LineJoin);
                     }
-                };
+                }
+
+                if (this.MarkerType != MarkerType.None)
+                {
+                    rc.DrawMarkers(
+                        markerPoints,
+                        this.MarkerType,
+                        this.MarkerOutline,
+                        new[] { this.MarkerSize },
+                        this.ActualMarkerFill,
+                        this.MarkerStroke,
+                        this.MarkerStrokeThickness,
+                        this.EdgeRenderingMode);
+                }
+            }
 
             var points = this.ActualPoints;
 
-            int offset = 0;
-            double xClipMax = double.MaxValue;
+            var offset = 0;
+            var xClipMax = double.MaxValue;
 
             if (this.IsXMonotonic)
             {
-                double xClipMin = this.XAxis.ClipMinimum;
+                var xClipMin = this.XAxis.ClipMinimum;
                 xClipMax = this.XAxis.ClipMaximum;
 
                 this.WindowStartIndex = this.UpdateWindowStartIndex(points, point => point.X, xClipMin, this.WindowStartIndex);
@@ -239,16 +239,18 @@ namespace OxyPlot.Series
             var linePoints = new List<ScreenPoint>();
             var markerPoints = new List<ScreenPoint>();
 
-            for (int i = offset; i < points.Count;)
+            for (var i = offset; i < points.Count;)
             {
-                bool hasValid = this.FindNextValidSegment(points, i, xClipMax, out int validOffset, out int endOffset);
+                var hasValid = this.FindNextValidSegment(points, i, xClipMax, out var validOffset, out var endOffset);
                 if (!hasValid)
+                {
                     break;
+                }
 
                 ScreenPoint transformedPoint = default;
-                DataPoint previousPoint = DataPoint.Undefined;
-                bool xIncreased = false;
-                bool xDecreased = false;
+                var previousPoint = DataPoint.Undefined;
+                var xIncreased = false;
+                var xDecreased = false;
 
                 for (i = validOffset; i < endOffset; ++i)
                 {
@@ -280,7 +282,9 @@ namespace OxyPlot.Series
                     {
                         // Vertical line start point.
                         if (!double.IsNaN(previousPoint.Y))
+                        {
                             linePoints.Add(this.Transform(new DataPoint(point.X, previousPoint.Y)));
+                        }
 
                         // Vertical line end point/horizontal line start point.
                         linePoints.Add(transformedPoint);
@@ -340,7 +344,9 @@ namespace OxyPlot.Series
                 }
 
                 if (this.IsValidPoint(point))
+                {
                     break;
+                }
             }
 
             validOffset = offset;
@@ -349,15 +355,21 @@ namespace OxyPlot.Series
             for (; ; ++offset)
             {
                 if (offset >= points.Count)
+                {
                     break;
+                }
 
                 var point = points[offset];
 
                 if (!this.IsValidPoint(point))
+                {
                     break;
+                }
 
                 if (point.X > xClipMax)
+                {
                     break;
+                }
             }
 
             endOffset = offset;

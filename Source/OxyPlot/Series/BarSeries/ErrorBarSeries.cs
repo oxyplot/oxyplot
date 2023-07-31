@@ -66,13 +66,13 @@ namespace OxyPlot.Series
                 var labels = this.GetCategoryAxis().ActualLabels;
                 for (var i = 0; i < labels.Count; i++)
                 {
-                    int j = 0;
+                    var j = 0;
                     var items = this.ValidItems.Where(item => item.GetCategoryIndex(j++) == i).ToList();
                     var values = items.Select(item => item.Value).Concat(new[] { 0d }).ToList();
                     var minTemp = values.Where(v => v <= 0).Sum();
                     var maxTemp = values.Where(v => v >= 0).Sum() + ((ErrorBarItem)items.Last()).Error;
 
-                    int stackIndex = this.Manager.GetStackIndex(this.StackGroup);
+                    var stackIndex = this.Manager.GetStackIndex(this.StackGroup);
                     var stackedMinValue = this.Manager.GetCurrentMinValue(stackIndex, i);
                     if (!double.IsNaN(stackedMinValue))
                     {
@@ -125,7 +125,7 @@ namespace OxyPlot.Series
         {
             base.RenderItem(rc, barValue, categoryValue, actualBarWidth, item, rect);
 
-            if (!(item is ErrorBarItem errorItem))
+            if (item is not ErrorBarItem errorItem)
             {
                 return;
             }
@@ -133,11 +133,11 @@ namespace OxyPlot.Series
             // Render the error
             var errorStart = barValue - errorItem.Error;
             var errorEnd = barValue + errorItem.Error;
-            var start = 0.5 - (this.ErrorWidth / 2);
-            var end = 0.5 + (this.ErrorWidth / 2);
-            var categoryStart = categoryValue + (start * actualBarWidth);
-            var categoryMiddle = categoryValue + (0.5 * actualBarWidth);
-            var categoryEnd = categoryValue + (end * actualBarWidth);
+            var start = 0.5 - this.ErrorWidth / 2;
+            var end = 0.5 + this.ErrorWidth / 2;
+            var categoryStart = categoryValue + start * actualBarWidth;
+            var categoryMiddle = categoryValue + 0.5 * actualBarWidth;
+            var categoryEnd = categoryValue + end * actualBarWidth;
 
             var lowerErrorPoint = this.Transform(errorStart, categoryMiddle);
             var upperErrorPoint = this.Transform(errorEnd, categoryMiddle);

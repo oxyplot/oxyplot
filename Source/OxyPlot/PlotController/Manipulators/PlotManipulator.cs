@@ -91,12 +91,16 @@ namespace OxyPlot
                     if (this.AxisPreference == AxisPreference.X)
                     {
                         if (xaxis != null)
+                        {
                             yaxis = null;
+                        }
                     }
                     else if (this.AxisPreference == AxisPreference.Y)
                     {
                         if (yaxis != null)
+                        {
                             xaxis = null;
+                        }
                     }
                 }
             }

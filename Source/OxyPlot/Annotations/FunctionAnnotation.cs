@@ -70,10 +70,10 @@ namespace OxyPlot.Annotations
 
             if (fx != null)
             {
-                double x = this.ActualMinimumX;
+                var x = this.ActualMinimumX;
 
                 // todo: the step size should be adaptive
-                double dx = (this.ActualMaximumX - this.ActualMinimumX) / this.Resolution;
+                var dx = (this.ActualMaximumX - this.ActualMinimumX) / this.Resolution;
                 while (true)
                 {
                     points.Add(new DataPoint(x, fx(x)));
@@ -87,10 +87,10 @@ namespace OxyPlot.Annotations
             }
             else if (fy != null)
             {
-                double y = this.ActualMinimumY;
+                var y = this.ActualMinimumY;
 
                 // todo: the step size should be adaptive
-                double dy = (this.ActualMaximumY - this.ActualMinimumY) / this.Resolution;
+                var dy = (this.ActualMaximumY - this.ActualMinimumY) / this.Resolution;
                 while (true)
                 {
                     points.Add(new DataPoint(fy(y), y));

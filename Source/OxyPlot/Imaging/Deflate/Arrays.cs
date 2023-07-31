@@ -27,7 +27,7 @@ namespace OxyPlot
         public static T[] CopyOfRange<T>(T[] source, int from, int to)
         {
             var result = new T[to - from];
-            for (int i = from; i < Math.Min(source.Length, to); i++)
+            for (var i = from; i < Math.Min(source.Length, to); i++)
             {
                 result[i - from] = source[i];
             }
@@ -45,7 +45,7 @@ namespace OxyPlot
         public static T[] CopyOf<T>(T[] source, int newLength)
         {
             var result = new T[newLength];
-            for (int i = 0; i < Math.Min(source.Length, newLength); i++)
+            for (var i = 0; i < Math.Min(source.Length, newLength); i++)
             {
                 result[i] = source[i];
             }
@@ -63,7 +63,7 @@ namespace OxyPlot
         /// <param name="v">The value to fill.</param>
         public static void Fill<T>(T[] source, int i0, int i1, T v)
         {
-            for (int i = i0; i < i1; i++)
+            for (var i = i0; i < i1; i++)
             {
                 source[i] = v;
             }

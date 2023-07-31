@@ -35,7 +35,7 @@ namespace OxyPlot.Series
         public FunctionSeries(Func<double, double> f, double x0, double x1, double dx, string title = null)
         {
             this.Title = title;
-            for (double x = x0; x <= x1 + (dx * 0.5); x += dx)
+            for (var x = x0; x <= x1 + dx * 0.5; x += dx)
             {
                 this.Points.Add(new DataPoint(x, f(x)));
             }
@@ -66,7 +66,7 @@ namespace OxyPlot.Series
         public FunctionSeries(Func<double, double> fx, Func<double, double> fy, double t0, double t1, double dt, string title = null)
         {
             this.Title = title;
-            for (double t = t0; t <= t1 + (dt * 0.5); t += dt)
+            for (var t = t0; t <= t1 + dt * 0.5; t += dt)
             {
                 this.Points.Add(new DataPoint(fx(t), fy(t)));
             }

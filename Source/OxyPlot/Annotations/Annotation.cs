@@ -50,7 +50,7 @@ namespace OxyPlot.Annotations
         /// </summary>
         /// <value>The Y axis.</value>
         public Axis? YAxis { get; private set; }
-        
+
         /// <summary>
         /// Gets or sets a value indicating whether to clip the annotation by the X axis range.
         /// </summary>

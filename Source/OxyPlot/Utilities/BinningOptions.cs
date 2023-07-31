@@ -79,21 +79,21 @@ namespace OxyPlot
         /// <param name="extremeValuesMode">Specifies whether extreme values should be assigned to the corresponding extreme bin.</param>
         public BinningOptions(BinningOutlierMode outlierMode, BinningIntervalType intervalType, BinningExtremeValueMode extremeValuesMode)
         {
-            if (outlierMode != BinningOutlierMode.RejectOutliers &&
-                outlierMode != BinningOutlierMode.CountOutliers &&
-                outlierMode != BinningOutlierMode.IgnoreOutliers)
+            if (outlierMode is not BinningOutlierMode.RejectOutliers and
+                not BinningOutlierMode.CountOutliers and
+                not BinningOutlierMode.IgnoreOutliers)
             {
                 throw new ArgumentException(nameof(outlierMode), "Unsupported binning outlier mode");
             }
 
-            if (intervalType != BinningIntervalType.InclusiveLowerBound &&
-                intervalType != BinningIntervalType.InclusiveUpperBound)
+            if (intervalType is not BinningIntervalType.InclusiveLowerBound and
+                not BinningIntervalType.InclusiveUpperBound)
             {
                 throw new ArgumentException(nameof(outlierMode), "Unsupported bin interval type");
             }
 
-            if (intervalType != BinningIntervalType.InclusiveLowerBound &&
-                intervalType != BinningIntervalType.InclusiveUpperBound)
+            if (intervalType is not BinningIntervalType.InclusiveLowerBound and
+                not BinningIntervalType.InclusiveUpperBound)
             {
                 throw new ArgumentException(nameof(outlierMode), "Unsupported bin interval type");
             }

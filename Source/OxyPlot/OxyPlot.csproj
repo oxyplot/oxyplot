@@ -9,10 +9,16 @@
         <SignAssembly>true</SignAssembly>
         <AssemblyOriginatorKeyFile>OxyPlot.snk</AssemblyOriginatorKeyFile>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        <LangVersion>8</LangVersion>
+        <LangVersion>11</LangVersion>
         <NoWarn>$(NoWarn);CS0618</NoWarn>
     </PropertyGroup>
     <ItemGroup>
         <None Include="OxyPlot.snk" />
+    </ItemGroup>
+    <ItemGroup>
+      <PackageReference Include="PolySharp" Version="1.13.2">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
     </ItemGroup>
 </Project>

@@ -64,7 +64,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets the center of the item.
         /// </summary>
-        public double RangeCenter => this.RangeStart + ((this.RangeEnd - this.RangeStart) / 2);
+        public double RangeCenter => this.RangeStart + (this.RangeEnd - this.RangeStart) / 2;
 
         /// <summary>
         /// Gets or sets the count.
@@ -133,9 +133,9 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// Returns a <see cref="string" /> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+        /// <returns>A <see cref="string" /> that represents this instance.</returns>
         public override string ToString()
         {
             return string.Format(

@@ -117,7 +117,7 @@ namespace OxyPlot.Series
         /// <returns>The category axis.</returns>
         protected CategoryAxis GetCategoryAxis()
         {
-            if (!(this.YAxis is CategoryAxis ca))
+            if (this.YAxis is not CategoryAxis ca)
             {
                 throw new Exception("BarSeries requires a CategoryAxis on the Y Axis.");
             }

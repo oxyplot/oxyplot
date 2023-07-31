@@ -173,7 +173,7 @@ namespace OxyPlot
         /// Invalid TIFF identifier</exception>
         public OxyImageInfo GetImageInfo(byte[] bytes)
         {
-            throw new NotImplementedException(); 
+            throw new NotImplementedException();
             /*
             int width = -1;
             int height = -1;
@@ -317,106 +317,108 @@ namespace OxyPlot
             switch (fieldType)
             {
                 case 1:
+                {
+                    var valueOrOffset = inputReader.ReadUInt32(isLittleEndian);
+
+                    if (count == 1)
                     {
-                        var valueOrOffset = inputReader.ReadUInt32(isLittleEndian);
+                        var value = inputReader.ReadByte();
 
-                        if (count == 1)
-                        {
-                            var value = inputReader.ReadByte();
-                            var x = inputReader.ReadBytes(3);
-                            return value;
-                        }
+                        _ = inputReader.ReadBytes(3);
+                        return value;
+                    }
 
+                    if (count < 4)
+                    {
+                        var value = inputReader.ReadBytes(count);
                         if (count < 4)
                         {
-                            var value = inputReader.ReadBytes(count);
-                            if (count < 4)
-                            {
-                                var x = inputReader.ReadBytes(4 - count);
-                            }
-
-                            return value;
+                            _ = inputReader.ReadBytes(4 - count);
                         }
 
-                        ms.Position = baseOffset + valueOrOffset;
-                        return inputReader.ReadBytes(count);
+                        return value;
                     }
+
+                    ms.Position = baseOffset + valueOrOffset;
+                    return inputReader.ReadBytes(count);
+                }
 
                 case 2:
+                {
+                    if (count <= 4)
                     {
-                        if (count <= 4)
+                        var value = inputReader.ReadString(count).Trim('\0');
+                        if (count < 4)
                         {
-                            var value = inputReader.ReadString(count).Trim('\0');
-                            if (count < 4)
-                            {
-                                inputReader.ReadBytes(4 - count);
-                            }
-
-                            return value;
+                            inputReader.ReadBytes(4 - count);
                         }
 
-                        var valueOrOffset = inputReader.ReadUInt32(isLittleEndian);
-                        ms.Position = baseOffset + valueOrOffset;
-                        return inputReader.ReadString(count).Trim('\0');
+                        return value;
                     }
+
+                    var valueOrOffset = inputReader.ReadUInt32(isLittleEndian);
+                    ms.Position = baseOffset + valueOrOffset;
+                    return inputReader.ReadString(count).Trim('\0');
+                }
 
                 case 3:
+                {
+                    if (count == 1)
                     {
-                        if (count == 1)
-                        {
-                            var value = inputReader.ReadUInt16(isLittleEndian);
-                            var x = inputReader.ReadUInt16(isLittleEndian);
-                            return value;
-                        }
+                        var value = inputReader.ReadUInt16(isLittleEndian);
 
-                        if (count == 2)
-                        {
-                            return inputReader.ReadUInt16Array(count, isLittleEndian);
-                        }
+                        _ = inputReader.ReadUInt16(isLittleEndian);
+                        return value;
+                    }
 
-                        var valueOrOffset = inputReader.ReadUInt32(isLittleEndian);
-                        ms.Position = baseOffset + valueOrOffset;
+                    if (count == 2)
+                    {
                         return inputReader.ReadUInt16Array(count, isLittleEndian);
                     }
-                case 4:
-                    {
-                        if (count == 1)
-                        {
-                            return inputReader.ReadUInt32(isLittleEndian);
-                        }
 
-                        var valueOrOffset = inputReader.ReadUInt32(isLittleEndian);
-                        ms.Position = baseOffset + valueOrOffset;
-                        return inputReader.ReadUInt32Array(count, isLittleEndian);
+                    var valueOrOffset = inputReader.ReadUInt32(isLittleEndian);
+                    ms.Position = baseOffset + valueOrOffset;
+                    return inputReader.ReadUInt16Array(count, isLittleEndian);
+                }
+                case 4:
+                {
+                    if (count == 1)
+                    {
+                        return inputReader.ReadUInt32(isLittleEndian);
                     }
+
+                    var valueOrOffset = inputReader.ReadUInt32(isLittleEndian);
+                    ms.Position = baseOffset + valueOrOffset;
+                    return inputReader.ReadUInt32Array(count, isLittleEndian);
+                }
 
                 case 5:
+                {
+                    var valueOrOffset = inputReader.ReadUInt32(isLittleEndian);
+                    ms.Position = baseOffset + valueOrOffset;
+                    if (count == 1)
                     {
-                        var valueOrOffset = inputReader.ReadUInt32(isLittleEndian);
-                        ms.Position = baseOffset + valueOrOffset;
-                        if (count == 1)
-                        {
-                            var nominator = inputReader.ReadUInt32(isLittleEndian);
-                            var denominator = inputReader.ReadUInt32(isLittleEndian);
-                            return (double)nominator / denominator;
-                        }
-
-                        throw new NotImplementedException();
+                        var nominator = inputReader.ReadUInt32(isLittleEndian);
+                        var denominator = inputReader.ReadUInt32(isLittleEndian);
+                        return (double)nominator / denominator;
                     }
+
+                    throw new NotImplementedException();
+                }
 
                 case 10:
+                {
+                    var valueOrOffset = inputReader.ReadInt32(isLittleEndian);
+                    ms.Position = baseOffset + valueOrOffset;
+                    if (count == 1)
                     {
-                        var valueOrOffset = inputReader.ReadInt32(isLittleEndian);
-                        ms.Position = baseOffset + valueOrOffset;
-                        if (count == 1)
-                        {
-                            var nominator = inputReader.ReadInt32(isLittleEndian);
-                            var denominator = inputReader.ReadInt32(isLittleEndian);
-                            return (double)nominator / denominator;
-                        }
-
-                        throw new NotImplementedException();
+                        var nominator = inputReader.ReadInt32(isLittleEndian);
+                        var denominator = inputReader.ReadInt32(isLittleEndian);
+                        return (double)nominator / denominator;
                     }
+
+                    throw new NotImplementedException();
+                }
             }
 
             throw new NotImplementedException();

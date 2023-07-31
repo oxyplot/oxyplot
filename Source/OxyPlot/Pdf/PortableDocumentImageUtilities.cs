@@ -35,13 +35,13 @@ namespace OxyPlot
 
             var bits = new byte[image.Width * image.Height * 3];
             var maskBits = new byte[image.Width * image.Height];
-            int i = 0;
-            int j = 0;
+            var i = 0;
+            var j = 0;
 
             // Start at the top row
-            for (int y = 0; y < image.Height; y++)
+            for (var y = 0; y < image.Height; y++)
             {
-                for (int x = 0; x < image.Width; x++)
+                for (var x = 0; x < image.Width; x++)
                 {
                     maskBits[j++] = pixels[x, y].A;
                     bits[i++] = pixels[x, y].R;

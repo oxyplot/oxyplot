@@ -11,7 +11,6 @@ namespace OxyPlot.Series
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Linq;
 
     /// <summary>
@@ -69,10 +68,7 @@ namespace OxyPlot.Series
         /// Gets the actual color.
         /// </summary>
         /// <value>The actual color.</value>
-        public OxyColor ActualColor
-        {
-            get { return this.Color.GetActualColor(this.defaultColor); }
-        }
+        public OxyColor ActualColor => this.Color.GetActualColor(this.defaultColor);
 
         /// <summary>
         /// Gets or sets the column coordinates.
@@ -172,31 +168,33 @@ namespace OxyPlot.Series
                 return;
             }
 
-            double[] actualContourLevels = this.ContourLevels;
+            var actualContourLevels = this.ContourLevels;
 
             this.segments = new List<ContourSegment>();
-            Conrec.RendererDelegate renderer = (startX, startY, endX, endY, contourLevel) =>
+            void renderer(double startX, double startY, double endX, double endY, double contourLevel)
+            {
                 this.segments.Add(new ContourSegment(new DataPoint(startX, startY), new DataPoint(endX, endY), contourLevel));
+            }
 
             if (actualContourLevels == null)
             {
-                double max = this.Data[0, 0];
-                double min = this.Data[0, 0];
-                for (int i = 0; i < this.Data.GetUpperBound(0); i++)
+                var max = this.Data[0, 0];
+                var min = this.Data[0, 0];
+                for (var i = 0; i < this.Data.GetUpperBound(0); i++)
                 {
-                    for (int j = 0; j < this.Data.GetUpperBound(1); j++)
+                    for (var j = 0; j < this.Data.GetUpperBound(1); j++)
                     {
                         max = Math.Max(max, this.Data[i, j]);
                         min = Math.Min(min, this.Data[i, j]);
                     }
                 }
 
-                double actualStep = this.ContourLevelStep;
+                var actualStep = this.ContourLevelStep;
                 if (double.IsNaN(actualStep))
                 {
-                    double range = max - min;
-                    double step = range / 20;
-                    double stepExp = Math.Round(Math.Log(Math.Abs(step), 10));
+                    var range = max - min;
+                    var step = range / 20;
+                    var stepExp = Math.Round(Math.Log(Math.Abs(step), 10));
                     actualStep = Math.Pow(10, Math.Floor(stepExp));
                     this.ContourLevelStep = actualStep;
                 }
@@ -216,11 +214,11 @@ namespace OxyPlot.Series
                 foreach (var c in this.contours)
                 {
                     // get the index of the contour's level
-                    var index = IndexOf(actualContourLevels, c.ContourLevel);
+                    var index = IndexOf(actualContourLevels, c.contourLevel);
                     if (index >= 0)
                     {
                         // clamp the index to the range of the ContourColors array
-                        index = index % this.ContourColors.Length;
+                        index %= this.ContourColors.Length;
                         c.Color = this.ContourColors[index];
                     }
                 }
@@ -243,7 +241,7 @@ namespace OxyPlot.Series
 
             foreach (var c in this.contours)
             {
-                var r = interpolate ? this.GetNearestInterpolatedPointInternal(c.Points, point) : this.GetNearestPointInternal(c.Points, point);
+                var r = interpolate ? this.GetNearestInterpolatedPointInternal(c.points, point) : this.GetNearestPointInternal(c.points, point);
                 if (r != null)
                 {
                     if (result == null || result.Position.DistanceToSquared(point) > r.Position.DistanceToSquared(point))
@@ -259,7 +257,7 @@ namespace OxyPlot.Series
                             yaxisTitle,
                             this.YAxis.GetValue(r.DataPoint.Y),
                             zaxisTitle,
-                            c.ContourLevel);
+                            c.contourLevel);
                     }
                 }
             }
@@ -295,7 +293,7 @@ namespace OxyPlot.Series
                     continue;
                 }
 
-                var transformedPoints = contour.Points.Select(this.Transform).ToArray();
+                var transformedPoints = contour.points.Select(this.Transform).ToArray();
 
                 var strokeColor = contour.Color.GetActualColor(this.ActualColor);
 
@@ -310,13 +308,13 @@ namespace OxyPlot.Series
 
                 // measure total contour length
                 var contourLength = 0.0;
-                for (int i = 1; i < transformedPoints.Length; i++)
+                for (var i = 1; i < transformedPoints.Length; i++)
                 {
                     contourLength += (transformedPoints[i] - transformedPoints[i - 1]).Length;
                 }
 
                 // don't add label to contours, if ContourLevel is not close to LabelStep
-                if (transformedPoints.Length <= 10 || (Math.Round(contour.ContourLevel / this.ContourLevelStep) % this.LabelStep != 0))
+                if (transformedPoints.Length <= 10 || (Math.Round(contour.contourLevel / this.ContourLevelStep) % this.LabelStep != 0))
                 {
                     continue;
                 }
@@ -339,7 +337,7 @@ namespace OxyPlot.Series
                 var contourPartLengthOld = 0.0;
                 var intervalIndex = 1;
                 var contourPartLengthTarget = 0.0;
-                var contourFirstPartLengthTarget = (contourLength - ((labelsCount - 1) * this.LabelSpacing)) / 2;
+                var contourFirstPartLengthTarget = (contourLength - (labelsCount - 1) * this.LabelSpacing) / 2;
                 for (var j = 0; j < labelsCount; j++)
                 {
                     var labelIndex = 0.0;
@@ -350,7 +348,7 @@ namespace OxyPlot.Series
                     }
                     else
                     {
-                        contourPartLengthTarget = contourFirstPartLengthTarget + (j * this.LabelSpacing);
+                        contourPartLengthTarget = contourFirstPartLengthTarget + j * this.LabelSpacing;
                     }
 
                     // find index of contour points where next label should be positioned
@@ -360,7 +358,7 @@ namespace OxyPlot.Series
 
                         if (contourPartLength > contourPartLengthTarget)
                         {
-                            labelIndex = (k - 1) + ((contourPartLengthTarget - contourPartLengthOld) / (contourPartLength - contourPartLengthOld));
+                            labelIndex = k - 1 + (contourPartLengthTarget - contourPartLengthOld) / (contourPartLength - contourPartLengthOld);
                             intervalIndex = k + 1;
                             break;
                         }
@@ -414,9 +412,9 @@ namespace OxyPlot.Series
         /// <returns>An index.</returns>
         private static int IndexOf(IList<double> values, double value)
         {
-            double min = double.MaxValue;
-            int index = -1;
-            for (int i = 0; i < values.Count; i++)
+            var min = double.MaxValue;
+            var index = -1;
+            for (var i = 0; i < values.Count; i++)
             {
                 var d = Math.Abs(values[i] - value);
                 if (d < min)
@@ -448,8 +446,8 @@ namespace OxyPlot.Series
             var i1 = i0 + 1;
             var dx = pts[i1].X - pts[i0].X;
             var dy = pts[i1].Y - pts[i0].Y;
-            var x = pts[i0].X + (dx * (labelIndex - i0));
-            var y = pts[i0].Y + (dy * (labelIndex - i0));
+            var x = pts[i0].X + dx * (labelIndex - i0);
+            var y = pts[i0].Y + dy * (labelIndex - i0);
 
             var pos = new ScreenPoint(x, y);
             var angle = Math.Atan2(dy, dx) * 180 / Math.PI;
@@ -464,7 +462,7 @@ namespace OxyPlot.Series
             }
 
             var formatString = string.Concat("{0:", this.LabelFormatString, "}");
-            var text = string.Format(this.ActualCulture, formatString, contour.ContourLevel);
+            var text = string.Format(this.ActualCulture, formatString, contour.contourLevel);
             contourLabels.Add(new ContourLabel { Position = pos, Angle = angle, Text = text });
         }
 
@@ -478,15 +476,15 @@ namespace OxyPlot.Series
 
             static IEnumerable<SegmentPoint> GetPoints(ContourSegment segment)
             {
-                var p1 = new SegmentPoint(segment.StartPoint);
-                var p2 = new SegmentPoint(segment.EndPoint);
+                var p1 = new SegmentPoint(segment.startPoint);
+                var p2 = new SegmentPoint(segment.endPoint);
                 p1.Partner = p2;
                 p2.Partner = p1;
                 yield return p1;
                 yield return p2;
             }
 
-            foreach (var group in this.segments.GroupBy(p => p.ContourLevel))
+            foreach (var group in this.segments.GroupBy(p => p.contourLevel))
             {
                 var level = group.Key;
                 var points = group.SelectMany(GetPoints).OrderBy(p => p.Point.X).ToList();
@@ -627,27 +625,26 @@ namespace OxyPlot.Series
 
             // Calculate background polygon
             var size = rc.MeasureText(cl.Text, this.ActualFont, this.ActualFontSize, this.ActualFontWeight);
-            double a = cl.Angle / 180 * Math.PI;
-            double dx = Math.Cos(a);
-            double dy = Math.Sin(a);
+            var a = cl.Angle / 180 * Math.PI;
+            var dx = Math.Cos(a);
+            var dy = Math.Sin(a);
 
-            double ux = dx * 0.6;
-            double uy = dy * 0.6;
-            double vx = -dy * 0.5;
-            double vy = dx * 0.5;
-            double x = cl.Position.X;
-            double y = cl.Position.Y;
+            var ux = dx * 0.6;
+            var uy = dy * 0.6;
+            var vx = -dy * 0.5;
+            var vy = dx * 0.5;
+            var x = cl.Position.X;
+            var y = cl.Position.Y;
 
             var bpts = new[]
                            {
-                               new ScreenPoint(x - (size.Width * ux) - (size.Height * vx), y - (size.Width * uy) - (size.Height * vy)),
-                               new ScreenPoint(x + (size.Width * ux) - (size.Height * vx), y + (size.Width * uy) - (size.Height * vy)),
-                               new ScreenPoint(x + (size.Width * ux) + (size.Height * vx), y + (size.Width * uy) + (size.Height * vy)),
-                               new ScreenPoint(x - (size.Width * ux) + (size.Height * vx), y - (size.Width * uy) + (size.Height * vy))
+                               new ScreenPoint(x - size.Width * ux - size.Height * vx, y - size.Width * uy - size.Height * vy),
+                               new ScreenPoint(x + size.Width * ux - size.Height * vx, y + size.Width * uy - size.Height * vy),
+                               new ScreenPoint(x + size.Width * ux + size.Height * vx, y + size.Width * uy + size.Height * vy),
+                               new ScreenPoint(x - size.Width * ux + size.Height * vx, y - size.Width * uy + size.Height * vy)
                            };
             rc.DrawPolygon(bpts, this.LabelBackground, OxyColors.Undefined, 0, this.EdgeRenderingMode);
         }
-
 
         /// <summary>
         /// Represents one of the two points of a segment.
@@ -693,13 +690,13 @@ namespace OxyPlot.Series
             /// Gets or sets the contour level.
             /// </summary>
             /// <value>The contour level.</value>
-            internal readonly double ContourLevel;
+            internal readonly double contourLevel;
 
             /// <summary>
             /// Gets or sets the points.
             /// </summary>
             /// <value>The points.</value>
-            internal readonly List<DataPoint> Points;
+            internal readonly List<DataPoint> points;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="Contour" /> class.
@@ -708,8 +705,8 @@ namespace OxyPlot.Series
             /// <param name="contourLevel">The contour level.</param>
             public Contour(List<DataPoint> points, double contourLevel)
             {
-                this.Points = points;
-                this.ContourLevel = contourLevel;
+                this.points = points;
+                this.contourLevel = contourLevel;
                 this.Color = OxyColors.Automatic;
             }
 
@@ -751,17 +748,17 @@ namespace OxyPlot.Series
             /// <summary>
             /// The contour level.
             /// </summary>
-            internal readonly double ContourLevel;
+            internal readonly double contourLevel;
 
             /// <summary>
             /// The end point.
             /// </summary>
-            internal readonly DataPoint EndPoint;
+            internal readonly DataPoint endPoint;
 
             /// <summary>
             /// The start point.
             /// </summary>
-            internal readonly DataPoint StartPoint;
+            internal readonly DataPoint startPoint;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="ContourSegment" /> class.
@@ -771,9 +768,9 @@ namespace OxyPlot.Series
             /// <param name="contourLevel">The contour level.</param>
             public ContourSegment(DataPoint startPoint, DataPoint endPoint, double contourLevel)
             {
-                this.ContourLevel = contourLevel;
-                this.StartPoint = startPoint;
-                this.EndPoint = endPoint;
+                this.contourLevel = contourLevel;
+                this.startPoint = startPoint;
+                this.endPoint = endPoint;
             }
         }
     }

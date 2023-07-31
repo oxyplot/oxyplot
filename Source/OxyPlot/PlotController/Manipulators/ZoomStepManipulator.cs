@@ -66,15 +66,9 @@ namespace OxyPlot
                 scale = 1.0 / (1 - scale);
             }
 
-            if (this.XAxis != null)
-            {
-                this.XAxis.ZoomAt(scale, current.X);
-            }
+            this.XAxis?.ZoomAt(scale, current.X);
 
-            if (this.YAxis != null)
-            {
-                this.YAxis.ZoomAt(scale, current.Y);
-            }
+            this.YAxis?.ZoomAt(scale, current.Y);
 
             this.PlotView.InvalidatePlot(false);
             e.Handled = true;

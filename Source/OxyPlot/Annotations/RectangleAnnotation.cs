@@ -77,7 +77,7 @@ namespace OxyPlot.Annotations
             var y2 = double.IsPositiveInfinity(this.MaximumY) || double.IsNaN(this.MaximumY) ? Math.Max(p1.Y, p2.Y) : this.MaximumY;
 
             this.screenRectangle = new OxyRect(this.Transform(x1, y1), this.Transform(x2, y2));
-            
+
             rc.DrawRectangle(
                 this.screenRectangle,
                 this.GetSelectableFillColor(this.Fill),

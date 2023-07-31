@@ -9,11 +9,10 @@
 
 namespace OxyPlot.Axes
 {
+    using OxyPlot.Utilities;
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using OxyPlot.Series;
-    using OxyPlot.Utilities;
 
     /// <summary>
     /// Provides an abstract base class for axes.
@@ -34,21 +33,6 @@ namespace OxyPlot.Axes
         /// Rounds a value if the difference between the rounded value and the original value is less than 1e-6.
         /// </summary>
         protected static readonly Func<double, double> ThresholdRound = x => Math.Abs(Math.Round(x) - x) < 1e-6 ? Math.Round(x) : x;
-
-        /// <summary>
-        /// The offset.
-        /// </summary>
-        private double offset;
-
-        /// <summary>
-        /// The scale.
-        /// </summary>
-        private double scale;
-
-        /// <summary>
-        /// The position of the axis.
-        /// </summary>
-        private AxisPosition position;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Axis" /> class.
@@ -352,13 +336,7 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Gets a value indicating whether this axis is reversed. It is reversed if <see cref="StartPosition" /> &gt; <see cref="EndPosition" />.
         /// </summary>
-        public bool IsReversed
-        {
-            get
-            {
-                return this.StartPosition > this.EndPosition;
-            }
-        }
+        public bool IsReversed => this.StartPosition > this.EndPosition;
 
         /// <summary>
         /// Gets or sets a value indicating whether zooming is enabled. The default value is <c>true</c>.
@@ -507,29 +485,12 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Gets the offset. This is used to transform between data and screen coordinates.
         /// </summary>
-        public double Offset
-        {
-            get
-            {
-                return this.offset;
-            }
-        }
+        public double Offset { get; private set; }
 
         /// <summary>
         /// Gets or sets the position of the axis. The default value is <see cref="AxisPosition.Left"/>.
         /// </summary>
-        public AxisPosition Position
-        {
-            get
-            {
-                return this.position;
-            }
-
-            set
-            {
-                this.position = value;
-            }
-        }
+        public AxisPosition Position { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the axis should be positioned at the zero-crossing of the related axis. The default value is <c>false</c>.
@@ -545,13 +506,7 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Gets the scaling factor of the axis. This is used to transform between data and screen coordinates.
         /// </summary>
-        public double Scale
-        {
-            get
-            {
-                return this.scale;
-            }
-        }
+        public double Scale { get; private set; }
 
         /// <summary>
         /// Gets or sets the screen coordinate of the maximum end of the axis.
@@ -668,46 +623,22 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Gets the actual color of the title.
         /// </summary>
-        protected internal OxyColor ActualTitleColor
-        {
-            get
-            {
-                return this.TitleColor.GetActualColor(this.PlotModel.TextColor);
-            }
-        }
+        protected internal OxyColor ActualTitleColor => this.TitleColor.GetActualColor(this.PlotModel.TextColor);
 
         /// <summary>
         /// Gets the actual title font.
         /// </summary>
-        protected internal string ActualTitleFont
-        {
-            get
-            {
-                return this.TitleFont ?? this.PlotModel.DefaultFont;
-            }
-        }
+        protected internal string ActualTitleFont => this.TitleFont ?? this.PlotModel.DefaultFont;
 
         /// <summary>
         /// Gets the actual size of the title font.
         /// </summary>
-        protected internal double ActualTitleFontSize
-        {
-            get
-            {
-                return !double.IsNaN(this.TitleFontSize) ? this.TitleFontSize : this.ActualFontSize;
-            }
-        }
+        protected internal double ActualTitleFontSize => !double.IsNaN(this.TitleFontSize) ? this.TitleFontSize : this.ActualFontSize;
 
         /// <summary>
         /// Gets the actual title font weight.
         /// </summary>
-        protected internal double ActualTitleFontWeight
-        {
-            get
-            {
-                return !double.IsNaN(this.TitleFontWeight) ? this.TitleFontWeight : this.ActualFontWeight;
-            }
-        }
+        protected internal double ActualTitleFontWeight => !double.IsNaN(this.TitleFontWeight) ? this.TitleFontWeight : this.ActualFontWeight;
 
         /// <summary>
         /// Gets or sets the current view's maximum. This value is used when the user zooms or pans.
@@ -728,14 +659,14 @@ namespace OxyPlot.Axes
         /// <returns>The floating point number value.</returns>
         public static double ToDouble(object value)
         {
-            if (value is DateTime)
+            if (value is DateTime time)
             {
-                return DateTimeAxis.ToDouble((DateTime)value);
+                return DateTimeAxis.ToDouble(time);
             }
 
-            if (value is TimeSpan)
+            if (value is TimeSpan span)
             {
-                return TimeSpanAxis.ToDouble((TimeSpan)value);
+                return TimeSpanAxis.ToDouble(span);
             }
 
             return Convert.ToDouble(value);
@@ -814,7 +745,7 @@ namespace OxyPlot.Axes
         /// <returns>The value.</returns>
         public virtual double InverseTransform(double sx)
         {
-            return (sx / this.scale) + this.offset;
+            return sx / this.Scale + this.Offset;
         }
 
         /// <summary>
@@ -823,7 +754,7 @@ namespace OxyPlot.Axes
         /// <returns><c>true</c> if the axis is horizontal; otherwise, <c>false</c> .</returns>
         public bool IsHorizontal()
         {
-            return this.position == AxisPosition.Top || this.position == AxisPosition.Bottom;
+            return this.Position is AxisPosition.Top or AxisPosition.Bottom;
         }
 
         /// <summary>
@@ -853,7 +784,7 @@ namespace OxyPlot.Axes
         /// <returns><c>true</c> if the axis is vertical; otherwise, <c>false</c> .</returns>
         public bool IsVertical()
         {
-            return this.position == AxisPosition.Left || this.position == AxisPosition.Right;
+            return this.Position is AxisPosition.Left or AxisPosition.Right;
         }
 
         /// <summary>
@@ -951,12 +882,12 @@ namespace OxyPlot.Axes
                     case AxisPosition.Right:
                         if (reachesMinPosition)
                         {
-                            marginBottom = Math.Max(0, (maximumTextSize.Height / 2) - minOuterMargin);
+                            marginBottom = Math.Max(0, maximumTextSize.Height / 2 - minOuterMargin);
                         }
 
                         if (reachesMaxPosition)
                         {
-                            marginTop = Math.Max(0, (maximumTextSize.Height / 2) - maxOuterMargin);
+                            marginTop = Math.Max(0, maximumTextSize.Height / 2 - maxOuterMargin);
                         }
 
                         break;
@@ -964,12 +895,12 @@ namespace OxyPlot.Axes
                     case AxisPosition.Bottom:
                         if (reachesMinPosition)
                         {
-                            marginLeft = Math.Max(0, (maximumTextSize.Width / 2) - minOuterMargin);
+                            marginLeft = Math.Max(0, maximumTextSize.Width / 2 - minOuterMargin);
                         }
 
                         if (reachesMaxPosition)
                         {
-                            marginRight = Math.Max(0, (maximumTextSize.Width / 2) - maxOuterMargin);
+                            marginRight = Math.Max(0, maximumTextSize.Width / 2 - maxOuterMargin);
                         }
 
                         break;
@@ -1002,16 +933,16 @@ namespace OxyPlot.Axes
                         var screenMinY = Math.Min(this.ScreenMin.Y, this.ScreenMax.Y);
                         var screenMaxY = Math.Max(this.ScreenMin.Y, this.ScreenMax.Y);
 
-                        marginTop = Math.Max(0, screenMinY - minLabelPosition + (minLabelSize.Height / 2) - minOuterMargin);
-                        marginBottom = Math.Max(0, maxLabelPosition - screenMaxY + (maxLabelSize.Height / 2) - maxOuterMargin);
+                        marginTop = Math.Max(0, screenMinY - minLabelPosition + minLabelSize.Height / 2 - minOuterMargin);
+                        marginBottom = Math.Max(0, maxLabelPosition - screenMaxY + maxLabelSize.Height / 2 - maxOuterMargin);
                         break;
                     case AxisPosition.Top:
                     case AxisPosition.Bottom:
                         var screenMinX = Math.Min(this.ScreenMin.X, this.ScreenMax.X);
                         var screenMaxX = Math.Max(this.ScreenMin.X, this.ScreenMax.X);
 
-                        marginLeft = Math.Max(0, screenMinX - minLabelPosition + (minLabelSize.Width / 2) - minOuterMargin);
-                        marginRight = Math.Max(0, maxLabelPosition - screenMaxX + (maxLabelSize.Width / 2) - maxOuterMargin);
+                        marginLeft = Math.Max(0, screenMinX - minLabelPosition + minLabelSize.Width / 2 - minOuterMargin);
+                        marginRight = Math.Max(0, maxLabelPosition - screenMaxX + maxLabelSize.Width / 2 - maxOuterMargin);
                         break;
                 }
             }
@@ -1031,9 +962,9 @@ namespace OxyPlot.Axes
                 return;
             }
 
-            bool isHorizontal = this.IsHorizontal();
+            var isHorizontal = this.IsHorizontal();
 
-            double dsx = isHorizontal ? cpt.X - ppt.X : cpt.Y - ppt.Y;
+            var dsx = isHorizontal ? cpt.X - ppt.X : cpt.Y - ppt.Y;
             this.Pan(dsx);
         }
 
@@ -1051,10 +982,10 @@ namespace OxyPlot.Axes
             var oldMinimum = this.ActualMinimum;
             var oldMaximum = this.ActualMaximum;
 
-            double dx = delta / this.Scale;
+            var dx = delta / this.Scale;
 
-            double newMinimum = this.ActualMinimum - dx;
-            double newMaximum = this.ActualMaximum - dx;
+            var newMinimum = this.ActualMinimum - dx;
+            var newMaximum = this.ActualMaximum - dx;
             if (newMinimum < this.AbsoluteMinimum)
             {
                 newMinimum = this.AbsoluteMinimum;
@@ -1112,9 +1043,9 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// Returns a <see cref="string" /> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+        /// <returns>A <see cref="string" /> that represents this instance.</returns>
         public override string ToString()
         {
             return string.Format(
@@ -1154,7 +1085,7 @@ namespace OxyPlot.Axes
 #if DEBUG
             // check if the screen coordinate is very big, this could cause issues
             // only do this in DEBUG builds, as it affects performance
-            var s = (x - this.offset) * this.scale;
+            var s = (x - this.Offset) * this.Scale;
             if (s * s > 1e12)
             {
                 throw new InvalidOperationException($"Invalid transform (screen coordinate={s}). This could cause issues with the presentation framework.");
@@ -1175,19 +1106,18 @@ namespace OxyPlot.Axes
             var oldMinimum = this.ActualMinimum;
             var oldMaximum = this.ActualMaximum;
 
-            double sx1 = this.Transform(this.ActualMaximum);
-            double sx0 = this.Transform(this.ActualMinimum);
+            var sx1 = this.Transform(this.ActualMaximum);
+            var sx0 = this.Transform(this.ActualMinimum);
 
-            double sgn = Math.Sign(this.scale);
-            double mid = (this.PreTransform(this.ActualMaximum) + this.PreTransform(this.ActualMinimum)) / 2;
+            double sgn = Math.Sign(this.Scale);
+            var mid = (this.PreTransform(this.ActualMaximum) + this.PreTransform(this.ActualMinimum)) / 2;
 
-
-            double dx = (this.offset - mid) * this.scale;
-            var newOffset = (dx / (sgn * newScale)) + mid;
+            var dx = (this.Offset - mid) * this.Scale;
+            var newOffset = dx / (sgn * newScale) + mid;
             this.SetTransform(sgn * newScale, newOffset);
 
-            double newMaximum = this.InverseTransform(sx1);
-            double newMinimum = this.InverseTransform(sx0);
+            var newMaximum = this.InverseTransform(sx1);
+            var newMinimum = this.InverseTransform(sx0);
 
             if (newMinimum < this.AbsoluteMinimum && newMaximum > this.AbsoluteMaximum)
             {
@@ -1198,7 +1128,7 @@ namespace OxyPlot.Axes
             {
                 if (newMinimum < this.AbsoluteMinimum)
                 {
-                    double d = newMaximum - newMinimum;
+                    var d = newMaximum - newMinimum;
                     newMinimum = this.AbsoluteMinimum;
                     newMaximum = this.AbsoluteMinimum + d;
                     if (newMaximum > this.AbsoluteMaximum)
@@ -1208,7 +1138,7 @@ namespace OxyPlot.Axes
                 }
                 else if (newMaximum > this.AbsoluteMaximum)
                 {
-                    double d = newMaximum - newMinimum;
+                    var d = newMaximum - newMinimum;
                     newMaximum = this.AbsoluteMaximum;
                     newMinimum = this.AbsoluteMaximum - d;
                     if (newMinimum < this.AbsoluteMinimum)
@@ -1244,8 +1174,8 @@ namespace OxyPlot.Axes
             var oldMinimum = this.ActualMinimum;
             var oldMaximum = this.ActualMaximum;
 
-            double newMinimum = Math.Max(Math.Min(x0, x1), this.AbsoluteMinimum);
-            double newMaximum = Math.Min(Math.Max(x0, x1), this.AbsoluteMaximum);
+            var newMinimum = Math.Max(Math.Min(x0, x1), this.AbsoluteMinimum);
+            var newMaximum = Math.Min(Math.Max(x0, x1), this.AbsoluteMaximum);
 
             this.ViewMinimum = newMinimum;
             this.ViewMaximum = newMaximum;
@@ -1272,25 +1202,25 @@ namespace OxyPlot.Axes
             var oldMinimum = this.ActualMinimum;
             var oldMaximum = this.ActualMaximum;
 
-            double dx0 = (this.ActualMinimum - x) * this.scale;
-            double dx1 = (this.ActualMaximum - x) * this.scale;
-            this.scale *= factor;
+            var dx0 = (this.ActualMinimum - x) * this.Scale;
+            var dx1 = (this.ActualMaximum - x) * this.Scale;
+            this.Scale *= factor;
 
-            double newMinimum = (dx0 / this.scale) + x;
-            double newMaximum = (dx1 / this.scale) + x;
+            var newMinimum = dx0 / this.Scale + x;
+            var newMaximum = dx1 / this.Scale + x;
 
             if (newMaximum - newMinimum > this.MaximumRange)
             {
                 var mid = (newMinimum + newMaximum) * 0.5;
-                newMaximum = mid + (this.MaximumRange * 0.5);
-                newMinimum = mid - (this.MaximumRange * 0.5);
+                newMaximum = mid + this.MaximumRange * 0.5;
+                newMinimum = mid - this.MaximumRange * 0.5;
             }
 
             if (newMaximum - newMinimum < this.MinimumRange)
             {
                 var mid = (newMinimum + newMaximum) * 0.5;
-                newMaximum = mid + (this.MinimumRange * 0.5);
-                newMinimum = mid - (this.MinimumRange * 0.5);
+                newMaximum = mid + this.MinimumRange * 0.5;
+                newMinimum = mid - this.MinimumRange * 0.5;
             }
 
             newMinimum = Math.Max(newMinimum, this.AbsoluteMinimum);
@@ -1312,7 +1242,7 @@ namespace OxyPlot.Axes
         /// <param name="factor">The zoom factor.</param>
         public virtual void ZoomAtCenter(double factor)
         {
-            double sx = (this.Transform(this.ClipMaximum) + this.Transform(this.ClipMinimum)) * 0.5;
+            var sx = (this.Transform(this.ClipMaximum) + this.Transform(this.ClipMinimum)) * 0.5;
             var x = this.InverseTransform(sx);
             this.ZoomAt(factor, x);
         }
@@ -1386,8 +1316,8 @@ namespace OxyPlot.Axes
         /// <param name="plotArea">The plot area rectangle.</param>
         internal virtual void UpdateIntervals(OxyRect plotArea)
         {
-            double labelSize = this.IntervalLength;
-            double length = this.IsHorizontal() ? plotArea.Width : plotArea.Height;
+            var labelSize = this.IntervalLength;
+            var length = this.IsHorizontal() ? plotArea.Width : plotArea.Height;
             length *= Math.Abs(this.EndPosition - this.StartPosition);
 
             this.ActualMajorStep = !double.IsNaN(this.MajorStep)
@@ -1420,19 +1350,19 @@ namespace OxyPlot.Axes
         /// <param name="bounds">The bounds.</param>
         internal virtual void UpdateTransform(OxyRect bounds)
         {
-            double x0 = bounds.Left;
-            double x1 = bounds.Right;
-            double y0 = bounds.Bottom;
-            double y1 = bounds.Top;
+            var x0 = bounds.Left;
+            var x1 = bounds.Right;
+            var y0 = bounds.Bottom;
+            var y1 = bounds.Top;
 
-            double a0 = this.IsHorizontal() ? x0 : y0;
-            double a1 = this.IsHorizontal() ? x1 : y1;
+            var a0 = this.IsHorizontal() ? x0 : y0;
+            var a1 = this.IsHorizontal() ? x1 : y1;
 
-            double dx = a1 - a0;
-            a1 = a0 + (this.EndPosition * dx);
-            a0 = a0 + (this.StartPosition * dx);
+            var dx = a1 - a0;
+            a1 = a0 + this.EndPosition * dx;
+            a0 += this.StartPosition * dx;
 
-            double marginSign = (this.IsHorizontal() ^ this.IsReversed) ? 1.0 : -1.0;
+            var marginSign = (this.IsHorizontal() ^ this.IsReversed) ? 1.0 : -1.0;
 
             if (this.MinimumMargin > 0)
             {
@@ -1470,21 +1400,21 @@ namespace OxyPlot.Axes
                 this.ActualMaximum = this.ActualMinimum + 1;
             }
 
-            double max = this.PreTransform(this.ActualMaximum);
-            double min = this.PreTransform(this.ActualMinimum);
+            var max = this.PreTransform(this.ActualMaximum);
+            var min = this.PreTransform(this.ActualMinimum);
 
-            double da = a0 - a1;
+            var da = a0 - a1;
             double newOffset, newScale;
             if (Math.Abs(da) > double.Epsilon)
             {
-                newOffset = (a0 / da * max) - (a1 / da * min);
+                newOffset = a0 / da * max - a1 / da * min;
             }
             else
             {
                 newOffset = 0;
             }
 
-            double range = max - min;
+            var range = max - min;
             if (Math.Abs(range) > double.Epsilon)
             {
                 newScale = (a1 - a0) / range;
@@ -1498,7 +1428,7 @@ namespace OxyPlot.Axes
 
             if (this.MinimumDataMargin > 0)
             {
-                this.ClipMinimum = this.InverseTransform(a0 - (this.MinimumDataMargin * marginSign));
+                this.ClipMinimum = this.InverseTransform(a0 - this.MinimumDataMargin * marginSign);
             }
             else
             {
@@ -1507,7 +1437,7 @@ namespace OxyPlot.Axes
 
             if (this.MaximumDataMargin > 0)
             {
-                this.ClipMaximum = this.InverseTransform(a1 + (this.MaximumDataMargin * marginSign));
+                this.ClipMaximum = this.InverseTransform(a1 + this.MaximumDataMargin * marginSign);
             }
             else
             {
@@ -1592,10 +1522,12 @@ namespace OxyPlot.Axes
             {
                 throw new InvalidOperationException("AbsoluteMaximum must be larger than AbsoluteMinimum.");
             }
+
             if (this.AbsoluteMaximum - this.AbsoluteMinimum < this.MinimumRange)
             {
                 throw new InvalidOperationException("MinimumRange must not be larger than AbsoluteMaximum-AbsoluteMinimum.");
             }
+
             if (this.MaximumRange < this.MinimumRange)
             {
                 throw new InvalidOperationException("MinimumRange must not be larger than MaximumRange.");
@@ -1613,7 +1545,7 @@ namespace OxyPlot.Axes
                 this.ActualMaximum = 100;
             }
 
-            if (this.AbsoluteMinimum > double.MinValue && this.AbsoluteMinimum < double.MaxValue)
+            if (this.AbsoluteMinimum is > double.MinValue and < double.MaxValue)
             {
                 this.ActualMinimum = Math.Max(this.ActualMinimum, this.AbsoluteMinimum);
                 if (this.MaximumRange < double.MaxValue)
@@ -1621,7 +1553,8 @@ namespace OxyPlot.Axes
                     this.ActualMaximum = Math.Min(this.ActualMaximum, this.AbsoluteMinimum + this.MaximumRange);
                 }
             }
-            if (this.AbsoluteMaximum > double.MinValue && this.AbsoluteMaximum < double.MaxValue)
+
+            if (this.AbsoluteMaximum is > double.MinValue and < double.MaxValue)
             {
                 this.ActualMaximum = Math.Min(this.ActualMaximum, this.AbsoluteMaximum);
                 if (this.MaximumRange < double.MaxValue)
@@ -1725,8 +1658,8 @@ namespace OxyPlot.Axes
             // The "SuperExponentialFormat" renders the number with superscript exponents. E.g. 10^2
             if (this.UseSuperExponentialFormat && !x.Equals(0))
             {
-                double exp = Exponent(x);
-                double mantissa = Mantissa(x);
+                var exp = Exponent(x);
+                var mantissa = Mantissa(x);
                 string fmt;
                 if (this.StringFormat == null)
                 {
@@ -1740,7 +1673,7 @@ namespace OxyPlot.Axes
                 return string.Format(this.ActualCulture, fmt, mantissa, exp);
             }
 
-            string format = string.Concat("{0:", this.ActualStringFormat ?? this.StringFormat ?? string.Empty, "}");
+            var format = string.Concat("{0:", this.ActualStringFormat ?? this.StringFormat ?? string.Empty, "}");
             return string.Format(this.ActualCulture, format, x);
         }
 
@@ -1754,19 +1687,19 @@ namespace OxyPlot.Axes
         protected virtual double CalculateActualMaximum()
         {
             var actualMaximum = this.DataMaximum;
-            double range = this.DataMaximum - this.DataMinimum;
+            var range = this.DataMaximum - this.DataMinimum;
 
             if (range <= 0)
             {
-                double zeroRange = this.DataMaximum > 0 ? this.DataMaximum : 1;
+                var zeroRange = this.DataMaximum > 0 ? this.DataMaximum : 1;
                 actualMaximum += zeroRange * 0.5;
             }
 
             if (!double.IsNaN(this.DataMinimum) && !double.IsNaN(actualMaximum))
             {
-                double x1 = this.PreTransform(actualMaximum);
-                double x0 = this.PreTransform(this.DataMinimum);
-                double dx = this.MaximumPadding * (x1 - x0);
+                var x1 = this.PreTransform(actualMaximum);
+                var x0 = this.PreTransform(this.DataMinimum);
+                var dx = this.MaximumPadding * (x1 - x0);
                 return this.PostInverseTransform(x1 + dx);
             }
 
@@ -1783,20 +1716,20 @@ namespace OxyPlot.Axes
         protected virtual double CalculateActualMinimum()
         {
             var actualMinimum = this.DataMinimum;
-            double range = this.DataMaximum - this.DataMinimum;
+            var range = this.DataMaximum - this.DataMinimum;
 
             if (range <= 0)
             {
-                double zeroRange = this.DataMaximum > 0 ? this.DataMaximum : 1;
+                var zeroRange = this.DataMaximum > 0 ? this.DataMaximum : 1;
                 actualMinimum -= zeroRange * 0.5;
             }
 
             if (!double.IsNaN(this.ActualMaximum))
             {
-                double x1 = this.PreTransform(this.ActualMaximum);
-                double x0 = this.PreTransform(actualMinimum);
-                double existingPadding = this.MaximumPadding;
-                double dx = this.MinimumPadding * ((x1 - x0) / (1.0 + existingPadding));
+                var x1 = this.PreTransform(this.ActualMaximum);
+                var x0 = this.PreTransform(actualMinimum);
+                var existingPadding = this.MaximumPadding;
+                var dx = this.MinimumPadding * ((x1 - x0) / (1.0 + existingPadding));
                 return this.PostInverseTransform(x0 - dx);
             }
 
@@ -1810,8 +1743,8 @@ namespace OxyPlot.Axes
         /// <param name="newOffset">The new offset.</param>
         protected void SetTransform(double newScale, double newOffset)
         {
-            this.scale = newScale;
-            this.offset = newOffset;
+            this.Scale = newScale;
+            this.Offset = newOffset;
             this.OnTransformChanged(new EventArgs());
         }
 
@@ -1854,20 +1787,30 @@ namespace OxyPlot.Axes
                 throw new ArgumentException("Range cannot be zero.", "range");
             }
 
-            Func<double, double> exponent = x => Math.Ceiling(Math.Log(x, 10));
-            Func<double, double> mantissa = x => x / Math.Pow(10, exponent(x) - 1);
+            static double exponent(double x)
+            {
+                return Math.Ceiling(Math.Log(x, 10));
+            }
+
+            double mantissa(double x)
+            {
+                return x / Math.Pow(10, exponent(x) - 1);
+            }
 
             // bound min/max interval counts
             minIntervalCount = Math.Max(minIntervalCount, 0);
             maxIntervalCount = Math.Min(maxIntervalCount, availableSize / maxIntervalSize);
 
             range = Math.Abs(range);
-            double interval = Math.Pow(10, exponent(range));
-            double intervalCandidate = interval;
+            var interval = Math.Pow(10, exponent(range));
+            var intervalCandidate = interval;
 
             // Function to remove 'double precision noise'
             // TODO: can this be improved
-            Func<double, double> removeNoise = x => double.Parse(x.ToString("e14"));
+            double removeNoise(double x)
+            {
+                return double.Parse(x.ToString("e14"));
+            }
 
             // decrease interval until interval count becomes less than maxIntervalCount
             while (true)
@@ -1878,7 +1821,7 @@ namespace OxyPlot.Axes
                     // reduce 5 to 2
                     intervalCandidate = removeNoise(intervalCandidate / 2.5);
                 }
-                else if (m == 2 || m == 1 || m == 10)
+                else if (m is 2 or 1 or 10)
                 {
                     // reduce 2 to 1, 10 to 5, 1 to 0.5
                     intervalCandidate = removeNoise(intervalCandidate / 2.0);
@@ -1911,12 +1854,7 @@ namespace OxyPlot.Axes
         protected virtual void OnAxisChanged(AxisChangedEventArgs args)
         {
             this.UpdateActualMaxMin();
-
-            var handler = this.AxisChanged;
-            if (handler != null)
-            {
-                handler(this, args);
-            }
+            this.AxisChanged?.Invoke(this, args);
         }
 
         /// <summary>
@@ -1925,11 +1863,7 @@ namespace OxyPlot.Axes
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
         protected virtual void OnTransformChanged(EventArgs args)
         {
-            var handler = this.TransformChanged;
-            if (handler != null)
-            {
-                handler(this, args);
-            }
+            this.TransformChanged?.Invoke(this, args);
         }
     }
 }

@@ -126,7 +126,7 @@ namespace OxyPlot.Series
         {
             var offsetBegin = this.StackedBarOffset[stackIndex, categoryIndex];
             var offsetEnd = this.StackedBarOffset[stackIndex + 1, categoryIndex];
-            return categoryIndex - 0.5 + ((offsetEnd + offsetBegin - actualBarWidth) * 0.5);
+            return categoryIndex - 0.5 + (offsetEnd + offsetBegin - actualBarWidth) * 0.5;
         }
 
         /// <summary>
@@ -350,7 +350,7 @@ namespace OxyPlot.Series
             }
 
             // Add width of unstacked series
-            foreach (var s in this.ManagedSeries.Where(s => !(s is IStackableSeries stackable) || !stackable.IsStacked))
+            foreach (var s in this.ManagedSeries.Where(s => s is not IStackableSeries stackable || !stackable.IsStacked))
             {
                 for (var i = 0; i < this.Categories.Count; i++)
                 {
@@ -372,7 +372,7 @@ namespace OxyPlot.Series
             var widthScale = 1 / (1 + this.CategoryAxis.GapWidth) / this.maxWidth;
             for (var i = 0; i < this.Categories.Count; i++)
             {
-                this.BarOffset[i] = 0.5 - (totalWidthPerCategory[i] * widthScale * 0.5);
+                this.BarOffset[i] = 0.5 - totalWidthPerCategory[i] * widthScale * 0.5;
             }
 
             for (var j = 0; j < stackGroups.Count; j++)

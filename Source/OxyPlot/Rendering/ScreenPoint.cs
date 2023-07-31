@@ -21,7 +21,7 @@ namespace OxyPlot
         /// <summary>
         /// The undefined point.
         /// </summary>
-        public static readonly ScreenPoint Undefined = new ScreenPoint(double.NaN, double.NaN);
+        public static readonly ScreenPoint Undefined = new(double.NaN, double.NaN);
 
         /// <summary>
         /// The x-coordinate.
@@ -52,25 +52,13 @@ namespace OxyPlot
         /// Gets the x-coordinate.
         /// </summary>
         /// <value>The x-coordinate.</value>
-        public double X
-        {
-            get
-            {
-                return this.x;
-            }
-        }
+        public readonly double X => this.x;
 
         /// <summary>
         /// Gets the y-coordinate.
         /// </summary>
         /// <value>The y-coordinate.</value>
-        public double Y
-        {
-            get
-            {
-                return this.y;
-            }
-        }
+        public readonly double Y => this.y;
 
         /// <summary>
         /// Determines whether the specified point is undefined.
@@ -122,11 +110,11 @@ namespace OxyPlot
         /// </summary>
         /// <param name="point">The point.</param>
         /// <returns>The distance.</returns>
-        public double DistanceTo(ScreenPoint point)
+        public readonly double DistanceTo(ScreenPoint point)
         {
-            double dx = point.x - this.x;
-            double dy = point.y - this.y;
-            return Math.Sqrt((dx * dx) + (dy * dy));
+            var dx = point.x - this.x;
+            var dy = point.y - this.y;
+            return Math.Sqrt(dx * dx + dy * dy);
         }
 
         /// <summary>
@@ -134,18 +122,18 @@ namespace OxyPlot
         /// </summary>
         /// <param name="point">The point.</param>
         /// <returns>The squared distance.</returns>
-        public double DistanceToSquared(ScreenPoint point)
+        public readonly double DistanceToSquared(ScreenPoint point)
         {
-            double dx = point.x - this.x;
-            double dy = point.y - this.y;
-            return (dx * dx) + (dy * dy);
+            var dx = point.x - this.x;
+            var dy = point.y - this.y;
+            return dx * dx + dy * dy;
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// Returns a <see cref="string" /> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-        public override string ToString()
+        /// <returns>A <see cref="string" /> that represents this instance.</returns>
+        public override readonly string ToString()
         {
             return this.x + " " + this.y;
         }

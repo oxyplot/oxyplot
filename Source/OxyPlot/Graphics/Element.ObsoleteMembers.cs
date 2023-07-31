@@ -65,11 +65,7 @@ namespace OxyPlot
         [Obsolete("Will be removed in v4.0 (#111)")]
         protected internal virtual void OnMouseDown(OxyMouseDownEventArgs e)
         {
-            var handler = this.MouseDown;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
+            this.MouseDown?.Invoke(this, e);
         }
 
         /// <summary>
@@ -79,11 +75,7 @@ namespace OxyPlot
         [Obsolete("Will be removed in v4.0 (#111)")]
         protected internal virtual void OnMouseMove(OxyMouseEventArgs e)
         {
-            var handler = this.MouseMove;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
+            this.MouseMove?.Invoke(this, e);
         }
 
         /// <summary>
@@ -93,11 +85,7 @@ namespace OxyPlot
         [Obsolete("Will be removed in v4.0 (#111)")]
         protected internal virtual void OnKeyDown(OxyKeyEventArgs e)
         {
-            var handler = this.KeyDown;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
+            this.KeyDown?.Invoke(this, e);
         }
 
         /// <summary>
@@ -107,11 +95,7 @@ namespace OxyPlot
         [Obsolete("Will be removed in v4.0 (#111)")]
         protected internal virtual void OnMouseUp(OxyMouseEventArgs e)
         {
-            var handler = this.MouseUp;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
+            this.MouseUp?.Invoke(this, e);
         }
 
         /// <summary>
@@ -121,11 +105,7 @@ namespace OxyPlot
         [Obsolete("Will be removed in v4.0 (#111)")]
         protected internal virtual void OnTouchStarted(OxyTouchEventArgs e)
         {
-            var handler = this.TouchStarted;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
+            this.TouchStarted?.Invoke(this, e);
         }
 
         /// <summary>
@@ -135,11 +115,7 @@ namespace OxyPlot
         [Obsolete("Will be removed in v4.0 (#111)")]
         protected internal virtual void OnTouchDelta(OxyTouchEventArgs e)
         {
-            var handler = this.TouchDelta;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
+            this.TouchDelta?.Invoke(this, e);
         }
 
         /// <summary>
@@ -149,11 +125,7 @@ namespace OxyPlot
         [Obsolete("Will be removed in v4.0 (#111)")]
         protected internal virtual void OnTouchCompleted(OxyTouchEventArgs e)
         {
-            var handler = this.TouchCompleted;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
+            this.TouchCompleted?.Invoke(this, e);
         }
     }
 }

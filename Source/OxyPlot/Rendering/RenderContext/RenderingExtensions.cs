@@ -50,17 +50,17 @@ namespace OxyPlot
         /// <summary>
         /// The vertical distance to the bottom points of the triangles.
         /// </summary>
-        private static readonly double M1 = Math.Tan(Math.PI / 6);
+        private static readonly double m1 = Math.Tan(Math.PI / 6);
 
         /// <summary>
         /// The vertical distance to the top points of the triangles .
         /// </summary>
-        private static readonly double M2 = Math.Sqrt(1 + (M1 * M1));
+        private static readonly double m2 = Math.Sqrt(1 + m1 * m1);
 
         /// <summary>
         /// The horizontal/vertical distance to the end points of the stars.
         /// </summary>
-        private static readonly double M3 = Math.Tan(Math.PI / 4);
+        private static readonly double m3 = Math.Tan(Math.PI / 4);
 
         /// <summary>
         /// Gets the actual edge rendering mode.
@@ -201,10 +201,10 @@ namespace OxyPlot
         public static void DrawMultilineText(this IRenderContext rc, ScreenPoint point, string text, OxyColor color, string? fontFamily = null, double fontSize = 10, double fontWeight = FontWeights.Normal, double dy = 12)
         {
             var lines = StringHelper.SplitLines(text);
-            for (int i = 0; i < lines.Length; i++)
+            for (var i = 0; i < lines.Length; i++)
             {
                 rc.DrawText(
-                    new ScreenPoint(point.X, point.Y + (i * dy)),
+                    new ScreenPoint(point.X, point.Y + i * dy),
                     lines[i],
                     color,
                     fontWeight: fontWeight,
@@ -372,7 +372,7 @@ namespace OxyPlot
                 {
                     var x = (int)((p.X - binOffset.X) / resolution);
                     var y = (int)((p.Y - binOffset.Y) / resolution);
-                    uint hash = (uint)(x << 16) + (uint)y;
+                    var hash = (uint)(x << 16) + (uint)y;
                     if (hashset.ContainsKey(hash))
                     {
                         i++;
@@ -557,7 +557,7 @@ namespace OxyPlot
                     throw new ArgumentNullException("outline", "The outline should be set when MarkerType is 'Custom'.");
                 }
 
-                var poly = outline.Select(o => new ScreenPoint(p.X + (o.x * size), p.Y + (o.y * size))).ToList();
+                var poly = outline.Select(o => new ScreenPoint(p.X + o.x * size, p.Y + o.y * size)).ToList();
                 polygons.Add(poly);
                 return;
             }
@@ -565,61 +565,61 @@ namespace OxyPlot
             switch (type)
             {
                 case MarkerType.Circle:
-                    {
-                        ellipses.Add(new OxyRect(p.x - size, p.y - size, size * 2, size * 2));
-                        break;
-                    }
+                {
+                    ellipses.Add(new OxyRect(p.x - size, p.y - size, size * 2, size * 2));
+                    break;
+                }
 
                 case MarkerType.Square:
-                    {
-                        rects.Add(new OxyRect(p.x - size, p.y - size, size * 2, size * 2));
-                        break;
-                    }
+                {
+                    rects.Add(new OxyRect(p.x - size, p.y - size, size * 2, size * 2));
+                    break;
+                }
 
                 case MarkerType.Diamond:
-                    {
-                        polygons.Add(
-                            new[]
-                                {
-                                    new ScreenPoint(p.x, p.y - (M2 * size)), new ScreenPoint(p.x + (M2 * size), p.y),
-                                    new ScreenPoint(p.x, p.y + (M2 * size)), new ScreenPoint(p.x - (M2 * size), p.y)
-                                });
-                        break;
-                    }
+                {
+                    polygons.Add(
+                        new[]
+                            {
+                                    new ScreenPoint(p.x, p.y - m2 * size), new ScreenPoint(p.x + m2 * size, p.y),
+                                    new ScreenPoint(p.x, p.y + m2 * size), new ScreenPoint(p.x - m2 * size, p.y)
+                            });
+                    break;
+                }
 
                 case MarkerType.Triangle:
-                    {
-                        polygons.Add(
-                            new[]
-                                {
-                                    new ScreenPoint(p.x - size, p.y + (M1 * size)),
-                                    new ScreenPoint(p.x + size, p.y + (M1 * size)), new ScreenPoint(p.x, p.y - (M2 * size))
-                                });
-                        break;
-                    }
+                {
+                    polygons.Add(
+                        new[]
+                            {
+                                    new ScreenPoint(p.x - size, p.y + m1 * size),
+                                    new ScreenPoint(p.x + size, p.y + m1 * size), new ScreenPoint(p.x, p.y - m2 * size)
+                            });
+                    break;
+                }
 
                 case MarkerType.Plus:
                 case MarkerType.Star:
-                    {
-                        lines.Add(new ScreenPoint(p.x - size, p.y));
-                        lines.Add(new ScreenPoint(p.x + size, p.y));
-                        lines.Add(new ScreenPoint(p.x, p.y - size));
-                        lines.Add(new ScreenPoint(p.x, p.y + size));
-                        break;
-                    }
+                {
+                    lines.Add(new ScreenPoint(p.x - size, p.y));
+                    lines.Add(new ScreenPoint(p.x + size, p.y));
+                    lines.Add(new ScreenPoint(p.x, p.y - size));
+                    lines.Add(new ScreenPoint(p.x, p.y + size));
+                    break;
+                }
             }
 
             switch (type)
             {
                 case MarkerType.Cross:
                 case MarkerType.Star:
-                    {
-                        lines.Add(new ScreenPoint(p.x - (size * M3), p.y - (size * M3)));
-                        lines.Add(new ScreenPoint(p.x + (size * M3), p.y + (size * M3)));
-                        lines.Add(new ScreenPoint(p.x - (size * M3), p.y + (size * M3)));
-                        lines.Add(new ScreenPoint(p.x + (size * M3), p.y - (size * M3)));
-                        break;
-                    }
+                {
+                    lines.Add(new ScreenPoint(p.x - size * m3, p.y - size * m3));
+                    lines.Add(new ScreenPoint(p.x + size * m3, p.y + size * m3));
+                    lines.Add(new ScreenPoint(p.x - size * m3, p.y + size * m3));
+                    lines.Add(new ScreenPoint(p.x + size * m3, p.y - size * m3));
+                    break;
+                }
             }
         }
 
@@ -651,8 +651,8 @@ namespace OxyPlot
             }
 
             outputBuffer.Add(points[0]);
-            int lastPointIndex = 0;
-            for (int i = 1; i < n; i++)
+            var lastPointIndex = 0;
+            for (var i = 1; i < n; i++)
             {
                 var sc1 = points[i];
 
@@ -660,7 +660,7 @@ namespace OxyPlot
                 var dx = sc1.X - points[lastPointIndex].X;
                 var dy = sc1.Y - points[lastPointIndex].Y;
 
-                if ((dx * dx) + (dy * dy) > minDistSquared || i == n - 1)
+                if (dx * dx + dy * dy > minDistSquared || i == n - 1)
                 {
                     outputBuffer.Add(new ScreenPoint(sc1.X, sc1.Y));
                     lastPointIndex = i;

@@ -47,7 +47,10 @@ namespace OxyPlot
             var theta = angle * Math.PI / 180.0;
             var costh = Math.Cos(theta);
             var sinth = Math.Sin(theta);
-            Func<ScreenVector, ScreenVector> rotate = p => new ScreenVector((costh * p.X) - (sinth * p.Y), (sinth * p.X) + (costh * p.Y));
+            ScreenVector rotate(ScreenVector p)
+            {
+                return new ScreenVector(costh * p.X - sinth * p.Y, sinth * p.X + costh * p.Y);
+            }
 
             var q0 = rotate(p0);
             var q1 = rotate(p1);
@@ -89,7 +92,10 @@ namespace OxyPlot
                 var theta = angle * Math.PI / 180.0;
                 var costh = Math.Cos(theta);
                 var sinth = Math.Sin(theta);
-                Func<ScreenVector, ScreenVector> rotate = p => new ScreenVector((costh * p.X) - (sinth * p.Y), (sinth * p.X) + (costh * p.Y));
+                ScreenVector rotate(ScreenVector p)
+                {
+                    return new ScreenVector(costh * p.X - sinth * p.Y, sinth * p.X + costh * p.Y);
+                }
 
                 p0 = rotate(p0);
                 p1 = rotate(p1);

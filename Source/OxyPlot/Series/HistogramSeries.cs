@@ -73,7 +73,7 @@ namespace OxyPlot.Series
         /// Gets or sets the actual base line.
         /// </summary>
         /// <returns>The actual base line.</returns>
-        public double ActualBaseLine{ get; protected set; }
+        public double ActualBaseLine { get; protected set; }
 
         /// <summary>
         /// Gets or sets the color of the interior of the bars.
@@ -239,7 +239,7 @@ namespace OxyPlot.Series
             var height = (legendBox.Bottom - legendBox.Top) * 0.8;
             var width = height;
             rc.DrawRectangle(
-                new OxyRect(xmid - (0.5 * width), ymid - (0.5 * height), width, height),
+                new OxyRect(xmid - 0.5 * width, ymid - 0.5 * height, width, height),
                 this.GetSelectableColor(this.ActualFillColor),
                 this.StrokeColor,
                 this.StrokeThickness,
@@ -371,7 +371,7 @@ namespace OxyPlot.Series
         /// <param name="items">The Items to render.</param>
         protected void RenderBins(IRenderContext rc, ICollection<HistogramItem> items)
         {
-            bool clampBase = this.YAxis.IsLogarithmic() && !this.YAxis.IsValidValue(this.BaseValue);
+            var clampBase = this.YAxis.IsLogarithmic() && !this.YAxis.IsValidValue(this.BaseValue);
 
             foreach (var item in items)
             {
@@ -390,10 +390,10 @@ namespace OxyPlot.Series
                 var rectangle = new OxyRect(p1, p2);
 
                 rc.DrawRectangle(
-                    rectangle, 
+                    rectangle,
                     actualFillColor,
-                    actualStrokeColor, 
-                    this.StrokeThickness, 
+                    actualStrokeColor,
+                    this.StrokeThickness,
                     this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness));
 
                 if (this.LabelFormatString != null)

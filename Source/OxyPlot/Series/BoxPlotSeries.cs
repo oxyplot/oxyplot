@@ -9,11 +9,9 @@
 
 namespace OxyPlot.Series
 {
-    using System;
+    using OxyPlot.Axes;
     using System.Collections.Generic;
     using System.Linq;
-
-    using OxyPlot.Axes;
 
     /// <summary>
     /// Represents a series for box plots.
@@ -171,13 +169,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets the list of items that should be rendered.
         /// </summary>
-        protected IList<BoxPlotItem> ActualItems
-        {
-            get
-            {
-                return this.ItemsSource != null ? this.itemsSourceItems : this.Items;
-            }
-        }
+        protected IList<BoxPlotItem> ActualItems => this.ItemsSource != null ? this.itemsSourceItems : this.Items;
 
         /// <summary>
         /// Gets the nearest point.
@@ -192,14 +184,14 @@ namespace OxyPlot.Series
                 return null;
             }
 
-            double minimumDistance = double.MaxValue;
+            var minimumDistance = double.MaxValue;
             TrackerHitResult result = null;
             foreach (var item in this.ActualItems)
             {
                 foreach (var outlier in item.Outliers)
                 {
                     var sp = this.Transform(item.X, outlier);
-                    double d = (sp - point).LengthSquared;
+                    var d = (sp - point).LengthSquared;
                     if (d < minimumDistance)
                     {
                         result = new TrackerHitResult
@@ -238,7 +230,7 @@ namespace OxyPlot.Series
 
                 // check if we are near the line
                 var p = ScreenPointHelper.FindPointOnLine(point, topWhisker, bottomWhisker);
-                double d2 = (p - point).LengthSquared;
+                var d2 = (p - point).LengthSquared;
                 if (d2 < minimumDistance)
                 {
                     hitPoint = this.InverseTransform(p);
@@ -289,8 +281,8 @@ namespace OxyPlot.Series
         public virtual bool IsValidPoint(BoxPlotItem item, Axis xaxis, Axis yaxis)
         {
             return !double.IsNaN(item.X) && !double.IsInfinity(item.X) && !item.Values.Any(double.IsNaN)
-                   && !item.Values.Any(double.IsInfinity) && (xaxis != null && xaxis.IsValidValue(item.X))
-                   && (yaxis != null && item.Values.All(yaxis.IsValidValue));
+                   && !item.Values.Any(double.IsInfinity) && xaxis != null && xaxis.IsValidValue(item.X)
+                   && yaxis != null && item.Values.All(yaxis.IsValidValue);
         }
 
         /// <summary>
@@ -371,10 +363,10 @@ namespace OxyPlot.Series
                     // Draw the box
                     var rect = this.GetBoxRect(item);
                     rc.DrawRectangle(
-                        rect, 
-                        fillColor, 
-                        strokeColor, 
-                        this.StrokeThickness, 
+                        rect,
+                        fillColor,
+                        strokeColor,
+                        this.StrokeThickness,
                         this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness));
                 }
 
@@ -456,10 +448,10 @@ namespace OxyPlot.Series
         /// <param name="legendBox">The legend rectangle.</param>
         public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
         {
-            double xmid = (legendBox.Left + legendBox.Right) / 2;
-            double ybottom = legendBox.Top + ((legendBox.Bottom - legendBox.Top) * 0.7);
-            double ytop = legendBox.Top + ((legendBox.Bottom - legendBox.Top) * 0.3);
-            double ymid = (ybottom + ytop) * 0.5;
+            var xmid = (legendBox.Left + legendBox.Right) / 2;
+            var ybottom = legendBox.Top + (legendBox.Bottom - legendBox.Top) * 0.7;
+            var ytop = legendBox.Top + (legendBox.Bottom - legendBox.Top) * 0.3;
+            var ymid = (ybottom + ytop) * 0.5;
 
             var halfBoxWidth = legendBox.Width * 0.24;
             var halfWhiskerWidth = halfBoxWidth * this.WhiskerWidth;
@@ -556,8 +548,7 @@ namespace OxyPlot.Series
                 return;
             }
 
-            var sourceAsListOfT = this.ItemsSource as IEnumerable<BoxPlotItem>;
-            if (sourceAsListOfT != null)
+            if (this.ItemsSource is IEnumerable<BoxPlotItem> sourceAsListOfT)
             {
                 this.itemsSourceItems = sourceAsListOfT.ToList();
                 this.ownsItemsSourceItems = false;
@@ -589,10 +580,10 @@ namespace OxyPlot.Series
                 return;
             }
 
-            double minx = this.MinX;
-            double miny = this.MinY;
-            double maxx = this.MaxX;
-            double maxy = this.MaxY;
+            var minx = this.MinX;
+            var miny = this.MinY;
+            var maxx = this.MaxX;
+            var maxy = this.MaxY;
 
             foreach (var pt in items)
             {

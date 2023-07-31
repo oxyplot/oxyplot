@@ -9,7 +9,6 @@
 
 namespace OxyPlot.Series
 {
-    using OxyPlot.Axes;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -22,12 +21,12 @@ namespace OxyPlot.Series
         /// <summary>
         /// The rendered rectangles.
         /// </summary>
-        private readonly List<OxyRect> rectangles = new List<OxyRect>();
+        private readonly List<OxyRect> rectangles = new();
 
         /// <summary>
         /// The indexes matching rendered rectangles.
         /// </summary>
-        private readonly List<int> rectanglesPointIndexes = new List<int>();
+        private readonly List<int> rectanglesPointIndexes = new();
 
         /// <summary>
         /// The default color.
@@ -43,7 +42,7 @@ namespace OxyPlot.Series
             this.BarWidth = 5;
             this.StrokeColor = OxyColors.Black;
             this.StrokeThickness = 0;
-            this.TrackerFormatString = XYAxisSeries.DefaultTrackerFormatString;
+            this.TrackerFormatString = DefaultTrackerFormatString;
             this.NegativeFillColor = OxyColors.Undefined;
             this.NegativeStrokeColor = OxyColors.Undefined;
             this.BaseValue = 0;
@@ -91,13 +90,7 @@ namespace OxyPlot.Series
         /// Gets the actual color.
         /// </summary>
         /// <value>The actual color.</value>
-        public OxyColor ActualColor
-        {
-            get
-            {
-                return this.FillColor.GetActualColor(this.defaultColor);
-            }
-        }
+        public OxyColor ActualColor => this.FillColor.GetActualColor(this.defaultColor);
 
         /// <summary>
         /// Gets or sets the base value. Default value is 0.
@@ -146,8 +139,8 @@ namespace OxyPlot.Series
             {
                 this.Title,
                 this.XAxis.Title ?? "X",
-                this.XAxis.GetValue(dataPoint.X), 
-                this.YAxis.Title ?? "Y", 
+                this.XAxis.GetValue(dataPoint.X),
+                this.YAxis.Title ?? "Y",
                 this.YAxis.GetValue(dataPoint.Y),
             };
 
@@ -193,7 +186,7 @@ namespace OxyPlot.Series
             var height = (legendBox.Bottom - legendBox.Top) * 0.8;
             var width = height;
             rc.DrawRectangle(
-                new OxyRect(xmid - (0.5 * width), ymid - (0.5 * height), width, height),
+                new OxyRect(xmid - 0.5 * width, ymid - 0.5 * height, width, height),
                 this.GetSelectableColor(this.ActualColor),
                 this.StrokeColor,
                 this.StrokeThickness,
@@ -300,7 +293,7 @@ namespace OxyPlot.Series
         /// <param name="actualPoints">The list of points that should be rendered.</param>
         private void RenderBars(IRenderContext rc, List<DataPoint> actualPoints)
         {
-            bool clampBase = this.YAxis.IsLogarithmic() && !this.YAxis.IsValidValue(this.BaseValue);
+            var clampBase = this.YAxis.IsLogarithmic() && !this.YAxis.IsValidValue(this.BaseValue);
 
             var widthOffset = this.GetBarWidth(actualPoints) / 2;
             var widthVector = this.Orientate(new ScreenVector(widthOffset, 0));
@@ -322,10 +315,10 @@ namespace OxyPlot.Series
                 var barColors = this.GetBarColors(actualPoint.Y);
 
                 rc.DrawRectangle(
-                    rectangle, 
-                    barColors.FillColor, 
-                    barColors.StrokeColor, 
-                    this.StrokeThickness, 
+                    rectangle,
+                    barColors.FillColor,
+                    barColors.StrokeColor,
+                    this.StrokeThickness,
                     this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness));
             }
         }

@@ -222,7 +222,7 @@ namespace OxyPlot.Annotations
                     xd = model.Width * x.Value;
                     break;
                 case PlotLengthUnit.RelativeToPlotArea:
-                    xd = model.PlotArea.Left + (model.PlotArea.Width * x.Value);
+                    xd = model.PlotArea.Left + model.PlotArea.Width * x.Value;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -239,7 +239,7 @@ namespace OxyPlot.Annotations
                     yd = model.Height * y.Value;
                     break;
                 case PlotLengthUnit.RelativeToPlotArea:
-                    yd = model.PlotArea.Top + (model.PlotArea.Height * y.Value);
+                    yd = model.PlotArea.Top + model.PlotArea.Height * y.Value;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

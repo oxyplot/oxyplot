@@ -18,12 +18,12 @@ namespace OxyPlot
     /// Represents a point in the data space.
     /// </summary>
     /// <remarks><see cref="DataPoint" />s are transformed to <see cref="ScreenPoint" />s.</remarks>
-    public struct DataPoint : ICodeGenerating, IEquatable<DataPoint>
+    public readonly struct DataPoint : ICodeGenerating, IEquatable<DataPoint>
     {
         /// <summary>
         /// The undefined.
         /// </summary>
-        public static readonly DataPoint Undefined = new DataPoint(double.NaN, double.NaN);
+        public static readonly DataPoint Undefined = new(double.NaN, double.NaN);
 
         /// <summary>
         /// The x-coordinate.
@@ -54,25 +54,13 @@ namespace OxyPlot
         /// Gets the X-coordinate of the point.
         /// </summary>
         /// <value>The X-coordinate.</value>
-        public double X
-        {
-            get
-            {
-                return this.x;
-            }
-        }
+        public double X => this.x;
 
         /// <summary>
         /// Gets the Y-coordinate of the point.
         /// </summary>
         /// <value>The Y-coordinate.</value>
-        public double Y
-        {
-            get
-            {
-                return this.y;
-            }
-        }
+        public double Y => this.y;
 
         /// <summary>
         /// Returns C# code that generates this instance.
@@ -94,9 +82,9 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// Returns a <see cref="string" /> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+        /// <returns>A <see cref="string" /> that represents this instance.</returns>
         public override string ToString()
         {
             return this.x + " " + this.y;

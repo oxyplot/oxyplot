@@ -215,7 +215,7 @@ namespace OxyPlot
             double angle)
         {
             var i = 0;
-            var angleRadian = (angle * Math.PI) / 180.0;
+            var angleRadian = angle * Math.PI / 180.0;
             var cosAngle = Math.Round(Math.Cos(angleRadian), 5);
             var sinAngle = Math.Round(Math.Sin(angleRadian), 5);
 
@@ -234,18 +234,18 @@ namespace OxyPlot
             var superscriptFontSize = fontSize * SuperSize;
             var subscriptFontSize = fontSize * SubSize;
 
-            Func<double, double, string, double, OxySize> drawText = (xb, yb, text, fSize) =>
+            OxySize drawText(double xb, double yb, string text, double fSize)
+            {
+                if (!measureOnly)
                 {
-                    if (!measureOnly)
-                    {
-                        var xr = x + ((xb - x + dx) * cosAngle) - ((yb - y + dy) * sinAngle);
-                        var yr = y + ((xb - x + dx) * sinAngle) + ((yb - y + dy) * cosAngle);
-                        rc.DrawText(new ScreenPoint(xr, yr), text, textColor, fontFamily, fSize, fontWeight, angle);
-                    }
+                    var xr = x + (xb - x + dx) * cosAngle - (yb - y + dy) * sinAngle;
+                    var yr = y + (xb - x + dx) * sinAngle + (yb - y + dy) * cosAngle;
+                    rc.DrawText(new ScreenPoint(xr, yr), text, textColor, fontFamily, fSize, fontWeight, angle);
+                }
 
-                    var flatSize = rc.MeasureText(text, fontFamily, fSize, fontWeight);
-                    return new OxySize(flatSize.Width, flatSize.Height);
-                };
+                var flatSize = rc.MeasureText(text, fontFamily, fSize, fontWeight);
+                return new OxySize(flatSize.Width, flatSize.Height);
+            }
 
             while (i < s.Length)
             {

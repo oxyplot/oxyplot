@@ -119,10 +119,10 @@ namespace OxyPlot.Annotations
             d.Normalize();
             var n = new ScreenVector(d.Y, -d.X);
 
-            var p1 = this.screenEndPoint - (d * this.HeadLength * this.StrokeThickness);
-            var p2 = p1 + (n * this.HeadWidth * this.StrokeThickness);
-            var p3 = p1 - (n * this.HeadWidth * this.StrokeThickness);
-            var p4 = p1 + (d * this.Veeness * this.StrokeThickness);
+            var p1 = this.screenEndPoint - d * this.HeadLength * this.StrokeThickness;
+            var p2 = p1 + n * this.HeadWidth * this.StrokeThickness;
+            var p3 = p1 - n * this.HeadWidth * this.StrokeThickness;
+            var p4 = p1 + d * this.Veeness * this.StrokeThickness;
 
             const double MinimumSegmentLength = 0;
 

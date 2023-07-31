@@ -73,10 +73,7 @@ namespace OxyPlot
 
             this.currentSeries = null;
             this.PlotView.HideTracker();
-            if (this.PlotView.ActualModel != null)
-            {
-                this.PlotView.ActualModel.RaiseTrackerChanged(null);
-            }
+            this.PlotView.ActualModel?.RaiseTrackerChanged(null);
         }
 
         /// <summary>
@@ -100,7 +97,7 @@ namespace OxyPlot
             base.Started(e);
             this.currentSeries = this.PlotView.ActualModel?.GetSeriesFromPoint(e.Position, this.FiresDistance);
 
-            UpdateTracker(e.Position);
+            this.UpdateTracker(e.Position);
         }
 
         /// <summary>

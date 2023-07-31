@@ -105,7 +105,7 @@ namespace OxyPlot.Axes
             }
             else if (ticksPerDecade > this.Base * 1.5)
             {   // Fall back to linearly distributed tick values
-                base.GetTickValues(out majorLabelValues, out majorTickValues, out minorTickValues);
+                base.GetTickValues(out _, out majorTickValues, out minorTickValues);
             }
             else
             {
@@ -208,7 +208,7 @@ namespace OxyPlot.Axes
         public override double InverseTransform(double sx)
         {
             // Inline the <see cref="PostInverseTransform" /> method here.
-            return Math.Exp((sx / this.Scale) + this.Offset);
+            return Math.Exp(sx / this.Scale + this.Offset);
         }
 
         /// <summary>
@@ -245,8 +245,8 @@ namespace OxyPlot.Axes
             var px = this.PreTransform(x);
             var dx0 = this.PreTransform(this.ActualMinimum) - px;
             var dx1 = this.PreTransform(this.ActualMaximum) - px;
-            var newViewMinimum = this.PostInverseTransform((dx0 / factor) + px);
-            var newViewMaximum = this.PostInverseTransform((dx1 / factor) + px);
+            var newViewMinimum = this.PostInverseTransform(dx0 / factor + px);
+            var newViewMaximum = this.PostInverseTransform(dx1 / factor + px);
 
             var newMinimum = Math.Max(newViewMinimum, this.AbsoluteMinimum);
             var newMaximum = Math.Min(newViewMaximum, this.AbsoluteMaximum);
@@ -546,7 +546,7 @@ namespace OxyPlot.Axes
             for (var c = 1; c < actualNumberOfSteps; c++)
             {
                 var newTick = (double)c / actualNumberOfSteps;
-                newTick = Math.Log(from + ((to - from) * newTick), this.Base);
+                newTick = Math.Log(from + (to - from) * newTick, this.Base);
 
                 logTicks.Add(newTick);
             }
@@ -650,11 +650,11 @@ namespace OxyPlot.Axes
         protected override double CalculateActualMaximum()
         {
             var actualMaximum = this.DataMaximum;
-            double range = this.DataMaximum - this.DataMinimum;
+            var range = this.DataMaximum - this.DataMinimum;
 
             if (range < double.Epsilon)
             {
-                double zeroRange = this.DataMaximum > 0 ? this.DataMaximum : 1;
+                var zeroRange = this.DataMaximum > 0 ? this.DataMaximum : 1;
                 actualMaximum += zeroRange * 0.5;
             }
 
@@ -671,8 +671,8 @@ namespace OxyPlot.Axes
                 // log(x_2) = padding * log(x_1/x_0) + log(x_1)
                 // x_2 = (x_1/x_0)^padding * x_1
 
-                double x1 = actualMaximum;
-                double x0 = this.DataMinimum;
+                var x1 = actualMaximum;
+                var x0 = this.DataMinimum;
                 return Math.Pow(x1, this.MaximumPadding + 1) * (x0 > double.Epsilon ? Math.Pow(x0, -this.MaximumPadding) : 1);
             }
 
@@ -689,11 +689,11 @@ namespace OxyPlot.Axes
         protected override double CalculateActualMinimum()
         {
             var actualMinimum = this.DataMinimum;
-            double range = this.DataMaximum - this.DataMinimum;
+            var range = this.DataMaximum - this.DataMinimum;
 
             if (range < double.Epsilon)
             {
-                double zeroRange = this.DataMaximum > 0 ? this.DataMaximum : 1;
+                var zeroRange = this.DataMaximum > 0 ? this.DataMaximum : 1;
                 actualMinimum -= zeroRange * 0.5;
             }
 
@@ -711,14 +711,13 @@ namespace OxyPlot.Axes
                 // log(x_1) = [log(x_2) + max_padding * log(x_0)] / (1 + max_padding)
                 // x_3 = x_0^[1 + padding - padding * max_padding / (1 + max_padding)] * x_2^[-padding / (1 + max_padding)]
 
-                double x1 = this.ActualMaximum;
-                double x0 = actualMinimum;
-                double existingPadding = this.MaximumPadding;
+                var x1 = this.ActualMaximum;
+                var x0 = actualMinimum;
+                var existingPadding = this.MaximumPadding;
                 return Math.Pow(x0, 1 + this.MinimumPadding - this.MinimumPadding * existingPadding / (1 + existingPadding)) * Math.Pow(x1, -this.MinimumPadding / (1 + existingPadding));
             }
 
             return actualMinimum;
         }
-
     }
 }

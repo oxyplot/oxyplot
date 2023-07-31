@@ -65,14 +65,14 @@ namespace OxyPlot
 
             var palette = new OxyColor[paletteSize];
 
-            double incrementStepSize = (paletteSize == 1) ? 0 : (1.0d / (paletteSize - 1));
+            var incrementStepSize = (paletteSize == 1) ? 0 : (1.0d / (paletteSize - 1));
 
-            for (int i = 0; i < paletteSize; i++)
+            for (var i = 0; i < paletteSize; i++)
             {
-                double y = i * incrementStepSize;
-                double x = y * (colors.Length - 1);
-                int i0 = (int)x;
-                int i1 = i0 + 1 < colors.Length ? i0 + 1 : i0;
+                var y = i * incrementStepSize;
+                var x = y * (colors.Length - 1);
+                var i0 = (int)x;
+                var i1 = i0 + 1 < colors.Length ? i0 + 1 : i0;
                 palette[i] = OxyColor.Interpolate(colors[i0], colors[i1], x - i0);
             }
 

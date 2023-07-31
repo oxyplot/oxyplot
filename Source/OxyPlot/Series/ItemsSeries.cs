@@ -38,8 +38,7 @@ namespace OxyPlot.Series
                 return null;
             }
 
-            var list = itemsSource as IList;
-            if (list != null)
+            if (itemsSource is IList list)
             {
                 if (index < list.Count && index >= 0)
                 {

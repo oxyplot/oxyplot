@@ -285,13 +285,13 @@ namespace OxyPlot.Series
             var height = (legendBox.Bottom - legendBox.Top) * 0.8;
             var width = height;
             rc.DrawRectangle(
-                new OxyRect(xmid - (0.5 * width), ymid - (0.5 * height), 0.5 * width, height),
+                new OxyRect(xmid - 0.5 * width, ymid - 0.5 * height, 0.5 * width, height),
                 this.ActualMinimumFillColor,
                 this.StrokeColor,
                 this.StrokeThickness,
                 this.EdgeRenderingMode);
             rc.DrawRectangle(
-                new OxyRect(xmid, ymid - (0.5 * height), 0.5 * width, height),
+                new OxyRect(xmid, ymid - 0.5 * height, 0.5 * width, height),
                 this.ActualMaximumFillColor,
                 this.StrokeColor,
                 this.StrokeThickness,

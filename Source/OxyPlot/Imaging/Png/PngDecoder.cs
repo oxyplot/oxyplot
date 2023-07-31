@@ -56,25 +56,25 @@ namespace OxyPlot
                 switch (type)
                 {
                     case "pHYs":
+                    {
+                        if (length != 9)
                         {
-                            if (length != 9)
-                            {
-                                throw new FormatException("Wrong length of pHYs chunk.");
-                            }
-
-                            var ppux = inputReader.ReadBigEndianUInt32();
-                            var ppuy = inputReader.ReadBigEndianUInt32();
-                            inputReader.ReadByte(); // unit
-                            dpix = ppux * 0.0254;
-                            dpiy = ppuy * 0.0254;
-                            break;
+                            throw new FormatException("Wrong length of pHYs chunk.");
                         }
+
+                        var ppux = inputReader.ReadBigEndianUInt32();
+                        var ppuy = inputReader.ReadBigEndianUInt32();
+                        inputReader.ReadByte(); // unit
+                        dpix = ppux * 0.0254;
+                        dpiy = ppuy * 0.0254;
+                        break;
+                    }
 
                     default:
-                        {
-                            ms.Position += length;
-                            break;
-                        }
+                    {
+                        ms.Position += length;
+                        break;
+                    }
                 }
 
                 // Read CRC
@@ -164,29 +164,29 @@ namespace OxyPlot
                         throw new NotImplementedException();
 
                     case "IDAT":
+                    {
+                        inputReader.ReadByte(); // method
+                        inputReader.ReadByte(); // check
+                        var chunkBytes = inputReader.ReadBytes(length - 6);
+                        var expectedCheckSum = inputReader.ReadBigEndianUInt32();
+
+                        var deflatedBytes = Deflate(chunkBytes);
+                        var actualCheckSum = PngEncoder.Adler32(deflatedBytes);
+
+                        if (actualCheckSum != expectedCheckSum)
                         {
-                            inputReader.ReadByte(); // method
-                            inputReader.ReadByte(); // check
-                            var chunkBytes = inputReader.ReadBytes(length - 6);
-                            var expectedCheckSum = inputReader.ReadBigEndianUInt32();
-
-                            var deflatedBytes = Deflate(chunkBytes);
-                            var actualCheckSum = PngEncoder.Adler32(deflatedBytes);
-
-                            if (actualCheckSum != expectedCheckSum)
-                            {
-                                throw new FormatException("Invalid checksum.");
-                            }
-
-                            ms.Write(deflatedBytes, 0, deflatedBytes.Length);
-                            break;
+                            throw new FormatException("Invalid checksum.");
                         }
+
+                        ms.Write(deflatedBytes, 0, deflatedBytes.Length);
+                        break;
+                    }
 
                     default:
-                        {
-                            inputReader.ReadBytes(length);
-                            break;
-                        }
+                    {
+                        inputReader.ReadBytes(length);
+                        break;
+                    }
                 }
 
                 inputReader.ReadBigEndianUInt32(); // crc
@@ -194,10 +194,10 @@ namespace OxyPlot
 
             var pixels = new OxyColor[width, height];
             ms.Position = 0;
-            for (int y = height - 1; y >= 0; y--)
+            for (var y = height - 1; y >= 0; y--)
             {
                 ms.ReadByte();
-                for (int x = 0; x < width; x++)
+                for (var x = 0; x < width; x++)
                 {
                     var red = (byte)ms.ReadByte();
                     var green = (byte)ms.ReadByte();

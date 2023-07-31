@@ -27,7 +27,7 @@ namespace OxyPlot.Axes
             // check if majorInterval = 2*10^x
             // uses the mathematical identity log10(2 * 10^x) = x + log10(2)
             // -> we just have to check if the modulo of log10(2*10^x) = log10(2)
-            if (Math.Abs(((Math.Log10(majorInterval) + 1000) % 1) - Math.Log10(2)) < 1e-10)
+            if (Math.Abs((Math.Log10(majorInterval) + 1000) % 1 - Math.Log10(2)) < 1e-10)
             {
                 return majorInterval / 4;
             }

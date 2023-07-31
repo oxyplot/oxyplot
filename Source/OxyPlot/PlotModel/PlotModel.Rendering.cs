@@ -9,14 +9,13 @@
 
 namespace OxyPlot
 {
+    using OxyPlot.Annotations;
+    using OxyPlot.Axes;
+    using OxyPlot.Legends;
+    using OxyPlot.Series;
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
-    using OxyPlot.Annotations;
-    using OxyPlot.Axes;
-    using OxyPlot.Series;
-    using OxyPlot.Legends;
 
     /// <summary>
     /// Represents a plot.
@@ -267,8 +266,8 @@ namespace OxyPlot
         {
             var titleSize = rc.MeasureText(this.Title, this.ActualTitleFont, this.TitleFontSize, this.TitleFontWeight);
             var subtitleSize = rc.MeasureText(this.Subtitle, this.SubtitleFont ?? this.ActualSubtitleFont, this.SubtitleFontSize, this.SubtitleFontWeight);
-            double height = titleSize.Height + subtitleSize.Height;
-            double width = Math.Max(titleSize.Width, subtitleSize.Width);
+            var height = titleSize.Height + subtitleSize.Height;
+            var width = Math.Max(titleSize.Width, subtitleSize.Width);
             return new OxySize(width, height);
         }
 
@@ -363,7 +362,7 @@ namespace OxyPlot
             this.RenderPlotElements(this.Series.Where(s => s.IsVisible), rc, series => series.Render(rc));
         }
 
-        private void RenderPlotElements<T>(IEnumerable<T> plotElements, IRenderContext rc, Action<T> renderAction) where T: PlotElement
+        private void RenderPlotElements<T>(IEnumerable<T> plotElements, IRenderContext rc, Action<T> renderAction) where T : PlotElement
         {
             var previousClippingRect = OxyRect.Everything;
 
@@ -412,8 +411,8 @@ namespace OxyPlot
 
             var titleSize = rc.MeasureText(this.Title, this.ActualTitleFont, this.TitleFontSize, this.TitleFontWeight);
 
-            double x = (this.TitleArea.Left + this.TitleArea.Right) * 0.5;
-            double y = this.TitleArea.Top;
+            var x = (this.TitleArea.Left + this.TitleArea.Right) * 0.5;
+            var y = this.TitleArea.Top;
 
             if (!string.IsNullOrEmpty(this.Title))
             {
@@ -477,12 +476,12 @@ namespace OxyPlot
             {
                 // Make space for legends
 
-                OxySize maxLegendSize = new OxySize(0, 0);
+                var maxLegendSize = new OxySize(0, 0);
                 double legendMargin = 0;
                 // first run Outside Left-Side legends
                 foreach (var legend in this.Legends.Where(l =>
-                    l.LegendPlacement == LegendPlacement.Outside && (l.IsLegendVisible &&
-                    (l.LegendPosition == LegendPosition.LeftTop || l.LegendPosition == LegendPosition.LeftMiddle || l.LegendPosition == LegendPosition.LeftBottom))))
+                    l.LegendPlacement == LegendPlacement.Outside && l.IsLegendVisible &&
+                    (l.LegendPosition == LegendPosition.LeftTop || l.LegendPosition == LegendPosition.LeftMiddle || l.LegendPosition == LegendPosition.LeftBottom)))
                 {
                     // Find the available size for the legend box
                     var availableLegendWidth = legend.AllowUseFullExtent
@@ -499,7 +498,9 @@ namespace OxyPlot
                     maxLegendSize = new OxySize(maxLegendSize.Width > lsiz.Width ? maxLegendSize.Width : lsiz.Width, maxLegendSize.Height > lsiz.Height ? maxLegendSize.Height : lsiz.Height);
 
                     if (legend.LegendMargin > legendMargin)
+                    {
                         legendMargin = legend.LegendMargin;
+                    }
                 }
 
                 // Adjust the plot area after the size of the legend has been calculated
@@ -512,8 +513,8 @@ namespace OxyPlot
                 legendMargin = 0;
                 // second run Outside Right-Side legends
                 foreach (var legend in this.Legends.Where(l =>
-                    l.LegendPlacement == LegendPlacement.Outside && (l.IsLegendVisible &&
-                    (l.LegendPosition == LegendPosition.RightTop || l.LegendPosition == LegendPosition.RightMiddle || l.LegendPosition == LegendPosition.RightBottom))))
+                    l.LegendPlacement == LegendPlacement.Outside && l.IsLegendVisible &&
+                    (l.LegendPosition == LegendPosition.RightTop || l.LegendPosition == LegendPosition.RightMiddle || l.LegendPosition == LegendPosition.RightBottom)))
                 {
                     // Find the available size for the legend box
                     var availableLegendWidth = legend.AllowUseFullExtent
@@ -530,7 +531,9 @@ namespace OxyPlot
                     maxLegendSize = new OxySize(maxLegendSize.Width > lsiz.Width ? maxLegendSize.Width : lsiz.Width, maxLegendSize.Height > lsiz.Height ? maxLegendSize.Height : lsiz.Height);
 
                     if (legend.LegendMargin > legendMargin)
+                    {
                         legendMargin = legend.LegendMargin;
+                    }
                 }
 
                 // Adjust the plot area after the size of the legend has been calculated
@@ -543,8 +546,8 @@ namespace OxyPlot
                 legendMargin = 0;
                 // third run Outside Top legends
                 foreach (var legend in this.Legends.Where(l =>
-                    l.LegendPlacement == LegendPlacement.Outside && (l.IsLegendVisible &&
-                    (l.LegendPosition == LegendPosition.TopLeft || l.LegendPosition == LegendPosition.TopCenter || l.LegendPosition == LegendPosition.TopRight))))
+                    l.LegendPlacement == LegendPlacement.Outside && l.IsLegendVisible &&
+                    (l.LegendPosition == LegendPosition.TopLeft || l.LegendPosition == LegendPosition.TopCenter || l.LegendPosition == LegendPosition.TopRight)))
                 {
                     // Find the available size for the legend box
                     var availableLegendWidth = legend.AllowUseFullExtent
@@ -561,7 +564,9 @@ namespace OxyPlot
                     maxLegendSize = new OxySize(maxLegendSize.Width > lsiz.Width ? maxLegendSize.Width : lsiz.Width, maxLegendSize.Height > lsiz.Height ? maxLegendSize.Height : lsiz.Height);
 
                     if (legend.LegendMargin > legendMargin)
+                    {
                         legendMargin = legend.LegendMargin;
+                    }
                 }
 
                 // Adjust the plot area after the size of the legend has been calculated
@@ -574,8 +579,8 @@ namespace OxyPlot
                 legendMargin = 0;
                 // fourth run Outside Bottom legends
                 foreach (var legend in this.Legends.Where(l =>
-                    l.LegendPlacement == LegendPlacement.Outside && (l.IsLegendVisible &&
-                    (l.LegendPosition == LegendPosition.BottomLeft || l.LegendPosition == LegendPosition.BottomCenter || l.LegendPosition == LegendPosition.BottomRight))))
+                    l.LegendPlacement == LegendPlacement.Outside && l.IsLegendVisible &&
+                    (l.LegendPosition == LegendPosition.BottomLeft || l.LegendPosition == LegendPosition.BottomCenter || l.LegendPosition == LegendPosition.BottomRight)))
                 {
                     // Find the available size for the legend box
                     var availableLegendWidth = legend.AllowUseFullExtent
@@ -592,7 +597,9 @@ namespace OxyPlot
                     maxLegendSize = new OxySize(maxLegendSize.Width > lsiz.Width ? maxLegendSize.Width : lsiz.Width, maxLegendSize.Height > lsiz.Height ? maxLegendSize.Height : lsiz.Height);
 
                     if (legend.LegendMargin > legendMargin)
+                    {
                         legendMargin = legend.LegendMargin;
+                    }
                 }
 
                 // Adjust the plot area after the size of the legend has been calculated

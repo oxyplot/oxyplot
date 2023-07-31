@@ -49,21 +49,15 @@ namespace OxyPlot
 
             this.PlotView.SetCursorType(CursorType.Default);
             this.PlotView.HideZoomRectangle();
-            
+
             if (this.zoomRectangle.Width > 10 && this.zoomRectangle.Height > 10)
             {
                 var p0 = this.InverseTransform(this.zoomRectangle.Left, this.zoomRectangle.Top);
                 var p1 = this.InverseTransform(this.zoomRectangle.Right, this.zoomRectangle.Bottom);
 
-                if (this.XAxis != null)
-                {
-                    this.XAxis.Zoom(p0.X, p1.X);
-                }
+                this.XAxis?.Zoom(p0.X, p1.X);
 
-                if (this.YAxis != null)
-                {
-                    this.YAxis.Zoom(p0.Y, p1.Y);
-                }
+                this.YAxis?.Zoom(p0.Y, p1.Y);
 
                 this.PlotView.InvalidatePlot();
             }

@@ -35,10 +35,7 @@ namespace OxyPlot.Series
         /// Gets the actual fill color.
         /// </summary>
         /// <value>The actual color.</value>
-        public OxyColor ActualFillColor
-        {
-            get { return this.Fill.GetActualColor(this.DefaultFillColor); }
-        }
+        public OxyColor ActualFillColor => this.Fill.GetActualColor(this.DefaultFillColor);
 
         /// <summary>
         /// Gets or sets a value indicating whether the slice is exploded.

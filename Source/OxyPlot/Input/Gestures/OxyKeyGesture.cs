@@ -43,8 +43,7 @@ namespace OxyPlot
         /// <returns><c>true</c> if the current object is equal to the <paramref name="other" /> parameter; otherwise, <c>false</c>.</returns>
         public override bool Equals(OxyInputGesture other)
         {
-            var kg = other as OxyKeyGesture;
-            return kg != null && kg.Modifiers == this.Modifiers && kg.Key == this.Key;
+            return other is OxyKeyGesture kg && kg.Modifiers == this.Modifiers && kg.Key == this.Key;
         }
     }
 }

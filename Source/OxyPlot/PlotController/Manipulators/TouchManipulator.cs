@@ -21,7 +21,7 @@ namespace OxyPlot
         public TouchManipulator(IPlotView plotView)
             : base(plotView)
         {
-            SetHandledForPanOrZoom = true;
+            this.SetHandledForPanOrZoom = true;
         }
 
         /// <summary>
@@ -69,27 +69,15 @@ namespace OxyPlot
             var newPosition = e.Position;
             var previousPosition = newPosition - e.DeltaTranslation;
 
-            if (this.XAxis != null)
-            {
-                this.XAxis.Pan(previousPosition, newPosition);
-            }
+            this.XAxis?.Pan(previousPosition, newPosition);
 
-            if (this.YAxis != null)
-            {
-                this.YAxis.Pan(previousPosition, newPosition);
-            }
+            this.YAxis?.Pan(previousPosition, newPosition);
 
             var current = this.InverseTransform(newPosition.X, newPosition.Y);
 
-            if (this.XAxis != null)
-            {
-                this.XAxis.ZoomAt(e.DeltaScale.X, current.X);
-            }
+            this.XAxis?.ZoomAt(e.DeltaScale.X, current.X);
 
-            if (this.YAxis != null)
-            {
-                this.YAxis.ZoomAt(e.DeltaScale.Y, current.Y);
-            }
+            this.YAxis?.ZoomAt(e.DeltaScale.Y, current.Y);
 
             this.PlotView.InvalidatePlot(false);
             e.Handled = true;

@@ -14,7 +14,6 @@ namespace OxyPlot
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Reflection;
     using System.Text.RegularExpressions;
 
     /// <summary>
@@ -25,7 +24,7 @@ namespace OxyPlot
         /// <summary>
         /// The formatting expression.
         /// </summary>
-        private static readonly Regex FormattingExpression = new Regex("{(?<Property>.+?)(?<Format>\\:.*?)?}");
+        private static readonly Regex FormattingExpression = new("{(?<Property>.+?)(?<Format>\\:.*?)?}");
 
         /// <summary>
         /// Replaces the format items in the specified string.

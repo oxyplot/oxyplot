@@ -9,15 +9,14 @@
 
 namespace OxyPlot
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.Linq;
-
     using OxyPlot.Annotations;
     using OxyPlot.Axes;
     using OxyPlot.Legends;
     using OxyPlot.Series;
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
 
     /// <summary>
     /// Specifies the coordinate system type.
@@ -66,7 +65,7 @@ namespace OxyPlot
         /// <summary>
         /// The bar series managers.
         /// </summary>
-        private readonly List<BarSeriesManager> barSeriesManagers = new List<BarSeriesManager>();
+        private readonly List<BarSeriesManager> barSeriesManagers = new();
 
         /// <summary>
         /// The plot view that renders this plot.
@@ -183,13 +182,7 @@ namespace OxyPlot
         /// <summary>
         /// Gets the actual culture.
         /// </summary>
-        public CultureInfo ActualCulture
-        {
-            get
-            {
-                return this.Culture ?? CultureInfo.CurrentCulture;
-            }
-        }
+        public CultureInfo ActualCulture => this.Culture ?? CultureInfo.CurrentCulture;
 
         /// <summary>
         /// Gets the actual plot margins.
@@ -202,13 +195,7 @@ namespace OxyPlot
         /// </summary>
         /// <value>The plot view.</value>
         /// <remarks>Only one view can render the plot at the same time.</remarks>
-        public IPlotView PlotView
-        {
-            get
-            {
-                return (this.plotViewReference != null) ? (IPlotView)this.plotViewReference.Target : null;
-            }
-        }
+        public IPlotView PlotView => (this.plotViewReference != null) ? (IPlotView)this.plotViewReference.Target : null;
 
         /// <summary>
         /// Gets the annotations.
@@ -480,24 +467,12 @@ namespace OxyPlot
         /// <summary>
         /// Gets the actual title font.
         /// </summary>
-        protected string ActualTitleFont
-        {
-            get
-            {
-                return this.TitleFont ?? this.DefaultFont;
-            }
-        }
+        protected string ActualTitleFont => this.TitleFont ?? this.DefaultFont;
 
         /// <summary>
         /// Gets the actual subtitle font.
         /// </summary>
-        protected string ActualSubtitleFont
-        {
-            get
-            {
-                return this.SubtitleFont ?? this.DefaultFont;
-            }
-        }
+        protected string ActualSubtitleFont => this.SubtitleFont ?? this.DefaultFont;
 
         /// <summary>
         /// Attaches this model to the specified plot view.
@@ -508,9 +483,9 @@ namespace OxyPlot
         void IPlotModel.AttachPlotView(IPlotView plotView)
         {
             var currentPlotView = this.PlotView;
-            if (!object.ReferenceEquals(currentPlotView, null) &&
-                !object.ReferenceEquals(plotView, null) &&
-                !object.ReferenceEquals(currentPlotView, plotView))
+            if (currentPlotView is not null &&
+                plotView is not null &&
+                !ReferenceEquals(currentPlotView, plotView))
             {
                 throw new InvalidOperationException(
                     "This PlotModel is already in use by some other PlotView control.");
@@ -595,7 +570,7 @@ namespace OxyPlot
                     continue;
                 }
 
-                double x = double.NaN;
+                var x = double.NaN;
                 if (axis.IsHorizontal())
                 {
                     x = axis.InverseTransform(pt.X);
@@ -612,27 +587,21 @@ namespace OxyPlot
                     {
                         if (axis.IsHorizontal())
                         {
-                            if (xaxis == null)
-                            {
-                                xaxis = axis;
-                            }
+                            xaxis ??= axis;
                         }
                         else if (axis.IsVertical())
                         {
-                            if (yaxis == null)
-                            {
-                                yaxis = axis;
-                            }
+                            yaxis ??= axis;
                         }
                     }
                     else if (position == axis.Position)
                     {
                         // Choose right tier
-                        double positionTierMinShift = axis.PositionTierMinShift;
-                        double positionTierMaxShift = axis.PositionTierMaxShift;
+                        var positionTierMinShift = axis.PositionTierMinShift;
+                        var positionTierMaxShift = axis.PositionTierMaxShift;
 
-                        double posValue = axis.IsHorizontal() ? pt.Y : pt.X;
-                        bool isLeftOrTop = position == AxisPosition.Top || position == AxisPosition.Left;
+                        var posValue = axis.IsHorizontal() ? pt.Y : pt.X;
+                        var isLeftOrTop = position is AxisPosition.Top or AxisPosition.Left;
                         if ((posValue >= plotAreaValue + positionTierMinShift
                              && posValue < plotAreaValue + positionTierMaxShift && !isLeftOrTop)
                             ||
@@ -641,17 +610,11 @@ namespace OxyPlot
                         {
                             if (axis.IsHorizontal())
                             {
-                                if (xaxis == null)
-                                {
-                                    xaxis = axis;
-                                }
+                                xaxis ??= axis;
                             }
                             else if (axis.IsVertical())
                             {
-                                if (yaxis == null)
-                                {
-                                    yaxis = axis;
-                                }
+                                yaxis ??= axis;
                             }
                         }
                     }
@@ -674,7 +637,7 @@ namespace OxyPlot
         /// <returns>The next default line style.</returns>
         public LineStyle GetDefaultLineStyle()
         {
-            return (LineStyle)((this.currentColorIndex / this.DefaultColors.Count) % (int)LineStyle.None);
+            return (LineStyle)(this.currentColorIndex / this.DefaultColors.Count % (int)LineStyle.None);
         }
 
         /// <summary>
@@ -685,7 +648,7 @@ namespace OxyPlot
         /// <returns>The nearest series.</returns>
         public Series.Series GetSeriesFromPoint(ScreenPoint point, double limit = 100)
         {
-            double mindist = double.MaxValue;
+            var mindist = double.MaxValue;
             Series.Series nearestSeries = null;
             foreach (var series in this.Series.Reverse().Where(s => s.IsVisible))
             {
@@ -697,7 +660,7 @@ namespace OxyPlot
                 }
 
                 // find distance to this point on the screen
-                double dist = point.DistanceTo(thr.Position);
+                var dist = point.DistanceTo(thr.Position);
                 if (dist < mindist)
                 {
                     nearestSeries = series;
@@ -724,9 +687,9 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// Returns a <see cref="string" /> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+        /// <returns>A <see cref="string" /> that represents this instance.</returns>
         public override string ToString()
         {
             return this.Title;
@@ -745,11 +708,7 @@ namespace OxyPlot
                 throw new ArgumentException("Axis key cannot be null.");
             }
 
-            var legend = this.Legends.FirstOrDefault(l => l.Key == key);
-            if (legend == null)
-            {
-                throw new InvalidOperationException($"Cannot find legend with Key = \"{key}\"");
-            }
+            var legend = this.Legends.FirstOrDefault(l => l.Key == key) ?? throw new InvalidOperationException($"Cannot find legend with Key = \"{key}\"");
             return legend;
         }
 
@@ -837,11 +796,7 @@ namespace OxyPlot
                 throw new ArgumentException("Axis key cannot be null.");
             }
 
-            var axis = this.Axes.FirstOrDefault(a => a.Key == key);
-            if (axis == null)
-            {
-                throw new InvalidOperationException($"Cannot find axis with Key = \"{key}\"");
-            }
+            var axis = this.Axes.FirstOrDefault(a => a.Key == key) ?? throw new InvalidOperationException($"Cannot find axis with Key = \"{key}\"");
             return axis;
         }
 
@@ -856,7 +811,7 @@ namespace OxyPlot
             if (key != null)
             {
                 var axis = this.Axes.FirstOrDefault(a => a.Key == key);
-                return axis != null ? axis : defaultAxis;
+                return axis ?? defaultAxis;
             }
 
             return defaultAxis;
@@ -1011,10 +966,10 @@ namespace OxyPlot
         /// </summary>
         private void EnforceCartesianTransforms()
         {
-            var notColorAxes = this.Axes.Where(a => !(a is IColorAxis)).ToArray();
+            var notColorAxes = this.Axes.Where(a => a is not IColorAxis).ToArray();
 
             // Set the same scaling on all axes
-            double sharedScale = notColorAxes.Min(a => Math.Abs(a.Scale));
+            var sharedScale = notColorAxes.Min(a => Math.Abs(a.Scale));
             foreach (var a in notColorAxes)
             {
                 a.Zoom(sharedScale);
@@ -1055,32 +1010,20 @@ namespace OxyPlot
             this.DefaultAngleAxis = this.Axes.FirstOrDefault(a => a is AngleAxis) as AngleAxis;
             this.DefaultColorAxis = this.Axes.FirstOrDefault(a => a is IColorAxis) as IColorAxis;
 
-            if (this.DefaultXAxis == null)
-            {
-                this.DefaultXAxis = this.DefaultMagnitudeAxis;
-            }
+            this.DefaultXAxis ??= this.DefaultMagnitudeAxis;
 
-            if (this.DefaultYAxis == null)
-            {
-                this.DefaultYAxis = this.DefaultAngleAxis;
-            }
+            this.DefaultYAxis ??= this.DefaultAngleAxis;
 
             if (this.PlotType == PlotType.Polar)
             {
-                if (this.DefaultXAxis == null)
-                {
-                    this.DefaultXAxis = this.DefaultMagnitudeAxis = new MagnitudeAxis();
-                }
+                this.DefaultXAxis ??= this.DefaultMagnitudeAxis = new MagnitudeAxis();
 
-                if (this.DefaultYAxis == null)
-                {
-                    this.DefaultYAxis = this.DefaultAngleAxis = new AngleAxis();
-                }
+                this.DefaultYAxis ??= this.DefaultAngleAxis = new AngleAxis();
             }
             else
             {
-                bool createdlinearxaxis = false;
-                bool createdlinearyaxis = false;
+                var createdlinearxaxis = false;
+                var createdlinearyaxis = false;
                 if (this.DefaultXAxis == null)
                 {
                     this.DefaultXAxis = new LinearAxis { Position = AxisPosition.Bottom };

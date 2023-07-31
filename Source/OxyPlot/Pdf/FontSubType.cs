@@ -67,27 +67,6 @@ namespace OxyPlot
         ProjectingSquare = 2
     }
 
-/*    /// <summary>
-    /// Defines the shape that joins two lines or segments.
-    /// </summary>
-    public enum LineJoin
-    {
-        /// <summary>
-        /// Miter join. The outer edges of the strokes for the two segments are extended until they meet at an angle, as in a picture frame. If the segments meet at too sharp an angle (as defined by the miter limit parameter—see “Miter Limit,” above), a bevel join is used instead.
-        /// </summary>
-        Miter = 0,
-
-        /// <summary>
-        /// Round join. An arc of a circle with a diameter equal to the line width is drawn around the point where the two segments meet, connecting the outer edges of the strokes for the two segments. This pieslice-shaped figure is filled in, producing a rounded corner.
-        /// </summary>
-        Round = 1,
-
-        /// <summary>
-        /// Bevel join. The two segments are finished with butt caps (see “Line Cap Style” on page 216) and the resulting notch beyond the ends of the segments is filled with a triangle.
-        /// </summary>
-        Bevel = 2
-    }*/
-
     /// <summary>
     /// Defines the color space.
     /// </summary>

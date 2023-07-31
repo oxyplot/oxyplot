@@ -20,7 +20,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// The undefined rectangle item.
         /// </summary>
-        public static readonly RectangleItem Undefined = new RectangleItem(DataPoint.Undefined, DataPoint.Undefined, double.NaN);
+        public static readonly RectangleItem Undefined = new(DataPoint.Undefined, DataPoint.Undefined, double.NaN);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RectangleItem" /> class.
@@ -98,9 +98,9 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// Returns a <see cref="string" /> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+        /// <returns>A <see cref="string" /> that represents this instance.</returns>
         public override string ToString()
         {
             return $"{this.A} {this.B} {this.Value}";

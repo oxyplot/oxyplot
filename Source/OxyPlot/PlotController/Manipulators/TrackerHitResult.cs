@@ -62,31 +62,17 @@ namespace OxyPlot
         /// <summary>
         /// Gets the X axis.
         /// </summary>
-        public Axes.Axis XAxis
-        {
-            get
-            {
-                var xyas = this.Series as XYAxisSeries;
-                return xyas != null ? xyas.XAxis : null;
-            }
-        }
+        public Axes.Axis XAxis => this.Series is XYAxisSeries xyas ? xyas.XAxis : null;
 
         /// <summary>
         /// Gets the Y axis.
         /// </summary>
-        public Axes.Axis YAxis
-        {
-            get
-            {
-                var xyas = this.Series as XYAxisSeries;
-                return xyas != null ? xyas.YAxis : null;
-            }
-        }
+        public Axes.Axis YAxis => this.Series is XYAxisSeries xyas ? xyas.YAxis : null;
 
         /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// Returns a <see cref="string" /> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+        /// <returns>A <see cref="string" /> that represents this instance.</returns>
         public override string ToString()
         {
             return this.Text != null ? this.Text.Trim() : string.Empty;

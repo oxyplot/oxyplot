@@ -102,17 +102,17 @@ namespace OxyPlot
         /// <param name="height">The height of the text.</param>
         public void Measure(string text, double fontSize, out double width, out double height)
         {
-            int wmax = 0;
+            var wmax = 0;
 
             var lines = StringHelper.SplitLines(text);
 
-            int lineCount = lines.Length;
+            var lineCount = lines.Length;
 
-            foreach (string line in lines)
+            foreach (var line in lines)
             {
-                int w = 0;
+                var w = 0;
 
-                for (int i = 0; i < line.Length; i++)
+                for (var i = 0; i < line.Length; i++)
                 {
                     var c = line[i];
                     if (c >= this.FirstChar + this.Widths.Length)

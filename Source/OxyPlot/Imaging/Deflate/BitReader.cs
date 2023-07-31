@@ -53,8 +53,8 @@ namespace OxyPlot
         /// <exception cref="System.IO.IOException">Reading past EOF.</exception>
         public int ReadBits(int bits)
         {
-            int r = 0;
-            for (int i = 0; i < bits; i++)
+            var r = 0;
+            for (var i = 0; i < bits; i++)
             {
                 var bit = this.Read();
                 if (bit == -1)

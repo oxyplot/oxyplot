@@ -20,13 +20,13 @@ namespace OxyPlot.Axes
         /// <summary>
         /// constants to simplify angular calculations
         /// </summary>
-        const double degree = 180.0d / Math.PI;
-        const double rad = Math.PI / 180.0d;
+        private const double degree = 180.0d / Math.PI;
+        private const double rad = Math.PI / 180.0d;
 
         /// <summary>
         /// this constant limit the number of segments to draw a tick arc
         /// </summary>
-        const double MaxSegments = 180.0;
+        private const double maxSegments = 180.0;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MagnitudeAxisFullPlotAreaRenderer" /> class.
@@ -58,38 +58,43 @@ namespace OxyPlot.Axes
 
             angleAxis.UpdateActualMaxMin();
 
-            double topdistance = Math.Abs(axis.PlotModel.PlotArea.Top - magnitudeAxis.MidPoint.Y);
-            double bottomdistance = Math.Abs(axis.PlotModel.PlotArea.Bottom - magnitudeAxis.MidPoint.Y);
-            double leftdistance = Math.Abs(axis.PlotModel.PlotArea.Left - magnitudeAxis.MidPoint.X);
-            double rightdistance = Math.Abs(axis.PlotModel.PlotArea.Right - magnitudeAxis.MidPoint.X);
-            OxyRect distancerect = axis.PlotModel.PlotArea.Offset(-magnitudeAxis.MidPoint.X, -magnitudeAxis.MidPoint.Y);
+            var topdistance = Math.Abs(axis.PlotModel.PlotArea.Top - magnitudeAxis.MidPoint.Y);
+            var bottomdistance = Math.Abs(axis.PlotModel.PlotArea.Bottom - magnitudeAxis.MidPoint.Y);
+            var leftdistance = Math.Abs(axis.PlotModel.PlotArea.Left - magnitudeAxis.MidPoint.X);
+            var rightdistance = Math.Abs(axis.PlotModel.PlotArea.Right - magnitudeAxis.MidPoint.X);
+            var distancerect = axis.PlotModel.PlotArea.Offset(-magnitudeAxis.MidPoint.X, -magnitudeAxis.MidPoint.Y);
 
-            double cornerangle_topright = -degree * Math.Atan2(distancerect.Top, distancerect.Right);
-            double cornerangle_topleft = -degree * Math.Atan2(distancerect.Top, distancerect.Left);
-            double cornerangle_bottomleft = 360-degree * Math.Atan2(distancerect.Bottom, distancerect.Left);
-            double cornerangle_bottomright = 360-degree * Math.Atan2(distancerect.Bottom, distancerect.Right);
+            var cornerangle_topright = -degree * Math.Atan2(distancerect.Top, distancerect.Right);
+            var cornerangle_topleft = -degree * Math.Atan2(distancerect.Top, distancerect.Left);
+            var cornerangle_bottomleft = 360 - degree * Math.Atan2(distancerect.Bottom, distancerect.Left);
+            var cornerangle_bottomright = 360 - degree * Math.Atan2(distancerect.Bottom, distancerect.Right);
 
             // detect and filter dodgy values caused by zero values
             if (cornerangle_topleft < 0)
+            {
                 cornerangle_topleft += 360;
-            if (cornerangle_bottomleft > 360)
-                cornerangle_bottomleft -= 360;
+            }
 
-            double cornerdistance_topright = Math.Sqrt(Math.Pow(distancerect.Top, 2) + Math.Pow(distancerect.Right, 2));
-            double cornerdistance_topleft = Math.Sqrt(Math.Pow(distancerect.Top, 2) + Math.Pow(distancerect.Left, 2));
-            double cornerdistance_bottomleft = Math.Sqrt(Math.Pow(distancerect.Bottom, 2) + Math.Pow(distancerect.Left, 2));
-            double cornerdistance_bottomright = Math.Sqrt(Math.Pow(distancerect.Bottom, 2) + Math.Pow(distancerect.Right, 2));
+            if (cornerangle_bottomleft > 360)
+            {
+                cornerangle_bottomleft -= 360;
+            }
+
+            var cornerdistance_topright = Math.Sqrt(Math.Pow(distancerect.Top, 2) + Math.Pow(distancerect.Right, 2));
+            var cornerdistance_topleft = Math.Sqrt(Math.Pow(distancerect.Top, 2) + Math.Pow(distancerect.Left, 2));
+            var cornerdistance_bottomleft = Math.Sqrt(Math.Pow(distancerect.Bottom, 2) + Math.Pow(distancerect.Left, 2));
+            var cornerdistance_bottomright = Math.Sqrt(Math.Pow(distancerect.Bottom, 2) + Math.Pow(distancerect.Right, 2));
 
             if (pass == 0 && this.MinorPen != null)
             {
-                OxyPen pen = this.MinorPen;
+                var pen = this.MinorPen;
 
                 foreach (var tickValue in this.MinorTickValues)
                 {
                     //a circle consists - in this case - of 4 arcs
                     //the start and end of each arc has to be computed
 
-                    double r = axis.Transform(tickValue);
+                    var r = axis.Transform(tickValue);
 
                     //this works by putting the limits of the plotarea into the circular equation and solving it to gain t for each intersection
 
@@ -102,10 +107,10 @@ namespace OxyPlot.Axes
                     double startangle_270_360 = 270;
                     double endangle_270_360 = 360;
 
-                    double rightportion = rightdistance / r;
-                    double topportion = topdistance / r;
-                    double leftportion = leftdistance / r;
-                    double bottomportion = bottomdistance / r;
+                    var rightportion = rightdistance / r;
+                    var topportion = topdistance / r;
+                    var leftportion = leftdistance / r;
+                    var bottomportion = bottomdistance / r;
 
                     if (r > rightdistance)
                     {
@@ -113,18 +118,21 @@ namespace OxyPlot.Axes
                         endangle_270_360 = 360 - degree * Math.Acos(rightportion);
                         startangle_0_90 = degree * Math.Acos(rightportion);
                     }
+
                     if (r > topdistance)
                     {
                         //will hit the top bound
                         endangle_0_90 = degree * Math.Asin(topportion);
                         startangle_90_180 = 180 - degree * Math.Asin(topportion);
                     }
+
                     if (r > leftdistance)
                     {
                         //will hit the left bound
                         endangle_90_180 = 180 - degree * Math.Acos(leftportion);
                         startangle_180_270 = 180 + degree * Math.Acos(leftportion);
                     }
+
                     if (r > bottomdistance)
                     {
                         //will hit the bottom bound
@@ -136,49 +144,69 @@ namespace OxyPlot.Axes
                     if (r <= cornerdistance_topright)
                     {
                         if (startangle_0_90 < cornerangle_topright)
-                            this.RenderTickArc(axis, angleAxis, tickValue, pen, (startangle_0_90 + angleAxis.Offset), (cornerangle_topright + angleAxis.Offset));
+                        {
+                            this.RenderTickArc(axis, angleAxis, tickValue, pen, startangle_0_90 + angleAxis.Offset, cornerangle_topright + angleAxis.Offset);
+                        }
+
                         if (cornerangle_topright < endangle_0_90)
-                            this.RenderTickArc(axis, angleAxis, tickValue, pen, (cornerangle_topright + angleAxis.Offset), (endangle_0_90 + angleAxis.Offset));
+                        {
+                            this.RenderTickArc(axis, angleAxis, tickValue, pen, cornerangle_topright + angleAxis.Offset, endangle_0_90 + angleAxis.Offset);
+                        }
                     }
 
                     //Top left
                     if (r <= cornerdistance_topleft)
                     {
                         if (startangle_90_180 < cornerangle_topleft)
+                        {
                             this.RenderTickArc(axis, angleAxis, tickValue, pen, startangle_90_180 + angleAxis.Offset, cornerangle_topleft + angleAxis.Offset);
+                        }
+
                         if (cornerangle_topleft < endangle_90_180)
+                        {
                             this.RenderTickArc(axis, angleAxis, tickValue, pen, cornerangle_topleft + angleAxis.Offset, endangle_90_180 + angleAxis.Offset);
+                        }
                     }
 
                     //Bottom left
                     if (r <= cornerdistance_bottomleft)
                     {
                         if (startangle_180_270 < cornerangle_bottomleft)
+                        {
                             this.RenderTickArc(axis, angleAxis, tickValue, pen, startangle_180_270 + angleAxis.Offset, cornerangle_bottomleft + angleAxis.Offset);
+                        }
+
                         if (cornerangle_bottomleft < endangle_180_270)
+                        {
                             this.RenderTickArc(axis, angleAxis, tickValue, pen, cornerangle_bottomleft + angleAxis.Offset, endangle_180_270 + angleAxis.Offset);
+                        }
                     }
 
                     //Bottom right
                     if (r <= cornerdistance_bottomright)
                     {
                         if (startangle_270_360 < cornerangle_bottomright)
+                        {
                             this.RenderTickArc(axis, angleAxis, tickValue, pen, startangle_270_360 + angleAxis.Offset, cornerangle_bottomright + angleAxis.Offset);
+                        }
+
                         if (cornerangle_bottomright < endangle_270_360)
+                        {
                             this.RenderTickArc(axis, angleAxis, tickValue, pen, cornerangle_bottomright + angleAxis.Offset, endangle_270_360 + angleAxis.Offset);
+                        }
                     }
                 }
             }
 
             if (pass == 0 && this.MajorPen != null)
             {
-                OxyPen pen = this.MajorPen;
+                var pen = this.MajorPen;
                 foreach (var tickValue in this.MajorTickValues)
                 {
                     //a circle consists - in this case - of 4 arcs
                     //the start and end of each arc has to be computed
 
-                    double r = axis.Transform(tickValue);
+                    var r = axis.Transform(tickValue);
 
                     //this works by putting the limits of the plotarea into the circular equation and solving it to gain t for each intersection
 
@@ -191,10 +219,10 @@ namespace OxyPlot.Axes
                     double startangle_270_360 = 270;
                     double endangle_270_360 = 360;
 
-                    double rightportion = rightdistance / r;
-                    double topportion = topdistance / r;
-                    double leftportion = leftdistance / r;
-                    double bottomportion = bottomdistance / r;
+                    var rightportion = rightdistance / r;
+                    var topportion = topdistance / r;
+                    var leftportion = leftdistance / r;
+                    var bottomportion = bottomdistance / r;
 
                     if (r > rightdistance)
                     {
@@ -202,18 +230,21 @@ namespace OxyPlot.Axes
                         endangle_270_360 = 360 - degree * Math.Acos(rightportion);
                         startangle_0_90 = degree * Math.Acos(rightportion);
                     }
+
                     if (r > topdistance)
                     {
                         //will hit the top bound
                         endangle_0_90 = degree * Math.Asin(topportion);
                         startangle_90_180 = 180 - degree * Math.Asin(topportion);
                     }
+
                     if (r > leftdistance)
                     {
                         //will hit the left bound
                         endangle_90_180 = 180 - degree * Math.Acos(leftportion);
                         startangle_180_270 = 180 + degree * Math.Acos(leftportion);
                     }
+
                     if (r > bottomdistance)
                     {
                         //will hit the bottom bound
@@ -225,36 +256,56 @@ namespace OxyPlot.Axes
                     if (r <= cornerdistance_topright)
                     {
                         if (startangle_0_90 < cornerangle_topright)
-                            this.RenderTickArc(axis, angleAxis, tickValue, pen, (startangle_0_90 + angleAxis.Offset), (cornerangle_topright + angleAxis.Offset));
+                        {
+                            this.RenderTickArc(axis, angleAxis, tickValue, pen, startangle_0_90 + angleAxis.Offset, cornerangle_topright + angleAxis.Offset);
+                        }
+
                         if (cornerangle_topright < endangle_0_90)
-                            this.RenderTickArc(axis, angleAxis, tickValue, pen, (cornerangle_topright + angleAxis.Offset), (endangle_0_90 + angleAxis.Offset));
+                        {
+                            this.RenderTickArc(axis, angleAxis, tickValue, pen, cornerangle_topright + angleAxis.Offset, endangle_0_90 + angleAxis.Offset);
+                        }
                     }
 
                     //Top left
                     if (r <= cornerdistance_topleft)
                     {
                         if (startangle_90_180 < cornerangle_topleft)
+                        {
                             this.RenderTickArc(axis, angleAxis, tickValue, pen, startangle_90_180 + angleAxis.Offset, cornerangle_topleft + angleAxis.Offset);
+                        }
+
                         if (cornerangle_topleft < endangle_90_180)
+                        {
                             this.RenderTickArc(axis, angleAxis, tickValue, pen, cornerangle_topleft + angleAxis.Offset, endangle_90_180 + angleAxis.Offset);
+                        }
                     }
 
                     //Bottom left
                     if (r <= cornerdistance_bottomleft)
                     {
                         if (startangle_180_270 < cornerangle_bottomleft)
+                        {
                             this.RenderTickArc(axis, angleAxis, tickValue, pen, startangle_180_270 + angleAxis.Offset, cornerangle_bottomleft + angleAxis.Offset);
+                        }
+
                         if (cornerangle_bottomleft < endangle_180_270)
+                        {
                             this.RenderTickArc(axis, angleAxis, tickValue, pen, cornerangle_bottomleft + angleAxis.Offset, endangle_180_270 + angleAxis.Offset);
+                        }
                     }
 
                     //Bottom right
                     if (r <= cornerdistance_bottomright)
                     {
                         if (startangle_270_360 < cornerangle_bottomright)
+                        {
                             this.RenderTickArc(axis, angleAxis, tickValue, pen, startangle_270_360 + angleAxis.Offset, cornerangle_bottomright + angleAxis.Offset);
+                        }
+
                         if (cornerangle_bottomright < endangle_270_360)
+                        {
                             this.RenderTickArc(axis, angleAxis, tickValue, pen, cornerangle_bottomright + angleAxis.Offset, endangle_270_360 + angleAxis.Offset);
+                        }
                     }
                 }
             }
@@ -291,7 +342,7 @@ namespace OxyPlot.Axes
         private static void GetTickTextAligment(double actualAngle, out HorizontalAlignment ha, out VerticalAlignment va)
         {
             //top
-            if (actualAngle > 3 * Math.PI / 4 || actualAngle < -3 * Math.PI / 4)
+            if (actualAngle is > (3 * Math.PI / 4) or < (-3 * Math.PI / 4))
             {
                 ha = HorizontalAlignment.Center;
                 va = VerticalAlignment.Top;
@@ -327,7 +378,7 @@ namespace OxyPlot.Axes
         /// <param name="endAngle">The end angle.</param>
         private void RenderTickArc(Axis axis, AngleAxis angleAxis, double x, OxyPen pen, double startAngle, double endAngle)
         {
-            if(startAngle>endAngle)
+            if (startAngle > endAngle)
             {
 
             }
@@ -339,24 +390,24 @@ namespace OxyPlot.Axes
             // (making a public property of it would be a great idea)
 
             // compute the actual number of segments
-            var segmentCount = (int)(MaxSegments * Math.Abs(endAngle - startAngle) / 360.0);
+            var segmentCount = (int)(maxSegments * Math.Abs(endAngle - startAngle) / 360.0);
             if (angleAxis.FractionUnit == Math.PI || angleAxis.ActualMaximum == 2 * Math.PI)
             {
-                segmentCount = (int)(MaxSegments * Math.Abs(endAngle - startAngle) / (2 * Math.PI));
+                segmentCount = (int)(maxSegments * Math.Abs(endAngle - startAngle) / (2 * Math.PI));
                 startAngle *= rad;
                 endAngle *= rad;
             }
 
             segmentCount = Math.Max(segmentCount, 2);
-            segmentCount = Math.Min(segmentCount, (int)MaxSegments);
+            segmentCount = Math.Min(segmentCount, (int)maxSegments);
             var angleStep = Math.Abs(endAngle - startAngle) / (segmentCount - 1);
 
             var points = new List<ScreenPoint>();
 
             for (var i = 0; i < segmentCount; i++)
             {
-                var angle = startAngle + (i * angleStep);
-                ScreenPoint toadd = axis.Transform(x, angle, angleAxis);
+                var angle = startAngle + i * angleStep;
+                var toadd = axis.Transform(x, angle, angleAxis);
                 points.Add(toadd);
             }
 
@@ -375,15 +426,12 @@ namespace OxyPlot.Axes
             var dx = axis.AxisTickToLabelDistance * Math.Sin(actualAngle);
             var dy = -axis.AxisTickToLabelDistance * Math.Cos(actualAngle);
 
-            HorizontalAlignment ha;
-            VerticalAlignment va;
-            GetTickTextAligment(actualAngle, out ha, out va);
+            GetTickTextAligment(actualAngle, out var ha, out var va);
 
             var pt = axis.Transform(x, angleAxis.Angle, angleAxis);
             pt = new ScreenPoint(pt.X + dx, pt.Y + dy);
 
-
-            string text = axis.FormatValue(x);
+            var text = axis.FormatValue(x);
             this.RenderContext.DrawMathText(
                 pt,
                 text,

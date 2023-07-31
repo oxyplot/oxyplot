@@ -11,11 +11,10 @@
 
 namespace OxyPlot
 {
+    using OxyPlot.Series;
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
-    using OxyPlot.Series;
 
     /// <summary>
     /// Provides methods to collect data samples into bins for use with a <see cref="HistogramSeries" />.
@@ -51,15 +50,16 @@ namespace OxyPlot
                 throw new ArgumentException("The end must be strictly greater than the start.", nameof(end));
             }
 
-            List<double> binBreaks = new List<double>(binCount + 1);
+            var binBreaks = new List<double>(binCount + 1)
+            {
+                start
+            };
 
-            binBreaks.Add(start);
-
-            for (int i = 1; i < binCount; i++)
+            for (var i = 1; i < binCount; i++)
             {
                 // This style works better for 'round' widths than an interpolation.
                 // This is desirable when handling small values, but it will fail for extremely large values.
-                binBreaks.Add(start + ((end - start) * i / binCount));
+                binBreaks.Add(start + (end - start) * i / binCount);
             }
 
             binBreaks.Add(end);
@@ -92,7 +92,7 @@ namespace OxyPlot
             }
 
             // Order breaks and remove zero-width intervals.
-            List<double> orderedBreaks = binBreaks.Distinct().OrderBy(b => b).ToList();
+            var orderedBreaks = binBreaks.Distinct().OrderBy(b => b).ToList();
 
             if (orderedBreaks.Count < 2)
             {
@@ -105,20 +105,20 @@ namespace OxyPlot
             }
 
             // count and assign samples to bins
-            int[] counts = new int[orderedBreaks.Count - 1];
+            var counts = new int[orderedBreaks.Count - 1];
             long total = 0;
 
-            foreach (double sample in samples)
+            foreach (var sample in samples)
             {
                 if (double.IsNaN(sample) || double.IsInfinity(sample))
                 {
                     throw new ArgumentException($"Samples may not be NaN or infinite.", nameof(samples));
                 }
 
-                int idx = orderedBreaks.BinarySearch(sample);
+                var idx = orderedBreaks.BinarySearch(sample);
 
                 // records whether this sample was assigned to a bin
-                bool placed = false;
+                var placed = false;
 
                 if (idx >= 0)
                 {
@@ -190,11 +190,11 @@ namespace OxyPlot
             }
 
             // create actual items
-            List<HistogramItem> items = new List<HistogramItem>(counts.Length);
+            var items = new List<HistogramItem>(counts.Length);
 
-            for (int i = 0; i < orderedBreaks.Count - 1; i++)
+            for (var i = 0; i < orderedBreaks.Count - 1; i++)
             {
-                int count = counts[i];
+                var count = counts[i];
                 items.Add(new HistogramItem(orderedBreaks[i], orderedBreaks[i + 1], (double)count / total, count));
             }
 

@@ -30,17 +30,17 @@ namespace OxyPlot.Axes
         /// The time origin.
         /// </summary>
         /// <remarks>This gives the same numeric date values as Excel</remarks>
-        private static readonly DateTime TimeOrigin = new DateTime(1899, 12, 31, 0, 0, 0, DateTimeKind.Utc);
+        private static readonly DateTime timeOrigin = new(1899, 12, 31, 0, 0, 0, DateTimeKind.Utc);
 
         /// <summary>
         /// The maximum day value
         /// </summary>
-        private static readonly double MaxDayValue = (DateTime.MaxValue - TimeOrigin).TotalDays;
+        private static readonly double maxDayValue = (DateTime.MaxValue - timeOrigin).TotalDays;
 
         /// <summary>
         /// The minimum day value
         /// </summary>
-        private static readonly double MinDayValue = (DateTime.MinValue - TimeOrigin).TotalDays;
+        private static readonly double minDayValue = (DateTime.MinValue - timeOrigin).TotalDays;
 
         /// <summary>
         /// The actual interval type.
@@ -130,12 +130,12 @@ namespace OxyPlot.Axes
         /// <returns>A <see cref="DateTime" /> structure. Ticks = 0 if the value is invalid.</returns>
         public static DateTime ToDateTime(double value)
         {
-            if (double.IsNaN(value) || value < MinDayValue || value > MaxDayValue)
+            if (double.IsNaN(value) || value < minDayValue || value > maxDayValue)
             {
                 return new DateTime();
             }
 
-            return TimeOrigin.AddDays(value - 1);
+            return timeOrigin.AddDays(value - 1);
         }
 
         /// <summary>
@@ -145,7 +145,7 @@ namespace OxyPlot.Axes
         /// <returns>The number of days after the time origin.</returns>
         public static double ToDouble(DateTime value)
         {
-            var span = value - TimeOrigin;
+            var span = value - timeOrigin;
             return span.TotalDays + 1;
         }
 
@@ -253,18 +253,13 @@ namespace OxyPlot.Axes
                     }
 
                     break;
-                    
-                    
-                    
+
                 case DateTimeIntervalType.Milliseconds:
                     this.ActualMinorStep = this.ActualMajorStep;
-                    if (this.ActualStringFormat == null)
-                    {
-                        this.ActualStringFormat = "HH:mm:ss.fff";
-                    }
+                    this.ActualStringFormat ??= "HH:mm:ss.fff";
 
                     break;
-                    
+
                 case DateTimeIntervalType.Manual:
                     break;
                 case DateTimeIntervalType.Auto:
@@ -299,13 +294,13 @@ namespace OxyPlot.Axes
                 time = TimeZoneInfo.ConvertTime(time, this.TimeZone);
             }
 
-            string fmt = this.ActualStringFormat;
+            var fmt = this.ActualStringFormat;
             if (fmt == null)
             {
                 return time.ToString(CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern);
             }
 
-            int week = this.GetWeek(time);
+            var week = this.GetWeek(time);
             fmt = fmt.Replace("ww", week.ToString("00"));
             fmt = fmt.Replace("w", week.ToString(CultureInfo.InvariantCulture));
             fmt = string.Concat("{0:", fmt, "}");
@@ -324,7 +319,7 @@ namespace OxyPlot.Axes
             const double Second = Minute / 60;
             const double MilliSecond = Second / 1000;
 
-            double range = Math.Abs(this.ClipMinimum - this.ClipMaximum);
+            var range = Math.Abs(this.ClipMinimum - this.ClipMaximum);
 
             var goodIntervals = new[]
                                     {   MilliSecond, 2 * MilliSecond, 10 * MilliSecond, 100 * MilliSecond,
@@ -334,7 +329,7 @@ namespace OxyPlot.Axes
                                         6 * Month, Year
                                     };
 
-            double interval = goodIntervals[0];
+            var interval = goodIntervals[0];
 
             // bound min/max interval counts
             minIntervalCount = Math.Max(minIntervalCount, 0);
@@ -347,7 +342,7 @@ namespace OxyPlot.Axes
                     break;
                 }
 
-                double nextInterval = goodIntervals.FirstOrDefault(i => i > interval);
+                var nextInterval = goodIntervals.FirstOrDefault(i => i > interval);
                 if (Math.Abs(nextInterval) <= 0)
                 {
                     nextInterval = interval * 2;
@@ -372,7 +367,7 @@ namespace OxyPlot.Axes
                 {
                     this.actualIntervalType = DateTimeIntervalType.Seconds;
                 }
-                    
+
                 if (interval >= 1.0 / 24 / 60)
                 {
                     this.actualIntervalType = DateTimeIntervalType.Minutes;
@@ -401,39 +396,27 @@ namespace OxyPlot.Axes
 
             if (this.actualIntervalType == DateTimeIntervalType.Months)
             {
-                double monthsRange = range / 30.5;
+                var monthsRange = range / 30.5;
                 interval = this.CalculateActualInterval(availableSize, maxIntervalSize, monthsRange, this.MinimumMajorIntervalCount, this.MaximumMajorIntervalCount);
             }
 
             if (this.actualIntervalType == DateTimeIntervalType.Years)
             {
-                double yearsRange = range / 365.25;
+                var yearsRange = range / 365.25;
                 interval = this.CalculateActualInterval(availableSize, maxIntervalSize, yearsRange, this.MinimumMajorIntervalCount, this.MaximumMajorIntervalCount);
             }
 
             if (this.actualMinorIntervalType == DateTimeIntervalType.Auto)
             {
-                switch (this.actualIntervalType)
+                this.actualMinorIntervalType = this.actualIntervalType switch
                 {
-                    case DateTimeIntervalType.Years:
-                        this.actualMinorIntervalType = DateTimeIntervalType.Months;
-                        break;
-                    case DateTimeIntervalType.Months:
-                        this.actualMinorIntervalType = DateTimeIntervalType.Days;
-                        break;
-                    case DateTimeIntervalType.Weeks:
-                        this.actualMinorIntervalType = DateTimeIntervalType.Days;
-                        break;
-                    case DateTimeIntervalType.Days:
-                        this.actualMinorIntervalType = DateTimeIntervalType.Hours;
-                        break;
-                    case DateTimeIntervalType.Hours:
-                        this.actualMinorIntervalType = DateTimeIntervalType.Minutes;
-                        break;
-                    default:
-                        this.actualMinorIntervalType = DateTimeIntervalType.Days;
-                        break;
-                }
+                    DateTimeIntervalType.Years => DateTimeIntervalType.Months,
+                    DateTimeIntervalType.Months => DateTimeIntervalType.Days,
+                    DateTimeIntervalType.Weeks => DateTimeIntervalType.Days,
+                    DateTimeIntervalType.Days => DateTimeIntervalType.Hours,
+                    DateTimeIntervalType.Hours => DateTimeIntervalType.Minutes,
+                    _ => DateTimeIntervalType.Days,
+                };
             }
 
             return interval;
@@ -486,7 +469,7 @@ namespace OxyPlot.Axes
             }
 
             var current = start;
-            double eps = step * 1e-3;
+            var eps = step * 1e-3;
             var minDateTime = ToDateTime(min - eps);
             var maxDateTime = ToDateTime(max + eps);
 
@@ -505,18 +488,12 @@ namespace OxyPlot.Axes
 
                 try
                 {
-                    switch (intervalType)
+                    current = intervalType switch
                     {
-                        case DateTimeIntervalType.Months:
-                            current = current.AddMonths((int)Math.Ceiling(step));
-                            break;
-                        case DateTimeIntervalType.Years:
-                            current = current.AddYears((int)Math.Ceiling(step));
-                            break;
-                        default:
-                            current = current.AddDays(step);
-                            break;
-                    }
+                        DateTimeIntervalType.Months => current.AddMonths((int)Math.Ceiling(step)),
+                        DateTimeIntervalType.Years => current.AddYears((int)Math.Ceiling(step)),
+                        _ => current.AddDays(step),
+                    };
                 }
                 catch (ArgumentOutOfRangeException)
                 {

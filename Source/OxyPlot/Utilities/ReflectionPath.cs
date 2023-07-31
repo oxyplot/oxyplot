@@ -55,8 +55,7 @@ namespace OxyPlot
         /// <exception cref="System.InvalidOperationException">Could not find property.</exception>
         public object? GetValue(object instance)
         {
-            object? result;
-            if (this.TryGetValue(instance, out result))
+            if (this.TryGetValue(instance, out var result))
             {
                 return result;
             }
@@ -75,7 +74,7 @@ namespace OxyPlot
         public bool TryGetValue(object instance, out object? result)
         {
             var current = instance;
-            for (int i = 0; i < this.items.Length; i++)
+            for (var i = 0; i < this.items.Length; i++)
             {
                 if (current == null)
                 {

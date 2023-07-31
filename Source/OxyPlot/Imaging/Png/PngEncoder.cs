@@ -126,10 +126,10 @@ namespace OxyPlot
         static PngEncoder()
         {
             CrcTable = new ulong[256];
-            for (int n = 0; n < 256; n++)
+            for (var n = 0; n < 256; n++)
             {
                 var c = (ulong)n;
-                for (int k = 0; k < 8; k++)
+                for (var k = 0; k < 8; k++)
                 {
                     if ((c & 1) != 0)
                     {
@@ -137,7 +137,7 @@ namespace OxyPlot
                     }
                     else
                     {
-                        c = c >> 1;
+                        c >>= 1;
                     }
                 }
 
@@ -161,15 +161,15 @@ namespace OxyPlot
         /// <returns>The png image data.</returns>
         public byte[] Encode(OxyColor[,] pixels)
         {
-            int width = pixels.GetLength(0);
-            int height = pixels.GetLength(1);
-            var bytes = new byte[(width * height * 4) + height];
+            var width = pixels.GetLength(0);
+            var height = pixels.GetLength(1);
+            var bytes = new byte[width * height * 4 + height];
 
-            int k = 0;
-            for (int y = 0; y < height; y++)
+            var k = 0;
+            for (var y = 0; y < height; y++)
             {
                 bytes[k++] = 0; // Filter
-                for (int x = 0; x < width; x++)
+                for (var x = 0; x < width; x++)
                 {
                     bytes[k++] = pixels[x, y].R;
                     bytes[k++] = pixels[x, y].G;
@@ -267,10 +267,10 @@ namespace OxyPlot
             const int MaxDeflate = 0xFFFF;
             var w = new MemoryWriter();
             const uint CompressionMethod = 8;
-            const uint Check = (31 - ((CompressionMethod << 8) % 31)) % 31;
+            const uint Check = (31 - (CompressionMethod << 8) % 31) % 31;
             w.Write((byte)CompressionMethod);
             w.Write((byte)Check);
-            for (int i = 0; i < bytes.Length; i += MaxDeflate)
+            for (var i = 0; i < bytes.Length; i += MaxDeflate)
             {
                 var n = (ushort)Math.Min(bytes.Length - i, MaxDeflate);
                 var last = (byte)(i + n < bytes.Length ? 0 : 1);

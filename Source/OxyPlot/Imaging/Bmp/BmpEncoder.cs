@@ -38,14 +38,14 @@ namespace OxyPlot
         /// <returns>The png image data.</returns>
         public byte[] Encode(OxyColor[,] pixels)
         {
-            int width = pixels.GetLength(0);
-            int height = pixels.GetLength(1);
+            var width = pixels.GetLength(0);
+            var height = pixels.GetLength(1);
 
             var bytes = new byte[width * height * 4];
-            int k = 0;
-            for (int y = 0; y < height; y++)
+            var k = 0;
+            for (var y = 0; y < height; y++)
             {
-                for (int x = 0; x < width; x++)
+                for (var x = 0; x < width; x++)
                 {
                     bytes[k++] = pixels[x, y].B;
                     bytes[k++] = pixels[x, y].G;
@@ -98,14 +98,14 @@ namespace OxyPlot
                 throw new ArgumentException("Too many colors in the palette.", "palette");
             }
 
-            int width = pixels.GetLength(0);
-            int height = pixels.GetLength(1);
+            var width = pixels.GetLength(0);
+            var height = pixels.GetLength(1);
             var length = width * height;
 
             var ms = new MemoryStream();
             var w = new BinaryWriter(ms);
 
-            var offBits = 14 + 40 + (4 * palette.Length);
+            var offBits = 14 + 40 + 4 * palette.Length;
             var size = offBits + length;
 
             // Bitmap file header (14 bytes)
@@ -135,17 +135,17 @@ namespace OxyPlot
             // For images with height > 1, multiple padded rows are stored consecutively, forming a Pixel Array.
 
             // ReSharper disable once PossibleLossOfFraction
-            int rowSize = (int)Math.Floor((double)((8 * width) + 31) / 32) * 4;
+            var rowSize = (int)Math.Floor((double)(8 * width + 31) / 32) * 4;
 
-            for (int y = 0; y < height; y++)
+            for (var y = 0; y < height; y++)
             {
-                for (int x = 0; x < width; x++)
+                for (var x = 0; x < width; x++)
                 {
                     w.Write(pixels[x, y]);
                 }
 
                 // padding
-                for (int j = width; j < rowSize; j++)
+                for (var j = width; j < rowSize; j++)
                 {
                     w.Write((byte)0);
                 }

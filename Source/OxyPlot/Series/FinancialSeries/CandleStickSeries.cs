@@ -90,7 +90,7 @@ namespace OxyPlot.Series
 
             var dataCandlewidth = (this.CandleWidth > 0) ? this.CandleWidth : this.minDx * 0.80;
             var halfDataCandlewidth = .5 * dataCandlewidth;
-            
+
             // colors
             var fillUp = this.GetSelectableFillColor(this.IncreasingColor);
             var fillDown = this.GetSelectableFillColor(this.DecreasingColor);
@@ -102,7 +102,7 @@ namespace OxyPlot.Series
             var xmax = this.XAxis.ClipMaximum;
             this.WindowStartIndex = this.UpdateWindowStartIndex(items, item => item.X, xmin, this.WindowStartIndex);
 
-            for (int i = this.WindowStartIndex; i < nitems; i++)
+            for (var i = this.WindowStartIndex; i < nitems; i++)
             {
                 var bar = items[i];
 
@@ -161,10 +161,10 @@ namespace OxyPlot.Series
         /// <param name="legendBox">The bounding rectangle of the legend box.</param>
         public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
         {
-            double xmid = (legendBox.Left + legendBox.Right) / 2;
-            double yopen = legendBox.Top + ((legendBox.Bottom - legendBox.Top) * 0.7);
-            double yclose = legendBox.Top + ((legendBox.Bottom - legendBox.Top) * 0.3);
-            double[] dashArray = this.LineStyle.GetDashArray();
+            var xmid = (legendBox.Left + legendBox.Right) / 2;
+            var yopen = legendBox.Top + (legendBox.Bottom - legendBox.Top) * 0.7;
+            var yclose = legendBox.Top + (legendBox.Bottom - legendBox.Top) * 0.3;
+            var dashArray = this.LineStyle.GetDashArray();
 
             var candlewidth = legendBox.Width * 0.75;
 
@@ -180,7 +180,7 @@ namespace OxyPlot.Series
             }
 
             rc.DrawRectangle(
-                new OxyRect(xmid - (candlewidth * 0.5), yclose, candlewidth, yopen - yclose),
+                new OxyRect(xmid - candlewidth * 0.5, yclose, candlewidth, yopen - yclose),
                 this.GetSelectableFillColor(this.IncreasingColor),
                 this.GetSelectableColor(this.ActualColor),
                 this.StrokeThickness,
@@ -213,7 +213,7 @@ namespace OxyPlot.Series
             var pidx = this.FindWindowStartIndex(this.Items, item => item.X, targetX, this.WindowStartIndex);
             var nidx = ((pidx + 1) < this.Items.Count) ? pidx + 1 : pidx;
 
-            Func<HighLowItem, double> distance = bar =>
+            double distance(HighLowItem bar)
             {
                 var dx = bar.X - xy.X;
                 var dyo = bar.Open - xy.Y;
@@ -221,20 +221,20 @@ namespace OxyPlot.Series
                 var dyl = bar.Low - xy.Y;
                 var dyc = bar.Close - xy.Y;
 
-                var d2O = (dx * dx) + (dyo * dyo);
-                var d2H = (dx * dx) + (dyh * dyh);
-                var d2L = (dx * dx) + (dyl * dyl);
-                var d2C = (dx * dx) + (dyc * dyc);
+                var d2O = dx * dx + dyo * dyo;
+                var d2H = dx * dx + dyh * dyh;
+                var d2L = dx * dx + dyl * dyl;
+                var d2C = dx * dx + dyc * dyc;
 
                 return Math.Min(d2O, Math.Min(d2H, Math.Min(d2L, d2C)));
-            };
+            }
 
             // determine closest point
-            var midx = distance(this.Items[pidx]) <= distance(this.Items[nidx]) ? pidx : nidx; 
+            var midx = distance(this.Items[pidx]) <= distance(this.Items[nidx]) ? pidx : nidx;
             var mbar = this.Items[midx];
 
             var hit = new DataPoint(mbar.X, mbar.Close);
-            return new TrackerHitResult 
+            return new TrackerHitResult
             {
                 Series = this,
                 DataPoint = hit,
@@ -261,13 +261,13 @@ namespace OxyPlot.Series
         protected internal override void UpdateData()
         {
             base.UpdateData();
-            
+
             // determine minimum X gap between successive points
             var items = this.Items;
             var nitems = items.Count;
             this.minDx = double.MaxValue;
 
-            for (int i = 1; i < nitems; i++)
+            for (var i = 1; i < nitems; i++)
             {
                 this.minDx = Math.Min(this.minDx, items[i].X - items[i - 1].X);
                 if (this.minDx < 0)

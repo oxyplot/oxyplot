@@ -14,7 +14,7 @@ namespace OxyPlot.Series
     /// <summary>
     /// Represents an interval defined by two doubles.
     /// </summary>
-    public struct DataRange : ICodeGenerating
+    public readonly struct DataRange : ICodeGenerating
     {
         /// <summary>
         /// The undefined data range.
@@ -91,7 +91,7 @@ namespace OxyPlot.Series
         /// <returns><c>true</c> if intersects, otherwise <c>false</c>.</returns>
         public bool IntersectsWith(DataRange other)
         {
-            return (this.IsDefined() && other.IsDefined()) &&
+            return this.IsDefined() && other.IsDefined() &&
                    (this.Contains(other.Minimum) ||
                     this.Contains(other.Maximum) ||
                     other.Contains(this.Minimum) ||

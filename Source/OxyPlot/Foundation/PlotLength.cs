@@ -16,7 +16,7 @@ namespace OxyPlot
     /// <summary>
     /// Represents absolute or relative lengths in data or screen space.
     /// </summary>
-    public struct PlotLength : IEquatable<PlotLength>
+    public readonly struct PlotLength : IEquatable<PlotLength>
     {
         /// <summary>
         /// The unit type
@@ -43,25 +43,13 @@ namespace OxyPlot
         /// Gets the value.
         /// </summary>
         /// <value>The value.</value>
-        public double Value
-        {
-            get
-            {
-                return this.value;
-            }
-        }
+        public double Value => this.value;
 
         /// <summary>
         /// Gets the type of the unit.
         /// </summary>
         /// <value>The type of the unit.</value>
-        public PlotLengthUnit Unit
-        {
-            get
-            {
-                return this.unit;
-            }
-        }
+        public PlotLengthUnit Unit => this.unit;
 
         /// <summary>
         /// Determines whether this instance and another specified <see cref="T:PlotLength" /> object have the same value.

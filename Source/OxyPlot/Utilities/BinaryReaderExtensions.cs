@@ -29,10 +29,7 @@ namespace OxyPlot
         /// <returns>The string.</returns>
         public static string ReadString(this BinaryReader r, int length, Encoding? encoding = null)
         {
-            if (encoding == null)
-            {
-                encoding = Encoding.UTF8;
-            }
+            encoding ??= Encoding.UTF8;
 
             return encoding.GetString(r.ReadBytes(length), 0, length);
         }
@@ -91,7 +88,7 @@ namespace OxyPlot
         public static uint[] ReadUInt32Array(this BinaryReader r, int count, bool isLittleEndian)
         {
             var result = new uint[count];
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
                 result[i] = isLittleEndian ? r.ReadUInt32() : r.ReadBigEndianUInt32();
             }
@@ -109,7 +106,7 @@ namespace OxyPlot
         public static ushort[] ReadUInt16Array(this BinaryReader r, int count, bool isLittleEndian)
         {
             var result = new ushort[count];
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
                 result[i] = isLittleEndian ? r.ReadUInt16() : r.ReadBigEndianUInt16();
             }
@@ -124,7 +121,7 @@ namespace OxyPlot
         /// <returns>The unsigned integer.</returns>
         public static uint ReadBigEndianUInt32(this BinaryReader r)
         {
-            byte[] a32 = r.ReadBytes(4);
+            var a32 = r.ReadBytes(4);
             Array.Reverse(a32);
             return BitConverter.ToUInt32(a32, 0);
         }
@@ -136,7 +133,7 @@ namespace OxyPlot
         /// <returns>The signed integer.</returns>
         public static int ReadBigEndianInt32(this BinaryReader r)
         {
-            byte[] a32 = r.ReadBytes(4);
+            var a32 = r.ReadBytes(4);
             Array.Reverse(a32);
             return BitConverter.ToInt32(a32, 0);
         }
@@ -148,7 +145,7 @@ namespace OxyPlot
         /// <returns>The unsigned integer.</returns>
         public static ushort ReadBigEndianUInt16(this BinaryReader r)
         {
-            byte[] a16 = r.ReadBytes(2);
+            var a16 = r.ReadBytes(2);
             Array.Reverse(a16);
             return BitConverter.ToUInt16(a16, 0);
         }
@@ -160,7 +157,7 @@ namespace OxyPlot
         /// <returns>A <see cref="double" />.</returns>
         public static double ReadBigEndianDouble(this BinaryReader r)
         {
-            byte[] a = r.ReadBytes(8);
+            var a = r.ReadBytes(8);
             Array.Reverse(a);
             return BitConverter.ToDouble(a, 0);
         }

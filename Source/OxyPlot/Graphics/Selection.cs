@@ -18,27 +18,17 @@ namespace OxyPlot
     /// </summary>
     public class Selection
     {
-        /// <summary>
-        /// Static instance representing everything (all items and all features) selected.
-        /// </summary>
-        private static readonly Selection EverythingSelection = new Selection();
 
         /// <summary>
         /// The selection (cannot use HashSet{T} in PCL)
         /// </summary>
-        private readonly Dictionary<SelectionItem, bool> selection = new Dictionary<SelectionItem, bool>();
+        private readonly Dictionary<SelectionItem, bool> selection = new();
 
         /// <summary>
         /// Gets the everything selected.
         /// </summary>
         /// <value>The everything.</value>
-        public static Selection Everything
-        {
-            get
-            {
-                return EverythingSelection;
-            }
-        }
+        public static Selection Everything { get; } = new Selection();
 
         /// <summary>
         /// Determines whether everything is selected.
@@ -47,7 +37,7 @@ namespace OxyPlot
         public bool IsEverythingSelected()
         {
             // ReSharper disable RedundantNameQualifier
-            return object.ReferenceEquals(this, EverythingSelection);
+            return ReferenceEquals(this, Everything);
             // ReSharper restore RedundantNameQualifier
         }
 
@@ -68,7 +58,7 @@ namespace OxyPlot
         public IEnumerable<int> GetSelectedItems(Enum feature)
         {
             // ReSharper disable RedundantNameQualifier
-            return this.selection.Keys.Where(si => object.Equals(si.Feature, feature)).Select(si => si.Index);
+            return this.selection.Keys.Where(si => Equals(si.Feature, feature)).Select(si => si.Index);
             // ReSharper restore RedundantNameQualifier
         }
 
@@ -127,7 +117,7 @@ namespace OxyPlot
         /// <summary>
         /// Represents an item in a <see cref="Selection" />.
         /// </summary>
-        public struct SelectionItem : IEquatable<SelectionItem>
+        public readonly struct SelectionItem : IEquatable<SelectionItem>
         {
             /// <summary>
             /// The index
@@ -154,25 +144,13 @@ namespace OxyPlot
             /// Gets the index.
             /// </summary>
             /// <value>The index.</value>
-            public int Index
-            {
-                get
-                {
-                    return this.index;
-                }
-            }
+            public int Index => this.index;
 
             /// <summary>
             /// Gets the feature.
             /// </summary>
             /// <value>The feature.</value>
-            public Enum Feature
-            {
-                get
-                {
-                    return this.feature;
-                }
-            }
+            public Enum Feature => this.feature;
 
             /// <summary>
             /// Indicates whether the current object is equal to another object of the same type.
@@ -182,7 +160,7 @@ namespace OxyPlot
             public bool Equals(SelectionItem other)
             {
                 // ReSharper disable RedundantNameQualifier
-                return other.index == this.index && object.Equals(other.feature, this.feature);
+                return other.index == this.index && Equals(other.feature, this.feature);
                 // ReSharper restore RedundantNameQualifier
             }
 

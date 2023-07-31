@@ -52,10 +52,10 @@ namespace OxyPlot.Series
             TrackerHitResult result = null;
 
             // http://paulbourke.net/geometry/pointlineplane/
-            double minimumDistance = double.MaxValue;
+            var minimumDistance = double.MaxValue;
             var points = this.ActualPoints;
 
-            for (int i = 0; i < points.Count; i++)
+            for (var i = 0; i < points.Count; i++)
             {
                 var p1 = points[i];
                 var basePoint = new DataPoint(p1.X, this.Base);
@@ -68,13 +68,13 @@ namespace OxyPlot.Series
                     u = 1; // we are a tiny line, snap to the end
                 }
 
-                if (u < 0 || u > 1)
+                if (u is < 0 or > 1)
                 {
                     u = 1; // we are outside the line, snap to the end
                 }
 
-                var sp = sp1 + ((sp2 - sp1) * u);
-                double distance = (point - sp).LengthSquared;
+                var sp = sp1 + (sp2 - sp1) * u;
+                var distance = (point - sp).LengthSquared;
 
                 if (distance < minimumDistance)
                 {
@@ -88,13 +88,13 @@ namespace OxyPlot.Series
                         Index = i,
                         Text =
                             StringHelper.Format(
-                                this.ActualCulture, 
+                                this.ActualCulture,
                                 this.TrackerFormatString,
                                 item,
                                 this.Title,
-                                this.XAxis.Title ?? XYAxisSeries.DefaultXAxisTitle,
+                                this.XAxis.Title ?? DefaultXAxisTitle,
                                 this.XAxis.GetValue(p1.X),
-                                this.YAxis.Title ?? XYAxisSeries.DefaultYAxisTitle,
+                                this.YAxis.Title ?? DefaultYAxisTitle,
                                 this.YAxis.GetValue(p1.Y))
                     };
                     minimumDistance = distance;
@@ -117,7 +117,7 @@ namespace OxyPlot.Series
 
             this.VerifyAxes();
 
-            double minDistSquared = this.MinimumSegmentLength * this.MinimumSegmentLength;
+            var minDistSquared = this.MinimumSegmentLength * this.MinimumSegmentLength;
 
             // Transform all points to screen coordinates
             // Render the line when invalid points occur
@@ -147,10 +147,7 @@ namespace OxyPlot.Series
                         this.LineJoin);
                 }
 
-                if (markerPoints != null)
-                {
-                    markerPoints.Add(points[1]);
-                }
+                markerPoints?.Add(points[1]);
             }
 
             if (this.MarkerType != MarkerType.None)

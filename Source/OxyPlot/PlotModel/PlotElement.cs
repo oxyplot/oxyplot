@@ -53,13 +53,7 @@ namespace OxyPlot
         /// <summary>
         /// Gets the parent <see cref="PlotModel" />.
         /// </summary>
-        public PlotModel PlotModel
-        {
-            get
-            {
-                return (PlotModel)this.Parent;
-            }
-        }
+        public PlotModel PlotModel => (PlotModel)this.Parent;
 
         /// <summary>
         /// Gets or sets an arbitrary object value that can be used to store custom information about this plot element. The default is <c>null</c>.
@@ -92,60 +86,30 @@ namespace OxyPlot
         /// <summary>
         /// Gets the actual font.
         /// </summary>
-        protected internal string ActualFont
-        {
-            get
-            {
-                return this.Font ?? this.PlotModel.DefaultFont;
-            }
-        }
+        protected internal string ActualFont => this.Font ?? this.PlotModel.DefaultFont;
 
         /// <summary>
         /// Gets the actual size of the font.
         /// </summary>
         /// <value>The actual size of the font.</value>
-        protected internal double ActualFontSize
-        {
-            get
-            {
-                return !double.IsNaN(this.FontSize) ? this.FontSize : this.PlotModel.DefaultFontSize;
-            }
-        }
+        protected internal double ActualFontSize => !double.IsNaN(this.FontSize) ? this.FontSize : this.PlotModel.DefaultFontSize;
 
         /// <summary>
         /// Gets the actual font weight.
         /// </summary>
-        protected internal double ActualFontWeight
-        {
-            get
-            {
-                return this.FontWeight;
-            }
-        }
+        protected internal double ActualFontWeight => this.FontWeight;
 
         /// <summary>
         /// Gets the actual color of the text.
         /// </summary>
         /// <value>The actual color of the text.</value>
-        protected internal OxyColor ActualTextColor
-        {
-            get
-            {
-                return this.TextColor.GetActualColor(this.PlotModel.TextColor);
-            }
-        }
+        protected internal OxyColor ActualTextColor => this.TextColor.GetActualColor(this.PlotModel.TextColor);
 
         /// <summary>
         /// Gets the actual culture.
         /// </summary>
         /// <remarks>The culture is defined in the parent PlotModel.</remarks>
-        protected CultureInfo ActualCulture
-        {
-            get
-            {
-                return this.PlotModel != null ? this.PlotModel.ActualCulture : CultureInfo.CurrentCulture;
-            }
-        }
+        protected CultureInfo ActualCulture => this.PlotModel != null ? this.PlotModel.ActualCulture : CultureInfo.CurrentCulture;
 
         /// <inheritdoc/>
         public virtual OxyRect GetClippingRect()

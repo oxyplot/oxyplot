@@ -9,11 +9,10 @@
 
 namespace OxyPlot.Series
 {
+    using OxyPlot.Axes;
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
-    using OxyPlot.Axes;
 
     /// <summary>
     /// Provides an abstract base class for series that are related to an X-axis and a Y-axis.
@@ -235,9 +234,9 @@ namespace OxyPlot.Series
             var dpn = default(DataPoint);
             double index = -1;
 
-            double minimumDistance = double.MaxValue;
+            var minimumDistance = double.MaxValue;
 
-            for (int i = startIdx; i + 1 < points.Count; i++)
+            for (var i = startIdx; i + 1 < points.Count; i++)
             {
                 var p1 = points[i];
                 var p2 = points[i + 1];
@@ -258,12 +257,12 @@ namespace OxyPlot.Series
                     continue;
                 }
 
-                double l2 = (point - spl).LengthSquared;
+                var l2 = (point - spl).LengthSquared;
 
                 if (l2 < minimumDistance)
                 {
-                    double segmentLength = (sp2 - sp1).Length;
-                    double u = segmentLength > 0 ? (spl - sp1).Length / segmentLength : 0;
+                    var segmentLength = (sp2 - sp1).Length;
+                    var u = segmentLength > 0 ? (spl - sp1).Length / segmentLength : 0;
                     dpn = this.InverseTransform(spl);
                     spn = spl;
                     minimumDistance = l2;
@@ -313,8 +312,8 @@ namespace OxyPlot.Series
             var dpn = default(DataPoint);
             double index = -1;
 
-            double minimumDistance = double.MaxValue;
-            int i = startIdx;
+            var minimumDistance = double.MaxValue;
+            var i = startIdx;
             foreach (var p in points.Skip(startIdx))
             {
                 if (!this.IsValidPoint(p))
@@ -324,7 +323,7 @@ namespace OxyPlot.Series
                 }
 
                 var sp = this.Transform(p.x, p.y);
-                double d2 = (sp - point).LengthSquared;
+                var d2 = (sp - point).LengthSquared;
 
                 if (d2 < minimumDistance)
                 {
@@ -396,10 +395,10 @@ namespace OxyPlot.Series
                 return;
             }
 
-            double minx = this.MinX;
-            double miny = this.MinY;
-            double maxx = this.MaxX;
-            double maxy = this.MaxY;
+            var minx = this.MinX;
+            var miny = this.MinY;
+            var maxx = this.MaxX;
+            var maxy = this.MaxY;
 
             if (double.IsNaN(minx))
             {
@@ -421,11 +420,11 @@ namespace OxyPlot.Series
                 maxy = double.MinValue;
             }
 
-            double lastX = double.MinValue;
+            var lastX = double.MinValue;
             foreach (var pt in points)
             {
-                double x = pt.X;
-                double y = pt.Y;
+                var x = pt.X;
+                var y = pt.Y;
 
                 // Check if the point is valid
                 if (!this.IsValidPoint(pt))
@@ -524,10 +523,10 @@ namespace OxyPlot.Series
                 return;
             }
 
-            double minx = this.MinX;
-            double miny = this.MinY;
-            double maxx = this.MaxX;
-            double maxy = this.MaxY;
+            var minx = this.MinX;
+            var miny = this.MinY;
+            var maxx = this.MaxX;
+            var maxy = this.MaxY;
 
             if (double.IsNaN(minx))
             {
@@ -549,11 +548,11 @@ namespace OxyPlot.Series
                 maxy = double.MinValue;
             }
 
-            double lastX = double.MinValue;
+            var lastX = double.MinValue;
             foreach (var item in items)
             {
-                double x = xf(item);
-                double y = yf(item);
+                var x = xf(item);
+                var y = yf(item);
 
                 // Check if the point is valid
                 if (!this.IsValidPoint(x, y))
@@ -634,10 +633,10 @@ namespace OxyPlot.Series
                 return;
             }
 
-            double minx = this.MinX;
-            double miny = this.MinY;
-            double maxx = this.MaxX;
-            double maxy = this.MaxY;
+            var minx = this.MinX;
+            var miny = this.MinY;
+            var maxx = this.MaxX;
+            var maxy = this.MaxY;
 
             if (double.IsNaN(minx))
             {
@@ -659,14 +658,14 @@ namespace OxyPlot.Series
                 maxy = double.MinValue;
             }
 
-            double lastX0 = double.MinValue;
-            double lastX1 = double.MinValue;
+            var lastX0 = double.MinValue;
+            var lastX1 = double.MinValue;
             foreach (var item in items)
             {
-                double x0 = xmin(item);
-                double x1 = xmax(item);
-                double y0 = ymin(item);
-                double y1 = ymax(item);
+                var x0 = xmin(item);
+                var x1 = xmax(item);
+                var y0 = ymin(item);
+                var y1 = ymax(item);
 
                 if (!this.IsValidPoint(x0, y0) || !this.IsValidPoint(x1, y1))
                 {
@@ -772,29 +771,37 @@ namespace OxyPlot.Series
         /// </returns>
         public int FindWindowStartIndex<T>(IList<T> items, Func<T, double> xgetter, double targetX, int initialGuess)
         {
-            int start = 0;
-            int nominalEnd = items.Count - 1;
+            var start = 0;
+            var nominalEnd = items.Count - 1;
             while (nominalEnd > 0 && double.IsNaN(xgetter(items[nominalEnd])))
+            {
                 nominalEnd -= 1;
-            int end = nominalEnd;
-            int curGuess = Math.Max(0, Math.Min(end, initialGuess));
+            }
+
+            var end = nominalEnd;
+            var curGuess = Math.Max(0, Math.Min(end, initialGuess));
 
             double GetX(int index)
             {
                 while (index <= nominalEnd)
                 {
-                    double guessX = xgetter(items[index]);
+                    var guessX = xgetter(items[index]);
                     if (double.IsNaN(guessX))
+                    {
                         index += 1;
+                    }
                     else
+                    {
                         return guessX;
+                    }
                 }
+
                 return xgetter(items[nominalEnd]);
             }
 
             while (start < end)
             {
-                double guessX = GetX(curGuess);
+                var guessX = GetX(curGuess);
                 if (guessX.Equals(targetX))
                 {
                     start = curGuess;
@@ -805,7 +812,7 @@ namespace OxyPlot.Series
                     end = curGuess - 1;
                 }
                 else
-                { 
+                {
                     start = curGuess;
                 }
 
@@ -814,17 +821,19 @@ namespace OxyPlot.Series
                     break;
                 }
 
-                double endX = GetX(end);
-                double startX = GetX(start);
+                var endX = GetX(end);
+                var startX = GetX(start);
 
                 var m = (end - start + 1) / (endX - startX);
-                
+
                 curGuess = start + (int)((targetX - startX) * m);
                 curGuess = Math.Max(start + 1, Math.Min(curGuess, end));
             }
 
             while (start > 0 && (xgetter(items[start]) > targetX))
+            {
                 start -= 1;
+            }
 
             return start;
         }

@@ -38,15 +38,15 @@ namespace OxyPlot.Axes
         {
             base.Render(axis, pass);
 
-            bool drawAxisLine = true;
-            double totalShift = axis.AxisDistance + axis.PositionTierMinShift;
-            double tierSize = axis.PositionTierSize - this.Plot.AxisTierDistance;
+            var drawAxisLine = true;
+            var totalShift = axis.AxisDistance + axis.PositionTierMinShift;
+            var tierSize = axis.PositionTierSize - this.Plot.AxisTierDistance;
 
             // store properties locally for performance
-            double plotAreaLeft = this.Plot.PlotArea.Left;
-            double plotAreaRight = this.Plot.PlotArea.Right;
-            double plotAreaTop = this.Plot.PlotArea.Top;
-            double plotAreaBottom = this.Plot.PlotArea.Bottom;
+            var plotAreaLeft = this.Plot.PlotArea.Left;
+            var plotAreaRight = this.Plot.PlotArea.Right;
+            var plotAreaTop = this.Plot.PlotArea.Top;
+            var plotAreaBottom = this.Plot.PlotArea.Bottom;
 
             // Axis position (x or y screen coordinate)
             double axisPosition = 0;
@@ -177,7 +177,7 @@ namespace OxyPlot.Axes
         protected static double Lerp(double x0, double x1, double f)
         {
             // http://en.wikipedia.org/wiki/Linear_interpolation
-            return (x0 * (1 - f)) + (x1 * f);
+            return x0 * (1 - f) + x1 * f;
         }
 
         /// <summary>
@@ -210,7 +210,7 @@ namespace OxyPlot.Axes
             ref HorizontalAlignment halign,
             ref VerticalAlignment valign)
         {
-            double middle = axis.IsHorizontal()
+            var middle = axis.IsHorizontal()
                                 ? Lerp(axis.ScreenMin.X, axis.ScreenMax.X, axis.TitlePosition)
                                 : Lerp(axis.ScreenMax.Y, axis.ScreenMin.Y, axis.TitlePosition);
 
@@ -253,14 +253,14 @@ namespace OxyPlot.Axes
                 return;
             }
 
-            bool isHorizontal = axis.IsHorizontal();
+            var isHorizontal = axis.IsHorizontal();
 
             OxySize? maxSize = null;
 
             if (axis.ClipTitle)
             {
                 // Calculate the title clipping dimensions
-                double screenLength = isHorizontal
+                var screenLength = isHorizontal
                                           ? Math.Abs(axis.ScreenMax.X - axis.ScreenMin.X)
                                           : Math.Abs(axis.ScreenMax.Y - axis.ScreenMin.Y);
 
@@ -296,23 +296,21 @@ namespace OxyPlot.Axes
         /// <param name="drawAxisLine">Draw the axis line if set to <c>true</c>.</param>
         protected virtual void RenderMajorItems(Axis axis, double axisPosition, double titlePosition, bool drawAxisLine)
         {
-            double eps = axis.ActualMinorStep * 1e-3;
+            var eps = axis.ActualMinorStep * 1e-3;
 
-            double clipMinimum = axis.ClipMinimum;
-            double clipMaximum = axis.ClipMaximum;
+            var clipMinimum = axis.ClipMinimum;
+            var clipMaximum = axis.ClipMaximum;
 
-            double plotAreaLeft = this.Plot.PlotArea.Left;
-            double plotAreaRight = this.Plot.PlotArea.Right;
-            double plotAreaTop = this.Plot.PlotArea.Top;
-            double plotAreaBottom = this.Plot.PlotArea.Bottom;
-            bool isHorizontal = axis.IsHorizontal();
-            bool cropGridlines = axis.CropGridlines;
+            var plotAreaLeft = this.Plot.PlotArea.Left;
+            var plotAreaRight = this.Plot.PlotArea.Right;
+            var plotAreaTop = this.Plot.PlotArea.Top;
+            var plotAreaBottom = this.Plot.PlotArea.Bottom;
+            var isHorizontal = axis.IsHorizontal();
+            var cropGridlines = axis.CropGridlines;
 
-            double a0;
-            double a1;
             var majorSegments = new List<ScreenPoint>();
             var majorTickSegments = new List<ScreenPoint>();
-            this.GetTickPositions(axis, axis.TickStyle, axis.MajorTickSize, axis.Position, out a0, out a1);
+            this.GetTickPositions(axis, axis.TickStyle, axis.MajorTickSize, axis.Position, out var a0, out var a1);
 
             var perpendicularAxis = axis.IsHorizontal() ? this.Plot.DefaultYAxis : this.Plot.DefaultXAxis;
             var dontRenderZero = axis.PositionAtZeroCrossing && perpendicularAxis.PositionAtZeroCrossing;
@@ -330,14 +328,14 @@ namespace OxyPlot.Axes
                 }
             }
 
-            foreach (double value in this.MajorTickValues)
+            foreach (var value in this.MajorTickValues)
             {
                 if (dontRenderZero && Math.Abs(value) < eps)
                 {
                     continue;
                 }
 
-                double transformedValue = axis.Transform(value);
+                var transformedValue = axis.Transform(value);
                 if (isHorizontal)
                 {
                     SnapTo(plotAreaLeft, ref transformedValue);
@@ -352,14 +350,14 @@ namespace OxyPlot.Axes
                 if (this.MajorPen != null)
                 {
                     this.AddSegments(
-                        majorSegments, 
-                        perpAxes, 
-                        isHorizontal, 
-                        cropGridlines, 
-                        transformedValue, 
-                        plotAreaLeft, 
-                        plotAreaRight, 
-                        plotAreaTop, 
+                        majorSegments,
+                        perpAxes,
+                        isHorizontal,
+                        cropGridlines,
+                        transformedValue,
+                        plotAreaLeft,
+                        plotAreaRight,
+                        plotAreaTop,
                         plotAreaBottom);
                 }
 
@@ -379,7 +377,7 @@ namespace OxyPlot.Axes
             }
 
             // Render the axis labels (numbers or category names)
-            foreach (double value in this.MajorLabelValues)
+            foreach (var value in this.MajorLabelValues)
             {
                 if (value < clipMinimum - eps || value > clipMaximum + eps)
                 {
@@ -391,7 +389,7 @@ namespace OxyPlot.Axes
                     continue;
                 }
 
-                double transformedValue = axis.Transform(value);
+                var transformedValue = axis.Transform(value);
                 if (isHorizontal)
                 {
                     SnapTo(plotAreaLeft, ref transformedValue);
@@ -430,7 +428,7 @@ namespace OxyPlot.Axes
                         break;
                 }
 
-                string text = axis.FormatValue(value);
+                var text = axis.FormatValue(value);
                 this.RenderContext.DrawMathText(
                     pt,
                     text,
@@ -448,14 +446,14 @@ namespace OxyPlot.Axes
             {
                 var extraSegments = new List<ScreenPoint>();
 
-                foreach (double value in axis.ExtraGridlines)
+                foreach (var value in axis.ExtraGridlines)
                 {
                     if (!this.IsWithin(value, clipMinimum, clipMaximum))
                     {
                         continue;
                     }
 
-                    double transformedValue = axis.Transform(value);
+                    var transformedValue = axis.Transform(value);
                     this.AddSegments(
                         extraSegments,
                         perpAxes,
@@ -514,19 +512,17 @@ namespace OxyPlot.Axes
         /// <param name="axisPosition">The axis position.</param>
         protected virtual void RenderMinorItems(Axis axis, double axisPosition)
         {
-            double eps = axis.ActualMinorStep * 1e-3;
-            double actualMinimum = axis.ClipMinimum;
-            double actualMaximum = axis.ClipMaximum;
+            var eps = axis.ActualMinorStep * 1e-3;
+            var actualMinimum = axis.ClipMinimum;
+            var actualMaximum = axis.ClipMaximum;
 
-            double plotAreaLeft = this.Plot.PlotArea.Left;
-            double plotAreaRight = this.Plot.PlotArea.Right;
-            double plotAreaTop = this.Plot.PlotArea.Top;
-            double plotAreaBottom = this.Plot.PlotArea.Bottom;
-            bool cropGridlines = axis.CropGridlines;
-            bool isHorizontal = axis.IsHorizontal();
+            var plotAreaLeft = this.Plot.PlotArea.Left;
+            var plotAreaRight = this.Plot.PlotArea.Right;
+            var plotAreaTop = this.Plot.PlotArea.Top;
+            var plotAreaBottom = this.Plot.PlotArea.Bottom;
+            var cropGridlines = axis.CropGridlines;
+            var isHorizontal = axis.IsHorizontal();
 
-            double a0;
-            double a1;
             var minorSegments = new List<ScreenPoint>();
             var minorTickSegments = new List<ScreenPoint>();
 
@@ -543,16 +539,16 @@ namespace OxyPlot.Axes
                 }
             }
 
-            this.GetTickPositions(axis, axis.TickStyle, axis.MinorTickSize, axis.Position, out a0, out a1);
+            this.GetTickPositions(axis, axis.TickStyle, axis.MinorTickSize, axis.Position, out var a0, out var a1);
 
-            foreach (double value in this.MinorTickValues)
+            foreach (var value in this.MinorTickValues)
             {
                 if (axis.PositionAtZeroCrossing && Math.Abs(value) < eps)
                 {
                     continue;
                 }
 
-                double transformedValue = axis.Transform(value);
+                var transformedValue = axis.Transform(value);
 
                 if (isHorizontal)
                 {
@@ -622,7 +618,7 @@ namespace OxyPlot.Axes
         /// <param name="plotAreaTop">Plot area top position.</param>
         /// <param name="plotAreaBottom">Plot area bottom position.</param>
         private void AddSegments(
-            List<ScreenPoint> segments, 
+            List<ScreenPoint> segments,
             List<Axis> perpAxes,
             bool isHorizontal,
             bool cropGridlines,
@@ -692,7 +688,7 @@ namespace OxyPlot.Axes
             Debug.Assert(new[] { 0.0, 90.0, -180.0, -90.0 }.Contains(axisAngle), "The axis angles should be one of 0, 90, -180, -90");
 
             // The axis angle if it would have been turned on 180 and leave it in [-180, 180)
-            double flippedAxisAngle = ((axisAngle + 360.0) % 360.0) - 180.0;
+            var flippedAxisAngle = (axisAngle + 360.0) % 360.0 - 180.0;
 
             // When the box (assuming the axis and box have the same angle) box starts to turn clockwise near the axis
             // It leans on the right until it gets to 180 rotation, when it is started to lean on the left.

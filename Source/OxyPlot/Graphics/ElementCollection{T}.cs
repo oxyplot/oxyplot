@@ -27,7 +27,7 @@ namespace OxyPlot
         /// <summary>
         /// The internal list.
         /// </summary>
-        private readonly List<T> internalList = new List<T>();
+        private readonly List<T> internalList = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ElementCollection{T}" /> class.
@@ -48,25 +48,13 @@ namespace OxyPlot
         /// Gets the number of elements contained in the collection.
         /// </summary>
         /// <returns>The number of elements contained in the collection.</returns>
-        public int Count
-        {
-            get
-            {
-                return this.internalList.Count;
-            }
-        }
+        public int Count => this.internalList.Count;
 
         /// <summary>
         /// Gets a value indicating whether the collection is read-only.
         /// </summary>
         /// <returns><c>true</c> if the collection is read-only; otherwise, <c>false</c>.</returns>
-        public bool IsReadOnly
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public bool IsReadOnly => false;
 
         /// <summary>
         /// Gets or sets the element at the specified index.
@@ -75,10 +63,7 @@ namespace OxyPlot
         /// <returns>The element.</returns>
         public T this[int index]
         {
-            get
-            {
-                return this.internalList[index];
-            }
+            get => this.internalList[index];
 
             set
             {
@@ -228,11 +213,7 @@ namespace OxyPlot
         /// <param name="removedItems">The removed items.</param>
         private void RaiseCollectionChanged(IEnumerable<T> addedItems = null, IEnumerable<T> removedItems = null)
         {
-            var collectionChanged = this.CollectionChanged;
-            if (collectionChanged != null)
-            {
-                collectionChanged(this, new ElementCollectionChangedEventArgs<T>(addedItems, removedItems));
-            }
+            this.CollectionChanged?.Invoke(this, new ElementCollectionChangedEventArgs<T>(addedItems, removedItems));
         }
     }
 }

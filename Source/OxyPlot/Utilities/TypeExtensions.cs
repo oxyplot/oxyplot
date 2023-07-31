@@ -12,7 +12,6 @@
 namespace OxyPlot
 {
     using System;
-    using System.Linq;
     using System.Reflection;
 
     /// <summary>
@@ -33,7 +32,10 @@ namespace OxyPlot
 
             foreach (var x in source)
             {
-                if (x.Name == name) return x;
+                if (x.Name == name)
+                {
+                    return x;
+                }
             }
 
             return null;

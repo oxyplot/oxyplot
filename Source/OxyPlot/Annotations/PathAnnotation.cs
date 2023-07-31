@@ -11,9 +11,9 @@
 
 namespace OxyPlot.Annotations
 {
+    using OxyPlot;
     using System;
     using System.Collections.Generic;
-    using OxyPlot;
 
     /// <summary>
     /// Provides an abstract base class for all annotations that contain paths (lines, functions or polylines).
@@ -156,6 +156,7 @@ namespace OxyPlot.Annotations
             {
                 throw new InvalidOperationException($"{nameof(this.XAxis)} must be non-null before rendering.");
             }
+
             if (this.YAxis == null)
             {
                 throw new InvalidOperationException($"{nameof(this.YAxis)} must be non-null before rendering.");
@@ -283,7 +284,7 @@ namespace OxyPlot.Annotations
             }
 
             var nearestPoint = ScreenPointHelper.FindNearestPointOnPolyline(args.Point, this.screenPoints);
-            double dist = (args.Point - nearestPoint).Length;
+            var dist = (args.Point - nearestPoint).Length;
             if (dist < args.Tolerance)
             {
                 return new HitTestResult(this, nearestPoint);
@@ -307,6 +308,7 @@ namespace OxyPlot.Annotations
             {
                 throw new InvalidOperationException($"{nameof(this.XAxis)} is null.");
             }
+
             if (this.YAxis == null)
             {
                 throw new InvalidOperationException($"{nameof(this.YAxis)} is null.");
@@ -353,25 +355,25 @@ namespace OxyPlot.Annotations
             }
 
             double length = 0;
-            for (int i = 1; i < pts.Count; i++)
+            for (var i = 1; i < pts.Count; i++)
             {
                 length += (pts[i] - pts[i - 1]).Length;
             }
 
-            double l = (length * p) + margin;
-            double eps = 1e-8;
+            var l = length * p + margin;
+            var eps = 1e-8;
             length = 0;
-            for (int i = 1; i < pts.Count; i++)
+            for (var i = 1; i < pts.Count; i++)
             {
-                double dl = (pts[i] - pts[i - 1]).Length;
+                var dl = (pts[i] - pts[i - 1]).Length;
                 if (l >= length - eps && l <= length + dl + eps)
                 {
-                    double f = (l - length) / dl;
-                    double x = (pts[i].X * f) + (pts[i - 1].X * (1 - f));
-                    double y = (pts[i].Y * f) + (pts[i - 1].Y * (1 - f));
+                    var f = (l - length) / dl;
+                    var x = pts[i].X * f + pts[i - 1].X * (1 - f);
+                    var y = pts[i].Y * f + pts[i - 1].Y * (1 - f);
                     position = new ScreenPoint(x, y);
-                    double dx = pts[i].X - pts[i - 1].X;
-                    double dy = pts[i].Y - pts[i - 1].Y;
+                    var dx = pts[i].X - pts[i - 1].X;
+                    var dy = pts[i].Y - pts[i - 1].Y;
                     angle = Math.Atan2(dy, dx) / Math.PI * 180;
                     return true;
                 }

@@ -17,15 +17,11 @@ namespace OxyPlot.Series
     /// </summary>
     public class AreaSeries : LineSeries
     {
-        /// <summary>
-        /// The second list of points.
-        /// </summary>
-        private readonly List<DataPoint> points2 = new List<DataPoint>();
 
         /// <summary>
         /// The secondary data points from the <see cref="P:ItemsSource" /> collection.
         /// </summary>
-        private readonly List<DataPoint> itemsSourcePoints2 = new List<DataPoint>();
+        private readonly List<DataPoint> itemsSourcePoints2 = new();
 
         /// <summary>
         /// The secondary data points from the <see cref="P:Points2" /> list.
@@ -74,13 +70,7 @@ namespace OxyPlot.Series
         /// Gets the actual color of the line for the second data set.
         /// </summary>
         /// <value>The actual color.</value>
-        public virtual OxyColor ActualColor2
-        {
-            get
-            {
-                return this.Color2.GetActualColor(this.ActualColor);
-            }
-        }
+        public virtual OxyColor ActualColor2 => this.Color2.GetActualColor(this.ActualColor);
 
         /// <summary>
         /// Gets or sets the fill color of the area.
@@ -92,26 +82,14 @@ namespace OxyPlot.Series
         /// Gets the actual fill color of the area.
         /// </summary>
         /// <value>The actual fill color.</value>
-        public OxyColor ActualFill
-        {
-            get
-            {
-                return this.Fill.GetActualColor(OxyColor.FromAColor(100, this.ActualColor));
-            }
-        }
+        public OxyColor ActualFill => this.Fill.GetActualColor(OxyColor.FromAColor(100, this.ActualColor));
 
         /// <summary>
         /// Gets the second list of points.
         /// </summary>
         /// <value>The second list of points.</value>
         /// <remarks>This property is not used if <see cref="P:ItemsSource" /> is set.</remarks>
-        public List<DataPoint> Points2
-        {
-            get
-            {
-                return this.points2;
-            }
-        }
+        public List<DataPoint> Points2 { get; } = new List<DataPoint>();
 
         /// <summary>
         /// Gets or sets a value indicating whether the second data collection should be reversed.
@@ -126,13 +104,7 @@ namespace OxyPlot.Series
         /// Gets the actual points of the second data set.
         /// </summary>
         /// <value>A list of data points.</value>
-        protected List<DataPoint> ActualPoints2
-        {
-            get
-            {
-                return this.ItemsSource != null ? this.itemsSourcePoints2 : this.actualPoints2;
-            }
-        }
+        protected List<DataPoint> ActualPoints2 => this.ItemsSource != null ? this.itemsSourcePoints2 : this.actualPoints2;
 
         /// <summary>
         /// Gets or sets the last visible window start position in second data points collection.
@@ -153,11 +125,12 @@ namespace OxyPlot.Series
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
             var xy = this.InverseTransform(point);
-            var targetX = xy.X;
-            int startIdx = this.IsXMonotonic 
+
+            _ = xy.X;
+            var startIdx = this.IsXMonotonic
                 ? this.WindowStartIndex
                 : 0;
-            int startIdx2 = this.IsXMonotonic
+            var startIdx2 = this.IsXMonotonic
                 ? this.WindowStartIndex2
                 : 0;
 
@@ -176,8 +149,8 @@ namespace OxyPlot.Series
             TrackerHitResult result;
             if (result1 != null && result2 != null)
             {
-                double dist1 = result1.Position.DistanceTo(point);
-                double dist2 = result2.Position.DistanceTo(point);
+                var dist1 = result1.Position.DistanceTo(point);
+                var dist2 = result2.Position.DistanceTo(point);
                 result = dist1 < dist2 ? result1 : result2;
             }
             else
@@ -192,9 +165,9 @@ namespace OxyPlot.Series
                     this.TrackerFormatString,
                     result.Item,
                     this.Title,
-                    this.XAxis.Title ?? XYAxisSeries.DefaultXAxisTitle,
+                    this.XAxis.Title ?? DefaultXAxisTitle,
                     this.XAxis.GetValue(result.DataPoint.X),
-                    this.YAxis.Title ?? XYAxisSeries.DefaultYAxisTitle,
+                    this.YAxis.Title ?? DefaultYAxisTitle,
                     this.YAxis.GetValue(result.DataPoint.Y));
             }
 
@@ -221,9 +194,9 @@ namespace OxyPlot.Series
                 return;
             }
 
-            int startIdx = 0;
-            int startIdx2 = 0;
-            double xmax = double.MaxValue;
+            var startIdx = 0;
+            var startIdx2 = 0;
+            var xmax = double.MaxValue;
 
             if (this.IsXMonotonic)
             {
@@ -237,7 +210,7 @@ namespace OxyPlot.Series
                 startIdx2 = this.WindowStartIndex2;
             }
 
-            double minDistSquared = this.MinimumSegmentLength * this.MinimumSegmentLength;
+            var minDistSquared = this.MinimumSegmentLength * this.MinimumSegmentLength;
 
             var areaContext = new AreaRenderContext
             {
@@ -257,7 +230,7 @@ namespace OxyPlot.Series
             areaContext.WindowStartIndex = startIdx2;
             areaContext.Reverse = this.Reverse2;
             areaContext.Color = this.ActualColor2;
-            
+
             var chunksOfPoints2 = this.RenderChunkedPoints(areaContext);
 
             if (chunksOfPoints.Count != chunksOfPoints2.Count)
@@ -266,7 +239,7 @@ namespace OxyPlot.Series
             }
 
             // Draw the fill
-            for (int chunkIndex = 0; chunkIndex < chunksOfPoints.Count; chunkIndex++)
+            for (var chunkIndex = 0; chunkIndex < chunksOfPoints.Count; chunkIndex++)
             {
                 var pts = chunksOfPoints[chunkIndex];
                 var pts2 = chunksOfPoints2[chunkIndex];
@@ -317,9 +290,9 @@ namespace OxyPlot.Series
         /// <param name="legendBox">The bounding rectangle of the legend box.</param>
         public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
         {
-            double y0 = (legendBox.Top * 0.2) + (legendBox.Bottom * 0.8);
-            double y1 = (legendBox.Top * 0.4) + (legendBox.Bottom * 0.6);
-            double y2 = (legendBox.Top * 0.8) + (legendBox.Bottom * 0.2);
+            var y0 = legendBox.Top * 0.2 + legendBox.Bottom * 0.8;
+            var y1 = legendBox.Top * 0.4 + legendBox.Bottom * 0.6;
+            var y2 = legendBox.Top * 0.8 + legendBox.Bottom * 0.2;
 
             var pts0 = new[] { new ScreenPoint(legendBox.Left, y0), new ScreenPoint(legendBox.Right, y0) };
             var pts1 = new[] { new ScreenPoint(legendBox.Right, y2), new ScreenPoint(legendBox.Left, y1) };
@@ -332,6 +305,7 @@ namespace OxyPlot.Series
                 rc.DrawLine(pts0, this.GetSelectableColor(this.ActualColor), this.StrokeThickness, this.EdgeRenderingMode, this.ActualLineStyle.GetDashArray());
                 rc.DrawLine(pts1, this.GetSelectableColor(this.ActualColor2), this.StrokeThickness, this.EdgeRenderingMode, this.ActualLineStyle.GetDashArray());
             }
+
             rc.DrawPolygon(pts, this.GetSelectableFillColor(this.ActualFill), OxyColors.Undefined, 0, this.EdgeRenderingMode);
         }
 
@@ -344,11 +318,11 @@ namespace OxyPlot.Series
 
             if (this.ItemsSource == null)
             {
-                this.IsPoints2Defined = this.points2.Count > 0;
+                this.IsPoints2Defined = this.Points2.Count > 0;
 
                 if (this.IsPoints2Defined)
                 {
-                    this.actualPoints2 = this.points2;
+                    this.actualPoints2 = this.Points2;
                 }
                 else
                 {
@@ -396,9 +370,9 @@ namespace OxyPlot.Series
             var result = new List<List<ScreenPoint>>();
             var screenPoints = new List<ScreenPoint>();
 
-            int clipCount = 0;
+            var clipCount = 0;
             var actualPoints = context.Points;
-            for (int i = context.WindowStartIndex; i < actualPoints.Count; i++)
+            for (var i = context.WindowStartIndex; i < actualPoints.Count; i++)
             {
                 var point = actualPoints[i];
 
@@ -488,7 +462,7 @@ namespace OxyPlot.Series
             {
                 // Use ConstantY2
                 var x0 = actualPoints[0].X;
-                var x1 = actualPoints[actualPoints.Count - 1].X;
+                var x1 = actualPoints[^1].X;
                 yield return new DataPoint(x0, this.ConstantY2);
                 yield return new DataPoint(x1, this.ConstantY2);
             }

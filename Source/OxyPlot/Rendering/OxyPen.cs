@@ -70,13 +70,7 @@ namespace OxyPlot
         /// Gets the actual dash array.
         /// </summary>
         /// <value>The actual dash array.</value>
-        public double[] ActualDashArray
-        {
-            get
-            {
-                return this.DashArray ?? this.LineStyle.GetDashArray();
-            }
-        }
+        public double[] ActualDashArray => this.DashArray ?? this.LineStyle.GetDashArray();
 
         /// <summary>
         /// Creates the specified pen.
@@ -108,7 +102,7 @@ namespace OxyPlot
         {
             unchecked
             {
-                int result = this.Color.GetHashCode();
+                var result = this.Color.GetHashCode();
                 result = (result * 397) ^ this.Thickness.GetHashCode();
                 result = (result * 397) ^ this.LineStyle.GetHashCode();
                 result = (result * 397) ^ this.LineJoin.GetHashCode();

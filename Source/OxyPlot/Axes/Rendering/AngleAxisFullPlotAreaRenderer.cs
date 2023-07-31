@@ -39,12 +39,7 @@ namespace OxyPlot.Axes
 
             base.Render(axis, pass);
 
-            var magnitudeAxis = this.Plot.DefaultMagnitudeAxis;
-
-            if (magnitudeAxis == null)
-            {
-                throw new InvalidOperationException("Magnitude axis not defined.");
-            }
+            var magnitudeAxis = this.Plot.DefaultMagnitudeAxis ?? throw new InvalidOperationException("Magnitude axis not defined.");
 
             var scaledStartAngle = angleAxis.StartAngle / angleAxis.Scale;
             var scaledEndAngle = angleAxis.EndAngle / angleAxis.Scale;
@@ -57,7 +52,7 @@ namespace OxyPlot.Axes
 
                 var screenPoints = this.MinorTickValues
                             .Take(tickCount + 1)
-                            .Select(x => this.TransformToClientRectangle(magnitudeAxis.ClipMaximum, x, axis, this.Plot.PlotArea, magnitudeAxis.MidPoint));
+                            .Select(x => TransformToClientRectangle(magnitudeAxis.ClipMaximum, x, axis, this.Plot.PlotArea, magnitudeAxis.MidPoint));
 
                 foreach (var screenPoint in screenPoints)
                 {
@@ -76,7 +71,7 @@ namespace OxyPlot.Axes
             {
                 var screenPoints = this.MajorTickValues
                                 .Take(majorTickCount)
-                                .Select(x => this.TransformToClientRectangle(magnitudeAxis.ClipMaximum, x, axis, this.Plot.PlotArea, magnitudeAxis.MidPoint));
+                                .Select(x => TransformToClientRectangle(magnitudeAxis.ClipMaximum, x, axis, this.Plot.PlotArea, magnitudeAxis.MidPoint));
 
                 foreach (var point in screenPoints)
                 {
@@ -87,11 +82,11 @@ namespace OxyPlot.Axes
             //Text rendering
             foreach (var value in this.MajorLabelValues.Take(majorTickCount))
             {
-                ScreenPoint pt = this.TransformToClientRectangle(magnitudeAxis.ClipMaximum, value, axis, this.Plot.PlotArea, magnitudeAxis.MidPoint);
+                var pt = TransformToClientRectangle(magnitudeAxis.ClipMaximum, value, axis, this.Plot.PlotArea, magnitudeAxis.MidPoint);
 
                 var angle = Math.Atan2(pt.y - magnitudeAxis.MidPoint.y, pt.x - magnitudeAxis.MidPoint.x);
 
-                double degree = Math.PI / 180d;
+                var degree = Math.PI / 180d;
                 // Convert to degrees
                 angle /= degree;
 
@@ -99,7 +94,7 @@ namespace OxyPlot.Axes
 
                 var ha = HorizontalAlignment.Center;
                 var va = VerticalAlignment.Middle;
-                OxyRect plotrect = this.Plot.PlotArea;
+                var plotrect = this.Plot.PlotArea;
 
                 //check on which side of the plotarea it is
                 //top
@@ -142,14 +137,14 @@ namespace OxyPlot.Axes
                     //va = angle >= 90 ? VerticalAlignment.Top : VerticalAlignment.Bottom;
                     angle = 0;
                 }
-                else if (angle > 90 || angle < -90)
+                else if (angle is > 90 or < (-90))
                 {
                     angle -= 180;
                     //ha = HorizontalAlignment.Right;
                     //va = VerticalAlignment.Middle;
                 }
 
-                ScreenPoint outsideposition = pt;
+                var outsideposition = pt;
                 this.RenderContext.DrawMathText(
                     outsideposition, text, axis.ActualTextColor, axis.ActualFont, axis.ActualFontSize, axis.ActualFontWeight, 0, ha, va);
             }
@@ -164,50 +159,61 @@ namespace OxyPlot.Axes
         /// <param name="plotArea"></param>
         /// <param name="midPoint"></param>
         /// <returns></returns>
-        public ScreenPoint TransformToClientRectangle(double actualMaximum, double x, Axis axis, OxyRect plotArea, ScreenPoint midPoint)
+        public static ScreenPoint TransformToClientRectangle(double actualMaximum, double x, Axis axis, OxyRect plotArea, ScreenPoint midPoint)
         {
-            ScreenPoint result = new ScreenPoint();
+            var result = new ScreenPoint();
+
             //I think the key is to NOT compute the axis scaled value of the angle, BUT to just draw it from the Midpoint to the end of the PlotView
             //For each MinorTickValue, compute an intersection point within the client area
-            double width_to_height = plotArea.Width / plotArea.Height;
+            _ = plotArea.Width / plotArea.Height;
 
-
-            double theta = (x - axis.Offset) * axis.Scale;
+            var theta = (x - axis.Offset) * axis.Scale;
             theta %= 360.0d;
-            double theta_rad = theta / 180.0d * Math.PI;
+            var theta_rad = theta / 180.0d * Math.PI;
 
-            double _x = Math.Cos(theta_rad);
+            var _x = Math.Cos(theta_rad);
             //y is negative because it is from top to bottom
-            double _y = -Math.Sin(theta_rad);
+            var _y = -Math.Sin(theta_rad);
             //compute intersections with right or lefth side
 
             if (_x != 0)
             {
                 double delta_x = 0;
                 if (_x > 0)
+                {
                     delta_x = plotArea.Right - midPoint.X;
+                }
                 else if (_x < 0)
+                {
                     delta_x = plotArea.Left - midPoint.X;
+                }
 
-                double x_portion = delta_x / _x;
-                double lineend_x = x_portion * _x;
-                double lineend_y = x_portion * _y;
+                var x_portion = delta_x / _x;
+                var lineend_x = x_portion * _x;
+                var lineend_y = x_portion * _y;
                 if (lineend_y + midPoint.Y > plotArea.Bottom || lineend_y + midPoint.Y < plotArea.Top)
                 {
-                    double delta_y = 0;
+                    double delta_y;
                     if (_y > 0)
+                    {
                         delta_y = plotArea.Bottom - midPoint.Y;
+                    }
                     else
+                    {
                         delta_y = plotArea.Top - midPoint.Y;
+                    }
 
-                    double y_portion = delta_y / _y;
-                    lineend_x = y_portion * _x;
-                    lineend_y = y_portion * _y;
-                    result = new ScreenPoint((y_portion * _x) + midPoint.X, (y_portion * _y) + midPoint.Y);
+                    var y_portion = delta_y / _y;
+                    _ = y_portion * _x;
+                    _ = y_portion * _y;
+                    result = new ScreenPoint(y_portion * _x + midPoint.X, y_portion * _y + midPoint.Y);
                 }
                 else
+                {
                     result = new ScreenPoint(lineend_x + midPoint.X, lineend_y + midPoint.Y);
+                }
             }
+
             return result;
         }
     }

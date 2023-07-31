@@ -54,19 +54,13 @@ namespace OxyPlot.Series
         /// Gets the actual hi color.
         /// </summary>
         /// <value>The actual color.</value>
-        public OxyColor ActualColorLo
-        {
-            get { return this.ColorLo.GetActualColor(this.defaultColorLo); }
-        }
+        public OxyColor ActualColorLo => this.ColorLo.GetActualColor(this.defaultColorLo);
 
         /// <summary>
         /// Gets the actual low color.
         /// </summary>
         /// <value>The actual color.</value>
-        public OxyColor ActualColorHi
-        {
-            get { return this.ColorHi.GetActualColor(this.defaultColorHi); }
-        }
+        public OxyColor ActualColorHi => this.ColorHi.GetActualColor(this.defaultColorHi);
 
         /// <summary>
         /// Gets or sets the high limit.
@@ -112,47 +106,23 @@ namespace OxyPlot.Series
         /// Gets the actual line style for the part of the line that is above the limit.
         /// </summary>
         /// <value>The line style.</value>
-        public LineStyle ActualLineStyleHi
-        {
-            get
-            {
-                return this.LineStyleHi != LineStyle.Automatic ? this.LineStyleHi : LineStyle.Solid;
-            }
-        }
+        public LineStyle ActualLineStyleHi => this.LineStyleHi != LineStyle.Automatic ? this.LineStyleHi : LineStyle.Solid;
 
         /// <summary>
         /// Gets the actual line style for the part of the line that is below the limit.
         /// </summary>
         /// <value>The line style.</value>
-        public LineStyle ActualLineStyleLo
-        {
-            get
-            {
-                return this.LineStyleLo != LineStyle.Automatic ? this.LineStyleLo : LineStyle.Solid;
-            }
-        }
+        public LineStyle ActualLineStyleLo => this.LineStyleLo != LineStyle.Automatic ? this.LineStyleLo : LineStyle.Solid;
 
         /// <summary>
         /// Gets the actual dash array for the line that is above the limit.
         /// </summary>
-        protected double[] ActualDashArrayHi
-        {
-            get
-            {
-                return this.DashesHi ?? this.ActualLineStyleHi.GetDashArray();
-            }
-        }
+        protected double[] ActualDashArrayHi => this.DashesHi ?? this.ActualLineStyleHi.GetDashArray();
 
         /// <summary>
         /// Gets the actual dash array for the line that is below the limit.
         /// </summary>
-        protected double[] ActualDashArrayLo
-        {
-            get
-            {
-                return this.DashesLo ?? this.ActualLineStyleLo.GetDashArray();
-            }
-        }
+        protected double[] ActualDashArrayLo => this.DashesLo ?? this.ActualLineStyleLo.GetDashArray();
 
         /// <summary>
         /// Sets the default values.

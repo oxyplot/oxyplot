@@ -174,15 +174,15 @@ namespace OxyPlot.Annotations
                     break;
             }
 
-            double cost = Math.Cos(rotation / 180 * Math.PI);
-            double sint = Math.Sin(rotation / 180 * Math.PI);
+            var cost = Math.Cos(rotation / 180 * Math.PI);
+            var sint = Math.Sin(rotation / 180 * Math.PI);
             var u = new ScreenVector(cost, sint);
             var v = new ScreenVector(-sint, cost);
             var polygon = new ScreenPoint[4];
-            polygon[0] = position + (u * (left - padding.Left)) + (v * (top - padding.Top));
-            polygon[1] = position + (u * (right + padding.Right)) + (v * (top - padding.Top));
-            polygon[2] = position + (u * (right + padding.Right)) + (v * (bottom + padding.Bottom));
-            polygon[3] = position + (u * (left - padding.Left)) + (v * (bottom + padding.Bottom));
+            polygon[0] = position + u * (left - padding.Left) + v * (top - padding.Top);
+            polygon[1] = position + u * (right + padding.Right) + v * (top - padding.Top);
+            polygon[2] = position + u * (right + padding.Right) + v * (bottom + padding.Bottom);
+            polygon[3] = position + u * (left - padding.Left) + v * (bottom + padding.Bottom);
             return polygon;
         }
     }

@@ -26,7 +26,7 @@ namespace OxyPlot
         /// <summary>
         /// The random number generator.
         /// </summary>
-        private readonly Random r = new Random(0);
+        private readonly Random r = new(0);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="XkcdRenderingDecorator"/> class.
@@ -245,8 +245,8 @@ namespace OxyPlot
             randomNumbers = this.ApplyMovingAverage(randomNumbers, 5);
 
             var d = this.DistortionFactor;
-            double d2 = d / 2;
-            for (int i = 0; i < interpolated.Count; i++)
+            var d2 = d / 2;
+            for (var i = 0; i < interpolated.Count; i++)
             {
                 if (i == 0 || i == interpolated.Count - 1)
                 {
@@ -258,7 +258,7 @@ namespace OxyPlot
                 tangent.Normalize();
                 var normal = new ScreenVector(tangent.Y, -tangent.X);
 
-                var delta = normal * ((randomNumbers[i] * d) - d2);
+                var delta = normal * (randomNumbers[i] * d - d2);
                 result[i] = interpolated[i] + delta;
             }
 
@@ -273,7 +273,7 @@ namespace OxyPlot
         private double[] GenerateRandomNumbers(int n)
         {
             var result = new double[n];
-            for (int i = 0; i < n; i++)
+            for (var i = 0; i < n; i++)
             {
                 result[i] = this.r.NextDouble();
             }
@@ -290,14 +290,14 @@ namespace OxyPlot
         private double[] ApplyMovingAverage(IList<double> input, int m)
         {
             // http://en.wikipedia.org/wiki/Moving_average
-            int n = input.Count;
+            var n = input.Count;
             var result = new double[n];
             var m2 = m / 2;
-            for (int i = 0; i < n; i++)
+            for (var i = 0; i < n; i++)
             {
                 var j0 = Math.Max(0, i - m2);
                 var j1 = Math.Min(n - 1, i + m2);
-                for (int j = j0; j <= j1; j++)
+                for (var j = j0; j <= j1; j++)
                 {
                     result[i] += input[j];
                 }
@@ -318,7 +318,7 @@ namespace OxyPlot
         {
             var p0 = default(ScreenPoint);
             double l = -1;
-            double nl = dist;
+            var nl = dist;
             foreach (var p1 in input)
             {
                 if (l < 0)
@@ -337,7 +337,7 @@ namespace OxyPlot
                     while (nl >= l && nl <= l + l1)
                     {
                         var f = (nl - l) / l1;
-                        yield return new ScreenPoint((p0.X * (1 - f)) + (p1.X * f), (p0.Y * (1 - f)) + (p1.Y * f));
+                        yield return new ScreenPoint(p0.X * (1 - f) + p1.X * f, p0.Y * (1 - f) + p1.Y * f);
 
                         nl += dist;
                     }

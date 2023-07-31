@@ -41,10 +41,7 @@ namespace OxyPlot.Series
         /// Gets the actual second color.
         /// </summary>
         /// <value>The actual color.</value>
-        public OxyColor ActualColor2
-        {
-            get { return this.Color2.GetActualColor(this.defaultColor2); }
-        }
+        public OxyColor ActualColor2 => this.Color2.GetActualColor(this.defaultColor2);
 
         /// <summary>
         /// Gets or sets the limit.
@@ -70,24 +67,12 @@ namespace OxyPlot.Series
         /// Gets the actual line style for the part of the line that is below the limit.
         /// </summary>
         /// <value>The line style.</value>
-        public LineStyle ActualLineStyle2
-        {
-            get
-            {
-                return this.LineStyle2 != LineStyle.Automatic ? this.LineStyle2 : LineStyle.Solid;
-            }
-        }
+        public LineStyle ActualLineStyle2 => this.LineStyle2 != LineStyle.Automatic ? this.LineStyle2 : LineStyle.Solid;
 
         /// <summary>
         /// Gets the actual dash array for the line that is below the limit.
         /// </summary>
-        protected double[] ActualDashArray2
-        {
-            get
-            {
-                return this.Dashes2 ?? this.ActualLineStyle2.GetDashArray();
-            }
-        }
+        protected double[] ActualDashArray2 => this.Dashes2 ?? this.ActualLineStyle2.GetDashArray();
 
         /// <summary>
         /// Sets the default values.
@@ -113,7 +98,7 @@ namespace OxyPlot.Series
             var clippingRect = this.GetClippingRect();
             var p1 = this.InverseTransform(clippingRect.BottomLeft);
             var p2 = this.InverseTransform(clippingRect.TopRight);
-            
+
             var clippingRectLo = new OxyRect(
                 this.Transform(p1.X, Math.Min(p1.Y, p2.Y)),
                 this.Transform(p2.X, this.Limit)).Clip(clippingRect);

@@ -49,7 +49,7 @@ namespace OxyPlot
         /// <returns>true if the points form a straight line; false otherwise.</returns>
         public static bool IsStraightLine(IList<ScreenPoint> points)
         {
-            for (int i = 1; i < points.Count; i++)
+            for (var i = 1; i < points.Count; i++)
             {
                 if (!IsStraightLine(points[i - 1], points[i]))
                 {
@@ -100,7 +100,7 @@ namespace OxyPlot
             double[] dashArray,
             LineJoin lineJoin)
         {
-            for (int i = 0; i + 1 < points.Count; i += 2)
+            for (var i = 0; i + 1 < points.Count; i += 2)
             {
                 this.DrawLine(new[] { points[i], points[i + 1] }, stroke, thickness, edgeRenderingMode, dashArray, lineJoin);
             }
@@ -246,15 +246,15 @@ namespace OxyPlot
         /// <remarks>Note that this is very slow, not optimized in any way.</remarks>
         protected static ScreenPoint[] CreateEllipse(OxyRect rect, int n = 40)
         {
-            double cx = rect.Center.X;
-            double cy = rect.Center.Y;
-            double dx = rect.Width / 2;
-            double dy = rect.Height / 2;
+            var cx = rect.Center.X;
+            var cy = rect.Center.Y;
+            var dx = rect.Width / 2;
+            var dy = rect.Height / 2;
             var points = new ScreenPoint[n];
-            for (int i = 0; i < n; i++)
+            for (var i = 0; i < n; i++)
             {
-                double t = Math.PI * 2 * i / n;
-                points[i] = new ScreenPoint(cx + (Math.Cos(t) * dx), cy + (Math.Sin(t) * dy));
+                var t = Math.PI * 2 * i / n;
+                points[i] = new ScreenPoint(cx + Math.Cos(t) * dx, cy + Math.Sin(t) * dy);
             }
 
             return points;
@@ -281,13 +281,11 @@ namespace OxyPlot
         /// <returns>true if anti-aliasing should be used; false otherwise.</returns>
         protected virtual bool ShouldUseAntiAliasingForRect(EdgeRenderingMode edgeRenderingMode)
         {
-            switch (edgeRenderingMode)
+            return edgeRenderingMode switch
             {
-                case EdgeRenderingMode.PreferGeometricAccuracy:
-                    return true;
-                default:
-                    return false;
-            }
+                EdgeRenderingMode.PreferGeometricAccuracy => true,
+                _ => false,
+            };
         }
 
         /// <summary>
@@ -297,13 +295,11 @@ namespace OxyPlot
         /// <returns>true if anti-aliasing should be used; false otherwise.</returns>
         protected virtual bool ShouldUseAntiAliasingForEllipse(EdgeRenderingMode edgeRenderingMode)
         {
-            switch (edgeRenderingMode)
+            return edgeRenderingMode switch
             {
-                case EdgeRenderingMode.PreferSpeed:
-                    return false;
-                default:
-                    return true;
-            }
+                EdgeRenderingMode.PreferSpeed => false,
+                _ => true,
+            };
         }
 
         /// <summary>

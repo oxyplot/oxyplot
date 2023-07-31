@@ -1,10 +1,9 @@
 ﻿namespace OxyPlot.Series
 {
+    using Axes;
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
-    using Axes;
 
     /// <summary>
     /// Represents a series that can be bound to a collection of <see cref="RectangleItem"/>.
@@ -29,7 +28,7 @@
         /// <summary>
         /// The default color-axis title
         /// </summary>
-        private const string DefaultColorAxisTitle = "Value";
+        private const string defaultColorAxisTitle = "Value";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HeatMapSeries" /> class.
@@ -173,8 +172,7 @@
                 return;
             }
 
-            var sourceAsListOfDataRects = this.ItemsSource as List<RectangleItem>;
-            if (sourceAsListOfDataRects != null)
+            if (this.ItemsSource is List<RectangleItem> sourceAsListOfDataRects)
             {
                 this.actualItems = sourceAsListOfDataRects;
                 this.ownsActualItems = false;
@@ -183,8 +181,7 @@
 
             this.ClearActualItems();
 
-            var sourceAsEnumerableDataRects = this.ItemsSource as IEnumerable<RectangleItem>;
-            if (sourceAsEnumerableDataRects != null)
+            if (this.ItemsSource is IEnumerable<RectangleItem> sourceAsEnumerableDataRects)
             {
                 this.actualItems.AddRange(sourceAsEnumerableDataRects);
             }
@@ -208,23 +205,23 @@
                 var rectrect = new OxyRect(p1, p2);
 
                 rc.DrawRectangle(
-                    rectrect, 
-                    rectcolor, 
+                    rectrect,
+                    rectcolor,
                     OxyColors.Undefined,
-                    0, 
+                    0,
                     this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness));
 
                 if (this.LabelFontSize > 0)
                 {
                     rc.DrawText(
-                        rectrect.Center, 
-                        item.Value.ToString(this.LabelFormatString), 
-                        this.ActualTextColor, 
-                        this.ActualFont, 
-                        this.LabelFontSize, 
-                        this.ActualFontWeight, 
-                        0, 
-                        HorizontalAlignment.Center, 
+                        rectrect.Center,
+                        item.Value.ToString(this.LabelFormatString),
+                        this.ActualTextColor,
+                        this.ActualFont,
+                        this.LabelFontSize,
+                        this.ActualFontWeight,
+                        0,
+                        HorizontalAlignment.Center,
                         VerticalAlignment.Middle);
                 }
             }
@@ -246,7 +243,7 @@
             }
 
             var colorAxis = this.ColorAxis as Axis;
-            var colorAxisTitle = colorAxis?.Title ?? DefaultColorAxisTitle;
+            var colorAxisTitle = colorAxis?.Title ?? defaultColorAxisTitle;
 
             if (this.ActualItems != null)
             {
@@ -335,8 +332,7 @@
         protected internal override void UpdateAxisMaxMin()
         {
             base.UpdateAxisMaxMin();
-            var colorAxis = this.ColorAxis as Axis;
-            if (colorAxis != null)
+            if (this.ColorAxis is Axis colorAxis)
             {
                 colorAxis.Include(this.MinValue);
                 colorAxis.Include(this.MaxValue);

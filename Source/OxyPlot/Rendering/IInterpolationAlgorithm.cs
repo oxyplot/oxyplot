@@ -14,7 +14,8 @@ namespace OxyPlot
     /// <summary>
     /// Defines an interpolation algorithm.
     /// </summary>
-    public interface IInterpolationAlgorithm {
+    public interface IInterpolationAlgorithm
+    {
         /// <summary>
         /// Creates a spline from data points.
         /// </summary>

@@ -163,11 +163,11 @@ namespace OxyPlot
             var textSize = this.MeasureText(text, fontFamily, fontSize, fontWeight);
             var lineHeight = textSize.Height / lines.Length;
             var lineOffset = new ScreenVector(-Math.Sin(rotate / 180.0 * Math.PI) * lineHeight, +Math.Cos(rotate / 180.0 * Math.PI) * lineHeight);
-            
+
             if (this.UseVerticalTextAlignmentWorkaround)
             {
                 // offset the position, and set the valign to neutral value of `Bottom`
-                double offsetRatio = valign == VerticalAlignment.Bottom ? (1.0 - lines.Length) : valign == VerticalAlignment.Top ? 1.0 : (1.0 - (lines.Length / 2.0));
+                var offsetRatio = valign == VerticalAlignment.Bottom ? (1.0 - lines.Length) : valign == VerticalAlignment.Top ? 1.0 : (1.0 - lines.Length / 2.0);
                 valign = VerticalAlignment.Bottom;
 
                 p += lineOffset * offsetRatio;
@@ -187,7 +187,8 @@ namespace OxyPlot
                     for (var i = lines.Length - 1; i >= 0; i--)
                     {
                         var line = lines[i];
-                        var size = this.MeasureText(line, fontFamily, fontSize, fontWeight);
+
+                        _ = this.MeasureText(line, fontFamily, fontSize, fontWeight);
                         this.w.WriteText(p, line, c, fontFamily, fontSize, fontWeight, rotate, halign, valign);
 
                         p -= lineOffset;

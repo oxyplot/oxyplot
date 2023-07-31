@@ -96,8 +96,7 @@ namespace OxyPlot
         /// <exception cref="System.Exception">Illegal node type</exception>
         private static void NodeString(string prefix, Node node, StringBuilder sb)
         {
-            var n = node as InternalNode;
-            if (n != null)
+            if (node is InternalNode n)
             {
                 var internalNode = n;
                 NodeString(prefix + "0", internalNode.LeftChild, sb);
@@ -105,8 +104,7 @@ namespace OxyPlot
             }
             else
             {
-                var leaf = node as Leaf;
-                if (leaf != null)
+                if (node is Leaf leaf)
                 {
                     sb.Append(string.Format("Code {0}: Symbol {1}", prefix, leaf.Symbol));
                 }
@@ -124,10 +122,8 @@ namespace OxyPlot
         /// <param name="prefix">The prefix.</param>
         private void BuildCodeList(Node node, List<int> prefix)
         {
-            if (node is InternalNode)
+            if (node is InternalNode internalNode)
             {
-                var internalNode = (InternalNode)node;
-
                 prefix.Add(0);
                 this.BuildCodeList(internalNode.LeftChild, prefix);
                 prefix.RemoveAt(prefix.Count - 1);
@@ -136,9 +132,8 @@ namespace OxyPlot
                 this.BuildCodeList(internalNode.RightChild, prefix);
                 prefix.RemoveAt(prefix.Count - 1);
             }
-            else if (node is Leaf)
+            else if (node is Leaf leaf)
             {
-                var leaf = (Leaf)node;
                 if (leaf.Symbol >= this.codes.Count)
                 {
                     throw new Exception("Symbol exceeds symbol limit");

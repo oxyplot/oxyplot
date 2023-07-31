@@ -27,7 +27,7 @@ namespace OxyPlot
         /// <summary>
         /// The image cache.
         /// </summary>
-        private readonly Dictionary<OxyImage, PortableDocumentImage> images = new Dictionary<OxyImage, PortableDocumentImage>();
+        private readonly Dictionary<OxyImage, PortableDocumentImage> images = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PdfRenderContext" /> class.
@@ -74,7 +74,7 @@ namespace OxyPlot
                 return;
             }
 
-            double y = this.doc.PageHeight - rect.Bottom;
+            var y = this.doc.PageHeight - rect.Bottom;
             if (isStroked)
             {
                 this.SetLineWidth(thickness);
@@ -123,7 +123,7 @@ namespace OxyPlot
             this.doc.SetLineJoin(Convert(lineJoin));
             var h = this.doc.PageHeight;
             this.doc.MoveTo(points[0].X, h - points[0].Y);
-            for (int i = 1; i < points.Count; i++)
+            for (var i = 1; i < points.Count; i++)
             {
                 this.doc.LineTo(points[i].X, h - points[i].Y);
             }
@@ -163,7 +163,7 @@ namespace OxyPlot
 
             var h = this.doc.PageHeight;
             this.doc.MoveTo(points[0].X, h - points[0].Y);
-            for (int i = 1; i < points.Count; i++)
+            for (var i = 1; i < points.Count; i++)
             {
                 this.doc.LineTo(points[i].X, h - points[i].Y);
             }
@@ -217,7 +217,7 @@ namespace OxyPlot
                 return;
             }
 
-            double y = this.doc.PageHeight - rect.Bottom;
+            var y = this.doc.PageHeight - rect.Bottom;
             if (isStroked)
             {
                 this.SetLineWidth(thickness);
@@ -268,8 +268,7 @@ namespace OxyPlot
             this.doc.SetFont(fontFamily, fontSize / 96 * 72, fontWeight > 500);
             this.doc.SetFillColor(fill);
 
-            double width, height;
-            this.doc.MeasureText(text, out width, out height);
+            this.doc.MeasureText(text, out var width, out var height);
             if (maxSize != null)
             {
                 if (width > maxSize.Value.Width)
@@ -306,7 +305,7 @@ namespace OxyPlot
                 dy = -height;
             }
 
-            double y = this.doc.PageHeight - p.Y;
+            var y = this.doc.PageHeight - p.Y;
 
             this.doc.Translate(p.X, y);
             if (Math.Abs(rotate) > 1e-6)
@@ -333,8 +332,7 @@ namespace OxyPlot
         public override OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
         {
             this.doc.SetFont(fontFamily, fontSize / 96 * 72, fontWeight > 500);
-            double width, height;
-            this.doc.MeasureText(text, out width, out height);
+            this.doc.MeasureText(text, out var width, out var height);
             return new OxySize(width, height);
         }
 
@@ -365,8 +363,7 @@ namespace OxyPlot
             double opacity,
             bool interpolate)
         {
-            PortableDocumentImage image;
-            if (!this.images.TryGetValue(source, out image))
+            if (!this.images.TryGetValue(source, out var image))
             {
                 image = PortableDocumentImageUtilities.Convert(source, interpolate);
                 if (image == null)
@@ -379,10 +376,10 @@ namespace OxyPlot
             }
 
             this.doc.SaveState();
-            double x = destX - (srcX / srcWidth * destWidth);
-            double width = image.Width / srcWidth * destWidth;
-            double y = destY - (srcY / srcHeight * destHeight);
-            double height = image.Height / srcHeight * destHeight;
+            var x = destX - srcX / srcWidth * destWidth;
+            var width = image.Width / srcWidth * destWidth;
+            var y = destY - srcY / srcHeight * destHeight;
+            var height = image.Height / srcHeight * destHeight;
             this.doc.SetClippingRectangle(destX, this.doc.PageHeight - (destY - destHeight), destWidth, destHeight);
             this.doc.Translate(x, this.doc.PageHeight - (y + height));
             this.doc.Scale(width, height);
@@ -410,15 +407,12 @@ namespace OxyPlot
         /// <returns>The converted value.</returns>
         private static LineJoin Convert(LineJoin lineJoin)
         {
-            switch (lineJoin)
+            return lineJoin switch
             {
-                case LineJoin.Bevel:
-                    return LineJoin.Bevel;
-                case LineJoin.Miter:
-                    return LineJoin.Miter;
-                default:
-                    return LineJoin.Round;
-            }
+                LineJoin.Bevel => LineJoin.Bevel,
+                LineJoin.Miter => LineJoin.Miter,
+                _ => LineJoin.Round,
+            };
         }
 
         /// <summary>

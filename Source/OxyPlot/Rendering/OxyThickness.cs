@@ -13,9 +13,9 @@ namespace OxyPlot
     using System.Globalization;
 
     /// <summary>
-    /// Describes the thickness of a frame around a rectangle. Four <see cref="System.Double" /> values describe the left, top, right, and bottom sides of the rectangle, respectively.
+    /// Describes the thickness of a frame around a rectangle. Four <see cref="double" /> values describe the left, top, right, and bottom sides of the rectangle, respectively.
     /// </summary>
-    public struct OxyThickness : ICodeGenerating
+    public readonly struct OxyThickness : ICodeGenerating
     {
         /// <summary>
         /// The bottom.
@@ -65,49 +65,25 @@ namespace OxyPlot
         /// Gets the bottom thickness.
         /// </summary>
         /// <value>The bottom thickness.</value>
-        public double Bottom
-        {
-            get
-            {
-                return this.bottom;
-            }
-        }
+        public double Bottom => this.bottom;
 
         /// <summary>
         /// Gets the left thickness.
         /// </summary>
         /// <value>The left thickness.</value>
-        public double Left
-        {
-            get
-            {
-                return this.left;
-            }
-        }
+        public double Left => this.left;
 
         /// <summary>
         /// Gets the right thickness.
         /// </summary>
         /// <value>The right thickness.</value>
-        public double Right
-        {
-            get
-            {
-                return this.right;
-            }
-        }
+        public double Right => this.right;
 
         /// <summary>
         /// Gets the top thickness.
         /// </summary>
         /// <value>The top thickness.</value>
-        public double Top
-        {
-            get
-            {
-                return this.top;
-            }
-        }
+        public double Top => this.top;
 
         /// <summary>
         /// Returns C# code that generates this instance.
@@ -125,9 +101,9 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// Returns a <see cref="string" /> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+        /// <returns>A <see cref="string" /> that represents this instance.</returns>
         public override string ToString()
         {
             return string.Format(

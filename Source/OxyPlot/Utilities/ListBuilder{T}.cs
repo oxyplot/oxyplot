@@ -84,11 +84,10 @@ namespace OxyPlot
                 }
 
                 var args = new List<object?>(pi.Length);
-                for (int j = 0; j < pi.Length; j++)
+                for (var j = 0; j < pi.Length; j++)
                 {
-                    object? value;
                     var path = pi[j];
-                    args.Add(path != null && path.TryGetValue(sourceItem, out value) ? value : this.defaultValues[j]);
+                    args.Add(path != null && path.TryGetValue(sourceItem, out var value) ? value : this.defaultValues[j]);
                 }
 
                 var item = instanceCreator(args);

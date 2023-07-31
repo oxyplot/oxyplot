@@ -28,9 +28,9 @@ namespace OxyPlot
         public static double[] CreateVector(double x0, double x1, int n)
         {
             var result = new double[n];
-            for (int i = 0; i < n; i++)
+            for (var i = 0; i < n; i++)
             {
-                result[i] = Math.Round(x0 + ((x1 - x0) * i / (n - 1)), 8);
+                result[i] = Math.Round(x0 + (x1 - x0) * i / (n - 1), 8);
             }
 
             return result;
@@ -47,9 +47,9 @@ namespace OxyPlot
         {
             var n = (int)Math.Round((x1 - x0) / dx);
             var result = new double[n + 1];
-            for (int i = 0; i <= n; i++)
+            for (var i = 0; i <= n; i++)
             {
-                result[i] = Math.Round(x0 + (i * dx), 8);
+                result[i] = Math.Round(x0 + i * dx, 8);
             }
 
             return result;
@@ -64,12 +64,12 @@ namespace OxyPlot
         /// <returns>Array of evaluations. The value of f(x_i,y_j) will be placed at index [i, j].</returns>
         public static double[,] Evaluate(Func<double, double, double> f, double[] x, double[] y)
         {
-            int m = x.Length;
-            int n = y.Length;
+            var m = x.Length;
+            var n = y.Length;
             var result = new double[m, n];
-            for (int i = 0; i < m; i++)
+            for (var i = 0; i < m; i++)
             {
-                for (int j = 0; j < n; j++)
+                for (var j = 0; j < n; j++)
                 {
                     result[i, j] = f(x[i], y[j]);
                 }

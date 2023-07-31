@@ -55,7 +55,9 @@ namespace OxyPlot.Utilities
             return null;
         }
 
-        private static bool ShouldTrackerOpen(TrackerHitResult result, ScreenPoint point, double firesDistance) =>
-            result?.Position.DistanceTo(point) < firesDistance;
+        private static bool ShouldTrackerOpen(TrackerHitResult result, ScreenPoint point, double firesDistance)
+        {
+            return result?.Position.DistanceTo(point) < firesDistance;
+        }
     }
 }

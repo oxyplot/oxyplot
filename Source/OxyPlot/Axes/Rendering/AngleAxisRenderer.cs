@@ -39,12 +39,7 @@ namespace OxyPlot.Axes
 
             base.Render(axis, pass);
 
-            var magnitudeAxis = this.Plot.DefaultMagnitudeAxis;
-
-            if (magnitudeAxis == null)
-            {
-                throw new InvalidOperationException("Magnitude axis not defined.");
-            }
+            var magnitudeAxis = this.Plot.DefaultMagnitudeAxis ?? throw new InvalidOperationException("Magnitude axis not defined.");
 
             var scaledStartAngle = angleAxis.StartAngle / angleAxis.Scale;
             var scaledEndAngle = angleAxis.EndAngle / angleAxis.Scale;
@@ -106,7 +101,7 @@ namespace OxyPlot.Axes
                     va = angle >= 90 ? VerticalAlignment.Top : VerticalAlignment.Bottom;
                     angle = 0;
                 }
-                else if (angle > 90 || angle < -90)
+                else if (angle is > 90 or < (-90))
                 {
                     angle -= 180;
                     ha = HorizontalAlignment.Right;

@@ -31,7 +31,7 @@ namespace OxyPlot
             // Overflow is fine, just wrap
             unchecked
             {
-                return items.Where(item => item != null).Aggregate(17, (current, item) => (current * 23) + item.GetHashCode());
+                return items.Where(item => item != null).Aggregate(17, (current, item) => current * 23 + item.GetHashCode());
             }
         }
     }

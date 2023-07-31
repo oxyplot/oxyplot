@@ -10,7 +10,6 @@
 namespace OxyPlot.Series
 {
     using System.Collections.Generic;
-    using System.Linq;
 
     /// <summary>
     /// Represents a two-color area series.
@@ -36,7 +35,7 @@ namespace OxyPlot.Series
         /// Start index of a visible rendering window for markers.
         /// </summary>
         private int markerStartIndex;
-        
+
         /// <summary>
         /// Initializes a new instance of the <see cref = "TwoColorAreaSeries" /> class.
         /// </summary>
@@ -62,22 +61,13 @@ namespace OxyPlot.Series
         /// Gets the actual fill color below the limit line.
         /// </summary>
         /// <value>The actual fill below the limit line.</value>
-        public OxyColor ActualFill2
-        {
-            get
-            {
-                return this.Fill2.GetActualColor(OxyColor.FromAColor(100, this.ActualColor2));
-            }
-        }
+        public OxyColor ActualFill2 => this.Fill2.GetActualColor(OxyColor.FromAColor(100, this.ActualColor2));
 
         /// <summary>
         /// Gets the actual second color.
         /// </summary>
         /// <value>The actual color.</value>
-        public override OxyColor ActualColor2
-        {
-            get { return this.Color2.GetActualColor(this.defaultColor2); }
-        }
+        public override OxyColor ActualColor2 => this.Color2.GetActualColor(this.defaultColor2);
 
         /// <summary>
         /// Gets or sets the dash array for the rendered line that is below the limit (overrides <see cref="LineStyle" />).
@@ -96,24 +86,12 @@ namespace OxyPlot.Series
         /// Gets the actual line style for the part of the line that is below the limit.
         /// </summary>
         /// <value>The line style.</value>
-        public LineStyle ActualLineStyle2
-        {
-            get
-            {
-                return this.LineStyle2 != LineStyle.Automatic ? this.LineStyle2 : LineStyle.Solid;
-            }
-        }
+        public LineStyle ActualLineStyle2 => this.LineStyle2 != LineStyle.Automatic ? this.LineStyle2 : LineStyle.Solid;
 
         /// <summary>
         /// Gets the actual dash array for the line that is below the limit.
         /// </summary>
-        public double[] ActualDashArray2
-        {
-            get
-            {
-                return this.Dashes2 ?? this.ActualLineStyle2.GetDashArray();
-            }
-        }
+        public double[] ActualDashArray2 => this.Dashes2 ?? this.ActualLineStyle2.GetDashArray();
 
         /// <summary>
         /// Gets or sets the marker fill color which is below the limit line. The default is <see cref="OxyColors.Automatic" />.
@@ -158,9 +136,9 @@ namespace OxyPlot.Series
                     this.TrackerFormatString,
                     result.Item,
                     this.Title,
-                    this.XAxis.Title ?? XYAxisSeries.DefaultXAxisTitle,
+                    this.XAxis.Title ?? DefaultXAxisTitle,
                     this.XAxis.GetValue(result.DataPoint.X),
-                    this.YAxis.Title ?? XYAxisSeries.DefaultYAxisTitle,
+                    this.YAxis.Title ?? DefaultYAxisTitle,
                     this.YAxis.GetValue(result.DataPoint.Y));
             }
 
@@ -176,7 +154,7 @@ namespace OxyPlot.Series
             this.WindowStartIndex = this.UpdateWindowStartIndex(this.abovePoints, this.GetPointX, xmin, this.WindowStartIndex);
             this.WindowStartIndex2 = this.UpdateWindowStartIndex(this.belowPoints, this.GetPointX, xmin, this.WindowStartIndex2);
 
-            double minDistSquared = this.MinimumSegmentLength * this.MinimumSegmentLength;
+            var minDistSquared = this.MinimumSegmentLength * this.MinimumSegmentLength;
 
             var areaContext = new TwoColorAreaRenderContext
             {
@@ -214,14 +192,14 @@ namespace OxyPlot.Series
             if (!this.IsPoints2Defined)
             {
                 var markerSizes = new[] { this.MarkerSize };
-                double limit = this.Limit;
+                var limit = this.Limit;
                 var points = this.ActualPoints;
                 var aboveMarkers = new List<ScreenPoint>();
                 var belowMarkers = new List<ScreenPoint>();
                 this.markerStartIndex = this.UpdateWindowStartIndex(points, this.GetPointX, xmin, this.markerStartIndex);
 
-                int markerClipCount = 0;
-                for (int i = this.markerStartIndex; i < points.Count; i++)
+                var markerClipCount = 0;
+                for (var i = this.markerStartIndex; i < points.Count; i++)
                 {
                     var point = points[i];
                     (point.y >= limit ? aboveMarkers : belowMarkers).Add(this.Transform(point.x, point.y));
@@ -237,8 +215,8 @@ namespace OxyPlot.Series
                     aboveMarkers,
                     this.MarkerType,
                     null,
-                    markerSizes, 
-                    this.ActualMarkerFill, 
+                    markerSizes,
+                    this.ActualMarkerFill,
                     this.MarkerStroke,
                     this.MarkerStrokeThickness,
                     this.EdgeRenderingMode,
@@ -342,15 +320,15 @@ namespace OxyPlot.Series
         private void SplitPoints(List<DataPoint> source)
         {
             var nan = new DataPoint(double.NaN, double.NaN);
-            double limit = this.Limit;
+            var limit = this.Limit;
             this.abovePoints = new List<DataPoint>(source.Count);
             this.belowPoints = new List<DataPoint>(source.Count);
 
-            bool lastAbove = false;
+            var lastAbove = false;
             DataPoint? lastPoint = null;
             foreach (var point in source)
             {
-                bool isAbove = point.y >= limit;
+                var isAbove = point.y >= limit;
 
                 if (lastPoint != null && isAbove != lastAbove)
                 {
@@ -388,7 +366,7 @@ namespace OxyPlot.Series
             p1 = new DataPoint(p1.X, baseline);
             result.Add(this.Transform(p1));
 
-            var p2 = this.InverseTransform(source[source.Count - 1]);
+            var p2 = this.InverseTransform(source[^1]);
             p2 = new DataPoint(p2.X, baseline);
             result.Add(this.Transform(p2));
 
@@ -410,7 +388,7 @@ namespace OxyPlot.Series
         /// <returns>Corresponding X coordinate.</returns>
         private double GetInterpolatedX(DataPoint a, DataPoint b, double y)
         {
-            return (((y - a.y) / (b.y - a.y)) * (b.x - a.x)) + a.x;
+            return (y - a.y) / (b.y - a.y) * (b.x - a.x) + a.x;
         }
 
         /// <summary>

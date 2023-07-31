@@ -15,7 +15,7 @@ namespace OxyPlot
     /// <summary>
     /// Describes a color in terms of alpha, red, green, and blue channels.
     /// </summary>
-    public struct OxyColor : ICodeGenerating, IEquatable<OxyColor>
+    public readonly struct OxyColor : ICodeGenerating, IEquatable<OxyColor>
     {
         /// <summary>
         /// The red component.
@@ -56,49 +56,25 @@ namespace OxyPlot
         /// Gets the alpha value.
         /// </summary>
         /// <value>The alpha value.</value>
-        public byte A
-        {
-            get
-            {
-                return this.a;
-            }
-        }
+        public byte A => this.a;
 
         /// <summary>
         /// Gets the blue value.
         /// </summary>
         /// <value>The blue value.</value>
-        public byte B
-        {
-            get
-            {
-                return this.b;
-            }
-        }
+        public byte B => this.b;
 
         /// <summary>
         /// Gets the green value.
         /// </summary>
         /// <value>The green value.</value>
-        public byte G
-        {
-            get
-            {
-                return this.g;
-            }
-        }
+        public byte G => this.g;
 
         /// <summary>
         /// Gets the red value.
         /// </summary>
         /// <value>The red value.</value>
-        public byte R
-        {
-            get
-            {
-                return this.r;
-            }
-        }
+        public byte R => this.r;
 
         /// <summary>
         /// Parse a string.
@@ -139,7 +115,7 @@ namespace OxyPlot
             }
 
             var values = value.Split(',');
-            if (values.Length < 3 || values.Length > 4)
+            if (values.Length is < 3 or > 4)
             {
                 throw new FormatException("Invalid format.");
             }
@@ -168,11 +144,11 @@ namespace OxyPlot
         {
             // http://en.wikipedia.org/wiki/OxyColor_difference
             // http://mathworld.wolfram.com/L2-Norm.html
-            double dr = (c1.R - c2.R) / 255.0;
-            double dg = (c1.G - c2.G) / 255.0;
-            double db = (c1.B - c2.B) / 255.0;
-            double da = (c1.A - c2.A) / 255.0;
-            double e = (dr * dr) + (dg * dg) + (db * db) + (da * da);
+            var dr = (c1.R - c2.R) / 255.0;
+            var dg = (c1.G - c2.G) / 255.0;
+            var db = (c1.B - c2.B) / 255.0;
+            var da = (c1.A - c2.A) / 255.0;
+            var e = dr * dr + dg * dg + db * db + da * da;
             return Math.Sqrt(e);
         }
 
@@ -216,7 +192,7 @@ namespace OxyPlot
         public static OxyColor FromHsv(double hue, double sat, double val)
         {
             double g, b;
-            double r = g = b = 0;
+            var r = g = b = 0;
 
             if (sat.Equals(0))
             {
@@ -232,10 +208,10 @@ namespace OxyPlot
 
                 hue *= 6.0;
                 var i = (int)Math.Floor(hue);
-                double f = hue - i;
-                double aa = val * (1 - sat);
-                double bb = val * (1 - (sat * f));
-                double cc = val * (1 - (sat * (1 - f)));
+                var f = hue - i;
+                var aa = val * (1 - sat);
+                var bb = val * (1 - sat * f);
+                var cc = val * (1 - sat * (1 - f));
                 switch (i)
                 {
                     case 0:
@@ -284,7 +260,7 @@ namespace OxyPlot
         {
             var hsv1 = c1.ToHsv();
             var hsv2 = c2.ToHsv();
-            double dh = hsv1[0] - hsv2[0];
+            var dh = hsv1[0] - hsv2[0];
 
             // clamp to [-0.5,0.5]
             if (dh > 0.5)
@@ -297,7 +273,7 @@ namespace OxyPlot
                 dh += 1.0;
             }
 
-            double e = dh * dh;
+            var e = dh * dh;
             return Math.Sqrt(e);
         }
 
@@ -347,10 +323,10 @@ namespace OxyPlot
         /// <returns>The interpolated color</returns>
         public static OxyColor Interpolate(OxyColor color1, OxyColor color2, double t)
         {
-            double a = (color1.A * (1 - t)) + (color2.A * t);
-            double r = (color1.R * (1 - t)) + (color2.R * t);
-            double g = (color1.G * (1 - t)) + (color2.G * t);
-            double b = (color1.B * (1 - t)) + (color2.B * t);
+            var a = color1.A * (1 - t) + color2.A * t;
+            var r = color1.R * (1 - t) + color2.R * t;
+            var g = color1.G * (1 - t) + color2.G * t;
+            var b = color1.B * (1 - t) + color2.B * t;
             return FromArgb((byte)a, (byte)r, (byte)g, (byte)b);
         }
 
@@ -377,10 +353,10 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="System.Object" /> is equal to this instance.
+        /// Determines whether the specified <see cref="object" /> is equal to this instance.
         /// </summary>
-        /// <param name="obj">The <see cref="System.Object" /> to compare with this instance.</param>
-        /// <returns><c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c> .</returns>
+        /// <param name="obj">The <see cref="object" /> to compare with this instance.</param>
+        /// <returns><c>true</c> if the specified <see cref="object" /> is equal to this instance; otherwise, <c>false</c> .</returns>
         public override bool Equals(object obj)
         {
             if (obj == null)
@@ -414,7 +390,7 @@ namespace OxyPlot
         {
             unchecked
             {
-                int result = this.A.GetHashCode();
+                var result = this.A.GetHashCode();
                 result = (result * 397) ^ this.R.GetHashCode();
                 result = (result * 397) ^ this.G.GetHashCode();
                 result = (result * 397) ^ this.B.GetHashCode();
@@ -423,9 +399,9 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// Returns a <see cref="string" /> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+        /// <returns>A <see cref="string" /> that represents this instance.</returns>
         public override string ToString()
         {
             return string.Format(

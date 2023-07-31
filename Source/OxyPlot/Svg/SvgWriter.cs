@@ -120,7 +120,7 @@ namespace OxyPlot
             }
             else
             {
-                string formatString = "stroke:{0};stroke-width:{1:" + this.NumberFormat + "}";
+                var formatString = "stroke:{0};stroke-width:{1:" + this.NumberFormat + "}";
                 style.AppendFormat(CultureInfo.InvariantCulture, formatString, this.ColorToString(stroke), thickness);
                 switch (lineJoin)
                 {
@@ -140,7 +140,7 @@ namespace OxyPlot
                 if (dashArray != null && dashArray.Length > 0)
                 {
                     style.Append(";stroke-dasharray:");
-                    for (int i = 0; i < dashArray.Length; i++)
+                    for (var i = 0; i < dashArray.Length; i++)
                     {
                         style.AppendFormat(
                             CultureInfo.InvariantCulture, "{0}{1}", i > 0 ? "," : string.Empty, dashArray[i]);
@@ -164,8 +164,8 @@ namespace OxyPlot
         {
             // http://www.w3.org/TR/SVG/shapes.html#EllipseElement
             this.WriteStartElement("ellipse");
-            this.WriteAttributeString("cx", x + (width / 2));
-            this.WriteAttributeString("cy", y + (height / 2));
+            this.WriteAttributeString("cx", x + width / 2);
+            this.WriteAttributeString("cy", y + height / 2);
             this.WriteAttributeString("rx", width / 2);
             this.WriteAttributeString("ry", height / 2);
             this.WriteAttributeString("style", style);
@@ -234,10 +234,10 @@ namespace OxyPlot
             double destHeight,
             OxyImage image)
         {
-            double x = destX - (srcX / srcWidth * destWidth);
-            double width = image.Width / srcWidth * destWidth;
-            double y = destY - (srcY / srcHeight * destHeight);
-            double height = image.Height / srcHeight * destHeight;
+            var x = destX - srcX / srcWidth * destWidth;
+            var width = image.Width / srcWidth * destWidth;
+            var y = destY - srcY / srcHeight * destHeight;
+            var height = image.Height / srcHeight * destHeight;
             this.BeginClip(destX, destY, destWidth, destHeight);
             this.WriteImage(x, y, width, height, image);
             this.EndClip();
@@ -373,7 +373,7 @@ namespace OxyPlot
 
             // WriteAttributeString("x", position.X);
             // WriteAttributeString("y", position.Y);
-            string baselineAlignment = "hanging";
+            var baselineAlignment = "hanging";
             if (valign == VerticalAlignment.Middle)
             {
                 baselineAlignment = "middle";
@@ -386,7 +386,7 @@ namespace OxyPlot
 
             this.WriteAttributeString("dominant-baseline", baselineAlignment);
 
-            string textAnchor = "start";
+            var textAnchor = "start";
             if (halign == HorizontalAlignment.Center)
             {
                 textAnchor = "middle";
@@ -399,8 +399,8 @@ namespace OxyPlot
 
             this.WriteAttributeString("text-anchor", textAnchor);
 
-            string fmt = "translate({0:" + this.NumberFormat + "},{1:" + this.NumberFormat + "})";
-            string transform = string.Format(CultureInfo.InvariantCulture, fmt, position.X, position.Y);
+            var fmt = "translate({0:" + this.NumberFormat + "},{1:" + this.NumberFormat + "})";
+            var transform = string.Format(CultureInfo.InvariantCulture, fmt, position.X, position.Y);
             if (Math.Abs(rotate) > 0)
             {
                 transform += string.Format(CultureInfo.InvariantCulture, " rotate({0})", rotate);
@@ -516,7 +516,7 @@ namespace OxyPlot
         private string PointsToString(IEnumerable<ScreenPoint> points)
         {
             var sb = new StringBuilder();
-            string fmt = "{0:" + this.NumberFormat + "},{1:" + this.NumberFormat + "} ";
+            var fmt = "{0:" + this.NumberFormat + "},{1:" + this.NumberFormat + "} ";
             foreach (var p in points)
             {
                 sb.AppendFormat(CultureInfo.InvariantCulture, fmt, p.X, p.Y);

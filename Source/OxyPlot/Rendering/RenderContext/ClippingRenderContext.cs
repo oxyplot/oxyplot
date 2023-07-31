@@ -14,7 +14,7 @@ namespace OxyPlot
     /// </summary>
     public abstract class ClippingRenderContext : RenderContextBase
     {
-        private readonly Stack<OxyRect> clipStack = new Stack<OxyRect>();
+        private readonly Stack<OxyRect> clipStack = new();
 
         /// <inheritdoc/>
         public sealed override void PopClip()

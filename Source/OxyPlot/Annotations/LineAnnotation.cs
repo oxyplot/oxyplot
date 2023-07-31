@@ -11,11 +11,10 @@
 
 namespace OxyPlot.Annotations
 {
+    using OxyPlot.Axes;
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
-    using OxyPlot.Axes;
 
     /// <summary>
     /// Represents an annotation that shows a straight line.
@@ -82,13 +81,13 @@ namespace OxyPlot.Annotations
                     fy = y => this.X;
                     break;
                 default:
-                    fx = x => (this.Slope * x) + this.Intercept;
+                    fx = x => this.Slope * x + this.Intercept;
                     break;
             }
 
             var points = new List<DataPoint>();
 
-            bool isCurvedLine = !(this.XAxis is LinearAxis && this.YAxis is LinearAxis);
+            var isCurvedLine = !(this.XAxis is LinearAxis && this.YAxis is LinearAxis);
 
             if (!isCurvedLine)
             {
@@ -115,7 +114,7 @@ namespace OxyPlot.Annotations
                     // todo: the step size should be adaptive
                     var n = 100;
                     var dx = (this.ActualMaximumX - this.ActualMinimumX) / 100;
-                    for (int i = 0; i <= n; i++)
+                    for (var i = 0; i <= n; i++)
                     {
                         var x = this.ActualMinimumX + i * dx;
                         points.Add(new DataPoint(x, fx(x)));
@@ -126,7 +125,7 @@ namespace OxyPlot.Annotations
                     // todo: the step size should be adaptive
                     var n = 100;
                     var dy = (this.ActualMaximumY - this.ActualMinimumY) / n;
-                    for (int i = 0; i <= n; i++)
+                    for (var i = 0; i <= n; i++)
                     {
                         var y = this.ActualMinimumY + i * dy;
                         points.Add(new DataPoint(fy(y), y));

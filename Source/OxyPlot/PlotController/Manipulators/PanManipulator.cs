@@ -61,15 +61,9 @@ namespace OxyPlot
                 return;
             }
 
-            if (this.XAxis != null)
-            {
-                this.XAxis.Pan(this.PreviousPosition, e.Position);
-            }
+            this.XAxis?.Pan(this.PreviousPosition, e.Position);
 
-            if (this.YAxis != null)
-            {
-                this.YAxis.Pan(this.PreviousPosition, e.Position);
-            }
+            this.YAxis?.Pan(this.PreviousPosition, e.Position);
 
             this.PlotView.InvalidatePlot(false);
             this.PreviousPosition = e.Position;

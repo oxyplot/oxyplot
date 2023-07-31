@@ -112,10 +112,11 @@ namespace OxyPlot
         public static OxyImage Create(OxyColor[,] pixels, ImageFormat format, ImageEncoderOptions encoderOptions = null)
         {
             var encoder = GetEncoder(format, encoderOptions);
-            var image = new OxyImage(encoder.Encode(pixels));
-
-            // TODO: remove when PNG decoder is implemented
-            image.pixels = pixels;
+            var image = new OxyImage(encoder.Encode(pixels))
+            {
+                // TODO: remove when PNG decoder is implemented
+                pixels = pixels
+            };
 
             return image;
         }
@@ -152,20 +153,13 @@ namespace OxyPlot
         /// <returns>The <see cref="IImageDecoder" />.</returns>
         private static IImageDecoder GetDecoder(ImageFormat format)
         {
-            switch (format)
+            return format switch
             {
-                case ImageFormat.Bmp:
-                    return new BmpDecoder();
-
-                case ImageFormat.Png:
-                    return new PngDecoder();
-
-                case ImageFormat.Jpeg:
-                    throw new NotImplementedException();
-
-                default:
-                    throw new InvalidOperationException("Image format not supported");
-            }
+                ImageFormat.Bmp => new BmpDecoder(),
+                ImageFormat.Png => new PngDecoder(),
+                ImageFormat.Jpeg => throw new NotImplementedException(),
+                _ => throw new InvalidOperationException("Image format not supported"),
+            };
         }
 
         /// <summary>
@@ -179,12 +173,9 @@ namespace OxyPlot
             switch (format)
             {
                 case ImageFormat.Bmp:
-                    if (encoderOptions == null)
-                    {
-                        encoderOptions = new BmpEncoderOptions();
-                    }
+                    encoderOptions ??= new BmpEncoderOptions();
 
-                    if (!(encoderOptions is BmpEncoderOptions))
+                    if (encoderOptions is not BmpEncoderOptions)
                     {
                         throw new ArgumentException("encoderOptions");
                     }
@@ -192,12 +183,9 @@ namespace OxyPlot
                     return new BmpEncoder((BmpEncoderOptions)encoderOptions);
 
                 case ImageFormat.Png:
-                    if (encoderOptions == null)
-                    {
-                        encoderOptions = new PngEncoderOptions();
-                    }
+                    encoderOptions ??= new PngEncoderOptions();
 
-                    if (!(encoderOptions is PngEncoderOptions))
+                    if (encoderOptions is not PngEncoderOptions)
                     {
                         throw new ArgumentException("encoderOptions");
                     }
@@ -245,11 +233,9 @@ namespace OxyPlot
         /// <returns>A byte array.</returns>
         private static byte[] GetBytes(Stream s)
         {
-            using (var ms = new MemoryStream())
-            {
-                s.CopyTo(ms);
-                return ms.ToArray();
-            }
+            using var ms = new MemoryStream();
+            s.CopyTo(ms);
+            return ms.ToArray();
         }
 
         /// <summary>

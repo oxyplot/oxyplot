@@ -24,7 +24,7 @@ namespace OxyPlot
         /// <summary>
         /// The output writer.
         /// </summary>
-        private BinaryWriter w;
+        private readonly BinaryWriter w;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PdfWriter" /> class.
@@ -90,13 +90,7 @@ namespace OxyPlot
         /// <summary>
         /// Gets the position in the stream.
         /// </summary>
-        public long Position
-        {
-            get
-            {
-                return this.w.BaseStream.Position;
-            }
-        }
+        public long Position => this.w.BaseStream.Position;
 
         /// <summary>
         /// Writes a formatted string.
@@ -168,8 +162,7 @@ namespace OxyPlot
         /// <param name="o">The object to write.</param>
         private void WriteCore(object o)
         {
-            var pdfObject = o as IPortableDocumentObject;
-            if (pdfObject != null)
+            if (o is IPortableDocumentObject pdfObject)
             {
                 this.Write("{0} 0 R", pdfObject.ObjectNumber);
                 return;
@@ -181,7 +174,7 @@ namespace OxyPlot
                 return;
             }
 
-            if (o is int || o is double)
+            if (o is int or double)
             {
                 this.Write("{0}", o);
                 return;
@@ -193,30 +186,26 @@ namespace OxyPlot
                 return;
             }
 
-            if (o is DateTime)
+            if (o is DateTime dt)
             {
-                var dt = (DateTime)o;
                 var dts = "(D:" + dt.ToString("yyyyMMddHHmmsszz") + "'00)";
                 this.Write(dts);
                 return;
             }
 
-            var s = o as string;
-            if (s != null)
+            if (o is string s)
             {
                 this.Write(s);
                 return;
             }
 
-            var list = o as IList;
-            if (list != null)
+            if (o is IList list)
             {
                 this.WriteList(list);
                 return;
             }
 
-            var dictionary = o as Dictionary<string, object>;
-            if (dictionary != null)
+            if (o is Dictionary<string, object> dictionary)
             {
                 this.Write(dictionary);
             }
@@ -229,7 +218,7 @@ namespace OxyPlot
         private void WriteList(IList list)
         {
             this.Write("[");
-            bool first = true;
+            var first = true;
 
             foreach (var o in list)
             {

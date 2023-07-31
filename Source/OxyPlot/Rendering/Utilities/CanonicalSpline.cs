@@ -18,7 +18,7 @@ namespace OxyPlot
     /// </summary>
     /// <remarks>CanonicalSplineHelper.cs (c) 2009 by Charles Petzold (WPF and Silverlight)
     /// See also <a href="http://www.charlespetzold.com/blog/2009/01/Canonical-Splines-in-WPF-and-Silverlight.html">blog post</a>.</remarks>
-    public class CanonicalSpline : IInterpolationAlgorithm 
+    public class CanonicalSpline : IInterpolationAlgorithm
     {
         /// <summary>
         /// The tension.
@@ -99,7 +99,7 @@ namespace OxyPlot
                 return result;
             }
 
-            int n = points.Count;
+            var n = points.Count;
             if (n < 1)
             {
                 return result;
@@ -125,12 +125,12 @@ namespace OxyPlot
             }
             else
             {
-                bool useTensionCollection = tensions != null && tensions.Count > 0;
+                var useTensionCollection = tensions != null && tensions.Count > 0;
 
-                for (int i = 0; i < n; i++)
+                for (var i = 0; i < n; i++)
                 {
-                    double t1 = useTensionCollection ? tensions[i % tensions.Count] : tension;
-                    double t2 = useTensionCollection ? tensions[(i + 1) % tensions.Count] : tension;
+                    var t1 = useTensionCollection ? tensions[i % tensions.Count] : tension;
+                    var t2 = useTensionCollection ? tensions[(i + 1) % tensions.Count] : tension;
 
                     if (i == 0)
                     {
@@ -199,30 +199,30 @@ namespace OxyPlot
             // See Petzold, "Programming Microsoft Windows with C#", pages 645-646 or
             // Petzold, "Programming Microsoft Windows with Microsoft Visual Basic .NET", pages 638-639
             // for derivation of the following formulas:
-            double sx1 = t1 * (pt2.X - pt0.X);
-            double sy1 = t1 * (pt2.Y - pt0.Y);
-            double sx2 = t2 * (pt3.X - pt1.X);
-            double sy2 = t2 * (pt3.Y - pt1.Y);
+            var sx1 = t1 * (pt2.X - pt0.X);
+            var sy1 = t1 * (pt2.Y - pt0.Y);
+            var sx2 = t2 * (pt3.X - pt1.X);
+            var sy2 = t2 * (pt3.Y - pt1.Y);
 
-            double ax = sx1 + sx2 + (2 * pt1.X) - (2 * pt2.X);
-            double ay = sy1 + sy2 + (2 * pt1.Y) - (2 * pt2.Y);
-            double bx = (-2 * sx1) - sx2 - (3 * pt1.X) + (3 * pt2.X);
-            double by = (-2 * sy1) - sy2 - (3 * pt1.Y) + (3 * pt2.Y);
+            var ax = sx1 + sx2 + 2 * pt1.X - 2 * pt2.X;
+            var ay = sy1 + sy2 + 2 * pt1.Y - 2 * pt2.Y;
+            var bx = -2 * sx1 - sx2 - 3 * pt1.X + 3 * pt2.X;
+            var by = -2 * sy1 - sy2 - 3 * pt1.Y + 3 * pt2.Y;
 
-            double cx = sx1;
-            double cy = sy1;
-            double dx = pt1.X;
-            double dy = pt1.Y;
+            var cx = sx1;
+            var cy = sy1;
+            var dx = pt1.X;
+            var dy = pt1.Y;
 
             var num = Math.Min(maxSegments, (int)((Math.Abs(pt1.X - pt2.X) + Math.Abs(pt1.Y - pt2.Y)) / tolerance));
 
             // Notice begins at 1 so excludes the first point (which is just pt1)
-            for (int i = 1; i < num; i++)
+            for (var i = 1; i < num; i++)
             {
-                double t = (double)i / (num - 1);
+                var t = (double)i / (num - 1);
                 var pt = new ScreenPoint(
-                    (ax * t * t * t) + (bx * t * t) + (cx * t) + dx,
-                    (ay * t * t * t) + (by * t * t) + (cy * t) + dy);
+                    ax * t * t * t + bx * t * t + cx * t + dx,
+                    ay * t * t * t + by * t * t + cy * t + dy);
                 points.Add(pt);
             }
         }

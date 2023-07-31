@@ -268,7 +268,7 @@ namespace OxyPlot
         private static void HandleZoomCenter(IPlotView view, OxyInputEventArgs args, double delta)
         {
             args.Handled = true;
-            view.ActualModel.ZoomAllAxes(1 + (delta * 0.12));
+            view.ActualModel.ZoomAllAxes(1 + delta * 0.12);
             view.InvalidatePlot(false);
         }
 

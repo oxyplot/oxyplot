@@ -121,7 +121,7 @@ namespace OxyPlot.Axes
             this.ScreenMax = new ScreenPoint(x1, y0);
 
             var newScale = (this.EndAngle - this.StartAngle) / (this.ActualMaximum - this.ActualMinimum);
-            var newOffset = this.ActualMinimum - (this.StartAngle / newScale);
+            var newOffset = this.ActualMinimum - this.StartAngle / newScale;
             this.SetTransform(newScale, newOffset);
 
             this.ClipMinimum = this.ActualMinimum;

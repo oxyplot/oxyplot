@@ -46,7 +46,6 @@ namespace OxyPlot.Series
             // this.LabelFormatString = "{0}-{1},{2}-{3}"; // X0-X1,Y0-Y1
         }
 
-
         /// <summary>
         /// Gets or sets the default color of the interior of the rectangles.
         /// </summary>
@@ -57,10 +56,7 @@ namespace OxyPlot.Series
         /// Gets the actual fill color.
         /// </summary>
         /// <value>The actual color.</value>
-        public OxyColor ActualFillColor
-        {
-            get { return this.FillColor.GetActualColor(this.defaultFillColor); }
-        }
+        public OxyColor ActualFillColor => this.FillColor.GetActualColor(this.defaultFillColor);
 
         /// <summary>
         /// Gets the rectangle bar items.
@@ -111,12 +107,12 @@ namespace OxyPlot.Series
                 return null;
             }
 
-            for (int i = 0; i < this.ActualBarRectangles.Count; i++)
+            for (var i = 0; i < this.ActualBarRectangles.Count; i++)
             {
                 var r = this.ActualBarRectangles[i];
                 if (r.Contains(point))
                 {
-                    double value = (this.ActualItems[i].Y0 + this.ActualItems[i].Y1) / 2;
+                    var value = (this.ActualItems[i].Y0 + this.ActualItems[i].Y1) / 2;
                     var sp = point;
                     var dp = new DataPoint(i, value);
                     var item = this.ActualItems[i];
@@ -154,8 +150,8 @@ namespace OxyPlot.Series
                 return;
             }
 
-            int startIdx = 0;
-            double xmax = double.MaxValue;
+            var startIdx = 0;
+            var xmax = double.MaxValue;
 
             this.ActualBarRectangles = new List<OxyRect>();
             this.ActualItems = new List<RectangleBarItem>();
@@ -169,8 +165,9 @@ namespace OxyPlot.Series
                 startIdx = this.WindowStartIndex;
             }
 
-            int clipCount = 0;
-            for (int i = startIdx; i < this.Items.Count; i++){
+            var clipCount = 0;
+            for (var i = startIdx; i < this.Items.Count; i++)
+            {
                 var item = this.Items[i];
                 if (!this.IsValid(item.X0) || !this.IsValid(item.X1)
                     || !this.IsValid(item.Y0) || !this.IsValid(item.Y1))
@@ -235,12 +232,12 @@ namespace OxyPlot.Series
         /// <param name="legendBox">The legend rectangle.</param>
         public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
         {
-            double xmid = (legendBox.Left + legendBox.Right) / 2;
-            double ymid = (legendBox.Top + legendBox.Bottom) / 2;
-            double height = (legendBox.Bottom - legendBox.Top) * 0.8;
-            double width = height;
+            var xmid = (legendBox.Left + legendBox.Right) / 2;
+            var ymid = (legendBox.Top + legendBox.Bottom) / 2;
+            var height = (legendBox.Bottom - legendBox.Top) * 0.8;
+            var width = height;
             rc.DrawRectangle(
-                new OxyRect(xmid - (0.5 * width), ymid - (0.5 * height), width, height),
+                new OxyRect(xmid - 0.5 * width, ymid - 0.5 * height, width, height),
                 this.GetSelectableFillColor(this.ActualFillColor),
                 this.StrokeColor,
                 this.StrokeThickness,
@@ -293,13 +290,13 @@ namespace OxyPlot.Series
                 return;
             }
 
-            double minValueX = double.MaxValue;
-            double maxValueX = double.MinValue;
-            double minValueY = double.MaxValue;
-            double maxValueY = double.MinValue;
+            var minValueX = double.MaxValue;
+            var maxValueX = double.MinValue;
+            var minValueY = double.MaxValue;
+            var maxValueY = double.MinValue;
 
-            double lastX0 = double.MinValue;
-            double lastX1 = double.MinValue;
+            var lastX0 = double.MinValue;
+            var lastX1 = double.MinValue;
             foreach (var item in this.Items)
             {
                 if (item.X0 < lastX0 || item.X1 < lastX1)

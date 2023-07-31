@@ -55,7 +55,7 @@ namespace OxyPlot.Annotations
         {
             base.Render(rc);
 
-            this.screenRectangle = new OxyRect(this.Transform(this.X - (this.Width / 2), this.Y - (this.Height / 2)), this.Transform(this.X + (this.Width / 2), this.Y + (this.Height / 2)));
+            this.screenRectangle = new OxyRect(this.Transform(this.X - this.Width / 2, this.Y - this.Height / 2), this.Transform(this.X + this.Width / 2, this.Y + this.Height / 2));
 
             rc.DrawEllipse(
                 this.screenRectangle,

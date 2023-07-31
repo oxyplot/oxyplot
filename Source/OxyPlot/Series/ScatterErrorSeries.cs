@@ -106,8 +106,8 @@ namespace OxyPlot.Series
 
                 if (point.ErrorX > 0.0)
                 {
-                    var leftErrorPoint = this.Transform(point.X - (point.ErrorX * 0.5), point.Y);
-                    var rightErrorPoint = this.Transform(point.X + (point.ErrorX * 0.5), point.Y);
+                    var leftErrorPoint = this.Transform(point.X - point.ErrorX * 0.5, point.Y);
+                    var rightErrorPoint = this.Transform(point.X + point.ErrorX * 0.5, point.Y);
 
                     if (rightErrorPoint.DistanceTo(leftErrorPoint) > this.MarkerSize * this.MinimumErrorSize)
                     {
@@ -122,8 +122,8 @@ namespace OxyPlot.Series
 
                 if (point.ErrorY > 0.0)
                 {
-                    var topErrorPoint = this.Transform(point.X, point.Y - (point.ErrorY * 0.5));
-                    var bottomErrorPoint = this.Transform(point.X, point.Y + (point.ErrorY * 0.5));
+                    var topErrorPoint = this.Transform(point.X, point.Y - point.ErrorY * 0.5);
+                    var bottomErrorPoint = this.Transform(point.X, point.Y + point.ErrorY * 0.5);
 
                     if (topErrorPoint.DistanceTo(bottomErrorPoint) > this.MarkerSize * this.MinimumErrorSize)
                     {
@@ -138,11 +138,11 @@ namespace OxyPlot.Series
             }
 
             rc.DrawLineSegments(
-                segments, 
-                this.GetSelectableColor(this.ErrorBarColor), 
-                this.ErrorBarStrokeThickness, 
+                segments,
+                this.GetSelectableColor(this.ErrorBarColor),
+                this.ErrorBarStrokeThickness,
                 this.EdgeRenderingMode,
-                null, 
+                null,
                 LineJoin.Bevel);
         }
 

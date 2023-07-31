@@ -11,7 +11,6 @@ namespace OxyPlot.Axes
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     /// <summary>
     /// Provides functionality to render <see cref="MagnitudeAxis" />.
@@ -38,12 +37,7 @@ namespace OxyPlot.Axes
         {
             base.Render(axis, pass);
 
-            var angleAxis = this.Plot.DefaultAngleAxis;
-
-            if (angleAxis == null)
-            {
-                throw new NullReferenceException("Angle axis should not be null.");
-            }
+            var angleAxis = this.Plot.DefaultAngleAxis ?? throw new NullReferenceException("Angle axis should not be null.");
 
             angleAxis.UpdateActualMaxMin();
 
@@ -52,7 +46,7 @@ namespace OxyPlot.Axes
                 var extraTicks = axis.ExtraGridlines;
                 if (extraTicks != null)
                 {
-                    for (int i = 0; i < extraTicks.Length; i++)
+                    for (var i = 0; i < extraTicks.Length; i++)
                     {
                         this.RenderTick(axis, angleAxis, extraTicks[i], this.ExtraPen);
                     }
@@ -105,7 +99,7 @@ namespace OxyPlot.Axes
         /// <param name="va">The vertical alignment.</param>
         private static void GetTickTextAligment(double actualAngle, out HorizontalAlignment ha, out VerticalAlignment va)
         {
-            if (actualAngle > 3 * Math.PI / 4 || actualAngle < -3 * Math.PI / 4)
+            if (actualAngle is > (3 * Math.PI / 4) or < (-3 * Math.PI / 4))
             {
                 ha = HorizontalAlignment.Center;
                 va = VerticalAlignment.Top;
@@ -197,7 +191,7 @@ namespace OxyPlot.Axes
 
             for (var i = 0; i < segmentCount; i++)
             {
-                var angle = minAngle + (i * angleStep);
+                var angle = minAngle + i * angleStep;
                 points.Add(axis.Transform(x, angle, angleAxis));
             }
 
@@ -216,14 +210,12 @@ namespace OxyPlot.Axes
             var dx = axis.AxisTickToLabelDistance * Math.Sin(actualAngle);
             var dy = -axis.AxisTickToLabelDistance * Math.Cos(actualAngle);
 
-            HorizontalAlignment ha;
-            VerticalAlignment va;
-            GetTickTextAligment(actualAngle, out ha, out va);
+            GetTickTextAligment(actualAngle, out var ha, out var va);
 
             var pt = axis.Transform(x, angleAxis.Angle, angleAxis);
             pt = new ScreenPoint(pt.X + dx, pt.Y + dy);
 
-            string text = axis.FormatValue(x);
+            var text = axis.FormatValue(x);
             this.RenderContext.DrawMathText(
                 pt,
                 text,

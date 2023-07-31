@@ -86,8 +86,8 @@ namespace OxyPlot
 
             if (this.mask != 0)
             {
-                int readIndex = (this.index - dist + this.data.Length) & this.mask;
-                for (int i = 0; i < len; i++)
+                var readIndex = (this.index - dist + this.data.Length) & this.mask;
+                for (var i = 0; i < len; i++)
                 {
                     w.Write(this.data[readIndex]);
                     this.data[this.index] = this.data[readIndex];
@@ -97,8 +97,8 @@ namespace OxyPlot
             }
             else
             {
-                int readIndex = (this.index - dist + this.data.Length) % this.data.Length;
-                for (int i = 0; i < len; i++)
+                var readIndex = (this.index - dist + this.data.Length) % this.data.Length;
+                for (var i = 0; i < len; i++)
                 {
                     w.Write(this.data[readIndex]);
                     this.data[this.index] = this.data[readIndex];

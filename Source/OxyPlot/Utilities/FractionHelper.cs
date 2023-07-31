@@ -50,13 +50,13 @@ namespace OxyPlot
             // int N = 10000;
             // int frac = (int) ((value - whole)*N);
             // var d = GCF(N,frac);
-            for (int d = 1; d <= 64; d++)
+            for (var d = 1; d <= 64; d++)
             {
-                double n = value * d;
+                var n = value * d;
                 var ni = (int)Math.Round(n);
                 if (Math.Abs(n - ni) < eps)
                 {
-                    string nis = unitSymbol == null || ni != 1 ? ni.ToString(CultureInfo.InvariantCulture) : string.Empty;
+                    var nis = unitSymbol == null || ni != 1 ? ni.ToString(CultureInfo.InvariantCulture) : string.Empty;
                     if (d == 1)
                     {
                         return string.Format("{0}{1}", nis, unitSymbol);

@@ -82,10 +82,10 @@ namespace OxyPlot.Axes
 
             if (pass == 0)
             {
-                double left = this.PlotModel.PlotArea.Left;
-                double top = this.PlotModel.PlotArea.Top;
-                double width = this.MajorTickSize - 2;
-                double height = this.MajorTickSize - 2;
+                var left = this.PlotModel.PlotArea.Left;
+                var top = this.PlotModel.PlotArea.Top;
+                var width = this.MajorTickSize - 2;
+                var height = this.MajorTickSize - 2;
 
                 switch (this.Position)
                 {
@@ -107,10 +107,10 @@ namespace OxyPlot.Axes
                         break;
                 }
 
-                Action<double, double, OxyColor> drawColorRect = (ylow, yhigh, color) =>
+                void drawColorRect(double ylow, double yhigh, OxyColor color)
                 {
-                    double ymin = Math.Min(ylow, yhigh);
-                    double ymax = Math.Max(ylow, yhigh);
+                    var ymin = Math.Min(ylow, yhigh);
+                    var ymax = Math.Max(ylow, yhigh);
                     rc.DrawRectangle(
                         this.IsHorizontal()
                             ? new OxyRect(ymin, top, ymax - ymin, height)
@@ -119,18 +119,15 @@ namespace OxyPlot.Axes
                         OxyColors.Undefined,
                         0,
                         this.EdgeRenderingMode);
-                };
+                }
 
-                IList<double> majorLabelValues;
-                IList<double> majorTickValues;
-                IList<double> minorTickValues;
-                this.GetTickValues(out majorLabelValues, out majorTickValues, out minorTickValues);
+                this.GetTickValues(out var majorLabelValues, out _, out _);
 
-                int n = this.Palette.Colors.Count;
-                for (int i = 0; i < n; i++)
+                var n = this.Palette.Colors.Count;
+                for (var i = 0; i < n; i++)
                 {
-                    double low = this.Transform(this.GetLowValue(i, majorLabelValues));
-                    double high = this.Transform(this.GetHighValue(i, majorLabelValues));
+                    var low = this.Transform(this.GetLowValue(i, majorLabelValues));
+                    var high = this.Transform(this.GetHighValue(i, majorLabelValues));
                     drawColorRect(low, high, this.Palette.Colors[i]);
                 }
             }
@@ -145,10 +142,7 @@ namespace OxyPlot.Axes
         /// <returns>The value.</returns>
         protected double GetHighValue(int paletteIndex)
         {
-            IList<double> majorLabelValues;
-            IList<double> majorTickValues;
-            IList<double> minorTickValues;
-            this.GetTickValues(out majorLabelValues, out majorTickValues, out minorTickValues);
+            this.GetTickValues(out var majorLabelValues, out _, out _);
             var highValue = this.GetHighValue(paletteIndex, majorLabelValues);
             return highValue;
         }
@@ -161,7 +155,7 @@ namespace OxyPlot.Axes
         /// <returns>The value.</returns>
         private double GetHighValue(int paletteIndex, IList<double> majorLabelValues)
         {
-            double highValue = paletteIndex >= this.Palette.Colors.Count - 1
+            var highValue = paletteIndex >= this.Palette.Colors.Count - 1
                                    ? this.ClipMaximum
                                    : (majorLabelValues[paletteIndex] + majorLabelValues[paletteIndex + 1]) / 2;
             return highValue;
@@ -175,7 +169,7 @@ namespace OxyPlot.Axes
         /// <returns>The value.</returns>
         private double GetLowValue(int paletteIndex, IList<double> majorLabelValues)
         {
-            double lowValue = paletteIndex == 0
+            var lowValue = paletteIndex == 0
                                   ? this.ClipMinimum
                                   : (majorLabelValues[paletteIndex - 1] + majorLabelValues[paletteIndex]) / 2;
             return lowValue;

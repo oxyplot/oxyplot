@@ -19,13 +19,13 @@ namespace OxyPlot.Series
         /// <summary>
         /// The undefined.
         /// </summary>
-        public static readonly OhlcvItem Undefined = new OhlcvItem(double.NaN, double.NaN, double.NaN, double.NaN, double.NaN);
+        public static readonly OhlcvItem Undefined = new(double.NaN, double.NaN, double.NaN, double.NaN, double.NaN);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OhlcvItem" /> class.
         /// </summary>
         public OhlcvItem()
-        { 
+        {
         }
 
         /// <summary>
@@ -39,12 +39,12 @@ namespace OxyPlot.Series
         /// <param name="buyvolume">Buy volume.</param>
         /// <param name="sellvolume">Sell volume.</param>
         public OhlcvItem(
-            double x, 
-            double open, 
-            double high, 
-            double low, 
+            double x,
+            double open,
+            double high,
+            double low,
             double close,
-            double buyvolume = 0, 
+            double buyvolume = 0,
             double sellvolume = 0)
         {
             this.X = x;
@@ -117,9 +117,9 @@ namespace OxyPlot.Series
         /// </returns>
         public static int FindIndex(List<OhlcvItem> items, double targetX, int guessIdx)
         {
-            int lastguess = 0;
-            int start = 0;
-            int end = items.Count - 1;
+            var lastguess = 0;
+            var start = 0;
+            var end = items.Count - 1;
 
             while (start <= end)
             {
@@ -150,9 +150,9 @@ namespace OxyPlot.Series
                     }
                 }
                 else
-                { 
-                    start = guessIdx + 1; 
-                    lastguess = guessIdx; 
+                {
+                    start = guessIdx + 1;
+                    lastguess = guessIdx;
                 }
 
                 if (start >= end)

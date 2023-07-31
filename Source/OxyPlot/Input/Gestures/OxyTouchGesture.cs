@@ -22,8 +22,7 @@ namespace OxyPlot
         /// <returns><c>true</c> if the current object is equal to the <paramref name="other" /> parameter; otherwise, <c>false</c>.</returns>
         public override bool Equals(OxyInputGesture other)
         {
-            var tg = other as OxyTouchGesture;
-            return tg != null;
+            return other is OxyTouchGesture tg;
         }
     }
 }
