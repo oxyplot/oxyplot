@@ -1093,7 +1093,7 @@ namespace OxyPlot.Axes
 
             return s;
 #else
-            return (x - this.offset) * this.scale;
+            return (x - this.Offset) * this.Scale;
 #endif
         }
 
