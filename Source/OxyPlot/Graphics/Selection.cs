@@ -28,7 +28,7 @@ namespace OxyPlot
         /// Gets the everything selected.
         /// </summary>
         /// <value>The everything.</value>
-        public static Selection Everything { get; } = new Selection();
+        public static Selection Everything { get; } = new();
 
         /// <summary>
         /// Determines whether everything is selected.

@@ -23,7 +23,7 @@ namespace OxyPlot.Annotations
         /// Gets the points.
         /// </summary>
         /// <value>The points.</value>
-        public List<DataPoint> Points { get; } = new List<DataPoint>();
+        public List<DataPoint> Points { get; } = new();
 
         /// <summary>
         /// Gets or sets the interpolation algorithm.

@@ -191,8 +191,9 @@ namespace OxyPlot
         /// <remarks>See <a href="http://en.wikipedia.org/wiki/HSL_Color_space">Wikipedia</a>.</remarks>
         public static OxyColor FromHsv(double hue, double sat, double val)
         {
-            double g, b;
-            var r = g = b = 0;
+            double r = 0;
+            double g = 0;
+            double b = 0;
 
             if (sat.Equals(0))
             {

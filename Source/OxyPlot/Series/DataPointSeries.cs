@@ -56,7 +56,7 @@ namespace OxyPlot.Series
         /// Gets the list of points.
         /// </summary>
         /// <value>A list of <see cref="DataPoint" />.</value>
-        public List<DataPoint> Points { get; } = new List<DataPoint>();
+        public List<DataPoint> Points { get; } = new();
 
         /// <summary>
         /// Gets the list of points that should be rendered.

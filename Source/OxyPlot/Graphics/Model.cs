@@ -34,7 +34,7 @@ namespace OxyPlot
         /// </summary>
         /// <value>A synchronization object.</value>
         /// <remarks>This property can be used when modifying the <see cref="Model" /> on a separate thread (not the thread updating or rendering the model).</remarks>
-        public object SyncRoot { get; } = new object();
+        public object SyncRoot { get; } = new();
 
         /// <summary>
         /// Gets or sets the color of the selection.

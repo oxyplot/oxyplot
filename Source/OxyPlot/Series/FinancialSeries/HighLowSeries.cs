@@ -88,7 +88,7 @@ namespace OxyPlot.Series
         /// Gets the items of the series.
         /// </summary>
         /// <value>The items.</value>
-        public List<HighLowItem> Items { get; } = new List<HighLowItem>();
+        public List<HighLowItem> Items { get; } = new();
 
         /// <summary>
         /// Gets or sets the line join.

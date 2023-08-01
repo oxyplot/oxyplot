@@ -637,7 +637,7 @@ namespace OxyPlot
         /// <returns>The next default line style.</returns>
         public LineStyle GetDefaultLineStyle()
         {
-            return (LineStyle)(this.currentColorIndex / this.DefaultColors.Count % (int)LineStyle.None);
+            return (LineStyle)((this.currentColorIndex / this.DefaultColors.Count) % (int)LineStyle.None);
         }
 
         /// <summary>

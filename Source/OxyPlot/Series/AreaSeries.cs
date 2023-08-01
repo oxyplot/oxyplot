@@ -89,7 +89,7 @@ namespace OxyPlot.Series
         /// </summary>
         /// <value>The second list of points.</value>
         /// <remarks>This property is not used if <see cref="P:ItemsSource" /> is set.</remarks>
-        public List<DataPoint> Points2 { get; } = new List<DataPoint>();
+        public List<DataPoint> Points2 { get; } = new();
 
         /// <summary>
         /// Gets or sets a value indicating whether the second data collection should be reversed.
@@ -124,9 +124,6 @@ namespace OxyPlot.Series
         /// <returns>A TrackerHitResult for the current hit.</returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
-            var xy = this.InverseTransform(point);
-
-            _ = xy.X;
             var startIdx = this.IsXMonotonic
                 ? this.WindowStartIndex
                 : 0;
