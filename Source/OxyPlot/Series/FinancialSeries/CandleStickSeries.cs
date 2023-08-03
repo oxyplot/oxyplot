@@ -70,7 +70,14 @@ namespace OxyPlot.Series
                 startIndex = this.WindowStartIndex;
             }
 
+
+/* Unmerged change from project 'OxyPlot (net7.0)'
+Before:
             return this.FindWindowStartIndex(this.Items, item => item.X, x, startIndex);
+After:
+            return FindWindowStartIndex(this.Items, item => item.X, x, startIndex);
+*/
+            return XYAxisSeries.FindWindowStartIndex(this.Items, item => item.X, x, startIndex);
         }
 
         /// <inheritdoc/>
@@ -210,7 +217,14 @@ namespace OxyPlot.Series
                 return null;
             }
 
+
+/* Unmerged change from project 'OxyPlot (net7.0)'
+Before:
             var pidx = this.FindWindowStartIndex(this.Items, item => item.X, targetX, this.WindowStartIndex);
+After:
+            var pidx = FindWindowStartIndex(this.Items, item => item.X, targetX, this.WindowStartIndex);
+*/
+            var pidx = XYAxisSeries.FindWindowStartIndex(this.Items, item => item.X, targetX, this.WindowStartIndex);
             var nidx = ((pidx + 1) < this.Items.Count) ? pidx + 1 : pidx;
 
             Func<HighLowItem, double> distance = bar =>

@@ -43,8 +43,8 @@ namespace WorldStatisticsDemo
                 if (separator == '\0')
                 {
                     // Auto detect
-                    int commaCount = Count(header, ',');
-                    int semicolonCount = Count(header, ';');
+                    int commaCount = CsvDocument.Count(header, ',');
+                    int semicolonCount = CsvDocument.Count(header, ';');
                     separator = commaCount > semicolonCount ? ',' : ';';
                 }
 
@@ -61,7 +61,7 @@ namespace WorldStatisticsDemo
             }
         }
 
-        private int Count(string s, char c)
+        private static int Count(string s, char c)
         {
             return s.Count(ch => ch == c);
         }

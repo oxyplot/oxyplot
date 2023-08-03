@@ -229,7 +229,7 @@ namespace OxyPlot.Axes
         /// <param name="min">The minimum value of the range.</param>
         /// <param name="max">The maximum value of the range.</param>
         /// <returns><c>true</c> if the specified value is within the range; otherwise, <c>false</c>.</returns>
-        protected bool IsWithin(double d, double min, double max)
+        protected static bool IsWithin(double d, double min, double max)
         {
             if (d < min)
             {
