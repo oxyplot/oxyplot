@@ -53,7 +53,7 @@ namespace WorldStatisticsDemo
                         for (int j=i0GDP+1;j<i;j++)
                         {
                             var Sj = Statistics[j];
-                            Sj.GdpPerCapitaPpp = Lerp(Sj.Year, Si0.Year, Si.Year, Si0.GdpPerCapitaPpp, Si.GdpPerCapitaPpp);
+                            Sj.GdpPerCapitaPpp = Country.Lerp(Sj.Year, Si0.Year, Si.Year, Si0.GdpPerCapitaPpp, Si.GdpPerCapitaPpp);
                         }
                     }
                     i0GDP = i;
@@ -68,7 +68,7 @@ namespace WorldStatisticsDemo
                         for (int j = i0LEB + 1; j < i; j++)
                         {
                             var Sj = Statistics[j];
-                            Sj.LifeExpectancyAtBirth = Lerp(Sj.Year, Si0.Year, Si.Year,Si0.LifeExpectancyAtBirth,Si.LifeExpectancyAtBirth);
+                            Sj.LifeExpectancyAtBirth = Country.Lerp(Sj.Year, Si0.Year, Si.Year,Si0.LifeExpectancyAtBirth,Si.LifeExpectancyAtBirth);
                         }
                     }
                     i0LEB = i;
@@ -83,7 +83,7 @@ namespace WorldStatisticsDemo
                         for (int j = i0POP + 1; j < i; j++)
                         {
                             var Sj = Statistics[j];
-                            Sj.Population = Lerp(Sj.Year, Si0.Year, Si.Year, Si0.Population, Si.Population);
+                            Sj.Population = Country.Lerp(Sj.Year, Si0.Year, Si.Year, Si0.Population, Si.Population);
                         }
                     }
                     i0POP = i;
@@ -91,7 +91,7 @@ namespace WorldStatisticsDemo
             }
         }
 
-        private double Lerp(double xj, double x0, double x1, double v0, double v1)
+        private static double Lerp(double xj, double x0, double x1, double v0, double v1)
         {
             return v0 + (xj - x0) / (x1 - x0) * (v1 - v0);
         }

@@ -74,7 +74,7 @@ namespace OxyPlot.Tests
             var targetX = random.NextDouble() * (N / 2.0) - 1.0;
             var guess = random.Next(0, testData.Count);
 
-            int foundIndex = xyAxiseries.FindWindowStartIndex(testData, x => x, targetX, guess);
+            int foundIndex = XYAxisSeries.FindWindowStartIndex(testData, x => x, targetX, guess);
 
             if (foundIndex > 0)
                 Assert.LessOrEqual(testData[foundIndex], targetX, "At " + seed);
@@ -125,7 +125,7 @@ namespace OxyPlot.Tests
             var targetX = random.NextDouble() * (N / 2.0) - 1.0;
             var guess = random.Next(0, testData.Count);
 
-            int foundIndex = xyAxiseries.FindWindowStartIndex(testData, x => x, targetX, guess);
+            int foundIndex = XYAxisSeries.FindWindowStartIndex(testData, x => x, targetX, guess);
 
             if (foundIndex > 0)
             {

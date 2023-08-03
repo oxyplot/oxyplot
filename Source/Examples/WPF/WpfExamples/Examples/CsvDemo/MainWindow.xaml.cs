@@ -98,11 +98,25 @@ namespace CsvDemo
                         break;
                 }
 
+
+/* Unmerged change from project 'WpfExamples (net7.0-windows)'
+Before:
                 this.OpenContainingFolder(dlg.FileName);
+After:
+                MainWindow.OpenContainingFolder(dlg.FileName);
+*/
+
+/* Unmerged change from project 'WpfExamples (net462)'
+Before:
+                this.OpenContainingFolder(dlg.FileName);
+After:
+                MainWindow.OpenContainingFolder(dlg.FileName);
+*/
+                OpenContainingFolder(dlg.FileName);
             }
         }
 
-        private void OpenContainingFolder(string fileName)
+        private static void OpenContainingFolder(string fileName)
         {
             // var folder = Path.GetDirectoryName(fileName);
             var psi = new ProcessStartInfo("Explorer.exe", "/select," + fileName);

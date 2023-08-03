@@ -351,7 +351,14 @@ namespace OxyPlot.Axes
 
                 if (this.MajorPen != null)
                 {
+
+/* Unmerged change from project 'OxyPlot (net7.0)'
+Before:
                     this.AddSegments(
+After:
+                    AddSegments(
+*/
+                    HorizontalAndVerticalAxisRenderer.AddSegments(
                         majorSegments, 
                         perpAxes, 
                         isHorizontal, 
@@ -410,22 +417,50 @@ namespace OxyPlot.Axes
                 {
                     case AxisPosition.Left:
                         pt = new ScreenPoint(axisPosition + a1 - axis.AxisTickToLabelDistance, transformedValue);
+
+/* Unmerged change from project 'OxyPlot (net7.0)'
+Before:
                         this.GetRotatedAlignments(axis.Angle, -90, out ha, out va);
+After:
+                        GetRotatedAlignments(axis.Angle, -90, out ha, out va);
+*/
+                        HorizontalAndVerticalAxisRenderer.GetRotatedAlignments(axis.Angle, -90, out ha, out va);
 
                         break;
                     case AxisPosition.Right:
                         pt = new ScreenPoint(axisPosition + a1 + axis.AxisTickToLabelDistance, transformedValue);
+
+/* Unmerged change from project 'OxyPlot (net7.0)'
+Before:
                         this.GetRotatedAlignments(axis.Angle, 90, out ha, out va);
+After:
+                        GetRotatedAlignments(axis.Angle, 90, out ha, out va);
+*/
+                        HorizontalAndVerticalAxisRenderer.GetRotatedAlignments(axis.Angle, 90, out ha, out va);
 
                         break;
                     case AxisPosition.Top:
                         pt = new ScreenPoint(transformedValue, axisPosition + a1 - axis.AxisTickToLabelDistance);
+
+/* Unmerged change from project 'OxyPlot (net7.0)'
+Before:
                         this.GetRotatedAlignments(axis.Angle, 0, out ha, out va);
+After:
+                        GetRotatedAlignments(axis.Angle, 0, out ha, out va);
+*/
+                        HorizontalAndVerticalAxisRenderer.GetRotatedAlignments(axis.Angle, 0, out ha, out va);
 
                         break;
                     case AxisPosition.Bottom:
                         pt = new ScreenPoint(transformedValue, axisPosition + a1 + axis.AxisTickToLabelDistance);
+
+/* Unmerged change from project 'OxyPlot (net7.0)'
+Before:
                         this.GetRotatedAlignments(axis.Angle, -180, out ha, out va);
+After:
+                        GetRotatedAlignments(axis.Angle, -180, out ha, out va);
+*/
+                        HorizontalAndVerticalAxisRenderer.GetRotatedAlignments(axis.Angle, -180, out ha, out va);
 
                         break;
                 }
@@ -450,13 +485,27 @@ namespace OxyPlot.Axes
 
                 foreach (double value in axis.ExtraGridlines)
                 {
+
+/* Unmerged change from project 'OxyPlot (net7.0)'
+Before:
                     if (!this.IsWithin(value, clipMinimum, clipMaximum))
+After:
+                    if (!IsWithin(value, clipMinimum, clipMaximum))
+*/
+                    if (!AxisRendererBase.IsWithin(value, clipMinimum, clipMaximum))
                     {
                         continue;
                     }
 
                     double transformedValue = axis.Transform(value);
+
+/* Unmerged change from project 'OxyPlot (net7.0)'
+Before:
                     this.AddSegments(
+After:
+                    AddSegments(
+*/
+                    HorizontalAndVerticalAxisRenderer.AddSegments(
                         extraSegments,
                         perpAxes,
                         isHorizontal,
@@ -568,7 +617,14 @@ namespace OxyPlot.Axes
                 // Draw the minor grid line
                 if (this.MinorPen != null)
                 {
+
+/* Unmerged change from project 'OxyPlot (net7.0)'
+Before:
                     this.AddSegments(
+After:
+                    AddSegments(
+*/
+                    HorizontalAndVerticalAxisRenderer.AddSegments(
                         minorSegments,
                         perpAxes,
                         isHorizontal,
@@ -621,7 +677,7 @@ namespace OxyPlot.Axes
         /// <param name="plotAreaRight">Plot area right position.</param>
         /// <param name="plotAreaTop">Plot area top position.</param>
         /// <param name="plotAreaBottom">Plot area bottom position.</param>
-        private void AddSegments(
+        private static void AddSegments(
             List<ScreenPoint> segments, 
             List<Axis> perpAxes,
             bool isHorizontal,
@@ -681,7 +737,7 @@ namespace OxyPlot.Axes
         /// Because such labels can have different angles, and the axis can have different angles as well,
         /// computing the alignment is not straightforward.
         /// </remarks>
-        private void GetRotatedAlignments(
+        private static void GetRotatedAlignments(
             double boxAngle,
             double axisAngle,
             out HorizontalAlignment ha,

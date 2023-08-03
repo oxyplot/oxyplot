@@ -127,7 +127,14 @@ namespace OxyPlot.WindowsForms
             this.SetSmoothingMode(this.ShouldUseAntiAliasingForLine(edgeRenderingMode, points));
 
             var pen = this.GetCachedPen(stroke, thickness, dashArray, lineJoin);
+
+/* Unmerged change from project 'OxyPlot.WindowsForms (net6.0-windows)'
+Before:
             this.g.DrawLines(pen, this.ToPoints(points));
+After:
+            this.g.DrawLines(pen, ToPoints(points));
+*/
+            this.g.DrawLines(pen, GraphicsRenderContext.ToPoints(points));
         }
 
         /// <inheritdoc/>
@@ -147,7 +154,14 @@ namespace OxyPlot.WindowsForms
 
             this.SetSmoothingMode(this.ShouldUseAntiAliasingForLine(edgeRenderingMode, points));
 
+
+/* Unmerged change from project 'OxyPlot.WindowsForms (net6.0-windows)'
+Before:
             var pts = this.ToPoints(points);
+After:
+            var pts = ToPoints(points);
+*/
+            var pts = GraphicsRenderContext.ToPoints(points);
             if (fill.IsVisible())
             {
                 this.g.FillPolygon(this.GetCachedBrush(fill), pts);
@@ -509,7 +523,14 @@ namespace OxyPlot.WindowsForms
 
             if (dashArray != null)
             {
+
+/* Unmerged change from project 'OxyPlot.WindowsForms (net6.0-windows)'
+Before:
                 pen.DashPattern = this.ToFloatArray(dashArray);
+After:
+                pen.DashPattern = ToFloatArray(dashArray);
+*/
+                pen.DashPattern = GraphicsRenderContext.ToFloatArray(dashArray);
             }
 
             switch (lineJoin)
@@ -540,7 +561,7 @@ namespace OxyPlot.WindowsForms
         /// </summary>
         /// <param name="a">The a.</param>
         /// <returns>The float array.</returns>
-        private float[] ToFloatArray(double[] a)
+        private static float[] ToFloatArray(double[] a)
         {
             if (a == null)
             {
@@ -561,7 +582,7 @@ namespace OxyPlot.WindowsForms
         /// </summary>
         /// <param name="points">The points.</param>
         /// <returns>An array of points.</returns>
-        private PointF[] ToPoints(IList<ScreenPoint> points)
+        private static PointF[] ToPoints(IList<ScreenPoint> points)
         {
             if (points == null)
             {

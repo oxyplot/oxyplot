@@ -239,10 +239,24 @@ namespace OxyPlot
             // http://xkcd.com/
 
             // The following code is just to show that some randomness is working - this should be improved
+
+/* Unmerged change from project 'OxyPlot (net7.0)'
+Before:
             IList<ScreenPoint> interpolated = this.Interpolate(points, this.InterpolationDistance).ToArray();
+After:
+            IList<ScreenPoint> interpolated = Interpolate(points, this.InterpolationDistance).ToArray();
+*/
+            IList<ScreenPoint> interpolated = XkcdRenderingDecorator.Interpolate(points, this.InterpolationDistance).ToArray();
             var result = new ScreenPoint[interpolated.Count];
             var randomNumbers = this.GenerateRandomNumbers(interpolated.Count);
+
+/* Unmerged change from project 'OxyPlot (net7.0)'
+Before:
             randomNumbers = this.ApplyMovingAverage(randomNumbers, 5);
+After:
+            randomNumbers = ApplyMovingAverage(randomNumbers, 5);
+*/
+            randomNumbers = XkcdRenderingDecorator.ApplyMovingAverage(randomNumbers, 5);
 
             var d = this.DistortionFactor;
             double d2 = d / 2;
@@ -287,7 +301,7 @@ namespace OxyPlot
         /// <param name="input">The input values.</param>
         /// <param name="m">The number of values to average.</param>
         /// <returns>The filtered values.</returns>
-        private double[] ApplyMovingAverage(IList<double> input, int m)
+        private static double[] ApplyMovingAverage(IList<double> input, int m)
         {
             // http://en.wikipedia.org/wiki/Moving_average
             int n = input.Count;
@@ -314,7 +328,7 @@ namespace OxyPlot
         /// <param name="input">The input points.</param>
         /// <param name="dist">The interpolation distance.</param>
         /// <returns>The interpolated points.</returns>
-        private IEnumerable<ScreenPoint> Interpolate(IEnumerable<ScreenPoint> input, double dist)
+        private static IEnumerable<ScreenPoint> Interpolate(IEnumerable<ScreenPoint> input, double dist)
         {
             var p0 = default(ScreenPoint);
             double l = -1;

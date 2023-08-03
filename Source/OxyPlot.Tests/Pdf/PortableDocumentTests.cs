@@ -471,7 +471,7 @@ namespace OxyPlot.Tests
             doc.SetColor(OxyColors.Blue);
             doc.SetFillColor(OxyColors.LightBlue);
             doc.SaveState();
-            doc.SetClippingRectangle(5, 5, 50, 50);
+            PortableDocument.SetClippingRectangle(5, 5, 50, 50);
             doc.DrawCircle(100, 100, 95, true);
             doc.RestoreState();
             doc.DrawCircle(120, 120, 70);
