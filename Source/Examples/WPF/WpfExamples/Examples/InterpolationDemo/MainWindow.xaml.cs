@@ -34,44 +34,12 @@ namespace InterpolationDemo
 
             this.PlotModels = new List<PlotModel>
             {
-
-/* Unmerged change from project 'WpfExamples (net7.0-windows)'
-Before:
                 this.GenerateRandomPlotModel(points, "None", null),
                 this.GenerateRandomPlotModel(points, "Canonical aka Cardinal",
-After:
-                MainWindow.GenerateRandomPlotModel(points, "None", null),
-                MainWindow.GenerateRandomPlotModel(points, "Canonical aka Cardinal",
-*/
-
-/* Unmerged change from project 'WpfExamples (net462)'
-Before:
-                this.GenerateRandomPlotModel(points, "None", null),
-                this.GenerateRandomPlotModel(points, "Canonical aka Cardinal",
-After:
-                MainWindow.GenerateRandomPlotModel(points, "None", null),
-                MainWindow.GenerateRandomPlotModel(points, "Canonical aka Cardinal",
-*/
-                GenerateRandomPlotModel(points, "None", null),
-                GenerateRandomPlotModel(points, "Canonical aka Cardinal",
                     new Entry("0.5 (default)", InterpolationAlgorithms.CanonicalSpline),
                     new Entry("0.1", new CanonicalSpline(0.1)),
                     new Entry("1.0", new CanonicalSpline(1.0))),
-
-/* Unmerged change from project 'WpfExamples (net7.0-windows)'
-Before:
                 this.GenerateRandomPlotModel(points, "Catmull–Rom",
-After:
-                MainWindow.GenerateRandomPlotModel(points, "Catmull–Rom",
-*/
-
-/* Unmerged change from project 'WpfExamples (net462)'
-Before:
-                this.GenerateRandomPlotModel(points, "Catmull–Rom",
-After:
-                MainWindow.GenerateRandomPlotModel(points, "Catmull–Rom",
-*/
-                GenerateRandomPlotModel(points, "Catmull–Rom",
                     new Entry("Standard", InterpolationAlgorithms.CatmullRomSpline),
                     new Entry("Uniform", InterpolationAlgorithms.UniformCatmullRomSpline),
                     new Entry("Chordal", InterpolationAlgorithms.ChordalCatmullRomSpline))
@@ -121,7 +89,7 @@ After:
 
         public List<PlotModel> PlotModels { get; set; }
 
-        private static PlotModel GenerateRandomPlotModel(List<DataPoint> points, string title, params Entry[] entries)
+        private PlotModel GenerateRandomPlotModel(List<DataPoint> points, string title, params Entry[] entries)
         {
             var plotModel = new PlotModel
             {

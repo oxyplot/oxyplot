@@ -1825,14 +1825,7 @@ namespace OxyPlot.Axes
         /// <returns>The calculate actual interval.</returns>
         protected virtual double CalculateActualInterval(double availableSize, double maxIntervalSize, double minIntervalCount, double maxIntervalCount)
         {
-
-/* Unmerged change from project 'OxyPlot (net7.0)'
-Before:
             return this.CalculateActualInterval(availableSize, maxIntervalSize, this.ActualMaximum - this.ActualMinimum, minIntervalCount, maxIntervalCount);
-After:
-            return CalculateActualInterval(availableSize, maxIntervalSize, this.ActualMaximum - this.ActualMinimum, minIntervalCount, maxIntervalCount);
-*/
-            return Axis.CalculateActualInterval(availableSize, maxIntervalSize, this.ActualMaximum - this.ActualMinimum, minIntervalCount, maxIntervalCount);
         }
 
         /// <summary>
@@ -1844,7 +1837,7 @@ After:
         /// <param name="minIntervalCount">The minimum number of intervals.</param>
         /// <param name="maxIntervalCount">The maximum number of intervals, once the minimum number of intervals is satisfied.</param>
         /// <returns>Actual interval to use to determine which values are displayed in the axis.</returns>
-        protected static double CalculateActualInterval(double availableSize, double maxIntervalSize, double range, double minIntervalCount, double maxIntervalCount)
+        protected double CalculateActualInterval(double availableSize, double maxIntervalSize, double range, double minIntervalCount, double maxIntervalCount)
         {
             if (availableSize <= 0)
             {

@@ -472,7 +472,7 @@ namespace OxyPlot.Series
         /// </summary>
         /// <param name="point">Data point.</param>
         /// <returns>X coordinate.</returns>
-        protected static double GetPointX(DataPoint point)
+        protected double GetPointX(DataPoint point)
         {
             return point.x;
         }

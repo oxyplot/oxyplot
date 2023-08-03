@@ -57,14 +57,7 @@ namespace OxyPlot.Axes
 
                 var screenPoints = this.MinorTickValues
                             .Take(tickCount + 1)
-
-/* Unmerged change from project 'OxyPlot (net7.0)'
-Before:
                             .Select(x => this.TransformToClientRectangle(magnitudeAxis.ClipMaximum, x, axis, this.Plot.PlotArea, magnitudeAxis.MidPoint));
-After:
-                            .Select(x => TransformToClientRectangle(magnitudeAxis.ClipMaximum, x, axis, this.Plot.PlotArea, magnitudeAxis.MidPoint));
-*/
-                            .Select(x => AngleAxisFullPlotAreaRenderer.TransformToClientRectangle(magnitudeAxis.ClipMaximum, x, axis, this.Plot.PlotArea, magnitudeAxis.MidPoint));
 
                 foreach (var screenPoint in screenPoints)
                 {
@@ -83,14 +76,7 @@ After:
             {
                 var screenPoints = this.MajorTickValues
                                 .Take(majorTickCount)
-
-/* Unmerged change from project 'OxyPlot (net7.0)'
-Before:
                                 .Select(x => this.TransformToClientRectangle(magnitudeAxis.ClipMaximum, x, axis, this.Plot.PlotArea, magnitudeAxis.MidPoint));
-After:
-                                .Select(x => TransformToClientRectangle(magnitudeAxis.ClipMaximum, x, axis, this.Plot.PlotArea, magnitudeAxis.MidPoint));
-*/
-                                .Select(x => AngleAxisFullPlotAreaRenderer.TransformToClientRectangle(magnitudeAxis.ClipMaximum, x, axis, this.Plot.PlotArea, magnitudeAxis.MidPoint));
 
                 foreach (var point in screenPoints)
                 {
@@ -101,14 +87,7 @@ After:
             //Text rendering
             foreach (var value in this.MajorLabelValues.Take(majorTickCount))
             {
-
-/* Unmerged change from project 'OxyPlot (net7.0)'
-Before:
                 ScreenPoint pt = this.TransformToClientRectangle(magnitudeAxis.ClipMaximum, value, axis, this.Plot.PlotArea, magnitudeAxis.MidPoint);
-After:
-                ScreenPoint pt = TransformToClientRectangle(magnitudeAxis.ClipMaximum, value, axis, this.Plot.PlotArea, magnitudeAxis.MidPoint);
-*/
-                ScreenPoint pt = AngleAxisFullPlotAreaRenderer.TransformToClientRectangle(magnitudeAxis.ClipMaximum, value, axis, this.Plot.PlotArea, magnitudeAxis.MidPoint);
 
                 var angle = Math.Atan2(pt.y - magnitudeAxis.MidPoint.y, pt.x - magnitudeAxis.MidPoint.x);
 
@@ -185,7 +164,7 @@ After:
         /// <param name="plotArea"></param>
         /// <param name="midPoint"></param>
         /// <returns></returns>
-        public static ScreenPoint TransformToClientRectangle(double actualMaximum, double x, Axis axis, OxyRect plotArea, ScreenPoint midPoint)
+        public ScreenPoint TransformToClientRectangle(double actualMaximum, double x, Axis axis, OxyRect plotArea, ScreenPoint midPoint)
         {
             ScreenPoint result = new ScreenPoint();
             //I think the key is to NOT compute the axis scaled value of the angle, BUT to just draw it from the Midpoint to the end of the PlotView

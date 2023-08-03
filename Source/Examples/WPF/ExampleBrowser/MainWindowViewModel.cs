@@ -100,7 +100,7 @@ namespace ExampleBrowser
             this.RaisePropertyChanged(nameof(this.CanvasModel));
         }
 
-        public static IEnumerable<Renderer> Renderers => Enum.GetValues(typeof(Renderer)).Cast<Renderer>();
+        public IEnumerable<Renderer> Renderers => Enum.GetValues(typeof(Renderer)).Cast<Renderer>();
 
         public ExampleInfo SelectedExample
         {

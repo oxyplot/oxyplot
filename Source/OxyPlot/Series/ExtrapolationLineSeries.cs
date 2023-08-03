@@ -154,14 +154,7 @@ namespace OxyPlot.Series
         {
             base.UpdateData();
 
-
-/* Unmerged change from project 'OxyPlot (net7.0)'
-Before:
             this.orderedIntervals = this.MergeOverlaps(this.Intervals);
-After:
-            this.orderedIntervals = MergeOverlaps(this.Intervals);
-*/
-            this.orderedIntervals = ExtrapolationLineSeries.MergeOverlaps(this.Intervals);
         }
 
         /// <summary>
@@ -252,14 +245,7 @@ After:
             if (this.orderedIntervals != null && this.orderedIntervals.Any())
             {
                 IEnumerable<double> flatLimits
-
-/* Unmerged change from project 'OxyPlot (net7.0)'
-Before:
                     = this.Flatten(this.orderedIntervals).Where(l => l >= minX && l <= maxX);
-After:
-                    = Flatten(this.orderedIntervals).Where(l => l >= minX && l <= maxX);
-*/
-                    = ExtrapolationLineSeries.Flatten(this.orderedIntervals).Where(l => l >= minX && l <= maxX);
 
                 foreach (var limiter in flatLimits)
                 {
@@ -282,7 +268,7 @@ After:
         /// Returns a flat sequence of doubles containing alternating minima
         /// and maxima of the original data range intervals.
         /// </summary>
-        private static IEnumerable<double> Flatten(IEnumerable<DataRange> intervals)
+        private IEnumerable<double> Flatten(IEnumerable<DataRange> intervals)
         {
             foreach (var interval in intervals)
             {
@@ -316,7 +302,7 @@ After:
         /// Sorts the intervals by their minimum and merges those intervals which overlap, i.e.
         /// replaces them by their union.
         /// </summary>
-        private static List<DataRange> MergeOverlaps(IEnumerable<DataRange> intervals)
+        private List<DataRange> MergeOverlaps(IEnumerable<DataRange> intervals)
         {
             var orderedList = new List<DataRange>();
 
@@ -357,14 +343,7 @@ After:
             while (min <= max)
             {
                 var mid = (min + max) / 2;
-
-/* Unmerged change from project 'OxyPlot (net7.0)'
-Before:
                 var comparison = this.Compare(this.orderedIntervals[mid], x);
-After:
-                var comparison = Compare(this.orderedIntervals[mid], x);
-*/
-                var comparison = ExtrapolationLineSeries.Compare(this.orderedIntervals[mid], x);
 
                 if (comparison == 0)
                 {
@@ -389,7 +368,7 @@ After:
         /// <param name="interval">The interval to check against.</param>
         /// <param name="x">The value to be checked.</param>
         /// <returns>0 if x is within inclusive interval, -1 if x smaller interval's min, 1 if x larger interval's max.</returns>
-        private static int Compare(DataRange interval, double x)
+        private int Compare(DataRange interval, double x)
         {
             if (x < interval.Minimum)
             {

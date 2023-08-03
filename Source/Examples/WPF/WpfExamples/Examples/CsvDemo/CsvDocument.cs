@@ -41,8 +41,8 @@ namespace CsvDemo
                 if (separator == '\0')
                 {
                     // Auto detect
-                    int commaCount = CsvDocument.Count(header, ',');
-                    int semicolonCount = CsvDocument.Count(header, ';');
+                    int commaCount = Count(header, ',');
+                    int semicolonCount = Count(header, ';');
                     separator = commaCount > semicolonCount ? ',' : ';';
                 }
 
@@ -59,7 +59,7 @@ namespace CsvDemo
             }
         }
 
-        private static int Count(string s, char c)
+        private int Count(string s, char c)
         {
             return s.Count(ch => ch == c);
         }

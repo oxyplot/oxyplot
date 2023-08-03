@@ -96,7 +96,7 @@ namespace WpfExamples
         /// <summary>
         /// Raises the can execute changed.
         /// </summary>
-        public static void RaiseCanExecuteChanged()
+        public void RaiseCanExecuteChanged()
         {
             CommandManager.InvalidateRequerySuggested();
         }

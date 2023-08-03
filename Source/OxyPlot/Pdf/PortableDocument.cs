@@ -535,7 +535,7 @@ namespace OxyPlot
         /// <param name="w">The width.</param>
         /// <param name="h">The height.</param>
         /// <param name="evenOddRule">Use the even-odd region rule if set to <c>true</c>.</param>
-        public static void SetClippingRectangle(double x, double y, double w, double h, bool evenOddRule = false)
+        public void SetClippingRectangle(double x, double y, double w, double h, bool evenOddRule = false)
         {
             // TODO: not working?
             return;

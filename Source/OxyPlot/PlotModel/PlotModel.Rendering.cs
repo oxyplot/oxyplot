@@ -279,14 +279,7 @@ namespace OxyPlot
         /// <param name="layer">The layer.</param>
         private void RenderAnnotations(IRenderContext rc, AnnotationLayer layer)
         {
-
-/* Unmerged change from project 'OxyPlot (net7.0)'
-Before:
             this.RenderPlotElements(this.Annotations.Where(a => a.Layer == layer), rc, annotation => annotation.Render(rc));
-After:
-            RenderPlotElements(this.Annotations.Where(a => a.Layer == layer), rc, annotation => annotation.Render(rc));
-*/
-            PlotModel.RenderPlotElements(this.Annotations.Where(a => a.Layer == layer), rc, annotation => annotation.Render(rc));
         }
 
         /// <summary>
@@ -367,17 +360,10 @@ After:
                 barSeriesManager.InitializeRender();
             }
 
-
-/* Unmerged change from project 'OxyPlot (net7.0)'
-Before:
             this.RenderPlotElements(this.Series.Where(s => s.IsVisible), rc, series => series.Render(rc));
-After:
-            RenderPlotElements(this.Series.Where(s => s.IsVisible), rc, series => series.Render(rc));
-*/
-            PlotModel.RenderPlotElements(this.Series.Where(s => s.IsVisible), rc, series => series.Render(rc));
         }
 
-        private static void RenderPlotElements<T>(IEnumerable<T> plotElements, IRenderContext rc, Action<T> renderAction) where T: PlotElement
+        private void RenderPlotElements<T>(IEnumerable<T> plotElements, IRenderContext rc, Action<T> renderAction) where T: PlotElement
         {
             var previousClippingRect = OxyRect.Everything;
 

@@ -402,27 +402,13 @@ namespace OxyPlot.Axes
             if (this.actualIntervalType == DateTimeIntervalType.Months)
             {
                 double monthsRange = range / 30.5;
-
-/* Unmerged change from project 'OxyPlot (net7.0)'
-Before:
                 interval = this.CalculateActualInterval(availableSize, maxIntervalSize, monthsRange, this.MinimumMajorIntervalCount, this.MaximumMajorIntervalCount);
-After:
-                interval = CalculateActualInterval(availableSize, maxIntervalSize, monthsRange, this.MinimumMajorIntervalCount, this.MaximumMajorIntervalCount);
-*/
-                interval = Axis.CalculateActualInterval(availableSize, maxIntervalSize, monthsRange, this.MinimumMajorIntervalCount, this.MaximumMajorIntervalCount);
             }
 
             if (this.actualIntervalType == DateTimeIntervalType.Years)
             {
                 double yearsRange = range / 365.25;
-
-/* Unmerged change from project 'OxyPlot (net7.0)'
-Before:
                 interval = this.CalculateActualInterval(availableSize, maxIntervalSize, yearsRange, this.MinimumMajorIntervalCount, this.MaximumMajorIntervalCount);
-After:
-                interval = CalculateActualInterval(availableSize, maxIntervalSize, yearsRange, this.MinimumMajorIntervalCount, this.MaximumMajorIntervalCount);
-*/
-                interval = Axis.CalculateActualInterval(availableSize, maxIntervalSize, yearsRange, this.MinimumMajorIntervalCount, this.MaximumMajorIntervalCount);
             }
 
             if (this.actualMinorIntervalType == DateTimeIntervalType.Auto)

@@ -58,26 +58,8 @@ namespace CsvDemo
                 var ls = new LineSeries { Title = doc.Headers[i] };
                 foreach (var item in doc.Items)
                 {
-
-/* Unmerged change from project 'WpfExamples (net7.0-windows)'
-Before:
                     double x = this.ParseDouble(item[0]);
                     double y = this.ParseDouble(item[i]);
-After:
-                    double x = MainViewModel.ParseDouble(item[0]);
-                    double y = MainViewModel.ParseDouble(item[i]);
-*/
-
-/* Unmerged change from project 'WpfExamples (net462)'
-Before:
-                    double x = this.ParseDouble(item[0]);
-                    double y = this.ParseDouble(item[i]);
-After:
-                    double x = MainViewModel.ParseDouble(item[0]);
-                    double y = MainViewModel.ParseDouble(item[i]);
-*/
-                    double x = ParseDouble(item[0]);
-                    double y = ParseDouble(item[i]);
                     ls.Points.Add(new DataPoint(x, y));
                 }
 
@@ -88,7 +70,7 @@ After:
             this.Model = tmp;
         }
 
-        private static double ParseDouble(string s)
+        private double ParseDouble(string s)
         {
             if (s == null)
             {

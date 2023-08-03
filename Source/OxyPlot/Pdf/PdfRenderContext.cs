@@ -317,7 +317,7 @@ namespace OxyPlot
             this.doc.Translate(dx, dy);
 
             // this.doc.DrawRectangle(0, 0, width, height);
-            PortableDocument.SetClippingRectangle(0, 0, width, height);
+            this.doc.SetClippingRectangle(0, 0, width, height);
             this.doc.DrawText(0, 0, text);
             this.doc.RestoreState();
         }
@@ -383,7 +383,7 @@ namespace OxyPlot
             double width = image.Width / srcWidth * destWidth;
             double y = destY - (srcY / srcHeight * destHeight);
             double height = image.Height / srcHeight * destHeight;
-            PortableDocument.SetClippingRectangle(destX, this.doc.PageHeight - (destY - destHeight), destWidth, destHeight);
+            this.doc.SetClippingRectangle(destX, this.doc.PageHeight - (destY - destHeight), destWidth, destHeight);
             this.doc.Translate(x, this.doc.PageHeight - (y + height));
             this.doc.Scale(width, height);
             this.doc.DrawImage(image);
@@ -394,7 +394,7 @@ namespace OxyPlot
         protected override void SetClip(OxyRect clippingRectangle)
         {
             this.doc.SaveState();
-            PortableDocument.SetClippingRectangle(clippingRectangle.Left, clippingRectangle.Bottom, clippingRectangle.Width, clippingRectangle.Height);
+            this.doc.SetClippingRectangle(clippingRectangle.Left, clippingRectangle.Bottom, clippingRectangle.Width, clippingRectangle.Height);
         }
 
         /// <inheritdoc/>

@@ -29,7 +29,7 @@ namespace CustomTrackerDemo
             this.DataContext = this;
         }
 
-        public static PlotModel Model
+        public PlotModel Model
         {
             get
             {
