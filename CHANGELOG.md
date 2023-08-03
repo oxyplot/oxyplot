@@ -19,6 +19,7 @@ All notable changes to this project will be documented in this file.
 - Run tests on both .NET Framework 4.6.2 and .NET 6.0 (#1937)
 - Add support for .NET 7.0 (#1937)
 - Update SkiaSharp to Version 2.88.3
+- Private, non-virtual methods that don't access any instance members were made `static`
 
 ### Removed
 - Support for .NET Framework 4.0 and 4.5 (#1839)
