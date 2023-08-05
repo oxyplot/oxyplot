@@ -9,9 +9,8 @@
 
 namespace OxyPlot.Pdf
 {
-    using System;
-
     using PdfSharp.Drawing;
+    using System;
 
     /// <summary>
     /// Provides extension methods for OxyPlot to PdfSharp type conversion.

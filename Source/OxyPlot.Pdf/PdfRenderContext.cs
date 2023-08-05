@@ -9,12 +9,12 @@
 
 namespace OxyPlot.Pdf
 {
+    using PdfSharp.Drawing;
+    using PdfSharp.Pdf;
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using PdfSharp.Drawing;
-    using PdfSharp.Pdf;
 
     /// <summary>
     /// Provides a render context for portable document format using PdfSharp (and SilverPDF for Silverlight)
@@ -25,7 +25,7 @@ namespace OxyPlot.Pdf
         /// <summary>
         /// The font size factor.
         /// </summary>
-        private const double FontsizeFactor = 1.0;
+        private const double fontsizeFactor = 1.0;
 
         /// <summary>
         /// The pdf document.
@@ -84,7 +84,7 @@ namespace OxyPlot.Pdf
         public override void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
         {
             this.SetSmoothingMode(this.ShouldUseAntiAliasingForEllipse(edgeRenderingMode));
-            
+
             if (fill.IsVisible())
             {
                 this.g.DrawEllipse(ToBrush(fill), rect.Left, rect.Top, rect.Width, rect.Height);
@@ -413,7 +413,7 @@ namespace OxyPlot.Pdf
             }
 
             var r = new XPoint[points.Count()];
-            int i = 0;
+            var i = 0;
             foreach (var p in points)
             {
                 r[i++] = new XPoint((float)p.X, (float)p.Y);
@@ -432,7 +432,7 @@ namespace OxyPlot.Pdf
         private static XFont CreateFont(string fontFamily, double fontSize, XFontStyle fontStyle)
         {
             var pdfOptions = new XPdfFontOptions(PdfFontEncoding.Unicode);
-            var font = new XFont(fontFamily ?? "Arial", (float)fontSize * FontsizeFactor, fontStyle, pdfOptions);
+            var font = new XFont(fontFamily ?? "Arial", (float)fontSize * fontsizeFactor, fontStyle, pdfOptions);
             return font;
         }
 
@@ -453,8 +453,7 @@ namespace OxyPlot.Pdf
                 this.imagesInUse.Add(source);
             }
 
-            XImage src;
-            if (this.imageCache.TryGetValue(source, out src))
+            if (this.imageCache.TryGetValue(source, out var src))
             {
                 return src;
             }
@@ -489,10 +488,7 @@ namespace OxyPlot.Pdf
             {
                 if (disposing)
                 {
-                    if (this.doc != null)
-                    {
-                        this.doc.Dispose();
-                    }
+                    this.doc?.Dispose();
                 }
             }
 
