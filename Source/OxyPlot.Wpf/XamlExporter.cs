@@ -50,11 +50,9 @@ namespace OxyPlot.Wpf
         /// <param name="height">The height.</param>
         public static void Export(PlotModel model, string fileName, double width, double height)
         {
-            using (var sw = new StreamWriter(fileName))
-            {
-                var xw = XmlWriter.Create(sw, new XmlWriterSettings { Indent = true });
-                Export(model, xw, width, height);
-            }
+            using var sw = new StreamWriter(fileName);
+            var xw = XmlWriter.Create(sw, new XmlWriterSettings { Indent = true });
+            Export(model, xw, width, height);
         }
 
         /// <summary>

@@ -57,11 +57,9 @@ namespace OxyPlot.Wpf
         /// <param name="height">The height.</param>
         public static void Export(IPlotModel model, string fileName, double width, double height)
         {
-            using (var stream = File.Open(fileName, FileMode.Create, FileAccess.ReadWrite))
-            {
-                var exporter = new XpsExporter { Width = width, Height = height };
-                exporter.Export(model, stream);
-            }
+            using var stream = File.Open(fileName, FileMode.Create, FileAccess.ReadWrite);
+            var exporter = new XpsExporter { Width = width, Height = height };
+            exporter.Export(model, stream);
         }
 
         /// <summary>
@@ -96,14 +94,10 @@ namespace OxyPlot.Wpf
         /// <param name="stream">The stream.</param>
         public void Export(IPlotModel model, Stream stream)
         {
-            using (var xpsPackage = Package.Open(stream, FileMode.Create, FileAccess.ReadWrite))
-            {
-                using (var doc = new XpsDocument(xpsPackage))
-                {
-                    var xpsdw = XpsDocument.CreateXpsDocumentWriter(doc);
-                    this.Write(model, xpsdw);
-                }
-            }
+            using var xpsPackage = Package.Open(stream, FileMode.Create, FileAccess.ReadWrite);
+            using var doc = new XpsDocument(xpsPackage);
+            var xpsdw = XpsDocument.CreateXpsDocumentWriter(doc);
+            this.Write(model, xpsdw);
         }
 
         /// <summary>
@@ -141,8 +135,10 @@ namespace OxyPlot.Wpf
             canvas.Measure(new Size(this.Width, this.Height));
             canvas.Arrange(new Rect(0, 0, this.Width, this.Height));
 
-            var rc = new CanvasRenderContext(canvas);
-            rc.TextFormattingMode = this.TextFormattingMode;
+            var rc = new CanvasRenderContext(canvas)
+            {
+                TextFormattingMode = this.TextFormattingMode
+            };
 
             model.Update(true);
             model.Render(rc, new OxyRect(0, 0, this.Width, this.Height));

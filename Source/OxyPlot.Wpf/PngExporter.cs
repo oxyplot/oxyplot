@@ -57,10 +57,8 @@ namespace OxyPlot.Wpf
         public static void Export(IPlotModel model, string fileName, int width, int height, double resolution = 96)
         {
             var exporter = new PngExporter { Width = width, Height = height, Resolution = resolution };
-            using (var stream = File.Create(fileName))
-            {
-                exporter.Export(model, stream);
-            }
+            using var stream = File.Create(fileName);
+            exporter.Export(model, stream);
         }
 
         /// <summary>
@@ -88,10 +86,12 @@ namespace OxyPlot.Wpf
             canvas.Measure(new Size(canvas.Width, canvas.Height));
             canvas.Arrange(new Rect(0, 0, canvas.Width, canvas.Height));
 
-            var rc = new CanvasRenderContext(canvas) { RendersToScreen = false };
-
-            rc.TextFormattingMode = TextFormattingMode.Ideal;
-            rc.DpiScale = this.Resolution / 96;
+            var rc = new CanvasRenderContext(canvas)
+            {
+                RendersToScreen = false,
+                TextFormattingMode = TextFormattingMode.Ideal,
+                DpiScale = this.Resolution / 96
+            };
 
             model.Update(true);
             model.Render(rc, new OxyRect(0, 0, canvas.Width, canvas.Height));

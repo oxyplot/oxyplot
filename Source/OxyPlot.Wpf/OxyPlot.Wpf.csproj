@@ -6,7 +6,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <LangVersion>8</LangVersion>
+    <LangVersion>11</LangVersion>
     <SignAssembly>True</SignAssembly>
     <Description>OxyPlot is a plotting library for .NET. This package targets WPF applications.</Description>
     <PackageTags>plotting plot charting chart</PackageTags>

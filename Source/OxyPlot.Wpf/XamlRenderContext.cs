@@ -24,17 +24,17 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// The maximum number of figures per geometry.
         /// </summary>
-        private const int MaxFiguresPerGeometry = 16;
+        private const int maxFiguresPerGeometry = 16;
 
         /// <summary>
         /// The maximum number of polylines per line.
         /// </summary>
-        private const int MaxPolylinesPerLine = 64;
+        private const int maxPolylinesPerLine = 64;
 
         /// <summary>
         /// The minimum number of points per polyline.
         /// </summary>
-        private const int MinPointsPerPolyline = 16;
+        private const int minPointsPerPolyline = 16;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CanvasRenderContext" /> class.
@@ -128,7 +128,7 @@ namespace OxyPlot.Wpf
                     pathGeometry = new PathGeometry();
                 }
 
-                var actualPoints = this.GetActualPoints( new[] { points[i], points[i + 1] }, path.StrokeThickness, edgeRenderingMode).ToList();
+                var actualPoints = this.GetActualPoints(new[] { points[i], points[i + 1] }, path.StrokeThickness, edgeRenderingMode).ToList();
 
                 var figure = new PathFigure { StartPoint = actualPoints[0], IsClosed = false };
                 figure.Segments.Add(new LineSegment(actualPoints[1], true) { IsSmoothJoin = false });
@@ -137,7 +137,7 @@ namespace OxyPlot.Wpf
                 count++;
 
                 // Must limit the number of figures, otherwise drawing errors...
-                if (count > MaxFiguresPerGeometry || dashArray != null)
+                if (count > maxFiguresPerGeometry || dashArray != null)
                 {
                     path.Data = pathGeometry;
                     path = null;
@@ -209,7 +209,7 @@ namespace OxyPlot.Wpf
                 count++;
 
                 // Must limit the number of figures, otherwise drawing errors...
-                if (count > MaxFiguresPerGeometry)
+                if (count > maxFiguresPerGeometry)
                 {
                     path.Data = pathGeometry;
                     path = null;
@@ -259,7 +259,7 @@ namespace OxyPlot.Wpf
         private void DrawLineBalanced(IList<ScreenPoint> points, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode, double[] dashArray, LineJoin lineJoin)
         {
             // balance the number of points per polyline and the number of polylines
-            var numPointsPerPolyline = Math.Max(points.Count / MaxPolylinesPerLine, MinPointsPerPolyline);
+            var numPointsPerPolyline = Math.Max(points.Count / maxPolylinesPerLine, minPointsPerPolyline);
 
             var polyline = this.CreateAndAdd<Polyline>();
             this.SetStroke(polyline, stroke, thickness, edgeRenderingMode, lineJoin, dashArray, 0);
@@ -279,7 +279,7 @@ namespace OxyPlot.Wpf
                     if (i > 0)
                     {
                         var delta = p - last;
-                        var dist = Math.Sqrt((delta.X * delta.X) + (delta.Y * delta.Y));
+                        var dist = Math.Sqrt(delta.X * delta.X + delta.Y * delta.Y);
                         lineLength += dist;
                     }
 

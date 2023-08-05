@@ -83,7 +83,7 @@ namespace OxyPlot.Wpf
         /// <returns>Snapped coordinate</returns>
         private static double Snap(double value, double offset, double scale)
         {
-            return (Math.Round((value + offset) * scale, MidpointRounding.AwayFromZero)) / scale - offset;
+            return Math.Round((value + offset) * scale, MidpointRounding.AwayFromZero) / scale - offset;
         }
 
         /// <summary>

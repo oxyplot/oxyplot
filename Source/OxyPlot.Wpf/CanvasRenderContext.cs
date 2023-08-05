@@ -703,7 +703,7 @@ namespace OxyPlot.Wpf
                         shape.StrokeLineJoin = PenLineJoin.Bevel;
                         break;
 
-                    // The default StrokeLineJoin is Miter
+                        // The default StrokeLineJoin is Miter
                 }
 
                 shape.StrokeThickness = this.GetActualStrokeThickness(thickness, edgeRenderingMode);
@@ -816,13 +816,11 @@ namespace OxyPlot.Wpf
         /// <returns>The processed stroke thickness.</returns>
         protected double GetActualStrokeThickness(double strokeThickness, EdgeRenderingMode edgeRenderingMode)
         {
-            switch (edgeRenderingMode)
+            return edgeRenderingMode switch
             {
-                case EdgeRenderingMode.PreferSharpness:
-                    return PixelLayout.SnapStrokeThickness(strokeThickness, this.DpiScale);
-                default:
-                    return strokeThickness;
-            }
+                EdgeRenderingMode.PreferSharpness => PixelLayout.SnapStrokeThickness(strokeThickness, this.DpiScale),
+                _ => strokeThickness,
+            };
         }
 
         private static T GetFirstAndRest<T>(IEnumerable<T> items, out IList<T> rest)
