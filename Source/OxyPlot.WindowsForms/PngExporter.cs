@@ -58,10 +58,8 @@ namespace OxyPlot.WindowsForms
         public static void Export(IPlotModel model, string fileName, int width, int height, double resolution = 96)
         {
             var exporter = new PngExporter { Width = width, Height = height, Resolution = resolution };
-            using (var stream = File.Create(fileName))
-            {
-                exporter.Export(model, stream);
-            }
+            using var stream = File.Create(fileName);
+            exporter.Export(model, stream);
         }
 
         /// <summary>
@@ -71,12 +69,10 @@ namespace OxyPlot.WindowsForms
         /// <param name="stream">The output stream.</param>
         public void Export(IPlotModel model, Stream stream)
         {
-            using (var bm = this.ExportToBitmap(model))
-            {
-                bm.Save(stream, ImageFormat.Png);
-            }
+            using var bm = this.ExportToBitmap(model);
+            bm.Save(stream, ImageFormat.Png);
         }
-        
+
         /// <summary>
         /// Exports the specified <see cref="PlotModel" /> to a <see cref="Bitmap" />.
         /// </summary>
@@ -85,25 +81,21 @@ namespace OxyPlot.WindowsForms
         public Bitmap ExportToBitmap(IPlotModel model)
         {
             var bm = new Bitmap(this.Width, this.Height);
-            using (var g = Graphics.FromImage(bm))
+            using var g = Graphics.FromImage(bm);
+            if (model.Background.IsVisible())
             {
-                if (model.Background.IsVisible())
-                {
-                    using (var brush = model.Background.ToBrush())
-                    {
-                        g.FillRectangle(brush, 0, 0, this.Width, this.Height);
-                    }
-                }
-
-                using (var rc = new GraphicsRenderContext(g) { RendersToScreen = false })
-                {
-                    model.Update(true);
-                    model.Render(rc, new OxyRect(0, 0, this.Width, this.Height));
-                }
-
-                bm.SetResolution((float)this.Resolution, (float)this.Resolution);
-                return bm;
+                using var brush = model.Background.ToBrush();
+                g.FillRectangle(brush, 0, 0, this.Width, this.Height);
             }
+
+            using (var rc = new GraphicsRenderContext(g) { RendersToScreen = false })
+            {
+                model.Update(true);
+                model.Render(rc, new OxyRect(0, 0, this.Width, this.Height));
+            }
+
+            bm.SetResolution((float)this.Resolution, (float)this.Resolution);
+            return bm;
         }
     }
 }

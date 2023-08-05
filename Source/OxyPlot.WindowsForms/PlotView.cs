@@ -25,22 +25,22 @@ namespace OxyPlot.WindowsForms
         /// <summary>
         /// The category for the properties of this control.
         /// </summary>
-        private const string OxyPlotCategory = "OxyPlot";
+        private const string oxyPlotCategory = "OxyPlot";
 
         /// <summary>
         /// The invalidate lock.
         /// </summary>
-        private readonly object invalidateLock = new object();
+        private readonly object invalidateLock = new();
 
         /// <summary>
         /// The model lock.
         /// </summary>
-        private readonly object modelLock = new object();
+        private readonly object modelLock = new();
 
         /// <summary>
         /// The rendering lock.
         /// </summary>
-        private readonly object renderingLock = new object();
+        private readonly object renderingLock = new();
 
         /// <summary>
         /// The render context.
@@ -109,25 +109,13 @@ namespace OxyPlot.WindowsForms
         /// <value>
         /// The actual model.
         /// </value>
-        Model IView.ActualModel
-        {
-            get
-            {
-                return this.Model;
-            }
-        }
+        Model IView.ActualModel => this.Model;
 
         /// <summary>
         /// Gets the actual model.
         /// </summary>
         /// <value>The actual model.</value>
-        public PlotModel ActualModel
-        {
-            get
-            {
-                return this.Model;
-            }
-        }
+        public PlotModel ActualModel => this.Model;
 
         /// <summary>
         /// Gets the actual controller.
@@ -135,49 +123,28 @@ namespace OxyPlot.WindowsForms
         /// <value>
         /// The actual <see cref="IController" />.
         /// </value>
-        IController IView.ActualController
-        {
-            get
-            {
-                return this.ActualController;
-            }
-        }
+        IController IView.ActualController => this.ActualController;
 
         /// <summary>
         /// Gets the coordinates of the client area of the view.
         /// </summary>
-        public OxyRect ClientArea
-        {
-            get
-            {
-                return new OxyRect(this.ClientRectangle.Left, this.ClientRectangle.Top, this.ClientRectangle.Width, this.ClientRectangle.Height);
-            }
-        }
+        public OxyRect ClientArea => new(this.ClientRectangle.Left, this.ClientRectangle.Top, this.ClientRectangle.Width, this.ClientRectangle.Height);
 
         /// <summary>
         /// Gets the actual plot controller.
         /// </summary>
         /// <value>The actual plot controller.</value>
-        public IPlotController ActualController
-        {
-            get
-            {
-                return this.Controller ?? (this.defaultController ?? (this.defaultController = new PlotController()));
-            }
-        }
+        public IPlotController ActualController => this.Controller ?? (this.defaultController ??= new PlotController());
 
         /// <summary>
         /// Gets or sets the model.
         /// </summary>
         [Browsable(false)]
         [DefaultValue(null)]
-        [Category(OxyPlotCategory)]
+        [Category(oxyPlotCategory)]
         public PlotModel Model
         {
-            get
-            {
-                return this.model;
-            }
+            get => this.model;
 
             set
             {
@@ -195,31 +162,31 @@ namespace OxyPlot.WindowsForms
         /// <value>The controller.</value>
         [Browsable(false)]
         [DefaultValue(null)]
-        [Category(OxyPlotCategory)]
+        [Category(oxyPlotCategory)]
         public IPlotController Controller { get; set; }
 
         /// <summary>
         /// Gets or sets the pan cursor.
         /// </summary>
-        [Category(OxyPlotCategory)]
+        [Category(oxyPlotCategory)]
         public Cursor PanCursor { get; set; }
 
         /// <summary>
         /// Gets or sets the horizontal zoom cursor.
         /// </summary>
-        [Category(OxyPlotCategory)]
+        [Category(oxyPlotCategory)]
         public Cursor ZoomHorizontalCursor { get; set; }
 
         /// <summary>
         /// Gets or sets the rectangle zoom cursor.
         /// </summary>
-        [Category(OxyPlotCategory)]
+        [Category(oxyPlotCategory)]
         public Cursor ZoomRectangleCursor { get; set; }
 
         /// <summary>
         /// Gets or sets the vertical zoom cursor.
         /// </summary>
-        [Category(OxyPlotCategory)]
+        [Category(oxyPlotCategory)]
         public Cursor ZoomVerticalCursor { get; set; }
 
         /// <summary>
@@ -286,24 +253,14 @@ namespace OxyPlot.WindowsForms
         /// <param name="cursorType">The cursor type.</param>
         public void SetCursorType(CursorType cursorType)
         {
-            switch (cursorType)
+            this.Cursor = cursorType switch
             {
-                case CursorType.Pan:
-                    this.Cursor = this.PanCursor;
-                    break;
-                case CursorType.ZoomRectangle:
-                    this.Cursor = this.ZoomRectangleCursor;
-                    break;
-                case CursorType.ZoomHorizontal:
-                    this.Cursor = this.ZoomHorizontalCursor;
-                    break;
-                case CursorType.ZoomVertical:
-                    this.Cursor = this.ZoomVerticalCursor;
-                    break;
-                default:
-                    this.Cursor = Cursors.Arrow;
-                    break;
-            }
+                CursorType.Pan => this.PanCursor,
+                CursorType.ZoomRectangle => this.ZoomRectangleCursor,
+                CursorType.ZoomHorizontal => this.ZoomHorizontalCursor,
+                CursorType.ZoomVertical => this.ZoomVerticalCursor,
+                _ => Cursors.Arrow,
+            };
         }
 
         /// <summary>
@@ -312,14 +269,11 @@ namespace OxyPlot.WindowsForms
         /// <param name="data">The data.</param>
         public void ShowTracker(TrackerHitResult data)
         {
-            if (this.trackerLabel == null)
-            {
-                this.trackerLabel = new Label { Parent = this, BackColor = Color.LightSkyBlue, AutoSize = true, Padding = new Padding(5) };
-            }
+            this.trackerLabel ??= new Label { Parent = this, BackColor = Color.LightSkyBlue, AutoSize = true, Padding = new Padding(5) };
 
             this.trackerLabel.Text = data.ToString();
             this.trackerLabel.Top = Math.Min(Math.Max(0, (int)data.Position.Y - this.trackerLabel.Height), this.Height - this.trackerLabel.Height);
-            this.trackerLabel.Left = Math.Min(Math.Max(0, (int)data.Position.X - (this.trackerLabel.Width / 2)), this.Width - this.trackerLabel.Width);
+            this.trackerLabel.Left = Math.Min(Math.Max(0, (int)data.Position.X - this.trackerLabel.Width / 2), this.Width - this.trackerLabel.Width);
             this.trackerLabel.Visible = true;
             this.trackerLabel.UseMnemonic = false;
         }
@@ -450,10 +404,8 @@ namespace OxyPlot.WindowsForms
                     {
                         if (!this.model.Background.IsUndefined())
                         {
-                            using (var brush = new SolidBrush(this.model.Background.ToColor()))
-                            {
-                                e.Graphics.FillRectangle(brush, e.ClipRectangle);
-                            }
+                            using var brush = new SolidBrush(this.model.Background.ToColor());
+                            e.Graphics.FillRectangle(brush, e.ClipRectangle);
                         }
 
                         ((IPlotModel)this.model).Render(this.renderContext, new OxyRect(0, 0, this.Width, this.Height));
@@ -461,13 +413,11 @@ namespace OxyPlot.WindowsForms
 
                     if (this.zoomRectangle != Rectangle.Empty)
                     {
-                        using (var zoomBrush = new SolidBrush(Color.FromArgb(0x40, 0xFF, 0xFF, 0x00)))
-                        using (var zoomPen = new Pen(Color.Black))
-                        {
-                            zoomPen.DashPattern = new float[] { 3, 1 };
-                            e.Graphics.FillRectangle(zoomBrush, this.zoomRectangle);
-                            e.Graphics.DrawRectangle(zoomPen, this.zoomRectangle);
-                        }
+                        using var zoomBrush = new SolidBrush(Color.FromArgb(0x40, 0xFF, 0xFF, 0x00));
+                        using var zoomPen = new Pen(Color.Black);
+                        zoomPen.DashPattern = new float[] { 3, 1 };
+                        e.Graphics.FillRectangle(zoomBrush, this.zoomRectangle);
+                        e.Graphics.DrawRectangle(zoomPen, this.zoomRectangle);
                     }
                 }
             }
@@ -476,12 +426,10 @@ namespace OxyPlot.WindowsForms
                 var trace = new StackTrace(paintException);
                 Debug.WriteLine(paintException);
                 Debug.WriteLine(trace);
-                using (var font = new Font("Arial", 10))
-                {
-                    e.Graphics.ResetTransform();
-                    e.Graphics.DrawString(
-                        "OxyPlot paint exception: " + paintException.Message, font, Brushes.Red, this.Width * 0.5f, this.Height * 0.5f, new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });
-                }
+                using var font = new Font("Arial", 10);
+                e.Graphics.ResetTransform();
+                e.Graphics.DrawString(
+                    "OxyPlot paint exception: " + paintException.Message, font, Brushes.Red, this.Width * 0.5f, this.Height * 0.5f, new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });
             }
         }
 
@@ -513,7 +461,7 @@ namespace OxyPlot.WindowsForms
         /// <param name="disposing">Whether to dispose managed resources or not.</param>
         protected override void Dispose(bool disposing)
         {
-            bool disposed = this.IsDisposed;
+            var disposed = this.IsDisposed;
 
             base.Dispose(disposing);
 

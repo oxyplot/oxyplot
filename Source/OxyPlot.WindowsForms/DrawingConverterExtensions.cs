@@ -31,7 +31,7 @@ namespace OxyPlot.WindowsForms
         {
             double dx = p1.X - p2.X;
             double dy = p1.Y - p2.Y;
-            return Math.Sqrt((dx * dx) + (dy * dy));
+            return Math.Sqrt(dx * dx + dy * dy);
         }
 
         /// <summary>
@@ -61,15 +61,12 @@ namespace OxyPlot.WindowsForms
         /// <returns>A HorizontalTextAlign.</returns>
         public static OxyPlot.HorizontalAlignment ToHorizontalTextAlign(this HorizontalAlignment alignment)
         {
-            switch (alignment)
+            return alignment switch
             {
-                case HorizontalAlignment.Center:
-                    return OxyPlot.HorizontalAlignment.Center;
-                case HorizontalAlignment.Right:
-                    return OxyPlot.HorizontalAlignment.Right;
-                default:
-                    return OxyPlot.HorizontalAlignment.Left;
-            }
+                HorizontalAlignment.Center => OxyPlot.HorizontalAlignment.Center,
+                HorizontalAlignment.Right => OxyPlot.HorizontalAlignment.Right,
+                _ => OxyPlot.HorizontalAlignment.Left,
+            };
         }
 
         /// <summary>
@@ -89,8 +86,7 @@ namespace OxyPlot.WindowsForms
         /// <returns>An <see cref="OxyColor" />.</returns>
         public static OxyColor ToOxyColor(this Brush brush)
         {
-            var scb = brush as SolidBrush;
-            return scb != null ? scb.Color.ToOxyColor() : OxyColors.Undefined;
+            return brush is SolidBrush scb ? scb.Color.ToOxyColor() : OxyColors.Undefined;
         }
 
         /// <summary>
@@ -156,7 +152,7 @@ namespace OxyPlot.WindowsForms
             }
 
             var pts = new ScreenPoint[points.Length];
-            for (int i = 0; i < points.Length; i++)
+            for (var i = 0; i < points.Length; i++)
             {
                 pts[i] = points[i].ToScreenPoint();
             }

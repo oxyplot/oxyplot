@@ -13,6 +13,7 @@ namespace OxyPlot.Core.Drawing
 namespace OxyPlot.WindowsForms
 #endif
 {
+    using OxyPlot;
     using System;
     using System.Collections.Generic;
     using System.Drawing;
@@ -22,8 +23,6 @@ namespace OxyPlot.WindowsForms
     using System.IO;
     using System.Linq;
 
-    using OxyPlot;
-
     /// <summary>
     /// The graphics render context.
     /// </summary>
@@ -32,27 +31,27 @@ namespace OxyPlot.WindowsForms
         /// <summary>
         /// The font size factor.
         /// </summary>
-        private const float FontsizeFactor = 0.8f;
+        private const float fontsizeFactor = 0.8f;
 
         /// <summary>
         /// The images in use
         /// </summary>
-        private readonly HashSet<OxyImage> imagesInUse = new HashSet<OxyImage>();
+        private readonly HashSet<OxyImage> imagesInUse = new();
 
         /// <summary>
         /// The image cache
         /// </summary>
-        private readonly Dictionary<OxyImage, Image> imageCache = new Dictionary<OxyImage, Image>();
+        private readonly Dictionary<OxyImage, Image> imageCache = new();
 
         /// <summary>
         /// The brush cache.
         /// </summary>
-        private readonly Dictionary<OxyColor, Brush> brushes = new Dictionary<OxyColor, Brush>();
+        private readonly Dictionary<OxyColor, Brush> brushes = new();
 
         /// <summary>
         /// The pen cache.
         /// </summary>
-        private readonly Dictionary<GraphicsPenDescription, Pen> pens = new Dictionary<GraphicsPenDescription, Pen>();
+        private readonly Dictionary<GraphicsPenDescription, Pen> pens = new();
 
         /// <summary>
         /// The string format.
@@ -105,7 +104,7 @@ namespace OxyPlot.WindowsForms
             {
                 return;
             }
-            
+
             var pen = this.GetCachedPen(stroke, thickness);
             this.g.DrawEllipse(pen, (float)rect.Left, (float)rect.Top, (float)rect.Width, (float)rect.Height);
         }
@@ -127,7 +126,7 @@ namespace OxyPlot.WindowsForms
             this.SetSmoothingMode(this.ShouldUseAntiAliasingForLine(edgeRenderingMode, points));
 
             var pen = this.GetCachedPen(stroke, thickness, dashArray, lineJoin);
-            this.g.DrawLines(pen, this.ToPoints(points));
+            this.g.DrawLines(pen, ToPoints(points));
         }
 
         /// <inheritdoc/>
@@ -147,7 +146,7 @@ namespace OxyPlot.WindowsForms
 
             this.SetSmoothingMode(this.ShouldUseAntiAliasingForLine(edgeRenderingMode, points));
 
-            var pts = this.ToPoints(points);
+            var pts = ToPoints(points);
             if (fill.IsVisible())
             {
                 this.g.FillPolygon(this.GetCachedBrush(fill), pts);
@@ -214,65 +213,63 @@ namespace OxyPlot.WindowsForms
 
             var fontStyle = fontWeight < 700 ? FontStyle.Regular : FontStyle.Bold;
 
-            using (var font = CreateFont(fontFamily, fontSize, fontStyle))
+            using var font = CreateFont(fontFamily, fontSize, fontStyle);
+            this.stringFormat.Alignment = StringAlignment.Near;
+            this.stringFormat.LineAlignment = StringAlignment.Near;
+            var size = Ceiling(this.g.MeasureString(text, font, int.MaxValue, this.stringFormat));
+            if (maxSize != null)
             {
-                this.stringFormat.Alignment = StringAlignment.Near;
-                this.stringFormat.LineAlignment = StringAlignment.Near;
-                var size = Ceiling(this.g.MeasureString(text, font, int.MaxValue, this.stringFormat));
-                if (maxSize != null)
+                if (size.Width > maxSize.Value.Width)
                 {
-                    if (size.Width > maxSize.Value.Width)
-                    {
-                        size.Width = (float)maxSize.Value.Width;
-                    }
-
-                    if (size.Height > maxSize.Value.Height)
-                    {
-                        size.Height = (float)maxSize.Value.Height;
-                    }
+                    size.Width = (float)maxSize.Value.Width;
                 }
 
-                float dx = 0;
-                if (halign == HorizontalAlignment.Center)
+                if (size.Height > maxSize.Value.Height)
                 {
-                    dx = -size.Width / 2;
+                    size.Height = (float)maxSize.Value.Height;
                 }
-
-                if (halign == HorizontalAlignment.Right)
-                {
-                    dx = -size.Width;
-                }
-
-                float dy = 0;
-                this.stringFormat.LineAlignment = StringAlignment.Near;
-                if (valign == VerticalAlignment.Middle)
-                {
-                    dy = -size.Height / 2;
-                }
-
-                if (valign == VerticalAlignment.Bottom)
-                {
-                    dy = -size.Height;
-                }
-
-                var graphicsState = this.g.Save();
-
-                this.g.TranslateTransform((float)p.X, (float)p.Y);
-
-                var layoutRectangle = new RectangleF(0, 0, size.Width, size.Height);
-                if (Math.Abs(rotate) > double.Epsilon)
-                {
-                    this.g.RotateTransform((float)rotate);
-
-                    layoutRectangle.Height += (float)(fontSize / 18.0);
-                }
-
-                this.g.TranslateTransform(dx, dy);
-
-                this.g.DrawString(text, font, this.GetCachedBrush(fill), layoutRectangle, this.stringFormat);
-
-                this.g.Restore(graphicsState);
             }
+
+            float dx = 0;
+            if (halign == HorizontalAlignment.Center)
+            {
+                dx = -size.Width / 2;
+            }
+
+            if (halign == HorizontalAlignment.Right)
+            {
+                dx = -size.Width;
+            }
+
+            float dy = 0;
+            this.stringFormat.LineAlignment = StringAlignment.Near;
+            if (valign == VerticalAlignment.Middle)
+            {
+                dy = -size.Height / 2;
+            }
+
+            if (valign == VerticalAlignment.Bottom)
+            {
+                dy = -size.Height;
+            }
+
+            var graphicsState = this.g.Save();
+
+            this.g.TranslateTransform((float)p.X, (float)p.Y);
+
+            var layoutRectangle = new RectangleF(0, 0, size.Width, size.Height);
+            if (Math.Abs(rotate) > double.Epsilon)
+            {
+                this.g.RotateTransform((float)rotate);
+
+                layoutRectangle.Height += (float)(fontSize / 18.0);
+            }
+
+            this.g.TranslateTransform(dx, dy);
+
+            this.g.DrawString(text, font, this.GetCachedBrush(fill), layoutRectangle, this.stringFormat);
+
+            this.g.Restore(graphicsState);
         }
 
         /// <summary>
@@ -291,13 +288,11 @@ namespace OxyPlot.WindowsForms
             }
 
             var fontStyle = fontWeight < 700 ? FontStyle.Regular : FontStyle.Bold;
-            using (var font = CreateFont(fontFamily, fontSize, fontStyle))
-            {
-                this.stringFormat.Alignment = StringAlignment.Near;
-                this.stringFormat.LineAlignment = StringAlignment.Near;
-                var size = Ceiling(this.g.MeasureString(text, font, int.MaxValue, this.stringFormat));
-                return new OxySize(size.Width, size.Height);
-            }
+            using var font = CreateFont(fontFamily, fontSize, fontStyle);
+            this.stringFormat.Alignment = StringAlignment.Near;
+            this.stringFormat.LineAlignment = StringAlignment.Near;
+            var size = Ceiling(this.g.MeasureString(text, font, int.MaxValue, this.stringFormat));
+            return new OxySize(size.Width, size.Height);
         }
 
         /// <summary>
@@ -353,10 +348,10 @@ namespace OxyPlot.WindowsForms
                 }
 
                 this.g.InterpolationMode = interpolate ? InterpolationMode.HighQualityBicubic : InterpolationMode.NearestNeighbor;
-                int sx = (int)Math.Floor(x);
-                int sy = (int)Math.Floor(y);
-                int sw = (int)Math.Ceiling(x + w) - sx;
-                int sh = (int)Math.Ceiling(y + h) - sy;
+                var sx = (int)Math.Floor(x);
+                var sy = (int)Math.Floor(y);
+                var sw = (int)Math.Ceiling(x + w) - sx;
+                var sh = (int)Math.Ceiling(y + h) - sy;
                 var destRect = new Rectangle(sx, sy, sw, sh);
                 this.g.DrawImage(image, destRect, (float)srcX - 0.5f, (float)srcY - 0.5f, (float)srcWidth, (float)srcHeight, GraphicsUnit.Pixel, ia);
             }
@@ -384,6 +379,7 @@ namespace OxyPlot.WindowsForms
             {
                 i.Value.Dispose();
             }
+
             this.imageCache.Clear();
 
             // dispose pens, brushes etc.
@@ -393,12 +389,14 @@ namespace OxyPlot.WindowsForms
             {
                 brush.Dispose();
             }
+
             this.brushes.Clear();
 
             foreach (var pen in this.pens.Values)
             {
                 pen.Dispose();
             }
+
             this.pens.Clear();
         }
 
@@ -411,7 +409,7 @@ namespace OxyPlot.WindowsForms
         /// <returns>A font</returns>
         private static Font CreateFont(string fontFamily, double fontSize, FontStyle fontStyle)
         {
-            return new Font(fontFamily, (float)fontSize * FontsizeFactor, fontStyle);
+            return new Font(fontFamily, (float)fontSize * fontsizeFactor, fontStyle);
         }
 
         /// <summary>
@@ -442,8 +440,7 @@ namespace OxyPlot.WindowsForms
                 this.imagesInUse.Add(source);
             }
 
-            Image src;
-            if (this.imageCache.TryGetValue(source, out src))
+            if (this.imageCache.TryGetValue(source, out var src))
             {
                 return src;
             }
@@ -465,8 +462,7 @@ namespace OxyPlot.WindowsForms
         /// <returns>A <see cref="Brush" />.</returns>
         private Brush GetCachedBrush(OxyColor fill)
         {
-            Brush brush;
-            if (this.brushes.TryGetValue(fill, out brush))
+            if (this.brushes.TryGetValue(fill, out var brush))
             {
                 return brush;
             }
@@ -484,10 +480,9 @@ namespace OxyPlot.WindowsForms
         /// <returns>A <see cref="Pen" />.</returns>
         private Pen GetCachedPen(OxyColor stroke, double thickness, double[] dashArray = null, OxyPlot.LineJoin lineJoin = OxyPlot.LineJoin.Miter)
         {
-            GraphicsPenDescription description = new GraphicsPenDescription(stroke, thickness, dashArray, lineJoin);
+            var description = new GraphicsPenDescription(stroke, thickness, dashArray, lineJoin);
 
-            Pen pen;
-            if (this.pens.TryGetValue(description, out pen))
+            if (this.pens.TryGetValue(description, out var pen))
             {
                 return pen;
             }
@@ -503,13 +498,13 @@ namespace OxyPlot.WindowsForms
         /// <param name="dashArray">The dash array.</param>
         /// <param name="lineJoin">The line join.</param>
         /// <returns>A <see cref="Pen" />.</returns>
-        private Pen CreatePen(OxyColor stroke, double thickness, double[] dashArray = null, OxyPlot.LineJoin lineJoin = OxyPlot.LineJoin.Miter)
+        private static Pen CreatePen(OxyColor stroke, double thickness, double[] dashArray = null, OxyPlot.LineJoin lineJoin = OxyPlot.LineJoin.Miter)
         {
             var pen = new Pen(stroke.ToColor(), (float)thickness);
 
             if (dashArray != null)
             {
-                pen.DashPattern = this.ToFloatArray(dashArray);
+                pen.DashPattern = ToFloatArray(dashArray);
             }
 
             switch (lineJoin)
@@ -520,7 +515,7 @@ namespace OxyPlot.WindowsForms
                 case OxyPlot.LineJoin.Bevel:
                     pen.LineJoin = System.Drawing.Drawing2D.LineJoin.Bevel;
                     break;
-                // The default LineJoin is Miter
+                    // The default LineJoin is Miter
             }
 
             return pen;
@@ -540,7 +535,7 @@ namespace OxyPlot.WindowsForms
         /// </summary>
         /// <param name="a">The a.</param>
         /// <returns>The float array.</returns>
-        private float[] ToFloatArray(double[] a)
+        private static float[] ToFloatArray(double[] a)
         {
             if (a == null)
             {
@@ -548,7 +543,7 @@ namespace OxyPlot.WindowsForms
             }
 
             var r = new float[a.Length];
-            for (int i = 0; i < a.Length; i++)
+            for (var i = 0; i < a.Length; i++)
             {
                 r[i] = (float)a[i];
             }
@@ -561,16 +556,16 @@ namespace OxyPlot.WindowsForms
         /// </summary>
         /// <param name="points">The points.</param>
         /// <returns>An array of points.</returns>
-        private PointF[] ToPoints(IList<ScreenPoint> points)
+        private static PointF[] ToPoints(IList<ScreenPoint> points)
         {
             if (points == null)
             {
                 return null;
             }
 
-            var r = new PointF[points.Count()];
-            int i = 0;
-            foreach (ScreenPoint p in points)
+            var r = new PointF[points.Count];
+            var i = 0;
+            foreach (var p in points)
             {
                 r[i++] = new PointF((float)p.X, (float)p.Y);
             }

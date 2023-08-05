@@ -5,12 +5,6 @@ namespace OxyPlot.Core.Drawing
 namespace OxyPlot.WindowsForms
 #endif
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-
     /// <summary>
     /// Describes a GDI+ Pen.
     /// </summary>
@@ -25,32 +19,32 @@ namespace OxyPlot.WindowsForms
         /// <param name="lineJoin">The line join.</param>
         public GraphicsPenDescription(OxyColor color, double thickness, double[] dashArray = null, OxyPlot.LineJoin lineJoin = OxyPlot.LineJoin.Miter)
         {
-            Color = color;
-            Thickness = thickness;
-            DashArray = dashArray;
-            LineJoin = lineJoin;
+            this.Color = color;
+            this.Thickness = thickness;
+            this.DashArray = dashArray;
+            this.LineJoin = lineJoin;
 
-            cachedHashCode = ComputeHashCode();
+            this.cachedHashCode = this.ComputeHashCode();
         }
-        
+
         /// <summary>
         /// Gets the color of the pen.
         /// </summary>
         /// <value>The color.</value>
         public OxyColor Color { get; }
-        
+
         /// <summary>
         /// Gets the line thickness.
         /// </summary>
         /// <value>The line thickness.</value>
         public double Thickness { get; }
-        
+
         /// <summary>
         /// Gets the dash array.
         /// </summary>
         /// <value>The dash array.</value>
         public double[] DashArray { get; }
-        
+
         /// <summary>
         /// Gets the line join type.
         /// </summary>
@@ -61,30 +55,28 @@ namespace OxyPlot.WindowsForms
         /// The HashCode of the <see cref="GraphicsPenDescription" /> instance, as computed in the constructor.
         /// </summary>
         private readonly int cachedHashCode;
-        
+
         /// <summary>
-        /// Determines whether the specified <see cref="System.Object" /> is equal to this instance.
+        /// Determines whether the specified <see cref="object" /> is equal to this instance.
         /// </summary>
-        /// <param name="obj">The <see cref="System.Object" /> to compare with this instance.</param>
-        /// <returns><c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c> .</returns>
+        /// <param name="obj">The <see cref="object" /> to compare with this instance.</param>
+        /// <returns><c>true</c> if the specified <see cref="object" /> is equal to this instance; otherwise, <c>false</c> .</returns>
         public override bool Equals(object obj)
         {
-            var description = obj as GraphicsPenDescription;
-
-            return description != null &&
-                   Color.Equals(description.Color) &&
-                   Thickness == description.Thickness &&
-                   DashArraysEquals(DashArray, description.DashArray) &&
-                   LineJoin == description.LineJoin;
+            return obj is GraphicsPenDescription description &&
+                   this.Color.Equals(description.Color) &&
+                   this.Thickness == description.Thickness &&
+                   DashArraysEquals(this.DashArray, description.DashArray) &&
+                   this.LineJoin == description.LineJoin;
         }
-        
+
         /// <summary>
         /// Returns a hash code for this instance.
         /// </summary>
         /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
         public override int GetHashCode()
         {
-            return cachedHashCode;
+            return this.cachedHashCode;
         }
 
         /// <summary>
@@ -94,13 +86,13 @@ namespace OxyPlot.WindowsForms
         private int ComputeHashCode()
         {
             var hashCode = 754997215;
-            
+
             unchecked
             {
-                hashCode = hashCode * -1521134295 + Color.GetHashCode();
-                hashCode = hashCode * -1521134295 + Thickness.GetHashCode();
-                hashCode = hashCode * -1521134295 + ComputeDashArrayHashCode(DashArray);
-                hashCode = hashCode * -1521134295 + LineJoin.GetHashCode();
+                hashCode = hashCode * -1521134295 + this.Color.GetHashCode();
+                hashCode = hashCode * -1521134295 + this.Thickness.GetHashCode();
+                hashCode = hashCode * -1521134295 + ComputeDashArrayHashCode(this.DashArray);
+                hashCode = hashCode * -1521134295 + this.LineJoin.GetHashCode();
             }
 
             return hashCode;
@@ -118,9 +110,9 @@ namespace OxyPlot.WindowsForms
                 return -1;
             }
 
-            int hashCode = array.Length;
+            var hashCode = array.Length;
 
-            for (int i = 0; i < array.Length; i++)
+            for (var i = 0; i < array.Length; i++)
             {
                 unchecked
                 {
@@ -154,7 +146,7 @@ namespace OxyPlot.WindowsForms
                 return false;
             }
 
-            for (int i = 0; i < l.Length; i++)
+            for (var i = 0; i < l.Length; i++)
             {
                 if (l[i] != r[i])
                 {

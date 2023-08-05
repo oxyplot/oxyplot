@@ -24,21 +24,15 @@ namespace OxyPlot.WindowsForms
         /// <returns>The converted mouse button.</returns>
         public static OxyMouseButton Convert(this MouseButtons button)
         {
-            switch (button)
+            return button switch
             {
-                case MouseButtons.Left:
-                    return OxyMouseButton.Left;
-                case MouseButtons.Middle:
-                    return OxyMouseButton.Middle;
-                case MouseButtons.Right:
-                    return OxyMouseButton.Right;
-                case MouseButtons.XButton1:
-                    return OxyMouseButton.XButton1;
-                case MouseButtons.XButton2:
-                    return OxyMouseButton.XButton2;
-            }
-
-            return OxyMouseButton.None;
+                MouseButtons.Left => OxyMouseButton.Left,
+                MouseButtons.Middle => OxyMouseButton.Middle,
+                MouseButtons.Right => OxyMouseButton.Right,
+                MouseButtons.XButton1 => OxyMouseButton.XButton1,
+                MouseButtons.XButton2 => OxyMouseButton.XButton2,
+                _ => OxyMouseButton.None,
+            };
         }
 
         /// <summary>
@@ -125,167 +119,88 @@ namespace OxyPlot.WindowsForms
         /// <returns>The converted key.</returns>
         public static OxyKey Convert(this Keys k)
         {
-            switch (k)
+            return k switch
             {
-                case Keys.A:
-                    return OxyKey.A;
-                case Keys.Add:
-                    return OxyKey.Add;
-                case Keys.B:
-                    return OxyKey.B;
-                case Keys.Back:
-                    return OxyKey.Backspace;
-                case Keys.C:
-                    return OxyKey.C;
-                case Keys.D:
-                    return OxyKey.D;
-                case Keys.D0:
-                    return OxyKey.D0;
-                case Keys.D1:
-                    return OxyKey.D1;
-                case Keys.D2:
-                    return OxyKey.D2;
-                case Keys.D3:
-                    return OxyKey.D3;
-                case Keys.D4:
-                    return OxyKey.D4;
-                case Keys.D5:
-                    return OxyKey.D5;
-                case Keys.D6:
-                    return OxyKey.D6;
-                case Keys.D7:
-                    return OxyKey.D7;
-                case Keys.D8:
-                    return OxyKey.D8;
-                case Keys.D9:
-                    return OxyKey.D9;
-                case Keys.Decimal:
-                    return OxyKey.Decimal;
-                case Keys.Delete:
-                    return OxyKey.Delete;
-                case Keys.Divide:
-                    return OxyKey.Divide;
-                case Keys.Down:
-                    return OxyKey.Down;
-                case Keys.E:
-                    return OxyKey.E;
-                case Keys.End:
-                    return OxyKey.End;
-                case Keys.Enter:
-                    return OxyKey.Enter;
-                case Keys.Escape:
-                    return OxyKey.Escape;
-                case Keys.F:
-                    return OxyKey.F;
-                case Keys.F1:
-                    return OxyKey.F1;
-                case Keys.F10:
-                    return OxyKey.F10;
-                case Keys.F11:
-                    return OxyKey.F11;
-                case Keys.F12:
-                    return OxyKey.F12;
-                case Keys.F2:
-                    return OxyKey.F2;
-                case Keys.F3:
-                    return OxyKey.F3;
-                case Keys.F4:
-                    return OxyKey.F4;
-                case Keys.F5:
-                    return OxyKey.F5;
-                case Keys.F6:
-                    return OxyKey.F6;
-                case Keys.F7:
-                    return OxyKey.F7;
-                case Keys.F8:
-                    return OxyKey.F8;
-                case Keys.F9:
-                    return OxyKey.F9;
-                case Keys.G:
-                    return OxyKey.G;
-                case Keys.H:
-                    return OxyKey.H;
-                case Keys.Home:
-                    return OxyKey.Home;
-                case Keys.I:
-                    return OxyKey.I;
-                case Keys.Insert:
-                    return OxyKey.Insert;
-                case Keys.J:
-                    return OxyKey.J;
-                case Keys.K:
-                    return OxyKey.K;
-                case Keys.L:
-                    return OxyKey.L;
-                case Keys.Left:
-                    return OxyKey.Left;
-                case Keys.M:
-                    return OxyKey.M;
-                case Keys.Multiply:
-                    return OxyKey.Multiply;
-                case Keys.N:
-                    return OxyKey.N;
-                case Keys.NumPad0:
-                    return OxyKey.NumPad0;
-                case Keys.NumPad1:
-                    return OxyKey.NumPad1;
-                case Keys.NumPad2:
-                    return OxyKey.NumPad2;
-                case Keys.NumPad3:
-                    return OxyKey.NumPad3;
-                case Keys.NumPad4:
-                    return OxyKey.NumPad4;
-                case Keys.NumPad5:
-                    return OxyKey.NumPad5;
-                case Keys.NumPad6:
-                    return OxyKey.NumPad6;
-                case Keys.NumPad7:
-                    return OxyKey.NumPad7;
-                case Keys.NumPad8:
-                    return OxyKey.NumPad8;
-                case Keys.NumPad9:
-                    return OxyKey.NumPad9;
-                case Keys.O:
-                    return OxyKey.O;
-                case Keys.P:
-                    return OxyKey.P;
-                case Keys.PageDown:
-                    return OxyKey.PageDown;
-                case Keys.PageUp:
-                    return OxyKey.PageUp;
-                case Keys.Q:
-                    return OxyKey.Q;
-                case Keys.R:
-                    return OxyKey.R;
-                case Keys.Right:
-                    return OxyKey.Right;
-                case Keys.S:
-                    return OxyKey.S;
-                case Keys.Space:
-                    return OxyKey.Space;
-                case Keys.Subtract:
-                    return OxyKey.Subtract;
-                case Keys.T:
-                    return OxyKey.T;
-                case Keys.Tab:
-                    return OxyKey.Tab;
-                case Keys.U:
-                    return OxyKey.U;
-                case Keys.Up:
-                    return OxyKey.Up;
-                case Keys.V:
-                    return OxyKey.V;
-                case Keys.W:
-                    return OxyKey.W;
-                case Keys.X:
-                    return OxyKey.X;
-                case Keys.Y:
-                    return OxyKey.Y;
-                case Keys.Z:
-                    return OxyKey.Z;
-                default:
-                    return OxyKey.Unknown;
-            }
+                Keys.A => OxyKey.A,
+                Keys.Add => OxyKey.Add,
+                Keys.B => OxyKey.B,
+                Keys.Back => OxyKey.Backspace,
+                Keys.C => OxyKey.C,
+                Keys.D => OxyKey.D,
+                Keys.D0 => OxyKey.D0,
+                Keys.D1 => OxyKey.D1,
+                Keys.D2 => OxyKey.D2,
+                Keys.D3 => OxyKey.D3,
+                Keys.D4 => OxyKey.D4,
+                Keys.D5 => OxyKey.D5,
+                Keys.D6 => OxyKey.D6,
+                Keys.D7 => OxyKey.D7,
+                Keys.D8 => OxyKey.D8,
+                Keys.D9 => OxyKey.D9,
+                Keys.Decimal => OxyKey.Decimal,
+                Keys.Delete => OxyKey.Delete,
+                Keys.Divide => OxyKey.Divide,
+                Keys.Down => OxyKey.Down,
+                Keys.E => OxyKey.E,
+                Keys.End => OxyKey.End,
+                Keys.Enter => OxyKey.Enter,
+                Keys.Escape => OxyKey.Escape,
+                Keys.F => OxyKey.F,
+                Keys.F1 => OxyKey.F1,
+                Keys.F10 => OxyKey.F10,
+                Keys.F11 => OxyKey.F11,
+                Keys.F12 => OxyKey.F12,
+                Keys.F2 => OxyKey.F2,
+                Keys.F3 => OxyKey.F3,
+                Keys.F4 => OxyKey.F4,
+                Keys.F5 => OxyKey.F5,
+                Keys.F6 => OxyKey.F6,
+                Keys.F7 => OxyKey.F7,
+                Keys.F8 => OxyKey.F8,
+                Keys.F9 => OxyKey.F9,
+                Keys.G => OxyKey.G,
+                Keys.H => OxyKey.H,
+                Keys.Home => OxyKey.Home,
+                Keys.I => OxyKey.I,
+                Keys.Insert => OxyKey.Insert,
+                Keys.J => OxyKey.J,
+                Keys.K => OxyKey.K,
+                Keys.L => OxyKey.L,
+                Keys.Left => OxyKey.Left,
+                Keys.M => OxyKey.M,
+                Keys.Multiply => OxyKey.Multiply,
+                Keys.N => OxyKey.N,
+                Keys.NumPad0 => OxyKey.NumPad0,
+                Keys.NumPad1 => OxyKey.NumPad1,
+                Keys.NumPad2 => OxyKey.NumPad2,
+                Keys.NumPad3 => OxyKey.NumPad3,
+                Keys.NumPad4 => OxyKey.NumPad4,
+                Keys.NumPad5 => OxyKey.NumPad5,
+                Keys.NumPad6 => OxyKey.NumPad6,
+                Keys.NumPad7 => OxyKey.NumPad7,
+                Keys.NumPad8 => OxyKey.NumPad8,
+                Keys.NumPad9 => OxyKey.NumPad9,
+                Keys.O => OxyKey.O,
+                Keys.P => OxyKey.P,
+                Keys.PageDown => OxyKey.PageDown,
+                Keys.PageUp => OxyKey.PageUp,
+                Keys.Q => OxyKey.Q,
+                Keys.R => OxyKey.R,
+                Keys.Right => OxyKey.Right,
+                Keys.S => OxyKey.S,
+                Keys.Space => OxyKey.Space,
+                Keys.Subtract => OxyKey.Subtract,
+                Keys.T => OxyKey.T,
+                Keys.Tab => OxyKey.Tab,
+                Keys.U => OxyKey.U,
+                Keys.Up => OxyKey.Up,
+                Keys.V => OxyKey.V,
+                Keys.W => OxyKey.W,
+                Keys.X => OxyKey.X,
+                Keys.Y => OxyKey.Y,
+                Keys.Z => OxyKey.Z,
+                _ => OxyKey.Unknown,
+            };
         }
     }
 }

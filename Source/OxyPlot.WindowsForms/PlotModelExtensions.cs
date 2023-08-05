@@ -27,13 +27,9 @@ namespace OxyPlot.WindowsForms
         /// <returns>A <see cref="string" />.</returns>
         public static string ToSvg(this PlotModel model, double width, double height, bool isDocument)
         {
-            using (var g = Graphics.FromHwnd(IntPtr.Zero))
-            {
-                using (var rc = new GraphicsRenderContext(g) { RendersToScreen = false })
-                {
-                    return OxyPlot.SvgExporter.ExportToString(model, width, height, isDocument, rc);
-                }
-            }
+            using var g = Graphics.FromHwnd(IntPtr.Zero);
+            using var rc = new GraphicsRenderContext(g) { RendersToScreen = false };
+            return OxyPlot.SvgExporter.ExportToString(model, width, height, isDocument, rc);
         }
     }
 }
