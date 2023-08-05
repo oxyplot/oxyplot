@@ -6,7 +6,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <PackageTags>plotting plot charting chart wpf</PackageTags>
-    <LangVersion>8</LangVersion>
+    <LangVersion>11</LangVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>OxyPlot.SkiaSharp.Wpf.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>

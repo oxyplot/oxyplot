@@ -83,6 +83,7 @@ namespace OxyPlot.SkiaSharp.Wpf
             {
                 return;
             }
+
             this.SkiaRenderContext.SkCanvas = e.Surface.Canvas;
             base.RenderOverride();
             this.SkiaRenderContext.SkCanvas = null;

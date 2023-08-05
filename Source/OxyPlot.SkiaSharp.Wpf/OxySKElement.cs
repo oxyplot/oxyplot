@@ -87,7 +87,7 @@ namespace OxyPlot.SkiaSharp.Wpf
         /// </summary>
         public bool IgnorePixelScaling
         {
-            get { return this.ignorePixelScaling; }
+            get => this.ignorePixelScaling;
             set
             {
                 this.ignorePixelScaling = value;
@@ -150,12 +150,12 @@ namespace OxyPlot.SkiaSharp.Wpf
             this.bitmap.Unlock();
 
             // get window to screen offset
-            var ancestor = GetAncestorVisualFromVisualTree(this);
+            var ancestor = this.GetAncestorVisualFromVisualTree(this);
             var visualOffset = ancestor != null ? this.TransformToAncestor(ancestor).Transform(default) : default;
 
             // calculate offset to physical pixels
-            var offsetX = ((visualOffset.X * scaleX) % 1) / scaleX;
-            var offsetY = ((visualOffset.Y * scaleY) % 1) / scaleY;
+            var offsetX = visualOffset.X * scaleX % 1 / scaleX;
+            var offsetY = visualOffset.Y * scaleY % 1 / scaleY;
 
             // draw, scaling back down from the (rounded) bitmap dimensions
             drawingContext.DrawImage(this.bitmap, new Rect(-offsetX, -offsetY, this.bitmap.Width / renderScale, this.bitmap.Height / renderScale));
@@ -200,6 +200,7 @@ namespace OxyPlot.SkiaSharp.Wpf
                 scaleX = m.M11;
                 scaleY = m.M22;
             }
+
             return new SKSizeI((int)(w * scaleX), (int)(h * scaleY));
 
             static bool IsPositive(double value)
@@ -214,13 +215,14 @@ namespace OxyPlot.SkiaSharp.Wpf
         /// <returns> The host visual from the visual tree.</returns>
         private Visual GetAncestorVisualFromVisualTree(DependencyObject startElement)
         {
-            DependencyObject child = startElement;
-            DependencyObject parent = VisualTreeHelper.GetParent(child);
+            var child = startElement;
+            var parent = VisualTreeHelper.GetParent(child);
             while (parent != null)
             {
                 child = parent;
                 parent = VisualTreeHelper.GetParent(child);
             }
+
             return child is Visual visualChild ? visualChild : Window.GetWindow(this);
         }
 
@@ -231,13 +233,14 @@ namespace OxyPlot.SkiaSharp.Wpf
         public virtual double GetRenderScale()
         {
             var transform = VisualTreeHelper.GetTransform(this)?.Value ?? Matrix.Identity;
-            DependencyObject control = VisualTreeHelper.GetParent(this);
+            var control = VisualTreeHelper.GetParent(this);
             while (control != null)
             {
                 if (control is Visual v && VisualTreeHelper.GetTransform(v) is Transform vt)
                 {
                     transform *= vt.Value;
                 }
+
                 control = VisualTreeHelper.GetParent(control);
             }
 
