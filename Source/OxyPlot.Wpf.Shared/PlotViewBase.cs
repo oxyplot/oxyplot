@@ -13,10 +13,10 @@ namespace OxyPlot.Wpf
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Controls.Primitives;
+    using System.Windows.Documents;
     using System.Windows.Input;
     using System.Windows.Media;
     using System.Windows.Threading;
-    using System.Windows.Documents;
     using CursorType = OxyPlot.CursorType;
 
     /// <summary>
@@ -48,7 +48,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// The model lock.
         /// </summary>
-        private readonly object modelLock = new object();
+        private readonly object modelLock = new();
 
         /// <summary>
         /// The current tracker.
@@ -126,7 +126,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets the coordinates of the client area of the view.
         /// </summary>
-        public OxyRect ClientArea => new OxyRect(0, 0, this.ActualWidth, this.ActualHeight);
+        public OxyRect ClientArea => new(0, 0, this.ActualWidth, this.ActualHeight);
 
         /// <summary>
         /// Gets the tracker definitions.
@@ -192,8 +192,7 @@ namespace OxyPlot.Wpf
             this.overlays = new Canvas();
             this.grid.Children.Add(this.overlays);
 
-            this.zoomControl = new ContentControl();
-            this.zoomControl.Focusable = false;
+            this.zoomControl = new ContentControl { Focusable = false };
             this.overlays.Children.Add(this.zoomControl);
 
             // add additional grid on top of everthing else to fix issue of mouse events getting lost
@@ -211,10 +210,7 @@ namespace OxyPlot.Wpf
         /// <param name="delta">The delta.</param>
         public void PanAllAxes(Vector delta)
         {
-            if (this.ActualModel != null)
-            {
-                this.ActualModel.PanAllAxes(delta.X, delta.Y);
-            }
+            this.ActualModel?.PanAllAxes(delta.X, delta.Y);
 
             this.InvalidatePlot(false);
         }
@@ -224,10 +220,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         public void ResetAllAxes()
         {
-            if (this.ActualModel != null)
-            {
-                this.ActualModel.ResetAllAxes();
-            }
+            this.ActualModel?.ResetAllAxes();
 
             this.InvalidatePlot(false);
         }
@@ -321,10 +314,7 @@ namespace OxyPlot.Wpf
         /// <param name="factor">The zoom factor.</param>
         public void ZoomAllAxes(double factor)
         {
-            if (this.ActualModel != null)
-            {
-                this.ActualModel.ZoomAllAxes(factor);
-            }
+            this.ActualModel?.ZoomAllAxes(factor);
 
             this.InvalidatePlot(false);
         }
@@ -378,6 +368,7 @@ namespace OxyPlot.Wpf
             {
                 return;
             }
+
             this.isInVisualTree = this.IsInVisualTree();
 
             this.RenderOverride();
@@ -394,8 +385,8 @@ namespace OxyPlot.Wpf
             if (this.ActualModel != null)
             {
                 // round width and height to full device pixels
-                var width = ((int)(this.plotPresenter.ActualWidth * dpiScale)) / dpiScale;
-                var height = ((int)(this.plotPresenter.ActualHeight * dpiScale)) / dpiScale;
+                var width = (int)(this.plotPresenter.ActualWidth * dpiScale) / dpiScale;
+                var height = (int)(this.plotPresenter.ActualHeight * dpiScale) / dpiScale;
 
                 lock (this.ActualModel.SyncRoot)
                 {

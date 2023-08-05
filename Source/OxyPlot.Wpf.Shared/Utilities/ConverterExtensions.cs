@@ -30,9 +30,9 @@ namespace OxyPlot.Wpf
         /// <returns>The distance.</returns>
         public static double DistanceTo(this Point p1, Point p2)
         {
-            double dx = p1.X - p2.X;
-            double dy = p1.Y - p2.Y;
-            return Math.Sqrt((dx * dx) + (dy * dy));
+            var dx = p1.X - p2.X;
+            var dy = p1.Y - p2.Y;
+            return Math.Sqrt(dx * dx + dy * dy);
         }
 
         /// <summary>
@@ -82,15 +82,12 @@ namespace OxyPlot.Wpf
         /// <returns>A HorizontalAlignment.</returns>
         public static HorizontalAlignment ToHorizontalAlignment(this System.Windows.HorizontalAlignment alignment)
         {
-            switch (alignment)
+            return alignment switch
             {
-                case System.Windows.HorizontalAlignment.Center:
-                    return HorizontalAlignment.Center;
-                case System.Windows.HorizontalAlignment.Right:
-                    return HorizontalAlignment.Right;
-                default:
-                    return HorizontalAlignment.Left;
-            }
+                System.Windows.HorizontalAlignment.Center => HorizontalAlignment.Center,
+                System.Windows.HorizontalAlignment.Right => HorizontalAlignment.Right,
+                _ => HorizontalAlignment.Left,
+            };
         }
 
         /// <summary>
@@ -100,15 +97,12 @@ namespace OxyPlot.Wpf
         /// <returns>A VerticalAlignment.</returns>
         public static VerticalAlignment ToVerticalAlignment(this System.Windows.VerticalAlignment alignment)
         {
-            switch (alignment)
+            return alignment switch
             {
-                case System.Windows.VerticalAlignment.Center:
-                    return VerticalAlignment.Middle;
-                case System.Windows.VerticalAlignment.Top:
-                    return VerticalAlignment.Top;
-                default:
-                    return VerticalAlignment.Bottom;
-            }
+                System.Windows.VerticalAlignment.Center => VerticalAlignment.Middle,
+                System.Windows.VerticalAlignment.Top => VerticalAlignment.Top,
+                _ => VerticalAlignment.Bottom,
+            };
         }
 
         /// <summary>
@@ -128,8 +122,7 @@ namespace OxyPlot.Wpf
         /// <returns>An <see cref="OxyColor" />.</returns>
         public static OxyColor ToOxyColor(this Brush brush)
         {
-            var scb = brush as SolidColorBrush;
-            return scb != null ? scb.Color.ToOxyColor() : OxyColors.Undefined;
+            return brush is SolidColorBrush scb ? scb.Color.ToOxyColor() : OxyColors.Undefined;
         }
 
         /// <summary>
@@ -165,7 +158,7 @@ namespace OxyPlot.Wpf
             }
 
             var pts = new ScreenPoint[points.Length];
-            for (int i = 0; i < points.Length; i++)
+            for (var i = 0; i < points.Length; i++)
             {
                 pts[i] = points[i].ToScreenPoint();
             }
@@ -190,167 +183,88 @@ namespace OxyPlot.Wpf
         /// <returns>The converted key.</returns>
         public static OxyKey Convert(this Key k)
         {
-            switch (k)
+            return k switch
             {
-                case Key.A:
-                    return OxyKey.A;
-                case Key.Add:
-                    return OxyKey.Add;
-                case Key.B:
-                    return OxyKey.B;
-                case Key.Back:
-                    return OxyKey.Backspace;
-                case Key.C:
-                    return OxyKey.C;
-                case Key.D:
-                    return OxyKey.D;
-                case Key.D0:
-                    return OxyKey.D0;
-                case Key.D1:
-                    return OxyKey.D1;
-                case Key.D2:
-                    return OxyKey.D2;
-                case Key.D3:
-                    return OxyKey.D3;
-                case Key.D4:
-                    return OxyKey.D4;
-                case Key.D5:
-                    return OxyKey.D5;
-                case Key.D6:
-                    return OxyKey.D6;
-                case Key.D7:
-                    return OxyKey.D7;
-                case Key.D8:
-                    return OxyKey.D8;
-                case Key.D9:
-                    return OxyKey.D9;
-                case Key.Decimal:
-                    return OxyKey.Decimal;
-                case Key.Delete:
-                    return OxyKey.Delete;
-                case Key.Divide:
-                    return OxyKey.Divide;
-                case Key.Down:
-                    return OxyKey.Down;
-                case Key.E:
-                    return OxyKey.E;
-                case Key.End:
-                    return OxyKey.End;
-                case Key.Enter:
-                    return OxyKey.Enter;
-                case Key.Escape:
-                    return OxyKey.Escape;
-                case Key.F:
-                    return OxyKey.F;
-                case Key.F1:
-                    return OxyKey.F1;
-                case Key.F10:
-                    return OxyKey.F10;
-                case Key.F11:
-                    return OxyKey.F11;
-                case Key.F12:
-                    return OxyKey.F12;
-                case Key.F2:
-                    return OxyKey.F2;
-                case Key.F3:
-                    return OxyKey.F3;
-                case Key.F4:
-                    return OxyKey.F4;
-                case Key.F5:
-                    return OxyKey.F5;
-                case Key.F6:
-                    return OxyKey.F6;
-                case Key.F7:
-                    return OxyKey.F7;
-                case Key.F8:
-                    return OxyKey.F8;
-                case Key.F9:
-                    return OxyKey.F9;
-                case Key.G:
-                    return OxyKey.G;
-                case Key.H:
-                    return OxyKey.H;
-                case Key.Home:
-                    return OxyKey.Home;
-                case Key.I:
-                    return OxyKey.I;
-                case Key.Insert:
-                    return OxyKey.Insert;
-                case Key.J:
-                    return OxyKey.J;
-                case Key.K:
-                    return OxyKey.K;
-                case Key.L:
-                    return OxyKey.L;
-                case Key.Left:
-                    return OxyKey.Left;
-                case Key.M:
-                    return OxyKey.M;
-                case Key.Multiply:
-                    return OxyKey.Multiply;
-                case Key.N:
-                    return OxyKey.N;
-                case Key.NumPad0:
-                    return OxyKey.NumPad0;
-                case Key.NumPad1:
-                    return OxyKey.NumPad1;
-                case Key.NumPad2:
-                    return OxyKey.NumPad2;
-                case Key.NumPad3:
-                    return OxyKey.NumPad3;
-                case Key.NumPad4:
-                    return OxyKey.NumPad4;
-                case Key.NumPad5:
-                    return OxyKey.NumPad5;
-                case Key.NumPad6:
-                    return OxyKey.NumPad6;
-                case Key.NumPad7:
-                    return OxyKey.NumPad7;
-                case Key.NumPad8:
-                    return OxyKey.NumPad8;
-                case Key.NumPad9:
-                    return OxyKey.NumPad9;
-                case Key.O:
-                    return OxyKey.O;
-                case Key.P:
-                    return OxyKey.P;
-                case Key.PageDown:
-                    return OxyKey.PageDown;
-                case Key.PageUp:
-                    return OxyKey.PageUp;
-                case Key.Q:
-                    return OxyKey.Q;
-                case Key.R:
-                    return OxyKey.R;
-                case Key.Right:
-                    return OxyKey.Right;
-                case Key.S:
-                    return OxyKey.S;
-                case Key.Space:
-                    return OxyKey.Space;
-                case Key.Subtract:
-                    return OxyKey.Subtract;
-                case Key.T:
-                    return OxyKey.T;
-                case Key.Tab:
-                    return OxyKey.Tab;
-                case Key.U:
-                    return OxyKey.U;
-                case Key.Up:
-                    return OxyKey.Up;
-                case Key.V:
-                    return OxyKey.V;
-                case Key.W:
-                    return OxyKey.W;
-                case Key.X:
-                    return OxyKey.X;
-                case Key.Y:
-                    return OxyKey.Y;
-                case Key.Z:
-                    return OxyKey.Z;
-                default:
-                    return OxyKey.Unknown;
-            }
+                Key.A => OxyKey.A,
+                Key.Add => OxyKey.Add,
+                Key.B => OxyKey.B,
+                Key.Back => OxyKey.Backspace,
+                Key.C => OxyKey.C,
+                Key.D => OxyKey.D,
+                Key.D0 => OxyKey.D0,
+                Key.D1 => OxyKey.D1,
+                Key.D2 => OxyKey.D2,
+                Key.D3 => OxyKey.D3,
+                Key.D4 => OxyKey.D4,
+                Key.D5 => OxyKey.D5,
+                Key.D6 => OxyKey.D6,
+                Key.D7 => OxyKey.D7,
+                Key.D8 => OxyKey.D8,
+                Key.D9 => OxyKey.D9,
+                Key.Decimal => OxyKey.Decimal,
+                Key.Delete => OxyKey.Delete,
+                Key.Divide => OxyKey.Divide,
+                Key.Down => OxyKey.Down,
+                Key.E => OxyKey.E,
+                Key.End => OxyKey.End,
+                Key.Enter => OxyKey.Enter,
+                Key.Escape => OxyKey.Escape,
+                Key.F => OxyKey.F,
+                Key.F1 => OxyKey.F1,
+                Key.F10 => OxyKey.F10,
+                Key.F11 => OxyKey.F11,
+                Key.F12 => OxyKey.F12,
+                Key.F2 => OxyKey.F2,
+                Key.F3 => OxyKey.F3,
+                Key.F4 => OxyKey.F4,
+                Key.F5 => OxyKey.F5,
+                Key.F6 => OxyKey.F6,
+                Key.F7 => OxyKey.F7,
+                Key.F8 => OxyKey.F8,
+                Key.F9 => OxyKey.F9,
+                Key.G => OxyKey.G,
+                Key.H => OxyKey.H,
+                Key.Home => OxyKey.Home,
+                Key.I => OxyKey.I,
+                Key.Insert => OxyKey.Insert,
+                Key.J => OxyKey.J,
+                Key.K => OxyKey.K,
+                Key.L => OxyKey.L,
+                Key.Left => OxyKey.Left,
+                Key.M => OxyKey.M,
+                Key.Multiply => OxyKey.Multiply,
+                Key.N => OxyKey.N,
+                Key.NumPad0 => OxyKey.NumPad0,
+                Key.NumPad1 => OxyKey.NumPad1,
+                Key.NumPad2 => OxyKey.NumPad2,
+                Key.NumPad3 => OxyKey.NumPad3,
+                Key.NumPad4 => OxyKey.NumPad4,
+                Key.NumPad5 => OxyKey.NumPad5,
+                Key.NumPad6 => OxyKey.NumPad6,
+                Key.NumPad7 => OxyKey.NumPad7,
+                Key.NumPad8 => OxyKey.NumPad8,
+                Key.NumPad9 => OxyKey.NumPad9,
+                Key.O => OxyKey.O,
+                Key.P => OxyKey.P,
+                Key.PageDown => OxyKey.PageDown,
+                Key.PageUp => OxyKey.PageUp,
+                Key.Q => OxyKey.Q,
+                Key.R => OxyKey.R,
+                Key.Right => OxyKey.Right,
+                Key.S => OxyKey.S,
+                Key.Space => OxyKey.Space,
+                Key.Subtract => OxyKey.Subtract,
+                Key.T => OxyKey.T,
+                Key.Tab => OxyKey.Tab,
+                Key.U => OxyKey.U,
+                Key.Up => OxyKey.Up,
+                Key.V => OxyKey.V,
+                Key.W => OxyKey.W,
+                Key.X => OxyKey.X,
+                Key.Y => OxyKey.Y,
+                Key.Z => OxyKey.Z,
+                _ => OxyKey.Unknown,
+            };
         }
 
         /// <summary>
@@ -360,21 +274,15 @@ namespace OxyPlot.Wpf
         /// <returns>The converted mouse button.</returns>
         public static OxyMouseButton Convert(this MouseButton button)
         {
-            switch (button)
+            return button switch
             {
-                case MouseButton.Left:
-                    return OxyMouseButton.Left;
-                case MouseButton.Middle:
-                    return OxyMouseButton.Middle;
-                case MouseButton.Right:
-                    return OxyMouseButton.Right;
-                case MouseButton.XButton1:
-                    return OxyMouseButton.XButton1;
-                case MouseButton.XButton2:
-                    return OxyMouseButton.XButton2;
-                default:
-                    return OxyMouseButton.None;
-            }
+                MouseButton.Left => OxyMouseButton.Left,
+                MouseButton.Middle => OxyMouseButton.Middle,
+                MouseButton.Right => OxyMouseButton.Right,
+                MouseButton.XButton1 => OxyMouseButton.XButton1,
+                MouseButton.XButton2 => OxyMouseButton.XButton2,
+                _ => OxyMouseButton.None,
+            };
         }
 
         /// <summary>

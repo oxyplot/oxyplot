@@ -351,7 +351,7 @@ namespace OxyPlot.Wpf
             Canvas.SetLeft(this.contentContainer, this.Position.X);
             Canvas.SetTop(this.contentContainer, this.Position.Y);
             FrameworkElement parent = this;
-            while (!(parent is Canvas) && parent != null)
+            while (parent is not Canvas and not null)
             {
                 parent = VisualTreeHelper.GetParent(parent) as FrameworkElement;
             }
@@ -362,14 +362,14 @@ namespace OxyPlot.Wpf
             }
 
             // throw new InvalidOperationException("The TrackerControl must have a Canvas parent.");
-            double canvasWidth = parent.ActualWidth;
-            double canvasHeight = parent.ActualHeight;
+            var canvasWidth = parent.ActualWidth;
+            var canvasHeight = parent.ActualHeight;
 
             this.content.Measure(new Size(canvasWidth, canvasHeight));
             this.content.Arrange(new Rect(0, 0, this.content.DesiredSize.Width, this.content.DesiredSize.Height));
 
-            double contentWidth = this.content.DesiredSize.Width;
-            double contentHeight = this.content.DesiredSize.Height;
+            var contentWidth = this.content.DesiredSize.Width;
+            var contentHeight = this.content.DesiredSize.Height;
 
             // Minimum allowed margins around the tracker
             const double MarginLimit = 10;
@@ -377,12 +377,12 @@ namespace OxyPlot.Wpf
             var ha = HorizontalAlignment.Center;
             if (this.CanCenterHorizontally)
             {
-                if (this.Position.X - (contentWidth / 2) < MarginLimit)
+                if (this.Position.X - contentWidth / 2 < MarginLimit)
                 {
                     ha = HorizontalAlignment.Left;
                 }
 
-                if (this.Position.X + (contentWidth / 2) > canvasWidth - MarginLimit)
+                if (this.Position.X + contentWidth / 2 > canvasWidth - MarginLimit)
                 {
                     ha = HorizontalAlignment.Right;
                 }
@@ -395,7 +395,7 @@ namespace OxyPlot.Wpf
             var va = VerticalAlignment.Center;
             if (this.CanCenterVertically)
             {
-                if (this.Position.Y - (contentHeight / 2) < MarginLimit)
+                if (this.Position.Y - contentHeight / 2 < MarginLimit)
                 {
                     va = VerticalAlignment.Top;
                 }
@@ -409,7 +409,7 @@ namespace OxyPlot.Wpf
                     }
                 }
 
-                if (va == VerticalAlignment.Center && this.Position.Y + (contentHeight / 2) > canvasHeight - MarginLimit)
+                if (va == VerticalAlignment.Center && this.Position.Y + contentHeight / 2 > canvasHeight - MarginLimit)
                 {
                     va = VerticalAlignment.Bottom;
                 }
@@ -424,11 +424,11 @@ namespace OxyPlot.Wpf
                 va = this.Position.Y < canvasHeight / 2 ? VerticalAlignment.Top : VerticalAlignment.Bottom;
             }
 
-            double dx = ha == HorizontalAlignment.Center ? -0.5 : ha == HorizontalAlignment.Left ? 0 : -1;
-            double dy = va == VerticalAlignment.Center ? -0.5 : va == VerticalAlignment.Top ? 0 : -1;
+            var dx = ha == HorizontalAlignment.Center ? -0.5 : ha == HorizontalAlignment.Left ? 0 : -1;
+            var dy = va == VerticalAlignment.Center ? -0.5 : va == VerticalAlignment.Top ? 0 : -1;
 
             this.path.Data = this.ShowPointer
-                                 ? this.CreatePointerBorderGeometry(ha, va, contentWidth, contentHeight, out Thickness margin)
+                                 ? this.CreatePointerBorderGeometry(ha, va, contentWidth, contentHeight, out var margin)
                                  : this.CreateBorderGeometry(ha, va, contentWidth, contentHeight, out margin);
 
             this.content.Margin = margin;
@@ -437,10 +437,10 @@ namespace OxyPlot.Wpf
             var contentSize = this.contentContainer.DesiredSize;
 
             this.contentContainer.RenderTransform = new TranslateTransform
-                {
-                    X = dx * contentSize.Width,
-                    Y = dy * contentSize.Height
-                };
+            {
+                X = dx * contentSize.Width,
+                Y = dy * contentSize.Height
+            };
 
             var pos = this.Position;
 
@@ -491,7 +491,7 @@ namespace OxyPlot.Wpf
         private Geometry CreateBorderGeometry(
             HorizontalAlignment ha, VerticalAlignment va, double width, double height, out Thickness margin)
         {
-            double m = this.Distance;
+            var m = this.Distance;
             var rect = new Rect(
                 ha == HorizontalAlignment.Left ? m : 0, va == VerticalAlignment.Top ? m : 0, width, height);
             margin = new Thickness(
@@ -515,76 +515,76 @@ namespace OxyPlot.Wpf
             HorizontalAlignment ha, VerticalAlignment va, double width, double height, out Thickness margin)
         {
             Point[] points = null;
-            double m = this.Distance;
+            var m = this.Distance;
             margin = new Thickness();
 
             if (ha == HorizontalAlignment.Center && va == VerticalAlignment.Bottom)
             {
                 double x0 = 0;
-                double x1 = width;
-                double x2 = (x0 + x1) / 2;
+                var x1 = width;
+                var x2 = (x0 + x1) / 2;
                 double y0 = 0;
-                double y1 = height;
+                var y1 = height;
                 margin = new Thickness(0, 0, 0, m);
                 points = new[]
                     {
-                        new Point(x0, y0), new Point(x1, y0), new Point(x1, y1), new Point(x2 + (m / 2), y1),
-                        new Point(x2, y1 + m), new Point(x2 - (m / 2), y1), new Point(x0, y1)
+                        new Point(x0, y0), new Point(x1, y0), new Point(x1, y1), new Point(x2 + m / 2, y1),
+                        new Point(x2, y1 + m), new Point(x2 - m / 2, y1), new Point(x0, y1)
                     };
             }
 
             if (ha == HorizontalAlignment.Center && va == VerticalAlignment.Top)
             {
                 double x0 = 0;
-                double x1 = width;
-                double x2 = (x0 + x1) / 2;
-                double y0 = m;
-                double y1 = m + height;
+                var x1 = width;
+                var x2 = (x0 + x1) / 2;
+                var y0 = m;
+                var y1 = m + height;
                 margin = new Thickness(0, m, 0, 0);
                 points = new[]
                     {
-                        new Point(x0, y0), new Point(x2 - (m / 2), y0), new Point(x2, 0), new Point(x2 + (m / 2), y0),
+                        new Point(x0, y0), new Point(x2 - m / 2, y0), new Point(x2, 0), new Point(x2 + m / 2, y0),
                         new Point(x1, y0), new Point(x1, y1), new Point(x0, y1)
                     };
             }
 
             if (ha == HorizontalAlignment.Left && va == VerticalAlignment.Center)
             {
-                double x0 = m;
-                double x1 = m + width;
+                var x0 = m;
+                var x1 = m + width;
                 double y0 = 0;
-                double y1 = height;
-                double y2 = (y0 + y1) / 2;
+                var y1 = height;
+                var y2 = (y0 + y1) / 2;
                 margin = new Thickness(m, 0, 0, 0);
                 points = new[]
                     {
-                        new Point(0, y2), new Point(x0, y2 - (m / 2)), new Point(x0, y0), new Point(x1, y0),
-                        new Point(x1, y1), new Point(x0, y1), new Point(x0, y2 + (m / 2))
+                        new Point(0, y2), new Point(x0, y2 - m / 2), new Point(x0, y0), new Point(x1, y0),
+                        new Point(x1, y1), new Point(x0, y1), new Point(x0, y2 + m / 2)
                     };
             }
 
             if (ha == HorizontalAlignment.Right && va == VerticalAlignment.Center)
             {
                 double x0 = 0;
-                double x1 = width;
+                var x1 = width;
                 double y0 = 0;
-                double y1 = height;
-                double y2 = (y0 + y1) / 2;
+                var y1 = height;
+                var y2 = (y0 + y1) / 2;
                 margin = new Thickness(0, 0, m, 0);
                 points = new[]
                     {
-                        new Point(x1 + m, y2), new Point(x1, y2 + (m / 2)), new Point(x1, y1), new Point(x0, y1),
-                        new Point(x0, y0), new Point(x1, y0), new Point(x1, y2 - (m / 2))
+                        new Point(x1 + m, y2), new Point(x1, y2 + m / 2), new Point(x1, y1), new Point(x0, y1),
+                        new Point(x0, y0), new Point(x1, y0), new Point(x1, y2 - m / 2)
                     };
             }
 
             if (ha == HorizontalAlignment.Left && va == VerticalAlignment.Top)
             {
                 m *= 0.67;
-                double x0 = m;
-                double x1 = m + width;
-                double y0 = m;
-                double y1 = m + height;
+                var x0 = m;
+                var x1 = m + width;
+                var y0 = m;
+                var y1 = m + height;
                 margin = new Thickness(m, m, 0, 0);
                 points = new[]
                     {
@@ -597,9 +597,9 @@ namespace OxyPlot.Wpf
             {
                 m *= 0.67;
                 double x0 = 0;
-                double x1 = width;
-                double y0 = m;
-                double y1 = m + height;
+                var x1 = width;
+                var y0 = m;
+                var y1 = m + height;
                 margin = new Thickness(0, m, m, 0);
                 points = new[]
                     {
@@ -611,10 +611,10 @@ namespace OxyPlot.Wpf
             if (ha == HorizontalAlignment.Left && va == VerticalAlignment.Bottom)
             {
                 m *= 0.67;
-                double x0 = m;
-                double x1 = m + width;
+                var x0 = m;
+                var x1 = m + width;
                 double y0 = 0;
-                double y1 = height;
+                var y1 = height;
                 margin = new Thickness(m, 0, 0, m);
                 points = new[]
                     {
@@ -627,9 +627,9 @@ namespace OxyPlot.Wpf
             {
                 m *= 0.67;
                 double x0 = 0;
-                double x1 = width;
+                var x1 = width;
                 double y0 = 0;
-                double y1 = height;
+                var y1 = height;
                 margin = new Thickness(0, 0, m, m);
                 points = new[]
                     {

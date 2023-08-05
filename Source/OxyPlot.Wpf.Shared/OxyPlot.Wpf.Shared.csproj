@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFrameworks>net462;net6.0-windows;net7.0-windows</TargetFrameworks>
     <UseWPF>true</UseWPF>
-    <LangVersion>8</LangVersion>
+    <LangVersion>11</LangVersion>
     <Description>OxyPlot is a plotting library for .NET. This package is the base for WPF PlotView implementations.</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
