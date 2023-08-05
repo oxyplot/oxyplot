@@ -9,18 +9,17 @@
 
 namespace OxyPlot.ImageSharp
 {
+    using OxyPlot;
+    using SixLabors.Fonts;
+    using SixLabors.ImageSharp;
+    using SixLabors.ImageSharp.Drawing;
+    using SixLabors.ImageSharp.Drawing.Processing;
+    using SixLabors.ImageSharp.PixelFormats;
+    using SixLabors.ImageSharp.Processing;
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using OxyPlot;
-    using SixLabors.ImageSharp;
-    using SixLabors.Fonts;
-    using SixLabors.ImageSharp.Drawing.Processing;
-    using SixLabors.ImageSharp.PixelFormats;
-    using SixLabors.ImageSharp.Processing;
-    using SixLabors.ImageSharp.Drawing;
-    using SixLabors.ImageSharp.Processing.Processors;
 
     /// <summary>
     /// Provides an implementation of IRenderContext which draws to a <see cref="Image"/>.
@@ -30,7 +29,7 @@ namespace OxyPlot.ImageSharp
         /// <summary>
         /// The default font to use when a request font cannot be found.
         /// </summary>
-        private static readonly string FallbackFontFamily = "Arial";
+        private static readonly string fallbackFontFamily = "Arial";
 
         /// <summary>
         /// Image to which the the <see cref="ImageRenderContext"/> will render.
@@ -200,7 +199,7 @@ namespace OxyPlot.ImageSharp
             };
 
             // this is the top of the top line
-            var topPosition = outputPosition + (offsetHeight * deltaY) - offsetHeight;
+            var topPosition = outputPosition + offsetHeight * deltaY - offsetHeight;
 
             // need this later
             var deltaX = horizontalAlignment switch
@@ -212,7 +211,7 @@ namespace OxyPlot.ImageSharp
             };
 
             var lines = StringHelper.SplitLines(text);
-            for (int li = 0; li < lines.Length; li++)
+            for (var li = 0; li < lines.Length; li++)
             {
                 var line = lines[li];
 
@@ -227,7 +226,7 @@ namespace OxyPlot.ImageSharp
                 var offsetLineWidth = new PointF(lineBoundsWidth * cos, lineBoundsWidth * sin);
 
                 // find the left baseline position
-                var lineTop = topPosition + (offsetLineGap * li) + (offsetLineHeight * li);
+                var lineTop = topPosition + offsetLineGap * li + offsetLineHeight * li;
                 var lineBaseLineLeft = lineTop + offsetLineWidth * deltaX + offsetLineHeight + offsetDescent;
 
                 // this seems to produce consistent and correct results, but we have to rotate it manually, so render it at the origin for simplicity
@@ -246,10 +245,7 @@ namespace OxyPlot.ImageSharp
                 var glyphs = glyphsAtOrigin.Transform(transform);
 
                 // draw the glyphs
-                this.Target.Mutate(img =>
-                {
-                    img.Fill(ToRgba32(fill), glyphs);
-                });
+                this.Target.Mutate(img => img.Fill(ToRgba32(fill), glyphs));
             }
         }
 
@@ -295,7 +291,7 @@ namespace OxyPlot.ImageSharp
             var cropBottom = dest.Bottom >= this.image.Height ? dest.Bottom - this.image.Height : 0;
 
             dest = RectangleF.FromLTRB(dest.Left + cropLeft, dest.Top + cropTop, dest.Right - cropRight, dest.Bottom - cropBottom);
-            src = RectangleF.FromLTRB(src.Left + (cropLeft / scale.Width), src.Top + (cropTop / scale.Height), src.Right - (cropRight / scale.Width), src.Bottom - (cropBottom / scale.Height));
+            src = RectangleF.FromLTRB(src.Left + cropLeft / scale.Width, src.Top + cropTop / scale.Height, src.Right - cropRight / scale.Width, src.Bottom - cropBottom / scale.Height);
 
             var bytes = source.GetData();
             var sourceImage = Image.Load(bytes);
@@ -347,10 +343,7 @@ namespace OxyPlot.ImageSharp
                     img.Crop(destRough);
                 });
 
-                this.Target.Mutate(img =>
-                {
-                    img.DrawImage(sourceImage, new Point((int)dest.X, (int)dest.Y), new GraphicsOptions() { Antialias = interpolate, BlendPercentage = (float)opacity });
-                });
+                this.Target.Mutate(img => img.DrawImage(sourceImage, new Point((int)dest.X, (int)dest.Y), new GraphicsOptions() { Antialias = interpolate, BlendPercentage = (float)opacity }));
             }
             catch (ImageProcessingException)
             {
@@ -383,10 +376,7 @@ namespace OxyPlot.ImageSharp
             var actualPoints = this.GetActualPoints(points, thickness, edgeRenderingMode).ToArray();
             var options = this.CreateDrawingOptions(this.ShouldUseAntiAliasingForLine(edgeRenderingMode, points));
 
-            this.Target.Mutate(img =>
-            {
-                img.DrawLines(options, pen, actualPoints);
-            });
+            this.Target.Mutate(img => img.DrawLines(options, pen, actualPoints));
         }
 
         /// <inheritdoc/>
@@ -493,7 +483,7 @@ namespace OxyPlot.ImageSharp
         private static float GetSnapOffset(float thickness)
         {
             var mod = thickness % 2;
-            var isOdd = mod >= 0.5 && mod < 1.5;
+            var isOdd = mod is >= 0.5f and < 1.5f;
             return isOdd ? 0.5f : 0;
         }
 
@@ -539,9 +529,9 @@ namespace OxyPlot.ImageSharp
         {
             rectangle.Intersect(source.Bounds());
 
-            for (int i = rectangle.Left; i < rectangle.Right; i++)
+            for (var i = rectangle.Left; i < rectangle.Right; i++)
             {
-                for (int j = rectangle.Top; j < rectangle.Bottom; j++)
+                for (var j = rectangle.Top; j < rectangle.Bottom; j++)
                 {
                     destination[i, j] = source[i, j];
                 }
@@ -560,7 +550,7 @@ namespace OxyPlot.ImageSharp
             if (fontFamily == null)
             {
                 allowFallback = false;
-                fontFamily = FallbackFontFamily;
+                fontFamily = fallbackFontFamily;
             }
 
             FontFamily family;
@@ -577,7 +567,7 @@ namespace OxyPlot.ImageSharp
 
                 try
                 {
-                    family = SystemFonts.Get(FallbackFontFamily);
+                    family = SystemFonts.Get(fallbackFontFamily);
                 }
                 catch (FontFamilyNotFoundException fallbackEx)
                 {
@@ -598,7 +588,7 @@ namespace OxyPlot.ImageSharp
         /// <returns>An <see cref="OxySize"/>.</returns>
         private OxySize MeasureTextLoose(string text, string fontFamily, double fontSize, double fontWeight)
         {
-            text = text ?? string.Empty;
+            text ??= string.Empty;
 
             var font = this.GetFontOrThrow(fontFamily, fontSize, this.ToFontStyle(fontWeight));
             var actualFontSize = this.NominalFontSizeToPoints(fontSize);
@@ -610,7 +600,7 @@ namespace OxyPlot.ImageSharp
             var lineGap = actualFontSize * this.MilliPointsToNominalResolution(font.FontMetrics.LineGap);
             var lineCount = CountLines(text);
 
-            var height = (lineHeight * lineCount) + (lineGap * (lineCount - 1));
+            var height = lineHeight * lineCount + lineGap * (lineCount - 1);
 
             return new OxySize(width, height);
         }
@@ -625,10 +615,9 @@ namespace OxyPlot.ImageSharp
         /// <returns>An <see cref="OxySize"/>.</returns>
         private OxySize MeasureTextTight(string text, string fontFamily, double fontSize, double fontWeight)
         {
-            text = text ?? string.Empty;
+            text ??= string.Empty;
 
             var font = this.GetFontOrThrow(fontFamily, fontSize, this.ToFontStyle(fontWeight));
-            var actualFontSize = this.NominalFontSizeToPoints(fontSize);
 
             var result = TextMeasurer.Measure(text, new TextOptions(font) { Dpi = this.Dpi });
             return new OxySize(this.ConvertBack(result.Width), this.ConvertBack(result.Height));
@@ -814,7 +803,6 @@ namespace OxyPlot.ImageSharp
 
             return scaledThickness;
         }
-
 
         /// <summary>
         /// Creates a <see cref="DrawingOptions"/> object for the given options.

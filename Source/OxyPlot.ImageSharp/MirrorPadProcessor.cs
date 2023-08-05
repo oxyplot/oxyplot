@@ -23,13 +23,13 @@
                 source[0, source.Height - 1] = source[1, source.Height - 2];
                 source[source.Width - 1, source.Height - 1] = source[source.Width - 2, source.Height - 2];
 
-                for (int x = 1; x < source.Width - 1; x++)
+                for (var x = 1; x < source.Width - 1; x++)
                 {
                     source[x, 0] = source[x, 1];
                     source[x, source.Height - 1] = source[x, source.Height - 2];
                 }
 
-                for (int y = 1; y < source.Height - 1; y++)
+                for (var y = 1; y < source.Height - 1; y++)
                 {
                     source[0, y] = source[1, y];
                     source[source.Width - 1, y] = source[source.Width - 2, y];
