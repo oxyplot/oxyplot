@@ -10,32 +10,17 @@ namespace OxyPlot.SkiaSharp
     using global::SkiaSharp.HarfBuzz;
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Linq;
-    using System.Reflection;
 
     /// <summary>
     /// Implements <see cref="IRenderContext" /> based on SkiaSharp.
     /// </summary>
     public class SkiaRenderContext : IRenderContext, IDisposable
     {
-        private readonly Dictionary<FontDescriptor, SKShaper> shaperCache = new Dictionary<FontDescriptor, SKShaper>();
-        private readonly Dictionary<FontDescriptor, SKTypeface> typefaceCache = new Dictionary<FontDescriptor, SKTypeface>();
-        private SKPaint paint = new SKPaint();
-        private SKPath path = new SKPath();
-
-        private readonly Dictionary<int, string> _fontWeights = new Dictionary<int, string>()
-        {
-            [100] = "Thin",
-            [200] = "ExtraLight",
-            [300] = "Light",
-            [400] = "Regular",
-            [500] = "Medium",
-            [600] = "SemiBold",
-            [700] = "Bold",
-            [800] = "ExtraBold",
-            [900] = "Black"
-        };
+        private readonly Dictionary<FontDescriptor, SKShaper> shaperCache = new();
+        private readonly Dictionary<FontDescriptor, SKTypeface> typefaceCache = new();
+        private SKPaint paint = new();
+        private SKPath path = new();
 
         /// <summary>
         /// Gets or sets the DPI scaling factor. A value of 1 corresponds to 96 DPI (dots per inch).
@@ -250,7 +235,7 @@ namespace OxyPlot.SkiaSharp
             double[] dashArray = null,
             LineJoin lineJoin = LineJoin.Miter)
         {
-            if (!fill.IsVisible() && !(stroke.IsVisible() || thickness <= 0) || points.Count < 2)
+            if ((!fill.IsVisible() && !(stroke.IsVisible() || thickness <= 0)) || points.Count < 2)
             {
                 return;
             }
@@ -283,7 +268,7 @@ namespace OxyPlot.SkiaSharp
             double[] dashArray = null,
             LineJoin lineJoin = LineJoin.Miter)
         {
-            if (!fill.IsVisible() && !(stroke.IsVisible() || thickness <= 0) || polygons.Count == 0)
+            if ((!fill.IsVisible() && !(stroke.IsVisible() || thickness <= 0)) || polygons.Count == 0)
             {
                 return;
             }
@@ -340,7 +325,7 @@ namespace OxyPlot.SkiaSharp
         /// <inheritdoc/>
         public void DrawRectangles(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
         {
-            if (!fill.IsVisible() && !(stroke.IsVisible() || thickness <= 0) || rectangles.Count == 0)
+            if ((!fill.IsVisible() && !(stroke.IsVisible() || thickness <= 0)) || rectangles.Count == 0)
             {
                 return;
             }
@@ -447,7 +432,7 @@ namespace OxyPlot.SkiaSharp
             var lines = StringHelper.SplitLines(text);
             var paint = this.GetTextPaint(fontFamily, fontSize, fontWeight, out var shaper);
             var height = paint.GetFontMetrics(out _) * lines.Length;
-            var width = lines.Max(line => this.MeasureText(line, shaper, paint)); 
+            var width = lines.Max(line => this.MeasureText(line, shaper, paint));
 
             return new OxySize(this.ConvertBack(width), this.ConvertBack(height));
         }
@@ -537,7 +522,7 @@ namespace OxyPlot.SkiaSharp
         private static float GetSnapOffset(float thickness)
         {
             var mod = thickness % 2;
-            var isOdd = mod >= 0.5 && mod < 1.5;
+            var isOdd = mod is >= 0.5f and < 1.5f;
             return isOdd ? 0.5f : 0;
         }
 
@@ -966,7 +951,7 @@ namespace OxyPlot.SkiaSharp
         /// <summary>
         /// Represents a font description.
         /// </summary>
-        private struct FontDescriptor
+        private readonly struct FontDescriptor
         {
             /// <summary>
             /// Initializes a new instance of the <see cref="FontDescriptor"/> struct.
