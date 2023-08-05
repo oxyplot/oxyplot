@@ -10,7 +10,9 @@ namespace OxyPlot.SkiaSharp
     using global::SkiaSharp.HarfBuzz;
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
+    using System.Reflection;
 
     /// <summary>
     /// Implements <see cref="IRenderContext" /> based on SkiaSharp.
@@ -21,6 +23,19 @@ namespace OxyPlot.SkiaSharp
         private readonly Dictionary<FontDescriptor, SKTypeface> typefaceCache = new();
         private SKPaint paint = new();
         private SKPath path = new();
+
+        private readonly Dictionary<int, string> _fontWeights = new()
+        {
+            [100] = "Thin",
+            [200] = "ExtraLight",
+            [300] = "Light",
+            [400] = "Regular",
+            [500] = "Medium",
+            [600] = "SemiBold",
+            [700] = "Bold",
+            [800] = "ExtraBold",
+            [900] = "Black"
+        };
 
         /// <summary>
         /// Gets or sets the DPI scaling factor. A value of 1 corresponds to 96 DPI (dots per inch).
