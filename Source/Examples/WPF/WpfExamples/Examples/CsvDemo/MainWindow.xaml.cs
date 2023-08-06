@@ -97,21 +97,6 @@ namespace CsvDemo
                         plot1.SaveXaml(dlg.FileName);
                         break;
                 }
-
-
-/* Unmerged change from project 'WpfExamples (net7.0-windows)'
-Before:
-                this.OpenContainingFolder(dlg.FileName);
-After:
-                MainWindow.OpenContainingFolder(dlg.FileName);
-*/
-
-/* Unmerged change from project 'WpfExamples (net462)'
-Before:
-                this.OpenContainingFolder(dlg.FileName);
-After:
-                MainWindow.OpenContainingFolder(dlg.FileName);
-*/
                 OpenContainingFolder(dlg.FileName);
             }
         }

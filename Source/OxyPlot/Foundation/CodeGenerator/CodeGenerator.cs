@@ -62,13 +62,6 @@ namespace OxyPlot
             this.Indents = 8;
             var title = model.Title ?? "Untitled";
             this.AppendLine("[Example({0})]", title.ToCode());
-
-/* Unmerged change from project 'OxyPlot (net7.0)'
-Before:
-            string methodName = this.MakeValidVariableName(title);
-After:
-            string methodName = MakeValidVariableName(title);
-*/
             string methodName = CodeGenerator.MakeValidVariableName(title);
             this.AppendLine("public static PlotModel {0}()", methodName);
             this.AppendLine("{");
@@ -358,13 +351,6 @@ After:
             foreach (var pi in properties)
             {
                 // check the [CodeGeneration] attribute
-
-/* Unmerged change from project 'OxyPlot (net7.0)'
-Before:
-                var cga = this.GetFirstAttribute<CodeGenerationAttribute>(pi);
-After:
-                var cga = GetFirstAttribute<CodeGenerationAttribute>(pi);
-*/
                 var cga = CodeGenerator.GetFirstAttribute<CodeGenerationAttribute>(pi);
                 if (cga != null && !cga.GenerateCode)
                 {
@@ -376,14 +362,7 @@ After:
                 object? defaultValue = pi.GetValue(defaultValues, null);
 
                 // check if lists are equal
-
-/* Unmerged change from project 'OxyPlot (net7.0)'
-Before:
-                if (this.AreListsEqual(value as IList, defaultValue as IList))
-After:
                 if (AreListsEqual(value as IList, defaultValue as IList))
-*/
-                if (CodeGenerator.AreListsEqual(value as IList, defaultValue as IList))
                 {
                     continue;
                 }

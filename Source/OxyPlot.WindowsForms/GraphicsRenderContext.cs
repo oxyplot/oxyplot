@@ -127,14 +127,7 @@ namespace OxyPlot.WindowsForms
             this.SetSmoothingMode(this.ShouldUseAntiAliasingForLine(edgeRenderingMode, points));
 
             var pen = this.GetCachedPen(stroke, thickness, dashArray, lineJoin);
-
-/* Unmerged change from project 'OxyPlot.WindowsForms (net6.0-windows)'
-Before:
-            this.g.DrawLines(pen, this.ToPoints(points));
-After:
             this.g.DrawLines(pen, ToPoints(points));
-*/
-            this.g.DrawLines(pen, GraphicsRenderContext.ToPoints(points));
         }
 
         /// <inheritdoc/>
@@ -154,14 +147,7 @@ After:
 
             this.SetSmoothingMode(this.ShouldUseAntiAliasingForLine(edgeRenderingMode, points));
 
-
-/* Unmerged change from project 'OxyPlot.WindowsForms (net6.0-windows)'
-Before:
-            var pts = this.ToPoints(points);
-After:
             var pts = ToPoints(points);
-*/
-            var pts = GraphicsRenderContext.ToPoints(points);
             if (fill.IsVisible())
             {
                 this.g.FillPolygon(this.GetCachedBrush(fill), pts);
@@ -517,20 +503,13 @@ After:
         /// <param name="dashArray">The dash array.</param>
         /// <param name="lineJoin">The line join.</param>
         /// <returns>A <see cref="Pen" />.</returns>
-        private Pen CreatePen(OxyColor stroke, double thickness, double[] dashArray = null, OxyPlot.LineJoin lineJoin = OxyPlot.LineJoin.Miter)
+        private static Pen CreatePen(OxyColor stroke, double thickness, double[] dashArray = null, OxyPlot.LineJoin lineJoin = OxyPlot.LineJoin.Miter)
         {
             var pen = new Pen(stroke.ToColor(), (float)thickness);
 
             if (dashArray != null)
             {
-
-/* Unmerged change from project 'OxyPlot.WindowsForms (net6.0-windows)'
-Before:
-                pen.DashPattern = this.ToFloatArray(dashArray);
-After:
                 pen.DashPattern = ToFloatArray(dashArray);
-*/
-                pen.DashPattern = GraphicsRenderContext.ToFloatArray(dashArray);
             }
 
             switch (lineJoin)

@@ -12,7 +12,6 @@ namespace OxyPlot.Axes
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using OxyPlot.Series;
     using OxyPlot.Utilities;
 
     /// <summary>
@@ -1825,13 +1824,6 @@ namespace OxyPlot.Axes
         /// <returns>The calculate actual interval.</returns>
         protected virtual double CalculateActualInterval(double availableSize, double maxIntervalSize, double minIntervalCount, double maxIntervalCount)
         {
-
-/* Unmerged change from project 'OxyPlot (net7.0)'
-Before:
-            return this.CalculateActualInterval(availableSize, maxIntervalSize, this.ActualMaximum - this.ActualMinimum, minIntervalCount, maxIntervalCount);
-After:
-            return CalculateActualInterval(availableSize, maxIntervalSize, this.ActualMaximum - this.ActualMinimum, minIntervalCount, maxIntervalCount);
-*/
             return Axis.CalculateActualInterval(availableSize, maxIntervalSize, this.ActualMaximum - this.ActualMinimum, minIntervalCount, maxIntervalCount);
         }
 

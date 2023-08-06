@@ -239,23 +239,9 @@ namespace OxyPlot
             // http://xkcd.com/
 
             // The following code is just to show that some randomness is working - this should be improved
-
-/* Unmerged change from project 'OxyPlot (net7.0)'
-Before:
-            IList<ScreenPoint> interpolated = this.Interpolate(points, this.InterpolationDistance).ToArray();
-After:
-            IList<ScreenPoint> interpolated = Interpolate(points, this.InterpolationDistance).ToArray();
-*/
             IList<ScreenPoint> interpolated = XkcdRenderingDecorator.Interpolate(points, this.InterpolationDistance).ToArray();
             var result = new ScreenPoint[interpolated.Count];
             var randomNumbers = this.GenerateRandomNumbers(interpolated.Count);
-
-/* Unmerged change from project 'OxyPlot (net7.0)'
-Before:
-            randomNumbers = this.ApplyMovingAverage(randomNumbers, 5);
-After:
-            randomNumbers = ApplyMovingAverage(randomNumbers, 5);
-*/
             randomNumbers = XkcdRenderingDecorator.ApplyMovingAverage(randomNumbers, 5);
 
             var d = this.DistortionFactor;

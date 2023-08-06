@@ -750,13 +750,6 @@ namespace OxyPlot.Series
         /// <returns>The new window start index.</returns>
         protected int UpdateWindowStartIndex<T>(IList<T> items, Func<T, double> xgetter, double targetX, int lastIndex)
         {
-
-/* Unmerged change from project 'OxyPlot (net7.0)'
-Before:
-            lastIndex = this.FindWindowStartIndex(items, xgetter, targetX, lastIndex);
-After:
-            lastIndex = FindWindowStartIndex(items, xgetter, targetX, lastIndex);
-*/
             lastIndex = XYAxisSeries.FindWindowStartIndex(items, xgetter, targetX, lastIndex);
             if (lastIndex > 0)
             {

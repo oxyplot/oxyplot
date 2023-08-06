@@ -13,7 +13,6 @@ namespace OxyPlot.Series
     using System.Collections.Generic;
     using System.Linq;
     using OxyPlot;
-    using OxyPlot.Series;
 
     /// <summary>
     /// Represents a series where the line can be rendered using a different style
@@ -153,14 +152,6 @@ namespace OxyPlot.Series
         protected internal override void UpdateData()
         {
             base.UpdateData();
-
-
-/* Unmerged change from project 'OxyPlot (net7.0)'
-Before:
-            this.orderedIntervals = this.MergeOverlaps(this.Intervals);
-After:
-            this.orderedIntervals = MergeOverlaps(this.Intervals);
-*/
             this.orderedIntervals = ExtrapolationLineSeries.MergeOverlaps(this.Intervals);
         }
 
@@ -252,14 +243,7 @@ After:
             if (this.orderedIntervals != null && this.orderedIntervals.Any())
             {
                 IEnumerable<double> flatLimits
-
-/* Unmerged change from project 'OxyPlot (net7.0)'
-Before:
-                    = this.Flatten(this.orderedIntervals).Where(l => l >= minX && l <= maxX);
-After:
                     = Flatten(this.orderedIntervals).Where(l => l >= minX && l <= maxX);
-*/
-                    = ExtrapolationLineSeries.Flatten(this.orderedIntervals).Where(l => l >= minX && l <= maxX);
 
                 foreach (var limiter in flatLimits)
                 {
@@ -357,13 +341,6 @@ After:
             while (min <= max)
             {
                 var mid = (min + max) / 2;
-
-/* Unmerged change from project 'OxyPlot (net7.0)'
-Before:
-                var comparison = this.Compare(this.orderedIntervals[mid], x);
-After:
-                var comparison = Compare(this.orderedIntervals[mid], x);
-*/
                 var comparison = ExtrapolationLineSeries.Compare(this.orderedIntervals[mid], x);
 
                 if (comparison == 0)

@@ -173,15 +173,6 @@ namespace OxyPlot.Series
             // determine render range
             var xmin = this.XAxis.ClipMinimum;
             var xmax = this.XAxis.ClipMaximum;
-
-/* Unmerged change from project 'OxyPlot (net7.0)'
-Before:
-            this.WindowStartIndex = this.UpdateWindowStartIndex(this.abovePoints, this.GetPointX, xmin, this.WindowStartIndex);
-            this.WindowStartIndex2 = this.UpdateWindowStartIndex(this.belowPoints, this.GetPointX, xmin, this.WindowStartIndex2);
-After:
-            this.WindowStartIndex = this.UpdateWindowStartIndex(this.abovePoints, GetPointX, xmin, this.WindowStartIndex);
-            this.WindowStartIndex2 = this.UpdateWindowStartIndex(this.belowPoints, GetPointX, xmin, this.WindowStartIndex2);
-*/
             this.WindowStartIndex = this.UpdateWindowStartIndex(this.abovePoints, AreaSeries.GetPointX, xmin, this.WindowStartIndex);
             this.WindowStartIndex2 = this.UpdateWindowStartIndex(this.belowPoints, AreaSeries.GetPointX, xmin, this.WindowStartIndex2);
 
@@ -227,13 +218,6 @@ After:
                 var points = this.ActualPoints;
                 var aboveMarkers = new List<ScreenPoint>();
                 var belowMarkers = new List<ScreenPoint>();
-
-/* Unmerged change from project 'OxyPlot (net7.0)'
-Before:
-                this.markerStartIndex = this.UpdateWindowStartIndex(points, this.GetPointX, xmin, this.markerStartIndex);
-After:
-                this.markerStartIndex = this.UpdateWindowStartIndex(points, GetPointX, xmin, this.markerStartIndex);
-*/
                 this.markerStartIndex = this.UpdateWindowStartIndex(points, AreaSeries.GetPointX, xmin, this.markerStartIndex);
 
                 int markerClipCount = 0;
@@ -370,13 +354,6 @@ After:
 
                 if (lastPoint != null && isAbove != lastAbove)
                 {
-
-/* Unmerged change from project 'OxyPlot (net7.0)'
-Before:
-                    var shared = new DataPoint(this.GetInterpolatedX(lastPoint.Value, point, limit), limit);
-After:
-                    var shared = new DataPoint(GetInterpolatedX(lastPoint.Value, point, limit), limit);
-*/
                     var shared = new DataPoint(TwoColorAreaSeries.GetInterpolatedX(lastPoint.Value, point, limit), limit);
                     this.abovePoints.Add(isAbove ? nan : shared);
                     this.abovePoints.Add(isAbove ? shared : nan);

@@ -29,20 +29,6 @@ namespace WpfExamples
         {
             InitializeComponent();
             this.DataContext = this;
-
-/* Unmerged change from project 'WpfExamples (net7.0-windows)'
-Before:
-            this.Examples = this.GetExamples(this.GetType().Assembly).OrderBy(e => e.Title).ToArray();
-After:
-            this.Examples = MainWindow.GetExamples(this.GetType().Assembly).OrderBy(e => e.Title).ToArray();
-*/
-
-/* Unmerged change from project 'WpfExamples (net462)'
-Before:
-            this.Examples = this.GetExamples(this.GetType().Assembly).OrderBy(e => e.Title).ToArray();
-After:
-            this.Examples = MainWindow.GetExamples(this.GetType().Assembly).OrderBy(e => e.Title).ToArray();
-*/
             this.Examples = GetExamples(this.GetType().Assembly).OrderBy(e => e.Title).ToArray();
         }
 
