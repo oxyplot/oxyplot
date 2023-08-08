@@ -6,14 +6,12 @@
 
 namespace OxyPlot.Pdf.Tests
 {
+    using NUnit.Framework;
+    using PdfSharp.Drawing;
+    using PdfSharp.Pdf;
     using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.IO;
-
-    using NUnit.Framework;
-
-    using PdfSharp.Drawing;
-    using PdfSharp.Pdf;
 
     // ReSharper disable InconsistentNaming
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
@@ -61,10 +59,10 @@ namespace OxyPlot.Pdf.Tests
             page.Height = 20 * 17;
             var g = XGraphics.FromPdfPage(page);
             var font = new XFont("Arial", 18);
-            for (int i = 32; i < 256; i++)
+            for (var i = 32; i < 256; i++)
             {
-                double x = 10 + (20 * (i % 16));
-                double y = 10 + (20 * (i / 16));
+                double x = 10 + 20 * (i % 16);
+                double y = 10 + 20 * (i / 16);
                 var s = ((char)i).ToString(CultureInfo.InvariantCulture);
                 g.DrawString(s, font, XBrushes.Black, x, y);
             }

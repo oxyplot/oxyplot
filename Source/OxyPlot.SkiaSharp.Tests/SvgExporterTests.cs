@@ -51,6 +51,5 @@ namespace OxyPlot.SkiaSharp.Tests
             using var stream = File.Create(Path.Combine(this.outputDirectory, "Background.svg"));
             exporter.Export(model, stream);
         }
-
     }
 }

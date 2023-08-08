@@ -6,12 +6,11 @@
 
 namespace OxyPlot.Tests
 {
+    using NUnit.Framework;
     using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.IO;
     using System.Text;
-
-    using NUnit.Framework;
 
     // ReSharper disable InconsistentNaming
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
@@ -95,10 +94,10 @@ namespace OxyPlot.Tests
             doc.AddPage(20 * 17, 20 * 17);
             doc.SetFont("Arial", 18);
             var sb = new StringBuilder();
-            for (int i = 32; i < 256; i++)
+            for (var i = 32; i < 256; i++)
             {
-                double x = 10 + (20 * (i % 16));
-                double y = doc.PageHeight - 10 - (20 * (i / 16));
+                double x = 10 + 20 * (i % 16);
+                var y = doc.PageHeight - 10 - 20 * (i / 16);
                 var s = ((char)i).ToString(CultureInfo.InvariantCulture);
                 doc.DrawText(x, y, s);
                 sb.Append(s);
@@ -121,9 +120,8 @@ namespace OxyPlot.Tests
             doc.SetFont("Arial", 96);
 
             var text = "qjQJKæ";
-            double width, height;
-            doc.MeasureText(text, out width, out height);
-            double y = doc.PageHeight - 400 - height;
+            doc.MeasureText(text, out var width, out var height);
+            var y = doc.PageHeight - 400 - height;
             doc.SetColor(0, 0, 1);
             doc.DrawRectangle(50, y, width, height);
             doc.SetFillColor(0, 0, 0);
@@ -137,7 +135,7 @@ namespace OxyPlot.Tests
             var doc = new PortableDocument();
             doc.AddPage(200, 200);
             doc.SetFont("Arial", 12);
-            for (int i = 0; i <= 360; i += 30)
+            for (var i = 0; i <= 360; i += 30)
             {
                 doc.SaveState();
                 doc.RotateAt(100, 100, i);
@@ -154,7 +152,7 @@ namespace OxyPlot.Tests
             var doc = new PortableDocument();
             doc.AddPage(200, 200);
             doc.SetFont("Arial", 12);
-            for (int i = 0; i <= 360; i += 30)
+            for (var i = 0; i <= 360; i += 30)
             {
                 doc.SaveState();
                 doc.Translate(100, 100);
@@ -534,9 +532,9 @@ namespace OxyPlot.Tests
         {
             var doc = new PortableDocument();
             doc.AddPage(PageSize.A4);
-            double x = 20 / 25.4 * 72;
-            double dy = 10 / 25.4 * 72;
-            double y = doc.PageHeight - dy;
+            var x = 20 / 25.4 * 72;
+            var dy = 10 / 25.4 * 72;
+            var y = doc.PageHeight - dy;
             doc.DrawText(x, y -= dy, "This is the default font.");
             doc.SetFont("Courier", 12);
             doc.DrawText(x, y -= dy, "This is courier normal.");
@@ -558,9 +556,9 @@ namespace OxyPlot.Tests
             var doc = new PortableDocument();
             doc.AddPage(PageSize.A4);
             doc.SetFont(fontName, 12);
-            double x = 20 / 25.4 * 72;
-            double dy = 10 / 25.4 * 72;
-            double y = doc.PageHeight - dy;
+            var x = 20 / 25.4 * 72;
+            var dy = 10 / 25.4 * 72;
+            var y = doc.PageHeight - dy;
             doc.DrawText(x, y -= dy, "This is 12pt " + fontName + " regular.");
             doc.SetFont(fontName, 12, true);
             doc.DrawText(x, y -= dy, "This is 12pt " + fontName + " bold.");
@@ -578,10 +576,10 @@ namespace OxyPlot.Tests
             doc.AddPage(220, 100);
             doc.SetFillColor(OxyColors.Black);
             doc.FillRectangle(0, 45, 220, 10);
-            for (int i = 0; i <= 10; i++)
+            for (var i = 0; i <= 10; i++)
             {
                 doc.SetFillColor(OxyColor.FromAColor((byte)(255d * i / 10), OxyColors.Gold));
-                doc.FillEllipse((i * 20) + 1, 41, 18, 18);
+                doc.FillEllipse(i * 20 + 1, 41, 18, 18);
             }
 
             doc.Save(Folder + "Transparency.pdf");

@@ -38,7 +38,7 @@ namespace OxyPlot.Tests
             var sc = new XmlSchemaSet();
 
             // Add the schema to the collection.
-            string dir = @"svg\";
+            var dir = @"svg\";
             sc.Add("http://www.w3.org/2000/svg", dir + "svg.xsd");
             return Validate(path, sc);
         }
@@ -53,17 +53,17 @@ namespace OxyPlot.Tests
         {
             // http://msdn.microsoft.com/en-us/library/as3tta56.aspx
             var settings = new XmlReaderSettings
-                {
-                    ConformanceLevel = ConformanceLevel.Document,
-                    DtdProcessing = DtdProcessing.Ignore,
-                    ValidationType = ValidationType.Schema,
-                    Schemas = sc,
-                    ValidationFlags =
+            {
+                ConformanceLevel = ConformanceLevel.Document,
+                DtdProcessing = DtdProcessing.Ignore,
+                ValidationType = ValidationType.Schema,
+                Schemas = sc,
+                ValidationFlags =
                         XmlSchemaValidationFlags.ProcessSchemaLocation | XmlSchemaValidationFlags.ProcessInlineSchema,
-                };
+            };
 
-            int warnings = 0;
-            int errors = 0;
+            var warnings = 0;
+            var errors = 0;
 
             settings.ValidationEventHandler += (sender, e) =>
                 {

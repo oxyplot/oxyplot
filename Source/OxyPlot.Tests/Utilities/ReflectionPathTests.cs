@@ -6,10 +6,9 @@
 
 namespace OxyPlot.Tests
 {
+    using NUnit.Framework;
     using System;
     using System.Diagnostics;
-
-    using NUnit.Framework;
 
     /// <summary>
     /// Unit tests for <see cref="ReflectionPath" />.
@@ -25,8 +24,7 @@ namespace OxyPlot.Tests
         {
             var item = new Item();
             var rp = new ReflectionPath("SubItem");
-            object result;
-            Assert.IsTrue(rp.TryGetValue(item, out result));
+            Assert.IsTrue(rp.TryGetValue(item, out var result));
             Assert.That(rp.GetValue(item), Is.Null);
         }
 
@@ -38,8 +36,7 @@ namespace OxyPlot.Tests
         {
             var item = new Item();
             var rp = new ReflectionPath("SubItem.X");
-            object result;
-            Assert.IsTrue(rp.TryGetValue(item, out result));
+            Assert.IsTrue(rp.TryGetValue(item, out var result));
             Assert.That(rp.GetValue(item), Is.Null);
         }
 
@@ -51,8 +48,7 @@ namespace OxyPlot.Tests
         {
             var item = new Item { Number = 41 };
             var rp = new ReflectionPath("Number");
-            object result;
-            Assert.IsTrue(rp.TryGetValue(item, out result));
+            Assert.IsTrue(rp.TryGetValue(item, out var result));
             Assert.That(rp.GetValue(item), Is.EqualTo(41));
         }
 
@@ -64,8 +60,7 @@ namespace OxyPlot.Tests
         {
             var item = new Item { Point = new DataPoint(1, 2) };
             var rp = new ReflectionPath("Point.X");
-            object result;
-            Assert.IsTrue(rp.TryGetValue(item, out result));
+            Assert.IsTrue(rp.TryGetValue(item, out var result));
             Assert.That(rp.GetValue(item), Is.EqualTo(1));
         }
 
@@ -89,7 +84,7 @@ namespace OxyPlot.Tests
             var item = new Item { SubItem = new Item { Point = new DataPoint(1, 2) } };
             var rp = new ReflectionPath("SubItem.Point.X");
             var w = Stopwatch.StartNew();
-            for (int i = 0; i < 1000000; i++)
+            for (var i = 0; i < 1000000; i++)
             {
                 rp.GetValue(item);
             }
@@ -105,8 +100,7 @@ namespace OxyPlot.Tests
         {
             var item = new Item { Point = new DataPoint(1, 2) };
             var rp = new ReflectionPath("Point.Z");
-            object result;
-            Assert.IsFalse(rp.TryGetValue(item, out result));
+            Assert.IsFalse(rp.TryGetValue(item, out var result));
             Assert.Throws<InvalidOperationException>(() => rp.GetValue(item));
         }
 

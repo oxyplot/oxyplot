@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFrameworks>net462;net6.0-windows;net7.0-windows</TargetFrameworks>
+        <LangVersion>11</LangVersion>
         <UseWPF>true</UseWPF>
         <Description>OxyPlot WPF unit tests</Description>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>

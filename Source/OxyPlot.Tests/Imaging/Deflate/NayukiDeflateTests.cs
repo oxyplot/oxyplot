@@ -9,11 +9,10 @@
 
 namespace OxyPlot.Tests
 {
+    using NUnit.Framework;
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
-
-    using NUnit.Framework;
 
     /// <summary>
     /// Unit tests based on Nayjuki's <a href="https://github.com/nayuki/DEFLATE/blob/master/test/nayuki/deflate/DecompressorTest.java">DEFLATE</a> project.
@@ -233,21 +232,21 @@ namespace OxyPlot.Tests
             }
 
             var refOut = new byte[refOutput.Length / 2];
-            for (int i = 0; i < refOut.Length; i++)
+            for (var i = 0; i < refOut.Length; i++)
             {
                 refOut[i] = (byte)int.Parse(refOutput.Substring(i * 2, 2), NumberStyles.HexNumber);
             }
 
             input = input.Replace(" ", string.Empty);
             var inputStream = new StringBitReader(input);
-            byte[] actualOut = Deflate.Decompress(inputStream);
+            var actualOut = Deflate.Decompress(inputStream);
             AssertArrayEquals(refOut, actualOut);
         }
 
         private static void AssertArrayEquals<T>(T[] refOut, T[] actualOut)
         {
             Assert.AreEqual(refOut.Length, actualOut.Length);
-            for (int i = 0; i < refOut.Length; i++)
+            for (var i = 0; i < refOut.Length; i++)
             {
                 Assert.AreEqual(refOut[i], actualOut[i]);
             }

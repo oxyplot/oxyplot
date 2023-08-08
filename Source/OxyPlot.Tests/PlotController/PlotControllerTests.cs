@@ -9,9 +9,8 @@
 
 namespace OxyPlot.Tests
 {
-    using System.Linq;
-
     using NUnit.Framework;
+    using System.Linq;
 
     /// <summary>
     /// Tests the <see cref="PlotController" /> class.

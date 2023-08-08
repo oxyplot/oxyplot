@@ -53,7 +53,7 @@ namespace OxyPlot.Tests
                 return -1;
             }
 
-            int result = this.text[this.index] - '0';
+            var result = this.text[this.index] - '0';
             this.index++;
             return result;
         }
@@ -65,7 +65,7 @@ namespace OxyPlot.Tests
         /// <exception cref="System.Exception">End of stream reached</exception>
         public override int ReadNoEof()
         {
-            int result = this.Read();
+            var result = this.Read();
             if (result != -1)
             {
                 return result;
@@ -102,8 +102,8 @@ namespace OxyPlot.Tests
                 this.ReadNoEof();
             }
 
-            int result = 0;
-            for (int i = 0; i < 8; i++)
+            var result = 0;
+            for (var i = 0; i < 8; i++)
             {
                 result |= this.ReadNoEof() << i;
             }

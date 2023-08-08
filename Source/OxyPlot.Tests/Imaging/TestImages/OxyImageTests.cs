@@ -6,12 +6,11 @@
 
 namespace OxyPlot.Tests
 {
+    using NUnit.Framework;
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
-
-    using NUnit.Framework;
 
     // ReSharper disable InconsistentNaming
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
@@ -55,12 +54,12 @@ namespace OxyPlot.Tests
         [Test]
         public void Create_LargeImageToPng()
         {
-            int w = 266;
-            int h = 40;
+            var w = 266;
+            var h = 40;
             var data = new OxyColor[w, h];
-            for (int y = 0; y < h; y++)
+            for (var y = 0; y < h; y++)
             {
-                for (int x = 0; x < w; x++)
+                for (var x = 0; x < w; x++)
                 {
                     data[x, y] = OxyColor.FromHsv((double)x / w, 1, 1);
                 }
@@ -111,10 +110,10 @@ namespace OxyPlot.Tests
         public void Discussion453825_100()
         {
             var data = new byte[100, 100];
-            int k = 0;
-            for (int i = 0; i < 100; i++)
+            var k = 0;
+            for (var i = 0; i < 100; i++)
             {
-                for (int j = 0; j < 100; j++)
+                for (var j = 0; j < 100; j++)
                 {
                     data[i, j] = (byte)(k++ % 256);
                 }
@@ -128,16 +127,16 @@ namespace OxyPlot.Tests
         [Test]
         public void Discussion453825_199()
         {
-            int w = 199;
-            int h = 256;
+            var w = 199;
+            var h = 256;
             var data = new byte[h, w];
             var data2 = new byte[h * w];
-            for (int i = 0; i < h; i++)
+            for (var i = 0; i < h; i++)
             {
-                for (int j = 0; j < w; j++)
+                for (var j = 0; j < w; j++)
                 {
                     data[i, j] = (byte)(i % 256);
-                    data2[(i * w) + j] = (byte)(i % 256);
+                    data2[i * w + j] = (byte)(i % 256);
                 }
             }
 

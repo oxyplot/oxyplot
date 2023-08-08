@@ -9,11 +9,9 @@
 
 namespace OxyPlot.Tests
 {
-    using System;
-
     using NUnit.Framework;
-    
     using OxyPlot.Series;
+    using System;
 
     /// <summary>
     /// Provides unit tests for the <see cref="XYAxisSeries" /> class.
@@ -38,7 +36,7 @@ namespace OxyPlot.Tests
         [Test]
         public void RunFuzzTest()
         {
-            for (int i = 0; i < 10000; ++i)
+            for (var i = 0; i < 10000; ++i)
             {
                 FuzzIteration(i);
             }
@@ -51,7 +49,7 @@ namespace OxyPlot.Tests
         [Test]
         public void RunFuzzWithNanTest()
         {
-            for (int i = 0; i < 10000; ++i)
+            for (var i = 0; i < 10000; ++i)
             {
                 FuzzIterationWithNan(i);
             }
@@ -65,7 +63,7 @@ namespace OxyPlot.Tests
             var random = new Random(seed);
             var testData = new System.Collections.Generic.List<double>();
             var currentValue = random.NextDouble() - 0.5;
-            for (int i = 0; i < N; ++i)
+            for (var i = 0; i < N; ++i)
             {
                 testData.Add(currentValue);
                 currentValue += random.NextDouble();
@@ -74,7 +72,7 @@ namespace OxyPlot.Tests
             var targetX = random.NextDouble() * (N / 2.0) - 1.0;
             var guess = random.Next(0, testData.Count);
 
-            int foundIndex = xyAxiseries.FindWindowStartIndex(testData, x => x, targetX, guess);
+            var foundIndex = xyAxiseries.FindWindowStartIndex(testData, x => x, targetX, guess);
 
             if (foundIndex > 0)
                 Assert.LessOrEqual(testData[foundIndex], targetX, "At " + seed);
@@ -90,7 +88,7 @@ namespace OxyPlot.Tests
             var random = new Random(seed);
             var testData = new System.Collections.Generic.List<double>();
             var currentValue = random.NextDouble() - 0.5;
-            for (int i = 0; i < N; ++i)
+            for (var i = 0; i < N; ++i)
             {
                 if (random.Next(4) == 0)
                     testData.Add(double.NaN);
@@ -125,13 +123,13 @@ namespace OxyPlot.Tests
             var targetX = random.NextDouble() * (N / 2.0) - 1.0;
             var guess = random.Next(0, testData.Count);
 
-            int foundIndex = xyAxiseries.FindWindowStartIndex(testData, x => x, targetX, guess);
+            var foundIndex = xyAxiseries.FindWindowStartIndex(testData, x => x, targetX, guess);
 
             if (foundIndex > 0)
             {
                 if (double.IsNaN(testData[foundIndex]))
                 {
-                    var prevNonNaN = PrevNonNan(foundIndex-1);
+                    var prevNonNaN = PrevNonNan(foundIndex - 1);
                     if (prevNonNaN.HasValue)
                         Assert.LessOrEqual(prevNonNaN, targetX, "At " + seed);
                 }
@@ -145,7 +143,7 @@ namespace OxyPlot.Tests
             {
                 if (double.IsNaN(testData[foundIndex + 1]))
                 {
-                    var nextNonNaN = NextNonNan(foundIndex+1);
+                    var nextNonNaN = NextNonNan(foundIndex + 1);
                     if (nextNonNaN.HasValue)
                         Assert.GreaterOrEqual(nextNonNaN, targetX, "At " + seed);
                 }

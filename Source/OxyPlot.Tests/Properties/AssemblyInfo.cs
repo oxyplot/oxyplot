@@ -4,7 +4,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Threading;
 using NUnit.Framework;
+using System.Threading;
 
 [assembly: Apartment(ApartmentState.STA)]

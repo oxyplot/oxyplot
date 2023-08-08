@@ -6,13 +6,12 @@
 
 namespace OxyPlot.SkiaSharp.Tests
 {
-    using System.IO;
     using ExampleLibrary;
     using global::SkiaSharp;
     using NUnit.Framework;
-
     using OxyPlot.Axes;
     using OxyPlot.SkiaSharp;
+    using System.IO;
 
     [TestFixture]
     public class PdfExporterTests

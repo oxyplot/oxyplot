@@ -9,10 +9,9 @@
 
 namespace OxyPlot.Tests.Rendering.Utilities
 {
+    using NUnit.Framework;
     using System;
     using System.Collections.Generic;
-
-    using NUnit.Framework;
 
     /// <summary>
     /// Provides unit tests for the <see cref="Decimator" /> class.
@@ -29,8 +28,8 @@ namespace OxyPlot.Tests.Rendering.Utilities
             // TODO: write some better tests
             var input = new List<ScreenPoint>();
             var output = new List<ScreenPoint>();
-            int n = 1000;
-            for (int i = 0; i < n; i++)
+            var n = 1000;
+            for (var i = 0; i < n; i++)
             {
                 input.Add(new ScreenPoint(Math.Round((double)i / n), Math.Sin(i)));
             }

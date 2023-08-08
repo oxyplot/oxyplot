@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFrameworks>net462</TargetFrameworks>
+        <LangVersion>11</LangVersion>
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
         <Description>OxyPlot Pdf unit tests</Description>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>

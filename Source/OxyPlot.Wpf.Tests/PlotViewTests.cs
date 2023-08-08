@@ -9,10 +9,9 @@
 
 namespace OxyPlot.Wpf.Tests
 {
+    using NUnit.Framework;
     using System.Threading.Tasks;
     using System.Windows;
-
-    using NUnit.Framework;
 
     /// <summary>
     /// Provides unit tests for the <see cref="PlotView" /> class.

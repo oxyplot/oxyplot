@@ -9,8 +9,8 @@
 
 namespace OxyPlot.Wpf.Tests
 {
-    using System.IO;
     using NUnit.Framework;
+    using System.IO;
 
     /// <summary>
     /// Provides unit tests for the example library.
@@ -18,9 +18,9 @@ namespace OxyPlot.Wpf.Tests
     [TestFixture]
     public class ExampleLibraryTests
     {
-        const string DestinationDirectory = "ExampleLibrary.Actual";
-        const string BaselineDirectory = "ExampleLibrary.Baseline";
-        const string DiffDirectory = "ExampleLibrary.Diff";
+        private const string DestinationDirectory = "ExampleLibrary.Actual";
+        private const string BaselineDirectory = "ExampleLibrary.Baseline";
+        private const string DiffDirectory = "ExampleLibrary.Diff";
 
         [OneTimeSetUp]
         public void Init()
@@ -71,7 +71,7 @@ namespace OxyPlot.Wpf.Tests
         /// <returns>A file name.</returns>
         private static string CreateValidFileName(string title, string extension)
         {
-            string validFileName = title.Trim();
+            var validFileName = title.Trim();
             var invalidFileNameChars = "/?<>\\:*|\0\t\r\n".ToCharArray();
             foreach (var invalChar in invalidFileNameChars)
             {

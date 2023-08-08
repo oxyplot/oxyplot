@@ -6,12 +6,10 @@
 
 namespace OxyPlot.Tests
 {
+    using NUnit.Framework;
+    using OxyPlot.Series;
     using System;
     using System.Collections.Generic;
-
-    using NUnit.Framework;
-
-    using OxyPlot.Series;
 
     [TestFixture]
     public class ListBuilderTests

@@ -9,9 +9,8 @@
 
 namespace OxyPlot.Tests
 {
-    using System.IO;
-
     using NUnit.Framework;
+    using System.IO;
 
     /// <summary>
     /// Provides methods to assert that plots look as expected.
@@ -29,8 +28,8 @@ namespace OxyPlot.Tests
         public static void AreEqual(PlotModel plot, string name)
         {
             // string name = new System.Diagnostics.StackFrame(1).GetMethod().Name;
-            string path = name + ".svg";
-            string baseline = @"baseline\" + path;
+            var path = name + ".svg";
+            var baseline = @"baseline\" + path;
             using (var s = File.Create(path))
             {
                 SvgExporter.Export(plot, s, 800, 500, false);

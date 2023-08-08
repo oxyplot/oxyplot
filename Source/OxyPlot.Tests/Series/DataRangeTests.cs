@@ -9,9 +9,9 @@
 
 namespace OxyPlot.Tests
 {
-    using System;
     using NUnit.Framework;
     using OxyPlot.Series;
+    using System;
 
     /// <summary>
     /// Contains the unit tests for the <see cref="DataRange"/> struct.
@@ -37,7 +37,7 @@ namespace OxyPlot.Tests
         [Test]
         public void Initialize_ThrowsArgumentException_NaN()
         {
-            ArgumentException ex = Assert.Throws<ArgumentException>(() => new DataRange(double.NaN, 3));
+            var ex = Assert.Throws<ArgumentException>(() => new DataRange(double.NaN, 3));
             Assert.AreEqual("NaN values are not permitted", ex.Message);
         }
 
@@ -47,7 +47,7 @@ namespace OxyPlot.Tests
         [Test]
         public void Initialize_ThrowsArgumentException_MinGreaterMax()
         {
-            ArgumentException ex = Assert.Throws<ArgumentException>(() => new DataRange(5, 3));
+            var ex = Assert.Throws<ArgumentException>(() => new DataRange(5, 3));
             Assert.AreEqual("max must be larger or equal min", ex.Message);
         }
 

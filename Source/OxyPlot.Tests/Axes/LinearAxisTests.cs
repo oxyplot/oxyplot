@@ -9,12 +9,10 @@
 
 namespace OxyPlot.Tests
 {
+    using NUnit.Framework;
+    using OxyPlot.Axes;
     using System;
     using System.Globalization;
-
-    using NUnit.Framework;
-
-    using OxyPlot.Axes;
 
     /// <summary>
     /// Provides unit tests for the <see cref="LinearAxis" /> class.

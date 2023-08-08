@@ -9,6 +9,7 @@
 
 namespace OxyPlot.Wpf.Tests
 {
+    using NUnit.Framework;
     using System;
     using System.Collections;
     using System.Collections.Generic;
@@ -16,8 +17,6 @@ namespace OxyPlot.Wpf.Tests
     using System.Linq;
     using System.Windows;
     using System.Windows.Media;
-
-    using NUnit.Framework;
 
     /// <summary>
     /// Provides specialized unit test assertion methods.
@@ -101,16 +100,15 @@ namespace OxyPlot.Wpf.Tests
                 var v2 = pd2.GetValue(o2);
                 v2 = ConvertToOxyPlotObject(v2, pd2.PropertyType);
 
-                var type1 = v1 != null ? v1.GetType() : null;
-                var type2 = v2 != null ? v2.GetType() : null;
+                var type1 = v1?.GetType();
+                var type2 = v2?.GetType();
                 if (!AreEqual(type1, type2))
                 {
                     Console.WriteLine(@"{0}: {1} / {2}", pd1.Name, type1, type2);
                 }
 
-                var list1 = v1 as IList;
                 var list2 = v2 as IList;
-                if (list1 != null)
+                if (v1 is IList list1)
                 {
                     if (list1.Count != list2.Count)
                     {
@@ -119,7 +117,7 @@ namespace OxyPlot.Wpf.Tests
                         continue;
                     }
 
-                    for (int i = 0; i < list1.Count; i++)
+                    for (var i = 0; i < list1.Count; i++)
                     {
                         if (!AreEqual(list1[i], list2[i]))
                         {
@@ -154,7 +152,7 @@ namespace OxyPlot.Wpf.Tests
         /// <param name="value">The object to convert.</param>
         /// <param name="type">The type.</param>
         /// <returns>
-        /// A converted <see cref="Object"/>.
+        /// A converted <see cref="object"/>.
         /// </returns>
         private static object ConvertToOxyPlotObject(object value, Type type)
         {
@@ -163,8 +161,7 @@ namespace OxyPlot.Wpf.Tests
                 return ((Color)value).ToOxyColor();
             }
 
-            var listOfColor = value as IList<Color>;
-            if (listOfColor != null)
+            if (value is IList<Color> listOfColor)
             {
                 return listOfColor.Select(c => c.ToOxyColor()).ToList();
             }
@@ -256,7 +253,7 @@ namespace OxyPlot.Wpf.Tests
                 return false;
             }
 
-            for (int i = 0; i < v1.Count; i++)
+            for (var i = 0; i < v1.Count; i++)
             {
                 if (!AreEqual(v1[i], v2[i]))
                 {

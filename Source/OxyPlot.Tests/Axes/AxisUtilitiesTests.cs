@@ -9,12 +9,11 @@
 
 namespace OxyPlot.Tests
 {
+    using NUnit.Framework;
+    using OxyPlot.Axes;
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using NUnit.Framework;
-
-    using OxyPlot.Axes;
 
     /// <summary>
     /// Provides unit tests for the <see cref="AxisUtilities" /> class.
@@ -162,7 +161,7 @@ namespace OxyPlot.Tests
                 }
 
                 var rng = new Random(1);
-                TestLargeAndSmall(majorTicks.Select(d => d + ((rng.NextDouble() - 0.5) * 1e-6)).ToList(), minorTicks, expected);
+                TestLargeAndSmall(majorTicks.Select(d => d + (rng.NextDouble() - 0.5) * 1e-6).ToList(), minorTicks, expected);
             }
 
             void TestLargeAndSmall(IList<double> majorTicks, IList<double> minorTicks, IList<double> expected)

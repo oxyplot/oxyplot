@@ -6,11 +6,10 @@
 
 namespace OxyPlot.Tests
 {
+    using NUnit.Framework;
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-
-    using NUnit.Framework;
 
     // ReSharper disable InconsistentNaming
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
@@ -53,22 +52,22 @@ namespace OxyPlot.Tests
         [Test]
         public void CreateUniformBins_IntegerBins()
         {
-            int[] primes = new int[] { 1, 2, 3, 5, 7, 11, 13, 17 };
+            var primes = new int[] { 1, 2, 3, 5, 7, 11, 13, 17 };
 
             // ensure we produce nice integer results over a reasonable range
-            int end = primes.Aggregate((a, b) => a * b);
-            int start = -end;
+            var end = primes.Aggregate((a, b) => a * b);
+            var start = -end;
 
             foreach (var interval in primes)
             {
-                int count = (end - start) / interval;
+                var count = (end - start) / interval;
 
                 var breaks = HistogramHelpers.CreateUniformBins(start, end, count);
 
                 Assert.AreEqual(count, breaks.Count - 1);
 
-                int i = 0;
-                for (int b = start; b <= end; b += interval, i++)
+                var i = 0;
+                for (var b = start; b <= end; b += interval, i++)
                 {
                     Assert.AreEqual(b, breaks[i]);
                 }
@@ -93,11 +92,11 @@ namespace OxyPlot.Tests
                 Assert.AreEqual(breaks[count], end);
 
                 // ensure the gab between breaks is reasonably consistent
-                double expectedGap = (end - start) / count;
+                var expectedGap = (end - start) / count;
 
-                for (int i = 0; i < count; i++)
+                for (var i = 0; i < count; i++)
                 {
-                    double gap = breaks[i + 1] - breaks[i];
+                    var gap = breaks[i + 1] - breaks[i];
                     Assert.AreEqual(expectedGap, gap, 1E-5); // near limits of resoltuion
                 }
             }
@@ -238,7 +237,7 @@ namespace OxyPlot.Tests
         private static void TestCollect(double[] samples, double[] breaks, int[] expectedCounts, BinningOptions binningOptions)
         {
             // compute areas from counts
-            int expectedCount = binningOptions.OutlierMode == BinningOutlierMode.CountOutliers ? samples.Length : expectedCounts.Sum();
+            var expectedCount = binningOptions.OutlierMode == BinningOutlierMode.CountOutliers ? samples.Length : expectedCounts.Sum();
 
             Assume.That(expectedCount > 0);
 
@@ -266,7 +265,7 @@ namespace OxyPlot.Tests
             Assert.AreEqual(expectedAreas.Length, items.Length);
 
             // check areas and counts
-            for (int i = 0; i < expectedAreas.Length; i++)
+            for (var i = 0; i < expectedAreas.Length; i++)
             {
                 Assert.AreEqual(expectedAreas[i], items[i].Area, expectedAreas[i] * 1E-15);
                 Assert.AreEqual(expectedCounts[i], items[i].Count);
@@ -274,7 +273,7 @@ namespace OxyPlot.Tests
 
             // check item ranges
             var orderedBreaks = breaks.Distinct().OrderBy(b => b).ToArray();
-            for (int i = 0; i < items.Length; i++)
+            for (var i = 0; i < items.Length; i++)
             {
                 Assert.AreEqual(orderedBreaks[i], items[i].RangeStart);
                 Assert.AreEqual(orderedBreaks[i + 1], items[i].RangeEnd);

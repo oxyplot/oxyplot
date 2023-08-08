@@ -6,21 +6,19 @@
 
 namespace OxyPlot.Tests
 {
+    using ExampleLibrary;
+    using NUnit.Framework;
+    using OxyPlot.Series;
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
-    using System.Linq;
-    using ExampleLibrary;
-    using NUnit.Framework;
-
-    using OxyPlot.Series;
 
     // ReSharper disable InconsistentNaming
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     [TestFixture]
     public class SvgExporterTests
     {
-        const string DestinationDirectory = "SvgExporterTests_ExampleLibrary";
+        private const string DestinationDirectory = "SvgExporterTests_ExampleLibrary";
 
         [OneTimeSetUp]
         public void Init()
@@ -60,12 +58,11 @@ namespace OxyPlot.Tests
             SvgAssert.IsValidFile(FileName);
         }
 
-
         [Test]
         [TestCaseSource(typeof(ExampleLibrary.Examples), nameof(ExampleLibrary.Examples.GetListForAutomatedTest))]
         public void Export_AllExamplesInExampleLibrary_CheckThatAllFilesExist(ExampleLibrary.ExampleInfo example)
         {
-            void ExportModelAndCheckFileExists(PlotModel model, string fileName)
+            static void ExportModelAndCheckFileExists(PlotModel model, string fileName)
             {
                 if (model == null)
                 {

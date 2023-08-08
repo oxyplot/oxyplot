@@ -6,13 +6,12 @@
 
 namespace OxyPlot.SkiaSharp.Tests
 {
-    using System;
-    using System.IO;
     using ExampleLibrary;
     using NUnit.Framework;
-
     using OxyPlot.Series;
     using OxyPlot.SkiaSharp;
+    using System;
+    using System.IO;
 
     [TestFixture]
     public class JpegExporterTests

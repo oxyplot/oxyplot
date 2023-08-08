@@ -6,9 +6,8 @@
 
 namespace OxyPlot.Tests
 {
-    using System.Diagnostics.CodeAnalysis;
-
     using NUnit.Framework;
+    using System.Diagnostics.CodeAnalysis;
 
     // ReSharper disable InconsistentNaming
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]

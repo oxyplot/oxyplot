@@ -6,13 +6,13 @@
 
 namespace OxyPlot.SkiaSharp.Tests
 {
-    using System;
-    using System.IO;
     using ExampleLibrary;
     using NUnit.Framework;
     using OxyPlot.Annotations;
     using OxyPlot.Series;
     using OxyPlot.SkiaSharp;
+    using System;
+    using System.IO;
 
     [TestFixture]
     public class PngExporterTests
@@ -142,11 +142,11 @@ namespace OxyPlot.SkiaSharp.Tests
             var plotModel = CreateTestModel1();
 
             var pixelData = new OxyColor[5, 5];
-            for (int i = 0; i < pixelData.GetLength(0); i++)
+            for (var i = 0; i < pixelData.GetLength(0); i++)
             {
-                for (int j = 0; j < pixelData.GetLength(1); j++)
+                for (var j = 0; j < pixelData.GetLength(1); j++)
                 {
-                    pixelData[i, j] = OxyColor.FromArgb(255, 128, (byte)((i * 255) / pixelData.GetLength(0)), (byte)((j * 255) / pixelData.GetLength(1)));
+                    pixelData[i, j] = OxyColor.FromArgb(255, 128, (byte)(i * 255 / pixelData.GetLength(0)), (byte)(j * 255 / pixelData.GetLength(1)));
                 }
             }
 
@@ -184,11 +184,11 @@ namespace OxyPlot.SkiaSharp.Tests
             var plotModel = CreateTestModel1();
 
             var pixelData = new OxyColor[5, 5];
-            for (int i = 0; i < pixelData.GetLength(0); i++)
+            for (var i = 0; i < pixelData.GetLength(0); i++)
             {
-                for (int j = 0; j < pixelData.GetLength(1); j++)
+                for (var j = 0; j < pixelData.GetLength(1); j++)
                 {
-                    pixelData[i, j] = OxyColor.FromArgb(255, 128, (byte)((i * 255) / pixelData.GetLength(0)), (byte)((j * 255) / pixelData.GetLength(1)));
+                    pixelData[i, j] = OxyColor.FromArgb(255, 128, (byte)(i * 255 / pixelData.GetLength(0)), (byte)(j * 255 / pixelData.GetLength(1)));
                 }
             }
 

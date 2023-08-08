@@ -9,13 +9,11 @@
 
 namespace OxyPlot.Tests
 {
-    using System;
-    using System.Diagnostics.CodeAnalysis;
-
     using NUnit.Framework;
-
     using OxyPlot.Axes;
     using OxyPlot.Series;
+    using System;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Provides unit tests for the <see cref="Axis" /> class.
@@ -594,9 +592,9 @@ namespace OxyPlot.Tests
 
             ((IPlotModel)plot).Update(true);
 
-            double dataMin = 10.1;
-            double dataMax = 10.3;
-            double dataCenter = (dataMax + dataMin) / 2;
+            var dataMin = 10.1;
+            var dataMax = 10.3;
+            var dataCenter = (dataMax + dataMin) / 2;
 
             // Center should be the between data min and max
             Assert.AreEqual(dataCenter, (plot.Axes[0].ActualMaximum + plot.Axes[0].ActualMinimum) / 2, 1e-5, "center");
@@ -632,7 +630,7 @@ namespace OxyPlot.Tests
 
             // Center should be the between AbsoluteMaximum and the (AboluteMaximum - MinimumRange)
             Assert.AreEqual(yaxis.AbsoluteMaximum, plot.Axes[0].ActualMaximum, 0, "absolute maximum");
-            Assert.AreEqual(yaxis.AbsoluteMaximum - (yaxis.MinimumRange / 2), (plot.Axes[0].ActualMaximum + plot.Axes[0].ActualMinimum) / 2, 1e-5, "center");
+            Assert.AreEqual(yaxis.AbsoluteMaximum - yaxis.MinimumRange / 2, (plot.Axes[0].ActualMaximum + plot.Axes[0].ActualMinimum) / 2, 1e-5, "center");
             Assert.AreEqual(yaxis.AbsoluteMaximum - yaxis.MinimumRange, plot.Axes[0].ActualMinimum, 1e-5, "minimum");
         }
 
@@ -664,7 +662,7 @@ namespace OxyPlot.Tests
 
             // Center should be the between AbsoluteMinimum and the (AboluteMinimum + MinimumRange)
             Assert.AreEqual(yaxis.AbsoluteMinimum, plot.Axes[0].ActualMinimum, 0, "absolute minimum");
-            Assert.AreEqual(yaxis.AbsoluteMinimum + (yaxis.MinimumRange / 2), (plot.Axes[0].ActualMaximum + plot.Axes[0].ActualMinimum) / 2, 1e-5, "center");
+            Assert.AreEqual(yaxis.AbsoluteMinimum + yaxis.MinimumRange / 2, (plot.Axes[0].ActualMaximum + plot.Axes[0].ActualMinimum) / 2, 1e-5, "center");
             Assert.AreEqual(yaxis.AbsoluteMinimum + yaxis.MinimumRange, plot.Axes[0].ActualMaximum, 1e-5, "maximum");
         }
 
@@ -693,9 +691,9 @@ namespace OxyPlot.Tests
 
             ((IPlotModel)plot).Update(true);
 
-            double dataMin = 10.1;
-            double dataMax = 10.3;
-            double dataCenter = (dataMax + dataMin) / 2;
+            var dataMin = 10.1;
+            var dataMax = 10.3;
+            var dataCenter = (dataMax + dataMin) / 2;
 
             // Center should be the between data min and max
             Assert.AreEqual(dataCenter, (plot.Axes[0].ActualMaximum + plot.Axes[0].ActualMinimum) / 2, 1e-5, "center");
@@ -731,7 +729,7 @@ namespace OxyPlot.Tests
 
             // Range is between AbsoluteMaximum and the (AboluteMaximum - MaximumRange)
             Assert.AreEqual(yaxis.AbsoluteMaximum, plot.Axes[0].ActualMaximum, 0, "absolute maximum");
-            Assert.AreEqual(yaxis.AbsoluteMaximum - (yaxis.MaximumRange / 2), (plot.Axes[0].ActualMaximum + plot.Axes[0].ActualMinimum) / 2, 1e-6, "center");
+            Assert.AreEqual(yaxis.AbsoluteMaximum - yaxis.MaximumRange / 2, (plot.Axes[0].ActualMaximum + plot.Axes[0].ActualMinimum) / 2, 1e-6, "center");
             Assert.AreEqual(yaxis.AbsoluteMaximum - yaxis.MaximumRange, plot.Axes[0].ActualMinimum, 1e-6, "minimum");
         }
 
@@ -763,7 +761,7 @@ namespace OxyPlot.Tests
 
             // Range is between AbsoluteMinimum and the (AboluteMinimum + MaximumRange)
             Assert.AreEqual(yaxis.AbsoluteMinimum, plot.Axes[0].ActualMinimum, 0, "absolute minimum");
-            Assert.AreEqual(yaxis.AbsoluteMinimum + (yaxis.MaximumRange / 2), (plot.Axes[0].ActualMaximum + plot.Axes[0].ActualMinimum) / 2, 1e-6, "center");
+            Assert.AreEqual(yaxis.AbsoluteMinimum + yaxis.MaximumRange / 2, (plot.Axes[0].ActualMaximum + plot.Axes[0].ActualMinimum) / 2, 1e-6, "center");
             Assert.AreEqual(yaxis.AbsoluteMinimum + yaxis.MaximumRange, plot.Axes[0].ActualMaximum, 1e-6, "maximum");
         }
 

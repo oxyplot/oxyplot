@@ -9,12 +9,11 @@
 
 namespace OxyPlot.Wpf.Tests
 {
+    using NUnit.Framework;
+    using OxyPlot.Series;
     using System;
     using System.Globalization;
     using System.IO;
-
-    using NUnit.Framework;
-    using OxyPlot.Series;
 
     /// <summary>
     /// Tests the <see cref="PngExporter" />.

@@ -9,17 +9,13 @@
 
 namespace OxyPlot.Tests
 {
-    using System;
-    using System.Diagnostics.CodeAnalysis;
-
     using ExampleLibrary;
-
     using NSubstitute;
-
     using NUnit.Framework;
-
     using OxyPlot.Axes;
     using OxyPlot.Series;
+    using System;
+    using System.Diagnostics.CodeAnalysis;
 
     // ReSharper disable InconsistentNaming
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
@@ -35,7 +31,7 @@ namespace OxyPlot.Tests
             var first = 1; // skip the 'none', since we do that above for clarity
             var all = (int)(ExampleFlags.Transpose | ExampleFlags.Reverse);
 
-            for (int flags = first; flags < all; flags++)
+            for (var flags = first; flags < all; flags++)
             {
                 ((IPlotModel)example.GetModel((ExampleFlags)flags))?.Update(true);
             }
@@ -51,14 +47,14 @@ namespace OxyPlot.Tests
             plot.Axes.Add(yaxis1);
             plot.Axes.Add(yaxis2);
 
-            Action<LineSeries> addExamplePoints = ls =>
-                {
-                    ls.Points.Add(new DataPoint(3, 13));
-                    ls.Points.Add(new DataPoint(10, 47));
-                    ls.Points.Add(new DataPoint(30, 23));
-                    ls.Points.Add(new DataPoint(40, 65));
-                    ls.Points.Add(new DataPoint(80, 10));
-                };
+            static void addExamplePoints(LineSeries ls)
+            {
+                ls.Points.Add(new DataPoint(3, 13));
+                ls.Points.Add(new DataPoint(10, 47));
+                ls.Points.Add(new DataPoint(30, 23));
+                ls.Points.Add(new DataPoint(40, 65));
+                ls.Points.Add(new DataPoint(80, 10));
+            }
 
             var ls1 = new LineSeries { Background = OxyColors.LightSeaGreen, YAxisKey = "Y1" };
             addExamplePoints(ls1);

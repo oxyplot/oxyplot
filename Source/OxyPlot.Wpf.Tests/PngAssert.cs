@@ -9,11 +9,10 @@
 
 namespace OxyPlot.Wpf.Tests
 {
+    using NUnit.Framework;
     using System;
     using System.IO;
     using System.Windows.Media.Imaging;
-
-    using NUnit.Framework;
 
     /// <summary>
     /// Provides assertions on image files.
@@ -53,9 +52,9 @@ namespace OxyPlot.Wpf.Tests
             var h = expectedImage.GetLength(1);
             var differences = 0;
             var differenceImage = new OxyColor[w, h];
-            for (int i = 0; i < h; i++)
+            for (var i = 0; i < h; i++)
             {
-                for (int j = 0; j < w; j++)
+                for (var j = 0; j < w; j++)
                 {
                     if (!expectedImage[j, i].Equals(actualImage[j, i]))
                     {
@@ -73,9 +72,9 @@ namespace OxyPlot.Wpf.Tests
             {
                 if (output != null)
                 {
-                    for (int i = 0; i < h; i++)
+                    for (var i = 0; i < h; i++)
                     {
-                        for (int j = 0; j < w; j++)
+                        for (var j = 0; j < w; j++)
                         {
                             if (!expectedImage[j, i].Equals(actualImage[j, i]))
                             {
@@ -130,20 +129,20 @@ namespace OxyPlot.Wpf.Tests
             bitmapImage.EndInit();
 
             // Assumes ARGB
-            int size = bitmapImage.PixelHeight * bitmapImage.PixelWidth * 4;
+            var size = bitmapImage.PixelHeight * bitmapImage.PixelWidth * 4;
             var pixels = new byte[size];
             bitmapImage.CopyPixels(pixels, bitmapImage.PixelWidth * 4, 0);
 
             var r = new OxyColor[bitmapImage.PixelWidth, bitmapImage.PixelHeight];
             var index = 0;
-            for (int i = 0; i < bitmapImage.PixelHeight; i++)
+            for (var i = 0; i < bitmapImage.PixelHeight; i++)
             {
-                for (int j = 0; j < bitmapImage.PixelWidth; j++)
+                for (var j = 0; j < bitmapImage.PixelWidth; j++)
                 {
-                    byte red = pixels[index++];
-                    byte green = pixels[index++];
-                    byte blue = pixels[index++];
-                    byte alpha = pixels[index++];
+                    var red = pixels[index++];
+                    var green = pixels[index++];
+                    var blue = pixels[index++];
+                    var alpha = pixels[index++];
                     r[j, i] = OxyColor.FromArgb(alpha, red, green, blue);
                 }
             }

@@ -10,7 +10,6 @@ namespace OxyPlot.ImageSharp.Tests
     using NUnit.Framework;
     using System.Collections.Generic;
     using System.IO;
-    using System.Linq;
 
     public static class ExportTest
     {

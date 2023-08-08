@@ -22,7 +22,7 @@ namespace OxyPlot.Tests
         /// <returns>A file name.</returns>
         public static string CreateValidFileName(string title, string extension)
         {
-            string validFileName = title.Trim();
+            var validFileName = title.Trim();
             var invalidFileNameChars = "/?<>\\:*|\0\t\r\n".ToCharArray();
             foreach (var invalChar in invalidFileNameChars)
             {

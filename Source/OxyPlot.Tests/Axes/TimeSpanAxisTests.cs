@@ -1,8 +1,8 @@
 ﻿
 namespace OxyPlot.Tests
 {
-    using NUnit.Framework;
     using Axes;
+    using NUnit.Framework;
 
     /// <summary>
     /// Provides unit tests for the <see cref="TimeSpanAxis" /> class.

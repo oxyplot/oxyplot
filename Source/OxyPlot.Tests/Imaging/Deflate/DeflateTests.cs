@@ -6,11 +6,9 @@
 
 namespace OxyPlot.Tests
 {
-    using System;
-    using System.Diagnostics;
-    using System.Diagnostics.CodeAnalysis;
-
     using NUnit.Framework;
+    using System;
+    using System.Diagnostics.CodeAnalysis;
 
     // ReSharper disable InconsistentNaming
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
@@ -20,12 +18,12 @@ namespace OxyPlot.Tests
         [Test]
         public void Deflate_InflateAndDeflate_ShouldEqualOriginal()
         {
-            for (int n = 100; n < 20000; n += 100)
+            for (var n = 100; n < 20000; n += 100)
             {
-                for (int seed = 0; seed < 3; seed++)
+                for (var seed = 0; seed < 3; seed++)
                 {
                     var input = new byte[n];
-                    for (int i = 0; i < n; i++)
+                    for (var i = 0; i < n; i++)
                     {
                         input[i] = (byte)(Math.Sin(i) * 255);
                     }
@@ -47,7 +45,7 @@ namespace OxyPlot.Tests
         private static void AssertArrayEquals<T>(T[] refOut, T[] actualOut)
         {
             Assert.AreEqual(refOut.Length, actualOut.Length, "Different length");
-            for (int i = 0; i < refOut.Length; i++)
+            for (var i = 0; i < refOut.Length; i++)
             {
                 Assert.AreEqual(refOut[i], actualOut[i], "Different at byte " + i);
             }

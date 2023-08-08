@@ -6,10 +6,9 @@
 
 namespace OxyPlot.Tests
 {
+    using NUnit.Framework;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-
-    using NUnit.Framework;
 
     // ReSharper disable InconsistentNaming
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
@@ -19,7 +18,7 @@ namespace OxyPlot.Tests
         [Test]
         public void IsPointInPolygon_NullPoints()
         {
-            Assert.IsFalse(ScreenPointHelper.IsPointInPolygon(default(ScreenPoint), null));
+            Assert.IsFalse(ScreenPointHelper.IsPointInPolygon(default, null));
         }
 
         [Test]
@@ -41,11 +40,13 @@ namespace OxyPlot.Tests
 
         private static IList<ScreenPoint> CreatePointList()
         {
-            var points = new List<ScreenPoint>();
-            points.Add(new ScreenPoint(-1, -1));
-            points.Add(new ScreenPoint(1, -2));
-            points.Add(new ScreenPoint(2, 2));
-            points.Add(new ScreenPoint(-2, 3));
+            var points = new List<ScreenPoint>
+            {
+                new ScreenPoint(-1, -1),
+                new ScreenPoint(1, -2),
+                new ScreenPoint(2, 2),
+                new ScreenPoint(-2, 3)
+            };
             return points;
         }
     }

@@ -6,19 +6,16 @@
 
 namespace OxyPlot.Tests
 {
-    using System;
+    using NUnit.Framework;
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
-
-    using ExampleLibrary;
-    using NUnit.Framework;
 
     // ReSharper disable InconsistentNaming
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     [TestFixture]
     public class PdfExporterTests
     {
-        static readonly string DestinationDirectory = Path.Combine(TestContext.CurrentContext.WorkDirectory, "PdfExporterTests_ExampleLibrary");
+        private static readonly string DestinationDirectory = Path.Combine(TestContext.CurrentContext.WorkDirectory, "PdfExporterTests_ExampleLibrary");
 
         [OneTimeSetUp]
         public void Init()
@@ -34,7 +31,7 @@ namespace OxyPlot.Tests
             const double Width = 297 / 25.4 * 72;
             const double Height = 210 / 25.4 * 72;
 
-            void ExportModelAndCheckFileExists(PlotModel model, string fileName)
+            static void ExportModelAndCheckFileExists(PlotModel model, string fileName)
             {
                 if (model == null)
                 {

@@ -61,11 +61,12 @@ namespace OxyPlot.Tests.Graphics
             [TestCase]
             public void RaisesCollectionChangedEvent()
             {
-                var collection = new ElementCollection<Axis>(new PlotModel());
-
-                collection.Add(new LinearAxis());
-                collection.Add(new LinearAxis());
-                collection.Add(new LinearAxis());
+                var collection = new ElementCollection<Axis>(new PlotModel())
+                {
+                    new LinearAxis(),
+                    new LinearAxis(),
+                    new LinearAxis()
+                };
 
                 ElementCollectionChangedEventArgs<Axis> eventArgs = null;
                 var raisedCount = 0;

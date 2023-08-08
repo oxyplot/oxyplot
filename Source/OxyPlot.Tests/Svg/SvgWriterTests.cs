@@ -6,11 +6,10 @@
 
 namespace OxyPlot.Tests
 {
+    using NUnit.Framework;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
-
-    using NUnit.Framework;
 
     // ReSharper disable InconsistentNaming
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
@@ -30,7 +29,7 @@ namespace OxyPlot.Tests
                         10,
                         100,
                         60,
-                        w.CreateStyle(OxyColors.Blue, OxyColors.Black, 2, LineStyle.Solid.GetDashArray()), 
+                        w.CreateStyle(OxyColors.Blue, OxyColors.Black, 2, LineStyle.Solid.GetDashArray()),
                         EdgeRenderingMode.Adaptive);
                 }
             }
@@ -49,7 +48,7 @@ namespace OxyPlot.Tests
                     w.WriteLine(
                         new ScreenPoint(10, 10),
                         new ScreenPoint(150, 80),
-                        w.CreateStyle(OxyColors.Undefined, OxyColors.Black, 2, LineStyle.Solid.GetDashArray()), 
+                        w.CreateStyle(OxyColors.Undefined, OxyColors.Black, 2, LineStyle.Solid.GetDashArray()),
                         EdgeRenderingMode.Adaptive);
                 }
             }
@@ -67,7 +66,7 @@ namespace OxyPlot.Tests
                 {
                     w.WritePolygon(
                         CreatePointList(),
-                        w.CreateStyle(OxyColors.Blue, OxyColors.Black, 2, LineStyleHelper.GetDashArray(LineStyle.Solid)), 
+                        w.CreateStyle(OxyColors.Blue, OxyColors.Black, 2, LineStyleHelper.GetDashArray(LineStyle.Solid)),
                         EdgeRenderingMode.Adaptive);
                 }
             }
@@ -85,7 +84,7 @@ namespace OxyPlot.Tests
                 {
                     w.WritePolyline(
                         CreatePointList(),
-                        w.CreateStyle(OxyColors.Blue, OxyColors.Black, 2, LineStyleHelper.GetDashArray(LineStyle.Solid)), 
+                        w.CreateStyle(OxyColors.Blue, OxyColors.Black, 2, LineStyleHelper.GetDashArray(LineStyle.Solid)),
                         EdgeRenderingMode.Adaptive);
                 }
             }
@@ -157,7 +156,7 @@ namespace OxyPlot.Tests
             {
                 using (var w = new SvgWriter(s, 500, 300))
                 {
-                    for (int y = 0; y <= 200; y += 20)
+                    for (var y = 0; y <= 200; y += 20)
                     {
                         w.WriteLine(new ScreenPoint(0, y), new ScreenPoint(400, y), w.CreateStyle(OxyColors.Undefined, OxyColors.Black, 1), EdgeRenderingMode.Adaptive);
                     }
