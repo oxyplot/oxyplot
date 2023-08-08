@@ -1,17 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <TargetFrameworks>net462;net6.0-windows;net7.0-windows</TargetFrameworks>
-        <UseWPF>true</UseWPF>
-        <OutputType>WinExe</OutputType>
-        <ApplicationManifest>app.manifest</ApplicationManifest>
-    </PropertyGroup>
-    <ItemGroup>
-        <ProjectReference Include="..\..\..\OxyPlot.SkiaSharp.Wpf\OxyPlot.SkiaSharp.Wpf.csproj" />
-        <ProjectReference Include="..\..\..\OxyPlot.Wpf\OxyPlot.Wpf.csproj" />
-        <ProjectReference Include="..\..\..\OxyPlot\OxyPlot.csproj" />
-        <ProjectReference Include="..\..\ExampleLibrary\ExampleLibrary.csproj" />
-    </ItemGroup>
-    <ItemGroup>
-        <Resource Include="..\..\..\..\Icons\OxyPlot_64.png" Link="OxyPlot_64.png" />
-    </ItemGroup>
+  <PropertyGroup>
+    <TargetFrameworks>net462;net6.0-windows;net7.0-windows</TargetFrameworks>
+    <UseWPF>true</UseWPF>
+    <OutputType>WinExe</OutputType>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\OxyPlot.SkiaSharp.Wpf\OxyPlot.SkiaSharp.Wpf.csproj" />
+    <ProjectReference Include="..\..\..\OxyPlot.Wpf\OxyPlot.Wpf.csproj" />
+    <ProjectReference Include="..\..\..\OxyPlot\OxyPlot.csproj" />
+    <ProjectReference Include="..\..\ExampleLibrary\ExampleLibrary.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="..\..\..\..\Icons\OxyPlot_64.png" Link="OxyPlot_64.png" />
+  </ItemGroup>
 </Project>

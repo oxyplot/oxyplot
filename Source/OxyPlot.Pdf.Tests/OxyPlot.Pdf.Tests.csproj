@@ -1,24 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <TargetFrameworks>net462</TargetFrameworks>
-        <LangVersion>11</LangVersion>
-        <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-        <Description>OxyPlot Pdf unit tests</Description>
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        <NoWarn>$(NoWarn);CS0618;NU1701</NoWarn>
-    </PropertyGroup>
-    <ItemGroup>
-        <ProjectReference Include="..\Examples\ExampleLibrary\ExampleLibrary.csproj" />
-        <ProjectReference Include="..\OxyPlot.Pdf\OxyPlot.Pdf.csproj" />
-        <ProjectReference Include="..\OxyPlot\OxyPlot.csproj" />
-    </ItemGroup>
-    <ItemGroup>
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.0" />
-        <PackageReference Include="NUnit" Version="3.12.0" />
-        <PackageReference Include="NUnit3TestAdapter" Version="3.15.1" />
-        <PackageReference Include="PDFsharp-MigraDoc-GDI" Version="1.50.5147" />
-    </ItemGroup>
-    <ItemGroup>
-        <Reference Include="System.Data.DataSetExtensions" />
-    </ItemGroup>
+  <PropertyGroup>
+    <TargetFrameworks>net462</TargetFrameworks>
+    <LangVersion>11</LangVersion>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Description>OxyPlot Pdf unit tests</Description>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>$(NoWarn);CS0618;NU1701</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Examples\ExampleLibrary\ExampleLibrary.csproj" />
+    <ProjectReference Include="..\OxyPlot.Pdf\OxyPlot.Pdf.csproj" />
+    <ProjectReference Include="..\OxyPlot\OxyPlot.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.0" />
+    <PackageReference Include="NUnit" Version="3.12.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.15.1" />
+    <PackageReference Include="PDFsharp-MigraDoc-GDI" Version="1.50.5147" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Data.DataSetExtensions" />
+  </ItemGroup>
 </Project>

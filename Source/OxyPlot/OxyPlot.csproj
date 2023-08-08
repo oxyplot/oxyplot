@@ -1,24 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <TargetFrameworks>netstandard2.0;net462;net6.0;net7.0</TargetFrameworks>
-        <PackageId>OxyPlot.Core</PackageId>
-        <Description>OxyPlot is a plotting library for .NET. This is the core library including the foundation classes and plot model. To display the plots, you also need to add a platform-specific OxyPlot package that contains a PlotView component.</Description>
-        <PackageTags>plotting plot charting chart</PackageTags>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <SignAssembly>true</SignAssembly>
-        <AssemblyOriginatorKeyFile>OxyPlot.snk</AssemblyOriginatorKeyFile>
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        <LangVersion>11</LangVersion>
-        <NoWarn>$(NoWarn);CS0618</NoWarn>
-    </PropertyGroup>
-    <ItemGroup>
-        <None Include="OxyPlot.snk" />
-    </ItemGroup>
-    <ItemGroup>
-      <PackageReference Include="PolySharp" Version="1.13.2">
-        <PrivateAssets>all</PrivateAssets>
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      </PackageReference>
-    </ItemGroup>
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net462;net6.0;net7.0</TargetFrameworks>
+    <PackageId>OxyPlot.Core</PackageId>
+    <Description>OxyPlot is a plotting library for .NET. This is the core library including the foundation classes and plot model. To display the plots, you also need to add a platform-specific OxyPlot package that contains a PlotView component.</Description>
+    <PackageTags>plotting plot charting chart</PackageTags>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>OxyPlot.snk</AssemblyOriginatorKeyFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <LangVersion>11</LangVersion>
+    <NoWarn>$(NoWarn);CS0618</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="OxyPlot.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="PolySharp" Version="1.13.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
 </Project>

@@ -1,22 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFrameworks>net6.0-windows;net7.0-windows</TargetFrameworks>
-        <!--<UseWindowsForms>true</UseWindowsForms>-->
-        <OutputType>Exe</OutputType>
-        <ApplicationIcon />
-        <StartupObject />
-    </PropertyGroup>
+  <PropertyGroup>
+    <TargetFrameworks>net6.0-windows;net7.0-windows</TargetFrameworks>
+    <OutputType>Exe</OutputType>
+    <ApplicationIcon />
+    <StartupObject />
+  </PropertyGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\..\OxyPlot.WindowsForms\OxyPlot.WindowsForms.csproj" />
-      <ProjectReference Include="..\ExampleLibrary\ExampleLibrary.csproj" />
-    </ItemGroup>
-    <!--<ItemGroup>
-        <Content Include="..\TruePNG\TruePNG.exe">
-            <Link>TruePNG.exe</Link>
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
-    </ItemGroup>-->
+  <ItemGroup>
+    <ProjectReference Include="..\..\OxyPlot.WindowsForms\OxyPlot.WindowsForms.csproj" />
+    <ProjectReference Include="..\ExampleLibrary\ExampleLibrary.csproj" />
+  </ItemGroup>
 
 </Project>

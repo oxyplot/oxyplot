@@ -1,20 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <LangVersion>11</LangVersion>
-        <TargetFrameworks>netstandard2.0</TargetFrameworks>
-        <Description>OxyPlot is a plotting library for .NET. This is package is based on SixLabors.ImageSharp.</Description>
-        <PackageTags>plotting plot charting chart imagesharp</PackageTags>
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <GenerateDocumentationFile>True</GenerateDocumentationFile>
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        <NoWarn>$(NoWarn);NU5104</NoWarn>
-        <WarningsAsErrors />
-    </PropertyGroup>
-    <ItemGroup>
-        <PackageReference Include="SixLabors.ImageSharp" Version="2.1.4" />
-        <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta15" />
-    </ItemGroup>
-    <ItemGroup>
-        <ProjectReference Include="..\OxyPlot\OxyPlot.csproj" />
-    </ItemGroup>
+  <PropertyGroup>
+    <LangVersion>11</LangVersion>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <Description>OxyPlot is a plotting library for .NET. This is package is based on SixLabors.ImageSharp.</Description>
+    <PackageTags>plotting plot charting chart imagesharp</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>$(NoWarn);NU5104</NoWarn>
+    <WarningsAsErrors />
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="SixLabors.ImageSharp" Version="2.1.4" />
+    <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta15" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OxyPlot\OxyPlot.csproj" />
+  </ItemGroup>
 </Project>
