@@ -90,23 +90,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets or sets the label format string.
         /// </summary>
-        /// <value>The label format string.</value>
         public string LabelFormatString { get; set; }
-
-        /// <summary>
-        /// Gets or sets the label margins. Default value is 2.
-        /// </summary>
-        public double LabelMargin { get; set; }
-
-        /// <summary>
-        /// Gets or sets the label angle in degrees. Default value is 0.
-        /// </summary>
-        public double LabelAngle { get; set; }
-
-        /// <summary>
-        /// Gets or sets label placements.
-        /// </summary>
-        public LabelPlacement LabelPlacement { get; set; }
 
         /// <summary>
         /// Gets or sets the color of the interior of the bars when the value is negative.
@@ -345,74 +329,6 @@ namespace OxyPlot.Series
                 this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness));
         }
 
-        /// <summary>
-        /// Renders the item label.
-        /// </summary>
-        /// <param name="rc">The render context</param>
-        /// <param name="item">The item.</param>
-        /// <param name="baseValue">The bar item base value.</param>
-        /// <param name="topValue">The bar item top value.</param>
-        /// <param name="categoryValue">The bar item category value.</param>
-        /// <param name="categoryEndValue">The bar item category end value.</param>
-        protected void RenderLabel(
-            IRenderContext rc,
-            BarItem item,
-            double baseValue,
-            double topValue,
-            double categoryValue,
-            double categoryEndValue)
-        {
-            var s = StringHelper.Format(this.ActualCulture, this.LabelFormatString, item, item.Value);
-            ScreenPoint pt;
-            var y = (categoryEndValue + categoryValue) / 2;
-            var sign = Math.Sign(topValue - baseValue);
-            var marginVector = new ScreenVector(this.LabelMargin, 0) * sign;
-            var centreVector = new ScreenVector(0, 0);
-
-            var size = rc.MeasureText(
-                s,
-                this.ActualFont,
-                this.ActualFontSize,
-                this.ActualFontWeight,
-                this.LabelAngle);
-
-            switch (this.LabelPlacement)
-            {
-                case LabelPlacement.Inside:
-                    pt = this.Transform(topValue, y);
-                    marginVector = -marginVector;
-                    centreVector = new ScreenVector(-sign * size.Width / 2, 0);
-                    break;
-                case LabelPlacement.Outside:
-                    pt = this.Transform(topValue, y);
-                    centreVector = new ScreenVector(sign * size.Width / 2, 0);
-                    break;
-                case LabelPlacement.Middle:
-                    pt = this.Transform((topValue + baseValue) / 2, y);
-                    marginVector = new ScreenVector(0, 0);
-                    break;
-                case LabelPlacement.Base:
-                    pt = this.Transform(baseValue, y);
-                    centreVector = new ScreenVector(sign * size.Width / 2, 0);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
-            pt += this.Orientate(marginVector) + this.Orientate(centreVector);
-
-            rc.DrawText(
-                pt,
-                s,
-                this.ActualTextColor,
-                this.ActualFont,
-                this.ActualFontSize,
-                this.ActualFontWeight,
-                this.LabelAngle,
-                HorizontalAlignment.Center,
-                VerticalAlignment.Middle);
-        }
-
         /// <inheritdoc/>
         public override void Render(IRenderContext rc)
         {
@@ -485,7 +401,8 @@ namespace OxyPlot.Series
                         baseValue,
                         topValue,
                         categoryValue,
-                        categoryValue + actualBarWidth);
+                        categoryValue + actualBarWidth,
+                        this.LabelFormatString);
                 }
 
                 if (!this.IsStacked)

@@ -101,6 +101,26 @@ namespace OxyPlot.Series
         protected Dictionary<int, int> ValidItemsIndexInversion { get; } = new Dictionary<int, int>();
 
         /// <summary>
+        /// Gets or sets the label color.
+        /// </summary>
+        public OxyColor LabelColor { get; set; }
+
+        /// <summary>
+        /// Gets or sets the label margins.
+        /// </summary>
+        public double LabelMargin { get; set; }
+
+        /// <summary>
+        /// Gets or sets the label angle in degrees.
+        /// </summary>
+        public double LabelAngle { get; set; }
+
+        /// <summary>
+        /// Gets or sets label placements.
+        /// </summary>
+        public LabelPlacement LabelPlacement { get; set; }
+
+        /// <summary>
         /// Gets the actual width of the items of this series.
         /// </summary>
         /// <returns>The width.</returns>
@@ -175,6 +195,107 @@ namespace OxyPlot.Series
         protected internal override bool IsUsing(Axis axis)
         {
             return this.XAxis == axis || this.YAxis == axis;
+        }
+
+        /// <summary>
+        /// Renders the item label.
+        /// </summary>
+        /// <param name="rc">The render context</param>
+        /// <param name="item">The item.</param>
+        /// <param name="baseValue">The bar item base value.</param>
+        /// <param name="topValue">The bar item top value.</param>
+        /// <param name="categoryValue">The bar item category value.</param>
+        /// <param name="categoryEndValue">The bar item category end value.</param>
+        /// <param name="labelFormatString">The format string to use for the label.</param>
+        /// <param name="labelValues">An optional set of data values to use when generating label strings.</param>
+        protected void RenderLabel(
+            IRenderContext rc,
+            T item,
+            double baseValue,
+            double topValue,
+            double categoryValue,
+            double categoryEndValue,
+            string labelFormatString,
+            params double[] labelValues)
+        {
+            var v = new List<object>();
+            if (!labelValues.Any())
+            {
+                switch (item)
+                {
+                    case BarItem barItem:
+                        v.Add(barItem.Value);
+                        break;
+
+                    case IntervalBarItem intervalBarItem:
+                        v.Add(intervalBarItem.Start);
+                        v.Add(intervalBarItem.End);
+                        break;
+
+                    case TornadoBarItem tornadoBarItem:
+                        throw new NotImplementedException(
+                            $"RenderLabel does not support automatic determination of label values for TornadoBarItem objects. Please populate the {nameof(labelValues)} parameter.");
+
+                    default:
+                        throw new NotImplementedException(
+                            $"RenderLabel automatic value determination not implemented for {this.GetType().Name}. Please populate the {nameof(labelValues)} parameter.");
+                }
+            }
+            else
+            {
+                v.AddRange(labelValues.Cast<object>());
+            }
+
+            var s = StringHelper.Format(this.ActualCulture, labelFormatString, item, v.ToArray());
+            ScreenPoint pt;
+            var y = (categoryEndValue + categoryValue) / 2;
+            var sign = Math.Sign(topValue - baseValue);
+            var marginVector = new ScreenVector(this.LabelMargin, 0) * sign;
+            var centreVector = new ScreenVector(0, 0);
+
+            var size = rc.MeasureText(
+                s,
+                this.ActualFont,
+                this.ActualFontSize,
+                this.ActualFontWeight,
+                this.LabelAngle);
+            var halfSize = (this.IsTransposed() ? size.Height : size.Width) / 2;
+
+            switch (this.LabelPlacement)
+            {
+                case LabelPlacement.Inside:
+                    pt = this.Transform(topValue, y);
+                    marginVector = -marginVector;
+                    centreVector = new ScreenVector(-sign * halfSize, 0);
+                    break;
+                case LabelPlacement.Outside:
+                    pt = this.Transform(topValue, y);
+                    centreVector = new ScreenVector(sign * halfSize, 0);
+                    break;
+                case LabelPlacement.Middle:
+                    pt = this.Transform((topValue + baseValue) / 2, y);
+                    marginVector = new ScreenVector(0, 0);
+                    break;
+                case LabelPlacement.Base:
+                    pt = this.Transform(baseValue, y);
+                    centreVector = new ScreenVector(sign * halfSize, 0);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            pt += this.Orientate(marginVector) + this.Orientate(centreVector);
+
+            rc.DrawText(
+                pt,
+                s,
+                this.ActualTextColor,
+                this.ActualFont,
+                this.ActualFontSize,
+                this.ActualFontWeight,
+                this.LabelAngle,
+                HorizontalAlignment.Center,
+                VerticalAlignment.Middle);
         }
 
         /// <inheritdoc/>

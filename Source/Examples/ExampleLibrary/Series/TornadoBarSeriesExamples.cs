@@ -95,5 +95,70 @@ namespace ExampleLibrary
             model.Axes.Add(valueAxis);
             return model;
         }
+
+        [Example("Tornado diagram with various label types")]
+        public static PlotModel TornadoDiagramWithLabels()
+        {
+            var model = new PlotModel { Title = "Tornado Diagram" };
+            var l = new Legend { LegendPlacement = LegendPlacement.Outside };
+
+            model.Legends.Add(l);
+
+            var s1 = new TornadoBarSeries { BaseValue = 7, LabelPlacement = LabelPlacement.Outside};
+            s1.Items.Add(new TornadoBarItem { Minimum = 6, Maximum = 8, CategoryIndex = 0});
+
+            var s2 = new TornadoBarSeries { BaseValue = 7, LabelPlacement = LabelPlacement.Inside };
+            s2.Items.Add(new TornadoBarItem { Minimum = 4, Maximum = 8, CategoryIndex = 1 });
+
+            var s3 = new TornadoBarSeries { BaseValue = 7, LabelPlacement = LabelPlacement.Middle };
+            s3.Items.Add(new TornadoBarItem { Minimum = 5, Maximum = 11, CategoryIndex = 2 });
+
+            var s4 = new TornadoBarSeries { BaseValue = 7, LabelPlacement = LabelPlacement.Base };
+            s4.Items.Add(new TornadoBarItem { Minimum = 4, Maximum = 12, CategoryIndex = 3 });
+
+            var s5 = new TornadoBarSeries { BaseValue = 7, LabelPlacement = LabelPlacement.Outside, LabelAngle = -45 };
+            s5.Items.Add(new TornadoBarItem { Minimum = 6, Maximum = 8, CategoryIndex = 4 });
+
+            var s6 = new TornadoBarSeries { BaseValue = 7, LabelPlacement = LabelPlacement.Inside, LabelAngle = -45 };
+            s6.Items.Add(new TornadoBarItem { Minimum = 4, Maximum = 8, CategoryIndex = 5 });
+
+            var s7 = new TornadoBarSeries { BaseValue = 7, LabelPlacement = LabelPlacement.Middle, LabelAngle = -45 };
+            s7.Items.Add(new TornadoBarItem { Minimum = 5, Maximum = 11, CategoryIndex = 6 });
+
+            var s8 = new TornadoBarSeries { BaseValue = 7, LabelPlacement = LabelPlacement.Base, LabelAngle = -45 };
+            s8.Items.Add(new TornadoBarItem { Minimum = 4, Maximum = 12, CategoryIndex = 7 });
+
+            var categoryAxis = new CategoryAxis { Position = AxisPosition.Left, StartPosition = 1, EndPosition = 0 };
+            categoryAxis.Labels.Add("Labels Outside");
+            categoryAxis.Labels.Add("Labels Inside");
+            categoryAxis.Labels.Add("Labels Middle");
+            categoryAxis.Labels.Add("Labels Base");
+            categoryAxis.Labels.Add("Labels Outside (angled)");
+            categoryAxis.Labels.Add("Labels Inside (angled)");
+            categoryAxis.Labels.Add("Labels Middle (angled)");
+            categoryAxis.Labels.Add("Labels Base (angled)");
+
+            var valueAxis = new LinearAxis
+                                {
+                                    Position = AxisPosition.Bottom,
+                                    ExtraGridlines = new[] { 7.0 },
+                                    MinimumPadding = 0.1,
+                                    MaximumPadding = 0.1
+                                };
+
+            model.Series.Add(s1);
+            model.Series.Add(s2);
+            model.Series.Add(s3);
+            model.Series.Add(s4);
+            model.Series.Add(s5);
+            model.Series.Add(s6);
+            model.Series.Add(s7);
+            model.Series.Add(s8);
+
+            model.Axes.Add(categoryAxis);
+            model.Axes.Add(valueAxis);
+
+            return model;
+        }
     }
 }
