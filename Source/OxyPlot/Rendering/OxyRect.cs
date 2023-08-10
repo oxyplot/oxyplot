@@ -24,6 +24,11 @@ namespace OxyPlot
         public static readonly OxyRect Everything = new OxyRect(0, 0, double.PositiveInfinity, double.PositiveInfinity);
 
         /// <summary>
+        /// The undefined <see cref="OxyRect"/>.
+        /// </summary>
+        public static readonly OxyRect Undefined = new OxyRect(double.NaN, double.NaN, double.NaN, double.NaN);
+
+        /// <summary>
         /// The height of the rectangle.
         /// </summary>
         private readonly double height;

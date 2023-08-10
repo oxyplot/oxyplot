@@ -14,6 +14,5 @@ namespace OxyPlot
         /// <param name="y">The y coordinate.</param>
         /// <returns><c>true</c> if the shape contains the specified point; otherwise, <c>false</c>.</returns>
         bool Contains(double x, double y);
-
     }
 }

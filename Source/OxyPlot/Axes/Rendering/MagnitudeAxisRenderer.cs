@@ -9,6 +9,7 @@
 
 namespace OxyPlot.Axes
 {
+    using OxyPlot.Series;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -39,9 +40,6 @@ namespace OxyPlot.Axes
             base.Render(axis, pass);
 
             var angleAxis = this.Plot.DefaultAngleAxis;
-
-            angleAxis.AxisLineArea = new EmptyShape();
-            angleAxis.AxisArea = new EmptyShape();
 
             if (angleAxis == null)
             {
@@ -78,14 +76,38 @@ namespace OxyPlot.Axes
                 }
             }
 
+            var axisArea = OxyRect.Undefined;
+
             if (pass == 1)
             {
                 foreach (var tickValue in this.MajorTickValues)
                 {
                     this.RenderTickText(axis, tickValue, angleAxis);
+                    var rect = this.CalculateTickTextRect(axis, tickValue, angleAxis);
+                    if (axisArea.Equals(OxyRect.Undefined))
+                        axisArea = rect;
+                    else
+                        axisArea = axisArea.Union(rect);
                 }
+                var maxTick = GetMaxTickValue(this.MinorTickValues, this.MajorTickValues);
+                var rectMaxTickValue = this.CalculateTickTextRect(axis, maxTick, angleAxis);
+                if (axisArea.Equals(OxyRect.Undefined))
+                    axisArea = rectMaxTickValue;
+                else
+                    axisArea = axisArea.Union(rectMaxTickValue);
             }
+
+            if (axisArea.Equals(OxyRect.Undefined))
+                axis.AxisArea = new EmptyShape();
+            else
+                axis.AxisArea = axisArea;
         }
+
+        private static double GetMaxTickValue(IList<double> minorTickValues, IList<double> majorTickValues)
+        {
+            return Math.Max(minorTickValues.Max(),majorTickValues.Max());
+        }
+
 
         /// <summary>
         /// Returns the angle (in radian) of the axis line in screen coordinate
@@ -168,7 +190,6 @@ namespace OxyPlot.Axes
             var left = right - width;
             var top = center.Y - radius;
             var height = width;
-
             this.RenderContext.DrawEllipse(new OxyRect(left, top, width, height), OxyColors.Undefined, pen.Color, pen.Thickness, axis.EdgeRenderingMode);
         }
 
@@ -227,6 +248,9 @@ namespace OxyPlot.Axes
             pt = new ScreenPoint(pt.X + dx, pt.Y + dy);
 
             string text = axis.FormatValue(x);
+
+            var labelSize = this.RenderContext.MeasureText(text, axis.ActualFont, axis.ActualFontSize, axis.ActualFontWeight);
+            
             this.RenderContext.DrawMathText(
                 pt,
                 text,
@@ -237,6 +261,31 @@ namespace OxyPlot.Axes
                 axis.Angle,
                 ha,
                 va);
+
         }
+
+        /// <summary>
+        /// Renders major tick text
+        /// </summary>
+        /// <param name="axis">The axis.</param>
+        /// <param name="x">The x-value.</param>
+        /// <param name="angleAxis">The angle axis.</param>
+        private OxyRect CalculateTickTextRect(Axis axis, double x, Axis angleAxis)
+        {
+            var actualAngle = GetActualAngle(axis, angleAxis);
+            var dx = axis.AxisTickToLabelDistance * Math.Sin(actualAngle);
+            var dy = -axis.AxisTickToLabelDistance * Math.Cos(actualAngle);
+
+            var pt = axis.Transform(x, angleAxis.Angle, angleAxis);
+            pt = new ScreenPoint(pt.X + dx, pt.Y + dy);
+
+            string text = axis.FormatValue(x);
+
+            var labelSize = this.RenderContext.MeasureText(text, axis.ActualFont, axis.ActualFontSize, axis.ActualFontWeight);
+            var pt1 = new ScreenPoint(pt.X + dx - labelSize.Height / 2d, pt.Y + dy - labelSize.Width);
+
+            return new OxyRect(pt1, labelSize);
+        }
+
     }
 }

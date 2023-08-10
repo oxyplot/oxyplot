@@ -299,9 +299,20 @@ namespace OxyPlot.Axes
                     break;
 
             }
-            // TODO: ensure min area of 5px x X to capture clicks, o this above acc. to axis position
-            //if (Math.Abs(this.pt2.X - this.pt3.X) < 5)
-            //    this.pt3.X = this.pt2.X + 5;
+
+            // ensure minimum height/width of 5 for the title area , centered to the initial location
+            if (areaBottomLeft.X - areaTopRight.X < 5 )
+            {
+                var delta = (5 - (areaBottomLeft.X - areaTopRight.X)) / 2d;
+                areaBottomLeft.Move(delta, 0d);
+                areaTopRight.Move(-delta, 0d);
+            }
+            if (areaTopRight.Y - areaBottomLeft.Y < 5)
+            {
+                var delta = (5 - (areaTopRight.Y - areaBottomLeft.Y)) / 2d;
+                areaBottomLeft.Move(0d, -delta);
+                areaTopRight.Move(0d , delta);
+            }
 
             axis.TitleArea = new OxyRect(areaBottomLeft, areaTopRight);
 

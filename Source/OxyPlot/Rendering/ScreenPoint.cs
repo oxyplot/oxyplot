@@ -159,5 +159,16 @@ namespace OxyPlot
         {
             return this.x.Equals(other.x) && this.y.Equals(other.y);
         }
+
+        /// <summary>
+        /// Moves the instance for the specified deltas.
+        /// </summary>
+        /// <param name="dx">Delta in x-direction</param>
+        /// <param name="dy">Delta in y-direction</param>
+        public void Move(double dx,double dy)
+        {
+            this.x += dx;
+            this.y += dy;
+        }
     }
 }
