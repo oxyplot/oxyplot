@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 - Example of issue with AreaSeries tracker (#1982)
 - Example for CategoryAxis with custom MajorStep and uncentered ticks (#1971)
 - BarSeries.LabelAngle property (#1870)
+- Border properties on PathAnnotation to match functionality in TextAnnotation (#1900)
 
 ### Changed
 - Make consistent BaseValue and BaseLine across BarSeries, LinearBarSeries, and HistogramSeries

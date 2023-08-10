@@ -57,6 +57,17 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Changes the opacity.
+        /// </summary>
+        /// <param name="color">The color.</param>
+        /// <param name="factor">The factor.</param>
+        /// <returns>A color with the new opacity.</returns>
+        public static OxyColor ChangeOpacity(this OxyColor color, double factor)
+        {
+            return OxyColor.FromAColor((byte)(color.A * factor), color);
+        }
+
+        /// <summary>
         /// Calculates the complementary color.
         /// </summary>
         /// <param name="color">The color to convert.</param>
