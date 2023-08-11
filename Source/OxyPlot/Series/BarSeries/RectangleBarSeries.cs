@@ -35,7 +35,6 @@ namespace OxyPlot.Series
             this.Items = new List<RectangleBarItem>();
 
             this.FillColor = OxyColors.Automatic;
-            this.LabelColor = OxyColors.Automatic;
             this.StrokeColor = OxyColors.Black;
             this.StrokeThickness = 1;
 
@@ -66,11 +65,6 @@ namespace OxyPlot.Series
         /// Gets the rectangle bar items.
         /// </summary>
         public IList<RectangleBarItem> Items { get; private set; }
-
-        /// <summary>
-        /// Gets or sets the label color.
-        /// </summary>
-        public OxyColor LabelColor { get; set; }
 
         /// <summary>
         /// Gets or sets the format string for the labels.
