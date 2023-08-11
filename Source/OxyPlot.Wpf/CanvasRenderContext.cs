@@ -460,7 +460,13 @@ namespace OxyPlot.Wpf
 
             if (!typeface.TryGetGlyphTypeface(out var glyphTypeface))
             {
-                throw new InvalidOperationException("No glyph typeface found");
+                var defaultTypeface = new Typeface(
+                    new FontFamily(this.DefaultFontFamily), FontStyles.Normal, GetFontWeight(fontWeight), FontStretches.Normal);
+
+                if (!defaultTypeface.TryGetGlyphTypeface(out glyphTypeface))
+                {
+                    throw new InvalidOperationException("No glyph typeface found");
+                }
             }
 
             var lineHeight = Math.Abs(glyphTypeface.Height) * fontSize;
