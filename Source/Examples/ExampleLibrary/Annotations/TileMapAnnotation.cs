@@ -317,7 +317,7 @@ namespace ExampleLibrary
             var request = (HttpWebRequest)WebRequest.Create(uri);
             request.Method = "GET";
 
-#if NET45
+#if NETFRAMEWORK
             // unavailable in NET Standard 1.0
             request.UserAgent = this.UserAgent;
 #else
