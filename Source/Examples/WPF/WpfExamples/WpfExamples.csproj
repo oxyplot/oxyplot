@@ -1,6 +1,6 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-      <TargetFramework>netcoreapp3.1</TargetFramework>
+      <TargetFrameworks>net462;net6.0-windows;net7.0-windows</TargetFrameworks>
       <UseWPF>true</UseWPF>
       <UseWindowsForms>true</UseWindowsForms>
       <OutputType>WinExe</OutputType>

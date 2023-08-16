@@ -18,39 +18,39 @@ namespace OxyPlot.Tests
     [TestFixture]
     public class PdfExporterTests
     {
-        [Test]
-        public void Export_AllExamplesInExampleLibrary_CheckThatAllFilesExist()
-        {
-            var destinationDirectory = Path.Combine(TestContext.CurrentContext.WorkDirectory, "PdfExporterTests_ExampleLibrary");
-            if (!Directory.Exists(destinationDirectory))
-            {
-                Directory.CreateDirectory(destinationDirectory);
-            }
+        static readonly string DestinationDirectory = Path.Combine(TestContext.CurrentContext.WorkDirectory, "PdfExporterTests_ExampleLibrary");
 
+        [OneTimeSetUp]
+        public void Init()
+        {
+            Directory.CreateDirectory(DestinationDirectory);
+        }
+
+        [Test]
+        [TestCaseSource(typeof(ExampleLibrary.Examples), nameof(ExampleLibrary.Examples.GetListForAutomatedTest))]
+        public void Export_AllExamplesInExampleLibrary_CheckThatAllFilesExist(ExampleLibrary.ExampleInfo example)
+        {
             // A4
             const double Width = 297 / 25.4 * 72;
             const double Height = 210 / 25.4 * 72;
 
-            foreach (var example in Examples.GetListForAutomatedTest())
+            void ExportModelAndCheckFileExists(PlotModel model, string fileName)
             {
-                void ExportModelAndCheckFileExists(PlotModel model, string fileName)
+                if (model == null)
                 {
-                    if (model == null)
-                    {
-                        return;
-                    }
-
-                    var path = Path.Combine(destinationDirectory, FileNameUtilities.CreateValidFileName(fileName, ".pdf"));
-                    using (var s = File.Create(path))
-                    {
-                        PdfExporter.Export(model, s, Width, Height);
-                    }
-
-                    Assert.IsTrue(File.Exists(path));
+                    return;
                 }
 
-                ExportModelAndCheckFileExists(example.PlotModel, $"{example.Category} - {example.Title}");
+                var path = Path.Combine(DestinationDirectory, FileNameUtilities.CreateValidFileName(fileName, ".pdf"));
+                using (var s = File.Create(path))
+                {
+                    PdfExporter.Export(model, s, Width, Height);
+                }
+
+                Assert.IsTrue(File.Exists(path));
             }
+
+            ExportModelAndCheckFileExists(example.PlotModel, $"{example.Category} - {example.Title}");
         }
     }
 }

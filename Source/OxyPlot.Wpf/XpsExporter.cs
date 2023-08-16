@@ -9,7 +9,6 @@
 
 namespace OxyPlot.Wpf
 {
-#if !NETFRAMEWORK
     using System.IO;
     using System.IO.Packaging;
     using System.Printing;
@@ -153,5 +152,4 @@ namespace OxyPlot.Wpf
             writer.Write(canvas);
         }
     }
-#endif
 }

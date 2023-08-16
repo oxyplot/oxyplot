@@ -38,7 +38,7 @@ namespace OxyPlot.Series
 
             this.TrackerFormatString = DefaultTrackerFormatString;
             this.LabelMargin = 4;
-
+            this.LabelPlacement = LabelPlacement.Middle;
             this.LabelFormatString = "{2}"; // title
         }
 
@@ -71,19 +71,9 @@ namespace OxyPlot.Series
         public bool OverlapsStack => true;
 
         /// <summary>
-        /// Gets or sets the label color.
-        /// </summary>
-        public OxyColor LabelColor { get; set; }
-
-        /// <summary>
-        /// Gets or sets the format string for the maximum labels.
+        /// Gets or sets the label format string.
         /// </summary>
         public string LabelFormatString { get; set; }
-
-        /// <summary>
-        /// Gets or sets the label margins.
-        /// </summary>
-        public double LabelMargin { get; set; }
 
         /// <inheritdoc/>
         public string StackGroup => string.Empty;
@@ -228,21 +218,14 @@ namespace OxyPlot.Series
 
                 if (this.LabelFormatString != null)
                 {
-                    var s = StringHelper.Format(this.ActualCulture, this.LabelFormatString, this.GetItem(i), item.Start, item.End, item.Title);
-
-                    var pt = new ScreenPoint(
-                        (rectangle.Left + rectangle.Right) / 2, (rectangle.Top + rectangle.Bottom) / 2);
-
-                    rc.DrawText(
-                        pt,
-                        s,
-                        this.ActualTextColor,
-                        this.ActualFont,
-                        this.ActualFontSize,
-                        this.ActualFontWeight,
-                        0,
-                        HorizontalAlignment.Center,
-                        VerticalAlignment.Middle);
+                    this.RenderLabel(
+                        rc,
+                        (IntervalBarItem)this.GetItem(i),
+                        item.Start,
+                        item.End,
+                        categoryValue,
+                        categoryValue + actualBarWidth,
+                        this.LabelFormatString);
                 }
             }
         }

@@ -133,7 +133,7 @@ namespace OxyPlot.Annotations
         /// <param name="horizontalAlignment">The horizontal alignment.</param>
         /// <param name="verticalAlignment">The vertical alignment.</param>
         /// <returns>The background rectangle coordinates.</returns>
-        private static IList<ScreenPoint> GetTextBounds(
+        internal static IList<ScreenPoint> GetTextBounds(
             ScreenPoint position,
             OxySize size,
             OxyThickness padding,

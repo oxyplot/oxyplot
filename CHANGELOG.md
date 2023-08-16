@@ -10,9 +10,18 @@ All notable changes to this project will be documented in this file.
 - Example for CategoryAxis with custom MajorStep and uncentered ticks (#1971)
 - BarSeries.LabelAngle property (#1870)
 - Support HiDPI for WinForms examples (#1597)
+- Border properties on PathAnnotation to match functionality in TextAnnotation (#1900)
+- Expanded `IntervalBarSeries` and `TornadoBarSeries` to allow for varied label positions and angles (#2027)
 
 ### Changed
 - Make consistent BaseValue and BaseLine across BarSeries, LinearBarSeries, and HistogramSeries
+- Factor out common project properties to `Directory.Build.props` (#1937)
+- Remove support for .NET Standard 1.X, as .NET Framework 4.6.2 supports .NET Standard 2.0 (#1937)
+- Remove support for .NET Core 3.1, as it is end-of-life soon (#1937)
+- Move example projects to .NET Framework 4.6.2 and .NET 6.0 (#1937)
+- Run tests on both .NET Framework 4.6.2 and .NET 6.0 (#1937)
+- Add support for .NET 7.0 (#1937)
+- Update SkiaSharp to Version 2.88.3
 
 ### Removed
 - Support for .NET Framework 4.0 and 4.5 (#1839)
@@ -24,6 +33,8 @@ All notable changes to this project will be documented in this file.
 - Incorrect coloring of TwoColorLineSeries
 - HitTest when IsLegendVisible is false (#1975)
 - Font weight not being applied in ImageSharp (#2006)
+- SkiaSharp - Fix use of obsolete functions (#1937)
+- Dashed lines are solid when exporting via SkiaSharp.SvgExporter (#1674)
 
 ## [2.1.2] - 2022-12-03
 

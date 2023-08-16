@@ -1,10 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFrameworks>net462;netcoreapp3.1</TargetFrameworks>
+        <TargetFrameworks>net462;net6.0;net7.0</TargetFrameworks>
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
         <Description>OxyPlot ImageSharp unit tests</Description>
-        <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <Copyright>OxyPlot contributors</Copyright>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
     <ItemGroup>
