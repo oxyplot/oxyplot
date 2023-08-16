@@ -32,7 +32,6 @@ namespace OxyPlot.Series
         /// </summary>
         public IntervalBarSeries()
         {
-            this.LabelColor = OxyColors.Automatic;
             this.FillColor = OxyColors.Automatic;
             this.StrokeThickness = 1;
 

@@ -41,7 +41,6 @@ namespace OxyPlot.Series
             this.MaximumFillColor = OxyColor.FromRgb(216, 82, 85);
             this.MinimumFillColor = OxyColor.FromRgb(84, 138, 209);
 
-            this.LabelColor = OxyColors.Automatic;
             this.StrokeColor = OxyColors.Black;
             this.StrokeThickness = 1;
 

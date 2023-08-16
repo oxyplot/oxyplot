@@ -26,6 +26,7 @@ All notable changes to this project will be documented in this file.
 
 ### Removed
 - Support for .NET Framework 4.0 and 4.5 (#1839)
+- Unused LabelColor property from TornadoBarSeries, IntervalBarSeries, and RectangleBarSeries (#2030)
 
 ### Fixed
 - Placement of BarSeries labels when stacked (#1979)
