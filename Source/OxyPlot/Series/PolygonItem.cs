@@ -40,7 +40,7 @@ namespace OxyPlot.Series
                 throw new ArgumentNullException(nameof(outlines));
             }
 
-            var outlineArrs = outlines.Select(outline => outline.ToArray().AsReadOnlyList()).ToArray().AsReadOnlyList();
+            var outlineArrs = outlines.Select(outline => outline.ToArray()).ToArray();
 
             foreach (var outline in outlineArrs)
             {
@@ -53,14 +53,14 @@ namespace OxyPlot.Series
                 }
             }
 
-            if (outlineArrs.Count < 1)
+            if (outlineArrs.Length < 1)
             {
-                throw new ArgumentException($"Outline does not contain any sub-polygons.");
+                throw new ArgumentException($"Outlines does not contain any sub-polygons.");
             }
 
             this.Outlines = outlineArrs;
             this.Value = value;
-            this.Bounds = outlineArrs.Select(outline => ComputeBounds(outline)).ToArray().AsReadOnlyList();
+            this.Bounds = outlineArrs.Select(outline => ComputeBounds(outline)).ToArray();
         }
 
         /// <summary>
