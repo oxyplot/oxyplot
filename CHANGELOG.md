@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 - Example of issue with AreaSeries tracker (#1982)
 - Example for CategoryAxis with custom MajorStep and uncentered ticks (#1971)
 - BarSeries.LabelAngle property (#1870)
+- Support HiDPI for WinForms examples (#1597)
 - Border properties on PathAnnotation to match functionality in TextAnnotation (#1900)
 - Expanded `IntervalBarSeries` and `TornadoBarSeries` to allow for varied label positions and angles (#2027)
 

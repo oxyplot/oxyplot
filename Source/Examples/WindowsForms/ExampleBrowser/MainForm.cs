@@ -6,6 +6,7 @@
 
 namespace ExampleBrowser
 {
+    using System;
     using System.Drawing;
     using System.Windows.Forms;
 
@@ -24,6 +25,9 @@ namespace ExampleBrowser
 
         private void InitTree()
         {
+#if NETFRAMEWORK
+            this.FixTreeViewDpi();
+#endif
             TreeNode node = null;
             foreach (var ex in this.vm.Examples)
             {
@@ -41,6 +45,21 @@ namespace ExampleBrowser
                 }
             }
             this.treeView1.AfterSelect += this.TreeView1AfterSelect;
+        }
+
+        private void FixTreeViewDpi()
+        {
+            using (var g = this.CreateGraphics())
+            {
+                // For some reason, legacy treeview does not respond to non-standard dpi up to 144, i.e. 150%
+                if (g.DpiY <= 96.0 || 144.0 <= g.DpiY)
+                    return;
+
+                var scaleFactor = g.DpiY / 96f;
+                this.treeView1.ItemHeight = (int) (this.treeView1.ItemHeight * scaleFactor);
+                var font = this.treeView1.Font;
+                this.treeView1.Font = new Font(font.FontFamily, (int)font.Size * scaleFactor, font.Style);
+            }
         }
 
         void TreeView1AfterSelect(object sender, TreeViewEventArgs e)
