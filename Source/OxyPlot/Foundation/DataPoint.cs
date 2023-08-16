@@ -84,13 +84,48 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Determines whether this instance and another specified <see cref="T:DataPoint" /> object have the same value.
+        /// Determines whether this and another specified <see cref="T:DataPoint" /> have the same value.
         /// </summary>
         /// <param name="other">The point to compare to this instance.</param>
         /// <returns><c>true</c> if the value of the <paramref name="other" /> parameter is the same as the value of this instance; otherwise, <c>false</c>.</returns>
         public bool Equals(DataPoint other)
         {
             return this.x.Equals(other.x) && this.y.Equals(other.y);
+        }
+
+        /// <summary>
+        /// Translates a <see cref="DataPoint" /> by a <see cref="DataVector" />.
+        /// </summary>
+        /// <param name="p1">The point.</param>
+        /// <param name="p2">The vector.</param>
+        /// <returns>The translated point.</returns>
+        public static DataPoint operator +(DataPoint p1, DataVector p2)
+        {
+            return new DataPoint(p1.x + p2.x, p1.y + p2.y);
+        }
+
+        /// <summary>
+        /// Subtracts a <see cref="DataPoint" /> from a <see cref="DataPoint" />
+        /// and returns the result as a <see cref="DataVector" />.
+        /// </summary>
+        /// <param name="p1">The point on which to perform the subtraction.</param>
+        /// <param name="p2">The point to subtract from p1.</param>
+        /// <returns>A <see cref="DataVector" /> structure that represents the difference between p1 and p2.</returns>
+        public static DataVector operator -(DataPoint p1, DataPoint p2)
+        {
+            return new DataVector(p1.x - p2.x, p1.y - p2.y);
+        }
+
+        /// <summary>
+        /// Subtracts a <see cref="DataVector" /> from a <see cref="DataPoint" />
+        /// and returns the result as a <see cref="DataPoint" />.
+        /// </summary>
+        /// <param name="point">The point on which to perform the subtraction.</param>
+        /// <param name="vector">The vector to subtract from p1.</param>
+        /// <returns>A <see cref="DataPoint" /> that represents point translated by the negative vector.</returns>
+        public static DataPoint operator -(DataPoint point, DataVector vector)
+        {
+            return new DataPoint(point.x - vector.x, point.y - vector.y);
         }
 
         /// <summary>
