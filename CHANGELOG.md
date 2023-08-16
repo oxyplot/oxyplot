@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 - Example for CategoryAxis with custom MajorStep and uncentered ticks (#1971)
 - BarSeries.LabelAngle property (#1870)
 - Border properties on PathAnnotation to match functionality in TextAnnotation (#1900)
+- Expanded `IntervalBarSeries` and `TornadoBarSeries` to allow for varied label positions and angles (#2027)
 
 ### Changed
 - Make consistent BaseValue and BaseLine across BarSeries, LinearBarSeries, and HistogramSeries
