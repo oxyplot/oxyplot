@@ -1762,7 +1762,7 @@ namespace ExampleLibrary
             var model = new PlotModel { Title = "LineSeries with Smooth = true (zoomed in)" };
             var l = new Legend
             {
-                LegendSymbolLength = 24 
+                LegendSymbolLength = 24
             };
 
             model.Legends.Add(l);
@@ -2290,9 +2290,9 @@ namespace ExampleLibrary
         public static PlotModel FindWindowsStartIndex()
         {
             var plotModel1 = new PlotModel { Title = "AreaSeries broken in time" };
-            var axis = new LinearAxis {Position = AxisPosition.Left, MinimumPadding = 0, MaximumPadding = 0.06, AbsoluteMinimum = 0};
-            var xAxis = new LinearAxis() {Position = AxisPosition.Bottom, Minimum = 4};
-            
+            var axis = new LinearAxis { Position = AxisPosition.Left, MinimumPadding = 0, MaximumPadding = 0.06, AbsoluteMinimum = 0 };
+            var xAxis = new LinearAxis() { Position = AxisPosition.Bottom, Minimum = 4 };
+
             plotModel1.Axes.Add(axis);
             plotModel1.Axes.Add(xAxis);
 
@@ -2307,14 +2307,14 @@ namespace ExampleLibrary
                     areaSeries.Points.Add(DataPoint.Undefined);
                     areaSeries.Points2.Add(DataPoint.Undefined);
                 }
-                    
+
                 currentValue += random.NextDouble();
                 areaSeries.Points.Add(new DataPoint(currentValue, currentValue));
                 areaSeries.Points2.Add(new DataPoint(currentValue, currentValue));
             }
-            
+
             plotModel1.Series.Add(areaSeries);
-          
+
 
             return plotModel1;
         }
@@ -2565,6 +2565,38 @@ namespace ExampleLibrary
             {
                 return new DataPoint(X, Y);
             }
+        }
+
+        [Example("#2038 BarSeries: HitTest does not deliver the correct BarItem (Closed)")]
+        public static PlotModel BarSeriesHitTestBug2038()
+        {
+            var model = new PlotModel
+            {
+                Title = "#2038 HitTest does not deliver the correct BarItem, when there are invalid items in Data",
+                Subtitle = "Click on top item, the top item, should change color!"
+            };
+            model.MouseDown += (s, e) =>
+            {
+                if (e.ChangedButton == OxyMouseButton.Left)
+                {
+                    foreach (var hit in model.HitTest(new HitTestArguments(e.Position, 0)))
+                    {
+                        if (hit.Item is BarItem barItem)
+                        {
+                            barItem.Color = OxyColors.Red;
+                            model.InvalidatePlot(false);
+                        }
+                    }
+                }
+            };
+            var s1 = new BarSeries { Title = "Series 1", IsStacked = true, StrokeColor = OxyColors.Black, StrokeThickness = 1, StackGroup = "3" };
+            int i = 0;
+            s1.Items.Add(new BarItem { Value = 25, CategoryIndex = i++ });
+            s1.Items.Add(new BarItem { Value = double.NaN, CategoryIndex = i++ });
+            s1.Items.Add(new BarItem { Value = 18, CategoryIndex = i++ });
+            s1.Items.Add(new BarItem { Value = 40, CategoryIndex = i++ });
+            model.Series.Add(s1);
+            return model;
         }
 
         /* NEW ISSUE TEMPLATE

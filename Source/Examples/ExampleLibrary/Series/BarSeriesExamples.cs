@@ -1172,36 +1172,5 @@ namespace ExampleLibrary
             model.Axes.Add(valueAxis);
             return model;
         }
-
-        [Example("BarSeriesBug #2038")]
-        public static PlotModel BarSeriesBug2038()
-        {
-            var model = new PlotModel
-            {
-                Title = nameof(BarSeriesBug2038),
-            };
-            model.MouseDown += (s, e) =>
-            {
-                if (e.ChangedButton == OxyMouseButton.Left)
-                {
-                    foreach (var hit in model.HitTest(new HitTestArguments(e.Position, 0)))
-                    {
-                        if (hit.Item is BarItem barItem)
-                        {
-                            barItem.Color = OxyColors.Red;
-                            model.InvalidatePlot(false);
-                        }
-                    }
-                }
-            };
-            var s1 = new BarSeries { Title = "Series 1", IsStacked = true, StrokeColor = OxyColors.Black, StrokeThickness = 1, StackGroup = "3" };
-            int i = 0;
-            s1.Items.Add(new BarItem { Value = 25, CategoryIndex = i++ });
-            s1.Items.Add(new BarItem { Value = double.NaN, CategoryIndex = i++ });
-            s1.Items.Add(new BarItem { Value = 18, CategoryIndex = i++ });
-            s1.Items.Add(new BarItem { Value = 40, CategoryIndex = i++ });
-            model.Series.Add(s1);
-            return model;
-        }
     }
 }
