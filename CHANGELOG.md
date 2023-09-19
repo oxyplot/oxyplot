@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 ## Unreleased
 
 ### Added
+- Example to demonstrate BarSeries HitTest bug (#2038)
 - Example to Show/Hide Legend (#1470)
 - Example of BarSeries stacked and with labels (#1979)
 - Example of issue with AreaSeries tracker (#1982)
@@ -29,6 +30,7 @@ All notable changes to this project will be documented in this file.
 - Unused LabelColor property from TornadoBarSeries, IntervalBarSeries, and RectangleBarSeries (#2030)
 
 ### Fixed
+- fixed issue with BarSeries, when the HitTest returns the wrong BarItem, when there are invalid items in the list. (#2038)
 - Placement of BarSeries labels when stacked (#1979)
 - SystemInvalidException in LineSeries when only Double.Nan values are added (#1991)
 - Issue with tracking AreaSeries with monotonic data points (#1982)

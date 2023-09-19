@@ -331,18 +331,14 @@ namespace OxyPlot.Series
             this.ValidItems.Clear();
             this.ValidItemsIndexInversion.Clear();
             var numberOfCategories = this.Manager.Categories.Count;
-            var valueAxis = this.XAxis;
-
-            var i = 0;
-            var items = this.ActualItems
-                .Where(item => item.GetCategoryIndex(i) < numberOfCategories)
-                .Where(this.IsValid);
-
-            foreach (var item in items)
+            for (int index = 0; index < this.ActualItems.Count; index++)
             {
-                this.ValidItemsIndexInversion.Add(this.ValidItems.Count, i);
-                this.ValidItems.Add(item);
-                i++;
+                var item = this.ActualItems[index];
+                if (item != null && item.GetCategoryIndex(index) < numberOfCategories && this.IsValid(item))
+                {
+                    this.ValidItemsIndexInversion.Add(this.ValidItems.Count, index);
+                    this.ValidItems.Add(item);
+                }
             }
         }
     }

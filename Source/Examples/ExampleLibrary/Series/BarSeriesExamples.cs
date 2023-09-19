@@ -52,7 +52,7 @@ namespace ExampleLibrary
             categoryAxis.Labels.Add("Category C");
             categoryAxis.Labels.Add("Category D");
             var valueAxis = new LinearAxis { Position = AxisPosition.Bottom, MinimumPadding = 0.06, MaximumPadding = 0.06, ExtraGridlines = new[] { 0d } };
-            
+
             foreach (var s in series)
             {
                 model.Series.Add(s);
