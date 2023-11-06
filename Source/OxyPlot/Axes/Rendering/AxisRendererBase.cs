@@ -14,7 +14,7 @@ namespace OxyPlot.Axes
     /// <summary>
     /// Provides an abstract base class for axis renderers.
     /// </summary>
-    public abstract class AxisRendererBase
+    public abstract class AxisRendererBase<T> where T: Axis
     {
         /// <summary>
         /// The plot.
@@ -42,7 +42,7 @@ namespace OxyPlot.Axes
         private IList<double> minorTickValues;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AxisRendererBase" /> class.
+        /// Initializes a new instance of the <see cref="AxisRendererBase{T}" /> class.
         /// </summary>
         /// <param name="rc">The render context.</param>
         /// <param name="plot">The plot.</param>
@@ -164,7 +164,7 @@ namespace OxyPlot.Axes
         /// </summary>
         /// <param name="axis">The axis.</param>
         /// <param name="pass">The pass.</param>
-        public virtual void Render(Axis axis, int pass)
+        public virtual void Render(T axis, int pass)
         {
             if (axis == null)
             {
@@ -179,7 +179,7 @@ namespace OxyPlot.Axes
         /// Creates the pens.
         /// </summary>
         /// <param name="axis">The axis.</param>
-        protected virtual void CreatePens(Axis axis)
+        protected virtual void CreatePens(T axis)
         {
             var minorTickColor = axis.MinorTicklineColor.IsAutomatic() ? axis.TicklineColor : axis.MinorTicklineColor;
 
@@ -201,7 +201,7 @@ namespace OxyPlot.Axes
         /// <param name="position">The position.</param>
         /// <param name="x0">The x 0.</param>
         /// <param name="x1">The x 1.</param>
-        protected virtual void GetTickPositions(Axis axis, TickStyle tickStyle, double tickSize, AxisPosition position, out double x0, out double x1)
+        protected virtual void GetTickPositions(T axis, TickStyle tickStyle, double tickSize, AxisPosition position, out double x0, out double x1)
         {
             x0 = 0;
             x1 = 0;

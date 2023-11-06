@@ -30,3 +30,4 @@ namespace OxyPlot.Axes
         int GetPaletteIndex(double value);
     }
 }
+

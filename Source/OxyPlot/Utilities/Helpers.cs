@@ -49,8 +49,8 @@ namespace OxyPlot.Utilities
                 throw new ArgumentNullException(nameof(projection));
             }
 
-            T best = default;
-            TComparable bestComparable = default;
+            T? best = default;
+            TComparable? bestComparable = default;
 
             bool first = true;
             foreach (T t in sequence)
@@ -70,6 +70,20 @@ namespace OxyPlot.Utilities
             }
 
             return best!;
+        }
+
+        /// <summary>
+        /// Performs a linear interpolation between two points.
+        /// </summary>
+        /// <param name="x0">The x coordinate of the first point.</param>
+        /// <param name="y0">The y coordinate of the first point.</param>
+        /// <param name="x1">The x coordinate of the second point.</param>
+        /// <param name="y1">The y coordinate of the second point.</param>
+        /// <param name="value">The x value where the interpolation should be evaluated.</param>
+        /// <returns>The y coordinate of a point with x=<paramref name="value"/> on the line between the first and second point.</returns>
+        public static double LinearInterpolation(double x0, double y0, double x1, double y1, double value)
+        {
+            return (value - x0) / (x1 - x0) * (y1 - y0) + y0;
         }
     }
 }

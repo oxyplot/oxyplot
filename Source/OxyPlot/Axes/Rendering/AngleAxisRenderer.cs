@@ -15,7 +15,7 @@ namespace OxyPlot.Axes
     /// <summary>
     /// Provides functionality to render <see cref="AngleAxis" />.
     /// </summary>
-    public class AngleAxisRenderer : AxisRendererBase
+    public class AngleAxisRenderer : AxisRendererBase<AngleAxis>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AngleAxisRenderer" /> class.
@@ -33,10 +33,8 @@ namespace OxyPlot.Axes
         /// <param name="axis">The axis.</param>
         /// <param name="pass">The render pass.</param>
         /// <exception cref="System.InvalidOperationException">Magnitude axis not defined.</exception>
-        public override void Render(Axis axis, int pass)
+        public override void Render(AngleAxis axis, int pass)
         {
-            var angleAxis = (AngleAxis)axis;
-
             base.Render(axis, pass);
 
             var magnitudeAxis = this.Plot.DefaultMagnitudeAxis;
@@ -46,8 +44,8 @@ namespace OxyPlot.Axes
                 throw new InvalidOperationException("Magnitude axis not defined.");
             }
 
-            var scaledStartAngle = angleAxis.StartAngle / angleAxis.Scale;
-            var scaledEndAngle = angleAxis.EndAngle / angleAxis.Scale;
+            var scaledStartAngle = axis.StartAngle / axis.Scale;
+            var scaledEndAngle = axis.EndAngle / axis.Scale;
 
             var axisLength = Math.Abs(scaledEndAngle - scaledStartAngle);
             var eps = axis.MinorStep * 1e-3;
@@ -64,7 +62,7 @@ namespace OxyPlot.Axes
                 }
             }
 
-            var isFullCircle = Math.Abs(Math.Abs(Math.Max(angleAxis.EndAngle, angleAxis.StartAngle) - Math.Min(angleAxis.StartAngle, angleAxis.EndAngle)) - 360) < 1e-3;
+            var isFullCircle = Math.Abs(Math.Abs(Math.Max(axis.EndAngle, axis.StartAngle) - Math.Min(axis.StartAngle, axis.EndAngle)) - 360) < 1e-3;
             var majorTickCount = (int)(axisLength / axis.ActualMajorStep);
             if (!isFullCircle)
             {

@@ -5,6 +5,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Example models for OxyPlot.</Description>
     <PackageTags>plotting plot charting chart</PackageTags>
+    <LangVersion>11</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Resources\DodgyContourData.tsv" />

@@ -1,25 +1,23 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LinearColorAxis.cs" company="OxyPlot">
+// <copyright file="LogarithmicColorAxis.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
-// <summary>
-//   Represents a linear color axis.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Axes
 {
     using OxyPlot.Axes.Rendering;
+    using System;
 
     /// <summary>
-    /// Represents a linear color axis.
+    /// Represents a logarithmic color axis.
     /// </summary>
-    public class LinearColorAxis : LinearAxis, INumericColorAxis
+    public class LogarithmicColorAxis : LogarithmicAxis, INumericColorAxis
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="LinearColorAxis" /> class.
         /// </summary>
-        public LinearColorAxis()
+        public LogarithmicColorAxis()
         {
             this.Position = AxisPosition.None;
             this.AxisDistance = 20;
@@ -57,7 +55,7 @@ namespace OxyPlot.Axes
         /// <inheritdoc />
         public override void Render(IRenderContext rc, int pass)
         {
-            var renderer = new NumericColorAxisRenderer<LinearColorAxis>(rc, this.PlotModel);
+            var renderer = new NumericColorAxisRenderer<LogarithmicColorAxis>(rc, this.PlotModel);
             renderer.Render(this, pass);
         }
 
@@ -84,7 +82,9 @@ namespace OxyPlot.Axes
                 return this.Palette.Colors.Count + 1;
             }
 
-            int index = 1 + (int)((value - this.ClipMinimum) / (this.ClipMaximum - this.ClipMinimum) * this.Palette.Colors.Count);
+            var logValue = this.PreTransform(value);
+
+            int index = 1 + (int)((logValue - this.LogClipMinimum) / (this.LogClipMaximum - this.LogClipMinimum) * this.Palette.Colors.Count);
 
             if (index < 1)
             {

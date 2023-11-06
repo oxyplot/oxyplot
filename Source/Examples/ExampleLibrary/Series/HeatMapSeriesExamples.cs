@@ -37,7 +37,13 @@ namespace ExampleLibrary
             var peaksData = ArrayBuilder.Evaluate(peaks, xvalues, yvalues);
 
             var model = new PlotModel { Title = "Peaks" };
-            model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = palette ?? OxyPalettes.Jet(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
+            var colorAxis = new LinearColorAxis { Position = AxisPosition.Right, HighColor = OxyColors.Gray, LowColor = OxyColors.Black };
+            if (palette is not null)
+            {
+                colorAxis.Palette = palette;
+            }
+
+            model.Axes.Add(colorAxis);
 
             var hms = new HeatMapSeries { X0 = x0, X1 = x1, Y0 = y0, Y1 = y1, Data = peaksData };
             model.Series.Add(hms);
