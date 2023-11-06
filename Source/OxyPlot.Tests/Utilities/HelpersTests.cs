@@ -21,7 +21,7 @@ namespace OxyPlot.Tests
         private readonly struct LinearInterpolationTestCase
         {
 
-            public LinearInterpolationTestCase(double x0, double x1, double y0, double y1, double x, double y) : this()
+            public LinearInterpolationTestCase(double x0, double y0, double x1, double y1, double x, double y) : this()
             {
                 this.X0 = x0;
                 this.X1 = x1;
