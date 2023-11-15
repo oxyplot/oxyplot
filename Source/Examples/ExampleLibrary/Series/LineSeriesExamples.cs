@@ -168,8 +168,17 @@ namespace ExampleLibrary
                 ls.Color = OxyColors.Red;
                 ls.MarkerStroke = OxyColors.Black;
                 ls.MarkerFill = OxyColors.Green;
-                ls.MarkerType = (MarkerType)i++;
+                ls.MarkerStrokeThickness = 2;
+                ls.MarkerSize = 7;
+                ls.MarkerType = (MarkerType)i;
+                ls.MarkerLineStyle = (LineStyle)i;
+                if (i == 8)
+                {
+                    ls.MarkerType = MarkerType.Triangle;
+                }
                 ls.Title = ls.MarkerType.ToString();
+
+                i++;
             }
 
             return pm;

@@ -65,7 +65,8 @@ namespace OxyPlot
         /// <param name="stroke">The stroke color.</param>
         /// <param name="thickness">The thickness.</param>
         /// <param name="edgeRenderingMode">The edge rendering mode. This is not supported and will be ignored.</param>
-        public override void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
+        /// <param name="dashArray">The dash array.</param>
+        public override void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode, double[] dashArray)
         {
             var isStroked = stroke.IsVisible() && thickness > 0;
             var isFilled = fill.IsVisible();
@@ -208,7 +209,8 @@ namespace OxyPlot
         /// <param name="stroke">The stroke color.</param>
         /// <param name="thickness">The stroke thickness.</param>
         /// <param name="edgeRenderingMode">The edge rendering mode. This is not supported and will be ignored.</param>
-        public override void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
+        /// <param name="dashArray">The dash array.</param>
+        public override void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode, double[] dashArray = null)
         {
             var isStroked = stroke.IsVisible() && thickness > 0;
             var isFilled = fill.IsVisible();

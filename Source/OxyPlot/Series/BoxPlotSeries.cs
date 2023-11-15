@@ -136,6 +136,17 @@ namespace OxyPlot.Series
         public ScreenPoint[] OutlierOutline { get; set; }
 
         /// <summary>
+        /// Gets or sets the marker line style. The default is <see cref="OxyPlot.LineStyle.Automatic" />.
+        /// </summary>
+        /// <value>The line style.</value>
+        public LineStyle MarkerLineStyle { get; set; }
+
+        /// <summary>
+        /// Gets the actual dash array for the marker.
+        /// </summary>
+        protected double[] ActualMarkerDashArray => this.MarkerLineStyle.GetDashArray();
+
+        /// <summary>
         /// Gets or sets a value indicating whether to show the boxes.
         /// </summary>
         public bool ShowBox { get; set; }
@@ -445,7 +456,8 @@ namespace OxyPlot.Series
                     fillColor,
                     strokeColor,
                     this.StrokeThickness,
-                    this.EdgeRenderingMode);
+                    this.EdgeRenderingMode,
+                    ActualMarkerDashArray);
             }
         }
 

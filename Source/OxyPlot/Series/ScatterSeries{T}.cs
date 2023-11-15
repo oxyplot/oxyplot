@@ -183,6 +183,17 @@ namespace OxyPlot.Series
         public MarkerType MarkerType { get; set; }
 
         /// <summary>
+        /// Gets or sets the marker line style. The default is <see cref="OxyPlot.LineStyle.Automatic" />.
+        /// </summary>
+        /// <value>The line style.</value>
+        public LineStyle MarkerLineStyle { get; set; }
+
+        /// <summary>
+        /// Gets the actual dash array for the marker.
+        /// </summary>
+        protected double[] ActualMarkerDashArray => this.MarkerLineStyle.GetDashArray();
+
+        /// <summary>
         /// Gets the maximum value of the points.
         /// </summary>
         public double MaxValue { get; private set; }
@@ -421,6 +432,7 @@ namespace OxyPlot.Series
                         markerIsStrokedOnly ? color : this.MarkerStroke,
                         this.MarkerStrokeThickness,
                         this.EdgeRenderingMode,
+                        ActualMarkerDashArray,
                         this.BinSize,
                         binOffset);
                 }
@@ -436,6 +448,7 @@ namespace OxyPlot.Series
                 this.MarkerStroke,
                 this.MarkerStrokeThickness,
                 this.EdgeRenderingMode,
+                ActualMarkerDashArray,
                 this.BinSize,
                 binOffset);
 
@@ -449,6 +462,7 @@ namespace OxyPlot.Series
                 this.PlotModel.SelectionColor,
                 this.MarkerStrokeThickness,
                 this.EdgeRenderingMode,
+                ActualMarkerDashArray,
                 this.BinSize,
                 binOffset);
 
@@ -479,7 +493,8 @@ namespace OxyPlot.Series
                 this.IsSelected() ? this.PlotModel.SelectionColor : this.ActualMarkerFillColor,
                 this.IsSelected() ? this.PlotModel.SelectionColor : this.MarkerStroke,
                 this.MarkerStrokeThickness,
-                this.EdgeRenderingMode);
+                this.EdgeRenderingMode,
+                ActualMarkerDashArray);
         }
 
         /// <summary>

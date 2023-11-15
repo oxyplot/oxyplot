@@ -9,6 +9,7 @@
     <PackageTags>plotting plot charting chart wpf</PackageTags>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>OxyPlot.Wpf.Shared.snk</AssemblyOriginatorKeyFile>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
     <None Include="OxyPlot.Wpf.Shared.snk" />

@@ -188,6 +188,12 @@ namespace OxyPlot.Series
         public double MarkerStrokeThickness { get; set; }
 
         /// <summary>
+        /// Gets or sets the marker line style. The default is <see cref="OxyPlot.LineStyle.Automatic" />.
+        /// </summary>
+        /// <value>The line style.</value>
+        public LineStyle MarkerLineStyle { get; set; }
+
+        /// <summary>
         /// Gets or sets the type of the marker. The default is <c>MarkerType.None</c>.
         /// </summary>
         /// <value>The type of the marker.</value>
@@ -260,6 +266,11 @@ namespace OxyPlot.Series
                 return this.Dashes ?? this.ActualLineStyle.GetDashArray();
             }
         }
+
+        /// <summary>
+        /// Gets the actual dash array for the marker.
+        /// </summary>
+        protected double[] ActualMarkerDashArray => this.MarkerLineStyle.GetDashArray();
 
         /// <summary>
         /// Gets the smoothed points.
@@ -372,7 +383,8 @@ namespace OxyPlot.Series
                 this.ActualMarkerFill,
                 this.MarkerStroke,
                 this.MarkerStrokeThickness,
-                this.EdgeRenderingMode);
+                this.EdgeRenderingMode,
+                ActualMarkerDashArray);
         }
 
         /// <summary>
@@ -729,6 +741,7 @@ namespace OxyPlot.Series
                     this.MarkerStroke, 
                     this.MarkerStrokeThickness, 
                     this.EdgeRenderingMode,
+                    ActualMarkerDashArray,
                     this.MarkerResolution, 
                     markerBinOffset);
             }
