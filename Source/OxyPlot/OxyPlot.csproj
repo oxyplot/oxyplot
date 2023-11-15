@@ -11,8 +11,6 @@
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <LangVersion>8</LangVersion>
         <NoWarn>$(NoWarn);CS0618</NoWarn>
-        <NoWarn>618</NoWarn>
-        <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
     </PropertyGroup>
     <ItemGroup>
         <None Include="OxyPlot.snk" />
