@@ -379,8 +379,6 @@ namespace ExampleLibrary
         [Example("Marker color options")]
         public static PlotModel MarkerColorOptions()
         {
-            var result = CreateRandomPoints();
-
             var model = new PlotModel { Title = "Marker color options" };
 
             // Dont specify line or marker color. Defaults will be used.
