@@ -384,7 +384,7 @@ namespace OxyPlot.Series
                 this.MarkerStroke,
                 this.MarkerStrokeThickness,
                 this.EdgeRenderingMode,
-                ActualMarkerDashArray);
+                this.ActualMarkerDashArray);
         }
 
         /// <summary>
@@ -741,7 +741,7 @@ namespace OxyPlot.Series
                     this.MarkerStroke, 
                     this.MarkerStrokeThickness, 
                     this.EdgeRenderingMode,
-                    ActualMarkerDashArray,
+                    this.ActualMarkerDashArray,
                     this.MarkerResolution, 
                     markerBinOffset);
             }

@@ -432,7 +432,7 @@ namespace OxyPlot.Series
                         markerIsStrokedOnly ? color : this.MarkerStroke,
                         this.MarkerStrokeThickness,
                         this.EdgeRenderingMode,
-                        ActualMarkerDashArray,
+                        this.ActualMarkerDashArray,
                         this.BinSize,
                         binOffset);
                 }
@@ -448,7 +448,7 @@ namespace OxyPlot.Series
                 this.MarkerStroke,
                 this.MarkerStrokeThickness,
                 this.EdgeRenderingMode,
-                ActualMarkerDashArray,
+                this.ActualMarkerDashArray,
                 this.BinSize,
                 binOffset);
 
@@ -462,7 +462,7 @@ namespace OxyPlot.Series
                 this.PlotModel.SelectionColor,
                 this.MarkerStrokeThickness,
                 this.EdgeRenderingMode,
-                ActualMarkerDashArray,
+                this.ActualMarkerDashArray,
                 this.BinSize,
                 binOffset);
 
@@ -494,7 +494,7 @@ namespace OxyPlot.Series
                 this.IsSelected() ? this.PlotModel.SelectionColor : this.MarkerStroke,
                 this.MarkerStrokeThickness,
                 this.EdgeRenderingMode,
-                ActualMarkerDashArray);
+                this.ActualMarkerDashArray);
         }
 
         /// <summary>

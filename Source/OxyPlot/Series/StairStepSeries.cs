@@ -219,7 +219,7 @@ namespace OxyPlot.Series
                             this.MarkerStroke,
                             this.MarkerStrokeThickness,
                             this.EdgeRenderingMode,
-                            this.ActualDashArray);
+                            this.ActualMarkerDashArray);
                     }
                 };
 

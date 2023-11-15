@@ -457,7 +457,7 @@ namespace OxyPlot.Series
                     strokeColor,
                     this.StrokeThickness,
                     this.EdgeRenderingMode,
-                    ActualMarkerDashArray);
+                    this.ActualMarkerDashArray);
             }
         }
 

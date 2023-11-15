@@ -242,7 +242,7 @@ namespace OxyPlot.Series
                     this.MarkerStroke,
                     this.MarkerStrokeThickness,
                     this.EdgeRenderingMode,
-                    this.ActualDashArray,
+                    this.ActualMarkerDashArray,
                     1);
                 rc.DrawMarkers(
                     belowMarkers,
@@ -253,7 +253,7 @@ namespace OxyPlot.Series
                     this.MarkerStroke2,
                     this.MarkerStrokeThickness,
                     this.EdgeRenderingMode,
-                    this.ActualDashArray,
+                    this.ActualMarkerDashArray,
                     1);
             }
         }
@@ -331,7 +331,7 @@ namespace OxyPlot.Series
                     twoColorContext.MarkerStroke,
                     this.MarkerStrokeThickness,
                     this.EdgeRenderingMode,
-                    ActualDashArray,
+                    this.ActualMarkerDashArray,
                     1);
             }
 
