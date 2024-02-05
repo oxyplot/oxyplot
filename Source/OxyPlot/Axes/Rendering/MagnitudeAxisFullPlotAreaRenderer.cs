@@ -15,7 +15,7 @@ namespace OxyPlot.Axes
     /// <summary>
     /// Provides functionality to render <see cref="MagnitudeAxis" /> using the full plot area.
     /// </summary>
-    public class MagnitudeAxisFullPlotAreaRenderer : AxisRendererBase
+    public class MagnitudeAxisFullPlotAreaRenderer : AxisRendererBase<MagnitudeAxisFullPlotArea>
     {
         /// <summary>
         /// constants to simplify angular calculations
@@ -44,7 +44,7 @@ namespace OxyPlot.Axes
         /// <param name="axis">The axis.</param>
         /// <param name="pass">The pass.</param>
         /// <exception cref="System.NullReferenceException">Angle axis should not be <c>null</c>.</exception>
-        public override void Render(Axis axis, int pass)
+        public override void Render(MagnitudeAxisFullPlotArea axis, int pass)
         {
             base.Render(axis, pass);
 
@@ -275,7 +275,7 @@ namespace OxyPlot.Axes
         /// <param name="axis">The axis.</param>
         /// <param name="angleAxis">The angle axis.</param>
         /// <returns>The angle (in radians).</returns>
-        private static double GetActualAngle(Axis axis, Axis angleAxis)
+        private static double GetActualAngle(MagnitudeAxisFullPlotArea axis, Axis angleAxis)
         {
             var a = axis.Transform(0, angleAxis.Angle, angleAxis);
             var b = axis.Transform(1, angleAxis.Angle, angleAxis);
@@ -325,7 +325,7 @@ namespace OxyPlot.Axes
         /// <param name="pen">The pen.</param>
         /// <param name="startAngle">The start angle.</param>
         /// <param name="endAngle">The end angle.</param>
-        private void RenderTickArc(Axis axis, AngleAxis angleAxis, double x, OxyPen pen, double startAngle, double endAngle)
+        private void RenderTickArc(MagnitudeAxisFullPlotArea axis, AngleAxis angleAxis, double x, OxyPen pen, double startAngle, double endAngle)
         {
             if(startAngle>endAngle)
             {
@@ -369,7 +369,7 @@ namespace OxyPlot.Axes
         /// <param name="axis">The axis.</param>
         /// <param name="x">The x-value.</param>
         /// <param name="angleAxis">The angle axis.</param>
-        private void RenderTickText(Axis axis, double x, Axis angleAxis)
+        private void RenderTickText(MagnitudeAxisFullPlotArea axis, double x, Axis angleAxis)
         {
             var actualAngle = GetActualAngle(axis, angleAxis);
             var dx = axis.AxisTickToLabelDistance * Math.Sin(actualAngle);

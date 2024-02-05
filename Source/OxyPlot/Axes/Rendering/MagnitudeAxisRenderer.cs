@@ -16,7 +16,7 @@ namespace OxyPlot.Axes
     /// <summary>
     /// Provides functionality to render <see cref="MagnitudeAxis" />.
     /// </summary>
-    public class MagnitudeAxisRenderer : AxisRendererBase
+    public class MagnitudeAxisRenderer : AxisRendererBase<MagnitudeAxis>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MagnitudeAxisRenderer" /> class.
@@ -34,7 +34,7 @@ namespace OxyPlot.Axes
         /// <param name="axis">The axis.</param>
         /// <param name="pass">The pass.</param>
         /// <exception cref="System.NullReferenceException">Angle axis should not be <c>null</c>.</exception>
-        public override void Render(Axis axis, int pass)
+        public override void Render(MagnitudeAxis axis, int pass)
         {
             base.Render(axis, pass);
 
@@ -134,7 +134,7 @@ namespace OxyPlot.Axes
         /// <param name="angleAxis">The angle axis.</param>
         /// <param name="x">The x-value.</param>
         /// <param name="pen">The pen.</param>
-        private void RenderTick(Axis axis, AngleAxis angleAxis, double x, OxyPen pen)
+        private void RenderTick(MagnitudeAxis axis, AngleAxis angleAxis, double x, OxyPen pen)
         {
             var isFullCircle = Math.Abs(Math.Abs(angleAxis.EndAngle - angleAxis.StartAngle) - 360) < 1e-6;
 
@@ -155,7 +155,7 @@ namespace OxyPlot.Axes
         /// <param name="angleAxis">The angle axis.</param>
         /// <param name="x">The x-value.</param>
         /// <param name="pen">The pen.</param>
-        private void RenderTickCircle(Axis axis, Axis angleAxis, double x, OxyPen pen)
+        private void RenderTickCircle(MagnitudeAxis axis, Axis angleAxis, double x, OxyPen pen)
         {
             var zero = angleAxis.Offset;
             var center = axis.Transform(axis.ClipMinimum, zero, angleAxis);
@@ -176,7 +176,7 @@ namespace OxyPlot.Axes
         /// <param name="angleAxis">The angle axis.</param>
         /// <param name="x">The x-value.</param>
         /// <param name="pen">The pen.</param>
-        private void RenderTickArc(Axis axis, AngleAxis angleAxis, double x, OxyPen pen)
+        private void RenderTickArc(MagnitudeAxis axis, AngleAxis angleAxis, double x, OxyPen pen)
         {
             // caution: make sure angleAxis.UpdateActualMaxMin(); has been called
             var minAngle = angleAxis.ClipMinimum;
@@ -210,7 +210,7 @@ namespace OxyPlot.Axes
         /// <param name="axis">The axis.</param>
         /// <param name="x">The x-value.</param>
         /// <param name="angleAxis">The angle axis.</param>
-        private void RenderTickText(Axis axis, double x, Axis angleAxis)
+        private void RenderTickText(MagnitudeAxis axis, double x, Axis angleAxis)
         {
             var actualAngle = GetActualAngle(axis, angleAxis);
             var dx = axis.AxisTickToLabelDistance * Math.Sin(actualAngle);

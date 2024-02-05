@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 - Border properties on PathAnnotation to match functionality in TextAnnotation (#1900)
 - Expanded `IntervalBarSeries` and `TornadoBarSeries` to allow for varied label positions and angles (#2027)
 - VectorSeries (#107)
+- LogarithmicColorAxis (#92)
 
 ### Changed
 - Make consistent BaseValue and BaseLine across BarSeries, LinearBarSeries, and HistogramSeries
@@ -24,6 +25,7 @@ All notable changes to this project will be documented in this file.
 - Run tests on both .NET Framework 4.6.2 and .NET 6.0 (#1937)
 - Add support for .NET 7.0 (#1937)
 - Update SkiaSharp to Version 2.88.6
+- AxisRendererBase is now generic
 
 ### Removed
 - Support for .NET Framework 4.0 and 4.5 (#1839)

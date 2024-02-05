@@ -3,6 +3,7 @@
         <TargetFrameworks>net462;net6.0;net7.0</TargetFrameworks>
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
         <Description>OxyPlot unit tests</Description>
+        <LangVersion>9</LangVersion>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <NoWarn>$(NoWarn);CS0618</NoWarn>
     </PropertyGroup>

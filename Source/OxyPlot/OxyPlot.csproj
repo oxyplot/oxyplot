@@ -9,7 +9,7 @@
         <SignAssembly>true</SignAssembly>
         <AssemblyOriginatorKeyFile>OxyPlot.snk</AssemblyOriginatorKeyFile>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        <LangVersion>8</LangVersion>
+        <LangVersion>9</LangVersion>
         <NoWarn>$(NoWarn);CS0618</NoWarn>
     </PropertyGroup>
     <ItemGroup>

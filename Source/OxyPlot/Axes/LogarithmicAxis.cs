@@ -207,8 +207,7 @@ namespace OxyPlot.Axes
         /// <returns>The value.</returns>
         public override double InverseTransform(double sx)
         {
-            // Inline the <see cref="PostInverseTransform" /> method here.
-            return Math.Exp((sx / this.Scale) + this.Offset);
+            return this.PostInverseTransform((sx / this.Scale) + this.Offset);
         }
 
         /// <summary>
@@ -223,8 +222,7 @@ namespace OxyPlot.Axes
                 return -1;
             }
 
-            // Inline the <see cref="PreTransform" /> method here.
-            return (Math.Log(x) - this.Offset) * this.Scale;
+            return (this.PreTransform(x) - this.Offset) * this.Scale;
         }
 
         /// <summary>
@@ -589,10 +587,10 @@ namespace OxyPlot.Axes
         /// <inheritdoc />
         protected override void ActualMaximumAndMinimumChangedOverride()
         {
-            this.LogActualMinimum = Math.Log(this.ActualMinimum, this.Base);
-            this.LogActualMaximum = Math.Log(this.ActualMaximum, this.Base);
-            this.LogClipMinimum = Math.Log(this.ClipMinimum, this.Base);
-            this.LogClipMaximum = Math.Log(this.ClipMaximum, this.Base);
+            this.LogActualMinimum = this.PreTransform(this.ActualMinimum);
+            this.LogActualMaximum = this.PreTransform(this.ActualMaximum);
+            this.LogClipMinimum = this.PreTransform(this.ClipMinimum);
+            this.LogClipMaximum = this.PreTransform(this.ClipMaximum);
         }
 
         /// <summary>
@@ -602,7 +600,7 @@ namespace OxyPlot.Axes
         /// <returns>The transformed value.</returns>
         protected override double PostInverseTransform(double x)
         {
-            return Math.Exp(x);
+            return Math.Pow(this.Base, x);
         }
 
         /// <summary>
@@ -614,7 +612,7 @@ namespace OxyPlot.Axes
         {
             Debug.Assert(x > 0, "Value should be positive.");
 
-            return x <= 0 ? 0 : Math.Log(x);
+            return x <= 0 ? 0 : Math.Log(x, this.Base);
         }
 
         /// <summary>

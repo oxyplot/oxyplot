@@ -9,7 +9,7 @@
 
 namespace OxyPlot.Axes
 {
-    using System;
+    using OxyPlot.Axes.Rendering;
     using System.Collections.Generic;
 
     /// <summary>
@@ -20,7 +20,7 @@ namespace OxyPlot.Axes
         /// <summary>
         /// The ranges
         /// </summary>
-        private readonly List<ColorRange> ranges = new List<ColorRange>();
+        internal readonly List<ColorRange> ranges = new List<ColorRange>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RangeColorAxis" /> class.
@@ -131,126 +131,17 @@ namespace OxyPlot.Axes
             return this.ranges[paletteIndex].Color;
         }
 
-        /// <summary>
-        /// Renders the axis on the specified render context.
-        /// </summary>
-        /// <param name="rc">The render context.</param>
-        /// <param name="pass">The render pass.</param>
+        /// <inheritdoc />
         public override void Render(IRenderContext rc, int pass)
         {
-            if (this.Position == AxisPosition.None)
-            {
-                return;
-            }
-
-            if (pass == 0)
-            {
-                double distance = this.AxisDistance;
-                double left = this.PlotModel.PlotArea.Left;
-                double top = this.PlotModel.PlotArea.Top;
-                double width = this.MajorTickSize - 2;
-                double height = this.MajorTickSize - 2;
-
-                const int TierShift = 0;
-
-                switch (this.Position)
-                {
-                    case AxisPosition.Left:
-                        left = this.PlotModel.PlotArea.Left - TierShift - width - distance;
-                        top = this.PlotModel.PlotArea.Top;
-                        break;
-                    case AxisPosition.Right:
-                        left = this.PlotModel.PlotArea.Right + TierShift + distance;
-                        top = this.PlotModel.PlotArea.Top;
-                        break;
-                    case AxisPosition.Top:
-                        left = this.PlotModel.PlotArea.Left;
-                        top = this.PlotModel.PlotArea.Top - TierShift - height - distance;
-                        break;
-                    case AxisPosition.Bottom:
-                        left = this.PlotModel.PlotArea.Left;
-                        top = this.PlotModel.PlotArea.Bottom + TierShift + distance;
-                        break;
-                }
-
-                Action<double, double, OxyColor> drawColorRect = (ylow, yhigh, color) =>
-                {
-                    double ymin = Math.Min(ylow, yhigh);
-                    double ymax = Math.Max(ylow, yhigh);
-                    rc.DrawRectangle(
-                        this.IsHorizontal()
-                            ? new OxyRect(ymin, top, ymax - ymin, height)
-                            : new OxyRect(left, ymin, width, ymax - ymin),
-                        color,
-                        OxyColors.Undefined,
-                        0,
-                        this.EdgeRenderingMode);
-                };
-
-                // if the axis is reversed then the min and max values need to be swapped.
-                double effectiveMaxY = this.Transform(this.IsReversed ? this.ActualMinimum : this.ActualMaximum);
-                double effectiveMinY = this.Transform(this.IsReversed ? this.ActualMaximum : this.ActualMinimum);
-
-                foreach (ColorRange range in this.ranges)
-                {
-                    double ylow = this.Transform(range.LowerBound);
-                    double yhigh = this.Transform(range.UpperBound);
-
-                    if (this.IsHorizontal())
-                    {
-                        if (ylow < effectiveMinY)
-                        {
-                            ylow = effectiveMinY;
-                        }
-
-                        if (yhigh > effectiveMaxY)
-                        {
-                            yhigh = effectiveMaxY;
-                        }
-                    }
-                    else
-                    {
-                        if (ylow > effectiveMinY)
-                        {
-                            ylow = effectiveMinY;
-                        }
-
-                        if (yhigh < effectiveMaxY)
-                        {
-                            yhigh = effectiveMaxY;
-                        }
-                    }
-
-                    drawColorRect(ylow, yhigh, range.Color);
-                }
-
-                double highLowLength = 10;
-                if (this.IsHorizontal())
-                {
-                    highLowLength *= -1;
-                }
-
-                if (!this.LowColor.IsUndefined())
-                {
-                    double ylow = this.Transform(this.ActualMinimum);
-                    drawColorRect(ylow, ylow + highLowLength, this.LowColor);
-                }
-
-                if (!this.HighColor.IsUndefined())
-                {
-                    double yhigh = this.Transform(this.ActualMaximum);
-                    drawColorRect(yhigh, yhigh - highLowLength, this.HighColor);
-                }
-            }
-
-            var r = new HorizontalAndVerticalAxisRenderer(rc, this.PlotModel);
-            r.Render(this, pass);
+            var renderer = new RangeColorAxisRenderer(rc, this.PlotModel);
+            renderer.Render(this, pass);
         }
 
         /// <summary>
         /// Defines a range.
         /// </summary>
-        private class ColorRange
+        internal class ColorRange
         {
             /// <summary>
             /// Gets or sets the color.

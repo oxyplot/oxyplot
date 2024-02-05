@@ -17,14 +17,29 @@ namespace OxyPlot.Axes
     /// <summary>
     /// Provides functionality to render horizontal and vertical axes.
     /// </summary>
-    public class HorizontalAndVerticalAxisRenderer : AxisRendererBase
+    public class HorizontalAndVerticalAxisRenderer : HorizontalAndVerticalAxisRenderer<Axis>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="HorizontalAndVerticalAxisRenderer" /> class.
         /// </summary>
         /// <param name="rc">The render context.</param>
         /// <param name="plot">The plot.</param>
-        public HorizontalAndVerticalAxisRenderer(IRenderContext rc, PlotModel plot)
+        public HorizontalAndVerticalAxisRenderer(IRenderContext rc, PlotModel plot) : base(rc, plot)
+        {
+        }
+    }
+
+    /// <summary>
+    /// Provides functionality to render horizontal and vertical axes.
+    /// </summary>
+    public abstract class HorizontalAndVerticalAxisRenderer<T> : AxisRendererBase<T> where T : Axis
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HorizontalAndVerticalAxisRenderer{T}" /> class.
+        /// </summary>
+        /// <param name="rc">The render context.</param>
+        /// <param name="plot">The plot.</param>
+        protected HorizontalAndVerticalAxisRenderer(IRenderContext rc, PlotModel plot)
             : base(rc, plot)
         {
         }
@@ -34,7 +49,7 @@ namespace OxyPlot.Axes
         /// </summary>
         /// <param name="axis">The axis.</param>
         /// <param name="pass">The pass.</param>
-        public override void Render(Axis axis, int pass)
+        public override void Render(T axis, int pass)
         {
             base.Render(axis, pass);
 
@@ -204,7 +219,7 @@ namespace OxyPlot.Axes
         /// <param name="valign">The vertical alignment.</param>
         /// <returns>The <see cref="ScreenPoint" />.</returns>
         protected virtual ScreenPoint GetAxisTitlePositionAndAlignment(
-            Axis axis,
+            T axis,
             double titlePosition,
             ref double angle,
             ref HorizontalAlignment halign,
@@ -246,7 +261,7 @@ namespace OxyPlot.Axes
         /// </summary>
         /// <param name="axis">The axis.</param>
         /// <param name="titlePosition">The title position.</param>
-        protected virtual void RenderAxisTitle(Axis axis, double titlePosition)
+        protected virtual void RenderAxisTitle(T axis, double titlePosition)
         {
             if (string.IsNullOrEmpty(axis.ActualTitle))
             {
@@ -294,7 +309,7 @@ namespace OxyPlot.Axes
         /// <param name="axisPosition">The axis position.</param>
         /// <param name="titlePosition">The title position.</param>
         /// <param name="drawAxisLine">Draw the axis line if set to <c>true</c>.</param>
-        protected virtual void RenderMajorItems(Axis axis, double axisPosition, double titlePosition, bool drawAxisLine)
+        protected virtual void RenderMajorItems(T axis, double axisPosition, double titlePosition, bool drawAxisLine)
         {
             double eps = axis.ActualMinorStep * 1e-3;
 
@@ -512,7 +527,7 @@ namespace OxyPlot.Axes
         /// </summary>
         /// <param name="axis">The axis.</param>
         /// <param name="axisPosition">The axis position.</param>
-        protected virtual void RenderMinorItems(Axis axis, double axisPosition)
+        protected virtual void RenderMinorItems(T axis, double axisPosition)
         {
             double eps = axis.ActualMinorStep * 1e-3;
             double actualMinimum = axis.ClipMinimum;
