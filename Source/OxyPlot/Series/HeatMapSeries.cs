@@ -30,7 +30,7 @@ namespace OxyPlot.Series
     }
 
     /// <summary>
-    /// Specifies how the heat map coordinates are defined.
+    /// Specifies how the heat map is rendered.
     /// </summary>
     public enum HeatMapRenderMethod
     {
