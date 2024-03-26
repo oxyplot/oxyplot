@@ -59,6 +59,17 @@ namespace OxyPlot.Annotations
         public MarkerType Shape { get; set; }
 
         /// <summary>
+        /// Gets or sets the marker line style. The default is <see cref="OxyPlot.LineStyle.Automatic" />.
+        /// </summary>
+        /// <value>The line style.</value>
+        public LineStyle MarkerLineStyle { get; set; }
+
+        /// <summary>
+        /// Gets the actual dash array for the marker.
+        /// </summary>
+        protected double[]? ActualMarkerDashArray => this.MarkerLineStyle.GetDashArray();
+
+        /// <summary>
         /// Gets or sets a custom polygon outline for the point marker. Set <see cref="Shape" /> to <see cref="MarkerType.Custom" /> to use this property.
         /// </summary>
         /// <value>A polyline. The default is <c>null</c>.</value>
@@ -71,7 +82,7 @@ namespace OxyPlot.Annotations
 
             this.screenPosition = this.Transform(this.X, this.Y);
 
-            rc.DrawMarker(this.screenPosition, this.Shape, this.CustomOutline, this.Size, this.Fill, this.Stroke, this.StrokeThickness, this.EdgeRenderingMode);
+            rc.DrawMarker(this.screenPosition, this.Shape, this.CustomOutline, this.Size, this.Fill, this.Stroke, this.StrokeThickness, this.EdgeRenderingMode, this.ActualMarkerDashArray);
 
             if (this.Text != null &&
                 !string.IsNullOrEmpty(this.Text))

@@ -163,7 +163,8 @@ namespace OxyPlot.Series
                     this.ActualMarkerFill,
                     this.MarkerStroke,
                     this.MarkerStrokeThickness,
-                    this.EdgeRenderingMode);
+                    this.EdgeRenderingMode,
+                    this.ActualMarkerDashArray);
             }
         }
     }

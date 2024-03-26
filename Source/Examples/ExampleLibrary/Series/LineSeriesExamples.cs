@@ -169,7 +169,6 @@ namespace ExampleLibrary
                 ls.MarkerStroke = OxyColors.Black;
                 ls.MarkerFill = OxyColors.Green;
                 ls.MarkerType = (MarkerType)i++;
-                ls.Title = ls.MarkerType.ToString();
             }
 
             return pm;
@@ -380,8 +379,6 @@ namespace ExampleLibrary
         [Example("Marker color options")]
         public static PlotModel MarkerColorOptions()
         {
-            var result = CreateRandomPoints();
-
             var model = new PlotModel { Title = "Marker color options" };
 
             // Dont specify line or marker color. Defaults will be used.
@@ -406,6 +403,59 @@ namespace ExampleLibrary
             s4.MarkerType = MarkerType.Square;
             s4.MarkerFill = OxyColors.OrangeRed;
             s4.Color = OxyColors.Orange;
+            model.Series.Add(s4);
+
+            return model;
+        }
+
+        [Example("Marker line style")]
+        public static PlotModel MarkerLineStyle()
+        {
+            var model = new PlotModel { Title = "Marker line style" };
+
+            var l = new Legend 
+            {
+                LegendBackground = OxyColor.FromAColor(220, OxyColors.White),
+                LegendBorder = OxyColors.Black,
+                LegendBorderThickness = 1.0
+             };
+            model.Legends.Add(l);
+
+            // Don't specify line style. Defaults will be used.
+            var s1 = CreateExampleLineSeries(1);
+            s1.MarkerType = MarkerType.Circle;
+            s1.MarkerStroke = OxyColors.DarkCyan;
+            s1.MarkerStrokeThickness = 2;
+            s1.MarkerSize = 8;
+            model.Series.Add(s1);
+
+            // Specify line style. Specified line style should be used.
+            var s2 = CreateExampleLineSeries(4);
+            s2.MarkerType = MarkerType.Square;
+            s2.Color = OxyColors.LightBlue;
+            s2.MarkerStroke = OxyColors.DarkBlue;
+            s2.MarkerStrokeThickness = 2;
+            s2.MarkerSize = 8;
+            s2.MarkerLineStyle = LineStyle.Dot;
+            model.Series.Add(s2);
+
+            var s3 = CreateExampleLineSeries(13);
+            s3.MarkerType = MarkerType.Diamond;
+            s3.MarkerFill = OxyColors.Black;
+            s3.MarkerStroke = OxyColors.HotPink;
+            s3.MarkerStrokeThickness = 2;
+            s3.MarkerSize = 8;
+            s3.MarkerLineStyle = LineStyle.Dot;
+            model.Series.Add(s3);
+
+            var s4 = CreateExampleLineSeries(5);
+            s4.MarkerType = MarkerType.Triangle;
+            s4.MarkerFill = OxyColors.OrangeRed;
+            s4.Color = OxyColors.Orange;
+            s4.MarkerStroke = OxyColors.DarkRed;
+            s4.MarkerStrokeThickness = 2;
+            s4.MarkerSize = 8;
+            s4.MarkerLineStyle = LineStyle.Dot;
             model.Series.Add(s4);
 
             return model;

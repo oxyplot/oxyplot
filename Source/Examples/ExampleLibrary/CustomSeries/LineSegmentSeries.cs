@@ -90,7 +90,7 @@ namespace ExampleLibrary
                 rc.DrawLineSegments(verticalLines, this.ActualColor, this.StrokeThickness / 3, this.EdgeRenderingMode, LineStyle.Dash.GetDashArray(), this.LineJoin);
             }
 
-            rc.DrawMarkers(screenPoints, this.MarkerType, null, this.MarkerSize, this.MarkerFill, this.MarkerStroke, this.MarkerStrokeThickness, this.EdgeRenderingMode);
+            rc.DrawMarkers(screenPoints, this.MarkerType, null, this.MarkerSize, this.MarkerFill, this.MarkerStroke, this.MarkerStrokeThickness, this.EdgeRenderingMode, null);
         }
 
         /// <summary>
