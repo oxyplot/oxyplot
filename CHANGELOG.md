@@ -15,6 +15,8 @@ All notable changes to this project will be documented in this file.
 - Expanded `IntervalBarSeries` and `TornadoBarSeries` to allow for varied label positions and angles (#2027)
 - VectorSeries (#107)
 - LogarithmicColorAxis (#92)
+- SvgExporter for OxyPlot.ImageSharp
+- Consistent support for DrawText's maxSize parameter (#1559)
 
 ### Changed
 - Make consistent BaseValue and BaseLine across BarSeries, LinearBarSeries, and HistogramSeries
@@ -26,10 +28,12 @@ All notable changes to this project will be documented in this file.
 - Add support for .NET 7.0 (#1937)
 - Update SkiaSharp to Version 2.88.6
 - AxisRendererBase is now generic
+- OxyPlot.Wpf to use common text arranging and trimming
 
 ### Removed
 - Support for .NET Framework 4.0 and 4.5 (#1839)
 - Unused LabelColor property from TornadoBarSeries, IntervalBarSeries, and RectangleBarSeries (#2030)
+- UseVerticalAlignmentWorkaround property of OxyPlot.SvgRenderContext
 
 ### Fixed
 - fixed issue with BarSeries, when the HitTest returns the wrong BarItem, when there are invalid items in the list. (#2038)
@@ -41,6 +45,9 @@ All notable changes to this project will be documented in this file.
 - Font weight not being applied in ImageSharp (#2006)
 - SkiaSharp - Fix use of obsolete functions (#1937)
 - Dashed lines are solid when exporting via SkiaSharp.SvgExporter (#1674)
+- Vertical text alignment in OxyPlot.SvgRenderContext (#1531)
+- Consistent horizontal text alignment for mutliline text (#1554)
+- Consistent implementation of MeasureText (#1551)
 
 ## [2.1.2] - 2022-12-03
 

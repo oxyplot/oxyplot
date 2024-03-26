@@ -14,18 +14,18 @@ namespace OxyPlot.ImageSharp
     using System.IO;
     using System.Linq;
     using OxyPlot;
-    using SixLabors.ImageSharp;
+    using OxyPlot.Rendering;
     using SixLabors.Fonts;
+    using SixLabors.ImageSharp;
     using SixLabors.ImageSharp.Drawing.Processing;
     using SixLabors.ImageSharp.PixelFormats;
     using SixLabors.ImageSharp.Processing;
     using SixLabors.ImageSharp.Drawing;
-    using SixLabors.ImageSharp.Processing.Processors;
 
     /// <summary>
     /// Provides an implementation of IRenderContext which draws to a <see cref="Image"/>.
     /// </summary>
-    public class ImageRenderContext : ClippingRenderContext, IDisposable
+    public class ImageRenderContext : ClippingRenderContext, IDisposable, ITextMeasurer
     {
         /// <summary>
         /// The default font to use when a request font cannot be found.
@@ -82,7 +82,14 @@ namespace OxyPlot.ImageSharp
             this.RendersToScreen = false;
 
             this.clipping = false;
+
+            this.TextArranger = new TextArranger(this, new SimpleTextTrimmer());
         }
+
+        /// <summary>
+        /// Gets or sets the <see cref="ITextArranger"/> used by this instance.
+        /// </summary>
+        public ITextArranger TextArranger { get; set; }
 
         /// <summary>
         /// Gets the DPI scaling factor. A value of 1 corresponds to 96 DPI (dots per inch).
@@ -168,6 +175,8 @@ namespace OxyPlot.ImageSharp
             var font = this.GetFontOrThrow(fontFamily, fontSize, this.ToFontStyle(fontWeight));
             var actualFontSize = this.NominalFontSizeToPoints(fontSize);
 
+            this.TextArranger.ArrangeText(p, text, fontFamily, fontSize, fontWeight, rotation, horizontalAlignment, verticalAlignment, maxSize, OxyPlot.HorizontalAlignment.Left, TextVerticalAlignment.Baseline, out var lines, out var linePositions);
+
             var outputX = this.Convert(p.X);
             var outputY = this.Convert(p.Y);
             var outputPosition = new PointF(outputX, outputY);
@@ -180,7 +189,7 @@ namespace OxyPlot.ImageSharp
             var boundsHeight = this.Convert(bounds.Height);
             var offsetHeight = new PointF(boundsHeight * -sin, boundsHeight * cos);
 
-            // determine the font metrids for this font size at 96 DPI
+            // determine the font metrics for this font size at 96 DPI
             var actualDescent = this.Convert(actualFontSize * this.MilliPointsToNominalResolution(font.FontMetrics.Descender));
             var offsetDescent = new PointF(actualDescent * -sin, actualDescent * cos);
 
@@ -211,10 +220,10 @@ namespace OxyPlot.ImageSharp
                 _ => throw new ArgumentOutOfRangeException(nameof(horizontalAlignment)),
             };
 
-            var lines = StringHelper.SplitLines(text);
             for (int li = 0; li < lines.Length; li++)
             {
                 var line = lines[li];
+                var linePosition = this.Convert(linePositions[li]);
 
                 if (string.IsNullOrWhiteSpace(line))
                 {
@@ -229,7 +238,6 @@ namespace OxyPlot.ImageSharp
                 // find the left baseline position
                 var lineTop = topPosition + (offsetLineGap * li) + (offsetLineHeight * li);
                 var lineBaseLineLeft = lineTop + offsetLineWidth * deltaX + offsetLineHeight + offsetDescent;
-
                 // this seems to produce consistent and correct results, but we have to rotate it manually, so render it at the origin for simplicity
                 var textPath = new PathBuilder().AddLine(0f, 0f, lineBoundsWidth, 0).Build();
                 var glyphsAtOrigin = TextBuilder.GenerateGlyphs(line, textPath, new TextOptions(font)
@@ -240,9 +248,9 @@ namespace OxyPlot.ImageSharp
                     KerningMode = KerningMode.Auto,
                 });
 
-                // translate and rotate into possition
+                // translate and rotate into position
                 var transform = Matrix3x2Extensions.CreateRotationDegrees((float)rotation);
-                transform.Translation = lineBaseLineLeft;
+                transform.Translation = linePosition;
                 var glyphs = glyphsAtOrigin.Transform(transform);
 
                 // draw the glyphs
@@ -256,7 +264,7 @@ namespace OxyPlot.ImageSharp
         /// <inheritdoc/>
         public override OxySize MeasureText(string text, string fontFamily = null, double fontSize = 10, double fontWeight = 500)
         {
-            return this.MeasureTextLoose(text, fontFamily, fontSize, fontWeight);
+            return this.TextArranger.MeasureText(text, fontFamily, fontSize, fontWeight);
         }
 
         /// <inheritdoc/>
@@ -434,6 +442,34 @@ namespace OxyPlot.ImageSharp
             this.EnsureClippedRegion();
 
             this.clipping = false;
+        }
+
+        /// <inheritdoc/>
+        public Rendering.FontMetrics GetFontMetrics(string fontFamily, double fontSize, double fontWeight)
+        {
+            var font = this.GetFontOrThrow(fontFamily, fontSize, this.ToFontStyle(fontWeight));
+            var actualFontSize = this.NominalFontSizeToPoints(fontSize);
+
+            var ascender = actualFontSize * this.MilliPointsToNominalResolution(Math.Abs(font.FontMetrics.Ascender));
+            var descender = actualFontSize * this.MilliPointsToNominalResolution(Math.Abs(font.FontMetrics.Descender));
+            var leading = actualFontSize * this.MilliPointsToNominalResolution(Math.Abs(font.FontMetrics.LineGap));
+
+            return new Rendering.FontMetrics(ascender, descender, leading);
+        }
+
+        /// <inheritdoc/>
+        public double MeasureTextWidth(string text, string fontFamily, double fontSize, double fontWeight)
+        {
+            text ??= string.Empty;
+
+            var font = this.GetFontOrThrow(fontFamily, fontSize, this.ToFontStyle(fontWeight));
+
+            var result = TextMeasurer.Measure(text, new TextOptions(font)
+            {
+                Dpi = 96,
+                KerningMode = KerningMode.Auto,
+            });
+            return result.Width;
         }
 
         /// <inheritdoc/>

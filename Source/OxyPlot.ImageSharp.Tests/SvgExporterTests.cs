@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PngExporterTests.cs" company="OxyPlot">
+// <copyright file="SvgExporterTests.cs" company="OxyPlot">
 //   Copyright (c) 2020 OxyPlot contributors
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -16,34 +16,31 @@ namespace OxyPlot.ImageSharp.Tests
     using ExampleLibrary;
 
     [TestFixture]
-    public class PngExporterTests
+    public class SvgExporterTests
     {
-        private const string PNG_FOLDER = "PNG";
+        private const string SVG_FOLDER = "SVG";
         private string outputDirectory;
 
         [OneTimeSetUp]
         public void Setup()
         {
-            this.outputDirectory = Path.Combine(TestContext.CurrentContext.WorkDirectory, PNG_FOLDER);
+            this.outputDirectory = Path.Combine(TestContext.CurrentContext.WorkDirectory, SVG_FOLDER);
             Directory.CreateDirectory(this.outputDirectory);
         }
 
         [Test]
         public void Export_SomeExamplesInExampleLibrary_CheckThatAllFilesExist()
         {
-            var exporter = new PngExporter(400, 300);
+            var exporter = new SvgExporter(1000, 750);
             var directory = Path.Combine(this.outputDirectory, "ExampleLibrary");
-            ExportTest.ExportExamples_CheckThatAllFilesExist(Examples.GetFirstExampleOfEachCategoryForAutomatedTest(), exporter, directory, ".png");
-            exporter.Width = 800;
-            exporter.Height = 600;
-            ExportTest.ExportExamples_CheckThatAllFilesExist(Examples.GetRenderingCapabilitiesForAutomatedTest(), exporter, directory, ".png");
+            ExportTest.ExportExamples_CheckThatAllFilesExist(Examples.GetFirstExampleOfEachCategoryForAutomatedTest(), exporter, directory, ".svg");
         }
 
         [Test]
         public void ExportToStream()
         {
             var plotModel = CreateTestModel1();
-            var exporter = new PngExporter(400, 300);
+            var exporter = new SvgExporter(1000, 750);
             var stream = new MemoryStream();
             exporter.Export(plotModel, stream);
 
@@ -54,8 +51,8 @@ namespace OxyPlot.ImageSharp.Tests
         public void ExportToFile()
         {
             var plotModel = CreateTestModel1();
-            var fileName = Path.Combine(this.outputDirectory, "Plot1.png");
-            PngExporter.Export(plotModel, fileName, 400, 300);
+            var fileName = Path.Combine(this.outputDirectory, "Plot1.svg");
+            SvgExporter.Export(plotModel, fileName, 1000, 750);
 
             Assert.IsTrue(File.Exists(fileName));
         }
@@ -65,8 +62,8 @@ namespace OxyPlot.ImageSharp.Tests
         {
             var plotModel = CreateTestModel1();
             plotModel.Background = OxyColors.Yellow;
-            var fileName = Path.Combine(this.outputDirectory, "Background_Yellow.png");
-            var exporter = new PngExporter(400, 300);
+            var fileName = Path.Combine(this.outputDirectory, "Background_Yellow.svg");
+            var exporter = new SvgExporter(1000, 750);
             using (var stream = File.OpenWrite(fileName))
             {
                 exporter.Export(plotModel, stream);
@@ -88,8 +85,8 @@ namespace OxyPlot.ImageSharp.Tests
             var directory = Path.Combine(this.outputDirectory, "Resolution");
             Directory.CreateDirectory(directory);
 
-            var fileName = Path.Combine(directory, $"Resolution{resolution}.png");
-            var exporter = new PngExporter((int)(400 * factor), (int)(300 * factor), resolution);
+            var fileName = Path.Combine(directory, $"Resolution{resolution}.svg");
+            var exporter = new SvgExporter((int)(400 * factor), (int)(300 * factor), resolution);
 
             using (var stream = File.OpenWrite(fileName))
             {
@@ -131,8 +128,8 @@ namespace OxyPlot.ImageSharp.Tests
             };
             plotModel.Annotations.Add(imageAnnotation);
 
-            var fileName = Path.Combine(this.outputDirectory, $"PlotBackground{(interpolate ? "Interpolated" : "Pixelated")}.png");
-            var exporter = new PngExporter(400, 300);
+            var fileName = Path.Combine(this.outputDirectory, $"PlotBackground{(interpolate ? "Interpolated" : "Pixelated")}.svg");
+            var exporter = new SvgExporter(1000, 750);
             using (var stream = File.OpenWrite(fileName))
             {
                 exporter.Export(plotModel, stream);
@@ -173,8 +170,8 @@ namespace OxyPlot.ImageSharp.Tests
             };
             plotModel.Annotations.Add(imageAnnotation);
 
-            var fileName = Path.Combine(this.outputDirectory, $"LargeImage{(interpolate ? "Interpolated" : "Pixelated")}.png");
-            var exporter = new PngExporter(400, 300);
+            var fileName = Path.Combine(this.outputDirectory, $"LargeImage{(interpolate ? "Interpolated" : "Pixelated")}.svg");
+            var exporter = new SvgExporter(1000, 750);
             using (var stream = File.OpenWrite(fileName))
             {
                 exporter.Export(plotModel, stream);
@@ -187,8 +184,8 @@ namespace OxyPlot.ImageSharp.Tests
         public void TestMultilineAlignment()
         {
             var plotModel = ExampleLibrary.RenderingCapabilities.DrawMultilineTextAlignmentRotation();
-            var fileName = Path.Combine(this.outputDirectory, "Multiline-Alignment.png");
-            PngExporter.Export(plotModel, fileName, 700, 700);
+            var fileName = Path.Combine(this.outputDirectory, "Multiline-Alignment.svg");
+            SvgExporter.Export(plotModel, fileName, 700, 700);
 
             Assert.IsTrue(File.Exists(fileName));
         }
@@ -197,18 +194,8 @@ namespace OxyPlot.ImageSharp.Tests
         public void TestBoundedMultilineAlignment()
         {
             var plotModel = ExampleLibrary.RenderingCapabilities.DrawBoundedMultilineTextAlignmentRotation();
-            var fileName = Path.Combine(this.outputDirectory, "Bounded-Multiline-Alignment.png");
-            PngExporter.Export(plotModel, fileName, 700, 700);
-
-            Assert.IsTrue(File.Exists(fileName));
-        }
-
-        [Test]
-        public void TestEmoji()
-        {
-            var plotModel = ExampleLibrary.Issues.EmojiText();
-            var fileName = Path.Combine(this.outputDirectory, "Emoji.png");
-            PngExporter.Export(plotModel, fileName, 700, 700);
+            var fileName = Path.Combine(this.outputDirectory, "Bounded-Multiline-Alignment.svg");
+            SvgExporter.Export(plotModel, fileName, 700, 700);
 
             Assert.IsTrue(File.Exists(fileName));
         }
