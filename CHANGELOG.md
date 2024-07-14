@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file.
 - Expanded `IntervalBarSeries` and `TornadoBarSeries` to allow for varied label positions and angles (#2027)
 - VectorSeries (#107)
 - LogarithmicColorAxis (#92)
+- Example how to synchronize several different Y-Axis of the same PlotModel
 
 ### Changed
 - Make consistent BaseValue and BaseLine across BarSeries, LinearBarSeries, and HistogramSeries
