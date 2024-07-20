@@ -22,7 +22,7 @@ namespace AnimationsDemo
 
         public DateTime Time
         {
-            get { return DateTimeAxis.ToDateTime(this.X); }
+            get { return DateTimeAxis.ToDateTime(this.X, DateTimeAxis.DefaultPrecision); }
             set
             {
                 var finalX = DateTimeAxis.ToDouble(value);

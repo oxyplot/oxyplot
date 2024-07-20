@@ -27,6 +27,11 @@ namespace OxyPlot.Axes
     public class DateTimeAxis : LinearAxis
     {
         /// <summary>
+        /// The default precision that is used for rounding DateTime values. 1ms is used to emulate the behavior of .NET 6 and earlier.
+        /// </summary>
+        public static readonly TimeSpan DefaultPrecision = TimeSpan.FromMilliseconds(1);
+
+        /// <summary>
         /// The time origin.
         /// </summary>
         /// <remarks>This gives the same numeric date values as Excel</remarks>
@@ -61,6 +66,7 @@ namespace OxyPlot.Axes
             this.IntervalType = DateTimeIntervalType.Auto;
             this.FirstDayOfWeek = DayOfWeek.Monday;
             this.CalendarWeekRule = CalendarWeekRule.FirstFourDayWeek;
+            this.DateTimePrecision = DefaultPrecision;
         }
 
         /// <summary>
@@ -82,6 +88,13 @@ namespace OxyPlot.Axes
         /// Gets or sets MinorIntervalType.
         /// </summary>
         public DateTimeIntervalType MinorIntervalType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the precision that is used for DateTime values internally. Limiting the precision avoids 'unexpected' tick labels, e.g.
+        /// '11:59' for a value of 11:59.99999. The default value is 1 Millisecond.
+        /// </summary>
+        /// <remarks>For .NET 6 and below, the minimum precision is 1 ms. Using a DateTimePrecision smaller than 1 ms will not result in increased precision.</remarks>
+        public TimeSpan DateTimePrecision { get; set; }
 
         /// <summary>
         /// Gets or sets the time zone (used when formatting date/time values).
@@ -124,18 +137,40 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Converts a numeric representation of the date (number of days after the time origin) to a DateTime structure.
+        /// Converts a numeric representation of the date (number of days after the time origin) to a DateTime structure, using a precision of 1 Millisecond.
         /// </summary>
         /// <param name="value">The number of days after the time origin.</param>
         /// <returns>A <see cref="DateTime" /> structure. Ticks = 0 if the value is invalid.</returns>
+        [Obsolete("Use ConvertToDateTime(double value) or ToDateTime(double value, TimeSpan precision) instead.")]
         public static DateTime ToDateTime(double value)
+        {
+            return ToDateTime(value, DefaultPrecision);
+        }
+
+        /// <summary>
+        /// Converts a numeric representation of the date (number of days after the time origin) to a DateTime structure.
+        /// </summary>
+        /// <param name="value">The number of days after the time origin.</param>
+        /// <param name="precision">The precision that is used for the conversion. The DateTime value is rounded to the next integer multiple of this value.</param>
+        /// <returns>A <see cref="DateTime" /> structure. Ticks = 0 if the value is invalid.</returns>
+        public static DateTime ToDateTime(double value, TimeSpan precision)
         {
             if (double.IsNaN(value) || value < MinDayValue || value > MaxDayValue)
             {
                 return new DateTime();
             }
 
-            return TimeOrigin.AddDays(value - 1);
+            var preliminaryDateTime = TimeOrigin.AddDays(value - 1);
+
+            var precisionIntervals = preliminaryDateTime.Ticks / precision.Ticks;
+            var remainderTicks = preliminaryDateTime.Ticks % precision.Ticks;
+
+            if (remainderTicks >= precision.Ticks / 2)
+            {
+                precisionIntervals += 1;
+            }
+
+            return new DateTime(precisionIntervals * precision.Ticks);
         }
 
         /// <summary>
@@ -147,6 +182,16 @@ namespace OxyPlot.Axes
         {
             var span = value - TimeOrigin;
             return span.TotalDays + 1;
+        }
+
+        /// <summary>
+        /// Converts a numeric representation of the date (number of days after the time origin) to a DateTime structure, using the precision specified by DateTimePrecision.
+        /// </summary>
+        /// <param name="value">The number of days after the time origin.</param>
+        /// <returns>A <see cref="DateTime" /> structure. Ticks = 0 if the value is invalid.</returns>
+        public DateTime ConvertToDateTime(double value)
+        {
+            return ToDateTime(value, this.DateTimePrecision);
         }
 
         /// <summary>
@@ -175,7 +220,7 @@ namespace OxyPlot.Axes
         /// <returns>The value.</returns>
         public override object GetValue(double x)
         {
-            var time = ToDateTime(x);
+            var time = this.ConvertToDateTime(x);
 
             if (this.TimeZone != null)
             {
@@ -291,7 +336,7 @@ namespace OxyPlot.Axes
         protected override string FormatValueOverride(double x)
         {
             // convert the double value to a DateTime
-            var time = ToDateTime(x);
+            var time = this.ConvertToDateTime(x);
 
             // If a time zone is specified, convert the time
             if (this.TimeZone != null)
@@ -451,7 +496,7 @@ namespace OxyPlot.Axes
             double min, double max, double step, DateTimeIntervalType intervalType)
         {
             var values = new Collection<double>();
-            var start = ToDateTime(min);
+            var start = this.ConvertToDateTime(min);
             if (start.Ticks == 0)
             {
                 // Invalid start time
@@ -478,7 +523,7 @@ namespace OxyPlot.Axes
             }
 
             // Adds a tick to the end time to make sure the end DateTime is included.
-            var end = ToDateTime(max).AddTicks(1);
+            var end = this.ConvertToDateTime(max).AddTicks(1);
             if (end.Ticks == 0)
             {
                 // Invalid end time
@@ -487,8 +532,8 @@ namespace OxyPlot.Axes
 
             var current = start;
             double eps = step * 1e-3;
-            var minDateTime = ToDateTime(min - eps);
-            var maxDateTime = ToDateTime(max + eps);
+            var minDateTime = this.ConvertToDateTime(min - eps);
+            var maxDateTime = this.ConvertToDateTime(max + eps);
 
             if (minDateTime.Ticks == 0 || maxDateTime.Ticks == 0)
             {

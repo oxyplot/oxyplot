@@ -35,31 +35,31 @@ namespace OxyPlot.Tests
         public void ToDateTime_ValidDate()
         {
             var date = new DateTime(2011, 3, 15);
-            Assert.AreEqual(date, DateTimeAxis.ToDateTime(date.ToOADate()));
+            Assert.AreEqual(date, DateTimeAxis.ToDateTime(date.ToOADate(), DateTimeAxis.DefaultPrecision));
         }
 
         [Test]
         public void ToDateTime_NoDate()
         {
-            Assert.AreEqual(new DateTime(), DateTimeAxis.ToDateTime(-693593));
+            Assert.AreEqual(new DateTime(), DateTimeAxis.ToDateTime(-693593, DateTimeAxis.DefaultPrecision));
         }
 
         [Test]
         public void ToDateTime_NaN()
         {
-            Assert.AreEqual(new DateTime(), DateTimeAxis.ToDateTime(double.NaN));
+            Assert.AreEqual(new DateTime(), DateTimeAxis.ToDateTime(double.NaN, DateTimeAxis.DefaultPrecision));
         }
 
         [Test]
         public void ToDateTime_VeryBigValue()
         {
-            Assert.AreEqual(new DateTime(), DateTimeAxis.ToDateTime(double.MaxValue));
+            Assert.AreEqual(new DateTime(), DateTimeAxis.ToDateTime(double.MaxValue, DateTimeAxis.DefaultPrecision));
         }
 
         [Test]
         public void ToDateTime_VerySmallValue()
         {
-            Assert.AreEqual(new DateTime(), DateTimeAxis.ToDateTime(double.MinValue));
+            Assert.AreEqual(new DateTime(), DateTimeAxis.ToDateTime(double.MinValue, DateTimeAxis.DefaultPrecision));
         }
     }
 }

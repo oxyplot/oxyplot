@@ -231,7 +231,11 @@ namespace ExampleLibrary
         public static PlotModel LabelFormatter()
         {
             var model = new PlotModel { Title = "Using LabelFormatter to format labels by day of week" };
-            model.Axes.Add(new DateTimeAxis { LabelFormatter = x => DateTimeAxis.ToDateTime(x).DayOfWeek.ToString().Substring(0, 3) });
+
+            var dateTimeAxis = new DateTimeAxis();
+            dateTimeAxis.LabelFormatter = x => dateTimeAxis.ConvertToDateTime(x).DayOfWeek.ToString().Substring(0, 3);
+            model.Axes.Add(dateTimeAxis);
+
             var series = new LineSeries();
             model.Series.Add(series);
             for (int i = 0; i < 7; i++)
@@ -241,6 +245,40 @@ namespace ExampleLibrary
                 double y = Math.Sin(i * i);
                 series.Points.Add(new DataPoint(x, y));
             }
+
+            return model;
+        }
+
+        [Example("DateTimePrecision")]
+        public static PlotModel DateTimePrecision()
+        {
+            var model = new PlotModel 
+            { 
+                Title = "This shows the effect of DateTimePrecision", 
+                Subtitle = "(only apparent under .NET 7 and above)" 
+            };
+
+            var startDate = new DateTime(2014, 07, 20);
+
+            var dateTimeAxis1 = new DateTimeAxis
+            {
+                Minimum = DateTimeAxis.ToDouble(startDate),
+                Maximum = DateTimeAxis.ToDouble(startDate.AddMinutes(50)),
+                Position = AxisPosition.Bottom,
+                DateTimePrecision = new TimeSpan(1),
+                Title = "DateTimePrecision = 1 tick (no rounding)",
+            };
+
+            var dateTimeAxis2 = new DateTimeAxis
+            {
+                Minimum = dateTimeAxis1.Minimum,
+                Maximum = dateTimeAxis1.Maximum,
+                Position = AxisPosition.Top,
+                Title = "DateTimePrecision = 1 ms (default value)",
+            };
+
+            model.Axes.Add(dateTimeAxis1);
+            model.Axes.Add(dateTimeAxis2);
 
             return model;
         }
