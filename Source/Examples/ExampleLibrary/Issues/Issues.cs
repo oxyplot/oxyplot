@@ -741,22 +741,24 @@ namespace ExampleLibrary
 
             plotModel1.Axes.Add(verticalAxis);
 
+            var time = new DateTime(2024, 07, 20, 13, 27, 5);
+
             var line = new LineSeries { Title = "Measurement", XAxisKey = masterAxis.Key, YAxisKey = verticalAxis.Key };
-            line.Points.Add(new DataPoint(DateTimeAxis.ToDouble(DateTime.Now), 10));
-            line.Points.Add(new DataPoint(DateTimeAxis.ToDouble(DateTime.Now.AddSeconds(1)), 10));
-            line.Points.Add(new DataPoint(DateTimeAxis.ToDouble(DateTime.Now.AddSeconds(2)), 45));
-            line.Points.Add(new DataPoint(DateTimeAxis.ToDouble(DateTime.Now.AddSeconds(3)), 17));
+            line.Points.Add(new DataPoint(DateTimeAxis.ToDouble(time), 10));
+            line.Points.Add(new DataPoint(DateTimeAxis.ToDouble(time.AddSeconds(1)), 10));
+            line.Points.Add(new DataPoint(DateTimeAxis.ToDouble(time.AddSeconds(2)), 45));
+            line.Points.Add(new DataPoint(DateTimeAxis.ToDouble(time.AddSeconds(3)), 17));
 
             line.Points.Add(DataPoint.Undefined);
 
             // this point should be visible
-            line.Points.Add(new DataPoint(DateTimeAxis.ToDouble(DateTime.Now.AddSeconds(4)), 10));
+            line.Points.Add(new DataPoint(DateTimeAxis.ToDouble(time.AddSeconds(4)), 10));
             //// line.Points.Add(new DataPoint(DateTimeAxis.ToDouble(DateTime.Now.AddSeconds(4)), 10));
 
             line.Points.Add(DataPoint.Undefined);
 
-            line.Points.Add(new DataPoint(DateTimeAxis.ToDouble(DateTime.Now.AddSeconds(5)), 45));
-            line.Points.Add(new DataPoint(DateTimeAxis.ToDouble(DateTime.Now.AddSeconds(6)), 17));
+            line.Points.Add(new DataPoint(DateTimeAxis.ToDouble(time.AddSeconds(5)), 45));
+            line.Points.Add(new DataPoint(DateTimeAxis.ToDouble(time.AddSeconds(6)), 17));
 
             plotModel1.Series.Add(line);
 
@@ -1184,7 +1186,7 @@ namespace ExampleLibrary
             var myModel = new PlotModel { Title = "Example 1" };
             myModel.Series.Add(new FunctionSeries(Math.Cos, 0, 10, 0.1, "cos(x)"));
 
-            var rng = new Random();
+            var rng = new Random(0);
             var buf = new byte[100, 100];
             for (int i = 0; i < 100; i++)
             {
@@ -2230,7 +2232,7 @@ namespace ExampleLibrary
                 Palette = myPalette,
             });
 
-            var rand = new Random();
+            var rand = new Random(0);
             var data = new double[yAxisLabels.Count, xAxisLabels.Count];
             for (int x = 0; x < xAxisLabels.Count; ++x)
             {

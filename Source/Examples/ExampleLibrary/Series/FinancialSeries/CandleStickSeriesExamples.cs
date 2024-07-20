@@ -26,7 +26,7 @@ namespace ExampleLibrary
             var linearAxis1 = new LinearAxis { Position = AxisPosition.Left };
             pm.Axes.Add(linearAxis1);
             var n = 1000000;
-            var items = HighLowItemGenerator.MRProcess(n).ToArray();
+            var items = HighLowItemGenerator.MRProcess(n, new Random(0)).ToArray();
             var series = new CandleStickSeries
                              {
                                  Color = OxyColors.Black,
@@ -68,7 +68,7 @@ namespace ExampleLibrary
             var linearAxis1 = new LinearAxis { Position = AxisPosition.Left };
             pm.Axes.Add(linearAxis1);
             var n = 1000000;
-            var items = HighLowItemGenerator.MRProcess(n).ToArray();
+            var items = HighLowItemGenerator.MRProcess(n, new Random(1)).ToArray();
             var series = new CandleStickSeries
                              {
                                  Color = OxyColors.Black,
@@ -106,7 +106,7 @@ namespace ExampleLibrary
             var linearAxis1 = new LinearAxis { Position = AxisPosition.Left };
             pm.Axes.Add(linearAxis1);
             var n = 100;
-            var items = HighLowItemGenerator.MRProcess(n).ToArray();
+            var items = HighLowItemGenerator.MRProcess(n, new Random(2)).ToArray();
             var series = new CandleStickSeries
                              {
                                  Color = OxyColors.Black,

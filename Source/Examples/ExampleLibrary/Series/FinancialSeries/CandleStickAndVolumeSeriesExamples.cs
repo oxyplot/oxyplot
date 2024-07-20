@@ -127,7 +127,7 @@ namespace ExampleLibrary
             };
 
             // create bars
-            foreach (var bar in OhlcvItemGenerator.MRProcess(n))
+            foreach (var bar in OhlcvItemGenerator.MRProcess(n, new Random(0)))
             {
                 series.Append(bar);
             }

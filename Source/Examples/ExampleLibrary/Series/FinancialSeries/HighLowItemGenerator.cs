@@ -21,11 +21,6 @@ namespace ExampleLibrary
     public static class HighLowItemGenerator
     {
         /// <summary>
-        /// The random number generator.
-        /// </summary>
-        private static readonly Random Rand = new Random();
-
-        /// <summary>
         /// Creates bars governed by a MR process
         /// </summary>
         /// <returns>The process.</returns>
@@ -36,6 +31,7 @@ namespace ExampleLibrary
         /// <param name="kappa">Kappa.</param>
         public static IEnumerable<HighLowItem> MRProcess(
             int n,
+            Random rand,
             double x0 = 100.0,
             double csigma = 0.50,
             double esigma = 0.70,
@@ -43,12 +39,12 @@ namespace ExampleLibrary
         {
             double x = x0;
 
-            var baseT = DateTime.UtcNow;
+            var baseT = new DateTime(2024, 07, 20, 14, 26, 06);
             for (int ti = 0; ti < n; ti++)
             {
-                var dx_c = -kappa * (x - x0) + RandomNormal(0, csigma);
-                var dx_1 = -kappa * (x - x0) + RandomNormal(0, esigma);
-                var dx_2 = -kappa * (x - x0) + RandomNormal(0, esigma);
+                var dx_c = -kappa * (x - x0) + RandomNormal(0, csigma, rand);
+                var dx_1 = -kappa * (x - x0) + RandomNormal(0, esigma, rand);
+                var dx_2 = -kappa * (x - x0) + RandomNormal(0, esigma, rand);
 
                 var open = x;
                 var close = x = x + dx_c;
@@ -92,9 +88,9 @@ namespace ExampleLibrary
         /// </summary>
         /// <param name="mu">Mu.</param>
         /// <param name="sigma">Sigma.</param>
-        private static double RandomNormal(double mu, double sigma)
+        private static double RandomNormal(double mu, double sigma, Random rand)
         {
-            return InverseCumNormal(Rand.NextDouble(), mu, sigma);
+            return InverseCumNormal(rand.NextDouble(), mu, sigma);
         }
 
         /// <summary>

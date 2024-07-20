@@ -9,6 +9,7 @@ namespace ExampleLibrary
     using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
+    using System;
 
     [Examples("VolumeSeries")]
     [Tags("Series")]
@@ -78,7 +79,7 @@ namespace ExampleLibrary
             };
 
             // create bars
-            foreach (var bar in OhlcvItemGenerator.MRProcess(n))
+            foreach (var bar in OhlcvItemGenerator.MRProcess(n, new Random(1)))
             {
                 series.Append(bar);
             }
