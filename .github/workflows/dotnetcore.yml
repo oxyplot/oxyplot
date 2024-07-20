@@ -19,7 +19,7 @@ jobs:
       with:
         dotnet-version: | 
           6.0.x
-          7.0.x
+          8.0.x
     
     - name: Build
       run: dotnet build Source/OxyPlot.CI.sln --configuration Release
