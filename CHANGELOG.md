@@ -23,7 +23,7 @@ All notable changes to this project will be documented in this file.
 - Remove support for .NET Core 3.1, as it is end-of-life soon (#1937)
 - Move example projects to .NET Framework 4.6.2 and .NET 6.0 (#1937)
 - Run tests on both .NET Framework 4.6.2 and .NET 6.0 (#1937)
-- Add support for .NET 7.0 (#1937)
+- Add support for .NET 8.0
 - Update SkiaSharp to Version 2.88.6
 - AxisRendererBase is now generic
 
