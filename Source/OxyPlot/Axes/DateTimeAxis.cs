@@ -185,7 +185,7 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Converts a numeric representation of the date (number of days after the time origin) to a DateTime structure, using the precision specified by DateTimePrecision.
+        /// Converts a numeric representation of the date (number of days after the time origin) to a DateTime structure, using the precision specified by <see cref="DateTimePrecision" />.
         /// </summary>
         /// <param name="value">The number of days after the time origin.</param>
         /// <returns>A <see cref="DateTime" /> structure. Ticks = 0 if the value is invalid.</returns>
