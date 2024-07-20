@@ -113,7 +113,6 @@ namespace OxyPlot.Wpf.Tests
         /// In this case, the Loaded event is not fired.
         /// </summary>
         [Test]
-        [RequiresThread(System.Threading.ApartmentState.STA)]
         public void PlotInifityPolyline()
         {
             var model = new PlotModel();
@@ -133,7 +132,6 @@ namespace OxyPlot.Wpf.Tests
         /// Make sure the PlotView does not throw an exception if it is invalidated while not in the visual tree.
         /// </summary>
         [Test]
-        [RequiresThread(System.Threading.ApartmentState.STA)]
         public void InvalidateDisconnected()
         {
             var model = new PlotModel();
