@@ -25,7 +25,7 @@ All notable changes to this project will be documented in this file.
 - Move example projects to .NET Framework 4.6.2 and .NET 6.0 (#1937)
 - Run tests on both .NET Framework 4.6.2 and .NET 6.0 (#1937)
 - Add support for .NET 8.0
-- Update SkiaSharp to Version 2.88.6
+- Update SkiaSharp to Version 2.88.8
 - AxisRendererBase is now generic
 - DateTimeAxis.ToDateTime(double value) is now obsolete, replacements are provided (related to #2061)
 - Modify some of the examples to make them deterministic

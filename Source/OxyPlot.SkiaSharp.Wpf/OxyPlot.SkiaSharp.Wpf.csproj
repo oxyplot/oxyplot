@@ -11,7 +11,7 @@
     <AssemblyOriginatorKeyFile>OxyPlot.SkiaSharp.Wpf.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="SkiaSharp.Views.Desktop.Common" Version="2.88.6" />
+    <PackageReference Include="SkiaSharp.Views.Desktop.Common" Version="2.88.8" />
     <None Include="OxyPlot.SkiaSharp.Wpf.snk" />
     <None Include="VisualStudioToolsManifest.xml" Pack="true" PackagePath="tools" />
   </ItemGroup>
