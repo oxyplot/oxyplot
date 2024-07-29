@@ -1,7 +1,5 @@
 OxyPlot is a cross-platform plotting library for .NET
 
-![License](https://img.shields.io/badge/license-MIT-red.svg) [![Build status](https://img.shields.io/appveyor/ci/objorke/oxyplot/develop.svg)](https://ci.appveyor.com/project/objorke/oxyplot)
-
 ![Plot](https://oxyplot.github.io/public/images/normal-distributions.png)
 
 
@@ -20,7 +18,7 @@ You can find examples in the `/Source/Examples` folder in the code repository.
 
 #### NuGet packages
 
-The latest pre-release packages are pushed by AppVeyor CI to [myget.org](https://www.myget.org/). To install these packages, set the myget.org package source `https://www.myget.org/F/oxyplot` and remember the "-pre" flag.
+The latest pre-release packages are pushed to [myget.org](https://www.myget.org/). To install these packages, set the myget.org package source `https://www.myget.org/F/oxyplot` and remember the "-pre" flag.
 
 The stable release packages will be pushed to [nuget.org](https://www.nuget.org/packages?q=oxyplot). Note that we have  have a lot of old (v2015.\*) and pre-release packages on this feed, and sometimes these show up even if they are unlisted.
 

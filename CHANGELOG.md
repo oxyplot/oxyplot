@@ -33,6 +33,7 @@ All notable changes to this project will be documented in this file.
 ### Removed
 - Support for .NET Framework 4.0 and 4.5 (#1839)
 - Unused LabelColor property from TornadoBarSeries, IntervalBarSeries, and RectangleBarSeries (#2030)
+- AppVeyor build (#2094)
 
 ### Fixed
 - fixed issue with BarSeries, when the HitTest returns the wrong BarItem, when there are invalid items in the list. (#2038)
