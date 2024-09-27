@@ -127,7 +127,7 @@ namespace OxyPlot.Series
         {
             // TODO: teach FormatConstructor to translate arrays
             var outlineCode = string.Format("new DataPoint[][] {0}", string.Join(",", this.Outlines.Select(outline => string.Format("new DataPoint[] {0}", outline.Select(p => p.ToCode())))));
-            return CodeGenerator.FormatConstructor(this.GetType(), "{0},{2}", outlineCode, this.Value);
+            return CodeGenerator.FormatConstructor(this.GetType(), "{0},{1}", outlineCode, this.Value);
         }
 
         /// <summary>

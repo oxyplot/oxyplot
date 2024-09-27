@@ -219,7 +219,7 @@
                 foreach (var outline in item.Outlines)
                 {
                     screenPointOutline.Clear();
-                    screenPointOutline.AddRange(outline.Select(Transform));
+                    screenPointOutline.AddRange(outline.Select(this.Transform));
 
                     rc.DrawPolygon(
                         screenPointOutline, 
@@ -281,7 +281,7 @@
 
                         // check against polygon
                         screenPointOutline.Clear();
-                        screenPointOutline.AddRange(item.Outlines[i].Select(Transform));
+                        screenPointOutline.AddRange(item.Outlines[i].Select(this.Transform));
 
                         if (ScreenPointHelper.IsPointInPolygon(point, screenPointOutline))
                         {
