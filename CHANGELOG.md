@@ -7,6 +7,9 @@ All notable changes to this project will be documented in this file.
 
 - Example to demonstrate how to create vertical BarSeries
 
+### Fixed
+- DateTimeAxis converting local time rather than UTC to TimeZone
+
 ## [2.2.0] - 2024-09-03
 
 ### Added
