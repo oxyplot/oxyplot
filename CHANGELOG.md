@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 
 - Example to demonstrate how to create vertical BarSeries
 - Add a public method `AddTypeface` to `SkiaRenderContext` to allow manually adding typefaces to the cache
+- Add a virtual method `GetTypeface` to `SkiaRenderContext` to allow overriding retrieving typefaces
 
 ## [2.2.0] - 2024-09-03
 

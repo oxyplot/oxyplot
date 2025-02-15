@@ -11,6 +11,7 @@ namespace OxyPlot.SkiaSharp
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Drawing;
     using System.Linq;
     using System.Reflection;
 
@@ -499,6 +500,45 @@ namespace OxyPlot.SkiaSharp
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="fontDescriptor">Descriptor for the font to create a typeface for</param>
+        /// <returns>The typeface for the font descriptor</returns>
+        public virtual SKTypeface GetTypeface(FontDescriptor fontDescriptor)
+        {
+            if (!this.typefaceCache.TryGetValue(fontDescriptor, out var typeface))
+            {
+                typeface = SKTypeface.FromFamilyName(fontDescriptor.FontFamily, new SKFontStyle((int)fontDescriptor.FontWeight, (int)SKFontStyleWidth.Normal, SKFontStyleSlant.Upright));
+
+                if (typeface.FamilyName != fontDescriptor.FontFamily) // requested font not found or is WASM
+                {
+                    try
+                    {
+                        var assembly = Assembly.GetEntryAssembly(); // the executing program (the GUI Project (WPF, WASM, ...))
+                        var weight = this._fontWeights.ContainsKey((int)fontDescriptor.FontWeight) ? this._fontWeights[(int)fontDescriptor.FontWeight] : "Regular";
+                        var filename = $"{fontDescriptor.FontFamily}-{weight}.ttf".ToLower();
+                        Debug.WriteLine($"Load Font {filename}");
+
+                        var matches = assembly!.GetManifestResourceNames().Where(item => item.ToLower().EndsWith(filename));
+                        if (!matches.Any()) matches = assembly!.GetManifestResourceNames().Where(item => item.ToLower().EndsWith(fontDescriptor.FontFamily + ".ttf"));
+                        foreach (var item in matches)
+                        {
+                            var s = assembly.GetManifestResourceStream(item);
+                            typeface = SKTypeface.FromStream(s);
+                        }
+                    }
+                    catch
+                    {
+                        Debug.WriteLine($"Requested Font {fontDescriptor.FontFamily} could not be found, falling back to {typeface.FamilyName}");
+                    }
+                }
+                this.typefaceCache.Add(fontDescriptor, typeface);
+            }
+
+            return typeface;
+        }
+
+        /// <summary>
         /// Disposes managed resources.
         /// </summary>
         /// <param name="disposing">A value indicating whether this method is called from the Dispose method.</param>
@@ -887,34 +927,8 @@ namespace OxyPlot.SkiaSharp
         private SKPaint GetTextPaint(string fontFamily, double fontSize, double fontWeight, out SKShaper shaper)
         {
             var fontDescriptor = new FontDescriptor(fontFamily, fontWeight);
-            if (!this.typefaceCache.TryGetValue(fontDescriptor, out var typeface))
-            {
-                typeface = SKTypeface.FromFamilyName(fontFamily, new SKFontStyle((int)fontWeight, (int)SKFontStyleWidth.Normal, SKFontStyleSlant.Upright));
-
-                if (typeface.FamilyName != fontFamily) // requested font not found or is WASM
-                {
-                    try
-                    {
-                        var assembly = Assembly.GetEntryAssembly(); // the executing program (the GUI Project (WPF, WASM, ...))
-                        var weight = (_fontWeights.ContainsKey((int)fontWeight) ? _fontWeights[(int)fontWeight] : "Regular");
-                        var filename = $"{fontFamily}-{weight}.ttf".ToLower();
-                        Debug.WriteLine($"Load Font {filename}");
-
-                        var matches = assembly!.GetManifestResourceNames().Where(item => item.ToLower().EndsWith(filename));
-                        if (!matches.Any()) matches = assembly!.GetManifestResourceNames().Where(item => item.ToLower().EndsWith(fontFamily + ".ttf"));
-                        foreach (var item in matches)
-                        {
-                            var s = assembly.GetManifestResourceStream(item);
-                            typeface = SKTypeface.FromStream(s);
-                        }
-                    }
-                    catch
-                    {
-                        Debug.WriteLine($"Requested Font {fontFamily} could not be found, falling back to {typeface.FamilyName}");
-                    }
-                }
-                this.typefaceCache.Add(fontDescriptor, typeface);
-            }
+            
+            var typeface = this.GetTypeface(fontDescriptor);
 
             if (this.UseTextShaping)
             {
@@ -988,7 +1002,7 @@ namespace OxyPlot.SkiaSharp
         /// <summary>
         /// Represents a font description.
         /// </summary>
-        private struct FontDescriptor
+        public struct FontDescriptor
         {
             /// <summary>
             /// Initializes a new instance of the <see cref="FontDescriptor"/> struct.
