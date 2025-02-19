@@ -477,30 +477,10 @@ namespace OxyPlot.SkiaSharp
         }
 
         /// <summary>
-        /// Manually add a typeface to the context typeface cache
-        /// This may be needed for example in a WebAssembly context, where system fonts cannot be accessed. 
-        /// In such a case, fonts must be embedded in the app or library. This method allows loading fonts
-        /// from an arbitrary external lib, and enables caching of loaded fonts locally, in case multiple 
-        /// instances of SkiaRenderContext are instatiated.
-        /// </summary>
-        /// <param name="fontFamily">The font family name</param>
-        /// <param name="fontWeight">The weight of the font (eg.: 400 for Regular, 700 for Bold; these are the only ones OxyPlot actually uses)</param>
-        /// <param name="typeface">Typeface instance to be added to cache, typically loaded from some embedded resource, eg.: <code>var typeface = SKTypeface.FromStream(stream);</code></param>
-        /// <returns>True if succesful, false if typeface with this family name and weight was already in cache</returns>
-        public bool AddTypeface(string fontFamily, double fontWeight, SKTypeface typeface)
-        {
-            var fontDescriptor = new FontDescriptor(fontFamily, fontWeight);
-            if (!this.typefaceCache.ContainsKey(fontDescriptor))
-            {
-                this.typefaceCache[fontDescriptor] = typeface;
-                return true;
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// 
+        /// Gets a typeface based on a font descriptor.
+        /// This method can be overriden in a derived class to allow custom typeface creation, 
+        /// for example in the context of WASM, where system fonts are unavailable and it may be
+        /// desirable to have a fonts cache in the consuming app
         /// </summary>
         /// <param name="fontDescriptor">Descriptor for the font to create a typeface for</param>
         /// <returns>The typeface for the font descriptor</returns>
