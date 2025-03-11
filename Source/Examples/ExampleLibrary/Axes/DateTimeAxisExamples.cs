@@ -80,31 +80,74 @@ namespace ExampleLibrary
             return tmp;
         }
 
-        [Example("TimeZone adjustments")]
+        [Example("TimeZone")]
         public static PlotModel DaylightSavingsBreak()
         {
-            var m = new PlotModel();
+            var timeZone = TimeZoneInfo.CreateCustomTimeZone(
+                id: "Example Time",
+                baseUtcOffset: TimeSpan.FromHours(-1),
+                displayName: "(UTC-01:00) Example Time",
+                standardDisplayName: "Example Standard Time",
+                daylightDisplayName: "Example Daylight Time",
+                new TimeZoneInfo.AdjustmentRule[]
+                {
+                    TimeZoneInfo.AdjustmentRule.CreateAdjustmentRule(
+                        DateTime.MinValue.Date,
+                        DateTime.MaxValue.Date,
+                        daylightDelta: TimeSpan.FromHours(1),
+                        daylightTransitionStart: TimeZoneInfo.TransitionTime.CreateFixedDateRule(
+                            timeOfDay: new DateTime(1, 1, 1, 2, 0, 0),
+                            month: 3,
+                            day: 1),
+                        daylightTransitionEnd: TimeZoneInfo.TransitionTime.CreateFixedDateRule(
+                            timeOfDay: new DateTime(1, 1, 1, 2, 0, 0),
+                            month: 11,
+                            day: 1))
+                });
 
-            var xa = new DateTimeAxis { Position = AxisPosition.Bottom };
-            // TimeZone not available in PCL...
+            var start = TimeZoneInfo.ConvertTimeToUtc(new DateTime(2000, 3, 1, 0, 0, 0), timeZone);
+            var end = TimeZoneInfo.ConvertTimeToUtc(new DateTime(2000, 3, 1, 5, 0, 0), timeZone);
 
-            m.Axes.Add(xa);
-            m.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
-            var ls = new LineSeries { MarkerType = MarkerType.Circle };
-            m.Series.Add(ls);
-
-            // set the origin of the curve to 2013-03-31 00:00:00 (UTC)
-            var o = new DateTime(2013, 3, 31, 0, 0, 0, DateTimeKind.Utc);
-
-            // add points at 10min intervals
-            // at 2am the clocks are turned forward 1 hour (W. Europe Standard Time)
-            for (int i = 0; i < 400; i += 10)
+            var items = new List<DataPoint>();
+            var date = start;
+            double y = 0;
+            while (date <= end)
             {
-                var time = o.AddMinutes(i);
-                ls.Points.Add(DateTimeAxis.CreateDataPoint(time, i));
+                items.Add(new DataPoint(DateTimeAxis.ToDouble(date), y));
+                date = date.AddHours(0.25);
+                y += 0.25;
             }
 
-            return m;
+            var plotModel = new PlotModel()
+            {
+                Title = "DateTimeAxis with TimeZone at DST Transition",
+                Subtitle = "Time goes from 0:00 to 5:00 and jumps from 1:59 to 3:00",
+                Axes =
+                {
+                    new LinearAxis
+                    {
+                        Position = AxisPosition.Left,
+                        MajorGridlineStyle = LineStyle.Solid,
+                        Unit = "Hours",
+                    },
+                    new DateTimeAxis
+                    {
+                        Position = AxisPosition.Bottom,
+                        MajorGridlineStyle = LineStyle.Solid,
+                        TimeZone = timeZone,
+                    },
+                },
+                Series =
+                {
+                    new LineSeries
+                    {
+                        MarkerType = MarkerType.Circle,
+                        ItemsSource = items,
+                    },
+                },
+            };
+
+            return plotModel;
         }
 
         public class Item
