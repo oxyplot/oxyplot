@@ -10,7 +10,7 @@
         <WarningsAsErrors />
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="SixLabors.ImageSharp" Version="2.1.9" />
+        <PackageReference Include="SixLabors.ImageSharp" Version="2.1.11" />
         <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0" />
     </ItemGroup>
     <ItemGroup>
