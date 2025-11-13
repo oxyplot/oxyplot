@@ -6,9 +6,11 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 - Example to demonstrate how to create vertical BarSeries
+- Example to demonstrate how to create ErrorBarSeries Marker
 
 ### Fixed
 - DateTimeAxis converting local time rather than UTC to TimeZone
+- ErrorBarItem add marker
 
 ## [2.2.0] - 2024-09-03
 
