@@ -42,6 +42,47 @@ namespace OxyPlot.Series
         public double Error { get; set; }
 
         /// <summary>
+        /// Gets or sets the color of marker
+        /// </summary>
+        public OxyColor MarkerColor { get; set; }
+
+
+        /// <summary>
+        /// Gets or sets the marker Type
+        /// </summary>
+        public MarkerType MarkerType { get; set; }
+        
+        /// <summary>
+        /// Gets or sets a custom polygon outline for the point marker. 
+        /// </summary>
+        public ScreenPoint[] CustomOutline { get; set; }
+
+        /// <summary>
+        /// Gets or sets the marker size
+        /// </summary>
+        public int MarkerSize { get; set; }
+
+        /// <summary>
+        /// Gets or sets the marker visible
+        /// </summary>
+        public bool IsMarkerVisible { get; set; }
+
+        /// <summary>
+        /// Gets or sets the marker offset
+        /// </summary>
+        public ScreenPoint MarkerOffset { get; set; }
+
+        /// <summary>
+        /// Gets or sets the marker stroke color
+        /// </summary>
+        public OxyColor MarkerStrokeColor { get; set; }
+
+        /// <summary>
+        /// Gets or sets the marker stroke thickness
+        /// </summary>
+        public double MarkerStrokeThickness { get; set; }
+
+        /// <summary>
         /// Returns c# code that generates this instance.
         /// </summary>
         /// <returns>C# code.</returns>
