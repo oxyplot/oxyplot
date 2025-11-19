@@ -170,7 +170,7 @@ namespace OxyPlot.Axes
                 precisionIntervals += 1;
             }
 
-            return new DateTime(precisionIntervals * precision.Ticks);
+            return new DateTime(precisionIntervals * precision.Ticks, preliminaryDateTime.Kind);
         }
 
         /// <summary>

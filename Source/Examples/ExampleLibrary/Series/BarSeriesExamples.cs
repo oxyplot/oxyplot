@@ -82,6 +82,48 @@ namespace ExampleLibrary
             return WithLabels().ReverseXAxis();
         }
 
+        [Example("With vertical bars")]
+        public static PlotModel WithVerticalBars()
+        {
+            var model = new PlotModel
+            {
+                Title = "With labels",
+            };
+
+            var rnd = new Random(1);
+            var series = new List<BarSeries>
+            {
+                new BarSeries { Title = "Base", XAxisKey = "values", YAxisKey = "categories" },
+                new BarSeries { Title = "Inside", XAxisKey = "values", YAxisKey = "categories" },
+                new BarSeries { Title = "Middle", XAxisKey = "values", YAxisKey = "categories" },
+                new BarSeries { Title = "Outside", XAxisKey = "values", YAxisKey = "categories" }
+            };
+
+            for (int i = 0; i < 4; i++)
+            {
+                foreach (var s in series)
+                {
+                    s.Items.Add(new BarItem() { Value = rnd.Next(-100, 100) });
+                }
+            }
+
+            var categoryAxis = new CategoryAxis { Position = AxisPosition.Bottom, Key = "categories" };
+            categoryAxis.Labels.Add("Category A");
+            categoryAxis.Labels.Add("Category B");
+            categoryAxis.Labels.Add("Category C");
+            categoryAxis.Labels.Add("Category D");
+            var valueAxis = new LinearAxis { Position = AxisPosition.Left, MinimumPadding = 0.06, MaximumPadding = 0.06, ExtraGridlines = new[] { 0d }, Key = "values" };
+
+            foreach (var s in series)
+            {
+                model.Series.Add(s);
+            }
+
+            model.Axes.Add(categoryAxis);
+            model.Axes.Add(valueAxis);
+            return model;
+        }
+
         [Example("Stacked")]
         [DocumentationExample("Series/BarSeries")]
         public static PlotModel StackedSeries()
