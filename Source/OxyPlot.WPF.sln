@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29403.142
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34723.18
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OxyPlot.Wpf", "OxyPlot.Wpf\OxyPlot.Wpf.csproj", "{698CCD8E-ADCC-4565-8517-5EDD36F07155}"
 EndProject
@@ -56,6 +56,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Directory.Build.props = Directory.Build.props
 		Directory.Build.targets = Directory.Build.targets
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Wpf Controls", "Wpf Controls", "{28A72D77-0FD0-42B6-BC9F-9542B94129CA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Wpf.Controls", "OxyPlot.Wpf.Controls\OxyPlot.Wpf.Controls.csproj", "{DE24F202-B78B-421B-AAE7-2C13A4EF3996}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Wpf.Controls.Tests", "OxyPlot.Wpf.Controls.Tests\OxyPlot.Wpf.Controls.Tests.csproj", "{6EA2D1A7-E059-49A5-8453-7B8B8BFC56F9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -119,6 +125,14 @@ Global
 		{13415F64-E385-48E8-9D91-6415AB69605A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{13415F64-E385-48E8-9D91-6415AB69605A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{13415F64-E385-48E8-9D91-6415AB69605A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE24F202-B78B-421B-AAE7-2C13A4EF3996}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE24F202-B78B-421B-AAE7-2C13A4EF3996}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE24F202-B78B-421B-AAE7-2C13A4EF3996}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE24F202-B78B-421B-AAE7-2C13A4EF3996}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6EA2D1A7-E059-49A5-8453-7B8B8BFC56F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EA2D1A7-E059-49A5-8453-7B8B8BFC56F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EA2D1A7-E059-49A5-8453-7B8B8BFC56F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EA2D1A7-E059-49A5-8453-7B8B8BFC56F9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -132,6 +146,8 @@ Global
 		{2169F331-413D-4492-960C-C592B0D6840E} = {B630CA82-A785-49CA-8FA0-3D3AF4D6626A}
 		{EE6B2700-9379-4882-9B43-F652995219A9} = {261D16CE-42DB-4C0D-830D-AE31B39C9781}
 		{E369870B-6336-45CC-8520-6D1AE667D26F} = {261D16CE-42DB-4C0D-830D-AE31B39C9781}
+		{DE24F202-B78B-421B-AAE7-2C13A4EF3996} = {28A72D77-0FD0-42B6-BC9F-9542B94129CA}
+		{6EA2D1A7-E059-49A5-8453-7B8B8BFC56F9} = {28A72D77-0FD0-42B6-BC9F-9542B94129CA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C96D2723-A182-4A28-ABEE-51CEC95FC6E2}

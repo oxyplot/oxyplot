@@ -46,6 +46,38 @@ namespace OxyPlot.Series
         public string DataFieldErrorY { get; set; }
 
         /// <summary>
+        /// Gets or sets the data field for the lower X error property.
+        /// </summary>
+        /// <value>
+        /// The data field.
+        /// </value>
+        public string DataFieldLowerErrorX { get; set; }
+
+        /// <summary>
+        /// Gets or sets the data field for the upper X error property.
+        /// </summary>
+        /// <value>
+        /// The data field.
+        /// </value>
+        public string DataFieldUpperErrorX { get; set; }
+
+        /// <summary>
+        /// Gets or sets the data field for the lower Y error property.
+        /// </summary>
+        /// <value>
+        /// The data field.
+        /// </value>
+        public string DataFieldLowerErrorY { get; set; }
+
+        /// <summary>
+        /// Gets or sets the data field for the upper Y error property.
+        /// </summary>
+        /// <value>
+        /// The data field.
+        /// </value>
+        public string DataFieldUpperErrorY { get; set; }
+
+        /// <summary>
         /// Gets or sets the color of the error bar.
         /// </summary>
         /// <value>
@@ -85,7 +117,7 @@ namespace OxyPlot.Series
         /// </param>
         public override void Render(IRenderContext rc)
         {
-            base.Render(rc);
+            
 
             var actualPoints = this.ActualPointsList;
             if (actualPoints == null || actualPoints.Count == 0)
@@ -104,7 +136,7 @@ namespace OxyPlot.Series
                 var errorBarVectorX = this.Orientate(new ScreenVector(0, this.ErrorBarStopWidth));
                 var errorBarVectorY = this.Orientate(new ScreenVector(this.ErrorBarStopWidth, 0));
 
-                if (point.ErrorX > 0.0)
+                if (!double.IsNaN(point.ErrorX) && point.ErrorX > 0.0)
                 {
                     var leftErrorPoint = this.Transform(point.X - (point.ErrorX * 0.5), point.Y);
                     var rightErrorPoint = this.Transform(point.X + (point.ErrorX * 0.5), point.Y);
@@ -120,7 +152,7 @@ namespace OxyPlot.Series
                     }
                 }
 
-                if (point.ErrorY > 0.0)
+                if (!double.IsNaN(point.ErrorY) && point.ErrorY > 0.0)
                 {
                     var topErrorPoint = this.Transform(point.X, point.Y - (point.ErrorY * 0.5));
                     var bottomErrorPoint = this.Transform(point.X, point.Y + (point.ErrorY * 0.5));
@@ -135,6 +167,39 @@ namespace OxyPlot.Series
                         segments.Add(bottomErrorPoint + errorBarVectorY);
                     }
                 }
+
+                if (!double.IsNaN(point.LowerErrorX) && !double.IsNaN(point.UpperErrorX))
+                {
+                    var leftErrorPoint = this.Transform(point.LowerErrorX, point.Y);
+                    var rightErrorPoint = this.Transform(point.UpperErrorX, point.Y);
+
+                    if (rightErrorPoint.DistanceTo(leftErrorPoint) > this.MarkerSize * this.MinimumErrorSize)
+                    {
+                        segments.Add(leftErrorPoint);
+                        segments.Add(rightErrorPoint);
+                        segments.Add(leftErrorPoint - errorBarVectorX);
+                        segments.Add(leftErrorPoint + errorBarVectorX);
+                        segments.Add(rightErrorPoint - errorBarVectorX);
+                        segments.Add(rightErrorPoint + errorBarVectorX);
+                    }
+                }
+
+                if (!double.IsNaN(point.LowerErrorY) && !double.IsNaN(point.UpperErrorY))
+                {
+                    var topErrorPoint = this.Transform(point.X, point.UpperErrorY);
+                    var bottomErrorPoint = this.Transform(point.X, point.LowerErrorY);
+
+                    if (topErrorPoint.DistanceTo(bottomErrorPoint) > this.MarkerSize * this.MinimumErrorSize)
+                    {
+                        segments.Add(topErrorPoint);
+                        segments.Add(bottomErrorPoint);
+                        segments.Add(topErrorPoint - errorBarVectorY);
+                        segments.Add(topErrorPoint + errorBarVectorY);
+                        segments.Add(bottomErrorPoint - errorBarVectorY);
+                        segments.Add(bottomErrorPoint + errorBarVectorY);
+                    }
+                }
+
             }
 
             rc.DrawLineSegments(
@@ -144,6 +209,8 @@ namespace OxyPlot.Series
                 this.EdgeRenderingMode,
                 null, 
                 LineJoin.Bevel);
+
+            base.Render(rc);
         }
 
         /// <summary>
@@ -173,7 +240,11 @@ namespace OxyPlot.Series
             filler.Add(this.DataFieldSize, double.NaN);
             filler.Add(this.DataFieldValue, double.NaN);
             filler.Add(this.DataFieldTag, (object)null);
-            filler.FillT(this.ItemsSourcePoints, this.ItemsSource, args => new ScatterErrorPoint(Convert.ToDouble(args[0]), Convert.ToDouble(args[1]), Convert.ToDouble(args[2]), Convert.ToDouble(args[3]), Convert.ToDouble(args[4]), Convert.ToDouble(args[5]), args[6]));
+            filler.Add(this.DataFieldLowerErrorX, double.NaN);
+            filler.Add(this.DataFieldUpperErrorX, double.NaN);
+            filler.Add(this.DataFieldLowerErrorY, double.NaN);
+            filler.Add(this.DataFieldUpperErrorY, double.NaN);
+            filler.FillT(this.ItemsSourcePoints, this.ItemsSource, args => new ScatterErrorPoint(Convert.ToDouble(args[0]), Convert.ToDouble(args[1]), Convert.ToDouble(args[2]), Convert.ToDouble(args[3]), Convert.ToDouble(args[4]), Convert.ToDouble(args[5]), args[6], Convert.ToDouble(args[7]), Convert.ToDouble(args[8]), Convert.ToDouble(args[9]), Convert.ToDouble(args[10])));
         }
     }
 }

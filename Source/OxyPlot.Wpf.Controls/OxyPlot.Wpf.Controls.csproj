@@ -1,0 +1,121 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\AddPointCursor.cur" />
+    <None Remove="Resources\ArrowAnnotation.png" />
+    <None Remove="Resources\Delete.png" />
+    <None Remove="Resources\EditTextbox.png" />
+    <None Remove="Resources\Ellipse.png" />
+    <None Remove="Resources\ExportFile.png" />
+    <None Remove="Resources\ExportPerformance.png" />
+    <None Remove="Resources\ExportToExcel.png" />
+    <None Remove="Resources\Format.png" />
+    <None Remove="Resources\Horizontal_Line.png" />
+    <None Remove="Resources\Pan_Hand.cur" />
+    <None Remove="Resources\Pan_Hand_Closed.cur" />
+    <None Remove="Resources\Point.png" />
+    <None Remove="Resources\pointer.ico" />
+    <None Remove="Resources\Polygon.png" />
+    <None Remove="Resources\Polyline.png" />
+    <None Remove="Resources\Rectangle.png" />
+    <None Remove="Resources\Save_chart_image.ico" />
+    <None Remove="Resources\SelectPointCursor.cur" />
+    <None Remove="Resources\TextBox.png" />
+    <None Remove="Resources\Vertical_Line.png" />
+    <None Remove="Resources\ZoomIn.cur" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Property Controls\Expander\" />
+    <Folder Include="Property Controls\Annotations\" />
+    <Folder Include="Property Controls\Axes\" />
+    <Folder Include="Property Controls\Legend\" />
+    <Folder Include="Property Controls\General\" />
+    <Folder Include="Property Controls\Series\" />
+    <Folder Include="Toolbar Control\" />
+    <Folder Include="Utilities\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\AddPointCursor.cur">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ArrowAnnotation.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Delete.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\EditTextbox.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Ellipse.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ExportFile.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ExportPerformance.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ExportToExcel.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Format.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Horizontal_Line.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Pan_Hand.cur">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Pan_Hand_Closed.cur">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Point.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\pointer.ico">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Polygon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Polyline.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Rectangle.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Save_chart_image.ico">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\SelectPointCursor.cur">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\TextBox.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Vertical_Line.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ZoomIn.cur">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Resources\IconResources.xaml">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Page>
+  </ItemGroup>
+
+</Project>

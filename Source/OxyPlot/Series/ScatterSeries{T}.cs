@@ -663,6 +663,26 @@ namespace OxyPlot.Series
 
                 double value = pt.Value;
 
+                
+                if (pt as ScatterErrorPoint != null)
+                {
+                    var ept = pt as ScatterErrorPoint;
+
+                    // X values
+                    if (!double.IsNaN(ept.LowerErrorX) && !double.IsNaN(ept.UpperErrorX))
+                    {
+                        minx = Math.Min(ept.UpperErrorX, Math.Min(minx, ept.LowerErrorX));
+                        maxx = Math.Max(ept.UpperErrorX, Math.Max(maxx, ept.LowerErrorX));
+                    }
+
+                    // Y values
+                    if (!double.IsNaN(ept.LowerErrorY) && !double.IsNaN(ept.UpperErrorY))
+                    {
+                        miny = Math.Min(ept.UpperErrorY, Math.Min(miny, ept.LowerErrorY));
+                        maxy = Math.Max(ept.UpperErrorY, Math.Max(maxy, ept.LowerErrorY));
+                    }
+                }
+
                 if (x < minx)
                 {
                     minx = x;

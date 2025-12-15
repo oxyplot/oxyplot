@@ -8,6 +8,12 @@
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <DefineConstants>OXYPLOT_COREDRAWING</DefineConstants>
     </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
+      <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
+      <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    </PropertyGroup>
     <ItemGroup>
         <Compile Include="..\OxyPlot.WindowsForms\DrawingConverterExtensions.cs" />
         <Compile Include="..\OxyPlot.WindowsForms\ExporterExtensions.cs" />
