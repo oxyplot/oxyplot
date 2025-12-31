@@ -1,0 +1,285 @@
+﻿<UserControl x:Class="ScatterSeriesControl" x:Name="ScatterSeriesProperties"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:OxyplotControls"
+             xmlns:cntrls="clr-namespace:GenericControls;assembly=GenericControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             DataContext="{Binding RelativeSource={RelativeSource Self}}">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/IconResources.xaml"/>
+                <ResourceDictionary>
+                    <cntrls:FontFamilyToFontStringConverter x:Key="FontFamilyToFontConverter"/>
+                    <cntrls:AlwaysVisibleConverter x:Key="AlwaysVisibleConverter" />
+                    <local:OxyAutomaticColorConverter x:Key="OxyAutoColorConverter"/>
+                    <local:ScatterSeriesMarkerFillConverter x:Key="MarkerFillConverter"/>
+                    <local:ScatterSeriesMarkerStrokeConverter x:Key="MarkerStrokeConverter"/>
+                    <local:OxyDefaultFontSizeConverter x:Key="DefaultFontSizeConverter"/>
+                    <cntrls:DoubleToGridLengthConverter x:Key="ActualToLengthConverter" />
+                    <cntrls:VisibilityToBooleanConverter x:Key="VisibilityToBoolConverter" VisibleValue="True" CollapsedValue="False" HiddenValue="False"/>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <cntrls:ContentPropertyControl 
+            Name="DummyPropertyControl" 
+            Grid.Row="0" 
+            Visibility="Hidden" 
+            Title="Marker Line Thickness" 
+            Padding="6 0 0 0"/>
+
+        <!--Display-->
+        <Expander 
+            x:Name="LabelingEXP" 
+            Grid.Row="1" Margin="0,0,0,0" 
+            Header="DISPLAY" 
+            IsExpanded="True" 
+            DockPanel.Dock="Top" 
+            Style="{Binding ElementName=ScatterSeriesProperties, Path=ExpanderStyle}">
+
+            <DockPanel>
+                <!--Title Text-->
+                <cntrls:TextPropertyControl 
+                    Margin="0 2" 
+                    DockPanel.Dock="Top" 
+                    MaxPropertyWidth="400"
+                    Title="Title" 
+                    Text="{Binding Series.Title, ElementName=ScatterSeriesProperties, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+
+                <!--Series Font-->
+                <!--<cntrls:FontSelectorControl 
+                    Margin="0 2" 
+                    DockPanel.Dock="Top" 
+                    Title="Font" 
+                    FontFamilyString="{Binding Path=Series.FontFamily, ElementName=ScatterSeriesProperties, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource FontFamilyToFontConverter}}"
+                    PropertyWidth="{Binding ElementName=DummyPropertyControl, Path=ActualPropertyWidth, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ActualToLengthConverter}}"/>-->
+
+                <!--Series Font Size-->
+                <!--<cntrls:NumericPropertySelectorControl 
+                    Margin="0 2" 
+                    DockPanel.Dock="Top" 
+                    Title="Font Size" 
+                    CanHaveNegative="False" 
+                    NumericOptions="{StaticResource FontSizeOptions}" 
+                    SelectedNumber="{Binding Series.FontSize, ElementName=ScatterSeriesProperties, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource DefaultFontSizeConverter}}"
+                    PropertyWidth="{Binding ElementName=DummyPropertyControl, Path=ActualPropertyWidth, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ActualToLengthConverter}}"/>-->
+
+                <!--Font Weight (DEVELOPER-->
+                <!--<cntrls:FontWeightSelectorControl 
+                    Margin="0 2" 
+                    DockPanel.Dock="Top" 
+                    Title="Font Weight" 
+                    SelectedFontWeight="{Binding Path=Series.FontWeight, ElementName=ScatterSeriesProperties, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                        PropertyWidth="{Binding ElementName=DummyPropertyControl, Path=ActualPropertyWidth, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ActualToLengthConverter}}"/>-->
+
+                <!--Series Foreground (used for text color)-->
+                <!--<cntrls:ColorPropertyControl 
+                    Margin="0 2" 
+                    DockPanel.Dock="Top" 
+                    Title="Text Color" 
+                    SelectedColor="{Binding ElementName=ScatterSeriesProperties, Path=Series.Foreground, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>-->
+
+                <!--Render In Legend (DEVELOPER)-->
+                <!--<cntrls:BooleanPropertyControl 
+                    Margin="0 2" 
+                    DockPanel.Dock="Top" 
+                    Title="Show In Legend" 
+                    IsSelected="{Binding ElementName=ScatterSeriesProperties, Path=Series.RenderInLegend, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>-->
+
+                <!--X Axis Key (XYAxisSeries Only) (DEVELOPER)-->
+                <!--<cntrls:TextPropertyControl 
+                    Margin="0 2" 
+                    DockPanel.Dock="Top" 
+                    Title="X-Axis Key" 
+                    Text="{Binding Series.XAxisKey, ElementName=ScatterSeriesProperties, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource EmptyToNullConverter}}" 
+                        Visibility="{Binding ElementName=ScatterSeriesProperties, Path=Series.XAxisKey, Converter={StaticResource AlwaysVisibleConverter}, FallbackValue=Collapsed}"/>-->
+
+                <!--Y Axis Key (XYAxisSeries Only) (DEVELOPER)-->
+                <!--<cntrls:TextPropertyControl 
+                    Margin="0 2" 
+                    DockPanel.Dock="Top" 
+                    Title="Y-Axis Key" 
+                    Text="{Binding Series.YAxisKey, ElementName=ScatterSeriesProperties, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource EmptyToNullConverter}}" 
+                        Visibility="{Binding ElementName=ScatterSeriesProperties, Path=Series.YAxisKey, Converter={StaticResource AlwaysVisibleConverter}, FallbackValue=Collapsed}"/>-->
+
+                <!--DataFieldX (DataPointSeries and ScatterSeries Only)-->
+                <!--DataFieldY (DataPointSeries and ScatterSeries Only)-->
+                <!--Mapping (DataPointSeries and ScatterSeries Only)-->
+
+                <!--Visibility (DEVELOPER)-->
+                <cntrls:BooleanPropertyControl 
+                    Margin="0 2" 
+                    DockPanel.Dock="Top" 
+                    Title="Is Visible" 
+                    IsSelected="{Binding ElementName=ScatterSeriesProperties, Path=Series.Visibility, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource VisibilityToBoolConverter}}"/>
+
+                <!--Render In Legend (DEVELOPER)-->
+                <cntrls:BooleanPropertyControl 
+                    Margin="0 2" 
+                    DockPanel.Dock="Top" 
+                    Title="Show In Legend" 
+                    IsSelected="{Binding ElementName=ScatterSeriesProperties, Path=Series.RenderInLegend, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+
+            </DockPanel>
+        </Expander>
+
+        <!--Markers-->
+        <Expander 
+                x:Name="MarkersEXP" 
+                Grid.Row="2" Margin="0,0,0,0" 
+                Header="MARKERS" 
+                IsExpanded="True" 
+                DockPanel.Dock="Top" 
+                Style="{Binding ElementName=ScatterSeriesProperties, Path=ExpanderStyle}">
+
+            <DockPanel>
+
+                <!--MarkerType (LineSeries and ScatterSeries)-->
+                <cntrls:ContentPropertyControl 
+                            Title="Marker" 
+                            Margin="0 2" 
+                            DockPanel.Dock="Top" 
+                            PropertyWidth="{Binding ElementName=DummyPropertyControl, Path=ActualPropertyWidth, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ActualToLengthConverter}}">
+                    <cntrls:ContentPropertyControl.InnerContent>
+                        <ComboBox  
+                            ItemsSource="{Binding MarkerTypeOptions}" 
+                            SelectedValue="{Binding Path=Series.MarkerType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                    </cntrls:ContentPropertyControl.InnerContent>
+                </cntrls:ContentPropertyControl>
+
+                <!--MarkerFill (LineSeries and ScatterSeries)-->
+                <cntrls:ColorPropertyControl 
+                        Margin="0 2" 
+                        DockPanel.Dock="Top" 
+                        Title="Marker Fill">
+                    <cntrls:ColorPropertyControl.SelectedColor>
+                        <MultiBinding 
+                                Converter="{StaticResource MarkerFillConverter}" 
+                                UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
+                            <Binding 
+                                    Path="Series.MarkerFill" 
+                                    ElementName="ScatterSeriesProperties" 
+                                    UpdateSourceTrigger="PropertyChanged" 
+                                    Mode="TwoWay"/>
+                            <Binding 
+                                    Path="Series" 
+                                    ElementName="ScatterSeriesProperties" 
+                                    UpdateSourceTrigger="PropertyChanged" 
+                                    Mode="OneWay"/>
+                        </MultiBinding>
+                    </cntrls:ColorPropertyControl.SelectedColor>
+                </cntrls:ColorPropertyControl>
+
+                <!--MarkerOutline (LineSeries and ScatterSeries) Allows capability to define custom polygon outline for the markers, default is null-->
+
+                <!--MarkerSize (LineSeries and ScatterSeries)-->
+                <cntrls:NumericPropertySelectorControl 
+                        Margin="0 2" 
+                        DockPanel.Dock="Top" 
+                        Title="Marker Size" 
+                        CanHaveNegative="False" 
+                        NumericOptions="{StaticResource LineWidthOptions}" 
+                        SelectedNumber="{Binding ElementName=ScatterSeriesProperties, Path=Series.MarkerSize, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                        PropertyWidth="{Binding ElementName=DummyPropertyControl, Path=ActualPropertyWidth, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ActualToLengthConverter}}"/>
+
+                <!--MarkerStroke (LineSeries and ScatterSeries)-->
+                <cntrls:ColorPropertyControl 
+                        Margin="0 2" 
+                        DockPanel.Dock="Top" 
+                        Title="Marker Line Color">
+                    <cntrls:ColorPropertyControl.SelectedColor>
+                        <MultiBinding 
+                                Converter="{StaticResource MarkerStrokeConverter}" 
+                                UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
+                            <Binding 
+                                    Path="Series.MarkerStroke" 
+                                    ElementName="ScatterSeriesProperties" 
+                                    UpdateSourceTrigger="PropertyChanged" 
+                                    Mode="TwoWay"/>
+                            <Binding 
+                                    Path="Series" 
+                                    ElementName="ScatterSeriesProperties" 
+                                    UpdateSourceTrigger="PropertyChanged" 
+                                    Mode="OneWay"/>
+                        </MultiBinding>
+                    </cntrls:ColorPropertyControl.SelectedColor>
+                </cntrls:ColorPropertyControl>
+
+                <!--MarkerStrokeThickness (LineSeries and ScatterSeries)-->
+                <cntrls:LineWidthSelectorControl 
+                        Margin="0 2" 
+                        DockPanel.Dock="Top" 
+                        Title="Marker Line Thickness" 
+                        WidthOptions="{StaticResource LineWidthOptions}" 
+                        SelectedWidth="{Binding Series.MarkerStrokeThickness, 
+                        ElementName=ScatterSeriesProperties, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                        PropertyWidth="{Binding ElementName=DummyPropertyControl, Path=ActualPropertyWidth, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ActualToLengthConverter}}"/>
+
+            </DockPanel>
+        </Expander>
+
+        <!--Error Bars-->
+        <Expander 
+            x:Name="ErrorBarSettingsEXP" 
+            Grid.Row="3" Margin="0,0,0,0" 
+            Header="ERROR BAR SETTINGS" 
+            IsExpanded="True" 
+            DockPanel.Dock="Top" 
+            Style="{Binding ElementName=ScatterSeriesProperties, Path=ExpanderStyle}"
+            Visibility="{Binding ElementName=ScatterSeriesProperties, Path=Series.ErrorBarColor, Converter={StaticResource AlwaysVisibleConverter}, FallbackValue=Collapsed}">
+
+            <DockPanel>
+
+                <!--ErrorBarColor (ScatterErrorSeries Only)-->
+                <cntrls:ColorPropertyControl 
+                        Margin="0 2" 
+                        DockPanel.Dock="Top" 
+                        Title="Color" 
+                        SelectedColor="{Binding ElementName=ScatterSeriesProperties, Path=Series.ErrorBarColor, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource OxyAutoColorConverter}}" 
+                        Visibility="{Binding ElementName=ScatterSeriesProperties, Path=Series.ErrorBarColor, Converter={StaticResource AlwaysVisibleConverter}, FallbackValue=Collapsed}"/>
+
+                <!--ErrorBarStopWidth (ScatterErrorSeries Only)-->
+                <cntrls:NumericPropertyControl 
+                        Margin="0 2" 
+                        DockPanel.Dock="Top" 
+                        Title="Stop Width" 
+                        Number="{Binding ElementName=ScatterSeriesProperties, Path=Series.ErrorBarStopWidth, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                        PropertyWidth="{Binding ElementName=DummyPropertyControl, Path=ActualPropertyWidth, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ActualToLengthConverter}}"
+                        Visibility="{Binding ElementName=ScatterSeriesProperties, Path=Series.ErrorBarStopWidth, Converter={StaticResource AlwaysVisibleConverter}, FallbackValue=Collapsed}"/>
+
+                <!--ErrorBarStrokeThickness (ScatterErrorSeries Only)-->
+                <cntrls:LineWidthSelectorControl 
+                        Margin="0 2" 
+                        DockPanel.Dock="Top" 
+                        Title="Thickness" 
+                        WidthOptions="{StaticResource LineWidthOptions}" 
+                        SelectedWidth="{Binding Series.ErrorBarStrokeThickness, ElementName=ScatterSeriesProperties, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                        PropertyWidth="{Binding ElementName=DummyPropertyControl, Path=ActualPropertyWidth, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ActualToLengthConverter}}"
+                        Visibility="{Binding ElementName=ScatterSeriesProperties, Path=Series.ErrorBarStrokeThickness, Converter={StaticResource AlwaysVisibleConverter}, FallbackValue=Collapsed}"/>
+
+                <!--MinimumErrorSize (ScatterErrorSeries Only)-->
+                <cntrls:NumericPropertyControl 
+                        Margin="0 2" 
+                        DockPanel.Dock="Top" 
+                        Title="Minimum Error Size" 
+                        Number="{Binding ElementName=ScatterSeriesProperties, Path=Series.MinimumErrorSize, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                        PropertyWidth="{Binding ElementName=DummyPropertyControl, Path=ActualPropertyWidth, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ActualToLengthConverter}}"
+                        Visibility="{Binding ElementName=ScatterSeriesProperties, Path=Series.MinimumErrorSize, Converter={StaticResource AlwaysVisibleConverter}, FallbackValue=Collapsed}"/>
+
+            </DockPanel>
+            
+        </Expander>
+    </Grid>
+</UserControl>

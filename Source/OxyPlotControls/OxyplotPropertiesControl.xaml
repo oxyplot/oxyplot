@@ -1,0 +1,107 @@
+﻿<UserControl x:Class="OxyplotPropertiesControl" x:Name="OxyplotProperties"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:OxyplotControls"
+             xmlns:cntrls="clr-namespace:GenericControls;assembly=GenericControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="300">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/IconResources.xaml"/>
+                <ResourceDictionary>
+                    <cntrls:BooleanToVisibilityConverter x:Key="VisibilityConverter" TrueValue="Visible" FalseValue="Collapsed"/>
+                    <!--<local:VerticalTabSizeConverter x:Key="TabSizeConverter" />-->
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+            <SolidColorBrush x:Key="ComboBoxItem.ItemsviewHover.Background" Color="#1F26A0DA"/>
+            <SolidColorBrush x:Key="ComboBoxItem.ItemsviewHover.Border" Color="#A826A0DA"/>
+            <SolidColorBrush x:Key="ComboBoxItem.ItemsviewSelected.Background" Color="#3D26A0DA"/>
+            <SolidColorBrush x:Key="ComboBoxItem.ItemsviewSelected.Border" Color="#FF26A0DA"/>
+            <SolidColorBrush x:Key="ComboBoxItem.ItemsviewSelectedHover.Background" Color="#2E0080FF"/>
+            <SolidColorBrush x:Key="ComboBoxItem.ItemsviewSelectedHover.Border" Color="#99006CD9"/>
+            <SolidColorBrush x:Key="ComboBoxItem.ItemsviewSelectedNoFocus.Background" Color="#3DDADADA"/>
+            <SolidColorBrush x:Key="ComboBoxItem.ItemsviewSelectedNoFocus.Border" Color="#FFDADADA"/>
+            <SolidColorBrush x:Key="ComboBoxItem.ItemsviewFocus.Border" Color="#FF26A0DA"/>
+            <SolidColorBrush x:Key="ComboBoxItem.ItemsviewHoverFocus.Background" Color="#5426A0DA"/>
+            <SolidColorBrush x:Key="ComboBoxItem.ItemsviewHoverFocus.Border" Color="#FF26A0DA"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="{Binding ElementName=BackButton, Path=Width}"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!--Back Arrow-->
+        <Button 
+                x:Name="BackButton"
+                Grid.Row="0" 
+                Grid.Column="0"
+                Margin="0"
+                SnapsToDevicePixels="True" 
+                ToolTip="Close Plot Properties" 
+                VerticalAlignment="Stretch" 
+                HorizontalAlignment="Stretch"
+                Background="Transparent"
+                BorderBrush="Transparent"
+                Style="{Binding ElementName=OxyplotProperties, Path=BackButtonStyle}" 
+                Visibility="{Binding ElementName=OxyplotProperties, Path=ShowCloseButton, Converter={StaticResource VisibilityConverter}}"
+                Click="ClosePropertiesButton_Click">
+            <StackPanel Orientation="Horizontal">
+                <Path Data="M 1,5 5,9 M 1,5 5,1 M 0,5 11,5" 
+                      Stroke="Black" 
+                      StrokeThickness="2" 
+                      VerticalAlignment="Center"
+                      HorizontalAlignment="Center"
+                      Margin="4"/>
+                <!--<Path Data="M 1,1 9,9 M 1,9 9,1" Stroke="Black" StrokeThickness="2" VerticalAlignment="Center"/>-->
+                <TextBlock Text="" VerticalAlignment="Center"/>
+            </StackPanel>
+        </Button>
+
+        <!--Scrollviewer needs to be initialized before the combobox-->
+        <ScrollViewer 
+            Name="ControlScrollViewer" 
+            VerticalScrollBarVisibility="Auto" 
+            HorizontalScrollBarVisibility="Auto" 
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Grid.Row="1">
+            <Grid x:Name="PropertyControlsGrid" Margin="0,5,0,0">
+                <!--Plot property controls will be generated on-the-fly in code behind and added to this grid-->
+            </Grid>
+        </ScrollViewer>
+
+        <ComboBox 
+            x:Name="PropertyControlComboBox" 
+            Style="{Binding ElementName=OxyplotProperties, Path=PropertyControlComboBoxStyle}" 
+            Grid.Row="0" 
+            Grid.Column="1"
+            HorizontalContentAlignment="Center" 
+            VerticalContentAlignment="Center"
+            SelectedIndex="0" 
+            ToolTip="Click to Select Plot Component" 
+            VerticalAlignment="Stretch" 
+            HorizontalAlignment="Stretch" 
+            Margin="0" 
+            FontSize="12"
+            FontWeight="Bold"
+            BorderThickness="0"
+            SelectionChanged="PropertyControlComboBox_SelectionChanged">
+
+            <ComboBoxItem Name="GeneralSettingsItem" HorizontalContentAlignment="Left" FontSize="12" Content="GENERAL PLOT SETTINGS"/>
+            <ComboBoxItem Name="LegendItem" HorizontalContentAlignment="Left" FontSize="12" Content="LEGEND"/>
+            <ComboBoxItem Name="AxesItem" HorizontalContentAlignment="Left" FontSize="12" Content="AXES"/>
+            <ComboBoxItem Name="SeriesItem" HorizontalContentAlignment="Left" FontSize="12" Content="SERIES"/>
+            <ComboBoxItem Name="AnnotationsItem" HorizontalContentAlignment="Left" FontSize="12" Content="ANNOTATIONS"/>
+        </ComboBox>
+    </Grid>
+</UserControl>

@@ -1,0 +1,121 @@
+﻿<UserControl x:Class="OxyplotToolbar" x:Name="OxyToolBar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:OxyplotControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="80">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/GenericControls;Component/Resources/GenericResources.xaml"/>
+                <!--<ResourceDictionary>
+                    <Image x:Key="ExportImage" Source="pack://application:,,,/OxyplotControls;Component/Resources/ExportPerformance_16x.png" 
+                           Stretch="UniformToFill" RenderOptions.EdgeMode="Aliased" RenderOptions.BitmapScalingMode="HighQuality" >
+                    </Image>
+                </ResourceDictionary>-->
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+
+    </UserControl.Resources>
+    <StackPanel Background="Transparent" Orientation="{Binding ElementName=OxyToolBar, Path=ToolBarOrientation, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+        <RadioButton x:Name="PointerButton" Style="{StaticResource {x:Static ToolBar.RadioButtonStyleKey}}" Margin="1,1,1,2" Padding="0" ToolTip="Track Data" Click="PointerButton_Click" IsChecked="True">
+            <Image Source="pack://application:,,,/OxyplotControls;component/Resources/pointer.ico" Stretch="Uniform" Width="{Binding ElementName=OxyToolBar, Path=IconSize}" Height="{Binding ElementName=OxyToolBar, Path=IconSize}" SnapsToDevicePixels="True"/>
+        </RadioButton>
+        <RadioButton Name="PanButton" Style="{StaticResource {x:Static ToolBar.RadioButtonStyleKey}}" Margin="1,1,1,2" Padding="0" ToolTip="Pan" Click="PanButton_Click">
+            <Viewbox Width="{Binding ElementName=OxyToolBar, Path=IconSize}" Height="{Binding ElementName=OxyToolBar, Path=IconSize}">
+                <ContentControl Padding="0" Content="{StaticResource PanHandIcon}"/>
+            </Viewbox>
+        </RadioButton>
+        <RadioButton x:Name="ZoomButton" Style="{StaticResource {x:Static ToolBar.RadioButtonStyleKey}}" Margin="1,1,1,2" Padding="0" ToolTip="Zoom In" Click="ZoomButton_Click">
+            <Viewbox Width="{Binding ElementName=OxyToolBar, Path=IconSize}" Height="{Binding ElementName=OxyToolBar, Path=IconSize}">
+                <ContentControl Padding="0" Content="{StaticResource ZoomInIcon}" />
+            </Viewbox>
+        </RadioButton>
+        <Button x:Name="ZoomAllButton" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Margin="1,1,1,2" Padding="0" ToolTip="Zoom Full Extents" Click="ZoomAllButton_Click">
+            <Viewbox Width="{Binding ElementName=OxyToolBar, Path=IconSize}" Height="{Binding ElementName=OxyToolBar, Path=IconSize}">
+                <ContentControl Padding="0" Content="{StaticResource ZoomAllIcon}" />
+            </Viewbox>
+        </Button>
+        <Button x:Name="AddAnnotationToggleButton" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Margin="1,1,1,2" Padding="0" ToolTip="Add Annotation" Click="AddAnnotationToggleButton_Click">
+            <Button.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Name="AddArrowAnnotationItem" Header="Arrow Annotation" Click="AddArrowAnnotationItem_Click">
+                        <MenuItem.Icon>
+                            <Image Source="pack://application:,,,/OxyplotControls;component/Resources/ArrowAnnotation.png" Stretch="UniformToFill"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Name="AddTextAnnotationItem" Header="Text Annotation" Click="AddTextAnnotationItem_Click">
+                        <MenuItem.Icon>
+                            <Image Source="pack://application:,,,/OxyplotControls;component/Resources/Textbox.png" Stretch="UniformToFill"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Name="AddVerticalLineAnnotationItem" Header="Vertical Line Annotation" Click="AddVerticalLineAnnotationItem_Click">
+                        <MenuItem.Icon>
+                            <Image Source="pack://application:,,,/OxyplotControls;component/Resources/Vertical_Line.png" Stretch="UniformToFill"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Name="AddHorizontalLineAnnotationItem" Header="Horizontal Line Annotation" Click="AddHorizontalLineAnnotationItem_Click">
+                        <MenuItem.Icon>
+                            <Image Source="pack://application:,,,/OxyplotControls;component/Resources/Horizontal_Line.png" Stretch="UniformToFill"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Name="AddRectangleAnnotationItem" Header="Rectangle Annotation" Click="AddRectangleAnnotationItem_Click">
+                        <MenuItem.Icon>
+                            <Image Source="pack://application:,,,/OxyplotControls;component/Resources/Rectangle.png" Stretch="UniformToFill"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Name="AddEllipseAnnotationItem" Header="Ellipse Annotation" Click="AddEllipseAnnotationItem_Click">
+                        <MenuItem.Icon>
+                            <Image Source="pack://application:,,,/OxyplotControls;component/Resources/Ellipse.png" Stretch="UniformToFill"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Name="AddPointAnnotationItem" Header="Point Annotation" Click="AddPointAnnotationItem_Click">
+                        <MenuItem.Icon>
+                            <Image Source="pack://application:,,,/OxyplotControls;component/Resources/Point.png" Stretch="UniformToFill"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Name="AddPolygonAnnotationItem" Header="Polygon Annotation" Click="AddPolygonAnnotationItem_Click">
+                        <MenuItem.Icon>
+                            <Image Source="pack://application:,,,/OxyplotControls;component/Resources/Polygon.png" Stretch="UniformToFill"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Name="AddPolylineAnnotationItem" Header="Polyline Annotation" Click="AddPolylineAnnotationItem_Click">
+                        <MenuItem.Icon>
+                            <Image Source="pack://application:,,,/OxyplotControls;component/Resources/Polyline.png" Stretch="UniformToFill"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </ContextMenu>
+            </Button.ContextMenu>
+            <Viewbox Width="{Binding ElementName=OxyToolBar, Path=IconSize}" Height="{Binding ElementName=OxyToolBar, Path=IconSize}">
+                <ContentControl Padding="0" Content="{StaticResource PlusIcon}" />
+            </Viewbox>
+        </Button>
+        <!--<Popup IsOpen="{Binding ElementName=AddAnnotationToggleButton, Path=IsChecked, Mode=TwoWay}" StaysOpen="False" 
+               AllowsTransparency="True" Placement="Right" PlacementTarget="{Binding ElementName=AddAnnotationToggleButton}" Width="200" Height="300">        
+        </Popup>-->
+        <Button x:Name="SaveImageButton" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Margin="1,1,1,2" Padding="0" ToolTip="Save Plot Image" Click="SaveImageButton_Click">
+            <Viewbox Width="{Binding ElementName=OxyToolBar, Path=IconSize}" Height="{Binding ElementName=OxyToolBar, Path=IconSize}">
+                <ContentControl Padding="0" Content="{StaticResource CameraIcon}" />
+            </Viewbox>
+        </Button>
+        <Button x:Name="ExportDataButton" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Margin="1,1,1,2" Padding="0" ToolTip="Export Series Data" Click="ExportDataButton_Click">
+            <Viewbox Width="{Binding ElementName=OxyToolBar, Path=IconSize}" Height="{Binding ElementName=OxyToolBar, Path=IconSize}">
+                <ContentControl Padding="0" Content="{StaticResource ExportTableIcon}" />
+            </Viewbox>
+        </Button>
+        <Button x:Name="PropertiesButton" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Margin="1,1,1,2" Padding="0" Focusable="False" ToolTip="Plot Properties" Click="PropertiesButton_Click">
+            <Viewbox Width="{Binding ElementName=OxyToolBar, Path=IconSize}" Height="{Binding ElementName=OxyToolBar, Path=IconSize}">
+                <ContentControl Padding="0" Content="{StaticResource PropertiesIcon}" />
+            </Viewbox>
+        </Button>
+
+        <!--<Button x:Name="SwapAxesButton" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Margin="1,1,1,2" Padding="0" Focusable="False" ToolTip="Swap the X and Y axes" Click="SwapAxesButton_Click">
+            <Viewbox Width="{Binding ElementName=OxyToolBar, Path=IconSize}" Height="{Binding ElementName=OxyToolBar, Path=IconSize}">
+                <ContentControl Padding="0" Content="{StaticResource SwapAxes}" />
+            </Viewbox>
+        </Button>-->
+
+    </StackPanel>
+</UserControl>
