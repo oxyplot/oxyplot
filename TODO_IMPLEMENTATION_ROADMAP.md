@@ -473,3 +473,203 @@ OxyplotToolbar.xaml.vb (3498 lines)
 4. Add context menus (EXPECTED UX)
 
 The C# implementation provides a functional skeleton but is missing significant interactive editing capabilities that were core features of the VB version.
+
+---
+
+## Detailed Task List for Achieving Parity
+
+### PHASE 1: Critical Fixes (Estimated: 3 hours)
+
+#### Task 1.1: Fix Controller Bindings
+**File:** `Source/OxyPlotControls/OxyPlotToolbar.xaml.cs`
+**Lines:** 180-196
+
+**Changes Required:**
+```csharp
+private void PointerButton_Click(object sender, RoutedEventArgs e)
+{
+    StopAddAnnotation();
+
+    if (_plotView?.ActualController == null) return;
+
+    var controller = _plotView.ActualController;
+    controller.UnbindAll();
+    controller.BindMouseDown(OxyMouseButton.Middle, PlotCommands.PanAt);
+    controller.BindMouseDown(OxyMouseButton.Left, PlotCommands.SnapTrack);
+    controller.BindMouseWheel(PlotCommands.ZoomWheel);
+    controller.BindKeyDown(OxyKey.Escape, PlotCommands.Reset);
+
+    SetCursor();
+}
+
+private void PanButton_Click(object sender, RoutedEventArgs e)
+{
+    StopAddAnnotation();
+
+    if (_plotView?.ActualController == null) return;
+
+    var controller = _plotView.ActualController;
+    controller.UnbindAll();
+    controller.BindMouseDown(OxyMouseButton.Middle, PlotCommands.PanAt);
+    controller.BindMouseDown(OxyMouseButton.Left, PlotCommands.PanAt);
+    controller.BindMouseDown(OxyMouseButton.Right, PlotCommands.SnapTrack);
+    controller.BindMouseWheel(PlotCommands.ZoomWheel);
+    controller.BindKeyDown(OxyKey.Escape, PlotCommands.Reset);
+
+    SetCursor();
+}
+
+private void ZoomButton_Click(object sender, RoutedEventArgs e)
+{
+    StopAddAnnotation();
+
+    if (_plotView?.ActualController == null) return;
+
+    var controller = _plotView.ActualController;
+    controller.UnbindAll();
+    controller.BindMouseDown(OxyMouseButton.Middle, PlotCommands.PanAt);
+    controller.BindMouseDown(OxyMouseButton.Left, PlotCommands.ZoomRectangle);
+    controller.BindMouseDown(OxyMouseButton.Right, PlotCommands.SnapTrack);
+    controller.BindMouseWheel(PlotCommands.ZoomWheel);
+    controller.BindKeyDown(OxyKey.Escape, PlotCommands.Reset);
+
+    SetCursor();
+}
+```
+
+---
+
+### PHASE 2: Essential Features (Estimated: 36 hours)
+
+#### Task 2.1: Add PropertiesCalled Event (3 hours)
+**File:** `Source/OxyPlotControls/OxyPlotToolbar.xaml.cs`
+
+**Add to Fields region:**
+```csharp
+/// <summary>
+/// Event indicating the plot properties need to be opened.
+/// </summary>
+public event EventHandler<PropertiesCalledEventArgs>? PropertiesCalled;
+
+/// <summary>
+/// Event args for PropertiesCalled event.
+/// </summary>
+public class PropertiesCalledEventArgs : EventArgs
+{
+    public PlotView? TargetPlot { get; set; }
+    public bool OpenProperties { get; set; }
+    public string? PropertyExpander { get; set; }
+    public object? SelectedObject { get; set; }
+}
+```
+
+#### Task 2.2: Add Annotation Editing (30 hours)
+**File:** `Source/OxyPlotControls/OxyPlotToolbar.xaml.cs`
+
+**Sub-tasks:**
+1. Add annotation collection changed handler
+2. Implement arrow annotation drag handlers
+3. Implement text annotation drag handlers
+4. Implement rectangle annotation resize handlers
+5. Implement ellipse annotation resize handlers
+6. Implement point annotation drag handlers
+7. Implement polygon vertex editing
+8. Implement polyline vertex editing
+9. Implement line annotation drag handlers
+10. Add visual highlight during editing (color change to red)
+11. Add edit state tracking variables
+
+**VB Reference:** Lines 321-1071 (750 lines)
+
+#### Task 2.3: Add Context Menus (3 hours)
+**File:** `Source/OxyPlotControls/OxyPlotToolbar.xaml.cs`
+
+**Sub-tasks:**
+1. Create context menu for annotations
+2. Add "Edit Text" menu item
+3. Add "Format Annotation" menu item
+4. Add "Delete Annotation" menu item
+5. Wire up right-click handling
+
+**VB Reference:** Lines 1900-2050
+
+---
+
+### PHASE 3: UX Enhancements (Estimated: 18 hours)
+
+#### Task 3.1: Add In-Place Text Editing (10 hours)
+**File:** `Source/OxyPlotControls/OxyPlotToolbar.xaml.cs`
+
+**Sub-tasks:**
+1. Create TextBox overlay for inline editing
+2. Handle positioning and rotation
+3. Match font styles
+4. Handle Enter/Escape key binding
+5. Handle focus loss
+6. Restore original colors
+
+**VB Reference:** Lines 2050-2380 (CreateEditTBX method)
+
+#### Task 3.2: Add Visual Edit Point Feedback (8 hours)
+**File:** `Source/OxyPlotControls/OxyPlotToolbar.xaml.cs`
+
+**Sub-tasks:**
+1. Draw edit point markers on hover
+2. Show resize handles for rectangles/ellipses
+3. Change cursor based on hit location
+4. Update markers during mouse move
+
+**VB Reference:** Lines 1270-1480
+
+---
+
+### PHASE 4: Nice-to-Have (Estimated: 12 hours)
+
+#### Task 4.1: Add SwapAxes Functionality (6 hours)
+**File:** `Source/OxyPlotControls/OxyPlotToolbar.xaml.cs`
+
+**Sub-tasks:**
+1. Add SwapAxes button to XAML
+2. Implement axis position swapping
+3. Implement data point swapping in series
+4. Handle different series types
+
+**VB Reference:** Lines 3347-3496
+
+#### Task 4.2: Add Line Annotation Tooltips (3 hours)
+**File:** `Source/OxyPlotControls/OxyPlotToolbar.xaml.cs`
+
+**Sub-tasks:**
+1. Create tooltip for line annotations
+2. Show X/Y value during placement
+3. Update tooltip during move
+
+**VB Reference:** Lines 1550-1650
+
+#### Task 4.3: Add InitializePlot Controller Setup (3 hours)
+**File:** `Source/OxyPlotControls/OxyPlotToolbar.xaml.cs`
+
+**Sub-tasks:**
+1. Initialize controller bindings when PlotView changes
+2. Set up custom cursors for zoom/pan
+3. Add leader line canvas to plot grid
+
+**VB Reference:** Lines 74-140
+
+---
+
+## Progress Tracking
+
+| Task | Status | Assignee | Date |
+|------|--------|----------|------|
+| 1.1 Fix Controller Bindings | NOT STARTED | - | - |
+| 2.1 PropertiesCalled Event | NOT STARTED | - | - |
+| 2.2 Annotation Editing | NOT STARTED | - | - |
+| 2.3 Context Menus | NOT STARTED | - | - |
+| 3.1 In-Place Text Editing | NOT STARTED | - | - |
+| 3.2 Edit Point Feedback | NOT STARTED | - | - |
+| 4.1 SwapAxes | NOT STARTED | - | - |
+| 4.2 Line Tooltips | NOT STARTED | - | - |
+| 4.3 InitializePlot Setup | NOT STARTED | - | - |
+
+**Total Estimated Effort:** ~70 hours
