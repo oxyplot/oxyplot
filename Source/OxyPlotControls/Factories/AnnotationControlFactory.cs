@@ -70,12 +70,15 @@ public static class AnnotationControlFactory
         // Register annotation controls
         Register<LineAnnotation>(() => new Controls.Annotations.LineAnnotationControl());
         Register<TextAnnotation>(() => new Controls.Annotations.TextAnnotationControl());
-        // TODO: Add more annotation controls as they are implemented:
-        // Register<ArrowAnnotation>(() => new ArrowAnnotationControl());
-        // Register<PolygonAnnotation>(() => new PolygonAnnotationControl());
-        // Register<ImageAnnotation>(() => new ImageAnnotationControl());
-        // Register<FunctionAnnotation>(() => new FunctionAnnotationControl());
-        // Register<PathAnnotation>(() => new PathAnnotationControl());
+        Register<ArrowAnnotation>(() => new Controls.Annotations.ArrowAnnotationControl());
+        Register<RectangleAnnotation>(() => new Controls.Annotations.RectangleAnnotationControl());
+        Register<EllipseAnnotation>(() => new Controls.Annotations.EllipseAnnotationControl());
+        Register<PointAnnotation>(() => new Controls.Annotations.PointAnnotationControl());
+        Register<PolygonAnnotation>(() => new Controls.Annotations.PolygonAnnotationControl());
+        Register<PolylineAnnotation>(() => new Controls.Annotations.PolylineAnnotationControl());
+        // Future annotations can be added here:
+        // Register<ImageAnnotation>(() => new Controls.Annotations.ImageAnnotationControl());
+        // Register<FunctionAnnotation>(() => new Controls.Annotations.FunctionAnnotationControl());
 
         _isInitialized = true;
     }

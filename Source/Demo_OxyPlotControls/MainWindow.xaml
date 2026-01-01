@@ -5,8 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:oxy="http://oxyplot.org/wpf"
         xmlns:controls="clr-namespace:OxyPlotControls.Controls.General;assembly=OxyPlotControls"
+        xmlns:oxyControls="clr-namespace:OxyPlotControls;assembly=OxyPlotControls"
         mc:Ignorable="d"
-        Title="OxyPlot Controls Demo" Height="800" Width="1200"
+        Title="OxyPlot Controls Demo - Full Interactive Toolbar" Height="800" Width="1400"
         x:Name="MainWindowRoot">
 
     <Grid>
@@ -16,16 +17,16 @@
             <ColumnDefinition Width="*" MinWidth="300"/>
         </Grid.ColumnDefinitions>
 
-        <!-- Plot View -->
+        <!-- Interactive Plot with Toolbar -->
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <!-- Toolbar -->
+            <!-- Data Management Toolbar (simplified) -->
             <ToolBarTray Grid.Row="0" Background="LightGray">
-                <ToolBar>
+                <ToolBar Header="Data">
                     <Button Content="Add Line Series" Click="AddLineSeries_Click" Padding="8,4"/>
                     <Button Content="Add Bar Series" Click="AddBarSeries_Click" Padding="8,4"/>
                     <Separator/>
@@ -36,11 +37,13 @@
                 </ToolBar>
             </ToolBarTray>
 
-            <!-- Plot -->
-            <oxy:PlotView Grid.Row="1"
-                          x:Name="PlotView"
-                          Model="{Binding PlotModel, ElementName=MainWindowRoot}"
-                          Margin="10"/>
+            <!-- Interactive Plot Toolbar with Embedded PlotView -->
+            <oxyControls:OxyPlotToolbar Grid.Row="1" x:Name="PlotToolbar">
+                <oxyControls:OxyPlotToolbar.PlotView>
+                    <oxy:PlotView x:Name="PlotView"
+                                  Model="{Binding PlotModel, ElementName=MainWindowRoot}"/>
+                </oxyControls:OxyPlotToolbar.PlotView>
+            </oxyControls:OxyPlotToolbar>
         </Grid>
 
         <GridSplitter Grid.Column="1"

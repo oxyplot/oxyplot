@@ -73,6 +73,11 @@ public static class AxisControlFactory
         Register<DateTimeAxis>(() => new Controls.Axes.DateTimeAxisControl());
         Register<CategoryAxis>(() => new Controls.Axes.CategoryAxisControl());
         Register<NormalProbabilityAxis>(() => new Controls.Axes.NormalProbabilityAxisControl());
+        Register<GumbelProbabilityAxis>(() => new Controls.Axes.GumbelProbabilityAxisControl());
+        Register<TimeSpanAxis>(() => new Controls.Axes.TimeSpanAxisControl());
+        Register<AngleAxis>(() => new Controls.Axes.AngleAxisControl());
+        Register<MagnitudeAxis>(() => new Controls.Axes.MagnitudeAxisControl());
+        Register<LinearColorAxis>(() => new Controls.Axes.LinearColorAxisControl());
 
         _isInitialized = true;
     }
