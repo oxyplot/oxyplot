@@ -26,8 +26,8 @@
                     <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Series.AngleSpan, ElementName=PieSeriesControlRoot, UpdateSourceTrigger=PropertyChanged}" Margin="4"/>
                     <TextBlock Grid.Row="2" Text="Inner Diameter:" VerticalAlignment="Center" Margin="0,4"/>
                     <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Series.InnerDiameter, ElementName=PieSeriesControlRoot, UpdateSourceTrigger=PropertyChanged}" Margin="4"/>
-                    <TextBlock Grid.Row="3" Text="Outer Diameter:" VerticalAlignment="Center" Margin="0,4"/>
-                    <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Series.OuterDiameter, ElementName=PieSeriesControlRoot, UpdateSourceTrigger=PropertyChanged}" Margin="4"/>
+                    <TextBlock Grid.Row="3" Text="Diameter:" VerticalAlignment="Center" Margin="0,4"/>
+                    <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Series.Diameter, ElementName=PieSeriesControlRoot, UpdateSourceTrigger=PropertyChanged}" Margin="4"/>
                 </Grid>
             </Expander>
         </StackPanel>

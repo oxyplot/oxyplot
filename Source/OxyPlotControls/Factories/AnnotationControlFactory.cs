@@ -67,16 +67,15 @@ public static class AnnotationControlFactory
     {
         if (_isInitialized) return;
 
-        // TODO: Register annotation controls as they are implemented in Phase 5
-        // Examples:
-        // Register<LineAnnotation>(() => new LineAnnotationControl());
+        // Register annotation controls
+        Register<LineAnnotation>(() => new Controls.Annotations.LineAnnotationControl());
+        Register<TextAnnotation>(() => new Controls.Annotations.TextAnnotationControl());
+        // TODO: Add more annotation controls as they are implemented:
         // Register<ArrowAnnotation>(() => new ArrowAnnotationControl());
-        // Register<TextAnnotation>(() => new TextAnnotationControl());
         // Register<PolygonAnnotation>(() => new PolygonAnnotationControl());
         // Register<ImageAnnotation>(() => new ImageAnnotationControl());
         // Register<FunctionAnnotation>(() => new FunctionAnnotationControl());
         // Register<PathAnnotation>(() => new PathAnnotationControl());
-        // ... etc
 
         _isInitialized = true;
     }

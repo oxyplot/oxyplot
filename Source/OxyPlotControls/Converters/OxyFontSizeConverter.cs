@@ -70,7 +70,7 @@ public class OxyFontSizeConverter : IValueConverter
     /// Unlike the buggy VB version, this does NOT treat any specific value as NaN.
     /// Returns NaN only when explicitly requested or when conversion fails.
     /// </summary>
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public virtual object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         try
         {

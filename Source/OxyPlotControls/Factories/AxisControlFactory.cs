@@ -72,7 +72,7 @@ public static class AxisControlFactory
         Register<LogarithmicAxis>(() => new Controls.Axes.LinearAxisControl()); // Use Linear control for Logarithmic
         Register<DateTimeAxis>(() => new Controls.Axes.DateTimeAxisControl());
         Register<CategoryAxis>(() => new Controls.Axes.CategoryAxisControl());
-        Register<Axes.NormalProbabilityAxis>(() => new Controls.Axes.NormalProbabilityAxisControl());
+        Register<NormalProbabilityAxis>(() => new Controls.Axes.NormalProbabilityAxisControl());
 
         _isInitialized = true;
     }
