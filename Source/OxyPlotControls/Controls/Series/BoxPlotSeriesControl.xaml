@@ -19,7 +19,7 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
-                        <RowDefination Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Row="0" Text="Title:" VerticalAlignment="Center" Margin="0,4"/>
                     <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Series.Title, ElementName=BoxPlotSeriesControlRoot, UpdateSourceTrigger=PropertyChanged}" Margin="4"/>
