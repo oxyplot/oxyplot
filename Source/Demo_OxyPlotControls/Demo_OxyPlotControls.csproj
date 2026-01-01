@@ -1,0 +1,18 @@
+<!-- Demo_OxyPlotControls - Demo Application for OxyPlotControls -->
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <LangVersion>13.0</LangVersion>
+    <RootNamespace>Demo_OxyPlotControls</RootNamespace>
+    <AssemblyName>Demo_OxyPlotControls</AssemblyName>
+    <Authors>USACE-RMC</Authors>
+    <Description>Demo application showcasing OxyPlotControls features and capabilities.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OxyPlotControls\OxyPlotControls.csproj" />
+  </ItemGroup>
+</Project>
