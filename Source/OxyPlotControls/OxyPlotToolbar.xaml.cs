@@ -11,6 +11,7 @@ using OxyPlot;
 using OxyPlot.Wpf;
 using OxyPlot.Annotations;
 using System.IO;
+using OxyPlotControls.Dialogs;
 
 namespace OxyPlotControls;
 
@@ -262,39 +263,16 @@ public partial class OxyPlotToolbar : UserControl
 
         try
         {
-            var dialog = new SaveFileDialog
+            var dialog = new SavePlotImageDialog(_plotView)
             {
-                Filter = "PNG Image (*.png)|*.png|JPEG Image (*.jpg)|*.jpg|PDF Document (*.pdf)|*.pdf|SVG Vector (*.svg)|*.svg",
-                DefaultExt = ".png",
-                FileName = "Plot.png"
+                Owner = Window.GetWindow(this)
             };
 
-            if (dialog.ShowDialog() == true)
-            {
-                var extension = Path.GetExtension(dialog.FileName).ToLowerInvariant();
-                switch (extension)
-                {
-                    case ".png":
-                        PngExporter.Export(_plotView.ActualModel, dialog.FileName, 1024, 768, OxyColors.White);
-                        break;
-                    case ".pdf":
-                        PdfExporter.Export(_plotView.ActualModel, dialog.FileName, 800, 600);
-                        break;
-                    case ".svg":
-                        SvgExporter.Export(_plotView.ActualModel, dialog.FileName, 800, 600, true);
-                        break;
-                    default:
-                        MessageBox.Show($"Unsupported format: {extension}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                        break;
-                }
-
-                MessageBox.Show($"Plot saved to {Path.GetFileName(dialog.FileName)}",
-                    "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
+            dialog.ShowDialog();
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"Error saving image: {ex.Message}",
+            MessageBox.Show($"Error opening save dialog: {ex.Message}",
                 "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
