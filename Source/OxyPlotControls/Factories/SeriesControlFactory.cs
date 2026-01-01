@@ -71,14 +71,13 @@ public static class SeriesControlFactory
     {
         if (_isInitialized) return;
 
-        // TODO: Register series controls as they are implemented in Phase 3
-        // Examples:
-        // Register<LineSeries>(() => new LineSeriesControl());
-        // Register<BarSeries>(() => new BarSeriesControl());
-        // Register<ScatterSeries>(() => new ScatterSeriesControl());
-        // Register<AreaSeries>(() => new AreaSeriesControl());
-        // Register<PieSeries>(() => new PieSeriesControl());
-        // ... etc
+        // Register series controls
+        Register<LineSeries>(() => new Controls.Series.LineSeriesControl());
+        Register<BarSeries>(() => new Controls.Series.BarSeriesControl());
+        Register<ColumnSeries>(() => new Controls.Series.BarSeriesControl()); // Use BarSeries control for columns
+        Register<ScatterSeries>(() => new Controls.Series.ScatterSeriesControl());
+        Register<AreaSeries>(() => new Controls.Series.AreaSeriesControl());
+        Register<PieSeries>(() => new Controls.Series.PieSeriesControl());
 
         _isInitialized = true;
     }

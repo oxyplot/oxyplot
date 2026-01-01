@@ -67,20 +67,12 @@ public static class AxisControlFactory
     {
         if (_isInitialized) return;
 
-        // TODO: Register axis controls as they are implemented in Phase 4
-        // Examples:
-        // Register<LinearAxis>(() => new LinearAxisControl());
-        // Register<LogarithmicAxis>(() => new LogarithmicAxisControl());
-        // Register<DateTimeAxis>(() => new DateTimeAxisControl());
-        // Register<CategoryAxis>(() => new CategoryAxisControl());
-        // Register<TimeSpanAxis>(() => new TimeSpanAxisControl());
-        // Register<NormalProbabilityAxis>(() => new NormalProbabilityAxisControl());
-        // Register<GumbelProbabilityAxis>(() => new GumbelProbabilityAxisControl());
-        // Register<LinearColorAxis>(() => new LinearColorAxisControl());
-        // Register<RangeColorAxis>(() => new RangeColorAxisControl());
-        // Register<AngleAxis>(() => new AngleAxisControl());
-        // Register<MagnitudeAxis>(() => new MagnitudeAxisControl());
-        // ... etc
+        // Register axis controls
+        Register<LinearAxis>(() => new Controls.Axes.LinearAxisControl());
+        Register<LogarithmicAxis>(() => new Controls.Axes.LinearAxisControl()); // Use Linear control for Logarithmic
+        Register<DateTimeAxis>(() => new Controls.Axes.DateTimeAxisControl());
+        Register<CategoryAxis>(() => new Controls.Axes.CategoryAxisControl());
+        Register<Axes.NormalProbabilityAxis>(() => new Controls.Axes.NormalProbabilityAxisControl());
 
         _isInitialized = true;
     }
