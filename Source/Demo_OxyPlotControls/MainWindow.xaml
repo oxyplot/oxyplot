@@ -51,27 +51,36 @@
                       Background="Gray"/>
 
         <!-- Properties Panel -->
-        <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto">
-            <StackPanel Margin="10">
-                <TextBlock Text="PLOT PROPERTIES"
-                           FontSize="16"
-                           FontWeight="Bold"
-                           Margin="0,0,0,10"/>
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-                <controls:GeneralPlotControl
-                    x:Name="GeneralControl"
-                    Model="{Binding PlotModel, ElementName=MainWindowRoot}"/>
+            <TextBlock Grid.Row="0"
+                       Text="PLOT PROPERTIES"
+                       FontSize="16"
+                       FontWeight="Bold"
+                       Margin="10,10,10,5"
+                       Background="LightGray"
+                       Padding="5"/>
 
-                <TextBlock Text="STATUS"
-                           FontSize="14"
-                           FontWeight="Bold"
-                           Margin="0,20,0,10"/>
+            <!-- Complete Properties Control with All Sections -->
+            <oxyControls:OxyplotPropertiesControl Grid.Row="1"
+                x:Name="PropertiesControl"
+                Model="{Binding PlotModel, ElementName=MainWindowRoot}"/>
 
-                <TextBlock x:Name="StatusText"
-                           Text="Ready"
-                           TextWrapping="Wrap"
-                           Foreground="Green"/>
-            </StackPanel>
-        </ScrollViewer>
+            <!-- Status -->
+            <Border Grid.Row="2" BorderBrush="Gray" BorderThickness="0,1,0,0" Padding="10">
+                <StackPanel>
+                    <TextBlock Text="STATUS" FontWeight="Bold" Margin="0,0,0,5"/>
+                    <TextBlock x:Name="StatusText"
+                               Text="Ready - Use dropdown above to edit General/Legend/Axes/Series/Annotations"
+                               TextWrapping="Wrap"
+                               Foreground="Green"/>
+                </StackPanel>
+            </Border>
+        </Grid>
     </Grid>
 </Window>

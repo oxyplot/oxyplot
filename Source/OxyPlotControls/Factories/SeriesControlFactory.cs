@@ -78,6 +78,7 @@ public static class SeriesControlFactory
         Register<ScatterSeries>(() => new Controls.Series.ScatterSeriesControl());
         Register<AreaSeries>(() => new Controls.Series.AreaSeriesControl());
         Register<PieSeries>(() => new Controls.Series.PieSeriesControl());
+        Register<BoxPlotSeries>(() => new Controls.Series.BoxPlotSeriesControl());
 
         _isInitialized = true;
     }
