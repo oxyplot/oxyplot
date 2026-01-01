@@ -79,6 +79,33 @@
                 <Button Content="Save Image" Style="{StaticResource ToolbarButtonStyle}"
                         Click="SaveImageButton_Click" ToolTip="Save plot as image"/>
             </ToolBar>
+
+            <!-- Tools Toolbar -->
+            <ToolBar Header="Tools">
+                <Button Content="Swap Axes" Style="{StaticResource ToolbarButtonStyle}"
+                        Click="SwapAxesButton_Click" ToolTip="Swap X and Y axes"/>
+                <Button x:Name="PropertiesButton" Content="Properties" Style="{StaticResource ToolbarButtonStyle}"
+                        Click="PropertiesButton_Click" ToolTip="Open plot properties"/>
+            </ToolBar>
+
+            <!-- Add Annotation Dropdown (hidden but functional) -->
+            <ToolBar Header="Add" Visibility="Collapsed">
+                <ToggleButton x:Name="AddAnnotationToggleButton" Content="Add..." Click="AddAnnotationToggleButton_Click">
+                    <ToggleButton.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Arrow Annotation" Click="AddArrowAnnotationItem_Click"/>
+                            <MenuItem Header="Text Annotation" Click="AddTextAnnotationItem_Click"/>
+                            <MenuItem Header="Vertical Line" Click="AddVerticalLineAnnotationItem_Click"/>
+                            <MenuItem Header="Horizontal Line" Click="AddHorizontalLineAnnotationItem_Click"/>
+                            <MenuItem Header="Rectangle" Click="AddRectangleAnnotationItem_Click"/>
+                            <MenuItem Header="Ellipse" Click="AddEllipseAnnotationItem_Click"/>
+                            <MenuItem Header="Point" Click="AddPointAnnotationItem_Click"/>
+                            <MenuItem Header="Polygon" Click="AddPolygonAnnotationItem_Click"/>
+                            <MenuItem Header="Polyline" Click="AddPolylineAnnotationItem_Click"/>
+                        </ContextMenu>
+                    </ToggleButton.ContextMenu>
+                </ToggleButton>
+            </ToolBar>
         </ToolBarTray>
 
         <!-- Plot View Container -->
