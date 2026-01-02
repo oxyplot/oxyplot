@@ -1,0 +1,123 @@
+<UserControl x:Class="OxyPlotControls.OxyPlotToolbar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DesignHeight="100" d:DesignWidth="800"
+             x:Name="ToolbarRoot">
+    <UserControl.Resources>
+        <!-- Custom Cursors -->
+        <Cursor x:Key="PanHandCursor">pack://application:,,,/OxyPlotControls;component/Resources/Cursors/PanHand.cur</Cursor>
+        <Cursor x:Key="PanHandClosedCursor">pack://application:,,,/OxyPlotControls;component/Resources/Cursors/PanHandClosed.cur</Cursor>
+        <Cursor x:Key="ZoomCursor">pack://application:,,,/OxyPlotControls;component/Resources/Cursors/ZoomIn.cur</Cursor>
+        <Cursor x:Key="MovePointsCursor">pack://application:,,,/OxyPlotControls;component/Resources/Cursors/SelectPoint.cur</Cursor>
+        <Cursor x:Key="AddPointCursor">pack://application:,,,/OxyPlotControls;component/Resources/Cursors/AddPoint.cur</Cursor>
+
+        <!-- Styles -->
+        <Style x:Key="ToolbarToggleButtonStyle" TargetType="RadioButton">
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="Padding" Value="8,4"/>
+            <Setter Property="MinWidth" Value="60"/>
+        </Style>
+
+        <Style x:Key="ToolbarButtonStyle" TargetType="Button">
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="Padding" Value="8,4"/>
+            <Setter Property="MinWidth" Value="60"/>
+        </Style>
+    </UserControl.Resources>
+
+    <DockPanel>
+        <!-- Toolbar -->
+        <ToolBarTray DockPanel.Dock="Top" Background="LightGray">
+            <!-- Mouse Mode Toolbar -->
+            <ToolBar Header="Mouse Mode">
+                <RadioButton x:Name="PointerButton" Content="Pointer" GroupName="MouseMode"
+                             Style="{StaticResource ToolbarToggleButtonStyle}"
+                             IsChecked="True" Click="PointerButton_Click"
+                             ToolTip="Select and edit plot elements"/>
+                <RadioButton x:Name="PanButton" Content="Pan" GroupName="MouseMode"
+                             Style="{StaticResource ToolbarToggleButtonStyle}"
+                             Click="PanButton_Click"
+                             ToolTip="Click and drag to pan the plot"/>
+                <RadioButton x:Name="ZoomButton" Content="Zoom" GroupName="MouseMode"
+                             Style="{StaticResource ToolbarToggleButtonStyle}"
+                             Click="ZoomButton_Click"
+                             ToolTip="Click and drag to zoom a region"/>
+                <Button Content="Zoom All" Style="{StaticResource ToolbarButtonStyle}"
+                        Click="ZoomAllButton_Click"
+                        ToolTip="Reset zoom to show all data"/>
+            </ToolBar>
+
+            <!-- Annotation Toolbar -->
+            <ToolBar Header="Annotations">
+                <Button x:Name="AddArrowButton" Content="Arrow" Style="{StaticResource ToolbarButtonStyle}"
+                        Click="AddArrowAnnotation_Click" ToolTip="Add arrow annotation"/>
+                <Button x:Name="AddTextButton" Content="Text" Style="{StaticResource ToolbarButtonStyle}"
+                        Click="AddTextAnnotation_Click" ToolTip="Add text annotation"/>
+                <Button x:Name="AddLineVButton" Content="Line V" Style="{StaticResource ToolbarButtonStyle}"
+                        Click="AddVerticalLineAnnotation_Click" ToolTip="Add vertical line"/>
+                <Button x:Name="AddLineHButton" Content="Line H" Style="{StaticResource ToolbarButtonStyle}"
+                        Click="AddHorizontalLineAnnotation_Click" ToolTip="Add horizontal line"/>
+                <Button x:Name="AddRectButton" Content="Rectangle" Style="{StaticResource ToolbarButtonStyle}"
+                        Click="AddRectangleAnnotation_Click" ToolTip="Add rectangle annotation"/>
+                <Button x:Name="AddEllipseButton" Content="Ellipse" Style="{StaticResource ToolbarButtonStyle}"
+                        Click="AddEllipseAnnotation_Click" ToolTip="Add ellipse annotation"/>
+                <Button x:Name="AddPointButton" Content="Point" Style="{StaticResource ToolbarButtonStyle}"
+                        Click="AddPointAnnotation_Click" ToolTip="Add point annotation"/>
+                <Button x:Name="AddPolygonButton" Content="Polygon" Style="{StaticResource ToolbarButtonStyle}"
+                        Click="AddPolygonAnnotation_Click" ToolTip="Add polygon annotation"/>
+                <Button x:Name="AddPolylineButton" Content="Polyline" Style="{StaticResource ToolbarButtonStyle}"
+                        Click="AddPolylineAnnotation_Click" ToolTip="Add polyline annotation"/>
+            </ToolBar>
+
+            <!-- Export/Save Toolbar -->
+            <ToolBar Header="Export">
+                <Button Content="Export Data" Style="{StaticResource ToolbarButtonStyle}"
+                        Click="ExportDataButton_Click" ToolTip="Export series data to file"/>
+                <Button Content="Save Image" Style="{StaticResource ToolbarButtonStyle}"
+                        Click="SaveImageButton_Click" ToolTip="Save plot as image"/>
+            </ToolBar>
+
+            <!-- Tools Toolbar -->
+            <ToolBar Header="Tools">
+                <Button Content="Swap Axes" Style="{StaticResource ToolbarButtonStyle}"
+                        Click="SwapAxesButton_Click" ToolTip="Swap X and Y axes"/>
+                <Button x:Name="PropertiesButton" Content="Properties" Style="{StaticResource ToolbarButtonStyle}"
+                        Click="PropertiesButton_Click" ToolTip="Open plot properties"/>
+            </ToolBar>
+
+            <!-- Add Annotation Dropdown (hidden but functional) -->
+            <ToolBar Header="Add" Visibility="Collapsed">
+                <ToggleButton x:Name="AddAnnotationToggleButton" Content="Add..." Click="AddAnnotationToggleButton_Click">
+                    <ToggleButton.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Arrow Annotation" Click="AddArrowAnnotationItem_Click"/>
+                            <MenuItem Header="Text Annotation" Click="AddTextAnnotationItem_Click"/>
+                            <MenuItem Header="Vertical Line" Click="AddVerticalLineAnnotationItem_Click"/>
+                            <MenuItem Header="Horizontal Line" Click="AddHorizontalLineAnnotationItem_Click"/>
+                            <MenuItem Header="Rectangle" Click="AddRectangleAnnotationItem_Click"/>
+                            <MenuItem Header="Ellipse" Click="AddEllipseAnnotationItem_Click"/>
+                            <MenuItem Header="Point" Click="AddPointAnnotationItem_Click"/>
+                            <MenuItem Header="Polygon" Click="AddPolygonAnnotationItem_Click"/>
+                            <MenuItem Header="Polyline" Click="AddPolylineAnnotationItem_Click"/>
+                        </ContextMenu>
+                    </ToggleButton.ContextMenu>
+                </ToggleButton>
+            </ToolBar>
+        </ToolBarTray>
+
+        <!-- Plot View Container -->
+        <Grid x:Name="PlotContainer" DockPanel.Dock="Bottom">
+            <!-- PlotView will be assigned here via PlotView property -->
+            <!-- Leader line for polygon/polyline drawing -->
+            <Polyline x:Name="LeaderLine"
+                      Stroke="Red"
+                      StrokeThickness="1"
+                      StrokeDashArray="2,2"
+                      Visibility="Collapsed"
+                      IsHitTestVisible="False"/>
+        </Grid>
+    </DockPanel>
+</UserControl>

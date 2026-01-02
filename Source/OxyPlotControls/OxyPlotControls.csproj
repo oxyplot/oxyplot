@@ -1,0 +1,24 @@
+<!-- OxyPlotControls - Modern C# WPF Controls for OxyPlot -->
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <LangVersion>13.0</LangVersion>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <RootNamespace>OxyPlotControls</RootNamespace>
+    <AssemblyName>OxyPlotControls</AssemblyName>
+    <Authors>USACE-RMC</Authors>
+    <Description>WPF controls for editing and configuring OxyPlot charts. Provides property editors for series, axes, annotations, and general plot settings.</Description>
+    <Copyright>Copyright © USACE-RMC 2026</Copyright>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OxyPlot\OxyPlot.csproj" />
+    <ProjectReference Include="..\OxyPlot.Wpf\OxyPlot.Wpf.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Text.Json" Version="9.0.0" />
+  </ItemGroup>
+</Project>

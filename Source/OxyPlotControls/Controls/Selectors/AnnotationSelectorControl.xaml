@@ -1,0 +1,69 @@
+<UserControl x:Class="OxyPlotControls.Controls.Selectors.AnnotationSelectorControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Name="AnnotationSelectorRoot">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Annotation Selector and Management -->
+        <Grid Grid.Row="0" Margin="8">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Annotation Selector ComboBox -->
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="Select Annotation:" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <ComboBox x:Name="AnnotationComboBox"
+                          Grid.Column="1"
+                          SelectionChanged="AnnotationComboBox_SelectionChanged"
+                          ToolTip="Select an annotation to edit its properties">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                                <Run Text="{Binding Text, Mode=OneWay}"/>
+                                <Run Text=" (" Foreground="Gray"/>
+                                <Run Text="{Binding ., Mode=OneWay, Converter={StaticResource TypeNameConverter}}" Foreground="Gray"/>
+                                <Run Text=")" Foreground="Gray"/>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </Grid>
+
+            <!-- Annotation Management Buttons -->
+            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,8,0,0">
+                <Button Content="+ Add" Click="AddAnnotation_Click" Padding="8,4" Margin="0,0,4,0" ToolTip="Add a new annotation">
+                    <Button.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Arrow Annotation" Click="AddArrowAnnotation_Click"/>
+                            <MenuItem Header="Text Annotation" Click="AddTextAnnotation_Click"/>
+                            <MenuItem Header="Line Annotation (V)" Click="AddLineAnnotationV_Click"/>
+                            <MenuItem Header="Line Annotation (H)" Click="AddLineAnnotationH_Click"/>
+                            <Separator/>
+                            <MenuItem Header="Rectangle Annotation" Click="AddRectangleAnnotation_Click"/>
+                            <MenuItem Header="Ellipse Annotation" Click="AddEllipseAnnotation_Click"/>
+                            <MenuItem Header="Point Annotation" Click="AddPointAnnotation_Click"/>
+                            <MenuItem Header="Polygon Annotation" Click="AddPolygonAnnotation_Click"/>
+                            <MenuItem Header="Polyline Annotation" Click="AddPolylineAnnotation_Click"/>
+                        </ContextMenu>
+                    </Button.ContextMenu>
+                </Button>
+                <Button Content="✗ Delete" Click="DeleteAnnotation_Click" Padding="8,4" ToolTip="Delete selected annotation"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Annotation Property Editor -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <ContentControl x:Name="AnnotationPropertyEditor" Margin="8"/>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

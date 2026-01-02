@@ -1,0 +1,35 @@
+<UserControl x:Class="OxyPlotControls.Controls.Series.ScatterSeriesControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:OxyPlotControls.Converters"
+             x:Name="ScatterSeriesControlRoot">
+    <UserControl.Resources>
+        <converters:OxyColorConverter x:Key="OxyColorConverter"/>
+    </UserControl.Resources>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="8">
+            <Expander Header="SCATTER PROPERTIES" IsExpanded="True">
+                <Grid Margin="8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" MinWidth="100"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Text="Title:" VerticalAlignment="Center" Margin="0,4"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Series.Title, ElementName=ScatterSeriesControlRoot, UpdateSourceTrigger=PropertyChanged}" Margin="4"/>
+                    <TextBlock Grid.Row="1" Text="Marker Type:" VerticalAlignment="Center" Margin="0,4"/>
+                    <ComboBox Grid.Row="1" Grid.Column="1" SelectedItem="{Binding Series.MarkerType, ElementName=ScatterSeriesControlRoot, UpdateSourceTrigger=PropertyChanged}" Margin="4"/>
+                    <TextBlock Grid.Row="2" Text="Marker Size:" VerticalAlignment="Center" Margin="0,4"/>
+                    <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Series.MarkerSize, ElementName=ScatterSeriesControlRoot, UpdateSourceTrigger=PropertyChanged}" Margin="4"/>
+                    <TextBlock Grid.Row="3" Text="Marker Fill:" VerticalAlignment="Center" Margin="0,4"/>
+                    <ComboBox Grid.Row="3" Grid.Column="1" SelectedItem="{Binding Series.MarkerFill, ElementName=ScatterSeriesControlRoot, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource OxyColorConverter}}" Margin="4"/>
+                </Grid>
+            </Expander>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
