@@ -313,4 +313,195 @@ public static class SerializationHelpers
     }
 
     #endregion
+
+    #region Integer Serialization
+
+    /// <summary>
+    /// Serializes an integer value to a string.
+    /// </summary>
+    /// <param name="value">The integer value.</param>
+    /// <returns>String representation.</returns>
+    public static string SerializeInt(int value) => value.ToString(CultureInfo.InvariantCulture);
+
+    /// <summary>
+    /// Deserializes an integer value from a string.
+    /// </summary>
+    /// <param name="value">The string to deserialize.</param>
+    /// <returns>The deserialized integer, or 0 if parsing fails.</returns>
+    public static int DeserializeInt(string value)
+    {
+        if (int.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out var result))
+        {
+            return result;
+        }
+
+        return 0;
+    }
+
+    #endregion
+
+    #region Enum Serialization
+
+    /// <summary>
+    /// Serializes an enum value to its string name.
+    /// </summary>
+    /// <typeparam name="TEnum">The enum type.</typeparam>
+    /// <param name="value">The enum value.</param>
+    /// <returns>String name of the enum value.</returns>
+    public static string SerializeEnum<TEnum>(TEnum value) where TEnum : struct, Enum
+    {
+        return value.ToString();
+    }
+
+    /// <summary>
+    /// Deserializes an enum value from a string.
+    /// </summary>
+    /// <typeparam name="TEnum">The enum type.</typeparam>
+    /// <param name="value">The string to deserialize.</param>
+    /// <param name="defaultValue">Default value if parsing fails.</param>
+    /// <returns>The deserialized enum value, or default if parsing fails.</returns>
+    public static TEnum DeserializeEnum<TEnum>(string value, TEnum defaultValue) where TEnum : struct, Enum
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return defaultValue;
+        }
+
+        if (Enum.TryParse<TEnum>(value, ignoreCase: true, out var result))
+        {
+            return result;
+        }
+
+        return defaultValue;
+    }
+
+    #endregion
+
+    #region DataPoint Serialization
+
+    /// <summary>
+    /// Serializes a <see cref="DataPoint"/> to a string.
+    /// </summary>
+    /// <param name="point">The data point.</param>
+    /// <returns>String in format "X, Y".</returns>
+    public static string SerializeDataPoint(DataPoint point)
+    {
+        return $"{SerializeDouble(point.X)}, {SerializeDouble(point.Y)}";
+    }
+
+    /// <summary>
+    /// Deserializes a <see cref="DataPoint"/> from a string.
+    /// </summary>
+    /// <param name="value">The string to deserialize.</param>
+    /// <returns>The deserialized DataPoint, or Undefined if parsing fails.</returns>
+    public static DataPoint DeserializeDataPoint(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return DataPoint.Undefined;
+        }
+
+        var parts = value.Split(',', StringSplitOptions.TrimEntries);
+        if (parts.Length != 2)
+        {
+            return DataPoint.Undefined;
+        }
+
+        var x = DeserializeDouble(parts[0]);
+        var y = DeserializeDouble(parts[1]);
+
+        return new DataPoint(x, y);
+    }
+
+    #endregion
+
+    #region ScreenPoint Serialization
+
+    /// <summary>
+    /// Serializes a <see cref="ScreenPoint"/> to a string.
+    /// </summary>
+    /// <param name="point">The screen point.</param>
+    /// <returns>String in format "X, Y".</returns>
+    public static string SerializeScreenPoint(ScreenPoint point)
+    {
+        return $"{SerializeDouble(point.X)}, {SerializeDouble(point.Y)}";
+    }
+
+    /// <summary>
+    /// Deserializes a <see cref="ScreenPoint"/> from a string.
+    /// </summary>
+    /// <param name="value">The string to deserialize.</param>
+    /// <returns>The deserialized ScreenPoint, or Undefined if parsing fails.</returns>
+    public static ScreenPoint DeserializeScreenPoint(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return ScreenPoint.Undefined;
+        }
+
+        var parts = value.Split(',', StringSplitOptions.TrimEntries);
+        if (parts.Length != 2)
+        {
+            return ScreenPoint.Undefined;
+        }
+
+        var x = DeserializeDouble(parts[0]);
+        var y = DeserializeDouble(parts[1]);
+
+        return new ScreenPoint(x, y);
+    }
+
+    #endregion
+
+    #region ScreenVector Serialization
+
+    /// <summary>
+    /// Serializes a <see cref="ScreenVector"/> to a string.
+    /// </summary>
+    /// <param name="vector">The screen vector.</param>
+    /// <returns>String in format "X, Y".</returns>
+    public static string SerializeScreenVector(ScreenVector vector)
+    {
+        return $"{SerializeDouble(vector.X)}, {SerializeDouble(vector.Y)}";
+    }
+
+    /// <summary>
+    /// Deserializes a <see cref="ScreenVector"/> from a string.
+    /// </summary>
+    /// <param name="value">The string to deserialize.</param>
+    /// <returns>The deserialized ScreenVector, or zero vector if parsing fails.</returns>
+    public static ScreenVector DeserializeScreenVector(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return new ScreenVector(0, 0);
+        }
+
+        var parts = value.Split(',', StringSplitOptions.TrimEntries);
+        if (parts.Length != 2)
+        {
+            return new ScreenVector(0, 0);
+        }
+
+        var x = DeserializeDouble(parts[0]);
+        var y = DeserializeDouble(parts[1]);
+
+        return new ScreenVector(x, y);
+    }
+
+    #endregion
+
+    #region LineStyle Serialization
+
+    /// <summary>
+    /// Serializes a <see cref="LineStyle"/> to a string.
+    /// </summary>
+    public static string SerializeLineStyle(LineStyle style) => SerializeEnum(style);
+
+    /// <summary>
+    /// Deserializes a <see cref="LineStyle"/> from a string.
+    /// </summary>
+    public static LineStyle DeserializeLineStyle(string value) => DeserializeEnum(value, LineStyle.Solid);
+
+    #endregion
 }
