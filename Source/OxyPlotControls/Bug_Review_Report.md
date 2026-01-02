@@ -120,10 +120,10 @@ The VB version used axis-specific formatting (DateTimeAxis shows dates, Category
 
 | Feature | VB Status | C# Status | Priority |
 |---------|-----------|-----------|----------|
-| LogarithmicAxisControl | Has generic control | Not implemented | High |
+| LogarithmicAxisControl | Has generic control | ✅ Now implemented | ~~High~~ Done |
 | Custom cursors (.cur files) | Loaded from resources | Using standard WPF cursors | Low |
 | Excel/SQLite export | Full DatabaseManager support | CSV only | Medium |
-| Ctrl+Click polyline point insertion | Implemented | Not implemented | Medium |
+| Ctrl+Click polyline/polygon point insertion | Implemented | ✅ Now implemented | ~~Medium~~ Done |
 | Line annotation axis-aware tooltip | Axis-specific formatting | Generic G6 format | Medium |
 | Property control lazy loading | Implemented | Not implemented | Low |
 | ShowCloseButton on PropertiesControl | Implemented | Not implemented | Low |

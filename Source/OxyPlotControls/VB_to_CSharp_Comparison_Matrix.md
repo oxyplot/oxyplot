@@ -126,7 +126,7 @@ This document provides a comprehensive comparison between the original **VB.NET 
 | Axis Type | VB Version | C# Version | Status |
 |-----------|-----------|------------|--------|
 | Linear | ✅ AxisControl handles | ✅ LinearAxisControl | ✅ Equivalent |
-| Logarithmic | ✅ AxisControl handles | ❌ Not yet | ⚠️ Missing |
+| Logarithmic | ✅ AxisControl handles | ✅ LogarithmicAxisControl | ✅ Equivalent |
 | Category | ✅ AxisControl handles | ✅ CategoryAxisControl | ✅ Equivalent |
 | DateTime | ✅ AxisControl handles | ✅ DateTimeAxisControl | ✅ Equivalent |
 | TimeSpan | ❌ Not in VB | ✅ TimeSpanAxisControl | ✅ C# Added |
@@ -271,11 +271,9 @@ This document provides a comprehensive comparison between the original **VB.NET 
 
 ### Not Yet Implemented (❌)
 
-1. Logarithmic axis control (use LinearAxisControl as workaround)
-2. FontFamily serialization helper (using string instead)
-3. Binding copy utilities
-4. Some property expander navigation enums
-5. Ctrl+click polyline point insertion
+1. FontFamily serialization helper (using string instead)
+2. Binding copy utilities
+3. Some property expander navigation enums
 
 ---
 

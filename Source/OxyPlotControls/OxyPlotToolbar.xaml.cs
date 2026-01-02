@@ -856,6 +856,17 @@ public partial class OxyPlotToolbar : UserControl
                 }
             }
 
+            // Ctrl+click to insert a new point on the nearest edge
+            if (e.ModifierKeys.HasFlag(OxyModifierKeys.Control) && _movePointIndex == -1 && polygon.Points.Count >= 3)
+            {
+                var insertIndex = FindNearestPolygonEdgeIndex(polygon, screenToData);
+                if (insertIndex >= 0)
+                {
+                    polygon.Points.Insert(insertIndex + 1, screenToData);
+                    _movePointIndex = insertIndex + 1;
+                }
+            }
+
             _originalColor = polygon.Fill;
             polygon.Fill = OxyColors.Red;
 
@@ -926,6 +937,17 @@ public partial class OxyPlotToolbar : UserControl
                 {
                     _movePointIndex = i;
                     break;
+                }
+            }
+
+            // Ctrl+click to insert a new point on the nearest segment
+            if (e.ModifierKeys.HasFlag(OxyModifierKeys.Control) && _movePointIndex == -1 && polyline.Points.Count >= 2)
+            {
+                var insertIndex = FindNearestSegmentIndex(polyline, screenToData);
+                if (insertIndex >= 0)
+                {
+                    polyline.Points.Insert(insertIndex + 1, screenToData);
+                    _movePointIndex = insertIndex + 1;
                 }
             }
 
@@ -2072,6 +2094,89 @@ public partial class OxyPlotToolbar : UserControl
             return new DataPoint(0, 0);
 
         return xAxis.InverseTransform(screenPoint.X, screenPoint.Y, yAxis);
+    }
+
+    /// <summary>
+    /// Finds the index of the nearest segment in a polyline to the given point.
+    /// </summary>
+    /// <param name="polyline">The polyline annotation.</param>
+    /// <param name="point">The point to find the nearest segment to.</param>
+    /// <returns>The index of the first point of the nearest segment, or -1 if not found.</returns>
+    private static int FindNearestSegmentIndex(PolylineAnnotation polyline, DataPoint point)
+    {
+        if (polyline.Points.Count < 2) return -1;
+
+        var minDistance = double.MaxValue;
+        var nearestIndex = -1;
+
+        for (int i = 0; i < polyline.Points.Count - 1; i++)
+        {
+            var p1 = polyline.Points[i];
+            var p2 = polyline.Points[i + 1];
+            var distance = PointToSegmentDistance(point, p1, p2);
+
+            if (distance < minDistance)
+            {
+                minDistance = distance;
+                nearestIndex = i;
+            }
+        }
+
+        return nearestIndex;
+    }
+
+    /// <summary>
+    /// Finds the index of the nearest edge in a polygon to the given point.
+    /// Polygons are closed, so the last point connects to the first.
+    /// </summary>
+    /// <param name="polygon">The polygon annotation.</param>
+    /// <param name="point">The point to find the nearest edge to.</param>
+    /// <returns>The index of the first point of the nearest edge, or -1 if not found.</returns>
+    private static int FindNearestPolygonEdgeIndex(PolygonAnnotation polygon, DataPoint point)
+    {
+        if (polygon.Points.Count < 3) return -1;
+
+        var minDistance = double.MaxValue;
+        var nearestIndex = -1;
+
+        for (int i = 0; i < polygon.Points.Count; i++)
+        {
+            var p1 = polygon.Points[i];
+            var p2 = polygon.Points[(i + 1) % polygon.Points.Count]; // Wrap around to first point
+            var distance = PointToSegmentDistance(point, p1, p2);
+
+            if (distance < minDistance)
+            {
+                minDistance = distance;
+                nearestIndex = i;
+            }
+        }
+
+        return nearestIndex;
+    }
+
+    /// <summary>
+    /// Calculates the distance from a point to a line segment.
+    /// </summary>
+    private static double PointToSegmentDistance(DataPoint point, DataPoint segStart, DataPoint segEnd)
+    {
+        var dx = segEnd.X - segStart.X;
+        var dy = segEnd.Y - segStart.Y;
+        var lengthSquared = dx * dx + dy * dy;
+
+        if (lengthSquared == 0)
+        {
+            // Segment is a point
+            return Math.Sqrt(Math.Pow(point.X - segStart.X, 2) + Math.Pow(point.Y - segStart.Y, 2));
+        }
+
+        // Project point onto the line segment
+        var t = Math.Max(0, Math.Min(1, ((point.X - segStart.X) * dx + (point.Y - segStart.Y) * dy) / lengthSquared));
+
+        var projX = segStart.X + t * dx;
+        var projY = segStart.Y + t * dy;
+
+        return Math.Sqrt(Math.Pow(point.X - projX, 2) + Math.Pow(point.Y - projY, 2));
     }
 
     #endregion
