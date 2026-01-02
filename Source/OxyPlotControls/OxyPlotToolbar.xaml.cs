@@ -1865,11 +1865,15 @@ public partial class OxyPlotToolbar : UserControl
                         dataTable.Columns.Add($"x{x}", typeof(string));
                     }
 
-                    for (int y = 0; y < heatMapSeries.Data.GetLength(1); y++)
+                    var yCount = heatMapSeries.Data.GetLength(1);
+                    for (int y = 0; y < yCount; y++)
                     {
                         var row = dataTable.NewRow();
                         row[0] = y + 1;
-                        row[1] = heatMapSeries.Y0 + y * (heatMapSeries.Y1 - heatMapSeries.Y0) / (heatMapSeries.Data.GetLength(1) - 1);
+                        // Avoid division by zero when there's only one row
+                        row[1] = yCount > 1
+                            ? heatMapSeries.Y0 + y * (heatMapSeries.Y1 - heatMapSeries.Y0) / (yCount - 1)
+                            : heatMapSeries.Y0;
                         for (int x = 0; x < heatMapSeries.Data.GetLength(0); x++)
                         {
                             row[x + 2] = heatMapSeries.Data[x, y];

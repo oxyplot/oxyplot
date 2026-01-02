@@ -299,8 +299,16 @@ public static class PlotModelSerializer
                 var categoryProps = new XElement("CategoryAxis");
                 categoryProps.SetAttributeValue("IsTickCentered", SerializationHelpers.SerializeBoolean(categoryAxis.IsTickCentered));
                 categoryProps.SetAttributeValue("GapWidth", SerializationHelpers.SerializeDouble(categoryAxis.GapWidth));
+                // Serialize labels as child elements to properly handle special characters
                 if (categoryAxis.Labels != null && categoryAxis.Labels.Count > 0)
-                    categoryProps.SetAttributeValue("Labels", string.Join("|", categoryAxis.Labels));
+                {
+                    var labelsElement = new XElement("Labels");
+                    foreach (var label in categoryAxis.Labels)
+                    {
+                        labelsElement.Add(new XElement("Label", label));
+                    }
+                    categoryProps.Add(labelsElement);
+                }
                 axisElement.Add(categoryProps);
                 break;
 
@@ -913,13 +921,28 @@ public static class PlotModelSerializer
                 {
                     categoryAxis.IsTickCentered = SerializationHelpers.DeserializeBoolean(categoryProps.Attribute("IsTickCentered")?.Value ?? "True");
                     categoryAxis.GapWidth = SerializationHelpers.DeserializeDouble(categoryProps.Attribute("GapWidth")?.Value ?? "1");
-                    var labelsStr = categoryProps.Attribute("Labels")?.Value;
-                    if (!string.IsNullOrEmpty(labelsStr))
+
+                    // Try new format (child elements) first, then fall back to old format (pipe-separated attribute)
+                    var labelsElement = categoryProps.Element("Labels");
+                    if (labelsElement is not null)
                     {
                         categoryAxis.Labels.Clear();
-                        foreach (var label in labelsStr.Split('|'))
+                        foreach (var labelElement in labelsElement.Elements("Label"))
                         {
-                            categoryAxis.Labels.Add(label);
+                            categoryAxis.Labels.Add(labelElement.Value);
+                        }
+                    }
+                    else
+                    {
+                        // Backward compatibility: try pipe-separated attribute
+                        var labelsStr = categoryProps.Attribute("Labels")?.Value;
+                        if (!string.IsNullOrEmpty(labelsStr))
+                        {
+                            categoryAxis.Labels.Clear();
+                            foreach (var label in labelsStr.Split('|'))
+                            {
+                                categoryAxis.Labels.Add(label);
+                            }
                         }
                     }
                 }
@@ -1177,7 +1200,7 @@ public static class PlotModelSerializer
         OxyPlot.Series.Series? series = seriesType switch
         {
             var t when t.Contains("LineSeries") => new LineSeries(),
-            var t when t.Contains("ScatterSeries") => new ScatterSeries<ScatterPoint>(),
+            var t when t.Contains("ScatterSeries") => new ScatterSeries(),
             var t when t.Contains("BarSeries") => new BarSeries(),
             var t when t.Contains("AreaSeries") => new AreaSeries(),
             _ => null
@@ -1218,7 +1241,7 @@ public static class PlotModelSerializer
                 }
                 break;
 
-            case ScatterSeries<ScatterPoint> scatterSeries:
+            case ScatterSeries scatterSeries:
                 var scatterProps = seriesElement.Element("ScatterSeries");
                 if (scatterProps is not null)
                 {

@@ -179,17 +179,18 @@ This document provides a comprehensive comparison between the original **VB.NET 
 |--------|-----------|------------|--------|
 | Color | ✅ GetColorAttribute | ✅ SerializeColor/DeserializeColor | ✅ Equivalent |
 | Double | ✅ GetDoubleAttribute | ✅ SerializeDouble/DeserializeDouble | ✅ Equivalent |
-| Integer | ✅ GetIntegerAttribute | ✅ DeserializeInt | ✅ Equivalent |
-| Boolean | ✅ GetBooleanAttribute | ✅ DeserializeBool | ✅ Equivalent |
+| Integer | ✅ GetIntegerAttribute | ✅ SerializeInt/DeserializeInt | ✅ Equivalent |
+| Boolean | ✅ GetBooleanAttribute | ✅ SerializeBoolean/DeserializeBoolean | ✅ Equivalent |
 | String | ✅ GetStringAttribute | ✅ Direct attribute access | ✅ Equivalent |
 | FontWeight | ✅ GetFontWeightAttribute | ✅ SerializeFontWeight/DeserializeFontWeight | ✅ Equivalent |
 | Thickness | ✅ GetThicknessAttribute | ✅ SerializeThickness/DeserializeThickness | ✅ Equivalent |
-| Enum | ✅ GetEnumAttribute | ✅ DeserializeEnum | ✅ Equivalent |
+| Enum | ✅ GetEnumAttribute | ✅ SerializeEnum/DeserializeEnum | ✅ Equivalent |
 | DataPoint | ✅ GetDataPointAttribute | ✅ SerializeDataPoint/DeserializeDataPoint | ✅ Equivalent |
-| ScreenPoint | ✅ GetScreenPointAttribute | ❌ Not yet | ⚠️ Missing |
-| ScreenVector | ✅ GetScreenVectorAttribute | ❌ Not yet | ⚠️ Missing |
-| Brush | ✅ GetBrushAttribute | ❌ Not needed (uses OxyColor) | ✅ Simplified |
-| FontFamily | ✅ GetFontFamilyAttribute | ❌ Not yet | ⚠️ Missing |
+| ScreenPoint | ✅ GetScreenPointAttribute | ✅ SerializeScreenPoint/DeserializeScreenPoint | ✅ Equivalent |
+| ScreenVector | ✅ GetScreenVectorAttribute | ✅ SerializeScreenVector/DeserializeScreenVector | ✅ Equivalent |
+| LineStyle | ❌ N/A | ✅ SerializeLineStyle/DeserializeLineStyle | ✅ C# Added |
+| Brush | ✅ GetBrushAttribute | ✅ SerializeBrush/DeserializeBrush | ✅ Equivalent |
+| FontFamily | ✅ GetFontFamilyAttribute | ❌ Not yet (uses string) | ⚠️ Simplified |
 
 ---
 
@@ -270,10 +271,11 @@ This document provides a comprehensive comparison between the original **VB.NET 
 
 ### Not Yet Implemented (❌)
 
-1. Logarithmic axis control
-2. Some serialization helpers (ScreenPoint, ScreenVector, FontFamily)
+1. Logarithmic axis control (use LinearAxisControl as workaround)
+2. FontFamily serialization helper (using string instead)
 3. Binding copy utilities
 4. Some property expander navigation enums
+5. Ctrl+click polyline point insertion
 
 ---
 
