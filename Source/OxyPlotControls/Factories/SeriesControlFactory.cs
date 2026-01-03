@@ -1,7 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Controls;
-using OxyPlot.Series;
+
+// Use type aliases to avoid namespace conflicts with OxyPlot.Wpf
+using Series = OxyPlot.Series.Series;
+using LineSeries = OxyPlot.Series.LineSeries;
+using BarSeries = OxyPlot.Series.BarSeries;
+using LinearBarSeries = OxyPlot.Series.LinearBarSeries;
+using ScatterSeries = OxyPlot.Series.ScatterSeries;
+using AreaSeries = OxyPlot.Series.AreaSeries;
+using PieSeries = OxyPlot.Series.PieSeries;
+using BoxPlotSeries = OxyPlot.Series.BoxPlotSeries;
 
 namespace OxyPlotControls.Factories;
 
@@ -74,7 +83,7 @@ public static class SeriesControlFactory
         // Register series controls
         Register<LineSeries>(() => new Controls.Series.LineSeriesControl());
         Register<BarSeries>(() => new Controls.Series.BarSeriesControl());
-        Register<ColumnSeries>(() => new Controls.Series.BarSeriesControl()); // Use BarSeries control for columns
+        Register<LinearBarSeries>(() => new Controls.Series.BarSeriesControl()); // Use BarSeries control for column/linear bar series
         Register<ScatterSeries>(() => new Controls.Series.ScatterSeriesControl());
         Register<AreaSeries>(() => new Controls.Series.AreaSeriesControl());
         Register<PieSeries>(() => new Controls.Series.PieSeriesControl());
