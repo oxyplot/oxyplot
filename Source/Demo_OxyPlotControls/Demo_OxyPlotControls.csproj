@@ -2,10 +2,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net9.0-windows</TargetFramework>
+    <TargetFrameworks>net6.0-windows;net8.0-windows;net9.0-windows</TargetFrameworks>
     <UseWPF>true</UseWPF>
     <Nullable>enable</Nullable>
-    <LangVersion>13.0</LangVersion>
+    <LangVersion>12.0</LangVersion>
     <RootNamespace>Demo_OxyPlotControls</RootNamespace>
     <AssemblyName>Demo_OxyPlotControls</AssemblyName>
     <Authors>USACE-RMC</Authors>

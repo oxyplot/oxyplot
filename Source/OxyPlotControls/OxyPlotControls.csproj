@@ -1,10 +1,10 @@
 <!-- OxyPlotControls - Modern C# WPF Controls for OxyPlot -->
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net9.0-windows</TargetFramework>
+    <TargetFrameworks>net6.0-windows;net8.0-windows;net9.0-windows</TargetFrameworks>
     <UseWPF>true</UseWPF>
     <Nullable>enable</Nullable>
-    <LangVersion>13.0</LangVersion>
+    <LangVersion>12.0</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <RootNamespace>OxyPlotControls</RootNamespace>
     <AssemblyName>OxyPlotControls</AssemblyName>
@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Text.Json" Version="9.0.0" />
+    <PackageReference Include="System.Text.Json" Version="8.0.5" />
   </ItemGroup>
 
   <!-- Cursor files as embedded resources for custom cursors -->
