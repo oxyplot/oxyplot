@@ -1740,6 +1740,10 @@ public partial class MainWindow : Window
     /// <param name="model">The plot model to analyze.</param>
     private void UpdatePlotStats(PlotModel model)
     {
+        // Guard against calls before XAML is fully initialized
+        if (StatsText == null)
+            return;
+
         if (model == null)
         {
             StatsText.Text = string.Empty;
