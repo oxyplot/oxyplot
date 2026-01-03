@@ -275,7 +275,7 @@ Extension Function IsBound(target, dp) As Boolean
     <local:OxyplotToolbar x:Name="PlotToolbar"
                           Grid.Column="0"
                           Plot="{Binding ElementName=MainPlot}"
-                          ToolBarOrientation="Vertical"
+                          Orientation="Vertical"
                           IconSize="24"/>
 
     <!-- OxyPlot Plot control -->

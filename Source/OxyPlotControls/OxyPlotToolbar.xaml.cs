@@ -112,9 +112,9 @@ public partial class OxyPlotToolbar : UserControl
     /// <summary>
     /// Dependency property for the toolbar orientation.
     /// </summary>
-    public static readonly DependencyProperty ToolBarOrientationProperty =
+    public static readonly DependencyProperty OrientationProperty =
         DependencyProperty.Register(
-            nameof(ToolBarOrientation),
+            nameof(Orientation),
             typeof(Orientation),
             typeof(OxyPlotToolbar),
             new PropertyMetadata(Orientation.Vertical));
@@ -122,19 +122,10 @@ public partial class OxyPlotToolbar : UserControl
     /// <summary>
     /// Gets or sets the toolbar orientation.
     /// </summary>
-    public Orientation ToolBarOrientation
-    {
-        get => (Orientation)GetValue(ToolBarOrientationProperty);
-        set => SetValue(ToolBarOrientationProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the toolbar orientation. Alias for <see cref="ToolBarOrientation"/>.
-    /// </summary>
     public Orientation Orientation
     {
-        get => ToolBarOrientation;
-        set => ToolBarOrientation = value;
+        get => (Orientation)GetValue(OrientationProperty);
+        set => SetValue(OrientationProperty, value);
     }
 
     // Cursors
