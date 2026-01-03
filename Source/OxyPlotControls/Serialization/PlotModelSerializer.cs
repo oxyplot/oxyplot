@@ -6,7 +6,12 @@ using System.Xml.Linq;
 using OxyPlot;
 using OxyPlot.Annotations;
 using OxyPlot.Axes;
-using OxyPlot.Series;
+
+// Use type aliases to avoid namespace conflicts with OxyPlot.Wpf
+using LineSeries = OxyPlot.Series.LineSeries;
+using ScatterSeries = OxyPlot.Series.ScatterSeries;
+using BarSeries = OxyPlot.Series.BarSeries;
+using AreaSeries = OxyPlot.Series.AreaSeries;
 
 namespace OxyPlotControls.Serialization;
 

@@ -1,5 +1,7 @@
-using OxyPlot.Series;
 using OxyPlotControls.Controls.Base;
+
+// Use type alias to avoid namespace conflicts with OxyPlot.Wpf
+using LineSeries = OxyPlot.Series.LineSeries;
 
 namespace OxyPlotControls.Controls.Series;
 

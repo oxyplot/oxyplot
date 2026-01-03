@@ -10,7 +10,7 @@ using OxyPlotControls.Managers;
 using Series = OxyPlot.Series.Series;
 using LineSeries = OxyPlot.Series.LineSeries;
 using BarSeries = OxyPlot.Series.BarSeries;
-using ColumnSeries = OxyPlot.Series.ColumnSeries;
+using LinearBarSeries = OxyPlot.Series.LinearBarSeries;
 using ScatterSeries = OxyPlot.Series.ScatterSeries;
 using AreaSeries = OxyPlot.Series.AreaSeries;
 using PieSeries = OxyPlot.Series.PieSeries;
@@ -148,7 +148,7 @@ public partial class SeriesSelectorControl : UserControl
 
     private void AddLineSeries_Click(object sender, RoutedEventArgs e) => AddNewSeries(new LineSeries { Title = "Line Series" });
     private void AddBarSeries_Click(object sender, RoutedEventArgs e) => AddNewSeries(new BarSeries { Title = "Bar Series" });
-    private void AddColumnSeries_Click(object sender, RoutedEventArgs e) => AddNewSeries(new ColumnSeries { Title = "Column Series" });
+    private void AddColumnSeries_Click(object sender, RoutedEventArgs e) => AddNewSeries(new LinearBarSeries { Title = "Column Series" });
     private void AddScatterSeries_Click(object sender, RoutedEventArgs e) => AddNewSeries(new ScatterSeries { Title = "Scatter Series" });
     private void AddAreaSeries_Click(object sender, RoutedEventArgs e) => AddNewSeries(new AreaSeries { Title = "Area Series" });
     private void AddPieSeries_Click(object sender, RoutedEventArgs e) => AddNewSeries(new PieSeries { Title = "Pie Series" });

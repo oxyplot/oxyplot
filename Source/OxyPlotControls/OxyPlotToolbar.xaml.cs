@@ -33,6 +33,9 @@ using PolylineAnnotation = OxyPlot.Annotations.PolylineAnnotation;
 
 // Series types alias
 using ScatterPoint = OxyPlot.Series.ScatterPoint;
+using HistogramSeries = OxyPlot.Series.HistogramSeries;
+using HeatMapSeries = OxyPlot.Series.HeatMapSeries;
+using LinearBarSeries = OxyPlot.Series.LinearBarSeries;
 
 namespace OxyPlotControls;
 
@@ -198,7 +201,7 @@ public partial class OxyPlotToolbar : UserControl
     {
         typeof(HistogramSeries),
         typeof(OxyPlot.Series.BarSeries),
-        typeof(ColumnSeries),
+        typeof(LinearBarSeries),
         typeof(HeatMapSeries)
     };
 
@@ -1913,16 +1916,16 @@ public partial class OxyPlotToolbar : UserControl
                     }
                     break;
 
-                case ColumnSeries columnSeries:
-                    seriesName = GetSeriesName(columnSeries.Title, "ColumnSeries", tableCount);
+                case LinearBarSeries linearBarSeries:
+                    seriesName = GetSeriesName(linearBarSeries.Title, "LinearBarSeries", tableCount);
                     dataTable.TableName = seriesName;
                     dataTable.Columns.Add("id", typeof(int));
-                    dataTable.Columns.Add(seriesName + "_categoryIndex", typeof(string));
-                    dataTable.Columns.Add(seriesName + "_value", typeof(string));
+                    dataTable.Columns.Add(seriesName + "_x", typeof(double));
+                    dataTable.Columns.Add(seriesName + "_y", typeof(double));
 
-                    foreach (var item in columnSeries.Items)
+                    foreach (var item in linearBarSeries.Points)
                     {
-                        dataTable.Rows.Add(dataTable.Rows.Count + 1, item.CategoryIndex, item.Value);
+                        dataTable.Rows.Add(dataTable.Rows.Count + 1, item.X, item.Y);
                     }
                     break;
 
