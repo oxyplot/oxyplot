@@ -29,14 +29,14 @@
     <Resource Include="Resources\*.cur" />
   </ItemGroup>
   <!-- DatabaseManager reference uses $(TargetFramework) to support multi-targeting -->
-  <ItemGroup Condition="'$(TargetFramework)' == 'net8.0-windows'">
-    <Reference Include="DatabaseManager">
-      <HintPath>..\..\..\database-management\DatabaseManager\bin\Debug\net8.0\DatabaseManager.dll</HintPath>
-    </Reference>
-  </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net9.0-windows'">
     <Reference Include="DatabaseManager">
       <HintPath>..\..\..\database-management\DatabaseManager\bin\Debug\net9.0\DatabaseManager.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net8.0-windows'">
+    <Reference Include="DatabaseManager">
+      <HintPath>..\..\..\database-management\DatabaseManager\bin\Debug\net8.0\DatabaseManager.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>
