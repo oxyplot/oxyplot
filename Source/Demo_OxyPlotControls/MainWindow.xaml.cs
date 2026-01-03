@@ -1709,15 +1709,15 @@ public partial class MainWindow : Window
     {
         if (visible)
         {
-            PropertiesPanel.Visibility = Visibility.Visible;
-            PropertiesColumn.Width = new GridLength(380);
-            PropertiesColumn.MinWidth = 300;
+            this.PropertiesPanel.Visibility = Visibility.Visible;
+            this.PropertiesColumn.Width = new GridLength(380);
+            this.PropertiesColumn.MinWidth = 300;
         }
         else
         {
-            PropertiesPanel.Visibility = Visibility.Collapsed;
-            PropertiesColumn.Width = new GridLength(0);
-            PropertiesColumn.MinWidth = 0;
+            this.PropertiesPanel.Visibility = Visibility.Collapsed;
+            this.PropertiesColumn.Width = new GridLength(0);
+            this.PropertiesColumn.MinWidth = 0;
         }
     }
 
