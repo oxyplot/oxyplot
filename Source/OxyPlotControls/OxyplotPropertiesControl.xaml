@@ -6,57 +6,84 @@
              xmlns:selectors="clr-namespace:OxyPlotControls.Controls.Selectors"
              x:Name="PropertiesControlRoot"
              MinWidth="300">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/OxyPlotControls;component/Styles/OxyPlotStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="25"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Header with Section Selector and Close Button -->
-        <Grid Grid.Row="0" Margin="8,8,8,4">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="{Binding ElementName=BackButton, Path=Width}"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
-            <!-- Property Section Selector -->
-            <ComboBox x:Name="PropertySectionComboBox"
-                      Grid.Column="0"
-                      SelectedIndex="0"
-                      FontWeight="Bold"
-                      FontSize="12"
-                      SelectionChanged="PropertySectionComboBox_SelectionChanged"
-                      ToolTip="Select property section to edit">
-                <ComboBoxItem Content="GENERAL PLOT SETTINGS" Tag="General"/>
-                <ComboBoxItem Content="LEGEND" Tag="Legend"/>
-                <ComboBoxItem Content="AXES" Tag="Axes"/>
-                <ComboBoxItem Content="SERIES" Tag="Series"/>
-                <ComboBoxItem Content="ANNOTATIONS" Tag="Annotations"/>
-            </ComboBox>
-
-            <!-- Close Button -->
-            <Button x:Name="ClosePropertiesButton"
-                    Grid.Column="1"
-                    Content="✕"
-                    Width="24"
-                    Height="24"
-                    Margin="4,0,0,0"
-                    Padding="0"
-                    FontWeight="Bold"
-                    ToolTip="Close properties panel"
-                    Click="ClosePropertiesButton_Click"
-                    Visibility="{Binding ShowCloseButton, ElementName=PropertiesControlRoot, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-        </Grid>
+        <!-- Back/Close Button -->
+        <Button x:Name="BackButton"
+                Grid.Row="0"
+                Grid.Column="0"
+                Margin="0"
+                SnapsToDevicePixels="True"
+                ToolTip="Close Plot Properties"
+                VerticalAlignment="Stretch"
+                HorizontalAlignment="Stretch"
+                Background="Transparent"
+                BorderBrush="Transparent"
+                Style="{Binding ElementName=PropertiesControlRoot, Path=BackButtonStyle}"
+                Visibility="{Binding ShowCloseButton, ElementName=PropertiesControlRoot, Converter={StaticResource BooleanToVisibilityConverter}}"
+                Click="ClosePropertiesButton_Click">
+            <StackPanel Orientation="Horizontal">
+                <Path Data="M 1,5 5,9 M 1,5 5,1 M 0,5 11,5"
+                      Stroke="Black"
+                      StrokeThickness="2"
+                      VerticalAlignment="Center"
+                      HorizontalAlignment="Center"
+                      Margin="4"/>
+            </StackPanel>
+        </Button>
 
         <!-- Property Editor Container with Lazy Loading -->
-        <ScrollViewer x:Name="ControlScrollViewer" Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-            <Grid x:Name="PropertyContentGrid">
+        <ScrollViewer x:Name="ControlScrollViewer"
+                      Grid.Row="1"
+                      Grid.Column="0"
+                      Grid.ColumnSpan="2"
+                      VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Auto">
+            <Grid x:Name="PropertyContentGrid" Margin="0,5,0,0">
                 <!-- Controls are created lazily in code-behind -->
             </Grid>
         </ScrollViewer>
-    </Grid>
 
-    <UserControl.Resources>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
-    </UserControl.Resources>
+        <!-- Property Section Selector -->
+        <ComboBox x:Name="PropertySectionComboBox"
+                  Grid.Row="0"
+                  Grid.Column="1"
+                  HorizontalContentAlignment="Center"
+                  VerticalContentAlignment="Center"
+                  SelectedIndex="0"
+                  ToolTip="Click to Select Plot Component"
+                  VerticalAlignment="Stretch"
+                  HorizontalAlignment="Stretch"
+                  Margin="0"
+                  FontSize="12"
+                  FontWeight="Bold"
+                  BorderThickness="0"
+                  Style="{Binding ElementName=PropertiesControlRoot, Path=PropertyControlComboBoxStyle}"
+                  SelectionChanged="PropertySectionComboBox_SelectionChanged">
+            <ComboBoxItem Content="GENERAL PLOT SETTINGS" Tag="General" HorizontalContentAlignment="Left" FontSize="12"/>
+            <ComboBoxItem Content="LEGEND" Tag="Legend" HorizontalContentAlignment="Left" FontSize="12"/>
+            <ComboBoxItem Content="AXES" Tag="Axes" HorizontalContentAlignment="Left" FontSize="12"/>
+            <ComboBoxItem Content="SERIES" Tag="Series" HorizontalContentAlignment="Left" FontSize="12"/>
+            <ComboBoxItem Content="ANNOTATIONS" Tag="Annotations" HorizontalContentAlignment="Left" FontSize="12"/>
+        </ComboBox>
+    </Grid>
 </UserControl>

@@ -65,6 +65,70 @@ public partial class OxyplotPropertiesControl : UserControl
         set => SetValue(ShowCloseButtonProperty, value);
     }
 
+    public static readonly DependencyProperty ExpanderStyleProperty =
+        DependencyProperty.Register(
+            nameof(ExpanderStyle),
+            typeof(Style),
+            typeof(OxyplotPropertiesControl),
+            new PropertyMetadata(null));
+
+    /// <summary>
+    /// Gets or sets the style for Expander controls.
+    /// </summary>
+    public Style? ExpanderStyle
+    {
+        get => (Style?)GetValue(ExpanderStyleProperty);
+        set => SetValue(ExpanderStyleProperty, value);
+    }
+
+    public static readonly DependencyProperty TabItemStyleProperty =
+        DependencyProperty.Register(
+            nameof(TabItemStyle),
+            typeof(Style),
+            typeof(OxyplotPropertiesControl),
+            new PropertyMetadata(null));
+
+    /// <summary>
+    /// Gets or sets the style for TabItem controls.
+    /// </summary>
+    public Style? TabItemStyle
+    {
+        get => (Style?)GetValue(TabItemStyleProperty);
+        set => SetValue(TabItemStyleProperty, value);
+    }
+
+    public static readonly DependencyProperty BackButtonStyleProperty =
+        DependencyProperty.Register(
+            nameof(BackButtonStyle),
+            typeof(Style),
+            typeof(OxyplotPropertiesControl),
+            new PropertyMetadata(null));
+
+    /// <summary>
+    /// Gets or sets the style for the back/close button.
+    /// </summary>
+    public Style? BackButtonStyle
+    {
+        get => (Style?)GetValue(BackButtonStyleProperty);
+        set => SetValue(BackButtonStyleProperty, value);
+    }
+
+    public static readonly DependencyProperty PropertyControlComboBoxStyleProperty =
+        DependencyProperty.Register(
+            nameof(PropertyControlComboBoxStyle),
+            typeof(Style),
+            typeof(OxyplotPropertiesControl),
+            new PropertyMetadata(null));
+
+    /// <summary>
+    /// Gets or sets the style for the property control ComboBox.
+    /// </summary>
+    public Style? PropertyControlComboBoxStyle
+    {
+        get => (Style?)GetValue(PropertyControlComboBoxStyleProperty);
+        set => SetValue(PropertyControlComboBoxStyleProperty, value);
+    }
+
     #endregion
 
     #region Events

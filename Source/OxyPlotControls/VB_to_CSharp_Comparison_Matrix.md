@@ -85,7 +85,7 @@ This document provides a comprehensive comparison between the original **VB.NET 
 | **Section Navigation** | ✅ ComboBox with 5 sections | ✅ ComboBox with 5 sections | ✅ Equivalent |
 | **PropertyEXP enum** | ✅ 22 property expanders | ✅ 22 PropertyExpander values | ✅ Equivalent |
 | **Close Button** | ✅ ShowCloseButton | ✅ ShowCloseButton | ✅ Equivalent |
-| **Style Properties** | ✅ BackButtonStyle, ExpanderStyle, etc. | ❌ Simplified | ⚠️ Reduced |
+| **Style Properties** | ✅ BackButtonStyle, ExpanderStyle, etc. | ✅ BackButtonStyle, ExpanderStyle, TabItemStyle, ComboBoxStyle | ✅ Equivalent |
 
 #### Sections
 
@@ -264,13 +264,11 @@ This document provides a comprehensive comparison between the original **VB.NET 
 
 ### Partially Implemented (⚠️)
 
-1. **Style Properties** - OxyplotPropertiesControl has simplified styling (no custom ExpanderStyle, TabItemStyle)
-2. **Some extension methods** - Not all VB extensions ported (IsBound, CopyBinding, etc.)
+1. **Some extension methods** - Not all VB extensions ported (IsBound, CopyBinding, etc.)
 
 ### Not Yet Implemented (❌)
 
 1. Binding copy utilities (IsBound, CopyBinding extensions)
-2. Custom style dependency properties for property controls
 
 ---
 
