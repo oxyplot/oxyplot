@@ -20,6 +20,7 @@ using OxyPlot.Axes;
 using OxyPlot.Series;
 using System.IO;
 using OxyPlotControls.Dialogs;
+using DatabaseManager;
 
 namespace OxyPlotControls;
 
@@ -1968,19 +1969,32 @@ public partial class OxyPlotToolbar : UserControl
             switch (extension)
             {
                 case ".csv":
+                    // Combine all tables since CSV only supports one sheet/table
                     var mergedTable = MergeAllTables(tableList, "id");
-                    ExportDataTableToCsv(mergedTable, saveDialog.FileName);
+                    var csvDataView = new InMemoryReader(mergedTable).GetTableManager(mergedTable.TableName);
+                    csvDataView?.ExportToCsv(saveDialog.FileName);
                     break;
 
                 case ".xlsx":
-                    MessageBox.Show("Excel export requires the DatabaseManager library.\n\nPlease use CSV export.",
-                        "XLSX Export", MessageBoxButton.OK, MessageBoxImage.Information);
+                    // Save each DataTable to the file as a new sheet
+                    foreach (var dt in tableList)
+                    {
+                        var dataView = new InMemoryReader(dt).GetTableManager(dt.TableName);
+                        dataView?.ExportToXlsx(saveDialog.FileName);
+                    }
                     break;
 
                 case ".sqlite":
-                    MessageBox.Show("SQLite export requires the DatabaseManager library.\n\nPlease use CSV export.",
-                        "SQLite Export", MessageBoxButton.OK, MessageBoxImage.Information);
+                    // Save each DataTable to the file as a new table
+                    foreach (var dt in tableList)
+                    {
+                        var dataView = new InMemoryReader(dt).GetTableManager(dt.TableName);
+                        dataView?.ExportToSqlite(saveDialog.FileName, dataView.TableName);
+                    }
                     break;
+
+                default:
+                    throw new NotSupportedException($"Selected file format extension '{extension}' is not supported for export.");
             }
         }
         catch (Exception ex)

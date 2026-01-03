@@ -122,7 +122,7 @@ The VB version used axis-specific formatting (DateTimeAxis shows dates, Category
 |---------|-----------|-----------|----------|
 | LogarithmicAxisControl | Has generic control | ✅ Now implemented | ~~High~~ Done |
 | Custom cursors (.cur files) | Loaded from resources | Using standard WPF cursors | Low |
-| Excel/SQLite export | Full DatabaseManager support | CSV only | Medium |
+| Excel/SQLite export | Full DatabaseManager support | ✅ Now implemented | ~~Medium~~ Done |
 | Ctrl+Click polyline/polygon point insertion | Implemented | ✅ Now implemented | ~~Medium~~ Done |
 | Line annotation axis-aware tooltip | Axis-specific formatting | Generic G6 format | Medium |
 | Property control lazy loading | Implemented | Not implemented | Low |

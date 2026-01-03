@@ -71,7 +71,7 @@ This document provides a comprehensive comparison between the original **VB.NET 
 | PNG Export | ✅ SaveBitmap | ✅ SaveBitmap | ✅ Equivalent |
 | PDF Export | ✅ PdfExporter | ✅ PdfExporter | ✅ Equivalent |
 | SVG Export | ✅ SvgExporter | ✅ SvgExporter | ✅ Equivalent |
-| Export Data | ✅ Series to CSV/Excel/SQLite | ✅ Series to CSV | ⚠️ Reduced (Excel/SQLite TBD) |
+| Export Data | ✅ Series to CSV/Excel/SQLite | ✅ Series to CSV/Excel/SQLite | ✅ Equivalent |
 | Series data types | LineSeries, ScatterSeries, AreaSeries, etc. | LineSeries, ScatterSeries, AreaSeries, etc. | ✅ Equivalent |
 
 ---
@@ -264,10 +264,9 @@ This document provides a comprehensive comparison between the original **VB.NET 
 
 ### Partially Implemented (⚠️)
 
-1. **Export Data** - CSV works, Excel/SQLite needs DatabaseManager library
-2. **Custom Cursors** - Using standard cursors instead of custom .cur files
-3. **OxyplotPropertiesControl** - Simplified (no lazy loading, reduced style properties)
-4. **Some extension methods** - Not all VB extensions ported
+1. **Custom Cursors** - Using standard cursors instead of custom .cur files
+2. **OxyplotPropertiesControl** - Simplified (no lazy loading, reduced style properties)
+3. **Some extension methods** - Not all VB extensions ported
 
 ### Not Yet Implemented (❌)
 
