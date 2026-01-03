@@ -30,7 +30,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="DatabaseManager">
-      <HintPath>..\..\..\database-management\DatabaseManager\bin\Debug\net9.0\DatabaseManager.dll</HintPath>
+      <HintPath>..\..\..\database-management\DatabaseManager\bin\Debug\net8.0\DatabaseManager.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>
