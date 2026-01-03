@@ -28,4 +28,9 @@
   <ItemGroup>
     <Resource Include="Resources\*.cur" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="DatabaseManager">
+      <HintPath>..\..\..\database-management\DatabaseManager\bin\Debug\net9.0\DatabaseManager.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>
