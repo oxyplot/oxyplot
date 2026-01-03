@@ -8,7 +8,7 @@ namespace OxyPlotControls.Controls.Base;
 /// <summary>
 /// Base class for axis editor controls.
 /// </summary>
-public abstract class AxisControlBase : UserControl
+public class AxisControlBase : UserControl
 {
     public static readonly DependencyProperty AxisProperty =
         DependencyProperty.Register(

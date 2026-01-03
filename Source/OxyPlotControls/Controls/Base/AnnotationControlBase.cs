@@ -7,7 +7,7 @@ namespace OxyPlotControls.Controls.Base;
 /// <summary>
 /// Base class for annotation editor controls.
 /// </summary>
-public abstract class AnnotationControlBase : UserControl
+public class AnnotationControlBase : UserControl
 {
     public static readonly DependencyProperty AnnotationProperty =
         DependencyProperty.Register(
