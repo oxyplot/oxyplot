@@ -1728,6 +1728,10 @@ public partial class MainWindow : Window
     /// <param name="isError">True if this is an error message.</param>
     private void UpdateStatus(string message, bool isError = false)
     {
+        // Guard against calls before XAML is fully initialized
+        if (StatusText == null)
+            return;
+
         StatusText.Text = $"{DateTime.Now:HH:mm:ss} - {message}";
         StatusText.Foreground = isError
             ? System.Windows.Media.Brushes.Red
