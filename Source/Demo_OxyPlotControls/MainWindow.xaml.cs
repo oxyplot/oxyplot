@@ -698,13 +698,13 @@ public partial class MainWindow : Window
             StrokeThickness = 2
         };
 
-        // Create histogram bins
-        histogramSeries.Items.Add(new HistogramItem(0, 200, 400));
-        histogramSeries.Items.Add(new HistogramItem(200, 400, 100));
-        histogramSeries.Items.Add(new HistogramItem(400, 600, 800));
-        histogramSeries.Items.Add(new HistogramItem(600, 800, 2000));
-        histogramSeries.Items.Add(new HistogramItem(800, 1000, 1200));
-        histogramSeries.Items.Add(new HistogramItem(1000, 1200, 600));
+        // Create histogram bins (rangeStart, rangeEnd, area, count)
+        histogramSeries.Items.Add(new HistogramItem(0, 200, 400, 2));
+        histogramSeries.Items.Add(new HistogramItem(200, 400, 100, 1));
+        histogramSeries.Items.Add(new HistogramItem(400, 600, 800, 4));
+        histogramSeries.Items.Add(new HistogramItem(600, 800, 2000, 10));
+        histogramSeries.Items.Add(new HistogramItem(800, 1000, 1200, 6));
+        histogramSeries.Items.Add(new HistogramItem(1000, 1200, 600, 3));
 
         model.Series.Add(histogramSeries);
         PlotModel = model;
@@ -712,13 +712,17 @@ public partial class MainWindow : Window
     }
 
     /// <summary>
-    /// Demonstrates Column Series with CategoryAxis.
+    /// Demonstrates Bar Series (vertical) with CategoryAxis.
     /// </summary>
+    /// <remarks>
+    /// In OxyPlot 2.x, ColumnSeries was replaced with BarSeries.
+    /// BarSeries renders horizontal bars by default (category on Y-axis).
+    /// </remarks>
     private void ColumnSeries_Create()
     {
         var model = new PlotModel
         {
-            Title = "Column Series",
+            Title = "Bar Series (Vertical Demo)",
             Subtitle = "Test scores by subject",
             Background = OxyColors.White,
             PlotAreaBorderColor = OxyColors.Black,
@@ -727,7 +731,7 @@ public partial class MainWindow : Window
 
         var categoryAxis = new CategoryAxis
         {
-            Position = AxisPosition.Bottom,
+            Position = AxisPosition.Left,
             Title = "Subject",
             ItemsSource = new[] { "Math", "Science", "English", "History", "Art" }
         };
@@ -735,7 +739,7 @@ public partial class MainWindow : Window
 
         model.Axes.Add(new LinearAxis
         {
-            Position = AxisPosition.Left,
+            Position = AxisPosition.Bottom,
             Title = "Score",
             MajorGridlineStyle = LineStyle.Solid,
             MinorGridlineStyle = LineStyle.Dot,
@@ -743,32 +747,35 @@ public partial class MainWindow : Window
             Maximum = 100
         });
 
-        var columnSeries = new ColumnSeries
+        var barSeries = new BarSeries
         {
             Title = "Test Scores",
             FillColor = OxyColors.CornflowerBlue
         };
 
-        columnSeries.Items.Add(new ColumnItem(85, 0));
-        columnSeries.Items.Add(new ColumnItem(92, 1));
-        columnSeries.Items.Add(new ColumnItem(78, 2));
-        columnSeries.Items.Add(new ColumnItem(88, 3));
-        columnSeries.Items.Add(new ColumnItem(95, 4));
+        barSeries.Items.Add(new BarItem(85));
+        barSeries.Items.Add(new BarItem(92));
+        barSeries.Items.Add(new BarItem(78));
+        barSeries.Items.Add(new BarItem(88));
+        barSeries.Items.Add(new BarItem(95));
 
-        model.Series.Add(columnSeries);
+        model.Series.Add(barSeries);
         PlotModel = model;
-        UpdateStatus("Column Series - 5 categories with score values using CategoryAxis");
+        UpdateStatus("Bar Series - 5 categories with score values using CategoryAxis");
     }
 
     /// <summary>
-    /// Demonstrates Column Series with data binding and grouped columns.
+    /// Demonstrates Bar Series with data binding and grouped bars.
     /// </summary>
+    /// <remarks>
+    /// In OxyPlot 2.x, ColumnSeries was replaced with BarSeries.
+    /// </remarks>
     private void ColumnSeriesBound_Create()
     {
         var model = new PlotModel
         {
-            Title = "Column Series (Data Bound)",
-            Subtitle = "Grouped columns comparing two test periods",
+            Title = "Bar Series (Data Bound)",
+            Subtitle = "Grouped bars comparing two test periods",
             Background = OxyColors.White,
             PlotAreaBorderColor = OxyColors.Black,
             PlotAreaBorderThickness = new OxyThickness(1)
@@ -776,7 +783,7 @@ public partial class MainWindow : Window
 
         var categoryAxis = new CategoryAxis
         {
-            Position = AxisPosition.Bottom,
+            Position = AxisPosition.Left,
             Title = "Subject",
             ItemsSource = _categoryItems.Select(c => c.Category).ToArray()
         };
@@ -784,7 +791,7 @@ public partial class MainWindow : Window
 
         model.Axes.Add(new LinearAxis
         {
-            Position = AxisPosition.Left,
+            Position = AxisPosition.Bottom,
             Title = "Score",
             MajorGridlineStyle = LineStyle.Solid,
             Minimum = 0,
@@ -792,7 +799,7 @@ public partial class MainWindow : Window
         });
 
         // First period scores
-        var series1 = new ColumnSeries
+        var series1 = new BarSeries
         {
             Title = "Period 1",
             FillColor = OxyColors.SteelBlue,
@@ -801,7 +808,7 @@ public partial class MainWindow : Window
         };
 
         // Second period scores
-        var series2 = new ColumnSeries
+        var series2 = new BarSeries
         {
             Title = "Period 2",
             FillColor = OxyColors.IndianRed,
@@ -812,7 +819,7 @@ public partial class MainWindow : Window
         model.Series.Add(series1);
         model.Series.Add(series2);
         PlotModel = model;
-        UpdateStatus("Column Series (Data Bound) - Grouped columns using ItemsSource and ValueField");
+        UpdateStatus("Bar Series (Data Bound) - Grouped bars using ItemsSource and ValueField");
     }
 
     /// <summary>
@@ -1331,25 +1338,23 @@ public partial class MainWindow : Window
             Text = "Text Annotation\n(Multi-line)",
             TextColor = OxyColors.DarkCyan,
             FontSize = 14,
-            FontWeight = FontWeights.Bold,
+            FontWeight = 700, // Bold weight in OxyPlot (uses double, not FontWeights)
             Stroke = OxyColors.Transparent
         });
 
         // Polygon annotation
-        model.Annotations.Add(new PolygonAnnotation
+        var polygonAnnotation = new PolygonAnnotation
         {
-            Points = new List<DataPoint>
-            {
-                new(10, 10),
-                new(20, 5),
-                new(25, 15),
-                new(15, 20)
-            },
             Fill = OxyColor.FromAColor(100, OxyColors.Magenta),
             Stroke = OxyColors.DarkMagenta,
             StrokeThickness = 2,
             Text = "Polygon"
-        });
+        };
+        polygonAnnotation.Points.Add(new DataPoint(10, 10));
+        polygonAnnotation.Points.Add(new DataPoint(20, 5));
+        polygonAnnotation.Points.Add(new DataPoint(25, 15));
+        polygonAnnotation.Points.Add(new DataPoint(15, 20));
+        model.Annotations.Add(polygonAnnotation);
 
         // Point annotation
         model.Annotations.Add(new PointAnnotation
@@ -1748,13 +1753,13 @@ public partial class MainWindow : Window
         var totalPoints = 0;
         foreach (var series in model.Series)
         {
+            // Note: AreaSeries must be checked before LineSeries because AreaSeries extends LineSeries
             totalPoints += series switch
             {
+                AreaSeries ars => ars.Points.Count,
                 LineSeries ls => ls.Points.Count,
                 ScatterSeries ss => ss.Points.Count,
-                AreaSeries ars => ars.Points.Count,
                 ScatterErrorSeries ses => ses.Points.Count,
-                ColumnSeries cs => cs.Items.Count,
                 BarSeries bs => bs.Items.Count,
                 BoxPlotSeries bps => bps.Items.Count,
                 HistogramSeries hs => hs.Items.Count,
