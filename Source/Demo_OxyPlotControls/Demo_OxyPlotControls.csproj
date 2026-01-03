@@ -13,6 +13,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\OxyPlot\OxyPlot.csproj" />
+    <ProjectReference Include="..\OxyPlot.Wpf\OxyPlot.Wpf.csproj" />
     <ProjectReference Include="..\OxyPlotControls\OxyPlotControls.csproj" />
   </ItemGroup>
 </Project>
