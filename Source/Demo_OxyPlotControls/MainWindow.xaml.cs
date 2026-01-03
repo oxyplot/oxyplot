@@ -34,7 +34,7 @@ namespace Demo_OxyPlotControls;
 ///   <item><description>Annotations demonstration with various annotation types</description></item>
 /// </list>
 /// </remarks>
-public partial class MainWindow : Window, INotifyPropertyChanged
+public partial class MainWindow : Window
 {
     #region Fields
 
@@ -52,6 +52,11 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     /// Sample category data source for bar/column charts.
     /// </summary>
     private ObservableCollection<CategoryDataItem> _categoryItems = new();
+
+    /// <summary>
+    /// Indicates whether the window has been fully loaded.
+    /// </summary>
+    private bool _isLoaded;
 
     #endregion
 
@@ -92,24 +97,6 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
     #endregion
 
-    #region INotifyPropertyChanged
-
-    /// <summary>
-    /// Occurs when a property value changes.
-    /// </summary>
-    public event PropertyChangedEventHandler? PropertyChanged;
-
-    /// <summary>
-    /// Raises the PropertyChanged event.
-    /// </summary>
-    /// <param name="propertyName">Name of the property that changed.</param>
-    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
-
-    #endregion
-
     #region Constructor
 
     /// <summary>
@@ -119,7 +106,17 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     {
         InitializeComponent();
         InitializeSampleData();
-        // Default demo will be set by ComboBox SelectedIndex
+        Loaded += MainWindow_Loaded;
+    }
+
+    /// <summary>
+    /// Handles the Loaded event of the MainWindow.
+    /// </summary>
+    /// <param name="sender">The source of the event.</param>
+    /// <param name="e">The event arguments.</param>
+    private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+    {
+        _isLoaded = true;
     }
 
     #endregion
@@ -282,10 +279,14 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     /// <param name="x1">End X value.</param>
     /// <param name="mean">Mean (center) of distribution.</param>
     /// <param name="variance">Variance (spread) of distribution.</param>
-    /// <param name="n">Number of points to generate.</param>
+    /// <param name="n">Number of points to generate (must be >= 2).</param>
     /// <returns>List of data points forming a normal distribution.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">Thrown when n is less than 2.</exception>
     private static List<DataPoint> CreateNormalDistribution(double x0, double x1, double mean, double variance, int n = 1000)
     {
+        if (n < 2)
+            throw new ArgumentOutOfRangeException(nameof(n), "Number of points must be at least 2");
+
         var result = new List<DataPoint>();
         for (int i = 0; i < n; i++)
         {
@@ -1549,6 +1550,12 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     /// <param name="e">The event arguments.</param>
     private void SaveSettings_Click(object sender, RoutedEventArgs e)
     {
+        if (PlotModel == null)
+        {
+            UpdateStatus("No plot to save. Please select a demo first.", isError: true);
+            return;
+        }
+
         try
         {
             var dialog = new SaveFileDialog
@@ -1578,6 +1585,12 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     /// <param name="e">The event arguments.</param>
     private void LoadSettings_Click(object sender, RoutedEventArgs e)
     {
+        if (PlotModel == null)
+        {
+            UpdateStatus("No plot to apply settings to. Please select a demo first.", isError: true);
+            return;
+        }
+
         try
         {
             var dialog = new OpenFileDialog
@@ -1604,6 +1617,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
                         model.Series.Add(series);
 
                     PlotModel = model;
+                    PlotModel.InvalidatePlot(true);
                     UpdateStatus($"Settings loaded from {Path.GetFileName(dialog.FileName)}");
                 }
                 else
@@ -1625,6 +1639,10 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     /// <param name="e">The event arguments.</param>
     private void ShowPropertiesCheckBox_Changed(object sender, RoutedEventArgs e)
     {
+        // Avoid issues during initialization before controls are fully loaded
+        if (!_isLoaded)
+            return;
+
         SetPropertiesPanelVisibility(ShowPropertiesCheckBox.IsChecked == true);
     }
 

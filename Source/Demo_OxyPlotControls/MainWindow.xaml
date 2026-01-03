@@ -122,6 +122,7 @@
         <GridSplitter Grid.Row="1"
                       Grid.Column="2"
                       HorizontalAlignment="Stretch"
+                      VerticalAlignment="Stretch"
                       Background="Gray"/>
 
         <!-- Properties Panel (Right Side) -->
