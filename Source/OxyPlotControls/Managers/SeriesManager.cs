@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OxyPlot;
-using OxyPlot.Series;
 using OxyPlot.Wpf;
+
+// Use alias to resolve ambiguity between OxyPlot.Series.Series and OxyPlot.Wpf.Series
+using Series = OxyPlot.Series.Series;
 
 namespace OxyPlotControls.Managers;
 
@@ -92,10 +94,6 @@ public class SeriesManager
     /// </summary>
     /// <param name="series">The series to move up.</param>
     /// <returns>True if the series was moved, false if it was already first or not found.</returns>
-    /// <remarks>
-    /// This uses the efficient Move() method instead of the VB code's inefficient
-    /// clear-and-rebuild pattern that was O(n) for a simple swap.
-    /// </remarks>
     public bool MoveSeriesUp(Series series)
     {
         ArgumentNullException.ThrowIfNull(series);
@@ -103,7 +101,9 @@ public class SeriesManager
         var index = _model.Series.IndexOf(series);
         if (index <= 0) return false; // Already first or not found
 
-        _model.Series.Move(index, index - 1);
+        // ElementCollection doesn't have Move, so use remove/insert
+        _model.Series.RemoveAt(index);
+        _model.Series.Insert(index - 1, series);
         InvalidatePlot(false);
         return true;
     }
@@ -120,7 +120,9 @@ public class SeriesManager
         var index = _model.Series.IndexOf(series);
         if (index < 0 || index >= _model.Series.Count - 1) return false; // Not found or already last
 
-        _model.Series.Move(index, index + 1);
+        // ElementCollection doesn't have Move, so use remove/insert
+        _model.Series.RemoveAt(index);
+        _model.Series.Insert(index + 1, series);
         InvalidatePlot(false);
         return true;
     }
@@ -145,7 +147,11 @@ public class SeriesManager
 
         if (currentIndex == newIndex) return true; // Already at target
 
-        _model.Series.Move(currentIndex, newIndex);
+        // ElementCollection doesn't have Move, so use remove/insert
+        _model.Series.RemoveAt(currentIndex);
+        // Adjust newIndex if it's after the removed position
+        if (newIndex > currentIndex) newIndex--;
+        _model.Series.Insert(newIndex, series);
         InvalidatePlot(false);
         return true;
     }

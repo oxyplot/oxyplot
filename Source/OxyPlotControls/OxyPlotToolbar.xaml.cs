@@ -15,12 +15,21 @@ using System.Windows.Shapes;
 using Microsoft.Win32;
 using OxyPlot;
 using OxyPlot.Wpf;
-using OxyPlot.Annotations;
 using OxyPlot.Axes;
-using OxyPlot.Series;
 using System.IO;
 using OxyPlotControls.Dialogs;
 using DatabaseManager;
+
+// Use aliases to resolve ambiguity between OxyPlot.Annotations and OxyPlot.Wpf
+using Annotation = OxyPlot.Annotations.Annotation;
+using LineAnnotation = OxyPlot.Annotations.LineAnnotation;
+using ArrowAnnotation = OxyPlot.Annotations.ArrowAnnotation;
+using TextAnnotation = OxyPlot.Annotations.TextAnnotation;
+using RectangleAnnotation = OxyPlot.Annotations.RectangleAnnotation;
+using EllipseAnnotation = OxyPlot.Annotations.EllipseAnnotation;
+using PointAnnotation = OxyPlot.Annotations.PointAnnotation;
+using PolygonAnnotation = OxyPlot.Annotations.PolygonAnnotation;
+using PolylineAnnotation = OxyPlot.Annotations.PolylineAnnotation;
 
 namespace OxyPlotControls;
 

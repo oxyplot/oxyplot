@@ -1,11 +1,12 @@
-<UserControl x:Class="OxyPlotControls.Controls.Legend.LegendControl"
+<base:PlotControlBase x:Class="OxyPlotControls.Controls.Legend.LegendControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:base="clr-namespace:OxyPlotControls.Controls.Base"
              xmlns:converters="clr-namespace:OxyPlotControls.Converters"
              x:Name="LegendControlRoot">
-    <UserControl.Resources>
+    <base:PlotControlBase.Resources>
         <converters:OxyColorConverter x:Key="OxyColorConverter"/>
-    </UserControl.Resources>
+    </base:PlotControlBase.Resources>
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel Margin="8">
             <!-- Title Section -->
@@ -105,4 +106,4 @@
             </Expander>
         </StackPanel>
     </ScrollViewer>
-</UserControl>
+</base:PlotControlBase>

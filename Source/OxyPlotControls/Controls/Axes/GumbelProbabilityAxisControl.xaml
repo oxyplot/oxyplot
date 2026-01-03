@@ -1,6 +1,7 @@
-<UserControl x:Class="OxyPlotControls.Controls.Axes.GumbelProbabilityAxisControl"
+<base:AxisControlBase x:Class="OxyPlotControls.Controls.Axes.GumbelProbabilityAxisControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:base="clr-namespace:OxyPlotControls.Controls.Base"
              x:Name="GumbelProbabilityAxisControlRoot">
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel Margin="8">
@@ -25,4 +26,4 @@
             </Expander>
         </StackPanel>
     </ScrollViewer>
-</UserControl>
+</base:AxisControlBase>

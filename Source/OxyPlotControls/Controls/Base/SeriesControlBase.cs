@@ -1,6 +1,5 @@
 using System.Windows;
 using System.Windows.Controls;
-using OxyPlot.Series;
 
 namespace OxyPlotControls.Controls.Base;
 
@@ -18,7 +17,7 @@ public abstract class SeriesControlBase : UserControl
     public static readonly DependencyProperty SeriesProperty =
         DependencyProperty.Register(
             nameof(Series),
-            typeof(Series),
+            typeof(OxyPlot.Series.Series),
             typeof(SeriesControlBase),
             new FrameworkPropertyMetadata(
                 null,
@@ -32,9 +31,9 @@ public abstract class SeriesControlBase : UserControl
     /// <summary>
     /// Gets or sets the Series being edited by this control.
     /// </summary>
-    public Series? Series
+    public OxyPlot.Series.Series? Series
     {
-        get => (Series?)GetValue(SeriesProperty);
+        get => (OxyPlot.Series.Series?)GetValue(SeriesProperty);
         set => SetValue(SeriesProperty, value);
     }
 
@@ -47,7 +46,7 @@ public abstract class SeriesControlBase : UserControl
     /// </summary>
     /// <param name="oldValue">The old Series value.</param>
     /// <param name="newValue">The new Series value.</param>
-    protected virtual void OnSeriesChanged(Series? oldValue, Series? newValue)
+    protected virtual void OnSeriesChanged(OxyPlot.Series.Series? oldValue, OxyPlot.Series.Series? newValue)
     {
         // Override in derived classes to handle series changes
     }
@@ -56,7 +55,7 @@ public abstract class SeriesControlBase : UserControl
     {
         if (d is SeriesControlBase control)
         {
-            control.OnSeriesChanged(e.OldValue as Series, e.NewValue as Series);
+            control.OnSeriesChanged(e.OldValue as OxyPlot.Series.Series, e.NewValue as OxyPlot.Series.Series);
         }
     }
 

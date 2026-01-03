@@ -1,16 +1,17 @@
-<UserControl x:Class="OxyPlotControls.Controls.Series.LineSeriesControl"
+<base:SeriesControlBase x:Class="OxyPlotControls.Controls.Series.LineSeriesControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:base="clr-namespace:OxyPlotControls.Controls.Base"
              xmlns:converters="clr-namespace:OxyPlotControls.Converters"
              mc:Ignorable="d"
              x:Name="LineSeriesControlRoot"
              MinWidth="200" d:DesignHeight="450" d:DesignWidth="300">
 
-    <UserControl.Resources>
+    <base:SeriesControlBase.Resources>
         <converters:OxyColorConverter x:Key="OxyColorConverter"/>
-    </UserControl.Resources>
+    </base:SeriesControlBase.Resources>
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel Margin="8">
@@ -116,4 +117,4 @@
 
         </StackPanel>
     </ScrollViewer>
-</UserControl>
+</base:SeriesControlBase>
