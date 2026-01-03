@@ -297,24 +297,10 @@ public static class PlotModelSerializer
         axisElement.Add(style);
 
         // Type-specific properties
+        // Note: Derived types must come before base types in pattern matching
         switch (axis)
         {
-            case LinearAxis linearAxis:
-                var linearProps = new XElement("LinearAxis");
-                linearProps.SetAttributeValue("FormatAsFractions", SerializationHelpers.SerializeBoolean(linearAxis.FormatAsFractions));
-                linearProps.SetAttributeValue("FractionUnit", SerializationHelpers.SerializeDouble(linearAxis.FractionUnit));
-                if (!string.IsNullOrEmpty(linearAxis.FractionUnitSymbol))
-                    linearProps.SetAttributeValue("FractionUnitSymbol", linearAxis.FractionUnitSymbol);
-                axisElement.Add(linearProps);
-                break;
-
-            case LogarithmicAxis logAxis:
-                var logProps = new XElement("LogarithmicAxis");
-                logProps.SetAttributeValue("Base", SerializationHelpers.SerializeDouble(logAxis.Base));
-                logProps.SetAttributeValue("PowerPadding", SerializationHelpers.SerializeBoolean(logAxis.PowerPadding));
-                axisElement.Add(logProps);
-                break;
-
+            // CategoryAxis, DateTimeAxis, TimeSpanAxis extend LinearAxis, so check them first
             case CategoryAxis categoryAxis:
                 var categoryProps = new XElement("CategoryAxis");
                 categoryProps.SetAttributeValue("IsTickCentered", SerializationHelpers.SerializeBoolean(categoryAxis.IsTickCentered));
@@ -344,6 +330,22 @@ public static class PlotModelSerializer
             case TimeSpanAxis timeSpanAxis:
                 var timeSpanProps = new XElement("TimeSpanAxis");
                 axisElement.Add(timeSpanProps);
+                break;
+
+            case LinearAxis linearAxis:
+                var linearProps = new XElement("LinearAxis");
+                linearProps.SetAttributeValue("FormatAsFractions", SerializationHelpers.SerializeBoolean(linearAxis.FormatAsFractions));
+                linearProps.SetAttributeValue("FractionUnit", SerializationHelpers.SerializeDouble(linearAxis.FractionUnit));
+                if (!string.IsNullOrEmpty(linearAxis.FractionUnitSymbol))
+                    linearProps.SetAttributeValue("FractionUnitSymbol", linearAxis.FractionUnitSymbol);
+                axisElement.Add(linearProps);
+                break;
+
+            case LogarithmicAxis logAxis:
+                var logProps = new XElement("LogarithmicAxis");
+                logProps.SetAttributeValue("Base", SerializationHelpers.SerializeDouble(logAxis.Base));
+                logProps.SetAttributeValue("PowerPadding", SerializationHelpers.SerializeBoolean(logAxis.PowerPadding));
+                axisElement.Add(logProps);
                 break;
         }
 
@@ -557,8 +559,23 @@ public static class PlotModelSerializer
         seriesElement.Add(general);
 
         // Type-specific properties
+        // Note: Derived types must come before base types in pattern matching
         switch (seriesItem)
         {
+            // AreaSeries extends LineSeries, so check it first
+            case AreaSeries areaSeries:
+                var areaProps = new XElement("AreaSeries");
+                areaProps.SetAttributeValue("Color", SerializationHelpers.SerializeColor(areaSeries.Color));
+                areaProps.SetAttributeValue("Color2", SerializationHelpers.SerializeColor(areaSeries.Color2));
+                areaProps.SetAttributeValue("Fill", SerializationHelpers.SerializeColor(areaSeries.Fill));
+                areaProps.SetAttributeValue("StrokeThickness", SerializationHelpers.SerializeDouble(areaSeries.StrokeThickness));
+                if (!string.IsNullOrEmpty(areaSeries.XAxisKey))
+                    areaProps.SetAttributeValue("XAxisKey", areaSeries.XAxisKey);
+                if (!string.IsNullOrEmpty(areaSeries.YAxisKey))
+                    areaProps.SetAttributeValue("YAxisKey", areaSeries.YAxisKey);
+                seriesElement.Add(areaProps);
+                break;
+
             case LineSeries lineSeries:
                 var lineProps = new XElement("LineSeries");
                 lineProps.SetAttributeValue("Color", SerializationHelpers.SerializeColor(lineSeries.Color));
@@ -604,19 +621,6 @@ public static class PlotModelSerializer
                 if (!string.IsNullOrEmpty(barSeries.YAxisKey))
                     barProps.SetAttributeValue("YAxisKey", barSeries.YAxisKey);
                 seriesElement.Add(barProps);
-                break;
-
-            case AreaSeries areaSeries:
-                var areaProps = new XElement("AreaSeries");
-                areaProps.SetAttributeValue("Color", SerializationHelpers.SerializeColor(areaSeries.Color));
-                areaProps.SetAttributeValue("Color2", SerializationHelpers.SerializeColor(areaSeries.Color2));
-                areaProps.SetAttributeValue("Fill", SerializationHelpers.SerializeColor(areaSeries.Fill));
-                areaProps.SetAttributeValue("StrokeThickness", SerializationHelpers.SerializeDouble(areaSeries.StrokeThickness));
-                if (!string.IsNullOrEmpty(areaSeries.XAxisKey))
-                    areaProps.SetAttributeValue("XAxisKey", areaSeries.XAxisKey);
-                if (!string.IsNullOrEmpty(areaSeries.YAxisKey))
-                    areaProps.SetAttributeValue("YAxisKey", areaSeries.YAxisKey);
-                seriesElement.Add(areaProps);
                 break;
         }
 
@@ -924,27 +928,10 @@ public static class PlotModelSerializer
         }
 
         // Type-specific properties
+        // Note: Derived types must come before base types in pattern matching
         switch (axis)
         {
-            case LinearAxis linearAxis:
-                var linearProps = axisElement.Element("LinearAxis");
-                if (linearProps is not null)
-                {
-                    linearAxis.FormatAsFractions = SerializationHelpers.DeserializeBoolean(linearProps.Attribute("FormatAsFractions")?.Value ?? "False");
-                    linearAxis.FractionUnit = SerializationHelpers.DeserializeDouble(linearProps.Attribute("FractionUnit")?.Value ?? "1");
-                    linearAxis.FractionUnitSymbol = linearProps.Attribute("FractionUnitSymbol")?.Value;
-                }
-                break;
-
-            case LogarithmicAxis logAxis:
-                var logProps = axisElement.Element("LogarithmicAxis");
-                if (logProps is not null)
-                {
-                    logAxis.Base = SerializationHelpers.DeserializeDouble(logProps.Attribute("Base")?.Value ?? "10");
-                    logAxis.PowerPadding = SerializationHelpers.DeserializeBoolean(logProps.Attribute("PowerPadding")?.Value ?? "True");
-                }
-                break;
-
+            // CategoryAxis, DateTimeAxis, TimeSpanAxis extend LinearAxis, so check them first
             case CategoryAxis categoryAxis:
                 var categoryProps = axisElement.Element("CategoryAxis");
                 if (categoryProps is not null)
@@ -986,6 +973,29 @@ public static class PlotModelSerializer
                     dateTimeAxis.FirstDayOfWeek = SerializationHelpers.DeserializeEnum(dateTimeProps.Attribute("FirstDayOfWeek")?.Value ?? "Monday", DayOfWeek.Monday);
                     dateTimeAxis.IntervalType = SerializationHelpers.DeserializeEnum(dateTimeProps.Attribute("IntervalType")?.Value ?? "Auto", DateTimeIntervalType.Auto);
                     dateTimeAxis.MinorIntervalType = SerializationHelpers.DeserializeEnum(dateTimeProps.Attribute("MinorIntervalType")?.Value ?? "Auto", DateTimeIntervalType.Auto);
+                }
+                break;
+
+            case TimeSpanAxis timeSpanAxis:
+                // TimeSpanAxis doesn't have additional properties in our serialization
+                break;
+
+            case LinearAxis linearAxis:
+                var linearProps = axisElement.Element("LinearAxis");
+                if (linearProps is not null)
+                {
+                    linearAxis.FormatAsFractions = SerializationHelpers.DeserializeBoolean(linearProps.Attribute("FormatAsFractions")?.Value ?? "False");
+                    linearAxis.FractionUnit = SerializationHelpers.DeserializeDouble(linearProps.Attribute("FractionUnit")?.Value ?? "1");
+                    linearAxis.FractionUnitSymbol = linearProps.Attribute("FractionUnitSymbol")?.Value;
+                }
+                break;
+
+            case LogarithmicAxis logAxis:
+                var logProps = axisElement.Element("LogarithmicAxis");
+                if (logProps is not null)
+                {
+                    logAxis.Base = SerializationHelpers.DeserializeDouble(logProps.Attribute("Base")?.Value ?? "10");
+                    logAxis.PowerPadding = SerializationHelpers.DeserializeBoolean(logProps.Attribute("PowerPadding")?.Value ?? "True");
                 }
                 break;
         }
@@ -1250,8 +1260,23 @@ public static class PlotModelSerializer
         }
 
         // Type-specific properties
+        // Note: Derived types must come before base types in pattern matching
         switch (series)
         {
+            // AreaSeries extends LineSeries, so check it first
+            case AreaSeries areaSeries:
+                var areaProps = seriesElement.Element("AreaSeries");
+                if (areaProps is not null)
+                {
+                    areaSeries.Color = SerializationHelpers.DeserializeColor(areaProps.Attribute("Color")?.Value ?? "Automatic");
+                    areaSeries.Color2 = SerializationHelpers.DeserializeColor(areaProps.Attribute("Color2")?.Value ?? "Automatic");
+                    areaSeries.Fill = SerializationHelpers.DeserializeColor(areaProps.Attribute("Fill")?.Value ?? "Automatic");
+                    areaSeries.StrokeThickness = SerializationHelpers.DeserializeDouble(areaProps.Attribute("StrokeThickness")?.Value ?? "2");
+                    areaSeries.XAxisKey = areaProps.Attribute("XAxisKey")?.Value;
+                    areaSeries.YAxisKey = areaProps.Attribute("YAxisKey")?.Value;
+                }
+                break;
+
             case LineSeries lineSeries:
                 var lineProps = seriesElement.Element("LineSeries");
                 if (lineProps is not null)
@@ -1297,19 +1322,6 @@ public static class PlotModelSerializer
                     barSeries.BarWidth = SerializationHelpers.DeserializeDouble(barProps.Attribute("BarWidth")?.Value ?? "1");
                     barSeries.XAxisKey = barProps.Attribute("XAxisKey")?.Value;
                     barSeries.YAxisKey = barProps.Attribute("YAxisKey")?.Value;
-                }
-                break;
-
-            case AreaSeries areaSeries:
-                var areaProps = seriesElement.Element("AreaSeries");
-                if (areaProps is not null)
-                {
-                    areaSeries.Color = SerializationHelpers.DeserializeColor(areaProps.Attribute("Color")?.Value ?? "Automatic");
-                    areaSeries.Color2 = SerializationHelpers.DeserializeColor(areaProps.Attribute("Color2")?.Value ?? "Automatic");
-                    areaSeries.Fill = SerializationHelpers.DeserializeColor(areaProps.Attribute("Fill")?.Value ?? "Automatic");
-                    areaSeries.StrokeThickness = SerializationHelpers.DeserializeDouble(areaProps.Attribute("StrokeThickness")?.Value ?? "2");
-                    areaSeries.XAxisKey = areaProps.Attribute("XAxisKey")?.Value;
-                    areaSeries.YAxisKey = areaProps.Attribute("YAxisKey")?.Value;
                 }
                 break;
         }

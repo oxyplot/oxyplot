@@ -1823,17 +1823,19 @@ public partial class OxyPlotToolbar : UserControl
 
     private void SwapSeriesData(OxyPlot.Series.Series series)
     {
+        // Note: Derived types must come before base types in pattern matching
         switch (series)
         {
+            // AreaSeries extends LineSeries, so check it first
+            case OxyPlot.Series.AreaSeries areaSeries:
+                SwapDataPoints(areaSeries.Points);
+                SwapDataPoints(areaSeries.Points2);
+                break;
             case OxyPlot.Series.LineSeries lineSeries:
                 SwapDataPoints(lineSeries.Points);
                 break;
             case OxyPlot.Series.ScatterSeries scatterSeries:
                 SwapScatterPoints(scatterSeries.Points);
-                break;
-            case OxyPlot.Series.AreaSeries areaSeries:
-                SwapDataPoints(areaSeries.Points);
-                SwapDataPoints(areaSeries.Points2);
                 break;
         }
     }
@@ -1871,8 +1873,23 @@ public partial class OxyPlotToolbar : UserControl
             string seriesName = "";
             tableCount++;
 
+            // Note: Derived types must come before base types in pattern matching
             switch (series)
             {
+                // AreaSeries extends LineSeries, so check it first
+                case OxyPlot.Series.AreaSeries areaSeries:
+                    seriesName = GetSeriesName(areaSeries.Title, "AreaSeries", tableCount);
+                    dataTable.TableName = seriesName;
+                    dataTable.Columns.Add("id", typeof(int));
+                    dataTable.Columns.Add(seriesName + "_x", typeof(string));
+                    dataTable.Columns.Add(seriesName + "_y", typeof(string));
+
+                    foreach (var point in areaSeries.Points)
+                    {
+                        dataTable.Rows.Add(dataTable.Rows.Count + 1, point.X, point.Y);
+                    }
+                    break;
+
                 case OxyPlot.Series.LineSeries lineSeries:
                     seriesName = GetSeriesName(lineSeries.Title, "LineSeries", tableCount);
                     dataTable.TableName = seriesName;
@@ -1894,19 +1911,6 @@ public partial class OxyPlotToolbar : UserControl
                     dataTable.Columns.Add(seriesName + "_y", typeof(string));
 
                     foreach (var point in scatterSeries.Points)
-                    {
-                        dataTable.Rows.Add(dataTable.Rows.Count + 1, point.X, point.Y);
-                    }
-                    break;
-
-                case OxyPlot.Series.AreaSeries areaSeries:
-                    seriesName = GetSeriesName(areaSeries.Title, "AreaSeries", tableCount);
-                    dataTable.TableName = seriesName;
-                    dataTable.Columns.Add("id", typeof(int));
-                    dataTable.Columns.Add(seriesName + "_x", typeof(string));
-                    dataTable.Columns.Add(seriesName + "_y", typeof(string));
-
-                    foreach (var point in areaSeries.Points)
                     {
                         dataTable.Rows.Add(dataTable.Rows.Count + 1, point.X, point.Y);
                     }
