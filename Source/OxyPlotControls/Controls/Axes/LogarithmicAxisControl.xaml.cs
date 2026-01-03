@@ -13,26 +13,28 @@ public partial class LogarithmicAxisControl : AxisControlBase
     public LogarithmicAxisControl()
     {
         InitializeComponent();
+
+        // Update LogAxis when Axis changes
+        var dpd = System.ComponentModel.DependencyPropertyDescriptor.FromProperty(
+            AxisProperty, typeof(AxisControlBase));
+        dpd?.AddValueChanged(this, (s, e) => UpdateLogAxis());
     }
 
     /// <summary>
     /// Gets the axis as a LogarithmicAxis for binding to log-specific properties.
     /// </summary>
-    public LogarithmicAxis? LogAxis => Axis as LogarithmicAxis;
+    public LogarithmicAxis? LogAxis
+    {
+        get => (LogarithmicAxis?)GetValue(LogAxisProperty);
+        private set => SetValue(LogAxisPropertyKey, value);
+    }
 
     /// <summary>
-    /// Notifies property changed when Axis changes to update LogAxis binding.
+    /// Updates the LogAxis property when Axis changes.
     /// </summary>
-    protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+    private void UpdateLogAxis()
     {
-        base.OnPropertyChanged(e);
-
-        if (e.Property == AxisProperty)
-        {
-            // Notify that LogAxis has also changed
-            OnPropertyChanged(new DependencyPropertyChangedEventArgs(
-                LogAxisProperty, e.OldValue as LogarithmicAxis, e.NewValue as LogarithmicAxis));
-        }
+        LogAxis = Axis as LogarithmicAxis;
     }
 
     /// <summary>

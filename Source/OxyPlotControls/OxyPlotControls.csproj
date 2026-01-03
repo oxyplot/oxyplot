@@ -16,9 +16,16 @@
   <ItemGroup>
     <ProjectReference Include="..\OxyPlot\OxyPlot.csproj" />
     <ProjectReference Include="..\OxyPlot.Wpf\OxyPlot.Wpf.csproj" />
+    <!-- NOTE: DatabaseManager reference required for Excel/SQLite export functionality -->
+    <!-- Add reference to DatabaseManager project or package before building -->
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="System.Text.Json" Version="9.0.0" />
+  </ItemGroup>
+
+  <!-- Cursor files as embedded resources for custom cursors -->
+  <ItemGroup>
+    <Resource Include="Resources\*.cur" />
   </ItemGroup>
 </Project>

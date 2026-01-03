@@ -269,7 +269,7 @@ public partial class OxyPlotToolbar : UserControl
     }
 
     /// <summary>
-    /// Loads a cursor from an embedded resource.
+    /// Loads a cursor from a WPF resource.
     /// </summary>
     /// <param name="resourceName">The resource file name.</param>
     /// <returns>The cursor, or null if not found.</returns>
@@ -277,18 +277,9 @@ public partial class OxyPlotToolbar : UserControl
     {
         try
         {
-            var assembly = System.Reflection.Assembly.GetExecutingAssembly();
-            var resourcePath = $"OxyPlotControls.Resources.{resourceName}";
-
-            using var stream = assembly.GetManifestResourceStream(resourcePath);
-            if (stream != null)
-            {
-                return new Cursor(stream);
-            }
-
-            // Try alternate path format
-            var altPath = $"pack://application:,,,/OxyPlotControls;component/Resources/{resourceName}";
-            var resourceInfo = System.Windows.Application.GetResourceStream(new Uri(altPath));
+            // Use pack URI format for WPF resources
+            var resourceUri = new Uri($"pack://application:,,,/OxyPlotControls;component/Resources/{resourceName}");
+            var resourceInfo = System.Windows.Application.GetResourceStream(resourceUri);
             if (resourceInfo != null)
             {
                 return new Cursor(resourceInfo.Stream);
