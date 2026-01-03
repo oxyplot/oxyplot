@@ -12,50 +12,51 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Property Section Selector -->
-        <ComboBox x:Name="PropertySectionComboBox"
-                  Grid.Row="0"
-                  Margin="8,8,8,4"
-                  SelectedIndex="0"
-                  FontWeight="Bold"
-                  FontSize="12"
-                  SelectionChanged="PropertySectionComboBox_SelectionChanged"
-                  ToolTip="Select property section to edit">
-            <ComboBoxItem Content="GENERAL PLOT SETTINGS" Tag="General"/>
-            <ComboBoxItem Content="LEGEND" Tag="Legend"/>
-            <ComboBoxItem Content="AXES" Tag="Axes"/>
-            <ComboBoxItem Content="SERIES" Tag="Series"/>
-            <ComboBoxItem Content="ANNOTATIONS" Tag="Annotations"/>
-        </ComboBox>
+        <!-- Header with Section Selector and Close Button -->
+        <Grid Grid.Row="0" Margin="8,8,8,4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
 
-        <!-- Property Editor Container -->
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <!-- Property Section Selector -->
+            <ComboBox x:Name="PropertySectionComboBox"
+                      Grid.Column="0"
+                      SelectedIndex="0"
+                      FontWeight="Bold"
+                      FontSize="12"
+                      SelectionChanged="PropertySectionComboBox_SelectionChanged"
+                      ToolTip="Select property section to edit">
+                <ComboBoxItem Content="GENERAL PLOT SETTINGS" Tag="General"/>
+                <ComboBoxItem Content="LEGEND" Tag="Legend"/>
+                <ComboBoxItem Content="AXES" Tag="Axes"/>
+                <ComboBoxItem Content="SERIES" Tag="Series"/>
+                <ComboBoxItem Content="ANNOTATIONS" Tag="Annotations"/>
+            </ComboBox>
+
+            <!-- Close Button -->
+            <Button x:Name="ClosePropertiesButton"
+                    Grid.Column="1"
+                    Content="✕"
+                    Width="24"
+                    Height="24"
+                    Margin="4,0,0,0"
+                    Padding="0"
+                    FontWeight="Bold"
+                    ToolTip="Close properties panel"
+                    Click="ClosePropertiesButton_Click"
+                    Visibility="{Binding ShowCloseButton, ElementName=PropertiesControlRoot, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        </Grid>
+
+        <!-- Property Editor Container with Lazy Loading -->
+        <ScrollViewer x:Name="ControlScrollViewer" Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
             <Grid x:Name="PropertyContentGrid">
-                <!-- General Plot Settings -->
-                <general:GeneralPlotControl x:Name="GeneralControl"
-                                           Model="{Binding Model, ElementName=PropertiesControlRoot}"
-                                           Visibility="Visible"/>
-
-                <!-- Legend Settings -->
-                <legend:LegendControl x:Name="LegendControl"
-                                     Model="{Binding Model, ElementName=PropertiesControlRoot}"
-                                     Visibility="Collapsed"/>
-
-                <!-- Axes Selector -->
-                <selectors:AxesControl x:Name="AxesControl"
-                                      Model="{Binding Model, ElementName=PropertiesControlRoot}"
-                                      Visibility="Collapsed"/>
-
-                <!-- Series Selector -->
-                <selectors:SeriesSelectorControl x:Name="SeriesControl"
-                                                Model="{Binding Model, ElementName=PropertiesControlRoot}"
-                                                Visibility="Collapsed"/>
-
-                <!-- Annotations Selector -->
-                <selectors:AnnotationSelectorControl x:Name="AnnotationsControl"
-                                                     Model="{Binding Model, ElementName=PropertiesControlRoot}"
-                                                     Visibility="Collapsed"/>
+                <!-- Controls are created lazily in code-behind -->
             </Grid>
         </ScrollViewer>
     </Grid>
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </UserControl.Resources>
 </UserControl>

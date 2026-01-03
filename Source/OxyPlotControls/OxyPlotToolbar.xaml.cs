@@ -255,16 +255,51 @@ public partial class OxyPlotToolbar : UserControl
     }
 
     /// <summary>
-    /// Initializes custom cursors.
+    /// Initializes custom cursors from embedded resources.
+    /// Falls back to standard cursors if resources are not available.
     /// </summary>
     private void InitializeCursors()
     {
-        // Use standard cursors as fallback
-        _panHandCursor = Cursors.Hand;
-        _panHandClosedCursor = Cursors.Hand;
-        _zoomCursor = Cursors.Cross;
-        _movePointsCursor = Cursors.SizeAll;
-        _addPointCursor = Cursors.Cross;
+        // Try to load custom cursors from embedded resources
+        _panHandCursor = LoadCursorFromResource("Pan_Hand.cur") ?? Cursors.Hand;
+        _panHandClosedCursor = LoadCursorFromResource("Pan_Hand_Closed.cur") ?? Cursors.Hand;
+        _zoomCursor = LoadCursorFromResource("ZoomIn.cur") ?? Cursors.Cross;
+        _movePointsCursor = LoadCursorFromResource("SelectPointCursor.cur") ?? Cursors.SizeAll;
+        _addPointCursor = LoadCursorFromResource("AddPointCursor.cur") ?? Cursors.Cross;
+    }
+
+    /// <summary>
+    /// Loads a cursor from an embedded resource.
+    /// </summary>
+    /// <param name="resourceName">The resource file name.</param>
+    /// <returns>The cursor, or null if not found.</returns>
+    private static Cursor? LoadCursorFromResource(string resourceName)
+    {
+        try
+        {
+            var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+            var resourcePath = $"OxyPlotControls.Resources.{resourceName}";
+
+            using var stream = assembly.GetManifestResourceStream(resourcePath);
+            if (stream != null)
+            {
+                return new Cursor(stream);
+            }
+
+            // Try alternate path format
+            var altPath = $"pack://application:,,,/OxyPlotControls;component/Resources/{resourceName}";
+            var resourceInfo = System.Windows.Application.GetResourceStream(new Uri(altPath));
+            if (resourceInfo != null)
+            {
+                return new Cursor(resourceInfo.Stream);
+            }
+        }
+        catch
+        {
+            // Fallback to null, caller will use default cursor
+        }
+
+        return null;
     }
 
     /// <summary>
@@ -1646,21 +1681,63 @@ public partial class OxyPlotToolbar : UserControl
 
     private void OpenLineAnnotationTooltip(LineAnnotation line)
     {
+        // Close any previous tooltip
+        CloseLineAnnotationTooltip();
+
         _lineAnnotationTooltip = new ToolTip
         {
             IsOpen = true,
-            Placement = System.Windows.Controls.Primitives.PlacementMode.Mouse
+            Placement = System.Windows.Controls.Primitives.PlacementMode.Relative,
+            PlacementTarget = PlotView,
+            Background = System.Windows.Media.Brushes.White,
+            BorderBrush = System.Windows.Media.Brushes.Transparent,
+            Padding = new Thickness(2),
+            Margin = new Thickness(0)
         };
         UpdateLineAnnotationTooltip(line);
     }
 
     private void UpdateLineAnnotationTooltip(LineAnnotation line)
     {
-        if (_lineAnnotationTooltip == null) return;
+        if (_lineAnnotationTooltip == null || PlotView?.ActualModel == null) return;
 
-        var value = line.Type == LineAnnotationType.Vertical ? line.X : line.Y;
-        var axis = line.Type == LineAnnotationType.Vertical ? "X" : "Y";
-        _lineAnnotationTooltip.Content = $"{axis} = {value:G6}";
+        // Use axis-aware formatting (DateTimeAxis shows dates, CategoryAxis shows labels, etc.)
+        if (line.Type == LineAnnotationType.Vertical)
+        {
+            var xAxis = line.XAxis ?? PlotView.ActualModel.DefaultXAxis;
+            if (xAxis != null)
+            {
+                // Format the value using the axis's own formatting logic
+                _lineAnnotationTooltip.Content = xAxis.FormatValue(line.X);
+
+                // Position tooltip at the bottom of the line
+                var dataPoint = xAxis.IsReversed
+                    ? new DataPoint(line.X, line.YAxis?.ActualMaximum ?? 0)
+                    : new DataPoint(line.X, line.YAxis?.ActualMinimum ?? 0);
+                var screenPoint = line.Transform(dataPoint);
+                _lineAnnotationTooltip.UpdateLayout();
+                _lineAnnotationTooltip.VerticalOffset = screenPoint.Y;
+                _lineAnnotationTooltip.HorizontalOffset = screenPoint.X - (_lineAnnotationTooltip.ActualWidth / 2);
+            }
+        }
+        else if (line.Type == LineAnnotationType.Horizontal)
+        {
+            var yAxis = line.YAxis ?? PlotView.ActualModel.DefaultYAxis;
+            if (yAxis != null)
+            {
+                // Format the value using the axis's own formatting logic
+                _lineAnnotationTooltip.Content = yAxis.FormatValue(line.Y);
+
+                // Position tooltip at the left of the line
+                var dataPoint = line.XAxis?.IsReversed == true
+                    ? new DataPoint(line.XAxis.ActualMaximum, line.Y)
+                    : new DataPoint(line.XAxis?.ActualMinimum ?? 0, line.Y);
+                var screenPoint = line.Transform(dataPoint);
+                _lineAnnotationTooltip.UpdateLayout();
+                _lineAnnotationTooltip.VerticalOffset = screenPoint.Y - (_lineAnnotationTooltip.ActualHeight / 2);
+                _lineAnnotationTooltip.HorizontalOffset = screenPoint.X - _lineAnnotationTooltip.ActualWidth;
+            }
+        }
     }
 
     private void CloseLineAnnotationTooltip()

@@ -32,7 +32,7 @@ This document provides a comprehensive comparison between the original **VB.NET 
 | **Pan Mode** | ✅ PanAt | ✅ PanAt | ✅ Equivalent |
 | **Zoom Mode** | ✅ ZoomRectangle | ✅ ZoomRectangle | ✅ Equivalent |
 | **Zoom All** | ✅ ResetAllAxes | ✅ ResetAllAxes | ✅ Equivalent |
-| **Custom Cursors** | From resources | ✅ Standard cursors | ⚠️ Simplified |
+| **Custom Cursors** | From resources | ✅ From resources | ✅ Equivalent |
 | **Properties Event** | ✅ PropertiesCalled | ✅ PropertiesCalled | ✅ Equivalent |
 
 #### Annotation Creation Tools
@@ -81,10 +81,10 @@ This document provides a comprehensive comparison between the original **VB.NET 
 | Feature | VB Version | C# Version | Status |
 |---------|-----------|------------|--------|
 | **Plot Binding** | `Plot` property (Wpf.Plot) | `Model` property (PlotModel) | ✅ Updated |
-| **Lazy Loading** | ✅ Controls loaded on selection | Not implemented | ⚠️ Simplified |
+| **Lazy Loading** | ✅ Controls loaded on selection | ✅ Controls loaded on selection | ✅ Equivalent |
 | **Section Navigation** | ✅ ComboBox with 5 sections | ✅ ComboBox with 5 sections | ✅ Equivalent |
-| **PropertyEXP enum** | ✅ 22 property expanders | ✅ PropertyExpander enum | ⚠️ Reduced |
-| **Close Button** | ✅ ShowCloseButton | ❌ Not implemented | ⚠️ Missing |
+| **PropertyEXP enum** | ✅ 22 property expanders | ✅ 22 PropertyExpander values | ✅ Equivalent |
+| **Close Button** | ✅ ShowCloseButton | ✅ ShowCloseButton | ✅ Equivalent |
 | **Style Properties** | ✅ BackButtonStyle, ExpanderStyle, etc. | ❌ Simplified | ⚠️ Reduced |
 
 #### Sections
@@ -190,7 +190,7 @@ This document provides a comprehensive comparison between the original **VB.NET 
 | ScreenVector | ✅ GetScreenVectorAttribute | ✅ SerializeScreenVector/DeserializeScreenVector | ✅ Equivalent |
 | LineStyle | ❌ N/A | ✅ SerializeLineStyle/DeserializeLineStyle | ✅ C# Added |
 | Brush | ✅ GetBrushAttribute | ✅ SerializeBrush/DeserializeBrush | ✅ Equivalent |
-| FontFamily | ✅ GetFontFamilyAttribute | ❌ Not yet (uses string) | ⚠️ Simplified |
+| FontFamily | ✅ GetFontFamilyAttribute | ✅ SerializeFontFamily/DeserializeFontFamily | ✅ Equivalent |
 
 ---
 
@@ -264,15 +264,13 @@ This document provides a comprehensive comparison between the original **VB.NET 
 
 ### Partially Implemented (⚠️)
 
-1. **Custom Cursors** - Using standard cursors instead of custom .cur files
-2. **OxyplotPropertiesControl** - Simplified (no lazy loading, reduced style properties)
-3. **Some extension methods** - Not all VB extensions ported
+1. **Style Properties** - OxyplotPropertiesControl has simplified styling (no custom ExpanderStyle, TabItemStyle)
+2. **Some extension methods** - Not all VB extensions ported (IsBound, CopyBinding, etc.)
 
 ### Not Yet Implemented (❌)
 
-1. FontFamily serialization helper (using string instead)
-2. Binding copy utilities
-3. Some property expander navigation enums
+1. Binding copy utilities (IsBound, CopyBinding extensions)
+2. Custom style dependency properties for property controls
 
 ---
 

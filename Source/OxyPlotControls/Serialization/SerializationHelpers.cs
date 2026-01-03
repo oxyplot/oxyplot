@@ -504,4 +504,41 @@ public static class SerializationHelpers
     public static LineStyle DeserializeLineStyle(string value) => DeserializeEnum(value, LineStyle.Solid);
 
     #endregion
+
+    #region FontFamily Serialization
+
+    private static readonly System.Windows.Media.FontFamilyConverter _fontFamilyConverter = new();
+
+    /// <summary>
+    /// Serializes a <see cref="System.Windows.Media.FontFamily"/> to a culture-invariant string.
+    /// </summary>
+    /// <param name="fontFamily">The font family to serialize.</param>
+    /// <returns>The font family name as a string.</returns>
+    public static string SerializeFontFamily(System.Windows.Media.FontFamily fontFamily)
+    {
+        return fontFamily?.Source ?? "Segoe UI";
+    }
+
+    /// <summary>
+    /// Deserializes a <see cref="System.Windows.Media.FontFamily"/> from a string.
+    /// </summary>
+    /// <param name="value">The string value to deserialize.</param>
+    /// <returns>The font family, or Segoe UI if parsing fails.</returns>
+    public static System.Windows.Media.FontFamily DeserializeFontFamily(string? value)
+    {
+        if (string.IsNullOrEmpty(value))
+            return new System.Windows.Media.FontFamily("Segoe UI");
+
+        try
+        {
+            return (System.Windows.Media.FontFamily?)_fontFamilyConverter.ConvertFromInvariantString(value)
+                ?? new System.Windows.Media.FontFamily("Segoe UI");
+        }
+        catch
+        {
+            return new System.Windows.Media.FontFamily("Segoe UI");
+        }
+    }
+
+    #endregion
 }
