@@ -137,20 +137,35 @@ public partial class SavePlotImageDialog : Window
 
             // Export based on file extension
             var extension = Path.GetExtension(dialog.FileName).ToLowerInvariant();
-            var backgroundColor = _plotView.ActualModel?.Background ?? OxyColors.White;
 
             switch (extension)
             {
                 case ".png":
-                    PngExporter.Export(_plotView.ActualModel, dialog.FileName, width, height, backgroundColor);
+                    // PngExporter uses model.Background internally for background color
+                    PngExporter.Export(_plotView.ActualModel, dialog.FileName, width, height);
                     break;
 
                 case ".pdf":
-                    PdfExporter.Export(_plotView.ActualModel, dialog.FileName, width, height);
+                    // PdfExporter takes a Stream, not a filename
+                    using (var stream = File.Create(dialog.FileName))
+                    {
+                        PdfExporter.Export(_plotView.ActualModel, stream, width, height);
+                    }
                     break;
 
                 case ".svg":
-                    SvgExporter.Export(_plotView.ActualModel, dialog.FileName, width, height, true, backgroundColor);
+                    // SvgExporter takes a Stream, not a filename
+                    // Use OxyPlot.Wpf.SvgExporter which has WPF text measuring
+                    var svgExporter = new SvgExporter
+                    {
+                        Width = width,
+                        Height = height,
+                        IsDocument = true
+                    };
+                    using (var stream = File.Create(dialog.FileName))
+                    {
+                        svgExporter.Export(_plotView.ActualModel, stream);
+                    }
                     break;
 
                 default:

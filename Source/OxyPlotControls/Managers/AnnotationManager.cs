@@ -188,7 +188,7 @@ public class AnnotationManager
             TextPosition = new DataPoint(x, y),
             TextColor = OxyColors.Black,
             FontSize = 12,
-            FontWeight = FontWeights.Normal
+            FontWeight = OxyPlot.FontWeights.Normal
         };
     }
 
