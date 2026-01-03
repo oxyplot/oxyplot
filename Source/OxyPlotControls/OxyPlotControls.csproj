@@ -1,7 +1,7 @@
 <!-- OxyPlotControls - Modern C# WPF Controls for OxyPlot -->
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net8.0-windows;</TargetFrameworks>
+    <TargetFrameworks>net8.0-windows;net9.0-windows</TargetFrameworks>
     <UseWPF>true</UseWPF>
     <Nullable>enable</Nullable>
     <LangVersion>12.0</LangVersion>
@@ -28,9 +28,15 @@
   <ItemGroup>
     <Resource Include="Resources\*.cur" />
   </ItemGroup>
-  <ItemGroup>
+  <!-- DatabaseManager reference uses $(TargetFramework) to support multi-targeting -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'net8.0-windows'">
     <Reference Include="DatabaseManager">
       <HintPath>..\..\..\database-management\DatabaseManager\bin\Debug\net8.0\DatabaseManager.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net9.0-windows'">
+    <Reference Include="DatabaseManager">
+      <HintPath>..\..\..\database-management\DatabaseManager\bin\Debug\net9.0\DatabaseManager.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>
