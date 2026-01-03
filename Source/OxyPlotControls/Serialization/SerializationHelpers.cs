@@ -272,17 +272,17 @@ public static class SerializationHelpers
     {
         if (string.IsNullOrWhiteSpace(value))
         {
-            return FontWeights.Normal;
+            return System.Windows.FontWeights.Normal;
         }
 
         try
         {
             var converter = new FontWeightConverter();
-            return (FontWeight)(converter.ConvertFromInvariantString(value) ?? FontWeights.Normal);
+            return (FontWeight)(converter.ConvertFromInvariantString(value) ?? System.Windows.FontWeights.Normal);
         }
         catch
         {
-            return FontWeights.Normal;
+            return System.Windows.FontWeights.Normal;
         }
     }
 
