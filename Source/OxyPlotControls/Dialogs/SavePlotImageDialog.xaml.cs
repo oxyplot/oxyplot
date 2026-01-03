@@ -10,7 +10,7 @@ using OxyPlot.Wpf;
 // Use WPF exporters (they take file paths)
 using SvgExporter = OxyPlot.Wpf.SvgExporter;
 using PngExporter = OxyPlot.Wpf.PngExporter;
-using PdfExporter = OxyPlot.Wpf.PdfExporter;
+using PdfExporter = OxyPlot.PdfExporter; // PdfExporter is in core OxyPlot namespace
 
 namespace OxyPlotControls.Dialogs;
 
