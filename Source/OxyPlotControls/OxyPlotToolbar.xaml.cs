@@ -31,6 +31,9 @@ using PointAnnotation = OxyPlot.Annotations.PointAnnotation;
 using PolygonAnnotation = OxyPlot.Annotations.PolygonAnnotation;
 using PolylineAnnotation = OxyPlot.Annotations.PolylineAnnotation;
 
+// Series types alias
+using ScatterPoint = OxyPlot.Series.ScatterPoint;
+
 namespace OxyPlotControls;
 
 /// <summary>

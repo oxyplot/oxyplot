@@ -2,13 +2,18 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using OxyPlot;
-using OxyPlot.Series;
 using OxyPlotControls.Controls.Base;
 using OxyPlotControls.Factories;
 using OxyPlotControls.Managers;
 
-// Use alias to resolve ambiguity with OxyPlot.Series namespace
+// Use aliases to resolve ambiguity with OxyPlot.Series namespace
 using Series = OxyPlot.Series.Series;
+using LineSeries = OxyPlot.Series.LineSeries;
+using BarSeries = OxyPlot.Series.BarSeries;
+using ColumnSeries = OxyPlot.Series.ColumnSeries;
+using ScatterSeries = OxyPlot.Series.ScatterSeries;
+using AreaSeries = OxyPlot.Series.AreaSeries;
+using PieSeries = OxyPlot.Series.PieSeries;
 
 namespace OxyPlotControls.Controls.Selectors;
 
