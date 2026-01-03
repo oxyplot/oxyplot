@@ -8,7 +8,7 @@ namespace OxyPlotControls.Controls.Base;
 /// Base class for series editor controls.
 /// Provides common infrastructure for editing series properties.
 /// </summary>
-public abstract class SeriesControlBase : UserControl
+public class SeriesControlBase : UserControl
 {
     #region Dependency Properties
 

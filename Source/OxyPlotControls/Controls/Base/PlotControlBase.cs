@@ -8,7 +8,7 @@ namespace OxyPlotControls.Controls.Base;
 /// Base class for all OxyPlot property editor controls.
 /// Provides common infrastructure for PlotModel binding and change notification.
 /// </summary>
-public abstract class PlotControlBase : UserControl
+public class PlotControlBase : UserControl
 {
     #region Dependency Properties
 
