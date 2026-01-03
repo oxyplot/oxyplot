@@ -128,6 +128,15 @@ public partial class OxyPlotToolbar : UserControl
         set => SetValue(ToolBarOrientationProperty, value);
     }
 
+    /// <summary>
+    /// Gets or sets the toolbar orientation. Alias for <see cref="ToolBarOrientation"/>.
+    /// </summary>
+    public Orientation Orientation
+    {
+        get => ToolBarOrientation;
+        set => ToolBarOrientation = value;
+    }
+
     // Cursors
     private Cursor? _movePointsCursor;
     private Cursor? _addPointCursor;
