@@ -7,6 +7,11 @@ using Microsoft.Win32;
 using OxyPlot;
 using OxyPlot.Wpf;
 
+// Use WPF exporters (they take file paths)
+using SvgExporter = OxyPlot.Wpf.SvgExporter;
+using PngExporter = OxyPlot.Wpf.PngExporter;
+using PdfExporter = OxyPlot.Wpf.PdfExporter;
+
 namespace OxyPlotControls.Dialogs;
 
 /// <summary>
