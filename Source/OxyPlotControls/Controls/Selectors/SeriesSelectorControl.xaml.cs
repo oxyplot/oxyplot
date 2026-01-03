@@ -7,6 +7,9 @@ using OxyPlotControls.Controls.Base;
 using OxyPlotControls.Factories;
 using OxyPlotControls.Managers;
 
+// Use alias to resolve ambiguity with OxyPlot.Series namespace
+using Series = OxyPlot.Series.Series;
+
 namespace OxyPlotControls.Controls.Selectors;
 
 /// <summary>

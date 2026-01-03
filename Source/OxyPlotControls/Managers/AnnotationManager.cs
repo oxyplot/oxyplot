@@ -2,8 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OxyPlot;
-using OxyPlot.Annotations;
 using OxyPlot.Wpf;
+
+// Use aliases to resolve ambiguity between OxyPlot.Annotations and OxyPlot.Wpf
+using Annotation = OxyPlot.Annotations.Annotation;
+using LineAnnotation = OxyPlot.Annotations.LineAnnotation;
+using ArrowAnnotation = OxyPlot.Annotations.ArrowAnnotation;
+using TextAnnotation = OxyPlot.Annotations.TextAnnotation;
+using PolygonAnnotation = OxyPlot.Annotations.PolygonAnnotation;
 
 namespace OxyPlotControls.Managers;
 

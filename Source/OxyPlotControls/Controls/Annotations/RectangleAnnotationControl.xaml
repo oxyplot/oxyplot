@@ -1,11 +1,12 @@
-<UserControl x:Class="OxyPlotControls.Controls.Annotations.RectangleAnnotationControl"
+<base:AnnotationControlBase x:Class="OxyPlotControls.Controls.Annotations.RectangleAnnotationControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:base="clr-namespace:OxyPlotControls.Controls.Base"
              xmlns:converters="clr-namespace:OxyPlotControls.Converters"
              x:Name="RectangleAnnotationControlRoot">
-    <UserControl.Resources>
+    <base:AnnotationControlBase.Resources>
         <converters:OxyColorConverter x:Key="OxyColorConverter"/>
-    </UserControl.Resources>
+    </base:AnnotationControlBase.Resources>
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel Margin="8">
             <Expander Header="RECTANGLE ANNOTATION" IsExpanded="True">
@@ -41,4 +42,4 @@
             </Expander>
         </StackPanel>
     </ScrollViewer>
-</UserControl>
+</base:AnnotationControlBase>
