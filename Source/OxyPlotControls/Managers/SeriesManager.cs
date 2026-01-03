@@ -36,7 +36,7 @@ public class SeriesManager
     /// Adds a series to the plot model.
     /// </summary>
     /// <param name="series">The series to add.</param>
-    public void AddSeries(Series series)
+    public void AddSeries(OxyPlot.Series.Series series)
     {
         ArgumentNullException.ThrowIfNull(series);
 
@@ -49,7 +49,7 @@ public class SeriesManager
     /// </summary>
     /// <param name="series">The series to remove.</param>
     /// <returns>True if the series was removed, false if it wasn't found.</returns>
-    public bool RemoveSeries(Series series)
+    public bool RemoveSeries(OxyPlot.Series.Series series)
     {
         ArgumentNullException.ThrowIfNull(series);
 
@@ -94,7 +94,7 @@ public class SeriesManager
     /// </summary>
     /// <param name="series">The series to move up.</param>
     /// <returns>True if the series was moved, false if it was already first or not found.</returns>
-    public bool MoveSeriesUp(Series series)
+    public bool MoveSeriesUp(OxyPlot.Series.Series series)
     {
         ArgumentNullException.ThrowIfNull(series);
 
@@ -113,7 +113,7 @@ public class SeriesManager
     /// </summary>
     /// <param name="series">The series to move down.</param>
     /// <returns>True if the series was moved, false if it was already last or not found.</returns>
-    public bool MoveSeriesDown(Series series)
+    public bool MoveSeriesDown(OxyPlot.Series.Series series)
     {
         ArgumentNullException.ThrowIfNull(series);
 
@@ -133,7 +133,7 @@ public class SeriesManager
     /// <param name="series">The series to move.</param>
     /// <param name="newIndex">The target index.</param>
     /// <returns>True if the series was moved, false if not found.</returns>
-    public bool MoveSeriesTo(Series series, int newIndex)
+    public bool MoveSeriesTo(OxyPlot.Series.Series series, int newIndex)
     {
         ArgumentNullException.ThrowIfNull(series);
 
@@ -164,14 +164,14 @@ public class SeriesManager
     /// Gets all series in the plot model.
     /// </summary>
     /// <returns>Collection of all series.</returns>
-    public IEnumerable<Series> GetAllSeries() => _model.Series;
+    public IEnumerable<OxyPlot.Series.Series> GetAllSeries() => _model.Series;
 
     /// <summary>
     /// Gets series of a specific type.
     /// </summary>
     /// <typeparam name="TSeries">The series type to filter by.</typeparam>
     /// <returns>Collection of series of the specified type.</returns>
-    public IEnumerable<TSeries> GetSeriesOfType<TSeries>() where TSeries : Series
+    public IEnumerable<TSeries> GetSeriesOfType<TSeries>() where TSeries : OxyPlot.Series.Series
         => _model.Series.OfType<TSeries>();
 
     /// <summary>
@@ -179,7 +179,7 @@ public class SeriesManager
     /// </summary>
     /// <param name="title">The series title to search for.</param>
     /// <returns>The series with the matching title, or null if not found.</returns>
-    public Series? FindSeriesByTitle(string title)
+    public OxyPlot.Series.Series? FindSeriesByTitle(string title)
     {
         ArgumentNullException.ThrowIfNull(title);
         return _model.Series.FirstOrDefault(s => s.Title == title);
@@ -190,7 +190,7 @@ public class SeriesManager
     /// </summary>
     /// <param name="series">The series to find.</param>
     /// <returns>The index of the series, or -1 if not found.</returns>
-    public int GetSeriesIndex(Series series)
+    public int GetSeriesIndex(OxyPlot.Series.Series series)
     {
         ArgumentNullException.ThrowIfNull(series);
         return _model.Series.IndexOf(series);
@@ -210,7 +210,7 @@ public class SeriesManager
     /// </summary>
     /// <param name="series">The series to modify.</param>
     /// <param name="isVisible">True to show the series, false to hide it.</param>
-    public void SetSeriesVisibility(Series series, bool isVisible)
+    public void SetSeriesVisibility(OxyPlot.Series.Series series, bool isVisible)
     {
         ArgumentNullException.ThrowIfNull(series);
 
@@ -222,7 +222,7 @@ public class SeriesManager
     /// Toggles the visibility of a series.
     /// </summary>
     /// <param name="series">The series to toggle.</param>
-    public void ToggleSeriesVisibility(Series series)
+    public void ToggleSeriesVisibility(OxyPlot.Series.Series series)
     {
         ArgumentNullException.ThrowIfNull(series);
 

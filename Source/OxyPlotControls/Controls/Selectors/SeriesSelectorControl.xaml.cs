@@ -76,7 +76,7 @@ public partial class SeriesSelectorControl : UserControl
 
     private void SeriesComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (SeriesComboBox.SelectedItem is Series series)
+        if (SeriesComboBox.SelectedItem is OxyPlot.Series.Series series)
         {
             var editor = SeriesControlFactory.CreateControl(series);
 
@@ -98,7 +98,7 @@ public partial class SeriesSelectorControl : UserControl
 
     private void MoveUp_Click(object sender, RoutedEventArgs e)
     {
-        if (SeriesComboBox.SelectedItem is Series series && _seriesManager != null)
+        if (SeriesComboBox.SelectedItem is OxyPlot.Series.Series series && _seriesManager != null)
         {
             if (_seriesManager.MoveSeriesUp(series))
             {
@@ -109,7 +109,7 @@ public partial class SeriesSelectorControl : UserControl
 
     private void MoveDown_Click(object sender, RoutedEventArgs e)
     {
-        if (SeriesComboBox.SelectedItem is Series series && _seriesManager != null)
+        if (SeriesComboBox.SelectedItem is OxyPlot.Series.Series series && _seriesManager != null)
         {
             if (_seriesManager.MoveSeriesDown(series))
             {
@@ -120,7 +120,7 @@ public partial class SeriesSelectorControl : UserControl
 
     private void DeleteSeries_Click(object sender, RoutedEventArgs e)
     {
-        if (SeriesComboBox.SelectedItem is Series series && Model != null)
+        if (SeriesComboBox.SelectedItem is OxyPlot.Series.Series series && Model != null)
         {
             var result = MessageBox.Show(
                 $"Delete series '{series.Title}'?",
@@ -153,7 +153,7 @@ public partial class SeriesSelectorControl : UserControl
     private void AddAreaSeries_Click(object sender, RoutedEventArgs e) => AddNewSeries(new AreaSeries { Title = "Area Series" });
     private void AddPieSeries_Click(object sender, RoutedEventArgs e) => AddNewSeries(new PieSeries { Title = "Pie Series" });
 
-    private void AddNewSeries(Series series)
+    private void AddNewSeries(OxyPlot.Series.Series series)
     {
         if (Model != null)
         {
@@ -163,7 +163,7 @@ public partial class SeriesSelectorControl : UserControl
         }
     }
 
-    private void RefreshSelection(Series series)
+    private void RefreshSelection(OxyPlot.Series.Series series)
     {
         // Refresh ComboBox to update display
         var temp = SeriesComboBox.ItemsSource;
