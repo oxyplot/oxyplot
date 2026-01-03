@@ -1,3 +1,4 @@
+using System;
 using OxyPlotControls.Controls.Base;
 
 // Use type alias to avoid namespace conflicts with OxyPlot.Wpf

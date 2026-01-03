@@ -6,12 +6,17 @@ using System.Xml.Linq;
 using OxyPlot;
 using OxyPlot.Annotations;
 using OxyPlot.Axes;
+using OxyPlot.Legends;
 
 // Use type aliases to avoid namespace conflicts with OxyPlot.Wpf
 using LineSeries = OxyPlot.Series.LineSeries;
 using ScatterSeries = OxyPlot.Series.ScatterSeries;
 using BarSeries = OxyPlot.Series.BarSeries;
 using AreaSeries = OxyPlot.Series.AreaSeries;
+
+// Use OxyPlot types instead of System.Windows types where there's ambiguity
+using OxyHorizontalAlignment = OxyPlot.HorizontalAlignment;
+using OxyVerticalAlignment = OxyPlot.VerticalAlignment;
 
 namespace OxyPlotControls.Serialization;
 
@@ -125,51 +130,61 @@ public static class PlotModelSerializer
 
     /// <summary>
     /// Serializes legend properties to XML.
+    /// In OxyPlot 2.x, legend properties are on a separate Legend object in model.Legends collection.
     /// </summary>
     private static XElement SerializeLegendProperties(PlotModel model)
     {
-        var legend = new XElement(LegendPropertiesTag);
+        var legendElement = new XElement(LegendPropertiesTag);
 
-        // Visibility and position
-        legend.SetAttributeValue("IsLegendVisible", SerializationHelpers.SerializeBoolean(model.IsLegendVisible));
-        legend.SetAttributeValue("LegendPlacement", SerializationHelpers.SerializeEnum(model.LegendPlacement));
-        legend.SetAttributeValue("LegendPosition", SerializationHelpers.SerializeEnum(model.LegendPosition));
-        legend.SetAttributeValue("LegendOrientation", SerializationHelpers.SerializeEnum(model.LegendOrientation));
+        // Get the first legend from the collection (OxyPlot 2.x architecture)
+        var legend = model.Legends.FirstOrDefault() as Legend;
+
+        // Visibility (IsLegendVisible is still on PlotModel)
+        legendElement.SetAttributeValue("IsLegendVisible", SerializationHelpers.SerializeBoolean(model.IsLegendVisible));
+
+        // If no legend exists, return just the visibility
+        if (legend == null)
+            return legendElement;
+
+        // Position and orientation
+        legendElement.SetAttributeValue("LegendPlacement", SerializationHelpers.SerializeEnum(legend.LegendPlacement));
+        legendElement.SetAttributeValue("LegendPosition", SerializationHelpers.SerializeEnum(legend.LegendPosition));
+        legendElement.SetAttributeValue("LegendOrientation", SerializationHelpers.SerializeEnum(legend.LegendOrientation));
 
         // Styling
-        legend.SetAttributeValue("LegendBackground", SerializationHelpers.SerializeColor(model.LegendBackground));
-        legend.SetAttributeValue("LegendBorder", SerializationHelpers.SerializeColor(model.LegendBorder));
-        legend.SetAttributeValue("LegendBorderThickness", SerializationHelpers.SerializeDouble(model.LegendBorderThickness));
-        legend.SetAttributeValue("LegendPadding", SerializationHelpers.SerializeDouble(model.LegendPadding));
-        legend.SetAttributeValue("LegendMargin", SerializationHelpers.SerializeDouble(model.LegendMargin));
-        legend.SetAttributeValue("LegendItemSpacing", SerializationHelpers.SerializeDouble(model.LegendItemSpacing));
-        legend.SetAttributeValue("LegendLineSpacing", SerializationHelpers.SerializeDouble(model.LegendLineSpacing));
-        legend.SetAttributeValue("LegendColumnSpacing", SerializationHelpers.SerializeDouble(model.LegendColumnSpacing));
+        legendElement.SetAttributeValue("LegendBackground", SerializationHelpers.SerializeColor(legend.LegendBackground));
+        legendElement.SetAttributeValue("LegendBorder", SerializationHelpers.SerializeColor(legend.LegendBorder));
+        legendElement.SetAttributeValue("LegendBorderThickness", SerializationHelpers.SerializeDouble(legend.LegendBorderThickness));
+        legendElement.SetAttributeValue("LegendPadding", SerializationHelpers.SerializeDouble(legend.LegendPadding));
+        legendElement.SetAttributeValue("LegendMargin", SerializationHelpers.SerializeDouble(legend.LegendMargin));
+        legendElement.SetAttributeValue("LegendItemSpacing", SerializationHelpers.SerializeDouble(legend.LegendItemSpacing));
+        legendElement.SetAttributeValue("LegendLineSpacing", SerializationHelpers.SerializeDouble(legend.LegendLineSpacing));
+        legendElement.SetAttributeValue("LegendColumnSpacing", SerializationHelpers.SerializeDouble(legend.LegendColumnSpacing));
 
         // Title
-        if (!string.IsNullOrEmpty(model.LegendTitle))
-            legend.SetAttributeValue("LegendTitle", model.LegendTitle);
-        legend.SetAttributeValue("LegendTitleColor", SerializationHelpers.SerializeColor(model.LegendTitleColor));
-        if (!string.IsNullOrEmpty(model.LegendTitleFont))
-            legend.SetAttributeValue("LegendTitleFont", model.LegendTitleFont);
-        legend.SetAttributeValue("LegendTitleFontSize", SerializationHelpers.SerializeDouble(model.LegendTitleFontSize));
-        legend.SetAttributeValue("LegendTitleFontWeight", SerializationHelpers.SerializeFontWeight(model.LegendTitleFontWeight));
+        if (!string.IsNullOrEmpty(legend.LegendTitle))
+            legendElement.SetAttributeValue("LegendTitle", legend.LegendTitle);
+        legendElement.SetAttributeValue("LegendTitleColor", SerializationHelpers.SerializeColor(legend.LegendTitleColor));
+        if (!string.IsNullOrEmpty(legend.LegendTitleFont))
+            legendElement.SetAttributeValue("LegendTitleFont", legend.LegendTitleFont);
+        legendElement.SetAttributeValue("LegendTitleFontSize", SerializationHelpers.SerializeDouble(legend.LegendTitleFontSize));
+        legendElement.SetAttributeValue("LegendTitleFontWeight", SerializationHelpers.SerializeDouble(legend.LegendTitleFontWeight));
 
-        // Items
-        legend.SetAttributeValue("LegendTextColor", SerializationHelpers.SerializeColor(model.LegendTextColor));
-        if (!string.IsNullOrEmpty(model.LegendFont))
-            legend.SetAttributeValue("LegendFont", model.LegendFont);
-        legend.SetAttributeValue("LegendFontSize", SerializationHelpers.SerializeDouble(model.LegendFontSize));
-        legend.SetAttributeValue("LegendFontWeight", SerializationHelpers.SerializeFontWeight(model.LegendFontWeight));
-        legend.SetAttributeValue("LegendSymbolLength", SerializationHelpers.SerializeDouble(model.LegendSymbolLength));
-        legend.SetAttributeValue("LegendSymbolMargin", SerializationHelpers.SerializeDouble(model.LegendSymbolMargin));
-        legend.SetAttributeValue("LegendSymbolPlacement", SerializationHelpers.SerializeEnum(model.LegendSymbolPlacement));
-        legend.SetAttributeValue("LegendItemAlignment", SerializationHelpers.SerializeEnum(model.LegendItemAlignment));
-        legend.SetAttributeValue("LegendItemOrder", SerializationHelpers.SerializeEnum(model.LegendItemOrder));
-        legend.SetAttributeValue("LegendMaxWidth", SerializationHelpers.SerializeDouble(model.LegendMaxWidth));
-        legend.SetAttributeValue("LegendMaxHeight", SerializationHelpers.SerializeDouble(model.LegendMaxHeight));
+        // Items (font weight is double in OxyPlot 2.x, not FontWeight)
+        legendElement.SetAttributeValue("LegendTextColor", SerializationHelpers.SerializeColor(legend.LegendTextColor));
+        if (!string.IsNullOrEmpty(legend.LegendFont))
+            legendElement.SetAttributeValue("LegendFont", legend.LegendFont);
+        legendElement.SetAttributeValue("LegendFontSize", SerializationHelpers.SerializeDouble(legend.LegendFontSize));
+        legendElement.SetAttributeValue("LegendFontWeight", SerializationHelpers.SerializeDouble(legend.LegendFontWeight));
+        legendElement.SetAttributeValue("LegendSymbolLength", SerializationHelpers.SerializeDouble(legend.LegendSymbolLength));
+        legendElement.SetAttributeValue("LegendSymbolMargin", SerializationHelpers.SerializeDouble(legend.LegendSymbolMargin));
+        legendElement.SetAttributeValue("LegendSymbolPlacement", SerializationHelpers.SerializeEnum(legend.LegendSymbolPlacement));
+        legendElement.SetAttributeValue("LegendItemAlignment", SerializationHelpers.SerializeEnum(legend.LegendItemAlignment));
+        legendElement.SetAttributeValue("LegendItemOrder", SerializationHelpers.SerializeEnum(legend.LegendItemOrder));
+        legendElement.SetAttributeValue("LegendMaxWidth", SerializationHelpers.SerializeDouble(legend.LegendMaxWidth));
+        legendElement.SetAttributeValue("LegendMaxHeight", SerializationHelpers.SerializeDouble(legend.LegendMaxHeight));
 
-        return legend;
+        return legendElement;
     }
 
     /// <summary>
@@ -555,7 +570,8 @@ public static class PlotModelSerializer
                 lineProps.SetAttributeValue("MarkerStroke", SerializationHelpers.SerializeColor(lineSeries.MarkerStroke));
                 lineProps.SetAttributeValue("MarkerStrokeThickness", SerializationHelpers.SerializeDouble(lineSeries.MarkerStrokeThickness));
                 lineProps.SetAttributeValue("MarkerFill", SerializationHelpers.SerializeColor(lineSeries.MarkerFill));
-                lineProps.SetAttributeValue("Smooth", SerializationHelpers.SerializeBoolean(lineSeries.Smooth));
+                // In OxyPlot 2.x, Smooth was replaced with InterpolationAlgorithm
+                lineProps.SetAttributeValue("Smooth", SerializationHelpers.SerializeBoolean(lineSeries.InterpolationAlgorithm != null));
                 if (!string.IsNullOrEmpty(lineSeries.XAxisKey))
                     lineProps.SetAttributeValue("XAxisKey", lineSeries.XAxisKey);
                 if (!string.IsNullOrEmpty(lineSeries.YAxisKey))
@@ -727,44 +743,53 @@ public static class PlotModelSerializer
 
     /// <summary>
     /// Deserializes legend properties for version 2.0.
+    /// In OxyPlot 2.x, legend properties are on a separate Legend object in model.Legends collection.
     /// </summary>
-    private static void DeserializeLegendPropertiesV2(PlotModel model, XElement legend)
+    private static void DeserializeLegendPropertiesV2(PlotModel model, XElement legendElement)
     {
-        // Visibility and position
-        model.IsLegendVisible = SerializationHelpers.DeserializeBoolean(legend.Attribute("IsLegendVisible")?.Value ?? "True");
-        model.LegendPlacement = SerializationHelpers.DeserializeEnum(legend.Attribute("LegendPlacement")?.Value ?? "Inside", LegendPlacement.Inside);
-        model.LegendPosition = SerializationHelpers.DeserializeEnum(legend.Attribute("LegendPosition")?.Value ?? "RightTop", LegendPosition.RightTop);
-        model.LegendOrientation = SerializationHelpers.DeserializeEnum(legend.Attribute("LegendOrientation")?.Value ?? "Vertical", LegendOrientation.Vertical);
+        // IsLegendVisible is still on PlotModel
+        model.IsLegendVisible = SerializationHelpers.DeserializeBoolean(legendElement.Attribute("IsLegendVisible")?.Value ?? "True");
+
+        // Create a new Legend object for OxyPlot 2.x
+        var legend = new Legend();
+
+        // Position and orientation
+        legend.LegendPlacement = SerializationHelpers.DeserializeEnum(legendElement.Attribute("LegendPlacement")?.Value ?? "Inside", LegendPlacement.Inside);
+        legend.LegendPosition = SerializationHelpers.DeserializeEnum(legendElement.Attribute("LegendPosition")?.Value ?? "RightTop", LegendPosition.RightTop);
+        legend.LegendOrientation = SerializationHelpers.DeserializeEnum(legendElement.Attribute("LegendOrientation")?.Value ?? "Vertical", LegendOrientation.Vertical);
 
         // Styling
-        model.LegendBackground = SerializationHelpers.DeserializeColor(legend.Attribute("LegendBackground")?.Value ?? "Undefined");
-        model.LegendBorder = SerializationHelpers.DeserializeColor(legend.Attribute("LegendBorder")?.Value ?? "Undefined");
-        model.LegendBorderThickness = SerializationHelpers.DeserializeDouble(legend.Attribute("LegendBorderThickness")?.Value ?? "1");
-        model.LegendPadding = SerializationHelpers.DeserializeDouble(legend.Attribute("LegendPadding")?.Value ?? "8");
-        model.LegendMargin = SerializationHelpers.DeserializeDouble(legend.Attribute("LegendMargin")?.Value ?? "8");
-        model.LegendItemSpacing = SerializationHelpers.DeserializeDouble(legend.Attribute("LegendItemSpacing")?.Value ?? "24");
-        model.LegendLineSpacing = SerializationHelpers.DeserializeDouble(legend.Attribute("LegendLineSpacing")?.Value ?? "0");
-        model.LegendColumnSpacing = SerializationHelpers.DeserializeDouble(legend.Attribute("LegendColumnSpacing")?.Value ?? "8");
+        legend.LegendBackground = SerializationHelpers.DeserializeColor(legendElement.Attribute("LegendBackground")?.Value ?? "Undefined");
+        legend.LegendBorder = SerializationHelpers.DeserializeColor(legendElement.Attribute("LegendBorder")?.Value ?? "Undefined");
+        legend.LegendBorderThickness = SerializationHelpers.DeserializeDouble(legendElement.Attribute("LegendBorderThickness")?.Value ?? "1");
+        legend.LegendPadding = SerializationHelpers.DeserializeDouble(legendElement.Attribute("LegendPadding")?.Value ?? "8");
+        legend.LegendMargin = SerializationHelpers.DeserializeDouble(legendElement.Attribute("LegendMargin")?.Value ?? "8");
+        legend.LegendItemSpacing = SerializationHelpers.DeserializeDouble(legendElement.Attribute("LegendItemSpacing")?.Value ?? "24");
+        legend.LegendLineSpacing = SerializationHelpers.DeserializeDouble(legendElement.Attribute("LegendLineSpacing")?.Value ?? "0");
+        legend.LegendColumnSpacing = SerializationHelpers.DeserializeDouble(legendElement.Attribute("LegendColumnSpacing")?.Value ?? "8");
 
         // Title
-        model.LegendTitle = legend.Attribute("LegendTitle")?.Value;
-        model.LegendTitleColor = SerializationHelpers.DeserializeColor(legend.Attribute("LegendTitleColor")?.Value ?? "Automatic");
-        model.LegendTitleFont = legend.Attribute("LegendTitleFont")?.Value;
-        model.LegendTitleFontSize = SerializationHelpers.DeserializeDouble(legend.Attribute("LegendTitleFontSize")?.Value ?? "12");
-        model.LegendTitleFontWeight = SerializationHelpers.DeserializeFontWeight(legend.Attribute("LegendTitleFontWeight")?.Value ?? "Bold");
+        legend.LegendTitle = legendElement.Attribute("LegendTitle")?.Value;
+        legend.LegendTitleColor = SerializationHelpers.DeserializeColor(legendElement.Attribute("LegendTitleColor")?.Value ?? "Automatic");
+        legend.LegendTitleFont = legendElement.Attribute("LegendTitleFont")?.Value;
+        legend.LegendTitleFontSize = SerializationHelpers.DeserializeDouble(legendElement.Attribute("LegendTitleFontSize")?.Value ?? "12");
+        legend.LegendTitleFontWeight = SerializationHelpers.DeserializeDouble(legendElement.Attribute("LegendTitleFontWeight")?.Value ?? "700"); // Bold = 700
 
-        // Items
-        model.LegendTextColor = SerializationHelpers.DeserializeColor(legend.Attribute("LegendTextColor")?.Value ?? "Automatic");
-        model.LegendFont = legend.Attribute("LegendFont")?.Value;
-        model.LegendFontSize = SerializationHelpers.DeserializeDouble(legend.Attribute("LegendFontSize")?.Value ?? "12");
-        model.LegendFontWeight = SerializationHelpers.DeserializeFontWeight(legend.Attribute("LegendFontWeight")?.Value ?? "Normal");
-        model.LegendSymbolLength = SerializationHelpers.DeserializeDouble(legend.Attribute("LegendSymbolLength")?.Value ?? "16");
-        model.LegendSymbolMargin = SerializationHelpers.DeserializeDouble(legend.Attribute("LegendSymbolMargin")?.Value ?? "4");
-        model.LegendSymbolPlacement = SerializationHelpers.DeserializeEnum(legend.Attribute("LegendSymbolPlacement")?.Value ?? "Left", LegendSymbolPlacement.Left);
-        model.LegendItemAlignment = SerializationHelpers.DeserializeEnum(legend.Attribute("LegendItemAlignment")?.Value ?? "Left", HorizontalAlignment.Left);
-        model.LegendItemOrder = SerializationHelpers.DeserializeEnum(legend.Attribute("LegendItemOrder")?.Value ?? "Normal", LegendItemOrder.Normal);
-        model.LegendMaxWidth = SerializationHelpers.DeserializeDouble(legend.Attribute("LegendMaxWidth")?.Value ?? "NaN");
-        model.LegendMaxHeight = SerializationHelpers.DeserializeDouble(legend.Attribute("LegendMaxHeight")?.Value ?? "NaN");
+        // Items (font weight is double in OxyPlot 2.x)
+        legend.LegendTextColor = SerializationHelpers.DeserializeColor(legendElement.Attribute("LegendTextColor")?.Value ?? "Automatic");
+        legend.LegendFont = legendElement.Attribute("LegendFont")?.Value;
+        legend.LegendFontSize = SerializationHelpers.DeserializeDouble(legendElement.Attribute("LegendFontSize")?.Value ?? "12");
+        legend.LegendFontWeight = SerializationHelpers.DeserializeDouble(legendElement.Attribute("LegendFontWeight")?.Value ?? "400"); // Normal = 400
+        legend.LegendSymbolLength = SerializationHelpers.DeserializeDouble(legendElement.Attribute("LegendSymbolLength")?.Value ?? "16");
+        legend.LegendSymbolMargin = SerializationHelpers.DeserializeDouble(legendElement.Attribute("LegendSymbolMargin")?.Value ?? "4");
+        legend.LegendSymbolPlacement = SerializationHelpers.DeserializeEnum(legendElement.Attribute("LegendSymbolPlacement")?.Value ?? "Left", LegendSymbolPlacement.Left);
+        legend.LegendItemAlignment = SerializationHelpers.DeserializeEnum(legendElement.Attribute("LegendItemAlignment")?.Value ?? "Left", OxyHorizontalAlignment.Left);
+        legend.LegendItemOrder = SerializationHelpers.DeserializeEnum(legendElement.Attribute("LegendItemOrder")?.Value ?? "Normal", LegendItemOrder.Normal);
+        legend.LegendMaxWidth = SerializationHelpers.DeserializeDouble(legendElement.Attribute("LegendMaxWidth")?.Value ?? "NaN");
+        legend.LegendMaxHeight = SerializationHelpers.DeserializeDouble(legendElement.Attribute("LegendMaxHeight")?.Value ?? "NaN");
+
+        // Add the legend to the model's Legends collection
+        model.Legends.Add(legend);
     }
 
     /// <summary>
@@ -1240,7 +1265,9 @@ public static class PlotModelSerializer
                     lineSeries.MarkerStroke = SerializationHelpers.DeserializeColor(lineProps.Attribute("MarkerStroke")?.Value ?? "Automatic");
                     lineSeries.MarkerStrokeThickness = SerializationHelpers.DeserializeDouble(lineProps.Attribute("MarkerStrokeThickness")?.Value ?? "1");
                     lineSeries.MarkerFill = SerializationHelpers.DeserializeColor(lineProps.Attribute("MarkerFill")?.Value ?? "Automatic");
-                    lineSeries.Smooth = SerializationHelpers.DeserializeBoolean(lineProps.Attribute("Smooth")?.Value ?? "False");
+                    // In OxyPlot 2.x, Smooth was replaced with InterpolationAlgorithm
+                    if (SerializationHelpers.DeserializeBoolean(lineProps.Attribute("Smooth")?.Value ?? "False"))
+                        lineSeries.InterpolationAlgorithm = InterpolationAlgorithms.CanonicalSpline;
                     lineSeries.XAxisKey = lineProps.Attribute("XAxisKey")?.Value;
                     lineSeries.YAxisKey = lineProps.Attribute("YAxisKey")?.Value;
                 }

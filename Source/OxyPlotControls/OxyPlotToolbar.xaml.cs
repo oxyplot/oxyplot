@@ -37,6 +37,16 @@ using HistogramSeries = OxyPlot.Series.HistogramSeries;
 using HeatMapSeries = OxyPlot.Series.HeatMapSeries;
 using LinearBarSeries = OxyPlot.Series.LinearBarSeries;
 
+// Use OxyPlot.PlotCommands (not OxyPlot.Wpf.PlotCommands)
+using PlotCommands = OxyPlot.PlotCommands;
+
+// Resolve Path ambiguity between System.IO.Path and System.Windows.Shapes.Path
+using IOPath = System.IO.Path;
+
+// Additional type aliases needed
+using LineAnnotationType = OxyPlot.Annotations.LineAnnotationType;
+using ScatterErrorPoint = OxyPlot.Series.ScatterErrorPoint;
+
 namespace OxyPlotControls;
 
 /// <summary>
@@ -2047,7 +2057,7 @@ public partial class OxyPlotToolbar : UserControl
 
         try
         {
-            var extension = Path.GetExtension(saveDialog.FileName).ToLower();
+            var extension = IOPath.GetExtension(saveDialog.FileName).ToLower();
 
             switch (extension)
             {

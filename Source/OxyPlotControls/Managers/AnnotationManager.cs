@@ -10,6 +10,8 @@ using LineAnnotation = OxyPlot.Annotations.LineAnnotation;
 using ArrowAnnotation = OxyPlot.Annotations.ArrowAnnotation;
 using TextAnnotation = OxyPlot.Annotations.TextAnnotation;
 using PolygonAnnotation = OxyPlot.Annotations.PolygonAnnotation;
+using PolylineAnnotation = OxyPlot.Annotations.PolylineAnnotation;
+using LineAnnotationType = OxyPlot.Annotations.LineAnnotationType;
 
 namespace OxyPlotControls.Managers;
 
@@ -95,20 +97,55 @@ public class AnnotationManager
 
     /// <summary>
     /// Creates a new line annotation with default properties.
+    /// In OxyPlot 2.x, LineAnnotation uses Type-based positioning (Vertical, Horizontal, LinearEquation).
+    /// For arbitrary line segments, we use PolylineAnnotation with two points.
     /// </summary>
     /// <param name="x1">Start X coordinate.</param>
     /// <param name="y1">Start Y coordinate.</param>
     /// <param name="x2">End X coordinate.</param>
     /// <param name="y2">End Y coordinate.</param>
-    /// <returns>The created line annotation.</returns>
-    public LineAnnotation CreateLineAnnotation(double x1, double y1, double x2, double y2)
+    /// <returns>The created polyline annotation representing a line segment.</returns>
+    public PolylineAnnotation CreateLineAnnotation(double x1, double y1, double x2, double y2)
+    {
+        var polyline = new PolylineAnnotation
+        {
+            Color = OxyColors.Black,
+            StrokeThickness = 1,
+            LineStyle = LineStyle.Solid
+        };
+        polyline.Points.Add(new DataPoint(x1, y1));
+        polyline.Points.Add(new DataPoint(x2, y2));
+        return polyline;
+    }
+
+    /// <summary>
+    /// Creates a horizontal line annotation.
+    /// </summary>
+    /// <param name="y">Y coordinate for the horizontal line.</param>
+    /// <returns>The created horizontal line annotation.</returns>
+    public LineAnnotation CreateHorizontalLineAnnotation(double y)
     {
         return new LineAnnotation
         {
-            X = x1,
-            Y = y1,
-            X2 = x2,
-            Y2 = y2,
+            Type = LineAnnotationType.Horizontal,
+            Y = y,
+            Color = OxyColors.Black,
+            StrokeThickness = 1,
+            LineStyle = LineStyle.Solid
+        };
+    }
+
+    /// <summary>
+    /// Creates a vertical line annotation.
+    /// </summary>
+    /// <param name="x">X coordinate for the vertical line.</param>
+    /// <returns>The created vertical line annotation.</returns>
+    public LineAnnotation CreateVerticalLineAnnotation(double x)
+    {
+        return new LineAnnotation
+        {
+            Type = LineAnnotationType.Vertical,
+            X = x,
             Color = OxyColors.Black,
             StrokeThickness = 1,
             LineStyle = LineStyle.Solid
@@ -229,7 +266,9 @@ public class AnnotationManager
         var index = _model.Annotations.IndexOf(annotation);
         if (index <= 0) return false; // Already first or not found
 
-        _model.Annotations.Move(index, index - 1);
+        // ElementCollection doesn't have Move, so use remove/insert
+        _model.Annotations.RemoveAt(index);
+        _model.Annotations.Insert(index - 1, annotation);
         InvalidatePlot(false);
         return true;
     }
@@ -246,7 +285,9 @@ public class AnnotationManager
         var index = _model.Annotations.IndexOf(annotation);
         if (index < 0 || index >= _model.Annotations.Count - 1) return false; // Not found or already last
 
-        _model.Annotations.Move(index, index + 1);
+        // ElementCollection doesn't have Move, so use remove/insert
+        _model.Annotations.RemoveAt(index);
+        _model.Annotations.Insert(index + 1, annotation);
         InvalidatePlot(false);
         return true;
     }

@@ -1,5 +1,6 @@
 using System.Windows;
 using System.Windows.Controls;
+using OxyPlot;
 
 namespace OxyPlotControls.Controls.Base;
 
@@ -24,6 +25,16 @@ public abstract class SeriesControlBase : UserControl
                 FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
                 OnSeriesChanged));
 
+    /// <summary>
+    /// Identifies the <see cref="Model"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty ModelProperty =
+        DependencyProperty.Register(
+            nameof(Model),
+            typeof(PlotModel),
+            typeof(SeriesControlBase),
+            new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+
     #endregion
 
     #region Properties
@@ -35,6 +46,15 @@ public abstract class SeriesControlBase : UserControl
     {
         get => (OxyPlot.Series.Series?)GetValue(SeriesProperty);
         set => SetValue(SeriesProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets the PlotModel that contains the series.
+    /// </summary>
+    public PlotModel? Model
+    {
+        get => (PlotModel?)GetValue(ModelProperty);
+        set => SetValue(ModelProperty, value);
     }
 
     #endregion
