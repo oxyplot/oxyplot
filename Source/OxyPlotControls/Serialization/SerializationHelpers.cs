@@ -286,6 +286,35 @@ public static class SerializationHelpers
         }
     }
 
+    /// <summary>
+    /// Deserializes an OxyPlot font weight (double) from a string.
+    /// Supports both numeric values (400, 700) and named values (Normal, Bold) for backwards compatibility.
+    /// </summary>
+    /// <param name="value">The string to deserialize.</param>
+    /// <param name="defaultValue">The default value if parsing fails.</param>
+    /// <returns>The deserialized font weight as a double.</returns>
+    public static double DeserializeOxyFontWeight(string value, double defaultValue = OxyPlot.FontWeights.Normal)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return defaultValue;
+        }
+
+        // Try to parse as a number first
+        if (double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out var numericWeight))
+        {
+            return numericWeight;
+        }
+
+        // Handle named font weights for backwards compatibility
+        return value.ToLowerInvariant() switch
+        {
+            "bold" => OxyPlot.FontWeights.Bold,
+            "normal" => OxyPlot.FontWeights.Normal,
+            _ => defaultValue
+        };
+    }
+
     #endregion
 
     #region Boolean Serialization

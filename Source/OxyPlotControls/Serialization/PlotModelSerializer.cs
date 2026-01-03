@@ -90,7 +90,7 @@ public static class PlotModelSerializer
             title.SetAttributeValue(nameof(model.TitleFont), model.TitleFont);
 
         title.SetAttributeValue(nameof(model.TitleFontSize), SerializationHelpers.SerializeDouble(model.TitleFontSize));
-        title.SetAttributeValue(nameof(model.TitleFontWeight), SerializationHelpers.SerializeFontWeight(model.TitleFontWeight));
+        title.SetAttributeValue(nameof(model.TitleFontWeight), SerializationHelpers.SerializeDouble(model.TitleFontWeight));
         title.SetAttributeValue(nameof(model.TitlePadding), SerializationHelpers.SerializeDouble(model.TitlePadding));
 
         general.Add(title);
@@ -106,7 +106,7 @@ public static class PlotModelSerializer
             subtitle.SetAttributeValue(nameof(model.SubtitleFont), model.SubtitleFont);
 
         subtitle.SetAttributeValue(nameof(model.SubtitleFontSize), SerializationHelpers.SerializeDouble(model.SubtitleFontSize));
-        subtitle.SetAttributeValue(nameof(model.SubtitleFontWeight), SerializationHelpers.SerializeFontWeight(model.SubtitleFontWeight));
+        subtitle.SetAttributeValue(nameof(model.SubtitleFontWeight), SerializationHelpers.SerializeDouble(model.SubtitleFontWeight));
 
         general.Add(subtitle);
 
@@ -243,7 +243,7 @@ public static class PlotModelSerializer
         if (!string.IsNullOrEmpty(axis.TitleFont))
             title.SetAttributeValue("TitleFont", axis.TitleFont);
         title.SetAttributeValue("TitleFontSize", SerializationHelpers.SerializeDouble(axis.TitleFontSize));
-        title.SetAttributeValue("TitleFontWeight", SerializationHelpers.SerializeFontWeight(axis.TitleFontWeight));
+        title.SetAttributeValue("TitleFontWeight", SerializationHelpers.SerializeDouble(axis.TitleFontWeight));
         title.SetAttributeValue("TitlePosition", SerializationHelpers.SerializeDouble(axis.TitlePosition));
         title.SetAttributeValue("AxisTitleDistance", SerializationHelpers.SerializeDouble(axis.AxisTitleDistance));
         if (!string.IsNullOrEmpty(axis.Unit))
@@ -256,7 +256,7 @@ public static class PlotModelSerializer
         if (!string.IsNullOrEmpty(axis.Font))
             labels.SetAttributeValue("Font", axis.Font);
         labels.SetAttributeValue("FontSize", SerializationHelpers.SerializeDouble(axis.FontSize));
-        labels.SetAttributeValue("FontWeight", SerializationHelpers.SerializeFontWeight(axis.FontWeight));
+        labels.SetAttributeValue("FontWeight", SerializationHelpers.SerializeDouble(axis.FontWeight));
         labels.SetAttributeValue("Angle", SerializationHelpers.SerializeDouble(axis.Angle));
         labels.SetAttributeValue("AxisTickToLabelDistance", SerializationHelpers.SerializeDouble(axis.AxisTickToLabelDistance));
         if (!string.IsNullOrEmpty(axis.StringFormat))
@@ -392,7 +392,7 @@ public static class PlotModelSerializer
             if (!string.IsNullOrEmpty(textualAnnotation.Font))
                 textual.SetAttributeValue("Font", textualAnnotation.Font);
             textual.SetAttributeValue("FontSize", SerializationHelpers.SerializeDouble(textualAnnotation.FontSize));
-            textual.SetAttributeValue("FontWeight", SerializationHelpers.SerializeFontWeight(textualAnnotation.FontWeight));
+            textual.SetAttributeValue("FontWeight", SerializationHelpers.SerializeDouble(textualAnnotation.FontWeight));
             textual.SetAttributeValue("TextPosition", SerializationHelpers.SerializeDataPoint(textualAnnotation.TextPosition));
             textual.SetAttributeValue("TextRotation", SerializationHelpers.SerializeDouble(textualAnnotation.TextRotation));
             textual.SetAttributeValue("TextHorizontalAlignment", SerializationHelpers.SerializeEnum(textualAnnotation.TextHorizontalAlignment));
@@ -708,7 +708,7 @@ public static class PlotModelSerializer
             model.TitleColor = SerializationHelpers.DeserializeColor(title.Attribute(nameof(model.TitleColor))?.Value ?? "Automatic");
             model.TitleFont = title.Attribute(nameof(model.TitleFont))?.Value;
             model.TitleFontSize = SerializationHelpers.DeserializeDouble(title.Attribute(nameof(model.TitleFontSize))?.Value ?? "18");
-            model.TitleFontWeight = SerializationHelpers.DeserializeFontWeight(title.Attribute(nameof(model.TitleFontWeight))?.Value ?? "Bold");
+            model.TitleFontWeight = SerializationHelpers.DeserializeOxyFontWeight(title.Attribute(nameof(model.TitleFontWeight))?.Value ?? "Bold", OxyPlot.FontWeights.Bold);
             model.TitlePadding = SerializationHelpers.DeserializeDouble(title.Attribute(nameof(model.TitlePadding))?.Value ?? "6");
         }
 
@@ -720,7 +720,7 @@ public static class PlotModelSerializer
             model.SubtitleColor = SerializationHelpers.DeserializeColor(subtitle.Attribute(nameof(model.SubtitleColor))?.Value ?? "Automatic");
             model.SubtitleFont = subtitle.Attribute(nameof(model.SubtitleFont))?.Value;
             model.SubtitleFontSize = SerializationHelpers.DeserializeDouble(subtitle.Attribute(nameof(model.SubtitleFontSize))?.Value ?? "14");
-            model.SubtitleFontWeight = SerializationHelpers.DeserializeFontWeight(subtitle.Attribute(nameof(model.SubtitleFontWeight))?.Value ?? "Normal");
+            model.SubtitleFontWeight = SerializationHelpers.DeserializeOxyFontWeight(subtitle.Attribute(nameof(model.SubtitleFontWeight))?.Value ?? "Normal");
         }
 
         // Plot area properties
@@ -863,7 +863,7 @@ public static class PlotModelSerializer
             axis.TitleColor = SerializationHelpers.DeserializeColor(title.Attribute("TitleColor")?.Value ?? "Automatic");
             axis.TitleFont = title.Attribute("TitleFont")?.Value;
             axis.TitleFontSize = SerializationHelpers.DeserializeDouble(title.Attribute("TitleFontSize")?.Value ?? "12");
-            axis.TitleFontWeight = SerializationHelpers.DeserializeFontWeight(title.Attribute("TitleFontWeight")?.Value ?? "Normal");
+            axis.TitleFontWeight = SerializationHelpers.DeserializeOxyFontWeight(title.Attribute("TitleFontWeight")?.Value ?? "Normal");
             axis.TitlePosition = SerializationHelpers.DeserializeDouble(title.Attribute("TitlePosition")?.Value ?? "0.5");
             axis.AxisTitleDistance = SerializationHelpers.DeserializeDouble(title.Attribute("AxisTitleDistance")?.Value ?? "4");
             axis.Unit = title.Attribute("Unit")?.Value;
@@ -876,7 +876,7 @@ public static class PlotModelSerializer
             axis.TextColor = SerializationHelpers.DeserializeColor(labels.Attribute("TextColor")?.Value ?? "Automatic");
             axis.Font = labels.Attribute("Font")?.Value;
             axis.FontSize = SerializationHelpers.DeserializeDouble(labels.Attribute("FontSize")?.Value ?? "12");
-            axis.FontWeight = SerializationHelpers.DeserializeFontWeight(labels.Attribute("FontWeight")?.Value ?? "Normal");
+            axis.FontWeight = SerializationHelpers.DeserializeOxyFontWeight(labels.Attribute("FontWeight")?.Value ?? "Normal");
             axis.Angle = SerializationHelpers.DeserializeDouble(labels.Attribute("Angle")?.Value ?? "0");
             axis.AxisTickToLabelDistance = SerializationHelpers.DeserializeDouble(labels.Attribute("AxisTickToLabelDistance")?.Value ?? "4");
             axis.StringFormat = labels.Attribute("StringFormat")?.Value;
@@ -1053,11 +1053,11 @@ public static class PlotModelSerializer
                 textualAnnotation.TextColor = SerializationHelpers.DeserializeColor(textual.Attribute("TextColor")?.Value ?? "Automatic");
                 textualAnnotation.Font = textual.Attribute("Font")?.Value;
                 textualAnnotation.FontSize = SerializationHelpers.DeserializeDouble(textual.Attribute("FontSize")?.Value ?? "12");
-                textualAnnotation.FontWeight = SerializationHelpers.DeserializeFontWeight(textual.Attribute("FontWeight")?.Value ?? "Normal");
+                textualAnnotation.FontWeight = SerializationHelpers.DeserializeOxyFontWeight(textual.Attribute("FontWeight")?.Value ?? "Normal");
                 textualAnnotation.TextPosition = SerializationHelpers.DeserializeDataPoint(textual.Attribute("TextPosition")?.Value ?? "NaN, NaN");
                 textualAnnotation.TextRotation = SerializationHelpers.DeserializeDouble(textual.Attribute("TextRotation")?.Value ?? "0");
-                textualAnnotation.TextHorizontalAlignment = SerializationHelpers.DeserializeEnum(textual.Attribute("TextHorizontalAlignment")?.Value ?? "Center", HorizontalAlignment.Center);
-                textualAnnotation.TextVerticalAlignment = SerializationHelpers.DeserializeEnum(textual.Attribute("TextVerticalAlignment")?.Value ?? "Middle", VerticalAlignment.Middle);
+                textualAnnotation.TextHorizontalAlignment = SerializationHelpers.DeserializeEnum(textual.Attribute("TextHorizontalAlignment")?.Value ?? "Center", OxyHorizontalAlignment.Center);
+                textualAnnotation.TextVerticalAlignment = SerializationHelpers.DeserializeEnum(textual.Attribute("TextVerticalAlignment")?.Value ?? "Middle", OxyVerticalAlignment.Middle);
             }
         }
 
@@ -1360,7 +1360,7 @@ public static class PlotModelSerializer
             model.TitleColor = SerializationHelpers.DeserializeColor(title.Attribute("TitleColor")?.Value ?? title.Attribute("Color")?.Value ?? "Automatic");
             model.TitleFont = title.Attribute("TitleFont")?.Value ?? title.Attribute("Font")?.Value;
             model.TitleFontSize = SerializationHelpers.DeserializeDouble(title.Attribute("TitleFontSize")?.Value ?? title.Attribute("Size")?.Value ?? "18");
-            model.TitleFontWeight = SerializationHelpers.DeserializeFontWeight(title.Attribute("TitleFontWeight")?.Value ?? title.Attribute("Weight")?.Value ?? "Bold");
+            model.TitleFontWeight = SerializationHelpers.DeserializeOxyFontWeight(title.Attribute("TitleFontWeight")?.Value ?? title.Attribute("Weight")?.Value ?? "Bold", OxyPlot.FontWeights.Bold);
             model.TitlePadding = SerializationHelpers.DeserializeDouble(title.Attribute("TitlePadding")?.Value ?? title.Attribute("Padding")?.Value ?? "6");
         }
 
@@ -1372,7 +1372,7 @@ public static class PlotModelSerializer
             model.SubtitleColor = SerializationHelpers.DeserializeColor(subtitle.Attribute("SubtitleColor")?.Value ?? subtitle.Attribute("Color")?.Value ?? "Automatic");
             model.SubtitleFont = subtitle.Attribute("SubtitleFont")?.Value ?? subtitle.Attribute("Font")?.Value;
             model.SubtitleFontSize = SerializationHelpers.DeserializeDouble(subtitle.Attribute("SubtitleFontSize")?.Value ?? subtitle.Attribute("Size")?.Value ?? "14");
-            model.SubtitleFontWeight = SerializationHelpers.DeserializeFontWeight(subtitle.Attribute("SubtitleFontWeight")?.Value ?? subtitle.Attribute("Weight")?.Value ?? "Normal");
+            model.SubtitleFontWeight = SerializationHelpers.DeserializeOxyFontWeight(subtitle.Attribute("SubtitleFontWeight")?.Value ?? subtitle.Attribute("Weight")?.Value ?? "Normal");
         }
 
         // Plot area properties (old format might use "Plot" or "PlotArea")
