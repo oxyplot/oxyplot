@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Xml.Linq;
 using OxyPlot;
-using Wpf = OxyPlot.Wpf;
+using OxyPlot.Legends;
 
 namespace OxyPlotControls
 {
@@ -22,19 +23,37 @@ namespace OxyPlotControls
         public static readonly string LegendPropertiesTag = "Legend";
 
         /// <summary>
-        /// Identifies the <see cref="Plot"/> dependency property.
+        /// Identifies the <see cref="PlotModel"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty PlotProperty = DependencyProperty.Register(
-            nameof(Plot), typeof(Wpf.Plot), typeof(LegendControl),
-            new PropertyMetadata(null, OnPlotChanged));
+        public static readonly DependencyProperty PlotModelProperty = DependencyProperty.Register(
+            nameof(PlotModel), typeof(PlotModel), typeof(LegendControl),
+            new PropertyMetadata(null, OnPlotModelChanged));
 
         /// <summary>
-        /// Gets or sets the OxyPlot Plot control that this control edits.
+        /// Gets or sets the PlotModel that this control edits.
         /// </summary>
-        public Wpf.Plot Plot
+        public PlotModel PlotModel
         {
-            get { return (Wpf.Plot)GetValue(PlotProperty); }
-            set { SetValue(PlotProperty, value); }
+            get { return (PlotModel)GetValue(PlotModelProperty); }
+            set { SetValue(PlotModelProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets the first legend from the PlotModel, creating one if it doesn't exist.
+        /// </summary>
+        public Legend? CurrentLegend
+        {
+            get
+            {
+                if (PlotModel == null) return null;
+                var legend = PlotModel.Legends.FirstOrDefault() as Legend;
+                if (legend == null)
+                {
+                    legend = new Legend();
+                    PlotModel.Legends.Add(legend);
+                }
+                return legend;
+            }
         }
 
         /// <summary>
@@ -86,10 +105,10 @@ namespace OxyPlotControls
         }
 
         /// <summary>
-        /// Called when the Plot property changes.
+        /// Called when the PlotModel property changes.
         /// Forces a layout update to ensure bindings are properly synchronized.
         /// </summary>
-        private static void OnPlotChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnPlotModelChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is LegendControl control && e.NewValue != null)
             {
@@ -108,192 +127,233 @@ namespace OxyPlotControls
         {
             // Invalidate the plot to refresh the legend display
             // Use true to force a full update including layout recalculation
-            if (Plot != null)
-            {
-                Plot.InvalidatePlot(true);
-            }
+            PlotModel?.InvalidatePlot(true);
         }
 
         /// <summary>
         /// Serializes legend properties to an XML element for persistence.
         /// </summary>
-        /// <param name="plot">The OxyPlot Plot control whose legend properties will be serialized.</param>
+        /// <param name="plotModel">The PlotModel whose legend properties will be serialized.</param>
         /// <returns>An XElement containing all serialized legend properties.</returns>
-        public static XElement LegendPropertiesToXElement(Wpf.Plot plot)
+        public static XElement LegendPropertiesToXElement(PlotModel plotModel)
         {
             var legendProperties = new XElement(LegendPropertiesTag);
 
-            var fwc = new FontWeightConverter();
+            // Get the first legend (or create defaults if none)
+            var legend = plotModel.Legends.FirstOrDefault() as Legend;
 
             // Legend Area
             var legendAreaProperties = new XElement("Area");
-            legendAreaProperties.SetAttributeValue(nameof(plot.IsLegendVisible), plot.IsLegendVisible);
-            legendAreaProperties.SetAttributeValue(nameof(plot.LegendBackground), plot.LegendBackground.ToString());
-            legendAreaProperties.SetAttributeValue(nameof(plot.LegendBorder), plot.LegendBorder.ToString());
-            legendAreaProperties.SetAttributeValue(nameof(plot.LegendBorderThickness), plot.LegendBorderThickness.ToString("G17", CultureInfo.InvariantCulture));
-            legendAreaProperties.SetAttributeValue(nameof(plot.LegendPadding), plot.LegendPadding.ToString("G17", CultureInfo.InvariantCulture));
+            legendAreaProperties.SetAttributeValue(nameof(plotModel.IsLegendVisible), plotModel.IsLegendVisible);
+            if (legend != null)
+            {
+                legendAreaProperties.SetAttributeValue(nameof(legend.LegendBackground), OxyPlotSettingsSerializer.OxyColorToString(legend.LegendBackground));
+                legendAreaProperties.SetAttributeValue(nameof(legend.LegendBorder), OxyPlotSettingsSerializer.OxyColorToString(legend.LegendBorder));
+                legendAreaProperties.SetAttributeValue(nameof(legend.LegendBorderThickness), legend.LegendBorderThickness.ToString("G17", CultureInfo.InvariantCulture));
+                legendAreaProperties.SetAttributeValue(nameof(legend.LegendPadding), legend.LegendPadding.ToString("G17", CultureInfo.InvariantCulture));
+            }
             legendProperties.Add(legendAreaProperties);
 
             // Legend Position Properties
-            var subTitleProperties = new XElement("Position");
-            subTitleProperties.SetAttributeValue(nameof(plot.LegendPlacement), plot.LegendPlacement.ToString());
-            subTitleProperties.SetAttributeValue(nameof(plot.LegendPosition), plot.LegendPosition.ToString());
-            subTitleProperties.SetAttributeValue(nameof(plot.LegendOrientation), plot.LegendOrientation.ToString());
-            legendProperties.Add(subTitleProperties);
+            var positionProperties = new XElement("Position");
+            if (legend != null)
+            {
+                positionProperties.SetAttributeValue(nameof(legend.LegendPlacement), legend.LegendPlacement.ToString());
+                positionProperties.SetAttributeValue(nameof(legend.LegendPosition), legend.LegendPosition.ToString());
+                positionProperties.SetAttributeValue(nameof(legend.LegendOrientation), legend.LegendOrientation.ToString());
+            }
+            legendProperties.Add(positionProperties);
 
             // Title Properties
             var titleProperties = new XElement("Title");
-            titleProperties.SetAttributeValue(nameof(plot.LegendTitle), plot.LegendTitle);
-            titleProperties.SetAttributeValue(nameof(plot.LegendTitleColor), plot.LegendTitleColor.ToString());
-            titleProperties.SetAttributeValue(nameof(plot.LegendTitleFont), plot.LegendTitleFont);
-            titleProperties.SetAttributeValue(nameof(plot.LegendTitleFontSize), plot.LegendTitleFontSize.ToString("G17", CultureInfo.InvariantCulture));
-            titleProperties.SetAttributeValue(nameof(plot.LegendTitleFontWeight), fwc.ConvertToInvariantString(plot.LegendTitleFontWeight));
+            if (legend != null)
+            {
+                titleProperties.SetAttributeValue(nameof(legend.LegendTitle), legend.LegendTitle ?? "");
+                titleProperties.SetAttributeValue(nameof(legend.LegendTitleColor), OxyPlotSettingsSerializer.OxyColorToString(legend.LegendTitleColor));
+                titleProperties.SetAttributeValue(nameof(legend.LegendTitleFont), legend.LegendTitleFont ?? "");
+                titleProperties.SetAttributeValue(nameof(legend.LegendTitleFontSize), legend.LegendTitleFontSize.ToString("G17", CultureInfo.InvariantCulture));
+                titleProperties.SetAttributeValue(nameof(legend.LegendTitleFontWeight), legend.LegendTitleFontWeight.ToString("G17", CultureInfo.InvariantCulture));
+            }
             legendProperties.Add(titleProperties);
 
             // Legend Item Properties
             var itemProperties = new XElement("Items");
-            itemProperties.SetAttributeValue(nameof(plot.LegendTextColor), plot.LegendTextColor.ToString());
-            itemProperties.SetAttributeValue(nameof(plot.LegendSymbolLength), plot.LegendSymbolLength.ToString("G17", CultureInfo.InvariantCulture));
-            itemProperties.SetAttributeValue(nameof(plot.LegendSymbolMargin), plot.LegendSymbolMargin.ToString("G17", CultureInfo.InvariantCulture));
-            itemProperties.SetAttributeValue(nameof(plot.LegendSymbolPlacement), plot.LegendSymbolPlacement.ToString());
-            itemProperties.SetAttributeValue(nameof(plot.LegendColumnSpacing), plot.LegendColumnSpacing.ToString("G17", CultureInfo.InvariantCulture));
-            itemProperties.SetAttributeValue(nameof(plot.LegendItemAlignment), plot.LegendItemAlignment.ToString());
-            itemProperties.SetAttributeValue(nameof(plot.LegendItemOrder), plot.LegendItemOrder.ToString());
-            itemProperties.SetAttributeValue(nameof(plot.LegendItemSpacing), plot.LegendItemSpacing.ToString("G17", CultureInfo.InvariantCulture));
-            itemProperties.SetAttributeValue(nameof(plot.LegendLineSpacing), plot.LegendLineSpacing.ToString("G17", CultureInfo.InvariantCulture));
+            if (legend != null)
+            {
+                itemProperties.SetAttributeValue(nameof(legend.LegendTextColor), OxyPlotSettingsSerializer.OxyColorToString(legend.LegendTextColor));
+                itemProperties.SetAttributeValue(nameof(legend.LegendSymbolLength), legend.LegendSymbolLength.ToString("G17", CultureInfo.InvariantCulture));
+                itemProperties.SetAttributeValue(nameof(legend.LegendSymbolMargin), legend.LegendSymbolMargin.ToString("G17", CultureInfo.InvariantCulture));
+                itemProperties.SetAttributeValue(nameof(legend.LegendSymbolPlacement), legend.LegendSymbolPlacement.ToString());
+                itemProperties.SetAttributeValue(nameof(legend.LegendColumnSpacing), legend.LegendColumnSpacing.ToString("G17", CultureInfo.InvariantCulture));
+                itemProperties.SetAttributeValue(nameof(legend.LegendItemAlignment), legend.LegendItemAlignment.ToString());
+                itemProperties.SetAttributeValue(nameof(legend.LegendItemOrder), legend.LegendItemOrder.ToString());
+                itemProperties.SetAttributeValue(nameof(legend.LegendItemSpacing), legend.LegendItemSpacing.ToString("G17", CultureInfo.InvariantCulture));
+                itemProperties.SetAttributeValue(nameof(legend.LegendLineSpacing), legend.LegendLineSpacing.ToString("G17", CultureInfo.InvariantCulture));
+            }
             legendProperties.Add(itemProperties);
 
             return legendProperties;
         }
 
         /// <summary>
-        /// Deserializes legend properties from an XML element and applies them to the plot.
+        /// Deserializes legend properties from an XML element and applies them to the plot model.
         /// </summary>
-        /// <param name="plot">The OxyPlot Plot control to apply settings to.</param>
+        /// <param name="plotModel">The PlotModel to apply settings to.</param>
         /// <param name="element">The XElement containing serialized legend properties.</param>
-        public static void XElementToLegendProperties(Wpf.Plot plot, XElement element)
+        /// <param name="version">The serialization format version (1 for legacy, 2 for modern).</param>
+        public static void XElementToLegendProperties(PlotModel plotModel, XElement element, int version = 2)
         {
             // Early Exit
-            if (plot == null) return;
+            if (plotModel == null) return;
             if (element.Name != LegendPropertiesTag) return;
 
-            // Set up converters
+            // Get or create the first legend
+            var legend = plotModel.Legends.FirstOrDefault() as Legend;
+            if (legend == null)
+            {
+                legend = new Legend();
+                plotModel.Legends.Add(legend);
+            }
+
+            // Set up converters for V1 backward compatibility
             var fontWeightConverter = new FontWeightConverter();
 
             // Area Properties
             var areaElement = element.Element("Area");
             if (areaElement != null)
             {
-                bool isLegendVisible;
-                if (OxyPlotSettingsSerializer.GetBooleanAttribute(areaElement, nameof(plot.IsLegendVisible), out isLegendVisible)) plot.IsLegendVisible = isLegendVisible;
+                if (OxyPlotSettingsSerializer.GetBooleanAttribute(areaElement, nameof(plotModel.IsLegendVisible), out bool isLegendVisible))
+                    plotModel.IsLegendVisible = isLegendVisible;
 
-                Color legendBackground;
-                if (OxyPlotSettingsSerializer.GetColorAttribute(areaElement, nameof(plot.LegendBackground), out legendBackground)) plot.LegendBackground = legendBackground;
+                if (OxyPlotSettingsSerializer.GetOxyColorAttribute(areaElement, nameof(legend.LegendBackground), out OxyColor legendBackground))
+                    legend.LegendBackground = legendBackground;
 
-                Color legendBorder;
-                if (OxyPlotSettingsSerializer.GetColorAttribute(areaElement, nameof(plot.LegendBorder), out legendBorder)) plot.LegendBorder = legendBorder;
+                if (OxyPlotSettingsSerializer.GetOxyColorAttribute(areaElement, nameof(legend.LegendBorder), out OxyColor legendBorder))
+                    legend.LegendBorder = legendBorder;
 
-                double legendBorderThickness;
-                if (OxyPlotSettingsSerializer.GetDoubleAttribute(areaElement, nameof(plot.LegendBorderThickness), out legendBorderThickness)) plot.LegendBorderThickness = legendBorderThickness;
+                if (OxyPlotSettingsSerializer.GetDoubleAttribute(areaElement, nameof(legend.LegendBorderThickness), out double legendBorderThickness))
+                    legend.LegendBorderThickness = legendBorderThickness;
 
-                double legendPadding;
-                if (OxyPlotSettingsSerializer.GetDoubleAttribute(areaElement, nameof(plot.LegendPadding), out legendPadding)) plot.LegendPadding = legendPadding;
+                if (OxyPlotSettingsSerializer.GetDoubleAttribute(areaElement, nameof(legend.LegendPadding), out double legendPadding))
+                    legend.LegendPadding = legendPadding;
 
-                // Backward compatibility
-                if (OxyPlotSettingsSerializer.GetBooleanAttribute(areaElement, "LegendVisible", out isLegendVisible)) plot.IsLegendVisible = isLegendVisible;
-                if (OxyPlotSettingsSerializer.GetColorAttribute(areaElement, "BackgroundColor", out legendBackground)) plot.LegendBackground = legendBackground;
-                if (OxyPlotSettingsSerializer.GetColorAttribute(areaElement, "BorderColor", out legendBorder)) plot.LegendBorder = legendBorder;
-                if (OxyPlotSettingsSerializer.GetDoubleAttribute(areaElement, "BorderThickness", out legendBorderThickness)) plot.LegendBorderThickness = legendBorderThickness;
-                if (OxyPlotSettingsSerializer.GetDoubleAttribute(areaElement, "Padding", out legendPadding)) plot.LegendPadding = legendPadding;
+                // V1 Backward compatibility - colors were stored as WPF Color strings
+                if (version == 1)
+                {
+                    if (OxyPlotSettingsSerializer.GetBooleanAttribute(areaElement, "LegendVisible", out isLegendVisible))
+                        plotModel.IsLegendVisible = isLegendVisible;
+                    if (OxyPlotSettingsSerializer.GetColorAttribute(areaElement, "LegendBackground", out Color wpfColor))
+                        legend.LegendBackground = OxyColor.FromArgb(wpfColor.A, wpfColor.R, wpfColor.G, wpfColor.B);
+                    if (OxyPlotSettingsSerializer.GetColorAttribute(areaElement, "BackgroundColor", out wpfColor))
+                        legend.LegendBackground = OxyColor.FromArgb(wpfColor.A, wpfColor.R, wpfColor.G, wpfColor.B);
+                    if (OxyPlotSettingsSerializer.GetColorAttribute(areaElement, "LegendBorder", out wpfColor))
+                        legend.LegendBorder = OxyColor.FromArgb(wpfColor.A, wpfColor.R, wpfColor.G, wpfColor.B);
+                    if (OxyPlotSettingsSerializer.GetColorAttribute(areaElement, "BorderColor", out wpfColor))
+                        legend.LegendBorder = OxyColor.FromArgb(wpfColor.A, wpfColor.R, wpfColor.G, wpfColor.B);
+                }
             }
 
             // Position Properties
             var positionElement = element.Element("Position");
             if (positionElement != null)
             {
-                LegendPlacement legendPlacement;
-                if (OxyPlotSettingsSerializer.GetEnumAttribute(positionElement, nameof(plot.LegendPlacement), out legendPlacement)) plot.LegendPlacement = legendPlacement;
+                if (OxyPlotSettingsSerializer.GetEnumAttribute(positionElement, nameof(legend.LegendPlacement), out LegendPlacement legendPlacement))
+                    legend.LegendPlacement = legendPlacement;
 
-                LegendPosition legendPosition;
-                if (OxyPlotSettingsSerializer.GetEnumAttribute(positionElement, nameof(plot.LegendPosition), out legendPosition)) plot.LegendPosition = legendPosition;
+                if (OxyPlotSettingsSerializer.GetEnumAttribute(positionElement, nameof(legend.LegendPosition), out LegendPosition legendPosition))
+                    legend.LegendPosition = legendPosition;
 
-                LegendOrientation legendOrientation;
-                if (OxyPlotSettingsSerializer.GetEnumAttribute(positionElement, nameof(plot.LegendOrientation), out legendOrientation)) plot.LegendOrientation = legendOrientation;
+                if (OxyPlotSettingsSerializer.GetEnumAttribute(positionElement, nameof(legend.LegendOrientation), out LegendOrientation legendOrientation))
+                    legend.LegendOrientation = legendOrientation;
 
                 // Backward compatibility
-                if (OxyPlotSettingsSerializer.GetEnumAttribute(positionElement, "Placement", out legendPlacement)) plot.LegendPlacement = legendPlacement;
-                if (OxyPlotSettingsSerializer.GetEnumAttribute(positionElement, "Position", out legendPosition)) plot.LegendPosition = legendPosition;
-                if (OxyPlotSettingsSerializer.GetEnumAttribute(positionElement, "Orientation", out legendOrientation)) plot.LegendOrientation = legendOrientation;
+                if (OxyPlotSettingsSerializer.GetEnumAttribute(positionElement, "Placement", out legendPlacement))
+                    legend.LegendPlacement = legendPlacement;
+                if (OxyPlotSettingsSerializer.GetEnumAttribute(positionElement, "Position", out legendPosition))
+                    legend.LegendPosition = legendPosition;
+                if (OxyPlotSettingsSerializer.GetEnumAttribute(positionElement, "Orientation", out legendOrientation))
+                    legend.LegendOrientation = legendOrientation;
             }
 
             // Title Properties
             var titleElement = element.Element("Title");
             if (titleElement != null)
             {
-                string legendTitle;
-                if (OxyPlotSettingsSerializer.GetStringAttribute(titleElement, nameof(plot.LegendTitle), out legendTitle)) plot.LegendTitle = legendTitle;
+                if (OxyPlotSettingsSerializer.GetStringAttribute(titleElement, nameof(legend.LegendTitle), out string legendTitle))
+                    legend.LegendTitle = legendTitle;
 
-                Color legendTitleColor;
-                if (OxyPlotSettingsSerializer.GetColorAttribute(titleElement, nameof(plot.LegendTitleColor), out legendTitleColor)) plot.LegendTitleColor = legendTitleColor;
+                if (OxyPlotSettingsSerializer.GetOxyColorAttribute(titleElement, nameof(legend.LegendTitleColor), out OxyColor legendTitleColor))
+                    legend.LegendTitleColor = legendTitleColor;
 
-                string legendTitleFont;
-                if (OxyPlotSettingsSerializer.GetStringAttribute(titleElement, nameof(plot.LegendTitleFont), out legendTitleFont)) plot.LegendTitleFont = legendTitleFont;
+                if (OxyPlotSettingsSerializer.GetStringAttribute(titleElement, nameof(legend.LegendTitleFont), out string legendTitleFont))
+                    legend.LegendTitleFont = legendTitleFont;
 
-                double legendTitleFontSize;
-                if (OxyPlotSettingsSerializer.GetDoubleAttribute(titleElement, nameof(plot.LegendTitleFontSize), out legendTitleFontSize)) plot.LegendTitleFontSize = legendTitleFontSize;
+                if (OxyPlotSettingsSerializer.GetDoubleAttribute(titleElement, nameof(legend.LegendTitleFontSize), out double legendTitleFontSize))
+                    legend.LegendTitleFontSize = legendTitleFontSize;
 
-                FontWeight legendTitleFontWeight;
-                if (OxyPlotSettingsSerializer.GetFontWeightAttribute(titleElement, nameof(plot.LegendTitleFontWeight), fontWeightConverter, out legendTitleFontWeight)) plot.LegendTitleFontWeight = legendTitleFontWeight;
+                if (OxyPlotSettingsSerializer.GetDoubleAttribute(titleElement, nameof(legend.LegendTitleFontWeight), out double legendTitleFontWeight))
+                    legend.LegendTitleFontWeight = legendTitleFontWeight;
 
-                // Backward compatibility
-                if (OxyPlotSettingsSerializer.GetStringAttribute(titleElement, "Title", out legendTitle)) plot.LegendTitle = legendTitle;
-                if (OxyPlotSettingsSerializer.GetColorAttribute(titleElement, "Color", out legendTitleColor)) plot.LegendTitleColor = legendTitleColor;
-                if (OxyPlotSettingsSerializer.GetStringAttribute(titleElement, "Font", out legendTitleFont)) plot.LegendTitleFont = legendTitleFont;
-                if (OxyPlotSettingsSerializer.GetDoubleAttribute(titleElement, "Size", out legendTitleFontSize)) plot.LegendTitleFontSize = legendTitleFontSize;
-                if (OxyPlotSettingsSerializer.GetFontWeightAttribute(titleElement, "Weight", fontWeightConverter, out legendTitleFontWeight)) plot.LegendTitleFontWeight = legendTitleFontWeight;
+                // V1 Backward compatibility
+                if (version == 1)
+                {
+                    if (OxyPlotSettingsSerializer.GetStringAttribute(titleElement, "Title", out legendTitle))
+                        legend.LegendTitle = legendTitle;
+                    if (OxyPlotSettingsSerializer.GetColorAttribute(titleElement, "LegendTitleColor", out Color wpfColor))
+                        legend.LegendTitleColor = OxyColor.FromArgb(wpfColor.A, wpfColor.R, wpfColor.G, wpfColor.B);
+                    if (OxyPlotSettingsSerializer.GetColorAttribute(titleElement, "Color", out wpfColor))
+                        legend.LegendTitleColor = OxyColor.FromArgb(wpfColor.A, wpfColor.R, wpfColor.G, wpfColor.B);
+                    if (OxyPlotSettingsSerializer.GetFontWeightAttribute(titleElement, "LegendTitleFontWeight", fontWeightConverter, out FontWeight wpfWeight))
+                        legend.LegendTitleFontWeight = wpfWeight.ToOpenTypeWeight();
+                    if (OxyPlotSettingsSerializer.GetFontWeightAttribute(titleElement, "Weight", fontWeightConverter, out wpfWeight))
+                        legend.LegendTitleFontWeight = wpfWeight.ToOpenTypeWeight();
+                }
             }
 
             // Legend Item Properties
             var itemsElement = element.Element("Items");
             if (itemsElement != null)
             {
-                Color legendTextColor;
-                if (OxyPlotSettingsSerializer.GetColorAttribute(itemsElement, nameof(plot.LegendTextColor), out legendTextColor)) plot.LegendTextColor = legendTextColor;
+                if (OxyPlotSettingsSerializer.GetOxyColorAttribute(itemsElement, nameof(legend.LegendTextColor), out OxyColor legendTextColor))
+                    legend.LegendTextColor = legendTextColor;
 
-                double legendSymbolLength;
-                if (OxyPlotSettingsSerializer.GetDoubleAttribute(itemsElement, nameof(plot.LegendSymbolLength), out legendSymbolLength)) plot.LegendSymbolLength = legendSymbolLength;
+                if (OxyPlotSettingsSerializer.GetDoubleAttribute(itemsElement, nameof(legend.LegendSymbolLength), out double legendSymbolLength))
+                    legend.LegendSymbolLength = legendSymbolLength;
 
-                double legendSymbolMargin;
-                if (OxyPlotSettingsSerializer.GetDoubleAttribute(itemsElement, nameof(plot.LegendSymbolMargin), out legendSymbolMargin)) plot.LegendSymbolMargin = legendSymbolMargin;
+                if (OxyPlotSettingsSerializer.GetDoubleAttribute(itemsElement, nameof(legend.LegendSymbolMargin), out double legendSymbolMargin))
+                    legend.LegendSymbolMargin = legendSymbolMargin;
 
-                LegendSymbolPlacement legendSymbolPlacement;
-                if (OxyPlotSettingsSerializer.GetEnumAttribute(itemsElement, nameof(plot.LegendSymbolPlacement), out legendSymbolPlacement)) plot.LegendSymbolPlacement = legendSymbolPlacement;
+                if (OxyPlotSettingsSerializer.GetEnumAttribute(itemsElement, nameof(legend.LegendSymbolPlacement), out LegendSymbolPlacement legendSymbolPlacement))
+                    legend.LegendSymbolPlacement = legendSymbolPlacement;
 
-                double legendColumnSpacing;
-                if (OxyPlotSettingsSerializer.GetDoubleAttribute(itemsElement, nameof(plot.LegendColumnSpacing), out legendColumnSpacing)) plot.LegendColumnSpacing = legendColumnSpacing;
+                if (OxyPlotSettingsSerializer.GetDoubleAttribute(itemsElement, nameof(legend.LegendColumnSpacing), out double legendColumnSpacing))
+                    legend.LegendColumnSpacing = legendColumnSpacing;
 
-                System.Windows.HorizontalAlignment legendItemAlignment;
-                if (OxyPlotSettingsSerializer.GetEnumAttribute(itemsElement, nameof(plot.LegendItemAlignment), out legendItemAlignment)) plot.LegendItemAlignment = legendItemAlignment;
+                if (OxyPlotSettingsSerializer.GetEnumAttribute(itemsElement, nameof(legend.LegendItemAlignment), out HorizontalAlignment legendItemAlignment))
+                    legend.LegendItemAlignment = legendItemAlignment;
 
-                LegendItemOrder legendItemOrder;
-                if (OxyPlotSettingsSerializer.GetEnumAttribute(itemsElement, nameof(plot.LegendItemOrder), out legendItemOrder)) plot.LegendItemOrder = legendItemOrder;
+                if (OxyPlotSettingsSerializer.GetEnumAttribute(itemsElement, nameof(legend.LegendItemOrder), out LegendItemOrder legendItemOrder))
+                    legend.LegendItemOrder = legendItemOrder;
 
-                double legendItemSpacing;
-                if (OxyPlotSettingsSerializer.GetDoubleAttribute(itemsElement, nameof(plot.LegendItemSpacing), out legendItemSpacing)) plot.LegendItemSpacing = legendItemSpacing;
+                if (OxyPlotSettingsSerializer.GetDoubleAttribute(itemsElement, nameof(legend.LegendItemSpacing), out double legendItemSpacing))
+                    legend.LegendItemSpacing = legendItemSpacing;
 
-                double legendLineSpacing;
-                if (OxyPlotSettingsSerializer.GetDoubleAttribute(itemsElement, nameof(plot.LegendLineSpacing), out legendLineSpacing)) plot.LegendLineSpacing = legendLineSpacing;
+                if (OxyPlotSettingsSerializer.GetDoubleAttribute(itemsElement, nameof(legend.LegendLineSpacing), out double legendLineSpacing))
+                    legend.LegendLineSpacing = legendLineSpacing;
 
-                // Backward compatibility
-                if (OxyPlotSettingsSerializer.GetColorAttribute(itemsElement, "Color", out legendTextColor)) plot.LegendTextColor = legendTextColor;
-                if (OxyPlotSettingsSerializer.GetDoubleAttribute(itemsElement, "SymbolLength", out legendSymbolLength)) plot.LegendSymbolLength = legendSymbolLength;
-                if (OxyPlotSettingsSerializer.GetDoubleAttribute(itemsElement, "SymbolMargin", out legendSymbolMargin)) plot.LegendSymbolMargin = legendSymbolMargin;
-                if (OxyPlotSettingsSerializer.GetEnumAttribute(itemsElement, "SymbolPlacement", out legendSymbolPlacement)) plot.LegendSymbolPlacement = legendSymbolPlacement;
-                if (OxyPlotSettingsSerializer.GetDoubleAttribute(itemsElement, "ColumnSpacing", out legendColumnSpacing)) plot.LegendColumnSpacing = legendColumnSpacing;
-                if (OxyPlotSettingsSerializer.GetEnumAttribute(itemsElement, "ItemAlignment", out legendItemAlignment)) plot.LegendItemAlignment = legendItemAlignment;
-                if (OxyPlotSettingsSerializer.GetEnumAttribute(itemsElement, "ItemOrder", out legendItemOrder)) plot.LegendItemOrder = legendItemOrder;
-                if (OxyPlotSettingsSerializer.GetDoubleAttribute(itemsElement, "ItemSpacing", out legendItemSpacing)) plot.LegendItemSpacing = legendItemSpacing;
-                if (OxyPlotSettingsSerializer.GetDoubleAttribute(itemsElement, "LineSpacing", out legendLineSpacing)) plot.LegendLineSpacing = legendLineSpacing;
+                // V1 Backward compatibility
+                if (version == 1)
+                {
+                    if (OxyPlotSettingsSerializer.GetColorAttribute(itemsElement, "LegendTextColor", out Color wpfColor))
+                        legend.LegendTextColor = OxyColor.FromArgb(wpfColor.A, wpfColor.R, wpfColor.G, wpfColor.B);
+                    if (OxyPlotSettingsSerializer.GetColorAttribute(itemsElement, "Color", out wpfColor))
+                        legend.LegendTextColor = OxyColor.FromArgb(wpfColor.A, wpfColor.R, wpfColor.G, wpfColor.B);
+                    // WPF HorizontalAlignment maps to OxyPlot HorizontalAlignment
+                    if (OxyPlotSettingsSerializer.GetEnumAttribute(itemsElement, "LegendItemAlignment", out System.Windows.HorizontalAlignment wpfAlignment))
+                        legend.LegendItemAlignment = (HorizontalAlignment)(int)wpfAlignment;
+                    if (OxyPlotSettingsSerializer.GetEnumAttribute(itemsElement, "ItemAlignment", out wpfAlignment))
+                        legend.LegendItemAlignment = (HorizontalAlignment)(int)wpfAlignment;
+                }
             }
         }
     }
