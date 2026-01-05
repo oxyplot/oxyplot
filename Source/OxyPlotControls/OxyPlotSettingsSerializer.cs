@@ -421,5 +421,78 @@ namespace OxyPlotControls
                 return string.Empty;
             return color.ToString();
         }
+
+        /// <summary>
+        /// Gets an OxyThickness attribute from an XElement.
+        /// </summary>
+        /// <param name="el">The XElement to get the attribute from.</param>
+        /// <param name="attributeName">The name of the attribute.</param>
+        /// <param name="thickness">The OxyThickness value if found.</param>
+        /// <returns>True if the attribute was found and parsed successfully.</returns>
+        public static bool GetOxyThicknessAttribute(XElement el, string attributeName, out OxyThickness thickness)
+        {
+            thickness = new OxyThickness(0);
+            if (el.Attribute(attributeName) == null) return false;
+            string value = el.Attribute(attributeName)!.Value;
+            if (string.IsNullOrEmpty(value)) return false;
+
+            // Try to parse as comma-separated values (left,top,right,bottom)
+            var parts = value.Split(',');
+            if (parts.Length == 4 &&
+                double.TryParse(parts[0].Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, out var left) &&
+                double.TryParse(parts[1].Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, out var top) &&
+                double.TryParse(parts[2].Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, out var right) &&
+                double.TryParse(parts[3].Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, out var bottom))
+            {
+                thickness = new OxyThickness(left, top, right, bottom);
+                return true;
+            }
+
+            // Try to parse as single value (uniform thickness)
+            if (double.TryParse(value.Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, out var uniform))
+            {
+                thickness = new OxyThickness(uniform);
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Gets a font weight as a double from an XElement, converting from WPF FontWeight names if necessary.
+        /// </summary>
+        /// <param name="el">The XElement to get the attribute from.</param>
+        /// <param name="attributeName">The name of the attribute.</param>
+        /// <param name="fontWeight">The font weight as double if found.</param>
+        /// <returns>True if the attribute was found and parsed successfully.</returns>
+        public static bool GetFontWeightAsDoubleAttribute(XElement el, string attributeName, out double fontWeight)
+        {
+            fontWeight = 400; // Normal weight
+            if (el.Attribute(attributeName) == null) return false;
+            string value = el.Attribute(attributeName)!.Value;
+            if (string.IsNullOrEmpty(value)) return false;
+
+            // Try to parse as a double first
+            if (double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out fontWeight))
+            {
+                return true;
+            }
+
+            // Map WPF FontWeight names to OpenType weight values
+            switch (value.ToLowerInvariant())
+            {
+                case "thin": fontWeight = 100; return true;
+                case "extralight": case "ultralight": fontWeight = 200; return true;
+                case "light": fontWeight = 300; return true;
+                case "normal": case "regular": fontWeight = 400; return true;
+                case "medium": fontWeight = 500; return true;
+                case "demibold": case "semibold": fontWeight = 600; return true;
+                case "bold": fontWeight = 700; return true;
+                case "extrabold": case "ultrabold": fontWeight = 800; return true;
+                case "black": case "heavy": fontWeight = 900; return true;
+                case "extrablack": case "ultrablack": fontWeight = 950; return true;
+                default: return false;
+            }
+        }
     }
 }
