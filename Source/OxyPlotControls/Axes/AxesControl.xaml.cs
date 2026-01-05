@@ -1,7 +1,8 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Xml.Linq;
-using Wpf = OxyPlot.Wpf;
+using OxyPlot;
+using OxyPlot.Axes;
 
 namespace OxyPlotControls
 {
@@ -17,34 +18,34 @@ namespace OxyPlotControls
         public static readonly string AxesPropertiesTag = "Axes";
 
         /// <summary>
-        /// Identifies the <see cref="Plot"/> dependency property.
+        /// Identifies the <see cref="PlotModel"/> dependency property.
         /// </summary>
-        public static DependencyProperty PlotProperty = DependencyProperty.Register(
-            nameof(Plot), typeof(Wpf.Plot), typeof(AxesControl),
-            new PropertyMetadata(null, InitializePlot));
+        public static DependencyProperty PlotModelProperty = DependencyProperty.Register(
+            nameof(PlotModel), typeof(PlotModel), typeof(AxesControl),
+            new PropertyMetadata(null, InitializePlotModel));
 
         /// <summary>
-        /// Gets or sets the OxyPlot Plot control that contains the axes.
+        /// Gets or sets the PlotModel that contains the axes.
         /// </summary>
-        public Wpf.Plot Plot
+        public PlotModel PlotModel
         {
-            get { return (Wpf.Plot)GetValue(PlotProperty); }
-            set { SetValue(PlotProperty, value); }
+            get { return (PlotModel)GetValue(PlotModelProperty); }
+            set { SetValue(PlotModelProperty, value); }
         }
 
         /// <summary>
         /// Identifies the <see cref="SelectedAxis"/> dependency property.
         /// </summary>
         public static DependencyProperty SelectedAxisProperty = DependencyProperty.Register(
-            nameof(SelectedAxis), typeof(Wpf.Axis), typeof(AxesControl),
+            nameof(SelectedAxis), typeof(Axis), typeof(AxesControl),
             new PropertyMetadata(null));
 
         /// <summary>
         /// Gets or sets the currently selected axis.
         /// </summary>
-        public Wpf.Axis SelectedAxis
+        public Axis SelectedAxis
         {
-            get { return (Wpf.Axis)GetValue(SelectedAxisProperty); }
+            get { return (Axis)GetValue(SelectedAxisProperty); }
             set { SetValue(SelectedAxisProperty, value); }
         }
 
@@ -131,7 +132,7 @@ namespace OxyPlotControls
             ComboBoxStyle = (Style)FindResource("CleanComboBoxStyle");
         }
 
-        private static void InitializePlot(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void InitializePlotModel(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d == null) return;
             if (d.GetType() != typeof(AxesControl)) return;
@@ -139,16 +140,15 @@ namespace OxyPlotControls
 
             thisControl.AxesPropertyControlComboBox.ItemsSource = null;
             if (e.NewValue == null) return;
-            if (e.NewValue.GetType() != typeof(Wpf.Plot)) return;
-            var newPlot = (Wpf.Plot)e.NewValue;
+            if (e.NewValue is not PlotModel newPlotModel) return;
 
             if (thisControl.ComboBoxStyle == null) thisControl.SetDefaultComboboxStyle();
-            thisControl.AxesPropertyControlComboBox.ItemsSource = newPlot.Axes;
+            thisControl.AxesPropertyControlComboBox.ItemsSource = newPlotModel.Axes;
 
             thisControl.AxesPropertyControlComboBox.ApplyTemplate();
             var t = thisControl.AxesPropertyControlComboBox.FindResource("ComboBoxTemplate");
 
-            if (newPlot.Axes.Count > 0) thisControl.AxesPropertyControlComboBox.SelectedIndex = 0;
+            if (newPlotModel.Axes.Count > 0) thisControl.AxesPropertyControlComboBox.SelectedIndex = 0;
         }
 
         /// <summary>
@@ -164,30 +164,31 @@ namespace OxyPlotControls
             // Early exit if nothing is selected.
             if (AxesPropertyControlComboBox.SelectedItem == null) return;
 
-            var axisToSelect = AxesPropertyControlComboBox.SelectedItem as Wpf.Axis;
+            var axisToSelect = AxesPropertyControlComboBox.SelectedItem as Axis;
             if (axisToSelect == null) return;
             AxisPropertiesControl.Axis = axisToSelect;
+            AxisPropertiesControl.PlotModel = PlotModel;
         }
 
         private void DeleteAxisButton_Click(object sender, RoutedEventArgs e)
         {
             if (AxesPropertyControlComboBox.SelectedItem == null) return;
-            if (Plot == null) return;
+            if (PlotModel == null) return;
             if (sender == null) return;
             if (sender.GetType() != typeof(Button)) return;
             var btn = (Button)sender;
             if (btn.DataContext == null) return;
 
-            var axisToDelete = btn.DataContext as Wpf.Axis;
+            var axisToDelete = btn.DataContext as Axis;
             if (axisToDelete == null) return;
 
-            int index = Plot.Axes.IndexOf(axisToDelete);
+            int index = PlotModel.Axes.IndexOf(axisToDelete);
             if (index == AxesPropertyControlComboBox.SelectedIndex)
             {
                 if (index > 0) index -= 1;
-                if (Plot.Axes.Count == 1) index = -1;
+                if (PlotModel.Axes.Count == 1) index = -1;
             }
-            Plot.Axes.Remove(axisToDelete);
+            PlotModel.Axes.Remove(axisToDelete);
             AxesPropertyControlComboBox.SelectedIndex = index;
 
             AxisPropertiesControl.CloseExpanders();
@@ -196,12 +197,12 @@ namespace OxyPlotControls
         /// <summary>
         /// Serializes all axes properties to an XML element for persistence.
         /// </summary>
-        /// <param name="plot">The OxyPlot Plot control containing the axes to serialize.</param>
+        /// <param name="plotModel">The PlotModel containing the axes to serialize.</param>
         /// <returns>An XElement containing all serialized axes properties.</returns>
-        public static XElement AxesPropertiesToXElement(Wpf.Plot plot)
+        public static XElement AxesPropertiesToXElement(PlotModel plotModel)
         {
             var axesProperties = new XElement(AxesPropertiesTag);
-            foreach (var axis in plot.Axes)
+            foreach (var axis in plotModel.Axes)
             {
                 axesProperties.Add(AxisControl.AxisPropertiesToXElement(axis));
             }
@@ -210,29 +211,30 @@ namespace OxyPlotControls
         }
 
         /// <summary>
-        /// Deserializes axes properties from an XML element and applies them to the plot.
+        /// Deserializes axes properties from an XML element and applies them to the plot model.
         /// </summary>
-        /// <param name="plot">The OxyPlot Plot control to apply settings to.</param>
+        /// <param name="plotModel">The PlotModel to apply settings to.</param>
         /// <param name="element">The XElement containing serialized axes properties.</param>
-        public static void XElementToAxesProperties(Wpf.Plot plot, XElement element)
+        /// <param name="version">The serialization format version (1 for legacy, 2 for modern).</param>
+        public static void XElementToAxesProperties(PlotModel plotModel, XElement element, int version = 2)
         {
             // Early Exit
             if (element.Name != AxesPropertiesTag) return;
 
             // Set up the axes
-            plot.Axes.Clear();
-            Wpf.Axis tempAxis;
+            plotModel.Axes.Clear();
+            Axis? tempAxis;
             foreach (var el in element.Elements(AxisControl.AxisPropertiesTag))
             {
                 tempAxis = AxisControl.XElementToAxisProperties(el);
                 if (tempAxis == null) continue;
-                plot.Axes.Add(tempAxis);
+                plotModel.Axes.Add(tempAxis);
             }
         }
 
-        private void AxisPropertiesControl_AxisTypeChanged(Wpf.Axis oldAxis, Wpf.Axis newAxis)
+        private void AxisPropertiesControl_AxisTypeChanged(Axis oldAxis, Axis newAxis)
         {
-            AxesPropertyControlComboBox.ItemsSource = Plot.Axes;
+            AxesPropertyControlComboBox.ItemsSource = PlotModel?.Axes;
             SelectedAxis = newAxis;
             AxesPropertyControlComboBox.SelectedItem = newAxis;
         }
