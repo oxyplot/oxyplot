@@ -68,16 +68,16 @@ namespace OxyPlotControls
         /// </summary>
         public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(
             nameof(Series),
-            typeof(OxyPlot.Wpf.Series),
+            typeof(OxyPlot.Series.Series),
             typeof(GenericSeriesControl),
             new PropertyMetadata(null, InitializeControl));
 
         /// <summary>
         /// Gets or sets the series whose properties are being edited.
         /// </summary>
-        public OxyPlot.Wpf.Series Series
+        public OxyPlot.Series.Series Series
         {
-            get => (OxyPlot.Wpf.Series)GetValue(SeriesProperty);
+            get => (OxyPlot.Series.Series)GetValue(SeriesProperty);
             set => SetValue(SeriesProperty, value);
         }
 
@@ -118,7 +118,7 @@ namespace OxyPlotControls
             var thisControl = (GenericSeriesControl)d;
 
             if (e.NewValue == null) return;
-            var wpfSeries = e.NewValue as OxyPlot.Wpf.Series;
+            var wpfSeries = e.NewValue as OxyPlot.Series.Series;
             if (wpfSeries == null) return;
 
             // Note: The commented code in VB relates to setting up a data grid for series data
@@ -175,10 +175,10 @@ namespace OxyPlotControls
         /// </summary>
         /// <param name="plot">The plot containing the series to serialize.</param>
         /// <returns>An XElement containing all series properties.</returns>
-        public static XElement SeriesPropertiesToXElement(OxyPlot.Wpf.Plot plot)
+        public static XElement SeriesPropertiesToXElement(PlotModel plot)
         {
             var seriesProperties = new XElement(SeriesPropertiesTag);
-            foreach (OxyPlot.Wpf.Series series in plot.Series)
+            foreach (OxyPlot.Series.Series series in plot.Series)
             {
                 seriesProperties.Add(SeriesPropertiesToXElement(series));
             }
@@ -190,7 +190,7 @@ namespace OxyPlotControls
         /// </summary>
         /// <param name="plot">The plot to populate with series.</param>
         /// <param name="element">The XElement containing series properties.</param>
-        public static void XElementToSeriesProperties(OxyPlot.Wpf.Plot plot, XElement element)
+        public static void XElementToSeriesProperties(PlotModel plot, XElement element)
         {
             // Early Exit
             if (element.Name != SeriesPropertiesTag) return;
@@ -215,7 +215,7 @@ namespace OxyPlotControls
         /// </summary>
         /// <param name="series">The series to serialize.</param>
         /// <returns>An XElement containing the series properties.</returns>
-        public static XElement SeriesPropertiesToXElement(OxyPlot.Wpf.Series series)
+        public static XElement SeriesPropertiesToXElement(OxyPlot.Series.Series series)
         {
             var seriesElement = new XElement(SeriesPropertiesTag);
             var seriesType = series.GetType();
@@ -248,20 +248,20 @@ namespace OxyPlotControls
             seriesElement.Add(generalProperties);
 
             // Serialize XY axis series properties
-            var xyAxisSeries = series as OxyPlot.Wpf.XYAxisSeries;
+            var xyAxisSeries = series as OxyPlot.Series.XYAxisSeries;
             if (xyAxisSeries != null)
             {
-                var xyAxisSeriesElement = new XElement(nameof(OxyPlot.Wpf.XYAxisSeries));
+                var xyAxisSeriesElement = new XElement(nameof(OxyPlot.Series.XYAxisSeries));
                 xyAxisSeriesElement.SetAttributeValue(nameof(xyAxisSeries.XAxisKey), xyAxisSeries.XAxisKey);
                 xyAxisSeriesElement.SetAttributeValue(nameof(xyAxisSeries.YAxisKey), xyAxisSeries.YAxisKey);
                 seriesElement.Add(xyAxisSeriesElement);
             }
 
             // Serialize data point series properties
-            var dataPointSeries = series as OxyPlot.Wpf.DataPointSeries;
+            var dataPointSeries = series as OxyPlot.Series.DataPointSeries;
             if (dataPointSeries != null)
             {
-                var dataPointSeriesElement = new XElement(nameof(OxyPlot.Wpf.DataPointSeries));
+                var dataPointSeriesElement = new XElement(nameof(OxyPlot.Series.DataPointSeries));
                 dataPointSeriesElement.SetAttributeValue(nameof(dataPointSeries.CanTrackerInterpolatePoints), dataPointSeries.CanTrackerInterpolatePoints.ToString());
                 dataPointSeriesElement.SetAttributeValue(nameof(dataPointSeries.DataFieldX), dataPointSeries.DataFieldX);
                 dataPointSeriesElement.SetAttributeValue(nameof(dataPointSeries.DataFieldY), dataPointSeries.DataFieldY);
@@ -269,10 +269,10 @@ namespace OxyPlotControls
             }
 
             // Serialize bar base series properties
-            var barBaseSeries = series as OxyPlot.Wpf.BarSeriesBase;
+            var barBaseSeries = series as OxyPlot.Series.BarSeriesBase;
             if (barBaseSeries != null)
             {
-                var barBaseElement = new XElement(nameof(OxyPlot.Wpf.BarSeriesBase));
+                var barBaseElement = new XElement(nameof(OxyPlot.Series.BarSeriesBase));
                 barBaseElement.SetAttributeValue(nameof(barBaseSeries.BaseValue), barBaseSeries.BaseValue.ToString("G17", CultureInfo.InvariantCulture));
                 barBaseElement.SetAttributeValue(nameof(barBaseSeries.FillColor), barBaseSeries.FillColor);
                 barBaseElement.SetAttributeValue(nameof(barBaseSeries.ColorField), barBaseSeries.ColorField);
@@ -289,28 +289,28 @@ namespace OxyPlotControls
             }
 
             // Serialize bar series properties
-            var barSeries = series as OxyPlot.Wpf.BarSeries;
+            var barSeries = series as OxyPlot.Series.BarSeries;
             if (barSeries != null)
             {
-                var barElement = new XElement(nameof(OxyPlot.Wpf.BarSeries));
+                var barElement = new XElement(nameof(OxyPlot.Series.BarSeries));
                 barElement.SetAttributeValue(nameof(barSeries.BarWidth), barSeries.BarWidth.ToString("G17", CultureInfo.InvariantCulture));
                 seriesElement.Add(barElement);
             }
 
             // Serialize column series properties
-            var columnSeries = series as OxyPlot.Wpf.ColumnSeries;
+            var columnSeries = series as OxyPlot.Series.ColumnSeries;
             if (columnSeries != null)
             {
-                var columnElement = new XElement(nameof(OxyPlot.Wpf.ColumnSeries));
+                var columnElement = new XElement(nameof(OxyPlot.Series.ColumnSeries));
                 columnElement.SetAttributeValue(nameof(columnSeries.ColumnWidth), columnSeries.ColumnWidth.ToString("G17", CultureInfo.InvariantCulture));
                 seriesElement.Add(columnElement);
             }
 
             // Serialize histogram series properties
-            var histogramSeries = series as OxyPlot.Wpf.HistogramSeries;
+            var histogramSeries = series as OxyPlot.Series.HistogramSeries;
             if (histogramSeries != null)
             {
-                var histogramElement = new XElement(nameof(OxyPlot.Wpf.HistogramSeries));
+                var histogramElement = new XElement(nameof(OxyPlot.Series.HistogramSeries));
                 histogramElement.SetAttributeValue(nameof(histogramSeries.FillColor), histogramSeries.FillColor);
                 histogramElement.SetAttributeValue(nameof(histogramSeries.NegativeFillColor), histogramSeries.NegativeFillColor);
                 histogramElement.SetAttributeValue(nameof(histogramSeries.LabelFormatString), histogramSeries.LabelFormatString);
@@ -321,10 +321,10 @@ namespace OxyPlotControls
             }
 
             // Serialize line series properties
-            var lineSeries = series as OxyPlot.Wpf.LineSeries;
+            var lineSeries = series as OxyPlot.Series.LineSeries;
             if (lineSeries != null)
             {
-                var lineSeriesElement = new XElement(nameof(OxyPlot.Wpf.LineSeries));
+                var lineSeriesElement = new XElement(nameof(OxyPlot.Series.LineSeries));
                 lineSeriesElement.SetAttributeValue(nameof(lineSeries.LineJoin), lineSeries.LineJoin);
                 lineSeriesElement.SetAttributeValue(nameof(lineSeries.LineLegendPosition), lineSeries.LineLegendPosition);
                 lineSeriesElement.SetAttributeValue(nameof(lineSeries.LineStyle), lineSeries.LineStyle);
@@ -346,10 +346,10 @@ namespace OxyPlotControls
             }
 
             // Serialize area series properties
-            var areaSeries = series as OxyPlot.Wpf.AreaSeries;
+            var areaSeries = series as OxyPlot.Series.AreaSeries;
             if (areaSeries != null)
             {
-                var areaSeriesElement = new XElement(nameof(OxyPlot.Wpf.AreaSeries));
+                var areaSeriesElement = new XElement(nameof(OxyPlot.Series.AreaSeries));
                 areaSeriesElement.SetAttributeValue(nameof(areaSeries.Color2), areaSeries.Color2);
                 areaSeriesElement.SetAttributeValue(nameof(areaSeries.Fill), areaSeries.Fill);
                 areaSeriesElement.SetAttributeValue(nameof(areaSeries.DataFieldX2), areaSeries.DataFieldX2);
@@ -359,10 +359,10 @@ namespace OxyPlotControls
             }
 
             // Serialize boxplot series properties
-            var boxPlotSeries = series as OxyPlot.Wpf.BoxPlotSeries;
+            var boxPlotSeries = series as OxyPlot.Series.BoxPlotSeries;
             if (boxPlotSeries != null)
             {
-                var boxPlotElement = new XElement(nameof(OxyPlot.Wpf.BoxPlotSeries));
+                var boxPlotElement = new XElement(nameof(OxyPlot.Series.BoxPlotSeries));
                 boxPlotElement.SetAttributeValue(nameof(boxPlotSeries.StrokeThickness), boxPlotSeries.StrokeThickness.ToString("G17", CultureInfo.InvariantCulture));
                 boxPlotElement.SetAttributeValue(nameof(boxPlotSeries.Stroke), boxPlotSeries.Stroke);
                 boxPlotElement.SetAttributeValue(nameof(boxPlotSeries.LineStyle), boxPlotSeries.LineStyle);
@@ -379,10 +379,10 @@ namespace OxyPlotControls
             }
 
             // Serialize scatter point series properties
-            var scatterPointSeries = series as OxyPlot.Wpf.ScatterPointSeries;
+            var scatterPointSeries = series as OxyPlot.Series.ScatterSeries;
             if (scatterPointSeries != null)
             {
-                var scatterPointElement = new XElement(nameof(OxyPlot.Wpf.ScatterPointSeries));
+                var scatterPointElement = new XElement(nameof(OxyPlot.Series.ScatterSeries));
                 scatterPointElement.SetAttributeValue(nameof(scatterPointSeries.DataFieldTag), scatterPointSeries.DataFieldTag);
                 scatterPointElement.SetAttributeValue(nameof(scatterPointSeries.DataFieldValue), scatterPointSeries.DataFieldValue);
                 scatterPointElement.SetAttributeValue(nameof(scatterPointSeries.ColorAxisKey), scatterPointSeries.ColorAxisKey);
@@ -397,10 +397,10 @@ namespace OxyPlotControls
             }
 
             // Serialize error bar series properties
-            var errorBarsSeries = series as OxyPlot.Wpf.ScatterErrorSeries;
+            var errorBarsSeries = series as OxyPlot.Series.ScatterErrorSeries;
             if (errorBarsSeries != null)
             {
-                var element = new XElement(nameof(OxyPlot.Wpf.ScatterErrorSeries));
+                var element = new XElement(nameof(OxyPlot.Series.ScatterErrorSeries));
                 element.SetAttributeValue(nameof(errorBarsSeries.DataFieldTag), errorBarsSeries.DataFieldTag);
                 element.SetAttributeValue(nameof(errorBarsSeries.DataFieldValue), errorBarsSeries.DataFieldValue);
                 element.SetAttributeValue(nameof(errorBarsSeries.ColorAxisKey), errorBarsSeries.ColorAxisKey);
@@ -423,10 +423,10 @@ namespace OxyPlotControls
             }
 
             // Serialize heat map series properties
-            var heatMapSeries = series as OxyPlot.Wpf.HeatMapSeries;
+            var heatMapSeries = series as OxyPlot.Series.HeatMapSeries;
             if (heatMapSeries != null)
             {
-                var heatMapElement = new XElement(nameof(OxyPlot.Wpf.HeatMapSeries));
+                var heatMapElement = new XElement(nameof(OxyPlot.Series.HeatMapSeries));
                 heatMapElement.SetAttributeValue(nameof(heatMapSeries.ColorAxisKey), heatMapSeries.ColorAxisKey);
                 heatMapElement.SetAttributeValue(nameof(heatMapSeries.Y0), heatMapSeries.Y0.ToString("G17", CultureInfo.InvariantCulture));
                 heatMapElement.SetAttributeValue(nameof(heatMapSeries.Y1), heatMapSeries.Y1.ToString("G17", CultureInfo.InvariantCulture));
@@ -448,7 +448,7 @@ namespace OxyPlotControls
         /// </summary>
         /// <param name="element">The XElement containing series properties.</param>
         /// <returns>A new series instance with the deserialized properties, or null if the type is not recognized.</returns>
-        public static OxyPlot.Wpf.Series XElementToSeriesProperties(XElement element)
+        public static OxyPlot.Series.Series XElementToSeriesProperties(XElement element)
         {
             // Early Exit
             if (element == null) return null;
@@ -457,35 +457,35 @@ namespace OxyPlotControls
             // Set up converters
             var fontWeightConverter = new FontWeightConverter();
             var thicknessConverter = new ThicknessConverter();
-            var oxycolorConverter = new OxyPlot.Wpf.OxyColorConverter();
+            // OxyColorConverter no longer needed - use OxyColor directly
             var brushConverter = new BrushConverter();
             var fontFamilyConverter = new FontFamilyConverter();
             var booleanToVisibilityConverter = new BooleanToVisibilityConverter();
 
             // Set up series to return
-            OxyPlot.Wpf.Series series = null;
+            OxyPlot.Series.Series series = null;
 
             GetStringAttribute(element, "SeriesType", out string seriesType);
 
             // Create the Series Type and Deserialize properties specific to the series
-            if (seriesType == typeof(OxyPlot.Wpf.HeatMapSeries).ToString())
-                series = new OxyPlot.Wpf.HeatMapSeries();
-            else if (seriesType == typeof(OxyPlot.Wpf.LineSeries).ToString())
-                series = new OxyPlot.Wpf.LineSeries();
-            else if (seriesType == typeof(OxyPlot.Wpf.ColumnSeries).ToString())
-                series = new OxyPlot.Wpf.ColumnSeries();
-            else if (seriesType == typeof(OxyPlot.Wpf.BarSeries).ToString())
-                series = new OxyPlot.Wpf.BarSeries();
-            else if (seriesType == typeof(OxyPlot.Wpf.HistogramSeries).ToString())
-                series = new OxyPlot.Wpf.HistogramSeries();
-            else if (seriesType == typeof(OxyPlot.Wpf.ScatterPointSeries).ToString())
-                series = new OxyPlot.Wpf.ScatterPointSeries();
-            else if (seriesType == typeof(OxyPlot.Wpf.ScatterErrorSeries).ToString())
-                series = new OxyPlot.Wpf.ScatterErrorSeries();
-            else if (seriesType == typeof(OxyPlot.Wpf.AreaSeries).ToString())
-                series = new OxyPlot.Wpf.AreaSeries();
-            else if (seriesType == typeof(OxyPlot.Wpf.BoxPlotSeries).ToString())
-                series = new OxyPlot.Wpf.BoxPlotSeries();
+            if (seriesType == typeof(OxyPlot.Series.HeatMapSeries).ToString())
+                series = new OxyPlot.Series.HeatMapSeries();
+            else if (seriesType == typeof(OxyPlot.Series.LineSeries).ToString())
+                series = new OxyPlot.Series.LineSeries();
+            else if (seriesType == typeof(OxyPlot.Series.ColumnSeries).ToString())
+                series = new OxyPlot.Series.ColumnSeries();
+            else if (seriesType == typeof(OxyPlot.Series.BarSeries).ToString())
+                series = new OxyPlot.Series.BarSeries();
+            else if (seriesType == typeof(OxyPlot.Series.HistogramSeries).ToString())
+                series = new OxyPlot.Series.HistogramSeries();
+            else if (seriesType == typeof(OxyPlot.Series.ScatterSeries).ToString())
+                series = new OxyPlot.Series.ScatterSeries();
+            else if (seriesType == typeof(OxyPlot.Series.ScatterErrorSeries).ToString())
+                series = new OxyPlot.Series.ScatterErrorSeries();
+            else if (seriesType == typeof(OxyPlot.Series.AreaSeries).ToString())
+                series = new OxyPlot.Series.AreaSeries();
+            else if (seriesType == typeof(OxyPlot.Series.BoxPlotSeries).ToString())
+                series = new OxyPlot.Series.BoxPlotSeries();
             else
                 return null; // not a recognized type
 
@@ -519,29 +519,29 @@ namespace OxyPlotControls
             }
 
             // Deserialize XY Axis Series Properties
-            var xyAxisSeries = series as OxyPlot.Wpf.XYAxisSeries;
+            var xyAxisSeries = series as OxyPlot.Series.XYAxisSeries;
             if (xyAxisSeries != null)
             {
-                var xyAxesSeriesElement = element.Element(nameof(OxyPlot.Wpf.XYAxisSeries));
+                var xyAxesSeriesElement = element.Element(nameof(OxyPlot.Series.XYAxisSeries));
                 if (GetStringAttribute(xyAxesSeriesElement, nameof(xyAxisSeries.XAxisKey), out var xAxisKey)) xyAxisSeries.XAxisKey = xAxisKey;
                 if (GetStringAttribute(xyAxesSeriesElement, nameof(xyAxisSeries.YAxisKey), out var yAxisKey)) xyAxisSeries.YAxisKey = yAxisKey;
             }
 
             // Deserialize Data Series Properties
-            var dataPointSeries = series as OxyPlot.Wpf.DataPointSeries;
+            var dataPointSeries = series as OxyPlot.Series.DataPointSeries;
             if (dataPointSeries != null)
             {
-                var dataPointSeriesElement = element.Element(nameof(OxyPlot.Wpf.DataPointSeries));
+                var dataPointSeriesElement = element.Element(nameof(OxyPlot.Series.DataPointSeries));
                 if (GetBooleanAttribute(dataPointSeriesElement, nameof(dataPointSeries.CanTrackerInterpolatePoints), out var canTrackerInterpolatePoints)) dataPointSeries.CanTrackerInterpolatePoints = canTrackerInterpolatePoints;
                 if (GetStringAttribute(dataPointSeriesElement, nameof(dataPointSeries.DataFieldX), out var dataFieldX)) dataPointSeries.DataFieldX = dataFieldX;
                 if (GetStringAttribute(dataPointSeriesElement, nameof(dataPointSeries.DataFieldY), out var dataFieldY)) dataPointSeries.DataFieldY = dataFieldY;
             }
 
             // Deserialize Bar series Base properties
-            var barBaseSeries = series as OxyPlot.Wpf.BarSeriesBase;
+            var barBaseSeries = series as OxyPlot.Series.BarSeriesBase;
             if (barBaseSeries != null)
             {
-                var barBaseSeriesElement = element.Element(nameof(OxyPlot.Wpf.BarSeriesBase));
+                var barBaseSeriesElement = element.Element(nameof(OxyPlot.Series.BarSeriesBase));
                 if (GetDoubleAttribute(barBaseSeriesElement, nameof(barBaseSeries.BaseValue), out var baseValue)) barBaseSeries.BaseValue = baseValue;
                 if (GetColorAttribute(barBaseSeriesElement, nameof(barBaseSeries.FillColor), out var fillColor)) barBaseSeries.FillColor = fillColor;
                 if (GetStringAttribute(barBaseSeriesElement, nameof(barBaseSeries.ColorField), out var colorField)) barBaseSeries.ColorField = colorField;
@@ -559,26 +559,26 @@ namespace OxyPlotControls
             }
 
             // Deserialize bar series properties
-            var barSeries = series as OxyPlot.Wpf.BarSeries;
+            var barSeries = series as OxyPlot.Series.BarSeries;
             if (barSeries != null)
             {
-                var barSeriesElement = element.Element(nameof(OxyPlot.Wpf.BarSeries));
+                var barSeriesElement = element.Element(nameof(OxyPlot.Series.BarSeries));
                 if (GetDoubleAttribute(barSeriesElement, nameof(barSeries.BarWidth), out var barWidth)) barSeries.BarWidth = barWidth;
             }
 
             // Deserialize column properties
-            var columnSeries = series as OxyPlot.Wpf.ColumnSeries;
+            var columnSeries = series as OxyPlot.Series.ColumnSeries;
             if (columnSeries != null)
             {
-                var columnSeriesElement = element.Element(nameof(OxyPlot.Wpf.ColumnSeries));
+                var columnSeriesElement = element.Element(nameof(OxyPlot.Series.ColumnSeries));
                 if (GetDoubleAttribute(columnSeriesElement, nameof(columnSeries.ColumnWidth), out var columnWidth)) columnSeries.ColumnWidth = columnWidth;
             }
 
             // Deserialize histogram series properties
-            var histogramSeries = series as OxyPlot.Wpf.HistogramSeries;
+            var histogramSeries = series as OxyPlot.Series.HistogramSeries;
             if (histogramSeries != null)
             {
-                var histogramSeriesElement = element.Element(nameof(OxyPlot.Wpf.HistogramSeries));
+                var histogramSeriesElement = element.Element(nameof(OxyPlot.Series.HistogramSeries));
                 if (GetColorAttribute(histogramSeriesElement, nameof(histogramSeries.FillColor), out var histFillColor)) histogramSeries.FillColor = histFillColor;
                 if (GetColorAttribute(histogramSeriesElement, nameof(histogramSeries.NegativeFillColor), out var histNegativeFillColor)) histogramSeries.NegativeFillColor = histNegativeFillColor;
                 if (GetStringAttribute(histogramSeriesElement, nameof(histogramSeries.LabelFormatString), out var histLabelFormatString)) histogramSeries.LabelFormatString = histLabelFormatString;
@@ -590,10 +590,10 @@ namespace OxyPlotControls
             }
 
             // Deserialize line series properties
-            var lineSeries = series as OxyPlot.Wpf.LineSeries;
+            var lineSeries = series as OxyPlot.Series.LineSeries;
             if (lineSeries != null)
             {
-                var lineSeriesElement = element.Element(nameof(OxyPlot.Wpf.LineSeries));
+                var lineSeriesElement = element.Element(nameof(OxyPlot.Series.LineSeries));
                 if (!GetEnumAttribute(lineSeriesElement, nameof(lineSeries.LineJoin), out OxyPlot.LineJoin lineJoin))
                     lineJoin = OxyPlot.LineJoin.Bevel;
                 lineSeries.LineJoin = lineJoin;
@@ -624,10 +624,10 @@ namespace OxyPlotControls
             }
 
             // Deserialize area series properties
-            var areaSeries = series as OxyPlot.Wpf.AreaSeries;
+            var areaSeries = series as OxyPlot.Series.AreaSeries;
             if (areaSeries != null)
             {
-                var areaSeriesElement = element.Element(nameof(OxyPlot.Wpf.AreaSeries));
+                var areaSeriesElement = element.Element(nameof(OxyPlot.Series.AreaSeries));
                 if (GetColorAttribute(areaSeriesElement, nameof(areaSeries.Color2), out var color2)) areaSeries.Color2 = color2;
                 if (GetColorAttribute(areaSeriesElement, nameof(areaSeries.Fill), out var areaFill)) areaSeries.Fill = areaFill;
                 if (GetStringAttribute(areaSeriesElement, nameof(areaSeries.DataFieldX2), out var dataFieldX2)) areaSeries.DataFieldX2 = dataFieldX2;
@@ -636,10 +636,10 @@ namespace OxyPlotControls
             }
 
             // Deserialize box plot properties
-            var boxPlotSeries = series as OxyPlot.Wpf.BoxPlotSeries;
+            var boxPlotSeries = series as OxyPlot.Series.BoxPlotSeries;
             if (boxPlotSeries != null)
             {
-                var boxPlotseriesElement = element.Element(nameof(OxyPlot.Wpf.BoxPlotSeries));
+                var boxPlotseriesElement = element.Element(nameof(OxyPlot.Series.BoxPlotSeries));
                 if (GetDoubleAttribute(boxPlotseriesElement, nameof(boxPlotSeries.StrokeThickness), out var boxStrokeThickness)) boxPlotSeries.StrokeThickness = boxStrokeThickness;
                 if (GetColorAttribute(boxPlotseriesElement, nameof(boxPlotSeries.Stroke), out var boxStroke)) boxPlotSeries.Stroke = boxStroke;
                 if (!GetEnumAttribute(boxPlotseriesElement, nameof(boxPlotSeries.LineStyle), out OxyPlot.LineStyle boxLineStyle))
@@ -659,10 +659,10 @@ namespace OxyPlotControls
             }
 
             // Deserialize scatter point series properties
-            var scatterPointSeries = series as OxyPlot.Wpf.ScatterPointSeries;
+            var scatterPointSeries = series as OxyPlot.Series.ScatterSeries;
             if (scatterPointSeries != null)
             {
-                var scatterPointSeriesElement = element.Element(nameof(OxyPlot.Wpf.ScatterPointSeries));
+                var scatterPointSeriesElement = element.Element(nameof(OxyPlot.Series.ScatterSeries));
                 if (GetStringAttribute(scatterPointSeriesElement, nameof(scatterPointSeries.DataFieldTag), out var scatterDataFieldTag)) scatterPointSeries.DataFieldTag = scatterDataFieldTag;
                 if (GetStringAttribute(scatterPointSeriesElement, nameof(scatterPointSeries.DataFieldValue), out var scatterDataFieldValue)) scatterPointSeries.DataFieldValue = scatterDataFieldValue;
                 if (GetStringAttribute(scatterPointSeriesElement, nameof(scatterPointSeries.ColorAxisKey), out var scatterColorAxisKey)) scatterPointSeries.ColorAxisKey = scatterColorAxisKey;
@@ -677,10 +677,10 @@ namespace OxyPlotControls
             }
 
             // Deserialize scatter error series properties
-            var scatterErrorSeries = series as OxyPlot.Wpf.ScatterErrorSeries;
+            var scatterErrorSeries = series as OxyPlot.Series.ScatterErrorSeries;
             if (scatterErrorSeries != null)
             {
-                var errorSeriesElement = element.Element(nameof(OxyPlot.Wpf.ScatterErrorSeries));
+                var errorSeriesElement = element.Element(nameof(OxyPlot.Series.ScatterErrorSeries));
                 if (GetStringAttribute(errorSeriesElement, nameof(scatterErrorSeries.DataFieldTag), out var errDataFieldTag)) scatterErrorSeries.DataFieldTag = errDataFieldTag;
                 if (GetStringAttribute(errorSeriesElement, nameof(scatterErrorSeries.DataFieldValue), out var errDataFieldValue)) scatterErrorSeries.DataFieldValue = errDataFieldValue;
                 if (GetStringAttribute(errorSeriesElement, nameof(scatterErrorSeries.ColorAxisKey), out var errColorAxisKey)) scatterErrorSeries.ColorAxisKey = errColorAxisKey;
@@ -703,10 +703,10 @@ namespace OxyPlotControls
             }
 
             // Deserialize heat map series properties
-            var heatMapSeries = series as OxyPlot.Wpf.HeatMapSeries;
+            var heatMapSeries = series as OxyPlot.Series.HeatMapSeries;
             if (heatMapSeries != null)
             {
-                var heatMapSeriesElement = element.Element(nameof(OxyPlot.Wpf.HeatMapSeries));
+                var heatMapSeriesElement = element.Element(nameof(OxyPlot.Series.HeatMapSeries));
                 if (GetStringAttribute(heatMapSeriesElement, nameof(heatMapSeries.ColorAxisKey), out var heatColorAxisKey)) heatMapSeries.ColorAxisKey = heatColorAxisKey;
                 if (GetDoubleAttribute(heatMapSeriesElement, nameof(heatMapSeries.Y0), out var y0)) heatMapSeries.Y0 = y0;
                 if (GetDoubleAttribute(heatMapSeriesElement, nameof(heatMapSeries.Y1), out var y1)) heatMapSeries.Y1 = y1;
@@ -747,7 +747,7 @@ namespace OxyPlotControls
 
             // Get Series (this should only be set on convert with one-way binding)
             if (values[1] == null) { _series = null; return false; }
-            _series = ((OxyPlot.Wpf.Series)values[1]).InternalSeries;
+            _series = values[1] as OxyPlot.Series.Series;
 
             // Convert
             if (oxyCol.IsAutomatic())
@@ -831,7 +831,7 @@ namespace OxyPlotControls
 
             // Get Series
             if (values[1] == null) { _series = null; return false; }
-            _series = ((OxyPlot.Wpf.Series)values[1]).InternalSeries;
+            _series = values[1] as OxyPlot.Series.Series;
 
             // Convert
             if (oxyCol.IsAutomatic())
@@ -902,7 +902,7 @@ namespace OxyPlotControls
 
             // Get Series
             if (values[1] == null) { _series = null; return false; }
-            _series = ((OxyPlot.Wpf.Series)values[1]).InternalSeries;
+            _series = values[1] as OxyPlot.Series.Series;
 
             // Convert
             if (oxyCol.IsAutomatic())
